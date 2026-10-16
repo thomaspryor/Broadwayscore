@@ -4666,10 +4666,10 @@ function coverageHolesResults(report, now = Date.now()) {
   if (!report || typeof report !== 'object' || !report.counts) return [];
   const c = report.counts;
   const t = (k) => (c[k] && Number(c[k].total)) || 0;
-  const unexplained = (k) => t(k) - ((c[k] && Number(c[k].explained)) || 0);
+  const unexplained = (k) => Math.max(0, t(k) - ((c[k] && Number(c[k].explained)) || 0));
   const at = Date.parse(report.generatedAt);
   const out = [];
-  const total = unexplained('A') + unexplained('B') + unexplained('C') + t('D');
+  const total = unexplained('A') + unexplained('B') + unexplained('C') + ((c.D && Number(c.D.published)) || 0);
   if (total > 0) {
     out.push({
       name: 'Data: review coverage holes',

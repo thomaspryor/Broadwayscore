@@ -401,6 +401,14 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
   },
   {
+    file: 'audit/coverage-holes.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-10-16 (BRO-4861): sole writer scripts/audit-coverage-holes.js --counts, invoked only by data-health-check.yml\'s "Coverage holes on current shows" step and committed by its "Commit provider spend ledger (apiFallbackSafe)" step. Counts only (no file names or text), regenerated each run — nothing to union.',
+  },
+  {
     file: 'audit/guard-audit-snapshot.json',
     surface: 'public-repo',
     status: 'single-writer',

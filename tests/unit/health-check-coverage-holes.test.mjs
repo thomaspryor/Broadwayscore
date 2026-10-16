@@ -51,3 +51,15 @@ test('countsReport carries counts only, no file names or text', () => {
   assert.equal(rep.counts.D.published, 1);
   assert.ok(!JSON.stringify(rep).includes('secret'));
 });
+
+test('unpublished D rows alone do not warn', () => {
+  const rep = report(0, 0, 0, 3);
+  rep.counts.D.published = 0;
+  assert.deepEqual(coverageHolesResults(rep, NOW), []);
+});
+
+test('explained above total never goes negative and masks a real hole', () => {
+  const rep = report(1, 0, 2, 0);
+  rep.counts.A.explained = 5;
+  assert.equal(coverageHolesResults(rep, NOW).length, 1);
+});
