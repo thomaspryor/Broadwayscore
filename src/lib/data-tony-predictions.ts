@@ -2121,6 +2121,17 @@ function currentSeasonCeremonyDate(): string | undefined {
 }
 
 /**
+ * The current season's ceremony as "Jun 7" for promo stat pills, or undefined
+ * until the date is recorded (the promos that show it are inactive until then).
+ */
+export function currentCeremonyShortDate(): string | undefined {
+  const date = currentSeasonCeremonyDate();
+  return date
+    ? new Date(`${date.slice(0, 10)}T00:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
+    : undefined;
+}
+
+/**
  * Whether to surface the homepage Tony-predictions promo. Active until the
  * current season's ceremonyDate + sunsetDays; hides itself after — no manual
  * takedown needed (Vercel cron rebuilds every 5 min). See

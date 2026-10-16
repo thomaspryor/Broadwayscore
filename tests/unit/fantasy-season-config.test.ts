@@ -23,6 +23,7 @@ import {
   SCORING_START, SCORING_END, EARLY_BIRD_CUTOFF, validatePicks, draftDeadlineDate, hasLateEntry,
 } from '../../src/config/fantasy';
 import type { FantasyShow } from '../../src/config/fantasy';
+import { LISTED_FROM, isFantasyListed } from '../../src/config/fantasy-listing';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = path.join(__dirname, '..', '..', 'data');
@@ -76,6 +77,23 @@ describe('fantasy-season.json is the single source of truth', () => {
   test('the deadline is 11:59:59pm New York time (EST or EDT handled in the UTC string)', () => {
     const t = new Date(seasonConfig.draftDeadline).toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour12: false });
     assert.equal(t, '23:59:59');
+  });
+
+  test('with rolling box office, each week of waiting costs a week of grosses (owner, BRO-5478)', async () => {
+    if (!hasLateEntry()) return;
+    const { entryPickPoints } = await import('../../src/lib/data-fantasy');
+    const weekAfter = (ymd: string, days: number) => new Date(Date.parse(`${ymd}T12:00:00Z`) + days * 86400000).toISOString().slice(0, 10);
+    // Weeks end on Sundays; scoringStart is a Monday.
+    const w1 = weekAfter(seasonConfig.scoringStart, 6), w2 = weekAfter(w1, 7), w3 = weekAfter(w2, 7);
+    const score = {
+      criticScorePoints: 0, audienceGradePoints: 0, boxOfficePoints: 9, awardsPoints: 0, totalPoints: 9,
+      openingDate: null, weeklyBoxOffice: { [w1]: 3, [w2]: 3, [w3]: 3 },
+      breakdown: { criticTier: null, audienceGrade: null, boxOfficeWeeks: 3, boxOfficeTotal: '$3M', awards: [] },
+    };
+    const atLaunch = entryPickPoints(score, null, `${seasonConfig.draftOpens}T16:00:00Z`).boxOffice;
+    const weekLater = entryPickPoints(score, null, `${weekAfter(w1, 1)}T16:00:00Z`).boxOffice;
+    assert.equal(atLaunch, 9, 'launch-weekend entries score every week from scoringStart');
+    assert.equal(weekLater, 6, 'an entry a week later misses the first week');
   });
 
   test('a single draft window starts box office after it closes, so nobody drafts with known grosses', () => {
@@ -150,5 +168,27 @@ describe('catalog integrity', () => {
     for (const [id, s] of Object.entries(shows)) {
       assert.ok(s.priceNote && s.priceNote.length > 10, `${id} has no priceNote`);
     }
+  });
+});
+
+// Unlisted until listedFrom (BRO-5483). The probes sit on the same side of
+// New York midnight under EDT and EST.
+describe('listing date', () => {
+  test('listedFrom is a date the draft is still open on', () => {
+    assert.match(LISTED_FROM, /^\d{4}-\d{2}-\d{2}$/);
+    assert.ok(LISTED_FROM <= draftDeadlineDate(), `listedFrom ${LISTED_FROM} is after the deadline ${draftDeadlineDate()}`);
+    // A stale date from last season would list the game a year early.
+    assert.ok(LISTED_FROM.startsWith(FANTASY_SEASON.slice(0, 4)), `listedFrom ${LISTED_FROM} is not in season ${FANTASY_SEASON}`);
+  });
+  test('the public can find the game before the early-bird cutoff', () => {
+    // Otherwise people with the direct link (testers, friends) get box office
+    // weeks the public never had a chance at.
+    if (hasLateEntry()) {
+      assert.ok(LISTED_FROM <= EARLY_BIRD_CUTOFF, `listedFrom ${LISTED_FROM} is after earlyBirdCutoff ${EARLY_BIRD_CUTOFF}: move earlyBirdCutoff (and scoringStart) with it`);
+    }
+  });
+  test('unlisted the evening before listedFrom, listed that morning', () => {
+    assert.equal(isFantasyListed(new Date(`${LISTED_FROM}T03:00:00Z`)), false);
+    assert.equal(isFantasyListed(new Date(`${LISTED_FROM}T12:00:00Z`)), true);
   });
 });

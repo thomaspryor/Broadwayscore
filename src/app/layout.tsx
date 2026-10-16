@@ -16,6 +16,7 @@ import MarketNav from '@/components/MarketNav';
 import AnalyticsWrapper from '@/components/AnalyticsWrapper';
 import { ProGateProvider } from '@/contexts/ProGateContext';
 import { featureFlags } from '@/config/feature-flags';
+import { isFantasyListed } from '@/config/fantasy-listing';
 import UserProviders from '@/components/UserProviders';
 import HeaderHamburger from '@/components/HeaderHamburger';
 import HeaderUserIcon from '@/components/HeaderUserIcon';
@@ -196,7 +197,7 @@ export default function RootLayout({
                 criticPages: featureFlags.criticPages,
                 creativePages: featureFlags.creativePages,
                 castPages: featureFlags.castPages,
-                fantasyLeague: featureFlags.fantasyLeague,
+                fantasyLeague: isFantasyListed(),
                 tours: isCategoryEnabled('tour'),
               }}
             />

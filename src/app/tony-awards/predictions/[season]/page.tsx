@@ -32,6 +32,7 @@ import {
   getSeasonSummary,
   getTonyTrackRecord,
   isBtcPromoActive,
+  currentCeremonyShortDate,
 } from '@/lib/data-tony-predictions';
 
 const allSeasons = getAllPredictionSeasons();
@@ -751,7 +752,7 @@ export default async function TonySeasonPredictionsPage(props: { params: Promise
                 stat={{ value: '$200', label: 'TodayTix gift card', compactLabel: 'Prize' }}
                 secondary={[
                   { value: '26', label: 'categories' },
-                  { value: 'Jun 7', label: 'ceremony' },
+                  ...(currentCeremonyShortDate() ? [{ value: currentCeremonyShortDate() as string, label: 'ceremony' }] : []),
                 ]}
                 trackingId="tony_predictions_mid_btc"
               />
