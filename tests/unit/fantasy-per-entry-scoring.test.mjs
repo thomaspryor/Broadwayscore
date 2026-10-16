@@ -16,10 +16,13 @@ const {
   isScoreLockedForEntry,
   entryPickPoints,
   computeLeaderboard,
+  isValidLeaderboardEntry,
 } = require('../../scripts/lib/fantasy-helpers.js');
 
 // Fixed season so the tests don't drift when the real config moves.
-const cfg = { scoringStart: '2026-10-05', earlyBirdCutoff: '2026-10-25' };
+// A made-up season: draft opens Oct 1 (earlier than the real one, so the
+// isValidLeaderboardEntry draft-open floor applies to these dates, not the real season's).
+const cfg = { draftOpens: '2026-10-01', scoringStart: '2026-10-05', earlyBirdCutoff: '2026-10-25' };
 
 const score = {
   criticScorePoints: 20,
@@ -143,5 +146,13 @@ describe('computeLeaderboard (per-entry rules)', () => {
     const entries = [{ id: 'e', email: 'a@x.com', team_name: null, picks: ['opens-later'], created_at: '2026-10-03T12:00:00Z' }];
     const [row] = computeLeaderboard(entries, showScores, shows, cfg);
     assert.deepEqual(row.pointBreakdown, { criticScore: 30, audienceGrade: 20, boxOffice: 6, awards: 0 });
+  });
+});
+
+describe('nothing real is drafted before the draft opens (BRO-5487)', () => {
+  const shows = { 'a-show': { title: 'A Show', price: 10, openingDate: '2026-11-15' } };
+  test('a real-season row stamped before draftOpens does not count', () => {
+    assert.equal(isValidLeaderboardEntry({ picks: ['a-show'], created_at: '2026-09-30T12:00:00Z' }, shows, cfg), false);
+    assert.equal(isValidLeaderboardEntry({ picks: ['a-show'], created_at: '2026-10-01T12:00:00Z' }, shows, cfg), true);
   });
 });

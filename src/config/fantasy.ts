@@ -279,9 +279,38 @@ export function isDraftClosed(now: Date = new Date()): boolean {
   return now > new Date(DRAFT_DEADLINE);
 }
 
+/**
+ * Practice drafts for testers (BRO-5487): /fantasy/draft?practice=1 until the
+ * real draft opens. Saved under their own season, which nothing that reads the
+ * real season selects (leaderboard, leagues, ownership, weekly email, admin),
+ * so practice teams never count. Must stay within the insert policy's 4 to 20
+ * characters (20261016_fantasy_entries_insert_hardening.sql).
+ */
+export const PRACTICE_SEASON = `${FANTASY_SEASON}-practice`;
+
+/** Practice drafts take entries until the real draft opens (New York date). */
+export function isPracticeOpen(now: Date = new Date()): boolean {
+  return nyDate(now.toISOString()) < DRAFT_OPENS;
+}
+
+export type DraftMode = 'practice' | 'practice-over' | 'not-open' | 'open' | 'closed';
+
+/**
+ * Which draft a page or request is in. `practiceRequested` is the link's
+ * intent (?practice=1), never inferred from the clock: a practice form left
+ * open past midnight on draft day must not turn into a real, final entry. The
+ * draft page and /api/fantasy/draft both decide with this (BRO-5487).
+ */
+export function draftMode(practiceRequested: boolean, now: Date = new Date()): DraftMode {
+  if (isDraftClosed(now)) return 'closed';
+  if (practiceRequested) return isPracticeOpen(now) ? 'practice' : 'practice-over';
+  return isDraftOpen(now) ? 'open' : 'not-open';
+}
+
 /** Check if the draft is open: on or after DRAFT_OPENS (a New York calendar date) and before the deadline */
 export function isDraftOpen(now: Date = new Date()): boolean {
-  return nyDate(now.toISOString()) >= DRAFT_OPENS && !isDraftClosed(now);
+  // The exact complement of the practice window, so the two never overlap.
+  return !isPracticeOpen(now) && !isDraftClosed(now);
 }
 
 /**
