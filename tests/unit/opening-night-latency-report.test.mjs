@@ -155,3 +155,15 @@ test('--show=ID keeps the global deploy line so a scoped report still has its te
   assert.equal(shows[0].showId, 'isla');
   assert.equal(shows[0].median_e2e_ms, 6 * MS_MIN, 'global deploy survives the --show filter');
 });
+
+test('computeLatencyStats: rebuild-excluded junk is not counted as a review (BRO-5427)', () => {
+  const base = new Date('2026-04-15T22:00:00Z').getTime();
+  const iso = (m) => new Date(base + m * MS_MIN).toISOString();
+  const entries = [
+    ...makeEntries({ showId: 'show-a', reviewKey: 'nytimes:a:https://nytimes.com/r', firstSeen: iso(0), scored: iso(5), deployed: iso(20) }),
+    { showId: 'show-a', reviewKey: 'rollingstone:unknown:https://rollingstone.com/concert', stage: 'review-first-seen', at: iso(0) },
+    { showId: 'show-a', reviewKey: 'rollingstone:Neil Griffiths:https://rollingstone.com/concert', stage: 'excluded', at: iso(3), metadata: { reason: 'skippedWrongShow' } },
+  ];
+  const [s] = computeLatencyStats(entries);
+  assert.equal(s.reviewCount, 1);
+});

@@ -17,6 +17,7 @@ const path = require('path');
 // Shared with the time-to-publish SLA so both answer "which rebuild folded this
 // review in" the same way — see scripts/lib/time-to-publish-sla.js.
 const { firstAtOrAfter } = require('./lib/time-to-publish-sla');
+const { reviewIdentity, excludedReviewIdentities } = require('./lib/stage-latency');
 
 const STAGE_ORDER = ['review-first-seen', 'review-text-collected', 'scored', 'rebuilt', 'deployed-live'];
 const STAGE_GAP_LABELS = [
@@ -121,9 +122,13 @@ function computeLatencyStats(entries, { showFilter, date } = {}) {
   const globalDeploy = showMeta.get('__global');
   for (const list of rebuildAtsByShow.values()) list.sort();
 
-  // Group reviews by showId
+  // Group reviews by showId. Skip rebuild-excluded junk (wrong show, news
+  // item, listing page) and the 'excluded' lines' own keys (BRO-5427).
+  const excludedIds = excludedReviewIdentities(entries);
   const byShow = new Map();
   for (const [, rv] of byShowReview) {
+    if (!rv.stages['review-first-seen'] && rv.stages.excluded) continue;
+    if (excludedIds.size && excludedIds.has(reviewIdentity(rv.showId, rv.reviewKey))) continue;
     if (!byShow.has(rv.showId)) byShow.set(rv.showId, []);
     byShow.get(rv.showId).push(rv);
   }

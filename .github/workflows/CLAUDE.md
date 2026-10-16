@@ -196,7 +196,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Scripts:** `scripts/opening-night-checklist.js`, `scripts/opening-night-latency-report.js`, `scripts/opening-night-sla-dispatch.js`
 - **Requires:** `DISCORD_WEBHOOK_ALERTS`, `RESEND_API_KEY`, `OWNER_EMAIL`, `REVIEW_TEXTS_TOKEN`
 - **Manual trigger:** `gh workflow run opening-night-checklist.yml -f show_id=the-rocky-horror-show-2026 -f dry_run=true`
-- **Related:** `opening-night-orchestrator.yml` also calls the checklist once after its polling loop; `opening-night-broadcast.yml` gates sends on checklist passing (override with `force_broadcast=true`)
+- **Related:** this workflow is the ONLY caller of the checklist + SLA dispatcher (the orchestrator's copy crashed every run and falsely resolved the P0 incident, removed BRO-5427); `opening-night-broadcast.yml` gates sends on checklist passing (override with `force_broadcast=true`)
 
 ## `opening-night-completeness-check.yml`
 - **Runs:** Every 15 min (`*/15 * * * *`), or manually via `workflow_dispatch`

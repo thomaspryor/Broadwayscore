@@ -16,7 +16,9 @@ const WF_DIR = path.join(ROOT, '.github', 'workflows');
 const require = createRequire(import.meta.url);
 const { findGaps } = require('./audit-workflow-secret-gaps.js');
 
-const BRO67 = ['opening-night-checklist.yml', 'opening-night-poller.yml', 'opening-night-orchestrator.yml'];
+// opening-night-orchestrator.yml left this set in BRO-5427: its only key consumer was the
+// checklist tail step, which was removed (it crashed every run and falsely resolved SLA pages).
+const BRO67 = ['opening-night-checklist.yml', 'opening-night-poller.yml'];
 // BRO-2378 cousin: the broadcast checklist gate runs the same checklist script.
 const WORKFLOWS = [...BRO67, 'opening-night-broadcast.yml'];
 
@@ -46,7 +48,7 @@ function stageBro67(strip, extra = (s) => s) {
   return dir;
 }
 
-test('real workflows: BRO-67 trio has no ANTHROPIC_API_KEY gaps', () => {
+test('real workflows: BRO-67 workflows have no ANTHROPIC_API_KEY gaps', () => {
   const dir = stageBro67(false);
   const gaps = findGaps(dir).filter((g) => g.secret === 'ANTHROPIC_API_KEY');
   assert.deepEqual(gaps, []);
@@ -58,14 +60,13 @@ test('real workflows: BRO-67 trio has no ANTHROPIC_API_KEY gaps', () => {
   }
 });
 
-test('flags all three BRO-67 workflows when ANTHROPIC_API_KEY is removed', () => {
+test('flags every BRO-67 workflow when ANTHROPIC_API_KEY is removed', () => {
   const dir = stageBro67(true);
   const gaps = findGaps(dir).filter((g) => g.secret === 'ANTHROPIC_API_KEY');
   const flagged = new Set(gaps.map((g) => g.workflow));
   for (const f of WORKFLOWS) assert.ok(flagged.has(f), `${f} should be flagged`);
-  // Per-step: orchestrator + broadcast each consume the key via the checklist script.
+  // Per-step: broadcast consumes the key via the checklist script.
   const steps = new Set(gaps.map((g) => `${g.workflow}::${g.script}`));
-  assert.ok(steps.has('opening-night-orchestrator.yml::scripts/opening-night-checklist.js'));
   assert.ok(steps.has('opening-night-broadcast.yml::scripts/opening-night-checklist.js'));
 });
 

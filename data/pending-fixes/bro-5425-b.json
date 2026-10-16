@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5425-b",
   "planId": "95c77d28-6d2f-4fcc-a76b-0a20cd8d9cc6",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -50,5 +50,28 @@
         "description": "plaza-suite-2022: notes no longer say capitalization unreported"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-16T05:26:24.306Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for plaza-suite-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for plaza-suite-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for plaza-suite-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for plaza-suite-2022"
+    }
+  ]
 }

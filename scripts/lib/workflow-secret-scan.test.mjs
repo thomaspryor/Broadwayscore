@@ -510,7 +510,6 @@ test('findGaps: the 3 specific BRO-67 steps no longer show an ANTHROPIC_API_KEY 
   const fixedSteps = [
     ['opening-night-checklist.yml', 'Run opening night checklist'],
     ['opening-night-poller.yml', 'Run poller for each show'],
-    ['opening-night-orchestrator.yml', 'Run opening night checklist + SLA dispatch'],
   ];
   const stillBroken = gaps.filter(
     (g) => g.secret === 'ANTHROPIC_API_KEY' && fixedSteps.some(([wf, step]) => g.workflow === wf && g.step === step)

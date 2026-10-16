@@ -203,8 +203,11 @@ jobs:
           if [ -s /tmp/checklist.json ]; then
             echo "Checklist output written ($(wc -c < /tmp/checklist.json) bytes)"
           else
-            echo '{"generatedAt":"'"$(date -u +%Y-%m-%dT%H:%M:%SZ)"'","shows":[]}' > /tmp/checklist.json
-            echo "Warning: checklist produced no output — wrote empty JSON"
+            # Do NOT fabricate an empty '{"shows":[]}' here: the SLA dispatcher
+            # would read it as "no live shows tonight" and RESOLVE an open page
+            # incident, then re-email on the next good run (BRO-5427). A missing
+            # file makes the dispatcher leave the incident untouched.
+            echo "Warning: checklist produced no output — SLA dispatch will leave the incident untouched"
           fi
           echo "opening-night-checklist.js exit code: $rc"
           if [ "$rc" -eq 0 ] || [ "$rc" -eq 1 ]; then
@@ -245,6 +248,8 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           STAGE_LATENCY_LOG: data/audit/stage-latency.jsonl
           SLA_DRY_RUN: ${{ inputs.dry_run || 'false' }}
+          # A --show=ID run cannot resolve the night's incident (BRO-5427).
+          SLA_CHECKLIST_FILTERED: ${{ inputs.show_id != '' && inputs.show_id != null }}
         run: |
           node scripts/opening-night-sla-dispatch.js /tmp/checklist.json "$LATENCY_OUT"
 

@@ -440,3 +440,15 @@ test('real log — production stage-latency rows parse into well-formed records'
     assert.equal(r.basis === null, r.publishedToLiveMs === null);
   }
 });
+
+test('a review rebuild excluded as not-a-review is not a latency sample (BRO-5427)', () => {
+  const entries = [
+    ...reviewEntries('s', 'nytimes:a:https://nytimes.com/r', { seen: 0, scored: 5 }),
+    ...reviewEntries('s', 'rollingstone:unknown:https://www.rollingstone.com/concert/', { seen: 0 }),
+    // excluded under the enriched byline + url variant: must still match
+    { showId: 's', reviewKey: 'rollingstone:Neil Griffiths:http://rollingstone.com/concert', stage: 'excluded', at: at(3), metadata: { reason: 'skippedWrongShow' } },
+    { showId: 's', reviewKey: null, stage: 'rebuilt', at: at(10) },
+  ];
+  const keys = computeReviewLatencies(entries).map(r => r.reviewKey);
+  assert.deepEqual(keys, ['nytimes:a:https://nytimes.com/r']);
+});

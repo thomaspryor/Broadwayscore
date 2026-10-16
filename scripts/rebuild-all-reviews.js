@@ -60,7 +60,8 @@ const {
   hasListingChrome, stripListingPrelude, isTagCloudExcerpt, isMidWordTruncation,
   EXCERPT_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
-const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
+const { emitStage, readTrackedShowIds, selectTerminalShowIds, createExcludedStageEmitter } = require('./lib/stage-latency');
+const emitExcludedStage = createExcludedStageEmitter();
 const { buildMultiProdDirectorGuard, inheritPriorRunReviews, findPriorRunSiblings, supersededPriorRunReviews, preWindowExemptPriorRuns } = require('./lib/prior-run-sibling');
 const { inheritUrlFromDuplicateLosers } = require('./lib/duplicate-fold-url');
 const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, isRejectedByReasonExclusion, isRejectedAtExclusion, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
@@ -311,6 +312,12 @@ function logExclusion(statKey, showId, file, data, extra) {
     reason: statKey,
     details,
   });
+  // BRO-5427: a recent review rebuild rejects as not-a-review-of-this-show gets a
+  // per-review 'excluded' terminal, so the opening-night SLA stops paging it as stuck.
+  if (data && data.url && data.outletId) {
+    emitExcludedStage(key, statKey, data,
+      `${data.outletId}:${normalizeCriticCanonical(data.criticName || data.critic || 'unknown')}:${data.url}`);
+  }
   if (file && file !== '-') {
     if (!stats.byShow[key]) stats.byShow[key] = { files: 0, reviews: 0, skipped: 0, exclusions: [] };
     if (!stats.byShow[key].exclusions) stats.byShow[key].exclusions = [];
