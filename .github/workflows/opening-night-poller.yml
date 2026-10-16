@@ -1256,6 +1256,18 @@ jobs:
           DEPLOY_VERIFIED="$DEPLOY_VERIFIED" DEPLOY_TIMED_OUT="$DEPLOY_TIMED_OUT" DEPLOY_REASON="$DEPLOY_REASON" \
           node scripts/opening-night-pipeline-verify.js
 
+      # BRO-5479 (owner decision 2026-10-16): a poll with a Broadway show also
+      # emails the owner right away; every failure still files the auto-fix
+      # card (BRO-5477). Fail-open: if this step breaks or writes nothing,
+      # `broadway` is empty and the owner is emailed.
+      - name: Classify failure audience
+        id: audience
+        if: failure() || cancelled()
+        continue-on-error: true
+        env:
+          SHOWS: ${{ steps.find.outputs.shows }}
+        run: node scripts/poller-failure-audience.js --shows="$SHOWS"
+
       # BRO-3707: opening-night-express.yml deliberately `gh run cancel`s any
       # in-progress poller run before taking over (its "Cancel competing
       # orchestrator/poller runs" step), then sets ORCHESTRATOR_PAUSED — an
@@ -1299,4 +1311,6 @@ jobs:
           # BRO-5477: auto-fix first, email only if the fix fails (page-worthy-alerts.js AUTO_FIX_FIRST_WORKFLOWS)
           auto_fix_first: ${{ vars.AUTO_FIX_FIRST_DISABLED != 'true' && 'true' || 'false' }}
           linear_api_key: ${{ secrets.LINEAR_API_KEY }}
+          # BRO-5479: a Broadway poll (or an unknown one) also emails right away.
+          email_with_auto_fix: ${{ steps.audience.outputs.broadway != 'false' && 'true' || 'false' }}
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

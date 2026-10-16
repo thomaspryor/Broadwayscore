@@ -346,6 +346,9 @@ const OWNER_ACTIONS = {
   'opening-night-broadcast.yml': 'Send the opening-night email yourself.',
   'restore-supabase.yml': 'Restore the project from the Supabase dashboard (only you hold that login).',
   'update-theatr.yml': 'Re-capture the Theatr login from the iPhone app.',
+  // Owner 2026-10-16 (BRO-5479): "A except for Broadway openings. I want to know
+  // then." A Broadway poll emails right away; other markets auto-fix first.
+  'opening-night-poller.yml': 'Ask Claude to fix the review poller before the Broadway opening reviews land.',
   // BRO-5477: sent only after the automatic fix card failed or never started.
   'auto-fix-first:escalation:': 'Ask Claude to fix the failing opening-night workflow; the automatic fix did not work.',
 };
@@ -369,7 +372,6 @@ const AWAITING_OWNER_DECISION = new Set([
   'broadcast:never-sent:',
   'ugc:signin-redirect-broken:',
   'opening-night-orchestrator.yml',
-  'opening-night-poller.yml',
 ]);
 
 /**

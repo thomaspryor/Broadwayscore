@@ -60,6 +60,15 @@ inputs:
     description: Linear API key, needed when auto_fix_first is 'true' (without it the card cannot be filed and the owner is emailed as before)
     required: false
     default: ''
+  email_with_auto_fix:
+    description: >-
+      'true' also emails the owner right away when the auto-fix gate held the
+      failure for its fix card (the gate itself sent nothing). The fix card is
+      still filed and still escalates if the fix fails. Opening-night-poller
+      passes it for a poll that includes a Broadway show (BRO-5479, owner
+      decision 2026-10-16). Default 'false'.
+    required: false
+    default: 'false'
 
 outputs:
   suppressed:
@@ -69,7 +78,8 @@ outputs:
       Gate follow-up steps (e.g. investigation dispatch) on this != 'true' so they
       only fire when the failure actually paged. (Before BRO-4603 a non-critical
       call left this EMPTY, so `!= 'true'` let investigate-alert.yml email anyway.)
-      An auto-fix-first failure held for its fix card (BRO-5477) is suppressed too.
+      An auto-fix-first failure held for its fix card (BRO-5477) is suppressed too,
+      even when email_with_auto_fix also sent the normal email (BRO-5479).
     value: ${{ steps.policy.outputs.page != 'true' && 'true' || steps.autofix.outputs.held == 'true' && 'true' || steps.cooldown.outputs.suppressed }}
 
 runs:
@@ -255,7 +265,9 @@ runs:
       run: node scripts/auto-fix-first.js gate
 
     - name: Send failure alert
-      if: steps.policy.outputs.page == 'true' && steps.cooldown.outputs.suppressed != 'true' && steps.autofix.outputs.handled != 'true'
+      # BRO-5479: email_with_auto_fix also sends when the gate only held the
+      # alert (held=true means it emailed nothing), never after its own email.
+      if: steps.policy.outputs.page == 'true' && steps.cooldown.outputs.suppressed != 'true' && (steps.autofix.outputs.handled != 'true' || (inputs.email_with_auto_fix == 'true' && steps.autofix.outputs.held == 'true'))
       uses: actions/github-script@v7
       env:
         RESEND_API_KEY: ${{ inputs.resend_api_key }}
