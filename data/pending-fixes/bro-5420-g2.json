@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5420-g2",
   "planId": "c5f1baed-b20a-4b34-a15b-3719cffd12ae",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-16T04:45:00.000Z",
   "submitter": {
     "name": null,
@@ -78,5 +78,55 @@
         "description": "BRO-5420: city-am 2024-09-20 review of the London production (https://www.cityam.com/waiting-for-godot-review-ben-whishaw-finds-joy-in-samuel-becketts-wondrous-misery/); filed under the Broadway id waiting-for-godot-2025 (run 2025-09-28..2026-01-04). Moves to waiting-for-godot-west-end-2024, whose run contains the date."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-16T05:20:10.508Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Move refused (same-url-exists): the-hills-of-california-2024/london-theatre--unknown.json → the-hills-of-california-west-end-2024/london-theatre--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: the-hills-of-california-west-end-2024/radio-times--olivia-garrett.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Move refused (same-url-exists): the-shark-is-broken-2023/guardian--httpswwwtheguardiancomprofileryangilbey.json → the-shark-is-broken-west-end-2021/guardian--httpswwwtheguardiancomprofileryangilbey.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: the-shark-is-broken-west-end-2021/i-paper--sam-marlowe.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Move refused (same-url-exists): the-shark-is-broken-2023/independent--unknown.json → the-shark-is-broken-west-end-2021/independent--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Move refused (same-url-exists): the-shark-is-broken-2023/london-theatre--unknown.json → the-shark-is-broken-west-end-2021/london-theatre--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Move refused (same-url-exists): uncle-vanya-2024/london-theatre--unknown.json → uncle-vanya-west-end-2020/london-theatre--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved uncle-vanya-2024/theupcoming--unknown.json → uncle-vanya-west-end-2020/theupcoming--unknown.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved waiting-for-godot-2025/city-am--adam-bloodworth.json → waiting-for-godot-west-end-2024/city-am--adam-bloodworth.json",
+      "cleared": []
+    }
+  ]
 }
