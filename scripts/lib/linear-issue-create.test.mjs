@@ -224,7 +224,7 @@ test('createLinearIssue: model stamps a Model: line the dispatcher reads; a conf
   try {
     const client = { createIssue: async (input) => { sent = input; return { identifier: 'BRO-0', id: 'i' }; } };
     await createLinearIssue({ title, description: 'body', park: 'needs triage', priority: 3, model: 'opus', client });
-    assert.match(sent.description, /\n\nModel: Opus$/);
+    assert.match(sent.description, /\n\nModel: Opus\n\nFiled by: /);
     assert.equal(explicitModelHint({ description: sent.description }, null), 'opus');
     teamCalls = 0;
     sent = null;
@@ -283,3 +283,92 @@ test('twin reuse: never a started card, a parked twin only for a parked request,
     assert.equal(created, 1);
   } finally { linearClient.getTeam = realGetTeam; }
 });
+
+// ---- BRO-5488: near-duplicate, flood rollup, source footer ----
+function withTeam(fn) {
+  const linearClient = require('./linear-client.js');
+  const real = linearClient.getTeam;
+  linearClient.getTeam = async () => ({ id: 'team-1', states: { nodes: STATES } });
+  return fn().finally(() => { linearClient.getTeam = real; });
+}
+
+function fakeBoard({ open = [], recent = [] } = {}) {
+  const board = { open: [...open], recent: [...recent], comments: [], created: [] };
+  board.client = {
+    findOpenIssueByTitle: async (t) => board.open.find((c) => c.title.toLowerCase() === String(t).toLowerCase()) || null,
+    listOpenIssueTitles: async () => board.open,
+    listRecentIssues: async () => board.recent,
+    addComment: async (id, body) => { board.comments.push({ id, body }); },
+    createIssue: async (input) => {
+      const n = board.created.length + 1;
+      const issue = { id: `new-${n}`, identifier: `BRO-N${n}`, title: input.title, description: input.description, createdAt: new Date().toISOString(), state: { name: 'Backlog', type: 'backlog' } };
+      board.created.push(issue); board.open.push(issue); board.recent.push(issue);
+      return issue;
+    },
+  };
+  return board;
+}
+
+test('BRO-5488: a reworded near-duplicate returns the open card, noted there, nothing filed', () => withTeam(async () => {
+  const board = fakeBoard({ open: [{ id: 'o1', identifier: 'BRO-100', title: 'BSC Rebuild: 41 reviews dropped [SUSPICIOUS]', state: { name: 'Backlog', type: 'backlog' } }] });
+  const r = await createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'today', park: 'auto-filed parked for triage', client: board.client, reuseTwin: true, nearDuplicate: true, source: 'session' });
+  assert.equal(r.mode, 'reused');
+  assert.equal(r.issue.identifier, 'BRO-100');
+  assert.ok(r.nearDuplicate.score >= 0.85);
+  assert.equal(board.created.length, 0);
+  assert.match(board.comments[0].body, /^Filed again on .*near-duplicate/);
+}));
+
+test('BRO-5488: a genuinely new title still files, stamped with its source', () => withTeam(async () => {
+  const board = fakeBoard({ open: [{ id: 'o1', identifier: 'BRO-100', title: 'Review gap — "The Wiz" missing 6 cited review(s)', state: { name: 'Backlog', type: 'backlog' } }] });
+  const r = await createLinearIssue({ title: 'Review gap — "Tru" missing 3 cited review(s)', description: 'body', park: 'auto-filed parked for triage', client: board.client, nearDuplicate: true, source: 'session' });
+  assert.equal(r.mode, 'park');
+  assert.equal(board.created.length, 1);
+  assert.match(board.created[0].description, /\n\nFiled by: session \(kind: review gap missing cited\)$/);
+}));
+
+test('BRO-5488: near-dup is opt-in and never applies to alert-router / digest-autofix bodies', () => withTeam(async () => {
+  const open = [{ id: 'o1', identifier: 'BRO-100', title: 'Opening-night audit 2026-10-14', state: { name: 'Todo', type: 'unstarted' } }];
+  const a = fakeBoard({ open });
+  await createLinearIssue({ title: 'Opening-night audit 2026-10-15', description: 'x', park: 'auto-filed parked for triage', client: a.client });
+  assert.equal(a.created.length, 1, 'not opted in: files');
+  const b = fakeBoard({ open });
+  await createLinearIssue({ title: 'Opening-night audit 2026-10-15', description: 'Auto-filed by digest-autofix (health row)', park: 'auto-filed parked for triage', client: b.client, nearDuplicate: true, rollup: true });
+  assert.equal(b.created.length, 1, 'per-card contract: files');
+  assert.match(b.created[0].description, /Filed by: digest-autofix/);
+}));
+
+test('BRO-5488: N same-kind workflow filings in 24h become 1 rollup card', () => withTeam(async () => {
+  const board = fakeBoard();
+  const shows = ['Fish', 'Triumph', 'The Ask', 'Midnight', 'Torera', 'Soon'];
+  const results = [];
+  for (const s of shows) {
+    results.push(await createLinearIssue({ title: `${s}: 2 roundup-listed review(s) still not captured`, description: `finding for ${s}`, park: 'daily audit finding for triage', client: board.client, nearDuplicate: true, rollup: true, source: 'workflow:Audit' }));
+  }
+  const individual = board.created.filter((c) => !c.title.startsWith('Rollup ('));
+  const rollups = board.created.filter((c) => c.title.startsWith('Rollup ('));
+  assert.equal(individual.length, 3, 'first 3 file normally');
+  assert.equal(rollups.length, 1, 'one rollup card, never one per filing');
+  assert.equal(rollups[0].title, 'Rollup (workflow:Audit): roundup listed review captured');
+  assert.deepEqual(results.slice(3).map((r) => r.mode), ['rolled-up', 'rolled-up', 'rolled-up']);
+  assert.ok(results.slice(3).every((r) => r.issue.identifier === rollups[0].identifier));
+  assert.equal(board.comments.filter((c) => c.id === rollups[0].id).length, 3);
+  assert.match(rollups[0].description, /Filed by: rollup/);
+}));
+
+test('BRO-5488: a flood from the alert router is never rolled up (it keys state on its own card)', () => withTeam(async () => {
+  const board = fakeBoard();
+  for (const s of ['A', 'B', 'C', 'D', 'E']) {
+    await createLinearIssue({ title: `Review gap — "${s}" missing 1 cited review(s)`, description: 'Auto-filed by owner-alert-router (condition: x)', park: 'Auto-filed by owner-alert-router (condition: x)', client: board.client, nearDuplicate: true, rollup: true, source: 'workflow:Audit' });
+  }
+  assert.equal(board.created.length, 5);
+}));
+
+test('BRO-5488: lookup failures fail open (file the card)', () => withTeam(async () => {
+  const board = fakeBoard();
+  board.client.listOpenIssueTitles = async () => { throw new Error('network'); };
+  board.client.listRecentIssues = async () => { throw new Error('network'); };
+  const r = await createLinearIssue({ title: 'Something new broke in the pipeline', description: 'x', park: 'auto-filed parked for triage', client: board.client, nearDuplicate: true, rollup: true, source: 'workflow:X' });
+  assert.equal(r.mode, 'park');
+  assert.equal(board.created.length, 1);
+}));
