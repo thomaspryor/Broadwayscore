@@ -546,7 +546,7 @@ const LISTING_PAGE_URL_PATTERNS = [
   { host: /(^|\.)broadwayworld\.com$/, path: /^\/[^/]+\/regional\//i, reason: 'show-listing-page' },
   // Talkin' Broadway regional section indexes, /regional/<city>/ (BRO-5436:
   // /regional/alb/ filed as a Macbeth review). Reviews are /page/<section>/<slug>.html.
-  { host: /(^|\.)talkinbroadway\.com$/, path: /^\/regional(\/[^/]*)?\/?$/i, reason: 'review-index-page' },
+  { host: /(^|\.)talkinbroadway\.com$/, path: /^\/regional(\/[^/.]*)?\/?$/i, reason: 'review-index-page' },
   // The Times / Sunday Times recipe pages (BRO-5436: a date-stuffing recipe matched
   // a "Stuffed" SERP query and sat as a T1 empty-body gap). Never a theatre review.
   { host: /(^|\.)thetimes\.(com|co\.uk)$/, path: /^\/recipes\//i, reason: 'recipe-page' },

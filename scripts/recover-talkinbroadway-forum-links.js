@@ -162,6 +162,11 @@ async function run() {
       failed++;
       continue;
     }
+    if (!reviewPageUrl && chatReply && (data.humanReviewScore != null || data.assignedScore != null)) {
+      console.warn('  chat-reply thread but carries a manual score — leaving stub for a human');
+      skipped++;
+      continue;
+    }
     if (!reviewPageUrl && chatReply) {
       // Audience chat reply, not a review announcement: the stub can never be filled.
       if (dryRun) {
