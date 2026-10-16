@@ -77,6 +77,14 @@ const MIGRATIONS = [
       && r.source === 'theatre-record' && r.publishDate === '2024-02-18' && !r.url,
   },
   {
+    id: 'dreamgirls-1981-campbell-nydailynews-to-ap',
+    note: 'BRO-5442: an AP review by Mary Campbell ("NEW YORK (AP)", newspapers.com OCR of a syndicating paper, 1981-12-26) filed as the Daily News / Douglas Watt row; the scorer then scored the Watt quote in its closing roundup (42) instead of Campbell\'s rave. One file only; plan c renames it to ap--mary-campbell.json.',
+    from: ['nydailynews'],
+    to: 'ap',
+    toName: 'Associated Press',
+    match: (r) => r.showId === 'dreamgirls-1981' && r.criticName === 'Mary Campbell' && r.source === 'newspapers-com-ocr',
+  },
+  {
     id: 'gotham-playgoer-to-bobs-theater-blog',
     note: 'Same Blogspot blog, renamed in 2017.',
     from: ['gotham-playgoer'],

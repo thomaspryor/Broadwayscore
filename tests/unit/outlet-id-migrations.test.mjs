@@ -197,3 +197,12 @@ test('the JFOD 2024 Maxwell Sunday row moves to sunday-times; nothing else does'
   assert.equal(planOutletMigration({ ...rec, criticName: 'Clive Davis', source: 'playbill-verdict', publishDate: '2024-02-14' }, 'times-uk--clive-davis.json'), null);
   assert.equal(planOutletMigration({ ...rec, showId: 'other-show-2024' }, 'times-uk--dominic-maxwell.json'), null);
 });
+
+// BRO-5442: one AP review filed as the Daily News row.
+test('the Dreamgirls 1981 Campbell AP row moves to ap; the real Daily News rows do not', () => {
+  const rec = { showId: 'dreamgirls-1981', outletId: 'nydailynews', criticName: 'Mary Campbell', source: 'newspapers-com-ocr' };
+  const p = planOutletMigration(rec, 'nydailynews--douglas-watt.json');
+  assert.equal(p.to, 'ap');
+  assert.equal(p.newData.outlet, 'Associated Press');
+  assert.equal(planOutletMigration({ ...rec, criticName: 'Douglas Watt' }, 'nydailynews--douglas-watt.json'), null);
+});
