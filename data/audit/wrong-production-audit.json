@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-16T14:19:35.481Z",
+  "timestamp": "2026-10-16T15:22:58.681Z",
   "stats": {
-    "totalReviews": 56990,
-    "alreadyFlagged": 21168,
+    "totalReviews": 57040,
+    "alreadyFlagged": 21175,
     "dateGuardCatches": 193,
     "directorMismatch": 1914,
-    "tvFilmSignals": 1585,
-    "londonSignals": 2372,
+    "tvFilmSignals": 1586,
+    "londonSignals": 2377,
     "offBroadwaySignals": 514,
     "yearMismatch": 147,
-    "noPublishDate": 5302
+    "noPublishDate": 5306
   },
   "findings": [
     {
@@ -63342,6 +63342,20 @@
       ]
     },
     {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "file": "guardian--emma-john.json",
+      "score": null,
+      "publishDate": "2026-10-07",
+      "url": "https://www.theguardian.com/stage/2026/oct/07/harry-potter-and-the-cursed-child-hogwarts-palace-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "hay-fever-west-end-2026",
       "file": "adventuresintheatreland--julie-fisher-sheher.json",
       "score": 78,
@@ -69572,6 +69586,19 @@
     },
     {
       "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
+      "file": "broadwayworld--unknown.json",
+      "publishDate": "2026-10-16",
+      "url": "https://www.broadwayworld.com/article/Wake-Up-With-BroadwayWorld-October-16-2026--MEMOIRS-OF-AMOROUS-GENTLEMEN-Opens-Off-Broadway-and-More-20261016",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
       "file": "vulture--jackson-mchenry.json",
       "score": 51,
       "publishDate": "2026-10-16",
@@ -75528,14 +75555,14 @@
     {
       "showId": "some-woman-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
-      "score": null,
+      "score": 54,
       "publishDate": "2026-10-16",
       "url": "https://www.londontheatre1.com/reviews/some-woman-national-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
@@ -75568,7 +75595,7 @@
     {
       "showId": "some-woman-west-end-2026",
       "file": "west-end-best-friend--oli-burgin.json",
-      "score": null,
+      "score": 45,
       "publishDate": "2026-10-16",
       "url": "https://www.westendbestfriend.co.uk/news/review-some-woman-national-theatre",
       "findings": [
@@ -76524,6 +76551,20 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "far-out-magazine--lucy-harbron.json",
+      "score": null,
+      "publishDate": "2023-12-16",
+      "url": "https://faroutmagazine.co.uk/stranger-things-the-first-shadow-play-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "guardian--susannah-clapp.json",
       "score": 77,
       "publishDate": "2023-12-15",
@@ -76593,6 +76634,25 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "radio-times--louise-griffin.json",
+      "score": null,
+      "publishDate": "2023-12-21",
+      "url": "https://www.radiotimes.com/going-out/going-out-reviews/stranger-things-the-first-shadow-play-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"season 4\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "standard--robert-dex-arts-correspondent.json",
       "score": 94,
       "publishDate": "2023-12-15",
@@ -76602,6 +76662,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "sunday-times--dominic-maxwell.json",
+      "score": null,
+      "publishDate": "2024-01-07",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/stranger-things-the-first-shadow-review-strange-and-staggeringly-good-klckxpnk5",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
