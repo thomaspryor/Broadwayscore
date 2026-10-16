@@ -170,6 +170,17 @@ function canWriteStarFallback(d, outletId, knownStarOutlets) {
   return isEmptyBodyFile(d) && !d.aggregatorStars && d.originalScore == null;
 }
 
+// Shared with the actual recovery writer so tests exercise its persisted fields.
+function starFallbackPatch(d, { stars, source, outletId = d?.outletId }, knownStarOutlets) {
+  if (typeof stars !== 'number' || !(stars > 0) || !STAR_SOURCE_BY_REFERENCE[source]) return null;
+  if (!canWriteStarFallback(d, outletId, knownStarOutlets)) return null;
+  return {
+    aggregatorStars: `${stars}/5`,
+    aggregatorStarsSource: source,
+    scoreSource: STAR_SOURCE_BY_REFERENCE[source],
+  };
+}
+
 /**
  * Decide what the hourly recovery loop should do with the recoverable dir file
  * behind one flaggedMiss. Returns a tagged action so the caller logs a precise
@@ -303,6 +314,7 @@ module.exports = {
   nonReviewStampBlockReason,
   STAR_SOURCE_BY_REFERENCE,
   canWriteStarFallback,
+  starFallbackPatch,
   decideEmptyBodyRecovery,
   nextRecoveryCount,
 };

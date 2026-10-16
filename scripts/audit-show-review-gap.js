@@ -114,7 +114,7 @@ const {
   hostFallbackVouchers,
   isRecoverableUncitedStub,
   STAR_SOURCE_BY_REFERENCE,
-  canWriteStarFallback,
+  starFallbackPatch,
   decideEmptyBodyRecovery,
   nextRecoveryCount,
   filledDateOutsideWindow,
@@ -1974,9 +1974,9 @@ function recoverEmptyBodyFlaggedMiss(showId, m, openingDate = null, show = null)
       // outlet would flip this audit green while the rebuild still excludes the
       // review (ship-check 2026-07-23, Codex finding). Gate on the same set.
       const outletForStars = cur.outletId || m.recoverableOutletId || m.knownOutletId;
-      if (canWriteStarFallback(cur, outletForStars, KNOWN_STAR_OUTLETS)) {
-        cur.aggregatorStars = `${m.weRefStars}/5`;
-        cur.scoreSource = STAR_SOURCE_BY_REFERENCE[m.weRefStarsSource];
+      const patch = starFallbackPatch(cur, { stars: m.weRefStars, source: m.weRefStarsSource, outletId: outletForStars }, KNOWN_STAR_OUTLETS);
+      if (patch) {
+        Object.assign(cur, patch);
         safeWriteReview(fp, cur);
         const after = JSON.parse(fs.readFileSync(fp, 'utf8'));
         recovered = !isEmptyBodyFile(after);
