@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T01:59:29.176Z",
+  "generatedAt": "2026-10-16T05:43:36.149Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -39,6 +39,11 @@
       "openingDate": "2026-10-15"
     },
     {
+      "id": "the-ask-off-broadway-2026",
+      "title": "The Ask",
+      "openingDate": "2026-10-13"
+    },
+    {
       "id": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
       "title": "The Banality of Evil: Hannah Arendt, France 1940",
       "openingDate": "2026-10-13"
@@ -70,10 +75,6 @@
     }
   ],
   "skipped": [
-    {
-      "showId": "the-ask-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
     {
       "showId": "doll-day-afternoon-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
@@ -112,24 +113,47 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 672,
-  "matchedGaps": 5,
-  "possibleGaps": 4,
+  "itemsScanned": 699,
+  "matchedGaps": 8,
+  "possibleGaps": 5,
   "gaps": [
     {
-      "showId": "stuffed-off-west-end-2026",
-      "title": "Stuffed",
+      "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
+      "title": "Memoirs of Amorous Gentlemen",
       "level": "matched",
-      "outletId": "north-west-end",
-      "url": "https://northwestend.com/stuffed-new-diorama-theatre/",
-      "headline": "Stuffed &#8211; New Diorama Theatre",
-      "publishDate": "2026-10-15"
+      "outletId": "pages-on-stages",
+      "url": "https://pagesonstages.com/2026/10/15/memoirs-of-amorous-gentlemen/",
+      "headline": "Go Revel in the Atmosphere",
+      "publishDate": "2026-10-16"
+    },
+    {
+      "showId": "midnight-off-broadway-2026",
+      "title": "Midnight",
+      "level": "matched",
+      "outletId": "pages-on-stages",
+      "url": "https://pagesonstages.com/2026/10/15/midnight/",
+      "headline": "Spellbinding",
+      "publishDate": "2026-10-16"
+    },
+    {
+      "showId": "midnight-off-broadway-2026",
+      "title": "Midnight",
+      "level": "matched",
+      "outletId": "the-interested-bystander",
+      "url": "https://www.interestedbystander.com/2026/10/theater-reviews-midnight-is-unique-and.html",
+      "headline": "Theater Reviews: “Midnight” Is a Unique and Visionary Musical About Slavery; “School Girls” Is An Enjoyable Broadway Romp; “Slam Frank” Invents a Hip-Hop Anne Frank; and What Is “The Ask” Actually Asking?",
+      "publishDate": "2026-10-16"
+    },
+    {
+      "showId": "midnight-off-broadway-2026",
+      "title": "Midnight",
+      "level": "matched",
+      "outletId": "theater-scene",
+      "url": "https://www.theaterscene.net/musicals/offbway/midnight/samuel-l-leiter/",
+      "headline": "Midnight",
+      "publishDate": "2026-10-16"
     },
     {
       "showId": "the-cherry-orchard-west-end-2026",
@@ -202,6 +226,15 @@
       "url": "https://www.theguardian.com/stage/2026/oct/14/the-cherry-orchard-review-kristin-scott-thomas-chekhov-harold-pinter-theatre-conor-mcpherson-ian-rickson-stephen-mangan",
       "headline": "The Cherry Orchard review – Kristin Scott Thomas makes a modern matriarch in trad, earthy Chekhov",
       "publishDate": "2026-10-13"
+    },
+    {
+      "showId": "the-ask-off-broadway-2026",
+      "title": "The Ask",
+      "level": "possible",
+      "outletId": "the-interested-bystander",
+      "url": "https://www.interestedbystander.com/2026/10/theater-reviews-midnight-is-unique-and.html",
+      "headline": "Theater Reviews: “Midnight” Is a Unique and Visionary Musical About Slavery; “School Girls” Is An Enjoyable Broadway Romp; “Slam Frank” Invents a Hip-Hop Anne Frank; and What Is “The Ask” Actually Asking?",
+      "publishDate": "2026-10-16"
     }
   ]
 }

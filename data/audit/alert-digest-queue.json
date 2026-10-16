@@ -620,19 +620,6 @@
     "queuedAt": "2026-10-15T20:51:35.587Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:the-cherry-orchard-west-end-2026",
-    "title": "Review gap — \"The Cherry Orchard\" missing 3 cited review(s)",
-    "description": "The Cherry Orchard (the-cherry-orchard-west-end-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-cherry-orchard-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-15T20:51:35.623Z"
-  },
-  {
     "conditionKey": "land:land/fix/ack-landed-data-repo",
     "title": "Landing blocked: unit-tests-node red on land/fix/ack-landed-data-repo",
     "description": "land.yml did not land land/fix/ack-landed-data-repo: the unit-tests-node gate went red at 728cee72fe. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38804787231",
@@ -1002,5 +989,18 @@
       }
     ],
     "queuedAt": "2026-10-16T03:57:07.789Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:fish-off-broadway-2026",
+    "title": "Review gap — \"Fish\" missing 1 cited review(s)",
+    "description": "Fish (fish-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=fish-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-16T05:39:49.544Z"
   }
 ]

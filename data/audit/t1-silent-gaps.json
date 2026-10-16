@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T01:59:15.704Z",
+  "generatedAt": "2026-10-16T05:40:41.659Z",
   "windowDays": 45,
   "showsScanned": 176,
   "gaps": [
@@ -17,9 +17,9 @@
       "forumLinkRecoveryCount": 6,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=cosi-fan-tutte-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-08T17:44:48.110Z",
-      "fileAgeHours": 176.2274872222222,
+      "fileAgeHours": 179.91772833333334,
       "gapSeenAt": "2026-10-08T22:46:44.413Z",
-      "nonTerminalAgeHours": 171.20869194444444
+      "nonTerminalAgeHours": 174.899235
     },
     {
       "showId": "macbeth-off-broadway-2026",
@@ -35,9 +35,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=macbeth-off-broadway-2026 --url=https://www.talkinbroadway.com/regional/alb/ --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-15T15:26:32.014Z",
-      "fileAgeHours": 10.531968888888889,
+      "fileAgeHours": 14.2222125,
       "gapSeenAt": "2026-10-15T16:29:17.938Z",
-      "nonTerminalAgeHours": 9.499379444444445
+      "nonTerminalAgeHours": 13.1899225
     },
     {
       "showId": "stuffed-off-west-end-2026",
@@ -53,13 +53,13 @@
         "ok": false,
         "reason": "⚠️  Bright Data failed: Bright Data request timeout\n⚠️  outletId drift detected — operator input \"su"
       },
-      "recoveryCount": 0,
+      "recoveryCount": 1,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=stuffed-off-west-end-2026 --url=https://www.thetimes.com/recipes/entertaining/party-food/article/dates-stuffed-with-labneh-tahini-and-hazelnuts-recipe-hxv7qhdhm --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-15T15:12:01.660Z",
-      "fileAgeHours": 10.786826111111111,
+      "fileAgeHours": 14.47726361111111,
       "gapSeenAt": "2026-10-16T01:59:15.704Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 3.6905430555555556
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -75,9 +75,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 561.3119541666666,
+      "fileAgeHours": 565.0024183333334,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 112.33130611111112
+      "nonTerminalAgeHours": 116.02184916666667
     }
   ],
   "contradictions": []
