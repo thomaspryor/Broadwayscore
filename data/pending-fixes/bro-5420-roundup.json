@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5420-roundup",
   "planId": "447396d1-0df8-4ac0-902e-d8635d41a054",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-16T11:30:00.000Z",
   "submitter": {
     "name": null,
@@ -111,5 +111,68 @@
         "description": "BRO-5420: roundup of other critics scored as one critic's review (Dreamgirls class)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-16T11:52:17.054Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-delicate-balance-2014/nyt-theater--jonathan-mandell.json isNonReviewReason: null -> \"manual (not a review): BRO-5420: critics' roundup, not a review: newyorktheater.me 'A Delicate Balance reviews and pictures' compilation of other critics' reviews (scored 41 off the quotes).\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-delicate-balance-2014/nyt-theater--jonathan-mandell.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "miss-saigon-1991/nydailynews--howard-kissel.json isNonReviewReason: null -> \"manual (not a review): BRO-5420: critics' roundup, not a review: Enquirer News Services roundup 'Critics finds Miss Saigon a Broadway hit' (newspapers.com OCR), filed as Howard Kissel's Daily News review.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "miss-saigon-1991/nydailynews--howard-kissel.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "of-mice-and-men-2014/guardian--jesse-green.json isNonReviewReason: null -> \"manual (not a review): BRO-5420: critics' roundup, not a review: Guardian 'Of Mice and Men on Broadway – reviews' critics' roundup (Nancy Groves), scored from the first quoted critic.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "of-mice-and-men-2014/guardian--jesse-green.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "long-days-journey-into-night-west-end-2024/daily-mail--joanna-crawley.json isNonReviewReason: null -> \"manual (not a review): BRO-5420: critics' roundup, not a review: Daily Mail showbiz roundup of critics' reviews by its deputy showbiz editor, not a review.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "long-days-journey-into-night-west-end-2024/daily-mail--joanna-crawley.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-curious-incident-of-the-dog-in-the-nighttime-2014/latimes--david-ng.json isNonReviewReason: null -> \"manual (not a review): BRO-5420: critics' roundup, not a review: LA Times news story on the Broadway opening aggregating other critics' reviews.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-curious-incident-of-the-dog-in-the-nighttime-2014/latimes--david-ng.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-devil-wears-prada-west-end-2024/daily-mail--gina-kalsi.json isNonReviewReason: null -> \"manual (not a review): BRO-5420: critics' roundup, not a review: Daily Mail lifestyle piece 'The Devil Wears Prada musical lambasted by critics', a roundup of other critics.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "the-devil-wears-prada-west-end-2024/daily-mail--gina-kalsi.json isNonReview applied, but the write guard also changed duplicateOf, duplicateReason; check the record before trusting it"
+    }
+  ]
 }
