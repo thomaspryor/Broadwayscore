@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5420-g5",
   "planId": "76a656a8-f62e-47a2-9da4-1c55a389c8c4",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-16T04:45:00.000Z",
   "submitter": {
     "name": null,
@@ -207,5 +207,128 @@
         "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-16T05:21:16.540Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "passing-strange-2008/standard--nick-curtis.json wrongProductionReason: null -> \"BRO-5420: standard 2024-05-22 review of a London production (https://www.standard.co.uk/culture/theatre/passing-strange-at-the-young-vic-review-theatre-b1159205.html), not the Broadway run 2008-02-28..2008-07-20.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rock-n-roll-2007/all-that-dazzles-uk--sam-waite.json wrongProductionReason: null -> \"BRO-5420: all-that-dazzles-uk 2023-12-15 review of a London production (https://www.allthatdazzles.co.uk/post/review-rock-n-roll-hampstead-theatre), not the Broadway run 2007-11-04..2008-03-09.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rock-n-roll-2007/artsdesk--aleks-sierz.json wrongProductionReason: null -> \"BRO-5420: artsdesk 2023-12-18 review of a London production (https://theartsdesk.com/theatre/rock-n-roll-hampstead-theatre-review-exciting-music-uneven-staging), not the Broadway run 2007-11-04..2008-03-09.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rock-n-roll-2007/london-theatre--matt-wolf.json wrongProductionReason: null -> \"BRO-5420: london-theatre 2023-12-17 review of a London production (https://www.londontheatre.co.uk/reviews/rock-n-roll-review-hampstead-theatre), not the Broadway run 2007-11-04..2008-03-09.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rock-n-roll-2007/standard--tim-bano.json wrongProductionReason: null -> \"BRO-5420: standard 2023-12-13 review of a London production (https://www.standard.co.uk/culture/theatre/rock-n-roll-hampstead-theatre-review-tom-stoppard-b1126600.html), not the Broadway run 2007-11-04..2008-03-09.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rock-n-roll-2007/west-end-best-friend--erifyli-gigante.json wrongProductionReason: null -> \"BRO-5420: west-end-best-friend 2023-12-13 review of a London production (https://www.westendbestfriend.co.uk/news/review-rock-n-roll-hampstead-theatre), not the Broadway run 2007-11-04..2008-03-09.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProductionReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProductionReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProductionReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProductionReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProductionReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-assembled-parties-2013/all-that-dazzles-uk--daz-gale.json wrongProductionReason: null -> \"BRO-5420: all-that-dazzles-uk 2025-10-24 review of a London production (https://www.allthatdazzles.co.uk/post/review-the-assembled-parties-hampstead-theatre), not the Broadway run 2013-04-17..2013-07-28.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    }
+  ]
 }
