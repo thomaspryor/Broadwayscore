@@ -173,7 +173,9 @@ Full predictions: broadwayscorecard.com/tony-predictions
 ```
 Broadway Fantasy League: Draft is open!
 
-$100 budget. 8 shows. Score points from critics, audiences, box office + Tonys.
+$100 budget. Up to 8 shows. Score points from critics, audiences, box office + Tonys.
+
+Draft early: box office points count from the week you draft.
 
 Free to play: broadwayscorecard.com/fantasy
 ```

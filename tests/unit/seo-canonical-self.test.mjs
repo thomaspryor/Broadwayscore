@@ -24,7 +24,7 @@ const APP_DIR = path.join(process.cwd(), 'src', 'app');
 // (/nvp is noindex via src/app/nvp/layout.tsx).
 const NOT_INDEXED = [
   '/admin', '/auth', '/test', '/dev', '/studio', '/plans', '/seen', '/my-shows',
-  '/diary-show', '/nvp', '/fantasy/create-league', '/fantasy/draft', '/fantasy/league',
+  '/diary-show', '/nvp', '/fantasy/league',
 ];
 
 // Public routes that only redirect (server redirect() or a client-side refresh to
@@ -52,7 +52,9 @@ test('every indexable page declares its own canonical in exported metadata', () 
     const route = routeOf(file);
     if (NOT_INDEXED.some((p) => route === p || route.startsWith(p + '/'))) continue;
     if (REDIRECT_ONLY.includes(route)) continue;
-    const src = fs.readFileSync(file, 'utf8');
+    // Client-component pages keep their metadata in the sibling layout.tsx.
+    const layout = path.join(path.dirname(file), 'layout.tsx');
+    const src = fs.readFileSync(file, 'utf8') + (fs.existsSync(layout) ? '\n' + fs.readFileSync(layout, 'utf8') : '');
     const exportsMetadata = /export\s+(async\s+)?function\s+generateMetadata|export\s+const\s+metadata\b/.test(src);
     // A page with no metadata export inherits the root layout's homepage canonical.
     const declaresCanonical = /alternates\s*:|canonical\s*:|marketAlternates\(/.test(src);

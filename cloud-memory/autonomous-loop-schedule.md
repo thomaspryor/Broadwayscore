@@ -191,7 +191,7 @@ Because :00 / :17 / :37 fire every hour, the largest possible distance from a su
 | 17:00 | Sun | scrape-westendtheatre.yml | WestEndTheatre scrape |
 | 17:00 | 1st | update-broadway-com.yml | Broadway.com monthly full |
 | 18:00 | daily | opening-night-orchestrator.yml | West End evening (~19 UTC actual) |
-| 18:00 | Wed | fantasy-weekly.yml | fantasy league weekly |
+| 18:00 | daily (draft open -14d to Tony night +14d) | fantasy-weekly.yml | fantasy league: reprice until the draft opens, then score; player email draft on Wed |
 | 18:00 | Sat | commercial-weekly.yml | commercial weekly digest |
 | 20:00 | Sun | recollect-for-scores.yml | recollect texts for scoring |
 | 20:00 | Sun | recover-explicit-ratings.yml | explicit rating recovery |

@@ -80,6 +80,8 @@ interface HomePageClientProps {
   tonyTrackRecord?: { pct: number; hits: number; cells: number; seasons: number };
   /** Whether the homepage Tony promo should render (auto-hides post-ceremony) */
   tonyPromoActive?: boolean;
+  /** Season the Tony promo links to (same one tonyPromoActive gates on) */
+  tonyPromoSeason?: { ceremonyYear: number; label: string; ceremonyShort?: string };
   btcPromoActive?: boolean;
 }
 
@@ -250,7 +252,7 @@ function filtersFromParams(initialSearchParams: URLSearchParams) {
 }
 
 // Inner component that uses searchParams
-function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [], westEndShows = [], totalShows, totalReviews, totalCritics = 0, totalOutlets = 0, skipHero, skipFirstMusicals, featuredRows = [], marketOpenCounts, awardWinnerSets, tonyTrackRecord, tonyPromoActive, btcPromoActive, renderedAt }: HomePageClientProps) {
+function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [], westEndShows = [], totalShows, totalReviews, totalCritics = 0, totalOutlets = 0, skipHero, skipFirstMusicals, featuredRows = [], marketOpenCounts, awardWinnerSets, tonyTrackRecord, tonyPromoActive, tonyPromoSeason, btcPromoActive, renderedAt }: HomePageClientProps) {
   const nowMs = useHydrationSafeNow(renderedAt);
 
   // Local state for instant updates (no full-page reload)
@@ -960,13 +962,13 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
                 viewAllHref={row.viewAllHref}
                 minCount={row.minCount}
               />
-              {row.title === 'Best Off-Broadway' && tonyTrackRecord && tonyPromoActive && (
+              {row.title === 'Best Off-Broadway' && tonyTrackRecord && tonyPromoActive && tonyPromoSeason && (
                 <FeaturedSpot
-                  eyebrow="Tony Awards 2026"
+                  eyebrow={`Tony Awards ${tonyPromoSeason.ceremonyYear}`}
                   title="Who will win Best Musical?"
                   description={`Our model matches ${tonyTrackRecord.pct}% of past Tony winners since 2015. See its picks before the ceremony.`}
                   ctaLabel="See the predictions"
-                  href="/tony-awards/predictions/2025-2026"
+                  href={`/tony-awards/predictions/${tonyPromoSeason.label}`}
                   accent="gold"
                   stat={{ value: `${tonyTrackRecord.pct}%`, label: 'Track record', compactLabel: 'Record' }}
                   secondary={[
@@ -987,7 +989,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
                   stat={{ value: '$200', label: 'TodayTix gift card', compactLabel: 'Prize' }}
                   secondary={[
                     { value: '26', label: 'categories' },
-                    { value: 'Jun 7', label: 'ceremony' },
+                    ...(tonyPromoSeason?.ceremonyShort ? [{ value: tonyPromoSeason.ceremonyShort, label: 'ceremony' }] : []),
                   ]}
                   trackingId="homepage_tony_winning_below_btc"
                 />

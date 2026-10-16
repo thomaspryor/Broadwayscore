@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState, useCallback, useEffect, useRef } from 'react';
 import type { BeatTheCriticsData, BeatTheCriticsCategoryData, ActorNominee } from './page';
 import type { SerializedTonyShow } from '@/lib/data-tony-predictions';
@@ -566,7 +567,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
             </div>
             <button onClick={handleLockIn} disabled={!selectedTitle} className={`w-full py-4 rounded-[14px] text-base font-bold transition-all duration-200 ${selectedTitle ? 'bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5' : 'bg-surface-overlay text-gray-500 cursor-not-allowed'}`}>{selectedTitle ? 'Lock In: ' + shortTitle(selectedTitle) + ' \u2192' : 'Lock In Pick'}</button>
             <p className="text-center mt-2.5 text-xs text-gray-500">Not sure? Go with your gut!</p>
-            <p className="text-center mt-1 text-xs"><a href="https://demo.broadwayscorecard.com/tony-awards/predictions/2025-2026" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:text-amber-300 transition-colors">Check our Predictions &rarr;</a></p>
+            <p className="text-center mt-1 text-xs"><Link href="/tony-awards/predictions" className="text-amber-400 hover:text-amber-300 transition-colors">Check our Predictions &rarr;</Link></p>
           </div>
         </div>
       </div>

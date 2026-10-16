@@ -20,9 +20,12 @@ import {
   isAudienceLockedForEntry,
   earnsBoxOffice,
   pickLimitNote,
+  scoringFromDate,
   SCORING_START,
   DRAFT_DEADLINE,
   DEADLINE_GRACE_MS,
+  DRAFT_OPENS,
+  isDraftOpen,
 } from '../../src/config/fantasy';
 import { isValidLeaderboardEntry, getFantasyShows } from '../../src/lib/data-fantasy';
 import type { FantasyShow } from '../../src/config/fantasy';
@@ -243,5 +246,42 @@ describe('deadline grace', () => {
   });
   test('an entry saved well after the deadline does not', () => {
     assert.equal(isValidLeaderboardEntry({ picks: cheap, created_at: new Date(deadline + DEADLINE_GRACE_MS + 1000).toISOString() }), false);
+  });
+});
+
+describe('rolling box office details (BRO-5478)', () => {
+  test('scoringStart is a Monday (grosses weeks run Monday to Sunday)', () => {
+    assert.equal(new Date(`${SCORING_START}T12:00:00Z`).getUTCDay(), 1);
+  });
+  test('a show that closes before a late drafter\'s first week earns that drafter awards only', () => {
+    const elig = { criticScore: true, audienceGrade: true, boxOffice: true, tonys: true };
+    const show = { eligible: elig, openingDate: '2026-09-28', closingDate: '2026-11-15', audienceGradeSince: null };
+    const late = '2026-11-20T16:00:00Z';
+    assert.equal(earnsBoxOffice(show, scoringFromDate(late)), false);
+    assert.equal(pickLimitNote(show, late), 'already open: awards only');
+    assert.equal(earnsBoxOffice(show, SCORING_START), true, 'a launch-week drafter still gets its last weeks');
+  });
+  test('an entry stamped just past the deadline keeps its draft week', () => {
+    const justAfter = new Date(Date.parse(DRAFT_DEADLINE) + 2000).toISOString();
+    const justBefore = new Date(Date.parse(DRAFT_DEADLINE) - 2000).toISOString();
+    assert.equal(scoringFromDate(justAfter), scoringFromDate(justBefore));
+  });
+});
+
+// isDraftOpen also gates the homepage promo (src/app/page.tsx, BRO-5483):
+// open from draftOpens in New York until the deadline instant. The probes sit
+// on the same side of midnight under both EDT and EST, so a future season
+// whose draft opens in winter keeps these honest.
+describe('isDraftOpen boundaries', () => {
+  test('closed late on the evening before draftOpens in New York', () => {
+    assert.strictEqual(isDraftOpen(new Date(`${DRAFT_OPENS}T03:00:00Z`)), false);
+  });
+  test('open on the morning of draftOpens in New York', () => {
+    assert.strictEqual(isDraftOpen(new Date(`${DRAFT_OPENS}T12:00:00Z`)), true);
+  });
+  test('open at the deadline, closed a second after', () => {
+    const deadline = new Date(DRAFT_DEADLINE);
+    assert.strictEqual(isDraftOpen(deadline), true);
+    assert.strictEqual(isDraftOpen(new Date(deadline.getTime() + 1000)), false);
   });
 });

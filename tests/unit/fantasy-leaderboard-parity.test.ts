@@ -54,6 +54,8 @@ const createdAts = [
   '2026-10-26T02:00:00Z',
   '2026-11-15T23:00:00-05:00',
   '2026-11-16T12:00:00Z',
+  // Inside the deadline grace: stamped 12:00:30am ET Nov 30, counts as Nov 29.
+  '2026-11-30T05:00:30Z',
   '2027-03-31T23:00:00-04:00',
 ];
 

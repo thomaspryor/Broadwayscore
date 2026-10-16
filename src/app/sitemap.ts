@@ -25,6 +25,7 @@ import { getAllComparisonSlugs } from '@/config/comparisons';
 import { GOLD_LIST_CONFIGS } from '@/config/gold-lists';
 import { getSeasonsForList } from '@/lib/data-gold-list-badges';
 import { featureFlags } from '@/config/feature-flags';
+import { isFantasyListed } from '@/config/fantasy-listing';
 import { getAllPredictionSeasons, getTonySeasonWindow, hasNominationsBeenAnnounced } from '@/lib/data-tony-predictions';
 import { getAllBlogReviews } from '@/lib/data-reviews-blog';
 import { computeSiteAwardScore } from '@/lib/awards-scoring';
@@ -309,6 +310,15 @@ async function buildCoreShard(ctx: DateContext): Promise<MetadataRoute.Sitemap> 
       changeFrequency: 'weekly' as const,
       priority: 0.88,
     }] : []),
+    // Fantasy League: only once it is listed (fantasy-season.json listedFrom);
+    // before that its pages are noindex, and a noindex URL in the sitemap is a
+    // Search Console error (BRO-5483).
+    ...(isFantasyListed() ? ['/fantasy', '/fantasy/guide', '/fantasy/leaderboard'].map((p, i) => ({
+      url: `${BASE_URL}${p}`,
+      lastModified: ctx.latestDate,
+      changeFrequency: 'weekly' as const,
+      priority: i === 0 ? 0.8 : 0.6,
+    })) : []),
     ...(featureFlags.tonyPredictions ? [
       {
         url: `${BASE_URL}/tony-awards/predictions`,

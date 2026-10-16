@@ -123,7 +123,7 @@ function buildConfirmationHtml(opts: {
         </table>
       </div>
       <div style="padding:0 28px 24px;color:#a1a1aa;font-size:13px;line-height:1.5;">
-        <p style="margin:0 0 10px;">Box office points count from ${!hasLateEntry() ? `${formatLongDate(scoringFrom)}, the same start date for every team` : isEarlyBird ? `the season start (${formatLongDate(scoringFrom)}), because you drafted before the early-bird cutoff on ${formatLongDate(EARLY_BIRD_CUTOFF)}` : `the week of ${formatLongDate(scoringFrom)}, the week you drafted`}.</p>
+        <p style="margin:0 0 10px;">Box office points count from ${!hasLateEntry() ? `${formatLongDate(scoringFrom)}, the same start date for every team` : isEarlyBird ? `${formatLongDate(scoringFrom)}, the first scoring week` : `the week of ${formatLongDate(scoringFrom)}, the week you drafted`}.</p>
         <p style="margin:0 0 10px;">Critic and audience points count for every pick that had not opened yet when you drafted (audience points only if its audience grade was not public yet).${lockedCount > 0 ? ` ${lockedCount === 1 ? 'One pick had' : `${lockedCount} picks had`} already opened, as marked above.` : ''}</p>
         <p style="margin:0 0 10px;">Awards points arrive in May and June. Final standings post after the Tony Awards on ${formatLongDate(SCORING_END)}.</p>
         <p style="margin:0;">Picks are final. Standings update daily, with a weekly email on Wednesdays.</p>

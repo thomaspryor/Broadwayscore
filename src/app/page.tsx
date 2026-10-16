@@ -19,7 +19,9 @@ import HomePageClient from '@/components/HomePageClient';
 import type { HomepageShow, FeaturedRowData } from '@/components/HomePageClient';
 import FeaturedRowServer from '@/components/FeaturedRowServer';
 import FeaturedSpotSlim from '@/components/FeaturedSpotSlim';
-import { getTonyTrackRecord, isTonyPromoActive, isBtcPromoActive } from '@/lib/data-tony-predictions';
+import { getTonyTrackRecord, getTonySeasonWindow, isTonyPromoActive, isBtcPromoActive, currentCeremonyShortDate } from '@/lib/data-tony-predictions';
+import { isDraftOpen, draftDeadlineDate, PRIZE_VALUE } from '@/config/fantasy';
+import { isFantasyListed } from '@/config/fantasy-listing';
 import { formatShowDate } from '@/lib/date-utils';
 import { displaysCriticScore } from '@/lib/critic-score-display';
 
@@ -65,6 +67,15 @@ export default function HomePage() {
   const tonyTrackRecord = getTonyTrackRecord(allShows);
   // Tony promo auto-hides 2 days after the ceremony.
   const tonyPromoActive = isTonyPromoActive();
+  // Same season isTonyPromoActive() gates on, so the promo never points at
+  // last year's predictions once the next ceremony date is recorded.
+  const tonyPromoSeason = getTonySeasonWindow();
+  // Fantasy League draft window (BRO-5483): the game is otherwise linked only
+  // from the footer. Takes the slot ahead of the Tony promo for those weeks.
+  // The page is static, so this flips at the next deploy (the deploy gate's
+  // 6h backstop plus build time, so up to ~6.5h late).
+  const fantasyPromoActive = isFantasyListed() && isDraftOpen();
+  const fantasyDeadline = formatShowDate(draftDeadlineDate(), { month: 'short', day: 'numeric' });
   const btcPromoActive = isBtcPromoActive();
 
   // Only pass active (non-closed) shows as props — archive is lazy-loaded from
@@ -357,8 +368,9 @@ export default function HomePage() {
             {stats.totalShows.toLocaleString('en-US')} shows. {stats.totalReviews.toLocaleString('en-US')} critic reviews. And counting.
           </p>
         </div>
-        {/* Above-fold slim promo — currently Tony predictions; swap to BTC by
-            changing the props (BTC config kept below as a comment).
+        {/* Above-fold slim promo. Order: the Fantasy League while its draft is
+            open, else Tony predictions. Swap Tony to BTC by changing the
+            props (BTC config kept below as a comment).
             Beat the Critics swap:
               <FeaturedSpotSlim
                 eyebrow="Now playing"
@@ -368,12 +380,22 @@ export default function HomePage() {
                 accent="btc"
                 stat={{ icon: '★', label: 'Beat the Critics' }}
               /> */}
-        {tonyPromoActive && (
+        {fantasyPromoActive ? (
           <FeaturedSpotSlim
-            eyebrow="Tony Awards 2026"
+            eyebrow="Broadway Fantasy League"
+            title={`Draft open until ${fantasyDeadline}.`}
+            ctaLabel="Draft your team"
+            href="/fantasy"
+            accent="gold"
+            stat={PRIZE_VALUE ? { value: PRIZE_VALUE, label: 'Prize' } : { label: 'Free to play' }}
+            trackingId="homepage_above_fold_fantasy_draft"
+          />
+        ) : tonyPromoActive && (
+          <FeaturedSpotSlim
+            eyebrow={`Tony Awards ${tonyPromoSeason.ceremonyYear}`}
             title="Who will win Best Musical?"
             ctaLabel="See the predictions"
-            href="/tony-awards/predictions/2025-2026"
+            href={`/tony-awards/predictions/${tonyPromoSeason.label}`}
             accent="gold"
             stat={{ value: `${tonyTrackRecord.pct}%`, label: 'Track record' }}
             trackingId="homepage_above_fold_tony_predictions"
@@ -408,6 +430,7 @@ export default function HomePage() {
           awardWinnerSets={getAwardWinnerSets()}
           tonyTrackRecord={tonyTrackRecord}
           tonyPromoActive={tonyPromoActive}
+          tonyPromoSeason={{ ceremonyYear: tonyPromoSeason.ceremonyYear, label: tonyPromoSeason.label, ceremonyShort: currentCeremonyShortDate() }}
           btcPromoActive={btcPromoActive}
         />
       </Suspense>

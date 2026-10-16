@@ -311,10 +311,19 @@ function audienceGradeForScore(score) {
 const seasonConfig = require('../../src/config/fantasy-season.json');
 
 /** New York calendar date (YYYY-MM-DD) for an ISO timestamp. */
+const NY_DAY = new Intl.DateTimeFormat('en-CA', {
+  timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit',
+});
+
 function nyDate(iso) {
-  return new Intl.DateTimeFormat('en-CA', {
-    timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit',
-  }).format(new Date(iso));
+  return NY_DAY.format(new Date(iso));
+}
+
+/** Mirrors src/config/fantasy.ts draftedDay: the stamp's NY day, clamped to the deadline day. */
+function draftedDay(createdAtIso, cfg = seasonConfig) {
+  const stamped = nyDate(createdAtIso);
+  const lastDay = nyDate(cfg.draftDeadline || seasonConfig.draftDeadline);
+  return stamped > lastDay ? lastDay : stamped;
 }
 
 /**
@@ -324,9 +333,13 @@ function nyDate(iso) {
  */
 function scoringFromDate(createdAtIso, cfg = seasonConfig) {
   if (!createdAtIso) return cfg.scoringStart;
-  const drafted = nyDate(createdAtIso);
+  const drafted = draftedDay(createdAtIso, cfg);
   if (drafted <= cfg.earlyBirdCutoff) return cfg.scoringStart;
-  return drafted;
+  // Monday of the draft week (same weeks scored; see src/config/fantasy.ts).
+  const d = new Date(`${drafted}T12:00:00Z`);
+  d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
+  const monday = d.toISOString().slice(0, 10);
+  return monday < cfg.scoringStart ? cfg.scoringStart : monday;
 }
 
 /**
@@ -335,13 +348,13 @@ function scoringFromDate(createdAtIso, cfg = seasonConfig) {
  */
 function isScoreLockedForEntry(openingDate, createdAtIso) {
   if (!openingDate || !createdAtIso) return false;
-  return openingDate <= nyDate(createdAtIso);
+  return openingDate <= draftedDay(createdAtIso);
 }
 
 /** Mirrors src/config/fantasy.ts isAudienceLockedForEntry. */
 function isAudienceLockedForEntry(audienceGradeSince, createdAtIso) {
   if (!audienceGradeSince || !createdAtIso) return false;
-  return audienceGradeSince <= nyDate(createdAtIso);
+  return audienceGradeSince <= draftedDay(createdAtIso);
 }
 
 /**
