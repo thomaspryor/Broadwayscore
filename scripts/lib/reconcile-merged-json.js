@@ -282,13 +282,8 @@ function readBase(ref, file, format, { requiresTrueBase = false } = {}) {
 }
 
 function main() {
-  // --strict (BRO-4688, push-with-retry.sh's autostash restore): exit 3 unless
-  // EVERY named file has a registered merger and merged without error. The
-  // default stays fail-open (exit 0) for the push-time reconcile callers.
-  const argv = process.argv.slice(2);
-  const strict = argv.includes('--strict');
-  const [ref, ...only] = argv.filter((a) => a !== '--strict');
-  if (!ref) { console.error('reconcile-merged-json: missing <remote-ref>'); process.exit(strict ? 3 : 0); }
+  const [ref, ...only] = process.argv.slice(2);
+  if (!ref) { console.error('reconcile-merged-json: missing <remote-ref>'); process.exit(0); }
 
   const root = repoRoot();
   if (root) { try { process.chdir(root); } catch { /* fall through, per-file try/catch below fails open */ } }
@@ -303,18 +298,18 @@ function main() {
   // regardless of optInReconcile" behavior — deliberate, not scoped to one
   // filename, since a caller that names a specific file is making its own
   // explicit choice, distinct from the opt-in whole-sweep default below.
-  const resolved = only.map((f) => explicitMergerFor(f));
-  let strictFailed = strict && (only.length === 0 || resolved.some((t) => !t));
-  const targets = only.length ? resolved.filter(Boolean) : MANAGED;
+  const targets = only.length
+    ? only.map((f) => explicitMergerFor(f)).filter(Boolean)
+    : MANAGED;
 
   const changedFiles = [];
   for (const t of targets) {
     try {
-      if (!fs.existsSync(t.file)) { if (strict) strictFailed = true; continue; }
+      if (!fs.existsSync(t.file)) continue;
       const before = fs.readFileSync(t.file, 'utf8');
       const ours = t.format === 'jsonl' ? parseJsonlLines(before) : JSON.parse(before);
       const remote = readRemote(ref, t.file, t.format);
-      if (remote === null) { if (strict) strictFailed = true; continue; }
+      if (remote === null) continue;
 
       // Three-argument mergers get the common ancestor; two-argument ones are
       // called exactly as before (arity is the dispatch, so a future merger
@@ -333,7 +328,6 @@ function main() {
     } catch (e) {
       // Fail OPEN, loudly enough to debug but never blocking.
       console.error(`  ::warning::reconcile-merged-json: ${t.file} skipped (${String(e.message).slice(0, 120)})`);
-      if (strict) strictFailed = true;
     }
   }
   // One changed path per line on stdout — NOT just a count. push-with-retry.sh
@@ -344,7 +338,6 @@ function main() {
   // deliberately pushed to the PRIVATE repo only and must never land in this
   // public amended commit).
   process.stdout.write(changedFiles.join('\n'));
-  if (strictFailed) process.exitCode = 3;
 }
 
 module.exports = { readBase, MANAGED, mergerFor, explicitMergerFor, additionsOnly, API_FALLBACK_SAFE, API_FALLBACK_MERGE, apiFallbackMergerFor };

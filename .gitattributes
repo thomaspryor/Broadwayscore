@@ -425,14 +425,26 @@ data/todaytix-ids.json merge-coverage=exempt
 scripts/health-check.js merge-coverage=exempt
 
 # autostash=regenerated (BRO-4688): a CUSTOM attribute read only by
-# push-with-retry.sh's autostash restore. In CI, a caller's uncommitted copy of
-# one of these that conflicts with upstream's is dropped quietly (upstream's is
-# an equally fresh regeneration) instead of being recorded as a lost edit.
-# merge=ours files get the same treatment; these generated public outputs stay
-# off `ours` because humans need a real 3-way merge on served data. Only list
-# files a script rewrites in full from other inputs (never reading its own
-# prior output): rebuild-all-reviews.js (critic-coverage), generate-locks-
-# index.js (locks), generate-mobile-data.js / generate-mobile-show-details.js.
+# push-with-retry.sh's autostash restore. In CI, when a caller's uncommitted
+# copy of one of these conflicts with upstream's, upstream's (an equally fresh
+# regeneration) is kept with a ::notice:: instead of an autostash-conflict row
+# in the push-retry failure ledger. Not inferred from merge=ours on purpose:
+# that also covers hand-edited config and accumulating state. List ONLY files a
+# script rewrites wholesale from other inputs on every run; never accumulate-
+# state, resume checkpoints or hand-edited files. Writers: rebuild-all-reviews.js
+# (watermark, needs-human-review, score drift, fingerprint and alias collisions,
+# critic-coverage), generate-locks-index.js, validate-data.js (baseline),
+# collect-review-texts.js (dated collection reports), generate-mobile-data.js /
+# generate-mobile-show-details.js. Append ledgers that read and extend their own
+# file (gather-collisions, url-mismatch-suspects, market-misroutes, exclusion
+# daily totals) are deliberately left off even though they are merge=ours.
+data/audit/deploy-watermark.json autostash=regenerated
+data/audit/needs-human-review.json autostash=regenerated
+data/audit/rebuild-score-drift.json autostash=regenerated
+data/audit/cross-show-fingerprint-collisions.json autostash=regenerated
+data/audit/validation-baseline.json autostash=regenerated
+data/audit/skipped-alias-collisions.json autostash=regenerated
+data/audit/validation/collection-report-*.json autostash=regenerated
 public/data/admin/locks.json autostash=regenerated
 public/data/admin/critic-coverage.json autostash=regenerated
 public/data/mobile-shows.json autostash=regenerated

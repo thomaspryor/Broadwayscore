@@ -16,12 +16,10 @@
 #  6. A dirty symlink skips the autostash (cannot be restored via git show).
 #  7. A merge=union ledger appended on both sides keeps both rows.
 #  8. A caller deletion never overrides a concurrent upstream edit.
-#  9. BRO-4688: in CI, a conflict on a merge=ours / autostash=regenerated
-#     snapshot keeps upstream with a ::notice:: and writes NO ledger row; the
-#     same conflict outside CI is still recorded.
-# 10. BRO-4688: a keyed JSON ledger with a registered merger
-#     (data/audit/alert-digest-queue.json) that conflicts as text is merged by
-#     that merger: both sides' rows survive, no ::error::, no ledger row.
+#  9. BRO-4688: in CI, a conflict on an autostash=regenerated snapshot keeps
+#     upstream with a ::notice:: and writes NO ledger row. Still recorded: the
+#     same conflict outside CI, with PUSH_AUTOSTASH_REGENERATED_QUIET=0, and on
+#     a merge=ours-only file (merge=ours is not proof of regenerability).
 #
 # Run: bash scripts/lib/push-with-retry.autostash.test.sh
 set -uo pipefail
@@ -155,45 +153,28 @@ if [ "$rc" -ne 0 ] || ! grep -q gone-upstream-edit "$TMP/c8-work/gone.txt" 2>/de
 else echo "PASS[8]: caller delete does not override upstream edit"; fi
 
 # ── Case 9: regenerated snapshot conflict (BRO-4688) ────────────────────────
-for mode in ci local; do
+for mode in ci local off ours; do
   n="c9$mode"; setup "$n"
-  printf 'snap.json merge=ours\ngen/*.json autostash=regenerated\n' > "$TMP/$n-work/.gitattributes"
+  if [ "$mode" = ours ]; then printf 'gen/*.json merge=ours\n' > "$TMP/$n-work/.gitattributes"
+  else printf 'gen/*.json autostash=regenerated\n' > "$TMP/$n-work/.gitattributes"; fi
   mkdir -p "$TMP/$n-work/gen"
-  printf '{\n  "at": "t0"\n}\n' > "$TMP/$n-work/snap.json"; cp "$TMP/$n-work/snap.json" "$TMP/$n-work/gen/a.json"
+  printf '{\n  "at": "t0"\n}\n' > "$TMP/$n-work/gen/a.json"; cp "$TMP/$n-work/gen/a.json" "$TMP/$n-work/gen/b.json"
   git -C "$TMP/$n-work" add -A; git -C "$TMP/$n-work" commit -q -m snap; git -C "$TMP/$n-work" push -q origin HEAD:main
   git -C "$TMP/$n-racer" fetch -q origin && git -C "$TMP/$n-racer" reset -q --hard origin/main
-  perl -pi -e 's/t0/t-upstream/' "$TMP/$n-racer/snap.json" "$TMP/$n-racer/gen/a.json"; race "$n"
+  perl -pi -e 's/t0/t-upstream/' "$TMP/$n-racer/gen/a.json" "$TMP/$n-racer/gen/b.json"; race "$n"
   printf 'local2\n' > "$TMP/$n-work/local2.txt"; git -C "$TMP/$n-work" add local2.txt; git -C "$TMP/$n-work" commit -q -m local2
-  perl -pi -e 's/t0/t-caller/' "$TMP/$n-work/snap.json" "$TMP/$n-work/gen/a.json"
-  if [ "$mode" = ci ]; then ga=true; else ga=""; fi
-  out=$( cd "$TMP/$n-work" && GITHUB_ACTIONS="$ga" PUSH_FAILURE_LOG="$TMP/$n-fail.jsonl" bash "$PUSH_SCRIPT" 3 main 2>&1 ); rc=$?
+  perl -pi -e 's/t0/t-caller/' "$TMP/$n-work/gen/a.json" "$TMP/$n-work/gen/b.json"
+  ga=true; quiet=1
+  case "$mode" in local) ga="" ;; off) quiet=0 ;; esac
+  out=$( cd "$TMP/$n-work" && GITHUB_ACTIONS="$ga" PUSH_AUTOSTASH_REGENERATED_QUIET="$quiet" PUSH_FAILURE_LOG="$TMP/$n-fail.jsonl" bash "$PUSH_SCRIPT" 3 main 2>&1 ); rc=$?
   if [ "$rc" -ne 0 ]; then echo "FAIL[9 $mode]: rc=$rc"; echo "$out" | tail -5; fail=1
-  elif ! grep -q t-upstream "$TMP/$n-work/snap.json" || ! grep -q t-upstream "$TMP/$n-work/gen/a.json"; then echo "FAIL[9 $mode]: upstream copy not on disk"; fail=1
-  elif [ "$mode" = ci ] && { grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null || grep -q '::error::.*autostash' <<<"$out" || [ "$(grep -c '::notice::.*regenerated latest-wins snapshot' <<<"$out")" != "2" ]; }; then
-    echo "FAIL[9 ci]: regenerated conflict should be a notice per file, not a ledger row/error"; echo "$out" | grep autostash; fail=1
-  elif [ "$mode" = local ] && ! grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null; then
-    echo "FAIL[9 local]: outside CI the conflict must still be recorded"; fail=1
-  else echo "PASS[9 $mode]: regenerated snapshot conflict handled ($mode)"; fi
+  elif ! grep -q t-upstream "$TMP/$n-work/gen/a.json" || ! grep -q t-upstream "$TMP/$n-work/gen/b.json"; then echo "FAIL[9 $mode]: upstream copy not on disk"; fail=1
+  elif [ "$mode" = ci ] && { grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null || grep -q '::error::.*autostash' <<<"$out" || [ "$(grep -c '::notice::.*is a regenerated snapshot' <<<"$out")" != "2" ]; }; then
+    echo "FAIL[9 ci]: regenerated conflict should be one notice per file, no ledger row/error"; echo "$out" | grep autostash; fail=1
+  elif [ "$mode" != ci ] && ! grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null; then
+    echo "FAIL[9 $mode]: this conflict must still be recorded"; fail=1
+  elif [ "$(refs_left "$n")" != "1" ]; then echo "FAIL[9 $mode]: snapshot ref should be kept"; fail=1
+  else echo "PASS[9 $mode]: regenerated-snapshot conflict handled ($mode)"; fi
 done
-
-# ── Case 10: registered JSON merger resolves a text conflict (BRO-4688) ─────
-n=c10; setup "$n"
-mkdir -p "$TMP/$n-work/data/audit"
-q() { node -e 'const r=process.argv.slice(1).map(k=>({conditionKey:k,title:k,queuedAt:"2026-10-01T00:00:00.000Z"}));process.stdout.write(JSON.stringify(r,null,2)+"\n")' "$@"; }
-q a > "$TMP/$n-work/data/audit/alert-digest-queue.json"
-git -C "$TMP/$n-work" add -A; git -C "$TMP/$n-work" commit -q -m queue; git -C "$TMP/$n-work" push -q origin HEAD:main
-git -C "$TMP/$n-racer" fetch -q origin && git -C "$TMP/$n-racer" reset -q --hard origin/main
-q a b-upstream > "$TMP/$n-racer/data/audit/alert-digest-queue.json"; race "$n"
-printf 'local2\n' > "$TMP/$n-work/local2.txt"; git -C "$TMP/$n-work" add local2.txt; git -C "$TMP/$n-work" commit -q -m local2
-q a c-caller > "$TMP/$n-work/data/audit/alert-digest-queue.json"
-out=$( cd "$TMP/$n-work" && PUSH_FAILURE_LOG="$TMP/$n-fail.jsonl" bash "$PUSH_SCRIPT" 3 main 2>&1 ); rc=$?
-f="$TMP/$n-work/data/audit/alert-digest-queue.json"
-if [ "$rc" -ne 0 ]; then echo "FAIL[10]: rc=$rc"; echo "$out" | tail -5; fail=1
-elif ! grep -q b-upstream "$f" || ! grep -q c-caller "$f" || ! node -e 'JSON.parse(require("fs").readFileSync(process.argv[1],"utf8"))' "$f"; then
-  echo "FAIL[10]: registry merge lost a side or wrote invalid JSON:"; cat "$f"; echo "$out" | grep -i autostash; fail=1
-elif grep -q '::error::.*autostash' <<<"$out" || grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null; then
-  echo "FAIL[10]: merged ledger still reported as a conflict"; fail=1
-elif [ "$(refs_left "$n")" != "0" ]; then echo "FAIL[10]: snapshot ref not cleaned"; fail=1
-else echo "PASS[10]: registered merger keeps caller and upstream rows"; fi
 
 exit $fail
