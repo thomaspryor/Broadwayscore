@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T05:54:51.694Z",
+  "generatedAt": "2026-10-16T06:59:52.057Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -2987,24 +2987,24 @@
       "liveScore": 89,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "reviewsNeeded": 3,
       "siteFileExists": true,
-      "total": 1,
+      "total": 2,
       "t1": 0,
       "t2": 0,
-      "t3": 1,
-      "positive": 1,
+      "t3": 2,
+      "positive": 2,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "2/8 total",
           "T1:0/3",
           "T2:0/2",
-          "hi-conf:1/6"
+          "hi-conf:2/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -3128,6 +3128,18 @@
           "m": 0,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-16T06:59:52.057Z",
+          "rc": 2,
+          "s": 89,
+          "t1": 0,
+          "t2": 0,
+          "t3": 2,
+          "p": 2,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -3141,23 +3153,23 @@
       "status": "open",
       "slug": "the-cherry-orchard-west-end",
       "thumbnail": "/images/shows/the-cherry-orchard-west-end-2026/thumbnail.jpeg",
-      "siteScore": 70.51,
+      "siteScore": 70.75,
       "liveScore": 71,
-      "scoreDrift": 0.4899999999999949,
+      "scoreDrift": 0.25,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 19,
+      "total": 20,
       "t1": 6,
       "t2": 4,
-      "t3": 9,
-      "positive": 11,
+      "t3": 10,
+      "positive": 12,
       "mixed": 7,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 18,
+        "highConfidence": 19,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -3465,6 +3477,18 @@
           "m": 7,
           "n": 1,
           "bc": "preview-sent"
+        },
+        {
+          "t": "2026-10-16T06:59:52.057Z",
+          "rc": 20,
+          "s": 70.75,
+          "t1": 6,
+          "t2": 4,
+          "t3": 10,
+          "p": 12,
+          "m": 7,
+          "n": 1,
+          "bc": "preview-sent-earlier"
         }
       ]
     },
@@ -3479,27 +3503,27 @@
       "slug": "the-ask-off-broadway",
       "thumbnail": "/images/shows/the-ask-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 68,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 0,
+      "total": 2,
       "t1": 0,
-      "t2": 0,
+      "t2": 2,
       "t3": 0,
       "positive": 0,
-      "mixed": 0,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "2/12 total",
           "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
+          "T2:2/3",
+          "hi-conf:2/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -3833,6 +3857,20 @@
         {
           "name": "The Tennessean",
           "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-16T06:59:52.057Z",
+          "rc": 2,
+          "s": 68,
+          "t1": 0,
+          "t2": 2,
+          "t3": 0,
+          "p": 0,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },

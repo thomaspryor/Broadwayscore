@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-16T05:54:41.558Z",
+  "timestamp": "2026-10-16T06:59:39.733Z",
   "stats": {
-    "totalReviews": 56896,
-    "alreadyFlagged": 21129,
+    "totalReviews": 56901,
+    "alreadyFlagged": 21147,
     "dateGuardCatches": 194,
-    "directorMismatch": 1913,
+    "directorMismatch": 1914,
     "tvFilmSignals": 1584,
     "londonSignals": 2369,
     "offBroadwaySignals": 514,
-    "yearMismatch": 146,
-    "noPublishDate": 5271
+    "yearMismatch": 147,
+    "noPublishDate": 5263
   },
   "findings": [
     {
@@ -45824,6 +45824,32 @@
       ]
     },
     {
+      "showId": "the-wiz-tour-2026",
+      "file": "daytonatimes--unknown.json",
+      "publishDate": "2026-10-15",
+      "url": "https://www.daytonatimes.com/community/the-wiz-tour-will-make-a-stop-at-the-peabody-in-january/article_e03c77d6-bc24-40db-8192-fe20632cb812.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"geoffrey holder\" from the-wiz-1975"
+        }
+      ]
+    },
+    {
+      "showId": "the-wiz-tour-2026",
+      "file": "daytontheatre--unknown.json",
+      "publishDate": null,
+      "url": "https://www.daytontheatre.com/shows/kuss-auditorium/the-wiz",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2024 (4x) more than 2026 (0x). 2024 matches production: the-wiz-2024"
+        }
+      ]
+    },
+    {
       "showId": "the-wizard-of-oz-west-end-2023",
       "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 87,
@@ -54607,6 +54633,19 @@
     },
     {
       "showId": "blood-of-my-blood-west-end-2026",
+      "file": "camdennewjournal--unknown.json",
+      "publishDate": null,
+      "url": "https://www.camdennewjournal.co.uk/article/review-blood-of-my-blood-at-royal-court-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
       "file": "eventslist--unknown.json",
       "publishDate": null,
       "url": "https://eventslist.co.uk/london/events/rct-blood-of-my-blood-2026-10-01",
@@ -63218,19 +63257,6 @@
       "score": 82,
       "publishDate": "March 13th, 2024",
       "url": "https://www.whatsonstage.com/news/harry-clarke-review-billy-crudup-paints-a-picture-of-fragmented-personality-in-the-west-end_1584110/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "guardian--emma-john.json",
-      "publishDate": "2026-10-07",
-      "url": "https://www.theguardian.com/stage/2026/oct/07/harry-potter-and-the-cursed-child-hogwarts-palace-theatre-london",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
