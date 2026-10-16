@@ -17,6 +17,7 @@
  */
 
 const { parseDate, toDateMs } = require('./date-utils');
+const { evaluateCollectedBeforePreviews, isCollectedBeforePreviewsHold } = require('./collected-before-previews');
 
 // Review-lag grace on the CLOSE/END side of a declared priorRuns or tourLegs
 // window (BRO-2561). Critics routinely file 1-7 days after a run's final
@@ -786,6 +787,34 @@ function shouldAutoClearDatelessRevival(data, { hasUsableDate } = {}) {
 }
 
 /**
+ * Decide whether a "Collected-before-previews guard" hold (BRO-4855,
+ * collected-before-previews.js) should be released. Same contract as
+ * shouldAutoClearDatelessRevival: only our own flag (reason/note prefix), a
+ * human override always wins, a unanimous ensemble wrong_production verdict
+ * outranks the release. Otherwise the evaluator is re-run on the CURRENT
+ * record + show and the hold lifts once it no longer fires: a usable date
+ * arrived (the dated guards then re-decide), the show gained priorRuns /
+ * tourLegs, or its preview date was corrected.
+ *
+ * @param {object} data - the review JSON object
+ * @param {object} ctx
+ * @param {boolean} ctx.hasUsableDate - true if the review now has a usable date
+ * @param {object|null} ctx.show - the show record (previewsStartDate/openingDate/priorRuns/tourLegs)
+ * @returns {boolean}
+ */
+function shouldAutoClearCollectedBeforePreviews(data, { hasUsableDate, show } = {}) {
+  if (!isCollectedBeforePreviewsHold(data)) return false;
+  const humanOverride = !!data.allowEarlyDate
+    || !!data.wrongProductionManualClear
+    || data.humanReviewedWrongProduction === true;
+  if (humanOverride) return true;
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
+  // No show record: nothing to re-evaluate against, keep the hold.
+  if (!show) return !!hasUsableDate;
+  return !evaluateCollectedBeforePreviews({ hasUsableDate: !!hasUsableDate, firstSeenAt: data.firstSeenAt, show }).flag;
+}
+
+/**
  * Decide whether a STALE dated pre-opening guard wrongProduction flag should be
  * auto-cleared because the review's CURRENT date now falls inside the show's
  * valid window.
@@ -1224,6 +1253,7 @@ module.exports = {
   shouldAutoClearWrongProductionPriorRun,
   shouldAutoClearWrongProductionTourLeg,
   shouldAutoClearDatelessRevival,
+  shouldAutoClearCollectedBeforePreviews,
   shouldAutoClearStaleDateGuard,
   isDatedGuardNote,
   shouldAutoClearAnticipatoryGrace,

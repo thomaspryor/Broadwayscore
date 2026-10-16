@@ -783,6 +783,13 @@ function loadWorkingTreeScoring() {
  * @param {object} review
  * @returns {Date|null}
  */
+// Every export of a module (function source or constant value), so a
+// constant/helper-only edit counts as a change (BRO-4855).
+function moduleFingerprint(lib) {
+  if (!lib) return '';
+  return Object.keys(lib).sort().map((k) => `${k}=${String(lib[k])}`).join('\n');
+}
+
 function resolveReviewDate(review) {
   if (!review.publishDate) return null;
   const d = parseDate(review.publishDate);
@@ -958,6 +965,15 @@ function decideInclusion(review, show, guards) {
         && typeof autoClear.shouldAutoClearDatelessRevival === 'function') {
       const reviewDate = resolveReviewDate(review);
       wrongProductionCleared = autoClear.shouldAutoClearDatelessRevival(review, { hasUsableDate: !!reviewDate });
+    }
+
+    // Collected-before-previews auto-clear (BRO-4855) — mirrors the rebuild's
+    // call right after the dateless-revival one ({ hasUsableDate, show }; the
+    // show summary carries previewsStartDate/openingDate/priorRuns/tourLegs).
+    if (!wrongProductionCleared && review.wrongProduction === true
+        && typeof autoClear.shouldAutoClearCollectedBeforePreviews === 'function') {
+      const reviewDate = resolveReviewDate(review);
+      wrongProductionCleared = autoClear.shouldAutoClearCollectedBeforePreviews(review, { hasUsableDate: !!reviewDate, show });
     }
 
     // Stale dated guard auto-clear — mirrors rebuild-all-reviews.js's block:
@@ -1183,6 +1199,27 @@ function decideInclusion(review, show, guards) {
   const wsExplicitlyCleared = typeof guards.wrongShowExplicitlyCleared === 'function' && guards.wrongShowExplicitlyCleared(review);
   if (review.wrongShow === true && !wsExplicitlyCleared && !wrongShowCleared && !inWindowVetoed('wrongShow') && !laneOk('wrongProduction')) return { included: false, reason: 'wrongShow' };
   if (review.wrongProduction === true && !wrongProductionCleared && !inWindowVetoed('wrongProduction') && !laneOk('wrongProduction')) return { included: false, reason: 'wrongProduction' };
+  // Collected-before-previews HOLD (BRO-4855) — mirrors the rebuild's flag pass
+  // (pre-opening loop, dateless branch): same skip gates (wpAuditOpen, url-
+  // correction withhold, routedFromShowId, allowEarlyDate, dateless manual
+  // clear). Through __dateGuard (typeof) so a baseline that predates the guard
+  // never holds and the delta shows each new hold as a flip.
+  if (inPreOpeningGuardLoop
+      && (review.wrongProduction !== true || wrongProductionCleared)
+      && review.wrongShow !== true
+      && typeof guards.__dateGuard?.evaluateCollectedBeforePreviews === 'function'
+      && !review.wrongProductionCleared
+      && review.humanReviewedWrongProduction !== false
+      && !guards.shouldSkipWrongProductionAudit(review)
+      && !laneOk('wrongProduction')
+      && !review.routedFromShowId
+      && !review.allowEarlyDate
+      && !review.wrongProductionManualClear
+      && !resolveReviewDate(review)
+      && !require('./lib/stale-flag-after-url-correction').shouldWithholdStaleExclusionFlag(review)
+      && guards.__dateGuard.evaluateCollectedBeforePreviews({ hasUsableDate: false, firstSeenAt: review.firstSeenAt, show }).flag) {
+    return { included: false, reason: 'collected-before-previews' };
+  }
   // Flat/unconditional, matching isIncludableForRebuild (review-guards.js) and
   // rebuild-all-reviews.js:3305 — no auto-clear path exists for this field
   // (unlike wrongShow/wrongProduction above). crossOutletVerified/
@@ -1612,6 +1649,12 @@ function main() {
         && (baseline.__priorRunLib?.shouldAutoClearWrongProductionPriorRun?.toString() || '') === (working.__priorRunLib?.shouldAutoClearWrongProductionPriorRun?.toString() || '')
         && (baseline.__priorRunLib?.shouldAutoClearWrongProductionTourLeg?.toString() || '') === (working.__priorRunLib?.shouldAutoClearWrongProductionTourLeg?.toString() || '')
         && (baseline.__priorRunLib?.shouldAutoClearDatelessRevival?.toString() || '') === (working.__priorRunLib?.shouldAutoClearDatelessRevival?.toString() || '')
+        // BRO-4855: the collected-before-previews hold + its auto-clear. The
+        // module's helpers/constants are compared too (a margin-only edit leaves
+        // the evaluator's own source identical).
+        && (baseline.__priorRunLib?.shouldAutoClearCollectedBeforePreviews?.toString() || '') === (working.__priorRunLib?.shouldAutoClearCollectedBeforePreviews?.toString() || '')
+        && (baseline.__dateGuard?.evaluateCollectedBeforePreviews?.toString() || '') === (working.__dateGuard?.evaluateCollectedBeforePreviews?.toString() || '')
+        && moduleFingerprint(baseline.__dateGuard?.collectedBeforePreviewsLib) === moduleFingerprint(working.__dateGuard?.collectedBeforePreviewsLib)
         && (baseline.__priorRunLib?.shouldAutoClearStaleDateGuard?.toString() || '') === (working.__priorRunLib?.shouldAutoClearStaleDateGuard?.toString() || '')
         && (baseline.__priorRunLib?.shouldAutoClearAnticipatoryGrace?.toString() || '') === (working.__priorRunLib?.shouldAutoClearAnticipatoryGrace?.toString() || '')
         && (baseline.__priorRunLib?.shouldAutoClearWrongProductionUrlYear?.toString() || '') === (working.__priorRunLib?.shouldAutoClearWrongProductionUrlYear?.toString() || '')

@@ -99,6 +99,7 @@ const {
   isAdjudicatedTourVerdict,
   supersedeAdjudicatedTourVerdict,
   shouldAutoClearDatelessRevival,
+  shouldAutoClearCollectedBeforePreviews,
   shouldAutoClearStaleDateGuard,
   isDatedGuardNote,
   shouldAutoClearAnticipatoryGrace,
@@ -111,6 +112,7 @@ const { evaluateRepublishedReview, humanFlagOutranksScriptClear } = require('./l
 const { detectPriorRunRepublish, shouldReleasePriorRunRepublish } = require('./lib/prior-run-republish-guard');
 const { detectOtherProductionUrl, shouldReleaseOtherProductionUrl, OTHER_PRODUCTION_URL_REASON } = require('./lib/other-production-signal');
 const { resolveBackfillPublishDate } = require('./lib/backfill-publish-date');
+const { COLLECTED_BEFORE_PREVIEWS_REASON, COLLECTED_BEFORE_PREVIEWS_NOTE_PREFIX, evaluateCollectedBeforePreviews } = require('./lib/collected-before-previews');
 const { guardPublishDate, evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
@@ -1592,6 +1594,8 @@ const crossShowFingerprints = new Map();
   let otherProductionUrlFlagged = 0;
   let flagOutranksClearHealed = 0;
   let datelessRevivalAutoCleared = 0;
+  let collectedBeforePreviewsFlagged = 0;
+  let collectedBeforePreviewsAutoCleared = 0;
   let staleDateGuardAutoCleared = 0;
   let anticipatoryGraceAutoCleared = 0;
   let awaitingRefetchSkipped = 0;
@@ -1663,6 +1667,25 @@ const crossShowFingerprints = new Map();
           }
           safeWriteReview(fp, d, { force: true });
           datelessRevivalAutoCleared++;
+          // Fall through — file may still need the dated pre-opening guard.
+        }
+
+        // Collected-before-previews auto-clear (BRO-4855): same provisional
+        // contract as the dateless-revival hold above. The predicate re-runs the
+        // guard on the CURRENT record + show and releases once it no longer
+        // fires (date arrived, priorRuns/tourLegs declared, preview date fixed).
+        if (shouldAutoClearCollectedBeforePreviews(d, { hasUsableDate: !!reviewDate, show: showRecord })) {
+          const wasNote = d.wrongProductionNote || d.wrongProductionReason || '(no marker)';
+          d.wrongProduction = false;
+          d.wrongProductionAutoCleared = `rebuild: collected-before-previews hold released (was: ${wasNote})`;
+          d.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
+          delete d.wrongProductionNote;
+          if (d.wrongProductionReason === COLLECTED_BEFORE_PREVIEWS_REASON) delete d.wrongProductionReason;
+          if (isStaleScoreInput(d, showRecord, fp)) {
+            markRescoreNeeded(d, 'wrongProduction false-positive cleared (collected-before-previews)');
+          }
+          safeWriteReview(fp, d, { force: true });
+          collectedBeforePreviewsAutoCleared++;
           // Fall through — file may still need the dated pre-opening guard.
         }
 
@@ -1987,6 +2010,23 @@ const crossShowFingerprints = new Map();
             d.wrongProductionNote = `Dateless revival guard: no publishDate on multi-production title that has not yet opened — unverified production (show starts ${showEarliest.toISOString().split('T')[0]})`;
             safeWriteReview(fp, d);
             datelessRevivalFlagged++;
+          } else if (!verdict.flag && !laneHolds(d, 'wrongProduction')) {
+            // Collected-before-previews guard (BRO-4855): the dateless-revival
+            // hold above only covers multi-production titles. On ANY title, a
+            // dateless review we first saw before the production's first
+            // preview cannot be a review of it (Two Girls 2026 carried four
+            // School Girls excerpts first seen 6 days before previews). Holds
+            // regardless of open status; released by the auto-clear above.
+            const cbp = evaluateCollectedBeforePreviews({ hasUsableDate: false, firstSeenAt: d.firstSeenAt, show: showRecord });
+            if (cbp.flag) {
+              console.log(`  [COLLECTED-BEFORE-PREVIEWS] ${sid}/${f}: dateless, first seen ${cbp.firstSeen}, before first preview ${cbp.anchor}`);
+              d.wrongProduction = true;
+              invalidateWrongProductionAutoClear(d);
+              d.wrongProductionReason = COLLECTED_BEFORE_PREVIEWS_REASON;
+              d.wrongProductionNote = `${COLLECTED_BEFORE_PREVIEWS_NOTE_PREFIX}: no publishDate and first seen ${cbp.firstSeen}, before this production's first preview ${cbp.anchor} — review of another staging`;
+              safeWriteReview(fp, d);
+              collectedBeforePreviewsFlagged++;
+            }
           }
         }
       } catch { /* skip unreadable */ }
@@ -2019,6 +2059,12 @@ const crossShowFingerprints = new Map();
   if (datelessRevivalAutoCleared > 0) {
     console.log(`Dateless-revival guard: auto-cleared ${datelessRevivalAutoCleared} reviews (date/override arrived)\n`);
   }
+  if (collectedBeforePreviewsFlagged > 0) {
+    console.log(`Collected-before-previews guard: held ${collectedBeforePreviewsFlagged} dateless reviews first seen before their show's first preview\n`);
+  }
+  if (collectedBeforePreviewsAutoCleared > 0) {
+    console.log(`Collected-before-previews guard: auto-cleared ${collectedBeforePreviewsAutoCleared} reviews (date/priorRuns/override arrived)\n`);
+  }
   if (priorRunAutoCleared > 0) {
     console.log(`Pre-opening guard: auto-cleared ${priorRunAutoCleared} reviews via priorRuns window\n`);
   }
@@ -2036,6 +2082,8 @@ const crossShowFingerprints = new Map();
   stats.priorRunSkipped = priorRunSkipped;
   stats.datelessRevivalFlagged = datelessRevivalFlagged;
   stats.datelessRevivalAutoCleared = datelessRevivalAutoCleared;
+  stats.collectedBeforePreviewsFlagged = collectedBeforePreviewsFlagged;
+  stats.collectedBeforePreviewsAutoCleared = collectedBeforePreviewsAutoCleared;
   stats.staleDateGuardAutoCleared = staleDateGuardAutoCleared;
   stats.anticipatoryGraceAutoCleared = anticipatoryGraceAutoCleared;
 }

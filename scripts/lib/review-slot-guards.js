@@ -28,6 +28,8 @@
  *                          held forever after its SERP rediscovery abandoned).
  */
 
+const { isCollectedBeforePreviewsHold } = require('./collected-before-previews');
+
 const DAY_MS = 86400000;
 const DATELESS_HOLD_RETRY_COOLDOWN_MS = 14 * DAY_MS;
 
@@ -191,7 +193,7 @@ function isDatelessRevivalHold(d) {
 
 /**
  * True when the collector should fetch a dateless-revival hold's STORED url
- * to recover its publish date. The hold's only open question is the date, so
+ * (or a collected-before-previews hold's) to recover its publish date. The hold's only open question is the date, so
  * the url is not in doubt and SERP rediscovery is the wrong tool; one fetch
  * per 14 days (the same wrongShowRetryAt clock the other flag retries use).
  * @param {object} d
@@ -199,7 +201,8 @@ function isDatelessRevivalHold(d) {
  * @returns {boolean}
  */
 function shouldRetryDatelessHoldFetch(d, nowMs = Date.now()) {
-  if (!isDatelessRevivalHold(d)) return false;
+  // BRO-4855: the collected-before-previews hold also lifts only on a date.
+  if (!isDatelessRevivalHold(d) && !isCollectedBeforePreviewsHold(d)) return false;
   if (d.publishDate) return false;
   if (!d.url || !/^https?:\/\//i.test(d.url)) return false;
   if (d._locked === true) return false;

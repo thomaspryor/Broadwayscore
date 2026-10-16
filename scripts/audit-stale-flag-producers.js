@@ -100,6 +100,7 @@ const PRODUCERS = [
   ['Pre-opening guard:', 'rebuild-all-reviews.js (inline pre-opening guard)'],
   ['Dateless revival guard:', 'AMBIGUOUS — rebuild-all-reviews.js:1489 OR flag-wrong-production-by-date.js:151 (byte-identical notes)'],
   ['Date guard:', 'flag-wrong-production-by-date.js'],
+  ['Collected-before-previews guard:', 'rebuild-all-reviews.js (collected-before-previews guard, BRO-4855)'],
   ['URL-path cross-market:', 'rebuild-all-reviews.js (URL-path cross-market guard)'],
   ['Cross-market:', 'rebuild-all-reviews.js (cross-market guard)'],
   ['Same URL exists', 'rebuild-all-reviews.js (same-URL dedup)'],

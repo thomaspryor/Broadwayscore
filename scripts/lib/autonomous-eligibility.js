@@ -180,6 +180,7 @@ const EXCLUDED_FILES = new Set([
   'scripts/rebuild-all-reviews.js',
   'scripts/lib/date-guard.js',
   'scripts/lib/wrong-production-autoclear.js',
+  'scripts/lib/collected-before-previews.js',
   'src/lib/scoring.ts',
   'src/lib/engine.ts',
   'src/lib/data-core.ts',

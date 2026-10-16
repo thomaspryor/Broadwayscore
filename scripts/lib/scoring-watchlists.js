@@ -20,6 +20,8 @@ const INCLUSION_FILES = [
   // edits do — before this entry, date-guard.js edits bypassed this gate entirely.
   'scripts/lib/date-guard.js',
   'scripts/lib/wrong-production-autoclear.js',
+  // BRO-4855: the collected-before-previews hold (re-exported via date-guard.js).
+  'scripts/lib/collected-before-previews.js',
   'src/lib/scoring.ts',
   'src/lib/engine.ts',
   'src/lib/data-core.ts',
