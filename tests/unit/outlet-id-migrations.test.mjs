@@ -186,3 +186,14 @@ test('observer rows on other publications move out; real Observer rows stay (BRO
     assert.equal(planOutletMigration({ outletId: 'observer', url }, 'observer--rex-reed.json'), null, String(url));
   }
 });
+
+// BRO-5420: one Theatre Record row dated a Sunday under The Times.
+test('the JFOD 2024 Maxwell Sunday row moves to sunday-times; nothing else does', () => {
+  const rec = { showId: 'just-for-one-day-west-end-2024', outletId: 'times-uk', outlet: 'The Times (UK)', criticName: 'Dominic Maxwell', source: 'theatre-record', publishDate: '2024-02-18', url: null };
+  const p = planOutletMigration(rec, 'times-uk--dominic-maxwell.json');
+  assert.equal(p.to, 'sunday-times');
+  assert.equal(p.newFilename, 'sunday-times--dominic-maxwell.json');
+  assert.equal(p.newData.outlet, 'The Sunday Times');
+  assert.equal(planOutletMigration({ ...rec, criticName: 'Clive Davis', source: 'playbill-verdict', publishDate: '2024-02-14' }, 'times-uk--clive-davis.json'), null);
+  assert.equal(planOutletMigration({ ...rec, showId: 'other-show-2024' }, 'times-uk--dominic-maxwell.json'), null);
+});

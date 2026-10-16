@@ -68,6 +68,15 @@ const MIGRATIONS = [
     match: (r) => hostOf(r.url) === 'theaternewsonline.com',
   },
   {
+    id: 'jfod-2024-maxwell-times-to-sunday-times',
+    note: 'BRO-5420: Dominic Maxwell\'s Just for One Day review (Theatre Record row, no url) is dated Sunday 2024-02-18; The Times has no Sunday edition and its daily review of the show is Clive Davis\'s (2024-02-14, own row). Theatre Record filed it under The Times. One file only.',
+    from: ['times-uk'],
+    to: 'sunday-times',
+    toName: 'The Sunday Times',
+    match: (r) => r.showId === 'just-for-one-day-west-end-2024' && r.criticName === 'Dominic Maxwell'
+      && r.source === 'theatre-record' && r.publishDate === '2024-02-18' && !r.url,
+  },
+  {
     id: 'gotham-playgoer-to-bobs-theater-blog',
     note: 'Same Blogspot blog, renamed in 2017.',
     from: ['gotham-playgoer'],
