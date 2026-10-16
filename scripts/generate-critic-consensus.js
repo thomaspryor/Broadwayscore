@@ -402,14 +402,19 @@ async function main() {
         continue;
       }
 
-      // A corrective retry that Claude refuses twice keeps the first take
-      // (null) rather than failing the show.
+      // A corrective retry that fails (refused twice, API error, or a refusal
+      // phrase in the text) keeps the first take (null) rather than failing
+      // the show or replacing a good take.
       const correctiveRetry = async (buildPrompt) => {
         try {
-          return (await requestConsensus(reviews, buildPrompt, 0.5, retryAttempt)).text;
+          const text = (await requestConsensus(reviews, buildPrompt, 0.5, retryAttempt)).text;
+          if (REFUSAL_PATTERNS.some(p => p.test(text))) {
+            console.warn(`  ⚠️  Corrective retry looks like a refusal — keeping the first take: "${text.slice(0, 60)}..."`);
+            return null;
+          }
+          return text;
         } catch (err) {
-          if (!(err instanceof ConsensusRefusedError)) throw err;
-          console.warn(`  ⚠️  Corrective retry refused — keeping the first take: ${err.message}`);
+          console.warn(`  ⚠️  Corrective retry failed — keeping the first take: ${err.message}`);
           return null;
         }
       };
