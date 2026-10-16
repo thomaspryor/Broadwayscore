@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-16T16:29:04.275Z",
+  "timestamp": "2026-10-16T17:28:01.782Z",
   "stats": {
-    "totalReviews": 57066,
-    "alreadyFlagged": 21186,
+    "totalReviews": 57070,
+    "alreadyFlagged": 21188,
     "dateGuardCatches": 194,
     "directorMismatch": 1914,
-    "tvFilmSignals": 1592,
+    "tvFilmSignals": 1593,
     "londonSignals": 2383,
     "offBroadwaySignals": 514,
     "yearMismatch": 147,
-    "noPublishDate": 5297
+    "noPublishDate": 5295
   },
   "findings": [
     {
@@ -25485,6 +25485,20 @@
       "file": "amnewscurtainraiser--unknown.json",
       "publishDate": null,
       "url": "https://www.amnewscurtainraiser.com/2026/08/memoirs-of-amorous-gentlemen-off.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
+      "file": "thewrap--robert-hofler.json",
+      "score": null,
+      "publishDate": "2026-10-16",
+      "url": "https://www.thewrap.com/creative-content/theater/memoirs-of-amorous-gentlemen-off-broadway-review/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -54846,6 +54860,7 @@
     {
       "showId": "blood-of-my-blood-west-end-2026",
       "file": "viewfromthegods--simon-jenner.json",
+      "score": 88,
       "publishDate": "2026-10-16",
       "url": "https://viewfromthegods.co.uk/2026/10/16/blood-of-my-blod-royal-court-upstairs/?utm_source=rss&utm_medium=rss&utm_campaign=blood-of-my-blod-royal-court-upstairs",
       "findings": [
@@ -75729,7 +75744,7 @@
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },

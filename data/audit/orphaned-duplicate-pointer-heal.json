@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-16T16:21:34.934Z",
+  "generated": "2026-10-16T17:20:17.124Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 31,
+  "count": 33,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -50,6 +50,13 @@
       "loserFile": "guardian--unknown.json",
       "targetFile": "guardian--emma-brockes.json",
       "reason": "orphaned-duplicate-heal: guardian--emma-brockes.json was flagged invalid after guardian--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "loserFile": "guardian--unknown.json",
+      "targetFile": "guardian--emma-john.json",
+      "reason": "orphaned-duplicate-heal: guardian--emma-john.json was flagged invalid after guardian--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -130,13 +137,6 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "some-woman-west-end-2026",
-      "loserFile": "thereviewshub--unknown.json",
-      "targetFile": "thereviewshub--scott-matthewman.json",
-      "reason": "orphaned-duplicate-heal: thereviewshub--scott-matthewman.json was flagged invalid after thereviewshub--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "the-car-man-west-end-2026",
       "loserFile": "financialtimes--unknown.json",
       "targetFile": "financialtimes--louise-levene.json",
@@ -148,6 +148,13 @@
       "loserFile": "londontheatredirect--unknown.json",
       "targetFile": "londontheatredirect--london-theatre-direct-limited.json",
       "reason": "orphaned-duplicate-heal: londontheatredirect--london-theatre-direct-limited.json was flagged invalid after londontheatredirect--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "the-cherry-orchard-west-end-2026",
+      "loserFile": "standard--unknown.json",
+      "targetFile": "standard--nick-curtis.json",
+      "reason": "orphaned-duplicate-heal: standard--nick-curtis.json was flagged invalid after standard--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -219,6 +226,13 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "loserFile": "guardian--unknown.json",
+      "targetFile": "guardian--emma-john.json",
+      "reason": "orphaned-duplicate-heal: guardian--emma-john.json was flagged invalid after guardian--unknown.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }

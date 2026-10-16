@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T16:29:16.250Z",
+  "generatedAt": "2026-10-16T17:28:14.376Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -727,17 +727,17 @@
       "status": "open",
       "slug": "some-woman-west-end",
       "thumbnail": "/images/shows/some-woman-west-end-2026/thumbnail.webp",
-      "siteScore": 57.64,
-      "liveScore": 58,
-      "scoreDrift": 0.35999999999999943,
+      "siteScore": 61.4,
+      "liveScore": 61,
+      "scoreDrift": -0.3999999999999986,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 11,
-      "t1": 4,
+      "total": 13,
+      "t1": 6,
       "t2": 5,
       "t3": 2,
-      "positive": 3,
+      "positive": 5,
       "mixed": 3,
       "negative": 5,
       "readiness": {
@@ -774,10 +774,6 @@
         },
         {
           "name": "The i",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out London",
           "isDualMarket": false
         },
         {
@@ -907,6 +903,18 @@
           "m": 3,
           "n": 5,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-16T17:28:14.376Z",
+          "rc": 13,
+          "s": 61.4,
+          "t1": 6,
+          "t2": 5,
+          "t3": 2,
+          "p": 5,
+          "m": 3,
+          "n": 5,
+          "bc": "waiting"
         }
       ]
     },
@@ -920,23 +928,22 @@
       "status": "open",
       "slug": "midnight-off-broadway",
       "thumbnail": "/images/shows/midnight-off-broadway-2026/thumbnail.webp",
-      "siteScore": 74.5,
-      "liveScore": 75,
-      "scoreDrift": 0.5,
+      "siteScore": 73.66,
+      "liveScore": 74,
+      "scoreDrift": 0.3400000000000034,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 11,
+      "total": 12,
       "t1": 0,
       "t2": 6,
-      "t3": 5,
+      "t3": 6,
       "positive": 6,
-      "mixed": 5,
+      "mixed": 6,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "11/12 total",
           "T1:0/3"
         ],
         "highConfidence": 11,
@@ -1323,6 +1330,18 @@
           "m": 5,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-16T17:28:14.376Z",
+          "rc": 12,
+          "s": 73.66,
+          "t1": 0,
+          "t2": 6,
+          "t3": 6,
+          "p": 6,
+          "m": 6,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -1336,27 +1355,26 @@
       "status": "open",
       "slug": "memoirs-of-amorous-gentlemen-off-broadway",
       "thumbnail": "/images/shows/memoirs-of-amorous-gentlemen-off-broadway-2026/thumbnail.webp",
-      "siteScore": 62.79,
-      "liveScore": 63,
-      "scoreDrift": 0.21000000000000085,
+      "siteScore": 61.42,
+      "liveScore": 61,
+      "scoreDrift": -0.4200000000000017,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 9,
-      "t1": 1,
+      "total": 11,
+      "t1": 2,
       "t2": 6,
-      "t3": 2,
-      "positive": 2,
+      "t3": 3,
+      "positive": 3,
       "mixed": 5,
-      "negative": 2,
+      "negative": 3,
       "readiness": {
         "ready": false,
         "reasons": [
-          "9/12 total",
-          "T1:1/3",
-          "hi-conf:7/8"
+          "11/12 total",
+          "T1:2/3"
         ],
-        "highConfidence": 7,
+        "highConfidence": 8,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1445,10 +1463,6 @@
         },
         {
           "name": "New York Daily News",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheWrap",
           "isDualMarket": false
         },
         {
@@ -1683,6 +1697,18 @@
           "p": 2,
           "m": 5,
           "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-16T17:28:14.376Z",
+          "rc": 11,
+          "s": 61.42,
+          "t1": 2,
+          "t2": 6,
+          "t3": 3,
+          "p": 3,
+          "m": 5,
+          "n": 3,
           "bc": "waiting"
         }
       ]
@@ -3604,6 +3630,10 @@
         {
           "name": "The Sunday Times",
           "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
         },
         {
           "name": "The i",

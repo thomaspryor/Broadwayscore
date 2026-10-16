@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-16T16:28:48.471Z",
-  "totalScanned": 57172,
-  "totalExcluded": 27248,
+  "generatedAt": "2026-10-16T17:27:44.968Z",
+  "totalScanned": 57176,
+  "totalExcluded": 27245,
   "ruleCounts": {
-    "wrongProduction": 18301,
+    "wrongProduction": 18303,
     "duplicateOf": 1857,
     "wrongShow": 1779,
     "unverifiableWebSearchRow": 961,
     "rejectionReason": 927,
-    "noTextOrScoreSignal": 770,
+    "noTextOrScoreSignal": 764,
     "nonReview": 480,
     "wrongAttribution": 309,
     "blockedReviewUrl": 241,
@@ -38,21 +38,20 @@
     "outletDomainUnvalidated": 2,
     "prematureForUnopenedShow": 2,
     "previewFirstLookPiece": 2,
+    "duplicateOfCircularTiebreak": 1,
     "personalRepost": 1
   },
   "ruleDeltas": {
-    "wrongProduction": 1,
-    "duplicateOf": 9,
-    "wrongShow": 1,
-    "noTextOrScoreSignal": -20,
-    "nonReview": 1
+    "wrongProduction": 2,
+    "noTextOrScoreSignal": -6,
+    "duplicateOfCircularTiebreak": 1
   },
-  "previousGeneratedAt": "2026-10-16T16:05:57.504Z",
+  "previousGeneratedAt": "2026-10-16T16:28:48.471Z",
   "mirror": {
     "comparedShows": 2545,
-    "comparedFiles": 56645,
-    "agreeExcluded": 26490,
-    "agreeIncluded": 29063,
+    "comparedFiles": 56649,
+    "agreeExcluded": 26487,
+    "agreeIncluded": 29070,
     "mirrorOnly": 234,
     "rebuildOnly": 858,
     "disagreements": 1092,
@@ -98,5 +97,5 @@
     "notComparedShows": 77,
     "notComparedFiles": 527
   },
-  "previousDisagreementRate": 0.0192
+  "previousDisagreementRate": 0.0193
 }
