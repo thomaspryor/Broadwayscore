@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-16T22:02:26.402Z",
+  "timestamp": "2026-10-16T23:22:20.033Z",
   "stats": {
-    "totalReviews": 57074,
-    "alreadyFlagged": 21187,
+    "totalReviews": 57076,
+    "alreadyFlagged": 21191,
     "dateGuardCatches": 192,
     "directorMismatch": 1915,
     "tvFilmSignals": 1598,
-    "londonSignals": 2387,
+    "londonSignals": 2390,
     "offBroadwaySignals": 514,
     "yearMismatch": 146,
-    "noPublishDate": 5281
+    "noPublishDate": 5276
   },
   "findings": [
     {
@@ -52401,6 +52401,20 @@
     },
     {
       "showId": "all-my-sons-west-end-2025",
+      "file": "cultural-capital--unknown.json",
+      "score": null,
+      "publishDate": "2025-11-24",
+      "url": "https://maryamphilpottblog.wordpress.com/2025/11/24/all-my-sons-and-the-theatre-of-ivo-van-hove/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
       "file": "everything-theatre--dave-b.json",
       "score": 95,
       "publishDate": "2025-11-23",
@@ -64211,6 +64225,19 @@
     },
     {
       "showId": "here-we-are-west-end-2025",
+      "file": "broadwayworld--unknown.json",
+      "publishDate": "2025-05-09",
+      "url": "https://www.broadwayworld.com/article/Review-HERE-WE-ARE-National-Theatre-20250509",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "here-we-are-west-end-2025",
       "file": "theatre-weekly--greg-stewart.json",
       "score": 75,
       "publishDate": "2025-05-08",
@@ -74401,6 +74428,20 @@
     },
     {
       "showId": "romeo-and-juliet-west-end-2026",
+      "file": "mildconcern--tim-brandon.json",
+      "score": null,
+      "publishDate": "2026-05-06",
+      "url": "https://mildconcern.substack.com/p/theatre-reviews-romeo-and-juliet",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
       "file": "nytimes--houman-barekat.json",
       "score": 75,
       "publishDate": "2026-04-01",
@@ -75718,7 +75759,7 @@
     {
       "showId": "some-woman-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 60,
+      "score": 57,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/some-woman-national-theatre-review-strong-social-issues-bit-too-didactic",
       "findings": [
@@ -75746,7 +75787,7 @@
     {
       "showId": "some-woman-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 56,
+      "score": 61,
       "publishDate": "2026-10-16",
       "url": "https://www.theguardian.com/stage/2026/oct/16/some-woman-review-anne-marie-duff-dorfman-theatre",
       "findings": [
@@ -75829,7 +75870,7 @@
     {
       "showId": "some-woman-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 77,
+      "score": 76,
       "publishDate": "2026-10-16",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/anne-marie-duff-some-woman-review/",
       "findings": [
