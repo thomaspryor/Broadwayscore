@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-10-16T02:11:09.840Z",
+  "generatedAt": "2026-10-16T02:32:13.948Z",
   "totalScanned": 56975,
-  "totalExcluded": 27106,
+  "totalExcluded": 27080,
   "ruleCounts": {
     "wrongProduction": 18235,
     "duplicateOf": 1837,
     "wrongShow": 1768,
     "unverifiableWebSearchRow": 961,
     "rejectionReason": 908,
-    "noTextOrScoreSignal": 755,
+    "noTextOrScoreSignal": 731,
     "nonReview": 467,
     "wrongAttribution": 309,
     "blockedReviewUrl": 241,
-    "bodylessAggregatorScoreUncorroborated": 235,
+    "bodylessAggregatorScoreUncorroborated": 232,
     "isRoundupArticle": 221,
     "crossOutletDuplicate": 182,
     "isSyndicatedDuplicate": 158,
@@ -26,7 +26,7 @@
     "namedNonReviewUrl": 55,
     "roundupPageAsReview": 53,
     "cancelledBeforeOpening": 30,
-    "directorMismatch": 29,
+    "directorMismatch": 30,
     "combinedReviewOfOtherMemberOnly": 18,
     "fabricatedEntry": 15,
     "wrongContentFlagsUncleared": 15,
@@ -41,23 +41,20 @@
     "personalRepost": 1
   },
   "ruleDeltas": {
-    "wrongProduction": 7,
-    "wrongShow": 1,
-    "rejectionReason": 2,
-    "noTextOrScoreSignal": -4,
-    "previewPlaceholder": -1,
-    "contentTierInvalid": -2
+    "noTextOrScoreSignal": -24,
+    "bodylessAggregatorScoreUncorroborated": -3,
+    "directorMismatch": 1
   },
-  "previousGeneratedAt": "2026-10-16T01:22:40.386Z",
+  "previousGeneratedAt": "2026-10-16T02:11:09.840Z",
   "mirror": {
     "comparedShows": 2535,
     "comparedFiles": 56437,
-    "agreeExcluded": 26337,
-    "agreeIncluded": 28972,
+    "agreeExcluded": 26311,
+    "agreeIncluded": 28974,
     "mirrorOnly": 235,
-    "rebuildOnly": 893,
-    "disagreements": 1128,
-    "disagreementRate": 0.02,
+    "rebuildOnly": 917,
+    "disagreements": 1152,
+    "disagreementRate": 0.0204,
     "mirrorOnlyByRule": {
       "duplicateOf": 82,
       "cvWrongArticleHighConfidence": 58,
@@ -71,14 +68,14 @@
     "rebuildOnlyByReason": {
       "skippedDuplicateText": 228,
       "skippedUnknownCriticDedup": 224,
-      "skippedNoScore": 88,
+      "skippedNoScore": 110,
       "skippedCrossMarket": 76,
       "skippedInvalidUrl": 64,
       "skippedPreOpening": 46,
-      "skippedShowNotMentioned": 24,
+      "skippedShowNotMentioned": 25,
       "skippedListingPage": 23,
       "skippedDuplicateOf": 22,
-      "skippedCrossShowDupe": 19,
+      "skippedCrossShowDupe": 20,
       "skippedSameArticleNamedTwin": 17,
       "skippedScraperGarbage": 11,
       "priorRunSuperseded": 10,
@@ -99,5 +96,5 @@
     "notComparedShows": 80,
     "notComparedFiles": 538
   },
-  "previousDisagreementRate": 0.0201
+  "previousDisagreementRate": 0.02
 }

@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-16T02:03:29.541Z",
+    "generatedAt": "2026-10-16T02:24:25.277Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 94,
+    "totalFlagged": 97,
     "highConfidence": 5,
-    "mediumConfidence": 89,
+    "mediumConfidence": 92,
     "lowConfidence": 0,
-    "reassignable": 38
+    "reassignable": 39
   },
   "results": [
     {
@@ -1159,6 +1159,38 @@
       "textSnippet": "ASTAGE representation of Dracula is a challenge not so much to modern performers as to the modern audience. It comes to us with a stake through its heart, beyond real revival although capable of usefu"
     },
     {
+      "showId": "a-chorus-line-1975",
+      "showTitle": "A Chorus Line",
+      "showYear": 1975,
+      "file": "hollywood-reporter--jordan-riefe.json",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "Jordan Riefe",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "a-chorus-line-2006",
+      "signals": [
+        "year 2006 in text matches revival a-chorus-line-2006"
+      ],
+      "textSnippet": "Each summer, the Hollywood Bowl features a popular Broadway musical thrown together over a handful of rehearsals. But this year’s A Chorus Line is different. Directed by Baayork Lee, who starred in th"
+    },
+    {
+      "showId": "a-chorus-line-1975",
+      "showTitle": "A Chorus Line",
+      "showYear": 1975,
+      "file": "sunday-times--unknown.json",
+      "outlet": "The Sunday Times",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: transferred from, this production",
+        "modern references: pandemic, post-pandemic",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "Challenge yourself with today’s puzzles.\n\nThere are neon coloured hotpants galore and high kicks worthy of Olympic gymnasts in Sadler’s Wells’s summer blockbuster. The 1975 musical by Marvin Hamlisch "
+    },
+    {
       "showId": "democracy-2004",
       "showTitle": "Democracy",
       "showYear": 2004,
@@ -1218,6 +1250,21 @@
         "modern references: hamilton"
       ],
       "textSnippet": "alls turn into water in the second act of \"Gem of the Ocean,\" the grandly evangelical new play by August Wilson that opened last night at the Walter Kerr Theater. And though anyone watching this metam"
+    },
+    {
+      "showId": "gem-of-the-ocean-2004",
+      "showTitle": "Gem of the Ocean",
+      "showYear": 2004,
+      "file": "talkinbroadway--unknown.json",
+      "outlet": "Talkin' Broadway",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "modern references: masks, hamilton"
+      ],
+      "textSnippet": "Talkin' Broadway Review: Gem of the Ocean\n\nTheatre Review by Matthew Murray \n - December 6, 2004\n\nGem of the Ocean by August Wilson. Directed by Kenny Leon. Set design by David Gallo. Costume design b"
     },
     {
       "showId": "master-haroldand-the-boys-2003",
