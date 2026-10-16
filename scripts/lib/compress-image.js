@@ -62,15 +62,20 @@ async function compressImage(buffer, type = 'thumbnail') {
  * production photo reaching the retry/last-resort path used to be written as-is
  * and quarantined by CI, so the show stayed imageless and self-heal re-dispatched
  * forever (BRO-5417, still-no-idea-west-end-2018, 640x427). Center-crop it to a
- * square instead. Returns the buffer unchanged if it already fits or can't be read.
+ * square instead (and over-tall images, h/w > 1.70, to 1.70). Returns the buffer unchanged if it already fits or can't be read.
  */
 async function ensureThumbnailAspect(buffer) {
   if (!sharp || !buffer || buffer.length === 0) return buffer;
   try {
     const { width, height } = await sharp(buffer).metadata();
-    if (!width || !height || height / width >= 0.85) return buffer;
+    const ratio = height / width;
+    if (!width || !height || (ratio >= 0.85 && ratio <= 1.7)) return buffer;
+    const region = ratio < 0.85
+      ? { left: Math.floor((width - height) / 2), top: 0, width: height, height }
+      : { left: 0, top: Math.floor((height - width * 1.7) / 2), width, height: Math.floor(width * 1.7) };
     return await sharp(buffer)
-      .extract({ left: Math.floor((width - height) / 2), top: 0, width: height, height })
+      .extract(region)
+      .flatten({ background: '#ffffff' })
       .jpeg({ quality: 85 })
       .toBuffer();
   } catch {

@@ -26,3 +26,8 @@ test('unreadable buffer is returned as-is', async () => {
   const b = Buffer.from('not an image');
   assert.equal(await ensureThumbnailAspect(b), b);
 });
+
+test('over-tall 200x600 banner is cropped into the 0.85..1.70 band', async () => {
+  const m = await sharp(await ensureThumbnailAspect(await mk(200, 600))).metadata();
+  assert.ok(m.height / m.width <= 1.7 && m.height / m.width >= 0.85);
+});
