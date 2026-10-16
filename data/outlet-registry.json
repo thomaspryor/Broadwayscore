@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-16T06:07:54.053Z",
+    "lastUpdated": "2026-10-16T10:22:28.494Z",
     "version": "2.1.0",
     "lastChange": "BRO-5373: split The Mail on Sunday (mail-on-sunday, splitFrom daily-mail) out of daily-mail"
   },
@@ -12969,6 +12969,24 @@
         "theweek"
       ],
       "domain": "theweek.com"
+    },
+    "inkansascity": {
+      "displayName": "Inkansascity",
+      "tier": 3,
+      "aliases": [
+        "inkansascity"
+      ],
+      "displayNameInferred": true,
+      "domain": "inkansascity.com"
+    },
+    "reviewstl": {
+      "displayName": "Reviewstl",
+      "tier": 3,
+      "aliases": [
+        "reviewstl"
+      ],
+      "displayNameInferred": true,
+      "domain": "reviewstl.com"
     }
   },
   "_aliasIndex": {
