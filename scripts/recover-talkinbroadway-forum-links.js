@@ -29,7 +29,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync, execSync } = require('child_process');
 const { fetchPage } = require('./lib/scraper');
-const { isForumThreadUrl, extractReviewPageUrl, extractCriticName } = require('./lib/talkinbroadway-forum-link');
+const { isForumThreadUrl, extractReviewPageUrl, extractCriticName, isChatReplyThread } = require('./lib/talkinbroadway-forum-link');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = 'Usage: node scripts/recover-talkinbroadway-forum-links.js [--show=ID] [--dry-run] [--data-dir=PATH]';
@@ -130,7 +130,9 @@ function findCandidateFiles() {
 
 async function resolveReviewPageUrl(forumUrl) {
   const r = await fetchPageWithRetry(forumUrl);
-  return extractReviewPageUrl(extractHtml(r));
+  const html = extractHtml(r);
+  const url = extractReviewPageUrl(html);
+  return { url, chatReply: !url && isChatReplyThread(html) };
 }
 
 async function resolveCriticName(reviewPageUrl) {
@@ -152,11 +154,24 @@ async function run() {
     const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
     let reviewPageUrl;
+    let chatReply = false;
     try {
-      reviewPageUrl = await resolveReviewPageUrl(data.url);
+      ({ url: reviewPageUrl, chatReply } = await resolveReviewPageUrl(data.url));
     } catch (e) {
       console.error(`  forum thread fetch failed: ${e.message}`);
       failed++;
+      continue;
+    }
+    if (!reviewPageUrl && chatReply) {
+      // Audience chat reply, not a review announcement: the stub can never be filled.
+      if (dryRun) {
+        console.log('  [dry-run] chat-reply thread, would delete non-review stub');
+      } else {
+        fs.unlinkSync(filePath);
+        console.log(`  chat-reply thread (not a review): deleted stub ${path.join(showDir, file)}`);
+        checkpointReviewTexts(`recover-talkinbroadway-forum-links (${showId} chat-reply stub removed)`);
+      }
+      skipped++;
       continue;
     }
     if (!reviewPageUrl) {

@@ -47,6 +47,14 @@ function extractReviewPageUrl(html) {
   return m ? m[1] : null;
 }
 
+// BRO-5436: a "re:" reply in the All That Chat board is audience discussion
+// (e.g. "re: Cosi Fan Tutte last night at the Met"), never a critic announcement.
+// The poller filed one as a T2 review stub that no recovery could ever fill.
+function isChatReplyThread(html) {
+  if (!html) return false;
+  return /<title[^>]*>\s*All That Chat\s*-\s*re:/i.test(html);
+}
+
 function extractCriticName(html) {
   if (!html) return null;
   const m = html.match(CRITIC_RE);
@@ -87,4 +95,4 @@ function isForumLinkRecoverable(file, cap = FORUM_RECOVERY_CAP, now = Date.now()
   return require('./flagged-recovery').isRecoverableFlaggedFile(file, Infinity);
 }
 
-module.exports = { isForumThreadUrl, isForumLinkRecoverable, FORUM_RECOVERY_CAP, FORUM_RECOVERY_SLOW_TRIES, FORUM_RECOVERY_SLOW_INTERVAL_MS, extractReviewPageUrl, extractCriticName, FORUM_URL_RE };
+module.exports = { isForumThreadUrl, isForumLinkRecoverable, FORUM_RECOVERY_CAP, FORUM_RECOVERY_SLOW_TRIES, FORUM_RECOVERY_SLOW_INTERVAL_MS, extractReviewPageUrl, extractCriticName, isChatReplyThread, FORUM_URL_RE };
