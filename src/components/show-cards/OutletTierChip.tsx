@@ -6,7 +6,7 @@ import { TIER_DISPLAY, tierBarsLit, type OutletTier } from '@/config/tier-displa
 export const TIER_CHIP_BOX = 'inline-flex items-center gap-[3px] h-[18px] px-[5px] rounded border text-[10px] font-semibold leading-none tabular-nums tracking-[0.02em]';
 
 /** Same chip, a few px narrower on phones, for the tier key row that must fit on one line. */
-export const TIER_CHIP_BOX_TIGHT = 'inline-flex items-center gap-[2px] sm:gap-[3px] h-[18px] px-1 sm:px-[5px] rounded border text-[10px] font-semibold leading-none tabular-nums tracking-[0.02em]';
+export const TIER_CHIP_BOX_TIGHT = `${TIER_CHIP_BOX} max-sm:gap-[2px] max-sm:px-1`;
 
 /** Text color of the resting chip: Tier 1 a touch brighter, the rest gray. */
 export function tierChipTextClass(tier: OutletTier): string {

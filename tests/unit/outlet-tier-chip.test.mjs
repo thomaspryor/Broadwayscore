@@ -30,8 +30,9 @@ test('no colored tier badges remain on outlet pages', () => {
 
 test('show-page chip and outlet chip share one box style and bar component', () => {
   const list = read('src/components/ReviewsList.tsx');
-  assert.match(list, /import \{ TIER_CHIP_BOX, TierBars, tierChipTextClass \} from '@\/components\/show-cards\/OutletTierChip'/);
+  assert.match(list, /import \{ TIER_CHIP_BOX, TIER_CHIP_BOX_TIGHT, TierBars, tierChipTextClass \} from '@\/components\/show-cards\/OutletTierChip'/);
   assert.doesNotMatch(list, /const TIER_CHIP_BOX\s*=/, 'ReviewsList must not redefine the chip box');
   const chip = read('src/components/show-cards/OutletTierChip.tsx');
+  assert.match(chip, /TIER_CHIP_BOX_TIGHT = `\$\{TIER_CHIP_BOX\} /, 'the tight key chip must extend the one box style, not copy it');
   assert.match(chip, /\$\{TIER_CHIP_BOX\}[^`]*border-white\/\[0\.12\][^`]*\$\{tierChipTextClass\(tier\)\}/);
 });
