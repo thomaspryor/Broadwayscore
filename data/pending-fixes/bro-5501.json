@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5501",
   "planId": "cb3a2c6f-92cb-4451-8304-bac1656f36a1",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -224,5 +224,73 @@
         "description": "Add director/adaptor and designers; sources: TheaterMania and New York Stage Review reviews (both name Stone, Saul Kim, James Farncombe)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-16T19:49:10.399Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-cherry-orchard-west-end-2026/standard--nick-curtis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-cherry-orchard-west-end-2026/timeout-london--andrzej-lukowski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-cherry-orchard-west-end-2026/times-uk--clive-davis.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-cherry-orchard-west-end-2026/cultural-capital--unknown.json criticName: \"Unknown\" -> \"Maryam Philpott\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-cherry-orchard-west-end-2026/firstnightmagazine--unknown.json criticName: \"Unknown\" -> \"Guillermo Nazara\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-cherry-orchard-west-end-2026/the-spy-in-the-stalls--thespyinthestalls.json criticName: \"thespyinthestalls\" -> \"Jonathan Evans\""
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for the-cherry-orchard-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for the-cherry-orchard-park-avenue-armory-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for the-cherry-orchard-park-avenue-armory-off-broadway-2026"
+    }
+  ]
 }
