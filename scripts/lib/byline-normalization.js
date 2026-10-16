@@ -220,8 +220,36 @@ function looksLikeUrlCriticName(raw) {
  * @param {*} raw - incoming criticName.
  * @returns {string} sanitized critic name (never a URL).
  */
+// BRO-5420: decoration a byline carries that is not part of the name. Pronoun
+// tags and role words in brackets ("Bethan Warriner (she/her)", "Ron Fassler
+// (critic)", "Shane Watson (Ms)"), a job title after a comma ("Debra Craine,
+// Chief Dance Critic", "Victor Gluck, Editor-in-Chief"), the outlet after a
+// bullet ("Drew Sitton • Times of San Diego"), HTML left in ("Lisa
+// Martland<br>", "&middot"), JSON-escaped letters ("Luc\\u00eda"), and stray
+// OCR punctuation at the end ("Sheridan Morley·", "Michael Covene>"). "Outlet
+// (Full Name)" keeps the full name. Joint bylines ("A & B"), part labels
+// ("(Pt. 2)": Angels in America's two parts are two reviews) and handles are
+// left alone.
+const BRACKET_TAG = /\s*\((?:she|he|they|ze|xe)\s*\/\s*(?:her|him|them|hers|his|theirs|zir|xem)(?:\s*\/\s*\w+)?\)|\s*\((?:critic|reviewer|writer|ms|mr|mrs|miss|dr)\.?\)/gi;
+const ROLE_SUFFIX = /,\s*(?:(?:chief|senior|deputy|associate|contributing|lead|head|principal|executive|managing|arts|theatre|theater|dance|music|fiction|culture|features|film|opera)\s+)*(?:critic|editor|reviewer|writer|correspondent|editor-in-chief)\b.*$/i;
+function stripCriticNameDecoration(raw) {
+  if (!raw || typeof raw !== 'string') return raw;
+  let s = raw
+    .replace(/\\u([0-9a-fA-F]{4})/g, (_, h) => String.fromCharCode(parseInt(h, 16)))
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&(?:amp|middot|nbsp|bull);?/gi, (m) => (/^&amp/i.test(m) ? '&' : ' '))
+    .replace(BRACKET_TAG, '')
+    .replace(ROLE_SUFFIX, '')
+    .replace(/\s+[•·|]\s+.*$/, '');
+  const inner = s.match(/^[^(]+\(([A-Z][\p{L}'’.-]+(?:\s+[A-Z][\p{L}'’.-]+)+)\)\s*$/u);
+  if (inner) s = inner[1];
+  s = s.replace(/[\s·•>~^_:;,|]+$/u, '').replace(/^[\s,;:·•]+/u, '').replace(/\s+/g, ' ').trim();
+  return s;
+}
+
 function sanitizeCriticName(raw) {
   if (!raw || typeof raw !== 'string') return raw;
+  raw = stripCriticNameDecoration(raw) || 'Unknown';
   if (!looksLikeUrlCriticName(raw)) return raw;
   const cleaned = normalizeCriticName(raw);
   // Guarantee the "never a URL" contract: if the recovery path couldn't yield a
@@ -305,5 +333,6 @@ module.exports = {
   normalizeCriticName,
   looksLikeUrlCriticName,
   sanitizeCriticName,
+  stripCriticNameDecoration,
   extractBodyByline,
 };

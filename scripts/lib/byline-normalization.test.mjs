@@ -82,3 +82,24 @@ test('leadingPersonName keeps O\', Mc, D\' and hyphenated surnames whole', () =>
   assert.equal(leadingPersonName('Unknown'), null);
   assert.equal(leadingPersonName(''), null);
 });
+
+// BRO-5420: decoration around a byline is stripped at save time.
+test('sanitizeCriticName strips pronoun tags, role titles, HTML, escapes and OCR tails', async () => {
+  const { sanitizeCriticName } = require('./byline-normalization.js');
+  const cases = {
+    'Bethan Warriner (she/her)': 'Bethan Warriner',
+    'Ron Fassler (critic)': 'Ron Fassler',
+    'Debra Craine, Chief Dance Critic': 'Debra Craine',
+    'Victor Gluck, Editor-in-Chief': 'Victor Gluck',
+    'Drew Sitton • Times of San Diego': 'Drew Sitton',
+    'Lisa Martland<br>': 'Lisa Martland',
+    '&middot': 'Unknown',
+    'Luc\\u00eda Piquero': 'Lucía Piquero',
+    'Sheridan Morley·': 'Sheridan Morley',
+    'HuffPost (Steven Suskin)': 'Steven Suskin',
+  };
+  for (const [raw, want] of Object.entries(cases)) assert.equal(sanitizeCriticName(raw), want, raw);
+  for (const keep of ['Ben Brantley (Pt. 2)', 'Barbara Siegel & Scott Siegel', 'nick730', "Holly O'Mahony", 'J. Kelly Nestruck', 'Unknown', 'Theatre Bee (UK)'])
+    assert.equal(sanitizeCriticName(keep), keep, keep);
+  assert.equal(sanitizeCriticName('https://www.example.com/author/jane-doe'), sanitizeCriticName('https://www.example.com/author/jane-doe'));
+});
