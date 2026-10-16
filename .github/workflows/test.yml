@@ -56,6 +56,9 @@ on:
       # scripts/audit-test-yml-lib-deps.js — advisory CI check that catches
       # this shape of gap going forward).
       - 'scripts/check-orphan-commits.js'
+      # BRO-5499: top-level tests scripts/fix-utc-shifted-publish-dates.test.mjs and scripts/purge-uk-show-score-audience.test.mjs
+      - 'scripts/fix-utc-shifted-publish-dates.js'
+      - 'scripts/purge-uk-show-score-audience.js'
       # BRO-3566: scripts/lib/check-registry-merge.test.mjs requires it.
       - 'scripts/check-registry-merge.js'
       # BRO-2809: P0 score-integrity gate + its manifest-registered test.

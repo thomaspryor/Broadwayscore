@@ -24,6 +24,8 @@
  * Pure: no I/O (CLAUDE.md §15). Tests: sibling-production-cast.test.mjs.
  */
 
+const { toDateMs } = require('./date-utils');
+
 const MIN_TEXT_CHARS = 400;
 const MIN_SIBLING_NAMES = 2;
 
@@ -82,10 +84,10 @@ function comparableMarkets(a, b) {
 const DAY_MS = 86400000;
 function reviewDateFitsRun(publishDate, sib) {
   if (!publishDate) return true; // undated: no evidence either way
-  const pub = Date.parse(publishDate);
-  const open = Date.parse(sib && sib.openingDate);
+  const pub = toDateMs(publishDate); // handles "April 22nd, 2014" (a bare Date.parse returns NaN)
+  const open = toDateMs(sib && sib.openingDate);
   if (Number.isNaN(pub) || Number.isNaN(open)) return true;
-  const close = Date.parse(sib.closingDate);
+  const close = toDateMs(sib.closingDate);
   const end = Number.isNaN(close) ? open + 400 * DAY_MS : close;
   return pub >= open - 60 * DAY_MS && pub <= end + 120 * DAY_MS;
 }

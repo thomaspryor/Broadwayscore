@@ -48,6 +48,7 @@ function utcShiftCorrection(rec) {
 }
 
 function main() {
+  require('./lib/cli-help').exitOnHelp(module);
   const args = process.argv.slice(2);
   const apply = args.includes('--apply');
   const only = (args.find((a) => a.startsWith('--show=')) || '').slice(7) || null;

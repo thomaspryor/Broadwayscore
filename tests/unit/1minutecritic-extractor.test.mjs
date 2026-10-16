@@ -99,7 +99,7 @@ describe('article-extractor: 1minutecritic.com entry-content', () => {
 
 describe('extractPublishDate — page metadata date extraction', () => {
   test('reads article:published_time meta (OpenGraph / WordPress)', () => {
-    const html = '<meta property="article:published_time" content="2026-05-27T02:00:00+00:00">';
+    const html = '<meta property="article:published_time" content="2026-05-27T14:00:00+00:00">';
     assert.equal(extractPublishDate(html), '2026-05-27');
   });
 
@@ -113,7 +113,7 @@ describe('extractPublishDate — page metadata date extraction', () => {
 
   test('meta wins over time tag when both present (priority order)', () => {
     const html =
-      '<meta property="article:published_time" content="2026-05-27T02:00:00Z">' +
+      '<meta property="article:published_time" content="2026-05-27T14:00:00Z">' +
       '<time datetime="2020-01-01">old</time>';
     assert.equal(extractPublishDate(html), '2026-05-27');
   });

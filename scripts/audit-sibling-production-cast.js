@@ -16,6 +16,8 @@ const path = require('path');
 const { findSiblingProductionCastMismatch } = require('./lib/sibling-production-cast');
 const { isHumanClearedWrongProduction } = require('./lib/stale-flag-neutralization');
 
+require('./lib/cli-help').exitOnHelp(module);
+
 const ROOT = path.join(__dirname, '..');
 const RT = path.join(ROOT, 'data', 'review-texts');
 const args = process.argv.slice(2);

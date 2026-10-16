@@ -69,6 +69,7 @@ function applyUkShowScoreRemoval(buzzShows, plan) {
 }
 
 function main() {
+  require('./lib/cli-help').exitOnHelp(module);
   const apply = process.argv.includes('--apply');
   const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
   const buzz = loadAudienceBuzz();
