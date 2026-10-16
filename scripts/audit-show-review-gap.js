@@ -1272,7 +1272,7 @@ async function auditShow(show, opts = {}) {
         // wrong-show / manually-protected exclusions are NOT recoverable.
         const recoverableFile = dirFiles.find(d => isRecoverableFlaggedFile(d));
         // BRO-4971: humanExcluded vs automatedExcluded + which detector (basis).
-        const { exclusion, basis } = classifyFlaggedMiss(dirFiles, d => explainFileExclusion(d, show));
+        const { exclusion, basis, confirmedNonReview } = classifyFlaggedMiss(dirFiles, d => explainFileExclusion(d, show));
         result.flaggedMisses.push({
           url: aggUrl,
           host: aggHost,
@@ -1290,6 +1290,7 @@ async function auditShow(show, opts = {}) {
           dirFlags: dirFiles.map(d => ({ file: d._file, flag: classifyShowFile(d), urlInDir: d.url })),
           exclusion,
           basis,
+          ...(confirmedNonReview ? { confirmedNonReview: true } : {}),
           // Stored flagged files dated before this run: permanent prior-run (see policy).
           ...(() => { const d = recoverableFile ? null : flaggedFilePriorRunDate(dirFiles, show); return d ? { priorRun: true, priorRunSource: `flagged-file-date:${d}` } : {}; })(),
         });
@@ -1803,7 +1804,8 @@ function computeResidualCounts(r, ingestMissing) {
   const capped = (r.ingestSkippedByCap || []).length;
   const uningested = ingestMissing ? 0 : currentRunCount(r.missing);
   const recovered = (r.recoveryResults || []).filter(x => x.recovered && !x.uncited).length;
-  const flaggedOut = Math.max(0, currentRunCount(r.flaggedMisses) - recovered);
+  // confirmedNonReview rows (BRO-5500): the exclusion is the correct outcome, not a gap.
+  const flaggedOut = Math.max(0, currentRunCount((r.flaggedMisses || []).filter(m => !(m && m.confirmedNonReview))) - recovered);
   const residual = failedIngest + capped + uningested + flaggedOut + conflictIngest + unclassifiedIngest;
   return { residual, failedIngest, noopIngest, conflictIngest, expectedIngest, unclassifiedIngest, capped, uningested, flaggedOut, recovered };
 }

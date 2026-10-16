@@ -189,7 +189,11 @@ if (!show) {
     const verdict = classifyReviewUrl(url);
     if (!verdict.ok && INGEST_REFUSED_URL_REASONS.has(verdict.reason)) {
       console.error(`Refusing to ingest — ${url} is a ${verdict.reason} page, not a review (scripts/lib/non-review-url-patterns.js classifyReviewUrl).`);
-      process.exit(1);
+      // BRO-5500: a permanent, expected rejection. Exit 1 with no `Skipped:` line made the gap
+      // audit count nyc.com/events/... as a failed ingest and re-alarm roundup-gap:all hourly;
+      // the classified skip (ingest-skip-classify.js) files it as expected instead.
+      console.log(`⚠️  Skipped: named-non-review-url:${verdict.reason} — ${url}`);
+      process.exit(0);
     }
   }
 

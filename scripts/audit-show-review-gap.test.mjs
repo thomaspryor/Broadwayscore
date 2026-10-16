@@ -709,3 +709,24 @@ test('serpCensus provenance is census-only: tagged from serpCensusOnlyUrls, neve
   assert.doesNotMatch(src, /if \(serpCensusUrls\.has\(m\.url\)\) m\.serpCensus = true;/);
   assert.ok(src.indexOf('serpCensusOnlyUrls = new Set') < src.indexOf('for (const u of serpCensusUrls) aggUrls.add(u);'));
 });
+
+// BRO-5500: a high-confidence CV non-review (critic never saw the show) that a
+// round-up merely links is the correct exclusion, not a residual gap. Fixture is
+// the real anon-a-tempest frontmezzjunkies--ross.json shape.
+test('flagged-miss-basis: CV-confirmed non-review is not residual; low-confidence / human rows still are', () => {
+  const { classifyFlaggedMiss, shouldReverify } = require('./lib/flagged-miss-basis.js');
+  const { computeResidualCounts } = require('./audit-show-review-gap.js');
+  const confirmed = {
+    wrongShow: true, isNonReview: true, rejectionReason: 'not_a_review',
+    contentVerification: { isValid: false, confidence: 'high', articleType: 'preview', articleTypeConfidence: 'high' },
+  };
+  const c = classifyFlaggedMiss([confirmed]);
+  assert.equal(c.confirmedNonReview, true);
+  assert.equal(shouldReverify({ exclusion: c.exclusion, confirmedNonReview: true }), false);
+  const weak = { ...confirmed, contentVerification: { ...confirmed.contentVerification, confidence: 'medium' } };
+  assert.equal(classifyFlaggedMiss([weak]).confirmedNonReview, false);
+  assert.equal(classifyFlaggedMiss([{ ...confirmed, isNotReview: true }]).confirmedNonReview, false);
+  const row = (extra) => ({ url: 'https://x.test/a', exclusion: 'automatedExcluded', ...extra });
+  assert.equal(computeResidualCounts({ flaggedMisses: [row({ confirmedNonReview: true })] }, false).flaggedOut, 0);
+  assert.equal(computeResidualCounts({ flaggedMisses: [row({})] }, false).flaggedOut, 1);
+});

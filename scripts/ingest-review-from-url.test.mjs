@@ -301,3 +301,17 @@ describe('BRO-4478: unresolvable /goto redirect URL is refused before fetch', ()
     });
   }
 });
+
+// BRO-5500: a refused ticketing/listing URL is a permanent EXPECTED rejection. It used to exit 1
+// with no `Skipped:` line, so the gap audit counted it as a failed ingest and held roundup-gap:all open.
+import { spawnSync as __spawnSyncBro5500 } from 'node:child_process';
+import { createRequire as __createRequireBro5500 } from 'node:module';
+test('ingest-review-from-url: nyc.com /events/ refusal exits 0 with a classified expected skip', () => {
+  const r = __spawnSyncBro5500(process.execPath, [new URL('./ingest-review-from-url.js', import.meta.url).pathname,
+    '--show=sea-wall-off-broadway-2026', '--url=https://www.nyc.com/events/sea_wall.443831802918871040/'], { encoding: 'utf8', timeout: 60000 });
+  assert.equal(r.status, 0);
+  const { classifyIngestSkip } = __createRequireBro5500(import.meta.url)('./lib/ingest-skip-classify.js');
+  const c = classifyIngestSkip(r.stdout);
+  assert.equal(c.kind, 'expected');
+  assert.equal(c.reason, 'named-non-review-url');
+});

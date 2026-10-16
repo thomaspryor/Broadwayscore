@@ -299,6 +299,10 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // (stale-flag-on-existing-file) for hours on opening night, 2026-10-01.
   { host: /(^|\.)newyorktheatreguide\.com$/, path: /^\/theatre-news\//, reason: 'news-article' },
   { host: /(^|\.)gigantic\.com$/, reason: 'ticketing-reseller' },
+  // BRO-5500: nyc.com /events/<slug>.<id>/ is a ticketing event page (the Playbill/BWW
+  // roundup for sea-wall-off-broadway-2026 linked one); it failed ingest as a zero-char
+  // provisional outlet and held roundup-gap:all open.
+  { host: /(^|\.)nyc\.com$/, path: /^\/events\//i, reason: 'ticketing-listing' },
   { host: /(^|\.)concordtheatricals\.com$/, reason: 'licensing-listing' },
   { host: /(^|\.)abouttheartists\.com$/, reason: 'production-database-listing' },
   { host: /(^|\.)traverse\.co\.uk$/, path: /^\/whats-on\//, reason: 'venue-production-page' },

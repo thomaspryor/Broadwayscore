@@ -60,6 +60,19 @@ function rawDetectorBasis(d) {
   return hit || null;
 }
 
+// BRO-5500: a CV verdict that this piece is a non-review (preview, news, a critic
+// who did not see the show) with HIGH confidence AND a promoted isNonReview exclusion
+// is the detector agreeing with the round-up on the URL but not on "review": the
+// round-up merely linked an article. Re-verifying it only reproduces the verdict, so
+// it must not hold roundup-gap:all open forever (anon-a-tempest frontmezzjunkies).
+const NONREVIEW_ARTICLE_TYPES = new Set(['preview', 'news', 'feature', 'interview', 'press-release']);
+function isConfirmedNonReviewFile(d) {
+  const cv = d && d.contentVerification;
+  if (!cv || cv.isValid !== false || cv.confidence !== 'high') return false;
+  if (cv.articleTypeConfidence !== 'high' || !NONREVIEW_ARTICLE_TYPES.has(cv.articleType)) return false;
+  return d.isNonReview === true && d.rejectionReason === 'not_a_review';
+}
+
 /**
  * Classify one flaggedMiss from its excluded dir files.
  * @param {object[]} files - the excluded dir files for the listed URL
@@ -78,12 +91,13 @@ function classifyFlaggedMiss(files, explain) {
     const r = reason || rawDetectorBasis(d) || 'unknown';
     if (!basis.includes(r)) basis.push(r);
   }
-  return { exclusion: human ? 'humanExcluded' : 'automatedExcluded', basis };
+  const confirmedNonReview = !human && list.length > 0 && list.every(isConfirmedNonReviewFile);
+  return { exclusion: human ? 'humanExcluded' : 'automatedExcluded', basis, confirmedNonReview };
 }
 
 /** Re-check an automated exclusion only when a current-run round-up lists it. */
 function shouldReverify(m) {
-  return !!m && m.exclusion === 'automatedExcluded' && !isPriorProductionCitation(m);
+  return !!m && m.exclusion === 'automatedExcluded' && !m.confirmedNonReview && !isPriorProductionCitation(m);
 }
 
 /** Count of flaggedMisses marked reverify (automated, current-run listed). */
@@ -95,6 +109,7 @@ module.exports = {
   hasHumanExclusionAssertion,
   rawDetectorBasis,
   classifyFlaggedMiss,
+  isConfirmedNonReviewFile,
   shouldReverify,
   countAutomatedExcludedListed,
 };

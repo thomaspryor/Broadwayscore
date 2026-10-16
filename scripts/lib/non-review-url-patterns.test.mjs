@@ -70,6 +70,12 @@ test('classifyReviewUrl: NYTG /theatre-news/ cast announcements are news, /revie
   assert.equal(classifyReviewUrl('https://www.newyorktheatreguide.com/reviews/creation-stories-and-all-the-important-importants-off-broadway-review').ok, true);
 });
 
+test('classifyReviewUrl: nyc.com /events/ ticketing pages blocked (BRO-5500)', () => {
+  const { classifyReviewUrl } = require('./non-review-url-patterns.js');
+  assert.deepEqual(classifyReviewUrl('https://www.nyc.com/events/sea_wall.443831802918871040/'), { ok: false, reason: 'ticketing-listing' });
+  assert.equal(classifyReviewUrl('https://www.nyc.com/some-review-article/').ok, true);
+});
+
 test('classifyReviewUrl: host-scoped ticket pages blocked, real review shapes stay ok', () => {
   const { classifyReviewUrl } = require('./non-review-url-patterns.js');
   // WET /NNNNNN/shows/… show pages and LBO root ticket slugs are listings.
