@@ -52,6 +52,12 @@ jobs:
         uses: ./.github/actions/checkout-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      # BRO-4779: run-script plans may edit the aggregator archive (sibling-misfile
+      # cleanup). Always checked out and pushed; the push is a no-op when unchanged.
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
@@ -113,6 +119,12 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Execute Approved Fix — Commit and push changes"
+      - name: Push aggregator-archive to private repo
+        if: always()
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Execute Approved Fix — aggregator-archive changes"
       - name: Commit and push changes
         if: always() && (steps.exec.outputs.result == 'fixed' || steps.exec.outputs.result == 'no-changes' || steps.exec.outputs.result == 'validation-failed' || steps.exec.outputs.result == 'rejected')
         env:

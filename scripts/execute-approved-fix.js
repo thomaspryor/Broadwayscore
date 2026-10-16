@@ -81,6 +81,9 @@ const ALLOWED_SCRIPTS = [
   // BRO-5276: delete Theatr audience data attached to shows that closed before
   // Theatr existed, recompute their combined score. Needs --apply in args.
   'neutralize-stale-theatr-buzz.js',
+  // BRO-4779: delete sibling-misfiled aggregator-archive pages (+ tombstone ids).
+  // Needs --delete --expect=N; the workflow checks out and pushes the archive.
+  'audit-sibling-misfile-archive.js',
   'rebuild-all-reviews.js',
   'gather-reviews.js',
   'collect-review-texts.js',

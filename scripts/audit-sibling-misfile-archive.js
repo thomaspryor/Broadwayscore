@@ -6,14 +6,15 @@
  * (scripts/lib/sibling-misfile.js), so a page this lists is exactly a page the
  * extractors would REJECT.
  *
- * Usage: node scripts/audit-sibling-misfile-archive.js [--delete] [--archive=DIR] [--json]
+ * Usage: node scripts/audit-sibling-misfile-archive.js [--delete [--expect=N]] [--archive=DIR] [--json]
  *   (default)  read-only report; exit 1 if any misfiled page found
  *   --delete   unlink the misfiled HTML files AND tombstone each id in
  *              <archive>/<aggregator>/_not-found.json. Without the tombstone the
  *              weekly scrape-dtli-show-score.yml sees "no archive file" and
  *              re-fetches the same sibling page (fetch-aggregator-pages.ts skips
  *              known-not-found ids unless --force). Exits 1 if anything was found,
- *              like the report mode.
+ *              exit 0 on success (2 on a missing
+ *              archive or an --expect=N mismatch, deleting nothing).
  *   --archive  override the archive root (default data/aggregator-archive)
  */
 const fs = require('fs');
@@ -69,11 +70,13 @@ function scanArchive(archiveRoot, { shows, extractShowData, extractReviewsFromDT
 function deleteAndTombstone(archiveRoot, hits, today = new Date().toISOString().split('T')[0]) {
   const caches = {};
   for (const h of hits) {
-    fs.unlinkSync(h.file);
     caches[h.aggregator] = caches[h.aggregator] || loadNotFoundForAggregator(archiveRoot, h.aggregator);
     caches[h.aggregator][h.showId] = today;
   }
+  // Tombstones first: a throw mid-way leaves tombstoned pages still present, never deleted
+  // pages the weekly scrape would re-fetch (BRO-4779 review).
   for (const [agg, cache] of Object.entries(caches)) saveNotFoundForAggregator(archiveRoot, agg, cache);
+  for (const h of hits) fs.unlinkSync(h.file);
 }
 
 function main() {
@@ -81,7 +84,10 @@ function main() {
   if (hasHelpFlag(args)) { console.log(USAGE); return; }
   const archiveArg = args.find(a => a.startsWith('--archive='));
   const archiveRoot = archiveArg ? path.resolve(archiveArg.slice(10)) : path.join(ROOT, 'data/aggregator-archive');
+  const deleting = args.includes('--delete');
   if (!fs.existsSync(archiveRoot)) {
+    // Under --delete a missing archive is a silent no-op in CI (BRO-4779): fail loudly.
+    if (deleting) { console.error(`archive not present at ${archiveRoot}: refusing a no-op --delete`); process.exitCode = 2; return; }
     console.log(`archive not present at ${archiveRoot} — nothing to audit`);
     return;
   }
@@ -95,9 +101,23 @@ function main() {
   if (json) console.log(JSON.stringify(hits));
   else for (const h of hits) console.log(`${h.aggregator}\t${h.showId}\t-> ${h.targetId} (${h.count}/${h.total})`);
   log(`\n${hits.length} sibling-misfiled archive page(s)`);
-  if (args.includes('--delete')) {
+  if (deleting) {
+    // --expect=N guards against a partial checkout deleting/finding the wrong set.
+    // Required: the CI checkout always creates the archive dir, so only --expect catches an empty one.
+    const expectArg = args.find(a => a.startsWith('--expect='));
+    if (!expectArg || !/^\d+$/.test(expectArg.slice(9))) {
+      console.error('--delete requires --expect=N (the number of misfiled pages the plan author saw)');
+      process.exitCode = 2;
+      return;
+    }
+    if (hits.length !== Number(expectArg.slice(9))) {
+      console.error(`expected ${expectArg.slice(9)} misfiled page(s), found ${hits.length}: nothing deleted`);
+      process.exitCode = 2;
+      return;
+    }
     deleteAndTombstone(archiveRoot, hits);
     log(`deleted ${hits.length} file(s) and tombstoned their ids in _not-found.json`);
+    return; // a successful delete is exit 0 so the approved-fix executor counts it applied
   }
   if (hits.length) process.exitCode = 1;
 }

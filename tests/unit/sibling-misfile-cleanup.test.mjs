@@ -14,6 +14,7 @@ import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
@@ -122,4 +123,19 @@ test('threshold boundaries: exactly 50% of >=3 flags; 3 of 7 and a split across 
 test('the real Show Score extractor exposes the detector verdict that the audit consumes', () => {
   const { extractShowData } = require('../../scripts/extract-show-score-reviews.js');
   assert.equal(typeof extractShowData, 'function');
+});
+
+// BRO-4779: --delete is exit 0 on success (the approved-fix executor counts non-zero as failed)
+// and refuses a no-op when the archive is absent or --expect disagrees.
+test('audit CLI: --delete exits 2 on a missing archive and on an --expect mismatch', () => {
+  const script = path.join(ROOT, 'scripts/audit-sibling-misfile-archive.js');
+  const run = (...a) => spawnSync('node', [script, ...a], { encoding: 'utf8' }).status;
+  const missing = path.join(os.tmpdir(), 'no-such-archive-bro-4779');
+  const empty = fs.mkdtempSync(path.join(os.tmpdir(), 'archive-bro-4779-'));
+  assert.equal(run('--delete', `--archive=${missing}`), 2);
+  assert.equal(run('--delete', `--archive=${empty}`), 2); // --expect is required
+  assert.equal(run('--delete', '--expect=', `--archive=${empty}`), 2);
+  assert.equal(run('--delete', '--expect=3', `--archive=${empty}`), 2);
+  assert.equal(run('--delete', '--expect=0', `--archive=${empty}`), 0);
+  assert.equal(run(`--archive=${missing}`), 0);
 });
