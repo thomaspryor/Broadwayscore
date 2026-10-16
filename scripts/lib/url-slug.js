@@ -93,4 +93,20 @@ function assignUniqueSlugs(names, slugifyFn = slugify) {
   });
 }
 
-module.exports = { foldDiacritics, slugify, legacySlugify, assignUniqueSlugs };
+/**
+ * The critic page a byline belongs to: its slugify() key, or null for no
+ * byline ("", whitespace, "Unknown"). ONE rule for src/lib/data-reviews.ts
+ * (which builds /critics/<slug> pages from it) and
+ * scripts/build-slug-redirects.js (which drops critic aliases whose canonical
+ * no byline produces, BRO-5434), so the two can never disagree.
+ * @param {string|null|undefined} criticName
+ * @returns {string|null}
+ */
+function criticProfileKey(criticName) {
+  if (typeof criticName !== 'string') return null;
+  const name = criticName.trim();
+  if (!name || name === 'Unknown') return null;
+  return slugify(name) || null;
+}
+
+module.exports = { foldDiacritics, slugify, legacySlugify, assignUniqueSlugs, criticProfileKey };

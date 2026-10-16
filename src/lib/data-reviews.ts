@@ -6,6 +6,7 @@ import type { ProfileReview, OutletProfile, CriticProfile } from './data-types';
 import { OUTLET_TIERS } from '@/config/scoring';
 import { OUTLET_LOGOS } from '@/config/outlet-logos';
 import { slugify } from './data-core';
+import { criticProfileKey as sharedCriticProfileKey } from '../../scripts/lib/url-slug';
 
 import reviewsData from '../../data/reviews.json';
 import showsData from '../../data/shows.json';
@@ -256,10 +257,8 @@ interface RawReviewEntry {
  * this rule (exact-string grouping), so it merges nothing new but spelling.
  */
 export function criticProfileKey(criticName: string | null | undefined): string | null {
-  if (typeof criticName !== 'string') return null;
-  const name = criticName.trim();
-  if (!name || name === 'Unknown') return null;
-  return slugify(name) || null;
+  // Shared with scripts/build-slug-redirects.js (scripts/lib/url-slug.js).
+  return sharedCriticProfileKey(criticName);
 }
 
 export interface CriticGroup<T> {

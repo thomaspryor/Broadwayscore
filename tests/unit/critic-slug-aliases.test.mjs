@@ -25,6 +25,9 @@ const {
   normalizeCriticSlugAliases,
   loadCriticSlugAliases,
   flattenCriticSlugAliases,
+  criticSlugsFromReviews,
+  dropAliasesWithoutLiveCanonical,
+  MAX_DEAD_CANONICAL_DROPS,
   buildCriticRedirectEntries,
 } = mod;
 
@@ -41,11 +44,14 @@ function withTmp(fn) {
   }
 }
 
-test('exported contract is exactly the six documented names', () => {
+test('exported contract is exactly the nine documented names', () => {
   assert.deepEqual(Object.keys(mod).sort(), [
     'CRITIC_REDIRECT_PREFIX',
     'CRITIC_SLUG_ALIASES_PATH',
+    'MAX_DEAD_CANONICAL_DROPS',
     'buildCriticRedirectEntries',
+    'criticSlugsFromReviews',
+    'dropAliasesWithoutLiveCanonical',
     'flattenCriticSlugAliases',
     'loadCriticSlugAliases',
     'normalizeCriticSlugAliases',
@@ -160,8 +166,9 @@ const FIXTURE_SHOWS = {
   ],
 };
 
-function runScript(dir, registryPath) {
+function runScript(dir, registryPath, reviews) {
   writeFileSync(join(dir, 'shows.json'), JSON.stringify(FIXTURE_SHOWS));
+  if (reviews) writeFileSync(join(dir, 'reviews.json'), JSON.stringify({ reviews }));
   const res = spawnSync(process.execPath, [SCRIPT], {
     cwd: REPO_ROOT,
     encoding: 'utf8',
@@ -238,5 +245,43 @@ test('build-slug-redirects.js: a malformed registry fails prebuild loudly', () =
     const res = runScript(dir, registry);
     assert.notEqual(res.status, 0, 'a malformed registry must not produce a redirect map');
     assert.match(res.stderr, /not valid JSON/);
+  });
+});
+
+test('criticSlugsFromReviews: one slug per byline page, no-byline and Unknown left out', () => {
+  assert.deepEqual(
+    [...criticSlugsFromReviews([{ criticName: 'José Solís' }, { criticName: ' Jose Solis ' }, { criticName: 'Unknown' }, { criticName: null }, {}])],
+    ['jose-solis']
+  );
+  assert.deepEqual([...criticSlugsFromReviews(undefined)], []);
+});
+
+test('dropAliasesWithoutLiveCanonical: keeps live canonicals, drops dead ones, keeps all with no data (BRO-5434)', () => {
+  const flat = { johnpeter: 'john-peter', 'jose-sol-s': 'jose-solis' };
+  const { aliases, dropped } = dropAliasesWithoutLiveCanonical(flat, new Set(['jose-solis']));
+  assert.deepEqual(aliases, { 'jose-sol-s': 'jose-solis' });
+  assert.deepEqual(dropped.map((d) => d.slug), ['johnpeter']);
+  assert.match(dropped[0].reason, /john-peter/);
+  assert.deepEqual(dropAliasesWithoutLiveCanonical(flat, null), { aliases: flat, dropped: [] });
+});
+
+test('dropAliasesWithoutLiveCanonical: an empty or truncated reviews.json throws instead of dropping every alias', () => {
+  const flat = {};
+  for (let i = 0; i <= MAX_DEAD_CANONICAL_DROPS; i++) flat['old-' + i] = 'critic-' + i;
+  assert.throws(() => dropAliasesWithoutLiveCanonical(flat, new Set()), /refusing to drop/);
+  delete flat['old-0'];
+  assert.equal(dropAliasesWithoutLiveCanonical(flat, new Set()).dropped.length, MAX_DEAD_CANONICAL_DROPS);
+});
+
+test('build-slug-redirects.js: an alias whose canonical critic has no reviews left is not emitted (BRO-5434)', () => {
+  withTmp((dir) => {
+    const registry = join(dir, 'critic-slug-aliases.json');
+    writeFileSync(registry, JSON.stringify({ johnpeter: 'john-peter', 'Jose-Sol-S': 'jose-solis' }));
+    const res = runScript(dir, registry, [{ criticName: 'José Solís' }, { criticName: 'Unknown' }]);
+    assert.equal(res.status, 0, `build-slug-redirects.js failed:\n${res.stdout}\n${res.stderr}`);
+    assert.equal(res.compact['critic:jose-sol-s'], 'jose-solis');
+    assert.ok(!('critic:johnpeter' in res.compact), 'alias to a vanished critic must not be emitted');
+    assert.deepEqual(res.full.criticRedirects, { 'jose-sol-s': 'jose-solis' });
+    assert.match(res.stderr, /johnpeter.*no critic page/);
   });
 });

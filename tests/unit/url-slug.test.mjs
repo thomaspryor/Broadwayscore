@@ -133,3 +133,10 @@ test('one implementation: title-match.js re-exports this fold and deduplication.
   // title-match's own callers still get what they always did.
   assert.equal(titleMatch.normalizeTitle('Les Misérables'), titleMatch.normalizeTitle('Les Miserables'));
 });
+
+test('criticProfileKey: the shared critic-page key (data-reviews.ts + build-slug-redirects.js, BRO-5434)', () => {
+  const { criticProfileKey } = require('../../scripts/lib/url-slug.js');
+  assert.equal(criticProfileKey('Juan A. Ramírez'), 'juan-a-ramirez');
+  assert.equal(criticProfileKey('  Jose Solis '), 'jose-solis');
+  for (const v of [null, undefined, '', '   ', 'Unknown', 42, '!!!']) assert.equal(criticProfileKey(v), null, String(v));
+});
