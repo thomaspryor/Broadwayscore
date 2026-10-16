@@ -63,6 +63,9 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   // breadcrumb that says what was checked. evaluateShowMentionGuard honours the
   // breadcrumb, so backfill-review-flags / the collector do not set it again.
   'showNotMentioned', 'showNotMentionedManualClear',
+  // isRoundupArticle (BRO-4914): CLEAR ONLY (false). A false value is sticky:
+  // shouldSkipRoundupAudit stops the CI setters from re-flagging the file.
+  'isRoundupArticle',
   // duplicate pointer (a clear needs duplicateClearReason alongside it)
   'duplicateOf', 'duplicateReason', 'duplicateClearReason',
   // cross-outlet duplicate flag (BRO-3870): CLEAR ONLY, with its breadcrumb.
@@ -115,6 +118,7 @@ const FIELD_VALUE_CHECKS = {
     ? null : 'isSyndicatedDuplicate may only be cleared (false), and only when syndicatedPrimaryFile points at this same file or its primary is excluded for a primary-only reason (syndicated-duplicate-heal)'),
   syndicatedPrimaryFile: (v, record, ctx = {}) => (v === null && (isSelfSyndicationPointer(record, ctx) || ctx.syndicatedHeal === true)
     ? null : 'syndicatedPrimaryFile may only be cleared (null), and only when it points at this same file or its primary is excluded for a primary-only reason (syndicated-duplicate-heal)'),
+  isRoundupArticle: (v) => (v === false ? null : 'isRoundupArticle may only be cleared (false)'),
   crossOutletDuplicate: (v) => (v === false ? null : 'crossOutletDuplicate may only be cleared (false)'),
   isNotReview: (v, record) => (v === false && record.isNotReviewManualClear === true
     ? null : 'isNotReview may only be cleared (false), after isNotReviewManualClear is set'),

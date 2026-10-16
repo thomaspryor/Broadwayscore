@@ -601,3 +601,17 @@ test('BRO-4415: a syndication mark naming another file clears only on the heal d
   }
   assert.equal(applyReviewFieldEdit(rec, { ...flag, newValue: true }, stamp, { ...ctx, syndicatedHeal: true }).ok, false, 'never sets the mark');
 });
+
+test('isRoundupArticle is clear-only (BRO-4914): false passes, true and null are refused', () => {
+  const rec = { outletId: 'theater-life', isRoundupArticle: true, roundupDetail: '4 other shows mentioned 3+ times' };
+  const ok = applyReviewFieldEdit(rec, { field: 'isRoundupArticle', oldValue: true, newValue: false }, stamp);
+  assert.equal(ok.ok, true);
+  assert.equal(ok.record.isRoundupArticle, false);
+  assert.ok(REVIEW_TEXT_EDITABLE_FIELDS.includes('isRoundupArticle'));
+  for (const bad of [true, null]) {
+    const res = applyReviewFieldEdit({ isRoundupArticle: false }, { field: 'isRoundupArticle', oldValue: false, newValue: bad }, stamp);
+    assert.equal(res.ok, false, `newValue ${bad} must be refused`);
+  }
+  const stale = applyReviewFieldEdit(rec, { field: 'isRoundupArticle', oldValue: false, newValue: false }, stamp);
+  assert.equal(stale.ok, false, 'oldValue must match current');
+});
