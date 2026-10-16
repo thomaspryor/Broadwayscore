@@ -142,4 +142,43 @@ function findSiblingProductionCastMismatch(text, show, allShows, { publishDate =
   return null;
 }
 
-module.exports = { findSiblingProductionCastMismatch, titleKey, namesOf, MIN_TEXT_CHARS, MIN_SIBLING_NAMES };
+/**
+ * shows.json rows whose cast list was copied from a same-title, same-market sibling entry of a different
+ * year: an IBDB wrong-show match put the 2022 Broadway Macbeth cast on the 2026 Met Opera Macbeth, and the
+ * 1999 Charlie Brown cast on a 2026 92NY run (BRO-5499). Pairs share >= 80% of the smaller cast, open 3+
+ * years apart, and neither declares the other as a prior run.
+ * @returns {Array<{showId: string, siblingId: string, shared: number, of: number}>}
+ */
+function findCopiedSiblingCasts(allShows) {
+  const groups = new Map();
+  for (const s of allShows || []) {
+    const k = titleKey(s && s.title);
+    if (k) (groups.get(k) || groups.set(k, []).get(k)).push(s);
+  }
+  const yearOf = (s) => new Date((s && (s.openingDate || s.previewsStartDate)) || 0).getFullYear();
+  const out = [];
+  for (const grp of groups.values()) {
+    for (let i = 0; i < grp.length; i++) {
+      for (let j = i + 1; j < grp.length; j++) {
+        const a = grp[i];
+        const b = grp[j];
+        if (!comparableMarkets(a, b) || declaresReturnOf(a, b) || declaresReturnOf(b, a)) continue;
+        if (Math.abs(yearOf(a) - yearOf(b)) < 3) continue;
+        const na = namesOf(a, { castOnly: true });
+        const nb = new Set(namesOf(b, { castOnly: true }));
+        const of = Math.min(na.length, nb.size);
+        if (of < 2) continue;
+        const shared = na.filter((n) => nb.has(n)).length;
+        if (shared / of >= 0.8) {
+          // report the LATER entry: an earlier production's cast is the original, the later one inherited it
+          const [later, earlier] = yearOf(a) >= yearOf(b) ? [a, b] : [b, a];
+          out.push({ showId: later.id, siblingId: earlier.id, shared, of });
+        }
+      }
+    }
+  }
+  return out;
+}
+
+module.exports = {
+  findCopiedSiblingCasts, findSiblingProductionCastMismatch, titleKey, namesOf, MIN_TEXT_CHARS, MIN_SIBLING_NAMES };

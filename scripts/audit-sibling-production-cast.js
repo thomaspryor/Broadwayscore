@@ -6,7 +6,8 @@
  * the 2019 Gyllenhaal review, scored 88). Report-only: fixes go through a
  * data/pending-fixes review-field-edit plan (wrongProduction + reason).
  *
- *   node scripts/audit-sibling-production-cast.js [--show=ID] [--json] [--strict]
+ *   node scripts/audit-sibling-production-cast.js [--show=ID] [--json] [--strict] [--casts]
+ *   --casts  report shows.json rows whose cast list was copied from a same-title sibling (not review files)
  *
  * Skips files already excluded (wrongProduction/wrongShow/invalid/rejected,
  * human-cleared). --strict exits 1 when any live (scored or includable) hit remains.
@@ -34,6 +35,19 @@ for (const s of shows) {
   if (!k) continue;
   if (!groups.has(k)) groups.set(k, []);
   groups.get(k).push(s);
+}
+
+// --casts: shows.json rows whose cast list was copied from a same-title sibling of another year
+if (args.includes('--casts')) {
+  const { findCopiedSiblingCasts } = require('./lib/sibling-production-cast');
+  const copied = findCopiedSiblingCasts(shows);
+  if (asJson) console.log(JSON.stringify({ copied }, null, 2));
+  else {
+    console.log(`${copied.length} shows.json rows share >=80% of their cast with a same-title entry 3+ years apart`);
+    for (const c of copied) console.log(`  ${c.showId} <- ${c.siblingId} (${c.shared}/${c.of})`);
+  }
+  if (strict && copied.length) process.exit(1);
+  process.exit(0);
 }
 
 const hits = [];

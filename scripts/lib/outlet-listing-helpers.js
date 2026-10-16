@@ -477,7 +477,8 @@ function parseSitemapXml(xml, cutoff, urlFilter) {
     }
     // No <lastmod> → include (don't silently drop — see function comment)
 
-    items.push({ url, headline: null, publishDate: lastmodMatch ? lastmodMatch[1].trim().slice(0, 10) : null });
+    // lastmod is a UTC instant: store the publisher-local date, not the UTC day (BRO-5499)
+    items.push({ url, headline: null, publishDate: lastmodMatch ? publishedStampToLocalDate(lastmodMatch[1].trim(), url) : null });
   }
   return items;
 }

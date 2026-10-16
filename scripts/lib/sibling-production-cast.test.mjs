@@ -101,3 +101,15 @@ test('cannot tell productions apart when this entry has nobody the sibling lacks
   const b = { id: 'x-2026', title: 'X', category: 'broadway', market: 'broadway', cast: [{ name: 'Ann Lee' }, { name: 'Bob Ray' }] };
   assert.equal(findSiblingProductionCastMismatch('Ann Lee and Bob Ray.' + pad, b, [a, b]), null);
 });
+
+test('findCopiedSiblingCasts: a Met Opera Macbeth carrying the 2022 Broadway Macbeth cast is reported; a plain revival is not', () => {
+  const { findCopiedSiblingCasts } = require('./sibling-production-cast');
+  const cast = (...n) => n.map((name) => ({ name }));
+  const broadway = { id: 'macbeth-2022', title: 'Macbeth', category: 'broadway', market: 'broadway', openingDate: '2022-04-28', cast: cast('Daniel Craig', 'Ruth Negga', 'Amber Gray', 'Paul Lazar') };
+  const met = { id: 'macbeth-off-broadway-2026', title: 'Macbeth', category: 'off-broadway', market: 'broadway', openingDate: '2026-09-22', cast: cast('Daniel Craig', 'Ruth Negga', 'Amber Gray', 'Paul Lazar') };
+  assert.deepEqual(findCopiedSiblingCasts([broadway, met]).map((c) => [c.showId, c.siblingId]), [['macbeth-off-broadway-2026', 'macbeth-2022']]);
+  const revival = { ...met, cast: cast('Quinn Kelsey', 'Lise Davidsen', 'Freddie De Tommaso', 'Ryan Speedo Green') };
+  assert.deepEqual(findCopiedSiblingCasts([broadway, revival]), []);
+  const sameYear = { ...met, openingDate: '2023-01-01' };
+  assert.deepEqual(findCopiedSiblingCasts([broadway, sameYear]), []);
+});
