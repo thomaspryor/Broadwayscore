@@ -431,3 +431,120 @@ test('buildClosureComment names the evidence the close used', () => {
   assert.match(body, /land\/ branch naming this card/);
   assert.doesNotMatch(body, /changed null/);
 });
+
+// ── In Review sweep (BRO-5433) ───────────────────────────────────────────
+const sweepMod = require('./stuck-card-closer.js');
+const listRow = (over = {}) => ({
+  identifier: 'BRO-900', title: 'technical thing', priority: 2, updatedAt: iso(NOW - 4 * DAY),
+  state: { name: 'In Review', type: 'started' }, labels: { nodes: [] }, ...over,
+});
+const fullCard = (over = {}) => ({
+  identifier: 'BRO-900', title: 'technical thing', priority: 2, updatedAt: iso(NOW - 4 * DAY),
+  state: { name: 'In Review', type: 'started' }, description: 'did the work', comments: [], ...over,
+});
+
+test('planInReviewSweep: idle 3d+, no owner marker, not already handled, oldest first', () => {
+  const issues = [
+    listRow({ identifier: 'BRO-1', updatedAt: iso(NOW - 4 * DAY) }),
+    listRow({ identifier: 'BRO-2', updatedAt: iso(NOW - 9 * DAY) }),
+    listRow({ identifier: 'BRO-3', updatedAt: iso(NOW - 1 * DAY) }),
+    listRow({ identifier: 'BRO-4', title: '👑 OWNER: cancel the plan' }),
+    listRow({ identifier: 'BRO-5', labels: { nodes: [{ name: 'awaiting-owner' }] } }),
+    listRow({ identifier: 'BRO-6' }),
+    listRow({ identifier: 'BRO-7', state: { name: 'Todo', type: 'unstarted' } }),
+  ];
+  assert.deepEqual(sweepMod.planInReviewSweep(issues, NOW, new Set(['BRO-6'])), ['BRO-2', 'BRO-1']);
+});
+
+test('decideSweep: evidence or a landing closes, a runnable check bounces, everything else stays', () => {
+  const d = (issue, extra = {}) => sweepMod.decideSweep({ issue, nowMs: NOW, ...extra });
+  assert.deepEqual(d(fullCard({ description: 'PR-EVIDENCE: merged deployed checked (https://github.com/x/y/commit/abc)' })), { action: 'try-close' });
+  assert.deepEqual(d(fullCard({ description: '## Acceptance criteria\n`node --test tests/unit/in-review-backlog.test.mjs`' })), { action: 'try-close' });
+  // no evidence and no runnable check: a Todo bounce would strand it (workers skip it), so it stays
+  assert.deepEqual(d(fullCard()), { action: 'leave', reason: 'no-auto-worker' });
+  // gate refused on a card a worker could pick up (it has a runnable check): bounce
+  const withCmd = '## Acceptance criteria\n`node --test tests/unit/in-review-backlog.test.mjs`';
+  assert.deepEqual(d(fullCard({ description: withCmd }), { gateRefused: true }), { action: 'bounce', priorBounces: 0 });
+  // gate refused on a PR reference with no runnable check: nothing to hand a worker
+  assert.equal(d(fullCard({ description: 'PR-EVIDENCE: merged (https://x/y)' }), { gateRefused: true }).action, 'leave');
+  // a land/ branch naming the card after it was filed is evidence; a revert or an older landing is not
+  const created = iso(NOW - 10 * DAY);
+  const land = (branch, ts) => ({ ts: iso(ts), branch, sha: 'abc123def456' });
+  assert.deepEqual(d(fullCard({ createdAt: created }), { landings: [land('land/bro-900-fix', NOW - 2 * DAY)] }), { action: 'try-close', sha: 'abc123def456' });
+  assert.equal(d(fullCard({ createdAt: created }), { landings: [land('land/revert-bro-900', NOW - 2 * DAY)] }).action, 'leave');
+  assert.equal(d(fullCard({ createdAt: created }), { landings: [land('land/bro-900-fix', NOW - 20 * DAY)] }).action, 'leave');
+  assert.equal(d(fullCard({ createdAt: created }), { landings: [land('land/bro-9001-other', NOW - 2 * DAY)] }).action, 'leave');
+  assert.equal(d(fullCard({ description: 'DECISION NEEDED: pick one' })).reason, 'owner-marker');
+  assert.equal(d(fullCard({ comments: [{ body: sweepMod.CLOSER_MARKER, createdAt: iso(NOW) }] })).reason, 'closer-already-tried');
+  const exhausted = Array.from({ length: MAX_BOUNCES }, () => ({ body: BOUNCE_MARKER, createdAt: iso(NOW - 5 * DAY) }));
+  assert.equal(d(fullCard({ description: withCmd, comments: exhausted }), { gateRefused: true }).reason, 'bounce-exhausted');
+  // no worker picks priority 0, so it is never bounced into Todo
+  assert.equal(d(fullCard({ priority: 0, description: withCmd }), { gateRefused: true }).reason, 'no-auto-worker');
+  assert.deepEqual(d(fullCard({ priority: 4, description: withCmd }), { gateRefused: true }), { action: 'bounce', priorBounces: 0 });
+});
+
+test('sweep comments never read as gate evidence', () => {
+  const { extractPrRef } = require('./linear-pr-evidence.js');
+  const { evaluateVerifiability } = require('./verify-gate.js');
+  for (const body of [sweepMod.buildSweepClosureComment(), sweepMod.buildSweepBounceComment({ priorBounces: 0, refused: true }),
+    sweepMod.buildSweepBounceComment({ priorBounces: 1, refused: false })]) {
+    assert.equal(extractPrRef(body), null);
+    assert.equal(evaluateVerifiability('', [body]).armed, false);
+  }
+  // the landing-evidence close is the one comment that carries a PR reference, on purpose
+  assert.match(sweepMod.buildSweepClosureComment({ sha: 'abc123' }), /^PR-EVIDENCE: merged deployed checked \(https:\/\/github\.com\/thomaspryor\/Broadwayscore\/commit\/abc123\)$/m);
+  assert.match(sweepMod.buildSweepBounceComment({ priorBounces: 1, refused: false }), new RegExp(`${BOUNCE_MARKER} \\(2 of ${MAX_BOUNCES}\\)`));
+});
+
+test('CLI sweep: closes cards the gate accepts, bounces only one a worker can pick up, leaves the rest', async () => {
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const path = require('node:path');
+  const { main } = require('../close-stuck-verified-cards.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'closer-sweep-'));
+  const auditPath = path.join(dir, 'audit.json');
+  const outPath = path.join(dir, 'out.json');
+  const now = Date.now();
+  fs.writeFileSync(auditPath, JSON.stringify({ generatedAt: new Date(now - 3600e3).toISOString(), results: [] }));
+  const old = new Date(now - 5 * DAY).toISOString();
+  const cards = {
+    'BRO-901': 'PR-EVIDENCE: merged deployed checked (https://github.com/o/r/commit/aaa)',
+    'BRO-902': 'PR-EVIDENCE: merged (https://github.com/o/r/commit/bbb)',
+    'BRO-903': 'finished, no reference',
+    'BRO-904': 'DECISION NEEDED: owner picks',
+    'BRO-905': 'finished, landed under its own branch',
+    'BRO-906': '## Acceptance criteria\n`node --test tests/unit/in-review-backlog.test.mjs`',
+  };
+  const row = (id) => ({ identifier: id, title: `t ${id}`, priority: 2, updatedAt: old, state: { name: 'In Review', type: 'started' }, labels: { nodes: [] } });
+  const linear = {
+    listOpenIssues: async () => Object.keys(cards).map(row),
+    graphql: async (_q, { id }) => ({ issue: { ...row(id), createdAt: old, description: cards[id], comments: { nodes: [] } } }),
+  };
+  const spawned = [];
+  const comments = {};
+  const spawn = (_n, args) => {
+    spawned.push({ id: args[2], state: args[4] });
+    comments[args[2] + args[4]] = args[6];
+    // the Done gate accepts 901 and 905, refuses 902 and 906
+    return { status: ['BRO-902', 'BRO-906'].includes(args[2]) && args[4] === 'Done' ? 5 : 0, stdout: '', stderr: 'gate' };
+  };
+  const log = console.log; const err = console.error;
+  console.log = () => {}; console.error = () => {};
+  let out;
+  try {
+    assert.equal(await main(['--apply'], { linear, commitsTouching: async () => [], spawn, auditPath, outPath,
+      landings: [{ ts: new Date(now - DAY).toISOString(), branch: 'land/bro-905-done', sha: 'c0ffee1234567' }] }), 0);
+    out = JSON.parse(fs.readFileSync(outPath, 'utf8'));
+  } finally { console.log = log; console.error = err; fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+  assert.deepEqual(spawned, [
+    { id: 'BRO-901', state: 'Done' },
+    { id: 'BRO-902', state: 'Done' },
+    { id: 'BRO-905', state: 'Done' },
+    { id: 'BRO-906', state: 'Done' },
+    { id: 'BRO-906', state: 'Todo' },
+  ]);
+  assert.match(comments['BRO-905Done'], /PR-EVIDENCE: merged deployed checked \(.*commit\/c0ffee1234567\)/);
+  assert.doesNotMatch(comments['BRO-901Done'], /PR-EVIDENCE/);
+  const act = Object.fromEntries(out.rows.map((r) => [r.id, r.action]));
+  assert.deepEqual(act, { 'BRO-901': 'sweep-closed', 'BRO-902': 'sweep-leave', 'BRO-903': 'sweep-leave', 'BRO-904': 'sweep-leave', 'BRO-905': 'sweep-closed', 'BRO-906': 'sweep-bounced' });
+});

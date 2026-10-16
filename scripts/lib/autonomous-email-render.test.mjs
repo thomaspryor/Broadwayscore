@@ -1177,3 +1177,17 @@ test('renderHealthDigestBlock: explicit loopDeadMessage override wins even when 
   assert.match(html, /12 job\(s\) launched, 0 reported back/);
   assert.doesNotMatch(html, /Automation queue.{0,40}filed and launched/s);
 });
+// ── BRO-5433: one ask, one line ─────────────────────────────────────────────
+test('buildOwnerView: a health row citing a decision card already shown is not counted twice', () => {
+  const mezz = { name: 'Mezzanine: token', title: 'Mezzanine token expired', description: 'Renew it. Tracked in BRO-5235.', decision: true };
+  const other = { name: 'Other: ask', title: 'Pick a vendor', description: 'See BRO-9999.', decision: true };
+  const needsYou = { items: [{ title: 'BRO-5235: renew the Mezzanine token', url: 'https://linear.app/x/issue/BRO-5235' }] };
+  const v = buildOwnerView({ health: { errors: [], warns: [], queued: [mezz, other] }, needsYou });
+  assert.deepEqual(v.decisionQueued.map((q) => q.name), ['Other: ask']);
+  assert.equal(v.decisions, 2); // the remaining health row + the card
+  // Near miss: BRO-52350 contains the digits of BRO-5235 but is a different card.
+  const near = buildOwnerView({ health: { errors: [], warns: [], queued: [{ ...mezz, description: 'See BRO-52350.' }] }, needsYou });
+  assert.equal(near.decisionQueued.length, 1);
+  // No decision card shown: nothing is deduped.
+  assert.equal(buildOwnerView({ health: { errors: [], warns: [], queued: [mezz] } }).decisionQueued.length, 1);
+});

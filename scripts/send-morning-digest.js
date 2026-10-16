@@ -599,6 +599,10 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   } else if (fixing) {
     parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${fixing} issue${fixing === 1 ? '' : 's'} detected — ${working ? `${working} being fixed by automated sessions right now, the rest queued` : 'all queued for automated fix sessions'}. Details below.</p>`);
   }
+  if (sections.inReviewTechnicalCount) {
+    const n = sections.inReviewTechnicalCount;
+    parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${n} finished technical card${n === 1 ? '' : 's'} idle in review 3d+. Not for you: the daily closer closes each one when its check passes, or sends it back to a worker.</p>`);
+  }
   const delegationMsg = localLinearDelegationMessage();
   if (delegationMsg) {
     parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(delegationMsg)}</p>`);
@@ -1063,9 +1067,15 @@ async function main() {
   // sitting past the idle threshold.
   try {
     if (openIssues && openIssues.length) {
-      const { buildInReviewSection } = require('./lib/in-review-backlog.js');
-      const section = buildInReviewSection(openIssues);
+      const { buildInReviewSection, countTechnicalInReview } = require('./lib/in-review-backlog.js');
+      // Owner-marked cards only (BRO-5433): technical cards a worker parked
+      // In Review are not owner decisions. stuck-card-closer closes or
+      // bounces them; the count below keeps them visible under Technical
+      // details so hiding them cannot rebuild the BRO-3376 pile unseen.
+      const section = buildInReviewSection(openIssues, { ownerOnly: true });
       if (section) sections.inReviewBacklog = section;
+      const technicalCount = countTechnicalInReview(openIssues);
+      if (technicalCount) sections.inReviewTechnicalCount = technicalCount;
     }
   } catch (err) {
     console.error(`[digest] WARN in-review backlog section failed: ${String(err.message).slice(0, 120)}`);

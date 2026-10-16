@@ -36,6 +36,9 @@
 
 'use strict';
 
+const { isRealInReview, hasOwnerMarker } = require('./in-review-backlog.js');
+const { extractPrRef } = require('./linear-pr-evidence.js');
+
 const HOUR_MS = 60 * 60 * 1000;
 const MAX_REPORT_AGE_MS = 6 * HOUR_MS;
 const IDLE_MS_BY_STATE = { 'In Review': 24 * HOUR_MS, 'In Progress': 72 * HOUR_MS };
@@ -206,13 +209,15 @@ function decideClosure({ candidate, issue, commits, landings, nowMs }) {
  * Returns { bounce: true, priorBounces } or { bounce: false, reason }.
  * 'bounce-exhausted' is reported, never acted on.
  */
-function decideBounce({ candidate, issue, nowMs }) {
+function decideBounce({ candidate, issue, nowMs, priorities = [1, 2] }) {
   if (!issue) return { bounce: false, reason: 'issue-not-found' };
   if ((issue.state && issue.state.name) !== 'In Review') return { bounce: false, reason: 'state-changed-since-audit' };
   // Only send back cards an automatic worker will pick up from Todo (the
-  // watchdog and the cloud worker take P0/P1 with no headless blocker).
-  // Anything else would sit in Todo looking unstarted; leave it In Review.
-  if (![1, 2].includes(Number(issue.priority))) return { bounce: false, reason: 'no-auto-worker' };
+  // watchdog and the cloud worker take P0/P1 with no headless blocker; the
+  // cloud worker's P2/P3 fallback tiers take priorities 3 and 4, so the
+  // In Review sweep below passes [1, 2, 3, 4]). Anything else would sit in
+  // Todo looking unstarted; leave it In Review.
+  if (!priorities.includes(Number(issue.priority))) return { bounce: false, reason: 'no-auto-worker' };
   const comments = Array.isArray(issue.comments) ? issue.comments : [];
   const lastActivity = Math.max(
     Date.parse(issue.updatedAt) || 0,
@@ -239,6 +244,101 @@ function buildBounceComment({ candidate, priorBounces, auditGeneratedAt }) {
     candidate.failDetail ? `What failed: ${String(candidate.failDetail).slice(0, 500)}` : null,
     'Moved back to Todo so a worker picks it up again. Done means the fix is on main and this check passes there.',
     `After ${MAX_BOUNCES} bounces the closer stops moving this card and reports it instead.`,
+  ].filter((l) => l !== null).join('\n');
+}
+
+// ── In Review sweep (BRO-5433) ──────────────────────────────────────────
+// The audit-driven paths above only see cards the done-evidence audit labels
+// STUCK or check-failed. Technical cards a worker parked In Review with a PR
+// reference, or with no check at all, matched neither, so nothing ever moved
+// them and the morning digest counted them as owner decisions (BRO-3376's
+// pile). This class covers the rest: every real In Review card idle 3+ days
+// with no owner marker, that no audit path already handles.
+const SWEEP_IDLE_MS = 3 * 24 * HOUR_MS;
+const MAX_SWEEP_PER_RUN = 25;
+// The cloud worker's tiers take Linear priorities 1-4 (P0/P1, then the P2 and
+// P3 fallbacks); priority 0 ("none") is never picked, so it is never bounced.
+const SWEEP_BOUNCE_PRIORITIES = [1, 2, 3, 4];
+const SWEEP_CLOSER_NOTE = 'In Review sweep';
+
+/**
+ * Cards for the In Review sweep, oldest-idle first.
+ *   issues:     linear.listOpenIssues() rows
+ *   handledIds: Set of ids the audit-driven candidates/bounces already cover
+ */
+function planInReviewSweep(issues, nowMs, handledIds = new Set()) {
+  return (issues || [])
+    .filter((i) => isRealInReview(i) && !hasOwnerMarker(i) && !handledIds.has(i.identifier))
+    .map((i) => ({ id: i.identifier, idle: nowMs - (Date.parse(i.updatedAt) || nowMs) }))
+    .filter((c) => c.idle >= SWEEP_IDLE_MS)
+    .sort((a, b) => b.idle - a.idle)
+    .map((c) => c.id);
+}
+
+/**
+ * Does the full card carry something the Done gate can verify? (A PR-EVIDENCE
+ * line or a safe-form VERIFY command.) Cheap pre-screen only: the gate
+ * itself still decides, and re-runs the command on a fresh origin/main.
+ */
+function hasGateEvidence(issue) {
+  const { evaluateVerifiability } = require('./verify-gate.js');
+  const comments = (Array.isArray(issue && issue.comments) ? issue.comments : []).map((c) => c && c.body).filter(Boolean);
+  if (extractPrRef([issue && issue.description, ...comments].join('\n'))) return true;
+  const v = evaluateVerifiability(issue && issue.description, comments);
+  return !!(v.armed && v.cmd);
+}
+
+/**
+ * Decide one sweep card against the full issue.
+ * Returns { action: 'try-close' } | { action: 'bounce', priorBounces } | { action: 'leave', reason }.
+ * `gateRefused` is true on the second pass, after the Done gate refused the close.
+ */
+function decideSweep({ issue, nowMs, gateRefused = false, landings = [] }) {
+  if (!issue) return { action: 'leave', reason: 'issue-not-found' };
+  if ((issue.state && issue.state.name) !== 'In Review') return { action: 'leave', reason: 'state-changed' };
+  // Re-check on the full card: the list query has no description, so a
+  // DECISION NEEDED line in the body only shows up here.
+  if (hasOwnerMarker(issue)) return { action: 'leave', reason: 'owner-marker' };
+  const comments = Array.isArray(issue.comments) ? issue.comments : [];
+  if (comments.some((c) => String(c.body || '').includes(CLOSER_MARKER))) return { action: 'leave', reason: 'closer-already-tried' };
+  if (!gateRefused && hasGateEvidence(issue)) return { action: 'try-close' };
+  // No recorded evidence: a land/ branch naming this card, merged after the
+  // card was filed, is the proof. The closure comment then cites that commit
+  // and the Done gate verifies it is on origin/main.
+  if (!gateRefused) {
+    const createdMs = Date.parse(issue.createdAt);
+    const landed = Number.isFinite(createdMs)
+      ? (landings || []).filter((l) => !/revert/i.test(l.branch) && branchIsForCard(l.branch, issue.identifier) && Date.parse(l.ts) > createdMs)
+      : [];
+    if (landed.length) return { action: 'try-close', sha: landed[landed.length - 1].sha };
+  }
+  // Todo only helps when a worker can pick the card up: decideBounce refuses
+  // cards with no runnable check (the cloud worker skips them too), so those
+  // stay In Review and the digest counts them under Technical details.
+  const b = decideBounce({ candidate: {}, issue, nowMs, priorities: SWEEP_BOUNCE_PRIORITIES });
+  if (!b.bounce) return { action: 'leave', reason: b.reason };
+  return { action: 'bounce', priorBounces: b.priorBounces };
+}
+
+function buildSweepBounceComment({ priorBounces, refused }) {
+  return [
+    `${BOUNCE_MARKER} (${priorBounces + 1} of ${MAX_BOUNCES}), ${SWEEP_CLOSER_NOTE}.`,
+    '',
+    refused
+      ? 'This card sat In Review 3+ days and the Done gate refused to close it: its recorded evidence did not hold on main.'
+      : 'This card sat In Review 3+ days with no merge reference and no runnable check, so nothing proves the work landed.',
+    'Moved back to Todo so a worker finishes it. Before moving it to In Review again, add a line starting PR-EVIDENCE with the landed commit URL, or an acceptance command.',
+    `After ${MAX_BOUNCES} bounces the closer stops moving this card.`,
+  ].join('\n');
+}
+
+function buildSweepClosureComment({ sha } = {}) {
+  return [
+    `${CLOSER_MARKER} (${SWEEP_CLOSER_NOTE}).`,
+    '',
+    'This card sat In Review 3+ days with no owner marker. The Done gate accepted its recorded evidence against a fresh copy of main, so the board is closed out here.',
+    sha ? `PR-EVIDENCE: merged deployed checked (https://github.com/thomaspryor/Broadwayscore/commit/${sha})` : null,
+    'If the problem is still happening, reopen the card and say what you saw.',
   ].filter((l) => l !== null).join('\n');
 }
 
@@ -298,4 +398,12 @@ module.exports = {
   decideBounce,
   buildBounceComment,
   closeRunStopReason,
+  SWEEP_IDLE_MS,
+  MAX_SWEEP_PER_RUN,
+  SWEEP_BOUNCE_PRIORITIES,
+  planInReviewSweep,
+  hasGateEvidence,
+  decideSweep,
+  buildSweepBounceComment,
+  buildSweepClosureComment,
 };

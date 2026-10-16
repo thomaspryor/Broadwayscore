@@ -88,6 +88,24 @@ function isRealInReview(issue) {
   return !isAutofixFiledIssue(issue);
 }
 
+// Owner markers (BRO-5433). A card parked In Review is a decision FOR THE
+// OWNER only when it says so: the awaiting-owner label (BRO-282), a DECISION
+// NEEDED line, "owner-only", or the 👑 OWNER prefix. Everything else is
+// technical work a worker finished; the owner never reviews it, so it must
+// not be counted as "decisions for you" (2026-10-16 digest: 3 of 4 Review
+// queue rows were technical). The open-issues query carries no description,
+// so the text markers are read from the title; a card whose marker lives
+// only in its body is closed or bounced by stuck-card-closer instead.
+const AWAITING_OWNER_LABEL = 'awaiting-owner';
+const OWNER_MARKER_RE = /DECISION NEEDED|owner[- ]only|👑\s*OWNER/i;
+
+function hasOwnerMarker(issue) {
+  if (!issue) return false;
+  const labels = (issue.labels && issue.labels.nodes) || [];
+  if (labels.some((l) => l && l.name === AWAITING_OWNER_LABEL)) return true;
+  return OWNER_MARKER_RE.test(`${issue.title || ''}\n${issue.description || ''}`);
+}
+
 function isUrgent(issue) {
   return !!issue && issue.priority === URGENT_PRIORITY;
 }
@@ -127,9 +145,10 @@ function formatIdle(ms) {
  * nothing to escalate about a row this cannot date, so it must not float to
  * the top where the eye reads it as most urgent).
  */
-function buildInReviewRows(issues, { now = new Date() } = {}) {
+function buildInReviewRows(issues, { now = new Date(), ownerOnly = false } = {}) {
   return (issues || [])
     .filter(isRealInReview)
+    .filter((issue) => !ownerOnly || hasOwnerMarker(issue))
     .map((issue) => {
       const ms = idleMs(issue, now);
       const urgent = isUrgent(issue);
@@ -177,9 +196,9 @@ function buildInReviewRows(issues, { now = new Date() } = {}) {
  */
 function buildInReviewSection(
   issues,
-  { now = new Date(), idleAfterMs = IDLE_AFTER_MS, maxRows = MAX_ROWS, maxUrgentRows = MAX_URGENT_ROWS } = {}
+  { now = new Date(), idleAfterMs = IDLE_AFTER_MS, maxRows = MAX_ROWS, maxUrgentRows = MAX_URGENT_ROWS, ownerOnly = false } = {}
 ) {
-  const all = buildInReviewRows(issues, { now });
+  const all = buildInReviewRows(issues, { now, ownerOnly });
   const idle = all.filter((r) => r.idleMs !== null && r.idleMs >= idleAfterMs);
   if (!idle.length) return null;
 
@@ -217,7 +236,23 @@ function buildInReviewSection(
   };
 }
 
+/**
+ * How many real In Review cards idle past the threshold carry NO owner marker
+ * (BRO-5433). The digest counts them under Technical details; the closer
+ * (stuck-card-closer.js) is what actually moves them.
+ */
+function countTechnicalInReview(issues, { now = new Date(), idleAfterMs = IDLE_AFTER_MS } = {}) {
+  return (issues || []).filter((issue) => {
+    if (!isRealInReview(issue) || hasOwnerMarker(issue)) return false;
+    const ms = idleMs(issue, now);
+    return ms !== null && ms >= idleAfterMs;
+  }).length;
+}
+
 module.exports = {
+  AWAITING_OWNER_LABEL,
+  hasOwnerMarker,
+  countTechnicalInReview,
   IN_REVIEW_STATE,
   IDLE_AFTER_MS,
   STALE_AFTER_MS,

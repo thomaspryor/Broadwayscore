@@ -29,6 +29,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const {
   planCandidates, decideClosure, parseLandingRows, buildClosureComment, closeRunStopReason,
   decideBounce, buildBounceComment, MAX_BOUNCES, MAX_BOUNCES_PER_RUN,
+  planInReviewSweep, decideSweep, buildSweepBounceComment, buildSweepClosureComment, MAX_SWEEP_PER_RUN,
 } = require('./lib/stuck-card-closer.js');
 
 const REPO = path.join(__dirname, '..');
@@ -246,7 +247,95 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       write();
     }
   }
-  console.log(`[close-stuck-verified-cards] candidates ${candidates.length}, bounces ${bounces.length}; ${apply ? `closed ${closed}, bounced ${bounced}; ` : ''}${JSON.stringify(out.counts)}`);
+  // In Review sweep (BRO-5433): technical cards the audit paths above never
+  // touch. Close through the Done gate when the card carries evidence; if the
+  // gate refuses, or there is none, send it back to a worker (shared bounce
+  // cap) so it neither sits unseen nor reaches the owner as a decision.
+  let swept = 0;
+  let sweepAttempts = 0;
+  try {
+    const handled = new Set([...plan.candidates, ...plan.bounces].map((c) => c.id));
+    let sweepIds = planInReviewSweep(await linear.listOpenIssues(), nowMs, handled);
+    if (only) sweepIds = sweepIds.filter((id) => id === only);
+    count('sweep:eligible');
+    out.counts['sweep:eligible'] = sweepIds.length;
+    for (const id of sweepIds) {
+      if (sweepAttempts >= MAX_SWEEP_PER_RUN) { count('sweep:over-run-cap'); continue; }
+      if (Date.now() - startMs > TIME_BUDGET_MS - CLOSE_TIMEOUT_MS) { count('sweep:over-time-budget'); continue; }
+      let issue;
+      try {
+        const data = await linear.graphql(ISSUE_QUERY, { id });
+        issue = data && data.issue ? { ...data.issue, comments: (data.issue.comments && data.issue.comments.nodes) || [] } : null;
+      } catch (err) {
+        console.error(`[close-stuck-verified-cards] could not read ${id}: ${err.message}`);
+        count('sweep:read-failed');
+        out.rows.push({ id, action: 'read-failed', reason: err.message.slice(0, 200) });
+        exitCode = 3;
+        continue;
+      }
+      let decision = decideSweep({ issue, nowMs, landings });
+      if (decision.action === 'leave') {
+        count(`sweep:${decision.reason}`);
+        out.rows.push({ id, state: 'In Review', action: 'sweep-leave', reason: decision.reason });
+        continue;
+      }
+      if (!apply) {
+        count(`sweep:would-${decision.action}`);
+        console.log(`would ${decision.action} ${id} (In Review sweep)`);
+        out.rows.push({ id, state: 'In Review', action: `sweep-would-${decision.action}` });
+        continue;
+      }
+      sweepAttempts++;
+      let refused = false;
+      if (decision.action === 'try-close') {
+        const r = (deps.spawn || spawnSync)('node', [path.join(__dirname, 'linear-brain.js'), 'update', id, '--state', 'Done', '--comment', buildSweepClosureComment({ sha: decision.sha })],
+          { cwd: REPO, encoding: 'utf8', timeout: CLOSE_TIMEOUT_MS });
+        if (r.status === 0) {
+          swept++;
+          count('sweep:closed');
+          console.log(`closed ${id} (In Review sweep)`);
+          out.rows.push({ id, state: 'In Review', action: 'sweep-closed' });
+          write();
+          continue;
+        }
+        if (r.status !== 5) {
+          // Timeout (status null), crash or Linear error: not a verdict on the card.
+          count('sweep:close-failed');
+          const tail = (r.stderr || r.stdout || '').trim().split('\n').slice(-2).join(' ').slice(0, 300);
+          console.error(`sweep close-failed for ${id}: ${tail}`);
+          out.rows.push({ id, state: 'In Review', action: 'sweep-close-failed', reason: tail });
+          continue;
+        }
+        refused = true;
+        decision = decideSweep({ issue, nowMs, gateRefused: true, landings });
+        if (decision.action !== 'bounce') {
+          count(`sweep:${decision.reason}`);
+          out.rows.push({ id, state: 'In Review', action: 'sweep-leave', reason: `gate-refused, ${decision.reason}` });
+          continue;
+        }
+      }
+      if (swept + bounced >= MAX_BOUNCES_PER_RUN + MAX_SWEEP_PER_RUN) { count('sweep:over-run-cap'); continue; }
+      const r = (deps.spawn || spawnSync)('node', [path.join(__dirname, 'linear-brain.js'), 'update', id, '--state', 'Todo',
+        '--comment', buildSweepBounceComment({ priorBounces: decision.priorBounces, refused })],
+      { cwd: REPO, encoding: 'utf8', timeout: CLOSE_TIMEOUT_MS });
+      if (r.status === 0) {
+        bounced++;
+        count('sweep:bounced');
+        console.log(`bounced ${id} to Todo (In Review sweep)`);
+        out.rows.push({ id, state: 'In Review', action: 'sweep-bounced' });
+      } else {
+        count('sweep:bounce-failed');
+        const tail = (r.stderr || r.stdout || '').trim().split('\n').slice(-2).join(' ').slice(0, 300);
+        console.error(`sweep bounce-failed for ${id}: ${tail}`);
+        out.rows.push({ id, state: 'In Review', action: 'sweep-bounce-failed', reason: tail });
+      }
+      write();
+    }
+  } catch (err) {
+    console.error(`[close-stuck-verified-cards] In Review sweep skipped: ${err.message}`);
+    count('sweep:list-failed');
+  }
+  console.log(`[close-stuck-verified-cards] candidates ${candidates.length}, bounces ${bounces.length}; ${apply ? `closed ${closed}, bounced ${bounced}, swept ${swept}; ` : ''}${JSON.stringify(out.counts)}`);
   write();
   return exitCode;
 }

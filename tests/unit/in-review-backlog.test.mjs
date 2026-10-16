@@ -17,6 +17,8 @@ const {
   buildInReviewSection,
   IDLE_AFTER_MS,
   MAX_TITLE_CHARS,
+  hasOwnerMarker,
+  countTechnicalInReview,
 } = require('../../scripts/lib/in-review-backlog.js');
 
 const NOW = new Date('2026-09-15T12:00:00.000Z');
@@ -253,5 +255,34 @@ describe('buildInReviewSection', () => {
     );
     assert.equal(row.title, '(no id): (untitled)');
     assert.doesNotMatch(row.title, /undefined/);
+  });
+});
+
+describe('owner split (BRO-5433): technical In Review cards are not owner decisions', () => {
+  const marked = [
+    issue({ identifier: 'BRO-10', title: '👑 OWNER: pick the vendor' }),
+    issue({ identifier: 'BRO-11', title: 'DECISION NEEDED: cancel the plan' }),
+    issue({ identifier: 'BRO-12', labels: { nodes: [{ name: 'awaiting-owner' }] } }),
+  ];
+  const technical = [issue({ identifier: 'BRO-20' }), issue({ identifier: 'BRO-21', title: 'fix the scraper' })];
+
+  test('hasOwnerMarker: label, title marker or description marker; plain technical cards have none', () => {
+    for (const i of marked) assert.equal(hasOwnerMarker(i), true, i.identifier);
+    assert.equal(hasOwnerMarker(issue({ description: 'Why: DECISION NEEDED: pick one' })), true);
+    for (const i of technical) assert.equal(hasOwnerMarker(i), false, i.identifier);
+  });
+
+  test('ownerOnly keeps just the owner-marked cards; the default keeps every idle card', () => {
+    const all = [...marked, ...technical];
+    const ids = (o) => buildInReviewRows(all, { now: NOW, ...o }).map((r) => r.title.split(':')[0]);
+    assert.deepEqual(ids({ ownerOnly: true }).sort(), ['BRO-10', 'BRO-11', 'BRO-12']);
+    assert.equal(ids({}).length, 5);
+    assert.equal(buildInReviewSection(technical, { now: NOW, ownerOnly: true }), null);
+  });
+
+  test('countTechnicalInReview counts idle unmarked cards only', () => {
+    const fresh = issue({ identifier: 'BRO-30', updatedAt: daysAgo(1) });
+    assert.equal(countTechnicalInReview([...marked, ...technical, fresh], { now: NOW }), 2);
+    assert.equal(countTechnicalInReview([], { now: NOW }), 0);
   });
 });

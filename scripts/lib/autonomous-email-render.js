@@ -617,7 +617,23 @@ function buildOwnerView({
   // decisions (state:'decision'). Without them (autofix failed before
   // compose) only rows explicitly marked decision:true are decisions; the
   // rest are technical and stay under Technical details.
-  const decisionQueued = Array.isArray(autofixRows) ? queued : queued.filter((q) => q.decision === true);
+  const decisionQueuedAll = Array.isArray(autofixRows) ? queued : queued.filter((q) => q.decision === true);
+  // A health row that names a Linear card (its text cites BRO-N) which the
+  // owner already sees as a decision card is the same ask rendered twice
+  // (BRO-5433: the Mezzanine token row and BRO-5235). Exact id match only; a
+  // fuzzy text match could hide a different, real decision.
+  const decisionCardIds = new Set([
+    ...(Array.isArray(needsYou?.items) ? needsYou.items : []),
+    ...(Array.isArray(needsYou?.cardUrls) ? needsYou.cardUrls.map((url) => ({ url })) : []),
+  ].map((it) => String((it && (it.title || it.url)) || '').match(/\bBRO-\d+\b/i))
+    .filter(Boolean).map((m) => m[0].toUpperCase()));
+  const coveredByCard = (q) => {
+    if (!decisionCardIds.size) return false;
+    const text = `${q.title || ''}\n${q.description || ''}\n${q.decisionPrompt || ''}\n${JSON.stringify(q.fields || [])}`;
+    const ids = text.match(/\bBRO-\d+\b/gi) || [];
+    return ids.some((id) => decisionCardIds.has(id.toUpperCase()));
+  };
+  const decisionQueued = decisionQueuedAll.filter((q) => !coveredByCard(q));
   const otherQueued = Array.isArray(autofixRows) ? [] : queued.filter((q) => q.decision !== true);
   // Parked in review (BRO-3376): finished work waiting on the owner WITHOUT
   // an opt-in marker. It is owner work, so it counts toward "N for you";
