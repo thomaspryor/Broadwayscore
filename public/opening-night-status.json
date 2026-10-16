@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T02:43:13.651Z",
+  "generatedAt": "2026-10-16T03:18:35.664Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -703,27 +703,27 @@
       "slug": "midnight-off-broadway",
       "thumbnail": "/images/shows/midnight-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 85,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 0,
+      "total": 2,
       "t1": 0,
-      "t2": 0,
-      "t3": 0,
-      "positive": 0,
+      "t2": 1,
+      "t3": 1,
+      "positive": 2,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "2/12 total",
           "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
+          "T2:1/3",
+          "hi-conf:2/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -847,10 +847,6 @@
           "isDualMarket": false
         },
         {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
           "name": "New York Theater",
           "isDualMarket": false
         },
@@ -864,10 +860,6 @@
         },
         {
           "name": "Cititour",
-          "isDualMarket": false
-        },
-        {
-          "name": "Slant Magazine",
           "isDualMarket": false
         },
         {
@@ -1072,6 +1064,18 @@
           "t2": 1,
           "t3": 0,
           "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-16T03:18:35.664Z",
+          "rc": 2,
+          "s": 85,
+          "t1": 0,
+          "t2": 1,
+          "t3": 1,
+          "p": 2,
           "m": 0,
           "n": 0,
           "bc": "waiting"

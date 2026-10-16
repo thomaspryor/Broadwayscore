@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-16T02:36:34.277Z",
+  "generated": "2026-10-16T03:10:57.536Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
   "count": 28,
   "orphans": [
@@ -96,9 +96,9 @@
     },
     {
       "showId": "midnight-at-the-never-get-west-end-2026",
-      "loserFile": "times-uk--will-hodgkinson.json",
-      "targetFile": "times-uk--unknown.json",
-      "reason": "orphaned-duplicate-heal: times-uk--unknown.json was flagged invalid after times-uk--will-hodgkinson.json was pointed at it",
+      "loserFile": "times-uk--unknown.json",
+      "targetFile": "times-uk--will-hodgkinson.json",
+      "reason": "orphaned-duplicate-heal: times-uk--will-hodgkinson.json was flagged invalid after times-uk--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
