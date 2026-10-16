@@ -27,7 +27,7 @@ const https = require('https');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { tourAutomationMode } = require('./lib/tour-automation-mode');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
-const { decideTourDates, scheduleSlugs, parseTourSchedule } = require('./lib/tour-schedule');
+const { decideTourDates, scheduleSlugs, parseTourSchedule, settleHandDatedNoMatch } = require('./lib/tour-schedule');
 const { fetchText, fetchSchedule } = require('./lib/tours-to-you');
 const { writeClosingDate } = require('./lib/closing-date-guard');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
@@ -140,9 +140,10 @@ async function main() {
     const { url, html } = await fetchSchedule(tour, fetchPage, { budget });
     let wiki = '';
     try { wiki = await fetchWikiText(tour.title); } catch (e) { console.log(`  wikipedia failed: ${e.message}`); }
-    const decision = url
+    const rawDecision = url
       ? decideTourDates(tour, html, wiki, new Date(), { cuts: earlierClosings(tour, shows) })
       : { write: {}, notes: [], problem: `no Tours To You page found (tried ${scheduleSlugs(tour).join(', ')}); set tourScheduleSlug on the entry` };
+    const decision = settleHandDatedNoMatch(tour, rawDecision);
     for (const n of decision.notes) console.log(`  ${n}`);
     if (decision.problem) console.log(`  PROBLEM: ${decision.problem}`);
     console.log(`  would write: ${JSON.stringify(decision.write)}`);

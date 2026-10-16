@@ -702,7 +702,26 @@ function pruneOrphanSchedules(tours, shows) {
   return dropped;
 }
 
+/**
+ * A tour whose opening date was verified by hand and that is still running
+ * has nothing for the schedule page to fill in (BRO-5450). When the page's
+ * segments (Tours To You keeps only recent rows) match no launch, that is
+ * not a problem to flag: the entry is already dated. Any other problem
+ * (zero engagements, no page) still reports.
+ * @param {object} tour shows.json tour entry
+ * @param {{write: object, notes: string[], problem?: string}} decision
+ */
+function settleHandDatedNoMatch(tour, decision) {
+  if (decision && decision.problem === 'no schedule segment matches this tour'
+      && tour && tour.openingDate && tour.openingDateSource === 'hand-verified' && !tour.closingDate) {
+    const { problem, ...rest } = decision;
+    return { ...rest, notes: [...(rest.notes || []), 'hand-verified opening date; schedule page has no matching segment (not a problem)'] };
+  }
+  return decision;
+}
+
 module.exports = {
+  settleHandDatedNoMatch,
   unparsedForTour,
   pruneOrphanSchedules,
   MIN_TOUR_STOPS,
