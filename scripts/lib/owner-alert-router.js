@@ -173,6 +173,12 @@ const ESCALATION_NOTIFY_THRESHOLD = 14;
 // tolerates one missed daily run.
 const DEFERRED_AUTO_FILE_AFTER_HOURS = 72;
 const INCIDENT_GAP_RESET_HOURS = 96;
+// BRO-5430: callers run once a day (health-check.js on a GitHub cron that
+// starts hours late, by a different amount each day), so a multi-day defer
+// compared strictly lands its due sighting a little under the mark about half
+// the time and files a day late. Slack under 24h keeps the previous daily
+// sighting held. Same rule as digest-autofix.js GATE_SLACK_HOURS.
+const DAILY_RUN_SLACK_HOURS = 12;
 
 /**
  * PURE. When did the CURRENT incident of this condition open? A condition
@@ -191,7 +197,8 @@ function currentIncidentOpenedAt(existing, nowMs) {
 function deferredAutoIsDue(existing, nowMs, fileAfterHours = DEFERRED_AUTO_FILE_AFTER_HOURS) {
   if (!existing || !existing.deferredAuto || existing.linearIdentifier) return false;
   const opened = Date.parse(currentIncidentOpenedAt(existing, nowMs));
-  return Number.isFinite(opened) && (nowMs - opened) / 3600000 >= fileAfterHours;
+  const slack = fileAfterHours >= 48 ? DAILY_RUN_SLACK_HOURS : 0; // only multi-day defers ride the daily cadence
+  return Number.isFinite(opened) && (nowMs - opened) / 3600000 >= fileAfterHours - slack;
 }
 
 // BRO-3030 pre-mortem P0 — the condition families that may NEVER be quieted.

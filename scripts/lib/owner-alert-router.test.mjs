@@ -2140,7 +2140,11 @@ test('currentIncidentOpenedAt / deferredAutoIsDue: incident clock resets on reso
     const opened = isoAgo(80);
     assert.equal(router.currentIncidentOpenedAt({ status: 'open', incidentOpenedAt: opened, lastSeen: isoAgo(50) }, now), opened, 'a 50h gap (one missed day) keeps the incident');
     assert.equal(router.deferredAutoIsDue({ status: 'open', deferredAuto: true, incidentOpenedAt: isoAgo(73), lastSeen: isoAgo(1) }, now), true);
-    assert.equal(router.deferredAutoIsDue({ status: 'open', deferredAuto: true, incidentOpenedAt: isoAgo(71), lastSeen: isoAgo(1) }, now), false, 'under 72h');
+    // BRO-5430: the 3rd daily run after opening lands at 72h give or take the
+    // cron's drift, so a little under 72h is due; the 2nd (~48h) is not.
+    assert.equal(router.deferredAutoIsDue({ status: 'open', deferredAuto: true, incidentOpenedAt: isoAgo(71), lastSeen: isoAgo(1) }, now), true, 'a little under 72h: the 3rd daily run');
+    assert.equal(router.deferredAutoIsDue({ status: 'open', deferredAuto: true, incidentOpenedAt: isoAgo(50), lastSeen: isoAgo(1) }, now), false, 'the 2nd daily run (~48h) still waits');
+    assert.equal(router.deferredAutoIsDue({ status: 'open', deferredAuto: true, incidentOpenedAt: isoAgo(23), lastSeen: isoAgo(1) }, now, 24), false, 'a sub-2-day defer gets no slack');
     assert.equal(router.deferredAutoIsDue({ status: 'open', deferredAuto: true, incidentOpenedAt: isoAgo(25), lastSeen: isoAgo(1) }, now, 24), true, 'caller-chosen age');
     assert.equal(router.deferredAutoIsDue({ status: 'open', deferredAuto: true, incidentOpenedAt: isoAgo(73), lastSeen: isoAgo(1), linearIdentifier: 'BRO-1' }, now), false, 'already carded');
     assert.equal(router.deferredAutoIsDue({ status: 'open', incidentOpenedAt: isoAgo(73), lastSeen: isoAgo(1) }, now), false, 'not a deferred condition');
