@@ -79,9 +79,12 @@ refresh_core_data() {
 # A session-attached broadway-review-texts clone (/home/user/<repo>, next to this
 # checkout) gives review texts with no REVIEW_TEXTS_TOKEN: setup-local-data.sh
 # copies its origin/main into data/ the same way the Mac layout has it.
+# BSC_ATTACHED_REPOS_DIR (default /home/user): where attached repos live. Tests
+# point it at their fixture, or every run copied the real ~1.7 GB clone into
+# /tmp and leaked it when the test timed out (BRO-5422/5443, BRO-5384).
 attached_review_texts() {
   local d
-  for d in "$(dirname "$ROOT")" /home/user; do
+  for d in "$(dirname "$ROOT")" "${BSC_ATTACHED_REPOS_DIR:-/home/user}"; do
     [ -d "$d/broadway-review-texts/.git" ] && { echo "$d/broadway-review-texts"; return 0; }
   done
   return 1

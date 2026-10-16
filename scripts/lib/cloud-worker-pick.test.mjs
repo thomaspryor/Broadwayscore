@@ -910,3 +910,23 @@ test('leaveCodexCards never leaves a card Codex would skip for its pause history
   assert.deepEqual(claude.map((x) => x.issue.identifier), ['BRO-1', 'BRO-3', 'BRO-4', 'BRO-6']);
   assert.deepEqual(leaveCodexCards(queue, { nowMs: NOW, verifyOf, cap: 9 }).left, ['BRO-2', 'BRO-5', 'BRO-6']);
 });
+
+test('a card whose newest RECHECK-AFTER date is ahead waits for the recheck (BRO-5384)', () => {
+  const day = (ms) => new Date(ms).toISOString().slice(0, 10);
+  const ahead = day(NOW + 3 * 86_400_000);
+  const past = day(NOW - 2 * 86_400_000);
+  const paused = report('paused', `Landed; holds after a day of runs.\nRECHECK-AFTER: ${ahead}`, 8 * RECENT_PAUSE_MS);
+  assert.equal(pausedHistorySkipReason([paused], NOW), 'recheck-pending');
+  // A stamp in an Outcome or triage comment counts the same as one in the session report.
+  assert.equal(pausedHistorySkipReason([{ body: `## Outcome\nRECHECK-AFTER ${ahead}`, createdAt: at(1000) }], NOW), 'recheck-pending');
+  // The newest stamp wins: an older future date is superseded by a newer past one.
+  const older = { body: `RECHECK-AFTER: ${ahead}`, createdAt: at(10 * RECENT_PAUSE_MS) };
+  assert.equal(pausedHistorySkipReason([older, report('paused', `RECHECK-AFTER: ${past}`, 9 * RECENT_PAUSE_MS)], NOW), null);
+  // Machine notes after the stamp (a Codex bounce) keep the hold; a person's comment releases it.
+  const bounce = { body: '<!-- codex-runner-bounced -->\n## Codex runner: not landed', createdAt: at(5 * RECENT_PAUSE_MS) };
+  assert.equal(pausedHistorySkipReason([paused, bounce], NOW), 'recheck-pending');
+  const human = { body: 'Checked by hand, the fix holds; close it.', createdAt: at(2 * RECENT_PAUSE_MS) };
+  assert.equal(pausedHistorySkipReason([paused, bounce, human], NOW), null);
+  // From midnight UTC of the stamped day the card is pickable.
+  assert.equal(pausedHistorySkipReason([report('paused', `RECHECK-AFTER: ${day(NOW)}`, 8 * RECENT_PAUSE_MS)], NOW), null);
+});

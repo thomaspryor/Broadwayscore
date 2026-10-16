@@ -781,3 +781,52 @@ test('crash memory: two runner crashes on one card keep Codex away; quoted crash
   const quoting = `${r.BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n\nreport: the earlier note said "## Codex runner: stopped mid-card"`;
   assert.equal(r.isCodexBounce(quoting), true);
 });
+
+test('staleTmpEntries: only known leak prefixes past their age (BRO-5422/5443)', () => {
+  const now = 20 * 3600_000;
+  const e = (name, agoMin) => ({ name, mtimeMs: now - agoMin * 60_000 });
+  assert.deepEqual(r.staleTmpEntries([
+    e('bro-5217-abc', 20), e('bro-5217-new', 5),
+    e('codex-lw-1', 250), e('codex-lw-2', 150),
+    e('codex-land-gauntlet-x', 241), e('codex-land-gauntlet-live', 150),
+    e('tmp.AbC', 13 * 60), e('tmp.young', 7 * 60),
+    e('claude-0', 9999), e('node-compile-cache', 9999),
+    { name: 'bro-5217-nomtime' },
+  ], now), ['bro-5217-abc', 'codex-lw-1', 'codex-land-gauntlet-x', 'tmp.AbC']);
+});
+
+test('slotsForDisk: budgets worktrees not yet created plus the per-card reserve', () => {
+  assert.deepEqual(r.slotsForDisk({ slots: 1, freeBytes: 1e9 }), { slots: 1, why: null });
+  // All worktrees exist: 3 slots x 3 GB reserve = 9 GB.
+  assert.deepEqual(r.slotsForDisk({ slots: 3, freeBytes: 10e9, missingBySlot: [0, 0, 0] }), { slots: 3, why: null });
+  // Fresh session: each slot also creates 2 x 1.4 GB.
+  const fresh = r.slotsForDisk({ slots: 3, freeBytes: 12e9, missingBySlot: [2, 2, 2] });
+  assert.equal(fresh.slots, 2);
+  assert.match(fresh.why, /12\.0 GB/);
+  assert.equal(r.slotsForDisk({ slots: 3, freeBytes: 2e9, missingBySlot: [2, 2, 2] }).slots, 1);
+  assert.deepEqual(r.slotsForDisk({ slots: 3, freeBytes: NaN }), { slots: 3, why: null });
+});
+
+test('isDiskFailure: the system message counts on its own, a bare ENOSPC only while the disk is low', () => {
+  // A batch that filled the disk has usually freed it again by the time it is judged.
+  assert.equal(r.isDiskFailure('copyfile: ENOSPC: no space left on device', 20e9), true);
+  assert.equal(r.isDiskFailure('fatal: No space left on device', 2.9e9), true);
+  assert.equal(r.isDiskFailure('Error: ENOSPC', 1e9), true);
+  // A test about ENOSPC handling prints the word on a healthy disk.
+  assert.equal(r.isDiskFailure('ok 3 - retries on ENOSPC', 20e9), false);
+  assert.equal(r.isDiskFailure('AssertionError: expected 3', 1e9), false);
+  assert.equal(r.isDiskFailure('ENOSPC', NaN), false);
+});
+
+test('crash memory: disk-full crashes never count toward the two-crash ban (BRO-5384)', () => {
+  const now = Date.parse('2026-10-16T12:00:00Z');
+  const crash = (err, h) => ({ body: `## Codex runner: stopped mid-card\n\nError: \`\`\`\n${err}\n\`\`\``, createdAt: new Date(now - h * 3600_000).toISOString() });
+  assert.equal(r.codexBouncedRecently([crash('No space left on device during the land checks', 2), crash('fatal: No space left on device', 1)], now), false);
+  assert.equal(r.codexBouncedRecently([crash('No space left on device', 2), crash('lost the run lock', 1)], now), false);
+  assert.equal(r.codexBouncedRecently([crash('lost the run lock', 2), crash('TypeError: x', 1)], now), true);
+});
+
+test('codexCardFit: workflow_dispatch input edits are a workflow edit (BRO-5152)', () => {
+  const fit = r.codexCardFit({ title: 'Redispatch keeps the show id', description: 'Make the retry declare the redispatched workflow_dispatch input so the second run sees it.' });
+  assert.equal(fit.skip, 'workflow-edit');
+});

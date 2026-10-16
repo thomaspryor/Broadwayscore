@@ -357,7 +357,9 @@ const isCrashNote = (body) => { const b = String(body || ''); return b.startsWit
 function codexBouncedRecently(comments, nowMs) {
   const recent = (Array.isArray(comments) ? comments : []).filter((c) => c
     && Number.isFinite(Date.parse(c.createdAt)) && nowMs - Date.parse(c.createdAt) < BOUNCE_MEMORY_MS);
-  return recent.some((c) => isCodexBounce(c.body)) || recent.filter((c) => isCrashNote(c.body)).length >= 2;
+  // A full disk is the machine's fault, so it never counts toward the card's two crashes (BRO-5384).
+  return recent.some((c) => isCodexBounce(c.body))
+    || recent.filter((c) => isCrashNote(c.body) && !DISK_FULL_RE.test(String(c.body))).length >= 2;
 }
 
 /**
@@ -453,7 +455,7 @@ const CODEX_PENALTIES = [
 // .github/workflows/**, cannot move land/ refs or write the private data repos, and a data fix
 // needs an approved-fix plan run after landing. These go to the Claude lane.
 const CODEX_HARD_SKIPS = [
-  ['workflow-edit', /\b(?:edit|change|modify|patch|add|update|wire|move|bump)\b[^.\n]{0,80}\.github\/workflows\/|\.github\/workflows\/[\w.-]+\.ya?ml\b[^.\n]{0,40}\b(?:step|job|cron|schedule|inputs?|env)\b|\bworkflow(?:'s)?\s+(?:\w+\s+)?(?:step|job)s?\b|\b(?:edit|change|modify|patch)\b[^.\n]{0,30}\b[\w-]+\.ya?ml\b/i],
+  ['workflow-edit', /\b(?:edit|change|modify|patch|add|update|wire|move|bump)\b[^.\n]{0,80}\.github\/workflows\/|\.github\/workflows\/[\w.-]+\.ya?ml\b[^.\n]{0,40}\b(?:step|job|cron|schedule|inputs?|env)\b|\bworkflow(?:'s)?\s+(?:\w+\s+)?(?:step|job)s?\b|\b(?:edit|change|modify|patch)\b[^.\n]{0,30}\b[\w-]+\.ya?ml\b|\bworkflow_dispatch\b[^.\n]{0,20}\binputs?\b/i],
   ['land-ref', /\bland\/\*|\b(?:stranded|refused|evicted)\s+land(?:ing)?s?\b|\bland(?:ing)?\s+refs?\b|\brebas\w*\b[^.\n]{0,40}\bland\b/i],
   ['private-repo-write', /\bbroadway-(?:review-texts|scorecard-data)\b|\bpending-fixes\b|\bexecute-approved-fix\b|\bapproved-fix\s+plan\b|\bdata repair\b/i],
   ['corpus-wide-data', /\bcorpus[- ]wide\b|\bbulk[- ](?:edit|fix|update|rewrite|repair|rescore)\b|(?<![\d,])(?!(?:19|20)\d\d\b)\d[\d,]{2,}\s+(?:shipped\s+|existing\s+|affected\s+|scored\s+)?(?:reviews|shows|files|rows|records)\b/i],
@@ -840,6 +842,53 @@ function stopReason({ startedMs, nowMs, maxMinutes, weeklyPct, maxWeeklyPct, rej
   return null;
 }
 
+// Temp dirs a firing leaves behind when a test or a data copy is killed mid-way (BRO-5422/5443:
+// leaked /tmp/bro-5217-* clones filled the disk). Prefix -> age after which it is surely dead.
+const STALE_TMP_RULES = [
+  [/^bro-5217-/, 15 * 60_000],
+  // A land-check pass reuses its gauntlet copy for up to ~2.5 h (3 branch batches, then the base).
+  [/^codex-lw-/, 4 * 3600_000],
+  [/^codex-land-gauntlet-/, 4 * 3600_000],
+  // mktemp's default name, also used by the Claude lane's scripts: only what is surely dead.
+  [/^tmp\./, 12 * 3600_000],
+];
+/** Names in a temp dir that are safe to delete: entries [{ name, mtimeMs }] -> [name]. */
+function staleTmpEntries(entries, nowMs) {
+  return (entries || []).filter(({ name, mtimeMs }) => {
+    const rule = STALE_TMP_RULES.find(([re]) => re.test(String(name)));
+    return rule && Number.isFinite(mtimeMs) && nowMs - mtimeMs > rule[1];
+  }).map((e) => e.name);
+}
+
+// One slot's worktree or base worktree (public/images + data, measured 2026-10-16).
+const WORKTREE_BYTES = 1.4e9;
+/**
+ * How many slots the free disk carries: slot k needs its worktree and base worktree created
+ * (missingBySlot[k] of the two do not exist yet) and still MIN_FREE_DISK_BYTES to run a card.
+ * -> { slots, why }
+ */
+function slotsForDisk({ slots, freeBytes, missingBySlot = [] }) {
+  if (!(slots > 1) || !Number.isFinite(freeBytes)) return { slots: Math.max(1, slots || 1), why: null };
+  const need = (n) => MIN_FREE_DISK_BYTES * n
+    + WORKTREE_BYTES * missingBySlot.slice(0, n).reduce((a, m) => a + (Number(m) || 0), 0);
+  let n = slots;
+  while (n > 1 && freeBytes < need(n)) n--;
+  return n === slots ? { slots, why: null } : { slots: n, why: `only ${(freeBytes / 1e9).toFixed(1)} GB of disk free` };
+}
+
+/**
+ * A check or Codex failure caused by a full disk, not by the card. The system's own message
+ * ("No space left on device") is enough: a batch that filled the disk has usually freed it by
+ * the time it is judged. A bare ENOSPC (a test about ENOSPC handling) counts only while the
+ * disk is low right now.
+ */
+const DISK_FULL_RE = /No space left on device/i;
+function isDiskFailure(text, freeDiskBytes) {
+  const t = String(text || '');
+  return DISK_FULL_RE.test(t)
+    || (/\bENOSPC\b/.test(t) && Number.isFinite(freeDiskBytes) && freeDiskBytes < MIN_FREE_DISK_BYTES);
+}
+
 /**
  * `claude -p --output-format json` -> { text, costUsd }. The JSON carries the review text in
  * `result` and the API cost in `total_cost_usd`; anything else (a crash banner) is kept as text.
@@ -925,6 +974,9 @@ module.exports = {
   codexBouncedRecently,
   isCodexBounce,
   MIN_FREE_DISK_BYTES,
+  staleTmpEntries,
+  slotsForDisk,
+  isDiskFailure,
   encryptAuth,
   decryptAuth,
   authLastRefresh,

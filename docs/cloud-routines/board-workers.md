@@ -17,6 +17,11 @@ In /home/user/Broadwayscore: `git fetch origin main && git checkout -f -B worker
 (retry the fetch with backoff on network errors), then `bash scripts/cloud-bootstrap-data.sh | tail -4`
 (routine sessions are multi-repo, so no repo hook does this: without it core data
 is the environment snapshot, days old, and review texts are absent; BRO-5008).
+Then remove the Claude lane's worktrees an earlier firing left (every firing
+runs in the same session, so they pile up at about 1.3 GB each; BRO-5384):
+`for w in .claude/worktrees/*/; do case "$(basename "$w")" in codex-runner*) continue ;; esac; [ -z "$(git -C "$w" status --porcelain)" ] && [ -z "$(git -C "$w" log --oneline -1 HEAD --not --remotes)" ] && git worktree remove --force "$w"; done; git worktree prune`.
+It keeps a worktree with uncommitted or unpushed work. Never touch `codex-runner*`:
+a Codex slot from the last firing may still be running. The Codex runner itself deletes stale test temp dirs in /tmp when it starts.
 If the directory is missing,
 reply "repo missing" and stop. Follow .claude/CLOUD.md and CLAUDE.md. Never ask
 the owner to do anything on a Mac.

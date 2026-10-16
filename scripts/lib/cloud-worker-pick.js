@@ -563,11 +563,12 @@ function mayTakeUnchecked(entry) {
  *   wait out RECENT_PAUSE_URGENT_MS instead. pausedBacklog: the card is a paused Backlog card
  *   (isPausedBacklog), which is only taken when a worker's session report or a Codex runner
  *   note shows a worker put it there; one moved to Backlog by hand is 'backlog-unexplained'.
- * @returns {'awaiting-owner'|'backlog-unexplained'|'reclaimed-to-backlog'|'paused-repeatedly'|'recently-paused'|null}
+ * @returns {'awaiting-owner'|'backlog-unexplained'|'reclaimed-to-backlog'|'recheck-pending'|'paused-repeatedly'|'recently-paused'|null}
  */
 function pausedHistorySkipReason(comments, nowMs, { priority, pausedBacklog = false } = {}) {
   const { parseSessionReportStatus } = require('./linear-session-reporting.js');
   const { BOUNCED_MARKER } = require('./codex-runner.js');
+  const { parseRecheckAfter } = require('./recheck-stamp.js');
   const sorted = (Array.isArray(comments) ? comments : [])
     .filter((c) => c && Number.isFinite(Date.parse(c.createdAt)))
     .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
@@ -581,6 +582,13 @@ function pausedHistorySkipReason(comments, nowMs, { priority, pausedBacklog = fa
     && !sorted.slice(0, reclaimIdx).some((c) => !isMachineComment(c.body) && parseSessionReportStatus(c.body) == null)) {
     return 'reclaimed-to-backlog';
   }
+  // The newest RECHECK-AFTER stamp is still ahead: the fix waits on time (a day of cron runs,
+  // an opening night), and the nightly acceptance recheck owns the card until then. Working it
+  // early only re-runs a check that cannot pass yet (BRO-5384: 4 of 32 Codex bounces). A later
+  // human comment re-opens it.
+  const stampIdx = sorted.findIndex((c) => parseRecheckAfter(c.body) != null);
+  if (stampIdx >= 0 && parseRecheckAfter(sorted[stampIdx].body) > nowMs
+    && !sorted.slice(0, stampIdx).some((c) => !isMachineComment(c.body))) return 'recheck-pending';
   if (idx < 0) return null;
   const report = sorted[idx];
   if (parseSessionReportStatus(report.body) !== 'paused') return null;

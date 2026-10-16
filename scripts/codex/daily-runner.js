@@ -194,6 +194,36 @@ function setupWorktree() {
   if (fs.existsSync(nm) && !fs.existsSync(path.join(WT, 'node_modules'))) fs.symlinkSync(nm, path.join(WT, 'node_modules'));
 }
 
+/** Least free space across the worktrees and data copies (ROOT), Codex sessions and test temp files, or null. */
+function freeDisk() {
+  let free = null;
+  for (const dir of [ROOT, CODEX_HOME, os.tmpdir()]) {
+    try { const st = fs.statfsSync(dir); const b = st.bavail * st.bsize; free = free == null ? b : Math.min(free, b); } catch { /* missing dir: skip */ }
+  }
+  return free;
+}
+
+/**
+ * Delete what killed tests and data copies left in the temp dir (R.staleTmpEntries: only known
+ * prefixes, past an age no live run reaches, so a sibling slot's own temp dirs are safe) and
+ * prune worktrees whose directory is gone. The routine fires into one long-lived session every
+ * 2 h, so leaks pile up across firings (BRO-5422/5443: 1.7 GB per leaked /tmp/bro-5217-*).
+ */
+function pruneDisk() {
+  const tmp = os.tmpdir();
+  let entries = [];
+  try {
+    entries = fs.readdirSync(tmp).map((name) => {
+      try { return { name, mtimeMs: fs.lstatSync(path.join(tmp, name)).mtimeMs }; } catch { return null; }
+    }).filter(Boolean);
+  } catch { /* unreadable tmp: nothing to prune */ }
+  const stale = R.staleTmpEntries(entries, Date.now());
+  for (const name of stale) fs.rmSync(path.join(tmp, name), { recursive: true, force: true });
+  // Safe beside a sibling slot's `git worktree add`: git locks a worktree while it initializes.
+  sh('git', ['worktree', 'prune'], { cwd: ROOT });
+  if (stale.length) log(`pruneDisk: removed ${stale.length} stale temp dir(s): ${stale.slice(0, 8).join(', ')}`);
+}
+
 /**
  * Give a freshly cleaned worktree the private data the main checkout has (R.DATA_FILES
  * copied, data/review-texts linked), since `git clean -x` removes it. reviewTexts: false
@@ -537,6 +567,16 @@ async function finishLanding(entry, stats) {
   return true;
 }
 
+/**
+ * A failure the full disk caused is the machine's, not Codex's: throw, so the card goes back
+ * unmarked as a runner error instead of a REJECT bounce (BRO-5384: 11 of 30 rejections were
+ * ENOSPC test failures). Returns text unchanged otherwise.
+ */
+function throwIfDisk(text, where) {
+  if (text && R.isDiskFailure(text, freeDisk())) throw new Error(`No space left on device during ${where}: ${tail(String(text), 300)}`);
+  return text;
+}
+
 async function pickCards() {
   if (OPTS.ids) return OPTS.ids.map((identifier) => ({ identifier }));
   // --list --codex: the picker drops cards unfit for Codex and puts the best-suited first (BRO-5287).
@@ -679,7 +719,7 @@ async function workCard(pick, stats, inFlight) {
       // moved on; catch them here and hand them straight back to Codex in the same attempt.
       if (c.hasDiff && !fitsBeforeHardStop(LAND_CHECKS_MS + REVIEW_RESERVE_MS)) { outOfTime = 'the land checks and the review'; break; }
       keepLock();
-      let landFails = c.hasDiff ? newLandFailures() : null;
+      let landFails = c.hasDiff ? throwIfDisk(newLandFailures(), 'the land checks') : null;
       if (landFails && execFits()) {
         log(`${id}: attempt ${attempt} land checks red, back to Codex`);
         const fx = await exec(prompt(`${onMain}\n\nYour change is committed on this branch, but the checks land runs found failures it adds over fresh main. Fix them (or, if one is not caused by your change, show the evidence in your report), then report as before:\n${fence(landFails)}${check ? `\n\nThe reviewer's earlier findings still apply:\n${fence(check.text)}` : ''}`));
@@ -688,7 +728,7 @@ async function workCard(pick, stats, inFlight) {
         c = commitAttempt(card, attempt);
         if (c.blocked) { check = { verdict: 'REJECT', text: `Blocked before review: ${c.blocked}.` }; step = 'bounce'; break; }
         keepLock();
-        landFails = newLandFailures();
+        landFails = throwIfDisk(newLandFailures(), 'the land checks');
       }
       envBlocked = null;
       if (landFails) {
@@ -702,6 +742,7 @@ async function workCard(pick, stats, inFlight) {
       } else {
         keepLock();
         check = runCheck(card, body, report, `check${execs}`, data);
+        if (check.verdict !== 'SHIP') throwIfDisk(check.text, 'the Claude check');
         log(`${id}: attempt ${attempt} verdict ${check.verdict}${c.hasDiff ? '' : ' (no diff)'}`);
         // No verdict means the reviewer is broken (auth, crash), not that the work is bad.
         if (check.verdict === 'NONE') { abort = `the Claude check gave no verdict: ${tail(R.redactSecrets(check.text, process.env), 400)}`; break; }
@@ -807,6 +848,12 @@ async function workCard(pick, stats, inFlight) {
       // card's answer, not a sign the checks are broken: hand it back like any unfinished card.
       // Counting it as a Done refusal stopped all three slots of the 2026-10-15 12:47 launch
       // after one card (BRO-4791). A refused LANDED change still stops the launch (settleLanded).
+      // No runnable check on the card at all (no VERIFY, no acceptance command): nothing says it
+      // is unfixed, so a person decides (BRO-4791/5193 bounced to Todo and came back to Codex).
+      if (r.code === 5 && /\bno-done-evidence\b/.test(r.out || '')) {
+        const rev = await moveCard(id, 'In Review', `## Codex runner: already fixed on main, no code change\n\nThe independent check found nothing left to do, but the card has no check the Done gate can run, so it waits here for a person to close it.\n\n${summary}`);
+        if (rev.code === 0) { stats.inReview.push(id); handedBack = true; disposed = true; return 'done'; }
+      }
       if (r.code === 5) summary += `\n\n### Not fixed after all\nThe reviewer judged it already fixed, but the card's own check still fails on main (the Done gate refused to close it):\n${fence(tail(R.redactSecrets(r.out || '', process.env), 800))}`;
     }
     stats.bounced.push(id);
@@ -1041,6 +1088,13 @@ async function launchSlots() {
   const runMs = (Number.isFinite(HARD_END_MS) ? HARD_END_MS : RUN_STARTED_MS + OPTS.maxMinutes * 60_000) - Date.now();
   const plan = restore.code === 0 ? R.slotsForLogin({ slots: OPTS.slots, authText, nowMs: Date.now(), runMs }) : { slots: 1, why: 'the Codex login did not restore' };
   authText = '';
+  pruneDisk();
+  const missingBySlot = [...Array(plan.slots).keys()].map((k) => {
+    const n = R.slotNames(k);
+    return [n.wt, n.base].filter((w) => !fs.existsSync(path.join(ROOT, '.claude/worktrees', w, '.git'))).length;
+  });
+  const disk = R.slotsForDisk({ slots: plan.slots, freeBytes: freeDisk(), missingBySlot });
+  if (disk.slots < plan.slots) Object.assign(plan, { slots: disk.slots, why: [plan.why, disk.why].filter(Boolean).join('; ') });
   log(`launching ${plan.slots} slot(s)${plan.why ? ` instead of ${OPTS.slots}: ${plan.why}` : ''}`);
   // One slot: no run dir, so it runs exactly as a lone runner (2 landings in flight, plain summary).
   const runDir = plan.slots > 1 ? fs.mkdtempSync(path.join(LOG_DIR, 'launch-')) : '';
@@ -1157,6 +1211,7 @@ async function runLocked(startedMs) {
   }
   const install = sh('node', ['scripts/codex/install.js']);
   if (install.code !== 0) log(`codex install warning: ${tail(install.out, 300)}`);
+  pruneDisk();
   setupWorktree();
 
   const inFlight = [];
@@ -1164,11 +1219,8 @@ async function runLocked(startedMs) {
   let stop = null;
   for (const pick of await pickCards()) {
     if (worked >= OPTS.limit) break;
-    // The worktrees and data copies (ROOT), Codex sessions (home) and test temp files (tmp).
-    let freeDiskBytes = null;
-    for (const dir of [ROOT, CODEX_HOME, os.tmpdir()]) {
-      try { const st = fs.statfsSync(dir); const free = st.bavail * st.bsize; freeDiskBytes = freeDiskBytes == null ? free : Math.min(freeDiskBytes, free); } catch { /* missing dir: skip */ }
-    }
+    let freeDiskBytes = freeDisk();
+    if (freeDiskBytes != null && freeDiskBytes < R.MIN_FREE_DISK_BYTES) { pruneDisk(); freeDiskBytes = freeDisk(); }
     const diskLow = freeDiskBytes != null && freeDiskBytes < R.MIN_FREE_DISK_BYTES;
     stop = R.stopReason({ startedMs, nowMs: Date.now(), maxMinutes: OPTS.maxMinutes, weeklyPct: weeklyPct(), maxWeeklyPct: OPTS.maxWeeklyPct, rejectStreak: stats.rejectStreak, doneRefusals: stats.doneRefusals, checkSpentUsd, checkBudgetUsd: OPTS.checkBudgetUsd, crashStreak: stats.crashStreak, lastCrash: stats.lastCrash, freeDiskBytes });
     if (!stop && stats.aborted) stop = stats.aborted;
@@ -1192,7 +1244,7 @@ async function runLocked(startedMs) {
   await Promise.all(inFlight.map((e) => e.promise));
   if (!stop && stats.aborted) stop = stats.aborted;
   if (stats.aborted || stats.doneRefusals) stopAllSlots(stop || 'the Done gate refused a card the Claude check passed');
-  else if (stats.crashStreak >= 1 && /No space left on device/i.test(stats.lastCrash || '')) stopAllSlots(`out of disk: ${String(stats.lastCrash).slice(0, 160)}`);
+  else if (stats.crashStreak >= 1 && R.isDiskFailure(stats.lastCrash, freeDisk())) stopAllSlots(`out of disk: ${String(stats.lastCrash).slice(0, 160)}`);
   saveLogin();
 
   const mins = Math.round((Date.now() - startedMs) / 60_000);
@@ -1204,7 +1256,7 @@ async function runLocked(startedMs) {
     `- Landed part, back to Todo with what is left: ${list(stats.landedPartial)}`,
     `- Already fixed, closed: ${list(stats.alreadyFixed)}`,
     `- Did not pass the Claude check, back to Todo: ${list(stats.bounced)}`,
-    `- Landed but Done gate refused (In Review): ${list(stats.inReview)}`,
+    `- In Review (the Done gate would not close it): ${list(stats.inReview)}`,
     `- Landing did not finish (left In Progress for resume): ${list(stats.landFailed)}`,
     `- Runner error mid-card (back to Todo): ${list(stats.crashed)}`,
     ...(stats.carried.length ? [`- SHIP-WITH-FIXES, fix round carried to the next run: ${list(stats.carried)}`] : []),

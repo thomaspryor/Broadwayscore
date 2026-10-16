@@ -21,8 +21,17 @@ const { atomicWriteShowsJson } = require('./atomic-shows-write.js');
 const git = (cwd, ...args) => execFileSync('git', ['-c', 'user.email=t@t', '-c', 'user.name=t', ...args], { cwd, encoding: 'utf8', stdio: 'pipe' });
 const SYMLINK_FILES = getLocalSymlinkFiles();
 
+// Every fixture root, removed on exit too: a run killed by a timeout left 1.7 GB dirs behind
+// (BRO-5422/5443). The real fix is BSC_ATTACHED_REPOS_DIR in run(): the bootstrap no longer
+// copies the session-attached review-texts clone into the fixture.
+const roots = new Set();
+const removeRoots = () => { for (const r of roots) { try { fs.rmSync(r, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); } catch { /* best effort */ } } };
+process.on('exit', removeRoots);
+for (const sig of ['SIGTERM', 'SIGINT']) process.once(sig, () => { removeRoots(); process.exit(1); });
+
 function fixture() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-5217-'));
+  roots.add(root);
   const home = path.join(root, 'home');
   const clone = path.join(home, 'broadway-scorecard-data');
   fs.mkdirSync(clone, { recursive: true });
@@ -42,7 +51,7 @@ function fixture() {
 function run(fx, script, args, env) {
   return execFileSync('bash', [path.join(fx.proj, 'scripts', script), ...args], {
     cwd: fx.proj, encoding: 'utf8', stdio: 'pipe', timeout: 60000,
-    env: { PATH: process.env.PATH, HOME: fx.home, GIT_CONFIG_NOSYSTEM: '1', ...env },
+    env: { PATH: process.env.PATH, HOME: fx.home, GIT_CONFIG_NOSYSTEM: '1', BSC_ATTACHED_REPOS_DIR: path.join(fx.root, 'attached'), ...env },
   });
 }
 const cloud = { CLAUDE_CODE_REMOTE: 'true' };
@@ -135,5 +144,24 @@ test('kill switch after a conversion: copies and marker go, links come back', ()
     for (const f of SYMLINK_FILES) assert.equal(isLink(path.join(fx.data, f)), true, f);
     assert.equal(fs.existsSync(path.join(fx.data, '.core-data-sha')), false);
     assert.deepEqual(fs.readdirSync(fx.data).filter((n) => /pre-symlink-backup/.test(n)), []);
+  } finally { fs.rmSync(fx.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
+test('bootstrap never copies a review-texts clone from outside the fixture (BRO-5422)', () => {
+  const fx = fixture();
+  try {
+    // A fake attached clone where the fixture says attached repos live: that one IS used...
+    const rt = path.join(fx.root, 'attached', 'broadway-review-texts');
+    fs.mkdirSync(rt, { recursive: true });
+    git(rt, 'init', '-q', '-b', 'main');
+    // ...while the real /home/user default is ignored once the variable points elsewhere.
+    const out = execFileSync('bash', ['-c', `source <(sed -n '/^attached_review_texts()/,/^}/p' "${path.join(fx.proj, 'scripts', 'cloud-bootstrap-data.sh')}"); ROOT="${fx.proj}"; attached_review_texts || echo none`], {
+      encoding: 'utf8', env: { PATH: process.env.PATH, BSC_ATTACHED_REPOS_DIR: path.join(fx.root, 'nowhere') },
+    }).trim();
+    assert.equal(out, 'none', 'a missing attached dir finds nothing, never /home/user');
+    const found = execFileSync('bash', ['-c', `source <(sed -n '/^attached_review_texts()/,/^}/p' "${path.join(fx.proj, 'scripts', 'cloud-bootstrap-data.sh')}"); ROOT="${fx.proj}"; attached_review_texts`], {
+      encoding: 'utf8', env: { PATH: process.env.PATH, BSC_ATTACHED_REPOS_DIR: path.join(fx.root, 'attached') },
+    }).trim();
+    assert.equal(found, rt);
   } finally { fs.rmSync(fx.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });

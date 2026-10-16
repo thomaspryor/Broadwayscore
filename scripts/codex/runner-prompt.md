@@ -20,11 +20,10 @@ Do the work the card asks for:
 1. Reproduce the problem first: run the card's test command and show it failing, or show the bug in real data.
 2. Make the smallest correct fix. Fix cousins of the same bug class in the same file if the card names them.
 3. Run the card's acceptance command and every test file you touched. Run `npx tsc --noEmit` only if you touched .ts files.
-4. Run what land runs, and fix any failure your change adds (a failure that also fails on origin/main is not yours):
-   - `node --test --test-reporter=tap --test-timeout 300000 $(node scripts/lib/unit-test-collection.js)` (or just the collected files near your change, if the full batch is too slow)
-   - `node --test --test-timeout 300000 scripts/lib/*.test.mjs`
-   - `GAUNTLET_GATES=lint-workflows bash scripts/lib/land-gauntlet.sh /tmp/gauntlet` then read /tmp/gauntlet/lint-workflows.log (repo-wide audits such as audit-toplevel-script-test-yml-coverage; actionlint may be missing here, ignore that one)
-   After you finish, the runner runs these same batches and hands any new failure straight back to you once before review.
+4. Run the tests for what you changed, and fix any failure your change adds (a failure that also fails on origin/main is not yours):
+   - the test files next to the files you touched, and any test that requires them (`grep -rl "<module name>" tests scripts --include=*.test.*`), with `node --test --test-timeout 300000 <files>`
+   - if you edited anything a repo-wide audit reads (a script's tests, package.json, scripts/lib/unit-test-collection.js), also `GAUNTLET_GATES=lint-workflows bash scripts/lib/land-gauntlet.sh /tmp/gauntlet` and read /tmp/gauntlet/lint-workflows.log (actionlint may be missing here, ignore that one)
+   Do not run the whole unit batch or `scripts/lib/*.test.mjs` yourself: after you finish, the runner runs every batch land runs and hands any new failure straight back to you once before review. Running them twice costs your time budget and the shared disk. Delete any temp directory you create.
 5. Tests and scripts can rewrite tracked files (data/audit/*.json, public/data, data/gold-lists-computed.json). Before you finish, run `git status` and restore every file the card did not ask you to change (`git checkout -- <file>`), because everything left in the tree gets committed.
 
 Mandatory checklist. Earlier Codex runs were rejected for exactly these misses, so answer each one in your report with evidence (a command you ran and what it printed, or file:line):
