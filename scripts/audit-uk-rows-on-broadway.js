@@ -33,6 +33,7 @@ const { earliestShowDate } = require('./lib/date-guard');
 const { findMatchingPriorRun } = require('./lib/wrong-production-autoclear');
 const { buildOutletRegionMap } = require('./lib/cross-market-guard');
 const { toDateMs } = require('./lib/date-utils');
+const { foldDiacritics } = require('./lib/title-match');
 
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
@@ -44,7 +45,7 @@ const DAY = 86400000;
 const UK_SIDE = new Set(['london', 'uk', 'dual']);
 
 const ymd = (ms) => (Number.isNaN(ms) ? null : new Date(ms).toISOString().slice(0, 10));
-const titleKey = (t) => String(t || '').toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]+/g, ' ').trim();
+const titleKey = (t) => foldDiacritics(String(t || '')).toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]+/g, ' ').trim();
 
 function londonCandidates(shows, show, pubMs) {
   const key = titleKey(show.title);
