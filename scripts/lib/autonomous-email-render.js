@@ -389,7 +389,7 @@ function renderAutofixBlock(autofixRows, loopDeadMessage = null) {
   // caller that wraps or prefixes the name (e.g. "BSC Daily: T1 Coverage
   // Scoreboard") would bypass this — it guards the exact shape the queued
   // path produces today, not every conceivable future shape.
-  let rows = (autofixRows || []).filter(r => r && r.name && r.state !== 'decision'
+  let rows = (autofixRows || []).filter(r => r && r.name && r.state !== 'decision' && r.state !== 'info'
     && !QUEUED_TELEMETRY_BLOCKLIST.some((re) => re.test(String(r.name))));
   if (!rows.length) return '';
   // Two checks can share a plain-English translation (e.g. two "Stuck work:"
@@ -470,7 +470,8 @@ function filterForbiddenQueued(queued) {
 // the email while the rest of the health block moves under "Technical
 // details". Same markup, same mandates as before.
 function renderNeedsAttentionBlock(queued) {
-  const validQueued = filterForbiddenQueued((Array.isArray(queued) ? queued : []).filter(Boolean));
+  // Receipts (BRO-5481) are never a card with a button, whichever caller got here.
+  const validQueued = filterForbiddenQueued((Array.isArray(queued) ? queued : []).filter((q) => q && !(q.info === true && q.decision !== true)));
   const safeUrl = (u) => (typeof u === 'string' && /^https?:\/\//i.test(u) ? u : null);
   const clip = (s2, n) => { const t = String(s2); return t.length > n ? `${t.slice(0, n - 1)}\u2026` : t; };
   // Owner mandate 2026-08-02 (second half, stated twice): anything that still
@@ -612,7 +613,12 @@ function buildOwnerView({
   health = null, autofixRows = null, needsYou = null, awaitingOwner = null, inReviewBacklog = null, loopDead = false,
 } = {}) {
   const split = splitHealthByAudience(health);
-  const queued = filterForbiddenQueued(Array.isArray(health?.queued) ? health.queued : []);
+  const allQueued = filterForbiddenQueued(Array.isArray(health?.queued) ? health.queued : []);
+  // BRO-5481: receipts (`info`, unless the row is also a decision) are told as
+  // one FYI line and never counted as decisions or shown with a button.
+  const isInfoRow = (q) => q.info === true && q.decision !== true;
+  const infoQueued = allQueued.filter(isInfoRow);
+  const queued = allQueued.filter((q) => !isInfoRow(q));
   // With autofix rows, main() has already narrowed health.queued to genuine
   // decisions (state:'decision'). Without them (autofix failed before
   // compose) only rows explicitly marked decision:true are decisions; the
@@ -658,7 +664,7 @@ function buildOwnerView({
   const decisions = decisionQueued.length + countSectionItems(needsYou) + countSectionItems(awaitingOwner)
     + countSectionItems(reviewQueue);
   const staleApprovals = Array.isArray(awaitingOwner?.items) ? awaitingOwner.items.filter((i) => i && i.stale).length : 0;
-  const rows = Array.isArray(autofixRows) ? autofixRows.filter((r) => r && r.state !== 'decision') : null;
+  const rows = Array.isArray(autofixRows) ? autofixRows.filter((r) => r && r.state !== 'decision' && r.state !== 'info') : null;
   const internalCount = split.internal.errors.length + split.internal.warns.length;
   const visitorCount = split.visitors.errors.length + split.visitors.warns.length;
   // Errors first, then warnings; plain names de-duplicated (two rows that
@@ -701,6 +707,7 @@ function buildOwnerView({
     internalWarns: split.internal.warns,
     internalCount,
     decisionQueued,
+    infoQueued,
     otherQueued,
     reviewQueue,
     decisions,
@@ -753,6 +760,31 @@ function renderVisitorItems(view) {
     + (view.loopDead ? `<div style="font-size:12px;color:#92400e;margin-top:6px;">Automatic fixing looks stalled right now, so none of these is being fixed automatically.</div>` : '');
 }
 
+// BRO-5481: plain FYI sentences for receipt rows (`info`). User-feedback
+// receipts collapse into one line (messages summed from their Submissions
+// field); any other info row is shown by its own title.
+function infoLines(view) {
+  const rows = (view && Array.isArray(view.infoQueued)) ? view.infoQueued : [];
+  const lines = [];
+  let feedback = 0;
+  let feedbackRows = 0;
+  for (const q of rows) {
+    // An escalated/tracked receipt keeps its own title (it names the tracker).
+    if (String(q.conditionKey || '').startsWith('feedback-outcomes:') && !q.tracked) {
+      const sub = (Array.isArray(q.fields) ? q.fields : []).find((f) => f && f.name === 'Submissions');
+      const n = Number.parseInt(sub && sub.value, 10);
+      feedback += n > 0 ? n : 1;
+      feedbackRows++;
+    } else if (q.title) {
+      lines.push(String(q.title));
+    }
+  }
+  if (feedbackRows) {
+    lines.unshift(`User feedback: ${feedback} message${feedback === 1 ? '' : 's'} came in, all handled automatically.`);
+  }
+  return lines;
+}
+
 // The top of the email: site status for visitors, owner decisions, one line
 // of what the automation did, one neutral "Behind the scenes" line.
 // `decisionBlocksHtml` is pre-rendered by the caller (Needs your attention
@@ -789,6 +821,10 @@ function renderOwnerTopBlock(view, { decisionBlocksHtml = '', overnightLine = nu
   } else {
     parts.push(`<p style="font-size:13px;color:#666;margin:0 0 12px;">No decisions needed from you.</p>`);
   }
+
+  // Receipts (BRO-5481): told to the owner, never counted as a decision.
+  const info = infoLines(view);
+  if (info.length) parts.push(`<p style="font-size:12px;color:#444;margin:0 0 8px;">${esc(info.join(' '))}</p>`);
 
   // overnightLine is pre-built plain text from send-morning-digest.js (the
   // "Overnight: N new shows added" sentence); escape it here.
@@ -1154,6 +1190,7 @@ function renderEmail(data) {
 }
 
 module.exports = {
+  infoLines,
   renderEmail, renderItem, renderUsageBlock, renderQueueSummary, renderAttentionBlock, renderRecheckBlock, renderSummaryLine, summarizeQueue, skipBucket, extractWhy, esc,
   attentionCountOf, actionableAttentionCountOf, digestStuckCount,
   renderHealthDigestBlock, healthIssueCount, selectHealthRows,

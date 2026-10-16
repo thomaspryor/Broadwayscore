@@ -9,7 +9,7 @@
 //
 // Merge rules:
 //   * shape: a bare array of { conditionKey, title, description, severity,
-//     url, decision, decisionPrompt, model, fields, queuedAt }.
+//     url, decision, info, decisionPrompt, model, fields, queuedAt }.
 //   * Natural key: conditionKey — queueDigestLine() (scripts/lib/owner-alert-
 //     router.js) already treats it as unique, replacing any existing queued
 //     line for the same condition rather than stacking duplicates.

@@ -233,8 +233,9 @@ function buildAlert(report, pipelineStatus, runUrl) {
     // digest-autofix.js spends a whole session on "everything worked" (its
     // default for any queued row is auto-dispatch — see queueDigestLine).
     ...(failedRun || needsYou > 0 ? {} : {
-      decision: true,
-      decisionPrompt: 'Receipt only — every message in this run was handled automatically. Nothing to fix.',
+      // BRO-5481: a receipt is told as one FYI line, never counted as an owner
+      // decision and never given a Dispatch-a-fix button.
+      info: true,
     }),
     url: runUrl || undefined,
     fields: [

@@ -100,7 +100,8 @@ test('the "now live" report names the review, not just a count', () => {
 test('good news never burns an agent session on itself', () => {
   const alert = buildLiveAlert([LIVE_ENTRY]);
   assert.equal(alert.severity, 'info');
-  assert.equal(alert.decision, true, 'digest-autofix auto-dispatches every row that is not flagged a decision');
+  assert.equal(alert.info, true, 'digest-autofix auto-dispatches every row that is not flagged info/decision');
+  assert.ok(!alert.decision, 'a receipt is never an owner decision (BRO-5481)');
 });
 
 test('with no reviews to name, the report says so instead of implying it listed them', () => {
@@ -305,8 +306,8 @@ test('a stalled submission says what it needs, and stays auto-dispatchable', () 
 test('a fully-handled run is a receipt, not a fix request', () => {
   const alert = buildAlert(RUN_REPORT, 'success', '');
   assert.equal(alert.severity, 'info');
-  assert.equal(alert.decision, true, 'otherwise digest-autofix spends a session on "everything worked"');
-  assert.match(alert.decisionPrompt, /Nothing to fix/);
+  assert.equal(alert.info, true, 'otherwise digest-autofix spends a session on "everything worked"');
+  assert.ok(!alert.decision, 'a receipt is never counted as an owner decision (BRO-5481)');
 });
 
 test('a dispatch GitHub refused reads as "could not start", in plain words', () => {

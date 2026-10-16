@@ -1475,3 +1475,16 @@ import { createRequire as _cr269 } from 'node:module';
     _a.doesNotMatch(out[0].message, /Shows:/);
   });
 }
+
+test('planAutofix/runAutofix: info receipts get no card and no dispatch; decision wins over info (BRO-5481)', () => {
+  const queued = [
+    { title: 'User feedback: 2 handled', description: 'ok', conditionKey: 'feedback-outcomes:x', info: true },
+    { title: 'Both flags', description: 'ok', conditionKey: 'both', info: true, decision: true },
+  ];
+  const plan = planAutofix({ health: { errors: [], warns: [] }, tasks: [], today: '2026-10-16', queued });
+  assert.deepEqual(plan.map((r) => r.state), ['info', 'decision']);
+  const dispatched = [];
+  const rows = runAutofix({ plan, dryRun: false, log: () => {}, dispatchFn: (r) => dispatched.push(r), concurrencyCap: 3, ledgerPath: tmpLedgerPath() });
+  assert.equal(dispatched.length, 0);
+  assert.deepEqual(rows.map((r) => r.state), ['info', 'decision']);
+});

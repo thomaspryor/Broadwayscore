@@ -489,7 +489,7 @@ function buildSubject({ health = null, autofixRows = null, awaitingOwner = null,
 // snapshot's warns usually already carry them; count each only when it is
 // not there (stale snapshot, or the Mac-only stuck signals CI cannot see).
 function pendingIssueCount({ sections = {}, autofixRows = null, stuckCount = 0 } = {}) {
-  if (Array.isArray(autofixRows)) return autofixRows.length;
+  if (Array.isArray(autofixRows)) return autofixRows.filter((r) => r && r.state !== 'info').length;
   const errs = sections.health ? (sections.health.errors?.length || 0) : 0;
   const warns = sections.health ? (sections.health.warns?.length || 0) : 0;
   const freshnessCount = sections.freshness?.count || 0;
@@ -770,7 +770,8 @@ function composeDigestEmail({
       const baseUrl = cfg.baseUrl || 'https://broadwayscorecard.com';
       const exp = Math.floor(now.getTime() / 1000) + DISPATCH_LINK_EXPIRY_H * 3600;
       for (const q of sections.health.queued) {
-        if (!q || !q.title || q.actionUrl) continue;
+        // Receipts (BRO-5481) get no Dispatch-a-fix button.
+        if (!q || !q.title || q.actionUrl || (q.info === true && q.decision !== true)) continue;
         q.actionUrl = buildDispatchUrl({
           conditionKey: `digest-needs-you:${q.title}`,
           title: `Fix: ${String(q.title).slice(0, 130)}`,
@@ -1349,7 +1350,8 @@ async function main() {
     }
     const d = autofixRows.filter(r => r.state === 'dispatched' || r.state === 'in-progress').length;
     const decisions = autofixRows.filter(r => r.state === 'decision').length;
-    console.log(`[digest] autofix: ${autofixRows.length} issue(s) — ${d} being worked, ${autofixRows.length - d - decisions} queued, ${decisions} decision(s) left for the owner`);
+    const infos = autofixRows.filter(r => r.state === 'info').length;
+    console.log(`[digest] autofix: ${autofixRows.length - infos} issue(s) — ${d} being worked, ${autofixRows.length - infos - d - decisions} queued, ${decisions} decision(s) left for the owner, ${infos} receipt(s)`);
   } catch (err) {
     console.error(`[digest] WARN autofix failed (email still sends): ${String(err.message).slice(0, 160)}`);
   }

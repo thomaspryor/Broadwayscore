@@ -2471,3 +2471,10 @@ test('trackerIsClosed: completed, canceled, duplicate and missing are closed; op
     restore();
   }
 });
+
+test('toSnapshotQueuedRow carries info through to the digest snapshot (BRO-5481)', async () => {
+  const { toSnapshotQueuedRow, DIGEST_ROW_FIELDS } = await import('./owner-alert-router.js').then((m) => m.default || m);
+  assert.ok(DIGEST_ROW_FIELDS.includes('info'));
+  assert.equal(toSnapshotQueuedRow({ conditionKey: 'k', title: 't', info: true }).info, true);
+  assert.equal(toSnapshotQueuedRow({ conditionKey: 'k', title: 't' }).info, false);
+});

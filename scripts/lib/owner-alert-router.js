@@ -726,11 +726,14 @@ function headStandsAlone(description, subject) {
 // caller opts a row OUT of that (keeps a bare Dispatch-a-fix button) only by
 // setting decision:true, for the rare row that's a genuine judgment call
 // (e.g. "raise the budget vs cut spend") rather than a technical fix.
+// `info` (BRO-5481) marks a receipt: the owner is told, as one plain FYI line,
+// but it is never a decision, never auto-dispatched and never gets a button.
+// If a caller sets both, `decision` wins (digest-autofix buildPlanRow).
 // `model` lets a caller force the escalated model on the row's first
 // auto-dispatch attempt (e.g. test.yml's streak escalation, which wants
 // opus immediately since it's already the SECOND machine attempt at the
 // underlying failure — the first, disposition:'auto', card already failed).
-function queueDigestLine({ title, description, severity, conditionKey, url, decision, decisionPrompt, model, fields, tracked }) {
+function queueDigestLine({ title, description, severity, conditionKey, url, decision, info, decisionPrompt, model, fields, tracked }) {
   // Non-throwing (card #1078): an alert must still reach the owner even if
   // its own head would clip badly — this is a loud warning, not a gate.
   // description renders as "<b>title</b> — description" (autonomous-email-
@@ -756,7 +759,7 @@ function queueDigestLine({ title, description, severity, conditionKey, url, deci
   queue = queue.filter(q => q.conditionKey !== conditionKey);
   queue.push({
     conditionKey, title, description, severity, url: url || null,
-    decision: !!decision, decisionPrompt: decisionPrompt || null, model: model || null,
+    decision: !!decision, info: !!info, decisionPrompt: decisionPrompt || null, model: model || null,
     tracked: tracked || null,
     // routeAlert's caller-supplied fields ([{name,value}]) — dispatchCard and
     // sendAlert both carry these through (e.g. the 'Shows' list on overdue/
@@ -777,7 +780,7 @@ function queueDigestLine({ title, description, severity, conditionKey, url, deci
 // BRO-5099, which hid every decision row from "Needs your attention").
 const DIGEST_ROW_FIELDS = Object.freeze([
   'conditionKey', 'title', 'description', 'severity', 'url',
-  'decision', 'decisionPrompt', 'model', 'tracked', 'fields',
+  'decision', 'info', 'decisionPrompt', 'model', 'tracked', 'fields',
 ]);
 
 function toSnapshotQueuedRow(q) {
@@ -786,6 +789,7 @@ function toSnapshotQueuedRow(q) {
   row.url = q.url ?? null;
   row.fields = Array.isArray(q.fields) ? q.fields : [];
   row.decision = !!q.decision;
+  row.info = !!q.info;
   return row;
 }
 
@@ -944,6 +948,7 @@ async function routeAlert(opts) {
     tags,
     cooldownHours = DEFAULT_COOLDOWN_HOURS,
     decision,
+    info,
     decisionPrompt,
     model,
     verify,
@@ -1073,7 +1078,7 @@ async function routeAlert(opts) {
           // BRO-5099: a notice about an already-tracked condition, not an owner
           // decision; `tracked` keeps it off the auto-fix path and out of
           // "Needs your attention". The caller's own decision flag still wins.
-          severity, conditionKey, url, decision, decisionPrompt, fields, tracked: linearDup.identifier,
+          severity, conditionKey, url, decision, info, decisionPrompt, fields, tracked: linearDup.identifier,
         });
       }
       ledger.conditions[conditionKey] = {
@@ -1148,7 +1153,7 @@ async function routeAlert(opts) {
           description: ageEscalation
             ? `Filed ${dispatch.linearIdentifier}: this has been happening for ${Math.round(fileAfterHours / 24)}+ days without clearing.\n\n${description}`
             : `Filed ${dispatch.linearIdentifier} for owner triage after ${digestNotifyCount} repeats with no tracker.\n\n${description}`,
-          severity, conditionKey, url, decision, decisionPrompt, fields, tracked: dispatch.linearIdentifier,
+          severity, conditionKey, url, decision, info, decisionPrompt, fields, tracked: dispatch.linearIdentifier,
         });
         result.lastSurfacedAt = now;
       } else {
@@ -1156,12 +1161,12 @@ async function routeAlert(opts) {
         // back to the plain line so visibility isn't worse than before this
         // fix. The ledger write below is skipped on notifyOk===false either
         // way, so the NEXT call retries escalation from the same state.
-        queueDigestLine({ title, description, severity, conditionKey, url, decision, decisionPrompt, model, fields });
+        queueDigestLine({ title, description, severity, conditionKey, url, decision, info, decisionPrompt, model, fields });
       }
     }
   } else if (effectiveDisposition === 'digest') {
     if (digestDecision.action === 'normal') {
-      queueDigestLine({ title, description, severity, conditionKey, url, decision, decisionPrompt, model, fields });
+      queueDigestLine({ title, description, severity, conditionKey, url, decision, info, decisionPrompt, model, fields });
       result.lastSurfacedAt = now;
     } else if (digestDecision.action === 'resurface') {
       // Carry the caller's OWN description through (BRO-3030 P0 follow-up).
@@ -1178,7 +1183,7 @@ async function routeAlert(opts) {
           `Still firing after ${digestNotifyCount} notifications since it was filed. Tracked at ${existing.linearIdentifier}.`,
           description,
         ].filter(Boolean).join('\n\n'),
-        severity, conditionKey, url, decision, decisionPrompt, model, fields, tracked: existing.linearIdentifier,
+        severity, conditionKey, url, decision, info, decisionPrompt, model, fields, tracked: existing.linearIdentifier,
       });
       result.lastSurfacedAt = now;
     }

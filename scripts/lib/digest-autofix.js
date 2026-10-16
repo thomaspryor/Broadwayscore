@@ -334,6 +334,7 @@ function normalizeQueuedRows(queued) {
     name: String(q.title).replace(/^(?:Fix: )?BSC Daily: /, ''),
     message: q.description || q.title,
     decision: !!q.decision,
+    info: !!q.info,
     decisionPrompt: q.decisionPrompt || null,
     model: q.model && VALID_MODELS.has(q.model) ? q.model : null,
     conditionKey: q.conditionKey || null,
@@ -372,6 +373,12 @@ function buildPlanRow(r, { tasks, today, titleOverride = null } = {}) {
   // them in sections.health.queued by matching on conditionKey).
   if (r.decision) {
     return { name: r.name, message, title, state: 'decision', taskId: null, conditionKey, model: null, decisionPrompt: r.decisionPrompt || null };
+  }
+  // BRO-5481: a receipt (`info: true`) is told to the owner as one FYI line;
+  // like a decision it never gets a card or a dispatch, and unlike one it is
+  // never counted as something the owner must act on.
+  if (r.info) {
+    return { name: r.name, message, title, state: 'info', taskId: null, conditionKey, model: null };
   }
   // BRO-5099: owner-alert-router's notice about a condition that already has a
   // Linear tracker (escalated / still open). Nothing to file or dispatch.
@@ -448,7 +455,7 @@ function buildPlanRow(r, { tasks, today, titleOverride = null } = {}) {
  * the verify semantics, can be solved generically here (SAFE_CHECK_FORMS'
  * check-health-row-absent.js form takes exactly one row).
  * @returns {Array<{name, message, title, state, taskId, conditionKey, model, affected}>}
- *   state: 'in-progress' | 'queued' | 'needs-card' | 'acknowledged' | 'decision' | 'tracked' | 'parked'
+ *   state: 'in-progress' | 'queued' | 'needs-card' | 'acknowledged' | 'decision' | 'info' | 'tracked' | 'parked'
  *   ('parked' is only ever set by runAutofix, never by planAutofix.)
  */
 function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {}) {
@@ -484,7 +491,7 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
   const openAnchor = new Map(); // condition key -> {row, batch}
   const planRows = [];
   for (const r of rows) {
-    const split = (r.decision || r.tracked) ? null : splitOnShowSuffix(r.name);
+    const split = (r.decision || r.tracked || r.info) ? null : splitOnShowSuffix(r.name);
     if (!split) {
       const row = buildPlanRow(r, { tasks, today });
       if (fromHealth.has(r)) row.fromHealth = true;
@@ -1091,7 +1098,7 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
  * File missing cards, refresh the task list, dispatch up to `cap`.
  * Mutates each plan row's state to one of:
  *   'in-progress' | 'dispatched' | 'queued' | 'card-filed' | 'card-failed'
- *   | 'acknowledged' | 'decision' (left untouched — no card, no dispatch)
+ *   | 'acknowledged' | 'decision' | 'tracked' | 'info' (left untouched — no card, no dispatch)
  *   | 'parked' (dispatch skipped — failed twice unchanged, see attempt-memory)
  * and returns the same array (annotated) for the email renderer.
  */
@@ -1321,7 +1328,7 @@ function runAutofix({
   // budget starting at 1, the first dispatch would sleep 90s instead of 45s.
   const startBudget = budget;
   for (const row of plan) {
-    if (row.state === 'in-progress' || row.state === 'card-failed' || row.state === 'acknowledged' || row.state === 'decision' || row.state === 'tracked') continue;
+    if (row.state === 'in-progress' || row.state === 'card-failed' || row.state === 'acknowledged' || row.state === 'decision' || row.state === 'tracked' || row.state === 'info') continue;
     if (!row.taskId) {
       const t = matchOpenTask(tasks, row.name);
       if (t) row.taskId = t.id;
@@ -1398,7 +1405,8 @@ function runAutofix({
 // autofix row instead. Matched on conditionKey, so a queued row must carry it
 // (BRO-5099: the health snapshot used to drop it, emptying this list daily).
 function keepDecisionQueued(queued, autofixRows) {
-  const keys = new Set((autofixRows || []).filter(r => r && r.state === 'decision' && r.conditionKey).map(r => r.conditionKey));
+  // 'info' rows (BRO-5481 receipts) stay too: the renderer shows them as one FYI line.
+  const keys = new Set((autofixRows || []).filter(r => r && (r.state === 'decision' || r.state === 'info') && r.conditionKey).map(r => r.conditionKey));
   return (Array.isArray(queued) ? queued : []).filter(q => q && keys.has(q.conditionKey));
 }
 

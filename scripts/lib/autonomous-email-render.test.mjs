@@ -1,6 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import os from 'node:os';
+import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const {
@@ -1190,4 +1192,65 @@ test('buildOwnerView: a health row citing a decision card already shown is not c
   assert.equal(near.decisionQueued.length, 1);
   // No decision card shown: nothing is deduped.
   assert.equal(buildOwnerView({ health: { errors: [], warns: [], queued: [mezz] } }).decisionQueued.length, 1);
+});
+
+// ── BRO-5481: user-feedback receipts are told, never counted as decisions ───
+
+const RECEIPT = {
+  conditionKey: 'feedback-outcomes:a,b',
+  title: 'User feedback: 4 messages handled',
+  description: 'All of them are being handled automatically. Nothing needs you.',
+  severity: 'info', url: 'https://example.com/run/1', decision: false, info: true,
+  decisionPrompt: null, model: null, tracked: null,
+  fields: [{ name: 'Submissions', value: '4' }, { name: 'Need you', value: '0' }],
+};
+const REAL_DECISION = {
+  conditionKey: 'budget:raise', title: 'Raise the scraper budget?', description: 'Judgment call.',
+  severity: 'warn', url: null, decision: true, info: false, decisionPrompt: 'Raise or cut spend', fields: [],
+};
+
+test('buildOwnerView: info receipts stay out of the decisions count, with and without autofix rows', () => {
+  const health = { errors: [], warns: [], queued: [RECEIPT] };
+  for (const autofixRows of [null, []]) {
+    const view = buildOwnerView({ health, autofixRows });
+    assert.equal(view.decisions, 0);
+    assert.equal(view.decisionQueued.length, 0);
+    assert.equal(view.otherQueued.length, 0);
+    assert.equal(view.infoQueued.length, 1);
+  }
+  const mixed = buildOwnerView({ health: { errors: [], warns: [], queued: [RECEIPT, REAL_DECISION] }, autofixRows: null });
+  assert.equal(mixed.decisions, 1);
+});
+
+test('renderOwnerTopBlock: a receipt is one plain FYI line, no decision heading, no button', () => {
+  const view = buildOwnerView({ health: { errors: [], warns: [], queued: [{ ...RECEIPT, actionUrl: 'https://x/dispatch' }] }, autofixRows: [] });
+  const html = renderOwnerTopBlock(view, { decisionBlocksHtml: renderNeedsAttentionBlock(view.decisionQueued) });
+  assert.match(html, /User feedback: 4 messages came in, all handled automatically\./);
+  assert.match(html, /Nothing needs your attention/);
+  assert.doesNotMatch(html, /decision[s]? for you|Dispatch a fix|Needs your attention</);
+});
+
+test('a row flagged both decision and info stays a decision', () => {
+  const view = buildOwnerView({ health: { errors: [], warns: [], queued: [{ ...RECEIPT, decision: true }] }, autofixRows: null });
+  assert.equal(view.decisions, 1);
+  assert.equal(view.infoQueued.length, 0);
+});
+
+test('composeDigestEmail end to end: receipt is told, not counted, not dispatched, no button', () => {
+  const { composeDigestEmail, buildSubject } = require('../send-morning-digest.js');
+  const { planAutofix, runAutofix, keepDecisionQueued } = require('./digest-autofix.js');
+  const health = { errors: [], warns: [], queued: [{ ...RECEIPT }, { ...REAL_DECISION }], generatedAt: '2026-10-16T05:00:00Z' };
+  const dispatched = [];
+  const plan = planAutofix({ health, tasks: [], today: '2026-10-16', queued: health.queued });
+  assert.deepEqual(plan.map((r) => r.state).sort(), ['decision', 'info']);
+  const autofixRows = runAutofix({ plan, dryRun: false, log: () => {}, dispatchFn: (r) => dispatched.push(r), concurrencyCap: 3, ledgerPath: path.join(os.tmpdir(), `bro5481-ledger-${process.pid}.jsonl`) });
+  assert.equal(dispatched.length, 0, 'no fix session for a receipt');
+  health.queued = keepDecisionQueued(health.queued, autofixRows);
+  const sections = { health };
+  const { subject, html } = composeDigestEmail({ sections, autofixRows, now: new Date('2026-10-16T06:00:00Z') });
+  assert.match(subject, /1 decision for you/);
+  assert.match(html, /1 decision for you/);
+  assert.match(html, /User feedback: 4 messages came in, all handled automatically\./);
+  assert.equal((html.match(/Dispatch a fix/g) || []).length <= 1, true);
+  assert.doesNotMatch(buildSubject({ health: { ...health, queued: [RECEIPT] }, autofixRows: [] }), /decision/);
 });

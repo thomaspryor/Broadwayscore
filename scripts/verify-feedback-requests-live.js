@@ -317,8 +317,9 @@ function conditionKeyFor(prefix, keys) {
  * evidence, so every report now names the reviews it is claiming — critic,
  * outlet, date — and links the page they are on.
  *
- * `decision: true` keeps digest-autofix from spending a session on a row where
- * nothing is broken; see queueDigestLine() in owner-alert-router.js.
+ * `info: true` keeps digest-autofix from spending a session on a row where
+ * nothing is broken, and keeps it out of "decisions for you"; see
+ * queueDigestLine() in owner-alert-router.js.
  */
 function buildLiveAlert(nowLive) {
   const blocks = nowLive.map((r) => {
@@ -349,14 +350,10 @@ function buildLiveAlert(nowLive) {
     title: `${nowLive.length} user request(s) now live on the site`,
     description: blocks.join('\n\n'),
     severity: 'info',
-    // `decision` here means only one thing to the machinery: do NOT auto-fix
-    // this row (digest-autofix.js spends a whole agent session on every queued
-    // row that lacks the flag). There is no "FYI" bucket in the digest, and a
-    // session spent on "the thing you asked for shipped" is pure waste — so the
-    // flag is set and decisionPrompt says outright that there is nothing to do,
-    // rather than leaving the owner to work out why good news has a button.
-    decision: true,
-    decisionPrompt: 'Nothing to do — this is a receipt. The request shipped and was checked against the live site.',
+    // `info` (BRO-5481) is the digest's FYI bucket: do NOT auto-fix this row
+    // (digest-autofix.js spends a whole agent session on every queued row that
+    // lacks a flag), and do not count it as an owner decision either.
+    info: true,
     url: nowLive[0]?.url,
     fields: [{ name: 'Now live', value: String(nowLive.length) }],
   };

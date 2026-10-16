@@ -777,7 +777,7 @@ function autofixFiledIssueGuard(issue, opts) {
 // Linear state (not the local task mirror) — a reattach hit can land on an
 // issue a PRIOR dispatch already moved to a started state (cross-host, or a
 // stalled prior attempt), and runAutofix's dispatch-loop skip-list
-// ('in-progress'/'card-failed'/'acknowledged'/'decision') does not include
+// ('in-progress'/'card-failed'/'acknowledged'/'decision'/'tracked'/'info') does not include
 // the 'card-filed' state a reattached row carries, so it reaches dispatchFn
 // same as a freshly-filed row would. That is this guard doing its job, not a
 // bug: refusing IS the correct outcome (prevents a stray double-dispatch
