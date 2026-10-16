@@ -349,6 +349,10 @@ const OWNER_ACTIONS = {
   'opening-night-broadcast.yml': 'Send the opening-night email yourself.',
   'restore-supabase.yml': 'Restore the project from the Supabase dashboard (only you hold that login).',
   'update-theatr.yml': 'Re-capture the Theatr login from the iPhone app.',
+  // Owner 2026-10-16 (BRO-5479): "A except for Broadway openings. I want to know
+  // then." The poller now emails only when a Broadway show is in the poll.
+  'opening-night-poller.yml': 'Ask Claude to fix the review poller before the Broadway opening reviews land.',
+  'opening-night-poller:card-not-filed': 'Ask Claude to fix the review poller: its automatic fix task could not be created.',
 };
 
 // Pages that were allowlisted as "urgent" before the must-act rule and name no
@@ -370,7 +374,6 @@ const AWAITING_OWNER_DECISION = new Set([
   'broadcast:never-sent:',
   'ugc:signin-redirect-broken:',
   'opening-night-orchestrator.yml',
-  'opening-night-poller.yml',
 ]);
 
 /** Every entry that can page: keys, prefixes, the final-report pattern, workflows. */
