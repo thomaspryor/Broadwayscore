@@ -56,4 +56,26 @@ async function compressImage(buffer, type = 'thumbnail') {
   return buffer;
 }
 
-module.exports = { compressImage, SIZE_LIMITS };
+/**
+ * Thumbnails must be square or mild-portrait (h/w >= 0.85, enforced after the
+ * fetch by check-image-aspect.js, which QUARANTINES anything wider). A landscape
+ * production photo reaching the retry/last-resort path used to be written as-is
+ * and quarantined by CI, so the show stayed imageless and self-heal re-dispatched
+ * forever (BRO-5417, still-no-idea-west-end-2018, 640x427). Center-crop it to a
+ * square instead. Returns the buffer unchanged if it already fits or can't be read.
+ */
+async function ensureThumbnailAspect(buffer) {
+  if (!sharp || !buffer || buffer.length === 0) return buffer;
+  try {
+    const { width, height } = await sharp(buffer).metadata();
+    if (!width || !height || height / width >= 0.85) return buffer;
+    return await sharp(buffer)
+      .extract({ left: Math.floor((width - height) / 2), top: 0, width: height, height })
+      .jpeg({ quality: 85 })
+      .toBuffer();
+  } catch {
+    return buffer;
+  }
+}
+
+module.exports = { compressImage, ensureThumbnailAspect, SIZE_LIMITS };

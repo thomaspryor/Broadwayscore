@@ -31,7 +31,7 @@ const { withSpendShow } = require('./lib/provider-telemetry');
 const { extractGoogleImageBuffer, hasUsableGoogleImage } = require('./lib/google-image-buffer');
 const { writeStagedCandidate, discardStaged, stagedBytesFor, stageImageSnapshot, finalizeStaged, sweepStagedCandidates } = require('./lib/image-candidate-staging');
 const path = require('path');
-const { compressImage } = require('./lib/compress-image');
+const { compressImage, ensureThumbnailAspect } = require('./lib/compress-image');
 const { getImageDimensions } = require('./lib/image-dimensions');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { isCrossMarketPlaybillUrl } = require('./lib/playbill-url-market');
@@ -1913,7 +1913,7 @@ async function tryNextGoogleCandidate(show, remainingCandidates, previousPoster 
 
       const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
       const showDir = path.join(outputBase, show.id);
-      const compressed = await compressImage(buffer, 'thumbnail');
+      const compressed = await compressImage(await ensureThumbnailAspect(buffer), 'thumbnail');
       const _staged = {};
       writeStagedCandidate(_staged, 'thumbnail', { local: `/images/shows/${show.id}/thumbnail.jpg`, final: path.join(showDir, 'thumbnail.jpg') }, compressed);
 
