@@ -88,6 +88,7 @@ test('BRO-5488 review: numbers that name a subject never merge; counts do', () =
     ['Opening-night watch 2026-10-09', 'Opening-night watch 2026-10-10'],
     ['Deploy at 14:00 failed on Vercel', 'Deploy at 15:00 failed on Vercel'],
     ['Phase 2 rollout of score pages', 'Phase 3 rollout of score pages'],
+    ['Phase 2 tasks pending on the show page', 'Phase 3 tasks pending on the show page'],
     ['Fix 404 on show pages', 'Fix 500 on show pages'],
     ['Bright Data web_unlocker1 zone exhausted', 'Bright Data web_unlocker2 zone exhausted'],
     ['Upgrade to Next.js 14 for the app router', 'Upgrade to Next.js 15 for the app router'],

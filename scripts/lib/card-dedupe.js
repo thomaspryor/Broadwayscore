@@ -161,6 +161,8 @@ function countFreeTitle(title) {
   const t = fold(title).trim().replace(/\s+/g, ' ');
   return t.replace(/(?<![#\w.:,\/-])\d{1,6}(?![\w.:,\/-])/g, (m, at) => {
     if (/^(?:19|20)\d\d$/.test(m)) return m;
+    // "Phase 2 tasks", "step 3 checks", "week 42 reviews": the number names the phase.
+    if (/\b(?:phase|step|part|round|stage|tier|level|wave|week|day|season|act|chapter|version|batch|shard|sprint|zone) $/.test(t.slice(0, at))) return m;
     if (/: $/.test(t.slice(0, at))) return '#';
     const after = t.slice(at + m.length);
     return COUNT_NOUN_RE.test(after) ? '#' : m;
