@@ -101,7 +101,8 @@ function priorProductionCount(list) {
 function splitGapCounts(result) {
   const r = result || {};
   const missing = currentRunCount(r.missing);
-  const flaggedMisses = currentRunCount(r.flaggedMisses);
+  // BRO-5500: a CV-confirmed non-review is a correct exclusion, not an owed review.
+  const flaggedMisses = currentRunCount((r.flaggedMisses || []).filter(m => !(m && m.confirmedNonReview)));
   const citedNoUrl = currentRunCount(r.citedNoUrl);
   const priorMissing = priorProductionCount(r.missing);
   const priorFlagged = priorProductionCount(r.flaggedMisses);

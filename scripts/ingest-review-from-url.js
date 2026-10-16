@@ -55,13 +55,7 @@ const { extractArticleTextFromUrl, extractPublishDate, extractLsaByline } = requ
 const { classifyReviewUrl } = require('./lib/non-review-url-patterns');
 const { isUnresolvableRedirectUrl } = require('./lib/unresolvable-url');
 const { recoverScoreFromHtml, existingHasScoreSignal, existingRatingCleared } = require('./lib/ingest-html-score');
-// classifyReviewUrl reasons that never occur on a scored review in the corpus
-// (checked 2026-09-28); see the refusal below.
-const INGEST_REFUSED_URL_REASONS = new Set([
-  'ticketing-reseller', 'ticketing-listing', 'venue-production-page',
-  'production-database-listing', 'access-listings-page', 'talent-agency-credit-page',
-  'institutional-press-release', 'pr-firm-press-release', 'ugc-platform',
-]);
+const { INGEST_REFUSED_URL_REASONS } = require('./lib/non-review-url-patterns');
 const { stripTrailingJunk } = require('./lib/text-cleaning');
 const { resolveCanonicalOutletId, _parseDomain, _buildDomainMap, provisionalOutletIdFromHost, lookupOutletForHost } = require('./lib/outlet-canonicalize');
 const { getOutletDisplayName, findExistingReviewFile, normalizeCritic, resolveOutletFromUrlIfPathInformed } = require('./lib/review-normalization');
@@ -189,11 +183,7 @@ if (!show) {
     const verdict = classifyReviewUrl(url);
     if (!verdict.ok && INGEST_REFUSED_URL_REASONS.has(verdict.reason)) {
       console.error(`Refusing to ingest — ${url} is a ${verdict.reason} page, not a review (scripts/lib/non-review-url-patterns.js classifyReviewUrl).`);
-      // BRO-5500: a permanent, expected rejection. Exit 1 with no `Skipped:` line made the gap
-      // audit count nyc.com/events/... as a failed ingest and re-alarm roundup-gap:all hourly;
-      // the classified skip (ingest-skip-classify.js) files it as expected instead.
-      console.log(`⚠️  Skipped: named-non-review-url:${verdict.reason} — ${url}`);
-      process.exit(0);
+      process.exit(1);
     }
   }
 

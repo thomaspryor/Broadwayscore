@@ -522,10 +522,10 @@ const priorRunOnly = priorProductionOnly;
 function countsFor(results) {
   const rs = results || [];
   return {
-    withGap: rs.filter(r => currentRun(r.missing).length + currentRun(r.flaggedMisses).length + currentRun(r.citedNoUrl).length > 0).length,
+    withGap: rs.filter(r => currentRun(r.missing).length + currentRun(r.flaggedMisses).filter(m => !(m && m.confirmedNonReview)).length + currentRun(r.citedNoUrl).length > 0).length,
     missingCurrentRun: rs.reduce((a, r) => a + currentRun(r.missing).length, 0),
     totalCitedNoUrl: rs.reduce((a, r) => a + currentRun(r.citedNoUrl).length, 0),
-    totalFlaggedMisses: rs.reduce((a, r) => a + currentRun(r.flaggedMisses).length, 0),
+    totalFlaggedMisses: rs.reduce((a, r) => a + currentRun(r.flaggedMisses).filter(m => !(m && m.confirmedNonReview)).length, 0),
     // priorRun-excluded to match totalFlaggedMisses: a prior-production
     // flaggedMiss can carry `recoverable: true` (auditShow sets it from the
     // file's own empty-body state, before priorRun tagging runs), but the

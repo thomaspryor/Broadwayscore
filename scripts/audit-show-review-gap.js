@@ -205,6 +205,7 @@ const { normalizeOutlet: normalizeOutletId } = require('./lib/review-normalizati
 const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, pendingPriorRunUrls, flaggedFilePriorRunDate, isRoundupSelfCitation } = require('./lib/gap-ingest-policy');
 const { otherProductionSignal } = require('./lib/other-production-signal');
 const { isLikelyTourReview } = require('./lib/review-guards');
+const { ingestRefusalReason } = require('./lib/non-review-url-patterns');
 const { classifyIngestSkip, describeSkip } = require('./lib/ingest-skip-classify');
 // WE reference schema version — bump to invalidate WE checkpoint entries (59 shows
 // recorded gaps:0 from vacuous Broadway-only-reference runs and closed-clean shows
@@ -1533,6 +1534,14 @@ async function dispatchGatherFor(showId) {
 // whose host is unknown to the registry (those should be added to the registry
 // first via the unknown-aggregator-outlets audit).
 function ingestMissingUrl(showId, url, knownOutletId) {
+  // BRO-5500: ingest-review-from-url.js refuses these with exit 1 (the submission workflow
+  // depends on that), which read here as a FAILED ingest and re-alarmed roundup-gap:all
+  // hourly. Same permanent refusal, so classify it as the expected skip without spawning.
+  const refusal = ingestRefusalReason(url);
+  if (refusal) {
+    const skip = { reason: 'named-non-review-url', detail: refusal };
+    return { ok: false, noop: true, expected: true, expectedReason: skip.reason, reason: describeSkip(showId, url, skip), provisional: !knownOutletId };
+  }
   const args = ['scripts/ingest-review-from-url.js', `--show=${showId}`, `--url=${url}`];
   let provisional = false;
   if (knownOutletId) {

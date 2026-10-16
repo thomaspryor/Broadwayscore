@@ -730,3 +730,16 @@ test('flagged-miss-basis: CV-confirmed non-review is not residual; low-confidenc
   assert.equal(computeResidualCounts({ flaggedMisses: [row({ confirmedNonReview: true })] }, false).flaggedOut, 0);
   assert.equal(computeResidualCounts({ flaggedMisses: [row({})] }, false).flaggedOut, 1);
 });
+
+// BRO-5500: the audit pre-classifies ingest-refused URLs (exit 1 in the child, which the
+// submission workflow relies on) as expected skips, and confirmed non-reviews drop out of
+// every gap count, not just flaggedOut.
+test('ingest-refused URL: classified expected without spawning; splitGapCounts ignores confirmedNonReview', () => {
+  const { ingestRefusalReason } = require('./lib/non-review-url-patterns.js');
+  const { splitGapCounts } = require('./lib/prior-production-citations.js');
+  const { classifyIngestSkip } = require('./lib/ingest-skip-classify.js');
+  assert.equal(ingestRefusalReason('https://www.nyc.com/events/sea_wall.443831802918871040/'), 'ticketing-listing');
+  assert.equal(ingestRefusalReason('https://www.nytimes.com/2026/10/16/theater/x-review.html'), null);
+  assert.equal(classifyIngestSkip('Skipped: named-non-review-url:ticketing-listing').kind, 'expected');
+  assert.equal(splitGapCounts({ flaggedMisses: [{ url: 'a', confirmedNonReview: true }, { url: 'b' }] }).total, 1);
+});

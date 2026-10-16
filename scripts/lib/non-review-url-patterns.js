@@ -840,7 +840,25 @@ function classifyGapCandidateUrl(url) {
   return { ok: true, reason: null };
 }
 
+// classifyReviewUrl reasons that never occur on a scored review in the corpus
+// (checked 2026-09-28). Single source for ingest-review-from-url.js's refusal AND
+// the gap audit's pre-check (BRO-5500), so a refused URL is classified as an
+// expected skip instead of a failed ingest.
+const INGEST_REFUSED_URL_REASONS = new Set([
+  'ticketing-reseller', 'ticketing-listing', 'venue-production-page',
+  'production-database-listing', 'access-listings-page', 'talent-agency-credit-page',
+  'institutional-press-release', 'pr-firm-press-release', 'ugc-platform',
+]);
+
+/** The refusal reason ingest-review-from-url.js would give this URL, or null. */
+function ingestRefusalReason(url) {
+  const v = classifyReviewUrl(url);
+  return !v.ok && INGEST_REFUSED_URL_REASONS.has(v.reason) ? v.reason : null;
+}
+
 module.exports = {
+  INGEST_REFUSED_URL_REASONS,
+  ingestRefusalReason,
   isBwwShowHubUrl,
   siteUtilityPathReason,
   classifyGapCandidateUrl,
