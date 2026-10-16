@@ -5,6 +5,13 @@ inputs:
   token:
     description: PAT for private repo access
     required: true
+  sparse:
+    description: >-
+      'true' = blob-less partial clone in cone mode: only the repo-root *.json files (everything the copy step below
+      and the show-JSON generator read) are fetched, no subdirectories (BRO-4835). Pushing from the clone still works.
+      Default 'false' keeps the full depth-1 clone.
+    required: false
+    default: 'false'
 
 runs:
   using: composite
@@ -51,7 +58,10 @@ runs:
       shell: bash
       env:
         CORE_DATA_TOKEN: ${{ inputs.token }}
+        CORE_DATA_SPARSE: ${{ inputs.sparse }}
       run: |
+        SPARSE_ARGS=""
+        if [ "${CORE_DATA_SPARSE}" = "true" ]; then SPARSE_ARGS="--filter=blob:none --sparse"; fi
         # BRO-66: REVIEW_TEXTS_TOKEN is a classic PAT (5000 req/hr across ALL
         # API calls from that token, shared by every workflow that checks out
         # core-data or review-texts). An opening-night burst of orchestrator
@@ -98,7 +108,7 @@ runs:
           # always see this step's own error (BRO-5261 retro-review; was 120s). `|| CLONE_RC=$?`
           # because this step runs under bash -e.
           CLONE_RC=0
-          git_net "$NET_SEC" clone --depth 1 --branch main "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" /tmp/core-data-checkout 2>>"$STDERR_FILE" || CLONE_RC=$?
+          git_net "$NET_SEC" clone --depth 1 $SPARSE_ARGS --branch main "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" /tmp/core-data-checkout 2>>"$STDERR_FILE" || CLONE_RC=$?
           if [ "$CLONE_RC" -eq 0 ]; then
             ELAPSED=$(($(date +%s) - START))
             echo "Core data cloned fresh in ${ELAPSED}s"

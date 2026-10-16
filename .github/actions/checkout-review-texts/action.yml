@@ -9,6 +9,13 @@ inputs:
     description: Number of commits to fetch (0 for full history)
     required: false
     default: '1'
+  sparse-paths:
+    description: >-
+      Optional space-separated top-level directories (e.g. one show id) to check out instead of the whole tree
+      (BRO-4835). Uses a blob-less partial clone in cone mode, so only those directories and root files are fetched;
+      other paths stay untouched in git and push-review-texts commits only what the job wrote. Empty = full checkout.
+    required: false
+    default: ''
 
 outputs:
   sha:
@@ -35,6 +42,7 @@ runs:
       env:
         REVIEW_TEXTS_TOKEN: ${{ inputs.token }}
         FETCH_DEPTH: ${{ inputs.fetch-depth }}
+        SPARSE_PATHS: ${{ inputs.sparse-paths }}
       run: |
         # FETCH_DEPTH can come from a dispatch input (run-script.yml): digits
         # only, so it can never smuggle a git option into the clone (BRO-5373).
@@ -45,6 +53,16 @@ runs:
         if [ -n "${FETCH_DEPTH}" ] && [ "${FETCH_DEPTH}" != "0" ]; then
           DEPTH_ARGS="--depth=${FETCH_DEPTH}"
         fi
+        # sparse-paths can come from a dispatch input too: plain directory names only (no option, no `..`, no slash).
+        SPARSE_ARGS=""
+        if [ -n "${SPARSE_PATHS}" ]; then
+          for p in ${SPARSE_PATHS}; do
+            if ! printf '%s' "$p" | grep -Eq '^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$' || [ "$p" != "${p#*..}" ]; then
+              echo "::error::sparse-paths entries must be plain directory names (got '$p')"; exit 1
+            fi
+          done
+          SPARSE_ARGS="--filter=blob:none --sparse"
+        fi
 
         rm -rf data/review-texts
         MAX_RETRIES=3
@@ -52,7 +70,7 @@ runs:
         for ATTEMPT in $(seq 1 $MAX_RETRIES); do
           : > "$STDERR_FILE"
           START=$(date +%s)
-          if git clone $DEPTH_ARGS --branch main "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts 2>>"$STDERR_FILE"; then
+          if git clone $DEPTH_ARGS $SPARSE_ARGS --branch main "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts 2>>"$STDERR_FILE"; then
             ELAPSED=$(($(date +%s) - START))
             echo "review-texts cloned in ${ELAPSED}s"
             break
@@ -102,6 +120,11 @@ runs:
         if [ ! -d data/review-texts/.git ]; then
           echo "::error::review-texts checkout FAILED — data/review-texts/.git missing"
           exit 1
+        fi
+        if [ -n "${SPARSE_PATHS}" ]; then
+          # shellcheck disable=SC2086 # word-splitting the validated list is intended
+          git -C data/review-texts sparse-checkout set -- ${SPARSE_PATHS}
+          echo "review-texts sparse checkout: ${SPARSE_PATHS}"
         fi
 
         # Stale-checkout race guard (BRO-3162): record the checkout-time SHA so
