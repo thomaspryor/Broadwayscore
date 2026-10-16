@@ -4055,6 +4055,7 @@ showDirs.forEach(showId => {
             publishDate: data.publishDate,
             outletIsUkRegion: outletIsUkMarketRegion(outletRegionMap, canonicalOutlet, rawOutlet),
             outletIsDualMarket: true,
+            url: data.url,
           }).shouldFlag) {
         if (!skipStaleFlagWrite(data)) {
           data.wrongProduction = true;

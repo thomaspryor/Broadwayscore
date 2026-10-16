@@ -781,8 +781,12 @@ function classifyDualMarketNullUrl({ hasUrl, outletIsDualMarket, siblingInOtherM
  *
  * @returns {{ shouldFlag: boolean }}
  */
-function evaluateLateDualMarketUkOnBroadway({ show, publishDate, outletIsUkRegion, outletIsDualMarket, lagDays = 60 } = {}) {
+function evaluateLateDualMarketUkOnBroadway({ show, publishDate, outletIsUkRegion, outletIsDualMarket, url, lagDays = 60 } = {}) {
   if (!outletIsUkRegion || !outletIsDualMarket) return { shouldFlag: false };
+  // A US-edition piece on a later Broadway cast (DailyMail.com 2015 "Taye
+  // Diggs ... Broadway's Hedwig", found by the post-land scoring-delta) names
+  // Broadway / New York in its url; a London review does not.
+  if (url && /broadway|new-?york|\bnyc\b/i.test(String(url).replace(/^https?:\/\/[^/]+/, ''))) return { shouldFlag: false };
   const { isWithinPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
   const { isLateTheatreRecordReviewOfBroadwayShow } = require('./tr-late-review-guard');
   return { shouldFlag: isLateTheatreRecordReviewOfBroadwayShow(show, publishDate, { lagDays, isWithinPriorRun, isWithinTourLeg }) };

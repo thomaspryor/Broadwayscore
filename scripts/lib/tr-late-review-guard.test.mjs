@@ -27,3 +27,13 @@ test('evaluateLateDualMarketUkOnBroadway: only UK-region dual-market outlets, on
   assert.equal(g({ show: chicago, publishDate: '1997-11-21', outletIsUkRegion: false, outletIsDualMarket: true }).shouldFlag, false, 'NY Theatre Guide / NY Observer (dual, not UK) keep later-run reviews');
   assert.equal(g({ show: chicago, publishDate: '1997-11-21', outletIsUkRegion: true, outletIsDualMarket: false }).shouldFlag, false, 'non-dual UK outlets are the reverse guard\'s');
 });
+
+test('evaluateLateDualMarketUkOnBroadway: a url naming Broadway / New York is a US-edition piece, not flagged', () => {
+  const { evaluateLateDualMarketUkOnBroadway: g } = require('./cross-market-guard.js');
+  const hedwig = { id: 'hedwig-and-the-angry-inch-2014', category: 'broadway', openingDate: '2014-04-22' };
+  const base = { show: hedwig, publishDate: '2015-07-23', outletIsUkRegion: true, outletIsDualMarket: true };
+  assert.equal(g({ ...base, url: 'https://www.dailymail.co.uk/tvshowbiz/article-3171727/Taye-Diggs-makes-debut-in-Broadway-s-Hedwig-Angry-Inch.html' }).shouldFlag, false);
+  assert.equal(g({ ...base, url: 'https://www.theguardian.com/stage/2015/jul/23/hedwig-review-new-york' }).shouldFlag, false);
+  assert.equal(g({ ...base, url: 'http://www.guardian.co.uk/stage/2010/nov/17/fela-review' }).shouldFlag, true, 'a London review url still flags');
+  assert.equal(g({ ...base, url: null }).shouldFlag, true, 'Theatre Record rows have no url');
+});

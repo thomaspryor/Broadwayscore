@@ -1427,7 +1427,7 @@ function decideInclusion(review, show, guards) {
     const canonicalOutletLd = normalizeOutletCanonical(rawOutletLd);
     const isDual = DUAL_MARKET_OUTLETS.has(canonicalOutletLd) || DUAL_MARKET_OUTLETS.has(rawOutletLd);
     const ukRegion = guards.__crossMarketLib.outletIsUkMarketRegion(outletRegionMap, canonicalOutletLd, rawOutletLd);
-    if (isDual && lateDualUk({ show, publishDate: review.publishDate, outletIsUkRegion: ukRegion, outletIsDualMarket: true }).shouldFlag) {
+    if (isDual && lateDualUk({ show, publishDate: review.publishDate, outletIsUkRegion: ukRegion, outletIsDualMarket: true, url: review.url }).shouldFlag) {
       return { included: false, reason: 'late dual-market UK review on Broadway show' };
     }
   }
