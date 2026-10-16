@@ -218,7 +218,8 @@ function deferredAutoIsDue(existing, nowMs, fileAfterHours = DEFERRED_AUTO_FILE_
 // once. The cost of being wrong here is asymmetric: an extra digest line
 // versus an unnoticed overage, so this matches on the FAMILY prefix and errs
 // toward keeping things visible.
-const NEVER_QUIET_CONDITION_RE = /(^provider-spend:|circuit-breaker|(^|[:\s-])(spend|cost|billing|quota|credits?|overspend|budget)([:\s-]|$))/i;
+// A workflow's performance budget measures page weight, not paid usage.
+const NEVER_QUIET_CONDITION_RE = /(^provider-spend:|circuit-breaker|(^|[:\s-])(spend|cost|billing|quota|credits?|overspend|(?<!performance[\s-])budget)([:\s-]|$))/i;
 
 /** Is `conditionKey` a paid-usage family that must never be silenced? */
 function isNeverQuietCondition(conditionKey) {
@@ -1329,17 +1330,18 @@ function resolveQuietConditions(conditionKeys, { quietHours = INCIDENT_GAP_RESET
 
 // BRO-5267: absence is evidence only for known, periodically evaluated or
 // event-scoped families. Daily checks tolerate missed runs (96h); opening
-// nights and sparse audits get a week. Gap/backstop emitters throttle their
-// own routeAlert calls to every 7 days, so allow two such intervals there.
+// nights and sparse audits get a week. Geo/tier-skip audits run weekly, and
+// gap/backstop emitters throttle routeAlert calls to every 7 days, so allow
+// two such intervals for those families.
 // Dated email keys roll over daily.
 // Unknown families and durable integrity failures (e.g. push-ledger-revert,
 // alert-sender-direct-bypass) require an explicit green observation. Paid
 // usage always requires explicit recovery, even inside an allowed family.
 const ABSENCE_RESOLVE_RULES = [
   { family: /^scheduled-email-missing:/, quietHours: 48 },
-  { family: /^(health-check:|cron-health(?:-failed)?:|alert-router:|feedback-(?:requests-live|outcomes):|geo-bots:|tier-skip-drift$)/, quietHours: 96 },
+  { family: /^(health-check:|cron-health(?:-failed)?:|alert-router:|feedback-(?:requests-live|outcomes):)/, quietHours: 96 },
   { family: /^(opening-night-|on-monitor-|broadcast-gate:|broadcast:overdue:|land:|direct-push:)/, quietHours: 168 },
-  { family: /^(gap:|backstop:)/, quietHours: 336 },
+  { family: /^(gap:|backstop:|geo-bots:|tier-skip-drift$)/, quietHours: 336 },
   { family: /^(orphan-unscored-requeue:|review-gap:|roundup-gap:|we-aggregator-go-live:|ob-venue-go-live:|express-retry-still-thin:|slug-misroute:|outlet-ground-truth:)/, quietHours: 168 },
 ];
 

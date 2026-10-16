@@ -24,8 +24,8 @@ test('each absence family resolves old keys and preserves live keys and the exac
     ['health-check:Workflow repeat-failure: Commercial RSS Poll', 96],
     ['cron-health-failed:job', 96], ['cron-health:job', 96],
     ['alert-router:deadman', 96], ['feedback-outcomes:date', 96],
-    ['feedback-requests-live:request', 96], ['geo-bots:country', 96],
-    ['tier-skip-drift', 96], ['opening-night-remediation-exhausted-empty-cast:show', 168],
+    ['feedback-requests-live:request', 96], ['geo-bots:country', 336],
+    ['tier-skip-drift', 336], ['opening-night-remediation-exhausted-empty-cast:show', 168],
     ['on-monitor-launch-failed-on-monitor-2026-07-22', 168],
     ['broadcast-gate:checklist:show', 168], ['broadcast:overdue:show', 168],
     ['land:branch', 168], ['direct-push:sha', 168],
@@ -47,6 +47,26 @@ test('each absence family resolves old keys and preserves live keys and the exac
       assert.equal(router.loadLedger().conditions[key].status, 'open');
     }
   }
+});
+
+test('weekly geo and tier-skip alerts seen seven days ago stay open', async () => {
+  const conditions = { 'geo-bots:Iran': row(168), 'tier-skip-drift': row(168) };
+  seed(conditions);
+  assert.deepEqual(await router.resolveAbsentConditions({ nowMs }), []);
+  assert.deepEqual(router.loadLedger().conditions, conditions);
+});
+
+test('performance budgets follow normal quieting while provider budgets stay protected', async () => {
+  const key = 'health-check:Workflow repeat-failure: Check Performance Budget';
+  assert.equal(router.isNeverQuietCondition(key), false);
+  assert.equal(router.decideDigestEscalation({
+    conditionKey: key,
+    existing: { linearIdentifier: 'BRO-1', lastSurfacedAt: new Date(nowMs).toISOString() },
+    notifyCount: 30, now: nowMs,
+  }).action, 'quiet');
+  seed({ [key]: row(97), 'health-check:Provider budget': row(1000) });
+  assert.deepEqual(await router.resolveAbsentConditions({ nowMs }), [key]);
+  assert.equal(router.loadLedger().conditions['health-check:Provider budget'].status, 'open');
 });
 
 test('paid usage, unknown families, durable integrity alerts and malformed dates stay open', async () => {
