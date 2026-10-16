@@ -617,5 +617,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-16T17:29:23.805Z"
+  },
+  {
+    "conditionKey": "land:land/tier-key-mobile-wrap",
+    "title": "Landing blocked: unit-tests-node red on land/tier-key-mobile-wrap",
+    "description": "land.yml did not land land/tier-key-mobile-wrap: the unit-tests-node gate went red at e7f509769a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38938846967",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/tier-key-mobile-wrap"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "e7f509769a50f5ce12c0a013a8fda60cfd3e252c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38938846967"
+      }
+    ],
+    "queuedAt": "2026-10-16T17:49:39.043Z"
   }
 ]
