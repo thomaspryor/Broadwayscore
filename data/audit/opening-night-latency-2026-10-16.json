@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-16T12:32:19.295Z",
+  "generatedAt": "2026-10-16T17:29:24.287Z",
   "date": "2026-10-16",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 248875,
+  "entryCount": 268062,
   "shows": [
     {
       "showId": "the-lion-king-west-end-2021",
@@ -313,13 +313,13 @@
     },
     {
       "showId": "a-ghost-in-your-ear-off-broadway-2026",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": 118347978,
       "p90_e2e_ms": 122271127,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 429645,
-        "scored-to-rebuilt": 435253,
+        "scored-to-rebuilt": 422510,
         "rebuilt-to-deployed": 116973555
       },
       "reviews_over_15min": 4,
@@ -652,7 +652,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 387734,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -661,7 +661,7 @@
     },
     {
       "showId": "rent-west-end-2026",
-      "reviewCount": 38,
+      "reviewCount": 37,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -802,7 +802,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1449965,
+        "scored-to-rebuilt": 444629,
         "rebuilt-to-deployed": 116452360
       },
       "reviews_over_15min": 0,
@@ -811,13 +811,13 @@
     },
     {
       "showId": "the-hungry-ghost-off-west-end-2026",
-      "reviewCount": 22,
+      "reviewCount": 23,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 404539,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -901,13 +901,13 @@
     },
     {
       "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
-      "reviewCount": 40,
+      "reviewCount": 41,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 81459,
+        "scored-to-rebuilt": 83995,
         "rebuilt-to-deployed": 174233437
       },
       "reviews_over_15min": 0,
@@ -1066,13 +1066,13 @@
     },
     {
       "showId": "twenty-thousand-streets-off-west-end-2026",
-      "reviewCount": 21,
+      "reviewCount": 22,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 224352,
+        "scored-to-rebuilt": 644720,
         "rebuilt-to-deployed": 6590605
       },
       "reviews_over_15min": 0,
@@ -1134,21 +1134,6 @@
         "collected-to-scored": null,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "man-to-man-west-end-2026",
-      "reviewCount": 46,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 212319,
-        "rebuilt-to-deployed": 6590610
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -1231,7 +1216,7 @@
     },
     {
       "showId": "sinatra-the-musical-west-end-2026",
-      "reviewCount": 41,
+      "reviewCount": 43,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1486,7 +1471,7 @@
     },
     {
       "showId": "my-neighbour-totoro-west-end-2025",
-      "reviewCount": 22,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1501,13 +1486,13 @@
     },
     {
       "showId": "maybe-happy-ending-2024",
-      "reviewCount": 36,
+      "reviewCount": 37,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 529811,
+        "scored-to-rebuilt": 797447,
         "rebuilt-to-deployed": 210709644
       },
       "reviews_over_15min": 0,
@@ -1591,13 +1576,13 @@
     },
     {
       "showId": "the-lion-king-tour-2021",
-      "reviewCount": 30,
+      "reviewCount": 31,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1065076,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -1741,13 +1726,13 @@
     },
     {
       "showId": "the-cherry-orchard-west-end-2026",
-      "reviewCount": 26,
+      "reviewCount": 29,
       "median_e2e_ms": 150793887,
       "p90_e2e_ms": 214737881,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 585720,
-        "scored-to-rebuilt": 371806,
+        "scored-to-rebuilt": 397282,
         "rebuilt-to-deployed": 141522355
       },
       "reviews_over_15min": 5,
@@ -2352,13 +2337,13 @@
     },
     {
       "showId": "cadel-lungs-on-legs-west-end-2026",
-      "reviewCount": 1,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 712150,
+        "collected-to-scored": 786300,
+        "scored-to-rebuilt": 547440,
         "rebuilt-to-deployed": 213070607
       },
       "reviews_over_15min": 0,
@@ -2547,7 +2532,7 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "reviewCount": 31,
+      "reviewCount": 33,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3327,7 +3312,7 @@
     },
     {
       "showId": "pride-west-end-2026",
-      "reviewCount": 24,
+      "reviewCount": 25,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5674,8 +5659,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 925715,
+        "collected-to-scored": 21054076,
+        "scored-to-rebuilt": 995394,
         "rebuilt-to-deployed": 208007383
       },
       "reviews_over_15min": 0,
@@ -10763,13 +10748,13 @@
     },
     {
       "showId": "stories-the-tap-dance-sensation-west-end-2026",
-      "reviewCount": 6,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 672056,
+        "scored-to-rebuilt": 632012,
         "rebuilt-to-deployed": 160461506
       },
       "reviews_over_15min": 0,
@@ -12053,13 +12038,13 @@
     },
     {
       "showId": "baby-off-west-end-2026",
-      "reviewCount": 5,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 2624720,
-        "scored-to-rebuilt": 272851,
+        "scored-to-rebuilt": 278832,
         "rebuilt-to-deployed": 64414760
       },
       "reviews_over_15min": 0,
@@ -12083,13 +12068,13 @@
     },
     {
       "showId": "wicked-tour-2021",
-      "reviewCount": 32,
+      "reviewCount": 33,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 24780693,
-        "scored-to-rebuilt": 2692047,
+        "scored-to-rebuilt": 2692044,
         "rebuilt-to-deployed": 90452761
       },
       "reviews_over_15min": 0,
@@ -12098,13 +12083,13 @@
     },
     {
       "showId": "midnight-off-broadway-2026",
-      "reviewCount": 4,
+      "reviewCount": 12,
       "median_e2e_ms": 31877560,
       "p90_e2e_ms": 31881328,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 540570,
-        "scored-to-rebuilt": 813269,
+        "collected-to-scored": 538292,
+        "scored-to-rebuilt": 513823,
         "rebuilt-to-deployed": 28873874
       },
       "reviews_over_15min": 2,
@@ -12825,7 +12810,7 @@
     },
     {
       "showId": "parade-tour-2025",
-      "reviewCount": 3,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -13320,13 +13305,13 @@
     },
     {
       "showId": "some-woman-west-end-2026",
-      "reviewCount": 3,
+      "reviewCount": 11,
       "median_e2e_ms": 5133679,
       "p90_e2e_ms": 5133900,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 712825,
-        "scored-to-rebuilt": 409362,
+        "collected-to-scored": 3816931,
+        "scored-to-rebuilt": 433369,
         "rebuilt-to-deployed": 2596982
       },
       "reviews_over_15min": 2,
@@ -13352,7 +13337,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 867877,
+        "scored-to-rebuilt": 865044,
         "rebuilt-to-deployed": 37502747
       },
       "reviews_over_15min": 0,
@@ -13373,37 +13358,6 @@
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
       "slowest_reviews": []
-    },
-    {
-      "showId": "dirty-dancing-the-classic-story-on-stage-west-end-2026",
-      "reviewCount": 3,
-      "median_e2e_ms": 36920909,
-      "p90_e2e_ms": 36921446,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 3,
-      "reviews_over_60min": 3,
-      "slowest_reviews": [
-        {
-          "reviewKey": "all-that-dazzles-uk:sam-waite:https://www.allthatdazzles.co.uk/post/review-dirty-dancing-dominion-theatre-1",
-          "e2e_ms": 36921446,
-          "stuck_at_stage": "review-first-seen"
-        },
-        {
-          "reviewKey": "london-theatre:marianka-swain:https://www.londontheatre.co.uk/reviews/dirty-dancing-review-dominion-theatre",
-          "e2e_ms": 36920909,
-          "stuck_at_stage": "review-first-seen"
-        },
-        {
-          "reviewKey": "whatsonstage:james-fitzgerald:https://www.whatsonstage.com/london-theatre/reviews/dirty-dancing-dominion-2022-west-end-review_55891.html",
-          "e2e_ms": 36920449,
-          "stuck_at_stage": "review-first-seen"
-        }
-      ]
     },
     {
       "showId": "hungry-women-off-broadway-2026",
@@ -13497,13 +13451,13 @@
     },
     {
       "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
-      "reviewCount": 6,
+      "reviewCount": 12,
       "median_e2e_ms": 27154110,
       "p90_e2e_ms": 27155459,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 677369,
-        "scored-to-rebuilt": 1021160,
+        "scored-to-rebuilt": 472155,
         "rebuilt-to-deployed": 24874783
       },
       "reviews_over_15min": 5,
@@ -14017,6 +13971,21 @@
       "slowest_reviews": []
     },
     {
+      "showId": "man-to-man-west-end-2026",
+      "reviewCount": 45,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 212319,
+        "rebuilt-to-deployed": 6590610
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
       "showId": "tartuffe-remixed-off-west-end-2026",
       "reviewCount": 29,
       "median_e2e_ms": null,
@@ -14034,6 +14003,36 @@
     {
       "showId": "sea-wall-off-broadway-2026",
       "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 6122055,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "zorba-1983",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1065077,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-play-that-goes-wrong-off-broadway-2019",
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
