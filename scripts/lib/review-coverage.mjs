@@ -15,7 +15,9 @@
 // tsc/lint/build are NOT checked here: land.yml runs them strictly on the rebased tree.
 // Known limits (accepted, BRO-5359 ship-check): this sets a floor, not proof of review quality;
 // coverage is not tied to the pushed diff hash (verify-edits.sh's fixup budget covers edits made
-// after the review); /code-review runs are trusted, not coverage-checked.
+// after the review); /code-review runs are trusted, not coverage-checked. Heredoc bodies are data
+// (BRO-5430), so a review run as `bash <<EOF ... curl ... EOF`, or written to a script by a heredoc
+// and run in the same command, does not count; the ship-check recipe keeps curl/codex outside it.
 //
 // One implementation for both enforcement points:
 //   - land gate:   land-preflight.mjs runHook -> landGateDecision (blocks a land/* push)
@@ -50,7 +52,10 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 import { walkTranscript } from './transcript-scan.mjs';
+
+const { stripHeredocBodies } = createRequire(import.meta.url)('./infra-review-scope.js');
 
 export const STRONG_SKILLS = ['ship-check', 'code-review'];
 // By-hand fallback when the Skill call fails with "Unknown skill" (BRO-5068):
@@ -65,14 +70,20 @@ const DATA_FLAG_RE = /\s(?:-d|--data(?:-[a-z]+)?|--json)\b/;
 const cmdPos = (word) => new RegExp(`(?:^|[;&|(\\n]|\\$\\()\\s*(?:\\w+=\\S*\\s+)*${word}\\b`);
 const CURL_POS_RE = cmdPos('curl');
 const CODEX_POS_RE = cmdPos('codex\\s+exec');
-const unquoted = (cmd) => cmd.replace(/'[^']*'/g, "''").replace(/"[^"]*"/g, '""');
+// The shell code a command runs, for "is X in command position" checks: heredoc bodies and quoted
+// strings blanked in ONE pass (BRO-5430). Two passes ('...' first) let an apostrophe in prose
+// ("what's", in a heredoc prompt or a double-quoted string) pair with a later quote and erase a
+// real `$(curl`; heredoc text is data, so a curl line inside one is not a call.
+const shellCode = (cmd) => stripHeredocBodies(cmd).replace(/'[^']*'|"[^"]*"/g, '""');
 const BUILD_RE = /(?:^|[;&|(\n]|\$\()\s*(?:\w+=\S*\s+|time\s+|timeout\s+\S+\s+)*(?:npm\s+run\s+build|npx\s+next\s+build|next\s+build)\b/;
 const SHELL_C_BUILD_RE = /^\s*(?:ba)?sh\s+-l?c\s[\s\S]*\b(?:npm\s+run\s+build|next\s+build)\b/;
 const MIN_PANELIST_PROMPT = 200; // chars: "say ok" is not a review
 const MIN_RESULT_CHARS = 40;
 const isExternalReviewCall = (cmd) => {
-  const bare = unquoted(cmd);
-  return (CURL_POS_RE.test(bare) && MODEL_ENDPOINT_RE.test(cmd) && DATA_FLAG_RE.test(cmd)) || CODEX_POS_RE.test(bare);
+  const code = shellCode(cmd);
+  // The URL is often quoted, so endpoint and body flag read the command with quotes kept, heredoc text out.
+  const visible = stripHeredocBodies(cmd);
+  return (CURL_POS_RE.test(code) && MODEL_ENDPOINT_RE.test(visible) && DATA_FLAG_RE.test(visible)) || CODEX_POS_RE.test(code);
 };
 const substantiveResult = (r) => !!r && !r.isError && String(r.content || '').trim().length >= MIN_RESULT_CHARS && !/"error"\s*:/.test(String(r.content));
 export const NO_SHIP_CHECK_RE = /#\s*NO-SHIP-CHECK:\s*(\S.{14,})/;
@@ -142,7 +153,7 @@ export function evaluateCoverage(events, { requireBuild = false } = {}) {
   }
   // land.yml runs tsc + lint but NOT `next build`; a src/ change needs the build run by the session.
   // Any build in the session counts (did-it-work often builds before ship-check is invoked).
-  const built = events.some((e) => e.kind === 'assistant_tool_use' && e.name === 'Bash' && answered(e.id) && (BUILD_RE.test(unquoted(String(e.input?.command || ''))) || SHELL_C_BUILD_RE.test(String(e.input?.command || ''))));
+  const built = events.some((e) => e.kind === 'assistant_tool_use' && e.name === 'Bash' && answered(e.id) && (BUILD_RE.test(shellCode(String(e.input?.command || ''))) || SHELL_C_BUILD_RE.test(String(e.input?.command || ''))));
   const missing = [];
   if (requireBuild && !built) missing.push('the build (`npm run build`, Phase 2 of ship-check): land.yml does not run it and this diff touches src/');
   if (claude.length === 0) missing.push('Claude codebase review (an Agent call, subagent_type review-panelist, with a real review prompt of 200+ characters)');

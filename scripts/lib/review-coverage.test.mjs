@@ -58,6 +58,30 @@ test('review-panelist plus external reviewer after the skill: complete, with evi
   assert.equal(c.evidence.checks.length, 2);
 });
 
+// BRO-5430: a real ship-check call was not counted because an apostrophe in its heredoc prompt
+// paired with a later quote and erased `$(curl`; and a heredoc that only WROTE a curl line counted.
+test('apostrophes in heredoc prompts or quoted strings do not hide a real curl; heredoc text is not a call', () => {
+  const covered = (command) => evaluateCoverage(ev(skill(), agent(), tool('Bash', { command }))).complete;
+  const heredocPrompt = [
+    'P=$(mktemp /tmp/p.XXXXXX); {',
+    "cat <<'PROMPT_HEAD'",
+    "Find what's brittle. It's a review.",
+    "And one more apostrophe: don't.",
+    'PROMPT_HEAD',
+    'git diff origin/main..HEAD',
+    '} > $P',
+    'RESP=$(curl -s https://api.openai.com/v1/chat/completions -H "Content-Type: application/json" -d "$(jq -n --rawfile u $P \'{model:"m"}\')")',
+    'echo "$RESP" | jq -r .choices[0].message.content',
+  ].join('\n');
+  assert.equal(covered(heredocPrompt), true, 'odd apostrophes in a heredoc prompt');
+  assert.equal(covered('X="it\'s"; RESP=$(curl -s "https://api.openai.com/v1/chat/completions" -d "don\'t")'), true, 'apostrophes inside double quotes around curl');
+  assert.equal(covered("cat <<'PROMPT_HEAD' > /tmp/p\nwhat's here\nPROMPT_HEAD\ncat /tmp/p | codex exec --sandbox read-only"), true, 'codex exec after a heredoc');
+  const writesOnly = "cat > /tmp/probe.mjs <<'EOF'\nconst x = `curl -s https://api.openai.com/v1/chat/completions -d @b`;\nEOF\nnode /tmp/probe.mjs";
+  assert.equal(covered(writesOnly), false, 'a curl line inside a heredoc body is data, not a call');
+  // Accepted limit (header): a review run by `bash <<EOF` is not counted.
+  assert.equal(covered("bash <<'EOF'\ncurl -s https://api.openai.com/v1/chat/completions -d @x\nEOF"), false);
+});
+
 test('codex exec counts as the external reviewer; code-review counts as a strong run', () => {
   const codex = tool('Bash', { command: 'cat p | codex exec --sandbox read-only -C "$PWD"' });
   assert.equal(evaluateCoverage(ev(skill('code-review'), agent(), codex)).complete, true);
