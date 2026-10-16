@@ -19,6 +19,9 @@
  *    with it. Fix: delete it and refetch the url.
  */
 
+const { toDateMs } = require('./date-utils');
+const { foldDiacritics } = require('./title-match');
+
 const DAY_MS = 86400000;
 const MIN_REVIEW_CHARS = 400;
 const SQUATTER_AGE_DAYS = 365;
@@ -32,7 +35,7 @@ function wrongContentFlag(d) {
 }
 
 function textKey(d) {
-  return String((d && d.fullText) || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().slice(0, 300);
+  return foldDiacritics(String((d && d.fullText) || '')).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().slice(0, 300);
 }
 
 /** files: [{file, data}] of ONE show folder. */
@@ -67,12 +70,12 @@ function normalizeUrl(u) {
 }
 
 function findStaleSlotSquatters(files, show, urlOwners, showId, normalize = normalizeUrl) {
-  const opening = show && show.openingDate ? Date.parse(show.openingDate) : NaN;
+  const opening = show && show.openingDate ? toDateMs(show.openingDate) : NaN;
   if (Number.isNaN(opening)) return [];
   const out = [];
   for (const { file, data } of files) {
     if (!data || data.wrongProduction !== true || !data.url || !data.publishDate) continue;
-    const pub = Date.parse(data.publishDate);
+    const pub = toDateMs(data.publishDate);
     if (Number.isNaN(pub) || opening - pub < SQUATTER_AGE_DAYS * DAY_MS) continue;
     const owners = urlOwners.get(normalize(data.url));
     const foreign = owners ? [...owners].filter((s) => s !== showId) : [];
