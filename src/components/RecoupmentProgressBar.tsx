@@ -14,6 +14,8 @@ interface RecoupmentProgressBarProps {
   variant?: 'compact' | 'headline';
   /** Model central below 0: reads "0% returned · losing money so far" (BRO-4989). */
   belowCosts?: boolean;
+  /** The run is over: a below-costs figure reads "lost money", not "losing money so far" (BRO-5502). */
+  final?: boolean;
 }
 
 function getBarColor(value: number): string {
@@ -34,12 +36,14 @@ const METHOD_LABELS: Record<string, string> = {
 // (Hamilton read "~159x"). Above 100% we say "100%+" and stop there; labels
 // come from getModelRecoupmentLabels (unit-tested in
 // tests/unit/recoupment-progress-label.test.mjs).
-export default function RecoupmentProgressBar({ estimatedPct, modelMethod, variant = 'compact', belowCosts = false }: RecoupmentProgressBarProps) {
-  const labels = getModelRecoupmentLabels(estimatedPct, { belowCosts });
+export default function RecoupmentProgressBar({ estimatedPct, modelMethod, variant = 'compact', belowCosts = false, final = false }: RecoupmentProgressBarProps) {
+  const labels = getModelRecoupmentLabels(estimatedPct, { belowCosts, final });
   const { low, central, high, valueText, label, rangeLabel, ariaLabel, barWidth, belowCostsNote } = labels;
   const isModel = estimatedPct.length === 3;
   const barColor = getBarColor(central);
   const methodLabel = modelMethod ? METHOD_LABELS[modelMethod] : null;
+  // A [low, high] estimate (an analyst's range) heads with its range, not a midpoint it never stated.
+  const headlineText = isModel || low === high ? valueText : `${low}–${high >= 100 ? '100%+' : `${high}%`}`;
 
   if (variant === 'headline') {
     return (
@@ -50,7 +54,7 @@ export default function RecoupmentProgressBar({ estimatedPct, modelMethod, varia
           </span>
           <span className="text-[22px] leading-none font-extrabold tracking-tight text-brand-light tabular-nums">
             {/* "~" like every other estimate on the card ("~ marks an estimate") and the /biz cards. */}
-            ~{valueText}
+            ~{headlineText}
           </span>
         </div>
         <div className="relative w-full bg-surface-overlay/50 rounded-full h-1.5">

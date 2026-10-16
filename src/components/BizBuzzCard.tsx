@@ -20,10 +20,12 @@ import {
   hasCommercialCard,
   lossBasisCaveat,
   publicNotesText,
+  getDisplayableAnalystRange,
 } from '@/lib/commercial-display';
 import { formatCapitalization } from '@/lib/biz-format';
 import { isRunningStatus } from '@/lib/commercial-metrics';
 import RecoupmentProgressBar from './RecoupmentProgressBar';
+import AnalystEstimateCredit from './biz/AnalystEstimateCredit';
 import dynamic from 'next/dynamic';
 import type { BoxOfficeV2Card } from '@/lib/box-office-v2-display';
 
@@ -145,14 +147,17 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
   const lossCaveat = lossBasisCaveat(commercial);
 
   // Display rules (src/lib/commercial-display.ts, unit-tested):
-  //  - recouped:true → the recoupment record, never the model (Q1).
-  //  - closed show with a final designation → designation + cited facts only:
-  //    no model %, range, break-even or model confidence (BRO-4623 P0-4).
-  //  - otherwise model output above the quality floor, labelled as an estimate.
+  //  - recouped:true → the recoupment record, never an estimate (Q1).
+  //  - a closed show's trade-reported return beats every estimate (BRO-5313).
+  //  - the analyst's published estimate, then our model above the quality
+  //    floor, each labelled; a closed Fizzle/Flop only shows one that agrees
+  //    with its label (BRO-4623 P0-4, BRO-5502).
   const displayMode = getRecoupmentDisplayMode({ ...commercial, status: showStatus });
   // A model the display guard held back says why instead of vanishing (BRO-4989).
   const holdLabel = displayMode === 'none' ? getModelHoldLabel({ ...commercial, status: showStatus }) : null;
   const reportedReturnLine = getReportedReturnLine({ ...commercial, status: showStatus });
+  const analystRange = displayMode === 'analyst' && !reportedReturnLine ? getDisplayableAnalystRange({ ...commercial, status: showStatus }) : null;
+  const showModelBar = displayMode === 'model' && !reportedReturnLine;
   const attribution = displayMode === 'announced' ? getRecoupmentAttribution(commercial) : null;
 
   // Source lines print only publishable text: records can carry internal
@@ -169,7 +174,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
 
   // One break-even figure everywhere (show card and /biz at-risk list):
   // model break-even above the quality floor, else the recorded weekly cost.
-  const breakEven = displayMode === 'model' ? getBreakEven(commercial) : null;
+  const breakEven = showModelBar ? getBreakEven(commercial) : null;
   const breakEvenIsModel =
     breakEven != null && breakEven === commercial.modelBreakeven && meetsModelQualityFloor(commercial);
 
@@ -184,7 +189,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
   const confidence: { level: 'high' | 'medium' | 'low'; label: string; basis: string } | null =
     attribution
       ? attribution.confidence
-      : displayMode === 'model'
+      : showModelBar
         ? {
             level: commercial.modelDataQuality === 'high' ? 'high' : commercial.modelDataQuality === 'low' ? 'low' : 'medium',
             label: `${commercial.modelDataQuality === 'high' ? 'High' : commercial.modelDataQuality === 'low' ? 'Low' : 'Medium'} confidence`,
@@ -205,7 +210,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           Commercial Scorecard
         </h2>
         <span className="text-[10px] tracking-[0.06em] text-gray-500 italic shrink-0">
-          {displayMode === 'model' ? 'source · filings, press + our model' : 'source · filings + press'}
+          {showModelBar ? 'source · filings, press + our model' : analystRange ? 'source · filings, press + analyst estimate' : 'source · filings + press'}
         </span>
       </header>
       <p className="text-[11px] font-medium tracking-[0.06em] text-gray-500 italic m-0 mb-3">
@@ -374,13 +379,27 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           </div>
         )}
 
-        {/* Recoupment estimate: model output only, above the quality floor,
-            never on a recouped show or a closed show with a final outcome. */}
-        {displayMode === 'model' && commercial.modelRecoupmentPct && (
+        {/* Recoupment estimate: the analyst's published range, else our model
+            above the quality floor; never on a recouped show, never beside a
+            reported return or a closed label it contradicts. */}
+        {analystRange && (
+          <div>
+            {analystRange[0] >= 100 ? (
+              <p className="text-sm text-gray-300">Estimated to have recouped, not yet announced</p>
+            ) : (
+              <RecoupmentProgressBar estimatedPct={analystRange} variant="headline" />
+            )}
+            <div className="mt-1">
+              <AnalystEstimateCredit asOf={commercial.analystRecoupAsOf} url={commercial.analystRecoupUrl} />
+            </div>
+          </div>
+        )}
+        {showModelBar && commercial.modelRecoupmentPct && (
           <RecoupmentProgressBar
             estimatedPct={commercial.modelRecoupmentPct}
             modelMethod={commercial.modelMethod}
             belowCosts={commercial.modelBelowCosts}
+            final={showStatus === 'closed'}
             variant="headline"
           />
         )}

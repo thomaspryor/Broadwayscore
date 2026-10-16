@@ -34,7 +34,9 @@ for (const [key, comm] of Object.entries(commercial)) {
   if (!displaysModel(comm, show)) continue;
   const weeks = playedWeeks(show);
   const reported = independentEstimate(comm);
-  const g = modelDisplayGuard({ pct: comm.modelRecoupmentPct, playedWeeks: weeks, independent: reported, running: isRunning(show), showType: show.type ?? null });
+  const running = isRunning(show);
+  // closed as the site passes it (applyModelDisplayGuard, BRO-5502).
+  const g = modelDisplayGuard({ pct: comm.modelRecoupmentPct, playedWeeks: weeks, independent: reported, running, closed: !running, showType: show.type ?? null });
   rows.push({ slug: key, status: show.status, weeks, pct: comm.modelRecoupmentPct, reported, ...g });
 }
 

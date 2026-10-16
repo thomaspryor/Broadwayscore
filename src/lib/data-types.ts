@@ -508,6 +508,12 @@ export interface ShowCommercial {
   reportedReturn?: { lo: number; hi: number; outlet: string; asOf: string | null } | null;
   /** Server-only: the range the display guard hid, for the At Risk rule. toPublicShowCommercial drops it. */
   modelHeldRange?: [number, number, number] | null;
+  /** u/Boring_Waltz_9545's newest "Estimated percentage recouped" [low, high] (scripts/lib/waltz-recoup-estimates.js, BRO-5502). */
+  analystRecoupPct?: [number, number] | null;
+  /** Date of the post that figure came from (YYYY-MM-DD). */
+  analystRecoupAsOf?: string | null;
+  /** That post. */
+  analystRecoupUrl?: string | null;
   modelRecouped?: boolean | null;
   modelBreakeven?: number | null;
   modelCostBasis?: number | null;
@@ -601,6 +607,12 @@ export interface CommercialShowRow {
   modelBelowCosts?: boolean;
   /** ShowCommercial.modelDisplayHold: why the guard hid the bar (getModelHoldLabel). */
   modelDisplayHold?: ShowCommercial['modelDisplayHold'];
+  /** The analyst's estimate (ShowCommercial.analystRecoupPct/AsOf/Url, BRO-5502). */
+  analystRecoupPct?: ShowCommercial['analystRecoupPct'];
+  analystRecoupAsOf?: string | null;
+  analystRecoupUrl?: string | null;
+  /** A closed show's trade-reported % returned (ShowCommercial.reportedReturn). */
+  reportedReturn?: ShowCommercial['reportedReturn'];
   modelMethod: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
   modelDataQuality?: 'high' | 'medium' | 'low';
   /** Reported investor multiple from a cited record (getReportedInvestorMultiple); never modeled. */

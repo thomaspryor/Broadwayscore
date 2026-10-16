@@ -658,6 +658,12 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
     modelRecoupmentPct: data.modelRecoupmentPct || null,
     ...(data.modelBelowCosts ? { modelBelowCosts: true } : {}),
     ...(data.modelDisplayHold ? { modelDisplayHold: data.modelDisplayHold } : {}),
+    ...(data.analystRecoupPct ? {
+      analystRecoupPct: data.analystRecoupPct,
+      analystRecoupAsOf: data.analystRecoupAsOf ?? null,
+      analystRecoupUrl: data.analystRecoupUrl ?? null,
+    } : {}),
+    ...(data.reportedReturn ? { reportedReturn: data.reportedReturn } : {}),
     modelMethod: data.modelMethod || null,
     modelDataQuality: data.modelDataQuality,
     reportedMultiple: getReportedInvestorMultiple(data),

@@ -467,7 +467,7 @@ export default function MethodologyPage() {
               <strong className="text-white">Capitalization</strong> (what it cost to put the show up) comes from SEC filings and trade press. When no figure has been published we say &quot;Undisclosed&quot;, and totals say how many shows are missing, for example &quot;~$40M+&quot; with &quot;3 of 9 undisclosed&quot;. We never count an unknown figure as zero.
             </Bullet>
             <Bullet>
-              <strong className="text-white">Return to investors</strong> only appears when a source reports it. We don&apos;t publish our own guesses at investor returns.
+              <strong className="text-white">Return to investors</strong>, as a multiple of what they put in, only appears when a source reports it. Our estimates stop at recoupment.
             </Bullet>
             <Bullet>
               <strong className="text-white">Weekly grosses</strong> are The Broadway League&apos;s figures, as published by Playbill and BroadwayWorld.
@@ -480,7 +480,16 @@ export default function MethodologyPage() {
           </p>
           <ul className="text-gray-300 space-y-2 text-sm">
             <Bullet>
-              <strong className="text-white">Estimated % recouped</strong> only appears for shows without a final outcome (still running, or closed and Undisclosed), and only when we have enough data. It always comes with a low and a high figure.
+              <strong className="text-white">Estimated % recouped</strong> is how much of its capitalization a show has paid back, as far as anyone outside the production can tell. It always comes with a low and a high figure, which stops at 99% until a recoupment is reported. When even the low figure passes 100%, we say the show is estimated to have recouped but has not announced it.
+            </Bullet>
+            <Bullet>
+              <strong className="text-white">Musicals</strong> show the estimate published each week by u/Boring_Waltz_9545, an analyst who covers Broadway grosses on Reddit&apos;s r/Broadway, with the date of the post and a link to it. Checked against outcomes reported later, those estimates have mostly held up. The Outsiders and Just in Time reached 100% the month they announced recoupment, and Hell&apos;s Kitchen&apos;s final 60% matched the 55 to 60% reported when it closed. Death Becomes Her&apos;s final 10 to 30% was too high for a show later reported as a total loss. Our own model runs higher on musicals than those outcomes, so we don&apos;t show it for them.
+            </Bullet>
+            <Bullet>
+              <strong className="text-white">Plays</strong> show our model&apos;s estimate, which adds up what the show has taken in each week, takes off its running costs, and compares the result with what it cost to put up.
+            </Bullet>
+            <Bullet>
+              <strong className="text-white">No estimate</strong> comes with the reason: the capitalization was never published, the running costs were never reported, the show is too new, or the figure does not apply (nonprofit productions and tour stops raise and repay their money differently).
             </Bullet>
             <Bullet>
               <strong className="text-white">Break-even</strong> is what a show needs to take in each week to cover its running costs. When no running cost has been published we use a typical figure for a show of that size, marked with ~.
@@ -499,7 +508,7 @@ export default function MethodologyPage() {
             </Bullet>
           </ul>
           <p className="text-gray-400 text-xs mt-3">
-            Once a show closes with a known outcome, we stop showing estimates and show only the outcome and the facts behind it. A closed show whose outcome was never announced is marked Undisclosed, and any estimate shown for it is labelled as one.
+            When a show closes without announcing its outcome, it is marked Undisclosed and its last estimate stays as its final figure, still labelled as an estimate. A show marked Fizzle or Flop only shows an estimate that agrees with the label, and a figure reported by the trade press replaces any estimate.
           </p>
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">Outcome labels</h3>

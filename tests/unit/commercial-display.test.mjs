@@ -30,6 +30,8 @@ const {
   getReportedInvestorMultiple,
   getDesignationDisplay,
   getBreakEven,
+  getDisplayableAnalystRange,
+  getRecoupedCellSummary,
 } = await import('../../src/lib/commercial-display.ts');
 
 const base = {
@@ -164,20 +166,23 @@ const modelFields = {
   modelMethod: 'weekly-model',
 };
 
-test('P0-4: a closed show with a final designation shows no model output', () => {
+test('P0-4: a closed show with a final designation never shows an estimate that contradicts it', () => {
   // Back to the Future shape: "Flop" next to a model 86%.
   const flop = { ...base, ...modelFields, designation: 'Flop', status: 'closed', recouped: false };
   assert.equal(isFinalClosedOutcome(flop), true);
   assert.equal(getRecoupmentDisplayMode(flop), 'none');
   assert.equal(getDisplayableModelRange(flop), null);
 
-  for (const designation of ['Fizzle', 'Easy Winner', 'Windfall', 'Miracle', 'Trickle', 'Nonprofit']) {
+  for (const designation of ['Easy Winner', 'Windfall', 'Miracle', 'Trickle', 'Nonprofit', 'Tour Stop']) {
     assert.equal(
       getRecoupmentDisplayMode({ ...flop, designation }),
       'none',
       `closed ${designation} must not quote the model`
     );
   }
+  // BRO-5502: an estimate that agrees with a Fizzle (86% sits in 30-99) shows; one that agrees with a Flop too.
+  assert.equal(getRecoupmentDisplayMode({ ...flop, designation: 'Fizzle' }), 'model');
+  assert.equal(getRecoupmentDisplayMode({ ...flop, modelRecoupmentPct: [0, 12, 25] }), 'model');
 });
 
 test('P0-4: open shows keep the labelled estimate; a closed TBD is not a final outcome', () => {
@@ -236,14 +241,52 @@ test('BRO-5020: a closed TBD that announced recoupment does not say "outcome not
   assert.equal(getDesignationDisplay('Windfall', 'closed', true).label, 'Windfall');
 });
 
-test('BRO-5020: a closed TBD never shows a model %, whatever its quality', () => {
+test('BRO-5502: a closed TBD ("Undisclosed") shows its final estimate, labelled (owner 2026-10-16, replacing BRO-5020)', () => {
+  // Mrs. Doubtfire's shape: closed without an announced outcome, model 0-8%.
   const closedTbd = { designation: 'TBD', status: 'closed', recouped: null, modelRecoupmentPct: [0, 0, 8.2], modelDataQuality: 'medium', modelMethod: 'weekly-model' };
-  assert.equal(getRecoupmentDisplayMode(closedTbd), 'none');
-  assert.equal(getDisplayableModelRange(closedTbd), null);
-  assert.equal(getRecoupmentDisplayMode({ ...closedTbd, designation: undefined }), 'none');
-  // Running TBD with the same model still shows it; a recouped closed TBD shows the announcement.
-  assert.equal(getRecoupmentDisplayMode({ ...closedTbd, status: 'open' }), 'model');
+  assert.equal(getRecoupmentDisplayMode(closedTbd), 'model');
+  assert.deepEqual(getDisplayableModelRange(closedTbd), [0, 0, 8.2]);
+  // The quality floor still holds; a recouped closed TBD shows the announcement.
+  assert.equal(getRecoupmentDisplayMode({ ...closedTbd, modelDataQuality: 'low' }), 'none');
   assert.equal(getRecoupmentDisplayMode({ ...closedTbd, recouped: true }), 'announced');
+});
+
+test('BRO-5502: the analyst figure leads wherever it shows', () => {
+  const twoStrangers = { ...base, status: 'open', modelRecoupmentPct: null, analystRecoupPct: [0, 0], analystRecoupAsOf: '2026-10-13', analystRecoupUrl: 'https://www.reddit.com/r/Broadway/comments/x/' };
+  assert.equal(getRecoupmentDisplayMode(twoStrangers), 'analyst');
+  assert.deepEqual(getDisplayableAnalystRange(twoStrangers), [0, 0]);
+  // Over a model too (the analyst covers musicals, where ours runs high).
+  assert.equal(getRecoupmentDisplayMode({ ...twoStrangers, ...modelFields }), 'analyst');
+  // Never over a recoupment record, and never on a nonprofit or a tour stop.
+  assert.equal(getRecoupmentDisplayMode({ ...twoStrangers, recouped: true }), 'announced');
+  assert.equal(getRecoupmentDisplayMode({ ...twoStrangers, designation: 'Nonprofit' }), 'none');
+  assert.equal(getRecoupmentDisplayMode({ ...twoStrangers, designation: 'Tour Stop' }), 'none');
+  // A range past 100 on an unrecouped show tops out at 99; a low end of 100+ stays (reads "not yet announced").
+  assert.deepEqual(getDisplayableAnalystRange({ ...twoStrangers, analystRecoupPct: [80, 120] }), [80, 99]);
+  assert.deepEqual(getDisplayableAnalystRange({ ...twoStrangers, analystRecoupPct: [100, 100] }), [100, 100]);
+  // A closed Flop takes the analyst's figure only when it fits the label (Death Becomes Her: 10-30).
+  const dbh = { ...twoStrangers, status: 'closed', designation: 'Flop', recouped: false, analystRecoupPct: [10, 30] };
+  assert.equal(getRecoupmentDisplayMode(dbh), 'analyst');
+  assert.equal(getRecoupmentDisplayMode({ ...dbh, analystRecoupPct: [50, 70] }), 'none');
+});
+
+test('BRO-5502: the % Recouped cell always says something', () => {
+  const cell = (over) => getRecoupedCellSummary({ ...base, modelRecoupmentPct: null, status: 'open', ...over });
+  assert.deepEqual(cell({ recouped: true }), { kind: 'recouped' });
+  assert.deepEqual(cell({ analystRecoupPct: [10, 30], analystRecoupAsOf: '2026-10-13', analystRecoupUrl: 'https://r/x' }),
+    { kind: 'analyst', range: [10, 30], asOf: '2026-10-13', url: 'https://r/x' });
+  assert.deepEqual(cell({ ...modelFields }), { kind: 'model', pct: [60, 86, 110] });
+  // A trade-reported return beats every estimate on a closed show (Hell's Kitchen).
+  const hk = { status: 'closed', designation: 'Fizzle', recouped: false, analystRecoupPct: [60, 60], reportedReturn: { lo: 55, hi: 60, outlet: 'Broadway Journal', asOf: 'Oct 2026' } };
+  assert.deepEqual(cell(hk), { kind: 'reported', lo: 55, hi: 60, outlet: 'Broadway Journal', asOf: 'Oct 2026' });
+  assert.equal(cell({ ...hk, reportedReturn: undefined }).kind, 'analyst');
+  assert.equal(cell({ ...hk, reportedReturn: undefined, analystRecoupPct: undefined }).kind, 'loss');
+  assert.deepEqual(cell({ designation: 'Nonprofit' }), { kind: 'reason', text: 'Not applicable: nonprofit' });
+  assert.deepEqual(cell({ designation: 'Tour Stop' }), { kind: 'reason', text: 'Not applicable: tour stop' });
+  assert.deepEqual(cell({ status: 'closed', capitalization: null, modelMethod: 'ai-estimated', modelDataQuality: 'low' }), { kind: 'reason', text: 'Budget not disclosed' });
+  assert.deepEqual(cell({ status: 'closed', modelDataQuality: 'low' }), { kind: 'reason', text: 'Running costs not reported' });
+  assert.deepEqual(cell({ modelDisplayHold: 'awaiting-truth' }), { kind: 'reason', text: 'Not enough reported data yet' });
+  assert.deepEqual(cell({}), { kind: 'reason', text: 'Not enough data to estimate' });
 });
 
 const tradeSource = { type: 'trade', url: 'https://variety.com/2014/legit/news/example', date: '2014-12-10' };

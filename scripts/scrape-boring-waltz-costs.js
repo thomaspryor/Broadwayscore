@@ -37,6 +37,7 @@ const { commercialRecordErrors } = require('./lib/commercial-record-checks');
 const { hasHelpFlag } = require('./lib/cli-help');
 const { waltzAnchor, appendWaltzAnchors, waltzJumpFlags, castEventsFor, shouldAlertNoAnchors } = require('./lib/waltz-cost-history');
 const { buildFitRows, summarizeFit, recordFit } = require('./lib/waltz-model-fit');
+const { applyAnalystRecoupEstimates } = require('./lib/waltz-recoup-estimates');
 
 // Commercial-specific aliases (same as update-commercial-data.js)
 const COMMERCIAL_ALIASES = {
@@ -57,8 +58,10 @@ const COMMERCIAL_ALIASES = {
   'cabaret': 'cabaret-2024',
   'cabaret revival': 'cabaret-2024',
   'gypsy': 'gypsy-2024',
-  'sunset boulevard': 'sunset-blvd-2024',
-  'sunset blvd': 'sunset-blvd-2024',
+  'sunset boulevard': 'sunset-boulevard-2024',
+  'sunset blvd': 'sunset-boulevard-2024',
+  // A typo in nine of the 2025-26 posts.
+  'two stranger (carry a cake across new york)': 'two-strangers',
   'giant musical': 'giant',
 };
 
@@ -80,6 +83,8 @@ r/Broadway Grosses Analysis / Post-Mortem posts (never over a reported figure).
 With --record-history, every figure he posts is also appended to the show's
 costHistory as a dated anchor (deduped by post id), so his series survives
 the gap-fill; without it the history is previewed only.
+The newest "Estimated percentage recouped" per show is stored on the record
+(analystRecoupPct/AsOf/Url, scripts/lib/waltz-recoup-estimates.js, BRO-5502).
   --dry-run         print the changes, write nothing
   --backfill        read his whole post archive, not just the last year; history
                     only, it never changes a current weeklyRunningCost
@@ -426,6 +431,17 @@ async function main() {
   for (const r of history.refused.slice(0, 10)) console.log(`  REFUSED ${r.slug}: ${r.errors.join('; ')}`);
   if (history.noRecord.length) console.log(`  No commercial record (anchors not stored): ${history.noRecord.join(', ')}`);
 
+  // --- The analyst's "Estimated percentage recouped", newest per show (BRO-5502) ---
+  const recoup = applyAnalystRecoupEstimates(commercial.shows, relevantPosts, (name) => {
+    if (!matchCache.has(name)) matchCache.set(name, matchShowName(name, lookup));
+    const show = matchCache.get(name);
+    return show && isBroadwayShow(show) ? show : null;
+  }, { apply: !DRY_RUN });
+  console.log('\n=== Estimated % recouped (analyst figure, newest per show) ===');
+  console.log(`${DRY_RUN ? 'Would update' : 'Updated'}: ${recoup.updated.length} | no commercial record: ${recoup.noRecord.length}`);
+  for (const u of recoup.updated) console.log(`  ${u.slug}: ${u.from ? u.from.join('-') : 'none'} -> ${u.to.join('-')}% (${u.asOf})`);
+  if (recoup.noRecord.length) console.log(`  No commercial record: ${recoup.noRecord.join(', ')}`);
+
   // Single-week jumps >15% in his series with no cast change near them may be
   // a change in his method rather than in the show's costs.
   let castChanges = null;
@@ -508,10 +524,10 @@ async function main() {
 
   // Write
   const costWrites = BACKFILL ? 0 : changes.length;
-  if (!DRY_RUN && (costWrites > 0 || (WRITE_HISTORY && history.added > 0))) {
+  if (!DRY_RUN && (costWrites > 0 || (WRITE_HISTORY && history.added > 0) || recoup.updated.length > 0)) {
     commercial._meta.lastUpdated = new Date().toISOString().slice(0, 10);
     saveCommercial(commercial);
-    console.log(`\nWrote ${costWrites} cost changes and ${WRITE_HISTORY ? history.added : 0} cost-history anchors to ${commercialPath}`);
+    console.log(`\nWrote ${costWrites} cost changes, ${WRITE_HISTORY ? history.added : 0} cost-history anchors and ${recoup.updated.length} recouped estimates to ${commercialPath}`);
   } else if (DRY_RUN && changes.length > 0) {
     console.log('\n[DRY RUN] No files written.');
   } else {

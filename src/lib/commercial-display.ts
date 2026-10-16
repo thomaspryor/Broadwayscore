@@ -19,9 +19,12 @@
 import type { ShowCommercial } from './data-types';
 import { getDesignationBadgeStyle, UNDISCLOSED_DESIGNATION, RECOUPED_UNDISCLOSED_DESIGNATION } from '@/config/commercial';
 import { reportedReturnLabel } from '../../scripts/lib/reported-return';
-import { modelDisplayGuard, displayBasis, playedWeeks, independentEstimate, isRunning } from '../../scripts/lib/model-display-guard';
+import {
+  modelDisplayGuard, displayBasis, playedWeeks, independentEstimate, isRunning,
+  analystRange, estimateFitsDesignation, NO_RECOUPMENT_DESIGNATIONS, RUNNING_SHOWN_MAX,
+} from '../../scripts/lib/model-display-guard';
 
-export type RecoupmentDisplayMode = 'announced' | 'model' | 'none';
+export type RecoupmentDisplayMode = 'announced' | 'analyst' | 'model' | 'none';
 
 /** Minimal shape the display-mode/quality-floor predicates actually read — lets
  *  callers with a narrower row type (e.g. the /biz all-shows table) reuse the
@@ -35,6 +38,8 @@ interface RecoupmentSignals {
   modelMethod?: ShowCommercial['modelMethod'] | null;
   recouped: ShowCommercial['recouped'];
   modelRecoupmentPct?: ShowCommercial['modelRecoupmentPct'];
+  /** u/Boring_Waltz_9545's published estimate (BRO-5502). */
+  analystRecoupPct?: ShowCommercial['analystRecoupPct'];
   designation?: ShowCommercial['designation'];
   status?: string | null;
 }
@@ -75,34 +80,52 @@ export function isClosedWithoutRecouping(
 
 /**
  * Which recoupment treatment the card renders:
- *  - 'announced': recouped:true — render the recoupment record, never the model.
+ *  - 'announced': recouped:true — render the recoupment record, never an estimate.
  *    (Sprint 2 guarantees every recouped:true entry is cited or carries
  *    humanReviewedDesignation:true, but the rule keys off recouped alone so
  *    an uncited entry can never fall through to a dual display.)
- *  - 'none' for a closed show with a final designation (isFinalClosedOutcome),
- *    and for any Nonprofit production (no investors to repay).
- *  - 'model': model output exists and clears the quality floor.
+ *  - 'none' for a Nonprofit production (no investors to repay, BRO-4721) or a
+ *    Tour Stop (its investors are repaid across the tour).
+ *  - 'analyst': u/Boring_Waltz_9545's published estimate (BRO-5502). It leads
+ *    wherever there is one: the analyst covers musicals, where our model stays off.
+ *  - 'model': model output exists and clears the quality floor (the guarded
+ *    copy has already held musicals, wide ranges and short runs).
+ *    A closed TBD ("Undisclosed") shows either estimate as its final figure,
+ *    labelled; owner 2026-10-16, replacing BRO-5020's blanket hide. A closed
+ *    Fizzle or Flop shows one only when it agrees with the label
+ *    (estimateFitsDesignation: Back to the Future "Flop" beside a model 86%
+ *    stays hidden); any other final designation shows none.
  *  - 'none': nothing trustworthy to show. The legacy AI research estimate
  *    (estimatedRecoupmentPct) is deliberately NOT a fallback — it is
  *    ai-estimated by construction, exactly what the floor excludes.
+ * displaysAnalyst / displaysModel (scripts/lib/model-display-guard.js) mirror this.
  */
 export function getRecoupmentDisplayMode(
   commercial: RecoupmentSignals
 ): RecoupmentDisplayMode {
   if (commercial.recouped === true) return 'announced';
-  if (isFinalClosedOutcome(commercial)) return 'none';
-  // Any closed show left here is TBD, which reads "Undisclosed"
-  // (getDesignationDisplay); a model % beside
-  // it would contradict the label. Structural, not left to the quality floor
-  // (BRO-5020: Mrs. Doubtfire's [0,0,8.2] passed the display guard and was kept
-  // off the page only by modelDataQuality 'low').
-  if (commercial.status === 'closed') return 'none';
-  // Nonprofit productions raise no investor capital, so a modeled "% recouped" means nothing (BRO-4721).
-  if (commercial.designation === 'Nonprofit') return 'none';
-  if (commercial.modelRecoupmentPct && meetsModelQualityFloor(commercial)) {
-    return 'model';
-  }
-  return 'none';
+  if (NO_RECOUPMENT_DESIGNATIONS.includes(commercial.designation ?? '')) return 'none';
+  if (getDisplayableAnalystRange(commercial)) return 'analyst';
+  const model = commercial.modelRecoupmentPct;
+  if (!model || !meetsModelQualityFloor(commercial)) return 'none';
+  if (isFinalClosedOutcome(commercial) && !estimateFitsDesignation(model, commercial.designation)) return 'none';
+  return 'model';
+}
+
+/**
+ * The analyst's [low, high] when getRecoupmentDisplayMode would render it, else null:
+ * not on a recouped, nonprofit or tour-stop record, and on a closed Fizzle or
+ * Flop only when it agrees with the label.
+ */
+export function getDisplayableAnalystRange(commercial: RecoupmentSignals): [number, number] | null {
+  if (commercial.recouped === true || NO_RECOUPMENT_DESIGNATIONS.includes(commercial.designation ?? '')) return null;
+  const range = analystRange(commercial);
+  if (!range) return null;
+  if (isFinalClosedOutcome(commercial) && !estimateFitsDesignation(range, commercial.designation)) return null;
+  // A range that reaches past 100 on an unrecouped show tops out at 99, as the
+  // model's does (BRO-5073). A low end of 100+ stays: it reads "Est. recouped,
+  // not yet announced".
+  return range[0] >= 100 ? range : [range[0], Math.min(range[1], RUNNING_SHOWN_MAX)];
 }
 
 /**
@@ -123,6 +146,8 @@ export function applyModelDisplayGuard(
 ): ShowCommercial {
   if (!data.modelRecoupmentPct) return data;
   const running = isRunning(show, now);
+  // Known to be over (BRO-5502): no "too early" hold, while the type rule and past-100 holds still apply.
+  const closed = !!show && !running;
   // Running shows: pre-credit unless the credit is cited (displayBasis, BRO-5073).
   const basis = displayBasis({ pct: data.modelRecoupmentPct, exCreditPct: data.modelReturnedExCreditPct, creditCounted: data.modelTaxCreditCounted, running });
   const pct = basis.pct as [number, number, number];
@@ -132,6 +157,7 @@ export function applyModelDisplayGuard(
     playedWeeks: show ? playedWeeks(show, now) : 0,
     independent: independentEstimate(data),
     running,
+    closed,
     showType: show ? show.type ?? null : undefined,
   });
   if (!g.show) {
@@ -162,7 +188,7 @@ export function getModelHoldLabel(
   if (!hold || hold === 'no-model') return null;
   if (commercial.recouped === true || isFinalClosedOutcome(commercial)) return null;
   if (commercial.designation === 'Nonprofit' || !meetsModelQualityFloor(commercial)) return null;
-  if (commercial.modelBelowCosts) return 'Losing money so far';
+  if (commercial.modelBelowCosts) return commercial.status === 'closed' ? 'Lost money: est. 0% returned' : 'Losing money so far';
   // "Too early" is wrong once the run is over (BRO-5020).
   if (hold === 'few-weeks') return commercial.status === 'closed' ? 'Not enough data to estimate' : 'Too early to estimate';
   if (hold === 'estimates-disagree') return 'Estimates disagree';
@@ -185,6 +211,51 @@ export function getReportedReturnLine(
 ): string | null {
   if (!isFinalClosedOutcome(commercial) || commercial.recouped === true || commercial.designation === 'Nonprofit') return null;
   return reportedReturnLabel(commercial.reportedReturn ?? null);
+}
+
+/** What the /biz % Recouped cell says, decided once for the cell, its sort and the coverage audit (BRO-5502). */
+export type RecoupedCellSummary =
+  | { kind: 'recouped' }
+  | { kind: 'reported'; lo: number; hi: number; outlet: string; asOf: string | null }
+  | { kind: 'analyst'; range: [number, number]; asOf: string | null; url: string | null }
+  | { kind: 'model'; pct: [number, number, number] }
+  | { kind: 'loss'; text: string }
+  | { kind: 'reason'; text: string };
+
+type CellSignals = RecoupmentSignals &
+  Pick<ShowCommercial, 'designation' | 'modelDisplayHold' | 'modelBelowCosts' | 'reportedReturn' | 'analystRecoupAsOf' | 'analystRecoupUrl'> & {
+    designationBasis?: ShowCommercial['designationBasis'] | null;
+    capitalization?: number | null;
+  };
+
+/**
+ * The % Recouped cell, most authoritative first: a recoupment record, a
+ * trade-reported return on a closed show, the analyst's estimate, our model,
+ * the loss phrase of a closed Fizzle/Flop, then the reason there is no figure.
+ * Every commercial row says something; none prints a bare dash (owner,
+ * 2026-10-16: "so many gaps").
+ */
+export function getRecoupedCellSummary(row: CellSignals): RecoupedCellSummary {
+  const mode = getRecoupmentDisplayMode(row);
+  if (mode === 'announced') return { kind: 'recouped' };
+  const rr = row.reportedReturn;
+  if (rr && getReportedReturnLine(row)) return { kind: 'reported', lo: rr.lo, hi: rr.hi, outlet: rr.outlet, asOf: rr.asOf };
+  if (mode === 'analyst') {
+    return { kind: 'analyst', range: getDisplayableAnalystRange(row)!, asOf: row.analystRecoupAsOf ?? null, url: row.analystRecoupUrl ?? null };
+  }
+  if (mode === 'model') return { kind: 'model', pct: row.modelRecoupmentPct! };
+  if (isClosedWithoutRecouping(row)) {
+    return { kind: 'loss', text: lossOutcomePhrase({ designation: row.designation, designationBasis: row.designationBasis ?? undefined }, 'cell') };
+  }
+  const held = getModelHoldLabel(row);
+  if (held) return { kind: 'reason', text: held };
+  if (row.designation === 'Nonprofit') return { kind: 'reason', text: 'Not applicable: nonprofit' };
+  if (row.designation === 'Tour Stop') return { kind: 'reason', text: 'Not applicable: tour stop' };
+  // Why there is no estimate: % recouped needs what the show cost to put up,
+  // and our model needs what it costs to run.
+  if (row.capitalization == null) return { kind: 'reason', text: 'Budget not disclosed' };
+  if (row.modelDataQuality === 'low') return { kind: 'reason', text: 'Running costs not reported' };
+  return { kind: 'reason', text: 'Not enough data to estimate' };
 }
 
 /** The model range when getRecoupmentDisplayMode would render it, else null. */
@@ -320,6 +391,12 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     modelDataQuality: commercial.modelDataQuality,
     modelMethod: commercial.modelMethod,
     ...(commercial.reportedReturn ? { reportedReturn: commercial.reportedReturn } : {}),
+    // The analyst's published estimate (BRO-5502): numbers, a date and the post's URL only.
+    ...(commercial.analystRecoupPct ? {
+      analystRecoupPct: commercial.analystRecoupPct,
+      analystRecoupAsOf: commercial.analystRecoupAsOf ?? null,
+      analystRecoupUrl: commercial.analystRecoupUrl ?? null,
+    } : {}),
   };
 }
 
@@ -592,6 +669,8 @@ function pctText(value: number): string {
 // An investor cannot get back less than nothing (BRO-4989 checker #5).
 const BELOW_COSTS_VALUE = '0% returned';
 const BELOW_COSTS_NOTE = 'losing money so far';
+// A closed run's loss is over, not ongoing (BRO-5502).
+const BELOW_COSTS_FINAL_NOTE = 'lost money';
 
 export interface ModelRecoupmentLabels {
   /** Rounded, clamped at 0. */
@@ -607,7 +686,7 @@ export interface ModelRecoupmentLabels {
   ariaLabel: string;
   /** Progress-bar fill, 0-100. */
   barWidth: number;
-  /** "losing money so far" when the model central is below 0, else null. */
+  /** "losing money so far" ("lost money" once the run is over) when the model central is below 0, else null. */
   belowCostsNote: string | null;
 }
 
@@ -619,8 +698,9 @@ export interface ModelRecoupmentLabels {
  */
 export function getModelRecoupmentLabels(
   estimatedPct: [number, number] | [number, number, number],
-  { belowCosts = false }: { belowCosts?: boolean } = {}
+  { belowCosts = false, final = false }: { belowCosts?: boolean; final?: boolean } = {}
 ): ModelRecoupmentLabels {
+  const belowNote = final ? BELOW_COSTS_FINAL_NOTE : BELOW_COSTS_NOTE;
   const isModel = estimatedPct.length === 3;
   // Clamp at 0: the model can emit negative percentages for deep flops
   // (e.g. cabaret-2024 [-168, -120, -74]); "-120% recouped" is nonsense copy.
@@ -631,7 +711,7 @@ export function getModelRecoupmentLabels(
 
   let label: string;
   if (isModel && belowCosts) {
-    label = `${BELOW_COSTS_VALUE} · ${BELOW_COSTS_NOTE}`;
+    label = `${BELOW_COSTS_VALUE} · ${belowNote}`;
   } else if (isModel) {
     label = `Est. ${valueText} recouped`;
   } else if (low === high || low >= PCT_CAP) {
@@ -649,12 +729,15 @@ export function getModelRecoupmentLabels(
     else rangeLabel = `Range: ${low}–${high}%`;
   }
 
+  // A [low, high] estimate (an analyst's) is read as its range, never as a midpoint it did not state (BRO-5502).
   const ariaLabel = isModel && belowCosts
-    ? `Estimated ${BELOW_COSTS_VALUE}, ${BELOW_COSTS_NOTE} (range ${pctText(low)} to ${pctText(high)})`
-    : `Estimated ${valueText} recouped (range ${pctText(low)} to ${pctText(high)})`;
+    ? `Estimated ${BELOW_COSTS_VALUE}, ${belowNote} (range ${pctText(low)} to ${pctText(high)})`
+    : isModel || low === high
+      ? `Estimated ${valueText} recouped (range ${pctText(low)} to ${pctText(high)})`
+      : `Estimated ${pctText(low)} to ${pctText(high)} recouped`;
   return {
     low, central, high, valueText, label, rangeLabel, ariaLabel, barWidth: Math.min(central, PCT_CAP),
-    belowCostsNote: isModel && belowCosts ? BELOW_COSTS_NOTE : null,
+    belowCostsNote: isModel && belowCosts ? belowNote : null,
   };
 }
 
@@ -662,6 +745,24 @@ const MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December',
 ];
+
+const SHORT_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+/** "2026-10-13" → "Oct 2026" (short) or "Oct 13, 2026" (long); anything else → null. For estimate dates (BRO-5502). */
+export function formatEstimateDate(iso: string | null | undefined, form: 'short' | 'long' = 'short'): string | null {
+  const m = typeof iso === 'string' ? /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso) : null;
+  if (!m) return null;
+  const month = SHORT_MONTHS[parseInt(m[2], 10) - 1];
+  if (!month) return null;
+  return form === 'long' ? `${month} ${parseInt(m[3], 10)}, ${m[1]}` : `${month} ${m[1]}`;
+}
+
+/** The note over every /biz table: what marks an estimate and whose it is (BRO-5502). */
+export const ESTIMATE_SOURCES_NOTE = "~ and Est. mark estimates: musicals use an r/Broadway analyst's weekly figure, plays use our model.";
+
+/** Who the analyst estimate belongs to, in the words every page uses (BRO-5502). */
+export const ANALYST_SHORT_LABEL = 'r/Broadway analyst';
+export const ANALYST_FULL_LABEL = 'u/Boring_Waltz_9545, who posts weekly grosses analysis on r/Broadway';
 
 /** "2025-01" → "January 2025"; "1999" → "1999"; junk → null. */
 export function formatRecoupedDate(date: string | null | undefined): string | null {

@@ -5,8 +5,9 @@
  * (/biz running shows, /biz/season/[season] all shows).
  * Sprint 2, Task 2.6. % Recouped / Return columns added Sprint A (task #158).
  * BRO-4623: Return shows only a reported investor multiple (never the model);
- * closed shows with a final designation show no model figures; closed TBD
- * reads "Undisclosed".
+ * closed TBD reads "Undisclosed". BRO-5502: % Recouped always says something
+ * (getRecoupedCellSummary): a record, a reported return, the analyst's or our
+ * model's labelled estimate, a loss phrase, or the reason there is none.
  */
 
 import { useState, useMemo } from 'react';
@@ -19,16 +20,15 @@ import {
 import type { CommercialShowRow } from '@/lib/data-types';
 import { formatCurrency, formatCapitalization } from '@/lib/biz-format';
 import {
-  getRecoupmentDisplayMode,
-  getModelHoldLabel,
+  getRecoupedCellSummary,
   getDesignationDisplay,
   publicSourceText,
-  isClosedWithoutRecouping,
-  lossOutcomePhrase,
   LOSS_ON_SILENCE_CAVEAT,
+  type RecoupedCellSummary,
 } from '@/lib/commercial-display';
 import { isRunningStatus } from '@/lib/commercial-metrics';
 import RecoupmentProgressBar from '@/components/RecoupmentProgressBar';
+import AnalystEstimateCredit from '@/components/biz/AnalystEstimateCredit';
 
 interface AllShowsTableProps {
   shows: CommercialShowRow[];
@@ -40,13 +40,17 @@ type SortDirection = 'asc' | 'desc';
 
 const RECOUPED_SORT_VALUE = 1_000_000;
 
-/** Sort key for the % Recouped column. Mirrors what RecoupedCell renders, so
- *  a row showing "—" never sorts as if it had a number. Recouped shows sort
- *  above every estimate without consulting the (hidden) model. */
+/** Sort key for the % Recouped column, from the same summary RecoupedCell
+ *  renders, so a row without a figure never sorts as if it had one. Recouped
+ *  shows sort above every estimate; a range sorts by its middle; a known loss
+ *  with no figure sorts below every figure but above rows we know nothing about. */
 function getRecoupedSortValue(show: CommercialShowRow): number {
-  const mode = getRecoupmentDisplayMode(show);
-  if (mode === 'announced') return RECOUPED_SORT_VALUE;
-  if (mode === 'model') return show.modelRecoupmentPct![1];
+  const cell = getRecoupedCellSummary(show);
+  if (cell.kind === 'recouped') return RECOUPED_SORT_VALUE;
+  if (cell.kind === 'reported') return (cell.lo + cell.hi) / 2;
+  if (cell.kind === 'analyst') return (cell.range[0] + cell.range[1]) / 2;
+  if (cell.kind === 'model') return cell.pct[1];
+  if (cell.kind === 'loss') return -1;
   return -Infinity;
 }
 
@@ -77,15 +81,17 @@ function CitationIcon() {
   );
 }
 
-/** % Recouped cell: a recoupment record renders solid + a citation marker
- *  (plus "Not publicly announced" when it was never announced, matching the
- *  show page); a modeled estimate renders the shared progress bar (labelled
- *  "Est."); a closed Fizzle or Flop says lossOutcomePhrase(…, 'cell')
- *  (isClosedWithoutRecouping); anything else renders "—". */
+/** % Recouped cell, one branch per getRecoupedCellSummary kind: a recoupment
+ *  record renders solid + a citation marker (plus "Not publicly announced"
+ *  when it was never announced, matching the show page); a reported return
+ *  names its outlet; an estimate renders the shared progress bar (labelled
+ *  "Est.", the analyst's with a credit line to the post); a closed Fizzle or
+ *  Flop says lossOutcomePhrase(…, 'cell'); otherwise the reason there is no
+ *  figure. */
 function RecoupedCell({ show }: { show: CommercialShowRow }) {
-  const displayMode = getRecoupmentDisplayMode(show);
+  const cell: RecoupedCellSummary = getRecoupedCellSummary(show);
 
-  if (displayMode === 'announced') {
+  if (cell.kind === 'recouped') {
     const source = publicSourceText(show.recoupedSource);
     return (
       <div>
@@ -115,24 +121,47 @@ function RecoupedCell({ show }: { show: CommercialShowRow }) {
     );
   }
 
-  if (displayMode === 'model' && show.modelRecoupmentPct) {
+  if (cell.kind === 'reported') {
+    const figure = cell.hi === 0 ? '0%' : cell.lo === cell.hi ? `${cell.lo}%` : `${cell.lo}–${cell.hi}%`;
     return (
-      <div className="w-36 sm:w-40" title="Model estimate, not a reported figure. See methodology.">
-        <RecoupmentProgressBar estimatedPct={show.modelRecoupmentPct} modelMethod={show.modelMethod} belowCosts={show.modelBelowCosts} />
+      <div title={`Reported by ${cell.outlet}${cell.asOf ? `, ${cell.asOf}` : ''}`}>
+        <div className="text-sm text-gray-200 whitespace-nowrap">{figure} returned</div>
+        <div className="text-[10px] text-gray-500 whitespace-nowrap">Reported · {cell.outlet}</div>
       </div>
     );
   }
 
-  if (isClosedWithoutRecouping(show)) {
-    return <span className="text-gray-400 text-sm">{lossOutcomePhrase({ designation: show.designation, designationBasis: show.designationBasis ?? undefined }, 'cell')}</span>;
+  if (cell.kind === 'analyst') {
+    const title = `Estimate published by an r/Broadway analyst (u/Boring_Waltz_9545), not a reported figure. See methodology.`;
+    if (cell.range[0] >= 100) {
+      return (
+        <div title={title}>
+          <div className="text-xs text-gray-300">Est. recouped, not yet announced</div>
+          <AnalystEstimateCredit asOf={cell.asOf} url={cell.url} compact />
+        </div>
+      );
+    }
+    return (
+      <div className="w-36 sm:w-40" title={title}>
+        <RecoupmentProgressBar estimatedPct={cell.range} />
+        <AnalystEstimateCredit asOf={cell.asOf} url={cell.url} compact />
+      </div>
+    );
   }
 
-  const held = getModelHoldLabel(show);
-  if (held) {
-    return <span className="text-gray-400 text-xs" data-testid="model-hold">{held}</span>;
+  if (cell.kind === 'model') {
+    return (
+      <div className="w-36 sm:w-40" title="Model estimate, not a reported figure. See methodology.">
+        <RecoupmentProgressBar estimatedPct={cell.pct} modelMethod={show.modelMethod} belowCosts={show.modelBelowCosts} final={show.status === 'closed'} />
+      </div>
+    );
   }
 
-  return <span className="text-gray-500">—</span>;
+  if (cell.kind === 'loss') {
+    return <span className="text-gray-400 text-sm">{cell.text}</span>;
+  }
+
+  return <span className="text-gray-400 text-xs" data-testid="model-hold">{cell.text}</span>;
 }
 
 export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTableProps) {

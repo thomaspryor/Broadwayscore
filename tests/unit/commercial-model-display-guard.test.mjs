@@ -21,9 +21,10 @@ const {
 
 const now = new Date('2026-10-10');
 const running = { previewsStartDate: '2025-10-01', openingDate: '2025-11-01' }; // ~53 weeks played
-// Closed with designation TBD: the bar still shows, and the running-show launch
-// switch does not apply, so the shown-copy tests use it.
-const closedTbd = { ...running, closingDate: '2026-10-01', status: 'closed' };
+// Closed play with designation TBD: the bar still shows, and the running-show
+// launch switch does not apply, so the shown-copy tests use it. A play: closed
+// musicals keep the model off too (BRO-5502).
+const closedTbd = { ...running, closingDate: '2026-10-01', status: 'closed', type: 'play' };
 const rec = (over) => ({ designation: 'TBD', recouped: null, modelMethod: 'weekly-model', modelDataQuality: 'medium', ...over });
 
 test('Schmigadoon -169 is hidden: no number reaches the page', () => {

@@ -23,7 +23,7 @@ import {
 } from '@/lib/data-commercial';
 import { getGrossesWeekEnding } from '@/lib/data-grosses';
 import { formatDataDate, formatDevelopmentDate, sortNewestFirst } from '@/lib/biz-format';
-import { lossOutcomePhrase } from '@/lib/commercial-display';
+import { lossOutcomePhrase, ESTIMATE_SOURCES_NOTE } from '@/lib/commercial-display';
 
 import SeasonStatsCard from '@/components/biz/SeasonStatsCard';
 import RecentDevelopmentsList, { type DevelopmentItem } from '@/components/biz/RecentDevelopmentsList';
@@ -237,7 +237,7 @@ export default function BizDashboard() {
                 </p>
               )}
               <p className="text-xs text-amber-500/70 mt-1">
-                ~ marks an estimate.{' '}
+                {ESTIMATE_SOURCES_NOTE}{' '}
                 <Link href="/methodology#commercial" className="underline hover:text-amber-400">
                   How we measure
                 </Link>

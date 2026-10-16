@@ -7,16 +7,21 @@
 //
 // Hidden when any of:
 //   few-weeks       fewer than 12 weeks played: too early to mean anything
+//                   (not for a closed show: its run is complete, BRO-5502)
 //   out-of-bounds   central outside [-25, 150]: the model is off its rails
 //                   (Schmigadoon -169)
 //   estimates-disagree  two independent estimates disagree: the record holds
 //                   an outside range (trade, producer or a Reddit analysis;
 //                   anything but our own inference) and the model central is
 //                   more than 25 points outside it (checker decision (c))
-//   too-uncertain   the model range is more than 60 points wide: one printed
-//                   number would overclaim (checker, 2026-10-10)
-//   awaiting-truth  a running show, while RUNNING_MODEL_BAR_ENABLED is off
-//   past-100-unannounced  a running show the model puts at 100% or more: the
+//   too-uncertain   the printed range (negatives shown as 0) is more than 60
+//                   points wide: one printed number would overclaim (checker,
+//                   2026-10-10; measured as printed since BRO-5502, so
+//                   [-42, -3, 33] prints as 0-33, not as 75 points of doubt)
+//   awaiting-truth  a running show, while RUNNING_MODEL_BAR_ENABLED is off, or
+//                   any show whose type is not in RUNNING_MODEL_BAR_TYPES,
+//                   running or closed (musicals: BRO-5073, BRO-5502)
+//   past-100-unannounced  a running or closed show the model puts at 100% or more: the
 //                   bar would read "100%+" (recouped) on a show that has not
 //                   announced it (BRO-5073: Mean Girls read 144 half a year
 //                   before it recouped). A shown range tops out at 99.
@@ -35,6 +40,7 @@
 // number stays internal.
 
 const { runWindow } = require('./run-window');
+const { FIZZLE_MIN_RETURNED_PCT } = require('./commercial-designations');
 // Our own "Inferred:"/"Estimated:" figures are not a report.
 const { OWN_INFERENCE, STATED_PCT } = require('./recoupment-ground-truth');
 
@@ -53,28 +59,84 @@ const RUNNING_SHOWN_MAX = 99;
 // Owner turned it on for plays, 2026-10-11 (BRO-5073 timing test; strict
 // backtest passes). Still inside the held Commercial Scorecard build.
 const RUNNING_MODEL_BAR_ENABLED = true;
-// Show types that get the running bar once the flag is on (BRO-5073): plays
+// Show types that get the model bar once the flag is on (BRO-5073): plays
 // only. The timing backtest finds the model crosses 100% a median 1.5 weeks
 // before a play's announcement (never more than 10 early) but up to a year
 // early for musicals. Add 'musical' when the weekly revisit bar is met for them.
+// Closed shows follow the same rule (BRO-5502): the model's final figure ran
+// high on closed musicals too (Hell's Kitchen 91 vs a reported 55-60, Death
+// Becomes Her 45 vs a reported total loss). Musicals show an analyst's figure
+// instead (analystRecoupPct, scripts/lib/waltz-recoup-estimates.js).
 const RUNNING_MODEL_BAR_TYPES = ['play'];
 // Notes stand in for a source only when they state a figure for the money
 // returned or lost ("$6M loss (~40% of cap)"); notes without one ("No trade
 // report of the capitalization") are no estimate (checker (c), 2026-10-10).
 
+/** Designations with no investors' money of their own to recoup on this page. */
+const NO_RECOUPMENT_DESIGNATIONS = ['Nonprofit', 'Tour Stop'];
+
+/**
+ * The analyst's figure as a [low, high] range, or null when the record has none or it
+ * is malformed (BRO-5502).
+ * @returns {[number, number] | null}
+ */
+function analystRange(comm) {
+  const p = comm && comm.analystRecoupPct;
+  if (!Array.isArray(p) || p.length !== 2 || !p.every((v) => typeof v === 'number' && Number.isFinite(v) && v >= 0)) return null;
+  return /** @type {[number, number]} */ ([Math.min(...p), Math.max(...p)]);
+}
+
+/**
+ * Can an estimate sit next to a closed show's final designation without
+ * contradicting it (BRO-5502)? Its middle must fall in the label's band:
+ * Flop under FIZZLE_MIN_RETURNED_PCT returned, Fizzle from there to under
+ * 100. Back to the Future read "Flop" next to a model 86% (BRO-4623): that
+ * stays hidden. Any other final designation takes no estimate.
+ * @param {number[]} range [low, high] or [low, central, high]
+ */
+function estimateFitsDesignation(range, designation) {
+  if (!Array.isArray(range) || range.length < 2) return false;
+  const mid = range.length === 3 ? range[1] : (range[0] + range[1]) / 2;
+  if (designation === 'Flop') return mid < FIZZLE_MIN_RETURNED_PCT;
+  if (designation === 'Fizzle') return mid >= FIZZLE_MIN_RETURNED_PCT && mid < 100;
+  return false;
+}
+
+/** A closed show with a settled (non-TBD) designation. */
+function isFinalClosed(comm, show) {
+  return !!show && show.status === 'closed' && !!comm.designation && comm.designation !== 'TBD';
+}
+
+/**
+ * Does the site show the analyst's figure for this record today? Mirrors
+ * getRecoupmentDisplayMode(...) === 'analyst' in src/lib/commercial-display.ts.
+ * The analyst's figure leads wherever there is one (they cover musicals, where our model
+ * stays off); a closed show's final designation must not contradict it.
+ */
+function displaysAnalyst(comm, show) {
+  if (!comm || !show) return false;
+  if (comm.recouped === true || NO_RECOUPMENT_DESIGNATIONS.includes(comm.designation)) return false;
+  const range = analystRange(comm);
+  if (!range) return false;
+  return !isFinalClosed(comm, show) || estimateFitsDesignation(range, comm.designation);
+}
+
 /**
  * Does the site show the model bar for this record today? Mirrors
  * getRecoupmentDisplayMode(...) === 'model' in src/lib/commercial-display.ts
- * (a unit test pins the two together).
+ * (a unit test pins the two together). `comm` is the guarded record
+ * (applyModelDisplayGuard), so a held model is already null here.
  */
 function displaysModel(comm, show) {
   if (!comm || !show) return false;
   if (comm.recouped === true) return false;
-  // Closed: a final designation is settled, and a TBD reads "Undisclosed" (BRO-5020).
-  if (show.status === 'closed') return false;
-  if (comm.designation === 'Nonprofit') return false;
+  if (NO_RECOUPMENT_DESIGNATIONS.includes(comm.designation)) return false;
+  if (displaysAnalyst(comm, show)) return false;
   if (!comm.modelRecoupmentPct) return false;
-  return comm.modelDataQuality !== 'low' && comm.modelMethod !== 'ai-estimated';
+  if (comm.modelDataQuality === 'low' || comm.modelMethod === 'ai-estimated') return false;
+  // Closed TBD shows the final estimate; a closed Fizzle/Flop only when the
+  // estimate agrees with it (BRO-5502, replacing BRO-5020's blanket hide).
+  return !isFinalClosed(comm, show) || estimateFitsDesignation(comm.modelRecoupmentPct, comm.designation);
 }
 
 /** Still running today: not closed and no closing date already past. */
@@ -103,14 +165,17 @@ function independentEstimate(comm) {
 }
 
 /**
- * @param {{ pct: [number, number, number] | null | undefined, playedWeeks: number, independent?: [number, number] | null, running?: boolean, runningEnabled?: boolean, showType?: string | null, runningTypes?: string[], starDealUnknown?: boolean }} input
+ * `closed` (BRO-5502): the run is over, so few-weeks does not apply, while the
+ * type rule and the past-100 holds do. Callers that know neither (running and
+ * closed both false) keep the original behaviour.
+ * @param {{ pct: [number, number, number] | null | undefined, playedWeeks: number, independent?: [number, number] | null, running?: boolean, closed?: boolean, runningEnabled?: boolean, showType?: string | null, runningTypes?: string[], starDealUnknown?: boolean }} input
  * @returns {{ show: boolean, reason: null | 'no-model' | 'star-deal-unknown' | 'few-weeks' | 'out-of-bounds' | 'estimates-disagree' | 'too-uncertain' | 'awaiting-truth' | 'past-100-unannounced' | 'estimated-recouped', shown: [number, number, number] | null, belowCosts: boolean }}
  */
-function modelDisplayGuard({ pct, playedWeeks: weeks, independent = null, running = false, runningEnabled = RUNNING_MODEL_BAR_ENABLED, showType, runningTypes = RUNNING_MODEL_BAR_TYPES, starDealUnknown = false }) {
+function modelDisplayGuard({ pct, playedWeeks: weeks, independent = null, running = false, closed = false, runningEnabled = RUNNING_MODEL_BAR_ENABLED, showType, runningTypes = RUNNING_MODEL_BAR_TYPES, starDealUnknown = false }) {
   const hide = (reason) => ({ show: false, reason, shown: null, belowCosts: false });
   if (!Array.isArray(pct) || pct.length !== 3 || !pct.every((v) => typeof v === 'number' && Number.isFinite(v))) return hide('no-model');
   const central = pct[1];
-  if (!(weeks >= MIN_PLAYED_WEEKS)) return hide('few-weeks');
+  if (!closed && !(weeks >= MIN_PLAYED_WEEKS)) return hide('few-weeks');
   // After few-weeks, so a new show still reads "Too early" (BRO-5029).
   if (starDealUnknown) return hide('star-deal-unknown');
   if (central < CENTRAL_MIN || central > CENTRAL_MAX) return hide('out-of-bounds');
@@ -118,11 +183,15 @@ function modelDisplayGuard({ pct, playedWeeks: weeks, independent = null, runnin
     const off = central < independent[0] ? independent[0] - central : central > independent[1] ? central - independent[1] : 0;
     if (off > MAX_DISAGREEMENT) return hide('estimates-disagree');
   }
-  if (pct[2] - pct[0] > MAX_RANGE_WIDTH) return hide('too-uncertain');
+  // Width as printed: an investor cannot get back less than nothing (BRO-5502).
+  if (Math.max(0, pct[2]) - Math.max(0, pct[0]) > MAX_RANGE_WIDTH) return hide('too-uncertain');
   // showType undefined (callers that predate the per-type switch) keeps the flag alone.
-  if (running && (!runningEnabled || (showType !== undefined && !runningTypes.includes(showType || 'musical')))) return hide('awaiting-truth');
-  if (running && central >= 100) return hide(pct[0] >= 100 ? 'estimated-recouped' : 'past-100-unannounced');
-  const top = running ? RUNNING_SHOWN_MAX : Infinity;
+  const typeHeld = showType !== undefined && !runningTypes.includes(showType || 'musical');
+  if (running && (!runningEnabled || typeHeld)) return hide('awaiting-truth');
+  if (closed && typeHeld) return hide('awaiting-truth');
+  if ((running || closed) && central >= 100) return hide(pct[0] >= 100 ? 'estimated-recouped' : 'past-100-unannounced');
+  // An unrecouped show never prints "100%+" (BRO-5073), closed ones included (BRO-5502: Our Town, a Fizzle, read 56%-100%+).
+  const top = running || closed ? RUNNING_SHOWN_MAX : Infinity;
   return { show: true, reason: null, shown: pct.map((v) => Math.min(top, Math.max(0, v))), belowCosts: central < 0 };
 }
 
@@ -145,7 +214,7 @@ function displayBasis({ pct, exCreditPct, creditCounted, running = false, runnin
 }
 
 module.exports = {
-  displayBasis,
+  displayBasis, analystRange, estimateFitsDesignation, displaysAnalyst, NO_RECOUPMENT_DESIGNATIONS,
   modelDisplayGuard, displaysModel, playedWeeks, independentEstimate, isRunning, RUNNING_MODEL_BAR_ENABLED, RUNNING_MODEL_BAR_TYPES,
   MIN_PLAYED_WEEKS, CENTRAL_MIN, CENTRAL_MAX, MAX_DISAGREEMENT, MAX_RANGE_WIDTH, RUNNING_SHOWN_MAX,
 };

@@ -15,6 +15,7 @@ import {
 
 import AllShowsTable from '@/components/biz/AllShowsTable';
 import { formatCapitalSummary } from '@/lib/biz-format';
+import { ESTIMATE_SOURCES_NOTE } from '@/lib/commercial-display';
 
 // Dynamically generate params from actual data - auto-updates when shows are added
 export function generateStaticParams() {
@@ -108,7 +109,7 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
             Commercial data for all Broadway productions from this season
           </p>
           <p className="text-xs text-amber-500/70 mt-1">
-            ~ marks an estimate.{' '}
+            {ESTIMATE_SOURCES_NOTE}{' '}
             <Link href="/methodology#commercial" className="underline hover:text-amber-400">
               How we measure
             </Link>

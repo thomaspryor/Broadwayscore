@@ -4,7 +4,7 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { modelDisplayGuard, displayBasis, displaysModel, playedWeeks, independentEstimate, isRunning, RUNNING_MODEL_BAR_ENABLED, RUNNING_MODEL_BAR_TYPES } = require('../../scripts/lib/model-display-guard');
+const { modelDisplayGuard, displayBasis, displaysModel, displaysAnalyst, analystRange, estimateFitsDesignation, playedWeeks, independentEstimate, isRunning, RUNNING_MODEL_BAR_ENABLED, RUNNING_MODEL_BAR_TYPES } = require('../../scripts/lib/model-display-guard');
 
 describe('modelDisplayGuard', () => {
   test('Schmigadoon -169 is hidden, not printed', () => {
@@ -30,10 +30,12 @@ describe('modelDisplayGuard', () => {
     assert.deepEqual(g, { show: true, reason: null, shown: [0, 0, 15], belowCosts: true });
     assert.equal(modelDisplayGuard({ pct: [30, 64, 85], playedWeeks: 132 }).belowCosts, false);
   });
-  test('a range more than 60 points wide is too uncertain to print', () => {
+  test('a range more than 60 points wide, as printed, is too uncertain to print', () => {
     // Gatsby today: one 64% over a -3..120 range overclaims.
     assert.equal(modelDisplayGuard({ pct: [-2.7, 63.6, 120.1], playedWeeks: 132 }).reason, 'too-uncertain');
-    assert.equal(modelDisplayGuard({ pct: [-42, -3, 33], playedWeeks: 49 }).reason, 'too-uncertain');
+    // BRO-5502: width is measured as printed. Two Strangers [-42, -3, 33] prints 0-33.
+    assert.deepEqual(modelDisplayGuard({ pct: [-42, -3, 33], playedWeeks: 49 }), { show: true, reason: null, shown: [0, 0, 33], belowCosts: true });
+    assert.equal(modelDisplayGuard({ pct: [-30, 40, 75], playedWeeks: 49 }).reason, 'too-uncertain');
     assert.equal(modelDisplayGuard({ pct: [10, 40, 70], playedWeeks: 49 }).show, true);
     assert.equal(modelDisplayGuard({ pct: [10, 40, 70.1], playedWeeks: 49 }).reason, 'too-uncertain');
     // A disagreement is the more useful reason when both hold.
@@ -110,16 +112,69 @@ describe('displaysModel (mirrors getRecoupmentDisplayMode === "model")', () => {
   test('shows a running record with a good model', () => {
     assert.equal(displaysModel({ modelRecoupmentPct: pct }, { status: 'open' }), true);
   });
-  test('announced, final closed, nonprofit, low quality and ai-estimated do not', () => {
+  test('closed: TBD shows the final estimate; a Fizzle or Flop only when it agrees (BRO-5502)', () => {
+    assert.equal(displaysModel({ modelRecoupmentPct: pct, designation: 'TBD' }, { status: 'closed' }), true);
+    assert.equal(displaysModel({ modelRecoupmentPct: pct, designation: 'Flop' }, { status: 'closed' }), true);
+    // Back to the Future: "Flop" beside a model 86% stays hidden (BRO-4623).
+    assert.equal(displaysModel({ modelRecoupmentPct: [60, 86, 110], designation: 'Flop' }, { status: 'closed' }), false);
+    assert.equal(displaysModel({ modelRecoupmentPct: [60, 86, 110], designation: 'Fizzle' }, { status: 'closed' }), true);
+    assert.equal(displaysModel({ modelRecoupmentPct: pct, designation: 'Fizzle' }, { status: 'closed' }), false);
+    assert.equal(displaysModel({ modelRecoupmentPct: pct, designation: 'Windfall' }, { status: 'closed' }), false);
+  });
+  test('the analyst figure leads: the model stays off when it shows', () => {
+    assert.equal(displaysModel({ modelRecoupmentPct: pct, analystRecoupPct: [0, 0] }, { status: 'open' }), false);
+    // ...unless it contradicts a closed show's label, when the model may still fit.
+    assert.equal(displaysModel({ modelRecoupmentPct: pct, analystRecoupPct: [60, 60], designation: 'Flop' }, { status: 'closed' }), true);
+  });
+  test('announced, nonprofit, tour stop, low quality and ai-estimated do not', () => {
     assert.equal(displaysModel({ modelRecoupmentPct: pct, recouped: true }, { status: 'open' }), false);
-    assert.equal(displaysModel({ modelRecoupmentPct: pct, designation: 'Flop' }, { status: 'closed' }), false);
-    assert.equal(displaysModel({ modelRecoupmentPct: pct, designation: 'TBD' }, { status: 'closed' }), false); // BRO-5020
     assert.equal(displaysModel({ modelRecoupmentPct: pct, designation: 'TBD' }, { status: 'open' }), true);
     assert.equal(displaysModel({ modelRecoupmentPct: pct, designation: 'Nonprofit' }, { status: 'open' }), false);
+    assert.equal(displaysModel({ modelRecoupmentPct: pct, designation: 'Tour Stop' }, { status: 'open' }), false);
     assert.equal(displaysModel({ modelRecoupmentPct: pct, modelDataQuality: 'low' }, { status: 'open' }), false);
     assert.equal(displaysModel({ modelRecoupmentPct: pct, modelMethod: 'ai-estimated' }, { status: 'open' }), false);
     assert.equal(displaysModel({}, { status: 'open' }), false);
     assert.equal(displaysModel(null, { status: 'open' }), false);
+  });
+});
+
+describe('analyst figure (BRO-5502)', () => {
+  test('analystRange: a valid [low, high] in order, else null', () => {
+    assert.deepEqual(analystRange({ analystRecoupPct: [30, 10] }), [10, 30]);
+    assert.deepEqual(analystRange({ analystRecoupPct: [0, 0] }), [0, 0]);
+    for (const v of [undefined, null, [10], [10, NaN], [-5, 10], 'x']) assert.equal(analystRange({ analystRecoupPct: v }), null);
+  });
+  test('estimateFitsDesignation: the middle must sit in the label band', () => {
+    assert.equal(estimateFitsDesignation([10, 30], 'Flop'), true);
+    assert.equal(estimateFitsDesignation([20, 40], 'Flop'), false);
+    assert.equal(estimateFitsDesignation([20, 40], 'Fizzle'), true);
+    assert.equal(estimateFitsDesignation([0, 0], 'Fizzle'), false);
+    assert.equal(estimateFitsDesignation([90, 110], 'Fizzle'), false);
+    assert.equal(estimateFitsDesignation([5, 20, 40], 'Flop'), true);
+    assert.equal(estimateFitsDesignation([10, 30], 'Windfall'), false);
+    assert.equal(estimateFitsDesignation(null, 'Flop'), false);
+  });
+  test('displaysAnalyst: running or closed TBD; a closed label it fits; never recouped, nonprofit or tour', () => {
+    const est = { analystRecoupPct: [0, 0] };
+    assert.equal(displaysAnalyst({ ...est, designation: 'TBD' }, { status: 'open' }), true);
+    assert.equal(displaysAnalyst({ ...est, designation: 'TBD' }, { status: 'closed' }), true);
+    assert.equal(displaysAnalyst({ ...est, designation: 'Flop' }, { status: 'closed' }), true);
+    assert.equal(displaysAnalyst({ ...est, designation: 'Fizzle' }, { status: 'closed' }), false);
+    assert.equal(displaysAnalyst({ ...est, recouped: true }, { status: 'open' }), false);
+    assert.equal(displaysAnalyst({ analystRecoupPct: [83, 83], designation: 'Nonprofit' }, { status: 'closed' }), false);
+    assert.equal(displaysAnalyst({ ...est, designation: 'Tour Stop' }, { status: 'open' }), false);
+    assert.equal(displaysAnalyst({ designation: 'TBD' }, { status: 'open' }), false);
+    assert.equal(displaysAnalyst(null, { status: 'open' }), false);
+  });
+  test('a closed show is never "too early", while musicals stay off and past-100 holds apply', () => {
+    assert.equal(modelDisplayGuard({ pct: [10, 20, 30], playedWeeks: 4, closed: true }).show, true);
+    assert.equal(modelDisplayGuard({ pct: [10, 20, 30], playedWeeks: 4 }).reason, 'few-weeks');
+    assert.equal(modelDisplayGuard({ pct: [10, 20, 30], playedWeeks: 40, closed: true, showType: 'musical' }).reason, 'awaiting-truth');
+    assert.equal(modelDisplayGuard({ pct: [10, 20, 30], playedWeeks: 40, closed: true, showType: 'play' }).show, true);
+    assert.equal(modelDisplayGuard({ pct: [100, 120, 140], playedWeeks: 40, closed: true, showType: 'play' }).reason, 'estimated-recouped');
+    assert.equal(modelDisplayGuard({ pct: [80, 105, 140], playedWeeks: 40, closed: true, showType: 'play' }).reason, 'past-100-unannounced');
+    // Our Town (closed Fizzle) [55.6, 83.6, 109.6]: the shown range tops out at 99.
+    assert.deepEqual(modelDisplayGuard({ pct: [55.6, 83.6, 109.6], playedWeeks: 40, closed: true, showType: 'play' }).shown, [55.6, 83.6, 99]);
   });
 });
 

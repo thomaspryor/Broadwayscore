@@ -79,3 +79,19 @@ test('legacy 2-value estimate: "~low–high%", capped at "100%+"', () => {
   assert.equal(getModelRecoupmentLabels([250, 350]).label, 'Est. ~100%+ recouped');
   assert.equal(getModelRecoupmentLabels([30, 50]).rangeLabel, null);
 });
+
+test('BRO-5502: a closed run below costs "lost money"; a running one is "losing money so far"', () => {
+  const running = getModelRecoupmentLabels([-20, -3, 15], { belowCosts: true });
+  assert.equal(running.label, '0% returned · losing money so far');
+  const closed = getModelRecoupmentLabels([-40, -20, 0.5], { belowCosts: true, final: true });
+  assert.equal(closed.label, '0% returned · lost money');
+  assert.equal(closed.belowCostsNote, 'lost money');
+  assert.ok(closed.ariaLabel.includes('lost money'));
+  // Not below costs: the final flag changes nothing.
+  assert.equal(getModelRecoupmentLabels([57, 78, 97], { final: true }).label, 'Est. 78% recouped');
+});
+
+test('BRO-5502: an analyst range is read out as its range, not a midpoint it never stated', () => {
+  assert.equal(getModelRecoupmentLabels([10, 30]).ariaLabel, 'Estimated 10% to 30% recouped');
+  assert.equal(getModelRecoupmentLabels([0, 0]).ariaLabel, 'Estimated 0% recouped (range 0% to 0%)');
+});
