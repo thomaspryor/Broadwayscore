@@ -121,7 +121,7 @@ function daysUntil(dateStr) {
 
 // A national tour sells per stop, not through show.ticketLinks: its links live
 // in data/tour-tickets.json (fetch-tour-tickets.js). Counting only
-// show.ticketLinks flagged 26 covered tours as missing_tickets (BRO-5455).
+// show.ticketLinks flagged tours that have on-sale stop links as missing_tickets (BRO-5455).
 function loadTourTickets() {
   try {
     return JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'tour-tickets.json'), 'utf8')).tours || {};

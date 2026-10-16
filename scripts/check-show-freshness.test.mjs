@@ -29,3 +29,15 @@ test('show with its own ticketLinks and a closed show are not flagged', () => {
   assert.ok(!types({ ...tour, ticketLinks: [{ url: 'https://y' }] }, {}).includes('missing_tickets'));
   assert.ok(!types({ ...tour, status: 'closed' }, {}).includes('missing_tickets'));
 });
+test('undefined tourTickets and an on-sale row without url do not cover a tour', () => {
+  assert.ok(types(tour, undefined).includes('missing_tickets'));
+  assert.ok(types(tour, { 'x-tour-2026': [{ city: 'A', start: 's', onSale: true }] }).includes('missing_tickets'));
+});
+test('real data/tour-tickets.json keeps the {tours:{id:[rows]}} shape this check reads', async () => {
+  const fs = await import('node:fs');
+  const f = new URL('../data/tour-tickets.json', import.meta.url);
+  if (!fs.existsSync(f)) return;
+  const d = JSON.parse(fs.readFileSync(f, 'utf8'));
+  assert.ok(d.tours && typeof d.tours === 'object');
+  assert.ok(Object.values(d.tours).every(Array.isArray));
+});
