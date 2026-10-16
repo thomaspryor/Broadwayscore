@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-10-14T23:14:36.383Z",
-    "completedAt": "2026-10-14T23:14:44.967Z",
-    "totalReviews": 3,
-    "processed": 3,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 8869,
-      "output": 729,
-      "total": 9598
-    },
-    "costUsd": 0.0236455,
-    "runId": "38652292090",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-15T00:46:17.200Z",
-    "completedAt": "2026-10-15T00:48:58.954Z",
-    "totalReviews": 56643,
-    "processed": 5,
-    "skipped": 56634,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 42022,
-      "output": 1826,
-      "total": 108996
-    },
-    "costUsd": 0.102745175,
-    "runId": "38661460932",
-    "errorDetails": [
-      {
-        "showId": "the-years-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-10-15T00:49:12.524Z",
     "completedAt": "2026-10-15T00:49:49.025Z",
     "totalReviews": 14,
@@ -807759,6 +807721,42 @@
     },
     "costUsd": 0,
     "runId": "38909454428",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-16T14:12:43.626Z",
+    "completedAt": "2026-10-16T14:13:05.134Z",
+    "totalReviews": 15,
+    "processed": 4,
+    "skipped": 11,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 20334,
+      "output": 1145,
+      "cacheRead": 11133,
+      "cacheWrite": 3696,
+      "total": 54056
+    },
+    "costUsd": 0.0919101,
+    "runId": "38913243952",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-16T14:13:07.486Z",
+    "completedAt": "2026-10-16T14:13:12.083Z",
+    "totalReviews": 2,
+    "processed": 2,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 5711,
+      "output": 438,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 6149
+    },
+    "costUsd": 0.015429799999999999,
+    "runId": "38913243952",
     "errorDetails": []
   }
 ]

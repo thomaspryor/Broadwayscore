@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-16T13:37:33.882Z",
+  "timestamp": "2026-10-16T14:19:35.481Z",
   "stats": {
-    "totalReviews": 56989,
+    "totalReviews": 56990,
     "alreadyFlagged": 21168,
     "dateGuardCatches": 193,
     "directorMismatch": 1914,
     "tvFilmSignals": 1585,
-    "londonSignals": 2370,
+    "londonSignals": 2372,
     "offBroadwaySignals": 514,
     "yearMismatch": 147,
-    "noPublishDate": 5303
+    "noPublishDate": 5302
   },
   "findings": [
     {
@@ -68607,20 +68607,6 @@
     },
     {
       "showId": "man-to-man-west-end-2026",
-      "file": "theatre-vibe--lizzie-loveridge.json",
-      "score": 89,
-      "publishDate": "2026-09-26",
-      "url": "https://theatrevibe.co.uk/2026/09/26/review-man-to-man-royal-court-2026/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "man-to-man-west-end-2026",
       "file": "theatreandtonic--penny-walshe.json",
       "score": 79,
       "publishDate": "2026-09-13",
@@ -75499,6 +75485,20 @@
     },
     {
       "showId": "some-woman-west-end-2026",
+      "file": "independent--alice-saville.json",
+      "score": 39,
+      "publishDate": "2026-10-16",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/some-woman-national-theatre-review-b3068031.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 82,
       "publishDate": "2026-10-16",
@@ -75517,6 +75517,20 @@
       "score": 39,
       "publishDate": "2026-10-16",
       "url": "https://www.londontheatre.co.uk/reviews/some-woman-review-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
+      "file": "londontheatre1--chris-omaweng.json",
+      "score": null,
+      "publishDate": "2026-10-16",
+      "url": "https://www.londontheatre1.com/reviews/some-woman-national-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -75548,6 +75562,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
+      "file": "west-end-best-friend--oli-burgin.json",
+      "score": null,
+      "publishDate": "2026-10-16",
+      "url": "https://www.westendbestfriend.co.uk/news/review-some-woman-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
