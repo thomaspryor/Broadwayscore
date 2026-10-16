@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-10-16T17:38:43.981Z",
+  "timestamp": "2026-10-16T17:51:26.813Z",
   "stats": {
     "totalReviews": 57070,
     "alreadyFlagged": 21188,
     "dateGuardCatches": 194,
-    "directorMismatch": 1914,
-    "tvFilmSignals": 1593,
+    "directorMismatch": 1915,
+    "tvFilmSignals": 1594,
     "londonSignals": 2383,
     "offBroadwaySignals": 514,
     "yearMismatch": 147,
@@ -16777,6 +16777,20 @@
     },
     {
       "showId": "hadestown-tour-2024",
+      "file": "arkansas-democrat-gazette--eric-e-harrison.json",
+      "score": 87,
+      "publishDate": "2025-04-25",
+      "url": "https://www.arkansasonline.com/news/2025/apr/25/theater-hadestown-cast-over-performs-in-infernal/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-tour-2024",
       "file": "austin101magazine--jerristarbuck.json",
       "score": 90,
       "publishDate": "2026-02-23",
@@ -25496,7 +25510,7 @@
     {
       "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
       "file": "thewrap--robert-hofler.json",
-      "score": null,
+      "score": 73,
       "publishDate": "2026-10-16",
       "url": "https://www.thewrap.com/creative-content/theater/memoirs-of-amorous-gentlemen-off-broadway-review/",
       "findings": [
@@ -76756,6 +76770,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "ign--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.ign.com/articles/stranger-things-the-first-shadow-reveals-official-image-with-a-demogorgon-taking-center-stage",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"season 3\""
         }
       ]
     },

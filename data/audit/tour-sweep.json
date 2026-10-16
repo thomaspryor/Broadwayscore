@@ -1,12 +1,17 @@
 {
-  "generatedAt": "2026-10-16T17:32:39.978Z",
+  "generatedAt": "2026-10-16T17:43:56.579Z",
   "moved": 0,
   "held": [],
   "repaired": 0,
   "integrity": {
-    "flagged": 0,
+    "flagged": 1,
     "held": false,
-    "rows": []
+    "rows": [
+      {
+        "file": "operation-mincemeat-2025/boston-globe--unknown.json",
+        "kind": "tour-on-broadway"
+      }
+    ]
   },
   "tours": [
     {
@@ -230,7 +235,9 @@
         "operation-mincemeat-2025"
       ],
       "held": false,
-      "counts": {}
+      "counts": {
+        "target-collision": 1
+      }
     },
     {
       "tourId": "boop-tour-2026",
