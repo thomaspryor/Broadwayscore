@@ -1298,14 +1298,11 @@ async function main() {
     const DIGEST_CONCURRENCY_CAP = 3;
     // BRO-5430: planAutofix's tracked check reads only the retired Notion
     // mirror, so a row whose Linear card was already open sat in the 72h gate
-    // labelled 'watching' (11 of 27 rows on 2026-10-16). Fail-soft: null keeps
-    // the gate as before.
-    let openLinearTitles = null;
-    try {
-      openLinearTitles = new Set((await require('./lib/linear-client.js').listOpenIssues()).map((i) => i && i.title).filter(Boolean));
-    } catch (err) {
-      console.error(`[digest] WARN could not read open Linear issues (gate holds every new row): ${String(err.message).slice(0, 120)}`);
-    }
+    // labelled 'watching' (11 of 27 rows on 2026-10-16). Reuses the open-board
+    // fetch above; null (that fetch failed) keeps the gate as before.
+    const openLinearTitles = Array.isArray(openIssues)
+      ? new Set(openIssues.map((i) => i && i.title).filter(Boolean))
+      : null;
     autofixRows = runAutofix({ plan: planAutofix({ health: sections.health, extraIssues: localRollupIssues({ health: sections.health, freshnessCount: sections.freshness?.count || 0, freshnessItems: sections.freshness?.items, stuckCount }), tasks, queued: queuedForAutofix }), dryRun: autofixDryRun, log: (m) => console.log(m), concurrencyCap: DIGEST_CONCURRENCY_CAP, openLinearTitles });
     // Liveness gate (task #940, owner screenshots 2026-08-03): the digest
     // once claimed "a fix session is working on it now" for 4 issues whose
