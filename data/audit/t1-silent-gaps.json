@@ -1,43 +1,26 @@
 {
-  "generatedAt": "2026-10-16T10:22:06.788Z",
+  "generatedAt": "2026-10-16T12:12:23.732Z",
   "windowDays": 45,
   "showsScanned": 176,
   "gaps": [
     {
-      "showId": "cosi-fan-tutte-off-broadway-2026",
-      "title": "Così fan tutte",
-      "openingDate": "2026-09-23",
-      "file": "talkinbroadway--unknown.json",
-      "outletId": "talkinbroadway",
+      "showId": "stuffed-off-west-end-2026",
+      "title": "Stuffed",
+      "openingDate": "2026-10-14",
+      "file": "nytg--unknown.json",
+      "outletId": "nytg",
       "tier": 2,
-      "type": "empty-body",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654389",
+      "type": "unscored",
+      "dispatchable": false,
+      "url": "http://www.newyorktheatreguide.com/reviews/stuffed16.htm",
       "recovery": null,
-      "recoveryCount": 3,
-      "forumLinkRecoveryCount": 7,
-      "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=cosi-fan-tutte-off-broadway-2026   # follows the thread's Link to the real review page",
-      "firstSeen": "2026-10-08T17:44:48.110Z",
-      "fileAgeHours": 184.62098416666666,
-      "gapSeenAt": "2026-10-08T22:46:44.413Z",
-      "nonTerminalAgeHours": 179.5895486111111
-    },
-    {
-      "showId": "macbeth-off-broadway-2026",
-      "title": "Macbeth",
-      "openingDate": "2026-09-22",
-      "file": "talkinbroadway--unknown.json",
-      "outletId": "talkinbroadway",
-      "tier": 2,
-      "type": "empty-body",
-      "url": "https://www.talkinbroadway.com/regional/alb/",
-      "recovery": null,
-      "recoveryCount": 3,
+      "recoveryCount": 1,
       "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=macbeth-off-broadway-2026 --url=https://www.talkinbroadway.com/regional/alb/ --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-10-15T15:26:32.014Z",
-      "fileAgeHours": 18.9254725,
-      "gapSeenAt": "2026-10-15T16:29:17.938Z",
-      "nonTerminalAgeHours": 17.88023611111111
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=stuffed-off-west-end-2026",
+      "firstSeen": "2026-10-15T15:44:57.921Z",
+      "fileAgeHours": 20.45651611111111,
+      "gapSeenAt": "2026-10-16T12:12:23.731Z",
+      "nonTerminalAgeHours": 0
     },
     {
       "showId": "stuffed-off-west-end-2026",
@@ -53,9 +36,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=stuffed-off-west-end-2026 --url=https://www.thetimes.com/recipes/entertaining/party-food/article/dates-stuffed-with-labneh-tahini-and-hazelnuts-recipe-hxv7qhdhm --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-15T15:12:01.660Z",
-      "fileAgeHours": 19.1674125,
+      "fileAgeHours": 21.005478333333333,
       "gapSeenAt": "2026-10-16T01:59:15.704Z",
-      "nonTerminalAgeHours": 8.380856666666666
+      "nonTerminalAgeHours": 10.218896388888888
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -64,16 +47,17 @@
       "file": "daily-mail--patrick-marmion.json",
       "outletId": "daily-mail",
       "tier": 1,
-      "type": "rejected-unscoreable",
+      "type": "unscored",
+      "dispatchable": true,
       "url": "https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing",
       "recovery": null,
       "recoveryCount": 0,
       "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=golden-boy-off-west-end-2026",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 569.6926025,
+      "fileAgeHours": 571.5306744444445,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 120.71216277777778
+      "nonTerminalAgeHours": 122.5502025
     }
   ],
   "contradictions": []

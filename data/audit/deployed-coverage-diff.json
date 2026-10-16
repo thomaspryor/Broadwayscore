@@ -1,13 +1,48 @@
 {
-  "generatedAt": "2026-10-16T10:22:23.471Z",
+  "generatedAt": "2026-10-16T12:15:05.402Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 238,
-  "clean": 238,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 236,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "the-cherry-orchard-west-end-2026",
+      "title": "The Cherry Orchard",
+      "openingDate": "2026-10-13",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 70.58 vs local 70.35 (Δ0.23)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 26,
+      "deployedCount": 26,
+      "firstDefectAt": "2026-10-16T12:14:59.792Z"
+    },
+    {
+      "showId": "la-boheme-off-broadway-2026",
+      "title": "La Bohème",
+      "openingDate": "2026-09-25",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 88.25 vs local 90 (Δ1.75)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 4,
+      "deployedCount": 4,
+      "firstDefectAt": "2026-10-16T12:14:59.792Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

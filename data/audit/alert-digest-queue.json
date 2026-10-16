@@ -151,6 +151,45 @@
     "queuedAt": "2026-10-16T10:22:01.696Z"
   },
   {
+    "conditionKey": "review-gap:opening-window:antigone-exits-chichester-regional-2026",
+    "title": "Review gap — \"Antigone Exits\" missing 2 cited review(s)",
+    "description": "Antigone Exits (antigone-exits-chichester-regional-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=antigone-exits-chichester-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-16T12:12:17.969Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:king-lear-royal-exchange-regional-2026",
+    "title": "Review gap — \"King Lear\" missing 2 cited review(s)",
+    "description": "King Lear (king-lear-royal-exchange-regional-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=king-lear-royal-exchange-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-16T12:12:18.042Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
+    "title": "Review gap — \"The Prime of Miss Jean Brodie\" missing 3 cited review(s)",
+    "description": "The Prime of Miss Jean Brodie (the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-16T12:12:18.129Z"
+  },
+  {
     "conditionKey": "pending-unrecoverable:some-woman-west-end-2026",
     "title": "1 review(s) for some-woman-west-end-2026 stuck in _pending with no text and no byline",
     "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--29ff640a.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/some-woman-review-dorfman-theatre-national-theatre-london",
