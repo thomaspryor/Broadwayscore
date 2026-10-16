@@ -110,5 +110,44 @@
       }
     ],
     "queuedAt": "2026-10-16T08:15:26.536Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:all-male-as-you-like-it-regional-2026",
+    "title": "Review gap — \"As You Like It\" missing 2 cited review(s)",
+    "description": "As You Like It (all-male-as-you-like-it-regional-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=all-male-as-you-like-it-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-16T10:22:01.561Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:an-oak-tree-off-west-end-2026",
+    "title": "Review gap — \"An Oak Tree\" missing 1 cited review(s)",
+    "description": "An Oak Tree (an-oak-tree-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=an-oak-tree-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-16T10:22:01.571Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:mystic-pizza-tour-2026",
+    "title": "Review gap — \"Mystic Pizza\" missing 11 cited review(s)",
+    "description": "Mystic Pizza (mystic-pizza-tour-2026): 11 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=mystic-pizza-tour-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-16T10:22:01.696Z"
   }
 ]

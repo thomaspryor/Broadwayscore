@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-16T06:43:45.509Z",
+  "generatedAt": "2026-10-16T10:22:00.998Z",
   "windowDays": 1095,
-  "targets": 656,
-  "auditedThisRun": 6,
-  "carriedForward": 728,
+  "targets": 671,
+  "auditedThisRun": 8,
+  "carriedForward": 726,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 422,
-    "missingCurrentRun": 854,
+    "withGap": 421,
+    "missingCurrentRun": 859,
     "totalCitedNoUrl": 5,
-    "totalFlaggedMisses": 978,
+    "totalFlaggedMisses": 968,
     "totalRecoverable": 6,
     "totalRecovered": 16,
     "humanExcluded": 1,
-    "automatedExcluded": 145,
-    "automatedExcludedListed": 145,
-    "priorProductionCitations": 5072
+    "automatedExcluded": 135,
+    "automatedExcludedListed": 135,
+    "priorProductionCitations": 5070
   },
   "results": [
     {
@@ -11436,8 +11436,7 @@
       ],
       "aggregatorListedUrls": [
         "https://frontmezzjunkies.com/2026/10/15/anon-a-tempest-at-our-kitchen-table-unleashes-suburban-panic-at-mcc-theater/",
-        "https://culturesauce.com/anon-anne-washburn-off-broadway-review/",
-        "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/"
+        "https://culturesauce.com/anon-anne-washburn-off-broadway-review/"
       ],
       "dirFiles": 9,
       "dirClean": 5,
@@ -11450,6 +11449,10 @@
         },
         {
           "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "theatermania.com",
           "count": 1
         }
       ],
@@ -11475,29 +11478,6 @@
             "wrongShow"
           ],
           "reverify": true
-        },
-        {
-          "url": "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--linda-buchwald.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "serpCensus": true,
-          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -11513,7 +11493,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 1,
             "error": null
           },
@@ -11523,7 +11503,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 6,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -11533,8 +11513,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 1,
+            "results": 9,
+            "accepted": 0,
             "error": null
           },
           {
@@ -11553,34 +11533,34 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 4,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 2,
+        "resultCount": 1,
         "error": null
       },
       "candidatesRejected": {
-        "count": 317,
+        "count": 315,
         "byReason": {
-          "non-review-host": 23,
-          "aggregator-internal-nav": 219,
-          "venue-production-page": 1,
+          "non-review-host": 25,
+          "ticketing-reseller": 4,
+          "aggregator-internal-nav": 216,
+          "ticketing-listing": 1,
           "census-junk-host": 3,
           "not-http-url": 49,
           "aggregator-section-root": 6,
-          "roundup-page": 4,
-          "production-database-listing": 2,
-          "ticketing-reseller": 7,
-          "ticketing-listing": 1,
-          "news-article": 2
+          "venue-production-page": 2,
+          "production-database-listing": 3,
+          "roundup-page": 5,
+          "news-article": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 2,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
@@ -11591,13 +11571,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://frontmezzjunkies.com/2026/10/15/anon-a-tempest-at-our-kitchen-table-unleashes-suburban-panic-at-mcc-theater/"
-          },
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/"
           }
         ],
         "suppressedMissing": [],
@@ -11614,25 +11587,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-15T10:17:27.731Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-15T17:40:22.075Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 1,
-        "candidateCount": 3
+        "candidateCount": 2
       },
-      "computedAt": "2026-10-16T01:58:23.533Z",
-      "quarantine": {
-        "nextState": "incomplete:1:2",
-        "since": "2026-10-16T06:43:45.592Z",
-        "lastAt": "2026-10-16T06:43:45.592Z"
-      }
+      "computedAt": "2026-10-16T10:22:00.998Z"
     },
     {
       "showId": "anonymous-off-broadway-2026",
@@ -27861,7 +27822,12 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-16T05:39:49.231Z"
+      "computedAt": "2026-10-16T05:39:49.231Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-16T10:22:01.075Z",
+        "lastAt": "2026-10-16T10:22:01.075Z"
+      }
     },
     {
       "showId": "bug-2026",
@@ -30440,7 +30406,12 @@
         "liveCount": 0,
         "candidateCount": 5
       },
-      "computedAt": "2026-10-16T05:39:49.231Z"
+      "computedAt": "2026-10-16T05:39:49.231Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-16T10:22:01.075Z",
+        "lastAt": "2026-10-16T10:22:01.075Z"
+      }
     },
     {
       "showId": "call-me-izzy-2025",
@@ -46000,9 +45971,9 @@
       },
       "computedAt": "2026-10-16T01:58:23.533Z",
       "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-16T06:43:45.592Z",
-        "lastAt": "2026-10-16T06:43:45.592Z"
+        "nextState": "incomplete:0:1",
+        "since": "2026-10-16T10:22:01.075Z",
+        "lastAt": "2026-10-16T10:22:01.075Z"
       }
     },
     {
@@ -47298,7 +47269,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 1,
             "error": null
           },
@@ -47309,7 +47280,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -47319,7 +47290,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
@@ -47329,9 +47300,9 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 27,
+        "count": 30,
         "byReason": {
-          "non-review-host": 21,
+          "non-review-host": 24,
           "aggregator-internal-nav": 2,
           "write-path-blocked": 1,
           "census-junk-host": 2,
@@ -47356,24 +47327,6 @@
           "zeroCharAttempts": 4
         }
       ],
-      "ingestResults": [
-        {
-          "url": "https://www.uktw.co.uk/London/Southwark-Playhouse-Borough/Play/Dog-Mom/L536895171/",
-          "host": "uktw.co.uk",
-          "outletId": "uktw",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -47441,12 +47394,7 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-16T01:58:23.533Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-16T06:43:45.592Z",
-        "lastAt": "2026-10-16T06:43:45.592Z"
-      }
+      "computedAt": "2026-10-16T10:22:00.998Z"
     },
     {
       "showId": "doll-day-afternoon-off-broadway-2026",
@@ -47667,18 +47615,18 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.chloenelkinconsulting.com/news/paul-bradshaws-critically-acclaimed-double-bill-tell-me-straight-aggy-comes-to-the-kings-head-theatre/",
-        "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-3499342",
+        "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-4775312",
         "https://www.uktw.co.uk/London/The-Kings-Head-Theatre/Play/Double-Bill-tell-me-straight-aggy-A-double-billing-of-two-critically-acclaimed-queer-shows/L175728610/",
         "https://shouldgoto.com/theatre/double-bill-tell-me-straight-aggy",
-        "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-1132760",
-        "https://discountsforcarers.ticketsforgood.co.uk/events/389569-double-bill-tell-me-straight-aggy"
+        "https://discountsforcarers.ticketsforgood.co.uk/events/389569-double-bill-tell-me-straight-aggy",
+        "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-7519268"
       ],
       "dirFiles": 3,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
         {
-          "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-3499342",
+          "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-4775312",
           "host": "whatnightout.uk",
           "knownOutletId": null,
           "serpCensus": true
@@ -47696,7 +47644,7 @@
           "serpCensus": true
         },
         {
-          "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-1132760",
+          "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-7519268",
           "host": "whatnightout.uk",
           "knownOutletId": null,
           "serpCensus": true
@@ -47860,15 +47808,16 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 18,
+        "count": 19,
         "byReason": {
           "non-review-host": 9,
+          "ticketing-reseller": 1,
+          "ticketing-listing": 3,
           "write-path-blocked": 1,
           "census-junk-host": 2,
-          "ticketing-listing": 3,
-          "ticketing-reseller": 1,
           "non-review-path": 1,
-          "show-hub": 1
+          "show-hub": 1,
+          "event-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -47876,7 +47825,7 @@
       "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-3499342",
+          "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-4775312",
           "host": "whatnightout.uk",
           "outletId": "whatnightout",
           "provisional": true,
@@ -47887,7 +47836,7 @@
           "expected": false,
           "expectedReason": null,
           "unclassified": false,
-          "zeroChar": true,
+          "zeroChar": false,
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=whatnightout.uk): Scrapingdog HTTP 400: Oops! Somethin"
         },
         {
@@ -47921,7 +47870,7 @@
           "reason": "⚠️  provisional outlet \"shouldgoto\" (not in registry) — onboard to outlet-registry.json after review"
         },
         {
-          "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-1132760",
+          "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-7519268",
           "host": "whatnightout.uk",
           "outletId": "whatnightout",
           "provisional": true,
@@ -47945,7 +47894,7 @@
             "outlet": "whatnightout.uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-3499342"
+            "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-4775312"
           },
           {
             "outletId": "uktw",
@@ -47966,7 +47915,7 @@
             "outlet": "whatnightout.uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-1132760"
+            "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-7519268"
           },
           {
             "outletId": "ticketsforgood.co.uk",
@@ -47979,11 +47928,11 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-3499342",
+            "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-4775312",
             "outletId": "whatnightout.uk",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-15T23:35:34.762Z"
+            "firstSeenAt": "2026-10-16T10:22:00.998Z"
           },
           {
             "url": "https://www.uktw.co.uk/London/The-Kings-Head-Theatre/Play/Double-Bill-tell-me-straight-aggy-A-double-billing-of-two-critically-acclaimed-queer-shows/L175728610/",
@@ -48000,11 +47949,11 @@
             "firstSeenAt": "2026-10-15T23:35:34.762Z"
           },
           {
-            "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-1132760",
+            "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-7519268",
             "outletId": "whatnightout.uk",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-15T23:35:34.762Z"
+            "firstSeenAt": "2026-10-16T10:22:00.998Z"
           },
           {
             "url": "https://discountsforcarers.ticketsforgood.co.uk/events/389569-double-bill-tell-me-straight-aggy",
@@ -48018,12 +47967,7 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-15T23:35:34.762Z",
-      "quarantine": {
-        "nextState": "incomplete:0:2",
-        "since": "2026-10-16T06:43:45.592Z",
-        "lastAt": "2026-10-16T06:43:45.592Z"
-      }
+      "computedAt": "2026-10-16T10:22:00.998Z"
     },
     {
       "showId": "dracula-west-end-2025",
@@ -56707,7 +56651,12 @@
         "liveCount": 3,
         "candidateCount": 6
       },
-      "computedAt": "2026-10-16T05:39:49.231Z"
+      "computedAt": "2026-10-16T05:39:49.231Z",
+      "quarantine": {
+        "nextState": "complete:1:1",
+        "since": "2026-10-16T10:22:01.075Z",
+        "lastAt": "2026-10-16T10:22:01.075Z"
+      }
     },
     {
       "showId": "fishing-for-alaska-off-broadway-2026",
@@ -81889,7 +81838,12 @@
         "liveCount": 1,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-16T05:39:49.231Z"
+      "computedAt": "2026-10-16T05:39:49.231Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-16T10:22:01.075Z",
+        "lastAt": "2026-10-16T10:22:01.075Z"
+      }
     },
     {
       "showId": "high-society-west-end-2026",
@@ -90910,7 +90864,12 @@
         "liveCount": 4,
         "candidateCount": 17
       },
-      "computedAt": "2026-10-16T05:39:49.231Z"
+      "computedAt": "2026-10-16T05:39:49.231Z",
+      "quarantine": {
+        "nextState": "incomplete:0:1",
+        "since": "2026-10-16T10:22:01.075Z",
+        "lastAt": "2026-10-16T10:22:01.075Z"
+      }
     },
     {
       "showId": "jasmines-demo-show-4-the-end-off-broadway-2026",
@@ -98183,7 +98142,12 @@
         "liveCount": 10,
         "candidateCount": 19
       },
-      "computedAt": "2026-10-16T05:39:49.231Z"
+      "computedAt": "2026-10-16T05:39:49.231Z",
+      "quarantine": {
+        "nextState": "complete:4:4",
+        "since": "2026-10-16T10:22:01.075Z",
+        "lastAt": "2026-10-16T10:22:01.075Z"
+      }
     },
     {
       "showId": "king-of-the-yees-off-broadway-2026",
@@ -110362,9 +110326,9 @@
       },
       "computedAt": "2026-10-15T23:35:34.762Z",
       "quarantine": {
-        "nextState": "incomplete:0:1",
-        "since": "2026-10-16T06:43:45.592Z",
-        "lastAt": "2026-10-16T06:43:45.592Z"
+        "nextState": "incomplete:0:2",
+        "since": "2026-10-16T10:22:01.075Z",
+        "lastAt": "2026-10-16T10:22:01.075Z"
       }
     },
     {
@@ -115995,7 +115959,7 @@
       "quarantine": {
         "nextState": "complete:4:4",
         "since": "2026-10-16T06:43:45.592Z",
-        "lastAt": "2026-10-16T06:43:45.592Z"
+        "lastAt": "2026-10-16T10:22:01.075Z"
       }
     },
     {
@@ -117893,7 +117857,7 @@
       "quarantine": {
         "nextState": "complete:3:3",
         "since": "2026-10-16T06:43:45.592Z",
-        "lastAt": "2026-10-16T06:43:45.592Z"
+        "lastAt": "2026-10-16T10:22:01.075Z"
       }
     },
     {
@@ -129787,7 +129751,12 @@
         "liveCount": 11,
         "candidateCount": 13
       },
-      "computedAt": "2026-10-16T05:39:49.231Z"
+      "computedAt": "2026-10-16T05:39:49.231Z",
+      "quarantine": {
+        "nextState": "complete:9:9",
+        "since": "2026-10-16T10:22:01.075Z",
+        "lastAt": "2026-10-16T10:22:01.075Z"
+      }
     },
     {
       "showId": "no-singing-in-the-navy-off-broadway-2026",
@@ -147355,72 +147324,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Quarter Rican\" Off-Broadway review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Quarter Rican\" Off-Broadway review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Quarter Rican\" review hostos",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Quarter Rican Hostos Center for the Arts & Culture review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Quarter Rican Hostos Center for the Arts & Culture review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Quarter Rican Hostos Center for the Arts & Culture review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 26,
-        "byReason": {
-          "aggregator-internal-nav": 2,
-          "non-review-host": 24
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -147433,7 +147342,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-16T05:39:49.231Z"
+      "computedAt": "2026-10-16T10:22:00.998Z"
     },
     {
       "showId": "queen-versailles-2025",
@@ -156297,8 +156206,9 @@
         "https://www.nytimes.com/2019/02/14/theater/sea-wall-a-life-review-jake-gyllenhaal-tom-sturridge.html",
         "https://observer.com/2019/02/sea-wall-a-life-review-jake-gyllenhaal-tom-sturridge-probe-pain/",
         "https://variety.com/2019/legit/reviews/sea-wall-a-life-review-jake-gyllenhaal-1203140091/",
-        "https://www.intermissionmagazine.ca/reviews/sea-wall-assembly/",
-        "https://www.timeout.com/newyork/theater/sea-wall"
+        "https://www.nyc.com/events/sea_wall.443831802918871040/",
+        "https://www.timeout.com/newyork/theater/sea-wall",
+        "https://www.nytheaterscene.com/RevN-Sea-Wall-A-Life-DR.html"
       ],
       "dirFiles": 5,
       "dirClean": 0,
@@ -156480,15 +156390,21 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.intermissionmagazine.ca/reviews/sea-wall-assembly/",
-          "host": "intermissionmagazine.ca",
-          "knownOutletId": "intermissionmagazine",
+          "url": "https://www.nyc.com/events/sea_wall.443831802918871040/",
+          "host": "nyc.com",
+          "knownOutletId": null,
           "serpCensus": true
         },
         {
           "url": "https://www.timeout.com/newyork/theater/sea-wall",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.nytheaterscene.com/RevN-Sea-Wall-A-Life-DR.html",
+          "host": "nytheaterscene.com",
+          "knownOutletId": "theater-scene",
           "serpCensus": true
         }
       ],
@@ -156629,7 +156545,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -156659,7 +156575,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -156669,27 +156585,27 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 2,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
-        "count": 231,
+        "count": 233,
         "byReason": {
-          "non-review-host": 59,
-          "aggregator-internal-nav": 121,
-          "venue-production-page": 1,
+          "non-review-host": 60,
+          "ticketing-reseller": 2,
+          "aggregator-internal-nav": 122,
+          "non-review-path": 1,
           "not-http-url": 11,
           "aggregator-section-root": 8,
-          "roundup-page": 5,
-          "production-database-listing": 22,
-          "ticketing-reseller": 3,
-          "non-review-path": 1
+          "venue-production-page": 1,
+          "production-database-listing": 23,
+          "roundup-page": 5
         }
       },
       "dedupedVariants": [],
@@ -156859,10 +156775,10 @@
       ],
       "ingestResults": [
         {
-          "url": "https://www.intermissionmagazine.ca/reviews/sea-wall-assembly/",
-          "host": "intermissionmagazine.ca",
-          "outletId": "intermissionmagazine",
-          "provisional": false,
+          "url": "https://www.nyc.com/events/sea_wall.443831802918871040/",
+          "host": "nyc.com",
+          "outletId": "nyc",
+          "provisional": true,
           "ok": false,
           "noop": false,
           "conflict": false,
@@ -156870,8 +156786,8 @@
           "expected": false,
           "expectedReason": null,
           "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  Misattribution guard: Aisling Murphy at intermissionmagazine (primary: the-globe-and-mail) for s"
+          "zeroChar": true,
+          "reason": "⚠️  provisional outlet \"nyc\" (not in registry) — onboard to outlet-registry.json after review.\nArtic"
         },
         {
           "url": "https://www.timeout.com/newyork/theater/sea-wall",
@@ -156887,6 +156803,21 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "sea-wall-off-broadway-2026: https://www.timeout.com/newyork/theater/sea-wall is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
+        },
+        {
+          "url": "https://www.nytheaterscene.com/RevN-Sea-Wall-A-Life-DR.html",
+          "host": "nytheaterscene.com",
+          "outletId": "theater-scene",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -156894,11 +156825,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "intermissionmagazine",
-            "outlet": "intermissionmagazine",
+            "outletId": "nyc.com",
+            "outlet": "nyc.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.intermissionmagazine.ca/reviews/sea-wall-assembly/"
+            "url": "https://www.nyc.com/events/sea_wall.443831802918871040/"
           },
           {
             "outletId": "timeout-london",
@@ -156906,16 +156837,23 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/newyork/theater/sea-wall"
+          },
+          {
+            "outletId": "theater-scene",
+            "outlet": "theater-scene",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytheaterscene.com/RevN-Sea-Wall-A-Life-DR.html"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.intermissionmagazine.ca/reviews/sea-wall-assembly/",
-            "outletId": "intermissionmagazine",
+            "url": "https://www.nyc.com/events/sea_wall.443831802918871040/",
+            "outletId": "nyc.com",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-16T01:58:23.533Z"
+            "firstSeenAt": "2026-10-16T10:22:00.998Z"
           },
           {
             "url": "https://www.timeout.com/newyork/theater/sea-wall",
@@ -156923,18 +156861,20 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-16T01:58:23.533Z"
+          },
+          {
+            "url": "https://www.nytheaterscene.com/RevN-Sea-Wall-A-Life-DR.html",
+            "outletId": "theater-scene",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-16T10:22:00.998Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 2
+        "candidateCount": 3
       },
-      "computedAt": "2026-10-16T01:58:23.533Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-16T06:43:45.592Z",
-        "lastAt": "2026-10-16T06:43:45.592Z"
-      }
+      "computedAt": "2026-10-16T10:22:00.998Z"
     },
     {
       "showId": "seagull-true-story-off-broadway-2026",
@@ -162653,187 +162593,14 @@
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.londonboxoffice.co.uk/news/post/some-woman-dorfman-national-theatre-review",
-        "https://www.britishtheatre.com/posts/national-theatre-reveals-lead-casting-for-some-woman-world-premiere",
-        "https://www.theatremonkey.com/show/some-woman/",
-        "https://www.timeout.com/london/theatre/some-woman",
-        "https://www.whatsonstage.com/news/national-theatre-reveals-lead-casting-for-some-woman-world-premiere_1720265/",
-        "https://theatreweekly.com/anne-marie-duff-leads-full-cast-for-helen-edmundsons-new-play-some-woman-at-the-national-theatre/",
-        "https://www.londontheatregeek.co.uk/shows/some-woman",
-        "https://draughtslondon.com/some-woman-at-the-national-theatre/"
+        "https://www.londonboxoffice.co.uk/news/post/some-woman-dorfman-national-theatre-review"
       ],
       "dirFiles": 9,
       "dirClean": 1,
       "inReviewsJson": 1,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.britishtheatre.com/posts/national-theatre-reveals-lead-casting-for-some-woman-world-premiere",
-          "host": "britishtheatre.com",
-          "knownOutletId": "britishtheatrecom",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "britishtheatrecom--susan-novak.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.britishtheatre.com/posts/national-theatre-reveals-lead-casting-for-some-woman-world-premiere"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-05-06",
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://www.theatremonkey.com/show/some-woman/",
-          "host": "theatremonkey.com",
-          "knownOutletId": "theatremonkey",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatremonkey--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.theatremonkey.com/show/some-woman/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/some-woman",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout-london--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/london/theatre/some-woman"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/national-theatre-reveals-lead-casting-for-some-woman-world-premiere_1720265/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "whatsonstage--tom-millward.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.whatsonstage.com/news/national-theatre-reveals-lead-casting-for-some-woman-world-premiere_1720265/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-05-05",
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://theatreweekly.com/anne-marie-duff-leads-full-cast-for-helen-edmundsons-new-play-some-woman-at-the-national-theatre/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatre-weekly--theatre-weekly.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theatreweekly.com/anne-marie-duff-leads-full-cast-for-helen-edmundsons-new-play-some-woman-at-the-national-theatre/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://www.londontheatregeek.co.uk/shows/some-woman",
-          "host": "londontheatregeek.co.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "londontheatregeek--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.londontheatregeek.co.uk/shows/some-woman"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://draughtslondon.com/some-woman-at-the-national-theatre/",
-          "host": "draughtslondon.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "draughtslondon--dotdesign.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://draughtslondon.com/some-woman-at-the-national-theatre/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 1,
@@ -162885,130 +162652,19 @@
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Some Woman\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Some Woman\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Some Woman\" review national",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Some Woman\" McIntyre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Some Woman National Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Some Woman National Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Some Woman National Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 8,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 42,
-        "byReason": {
-          "aggregator-internal-nav": 3,
-          "non-review-host": 31,
-          "ticketing-listing": 3,
-          "venue-production-page": 2,
-          "ticketing-reseller": 1,
-          "non-review-path": 1,
-          "ticket-seller-product-page": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 5,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "theatremonkey",
-            "outlet": "theatremonkey",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatremonkey.com/show/some-woman/"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/london/theatre/some-woman"
-          },
-          {
-            "outletId": "theatre-weekly",
-            "outlet": "theatre-weekly",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreweekly.com/anne-marie-duff-leads-full-cast-for-helen-edmundsons-new-play-some-woman-at-the-national-theatre/"
-          },
-          {
-            "outletId": "londontheatregeek.co.uk",
-            "outlet": "londontheatregeek.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatregeek.co.uk/shows/some-woman"
-          },
-          {
-            "outletId": "draughtslondon.com",
-            "outlet": "draughtslondon.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://draughtslondon.com/some-woman-at-the-national-theatre/"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -163016,53 +162672,13 @@
             "outletId": "londonboxoffice.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-16T05:39:49.231Z"
-          },
-          {
-            "url": "https://www.theatremonkey.com/show/some-woman/",
-            "outletId": "theatremonkey",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-15T01:10:51.119Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/some-woman",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-15T01:10:51.119Z"
-          },
-          {
-            "url": "https://theatreweekly.com/anne-marie-duff-leads-full-cast-for-helen-edmundsons-new-play-some-woman-at-the-national-theatre/",
-            "outletId": "theatre-weekly",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-16T05:39:49.231Z"
-          },
-          {
-            "url": "https://www.londontheatregeek.co.uk/shows/some-woman",
-            "outletId": "londontheatregeek.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-15T20:51:35.128Z"
-          },
-          {
-            "url": "https://draughtslondon.com/some-woman-at-the-national-theatre/",
-            "outletId": "draughtslondon.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-16T05:39:49.231Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 1,
-        "candidateCount": 6
+        "candidateCount": 1
       },
-      "computedAt": "2026-10-16T05:39:49.231Z",
-      "quarantine": {
-        "nextState": "complete:1:1",
-        "since": "2026-10-16T06:43:45.592Z",
-        "lastAt": "2026-10-16T06:43:45.592Z"
-      }
+      "computedAt": "2026-10-16T10:22:00.998Z"
     },
     {
       "showId": "soon-off-broadway-2026",
@@ -168467,7 +168083,12 @@
         "liveCount": 6,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-16T05:39:49.231Z"
+      "computedAt": "2026-10-16T05:39:49.231Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-16T10:22:01.075Z",
+        "lastAt": "2026-10-16T10:22:01.075Z"
+      }
     },
     {
       "showId": "stranger-things-2024",
@@ -170217,7 +169838,12 @@
         "liveCount": 1,
         "candidateCount": 5
       },
-      "computedAt": "2026-10-16T05:39:49.231Z"
+      "computedAt": "2026-10-16T05:39:49.231Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-16T10:22:01.075Z",
+        "lastAt": "2026-10-16T10:22:01.075Z"
+      }
     },
     {
       "showId": "suffs-2024",
@@ -177114,7 +176740,7 @@
       "quarantine": {
         "nextState": "no-census-yet:0:0",
         "since": "2026-10-16T06:43:45.592Z",
-        "lastAt": "2026-10-16T06:43:45.592Z"
+        "lastAt": "2026-10-16T10:22:01.075Z"
       }
     },
     {
@@ -178307,36 +177933,37 @@
         "http://www.nj.com/entertainment/index.ssf/2016/10/the_cherry_orchard_review_diane_lane_cant_bring_th.html",
         "http://www.northjersey.com/arts-and-entertainment/theater-review-the-cherry-orchard-with-diane-lane-1.1677715",
         "https://www.theguardian.com/stage/2016/oct/16/the-cherry-orchard-review-diane-lane",
-        "https://www.theguardian.com/stage/2026/oct/14/the-cherry-orchard-review-kristin-scott-thomas-chekhov-harold-pinter-theatre-conor-mcpherson-ian-rickson-stephen-mangan",
-        "https://www.londontheatre.co.uk/reviews/the-cherry-orchard-review-harold-pinter-theatre",
-        "https://www.whatsonstage.com/news/the-cherry-orchard-with-kristin-scott-thomas-review-a-smart-and-salty-west-end-revival_1734872/",
-        "https://loureviews.blog/2026/10/15/play-review-the-cherry-orchard-at-harold-pinter-theatre/",
-        "https://www.thetimes.com/culture/theatre-dance/article/the-cherry-orchard-review-kristin-scott-thomas-gc88pnwh6",
-        "https://thespyinthestalls.com/2026/10/the-cherry-orchard-2/",
-        "https://www.allthatdazzles.co.uk/post/review-the-cherry-orchard-harold-pinter-theatre",
-        "https://monstagigz.com/2026/10/06/theatre-review-the-cherry-orchard-starring-kristin-scott-thomas-stephen-mangan-at-the-harold-pinter-theatre/",
-        "https://www.timeout.com/london/theatre/the-cherry-orchard-16",
-        "https://theatreweekly.com/review-the-cherry-orchard-at-harold-pinter-theatre/",
-        "https://www.soniafriedman.com/productions/the-cherry-orchard",
-        "https://www.wheeliegoodshow.com/post/the-cherry-orchard-harold-pinter-theatre-london",
-        "https://www.standard.co.uk/culture/theatre/the-cherry-orchard-review-b1300867.html",
-        "https://liamodell.com/2026/10/14/the-cherry-orchard-review-harold-pinter-theatre-london-kristin-scott-thomas-stephen-mangan-ruby-bentall-anton-chekhov-summary/",
-        "https://www.westendbestfriend.co.uk/news/review-the-cherry-orchard-harold-pinter-theatre",
-        "https://www.londonboxoffice.co.uk/news/post/the-cherry-orchard-harold-pinter-theatre-review",
-        "https://www.thestage.co.uk/reviews/the-cherry-orchard-review-harold-pinter-theatre-london-kristin-scott-thomas-conor-mcpherson",
         "https://www.telegraph.co.uk/theatre/what-to-see/the-cherry-orchard-review/",
-        "https://www.theatremonkey.com/show/the-cherry-orchard-2/",
+        "https://www.whatsonstage.com/news/the-cherry-orchard-with-kristin-scott-thomas-review-a-smart-and-salty-west-end-revival_1734872/",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cherry-orchard-review-kristin-scott-thomas-steven-mangan-b3066484.html",
+        "https://www.theguardian.com/stage/2026/oct/14/the-cherry-orchard-review-kristin-scott-thomas-chekhov-harold-pinter-theatre-conor-mcpherson-ian-rickson-stephen-mangan",
+        "https://www.thetimes.com/culture/theatre-dance/article/the-cherry-orchard-review-kristin-scott-thomas-gc88pnwh6",
+        "https://www.thestage.co.uk/reviews/the-cherry-orchard-review-harold-pinter-theatre-london-kristin-scott-thomas-conor-mcpherson",
         "https://www.cityam.com/the-cherry-orchard-noel-coward-theatre-kristin-scott-thomas-is-luminous/",
+        "https://www.londontheatre.co.uk/reviews/the-cherry-orchard-review-harold-pinter-theatre",
+        "https://www.standard.co.uk/culture/theatre/the-cherry-orchard-review-b1300867.html",
         "https://www.timeout.com/london/news/the-cherry-orchard-review-kristin-scott-thomas-harold-pinter-theatre-101426",
         "https://www.ft.com/content/e36fa65e-f5e7-4d8b-aa68-4a96c4f5a8e5",
         "https://www.broadwayworld.com/westend/article/Review-THE-CHERRY-ORCHARD-starring-Kristin-Scott-Thomas-Harold-Pinter-Theatre-20261014",
         "https://www.dailymail.com/tvshowbiz/article-16206943/Kristins-PATRICK-MARMION-shares-night-review-Cherry-Orchard.html",
-        "https://www.dailymail.co.uk/tvshowbiz/article-16206943/Kristins-PATRICK-MARMION-shares-night-review-Cherry-Orchard.html"
+        "https://www.londonboxoffice.co.uk/news/post/the-cherry-orchard-harold-pinter-theatre-review",
+        "https://thespyinthestalls.com/2026/10/the-cherry-orchard-2/",
+        "https://www.jackstage.co.uk/post/the-cherry-orchard-review-kristin-scott-thomas-is-inspiring-in-this-beautiful-revival",
+        "https://theatreandtonic.co.uk/blog/the-cherry-orchard-starring-kristin-scott-thomas-review",
+        "https://northwestend.com/the-cherry-orchard-harold-pinter-theatre/",
+        "https://www.theupcoming.co.uk/2026/10/09/the-cherry-orchard-at-harold-pinter-theatre-theatre-review/",
+        "https://loureviews.blog/2026/10/15/play-review-the-cherry-orchard-at-harold-pinter-theatre/",
+        "https://www.allthatdazzles.co.uk/post/review-the-cherry-orchard-harold-pinter-theatre",
+        "https://www.westendbestfriend.co.uk/news/review-the-cherry-orchard-harold-pinter-theatre",
+        "https://liamodell.com/2026/10/14/the-cherry-orchard-review-harold-pinter-theatre-london-kristin-scott-thomas-stephen-mangan-ruby-bentall-anton-chekhov-summary/",
+        "https://theatreweekly.com/review-the-cherry-orchard-at-harold-pinter-theatre/",
+        "https://www.dailymail.co.uk/tvshowbiz/article-16206943/Kristins-PATRICK-MARMION-shares-night-review-Cherry-Orchard.html",
+        "https://firstnightmagazine.com/2026/10/15/review-of-the-cherry-orchard-2026-harold-pinter-theatre-connor-mcphersons-sapped-adaptation-is-too-green-to-blossom/",
+        "https://www.britishtheatreguide.info/reviews/the-cherry-orch-harold-pinter-t-26118"
       ],
-      "dirFiles": 63,
-      "dirClean": 18,
-      "inReviewsJson": 19,
+      "dirFiles": 64,
+      "dirClean": 19,
+      "inReviewsJson": 20,
       "missing": [
         {
           "url": "http://www.nytimes.com/2016/10/17/theater/the-cherry-orchard-review.html",
@@ -178388,10 +178015,57 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.wheeliegoodshow.com/post/the-cherry-orchard-harold-pinter-theatre-london",
-          "host": "wheeliegoodshow.com",
-          "knownOutletId": "wheeliegoodshow",
-          "serpCensus": true
+          "url": "https://theatreandtonic.co.uk/blog/the-cherry-orchard-starring-kristin-scott-thomas-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": "theatreandtonic",
+          "weRef": true,
+          "weRefSources": [
+            "bestoftheatre"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "bestoftheatre"
+        },
+        {
+          "url": "https://northwestend.com/the-cherry-orchard-harold-pinter-theatre/",
+          "host": "northwestend.com",
+          "knownOutletId": "north-west-end",
+          "weRef": true,
+          "weRefSources": [
+            "bestoftheatre"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "bestoftheatre"
+        },
+        {
+          "url": "https://www.theupcoming.co.uk/2026/10/09/the-cherry-orchard-at-harold-pinter-theatre-theatre-review/",
+          "host": "theupcoming.co.uk",
+          "knownOutletId": "theupcoming",
+          "weRef": true,
+          "weRefSources": [
+            "bestoftheatre"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "bestoftheatre"
+        },
+        {
+          "url": "https://firstnightmagazine.com/2026/10/15/review-of-the-cherry-orchard-2026-harold-pinter-theatre-connor-mcphersons-sapped-adaptation-is-too-green-to-blossom/",
+          "host": "firstnightmagazine.com",
+          "knownOutletId": "firstnightmagazine",
+          "weRef": true,
+          "weRefSources": [
+            "bestoftheatre"
+          ],
+          "weRefStars": 2,
+          "weRefStarsSource": "bestoftheatre"
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/the-cherry-orch-harold-pinter-t-26118",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
+          "weRef": true,
+          "weRefSources": [
+            "bestoftheatre"
+          ]
         }
       ],
       "dirOnly": [
@@ -178400,11 +178074,11 @@
           "count": 1
         },
         {
-          "host": "jackstage.co.uk",
+          "host": "londontheatredirect.com",
           "count": 1
         },
         {
-          "host": "londontheatredirect.com",
+          "host": "wheeliegoodshow.com",
           "count": 1
         }
       ],
@@ -178560,6 +178234,36 @@
           "reverify": false
         },
         {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cherry-orchard-review-kristin-scott-thomas-steven-mangan-b3066484.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "independent--alice-saville.json",
+              "flag": "clean",
+              "urlInDir": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cherry-orchard-review-kristin-scott-thomas-steven-mangan-b3066484.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "contentTierInvalid"
+          ],
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre",
+            "theatre-reviews",
+            "bestoftheatre"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "westendtheatre",
+          "reverify": true
+        },
+        {
           "url": "https://www.thetimes.com/culture/theatre-dance/article/the-cherry-orchard-review-kristin-scott-thomas-gc88pnwh6",
           "host": "thetimes.com",
           "knownOutletId": "sunday-times",
@@ -178591,100 +178295,6 @@
           "reverify": false
         },
         {
-          "url": "https://monstagigz.com/2026/10/06/theatre-review-the-cherry-orchard-starring-kristin-scott-thomas-stephen-mangan-at-the-harold-pinter-theatre/",
-          "host": "monstagigz.com",
-          "knownOutletId": "monstagigz",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "monstagigz--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://monstagigz.com/2026/10/06/theatre-review-the-cherry-orchard-starring-kristin-scott-thomas-stephen-mangan-at-the-harold-pinter-theatre/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/the-cherry-orchard-16",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout-london--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.timeout.com/london/theatre/the-cherry-orchard-16"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://theatreweekly.com/review-the-cherry-orchard-at-harold-pinter-theatre/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatre-weekly--greg-stewart.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theatreweekly.com/review-the-cherry-orchard-at-harold-pinter-theatre/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2024-05-02",
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://www.soniafriedman.com/productions/the-cherry-orchard",
-          "host": "soniafriedman.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "soniafriedman--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.soniafriedman.com/productions/the-cherry-orchard"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
           "url": "https://www.standard.co.uk/culture/theatre/the-cherry-orchard-review-b1300867.html",
           "host": "standard.co.uk",
           "knownOutletId": "standard",
@@ -178714,59 +178324,6 @@
           "weRefStars": 4,
           "weRefStarsSource": "theatre-reviews",
           "reverify": false
-        },
-        {
-          "url": "https://www.theatremonkey.com/show/the-cherry-orchard-2/",
-          "host": "theatremonkey.com",
-          "knownOutletId": "theatremonkey",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatremonkey--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatremonkey.com/show/the-cherry-orchard-2/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cherry-orchard-review-kristin-scott-thomas-steven-mangan-b3066484.html",
-          "host": "independent.co.uk",
-          "knownOutletId": "independent",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "independent--alice-saville.json",
-              "flag": "clean",
-              "urlInDir": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cherry-orchard-review-kristin-scott-thomas-steven-mangan-b3066484.html"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "contentTierInvalid"
-          ],
-          "weRef": true,
-          "weRefSources": [
-            "westendtheatre",
-            "theatre-reviews",
-            "bestoftheatre"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "westendtheatre",
-          "reverify": true
         },
         {
           "url": "https://www.timeout.com/london/news/the-cherry-orchard-review-kristin-scott-thomas-harold-pinter-theatre-101426",
@@ -178828,11 +178385,41 @@
           "weRefStars": 2,
           "weRefStarsSource": "theatre-reviews",
           "reverify": false
+        },
+        {
+          "url": "https://theatreweekly.com/review-the-cherry-orchard-at-harold-pinter-theatre/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-weekly--greg-stewart.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theatreweekly.com/review-the-cherry-orchard-at-harold-pinter-theatre/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2024-05-02",
+          "weRef": true,
+          "weRefSources": [
+            "bestoftheatre"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "bestoftheatre",
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
       "weReference": {
-        "rowCount": 37,
+        "rowCount": 46,
         "sources": {
           "westendtheatre": {
             "found": true,
@@ -178857,7 +178444,7 @@
           },
           "bestoftheatre": {
             "found": true,
-            "rows": 17,
+            "rows": 26,
             "emptyParse": false,
             "error": null,
             "fetchErrors": 0
@@ -178871,8 +178458,8 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 37,
-        "corroborated": 13,
+        "currentRunRows": 46,
+        "corroborated": 16,
         "perSource": {
           "westendtheatre": {
             "cited": 5,
@@ -178883,8 +178470,8 @@
             "corroborated": 8
           },
           "bestoftheatre": {
-            "cited": 17,
-            "corroborated": 13
+            "cited": 21,
+            "corroborated": 16
           },
           "lbo-roundup": {
             "cited": 1,
@@ -178893,86 +178480,16 @@
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Cherry Orchard\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Cherry Orchard\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 6,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Cherry Orchard\" review harold",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"The Cherry Orchard\" Chekhov review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Cherry Orchard Harold Pinter Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Cherry Orchard Harold Pinter Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Cherry Orchard Harold Pinter Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 7,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 19,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 301,
+        "count": 288,
         "byReason": {
+          "non-review-host": 15,
           "aggregator-internal-nav": 226,
           "not-http-url": 43,
-          "aggregator-section-root": 4,
-          "non-review-host": 25,
-          "roundup-page": 1,
-          "ticketing-listing": 1,
-          "census-junk-host": 1
+          "aggregator-section-root": 4
         }
       },
       "dedupedVariants": [],
@@ -178982,7 +178499,7 @@
           "publishDate": "2016-10-16"
         }
       ],
-      "automatedExcludedListed": 5,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -179030,9 +178547,69 @@
       ],
       "ingestResults": [
         {
-          "url": "https://www.wheeliegoodshow.com/post/the-cherry-orchard-harold-pinter-theatre-london",
-          "host": "wheeliegoodshow.com",
-          "outletId": "wheeliegoodshow",
+          "url": "https://theatreandtonic.co.uk/blog/the-cherry-orchard-starring-kristin-scott-thomas-review",
+          "host": "theatreandtonic.co.uk",
+          "outletId": "theatreandtonic",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://northwestend.com/the-cherry-orchard-harold-pinter-theatre/",
+          "host": "northwestend.com",
+          "outletId": "north-west-end",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.theupcoming.co.uk/2026/10/09/the-cherry-orchard-at-harold-pinter-theatre-theatre-review/",
+          "host": "theupcoming.co.uk",
+          "outletId": "theupcoming",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://firstnightmagazine.com/2026/10/15/review-of-the-cherry-orchard-2026-harold-pinter-theatre-connor-mcphersons-sapped-adaptation-is-too-green-to-blossom/",
+          "host": "firstnightmagazine.com",
+          "outletId": "firstnightmagazine",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/the-cherry-orch-harold-pinter-t-26118",
+          "host": "britishtheatreguide.info",
+          "outletId": "british-theatre",
           "provisional": false,
           "ok": true,
           "noop": false,
@@ -179050,39 +178627,39 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "wheeliegoodshow",
-            "outlet": "wheeliegoodshow",
+            "outletId": "theatreandtonic",
+            "outlet": "theatreandtonic",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.wheeliegoodshow.com/post/the-cherry-orchard-harold-pinter-theatre-london"
+            "url": "https://theatreandtonic.co.uk/blog/the-cherry-orchard-starring-kristin-scott-thomas-review"
           },
           {
-            "outletId": "monstagigz",
-            "outlet": "monstagigz",
+            "outletId": "north-west-end",
+            "outlet": "north-west-end",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://monstagigz.com/2026/10/06/theatre-review-the-cherry-orchard-starring-kristin-scott-thomas-stephen-mangan-at-the-harold-pinter-theatre/"
+            "url": "https://northwestend.com/the-cherry-orchard-harold-pinter-theatre/"
           },
           {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
+            "outletId": "theupcoming",
+            "outlet": "theupcoming",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.timeout.com/london/theatre/the-cherry-orchard-16"
+            "url": "https://www.theupcoming.co.uk/2026/10/09/the-cherry-orchard-at-harold-pinter-theatre-theatre-review/"
           },
           {
-            "outletId": "soniafriedman.com",
-            "outlet": "soniafriedman.com",
+            "outletId": "firstnightmagazine",
+            "outlet": "firstnightmagazine",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.soniafriedman.com/productions/the-cherry-orchard"
+            "url": "https://firstnightmagazine.com/2026/10/15/review-of-the-cherry-orchard-2026-harold-pinter-theatre-connor-mcphersons-sapped-adaptation-is-too-green-to-blossom/"
           },
           {
-            "outletId": "theatremonkey",
-            "outlet": "theatremonkey",
+            "outletId": "british-theatre",
+            "outlet": "british-theatre",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.theatremonkey.com/show/the-cherry-orchard-2/"
+            "url": "https://www.britishtheatreguide.info/reviews/the-cherry-orch-harold-pinter-t-26118"
           },
           {
             "outletId": "independent",
@@ -179101,14 +178678,8 @@
             "firstSeenAt": "2026-10-14T02:28:29.917Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/oct/14/the-cherry-orchard-review-kristin-scott-thomas-chekhov-harold-pinter-theatre-conor-mcpherson-ian-rickson-stephen-mangan",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-14T02:28:29.917Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/the-cherry-orchard-review-harold-pinter-theatre",
-            "outletId": "londontheatre.co.uk",
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-cherry-orchard-review/",
+            "outletId": "telegraph.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-14T02:28:29.917Z"
           },
@@ -179119,40 +178690,10 @@
             "firstSeenAt": "2026-10-14T02:28:29.917Z"
           },
           {
-            "url": "https://loureviews.blog/2026/10/15/play-review-the-cherry-orchard-at-harold-pinter-theatre/",
-            "outletId": "loureviews.blog",
-            "state": "live",
-            "firstSeenAt": "2026-10-15T12:23:26.665Z"
-          },
-          {
-            "url": "https://thespyinthestalls.com/2026/10/the-cherry-orchard-2/",
-            "outletId": "thespyinthestalls.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-15T12:23:26.665Z"
-          },
-          {
-            "url": "https://www.allthatdazzles.co.uk/post/review-the-cherry-orchard-harold-pinter-theatre",
-            "outletId": "allthatdazzles.co.uk",
+            "url": "https://www.theguardian.com/stage/2026/oct/14/the-cherry-orchard-review-kristin-scott-thomas-chekhov-harold-pinter-theatre-conor-mcpherson-ian-rickson-stephen-mangan",
+            "outletId": "theguardian.com",
             "state": "live",
             "firstSeenAt": "2026-10-14T02:28:29.917Z"
-          },
-          {
-            "url": "https://liamodell.com/2026/10/14/the-cherry-orchard-review-harold-pinter-theatre-london-kristin-scott-thomas-stephen-mangan-ruby-bentall-anton-chekhov-summary/",
-            "outletId": "liamodell.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-14T22:22:34.949Z"
-          },
-          {
-            "url": "https://www.westendbestfriend.co.uk/news/review-the-cherry-orchard-harold-pinter-theatre",
-            "outletId": "westendbestfriend.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-15T04:30:21.497Z"
-          },
-          {
-            "url": "https://www.londonboxoffice.co.uk/news/post/the-cherry-orchard-harold-pinter-theatre-review",
-            "outletId": "londonboxoffice.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-15T04:30:21.497Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/the-cherry-orchard-review-harold-pinter-theatre-london-kristin-scott-thomas-conor-mcpherson",
@@ -179161,16 +178702,16 @@
             "firstSeenAt": "2026-10-14T14:20:53.735Z"
           },
           {
-            "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-cherry-orchard-review/",
-            "outletId": "telegraph.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-14T02:28:29.917Z"
-          },
-          {
             "url": "https://www.cityam.com/the-cherry-orchard-noel-coward-theatre-kristin-scott-thomas-is-luminous/",
             "outletId": "cityam.com",
             "state": "live",
             "firstSeenAt": "2026-10-15T12:23:26.665Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/the-cherry-orchard-review-harold-pinter-theatre",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-14T02:28:29.917Z"
           },
           {
             "url": "https://www.ft.com/content/e36fa65e-f5e7-4d8b-aa68-4a96c4f5a8e5",
@@ -179185,45 +178726,87 @@
             "firstSeenAt": "2026-10-15T12:23:26.665Z"
           },
           {
+            "url": "https://www.londonboxoffice.co.uk/news/post/the-cherry-orchard-harold-pinter-theatre-review",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-15T04:30:21.497Z"
+          },
+          {
+            "url": "https://thespyinthestalls.com/2026/10/the-cherry-orchard-2/",
+            "outletId": "thespyinthestalls.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-15T12:23:26.665Z"
+          },
+          {
+            "url": "https://www.jackstage.co.uk/post/the-cherry-orchard-review-kristin-scott-thomas-is-inspiring-in-this-beautiful-revival",
+            "outletId": "jackstage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-16T10:22:00.998Z"
+          },
+          {
+            "url": "https://loureviews.blog/2026/10/15/play-review-the-cherry-orchard-at-harold-pinter-theatre/",
+            "outletId": "loureviews.blog",
+            "state": "live",
+            "firstSeenAt": "2026-10-15T12:23:26.665Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-the-cherry-orchard-harold-pinter-theatre",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-14T02:28:29.917Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-the-cherry-orchard-harold-pinter-theatre",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-15T04:30:21.497Z"
+          },
+          {
+            "url": "https://liamodell.com/2026/10/14/the-cherry-orchard-review-harold-pinter-theatre-london-kristin-scott-thomas-stephen-mangan-ruby-bentall-anton-chekhov-summary/",
+            "outletId": "liamodell.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-14T22:22:34.949Z"
+          },
+          {
             "url": "https://www.dailymail.co.uk/tvshowbiz/article-16206943/Kristins-PATRICK-MARMION-shares-night-review-Cherry-Orchard.html",
             "outletId": "dailymail.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-14T14:20:53.735Z"
           },
           {
-            "url": "https://www.wheeliegoodshow.com/post/the-cherry-orchard-harold-pinter-theatre-london",
-            "outletId": "wheeliegoodshow",
+            "url": "https://theatreandtonic.co.uk/blog/the-cherry-orchard-starring-kristin-scott-thomas-review",
+            "outletId": "theatreandtonic",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-16T05:39:49.231Z"
+            "firstSeenAt": "2026-10-16T10:22:00.998Z"
           },
           {
-            "url": "https://monstagigz.com/2026/10/06/theatre-review-the-cherry-orchard-starring-kristin-scott-thomas-stephen-mangan-at-the-harold-pinter-theatre/",
-            "outletId": "monstagigz",
+            "url": "https://northwestend.com/the-cherry-orchard-harold-pinter-theatre/",
+            "outletId": "north-west-end",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-13T04:11:59.529Z"
+            "firstSeenAt": "2026-10-16T10:22:00.998Z"
           },
           {
-            "url": "https://www.timeout.com/london/theatre/the-cherry-orchard-16",
-            "outletId": "timeout-london",
+            "url": "https://www.theupcoming.co.uk/2026/10/09/the-cherry-orchard-at-harold-pinter-theatre-theatre-review/",
+            "outletId": "theupcoming",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-15T04:30:21.497Z"
+            "firstSeenAt": "2026-10-16T10:22:00.998Z"
           },
           {
-            "url": "https://www.soniafriedman.com/productions/the-cherry-orchard",
-            "outletId": "soniafriedman.com",
+            "url": "https://firstnightmagazine.com/2026/10/15/review-of-the-cherry-orchard-2026-harold-pinter-theatre-connor-mcphersons-sapped-adaptation-is-too-green-to-blossom/",
+            "outletId": "firstnightmagazine",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-14T22:22:34.949Z"
+            "firstSeenAt": "2026-10-16T10:22:00.998Z"
           },
           {
-            "url": "https://www.theatremonkey.com/show/the-cherry-orchard-2/",
-            "outletId": "theatremonkey",
+            "url": "https://www.britishtheatreguide.info/reviews/the-cherry-orch-harold-pinter-t-26118",
+            "outletId": "british-theatre",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-16T05:39:49.231Z"
+            "firstSeenAt": "2026-10-16T10:22:00.998Z"
           },
           {
             "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cherry-orchard-review-kristin-scott-thomas-steven-mangan-b3066484.html",
@@ -179234,10 +178817,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 15,
-        "candidateCount": 21
+        "liveCount": 16,
+        "candidateCount": 22
       },
-      "computedAt": "2026-10-16T05:39:49.231Z"
+      "computedAt": "2026-10-16T10:22:00.998Z"
     },
     {
       "showId": "the-children-off-west-end-2026",
@@ -203784,7 +203367,12 @@
         "liveCount": 12,
         "candidateCount": 16
       },
-      "computedAt": "2026-10-16T05:39:49.231Z"
+      "computedAt": "2026-10-16T05:39:49.231Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-16T10:22:01.075Z",
+        "lastAt": "2026-10-16T10:22:01.075Z"
+      }
     },
     {
       "showId": "the-producers-west-end-2025",
@@ -222776,8 +222364,8 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/",
-        "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/"
+        "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/",
+        "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/"
       ],
       "dirFiles": 1,
       "dirClean": 0,
@@ -222831,7 +222419,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 1,
             "accepted": 0,
             "error": null
           },
@@ -222841,7 +222429,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 2,
+            "results": 3,
             "accepted": 0,
             "error": null
           },
@@ -222852,7 +222440,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -222862,7 +222450,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -222872,7 +222460,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
@@ -222882,14 +222470,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 28,
+        "count": 24,
         "byReason": {
           "non-review-host": 16,
-          "aggregator-internal-nav": 6,
-          "venue-production-page": 1,
+          "aggregator-internal-nav": 3,
           "write-path-blocked": 1,
-          "merch-store": 3,
-          "census-junk-host": 1
+          "census-junk-host": 2,
+          "merch-store": 2
         }
       },
       "dedupedVariants": [],
@@ -222930,12 +222517,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-16T01:58:23.533Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-16T06:43:45.592Z",
-        "lastAt": "2026-10-16T06:43:45.592Z"
-      }
+      "computedAt": "2026-10-16T10:22:00.998Z"
     },
     {
       "showId": "under-the-shadow-off-west-end-2026",

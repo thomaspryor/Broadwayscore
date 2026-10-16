@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T06:46:20.302Z",
+  "generatedAt": "2026-10-16T10:22:06.788Z",
   "windowDays": 45,
   "showsScanned": 176,
   "gaps": [
@@ -12,18 +12,14 @@
       "tier": 2,
       "type": "empty-body",
       "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654389",
-      "recovery": {
-        "attempted": true,
-        "ok": true,
-        "reason": "  ⚠️  Bright Data returned empty content (0 bytes, x-brd-error: captcha or protection page found), trying next provider... |   → Trying Playwright (last resort)... |   ⏱️  Playwright: network still busy after 15s at https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654389 — reading the DOMContentLoaded page |   ✅ Success (Playwright, html) |  | Done. 0 succeeded, 0 failed, 1 skipped."
-      },
+      "recovery": null,
       "recoveryCount": 3,
-      "forumLinkRecoveryCount": 6,
+      "forumLinkRecoveryCount": 7,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=cosi-fan-tutte-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-08T17:44:48.110Z",
-      "fileAgeHours": 181.01172166666666,
+      "fileAgeHours": 184.62098416666666,
       "gapSeenAt": "2026-10-08T22:46:44.413Z",
-      "nonTerminalAgeHours": 175.9933025
+      "nonTerminalAgeHours": 179.5895486111111
     },
     {
       "showId": "macbeth-off-broadway-2026",
@@ -39,9 +35,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=macbeth-off-broadway-2026 --url=https://www.talkinbroadway.com/regional/alb/ --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-15T15:26:32.014Z",
-      "fileAgeHours": 15.316209444444445,
+      "fileAgeHours": 18.9254725,
       "gapSeenAt": "2026-10-15T16:29:17.938Z",
-      "nonTerminalAgeHours": 14.28399
+      "nonTerminalAgeHours": 17.88023611111111
     },
     {
       "showId": "stuffed-off-west-end-2026",
@@ -52,18 +48,14 @@
       "tier": 1,
       "type": "empty-body",
       "url": "https://www.thetimes.com/recipes/entertaining/party-food/article/dates-stuffed-with-labneh-tahini-and-hazelnuts-recipe-hxv7qhdhm",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "⚠️  Bright Data failed: Bright Data request timeout\n⚠️  outletId drift detected — operator input \"su"
-      },
-      "recoveryCount": 2,
+      "recovery": null,
+      "recoveryCount": 3,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=stuffed-off-west-end-2026 --url=https://www.thetimes.com/recipes/entertaining/party-food/article/dates-stuffed-with-labneh-tahini-and-hazelnuts-recipe-hxv7qhdhm --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-15T15:12:01.660Z",
-      "fileAgeHours": 15.571311944444444,
+      "fileAgeHours": 19.1674125,
       "gapSeenAt": "2026-10-16T01:59:15.704Z",
-      "nonTerminalAgeHours": 4.784610555555555
+      "nonTerminalAgeHours": 8.380856666666666
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -79,9 +71,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 566.0964697222222,
+      "fileAgeHours": 569.6926025,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 117.11591666666666
+      "nonTerminalAgeHours": 120.71216277777778
     }
   ],
   "contradictions": []
