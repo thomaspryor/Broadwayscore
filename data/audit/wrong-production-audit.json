@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-16T21:40:16.968Z",
+  "timestamp": "2026-10-16T22:02:26.402Z",
   "stats": {
-    "totalReviews": 57085,
-    "alreadyFlagged": 21200,
-    "dateGuardCatches": 193,
-    "directorMismatch": 1913,
-    "tvFilmSignals": 1597,
+    "totalReviews": 57074,
+    "alreadyFlagged": 21187,
+    "dateGuardCatches": 192,
+    "directorMismatch": 1915,
+    "tvFilmSignals": 1598,
     "londonSignals": 2387,
     "offBroadwaySignals": 514,
-    "yearMismatch": 147,
-    "noPublishDate": 5285
+    "yearMismatch": 146,
+    "noPublishDate": 5281
   },
   "findings": [
     {
@@ -20220,20 +20220,6 @@
     },
     {
       "showId": "into-the-woods-2022",
-      "file": "talkinbroadway--matthew-murray.json",
-      "score": 88,
-      "publishDate": "July 11, 2022",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-2022",
       "file": "theater-life--david-sheward.json",
       "score": 95,
       "publishDate": "2022-07-14T23:21:11",
@@ -26735,6 +26721,20 @@
     },
     {
       "showId": "much-ado-about-nothing-west-end-2025",
+      "file": "artsdesk--rachel-halliburton.json",
+      "score": null,
+      "publishDate": "February 20th, 2025",
+      "url": "https://theartsdesk.com/theatre/much-ado-about-nothing-theatre-royal-drury-lane-review-shamelessly-hedonistic-production",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-west-end-2025",
       "file": "british-theatre--howard-loxton.json",
       "score": 81,
       "publishDate": "2025-02-21",
@@ -26847,6 +26847,20 @@
     },
     {
       "showId": "much-ado-about-nothing-west-end-2025",
+      "file": "independent--alice-saville.json",
+      "score": 79,
+      "publishDate": "2025-02-20",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/much-ado-about-nothing-tom-hiddleston-hayley-atwell-play-b2701440.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-west-end-2025",
       "file": "london-box-office--stuart-king.json",
       "score": 89,
       "publishDate": null,
@@ -26945,6 +26959,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-west-end-2025",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 96,
+      "publishDate": "2025-02-20",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/much-ado-about-nothing-review-tom-hiddleston/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -28523,20 +28556,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn\" from oklahoma-2002"
-        }
-      ]
-    },
-    {
-      "showId": "old-times-1971",
-      "file": "nbcny--robert-kahn.json",
-      "score": 77,
-      "publishDate": null,
-      "url": "http://www.nbcnewyork.com/entertainment/the-scene/Review-Old-Times-Roundabout-330788122.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"douglas hodge\" from old-times-2015"
         }
       ]
     },
@@ -30699,6 +30718,19 @@
       "score": 91,
       "publishDate": "2013-04-25",
       "url": "https://www.backstage.com/review/ny-theater/broadway/diane-paulus-pippin-stephen-schwartz-roger-o-hirson/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from pippin-1972"
+        }
+      ]
+    },
+    {
+      "showId": "pippin-2013",
+      "file": "bloomberg--jeremy-gerard.json",
+      "publishDate": "2013-04-26",
+      "url": "http://www.bloomberg.com/news/2013-04-26/andrea-martin-s-swing-a-long-dazzles-in-pippin-review.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -39262,25 +39294,6 @@
       ]
     },
     {
-      "showId": "the-gin-game-1977",
-      "file": "ap--mark-kennedy.json",
-      "score": 81,
-      "publishDate": null,
-      "url": "http://www.wral.com/review-james-earl-jones-cicely-tyson-risk-it-in-gin-game-/14969990/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"leonard foglia\" from the-gin-game-2015"
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2015 (2x) more than 1977 (1x). 2015 matches production: the-gin-game-2015"
-        }
-      ]
-    },
-    {
       "showId": "the-gin-game-2015",
       "file": "broadwayworld--michael-dale.json",
       "score": 76,
@@ -41806,20 +41819,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "the-mystery-of-edwin-drood-1985",
-      "file": "amny--matt-windman.json",
-      "score": 86,
-      "publishDate": null,
-      "url": "http://www.amny.com/urbanite-1.812039/theater-review-the-mystery-of-edwin-drood-4-stars-1.4219057",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"scott ellis\" from the-mystery-of-edwin-drood-2012"
         }
       ]
     },
@@ -50005,6 +50004,20 @@
       ]
     },
     {
+      "showId": "whos-afraid-of-virginia-woolf-2005",
+      "file": "nytg--unknown.json",
+      "score": 78,
+      "publishDate": null,
+      "url": "https://www.newyorktheatreguide.com/reviews/whos-afraid-of-virginia-woolf",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        }
+      ]
+    },
+    {
       "showId": "whos-afraid-of-virginia-woolf-2012",
       "file": "ap--mark-kennedy.json",
       "score": 93,
@@ -50080,6 +50093,20 @@
       "score": 85,
       "publishDate": "October 16, 2012",
       "url": "https://www.northjersey.com/arts_entertainment/theater/174136991_Broadway_review___Who_s_Afraid_of_Virginia_Woolf__.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-2012",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "score": 89,
+      "publishDate": "2012-10-16",
+      "url": "https://www.newspapers.com/image/575154843/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -75719,7 +75746,7 @@
     {
       "showId": "some-woman-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 61,
+      "score": 56,
       "publishDate": "2026-10-16",
       "url": "https://www.theguardian.com/stage/2026/oct/16/some-woman-review-anne-marie-duff-dorfman-theatre",
       "findings": [
@@ -75802,7 +75829,7 @@
     {
       "showId": "some-woman-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 69,
+      "score": 77,
       "publishDate": "2026-10-16",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/anne-marie-duff-some-woman-review/",
       "findings": [
@@ -87394,20 +87421,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
-      "file": "standard--nick-curtis.json",
-      "score": 82,
-      "publishDate": "2026-03-20",
-      "url": "https://www.standard.co.uk/culture/theatre/who-s-afraid-of-virginia-woolf-review-b1299111.html",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 185d before show (2026-03-20 vs 2026-09-21)"
         }
       ]
     },

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T21:40:28.329Z",
+  "generatedAt": "2026-10-16T22:02:38.411Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -13,24 +13,24 @@
       "slug": "dirty-dancing-the-classic-story-on-stage-west-end",
       "thumbnail": "/images/shows/dirty-dancing-the-classic-story-on-stage-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 79,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 2,
       "siteFileExists": true,
-      "total": 0,
+      "total": 1,
       "t1": 0,
-      "t2": 0,
+      "t2": 1,
       "t3": 0,
-      "positive": 0,
+      "positive": 1,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/8 total",
+          "1/8 total",
           "T1:0/3",
-          "T2:0/2",
+          "T2:1/2",
           "hi-conf:0/6"
         ],
         "highConfidence": 0,
@@ -147,6 +147,20 @@
         {
           "name": "London Box Office",
           "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-16T22:02:38.411Z",
+          "rc": 1,
+          "s": 79,
+          "t1": 0,
+          "t2": 1,
+          "t3": 0,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -550,26 +564,25 @@
       "status": "open",
       "slug": "cadel-lungs-on-legs-west-end",
       "thumbnail": "/images/shows/cadel-lungs-on-legs-west-end-2026/thumbnail.jpg",
-      "siteScore": 80.48,
-      "liveScore": 80,
-      "scoreDrift": -0.480000000000004,
+      "siteScore": 81.38,
+      "liveScore": 81,
+      "scoreDrift": -0.37999999999999545,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
+      "total": 8,
       "t1": 0,
       "t2": 3,
-      "t3": 4,
-      "positive": 6,
+      "t3": 5,
+      "positive": 7,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "7/8 total",
           "T1:0/3"
         ],
-        "highConfidence": 6,
+        "highConfidence": 7,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -725,6 +738,18 @@
           "m": 1,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-16T22:02:38.411Z",
+          "rc": 8,
+          "s": 81.38,
+          "t1": 0,
+          "t2": 3,
+          "t3": 5,
+          "p": 7,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -738,9 +763,9 @@
       "status": "open",
       "slug": "some-woman-west-end",
       "thumbnail": "/images/shows/some-woman-west-end-2026/thumbnail.webp",
-      "siteScore": 63.63,
-      "liveScore": 64,
-      "scoreDrift": 0.36999999999999744,
+      "siteScore": 62.96,
+      "liveScore": 63,
+      "scoreDrift": 0.03999999999999915,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -754,7 +779,7 @@
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 10,
+        "highConfidence": 11,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -935,6 +960,18 @@
           "t": "2026-10-16T20:05:48.943Z",
           "rc": 14,
           "s": 63.63,
+          "t1": 6,
+          "t2": 6,
+          "t3": 2,
+          "p": 6,
+          "m": 3,
+          "n": 5,
+          "bc": "preview-sent"
+        },
+        {
+          "t": "2026-10-16T22:02:38.411Z",
+          "rc": 14,
+          "s": 62.96,
           "t1": 6,
           "t2": 6,
           "t3": 2,
@@ -3652,23 +3689,23 @@
       "status": "open",
       "slug": "the-cherry-orchard-west-end",
       "thumbnail": "/images/shows/the-cherry-orchard-west-end-2026/thumbnail.jpeg",
-      "siteScore": 71.85,
+      "siteScore": 72.02,
       "liveScore": 72,
-      "scoreDrift": 0.15000000000000568,
+      "scoreDrift": -0.01999999999999602,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 32,
-      "t1": 8,
+      "total": 33,
+      "t1": 9,
       "t2": 5,
       "t3": 19,
-      "positive": 21,
+      "positive": 22,
       "mixed": 9,
       "negative": 2,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 31,
+        "highConfidence": 32,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -4049,6 +4086,18 @@
           "t2": 5,
           "t3": 19,
           "p": 21,
+          "m": 9,
+          "n": 2,
+          "bc": "preview-sent-earlier"
+        },
+        {
+          "t": "2026-10-16T22:02:38.411Z",
+          "rc": 33,
+          "s": 72.02,
+          "t1": 9,
+          "t2": 5,
+          "t3": 19,
+          "p": 22,
           "m": 9,
           "n": 2,
           "bc": "preview-sent-earlier"
