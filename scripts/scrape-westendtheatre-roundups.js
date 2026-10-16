@@ -33,6 +33,7 @@ const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
 const { fetchJSON: scraperFetchJSON, fetchPage, cleanup } = require('./lib/scraper');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { roundupEntryDateFields } = require('./lib/publish-date-provenance');
+const { leadingPersonName } = require('./lib/byline-normalization');
 
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const archiveDir = path.join(__dirname, '../data/aggregator-archive/westendtheatre');
@@ -321,8 +322,7 @@ function extractSectionReviews(htmlContent) {
       const authorText = $block.filter('.reviewnewauthor').first().text().trim();
       let critic = null;
       if (authorText) {
-        const cm = authorText.match(/^([A-Z][a-z]+(?:\s[A-Z][a-z'-]+)+)/);
-        if (cm) critic = cm[1].trim();
+        critic = leadingPersonName(authorText);
       }
 
       let reviewUrl = null;

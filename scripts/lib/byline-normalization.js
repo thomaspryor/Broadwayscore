@@ -286,7 +286,20 @@ function extractBodyByline(text, opts = {}) {
   return name;
 }
 
+// BRO-5444: the person name at the START of a byline line ("Holly O'Mahony",
+// "Ian McKellen", "Anya D'Souza", "Sam Smith-Jones"), before any outlet text
+// run on after it. The WET roundup parsers used [A-Z][a-z'-]+ per word, which
+// takes the apostrophe but stops at the capital after it and kept "Holly O'"
+// (a-midsummer-nights-dream-west-end-2026, christmas-carol-goes-wrong).
+const LEADING_NAME_WORD = String.raw`(?:O['’]|Mc|Mac(?=[A-Z])|D['’])?[A-Z][a-z]+(?:[-'’][A-Z]?[a-z]+)*`;
+const LEADING_NAME_RE = new RegExp(String.raw`^(${LEADING_NAME_WORD}(?:\s${LEADING_NAME_WORD})+)`);
+function leadingPersonName(text) {
+  const m = String(text || '').trim().match(LEADING_NAME_RE);
+  return m ? m[1] : null;
+}
+
 module.exports = {
+  leadingPersonName,
   normalizeBylineCapture,
   stripBylineSuffixes,
   normalizeCriticName,
