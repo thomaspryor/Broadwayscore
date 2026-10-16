@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-16T12:27:32.127Z",
+  "timestamp": "2026-10-16T13:25:34.740Z",
   "stats": {
-    "totalReviews": 56929,
-    "alreadyFlagged": 21161,
-    "dateGuardCatches": 194,
-    "directorMismatch": 1912,
+    "totalReviews": 56990,
+    "alreadyFlagged": 21167,
+    "dateGuardCatches": 193,
+    "directorMismatch": 1914,
     "tvFilmSignals": 1585,
-    "londonSignals": 2371,
+    "londonSignals": 2370,
     "offBroadwaySignals": 514,
-    "yearMismatch": 146,
-    "noPublishDate": 5252
+    "yearMismatch": 147,
+    "noPublishDate": 5305
   },
   "findings": [
     {
@@ -27269,25 +27269,6 @@
     },
     {
       "showId": "my-neighbour-totoro-west-end-2025",
-      "file": "financialtimes--financial-times.json",
-      "score": 67,
-      "publishDate": "2022-10-19",
-      "url": "https://www.ft.com/content/a49309dc-bda1-4f26-93cf-274237764e15",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 576d before show (2022-10-19 vs 2024-05-17)"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "my-neighbour-totoro-west-end-2025",
       "file": "guardian--arifa-akbar.json",
       "score": 97,
       "publishDate": "October 19th, 2022",
@@ -29727,6 +29708,30 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"harold prince\" from parade-1998"
+        }
+      ]
+    },
+    {
+      "showId": "parade-tour-2025",
+      "file": "chicago-sun-times--catey-sullivan.json",
+      "score": 82,
+      "publishDate": "2025-08-07",
+      "url": "https://chicago.suntimes.com/theater/2025/08/07/review-parade-cibc-theater",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from parade-2023"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from parade-1998"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2023 (2x) more than 2025 (0x). 2023 matches production: parade-2023"
         }
       ]
     },

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T12:27:44.332Z",
+  "generatedAt": "2026-10-16T13:25:46.831Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "off-west-end",
       "type": "musical",
       "openingDate": "2026-10-16",
-      "status": "upcoming",
+      "status": "open",
       "slug": "dirty-dancing-the-classic-story-on-stage-west-end",
       "thumbnail": "/images/shows/dirty-dancing-the-classic-story-on-stage-west-end-2026/thumbnail.webp",
       "siteScore": null,
@@ -161,31 +161,31 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-10-16",
-      "status": "upcoming",
+      "status": "open",
       "slug": "sea-wall-off-broadway",
       "thumbnail": "/images/shows/sea-wall-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 88,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 2,
       "siteFileExists": true,
-      "total": 0,
+      "total": 1,
       "t1": 0,
-      "t2": 0,
+      "t2": 1,
       "t3": 0,
-      "positive": 0,
+      "positive": 1,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "1/12 total",
           "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
+          "T2:1/3",
+          "hi-conf:1/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -524,39 +524,54 @@
           "name": "The Tennessean",
           "isDualMarket": false
         }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-16T13:25:46.831Z",
+          "rc": 1,
+          "s": 88,
+          "t1": 0,
+          "t2": 1,
+          "t3": 0,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        }
       ]
     },
     {
-      "id": "some-woman-west-end-2026",
-      "title": "Some Woman",
+      "id": "cadel-lungs-on-legs-west-end-2026",
+      "title": "Cadel: Lungs On Legs",
       "market": "west-end",
-      "category": "west-end",
+      "category": "off-west-end",
       "type": "play",
-      "openingDate": "2026-10-15",
+      "openingDate": "2026-10-16",
       "status": "open",
-      "slug": "some-woman-west-end",
-      "thumbnail": "/images/shows/some-woman-west-end-2026/thumbnail.webp",
+      "slug": "cadel-lungs-on-legs-west-end",
+      "thumbnail": "/images/shows/cadel-lungs-on-legs-west-end-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": 67,
+      "liveScore": 79,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "reviewsNeeded": 3,
       "siteFileExists": true,
-      "total": 3,
+      "total": 2,
       "t1": 0,
-      "t2": 3,
-      "t3": 0,
+      "t2": 0,
+      "t3": 2,
       "positive": 2,
       "mixed": 0,
-      "negative": 1,
+      "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
+          "2/8 total",
           "T1:0/3",
-          "hi-conf:3/6"
+          "T2:0/2",
+          "hi-conf:0/6"
         ],
-        "highConfidence": 3,
+        "highConfidence": 0,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -640,6 +655,10 @@
           "isDualMarket": true
         },
         {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
           "name": "The Arts Desk",
           "isDualMarket": false
         },
@@ -660,7 +679,156 @@
           "isDualMarket": false
         },
         {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
           "name": "LondonTheatre1",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Box Office",
+          "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-16T13:25:46.831Z",
+          "rc": 2,
+          "s": 79,
+          "t1": 0,
+          "t2": 0,
+          "t3": 2,
+          "p": 2,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        }
+      ]
+    },
+    {
+      "id": "some-woman-west-end-2026",
+      "title": "Some Woman",
+      "market": "west-end",
+      "category": "west-end",
+      "type": "play",
+      "openingDate": "2026-10-15",
+      "status": "open",
+      "slug": "some-woman-west-end",
+      "thumbnail": "/images/shows/some-woman-west-end-2026/thumbnail.webp",
+      "siteScore": null,
+      "liveScore": 67,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 2,
+      "siteFileExists": true,
+      "total": 3,
+      "t1": 0,
+      "t2": 3,
+      "t3": 0,
+      "positive": 2,
+      "mixed": 0,
+      "negative": 1,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "3/8 total",
+          "T1:0/3",
+          "hi-conf:3/6"
+        ],
+        "highConfidence": 3,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Sunday Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Mail on Sunday",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Arts Desk",
+          "isDualMarket": false
+        },
+        {
+          "name": "British Theatre Guide",
+          "isDualMarket": false
+        },
+        {
+          "name": "BritishTheatre.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Spectator (UK)",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Reviews Hub",
           "isDualMarket": false
         }
       ],
@@ -701,27 +869,27 @@
       "status": "open",
       "slug": "midnight-off-broadway",
       "thumbnail": "/images/shows/midnight-off-broadway-2026/thumbnail.webp",
-      "siteScore": 72.92,
-      "liveScore": 73,
-      "scoreDrift": 0.0799999999999983,
+      "siteScore": 70.51,
+      "liveScore": 71,
+      "scoreDrift": 0.4899999999999949,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 4,
+      "total": 5,
       "t1": 0,
-      "t2": 3,
+      "t2": 4,
       "t3": 1,
       "positive": 2,
-      "mixed": 2,
+      "mixed": 3,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "4/12 total",
+          "5/12 total",
           "T1:0/3",
-          "hi-conf:4/8"
+          "hi-conf:5/8"
         ],
-        "highConfidence": 4,
+        "highConfidence": 5,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1075,6 +1243,18 @@
           "t3": 1,
           "p": 2,
           "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-16T13:25:46.831Z",
+          "rc": 5,
+          "s": 70.51,
+          "t1": 0,
+          "t2": 4,
+          "t3": 1,
+          "p": 2,
+          "m": 3,
           "n": 0,
           "bc": "waiting"
         }
@@ -1437,6 +1617,164 @@
           "p": 1,
           "m": 3,
           "n": 2,
+          "bc": "waiting"
+        }
+      ]
+    },
+    {
+      "id": "jane-eyre-rose-kingston-off-west-end-2026",
+      "title": "Jane Eyre",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-10-15",
+      "status": "open",
+      "slug": "jane-eyre-rose-kingston-off-west-end",
+      "thumbnail": "/images/shows/jane-eyre-rose-kingston-off-west-end-2026/thumbnail.webp",
+      "siteScore": 80.88,
+      "liveScore": 81,
+      "scoreDrift": 0.12000000000000455,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
+      "siteFileExists": true,
+      "total": 6,
+      "t1": 2,
+      "t2": 0,
+      "t3": 4,
+      "positive": 6,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "6/8 total",
+          "T1:2/3",
+          "T2:0/2",
+          "hi-conf:5/6"
+        ],
+        "highConfidence": 5,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Sunday Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Mail on Sunday",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Arts Desk",
+          "isDualMarket": false
+        },
+        {
+          "name": "British Theatre Guide",
+          "isDualMarket": false
+        },
+        {
+          "name": "BritishTheatre.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Spectator (UK)",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Reviews Hub",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "LondonTheatre1",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Box Office",
+          "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-16T13:25:46.831Z",
+          "rc": 6,
+          "s": 80.88,
+          "t1": 2,
+          "t2": 0,
+          "t3": 4,
+          "p": 6,
+          "m": 0,
+          "n": 0,
           "bc": "waiting"
         }
       ]
