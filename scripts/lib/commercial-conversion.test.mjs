@@ -89,7 +89,8 @@ test('the model does not charge nonprofit weeks to a commercial capitalization: 
   const weekly = {};
   for (let i = 0; i < 30; i++) weekly[new Date(Date.UTC(2023, 11, 3 + 7 * i)).toISOString().slice(0, 10)] = { gross: 600000, performances: 8, attendance: 4000 };
   const allTime = { gross: 18000000, performances: 240, attendance: 120000 };
-  const comm = { designation: 'Easy Winner', recouped: true, recoupedDate: '2024-03', capitalization: 3750000, weeklyRunningCost: 300000, costMethodology: 'trade-reported', nonprofitOrg: 'Second Stage Theater' };
+  // No weekly cost on the record: the model estimates one (and tests/unit/cost-for-week.test.mjs keeps new files off that field).
+  const comm = { designation: 'Easy Winner', recouped: true, recoupedDate: '2024-03', capitalization: 3750000, nonprofitOrg: 'Second Stage Theater' };
   const plain = calculateRecoupment(show, comm, allTime, weekly);
   assert.equal(plain.error, undefined, 'an ordinary record still models');
   const converted = { ...comm, commercialConversion: { date: '2024-03-25', sourceUrl: 'https://playbill.com/article/broadways-appropriate-extension-begins-march-25' } };
