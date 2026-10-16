@@ -70,6 +70,9 @@ const FILES = {
     contentVerification: { wrongProduction: true, confidence: 'high', reasoning: 'x', issues: [] },
   }),
   // Its own top-level flag excludes it; the shipped row with its url is a sibling's.
+  // Shares its url with a different critic's shipped row (mis-split byline).
+  'sibling.json': file('sibling', { url: 'https://example.com/shared/fixture-show-review',
+    contentVerification: { wrongProduction: false, confidence: 'high', reasoning: '', issues: [] } }),
   'not-shipped.json': file('not-shipped', {
     url: 'https://example.com/shared/fixture-show-review',
     wrongProduction: true,
@@ -79,14 +82,17 @@ const FILES = {
 
 let tmpRoot;
 let result;
+let plainResult;
 
 before(() => {
   tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'cv-wp-handled-'));
   const dir = path.join(tmpRoot, SHOW.id);
   fs.mkdirSync(dir, { recursive: true });
   for (const [name, data] of Object.entries(FILES)) fs.writeFileSync(path.join(dir, name), JSON.stringify(data));
-  const shipped = Object.values(FILES).map((d) => ({ showId: SHOW.id, outletId: d.outletId, criticName: d.criticName, url: d.url }));
-  result = check.run(SHOW, { reviewTextsRoot: tmpRoot, reviewsDoc: { [SHOW.id]: shipped } });
+  const shipped = Object.values(FILES).filter((d) => d.outletId !== 'not-shipped').map((d) => ({ showId: SHOW.id, outletId: d.outletId, criticName: d.criticName, url: d.url }));
+  const ctx = { reviewTextsRoot: tmpRoot, reviewsDoc: { [SHOW.id]: shipped } };
+  result = check.run(SHOW, { ...ctx, setAsideHandled: true });
+  plainResult = check.run(SHOW, ctx);
 });
 
 after(() => { if (tmpRoot) fs.rmSync(tmpRoot, { recursive: true, force: true }); });
@@ -106,6 +112,37 @@ describe('cv-wrongproduction-unhandled handled classes (BRO-5437)', () => {
       'rebuild-skip-audit': 1,
       'not-shipped': 1,
     });
+  });
+
+  it('the opening-night run (no setAsideHandled) still reports every class', () => {
+    assert.equal(plainResult.details.violations.length, 8);
+  });
+
+  it('handledReason: an override marker whose current date left the 30-day window is not handled', () => {
+    const d = file('x', { publishDate: '2023-01-01', contentVerification: { wrongProduction: true,
+      confidence: 'low', reasoning: `${OVERRIDE}venue`, issues: [] } });
+    assert.equal(check.handledReason(d, SHOW, '/nonexistent/x.json'), null);
+  });
+
+  it('handledReason: an inheritReviews:false prior-run window is not handled', () => {
+    const show = { ...SHOW, priorRuns: [{ ...SHOW.priorRuns[0], inheritReviews: false }] };
+    const d = file('x', { publishDate: '2025-02-01', contentVerification: { wrongProduction: true,
+      confidence: 'high', reasoning: 'x', issues: [] } });
+    assert.equal(check.handledReason(d, show, '/nonexistent/x.json'), null);
+  });
+
+  it('handledReason: own url+critic shipped means it is not "not-shipped"', () => {
+    const d = file('x', { wrongProduction: true, contentVerification: { wrongProduction: true,
+      confidence: 'high', reasoning: 'x', issues: [] } });
+    assert.equal(check.handledReason(d, SHOW, '/nonexistent/x.json', { exactShipped: true }), null);
+  });
+
+  it('handledReason: placeholder manual-clear strings are not a clear', () => {
+    for (const mc of ['pending review by curator', 'no', 'NOT cleared yet, check']) {
+      const d = file('x', { wrongProductionManualClear: mc,
+        contentVerification: { wrongProduction: true, confidence: 'high', reasoning: 'x', issues: [] } });
+      assert.equal(check.handledReason(d, SHOW, '/nonexistent/x.json'), null, mc);
+    }
   });
 
   it('handledReason: a "false" manual-clear string is not a clear', () => {

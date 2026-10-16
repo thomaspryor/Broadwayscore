@@ -144,7 +144,9 @@ function main() {
     console.error(`FAIL: could not read ${REVIEWS_PATH}: ${e.message}`);
     process.exit(1);
   }
-  const context = { reviewTextsRoot: REVIEW_TEXTS_DIR, reviewsDoc };
+  // setAsideHandled (BRO-5437): count documented pipeline-handled files under
+  // `handled` instead of as violations. Lifetime sweep only.
+  const context = { reviewTextsRoot: REVIEW_TEXTS_DIR, reviewsDoc, setAsideHandled: true };
 
   // "scanned" reflects directories actually present on disk (mirrors
   // audit-flag-wipe-signature.js), not how many shows.json entries happen to

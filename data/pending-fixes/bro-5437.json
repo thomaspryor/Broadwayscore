@@ -7,9 +7,9 @@
     "email": null
   },
   "plan": {
-    "summary": "BRO-5437: curator-clear 6 shipped reviews whose CV.wrongProduction verdict is a demonstrable false positive (renamed venue, stale date, or wrong market assumption), so the cv-wrongproduction lifetime sweep stops listing them. These reviews already ship; no score changes.",
+    "summary": "BRO-5437: curator-clear 5 shipped reviews whose CV.wrongProduction verdict is a demonstrable false positive (renamed venue or wrong market assumption), so the cv-wrongproduction lifetime sweep stops listing them. These reviews already ship; no score changes.",
     "steps": [
-      "Set wrongProductionManualClear on 6 review-texts files (compare-and-set from absent)."
+      "Set wrongProductionManualClear on 5 review-texts files (compare-and-set from absent)."
     ],
     "riskLevel": "low",
     "actions": [
@@ -39,19 +39,11 @@
       },
       {
         "type": "review-field-edit",
-        "file": "the-rose-tattoo-2019/broadwayworld--michael-dale.json",
-        "field": "wrongProductionManualClear",
-        "oldValue": null,
-        "newValue": true,
-        "description": "BRO-5437: CV objected only to a stale 2026-10-02 publishDate; the URL is dated 20191016 (opening 2019-10-15) and names this revival's star and director, and the stored date is now 2019-10-16."
-      },
-      {
-        "type": "review-field-edit",
         "file": "to-kill-a-mockingbird-west-end-2022/i-paper--sam-marlowe.json",
         "field": "wrongProductionManualClear",
         "oldValue": null,
         "newValue": true,
-        "description": "BRO-5437: CV called it the Broadway production; the URL names the Gielgud Theatre (this show's venue) and the stored date 2022-04-01 is the day after the West End opening."
+        "description": "BRO-5437: CV called it the Broadway production; the review body names Rafe Spall, who plays Atticus in this West End production at the Gielgud, and the stored date 2022-04-01 is the day after the West End opening."
       },
       {
         "type": "review-field-edit",
@@ -59,7 +51,7 @@
         "field": "wrongProductionManualClear",
         "oldValue": null,
         "newValue": true,
-        "description": "BRO-5437: CV assumed a Broadway St. James run; this show is the Off-Broadway production, which opened at Asylum NYC in June 2022 before moving to the Daryl Roth. The 2022-08-05 review is of this run."
+        "description": "BRO-5437: CV assumed a Broadway St. James run; this show is the Off-Broadway production, which the review body places at Asylum NYC, its 2022 home before the move to the Daryl Roth. The 2022-08-05 review is of this run."
       }
     ]
   }
