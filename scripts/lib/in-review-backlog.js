@@ -93,9 +93,11 @@ function isRealInReview(issue) {
 // NEEDED line, "owner-only", or the 👑 OWNER prefix. Everything else is
 // technical work a worker finished; the owner never reviews it, so it must
 // not be counted as "decisions for you" (2026-10-16 digest: 3 of 4 Review
-// queue rows were technical). The open-issues query carries no description,
-// so the text markers are read from the title; a card whose marker lives
-// only in its body is closed or bounced by stuck-card-closer instead.
+// queue rows were technical). The open-issues query carries no description or
+// comments, so the digest first runs enrichForOwnerMarkers() on the idle cards
+// that have no marker yet; stuck-card-closer reads the same fields from the
+// full card. A card whose text cannot be read counts as owner-marked (shown),
+// never as technical.
 const AWAITING_OWNER_LABEL = 'awaiting-owner';
 const OWNER_MARKER_RE = /DECISION NEEDED|owner[- ]only|👑\s*OWNER/i;
 
@@ -103,7 +105,41 @@ function hasOwnerMarker(issue) {
   if (!issue) return false;
   const labels = (issue.labels && issue.labels.nodes) || [];
   if (labels.some((l) => l && l.name === AWAITING_OWNER_LABEL)) return true;
-  return OWNER_MARKER_RE.test(`${issue.title || ''}\n${issue.description || ''}`);
+  if (issue.ownerMarkerUnknown) return true;
+  return OWNER_MARKER_RE.test(`${issue.title || ''}\n${issue.description || ''}\n${issue.commentText || ''}`);
+}
+
+const OWNER_MARKER_QUERY = `query($id: String!) {
+  issue(id: $id) { description comments(first: 100) { nodes { body } } }
+}`;
+const MAX_ENRICH = 40;
+
+/**
+ * Fill description + commentText on the idle In Review cards that carry no
+ * marker yet, so a DECISION NEEDED that lives in the body or in a worker's
+ * report comment still reaches the owner. Mutates and returns `issues`.
+ * A failed read sets ownerMarkerUnknown (shown to the owner, fail safe); cards
+ * past MAX_ENRICH are treated the same way rather than silently hidden.
+ * @param {Array} issues listOpenIssues() rows
+ * @param {(query:string, vars:object)=>Promise<any>} graphql
+ */
+async function enrichForOwnerMarkers(issues, graphql, { now = new Date(), idleAfterMs = IDLE_AFTER_MS } = {}) {
+  const todo = (issues || []).filter((i) => isRealInReview(i) && !hasOwnerMarker(i)
+    && idleMs(i, now) !== null && idleMs(i, now) >= idleAfterMs);
+  let n = 0;
+  for (const issue of todo) {
+    if (n++ >= MAX_ENRICH) { issue.ownerMarkerUnknown = true; continue; }
+    try {
+      const data = await graphql(OWNER_MARKER_QUERY, { id: issue.identifier });
+      const full = data && data.issue;
+      if (!full) { issue.ownerMarkerUnknown = true; continue; }
+      issue.description = full.description || '';
+      issue.commentText = ((full.comments && full.comments.nodes) || []).map((c) => c && c.body).filter(Boolean).join('\n');
+    } catch (_) {
+      issue.ownerMarkerUnknown = true;
+    }
+  }
+  return issues;
 }
 
 function isUrgent(issue) {
@@ -252,6 +288,7 @@ function countTechnicalInReview(issues, { now = new Date(), idleAfterMs = IDLE_A
 module.exports = {
   AWAITING_OWNER_LABEL,
   hasOwnerMarker,
+  enrichForOwnerMarkers,
   countTechnicalInReview,
   IN_REVIEW_STATE,
   IDLE_AFTER_MS,

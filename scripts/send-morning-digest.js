@@ -601,7 +601,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   }
   if (sections.inReviewTechnicalCount) {
     const n = sections.inReviewTechnicalCount;
-    parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${n} finished technical card${n === 1 ? '' : 's'} idle in review 3d+. Not for you: the daily closer closes each one when its check passes, or sends it back to a worker.</p>`);
+    parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${n} finished technical card${n === 1 ? '' : 's'} idle in review 3d+. Not for you: the daily closer closes each one it can verify; the rest wait for a worker.</p>`);
   }
   const delegationMsg = localLinearDelegationMessage();
   if (delegationMsg) {
@@ -1067,7 +1067,10 @@ async function main() {
   // sitting past the idle threshold.
   try {
     if (openIssues && openIssues.length) {
-      const { buildInReviewSection, countTechnicalInReview } = require('./lib/in-review-backlog.js');
+      const { buildInReviewSection, countTechnicalInReview, enrichForOwnerMarkers } = require('./lib/in-review-backlog.js');
+      // Read body + comments of the idle unmarked cards so a DECISION NEEDED
+      // that is not in the title still reaches the owner (unreadable = shown).
+      await enrichForOwnerMarkers(openIssues, require('./lib/linear-client.js').graphql);
       // Owner-marked cards only (BRO-5433): technical cards a worker parked
       // In Review are not owner decisions. stuck-card-closer closes or
       // bounces them; the count below keeps them visible under Technical

@@ -260,6 +260,8 @@ const MAX_SWEEP_PER_RUN = 25;
 // P3 fallbacks); priority 0 ("none") is never picked, so it is never bounced.
 const SWEEP_BOUNCE_PRIORITIES = [1, 2, 3, 4];
 const SWEEP_CLOSER_NOTE = 'In Review sweep';
+const REFUSED_MARKER = 'closer-sweep-refused';
+const REFUSED_COOLDOWN_MS = 7 * 24 * HOUR_MS;
 
 /**
  * Cards for the In Review sweep, oldest-idle first.
@@ -293,53 +295,62 @@ function hasGateEvidence(issue) {
  * Returns { action: 'try-close' } | { action: 'bounce', priorBounces } | { action: 'leave', reason }.
  * `gateRefused` is true on the second pass, after the Done gate refused the close.
  */
-function decideSweep({ issue, nowMs, gateRefused = false, landings = [] }) {
+function decideSweep({ issue, nowMs, gateRefused = false }) {
   if (!issue) return { action: 'leave', reason: 'issue-not-found' };
   if ((issue.state && issue.state.name) !== 'In Review') return { action: 'leave', reason: 'state-changed' };
-  // Re-check on the full card: the list query has no description, so a
-  // DECISION NEEDED line in the body only shows up here.
-  if (hasOwnerMarker(issue)) return { action: 'leave', reason: 'owner-marker' };
   const comments = Array.isArray(issue.comments) ? issue.comments : [];
+  // Re-check on the full card, body AND comments: the list query has neither,
+  // and a worker's In Review report (where an ask to the owner lives) is a comment.
+  const commentText = comments.map((c) => c && c.body).filter(Boolean).join('\n');
+  if (hasOwnerMarker({ ...issue, commentText })) return { action: 'leave', reason: 'owner-marker' };
   if (comments.some((c) => String(c.body || '').includes(CLOSER_MARKER))) return { action: 'leave', reason: 'closer-already-tried' };
+  // A refusal leaves no marker from linear-brain (it exits before commenting),
+  // so the closer posts one itself; without a cooldown the same refused cards
+  // would re-run their check every day and starve newer cards.
+  const lastRefusal = Math.max(0, ...comments.filter((c) => String(c.body || '').includes(REFUSED_MARKER)).map((c) => Date.parse(c.createdAt) || 0));
+  if (lastRefusal && nowMs - lastRefusal < REFUSED_COOLDOWN_MS) return { action: 'leave', reason: 'refused-recently' };
+  const lastActivity = Math.max(Date.parse(issue.updatedAt) || 0, ...comments.map((c) => Date.parse(c.createdAt) || 0));
+  if (nowMs - lastActivity < SWEEP_IDLE_MS) return { action: 'leave', reason: 'recent-activity' };
+  // A fix only observable later is never closed early.
+  if (futureRecheckAfter([issue.description, ...comments.map((c) => c.body)], nowMs)) return { action: 'leave', reason: 'recheck-after-pending' };
   if (!gateRefused && hasGateEvidence(issue)) return { action: 'try-close' };
-  // No recorded evidence: a land/ branch naming this card, merged after the
-  // card was filed, is the proof. The closure comment then cites that commit
-  // and the Done gate verifies it is on origin/main.
-  if (!gateRefused) {
-    const createdMs = Date.parse(issue.createdAt);
-    const landed = Number.isFinite(createdMs)
-      ? (landings || []).filter((l) => !/revert/i.test(l.branch) && branchIsForCard(l.branch, issue.identifier) && Date.parse(l.ts) > createdMs)
-      : [];
-    if (landed.length) return { action: 'try-close', sha: landed[landed.length - 1].sha };
-  }
-  // Todo only helps when a worker can pick the card up: decideBounce refuses
-  // cards with no runnable check (the cloud worker skips them too), so those
-  // stay In Review and the digest counts them under Technical details.
+  // No evidence the gate can verify: Todo only helps when a worker can pick the
+  // card up. decideBounce refuses cards with no runnable check (the cloud worker
+  // skips them too), so those stay In Review and the digest counts them under
+  // Technical details. A landing that merely names the card is NOT evidence:
+  // it can be a partial or follow-up landing, and the gate would approve a
+  // commit that is on main by definition.
+  if (!gateRefused) return { action: 'leave', reason: 'no-evidence' };
   const b = decideBounce({ candidate: {}, issue, nowMs, priorities: SWEEP_BOUNCE_PRIORITIES });
   if (!b.bounce) return { action: 'leave', reason: b.reason };
   return { action: 'bounce', priorBounces: b.priorBounces };
 }
 
-function buildSweepBounceComment({ priorBounces, refused }) {
+function buildSweepBounceComment({ priorBounces }) {
   return [
     `${BOUNCE_MARKER} (${priorBounces + 1} of ${MAX_BOUNCES}), ${SWEEP_CLOSER_NOTE}.`,
     '',
-    refused
-      ? 'This card sat In Review 3+ days and the Done gate refused to close it: its recorded evidence did not hold on main.'
-      : 'This card sat In Review 3+ days with no merge reference and no runnable check, so nothing proves the work landed.',
+    'This card sat In Review 3+ days and the Done gate refused to close it: its recorded evidence did not hold on main.',
     'Moved back to Todo so a worker finishes it. Before moving it to In Review again, add a line starting PR-EVIDENCE with the landed commit URL, or an acceptance command.',
     `After ${MAX_BOUNCES} bounces the closer stops moving this card.`,
   ].join('\n');
 }
 
-function buildSweepClosureComment({ sha } = {}) {
+function buildSweepRefusedComment() {
+  return [
+    `${REFUSED_MARKER} (${SWEEP_CLOSER_NOTE}).`,
+    '',
+    'The Done gate refused to close this card and no worker can pick it up automatically, so it stays In Review. The closer will not retry for 7 days.',
+  ].join('\n');
+}
+
+function buildSweepClosureComment() {
   return [
     `${CLOSER_MARKER} (${SWEEP_CLOSER_NOTE}).`,
     '',
     'This card sat In Review 3+ days with no owner marker. The Done gate accepted its recorded evidence against a fresh copy of main, so the board is closed out here.',
-    sha ? `PR-EVIDENCE: merged deployed checked (https://github.com/thomaspryor/Broadwayscore/commit/${sha})` : null,
     'If the problem is still happening, reopen the card and say what you saw.',
-  ].filter((l) => l !== null).join('\n');
+  ].join('\n');
 }
 
 // How many cards one run may close. The real limiter is time: every close
@@ -406,4 +417,6 @@ module.exports = {
   decideSweep,
   buildSweepBounceComment,
   buildSweepClosureComment,
+  buildSweepRefusedComment,
+  REFUSED_MARKER,
 };

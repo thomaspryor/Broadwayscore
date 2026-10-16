@@ -28,8 +28,8 @@ const { spawnSync, execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const {
   planCandidates, decideClosure, parseLandingRows, buildClosureComment, closeRunStopReason,
-  decideBounce, buildBounceComment, MAX_BOUNCES, MAX_BOUNCES_PER_RUN,
-  planInReviewSweep, decideSweep, buildSweepBounceComment, buildSweepClosureComment, MAX_SWEEP_PER_RUN,
+  decideBounce, buildBounceComment, MAX_BOUNCES, MAX_BOUNCES_PER_RUN, MAX_REFUSALS_PER_RUN,
+  planInReviewSweep, decideSweep, buildSweepBounceComment, buildSweepClosureComment, buildSweepRefusedComment, MAX_SWEEP_PER_RUN,
 } = require('./lib/stuck-card-closer.js');
 
 const REPO = path.join(__dirname, '..');
@@ -253,6 +253,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // cap) so it neither sits unseen nor reaches the owner as a decision.
   let swept = 0;
   let sweepAttempts = 0;
+  let sweepRefusals = 0;
   try {
     const handled = new Set([...plan.candidates, ...plan.bounces].map((c) => c.id));
     let sweepIds = planInReviewSweep(await linear.listOpenIssues(), nowMs, handled);
@@ -260,6 +261,9 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     count('sweep:eligible');
     out.counts['sweep:eligible'] = sweepIds.length;
     for (const id of sweepIds) {
+      // Same breaker as the audit path: when the gate keeps refusing what the
+      // sweep picked, the two disagree and more closes would be guessing.
+      if (sweepRefusals >= MAX_REFUSALS_PER_RUN) { count('sweep:refusal-breaker'); continue; }
       if (sweepAttempts >= MAX_SWEEP_PER_RUN) { count('sweep:over-run-cap'); continue; }
       if (Date.now() - startMs > TIME_BUDGET_MS - CLOSE_TIMEOUT_MS) { count('sweep:over-time-budget'); continue; }
       let issue;
@@ -273,7 +277,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         exitCode = 3;
         continue;
       }
-      let decision = decideSweep({ issue, nowMs, landings });
+      let decision = decideSweep({ issue, nowMs });
       if (decision.action === 'leave') {
         count(`sweep:${decision.reason}`);
         out.rows.push({ id, state: 'In Review', action: 'sweep-leave', reason: decision.reason });
@@ -286,9 +290,8 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         continue;
       }
       sweepAttempts++;
-      let refused = false;
       if (decision.action === 'try-close') {
-        const r = (deps.spawn || spawnSync)('node', [path.join(__dirname, 'linear-brain.js'), 'update', id, '--state', 'Done', '--comment', buildSweepClosureComment({ sha: decision.sha })],
+        const r = (deps.spawn || spawnSync)('node', [path.join(__dirname, 'linear-brain.js'), 'update', id, '--state', 'Done', '--comment', buildSweepClosureComment()],
           { cwd: REPO, encoding: 'utf8', timeout: CLOSE_TIMEOUT_MS });
         if (r.status === 0) {
           swept++;
@@ -306,17 +309,20 @@ async function main(argv = process.argv.slice(2), deps = {}) {
           out.rows.push({ id, state: 'In Review', action: 'sweep-close-failed', reason: tail });
           continue;
         }
-        refused = true;
-        decision = decideSweep({ issue, nowMs, gateRefused: true, landings });
+        sweepRefusals++;
+        decision = decideSweep({ issue, nowMs, gateRefused: true });
         if (decision.action !== 'bounce') {
           count(`sweep:${decision.reason}`);
           out.rows.push({ id, state: 'In Review', action: 'sweep-leave', reason: `gate-refused, ${decision.reason}` });
+          // Cooldown marker (comment only, no state change) so tomorrow's run
+          // does not re-run this card's check first and starve newer cards.
+          (deps.spawn || spawnSync)('node', [path.join(__dirname, 'linear-brain.js'), 'update', id, '--comment', buildSweepRefusedComment()],
+            { cwd: REPO, encoding: 'utf8', timeout: 60_000 });
           continue;
         }
       }
-      if (swept + bounced >= MAX_BOUNCES_PER_RUN + MAX_SWEEP_PER_RUN) { count('sweep:over-run-cap'); continue; }
       const r = (deps.spawn || spawnSync)('node', [path.join(__dirname, 'linear-brain.js'), 'update', id, '--state', 'Todo',
-        '--comment', buildSweepBounceComment({ priorBounces: decision.priorBounces, refused })],
+        '--comment', buildSweepBounceComment({ priorBounces: decision.priorBounces })],
       { cwd: REPO, encoding: 'utf8', timeout: CLOSE_TIMEOUT_MS });
       if (r.status === 0) {
         bounced++;

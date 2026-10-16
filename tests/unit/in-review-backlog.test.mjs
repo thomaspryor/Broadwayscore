@@ -19,6 +19,7 @@ const {
   MAX_TITLE_CHARS,
   hasOwnerMarker,
   countTechnicalInReview,
+  enrichForOwnerMarkers,
 } = require('../../scripts/lib/in-review-backlog.js');
 
 const NOW = new Date('2026-09-15T12:00:00.000Z');
@@ -284,5 +285,19 @@ describe('owner split (BRO-5433): technical In Review cards are not owner decisi
     const fresh = issue({ identifier: 'BRO-30', updatedAt: daysAgo(1) });
     assert.equal(countTechnicalInReview([...marked, ...technical, fresh], { now: NOW }), 2);
     assert.equal(countTechnicalInReview([], { now: NOW }), 0);
+  });
+
+  test('enrichForOwnerMarkers: a marker in the body or a comment surfaces; unreadable cards fail toward the owner', async () => {
+    const issues = [issue({ identifier: 'BRO-40' }), issue({ identifier: 'BRO-41' }), issue({ identifier: 'BRO-42' }), issue({ identifier: 'BRO-43' })];
+    const bodies = {
+      'BRO-40': { description: 'DECISION NEEDED: pick one', comments: { nodes: [] } },
+      'BRO-41': { description: 'done', comments: { nodes: [{ body: 'report. 👑 OWNER: approve' }] } },
+      'BRO-42': { description: 'all technical', comments: { nodes: [{ body: 'merged' }] } },
+    };
+    const graphql = async (_q, { id }) => { if (id === 'BRO-43') throw new Error('boom'); return { issue: bodies[id] }; };
+    await enrichForOwnerMarkers(issues, graphql, { now: NOW });
+    const ids = buildInReviewRows(issues, { now: NOW, ownerOnly: true }).map((r) => r.title.split(':')[0]).sort();
+    assert.deepEqual(ids, ['BRO-40', 'BRO-41', 'BRO-43']);
+    assert.equal(countTechnicalInReview(issues, { now: NOW }), 1);
   });
 });
