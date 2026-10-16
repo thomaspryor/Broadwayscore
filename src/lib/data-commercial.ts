@@ -48,8 +48,10 @@ import {
   getNonprofitProducer,
   getCitedSourceUrl,
   meetsModelQualityFloor,
+  hasNoInvestorsToRepay,
 } from './commercial-display';
 import { reportedReturn } from '../../scripts/lib/reported-return';
+import { conversionOf, isConvertedToCommercial } from '../../scripts/lib/commercial-conversion';
 import {
   computeMarketMedianByWeek,
   computeShowStatus,
@@ -665,6 +667,7 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
     } : {}),
     ...(data.reportedReturn ? { reportedReturn: data.reportedReturn } : {}),
     ...(data.productionType ? { productionType: data.productionType } : {}),
+    ...(conversionOf(data) ? { commercialConversion: conversionOf(data) } : {}),
     modelMethod: data.modelMethod || null,
     modelDataQuality: data.modelDataQuality,
     reportedMultiple: getReportedInvestorMultiple(data),
@@ -736,6 +739,8 @@ export interface ShowBoxOfficeV2 extends ShowBoxOfficeStatus {
   costSourceText: string | null;
   costSourceUrl: string | null;
   nonprofitOrg: string | null;
+  /** hasNoInvestorsToRepay: the nonprofit note says "no investors to pay back" only then (an enhancement deal has them). */
+  noInvestors: boolean;
   /** Final designation for a closed show (links to the Commercial Scorecard), else null. */
   designation: CommercialDesignation | null;
   /** Why a show has no usable cost (availability 'nocost' only), for the build report. */
@@ -804,6 +809,8 @@ function productionWeeks(show: RawShow): WeekRow[] {
 }
 
 function isNonprofitRecord(data: ShowCommercial): boolean {
+  // A nonprofit run that became a commercial run is a commercial production now (BRO-5508).
+  if (isConvertedToCommercial(data)) return false;
   return data.designation === 'Nonprofit' || getNonprofitProducer(data) != null;
 }
 
@@ -895,6 +902,7 @@ export function getShowBoxOfficeV2(slug: string): ShowBoxOfficeV2 | null {
     costSourceText: cited ? publicSourceText(data.weeklyRunningCostSource) : null,
     costSourceUrl: cited ? getCitedSourceUrl(data.sources) : null,
     nonprofitOrg: getNonprofitProducer(data),
+    noInvestors: hasNoInvestorsToRepay(data),
     designation: show.status === 'closed' && data.designation && data.designation !== 'TBD' ? data.designation : null,
     noCostReason: status.availability === 'nocost' ? noCostReason(data) : null,
   };

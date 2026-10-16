@@ -466,6 +466,8 @@ export interface ShowCommercial {
   /** What a Fizzle/Flop rests on (owner policy B, BRO-5020). Anything but 'reported-loss' prints a caveat (lossBasisCaveat). */
   designationBasis?: 'reported-loss' | 'no-recoupment-announced' | 'notes-stated';
   nonprofitOrg?: string;
+  /** A nonprofit run's switch to a commercial run; date null when not reported (BRO-5508, scripts/lib/commercial-conversion.js). */
+  commercialConversion?: { date: string | null; sourceUrl: string | null } | null;
   notes?: string;
   estimatedRecoupmentPct?: [number, number] | null;
   estimatedRecoupmentSource?: string | null;
@@ -601,6 +603,8 @@ export interface CommercialShowRow {
   weeklyCostIsEstimate: boolean;
   /** getNonprofitProducer(): nonprofit company behind the production, else null. */
   nonprofitOrg: string | null;
+  /** ShowCommercial.commercialConversion: the nonprofit run became a commercial run (BRO-5508). */
+  commercialConversion?: ShowCommercial['commercialConversion'];
   totalGross: number | null;
   modelRecoupmentPct: [number, number, number] | null;
   /** ShowCommercial.modelBelowCosts: the bar reads 0% with "losing money so far". */

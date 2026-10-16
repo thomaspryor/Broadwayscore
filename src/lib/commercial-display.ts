@@ -24,6 +24,7 @@ import {
   analystRange, estimateFitsDesignation, RUNNING_SHOWN_MAX,
 } from '../../scripts/lib/model-display-guard';
 import { hasNoInvestorsToRepay } from '../../scripts/lib/commercial-designations';
+import { conversionOf } from '../../scripts/lib/commercial-conversion';
 
 export type RecoupmentDisplayMode = 'announced' | 'analyst' | 'model' | 'none';
 
@@ -385,6 +386,8 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     sources: commercial.sources?.map(({ type, url, date }) => ({ type, url, date })),
     investorMultiple: commercial.investorMultiple,
     nonprofitOrg: getNonprofitProducer(commercial) ?? undefined,
+    // A nonprofit run that became a commercial run (BRO-5508): the card's producer line names the switch.
+    ...(conversionOf(commercial) ? { commercialConversion: conversionOf(commercial) } : {}),
     // An enhancement deal has investors to repay (hasNoInvestorsToRepay); the card needs it to match the table.
     ...(commercial.productionType ? { productionType: commercial.productionType } : {}),
     modelRecoupmentPct: commercial.modelRecoupmentPct,
@@ -418,18 +421,38 @@ export function getNonprofitProducer(commercial: Pick<ShowCommercial, 'nonprofit
  * The line under the designation naming the nonprofit producer: a Nonprofit
  * show reads "A Manhattan Theatre Club production (nonprofit)"; a commercial
  * outcome on a nonprofit production (an enhancement) reads "Nonprofit
- * producer: Lincoln Center Theater". Null when there is no nonprofit producer.
+ * producer: Lincoln Center Theater"; a nonprofit run that became a commercial
+ * run says when (BRO-5508). Null when there is no nonprofit producer.
  */
 export function getNonprofitProducerLine(
-  commercial: Pick<ShowCommercial, 'nonprofitOrg' | 'designation'> & { productionType?: ShowCommercial['productionType'] | null }
+  commercial: Pick<ShowCommercial, 'nonprofitOrg' | 'designation' | 'commercialConversion'> & { productionType?: ShowCommercial['productionType'] | null }
 ): string | null {
   const org = getNonprofitProducer(commercial);
   if (!org) return null;
+  const conversion = conversionOf(commercial);
+  if (conversion) {
+    const when = formatEstimateDate(conversion.date, 'short');
+    return `Began as a ${org} nonprofit production, then switched to a commercial run${when ? ` in ${when}` : ''}`;
+  }
   if (commercial.designation !== 'Nonprofit') return `Nonprofit producer: ${org}`;
   // An enhancement deal raised commercial money, so its % recouped shows (BRO-5502); say why.
   return commercial.productionType === 'enhancement'
     ? `A ${org} production (nonprofit, with commercial enhancement investors)`
     : `A ${org} production (nonprofit)`;
+}
+
+/**
+ * The /biz table's small line under the designation: the nonprofit company,
+ * plus when its run became a commercial run (BRO-5508). Null with none.
+ */
+export function getNonprofitTag(
+  row: { nonprofitOrg?: string | null; commercialConversion?: ShowCommercial['commercialConversion'] }
+): string | null {
+  if (!row.nonprofitOrg) return null;
+  const conversion = conversionOf(row);
+  if (!conversion) return row.nonprofitOrg;
+  const when = formatEstimateDate(conversion.date, 'short');
+  return when ? `${row.nonprofitOrg} · commercial from ${when}` : `${row.nonprofitOrg} · went commercial`;
 }
 
 /** Re-exported for client components: one rule for who has investors to repay (BRO-5502). */

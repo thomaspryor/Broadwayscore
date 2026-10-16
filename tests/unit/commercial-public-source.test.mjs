@@ -20,6 +20,8 @@ const {
   getRecoupmentAttribution,
   toPublicShowCommercial,
   getNonprofitProducerLine,
+  getNonprofitTag,
+  getRecoupedCellSummary,
 } = await import('../../src/lib/commercial-display.ts');
 
 test('publicSourceText drops internal research-tooling language', () => {
@@ -281,4 +283,30 @@ test('nonprofit producer line (BRO-4721): names the company, survives toPublicSh
   assert.equal(getNonprofitProducerLine(toPublicShowCommercial(lct)), 'A Lincoln Center Theater production (nonprofit, with commercial enhancement investors)');
   assert.equal(getNonprofitProducerLine({ ...base, designation: 'Nonprofit', nonprofitOrg: 'Inferred from GPT deep research' }), null);
   assert.equal(toPublicShowCommercial({ ...base, designation: 'Nonprofit', nonprofitOrg: 'GPT DR batch 2' }).nonprofitOrg, undefined);
+});
+
+test('a nonprofit run that became a commercial run (BRO-5508): says when, counts as commercial, survives the projections', () => {
+  const base = { capitalization: null, capitalizationSource: null, weeklyRunningCost: null, recouped: null, recoupedDate: null, recoupedWeeks: null };
+  const ragtime = {
+    ...base, designation: 'TBD', nonprofitOrg: 'Lincoln Center Theater', productionType: 'enhancement',
+    commercialConversion: { date: '2026-01-05', sourceUrl: 'https://www.reddit.com/r/Broadway/comments/x/' },
+  };
+  const line = 'Began as a Lincoln Center Theater nonprofit production, then switched to a commercial run in Jan 2026';
+  assert.equal(getNonprofitProducerLine(ragtime), line);
+  assert.equal(getNonprofitProducerLine(toPublicShowCommercial(ragtime)), line);
+  assert.deepEqual(toPublicShowCommercial(ragtime).commercialConversion, ragtime.commercialConversion);
+  assert.equal(getNonprofitTag(ragtime), 'Lincoln Center Theater · commercial from Jan 2026');
+  // The switch is reported but not its date: say it happened, never invent when.
+  const rocky = { ...base, designation: 'TBD', nonprofitOrg: 'Roundabout Theatre Company', commercialConversion: { date: null, sourceUrl: 'https://www.reddit.com/r/Broadway/comments/y/' } };
+  assert.equal(getNonprofitProducerLine(rocky), 'Began as a Roundabout Theatre Company nonprofit production, then switched to a commercial run');
+  assert.equal(getNonprofitTag(rocky), 'Roundabout Theatre Company · went commercial');
+  // A malformed record never reaches the page as a conversion.
+  assert.equal(toPublicShowCommercial({ ...base, designation: 'TBD', commercialConversion: 'yes' }).commercialConversion, undefined);
+  // Without a switch the tag is the company, as before.
+  assert.equal(getNonprofitTag({ nonprofitOrg: 'Manhattan Theatre Club' }), 'Manhattan Theatre Club');
+  assert.equal(getNonprofitTag({ nonprofitOrg: null }), null);
+  // It has investors: its % recouped cell shows the analyst's figure, never "Not applicable: nonprofit".
+  const row = { ...rocky, slug: 'the-rocky-horror-show', status: 'open', analystRecoupPct: [0, 20], analystRecoupAsOf: '2026-10-13', analystRecoupUrl: 'https://www.reddit.com/r/Broadway/comments/z/', modelRecoupmentPct: null };
+  assert.equal(getRecoupedCellSummary(row).kind, 'analyst');
+  assert.equal(getRecoupedCellSummary({ ...row, designation: 'Nonprofit', commercialConversion: undefined }).kind, 'reason');
 });
