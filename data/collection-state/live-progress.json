@@ -1,43 +1,21 @@
 {
-  "updatedAt": "2026-10-16T22:06:24.911Z",
-  "processed": 393,
-  "failed": 289,
-  "successRate": "57.6%",
+  "updatedAt": "2026-10-16T22:38:36.054Z",
+  "processed": 438,
+  "failed": 324,
+  "successRate": "57.5%",
   "tierBreakdown": {
-    "playwright": 248,
+    "playwright": 274,
     "amp": 3,
-    "browserbase": 3,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 39,
-    "scrapingbee": 33,
+    "scrapingdog": 43,
+    "scrapingbee": 38,
     "brightdata": 2,
     "archiveToday": 0,
-    "archive": 73
+    "archive": 85
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-10-16T18:24:08.301Z",
-      "event": "bb-session",
-      "session": "5baa2a64",
-      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
-    },
-    {
-      "t": "2026-10-16T18:24:09.017Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-16T18:24:26.946Z",
-      "event": "bb-session",
-      "session": "351b228d",
-      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
-    },
-    {
-      "t": "2026-10-16T18:24:27.567Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-10-16T18:38:59.637Z",
       "event": "bb-session",
@@ -123,6 +101,28 @@
     },
     {
       "t": "2026-10-16T21:55:33.337Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-16T22:37:26.951Z",
+      "event": "bb-session",
+      "session": "796a5161",
+      "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89"
+    },
+    {
+      "t": "2026-10-16T22:37:27.265Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-16T22:37:44.373Z",
+      "event": "bb-session",
+      "session": "742de40d",
+      "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89"
+    },
+    {
+      "t": "2026-10-16T22:37:44.678Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
