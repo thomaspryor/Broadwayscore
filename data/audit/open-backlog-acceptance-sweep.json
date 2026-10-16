@@ -1,18 +1,30 @@
 {
-  "generatedAt": "2026-10-15T07:31:12.377Z",
+  "generatedAt": "2026-10-16T07:16:07.644Z",
   "shadow": true,
-  "checkoutSha": "e27e10ba5630648f49ade9fcc5ffc80357c24085",
-  "totalCandidates": 525,
-  "eligibleCandidates": 113,
+  "checkoutSha": "29efe056b39e18aa71ebf8bdf010c89724265f75",
+  "totalCandidates": 522,
+  "eligibleCandidates": 98,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 12,
-    "fail": 2,
+    "pass": 14,
+    "fail": 0,
     "unverifiable": 16
   },
   "alreadyDone": [
+    {
+      "id": "BRO-5427",
+      "name": "Opening-night SLA: duplicate P0 emails + junk reviews paging as stuck",
+      "verifyCmd": "node --test tests/unit/opening-night-sla.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5396",
+      "name": "Syndicated duplicates: 23 secondaries point at a primary file that no longer exists (excluded for nothing)",
+      "verifyCmd": "node --test scripts/lib/syndicated-duplicate-heal.test.mjs",
+      "detail": null
+    },
     {
       "id": "BRO-5366",
       "name": "Weekly Video Reviews stale 207h: TikTok creator scans failing via yt-dlp (4 creators unscanned 15-23 days)",
@@ -44,6 +56,12 @@
       "detail": null
     },
     {
+      "id": "BRO-5267",
+      "name": "Alert ledger: 267 conditions stay 'open' after their emitter stopped seeing them (no rollover/absence resolve)",
+      "verifyCmd": "node --test tests/unit/alert-ledger-absence-resolve.test.mjs",
+      "detail": null
+    },
+    {
       "id": "BRO-5266",
       "name": "Data-backfill cards get node --test acceptance commands, pushing workers to write world-state tests into blocking unit jobs",
       "verifyCmd": "node --test scripts/enrich-card-acceptance.test.mjs",
@@ -53,6 +71,12 @@
       "id": "BRO-5238",
       "name": "Human wrong-production clear should override stale ensemble rejectionReason in inclusion gate",
       "verifyCmd": "node --test scripts/lib/review-guards.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5231",
+      "name": "P2: 439 url-corrected reviews still ship the OLD url's body and score (needsRefetch never drains)",
+      "verifyCmd": "node --test tests/unit/url-corrected-refetch-drain.test.mjs",
       "detail": null
     },
     {
@@ -72,35 +96,16 @@
       "name": "Missing show: You Will Get Sick",
       "verifyCmd": "node scripts/validate-data.js",
       "detail": null
-    },
-    {
-      "id": "BRO-5191",
-      "name": "Missing show: No Exit",
-      "verifyCmd": "node scripts/validate-data.js",
-      "detail": null
-    },
-    {
-      "id": "BRO-5171",
-      "name": "Reverse discovery: stage West End Guardian-review candidates into the Off-West-End promoter",
-      "verifyCmd": "node --test tests/unit/owe-guardian-staging.test.mjs",
-      "detail": null
     }
   ],
-  "failing": [
-    {
-      "id": "BRO-5282",
-      "name": "P1: landing throughput is now the bottleneck (23 landings queued, ~2h wait, ~15 lands/hour)",
-      "verifyCmd": "node --test tests/acceptance/land-train-live.test.mjs",
-      "detail": "TAP version 13\n# fatal: Not a valid commit name 245b878352e94aa53e4aa822f68c6e7fc629c172\n# Subtest: BRO-5282: a merge train has landed in production, and all of its commits are on main\nnot ok 1 - BRO-5282: a merge train has landed in production, and all of its commits are on main\n  ---\n  duration_ms: 284.517484\n  location: '/tmp/open-backlog-sweep-pZbAqA/main/tests/acceptance/land-train-live.test."
-    },
-    {
-      "id": "BRO-5166",
-      "name": "Major-outlet reviews not counted in scores: Data: T1/T2 silent review gaps (11 reviews, 3 T1)",
-      "verifyCmd": "node scripts/check-health-row-absent.js --row-b64 RGF0YTogVDEvVDIgc2lsZW50IHJldmlldyBnYXBz",
-      "detail": "[check-health-row-absent] FAIL: \"Data: T1/T2 silent review gaps\" still listed in the 2026-10-15T07:28:22.410Z health snapshot\n"
-    }
-  ],
+  "failing": [],
   "unverifiable": [
+    {
+      "id": "BRO-5384",
+      "name": "Codex lane: ~2 cards per 2h, half rejected, 96% of the ChatGPT allowance unused — make it parallel, route it fitting cards, give fix rounds time",
+      "verifyCmd": "node --test scripts/verify-bro-5384-codex-throughput.test.mjs",
+      "detail": "ran no passing tests (all skipped or none ran)"
+    },
     {
       "id": "BRO-5351",
       "name": "Collector derives publishDate from the review URL (collect-review-texts.js:4858) against CLAUDE.md section 3",
@@ -150,12 +155,6 @@
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/classify-sample.test.mjs"
     },
     {
-      "id": "BRO-5267",
-      "name": "Alert ledger: 267 conditions stay 'open' after their emitter stopped seeing them (no rollover/absence resolve)",
-      "verifyCmd": "node --test tests/unit/alert-ledger-absence-resolve.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/alert-ledger-absence-resolve.test.mjs"
-    },
-    {
       "id": "BRO-5265",
       "name": "17 mutual crossOutletDuplicate 2-cycles exclude both copies of a review",
       "verifyCmd": "node --test tests/unit/cross-outlet-duplicate-cycle.test.mjs",
@@ -200,6 +199,13 @@
   ],
   "landedButOpen": [
     {
+      "id": "BRO-5427",
+      "name": "Opening-night SLA: duplicate P0 emails + junk reviews paging as stuck",
+      "branch": "land/bro-5427-sla-dup-emails",
+      "sha": "f1f0696c576898d24fe4c09f1ba41a24ad06b18e",
+      "landedAt": "2026-10-16T05:28:14.296Z"
+    },
+    {
       "id": "BRO-5366",
       "name": "Weekly Video Reviews stale 207h: TikTok creator scans failing via yt-dlp (4 creators unscanned 15-23 days)",
       "branch": "land/bro-5366-tiktok-scan-retry",
@@ -221,11 +227,18 @@
       "landedAt": "2026-10-14T14:36:54.768Z"
     },
     {
-      "id": "BRO-5171",
-      "name": "Reverse discovery: stage West End Guardian-review candidates into the Off-West-End promoter",
-      "branch": "land/bro-5171-owe-guardian-staging",
-      "sha": "b8dc1ab115b401bba3520f97b15dbfc2d09ac042",
-      "landedAt": "2026-10-12T19:49:56.257Z"
+      "id": "BRO-5267",
+      "name": "Alert ledger: 267 conditions stay 'open' after their emitter stopped seeing them (no rollover/absence resolve)",
+      "branch": "land/codex-bro-5267",
+      "sha": "ae892502d0035455b38e14c40df1d950a18a5978",
+      "landedAt": "2026-10-16T02:14:36.698Z"
+    },
+    {
+      "id": "BRO-5231",
+      "name": "P2: 439 url-corrected reviews still ship the OLD url's body and score (needsRefetch never drains)",
+      "branch": "land/bro-5231-url-corrected-drain",
+      "sha": "5c3038a5c4814e0816cc990e25a777af083610d2",
+      "landedAt": "2026-10-13T07:55:30.948Z"
     }
   ]
 }
