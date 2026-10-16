@@ -38,9 +38,22 @@ test('decide: a started card escalates only on red seen after the window', () =>
 
 test('decide: a closed card escalates only on red more than 1h after it closed', () => {
   const closed = card({ createdAt: iso(5 * H), startedAt: iso(4 * H), completedAt: iso(3 * H), state: { type: 'completed' } });
-  assert.equal(decide([closed], 2.5 * H), 'hold:fix-just-closed');
+  assert.equal(decide([closed], 3.5 * H), 'hold:fix-just-closed', 'red from before the fix closed is the old failure');
   assert.equal(decide([closed], 1 * H), 'escalate:red-after-fix');
   assert.equal(decide([closed], null), 'hold:fix-just-closed');
+});
+
+test('decide: red inside the grace hour after Done holds only until the hour is up, then escalates', () => {
+  const justClosed = card({ createdAt: iso(3 * H), startedAt: iso(2 * H), completedAt: iso(0.5 * H), state: { type: 'completed' } });
+  assert.equal(decide([justClosed], 0), 'hold:fix-just-closed', 'the gate holds a failure inside the grace hour');
+  const closed = card({ createdAt: iso(5 * H), startedAt: iso(4 * H), completedAt: iso(3 * H), state: { type: 'completed' } });
+  assert.equal(decide([closed], 2.5 * H), 'escalate:red-after-fix', 'the sweep pages it once the grace hour has passed');
+});
+
+test('decide: a card closed as Duplicate is not open', () => {
+  const dup = card({ createdAt: iso(4 * H), canceledAt: iso(3.5 * H), state: { type: 'duplicate' } });
+  const real = card({ identifier: 'BRO-2', createdAt: iso(3.9 * H), state: { type: 'started' } });
+  assert.equal(decide([dup, real], null), 'hold:fix-in-progress');
 });
 
 test('decide: an escalated card passes (alert emails as before), and cards older than 24h are a past incident', () => {
@@ -193,8 +206,9 @@ test('buildCard: the key line survives a markdown round-trip (own paragraph)', (
 
 test('decide: a fix stuck In Progress for 6h with no new red escalates as stalled', () => {
   const stuck = (ago) => card({ createdAt: iso(ago), state: { type: 'started' } });
-  assert.equal(decide([stuck(5 * H)], null), 'hold:fix-in-progress');
-  assert.equal(decide([stuck(6 * H)], null), 'escalate:stalled');
+  assert.equal(decide([stuck(5 * H)], 5 * H), 'hold:fix-in-progress');
+  assert.equal(decide([stuck(6 * H)], 6 * H), 'escalate:stalled');
+  assert.equal(decide([stuck(6 * H)], null), 'hold:fix-in-progress', 'the newest run passed: nothing to page');
 });
 
 test('the gate and the sweep send one escalation per card: same Resend key as routeAlert() derives for the escalation condition', () => {

@@ -58,9 +58,11 @@ function ms(iso) {
   return Number.isFinite(t) ? t : null;
 }
 
+// Duplicate is terminal too: a racing second card closed as Duplicate must not
+// stay "open" and page as not-started while the real card is being worked.
 function isOpen(card) {
   const type = card && card.state && card.state.type;
-  return type !== 'completed' && type !== 'canceled';
+  return !require('./linear-state-types.js').isTerminalStateType(type);
 }
 
 // Being worked on right now. A worker that gives up moves the card back to
@@ -104,7 +106,8 @@ function decide({ cards, redObservedAt, nowMs, canFile, windowMs = WINDOW_MS, lo
     if (red !== null && red >= created + windowMs) return { action: 'escalate', reason: 'still-red', card };
     // A crashed fix session leaves the card In Progress forever, and the
     // poller (no cron) may never show red again: give up waiting at 2x window.
-    if (nowMs - created >= 2 * windowMs) return { action: 'escalate', reason: 'stalled', card };
+    // No red at all means the newest run passed, so there is nothing to page.
+    if (red !== null && nowMs - created >= 2 * windowMs) return { action: 'escalate', reason: 'stalled', card };
     return { action: 'hold', reason: 'fix-in-progress', card };
   }
   const closed = recent.filter((c) => closedAtMs(c) !== null).sort((a, b) => closedAtMs(b) - closedAtMs(a));
@@ -116,7 +119,11 @@ function decide({ cards, redObservedAt, nowMs, canFile, windowMs = WINDOW_MS, lo
     const done = closed.filter((c) => c.state && c.state.type === 'completed');
     if (!done.length) return { action: 'escalate', reason: 'fix-canceled', card: closed[0] };
     const card = done[0];
-    if (red !== null && red > closedAtMs(card) + graceMs) return { action: 'escalate', reason: 'red-after-fix', card };
+    // Red after Done is a failed fix. The grace hour only delays the page (a
+    // run already in flight at close); it never excuses the red for good, or a
+    // failure inside that hour would hold here forever (the gate holds it and
+    // every sweep re-reads the same run until the card ages out).
+    if (red !== null && red > closedAtMs(card) && nowMs >= closedAtMs(card) + graceMs) return { action: 'escalate', reason: 'red-after-fix', card };
     return { action: 'hold', reason: 'fix-just-closed', card };
   }
   return canFile ? { action: 'file', reason: 'no-card' } : { action: 'none', reason: 'no-card' };
