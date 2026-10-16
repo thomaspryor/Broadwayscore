@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-10-16T20:05:36.999Z",
+  "timestamp": "2026-10-16T20:32:44.790Z",
   "stats": {
-    "totalReviews": 57075,
-    "alreadyFlagged": 21192,
+    "totalReviews": 57081,
+    "alreadyFlagged": 21194,
     "dateGuardCatches": 193,
     "directorMismatch": 1916,
     "tvFilmSignals": 1595,
@@ -35635,6 +35635,19 @@
       ]
     },
     {
+      "showId": "stories-the-tap-dance-sensation-west-end-2026",
+      "file": "whatsgoodtodo--debbie-kingsland.json",
+      "publishDate": "2026-10-16",
+      "url": "https://whatsgoodtodo.com/stories-the-tap-dance-sensation-at-peacock-theatre-london-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
       "showId": "straight-white-men-2018",
       "file": "theater-life--isa-goldberg.json",
       "score": 60,
@@ -37976,7 +37989,7 @@
     {
       "showId": "the-cherry-orchard-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2026-10-13",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-cherry-orchard-review/",
       "findings": [
@@ -69761,7 +69774,7 @@
       "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
       "file": "vulture--jackson-mchenry.json",
       "score": 51,
-      "publishDate": "2026-10-16",
+      "publishDate": "2026-10-15",
       "url": "https://www.vulture.com/article/reviews-memoirs-of-amorous-gentlemen-and-a-ghost-in-your-ear.html",
       "findings": [
         {
@@ -74370,7 +74383,7 @@
     },
     {
       "showId": "romeo-and-juliet-west-end-2026",
-      "file": "thenerve--unknown.json",
+      "file": "thenerve--dorian-lynskey.json",
       "score": 78,
       "publishDate": "2026-04-02",
       "url": "https://www.thenerve.news/p/review-romeo-and-juliet-les-liaisons-dangereuses-dorian-lynskey-harold-pinter-national-theatre",
@@ -74916,7 +74929,7 @@
     },
     {
       "showId": "seven-methods-of-killing-kylie-jenner-west-end-2019",
-      "file": "guardian--unknown.json",
+      "file": "guardian--arifa-akbar.json",
       "score": 60,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2019/jul/09/seven-methods-of-killing-kylie-jenner-review-royal-court-theatre",
@@ -76803,20 +76816,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "ign--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.ign.com/articles/stranger-things-the-first-shadow-reveals-official-image-with-a-demogorgon-taking-center-stage",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Contains TV/film keyword: \"season 3\""
         }
       ]
     },
@@ -78908,7 +78907,7 @@
     {
       "showId": "the-cherry-orchard-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": 78,
+      "score": 75,
       "publishDate": "2026-10-16",
       "url": "https://theatreandtonic.co.uk/blog/the-cherry-orchard-starring-kristin-scott-thomas-review",
       "findings": [
@@ -78922,6 +78921,7 @@
     {
       "showId": "the-cherry-orchard-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
       "publishDate": "2026-10-14",
       "url": "https://www.timeout.com/london/news/the-cherry-orchard-review-kristin-scott-thomas-harold-pinter-theatre-101426",
       "findings": [

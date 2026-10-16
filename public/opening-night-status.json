@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T20:05:48.943Z",
+  "generatedAt": "2026-10-16T20:32:52.744Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -3645,9 +3645,9 @@
       "status": "open",
       "slug": "the-cherry-orchard-west-end",
       "thumbnail": "/images/shows/the-cherry-orchard-west-end-2026/thumbnail.jpeg",
-      "siteScore": 72.34,
+      "siteScore": 71.85,
       "liveScore": 72,
-      "scoreDrift": -0.3400000000000034,
+      "scoreDrift": 0.15000000000000568,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -3655,13 +3655,13 @@
       "t1": 8,
       "t2": 5,
       "t3": 19,
-      "positive": 22,
-      "mixed": 8,
+      "positive": 21,
+      "mixed": 9,
       "negative": 2,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 29,
+        "highConfidence": 31,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -4035,6 +4035,18 @@
           "t3": 19,
           "p": 22,
           "m": 8,
+          "n": 2,
+          "bc": "preview-sent-earlier"
+        },
+        {
+          "t": "2026-10-16T20:32:52.744Z",
+          "rc": 32,
+          "s": 71.85,
+          "t1": 8,
+          "t2": 5,
+          "t3": 19,
+          "p": 21,
+          "m": 9,
           "n": 2,
           "bc": "preview-sent-earlier"
         }
