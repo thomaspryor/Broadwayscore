@@ -14,7 +14,8 @@ import Anthropic from '@anthropic-ai/sdk';
 // demand a consensus this script is coded to refuse (task #389).
 import { MIN_SCORED_REVIEWS, MAX_STALE_PRUNE, isConsensusEligible, liveScoredCounts, staleConsensusIds, pruneConsensusEntries, liveOutletKeys } from './lib/critic-consensus-eligibility.js';
 import { finalResponseText, describeResponse } from './lib/anthropic-response-text.js';
-import { normalizeOutlet } from './lib/review-normalization.js';
+import { loadReviewTexts as loadConsensusInputs, consensusFingerprint } from './lib/critic-consensus-inputs.js';
+import { refusalRetryDecision, excerptOptionsForAttempt, formatReviewExcerpts, REFUSAL_RETRY_EXCERPT_CHARS } from './lib/critic-consensus-refusal.js';
 // --shows=a,b / --show=a filter (BRO-4595). List form lets the opening-night
 // poller dispatch update-critic-consensus.yml ONCE for every polled show; its
 // concurrency group keeps a single pending run, so per-show dispatches were
@@ -25,7 +26,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const ROOT = path.resolve(__dirname, '..');
-const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
 const SHOWS_FILE = path.join(ROOT, 'data', 'shows.json');
 const CONSENSUS_FILE = path.join(ROOT, 'data', 'critic-consensus.json');
 const REVIEWS_FILE = path.join(ROOT, 'data', 'reviews.json');
@@ -41,63 +41,12 @@ const anthropic = {
   },
 };
 
-/**
- * Load review texts for a show
- */
+// loadReviewTexts / consensusFingerprint live in scripts/lib so the
+// contamination audit counts the same inputs this script stores (BRO-4869).
 function loadReviewTexts(showId, liveOutlets = null) {
-  const showDir = path.join(REVIEW_TEXTS_DIR, showId);
-  if (!fs.existsSync(showDir)) {
-    return [];
-  }
-
-  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
-  const reviews = [];
-
-  for (const file of files) {
-    try {
-      const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf-8'));
-
-      // Skip excluded reviews
-      if (data.duplicateOf || data.wrongProduction || data.wrongShow || data.wrongAttribution ||
-          data.isRoundupArticle || data.rejectionReason || data.contentTier === 'invalid') continue;
-      // Only outlets the site actually shows for this show: the rebuild's
-      // guards exclude more than the flags above, and a Critics' Take written
-      // from an excluded review (another production, another show) is wrong on
-      // the page (BRO-4852; 858 such inputs across 1,289 takes on 2026-10-08).
-      // Same outlet normalisation the rebuild applies to reviews.json rows
-      // (rebuild-all-reviews.js normalizeOutletCanonical), so an alias such as
-      // metro -> metro-uk still matches.
-      if (liveOutlets && !liveOutlets.has(`${showId}|${data.outletId}`)
-          && !liveOutlets.has(`${showId}|${normalizeOutlet(data.outletId || data.outlet)}`)) continue;
-
-      // Collect all available text (prefer full text, fall back to excerpts)
-      const textParts = [];
-      if (data.fullText) {
-        textParts.push(data.fullText);
-      } else {
-        if (data.dtliExcerpt) textParts.push(data.dtliExcerpt);
-        if (data.bwwExcerpt) textParts.push(data.bwwExcerpt);
-        if (data.showScoreExcerpt) textParts.push(data.showScoreExcerpt);
-        if (data.nycTheatreExcerpt) textParts.push(data.nycTheatreExcerpt);
-        if (data.lboRoundupExcerpt) textParts.push(data.lboRoundupExcerpt);
-      }
-
-      if (textParts.length > 0) {
-        reviews.push({
-          outlet: data.outlet,
-          critic: data.criticName,
-          text: textParts.join('\n\n'),
-          score: data.assignedScore,
-          publishDate: data.publishDate,
-          hasFullText: !!data.fullText,
-        });
-      }
-    } catch (err) {
-      console.warn(`  ⚠️  Failed to parse ${file}: ${err.message}`);
-    }
-  }
-
-  return reviews;
+  return loadConsensusInputs(showId, liveOutlets, {
+    onWarn: (msg) => console.warn(`  ⚠️  ${msg}`),
+  });
 }
 
 /**
@@ -111,17 +60,42 @@ function responseText(message) {
   return text;
 }
 
+/** Thrown when Claude refuses twice: the caller keeps the stored take. */
+class ConsensusRefusedError extends Error {}
+
+/**
+ * One consensus request with the refusal policy from
+ * scripts/lib/critic-consensus-refusal.js: a refusal (empty reply,
+ * stop_reason=refusal) is retried once with ~250-char excerpts and quoted
+ * lyrics removed; a second refusal throws ConsensusRefusedError
+ * (wicked-tour-2021, BRO-4869).
+ * @param {(excerpts: string) => string} buildPrompt
+ * @returns {Promise<{text: string, excerptOpts: object, attempt: number}>}
+ */
+async function requestConsensus(reviews, buildPrompt, temperature, startAttempt = 0) {
+  for (let attempt = startAttempt; ; attempt++) {
+    const excerptOpts = excerptOptionsForAttempt(attempt);
+    const message = await anthropic.messages.create({
+      model: 'claude-sonnet-4-5-20250929',
+      max_tokens: 150,
+      temperature,
+      messages: [{ role: 'user', content: buildPrompt(formatReviewExcerpts(reviews, excerptOpts)) }],
+    });
+    const decision = refusalRetryDecision(message, attempt);
+    if (decision === 'accept') return { text: responseText(message), excerptOpts, attempt };
+    if (decision === 'keep-old') {
+      throw new ConsensusRefusedError(`Claude refused again with ${REFUSAL_RETRY_EXCERPT_CHARS}-char lyric-free excerpts (${describeResponse(message)})`);
+    }
+    console.warn(`  ⚠️  Claude refused (${describeResponse(message)}) — retrying once with ${REFUSAL_RETRY_EXCERPT_CHARS}-char excerpts, quoted lyrics removed`);
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  }
+}
+
 /**
  * Generate consensus using Claude API
  */
 async function generateConsensus(showTitle, reviews) {
-  // Build prompt with review excerpts
-  const reviewSummaries = reviews.map((r, i) => {
-    const excerpt = r.text.slice(0, 500); // First 500 chars
-    return `Review ${i + 1} (${r.outlet} - ${r.critic}, score: ${r.score}/100):\n${excerpt}...`;
-  }).join('\n\n');
-
-  const prompt = `You are writing a "Critics' Take" for the Broadway show "${showTitle}" - a very concise editorial summary capturing the critical reception.
+  const buildPrompt = (reviewSummaries) => `You are writing a "Critics' Take" for the Broadway show "${showTitle}" - a very concise editorial summary capturing the critical reception.
 
 Based on these ${reviews.length} critic reviews, write a brief summary (1-2 SHORT sentences, maximum 280 characters total) that captures the overall critical reception. The summary should:
 - Be VERY concise and punchy (like a tweet)
@@ -138,19 +112,8 @@ ${reviewSummaries}
 
 Write only the concise consensus (max 280 chars), nothing else.`;
 
-  const message = await anthropic.messages.create({
-    model: 'claude-sonnet-4-5-20250929',
-    max_tokens: 150,
-    temperature: 0.7,
-    messages: [
-      {
-        role: 'user',
-        content: prompt,
-      },
-    ],
-  });
-
-  let consensus = responseText(message);
+  const result = await requestConsensus(reviews, buildPrompt, 0.7);
+  const consensus = result.text;
 
   // Validate length and sentence count
   const sentenceCount = (consensus.match(/[.!?]+/g) || []).length;
@@ -161,7 +124,7 @@ Write only the concise consensus (max 280 chars), nothing else.`;
     console.warn(`  ⚠️  Generated ${sentenceCount} sentences (target: 1-2), but proceeding...`);
   }
 
-  return consensus;
+  return result;
 }
 
 /**
@@ -416,7 +379,11 @@ async function main() {
     try {
       // Generate consensus
       console.log(`  🤖 Generating consensus from ${reviews.length} reviews...`);
-      let consensus = await generateConsensus(showTitle, reviews);
+      const first = await generateConsensus(showTitle, reviews);
+      let consensus = first.text;
+      // Sentiment retries reuse the excerpt mode that got an answer: if the
+      // full excerpts were refused, the corrective prompt starts lyric-free.
+      const retryAttempt = first.attempt;
 
       // Layer 5b: Output validation — LLM refusal detection
       const REFUSAL_PATTERNS = [
@@ -435,6 +402,18 @@ async function main() {
         continue;
       }
 
+      // A corrective retry that Claude refuses twice keeps the first take
+      // (null) rather than failing the show.
+      const correctiveRetry = async (buildPrompt) => {
+        try {
+          return (await requestConsensus(reviews, buildPrompt, 0.5, retryAttempt)).text;
+        } catch (err) {
+          if (!(err instanceof ConsensusRefusedError)) throw err;
+          console.warn(`  ⚠️  Corrective retry refused — keeping the first take: ${err.message}`);
+          return null;
+        }
+      };
+
       // Layer 5b: Output validation — sentiment cross-check against review breakdown
       const breakdown = { positive: 0, mixed: 0, negative: 0 };
       for (const r of reviews) {
@@ -450,24 +429,20 @@ async function main() {
       if (allPositive && (NEGATIVE_KEYWORDS.test(consensus) || HEDGED_NEGATIVE.test(consensus))) {
         console.warn(`  ⚠️  Sentiment mismatch: all ${totalScored} reviews are positive but text implies criticism — regenerating...`);
         // Retry once with an explicit instruction about the breakdown
-        const retryPrompt = `You are writing a "Critics' Take" for the Broadway show "${showTitle}".
+        const retryPrompt = (excerpts) => `You are writing a "Critics' Take" for the Broadway show "${showTitle}".
 
 IMPORTANT: All ${totalScored} reviews are POSITIVE (scores 61-100). Do NOT say critics are "divided", "mixed", or that "some find it less compelling." The consensus is clearly positive.
 
 Based on these ${reviews.length} critic reviews, write a brief summary (1-2 SHORT sentences, maximum 280 characters total) that captures this positive reception. Mention 1-2 specific praised elements if space allows. Be concise, objective, and use present tense.
 
 Reviews:
-${reviews.map((r, i) => `Review ${i + 1} (${r.outlet} - ${r.critic}, score: ${r.score}/100):\n${r.text.slice(0, 500)}...`).join('\n\n')}
+${excerpts}
 
 Write only the concise consensus (max 280 chars), nothing else.`;
-        const retryMsg = await anthropic.messages.create({
-          model: 'claude-sonnet-4-5-20250929',
-          max_tokens: 150,
-          temperature: 0.5,
-          messages: [{ role: 'user', content: retryPrompt }],
-        });
-        const retryText = responseText(retryMsg);
-        if (!NEGATIVE_KEYWORDS.test(retryText) && !HEDGED_NEGATIVE.test(retryText)) {
+        const retryText = await correctiveRetry(retryPrompt);
+        if (retryText == null) {
+          // keep the first take
+        } else if (!NEGATIVE_KEYWORDS.test(retryText) && !HEDGED_NEGATIVE.test(retryText)) {
           consensus = retryText;
           console.log(`  ✅ Retry succeeded — sentiment now matches breakdown`);
         } else {
@@ -482,24 +457,21 @@ Write only the concise consensus (max 280 chars), nothing else.`;
       const POSITIVE_KEYWORDS = /\b(universal acclaim|unanimous|universally praised|all praise|every critic|rave reviews|critics rave)\b/i;
       if (mostlyNegative && POSITIVE_KEYWORDS.test(consensus)) {
         console.warn(`  ⚠️  Inverse sentiment mismatch: ${breakdown.negative}N/${breakdown.mixed}M/${breakdown.positive}P but text implies unanimous praise — regenerating...`);
-        const retryPrompt = `You are writing a "Critics' Take" for the Broadway show "${showTitle}".
+        const retryPrompt = (excerpts) => `You are writing a "Critics' Take" for the Broadway show "${showTitle}".
 
 IMPORTANT: Reviews are mixed/negative (${breakdown.positive} positive, ${breakdown.mixed} mixed, ${breakdown.negative} negative out of ${totalScored}). Do NOT say "universal acclaim", "unanimous praise", or "critics rave." Reflect the actual divided or negative reception.
 
 Based on these ${reviews.length} critic reviews, write a brief summary (1-2 SHORT sentences, maximum 280 characters total). Be concise, objective, and use present tense.
 
 Reviews:
-${reviews.map((r, i) => `Review ${i + 1} (${r.outlet} - ${r.critic}, score: ${r.score}/100):\n${r.text.slice(0, 500)}...`).join('\n\n')}
+${excerpts}
 
 Write only the concise consensus (max 280 chars), nothing else.`;
-        const retryMsg = await anthropic.messages.create({
-          model: 'claude-sonnet-4-5-20250929',
-          max_tokens: 150,
-          temperature: 0.5,
-          messages: [{ role: 'user', content: retryPrompt }],
-        });
-        consensus = responseText(retryMsg);
-        console.log(`  ✅ Inverse retry complete`);
+        const retryText = await correctiveRetry(retryPrompt);
+        if (retryText != null) {
+          consensus = retryText;
+          console.log(`  ✅ Inverse retry complete`);
+        }
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
 
@@ -512,28 +484,14 @@ Write only the concise consensus (max 280 chars), nothing else.`;
         finalText = lastSentence > 100 ? truncated.substring(0, lastSentence + 1) : truncated;
       }
 
-      // Build fingerprint for change detection on future runs
-      const fullTextCount = reviews.filter(r => r.hasFullText).length;
-      const scoredForMean = reviews.filter(r => r.score != null);
-      const meanScore = scoredForMean.length > 0
-        ? Math.round(scoredForMean.reduce((a, r) => a + r.score, 0) / scoredForMean.length)
-        : null;
-
-      // Compute bucket breakdown for change detection
-      const bucketBreakdown = { positive: 0, mixed: 0, negative: 0 };
-      for (const r of scoredForMean) {
-        if (r.score >= 61) bucketBreakdown.positive++;
-        else if (r.score >= 40) bucketBreakdown.mixed++;
-        else bucketBreakdown.negative++;
-      }
+      // Fingerprint for change detection on future runs; the contamination
+      // audit rebuilds the same one from the same inputs (BRO-4869).
+      const fingerprint = consensusFingerprint(reviews);
 
       consensusData.shows[showId] = {
         text: finalText,
         lastUpdated: new Date().toISOString(),
-        reviewCount: reviews.length,
-        fullTextCount,
-        meanScore,
-        bucketBreakdown,
+        ...fingerprint,
       };
 
       console.log(`  ✅ Generated: "${(consensusData.shows[showId].text).slice(0, 80)}..."`);
@@ -542,7 +500,11 @@ Write only the concise consensus (max 280 chars), nothing else.`;
       // Rate limiting - wait 1 second between API calls
       await new Promise(resolve => setTimeout(resolve, 1000));
     } catch (err) {
-      console.error(`  ❌ Error: ${err.message}`);
+      if (err instanceof ConsensusRefusedError) {
+        console.warn(`::warning::Critics' Take refused for ${showId}; ${existing ? 'keeping the existing take' : 'no take written'}: ${err.message}`);
+      } else {
+        console.error(`  ❌ Error: ${err.message}`);
+      }
       errorCount++;
     }
   }

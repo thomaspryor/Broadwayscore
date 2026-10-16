@@ -179,6 +179,12 @@ it('liveOutletKeys lists show|outlet pairs the site shows, skipping flagged and 
 
 it('generate-critic-consensus filters texts to live outlets and parses replies through finalResponseText', () => {
   const src = fs.readFileSync(path.join(REPO_ROOT, 'scripts', 'generate-critic-consensus.js'), 'utf8');
-  assert.match(src, /liveOutlets\.has\(`\$\{showId\}\|\$\{data\.outletId\}`\)/);
+  // The loader moved to scripts/lib/critic-consensus-inputs.js (BRO-4869) so
+  // the contamination audit counts the same inputs; behaviour is tested in
+  // critic-consensus-inputs.test.mjs.
+  assert.match(src, /from '\.\/lib\/critic-consensus-inputs\.js'/);
+  assert.match(src, /loadReviewTexts\(showId, liveOutlets\)/);
+  const lib = fs.readFileSync(path.join(REPO_ROOT, 'scripts', 'lib', 'critic-consensus-inputs.js'), 'utf8');
+  assert.match(lib, /liveOutlets\.has\(`\$\{showId\}\|\$\{data\.outletId\}`\)/);
   assert.doesNotMatch(src, /content\[0\]\.text\.trim\(\)/);
 });

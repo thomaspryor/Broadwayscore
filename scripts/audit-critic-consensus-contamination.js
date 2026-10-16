@@ -20,9 +20,18 @@
  *
  * Signals:
  *   SHOW_NOT_IN_DB        (fail) — key not present in shows.json
- *   REVIEWCOUNT_DRIFT     (fail) — |consensus.reviewCount − reviews.json count| >= 10
+ *   REVIEWCOUNT_DRIFT     (fail) — |consensus.reviewCount − current input count| >= 10
  *                                    (consensus is summarising a stale review set)
- *   MEANSCORE_DRIFT       (fail) — |consensus.meanScore − reviews.json mean| >= 15
+ *   MEANSCORE_DRIFT       (fail) — |consensus.meanScore − current input mean| >= 15
+ *
+ *   "Current inputs" are what the generator would summarise today: the review
+ *   TEXTS it can read for outlets the site shows (scripts/lib/critic-consensus-
+ *   inputs.js, shared with generate-critic-consensus.js). Comparing the stored
+ *   text-based fingerprint against every scored reviews.json row made text-light
+ *   shows (West End star-rated rows with no text) drift forever although a
+ *   regeneration would write the same numbers (BRO-4869). Review texts are read
+ *   from $REVIEW_TEXTS_DIR or data/review-texts; without them the drift signals
+ *   are skipped (a notice goes to stderr) rather than compared unlike-for-like.
  *   BELOW_FLOOR           (warn) — take exists but the show has < MIN_SCORED_REVIEWS
  *                                    live reviews (BRO-4852; 0 baseline after the prune)
  *                                    (consensus text reflects an outdated critical mood)
@@ -43,7 +52,15 @@
 
 const fs = require('fs');
 const path = require('path');
-const { MIN_SCORED_REVIEWS, isConsensusEligible } = require('./lib/critic-consensus-eligibility');
+const { MIN_SCORED_REVIEWS, isConsensusEligible, liveOutletKeys } = require('./lib/critic-consensus-eligibility');
+const {
+  loadReviewTexts,
+  consensusFingerprint,
+  consensusDriftFlags,
+  DEFAULT_REVIEW_TEXTS_DIR,
+  REVIEWCOUNT_DRIFT_THRESHOLD,
+  MEANSCORE_DRIFT_THRESHOLD,
+} = require('./lib/critic-consensus-inputs');
 
 const ROOT = path.join(__dirname, '..');
 const CONSENSUS_FILE = path.join(ROOT, 'data', 'critic-consensus.json');
@@ -56,8 +73,9 @@ const FAIL_SIGNALS = new Set([
   'MEANSCORE_DRIFT',
 ]);
 
-const REVIEWCOUNT_DRIFT_THRESHOLD = 10;
-const MEANSCORE_DRIFT_THRESHOLD = 15;
+function reviewTextsDir() {
+  return process.env.REVIEW_TEXTS_DIR ? path.resolve(process.env.REVIEW_TEXTS_DIR) : DEFAULT_REVIEW_TEXTS_DIR;
+}
 
 function loadShowIds() {
   try {
@@ -76,7 +94,12 @@ function reviewScore(r) {
   return typeof v === 'number' ? v : undefined;
 }
 
-function loadReviewsByShow() {
+/**
+ * reviews.json grouped by show, plus the show|outlet keys the generator
+ * filters its review texts by. null when reviews.json is missing/unparseable.
+ * @returns {{byShow: Map<string, object[]>, liveOutlets: Set<string>}|null}
+ */
+function loadReviewsData() {
   try {
     const raw = JSON.parse(fs.readFileSync(REVIEWS_FILE, 'utf-8'));
     const arr = Array.isArray(raw) ? raw : (raw.reviews || []);
@@ -89,15 +112,30 @@ function loadReviewsByShow() {
       // landed, "0 baseline hits" included (BRO-4852).
       m.get(r.showId).push({ ...r, score: reviewScore(r) });
     }
-    return m;
+    return { byShow: m, liveOutlets: liveOutletKeys(arr) };
   } catch {
     return null;
   }
 }
 
-function audit() {
+function loadReviewsByShow() {
+  const data = loadReviewsData();
+  return data ? data.byShow : null;
+}
+
+/**
+ * @param {{reviewTextsDir?: string}} [opts] review-texts root (default
+ *   $REVIEW_TEXTS_DIR or data/review-texts). Missing root = drift skipped.
+ */
+function audit(opts = {}) {
   const showIds = loadShowIds();
-  const reviewsByShow = loadReviewsByShow();
+  const reviewsData = loadReviewsData();
+  const reviewsByShow = reviewsData && reviewsData.byShow;
+  const textsDir = opts.reviewTextsDir || reviewTextsDir();
+  const haveTexts = fs.existsSync(textsDir);
+  if (reviewsByShow && !haveTexts) {
+    console.error(`[audit-critic-consensus-contamination] review texts not found at ${textsDir}: REVIEWCOUNT/MEANSCORE drift not computed`);
+  }
   const raw = JSON.parse(fs.readFileSync(CONSENSUS_FILE, 'utf-8'));
   const showsMap = raw.shows || {};
   const issues = [];
@@ -117,22 +155,11 @@ function audit() {
       // regressed. Midnight carried a take written from two wrong-show reviews.
       const liveScored = (reviews || []).filter(r => typeof r.score === 'number').length;
       if (!isConsensusEligible(liveScored)) flags.push(`BELOW_FLOOR:live=${liveScored},min=${MIN_SCORED_REVIEWS}`);
-      if (reviews) {
-        const scored = reviews.filter(r => typeof r.score === 'number');
-        if (scored.length > 0) {
-          const actualCount = scored.length;
-          const rcDiff = Math.abs((c.reviewCount || 0) - actualCount);
-          if (rcDiff >= REVIEWCOUNT_DRIFT_THRESHOLD) {
-            flags.push(`REVIEWCOUNT_DRIFT:consensus=${c.reviewCount || 0},actual=${actualCount},diff=${rcDiff}`);
-          }
-
-          const actualMean = scored.reduce((s, r) => s + r.score, 0) / actualCount;
-          // No stored meanScore = nothing to drift from (generator's own guard).
-          const msDiff = c.meanScore != null ? Math.abs(c.meanScore - actualMean) : 0;
-          if (msDiff >= MEANSCORE_DRIFT_THRESHOLD) {
-            flags.push(`MEANSCORE_DRIFT:consensus=${c.meanScore || 0},actual=${Math.round(actualMean)},diff=${Math.round(msDiff)}`);
-          }
-        }
+      // Drift: the stored fingerprint vs the one a regeneration would write
+      // today, built from the same inputs (BRO-4869).
+      if (reviews && haveTexts) {
+        const current = consensusFingerprint(loadReviewTexts(id, reviewsData.liveOutlets, { reviewTextsDir: textsDir }));
+        flags.push(...consensusDriftFlags(c, current));
       }
     }
 
@@ -205,6 +232,12 @@ function main() {
   }
 
   if (fails > 0 || (strict && warns > 0)) process.exitCode = 1;
+  // --strict must not pass green because the drift half never ran: without
+  // review texts there is nothing like-for-like to compare (BRO-4869).
+  if (strict && fs.existsSync(REVIEWS_FILE) && !fs.existsSync(reviewTextsDir())) {
+    console.error('❌ --strict: review texts missing, REVIEWCOUNT/MEANSCORE drift could not be checked.');
+    process.exitCode = 1;
+  }
 }
 
 if (require.main === module) main();
