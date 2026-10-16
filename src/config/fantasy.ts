@@ -316,26 +316,9 @@ export function hasLateEntry(): boolean {
  * they draft. Same rule as BroadwayWorld's Producer Fantasy Game grace window.
  */
 export function scoringFromDate(createdAtIso: string): string {
-  // Clamped to the deadline day: an entry the route accepted at 11:59:59pm
-  // that the database stamps a moment past midnight keeps the week it was
-  // drafted in (DEADLINE_GRACE_MS lets it count at all).
-  const stamped = nyDate(createdAtIso);
-  const lastDay = draftDeadlineDate();
-  const drafted = stamped > lastDay ? lastDay : stamped;
+  const drafted = nyDate(createdAtIso);
   if (drafted <= EARLY_BIRD_CUTOFF) return SCORING_START;
-  // The Monday of the draft week: grosses weeks run Monday to Sunday and are
-  // keyed by their Sunday, so this scores exactly the same weeks as the draft
-  // day itself, and "box office counts from the week of Mon Nov 9" reads
-  // right for a Sunday drafter too. Never before SCORING_START.
-  const monday = mondayOf(drafted);
-  return monday < SCORING_START ? SCORING_START : monday;
-}
-
-/** Monday (YYYY-MM-DD) of the Monday-to-Sunday week containing a calendar date. */
-export function mondayOf(ymd: string): string {
-  const d = new Date(`${ymd}T12:00:00Z`);
-  d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
-  return d.toISOString().slice(0, 10);
+  return drafted;
 }
 
 /**
@@ -375,17 +358,13 @@ export function isAudienceLockedForEntry(audienceGradeSince: string | null | und
 }
 
 /**
- * Whether a show can still earn box office points for a team whose box office
- * starts on `fromDate` (scoringFromDate of its draft time; SCORING_START for
- * the earliest teams): Broadway only, and still running on or after that
- * week's Monday. A show that closes earlier earns that team awards points only.
+ * Whether a show can still earn box office points: Broadway only, and still
+ * running when box office scoring starts (a show that closes before
+ * SCORING_START earns awards points only).
  */
-export function earnsBoxOffice(
-  show: Pick<FantasyShow, 'eligible' | 'closingDate'>,
-  fromDate: string = SCORING_START,
-): boolean {
+export function earnsBoxOffice(show: Pick<FantasyShow, 'eligible' | 'closingDate'>): boolean {
   if (!show.eligible.boxOffice) return false;
-  return !show.closingDate || show.closingDate >= fromDate;
+  return !show.closingDate || show.closingDate >= SCORING_START;
 }
 
 /**
@@ -398,7 +377,7 @@ export function pickLimitNote(
   createdAtIso: string,
 ): string | null {
   const criticLocked = !show.eligible.criticScore || isScoreLockedForEntry(show.openingDate, createdAtIso);
-  const boxOffice = earnsBoxOffice(show, scoringFromDate(createdAtIso));
+  const boxOffice = earnsBoxOffice(show);
   if (criticLocked) return boxOffice ? 'already open: box office and awards only' : 'already open: awards only';
   if (isAudienceLockedForEntry(show.audienceGradeSince, createdAtIso)) return 'audience grade already public: no audience points';
   return null;

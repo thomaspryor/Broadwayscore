@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { BASE_URL } from '@/lib/seo';
 import { getFantasyShowsSorted, getFantasyConfig } from '@/lib/data-fantasy';
-import { ELIGIBILITY_MARKERS, isShowOpenForDrafter, isDraftOpen, isDraftClosed, earnsBoxOffice, nyDate, scoringFromDate, hasLateEntry, DRAFT_OPENS, SCORING_START, type FantasyShow } from '@/config/fantasy';
+import { ELIGIBILITY_MARKERS, isShowOpenForDrafter, isDraftOpen, isDraftClosed, earnsBoxOffice, nyDate, DRAFT_OPENS, SCORING_START, type FantasyShow } from '@/config/fantasy';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getScoreLabel } from '@/config/score-buckets';
 import FantasyOwnershipTag from '@/components/fantasy/FantasyOwnershipTag';
@@ -68,7 +68,7 @@ function ShowCard({ show, variant = 'default' }: { show: { id: string } & Fantas
             <span className="text-[10px] bg-gray-500/20 text-gray-400 px-1.5 py-0.5 rounded">Closed</span>
           )}
           {locked && show.status !== 'closed' && (
-            <span className="text-[10px] bg-yellow-500/15 text-yellow-300 px-1.5 py-0.5 rounded">{ELIGIBILITY_MARKERS.criticScoreLocked} {opened ? 'Already open' : 'Opens before the draft'}{earnsBoxOffice(show, scoringFromDate(new Date().toISOString())) ? '' : ': awards only'}</span>
+            <span className="text-[10px] bg-yellow-500/15 text-yellow-300 px-1.5 py-0.5 rounded">{ELIGIBILITY_MARKERS.criticScoreLocked} {opened ? 'Already open' : 'Opens before the draft'}{earnsBoxOffice(show) ? '' : ': awards only'}</span>
           )}
         </div>
         <div className="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-400">
@@ -139,7 +139,7 @@ export default function FantasyGuidePage() {
             <p className="text-brand">Prices are provisional until the draft opens on {shortDate(DRAFT_OPENS)}, then fixed for the season.</p>
           )}
           <p>Prices reflect projected points: Tony prospects, box office outlook, weeks left to run, and known scores. The line under each show is the reasoning.</p>
-          <p><span className="text-yellow-300">{ELIGIBILITY_MARKERS.criticScoreLocked} Already open</span> = reviews are public, so the show earns box office and awards points only (awards only if it closes before {hasLateEntry() ? 'your first box office week' : <>box office starts on {shortDate(SCORING_START)}</>}).</p>
+          <p><span className="text-yellow-300">{ELIGIBILITY_MARKERS.criticScoreLocked} Already open</span> = reviews are public, so the show earns box office and awards points only (awards only if it closes before box office starts on {shortDate(SCORING_START)}).</p>
           <p><span className="text-purple-400">OB</span> = Off-Broadway (no box office, no Tony eligibility)</p>
           <p className="text-gray-500">Shows that open after you draft earn critic and audience points for you. Audience points need the show&apos;s audience grade to be still unpublished when you draft (grades can appear in previews). Scores shown here may still change.</p>
         </div>

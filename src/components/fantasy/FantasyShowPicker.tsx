@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import type { FantasyShow } from '@/config/fantasy';
-import { ELIGIBILITY_MARKERS, isShowOpenForDrafter, isAudienceLockedForEntry, earnsBoxOffice, scoringFromDate } from '@/config/fantasy';
+import { ELIGIBILITY_MARKERS, isShowOpenForDrafter, isAudienceLockedForEntry, earnsBoxOffice } from '@/config/fantasy';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { showFormatTitle } from '@/lib/show-format';
 import FantasyOwnershipTag from './FantasyOwnershipTag';
@@ -43,8 +43,6 @@ export default function FantasyShowPicker({
   }, []);
 
   const selectedShow = shows.find(s => s.id === selectedIds[slotIndex]);
-  // Box office for this drafter starts the week they draft (rolling scoring).
-  const boxOfficeFrom = scoringFromDate(now.toISOString());
 
   // Filter available shows
   const available = shows.filter(s => {
@@ -87,7 +85,7 @@ export default function FantasyShowPicker({
             <span className="whitespace-nowrap">{showFormatTitle(selectedShow.type)}</span>
             {isShowOpenForDrafter(selectedShow, now) ? (
               <span className="text-yellow-400 whitespace-nowrap">
-                {ELIGIBILITY_MARKERS.criticScoreLocked} Already open{earnsBoxOffice(selectedShow, boxOfficeFrom) ? '' : ': awards only'}
+                {ELIGIBILITY_MARKERS.criticScoreLocked} Already open{earnsBoxOffice(selectedShow) ? '' : ': awards only'}
               </span>
             ) : (
               <>
@@ -204,7 +202,7 @@ export default function FantasyShowPicker({
                       <span className="whitespace-nowrap">{showFormatTitle(show.type)}</span>
                       {isShowOpenForDrafter(show, now) ? (
                         <span className="text-yellow-400 whitespace-nowrap">
-                          {ELIGIBILITY_MARKERS.criticScoreLocked} Already open{earnsBoxOffice(show, boxOfficeFrom) ? '' : ': awards only'}{show.criticScore != null ? ` · Score ${Math.round(show.criticScore)}` : ''}
+                          {ELIGIBILITY_MARKERS.criticScoreLocked} Already open{earnsBoxOffice(show) ? '' : ': awards only'}{show.criticScore != null ? ` · Score ${Math.round(show.criticScore)}` : ''}
                         </span>
                       ) : (
                         <>
@@ -222,8 +220,8 @@ export default function FantasyShowPicker({
                           )}
                         </>
                       )}
-                      {!earnsBoxOffice(show, boxOfficeFrom) && show.eligible.boxOffice && (
-                        <span className="text-gray-400 whitespace-nowrap">† closes before your box office starts</span>
+                      {!earnsBoxOffice(show) && show.eligible.boxOffice && (
+                        <span className="text-gray-400 whitespace-nowrap">† closes before box office starts</span>
                       )}
                       {!show.eligible.boxOffice && (
                         <span className="text-gray-400 whitespace-nowrap">† no box office</span>

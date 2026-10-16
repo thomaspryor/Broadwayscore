@@ -88,20 +88,16 @@ export default function FantasyLandingPage() {
     total: exampleCritic + exampleAudience + exampleBoxOffice + exampleAwards,
   };
 
-  // lateEntry: each team scores box office from the week it drafts, so
-  // waiting costs grosses (owner, BRO-5478: Vulture's league rewarded waiting).
   const lateEntry = hasLateEntry();
-  // An early-bird cutoff only means something when it falls after scoring starts.
-  const earlyBird = info.earlyBirdCutoff && info.earlyBirdCutoff >= info.scoringStart ? info.earlyBirdCutoff : null;
   const calendar = lateEntry
     ? [
         { date: DRAFT_OPENS, label: 'Draft opens' },
-        { date: info.scoringStart, label: 'Box office scoring starts. Each team scores from the week it drafts.' },
-        ...(earlyBird ? [{ date: earlyBird, label: 'Early-bird cutoff: draft by this day and your box office counts from the season start' }] : []),
-        { date: deadlineDate, label: 'Draft closes at 11:59pm ET. Picks are final.' },
+        { date: info.scoringStart, label: 'Scoring starts' },
+        { date: info.earlyBirdCutoff ?? info.scoringStart, label: 'Early-bird cutoff: draft by this day and your box office counts from the season start' },
+        { date: deadlineDate, label: 'Draft deadline (11:59pm ET)' },
         { date: FANTASY_TONY_WINDOW.end, label: 'Tony eligibility cutoff' },
         { date: info.scoringEnd, label: 'Tony Awards night (expected date): final standings' },
-      ].sort((a, b) => a.date.localeCompare(b.date))
+      ]
     : [
         { date: DRAFT_OPENS, label: 'Draft opens' },
         { date: deadlineDate, label: 'Draft closes at 11:59pm ET. Picks are final.' },
@@ -117,8 +113,8 @@ export default function FantasyLandingPage() {
   const draftStatus = isDraftClosed(now)
     ? 'The draft is closed. Follow the race on the leaderboard.'
     : isDraftOpen(now)
-      ? `The draft is open until ${longDate(deadlineDate)} at 11:59pm ET.${lateEntry ? ' Box office counts from the week you draft, so the sooner the better.' : ''}`
-      : `The draft opens ${longDate(DRAFT_OPENS)}. Picks are due ${longDate(deadlineDate)}.${lateEntry ? ' Box office counts from the week you draft, so get in early.' : ''}`;
+      ? `The draft is open until ${longDate(deadlineDate)} at 11:59pm ET.`
+      : `The draft opens ${longDate(DRAFT_OPENS)}. Picks are due ${longDate(deadlineDate)}.`;
 
   return (
     <div className="min-h-screen bg-surface text-white">
@@ -178,7 +174,7 @@ export default function FantasyLandingPage() {
                 : `${openedNow.length === 1 ? 'One show has' : `${openedNow.length} shows have`} already opened`}
             </h2>
             <p className="text-sm text-gray-400 mb-3">
-              {preDraft ? 'Their reviews will be public before anyone can draft' : 'Their reviews are already public'}, so they earn box office and awards points only (awards only if they close before {lateEntry ? 'your first box office week' : <>box office starts on {shortDate(info.scoringStart)}</>}).
+              {preDraft ? 'Their reviews will be public before anyone can draft' : 'Their reviews are already public'}, so they earn box office and awards points only (awards only if they close before box office starts on {shortDate(info.scoringStart)}).
               The same rule applies to any show that opens before you draft: you can still pick it, but critic and audience points go only to players who drafted it before opening night.
             </p>
             <ul className="text-sm text-gray-300 space-y-2">
@@ -315,8 +311,8 @@ export default function FantasyLandingPage() {
               A hit musical grossing $1M a week earns about 3 points every week.
               {lateEntry ? (
                 <>
-                  {' '}Your shows earn it from the week you draft (Monday to Sunday weeks, starting {shortDate(info.scoringStart)}) through Tony Awards night, so every week you wait costs you a week of grosses.
-                  {earlyBird && <> Draft by {shortDate(earlyBird)} and your box office counts from the season start.</>}
+                  {' '}Points accumulate from the week you draft through Tony Awards night.
+                  Draft by {shortDate(info.earlyBirdCutoff ?? info.scoringStart)} and your box office counts from the season start on {shortDate(info.scoringStart)}.
                 </>
               ) : (
                 <> Every team&apos;s box office counts from {shortDate(info.scoringStart)} through Tony Awards night.</>
@@ -418,7 +414,7 @@ export default function FantasyLandingPage() {
             {
               q: 'When can I draft?',
               a: lateEntry
-                ? `From ${longDate(DRAFT_OPENS)} until ${longDate(deadlineDate)} at 11:59pm ET, then the draft is closed for the season. Draft early: box office counts from the week you draft (Monday to Sunday weeks, starting ${longDate(info.scoringStart)}), so every week you wait costs your shows a week of grosses. Critic and audience points count only for shows that had not opened yet when you picked them.${earlyBird ? ` Draft by ${longDate(earlyBird)} and your box office counts from the season start.` : ''}`
+                ? `Any time from ${longDate(DRAFT_OPENS)} until the deadline on ${longDate(deadlineDate)} at 11:59pm ET. The earlier you draft, the more your shows can earn: box office counts from the week you draft, and critic and audience points count only for shows that had not opened yet when you picked them. Draft by ${longDate(info.earlyBirdCutoff ?? info.scoringStart)} and your box office counts from the season start.`
                 : `From ${longDate(DRAFT_OPENS)} until ${longDate(deadlineDate)} at 11:59pm ET. After that the draft is closed for the season. Box office counts for every team from ${longDate(info.scoringStart)}, whenever in the window you draft. Critic and audience points count only for shows that had not opened yet when you picked them, so drafting before a November opening night can pay off.`,
             },
             {
@@ -435,7 +431,7 @@ export default function FantasyLandingPage() {
             },
             {
               q: 'What is the best strategy?',
-              a: `Awards are worth the most points, so pick shows likely to earn Tony nominations. Do not ignore box office: a hit musical earning $1M a week adds points every week.${lateEntry ? ' And do not wait: those weeks only count once you have drafted.' : ''} A few premium contenders plus some value sleepers usually beats going all-in on favorites.`,
+              a: 'Awards are worth the most points, so pick shows likely to earn Tony nominations. Do not ignore box office: a hit musical earning $1M a week adds points every week. A few premium contenders plus some value sleepers usually beats going all-in on favorites.',
             },
             {
               q: 'What about shows that close early?',
@@ -451,7 +447,9 @@ export default function FantasyLandingPage() {
             },
             {
               q: 'What if a new show is announced after I draft?',
-              a: `If it is announced while the draft is open, it joins the list at a freshly set price. Existing rosters do not change. Shows announced after ${longDate(deadlineDate)} are not part of this season's game.`,
+              a: lateEntry
+                ? 'It joins the draftable list at a freshly set price so later drafters can pick it. Existing rosters do not change.'
+                : `If it is announced while the draft is open, it joins the list at a freshly set price. Existing rosters do not change. Shows announced after ${longDate(deadlineDate)} are not part of this season's game.`,
             },
             {
               q: 'When do scores update?',

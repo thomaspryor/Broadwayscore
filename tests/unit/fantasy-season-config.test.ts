@@ -78,23 +78,6 @@ describe('fantasy-season.json is the single source of truth', () => {
     assert.equal(t, '23:59:59');
   });
 
-  test('with rolling box office, each week of waiting costs a week of grosses (owner, BRO-5478)', async () => {
-    if (!hasLateEntry()) return;
-    const { entryPickPoints } = await import('../../src/lib/data-fantasy');
-    const weekAfter = (ymd: string, days: number) => new Date(Date.parse(`${ymd}T12:00:00Z`) + days * 86400000).toISOString().slice(0, 10);
-    // Weeks end on Sundays; scoringStart is a Monday.
-    const w1 = weekAfter(seasonConfig.scoringStart, 6), w2 = weekAfter(w1, 7), w3 = weekAfter(w2, 7);
-    const score = {
-      criticScorePoints: 0, audienceGradePoints: 0, boxOfficePoints: 9, awardsPoints: 0, totalPoints: 9,
-      openingDate: null, weeklyBoxOffice: { [w1]: 3, [w2]: 3, [w3]: 3 },
-      breakdown: { criticTier: null, audienceGrade: null, boxOfficeWeeks: 3, boxOfficeTotal: '$3M', awards: [] },
-    };
-    const atLaunch = entryPickPoints(score, null, `${seasonConfig.draftOpens}T16:00:00Z`).boxOffice;
-    const weekLater = entryPickPoints(score, null, `${weekAfter(w1, 1)}T16:00:00Z`).boxOffice;
-    assert.equal(atLaunch, 9, 'launch-weekend entries score every week from scoringStart');
-    assert.equal(weekLater, 6, 'an entry a week later misses the first week');
-  });
-
   test('a single draft window starts box office after it closes, so nobody drafts with known grosses', () => {
     if (hasLateEntry()) return; // rolling draft: late entries score from their own draft day
     assert.ok(seasonConfig.scoringStart > seasonConfig.earlyBirdCutoff,

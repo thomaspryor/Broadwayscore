@@ -46,10 +46,7 @@ describe('scoringFromDate', () => {
   });
 
   test('later entries score from the day they draft (NY time)', () => {
-    // Wednesday Nov 4 → the Monday of that week (same grosses weeks scored).
-    assert.equal(scoringFromDate('2026-11-04T15:00:00Z', cfg), '2026-11-02');
-    assert.equal(scoringFromDate('2026-11-08T23:00:00-05:00', cfg), '2026-11-02', 'Sunday drafter: week started Monday');
-    assert.equal(scoringFromDate('2026-11-09T15:00:00Z', cfg), '2026-11-09');
+    assert.equal(scoringFromDate('2026-11-04T15:00:00Z', cfg), '2026-11-04');
     // 02:00 UTC Oct 26 is Oct 25 in New York, still an early bird.
     assert.equal(scoringFromDate('2026-10-26T02:00:00Z', cfg), '2026-10-05');
   });
@@ -132,7 +129,7 @@ describe('computeLeaderboard (per-entry rules)', () => {
     assert.equal(early.totalPoints, 66, 'all box office + full critic/audience');
     assert.equal(early.scoringFrom, '2026-10-05');
     assert.equal(late.totalPoints, 11, 'only post-draft box office; critic/audience locked');
-    assert.equal(late.scoringFrom, '2026-11-16', 'Monday of the Nov 20 draft week');
+    assert.equal(late.scoringFrom, '2026-11-20');
     assert.equal(late.picks[1].scoreLocked, true);
     assert.equal(early.picks[1].scoreLocked, false);
     assert.equal(early.rank, 1);
