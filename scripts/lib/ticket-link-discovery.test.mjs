@@ -31,6 +31,33 @@ test('platformForUrl rejects resale marketplaces and unknown domains', () => {
   assert.equal(platformForUrl('https://random-blog.com/tickets'), null);
 });
 
+// BRO-5455: these open regional shows had no ticket links even though their
+// first-party production pages offered booking. The fallback writer must be
+// able to select the venue result instead of rejecting its unlisted domain.
+const regionalBookingResults = [
+  ['The Snow Goose', 'Goodspeed Opera House, East Haddam, CT', 'https://www.goodspeed.org/shows/the-snow-goose?nextdates=2'],
+  ['Begin Again', 'The Old Globe (Donald and Darlene Shiley Stage), San Diego, CA', 'https://www.theoldglobe.org/pdp/26-season/begin-again'],
+  ['The Front Page', 'Northlight Theatre, Evanston, IL', 'https://northlight.org/series/the-front-page/'],
+  ['Topdog/Underdog', 'Steppenwolf Theatre Company, Chicago, IL', 'https://www.steppenwolf.org/whats-on/2026-2027/topdog-underdog'],
+  ['As You Like It', 'Royal Shakespeare Theatre, Stratford-upon-Avon', 'https://www.rsc.org.uk/as-you-like-it'],
+  ['The Prime of Miss Jean Brodie', 'Royal Lyceum Theatre, Edinburgh', 'https://lyceum.org.uk/events/the-prime-of-miss-jean-brodie'],
+  ['King Lear', 'Royal Exchange Theatre, Manchester', 'https://www.royalexchange.co.uk/event/king-lear/'],
+  ['Antigone Exits', 'Chichester Festival Theatre, Chichester', 'https://www.cft.org.uk/events/antigone-exits'],
+];
+
+for (const [title, venue, url] of regionalBookingResults) {
+  test(`pickTicketUrl accepts the first-party regional booking page for ${title}`, () => {
+    const show = { title, venue, category: 'regional', market: 'regional' };
+    assert.deepEqual(pickTicketUrl([{ title, url }], show), { url, platform: 'Venue Box Office' });
+    assert.equal(pickTicketUrl([{ title: 'Unrelated Production Tickets', url }], show), null);
+    assert.equal(pickTicketUrl([{ title, url }], { ...show, venue: 'Another Theatre' }), null);
+    assert.equal(pickTicketUrl([{ title, url }], { ...show, venue: undefined }), null);
+    const spoof = new URL(url);
+    spoof.hostname += '.example.com';
+    assert.equal(pickTicketUrl([{ title, url: spoof.href }], show), null);
+  });
+}
+
 test('titleMatches rejects stopword-only matches (The Guilty vs Book of Mormon)', () => {
   assert.ok(!titleMatches('The Book of Mormon Tickets | Broadway', 'The Guilty'));
   assert.ok(titleMatches('The Guilty | Donmar Warehouse', 'The Guilty', 'Donmar Warehouse'));

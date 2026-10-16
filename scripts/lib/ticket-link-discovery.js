@@ -108,6 +108,20 @@ function isRegionMismatch(url, show) {
   return linkRegion !== region;
 }
 
+// BRO-5455: regional first-party booking sites missing from the fallback
+// allowlist. Scope these to their venue so a same-title production elsewhere
+// cannot acquire a regional house's booking page.
+const REGIONAL_VENUE_SITES = [
+  { host: 'goodspeed.org', venue: 'goodspeed' },
+  { host: 'theoldglobe.org', venue: 'old globe' },
+  { host: 'northlight.org', venue: 'northlight' },
+  { host: 'steppenwolf.org', venue: 'steppenwolf' },
+  { host: 'rsc.org.uk', venue: 'royal shakespeare' },
+  { host: 'lyceum.org.uk', venue: 'royal lyceum' },
+  { host: 'royalexchange.co.uk', venue: 'royal exchange' },
+  { host: 'cft.org.uk', venue: 'chichester festival' },
+];
+
 // Institutional venues that sell first-party from their own domain. Extend as
 // gaps surface (the freshness digest's missing_tickets line names the shows).
 const VENUE_SITES = [
@@ -144,6 +158,7 @@ const VENUE_SITES = [
   'borninthecity.com', // off-off-Broadway producer/ticketing site (e.g. The Gym at Judson shows)
   'tfana.org', // Theatre for a New Audience / Polonsky Shakespeare Center (card #795)
   'asylumnyc.com', // Asylum NYC (card #795)
+  ...REGIONAL_VENUE_SITES.map((v) => v.host),
 ];
 
 // SERP result paths that are listings/search hubs, never a buyable show page.
@@ -272,6 +287,8 @@ function pickTicketUrl(results, show) {
     if (LISTING_PATH_FRAGMENTS.some((f) => url.includes(f))) continue;
     const platform = platformForUrl(url);
     if (!platform) continue;
+    const regionalVenue = REGIONAL_VENUE_SITES.find((v) => hostMatches(hostOf(url), v.host));
+    if (regionalVenue && !(` ${foldTitle(show.venue)} `).includes(` ${regionalVenue.venue} `)) continue;
     // A same-title production runs on both sides of the Atlantic more often
     // than not at Christmas; title-matching alone cannot tell the storefronts
     // apart. Reject before the title check so a US artist page can never be
