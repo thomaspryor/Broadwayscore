@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "stuffed-off-west-end-2026",
   "openingDate": "2026-10-14",
-  "detectedAt": "2026-10-16T11:50:44.027Z",
+  "detectedAt": "2026-10-16T12:27:01.360Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "bristol247--sarski-anderson.json",
+      "outletId": "bristol247",
+      "criticName": "Sarski Anderson",
+      "url": "https://www.bristol247.com/culture/theatre/review-back-to-the-future-the-musical-bristol-hippodrome-an-immensely-fun-visually-spectacular-and-nostalgia-stuffed-ride/",
+      "fullTextLen": 7043,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "nytg--unknown.json",
       "outletId": "nytg",
@@ -23,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }
