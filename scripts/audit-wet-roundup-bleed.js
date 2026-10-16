@@ -110,7 +110,9 @@ function main() {
   for (const f of fs.readdirSync(ARCHIVE_DIR).filter(x => x.endsWith('.json') && !x.startsWith('_')).sort()) {
     const archive = readJson(path.join(ARCHIVE_DIR, f));
     if (!archive) { report.archive.unreadable.push(f); continue; }
-    const showId = archive.ourShowId || f.replace(/\.json$/, '');
+    // Replay (gather-reviews, sweep-we-aggregators) keys on the FILE name, not
+    // ourShowId, so the review-text folder the rows reach is the file's.
+    const showId = f.replace(/\.json$/, '');
     const rows = normalizeArchiveRows(archive);
     report.archive.files++;
     report.archive.rows += rows.length;
