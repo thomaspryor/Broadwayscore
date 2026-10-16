@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-10-15T07:31:22.105Z",
-  "bannerText": "324/459 Done(14d) verified on main · 9 FAILED · 0 vacuous · 7 stuck-but-done — PARTIAL RUN: 116 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-10-16T07:16:11.932Z",
+  "bannerText": "211/281 Done(14d) verified on main · 8 FAILED · 0 vacuous · 14 stuck-but-done — PARTIAL RUN: 48 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
-    {
-      "title": "FAILED BRO-5170 — Digest 'Dispatch a fix' button fails: LINEAR_API_KEY missing from Vercel production env (BRO-4718 follow-up)",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/check-vercel-required-env.js",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5170/digest-dispatch-a-fix-button-fails-linear-api-key-missing-from-vercel"
-    },
-    {
-      "title": "FAILED BRO-5001 — Duplicate show rows with different titles: 860 / Billy Crystal 860; Anne Teresa De Keersmaeker Il Cimento (2 rows)",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/no-duplicate-860-cimento-rows.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5001/duplicate-show-rows-with-different-titles-860-billy-crystal-860-anne"
-    },
-    {
-      "title": "FAILED BRO-4896 — App: TestFlight submission of build 82 failed at Apple (eas-build run 37856154098)",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/ship.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4896/app-testflight-submission-of-build-82-failed-at-apple-eas-build-run"
-    },
-    {
-      "title": "FAILED BRO-4617 — P1: update-show-status closes a just-opened show via prior-production ShowScore URL + stale todaytixId",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/update-show-status.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4617/p1-update-show-status-closes-a-just-opened-show-via-prior-production"
-    },
-    {
-      "title": "FAILED BRO-4359 — Alert when an opened show has a cached Show Score URL but no Show Score audience score",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/health-check.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4359/alert-when-an-opened-show-has-a-cached-show-score-url-but-no-show"
-    },
     {
       "title": "FAILED BRO-3528 — 3 Repertorio Espanol OB shows burn SERP credit daily with permanent no-coverage result",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/tests/repertorio-espanol-serp-skip.test.mjs",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-3528/3-repertorio-espanol-ob-shows-burn-serp-credit-daily-with-permanent-no"
     },
     {
-      "title": "FAILED BRO-3465 — Persist push-with-retry.sh's trace2/curl stall diagnostics into the durable failure ledger, not just CI stdout",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/push-with-retry.trace2-ledger-roundtrip.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3465/persist-push-with-retryshs-trace2curl-stall-diagnostics-into-the"
-    },
-    {
       "title": "FAILED BRO-3432 — Weekly geo-bot audit is blind to PostHog-only bot geos (Hong Kong ran 11 weeks unflagged)",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-geo-bots.test.mjs",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-3432/weekly-geo-bot-audit-is-blind-to-posthog-only-bot-geos-hong-kong-ran"
+    },
+    {
+      "title": "FAILED BRO-3125 — push-with-retry.sh's PUSH_DEADLINE_SEC doesn't bound the Git Data API fallback's own time — audit callers, consider self-wrapping the script",
+      "detail": "TAP version 13 # Subtest: push-via-git-api.sh replays our own diff onto a tip that moved after our base, without a local rebase ok 1 - push-via-git-api.sh replays our own diff ont…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3125/push-with-retryshs-push-deadline-sec-doesnt-bound-the-git-data-api"
+    },
+    {
+      "title": "FAILED BRO-3016 — Forbes / Marc Hershberg walkthrough — never scheduled, and untracked outside 60 crown handoff files until now",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/hershberg-walkthrough-decision.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3016/forbes-marc-hershberg-walkthrough-never-scheduled-and-untracked"
+    },
+    {
+      "title": "FAILED BRO-2463 — audit-review: feedback-request-ledger.json / express-retry-queue.json may share alert-digest-queue's -X theirs clean-rebase silent-drop gap",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/core-data-merge-registry.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2463/audit-review-feedback-request-ledgerjson-express-retry-queuejson-may"
+    },
+    {
+      "title": "FAILED BRO-5426 — Opening Night Poller: fast_path rebuild hits 5-min step timeout, owner gets repeated investigation emails",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/workflow-rebuild-step-timeout.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5426/opening-night-poller-fast-path-rebuild-hits-5-min-step-timeout-owner"
+    },
+    {
+      "title": "FAILED BRO-5282 — P1: landing throughput is now the bottleneck (23 landings queued, ~2h wait, ~15 lands/hour)",
+      "detail": "TAP version 13 # fatal: Not a valid commit name 245b878352e94aa53e4aa822f68c6e7fc629c172 # Subtest: BRO-5282: a merge train has landed in production, and all of its commits are on…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5282/p1-landing-throughput-is-now-the-bottleneck-23-landings-queued-2h-wait"
+    },
+    {
+      "title": "FAILED BRO-4903 — Accounts audit follow-ups needing owner decisions: after-first-save sheet (0 of 33 on phones), signed-out My Shows for device-saved shows, Apple relay email registration, Google OAuth brand verification",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/accounts-audit-decisions.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4903/accounts-audit-follow-ups-needing-owner-decisions-after-first-save"
     }
   ],
-  "moreCount": 8
+  "moreCount": 14
 }
