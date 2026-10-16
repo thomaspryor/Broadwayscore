@@ -382,11 +382,11 @@ function FantasyDraftInner() {
         </div>
 
         {/* Legend */}
-        <div className="text-xs text-gray-500 mb-8 space-y-1">
-          <p><span className="text-yellow-400">{ELIGIBILITY_MARKERS.criticScoreLocked}</span> = already open. Reviews are public, so this show earns box office and awards points only.</p>
+        <div className="text-xs text-gray-400 mb-8 space-y-1">
+          <p><span className="text-yellow-400">{ELIGIBILITY_MARKERS.criticScoreLocked}</span> = already open. Reviews are public, so this show earns box office and awards points only (awards only where marked).</p>
           <p>OB = Off-Broadway (no box office points, not Tony-eligible)</p>
           {hasLateEntry()
-            ? <p>Box office counts from the week you draft. Draft by {shortDate(EARLY_BIRD_CUTOFF)} and it counts from {shortDate(SCORING_START)}. Critic and audience points count for shows that open after you draft.</p>
+            ? <p>Picks are due {shortDate(draftDeadlineDate())} at 11:59pm ET. Box office counts from the week you draft (weeks run Monday to Sunday, starting {shortDate(SCORING_START)}), so the sooner you lock in, the more weeks your shows earn.{EARLY_BIRD_CUTOFF >= SCORING_START && <> Draft by {shortDate(EARLY_BIRD_CUTOFF)} and it counts from {shortDate(SCORING_START)}.</>} Critic and audience points count for shows that open after you draft (audience points only while the show has no public audience grade).</p>
             : <p>Picks are due {shortDate(draftDeadlineDate())} at 11:59pm ET. Box office counts for every team from {shortDate(SCORING_START)}. Critic and audience points count for shows that open after you draft (audience points only while the show has no public audience grade).</p>}
         </div>
 

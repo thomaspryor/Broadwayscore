@@ -324,9 +324,16 @@ function nyDate(iso) {
  */
 function scoringFromDate(createdAtIso, cfg = seasonConfig) {
   if (!createdAtIso) return cfg.scoringStart;
-  const drafted = nyDate(createdAtIso);
+  // Clamped to the deadline day (see src/config/fantasy.ts).
+  const stamped = nyDate(createdAtIso);
+  const lastDay = cfg.draftDeadline ? nyDate(cfg.draftDeadline) : null;
+  const drafted = lastDay && stamped > lastDay ? lastDay : stamped;
   if (drafted <= cfg.earlyBirdCutoff) return cfg.scoringStart;
-  return drafted;
+  // Monday of the draft week (same weeks scored; see src/config/fantasy.ts).
+  const d = new Date(`${drafted}T12:00:00Z`);
+  d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
+  const monday = d.toISOString().slice(0, 10);
+  return monday < cfg.scoringStart ? cfg.scoringStart : monday;
 }
 
 /**
