@@ -388,7 +388,10 @@
     "romeo-and-juliet-west-end-2026/express-uk--neil-norman.json",
     "romeo-and-juliet-west-end-2026/londontheatrehub--william-shakespeare.json",
     "romeo-and-juliet-west-end-2026/redbuslondinium--unknown.json",
-    "romeo-and-juliet-west-end-2026/west-end-best-friend--livvy-perrett.json"
+    "romeo-and-juliet-west-end-2026/west-end-best-friend--livvy-perrett.json",
+    "cadel-lungs-on-legs-west-end-2026/theatreandtonic--eleanor-bywater.json",
+    "some-woman-west-end-2026/sunday-times--clive-davis.json",
+    "nina-off-west-end-2026/guardian--kate-wyver.json"
   ],
   "failed": [
     "othello-west-end-2022/standard--unknown.json",
@@ -463,7 +466,6 @@
     "some-woman-west-end-2026/telegraph--dominic-cavendish.json",
     "some-woman-west-end-2026/thestage--unknown.json",
     "the-cherry-orchard-west-end-2026/theupcoming--jim-compton-hall.json",
-    "nina-off-west-end-2026/guardian--kate-wyver.json",
     "fish-off-broadway-2026/exeunt-magazine--unknown.json",
     "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--jane-bradley.json",
     "a-ghost-in-your-ear-off-broadway-2026/theatermania--zachary-stewart.json",
@@ -671,7 +673,15 @@
     "romeo-and-juliet-west-end-2026/mildconcern--unknown.json",
     "romeo-and-juliet-west-end-2026/nbcny--unknown.json",
     "romeo-and-juliet-west-end-2026/ny1--unknown.json",
-    "romeo-and-juliet-west-end-2026/voice-magazine--unknown.json"
+    "romeo-and-juliet-west-end-2026/voice-magazine--unknown.json",
+    "some-woman-west-end-2026/guardian--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json",
+    "stuffed-off-west-end-2026/nytg--unknown.json",
+    "stuffed-off-west-end-2026/sunday-times--unknown.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json",
+    "the-cherry-orchard-west-end-2026/theatremonkey--unknown.json",
+    "nina-off-west-end-2026/thereviewshub--the-reviews-hub-ireland.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -921,7 +931,9 @@
       "les-liaisons-dangereuses-west-end-2026/redbuslondinium--unknown.json",
       "romeo-and-juliet-west-end-2026/express-uk--neil-norman.json",
       "romeo-and-juliet-west-end-2026/londontheatrehub--william-shakespeare.json",
-      "romeo-and-juliet-west-end-2026/redbuslondinium--unknown.json"
+      "romeo-and-juliet-west-end-2026/redbuslondinium--unknown.json",
+      "cadel-lungs-on-legs-west-end-2026/theatreandtonic--eleanor-bywater.json",
+      "nina-off-west-end-2026/guardian--kate-wyver.json"
     ],
     "amp": [
       "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json",
@@ -929,7 +941,9 @@
       "dirty-dancing-tour-2026/variety--payton-turkeltaub.json"
     ],
     "browserbase": [
-      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/some-woman-west-end-2026/sunday-times--clive-davis.json",
+      "some-woman-west-end-2026/sunday-times--clive-davis.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -1088,7 +1102,7 @@
     ]
   },
   "startTime": "2026-10-16T13:35:14.517Z",
-  "lastProcessed": "romeo-and-juliet-west-end-2026/hollywood-reporter--david-rooney.json",
+  "lastProcessed": "nina-off-west-end-2026/thereviewshub--the-reviews-hub-ireland.json",
   "log": [
     {
       "t": "2026-10-16T14:38:18.090Z",
@@ -1305,6 +1319,29 @@
       "t": "2026-10-16T18:47:09.303Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-16T21:36:38.762Z",
+      "event": "bb-session",
+      "session": "37557b3f",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/some-woman-review-anne-ma"
+    },
+    {
+      "t": "2026-10-16T21:36:39.363Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-16T21:42:00.290Z",
+      "event": "bb-session",
+      "session": "eb44c583",
+      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
+    },
+    {
+      "t": "2026-10-16T21:42:08.752Z",
+      "event": "bb-session",
+      "session": "9312f9b7",
+      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
     }
   ],
   "recoveredAfterFailure": [
@@ -1316,6 +1353,7 @@
     "hadestown-2019/theater-life--isa-goldberg.json",
     "spellbound-off-broadway-2026/theater-life--paulanne-simmons.json",
     "the-bathroom-attendant-off-broadway-2026/stagebuddy--unknown.json",
-    "jeeves-takes-charge-west-end-2026/ground--unknown.json"
+    "jeeves-takes-charge-west-end-2026/ground--unknown.json",
+    "nina-off-west-end-2026/guardian--kate-wyver.json"
   ]
 }

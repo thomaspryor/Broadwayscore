@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-10-16T21:27:29.350Z",
-  "processed": 389,
-  "failed": 281,
-  "successRate": "58.1%",
+  "updatedAt": "2026-10-16T21:42:36.810Z",
+  "processed": 392,
+  "failed": 288,
+  "successRate": "57.6%",
   "tierBreakdown": {
-    "playwright": 246,
+    "playwright": 248,
     "amp": 3,
-    "browserbase": 1,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingdog": 40,
     "scrapingbee": 32,
@@ -14,30 +14,8 @@
     "archiveToday": 0,
     "archive": 71
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-10-16T17:54:06.154Z",
-      "event": "bb-session",
-      "session": "a6e3ff53",
-      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
-    },
-    {
-      "t": "2026-10-16T17:54:06.681Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-16T18:12:07.073Z",
-      "event": "bb-session",
-      "session": "28e0e508",
-      "url": "https://www.nytimes.com/2026/10/16/theater/memoirs-of-amorous-gentlemen-review-d"
-    },
-    {
-      "t": "2026-10-16T18:12:07.798Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-10-16T18:24:08.301Z",
       "event": "bb-session",
@@ -125,6 +103,29 @@
       "t": "2026-10-16T18:47:09.303Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-16T21:36:38.762Z",
+      "event": "bb-session",
+      "session": "37557b3f",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/some-woman-review-anne-ma"
+    },
+    {
+      "t": "2026-10-16T21:36:39.363Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-16T21:42:00.290Z",
+      "event": "bb-session",
+      "session": "eb44c583",
+      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
+    },
+    {
+      "t": "2026-10-16T21:42:08.752Z",
+      "event": "bb-session",
+      "session": "9312f9b7",
+      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
     }
   ]
 }
