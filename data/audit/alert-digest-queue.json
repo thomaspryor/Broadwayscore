@@ -972,5 +972,35 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-16T02:56:36.997Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5420-ukbway",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5420-ukbway",
+    "description": "land.yml did not land land/bro-5420-ukbway: the unit-tests-node gate went red at d1fb4c7e45. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38844993137",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5420-ukbway"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "d1fb4c7e456de40e2c7745fc1f2476a0d5e46ca0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38844993137"
+      }
+    ],
+    "queuedAt": "2026-10-16T03:57:07.789Z"
   }
 ]
