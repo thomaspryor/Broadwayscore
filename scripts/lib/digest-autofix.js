@@ -218,6 +218,11 @@ const OPEN_TASK_SUBJECT_RE = /^(?:Fix: )?BSC Daily: (.+)$/;
 // with count tokens normalized so "(438/250 reqs)" and "(1048/250 reqs)" are
 // one condition while "web_unlocker2" vs "serp_api1" stay distinct.
 const PERSIST_BEFORE_FILING_HOURS = 72;
+// BRO-5430: the digest runs once a day, so the 4th sighting lands at 72h plus
+// or minus launchd drift (a Mac asleep at 07:30 runs late). A strict 72h
+// compare held Oct 12 rows on Oct 15 by seconds. Any slack under 24h keeps
+// the 3rd sighting (~48h) held.
+const GATE_SLACK_HOURS = 12;
 const SEEN_GAP_RESET_HOURS = 96; // tolerates one missed daily digest run
 const SEEN_PRUNE_AFTER_DAYS = 14;
 const DIGEST_SEEN_PATH = process.env.DIGEST_AUTOFIX_SEEN_PATH
@@ -239,8 +244,12 @@ function persistenceKey(row) {
  * updated sightings map (old entries pruned) and the rows to hold back.
  * BRO-5168: runAutofix applies `hold` only after `seen` was written, so a
  * failed write files as before instead of holding every row forever.
+ * BRO-5430: `openTitles` (exact titles of open Linear issues, or null when
+ * Linear was unreadable) exempts a row whose card already exists. The gate
+ * only stops NEW cards, and fileCard's exact-title dedup reattaches such a
+ * row instead of filing, so holding it just mislabelled it 'watching'.
  */
-function computePersistenceGate(plan, seen, nowMs) {
+function computePersistenceGate(plan, seen, nowMs, { openTitles = null } = {}) {
   const next = {};
   for (const [k, v] of Object.entries(seen || {})) {
     const last = Date.parse(v && v.lastSeen);
@@ -256,7 +265,9 @@ function computePersistenceGate(plan, seen, nowMs) {
     const firstSeen = continuing ? prev.firstSeen : nowIso;
     next[key] = { firstSeen, lastSeen: nowIso };
     const ageHours = (nowMs - Date.parse(firstSeen)) / 3600000;
-    if (row.state === 'needs-card' && ageHours < PERSIST_BEFORE_FILING_HOURS) hold.push(row);
+    if (row.state !== 'needs-card' || ageHours >= PERSIST_BEFORE_FILING_HOURS - GATE_SLACK_HOURS) continue;
+    if (openTitles && openTitles.has(row.title)) continue;
+    hold.push(row);
   }
   return { seen: next, hold };
 }
@@ -265,8 +276,8 @@ function computePersistenceGate(plan, seen, nowMs) {
  * computePersistenceGate + hold in one step (state -> 'watching'). Mutates
  * plan row states; returns the updated sightings map.
  */
-function applyPersistenceGate(plan, seen, nowMs) {
-  const { seen: next, hold } = computePersistenceGate(plan, seen, nowMs);
+function applyPersistenceGate(plan, seen, nowMs, opts = {}) {
+  const { seen: next, hold } = computePersistenceGate(plan, seen, nowMs, opts);
   for (const row of hold) row.state = 'watching';
   return next;
 }
@@ -1078,6 +1089,9 @@ function runAutofix({
   plan, cap = DISPATCH_CAP, dryRun = false, log = () => {}, loadTasksFn = null,
   ledgerPath = DIGEST_LEDGER_PATH, dispatchLedgerEntriesFn = null, now = new Date(),
   seenPath = DIGEST_SEEN_PATH,
+  // BRO-5430: exact titles of open Linear issues (Set), or null when Linear
+  // could not be read. Rows whose card already exists skip the persistence gate.
+  openLinearTitles = null,
   dispatchFn = dispatchDetached,
   fileCardFn = fileCard,
   // BRO-3412: shared defaults imported from scripts/backlog-drain.js
@@ -1120,7 +1134,7 @@ function runAutofix({
   if (!(gateUsesRealFile && isTestRun())) try {
     let seen = {};
     try { seen = JSON.parse(require('fs').readFileSync(seenPath, 'utf8')); } catch { seen = {}; }
-    const { seen: updated, hold } = computePersistenceGate(plan, seen, now.getTime());
+    const { seen: updated, hold } = computePersistenceGate(plan, seen, now.getTime(), { openTitles: openLinearTitles });
     require('fs').mkdirSync(path.dirname(seenPath), { recursive: true });
     require('fs').writeFileSync(seenPath, JSON.stringify(updated, null, 1));
     // BRO-5168: hold only once the sightings are on disk. Holding first and
@@ -1415,7 +1429,7 @@ module.exports = {
   keepDecisionQueued, localRollupIssues, ROLLUP_ROW_NAMES,
   planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP,
   DIGEST_LEDGER_PATH, reconcileDigestOutcomes, isDispatchResolved, findMyJob, readJsonlLedger, appendJsonlLedger,
-  persistenceKey, computePersistenceGate, applyPersistenceGate, PERSIST_BEFORE_FILING_HOURS, DIGEST_SEEN_PATH,
+  persistenceKey, computePersistenceGate, applyPersistenceGate, PERSIST_BEFORE_FILING_HOURS, GATE_SLACK_HOURS, DIGEST_SEEN_PATH,
   fileCard, startNowNotes, START_NOW_REFUSED_RE, isVisitorFacingRow, dispatchDetached, familyDisplayName, rowFamilyKey,
   splitOnShowSuffix, MAX_FOLD_PER_CONDITION,
 };

@@ -426,11 +426,13 @@ function mergeNeedsYouSections(cmux, linear) {
 // see nor act on; those counts now live in the email's Technical details.
 const SUBJECT_NAME_MAX = 42;
 const SUBJECT_LIMIT = 120; // digest-content-invariants.js: subject must be < 120 chars
-function buildSubject({ health = null, autofixRows = null, awaitingOwner = null, needsYou = null, inReviewBacklog = null, now = new Date() } = {}) {
+function buildSubject({ health = null, autofixRows = null, awaitingOwner = null, needsYou = null, inReviewBacklog = null, loopDead = false, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric',
   }).format(now);
-  const view = buildOwnerView({ health, autofixRows, needsYou, awaitingOwner, inReviewBacklog });
+  // loopDead must match buildHtml's (composeDigestEmail computes it once):
+  // it decides which visitor rows count as handled (BRO-5430).
+  const view = buildOwnerView({ health, autofixRows, needsYou, awaitingOwner, inReviewBacklog, loopDead });
   let site;
   if (view.siteState === 'affected') {
     const names = visitorProblemNames(view);
@@ -442,6 +444,9 @@ function buildSubject({ health = null, autofixRows = null, awaitingOwner = null,
     // visitors), but they are not an outage either.
     const n = view.visitorItems.length;
     site = `site mostly OK · ${n} minor visitor issue${n === 1 ? '' : 's'}`;
+  } else if (view.siteState === 'handled') {
+    // BRO-5430: visitor rows exist but the automation owns every one.
+    site = `site: ${view.visitorHandled} issue${view.visitorHandled === 1 ? '' : 's'}, all with automation`;
   } else if (view.siteState === 'ok') {
     site = 'Site OK';
   } else {
@@ -479,10 +484,31 @@ function buildSubject({ health = null, autofixRows = null, awaitingOwner = null,
   return subject;
 }
 
+// Issues the automation is tracking this morning (the technical "N issues
+// detected" count). BRO-3697: both rollups are core health rows now, so the
+// snapshot's warns usually already carry them; count each only when it is
+// not there (stale snapshot, or the Mac-only stuck signals CI cannot see).
+function pendingIssueCount({ sections = {}, autofixRows = null, stuckCount = 0 } = {}) {
+  if (Array.isArray(autofixRows)) return autofixRows.length;
+  const errs = sections.health ? (sections.health.errors?.length || 0) : 0;
+  const warns = sections.health ? (sections.health.warns?.length || 0) : 0;
+  const freshnessCount = sections.freshness?.count || 0;
+  const rollupExtra = require('./lib/digest-autofix.js')
+    .localRollupIssues({ health: sections.health, freshnessCount, stuckCount }).length;
+  return errs + warns + rollupExtra;
+}
+
+// The dead-loop verdict, computed once per email so the subject and the top
+// block agree on which visitor rows are handled (BRO-5430).
+function digestLoopDeadMessage({ sections = {}, autofixRows = null, stuckCount = 0, pipelineIssues = null } = {}) {
+  const pendingIssues = pendingIssueCount({ sections, autofixRows, stuckCount });
+  return localLoopDeadMessage({ pendingIssues, pipelineIssues }) || autofixLoopDeadMessage(sections.health) || null;
+}
+
 // Sections render via the SAME exported block renderers the old email used —
 // identical visual output for the parts the owner kept, none of the loop
 // parts. `changes` is overnight-digest.js's pre-rendered HTML block (or null).
-function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, now = new Date() } = {}) {
+function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, loopDeadMsg: givenLoopDeadMsg, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric',
   }).format(now);
@@ -517,24 +543,13 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // understand … very unactionable"): NAME what needs attention instead of
   // just counting it, and say plainly that warnings are routine watch items.
   const errs = sections.health ? (sections.health.errors?.length || 0) : 0;
-  const warns = sections.health ? (sections.health.warns?.length || 0) : 0;
   // Health snapshot items are {name, message} objects; tolerate bare strings.
   const errNames = (sections.health?.errors || []).filter(Boolean)
     .map((e) => (typeof e === 'string' ? e : e.name)).filter(Boolean);
-  // Data freshness (task #689): revenue-impacting gaps (missing tickets,
-  // missing poster) on OPEN shows must escalate the top verdict, not just
-  // sit in the demoted-to-context box below — the whole point of this fix
-  // is that these signals stop being easy to miss (second-opinion review).
-  const freshnessCount = sections.freshness?.count || 0;
   // Digest v3 summary: everything auto-fixable is BEING fixed — say that,
   // never point at sections that no longer exist (Closing soon / Data
   // freshness / stuck lists were deleted by the 2026-08-02 owner mandate).
-  // BRO-3697: both rollups are core health rows now, so the snapshot's warns
-  // usually already carry them; count each only when it is not there (stale
-  // snapshot, or the Mac-only stuck signals CI cannot see).
-  const rollupExtra = require('./lib/digest-autofix.js')
-    .localRollupIssues({ health: sections.health, freshnessCount, stuckCount }).length;
-  const fixing = Array.isArray(autofixRows) ? autofixRows.length : (errs + warns + rollupExtra);
+  const fixing = pendingIssueCount({ sections, autofixRows, stuckCount });
   const working = Array.isArray(autofixRows) ? autofixRows.filter(r => r.state === 'dispatched' || r.state === 'in-progress').length : 0;
   // Task #1220/BRO-230: this line used to claim "being fixed"/"queued for
   // automated fix sessions" no matter what — including the 13 straight
@@ -545,7 +560,8 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // Local ledger read is authoritative (this machine IS the dispatch host);
   // fall back to scanning health.errors only for the hypothetical case that
   // check ever runs somewhere the ledger is actually visible.
-  const loopDeadMsg = localLoopDeadMessage({ pendingIssues: fixing, pipelineIssues }) || autofixLoopDeadMessage(sections.health);
+  const loopDeadMsg = givenLoopDeadMsg !== undefined ? givenLoopDeadMsg
+    : digestLoopDeadMessage({ sections, autofixRows, stuckCount, pipelineIssues });
   // Owner-first top block (2026-09-24 rework). Decisions render here, at the
   // top, with their one-click action links intact (owner mandate
   // 2026-08-02); everything else follows under "Technical details".
@@ -764,8 +780,9 @@ function composeDigestEmail({
     }
   }
 
-  const subject = buildSubject({ health: sections.health, autofixRows, awaitingOwner: sections.awaitingOwner, needsYou: sections.needsYou, inReviewBacklog: sections.inReviewBacklog, now });
-  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, now });
+  const loopDeadMsg = digestLoopDeadMessage({ sections, autofixRows, stuckCount, pipelineIssues });
+  const subject = buildSubject({ health: sections.health, autofixRows, awaitingOwner: sections.awaitingOwner, needsYou: sections.needsYou, inReviewBacklog: sections.inReviewBacklog, loopDead: !!loopDeadMsg, now });
+  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, loopDeadMsg, now });
   return { subject, html };
 }
 
@@ -1279,7 +1296,17 @@ async function main() {
     // that machine, so 3 here means at most 5 concurrent headless sessions.
     // Raise it further only against a fresh `sysctl vm.swapusage` reading.
     const DIGEST_CONCURRENCY_CAP = 3;
-    autofixRows = runAutofix({ plan: planAutofix({ health: sections.health, extraIssues: localRollupIssues({ health: sections.health, freshnessCount: sections.freshness?.count || 0, freshnessItems: sections.freshness?.items, stuckCount }), tasks, queued: queuedForAutofix }), dryRun: autofixDryRun, log: (m) => console.log(m), concurrencyCap: DIGEST_CONCURRENCY_CAP });
+    // BRO-5430: planAutofix's tracked check reads only the retired Notion
+    // mirror, so a row whose Linear card was already open sat in the 72h gate
+    // labelled 'watching' (11 of 27 rows on 2026-10-16). Fail-soft: null keeps
+    // the gate as before.
+    let openLinearTitles = null;
+    try {
+      openLinearTitles = new Set((await require('./lib/linear-client.js').listOpenIssues()).map((i) => i && i.title).filter(Boolean));
+    } catch (err) {
+      console.error(`[digest] WARN could not read open Linear issues (gate holds every new row): ${String(err.message).slice(0, 120)}`);
+    }
+    autofixRows = runAutofix({ plan: planAutofix({ health: sections.health, extraIssues: localRollupIssues({ health: sections.health, freshnessCount: sections.freshness?.count || 0, freshnessItems: sections.freshness?.items, stuckCount }), tasks, queued: queuedForAutofix }), dryRun: autofixDryRun, log: (m) => console.log(m), concurrencyCap: DIGEST_CONCURRENCY_CAP, openLinearTitles });
     // Liveness gate (task #940, owner screenshots 2026-08-03): the digest
     // once claimed "a fix session is working on it now" for 4 issues whose
     // sessions had died hours earlier — 'in-progress' state comes purely

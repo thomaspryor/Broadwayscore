@@ -676,6 +676,21 @@ test('buildSubject: a long visitor-problem name is shortened to keep the subject
   assert.match(s, /^Morning digest — Tue, Sep 29 · ⚠️ visitors affected: .+… \(\+1 more\) · \d+ decisions for you$/);
 });
 
+// BRO-5430: visitor rows the automation owns never put a warning in the
+// subject; the dead-loop verdict passed by composeDigestEmail flips them back.
+test('buildSubject: automation-owned visitor rows read as handled, unless the fix loop is dead', () => {
+  const now = new Date('2026-10-15T11:30:00Z');
+  const health = { errors: [{ name: 'Quality: star-vs-score mismatch' }], warns: [{ name: 'SEO: health' }] };
+  const autofixRows = [{ name: 'Quality: star-vs-score mismatch', state: 'card-filed' }, { name: 'SEO: health', state: 'watching' }];
+  const s = buildSubject({ health, autofixRows, now });
+  assert.equal(s, 'Morning digest — Thu, Oct 15 · site: 2 issues, all with automation · nothing needs you');
+  const dead = buildSubject({ health, autofixRows, loopDead: true, now });
+  assert.match(dead, /⚠️ visitors affected: /);
+  const awaitingOwner = { items: Array.from({ length: 400 }, (_, i) => ({ title: `a${i}`, stale: true })) };
+  const long = buildSubject({ health, autofixRows, awaitingOwner, now });
+  assert.ok(long.length < 120, `${long.length}: ${long}`);
+});
+
 // Codex review (BRO-4141): every siteState branch must stay < 120, including
 // with a stale-approval prefix.
 test('buildSubject: < 120 chars across affected/minor with stale approvals', () => {

@@ -67,6 +67,67 @@ test('renderOwnerTopBlock: a dead loop is stated once, and no row claims a fix',
   assert.doesNotMatch(html, /working on it now/);
 });
 
+// BRO-5430 (owner 2026-10-16): problems the automation already owns never
+// reach the owner's top block or subject; only rows nothing is fixing do.
+test('buildOwnerView: automation-owned visitor rows leave the owner list; unfixed ones stay', () => {
+  const health = {
+    errors: [{ name: 'Quality: star-vs-score mismatch' }, { name: 'Data: reviewed shows missing from shows.json' }],
+    warns: [{ name: 'SEO: health' }, { name: 'Quality: Show Score gap' }],
+  };
+  const autofixRows = [
+    { name: 'Quality: star-vs-score mismatch', state: 'card-filed' },
+    { name: 'Data: reviewed shows missing from shows.json', state: 'parked' },
+    { name: 'SEO: health', state: 'watching' },
+    { name: 'Quality: Show Score gap', state: 'tracked' },
+  ];
+  const v = buildOwnerView({ health, autofixRows });
+  assert.deepEqual(v.visitorItems.map((i) => i.name), ['Data: reviewed shows missing from shows.json']);
+  assert.equal(v.siteState, 'affected');
+  assert.equal(v.visitorHandled, 3);
+  assert.equal(v.visitorHandledWatching, 1);
+  const html = renderOwnerTopBlock(v, {});
+  assert.match(html, /Reviewed shows missing from the site/);
+  assert.match(html, /3 more are with the automation, nothing for you to do: 2 already tracked for an automatic fix; 1 new/);
+  assert.doesNotMatch(html, /being watched/);
+});
+
+test('buildOwnerView: every visitor row handled -> siteState handled, no warning box, nothing for the owner', () => {
+  const health = { errors: [{ name: 'Quality: star-vs-score mismatch' }], warns: [{ name: 'SEO: health' }] };
+  const v = buildOwnerView({ health, autofixRows: [
+    { name: 'Quality: star-vs-score mismatch', state: 'queued' }, { name: 'SEO: health', state: 'watching' },
+  ] });
+  assert.equal(v.siteState, 'handled');
+  assert.deepEqual(v.visitorItems, []);
+  const html = renderOwnerTopBlock(v, {});
+  assert.match(html, /2 problems visitors could notice, none need you: 1 already tracked for an automatic fix; 1 new, which get a fix card if still there after 3 days\./);
+  assert.match(html, /Nothing needs your attention this morning/);
+  assert.doesNotMatch(html, /Visitors may notice a problem|being fixed/);
+});
+
+test('buildOwnerView: nothing counts as handled without row evidence (no rows, failed rows, dead loop)', () => {
+  const health = { errors: [{ name: 'Quality: star-vs-score mismatch' }], warns: [] };
+  assert.equal(buildOwnerView({ health, autofixRows: null }).visitorItems.length, 1, 'autofix crashed');
+  for (const state of ['parked', 'card-failed', 'no-live-session', 'decision']) {
+    assert.equal(buildOwnerView({ health, autofixRows: [{ name: 'Quality: star-vs-score mismatch', state }] }).visitorItems.length, 1, state);
+  }
+  const dead = buildOwnerView({ health, autofixRows: [{ name: 'Quality: star-vs-score mismatch', state: 'in-progress' }], loopDead: true });
+  assert.equal(dead.visitorItems.length, 1, 'dead loop: listed');
+  assert.equal(dead.siteState, 'affected');
+});
+
+test('buildOwnerView: two rows on one plain line stay listed if either is unfixed', () => {
+  // Both names map to the same plain line via plainHealthLine's prefix rules.
+  const health = { errors: [{ name: 'Data: reviewed shows missing from shows.json' }, { name: 'Data: reviewed shows missing from shows.json (batch 2)' }], warns: [] };
+  const v = buildOwnerView({ health, autofixRows: [
+    { name: 'Data: reviewed shows missing from shows.json', state: 'card-filed' },
+    { name: 'Data: reviewed shows missing from shows.json (batch 2)', state: 'card-failed' },
+  ] });
+  assert.equal(v.visitorHandled, 0, 'the handled first member does not hide the failed second one');
+  assert.equal(v.visitorItems.length, 1, 'one merged line');
+  assert.equal(v.visitorItems[0].plain, 'Reviewed shows missing from the site');
+  assert.match(v.visitorItems[0].status, /not being fixed automatically yet/);
+});
+
 // Codex P1-2: parked-in-review work is owner work, deduped against approvals.
 test('buildOwnerView: review-queue items count as decisions, de-duplicated against awaitingOwner', () => {
   const same = { title: 'BRO-9: approve homepage', url: 'https://linear.app/x/BRO-9' };

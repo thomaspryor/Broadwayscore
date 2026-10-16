@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { persistenceKey, applyPersistenceGate, PERSIST_BEFORE_FILING_HOURS } = require('./digest-autofix.js');
+const { persistenceKey, applyPersistenceGate, PERSIST_BEFORE_FILING_HOURS, GATE_SLACK_HOURS } = require('./digest-autofix.js');
 
 const H = 3600 * 1000;
 const NOW = Date.parse('2026-10-02T12:00:00Z');
@@ -35,6 +35,35 @@ test('applyPersistenceGate: a condition present for 3+ days is filed', () => {
   const key = persistenceKey(plan[0]);
   applyPersistenceGate(plan, { [key]: { firstSeen: iso((PERSIST_BEFORE_FILING_HOURS + 1) * H), lastSeen: iso(24 * H) } }, NOW);
   assert.equal(plan[0].state, 'needs-card');
+});
+
+// BRO-5430: the digest runs daily, so the 4th sighting is 72h minus a few
+// seconds (or minus launchd drift). It must file, and the 3rd must not.
+test('applyPersistenceGate: the 4th daily sighting files even a little under 72h; the 3rd is held', () => {
+  const key = persistenceKey(row('BSC Daily: Daily thing'));
+  const fourth = [row('BSC Daily: Daily thing')];
+  applyPersistenceGate(fourth, { [key]: { firstSeen: iso(PERSIST_BEFORE_FILING_HOURS * H - 3000), lastSeen: iso(24 * H) } }, NOW);
+  assert.equal(fourth[0].state, 'needs-card', '71.99h (Oct 12 11:30:35 -> Oct 15 11:30:32) files');
+  const late = [row('BSC Daily: Daily thing')];
+  applyPersistenceGate(late, { [key]: { firstSeen: iso((PERSIST_BEFORE_FILING_HOURS - GATE_SLACK_HOURS + 1) * H), lastSeen: iso(24 * H) } }, NOW);
+  assert.equal(late[0].state, 'needs-card', 'a day-0 run delayed under the slack still files on day 3');
+  const third = [row('BSC Daily: Daily thing')];
+  applyPersistenceGate(third, { [key]: { firstSeen: iso(48 * H + 3000), lastSeen: iso(24 * H) } }, NOW);
+  assert.equal(third[0].state, 'watching', 'the 3rd sighting (~48h) is still held');
+  assert.ok(GATE_SLACK_HOURS > 0 && GATE_SLACK_HOURS < 24, 'slack must stay under one daily run');
+});
+
+// BRO-5430: 11 of 27 rows on 2026-10-16 already had an open Linear card and
+// were shown as 'watching'. The gate only stops new cards, so they skip it.
+test('applyPersistenceGate: a row whose exact title has an open Linear card is not held', () => {
+  const plan = [row('BSC Daily: Quality: star-vs-score mismatch'), row('BSC Daily: Brand new')];
+  const seen = applyPersistenceGate(plan, {}, NOW, { openTitles: new Set(['BSC Daily: Quality: star-vs-score mismatch', 'BSC Daily: Brand new thing']) });
+  assert.equal(plan[0].state, 'needs-card', 'existing card: straight to fileCard reattach');
+  assert.equal(plan[1].state, 'watching', 'exact title only, like fileCard: a near-miss title is still held');
+  assert.ok(seen[persistenceKey(plan[0])], 'sightings are still recorded for exempt rows');
+  const unread = [row('BSC Daily: Quality: star-vs-score mismatch')];
+  applyPersistenceGate(unread, {}, NOW, { openTitles: null });
+  assert.equal(unread[0].state, 'watching', 'Linear unreadable (null): gate holds as before');
 });
 
 test('applyPersistenceGate: a 96h+ gap restarts the clock', () => {

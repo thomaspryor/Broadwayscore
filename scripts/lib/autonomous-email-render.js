@@ -570,6 +570,15 @@ const OWNER_FIX_STATUS = {
   'watching': 'being watched; a fix is queued if it is still here after 3 days',
 };
 
+// BRO-5430 (owner, 2026-10-16: "I hate getting emailed about issues that can
+// be fixed just by me pasting it into a Claude session"): states where the
+// automation already owns the row. 'watching' has no card yet but files one
+// itself if the row is still there after 3 days. These rows leave the owner's
+// top block and subject; the wording never calls them "being fixed".
+// Everything else (parked, card-failed, no-live-session, no matching row, or
+// a dead loop) means nothing is fixing it, so it stays listed.
+const OWNER_HANDLED_STATES = new Set(['watching', 'queued', 'card-filed', 'dispatched', 'in-progress', 'tracked', 'acknowledged']);
+
 function findAutofixRow(row, autofixRows) {
   if (!Array.isArray(autofixRows) || !row || !row.name) return null;
   return autofixRows.find((r) => r && (r.name === row.name
@@ -636,23 +645,35 @@ function buildOwnerView({
   const visitorCount = split.visitors.errors.length + split.visitors.warns.length;
   // Errors first, then warnings; plain names de-duplicated (two rows that
   // share a plain-English line read as one problem).
-  const visitorItems = [];
-  const seenPlain = new Set();
+  // A merged plain line is handled only when every row behind it is.
+  const byPlain = new Map();
   for (const [severity, list] of [['error', split.visitors.errors], ['warn', split.visitors.warns]]) {
     for (const r of list) {
       const plain = plainHealthLine(r.name);
-      if (seenPlain.has(plain)) continue;
-      seenPlain.add(plain);
-      visitorItems.push({ name: r.name, plain, severity, status: ownerFixStatus(r, autofixRows, loopDead) });
+      const fix = loopDead ? null : findAutofixRow(r, autofixRows);
+      const handled = !!fix && OWNER_HANDLED_STATES.has(fix.state);
+      const prev = byPlain.get(plain);
+      if (prev) {
+        if (prev.handled && !handled) Object.assign(prev, { name: r.name, handled, status: ownerFixStatus(r, autofixRows, loopDead) });
+        continue;
+      }
+      byPlain.set(plain, { name: r.name, plain, severity, handled, watching: handled && fix.state === 'watching', status: ownerFixStatus(r, autofixRows, loopDead) });
     }
   }
+  const all = [...byPlain.values()];
+  // visitorItems: only rows nothing is fixing (BRO-5430); the rest are counted.
+  const visitorItems = all.filter((i) => !i.handled).map(({ handled, watching, ...i }) => i);
+  const handledItems = all.filter((i) => i.handled);
   let siteState = 'ok';
   if (!health) siteState = 'unknown';
-  else if (split.visitors.errors.length) siteState = 'affected';
-  else if (split.visitors.warns.length) siteState = 'minor';
+  else if (visitorItems.some((i) => i.severity === 'error')) siteState = 'affected';
+  else if (visitorItems.length) siteState = 'minor';
+  else if (handledItems.length) siteState = 'handled';
   return {
     siteState,
     visitorItems,
+    visitorHandled: handledItems.length,
+    visitorHandledWatching: handledItems.filter((i) => i.watching).length,
     visitorErrors: split.visitors.errors,
     visitorWarns: split.visitors.warns,
     internalErrors: split.internal.errors,
@@ -681,6 +702,21 @@ function visitorProblemNames(view) {
   return (errs.length ? errs : items).map((i) => i.plain);
 }
 
+// One plain line for the visitor rows the automation owns (BRO-5430).
+function visitorHandledLine(view, { more = false } = {}) {
+  const n = view.visitorHandled || 0;
+  if (!n) return '';
+  const w = view.visitorHandledWatching || 0;
+  const t = n - w;
+  const bits = [];
+  if (t) bits.push(`${t} already tracked for an automatic fix`);
+  if (w) bits.push(`${w} new, which get a fix card if still there after 3 days`);
+  const lead = more
+    ? `${n} more ${n === 1 ? 'is' : 'are'} with the automation, nothing for you to do`
+    : `${n} problem${n === 1 ? '' : 's'} visitors could notice, none need you`;
+  return `${lead}: ${bits.join('; ')}.`;
+}
+
 function renderVisitorItems(view) {
   const shown = view.visitorItems.slice(0, OWNER_TOP_MAX_ROWS);
   const rest = view.visitorItems.length - shown.length;
@@ -690,6 +726,7 @@ function renderVisitorItems(view) {
         ${view.loopDead ? '' : `<div style="font-size:11px;color:#777;margin:1px 0 0 12px;">${esc(i.status)}</div>`}
       </div>`).join('')
     + (rest > 0 ? `<div style="font-size:11px;color:#777;margin-top:4px;">+${rest} more (listed under Technical details)</div>` : '')
+    + (view.visitorHandled ? `<div style="font-size:11px;color:#777;margin-top:4px;">${esc(visitorHandledLine(view, { more: true }))}</div>` : '')
     + (view.loopDead ? `<div style="font-size:12px;color:#92400e;margin-top:6px;">Automatic fixing looks stalled right now, so none of these is being fixed automatically.</div>` : '');
 }
 
@@ -711,6 +748,8 @@ function renderOwnerTopBlock(view, { decisionBlocksHtml = '', overnightLine = nu
       <div style="font-size:14px;font-weight:700;color:${affected ? '#92400e' : '#333'};margin-bottom:6px;">${esc(heading)}</div>
       ${renderVisitorItems(view)}
     </div>`);
+  } else if (view.siteState === 'handled') {
+    parts.push(`<p style="font-size:13px;color:#444;margin:0 0 12px;">${esc(visitorHandledLine(view))}</p>`);
   } else if (view.siteState === 'ok') {
     parts.push(`<p style="font-size:14px;font-weight:700;color:#15803d;margin:0 0 12px;">✅ The site is working normally for visitors.</p>`);
   } else {
@@ -1101,5 +1140,5 @@ module.exports = {
   renderParkedCardsBlock,
   filterForbiddenQueued,
   renderNeedsAttentionBlock, buildOwnerView, renderOwnerTopBlock, visitorProblemNames,
-  renderTechnicalDetailsHeading, TECHNICAL_DETAILS_HEADING, ownerFixStatus,
+  renderTechnicalDetailsHeading, TECHNICAL_DETAILS_HEADING, ownerFixStatus, OWNER_HANDLED_STATES,
 };
