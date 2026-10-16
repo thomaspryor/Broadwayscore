@@ -119,7 +119,23 @@ function daysUntil(dateStr) {
   return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 }
 
-function checkShowCompleteness(show) {
+// A national tour sells per stop, not through show.ticketLinks: its links live
+// in data/tour-tickets.json (fetch-tour-tickets.js). Counting only
+// show.ticketLinks flagged 26 covered tours as missing_tickets (BRO-5455).
+function loadTourTickets() {
+  try {
+    return JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'tour-tickets.json'), 'utf8')).tours || {};
+  } catch {
+    return {};
+  }
+}
+
+function hasTourTickets(show, tourTickets) {
+  const links = tourTickets && tourTickets[show.id];
+  return Array.isArray(links) && links.length > 0;
+}
+
+function checkShowCompleteness(show, tourTickets = {}) {
   const issues = [];
   const isOpen = show.status === 'open';
 
@@ -150,7 +166,7 @@ function checkShowCompleteness(show) {
   }
 
   // Ticket links (only for open shows)
-  if (isOpen && (!show.ticketLinks || show.ticketLinks.length === 0)) {
+  if (isOpen && (!show.ticketLinks || show.ticketLinks.length === 0) && !hasTourTickets(show, tourTickets)) {
     issues.push({ type: 'missing_tickets', severity: 'high' });
   }
 
@@ -249,8 +265,9 @@ function checkFreshness() {
   report.closingSoon.sort((a, b) => a.daysLeft - b.daysLeft);
 
   // Check data completeness for open shows
+  const tourTickets = loadTourTickets();
   for (const show of openShows) {
-    const issues = checkShowCompleteness(show);
+    const issues = checkShowCompleteness(show, tourTickets);
     const significantIssues = issues.filter(i => i.severity !== 'info');
 
     if (significantIssues.length === 0) {
@@ -374,5 +391,7 @@ function printReport(report) {
   console.log(`Open shows with issues: ${report.dataQuality.hasIssues.length}`);
 }
 
+module.exports = { checkShowCompleteness, hasTourTickets };
+
 // Run
-checkFreshness();
+if (require.main === module) checkFreshness();
