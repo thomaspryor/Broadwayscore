@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-15T23:35:41.005Z",
+  "generatedAt": "2026-10-16T01:59:15.704Z",
   "windowDays": 45,
-  "showsScanned": 172,
+  "showsScanned": 176,
   "gaps": [
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
@@ -17,9 +17,9 @@
       "forumLinkRecoveryCount": 6,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=cosi-fan-tutte-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-08T17:44:48.110Z",
-      "fileAgeHours": 173.84718666666666,
+      "fileAgeHours": 176.2274872222222,
       "gapSeenAt": "2026-10-08T22:46:44.413Z",
-      "nonTerminalAgeHours": 168.81572
+      "nonTerminalAgeHours": 171.20869194444444
     },
     {
       "showId": "macbeth-off-broadway-2026",
@@ -35,9 +35,31 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=macbeth-off-broadway-2026 --url=https://www.talkinbroadway.com/regional/alb/ --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-15T15:26:32.014Z",
-      "fileAgeHours": 8.151675277777779,
+      "fileAgeHours": 10.531968888888889,
       "gapSeenAt": "2026-10-15T16:29:17.938Z",
-      "nonTerminalAgeHours": 7.1064075
+      "nonTerminalAgeHours": 9.499379444444445
+    },
+    {
+      "showId": "stuffed-off-west-end-2026",
+      "title": "Stuffed",
+      "openingDate": "2026-10-14",
+      "file": "sunday-times--unknown.json",
+      "outletId": "sunday-times",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.thetimes.com/recipes/entertaining/party-food/article/dates-stuffed-with-labneh-tahini-and-hazelnuts-recipe-hxv7qhdhm",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "⚠️  Bright Data failed: Bright Data request timeout\n⚠️  outletId drift detected — operator input \"su"
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=stuffed-off-west-end-2026 --url=https://www.thetimes.com/recipes/entertaining/party-food/article/dates-stuffed-with-labneh-tahini-and-hazelnuts-recipe-hxv7qhdhm --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-10-15T15:12:01.660Z",
+      "fileAgeHours": 10.786826111111111,
+      "gapSeenAt": "2026-10-16T01:59:15.704Z",
+      "nonTerminalAgeHours": 0
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -53,28 +75,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 558.9187883333333,
+      "fileAgeHours": 561.3119541666666,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 109.93833416666666
-    },
-    {
-      "showId": "maybe-happy-ending-tour-2026",
-      "title": "Maybe Happy Ending",
-      "openingDate": "2026-09-13",
-      "file": "theatermania--zachary-stewart.json",
-      "outletId": "theatermania",
-      "tier": 2,
-      "type": "unscored",
-      "dispatchable": true,
-      "url": "https://www.theatermania.com/news/jazz-vocalist-stella-cole-to-join-cast-of-maybe-happy-ending-on-broadway_1855818/",
-      "recovery": null,
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=maybe-happy-ending-tour-2026",
-      "firstSeen": "2026-10-06T02:28:41.564Z",
-      "fileAgeHours": 237.11629,
-      "gapSeenAt": "2026-10-15T23:35:41.005Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 112.33130611111112
     }
   ],
   "contradictions": []

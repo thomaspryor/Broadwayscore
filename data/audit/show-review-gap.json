@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-10-15T23:35:34.762Z",
+  "generatedAt": "2026-10-16T01:58:23.533Z",
   "windowDays": 1095,
-  "targets": 665,
-  "auditedThisRun": 13,
-  "carriedForward": 720,
+  "targets": 663,
+  "auditedThisRun": 8,
+  "carriedForward": 726,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 418,
-    "missingCurrentRun": 853,
+    "withGap": 421,
+    "missingCurrentRun": 859,
     "totalCitedNoUrl": 5,
-    "totalFlaggedMisses": 965,
+    "totalFlaggedMisses": 970,
     "totalRecoverable": 5,
     "totalRecovered": 15,
     "humanExcluded": 1,
-    "automatedExcluded": 132,
-    "automatedExcludedListed": 132,
+    "automatedExcluded": 137,
+    "automatedExcludedListed": 137,
     "priorProductionCitations": 5083
   },
   "results": [
@@ -5738,9 +5738,9 @@
       },
       "computedAt": "2026-10-12T19:37:31.912Z",
       "quarantine": {
-        "nextState": "incomplete:11:13",
-        "since": "2026-10-15T17:40:22.140Z",
-        "lastAt": "2026-10-15T17:40:22.140Z"
+        "nextState": "incomplete:11:15",
+        "since": "2026-10-16T01:58:23.583Z",
+        "lastAt": "2026-10-16T01:58:23.583Z"
       }
     },
     {
@@ -11474,7 +11474,6 @@
           "basis": [
             "wrongShow"
           ],
-          "serpCensus": true,
           "reverify": true
         },
         {
@@ -11524,7 +11523,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 6,
             "accepted": 0,
             "error": null
           },
@@ -11554,7 +11553,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 8,
             "accepted": 0,
             "error": null
           }
@@ -11565,18 +11564,19 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 314,
+        "count": 317,
         "byReason": {
-          "non-review-host": 26,
-          "aggregator-internal-nav": 215,
-          "ticketing-reseller": 7,
-          "ticketing-listing": 1,
-          "production-database-listing": 3,
+          "non-review-host": 23,
+          "aggregator-internal-nav": 219,
+          "venue-production-page": 1,
           "census-junk-host": 3,
-          "roundup-page": 3,
           "not-http-url": 49,
           "aggregator-section-root": 6,
-          "news-article": 1
+          "roundup-page": 4,
+          "production-database-listing": 2,
+          "ticketing-reseller": 7,
+          "ticketing-listing": 1,
+          "news-article": 2
         }
       },
       "dedupedVariants": [],
@@ -11627,7 +11627,7 @@
         "liveCount": 1,
         "candidateCount": 3
       },
-      "computedAt": "2026-10-15T17:40:22.075Z"
+      "computedAt": "2026-10-16T01:58:23.533Z"
     },
     {
       "showId": "anonymous-off-broadway-2026",
@@ -25324,17 +25324,18 @@
         "https://rollingout.com/2023/12/08/boop-blending-fantasy-and-real-life/",
         "https://www.shawlocal.com/northwest-herald/2023/12/08/boop-the-musical-a-3d-rainbow-playing-chicago-before-heading-to-broadway/",
         "https://news.wttw.com/2023/12/07/girl-named-boop-headed-broadway-review",
-        "https://blogs.millersville.edu/news/2026/09/03/theatre-alumna-lands-role-in-boop-the-musicals-national-tour/",
-        "https://www.visitmo.com/events/boop-the-musical-2",
-        "https://518scene.com/event/boop-the-musical/2026-10-17/2/",
+        "https://www.timesunion.com/theater/article/review-boop-the-musical-tour-proctors-22466983.php",
+        "https://www.yahoo.com/entertainment/music/articles/review-boop-playful-yet-perplexing-150000630.html",
         "https://www.newsfromme.com/2026/10/05/the-boop-report/",
+        "https://www.timesunion.com/theater/article/boop-the-musical-aliya-grace-proctors-theatre-22473535.php",
         "https://meganannrasmussen.com/reviews/boop-the-musical",
-        "https://popcultblog.com/review-revisited-boop-hits-broadway",
         "https://www.broadwaynews.com/boop-the-musical-sets-50-week-north-american-tour/",
+        "https://popcultblog.com/review-revisited-boop-hits-broadway",
         "https://reallytallguy.com/theatre/reviews/boop/",
+        "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/boop-the-musical-broadway-a-post-show-analysis/271",
         "https://didtheylikeit.com/shows/boop-the-musical/boop-broadway-review/"
       ],
-      "dirFiles": 3,
+      "dirFiles": 4,
       "dirClean": 1,
       "inReviewsJson": 1,
       "missing": [
@@ -25406,8 +25407,7 @@
           "host": "newyorktheatreguide.com",
           "knownOutletId": "nytg",
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "serpCensus": true
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "https://www.nytimes.com/2025/04/07/theater/boop-the-musical-review-broadway.html",
@@ -25435,8 +25435,7 @@
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "serpCensus": true
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "https://variety.com/2025/legit/reviews/boop-review-broadway-musical-1236361705/",
@@ -25516,32 +25515,26 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://blogs.millersville.edu/news/2026/09/03/theatre-alumna-lands-role-in-boop-the-musicals-national-tour/",
-          "host": "millersville.edu",
-          "knownOutletId": null,
+          "url": "https://www.timesunion.com/theater/article/review-boop-the-musical-tour-proctors-22466983.php",
+          "host": "timesunion.com",
+          "knownOutletId": "albany-times-union",
           "serpCensus": true
         },
         {
-          "url": "https://www.visitmo.com/events/boop-the-musical-2",
-          "host": "visitmo.com",
-          "knownOutletId": null,
+          "url": "https://www.yahoo.com/entertainment/music/articles/review-boop-playful-yet-perplexing-150000630.html",
+          "host": "yahoo.com",
+          "knownOutletId": "yahoo",
           "serpCensus": true
         },
         {
-          "url": "https://518scene.com/event/boop-the-musical/2026-10-17/2/",
-          "host": "518scene.com",
-          "knownOutletId": null,
+          "url": "https://www.timesunion.com/theater/article/boop-the-musical-aliya-grace-proctors-theatre-22473535.php",
+          "host": "timesunion.com",
+          "knownOutletId": "albany-times-union",
           "serpCensus": true
         },
         {
           "url": "https://meganannrasmussen.com/reviews/boop-the-musical",
           "host": "meganannrasmussen.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://popcultblog.com/review-revisited-boop-hits-broadway",
-          "host": "popcultblog.com",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -25552,9 +25545,21 @@
           "serpCensus": true
         },
         {
+          "url": "https://popcultblog.com/review-revisited-boop-hits-broadway",
+          "host": "popcultblog.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
           "url": "https://reallytallguy.com/theatre/reviews/boop/",
           "host": "reallytallguy.com",
           "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/boop-the-musical-broadway-a-post-show-analysis/271",
+          "host": "broadwaypodcastnetwork.com",
+          "knownOutletId": "broadwaypodcastnetwork",
           "serpCensus": true
         },
         {
@@ -25579,8 +25584,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 2,
+            "results": 9,
+            "accepted": 4,
             "error": null
           },
           {
@@ -25590,7 +25595,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -25610,7 +25615,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -25626,22 +25631,23 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 11,
+        "resultCount": 12,
         "error": null
       },
       "candidatesRejected": {
-        "count": 845,
+        "count": 843,
         "byReason": {
-          "non-review-host": 97,
-          "bare-host": 1,
+          "non-review-host": 95,
+          "aggregator-internal-nav": 583,
+          "show-hub": 1,
           "not-http-url": 84,
-          "aggregator-internal-nav": 585,
           "aggregator-section-root": 16,
-          "non-review-path": 2,
-          "ticketing-reseller": 1,
-          "show-listing-page": 1,
+          "roundup-page": 1,
           "production-database-listing": 57,
-          "show-hub": 1
+          "ticketing-reseller": 1,
+          "bare-host": 2,
+          "non-review-path": 2,
+          "show-listing-page": 1
         }
       },
       "dedupedVariants": [],
@@ -25819,43 +25825,49 @@
       ],
       "ingestResults": [
         {
-          "url": "https://blogs.millersville.edu/news/2026/09/03/theatre-alumna-lands-role-in-boop-the-musicals-national-tour/",
-          "host": "millersville.edu",
-          "outletId": "millersville",
-          "provisional": true,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": true,
-          "zeroChar": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (tour)"
-        },
-        {
-          "url": "https://www.visitmo.com/events/boop-the-musical-2",
-          "host": "visitmo.com",
-          "outletId": "visitmo",
-          "provisional": true,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": true,
-          "zeroChar": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (tour)"
-        },
-        {
-          "url": "https://518scene.com/event/boop-the-musical/2026-10-17/2/",
-          "host": "518scene.com",
-          "outletId": "518scene",
-          "provisional": true,
+          "url": "https://www.timesunion.com/theater/article/review-boop-the-musical-tour-proctors-22466983.php",
+          "host": "timesunion.com",
+          "outletId": "albany-times-union",
+          "provisional": false,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        },
+        {
+          "url": "https://www.yahoo.com/entertainment/music/articles/review-boop-playful-yet-perplexing-150000630.html",
+          "host": "yahoo.com",
+          "outletId": "yahoo",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "spawnSync node ETIMEDOUT"
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "https://www.timesunion.com/theater/article/boop-the-musical-aliya-grace-proctors-theatre-22473535.php",
+          "host": "timesunion.com",
+          "outletId": "albany-times-union",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
         },
         {
           "url": "https://meganannrasmussen.com/reviews/boop-the-musical",
@@ -25866,19 +25878,23 @@
           "noop": true,
           "conflict": false,
           "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
           "unclassified": true,
           "zeroChar": false,
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (tour)"
         },
         {
-          "url": "https://popcultblog.com/review-revisited-boop-hits-broadway",
-          "host": "popcultblog.com",
-          "outletId": "popcultblog",
-          "provisional": true,
+          "url": "https://www.broadwaynews.com/boop-the-musical-sets-50-week-north-american-tour/",
+          "host": "broadwaynews.com",
+          "outletId": "broadwaynews",
+          "provisional": false,
           "ok": false,
           "noop": true,
           "conflict": false,
           "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
           "unclassified": true,
           "zeroChar": false,
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (tour)"
@@ -25886,14 +25902,19 @@
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://www.broadwaynews.com/boop-the-musical-sets-50-week-north-american-tour/",
-          "host": "broadwaynews.com",
-          "outletId": "broadwaynews"
+          "url": "https://popcultblog.com/review-revisited-boop-hits-broadway",
+          "host": "popcultblog.com",
+          "outletId": "popcultblog"
         },
         {
           "url": "https://reallytallguy.com/theatre/reviews/boop/",
           "host": "reallytallguy.com",
           "outletId": "reallytallguy"
+        },
+        {
+          "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/boop-the-musical-broadway-a-post-show-analysis/271",
+          "host": "broadwaypodcastnetwork.com",
+          "outletId": "broadwaypodcastnetwork"
         },
         {
           "url": "https://didtheylikeit.com/shows/boop-the-musical/boop-broadway-review/",
@@ -25905,25 +25926,25 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "millersville.edu",
-            "outlet": "millersville.edu",
+            "outletId": "albany-times-union",
+            "outlet": "albany-times-union",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://blogs.millersville.edu/news/2026/09/03/theatre-alumna-lands-role-in-boop-the-musicals-national-tour/"
+            "url": "https://www.timesunion.com/theater/article/review-boop-the-musical-tour-proctors-22466983.php"
           },
           {
-            "outletId": "visitmo.com",
-            "outlet": "visitmo.com",
+            "outletId": "yahoo",
+            "outlet": "yahoo",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.visitmo.com/events/boop-the-musical-2"
+            "url": "https://www.yahoo.com/entertainment/music/articles/review-boop-playful-yet-perplexing-150000630.html"
           },
           {
-            "outletId": "518scene.com",
-            "outlet": "518scene.com",
+            "outletId": "albany-times-union",
+            "outlet": "albany-times-union",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://518scene.com/event/boop-the-musical/2026-10-17/2/"
+            "url": "https://www.timesunion.com/theater/article/boop-the-musical-aliya-grace-proctors-theatre-22473535.php"
           },
           {
             "outletId": "meganannrasmussen.com",
@@ -25933,13 +25954,6 @@
             "url": "https://meganannrasmussen.com/reviews/boop-the-musical"
           },
           {
-            "outletId": "popcultblog.com",
-            "outlet": "popcultblog.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://popcultblog.com/review-revisited-boop-hits-broadway"
-          },
-          {
             "outletId": "broadwaynews",
             "outlet": "broadwaynews",
             "critic": "Unknown",
@@ -25947,11 +25961,25 @@
             "url": "https://www.broadwaynews.com/boop-the-musical-sets-50-week-north-american-tour/"
           },
           {
+            "outletId": "popcultblog.com",
+            "outlet": "popcultblog.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://popcultblog.com/review-revisited-boop-hits-broadway"
+          },
+          {
             "outletId": "reallytallguy.com",
             "outlet": "reallytallguy.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://reallytallguy.com/theatre/reviews/boop/"
+          },
+          {
+            "outletId": "broadwaypodcastnetwork",
+            "outlet": "broadwaypodcastnetwork",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/boop-the-musical-broadway-a-post-show-analysis/271"
           },
           {
             "outletId": "dtli",
@@ -25970,29 +25998,36 @@
             "firstSeenAt": "2026-10-05T17:43:35.209Z"
           },
           {
-            "url": "https://blogs.millersville.edu/news/2026/09/03/theatre-alumna-lands-role-in-boop-the-musicals-national-tour/",
-            "outletId": "millersville.edu",
+            "url": "https://www.timesunion.com/theater/article/review-boop-the-musical-tour-proctors-22466983.php",
+            "outletId": "albany-times-union",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-09T02:53:30.879Z"
+            "firstSeenAt": "2026-10-16T01:58:23.533Z"
           },
           {
-            "url": "https://www.visitmo.com/events/boop-the-musical-2",
-            "outletId": "visitmo.com",
+            "url": "https://www.yahoo.com/entertainment/music/articles/review-boop-playful-yet-perplexing-150000630.html",
+            "outletId": "yahoo",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-13T04:11:59.529Z"
+            "firstSeenAt": "2026-10-16T01:58:23.533Z"
           },
           {
-            "url": "https://518scene.com/event/boop-the-musical/2026-10-17/2/",
-            "outletId": "518scene.com",
+            "url": "https://www.timesunion.com/theater/article/boop-the-musical-aliya-grace-proctors-theatre-22473535.php",
+            "outletId": "albany-times-union",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-13T04:11:59.529Z"
+            "firstSeenAt": "2026-10-16T01:58:23.533Z"
           },
           {
             "url": "https://meganannrasmussen.com/reviews/boop-the-musical",
             "outletId": "meganannrasmussen.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-05T01:35:25.861Z"
+          },
+          {
+            "url": "https://www.broadwaynews.com/boop-the-musical-sets-50-week-north-american-tour/",
+            "outletId": "broadwaynews",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-05T01:35:25.861Z"
@@ -26005,18 +26040,18 @@
             "firstSeenAt": "2026-10-09T16:54:53.545Z"
           },
           {
-            "url": "https://www.broadwaynews.com/boop-the-musical-sets-50-week-north-american-tour/",
-            "outletId": "broadwaynews",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-05T01:35:25.861Z"
-          },
-          {
             "url": "https://reallytallguy.com/theatre/reviews/boop/",
             "outletId": "reallytallguy.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-13T04:11:59.529Z"
+          },
+          {
+            "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/boop-the-musical-broadway-a-post-show-analysis/271",
+            "outletId": "broadwaypodcastnetwork",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-16T01:58:23.533Z"
           },
           {
             "url": "https://didtheylikeit.com/shows/boop-the-musical/boop-broadway-review/",
@@ -26030,12 +26065,7 @@
         "liveCount": 1,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-13T04:11:59.529Z",
-      "quarantine": {
-        "nextState": "incomplete:0:9",
-        "since": "2026-10-15T06:43:21.647Z",
-        "lastAt": "2026-10-15T06:43:21.647Z"
-      }
+      "computedAt": "2026-10-16T01:58:23.533Z"
     },
     {
       "showId": "brainiac-live-west-end-2026",
@@ -29180,7 +29210,7 @@
       "quarantine": {
         "nextState": "incomplete:8:11",
         "since": "2026-10-14T22:55:22.914Z",
-        "lastAt": "2026-10-15T17:40:22.140Z"
+        "lastAt": "2026-10-16T01:58:23.583Z"
       }
     },
     {
@@ -30414,7 +30444,12 @@
         "liveCount": 1,
         "candidateCount": 7
       },
-      "computedAt": "2026-10-15T20:51:35.128Z"
+      "computedAt": "2026-10-15T20:51:35.128Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-16T01:58:23.583Z",
+        "lastAt": "2026-10-16T01:58:23.583Z"
+      }
     },
     {
       "showId": "call-me-izzy-2025",
@@ -45681,35 +45716,298 @@
       "status": "upcoming",
       "category": "off-west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://www.londontheatre.co.uk/reviews/dirty-dancing-the-classic-story-on-stage-review-dominion-theatre",
+        "https://www.lastminutetheatretickets.com/review-of-dirty-dancing-the-classic-story-on-stage/",
+        "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462",
+        "https://heimildin.promogogo.com/event/dirty-dancing-the-classic-story-on-stage/08193909-c494-4b16-8c7c-5c357d64ddfd"
+      ],
+      "dirFiles": 7,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.lastminutetheatretickets.com/review-of-dirty-dancing-the-classic-story-on-stage/",
+          "host": "lastminutetheatretickets.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462",
+          "host": "edinburghguide.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://heimildin.promogogo.com/event/dirty-dancing-the-classic-story-on-stage/08193909-c494-4b16-8c7c-5c357d64ddfd",
+          "host": "promogogo.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/dirty-dancing-the-classic-story-on-stage-review-dominion-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "london-theatre--sophie-thomas.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.londontheatre.co.uk/reviews/dirty-dancing-the-classic-story-on-stage-review-dominion-theatre"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        }
+      ],
       "citedNoUrl": [],
-      "weReference": null,
+      "weReference": {
+        "rowCount": 0,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "bestoftheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
+      },
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Dirty Dancing: The Classic Story on Stage\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Dirty Dancing: The Classic Story on Stage\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Dirty Dancing: The Classic Story on Stage\" review capital",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Dirty Dancing: The Classic Story on Stage Capital Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Dirty Dancing: The Classic Story on Stage Capital Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Dirty Dancing: The Classic Story on Stage Capital Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 4,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 33,
+        "byReason": {
+          "non-review-host": 22,
+          "aggregator-internal-nav": 3,
+          "write-path-blocked": 2,
+          "ticketing-reseller": 2,
+          "bare-host": 1,
+          "non-review-path": 2,
+          "ticket-seller-product-page": 1
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 1,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.lastminutetheatretickets.com/review-of-dirty-dancing-the-classic-story-on-stage/",
+          "host": "lastminutetheatretickets.com",
+          "outletId": "lastminutetheatretickets",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  provisional outlet \"lastminutetheatretickets\" (not in registry) — onboard to outlet-registry.jso"
+        },
+        {
+          "url": "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462",
+          "host": "edinburghguide.com",
+          "outletId": "edinburghguide",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://heimildin.promogogo.com/event/dirty-dancing-the-classic-story-on-stage/08193909-c494-4b16-8c7c-5c357d64ddfd",
+          "host": "promogogo.com",
+          "outletId": "promogogo",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "⚠️  provisional outlet \"promogogo\" (not in registry) — onboard to outlet-registry.json after review."
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "lastminutetheatretickets.com",
+            "outlet": "lastminutetheatretickets.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.lastminutetheatretickets.com/review-of-dirty-dancing-the-classic-story-on-stage/"
+          },
+          {
+            "outletId": "edinburghguide.com",
+            "outlet": "edinburghguide.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462"
+          },
+          {
+            "outletId": "promogogo.com",
+            "outlet": "promogogo.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://heimildin.promogogo.com/event/dirty-dancing-the-classic-story-on-stage/08193909-c494-4b16-8c7c-5c357d64ddfd"
+          },
+          {
+            "outletId": "london-theatre",
+            "outlet": "london-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatre.co.uk/reviews/dirty-dancing-the-classic-story-on-stage-review-dominion-theatre"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.lastminutetheatretickets.com/review-of-dirty-dancing-the-classic-story-on-stage/",
+            "outletId": "lastminutetheatretickets.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-16T01:58:23.533Z"
+          },
+          {
+            "url": "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462",
+            "outletId": "edinburghguide.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-16T01:58:23.533Z"
+          },
+          {
+            "url": "https://heimildin.promogogo.com/event/dirty-dancing-the-classic-story-on-stage/08193909-c494-4b16-8c7c-5c357d64ddfd",
+            "outletId": "promogogo.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-16T01:58:23.533Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/dirty-dancing-the-classic-story-on-stage-review-dominion-theatre",
+            "outletId": "london-theatre",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-16T01:58:23.533Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 4
       },
-      "computedAt": "2026-10-15T20:51:35.128Z"
+      "computedAt": "2026-10-16T01:58:23.533Z"
     },
     {
       "showId": "dirty-dancing-tour-2026",
@@ -46821,13 +47119,113 @@
       "status": "previews",
       "category": "off-west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://theqr.co.uk/2026/10/13/canine-logic-and-reinvention-in-southwarks-dog-mom/",
+        "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn",
+        "https://readaboutstuff.com/2026/09/29/interview-ajay-chowdhury-chats-to-read-about-stuff-ahead-of-dog-mom/",
+        "https://shouldgoto.com/theatre/dog-mom",
+        "https://www.uktw.co.uk/London/Southwark-Playhouse-Borough/Play/Dog-Mom/L536895171/",
+        "https://dogforum.co.uk/threads/forum-competition-award-winning-comedy-dog-mom-at-londons-southwark-playhouse.97692/"
+      ],
+      "dirFiles": 4,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://theqr.co.uk/2026/10/13/canine-logic-and-reinvention-in-southwarks-dog-mom/",
+          "host": "theqr.co.uk",
+          "knownOutletId": "theqr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theqr--will-quinn.json",
+              "flag": "clean",
+              "urlInDir": "https://theqr.co.uk/2026/10/13/canine-logic-and-reinvention-in-southwarks-dog-mom/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn",
+          "host": "flickermagazine.art",
+          "knownOutletId": "flicker-magazine",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "flicker-magazine--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://readaboutstuff.com/2026/09/29/interview-ajay-chowdhury-chats-to-read-about-stuff-ahead-of-dog-mom/",
+          "host": "readaboutstuff.com",
+          "knownOutletId": "readaboutstuff",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "readaboutstuff--dan-english.json",
+              "flag": "clean",
+              "urlInDir": "https://readaboutstuff.com/2026/09/29/interview-ajay-chowdhury-chats-to-read-about-stuff-ahead-of-dog-mom/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://dogforum.co.uk/threads/forum-competition-award-winning-comedy-dog-mom-at-londons-southwark-playhouse.97692/",
+          "host": "dogforum.co.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "dogforum--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://dogforum.co.uk/threads/forum-competition-award-winning-comedy-dog-mom-at-londons-southwark-playhouse.97692/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -46844,7 +47242,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 1
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -46868,28 +47266,186 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Dog Mom\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Dog Mom\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Dog Mom\" review southwark",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Dog Mom Southwark Playhouse review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Dog Mom Southwark Playhouse review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Dog Mom Southwark Playhouse review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 6,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 27,
+        "byReason": {
+          "non-review-host": 21,
+          "aggregator-internal-nav": 2,
+          "write-path-blocked": 1,
+          "census-junk-host": 2,
+          "review-hub-page": 1
+        }
       },
       "dedupedVariants": [],
-      "unextractable": [],
+      "automatedExcludedListed": 4,
+      "unextractable": [
+        {
+          "url": "https://shouldgoto.com/theatre/dog-mom",
+          "host": "shouldgoto.com",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "zeroCharAttempts": 4
+        },
+        {
+          "url": "https://www.uktw.co.uk/London/Southwark-Playhouse-Borough/Play/Dog-Mom/L536895171/",
+          "host": "uktw.co.uk",
+          "knownOutletId": "uktw",
+          "serpCensus": true,
+          "zeroCharAttempts": 4
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.uktw.co.uk/London/Southwark-Playhouse-Borough/Play/Dog-Mom/L536895171/",
+          "host": "uktw.co.uk",
+          "outletId": "uktw",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "theqr",
+            "outlet": "theqr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theqr.co.uk/2026/10/13/canine-logic-and-reinvention-in-southwarks-dog-mom/"
+          },
+          {
+            "outletId": "flicker-magazine",
+            "outlet": "flicker-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn"
+          },
+          {
+            "outletId": "readaboutstuff",
+            "outlet": "readaboutstuff",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://readaboutstuff.com/2026/09/29/interview-ajay-chowdhury-chats-to-read-about-stuff-ahead-of-dog-mom/"
+          },
+          {
+            "outletId": "dogforum.co.uk",
+            "outlet": "dogforum.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://dogforum.co.uk/threads/forum-competition-award-winning-comedy-dog-mom-at-londons-southwark-playhouse.97692/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://theqr.co.uk/2026/10/13/canine-logic-and-reinvention-in-southwarks-dog-mom/",
+            "outletId": "theqr",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-16T01:58:23.533Z"
+          },
+          {
+            "url": "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn",
+            "outletId": "flicker-magazine",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-16T01:58:23.533Z"
+          },
+          {
+            "url": "https://readaboutstuff.com/2026/09/29/interview-ajay-chowdhury-chats-to-read-about-stuff-ahead-of-dog-mom/",
+            "outletId": "readaboutstuff",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-16T01:58:23.533Z"
+          },
+          {
+            "url": "https://dogforum.co.uk/threads/forum-competition-award-winning-comedy-dog-mom-at-londons-southwark-playhouse.97692/",
+            "outletId": "dogforum.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-16T01:58:23.533Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 4
       },
-      "computedAt": "2026-10-15T20:51:35.128Z"
+      "computedAt": "2026-10-16T01:58:23.533Z"
     },
     {
       "showId": "doll-day-afternoon-off-broadway-2026",
@@ -46908,12 +47464,75 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Doll Day Afternoon\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Doll Day Afternoon\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Doll Day Afternoon\" review mama",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Doll Day Afternoon La MaMa / The Downstairs review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Doll Day Afternoon La MaMa / The Downstairs review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Doll Day Afternoon La MaMa / The Downstairs review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 34,
+        "byReason": {
+          "non-review-host": 23,
+          "aggregator-internal-nav": 7,
+          "venue-production-page": 2,
+          "write-path-blocked": 1,
+          "show-hub": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -46926,7 +47545,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-15T17:40:22.075Z"
+      "computedAt": "2026-10-16T01:58:23.533Z"
     },
     {
       "showId": "don-giovanni-off-broadway-2025",
@@ -47461,7 +48080,12 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-15T23:35:34.762Z"
+      "computedAt": "2026-10-15T23:35:34.762Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-16T01:58:23.583Z",
+        "lastAt": "2026-10-16T01:58:23.583Z"
+      }
     },
     {
       "showId": "dracula-west-end-2025",
@@ -56070,7 +56694,12 @@
         "liveCount": 3,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-15T20:51:35.128Z"
+      "computedAt": "2026-10-15T20:51:35.128Z",
+      "quarantine": {
+        "nextState": "complete:1:1",
+        "since": "2026-10-16T01:58:23.583Z",
+        "lastAt": "2026-10-16T01:58:23.583Z"
+      }
     },
     {
       "showId": "fishing-for-alaska-off-broadway-2026",
@@ -77642,7 +78271,12 @@
         "liveCount": 30,
         "candidateCount": 34
       },
-      "computedAt": "2026-10-13T12:28:08.210Z"
+      "computedAt": "2026-10-13T12:28:08.210Z",
+      "quarantine": {
+        "nextState": "incomplete:31:32",
+        "since": "2026-10-16T01:58:23.583Z",
+        "lastAt": "2026-10-16T01:58:23.583Z"
+      }
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
@@ -81302,7 +81936,12 @@
         "liveCount": 2,
         "candidateCount": 10
       },
-      "computedAt": "2026-10-15T20:51:35.128Z"
+      "computedAt": "2026-10-15T20:51:35.128Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-16T01:58:23.583Z",
+        "lastAt": "2026-10-16T01:58:23.583Z"
+      }
     },
     {
       "showId": "high-society-west-end-2026",
@@ -97920,7 +98559,12 @@
         "liveCount": 9,
         "candidateCount": 18
       },
-      "computedAt": "2026-10-15T20:51:35.128Z"
+      "computedAt": "2026-10-15T20:51:35.128Z",
+      "quarantine": {
+        "nextState": "complete:4:4",
+        "since": "2026-10-16T01:58:23.583Z",
+        "lastAt": "2026-10-16T01:58:23.583Z"
+      }
     },
     {
       "showId": "king-of-the-yees-off-broadway-2026",
@@ -110097,7 +110741,12 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-15T23:35:34.762Z"
+      "computedAt": "2026-10-15T23:35:34.762Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-16T01:58:23.583Z",
+        "lastAt": "2026-10-16T01:58:23.583Z"
+      }
     },
     {
       "showId": "marcel-on-the-train-off-broadway-2026",
@@ -115605,7 +116254,12 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-10-15T20:51:35.128Z"
+      "computedAt": "2026-10-15T20:51:35.128Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-16T01:58:23.583Z",
+        "lastAt": "2026-10-16T01:58:23.583Z"
+      }
     },
     {
       "showId": "meow-meow-off-broadway-2026",
@@ -117440,7 +118094,12 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-10-15T20:51:35.128Z"
+      "computedAt": "2026-10-15T20:51:35.128Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-16T01:58:23.583Z",
+        "lastAt": "2026-10-16T01:58:23.583Z"
+      }
     },
     {
       "showId": "milk-and-honey-amt-theater-off-broadway-2026",
@@ -129334,7 +129993,12 @@
         "liveCount": 10,
         "candidateCount": 14
       },
-      "computedAt": "2026-10-15T20:51:35.128Z"
+      "computedAt": "2026-10-15T20:51:35.128Z",
+      "quarantine": {
+        "nextState": "complete:9:9",
+        "since": "2026-10-16T01:58:23.583Z",
+        "lastAt": "2026-10-16T01:58:23.583Z"
+      }
     },
     {
       "showId": "no-singing-in-the-navy-off-broadway-2026",
@@ -155845,7 +156509,9 @@
         "http://nystagereview.com/2019/02/14/sea-wall-a-life-personal-storytelling-carefully-and-impersonally-constructed/",
         "https://www.nytimes.com/2019/02/14/theater/sea-wall-a-life-review-jake-gyllenhaal-tom-sturridge.html",
         "https://observer.com/2019/02/sea-wall-a-life-review-jake-gyllenhaal-tom-sturridge-probe-pain/",
-        "https://variety.com/2019/legit/reviews/sea-wall-a-life-review-jake-gyllenhaal-1203140091/"
+        "https://variety.com/2019/legit/reviews/sea-wall-a-life-review-jake-gyllenhaal-1203140091/",
+        "https://www.intermissionmagazine.ca/reviews/sea-wall-assembly/",
+        "https://www.timeout.com/newyork/theater/sea-wall"
       ],
       "dirFiles": 5,
       "dirClean": 0,
@@ -156025,6 +156691,18 @@
           "knownOutletId": "variety",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.intermissionmagazine.ca/reviews/sea-wall-assembly/",
+          "host": "intermissionmagazine.ca",
+          "knownOutletId": "intermissionmagazine",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/sea-wall",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "serpCensus": true
         }
       ],
       "dirOnly": [],
@@ -156153,18 +156831,78 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Sea Wall\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Sea Wall\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Sea Wall\" review seaview",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Sea Wall Studio Seaview review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Sea Wall Studio Seaview review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Sea Wall Studio Seaview review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 2,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 205,
+        "count": 231,
         "byReason": {
-          "non-review-host": 40,
-          "aggregator-internal-nav": 120,
-          "production-database-listing": 21,
-          "roundup-page": 5,
+          "non-review-host": 59,
+          "aggregator-internal-nav": 121,
+          "venue-production-page": 1,
           "not-http-url": 11,
-          "aggregator-section-root": 8
+          "aggregator-section-root": 8,
+          "roundup-page": 5,
+          "production-database-listing": 22,
+          "ticketing-reseller": 3,
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
@@ -156332,18 +157070,79 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [],
+      "ingestResults": [
+        {
+          "url": "https://www.intermissionmagazine.ca/reviews/sea-wall-assembly/",
+          "host": "intermissionmagazine.ca",
+          "outletId": "intermissionmagazine",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Misattribution guard: Aisling Murphy at intermissionmagazine (primary: the-globe-and-mail) for s"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/sea-wall",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "timeout-listing-capsule",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "sea-wall-off-broadway-2026: https://www.timeout.com/newyork/theater/sea-wall is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
+        }
+      ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "intermissionmagazine",
+            "outlet": "intermissionmagazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.intermissionmagazine.ca/reviews/sea-wall-assembly/"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/sea-wall"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.intermissionmagazine.ca/reviews/sea-wall-assembly/",
+            "outletId": "intermissionmagazine",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-16T01:58:23.533Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/sea-wall",
+            "outletId": "timeout-london",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-16T01:58:23.533Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 2
       },
-      "computedAt": "2026-10-15T20:51:35.128Z"
+      "computedAt": "2026-10-16T01:58:23.533Z"
     },
     {
       "showId": "seagull-true-story-off-broadway-2026",
@@ -162392,7 +163191,12 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-15T20:51:35.128Z"
+      "computedAt": "2026-10-15T20:51:35.128Z",
+      "quarantine": {
+        "nextState": "complete:1:1",
+        "since": "2026-10-16T01:58:23.583Z",
+        "lastAt": "2026-10-16T01:58:23.583Z"
+      }
     },
     {
       "showId": "soon-off-broadway-2026",
@@ -167815,7 +168619,12 @@
         "liveCount": 6,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-15T20:51:35.128Z"
+      "computedAt": "2026-10-15T20:51:35.128Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-16T01:58:23.583Z",
+        "lastAt": "2026-10-16T01:58:23.583Z"
+      }
     },
     {
       "showId": "stranger-things-2024",
@@ -176132,7 +176941,12 @@
         "liveCount": 1,
         "candidateCount": 6
       },
-      "computedAt": "2026-10-15T20:51:35.128Z"
+      "computedAt": "2026-10-15T20:51:35.128Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-16T01:58:23.583Z",
+        "lastAt": "2026-10-16T01:58:23.583Z"
+      }
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
@@ -178294,7 +179108,12 @@
         "liveCount": 15,
         "candidateCount": 23
       },
-      "computedAt": "2026-10-15T20:51:35.128Z"
+      "computedAt": "2026-10-15T20:51:35.128Z",
+      "quarantine": {
+        "nextState": "incomplete:13:14",
+        "since": "2026-10-16T01:58:23.583Z",
+        "lastAt": "2026-10-16T01:58:23.583Z"
+      }
     },
     {
       "showId": "the-children-off-west-end-2026",
@@ -202880,7 +203699,12 @@
         "liveCount": 13,
         "candidateCount": 18
       },
-      "computedAt": "2026-10-15T20:51:35.128Z"
+      "computedAt": "2026-10-15T20:51:35.128Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-16T01:58:23.583Z",
+        "lastAt": "2026-10-16T01:58:23.583Z"
+      }
     },
     {
       "showId": "the-producers-west-end-2025",
@@ -205175,6 +205999,43 @@
         "candidateCount": 9
       },
       "computedAt": "2026-10-04T19:06:54.776Z"
+    },
+    {
+      "showId": "the-second-best-school-shooting-off-broadway-2026",
+      "title": "The Second Best School Shooting",
+      "openingDate": "2026-10-17",
+      "status": "upcoming",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-16T01:58:23.533Z"
     },
     {
       "showId": "the-secret-circus-musical-off-broadway-2026",
@@ -211746,9 +212607,9 @@
       },
       "computedAt": "2026-10-13T04:11:59.529Z",
       "quarantine": {
-        "nextState": "incomplete:0:5",
-        "since": "2026-10-15T06:43:21.647Z",
-        "lastAt": "2026-10-15T06:43:21.647Z"
+        "nextState": "incomplete:1:5",
+        "since": "2026-10-16T01:58:23.583Z",
+        "lastAt": "2026-10-16T01:58:23.583Z"
       }
     },
     {
@@ -221882,7 +222743,7 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://stageraw.com/unconditional-a-musical-memoir/",
+        "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/",
         "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/"
       ],
       "dirFiles": 1,
@@ -221890,11 +222751,11 @@
       "inReviewsJson": 0,
       "missing": [
         {
-          "url": "https://stageraw.com/unconditional-a-musical-memoir/",
-          "host": "stageraw.com",
-          "knownOutletId": "stage-raw",
+          "url": "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/",
+          "host": "hollywoodtimes.net",
+          "knownOutletId": null,
           "priorRun": true,
-          "priorRunSource": "pending-file-date:2025-02-18",
+          "priorRunSource": "pending-file-date:2025-02-22",
           "serpCensus": true
         }
       ],
@@ -221988,15 +222849,14 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 26,
+        "count": 28,
         "byReason": {
-          "non-review-host": 17,
-          "aggregator-internal-nav": 2,
-          "merch-store": 2,
-          "bare-host": 1,
+          "non-review-host": 16,
+          "aggregator-internal-nav": 6,
+          "venue-production-page": 1,
           "write-path-blocked": 1,
-          "census-junk-host": 2,
-          "venue-production-page": 1
+          "merch-store": 3,
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
@@ -222004,8 +222864,8 @@
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://stageraw.com/unconditional-a-musical-memoir/",
-          "host": "stageraw.com",
+          "url": "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/",
+          "host": "hollywoodtimes.net",
           "priorRun": true,
           "reason": "prior-run"
         }
@@ -222028,8 +222888,8 @@
           {
             "url": "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/",
             "outletId": "theatreinla",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-15T17:40:22.075Z"
           }
         ],
@@ -222037,7 +222897,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-15T17:40:22.075Z"
+      "computedAt": "2026-10-16T01:58:23.533Z"
     },
     {
       "showId": "under-the-shadow-off-west-end-2026",
@@ -227813,7 +228673,7 @@
       "quarantine": {
         "nextState": "incomplete:14:19",
         "since": "2026-10-15T17:40:22.140Z",
-        "lastAt": "2026-10-15T17:40:22.140Z"
+        "lastAt": "2026-10-16T01:58:23.583Z"
       }
     },
     {
@@ -229207,9 +230067,9 @@
       },
       "computedAt": "2026-10-13T04:11:59.529Z",
       "quarantine": {
-        "nextState": "incomplete:26:32",
-        "since": "2026-10-15T06:43:21.647Z",
-        "lastAt": "2026-10-15T06:43:21.647Z"
+        "nextState": "incomplete:27:32",
+        "since": "2026-10-16T01:58:23.583Z",
+        "lastAt": "2026-10-16T01:58:23.583Z"
       }
     },
     {

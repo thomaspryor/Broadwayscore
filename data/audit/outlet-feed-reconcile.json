@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-15T23:35:58.524Z",
+  "generatedAt": "2026-10-16T01:59:29.176Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -14,19 +14,9 @@
       "openingDate": "2026-10-11"
     },
     {
-      "id": "good-time-charlie-off-broadway-2026",
-      "title": "Good Time Charlie",
-      "openingDate": "2026-10-09"
-    },
-    {
       "id": "some-woman-west-end-2026",
       "title": "Some Woman",
       "openingDate": "2026-10-15"
-    },
-    {
-      "id": "fences-off-west-end-2026",
-      "title": "Fences",
-      "openingDate": "2026-10-09"
     },
     {
       "id": "midnight-off-broadway-2026",
@@ -44,19 +34,9 @@
       "openingDate": "2026-10-14"
     },
     {
-      "id": "a-ghost-in-your-ear-off-broadway-2026",
-      "title": "A Ghost In Your Ear",
-      "openingDate": "2026-10-09"
-    },
-    {
       "id": "memoirs-of-amorous-gentlemen-off-broadway-2026",
       "title": "Memoirs of Amorous Gentlemen",
       "openingDate": "2026-10-15"
-    },
-    {
-      "id": "the-ask-off-broadway-2026",
-      "title": "The Ask",
-      "openingDate": "2026-10-13"
     },
     {
       "id": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
@@ -91,7 +71,7 @@
   ],
   "skipped": [
     {
-      "showId": "bettys-summer-vacation-the-heights-players-off-broadway-2026",
+      "showId": "the-ask-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     },
     {
@@ -132,21 +112,16 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 695,
-  "matchedGaps": 6,
-  "possibleGaps": 5,
+  "itemsScanned": 672,
+  "matchedGaps": 5,
+  "possibleGaps": 4,
   "gaps": [
-    {
-      "showId": "a-ghost-in-your-ear-off-broadway-2026",
-      "title": "A Ghost In Your Ear",
-      "level": "matched",
-      "outletId": "off-off-online",
-      "url": "https://www.offoffonline.com/offoffonline/2026/10/7/a-ghost-in-your-ear-ObL3Q",
-      "headline": "A Ghost in Your Ear",
-      "publishDate": "2026-10-15"
-    },
     {
       "showId": "stuffed-off-west-end-2026",
       "title": "Stuffed",
@@ -191,15 +166,6 @@
       "url": "https://www.britishtheatreguide.info/reviews/the-cherry-orch-harold-pinter-t-26118",
       "headline": "The Cherry Orchard",
       "publishDate": "2026-10-15"
-    },
-    {
-      "showId": "a-ghost-in-your-ear-off-broadway-2026",
-      "title": "A Ghost In Your Ear",
-      "level": "possible",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/",
-      "headline": "Review: A Ghost in Your Ear, the Curse of Daddy Issues in an Audiobook",
-      "publishDate": null
     },
     {
       "showId": "king-lear-royal-exchange-regional-2026",
