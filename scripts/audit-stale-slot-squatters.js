@@ -57,12 +57,21 @@ try { assertCorpusScanned(scanned, { gate: true, label: ROOT }); } catch (e) {
   throw e;
 }
 
+const REVIEWS = process.env.REVIEWS_JSON_PATH || path.join(__dirname, '..', 'data', 'reviews.json');
+const haveOutlet = new Set();
+try {
+  const rj = JSON.parse(fs.readFileSync(REVIEWS, 'utf8'));
+  for (const r of Array.isArray(rj) ? rj : rj.reviews || []) if (r && r.showId && r.outletId) haveOutlet.add(`${r.showId}|${r.outletId}`);
+} catch { /* no reviews.json: cannot tell, so keep every finding */ }
+const slotEmpty = (showId, f) => !haveOutlet.size || !haveOutlet.has(`${showId}|${String(f.file).split('--')[0]}`);
+
 const found = [];
 for (const [showId, files] of tree) {
   if (onlyShows && !onlyShows.includes(showId)) continue;
   const show = byId[showId];
   if (!show || !show.openingDate || Number(String(show.openingDate).slice(0, 4)) < minYear) continue;
-  for (const r of [...findDroppedByWrongTwin(files), ...findStaleSlotSquatters(files, show, urlOwners, showId)]) found.push({ showId, ...r });
+  for (const r of findDroppedByWrongTwin(files)) found.push({ showId, ...r });
+  for (const r of findStaleSlotSquatters(files, show, urlOwners, showId)) if (argv.includes('--all') || slotEmpty(showId, r)) found.push({ showId, ...r });
 }
 if (argv.includes('--json')) console.log(JSON.stringify({ scanned, count: found.length, found }, null, 2));
 else {
