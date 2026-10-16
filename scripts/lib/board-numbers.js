@@ -23,6 +23,8 @@ const { execFileSync } = require('child_process');
 const { TERMINAL_STATE_TYPES } = require('./linear-state-types.js');
 const { fetchInflowCounts } = require('./backlog-inflow-ratio.js');
 const { landedPerLane } = require('./codex-runner.js');
+const { isAutofixFiledIssue } = require('./autofix-filed-marker.js');
+const { isAwaitingOwner } = require('./owner-approval-channel.js');
 
 const TEAM_KEY = 'BRO';
 const PRIORITY_LABELS = [[1, 'Urgent'], [2, 'High'], [3, 'Medium'], [4, 'Low'], [0, 'No priority']];
@@ -33,6 +35,13 @@ const OPEN_PRIORITY_QUERY = `query OpenByPriority($filter: IssueFilter, $after: 
   }
 }`;
 const MAX_PAGES = 20;
+const STUCK_AFTER_MS = 48 * 3600 * 1000;
+const STUCK_QUERY = `query StuckCards($filter: IssueFilter, $after: String) {
+  issues(filter: $filter, first: 250, after: $after, includeArchived: false) {
+    pageInfo { hasNextPage endCursor }
+    nodes { identifier title description state { name } labels { nodes { name } } }
+  }
+}`;
 const GRAPHQL_OPTS = { maxAttempts: 2, timeoutMs: 6_000, baseMs: 250 };
 
 /** Open cards per priority. Priority 0 (or anything unknown) counts as "No priority". */
@@ -54,6 +63,32 @@ async function fetchOpenByPriority({ graphql, teamKey = TEAM_KEY, graphqlOpts = 
     after = conn.pageInfo.endCursor;
   }
   return { total, byPriority, truncated: true };
+}
+
+/**
+ * Stuck CARDS: open cards In Progress or In Review with no update for 48h+. The 48h rule alone;
+ * the picker's paused-repeatedly history (cloud-worker-pick.js historySkipReason) needs every
+ * card's comments, which is too many reads for a digest.
+ */
+async function fetchStuckCards({ graphql, now = new Date(), teamKey = TEAM_KEY, graphqlOpts = GRAPHQL_OPTS } = {}) {
+  const filter = {
+    team: { key: { eq: teamKey } },
+    state: { type: { eq: 'started' } }, // exactly In Progress and In Review on this team; survives a rename
+    updatedAt: { lt: new Date(now.getTime() - STUCK_AFTER_MS).toISOString() },
+  };
+  let count = 0;
+  let after = null;
+  for (let page = 0; page < MAX_PAGES; page++) {
+    const data = await graphql(STUCK_QUERY, { filter, after }, graphqlOpts);
+    const conn = data && data.issues;
+    if (!conn || !Array.isArray(conn.nodes)) throw new Error('Linear returned no issues connection for the stuck-card count');
+    // Same exclusions as the digest's other sections: pipeline-owned cards (autofix/canary) are
+    // not stuck work, and owner-waiting cards are already counted under "Waiting on you".
+    count += conn.nodes.filter((n) => !isAutofixFiledIssue(n) && !isAwaitingOwner(n)).length;
+    if (!conn.pageInfo || !conn.pageInfo.hasNextPage) return { count, truncated: false };
+    after = conn.pageInfo.endCursor;
+  }
+  return { count, truncated: true };
 }
 
 /**
@@ -87,18 +122,20 @@ function readLanded({ cwd = process.cwd(), exec = execFileSync, nowMs = Date.now
 }
 
 /** Every live read, each fail-soft on its own: a missing piece renders "n/a", never blocks the digest. */
-async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLandedFn = readLanded, fetchInflow = fetchInflowCounts, fetchOpen = fetchOpenByPriority } = {}) {
+async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLandedFn = readLanded, fetchInflow = fetchInflowCounts, fetchOpen = fetchOpenByPriority, fetchStuck = fetchStuckCards } = {}) {
   const soft = async (fn) => { try { return await fn(); } catch (err) { return { error: String(err && err.message || err).slice(0, 120) }; } };
   // Sequential on purpose: backlog-inflow-ratio.js walks one at a time because of Linear rate limits.
   const open = await soft(() => fetchOpen({ graphql }));
   const d1 = await soft(() => fetchInflow({ graphql, now, windowDays: 1 }));
   const d7 = await soft(() => fetchInflow({ graphql, now, windowDays: 7 }));
+  const stuckCards = await soft(() => fetchStuck({ graphql, now }));
   let landed = null;
   try { landed = readLandedFn({ cwd, nowMs: now.getTime() }); } catch { /* n/a */ }
   return {
     open,
     d1,
     d7,
+    stuckCards,
     landed1: landed ? landed.d1 : null,
     landed7: landed ? landed.d7 : null,
   };
@@ -119,7 +156,7 @@ function buildBoardNumbers({ data = {}, waiting = null, stuck = null, technicalI
   const pick = (w, k) => (ok(w) ? num(w[k]) : null);
   // fetchInflowCounts also walks an open count we never use; only truncation of the counts we show matters.
   const shownTrunc = (w) => ok(w) && (w.truncatedCounts || []).some((n) => n !== 'open');
-  const floors = (ok(data.open) && !!data.open.truncated) || shownTrunc(data.d1) || shownTrunc(data.d7);
+  const floors = !!((ok(data.open) && !!data.open.truncated) || shownTrunc(data.d1) || shownTrunc(data.d7) || (ok(data.stuckCards) && data.stuckCards.truncated));
   return {
     open,
     added: { d1: pick(data.d1, 'created'), d7: pick(data.d7, 'created') },
@@ -127,6 +164,8 @@ function buildBoardNumbers({ data = {}, waiting = null, stuck = null, technicalI
     canceled: { d1: pick(data.d1, 'canceled'), d7: pick(data.d7, 'canceled') },
     waiting: num(waiting),
     stuck: num(stuck),
+    stuckCards: ok(data.stuckCards) ? num(data.stuckCards.count) : null,
+    stuckCardsFloor: ok(data.stuckCards) && !!data.stuckCards.truncated,
     technicalInReview: num(technicalInReview),
     lanes: { d1: data.landed1 || null, d7: data.landed7 || null },
     floors,
@@ -145,6 +184,7 @@ function renderBoardNumbersLines(m) {
   lines.push(`Completed: ${show(m.completed.d1)} in 24h, ${show(m.completed.d7)} in 7 days`);
   lines.push(`Canceled: ${show(m.canceled.d1)} in 24h, ${show(m.canceled.d7)} in 7 days`);
   lines.push(`Waiting on you: ${show(m.waiting)}`);
+  lines.push(`Stuck cards: ${show(m.stuckCards)}${m.stuckCards === null ? '' : ' (In Progress or In Review, no update in 48h+, not waiting on you)'}`);
   lines.push(`Stuck alerts: ${show(m.stuck)}${m.technicalInReview ? ` (plus ${m.technicalInReview} technical cards parked In Review)` : ''}`);
   const lane = (l) => (l ? `Codex ${l.codex}, Claude ${l.claude}` : 'n/a');
   lines.push(`Landed on main, 24h: ${lane(m.lanes.d1)}`);
@@ -164,5 +204,5 @@ function renderBoardNumbersHtml(m, esc = (s) => String(s)) {
 }
 
 module.exports = {
-  fetchOpenByPriority, readLanded, fetchBoardNumbersData, buildBoardNumbers, renderBoardNumbersLines, renderBoardNumbersHtml, PRIORITY_LABELS,
+  fetchOpenByPriority, fetchStuckCards, readLanded, fetchBoardNumbersData, buildBoardNumbers, renderBoardNumbersLines, renderBoardNumbersHtml, PRIORITY_LABELS,
 };

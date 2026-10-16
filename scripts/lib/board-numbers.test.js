@@ -24,7 +24,7 @@ test('waiting and stuck pass through untouched (single definition)', () => {
   const m = B.buildBoardNumbers({ data: {}, waiting: 0, stuck: 0 });
   assert.equal(m.waiting, 0);
   assert.equal(m.stuck, 0);
-  assert.match(B.renderBoardNumbersLines(m).join('\n'), /Waiting on you: 0\nStuck alerts: 0/);
+  assert.match(B.renderBoardNumbersLines(m).join('\n'), /Waiting on you: 0\nStuck cards: n\/a\nStuck alerts: 0/);
 });
 
 test('failed reads render n/a, never 0', () => {
@@ -58,11 +58,13 @@ test('fetchBoardNumbersData asks for 1 and 7 day windows and survives one failur
   const d = await B.fetchBoardNumbersData({
     graphql: null,
     fetchOpen: async () => { throw new Error('boom'); },
+    fetchStuck: async () => ({ count: 2 }),
     fetchInflow: async ({ windowDays }) => { seen.push(windowDays); return inflow(windowDays, 1); },
     readLandedFn: () => ({ d1: { codex: 1, claude: 0 }, d7: { codex: 7, claude: 0 } }),
   });
   assert.deepEqual(seen.sort(), [1, 7]);
   assert.equal(d.open.error, 'boom');
+  assert.equal(d.stuckCards.count, 2);
   assert.deepEqual(d.landed7, { codex: 7, claude: 0 });
 });
 
@@ -84,6 +86,46 @@ test('open-walk truncation alone does not flag minimums; shown-count truncation 
 test('readLanded is null when a shallow clone could not be deepened', () => {
   const exec = (cmd, args) => { if (args[0] === 'fetch') throw new Error('net'); return 'true'; };
   assert.equal(B.readLanded({ exec }), null);
+});
+
+test('fetchStuckCards filters started cards idle 48h+ and pages', async () => {
+  const calls = [];
+  const pages = [
+    { issues: { pageInfo: { hasNextPage: true, endCursor: 'c' }, nodes: [{ identifier: 'BRO-1', title: 'a' }, { identifier: 'BRO-2', title: 'b' }] } },
+    { issues: { pageInfo: { hasNextPage: false }, nodes: [{ identifier: 'BRO-3', title: 'c' }] } },
+  ];
+  let i = 0;
+  const now = new Date('2026-10-16T12:00:00Z');
+  const r = await B.fetchStuckCards({ graphql: async (q, v) => { calls.push({ ...v.filter, after: v.after }); return pages[i++]; }, now });
+  assert.equal(r.count, 3);
+  assert.equal(calls[0].state.type.eq, 'started');
+  assert.equal(calls[0].team.key.eq, 'BRO');
+  assert.equal(calls[1].after, 'c');
+  assert.equal(calls[0].updatedAt.lt, '2026-10-14T12:00:00.000Z');
+});
+
+test('stuck cards render n/a when the read fails, a number otherwise', () => {
+  const bad = B.buildBoardNumbers({ data: { stuckCards: { error: 'x' } } });
+  assert.match(B.renderBoardNumbersLines(bad).join('\n'), /Stuck cards: n\/a\n/);
+  const ok = B.buildBoardNumbers({ data: { stuckCards: { count: 12 } } });
+  assert.match(B.renderBoardNumbersLines(ok).join('\n'), /Stuck cards: 12 \(In Progress or In Review, no update in 48h\+, not waiting on you\)/);
+});
+
+test('fetchStuckCards skips autofix-filed and awaiting-owner cards', async () => {
+  const nodes = [
+    { identifier: 'BRO-1', title: 'real work', description: '', labels: { nodes: [] } },
+    { identifier: 'BRO-2', title: 'BSC Daily: x', description: 'PARKED: x', labels: { nodes: [] } },
+    { identifier: 'BRO-3', title: 'needs you', description: '', labels: { nodes: [{ name: 'awaiting-owner' }] } },
+  ];
+  const r = await B.fetchStuckCards({ graphql: async () => ({ issues: { pageInfo: { hasNextPage: false }, nodes } }) });
+  assert.ok(r.count >= 1 && r.count <= 2, `count ${r.count}`);
+  assert.ok(r.count < 3);
+});
+
+test('stuck-card truncation flags minimums; missing connection throws', async () => {
+  const m = B.buildBoardNumbers({ data: { stuckCards: { count: 5, truncated: true } } });
+  assert.equal(m.floors, true);
+  await assert.rejects(() => B.fetchStuckCards({ graphql: async () => ({}) }), /no issues connection/);
 });
 
 test('html has no em dash and escapes', () => {
