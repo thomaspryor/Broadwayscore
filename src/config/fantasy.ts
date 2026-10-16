@@ -293,9 +293,24 @@ export function isPracticeOpen(now: Date = new Date()): boolean {
   return nyDate(now.toISOString()) < DRAFT_OPENS;
 }
 
+export type DraftMode = 'practice' | 'practice-over' | 'not-open' | 'open' | 'closed';
+
+/**
+ * Which draft a page or request is in. `practiceRequested` is the link's
+ * intent (?practice=1), never inferred from the clock: a practice form left
+ * open past midnight on draft day must not turn into a real, final entry. The
+ * draft page and /api/fantasy/draft both decide with this (BRO-5487).
+ */
+export function draftMode(practiceRequested: boolean, now: Date = new Date()): DraftMode {
+  if (isDraftClosed(now)) return 'closed';
+  if (practiceRequested) return isPracticeOpen(now) ? 'practice' : 'practice-over';
+  return isDraftOpen(now) ? 'open' : 'not-open';
+}
+
 /** Check if the draft is open: on or after DRAFT_OPENS (a New York calendar date) and before the deadline */
 export function isDraftOpen(now: Date = new Date()): boolean {
-  return nyDate(now.toISOString()) >= DRAFT_OPENS && !isDraftClosed(now);
+  // The exact complement of the practice window, so the two never overlap.
+  return !isPracticeOpen(now) && !isDraftClosed(now);
 }
 
 /**

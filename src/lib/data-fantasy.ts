@@ -18,7 +18,9 @@ import {
   validatePicks,
   SCORING_START,
   DRAFT_DEADLINE,
+  DRAFT_OPENS,
   DEADLINE_GRACE_MS,
+  nyDate,
 } from '@/config/fantasy';
 
 // Import JSON data (loaded at build time)
@@ -138,6 +140,10 @@ export function isValidLeaderboardEntry(entry: Pick<FantasyEntry, 'picks' | 'cre
   if (!Array.isArray(entry.picks)) return false;
   if (!validatePicks(entry.picks, config.shows).valid) return false;
   if (entry.created_at && Date.parse(entry.created_at) > Date.parse(DRAFT_DEADLINE) + DEADLINE_GRACE_MS) return false;
+  // Nothing real is drafted before the draft opens: the route refuses it, so a
+  // real-season row stamped earlier came straight through the anon key
+  // (during the practice round, for example) and must not count (BRO-5487).
+  if (entry.created_at && nyDate(entry.created_at) < DRAFT_OPENS) return false;
   return true;
 }
 

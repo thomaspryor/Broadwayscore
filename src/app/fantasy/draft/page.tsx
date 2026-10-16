@@ -12,9 +12,7 @@ import {
   draftDeadlineDate,
   EARLY_BIRD_CUTOFF,
   SCORING_START,
-  isDraftClosed,
-  isDraftOpen,
-  isPracticeOpen,
+  draftMode,
   hasLateEntry,
   TIEBREAKER_QUESTIONS,
   ELIGIBILITY_MARKERS,
@@ -80,11 +78,12 @@ function FantasyDraftInner() {
     const t = setInterval(() => setNow(new Date()), 60_000);
     return () => clearInterval(t);
   }, []);
-  const draftClosed = now ? isDraftClosed(now) : false;
-  const draftOpen = now ? isDraftOpen(now) : false;
-  // Practice runs until the real draft opens; after that the link is the real draft.
-  const practice = practiceRequested && (now ? isPracticeOpen(now) : false);
-  const formOpen = practice || draftOpen;
+  // The link's intent decides practice vs real, never the clock alone: a
+  // practice form left open past midnight on draft day turns into the
+  // "practice is over" screen, not into a real, final entry (BRO-5487).
+  const mode = now ? draftMode(practiceRequested, now) : null;
+  const practice = mode === 'practice';
+  const formOpen = mode === 'practice' || mode === 'open';
 
   const allShows = useMemo(() => {
     return Object.entries(config.shows)
@@ -151,7 +150,7 @@ function FantasyDraftInner() {
           league_name: leagueName.trim() || null,
           picks: selectedIds,
           tiebreakers: Object.keys(tiebreakers).length > 0 ? tiebreakers : null,
-          ...(practice ? { practice: true } : {}),
+          ...(practiceRequested ? { practice: true } : {}),
         }),
       });
 
@@ -161,10 +160,10 @@ function FantasyDraftInner() {
         return;
       }
 
-      captureEvent('fantasy_draft_submitted', {
+      captureEvent(practice ? 'fantasy_practice_submitted' : 'fantasy_draft_submitted', {
         picks: selectedIds.length,
         total_cost: totalSpent,
-        in_league: !!leagueName.trim(),
+        in_league: !practice && !!leagueName.trim(),
         locked_picks: Array.isArray(data.locked_picks) ? data.locked_picks.length : 0,
         practice,
       });
@@ -189,7 +188,7 @@ function FantasyDraftInner() {
           <div className="text-6xl mb-6">🎭</div>
           <h1 className="text-3xl font-bold mb-4">{submitted.practice ? 'Practice team saved' : <>You&apos;re In!</>}</h1>
           {submitted.practice && (
-            <p className="text-amber-300 mb-4">
+            <p className="text-score-tepid mb-4">
               This team doesn&apos;t count and won&apos;t show on the leaderboard. Draft for real from {longDate(DRAFT_OPENS)}.
             </p>
           )}
@@ -205,7 +204,7 @@ function FantasyDraftInner() {
             Total spent: <span className="text-emerald-400 font-bold">${totalSpent}</span> / ${FANTASY_BUDGET}
           </p>
           <p className="text-gray-500 text-sm mb-8">
-            {submitted.scoringFrom && <>Box office counts from the week of {longDate(submitted.scoringFrom)}. </>}
+            {submitted.scoringFrom && !submitted.practice && <>Box office counts from the week of {longDate(submitted.scoringFrom)}. </>}
             {submitted.emailSent
               ? <>We emailed a copy of your roster to {email.trim()}.</>
               : submitted.practice ? null : <>Find your team on the leaderboard by searching for {email.trim()}.</>}
@@ -231,7 +230,7 @@ function FantasyDraftInner() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <FantasyShareButton picks={selectedIds} teamName={teamName} />
+            {!submitted.practice && <FantasyShareButton picks={selectedIds} teamName={teamName} />}
             <a
               href={submitted.practice ? '/fantasy' : '/fantasy/leaderboard'}
               className="px-6 py-3 whitespace-nowrap bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
@@ -253,7 +252,7 @@ function FantasyDraftInner() {
   }
 
   // Draft closed screen
-  if (draftClosed) {
+  if (mode === 'closed') {
     return (
       <div className="min-h-screen bg-surface text-white">
         <div className="max-w-2xl mx-auto px-4 py-16 text-center">
@@ -277,7 +276,26 @@ function FantasyDraftInner() {
     return <div className="min-h-screen bg-surface" />;
   }
 
-  // Draft not open yet (a practice link still gets the form)
+  // A practice link after the real draft opened: never show a form that
+  // looks like practice but saves for real.
+  if (mode === 'practice-over') {
+    return (
+      <div className="min-h-screen bg-surface text-white">
+        <div className="max-w-2xl mx-auto px-4 py-16 text-center">
+          <h1 className="text-3xl font-bold mb-4">The practice round is over</h1>
+          <p className="text-gray-400 mb-8">The real draft is open. Teams you draft now count, and picks are final.</p>
+          <a
+            href={`/fantasy/draft${leagueFromUrl ? `?league=${encodeURIComponent(leagueFromUrl)}` : ''}`}
+            className="px-6 py-3 whitespace-nowrap bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
+          >
+            Draft for real
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  // Draft not open yet (a practice link gets the form instead)
   if (!formOpen) {
     return (
       <div className="min-h-screen bg-surface text-white">
@@ -308,16 +326,13 @@ function FantasyDraftInner() {
           </a>
           <h1 className="text-2xl sm:text-3xl font-bold mt-2">{practice ? 'Practice Draft' : 'Draft Your Team'}</h1>
           <p className="text-gray-400 mt-1">
-            Pick up to {FANTASY_TEAM_SIZE} shows. Stay under ${FANTASY_BUDGET}. One entry per person. Picks are due {longDate(draftDeadlineDate())} at 11:59pm ET.
+            {practice
+              ? <>Pick up to {FANTASY_TEAM_SIZE} shows. Stay under ${FANTASY_BUDGET}. Practice runs until the draft opens on {longDate(DRAFT_OPENS)}.</>
+              : <>Pick up to {FANTASY_TEAM_SIZE} shows. Stay under ${FANTASY_BUDGET}. One entry per person. Picks are due {longDate(draftDeadlineDate())} at 11:59pm ET.</>}
           </p>
           {practice && (
-            <p role="note" className="mt-4 rounded-lg border border-amber-400/40 bg-amber-400/10 px-4 py-3 text-sm text-amber-200">
+            <p role="note" className="mt-4 rounded-lg border border-score-tepid/40 bg-score-tepid-bg px-4 py-3 text-sm text-white">
               Practice round. This team won&apos;t count and won&apos;t show on the leaderboard, so try anything. The real draft opens {longDate(DRAFT_OPENS)}, and your real team is a separate entry.
-            </p>
-          )}
-          {practiceRequested && !practice && draftOpen && (
-            <p role="note" className="mt-4 rounded-lg border border-white/10 bg-surface-raised px-4 py-3 text-sm text-gray-300">
-              The practice round is over. The team you submit here is your real entry, and it&apos;s final.
             </p>
           )}
         </div>
@@ -473,7 +488,7 @@ function FantasyDraftInner() {
               : 'bg-surface-overlay text-gray-500 cursor-not-allowed'
           }`}
         >
-          {submitting ? 'Submitting...' : `Lock In My Picks ($${totalSpent})`}
+          {submitting ? 'Submitting...' : practice ? `Save Practice Team ($${totalSpent})` : `Lock In My Picks ($${totalSpent})`}
         </button>
 
         {!canSubmit && !submitting && selectedIds.length > 0 && (

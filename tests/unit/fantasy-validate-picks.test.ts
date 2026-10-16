@@ -27,6 +27,7 @@ import {
   DRAFT_OPENS,
   isDraftOpen,
   isPracticeOpen,
+  draftMode,
   PRACTICE_SEASON,
   FANTASY_SEASON,
 } from '../../src/config/fantasy';
@@ -305,5 +306,33 @@ describe('practice drafts', () => {
       const d = new Date(iso);
       assert.ok(!(isPracticeOpen(d) && isDraftOpen(d)), iso);
     }
+  });
+});
+
+// The link's intent decides practice vs real (BRO-5487): a practice request is
+// never a real entry, at any instant. Midnight EDT on draft day is 04:00Z.
+describe('draftMode', () => {
+  const justBefore = new Date(`${DRAFT_OPENS}T03:59:59Z`);
+  const midnight = new Date(`${DRAFT_OPENS}T04:00:00Z`);
+  const afterDeadline = new Date(Date.parse(DRAFT_DEADLINE) + 1000);
+  test('a practice link is practice until midnight, then practice-over, never open', () => {
+    assert.strictEqual(draftMode(true, justBefore), 'practice');
+    assert.strictEqual(draftMode(true, midnight), 'practice-over');
+  });
+  test('the real draft is not open until midnight, then open', () => {
+    assert.strictEqual(draftMode(false, justBefore), 'not-open');
+    assert.strictEqual(draftMode(false, midnight), 'open');
+  });
+  test('after the deadline both links are closed', () => {
+    assert.strictEqual(draftMode(true, afterDeadline), 'closed');
+    assert.strictEqual(draftMode(false, afterDeadline), 'closed');
+  });
+});
+
+describe('isValidLeaderboardEntry draft-open floor (BRO-5487)', () => {
+  const [anyId] = Object.keys(getFantasyShows()).filter(id => getFantasyShows()[id].price <= 20);
+  test('a real-season row stamped before the draft opened does not count', () => {
+    assert.strictEqual(isValidLeaderboardEntry({ picks: [anyId], created_at: `${DRAFT_OPENS}T03:59:59Z` }), false);
+    assert.strictEqual(isValidLeaderboardEntry({ picks: [anyId], created_at: `${DRAFT_OPENS}T04:00:01Z` }), true);
   });
 });
