@@ -95,3 +95,12 @@ describe('slug-mismatch run() with an opaque-URL review', () => {
     );
   });
 });
+
+describe('id-only query URLs (BRO-5438)', () => {
+  it('londontheatrereviews post.cfm?p=<id> is opaque', () => {
+    assert.strictEqual(isOpaqueUrlSlug(urlSearchSlug('https://www.londontheatrereviews.co.uk/post.cfm?p=29349')), true);
+  });
+  it('a .cfm URL with a real wrong-show slug still counts as slugged', () => {
+    assert.strictEqual(isOpaqueUrlSlug(urlSearchSlug('https://theaternewsonline.com/NYTheaterReviews/TAP-HAPPY.cfm')), false);
+  });
+});

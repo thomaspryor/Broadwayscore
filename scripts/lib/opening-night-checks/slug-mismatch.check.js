@@ -30,7 +30,7 @@ function urlSearchSlug(url) {
   if (!url) return '';
   try {
     const u = new URL(url);
-    const path = u.pathname.replace(/\.(html?|php|aspx?)$/i, '').replace(/\/$/, '');
+    const path = u.pathname.replace(/\.(html?|php|aspx?|cfm)$/i, '').replace(/\/$/, '');
     const segments = path.split('/').filter(Boolean);
     // Some outlets (e.g. Talkin' Broadway: /ParanormalActivity.html) use
     // camelCase path segments with no hyphen/space between words. Insert a
@@ -163,6 +163,8 @@ function urlMentionsAnySlug(urlSlug, acceptSlugs) {
 const STRUCTURAL_PATH_WORDS = new Set([
   'content', 'article', 'articles', 'story', 'stories', 'news', 'item',
   'p', 'id', 'view', 'node', 'index', 'amp', 'www', 'html', 'htm', 'php',
+  // londontheatrereviews.co.uk/post.cfm?p=<id>: an id-only query URL (BRO-5438)
+  'post', 'cfm',
 ]);
 
 /**
