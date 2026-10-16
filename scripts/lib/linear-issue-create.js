@@ -38,6 +38,7 @@ const { resolveDisposition } = require('./card-disposition');
 const { checkIntake, recordCreated, ENFORCE } = require('./intake-breaker');
 const { TITLE_PRIORITY_TIER_RE } = require('./linear-watchdog-source');
 const { stampModelHint } = require('./bsc-next-model');
+const cardDedupe = require('./card-dedupe');
 
 const USAGE_LIMIT_MESSAGE =
   'Linear issue creation refused: USAGE_LIMIT_EXCEEDED — the workspace is at (or near) the ' +
@@ -159,9 +160,16 @@ function effectiveCreatePriority({ priority, mode, title }) {
  *   create mutation (linear.js's LinearClient shape) — tests pass a stub;
  *   production defaults to a LinearClient wired to linear-client.js's
  *   retry-aware graphql() (BRO-374/BRO-375).
- * @returns {Promise<{issue: object, mode: 'dispatch'|'park', stateName: string}>}
+ * @param {string} [p.source] who is filing ('session', 'workflow:<name>', ...).
+ *   Title/body rules win over it (card-dedupe.js inferCardSource); recorded as
+ *   a "Filed by:" footer on the new card (BRO-5488).
+ * @param {boolean} [p.nearDuplicate] opt-in: a reworded repeat of an open card
+ *   is noted there instead (mode 'reused'). Same opt-in reasoning as reuseTwin.
+ * @param {boolean} [p.rollup] opt-in: a flood of same-kind parked filings from
+ *   a contract-free workflow source goes onto one rollup card (mode 'rolled-up').
+ * @returns {Promise<{issue: object, mode: 'dispatch'|'park'|'reused'|'rolled-up', stateName: string}>}
  */
-async function createLinearIssue({ title, description, dispatch, park, priority, projectId, model, client, reuseTwin = false }) {
+async function createLinearIssue({ title, description, dispatch, park, priority, projectId, model, client, reuseTwin = false, source, nearDuplicate = false, rollup = false }) {
   const disposition = resolveDisposition({ dispatch, park });
   if (!disposition.ok) {
     const err = new Error(disposition.message);
@@ -222,6 +230,22 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
     if (reused) return reused;
   }
 
+  // BRO-5488: the near-duplicate and flood rules, opt-in like reuseTwin (only
+  // linear-brain.js create opts in). Filers whose downstream code keys per-card
+  // state on the card they get back (the alert router, digest-autofix, the
+  // canary) are excluded here as well as by not opting in. Both fail open.
+  const cardSource = cardDedupe.inferCardSource({ title, description: body, source });
+  const kind = cardDedupe.titleKind(title);
+  const contract = cardDedupe.hasPerCardContract(body);
+  if (nearDuplicate && !contract && cardSource !== 'e2e-canary') {
+    const reused = await reuseNearDuplicate({ title, body, client, mode: disposition.mode });
+    if (reused) return reused;
+  }
+  if (rollup && disposition.mode === 'park' && cardDedupe.rollupEnforced({ source: cardSource, description: body })) {
+    const rolled = await rollUpFlood({ title, body, client, source: cardSource, kind });
+    if (rolled) return rolled;
+  }
+
   const team = await linear.getTeam();
   const state = pickStateForMode(team.states, disposition.mode);
 
@@ -242,8 +266,10 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   const clampNote = filed.clamped
     ? `\n\n${PARKED_CLAMP_MARKER} A P0/P1 must be dispatched at creation (BRO-4487); re-file with --dispatch if it needs urgent work.`
     : '';
-  const finalDescription =
-    disposition.mode === 'park' ? `PARKED: ${disposition.reason}${clampNote}\n\n${body}`.trim() : body;
+  const footer = cardDedupe.sourceFooter(cardSource, kind);
+  const finalDescription = `${
+    disposition.mode === 'park' ? `PARKED: ${disposition.reason}${clampNote}\n\n${body}`.trim() : body
+  }\n\n${footer}`.trim();
 
   // Built lazily (not at module load) so requiring this file never reads
   // LINEAR_API_KEY or touches the network — only a real create attempt does.
@@ -306,6 +332,108 @@ function twinServes(twin, mode) {
   return false;
 }
 
+async function noteOnCard(client, card, note) {
+  try {
+    if (client && client.addComment) await client.addComment(card.id, note);
+    else await new LinearClient({ graphql: linear.graphql, teamKey: linear.TEAM_KEY }).addComment(card.id, note);
+    return true;
+  } catch (e) {
+    console.warn(`[linear-issue-create] could not add a note to ${card.identifier}: ${e.message}`);
+    return false;
+  }
+}
+
+const OPEN_TITLES_QUERY = `query($teamKey: String!, $after: String) {
+  issues(first: 250, after: $after, filter: {
+    team: { key: { eq: $teamKey } },
+    state: { type: { nin: ["completed", "canceled", "duplicate"] } }
+  }) { pageInfo { hasNextPage endCursor } nodes { id identifier title url state { name type } } }
+}`;
+const RECENT_QUERY = `query($teamKey: String!, $since: DateTimeOrDuration!, $after: String) {
+  issues(first: 100, after: $after, includeArchived: true, filter: {
+    team: { key: { eq: $teamKey } }, createdAt: { gte: $since }
+  }) { pageInfo { hasNextPage endCursor } nodes { identifier title description createdAt } }
+}`;
+const MAX_PAGES = 10;
+
+async function walkPages(query, vars) {
+  const out = [];
+  let after = null;
+  for (let page = 0; page < MAX_PAGES; page++) {
+    const data = await linear.graphql(query, { ...vars, after });
+    const conn = (data && data.issues) || { nodes: [], pageInfo: {} };
+    out.push(...(conn.nodes || []));
+    if (!conn.pageInfo || !conn.pageInfo.hasNextPage) break;
+    after = conn.pageInfo.endCursor;
+  }
+  return out;
+}
+
+// Titles only (~3 pages at ~750 open cards): one walk per CLI create.
+async function defaultListOpenIssueTitles() {
+  return walkPages(OPEN_TITLES_QUERY, { teamKey: linear.TEAM_KEY });
+}
+
+async function defaultListRecentIssues(sinceIso) {
+  return walkPages(RECENT_QUERY, { teamKey: linear.TEAM_KEY, since: sinceIso });
+}
+
+async function reuseNearDuplicate({ title, body, client, mode = 'park' }) {
+  if (process.env.LINEAR_NEAR_DUP_DISABLED === '1') return null;
+  const list = client ? (client.listOpenIssueTitles && client.listOpenIssueTitles.bind(client)) : defaultListOpenIssueTitles;
+  if (!list) return null;
+  let match = null;
+  try {
+    match = cardDedupe.findNearDuplicate(title, await list(), (card) => twinServes(card, mode));
+  } catch (e) {
+    console.warn(`[linear-issue-create] near-duplicate lookup failed, filing anyway: ${e.message}`);
+    return null;
+  }
+  if (!match) return null;
+  const twin = match.card;
+  const note = `Filed again on ${new Date().toISOString().slice(0, 16)}Z as "${title}" (near-duplicate of this card, score ${match.score.toFixed(2)}); added here instead of opening a new card. File a new card anyway with linear-brain.js create --new-anyway "<reason>".${body ? `\n\n${String(body).slice(0, 6000)}` : ''}`;
+  await noteOnCard(client, twin, note);
+  console.warn(`[linear-issue-create] "${title}" repeats open ${twin.identifier} ("${twin.title}", score ${match.score.toFixed(2)}); noted there, no new card`);
+  return { issue: twin, mode: 'reused', stateName: twin.state ? twin.state.name : '', reused: true, nearDuplicate: { score: match.score } };
+}
+
+// A flood (FLOOD_THRESHOLD same source+kind in 24h) goes onto one parked
+// rollup card. Keyed on the rollup card existing, so once it is open every
+// later filing of that kind lands there (no daily re-flood as the 24h count
+// decays). The rollup card itself is filed with both rules off (no recursion).
+async function rollUpFlood({ title, body, client, source, kind }) {
+  if (process.env.LINEAR_ROLLUP_DISABLED === '1') return null;
+  const rTitle = cardDedupe.rollupTitle(source, kind);
+  const find = client ? (client.findOpenIssueByTitle && client.findOpenIssueByTitle.bind(client)) : defaultFindOpenIssueByTitle;
+  const recentFn = client ? (client.listRecentIssues && client.listRecentIssues.bind(client)) : defaultListRecentIssues;
+  if (!find || !recentFn) return null;
+  try {
+    let card = await find(rTitle);
+    if (!card) {
+      const recent = await recentFn(new Date(Date.now() - cardDedupe.FLOOD_WINDOW_MS).toISOString());
+      const same = cardDedupe.sameKindCards({ source, kind, recent });
+      if (same.length < cardDedupe.FLOOD_THRESHOLD) return null;
+      const created = await createLinearIssue({
+        title: rTitle,
+        description: [
+          `${same.length} cards of this kind were filed by ${source} in the last 24 hours (${same.map((c) => c.identifier).join(', ')}).`,
+          'Further filings of this kind are added here as comments instead of new cards (BRO-5488). Work them from this card; close it when the list is clear.',
+        ].join('\n\n'),
+        park: `rollup of repeated ${source} filings; each comment is one finding`,
+        source: 'rollup',
+        client,
+      });
+      card = created.issue;
+    }
+    await noteOnCard(client, card, `${title}${body ? `\n\n${String(body).slice(0, 6000)}` : ''}`);
+    console.warn(`[linear-issue-create] "${title}" is part of a ${source} flood; added to rollup ${card.identifier}, no new card`);
+    return { issue: card, mode: 'rolled-up', stateName: card.state ? card.state.name : '', reused: true };
+  } catch (e) {
+    console.warn(`[linear-issue-create] rollup check failed, filing anyway: ${e.message}`);
+    return null;
+  }
+}
+
 async function reuseOpenTwin({ title, body, client, mode = 'park' }) {
   if (process.env.LINEAR_TITLE_DEDUPE_DISABLED === '1') return null;
   const find = client ? (client.findOpenIssueByTitle && client.findOpenIssueByTitle.bind(client)) : defaultFindOpenIssueByTitle;
@@ -317,17 +445,12 @@ async function reuseOpenTwin({ title, body, client, mode = 'park' }) {
   }
   if (!twin || !twin.identifier || !twinServes(twin, mode)) return null;
   const note = `Filed again on ${new Date().toISOString().slice(0, 16)}Z with the same title; added here instead of opening a duplicate card.${body ? `\n\n${String(body).slice(0, 6000)}` : ''}`;
-  try {
-    if (client && client.addComment) await client.addComment(twin.id, note);
-    else await new LinearClient({ graphql: linear.graphql, teamKey: linear.TEAM_KEY }).addComment(twin.id, note);
-  } catch (e) {
-    console.warn(`[linear-issue-create] could not note the repeat on ${twin.identifier}: ${e.message}`);
-  }
+  await noteOnCard(client, twin, note);
   console.warn(`[linear-issue-create] "${title}" is already open as ${twin.identifier}; noted there, no new card`);
   return { issue: twin, mode: 'reused', stateName: twin.state ? twin.state.name : '', reused: true };
 }
 
 module.exports = {
-  createLinearIssue, reuseOpenTwin, defaultFindOpenIssueByTitle, twinServes, pickStateForMode, isUsageLimitExceeded, USAGE_LIMIT_MESSAGE,
+  createLinearIssue, reuseOpenTwin, reuseNearDuplicate, rollUpFlood, defaultFindOpenIssueByTitle, twinServes, pickStateForMode, isUsageLimitExceeded, USAGE_LIMIT_MESSAGE,
   effectiveCreatePriority, priorityFromTitle, PARKED_MAX_PRIORITY, PARKED_CLAMP_MARKER, DEFAULT_CREATE_PRIORITY,
 };

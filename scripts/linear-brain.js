@@ -7,7 +7,7 @@
  * Usage:
  *   node scripts/linear-brain.js create "Issue title" --notes "description" \
  *     [--dispatch | --park "<reason>"] [--priority 0-4] [--project-id <id>] \
- *     [--model opus|sonnet]
+ *     [--model opus|sonnet] [--source <filer>] [--new-anyway "<reason>"]
  *
  * --dispatch or --park "<reason>" is REQUIRED — there is no default
  * disposition. Neither given → exit 2, usage message names both.
@@ -37,7 +37,7 @@ const USAGE = `linear-brain.js — file a Linear issue through the one creation 
 Usage:
   node scripts/linear-brain.js create "Issue title" --notes "description" \\
     [--dispatch | --park "<reason>"] [--priority 0-4] [--project-id <id>] \\
-    [--model opus|sonnet]
+    [--model opus|sonnet] [--source <filer>] [--new-anyway "<reason>"]
   node scripts/linear-brain.js find "search term"
   node scripts/linear-brain.js get <BRO-N>
   node scripts/linear-brain.js update <BRO-N> [--state "<name>"] [--comment "<text>"] \\
@@ -53,6 +53,13 @@ Usage:
           mechanical, single-file, data fixes. Anything else → exit 2.
           Only a Model line in the description counts; one in a comment
           is ignored.
+          Repeats (BRO-5488): an open card whose title this one repeats
+          (same subject, reworded, or only a count/date changed) gets the
+          notes as a comment instead (ISSUE-REUSED); --new-anyway "<reason>"
+          files anyway. A workflow filer's 3+ same-kind parked findings in
+          24h go onto one "Rollup (...)" card (ROLLED-UP). --source names the
+          filer (default workflow:$GITHUB_WORKFLOW, else session); it is
+          stamped as a "Filed by:" line the morning digest counts.
   find:   prints {"identifier": "BRO-N", ...} for the first OPEN issue whose
           title or body contains the term, or null. Sync-callable dedup seam
           for digest-autofix's fileCard (BRO-286) — filing the same
@@ -676,16 +683,28 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     process.exit(1);
   }
 
+  // BRO-5488: --new-anyway "<reason>" files even when an open card repeats this
+  // one; the reason is kept on the card so the override is visible later.
+  const newAnyway = args['new-anyway'];
+  if (newAnyway === true || (typeof newAnyway === 'string' && newAnyway.trim().length < 10)) {
+    console.error('--new-anyway needs a reason of at least 10 characters (why this is not the open card it matched).');
+    process.exit(1);
+  }
+  const notes = newAnyway ? `${args.notes || ''}\n\nFiled with --new-anyway: ${newAnyway}`.trim() : (args.notes || '');
   try {
     const result = await createLinearIssue({
       title,
-      description: args.notes || '',
+      description: notes,
       dispatch: args.dispatch,
       park: args.park,
       priority: args.priority !== undefined ? Number(args.priority) : undefined,
       projectId: args['project-id'],
       model: args.model,
       reuseTwin: true,
+      source: typeof args.source === 'string' ? args.source
+        : (process.env.GITHUB_WORKFLOW ? `workflow:${process.env.GITHUB_WORKFLOW}` : 'session'),
+      nearDuplicate: !newAnyway,
+      rollup: !newAnyway,
     });
     console.log(JSON.stringify(result.issue, null, 2));
     // Board-neutral marker (S1-T5, notion→linear cutover). Emitted BEFORE the
@@ -697,8 +716,12 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // because that is what every Linear-side reader — linear-brain find,
     // linear-client getIssue, the issue URL — already keys on.
     console.error(`__BOARD_CARD_ID__=${result.issue.identifier}`);
-    if (result.mode === 'reused') {
+    if (result.mode === 'reused' && result.nearDuplicate) {
+      console.error(`ISSUE-REUSED: ${result.issue.identifier} ("${result.issue.title}") is already open and this title repeats it (score ${result.nearDuplicate.score.toFixed(2)}); the notes were added there as a comment (state=${result.stateName}). If it is really different work, re-run with --new-anyway "<reason>".`);
+    } else if (result.mode === 'reused') {
       console.error(`ISSUE-REUSED: ${result.issue.identifier} ("${result.issue.title}") is already open with this title; the notes were added there as a comment (state=${result.stateName})`);
+    } else if (result.mode === 'rolled-up') {
+      console.error(`ROLLED-UP: ${result.issue.identifier} ("${result.issue.title}") collects this filer's repeated findings of this kind; the notes were added there as a comment, no new card`);
     } else if (result.mode === 'dispatch') {
       console.error(`ISSUE-FILED: ${result.issue.identifier} ("${result.issue.title}") — state=${result.stateName}, not yet running (bsc-next Linear support pending #1303)`);
     } else {
