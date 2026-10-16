@@ -233,7 +233,7 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -245,7 +245,8 @@
       "notifyCount": 140,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 3
+      "silentRefires": 3,
+      "resolvedAt": "2026-10-16T08:25:14.391Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -18753,7 +18754,7 @@
       "resolvedAt": "2026-10-16T06:47:08.882Z"
     },
     "test-yml:red:Unit Tests:eb30639a": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every emitted critic alias resolves: canonical exists, and the old slug resolves to it unless the old slug is still a live profile (exact match wins)\"",
       "firstSeen": "2026-10-16T06:37:49.248Z",
@@ -18764,7 +18765,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-5434",
-      "silentRefires": 3
+      "silentRefires": 3,
+      "resolvedAt": "2026-10-16T08:25:14.209Z",
+      "resolveReason": "job-green"
     },
     "coverage-holes:a-ghost-in-your-ear-off-broadway-2026": {
       "status": "open",
