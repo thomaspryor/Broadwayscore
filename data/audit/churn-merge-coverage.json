@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-16T02:54:27.172Z",
+    "generatedAt": "2026-10-16T09:03:53.517Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -8,231 +8,218 @@
   },
   "summary": {
     "minChurn": 30,
-    "flaggedCount": 2,
-    "exemptCount": 16,
-    "coveredCount": 73,
-    "highChurnTracked": 91
+    "flaggedCount": 1,
+    "exemptCount": 15,
+    "coveredCount": 59,
+    "highChurnTracked": 75
   },
   "flagged": [
     {
       "path": "data/show-score-candidates.json",
       "churn": 40
-    },
-    {
-      "path": "data/nyt-critics-picks.json",
-      "churn": 31
     }
   ],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 765
+      "churn": 664
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 267
+      "churn": 252
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 267
+      "churn": 252
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 267
+      "churn": 252
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 213
+      "churn": 208
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 210
+      "churn": 180
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 166
+      "churn": 154
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 149
+      "churn": 134
     },
     {
       "path": "public/data/shows/the-cherry-orchard-west-end-2026.json",
-      "churn": 63
+      "churn": 64
     },
     {
       "path": ".github/workflows/test.yml",
-      "churn": 52
-    },
-    {
-      "path": "scripts/collect-review-texts.js",
-      "churn": 49
-    },
-    {
-      "path": "public/data/shows/rent-west-end-2026.json",
       "churn": 41
     },
     {
-      "path": "public/data/shows/a-ghost-in-your-ear-off-broadway-2026.json",
-      "churn": 35
+      "path": "scripts/collect-review-texts.js",
+      "churn": 36
     },
     {
       "path": "public/data/shows/hay-fever-west-end-2026.json",
-      "churn": 33
+      "churn": 35
+    },
+    {
+      "path": "public/data/shows/rent-west-end-2026.json",
+      "churn": 35
+    },
+    {
+      "path": "public/data/shows/a-ghost-in-your-ear-off-broadway-2026.json",
+      "churn": 34
     },
     {
       "path": "public/data/shows/into-the-woods-noel-coward-west-end-2026.json",
-      "churn": 33
-    },
-    {
-      "path": "data/audit/t1-outlet-breaker.json",
-      "churn": 30
+      "churn": 32
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 866,
+      "churn": 848,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 643,
-      "mergeAttr": "union"
-    },
-    {
-      "path": "data/audit/landings.jsonl",
-      "churn": 482,
+      "churn": 622,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 479,
+      "churn": 460,
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/landings.jsonl",
+      "churn": 446,
+      "mergeAttr": "union"
+    },
+    {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 467,
+      "churn": 445,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 467,
+      "churn": 445,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 467,
+      "churn": 445,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/exclusion-daily-totals.json",
-      "churn": 326,
+      "churn": 303,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 318,
+      "churn": 300,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 307,
+      "churn": 277,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/lane-rehearsal.json",
-      "churn": 285,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/verify-all-scored-state.json",
-      "churn": 267,
+      "churn": 259,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 266,
+      "churn": 253,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/collection-state/progress.json",
-      "churn": 264,
+      "path": "data/audit/verify-all-scored-state.json",
+      "churn": 252,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 235,
+      "churn": 229,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/exclusion-mirror-summary.json",
-      "churn": 149,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/wrong-production-audit.json",
-      "churn": 149,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/orphaned-duplicate-pointer-heal.json",
-      "churn": 146,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 146,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/syndicated-duplicates.json",
-      "churn": 146,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/tour-sweep.json",
-      "churn": 146,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/skipped-alias-collisions.json",
-      "churn": 143,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/browserbase-usage.json",
       "churn": 134,
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/wrong-production-audit.json",
+      "churn": 134,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/orphaned-duplicate-pointer-heal.json",
+      "churn": 131,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/pre2005-wrong-production.json",
+      "churn": 131,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/syndicated-duplicates.json",
+      "churn": 131,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/tour-sweep.json",
+      "churn": 131,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/collection-state/browserbase-usage.json",
+      "churn": 126,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 132,
+      "churn": 120,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/skipped-alias-collisions.json",
+      "churn": 101,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 77,
+      "churn": 72,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 77,
+      "churn": 72,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/churn-merge-coverage.json",
-      "churn": 67,
+      "churn": 59,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/corpus-drift.json",
-      "churn": 65,
+      "churn": 57,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 60,
+      "churn": 57,
       "mergeAttr": "ours"
     },
     {
@@ -242,33 +229,18 @@
     },
     {
       "path": "data/audit/poller-backoff/the-cherry-orchard-west-end-2026.json",
-      "churn": 48,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/url-mismatch-suspects.json",
-      "churn": 45,
+      "churn": 46,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026.json",
-      "churn": 44,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/gather-collisions.json",
-      "churn": 43,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/baby-off-west-end-2026.json",
       "churn": 42,
       "mergeAttr": "ours"
     },
     {
-      "path": "tests/unit-test-manifest.txt",
+      "path": "data/audit/url-mismatch-suspects.json",
       "churn": 42,
-      "mergeAttr": "union"
+      "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/the-ask-off-broadway-2026.json",
@@ -276,18 +248,13 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/whos-afraid-of-virginia-woolf-west-end-2026.json",
-      "churn": 38,
+      "path": "data/audit/gather-collisions.json",
+      "churn": 40,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/affluenza-off-west-end-2026.json",
-      "churn": 37,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/fences-off-west-end-2026.json",
-      "churn": 37,
+      "path": "data/audit/poller-backoff/baby-off-west-end-2026.json",
+      "churn": 40,
       "mergeAttr": "ours"
     },
     {
@@ -296,47 +263,32 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/hay-fever-west-end-2026.json",
-      "churn": 37,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/rent-west-end-2026.json",
-      "churn": 37,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/the-standard-of-living-west-end-2026.json",
-      "churn": 37,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/a-small-and-quiet-light-off-west-end-2026.json",
+      "path": "data/audit/poller-backoff/anon-a-tempest-at-our-kitchen-table-off-broadway-2026.json",
       "churn": 36,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/an-oak-tree-off-west-end-2026.json",
+      "path": "data/audit/poller-backoff/whos-afraid-of-virginia-woolf-west-end-2026.json",
       "churn": 36,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/bull-off-west-end-2026.json",
-      "churn": 36,
+      "path": "data/audit/poller-backoff/affluenza-off-west-end-2026.json",
+      "churn": 35,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/into-the-woods-noel-coward-west-end-2026.json",
-      "churn": 36,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/tru-off-west-end-2026.json",
-      "churn": 36,
+      "path": "data/audit/poller-backoff/fences-off-west-end-2026.json",
+      "churn": 35,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/good-time-charlie-off-broadway-2026.json",
+      "churn": 35,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/hay-fever-west-end-2026.json",
       "churn": 35,
       "mergeAttr": "ours"
     },
@@ -351,6 +303,11 @@
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/poller-backoff/rent-west-end-2026.json",
+      "churn": 35,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/poller-backoff/school-girls-or-the-african-mean-girls-play-2026.json",
       "churn": 35,
       "mergeAttr": "ours"
@@ -361,7 +318,22 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/anon-a-tempest-at-our-kitchen-table-off-broadway-2026.json",
+      "path": "data/audit/poller-backoff/the-standard-of-living-west-end-2026.json",
+      "churn": 35,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/a-small-and-quiet-light-off-west-end-2026.json",
+      "churn": 34,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/an-oak-tree-off-west-end-2026.json",
+      "churn": 34,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/bull-off-west-end-2026.json",
       "churn": 34,
       "mergeAttr": "ours"
     },
@@ -371,8 +343,23 @@
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/poller-backoff/into-the-woods-noel-coward-west-end-2026.json",
+      "churn": 34,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/poller-backoff/the-hairy-ape-irish-repertory-theatre-off-broadway-2026.json",
       "churn": 34,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/tru-off-west-end-2026.json",
+      "churn": 34,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/fishing-for-alaska-off-broadway-2026.json",
+      "churn": 33,
       "mergeAttr": "ours"
     },
     {
@@ -383,71 +370,6 @@
     {
       "path": "data/audit/poller-backoff/soon-off-broadway-2026.json",
       "churn": 33,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/delirium-off-broadway-2026.json",
-      "churn": 31,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/fishing-for-alaska-off-broadway-2026.json",
-      "churn": 31,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/autoclear-shadow-report.json",
-      "churn": 30,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/coverage-digest-snapshot.json",
-      "churn": 30,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/deployed-coverage-diff.json",
-      "churn": 30,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/gap-audit-checkpoint.json",
-      "churn": 30,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/score-public-since.json",
-      "churn": 30,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/show-review-gap.json",
-      "churn": 30,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/t1-coverage-signals.json",
-      "churn": 30,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/t1-coverage-stats.json",
-      "churn": 30,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/t1-silent-gaps.json",
-      "churn": 30,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/uncollected-live-reviews.json",
-      "churn": 30,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/unknown-aggregator-outlets.json",
-      "churn": 30,
       "mergeAttr": "ours"
     },
     {
