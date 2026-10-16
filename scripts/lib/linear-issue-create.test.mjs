@@ -327,16 +327,54 @@ test('BRO-5488: a genuinely new title still files, stamped with its source', () 
   assert.match(board.created[0].description, /\n\nFiled by: session \(kind: review gap missing cited\)$/);
 }));
 
-test('BRO-5488: near-dup is opt-in and never applies to alert-router / digest-autofix bodies', () => withTeam(async () => {
-  const open = [{ id: 'o1', identifier: 'BRO-100', title: 'BSC Rebuild: 41 reviews dropped [SUSPICIOUS]', state: { name: 'Todo', type: 'unstarted' } }];
+test('BRO-5488: near-dup is ON by default; a named opt-out or a contract marker files', () => withTeam(async () => {
+  const open = [{ id: 'o1', identifier: 'BRO-100', title: 'BSC Rebuild: 41 reviews dropped [SUSPICIOUS]', state: { name: 'Backlog', type: 'backlog' } }];
   const a = fakeBoard({ open });
-  await createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'x', park: 'auto-filed parked for triage', client: a.client });
-  assert.equal(a.created.length, 1, 'not opted in: files');
+  const ra = await createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'x', park: 'auto-filed parked for triage', client: a.client });
+  assert.equal(ra.mode, 'reused', 'default caller: noted on the open card');
+  assert.equal(a.created.length, 0);
+  const o = fakeBoard({ open });
+  await createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'x', park: 'auto-filed parked for triage', client: o.client, dedupeOptOut: 'alert-router' });
+  assert.equal(o.created.length, 1, 'named opt-out: files');
+  const n = fakeBoard({ open });
+  await createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'x', park: 'auto-filed parked for triage', client: n.client, newAnyway: 'different rebuild, different cause' });
+  assert.equal(n.created.length, 1, '--new-anyway: files');
   const b = fakeBoard({ open });
-  await createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'Auto-filed by digest-autofix (health row)', park: 'auto-filed parked for triage', client: b.client, nearDuplicate: true, rollup: true });
-  assert.equal(b.created.length, 1, 'per-card contract: files');
+  await createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'Auto-filed by digest-autofix (health row)', park: 'auto-filed parked for triage', client: b.client });
+  assert.equal(b.created.length, 1, 'per-card contract guard: files');
   assert.match(b.created[0].description, /Filed by: digest-autofix/);
 }));
+
+test('BRO-5488: an opt-out name not in DEDUPE_OPT_OUTS throws before any API call', () => withTeam(async () => {
+  const board = fakeBoard();
+  await assert.rejects(createLinearIssue({ title: 'Some finding about the site', description: 'x', park: 'auto-filed parked for triage', client: board.client, dedupeOptOut: 'my-new-filer' }), /DEDUPE_OPT_OUTS/);
+  assert.equal(board.created.length, 0);
+}));
+
+test('BRO-5488: every dedupe opt-out in the repo is on the allowed list, and the list is exactly these', async () => {
+  const { DEDUPE_OPT_OUTS } = require('./card-dedupe.js');
+  // Adding a name here is a reviewed decision: the filer must group its own filings.
+  assert.deepEqual(Object.keys(DEDUPE_OPT_OUTS).sort(), ['alert-router', 'digest-autofix', 'rollup']);
+  for (const reason of Object.values(DEDUPE_OPT_OUTS)) assert.ok(reason.length >= 30, 'each opt-out carries its reason');
+  const fs = require('fs'); const path = require('path');
+  const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '..');
+  const used = new Set();
+  const walk = (dir) => {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (e.name === 'node_modules' || e.name.startsWith('.')) continue;
+      const f = path.join(dir, e.name);
+      if (e.isDirectory()) walk(f);
+      else if (/\.(c|m)?js$|\.sh$/.test(e.name) && !/\.test\./.test(e.name)) {
+        const t = fs.readFileSync(f, 'utf8');
+        for (const m of t.matchAll(/dedupeOptOut:\s*['"]([^'"]+)['"]/g)) used.add(`${m[1]}\t${path.relative(root, f)}`);
+        for (const m of t.matchAll(/--dedupe-opt-out['"]?[,\s=]+['"]?([\w-]+)/g)) used.add(`${m[1]}\t${path.relative(root, f)}`);
+      }
+    }
+  };
+  walk(path.join(root, 'scripts'));
+  for (const u of used) assert.ok(Object.prototype.hasOwnProperty.call(DEDUPE_OPT_OUTS, u.split('\t')[0]), `unlisted dedupe opt-out: ${u}`);
+  assert.ok([...used].some((u) => u.startsWith('alert-router\t')) && [...used].some((u) => u.startsWith('digest-autofix\t')), 'router and digest-autofix opt out by name');
+});
 
 test('BRO-5488: N same-kind workflow filings in 24h become 1 rollup card', () => withTeam(async () => {
   const board = fakeBoard();

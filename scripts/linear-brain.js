@@ -703,8 +703,8 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       reuseTwin: !newAnyway,
       source: typeof args.source === 'string' ? args.source
         : (process.env.GITHUB_WORKFLOW ? `workflow:${process.env.GITHUB_WORKFLOW}` : 'session'),
-      nearDuplicate: !newAnyway,
-      rollup: !newAnyway,
+      newAnyway: newAnyway || undefined,
+      dedupeOptOut: typeof args['dedupe-opt-out'] === 'string' ? args['dedupe-opt-out'] : undefined,
     });
     console.log(JSON.stringify(result.issue, null, 2));
     // Board-neutral marker (S1-T5, notion→linear cutover). Emitted BEFORE the

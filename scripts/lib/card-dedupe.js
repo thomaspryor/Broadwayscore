@@ -220,7 +220,23 @@ function rollupEnforced({ source, description }) {
   return /^workflow:/.test(String(source || '')) && !hasPerCardContract(description);
 }
 
+/**
+ * The ONLY callers allowed to skip the near-duplicate and rollup rules, each
+ * with why. Every other filer gets them by default (BRO-5488, owner ask: fix
+ * duplicates and floods for every filer). linear-issue-create.js throws on a
+ * name not listed here, and linear-issue-create.test.mjs checks the repo's
+ * call sites against this list, so a new filer cannot skip the front door
+ * silently. Floods from these filers are fixed at the filer (BRO-5486,
+ * BRO-5493) and stay visible on the digest's Floods line.
+ */
+const DEDUPE_OPT_OUTS = Object.freeze({
+  'alert-router': 'owner-alert-router dedupes per conditionKey and keys its ledger, START-NOW and dispatch-at-filing markers on the card it gets back',
+  'digest-autofix': 'digest-autofix dedupes per digest row and dispatches the card it gets back (grouping fixed at the filer by BRO-5486)',
+  rollup: 'the rollup card itself; running the rules on it would recurse',
+});
+
 module.exports = {
+  DEDUPE_OPT_OUTS,
   NEAR_DUP_MIN_SCORE, NEAR_DUP_MIN_TOKENS, FLOOD_THRESHOLD, FLOOD_WINDOW_MS, ALERT_ROUTER_MARKER, ROLLUP_TITLE_PREFIX,
   titleCore, titleTokens, distinctiveParts, titleKind, jaccard, findNearDuplicate, hasPerCardContract,
   inferCardSource, normalizeSource, sourceFooter, parseSourceFooter, rollupTitle, sameKindCards, countSameKind, rollupEnforced,

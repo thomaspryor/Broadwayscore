@@ -163,13 +163,22 @@ function effectiveCreatePriority({ priority, mode, title }) {
  * @param {string} [p.source] who is filing ('session', 'workflow:<name>', ...).
  *   Title/body rules win over it (card-dedupe.js inferCardSource); recorded as
  *   a "Filed by:" footer on the new card (BRO-5488).
- * @param {boolean} [p.nearDuplicate] opt-in: a reworded repeat of an open card
- *   is noted there instead (mode 'reused'). Same opt-in reasoning as reuseTwin.
- * @param {boolean} [p.rollup] opt-in: a flood of same-kind parked filings from
- *   a contract-free workflow source goes onto one rollup card (mode 'rolled-up').
+ *   Defaults to workflow:$GITHUB_WORKFLOW when running in Actions.
+ * Repeats and floods (BRO-5488), ON for every caller: a parked filing whose
+ *   title repeats an open card is noted there instead (mode 'reused'), and a
+ *   flood of same-kind parked filings from one workflow goes onto one rollup
+ *   card (mode 'rolled-up'). Two ways to skip them:
+ * @param {string} [p.dedupeOptOut] a caller that groups its own filings,
+ *   named in card-dedupe.js DEDUPE_OPT_OUTS (anything else throws).
+ * @param {string} [p.newAnyway] one filing a person says is new work despite
+ *   the match; the reason is kept on the card.
  * @returns {Promise<{issue: object, mode: 'dispatch'|'park'|'reused'|'rolled-up', stateName: string}>}
  */
-async function createLinearIssue({ title, description, dispatch, park, priority, projectId, model, client, reuseTwin = false, source, nearDuplicate = false, rollup = false }) {
+async function createLinearIssue({ title, description, dispatch, park, priority, projectId, model, client, reuseTwin = false, source, dedupeOptOut, newAnyway }) {
+  if (dedupeOptOut !== undefined && !Object.prototype.hasOwnProperty.call(cardDedupe.DEDUPE_OPT_OUTS, dedupeOptOut)) {
+    throw new Error(`createLinearIssue: dedupeOptOut "${dedupeOptOut}" is not in card-dedupe.js DEDUPE_OPT_OUTS; add it there with its reason, or drop it`);
+  }
+  const dedupe = !dedupeOptOut && !newAnyway;
   const disposition = resolveDisposition({ dispatch, park });
   if (!disposition.ok) {
     const err = new Error(disposition.message);
@@ -230,11 +239,14 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
     if (reused) return reused;
   }
 
-  // BRO-5488: the near-duplicate and flood rules, opt-in like reuseTwin (only
-  // linear-brain.js create opts in). Filers whose downstream code keys per-card
-  // state on the card they get back (the alert router, digest-autofix, the
-  // canary) are excluded here as well as by not opting in. Both fail open.
-  const cardSource = cardDedupe.inferCardSource({ title, description: body, source });
+  // BRO-5488: the near-duplicate and flood rules, on by default. Skipped for a
+  // named opt-out (DEDUPE_OPT_OUTS), --new-anyway, and, as a guard if an
+  // opt-out is ever forgotten, any body or park reason carrying a filer's
+  // per-card contract marker. Both fail open.
+  const cardSource = cardDedupe.inferCardSource({
+    title, description: body,
+    source: source || (process.env.GITHUB_WORKFLOW ? `workflow:${process.env.GITHUB_WORKFLOW}` : undefined),
+  });
   const kind = cardDedupe.titleKind(title);
   // The contract marker can sit in the park reason (digest-autofix passes it
   // as --park, not in the notes), so check both, plus the inferred filer.
@@ -244,11 +256,11 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   // Park mode only: a --dispatch filing is a session's own card, and handing it
   // another Todo card whose title differs only by a number would make the
   // session claim someone else's work. Exact-title reuse still applies there.
-  if (nearDuplicate && !contract && disposition.mode === 'park') {
+  if (dedupe && !contract && disposition.mode === 'park') {
     const reused = await reuseNearDuplicate({ title, body, client, mode: disposition.mode });
     if (reused) return reused;
   }
-  if (rollup && disposition.mode === 'park' && !contract && cardDedupe.rollupEnforced({ source: cardSource, description: contractText })) {
+  if (dedupe && disposition.mode === 'park' && !contract && cardDedupe.rollupEnforced({ source: cardSource, description: contractText })) {
     const rolled = await rollUpFlood({ title, body, client, source: cardSource, kind });
     if (rolled) return rolled;
   }
@@ -430,6 +442,7 @@ async function rollUpFlood({ title, body, client, source, kind }) {
         ].join('\n\n'),
         park: `rollup of repeated ${source} filings; each comment is one finding`,
         source: 'rollup',
+        dedupeOptOut: 'rollup',
         // Narrows (does not close) the window where two concurrent floods both open a rollup.
         reuseTwin: true,
         client,

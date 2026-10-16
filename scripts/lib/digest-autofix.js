@@ -756,6 +756,7 @@ function fileCard(title, notes, { log = () => {}, refreshNotesOnReattach = false
     // Medium by linear-issue-create; a --dispatch one keeps High.
     '--priority', '2',
     '--notes', body,
+    '--dedupe-opt-out', 'digest-autofix', // see card-dedupe.js DEDUPE_OPT_OUTS
     ...disposition,
   ];
   // task #1310: filing and dispatching are deliberately separate steps

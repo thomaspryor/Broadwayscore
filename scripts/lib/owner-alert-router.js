@@ -618,6 +618,7 @@ async function dispatchCard({ title, description, hint, fields, severity, cardAc
       description: notes,
       priority: startNow ? 2 : linearPriority,
       ...(dispatchMode || startNow ? { dispatch: true } : { park: parkReason }),
+      dedupeOptOut: 'alert-router', // see card-dedupe.js DEDUPE_OPT_OUTS
     });
     if (startNow) startNowFiledThisRun++;
     logDispatchAttempt({ conditionKey, title, ok: true });
