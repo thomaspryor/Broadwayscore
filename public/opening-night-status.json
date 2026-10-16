@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T13:37:45.964Z",
+  "generatedAt": "2026-10-16T14:07:52.773Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -716,24 +716,24 @@
       "status": "open",
       "slug": "some-woman-west-end",
       "thumbnail": "/images/shows/some-woman-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 67,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "siteScore": 55.46,
+      "liveScore": 55,
+      "scoreDrift": -0.46000000000000085,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
-      "t1": 0,
-      "t2": 3,
+      "total": 6,
+      "t1": 2,
+      "t2": 4,
       "t3": 0,
       "positive": 2,
-      "mixed": 0,
-      "negative": 1,
+      "mixed": 1,
+      "negative": 3,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
-          "T1:0/3",
+          "6/8 total",
+          "T1:2/3",
           "hi-conf:3/6"
         ],
         "highConfidence": 3,
@@ -855,6 +855,18 @@
           "p": 2,
           "m": 0,
           "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-16T14:07:52.773Z",
+          "rc": 6,
+          "s": 55.46,
+          "t1": 2,
+          "t2": 4,
+          "t3": 0,
+          "p": 2,
+          "m": 1,
+          "n": 3,
           "bc": "waiting"
         }
       ]
