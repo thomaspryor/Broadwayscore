@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-10-16T03:04:05.080Z",
-  "processed": 337,
-  "failed": 270,
-  "successRate": "55.5%",
+  "updatedAt": "2026-10-16T04:14:55.944Z",
+  "processed": 342,
+  "failed": 279,
+  "successRate": "55.1%",
   "tierBreakdown": {
-    "playwright": 186,
+    "playwright": 191,
     "amp": 6,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 26,
     "scrapingbee": 18,
@@ -14,7 +14,7 @@
     "archiveToday": 0,
     "archive": 106
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-10-16T00:16:11.438Z",
@@ -59,6 +59,57 @@
       "t": "2026-10-15T23:08:36.870Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-16T04:08:59.116Z",
+      "event": "bb-session",
+      "session": "80f3399f",
+      "url": "https://www.talkinbroadway.com/page/ob/10_14_26b.html"
+    },
+    {
+      "t": "2026-10-16T04:08:59.821Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-16T04:10:32.764Z",
+      "event": "bb-session",
+      "session": "fb241311",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-16T04:11:38.487Z",
+      "event": "bb-session",
+      "session": "52e92cba",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-16T04:11:44.502Z",
+      "event": "bb-session",
+      "session": "3376d2b9",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654594"
+    },
+    {
+      "t": "2026-10-16T04:11:45.146Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-16T04:11:46.512Z",
+      "event": "bb-session",
+      "session": "7740bca1",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-16T04:14:47.279Z",
+      "event": "bb-session",
+      "session": "6dfb910e",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-16T04:14:47.957Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
