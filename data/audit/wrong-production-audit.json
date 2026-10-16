@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-16T17:51:26.813Z",
+  "timestamp": "2026-10-16T20:05:36.999Z",
   "stats": {
-    "totalReviews": 57070,
-    "alreadyFlagged": 21188,
-    "dateGuardCatches": 194,
-    "directorMismatch": 1915,
-    "tvFilmSignals": 1594,
-    "londonSignals": 2383,
+    "totalReviews": 57075,
+    "alreadyFlagged": 21192,
+    "dateGuardCatches": 193,
+    "directorMismatch": 1916,
+    "tvFilmSignals": 1595,
+    "londonSignals": 2385,
     "offBroadwaySignals": 514,
     "yearMismatch": 147,
-    "noPublishDate": 5294
+    "noPublishDate": 5292
   },
   "findings": [
     {
@@ -25509,6 +25509,20 @@
     },
     {
       "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
+      "file": "nytimes--elisabeth-vincentelli.json",
+      "score": 44,
+      "publishDate": "2026-10-16",
+      "url": "https://www.nytimes.com/2026/10/16/theater/memoirs-of-amorous-gentlemen-review-duncan-sheik.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
       "file": "thewrap--robert-hofler.json",
       "score": 73,
       "publishDate": "2026-10-16",
@@ -37974,6 +37988,25 @@
       ]
     },
     {
+      "showId": "the-cherry-orchard-west-end-2026",
+      "file": "whatsonstage--alun-hood.json",
+      "score": 82,
+      "publishDate": "2026-10-13",
+      "url": "https://www.whatsonstage.com/news/the-cherry-orchard-with-kristin-scott-thomas-review-a-smart-and-salty-west-end-revival_1734872/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"simon stone\" from the-cherry-orchard-park-avenue-armory-off-broadway-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-children-2017",
       "file": "curtainup--elyse-sommer.json",
       "score": 79,
@@ -44243,20 +44276,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
-      "file": "the-list--unknown.json",
-      "score": 79,
-      "publishDate": "2020-10-18",
-      "url": "https://list.co.uk/news/the-prime-of-miss-jean-brodie-theatre-review-sparkling-ambiguity-49282",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 2184d before show (2020-10-18 vs 2026-10-11)"
         }
       ]
     },
@@ -75206,7 +75225,7 @@
     {
       "showId": "sinatra-the-musical-west-end-2026",
       "file": "london-theatre--unknown.json",
-      "score": 79,
+      "score": 80,
       "publishDate": null,
       "url": "https://www.londontheatre.co.uk/reviews/sinatra-the-musical-review-aldwych-theatre",
       "findings": [
@@ -75657,6 +75676,20 @@
       "score": 60,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/some-woman-national-theatre-review-strong-social-issues-bit-too-didactic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
+      "file": "broadwayworld--cindy-marcolina.json",
+      "score": 91,
+      "publishDate": "2026-10-16",
+      "url": "https://www.broadwayworld.com/westend/article/Review-SOME-WOMAN-starring-Anne-Marie-Duff-National-Theatre-20261016",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -76693,7 +76726,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "bbc-news--neil-armstrong.json",
-      "score": 93,
+      "score": 94,
       "publishDate": "2023-12-14",
       "url": "https://www.bbc.com/culture/article/20231214-stranger-things-the-first-shadow-review-the-theatrical-spin-off-from-the-netflix-mega-hit-is-funny-and-thrilling",
       "findings": [
@@ -76735,7 +76768,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "far-out-magazine--lucy-harbron.json",
-      "score": null,
+      "score": 87,
       "publishDate": "2023-12-16",
       "url": "https://faroutmagazine.co.uk/stranger-things-the-first-shadow-play-review/",
       "findings": [
@@ -76749,7 +76782,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "guardian--susannah-clapp.json",
-      "score": 77,
+      "score": 76,
       "publishDate": "2023-12-15",
       "url": "https://www.theguardian.com/stage/2023/dec/24/macbeth-donmar-warehouse-max-webster-david-tennant-cush-jumbo-review-stranger-things-the-first-shadow-phoenix-stephen-daldry-ulster-american-riverside-studios-david-ireland-woody-harrelson-andy-serkis-louisa-harland",
       "findings": [
@@ -76790,7 +76823,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "lost-in-theatreland--jill-johnson.json",
-      "score": 97,
+      "score": 96,
       "publishDate": "2023-12-18",
       "url": "https://lostintheatreland.co.uk/stranger-things-the-first-shadow-review-phoenix-theatre/",
       "findings": [
@@ -76832,7 +76865,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "radio-times--louise-griffin.json",
-      "score": null,
+      "score": 82,
       "publishDate": "2023-12-21",
       "url": "https://www.radiotimes.com/going-out/going-out-reviews/stranger-things-the-first-shadow-play-review/",
       "findings": [
@@ -76851,7 +76884,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "standard--robert-dex-arts-correspondent.json",
-      "score": 94,
+      "score": 92,
       "publishDate": "2023-12-15",
       "url": "https://www.standard.co.uk/news/uk/stranger-things-the-first-shadow-west-end-theatre-louis-mccartney-b1127164.html",
       "findings": [
@@ -76865,7 +76898,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "sunday-times--dominic-maxwell.json",
-      "score": null,
+      "score": 97,
       "publishDate": "2024-01-07",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/stranger-things-the-first-shadow-review-strange-and-staggeringly-good-klckxpnk5",
       "findings": [
@@ -78860,7 +78893,7 @@
     },
     {
       "showId": "the-cherry-orchard-west-end-2026",
-      "file": "cultural-capital--unknown.json",
+      "file": "cultural-capital--maryam-philpott.json",
       "score": 77,
       "publishDate": "2026-10-12",
       "url": "https://maryamphilpottblog.wordpress.com/2026/10/12/the-cherry-orchard-harold-pinter-theatre/",
@@ -78888,10 +78921,9 @@
     },
     {
       "showId": "the-cherry-orchard-west-end-2026",
-      "file": "whatsonstage--alun-hood.json",
-      "score": 82,
-      "publishDate": "2026-10-13",
-      "url": "https://www.whatsonstage.com/news/the-cherry-orchard-with-kristin-scott-thomas-review-a-smart-and-salty-west-end-revival_1734872/",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2026-10-14",
+      "url": "https://www.timeout.com/london/news/the-cherry-orchard-review-kristin-scott-thomas-harold-pinter-theatre-101426",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

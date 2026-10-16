@@ -1,17 +1,12 @@
 {
-  "generatedAt": "2026-10-16T17:43:56.579Z",
+  "generatedAt": "2026-10-16T19:58:28.924Z",
   "moved": 0,
   "held": [],
   "repaired": 0,
   "integrity": {
-    "flagged": 1,
+    "flagged": 0,
     "held": false,
-    "rows": [
-      {
-        "file": "operation-mincemeat-2025/boston-globe--unknown.json",
-        "kind": "tour-on-broadway"
-      }
-    ]
+    "rows": []
   },
   "tours": [
     {
@@ -638,6 +633,14 @@
         "before-tour-launch": 2,
         "non-review": 1
       }
+    },
+    {
+      "tourId": "mrs-doubtfire-tour-2023",
+      "fromIds": [
+        "mrs-doubtfire-2021"
+      ],
+      "held": false,
+      "counts": {}
     }
   ]
 }

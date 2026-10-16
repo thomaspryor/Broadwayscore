@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T17:51:38.931Z",
+  "generatedAt": "2026-10-16T20:05:48.943Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -165,27 +165,27 @@
       "slug": "sea-wall-off-broadway",
       "thumbnail": "/images/shows/sea-wall-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 88,
+      "liveScore": null,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "reviewsNeeded": 5,
       "siteFileExists": true,
-      "total": 1,
+      "total": 0,
       "t1": 0,
-      "t2": 1,
+      "t2": 0,
       "t3": 0,
-      "positive": 1,
+      "positive": 0,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/12 total",
+          "0/12 total",
           "T1:0/3",
-          "T2:1/3",
-          "hi-conf:1/8"
+          "T2:0/3",
+          "hi-conf:0/8"
         ],
-        "highConfidence": 1,
+        "highConfidence": 0,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -342,6 +342,10 @@
         },
         {
           "name": "The New York Sun",
+          "isDualMarket": false
+        },
+        {
+          "name": "Theater Scene",
           "isDualMarket": false
         },
         {
@@ -727,23 +731,23 @@
       "status": "open",
       "slug": "some-woman-west-end",
       "thumbnail": "/images/shows/some-woman-west-end-2026/thumbnail.webp",
-      "siteScore": 61.3,
-      "liveScore": 61,
-      "scoreDrift": -0.29999999999999716,
+      "siteScore": 63.63,
+      "liveScore": 64,
+      "scoreDrift": 0.36999999999999744,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 13,
+      "total": 14,
       "t1": 6,
-      "t2": 5,
+      "t2": 6,
       "t3": 2,
-      "positive": 5,
+      "positive": 6,
       "mixed": 3,
       "negative": 5,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 8,
+        "highConfidence": 10,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -752,8 +756,8 @@
         }
       },
       "broadcast": {
-        "state": "waiting",
-        "detail": "Ready — awaiting send"
+        "state": "preview-sent",
+        "detail": "Preview sent to thomas.pryor@gmail.com at 5:44:49 PM"
       },
       "missingT1": [
         {
@@ -762,10 +766,6 @@
         },
         {
           "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Sunday Times",
           "isDualMarket": true
         },
         {
@@ -792,10 +792,6 @@
         },
         {
           "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "BroadwayWorld",
           "isDualMarket": true
         },
         {
@@ -927,6 +923,18 @@
           "m": 3,
           "n": 5,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-16T20:05:48.943Z",
+          "rc": 14,
+          "s": 63.63,
+          "t1": 6,
+          "t2": 6,
+          "t3": 2,
+          "p": 6,
+          "m": 3,
+          "n": 5,
+          "bc": "preview-sent"
         }
       ]
     },
@@ -1379,9 +1387,9 @@
       "status": "open",
       "slug": "memoirs-of-amorous-gentlemen-off-broadway",
       "thumbnail": "/images/shows/memoirs-of-amorous-gentlemen-off-broadway-2026/thumbnail.webp",
-      "siteScore": 62.47,
+      "siteScore": 62.14,
       "liveScore": 62,
-      "scoreDrift": -0.46999999999999886,
+      "scoreDrift": -0.14000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -1738,6 +1746,18 @@
           "t": "2026-10-16T17:51:38.931Z",
           "rc": 12,
           "s": 62.47,
+          "t1": 2,
+          "t2": 7,
+          "t3": 3,
+          "p": 3,
+          "m": 6,
+          "n": 3,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-16T20:05:48.943Z",
+          "rc": 12,
+          "s": 62.14,
           "t1": 2,
           "t2": 7,
           "t3": 3,
@@ -2313,7 +2333,7 @@
       "title": "UNCONDITIONAL, a new musical memoir",
       "market": "broadway",
       "category": "off-broadway",
-      "type": "play",
+      "type": "musical",
       "openingDate": "2026-10-15",
       "status": "open",
       "slug": "unconditional-a-new-musical-memoir-off-broadway",
@@ -3625,23 +3645,23 @@
       "status": "open",
       "slug": "the-cherry-orchard-west-end",
       "thumbnail": "/images/shows/the-cherry-orchard-west-end-2026/thumbnail.jpeg",
-      "siteScore": 71.31,
-      "liveScore": 71,
-      "scoreDrift": -0.3100000000000023,
+      "siteScore": 72.34,
+      "liveScore": 72,
+      "scoreDrift": -0.3400000000000034,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 30,
-      "t1": 6,
+      "total": 32,
+      "t1": 8,
       "t2": 5,
       "t3": 19,
-      "positive": 20,
+      "positive": 22,
       "mixed": 8,
       "negative": 2,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 28,
+        "highConfidence": 29,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -3659,23 +3679,11 @@
           "isDualMarket": true
         },
         {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
           "name": "The Sunday Times",
           "isDualMarket": true
         },
         {
-          "name": "Evening Standard",
-          "isDualMarket": false
-        },
-        {
           "name": "The i",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out London",
           "isDualMarket": false
         },
         {
@@ -4014,6 +4022,18 @@
           "t2": 5,
           "t3": 19,
           "p": 20,
+          "m": 8,
+          "n": 2,
+          "bc": "preview-sent-earlier"
+        },
+        {
+          "t": "2026-10-16T20:05:48.943Z",
+          "rc": 32,
+          "s": 72.34,
+          "t1": 8,
+          "t2": 5,
+          "t3": 19,
+          "p": 22,
           "m": 8,
           "n": 2,
           "bc": "preview-sent-earlier"
