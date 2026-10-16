@@ -106,3 +106,13 @@ test('firstRunStartValueProblem: the plan/validate-data guard for the field', ()
   assert.match(firstRunStartValueProblem('2025-09-09', { title: 'X' }, today), /no previewsStartDate/);
   assert.match(firstRunStartValueProblem('2027-01-01', { openingDate: '2028-01-01' }, today), /future/);
 });
+
+test('priorRuns entries with their own row or inheritReviews:false are a separate production', () => {
+  const linked = { ...mexodus, priorRuns: [{ id: 'earlier-run-row', openingDate: '2025-09-18' }] };
+  const noInherit = { ...mexodus, priorRuns: [{ openingDate: '2025-09-18', inheritReviews: false }] };
+  const same = { ...mexodus, priorRuns: [{ openingDate: '2025-09-18' }] };
+  assert.equal(productionStartDate(linked), '2026-03-06');
+  assert.equal(productionStartDate(noInherit), '2026-03-06');
+  assert.equal(productionStartDate(same), '2025-09-18');
+  assert.equal(videoPredatesProduction('20251001', linked), true);
+});

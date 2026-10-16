@@ -69,7 +69,11 @@ function productionStartMs(show) {
   const candidates = [
     parseYmd(show.previewsStartDate) ?? parseYmd(show.openingDate),
     parseYmd(show.firstRunStart),
-    ...(Array.isArray(show.priorRuns) ? show.priorRuns.map(r => parseYmd(r && r.openingDate)) : []),
+    // An entry with its own row (`id`) or `inheritReviews: false` is a separate
+    // production, not the same one returning: its videos belong to that row.
+    ...(Array.isArray(show.priorRuns)
+      ? show.priorRuns.filter(r => r && !r.id && r.inheritReviews !== false).map(r => parseYmd(r.openingDate))
+      : []),
   ].filter(t => t !== null);
   return candidates.length ? Math.min(...candidates) : null;
 }
