@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4768",
   "planId": "44c0bbfc-b4d8-4eae-9c0b-8b273fce49ba",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-16T01:12:59.520Z",
   "submitter": {
     "name": null,
@@ -43,5 +43,23 @@
         "description": "2025 NYC premiere at Urban Stages, Sep 12-Oct 11/12 2025 (ticket listing; DC Theater Arts review 2025-09-18; matches this row's existing priorRuns openingDate 2025-09-12). Same production returned Jan 2026."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-16T02:08:22.582Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: firstRunStart updated for mexodus-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: firstRunStart updated for sexual-misconduct-of-the-middle-classes-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: firstRunStart updated for the-porch-on-windy-hill-off-broadway-2026"
+    }
+  ]
 }
