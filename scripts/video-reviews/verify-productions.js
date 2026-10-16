@@ -9,6 +9,9 @@
  * 2026-09-29 audit). This step checks every scored per-show transcript
  * against the production's venue, city and run dates:
  *   1. Deterministic: posted before the production's first preview -> wrong.
+ *      "First preview" is the earliest run of the same production
+ *      (firstRunStart / priorRuns, BRO-4768). A date flag the rule no longer
+ *      supports (that start was recorded later) is re-checked and cleared.
  *   2. LLM: given the production details, the video title, post date and
  *      transcript, is it the same production? "different" at high/medium
  *      confidence, with an accepted evidence type and a quote that appears in
@@ -32,7 +35,7 @@ const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('../lib/list-show-dirs');
 const { foldDiacritics } = require('../lib/title-match');
-const { describeProduction, videoPredatesProduction } = require('../lib/video-production-context');
+const { describeProduction, videoPredatesProduction, productionStartDate, isStaleDateFlag } = require('../lib/video-production-context');
 const { GPT4O, CLAUDE_SONNET, GEMINI_FLASH } = require('../lib/models');
 const { invalidateWrongProductionAutoClear } = require('../lib/review-write-guard');
 
@@ -167,7 +170,7 @@ ${String(t.transcript || '').substring(0, 3000)}
 
 async function checkOne(t, show, creatorName) {
   if (videoPredatesProduction(t.publishedAt, show)) {
-    return { verdict: 'different', confidence: 'high', reason: `Video posted ${t.publishedAt}, before this production's first performance (${show.previewsStartDate || show.openingDate}).`, method: 'date' };
+    return { verdict: 'different', confidence: 'high', reason: `Video posted ${t.publishedAt}, before this production's first performance (${productionStartDate(show)}).`, method: 'date' };
   }
   const user = `ASSIGNED production: ${describeProduction(show)}
 Creator: ${creatorName}
@@ -198,9 +201,13 @@ async function main() {
     for (const f of fs.readdirSync(path.join(TRANSCRIPTS_DIR, showId)).filter(x => x.endsWith('.json'))) {
       const file = path.join(TRANSCRIPTS_DIR, showId, f);
       const t = JSON.parse(fs.readFileSync(file, 'utf8'));
-      if (t.score === undefined || t.scoreable === false || t.wrongProduction === true) continue;
-      if (t.productionCheck && !REFRESH) continue;
-      jobs.push({ file, showId, show, t });
+      if (t.score === undefined || t.scoreable === false) continue;
+      // BRO-4768: a date flag whose rule no longer holds (an earlier run of the
+      // same production was recorded since) goes back through the full check.
+      const staleDateFlag = isStaleDateFlag(t, show);
+      if (t.wrongProduction === true && !staleDateFlag) continue;
+      if (t.productionCheck && !REFRESH && !staleDateFlag) continue;
+      jobs.push({ file, showId, show, t, staleDateFlag });
     }
   }
   console.log(`Checking ${jobs.length} reviews with ${PROVIDER}/${MODEL}${DRY_RUN ? ' (dry run)' : ''}`);
@@ -208,6 +215,7 @@ async function main() {
   let wrong = 0, errors = 0, i = 0;
   const flagged = [];
   const disputed = [];
+  const cleared = [];
   async function worker() {
     while (i < jobs.length) {
       const job = jobs[i++];
@@ -239,15 +247,22 @@ async function main() {
       if (isWrong) {
         wrong++;
         flagged.push(`${job.showId}  ${job.t.creatorId}  ${job.t.videoUrl}  [${v.method}] ${v.reason}`);
+      } else if (job.staleDateFlag) {
+        cleared.push(`${job.showId}  ${job.t.creatorId}  ${job.t.videoUrl}  posted ${job.t.publishedAt}, production from ${productionStartDate(job.show)}`);
       }
       if (DRY_RUN) continue;
       const fresh = JSON.parse(fs.readFileSync(job.file, 'utf8'));
+      // re-read: only clear a date flag that is still the same stale date flag on disk
+      const clearFlag = !isWrong && job.staleDateFlag && isStaleDateFlag(fresh, job.show);
       fresh.productionCheck = { ...v, checkedAt: new Date().toISOString() };
       if (isWrong) {
         fresh.wrongProduction = true;
         fresh.wrongProductionReason = v.reason;
         // a stale auto-clear breadcrumb beside a fresh flag would let the guards clear it again
         invalidateWrongProductionAutoClear(fresh);
+      } else if (clearFlag) {
+        delete fresh.wrongProduction;
+        delete fresh.wrongProductionReason;
       }
       fs.writeFileSync(job.file, JSON.stringify(fresh, null, 2) + '\n');
     }
@@ -256,6 +271,10 @@ async function main() {
 
   console.log(`\n=== Production check: ${jobs.length} checked, ${wrong} wrong production, ${errors} errors ===`);
   for (const line of flagged.sort()) console.log('  ' + line);
+  if (cleared.length) {
+    console.log(`\n${cleared.length} earlier date flags cleared (an earlier run of the same production was recorded):`);
+    for (const line of cleared.sort()) console.log('  ' + line);
+  }
   if (disputed.length) {
     console.log(`\n${disputed.length} flagged by the first checker but not confirmed (kept):`);
     for (const line of disputed.sort()) console.log('  ' + line);

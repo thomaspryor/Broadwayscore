@@ -22,6 +22,8 @@ const ALLOWED = new Set([
   'ibdbRevivalChecked', 'runtime', 'intermissions', 'ageRecommendation', 'discoverySource',
   'provisional', 'tourOf', 'tourScheduleSlug', 'tourLaunchEvidence', 'statusSource',
   'closingDateSource', 'closingDateUpdatedAt', 'discoveredAt', 'season', 'evidenceUrls',
+  // BRO-4768: an earlier run of the same production (return engagement)
+  'firstRunStart',
 ]);
 const ID_RE = /^[a-z0-9][a-z0-9-]*$/;
 const STATUSES = ['upcoming', 'announced', 'previews', 'open', 'closed'];

@@ -370,6 +370,12 @@ function executeDataEdit(action) {
       if (problem) return { ok: false, reason: problem };
     }
 
+    if (field === 'firstRunStart') {
+      const { firstRunStartValueProblem } = require('./lib/feedback-pipeline-fields.js');
+      const problem = firstRunStartValueProblem(newValue, shows[idx]);
+      if (problem) return { ok: false, reason: problem };
+    }
+
     if (field === 'priorRuns') {
       const { priorRunsValueProblem } = require('./lib/feedback-pipeline-fields.js');
       const problem = priorRunsValueProblem(newValue, oldValue);

@@ -760,6 +760,16 @@ function validateDates(shows) {
       error(`Show "${show.title}" has invalid previewsStartDate: "${show.previewsStartDate}"`);
       issues++;
     }
+    // BRO-4768: earlier run of the same production; the video-review date rule
+    // starts there, so a bad value silently keeps or drops reviews.
+    if (show.firstRunStart !== undefined && show.firstRunStart !== null) {
+      const { firstRunStartValueProblem } = require('./lib/feedback-pipeline-fields.js');
+      const problem = firstRunStartValueProblem(show.firstRunStart, show, today);
+      if (problem) {
+        error(`Show "${show.title}" (${show.id}) ${problem}`);
+        issues++;
+      }
+    }
 
     // Logic checks
     if (show.status === 'closed' && show.closingDate && show.closingDate > today) {

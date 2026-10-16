@@ -33,8 +33,9 @@ describe('feedback-pipeline-fields', () => {
 
     // Real fields that only the pipeline writes, so no row may have one yet:
     // rejectedImageUrls is read by scripts/lib/image-source-match.js (BRO-4996);
-    // noReliableArt by scripts/lib/no-reliable-art.js (BRO-5022).
-    const writtenByPipeline = new Set(['rejectedImageUrls', 'noReliableArt']);
+    // noReliableArt by scripts/lib/no-reliable-art.js (BRO-5022);
+    // firstRunStart by scripts/lib/video-production-context.js (BRO-4768).
+    const writtenByPipeline = new Set(['rejectedImageUrls', 'noReliableArt', 'firstRunStart']);
     for (const field of FEEDBACK_EDITABLE_FIELDS['shows.json']) {
       if (writtenByPipeline.has(field)) continue;
       assert.ok(
@@ -132,8 +133,9 @@ describe('feedback-pipeline-fields', () => {
     assert.equal(snapshot.venue, 'Some Theatre');
     // Real fields that only the pipeline writes, so no row may have one yet:
     // rejectedImageUrls is read by scripts/lib/image-source-match.js (BRO-4996);
-    // noReliableArt by scripts/lib/no-reliable-art.js (BRO-5022).
-    const writtenByPipeline = new Set(['rejectedImageUrls', 'noReliableArt']);
+    // noReliableArt by scripts/lib/no-reliable-art.js (BRO-5022);
+    // firstRunStart by scripts/lib/video-production-context.js (BRO-4768).
+    const writtenByPipeline = new Set(['rejectedImageUrls', 'noReliableArt', 'firstRunStart']);
     for (const field of FEEDBACK_EDITABLE_FIELDS['shows.json']) {
       if (writtenByPipeline.has(field)) continue;
       assert.ok(field in snapshot, `buildShowSnapshot() omits editable field "${field}"`);
@@ -148,8 +150,9 @@ describe('feedback-pipeline-fields', () => {
 
     // Real fields that only the pipeline writes, so no row may have one yet:
     // rejectedImageUrls is read by scripts/lib/image-source-match.js (BRO-4996);
-    // noReliableArt by scripts/lib/no-reliable-art.js (BRO-5022).
-    const writtenByPipeline = new Set(['rejectedImageUrls', 'noReliableArt']);
+    // noReliableArt by scripts/lib/no-reliable-art.js (BRO-5022);
+    // firstRunStart by scripts/lib/video-production-context.js (BRO-4768).
+    const writtenByPipeline = new Set(['rejectedImageUrls', 'noReliableArt', 'firstRunStart']);
     for (const field of FEEDBACK_EDITABLE_FIELDS['shows.json']) {
       if (writtenByPipeline.has(field)) continue;
       assert.ok(field in serialized, `"${field}" was dropped by JSON.stringify (undefined value) — issue #582 regression`);

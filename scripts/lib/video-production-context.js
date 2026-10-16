@@ -31,7 +31,10 @@ function parseYmd(s) {
   let m = str.match(/^(\d{4})(\d{2})(\d{2})$/) || str.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (!m) return null;
   const t = Date.UTC(+m[1], +m[2] - 1, +m[3]);
-  return Number.isNaN(t) ? null : t;
+  if (Number.isNaN(t)) return null;
+  // Date.UTC rolls 2025-13-45 over into 2026; refuse anything that is not a real day.
+  const d = new Date(t);
+  return d.getUTCFullYear() === +m[1] && d.getUTCMonth() === +m[2] - 1 && d.getUTCDate() === +m[3] ? t : null;
 }
 
 /** One line a model can use to tell this production apart from others with the same title. */
@@ -44,21 +47,61 @@ function describeProduction(show) {
   if (show.openingDate) dates.push(`opened ${show.openingDate}`);
   if (show.closingDate) dates.push(`closed/closing ${show.closingDate}`);
   if (dates.length) parts.push(dates.join(', '));
+  const ownStart = parseYmd(show.previewsStartDate) ?? parseYmd(show.openingDate);
+  const start = productionStartMs(show);
+  if (start !== null && (ownStart === null || start < ownStart)) {
+    parts.push(`return engagement: the same production first played from ${new Date(start).toISOString().slice(0, 10)}`);
+  }
   if (show.isRevival === true) parts.push('a revival');
   return parts.join('; ');
 }
 
 /**
+ * Earliest known first performance of this PRODUCTION, as a UTC ms timestamp
+ * (or null). One shows.json entry covers one run, so a return engagement's row
+ * starts at the return; its earlier run of the identical production is
+ * declared by `firstRunStart` (ISO date, BRO-4768) or by a `priorRuns` entry
+ * (the operator saying "same production", lib/prior-run-sibling.js). Videos of
+ * that earlier run review this production, so the date rule must start there.
+ * Unparseable values are ignored.
+ */
+function productionStartMs(show) {
+  const candidates = [
+    parseYmd(show.previewsStartDate) ?? parseYmd(show.openingDate),
+    parseYmd(show.firstRunStart),
+    ...(Array.isArray(show.priorRuns) ? show.priorRuns.map(r => parseYmd(r && r.openingDate)) : []),
+  ].filter(t => t !== null);
+  return candidates.length ? Math.min(...candidates) : null;
+}
+
+/** YYYY-MM-DD of productionStartMs, for log and reason lines. */
+function productionStartDate(show) {
+  const t = productionStartMs(show);
+  return t === null ? null : new Date(t).toISOString().slice(0, 10);
+}
+
+/**
  * True when the video was posted clearly before this production's first
- * performance, so it cannot be a first-hand review of it (it reviews an
- * earlier run, a tryout, or another city's production).
+ * performance (including an earlier run of the same production, see
+ * productionStartMs), so it cannot be a first-hand review of it (it reviews
+ * an earlier, different production, a tryout, or another city's run).
  * Unknown dates (null, "NA") never count.
  */
 function videoPredatesProduction(publishedAt, show, graceDays = PREDATE_GRACE_DAYS) {
   const posted = parseYmd(publishedAt);
-  const start = parseYmd(show.previewsStartDate) ?? parseYmd(show.openingDate);
+  const start = productionStartMs(show);
   if (posted === null || start === null) return false;
   return posted < start - graceDays * 86400000;
 }
 
-module.exports = { describeProduction, videoPredatesProduction, parseYmd, PREDATE_GRACE_DAYS };
+/**
+ * A wrongProduction flag set by verify-productions.js's date rule that the
+ * rule no longer supports (an earlier run of the same production was recorded
+ * after the flag, BRO-4768). Only method 'date' flags qualify: LLM, audit and
+ * manual flags are never revisited by this.
+ */
+function isStaleDateFlag(t, show) {
+  return !!t && t.wrongProduction === true && t.productionCheck?.method === 'date' && !videoPredatesProduction(t.publishedAt, show);
+}
+
+module.exports = { describeProduction, videoPredatesProduction, productionStartMs, productionStartDate, isStaleDateFlag, parseYmd, PREDATE_GRACE_DAYS };

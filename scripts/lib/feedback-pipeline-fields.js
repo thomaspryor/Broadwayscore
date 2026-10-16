@@ -48,6 +48,11 @@ const FEEDBACK_EDITABLE_FIELDS = {
     // title match attached another production's site to two London rows;
     // officialUrlValueProblem refuses ticket/review/aggregator domains.
     'officialUrl',
+    // BRO-4768: ISO date or null. First performance of an EARLIER run of the
+    // same production when this row covers only a return engagement, so the
+    // video-review date rule (lib/video-production-context.js) keeps reviews of
+    // that run. firstRunStartValueProblem checks it.
+    'firstRunStart',
   ],
   // recoupedDate/recoupedSource/sources: a recoupment correction needs all
   // three (validate-data.js requires recoupedDate when recouped=true). The
@@ -218,6 +223,26 @@ function priorRunsValueProblem(newValue, oldValue) {
   return null;
 }
 
+// shows.json firstRunStart check for the human-approved data-edit path
+// (BRO-4768): null, or a real YYYY-MM-DD day strictly before the row's own
+// first performance (previewsStartDate, else openingDate) and not in the
+// future. Returns an error string or null.
+function firstRunStartValueProblem(newValue, show, today = new Date().toISOString().slice(0, 10)) {
+  if (newValue === null) return null;
+  if (!isIsoDay(newValue)) return 'firstRunStart: must be null or a real YYYY-MM-DD date';
+  const own = (show && (show.previewsStartDate || show.openingDate)) || null;
+  if (!own) return 'firstRunStart: the show has no previewsStartDate/openingDate to precede';
+  if (!(newValue < String(own).slice(0, 10))) return `firstRunStart: ${newValue} must be before this row's own first performance (${own})`;
+  if (newValue > today) return `firstRunStart: ${newValue} is in the future`;
+  return null;
+}
+
+function isIsoDay(v) {
+  if (typeof v !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(v)) return false;
+  const d = new Date(`${v}T00:00:00Z`);
+  return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === v;
+}
+
 module.exports = {
   FEEDBACK_EDITABLE_FIELDS,
   AUTO_FIX_EDITABLE_FIELDS,
@@ -228,4 +253,6 @@ module.exports = {
   rejectedUrlsValueProblem,
   priorRunsValueProblem,
   officialUrlValueProblem,
+  firstRunStartValueProblem,
+  isIsoDay,
 };
