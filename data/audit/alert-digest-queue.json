@@ -838,6 +838,48 @@
     "queuedAt": "2026-10-16T21:16:11.914Z"
   },
   {
+    "conditionKey": "pending-unrecoverable:into-the-woods-noel-coward-west-end-2026",
+    "title": "2 review(s) for into-the-woods-noel-coward-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- noel-coward-theatre--333fba17.json (noel-coward-theatre): no byline in page and no recoverable body https://delfontmackintosh.co.uk/\n- thestage--4d5a441.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/into-the-woods-review-bridge-theatre-london-stephen-sondheim-jordan-fein",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-16T22:23:49.276Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:bull-off-west-end-2026",
+    "title": "1 review(s) for bull-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--unknown.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/bull",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-16T22:24:20.557Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:hay-fever-west-end-2026",
+    "title": "1 review(s) for hay-fever-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- broadwayworld--379d8495.json (broadwayworld): fetch failed: All scraping methods failed https://www.broadwayworld.com/westend/article/Review-HAY-FEVER-Starring-Christine-Baranski-Richard-E-Grant-20261002",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-16T22:24:35.500Z"
+  },
+  {
     "conditionKey": "land:land/bro-5508-conversion",
     "title": "Landing blocked: unit-tests-node red on land/bro-5508-conversion",
     "description": "land.yml did not land land/bro-5508-conversion: the unit-tests-node gate went red at 32237669ea. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38972430463",
