@@ -1,48 +1,21 @@
 {
-  "updatedAt": "2026-10-16T18:42:31.984Z",
-  "processed": 216,
-  "failed": 181,
-  "successRate": "54.4%",
+  "updatedAt": "2026-10-16T19:12:55.855Z",
+  "processed": 268,
+  "failed": 202,
+  "successRate": "57.0%",
   "tierBreakdown": {
-    "playwright": 140,
+    "playwright": 167,
     "amp": 3,
     "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 22,
-    "scrapingbee": 17,
-    "brightdata": 3,
+    "scrapingdog": 30,
+    "scrapingbee": 23,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 41
+    "archive": 47
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 9,
   "recentActivity": [
-    {
-      "t": "2026-10-16T17:50:56.338Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-16T17:51:16.855Z",
-      "event": "bb-session",
-      "session": "bcd166e2",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
-    {
-      "t": "2026-10-16T17:51:17.308Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-16T17:53:48.164Z",
-      "event": "bb-session",
-      "session": "3c8552ff",
-      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
-    },
-    {
-      "t": "2026-10-16T17:53:48.690Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-10-16T17:54:06.154Z",
       "event": "bb-session",
@@ -119,7 +92,51 @@
     {
       "t": "2026-10-16T18:38:30.460Z",
       "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-16T18:43:40.249Z",
+      "event": "bb-session",
+      "session": "277bb290",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-16T18:43:40.927Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-16T18:43:59.045Z",
+      "event": "bb-session",
+      "session": "4b6dbacb",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-16T18:43:59.681Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-16T18:46:50.264Z",
+      "event": "bb-session",
+      "session": "80259d60",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-16T18:46:50.923Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-16T18:47:08.689Z",
+      "event": "bb-session",
+      "session": "6e3d0a51",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-16T18:47:09.303Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
