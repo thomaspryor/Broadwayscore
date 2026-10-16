@@ -116,21 +116,21 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
           </p>
         </div>
 
-        {/* Season Stats Summary */}
+        {/* Season Stats Summary. text-xl on phones: "~$164.7M+" overflowed a two-column tile at 360px. */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
-            <div className="text-2xl font-bold text-white">{shows.length}</div>
+            <div className="text-xl sm:text-2xl font-bold text-white">{shows.length}</div>
             <div className="text-xs text-gray-500">Total Shows</div>
           </div>
           <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
-            <div className="text-2xl font-bold text-emerald-400">
+            <div className="text-xl sm:text-2xl font-bold text-emerald-400">
               {stats.recoupedCount}{' '}
               <span className="text-sm text-gray-400">of {stats.totalShows}</span>
             </div>
             <div className="text-xs text-gray-500">Commercial shows recouped</div>
           </div>
           <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
-            <div className="text-2xl font-bold text-white">
+            <div className="text-xl sm:text-2xl font-bold text-white">
               {totalCapital.value}
             </div>
             <div
@@ -142,7 +142,7 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
             {totalCapital.note && <div className="text-xs text-gray-500">{totalCapital.note}</div>}
           </div>
           <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
-            <div className="text-2xl font-bold text-amber-400">
+            <div className="text-xl sm:text-2xl font-bold text-amber-400">
               {capitalAtRisk.value}
             </div>
             <div

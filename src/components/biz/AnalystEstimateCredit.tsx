@@ -13,10 +13,15 @@ interface AnalystEstimateCreditProps {
 
 export default function AnalystEstimateCredit({ asOf, url, compact = false }: AnalystEstimateCreditProps) {
   const when = formatEstimateDate(asOf, compact ? 'short' : 'long');
-  const text = compact
-    ? `${ANALYST_SHORT_LABEL}${when ? ` · ${when}` : ''}`
-    : `Estimate by ${ANALYST_FULL_LABEL}${when ? `, ${when}` : ''}`;
-  const className = compact ? 'text-[10px] text-gray-500 whitespace-nowrap mt-1' : 'text-[11px] text-gray-500';
+  // The date never splits; a narrow table cell breaks before it instead of
+  // clipping it (a one-line credit overflowed its 144px cell at 360-414px).
+  const text = (
+    <>
+      {compact ? ANALYST_SHORT_LABEL : `Estimate by ${ANALYST_FULL_LABEL}`}
+      {when && <>{compact ? ' · ' : ', '}<span className="whitespace-nowrap">{when}</span></>}
+    </>
+  );
+  const className = compact ? 'text-[10px] text-gray-500 mt-1' : 'text-[11px] text-gray-500';
   if (!url) return <p className={className} data-testid="analyst-credit">{text}</p>;
   return (
     <p className={className} data-testid="analyst-credit">
