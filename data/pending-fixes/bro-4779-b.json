@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4779-b",
   "planId": "d2f4a7e0-5b1c-4c8e-9a36-0e7b3f9c2a14",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-16T04:05:00.000Z",
   "submitter": {
     "name": null,
@@ -22,5 +22,13 @@
         "description": "Delete sibling-misfiled archive pages and tombstone their ids"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-16T04:42:06.514Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran audit-sibling-misfile-archive.js successfully"
+    }
+  ]
 }
