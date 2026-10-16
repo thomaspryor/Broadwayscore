@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4910",
   "planId": "dec1f2df-a678-417d-8094-1338c46dded2",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-16T20:57:52.443Z",
   "submitter": {
     "name": null,
@@ -69,5 +69,43 @@
         "description": "Same 2022/07/29 Washington Post article misfiled under the 1987 production; flagged wrongProduction."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-16T21:45:58.837Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-2022/frontmezzjunkies--shannon-shyne.json url: \"https://www.frontmezzjunkies.com/into-the-woods-review/\" -> \"https://frontmezzjunkies.com/2022/07/28/latest-broadway-revival-into-the-woods/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-2022/theater-life--paulanne-simmons.json humanReviewScore: null -> 94"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-2022/theater-life--paulanne-simmons.json humanReviewNote: null -> \"Theater Life 5/5 stars by Paulanne Simmons, read in full 2026-10-16: enthusiastic about staging and cast, lukewarm on Sondheim generally. BRO-4910.\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-2022/amny--matt-windman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-2022/talkinbroadway--matthew-murray.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-1997/washpost--peter-marks.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-1987/washpost--peter-marks.json"
+    }
+  ]
 }
