@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4919-b",
   "planId": "f414ef31-5278-4acb-9863-8e63e0f4bcbd",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-16T21:06:24.892Z",
   "submitter": {
     "name": null,
@@ -146,5 +146,88 @@
         "description": "BRO-4919: recompute contentTier on the 4 rows whose wrong-content flag this plan clears (BRO-5356 file mode)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-16T21:49:50.632Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-west-end-2026/standard--nick-curtis.json publishDate: \"2026-03-20\" -> \"2026-10-01\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-west-end-2026/standard--nick-curtis.json dateSource: \"llm-scoring\" -> \"human-page-verified\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-2012/nydailynews--joe-dziemianowicz.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-2012/nydailynews--joe-dziemianowicz.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-2012/variety--unknown.json criticName: \"Unknown\" -> \"Steven Oxman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-2005/nytg--unknown.json showId: \"whos-afraid-of-virginia-woolf-2020\" -> \"whos-afraid-of-virginia-woolf-2005\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-2005/nytg--unknown.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-2005/nytg--unknown.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-of-a-salesman-2012/telegraph--unknown.json criticName: \"Unknown\" -> \"Dominic Cavendish\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-of-a-salesman-2026/talkinbroadway--howard-miller.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-of-a-salesman-2026/talkinbroadway--howard-miller.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "miss-saigon-2017/broadwayworld--michael-dale.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "miss-saigon-2017/broadwayworld--michael-dale.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "miss-saigon-2017/broadwayworld--michael-dale.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for death-of-a-salesman-west-end-2026"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran reclassify-invalid-reviews.js successfully"
+    }
+  ]
 }
