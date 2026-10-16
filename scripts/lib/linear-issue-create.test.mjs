@@ -328,12 +328,12 @@ test('BRO-5488: a genuinely new title still files, stamped with its source', () 
 }));
 
 test('BRO-5488: near-dup is opt-in and never applies to alert-router / digest-autofix bodies', () => withTeam(async () => {
-  const open = [{ id: 'o1', identifier: 'BRO-100', title: 'Opening-night audit 2026-10-14', state: { name: 'Todo', type: 'unstarted' } }];
+  const open = [{ id: 'o1', identifier: 'BRO-100', title: 'BSC Rebuild: 41 reviews dropped [SUSPICIOUS]', state: { name: 'Todo', type: 'unstarted' } }];
   const a = fakeBoard({ open });
-  await createLinearIssue({ title: 'Opening-night audit 2026-10-15', description: 'x', park: 'auto-filed parked for triage', client: a.client });
+  await createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'x', park: 'auto-filed parked for triage', client: a.client });
   assert.equal(a.created.length, 1, 'not opted in: files');
   const b = fakeBoard({ open });
-  await createLinearIssue({ title: 'Opening-night audit 2026-10-15', description: 'Auto-filed by digest-autofix (health row)', park: 'auto-filed parked for triage', client: b.client, nearDuplicate: true, rollup: true });
+  await createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'Auto-filed by digest-autofix (health row)', park: 'auto-filed parked for triage', client: b.client, nearDuplicate: true, rollup: true });
   assert.equal(b.created.length, 1, 'per-card contract: files');
   assert.match(b.created[0].description, /Filed by: digest-autofix/);
 }));

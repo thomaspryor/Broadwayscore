@@ -9,9 +9,9 @@ const open = (identifier, title, type = 'backlog') => ({ identifier, title, stat
 
 test('true repeats match: only a count or date changed', () => {
   for (const [a, b] of [
-    ['Opening-night audit 2026-10-15', 'Opening-night audit 2026-10-14'],
+    ['Opening-night audit 2026-10-15', 'Opening-night audit 2026-10-15'],
     ['🚨 BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', '🚨 BSC Rebuild: 41 reviews dropped [SUSPICIOUS]'],
-    ['Scheduled sender delivered MORE THAN ONCE on 2026-10-09: reddit-post-ready', 'Scheduled sender delivered MORE THAN ONCE on 2026-10-08: reddit-post-ready'],
+    ['Corpus drift: maybeUpgradeUrl() swapped a review URL for a PRIOR production', 'Corpus drift: maybeUpgradeUrl() swapped a review URL for a prior production'],
   ]) assert.ok(d.findNearDuplicate(a, [open('BRO-1', b)]), `${a} ~ ${b}`);
 });
 
@@ -22,6 +22,7 @@ test('different subjects never match, even at high word overlap', () => {
     ['main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — "no image file carries a hash rejected by eye"', 'main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — "every emitted critic alias resolves"'],
     ['National tour pages show wrong information: 1 page problem(s) (stops-overlap)', 'National tour pages show wrong information: 1 page problem(s) (stops-before-open)'],
     ['Fix flaky test', 'Fix flaky tests'],
+    ['Opening-night watch 2026-10-09', 'Opening-night watch 2026-10-08'],
   ]) assert.equal(d.findNearDuplicate(a, [open('BRO-1', b)]), null, `${a} !~ ${b}`);
 });
 
@@ -31,7 +32,7 @@ test('diacritics fold (task #648 class) and rollup cards are never a near-dup ta
 });
 
 test('serves filter: a started card is never returned', () => {
-  const m = d.findNearDuplicate('Opening-night audit 2026-10-15', [open('BRO-1', 'Opening-night audit 2026-10-14', 'started')], (c) => c.state.type !== 'started');
+  const m = d.findNearDuplicate('Opening-night audit 2026-10-15', [open('BRO-1', 'Opening-night audit 2026-10-15', 'started')], (c) => c.state.type !== 'started');
   assert.equal(m, null);
 });
 

@@ -12,7 +12,7 @@
  *   - inferCardSource / sourceFooter: every new card says who filed it, so the
  *     morning digest can show inflow by source (board-numbers.js).
  *   - findNearDuplicate: a reworded repeat of an open card ("Opening-night
- *     audit 2026-10-15" vs "...2026-10-14", "BSC Rebuild: 49 reviews dropped"
+ *     reviews dropped" repeats, "BSC Rebuild: 49 reviews dropped"
  *     vs "41 reviews dropped") is noted on that card instead of filed again.
  *   - titleKind: the same-kind key a flood is grouped by ("Review gap — "X"
  *     missing 6 cited review(s)" and "... "Y" missing 1 ..." share a kind).
@@ -75,7 +75,7 @@ function titleTokens(title) {
 
 /**
  * The parts of a title that name a specific subject: quoted strings, a
- * parenthetical, file paths, BRO refs. Two titles are only near-duplicates
+ * parenthetical, file paths, BRO refs, dates. Two titles are only near-duplicates
  * when these are EQUAL, so "Review gap — "The Wiz"" never matches "... "Tru"",
  * and "main test.yml red: ... — "test A"" never matches "... "test B"".
  */
@@ -89,6 +89,10 @@ function distinctiveParts(title) {
   }
   for (const f of core.match(FILE_REF_RE) || []) parts.add(`f:${f}`);
   for (const b of core.match(/\bbro-\d+\b/g) || []) parts.add(`b:${b}`);
+  // A date names the day a card is about: "Opening-night watch 2026-10-09" is
+  // one log card per night by design (resolved-alert-card-sweep.js LOG_TITLE_RE
+  // closes them by that date), so another night is never a repeat.
+  for (const day of core.match(/\b\d{4}-\d{2}-\d{2}\b/g) || []) parts.add(`d:${day}`);
   return parts;
 }
 
