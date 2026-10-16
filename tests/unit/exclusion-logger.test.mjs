@@ -198,11 +198,14 @@ describe('exclusion-logger — truncation', () => {
 });
 
 describe('exclusion-logger — file write failure', () => {
-  it('TC9: read-only audit dir → logs to stderr, does NOT throw', () => {
+  it('TC9: unwritable audit dir → logs to stderr, does NOT throw', () => {
     const tmpDir = makeTmpDir();
-    // Make dir read-only so appendFileSync fails
-    fs.chmodSync(tmpDir, 0o444);
-    const { logExclusion } = loadLogger(tmpDir);
+    // The audit "dir" is a regular file, so mkdirSync/appendFileSync fail for
+    // every user. A chmod 0o444 dir did not fail as root (cloud containers),
+    // which wrote straight through it (BRO-5420).
+    const notADir = path.join(tmpDir, 'audit-is-a-file');
+    fs.writeFileSync(notADir, '');
+    const { logExclusion } = loadLogger(notADir);
     const stderrChunks = [];
     const origStderr = process.stderr.write.bind(process.stderr);
     process.stderr.write = (chunk, ...args) => {
@@ -218,7 +221,6 @@ describe('exclusion-logger — file write failure', () => {
       assert.ok(stderrOutput.includes('[exclusion-logger]'), 'stderr should mention exclusion-logger');
     } finally {
       process.stderr.write = origStderr;
-      fs.chmodSync(tmpDir, 0o755);
       fs.rmSync(tmpDir, { recursive: true });
     }
   });
