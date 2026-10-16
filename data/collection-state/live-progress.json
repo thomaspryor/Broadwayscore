@@ -1,65 +1,21 @@
 {
-  "updatedAt": "2026-10-16T23:12:37.887Z",
-  "processed": 474,
-  "failed": 348,
-  "successRate": "57.7%",
+  "updatedAt": "2026-10-16T23:45:23.283Z",
+  "processed": 513,
+  "failed": 369,
+  "successRate": "58.2%",
   "tierBreakdown": {
-    "playwright": 291,
+    "playwright": 313,
     "amp": 12,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 47,
-    "scrapingbee": 45,
+    "scrapingdog": 50,
+    "scrapingbee": 58,
     "brightdata": 2,
     "archiveToday": 0,
-    "archive": 93
+    "archive": 99
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-10-16T18:43:59.045Z",
-      "event": "bb-session",
-      "session": "4b6dbacb",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
-    {
-      "t": "2026-10-16T18:43:59.681Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-16T18:46:50.264Z",
-      "event": "bb-session",
-      "session": "80259d60",
-      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
-    },
-    {
-      "t": "2026-10-16T18:46:50.923Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-16T18:47:08.689Z",
-      "event": "bb-session",
-      "session": "6e3d0a51",
-      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
-    },
-    {
-      "t": "2026-10-16T18:47:09.303Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-16T21:55:15.492Z",
-      "event": "bb-session",
-      "session": "e858b328",
-      "url": "https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pi"
-    },
-    {
-      "t": "2026-10-16T21:55:15.860Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-10-16T21:55:32.987Z",
       "event": "bb-session",
@@ -125,6 +81,50 @@
       "t": "2026-10-16T22:52:37.566Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-16T23:21:02.752Z",
+      "event": "bb-session",
+      "session": "695e3052",
+      "url": "https://www.nytimes.com/2025/02/18/theater/the-years-play-abortion-scene-garai.h"
+    },
+    {
+      "t": "2026-10-16T23:21:03.092Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-16T23:21:19.528Z",
+      "event": "bb-session",
+      "session": "2e50369d",
+      "url": "https://www.nytimes.com/2025/02/18/theater/the-years-play-abortion-scene-garai.h"
+    },
+    {
+      "t": "2026-10-16T23:21:19.797Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-16T23:43:20.967Z",
+      "event": "bb-session",
+      "session": "9d7a018a",
+      "url": "https://www.wsj.com/articles/swept-away-review-the-avett-brothers-set-sail-on-br"
+    },
+    {
+      "t": "2026-10-16T23:43:21.295Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-16T23:43:38.127Z",
+      "event": "bb-session",
+      "session": "e36113f1",
+      "url": "https://www.wsj.com/articles/swept-away-review-the-avett-brothers-set-sail-on-br"
+    },
+    {
+      "t": "2026-10-16T23:43:38.422Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
