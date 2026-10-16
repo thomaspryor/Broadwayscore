@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-10-16T01:36:39.410Z",
-  "processed": 272,
-  "failed": 207,
-  "successRate": "56.8%",
+  "updatedAt": "2026-10-16T01:48:08.229Z",
+  "processed": 274,
+  "failed": 223,
+  "successRate": "55.1%",
   "tierBreakdown": {
-    "playwright": 154,
+    "playwright": 156,
     "amp": 6,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 25,
     "scrapingbee": 16,
@@ -14,30 +14,8 @@
     "archiveToday": 0,
     "archive": 78
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-10-16T00:16:11.438Z",
-      "event": "bb-session",
-      "session": "bb5c0c15",
-      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
-    },
-    {
-      "t": "2026-10-16T00:16:12.356Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-16T00:16:21.914Z",
-      "event": "bb-session",
-      "session": "c2e24528",
-      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
-    },
-    {
-      "t": "2026-10-16T00:16:22.785Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-10-16T00:17:19.777Z",
       "event": "bb-session",
@@ -89,6 +67,67 @@
       "event": "bb-session",
       "session": "eacb5c7e",
       "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
+    },
+    {
+      "t": "2026-10-16T01:41:30.837Z",
+      "event": "bb-session",
+      "session": "5085ccb6",
+      "url": "https://www.talkinbroadway.com/page/ob/10_14_26b.html"
+    },
+    {
+      "t": "2026-10-16T01:41:31.766Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-16T01:41:42.515Z",
+      "event": "bb-session",
+      "session": "29c47347",
+      "url": "https://www.wsj.com/articles/anon-and-a-ghost-in-your-ear-review-minds-unravelin"
+    },
+    {
+      "t": "2026-10-16T01:41:43.306Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-16T01:42:01.601Z",
+      "event": "bb-session",
+      "session": "ba76fa58",
+      "url": "https://www.wsj.com/articles/anon-and-a-ghost-in-your-ear-review-minds-unravelin"
+    },
+    {
+      "t": "2026-10-16T01:42:02.432Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-16T01:43:59.252Z",
+      "event": "bb-session",
+      "session": "c4dfb7b8",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-16T01:44:35.145Z",
+      "event": "bb-session",
+      "session": "e4a5152d",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654594"
+    },
+    {
+      "t": "2026-10-16T01:44:35.999Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-16T01:47:50.081Z",
+      "event": "bb-session",
+      "session": "ce6c56ee",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-16T01:47:51.014Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
