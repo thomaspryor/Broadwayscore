@@ -53,10 +53,10 @@ Usage:
           mechanical, single-file, data fixes. Anything else → exit 2.
           Only a Model line in the description counts; one in a comment
           is ignored.
-          Repeats (BRO-5488): an open card whose title this one repeats
-          (same subject, reworded, or only a count/date changed) gets the
-          notes as a comment instead (ISSUE-REUSED); --new-anyway "<reason>"
-          files anyway. A workflow filer's 3+ same-kind parked findings in
+          Repeats (BRO-5488): a --park card whose title repeats an open
+          card (same subject, reworded, or only a count changed; a different
+          date is a different card) is added there as a comment instead
+          (ISSUE-REUSED); --new-anyway "<reason>" files anyway. A workflow filer's 3+ same-kind parked findings in
           24h go onto one "Rollup (...)" card (ROLLED-UP). --source names the
           filer (default workflow:$GITHUB_WORKFLOW, else session); it is
           stamped as a "Filed by:" line the morning digest counts.
