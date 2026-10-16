@@ -182,7 +182,7 @@ check_merge_drivers() {
   local BUILTIN="union text binary"
   local REG_FILE="scripts/setup-local-data.sh"
   local MISSING="" DRIVERS d
-  DRIVERS=$(grep -oE 'merge=[A-Za-z0-9_.-]+' .gitattributes | sed 's/^merge=//' | sort -u)
+  DRIVERS=$(grep -vE '^[[:space:]]*#' .gitattributes | grep -oE 'merge=[A-Za-z0-9_-]+([.][A-Za-z0-9_-]+)*' | sed 's/^merge=//' | sort -u)
   for d in $DRIVERS; do
     if grep -qw "$d" <<<"$BUILTIN"; then continue; fi
     # Tolerant match: `git config [--global] merge.<d>.driver ...`

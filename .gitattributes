@@ -441,7 +441,7 @@ scripts/health-check.js merge-coverage=exempt
 # edits to it (.github/workflows/CLAUDE.md "Public Show JSON Safety"). Append
 # ledgers that read and extend their own file (gather-collisions,
 # url-mismatch-suspects, market-misroutes, exclusion daily totals) are left off
-# on purpose even though they are merge=ours.
+# on purpose even though they use merge=ours too.
 data/audit/deploy-watermark.json autostash=regenerated
 data/audit/needs-human-review.json autostash=regenerated
 data/audit/rebuild-score-drift.json autostash=regenerated
