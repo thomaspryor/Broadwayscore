@@ -125,7 +125,7 @@ function trIssueMonthRange(link) {
  * night; PDF-era issue months are approximate). Closest issue wins.
  * @param {Array<{title: string, venue: string, link: string}>} results
  * @param {{title: string, venue: string, date: string}} review
- * @param {{isLondonVenue: (v: string) => boolean}} opts
+ * @param {{isLondonVenue: (v: string, context: {pdfEra: boolean}) => boolean}} opts
  */
 function pickTrForReview(results, review, opts = {}) {
   const { isLondonVenue = () => true } = opts;
@@ -133,7 +133,7 @@ function pickTrForReview(results, review, opts = {}) {
   if (rm == null) return null;
   const hits = (results || [])
     .filter(r => r && titlesMatch(r.title, review.title))
-    .filter(r => isLondonVenue(r.venue) && sameVenueFamily(trVenueName(r.venue), review.venue))
+    .filter(r => isLondonVenue(r.venue, { pdfEra: /\/volume\//.test(r.link || '') }) && sameVenueFamily(trVenueName(r.venue), review.venue))
     .map(r => ({ r, m: trIssueMonthRange(r.link) }))
     .filter(x => x.m != null && x.m.hi >= rm - 3 && x.m.lo <= rm + 1)
     .map(x => ({ r: x.r, d: rm < x.m.lo ? x.m.lo - rm : rm > x.m.hi ? rm - x.m.hi : 0, w: x.m.hi - x.m.lo }))

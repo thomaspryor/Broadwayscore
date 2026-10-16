@@ -30,11 +30,14 @@ const NON_LONDON_CITIES = [
   'liverpool', 'plymouth', 'norwich', 'canterbury',
 ];
 
-function isLondonVenue(venueText) {
+function isLondonVenue(venueText, { pdfEra = false } = {}) {
   if (!venueText) return false;
   const lower = venueText.toLowerCase();
   // Reject if a non-London city is mentioned
   if (NON_LONDON_CITIES.some(city => lower.includes(city))) return false;
+  // PDF-era TR omits London on these two houses. Accept only the bare
+  // names with explicit PDF context, never a similarly named regional venue.
+  if (pdfEra && /^(?:royal court|arts)$/.test(lower.trim())) return true;
   return LONDON_VENUES.some(v => lower.includes(v));
 }
 

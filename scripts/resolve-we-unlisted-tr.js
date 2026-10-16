@@ -29,9 +29,10 @@ const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { selectLookups, pickTrForReview, reviewLedPath, headerFacts, parseTrHeaderDates, dateSnippets } = require('./lib/we-review-led-candidates');
+const { selectLookups, pickTrForReview, reviewLedPath, headerFacts, parseTrHeaderDates, dateSnippets, trVenueName } = require('./lib/we-review-led-candidates');
 const { isLondonVenue } = require('./lib/tr-london-venue');
 const { cleanSearchTitle } = require('./lib/title-normalization');
+const { venueFamily } = require('./lib/we-historical-corroboration');
 
 const ROOT = path.join(__dirname, '..');
 const USAGE = `resolve-we-unlisted-tr.js — Theatre Record lookups for WE reviews with no WOS listing (BRO-5031).
@@ -139,11 +140,12 @@ function pairLabelLines(lines) {
 }
 
 const capsKey = s => String(s || '').toUpperCase().replace(/[^A-Z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+const pdfTitleKey = title => capsKey(cleanSearchTitle(String(title || '')).replace(/^(.*)\s+\(The\)$/i, 'The $1'));
 
 const TR_ISSUE_BANNER = /\bIssue\s+\d+(?:\s*[-–]\s*\d+)?(?:\s+Openings)?(?:\s+\d{1,2}\s*[-–]\s*\d{1,2}\s+[A-Za-z]+\s+\d{4})?/gi;
 
-function pdfHeaderFor(text, title) {
-  const want = capsKey(cleanSearchTitle(title));
+function pdfHeaderFor(text, title, venue) {
+  const want = pdfTitleKey(title);
   if (!want) return null;
   const variants = [...new Set([want.replace(/^THE /, ''), `THE ${want.replace(/^THE /, '')}`])].filter(v => v !== want);
   const lines = String(text || '').split('\n');
@@ -174,6 +176,61 @@ function pdfHeaderFor(text, title) {
       if (d.previewsStartDate || d.openingDate || d.closingDate) return facts;
     }
   }
+  return pdfOpeningsFor(text, want, variants, venue);
+}
+
+/**
+ * Older issues print dates as venue rows in Openings, not labelled production
+ * headers. Match both title and venue, and save only the factual date fields.
+ * The first date is press night; a yearless close inherits the start year,
+ * rolling forward only when its month/day precedes the start. No issue or
+ * review date supplies a missing start year. Conflicting rows fail closed.
+ */
+function pdfOpeningsFor(text, want, variants, venue) {
+  if (!venue) return null;
+  const wantedVenue = venueFamily(trVenueName(venue));
+  const lines = String(text || '').replace(/\f/g, '\n').split('\n');
+  const rowDate = /^(.+?)\s+(\d{1,2})\s+([A-Za-z]+)\s+(\d{4}|\d{2})(?:\s*(?:\||[–-]|to)\s*|\s+)?(?:(\d{1,2})\s+([A-Za-z]+)(?:\s+(\d{4}|\d{2}))?)?\s*$/;
+  const readDate = (day, month, year) => {
+    const y = Number(year) < 100 ? 2000 + Number(year) : Number(year);
+    const iso = parseTrHeaderDates(`Press night ${day} ${month} ${y}`).openingDate;
+    return iso && new Date(iso).toISOString().slice(0, 10) === iso ? iso : null;
+  };
+  for (const keys of [new Set([want]), new Set(variants)]) {
+    const matches = new Set();
+    let inOpenings = false;
+    let matchedTitle = false;
+    for (const raw of lines) {
+      const line = raw.trim();
+      if (!line) continue;
+      if (/^(?:Issue\s+\d+(?:\s*[-–]\s*\d+)?\s+)?Openings(?:\s+\d.*)?$/i.test(line)) {
+        inOpenings = true;
+        matchedTitle = false;
+        continue;
+      }
+      if (/^(?:Reviews|Contents|Index)\b/i.test(line)) { inOpenings = false; matchedTitle = false; continue; }
+      if (!inOpenings) continue;
+      if (keys.has(pdfTitleKey(line))) { matchedTitle = true; continue; }
+      const row = line.match(rowDate);
+      if (!row) {
+        // Author credits may separate a title from its venue rows.
+        if (!/^by\s+/i.test(line)) matchedTitle = false;
+        continue;
+      }
+      if (!matchedTitle || !isLondonVenue(row[1], { pdfEra: true })
+          || venueFamily(trVenueName(row[1])) !== wantedVenue) continue;
+      const start = readDate(row[2], row[3], row[4]);
+      if (!start) return null;
+      let close = null;
+      if (row[5]) {
+        close = readDate(row[5], row[6], row[7] || start.slice(0, 4));
+        if (close && !row[7] && close < start) close = readDate(row[5], row[6], Number(start.slice(0, 4)) + 1);
+        if (!close || close < start) return null;
+      }
+      matches.add(`${want}\nPress night ${row[2]} ${row[3]} ${start.slice(0, 4)}${close ? `\nCloses ${row[5]} ${row[6]} ${close.slice(0, 4)}` : ''}`);
+    }
+    if (matches.size) return matches.size === 1 ? [...matches][0] : null;
+  }
   return null;
 }
 
@@ -187,7 +244,7 @@ const LOG_DATE = /\b\d{1,2}(?:st|nd|rd|th)?\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug
  * Goes to the Actions log only, never to the committed file.
  */
 function logDateContext(text, title, mode) {
-  const want = capsKey(cleanSearchTitle(title)).replace(/^THE /, '');
+  const want = pdfTitleKey(title).replace(/^THE /, '');
   const lines = String(text || '').split('\n');
   let shown = 0;
   for (let i = 0; i < lines.length && shown < 4; i++) {
@@ -318,7 +375,7 @@ async function main() {
     return out;
   }
 
-  async function header(link, title) {
+  async function header(link, title, venue) {
     if (/\/volume\/|\/issue\//.test(link)) {
       const cookie = (await context.cookies()).find(c => c.name === 'PHPSESSID');
       if (!cookie) throw new Error('no PHPSESSID cookie for PDF download');
@@ -330,7 +387,7 @@ async function main() {
         // the fallback for two-column pages (same order as extract-theatre-record.js).
         for (const mode of ['-layout', '-raw']) {
           const text = execFileSync('pdftotext', [mode, tmp, '-'], { maxBuffer: 50 * 1024 * 1024 }).toString();
-          const h = pdfHeaderFor(text, title);
+          const h = pdfHeaderFor(text, title, venue);
           const d = parseTrHeaderDates(h);
           if (!d.closingDate || !d.openingDate) logDateContext(text, title, mode);
           if (h) return h;
@@ -362,7 +419,7 @@ async function main() {
           const results = await search(review.title);
           row.trResults = results.slice(0, 10);
           row.tr = pickTrForReview(results, review, { isLondonVenue });
-          if (row.tr) row.header = await header(row.tr.link, row.tr.title);
+          if (row.tr) row.header = await header(row.tr.link, row.tr.title, row.tr.venue);
           console.log(`  ${review.title}: ${row.tr ? `${row.tr.venue} ${row.tr.link} header=${row.header ? 'yes' : 'NO'}` : `no match (${results.length} results)`}`);
         } catch (e) {
           failures++;
