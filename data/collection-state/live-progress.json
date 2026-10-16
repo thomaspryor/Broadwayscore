@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-16T17:08:13.486Z",
-  "processed": 151,
-  "failed": 104,
-  "successRate": "59.2%",
+  "updatedAt": "2026-10-16T17:43:56.692Z",
+  "processed": 201,
+  "failed": 154,
+  "successRate": "56.6%",
   "tierBreakdown": {
-    "playwright": 102,
+    "playwright": 128,
     "amp": 3,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 16,
-    "scrapingbee": 11,
+    "scrapingdog": 21,
+    "scrapingbee": 17,
     "brightdata": 2,
     "archiveToday": 0,
-    "archive": 21
+    "archive": 35
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-10-16T14:38:18.090Z",
@@ -77,6 +77,17 @@
       "t": "2026-10-16T17:05:26.416Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-16T17:26:19.204Z",
+      "event": "bb-session",
+      "session": "e2f4af58",
+      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
+    },
+    {
+      "t": "2026-10-16T17:26:19.802Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
