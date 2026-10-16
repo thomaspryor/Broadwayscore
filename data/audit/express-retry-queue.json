@@ -80,7 +80,8 @@
       "outletIds": [
         "daily-mail"
       ],
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-10-16T20:08:06.071Z"
     },
     {
       "kind": "truncated-t1-refetch",
@@ -92,7 +93,8 @@
       "outletIds": [
         "daily-mail"
       ],
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-10-16T20:08:06.071Z"
     },
     {
       "kind": "truncated-t1-refetch",
@@ -116,7 +118,10 @@
       "outletIds": [
         "nytimes"
       ],
-      "attempted": false
+      "attempted": true,
+      "skipped": true,
+      "skipReason": "no-truncated-t1",
+      "attemptedAt": "2026-10-16T20:08:06.071Z"
     },
     {
       "kind": "truncated-t1-refetch",
@@ -128,7 +133,10 @@
       "outletIds": [
         "nytimes"
       ],
-      "attempted": false
+      "attempted": true,
+      "skipped": true,
+      "skipReason": "no-truncated-t1",
+      "attemptedAt": "2026-10-16T20:08:06.071Z"
     },
     {
       "kind": "truncated-t1-refetch",
@@ -153,7 +161,8 @@
         "telegraph",
         "times-uk"
       ],
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-10-16T20:08:06.071Z"
     },
     {
       "kind": "truncated-t1-refetch",
@@ -166,7 +175,8 @@
         "telegraph",
         "times-uk"
       ],
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-10-16T20:08:06.071Z"
     },
     {
       "kind": "truncated-t1-refetch",
