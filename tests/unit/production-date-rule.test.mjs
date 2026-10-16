@@ -1,7 +1,8 @@
 // BRO-4768: the video-review date rule ("posted before this production's first
 // performance -> wrong production") dropped reviews of return engagements whose
 // row covers only the return. It now starts at the earliest run of the SAME
-// production: firstRunStart, or a priorRuns entry. require()s the real helpers
+// production, recorded as firstRunStart (priorRuns is NOT used: it also holds
+// tryouts and other-city runs the rule must still catch). require()s the real helpers
 // (CLAUDE.md §15). Show fixtures are real shows.json rows (trimmed); post dates
 // are the real dropped videos.
 import { test } from 'node:test';
@@ -42,18 +43,15 @@ test('mexodus: all three 2025 Minetta Lane videos kept once firstRunStart is rec
   for (const posted of ['20250911', '20250925', '20251001']) assert.equal(videoPredatesProduction(posted, mexodus), true, posted);
 });
 
-test('sexual misconduct: 2025 videos kept with firstRunStart (and with its existing priorRuns)', () => {
+test('sexual misconduct: 2025 videos kept with firstRunStart ', () => {
   assert.equal(videoPredatesProduction('20250606', smotmc), true);
   assert.equal(videoPredatesProduction('20250606', { ...smotmc, firstRunStart: '2025-04-28' }), false);
   assert.equal(videoPredatesProduction('20250509', { ...smotmc, firstRunStart: '2025-04-28' }), false);
-  const withPrior = { ...smotmc, priorRuns: [{ openingDate: '2025-05-01', closingDate: '2025-07-15', venue: "Audible's Minetta Lane Theatre" }] };
-  assert.equal(videoPredatesProduction('20250606', withPrior), false);
 });
 
 test('porch on windy hill: 2025 Urban Stages video kept (openingDate only, no previews)', () => {
   assert.equal(videoPredatesProduction('20250919', porch), true);
   assert.equal(videoPredatesProduction('20250919', { ...porch, firstRunStart: '2025-09-12' }), false);
-  assert.equal(videoPredatesProduction('20250919', { ...porch, priorRuns: [{ openingDate: '2025-09-12', closingDate: '2025-10-11', venue: 'Urban Stages' }] }), false);
 });
 
 test('harry potter: the 2018 London review stays dropped', () => {
@@ -107,12 +105,8 @@ test('firstRunStartValueProblem: the plan/validate-data guard for the field', ()
   assert.match(firstRunStartValueProblem('2027-01-01', { openingDate: '2028-01-01' }, today), /future/);
 });
 
-test('priorRuns entries with their own row or inheritReviews:false are a separate production', () => {
-  const linked = { ...mexodus, priorRuns: [{ id: 'earlier-run-row', openingDate: '2025-09-18' }] };
-  const noInherit = { ...mexodus, priorRuns: [{ openingDate: '2025-09-18', inheritReviews: false }] };
-  const same = { ...mexodus, priorRuns: [{ openingDate: '2025-09-18' }] };
-  assert.equal(productionStartDate(linked), '2026-03-06');
-  assert.equal(productionStartDate(noInherit), '2026-03-06');
-  assert.equal(productionStartDate(same), '2025-09-18');
-  assert.equal(videoPredatesProduction('20251001', linked), true);
+test('priorRuns never moves the start (tryouts and other-city runs stay caught)', () => {
+  const withPrior = { ...mexodus, priorRuns: [{ openingDate: '2025-09-18', venue: 'Edinburgh Fringe' }, { id: 'x', openingDate: '2024-01-01' }] };
+  assert.equal(productionStartDate(withPrior), '2026-03-06');
+  assert.equal(videoPredatesProduction('20251001', withPrior), true);
 });

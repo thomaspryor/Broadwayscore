@@ -60,8 +60,9 @@ function describeProduction(show) {
  * Earliest known first performance of this PRODUCTION, as a UTC ms timestamp
  * (or null). One shows.json entry covers one run, so a return engagement's row
  * starts at the return; its earlier run of the identical production is
- * declared by `firstRunStart` (ISO date, BRO-4768) or by a `priorRuns` entry
- * (the operator saying "same production", lib/prior-run-sibling.js). Videos of
+ * declared by `firstRunStart` (ISO date, BRO-4768; set only by an approved
+ * plan). `priorRuns` is deliberately NOT used: it also records tryouts and
+ * other-city runs the date rule exists to catch. Videos of
  * that earlier run review this production, so the date rule must start there.
  * Unparseable values are ignored.
  */
@@ -69,11 +70,6 @@ function productionStartMs(show) {
   const candidates = [
     parseYmd(show.previewsStartDate) ?? parseYmd(show.openingDate),
     parseYmd(show.firstRunStart),
-    // An entry with its own row (`id`) or `inheritReviews: false` is a separate
-    // production, not the same one returning: its videos belong to that row.
-    ...(Array.isArray(show.priorRuns)
-      ? show.priorRuns.filter(r => r && !r.id && r.inheritReviews !== false).map(r => parseYmd(r.openingDate))
-      : []),
   ].filter(t => t !== null);
   return candidates.length ? Math.min(...candidates) : null;
 }

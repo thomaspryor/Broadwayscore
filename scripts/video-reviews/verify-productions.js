@@ -10,7 +10,7 @@
  * against the production's venue, city and run dates:
  *   1. Deterministic: posted before the production's first preview -> wrong.
  *      "First preview" is the earliest run of the same production
- *      (firstRunStart / priorRuns, BRO-4768). A date flag the rule no longer
+ *      (firstRunStart, BRO-4768). A date flag the rule no longer
  *      supports (that start was recorded later) is re-checked and cleared.
  *   2. LLM: given the production details, the video title, post date and
  *      transcript, is it the same production? "different" at high/medium
