@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-16T03:18:23.599Z",
+  "timestamp": "2026-10-16T05:54:41.558Z",
   "stats": {
-    "totalReviews": 56875,
-    "alreadyFlagged": 21116,
+    "totalReviews": 56896,
+    "alreadyFlagged": 21129,
     "dateGuardCatches": 194,
     "directorMismatch": 1913,
     "tvFilmSignals": 1584,
-    "londonSignals": 2370,
-    "offBroadwaySignals": 513,
+    "londonSignals": 2369,
+    "offBroadwaySignals": 514,
     "yearMismatch": 146,
-    "noPublishDate": 5268
+    "noPublishDate": 5271
   },
   "findings": [
     {
@@ -7674,20 +7674,6 @@
       "score": 92,
       "publishDate": "November 20, 1996",
       "url": "http://www.curtainup.com/chicago.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bob fosse\" from chicago-1975"
-        }
-      ]
-    },
-    {
-      "showId": "chicago-1996",
-      "file": "daily-mail--michael-covene.json",
-      "score": 78,
-      "publishDate": "1997-11-21",
-      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -40415,6 +40401,20 @@
     },
     {
       "showId": "the-great-gatsby-west-end-2025",
+      "file": "theupcoming--antonia-georgiou.json",
+      "score": 87,
+      "publishDate": "2025-04-25",
+      "url": "https://www.theupcoming.co.uk/2025/04/25/the-great-gatsby-at-london-coliseum-theatre-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-west-end-2025",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 45,
       "publishDate": "2025-04-24",
@@ -60774,20 +60774,6 @@
       ]
     },
     {
-      "showId": "fosse-1999",
-      "file": "news-oftheworld--bill-hagerty.json",
-      "score": 84,
-      "publishDate": "2000-02-13",
-      "url": null,
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "foxfinder-west-end-2018",
       "file": "guardian--miriam-gillinson.json",
       "score": 37,
@@ -64118,6 +64104,19 @@
       "file": "theatre-weekly--unknown.json",
       "publishDate": "2026-10-12",
       "url": "https://theatreweekly.com/first-look-production-images-released-for-london-run-of-disneys-high-school-musical/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "high-school-musical-off-west-end-2026",
+      "file": "whatsonstage--tanyel-gumushan.json",
+      "publishDate": null,
+      "url": "https://www.whatsonstage.com/news/disneys-high-school-musical-revival-releases-new-trailer_1734382/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -69581,6 +69580,20 @@
       ]
     },
     {
+      "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
+      "file": "vulture--jackson-mchenry.json",
+      "score": 51,
+      "publishDate": "2026-10-16",
+      "url": "https://www.vulture.com/article/reviews-memoirs-of-amorous-gentlemen-and-a-ghost-in-your-ear.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"minetta lane\""
+        }
+      ]
+    },
+    {
       "showId": "merrily-we-roll-along-2023",
       "file": "cititour--brian-scott-lipton.json",
       "score": 93,
@@ -69771,20 +69784,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "million-dollar-quartet-2010",
-      "file": "times-uk--dominic-maxwell.json",
-      "score": 58,
-      "publishDate": "2011-02-28",
-      "url": "http://www.thetimes.co.uk/tto/arts/stage/theatre/article2928930.ece",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
