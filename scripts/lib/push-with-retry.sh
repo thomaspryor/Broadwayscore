@@ -1237,6 +1237,17 @@ restore_autostash() {
     case "$(git check-attr merge -- "$p" 2>/dev/null)" in *": merge: union") union="--union" ;; esac
     if git merge-file -q $union "$ours_f" "$base_f" "$theirs_f" 2>/dev/null; then
       if cp -f "$ours_f" "$p" 2>/dev/null; then merged=1; restored+=("$p"); else kept=1; fi
+    elif case "$p" in *.json) true ;; *) false ;; esac \
+         && command -v node >/dev/null 2>&1 \
+         && git show "$AUTOSTASH_SHA:$p" >"$tmpd/ours.json" 2>/dev/null \
+         && _timeout 30 node "$SCRIPT_DIR/json-three-way-merge.js" "$base_f" "$tmpd/ours.json" "$theirs_f" "$tmpd/merged.json" 2>/dev/null \
+         && cp -f "$tmpd/merged.json" "$p" 2>/dev/null; then
+      # BRO-4688: a JSON file that conflicts as text but where no single value
+      # changed on both sides (two rebuilds each auto-registering an outlet in
+      # data/outlet-registry.json, which push-core-data commits later in the
+      # same job). Key-wise 3-way against the snapshot's base; a true clash
+      # fails and falls through to the conflict report below.
+      merged=1; restored+=("$p")
     elif [ "${GITHUB_ACTIONS:-}" = "true" ] && [ "${PUSH_AUTOSTASH_REGENERATED_QUIET:-1}" != "0" ] \
          && autostash_is_regenerated "$p"; then
       # BRO-4688: upstream's copy is an equally fresh regeneration of a file the

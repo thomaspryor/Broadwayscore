@@ -20,6 +20,10 @@
 #     upstream with a ::notice:: and writes NO ledger row. Still recorded: the
 #     same conflict outside CI, with PUSH_AUTOSTASH_REGENERATED_QUIET=0, and on
 #     a merge=ours-only file (merge=ours is not proof of regenerability).
+# 10. BRO-4688: a .json object that conflicts as text but where each side
+#     changed different keys (two rebuilds auto-registering different outlets)
+#     is merged key-wise: both keys survive, no ::error::, no ledger row. The
+#     same key changed differently on both sides is still a recorded conflict.
 #
 # Run: bash scripts/lib/push-with-retry.autostash.test.sh
 set -uo pipefail
@@ -175,6 +179,34 @@ for mode in ci local off ours; do
     echo "FAIL[9 $mode]: this conflict must still be recorded"; fail=1
   elif [ "$(refs_left "$n")" != "1" ]; then echo "FAIL[9 $mode]: snapshot ref should be kept"; fail=1
   else echo "PASS[9 $mode]: regenerated-snapshot conflict handled ($mode)"; fi
+done
+
+# ── Case 10: key-wise JSON merge of a text conflict (BRO-4688) ─────────────
+for mode in merge clash; do
+  n="c10$mode"; setup "$n"
+  printf '{\n  "outlets": {\n    "nyt": "NYT"\n  }\n}\n' > "$TMP/$n-work/reg.json"
+  git -C "$TMP/$n-work" add -A; git -C "$TMP/$n-work" commit -q -m reg; git -C "$TMP/$n-work" push -q origin HEAD:main
+  git -C "$TMP/$n-racer" fetch -q origin && git -C "$TMP/$n-racer" reset -q --hard origin/main
+  if [ "$mode" = merge ]; then
+    printf '{\n  "outlets": {\n    "nyt": "NYT",\n    "up": "Upstream"\n  }\n}\n' > "$TMP/$n-racer/reg.json"
+    want='{\n  "outlets": {\n    "nyt": "NYT",\n    "up": "Upstream",\n    "me": "Caller"\n  }\n}\n'
+    printf '{\n  "outlets": {\n    "nyt": "NYT",\n    "me": "Caller"\n  }\n}\n' > "$TMP/$n-work/reg.json.new"
+  else
+    printf '{\n  "outlets": {\n    "nyt": "NYT-up"\n  }\n}\n' > "$TMP/$n-racer/reg.json"
+    printf '{\n  "outlets": {\n    "nyt": "NYT-me"\n  }\n}\n' > "$TMP/$n-work/reg.json.new"
+  fi
+  race "$n"
+  printf 'local2\n' > "$TMP/$n-work/local2.txt"; git -C "$TMP/$n-work" add local2.txt; git -C "$TMP/$n-work" commit -q -m local2
+  mv "$TMP/$n-work/reg.json.new" "$TMP/$n-work/reg.json"
+  out=$( cd "$TMP/$n-work" && GITHUB_ACTIONS=true PUSH_FAILURE_LOG="$TMP/$n-fail.jsonl" bash "$PUSH_SCRIPT" 3 main 2>&1 ); rc=$?
+  if [ "$rc" -ne 0 ]; then echo "FAIL[10 $mode]: rc=$rc"; echo "$out" | tail -5; fail=1
+  elif [ "$mode" = merge ] && [ "$(cat "$TMP/$n-work/reg.json")" != "$(printf "$want")" ]; then
+    echo "FAIL[10 merge]: expected both outlets in theirs' layout:"; cat "$TMP/$n-work/reg.json"; fail=1
+  elif [ "$mode" = merge ] && { grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null || grep -q '::error::.*autostash' <<<"$out" || [ "$(refs_left "$n")" != "0" ]; }; then
+    echo "FAIL[10 merge]: merged JSON still reported as a conflict / ref kept"; echo "$out" | grep autostash; fail=1
+  elif [ "$mode" = clash ] && { ! grep -q NYT-up "$TMP/$n-work/reg.json" || ! grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null; }; then
+    echo "FAIL[10 clash]: a true value clash must keep upstream and be recorded"; cat "$TMP/$n-work/reg.json"; fail=1
+  else echo "PASS[10 $mode]: JSON restore ($mode)"; fi
 done
 
 exit $fail
