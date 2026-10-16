@@ -21,6 +21,7 @@ import { TYPE_GROUP, buildStatusGroup, STATUS_OPTIONS_BROADWAY, PANEL_PARAM_KEYS
 import { usePanelFilters } from '@/lib/hooks/usePanelFilters';
 import { getShowListEmptyState } from '@/lib/show-list-empty-state';
 import ScrollRow from '@/components/ScrollRow';
+import { useHydrationSafeNow } from '@/hooks/useHydrationSafeNow';
 import { displaysCriticScore } from '@/lib/critic-score-display';
 
 export interface FeaturedRowData {
@@ -57,6 +58,8 @@ export interface HomepageShow {
 }
 
 interface HomePageClientProps {
+  /** Server Date.now() at render; date-derived rows use it until mount (BRO-5419). */
+  renderedAt: number;
   shows: HomepageShow[];
   archiveHash?: string;
   upcomingShows: HomepageShow[];
@@ -247,7 +250,8 @@ function filtersFromParams(initialSearchParams: URLSearchParams) {
 }
 
 // Inner component that uses searchParams
-function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [], westEndShows = [], totalShows, totalReviews, totalCritics = 0, totalOutlets = 0, skipHero, skipFirstMusicals, featuredRows = [], marketOpenCounts, awardWinnerSets, tonyTrackRecord, tonyPromoActive, btcPromoActive }: HomePageClientProps) {
+function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [], westEndShows = [], totalShows, totalReviews, totalCritics = 0, totalOutlets = 0, skipHero, skipFirstMusicals, featuredRows = [], marketOpenCounts, awardWinnerSets, tonyTrackRecord, tonyPromoActive, btcPromoActive, renderedAt }: HomePageClientProps) {
+  const nowMs = useHydrationSafeNow(renderedAt);
 
   // Local state for instant updates (no full-page reload)
   const [filters, setFilters] = useState(() => filtersFromParams(new URLSearchParams()));
@@ -471,17 +475,17 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
   // bestRecentShows is still needed for the inline shelf when skipFirstMusicals is false
   const bestRecentShows = useMemo(() => {
     if (skipFirstMusicals) return []; // Server renders it via FeaturedRowServer
-    const twelveMonthsAgo = new Date();
+    const twelveMonthsAgo = new Date(nowMs);
     twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
     const cutoff = twelveMonthsAgo.toISOString().slice(0, 10);
     return shows
       .filter(show => (show.type === 'musical' || show.type === 'play') && show.status === 'open' && show.openingDate >= cutoff && show.criticScore?.score
         && displaysCriticScore(show))
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
-  }, [shows, skipFirstMusicals]);
+  }, [shows, skipFirstMusicals, nowMs]);
 
   // Treat shows that closed today as still "playing" — people should see them on closing day
-  const todayStr = useMemo(() => new Date().toISOString().slice(0, 10), []);
+  const todayStr = useMemo(() => new Date(nowMs).toISOString().slice(0, 10), [nowMs]);
   const isEffectivelyOpen = useCallback((show: HomepageShow) => {
     return show.status === 'open' || (show.status === 'closed' && show.closingDate === todayStr);
   }, [todayStr]);
@@ -514,7 +518,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
     // Status filter (closed-today shows count as "open" for filtering purposes)
     if (statusFilter === 'closing_soon') {
       // Filter for shows closing within 90 days
-      const now = new Date();
+      const now = new Date(nowMs);
       const ninetyDaysFromNow = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000);
       result = result.filter(show => {
         if (!isEffectivelyOpen(show) || !show.closingDate) return false;
@@ -594,7 +598,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
     }
 
     return result;
-  }, [allShows, fuseResults, statusFilter, type, searchQuery, sort, scoreMode, obPicks, isEffectivelyOpen]);
+  }, [allShows, fuseResults, statusFilter, type, searchQuery, sort, scoreMode, obPicks, isEffectivelyOpen, nowMs]);
 
   // Advanced filter panel — applies on top of inline-filtered shows.
   // Type + Status mirror the inline ToggleBars as full panel members.

@@ -383,6 +383,7 @@ export default function HomePage() {
       </div>
       <Suspense>
         <HomePageClient
+          renderedAt={Date.now()}
           shows={activeShows.map(serializeShow)}
           archiveHash={archiveHash}
           upcomingShows={upcomingShows.map(serializeShow)}

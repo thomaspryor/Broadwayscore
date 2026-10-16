@@ -205,10 +205,13 @@ const ShowListCard = memo(function ShowListCard({
           <>
             {show.status === 'open' && (() => {
               const duration = getRunAgeLabel(show.openingDate, category, undefined, durationSuffix);
-              return duration ? <span>{duration}</span> : null;
+              // Reads today's date: the static page can be a day behind the viewer
+              // ("Just opened" -> "1 month"), so keep the server text rather than
+              // fail hydration, which drops the page's first clicks (BRO-5419).
+              return duration ? <span suppressHydrationWarning>{duration}</span> : null;
             })()}
             {show.status === 'open' && show.closingDate && (
-              <span className="text-amber-400">
+              <span className="text-amber-400" suppressHydrationWarning>
                 {getRunAgeLabel(show.openingDate, category, undefined, durationSuffix) && '·'} Closes {formatShowDate(show.closingDate)}
               </span>
             )}
@@ -291,10 +294,11 @@ const ShowListCard = memo(function ShowListCard({
           <>
             {(() => {
               const duration = getRunAgeLabel(show.openingDate, category, undefined, durationSuffix);
-              return duration ? <>{duration}</> : null;
+              // Today-relative text: keep the server copy on hydration (BRO-5419).
+              return duration ? <span suppressHydrationWarning>{duration}</span> : null;
             })()}
             {show.closingDate && (
-              <span className="text-amber-400">{getRunAgeLabel(show.openingDate, category, undefined, durationSuffix) ? ' · ' : ''}Closes {formatOpeningDate(show.closingDate)}</span>
+              <span className="text-amber-400" suppressHydrationWarning>{getRunAgeLabel(show.openingDate, category, undefined, durationSuffix) ? ' · ' : ''}Closes {formatOpeningDate(show.closingDate)}</span>
             )}
           </>
         )}

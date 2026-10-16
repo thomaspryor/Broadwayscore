@@ -79,6 +79,7 @@ export default function OffWestEndPage() {
 
       <Suspense>
         <OffWestEndPageClient
+          renderedAt={Date.now()}
           shows={serializedShows}
           archiveHash={archiveHash}
           totalShows={activeShows.length}

@@ -139,10 +139,13 @@ export default function TheaterDetailClient({ shows }: { shows: TheaterShow[] })
                   <FormatPill type={show.type} />
                   {show.isRevival && <ProductionPill isRevival={true} />}
                   {isOpen ? (() => {
-                    const duration = getBroadwayDuration(show.openingDate);
+                    // Today-relative text: only for shows the data already calls open, so a
+                    // previews/upcoming show can't grow a label between build and visit
+                    // (structural hydration mismatch); keep the server copy otherwise (BRO-5419).
+                    const duration = show.status === 'open' ? getBroadwayDuration(show.openingDate) : null;
                     return <>
                       {duration && (
-                        <span>{duration}</span>
+                        <span suppressHydrationWarning>{duration}</span>
                       )}
                       {show.closingDate && (
                         <span className="text-amber-400">

@@ -16,6 +16,7 @@ import { usePanelFilters } from '@/lib/hooks/usePanelFilters';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { getNextSort, getSortArrow, normalizeSort } from '@/lib/sort-toggle';
 import ScrollRow from '@/components/ScrollRow';
+import { useHydrationSafeNow } from '@/hooks/useHydrationSafeNow';
 
 // Serialized show data passed from server component
 export interface WestEndShow {
@@ -46,6 +47,8 @@ export interface WestEndShow {
 }
 
 interface WestEndPageClientProps {
+  /** Server Date.now() at render; date-derived rows use it until mount (BRO-5419). */
+  renderedAt: number;
   shows: WestEndShow[];
   totalShows: number;
   totalReviews: number;
@@ -153,7 +156,8 @@ function filtersFromParams(initialSearchParams: URLSearchParams) {
 }
 
 // Inner component that uses searchParams
-function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotteryShows = [], rushShows = [], beyondLondonShows = [], marketOpenCounts, awardWinnerSets, skipAboveFold = false }: WestEndPageClientProps) {
+function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotteryShows = [], rushShows = [], beyondLondonShows = [], marketOpenCounts, awardWinnerSets, skipAboveFold = false, renderedAt }: WestEndPageClientProps) {
+  const nowMs = useHydrationSafeNow(renderedAt);
 
   const [filters, setFilters] = useState(() => filtersFromParams(new URLSearchParams()));
 
@@ -280,17 +284,16 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
   }, [shows]);
 
   const closingSoonShows = useMemo(() => {
-    const now = new Date();
     return shows
       .filter(show => {
         if (show.status !== 'open' || !show.closingDate) return false;
         const closing = new Date(show.closingDate);
-        const diffDays = Math.ceil((closing.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+        const diffDays = Math.ceil((closing.getTime() - nowMs) / (1000 * 60 * 60 * 24));
         return diffDays > 0 && diffDays <= 90 && weHasEnoughReviews(show);
       })
       .sort((a, b) => new Date(a.closingDate!).getTime() - new Date(b.closingDate!).getTime())
       .map(s => ({ ...s, subtitle: `Closes ${shortDate(s.closingDate!)}`, subtitleColor: 'text-amber-400' }));
-  }, [shows]);
+  }, [shows, nowMs]);
 
   const bestOffWestEnd = useMemo(() => {
     return shows
@@ -312,8 +315,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
   }, [shows]);
 
   const { upcomingSoon, upcomingLater } = useMemo(() => {
-    const now = new Date();
-    const cutoff = new Date(now.getTime() + 60 * 24 * 60 * 60 * 1000); // 60 days
+    const cutoff = new Date(nowMs + 60 * 24 * 60 * 60 * 1000); // 60 days
     const upcoming = shows
       .filter(show => show.status === 'upcoming' && (show.previewsStartDate || show.openingDate))
       .sort((a, b) => new Date(a.previewsStartDate || a.openingDate).getTime() - new Date(b.previewsStartDate || b.openingDate).getTime())
@@ -330,7 +332,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
       return d > cutoff;
     });
     return { upcomingSoon: soon, upcomingLater: later };
-  }, [shows]);
+  }, [shows, nowMs]);
 
   const kidsShows = useMemo(() => {
     return shows

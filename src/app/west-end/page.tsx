@@ -192,6 +192,7 @@ export default function WestEndPage() {
 
       <Suspense>
         <WestEndPageClient
+          renderedAt={Date.now()}
           shows={serializedShows}
           totalShows={scoredShows.length}
           totalReviews={totalReviews}

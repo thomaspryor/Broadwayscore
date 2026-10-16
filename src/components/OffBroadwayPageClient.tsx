@@ -18,6 +18,7 @@ import { hasEnoughReviews } from '@/config/score-buckets';
 import { getNextSort, getSortArrow, normalizeSort } from '@/lib/sort-toggle';
 import { getShowListEmptyState } from '@/lib/show-list-empty-state';
 import ScrollRow from '@/components/ScrollRow';
+import { useHydrationSafeNow } from '@/hooks/useHydrationSafeNow';
 
 // Serialized show data passed from server component
 export interface OffBroadwayShow {
@@ -60,6 +61,8 @@ interface OffBroadwayPageClientProps {
    *  server-side by the page (page.tsx) so the LCP image lands in static HTML.
    *  This client then skips them to avoid a duplicate. See #317. */
   skipAboveFold?: boolean;
+  /** Server Date.now() at render; date-derived rows use it until mount (BRO-5419). */
+  renderedAt: number;
 }
 
 // URL parameter values
@@ -156,7 +159,8 @@ function filtersFromParams(initialSearchParams: URLSearchParams) {
 }
 
 // Inner component that uses searchParams
-function OffBroadwayPageInner({ shows, archiveHash, totalShows, totalReviews, marketOpenCounts, awardWinnerSets, startingSoonShows = [], justOpenedShows = [], skipAboveFold = false }: OffBroadwayPageClientProps) {
+function OffBroadwayPageInner({ shows, archiveHash, totalShows, totalReviews, marketOpenCounts, awardWinnerSets, startingSoonShows = [], justOpenedShows = [], skipAboveFold = false, renderedAt }: OffBroadwayPageClientProps) {
+  const nowMs = useHydrationSafeNow(renderedAt);
 
   const [filters, setFilters] = useState(() => filtersFromParams(new URLSearchParams()));
 
@@ -317,7 +321,7 @@ function OffBroadwayPageInner({ shows, archiveHash, totalShows, totalReviews, ma
 
   // Featured rows
   const topRecentShows = useMemo(() => {
-    const twelveMonthsAgo = new Date();
+    const twelveMonthsAgo = new Date(nowMs);
     twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
     return shows
       .filter(show => {
@@ -327,7 +331,7 @@ function OffBroadwayPageInner({ shows, archiveHash, totalShows, totalReviews, ma
         return opened >= twelveMonthsAgo;
       })
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
-  }, [shows]);
+  }, [shows, nowMs]);
 
   const topPlays = useMemo(() => {
     return shows
@@ -342,16 +346,15 @@ function OffBroadwayPageInner({ shows, archiveHash, totalShows, totalReviews, ma
   }, [shows]);
 
   const closingSoonShows = useMemo(() => {
-    const now = new Date();
     return shows
       .filter(show => {
         if (show.status !== 'open' || !show.closingDate) return false;
         const closing = new Date(show.closingDate);
-        const diffDays = Math.ceil((closing.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+        const diffDays = Math.ceil((closing.getTime() - nowMs) / (1000 * 60 * 60 * 24));
         return diffDays > 0 && diffDays <= 90 && obHasEnoughReviews(show);
       })
       .sort((a, b) => new Date(a.closingDate!).getTime() - new Date(b.closingDate!).getTime());
-  }, [shows]);
+  }, [shows, nowMs]);
 
   const filteredAndSortedShows = useMemo(() => {
     // fuseResults is null while Fuse.js loads — fall through to normal filtering (avoids empty flash)

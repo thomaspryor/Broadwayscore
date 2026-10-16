@@ -183,6 +183,7 @@ export default function OffBroadwayPage() {
 
       <Suspense>
         <OffBroadwayPageClient
+          renderedAt={Date.now()}
           shows={serializedShows}
           archiveHash={archiveHash}
           startingSoonShows={startingSoonShows}

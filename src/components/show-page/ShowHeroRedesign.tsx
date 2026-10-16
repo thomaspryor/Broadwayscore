@@ -874,8 +874,10 @@ function DateLine({ show, tourReviewYears }: { show: ComputedShowWithReviews<Pic
   if (tourReviewYears) segments.push({ text: `reviewed ${tourReviewYears}` });
   if (segments.length === 0) return null;
 
+  // The duration segment reads today's date ("Just opened" -> "1 month"), and the
+  // cached page can be a day behind the viewer: keep the server text (BRO-5419).
   return (
-    <p className={dateClass}>
+    <p className={dateClass} suppressHydrationWarning>
       {segments.map((seg, i) => (
         <React.Fragment key={i}>
           {i > 0 ? ' · ' : ''}
