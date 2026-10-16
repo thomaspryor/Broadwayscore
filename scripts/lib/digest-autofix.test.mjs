@@ -1488,3 +1488,35 @@ test('planAutofix/runAutofix: info receipts get no card and no dispatch; decisio
   assert.equal(dispatched.length, 0);
   assert.deepEqual(rows.map((r) => r.state), ['info', 'decision']);
 });
+
+// ── BRO-5486: per-show rows without " on <show>" fold to ONE card per kind ──
+test('BRO-5486: N per-show "Review gap" findings produce exactly 1 plan row / card, with a stable count-free title', () => {
+  const shows = ['The Wiz', 'Measure for Measure', 'Fences', 'Into the Woods', 'Mystic Pizza'];
+  const queued = shows.map((s, i) => ({
+    title: `BSC Daily: Review gap — "${s}" missing ${i + 1} cited review(s)`,
+    description: `${s}: ${i + 1} review(s) not collected`,
+    conditionKey: `review-gap:${s.toLowerCase().replace(/\s+/g, '-')}`,
+  }));
+  const plan = planAutofix({ health: {}, tasks: [], queued });
+  assert.equal(plan.length, 1, 'one card for the whole kind');
+  assert.equal(plan[0].title, 'BSC Daily: Review gaps (cited reviews not yet collected)');
+  assert.equal(plan[0].affected.length, shows.length);
+  // Day 2: different shows and counts, same title -> reattaches to the open card.
+  const day2 = planAutofix({ health: {}, tasks: [{ id: 7, status: 'pending', subject: plan[0].title }], queued: queued.slice(0, 2).map((q) => ({ ...q, title: q.title.replace(/missing \d+/, 'missing 9') })) });
+  assert.equal(day2.length, 1);
+  assert.equal(day2[0].title, plan[0].title);
+  assert.equal(day2[0].state, 'queued');
+});
+
+test('BRO-5486: "<show-id>: N review(s) need a decision" rows fold to 1 card; unrelated rows stay separate', () => {
+  const health = { warns: [
+    { name: 'good-time-charlie-off-broadway-2026: 1 review(s) need a decision (rejected real review)', message: 'a' },
+    { name: 'other-show-2026: 4 review(s) need a decision (rejected real review)', message: 'b' },
+    { name: 'Credits: ScrapingDog', message: 'c' },
+  ] };
+  const plan = planAutofix({ health, tasks: [] });
+  assert.equal(plan.length, 2);
+  assert.equal(plan.filter((p) => p.title.startsWith('BSC Daily: Reviews need a decision')).length, 1);
+  assert.equal(splitOnShowSuffix('Review gap — "A" missing 1 cited review(s)').show, 'A');
+  assert.equal(splitOnShowSuffix('Credits: ScrapingDog'), null);
+});

@@ -193,8 +193,27 @@ const ON_SHOW_SUFFIX_RE = /^(.+?) on (.+)$/;
 // normalizeQueuedRows/queueDigestLine — a real architecture change, left
 // for if/when a real collision is observed rather than spent on a landmine
 // that has never actually gone off.
+// BRO-5486: per-show rows that do NOT use the " on <show>" shape. Measured
+// 2026-10-16: audit-show-review-gap.js queues `Review gap — "<show>" missing N
+// cited review(s)` once per show (13 cards in one pass) and audit-coverage-
+// holes.js queues `<show-id>: N review(s) need a decision (...)`. Each embeds
+// the show AND a count in the title, so the exact-title dedup could never
+// reattach them and every show minted its own card. These patterns fold them
+// onto ONE stable-titled card per kind exactly like the " on " rows (cap and
+// batch spill included). Add a row here when a new audit emits one row per
+// show; the title must stay free of counts so the card identity is stable.
+const PER_SHOW_KIND_PATTERNS = [
+  { re: /^Review gap — "(.+)" missing \d+ cited review\(s\)$/, condition: 'Review gaps (cited reviews not yet collected)' },
+  { re: /^([a-z0-9][a-z0-9-]*): \d+ review\(s\) need a decision\b/, condition: 'Reviews need a decision (rejected real review or score outside rating)' },
+];
+
 function splitOnShowSuffix(name) {
-  const m = ON_SHOW_SUFFIX_RE.exec(familyDisplayName(name));
+  const display = familyDisplayName(name);
+  for (const { re, condition } of PER_SHOW_KIND_PATTERNS) {
+    const k = re.exec(display);
+    if (k) return { condition, show: k[1].trim() };
+  }
+  const m = ON_SHOW_SUFFIX_RE.exec(display);
   return m ? { condition: m[1].trim(), show: m[2].trim() } : null;
 }
 
