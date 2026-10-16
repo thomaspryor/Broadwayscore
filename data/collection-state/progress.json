@@ -97,8 +97,11 @@
     "mystic-pizza-tour-2026/broadwayworld--jared-fessler.json",
     "the-urmetazoan-off-west-end-2026/theatre-news--unknown.json",
     "la-boheme-off-broadway-2026/operawire--david-salazar.json",
-    "memoirs-of-amorous-gentlemen-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
-    "memoirs-of-amorous-gentlemen-off-broadway-2026/thewrap--robert-hofler.json"
+    "some-woman-west-end-2026/telegraph--dominic-cavendish.json",
+    "some-woman-west-end-2026/times-uk--clive-davis.json",
+    "the-cherry-orchard-west-end-2026/standard--unknown.json",
+    "nina-off-west-end-2026/guardian--kate-wyver.json",
+    "harry-potter-and-the-cursed-child-one-part-west-end-2026/guardian--unknown.json"
   ],
   "failed": [
     "othello-west-end-2022/standard--unknown.json",
@@ -128,7 +131,6 @@
     "mamma-mia-west-end-2021/whatsonstage--sarah-crompton.json",
     "some-woman-west-end-2026/guardian--unknown.json",
     "some-woman-west-end-2026/thestage--unknown.json",
-    "harry-potter-and-the-cursed-child-one-part-west-end-2026/guardian--unknown.json",
     "an-oak-tree-off-west-end-2026/thestage--dave-fargnoli.json",
     "an-oak-tree-off-west-end-2026/thestage--unknown.json",
     "from-the-heart-west-end-2026/thestage--neil-norman.json",
@@ -173,9 +175,7 @@
     "a-few-good-men-2026/variety--anna-tingley.json",
     "a-few-good-men-2026/times-square-chronicles--genevieve-rafter-keddy.json",
     "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
-    "some-woman-west-end-2026/telegraph--dominic-cavendish.json",
     "the-cherry-orchard-west-end-2026/theupcoming--jim-compton-hall.json",
-    "nina-off-west-end-2026/guardian--kate-wyver.json",
     "fish-off-broadway-2026/exeunt-magazine--unknown.json",
     "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--jane-bradley.json",
     "a-ghost-in-your-ear-off-broadway-2026/theatermania--zachary-stewart.json",
@@ -187,7 +187,15 @@
     "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
     "elf-lyons-the-woman-on-the-edge-off-broadway-2026/the-scotsman--david-hepburn.json",
     "mystic-pizza-tour-2026/talkinbroadway--arthur-dorman.json",
-    "la-boheme-off-broadway-2026/parterre-box--unknown.json"
+    "la-boheme-off-broadway-2026/parterre-box--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json",
+    "some-woman-west-end-2026/thestage--sam-marlowe.json",
+    "stuffed-off-west-end-2026/nytg--unknown.json",
+    "stuffed-off-west-end-2026/sunday-times--unknown.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json",
+    "the-cherry-orchard-west-end-2026/theatremonkey--unknown.json",
+    "nina-off-west-end-2026/thereviewshub--the-reviews-hub-ireland.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -260,15 +268,20 @@
       "tru-off-west-end-2026/west-end-best-friend--unknown.json",
       "burning-leaves-off-broadway-2026/stagelightmagazine--unknown.json",
       "the-urmetazoan-off-west-end-2026/theatre-news--unknown.json",
-      "la-boheme-off-broadway-2026/operawire--david-salazar.json"
+      "la-boheme-off-broadway-2026/operawire--david-salazar.json",
+      "nina-off-west-end-2026/guardian--kate-wyver.json",
+      "harry-potter-and-the-cursed-child-one-part-west-end-2026/guardian--unknown.json"
     ],
     "amp": [
       "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json"
     ],
     "browserbase": [
-      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+      "data/review-texts/some-woman-west-end-2026/times-uk--clive-davis.json",
+      "some-woman-west-end-2026/times-uk--clive-davis.json"
     ],
-    "directCookies": [],
+    "directCookies": [
+      "the-cherry-orchard-west-end-2026/standard--unknown.json"
+    ],
     "scrapingdog": [
       "some-woman-west-end-2026/london-unattached--unknown.json",
       "stories-the-tap-dance-sensation-west-end-2026/london-unattached--unknown.json",
@@ -296,8 +309,7 @@
     "brightdata": [
       "la-bete-2010/vulture--scott-brown.json",
       "memoirs-of-amorous-gentlemen-off-broadway-2026/nytimes--unknown.json",
-      "memoirs-of-amorous-gentlemen-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
-      "memoirs-of-amorous-gentlemen-off-broadway-2026/thewrap--robert-hofler.json"
+      "some-woman-west-end-2026/telegraph--dominic-cavendish.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -313,7 +325,7 @@
     ]
   },
   "startTime": "2026-10-16T13:35:14.517Z",
-  "lastProcessed": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+  "lastProcessed": "harry-potter-and-the-cursed-child-one-part-west-end-2026/guardian--unknown.json",
   "log": [
     {
       "t": "2026-10-16T14:38:18.090Z",
@@ -367,55 +379,32 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-16T16:47:37.386Z",
+      "t": "2026-10-16T16:59:33.441Z",
       "event": "bb-session",
-      "session": "016a6fb5",
-      "url": "https://www.nytimes.com/2026/10/16/theater/memoirs-of-amorous-gentlemen-review-d"
+      "session": "5681158d",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/some-woman-review-anne-ma"
     },
     {
-      "t": "2026-10-16T16:47:37.971Z",
+      "t": "2026-10-16T16:59:33.920Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "thetimes.com"
     },
     {
-      "t": "2026-10-16T16:52:09.265Z",
+      "t": "2026-10-16T17:04:52.371Z",
       "event": "bb-session",
-      "session": "e62e4ff1",
-      "url": "https://www.talkinbroadway.com/page/ob/10_14_26b.html"
+      "session": "e579facd",
+      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
     },
     {
-      "t": "2026-10-16T16:52:09.737Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-16T16:54:34.098Z",
+      "t": "2026-10-16T17:05:00.232Z",
       "event": "bb-session",
-      "session": "934b248c",
-      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
-    },
-    {
-      "t": "2026-10-16T16:55:00.884Z",
-      "event": "bb-session",
-      "session": "49706ba8",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654594"
-    },
-    {
-      "t": "2026-10-16T16:55:01.353Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-16T16:55:23.024Z",
-      "event": "bb-session",
-      "session": "fc44ea91",
-      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
-    },
-    {
-      "t": "2026-10-16T16:55:32.186Z",
-      "event": "bb-session",
-      "session": "9bdeea30",
-      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+      "session": "6019f125",
+      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
     }
+  ],
+  "recoveredAfterFailure": [
+    "some-woman-west-end-2026/telegraph--dominic-cavendish.json",
+    "harry-potter-and-the-cursed-child-one-part-west-end-2026/guardian--unknown.json",
+    "nina-off-west-end-2026/guardian--kate-wyver.json"
   ]
 }
