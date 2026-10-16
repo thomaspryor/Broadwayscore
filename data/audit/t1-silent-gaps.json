@@ -1,8 +1,30 @@
 {
-  "generatedAt": "2026-10-16T17:15:12.762Z",
+  "generatedAt": "2026-10-16T20:21:07.795Z",
   "windowDays": 45,
   "showsScanned": 174,
   "gaps": [
+    {
+      "showId": "the-cherry-orchard-west-end-2026",
+      "title": "The Cherry Orchard",
+      "openingDate": "2026-10-13",
+      "file": "times-uk--unknown.json",
+      "outletId": "times-uk",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-cherry-orchard-review-kristin-scott-thomas-gc88pnwh6",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=the-cherry-orchard-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/the-cherry-orchard-review-kristin-scott-thomas-gc88pnwh6 --outlet=times-uk   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-10-16T19:49:06.286Z",
+      "fileAgeHours": 0.5329747222222222,
+      "gapSeenAt": "2026-10-16T20:21:07.794Z",
+      "nonTerminalAgeHours": 0
+    },
     {
       "showId": "stuffed-off-west-end-2026",
       "title": "Stuffed",
@@ -18,9 +40,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=stuffed-off-west-end-2026",
       "firstSeen": "2026-10-15T15:44:57.921Z",
-      "fileAgeHours": 25.503676944444443,
+      "fileAgeHours": 28.60222,
       "gapSeenAt": "2026-10-16T12:12:23.731Z",
-      "nonTerminalAgeHours": 5.046953055555556
+      "nonTerminalAgeHours": 8.145573055555555
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -36,9 +58,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 576.5777805555556,
+      "fileAgeHours": 579.6763344444445,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 127.59715555555556
+      "nonTerminalAgeHours": 130.69577555555554
     }
   ],
   "contradictions": []

@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-16T17:15:02.578Z",
+  "generatedAt": "2026-10-16T20:21:01.675Z",
   "windowDays": 1095,
-  "targets": 669,
-  "auditedThisRun": 9,
-  "carriedForward": 731,
+  "targets": 678,
+  "auditedThisRun": 13,
+  "carriedForward": 727,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 425,
-    "missingCurrentRun": 877,
+    "withGap": 422,
+    "missingCurrentRun": 869,
     "totalCitedNoUrl": 5,
-    "totalFlaggedMisses": 971,
+    "totalFlaggedMisses": 975,
     "totalRecoverable": 8,
     "totalRecovered": 16,
     "humanExcluded": 1,
-    "automatedExcluded": 138,
-    "automatedExcludedListed": 138,
-    "priorProductionCitations": 5136
+    "automatedExcluded": 142,
+    "automatedExcludedListed": 142,
+    "priorProductionCitations": 5140
   },
   "results": [
     {
@@ -11247,27 +11247,11 @@
       "status": "previews",
       "category": "west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.britishtheatreguide.info/reviews/angel-s-bone-aviva-studios-25587",
-        "https://www.theatrereviewsnorth.com/post/angel-s-bone-a-defining-moment-for-eno-but-you-have-to-stand-to-see-it"
-      ],
+      "aggregatorListedUrls": [],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://www.britishtheatreguide.info/reviews/angel-s-bone-aviva-studios-25587",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.theatrereviewsnorth.com/post/angel-s-bone-a-defining-moment-for-eno-but-you-have-to-stand-to-see-it",
-          "host": "theatrereviewsnorth.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
@@ -11286,7 +11270,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 2
+            "fetchErrors": 1
           },
           "lbo-roundup": {
             "found": false,
@@ -11310,164 +11294,28 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
+        "allSourcesFailed": false
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Angel's Bone\" West End review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Angel's Bone\" West End review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Angel's Bone\" review london",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Angel's Bone London Coliseum review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Angel's Bone London Coliseum review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Angel's Bone London Coliseum review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 2,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 23,
-        "byReason": {
-          "non-review-host": 11,
-          "write-path-blocked": 1,
-          "non-review-path": 2,
-          "bare-host": 2,
-          "ticketing-listing": 2,
-          "event-listing": 5
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://www.britishtheatreguide.info/reviews/angel-s-bone-aviva-studios-25587",
-          "host": "britishtheatreguide.info",
-          "outletId": "british-theatre",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.theatrereviewsnorth.com/post/angel-s-bone-a-defining-moment-for-eno-but-you-have-to-stand-to-see-it",
-          "host": "theatrereviewsnorth.com",
-          "outletId": "theatrereviewsnorth",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  provisional outlet \"theatrereviewsnorth\" (not in registry) — onboard to outlet-registry.json aft"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "british-theatre",
-            "outlet": "british-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.britishtheatreguide.info/reviews/angel-s-bone-aviva-studios-25587"
-          },
-          {
-            "outletId": "theatrereviewsnorth.com",
-            "outlet": "theatrereviewsnorth.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatrereviewsnorth.com/post/angel-s-bone-a-defining-moment-for-eno-but-you-have-to-stand-to-see-it"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://www.britishtheatreguide.info/reviews/angel-s-bone-aviva-studios-25587",
-            "outletId": "british-theatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-16T15:25:47.244Z"
-          },
-          {
-            "url": "https://www.theatrereviewsnorth.com/post/angel-s-bone-a-defining-moment-for-eno-but-you-have-to-stand-to-see-it",
-            "outletId": "theatrereviewsnorth.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-16T15:25:47.244Z"
-          }
-        ],
+        "candidates": [],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 2
+        "candidateCount": 0
       },
-      "computedAt": "2026-10-16T15:25:47.244Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-16T17:15:02.678Z",
-        "lastAt": "2026-10-16T17:15:02.678Z"
-      }
+      "computedAt": "2026-10-16T20:21:01.675Z"
     },
     {
       "showId": "animal-wisdom-off-broadway-2022",
@@ -23749,147 +23597,35 @@
       "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.theatermania.com/news/bob-odenkirk-will-present-hospital-hour-starring-comedian-rachel-kaly-off-broadway_1853970/"
-      ],
+      "aggregatorListedUrls": [],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://www.theatermania.com/news/bob-odenkirk-will-present-hospital-hour-starring-comedian-rachel-kaly-off-broadway_1853970/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Bob Odenkirk Presents HOSPITAL HOUR\" Off-Broadway review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Bob Odenkirk Presents HOSPITAL HOUR\" Off-Broadway review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Bob Odenkirk Presents HOSPITAL HOUR\" review night",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Bob Odenkirk Presents HOSPITAL HOUR The Night Egg at the Culture Club review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Bob Odenkirk Presents HOSPITAL HOUR The Night Egg at the Culture Club review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Bob Odenkirk Presents HOSPITAL HOUR The Night Egg at the Culture Club review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 0,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 1,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 15,
-        "byReason": {
-          "non-review-host": 11,
-          "write-path-blocked": 1,
-          "aggregator-internal-nav": 1,
-          "ticketing-reseller": 1,
-          "tag-index-page": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://www.theatermania.com/news/bob-odenkirk-will-present-hospital-hour-starring-comedian-rachel-kaly-off-broadway_1853970/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/bob-odenkirk-will-present-hospital-hour-starring-comedian-rachel-kaly-off-broadway_1853970/"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://www.theatermania.com/news/bob-odenkirk-will-present-hospital-hour-starring-comedian-rachel-kaly-off-broadway_1853970/",
-            "outletId": "theatermania",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-16T15:25:47.244Z"
-          }
-        ],
+        "candidates": [],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 1
+        "candidateCount": 0
       },
-      "computedAt": "2026-10-16T15:25:47.244Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-16T17:15:02.678Z",
-        "lastAt": "2026-10-16T17:15:02.678Z"
-      }
+      "computedAt": "2026-10-16T20:21:01.675Z"
     },
     {
       "showId": "bone-wars-a-new-musical-off-broadway-2026",
@@ -28213,9 +27949,9 @@
       },
       "computedAt": "2026-10-16T12:12:17.690Z",
       "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-16T17:15:02.678Z",
-        "lastAt": "2026-10-16T17:15:02.678Z"
+        "nextState": "incomplete:0:2",
+        "since": "2026-10-16T20:21:01.769Z",
+        "lastAt": "2026-10-16T20:21:01.769Z"
       }
     },
     {
@@ -30422,26 +30158,32 @@
     {
       "showId": "cadel-lungs-on-legs-west-end-2026",
       "title": "Cadel: Lungs On Legs",
-      "openingDate": null,
-      "status": "previews",
+      "openingDate": "2026-10-16",
+      "status": "open",
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://loureviews.blog/2026/10/16/play-review-cadel-lungs-on-legs-at-riverside-studios/",
         "https://www.allthatdazzles.co.uk/post/review-cadel-lungs-on-legs-riverside-studios",
+        "https://www.broadwayworld.com/westend/article/Review-CADEL-LUNGS-ON-LEGS-Riverside-Studios-20261016",
         "https://theatreweekly.com/interview-connor-delves-on-cadel-lungs-on-legs-at-riverside-studios/",
-        "https://www.bestoftheatre.co.uk/blog/post/cadel-lungs-on-legs-london-premiere-riverside-studios",
+        "https://www.londontheatre1.com/reviews/cadel-lungs-on-legs-riverside-studios/",
+        "https://www.londonpubtheatres.com/cadel-lungs-on-legs-by-connor-delves-steve-mcmahon-at-riverside-studios-13-october-15-november-2026",
         "https://thescoop.au/review-cadel-lungs-on-legs-2026-adelaide-fringe/",
+        "https://www.bestoftheatre.co.uk/blog/post/cadel-lungs-on-legs-london-premiere-riverside-studios",
         "https://list.co.uk/adelaide-festivals/news/cadel-lungs-on-legs-theatre-review-racing-to-glory-48060",
-        "https://theqr.co.uk/2026/08/19/edfringe-review-cadel-lungs-on-legs-2/"
+        "https://theatreinedinburgh.co.uk/reviews/cadel-lungs-on-legs-gilded-balloon-at-the-museum/",
+        "https://one4review.co.uk/2026/08/cadel-lungs-on-legs-4-5/",
+        "https://www.londonboxoffice.co.uk/news/post/cadel-lungs-on-legs-riverside-studios-review"
       ],
-      "dirFiles": 9,
-      "dirClean": 1,
-      "inReviewsJson": 1,
+      "dirFiles": 14,
+      "dirClean": 6,
+      "inReviewsJson": 6,
       "missing": [
         {
-          "url": "https://www.allthatdazzles.co.uk/post/review-cadel-lungs-on-legs-riverside-studios",
-          "host": "allthatdazzles.co.uk",
-          "knownOutletId": "all-that-dazzles-uk",
+          "url": "https://www.londonpubtheatres.com/cadel-lungs-on-legs-by-connor-delves-steve-mcmahon-at-riverside-studios-13-october-15-november-2026",
+          "host": "londonpubtheatres.com",
+          "knownOutletId": "londonpubtheatres",
           "serpCensus": true
         },
         {
@@ -30450,6 +30192,12 @@
           "knownOutletId": null,
           "priorRun": true,
           "priorRunSource": "pending-file-date:2026-03-01",
+          "serpCensus": true
+        },
+        {
+          "url": "https://one4review.co.uk/2026/08/cadel-lungs-on-legs-4-5/",
+          "host": "one4review.co.uk",
+          "knownOutletId": null,
           "serpCensus": true
         }
       ],
@@ -30490,21 +30238,21 @@
           "dirFlags": [
             {
               "file": "bestoftheatre--milo-garth.json",
-              "flag": "clean",
+              "flag": "wrongProduction",
               "urlInDir": "https://www.bestoftheatre.co.uk/blog/post/cadel-lungs-on-legs-london-premiere-riverside-studios"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "rejectionReason"
+            "wrongProduction"
           ],
           "serpCensus": true,
           "reverify": true
         },
         {
-          "url": "https://theqr.co.uk/2026/08/19/edfringe-review-cadel-lungs-on-legs-2/",
-          "host": "theqr.co.uk",
-          "knownOutletId": "theqr",
+          "url": "https://theatreinedinburgh.co.uk/reviews/cadel-lungs-on-legs-gilded-balloon-at-the-museum/",
+          "host": "theatreinedinburgh.co.uk",
+          "knownOutletId": "theatreinedinburgh",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -30512,9 +30260,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "theqr--sandra-macdonald.json",
+              "file": "theatreinedinburgh--chris-omaweng.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://theqr.co.uk/2026/08/19/edfringe-review-cadel-lungs-on-legs-2/"
+              "urlInDir": "https://theatreinedinburgh.co.uk/reviews/cadel-lungs-on-legs-gilded-balloon-at-the-museum/"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -30527,7 +30275,7 @@
       ],
       "citedNoUrl": [],
       "weReference": {
-        "rowCount": 0,
+        "rowCount": 1,
         "sources": {
           "westendtheatre": {
             "found": false,
@@ -30541,11 +30289,11 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0
+            "fetchErrors": 2
           },
           "lbo-roundup": {
-            "found": false,
-            "rows": 0,
+            "found": true,
+            "rows": 1,
             "emptyParse": false,
             "error": null,
             "fetchErrors": 0
@@ -30566,23 +30314,28 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
+        "currentRunRows": 1,
+        "corroborated": 1,
+        "perSource": {
+          "lbo-roundup": {
+            "cited": 1,
+            "corroborated": 1
+          }
+        }
       },
       "serpCensus": {
         "ran": true,
         "complete": true,
-        "query": "\"Cadel: Lungs On Legs\" West End review",
+        "query": "\"Cadel: Lungs On Legs\" West End review 2026",
         "queryStatus": [
           {
             "arm": "primary",
-            "query": "\"Cadel: Lungs On Legs\" West End review",
+            "query": "\"Cadel: Lungs On Legs\" West End review 2026",
             "page": 0,
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 5,
             "error": null
           },
           {
@@ -30591,8 +30344,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 8,
-            "accepted": 0,
+            "results": 9,
+            "accepted": 1,
             "error": null
           },
           {
@@ -30601,8 +30354,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 1,
+            "results": 9,
+            "accepted": 0,
             "error": null
           },
           {
@@ -30612,7 +30365,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -30622,24 +30375,24 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 6,
+        "resultCount": 11,
         "error": null
       },
       "candidatesRejected": {
-        "count": 34,
+        "count": 27,
         "byReason": {
-          "non-review-host": 24,
+          "non-review-host": 20,
+          "aggregator-internal-nav": 1,
+          "write-path-blocked": 1,
           "ticketing-reseller": 1,
-          "aggregator-internal-nav": 2,
-          "write-path-blocked": 2,
           "bare-host": 1,
-          "non-review-path": 4
+          "non-review-path": 3
         }
       },
       "dedupedVariants": [],
@@ -30655,10 +30408,25 @@
       ],
       "ingestResults": [
         {
-          "url": "https://www.allthatdazzles.co.uk/post/review-cadel-lungs-on-legs-riverside-studios",
-          "host": "allthatdazzles.co.uk",
-          "outletId": "all-that-dazzles-uk",
+          "url": "https://www.londonpubtheatres.com/cadel-lungs-on-legs-by-connor-delves-steve-mcmahon-at-riverside-studios-13-october-15-november-2026",
+          "host": "londonpubtheatres.com",
+          "outletId": "londonpubtheatres",
           "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://one4review.co.uk/2026/08/cadel-lungs-on-legs-4-5/",
+          "host": "one4review.co.uk",
+          "outletId": "one4review",
+          "provisional": true,
           "ok": true,
           "noop": false,
           "conflict": false,
@@ -30675,11 +30443,18 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "all-that-dazzles-uk",
-            "outlet": "all-that-dazzles-uk",
+            "outletId": "londonpubtheatres",
+            "outlet": "londonpubtheatres",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.allthatdazzles.co.uk/post/review-cadel-lungs-on-legs-riverside-studios"
+            "url": "https://www.londonpubtheatres.com/cadel-lungs-on-legs-by-connor-delves-steve-mcmahon-at-riverside-studios-13-october-15-november-2026"
+          },
+          {
+            "outletId": "one4review.co.uk",
+            "outlet": "one4review.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://one4review.co.uk/2026/08/cadel-lungs-on-legs-4-5/"
           },
           {
             "outletId": "theatre-weekly",
@@ -30696,15 +30471,39 @@
             "url": "https://www.bestoftheatre.co.uk/blog/post/cadel-lungs-on-legs-london-premiere-riverside-studios"
           },
           {
-            "outletId": "theqr",
-            "outlet": "theqr",
+            "outletId": "theatreinedinburgh",
+            "outlet": "theatreinedinburgh",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://theqr.co.uk/2026/08/19/edfringe-review-cadel-lungs-on-legs-2/"
+            "url": "https://theatreinedinburgh.co.uk/reviews/cadel-lungs-on-legs-gilded-balloon-at-the-museum/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://loureviews.blog/2026/10/16/play-review-cadel-lungs-on-legs-at-riverside-studios/",
+            "outletId": "loureviews.blog",
+            "state": "live",
+            "firstSeenAt": "2026-10-16T20:21:01.675Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-cadel-lungs-on-legs-riverside-studios",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-16T12:12:17.690Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-CADEL-LUNGS-ON-LEGS-Riverside-Studios-20261016",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-16T20:21:01.675Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/cadel-lungs-on-legs-riverside-studios/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-16T20:21:01.675Z"
+          },
           {
             "url": "https://list.co.uk/adelaide-festivals/news/cadel-lungs-on-legs-theatre-review-racing-to-glory-48060",
             "outletId": "list.co.uk",
@@ -30712,11 +30511,24 @@
             "firstSeenAt": "2026-10-16T12:12:17.690Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-cadel-lungs-on-legs-riverside-studios",
-            "outletId": "all-that-dazzles-uk",
+            "url": "https://www.londonboxoffice.co.uk/news/post/cadel-lungs-on-legs-riverside-studios-review",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-16T20:21:01.675Z"
+          },
+          {
+            "url": "https://www.londonpubtheatres.com/cadel-lungs-on-legs-by-connor-delves-steve-mcmahon-at-riverside-studios-13-october-15-november-2026",
+            "outletId": "londonpubtheatres",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-16T12:12:17.690Z"
+            "firstSeenAt": "2026-10-16T20:21:01.675Z"
+          },
+          {
+            "url": "https://one4review.co.uk/2026/08/cadel-lungs-on-legs-4-5/",
+            "outletId": "one4review.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-16T20:21:01.675Z"
           },
           {
             "url": "https://theatreweekly.com/interview-connor-delves-on-cadel-lungs-on-legs-at-riverside-studios/",
@@ -30733,23 +30545,18 @@
             "firstSeenAt": "2026-10-14T17:37:56.841Z"
           },
           {
-            "url": "https://theqr.co.uk/2026/08/19/edfringe-review-cadel-lungs-on-legs-2/",
-            "outletId": "theqr",
+            "url": "https://theatreinedinburgh.co.uk/reviews/cadel-lungs-on-legs-gilded-balloon-at-the-museum/",
+            "outletId": "theatreinedinburgh",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-14T17:37:56.841Z"
+            "firstSeenAt": "2026-10-16T20:21:01.675Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 1,
-        "candidateCount": 5
+        "liveCount": 6,
+        "candidateCount": 11
       },
-      "computedAt": "2026-10-16T12:12:17.690Z",
-      "quarantine": {
-        "nextState": "complete:1:1",
-        "since": "2026-10-16T17:15:02.678Z",
-        "lastAt": "2026-10-16T17:15:02.678Z"
-      }
+      "computedAt": "2026-10-16T20:21:01.675Z"
     },
     {
       "showId": "call-me-izzy-2025",
@@ -46013,11 +45820,16 @@
       "showId": "dirty-dancing-the-classic-story-on-stage-west-end-2026",
       "title": "Dirty Dancing: The Classic Story on Stage",
       "openingDate": "2026-10-16",
-      "status": "upcoming",
+      "status": "open",
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.londontheatre.co.uk/reviews/dirty-dancing-the-classic-story-on-stage-review-dominion-theatre",
+        "https://www.allthatdazzles.co.uk/post/review-dirty-dancing-dominion-theatre-1",
+        "https://everything-theatre.co.uk/2023/01/review-dirty-dancing-dominion-theatre-2/",
+        "https://www.londontheatre.co.uk/reviews/dirty-dancing-review-dominion-theatre",
+        "https://shystrangemanic.com/2022/02/dirty-dancing-at-the-dominion-theatre.html",
+        "https://www.whatsonstage.com/london-theatre/reviews/dirty-dancing-dominion-2022-west-end-review_55891.html",
         "https://www.lastminutetheatretickets.com/review-of-dirty-dancing-the-classic-story-on-stage/",
         "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462"
       ],
@@ -46025,6 +45837,20 @@
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://everything-theatre.co.uk/2023/01/review-dirty-dancing-dominion-theatre-2/",
+          "host": "everything-theatre.co.uk",
+          "knownOutletId": "everything-theatre",
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
+        },
+        {
+          "url": "https://shystrangemanic.com/2022/02/dirty-dancing-at-the-dominion-theatre.html",
+          "host": "shystrangemanic.com",
+          "knownOutletId": "shy-strange-manic",
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
+        },
         {
           "url": "https://www.lastminutetheatretickets.com/review-of-dirty-dancing-the-classic-story-on-stage/",
           "host": "lastminutetheatretickets.com",
@@ -46058,7 +45884,78 @@
           ],
           "priorRun": true,
           "priorRunSource": "flagged-file-date:January 26th, 2023",
-          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-dirty-dancing-dominion-theatre-1",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "all-that-dazzles-uk--sam-waite.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-dirty-dancing-dominion-theatre-1"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:January 26th, 2023",
+          "reverify": false
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/dirty-dancing-review-dominion-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "london-theatre--marianka-swain.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.londontheatre.co.uk/reviews/dirty-dancing-review-dominion-theatre"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:February 9th, 2022",
+          "reverify": false
+        },
+        {
+          "url": "https://www.whatsonstage.com/london-theatre/reviews/dirty-dancing-dominion-2022-west-end-review_55891.html",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--james-fitzgerald.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/london-theatre/reviews/dirty-dancing-dominion-2022-west-end-review_55891.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:February 9th, 2022",
           "reverify": false
         },
         {
@@ -46101,7 +45998,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0
+            "fetchErrors": 1
           },
           "lbo-roundup": {
             "found": false,
@@ -46192,22 +46089,34 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 35,
+        "count": 34,
         "byReason": {
           "non-review-host": 24,
-          "ticketing-reseller": 2,
-          "aggregator-internal-nav": 3,
-          "ticketing-listing": 1,
+          "aggregator-internal-nav": 2,
+          "census-junk-host": 1,
           "write-path-blocked": 2,
+          "ticketing-reseller": 2,
           "bare-host": 1,
           "non-review-path": 1,
-          "census-junk-host": 1
+          "ticket-seller-product-page": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
+        {
+          "url": "https://everything-theatre.co.uk/2023/01/review-dirty-dancing-dominion-theatre-2/",
+          "host": "everything-theatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://shystrangemanic.com/2022/02/dirty-dancing-at-the-dominion-theatre.html",
+          "host": "shystrangemanic.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
         {
           "url": "https://www.lastminutetheatretickets.com/review-of-dirty-dancing-the-classic-story-on-stage/",
           "host": "lastminutetheatretickets.com",
@@ -46242,12 +46151,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-16T12:12:17.690Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-16T17:15:02.678Z",
-        "lastAt": "2026-10-16T17:15:02.678Z"
-      }
+      "computedAt": "2026-10-16T20:21:01.675Z"
     },
     {
       "showId": "dirty-dancing-tour-2026",
@@ -47532,7 +47436,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -47542,7 +47446,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 1,
             "error": null
           },
@@ -47573,13 +47477,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 30,
+        "count": 29,
         "byReason": {
-          "non-review-host": 24,
-          "aggregator-internal-nav": 2,
-          "write-path-blocked": 1,
+          "non-review-host": 23,
+          "aggregator-internal-nav": 3,
           "census-junk-host": 2,
-          "review-hub-page": 1
+          "write-path-blocked": 1
         }
       },
       "dedupedVariants": [],
@@ -47667,12 +47570,7 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-16T10:22:00.998Z",
-      "quarantine": {
-        "nextState": "incomplete:0:3",
-        "since": "2026-10-16T17:15:02.678Z",
-        "lastAt": "2026-10-16T17:15:02.678Z"
-      }
+      "computedAt": "2026-10-16T20:21:01.675Z"
     },
     {
       "showId": "doll-day-afternoon-off-broadway-2026",
@@ -56904,9 +56802,9 @@
       },
       "computedAt": "2026-10-16T12:12:17.690Z",
       "quarantine": {
-        "nextState": "complete:1:1",
-        "since": "2026-10-16T17:15:02.678Z",
-        "lastAt": "2026-10-16T17:15:02.678Z"
+        "nextState": "incomplete:3:6",
+        "since": "2026-10-16T20:21:01.769Z",
+        "lastAt": "2026-10-16T20:21:01.769Z"
       }
     },
     {
@@ -81443,10 +81341,10 @@
         "https://www.timeout.com/london/theatre/high-school-musical",
         "https://jadar.uk/2026/08/28/review-high-school-musical/",
         "https://kidify.co.uk/day-out/high-school-musical",
-        "https://www.jackstage.co.uk/post/disney-s-high-school-musical-review-theatre-meets-interactive-sports-stadium",
-        "https://www.whatsonstage.com/news/high-school-musical-revival-take-a-sneak-peek-at-the-set-designs-for-salford-and-london_1726697/"
+        "https://oneshowatatime.co.uk/2026/08/28/high-school-musical-a-fantastically-joyous-production-theatre-review/",
+        "https://activities.bookpebble.co.uk/activity/fresh-arts-high-school-musical-at-the-troubadour-theatre-wembley-5941d490-c377-417d-8187-20d8b8fc8e92"
       ],
-      "dirFiles": 15,
+      "dirFiles": 18,
       "dirClean": 2,
       "inReviewsJson": 1,
       "missing": [
@@ -81549,9 +81447,9 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.jackstage.co.uk/post/disney-s-high-school-musical-review-theatre-meets-interactive-sports-stadium",
-          "host": "jackstage.co.uk",
-          "knownOutletId": "jackstage",
+          "url": "https://activities.bookpebble.co.uk/activity/fresh-arts-high-school-musical-at-the-troubadour-theatre-wembley-5941d490-c377-417d-8187-20d8b8fc8e92",
+          "host": "bookpebble.co.uk",
+          "knownOutletId": null,
           "serpCensus": true
         }
       ],
@@ -81701,9 +81599,9 @@
           "reverify": true
         },
         {
-          "url": "https://www.whatsonstage.com/news/high-school-musical-revival-take-a-sneak-peek-at-the-set-designs-for-salford-and-london_1726697/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
+          "url": "https://oneshowatatime.co.uk/2026/08/28/high-school-musical-a-fantastically-joyous-production-theatre-review/",
+          "host": "oneshowatatime.co.uk",
+          "knownOutletId": null,
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -81711,19 +81609,17 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "whatsonstage--tom-millward.json",
+              "file": "oneshowatatime--leyla-demirel.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.whatsonstage.com/news/high-school-musical-revival-take-a-sneak-peek-at-the-set-designs-for-salford-and-london_1726697/"
+              "urlInDir": "https://oneshowatatime.co.uk/2026/08/28/high-school-musical-a-fantastically-joyous-production-theatre-review/"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
             "wrongProduction"
           ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-07-03",
           "serpCensus": true,
-          "reverify": false
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -81742,7 +81638,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0
+            "fetchErrors": 2
           },
           "lbo-roundup": {
             "found": false,
@@ -81833,19 +81729,19 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 449,
+        "count": 451,
         "byReason": {
-          "non-review-host": 56,
+          "non-review-host": 60,
           "aggregator-internal-nav": 276,
-          "write-path-blocked": 2,
+          "census-junk-host": 3,
+          "write-path-blocked": 1,
+          "ticketing-listing": 1,
           "bare-host": 2,
-          "census-junk-host": 4,
+          "ticket-seller-product-page": 2,
           "not-http-url": 38,
-          "production-database-listing": 10,
           "aggregator-section-root": 8,
           "roundup-page": 50,
-          "ticket-seller-product-page": 2,
-          "news-article": 1
+          "production-database-listing": 10
         }
       },
       "dedupedVariants": [],
@@ -81859,7 +81755,7 @@
           "publishDate": "2019-11-11"
         }
       ],
-      "automatedExcludedListed": 6,
+      "automatedExcludedListed": 7,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -81949,11 +81845,11 @@
       ],
       "ingestResults": [
         {
-          "url": "https://www.jackstage.co.uk/post/disney-s-high-school-musical-review-theatre-meets-interactive-sports-stadium",
-          "host": "jackstage.co.uk",
-          "outletId": "jackstage",
-          "provisional": false,
-          "ok": true,
+          "url": "https://activities.bookpebble.co.uk/activity/fresh-arts-high-school-musical-at-the-troubadour-theatre-wembley-5941d490-c377-417d-8187-20d8b8fc8e92",
+          "host": "bookpebble.co.uk",
+          "outletId": "bookpebble",
+          "provisional": true,
+          "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
@@ -81961,7 +81857,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": null
+          "reason": "Fetch failed: All scraping methods failed"
         }
       ],
       "ingestSkippedByCap": [],
@@ -81969,11 +81865,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "jackstage",
-            "outlet": "jackstage",
+            "outletId": "bookpebble.co.uk",
+            "outlet": "bookpebble.co.uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.jackstage.co.uk/post/disney-s-high-school-musical-review-theatre-meets-interactive-sports-stadium"
+            "url": "https://activities.bookpebble.co.uk/activity/fresh-arts-high-school-musical-at-the-troubadour-theatre-wembley-5941d490-c377-417d-8187-20d8b8fc8e92"
           },
           {
             "outletId": "maninlondon.com",
@@ -82016,6 +81912,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://kidify.co.uk/day-out/high-school-musical"
+          },
+          {
+            "outletId": "oneshowatatime.co.uk",
+            "outlet": "oneshowatatime.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://oneshowatatime.co.uk/2026/08/28/high-school-musical-a-fantastically-joyous-production-theatre-review/"
           }
         ],
         "suppressedMissing": [],
@@ -82027,11 +81930,11 @@
             "firstSeenAt": "2026-10-13T19:50:25.664Z"
           },
           {
-            "url": "https://www.jackstage.co.uk/post/disney-s-high-school-musical-review-theatre-meets-interactive-sports-stadium",
-            "outletId": "jackstage",
+            "url": "https://activities.bookpebble.co.uk/activity/fresh-arts-high-school-musical-at-the-troubadour-theatre-wembley-5941d490-c377-417d-8187-20d8b8fc8e92",
+            "outletId": "bookpebble.co.uk",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-16T12:12:17.690Z"
+            "firstSeenAt": "2026-10-16T20:21:01.675Z"
           },
           {
             "url": "https://maninlondon.com/high-school-musical-troubadour-wembley-park-theatre-london/",
@@ -82074,18 +81977,20 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-13T04:11:59.529Z"
+          },
+          {
+            "url": "https://oneshowatatime.co.uk/2026/08/28/high-school-musical-a-fantastically-joyous-production-theatre-review/",
+            "outletId": "oneshowatatime.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-16T20:21:01.675Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 1,
-        "candidateCount": 8
+        "candidateCount": 9
       },
-      "computedAt": "2026-10-16T12:12:17.690Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-16T17:15:02.678Z",
-        "lastAt": "2026-10-16T17:15:02.678Z"
-      }
+      "computedAt": "2026-10-16T20:21:01.675Z"
     },
     {
       "showId": "high-society-west-end-2026",
@@ -90453,30 +90358,31 @@
     {
       "showId": "jane-eyre-rose-kingston-off-west-end-2026",
       "title": "Jane Eyre",
-      "openingDate": null,
-      "status": "previews",
+      "openingDate": "2026-10-15",
+      "status": "open",
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.westendbestfriend.co.uk/news/review-jane-eyre-rose-theatre-kingston-tour",
-        "https://www.whatsonstage.com/news/jane-eyre-at-mercury-theatre-and-on-tour-review_1734669/",
         "https://timeandleisure.co.uk/things-to-do/review-jane-eyre-rose-theatre/",
+        "https://www.whatsonstage.com/news/jane-eyre-at-mercury-theatre-and-on-tour-review_1734669/",
+        "https://kingston.nub.news/news/local-features/review-electrifying-jane-eyre-adaptation-captivates-theatre-audiences-in-kingston-311482",
+        "https://broadwaybaby.com/shows/jane-eyre/838635",
         "https://www.allthatdazzles.co.uk/post/review-jane-eyre-rose-theatre",
         "https://northwestend.com/jane-eyre-rose-theatre/",
-        "https://broadwaybaby.com/shows/jane-eyre/838635",
-        "https://kingston.nub.news/news/local-features/review-electrifying-jane-eyre-adaptation-captivates-theatre-audiences-in-kingston-311482",
-        "https://brightonsource.co.uk/reviews/jane-eyre-review/",
         "https://www.britishtheatreguide.info/reviews/jane-eyre-the-southwark-playh-25995",
-        "https://theatreandtonic.co.uk/blog/jane-eyre-a-musical-southwark-playhouse-elephant-review",
+        "https://brightonsource.co.uk/reviews/jane-eyre-review/",
+        "https://ayoungishperspective.co.uk/2026/09/11/review-jane-eyre/",
         "https://everything-theatre.co.uk/2026/06/review-jane-eyre-convention-bread-and-roses-theatre/",
         "https://blackeyedtheatre.co.uk/press-reviews/jane-eyre/",
-        "https://www.theguardian.com/stage/2026/sep/09/jane-eyre-a-musical-review-southwark-playhouse-elephant-london-charlotte-bronte",
         "https://www.southernartsreviews.co.uk/review-jane-eyre/",
+        "https://www.theguardian.com/stage/2026/sep/09/jane-eyre-a-musical-review-southwark-playhouse-elephant-london-charlotte-bronte",
         "https://www.londontheatre.co.uk/reviews/jane-eyre",
+        "https://alltrippers.com/en/united-kingdom/shows/play-jane-eyre-rose-theatre-kingston-kingston",
         "https://artsreviewhub.com/jane-eyre-set-to-enchant-storyhouse-audiences-this-autumn/",
         "https://www.londonboxoffice.co.uk/news/post/jane-eyre-southwark-playhouse-elephant-review"
       ],
-      "dirFiles": 14,
+      "dirFiles": 16,
       "dirClean": 5,
       "inReviewsJson": 6,
       "missing": [
@@ -90484,6 +90390,12 @@
           "url": "https://www.westendbestfriend.co.uk/news/review-jane-eyre-rose-theatre-kingston-tour",
           "host": "westendbestfriend.co.uk",
           "knownOutletId": "west-end-best-friend",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/jane-eyre-the-southwark-playh-25995",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
           "serpCensus": true
         },
         {
@@ -90495,15 +90407,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.britishtheatreguide.info/reviews/jane-eyre-the-southwark-playh-25995",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/jane-eyre-a-musical-southwark-playhouse-elephant-review",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": "theatreandtonic",
+          "url": "https://ayoungishperspective.co.uk/2026/09/11/review-jane-eyre/",
+          "host": "ayoungishperspective.co.uk",
+          "knownOutletId": "a-youngish-perspective",
           "serpCensus": true
         },
         {
@@ -90518,6 +90424,12 @@
           "knownOutletId": "london-theatre",
           "priorRun": true,
           "priorRunSource": "pending-file-date:2016-06-08",
+          "serpCensus": true
+        },
+        {
+          "url": "https://alltrippers.com/en/united-kingdom/shows/play-jane-eyre-rose-theatre-kingston-kingston",
+          "host": "alltrippers.com",
+          "knownOutletId": null,
           "serpCensus": true
         },
         {
@@ -90698,7 +90610,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0
+            "fetchErrors": 2
           },
           "lbo-roundup": {
             "found": true,
@@ -90730,16 +90642,16 @@
       "serpCensus": {
         "ran": true,
         "complete": true,
-        "query": "\"Jane Eyre\" West End review",
+        "query": "\"Jane Eyre\" West End review 2026",
         "queryStatus": [
           {
             "arm": "primary",
-            "query": "\"Jane Eyre\" West End review",
+            "query": "\"Jane Eyre\" West End review 2026",
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 7,
+            "results": 9,
+            "accepted": 5,
             "error": null
           },
           {
@@ -90749,7 +90661,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -90759,7 +90671,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -90769,7 +90681,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           },
           {
@@ -90778,20 +90690,20 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 4,
+            "results": 10,
+            "accepted": 5,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 16,
+        "resultCount": 17,
         "error": null
       },
       "candidatesRejected": {
-        "count": 17,
+        "count": 19,
         "byReason": {
-          "non-review-host": 15,
+          "non-review-host": 17,
           "write-path-blocked": 2
         }
       },
@@ -90844,19 +90756,19 @@
           "reason": "⚠️  Cross-market reroute: jane-eyre-rose-kingston-off-west-end-2026 → jane-eyre-off-west-end-2026 (s"
         },
         {
-          "url": "https://theatreandtonic.co.uk/blog/jane-eyre-a-musical-southwark-playhouse-elephant-review",
-          "host": "theatreandtonic.co.uk",
-          "outletId": "theatreandtonic",
+          "url": "https://ayoungishperspective.co.uk/2026/09/11/review-jane-eyre/",
+          "host": "ayoungishperspective.co.uk",
+          "outletId": "a-youngish-perspective",
           "provisional": false,
           "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
           "expected": false,
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Cross-market reroute: jane-eyre-rose-kingston-off-west-end-2026 → jane-eyre-off-west-end-2026 (s"
+          "reason": "jane-eyre-rose-kingston-off-west-end-2026: https://ayoungishperspective.co.uk/2026/09/11/review-jane-eyre/ is already owned by jane-eyre-off-west-end-2026 — one of the two is contaminated. Inspect data/review-texts/jane-eyre-off-west-end-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
         },
         {
           "url": "https://www.theguardian.com/stage/2026/sep/09/jane-eyre-a-musical-review-southwark-playhouse-elephant-london-charlotte-bronte",
@@ -90874,11 +90786,11 @@
           "reason": "⚠️  Cross-market reroute: jane-eyre-rose-kingston-off-west-end-2026 → jane-eyre-off-west-end-2026 (s"
         },
         {
-          "url": "https://www.londonboxoffice.co.uk/news/post/jane-eyre-southwark-playhouse-elephant-review",
-          "host": "londonboxoffice.co.uk",
-          "outletId": "london-box-office",
-          "provisional": false,
-          "ok": false,
+          "url": "https://alltrippers.com/en/united-kingdom/shows/play-jane-eyre-rose-theatre-kingston-kingston",
+          "host": "alltrippers.com",
+          "outletId": "alltrippers",
+          "provisional": true,
+          "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
@@ -90886,10 +90798,16 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Cross-market reroute: jane-eyre-rose-kingston-off-west-end-2026 → jane-eyre-off-west-end-2026 (s"
+          "reason": null
         }
       ],
-      "ingestSkippedByCap": [],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.londonboxoffice.co.uk/news/post/jane-eyre-southwark-playhouse-elephant-review",
+          "host": "londonboxoffice.co.uk",
+          "outletId": "london-box-office"
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -90908,11 +90826,11 @@
             "url": "https://www.britishtheatreguide.info/reviews/jane-eyre-the-southwark-playh-25995"
           },
           {
-            "outletId": "theatreandtonic",
-            "outlet": "theatreandtonic",
+            "outletId": "a-youngish-perspective",
+            "outlet": "a-youngish-perspective",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://theatreandtonic.co.uk/blog/jane-eyre-a-musical-southwark-playhouse-elephant-review"
+            "url": "https://ayoungishperspective.co.uk/2026/09/11/review-jane-eyre/"
           },
           {
             "outletId": "guardian",
@@ -90920,6 +90838,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theguardian.com/stage/2026/sep/09/jane-eyre-a-musical-review-southwark-playhouse-elephant-london-charlotte-bronte"
+          },
+          {
+            "outletId": "alltrippers.com",
+            "outlet": "alltrippers.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://alltrippers.com/en/united-kingdom/shows/play-jane-eyre-rose-theatre-kingston-kingston"
           },
           {
             "outletId": "london-box-office",
@@ -90966,6 +90891,12 @@
             "firstSeenAt": "2026-10-15T23:35:34.762Z"
           },
           {
+            "url": "https://kingston.nub.news/news/local-features/review-electrifying-jane-eyre-adaptation-captivates-theatre-audiences-in-kingston-311482",
+            "outletId": "kingston.nub.news",
+            "state": "live",
+            "firstSeenAt": "2026-10-15T23:35:34.762Z"
+          },
+          {
             "url": "https://www.allthatdazzles.co.uk/post/review-jane-eyre-rose-theatre",
             "outletId": "allthatdazzles.co.uk",
             "state": "live",
@@ -90978,85 +90909,81 @@
             "firstSeenAt": "2026-10-15T23:35:34.762Z"
           },
           {
-            "url": "https://kingston.nub.news/news/local-features/review-electrifying-jane-eyre-adaptation-captivates-theatre-audiences-in-kingston-311482",
-            "outletId": "kingston.nub.news",
-            "state": "live",
-            "firstSeenAt": "2026-10-15T23:35:34.762Z"
-          },
-          {
             "url": "https://www.westendbestfriend.co.uk/news/review-jane-eyre-rose-theatre-kingston-tour",
             "outletId": "west-end-best-friend",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-15T16:27:21.493Z"
           },
           {
             "url": "https://www.britishtheatreguide.info/reviews/jane-eyre-the-southwark-playh-25995",
             "outletId": "british-theatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-15T16:27:21.493Z"
           },
           {
-            "url": "https://theatreandtonic.co.uk/blog/jane-eyre-a-musical-southwark-playhouse-elephant-review",
-            "outletId": "theatreandtonic",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-16T12:12:17.690Z"
+            "url": "https://ayoungishperspective.co.uk/2026/09/11/review-jane-eyre/",
+            "outletId": "a-youngish-perspective",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-16T20:21:01.675Z"
           },
           {
             "url": "https://www.theguardian.com/stage/2026/sep/09/jane-eyre-a-musical-review-southwark-playhouse-elephant-london-charlotte-bronte",
             "outletId": "guardian",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-15T16:27:21.493Z"
+          },
+          {
+            "url": "https://alltrippers.com/en/united-kingdom/shows/play-jane-eyre-rose-theatre-kingston-kingston",
+            "outletId": "alltrippers.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-16T20:21:01.675Z"
           },
           {
             "url": "https://www.londonboxoffice.co.uk/news/post/jane-eyre-southwark-playhouse-elephant-review",
             "outletId": "london-box-office",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-13T17:02:51.141Z"
           },
           {
             "url": "https://www.whatsonstage.com/news/jane-eyre-at-mercury-theatre-and-on-tour-review_1734669/",
             "outletId": "whatsonstage",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-15T16:27:21.493Z"
           },
           {
             "url": "https://broadwaybaby.com/shows/jane-eyre/838635",
             "outletId": "broadway-baby",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-15T16:27:21.493Z"
           },
           {
             "url": "https://blackeyedtheatre.co.uk/press-reviews/jane-eyre/",
             "outletId": "blackeyedtheatre.co.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-16T12:12:17.690Z"
           },
           {
             "url": "https://www.southernartsreviews.co.uk/review-jane-eyre/",
             "outletId": "southernartsreviews",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-15T23:35:34.762Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 4,
-        "candidateCount": 13
+        "candidateCount": 14
       },
-      "computedAt": "2026-10-16T12:12:17.690Z",
-      "quarantine": {
-        "nextState": "incomplete:0:1",
-        "since": "2026-10-16T17:15:02.678Z",
-        "lastAt": "2026-10-16T17:15:02.678Z"
-      }
+      "computedAt": "2026-10-16T20:21:01.675Z"
     },
     {
       "showId": "jasmines-demo-show-4-the-end-off-broadway-2026",
@@ -93809,9 +93736,9 @@
       },
       "computedAt": "2026-10-16T15:25:47.244Z",
       "quarantine": {
-        "nextState": "incomplete:0:8",
-        "since": "2026-10-16T17:15:02.678Z",
-        "lastAt": "2026-10-16T17:15:02.678Z"
+        "nextState": "incomplete:0:9",
+        "since": "2026-10-16T20:21:01.769Z",
+        "lastAt": "2026-10-16T20:21:01.769Z"
       }
     },
     {
@@ -94194,7 +94121,7 @@
       "quarantine": {
         "nextState": "no-census-yet:0:0",
         "since": "2026-10-16T17:15:02.678Z",
-        "lastAt": "2026-10-16T17:15:02.678Z"
+        "lastAt": "2026-10-16T20:21:01.769Z"
       }
     },
     {
@@ -98962,13 +98889,13 @@
       "aggregatorArticles": [
         "https://playbill.com/article/read-reviews-for-broadways-king-lear-with-glenda-jackson",
         "https://playbill.com/article/reviews-what-do-critics-think-of-kenneth-branagh-led-king-lear",
+        "https://playbill.com/article/what-do-critics-think-of-shakespeare-theatre-companys-king-lear-starring-patrick-page",
         "https://playbill.com/article/read-reviews-for-king-lear-starring-anthony-hopkins-and-emma-thompson",
         "https://playbill.com/article/read-uk-reviews-for-ian-mckellen-in-king-lear",
-        "https://playbill.com/article/what-do-critics-think-of-shakespeare-theatre-companys-king-lear-starring-patrick-page",
         "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404",
+        "https://www.broadwayworld.com/article/Review-Roundup-The-Publics-KING-LEAR-Opens-at-the-Delacorte-20140805",
         "https://www.broadwayworld.com/article/Review-Roundup-Kenneth-Branagh-Directed-KING-LEAR-Opens-at-The-Shed-20241114",
-        "https://www.broadwayworld.com/article/Review-Roundup-Amazon-Primes-KING-LEAR-with-Anthony-Hopkins-and-Emma-Thompson-20180927",
-        "https://www.broadwayworld.com/article/Review-Roundup-The-Publics-KING-LEAR-Opens-at-the-Delacorte-20140805"
+        "https://www.broadwayworld.com/article/Review-Roundup-Amazon-Primes-KING-LEAR-with-Anthony-Hopkins-and-Emma-Thompson-20180927"
       ],
       "aggregatorListedUrls": [
         "http://broadway.news/2019/04/04/review-a-scorching-glenda-jackson-leads-the-way-for-the-women-of-king-lear/",
@@ -98998,6 +98925,8 @@
         "https://www.timeout.com/london/theatre/king-lear-25-review",
         "https://www.thestage.co.uk/reviews/king-lear-review-at-wyndhams-theatre-london-with-kenneth-branagh",
         "https://www.whatsonstage.com/news/king-lear-review-kenneth-branaghs-banal-tragedy_1543275/",
+        "https://www.broadwayworld.com/washington-dc/article/Review-KING-LEAR-at-Shakespeare-Theatre-Company-20230303",
+        "https://www.washingtonpost.com/theater-dance/2023/03/03/king-lear-patrick-page-godwin-stc/",
         "http://www.theguardian.com/tv-and-radio/2018/may/28/bbc-king-lear-review-anthony-hopkins",
         "http://www.hollywoodreporter.com/review/king-lear-review-amazon-1143459",
         "https://www.standard.co.uk/goingout/theatre/king-lear-theatre-review-ian-mckellens-detailed-intelligent-performance-is-a-triumph-a3648041.html",
@@ -99005,8 +98934,6 @@
         "https://inews.co.uk/essentials/ian-mckellen-king-lear-brutal-sensual-triumphant/",
         "https://www.metro.news/theatre-review-ian-mckellen-put-through-the-wringer-in-king-lear/766152/",
         "http://variety.com/2017/legit/reviews/king-lear-review-ian-mckellen-1202577750/",
-        "https://www.broadwayworld.com/washington-dc/article/Review-KING-LEAR-at-Shakespeare-Theatre-Company-20230303",
-        "https://www.washingtonpost.com/theater-dance/2023/03/03/king-lear-patrick-page-godwin-stc/",
         "https://www.hollywoodreporter.com/review/king-lear-theater-review-258884",
         "https://www.nytimes.com/2019/04/04/theater/king-lear-review-glenda-jackson.html",
         "https://www.timeout.com/newyork/theater/review-king-lear-glenda-jackson",
@@ -99024,13 +98951,6 @@
         "https://www.nj.com/entertainment/2019/04/glenda-jackson-roars-in-an-amazing-king-lear-on-broadway-review.html",
         "https://www.thedailybeast.com/glenda-jackson-in-shakespeares-king-lear-on-broadway-tragedy-and-a-lot-of-trump-era-sighing",
         "https://www.theguardian.com/stage/2019/apr/04/king-lear-shakespeare-glenda-jackson-broadway",
-        "https://www.nytimes.com/2024/11/14/theater/king-lear-review-kenneth-branagh.html",
-        "https://observer.com/2024/11/review-kenneth-branaghs-king-lear-howls-into-a-stormy-rushed-muddle/",
-        "https://www.theatrely.com/post/a-hasty-king-lear-at-the-shed-review",
-        "https://www.newyorktheatreguide.com/reviews/king-lear-off-broadway-review-kenneth-branagh",
-        "https://www.theguardian.com/tv-and-radio/2018/may/28/bbc-king-lear-review-anthony-hopkins",
-        "https://www.hollywoodreporter.com/review/king-lear-review-amazon-1143459",
-        "https://www.pastemagazine.com/articles/2018/09/amazon-prime-bbc-king-lear-anthony-hopkins-emma-th.html",
         "http://www.nytimes.com/2014/08/06/theater/king-lear-in-central-park-starring-john-lithgow.html",
         "http://www.vulture.com/2014/08/theater-review-king-lear-public-theater-john-lithgow.html",
         "http://www.newsday.com/entertainment/theater/king-lear-review-hail-john-lithgow-1.8945797",
@@ -99045,11 +98965,17 @@
         "http://www.amny.com/entertainment/king-lear-review-john-lithgow-superb-in-shakespeare-in-the-park-production-1.8971915",
         "https://www.theguardian.com/stage/2014/aug/06/king-lear-shakespeare-central-park-john-lithgow-review",
         "http://www.deadline.com/2014/08/king-lear-central-park-john-lithgow-annette-bening-review/",
+        "https://www.nytimes.com/2024/11/14/theater/king-lear-review-kenneth-branagh.html",
+        "https://observer.com/2024/11/review-kenneth-branaghs-king-lear-howls-into-a-stormy-rushed-muddle/",
+        "https://www.theatrely.com/post/a-hasty-king-lear-at-the-shed-review",
+        "https://www.newyorktheatreguide.com/reviews/king-lear-off-broadway-review-kenneth-branagh",
+        "https://www.theguardian.com/tv-and-radio/2018/may/28/bbc-king-lear-review-anthony-hopkins",
+        "https://www.hollywoodreporter.com/review/king-lear-review-amazon-1143459",
+        "https://www.pastemagazine.com/articles/2018/09/amazon-prime-bbc-king-lear-anthony-hopkins-emma-th.html",
         "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Oakland-Theater-Project-20261002",
         "https://www.mercurynews.com/2026/10/01/review-missed-opportunities-plague-oakland-theaters-king-lear/",
-        "https://www.thestage.co.uk/reviews/king-lear-review-royal-exchange-theatre-manchester-matthew-dunster-david-threlfall",
-        "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Z-Space-20260928",
         "https://www.whatsonstage.com/news/king-lear-with-david-threlfall-at-the-royal-exchange-review_1734679/",
+        "https://www.thestage.co.uk/reviews/king-lear-review-royal-exchange-theatre-manchester-matthew-dunster-david-threlfall",
         "https://www.theguardian.com/stage/2026/oct/10/king-lear-review-david-threlfall-royal-exchange-theatre-manchester",
         "https://theatreandtonic.co.uk/blog/king-lear-at-royal-exchange-theatre-review",
         "https://www.britishtheatreguide.info/reviews/king-lear-royal-exchange-26094",
@@ -99058,14 +98984,16 @@
         "https://www.thereviewshub.com/king-lear-royal-exchange-manchester/",
         "https://quayslife.com/reviews/king-lear-royal-exchange-50th-anniversary-production-review/",
         "https://everything-theatre.co.uk/2026/09/review-king-lear-crucible-theatre-sheffield/",
-        "https://ilovemanchester.com/king-lear-royal-exchange-review",
+        "https://www.sfchronicle.com/entertainment/theater/article/oakland-theater-project-king-lear-22404840.php",
         "https://www.royalexchange.co.uk/event/king-lear/",
         "https://northwestend.co.uk/index.php/professional-reviews/773-king-lear-royal-exchange-manchester",
+        "https://confidentials.com/manchester/review-king-lear-royal-exchange-theatre",
         "https://www.telegraph.co.uk/theatre/what-to-see/king-lear-royal-exchange-three-star-review/",
         "https://www.manchestertheatres.com/event/king-lear",
+        "https://www.visitmanchester.com/event/king-lear/111756101/",
         "https://www.franklymydearuk.co.uk/theatre-review-king-lear-royal-exchange-manchester/",
-        "https://ilovemanchester.com/event/king-lear",
         "https://www.britishtheatreguide.info/reviews/king-lear-royal-exchange-12733",
+        "https://ilovemanchester.com/event/king-lear",
         "https://uk.news.yahoo.com/review-king-lear-royal-exchange-170000344.html",
         "https://www.thestage.co.uk/reviews/king-lear-review-at-the-royal-exchange-theatre-manchester--outstanding"
       ],
@@ -99214,6 +99142,20 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://www.broadwayworld.com/washington-dc/article/Review-KING-LEAR-at-Shakespeare-Theatre-Company-20230303",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.washingtonpost.com/theater-dance/2023/03/03/king-lear-patrick-page-godwin-stc/",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
           "url": "http://www.hollywoodreporter.com/review/king-lear-review-amazon-1143459",
           "host": "hollywoodreporter.com",
           "knownOutletId": "hollywood-reporter",
@@ -99245,20 +99187,6 @@
           "url": "http://variety.com/2017/legit/reviews/king-lear-review-ian-mckellen-1202577750/",
           "host": "variety.com",
           "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.broadwayworld.com/washington-dc/article/Review-KING-LEAR-at-Shakespeare-Theatre-Company-20230303",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.washingtonpost.com/theater-dance/2023/03/03/king-lear-patrick-page-godwin-stc/",
-          "host": "washingtonpost.com",
-          "knownOutletId": "washpost",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -99354,48 +99282,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.nytimes.com/2024/11/14/theater/king-lear-review-kenneth-branagh.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://observer.com/2024/11/review-kenneth-branaghs-king-lear-howls-into-a-stormy-rushed-muddle/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatrely.com/post/a-hasty-king-lear-at-the-shed-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/king-lear-off-broadway-review-kenneth-branagh",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/king-lear-review-amazon-1143459",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.pastemagazine.com/articles/2018/09/amazon-prime-bbc-king-lear-anthony-hopkins-emma-th.html",
-          "host": "pastemagazine.com",
-          "knownOutletId": "paste-magazine",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "http://www.nytimes.com/2014/08/06/theater/king-lear-in-central-park-starring-john-lithgow.html",
           "host": "nytimes.com",
           "knownOutletId": "nytimes",
@@ -99487,9 +99373,59 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://www.nytimes.com/2024/11/14/theater/king-lear-review-kenneth-branagh.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2024/11/review-kenneth-branaghs-king-lear-howls-into-a-stormy-rushed-muddle/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/a-hasty-king-lear-at-the-shed-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/king-lear-off-broadway-review-kenneth-branagh",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/king-lear-review-amazon-1143459",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.pastemagazine.com/articles/2018/09/amazon-prime-bbc-king-lear-anthony-hopkins-emma-th.html",
+          "host": "pastemagazine.com",
+          "knownOutletId": "paste-magazine",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
           "url": "https://northwestend.co.uk/index.php/professional-reviews/773-king-lear-royal-exchange-manchester",
           "host": "northwestend.co.uk",
           "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://confidentials.com/manchester/review-king-lear-royal-exchange-theatre",
+          "host": "confidentials.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2016-04-07",
           "serpCensus": true
         },
         {
@@ -99717,29 +99653,6 @@
           "reverify": true
         },
         {
-          "url": "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Z-Space-20260928",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "broadwayworld--steve-murray.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Z-Space-20260928"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
           "url": "https://everything-theatre.co.uk/2026/09/review-king-lear-crucible-theatre-sheffield/",
           "host": "everything-theatre.co.uk",
           "knownOutletId": "everything-theatre",
@@ -99753,6 +99666,29 @@
               "file": "everything-theatre--joanne-thornewell.json",
               "flag": "wrongProduction",
               "urlInDir": "https://everything-theatre.co.uk/2026/09/review-king-lear-crucible-theatre-sheffield/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://www.sfchronicle.com/entertainment/theater/article/oakland-theater-project-king-lear-22404840.php",
+          "host": "sfchronicle.com",
+          "knownOutletId": "san-francisco-chronicle",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "san-francisco-chronicle--lily-janiak.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.sfchronicle.com/entertainment/theater/article/oakland-theater-project-king-lear-22404840.php"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -99807,6 +99743,29 @@
           ],
           "serpCensus": true,
           "reverify": true
+        },
+        {
+          "url": "https://www.visitmanchester.com/event/king-lear/111756101/",
+          "host": "visitmanchester.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "visitmanchester--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.visitmanchester.com/event/king-lear/111756101/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -99823,7 +99782,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 4,
             "error": null
           },
           {
@@ -99842,8 +99801,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 1,
+            "results": 8,
+            "accepted": 2,
             "error": null
           },
           {
@@ -99853,7 +99812,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           },
           {
@@ -99879,21 +99838,22 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 23,
+        "resultCount": 24,
         "error": null
       },
       "candidatesRejected": {
-        "count": 1737,
+        "count": 1734,
         "byReason": {
-          "non-review-host": 176,
-          "aggregator-internal-nav": 1258,
-          "write-path-blocked": 2,
+          "non-review-host": 175,
+          "aggregator-internal-nav": 1255,
+          "write-path-blocked": 1,
           "bare-host": 1,
           "not-http-url": 189,
-          "production-database-listing": 73,
           "aggregator-section-root": 36,
-          "venue-production-page": 1,
-          "review-index-page": 1
+          "roundup-page": 2,
+          "production-database-listing": 73,
+          "review-index-page": 1,
+          "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
@@ -99907,6 +99867,10 @@
           "publishDate": "2023-11-01"
         },
         {
+          "url": "https://playbill.com/article/what-do-critics-think-of-shakespeare-theatre-companys-king-lear-starring-patrick-page",
+          "publishDate": "2023-03-04"
+        },
+        {
           "url": "https://playbill.com/article/read-reviews-for-king-lear-starring-anthony-hopkins-and-emma-thompson",
           "publishDate": "2018-09-27"
         },
@@ -99915,12 +99879,12 @@
           "publishDate": "2017-10-02"
         },
         {
-          "url": "https://playbill.com/article/what-do-critics-think-of-shakespeare-theatre-companys-king-lear-starring-patrick-page",
-          "publishDate": "2023-03-04"
-        },
-        {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404",
           "publishDate": "2019-04-04"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-The-Publics-KING-LEAR-Opens-at-the-Delacorte-20140805",
+          "publishDate": "2014-08-05"
         },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-Kenneth-Branagh-Directed-KING-LEAR-Opens-at-The-Shed-20241114",
@@ -99929,13 +99893,9 @@
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-Amazon-Primes-KING-LEAR-with-Anthony-Hopkins-and-Emma-Thompson-20180927",
           "publishDate": "2018-09-27"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-The-Publics-KING-LEAR-Opens-at-the-Delacorte-20140805",
-          "publishDate": "2014-08-05"
         }
       ],
-      "automatedExcludedListed": 6,
+      "automatedExcludedListed": 7,
       "unextractable": [
         {
           "url": "https://www.thetimes.com/culture/theatre-dance/article/king-lear-review-david-threlfall-kb6mrfglj",
@@ -100067,6 +100027,18 @@
           "reason": "prior-run"
         },
         {
+          "url": "https://www.broadwayworld.com/washington-dc/article/Review-KING-LEAR-at-Shakespeare-Theatre-Company-20230303",
+          "host": "broadwayworld.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.washingtonpost.com/theater-dance/2023/03/03/king-lear-patrick-page-godwin-stc/",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
           "url": "http://www.hollywoodreporter.com/review/king-lear-review-amazon-1143459",
           "host": "hollywoodreporter.com",
           "priorRun": true,
@@ -100093,18 +100065,6 @@
         {
           "url": "http://variety.com/2017/legit/reviews/king-lear-review-ian-mckellen-1202577750/",
           "host": "variety.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.broadwayworld.com/washington-dc/article/Review-KING-LEAR-at-Shakespeare-Theatre-Company-20230303",
-          "host": "broadwayworld.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.washingtonpost.com/theater-dance/2023/03/03/king-lear-patrick-page-godwin-stc/",
-          "host": "washingtonpost.com",
           "priorRun": true,
           "reason": "prior-run"
         },
@@ -100187,42 +100147,6 @@
           "reason": "prior-run"
         },
         {
-          "url": "https://www.nytimes.com/2024/11/14/theater/king-lear-review-kenneth-branagh.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://observer.com/2024/11/review-kenneth-branaghs-king-lear-howls-into-a-stormy-rushed-muddle/",
-          "host": "observer.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.theatrely.com/post/a-hasty-king-lear-at-the-shed-review",
-          "host": "theatrely.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/king-lear-off-broadway-review-kenneth-branagh",
-          "host": "newyorktheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/king-lear-review-amazon-1143459",
-          "host": "hollywoodreporter.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.pastemagazine.com/articles/2018/09/amazon-prime-bbc-king-lear-anthony-hopkins-emma-th.html",
-          "host": "pastemagazine.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
           "url": "http://www.nytimes.com/2014/08/06/theater/king-lear-in-central-park-starring-john-lithgow.html",
           "host": "nytimes.com",
           "priorRun": true,
@@ -100301,6 +100225,48 @@
           "reason": "prior-run"
         },
         {
+          "url": "https://www.nytimes.com/2024/11/14/theater/king-lear-review-kenneth-branagh.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://observer.com/2024/11/review-kenneth-branaghs-king-lear-howls-into-a-stormy-rushed-muddle/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.theatrely.com/post/a-hasty-king-lear-at-the-shed-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/king-lear-off-broadway-review-kenneth-branagh",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/king-lear-review-amazon-1143459",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.pastemagazine.com/articles/2018/09/amazon-prime-bbc-king-lear-anthony-hopkins-emma-th.html",
+          "host": "pastemagazine.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://confidentials.com/manchester/review-king-lear-royal-exchange-theatre",
+          "host": "confidentials.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
           "url": "https://www.franklymydearuk.co.uk/theatre-review-king-lear-royal-exchange-manchester/",
           "host": "franklymydearuk.co.uk",
           "priorRun": true,
@@ -100372,18 +100338,18 @@
             "url": "https://www.mercurynews.com/2026/10/01/review-missed-opportunities-plague-oakland-theaters-king-lear/"
           },
           {
-            "outletId": "broadwayworld",
-            "outlet": "broadwayworld",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Z-Space-20260928"
-          },
-          {
             "outletId": "everything-theatre",
             "outlet": "everything-theatre",
             "critic": "Unknown",
             "stars": null,
             "url": "https://everything-theatre.co.uk/2026/09/review-king-lear-crucible-theatre-sheffield/"
+          },
+          {
+            "outletId": "san-francisco-chronicle",
+            "outlet": "san-francisco-chronicle",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.sfchronicle.com/entertainment/theater/article/oakland-theater-project-king-lear-22404840.php"
           },
           {
             "outletId": "royalexchange.co.uk",
@@ -100398,6 +100364,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.manchestertheatres.com/event/king-lear"
+          },
+          {
+            "outletId": "visitmanchester.com",
+            "outlet": "visitmanchester.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.visitmanchester.com/event/king-lear/111756101/"
           }
         ],
         "suppressedMissing": [],
@@ -100445,28 +100418,28 @@
             "firstSeenAt": "2026-10-12T23:33:06.241Z"
           },
           {
-            "url": "https://www.theguardian.com/tv-and-radio/2018/may/28/bbc-king-lear-review-anthony-hopkins",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-12T23:33:06.241Z"
-          },
-          {
             "url": "https://www.theguardian.com/stage/2014/aug/06/king-lear-shakespeare-central-park-john-lithgow-review",
             "outletId": "theguardian.com",
             "state": "live",
             "firstSeenAt": "2026-10-16T12:12:17.690Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/king-lear-review-royal-exchange-theatre-manchester-matthew-dunster-david-threlfall",
-            "outletId": "thestage.co.uk",
+            "url": "https://www.theguardian.com/tv-and-radio/2018/may/28/bbc-king-lear-review-anthony-hopkins",
+            "outletId": "theguardian.com",
             "state": "live",
-            "firstSeenAt": "2026-10-14T22:22:34.949Z"
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
           },
           {
             "url": "https://www.whatsonstage.com/news/king-lear-with-david-threlfall-at-the-royal-exchange-review_1734679/",
             "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-10-13T12:28:08.210Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/king-lear-review-royal-exchange-theatre-manchester-matthew-dunster-david-threlfall",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-14T22:22:34.949Z"
           },
           {
             "url": "https://www.theguardian.com/stage/2026/oct/10/king-lear-review-david-threlfall-royal-exchange-theatre-manchester",
@@ -100505,14 +100478,14 @@
             "firstSeenAt": "2026-10-16T05:39:49.231Z"
           },
           {
-            "url": "https://ilovemanchester.com/king-lear-royal-exchange-review",
-            "outletId": "ilovemanchester.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-13T12:28:08.210Z"
-          },
-          {
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/king-lear-royal-exchange-three-star-review/",
             "outletId": "telegraph.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-16T12:12:17.690Z"
+          },
+          {
+            "url": "https://www.britishtheatreguide.info/reviews/king-lear-royal-exchange-12733",
+            "outletId": "britishtheatreguide.info",
             "state": "live",
             "firstSeenAt": "2026-10-16T12:12:17.690Z"
           },
@@ -100521,12 +100494,6 @@
             "outletId": "ilovemanchester.com",
             "state": "live",
             "firstSeenAt": "2026-10-15T20:51:35.128Z"
-          },
-          {
-            "url": "https://www.britishtheatreguide.info/reviews/king-lear-royal-exchange-12733",
-            "outletId": "britishtheatreguide.info",
-            "state": "live",
-            "firstSeenAt": "2026-10-16T12:12:17.690Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/king-lear-review-at-the-royal-exchange-theatre-manchester--outstanding",
@@ -100563,18 +100530,18 @@
             "firstSeenAt": "2026-10-15T04:30:21.497Z"
           },
           {
-            "url": "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Z-Space-20260928",
-            "outletId": "broadwayworld",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-14T22:22:34.949Z"
-          },
-          {
             "url": "https://everything-theatre.co.uk/2026/09/review-king-lear-crucible-theatre-sheffield/",
             "outletId": "everything-theatre",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-13T19:50:25.664Z"
+          },
+          {
+            "url": "https://www.sfchronicle.com/entertainment/theater/article/oakland-theater-project-king-lear-22404840.php",
+            "outletId": "san-francisco-chronicle",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-16T20:21:01.675Z"
           },
           {
             "url": "https://www.royalexchange.co.uk/event/king-lear/",
@@ -100589,18 +100556,20 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-16T05:39:49.231Z"
+          },
+          {
+            "url": "https://www.visitmanchester.com/event/king-lear/111756101/",
+            "outletId": "visitmanchester.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-16T20:21:01.675Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 10,
-        "candidateCount": 17
+        "candidateCount": 19
       },
-      "computedAt": "2026-10-16T12:12:17.690Z",
-      "quarantine": {
-        "nextState": "complete:1:1",
-        "since": "2026-10-16T17:15:02.678Z",
-        "lastAt": "2026-10-16T17:15:02.678Z"
-      }
+      "computedAt": "2026-10-16T20:21:01.675Z"
     },
     {
       "showId": "king-of-the-yees-off-broadway-2026",
@@ -112771,9 +112740,9 @@
       },
       "computedAt": "2026-10-16T12:12:17.690Z",
       "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-16T17:15:02.678Z",
-        "lastAt": "2026-10-16T17:15:02.678Z"
+        "nextState": "incomplete:0:2",
+        "since": "2026-10-16T20:21:01.769Z",
+        "lastAt": "2026-10-16T20:21:01.769Z"
       }
     },
     {
@@ -128934,7 +128903,12 @@
         "liveCount": 1,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-16T15:25:47.244Z"
+      "computedAt": "2026-10-16T15:25:47.244Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-16T20:21:01.769Z",
+        "lastAt": "2026-10-16T20:21:01.769Z"
+      }
     },
     {
       "showId": "murder-she-didnt-write-west-end-2025",
@@ -129186,7 +129160,12 @@
         "liveCount": 1,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-16T15:25:47.244Z"
+      "computedAt": "2026-10-16T15:25:47.244Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-16T20:21:01.769Z",
+        "lastAt": "2026-10-16T20:21:01.769Z"
+      }
     },
     {
       "showId": "my-joy-is-heavy-off-broadway-2025",
@@ -131229,16 +131208,16 @@
       "aggregatorListedUrls": [
         "http://www.nytimes.com/2014/07/29/theater/nina-arianda-and-sam-rockwell-star-in-fool-for-love.html",
         "https://everything-theatre.co.uk/2026/10/review-nina-battersea-arts-centre/",
+        "https://www.britishtheatreguide.info/reviews/nina-battersea-arts-26117",
+        "https://www.theguardian.com/stage/2026/oct/12/nina-review-chekhov-seagull-battersea-arts-centre-london",
         "https://www.londontheatre1.com/reviews/nina-battersea-arts-centre-review/",
         "https://www.thereviewshub.com/nina-battersea-arts-centre-london/",
-        "https://www.theguardian.com/stage/2026/oct/12/nina-review-chekhov-seagull-battersea-arts-centre-london",
         "https://www.timeout.com/london/theatre/nina-1-review",
         "https://www.thestage.co.uk/reviews/nina-review-battersea-arts-centre-council-chamber-london",
         "https://www.westendbestfriend.co.uk/news/review-nina-battersea-arts-centre",
-        "https://www.britishtheatreguide.info/reviews/nina-battersea-arts-26117",
         "https://www.bestoftheatre.co.uk/blog/post/nina-first-look-battersea-arts-centre",
         "https://www.uktw.co.uk/London/BAC/Play/Nina/L0470592871/",
-        "https://eventsforlondon.co.uk/event/nina-battersea-arts-centre/2026-10-07/",
+        "https://cornernotice.com/events/bac-nina",
         "https://playsinternational.org.uk/nina-battersea-arts-centre/",
         "https://ayoungishperspective.co.uk/2026/10/10/review-nina/",
         "https://morningstaronline.co.uk/article/nina-when-method-acting-becomes-abuse"
@@ -131281,8 +131260,8 @@
           "reverify": true
         },
         {
-          "url": "https://eventsforlondon.co.uk/event/nina-battersea-arts-centre/2026-10-07/",
-          "host": "eventsforlondon.co.uk",
+          "url": "https://cornernotice.com/events/bac-nina",
+          "host": "cornernotice.com",
           "knownOutletId": null,
           "recoverable": false,
           "recoverableFile": null,
@@ -131291,14 +131270,14 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "eventsforlondon--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://eventsforlondon.co.uk/event/nina-battersea-arts-centre/2026-10-07/"
+              "file": "cornernotice--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://cornernotice.com/events/bac-nina"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongProduction"
+            "rejectionReason"
           ],
           "serpCensus": true,
           "reverify": true
@@ -131320,7 +131299,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0
+            "fetchErrors": 2
           },
           "lbo-roundup": {
             "found": false,
@@ -131366,7 +131345,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 6,
+            "accepted": 7,
             "error": null
           },
           {
@@ -131376,7 +131355,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -131419,15 +131398,15 @@
         "count": 403,
         "byReason": {
           "non-review-host": 46,
-          "ticketing-reseller": 1,
           "aggregator-internal-nav": 291,
-          "write-path-blocked": 2,
-          "non-review-path": 1,
           "census-junk-host": 2,
+          "write-path-blocked": 2,
+          "ticketing-reseller": 1,
+          "non-review-path": 1,
           "not-http-url": 40,
-          "production-database-listing": 10,
           "aggregator-section-root": 8,
-          "roundup-page": 2
+          "roundup-page": 2,
+          "production-database-listing": 10
         }
       },
       "dedupedVariants": [],
@@ -131472,11 +131451,11 @@
             "url": "https://www.bestoftheatre.co.uk/blog/post/nina-first-look-battersea-arts-centre"
           },
           {
-            "outletId": "eventsforlondon.co.uk",
-            "outlet": "eventsforlondon.co.uk",
+            "outletId": "cornernotice.com",
+            "outlet": "cornernotice.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://eventsforlondon.co.uk/event/nina-battersea-arts-centre/2026-10-07/"
+            "url": "https://cornernotice.com/events/bac-nina"
           }
         ],
         "suppressedMissing": [],
@@ -131484,6 +131463,18 @@
           {
             "url": "https://everything-theatre.co.uk/2026/10/review-nina-battersea-arts-centre/",
             "outletId": "everything-theatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-13T22:54:31.321Z"
+          },
+          {
+            "url": "https://www.britishtheatreguide.info/reviews/nina-battersea-arts-26117",
+            "outletId": "britishtheatreguide.info",
+            "state": "live",
+            "firstSeenAt": "2026-10-15T20:51:35.128Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/oct/12/nina-review-chekhov-seagull-battersea-arts-centre-london",
+            "outletId": "theguardian.com",
             "state": "live",
             "firstSeenAt": "2026-10-13T22:54:31.321Z"
           },
@@ -131496,12 +131487,6 @@
           {
             "url": "https://www.thereviewshub.com/nina-battersea-arts-centre-london/",
             "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-13T22:54:31.321Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/oct/12/nina-review-chekhov-seagull-battersea-arts-centre-london",
-            "outletId": "theguardian.com",
             "state": "live",
             "firstSeenAt": "2026-10-13T22:54:31.321Z"
           },
@@ -131522,12 +131507,6 @@
             "outletId": "westendbestfriend.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-13T22:54:31.321Z"
-          },
-          {
-            "url": "https://www.britishtheatreguide.info/reviews/nina-battersea-arts-26117",
-            "outletId": "britishtheatreguide.info",
-            "state": "live",
-            "firstSeenAt": "2026-10-15T20:51:35.128Z"
           },
           {
             "url": "https://playsinternational.org.uk/nina-battersea-arts-centre/",
@@ -131555,23 +131534,18 @@
             "firstSeenAt": "2026-10-13T22:54:31.321Z"
           },
           {
-            "url": "https://eventsforlondon.co.uk/event/nina-battersea-arts-centre/2026-10-07/",
-            "outletId": "eventsforlondon.co.uk",
+            "url": "https://cornernotice.com/events/bac-nina",
+            "outletId": "cornernotice.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-16T12:12:17.690Z"
+            "firstSeenAt": "2026-10-16T20:21:01.675Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 11,
         "candidateCount": 13
       },
-      "computedAt": "2026-10-16T12:12:17.690Z",
-      "quarantine": {
-        "nextState": "complete:9:9",
-        "since": "2026-10-16T17:15:02.678Z",
-        "lastAt": "2026-10-16T17:15:02.678Z"
-      }
+      "computedAt": "2026-10-16T20:21:01.675Z"
     },
     {
       "showId": "no-singing-in-the-navy-off-broadway-2026",
@@ -170424,9 +170398,9 @@
       },
       "computedAt": "2026-10-16T12:12:17.690Z",
       "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-16T17:15:02.678Z",
-        "lastAt": "2026-10-16T17:15:02.678Z"
+        "nextState": "incomplete:5:9",
+        "since": "2026-10-16T20:21:01.769Z",
+        "lastAt": "2026-10-16T20:21:01.769Z"
       }
     },
     {
@@ -171791,10 +171765,11 @@
         "https://www.bristol247.com/culture/theatre/review-back-to-the-future-the-musical-bristol-hippodrome-an-immensely-fun-visually-spectacular-and-nostalgia-stuffed-ride/",
         "https://www.thenerve.news/p/protest-theatre-companies-social-issues-stuffed-these-are-our-neighbours-unfortunately",
         "https://www.londonpubtheatres.com/review-stuffed-at-new-diorama-theatre-13-24-october-2026",
+        "https://northwestend.com/stuffed-new-diorama-theatre/",
         "https://www.fest-mag.com/edinburgh/theatre/review-stuffed",
         "https://www.uktw.co.uk/London/The-New-Diorama-Theatre/Play/Stuffed/L0727657514/"
       ],
-      "dirFiles": 9,
+      "dirFiles": 10,
       "dirClean": 3,
       "inReviewsJson": 2,
       "missing": [
@@ -171819,12 +171794,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.bristol247.com/culture/theatre/review-back-to-the-future-the-musical-bristol-hippodrome-an-immensely-fun-visually-spectacular-and-nostalgia-stuffed-ride/",
-          "host": "bristol247.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
           "url": "https://www.fest-mag.com/edinburgh/theatre/review-stuffed",
           "host": "fest-mag.com",
           "knownOutletId": null,
@@ -171834,10 +171803,6 @@
         }
       ],
       "dirOnly": [
-        {
-          "host": "northwestend.com",
-          "count": 1
-        },
         {
           "host": "newyorktheatreguide.com",
           "count": 1
@@ -171897,6 +171862,29 @@
           "reverify": true
         },
         {
+          "url": "https://www.bristol247.com/culture/theatre/review-back-to-the-future-the-musical-bristol-hippodrome-an-immensely-fun-visually-spectacular-and-nostalgia-stuffed-ride/",
+          "host": "bristol247.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bristol247--sarski-anderson.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.bristol247.com/culture/theatre/review-back-to-the-future-the-musical-bristol-hippodrome-an-immensely-fun-visually-spectacular-and-nostalgia-stuffed-ride/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
           "url": "https://www.thenerve.news/p/protest-theatre-companies-social-issues-stuffed-these-are-our-neighbours-unfortunately",
           "host": "thenerve.news",
           "knownOutletId": "thenerve",
@@ -171936,7 +171924,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0
+            "fetchErrors": 2
           },
           "lbo-roundup": {
             "found": false,
@@ -172007,7 +171995,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -172023,20 +172011,20 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 7,
+        "resultCount": 8,
         "error": null
       },
       "candidatesRejected": {
-        "count": 127,
+        "count": 132,
         "byReason": {
-          "non-review-host": 30,
+          "non-review-host": 33,
           "aggregator-internal-nav": 69,
-          "write-path-blocked": 6,
           "census-junk-host": 1,
+          "write-path-blocked": 8,
           "not-http-url": 5,
-          "production-database-listing": 10,
           "aggregator-section-root": 4,
-          "roundup-page": 2
+          "roundup-page": 2,
+          "production-database-listing": 10
         }
       },
       "dedupedVariants": [],
@@ -172046,7 +172034,7 @@
           "publishDate": "2016-10-17"
         }
       ],
-      "automatedExcludedListed": 2,
+      "automatedExcludedListed": 3,
       "unextractable": [
         {
           "url": "https://www.uktw.co.uk/London/The-New-Diorama-Theatre/Play/Stuffed/L0727657514/",
@@ -172091,21 +172079,6 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "stuffed-off-west-end-2026: https://www.timeout.com/london/theatre/stuffed is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
-        },
-        {
-          "url": "https://www.bristol247.com/culture/theatre/review-back-to-the-future-the-musical-bristol-hippodrome-an-immensely-fun-visually-spectacular-and-nostalgia-stuffed-ride/",
-          "host": "bristol247.com",
-          "outletId": "bristol247",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -172120,18 +172093,18 @@
             "url": "https://www.timeout.com/london/theatre/stuffed"
           },
           {
-            "outletId": "bristol247.com",
-            "outlet": "bristol247.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.bristol247.com/culture/theatre/review-back-to-the-future-the-musical-bristol-hippodrome-an-immensely-fun-visually-spectacular-and-nostalgia-stuffed-ride/"
-          },
-          {
             "outletId": "redbuslondinium",
             "outlet": "redbuslondinium",
             "critic": "Unknown",
             "stars": null,
             "url": "https://redbuslondinium.uk/2026/10/07/interview-ugly-bucket-on-stuffed/"
+          },
+          {
+            "outletId": "bristol247.com",
+            "outlet": "bristol247.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.bristol247.com/culture/theatre/review-back-to-the-future-the-musical-bristol-hippodrome-an-immensely-fun-visually-spectacular-and-nostalgia-stuffed-ride/"
           },
           {
             "outletId": "thenerve",
@@ -172150,6 +172123,12 @@
             "firstSeenAt": "2026-10-15T15:28:00.413Z"
           },
           {
+            "url": "https://northwestend.com/stuffed-new-diorama-theatre/",
+            "outletId": "northwestend.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-16T20:21:01.675Z"
+          },
+          {
             "url": "https://www.timeout.com/london/theatre/stuffed",
             "outletId": "timeout-london",
             "state": "GAP",
@@ -172157,18 +172136,18 @@
             "firstSeenAt": "2026-10-15T23:35:34.762Z"
           },
           {
-            "url": "https://www.bristol247.com/culture/theatre/review-back-to-the-future-the-musical-bristol-hippodrome-an-immensely-fun-visually-spectacular-and-nostalgia-stuffed-ride/",
-            "outletId": "bristol247.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-16T12:12:17.690Z"
-          },
-          {
             "url": "https://redbuslondinium.uk/2026/10/07/interview-ugly-bucket-on-stuffed/",
             "outletId": "redbuslondinium",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-15T15:28:00.413Z"
+          },
+          {
+            "url": "https://www.bristol247.com/culture/theatre/review-back-to-the-future-the-musical-bristol-hippodrome-an-immensely-fun-visually-spectacular-and-nostalgia-stuffed-ride/",
+            "outletId": "bristol247.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-16T12:12:17.690Z"
           },
           {
             "url": "https://www.thenerve.news/p/protest-theatre-companies-social-issues-stuffed-these-are-our-neighbours-unfortunately",
@@ -172179,15 +172158,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 1,
-        "candidateCount": 5
+        "liveCount": 2,
+        "candidateCount": 6
       },
-      "computedAt": "2026-10-16T12:12:17.690Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-16T17:15:02.678Z",
-        "lastAt": "2026-10-16T17:15:02.678Z"
-      }
+      "computedAt": "2026-10-16T20:21:01.675Z"
     },
     {
       "showId": "suffs-2024",
@@ -177148,7 +177122,12 @@
         "liveCount": 2,
         "candidateCount": 7
       },
-      "computedAt": "2026-10-16T15:25:47.244Z"
+      "computedAt": "2026-10-16T15:25:47.244Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-16T20:21:01.769Z",
+        "lastAt": "2026-10-16T20:21:01.769Z"
+      }
     },
     {
       "showId": "the-balusters-2026",
@@ -177855,7 +177834,12 @@
         "liveCount": 11,
         "candidateCount": 15
       },
-      "computedAt": "2026-10-16T15:25:47.244Z"
+      "computedAt": "2026-10-16T15:25:47.244Z",
+      "quarantine": {
+        "nextState": "complete:11:11",
+        "since": "2026-10-16T20:21:01.769Z",
+        "lastAt": "2026-10-16T20:21:01.769Z"
+      }
     },
     {
       "showId": "the-bathroom-attendant-off-broadway-2026",
@@ -178323,22 +178307,21 @@
         "http://www.heraldscotland.com/arts-ents/stage/the-bodyguard-adelphi-theatre-london.19599460",
         "http://www.thestage.co.uk/reviews/review.php/37808/the-bodyguard",
         "https://motifri.com/theater-preview-touring-movical-the-bodyguard-returns-reenvisioned-to-ppac/",
-        "https://www.artscape.co.za/the-bodyguard-the-musical-makes-its-sa-debut-in-march-2027/",
+        "https://www.toledoblade.com/a-e/music-theater-dance/2026/10/15/the-bodyguard-director-cast-share-insights-from-the-stranahan/stories/20261015007",
         "https://www.engemantheater.com/post/broadway-world-review-the-bodyguard",
-        "https://www.kaywilsonwriter.com/blog/the-bodyguard-musical-review",
+        "https://jadar.uk/2026/01/20/review-the-bodyguard/",
         "https://matineedog.com/the-bodyguard-uk-tour-review/",
         "https://aroundthetownchicago.com/theatre-reviews/the-bodyguard-musical/",
         "https://www.londontheatre1.com/reviews/the-bodyguard-2026-new-wimbledon-theatre-review/",
         "https://famousashleygrant.com/bodyguard-musical-review/",
-        "https://www.stagesideuk.co.uk/the-bodyguard-review/",
-        "https://www.voicemag.uk/review/16653/the-bodyguard-the-musical-review",
-        "https://theater.guide/events/the-bodyguard-the-musical/",
-        "https://minitravellers.co.uk/review-the-bodyguard-the-palace-theatre-manchester/",
-        "https://www.allthatdazzles.co.uk/post/review-the-bodyguard-uk-tour",
         "https://fairypoweredproductions.com/the-bodyguard-the-musical-review-6/",
-        "https://ilovemanchester.com/review-bodyguard-palace-theatre"
+        "https://dallas.culturemap.com/news/arts/07-26-17-the-bodyguard-musical-review-national-tour-deborah-cox/",
+        "https://www.voicemag.uk/review/16653/the-bodyguard-the-musical-review",
+        "https://www.britishtheatreguide.info/reviews/the-bodyguard-everyman-theatr-25364",
+        "https://www.cheekylittlematinee.com/post/review-the-bodyguard-tour",
+        "https://corrblimey.uk/2026/05/20/review-the-bodyguard-the-playhouse-edinburgh/"
       ],
-      "dirFiles": 14,
+      "dirFiles": 16,
       "dirClean": 1,
       "inReviewsJson": 1,
       "missing": [
@@ -178399,9 +178382,9 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.artscape.co.za/the-bodyguard-the-musical-makes-its-sa-debut-in-march-2027/",
-          "host": "artscape.co.za",
-          "knownOutletId": null,
+          "url": "https://www.toledoblade.com/a-e/music-theater-dance/2026/10/15/the-bodyguard-director-cast-share-insights-from-the-stranahan/stories/20261015007",
+          "host": "toledoblade.com",
+          "knownOutletId": "the-blade",
           "serpCensus": true
         },
         {
@@ -178410,6 +178393,12 @@
           "knownOutletId": null,
           "priorRun": true,
           "priorRunSource": "pending-file-date:2026-03-29",
+          "serpCensus": true
+        },
+        {
+          "url": "https://jadar.uk/2026/01/20/review-the-bodyguard/",
+          "host": "jadar.uk",
+          "knownOutletId": "jadar",
           "serpCensus": true
         },
         {
@@ -178429,35 +178418,29 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.stagesideuk.co.uk/the-bodyguard-review/",
-          "host": "stagesideuk.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.voicemag.uk/review/16653/the-bodyguard-the-musical-review",
-          "host": "voicemag.uk",
-          "knownOutletId": "voice-magazine",
-          "serpCensus": true
-        },
-        {
-          "url": "https://theater.guide/events/the-bodyguard-the-musical/",
-          "host": "theater.guide",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://minitravellers.co.uk/review-the-bodyguard-the-palace-theatre-manchester/",
-          "host": "minitravellers.co.uk",
+          "url": "https://dallas.culturemap.com/news/arts/07-26-17-the-bodyguard-musical-review-national-tour-deborah-cox/",
+          "host": "culturemap.com",
           "knownOutletId": null,
           "priorRun": true,
-          "priorRunSource": "pending-file-date:2026-01-20",
+          "priorRunSource": "pending-file-date:2017-07-26",
           "serpCensus": true
         },
         {
-          "url": "https://ilovemanchester.com/review-bodyguard-palace-theatre",
-          "host": "ilovemanchester.com",
-          "knownOutletId": "ilovemanchester",
+          "url": "https://www.britishtheatreguide.info/reviews/the-bodyguard-everyman-theatr-25364",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.cheekylittlematinee.com/post/review-the-bodyguard-tour",
+          "host": "cheekylittlematinee.com",
+          "knownOutletId": "cheeky-little-matinee",
+          "serpCensus": true
+        },
+        {
+          "url": "https://corrblimey.uk/2026/05/20/review-the-bodyguard-the-playhouse-edinburgh/",
+          "host": "corrblimey.uk",
+          "knownOutletId": "corrblimey",
           "serpCensus": true
         }
       ],
@@ -178487,31 +178470,6 @@
           "reverify": true
         },
         {
-          "url": "https://www.kaywilsonwriter.com/blog/the-bodyguard-musical-review",
-          "host": "kaywilsonwriter.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "kaywilsonwriter--kay-wilson.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.kaywilsonwriter.com/blog/the-bodyguard-musical-review"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-04-29",
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
           "url": "https://matineedog.com/the-bodyguard-uk-tour-review/",
           "host": "matineedog.com",
           "knownOutletId": null,
@@ -178533,31 +178491,6 @@
           ],
           "priorRun": true,
           "priorRunSource": "flagged-file-date:2026-07-07",
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-the-bodyguard-uk-tour",
-          "host": "allthatdazzles.co.uk",
-          "knownOutletId": "all-that-dazzles-uk",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "all-that-dazzles-uk--daz-gale.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-the-bodyguard-uk-tour"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:March 13th, 2023",
           "serpCensus": true,
           "reverify": false
         },
@@ -178585,6 +178518,29 @@
           "priorRunSource": "flagged-file-date:2026-07-14",
           "serpCensus": true,
           "reverify": false
+        },
+        {
+          "url": "https://www.voicemag.uk/review/16653/the-bodyguard-the-musical-review",
+          "host": "voicemag.uk",
+          "knownOutletId": "voice-magazine",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "voice-magazine--lauren-slater.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.voicemag.uk/review/16653/the-bodyguard-the-musical-review"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -178631,7 +178587,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           },
           {
@@ -178641,20 +178597,20 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 7,
+            "accepted": 5,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 15,
+        "resultCount": 14,
         "error": null
       },
       "candidatesRejected": {
-        "count": 356,
+        "count": 357,
         "byReason": {
-          "non-review-host": 35,
-          "aggregator-internal-nav": 230,
+          "non-review-host": 37,
+          "aggregator-internal-nav": 229,
           "bare-host": 1,
           "not-http-url": 86,
           "aggregator-section-root": 4
@@ -178667,7 +178623,7 @@
           "publishDate": "2012-12-06"
         }
       ],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 2,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -178737,33 +178693,33 @@
           "reason": "prior-run"
         },
         {
-          "url": "https://minitravellers.co.uk/review-the-bodyguard-the-palace-theatre-manchester/",
-          "host": "minitravellers.co.uk",
+          "url": "https://dallas.culturemap.com/news/arts/07-26-17-the-bodyguard-musical-review-national-tour-deborah-cox/",
+          "host": "culturemap.com",
           "priorRun": true,
           "reason": "prior-run"
         }
       ],
       "ingestResults": [
         {
-          "url": "https://www.artscape.co.za/the-bodyguard-the-musical-makes-its-sa-debut-in-march-2027/",
-          "host": "artscape.co.za",
-          "outletId": "artscape",
-          "provisional": true,
-          "ok": true,
+          "url": "https://www.toledoblade.com/a-e/music-theater-dance/2026/10/15/the-bodyguard-director-cast-share-insights-from-the-stranahan/stories/20261015007",
+          "host": "toledoblade.com",
+          "outletId": "the-blade",
+          "provisional": false,
+          "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "expected": false,
           "expectedReason": null,
           "unclassified": false,
-          "zeroChar": false,
-          "reason": null
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
         },
         {
-          "url": "https://www.stagesideuk.co.uk/the-bodyguard-review/",
-          "host": "stagesideuk.co.uk",
-          "outletId": "stagesideuk",
-          "provisional": true,
+          "url": "https://jadar.uk/2026/01/20/review-the-bodyguard/",
+          "host": "jadar.uk",
+          "outletId": "jadar",
+          "provisional": false,
           "ok": false,
           "noop": false,
           "conflict": false,
@@ -178772,12 +178728,42 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  provisional outlet \"stagesideuk\" (not in registry) — onboard to outlet-registry.json after revie"
+          "reason": "[review-write-guard] date-implausible: the-bodyguard-tour-2026/jadar--jay-darcy.json → quarantined t"
         },
         {
-          "url": "https://www.voicemag.uk/review/16653/the-bodyguard-the-musical-review",
-          "host": "voicemag.uk",
-          "outletId": "voice-magazine",
+          "url": "https://www.britishtheatreguide.info/reviews/the-bodyguard-everyman-theatr-25364",
+          "host": "britishtheatreguide.info",
+          "outletId": "british-theatre",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "[review-write-guard] date-implausible: the-bodyguard-tour-2026/british-theatre--rachael-birtwistle.j"
+        },
+        {
+          "url": "https://www.cheekylittlematinee.com/post/review-the-bodyguard-tour",
+          "host": "cheekylittlematinee.com",
+          "outletId": "cheeky-little-matinee",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "[review-write-guard] date-implausible: the-bodyguard-tour-2026/cheeky-little-matinee--cheekylittlema"
+        },
+        {
+          "url": "https://corrblimey.uk/2026/05/20/review-the-bodyguard-the-playhouse-edinburgh/",
+          "host": "corrblimey.uk",
+          "outletId": "corrblimey",
           "provisional": false,
           "ok": true,
           "noop": false,
@@ -178788,36 +178774,6 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": null
-        },
-        {
-          "url": "https://theater.guide/events/the-bodyguard-the-musical/",
-          "host": "theater.guide",
-          "outletId": "theater",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://ilovemanchester.com/review-bodyguard-palace-theatre",
-          "host": "ilovemanchester.com",
-          "outletId": "ilovemanchester",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "[review-write-guard] date-implausible: the-bodyguard-tour-2026/ilovemanchester--shayan-le.json → qua"
         }
       ],
       "ingestSkippedByCap": [],
@@ -178825,39 +178781,39 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "artscape.co.za",
-            "outlet": "artscape.co.za",
+            "outletId": "the-blade",
+            "outlet": "the-blade",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.artscape.co.za/the-bodyguard-the-musical-makes-its-sa-debut-in-march-2027/"
+            "url": "https://www.toledoblade.com/a-e/music-theater-dance/2026/10/15/the-bodyguard-director-cast-share-insights-from-the-stranahan/stories/20261015007"
           },
           {
-            "outletId": "stagesideuk.co.uk",
-            "outlet": "stagesideuk.co.uk",
+            "outletId": "jadar",
+            "outlet": "jadar",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.stagesideuk.co.uk/the-bodyguard-review/"
+            "url": "https://jadar.uk/2026/01/20/review-the-bodyguard/"
           },
           {
-            "outletId": "voice-magazine",
-            "outlet": "voice-magazine",
+            "outletId": "british-theatre",
+            "outlet": "british-theatre",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.voicemag.uk/review/16653/the-bodyguard-the-musical-review"
+            "url": "https://www.britishtheatreguide.info/reviews/the-bodyguard-everyman-theatr-25364"
           },
           {
-            "outletId": "theater.guide",
-            "outlet": "theater.guide",
+            "outletId": "cheeky-little-matinee",
+            "outlet": "cheeky-little-matinee",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://theater.guide/events/the-bodyguard-the-musical/"
+            "url": "https://www.cheekylittlematinee.com/post/review-the-bodyguard-tour"
           },
           {
-            "outletId": "ilovemanchester",
-            "outlet": "ilovemanchester",
+            "outletId": "corrblimey",
+            "outlet": "corrblimey",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://ilovemanchester.com/review-bodyguard-palace-theatre"
+            "url": "https://corrblimey.uk/2026/05/20/review-the-bodyguard-the-playhouse-edinburgh/"
           },
           {
             "outletId": "motif",
@@ -178865,6 +178821,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://motifri.com/theater-preview-touring-movical-the-bodyguard-returns-reenvisioned-to-ppac/"
+          },
+          {
+            "outletId": "voice-magazine",
+            "outlet": "voice-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.voicemag.uk/review/16653/the-bodyguard-the-musical-review"
           }
         ],
         "suppressedMissing": [],
@@ -178876,39 +178839,39 @@
             "firstSeenAt": "2026-10-15T01:10:51.119Z"
           },
           {
-            "url": "https://www.artscape.co.za/the-bodyguard-the-musical-makes-its-sa-debut-in-march-2027/",
-            "outletId": "artscape.co.za",
+            "url": "https://www.toledoblade.com/a-e/music-theater-dance/2026/10/15/the-bodyguard-director-cast-share-insights-from-the-stranahan/stories/20261015007",
+            "outletId": "the-blade",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-16T12:12:17.690Z"
+            "firstSeenAt": "2026-10-16T20:21:01.675Z"
           },
           {
-            "url": "https://www.stagesideuk.co.uk/the-bodyguard-review/",
-            "outletId": "stagesideuk.co.uk",
+            "url": "https://jadar.uk/2026/01/20/review-the-bodyguard/",
+            "outletId": "jadar",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-16T12:12:17.690Z"
+            "firstSeenAt": "2026-10-16T20:21:01.675Z"
           },
           {
-            "url": "https://www.voicemag.uk/review/16653/the-bodyguard-the-musical-review",
-            "outletId": "voice-magazine",
+            "url": "https://www.britishtheatreguide.info/reviews/the-bodyguard-everyman-theatr-25364",
+            "outletId": "british-theatre",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-15T20:51:35.128Z"
+            "firstSeenAt": "2026-10-16T20:21:01.675Z"
           },
           {
-            "url": "https://theater.guide/events/the-bodyguard-the-musical/",
-            "outletId": "theater.guide",
+            "url": "https://www.cheekylittlematinee.com/post/review-the-bodyguard-tour",
+            "outletId": "cheeky-little-matinee",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-16T12:12:17.690Z"
+            "firstSeenAt": "2026-10-16T20:21:01.675Z"
           },
           {
-            "url": "https://ilovemanchester.com/review-bodyguard-palace-theatre",
-            "outletId": "ilovemanchester",
+            "url": "https://corrblimey.uk/2026/05/20/review-the-bodyguard-the-playhouse-edinburgh/",
+            "outletId": "corrblimey",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-16T12:12:17.690Z"
+            "firstSeenAt": "2026-10-16T20:21:01.675Z"
           },
           {
             "url": "https://motifri.com/theater-preview-touring-movical-the-bodyguard-returns-reenvisioned-to-ppac/",
@@ -178916,18 +178879,20 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://www.voicemag.uk/review/16653/the-bodyguard-the-musical-review",
+            "outletId": "voice-magazine",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-15T20:51:35.128Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 1,
-        "candidateCount": 7
+        "candidateCount": 8
       },
-      "computedAt": "2026-10-16T12:12:17.690Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-16T17:15:02.678Z",
-        "lastAt": "2026-10-16T17:15:02.678Z"
-      }
+      "computedAt": "2026-10-16T20:21:01.675Z"
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
@@ -205658,32 +205623,29 @@
       "aggregatorListedUrls": [
         "https://www.theguardian.com/stage/2026/oct/11/the-prime-of-miss-jean-brodie-review-muriel-spark-royal-lyceum-edinburgh-tour",
         "https://list.co.uk/news/the-prime-of-miss-jean-brodie-theatre-review-sparkling-ambiguity-49282",
-        "https://www.telegraph.co.uk/theatre/what-to-see/the-prime-of-miss-jean-brodie-national-theatre-of-scotland/",
-        "https://www.thetimes.com/culture/theatre-dance/article/the-prime-of-miss-jean-brodie-review-nk3mmsrbz",
         "https://www.whatsonstage.com/news/the-prime-of-miss-jean-brodie-at-royal-lyceum-theatre-and-on-tour-review_1734843/",
-        "https://www.scotsman.com/arts-and-culture/edinburgh-festivals/the-prime-of-miss-jean-brodie-review-lyceum-edinburgh-9279438",
-        "https://www.mixuptheatre.com/post/theatre-review-the-prime-of-miss-jean-brodie",
-        "https://www.heraldscotland.com/life_style/26626439.review-prime-miss-jean-brodie-royal-lyceum-theatre-edinburgh/",
-        "https://theweek.com/culture-life/theatre/the-prime-of-miss-jean-brodie-review",
+        "https://www.telegraph.co.uk/theatre/what-to-see/the-prime-of-miss-jean-brodie-national-theatre-of-scotland/",
         "https://uktheatrenetwork.com/2026/10/10/the-prime-of-miss-jean-brodie-at-the-royal-lyceum-theatre-edinburgh/",
-        "https://www.aol.com/articles/ingenious-production-prime-miss-jean-115106000.html",
-        "https://ground.news/article/the-prime-of-miss-jean-brodie-review-spectacular",
+        "https://corrblimey.uk/2026/10/10/review-the-prime-of-miss-jean-brodie-the-royal-lyceum-theatre/",
+        "https://theatreandtonic.co.uk/blog/the-prime-of-miss-jean-brodie-at-lyceum-theatre-edinburgh-review",
+        "https://www.thereviewshub.com/the-prime-of-miss-jean-brodie-royal-lyceum-theatre-edinburgh/",
+        "https://www.mixuptheatre.com/post/theatre-review-the-prime-of-miss-jean-brodie",
+        "https://www.scotsman.com/arts-and-culture/edinburgh-festivals/the-prime-of-miss-jean-brodie-review-lyceum-edinburgh-9279438",
+        "https://www.heraldscotland.com/life_style/26626439.review-prime-miss-jean-brodie-royal-lyceum-theatre-edinburgh/",
         "https://www.reviewsgate.co.uk/reviews-archive-part-2/the-prime-of-miss-jean-brodie",
-        "https://www.yahoo.com/entertainment/tv/articles/ingenious-production-prime-miss-jean-115106935.html",
+        "https://ground.news/article/the-prime-of-miss-jean-brodie-review-spectacular",
+        "https://www.thetimes.com/culture/theatre-dance/article/the-prime-of-miss-jean-brodie-review-nk3mmsrbz",
         "https://www.scotsman.com/arts-and-culture/the-prime-of-miss-jean-brodie-the-muriel-spark-fax-which-gave-playwright-go-ahead-for-radical-adaptation-9232721",
-        "https://www.heraldscotland.com/news/26547748.prime-miss-jean-brodie-edinburgh-lyceum-need-know/",
-        "https://www.express.co.uk/entertainment/theatre/978894/theatre-reviews-prime-miss-jean-brodie-finishing-picture"
+        "https://www.yahoo.com/entertainment/tv/articles/ingenious-production-prime-miss-jean-115106935.html",
+        "https://corrblimey.uk/tag/the-prime-of-miss-jean-brodie/",
+        "https://theweek.com/culture-life/theatre/the-prime-of-miss-jean-brodie-review",
+        "https://www.express.co.uk/entertainment/theatre/978894/theatre-reviews-prime-miss-jean-brodie-finishing-picture",
+        "https://www.heraldscotland.com/news/26547748.prime-miss-jean-brodie-edinburgh-lyceum-need-know/"
       ],
       "dirFiles": 26,
-      "dirClean": 20,
-      "inReviewsJson": 21,
+      "dirClean": 19,
+      "inReviewsJson": 20,
       "missing": [
-        {
-          "url": "https://www.aol.com/articles/ingenious-production-prime-miss-jean-115106000.html",
-          "host": "aol.com",
-          "knownOutletId": "travel-aol",
-          "serpCensus": true
-        },
         {
           "url": "https://www.reviewsgate.co.uk/reviews-archive-part-2/the-prime-of-miss-jean-brodie",
           "host": "reviewsgate.co.uk",
@@ -205719,23 +205681,11 @@
           "count": 1
         },
         {
-          "host": "corrblimey.uk",
-          "count": 1
-        },
-        {
           "host": "northwestend.com",
           "count": 1
         },
         {
           "host": "playstosee.com",
-          "count": 1
-        },
-        {
-          "host": "theatreandtonic.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thereviewshub.com",
           "count": 1
         },
         {
@@ -205752,6 +205702,31 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://list.co.uk/news/the-prime-of-miss-jean-brodie-theatre-review-sparkling-ambiguity-49282",
+          "host": "list.co.uk",
+          "knownOutletId": "the-list",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "the-list--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://list.co.uk/news/the-prime-of-miss-jean-brodie-theatre-review-sparkling-ambiguity-49282"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2020-10-18",
+          "serpCensus": true,
+          "reverify": false
+        },
         {
           "url": "https://www.scotsman.com/arts-and-culture/edinburgh-festivals/the-prime-of-miss-jean-brodie-review-lyceum-edinburgh-9279438",
           "host": "scotsman.com",
@@ -205846,7 +205821,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           },
           {
@@ -205876,20 +205851,20 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 4,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 17,
+        "resultCount": 20,
         "error": null
       },
       "candidatesRejected": {
-        "count": 13,
+        "count": 14,
         "byReason": {
-          "non-review-host": 9,
-          "aggregator-internal-nav": 3,
+          "non-review-host": 11,
+          "aggregator-internal-nav": 2,
           "census-junk-host": 1
         }
       },
@@ -205905,21 +205880,6 @@
         }
       ],
       "ingestResults": [
-        {
-          "url": "https://www.aol.com/articles/ingenious-production-prime-miss-jean-115106000.html",
-          "host": "aol.com",
-          "outletId": "travel-aol",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "Fetch failed: All scraping methods failed"
-        },
         {
           "url": "https://www.yahoo.com/entertainment/tv/articles/ingenious-production-prime-miss-jean-115106935.html",
           "host": "yahoo.com",
@@ -205955,13 +205915,6 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "travel-aol",
-            "outlet": "travel-aol",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.aol.com/articles/ingenious-production-prime-miss-jean-115106000.html"
-          },
           {
             "outletId": "yahoo",
             "outlet": "yahoo",
@@ -206007,8 +205960,8 @@
             "firstSeenAt": "2026-10-13T12:28:08.210Z"
           },
           {
-            "url": "https://list.co.uk/news/the-prime-of-miss-jean-brodie-theatre-review-sparkling-ambiguity-49282",
-            "outletId": "list.co.uk",
+            "url": "https://www.whatsonstage.com/news/the-prime-of-miss-jean-brodie-at-royal-lyceum-theatre-and-on-tour-review_1734843/",
+            "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-10-13T12:28:08.210Z"
           },
@@ -206019,16 +205972,28 @@
             "firstSeenAt": "2026-10-13T12:28:08.210Z"
           },
           {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/the-prime-of-miss-jean-brodie-review-nk3mmsrbz",
-            "outletId": "thetimes.com",
+            "url": "https://uktheatrenetwork.com/2026/10/10/the-prime-of-miss-jean-brodie-at-the-royal-lyceum-theatre-edinburgh/",
+            "outletId": "uktheatrenetwork.com",
             "state": "live",
-            "firstSeenAt": "2026-10-13T12:28:08.210Z"
+            "firstSeenAt": "2026-10-16T12:12:17.690Z"
           },
           {
-            "url": "https://www.whatsonstage.com/news/the-prime-of-miss-jean-brodie-at-royal-lyceum-theatre-and-on-tour-review_1734843/",
-            "outletId": "whatsonstage.com",
+            "url": "https://corrblimey.uk/2026/10/10/review-the-prime-of-miss-jean-brodie-the-royal-lyceum-theatre/",
+            "outletId": "corrblimey.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-13T12:28:08.210Z"
+            "firstSeenAt": "2026-10-16T20:21:01.675Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/the-prime-of-miss-jean-brodie-at-lyceum-theatre-edinburgh-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-16T20:21:01.675Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/the-prime-of-miss-jean-brodie-royal-lyceum-theatre-edinburgh/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-16T20:21:01.675Z"
           },
           {
             "url": "https://www.mixuptheatre.com/post/theatre-review-the-prime-of-miss-jean-brodie",
@@ -206043,29 +206008,28 @@
             "firstSeenAt": "2026-10-13T12:28:08.210Z"
           },
           {
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/the-prime-of-miss-jean-brodie-review-nk3mmsrbz",
+            "outletId": "thetimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-13T12:28:08.210Z"
+          },
+          {
+            "url": "https://corrblimey.uk/tag/the-prime-of-miss-jean-brodie/",
+            "outletId": "corrblimey.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-16T20:21:01.675Z"
+          },
+          {
             "url": "https://theweek.com/culture-life/theatre/the-prime-of-miss-jean-brodie-review",
             "outletId": "theweek.com",
             "state": "live",
             "firstSeenAt": "2026-10-16T05:39:49.231Z"
           },
           {
-            "url": "https://uktheatrenetwork.com/2026/10/10/the-prime-of-miss-jean-brodie-at-the-royal-lyceum-theatre-edinburgh/",
-            "outletId": "uktheatrenetwork.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-16T12:12:17.690Z"
-          },
-          {
             "url": "https://www.heraldscotland.com/news/26547748.prime-miss-jean-brodie-edinburgh-lyceum-need-know/",
             "outletId": "heraldscotland.com",
             "state": "live",
             "firstSeenAt": "2026-10-14T22:22:34.949Z"
-          },
-          {
-            "url": "https://www.aol.com/articles/ingenious-production-prime-miss-jean-115106000.html",
-            "outletId": "travel-aol",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-16T12:12:17.690Z"
           },
           {
             "url": "https://www.yahoo.com/entertainment/tv/articles/ingenious-production-prime-miss-jean-115106935.html",
@@ -206104,15 +206068,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 9,
-        "candidateCount": 14
+        "liveCount": 11,
+        "candidateCount": 15
       },
-      "computedAt": "2026-10-16T12:12:17.690Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-16T17:15:02.678Z",
-        "lastAt": "2026-10-16T17:15:02.678Z"
-      }
+      "computedAt": "2026-10-16T20:21:01.675Z"
     },
     {
       "showId": "the-producers-west-end-2025",
@@ -220419,48 +220378,11 @@
       "status": "previews",
       "category": "off-west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://bristolparent.co.uk/review-back-to-the-future-the-musical-is-a-spectacular-triumph-at-bristol-hippodrome/",
-        "https://www.bestoftheatre.co.uk/blog/post/caryl-churchill-triumph-public-theater-new-york-almeida",
-        "https://www.uktw.co.uk/London/Almeida-Theatre/Play/Triumph/L967094073/",
-        "https://www.londontheatre.co.uk/theatre-news/news/caryl-churchills-triumph-to-premiere-at-the-almeida-theatre",
-        "https://shouldgoto.com/theatre/triumph"
-      ],
+      "aggregatorListedUrls": [],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://bristolparent.co.uk/review-back-to-the-future-the-musical-is-a-spectacular-triumph-at-bristol-hippodrome/",
-          "host": "bristolparent.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.bestoftheatre.co.uk/blog/post/caryl-churchill-triumph-public-theater-new-york-almeida",
-          "host": "bestoftheatre.co.uk",
-          "knownOutletId": "bestoftheatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.uktw.co.uk/London/Almeida-Theatre/Play/Triumph/L967094073/",
-          "host": "uktw.co.uk",
-          "knownOutletId": "uktw",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/theatre-news/news/caryl-churchills-triumph-to-premiere-at-the-almeida-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://shouldgoto.com/theatre/triumph",
-          "host": "shouldgoto.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
@@ -220479,7 +220401,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 1
+            "fetchErrors": 2
           },
           "lbo-roundup": {
             "found": false,
@@ -220503,252 +220425,28 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
+        "allSourcesFailed": false
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Triumph\" West End review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Triumph\" West End review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Triumph\" review almeida",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Triumph Almeida Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Triumph Almeida Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Triumph Almeida Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 5,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 27,
-        "byReason": {
-          "non-review-host": 15,
-          "write-path-blocked": 3,
-          "non-review-path": 2,
-          "roundup-page": 3,
-          "aggregator-internal-nav": 2,
-          "news-article": 1,
-          "aggregator-roundup": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://bristolparent.co.uk/review-back-to-the-future-the-musical-is-a-spectacular-triumph-at-bristol-hippodrome/",
-          "host": "bristolparent.co.uk",
-          "outletId": "bristolparent",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "⚠️  provisional outlet \"bristolparent\" (not in registry) — onboard to outlet-registry.json after rev"
-        },
-        {
-          "url": "https://www.bestoftheatre.co.uk/blog/post/caryl-churchill-triumph-public-theater-new-york-almeida",
-          "host": "bestoftheatre.co.uk",
-          "outletId": "bestoftheatre",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.uktw.co.uk/London/Almeida-Theatre/Play/Triumph/L967094073/",
-          "host": "uktw.co.uk",
-          "outletId": "uktw",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/theatre-news/news/caryl-churchills-triumph-to-premiere-at-the-almeida-theatre",
-          "host": "londontheatre.co.uk",
-          "outletId": "london-theatre",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://shouldgoto.com/theatre/triumph",
-          "host": "shouldgoto.com",
-          "outletId": "shouldgoto",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "⚠️  provisional outlet \"shouldgoto\" (not in registry) — onboard to outlet-registry.json after review"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "bristolparent.co.uk",
-            "outlet": "bristolparent.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://bristolparent.co.uk/review-back-to-the-future-the-musical-is-a-spectacular-triumph-at-bristol-hippodrome/"
-          },
-          {
-            "outletId": "bestoftheatre",
-            "outlet": "bestoftheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.bestoftheatre.co.uk/blog/post/caryl-churchill-triumph-public-theater-new-york-almeida"
-          },
-          {
-            "outletId": "uktw",
-            "outlet": "uktw",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.uktw.co.uk/London/Almeida-Theatre/Play/Triumph/L967094073/"
-          },
-          {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre.co.uk/theatre-news/news/caryl-churchills-triumph-to-premiere-at-the-almeida-theatre"
-          },
-          {
-            "outletId": "shouldgoto.com",
-            "outlet": "shouldgoto.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://shouldgoto.com/theatre/triumph"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://bristolparent.co.uk/review-back-to-the-future-the-musical-is-a-spectacular-triumph-at-bristol-hippodrome/",
-            "outletId": "bristolparent.co.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-16T15:25:47.244Z"
-          },
-          {
-            "url": "https://www.bestoftheatre.co.uk/blog/post/caryl-churchill-triumph-public-theater-new-york-almeida",
-            "outletId": "bestoftheatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-16T15:25:47.244Z"
-          },
-          {
-            "url": "https://www.uktw.co.uk/London/Almeida-Theatre/Play/Triumph/L967094073/",
-            "outletId": "uktw",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-16T15:25:47.244Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/theatre-news/news/caryl-churchills-triumph-to-premiere-at-the-almeida-theatre",
-            "outletId": "london-theatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-16T15:25:47.244Z"
-          },
-          {
-            "url": "https://shouldgoto.com/theatre/triumph",
-            "outletId": "shouldgoto.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-16T15:25:47.244Z"
-          }
-        ],
+        "candidates": [],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 5
+        "candidateCount": 0
       },
-      "computedAt": "2026-10-16T15:25:47.244Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-16T17:15:02.678Z",
-        "lastAt": "2026-10-16T17:15:02.678Z"
-      }
+      "computedAt": "2026-10-16T20:21:01.675Z"
     },
     {
       "showId": "trophy-boys-off-broadway-2025",

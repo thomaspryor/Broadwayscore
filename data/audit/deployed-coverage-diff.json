@@ -1,62 +1,81 @@
 {
-  "generatedAt": "2026-10-16T17:15:23.983Z",
+  "generatedAt": "2026-10-16T20:23:35.130Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 241,
-  "clean": 238,
-  "defective": 3,
+  "clean": 237,
+  "defective": 4,
   "byType": {
-    "score-drift": 3
+    "score-drift": 3,
+    "missing-from-prod": 1
   },
   "shows": [
     {
-      "showId": "midnight-off-broadway-2026",
-      "title": "Midnight",
-      "openingDate": "2026-10-15",
+      "showId": "sea-wall-off-broadway-2026",
+      "title": "Sea Wall",
+      "openingDate": "2026-10-16",
       "ok": false,
       "defects": [
         {
-          "type": "score-drift",
-          "detail": "deployed cs 75.05 vs local 74.5 (Δ0.55)"
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: theater-scene"
         }
       ],
-      "missingFromProd": [],
-      "localCount": 11,
-      "deployedCount": 12,
-      "firstDefectAt": "2026-10-16T17:15:19.614Z"
+      "missingFromProd": [
+        "theater-scene"
+      ],
+      "localCount": 1,
+      "deployedCount": 0,
+      "firstDefectAt": "2026-10-16T20:23:30.783Z"
     },
     {
-      "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
-      "title": "Memoirs of Amorous Gentlemen",
-      "openingDate": "2026-10-15",
+      "showId": "the-cherry-orchard-west-end-2026",
+      "title": "The Cherry Orchard",
+      "openingDate": "2026-10-13",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 62.56 vs local 61.42 (Δ1.14)"
+          "detail": "deployed cs 72.34 vs local 71.38 (Δ0.96)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 11,
-      "deployedCount": 12,
-      "firstDefectAt": "2026-10-16T17:15:19.614Z"
+      "localCount": 30,
+      "deployedCount": 32,
+      "firstDefectAt": "2026-10-16T20:23:30.783Z"
     },
     {
-      "showId": "a-ghost-in-your-ear-off-broadway-2026",
-      "title": "A Ghost In Your Ear",
-      "openingDate": "2026-10-09",
+      "showId": "lost-in-del-valle-return-off-broadway-2026",
+      "title": "Lost in Del Valle",
+      "openingDate": "2026-09-23",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 68.09 vs local 69.67 (Δ1.58)"
+          "detail": "deployed cs 80.81 vs local 79.34 (Δ1.47)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 9,
-      "deployedCount": 10,
-      "firstDefectAt": "2026-10-16T17:15:19.614Z"
+      "localCount": 6,
+      "deployedCount": 7,
+      "firstDefectAt": "2026-10-16T20:23:30.783Z"
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "title": "Stranger Things: The First Shadow",
+      "openingDate": "2023-12-14",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 81.5 vs local 81.07 (Δ0.43)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 32,
+      "deployedCount": 34,
+      "firstDefectAt": "2026-10-16T20:23:30.783Z"
     }
   ],
   "persistentDefective": 0,

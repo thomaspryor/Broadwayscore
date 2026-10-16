@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T17:15:24.299Z",
+  "generatedAt": "2026-10-16T20:23:35.516Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -103,10 +103,6 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -135,9 +131,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 707,
-  "matchedGaps": 4,
-  "possibleGaps": 7,
+  "itemsScanned": 713,
+  "matchedGaps": 5,
+  "possibleGaps": 8,
   "gaps": [
     {
       "showId": "jane-eyre-rose-kingston-off-west-end-2026",
@@ -149,12 +145,21 @@
       "publishDate": "2026-10-15"
     },
     {
-      "showId": "midnight-off-broadway-2026",
-      "title": "Midnight",
+      "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
+      "title": "Memoirs of Amorous Gentlemen",
       "level": "matched",
-      "outletId": "culturesauce",
-      "url": "https://culturesauce.com/todrick-hall-midnight-muscial-off-broadway-review/",
-      "headline": "Todrick Hall does it all in the beautiful, bloated musical &#8216;Midnight&#8217; and that&#8217;s the problem (Off Broadway review)",
+      "outletId": "stageandcinema",
+      "url": "https://stageandcinema.com/2026/10/16/memoirs-of-amorous-gentlemen-review/",
+      "headline": "Off-Broadway Review: MEMOIRS OF AMOROUS GENTLEMEN (The Night Egg at Culture Club)",
+      "publishDate": "2026-10-16"
+    },
+    {
+      "showId": "the-ask-off-broadway-2026",
+      "title": "The Ask",
+      "level": "matched",
+      "outletId": "stageandcinema",
+      "url": "https://stageandcinema.com/2026/10/16/slug-the-ask-theater-555-review/",
+      "headline": "Off-Broadway Review: THE ASK (Theater 555 / New York)",
       "publishDate": "2026-10-16"
     },
     {
@@ -173,6 +178,15 @@
       "outletId": "plays-international",
       "url": "https://playsinternational.org.uk/the-cherry-orchard-harold-pinter-theatre/",
       "headline": "“The Cherry Orchard” at Harold Pinter Theatre",
+      "publishDate": "2026-10-16"
+    },
+    {
+      "showId": "fish-off-broadway-2026",
+      "title": "Fish",
+      "level": "possible",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/good-time-charlie-fish-anon/",
+      "headline": "Good Time Charlie ***, Fish ****, Anon ***",
       "publishDate": "2026-10-16"
     },
     {
@@ -218,7 +232,7 @@
       "outletId": "guardian",
       "url": "https://www.theguardian.com/stage/2026/oct/14/the-cherry-orchard-review-kristin-scott-thomas-chekhov-harold-pinter-theatre-conor-mcpherson-ian-rickson-stephen-mangan",
       "headline": "The Cherry Orchard review – Kristin Scott Thomas makes a modern matriarch in trad, earthy Chekhov",
-      "publishDate": "2026-10-13"
+      "publishDate": "2026-10-14"
     },
     {
       "showId": "the-ask-off-broadway-2026",
@@ -227,7 +241,7 @@
       "outletId": "the-interested-bystander",
       "url": "https://www.interestedbystander.com/2026/10/theater-reviews-midnight-is-unique-and.html",
       "headline": "Theater Reviews: “Midnight” Is a Unique and Visionary Musical About Slavery; “School Girls” Is An Enjoyable Broadway Romp; “Slam Frank” Invents a Hip-Hop Anne Frank; and What Is “The Ask” Actually Asking?",
-      "publishDate": "2026-10-16"
+      "publishDate": "2026-10-15"
     },
     {
       "showId": "the-cherry-orchard-west-end-2026",
