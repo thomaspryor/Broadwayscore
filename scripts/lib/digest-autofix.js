@@ -251,8 +251,9 @@ const DIGEST_SEEN_PATH = process.env.DIGEST_AUTOFIX_SEEN_PATH
 function persistenceKey(row) {
   // BRO-5486: a folded row's conditionKey is its FIRST show's, which changes as
   // shows clear or the queue reorders; keying on it restarted the 72h hold.
-  if (row && Array.isArray(row.affected) && row.title) return `t:${String(row.title).toLowerCase()}`;
-  if (row && row.conditionKey) return `ck:${row.conditionKey}`;
+  // Skip the ck: branch for folded rows; the normalized-title path below keeps
+  // the digit-to-N handling every title key already had.
+  if (row && row.conditionKey && !Array.isArray(row.affected)) return `ck:${row.conditionKey}`;
   const title = String((row && (row.title || row.name)) || '');
   const batch = (title.match(/\(batch \d+\)\s*$/) || [''])[0];
   const body = batch ? title.slice(0, -batch.length) : title;
@@ -631,7 +632,10 @@ function buildCardNotes(row) {
       // the row name a single token (SAFE_CHECK_FORMS + quote-free argv split).
       // Encode the RAW name (the checker compares against raw snapshot names);
       // only prose gets sanitized. Slice matches the checker's own bound.
-      `\`${rowAbsentCheckCmd(row.name)}\` passes — i.e. the daily health check no longer lists "${name}" among errors or warnings.`,
+      // BRO-5486: a one-show fold of a queued row still verifies by conditionKey.
+      row.affected && row.affected[0] && row.affected[0].conditionKey
+        ? `\`${alertAbsentCheckCmd(row.affected[0].conditionKey)}\` passes — i.e. the alert condition for "${name}" is no longer open.`
+        : `\`${rowAbsentCheckCmd(row.name)}\` passes — i.e. the daily health check no longer lists "${name}" among errors or warnings.`,
     ].join('\n');
   }
 

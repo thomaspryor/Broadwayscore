@@ -1531,6 +1531,10 @@ test('BRO-5486: folded rows keep one persistence key when the first show changes
   const notes = buildCardNotes(a);
   assert.ok(/check-alert-condition-absent\.js --key-b64/.test(notes));
   assert.ok(!/check-health-row-absent/.test(notes));
+  // one-show fold must verify by conditionKey too
+  const single = buildCardNotes(b);
+  assert.ok(/check-alert-condition-absent\.js --key-b64/.test(single));
+  assert.ok(!/check-health-row-absent/.test(single));
 });
 
 test('BRO-5486: PER_SHOW_KIND_PATTERNS still match the REAL producer title templates (drift guard)', async () => {
