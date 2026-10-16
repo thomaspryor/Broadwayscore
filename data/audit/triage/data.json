@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "error",
-  "lastChecked": "2026-10-15T07:28:18.836Z",
+  "lastChecked": "2026-10-16T07:11:27.261Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -43,8 +43,8 @@
     },
     {
       "name": "Data: national tours added automatically",
-      "status": "pass",
-      "message": "No national tours added automatically this run"
+      "status": "warn",
+      "message": "Added aint-too-proud-tour-2024, an-american-in-paris-tour-2022, anastasia-tour-2021, annie-tour-2022, company-tour-2023, dear-evan-hansen-tour-2024, jagged-little-pill-tour-2022, legally-blonde-tour-2022, les-miserables-tour-2022 from BroadwayWorld tour roundups or Tours To You schedules (dates from Tours To You + Wikipedia)."
     },
     {
       "name": "Data: closed national tours reopened automatically",
@@ -59,27 +59,22 @@
     {
       "name": "Data: T1/T2 silent review gaps",
       "status": "error",
-      "message": "2 discovered review(s) not reaching the composite score (1 T1). Oldest: golden-boy-off-west-end-2026 — daily-mail (rejected-unscoreable)"
-    },
-    {
-      "name": "Data: uncollected live review strands",
-      "status": "warn",
-      "message": "32 discovered review URL(s) across 22 live show(s) were never fetched. First: little-shop-of-horrors-off-broadway-2019 (3 stranded)"
+      "message": "2 discovered review(s) not reaching the composite score (1 T1). Oldest: golden-boy-off-west-end-2026 — daily-mail (rejected-unscoreable); 2 newer still in flight"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
       "status": "warn",
-      "message": "1 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Frank and Percy\" (guardian-review — missing 1d)"
+      "message": "2 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Frank and Percy\" (guardian-review — missing 2d)"
     },
     {
       "name": "Data: armed-but-vacuous backlog cards",
       "status": "warn",
-      "message": "3 Linear card(s) carry an acceptance check that cannot tell done from not done (3 can never fail, 0 can never pass). First: BRO-4602 Deploy's Google sitemap submission gets 403 (service account lacks Search Console permission)"
+      "message": "2 Linear card(s) carry an acceptance check that cannot tell done from not done (2 can never fail, 0 can never pass). First: BRO-5297 Triage ~150 open Notion-only cards filed after the 2026-08-20 freeze (no Linear twin)"
     },
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "198 of 577 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-5351 Collector derives publishDate from the review URL (collect-review-texts.js:4858) against CLAUDE.md section 3"
+      "message": "106 of 519 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-5382 Opening-night watch 2026-10-14"
     }
   ]
 }

@@ -1,15 +1,25 @@
 {
   "system": "workflow repeat-failure",
-  "status": "warn",
-  "lastChecked": "2026-10-15T07:28:18.840Z",
+  "status": "error",
+  "lastChecked": "2026-10-16T07:11:27.264Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Workflow repeat-failure: LLM Ensemble Score Reviews",
+      "name": "Workflow repeat-failure: Execute Approved Fix",
       "status": "warn",
-      "message": "LLM Ensemble Score Reviews failed 3 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+      "message": "Execute Approved Fix failed 9 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+    },
+    {
+      "name": "Workflow repeat-failure: Test Suite",
+      "status": "error",
+      "message": "Test Suite failed 6 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Opening Night Poller — auto",
+      "status": "warn",
+      "message": "Opening Night Poller — auto failed 2 times in the last 24h — likely broken, not transient."
     }
   ]
 }

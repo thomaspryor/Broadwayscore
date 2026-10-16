@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-15T07:41:26.817Z",
+  "generatedAt": "2026-10-16T07:28:01.060Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 3736,
-  "flaggedShows": 66,
-  "flaggedFiles": 211,
+  "scannedShows": 3751,
+  "flaggedShows": 64,
+  "flaggedFiles": 209,
   "readmissionRiskFiles": 0,
   "readmissionRisks": [],
   "unevaluatedFiles": 0,
@@ -11,7 +11,7 @@
   "unreadableFiles": 0,
   "byVerdict": {
     "likely-contamination": 35,
-    "needs-human-review": 31
+    "needs-human-review": 29
   },
   "shows": [
     {
@@ -3196,42 +3196,6 @@
       ]
     },
     {
-      "showId": "dirty-dancing-the-classic-story-on-stage-west-end-2026",
-      "title": "Dirty Dancing: The Classic Story on Stage",
-      "market": "west-end",
-      "status": "upcoming",
-      "venue": "Capital Theatre",
-      "previewsStartDate": "2026-10-16",
-      "openingDate": "2026-10-16",
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Capital Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2023
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "london-theatre--sophie-thomas.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "previewPlaceholder",
-          "afterReason": "previewPlaceholder",
-          "outletId": "london-theatre",
-          "criticName": "Sophie Thomas",
-          "publishDate": "January 26th, 2023",
-          "url": "https://www.londontheatre.co.uk/reviews/dirty-dancing-the-classic-story-on-stage-review-dominion-theatre",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "ivanov-west-end-2026",
       "title": "Ivanov",
       "market": "west-end",
@@ -3628,42 +3592,6 @@
       ]
     },
     {
-      "showId": "midnight-off-broadway-2026",
-      "title": "Midnight",
-      "market": "broadway",
-      "status": "previews",
-      "venue": "Daryl Roth Theatre",
-      "previewsStartDate": "2026-09-25",
-      "openingDate": "2026-10-15",
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Daryl Roth Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2026
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "one-minute-critic--ryan-leeds.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "one-minute-critic",
-          "criticName": "Ryan Leeds",
-          "publishDate": "2026-02-12",
-          "url": "https://1minutecritic.com/11-to-midnight-review-cost-n-mayor/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "the-sound-of-music-2027",
       "title": "The Sound of Music",
       "market": "broadway",
@@ -3739,7 +3667,7 @@
       "showId": "the-pianist-off-west-end-2026",
       "title": "The Pianist",
       "market": "west-end",
-      "status": "upcoming",
+      "status": "previews",
       "venue": "Park Theatre",
       "previewsStartDate": "2026-10-15",
       "openingDate": "2026-10-22",
