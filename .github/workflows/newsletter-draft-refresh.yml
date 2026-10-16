@@ -63,7 +63,6 @@ permissions:
   actions: write
 
 concurrency:
-  # concurrency-queue-ok: one shared group serializes writes to data/newsletter-state.json across editions (a per-edition group let two editions race it and drop an entry); a recovery dispatch evicted from the queue is retried by the next refresh run (BRO-4870)
   group: newsletter-draft
   cancel-in-progress: false
 

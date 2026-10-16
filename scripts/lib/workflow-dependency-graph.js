@@ -255,10 +255,15 @@ function queueEvictionRisks(workflows, rawByFile, scriptTexts = []) {
 
 // Known offenders when the check landed (BRO-4859). The check fails only on
 // workflows NOT listed here, so the set can only shrink.
-// BRO-4870 triaged every entry (marker, per-edition group, batched dispatch, or a
-// hint-string false positive), so the baseline is empty. Keep it that way: a new
-// offender gets fixed or annotated, not listed.
-const QUEUE_EVICTION_BASELINE = [];
+// BRO-4870 triaged every entry (marker, batched dispatch, or a hint-string false
+// positive). newsletter-draft.yml stays listed on purpose: its Sunday recovery
+// dispatches both editions into one group (the second evicts the first), but a
+// per-edition group would let the editions race data/newsletter-state.json, so it
+// needs a per-key merge in push-with-retry first. A new offender gets fixed or
+// annotated, not listed.
+const QUEUE_EVICTION_BASELINE = [
+  'newsletter-draft.yml',
+];
 
 module.exports = {
   QUEUE_OK_ANNOTATION,

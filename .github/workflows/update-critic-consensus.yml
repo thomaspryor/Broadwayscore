@@ -24,8 +24,8 @@ on:
         default: ''
 
 concurrency:
-  # concurrency-queue-ok: an unfiltered run (rebuild-reviews.yml dispatches one after every
-  # rebuild, plus the Sunday cron) regenerates every show whose reviews changed, a superset of any
+  # concurrency-queue-ok: an unfiltered run (rebuild-reviews.yml dispatches one after most
+  # rebuilds (skipped if one succeeded within the hour), plus the Sunday cron) regenerates every show whose reviews changed, a superset of any
   # evicted poller --shows batch; the static group stops two runs racing critic-consensus.json (BRO-4870).
   group: update-critic-consensus
   cancel-in-progress: false
