@@ -71,6 +71,11 @@ describe('hasStaleUpcomingTag', () => {
 });
 
 describe('hasSameMarketTitleMatch', () => {
+  it('false for a tour entry (BRO-5439: tours are not revivals of their parent or sibling segments)', () => {
+    const show = { id: 'legally-blonde-tour-2027', title: 'Legally Blonde', category: 'tour', market: 'tour', tourOf: 'legally-blonde-2007' };
+    const shows = [show, { id: 'legally-blonde-2007', title: 'Legally Blonde', category: 'broadway' }, { id: 'legally-blonde-tour-2026', title: 'Legally Blonde', category: 'tour' }];
+    assert.equal(hasSameMarketTitleMatch(show, shows), false);
+  });
   it('true for same title, same market (real revival, e.g. Death of a Salesman)', () => {
     const show = { id: 'death-of-a-salesman-2026', title: 'Death of a Salesman', market: 'broadway' };
     const shows = [show, { id: 'death-of-a-salesman-2012', title: 'Death of a Salesman', market: 'broadway' }];
