@@ -1755,6 +1755,60 @@ function planRoundupGapAlerts(results, ingestMissing, now = Date.now()) {
   return { alert, resolve };
 }
 
+// BRO-5493: every show with a residual gap this run folds into ONE alert/card.
+// The key is fixed so the next run hits the same ledger row + Linear tracker
+// (findLinearDuplicate matches the key) instead of filing one card per show.
+const ROUNDUP_GAP_ROLLUP_KEY = 'roundup-gap:all';
+function roundupGapLegacyKey(showId) { return `roundup-gap:${showId}`; }
+function roundupGapShowBlock(g) {
+  const lines = g.missing.slice(0, 15).map((m) => `  - ${m.knownOutletId || m.host}: ${m.url}`);
+  return `- ${g.title || g.showId} (${g.showId}): ${g.counts.residual} not captured `
+    + `(failed=${g.counts.failedIngest} capped=${g.counts.capped} flaggedOut=${g.counts.flaggedOut} conflict=${g.counts.conflictIngest})`
+    + (lines.length ? `\n${lines.join('\n')}` : '');
+}
+
+// routeAlert only dedupes a re-fire onto the open card (ledger + Linear key
+// match); it never edits the card. So a show that gains a gap after the card
+// was filed would be invisible. Track the shows the card already names in the
+// ledger row and comment the newly added ones on the tracker. BRO-5493.
+async function syncRollupCard(plan, result, deps = {}) {
+  const shows = (plan && plan.alert) || [];
+  if (!result || !shows.length) return { commented: 0 };
+  const router = deps.router || require('./lib/owner-alert-router');
+  const ids = shows.map((g) => g.showId);
+  const filedNow = result.action && result.action !== 'silent';
+  if (!filedNow && !result.linearIdentifier) return { commented: 0 };
+  const ledger = router.loadLedger();
+  const known = new Set(((ledger.conditions[ROUNDUP_GAP_ROLLUP_KEY] || {}).rollupShows) || []);
+  const added = filedNow ? [] : shows.filter((g) => !known.has(g.showId));
+  if (added.length) {
+    const client = deps.linearClient || require('./lib/linear-client');
+    const issue = await client.getIssue(result.linearIdentifier);
+    if (!issue || !issue.id) throw new Error(`rollup tracker ${result.linearIdentifier} not found`);
+    await client.createComment(issue.id, `More shows with roundup-listed reviews not captured (${added.length} new):\n\n${added.map(roundupGapShowBlock).join('\n')}`);
+  }
+  router.patchCondition(ROUNDUP_GAP_ROLLUP_KEY, { rollupShows: filedNow ? ids : [...new Set([...known, ...ids])] });
+  return { commented: added.length };
+}
+
+function buildRoundupGapAlert(plan) {
+  const shows = (plan && plan.alert) || [];
+  if (!shows.length) return null;
+  const total = shows.reduce((n, g) => n + g.counts.residual, 0);
+  const blocks = shows.map(roundupGapShowBlock);
+  const names = shows.map((g) => g.title || g.showId);
+  return {
+    conditionKey: ROUNDUP_GAP_ROLLUP_KEY,
+    title: `Roundup gaps: ${total} listed review(s) not captured across ${shows.length} show(s)`,
+    description: `The BWW / Playbill roundups list reviews the site doesn't have after this run's auto-ingest. Shows: ${names.join(', ')}.\n\n`
+      + `${blocks.join('\n')}\n\n`
+      + 'For each: grep the poller / this audit log for the URL; the EXCLUSION line names the guard that dropped it. Fix the guard, then ingest.',
+    severity: 'warning',
+    disposition: 'auto',
+    cooldownHours: 12,
+  };
+}
+
 function computeResidualCounts(r, ingestMissing) {
   const failedIngest = (r.ingestResults || []).filter(x => !x.ok && !x.noop).length;
   const noopIngest = (r.ingestResults || []).filter(x => x.noop).length;
@@ -2920,32 +2974,24 @@ async function main(argv = process.argv.slice(2)) {
   // blast-radius-accepted set) and never on --dry-run.
   if (!dryRun && useCheckpoint && process.env.GITHUB_ACTIONS === 'true') {
     const plan = planRoundupGapAlerts(reportedResults, ingestMissing);
-    if (plan.alert.length || plan.resolve.length) {
-      const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
-      for (const showId of plan.resolve) {
-        try { resolveCondition(`roundup-gap:${showId}`, { reason: 'no residual roundup gap after auto-ingest' }); }
-        catch (e) { console.error(`::warning::roundup-gap resolve failed for ${showId}: ${(e.message || '').slice(0, 120)}`); }
-      }
-      for (const g of plan.alert) {
-        const lines = g.missing.slice(0, 15).map((m) => `- ${m.knownOutletId || m.host}: ${m.url}`);
+    const alertOpts = buildRoundupGapAlert(plan);
+    if (alertOpts || plan.resolve.length) {
+      const { routeAlert, resolveQuietConditions } = require('./lib/owner-alert-router');
+      // Fold-in (BRO-5493): one rollup condition per run instead of one card per
+      // show. The rollup resolves on the router's quiet-gap debounce (not on a
+      // single clean run: a checkpoint run audits only some shows, so "this
+      // subset is clean" must not close a card other shows still hold open).
+      // The pre-fold per-show keys go quiet and resolve the same way.
+      try {
+        resolveQuietConditions([...(alertOpts ? [] : [ROUNDUP_GAP_ROLLUP_KEY]), ...plan.resolve.map(roundupGapLegacyKey), ...plan.alert.map((g) => roundupGapLegacyKey(g.showId))],
+          { reason: 'no residual roundup gap after auto-ingest' });
+      } catch (e) { console.error(`::warning::roundup-gap resolve failed: ${(e.message || '').slice(0, 120)}`); }
+      if (alertOpts) {
         try {
-          await routeAlert({
-            conditionKey: `roundup-gap:${g.showId}`,
-            title: `${g.title}: ${g.counts.residual} roundup-listed review(s) still not captured`,
-            description: `The BWW / Playbill roundups for ${g.showId} list reviews the site doesn't have after this run's auto-ingest `
-              + `(failed=${g.counts.failedIngest} capped=${g.counts.capped} flaggedOut=${g.counts.flaggedOut} conflict=${g.counts.conflictIngest}).\n`
-              + `${lines.join('\n') || '(see data/audit/show-review-gap.json)'}\n\n`
-              + 'For each: grep the poller / this audit log for the URL; the EXCLUSION line names the guard that dropped it. Fix the guard, then ingest.',
-            severity: 'warning',
-            disposition: 'auto',
-            cooldownHours: 12,
-            verify: {
-              line: `VERIFY: node scripts/audit-show-review-gap.js --show=${g.showId} --dry-run --verbose`,
-              note: 'no "review gap" warning for the show once every roundup-cited review is captured',
-            },
-          });
+          const routed = await routeAlert(alertOpts);
+          await syncRollupCard(plan, routed);
         } catch (e) {
-          console.error(`::error::roundup-gap alert failed for ${g.showId}: ${(e.message || '').slice(0, 120)}`);
+          console.error(`::error::roundup-gap alert failed: ${(e.message || '').slice(0, 120)}`);
         }
       }
     }
@@ -3035,4 +3081,4 @@ if (require.main === module) {
 // REVIEW_TEXTS_DIR before requiring this module.
 // main + USAGE are exported so scripts/audit-show-review-gap.test.mjs can
 // prove --help never falls through to a real gh call (task #266).
-module.exports = { planRoundupGapAlerts, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, gapUrlIdentity, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, openingWindowClearedKeys, main, USAGE };
+module.exports = { planRoundupGapAlerts, buildRoundupGapAlert, syncRollupCard, ROUNDUP_GAP_ROLLUP_KEY, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, gapUrlIdentity, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, openingWindowClearedKeys, main, USAGE };
