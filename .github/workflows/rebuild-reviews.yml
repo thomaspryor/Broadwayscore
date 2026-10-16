@@ -7,6 +7,9 @@ name: Rebuild Reviews Data
 # With cancel-in-progress: false, a second trigger queues rather than cancelling.
 # GitHub keeps at most 1 pending run, so rapid-fire triggers naturally debounce.
 concurrency:
+  # concurrency-queue-ok: a full rebuild from current data; the newest pending run covers any it
+  # evicts (the `reason` input is a label). A rare evicted force_write/skip_enrichment manual run
+  # shows as cancelled in Actions and is re-run by hand. Debounce is the intent (BRO-4870).
   group: rebuild-reviews
   cancel-in-progress: false
 

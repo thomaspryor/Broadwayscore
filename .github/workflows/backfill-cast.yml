@@ -16,7 +16,7 @@ on:
         default: '10'
         type: string
       show_filter:
-        description: 'Optional: specific show ID to process'
+        description: 'Optional: show ID, or comma-separated list of IDs, to process'
         required: false
         type: string
       force:
@@ -38,6 +38,10 @@ permissions:
 # data/cast/{id}.json files with no lock (ship-check adversarial review,
 # task #712 follow-up). Matches backfill-cast-web.yml's existing pattern.
 concurrency:
+  # concurrency-queue-ok: callers (update-show-status.yml, discover-historical-shows.yml)
+  # send ONE comma-list dispatch per run (BRO-4870), and update-show-status's shows are
+  # new/opening Broadway shows that the Wednesday --open-only cron refreshes anyway; the
+  # group must stay static because every run rewrites shows.json cast via push-core-data.
   group: backfill-cast
   cancel-in-progress: false
 

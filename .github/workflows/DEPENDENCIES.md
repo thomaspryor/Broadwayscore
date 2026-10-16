@@ -299,7 +299,7 @@ Groups shared by 2+ workflows:
 | `commercial-data-write` | false | `commercial-friday.yml`, `commercial-release-held.yml`, `commercial-rss-poll.yml`, `commercial-stale-closures.yml`, `commercial-weekly.yml`, `deep-research-commercial.yml`, `scrape-waltz-costs.yml`, `update-commercial.yml` |
 | `data-grosses-writers` | false | `backfill-grosses.yml`, `scrape-alltime-grosses.yml`, `weekly-grosses.yml` |
 | `data-health-check` | false | `affiliate-link-integrity.yml`, `data-health-check.yml` |
-| `newsletter-draft` | false | `newsletter-draft-refresh.yml`, `newsletter-draft.yml` |
+| `newsletter-draft-*` | false | `newsletter-draft-refresh.yml`, `newsletter-draft.yml` |
 | `rebuild-reviews` | false | `gather-reviews.yml`, `rebuild-reviews.yml`, `scoring-audit.yml` |
 | `reconcile-broadcast-state` | false | `discard-broadcast-draft.yml`, `reconcile-broadcast-state.yml` |
 | `reverify-cv-promoted-nonreview` | false | `reverify-cv-promoted-nonreview.yml`, `reverify-cv-promoted-weekly.yml` |

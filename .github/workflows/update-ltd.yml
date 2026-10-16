@@ -26,6 +26,8 @@ on:
         default: '22'
 
 concurrency:
+  # concurrency-queue-ok: update-show-status.yml's London-opening dispatch is backed by the Sunday cron,
+  # which scrapes every show; two parallel scrapers would race on the same audience data (BRO-4870).
   group: ltd
   cancel-in-progress: false
 

@@ -13,7 +13,7 @@
  * Options:
  *   --shard N          Shard index (0-based)
  *   --total-shards M   Total number of shards
- *   --show-filter ID   Process only a specific show by ID or slug
+ *   --show-filter IDS  Process only these shows (ID or slug; comma-separated list OK)
  *   --force            Re-scrape even if cast file already exists
  *   --dry-run          Show what would be processed without scraping
  *   --open-only        Only process open/previews shows (for current cast updates)
@@ -109,7 +109,11 @@ async function main() {
 
   // Apply filters
   if (showFilter) {
-    shows = shows.filter(s => s.id === showFilter || s.slug === showFilter);
+    // Comma-separated list (BRO-4870): callers dispatch backfill-cast.yml ONCE
+    // per batch, because per-show dispatches evicted each other from its
+    // one-pending-run concurrency group.
+    const wanted = new Set(showFilter.split(',').map(s => s.trim()).filter(Boolean));
+    shows = shows.filter(s => wanted.has(s.id) || wanted.has(s.slug));
     if (shows.length === 0) {
       console.error(`❌ No show found with id/slug: ${showFilter}`);
       process.exit(1);

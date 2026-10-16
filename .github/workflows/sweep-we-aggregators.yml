@@ -35,6 +35,9 @@ on:
         default: open
 
 concurrency:
+  # concurrency-queue-ok: update-show-status.yml's per-day London-opening dispatch is backed by the
+  # Tuesday cron (mode=open sweeps every open West End show), and the static group stops two sweeps
+  # writing the same review-texts files at once (BRO-4870).
   group: sweep-we-aggregators
   cancel-in-progress: false
 

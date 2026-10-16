@@ -50,6 +50,9 @@ on:
 # workflow still serializes itself, and with land.yml runs (re-runs) that
 # predate BRO-5112.
 concurrency:
+  # concurrency-queue-ok: scripts/autonomous-run.js dispatches one merge and waits for that run
+  # to finish (dispatchAndWaitMerge) before the next, then reads the card's Auto state, so a second
+  # pending dispatch never builds up and an evicted one is not silent. Serializing landings is the point.
   group: landing
   cancel-in-progress: false
 

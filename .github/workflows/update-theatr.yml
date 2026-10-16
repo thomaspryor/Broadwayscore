@@ -26,6 +26,8 @@ on:
         default: false
 
 concurrency:
+  # concurrency-queue-ok: must stay one static group (single-use refresh token, below); the Sunday
+  # cron sweeps all shows, so an evicted per-show dispatch is covered (BRO-4870).
   # MUST be a shared group (same group as rotate-theatr-token.yml). Theatr
   # refresh tokens are single-use and rotate on every auth call — parallel
   # runs both read THEATR_REFRESH_TOKEN, the first burns it, the second fails

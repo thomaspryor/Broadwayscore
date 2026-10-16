@@ -60,6 +60,9 @@ permissions:
   actions: write
 
 concurrency:
+  # concurrency-queue-ok: automatic dispatches (opening-night-poller lookback_days=2,
+  # update-show-status no inputs) and the cron all scan the same 2-day opening window, so the newest
+  # pending run does the evicted one's work; one static group is what prevents a double send (BRO-4870).
   group: broadcast-send
   cancel-in-progress: false
 

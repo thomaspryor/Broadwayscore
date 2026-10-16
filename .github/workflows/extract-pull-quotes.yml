@@ -48,6 +48,9 @@ permissions:
 # without a group two of those dispatches could run in parallel and race on
 # the same review-texts files. See docs/workflow-concurrency-audit.md.
 concurrency:
+  # concurrency-queue-ok: every dispatcher (bulk-collect-review-texts, llm-ensemble-score) sends the
+  # same chain=true remaining_batches=3 inputs, and a run extracts quotes for whatever reviews
+  # still lack them, so the newest pending run covers any it evicts (BRO-4870).
   group: extract-pull-quotes
   cancel-in-progress: false
 

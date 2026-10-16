@@ -57,6 +57,9 @@ on:
         default: 3
 
 concurrency:
+  # concurrency-queue-ok: the group is shared by every commercial-data writer and must stay
+  # static. An evicted opened-show dispatch from update-show-status.yml is covered by
+  # commercial-weekly.yml's Saturday --all-tbd deep-research pass, which sorts recent openings first (BRO-4870).
   group: commercial-data-write
   cancel-in-progress: false
 

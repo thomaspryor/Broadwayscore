@@ -1519,7 +1519,10 @@ jobs:
           script: |
             // Trigger IBDB cast scraping for each new show (including previews)
             const slugs = '${{ steps.filter.outputs.cast_shows }}'.split(',').filter(Boolean);
-            for (const slug of slugs) {
+            // ONE dispatch for the whole batch (BRO-4870): backfill-cast.yml keeps a single
+            // pending run in its concurrency group, so per-show dispatches 10s apart
+            // evicted all but the first and last. --show-filter takes a comma list.
+            if (slugs.length) {
               try {
                 await github.rest.actions.createWorkflowDispatch({
                   owner: context.repo.owner,
@@ -1527,14 +1530,12 @@ jobs:
                   workflow_id: 'backfill-cast.yml',
                   ref: 'main',
                   inputs: {
-                    show_filter: slug
+                    show_filter: slugs.join(',')
                   }
                 });
-                console.log(`Triggered cast backfill for: ${slug}`);
-                // 10s spacing between dispatch calls
-                await new Promise(r => setTimeout(r, 10000));
+                console.log(`Triggered cast backfill for: ${slugs.join(', ')}`);
               } catch (e) {
-                console.log(`Cast backfill trigger failed for ${slug}:`, e.message);
+                console.log(`Cast backfill trigger failed for ${slugs.join(', ')}:`, e.message);
               }
             }
 

@@ -185,6 +185,21 @@ function writersWithoutConcurrency(workflows) {
 // Opt out with `# concurrency-queue-ok: <reason>` inside the concurrency block.
 const QUEUE_OK_ANNOTATION = 'concurrency-queue-ok';
 
+// BRO-4870: `gh workflow run` only counts where it is executed, not where it is
+// printed as advice. `prefix` is the text before it on the same line. A command
+// sits at line start, after a shell operator, or as the first character of a
+// string literal (execSync(`gh workflow run ...`)). Comments, echo/console/hint
+// text and strings with words before the command (`'Run: gh workflow run ...'`)
+// are human hints: they dispatch nothing, so they must not flag a target.
+function isCommandPosition(prefix) {
+  if (/(?:\/\/|#|^\s*\*)/.test(prefix)) return false;
+  if (/\b(?:echo|printf|console\.\w+|hint|message|report|log)\b|::(?:error|warning|notice)::/.test(prefix)) return false;
+  if (/[`'"]$/.test(prefix)) return true;
+  // Command wrappers: timeout 30 gh ..., perl -e 'alarm 30; exec @ARGV' gh ..., VAR=x gh ...
+  if (/(?:\btimeout(?:\s+-\S+)*\s+\S+|@ARGV['"]|\bxargs(?:\s+-\S+)*|\bexec|\benv|\bsudo|\b[A-Z_][A-Z0-9_]*=\S+)\s+$/.test(prefix)) return true;
+  return /(?:^|\$\(|&&|\|\||[;|(!]|\b(?:if|then|do|else|run:|time|until|while))\s*$/.test(prefix);
+}
+
 // Workflows a script or workflow text dispatches: gh CLI (string or argv-array form,
 // flags before the target, by file or by display name), REST path, octokit. Display
 // names come back as `name:<Name>` for queueEvictionRisks to resolve. A dispatch with
@@ -201,7 +216,10 @@ function dispatchTargetsIn(text) {
     const name = args.match(/^[\s,]*['"]([A-Z][^'"\n]*)['"]/);
     if (name) out.add(`name:${name[1]}`);
   };
-  for (const m of text.matchAll(/gh workflow run\b([^\n]*)/g)) if (!otherRepo(m[1])) addTarget(m[1].replace(/(?:^|\s)--?[\w-]+(?:[ =](?!['"][A-Z])\S+)?/g, ' '));
+  for (const m of text.matchAll(/^([^\n]*?)gh workflow run\b([^\n]*)/gm)) {
+    if (!isCommandPosition(m[1])) continue;
+    if (!otherRepo(m[2])) addTarget(m[2].replace(/(?:^|\s)--?[\w-]+(?:[ =](?!['"][A-Z])\S+)?/g, ' '));
+  }
   for (const m of text.matchAll(/['"]workflow['"]\s*,\s*['"]run['"]\s*,([^\]\n]*)/g)) if (!otherRepo(m[1])) addTarget(m[1]);
   for (const m of text.matchAll(/workflow_id\s*:\s*['"]([\w.-]+\.ya?ml)['"]/g)) out.add(m[1]);
   for (const m of text.matchAll(/actions\/workflows\/([\w.-]+\.ya?ml)\/dispatches/g)) out.add(m[1]);
@@ -235,32 +253,12 @@ function queueEvictionRisks(workflows, rawByFile, scriptTexts = []) {
   return risks;
 }
 
-// Known offenders when the check landed (BRO-4859); triage tracked on Linear. The
-// check fails only on workflows NOT listed here, so the set can only shrink.
-const QUEUE_EVICTION_BASELINE = [
-  'apply-migration.yml',
-  'audit-aggregator-gap.yml',
-  'audit-census-recall.yml',
-  'audit-reverse-discovery.yml',
-  'autonomous-merge.yml',
-  'backfill-cast.yml',
-  'coverage-adversarial-probe.yml',
-  'deep-research-commercial.yml',
-  'extract-pull-quotes.yml',
-  'fetch-aggregator-pages.yml',
-  'newsletter-draft.yml',
-  'opening-digest.yml',
-  'opening-night-broadcast.yml',
-  'outlet-listing-poller.yml',
-  'rebuild-reviews.yml',
-  'review-refresh.yml',
-  'scrape-dtli-show-score.yml',
-  'sweep-we-aggregators.yml',
-  'update-critic-consensus.yml',
-  'update-ltd.yml',
-  'update-theatr.yml',
-  'weekly-grosses.yml',
-];
+// Known offenders when the check landed (BRO-4859). The check fails only on
+// workflows NOT listed here, so the set can only shrink.
+// BRO-4870 triaged every entry (marker, per-edition group, batched dispatch, or a
+// hint-string false positive), so the baseline is empty. Keep it that way: a new
+// offender gets fixed or annotated, not listed.
+const QUEUE_EVICTION_BASELINE = [];
 
 module.exports = {
   QUEUE_OK_ANNOTATION,

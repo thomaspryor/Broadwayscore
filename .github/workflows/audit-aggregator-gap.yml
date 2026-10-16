@@ -44,6 +44,8 @@ on:
         default: 'false'
 
 concurrency:
+  # concurrency-queue-ok: single writer of the gap-audit checkpoint (below); the hourly cron
+  # re-audits live newest shows first, so a targeted show_ids run that a cron tick evicts is covered (BRO-4870).
   # Targeted (show_ids) runs share this group on purpose (BRO-4592). This workflow
   # is the single writer of data/audit/gap-audit-checkpoint.json and its siblings,
   # which core-data-merge-registry.js registers as apiFallbackSafe BECAUSE of this
