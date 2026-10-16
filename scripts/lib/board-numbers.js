@@ -25,6 +25,7 @@ const { fetchInflowCounts } = require('./backlog-inflow-ratio.js');
 const { landedPerLane } = require('./codex-runner.js');
 const { isAutofixFiledIssue } = require('./autofix-filed-marker.js');
 const { isAwaitingOwner } = require('./owner-approval-channel.js');
+const cardDedupe = require('./card-dedupe.js');
 
 const TEAM_KEY = 'BRO';
 const PRIORITY_LABELS = [[1, 'Urgent'], [2, 'High'], [3, 'Medium'], [4, 'Low'], [0, 'No priority']];
@@ -91,6 +92,55 @@ async function fetchStuckCards({ graphql, now = new Date(), teamKey = TEAM_KEY, 
   return { count, truncated: true };
 }
 
+const RECENT_QUERY = `query RecentCards($filter: IssueFilter, $after: String) {
+  issues(filter: $filter, first: 100, after: $after, includeArchived: true) {
+    pageInfo { hasNextPage endCursor }
+    nodes { title description createdAt }
+  }
+}`;
+
+/**
+ * PURE. Cards added in the window, per filer (the "Filed by:" footer the front door
+ * stamps since BRO-5488, else card-dedupe's title/body rules), plus floods: one
+ * filer's FLOOD_THRESHOLD+ cards of one kind. -> { total, bySource:[{source,count}], floods:[{source,kind,count}] }
+ */
+function summarizeInflowBySource(cards) {
+  const bySource = new Map();
+  const byKind = new Map();
+  for (const c of cards || []) {
+    const footer = cardDedupe.parseSourceFooter(c.description);
+    const source = footer ? footer.source : cardDedupe.inferCardSource(c);
+    bySource.set(source, (bySource.get(source) || 0) + 1);
+    if (source === 'rollup') continue;
+    const kind = footer && footer.kind ? footer.kind : cardDedupe.titleKind(c.title);
+    const key = `${source}\u0000${kind}`;
+    byKind.set(key, (byKind.get(key) || 0) + 1);
+  }
+  const desc = (a, b) => b.count - a.count || String(a.source).localeCompare(String(b.source));
+  return {
+    total: (cards || []).length,
+    bySource: [...bySource].map(([source, count]) => ({ source, count })).sort(desc),
+    floods: [...byKind].filter(([, n]) => n >= cardDedupe.FLOOD_THRESHOLD)
+      .map(([k, count]) => { const [source, kind] = k.split('\u0000'); return { source, kind, count }; }).sort(desc),
+  };
+}
+
+/** Cards created in the last 24h (archived included), summarized by filer. */
+async function fetchInflowBySource({ graphql, now = new Date(), teamKey = TEAM_KEY, graphqlOpts = GRAPHQL_OPTS } = {}) {
+  const filter = { team: { key: { eq: teamKey } }, createdAt: { gte: new Date(now.getTime() - 24 * 3600 * 1000).toISOString() } };
+  const cards = [];
+  let after = null;
+  for (let page = 0; page < MAX_PAGES; page++) {
+    const data = await graphql(RECENT_QUERY, { filter, after }, graphqlOpts);
+    const conn = data && data.issues;
+    if (!conn || !Array.isArray(conn.nodes)) throw new Error('Linear returned no issues connection for the inflow-by-source read');
+    cards.push(...conn.nodes);
+    if (!conn.pageInfo || !conn.pageInfo.hasNextPage) return { ...summarizeInflowBySource(cards), truncated: false };
+    after = conn.pageInfo.endCursor;
+  }
+  return { ...summarizeInflowBySource(cards), truncated: true };
+}
+
 /**
  * Codex vs Claude cards landed on main in the last 24h and 7 days, from ONE git log (the
  * history fetch is the slow part: ~12k commits/week, mostly bots). -> { d1, d7 } or null.
@@ -122,13 +172,14 @@ function readLanded({ cwd = process.cwd(), exec = execFileSync, nowMs = Date.now
 }
 
 /** Every live read, each fail-soft on its own: a missing piece renders "n/a", never blocks the digest. */
-async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLandedFn = readLanded, fetchInflow = fetchInflowCounts, fetchOpen = fetchOpenByPriority, fetchStuck = fetchStuckCards } = {}) {
+async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLandedFn = readLanded, fetchInflow = fetchInflowCounts, fetchOpen = fetchOpenByPriority, fetchStuck = fetchStuckCards, fetchBySource = fetchInflowBySource } = {}) {
   const soft = async (fn) => { try { return await fn(); } catch (err) { return { error: String(err && err.message || err).slice(0, 120) }; } };
   // Sequential on purpose: backlog-inflow-ratio.js walks one at a time because of Linear rate limits.
   const open = await soft(() => fetchOpen({ graphql }));
   const d1 = await soft(() => fetchInflow({ graphql, now, windowDays: 1 }));
   const d7 = await soft(() => fetchInflow({ graphql, now, windowDays: 7 }));
   const stuckCards = await soft(() => fetchStuck({ graphql, now }));
+  const bySource = await soft(() => fetchBySource({ graphql, now }));
   let landed = null;
   try { landed = readLandedFn({ cwd, nowMs: now.getTime() }); } catch { /* n/a */ }
   return {
@@ -136,6 +187,7 @@ async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLande
     d1,
     d7,
     stuckCards,
+    bySource,
     landed1: landed ? landed.d1 : null,
     landed7: landed ? landed.d7 : null,
   };
@@ -167,11 +219,13 @@ function buildBoardNumbers({ data = {}, waiting = null, stuck = null, technicalI
     stuckCards: ok(data.stuckCards) ? num(data.stuckCards.count) : null,
     stuckCardsFloor: ok(data.stuckCards) && !!data.stuckCards.truncated,
     technicalInReview: num(technicalInReview),
+    bySource: ok(data.bySource) ? data.bySource : null,
     lanes: { d1: data.landed1 || null, d7: data.landed7 || null },
     floors,
   };
 }
 
+const FLOOD_LABEL = `${cardDedupe.FLOOD_THRESHOLD}+ cards of one kind from one filer in 24h`;
 const show = (v) => (v === null || v === undefined ? 'n/a' : String(v));
 
 /** Plain-text lines (also what gets pasted into the card Outcome). */
@@ -181,6 +235,12 @@ function renderBoardNumbersLines(m) {
     ? `Open cards: ${m.open.total} (${m.open.rows.map((r) => `${r.count} ${r.label}`).join(', ')})`
     : 'Open cards: n/a');
   lines.push(`Added: ${show(m.added.d1)} in 24h, ${show(m.added.d7)} in 7 days`);
+  if (m.bySource && m.bySource.bySource) {
+    lines.push(`Added in 24h by source: ${m.bySource.bySource.map((r) => `${r.source} ${r.count}`).join(', ') || 'none'}`);
+    if (m.bySource.floods.length) {
+      lines.push(`Floods (${FLOOD_LABEL}): ${m.bySource.floods.slice(0, 5).map((f) => `${f.source} "${f.kind}" ${f.count}`).join('; ')}`);
+    }
+  }
   lines.push(`Completed: ${show(m.completed.d1)} in 24h, ${show(m.completed.d7)} in 7 days`);
   lines.push(`Canceled: ${show(m.canceled.d1)} in 24h, ${show(m.canceled.d7)} in 7 days`);
   lines.push(`Waiting on you: ${show(m.waiting)}`);
@@ -204,5 +264,5 @@ function renderBoardNumbersHtml(m, esc = (s) => String(s)) {
 }
 
 module.exports = {
-  fetchOpenByPriority, fetchStuckCards, readLanded, fetchBoardNumbersData, buildBoardNumbers, renderBoardNumbersLines, renderBoardNumbersHtml, PRIORITY_LABELS,
+  fetchOpenByPriority, fetchStuckCards, fetchInflowBySource, summarizeInflowBySource, readLanded, fetchBoardNumbersData, buildBoardNumbers, renderBoardNumbersLines, renderBoardNumbersHtml, PRIORITY_LABELS,
 };

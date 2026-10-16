@@ -134,3 +134,28 @@ test('html has no em dash and escapes', () => {
   assert.ok(!html.includes('—'));
   assert.match(html, /Board numbers/);
 });
+
+test('BRO-5488: inflow by source reads the Filed-by footer, else title rules, and flags floods', () => {
+  const { sourceFooter, titleKind } = require('./card-dedupe.js');
+  const gap = (s) => `BSC Daily: Review gap — "${s}" missing 1 cited review(s)`;
+  const cards = [
+    ...['A', 'B', 'C', 'D'].map((s) => ({ title: gap(s), description: '' })),
+    { title: 'Opening-night audit 2026-10-16', description: `x\n\n${sourceFooter('session', titleKind('Opening-night audit'))}` },
+    { title: 'main test.yml red: E2E Tests / Run E2E tests', description: '' },
+    { title: 'Rollup (workflow:A): k', description: sourceFooter('rollup', 'k') },
+  ];
+  const s = B.summarizeInflowBySource(cards);
+  assert.equal(s.total, 7);
+  assert.deepEqual(s.bySource, [
+    { source: 'digest-autofix', count: 4 }, { source: 'ci-red', count: 1 }, { source: 'rollup', count: 1 }, { source: 'session', count: 1 },
+  ]);
+  assert.deepEqual(s.floods, [{ source: 'digest-autofix', kind: 'review gap missing cited', count: 4 }]);
+  const m = B.buildBoardNumbers({ data: { d1: inflow(7, 0), bySource: s } });
+  const text = B.renderBoardNumbersLines(m).join('\n');
+  assert.match(text, /Added: 7 in 24h.*\nAdded in 24h by source: digest-autofix 4, ci-red 1, rollup 1, session 1\nFloods \(3\+ cards of one kind from one filer in 24h\): digest-autofix "review gap missing cited" 4\nCompleted:/);
+});
+
+test('BRO-5488: a failed by-source read drops the line instead of printing zeros', () => {
+  const m = B.buildBoardNumbers({ data: { bySource: { error: 'boom' } } });
+  assert.doesNotMatch(B.renderBoardNumbersLines(m).join('\n'), /by source/);
+});
