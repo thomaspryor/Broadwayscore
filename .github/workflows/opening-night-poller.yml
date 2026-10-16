@@ -1297,20 +1297,3 @@ jobs:
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
-
-      - name: Trigger investigation
-        # BRO-3931: cancelled() too, matching "Notify on failure" above (BRO-3707), so a
-        # job-timeout cancellation that pages also dispatches the investigation. Same
-        # Express-takeover guard as Notify: a preempted run's Notify is skipped, which
-        # leaves `suppressed` empty, and that must not read as "paged".
-        # Gate on the page actually firing — otherwise every graced transient
-        # still sends an investigation email (the 2026-07-13 5-email storm).
-        if: (failure() || (cancelled() && steps.check_preemption.outputs.preempted != 'true')) && steps.notify.outputs.suppressed != 'true'
-        env:
-          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-        run: |
-          gh workflow run investigate-alert.yml \
-            -f alert_type=poller_fail \
-            -f alert_title="Opening Night Poller Failed" \
-            -f alert_context='{}' \
-            -f run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

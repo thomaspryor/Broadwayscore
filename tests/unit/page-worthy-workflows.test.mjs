@@ -87,3 +87,28 @@ test('investigate-alert.yml (always emails) is only dispatched by page-worthy wo
     'These steps dispatch investigate-alert.yml (which always emails the owner) from a workflow that is not page-worthy, ' +
     "without the `steps.<notify>.outputs.suppressed != 'true'` gate: " + offenders.join('; '));
 });
+
+// Owner decision 2026-10-16 (BRO-5426): one email per incident. A job whose
+// notify-failure step already emails (email: 'true') must not also dispatch
+// investigate-alert.yml, which sends a second email about the same failure a
+// minute later. The poller and broadcast did both, so each page was two emails.
+test('a job that emails via notify-failure does not also dispatch investigate-alert.yml', () => {
+  const offenders = [];
+  for (const file of fs.readdirSync(WORKFLOWS_DIR).filter((f) => /\.ya?ml$/.test(f))) {
+    if (file === 'investigate-alert.yml') continue;
+    const doc = yaml.load(fs.readFileSync(path.join(WORKFLOWS_DIR, file), 'utf-8')) || {};
+    for (const [jobId, job] of Object.entries(doc.jobs || {})) {
+      const steps = job.steps || [];
+      const emails = steps.some((s) => /notify-failure/.test(String(s.uses || '')) && String(s.with?.email) === 'true');
+      if (!emails) continue;
+      for (const step of steps) {
+        if (/workflow run investigate-alert\.yml|investigate-alert\.yml\/dispatches/.test(String(step.run || ''))) {
+          offenders.push(`${file} / ${jobId} / ${step.name || '(unnamed)'}`);
+        }
+      }
+    }
+  }
+  assert.deepEqual(offenders, [],
+    'These jobs already email the owner through notify-failure and also dispatch investigate-alert.yml, ' +
+    'so one failure sends two emails: ' + offenders.join('; '));
+});

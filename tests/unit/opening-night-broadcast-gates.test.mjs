@@ -113,7 +113,7 @@ describe('opening-night-broadcast.yml gate wiring', () => {
   });
 
   test('failure notifiers are not masked by a gate block', () => {
-    for (const s of [byId('notify'), byName(/^Trigger investigation/)]) {
+    for (const s of [byId('notify')]) {
       assert.doesNotMatch(String(s.if), /outputs\.blocked/, `${s.name}: a blocked gate must not hide later failures`);
     }
   });

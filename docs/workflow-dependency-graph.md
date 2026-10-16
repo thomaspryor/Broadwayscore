@@ -170,11 +170,9 @@ collect-review-texts.yml ──▶ rebuild-reviews.yml, llm-ensemble-score.yml
 rebuild-reviews.yml ──▶ vercel-deploy.yml, llm-ensemble-score.yml, update-critic-consensus.yml
 llm-ensemble-score.yml ──▶ llm-ensemble-score.yml (self, batch chaining), extract-pull-quotes.yml
 opening-night-poller.yml ──▶ fetch-guardian-reviews.yml, vercel-deploy.yml (fast_path),
-                              rebuild-reviews.yml (legacy path), opening-night-broadcast.yml,
-                              investigate-alert.yml (on failure)
+                              rebuild-reviews.yml (legacy path), opening-night-broadcast.yml
 opening-night-orchestrator.yml ──▶ opening-night-poller.yml (per-show, waited-on synchronously)
-opening-night-broadcast.yml ──▶ gather-reviews.yml, vercel-deploy.yml, send-notifications.yml,
-                                 investigate-alert.yml (on failure)
+opening-night-broadcast.yml ──▶ gather-reviews.yml, vercel-deploy.yml, send-notifications.yml
 opening-night-reviews.yml ──▶ gather-reviews.yml
 update-show-status.yml ──▶ gather-reviews.yml, vercel-deploy.yml, check-opening-night-readiness.yml,
                             + (on previews→open) opening-night-poller.yml, opening-night-broadcast.yml,
