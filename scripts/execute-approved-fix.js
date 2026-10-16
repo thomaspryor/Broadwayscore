@@ -81,6 +81,11 @@ const ALLOWED_SCRIPTS = [
   // BRO-5276: delete Theatr audience data attached to shows that closed before
   // Theatr existed, recompute their combined score. Needs --apply in args.
   'neutralize-stale-theatr-buzz.js',
+  // BRO-5499: delete Show Score audience data that came from a UK production page on a US show
+  // (stored rating must equal the archived UK page's). Needs --apply in args.
+  'purge-uk-show-score-audience.js',
+  // BRO-5499: publishDate stored one day late (UTC truncation) -> permalink date; evidence rules in the script.
+  'fix-utc-shifted-publish-dates.js',
   // BRO-4779: delete sibling-misfiled aggregator-archive pages (+ tombstone ids).
   // Needs --delete --expect=N; the workflow checks out and pushes the archive.
   'audit-sibling-misfile-archive.js',

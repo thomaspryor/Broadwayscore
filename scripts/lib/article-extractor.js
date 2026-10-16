@@ -25,6 +25,7 @@
  */
 
 'use strict';
+const { publishedStampToLocalDate } = require('./local-date');
 
 const { foldDiacritics } = require('./title-match');
 const { decodeBloxRot47 } = require('./blox-rot47-decode');
@@ -1020,12 +1021,15 @@ function extractArticleTextFromUrl(html, url, criticHint) {
 }
 
 /** Normalize a raw date string to YYYY-MM-DD (or null). */
-function normalizeDate(raw) {
+function normalizeDate(raw, url) {
   if (!raw || typeof raw !== 'string') return null;
-  // Most sources are ISO 8601 (2026-05-27T02:00:00+00:00) — take the date part
-  // verbatim (do NOT UTC-convert; the source's local calendar date is what we want).
-  const iso = raw.match(/^(\d{4}-\d{2}-\d{2})/);
-  if (iso) return iso[1];
+  // ISO 8601 with an explicit local offset (2026-05-27T21:00:00-04:00) or no time: take the date part
+  // verbatim. A UTC stamp (Z / +00:00) is the UTC calendar date, which for an opening-night review posted
+  // after ~8pm ET is the NEXT day (BRO-5499): convert to the publisher's timezone via local-date.js.
+  if (/^\d{4}-\d{2}-\d{2}/.test(raw.trim())) {
+    // Unparseable time part ("T2:00:00Z", "+00"): keep the old behaviour, the stamp's own date part.
+    return publishedStampToLocalDate(raw, url) || raw.trim().slice(0, 10);
+  }
   // Fall back to Date parsing for non-ISO formats (e.g. "June 19, 2026 11:15 AM").
   const d = new Date(raw);
   if (!Number.isNaN(d.getTime())) return d.toISOString().slice(0, 10);
@@ -1119,7 +1123,7 @@ function extractPublishDate(html, url) {
 
   // 1. OpenGraph published_time — page-level, never a related article.
   const og = normalizeDate((html.match(/<meta[^>]+property=["']article:published_time["'][^>]+content=["']([^"']+)["']/i)
-    || html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']article:published_time["']/i) || [])[1]);
+    || html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']article:published_time["']/i) || [])[1], url);
   if (og) return og;
 
   // 2. JSON-LD scoped to the main article by canonical-URL match.
@@ -1133,25 +1137,25 @@ function extractPublishDate(html, url) {
   if (entities.length) {
     if (canonical) {
       const main = entities.find((e) => entitySelfUrls(e).includes(canonical));
-      if (main) { const d = normalizeDate(main.datePublished); if (d) return d; }
+      if (main) { const d = normalizeDate(main.datePublished, url); if (d) return d; }
     }
     // No canonical, or no entity self-identifies with it: only trust JSON-LD when
     // every article entity agrees on one date (an unambiguous single-article page).
-    const ldDates = [...new Set(entities.map((e) => normalizeDate(e.datePublished)).filter(Boolean))];
+    const ldDates = [...new Set(entities.map((e) => normalizeDate(e.datePublished, url)).filter(Boolean))];
     if (ldDates.length === 1) return ldDates[0];
   }
 
   // 3. First-match fallback — safe only when the document has ONE distinct date.
   const rawDates = [];
   for (const re of [/["']datePublished["']\s*:\s*["']([^"']+)["']/g, /<time[^>]+datetime=["']([^"']+)["']/gi]) {
-    for (const m of html.matchAll(re)) { const d = normalizeDate(m[1]); if (d) rawDates.push(d); }
+    for (const m of html.matchAll(re)) { const d = normalizeDate(m[1], url); if (d) rawDates.push(d); }
   }
   const distinct = [...new Set(rawDates)];
   if (distinct.length === 1) return distinct[0];
 
   // 4. Theatrely (Webflow) exposes no date meta/time/JSON-LD — only a visible
   // <div class="publish-date">June 19, 2026 11:15 AM</div>. Inherently single.
-  const divDate = normalizeDate((html.match(/<div[^>]+class=["'][^"']*publish-date[^"']*["'][^>]*>([^<]+)</i) || [])[1]);
+  const divDate = normalizeDate((html.match(/<div[^>]+class=["'][^"']*publish-date[^"']*["'][^>]*>([^<]+)</i) || [])[1], url);
   if (divDate) return divDate;
 
   return null;

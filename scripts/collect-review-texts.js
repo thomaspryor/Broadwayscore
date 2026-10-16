@@ -53,6 +53,7 @@
  */
 
 const { pointsAtFile, planCanonicalPointerClear, applyCanonicalPointerClear } = require('./lib/canonical-duplicate-pointers');
+const { localizeIsoStamp } = require('./lib/local-date');
 const { quarantineBody } = require('./lib/quarantine-body');
 const fs = require('fs');
 const path = require('path');
@@ -4664,7 +4665,7 @@ function classifyTextQuality(text, showId, wordCount, excerptLength = 0) {
 }
 
 // Extract publishDate from raw HTML using JSON-LD, meta tags, and time elements
-function extractPublishDateFromHtml(html) {
+function extractPublishDateFromHtml(html, pageUrl) {
   if (!html || html.length < 100) return null;
 
   // 1. JSON-LD datePublished (most reliable)
@@ -4678,7 +4679,7 @@ function extractPublishDateFromHtml(html) {
       for (const item of items) {
         const date = item.datePublished || item.dateCreated;
         if (date) {
-          const normalized = normalizeExtractedDate(date);
+          const normalized = normalizeExtractedDate(date, pageUrl);
           if (normalized) return normalized;
         }
       }
@@ -4696,7 +4697,7 @@ function extractPublishDateFromHtml(html) {
   for (const regex of metaSelectors) {
     const m = html.match(regex);
     if (m && m[1]) {
-      const normalized = normalizeExtractedDate(m[1]);
+      const normalized = normalizeExtractedDate(m[1], pageUrl);
       if (normalized) return normalized;
     }
   }
@@ -4704,7 +4705,7 @@ function extractPublishDateFromHtml(html) {
   // 3. <time datetime="..."> in article context
   const timeMatch = html.match(/<time[^>]*datetime=["']([^"']+)["'][^>]*>/i);
   if (timeMatch && timeMatch[1]) {
-    const normalized = normalizeExtractedDate(timeMatch[1]);
+    const normalized = normalizeExtractedDate(timeMatch[1], pageUrl);
     if (normalized) return normalized;
   }
 
@@ -4724,8 +4725,10 @@ const { extractDateFromText, detectBodyDateMismatch } = require('./lib/body-date
 // Normalize extracted date string to YYYY-MM-DD format
 // Extracts date components directly from string to avoid timezone shift issues
 // (e.g., "2024-03-15T23:30:00-05:00" → "2024-03-15", not "2024-03-16")
-function normalizeExtractedDate(dateStr) {
+function normalizeExtractedDate(dateStr, pageUrl) {
   if (!dateStr || typeof dateStr !== 'string') return null;
+  // BRO-5499: a UTC stamp (Z / +00:00) is the next calendar day for an evening ET post; use the publisher-local date.
+  dateStr = localizeIsoStamp(dateStr, pageUrl);
   try {
     // Extract YYYY-MM-DD directly from the string before any timezone conversion
     const dateMatch = dateStr.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
@@ -4958,7 +4961,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
 
   // Extract publishDate from HTML if not already set
   if (!data.publishDate && html) {
-    const extractedDate = extractPublishDateFromHtml(html);
+    const extractedDate = extractPublishDateFromHtml(html, data.url);
     if (extractedDate) {
       data.publishDate = extractedDate;
       if (provisionalPublishDate) data.dateSource = 'html-page';
@@ -7322,7 +7325,7 @@ async function verifyFetchedContent(review, result, validation, { discoveredUrl 
           // row's (a stored 2015 date made a 2018 tour review look like an
           // opening-week review, BRO-5183).
           storedDate: discoveredUrl ? null : reviewData.publishDate,
-          derivedDate: extractPublishDateFromHtml(result.html)
+          derivedDate: extractPublishDateFromHtml(result.html, discoveredUrl || reviewData.url)
             || (() => { const pageUrl = discoveredUrl || reviewData.url; const u = pageUrl ? extractDateFromUrlCanonical(pageUrl) : null; return u && /^\d{4}-\d{2}-\d{2}$/.test(u.date || '') ? u.date : null; })()
             || (result.text && result.text.length > 100 ? extractDateFromText(result.text) : null),
           textFetchedAt: discoveredUrl ? null : reviewData.textFetchedAt,

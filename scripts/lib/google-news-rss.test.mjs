@@ -55,7 +55,8 @@ test('discovers a publisher URL and real byline through the shared fetch seam', 
   assert.equal(results[0].outletId, 'telegraph');
   assert.equal(results[0].criticName, 'Dominic Cavendish');
   assert.equal(results[0].source, 'google-news-rss');
-  assert.equal(results[0].publishDate, '2026-09-21');
+  // 23:35 UTC is 00:35 BST on the 22nd at a UK publisher: the reader-visible date is the local one (BRO-5499).
+  assert.equal(results[0].publishDate, '2026-09-22');
   assert.equal(results[0].url, publisher);
   assert.equal(calls.length, 2);
   assert.ok(calls.every(c => c.options.preferPlaywright === true));

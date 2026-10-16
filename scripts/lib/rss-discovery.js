@@ -1,3 +1,4 @@
+const { publishedStampToLocalDate } = require('./local-date');
 /**
  * RSS Feed Discovery for Opening Night Poller
  *
@@ -456,7 +457,7 @@ async function checkRSSFeeds(showTitle, options = {}) {
             outletId: feed.outletId,
             outlet: feed.name,
             title: item.title,
-            publishDate: item.pubDate ? item.pubDate.toISOString().slice(0, 10) : null,
+            publishDate: item.pubDate ? publishedStampToLocalDate(item.pubDate, item.link) : null,
             source: 'rss-discovery',
           };
           // Stamp critic on single-author feeds (Substack critics). Prevents the

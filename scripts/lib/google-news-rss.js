@@ -1,4 +1,5 @@
 'use strict';
+const { publishedStampToLocalDate, tzForMarket } = require('./local-date');
 
 const cheerio = require('cheerio');
 const { fetchPage, domainMatchesExpected } = require('./scraper');
@@ -156,7 +157,7 @@ async function discoverGoogleNewsReviews(show, options = {}) {
           showId: show.id, url, outletId: outlet.outletId,
           outlet: outlet.displayName || item.sourceName,
           criticName: resolveCritic({ byline: extractByline(page?.content || ''), outletEntry: registry[outlet.outletId] }), title: item.title,
-          publishDate: item.pubDate.toISOString().slice(0, 10),
+          publishDate: publishedStampToLocalDate(item.pubDate, url, { tz: tzForMarket(show.category || show.market) || undefined }),
           dateSource: 'google-news-rss', source: 'google-news-rss',
         });
         if (verbose) console.log(`  google-news-rss candidate: ${outlet.outletId} ${url}`);

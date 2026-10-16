@@ -19,6 +19,7 @@
  */
 
 const { canDiscoverShowScoreUrl } = require('./lib/showscore-status-eligibility');
+const { servesUkPageForUsShow, allowsUkShowScorePage } = require('./lib/show-score-canonical');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
@@ -529,6 +530,12 @@ function isValidShowScorePage(html, url, showTitle, options = {}) {
   if (!allowOffBroadway && url.includes('/off-broadway-shows/')) return false;
   // Reject london/west-end shows unless show is west-end
   if (!allowWestEnd && (url.includes('/london-shows/') || url.includes('/west-end-shows/'))) return false;
+  // BRO-5499: Show Score serves the London page at the NYC slug when a transfer has no NYC page
+  // yet (canonical /uk/london/off-west-end-shows/...): London ratings must not become a NYC audience score.
+  if (servesUkPageForUsShow(html, url, { allowWestEnd })) {
+    if (verbose) console.log('    Rejected: page canonical is a UK Show Score page');
+    return false;
+  }
   const jsonLdMatch = html.match(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi);
   if (jsonLdMatch) {
     for (const match of jsonLdMatch) {
@@ -611,7 +618,7 @@ async function discoverShowScoreUrl(show) {
       // has no year-mismatch or short-title-partial-match guard, so a
       // same-title-different-year revival, or a listing-page JSON-LD name
       // that loosely contains the show title, wouldn't otherwise be caught.
-      if (isValidShowScorePage(html, url, show.title, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: isLondonMarket(show.category) })) {
+      if (isValidShowScorePage(html, url, show.title, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: isLondonMarket(show.category) || allowsUkShowScorePage(show) })) {
         const pageValidation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null, pageType: 'audience-aggregator', skipLlm: true });
         if (!pageValidation.valid) {
           if (verbose) console.log(`  ✗ Page validator rejected (deterministic): ${pageValidation.reason}`);

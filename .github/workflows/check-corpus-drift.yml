@@ -186,6 +186,22 @@ jobs:
             echo "::warning::audit-publisher-domain-live.js could not run (exit=$RC) — no misattribution signal this run."
           fi
 
+      - name: Audit wrong-production reviews, UTC-shifted dates, UK Show Score audience (BRO-5499, advisory)
+        if: always()
+        continue-on-error: true # lands advisory first (BRO-2123)
+        run: |
+          # Three classes the Sea Wall / Midnight / Memoirs cleanup found (2026-10-16). Each exits 1 while hits remain.
+          RC1=0; OUT1=$(node scripts/audit-sibling-production-cast.js --strict 2>&1) || RC1=$?
+          echo "$OUT1" | tail -15
+          [ "$RC1" != "0" ] && echo "::warning::sibling-cast audit: a scored review names only another production's cast (wrong production). Run: node scripts/audit-sibling-production-cast.js"
+          RC2=0; OUT2=$(node scripts/fix-utc-shifted-publish-dates.js --strict 2>&1) || RC2=$?
+          echo "$OUT2" | tail -4
+          [ "$RC2" != "0" ] && echo "::warning::publishDate stored a day late (UTC truncation). Fix: node scripts/fix-utc-shifted-publish-dates.js --apply"
+          RC3=0; OUT3=$(node scripts/purge-uk-show-score-audience.js --strict 2>&1) || RC3=$?
+          echo "$OUT3" | tail -6
+          [ "$RC3" != "0" ] && echo "::warning::UK Show Score ratings on US shows. Fix: node scripts/purge-uk-show-score-audience.js --apply"
+          exit 0
+
       - name: Audit isNonReview content-type/wrongShow + slug coverage (BRO-3862)
         if: always()
         run: |

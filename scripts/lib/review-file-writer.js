@@ -46,6 +46,8 @@ const { safeWriteReview, safeRenameReview, invalidateWrongProductionAutoClear } 
 const { classifyContentTier } = require('./content-quality');
 const { clearFailureFlags } = require('./clear-failure-flags');
 const { pickRerouteTarget, shouldSkipRoundupAudit, isRoundupPageAsReview, isRoundupUrl, isLikelyTourReview, getWrongProductionReasonForUnknownCritic, getWrongProductionReasonForBww, isWrongShowUnknownLocked } = require('./review-guards');
+const { findSiblingProductionCastMismatch } = require('./sibling-production-cast');
+const { printedBylineOverride } = require('./byline-from-text');
 const { isStaleScoreInput, markRescoreNeeded } = require('./rescore-flagging');
 const { capturePublishedStar } = require('./published-star-capture');
 const { isHumanClearedWrongProduction: _isHumanClearedWrongProduction, neutralizeStaleFlagsOnBodyReplacement } = require('./stale-flag-neutralization');
@@ -253,6 +255,12 @@ function _getShowById(showId) {
     }
   }
   return _showByIdCache[showId] || null;
+}
+
+// All shows.json entries (same lazy load as _getShowById) for the sibling-production cast check.
+function _getAllShows() {
+  _getShowById('');
+  return Object.values(_showByIdCache || {});
 }
 
 // BRO-4317: ids read fresh from disk, so a show added earlier in the same process
@@ -870,7 +878,14 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
   // personal name or 'Unknown' BEFORE filename/dedup/guards run, so a URL can
   // never be persisted as criticName. Save-time mirror of validate-data's
   // [headline-critic]/[url-critic] gate. See byline-normalization.js.
-  const criticName = sanitizeCriticName(input.criticName) || 'Unknown';
+  let criticName = sanitizeCriticName(input.criticName) || 'Unknown';
+  // BRO-5499: where the article prints its own byline line (TheaterScene.net "Posted on <date> by X in"),
+  // that line beats a scraped / aggregator-supplied name (the site editor is credited on other critics' pages).
+  const printedByline = printedBylineOverride(outletId, input.fullText || fields.fullText, input.url);
+  if (printedByline && sanitizeCriticName(printedByline) && normalizeCritic(printedByline) !== normalizeCritic(criticName)) {
+    console.warn(`  ✎ Byline: ${outletId} page prints "${printedByline}", replacing "${criticName}"`);
+    criticName = sanitizeCriticName(printedByline);
+  }
   if (!laneHolds('scraperGarbage') && criticName === 'Unknown' && !input.url && !fields.fullText && !fields.bwwExcerpt
       && !fields.dtliExcerpt && !fields.showScoreExcerpt && !fields.nycTheatreExcerpt
       && !fields.stagedoorExcerpt && !fields.lboRoundupExcerpt) {
@@ -977,6 +992,36 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
         fields.wrongProduction = true;
         fields.wrongProductionReason = wpReason;
         console.warn(`  ⚠️  ${wpReason} (${showId}/${outletId})`);
+      }
+    }
+  }
+
+  // --- Guard L: sibling-production cast mismatch (BRO-5499) ---
+  // A review whose text names two or more cast members of a same-title sibling production
+  // (same market) and none of THIS production's cast/creatives is a review of the other
+  // production. Sea Wall 2026 (Andrew Scott) held the 2019 Gyllenhaal/Sturridge review, scored 88:
+  // no publishDate, Unknown critic, so Guards J/K (URL-date) failed open. Flag-not-skip, with the
+  // same human-clear exemption as Guard J. Pure predicate: sibling-production-cast.js.
+  if (!fields.wrongProduction && !laneHolds('wrongProduction')) {
+    const siblingMismatch = findSiblingProductionCastMismatch(
+      input.fullText || fields.fullText, _getShowById(showId), _getAllShows(),
+      { publishDate: input.publishDate || fields.publishDate },
+    );
+    if (siblingMismatch) {
+      const existingSibData = _lookupExistingWrongProductionData(
+        reviewTextsDir, showId, outletId, criticName !== 'Unknown' ? criticName : null, input.url
+      );
+      if (_isHumanClearedWrongProduction(existingSibData)) {
+        console.warn(`  ⏭️  Skipping sibling-cast wrongProduction stamp for ${showId}/${outletId}: human override in place`);
+      } else if (existingSibData && existingSibData.assignedScore != null) {
+        // A merge into a file that is already scored and live is not re-judged here: the content
+        // verifier and the audit own it (a good review that cites the original cast must not be
+        // excluded by a later re-collect). The guard is for NEW reviews (BRO-5499 review).
+        console.warn(`  ⏭️  Skipping sibling-cast wrongProduction stamp for ${showId}/${outletId}: existing file is already scored`);
+      } else {
+        fields.wrongProduction = true;
+        fields.wrongProductionReason = siblingMismatch.reason;
+        console.warn(`  ⚠️  ${siblingMismatch.reason} (${showId}/${outletId})`);
       }
     }
   }

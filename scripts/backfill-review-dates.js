@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const { maxPlausibleYear } = require('./lib/date-utils');
+const { localizeIsoStamp } = require('./lib/local-date');
 /**
  * backfill-review-dates.js — Fetch pages for undated reviews to extract publishDate.
  *
@@ -83,8 +84,10 @@ const SKIP_DOMAINS = new Set([
 
 // --- Date extraction from HTML (copied from collect-review-texts.js) ---
 
-function normalizeExtractedDate(dateStr) {
+function normalizeExtractedDate(dateStr, pageUrl) {
   if (!dateStr || typeof dateStr !== 'string') return null;
+  // BRO-5499: a UTC stamp (Z / +00:00) is the next calendar day for an evening ET post; use the publisher-local date.
+  dateStr = localizeIsoStamp(dateStr, pageUrl);
   try {
     const dateMatch = dateStr.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
     if (dateMatch) {
@@ -107,7 +110,7 @@ function normalizeExtractedDate(dateStr) {
   }
 }
 
-function extractPublishDateFromHtml(html) {
+function extractPublishDateFromHtml(html, pageUrl) {
   if (!html || html.length < 100) return null;
 
   // 1. JSON-LD datePublished (most reliable)
@@ -121,7 +124,7 @@ function extractPublishDateFromHtml(html) {
       for (const item of items) {
         const date = item.datePublished || item.dateCreated;
         if (date) {
-          const normalized = normalizeExtractedDate(date);
+          const normalized = normalizeExtractedDate(date, pageUrl);
           if (normalized) return normalized;
         }
       }
@@ -139,7 +142,7 @@ function extractPublishDateFromHtml(html) {
   for (const regex of metaSelectors) {
     const m = html.match(regex);
     if (m && m[1]) {
-      const normalized = normalizeExtractedDate(m[1]);
+      const normalized = normalizeExtractedDate(m[1], pageUrl);
       if (normalized) return normalized;
     }
   }
@@ -147,7 +150,7 @@ function extractPublishDateFromHtml(html) {
   // 3. <time datetime="..."> in article context
   const timeMatch = html.match(/<time[^>]*datetime=["']([^"']+)["'][^>]*>/i);
   if (timeMatch && timeMatch[1]) {
-    const normalized = normalizeExtractedDate(timeMatch[1]);
+    const normalized = normalizeExtractedDate(timeMatch[1], pageUrl);
     if (normalized) return normalized;
   }
 
@@ -427,7 +430,7 @@ async function main() {
         continue;
       }
 
-      const date = extractPublishDateFromHtml(html);
+      const date = extractPublishDateFromHtml(html, url);
 
       if (date) {
         console.log(`  ✓ Extracted date: ${date} (${dateSource})`);

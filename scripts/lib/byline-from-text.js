@@ -67,11 +67,40 @@ function extractPlaysInternationalByline(text) {
   return { name: captured, known: false };
 }
 
+// TheaterScene.net prints the real byline as "Posted on October 15, 2026 by Samuel L. Leiter in Musicals".
+// Its page chrome / listing metadata credits the editor (Victor Gluck) on pages other critics wrote, so a
+// scraped or aggregator-supplied name is wrong whenever this line names someone else (Midnight 2026,
+// BRO-5499). A name printed on this line is the critic.
+const TS_POSTED_BY_RE = /Posted on [A-Z][a-z]+ \d{1,2}, \d{4} by (\p{Lu}[\p{L}'’.-]+(?:\s+\p{Lu}[\p{L}'’.-]+){1,3}?)\s+in\s/u;
+function extractTheaterSceneByline(text) {
+  if (!text) return null;
+  const m = TS_POSTED_BY_RE.exec(String(text).slice(0, 1500).replace(/\s+/g, " "));
+  return m ? { name: m[1].trim(), known: true } : null;
+}
+
 const { extractBodyByline } = require("./byline-normalization");
 
 const BYLINE_EXTRACTORS = {
   "plays-international": extractPlaysInternationalByline,
+  "theater-scene": extractTheaterSceneByline,
 };
+
+/**
+ * Outlets whose printed byline line is authoritative over a scraped / aggregator-supplied name, so a
+ * different stored name is replaced rather than only filled when missing.
+ */
+const PRINTED_BYLINE_OVERRIDES = new Set(["theater-scene"]);
+
+/** The critic the article itself prints, for outlets in PRINTED_BYLINE_OVERRIDES; else null. */
+function printedBylineOverride(outletId, text, url) {
+  if (!PRINTED_BYLINE_OVERRIDES.has(outletId)) return null;
+  const hit = BYLINE_EXTRACTORS[outletId](text);
+  if (!hit || !hit.known) return null;
+  // "Posted by" can name whoever uploaded the post (5 of 129 TheaterScene pages disagree with the
+  // critic slug in their own url). Replace a stored name only when the url's critic slug agrees.
+  const slug = hit.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  return slug && String(url || "").toLowerCase().includes("/" + slug) ? hit.name : null;
+}
 
 /**
  * @param {string} outletId canonical outlet id
@@ -111,6 +140,8 @@ function otherNamedCriticAtOutlet(seenKeys, outletKey, criticKey) {
 module.exports = {
   otherNamedCriticAtOutlet,
   extractBylineFromText,
+  printedBylineOverride,
+  extractTheaterSceneByline,
   extractPlaysInternationalByline,
   PI_KNOWN_CRITICS,
 };

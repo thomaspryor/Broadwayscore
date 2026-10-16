@@ -22,6 +22,7 @@
 
 'use strict';
 const { maxPlausibleYear } = require('./lib/date-utils');
+const { localizeIsoStamp } = require('./lib/local-date');
 
 const fs = require('fs');
 const path = require('path');
@@ -59,8 +60,10 @@ const SKIP_DOMAINS = new Set([
 ]);
 
 // ---- HTML date extraction (mirrors backfill-review-dates.js) ----
-function normalizeExtractedDate(dateStr) {
+function normalizeExtractedDate(dateStr, pageUrl) {
   if (!dateStr || typeof dateStr !== 'string') return null;
+  // BRO-5499: a UTC stamp (Z / +00:00) is the next calendar day for an evening ET post; use the publisher-local date.
+  dateStr = localizeIsoStamp(dateStr, pageUrl);
   try {
     const m = dateStr.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
     if (m) {
@@ -77,7 +80,7 @@ function normalizeExtractedDate(dateStr) {
   } catch (e) { return null; }
 }
 
-function extractPublishDateFromHtml(html) {
+function extractPublishDateFromHtml(html, pageUrl) {
   if (!html || html.length < 100) return null;
 
   const jsonLdRegex = /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
@@ -89,7 +92,7 @@ function extractPublishDateFromHtml(html) {
       for (const item of items) {
         const date = item.datePublished || item.dateCreated;
         if (date) {
-          const normalized = normalizeExtractedDate(date);
+          const normalized = normalizeExtractedDate(date, pageUrl);
           if (normalized) return normalized;
         }
       }
@@ -106,20 +109,20 @@ function extractPublishDateFromHtml(html) {
   for (const regex of metaSelectors) {
     const m = html.match(regex);
     if (m && m[1]) {
-      const normalized = normalizeExtractedDate(m[1]);
+      const normalized = normalizeExtractedDate(m[1], pageUrl);
       if (normalized) return normalized;
     }
   }
 
   const timeMatch = html.match(/<time[^>]*datetime=["']([^"']+)["'][^>]*>/i);
   if (timeMatch && timeMatch[1]) {
-    const normalized = normalizeExtractedDate(timeMatch[1]);
+    const normalized = normalizeExtractedDate(timeMatch[1], pageUrl);
     if (normalized) return normalized;
   }
 
   const stageMatch = html.match(/aos-ArticleDate[^>]*>((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2},\s*\d{4})/i);
   if (stageMatch && stageMatch[1]) {
-    const normalized = normalizeExtractedDate(stageMatch[1]);
+    const normalized = normalizeExtractedDate(stageMatch[1], pageUrl);
     if (normalized) return normalized;
   }
 
@@ -429,7 +432,7 @@ async function processOne(cand, stats) {
       return;
     }
 
-    const date = extractPublishDateFromHtml(html);
+    const date = extractPublishDateFromHtml(html, url);
     if (date) {
       if (!dryRun) {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));

@@ -1,4 +1,5 @@
 'use strict';
+const { publishedStampToLocalDate } = require('./local-date');
 
 /**
  * outlet-listing-helpers.js
@@ -398,7 +399,7 @@ function parseRssFeed(xml, cutoff) {
     const pubDate = parseFeedDate(dateMatch);
     if (pubDate && pubDate < cutoff) continue;
     if (!url.startsWith('http')) continue;
-    items.push({ url, headline, publishDate: pubDate ? pubDate.toISOString().slice(0, 10) : null, description: feedText(body, ['description']) });
+    items.push({ url, headline, publishDate: pubDate ? publishedStampToLocalDate(pubDate, url) : null, description: feedText(body, ['description']) });
   }
 
   // Atom entries
@@ -416,7 +417,7 @@ function parseRssFeed(xml, cutoff) {
     const pubDate = parseFeedDate(dateMatch);
     if (pubDate && pubDate < cutoff) continue;
     if (!url.startsWith('http')) continue;
-    items.push({ url, headline, publishDate: pubDate ? pubDate.toISOString().slice(0, 10) : null, description: feedText(body, ['summary']) });
+    items.push({ url, headline, publishDate: pubDate ? publishedStampToLocalDate(pubDate, url) : null, description: feedText(body, ['summary']) });
   }
 
   return items;
@@ -438,7 +439,10 @@ function parseWpApiPosts(posts, cutoff) {
     if (!url || !rawDate) continue;
     const pubDate = new Date(rawDate);
     if (pubDate < cutoff) continue;
-    items.push({ url, headline: headline.replace(/<[^>]+>/g, '').trim(), publishDate: pubDate.toISOString().slice(0, 10) });
+    // post.date is the site's local wall-clock stamp (no zone): its date part IS the calendar date.
+    // Only the date_gmt fallback is UTC and needs converting (BRO-5499).
+    const publishDate = post.date ? String(post.date).slice(0, 10) : publishedStampToLocalDate(`${String(post.date_gmt).slice(0, 19)}Z`, url);
+    items.push({ url, headline: headline.replace(/<[^>]+>/g, '').trim(), publishDate });
   }
   return items;
 }

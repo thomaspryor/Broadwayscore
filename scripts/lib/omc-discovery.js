@@ -1,3 +1,4 @@
+const { publishedStampToLocalDate, tzForMarket } = require('./local-date');
 /**
  * One Minute Critic Direct Discovery
  *
@@ -293,7 +294,7 @@ async function discoverNewReviews(showId, show, since, options = {}) {
       outlet: OUTLET_NAME,
       outletId: OUTLET_ID,
       criticName: item.creator || undefined,
-      publishDate: item.pubDate ? item.pubDate.toISOString().slice(0, 10) : null,
+      publishDate: item.pubDate ? publishedStampToLocalDate(item.pubDate, item.link, { tz: tzForMarket(show.category || show.market) || undefined }) : null,
       title: item.title,
       source: 'omc-discovery',
     });

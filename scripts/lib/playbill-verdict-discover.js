@@ -1,3 +1,4 @@
+const { publishedStampToLocalDate } = require('./local-date');
 /**
  * Playbill Verdict discovery + extraction helpers.
  *
@@ -108,7 +109,8 @@ function extractArticlesFromSitemap(xml) {
       url,
       title: cleanSlugTitle(slug) || slug,
       slug,
-      publishDate: lastmodMatch ? lastmodMatch[1].trim().slice(0, 10) : null,
+      // sitemap lastmod is a UTC instant: the reader-visible (New York) date, not the UTC day (BRO-5499)
+      publishDate: lastmodMatch ? publishedStampToLocalDate(lastmodMatch[1].trim(), url) : null,
     });
   }
   return articles;
