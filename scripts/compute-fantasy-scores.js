@@ -133,7 +133,7 @@ if (sortedWeeks.length > 0) {
 
 for (const [showId, show] of Object.entries(fantasyShows)) {
   // CriticScore points — same in both modes (current tier assumed to hold).
-  // Shows that opened before the season's scoring start are locked for
+  // Shows that opened before the draft opened are locked for
   // everyone (their score was public before the draft opened); shows opening
   // later are locked per entry in computeLeaderboard.
   let criticScorePoints = 0;
@@ -185,7 +185,7 @@ for (const [showId, show] of Object.entries(fantasyShows)) {
   let awardsList;
   let expectedAwardsBreakdown = null;
   if (mode === 'projection') {
-    const realized = computeAwardsPoints(showId, awardsData, scoring.awards);
+    const realized = computeAwardsPoints(showId, awardsData, scoring.awards, { season: meta.tonyWindow?.label });
     const expected = show.eligible.tonys
       ? computeExpectedAwardsPoints(showId, tonyPredictions, scoring.awards)
       : { points: 0, breakdown: null };
@@ -196,7 +196,7 @@ for (const [showId, show] of Object.entries(fantasyShows)) {
     ];
     expectedAwardsBreakdown = expected.breakdown;
   } else {
-    const awardsResult = computeAwardsPoints(showId, awardsData, scoring.awards);
+    const awardsResult = computeAwardsPoints(showId, awardsData, scoring.awards, { season: meta.tonyWindow?.label });
     awardsPoints = awardsResult.points;
     awardsList = awardsResult.awardsList;
   }
@@ -211,6 +211,7 @@ for (const [showId, show] of Object.entries(fantasyShows)) {
     totalPoints,
     weeklyBoxOffice,
     openingDate: show.openingDate || null,
+    audienceGradeSince: show.audienceGradeSince || null,
     breakdown: {
       criticTier,
       audienceGrade: audGrade,

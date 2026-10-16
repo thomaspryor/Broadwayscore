@@ -15,7 +15,16 @@ import {
   AUDIENCE_GRADE_POINTS,
   BOX_OFFICE_POINTS_PER_100K,
   getCriticLabel,
+  canonicalFantasyEmail,
+  isShowOpenForDrafter,
+  isAudienceLockedForEntry,
+  earnsBoxOffice,
+  pickLimitNote,
+  SCORING_START,
+  DRAFT_DEADLINE,
+  DEADLINE_GRACE_MS,
 } from '../../src/config/fantasy';
+import { isValidLeaderboardEntry, getFantasyShows } from '../../src/lib/data-fantasy';
 import type { FantasyShow } from '../../src/config/fantasy';
 
 // Minimal show catalog for testing
@@ -165,4 +174,74 @@ describe('getCriticLabel — score → tier', () => {
       assert.equal(getCriticLabel(score), expected);
     });
   }
+});
+
+describe('validatePicks refuses ids that only look like shows (BRO-5424)', () => {
+  test('nested arrays cannot draft one show many times', () => {
+    const picks = [['show-a'], ['show-a']] as unknown as string[];
+    assert.equal(validatePicks(picks, shows).valid, false);
+  });
+  test('object prototype keys are not shows', () => {
+    assert.equal(validatePicks(['constructor'], shows).valid, false);
+    assert.equal(validatePicks(['__proto__'], shows).valid, false);
+  });
+});
+
+describe('canonicalFantasyEmail (one entry per inbox)', () => {
+  test('Gmail ignores dots and +tags, and googlemail is gmail', () => {
+    assert.equal(canonicalFantasyEmail('Tom.Pryor+bfl@Gmail.com'), 'tompryor@gmail.com');
+    assert.equal(canonicalFantasyEmail('t.o.m@googlemail.com'), 'tom@gmail.com');
+  });
+  test('+tags are dropped on providers that ignore them, dots kept outside Gmail', () => {
+    assert.equal(canonicalFantasyEmail('jane.doe+x@outlook.com'), 'jane.doe@outlook.com');
+    assert.equal(canonicalFantasyEmail('jane+x@icloud.com'), 'jane@icloud.com');
+  });
+  test('other domains are only lower-cased (a + may be part of the mailbox)', () => {
+    assert.equal(canonicalFantasyEmail(' Jane+Box@Example.org '), 'jane+box@example.org');
+  });
+});
+
+describe('per-drafter locks', () => {
+  const base = { eligible: { criticScore: true, audienceGrade: true, boxOffice: true, tonys: true } };
+  test('a show that opened after the draft opened is "already open" for later drafters', () => {
+    assert.equal(isShowOpenForDrafter({ ...base, openingDate: '2026-11-08' }, new Date('2026-11-07T12:00:00Z')), false);
+    assert.equal(isShowOpenForDrafter({ ...base, openingDate: '2026-11-08' }, new Date('2026-11-09T12:00:00Z')), true);
+  });
+  test('a show locked for everyone stays locked', () => {
+    assert.equal(isShowOpenForDrafter({ eligible: { ...base.eligible, criticScore: false }, openingDate: '2026-10-01' }, new Date('2026-09-01T12:00:00Z')), true);
+  });
+  test('audience points lock from the New York day the grade appeared', () => {
+    assert.equal(isAudienceLockedForEntry('2026-11-02', '2026-11-02T03:00:00Z'), false, '11pm Nov 1 in New York');
+    assert.equal(isAudienceLockedForEntry('2026-11-02', '2026-11-02T15:00:00Z'), true);
+    assert.equal(isAudienceLockedForEntry(null, '2026-11-02T15:00:00Z'), false);
+  });
+});
+
+describe('what a pick can still earn', () => {
+  const elig = { criticScore: true, audienceGrade: true, boxOffice: true, tonys: true };
+  test('a Broadway show closing before box office starts earns awards only', () => {
+    const dayBefore = new Date(Date.parse(`${SCORING_START}T12:00:00Z`) - 86400000).toISOString().slice(0, 10);
+    assert.equal(earnsBoxOffice({ eligible: elig, closingDate: dayBefore }), false);
+    assert.equal(earnsBoxOffice({ eligible: elig, closingDate: SCORING_START }), true);
+    assert.equal(earnsBoxOffice({ eligible: { ...elig, boxOffice: false }, closingDate: null }), false);
+  });
+  test('confirmation notes match the scoring rules', () => {
+    const opened = { eligible: elig, openingDate: '2026-11-08', closingDate: null, audienceGradeSince: null };
+    assert.equal(pickLimitNote(opened, '2026-11-09T12:00:00Z'), 'already open: box office and awards only');
+    assert.equal(pickLimitNote({ ...opened, eligible: { ...elig, boxOffice: false } }, '2026-11-09T12:00:00Z'), 'already open: awards only');
+    assert.equal(pickLimitNote({ ...opened, audienceGradeSince: '2026-11-01' }, '2026-11-02T12:00:00Z'), 'audience grade already public: no audience points');
+    assert.equal(pickLimitNote(opened, '2026-11-01T12:00:00Z'), null);
+  });
+});
+
+describe('deadline grace', () => {
+  const shows = getFantasyShows();
+  const cheap = Object.keys(shows).sort((a, b) => shows[a].price - shows[b].price).slice(0, 1);
+  const deadline = Date.parse(DRAFT_DEADLINE);
+  test('an entry the database stamped a moment after the deadline still counts', () => {
+    assert.equal(isValidLeaderboardEntry({ picks: cheap, created_at: new Date(deadline + 800).toISOString() }), true);
+  });
+  test('an entry saved well after the deadline does not', () => {
+    assert.equal(isValidLeaderboardEntry({ picks: cheap, created_at: new Date(deadline + DEADLINE_GRACE_MS + 1000).toISOString() }), false);
+  });
 });

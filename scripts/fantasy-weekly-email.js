@@ -20,6 +20,8 @@
  * Required env (for --draft):
  *   RESEND_API_KEY
  *   RESEND_FANTASY_AUDIENCE_ID   — dedicated Resend audience for BFL players
+ *                                  (optional: unset, the audience named
+ *                                  FANTASY_AUDIENCE_NAME is found or created)
  *   NEXT_PUBLIC_SUPABASE_URL + NEXT_PUBLIC_SUPABASE_ANON_KEY (for entries)
  */
 
@@ -29,7 +31,7 @@ const { postJSON, buildReplyToAddress } = require('./lib/email-templates');
 const { applyUtm } = require('./lib/email-utm');
 const { acquireSendLock, releaseSendLock } = require('./lib/send-lock');
 const { upsertBroadcastDraft, makeResendRequest } = require('./lib/resend-draft-upsert');
-const { fetchFantasyEntries, computeLeaderboard, computeWeeklyMovers } = require('./lib/fantasy-helpers');
+const { fetchFantasyEntries, computeLeaderboard, computeWeeklyMovers, isValidLeaderboardEntry } = require('./lib/fantasy-helpers');
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const RESEND_FANTASY_AUDIENCE_ID = process.env.RESEND_FANTASY_AUDIENCE_ID;
@@ -50,11 +52,10 @@ if (isDraft && !RESEND_API_KEY) {
   console.error('ERROR: RESEND_API_KEY required for --draft');
   process.exit(1);
 }
-if (isDraft && !RESEND_FANTASY_AUDIENCE_ID) {
-  console.error('ERROR: RESEND_FANTASY_AUDIENCE_ID required for --draft');
-  console.error('Create a dedicated BFL audience in Resend and set its ID here.');
-  process.exit(1);
-}
+// The secret was never set, so every in-season --draft run exited 1 here
+// (runs 37699201771, 38640350581). The audience is now found by name, or
+// created once, when the secret is absent.
+const FANTASY_AUDIENCE_NAME = 'Broadway Fantasy League players';
 
 // ── Load data ───────────────────────────────────────────────────────
 const dataDir = path.join(__dirname, '..', 'data');
@@ -211,11 +212,13 @@ function escapeHtml(str) {
 async function main() {
   // Fetch leaderboard entries (for all modes — dry-run shows what email would look like)
   let leaderboard = [];
+  let entriesFetched = false;
   try {
     const entries = await fetchFantasyEntries({ season: leagueData._meta.season });
     if (entries.length > 0) {
       leaderboard = computeLeaderboard(entries, scoresData.showScores, leagueData.shows);
     }
+    entriesFetched = true;
   } catch (err) {
     console.error(`Warning: Could not fetch leaderboard: ${err.message}`);
     // Continue without leaderboard — top shows section is still valuable
@@ -265,6 +268,18 @@ async function main() {
     // and clicks Send there. This script never calls POST /broadcasts/{id}/send.
     console.error(`Creating Resend broadcast draft: "${subject}"`);
     console.error(`Leaderboard entries: ${leaderboard.length}`);
+    // Resolve the audience first so a broken lookup fails the run even in
+    // weeks with no players (it first runs before launch, not with players).
+    const audienceId = RESEND_FANTASY_AUDIENCE_ID || await resolveFantasyAudienceId(RESEND_API_KEY);
+    console.error(`  Audience: ${audienceId}${RESEND_FANTASY_AUDIENCE_ID ? '' : ` ("${FANTASY_AUDIENCE_NAME}", found by name)`}`);
+    if (!entriesFetched) {
+      console.error('ERROR: could not read the entries, so no draft (a draft without the standings would mislead players).');
+      process.exit(1);
+    }
+    if (leaderboard.length === 0) {
+      console.error('  No players yet: no draft this week.');
+      return;
+    }
 
     const lock = acquireSendLock({
       purpose: `fantasy-weekly-${weekEnding}`,
@@ -282,9 +297,12 @@ async function main() {
       // would make Resend contacts undeliverable. Skip sync if not configured.
       let syncSummary = 'skipped (no service role)';
       if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
-        const entries = await fetchFantasyEntries({ admin: true, season: leagueData._meta.season }).catch(() => []);
-        const playerEmails = [...new Set(entries.map(e => (e.email || '').toLowerCase().trim()).filter(Boolean))];
-        const syncResult = await syncAudienceContacts(playerEmails, RESEND_FANTASY_AUDIENCE_ID, RESEND_API_KEY);
+        const entries = await fetchFantasyEntries({ admin: true, season: leagueData._meta.season });
+        // Only entries the standings count: a row inserted straight into
+        // Supabase with the public anon key must not put an address on the list.
+        const valid = entries.filter(e => isValidLeaderboardEntry(e, leagueData.shows));
+        const playerEmails = [...new Set(valid.map(e => (e.email || '').toLowerCase().trim()).filter(Boolean))];
+        const syncResult = await syncAudienceContacts(playerEmails, audienceId, RESEND_API_KEY);
         syncSummary = `${syncResult.added} added, ${syncResult.existing} existing, ${syncResult.errors} errors`;
       } else {
         console.warn('  SUPABASE_SERVICE_ROLE_KEY not set — skipping Resend audience sync (add this secret to re-enable)');
@@ -302,7 +320,7 @@ async function main() {
       // player hitting Reply would bounce instead of reaching the owner.
       const upsert = await upsertBroadcastDraft({
         payload: {
-          audience_id: RESEND_FANTASY_AUDIENCE_ID,
+          audience_id: audienceId,
           from: FROM_EMAIL,
           reply_to: buildReplyToAddress(),
           subject,
@@ -359,6 +377,28 @@ ${warningsHtml}
 }
 
 // ── Resend audience sync ────────────────────────────────────────────
+
+/**
+ * The players' audience id when RESEND_FANTASY_AUDIENCE_ID is not set: the
+ * audience named FANTASY_AUDIENCE_NAME, created on first use. Creating an
+ * audience sends nothing; contacts only ever receive the broadcast the owner
+ * sends by hand from the Resend UI.
+ */
+async function resolveFantasyAudienceId(apiKey) {
+  const auth = { 'Authorization': `Bearer ${apiKey}` };
+  // A failed list throws (fetchJSON rejects on non-2xx), so an outage can
+  // never lead to creating a duplicate audience. Same one-match rule as
+  // splitBroadcastsByName in scripts/lib/resend-draft-upsert.js.
+  const list = await fetchJSON('https://api.resend.com/audiences', auth);
+  if (!list || !Array.isArray(list.data)) throw new Error('Unexpected response listing Resend audiences');
+  const matches = list.data.filter(a => a && a.name === FANTASY_AUDIENCE_NAME);
+  if (matches.length > 1) throw new Error(`${matches.length} Resend audiences are named "${FANTASY_AUDIENCE_NAME}"; set RESEND_FANTASY_AUDIENCE_ID to the right one`);
+  if (matches.length === 1) return matches[0].id;
+  const created = await postJSON('https://api.resend.com/audiences', { name: FANTASY_AUDIENCE_NAME }, auth);
+  if (!created?.id) throw new Error(`Resend did not return an id for the new "${FANTASY_AUDIENCE_NAME}" audience`);
+  console.error(`  Created Resend audience "${FANTASY_AUDIENCE_NAME}": ${created.id}`);
+  return created.id;
+}
 
 /**
  * Add-only sync of emails into a Resend audience. Idempotent.

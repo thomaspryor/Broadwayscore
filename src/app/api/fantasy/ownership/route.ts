@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSupabaseClient } from '@/lib/supabase-server';
 import { FANTASY_SEASON } from '@/config/fantasy';
+import { isValidLeaderboardEntry } from '@/lib/data-fantasy';
 import { noStoreFetch } from '@/lib/share-links/load';
 import { computePickOwnership } from '../../../../../scripts/lib/fantasy-ownership';
 
@@ -25,11 +26,11 @@ export async function GET() {
 
     // PostgREST caps a response at 1000 rows, so page through every roster;
     // a silently truncated read would skew every percentage.
-    const rows: { picks: unknown }[] = [];
+    const rows: { picks: unknown; created_at: string }[] = [];
     for (let from = 0; ; from += PAGE) {
       const { data, error } = await supabase
         .from('fantasy_entries_public')
-        .select('picks')
+        .select('picks, created_at')
         .eq('season', FANTASY_SEASON)
         .order('id')
         .range(from, from + PAGE - 1);
@@ -42,7 +43,9 @@ export async function GET() {
     }
 
     return NextResponse.json(
-      { season: FANTASY_SEASON, ...computePickOwnership(rows) },
+      // Same entries the standings count (rows inserted straight into Supabase
+      // with invalid picks would skew the percentages).
+      { season: FANTASY_SEASON, ...computePickOwnership(rows.filter(r => isValidLeaderboardEntry({ picks: r.picks as string[], created_at: r.created_at }))) },
       { headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600' } },
     );
   } catch (err) {

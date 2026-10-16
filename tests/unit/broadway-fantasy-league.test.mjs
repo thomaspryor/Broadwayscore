@@ -17,6 +17,8 @@ const {
   computeLeaderboard,
   computeWeeklyMovers,
   maskEmail,
+  nominationCount,
+  fantasyJobWindow,
 } = require('../../scripts/lib/fantasy-helpers.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -50,9 +52,12 @@ describe('draftable show catalog (data/fantasy-league.json)', () => {
   });
 
   test('shows marked CriticScore-ineligible (locked) actually carry a score', () => {
-    // These are the shows that opened before scoring kickoff — the draft
+    // These are the shows that opened before the draft opened — the draft
     // form is supposed to show their locked score as built-in research.
-    const locked = Object.entries(shows).filter(([, s]) => s.eligible.criticScore === false);
+    // A show locked because it opens in the last days before the draft has
+    // no reviews yet; give the review pipeline a week after opening night.
+    const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
+    const locked = Object.entries(shows).filter(([, s]) => s.eligible.criticScore === false && (!s.openingDate || s.openingDate <= weekAgo));
     for (const [id, show] of locked) {
       assert.ok(
         show.criticScore != null || show.audienceGrade != null,
@@ -124,14 +129,31 @@ describe('computeLeaderboard', () => {
     assert.equal(board[1].rank, 1); // tied entries share rank 1
   });
 
-  test('un-drafted show contributes zero points, not a crash', () => {
-    const entries = [{ id: '1', email: 'x@x.com', team_name: null, picks: ['unknown-show'] }];
-    const board = computeLeaderboard(entries, scores.showScores, shows);
+  test('a drafted show with no score yet contributes zero points, not a crash', () => {
+    const entries = [{ id: '1', email: 'x@x.com', team_name: null, picks: ['show-b'] }];
+    const board = computeLeaderboard(entries, {}, shows);
     assert.equal(board[0].totalPoints, 0);
   });
 
+  test('entries the draft route would refuse are left out of the standings', () => {
+    // The public anon key can insert rows straight into Supabase.
+    const entries = [
+      { id: 'ok', email: 'a@x.com', team_name: 'OK', picks: ['show-a'] },
+      { id: 'unknown', email: 'b@x.com', team_name: null, picks: ['unknown-show'] },
+      { id: 'empty', email: 'c@x.com', team_name: null, picks: [] },
+      { id: 'dupe', email: 'd@x.com', team_name: null, picks: ['show-a', 'show-a'] },
+      { id: 'nested', email: 'e@x.com', team_name: null, picks: [['show-a']] },
+      { id: 'proto', email: 'f@x.com', team_name: null, picks: ['constructor'] },
+      { id: 'late', email: 'g@x.com', team_name: null, picks: ['show-b'], created_at: '2030-01-01T00:00:00Z' },
+    ];
+    const board = computeLeaderboard(entries, scores.showScores, shows, { budget: 25 });
+    assert.deepEqual(board.map(e => e.id), ['ok']);
+    const overBudget = computeLeaderboard([{ id: 'x', email: 'h@x.com', picks: ['show-a', 'show-b'] }], scores.showScores, shows, { budget: 25 });
+    assert.equal(overBudget.length, 0, '$30 roster on a $25 budget is refused');
+  });
+
   test('displayName falls back to masked email when no team name', () => {
-    const entries = [{ id: '1', email: 'tom@gmail.com', team_name: null, picks: [] }];
+    const entries = [{ id: '1', email: 'tom@gmail.com', team_name: null, picks: ['show-b'] }];
     const board = computeLeaderboard(entries, scores.showScores, shows);
     assert.equal(board[0].displayName, maskEmail('tom@gmail.com'));
   });
@@ -209,5 +231,60 @@ describe('data/fantasy-scores.json (weekly compute output)', () => {
         assert.equal(typeof score[key], 'number', `${id}.${key} should be a number`);
       }
     }
+  });
+});
+
+// ── Awards data shapes the precursor scrapers actually write (BRO-5424) ──
+
+describe('computeAwardsPoints on scraper-shaped records', () => {
+  const sc = leagueData.scoring.awards;
+
+  test('nominatedFor without a nominations count still scores nominations', () => {
+    const awardsData = { shows: { s: { dramadesk: { season: '2026-27', wins: ['Outstanding Revival of a Play'], nominatedFor: ['Outstanding Revival of a Play', 'Outstanding Director of a Play', 'Outstanding Lead Performance in a Play'] } } } };
+    const r = computeAwardsPoints('s', awardsData, sc);
+    assert.equal(r.points, 2 * sc.dramaDeskNom + 1 * sc.dramaDeskWin);
+  });
+
+  test('a category nominated twice (two performers) counts twice; a win missing from nominatedFor counts', () => {
+    assert.equal(nominationCount({ nominatedFor: ['Featured Actor', 'Featured Actor', 'Book'] }), 3);
+    assert.equal(nominationCount({ nominatedFor: ['Book'], wins: ['Score'] }), 2);
+    assert.equal(nominationCount({ nominations: 16, nominatedFor: ['A', 'B'] }), 16);
+    // An explicit count wins over lists whose win names are worded differently.
+    assert.equal(nominationCount({ nominations: 3, nominatedFor: ['Lighting Design for a Musical', 'Book', 'Score'], wins: ['Lighting Design of a Musical'] }), 3);
+  });
+
+  test('NY Drama Critics Circle wins score from the nyDramaCritics key', () => {
+    const awardsData = { shows: { s: { nyDramaCritics: { season: '2026-27', wins: ['Best Musical'], nominatedFor: [] } } } };
+    assert.equal(computeAwardsPoints('s', awardsData, sc).points, sc.nydccWin);
+  });
+
+  test('records from another season do not score when a season is given', () => {
+    const awardsData = { shows: { s: { lortel: { season: '2025-26', wins: ['Outstanding Play'], nominatedFor: ['Outstanding Play'] }, tony: { season: '2026-27', nominations: 1, wins: [] } } } };
+    const r = computeAwardsPoints('s', awardsData, sc, { season: '2026-27' });
+    assert.equal(r.points, sc.tonyNom);
+  });
+
+  test('every precursor ceremony in real awards.json scores its nominations', () => {
+    const real = JSON.parse(fs.readFileSync(path.join(dataDir, 'awards.json'), 'utf8'));
+    const [id] = Object.entries(real.shows).find(([, a]) => a.dramadesk && a.dramadesk.nominations == null && (a.dramadesk.nominatedFor || []).length > (a.dramadesk.wins || []).length) || [];
+    assert.ok(id, 'awards.json has a Drama Desk record with nominatedFor only');
+    const r = computeAwardsPoints(id, { shows: { [id]: { dramadesk: real.shows[id].dramadesk } } }, sc);
+    assert.ok(r.awardsList.some(a => /Drama Desk: \d+ nom/.test(a)), `${id}: ${JSON.stringify(r.awardsList)}`);
+  });
+});
+
+describe('fantasyJobWindow', () => {
+  const cfg = { draftOpens: '2026-10-30', scoringEnd: '2027-06-13' };
+  test('runs from two weeks before the draft opens through two weeks after Tony night', () => {
+    assert.equal(fantasyJobWindow('2026-10-15', cfg).run, false);
+    assert.equal(fantasyJobWindow('2026-10-16', cfg).run, true);
+    assert.equal(fantasyJobWindow('2027-06-16', cfg).run, true, 'the Wednesday after Tony night scores the ceremony');
+    assert.equal(fantasyJobWindow('2027-06-27', cfg).run, true);
+    assert.equal(fantasyJobWindow('2027-06-28', cfg).run, false);
+  });
+  test('prices are provisional until the day before the draft opens', () => {
+    assert.equal(fantasyJobWindow('2026-10-28', cfg).pricesProvisional, true);
+    assert.equal(fantasyJobWindow('2026-10-29', cfg).pricesProvisional, false, 'last reprice deploys before the first entry');
+    assert.equal(fantasyJobWindow('2026-10-30', cfg).pricesProvisional, false);
   });
 });

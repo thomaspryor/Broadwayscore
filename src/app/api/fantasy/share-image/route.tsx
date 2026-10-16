@@ -22,7 +22,7 @@ const shows = (fantasyLeague as unknown as { shows: Record<string, { title: stri
 export async function GET(request: NextRequest) {
   const params = request.nextUrl.searchParams;
   const ids = Array.from(new Set((params.get('picks') || '').split(',').map((s) => s.trim())))
-    .filter((id) => id && shows[id])
+    .filter((id) => id && Object.prototype.hasOwnProperty.call(shows, id))
     .slice(0, seasonConfig.teamSize);
   if (ids.length === 0) return new Response('No valid picks', { status: 400 });
 

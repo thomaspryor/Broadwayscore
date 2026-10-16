@@ -14,6 +14,7 @@ import {
   SCORING_START,
   isDraftClosed,
   isDraftOpen,
+  hasLateEntry,
   TIEBREAKER_QUESTIONS,
   ELIGIBILITY_MARKERS,
 } from '@/config/fantasy';
@@ -61,15 +62,21 @@ function FantasyDraftInner() {
   const [picks, setPicks] = useState<string[]>(['']);
   const [tiebreakers, setTiebreakers] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState<null | { scoringFrom: string | null; lockedPicks: string[]; emailSent: boolean }>(null);
+  const [submitted, setSubmitted] = useState<null | { scoringFrom: string | null; pickNotes: Record<string, string>; emailSent: boolean }>(null);
   const [error, setError] = useState<string | null>(null);
 
   // The draft window is evaluated on the client after mount so a statically
   // prerendered page can't be stuck on yesterday's state (and so the server
   // and client never disagree during hydration). The API route is the real
   // gate; this only picks which screen to show.
+  // Ticks every minute: a form left open past midnight on an opening night
+  // must show that show as already open before the player submits.
   const [now, setNow] = useState<Date | null>(null);
-  useEffect(() => { setNow(new Date()); }, []);
+  useEffect(() => {
+    setNow(new Date());
+    const t = setInterval(() => setNow(new Date()), 60_000);
+    return () => clearInterval(t);
+  }, []);
   const draftClosed = now ? isDraftClosed(now) : false;
   const draftOpen = now ? isDraftOpen(now) : false;
 
@@ -155,7 +162,7 @@ function FantasyDraftInner() {
       });
       setSubmitted({
         scoringFrom: typeof data.scoring_from === 'string' ? data.scoring_from : null,
-        lockedPicks: Array.isArray(data.locked_picks) ? data.locked_picks : [],
+        pickNotes: data.pick_notes && typeof data.pick_notes === 'object' ? data.pick_notes : {},
         emailSent: data.email_sent === true,
       });
     } catch {
@@ -175,7 +182,7 @@ function FantasyDraftInner() {
           <p className="text-gray-400 mb-2">
             Your picks are locked in{teamName ? ` as "${teamName}"` : ''}. Picks are final.
             {leagueName && (
-              <> You&apos;ve joined league <a href={`/fantasy/league/${leagueName.trim().toLowerCase()}`} className="text-brand hover:underline font-semibold">{leagueName}</a>.</>
+              <> You&apos;ve joined league <a href={`/fantasy/league/${encodeURIComponent(leagueName.trim().toLowerCase())}`} className="text-brand hover:underline font-semibold">{leagueName}</a>.</>
             )}
           </p>
           <p className="text-gray-400 mb-2">
@@ -193,12 +200,12 @@ function FantasyDraftInner() {
             <div className="space-y-2">
               {selectedIds.map((id, i) => {
                 const show = config.shows[id];
-                const locked = submitted.lockedPicks.includes(show?.title ?? '');
+                const note = submitted.pickNotes[id];
                 return (
                   <div key={id} className="flex items-center justify-between gap-3">
                     <span className="text-gray-300">
                       {i + 1}. {show?.title}
-                      {locked && <span className="text-xs text-gray-500 ml-2">already open: box office + awards only</span>}
+                      {note && <span className="text-xs text-gray-400 ml-2">{note}</span>}
                     </span>
                     <span className="text-emerald-400 font-mono">${show?.price}</span>
                   </div>
@@ -261,6 +268,7 @@ function FantasyDraftInner() {
         <div className="max-w-2xl mx-auto px-4 py-16 text-center">
           <h1 className="text-3xl font-bold mb-4">The draft opens {longDate(DRAFT_OPENS)}</h1>
           <p className="text-gray-400 mb-8">
+            {leagueFromUrl && <>You&apos;re invited to league <span className="text-brand font-semibold">{leagueFromUrl}</span>. Keep this link: it will drop you straight into the league when the draft opens. </>}
             Study the field in the meantime. Every show&apos;s price and rationale is in the Draft Guide.
           </p>
           <a
@@ -284,7 +292,7 @@ function FantasyDraftInner() {
           </a>
           <h1 className="text-2xl sm:text-3xl font-bold mt-2">Draft Your Team</h1>
           <p className="text-gray-400 mt-1">
-            Pick up to {FANTASY_TEAM_SIZE} shows. Stay under ${FANTASY_BUDGET}. One entry per email.
+            Pick up to {FANTASY_TEAM_SIZE} shows. Stay under ${FANTASY_BUDGET}. One entry per person. Picks are due {longDate(draftDeadlineDate())} at 11:59pm ET.
           </p>
         </div>
 
@@ -300,7 +308,7 @@ function FantasyDraftInner() {
               value={email}
               onChange={e => setEmail(e.target.value)}
             />
-            <p className="text-xs text-gray-500 mt-1">One entry per email, final once submitted. We email you a copy of your roster and weekly standings.</p>
+            <p className="text-xs text-gray-500 mt-1">One entry per person, final once submitted. We email you a copy of your roster and weekly standings.</p>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -365,6 +373,7 @@ function FantasyDraftInner() {
               onRemove={handleRemove}
               remainingBudget={remainingBudget}
               slotIndex={index}
+              now={now}
             />
           ))}
           {rosterFull && (
@@ -376,7 +385,9 @@ function FantasyDraftInner() {
         <div className="text-xs text-gray-500 mb-8 space-y-1">
           <p><span className="text-yellow-400">{ELIGIBILITY_MARKERS.criticScoreLocked}</span> = already open. Reviews are public, so this show earns box office and awards points only.</p>
           <p>OB = Off-Broadway (no box office points, not Tony-eligible)</p>
-          <p>Box office counts from the week you draft. Draft by {shortDate(EARLY_BIRD_CUTOFF)} and it counts from {shortDate(SCORING_START)}. Critic and audience points count for shows that open after you draft.</p>
+          {hasLateEntry()
+            ? <p>Box office counts from the week you draft. Draft by {shortDate(EARLY_BIRD_CUTOFF)} and it counts from {shortDate(SCORING_START)}. Critic and audience points count for shows that open after you draft.</p>
+            : <p>Picks are due {shortDate(draftDeadlineDate())} at 11:59pm ET. Box office counts for every team from {shortDate(SCORING_START)}. Critic and audience points count for shows that open after you draft (audience points only while the show has no public audience grade).</p>}
         </div>
 
         {/* Tiebreakers */}

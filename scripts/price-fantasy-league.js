@@ -73,6 +73,14 @@ function main() {
     console.error(`Missing ${leaguePath}. Run generate-fantasy-config.js first.`);
     process.exit(1);
   }
+  // Same rule as generate-fantasy-config.js --refreeze: once the draft is
+  // open, players hold picks at the frozen prices.
+  const { nyDate } = require('./lib/fantasy-helpers');
+  const { draftOpens } = require('../src/config/fantasy-season.json');
+  if (!dryRun && !force && nyDate(new Date().toISOString()) >= draftOpens) {
+    console.error(`REFUSED: the draft opened ${draftOpens}; repricing now would change prices players already drafted at. Use --dry-run, or --force only if no entries exist.`);
+    process.exit(2);
+  }
   if (!fs.existsSync(evPath)) {
     console.error(`Missing ${evPath}. Run compute-fantasy-scores.js --mode=projection first.`);
     process.exit(1);

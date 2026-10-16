@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSupabaseClient } from '@/lib/supabase-server';
 import { computeLeaderboard } from '@/lib/data-fantasy';
-import { FANTASY_SEASON } from '@/config/fantasy';
+import { FANTASY_SEASON, canonicalFantasyEmail } from '@/config/fantasy';
 import type { FantasyEntry } from '@/config/fantasy';
 
 // Email search confirms "does this exact email have an entry" — an
@@ -30,6 +30,31 @@ function checkEmailSearchRateLimit(ip: string): boolean {
 }
 
 const EMAIL_FORMAT_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// PostgREST returns at most 1000 rows per request; read every page so entry
+// #1001 still ranks (and can win).
+const PAGE_SIZE = 1000;
+type SupabaseClient = NonNullable<ReturnType<typeof getServerSupabaseClient>>;
+async function fetchSeasonEntries(
+  supabase: SupabaseClient,
+  leagueName: string | null,
+): Promise<{ rows: FantasyEntryPublicRow[]; error: unknown }> {
+  const rows: FantasyEntryPublicRow[] = [];
+  for (let from = 0; ; from += PAGE_SIZE) {
+    let query = supabase
+      .from('fantasy_entries_public')
+      .select('*')
+      .eq('season', FANTASY_SEASON);
+    if (leagueName) query = query.eq('league_name', leagueName);
+    const { data, error } = await query
+      .order('created_at', { ascending: true })
+      .order('id', { ascending: true })
+      .range(from, from + PAGE_SIZE - 1);
+    if (error) return { rows, error };
+    rows.push(...((data || []) as FantasyEntryPublicRow[]));
+    if (!data || data.length < PAGE_SIZE) return { rows, error: null };
+  }
+}
 
 interface FantasyEntryPublicRow {
   id: string;
@@ -62,15 +87,15 @@ function toFantasyEntries(rows: FantasyEntryPublicRow[]): FantasyEntry[] {
  * GET /api/fantasy/leaderboard — Fetch leaderboard data
  *
  * Query params:
- *   ?league=NAME — filter by league name (case-sensitive)
+ *   ?league=NAME — filter by league name or code (lower-cased, like the draft route stores it)
  *   ?email=ADDR  — find one entry by the exact email it was drafted with
  *                  (via the find_fantasy_entry_by_email RPC — exact match
  *                  only, never a list, so it can't be used to enumerate
  *                  other players' emails). Takes priority over ?league.
  *
- * Returns ranked entries with computed fantasy points (rank is the entry's
- * global standing for the season, even when a filter narrows the response
- * to one row). Emails are masked in the response (privacy).
+ * Returns ranked entries with computed fantasy points. With ?email the rank
+ * is the entry's standing in the whole season; with ?league it is the
+ * standing inside that league. Emails are masked in the response (privacy).
  */
 export async function GET(request: NextRequest) {
   try {
@@ -97,11 +122,7 @@ export async function GET(request: NextRequest) {
 
       // Rank is relative standing, so compute it against the full season
       // leaderboard, then narrow the response to the matched entry.
-      const { data: allEntries, error: allError } = await supabase
-        .from('fantasy_entries_public')
-        .select('*')
-        .eq('season', FANTASY_SEASON)
-        .order('created_at', { ascending: true });
+      const { rows: allEntries, error: allError } = await fetchSeasonEntries(supabase, null);
 
       if (allError) {
         console.error('Fantasy leaderboard fetch error:', allError);
@@ -109,7 +130,8 @@ export async function GET(request: NextRequest) {
       }
 
       const { data: matchRows, error: rpcError } = await supabase.rpc('find_fantasy_entry_by_email', {
-        p_email: emailQuery,
+        // Stored addresses are canonical (draft route): tom+bfl@gmail.com finds tom@gmail.com.
+        p_email: canonicalFantasyEmail(emailQuery),
         p_season: FANTASY_SEASON,
       });
 
@@ -135,16 +157,7 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    let query = supabase
-      .from('fantasy_entries_public')
-      .select('*')
-      .eq('season', FANTASY_SEASON);
-
-    if (leagueName) {
-      query = query.eq('league_name', leagueName);
-    }
-
-    const { data: entries, error: dbError } = await query.order('created_at', { ascending: true });
+    const { rows: entries, error: dbError } = await fetchSeasonEntries(supabase, leagueName);
 
     if (dbError) {
       console.error('Fantasy leaderboard fetch error:', dbError);

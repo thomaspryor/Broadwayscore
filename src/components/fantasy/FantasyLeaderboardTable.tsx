@@ -131,6 +131,8 @@ export default function FantasyLeaderboardTable() {
     );
   }
 
+  const anyPoints = entries.some(e => e.totalPoints > 0);
+
   return (
     <div className="space-y-2">
       {filterBar}
@@ -150,7 +152,11 @@ export default function FantasyLeaderboardTable() {
         <span className="text-right font-bold">Total</span>
       </div>
 
-      {entries.map((entry, idx) => (
+      {entries.map((entry, idx) => {
+        // Before any points post (the draft window), every team ties at 0:
+        // show no rank rather than a field full of gold #1s.
+        const ranked = anyPoints;
+        return (
         <div key={entry.id ?? `${entry.rank}-${entry.displayName}-${idx}`}>
           {/* Main row */}
           <button
@@ -158,14 +164,14 @@ export default function FantasyLeaderboardTable() {
               expandedRank === idx
                 ? 'bg-surface-raised border border-white/10'
                 : 'bg-surface-raised/50 hover:bg-surface-raised border border-transparent'
-            } ${entry.rank <= 3 ? 'border-l-2 border-l-brand/50' : ''}`}
+            } ${ranked && entry.rank <= 3 ? 'border-l-2 border-l-brand/50' : ''}`}
             onClick={() => setExpandedRank(expandedRank === idx ? null : idx)}
           >
             {/* Rank */}
             <span className={`text-lg font-bold ${
-              entry.rank === 1 ? 'text-brand' : entry.rank === 2 ? 'text-gray-300' : entry.rank === 3 ? 'text-brand-hover' : 'text-gray-500'
+              !ranked ? 'text-gray-500' : entry.rank === 1 ? 'text-brand' : entry.rank === 2 ? 'text-gray-300' : entry.rank === 3 ? 'text-brand-hover' : 'text-gray-500'
             }`}>
-              {entry.rank}
+              {ranked ? entry.rank : '–'}
             </span>
 
             {/* Name */}
@@ -218,7 +224,8 @@ export default function FantasyLeaderboardTable() {
             </div>
           )}
         </div>
-      ))}
+        );
+      })}
 
       {error && (
         <p className="text-center text-xs text-gray-500 mt-4">{error}</p>
