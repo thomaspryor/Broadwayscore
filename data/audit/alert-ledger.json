@@ -40,7 +40,7 @@
       "linearIdentifier": null
     },
     "tour-page-audit:stops-overlap": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "National tour pages show wrong information: 1 page problem(s) (stops-overlap)",
       "firstSeen": "2026-10-12T20:24:04.082Z",
@@ -50,7 +50,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5066"
+      "linearIdentifier": "BRO-5066",
+      "resolvedAt": "2026-10-16T15:28:48.429Z",
+      "resolveReason": "audit-tour-pages: no longer reported"
     },
     "imageless-scored-show:still-imageless:soldiers-of-tomorrow-off-west-end-2026": {
       "status": "resolved",
@@ -13315,22 +13317,21 @@
     "tour-page-audit:poster-missing": {
       "status": "open",
       "disposition": "auto",
-      "title": "National tour pages show wrong information: 1 page problem(s) (poster-missing)",
+      "title": "National tour pages show wrong information: 8 page problem(s) (poster-missing)",
       "firstSeen": "2026-10-08T18:00:17.152Z",
       "incidentOpenedAt": "2026-10-08T18:00:17.152Z",
-      "lastSeen": "2026-10-15T15:42:54.030Z",
-      "lastNotifiedAt": "2026-10-08T18:00:17.152Z",
+      "lastSeen": "2026-10-16T15:28:48.438Z",
+      "lastNotifiedAt": "2026-10-16T15:28:48.438Z",
       "lastSurfacedAt": null,
-      "notifyCount": 1,
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-4877",
+      "linearIdentifier": "BRO-5491",
       "dispatch": {
-        "requestedAt": "2026-10-08T18:00:17.152Z",
+        "requestedAt": "2026-10-16T15:28:48.438Z",
         "mode": "dispatch-at-filing",
-        "runId": "37820206082",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37820206082"
-      },
-      "silentRefires": 7
+        "runId": "38923703242",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38923703242"
+      }
     },
     "tour-page-audit:schedule-orphan": {
       "status": "resolved",
