@@ -123,6 +123,14 @@ const FIELD_VALUE_CHECKS = {
     ? null : 'nonReviewFlag may only be cleared (false), after nonReviewManualClear is set'),
   showNotMentionedManualClear: (v) => (typeof v === 'string' && v.trim().length >= 20
     ? null : 'showNotMentionedManualClear must say what was checked (20+ chars)'),
+  // BRO-5420: isNonReviewDemotedByFreshCV ignores an isNonReview flag when a
+  // newer high-confidence CV calls the article a review, unless the flag is
+  // marked manual. A plan's flag is a human decision, so setting it true needs
+  // the manual marker on isNonReviewReason first; without it the flag sat on
+  // disk while the review stayed live (brighton-beach-memoirs-2009 LA Times).
+  isNonReview: (v, record) => (v !== true
+    || (typeof record.isNonReviewReason === 'string' && /^manual \(not a review\)/i.test(record.isNonReviewReason))
+    ? null : 'isNonReview may only be set true after isNonReviewReason starts "manual (not a review)" (a plan flag is a human decision; otherwise a fresh CV demotes it)'),
   showNotMentioned: (v, record) => (v === false && typeof record.showNotMentionedManualClear === 'string' && record.showNotMentionedManualClear.trim()
     ? null : 'showNotMentioned may only be cleared (false), after showNotMentionedManualClear records the check'),
   crossOutletClearReason: (v) => (typeof v === 'string' && v.trim().length > 0

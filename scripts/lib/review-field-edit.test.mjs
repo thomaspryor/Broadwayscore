@@ -333,7 +333,7 @@ test('setting a flag false or a non-paired flag leaves clear breadcrumbs alone',
   const off = applyReviewFieldEdit(rec, { field: 'wrongAttribution', oldValue: true, newValue: false }, stamp);
   assert.equal(off.record.crossOutletVerified, true);
   assert.deepEqual(off.sideEffectKeys, []);
-  const other = applyReviewFieldEdit({ url: 'u', crossOutletVerified: true }, { field: 'isNonReview', oldValue: null, newValue: true }, stamp);
+  const other = applyReviewFieldEdit({ url: 'u', crossOutletVerified: true, isNonReviewReason: 'manual (not a review): test' }, { field: 'isNonReview', oldValue: null, newValue: true }, stamp);
   assert.equal(other.record.crossOutletVerified, true);
 });
 

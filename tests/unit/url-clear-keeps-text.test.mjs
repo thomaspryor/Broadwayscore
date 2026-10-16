@@ -104,3 +104,15 @@ test('showNotMentioned clears only to false and only after showNotMentionedManua
   assert.equal(r.ok, true, r.reason);
   assert.equal(r.record.showNotMentioned, false);
 });
+
+// BRO-5420: a plan's isNonReview=true needs the manual marker, or a fresh CV
+// demotes it and the row stays live (brighton-beach-memoirs-2009 LA Times).
+test('isNonReview may be set true only after a "manual (not a review)" reason', () => {
+  const set = { field: 'isNonReview', oldValue: null, newValue: true };
+  assert.equal(applyReviewFieldEdit(tr({ isNonReviewReason: 'BRO-1: a feature' }), set, stamp, {}).ok, false);
+  assert.equal(applyReviewFieldEdit(tr({ isNonReviewReason: 'manual (not a review): BRO-1: a feature' }), set, stamp, {}).ok, true);
+  const { isNonReviewDemotedByFreshCV } = require('../../scripts/lib/review-guards.js');
+  const freshCv = { articleType: 'review', isValid: true, confidence: 'high', verifiedAt: '2026-08-15T00:00:00Z' };
+  assert.equal(isNonReviewDemotedByFreshCV({ isNonReview: true, isNonReviewReason: 'BRO-1: x', contentVerification: freshCv }), true, 'unmarked flag is demoted');
+  assert.equal(isNonReviewDemotedByFreshCV({ isNonReview: true, isNonReviewReason: 'manual (not a review): BRO-1: x', contentVerification: freshCv }), false, 'marked flag holds');
+});
