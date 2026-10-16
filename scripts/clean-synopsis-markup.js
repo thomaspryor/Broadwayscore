@@ -14,6 +14,7 @@ const path = require('path');
 const { stripWikiMarkup, hasWikiMarkup, stripLeadingJunk } = require('./lib/wiki-utils');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { clearSynopsis } = require('./lib/synopsis-source');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `clean-synopsis-markup.js — One-shot script: Clean raw Wikipedia markup from existing synopses in shows.json.
@@ -83,7 +84,7 @@ function main() {
       stillDirty++;
       changes.push({ id: show.id, status: 'STILL DIRTY', snippet: fixed.substring(0, 80) });
       if (!DRY_RUN) {
-        show.synopsis = '';
+        clearSynopsis(show, '');
       }
       continue;
     }

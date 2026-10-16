@@ -1645,7 +1645,7 @@ function validateSynopsisQuality(shows) {
   for (const show of shows) {
     // BRO-4856: provenance stamp must be a known writer (unstamped legacy rows are allowed).
     const srcProblem = synopsisSourceProblem(show);
-    if (srcProblem) { error(`Show "${show.title}" (${show.id}) ${srcProblem}`); issues++; }
+    if (srcProblem) { warn(`Show "${show.title}" (${show.id}) ${srcProblem}`); issues++; } // advisory first (CLAUDE.md §19)
     if (!show.synopsis) continue;
 
     if (accessibilityPattern.test(show.synopsis)) {

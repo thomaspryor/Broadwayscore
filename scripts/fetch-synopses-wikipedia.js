@@ -15,6 +15,7 @@ const https = require('https');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
+const { setSynopsis } = require('./lib/synopsis-source');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { gateScrapedSynopsis } = require('./lib/synopsis-fact-check');
 
@@ -232,7 +233,7 @@ async function main() {
     if (result && factGate.ok) {
       console.log(`OK (${result.source}, ${result.synopsis.length} chars)`);
       if (!dryRun) {
-        show.synopsis = result.synopsis;
+        setSynopsis(show, result.synopsis, 'wikipedia');
       }
       fetched++;
     } else if (result) {

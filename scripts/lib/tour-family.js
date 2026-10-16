@@ -171,7 +171,10 @@ function sameProductionLikely(tour, parent, shows = null) {
 function tourInheritance(tour, parent, shows = null) {
   if (!isTourShow(tour) || !parent || isTourShow(parent)) return null;
   const patch = {};
-  if (!tour.synopsis && parent.synopsis) patch.synopsis = parent.synopsis;
+  if (!tour.synopsis && parent.synopsis) {
+    patch.synopsis = parent.synopsis;
+    if (parent.synopsisSource) patch.synopsisSource = parent.synopsisSource;
+  }
   if (!sameProductionLikely(tour, parent, shows)) return Object.keys(patch).length ? patch : null;
   const own = tour.images || {};
   const theirs = parent.images || {};

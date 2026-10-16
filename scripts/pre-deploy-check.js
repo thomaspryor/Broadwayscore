@@ -241,7 +241,7 @@ try {
     const { bad, reason } = classifyBadSynopsis(show);
     if (bad && HEALABLE.has(reason)) {
       console.log(`   Stripped ${reason} synopsis from "${show.title}" (${show.id})`);
-      show.synopsis = null;
+      require('./lib/synopsis-source').clearSynopsis(show, null);
       refusalStripped++;
     }
   }

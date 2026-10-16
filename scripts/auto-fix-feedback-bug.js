@@ -497,7 +497,8 @@ If you cannot fix it, respond: { "canFix": false, "reason": "why" }`;
           skipped.push(`${change.field}: current value doesn't match expected (data may have changed since diagnosis)`);
           continue;
         }
-        shows[showIndex][change.field] = change.newValue;
+        if (change.field === 'synopsis') require('./lib/synopsis-source').setSynopsis(shows[showIndex], change.newValue, 'llm');
+        else shows[showIndex][change.field] = change.newValue;
         // The site also reads tags:'revival' (BRO-4436).
         if (change.field === 'isRevival') syncRevivalTags(shows[showIndex]);
         applied.push(`shows.json: ${change.field} = "${String(change.newValue).substring(0, 80)}..."`);

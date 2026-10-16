@@ -17,6 +17,13 @@ function setSynopsis(show, text, source) {
   return show;
 }
 
+/** Clears the synopsis and its stamp together (never leave an orphan stamp). */
+function clearSynopsis(show, value = '') {
+  show.synopsis = value;
+  delete show.synopsisSource;
+  return show;
+}
+
 /**
  * Returns a problem string for an invalid stamp, else null. Unstamped rows are
  * allowed (legacy). A free-text note naming a BRO card ("hand-written ... (BRO-4884)")
@@ -32,4 +39,4 @@ function synopsisSourceProblem(show) {
   return null;
 }
 
-module.exports = { SYNOPSIS_SOURCES, setSynopsis, synopsisSourceProblem };
+module.exports = { SYNOPSIS_SOURCES, setSynopsis, clearSynopsis, synopsisSourceProblem };

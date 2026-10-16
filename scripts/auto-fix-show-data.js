@@ -17,6 +17,7 @@ const path = require('path');
 const https = require('https');
 const { isValidSynopsis, classifyBadSynopsis, cutToLastSentence } = require('./lib/synopsis-validation');
 const { setSynopsis } = require('./lib/synopsis-source');
+const SYNOPSIS_SOURCE_BY_CALLER = { TodayTix: 'todaytix', LLM: 'llm' };
 const { isTourShow } = require('./lib/tour-family');
 const { imageOnDisk } = require('./lib/show-images');
 const { verifyProductionMatch } = require('./lib/synopsis-production-match');
@@ -475,7 +476,7 @@ async function fixSynopsis(show, todayTixIds) {
     // every new historical row (BRO-4851).
     if (trusted) {
       console.log(`    ✓ ${source} page identity matches this production — verifier not needed`);
-      setSynopsis(show, text, source === 'LLM' ? 'llm' : 'todaytix');
+      setSynopsis(show, text, SYNOPSIS_SOURCE_BY_CALLER[source]);
       return true;
     }
     if (!verifier) {
@@ -487,7 +488,7 @@ async function fixSynopsis(show, todayTixIds) {
       console.log(`    ✗ rejected ${source} synopsis (wrong show): ${reason}`);
       return false;
     }
-    setSynopsis(show, text, source === 'LLM' ? 'llm' : 'todaytix');
+    setSynopsis(show, text, SYNOPSIS_SOURCE_BY_CALLER[source]);
     return true;
   };
 
