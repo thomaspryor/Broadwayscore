@@ -20,12 +20,13 @@
   "scoringModel": "claude-opus-4-7",
   "thumbnail": "https://i.ytimg.com/vi/nhgQTJ864PA/hqdefault.jpg",
   "productionCheck": {
-    "verdict": "different",
+    "verdict": "same",
     "confidence": "high",
-    "reason": "Video posted 20250919, before this production's first performance (2026-01-25).",
-    "method": "date",
-    "checkedAt": "2026-10-06T00:48:45.032Z"
-  },
-  "wrongProduction": true,
-  "wrongProductionReason": "Video posted 20250919, before this production's first performance (2026-01-25)."
+    "evidenceType": null,
+    "evidenceQuote": "",
+    "reason": "The video review discusses 'The Porch on Windy Hill' as an Off-Broadway production, which matches the assigned production in New York City.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "checkedAt": "2026-10-16T09:48:24.270Z"
+  }
 }

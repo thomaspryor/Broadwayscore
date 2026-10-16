@@ -24,12 +24,13 @@
     "opus": 69
   },
   "productionCheck": {
-    "verdict": "different",
+    "verdict": "same",
     "confidence": "high",
-    "reason": "Video posted 20250925, before this production's first performance (2026-03-06).",
-    "method": "date",
-    "checkedAt": "2026-09-29T14:55:58.221Z"
-  },
-  "wrongProduction": true,
-  "wrongProductionReason": "Video posted 20250925, before this production's first performance (2026-03-06)."
+    "evidenceType": null,
+    "evidenceQuote": "",
+    "reason": "The video discusses 'Mexodus' in the context of the New York theatre community, which aligns with the assigned Off-Broadway production in New York City.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "checkedAt": "2026-10-16T09:48:21.566Z"
+  }
 }

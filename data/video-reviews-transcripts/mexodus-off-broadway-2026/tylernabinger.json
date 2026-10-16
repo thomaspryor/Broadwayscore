@@ -26,10 +26,16 @@
   "productionCheck": {
     "verdict": "different",
     "confidence": "high",
-    "reason": "Video posted 20250911, before this production's first performance (2026-03-06).",
-    "method": "date",
-    "checkedAt": "2026-09-29T14:55:58.221Z"
-  },
-  "wrongProduction": true,
-  "wrongProductionReason": "Video posted 20250911, before this production's first performance (2026-03-06)."
+    "evidenceType": "other_city",
+    "evidenceQuote": "Mexodus at Audible's Minetta Lane Theatre",
+    "reason": "The video review is about a production of 'Mexodus' at Audible's Minetta Lane Theatre, not the assigned Daryl Roth Theatre.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": false,
+      "reason": "The evidence indicates a different theater in the same city, which does not confirm a different production as shows can transfer or have return engagements at different venues within New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-10-16T09:48:24.083Z"
+  }
 }

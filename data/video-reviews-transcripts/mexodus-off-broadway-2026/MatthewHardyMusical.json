@@ -22,10 +22,16 @@
   "productionCheck": {
     "verdict": "different",
     "confidence": "high",
-    "reason": "Video posted 20251001, before this production's first performance (2026-03-06).",
-    "method": "date",
-    "checkedAt": "2026-10-06T00:48:24.214Z"
-  },
-  "wrongProduction": true,
-  "wrongProductionReason": "Video posted 20251001, before this production's first performance (2026-03-06)."
+    "evidenceType": "other_city",
+    "evidenceQuote": "playing off Broadway at the Audible Manetta Lane Theater",
+    "reason": "The review mentions the show 'Mexus' playing at the Audible Manetta Lane Theater, which is a different venue from the assigned Daryl Roth Theatre.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": false,
+      "reason": "The evidence cites a different theater in the same city, which does not confirm the video is about a different production.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-10-16T09:48:22.528Z"
+  }
 }

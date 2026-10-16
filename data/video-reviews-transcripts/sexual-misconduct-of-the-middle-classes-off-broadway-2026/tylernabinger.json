@@ -19,12 +19,13 @@
   "scoredAt": "2026-04-19T19:02:23.929Z",
   "scoringModel": "claude-opus-4-7",
   "productionCheck": {
-    "verdict": "different",
+    "verdict": "same",
     "confidence": "high",
-    "reason": "Video posted 20250509, before this production's first performance (2026-03-17).",
-    "method": "date",
-    "checkedAt": "2026-09-29T14:56:26.137Z"
-  },
-  "wrongProduction": true,
-  "wrongProductionReason": "Video posted 20250509, before this production's first performance (2026-03-17)."
+    "evidenceType": null,
+    "evidenceQuote": "",
+    "reason": "The video explicitly mentions the Minetta Lane Theatre in New York City, which matches the assigned production location.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "checkedAt": "2026-10-16T09:48:23.409Z"
+  }
 }

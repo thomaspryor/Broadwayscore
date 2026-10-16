@@ -20,12 +20,13 @@
   "scoringModel": "claude-opus-4-7",
   "thumbnail": "https://i.ytimg.com/vi/xnucdmv1KdI/hqdefault.jpg",
   "productionCheck": {
-    "verdict": "different",
+    "verdict": "same",
     "confidence": "high",
-    "reason": "Video posted 20250606, before this production's first performance (2026-03-17).",
-    "method": "date",
-    "checkedAt": "2026-10-06T00:48:33.775Z"
-  },
-  "wrongProduction": true,
-  "wrongProductionReason": "Video posted 20250606, before this production's first performance (2026-03-17)."
+    "evidenceType": null,
+    "evidenceQuote": "",
+    "reason": "The video review discusses 'Sexual Misconduct of the Middle Classes' at the Minetta Lane Theatre in New York City, which matches the assigned production.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "checkedAt": "2026-10-16T09:48:24.056Z"
+  }
 }
