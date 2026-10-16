@@ -4,9 +4,20 @@ import fs from 'node:fs';
 import { createRequire } from 'node:module';
 const { isPageWorthy } = createRequire(import.meta.url)('./page-worthy-alerts.js');
 
-test('window-end ESCALATION from the opening-night monitor pages the owner (BRO-2791)', () => {
-  assert.equal(isPageWorthy('on-monitor-escalation-on-monitor-2026-09-04'), true);
-  assert.equal(isPageWorthy('on-monitor-escalation-on-monitor-forced-some-show'), true);
+test('the dead on-monitor-escalation- prefix no longer pages; the window-end escalation is the per-show final report (BRO-5490)', () => {
+  assert.equal(isPageWorthy('on-monitor-escalation-on-monitor-2026-09-04'), false);
+  assert.equal(isPageWorthy('on-monitor-report-on-monitor-2026-09-21-show-a-escalation-final'), true);
+});
+
+test('owner option A (BRO-5490): technical alerts stop emailing; Mac and broadcast ones stay', () => {
+  for (const k of ['serp-burst:tripwire', 'guard-escalation:stale-checkout-staleness', 'guard-escalation:scoring-queue-scan-failed',
+    'guard-escalation:ensemble-scoring-pipeline-crashed', 'guard-escalation:review-count-drift-strict-breach']) {
+    assert.equal(isPageWorthy(k), false, k);
+  }
+  for (const k of ['on-monitor-launch-failed-2026-10-16', 'on-monitor-dead-session-2026-10-16', 'on-monitor-auth-starved-sustained-2026-10-16',
+    'broadcast:overdue:some-show', 'broadcast:never-sent:some-show']) {
+    assert.equal(isPageWorthy(k), true, k);
+  }
 });
 
 test('the success report and per-pass monitor noise stay in the digest', () => {
@@ -71,14 +82,7 @@ test('no stale rows: every owner action and awaiting entry is a live page', () =
 });
 
 test('the awaiting-decision set may shrink but never grow (pinned)', () => {
-  const PINNED = [
-    'ugc-roundtrip:users-affected', 'serp-burst:tripwire',
-    'guard-escalation:stale-checkout-staleness', 'guard-escalation:scoring-queue-scan-failed',
-    'guard-escalation:ensemble-scoring-pipeline-crashed', 'guard-escalation:review-count-drift-strict-breach',
-    'on-monitor-launch-failed-', 'on-monitor-auth-starved-sustained-', 'on-monitor-escalation-',
-    'on-monitor-dead-session-', 'on-monitor-report-*-final', 'broadcast:overdue:', 'broadcast:never-sent:',
-    'ugc:signin-redirect-broken:', 'opening-night-orchestrator.yml', 'opening-night-poller.yml',
-  ];
+  const PINNED = ['ugc-roundtrip:users-affected', 'ugc:signin-redirect-broken:'];
   const extra = [...AWAITING_OWNER_DECISION].filter((k) => !PINNED.includes(k));
   assert.deepEqual(extra, [], 'a new page must name the owner action; it cannot join the awaiting set');
 });

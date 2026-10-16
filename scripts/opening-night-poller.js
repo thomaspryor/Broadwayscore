@@ -1966,12 +1966,10 @@ async function pollCycle() {
         // alert ledger's dedup — one of the two direct-bypass senders this card exists
         // to close. conditionKey is static (not per-show) because the tripwire is a
         // global daily-cascade signal, matching the local tripwireAlerted gate above.
-        // 'serp-burst:tripwire' IS on the page-worthy allowlist (scripts/lib/page-
-        // worthy-alerts.js) so disposition:'human' actually pages — a ship-check
-        // finding caught leaving it off the allowlist as a real regression: this
-        // alert's own severity rationale (below) argues the digest is too late for
-        // a same-day credit runaway, so silently downgrading it would have
-        // contradicted the code's own stated urgency.
+        // BRO-5490 (owner chose option A, 2026-10-16): the tripwire routes to the
+        // morning digest (disposition 'digest'), not an owner email; the hard
+        // daily cap stops the runaway on its own. opening-night-poller.yml
+        // commits alert-digest-queue.json so the line survives the runner.
         // cooldownHours is intentionally short (1h, not the router's 7-day
         // default): the LOCAL tripwireAlerted flag above is the real once-per-day
         // dedup (it resets at the UTC-day boundary with the rest of the SERP

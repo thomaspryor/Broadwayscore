@@ -108,7 +108,7 @@ test('the overdue-broadcast alert step is reachable when an earlier gate step fa
   );
 });
 
-test('both migrated conditionKeys stay on the page-worthy allowlist (no silent digest downgrade)', () => {
+test('broadcast:overdue: stays page-worthy; serp-burst asks for the digest explicitly (no silent downgrade)', () => {
   // Ship-check finding (BRO-1699): leaving a migrated conditionKey off this
   // allowlist silently downgrades disposition:'human' to the digest, which
   // regressed real-time paging for the SERP-burst tripwire on the first pass
@@ -122,8 +122,10 @@ test('both migrated conditionKeys stay on the page-worthy allowlist (no silent d
     PAGE_WORTHY_PREFIXES.includes('broadcast:overdue:'),
     "'broadcast:overdue:' missing from PAGE_WORTHY_PREFIXES"
   );
-  assert.ok(
-    PAGE_WORTHY_CONDITION_KEYS.has('serp-burst:tripwire'),
-    "'serp-burst:tripwire' missing from PAGE_WORTHY_CONDITION_KEYS"
-  );
+  // BRO-5490 (owner chose option A, 2026-10-16): the SERP-burst tripwire no
+  // longer emails; it asks for disposition 'digest' explicitly, so there is no
+  // silent downgrade to guard against.
+  assert.equal(PAGE_WORTHY_CONDITION_KEYS.has('serp-burst:tripwire'), false);
+  const src = fs.readFileSync(path.join(REPO, 'scripts/lib/serp-burst-tripwire.js'), 'utf8');
+  assert.match(src, /disposition: 'digest'/);
 });

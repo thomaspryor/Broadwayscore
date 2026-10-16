@@ -227,3 +227,31 @@ test('shouldAutoRecover: soft-warn guards are unaffected by either bound', () =>
   assert.equal(shouldAutoRecover('review-count-regression', 0, {}), true);
   assert.equal(shouldAutoRecover('review-count-regression', 9999, { firstBlockedAt: T0, now: T0 }), true);
 });
+
+test('escalateGuard files a worker card, never an owner email (BRO-5490)', async () => {
+  const { escalateGuard } = require('./guard-escalation.js');
+  const calls = [];
+  const route = async (o) => { calls.push(o); return { action: o.disposition, dispatchOk: true }; };
+  await escalateGuard(route, { conditionKey: 'guard-escalation:x', title: 't', description: 'd' });
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].disposition, 'auto');
+  assert.equal(calls.some((c) => c.disposition === 'human'), false);
+});
+
+test('escalateGuard falls back to a digest line when the card cannot be filed', async () => {
+  const { escalateGuard } = require('./guard-escalation.js');
+  const calls = [];
+  const route = async (o) => { calls.push(o); return o.disposition === 'auto' ? { action: 'auto', dispatchOk: false, dispatchError: 'LINEAR_API_KEY not set' } : { action: 'digest' }; };
+  const res = await escalateGuard(route, { conditionKey: 'guard-escalation:x', title: 't', description: 'd' });
+  assert.deepEqual(calls.map((c) => c.disposition), ['auto', 'digest']);
+  assert.equal(calls[1].conditionKey, 'guard-escalation:x:card-failed');
+  assert.match(calls[1].description, /LINEAR_API_KEY not set/);
+  assert.equal(res.action, 'digest');
+});
+
+test('clearGuard resolves the card condition and its digest fallback', () => {
+  const { clearGuard } = require('./guard-escalation.js');
+  const resolved = [];
+  clearGuard((k) => resolved.push(k), 'guard-escalation:x');
+  assert.deepEqual(resolved, ['guard-escalation:x', 'guard-escalation:x:card-failed']);
+});

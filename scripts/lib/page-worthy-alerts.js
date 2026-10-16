@@ -51,7 +51,8 @@ const PAGE_WORTHY_PREFIXES = [
   // escalate reason is a deliberate stop (spend cap / attempt cap / no-progress
   // brake), e.g. "[CRITICAL] … spend cap reached ($202.66 >= $200)" — not a
   // dead pipeline and nothing the owner can act on. It routes to the digest.
-  'on-monitor-escalation-', // monitor-v2.md step 3: the window is ending with parity never reached; mid-window reports on the base 'on-monitor-report-<NIGHT_KEY>' key stay digest per the open email-policy call BRO-3154 (BRO-2791); the one FINAL per-show report pages via PAGE_WORTHY_FINAL_REPORT_RE below (BRO-4043)
+  // 'on-monitor-escalation-' was here and REMOVED (BRO-5490): nothing emits it;
+  // the window-end escalation is the per-show final report below.
   'on-monitor-dead-session-', // opening-night-monitor-launch.js: the launcher kept dying (SIGKILL/OOM) until the attempt cap — monitor is dead for the rest of the window
   'broadcast:draft-creation-failed:', // send-opening-night-broadcast.js: the time-sensitive opening-night email draft failed to create
   // BRO-886: the draft itself was created and tracked fine — only the
@@ -175,37 +176,11 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // starvation" twice in two days with nothing they could do. They still
   // route (downgraded to the morning digest), so nothing goes silent.
 
-  // Not one of the 3 owner-approved categories above, but a deliberate
-  // carve-out (BRO-1699 ship-check finding): this was a direct sendAlert()
-  // real-time email BEFORE the routeAlert() migration, specifically because
-  // its own severity comment argues the 24h-late digest is inadequate for a
-  // same-day 60-100K ScrapingBee-credit runaway (feedback_sb_serp_invisible_
-  // burn). Downgrading it to disposition:'human'-requested-but-actually-
-  // digest would have silently regressed real-time paging while the code's
-  // own rationale still claimed same-day urgency — leaving it off this list
-  // was the ship-check-caught bug, not a deliberate policy choice. The hard
-  // daily cap (scripts/lib/serp-burst-caps.js) still auto-stops the runaway
-  // regardless of whether this page fires.
-  'serp-burst:tripwire', // opening-night-poller.js: WE SERP burst cascade tripwire, one page per UTC day
-  // Category 3 (BRO-545, pipeline self-healing): a hard-blocking rebuild
-  // guard that has fired 2+ consecutive times means reviews.json — the
-  // site's single source of truth for scores — has stopped advancing. This
-  // is the "data-loss in progress" category the file header notes had no
-  // entries yet; scripts/check-rebuild-staleness.js (via
-  // scripts/lib/guard-escalation.js's shouldEscalate) is the first sender.
-  'guard-escalation:stale-checkout-staleness',
-
-  // Category 3 (BRO-2423, port of BRO-545's guard-escalation auto-recovery
-  // to llm-ensemble-score.yml + check-review-count-drift.yml, found during
-  // BRO-545's own /what-else pass): each of these three means the daily
-  // LLM-scoring pipeline — reviews never getting a score is the same
-  // "site's single source of truth has stopped advancing" class BRO-545
-  // covers for rebuild-reviews.yml — or the review-count-drift safety net
-  // that catches silently-suppressed opening-night reviews, has stopped
-  // working for 2+ consecutive daily runs.
-  'guard-escalation:scoring-queue-scan-failed', // scripts/check-scoring-queue-guard.js: count-scoring-queue.js can't trust the corpus scan (broken checkout) — the scoring cascade can't see its own queue depth
-  'guard-escalation:ensemble-scoring-pipeline-crashed', // scripts/run-ensemble-scoring-guard.js: scripts/llm-scoring/index.ts itself is crashing — new reviews stop getting scored
-  'guard-escalation:review-count-drift-strict-breach', // scripts/check-review-count-drift-guard.js: check-review-count-drift.yml's daily --strict run keeps blocking (stale reviews.json or opening-window reviews silently missing)
+  // 'serp-burst:tripwire' and the four 'guard-escalation:*' keys were here
+  // and REMOVED 2026-10-16 (BRO-5490, owner chose option A: technical
+  // alerts stop emailing). serp-burst routes to the morning digest (its hard
+  // daily cap stops the runaway by itself); the guards file a worker card
+  // (disposition 'auto') that the CI sweep cancels once the guard recovers.
 
   // 'test-yml:main-streak-escalation' was listed below and REMOVED 2026-09-25
   // (BRO-4141). The history is kept for context. Its "24h cooldown caps this
@@ -349,6 +324,18 @@ const OWNER_ACTIONS = {
   // Owner 2026-10-16 (BRO-5479): "A except for Broadway openings. I want to know
   // then." A Broadway poll emails right away; other markets auto-fix first.
   'opening-night-poller.yml': 'Ask Claude to fix the review poller before the Broadway opening reviews land.',
+  // Mac-side launcher (opening-night-monitor-launch.js, launchd): only a
+  // person at the Mac can fix these, and the Mac-local digest is never read.
+  'on-monitor-launch-failed-': 'Check the Mac is on and not frozen; restart it if needed. Tonight\'s opening-night monitor could not start.',
+  'on-monitor-auth-starved-sustained-': 'Restart the Mac or close apps: it is too short of memory to run the opening-night monitor.',
+  'on-monitor-dead-session-': 'Restart the Mac: the opening-night monitor keeps getting killed for lack of memory.',
+  // Kept as emails by the owner (option A, 2026-10-16).
+  [FINAL_REPORT_ENTRY]: 'Read tonight\'s opening-night result for this show.',
+  'broadcast:overdue:': 'Send the opening-night email; it is overdue.',
+  'broadcast:never-sent:': 'Send the opening-night email; it never went out.',
+  // BRO-5477: files a worker card first and emails only when that automatic
+  // fix failed or never started.
+  'opening-night-orchestrator.yml': 'Ask Claude to fix it: opening-night review collection is down and the automatic fix did not work.',
   // BRO-5477: sent only after the automatic fix card failed or never started.
   'auto-fix-first:escalation:': 'Ask Claude to fix the failing opening-night workflow; the automatic fix did not work.',
 };
@@ -357,21 +344,10 @@ const OWNER_ACTIONS = {
 // owner action yet. Each is the owner's call (keep emailing, or move to a
 // worker card like opening-night-sla). Frozen: the test pins this exact set.
 const AWAITING_OWNER_DECISION = new Set([
+  // Readers affected; the owner kept these as emails (option A, 2026-10-16)
+  // without naming an action yet.
   'ugc-roundtrip:users-affected',
-  'serp-burst:tripwire',
-  'guard-escalation:stale-checkout-staleness',
-  'guard-escalation:scoring-queue-scan-failed',
-  'guard-escalation:ensemble-scoring-pipeline-crashed',
-  'guard-escalation:review-count-drift-strict-breach',
-  'on-monitor-launch-failed-',
-  'on-monitor-auth-starved-sustained-',
-  'on-monitor-escalation-',
-  'on-monitor-dead-session-',
-  FINAL_REPORT_ENTRY,
-  'broadcast:overdue:',
-  'broadcast:never-sent:',
   'ugc:signin-redirect-broken:',
-  'opening-night-orchestrator.yml',
 ]);
 
 /**

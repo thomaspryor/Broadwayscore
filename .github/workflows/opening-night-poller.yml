@@ -552,6 +552,11 @@ jobs:
           # tripwireAlerted-style dedup the router provides resets every run
           # (alert-ledger-commit-check.js CI gate).
           { [ -f data/audit/alert-ledger.json ] && git add data/audit/alert-ledger.json; } || true
+          # BRO-5490: the tripwire now queues a morning-digest line instead of
+          # emailing; without these the line died with the runner while the
+          # ledger + tripwireAlerted flag were pushed (no email, no digest).
+          { [ -f data/audit/alert-digest-queue.json ] && git add data/audit/alert-digest-queue.json; } || true
+          { [ -f data/audit/alert-router-attempts.jsonl ] && git add data/audit/alert-router-attempts.jsonl; } || true
           git diff --cached --quiet && { echo "No backoff/ledger changes"; exit 0; }
           git commit -m "audit: Opening night poller — backoff + SERP ledger state update [skip ci]"
           bash scripts/lib/push-with-retry.sh 5 main

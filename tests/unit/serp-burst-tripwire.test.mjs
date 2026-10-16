@@ -80,7 +80,7 @@ test('successful delivery: tripwireAlerted is set AFTER routeAlert resolves, and
       // marked alerted — proves the write happens after, not before.
       assert.equal(ledger.tripwireAlerted, false, 'tripwireAlerted must still be false while routeAlert is in flight');
       assert.equal(opts.conditionKey, 'serp-burst:tripwire');
-      assert.equal(opts.disposition, 'human');
+      assert.equal(opts.disposition, 'digest', 'BRO-5490: morning digest, not an owner email');
       return { delivered: true };
     },
     writeSerpBurstLedger: (l) => { callOrder.push('write-called'); writtenSnapshot = { ...l }; },

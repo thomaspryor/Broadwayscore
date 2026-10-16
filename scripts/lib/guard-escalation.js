@@ -174,6 +174,40 @@ function buildGuardBlockedAlert({ guardId, guardLabel, consecutiveBlocks, thresh
   return { title, description: lines.join('\n') };
 }
 
+/**
+ * BRO-5490: escalate a guard to a worker card (disposition 'auto'), never an
+ * owner email. If the card cannot be filed (no LINEAR_API_KEY in this
+ * workflow, Linear down), the router queues nothing on its own, so fall back
+ * to a morning-digest line rather than reaching nobody.
+ * @param {function} routeAlert owner-alert-router's routeAlert
+ * @param {{conditionKey:string,title:string,description:string}} alert
+ */
+async function escalateGuard(routeAlert, { conditionKey, title, description }) {
+  const res = await routeAlert({ conditionKey, title, description, disposition: 'auto', cooldownHours: 1 });
+  if (res && res.action === 'auto' && res.dispatchOk === false) {
+    return routeAlert({
+      conditionKey: `${conditionKey}:card-failed`,
+      title: `${title} (worker card could not be filed)`,
+      description: `${description}\n\nFiling the worker card failed: ${res.dispatchError || 'unknown error'}.`,
+      disposition: 'digest',
+      cooldownHours: 24,
+    });
+  }
+  return res;
+}
+
+/**
+ * The guard is healthy again: resolve its card condition and the digest
+ * fallback escalateGuard() may have queued, so the CI sweep cancels an
+ * untouched card and a later block notifies fresh (BRO-5490).
+ * @param {function} resolveCondition owner-alert-router's resolveCondition
+ * @param {string} conditionKey
+ */
+function clearGuard(resolveCondition, conditionKey) {
+  resolveCondition(conditionKey);
+  resolveCondition(`${conditionKey}:card-failed`);
+}
+
 module.exports = {
   DEFAULT_ESCALATION_THRESHOLD,
   DEFAULT_REMINDER_EVERY,
@@ -186,4 +220,6 @@ module.exports = {
   shouldEscalate,
   buildOverrideCommand,
   buildGuardBlockedAlert,
+  escalateGuard,
+  clearGuard,
 };

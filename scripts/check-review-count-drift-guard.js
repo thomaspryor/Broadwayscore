@@ -110,7 +110,7 @@ async function main() {
     if (priorState && priorState.consecutiveBlocks > 0) {
       try {
         const { resolveCondition } = require('./lib/owner-alert-router');
-        resolveCondition(ALERT_CONDITION_KEY);
+        require('./lib/guard-escalation').clearGuard(resolveCondition, ALERT_CONDITION_KEY);
       } catch (e) { /* best-effort — a missing router/ledger never blocks a healthy run */ }
       saveGuardState(nextGuardState(priorState, false, Date.now()));
     }
@@ -173,13 +173,8 @@ async function main() {
   if (shouldEscalate(state.consecutiveBlocks)) {
     try {
       const { routeAlert } = require('./lib/owner-alert-router');
-      await routeAlert({
-        conditionKey: ALERT_CONDITION_KEY,
-        title: alert.title,
-        description: alert.description,
-        disposition: 'human',
-        cooldownHours: 1,
-      });
+      // BRO-5490: worker card, never an owner email (digest if filing fails).
+      await require('./lib/guard-escalation').escalateGuard(routeAlert, { conditionKey: ALERT_CONDITION_KEY, title: alert.title, description: alert.description });
     } catch (e) {
       console.error(`::warning::[guard-escalation] routeAlert failed (${e.message}) — escalation was logged above regardless.`);
     }

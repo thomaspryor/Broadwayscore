@@ -41,11 +41,13 @@ async function maybeAlertSerpBurstTripwire({ ledger, config, routeAlert, writeSe
       conditionKey: 'serp-burst:tripwire',
       title: 'WE SERP burst tripwire',
       description: msg,
-      // 'error': same-day actionable — the 60-100K credits/day runaway
-      // class (feedback_sb_serp_invisible_burn); the daily digest is up
-      // to 24h late. warning would be suppressed (actionable-only policy).
+      // 'error' keeps it out of the actionable-only filter; the runaway
+      // class (feedback_sb_serp_invisible_burn) is stopped by the hard
+      // daily cap, so a digest line is enough (BRO-5490).
       severity: 'error',
-      disposition: 'human',
+      // BRO-5490 (owner, option A): morning digest, not an owner email. The
+      // hard daily cap stops the runaway on its own; nobody needs to act.
+      disposition: 'digest',
       cooldownHours: 1,
     });
     // `delivered !== false`, not `=== true`: routeAlert's OTHER two "the
@@ -55,10 +57,7 @@ async function maybeAlertSerpBurstTripwire({ ledger, config, routeAlert, writeSe
     // Treating undefined as "informed" matches this exact file's sibling
     // gates (opening-night-broadcast.yml's checklist/drift/overdue .then()
     // callbacks: "action==='digest' ... counts as informed too"). The digest
-    // downgrade case specifically is guarded separately, not by this check:
-    // 'serp-burst:tripwire' staying on the page-worthy allowlist is locked
-    // in by scripts/tests/alert-sender-bypass.test.mjs, so a regression that
-    // would make a 'digest' downgrade reachable here fails that test first.
+    // case is now the normal path (BRO-5490: disposition 'digest').
     if (alertResult.delivered !== false) {
       ledger.tripwireAlerted = true;
       writeSerpBurstLedger(ledger);
