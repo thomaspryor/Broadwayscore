@@ -26,6 +26,9 @@ import {
   DEADLINE_GRACE_MS,
   DRAFT_OPENS,
   isDraftOpen,
+  isPracticeOpen,
+  PRACTICE_SEASON,
+  FANTASY_SEASON,
 } from '../../src/config/fantasy';
 import { isValidLeaderboardEntry, getFantasyShows } from '../../src/lib/data-fantasy';
 import type { FantasyShow } from '../../src/config/fantasy';
@@ -283,5 +286,24 @@ describe('isDraftOpen boundaries', () => {
     const deadline = new Date(DRAFT_DEADLINE);
     assert.strictEqual(isDraftOpen(deadline), true);
     assert.strictEqual(isDraftOpen(new Date(deadline.getTime() + 1000)), false);
+  });
+});
+
+// Practice drafts (BRO-5487): their own season, open only before the real draft.
+describe('practice drafts', () => {
+  test('save under a season no real-season reader selects, within the insert policy length', () => {
+    assert.notStrictEqual(PRACTICE_SEASON, FANTASY_SEASON);
+    // 20261016_fantasy_entries_insert_hardening.sql: char_length(season) BETWEEN 4 AND 20
+    assert.ok(PRACTICE_SEASON.length >= 4 && PRACTICE_SEASON.length <= 20, `${PRACTICE_SEASON} is ${PRACTICE_SEASON.length} chars`);
+  });
+  test('open the evening before the real draft, closed from its morning', () => {
+    assert.strictEqual(isPracticeOpen(new Date(`${DRAFT_OPENS}T03:00:00Z`)), true);
+    assert.strictEqual(isPracticeOpen(new Date(`${DRAFT_OPENS}T12:00:00Z`)), false);
+  });
+  test('practice and the real draft never overlap', () => {
+    for (const iso of [`${DRAFT_OPENS}T03:00:00Z`, `${DRAFT_OPENS}T12:00:00Z`]) {
+      const d = new Date(iso);
+      assert.ok(!(isPracticeOpen(d) && isDraftOpen(d)), iso);
+    }
   });
 });

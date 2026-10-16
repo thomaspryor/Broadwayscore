@@ -279,6 +279,20 @@ export function isDraftClosed(now: Date = new Date()): boolean {
   return now > new Date(DRAFT_DEADLINE);
 }
 
+/**
+ * Practice drafts for testers (BRO-5487): /fantasy/draft?practice=1 until the
+ * real draft opens. Saved under their own season, which nothing that reads the
+ * real season selects (leaderboard, leagues, ownership, weekly email, admin),
+ * so practice teams never count. Must stay within the insert policy's 4 to 20
+ * characters (20261016_fantasy_entries_insert_hardening.sql).
+ */
+export const PRACTICE_SEASON = `${FANTASY_SEASON}-practice`;
+
+/** Practice drafts take entries until the real draft opens (New York date). */
+export function isPracticeOpen(now: Date = new Date()): boolean {
+  return nyDate(now.toISOString()) < DRAFT_OPENS;
+}
+
 /** Check if the draft is open: on or after DRAFT_OPENS (a New York calendar date) and before the deadline */
 export function isDraftOpen(now: Date = new Date()): boolean {
   return nyDate(now.toISOString()) >= DRAFT_OPENS && !isDraftClosed(now);
