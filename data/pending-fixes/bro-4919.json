@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4919",
   "planId": "ace56fc7-e622-4fa6-bcbf-3b23e638189e",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-16T21:06:24.891Z",
   "submitter": {
     "name": null,
@@ -130,5 +130,89 @@
         "description": "BRO-4919: recompute contentTier on the 3 rows whose wrong-content flag this plan clears (BRO-5356 file mode)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-16T21:49:25.280Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--daisy-bowie.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--matt-trueman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--michael-davies.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--mickey-jo-boucher.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--judi-herman.json criticName: \"Judi Herman\" -> \"Maygan Forbes\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--judi-herman.json → much-ado-about-nothing-off-west-end-2026/whatsonstage--maygan-forbes.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted much-ado-about-nothing-off-west-end-2026/london-box-office--stuart-king.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted much-ado-about-nothing-globe-off-west-end-2026/express-uk--stefan-kyriazis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted much-ado-about-nothing-globe-off-west-end-2026/independent--alice-saville.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-west-end-2025/independent--alice-saville.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-west-end-2025/independent--alice-saville.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-west-end-2025/telegraph--dominic-cavendish.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-west-end-2025/telegraph--dominic-cavendish.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-west-end-2025/artsdesk--rachel-halliburton.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-west-end-2025/artsdesk--rachel-halliburton.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran reclassify-invalid-reviews.js successfully"
+    }
+  ]
 }
