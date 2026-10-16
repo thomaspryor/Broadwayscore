@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5425",
   "planId": "24785cb9-ce9e-472b-9c6c-f6c50724925a",
-  "status": "pending",
+  "status": "partial",
   "submitter": {
     "name": null,
     "email": null
@@ -40,5 +40,13 @@
         "description": "plaza-suite-2022: add commercial entry (Easy Winner, low confidence, forum-reported recoupment)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-16T04:40:51.881Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": false,
+      "reason": "add-commercial-entry: \"plaza-suite-2022\" already has a commercial entry (use data-edit)"
+    }
+  ]
 }
