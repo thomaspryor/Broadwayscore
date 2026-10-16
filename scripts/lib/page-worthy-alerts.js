@@ -337,7 +337,7 @@ const OWNER_ACTIONS = {
   // fix failed or never started.
   'opening-night-orchestrator.yml': 'Ask Claude to fix it: opening-night review collection is down and the automatic fix did not work.',
   // BRO-5477: sent only after the automatic fix card failed or never started.
-  'auto-fix-first:escalation:': 'Ask Claude to fix the failing opening-night workflow; the automatic fix did not work.',
+  'auto-fix-first:escalation:': 'Ask Claude to fix the failing opening-night workflow; the automatic fix did not run or did not work.',
 };
 
 // Pages that were allowlisted as "urgent" before the must-act rule and name no
@@ -385,6 +385,35 @@ function isAutoFixFirstWorkflow(workflowFile) {
   return AUTO_FIX_FIRST_WORKFLOWS.has(base) && isPageWorthyWorkflow(base);
 }
 
+/**
+ * The owner's action for a condition key, for the first line of its email
+ * (BRO-5498). Exact key first, then the longest matching prefix, then the
+ * final-report pattern. null when none is named (the AWAITING entries).
+ * @param {string} conditionKey
+ * @returns {string|null}
+ */
+function ownerActionFor(conditionKey) {
+  if (!conditionKey) return null;
+  const base = String(conditionKey).split('@')[0].split('/').pop(); // workflow path/ref -> file
+  if (Object.hasOwn(OWNER_ACTIONS, conditionKey)) return OWNER_ACTIONS[conditionKey];
+  if (Object.hasOwn(OWNER_ACTIONS, base) && PAGE_WORTHY_WORKFLOWS.has(base)) return OWNER_ACTIONS[base];
+  const prefix = PAGE_WORTHY_PREFIXES.filter((p) => conditionKey.startsWith(p) && OWNER_ACTIONS[p])
+    .sort((a, b) => b.length - a.length)[0];
+  if (prefix) return OWNER_ACTIONS[prefix];
+  if (PAGE_WORTHY_FINAL_REPORT_RE.test(conditionKey)) return OWNER_ACTIONS[FINAL_REPORT_ENTRY] || null;
+  return null;
+}
+
+/**
+ * Email body with the owner's action as its first line, the one format every
+ * owner email uses (router, notify-failure, auto-fix-first). Unchanged when no
+ * action is named.
+ */
+function withOwnerAction(key, description) {
+  const action = ownerActionFor(key);
+  return action ? `What to do: ${action}\n\n${description || ''}` : description;
+}
+
 /** Every entry that can page: keys, prefixes, the final-report pattern, workflows. */
 function allPageWorthyEntries() {
   return [...PAGE_WORTHY_CONDITION_KEYS, ...PAGE_WORTHY_PREFIXES, FINAL_REPORT_ENTRY, ...PAGE_WORTHY_WORKFLOWS];
@@ -403,4 +432,6 @@ module.exports = {
   OWNER_ACTIONS,
   AWAITING_OWNER_DECISION,
   allPageWorthyEntries,
+  ownerActionFor,
+  withOwnerAction,
 };

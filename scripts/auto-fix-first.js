@@ -48,7 +48,8 @@ async function runGate() {
   const { sendAlert } = require('./lib/discord-notify.js');
   const delivered = await sendAlert({
     title: `${title} (automatic fix did not work)`,
-    description: `${res.preamble}\n\n${description}`,
+    // BRO-5498: the owner's action first, the escalation preamble next.
+    description: require('./lib/page-worthy-alerts.js').withOwnerAction('auto-fix-first:escalation:', `${res.preamble}\n\n${description}`),
     severity: 'error',
     email: process.env.INPUT_EMAIL === 'true',
     fields: runUrl ? [{ name: 'Run', value: `[View logs](${runUrl})` }] : [],

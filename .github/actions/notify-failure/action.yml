@@ -280,9 +280,11 @@ runs:
           const { sendAlert } = require('./scripts/lib/discord-notify.js');
           const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
           const desc = process.env.INPUT_DESCRIPTION || 'Check the run logs for details.';
+          // BRO-5498: open the owner's email with what they do about it.
+          const { withOwnerAction } = require('./scripts/lib/page-worthy-alerts.js');
           await sendAlert({
             title: process.env.INPUT_TITLE,
-            description: desc,
+            description: withOwnerAction(process.env.GITHUB_WORKFLOW_REF || '', desc),
             severity: 'error',
             email: process.env.INPUT_EMAIL === 'true',
             fields: [

@@ -2476,3 +2476,15 @@ test('toSnapshotQueuedRow carries info through to the digest snapshot (BRO-5481)
   assert.equal(toSnapshotQueuedRow({ conditionKey: 'k', title: 't', info: true }).info, true);
   assert.equal(toSnapshotQueuedRow({ conditionKey: 'k', title: 't' }).info, false);
 });
+
+test('routeAlert: an owner email opens with the What-to-do line from OWNER_ACTIONS (BRO-5498)', async () => {
+  const sent = [];
+  const { router, restore } = loadRouterWithFakes({ sendAlertImpl: (opts) => { sent.push(opts); return true; } });
+  try {
+    await router.routeAlert({ conditionKey: 'claude-auth:revoked', title: 't', description: 'original body', disposition: 'human' });
+    assert.equal(sent.length, 1);
+    assert.match(sent[0].description, /^What to do: Log in to Claude again on the Mac\.\n\noriginal body$/);
+  } finally {
+    restore();
+  }
+});

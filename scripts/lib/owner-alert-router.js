@@ -87,7 +87,7 @@ const os = require('os');
 const path = require('path');
 const { isTestRun } = require('./test-run-guard');
 const { sendAlert } = require('./discord-notify');
-const { isPageWorthy } = require('./page-worthy-alerts');
+const { isPageWorthy, withOwnerAction } = require('./page-worthy-alerts');
 // BRO-375 (Phase 1): dispatchCard() below calls this in-process instead of
 // shelling out to the linear-brain.js CLI — see linear-issue-create.js's
 // header for why this is the natural repoint target.
@@ -628,8 +628,8 @@ async function dispatchCard({ title, description, hint, fields, severity, cardAc
     console.error(`[alert-router] issue dispatch failed for "${title}": ${err.message.slice(0, 300)}`);
     logDispatchAttempt({ conditionKey, title, ok: false, error: err.message });
     // A workflow that never wired LINEAR_API_KEY is a CONFIG gap, not a Linear
-    // outage, and it is invisible in the run: the router fails open, the email
-    // still sends, and only data/audit/alert-router-attempts.jsonl records that
+    // outage, and it is invisible in the run: the router fails open (an 'auto'
+    // alert then sends nothing, BRO-5490), and only data/audit/alert-router-attempts.jsonl records that
     // no card was filed. That is how audit-imageless-scored-shows.yml dropped
     // every auto-dispatch on 2026-08-31 while its workflow stayed green.
     // Surface it as a run annotation so the gap is visible where it happens.
@@ -638,8 +638,8 @@ async function dispatchCard({ title, description, hint, fields, severity, cardAc
     if (process.env.GITHUB_ACTIONS && /LINEAR_API_KEY/.test(err.message || '')) {
       console.error(
         `::error title=Auto-dispatch disabled::LINEAR_API_KEY is not set in this workflow, so ` +
-          `routeAlert(disposition:'auto') could not file a card for "${conditionKey}". The email was ` +
-          `still sent, but nothing will be dispatched to fix it. Add ` +
+          `routeAlert(disposition:'auto') could not file a card for "${conditionKey}": nothing will be ` +
+          `dispatched to fix it and no email goes out for an 'auto' alert. Add ` +
           `LINEAR_API_KEY: \${{ secrets.LINEAR_API_KEY }} to this step's env.`
       );
     }
@@ -1202,8 +1202,11 @@ async function routeAlert(opts) {
     // 'broadcast:owner-notification-failed:' were logged and never emailed.
     // Same two values as discord-notify.js EMAILABLE_SEVERITIES.
     const deliverySeverity = severity === 'critical' || severity === 'error' ? severity : 'error';
+    // BRO-5498: open the email with what the owner does about it (the
+    // owner is not technical; OWNER_ACTIONS in page-worthy-alerts.js).
+    const emailBody = withOwnerAction(conditionKey, description);
     const delivered = await sendAlert({
-      title, description, severity: deliverySeverity, fields, url, email: true, subjectLabel,
+      title, description: emailBody, severity: deliverySeverity, fields, url, email: true, subjectLabel,
       idempotencyKey: alertIdempotencyKey(conditionKey, cooldownHours, Date.now(),
         existing && existing.status === 'resolved' ? existing.resolvedAt || '' : ''),
     });

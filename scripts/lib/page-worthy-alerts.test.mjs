@@ -90,3 +90,29 @@ test('the awaiting-decision set may shrink but never grow (pinned)', () => {
 test('stuck opening-night reviews never email the owner (BRO-5480)', () => {
   assert.equal(isPageWorthy('opening-night-sla:pages-stuck'), false);
 });
+
+test('ownerActionFor: exact key, longest prefix, final report; null for awaiting (BRO-5498)', () => {
+  const { ownerActionFor, OWNER_ACTIONS } = createRequire(import.meta.url)('./page-worthy-alerts.js');
+  assert.equal(ownerActionFor('claude-auth:revoked'), OWNER_ACTIONS['claude-auth:revoked']);
+  assert.equal(ownerActionFor('broadcast:overdue:some-show'), OWNER_ACTIONS['broadcast:overdue:']);
+  assert.equal(ownerActionFor('on-monitor-dead-session-2026-10-16'), OWNER_ACTIONS['on-monitor-dead-session-']);
+  assert.equal(ownerActionFor('on-monitor-report-on-monitor-2026-09-21-show-a-parity-final'), OWNER_ACTIONS['on-monitor-report-*-final']);
+  assert.equal(ownerActionFor('ugc-roundtrip:users-affected'), null);
+  assert.equal(ownerActionFor('not-a-page'), null);
+});
+
+test('every email-capable key or prefix gets a What-to-do line except the awaiting ones', () => {
+  const { ownerActionFor, PAGE_WORTHY_CONDITION_KEYS, PAGE_WORTHY_PREFIXES, AWAITING_OWNER_DECISION } = createRequire(import.meta.url)('./page-worthy-alerts.js');
+  const missing = [...PAGE_WORTHY_CONDITION_KEYS, ...PAGE_WORTHY_PREFIXES.map((p) => `${p}x`)]
+    .filter((k) => !ownerActionFor(k) && ![...AWAITING_OWNER_DECISION].some((a) => k === a || k.startsWith(a)));
+  assert.deepEqual(missing, []);
+});
+
+test('withOwnerAction: workflow refs resolve to their file; prototype keys and unknowns are untouched', () => {
+  const { withOwnerAction, OWNER_ACTIONS } = createRequire(import.meta.url)('./page-worthy-alerts.js');
+  const ref = 'thomaspryor/Broadwayscore/.github/workflows/update-theatr.yml@refs/heads/main';
+  assert.equal(withOwnerAction(ref, 'body'), `What to do: ${OWNER_ACTIONS['update-theatr.yml']}\n\nbody`);
+  assert.equal(withOwnerAction('constructor', 'body'), 'body');
+  assert.equal(withOwnerAction('', 'body'), 'body');
+  assert.match(withOwnerAction('auto-fix-first:escalation:', 'pre'), /^What to do: .*did not run or did not work/);
+});
