@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-16T10:56:22.056Z",
-  "processed": 144,
-  "failed": 81,
-  "successRate": "64.0%",
+  "updatedAt": "2026-10-16T11:27:19.170Z",
+  "processed": 170,
+  "failed": 125,
+  "successRate": "57.6%",
   "tierBreakdown": {
-    "playwright": 82,
+    "playwright": 96,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 17,
-    "scrapingbee": 8,
+    "scrapingdog": 19,
+    "scrapingbee": 12,
     "brightdata": 4,
     "archiveToday": 0,
-    "archive": 34
+    "archive": 40
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-10-16T10:34:34.647Z",
@@ -37,6 +37,28 @@
       "t": "2026-10-16T10:38:15.706Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-16T11:05:08.155Z",
+      "event": "bb-session",
+      "session": "5ad2cc3c",
+      "url": "https://www.newyorker.com/goings-on-about-town/just-in-time"
+    },
+    {
+      "t": "2026-10-16T11:05:08.696Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-16T11:18:23.482Z",
+      "event": "bb-session",
+      "session": "ca97f9ed",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/and-juliet-11-28-22"
+    },
+    {
+      "t": "2026-10-16T11:18:24.073Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
