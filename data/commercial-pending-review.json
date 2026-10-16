@@ -1377,53 +1377,6 @@
       },
       "ownerApproved": true
     },
-    "plaza-suite-2022": {
-      "capitalization": 8003548,
-      "capitalizationSource": "Broadway Investment Alliance listed a $2,000,887 NYC theater tax credit for Suite 719 LLC, and Broadway Journal identifies Suite 719 LLC as the company presenting Plaza Suite; 2,000,887 / 0.25 = 8,003,548. ([investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit))",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "estimatedRecoupmentPct": null,
-      "designation": "Easy Winner",
-      "notes": "The only hard dollar figure I could verify publicly was the NYC tax credit for Suite 719 LLC, which implies about $8.0M of production cost. I could not verify a weekly nut. Recoupment appears to have happened, but I did not find an official producer announcement. ([investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit))",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
-          "date": "2025-08-09"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/ambassador-theatre-group-its-productions-secured-79-million-in-u-s-aid-exclusive",
-          "date": "2022-06-03"
-        },
-        {
-          "type": "manual",
-          "url": "https://forum.broadwayworld.com/thread/JULIET-Recoups-Its-Investment",
-          "date": "2024-06-11"
-        }
-      ],
-      "_recoupedNote": "Recoupment applied to commercial.json from a BroadwayWorld forum citation (owner decision 2026-10-13, BRO-5229)",
-      "title": "Plaza Suite",
-      "slug": "plaza-suite-2022",
-      "openingDate": "2022-03-28",
-      "status": "closed",
-      "researchedAt": "2026-10-10T19:39:12.011Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual",
-      "requiresHumanReview": true,
-      "backfill": "BRO-4990",
-      "researchAttempts": 1,
-      "truthReview": {
-        "card": "BRO-5020",
-        "reviewedAt": "2026-10-11T06:20:31.503Z",
-        "verdict": "rejected",
-        "hardFields": [],
-        "rejectReasons": [
-          "no fetched source states recoupment (cite is a forum thread)"
-        ]
-      }
-    },
     "titanique": {
       "capitalization": 9500000,
       "capitalizationSource": "Washington Post reporting said the Broadway production reportedly kept its capitalization at $9.5 million, echoed by Broadway Journal’s description of a maximum $9.5 million capitalization. ([washingtonpost.com](https://www.washingtonpost.com/entertainment/theater/2026/06/06/these-four-musicals-are-beating-odds-succeeding-broadway/))",
