@@ -64,3 +64,22 @@ test('CLI writes theirs layout and exits 0; exits 1 on conflict without writing'
   execFileSync('node', [CLI, path.join(dir, 'missing'), w('o3', { o: 1 }, 2, true), w('t3', { t: 1 }, 2, true), out]);
   assert.deepEqual(JSON.parse(fs.readFileSync(out, 'utf8')), { t: 1, o: 1 });
 });
+
+test('CLI refuses files that would not round-trip byte-identically', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'j3w-'));
+  const w = (n, text) => { fs.writeFileSync(path.join(dir, n), text); return path.join(dir, n); };
+  const out = path.join(dir, 'out');
+  const b = w('b', '{\n  "a": 1\n}\n');
+  const o = w('o', '{\n  "a": 1,\n  "o": 1\n}\n');
+  for (const t of ['{\r\n  "a": 1,\r\n  "t": 1\r\n}\r\n', '{\n  "a": 1, "t": 1\n}\n', '{\n  "a": 1,\n  "t": 12345678901234567890\n}\n']) {
+    assert.throws(() => execFileSync('node', [CLI, b, o, w('t', t), out], { stdio: 'ignore' }));
+    assert.equal(fs.existsSync(out), false);
+  }
+});
+
+test('a literal __proto__ key survives as a key', () => {
+  const r = mergeJson({}, JSON.parse('{"__proto__": {"x": 1}}'), { t: 1 });
+  assert.equal(r.ok, true);
+  assert.deepEqual(Object.keys(r.merged), ['t', '__proto__']);
+  assert.equal(JSON.stringify(r.merged), '{"t":1,"__proto__":{"x":1}}');
+});

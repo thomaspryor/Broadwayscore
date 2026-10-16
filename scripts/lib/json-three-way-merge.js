@@ -13,10 +13,11 @@
  *   - both sides equal                -> that value
  *   - only one side changed from base -> the changed side (adds and deletes)
  *   - both changed, both objects      -> recurse key by key
- *   - both changed, both ISO-8601 timestamps -> the later one
+ *   - both changed, both ISO-8601 timestamps -> the later one (freshness
+ *     stamps like `lastUpdated`; the earlier stamp is the one dropped value)
  *   - anything else                   -> conflict; the whole merge fails
- * So no side's change is ever dropped: a true clash fails and the caller keeps
- * reporting the conflict. Unlike the core-data-merge-registry mergers (built
+ * Apart from that stamp, no side's change is dropped: a true clash fails and
+ * the caller keeps reporting the conflict. Unlike the core-data-merge-registry mergers (built
  * for the post-rebase reconcile, where "ours" is already blended and wins
  * shared keys), the base decides who changed what, so a stale snapshot never
  * reverts an upstream edit.
@@ -26,6 +27,9 @@
  * CLI: node json-three-way-merge.js <base> <ours> <theirs> <out>
  *   Writes the merge to <out> in theirs' layout (indent, trailing newline) and
  *   exits 0; exits 1 on a conflict or any read/parse error (writes nothing).
+ *   Also exits 1 when ours or theirs would not re-serialize byte-identically
+ *   (other formatting, CRLF, integers past 2^53): rewriting would churn or
+ *   corrupt the file, so the caller reports a conflict instead.
  *   A missing/empty <base> counts as "no base" ({} for objects).
  */
 
@@ -69,7 +73,8 @@ function mergeObject(base, ours, theirs) {
     const t = has(theirs, k) ? theirs[k] : undefined;
     const m = mergeValue(b, o, t);
     if (m === CONFLICT) return CONFLICT;
-    if (m !== undefined) out[k] = m;
+    // defineProperty: a literal "__proto__" key must stay a key.
+    if (m !== undefined) Object.defineProperty(out, k, { value: m, enumerable: true, writable: true, configurable: true });
   }
   return out;
 }
@@ -87,19 +92,29 @@ function layoutOf(text) {
   return { indent: m ? m[1] : 0, newline: text.endsWith('\n') };
 }
 
+function serialize(value, text) {
+  const { indent, newline } = layoutOf(text);
+  return JSON.stringify(value, null, indent) + (newline ? '\n' : '');
+}
+
+function roundTrips(text, value) {
+  return serialize(value, text) === text;
+}
+
 function main(argv) {
   const [baseP, oursP, theirsP, outP] = argv;
   if (!outP) return 1;
   try {
     const baseText = fs.existsSync(baseP) ? fs.readFileSync(baseP, 'utf8') : '';
-    const ours = JSON.parse(fs.readFileSync(oursP, 'utf8'));
+    const oursText = fs.readFileSync(oursP, 'utf8');
+    const ours = JSON.parse(oursText);
     const theirsText = fs.readFileSync(theirsP, 'utf8');
     const theirs = JSON.parse(theirsText);
+    if (!roundTrips(oursText, ours) || !roundTrips(theirsText, theirs)) return 1;
     const base = baseText.trim() ? JSON.parse(baseText) : (isPlainObject(theirs) ? {} : null);
     const res = mergeJson(base, ours, theirs);
     if (!res.ok) return 1;
-    const { indent, newline } = layoutOf(theirsText);
-    fs.writeFileSync(outP, JSON.stringify(res.merged, null, indent) + (newline ? '\n' : ''));
+    fs.writeFileSync(outP, serialize(res.merged, theirsText));
     return 0;
   } catch {
     return 1;

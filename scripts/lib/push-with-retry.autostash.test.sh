@@ -23,7 +23,8 @@
 # 10. BRO-4688: a .json object that conflicts as text but where each side
 #     changed different keys (two rebuilds auto-registering different outlets)
 #     is merged key-wise: both keys survive, no ::error::, no ledger row. The
-#     same key changed differently on both sides is still a recorded conflict.
+#     same key changed differently on both sides is still a recorded conflict,
+#     and an autostash=regenerated file is never blended (upstream kept).
 #
 # Run: bash scripts/lib/push-with-retry.autostash.test.sh
 set -uo pipefail
@@ -182,12 +183,13 @@ for mode in ci local off ours; do
 done
 
 # ── Case 10: key-wise JSON merge of a text conflict (BRO-4688) ─────────────
-for mode in merge clash; do
+for mode in merge clash regen; do
   n="c10$mode"; setup "$n"
+  [ "$mode" = regen ] && printf 'reg.json autostash=regenerated\n' > "$TMP/$n-work/.gitattributes"
   printf '{\n  "outlets": {\n    "nyt": "NYT"\n  }\n}\n' > "$TMP/$n-work/reg.json"
   git -C "$TMP/$n-work" add -A; git -C "$TMP/$n-work" commit -q -m reg; git -C "$TMP/$n-work" push -q origin HEAD:main
   git -C "$TMP/$n-racer" fetch -q origin && git -C "$TMP/$n-racer" reset -q --hard origin/main
-  if [ "$mode" = merge ]; then
+  if [ "$mode" != clash ]; then
     printf '{\n  "outlets": {\n    "nyt": "NYT",\n    "up": "Upstream"\n  }\n}\n' > "$TMP/$n-racer/reg.json"
     want='{\n  "outlets": {\n    "nyt": "NYT",\n    "up": "Upstream",\n    "me": "Caller"\n  }\n}\n'
     printf '{\n  "outlets": {\n    "nyt": "NYT",\n    "me": "Caller"\n  }\n}\n' > "$TMP/$n-work/reg.json.new"
@@ -206,6 +208,8 @@ for mode in merge clash; do
     echo "FAIL[10 merge]: merged JSON still reported as a conflict / ref kept"; echo "$out" | grep autostash; fail=1
   elif [ "$mode" = clash ] && { ! grep -q NYT-up "$TMP/$n-work/reg.json" || ! grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null; }; then
     echo "FAIL[10 clash]: a true value clash must keep upstream and be recorded"; cat "$TMP/$n-work/reg.json"; fail=1
+  elif [ "$mode" = regen ] && { grep -q Caller "$TMP/$n-work/reg.json" || ! grep -q Upstream "$TMP/$n-work/reg.json" || grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null; }; then
+    echo "FAIL[10 regen]: a regenerated snapshot must keep upstream, not blend"; cat "$TMP/$n-work/reg.json"; fail=1
   else echo "PASS[10 $mode]: JSON restore ($mode)"; fi
 done
 
