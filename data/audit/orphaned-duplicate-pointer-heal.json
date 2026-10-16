@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-16T15:58:49.218Z",
+  "generated": "2026-10-16T16:21:34.934Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 30,
+  "count": 31,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -127,6 +127,13 @@
       "loserFile": "patch--unknown.json",
       "targetFile": "patch--katie-rosin.json",
       "reason": "orphaned-duplicate-heal: patch--katie-rosin.json was flagged invalid after patch--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "some-woman-west-end-2026",
+      "loserFile": "thereviewshub--unknown.json",
+      "targetFile": "thereviewshub--scott-matthewman.json",
+      "reason": "orphaned-duplicate-heal: thereviewshub--scott-matthewman.json was flagged invalid after thereviewshub--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
