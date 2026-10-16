@@ -23,6 +23,8 @@
 
 'use strict';
 
+require('./lib/cli-help').exitOnHelp(module);
+
 const { spawnSync } = require('child_process');
 const path = require('path');
 const d = require('./lib/card-dedupe.js');

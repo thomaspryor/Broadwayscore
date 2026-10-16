@@ -3207,6 +3207,7 @@ on:
       # + the new Linear chokepoint/CLI/CI-gate files need explicit listing.
       - 'scripts/linear-brain.js'
       - 'scripts/audit-linear-issuecreate-chokepoint.js'
+      - 'scripts/linear-dedupe-sweep.js'
       # launchd stale-sync-swallow guard (BRO-1794): scripts/lib/launchd-
       # stale-sync-guard.js and scripts/launchd/** are already globbed
       # above (scripts/lib/** / scripts/launchd/**) — only these two

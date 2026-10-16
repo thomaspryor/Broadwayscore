@@ -323,12 +323,7 @@ def _session_has_card():
             continue
         if not _CARD_CMD_RE.search(_strip_heredocs(inp.get('command') or '')):
             continue
-        res = tool_results_by_id.get(tid, '') or ''
-        # BRO-5488: a create refused as a repeat ("ALREADY-OPEN: already open:
-        # BRO-N ...", exit 8) names a card but made none.
-        if 'already open: BRO-' in res and not any(k in res for k in ('__LINEAR_ISSUE_ID__=', '__BOARD_CARD_ID__=', 'ISSUE-FILED')):
-            continue
-        if _CARD_RESULT_RE.search(res):
+        if _CARD_RESULT_RE.search(res := (tool_results_by_id.get(tid, '') or '')) and ('already open: BRO-' not in res or any(k in res for k in ('__LINEAR_ISSUE_ID__=', '__BOARD_CARD_ID__=', 'ISSUE-FILED'))):  # BRO-5488: a refused repeat made no card
             return True
     return False
 
