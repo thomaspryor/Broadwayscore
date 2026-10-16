@@ -13,12 +13,12 @@ const decide = html => decideTourDates(hand, html, '', NOW);
 
 test('hand-dated tour, page still lists current stops: problem cleared', () => {
   const d = decide(live);
-  assert.ok(d.problem, 'precondition: decideTourDates reports no matching segment');
+  assert.strictEqual(d.problem, 'no schedule segment matches this tour');
   assert.strictEqual(settleHandDatedNoMatch(hand, d, live, NOW).problem, undefined);
 });
 test('hand-dated tour, page lists nothing current: keeps a problem', () => {
   const d = decide(ended);
-  assert.ok(settleHandDatedNoMatch(hand, d, ended, NOW).problem);
+  assert.match(settleHandDatedNoMatch(hand, d, ended, NOW).problem, /no current or upcoming stops/);
 });
 test('undated tour keeps the problem', () => {
   const t = { ...hand, openingDate: null };
