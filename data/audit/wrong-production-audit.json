@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-16T01:22:50.251Z",
+  "timestamp": "2026-10-16T02:11:24.156Z",
   "stats": {
-    "totalReviews": 56869,
-    "alreadyFlagged": 21108,
+    "totalReviews": 56873,
+    "alreadyFlagged": 21115,
     "dateGuardCatches": 194,
-    "directorMismatch": 1908,
-    "tvFilmSignals": 1586,
+    "directorMismatch": 1907,
+    "tvFilmSignals": 1585,
     "londonSignals": 2365,
     "offBroadwaySignals": 512,
     "yearMismatch": 144,
-    "noPublishDate": 5274
+    "noPublishDate": 5269
   },
   "findings": [
     {
@@ -8152,19 +8152,6 @@
       "score": 61,
       "publishDate": "2026-03-16",
       "url": "https://munroreview.com/2026/03/15/theater-review-a-clever-script-for-clue-delivers-laughs-but-one-note-performances-diminish-the-farce/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "clue-tour-2025",
-      "file": "phenomnaltwincities--stephanie-kwong.json",
-      "publishDate": "2026-10-11",
-      "url": "https://www.phenomnaltwincities.com/review-clue/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -42926,19 +42913,6 @@
       "score": 79,
       "publishDate": "2026-03-09",
       "url": "https://www.theonlycritic.com/post/the-outsiders-review-a-vulnerable-high-voltage-musical-reimagining-that-honors-the-novel-s-heart",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
-        }
-      ]
-    },
-    {
-      "showId": "the-outsiders-tour-2025",
-      "file": "third-coast-review--unknown.json",
-      "publishDate": "2026-02-15",
-      "url": "https://thirdcoastreview.com/stages/2026/02/15/review-the-outsiders-broadway-in-chicago",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
