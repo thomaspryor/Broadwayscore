@@ -1546,3 +1546,16 @@ test('BRO-5486: PER_SHOW_KIND_PATTERNS still match the REAL producer title templ
   assert.ok(splitOnShowSuffix('Review gap — "Kramer/Fauci" missing 3 cited review(s)'));
   assert.ok(splitOnShowSuffix('mystic-pizza-broadway-2026: 2 review(s) need a decision (rejected real review or score outside the critic\'s rating)'));
 });
+
+test('BRO-5486: a grouped per-show card files in the same disposition as the per-finding cards it replaced', () => {
+  const shows = ['The Wiz', 'Fences', 'Mystic Pizza'];
+  const name = (s, i) => `Review gap — "${s}" missing ${i + 1} cited review(s)`;
+  // Health-check path: visitor-facing, so the one grouped card files START-NOW (Todo, High) and the cloud worker can pick it.
+  const fromHealth = planAutofix({ health: { warns: shows.map((s, i) => ({ name: name(s, i), message: 'm', conditionKey: `review-gap:${s}` })) }, tasks: [] });
+  assert.equal(fromHealth.length, 1);
+  assert.equal(isVisitorFacingRow(fromHealth[0]), true, 'grouped health card must stay START-NOW like its per-show cards');
+  // Router-queued path: not a health row, so it files parked at Medium exactly as the per-finding cards did.
+  const fromQueue = planAutofix({ health: {}, tasks: [], queued: shows.map((s, i) => ({ title: `BSC Daily: ${name(s, i)}`, description: 'd', conditionKey: `review-gap:${s}` })) });
+  assert.equal(fromQueue.length, 1);
+  assert.equal(isVisitorFacingRow(fromQueue[0]), false, 'queued rows keep the parked disposition they always had');
+});
