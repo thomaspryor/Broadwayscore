@@ -16,6 +16,12 @@
 #  6. A dirty symlink skips the autostash (cannot be restored via git show).
 #  7. A merge=union ledger appended on both sides keeps both rows.
 #  8. A caller deletion never overrides a concurrent upstream edit.
+#  9. BRO-4688: in CI, a conflict on a merge=ours / autostash=regenerated
+#     snapshot keeps upstream with a ::notice:: and writes NO ledger row; the
+#     same conflict outside CI is still recorded.
+# 10. BRO-4688: a keyed JSON ledger with a registered merger
+#     (data/audit/alert-digest-queue.json) that conflicts as text is merged by
+#     that merger: both sides' rows survive, no ::error::, no ledger row.
 #
 # Run: bash scripts/lib/push-with-retry.autostash.test.sh
 set -uo pipefail
@@ -78,8 +84,8 @@ else echo "PASS[1]: rebase path, dirt restored, not pushed, ref cleaned"; fi
 
 # ── Case 2: upstream changed the dirty file in a different hunk ─────────────
 setup c2
-sed -i 's/^l8$/l8-upstream/' "$TMP/c2-racer/shared.txt"; race c2
-sed -i 's/^l1$/l1-caller/' "$TMP/c2-work/shared.txt"
+perl -pi -e 's/^l8$/l8-upstream/' "$TMP/c2-racer/shared.txt"; race c2
+perl -pi -e 's/^l1$/l1-caller/' "$TMP/c2-work/shared.txt"
 out=$( cd "$TMP/c2-work" && bash "$PUSH_SCRIPT" 3 main 2>&1 ); rc=$?
 if [ "$rc" -ne 0 ]; then echo "FAIL[2]: rc=$rc"; echo "$out"; fail=1
 elif ! grep -q l1-caller "$TMP/c2-work/shared.txt" || ! grep -q l8-upstream "$TMP/c2-work/shared.txt"; then
@@ -89,8 +95,8 @@ else echo "PASS[2]: 3-way restore kept caller and upstream edits"; fi
 
 # ── Case 3: conflicting edit ────────────────────────────────────────────────
 setup c3
-sed -i 's/^l4$/l4-upstream/' "$TMP/c3-racer/shared.txt"; race c3
-sed -i 's/^l4$/l4-caller/' "$TMP/c3-work/shared.txt"
+perl -pi -e 's/^l4$/l4-upstream/' "$TMP/c3-racer/shared.txt"; race c3
+perl -pi -e 's/^l4$/l4-caller/' "$TMP/c3-work/shared.txt"
 out=$( cd "$TMP/c3-work" && PUSH_FAILURE_LOG="$TMP/c3-fail.jsonl" bash "$PUSH_SCRIPT" 3 main 2>&1 ); rc=$?
 if [ "$rc" -ne 0 ]; then echo "FAIL[3]: rc=$rc"; echo "$out"; fail=1
 elif ! grep -q l4-upstream "$TMP/c3-work/shared.txt" || grep -q '<<<<<<<' "$TMP/c3-work/shared.txt"; then
@@ -147,5 +153,47 @@ out=$( cd "$TMP/c8-work" && bash "$PUSH_SCRIPT" 3 main 2>&1 ); rc=$?
 if [ "$rc" -ne 0 ] || ! grep -q gone-upstream-edit "$TMP/c8-work/gone.txt" 2>/dev/null || [ "$(refs_left c8)" != "1" ]; then
   echo "FAIL[8]: delete-vs-upstream-edit (rc=$rc)"; echo "$out" | tail -5; fail=1
 else echo "PASS[8]: caller delete does not override upstream edit"; fi
+
+# ── Case 9: regenerated snapshot conflict (BRO-4688) ────────────────────────
+for mode in ci local; do
+  n="c9$mode"; setup "$n"
+  printf 'snap.json merge=ours\ngen/*.json autostash=regenerated\n' > "$TMP/$n-work/.gitattributes"
+  mkdir -p "$TMP/$n-work/gen"
+  printf '{\n  "at": "t0"\n}\n' > "$TMP/$n-work/snap.json"; cp "$TMP/$n-work/snap.json" "$TMP/$n-work/gen/a.json"
+  git -C "$TMP/$n-work" add -A; git -C "$TMP/$n-work" commit -q -m snap; git -C "$TMP/$n-work" push -q origin HEAD:main
+  git -C "$TMP/$n-racer" fetch -q origin && git -C "$TMP/$n-racer" reset -q --hard origin/main
+  perl -pi -e 's/t0/t-upstream/' "$TMP/$n-racer/snap.json" "$TMP/$n-racer/gen/a.json"; race "$n"
+  printf 'local2\n' > "$TMP/$n-work/local2.txt"; git -C "$TMP/$n-work" add local2.txt; git -C "$TMP/$n-work" commit -q -m local2
+  perl -pi -e 's/t0/t-caller/' "$TMP/$n-work/snap.json" "$TMP/$n-work/gen/a.json"
+  if [ "$mode" = ci ]; then ga=true; else ga=""; fi
+  out=$( cd "$TMP/$n-work" && GITHUB_ACTIONS="$ga" PUSH_FAILURE_LOG="$TMP/$n-fail.jsonl" bash "$PUSH_SCRIPT" 3 main 2>&1 ); rc=$?
+  if [ "$rc" -ne 0 ]; then echo "FAIL[9 $mode]: rc=$rc"; echo "$out" | tail -5; fail=1
+  elif ! grep -q t-upstream "$TMP/$n-work/snap.json" || ! grep -q t-upstream "$TMP/$n-work/gen/a.json"; then echo "FAIL[9 $mode]: upstream copy not on disk"; fail=1
+  elif [ "$mode" = ci ] && { grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null || grep -q '::error::.*autostash' <<<"$out" || [ "$(grep -c '::notice::.*regenerated latest-wins snapshot' <<<"$out")" != "2" ]; }; then
+    echo "FAIL[9 ci]: regenerated conflict should be a notice per file, not a ledger row/error"; echo "$out" | grep autostash; fail=1
+  elif [ "$mode" = local ] && ! grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null; then
+    echo "FAIL[9 local]: outside CI the conflict must still be recorded"; fail=1
+  else echo "PASS[9 $mode]: regenerated snapshot conflict handled ($mode)"; fi
+done
+
+# ── Case 10: registered JSON merger resolves a text conflict (BRO-4688) ─────
+n=c10; setup "$n"
+mkdir -p "$TMP/$n-work/data/audit"
+q() { node -e 'const r=process.argv.slice(1).map(k=>({conditionKey:k,title:k,queuedAt:"2026-10-01T00:00:00.000Z"}));process.stdout.write(JSON.stringify(r,null,2)+"\n")' "$@"; }
+q a > "$TMP/$n-work/data/audit/alert-digest-queue.json"
+git -C "$TMP/$n-work" add -A; git -C "$TMP/$n-work" commit -q -m queue; git -C "$TMP/$n-work" push -q origin HEAD:main
+git -C "$TMP/$n-racer" fetch -q origin && git -C "$TMP/$n-racer" reset -q --hard origin/main
+q a b-upstream > "$TMP/$n-racer/data/audit/alert-digest-queue.json"; race "$n"
+printf 'local2\n' > "$TMP/$n-work/local2.txt"; git -C "$TMP/$n-work" add local2.txt; git -C "$TMP/$n-work" commit -q -m local2
+q a c-caller > "$TMP/$n-work/data/audit/alert-digest-queue.json"
+out=$( cd "$TMP/$n-work" && PUSH_FAILURE_LOG="$TMP/$n-fail.jsonl" bash "$PUSH_SCRIPT" 3 main 2>&1 ); rc=$?
+f="$TMP/$n-work/data/audit/alert-digest-queue.json"
+if [ "$rc" -ne 0 ]; then echo "FAIL[10]: rc=$rc"; echo "$out" | tail -5; fail=1
+elif ! grep -q b-upstream "$f" || ! grep -q c-caller "$f" || ! node -e 'JSON.parse(require("fs").readFileSync(process.argv[1],"utf8"))' "$f"; then
+  echo "FAIL[10]: registry merge lost a side or wrote invalid JSON:"; cat "$f"; echo "$out" | grep -i autostash; fail=1
+elif grep -q '::error::.*autostash' <<<"$out" || grep -q '"autostash-conflict"' "$TMP/$n-fail.jsonl" 2>/dev/null; then
+  echo "FAIL[10]: merged ledger still reported as a conflict"; fail=1
+elif [ "$(refs_left "$n")" != "0" ]; then echo "FAIL[10]: snapshot ref not cleaned"; fail=1
+else echo "PASS[10]: registered merger keeps caller and upstream rows"; fi
 
 exit $fail

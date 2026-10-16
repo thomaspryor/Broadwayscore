@@ -1181,6 +1181,33 @@ fi
 #    caller's next commit cannot silently revert a concurrent writer. On conflict
 #    keep HEAD's version and keep the ref for manual recovery.
 # Called from the EXIT trap with `|| true`; every step checks its own rc.
+# BRO-4688: true when .gitattributes declares <path> a bot-written regenerated
+# snapshot: merge=ours (the audit/collection-state latest-wins files) or the
+# custom autostash=regenerated (generated public/data outputs, which must keep a
+# real 3-way merge for humans and so cannot be merge=ours).
+autostash_is_regenerated() {
+  local attrs
+  attrs=$(git check-attr merge autostash -- "$1" 2>/dev/null) || return 1
+  case "$attrs" in *": merge: ours"*|*": autostash: regenerated"*) return 0 ;; esac
+  return 1
+}
+
+# BRO-4688: merge the caller's snapshot copy (<ours_file>) of <path> with HEAD's
+# using the file's registered JSON merger (core-data-merge-registry.js via
+# reconcile-merged-json.js --strict, base = the snapshot's HEAD). On success the
+# merged content is on disk. Any failure, including "no merger registered",
+# puts HEAD's copy back and returns 1 so the caller reports the conflict.
+autostash_registry_merge() {
+  local p="$1" ours_f="$2"
+  [ -f "$SCRIPT_DIR/reconcile-merged-json.js" ] && command -v node >/dev/null 2>&1 || return 1
+  if cp -f "$ours_f" "$p" 2>/dev/null \
+     && PUSH_RECONCILE_BASE="$AUTOSTASH_HEAD" _timeout 30 node "$SCRIPT_DIR/reconcile-merged-json.js" --strict HEAD "$p" >/dev/null 2>&1; then
+    return 0
+  fi
+  git show "HEAD:$p" >"$p" 2>/dev/null || true
+  return 1
+}
+
 restore_autostash() {
   [ -n "${AUTOSTASH_SHA:-}" ] || return 0
   local p kept=0 merged=0 conflicted=0 tmpd base_f ours_f theirs_f union
@@ -1228,6 +1255,19 @@ restore_autostash() {
     case "$(git check-attr merge -- "$p" 2>/dev/null)" in *": merge: union") union="--union" ;; esac
     if git merge-file -q $union "$ours_f" "$base_f" "$theirs_f" 2>/dev/null; then
       if cp -f "$ours_f" "$p" 2>/dev/null; then merged=1; restored+=("$p"); else kept=1; fi
+    elif [ "${GITHUB_ACTIONS:-}" = "true" ] && autostash_is_regenerated "$p"; then
+      # BRO-4688: a bot-written latest-wins snapshot (rebuild/validate/generate
+      # output, see .gitattributes). Upstream's copy is an equally fresh
+      # regeneration, and CI callers commit these before pushing (or never), so
+      # keeping it loses nothing. Not a conflict row: these made up ~90% of the
+      # ~100/day autostash-conflict rows that kept the deadman digest row red.
+      # CI only: a local session may have hand-edited one (admin locks).
+      echo "::notice::push-with-retry: autostash: $p is a regenerated latest-wins snapshot; kept upstream's copy of it. Your version: git show $AUTOSTASH_SHA:$p"
+      kept=1
+    elif git show "$AUTOSTASH_SHA:$p" >"$ours_f" 2>/dev/null && autostash_registry_merge "$p" "$ours_f"; then
+      # BRO-4688: keyed JSON ledgers (outlet-registry.json, alert-digest-queue.json)
+      # conflict as text but merge cleanly with their registered merger.
+      merged=1; restored+=("$p")
     else
       echo "::error::push-with-retry: autostash: your uncommitted edit to $p conflicts with a concurrent upstream change; kept the upstream version on disk. Your version: git show $AUTOSTASH_SHA:$p"
       kept=1; conflicted=1

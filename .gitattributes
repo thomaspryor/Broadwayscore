@@ -424,6 +424,20 @@ data/image-sources.json merge-coverage=exempt
 data/todaytix-ids.json merge-coverage=exempt
 scripts/health-check.js merge-coverage=exempt
 
+# autostash=regenerated (BRO-4688): a CUSTOM attribute read only by
+# push-with-retry.sh's autostash restore. In CI, a caller's uncommitted copy of
+# one of these that conflicts with upstream's is dropped quietly (upstream's is
+# an equally fresh regeneration) instead of being recorded as a lost edit.
+# merge=ours files get the same treatment; these generated public outputs stay
+# off `ours` because humans need a real 3-way merge on served data. Only list
+# files a script rewrites in full from other inputs (never reading its own
+# prior output): rebuild-all-reviews.js (critic-coverage), generate-locks-
+# index.js (locks), generate-mobile-data.js / generate-mobile-show-details.js.
+public/data/admin/locks.json autostash=regenerated
+public/data/admin/critic-coverage.json autostash=regenerated
+public/data/mobile-shows.json autostash=regenerated
+public/data/shows/*.json autostash=regenerated
+
 # cloud-memory/ is a mirror of ~/.claude/projects/.../memory/ for cloud Claude
 # Code sessions. Marking it vendored keeps language stats accurate and lets
 # GitHub collapse it in the diff view.
