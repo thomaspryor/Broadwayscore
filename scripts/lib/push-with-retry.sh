@@ -40,6 +40,8 @@ source "$SCRIPT_DIR/push-mutex.sh"
 source "$SCRIPT_DIR/disk-floor-check.sh"
 # shellcheck source=scripts/lib/heal-phantom-shallow.sh
 source "$SCRIPT_DIR/heal-phantom-shallow.sh"
+# shellcheck source=scripts/lib/modify-delete-conflict.sh
+source "$SCRIPT_DIR/modify-delete-conflict.sh"   # is_modify_delete (BRO-5494)
 ensure_disk_floor   # task #968: self-heal low-disk before the push that needs the space
 
 MAX_RETRIES=${1:-7}
@@ -1645,40 +1647,7 @@ restore_head_if_moved() {
 # what was just pushed. Idempotent with the manual calls (restore_head_if_moved
 # no-ops if HEAD already matches).
 
-# Check if a file has a modify/delete conflict.
-# git checkout --ours/--theirs fails on these because one side has no version.
-# Common cause: poller creates --unknown.json, LLM scoring renames it to
-# --named-critic.json on remote — poller's push sees modify/delete.
-# Returns 0 if modify/delete, 1 if normal conflict.
-# Sets IS_DELETED_LOCALLY to "true" or "false".
-is_modify_delete() {
-  local file="$1"
-  local mode="$2"
-  IS_DELETED_LOCALLY=false
-
-  # Check remote side
-  if ! git cat-file -e "origin/$PULL_BRANCH:$file" 2>/dev/null; then
-    # Remote deleted (or never had) this file — local modified
-    return 0
-  fi
-
-  # Check local side (the commit being applied)
-  if [ "$mode" = "rebase" ]; then
-    # During rebase, REBASE_HEAD is the commit being replayed
-    if ! git cat-file -e "REBASE_HEAD:$file" 2>/dev/null; then
-      IS_DELETED_LOCALLY=true
-      return 0
-    fi
-  else
-    # During merge, MERGE_HEAD is the remote, HEAD is local
-    if ! git cat-file -e "HEAD:$file" 2>/dev/null; then
-      IS_DELETED_LOCALLY=true
-      return 0
-    fi
-  fi
-
-  return 1  # Both sides have the file — normal conflict
-}
+# is_modify_delete: see modify-delete-conflict.sh (sourced at the top, BRO-5494).
 
 # Auto-resolve conflicts by keeping our run's version of state files.
 # Args: $1 = "rebase" or "merge" (determines ours/theirs mapping)
@@ -1718,6 +1687,14 @@ resolve_conflicts() {
         # We deleted it, remote modified — keep remote's version
         echo "  Auto-resolving modify/delete (accept remote version): $file"
         git checkout $keep_remote "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
+      elif [ "$IS_LOCAL_ADDITION" = "true" ]; then
+        # BRO-5494: remote never had this path (base lacked it too). git's
+        # rename detection paired our NEW file with a file the remote deleted,
+        # so this is our addition, not a remote deletion. Keep our version.
+        echo "  Auto-resolving modify/delete (keep local addition, remote never had it): $file"
+        mkdir -p "$(dirname "$file")" \
+          && git show "$(modify_delete_local_ref "$mode"):$file" >"$file" 2>/dev/null \
+          && git add -- "$file" 2>/dev/null && resolved=true
       else
         # Remote deleted (renamed), we modified — accept the deletion.
         # The renamed version already exists on remote with the correct data.
