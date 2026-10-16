@@ -306,5 +306,36 @@
       }
     ],
     "queuedAt": "2026-10-16T13:51:23.183Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5477-auto-fix-first",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5477-auto-fix-first",
+    "description": "land.yml did not land land/bro-5477-auto-fix-first: the unit-tests-node gate went red at a135e9cfd6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38908482594",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5477-auto-fix-first"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "a135e9cfd6f285422e7420e5dffc137a0ecfc6ce"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38908482594"
+      }
+    ],
+    "queuedAt": "2026-10-16T14:11:16.606Z"
   }
 ]
