@@ -381,44 +381,6 @@
       "confidence": "low",
       "researchedAt": "2026-10-10T21:35:37.184Z"
     },
-    "death-of-a-salesman": {
-      "capitalization": 8000000,
-      "capitalizationSource": "New York Times: Was Scott Rudin the Biggest Winner at This Year’s Tony Awards? ([monorepo-sample1.nyt.net](https://monorepo-sample1.nyt.net/2026/06/08/theater/scott-rudin-salesman-tony-awards.html?utm_source=openai))",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": false,
-      "recoupedDate": null,
-      "recoupedSource": "New York Times: Was Scott Rudin the Biggest Winner at This Year’s Tony Awards? ([monorepo-sample1.nyt.net](https://monorepo-sample1.nyt.net/2026/06/08/theater/scott-rudin-salesman-tony-awards.html?utm_source=openai))",
-      "estimatedRecoupmentPct": null,
-      "designation": "Fizzle",
-      "notes": "Capitalized at $8 million and closed without recouping its capitalization after a 14-week limited run.",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://monorepo-sample1.nyt.net/2026/06/08/theater/scott-rudin-salesman-tony-awards.html",
-          "date": "2026-06-08"
-        }
-      ],
-      "title": "Death of a Salesman",
-      "slug": "death-of-a-salesman",
-      "openingDate": "2026-04-09",
-      "status": "closed",
-      "researchedAt": "2026-10-10T18:40:36.819Z",
-      "model": "o4-mini",
-      "researchTrigger": "manual",
-      "requiresHumanReview": true,
-      "backfill": "BRO-4990",
-      "truthReview": {
-        "card": "BRO-5020",
-        "reviewedAt": "2026-10-11T06:20:31.503Z",
-        "verdict": "rejected",
-        "hardFields": [],
-        "rejectReasons": [
-          "only source is a fabricated host (monorepo-sample1.nyt.net)"
-        ]
-      }
-    },
     "death-becomes-her": {
       "capitalization": 31500000,
       "capitalizationSource": "Forbes: Skyrocketing Broadway Show Budgets Scare Producers by Marc Hershberg (Oct. 24, 2024)",
@@ -1264,63 +1226,6 @@
       "researchedAt": "2026-10-10T22:15:57.041Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog"
-    },
-    "the-lehman-trilogy-2021": {
-      "capitalization": 5750000,
-      "capitalizationSource": "BroadwayNews reported the Broadway production was capitalized for up to $5.75 million, citing 2019 financial documents.",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "estimatedRecoupmentPct": null,
-      "designation": "TBD",
-      "notes": "Direct capitalization was reported at up to $5.75M. NYC tax-credit reporting lists The Lehman Trilogy at $2,091,142 and Broadway Journal identifies Three Brothers Broadway LLC as the presenting company, but that tax-credit figure does not cleanly map to total capitalization. I did not find a verified public weekly running cost or a confirmed recoupment announcement.",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.broadwaynews.com/the-lehman-trilogy-announces-broadway-return-date/",
-          "date": "2021-06-04"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/rudin-free-lehman-trilogy-dropped-from-spotco-suit-clearing-path-to-opening",
-          "date": "2021-05-21"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayworld.com/article/nys-theater-tax-credit-who-benefits-and-how-20240220",
-          "date": "2024-02-20"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.playbill.com/production/the-lehman-trilogynederlander-theatre-2021-2022",
-          "date": null
-        }
-      ],
-      "title": "The Lehman Trilogy",
-      "slug": "the-lehman-trilogy-2021",
-      "openingDate": "2021-10-14",
-      "status": "closed",
-      "researchedAt": "2026-10-10T19:26:29.741Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual",
-      "requiresHumanReview": true,
-      "backfill": "BRO-4990",
-      "researchAttempts": 1,
-      "truthReview": {
-        "card": "BRO-5020",
-        "reviewedAt": "2026-10-11T06:20:31.503Z",
-        "verdict": "cap-released",
-        "hardFields": [
-          "capitalization:5750000"
-        ],
-        "rejectReasons": [
-          "outcome unsourced; designation TBD"
-        ]
-      },
-      "sourceVerifyAttempts": 1
     },
     "caroline-or-change-2021": {
       "capitalization": null,
