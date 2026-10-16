@@ -23,6 +23,7 @@ const {
   getNonprofitTag,
   getRecoupedCellSummary,
   hasCommercialCard,
+  getConversionSourceLabel,
 } = await import('../../src/lib/commercial-display.ts');
 
 test('publicSourceText drops internal research-tooling language', () => {
@@ -314,4 +315,9 @@ test('a nonprofit run that became a commercial run (BRO-5508): says when, counts
   assert.equal(hasCommercialCard(toPublicShowCommercial(rocky)), true);
   assert.equal(hasCommercialCard({ ...base, designation: 'TBD', analystRecoupPct: [0, 0] }), true);
   assert.equal(hasCommercialCard({ ...base, designation: 'TBD' }), false);
+  // The card's link names a Reddit source the way the estimates do.
+  assert.equal(getConversionSourceLabel(ragtime.commercialConversion.sourceUrl), 'r/Broadway analyst');
+  assert.equal(getConversionSourceLabel('https://playbill.com/article/broadways-appropriate-extension-begins-march-25'), 'source');
+  assert.equal(getConversionSourceLabel('https://notreddit.com.example/x'), 'source');
+  assert.equal(getConversionSourceLabel(null), 'source');
 });

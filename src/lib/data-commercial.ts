@@ -51,7 +51,7 @@ import {
   hasNoInvestorsToRepay,
 } from './commercial-display';
 import { reportedReturn } from '../../scripts/lib/reported-return';
-import { conversionOf, isConvertedToCommercial } from '../../scripts/lib/commercial-conversion';
+import { conversionOf, isConvertedToCommercial, commercialRunWeeks } from '../../scripts/lib/commercial-conversion';
 import {
   computeMarketMedianByWeek,
   computeShowStatus,
@@ -835,7 +835,9 @@ function getBoxOfficeV2Context(): BoxOfficeV2Context {
   for (const [slug, data] of Object.entries(commercial.shows)) {
     const show = rawShows.find((s) => s.slug === slug);
     if (!show || show.category !== 'broadway') continue;
-    shows.push({ showId: slug, nonprofit: isNonprofitRecord(data), weeks: productionWeeks(show).filter((r) => recent.has(r.week)) });
+    const weeks = productionWeeks(show).filter((r) => recent.has(r.week));
+    // A run that switched to commercial adds only its commercial weeks; an undated switch adds none (BRO-5508).
+    shows.push({ showId: slug, nonprofit: isNonprofitRecord(data), weeks: commercialRunWeeks(data, weeks) ?? weeks });
   }
   boxOfficeV2Context = { cost, market: computeMarketMedianByWeek(shows, cost), latestWeek };
   return boxOfficeV2Context;

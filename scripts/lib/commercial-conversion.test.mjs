@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { conversionOf, isConvertedToCommercial, conversionShapeProblems } = require('./commercial-conversion');
+const { conversionOf, isConvertedToCommercial, commercialRunWeeks, conversionShapeProblems } = require('./commercial-conversion');
 const { commercialRecordErrors } = require('./commercial-record-checks');
 const { hasNoInvestorsToRepay } = require('./commercial-designations');
 const { calculateRecoupment, calculateLifetimeRecoupment, SPLIT_RUN_ERROR } = require('./recoupment-model');
@@ -31,6 +31,19 @@ test('conversionOf reads the record, dropping a malformed date or URL instead of
     assert.equal(isConvertedToCommercial(rec), false);
   }
   assert.equal(isConvertedToCommercial(ragtime), true);
+});
+
+test('commercialRunWeeks keeps only the weeks played on commercial terms', () => {
+  // Ragtime's grosses weeks around the switch (week-ending Sundays): Jan 4 was the last LORT week.
+  const weeks = ['2025-12-28', '2026-01-04', '2026-01-11', '2026-01-18'].map((week) => ({ week, gross: 1 }));
+  assert.deepEqual(commercialRunWeeks(ragtime, weeks).map((r) => r.week), ['2026-01-11', '2026-01-18']);
+  // A switch recorded on a Sunday leaves that week, played on nonprofit terms, out.
+  const sunday = { ...ragtime, commercialConversion: { date: '2026-01-04', sourceUrl: SRC } };
+  assert.deepEqual(commercialRunWeeks(sunday, weeks).map((r) => r.week), ['2026-01-11', '2026-01-18']);
+  // An undated switch cannot be split: no week counts as commercial.
+  assert.deepEqual(commercialRunWeeks({ ...ragtime, commercialConversion: { date: null, sourceUrl: SRC } }, weeks), []);
+  // A record that never switched: null, so callers keep their own rule.
+  assert.equal(commercialRunWeeks({ designation: 'TBD' }, weeks), null);
 });
 
 test('conversionShapeProblems names each bad part', () => {

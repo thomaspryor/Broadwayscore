@@ -49,6 +49,23 @@ function isConvertedToCommercial(rec) {
 }
 
 /**
+ * The weekly rows of a run that switched which belong to its commercial run:
+ * weeks ending after the switch date (a week ending on the switch day itself
+ * was played on nonprofit terms). None when the date is not reported, since
+ * the run cannot be split. Null for a record that never switched.
+ * @template {{ week: string }} T
+ * @param {{ commercialConversion?: unknown } | null | undefined} rec
+ * @param {T[]} weeks - rows keyed by week-ending date (YYYY-MM-DD)
+ * @returns {T[] | null}
+ */
+function commercialRunWeeks(rec, weeks) {
+  const conversion = conversionOf(rec);
+  if (!conversion) return null;
+  const from = conversion.date;
+  return from ? weeks.filter((r) => r.week > from) : [];
+}
+
+/**
  * Shape problems in a record's commercialConversion (empty when absent or
  * well formed). Cross-field rules live in commercial-record-checks.js.
  * @param {unknown} value
@@ -66,4 +83,4 @@ function conversionShapeProblems(value) {
   return out;
 }
 
-module.exports = { conversionOf, isConvertedToCommercial, conversionShapeProblems };
+module.exports = { conversionOf, isConvertedToCommercial, commercialRunWeeks, conversionShapeProblems };

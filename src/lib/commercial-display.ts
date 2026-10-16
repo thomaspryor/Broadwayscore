@@ -801,6 +801,17 @@ export const ESTIMATE_SOURCES_NOTE = "~ and Est. mark estimates: musicals use an
 
 /** Who the analyst estimate belongs to, in the words every page uses (BRO-5502). */
 export const ANALYST_SHORT_LABEL = 'r/Broadway analyst';
+
+/**
+ * Link text for where a switch to a commercial run is reported (BRO-5508):
+ * the analyst's credit for an r/Broadway post, as on the estimates, else "source".
+ */
+export function getConversionSourceLabel(url: string | null | undefined): string {
+  try {
+    if (url && /(^|\.)reddit\.com$/i.test(new URL(url).hostname)) return ANALYST_SHORT_LABEL;
+  } catch { /* not a URL: plain label */ }
+  return 'source';
+}
 export const ANALYST_FULL_LABEL = 'u/Boring_Waltz_9545, who posts weekly grosses analysis on r/Broadway';
 
 /** "2025-01" → "January 2025"; "1999" → "1999"; junk → null. */

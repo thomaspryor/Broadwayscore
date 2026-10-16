@@ -8,7 +8,7 @@
     "email": null
   },
   "plan": {
-    "summary": "BRO-5508: record three nonprofit Broadway runs that switched to commercial runs. Ragtime (Lincoln Center Theater) played its first weeks under the LORT contract and became a commercial run the week of 2026-01-05; The Rocky Horror Show (Roundabout) turned into a commercial run in summer 2026 (date not yet reported); Appropriate (Second Stage) moved to a commercial run at the Belasco on 2024-03-25. A converted run has investors, so Ragtime and Rocky Horror go from Nonprofit to TBD (outcome not announced; both keep humanReviewedDesignation). Appropriate stays Easy Winner.",
+    "summary": "BRO-5508: record two nonprofit Broadway runs that switched to commercial runs. Ragtime (Lincoln Center Theater) played its first weeks under the LORT contract and became a commercial run the week of 2026-01-05; The Rocky Horror Show (Roundabout) turned into a commercial run in summer 2026 (date not yet reported). A converted run has investors, so both go from Nonprofit to TBD (outcome not announced; both keep humanReviewedDesignation). Appropriate (Hayes to a commercial run at the Belasco, 2024-03-25) is left for later: its record counts it recouped in 2024-03 by editorial judgment, which a same-month switch would contradict.",
     "steps": [
       "Designation edits come before the conversion edits: commercial-record-checks.js refuses a commercialConversion on a Nonprofit designation."
     ],
@@ -29,7 +29,10 @@
         "showSlug": "ragtime",
         "field": "commercialConversion",
         "oldValue": null,
-        "newValue": { "date": "2026-01-05", "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1q5tsno/new_year_grosses_week_ending_january_4/" },
+        "newValue": {
+          "date": "2026-01-05",
+          "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1q5tsno/new_year_grosses_week_ending_january_4/"
+        },
         "description": "ragtime: r/Broadway analyst, week ending Jan 4, 2026: 'This was also the final week under the LORT contract, show becomes a commercial run starting this week.' BroadwayWorld (Aug 27, 2026): it 'got to play by different rules for the first 16 weeks of their run'."
       },
       {
@@ -47,17 +50,11 @@
         "showSlug": "the-rocky-horror-show",
         "field": "commercialConversion",
         "oldValue": null,
-        "newValue": { "date": null, "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1vyc22q/grosses_analysis_week_ending_august_23/" },
+        "newValue": {
+          "date": null,
+          "sourceUrl": "https://www.reddit.com/r/Broadway/comments/1vyc22q/grosses_analysis_week_ending_august_23/"
+        },
         "description": "the-rocky-horror-show: r/Broadway analyst, week ending Aug 23, 2026: 'the best since the show turned into a commercial run'. Date not reported; the deep research prompts ask for it."
-      },
-      {
-        "type": "data-edit",
-        "file": "commercial.json",
-        "showSlug": "appropriate",
-        "field": "commercialConversion",
-        "oldValue": null,
-        "newValue": { "date": "2024-03-25", "sourceUrl": "https://playbill.com/article/broadways-appropriate-extension-begins-march-25" },
-        "description": "appropriate: Playbill (Mar 25, 2024): 'begins its transfer run at the Belasco Theatre March 25 ... The transfer gives the Second Stage Theater production a commercial run on the Main Stem.'"
       }
     ]
   }

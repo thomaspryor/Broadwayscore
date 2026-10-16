@@ -17,6 +17,7 @@ import {
   isEstimatedCapitalization,
   getWeeklyCostSourceLabel,
   getNonprofitProducerLine,
+  getConversionSourceLabel,
   hasCommercialCard,
   lossBasisCaveat,
   publicNotesText,
@@ -277,7 +278,8 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
                 <>
                   {' · '}
                   <a href={commercial.commercialConversion.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline decoration-white/20 hover:text-brand">
-                    source<span className="sr-only"> (opens in a new tab)</span>
+                    {getConversionSourceLabel(commercial.commercialConversion.sourceUrl)}
+                    <span className="sr-only">, where the switch to a commercial run is reported (opens in a new tab)</span>
                   </a>
                 </>
               )}

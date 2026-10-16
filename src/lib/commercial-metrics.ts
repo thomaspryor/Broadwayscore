@@ -128,8 +128,10 @@ export function summarizeCapital(caps: Array<number | null | undefined>): Capita
 /**
  * Left out of season recoupment math and capital at risk (BRO-4623 P0-6):
  * pure nonprofits and tour stops carry no commercial investor capital.
- * Enhancement deals (e.g. Ragtime LCT 2025) keep designation 'Nonprofit' for
- * taxonomy but carry commercial co-producer capital, so they stay in.
+ * Enhancement deals (e.g. LCT's Floyd Collins 2025) keep designation
+ * 'Nonprofit' for taxonomy but carry commercial co-producer capital, so they
+ * stay in, as does a nonprofit run that switched to a commercial run (BRO-5508,
+ * Ragtime 2025), which carries a commercial designation.
  */
 export function isExcludedFromSeasonStats(commercial: {
   designation?: string | null;
