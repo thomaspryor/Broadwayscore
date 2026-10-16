@@ -508,7 +508,7 @@ function digestLoopDeadMessage({ sections = {}, autofixRows = null, stuckCount =
 // Sections render via the SAME exported block renderers the old email used —
 // identical visual output for the parts the owner kept, none of the loop
 // parts. `changes` is overnight-digest.js's pre-rendered HTML block (or null).
-function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, loopDeadMsg: givenLoopDeadMsg, now = new Date() } = {}) {
+function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, boardNumbersData = null, loopDeadMsg: givenLoopDeadMsg, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric',
   }).format(now);
@@ -586,6 +586,19 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
     view.reviewQueue ? renderNamedDigestBlock('Review queue', view.reviewQueue) : '',
   ].filter(Boolean).join('\n');
   head.push(renderOwnerTopBlock(view, { decisionBlocksHtml, overnightLine }));
+  // Board numbers (BRO-5482). `waiting` and `stuck` are the SAME numbers the sections
+  // above/below use (view.decisions, stuckCount): never a second definition.
+  if (boardNumbersData) {
+    try {
+      const bn = require('./lib/board-numbers.js');
+      head.push(bn.renderBoardNumbersHtml(
+        bn.buildBoardNumbers({ data: boardNumbersData, waiting: sections.boardWaitingUnknown ? null : view.decisions, stuck: sections.boardStuckUnknown ? null : stuckCount, technicalInReview: sections.inReviewTechnicalCount }),
+        esc,
+      ));
+    } catch (err) {
+      console.error(`[digest] WARN board numbers block failed: ${String(err.message).slice(0, 120)}`);
+    }
+  }
 
   // Technical report starts here. The raw error names stay (debugging), but
   // are no longer called "site errors": most are the automation's own
@@ -752,7 +765,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
 // would not have caught that, which is exactly what happened (renderer unit
 // buttons per the 2026-08-02 owner mandate — autofix runs in main().)
 function composeDigestEmail({
-  sections, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, now = new Date(),
+  sections, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, boardNumbersData = null, now = new Date(),
   dispatchSecret = process.env.APPROVAL_HMAC_SECRET, dispatchConfigPath = DISPATCH_CONFIG_PATH,
 } = {}) {
   // Digest v3 (owner mandate 2026-08-02, his FIFTH escalation): no Fix-this
@@ -786,7 +799,7 @@ function composeDigestEmail({
 
   const loopDeadMsg = digestLoopDeadMessage({ sections, autofixRows, stuckCount, pipelineIssues });
   const subject = buildSubject({ health: sections.health, autofixRows, awaitingOwner: sections.awaitingOwner, needsYou: sections.needsYou, inReviewBacklog: sections.inReviewBacklog, loopDead: !!loopDeadMsg, now });
-  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, loopDeadMsg, now });
+  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, boardNumbersData, loopDeadMsg, now });
   return { subject, html };
 }
 
@@ -1050,6 +1063,7 @@ async function main() {
     const section = buildAwaitingOwnerSection(enriched.filter(isAwaitingOwner));
     if (section) sections.awaitingOwner = section;
   } catch (err) {
+    sections.boardWaitingUnknown = true; // Board numbers shows n/a, not 0 (BRO-5482)
     console.error(`[digest] WARN awaiting-owner section failed: ${String(err.message).slice(0, 120)}`);
   }
 
@@ -1255,12 +1269,14 @@ async function main() {
   // never block the digest itself.
   let changesHtml = null;
   let stuckCount = 0;
+  let stuckKnown = false; // false when the overnight collector failed: Board numbers shows n/a, not 0
   try {
     const { gatherDigest, renderDigestBlock, countStuckSignals } = require('./lib/overnight-digest.js');
     const digest = gatherDigest({ repo: REPO });
     if (digest) {
       changesHtml = renderDigestBlock(digest);
       stuckCount = countStuckSignals(digest);
+      stuckKnown = true;
     }
   } catch (err) {
     console.error(`[digest] WARN overnight-changes gathering failed: ${String(err.message).slice(0, 120)}`);
@@ -1389,7 +1405,16 @@ async function main() {
   } catch (err) {
     console.error(`[digest] WARN could not read pipeline cards from Linear: ${String(err.message).slice(0, 120)}`);
   }
-  const { subject, html } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, now });
+  if (!stuckKnown) sections.boardStuckUnknown = true;
+  // Board numbers (BRO-5482): fail-soft, each piece degrades to "n/a" on its own.
+  let boardNumbersData = null;
+  try {
+    const timeout = (ms) => new Promise((_, reject) => setTimeout(() => reject(new Error(`timed out after ${ms}ms`)), ms));
+    boardNumbersData = await Promise.race([require('./lib/board-numbers.js').fetchBoardNumbersData({ graphql: require('./lib/linear-client.js').graphql, now, cwd: REPO }), timeout(330_000)]);
+  } catch (err) {
+    console.error(`[digest] WARN board numbers failed: ${String(err.message).slice(0, 120)}`);
+  }
+  const { subject, html } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, boardNumbersData, now });
 
   // Card #670/#1641: pre-send content check. Never blocks the SEND itself
   // (the digest must always send — a broken invariant check must not turn
