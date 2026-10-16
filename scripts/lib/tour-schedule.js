@@ -582,7 +582,7 @@ function decideTourDates(tour, scheduleHtml, wikiText, now = new Date(), opts = 
   // lifecyclePlan, BRO-4724).
   const segments = splitSegmentsAt(segmentTourRows(rows), opts.cuts);
   const seg = pickSegment(segments, tour, wikiText, opts);
-  if (!seg) return { write: {}, notes: [`${segments.length} segment(s), none matches this tour`], problem: 'no schedule segment matches this tour' };
+  if (!seg) return { write: {}, notes: [`${segments.length} segment(s), none matches this tour`], problem: NO_SEGMENT_PROBLEM };
 
   const write = {};
   const wikiLaunch = segmentLaunch(seg, wikiText);
@@ -702,6 +702,8 @@ function pruneOrphanSchedules(tours, shows) {
   return dropped;
 }
 
+const NO_SEGMENT_PROBLEM = 'no schedule segment matches this tour';
+
 /**
  * A tour whose opening date was verified by hand and that is still running
  * has nothing for the schedule page to fill in (BRO-5450). When the page's
@@ -711,9 +713,14 @@ function pruneOrphanSchedules(tours, shows) {
  * @param {object} tour shows.json tour entry
  * @param {{write: object, notes: string[], problem?: string}} decision
  */
-function settleHandDatedNoMatch(tour, decision) {
-  if (decision && decision.problem === 'no schedule segment matches this tour'
+function settleHandDatedNoMatch(tour, decision, scheduleHtml, now = new Date()) {
+  if (decision && decision.problem === NO_SEGMENT_PROBLEM
       && tour && tour.openingDate && tour.openingDateSource === 'hand-verified' && !tour.closingDate) {
+    // Closing is only detected from a matched segment, so this exemption holds
+    // only while the page still lists a current or upcoming engagement; a page
+    // with none may mean the tour closed (review finding, BRO-5450).
+    const live = parseTourSchedule(scheduleHtml).some(r => r.end.getTime() + DAY >= now.getTime());
+    if (!live) return { ...decision, problem: 'hand-dated tour and the schedule page lists no current or upcoming stops; check whether it closed' };
     const { problem, ...rest } = decision;
     return { ...rest, notes: [...(rest.notes || []), 'hand-verified opening date; schedule page has no matching segment (not a problem)'] };
   }

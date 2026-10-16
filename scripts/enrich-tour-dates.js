@@ -143,7 +143,7 @@ async function main() {
     const rawDecision = url
       ? decideTourDates(tour, html, wiki, new Date(), { cuts: earlierClosings(tour, shows) })
       : { write: {}, notes: [], problem: `no Tours To You page found (tried ${scheduleSlugs(tour).join(', ')}); set tourScheduleSlug on the entry` };
-    const decision = settleHandDatedNoMatch(tour, rawDecision);
+    const decision = settleHandDatedNoMatch(tour, rawDecision, html);
     for (const n of decision.notes) console.log(`  ${n}`);
     if (decision.problem) console.log(`  PROBLEM: ${decision.problem}`);
     console.log(`  would write: ${JSON.stringify(decision.write)}`);
