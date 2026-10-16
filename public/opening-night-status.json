@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T15:42:23.533Z",
+  "generatedAt": "2026-10-16T16:06:23.787Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -550,27 +550,27 @@
       "status": "open",
       "slug": "cadel-lungs-on-legs-west-end",
       "thumbnail": "/images/shows/cadel-lungs-on-legs-west-end-2026/thumbnail.jpg",
-      "siteScore": 80.85,
+      "siteScore": 80.88,
       "liveScore": 81,
-      "scoreDrift": 0.15000000000000568,
+      "scoreDrift": 0.12000000000000455,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 6,
       "t1": 0,
-      "t2": 2,
+      "t2": 3,
       "t3": 3,
-      "positive": 4,
+      "positive": 5,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/8 total",
+          "6/8 total",
           "T1:0/3",
-          "hi-conf:4/6"
+          "hi-conf:5/6"
         ],
-        "highConfidence": 4,
+        "highConfidence": 5,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -702,6 +702,18 @@
           "m": 1,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-16T16:06:23.787Z",
+          "rc": 6,
+          "s": 80.88,
+          "t1": 0,
+          "t2": 3,
+          "t3": 3,
+          "p": 5,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -715,26 +727,23 @@
       "status": "open",
       "slug": "some-woman-west-end",
       "thumbnail": "/images/shows/some-woman-west-end-2026/thumbnail.webp",
-      "siteScore": 55.72,
-      "liveScore": 56,
-      "scoreDrift": 0.28000000000000114,
+      "siteScore": 57.64,
+      "liveScore": 58,
+      "scoreDrift": 0.35999999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 9,
-      "t1": 2,
+      "total": 11,
+      "t1": 4,
       "t2": 5,
       "t3": 2,
       "positive": 3,
-      "mixed": 1,
+      "mixed": 3,
       "negative": 5,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "T1:2/3",
-          "hi-conf:5/6"
-        ],
-        "highConfidence": 5,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 8,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -744,7 +753,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -882,6 +891,18 @@
           "m": 1,
           "n": 5,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-16T16:06:23.787Z",
+          "rc": 11,
+          "s": 57.64,
+          "t1": 4,
+          "t2": 5,
+          "t3": 2,
+          "p": 3,
+          "m": 3,
+          "n": 5,
+          "bc": "waiting"
         }
       ]
     },
@@ -895,26 +916,26 @@
       "status": "open",
       "slug": "midnight-off-broadway",
       "thumbnail": "/images/shows/midnight-off-broadway-2026/thumbnail.webp",
-      "siteScore": 73.87,
-      "liveScore": 74,
-      "scoreDrift": 0.12999999999999545,
+      "siteScore": 74.5,
+      "liveScore": 75,
+      "scoreDrift": 0.5,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 9,
+      "total": 11,
       "t1": 0,
-      "t2": 5,
-      "t3": 4,
-      "positive": 5,
-      "mixed": 4,
+      "t2": 6,
+      "t3": 5,
+      "positive": 6,
+      "mixed": 5,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "9/12 total",
+          "11/12 total",
           "T1:0/3"
         ],
-        "highConfidence": 9,
+        "highConfidence": 11,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1284,6 +1305,18 @@
           "t3": 4,
           "p": 5,
           "m": 4,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-16T16:06:23.787Z",
+          "rc": 11,
+          "s": 74.5,
+          "t1": 0,
+          "t2": 6,
+          "t3": 5,
+          "p": 6,
+          "m": 5,
           "n": 0,
           "bc": "waiting"
         }
@@ -3527,23 +3560,23 @@
       "status": "open",
       "slug": "the-cherry-orchard-west-end",
       "thumbnail": "/images/shows/the-cherry-orchard-west-end-2026/thumbnail.jpeg",
-      "siteScore": 71,
+      "siteScore": 71.17,
       "liveScore": 71,
-      "scoreDrift": 0,
+      "scoreDrift": -0.1700000000000017,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 28,
+      "total": 29,
       "t1": 6,
       "t2": 5,
-      "t3": 17,
-      "positive": 18,
+      "t3": 18,
+      "positive": 19,
       "mixed": 8,
       "negative": 2,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 25,
+        "highConfidence": 28,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -3888,6 +3921,18 @@
           "t2": 5,
           "t3": 17,
           "p": 18,
+          "m": 8,
+          "n": 2,
+          "bc": "preview-sent-earlier"
+        },
+        {
+          "t": "2026-10-16T16:06:23.787Z",
+          "rc": 29,
+          "s": 71.17,
+          "t1": 6,
+          "t2": 5,
+          "t3": 18,
+          "p": 19,
           "m": 8,
           "n": 2,
           "bc": "preview-sent-earlier"
