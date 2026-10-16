@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T15:26:12.825Z",
+  "generatedAt": "2026-10-16T17:15:24.299Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -103,6 +103,10 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -131,9 +135,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 712,
-  "matchedGaps": 9,
-  "possibleGaps": 9,
+  "itemsScanned": 707,
+  "matchedGaps": 4,
+  "possibleGaps": 7,
   "gaps": [
     {
       "showId": "jane-eyre-rose-kingston-off-west-end-2026",
@@ -145,84 +149,30 @@
       "publishDate": "2026-10-15"
     },
     {
-      "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
-      "title": "Memoirs of Amorous Gentlemen",
-      "level": "matched",
-      "outletId": "pages-on-stages",
-      "url": "https://pagesonstages.com/2026/10/15/memoirs-of-amorous-gentlemen/",
-      "headline": "Go Revel in the Atmosphere",
-      "publishDate": "2026-10-16"
-    },
-    {
-      "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
-      "title": "Memoirs of Amorous Gentlemen",
-      "level": "matched",
-      "outletId": "nytimes",
-      "url": "https://www.nytimes.com/2026/10/16/theater/memoirs-of-amorous-gentlemen-review-duncan-sheik.html",
-      "headline": "‘Memoirs of Amorous Gentlemen’ Review: Duncan Sheik’s Tale of Eros",
-      "publishDate": "2026-10-16"
-    },
-    {
       "showId": "midnight-off-broadway-2026",
       "title": "Midnight",
       "level": "matched",
-      "outletId": "theater-scene",
-      "url": "https://www.theaterscene.net/musicals/offbway/midnight/samuel-l-leiter/",
-      "headline": "Midnight",
+      "outletId": "culturesauce",
+      "url": "https://culturesauce.com/todrick-hall-midnight-muscial-off-broadway-review/",
+      "headline": "Todrick Hall does it all in the beautiful, bloated musical &#8216;Midnight&#8217; and that&#8217;s the problem (Off Broadway review)",
       "publishDate": "2026-10-16"
     },
     {
-      "showId": "some-woman-west-end-2026",
-      "title": "Some Woman",
+      "showId": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
+      "title": "The Banality of Evil: Hannah Arendt, France 1940",
       "level": "matched",
-      "outletId": "london-unattached",
-      "url": "https://www.london-unattached.com/some-woman-dorfman-national-theatre/",
-      "headline": "Some Woman &#8211; Dorfman National Theatre",
-      "publishDate": "2026-10-16"
-    },
-    {
-      "showId": "some-woman-west-end-2026",
-      "title": "Some Woman",
-      "level": "matched",
-      "outletId": "guardian",
-      "url": "https://www.theguardian.com/stage/2026/oct/16/some-woman-review-anne-marie-duff-dorfman-theatre",
-      "headline": "Some Woman review – Anne-Marie Duff is wholly believable but this twisty drama is not",
-      "publishDate": "2026-10-16"
-    },
-    {
-      "showId": "some-woman-west-end-2026",
-      "title": "Some Woman",
-      "level": "matched",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/some-woman-national-theatre-london/",
-      "headline": "Some Woman – National Theatre, London",
+      "outletId": "plays-international",
+      "url": "https://playsinternational.org.uk/the-banality-of-evil-hannah-arendt-france-1940-arcola-theatre/",
+      "headline": "“The Banality of Evil: Hannah Arendt, France, 1940” at Arcola Theatre",
       "publishDate": "2026-10-16"
     },
     {
       "showId": "the-cherry-orchard-west-end-2026",
       "title": "The Cherry Orchard",
       "level": "matched",
-      "outletId": "the-recs",
-      "url": "https://therecs.co.uk/the-cherry-orchard-the-harold-pinter-theatre/",
-      "headline": "The Cherry Orchard &#8211; The Harold Pinter Theatre ★★★★",
-      "publishDate": "2026-10-15"
-    },
-    {
-      "showId": "the-cherry-orchard-west-end-2026",
-      "title": "The Cherry Orchard",
-      "level": "matched",
-      "outletId": "adventuresintheatreland",
-      "url": "https://www.adventuresintheatreland.com/post/the-cherry-orchard-harold-pinter-theatre",
-      "headline": "The Cherry Orchard | Harold Pinter Theatre",
-      "publishDate": "2026-10-16"
-    },
-    {
-      "showId": "fish-off-broadway-2026",
-      "title": "Fish",
-      "level": "possible",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/good-time-charlie-fish-anon/",
-      "headline": "Good Time Charlie ***, Fish ****, Anon ***",
+      "outletId": "plays-international",
+      "url": "https://playsinternational.org.uk/the-cherry-orchard-harold-pinter-theatre/",
+      "headline": "“The Cherry Orchard” at Harold Pinter Theatre",
       "publishDate": "2026-10-16"
     },
     {
@@ -269,15 +219,6 @@
       "url": "https://www.theguardian.com/stage/2026/oct/14/the-cherry-orchard-review-kristin-scott-thomas-chekhov-harold-pinter-theatre-conor-mcpherson-ian-rickson-stephen-mangan",
       "headline": "The Cherry Orchard review – Kristin Scott Thomas makes a modern matriarch in trad, earthy Chekhov",
       "publishDate": "2026-10-13"
-    },
-    {
-      "showId": "some-woman-west-end-2026",
-      "title": "Some Woman",
-      "level": "possible",
-      "outletId": "artsdesk",
-      "url": "https://theartsdesk.com/theatre/some-woman-national-theatre-review-strong-social-issues-bit-too-didactic",
-      "headline": "Some Woman, National Theatre review - strong social issues, but a bit too didactic",
-      "publishDate": null
     },
     {
       "showId": "the-ask-off-broadway-2026",

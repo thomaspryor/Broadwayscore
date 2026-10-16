@@ -1,30 +1,62 @@
 {
-  "generatedAt": "2026-10-16T15:26:12.415Z",
+  "generatedAt": "2026-10-16T17:15:23.983Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 242,
-  "clean": 241,
-  "defective": 1,
+  "checked": 241,
+  "clean": 238,
+  "defective": 3,
   "byType": {
-    "score-drift": 1
+    "score-drift": 3
   },
   "shows": [
     {
-      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
-      "title": "Who’s Afraid of Virginia Woolf?",
-      "openingDate": "2026-09-30",
+      "showId": "midnight-off-broadway-2026",
+      "title": "Midnight",
+      "openingDate": "2026-10-15",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 85.61 vs local 85.67 (Δ0.06)"
+          "detail": "deployed cs 75.05 vs local 74.5 (Δ0.55)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 41,
-      "deployedCount": 41,
-      "firstDefectAt": "2026-10-16T15:26:07.905Z"
+      "localCount": 11,
+      "deployedCount": 12,
+      "firstDefectAt": "2026-10-16T17:15:19.614Z"
+    },
+    {
+      "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
+      "title": "Memoirs of Amorous Gentlemen",
+      "openingDate": "2026-10-15",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 62.56 vs local 61.42 (Δ1.14)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 11,
+      "deployedCount": 12,
+      "firstDefectAt": "2026-10-16T17:15:19.614Z"
+    },
+    {
+      "showId": "a-ghost-in-your-ear-off-broadway-2026",
+      "title": "A Ghost In Your Ear",
+      "openingDate": "2026-10-09",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 68.09 vs local 69.67 (Δ1.58)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 9,
+      "deployedCount": 10,
+      "firstDefectAt": "2026-10-16T17:15:19.614Z"
     }
   ],
   "persistentDefective": 0,
