@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { hasSameMarketTitleMatch, countRevivalMentions } = require('../opening-night-completeness.js');
+const { hasSameMarketTitleMatch, isTourShow, countRevivalMentions } = require('../opening-night-completeness.js');
 
 const name = 'revival-unverified';
 const description = 'Show shares a canonical title with an earlier production (or review text repeatedly says "revival") but isRevival is not set';
@@ -18,6 +18,12 @@ const SKIP_STATUSES = new Set(['closed']);
 function run(show, context) {
   if (SKIP_STATUSES.has(show.status)) {
     return { ok: true, severity: 'ok', message: `Status is ${show.status} — revival check not needed` };
+  }
+
+  // Tours carry isRevival false by design, and their reviews say "revival"
+  // when the parent is one (BRO-5439): neither signal applies.
+  if (isTourShow(show)) {
+    return { ok: true, severity: 'ok', message: `${show.id} is a tour — revival check not needed` };
   }
 
   if (show.isRevival === true) {

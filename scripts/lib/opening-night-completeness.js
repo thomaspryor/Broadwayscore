@@ -110,13 +110,17 @@ function stripUpcomingTag(show) {
  * @param {Array} shows
  * @returns {boolean}
  */
+function isTourShow(show) {
+  return !!show && (!!show.tourOf || show.category === 'tour' || show.market === 'tour');
+}
+
 function hasSameMarketTitleMatch(show, shows) {
   if (!show || !Array.isArray(shows)) return false;
   const targetTitle = (show.canonicalTitle || show.title || '').toLowerCase().trim();
   if (!targetTitle) return false;
   // A tour is the same production on the road, never a revival of its parent
-  // or of a sibling tour segment (BRO-5439: 49 of 74 hits were tour entries).
-  if (show.tourOf || show.category === 'tour' || show.market === 'tour') return false;
+  // or of a sibling tour segment (BRO-5439).
+  if (isTourShow(show)) return false;
   const targetMarket = show.category || show.market || null;
   return shows.some(s => {
     if (!s || s.id === show.id) return false;
@@ -156,5 +160,6 @@ module.exports = {
   isUpcomingTag,
   stripUpcomingTag,
   hasSameMarketTitleMatch,
+  isTourShow,
   countRevivalMentions,
 };

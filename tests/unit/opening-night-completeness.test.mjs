@@ -75,6 +75,16 @@ describe('hasSameMarketTitleMatch', () => {
     const show = { id: 'legally-blonde-tour-2027', title: 'Legally Blonde', category: 'tour', market: 'tour', tourOf: 'legally-blonde-2007' };
     const shows = [show, { id: 'legally-blonde-2007', title: 'Legally Blonde', category: 'broadway' }, { id: 'legally-blonde-tour-2026', title: 'Legally Blonde', category: 'tour' }];
     assert.equal(hasSameMarketTitleMatch(show, shows), false);
+    for (const t of [{ tourOf: 'x' }, { category: 'tour' }, { market: 'tour' }]) {
+      const s2 = { id: 'a-tour', title: 'Legally Blonde', ...t };
+      assert.equal(hasSameMarketTitleMatch(s2, [s2, { id: 'b', title: 'Legally Blonde', ...t }]), false);
+    }
+  });
+  it('revival-unverified check passes a tour even with revival-heavy title match', () => {
+    const chk = require('../../scripts/lib/opening-night-checks/revival-unverified.check.js');
+    const show = { id: 'p-tour', title: 'Parade', category: 'tour', tourOf: 'p', status: 'upcoming' };
+    const r = chk.run(show, { shows: [show, { id: 'q', title: 'Parade', category: 'tour' }], reviewTextsRoot: '/nonexistent' });
+    assert.equal(r.ok, true);
   });
   it('true for same title, same market (real revival, e.g. Death of a Salesman)', () => {
     const show = { id: 'death-of-a-salesman-2026', title: 'Death of a Salesman', market: 'broadway' };
