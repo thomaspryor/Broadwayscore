@@ -272,6 +272,15 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           {producerLine && !isNonprofit && (
             <p className="text-[13px] text-gray-300 mt-0.5 leading-[1.4]" data-testid="nonprofit-producer">
               {producerLine}
+              {/* A nonprofit run that became a commercial run cites where that is reported (BRO-5508). */}
+              {commercial.commercialConversion?.sourceUrl && (
+                <>
+                  {' · '}
+                  <a href={commercial.commercialConversion.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline decoration-white/20 hover:text-brand">
+                    source<span className="sr-only"> (opens in a new tab)</span>
+                  </a>
+                </>
+              )}
             </p>
           )}
         </div>

@@ -98,7 +98,7 @@ export default function BreakEvenSection({ card }: { card: BoxOfficeV2Card }) {
             {near && <p className="m-0 text-sm leading-relaxed text-gray-300">{near}</p>}
             {card.nonprofit && (
               <p className="m-0 text-sm leading-relaxed text-gray-300">
-                {card.nonprofitOrg ? `${card.nonprofitOrg} is a nonprofit` : 'This is a nonprofit production'}: there are no investors to pay back, and nonprofits often cover part of the cost with donations and subscriptions, so grossing below break-even is less of a warning sign here.
+                {card.nonprofitOrg ? `${card.nonprofitOrg} is a nonprofit` : 'This is a nonprofit production'}: {card.noInvestors ? 'there are no investors to pay back, and ' : ''}nonprofits often cover part of the cost with donations and subscriptions, so grossing below break-even is less of a warning sign here.
               </p>
             )}
             {basis && (
