@@ -91,14 +91,14 @@ function isPrematureSilenceLabel(entry, show, now = Date.now()) {
  * (isExcludedFromSeasonStats) and the display (model-display-guard.js,
  * commercial-display.ts).
  */
-function hasNoInvestorRecoupment(rec) {
+function hasNoInvestorsToRepay(rec) {
   if (!rec) return false;
   if (rec.designation === 'Tour Stop') return true;
   return rec.designation === 'Nonprofit' && rec.productionType !== 'enhancement';
 }
 
 module.exports = {
-  hasNoInvestorRecoupment,
+  hasNoInvestorsToRepay,
   DESIGNATION_BASES, VALID_DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel,
   VALID_DESIGNATIONS, canonicalDesignation,
   TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, DESIGNATIONS_OUTSIDE_RULE,

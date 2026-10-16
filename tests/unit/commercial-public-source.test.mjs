@@ -275,6 +275,10 @@ test('nonprofit producer line (BRO-4721): names the company, survives toPublicSh
     'Nonprofit producer: Lincoln Center Theater'
   );
   assert.equal(getNonprofitProducerLine({ ...base, designation: 'Windfall' }), null);
+  // An enhancement deal says why its card shows a % recouped (BRO-5502), and the type survives the public projection.
+  const lct = { ...base, designation: 'Nonprofit', nonprofitOrg: 'Lincoln Center Theater', productionType: 'enhancement' };
+  assert.equal(getNonprofitProducerLine(lct), 'A Lincoln Center Theater production (nonprofit, with commercial enhancement investors)');
+  assert.equal(getNonprofitProducerLine(toPublicShowCommercial(lct)), 'A Lincoln Center Theater production (nonprofit, with commercial enhancement investors)');
   assert.equal(getNonprofitProducerLine({ ...base, designation: 'Nonprofit', nonprofitOrg: 'Inferred from GPT deep research' }), null);
   assert.equal(toPublicShowCommercial({ ...base, designation: 'Nonprofit', nonprofitOrg: 'GPT DR batch 2' }).nonprofitOrg, undefined);
 });

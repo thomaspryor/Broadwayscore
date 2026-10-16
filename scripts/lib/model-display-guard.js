@@ -40,7 +40,7 @@
 // number stays internal.
 
 const { runWindow } = require('./run-window');
-const { FIZZLE_MIN_RETURNED_PCT, hasNoInvestorRecoupment } = require('./commercial-designations');
+const { FIZZLE_MIN_RETURNED_PCT, hasNoInvestorsToRepay } = require('./commercial-designations');
 // Our own "Inferred:"/"Estimated:" figures are not a report.
 const { OWN_INFERENCE, STATED_PCT } = require('./recoupment-ground-truth');
 
@@ -90,7 +90,7 @@ function analystRange(comm) {
  * 100. Back to the Future read "Flop" next to a model 86% (BRO-4623): that
  * stays hidden. "Nonprofit" names how a show was funded, not how it ended, so
  * an estimate cannot contradict it (only an enhancement deal gets this far,
- * hasNoInvestorRecoupment). Any other final designation takes no estimate.
+ * hasNoInvestorsToRepay). Any other final designation takes no estimate.
  * @param {number[]} range [low, high] or [low, central, high]
  */
 function estimateFitsDesignation(range, designation) {
@@ -115,7 +115,7 @@ function isFinalClosed(comm, show) {
  */
 function displaysAnalyst(comm, show) {
   if (!comm || !show) return false;
-  if (comm.recouped === true || hasNoInvestorRecoupment(comm)) return false;
+  if (comm.recouped === true || hasNoInvestorsToRepay(comm)) return false;
   const range = analystRange(comm);
   if (!range) return false;
   return !isFinalClosed(comm, show) || estimateFitsDesignation(range, comm.designation);
@@ -130,7 +130,7 @@ function displaysAnalyst(comm, show) {
 function displaysModel(comm, show) {
   if (!comm || !show) return false;
   if (comm.recouped === true) return false;
-  if (hasNoInvestorRecoupment(comm)) return false;
+  if (hasNoInvestorsToRepay(comm)) return false;
   if (displaysAnalyst(comm, show)) return false;
   if (!comm.modelRecoupmentPct) return false;
   if (comm.modelDataQuality === 'low' || comm.modelMethod === 'ai-estimated') return false;

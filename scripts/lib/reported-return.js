@@ -5,6 +5,7 @@
 // deep-research and our own inference never pass. Never infers a number.
 
 const { groundTruth, statesFigure } = require('./recoupment-ground-truth');
+const { hasNoInvestorsToRepay } = require('./commercial-designations');
 
 // Outlets a reader recognises; matched in the source text, label is what prints.
 const OUTLETS = [
@@ -97,12 +98,13 @@ function monthYear(iso) {
 
 /**
  * @returns {null | { lo: number, hi: number, outlet: string, asOf: string | null }}
- * Null unless the show is closed with a final, non-Nonprofit designation, has not
- * recouped, and a named trade outlet states the figure.
+ * Null unless the show is closed with a final designation, has investors to
+ * repay (hasNoInvestorsToRepay: a nonprofit with enhancement money counts),
+ * has not recouped, and a named trade outlet states the figure.
  */
 function reportedReturn(comm, show) {
   if (!comm || !show || show.status !== 'closed') return null;
-  if (comm.recouped === true || comm.designation === 'Nonprofit') return null;
+  if (comm.recouped === true || hasNoInvestorsToRepay(comm)) return null;
   if (!comm.designation || comm.designation === 'TBD') return null;
   const truth = groundTruth(comm, show);
   if (!truth || truth.kind !== 'reported-pct' || truth.truthClass !== 'reported') return null;

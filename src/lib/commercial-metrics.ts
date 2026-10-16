@@ -4,7 +4,7 @@
 // (tests/unit/commercial-metrics.test.ts) call them with fixtures.
 
 import type { RecoupmentTrend } from '@/config/commercial';
-import { hasNoInvestorRecoupment } from '../../scripts/lib/commercial-designations';
+import { hasNoInvestorsToRepay } from '../../scripts/lib/commercial-designations';
 
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
@@ -136,7 +136,7 @@ export function isExcludedFromSeasonStats(commercial: {
   productionType?: string | null;
 }): boolean {
   // One rule with the % recouped column (BRO-5502).
-  return hasNoInvestorRecoupment(commercial);
+  return hasNoInvestorsToRepay(commercial);
 }
 
 /** Running = capital still exposed (open or in previews). */

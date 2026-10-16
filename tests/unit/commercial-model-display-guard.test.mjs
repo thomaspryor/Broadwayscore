@@ -9,7 +9,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { displaysModel } = require('../../scripts/lib/model-display-guard');
+const { displaysModel, displaysAnalyst } = require('../../scripts/lib/model-display-guard');
 const {
   applyModelDisplayGuard,
   getAtRiskModelRange,
@@ -93,10 +93,13 @@ test('displaysModel mirrors getRecoupmentDisplayMode === "model"', () => {
         for (const modelDataQuality of ['high', 'low'])
           for (const modelMethod of ['weekly-model', 'ai-estimated'])
             for (const modelRecoupmentPct of [pct, null])
-              cases.push({ recouped, designation, status, modelDataQuality, modelMethod, modelRecoupmentPct });
+              for (const productionType of [undefined, 'enhancement'])
+                for (const analystRecoupPct of [undefined, [0, 0]])
+                  cases.push({ recouped, designation, status, modelDataQuality, modelMethod, modelRecoupmentPct, productionType, analystRecoupPct });
   for (const c of cases) {
     const { status, ...comm } = c;
     assert.equal(displaysModel(comm, { status }), getRecoupmentDisplayMode(c) === 'model', JSON.stringify(c));
+    assert.equal(displaysAnalyst(comm, { status }), getRecoupmentDisplayMode(c) === 'analyst', JSON.stringify(c));
   }
 });
 

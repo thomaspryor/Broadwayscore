@@ -23,7 +23,7 @@ import {
   modelDisplayGuard, displayBasis, playedWeeks, independentEstimate, isRunning,
   analystRange, estimateFitsDesignation, RUNNING_SHOWN_MAX,
 } from '../../scripts/lib/model-display-guard';
-import { hasNoInvestorRecoupment } from '../../scripts/lib/commercial-designations';
+import { hasNoInvestorsToRepay } from '../../scripts/lib/commercial-designations';
 
 export type RecoupmentDisplayMode = 'announced' | 'analyst' | 'model' | 'none';
 
@@ -41,7 +41,7 @@ interface RecoupmentSignals {
   modelRecoupmentPct?: ShowCommercial['modelRecoupmentPct'];
   /** u/Boring_Waltz_9545's published estimate (BRO-5502). */
   analystRecoupPct?: ShowCommercial['analystRecoupPct'];
-  /** 'enhancement': a nonprofit production with commercial money to recoup (hasNoInvestorRecoupment). */
+  /** 'enhancement': a nonprofit production with commercial money to recoup (hasNoInvestorsToRepay). */
   productionType?: ShowCommercial['productionType'] | null;
   designation?: ShowCommercial['designation'];
   status?: string | null;
@@ -57,7 +57,8 @@ export function meetsModelQualityFloor(commercial: Pick<RecoupmentSignals, 'mode
 
 /**
  * A closed show whose designation is final (anything but TBD) has a settled
- * outcome. Its card and table row show the designation and cited facts only:
+ * outcome. "Nonprofit" on an enhancement deal names funding, not an outcome:
+ * its estimates follow estimateFitsDesignation like a TBD's (BRO-5502). Its card and table row show the designation and cited facts only:
  * no model recoupment %, range, return or model confidence. (Lucky Guy read
  * "Flop" next to a model "~2.0x return"; Back to the Future "Flop" next to 86%.)
  */
@@ -107,7 +108,7 @@ export function getRecoupmentDisplayMode(
   commercial: RecoupmentSignals
 ): RecoupmentDisplayMode {
   if (commercial.recouped === true) return 'announced';
-  if (hasNoInvestorRecoupment(commercial)) return 'none';
+  if (hasNoInvestorsToRepay(commercial)) return 'none';
   if (getDisplayableAnalystRange(commercial)) return 'analyst';
   const model = commercial.modelRecoupmentPct;
   if (!model || !meetsModelQualityFloor(commercial)) return 'none';
@@ -121,7 +122,7 @@ export function getRecoupmentDisplayMode(
  * Flop only when it agrees with the label.
  */
 export function getDisplayableAnalystRange(commercial: RecoupmentSignals): [number, number] | null {
-  if (commercial.recouped === true || hasNoInvestorRecoupment(commercial)) return null;
+  if (commercial.recouped === true || hasNoInvestorsToRepay(commercial)) return null;
   const range = analystRange(commercial);
   if (!range) return null;
   if (isFinalClosedOutcome(commercial) && !estimateFitsDesignation(range, commercial.designation)) return null;
@@ -190,7 +191,7 @@ export function getModelHoldLabel(
   const hold = commercial.modelDisplayHold;
   if (!hold || hold === 'no-model') return null;
   if (commercial.recouped === true || isFinalClosedOutcome(commercial)) return null;
-  if (hasNoInvestorRecoupment(commercial) || !meetsModelQualityFloor(commercial)) return null;
+  if (hasNoInvestorsToRepay(commercial) || !meetsModelQualityFloor(commercial)) return null;
   if (commercial.modelBelowCosts) return commercial.status === 'closed' ? 'Lost money: est. 0% returned' : 'Losing money so far';
   // "Too early" is wrong once the run is over (BRO-5020).
   if (hold === 'few-weeks') return commercial.status === 'closed' ? 'Not enough data to estimate' : 'Too early to estimate';
@@ -210,9 +211,9 @@ export function getModelHoldLabel(
  * figure (reportedReturn). Null otherwise; never built from the model or an inference.
  */
 export function getReportedReturnLine(
-  commercial: Pick<ShowCommercial, 'reportedReturn' | 'designation' | 'recouped'> & Pick<RecoupmentSignals, 'status'>
+  commercial: Pick<ShowCommercial, 'reportedReturn' | 'designation' | 'recouped'> & Pick<RecoupmentSignals, 'status' | 'productionType'>
 ): string | null {
-  if (!isFinalClosedOutcome(commercial) || commercial.recouped === true || commercial.designation === 'Nonprofit') return null;
+  if (!isFinalClosedOutcome(commercial) || commercial.recouped === true || hasNoInvestorsToRepay(commercial)) return null;
   return reportedReturnLabel(commercial.reportedReturn ?? null);
 }
 
@@ -252,7 +253,7 @@ export function getRecoupedCellSummary(row: CellSignals): RecoupedCellSummary {
   }
   const held = getModelHoldLabel(row);
   if (held) return { kind: 'reason', text: held };
-  if (hasNoInvestorRecoupment(row)) return { kind: 'reason', text: row.designation === 'Tour Stop' ? 'Not applicable: tour stop' : 'Not applicable: nonprofit' };
+  if (hasNoInvestorsToRepay(row)) return { kind: 'reason', text: row.designation === 'Tour Stop' ? 'Not applicable: tour stop' : 'Not applicable: nonprofit' };
   // Why there is no estimate: % recouped needs what the show cost to put up,
   // and our model needs what it costs to run.
   if (row.capitalization == null) return { kind: 'reason', text: 'Budget not disclosed' };
@@ -384,7 +385,7 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     sources: commercial.sources?.map(({ type, url, date }) => ({ type, url, date })),
     investorMultiple: commercial.investorMultiple,
     nonprofitOrg: getNonprofitProducer(commercial) ?? undefined,
-    // An enhancement deal has investors to repay (hasNoInvestorRecoupment); the card needs it to match the table.
+    // An enhancement deal has investors to repay (hasNoInvestorsToRepay); the card needs it to match the table.
     ...(commercial.productionType ? { productionType: commercial.productionType } : {}),
     modelRecoupmentPct: commercial.modelRecoupmentPct,
     // Display-guard outputs (applyModelDisplayGuard): the show-page bar reads these.
@@ -420,12 +421,19 @@ export function getNonprofitProducer(commercial: Pick<ShowCommercial, 'nonprofit
  * producer: Lincoln Center Theater". Null when there is no nonprofit producer.
  */
 export function getNonprofitProducerLine(
-  commercial: Pick<ShowCommercial, 'nonprofitOrg' | 'designation'>
+  commercial: Pick<ShowCommercial, 'nonprofitOrg' | 'designation'> & { productionType?: ShowCommercial['productionType'] | null }
 ): string | null {
   const org = getNonprofitProducer(commercial);
   if (!org) return null;
-  return commercial.designation === 'Nonprofit' ? `A ${org} production (nonprofit)` : `Nonprofit producer: ${org}`;
+  if (commercial.designation !== 'Nonprofit') return `Nonprofit producer: ${org}`;
+  // An enhancement deal raised commercial money, so its % recouped shows (BRO-5502); say why.
+  return commercial.productionType === 'enhancement'
+    ? `A ${org} production (nonprofit, with commercial enhancement investors)`
+    : `A ${org} production (nonprofit)`;
 }
+
+/** Re-exported for client components: one rule for who has investors to repay (BRO-5502). */
+export { hasNoInvestorsToRepay };
 
 /**
  * True when the capitalization should carry the "~" estimate marker: the

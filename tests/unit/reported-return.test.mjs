@@ -23,6 +23,8 @@ test('open, TBD, recouped and nonprofit shows never print', () => {
   assert.equal(reportedReturn({ ...base, ...src, designation: 'TBD' }, closed), null);
   assert.equal(reportedReturn({ ...base, ...src, recouped: true }, closed), null);
   assert.equal(reportedReturn({ ...base, ...src, designation: 'Nonprofit' }, closed), null);
+  // An enhancement deal has investors to repay, so a reported return prints (BRO-5502).
+  assert.notEqual(reportedReturn({ ...base, ...src, designation: 'Nonprofit', productionType: 'enhancement' }, closed), null);
 });
 test('single value and zero read naturally', () => {
   const rr = reportedReturn({ designation: 'Flop', recouped: false, estimatedRecoupmentPct: [15, 15], estimatedRecoupmentSource: 'BroadwayWorld: it only returned 15% of its investment.' }, closed);

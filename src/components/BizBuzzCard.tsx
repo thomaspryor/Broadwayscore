@@ -21,6 +21,7 @@ import {
   lossBasisCaveat,
   publicNotesText,
   getDisplayableAnalystRange,
+  hasNoInvestorsToRepay,
 } from '@/lib/commercial-display';
 import { formatCapitalization } from '@/lib/biz-format';
 import { isRunningStatus } from '@/lib/commercial-metrics';
@@ -222,8 +223,9 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
 
       {/* Status chips: recoupment, trend, break-even position */}
       <div className="flex flex-wrap gap-1.5 mb-4 empty:hidden">
-        {/* Nonprofits raise no investor capital: "Not reported" / "Not Recouped" would read as a gap or a failure. */}
-        {!(isNonprofit && commercial.recouped !== true) && <RecoupmentBadge recouped={commercial.recouped} />}
+        {/* Pure nonprofits raise no investor capital: "Not reported" / "Not Recouped" would read as a gap or a failure.
+            An enhancement deal has investors to repay, so it keeps the badge (BRO-5502). */}
+        {!(hasNoInvestorsToRepay(commercial) && commercial.recouped !== true) && <RecoupmentBadge recouped={commercial.recouped} />}
         {showTrend && <TrendIndicator trend={trend} />}
         {breakevenComparison && (
           <span

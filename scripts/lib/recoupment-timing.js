@@ -29,6 +29,7 @@
 // Pure functions; the CLI is scripts/backtest-recoupment-ground-truth.js --timing.
 
 const { truthClassOf, creditBasis } = require('./recoupment-ground-truth');
+const { hasNoInvestorsToRepay } = require('./commercial-designations');
 
 const RECOUP_BAND = [85, 115];
 const EARLIER_WEEKS = [26, 52];
@@ -156,7 +157,7 @@ function modelAt(libs, show, comm, lookup, asOf, opts = {}) {
  * modelDisplayGuard with the launch flag on.
  */
 function displayableAt({ comm, tier, result, playedWeeks }, guard) {
-  if (!result || tier === 'ai-estimated' || !comm || comm.designation === 'Nonprofit') return false;
+  if (!result || tier === 'ai-estimated' || !comm || hasNoInvestorsToRepay(comm)) return false;
   // A replay has no cumulative grosses (they cannot be cut at a date), which
   // alone drops a reported-cost record to 'low'; the site had them then.
   const quality = result.dataQuality === 'low' && result.weeklyFixedCostSource === 'reported' ? 'medium' : result.dataQuality;
