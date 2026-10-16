@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-16T16:36:15.157Z",
+  "updatedAt": "2026-10-16T16:56:05.604Z",
   "processed": 99,
-  "failed": 86,
-  "successRate": "53.5%",
+  "failed": 87,
+  "successRate": "53.2%",
   "tierBreakdown": {
-    "playwright": 68,
-    "amp": 0,
+    "playwright": 69,
+    "amp": 1,
     "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 12,
     "scrapingbee": 8,
-    "brightdata": 2,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 12
+    "archive": 9
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-10-16T14:38:18.090Z",
@@ -66,6 +66,57 @@
       "t": "2026-10-16T16:11:26.038Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-16T16:47:37.386Z",
+      "event": "bb-session",
+      "session": "016a6fb5",
+      "url": "https://www.nytimes.com/2026/10/16/theater/memoirs-of-amorous-gentlemen-review-d"
+    },
+    {
+      "t": "2026-10-16T16:47:37.971Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-16T16:52:09.265Z",
+      "event": "bb-session",
+      "session": "e62e4ff1",
+      "url": "https://www.talkinbroadway.com/page/ob/10_14_26b.html"
+    },
+    {
+      "t": "2026-10-16T16:52:09.737Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-16T16:54:34.098Z",
+      "event": "bb-session",
+      "session": "934b248c",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-16T16:55:00.884Z",
+      "event": "bb-session",
+      "session": "49706ba8",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654594"
+    },
+    {
+      "t": "2026-10-16T16:55:01.353Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-16T16:55:23.024Z",
+      "event": "bb-session",
+      "session": "fc44ea91",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-16T16:55:32.186Z",
+      "event": "bb-session",
+      "session": "9bdeea30",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
     }
   ]
 }
