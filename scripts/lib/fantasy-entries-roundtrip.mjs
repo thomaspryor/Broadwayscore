@@ -33,6 +33,9 @@ function draftIsOpen(now = new Date()) {
 export async function runFantasyEntryChecks({ rest, check, anonKey, serviceKey, notUrgent }) {
   const stamp = Date.now();
   const email = `bfl-roundtrip-${stamp}@example.com`;
+  // 6 chars like the real codes (the insert policy checks the length); the
+  // 'zz' prefix keeps it clear of real invite codes in practice.
+  const leagueCode = `zz${stamp.toString(36).slice(-4)}`;
   const saveUrgency = draftIsOpen() ? {} : notUrgent;
   try {
     const ins = await rest('POST', 'fantasy_entries', anonKey, {
@@ -65,8 +68,21 @@ export async function runFantasyEntryChecks({ rest, check, anonKey, serviceKey, 
     check('fantasy: player emails are not readable anonymously',
       !anonRead.ok || (Array.isArray(anonRead.json) && anonRead.json.length === 0),
       `anon saw ${Array.isArray(anonRead.json) ? anonRead.json.length : '?'} rows`);
+
+    // Private leagues: the same anon insert /api/fantasy/leagues makes, then
+    // the lookup the league page does.
+    const leagueIns = await rest('POST', 'fantasy_leagues', anonKey, {
+      code: leagueCode, name: 'Round-trip probe league', created_by: email,
+    }, 'return=minimal');
+    check('fantasy: a private league saves (anon insert, as /api/fantasy/leagues makes it)', leagueIns.status === 201,
+      `HTTP ${leagueIns.status} ${leagueIns.text.slice(0, 160)}`, saveUrgency);
+    const leagueRead = await rest('GET', `fantasy_leagues?code=eq.${leagueCode}&select=code,name`, anonKey);
+    check('fantasy: a league is readable by its invite code', Array.isArray(leagueRead.json) && leagueRead.json.length === 1,
+      `HTTP ${leagueRead.status}`, saveUrgency);
   } finally {
     const del = await rest('DELETE', `fantasy_entries?season=eq.${PROBE_SEASON}`, serviceKey, null, 'return=minimal');
     if (!del.ok) console.warn(`fantasy probe cleanup: HTTP ${del.status} ${del.text.slice(0, 160)}`);
+    const delLeague = await rest('DELETE', `fantasy_leagues?code=eq.${leagueCode}`, serviceKey, null, 'return=minimal');
+    if (!delLeague.ok) console.warn(`fantasy league probe cleanup: HTTP ${delLeague.status} ${delLeague.text.slice(0, 160)}`);
   }
 }
