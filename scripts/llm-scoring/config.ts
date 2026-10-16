@@ -376,6 +376,7 @@ The following are NOT rejections — score them, but with reduced confidence:
 | Situation | How to Handle |
 |-----------|--------------|
 | **Multi-show roundup** | Score the portion about the target show. Set confidence to "low" if less than ~150 words about it. |
+| **Quotes other critics** | Score only the named critic's own evaluation. Ignore verdicts the text quotes or summarizes from other critics (a closing "what the critics said" roundup in a wire piece, a feature citing a review). If the named critic gives no verdict of their own, reject as not_a_review. |
 | **Truncated text** | Score what's available. Set confidence to "low" if the verdict/conclusion appears cut off. |
 | **Excerpt only** | Score the excerpt. Set confidence to "low". |
 
@@ -689,6 +690,7 @@ The following are NOT rejections — score them, but with reduced confidence:
 | Situation | How to Handle |
 |-----------|--------------|
 | **Multi-show roundup** | Score the portion about the target show. Set confidence to "low" if less than ~150 words about it. |
+| **Quotes other critics** | Score only the named critic's own evaluation. Ignore verdicts the text quotes or summarizes from other critics (a closing "what the critics said" roundup in a wire piece, a feature citing a review). If the named critic gives no verdict of their own, reject as not_a_review. |
 | **Truncated text** | Score what's available. Set confidence to "low" if the verdict/conclusion appears cut off. |
 | **Excerpt only** | Score the excerpt. Set confidence to "low". |
 
