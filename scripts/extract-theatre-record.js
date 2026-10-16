@@ -20,6 +20,7 @@ const { execSync } = require('child_process');
 const { chromium } = require('playwright');
 const { isLikelyWrongProduction, isLikelyTourReview } = require('./lib/review-guards');
 const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-autoclear');
+const { isLateTheatreRecordReviewOfBroadwayShow } = require('./lib/tr-late-review-guard');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, getOutletDisplayName: getRegistryDisplayName } = require('./lib/review-normalization');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { checkWrongShowMentionGuard, checkFilmTvGuard, isCorroboratedByRoundup } = require('./lib/tr-wrongshow-guard');
@@ -522,6 +523,13 @@ async function main() {
       if (isLikelyWrongProduction(pubDate, showEarliestDate, 90)
           && !(pubDate && (isWithinPriorRun(new Date(pubDate), show.priorRuns) || isWithinTourLeg(new Date(pubDate), show.tourLegs)))) {
         skipReason = `wrong-production-date (review ${pubDate} vs show ${showEarliestDate})`;
+      }
+
+      // BRO-5420: the guard above only refuses reviews dated BEFORE the show. A
+      // TR (London archive) review dated months after a Broadway opening is of a
+      // London production of the same title (chicago-1996 / Daily Mail 1997).
+      if (!skipReason && isLateTheatreRecordReviewOfBroadwayShow(show, pubDate, { isWithinPriorRun, isWithinTourLeg })) {
+        skipReason = `wrong-production-late-london (review ${pubDate} vs Broadway opening ${show.openingDate || show.previewsStartDate})`;
       }
 
       // When show has no opening date, fall back to comparing review year vs show ID year.
