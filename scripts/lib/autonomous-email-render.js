@@ -573,10 +573,12 @@ const OWNER_FIX_STATUS = {
 // BRO-5430 (owner, 2026-10-16: "I hate getting emailed about issues that can
 // be fixed just by me pasting it into a Claude session"): states where the
 // automation already owns the row. 'watching' has no card yet but files one
-// itself if the row is still there after 3 days. These rows leave the owner's
-// top block and subject; the wording never calls them "being fixed".
-// Everything else (parked, card-failed, no-live-session, no matching row, or
-// a dead loop) means nothing is fixing it, so it stays listed.
+// itself if the row is still there after 3 days; a watching visitor ERROR
+// stays listed (a fixable one never waits, see digest-autofix's gate, so one
+// still watching is an owner/Mac row). These rows leave the owner's top block
+// and subject; the wording never calls them "being fixed". Everything else
+// (parked, card-failed, no-live-session, no matching row, or a dead loop)
+// means nothing is fixing it, so it stays listed.
 const OWNER_HANDLED_STATES = new Set(['watching', 'queued', 'card-filed', 'dispatched', 'in-progress', 'tracked', 'acknowledged']);
 
 function findAutofixRow(row, autofixRows) {
@@ -651,18 +653,20 @@ function buildOwnerView({
     for (const r of list) {
       const plain = plainHealthLine(r.name);
       const fix = loopDead ? null : findAutofixRow(r, autofixRows);
-      const handled = !!fix && OWNER_HANDLED_STATES.has(fix.state);
+      const handled = !!fix && OWNER_HANDLED_STATES.has(fix.state) && !(fix.state === 'watching' && severity === 'error');
+      const item = {
+        name: r.name, plain, severity, handled, status: ownerFixStatus(r, autofixRows, loopDead),
+        kind: !handled ? null : fix.state === 'watching' ? 'watching' : fix.state === 'acknowledged' ? 'acknowledged' : 'ticket',
+      };
       const prev = byPlain.get(plain);
-      if (prev) {
-        if (prev.handled && !handled) Object.assign(prev, { name: r.name, handled, status: ownerFixStatus(r, autofixRows, loopDead) });
-        continue;
-      }
-      byPlain.set(plain, { name: r.name, plain, severity, handled, watching: handled && fix.state === 'watching', status: ownerFixStatus(r, autofixRows, loopDead) });
+      // The unfixed member is what the owner needs to see, at its own severity.
+      if (prev) { if (prev.handled && !handled) Object.assign(prev, item); continue; }
+      byPlain.set(plain, item);
     }
   }
   const all = [...byPlain.values()];
   // visitorItems: only rows nothing is fixing (BRO-5430); the rest are counted.
-  const visitorItems = all.filter((i) => !i.handled).map(({ handled, watching, ...i }) => i);
+  const visitorItems = all.filter((i) => !i.handled).map(({ handled, kind, ...i }) => i);
   const handledItems = all.filter((i) => i.handled);
   let siteState = 'ok';
   if (!health) siteState = 'unknown';
@@ -673,7 +677,8 @@ function buildOwnerView({
     siteState,
     visitorItems,
     visitorHandled: handledItems.length,
-    visitorHandledWatching: handledItems.filter((i) => i.watching).length,
+    visitorHandledWatching: handledItems.filter((i) => i.kind === 'watching').length,
+    visitorHandledAcknowledged: handledItems.filter((i) => i.kind === 'acknowledged').length,
     visitorErrors: split.visitors.errors,
     visitorWarns: split.visitors.warns,
     internalErrors: split.internal.errors,
@@ -707,10 +712,12 @@ function visitorHandledLine(view, { more = false } = {}) {
   const n = view.visitorHandled || 0;
   if (!n) return '';
   const w = view.visitorHandledWatching || 0;
-  const t = n - w;
+  const a = view.visitorHandledAcknowledged || 0;
+  const t = n - w - a;
   const bits = [];
-  if (t) bits.push(`${t} already tracked for an automatic fix`);
-  if (w) bits.push(`${w} new, which get a fix card if still there after 3 days`);
+  if (t) bits.push(`${t} already ${t === 1 ? 'has a fix ticket' : 'have fix tickets'}`);
+  if (a) bits.push(`${a} already known, with a set end date`);
+  if (w) bits.push(`${w} new, which get${w === 1 ? 's' : ''} a fix ticket if still there after 3 days`);
   const lead = more
     ? `${n} more ${n === 1 ? 'is' : 'are'} with the automation, nothing for you to do`
     : `${n} problem${n === 1 ? '' : 's'} visitors could notice, none need you`;
@@ -1140,5 +1147,5 @@ module.exports = {
   renderParkedCardsBlock,
   filterForbiddenQueued,
   renderNeedsAttentionBlock, buildOwnerView, renderOwnerTopBlock, visitorProblemNames,
-  renderTechnicalDetailsHeading, TECHNICAL_DETAILS_HEADING, ownerFixStatus, OWNER_HANDLED_STATES,
+  renderTechnicalDetailsHeading, TECHNICAL_DETAILS_HEADING, ownerFixStatus, OWNER_HANDLED_STATES, OWNER_FIX_STATUS,
 };

@@ -546,9 +546,8 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // Health snapshot items are {name, message} objects; tolerate bare strings.
   const errNames = (sections.health?.errors || []).filter(Boolean)
     .map((e) => (typeof e === 'string' ? e : e.name)).filter(Boolean);
-  // Digest v3 summary: everything auto-fixable is BEING fixed — say that,
-  // never point at sections that no longer exist (Closing soon / Data
-  // freshness / stuck lists were deleted by the 2026-08-02 owner mandate).
+  // Issues the automation is tracking (never claimed as being fixed: the
+  // dead-loop check below and each row's own state decide that).
   const fixing = pendingIssueCount({ sections, autofixRows, stuckCount });
   const working = Array.isArray(autofixRows) ? autofixRows.filter(r => r.state === 'dispatched' || r.state === 'in-progress').length : 0;
   // Task #1220/BRO-230: this line used to claim "being fixed"/"queued for

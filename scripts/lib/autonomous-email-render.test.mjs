@@ -10,6 +10,7 @@ const {
   renderNamedDigestBlock, renderDailyDigestBlock, renderOpeningDigestBlock, renderRedditDigestBlock,
   filterForbiddenQueued,
   buildOwnerView, renderOwnerTopBlock, renderNeedsAttentionBlock, ownerFixStatus,
+  OWNER_HANDLED_STATES, OWNER_FIX_STATUS,
 } = require('./autonomous-email-render.js');
 
 // ── Owner-first view (2026-09-24 digest rework) ─────────────────────────────
@@ -87,7 +88,7 @@ test('buildOwnerView: automation-owned visitor rows leave the owner list; unfixe
   assert.equal(v.visitorHandledWatching, 1);
   const html = renderOwnerTopBlock(v, {});
   assert.match(html, /Reviewed shows missing from the site/);
-  assert.match(html, /3 more are with the automation, nothing for you to do: 2 already tracked for an automatic fix; 1 new/);
+  assert.match(html, /3 more are with the automation, nothing for you to do: 2 already have fix tickets; 1 new, which gets a fix ticket/);
   assert.doesNotMatch(html, /being watched/);
 });
 
@@ -99,7 +100,7 @@ test('buildOwnerView: every visitor row handled -> siteState handled, no warning
   assert.equal(v.siteState, 'handled');
   assert.deepEqual(v.visitorItems, []);
   const html = renderOwnerTopBlock(v, {});
-  assert.match(html, /2 problems visitors could notice, none need you: 1 already tracked for an automatic fix; 1 new, which get a fix card if still there after 3 days\./);
+  assert.match(html, /2 problems visitors could notice, none need you: 1 already has a fix ticket; 1 new, which gets a fix ticket if still there after 3 days\./);
   assert.match(html, /Nothing needs your attention this morning/);
   assert.doesNotMatch(html, /Visitors may notice a problem|being fixed/);
 });
@@ -115,6 +116,29 @@ test('buildOwnerView: nothing counts as handled without row evidence (no rows, f
   assert.equal(dead.siteState, 'affected');
 });
 
+// Ship-check P1 (BRO-5430): a visitor ERROR with no ticket yet is never
+// hidden; and an owner-accepted row is not called an automatic fix.
+test('buildOwnerView: a watching visitor error stays listed; acknowledged rows are not called a fix', () => {
+  const health = { errors: [{ name: 'Credits: ScrapingBee low' }], warns: [{ name: 'SEO: health' }] };
+  const v = buildOwnerView({ health, autofixRows: [
+    { name: 'Credits: ScrapingBee low', state: 'watching' }, { name: 'SEO: health', state: 'acknowledged' },
+  ] });
+  assert.deepEqual(v.visitorItems.map((i) => i.name), ['Credits: ScrapingBee low']);
+  assert.equal(v.siteState, 'affected');
+  const html = renderOwnerTopBlock(v, {});
+  assert.match(html, /1 more is with the automation, nothing for you to do: 1 already known, with a set end date\./);
+  assert.doesNotMatch(html, /fix ticket/);
+});
+
+// A new autofix state must be classified on purpose, never by accident.
+test('OWNER_HANDLED_STATES: every owner-facing fix state is classified', () => {
+  const notHandled = new Set(['card-failed', 'parked', 'no-live-session']);
+  for (const state of Object.keys(OWNER_FIX_STATUS)) {
+    assert.ok(OWNER_HANDLED_STATES.has(state) !== notHandled.has(state), `classify '${state}' as handled or not handled`);
+  }
+  for (const state of OWNER_HANDLED_STATES) assert.ok(state in OWNER_FIX_STATUS, `${state} needs an OWNER_FIX_STATUS line`);
+});
+
 test('buildOwnerView: two rows on one plain line stay listed if either is unfixed', () => {
   // Both names map to the same plain line via plainHealthLine's prefix rules.
   const health = { errors: [{ name: 'Data: reviewed shows missing from shows.json' }, { name: 'Data: reviewed shows missing from shows.json (batch 2)' }], warns: [] };
@@ -126,6 +150,16 @@ test('buildOwnerView: two rows on one plain line stay listed if either is unfixe
   assert.equal(v.visitorItems.length, 1, 'one merged line');
   assert.equal(v.visitorItems[0].plain, 'Reviewed shows missing from the site');
   assert.match(v.visitorItems[0].status, /not being fixed automatically yet/);
+  // Handled error + unfixed warning on one line: listed at the warning's severity.
+  const mixed = buildOwnerView({
+    health: { errors: [{ name: 'Data: reviewed shows missing from shows.json' }], warns: [{ name: 'Data: reviewed shows missing from shows.json (batch 2)' }] },
+    autofixRows: [
+      { name: 'Data: reviewed shows missing from shows.json', state: 'card-filed' },
+      { name: 'Data: reviewed shows missing from shows.json (batch 2)', state: 'parked' },
+    ],
+  });
+  assert.equal(mixed.visitorItems[0].severity, 'warn');
+  assert.equal(mixed.siteState, 'minor');
 });
 
 // Codex P1-2: parked-in-review work is owner work, deduped against approvals.

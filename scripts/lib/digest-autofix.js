@@ -248,6 +248,7 @@ function persistenceKey(row) {
  * Linear was unreadable) exempts a row whose card already exists. The gate
  * only stops NEW cards, and fileCard's exact-title dedup reattaches such a
  * row instead of filing, so holding it just mislabelled it 'watching'.
+ * Visitor-facing errors a worker can fix (isVisitorFacingRow) are exempt too.
  */
 function computePersistenceGate(plan, seen, nowMs, { openTitles = null } = {}) {
   const next = {};
@@ -267,6 +268,11 @@ function computePersistenceGate(plan, seen, nowMs, { openTitles = null } = {}) {
     const ageHours = (nowMs - Date.parse(firstSeen)) / 3600000;
     if (row.state !== 'needs-card' || ageHours >= PERSIST_BEFORE_FILING_HOURS - GATE_SLACK_HOURS) continue;
     if (openTitles && openTitles.has(row.title)) continue;
+    // A visitor-facing error a worker can fix files START-NOW on its first
+    // sighting: waiting 3 days in case it clears leaves visitors facing it
+    // with nothing working on it. Low volume (1-2 a day), and the resolved-
+    // alert sweep cancels a START-NOW card once its row clears.
+    if (row.healthError && isVisitorFacingRow(row)) continue;
     hold.push(row);
   }
   return { seen: next, hold };
@@ -454,6 +460,8 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
   // cards (isVisitorFacingRow). extraIssues and queued router lines don't go
   // through digest-audience.js, whose default for an unknown name is 'visitors'.
   const fromHealth = new Set(healthRows);
+  // BRO-5430: visitor-facing ERRORS skip the persistence gate (computePersistenceGate).
+  const healthErrors = new Set(Array.isArray(health?.errors) ? health.errors : []);
   // health-check.js also routes unrouted health rows through the router,
   // whose queued "BSC Daily: <row>" line would repeat the row (ship-check).
   const healthNames = new Set(healthRows.map((r) => r && r.name));
@@ -480,6 +488,7 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
     if (!split) {
       const row = buildPlanRow(r, { tasks, today });
       if (fromHealth.has(r)) row.fromHealth = true;
+      if (healthErrors.has(r)) row.healthError = true;
       planRows.push(row);
       continue;
     }
@@ -520,6 +529,7 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
     const titleOverride = `${BSC_DAILY_TITLE_PREFIX}${split.condition}${batch > 1 ? ` (batch ${batch})` : ''}`;
     const row = buildPlanRow(r, { tasks, today, titleOverride });
     if (fromHealth.has(r)) row.fromHealth = true;
+    if (healthErrors.has(r)) row.healthError = true;
     row.affected = [{ name: r.name, message: String(r.message || '').slice(0, 400) }];
     // anchorModel: the anchor's raw model hint, captured HERE (not read back
     // off `row` later) because buildPlanRow's 'acknowledged' branch discards

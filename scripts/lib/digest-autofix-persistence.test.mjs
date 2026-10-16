@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { persistenceKey, applyPersistenceGate, PERSIST_BEFORE_FILING_HOURS, GATE_SLACK_HOURS } = require('./digest-autofix.js');
+const { persistenceKey, applyPersistenceGate, planAutofix, PERSIST_BEFORE_FILING_HOURS, GATE_SLACK_HOURS } = require('./digest-autofix.js');
 
 const H = 3600 * 1000;
 const NOW = Date.parse('2026-10-02T12:00:00Z');
@@ -64,6 +64,24 @@ test('applyPersistenceGate: a row whose exact title has an open Linear card is n
   const unread = [row('BSC Daily: Quality: star-vs-score mismatch')];
   applyPersistenceGate(unread, {}, NOW, { openTitles: null });
   assert.equal(unread[0].state, 'watching', 'Linear unreadable (null): gate holds as before');
+});
+
+// Ship-check P1 (BRO-5430): a visitor-facing error a worker can fix files on
+// its first sighting; warnings, internal rows and owner/Mac rows still wait.
+test('applyPersistenceGate: a fixable visitor-facing error is never held; others still wait', () => {
+  const plan = planAutofix({
+    health: {
+      errors: [{ name: 'Data: T1/T2 silent review gaps', message: 'x' }, { name: 'Push-retry deadman', message: 'x' }, { name: 'Credits: ScrapingBee low', message: 'x' }],
+      warns: [{ name: 'SEO: health', message: 'x' }],
+    },
+    tasks: [], queued: [],
+  });
+  applyPersistenceGate(plan, {}, NOW);
+  const state = Object.fromEntries(plan.map((r) => [r.name, r.state]));
+  assert.equal(state['Data: T1/T2 silent review gaps'], 'needs-card', 'visitor error: files now (START-NOW in fileCard)');
+  assert.equal(state['Push-retry deadman'], 'watching', 'internal error waits');
+  assert.equal(state['Credits: ScrapingBee low'], 'watching', 'owner-money row waits');
+  assert.equal(state['SEO: health'], 'watching', 'visitor warning waits');
 });
 
 test('applyPersistenceGate: a 96h+ gap restarts the clock', () => {
