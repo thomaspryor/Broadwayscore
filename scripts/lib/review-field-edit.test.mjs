@@ -615,3 +615,13 @@ test('isRoundupArticle is clear-only (BRO-4914): false passes, true and null are
   const stale = applyReviewFieldEdit(rec, { field: 'isRoundupArticle', oldValue: false, newValue: false }, stamp);
   assert.equal(stale.ok, false, 'oldValue must match current');
 });
+
+test('allowCrossMarket can be set true (a UK critic who reviewed the NYC production), never false or other values (BRO-5499)', () => {
+  assert.ok(REVIEW_TEXT_EDITABLE_FIELDS.includes('allowCrossMarket'));
+  const rec = { outletId: 'attitude', criticName: 'Kyle Torrence' };
+  const ok = applyReviewFieldEdit(rec, { field: 'allowCrossMarket', oldValue: null, newValue: true }, stamp);
+  assert.equal(ok.ok, true);
+  assert.equal(ok.record.allowCrossMarket, true);
+  assert.equal(applyReviewFieldEdit(rec, { field: 'allowCrossMarket', oldValue: null, newValue: false }, stamp).ok, false);
+  assert.equal(applyReviewFieldEdit(rec, { field: 'allowCrossMarket', oldValue: null, newValue: 'yes' }, stamp).ok, false);
+});

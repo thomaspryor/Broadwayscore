@@ -37,6 +37,10 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   // verdict flags and their human-clear markers
   'wrongAttribution', 'wrongAttributionReason',
   'wrongProduction', 'wrongProductionReason', 'wrongProductionManualClear',
+  // allowCrossMarket (BRO-5499): TRUE ONLY. The rebuild's cross-market guard excludes any .co.uk / london-region
+  // outlet reviewing a NYC show and the CV cannot override it; a UK critic who really reviewed the NYC production
+  // (Attitude's 3/5 Midnight review) is let through by this per-review marker, not by making the outlet dual-market.
+  'allowCrossMarket',
   'wrongShow', 'wrongShowManualClear',
   // showId (BRO-4317): only to repair a stale id left by a move, and only to the
   // folder the file lives in (FIELD_VALUE_CHECKS.showId). A mismatch can also
@@ -112,6 +116,7 @@ function isSelfSyndicationPointer(record, ctx = {}) {
 
 // Per-field value checks beyond "scalar". Returns an error string or null.
 const FIELD_VALUE_CHECKS = {
+  allowCrossMarket: (v) => (v === true ? null : 'allowCrossMarket may only be set to true'),
   // BRO-4415: or when the executor's syndicated-duplicate-heal decision (ctx.syndicatedHeal) is 'clear':
   // the primary is excluded for a reason that does not apply to this copy.
   isSyndicatedDuplicate: (v, record, ctx = {}) => (v === false && (isSelfSyndicationPointer(record, ctx) || ctx.syndicatedHeal === true)
