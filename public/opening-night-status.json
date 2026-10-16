@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T20:32:52.744Z",
+  "generatedAt": "2026-10-16T21:01:15.532Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -554,27 +554,26 @@
       "status": "open",
       "slug": "cadel-lungs-on-legs-west-end",
       "thumbnail": "/images/shows/cadel-lungs-on-legs-west-end-2026/thumbnail.jpg",
-      "siteScore": 80.88,
-      "liveScore": 81,
-      "scoreDrift": 0.12000000000000455,
+      "siteScore": 80.48,
+      "liveScore": 80,
+      "scoreDrift": -0.480000000000004,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 6,
+      "total": 7,
       "t1": 0,
       "t2": 3,
-      "t3": 3,
-      "positive": 5,
+      "t3": 4,
+      "positive": 6,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "6/8 total",
-          "T1:0/3",
-          "hi-conf:5/6"
+          "7/8 total",
+          "T1:0/3"
         ],
-        "highConfidence": 5,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -715,6 +714,18 @@
           "t2": 3,
           "t3": 3,
           "p": 5,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-16T21:01:15.532Z",
+          "rc": 7,
+          "s": 80.48,
+          "t1": 0,
+          "t2": 3,
+          "t3": 4,
+          "p": 6,
           "m": 1,
           "n": 0,
           "bc": "waiting"
