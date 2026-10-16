@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { evaluateSlaForReviews, dispatchSlaAlerts, isTestShowId } = require('../../scripts/lib/opening-night-sla.js');
+const { evaluateSlaForReviews, dispatchSlaAlerts, isTestShowId, resolveSlaScope } = require('../../scripts/lib/opening-night-sla.js');
 
 const MS_MIN = 60 * 1000;
 
@@ -340,4 +340,149 @@ test('a page-worthy-gate digest downgrade still advances the peak and re-fires o
   state = JSON.parse(fs.readFileSync(statePath, 'utf8'));
   assert.equal(state.notifiedPageCount, 3, 'peak advanced to the grown count on the second digest downgrade');
   fs.rmSync(statePath, { force: true });
+});
+
+// --- BRO-5427: duplicate P0 email + junk reviews paging as stuck ---
+
+const { shouldEmitExcludedStage, reviewIdentity, TERMINAL_EXCLUSION_REASONS, TERMINAL_WHEN_ABANDONED_REASONS, createExcludedStageEmitter, excludedReviewIdentities } = require('../../scripts/lib/stage-latency.js');
+
+test('resolveSlaScope: missing/unparseable checklist is an UNKNOWN scope', () => {
+  assert.equal(resolveSlaScope(null).known, false);
+  assert.equal(resolveSlaScope('garbage').known, false);
+});
+
+test('resolveSlaScope: a fabricated {shows:[]} without generatedAt is not a real run', () => {
+  assert.equal(resolveSlaScope({ shows: [] }).known, false);
+});
+
+test('resolveSlaScope: the real zero-shows payload is a KNOWN empty scope', () => {
+  const r = resolveSlaScope({ generatedAt: '2026-10-15T13:22:00Z', shows: [], error: 'No shows with openingDate within ±2 days' });
+  assert.equal(r.known, true);
+  assert.deepEqual(r.activeShowIds, []);
+});
+
+test('resolveSlaScope: schema drift (shows but no ids) is unknown; normal payload yields ids', () => {
+  assert.equal(resolveSlaScope({ generatedAt: 'x', shows: [{ summary: {} }] }).known, false);
+  const r = resolveSlaScope({ generatedAt: 'x', shows: [{ show: { id: 'a' } }, { showId: 'b' }] });
+  assert.equal(r.known, true);
+  assert.deepEqual(r.activeShowIds, ['a', 'b']);
+});
+
+test('an excluded stage clears the review even when critic casing and url form differ (the 2026-10-15 pages)', () => {
+  const now = new Date('2026-10-15T15:07:00Z');
+  const entries = [
+    // first-seen keyed with the unenriched critic, later excluded under the enriched byline
+    makeEntry('midnight-off-broadway-2026', 'rollingstone:neil-griffiths:https://au.rollingstone.com/music/x-102167/', 'review-first-seen', 833, now),
+    makeEntry('midnight-off-broadway-2026', 'rollingstone:neil-griffiths:http://www.au.rollingstone.com/music/x-102167', 'excluded', 800, now),
+    makeEntry('memoirs-show', 'theatermania:unknown:https://www.theatermania.com/news/finishing-memoirs_1856138/', 'review-first-seen', 87, now),
+    makeEntry('memoirs-show', 'theatermania:david-gordon:https://www.theatermania.com/news/finishing-memoirs_1856138/', 'excluded', 60, now),
+    // a real, un-excluded review on the same show still pages
+    makeEntry('memoirs-show', 'nytimes:someone:https://www.nytimes.com/2026/10/15/theater/memoirs-review.html', 'review-first-seen', 90, now),
+  ];
+  const { pages } = evaluateSlaForReviews(entries, { now, activeShowIds: ['midnight-off-broadway-2026', 'memoirs-show'] });
+  assert.deepEqual(pages.map(p => p.outletId), ['nytimes']);
+});
+
+test('an excluded stage for a different outlet or url does not clear a review', () => {
+  const now = new Date('2026-10-15T15:07:00Z');
+  const entries = [
+    makeEntry('s', 'nytimes:a:https://nytimes.com/r1', 'review-first-seen', 90, now),
+    makeEntry('s', 'vulture:a:https://nytimes.com/r1', 'excluded', 10, now),
+    makeEntry('s', 'nytimes:a:https://nytimes.com/r2', 'excluded', 10, now),
+  ];
+  assert.equal(evaluateSlaForReviews(entries, { now, activeShowIds: ['s'] }).pages.length, 1);
+});
+
+test('reviewIdentity ignores the critic segment and url noise', () => {
+  assert.equal(
+    reviewIdentity('s', 'NYT:Ben Brantley:https://www.nytimes.com/a/b/?utm_source=x#top'),
+    reviewIdentity('s', 'nyt:ben-brantley:http://nytimes.com/a/b'),
+  );
+  assert.equal(reviewIdentity('s', 'no-colons'), null);
+  // a query string can BE the identity (WordPress ?p=): never merged
+  assert.notEqual(reviewIdentity('s', 'o:c:https://blog.com/?p=1'), reviewIdentity('s', 'o:c:https://blog.com/?p=2'));
+});
+
+test('shouldEmitExcludedStage: terminal reasons only, tracked-window reviews only', () => {
+  const now = new Date('2026-10-15T15:00:00Z');
+  const recent = { url: 'https://x.com/r', outletId: 'x', firstSeenAt: '2026-10-15T01:00:00Z' };
+  assert.equal(shouldEmitExcludedStage('skippedWrongShow', recent, now), true);
+  assert.equal(shouldEmitExcludedStage('skippedRejectionReason', recent, now), true);
+  // "not yet" reasons must keep paging a stalled real review
+  for (const r of ['skippedNoScore', 'skippedProcessingError', 'heldPreOpeningCorroboration', 'skippedPrematurePreOpening', 'skippedSuspectedMisattribution', 'skippedOutletDomainUnvalidated']) {
+    assert.equal(TERMINAL_EXCLUSION_REASONS.has(r), false, r);
+    assert.equal(shouldEmitExcludedStage(r, recent, now), false, r);
+  }
+  // found in previews two weeks out: still inside the tracked window
+  assert.equal(shouldEmitExcludedStage('skippedWrongShow', { url: 'https://x.com/r', outletId: 'x', firstSeenAt: '2026-10-01T00:00:00Z' }, now), true);
+  // outside the 21-day tracked window, and url-less rows: nothing
+  assert.equal(shouldEmitExcludedStage('skippedWrongShow', { url: 'https://x.com/r', outletId: 'x', firstSeenAt: '2026-09-01T00:00:00Z' }, now), false);
+  assert.equal(shouldEmitExcludedStage('skippedWrongShow', { firstSeenAt: '2026-10-15T01:00:00Z' }, now), false);
+  assert.equal(shouldEmitExcludedStage('skippedWrongShow', { url: 'https://x.com/r' }, now), false);
+});
+
+test('every terminal exclusion reason is a stat key rebuild-all-reviews actually logs', () => {
+  const src = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '../../scripts/rebuild-all-reviews.js'), 'utf8');
+  const logged = new Set([...src.matchAll(/logExclusion\("([A-Za-z]+)"/g)].map(m => m[1]));
+  for (const r of [...TERMINAL_EXCLUSION_REASONS, ...TERMINAL_WHEN_ABANDONED_REASONS]) assert.ok(logged.has(r), `${r} is not a rebuild logExclusion key (renamed?)`);
+});
+
+test('createExcludedStageEmitter writes each excluded review once, across runs (log-volume guard)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'excl-emit-'));
+  const logFile = path.join(dir, 'stage.jsonl');
+  const now = new Date('2026-10-15T15:00:00Z');
+  const data = { url: 'https://x.com/r', outletId: 'o', firstSeenAt: '2026-10-15T01:00:00Z' };
+  // a previous rebuild already wrote this review's line (different critic casing)
+  fs.writeFileSync(logFile, JSON.stringify({ showId: 's', reviewKey: 'o:Old Name:https://www.x.com/r/', stage: 'excluded', at: now.toISOString() }) + '\n');
+  const emitted = [];
+  const emitA = createExcludedStageEmitter({ logFile, now, emit: (e) => emitted.push(e) });
+  assert.equal(emitA('s', 'skippedWrongShow', data, 'o:new-name:https://x.com/r'), false, 'already in the log');
+  const other = { url: 'https://x.com/other', outletId: 'o', firstSeenAt: data.firstSeenAt };
+  assert.equal(emitA('s', 'skippedWrongShow', other, 'o:a:https://x.com/other'), true);
+  assert.equal(emitA('s', 'skippedNonReview', other, 'o:a:https://x.com/other'), false, 'second call in the same run');
+  assert.equal(emitA('s', 'skippedNoScore', { url: 'https://x.com/3', outletId: 'o', firstSeenAt: data.firstSeenAt }, 'o:a:https://x.com/3'), false, 'non-terminal reason');
+  assert.equal(emitted.length, 1);
+  assert.deepEqual(emitted[0].metadata, { reason: 'skippedWrongShow' });
+});
+
+test('same-identity dedup and date-mismatch reasons are never terminal (would silence the KEPT review)', () => {
+  for (const r of ['skippedDuplicateUrl', 'skippedDuplicateOf', 'skippedDuplicateText', 'skippedWithinShowDupe',
+    'skippedFingerprintDedup', 'skippedUnknownCriticDedup', 'skippedPlaceholderBylineTwin', 'skippedSameArticleNamedTwin',
+    'skippedCircularDuplicateTiebreak', 'skippedDateMismatch', 'skippedLateDateMismatch']) {
+    assert.equal(TERMINAL_EXCLUSION_REASONS.has(r), false, r);
+  }
+});
+
+test('text-quality reasons are terminal only once discovery is abandoned', () => {
+  const now = new Date('2026-10-15T15:00:00Z');
+  const base = { url: 'https://timeout.com/listing', outletId: 'timeout', firstSeenAt: '2026-10-14T12:00:00Z' };
+  assert.equal(shouldEmitExcludedStage('skippedScraperGarbage', base, now), false, 're-collect pending');
+  assert.equal(shouldEmitExcludedStage('skippedShowNotMentioned', base, now), false);
+  assert.equal(shouldEmitExcludedStage('skippedScraperGarbage', { ...base, fetchDiscoveryAbandoned: true }, now), true);
+  assert.equal(shouldEmitExcludedStage('skippedWrongShow', { ...base, outletId: undefined }, now), false, 'no outletId: key would never match');
+});
+
+test('an exclusion stops counting once the review is re-collected after it', () => {
+  const now = new Date('2026-10-15T15:07:00Z');
+  const k = 'o:c:https://x.com/r';
+  const entries = [
+    makeEntry('s', k, 'review-first-seen', 300, now),
+    makeEntry('s', k, 'excluded', 280, now),
+    makeEntry('s', k, 'review-text-collected', 200, now), // flag cleared + re-fetched
+  ];
+  assert.equal(excludedReviewIdentities(entries).size, 0);
+  assert.equal(evaluateSlaForReviews(entries, { now, activeShowIds: ['s'] }).pages.length, 1);
+  // re-excluded by the next rebuild: silent again
+  entries.push(makeEntry('s', k, 'excluded', 150, now));
+  assert.equal(evaluateSlaForReviews(entries, { now, activeShowIds: ['s'] }).pages.length, 0);
+});
+
+test('reviewIdentity refuses a key with no critic segment', () => {
+  assert.equal(reviewIdentity('s', 'nyt:https://x.com/a'), null);
+});
+
+test('resolveSlaScope: a --show filtered run never speaks for the night', () => {
+  const payload = { generatedAt: 'x', shows: [], error: 'Show not found: typo' };
+  assert.equal(resolveSlaScope(payload, { filtered: true }).known, false);
+  assert.equal(resolveSlaScope({ generatedAt: 'x', shows: [{ show: { id: 'a' } }] }, { filtered: true }).known, false);
 });

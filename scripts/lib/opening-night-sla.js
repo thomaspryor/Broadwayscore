@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const { routeAlert, resolveCondition } = require('./owner-alert-router');
+const { reviewIdentity, excludedReviewIdentities } = require('./stage-latency');
 
 const DEFAULT_LOG = path.join(__dirname, '../../data/audit/stage-latency.jsonl');
 
@@ -40,9 +41,46 @@ const PER_KEY_TERMINAL = ['scored', 'deployed-live'];
 // intentionally defers are already covered elsewhere: includable-but-unscored
 // by verify-all-scored.js → orphan-unscored self-heal (#356); silent per-review
 // drops by opening-night-completeness-check.yml / analyze-rebuild-drops.js;
-// excluded reviews should not page at all. A reliable per-review deploy signal
+// excluded reviews should not page at all (rebuild emits a per-review
+// 'excluded' terminal for those, see stage-latency.js TERMINAL_EXCLUSION_REASONS). A reliable per-review deploy signal
 // would need instrumentation work — tracked as a follow-up, not this P0.
 const SHOW_LEVEL_TERMINAL = new Set(['rebuilt', 'deployed-live']);
+
+/**
+ * Turn the checklist output into an SLA scope, or say the scope is unknown.
+ *
+ * known:false means "we cannot tell which shows are live tonight", and the
+ * caller must then neither page NOR resolve. Resolving on an unknown scope is
+ * what sent the owner a duplicate P0 on 2026-10-15: opening-night-orchestrator
+ * ran the dispatcher after its checklist crashed, the empty scope resolved the
+ * open incident, and the next hourly run re-opened it and emailed again
+ * (BRO-5427). A real checklist run always stamps generatedAt, including the
+ * legitimate zero-shows path, so a payload without it is not a real run.
+ *
+ * @param {object|null} checklistData
+ * @param {{ filtered?: boolean }} [opts] filtered: the checklist ran with --show
+ * @returns {{ known: boolean, activeShowIds: string[], why?: string }}
+ */
+function resolveSlaScope(checklistData, { filtered = false } = {}) {
+  // A --show=ID run (manual workflow_dispatch) sees one show, or none on a
+  // typo; either way it cannot speak for the night, so it must not resolve.
+  if (filtered) {
+    return { known: false, activeShowIds: [], why: 'checklist was filtered to one show (--show)' };
+  }
+  if (!checklistData || typeof checklistData !== 'object') {
+    return { known: false, activeShowIds: [], why: 'checklist JSON missing/unparseable' };
+  }
+  if (!checklistData.generatedAt || !Array.isArray(checklistData.shows)) {
+    return { known: false, activeShowIds: [], why: 'checklist JSON lacks generatedAt/shows (not a real checklist run)' };
+  }
+  const ids = checklistData.shows
+    .map(s => (s && s.show && (s.show.id || s.show.showId)) || (s && (s.showId || s.id)))
+    .filter(Boolean);
+  if (checklistData.shows.length > 0 && ids.length === 0) {
+    return { known: false, activeShowIds: [], why: `checklist has ${checklistData.shows.length} show(s) but 0 extractable IDs (schema drift)` };
+  }
+  return { known: true, activeShowIds: ids };
+}
 
 // Synthetic/fixture show IDs that leak into the prod stage-latency log from CI
 // unit tests (review-file-writer emits review-first-seen unconditionally). They
@@ -99,6 +137,9 @@ function evaluateSlaForReviews(latencyEntries, { warningMinutes = 30, pageMinute
     if (!prev || e.at > prev) showTerminalAt.set(e.showId, e.at);
   }
 
+  // Reviews the rebuild deliberately excluded as not-a-review-of-this-show.
+  const excludedIds = excludedReviewIdentities(latencyEntries);
+
   // Per-reviewKey stage map (earliest timestamp per stage).
   const byKey = new Map();
   for (const e of latencyEntries) {
@@ -132,6 +173,7 @@ function evaluateSlaForReviews(latencyEntries, { warningMinutes = 30, pageMinute
     const showDoneAt = showTerminalAt.get(rv.showId);
     const showDone = !!showDoneAt && showDoneAt >= firstSeen;
     if (perKeyDone || showDone) continue;
+    if (excludedIds.size && excludedIds.has(reviewIdentity(rv.showId, rv.reviewKey))) continue;
 
     const elapsedMin = Math.floor((now - new Date(firstSeen)) / 60000);
     const outletId = rv.reviewKey.split(':')[0] || 'unknown';
@@ -271,6 +313,7 @@ module.exports = {
   dispatchSlaAlerts,
   isTestShowId,
   loadSlaState,
+  resolveSlaScope,
   SLA_PAGE_CONDITION,
   SLA_WARN_CONDITION,
   _DEFAULT_LOG: DEFAULT_LOG,

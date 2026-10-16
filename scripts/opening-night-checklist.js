@@ -17,6 +17,15 @@
  * checks from scripts/lib/opening-night-checks/ and reports results.
  */
 
+// BRO-5427: a crash must not look like the designed exit 1 ("shows have
+// errors"). Node exits 1 on an uncaught error, so a module-load failure
+// (cheerio missing in opening-night-orchestrator.yml) slipped past the
+// workflows' "rc > 1 = crash" guard. Registered before the requires below.
+process.on('uncaughtException', (err) => {
+  console.error('opening-night-checklist crashed:', err && err.stack ? err.stack : err);
+  process.exit(2);
+});
+
 const fs = require('fs');
 const path = require('path');
 
@@ -609,5 +618,5 @@ async function main() {
 
 main().catch(err => {
   console.error('opening-night-checklist fatal error:', err.message);
-  process.exit(1);
+  process.exit(2); // crash, not the designed exit 1 (BRO-5427)
 });

@@ -764,61 +764,15 @@ jobs:
         run: node scripts/opening-night-status.js --notify --lookback=2
         continue-on-error: true
 
-      - name: Run opening night checklist + SLA dispatch
-        if: always() && steps.find.outputs.has_shows == 'true'
-        env:
-          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
-          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
-          STAGE_LATENCY_LOG: data/audit/stage-latency.jsonl
-          # BRO-67: this step's opening-night-checklist.js invocation runs the
-          # bww/dtli count-mismatch checks, same as opening-night-checklist.yml
-          # — needs the key for the same reason (see that workflow's comment).
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          # BRO-2872: remediation dispatch (opening-night-remediation.js) needs a
-          # token or every self-heal fails 'no-token'; `actions: write` is
-          # already granted at workflow level.
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # --out keeps the JSON free of stdout/stderr log noise — a merged
-          # redirect made checklist.json unparseable and silently un-scoped
-          # the SLA dispatcher (2026-08-02 false P0 storm).
-          # rc discrimination (task #1073, Codex ship-check): 0/1 are designed
-          # outcomes (clean / shows-have-errors — the SLA dispatcher consumes
-          # the JSON either way); >1 means the checklist CRASHED (the exact
-          # MODULE_NOT_FOUND that ran swallowed for 3 months) — fail the step
-          # loudly instead of feeding the SLA dispatcher an empty/stale file.
-          RC=0
-          node scripts/opening-night-checklist.js --json --out=/tmp/checklist.json 2>&1 || RC=$?
-          if [ "$RC" -gt 1 ]; then
-            echo "::error::opening-night-checklist crashed (exit $RC) — SLA dispatch skipped"
-            exit "$RC"
-          fi
-          node scripts/opening-night-sla-dispatch.js /tmp/checklist.json
-
-      # BRO-3671: opening-night-checklist.js requires routeAlert and passes it
-      # into executeRemediations() (dependency injection, not a direct call in
-      # this file), and opening-night-sla-dispatch.js reaches the router via
-      # opening-night-sla.js — this job had NO commit step for any of these
-      # files anywhere in its 700+ lines, so the cooldown ledger, queued
-      # digest lines (opening-night-remediation.js uses disposition:'digest'),
-      # and the dispatch-attempts log never persisted across runs. Mirrors
-      # opening-night-checklist.yml's own "Commit shared audit telemetry" step.
-      - name: Commit alert state
-        if: always() && steps.find.outputs.has_shows == 'true'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/audit/alert-ledger.json 2>/dev/null || true
-          git add data/audit/alert-digest-queue.json 2>/dev/null || true
-          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
-          if git diff --cached --quiet; then
-            echo "No alert-state changes to commit."
-          else
-            git commit -m "chore: opening-night-orchestrator alert state [skip ci]"
-            bash scripts/lib/push-with-retry.sh
-          fi
+      # BRO-5427: the checklist + SLA dispatch tail step (and its "Commit alert
+      # state" step) were removed. This job has no npm ci and no review-texts
+      # checkout, so opening-night-checklist.js crashed on every run (cheerio
+      # MODULE_NOT_FOUND, exit 1, past the rc>1 guard); its remediations never
+      # ran, and the SLA dispatcher it fed saw an empty scope and RESOLVED the
+      # open P0 incident, so the next hourly run re-opened it and emailed the
+      # owner a duplicate (2026-10-15). opening-night-checklist.yml (hourly,
+      # npm ci + review-texts, serialized concurrency group) is the sole owner
+      # of the checklist and the SLA incident.
 
       # BRO-3707: opening-night-express.yml deliberately `gh run cancel`s any
       # in-progress orchestrator run before taking over (its "Cancel competing

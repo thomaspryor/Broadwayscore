@@ -19,7 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const { evaluateSlaForReviews, dispatchSlaAlerts } = require('./lib/opening-night-sla');
+const { evaluateSlaForReviews, dispatchSlaAlerts, resolveSlaScope } = require('./lib/opening-night-sla');
 const { sendAlert } = require('./lib/discord-notify');
 
 const DEFAULT_LOG = path.join(__dirname, '../data/audit/stage-latency.jsonl');
@@ -69,19 +69,15 @@ async function main() {
   // empty night — a missed page on a genuinely live opening night is recovered
   // by the next hourly run once the checklist heals, whereas an unscoped page
   // is guaranteed false noise. Warnings still go to the run log.
-  let activeShowIds = [];
-  if (checklistData && Array.isArray(checklistData.shows)) {
-    const ids = checklistData.shows
-      .map(s => (s.show && (s.show.id || s.show.showId)) || s.showId || s.id)
-      .filter(Boolean);
-    if (checklistData.shows.length > 0 && ids.length === 0) {
-      process.stderr.write(`[sla-dispatch] WARNING: checklist has ${checklistData.shows.length} show(s) but 0 extractable IDs — schema drift; failing CLOSED (no SLA scope tonight)\n`);
-    } else {
-      activeShowIds = ids;
-    }
-  } else {
-    process.stderr.write('[sla-dispatch] WARNING: checklist JSON missing/unparseable — failing CLOSED (no SLA scope tonight). Fix the checklist output before expecting SLA pages.\n');
+  // An UNKNOWN scope (checklist missing, crashed, or schema drift) must not
+  // touch the incident at all: paging on it would be unscoped noise, and
+  // RESOLVING on it is what produced the 2026-10-15 duplicate P0 email
+  // (BRO-5427). The next run with a real checklist decides.
+  const scope = resolveSlaScope(checklistData, { filtered: process.env.SLA_CHECKLIST_FILTERED === 'true' });
+  if (!scope.known) {
+    process.stderr.write(`[sla-dispatch] WARNING: ${scope.why} — SLA scope unknown; leaving the page incident untouched (no page, no resolve).\n`);
   }
+  const activeShowIds = scope.activeShowIds;
 
   let slaResult = { warnings: [], pages: [] };
   try {
@@ -93,7 +89,7 @@ async function main() {
   // --- Dispatch SLA alerts ---
   const dryRun = process.env.SLA_DRY_RUN === 'true';
   try {
-    await dispatchSlaAlerts(slaResult, { dryRun });
+    if (scope.known) await dispatchSlaAlerts(slaResult, { dryRun });
   } catch (e) {
     process.stderr.write(`[sla-dispatch] dispatchSlaAlerts error: ${e.message}\n`);
   }

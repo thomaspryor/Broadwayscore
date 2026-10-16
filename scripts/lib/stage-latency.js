@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { isTestRun } = require('./test-run-guard');
 
-/** @typedef {'review-first-seen'|'review-text-collected'|'scored'|'rebuilt'|'deployed-live'} Stage */
+/** @typedef {'review-first-seen'|'review-text-collected'|'scored'|'rebuilt'|'deployed-live'|'excluded'} Stage */
 
 const DEFAULT_LOG = path.join(__dirname, '../../data/audit/stage-latency.jsonl');
 
@@ -227,8 +227,177 @@ function selectTerminalShowIds(showIdsWithReviews, trackedShowIds) {
   return out;
 }
 
+// Exclusion reasons (rebuild-all-reviews.js logExclusion stat keys) that mean
+// "the pipeline looked at this item and decided it is not a review of this
+// show". rebuild emits a per-review 'excluded' stage for these, and the SLA
+// treats that as a terminal. Without it a junk discovery (a Rolling Stone
+// concert review filed under a show, a news story, a listing page) has no
+// terminal stage and pages as "stuck" until the log rotates: on 2026-10-15
+// all 3 paged reviews were exactly that (BRO-5427).
+//
+// This is an ALLOW-list on purpose. Reasons that mean "not yet" (skippedNoScore,
+// pre-opening holds, processing errors, unvalidated domains, suspected
+// misattribution, bodyless aggregator scores) are left out so a real review
+// stalled behind them keeps paging, and a new reason added to rebuild later
+// stays page-worthy until someone decides otherwise.
+const TERMINAL_EXCLUSION_REASONS = new Set([
+  'skippedBlockedUrl', 'skippedCancelledBeforeOpening', 'skippedCombinedReviewOfOtherMemberOnly',
+  'skippedCrossMarket', 'skippedCrossOutletDupe', 'skippedCrossOutletDuplicateUrl',
+  'skippedCrossOutletFingerprintDedup', 'skippedCrossShowDupe', 'skippedCrossShowUrl',
+  'skippedDirectorMismatch', 'skippedFabricated', 'skippedFilmTvContamination',
+  'skippedFullTextWrongAuthor', 'skippedGarbage', 'skippedInvalidUrl', 'skippedListingPage',
+  'skippedLlmRejected', 'skippedNamedNonReviewUrl', 'skippedNonReview', 'skippedNotReview',
+  'skippedPersonalRepost', 'skippedPreviewFirstLookPiece', 'skippedRejectedAt',
+  'skippedRejectionReason', 'skippedRoundup', 'skippedSyndicated', 'skippedTourContamination',
+  'skippedUrlPathCrossMarket', 'skippedUrlYearMismatch', 'skippedUrlYearStandalone',
+  'skippedWrongAttribution', 'skippedWrongContent', 'skippedWrongProduction', 'skippedWrongShow',
+]);
+// Deliberately NOT terminal (ship-check, BRO-5427):
+// - same-identity dedups (skippedDuplicateUrl/Of/Text, skippedWithinShowDupe,
+//   skippedFingerprintDedup*, skipped*CriticDedup/OutletDedup, *Twin,
+//   skippedCircularDuplicateTiebreak): the loser shares show+outlet+url with
+//   the KEPT file, so its 'excluded' line would silence the kept review too.
+// - skippedDateMismatch / skippedLateDateMismatch: fire on a mis-parsed
+//   publishDate or a stale openingDate, i.e. a real review behind bad data.
+// Text-quality reasons are terminal only once the pipeline has given up on
+// the file (fetchDiscoveryAbandoned); before that they mean "re-collect".
+const TERMINAL_WHEN_ABANDONED_REASONS = new Set([
+  'skippedScraperGarbage', 'skippedShowNotMentioned', 'skippedCorrupted',
+]);
+
+// Only reviews first seen inside the tracked window get an 'excluded' line.
+// createExcludedStageEmitter writes each review once, so volume is bounded by
+// new excluded discoveries, not by rebuild frequency. The window matches
+// TRACKED_WINDOW_DAYS: a junk item found in previews, weeks before its show
+// enters the checklist window, still needs its terminal when the show does.
+const EXCLUDED_STAGE_WINDOW_MS = TRACKED_WINDOW_DAYS * 24 * 60 * 60 * 1000;
+
+/**
+ * Should rebuild emit a per-review 'excluded' terminal for this exclusion?
+ * @param {string} reason  logExclusion stat key
+ * @param {object} data    review-text file contents
+ * @param {Date}   [now]
+ */
+function shouldEmitExcludedStage(reason, data, now = new Date()) {
+  if (!data || !data.url || !data.firstSeenAt || !data.outletId) return false;
+  const terminal = TERMINAL_EXCLUSION_REASONS.has(reason)
+    || (TERMINAL_WHEN_ABANDONED_REASONS.has(reason) && data.fetchDiscoveryAbandoned === true);
+  if (!terminal) return false;
+  const seen = Date.parse(data.firstSeenAt);
+  if (!Number.isFinite(seen)) return false;
+  return now.getTime() - seen <= EXCLUDED_STAGE_WINDOW_MS;
+}
+
+function normalizeReviewUrl(url) {
+  return String(url || '').trim().toLowerCase()
+    .replace(/^https?:\/\//, '').replace(/^www\./, '')
+    .replace(/#.*$/, '')
+    // Drop tracking params only: a query string can be the review's identity
+    // (WordPress ?p=123), so it is not stripped wholesale.
+    .replace(/([?&])(utm_[a-z]+|fbclid|gclid|ref|cmpid)=[^&]*/g, '$1')
+    .replace(/[?&]+$/, '').replace(/\?&+/, '?')
+    .replace(/\/+(\?|$)/, '$1');
+}
+
+/**
+ * Identity of a review for matching stages across emitters. reviewKey is
+ * "{outletId}:{critic}:{url}", but the critic part is not stable: the
+ * first-seen line can say "unknown" or "neil-griffiths" while a later stage
+ * says "Neil Griffiths" after byline enrichment. Match on show + outlet + url.
+ */
+function reviewIdentity(showId, reviewKey) {
+  const s = String(reviewKey || '');
+  const i = s.indexOf(':');
+  if (i < 0) return null;
+  const j = s.indexOf(':', i + 1);
+  if (j < 0) return null;
+  const rest = s.slice(j + 1);
+  // "outlet:https://x" (no critic segment) splits inside the scheme; refuse it
+  // rather than produce a url that silently never matches.
+  if (rest.startsWith('//')) return null;
+  const url = normalizeReviewUrl(rest);
+  if (!url) return null;
+  return `${showId}||${s.slice(0, i).toLowerCase()}||${url}`;
+}
+
+/**
+ * Identities of reviews rebuild excluded as not-a-review-of-this-show (an
+ * 'excluded' stage line). Consumers that count reviews (the opening-night SLA,
+ * time-to-publish) skip these.
+ * @param {object[]} entries parsed stage-latency lines
+ * @returns {Set<string>}
+ */
+function excludedReviewIdentities(entries) {
+  // An exclusion stops counting once the review is collected or re-seen after
+  // it (a cleared flag, a re-fetch): the next rebuild re-decides, and until
+  // then the review is back in flight (ship-check, BRO-5427).
+  const lastExcluded = new Map();
+  const lastActivity = new Map();
+  for (const e of entries || []) {
+    if (!e || !e.showId || !e.reviewKey || !e.at) continue;
+    const isExcl = e.stage === 'excluded';
+    if (!isExcl && e.stage !== 'review-text-collected' && e.stage !== 'review-first-seen') continue;
+    const id = reviewIdentity(e.showId, e.reviewKey);
+    if (!id) continue;
+    const m = isExcl ? lastExcluded : lastActivity;
+    if (!m.has(id) || e.at > m.get(id)) m.set(id, e.at);
+  }
+  const out = new Set();
+  for (const [id, at] of lastExcluded) {
+    const act = lastActivity.get(id);
+    if (!act || at >= act) out.add(id);
+  }
+  return out;
+}
+
+/**
+ * One 'excluded' line per review, ever. rebuild runs every ~30 min and calls
+ * logExclusion for every excluded file each time, so emitting on every call
+ * would write ~hundreds of lines per run (the task #388 flood). The first call
+ * reads the existing 'excluded' identities from the log once; later calls only
+ * consult the in-process set.
+ *
+ * @param {object} [opts]
+ * @param {string} [opts.logFile]
+ * @param {function} [opts.emit=emitStage]
+ * @returns {(showId: string, reason: string, data: object, reviewKey: string) => boolean}
+ *          emits when needed; returns true when a line was written
+ */
+function createExcludedStageEmitter({ logFile, emit = emitStage, now } = {}) {
+  let seen = null;
+  const load = () => {
+    const file = logFile || process.env.STAGE_LATENCY_LOG || DEFAULT_LOG;
+    let text = '';
+    try { text = fs.readFileSync(file, 'utf8'); } catch { seen = new Set(); return; }
+    const wanted = [];
+    for (const line of text.split('\n')) {
+      if (!line.includes('"excluded"') && !line.includes('"review-text-collected"') && !line.includes('"review-first-seen"')) continue;
+      try { wanted.push(JSON.parse(line)); } catch { /* skip */ }
+    }
+    // Same rule the SLA reads with: a superseded exclusion is re-emitted.
+    seen = excludedReviewIdentities(wanted);
+  };
+  return function maybeEmitExcluded(showId, reason, data, reviewKey) {
+    if (!shouldEmitExcludedStage(reason, data, now || new Date())) return false;
+    const id = reviewIdentity(showId, reviewKey);
+    if (!id) return false;
+    if (!seen) load();
+    if (seen.has(id)) return false;
+    seen.add(id);
+    emit({ showId, reviewKey, stage: 'excluded', metadata: { reason } });
+    return true;
+  };
+}
+
 module.exports = {
   emitStage,
+  createExcludedStageEmitter,
+  excludedReviewIdentities,
+  reviewIdentity,
+  shouldEmitExcludedStage,
+  TERMINAL_EXCLUSION_REASONS,
+  TERMINAL_WHEN_ABANDONED_REASONS,
+  EXCLUDED_STAGE_WINDOW_MS,
   rotateIfNeeded,
   readTrackedShowIds,
   selectTerminalShowIds,

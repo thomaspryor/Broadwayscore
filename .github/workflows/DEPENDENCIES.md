@@ -316,7 +316,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 
 | Secret | Used by (cross-repo writers) |
 |---|---|
-| `ANTHROPIC_API_KEY` | 42 cross-repo writers (of 67 workflows using it) |
+| `ANTHROPIC_API_KEY` | 41 cross-repo writers (of 66 workflows using it) |
 | `APPROVAL_HMAC_SECRET` | 3 cross-repo writers (of 6 workflows using it): `auto-fix-feedback-bug.yml`, `process-review-submission.yml`, `update-mezzanine.yml` |
 | `BLOOMBERG_EMAIL` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
 | `BLOOMBERG_PASSWORD` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
@@ -352,7 +352,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `GITHUB_TOKEN` | 91 cross-repo writers (of 143 workflows using it) |
 | `GOOGLE_INDEXING_KEY` | 2 cross-repo writers (of 6 workflows using it): `opening-night-broadcast.yml`, `update-show-status.yml` |
 | `GUARDIAN_API_KEY` | 4 cross-repo writers (of 5 workflows using it) |
-| `LINEAR_API_KEY` | 25 cross-repo writers (of 61 workflows using it) |
+| `LINEAR_API_KEY` | 24 cross-repo writers (of 60 workflows using it) |
 | `MEZZANINE_APP_ID` | 2 cross-repo writers (of 3 workflows using it): `fetch-all-image-formats.yml`, `update-mezzanine.yml` |
 | `MEZZANINE_SESSION_TOKEN` | 2 cross-repo writers (of 3 workflows using it): `fetch-all-image-formats.yml`, `update-mezzanine.yml` |
 | `NEW_YORKER_EMAIL` | 4 cross-repo writers (of 4 workflows using it) |
