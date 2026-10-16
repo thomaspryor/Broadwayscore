@@ -23,6 +23,9 @@
  *     we count, and its reviews legitimately predate this run's previews;
  *   - previewsStartDate is AFTER openingDate: bad show data, no reliable anchor;
  *   - firstSeenAt or the anchor date is missing or unparseable.
+ * With no previewsStartDate the anchor is openingDate minus
+ * OPENING_ONLY_PREVIEW_ALLOWANCE_DAYS, so a review first seen during the
+ * (undated) previews is not held.
  *
  * The hold is provisional: shouldAutoClearCollectedBeforePreviews
  * (wrong-production-autoclear.js) re-runs this evaluator and releases the
@@ -37,6 +40,11 @@ const COLLECTED_BEFORE_PREVIEWS_NOTE_PREFIX = 'Collected-before-previews guard';
 // Slack for timezone skew (firstSeenAt is UTC, show dates are local calendar
 // dates) and a preview date that slipped by a day or two in shows.json.
 const DEFAULT_MARGIN_DAYS = 3;
+// No previewsStartDate: the real first preview is unknown but precedes
+// openingDate, and a review first seen during previews may be genuine (an
+// early/preview review). Anchor this many days before opening instead, about
+// the longest usual preview period.
+const OPENING_ONLY_PREVIEW_ALLOWANCE_DAYS = 35;
 const DAY_MS = 86400000;
 
 function parseYmd(value) {
@@ -71,7 +79,9 @@ function evaluateCollectedBeforePreviews({ hasUsableDate, firstSeenAt, show, mar
   if (previews != null && opening != null && previews > opening) {
     return { flag: false, reason: 'previews_after_opening' };
   }
-  const anchor = previews != null ? previews : opening;
+  const anchor = previews != null
+    ? previews
+    : (opening != null ? opening - OPENING_ONLY_PREVIEW_ALLOWANCE_DAYS * DAY_MS : null);
   if (anchor == null) return { flag: false, reason: null };
   const seen = parseInstant(firstSeenAt);
   if (seen == null) return { flag: false, reason: null };
@@ -83,6 +93,22 @@ function evaluateCollectedBeforePreviews({ hasUsableDate, firstSeenAt, show, mar
     anchor: new Date(anchor).toISOString().slice(0, 10),
     firstSeen: new Date(seen).toISOString().slice(0, 10),
   };
+}
+
+/**
+ * Flag-pass decision for one review record: evaluateCollectedBeforePreviews
+ * plus the record-level gate. A human wrongProduction verdict
+ * (humanReviewedWrongProduction === true) always wins: the auto-clear releases
+ * the hold for it, so flagging it again would flip-flop every rebuild.
+ *
+ * @param {object} review
+ * @param {{ hasUsableDate: boolean, show: object|null }} ctx
+ * @returns {{ flag: boolean, reason: string|null, anchor?: string, firstSeen?: string }}
+ */
+function shouldFlagCollectedBeforePreviews(review, { hasUsableDate, show } = {}) {
+  if (!review) return { flag: false, reason: null };
+  if (review.humanReviewedWrongProduction === true) return { flag: false, reason: 'human_reviewed' };
+  return evaluateCollectedBeforePreviews({ hasUsableDate, firstSeenAt: review.firstSeenAt, show });
 }
 
 /** True when the record carries this guard's own hold (reason or note prefix). */
@@ -97,7 +123,9 @@ module.exports = {
   COLLECTED_BEFORE_PREVIEWS_REASON,
   COLLECTED_BEFORE_PREVIEWS_NOTE_PREFIX,
   DEFAULT_MARGIN_DAYS,
+  OPENING_ONLY_PREVIEW_ALLOWANCE_DAYS,
   evaluateCollectedBeforePreviews,
+  shouldFlagCollectedBeforePreviews,
   isCollectedBeforePreviewsHold,
   // Exported so scoring-delta's moduleFingerprint sees helper-only edits.
   parseYmd,

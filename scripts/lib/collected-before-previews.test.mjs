@@ -15,6 +15,8 @@ const reviewGuards = require('./review-guards.js');
 const realAutoClear = require('./wrong-production-autoclear.js');
 const { decideInclusion } = require('../scoring-delta.js');
 const { shouldRetryDatelessHoldFetch } = require('./review-slot-guards.js');
+const { shouldFlagCollectedBeforePreviews } = require('./collected-before-previews.js');
+const { resolveGuardReviewDate } = require('./backfill-publish-date.js');
 
 // Real shape (BRO-4855): Two Girls off-Broadway 2026 carried four School Girls
 // excerpts relayed by nyc-theatre with no url and no publishDate, first seen
@@ -73,10 +75,15 @@ describe('evaluateCollectedBeforePreviews', () => {
     assert.deepStrictEqual(evaluateCollectedBeforePreviews({ hasUsableDate: false, firstSeenAt: TWO_GIRLS_DEADLINE.firstSeenAt, show: bad }), { flag: false, reason: 'previews_after_opening' });
   });
 
-  test('falls back to openingDate when there is no previewsStartDate', () => {
+  test('openingDate-only show: a review first seen during previews is NOT held', () => {
     const noPreviews = { id: 'x', openingDate: '2026-10-18' };
-    assert.strictEqual(evaluateCollectedBeforePreviews({ hasUsableDate: false, firstSeenAt: '2026-10-10T00:00:00Z', show: noPreviews }).flag, true);
+    // 10 days before opening: inside the undated preview period.
+    assert.strictEqual(evaluateCollectedBeforePreviews({ hasUsableDate: false, firstSeenAt: '2026-10-08T00:00:00Z', show: noPreviews }).flag, false);
     assert.strictEqual(evaluateCollectedBeforePreviews({ hasUsableDate: false, firstSeenAt: '2026-10-16T00:00:00Z', show: noPreviews }).flag, false);
+    // Months before opening: held, anchored at openingDate - 35d.
+    const v = evaluateCollectedBeforePreviews({ hasUsableDate: false, firstSeenAt: '2026-08-01T00:00:00Z', show: noPreviews });
+    assert.strictEqual(v.flag, true);
+    assert.strictEqual(v.anchor, '2026-09-13');
   });
 
   test('missing/unparseable firstSeenAt or show dates abstain', () => {
@@ -130,7 +137,7 @@ describe('shouldAutoClearCollectedBeforePreviews', () => {
 
 describe('scoring-delta decideInclusion replays the hold', () => {
   const guardsWith = { ...reviewGuards, __dateGuard: dateGuard, __priorRunLib: realAutoClear };
-  const { evaluateCollectedBeforePreviews: _omit, ...dateGuardWithout } = dateGuard;
+  const { evaluateCollectedBeforePreviews: _omit, shouldFlagCollectedBeforePreviews: _omit2, ...dateGuardWithout } = dateGuard;
   const guardsWithout = { ...reviewGuards, __dateGuard: dateGuardWithout, __priorRunLib: realAutoClear };
 
   test('Two Girls excerpt: held under the working guards, included under a baseline without the guard', () => {
@@ -163,5 +170,83 @@ describe('collector date retry covers the hold', () => {
     assert.strictEqual(shouldRetryDatelessHoldFetch(held), true);
     assert.strictEqual(shouldRetryDatelessHoldFetch({ ...held, url: null }), false);
     assert.strictEqual(shouldRetryDatelessHoldFetch({ ...held, wrongProductionReason: 'other', wrongProductionNote: 'x' }), false);
+  });
+});
+
+describe('human verdict wins: clear-then-flag cycle is stable', () => {
+  // Mirrors rebuild-all-reviews.js: the auto-clear runs first in the pre-opening
+  // pass, then (wrongProduction now false) the dateless flag pass re-decides.
+  function rebuildCycle(rec, show) {
+    const d = { ...rec };
+    let writes = 0;
+    if (shouldAutoClearCollectedBeforePreviews(d, { hasUsableDate: false, show })) {
+      d.wrongProduction = false;
+      delete d.wrongProductionReason;
+      delete d.wrongProductionNote;
+      writes++;
+    }
+    if (!d.wrongProduction && shouldFlagCollectedBeforePreviews(d, { hasUsableDate: false, show }).flag) {
+      d.wrongProduction = true;
+      d.wrongProductionReason = COLLECTED_BEFORE_PREVIEWS_REASON;
+      d.wrongProductionNote = `${COLLECTED_BEFORE_PREVIEWS_NOTE_PREFIX}: x`;
+      writes++;
+    }
+    return { d, writes };
+  }
+
+  test('humanReviewedWrongProduction === true: released once, never re-flagged', () => {
+    const held = {
+      ...TWO_GIRLS_DEADLINE,
+      humanReviewedWrongProduction: true,
+      wrongProduction: true,
+      wrongProductionReason: COLLECTED_BEFORE_PREVIEWS_REASON,
+      wrongProductionNote: `${COLLECTED_BEFORE_PREVIEWS_NOTE_PREFIX}: x`,
+    };
+    const first = rebuildCycle(held, TWO_GIRLS);
+    assert.strictEqual(first.d.wrongProduction, false);
+    assert.strictEqual(first.writes, 1);
+    const second = rebuildCycle(first.d, TWO_GIRLS);
+    assert.strictEqual(second.d.wrongProduction, false);
+    assert.strictEqual(second.writes, 0);
+  });
+
+  test('without a human verdict the hold is stable (no writes on re-run)', () => {
+    const first = rebuildCycle(TWO_GIRLS_DEADLINE, TWO_GIRLS);
+    assert.strictEqual(first.d.wrongProduction, true);
+    assert.strictEqual(rebuildCycle(first.d, TWO_GIRLS).writes, 0);
+  });
+});
+
+describe('effective date matches the rebuild (url date counts)', () => {
+  // Shape of ivanov-west-end-2026/consequence--unknown.json: no publishDate,
+  // a full YYYY-MM-DD in the url, first seen before previews.
+  const IVANOV = { id: 'ivanov-west-end-2026', previewsStartDate: '2027-07-27', openingDate: '2027-08-03', category: 'west-end', earliestDate: '2027-07-27' };
+  const CONSEQUENCE = {
+    outletId: 'consequence',
+    url: 'https://concerts.consequence.net/events/ivanov-at-bridge-theatre-on-2027-08-20-19-30',
+    publishDate: null,
+    firstSeenAt: '2026-10-11T14:56:21.098Z',
+    assignedScore: 70,
+    contentTier: 'excerpt',
+  };
+
+  test('resolveGuardReviewDate falls back to the url date', () => {
+    const d = resolveGuardReviewDate(CONSEQUENCE, IVANOV);
+    assert.ok(d, 'expected a url-derived date');
+    assert.strictEqual(d.toISOString().slice(0, 10), '2027-08-20');
+  });
+
+  test('scoring-delta replay does NOT hold a publishDate-less review with a url date', () => {
+    const guards = { ...reviewGuards, __dateGuard: dateGuard, __priorRunLib: realAutoClear };
+    const r = decideInclusion(CONSEQUENCE, IVANOV, guards);
+    assert.notStrictEqual(r.reason, 'collected-before-previews', JSON.stringify(r));
+  });
+
+  test('a stored hold on a review with a url date is released in the replay', () => {
+    const guards = { ...reviewGuards, __dateGuard: dateGuard, __priorRunLib: realAutoClear };
+    const held = { ...CONSEQUENCE, wrongProduction: true, wrongProductionReason: COLLECTED_BEFORE_PREVIEWS_REASON };
+    const r = decideInclusion(held, IVANOV, guards);
+    assert.notStrictEqual(r.reason, 'wrongProduction', JSON.stringify(r));
+    assert.notStrictEqual(r.reason, 'collected-before-previews', JSON.stringify(r));
   });
 });

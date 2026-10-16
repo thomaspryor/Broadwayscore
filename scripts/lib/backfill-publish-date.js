@@ -29,4 +29,30 @@ function resolveBackfillPublishDate(data) {
   return { date: urlDate.date, source: urlDate.source };
 }
 
-module.exports = { resolveBackfillPublishDate };
+/**
+ * The rebuild pre-opening pass's effective review date (BRO-4855): the guarded
+ * publishDate (an LLM-guessed date is never the sole basis, BRO-4473), else a
+ * FULL YYYY-MM-DD resolved from the url (never a bare year or YYYY-MM).
+ * Shared by rebuild-all-reviews.js and scoring-delta.js's replay so the two
+ * cannot disagree about whether a review "has a usable date".
+ *
+ * @param {object} data - review record
+ * @param {object|null} show - shows.json record
+ * @returns {Date|null}
+ */
+function resolveGuardReviewDate(data, show) {
+  const { parseDate } = require('./date-utils');
+  const { guardPublishDate } = require('./date-guard');
+  if (!data) return null;
+  const pd = parseDate(guardPublishDate(data, show).publishDate);
+  if (pd && !isNaN(pd.getTime())) return pd;
+  if (!data.url) return null;
+  const urlDate = resolveBackfillPublishDate(data);
+  if (urlDate && urlDate.date && /^\d{4}-\d{2}-\d{2}$/.test(urlDate.date)) {
+    const parsed = parseDate(urlDate.date);
+    if (parsed && !isNaN(parsed.getTime())) return parsed;
+  }
+  return null;
+}
+
+module.exports = { resolveBackfillPublishDate, resolveGuardReviewDate };

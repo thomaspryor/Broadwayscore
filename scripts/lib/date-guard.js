@@ -18,7 +18,7 @@
 const { isWithinPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
 // BRO-4855: re-exported so scoring-delta's per-side __dateGuard replays it.
 const collectedBeforePreviewsLib = require('./collected-before-previews');
-const { evaluateCollectedBeforePreviews } = collectedBeforePreviewsLib;
+const { evaluateCollectedBeforePreviews, shouldFlagCollectedBeforePreviews } = collectedBeforePreviewsLib;
 
 // Exported so the calling script can use the same constants in log messages
 // without drift. See scripts/flag-wrong-production-by-date.js.
@@ -443,6 +443,7 @@ module.exports = {
   evaluateDateGuard,
   evaluateDatelessRevivalGuard,
   evaluateCollectedBeforePreviews,
+  shouldFlagCollectedBeforePreviews,
   collectedBeforePreviewsLib,
   evaluateShowScorePreviousProduction,
   earliestShowDate,

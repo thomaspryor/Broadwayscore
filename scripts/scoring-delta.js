@@ -50,6 +50,7 @@ const { earliestShowDate } = require('./lib/date-guard');
 // scoring-logic watchlist — same rationale as earliestShowDate above.
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { parseDate } = require('./lib/date-utils');
+const { resolveGuardReviewDate } = require('./lib/backfill-publish-date');
 // Working-tree copies: pure classification helpers behind
 // shouldAutoClearWrongProductionUkDualMarket's ctx (task #1190) — same
 // rationale as isLondonMarket/isUkOutletUrl above, the predicate itself
@@ -972,8 +973,11 @@ function decideInclusion(review, show, guards) {
     // show summary carries previewsStartDate/openingDate/priorRuns/tourLegs).
     if (!wrongProductionCleared && review.wrongProduction === true
         && typeof autoClear.shouldAutoClearCollectedBeforePreviews === 'function') {
-      const reviewDate = resolveReviewDate(review);
-      wrongProductionCleared = autoClear.shouldAutoClearCollectedBeforePreviews(review, { hasUsableDate: !!reviewDate, show });
+      // Same effective date as the rebuild (guarded publishDate, else a full
+      // url date): resolveGuardReviewDate is the rebuild's own resolver.
+      wrongProductionCleared = autoClear.shouldAutoClearCollectedBeforePreviews(review, {
+        hasUsableDate: !!resolveGuardReviewDate(review, show?.raw || show), show,
+      });
     }
 
     // Stale dated guard auto-clear — mirrors rebuild-all-reviews.js's block:
@@ -1207,7 +1211,7 @@ function decideInclusion(review, show, guards) {
   if (inPreOpeningGuardLoop
       && (review.wrongProduction !== true || wrongProductionCleared)
       && review.wrongShow !== true
-      && typeof guards.__dateGuard?.evaluateCollectedBeforePreviews === 'function'
+      && typeof guards.__dateGuard?.shouldFlagCollectedBeforePreviews === 'function'
       && !review.wrongProductionCleared
       && review.humanReviewedWrongProduction !== false
       && !guards.shouldSkipWrongProductionAudit(review)
@@ -1215,9 +1219,9 @@ function decideInclusion(review, show, guards) {
       && !review.routedFromShowId
       && !review.allowEarlyDate
       && !review.wrongProductionManualClear
-      && !resolveReviewDate(review)
+      && !resolveGuardReviewDate(review, show?.raw || show)
       && !require('./lib/stale-flag-after-url-correction').shouldWithholdStaleExclusionFlag(review)
-      && guards.__dateGuard.evaluateCollectedBeforePreviews({ hasUsableDate: false, firstSeenAt: review.firstSeenAt, show }).flag) {
+      && guards.__dateGuard.shouldFlagCollectedBeforePreviews(review, { hasUsableDate: false, show }).flag) {
     return { included: false, reason: 'collected-before-previews' };
   }
   // Flat/unconditional, matching isIncludableForRebuild (review-guards.js) and
@@ -1654,6 +1658,7 @@ function main() {
         // the evaluator's own source identical).
         && (baseline.__priorRunLib?.shouldAutoClearCollectedBeforePreviews?.toString() || '') === (working.__priorRunLib?.shouldAutoClearCollectedBeforePreviews?.toString() || '')
         && (baseline.__dateGuard?.evaluateCollectedBeforePreviews?.toString() || '') === (working.__dateGuard?.evaluateCollectedBeforePreviews?.toString() || '')
+        && (baseline.__dateGuard?.shouldFlagCollectedBeforePreviews?.toString() || '') === (working.__dateGuard?.shouldFlagCollectedBeforePreviews?.toString() || '')
         && moduleFingerprint(baseline.__dateGuard?.collectedBeforePreviewsLib) === moduleFingerprint(working.__dateGuard?.collectedBeforePreviewsLib)
         && (baseline.__priorRunLib?.shouldAutoClearStaleDateGuard?.toString() || '') === (working.__priorRunLib?.shouldAutoClearStaleDateGuard?.toString() || '')
         && (baseline.__priorRunLib?.shouldAutoClearAnticipatoryGrace?.toString() || '') === (working.__priorRunLib?.shouldAutoClearAnticipatoryGrace?.toString() || '')

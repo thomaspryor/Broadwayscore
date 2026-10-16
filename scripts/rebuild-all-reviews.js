@@ -111,8 +111,8 @@ const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
 const { evaluateRepublishedReview, humanFlagOutranksScriptClear } = require('./lib/run-contamination');
 const { detectPriorRunRepublish, shouldReleasePriorRunRepublish } = require('./lib/prior-run-republish-guard');
 const { detectOtherProductionUrl, shouldReleaseOtherProductionUrl, OTHER_PRODUCTION_URL_REASON } = require('./lib/other-production-signal');
-const { resolveBackfillPublishDate } = require('./lib/backfill-publish-date');
-const { COLLECTED_BEFORE_PREVIEWS_REASON, COLLECTED_BEFORE_PREVIEWS_NOTE_PREFIX, evaluateCollectedBeforePreviews } = require('./lib/collected-before-previews');
+const { resolveBackfillPublishDate, resolveGuardReviewDate } = require('./lib/backfill-publish-date');
+const { COLLECTED_BEFORE_PREVIEWS_REASON, COLLECTED_BEFORE_PREVIEWS_NOTE_PREFIX, shouldFlagCollectedBeforePreviews } = require('./lib/collected-before-previews');
 const { guardPublishDate, evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
@@ -1638,14 +1638,8 @@ const crossShowFingerprints = new Map();
         // Shared by the dateless-revival auto-clear/guard and the dated
         // pre-opening guard further down.
         // LLM-guessed dates never sole basis for a stamp (BRO-4473)
-        let reviewDate = parseDate(guardPublishDate(d, showRecord).publishDate);
-        if (!reviewDate && d.url) {
-          const urlDate = resolveBackfillPublishDate(d);
-          if (urlDate && urlDate.date && /^\d{4}-\d{2}-\d{2}$/.test(urlDate.date)) {
-            const parsed = parseDate(urlDate.date);
-            if (parsed && !isNaN(parsed.getTime())) reviewDate = parsed;
-          }
-        }
+        // BRO-4855: shared with scoring-delta.js's replay (same effective date).
+        const reviewDate = resolveGuardReviewDate(d, showRecord);
 
         // Dateless-revival auto-clear: our HOLD (set below) is provisional —
         // strip it the moment the review gains a usable date (the dated guard
@@ -2017,7 +2011,7 @@ const crossShowFingerprints = new Map();
             // preview cannot be a review of it (Two Girls 2026 carried four
             // School Girls excerpts first seen 6 days before previews). Holds
             // regardless of open status; released by the auto-clear above.
-            const cbp = evaluateCollectedBeforePreviews({ hasUsableDate: false, firstSeenAt: d.firstSeenAt, show: showRecord });
+            const cbp = shouldFlagCollectedBeforePreviews(d, { hasUsableDate: false, show: showRecord });
             if (cbp.flag) {
               console.log(`  [COLLECTED-BEFORE-PREVIEWS] ${sid}/${f}: dateless, first seen ${cbp.firstSeen}, before first preview ${cbp.anchor}`);
               d.wrongProduction = true;
