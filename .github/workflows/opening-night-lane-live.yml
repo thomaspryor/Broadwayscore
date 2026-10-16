@@ -165,7 +165,7 @@ jobs:
       # lease lost. 3 is a normal stand-down (the regular pipeline covers the night), so it does not fail the job.
       - name: Run the lane
         id: lane
-        timeout-minutes: 335
+        timeout-minutes: 280
         env:
           SHOW: ${{ inputs.show }}
           NIGHT: ${{ inputs.night }}
