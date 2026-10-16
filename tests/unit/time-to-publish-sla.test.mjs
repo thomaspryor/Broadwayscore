@@ -452,3 +452,12 @@ test('a review rebuild excluded as not-a-review is not a latency sample (BRO-542
   const keys = computeReviewLatencies(entries).map(r => r.reviewKey);
   assert.deepEqual(keys, ['nytimes:a:https://nytimes.com/r']);
 });
+
+test('a find on a show rebuild still holds as not-yet-open is not a latency sample (BRO-5480)', () => {
+  const entries = [
+    ...reviewEntries('s', 'nytimes:a:https://nytimes.com/r', { seen: 0, scored: 5 }),
+    { showId: 's', reviewKey: null, stage: 'held', at: at(2), metadata: { reason: 'skippedUpcomingShows' } },
+    { showId: 's', reviewKey: null, stage: 'rebuilt', at: at(600) },
+  ];
+  assert.deepEqual(computeReviewLatencies(entries), []);
+});

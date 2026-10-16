@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { isTestRun } = require('./test-run-guard');
 
-/** @typedef {'review-first-seen'|'review-text-collected'|'scored'|'rebuilt'|'deployed-live'|'excluded'} Stage */
+/** @typedef {'review-first-seen'|'review-text-collected'|'scored'|'rebuilt'|'deployed-live'|'excluded'|'held'} Stage */
 
 const DEFAULT_LOG = path.join(__dirname, '../../data/audit/stage-latency.jsonl');
 
@@ -320,6 +320,56 @@ function reviewIdentity(showId, reviewKey) {
   return `${showId}||${s.slice(0, i).toLowerCase()}||${url}`;
 }
 
+// Show-level "held, not open yet" (BRO-5480). rebuild skips an upcoming or
+// in-previews show wholesale, before any per-file decision, so its reviews get
+// neither a 'rebuilt' nor an 'excluded' terminal. On 2026-10-16 three
+// wrongProduction finds for an upcoming West End show paged as "stuck" for
+// 11+ hours. rebuild emits one 'held' line per tracked held show per run;
+// the SLA treats a review as held while a FRESH line exists (the show is
+// still not open), so the line stops counting soon after the show opens.
+const SHOW_HELD_REASONS = new Set(['skippedUpcomingShows', 'skippedPreviewsShows']);
+const HELD_FRESH_MS = 2 * 60 * 60 * 1000;
+
+/**
+ * Is `now` (UTC) strictly before the show's opening date? Only then is a
+ * wholesale pre-opening skip a "held" show; on opening day itself reviews are
+ * due, so a still-'previews' status must not mute them.
+ * @param {string} openingDate 'YYYY-MM-DD' (or ISO)
+ */
+function isBeforeOpeningDate(openingDate, now = new Date()) {
+  const d = String(openingDate || '').slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) return false;
+  return now.toISOString().slice(0, 10) < d;
+}
+
+/**
+ * Does a wholesale pre-opening skip count as "held"? Before the opening date,
+ * yes. An 'upcoming' show with no usable opening date has not opened either.
+ * A 'previews' show with no date, or any show on/after its opening date, is
+ * not held: its reviews are due (or overdue) and must page if stuck.
+ */
+function isHeldBeforeOpening(statKey, openingDate, now = new Date()) {
+  if (!/^\d{4}-\d{2}-\d{2}/.test(String(openingDate || ''))) return statKey === 'skippedUpcomingShows';
+  return isBeforeOpeningDate(openingDate, now);
+}
+
+/** Latest show-level 'held' timestamp per show. */
+function latestShowHeldAt(entries) {
+  const out = new Map();
+  for (const e of entries || []) {
+    if (!e || e.stage !== 'held' || !e.showId || e.reviewKey) continue;
+    const prev = out.get(e.showId);
+    if (!prev || e.at > prev) out.set(e.showId, e.at);
+  }
+  return out;
+}
+
+/** Is the show still held (not open) as of `now`, per a held line at/after firstSeen? */
+function isShowHeld(heldAt, firstSeen, now = new Date()) {
+  if (!heldAt || !firstSeen || heldAt < firstSeen) return false;
+  return now.getTime() - Date.parse(heldAt) <= HELD_FRESH_MS;
+}
+
 /**
  * Identities of reviews rebuild excluded as not-a-review-of-this-show (an
  * 'excluded' stage line). Consumers that count reviews (the opening-night SLA,
@@ -391,6 +441,12 @@ function createExcludedStageEmitter({ logFile, emit = emitStage, now } = {}) {
 
 module.exports = {
   emitStage,
+  SHOW_HELD_REASONS,
+  HELD_FRESH_MS,
+  latestShowHeldAt,
+  isShowHeld,
+  isBeforeOpeningDate,
+  isHeldBeforeOpening,
   createExcludedStageEmitter,
   excludedReviewIdentities,
   reviewIdentity,

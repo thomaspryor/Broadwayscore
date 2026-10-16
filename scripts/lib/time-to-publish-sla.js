@@ -51,7 +51,7 @@
  * test require()s these functions rather than restating them).
  */
 
-const { reviewIdentity, excludedReviewIdentities } = require('./stage-latency');
+const { reviewIdentity, excludedReviewIdentities, latestShowHeldAt } = require('./stage-latency');
 
 const MS_MIN = 60 * 1000;
 
@@ -216,11 +216,16 @@ function computeReviewLatencies(entries, { publishTimes = null, discoveryWindowM
   // BRO-5427: junk rebuild rejected as not-a-review-of-this-show (wrong show,
   // news item, listing page) is not a review, so it is not a latency sample.
   const excludedIds = excludedReviewIdentities(entries);
+  // BRO-5480: a find on a show rebuild was still holding as not-yet-open is a
+  // pre-opening discovery, not a pipeline-latency sample.
+  const heldAt = latestShowHeldAt(entries);
 
   for (const [key, rv] of perReview) {
     const firstSeenAt = rv.stages['review-first-seen'];
     if (!firstSeenAt) continue; // not a tracked review, just a stray stamp
     if (excludedIds.size && excludedIds.has(reviewIdentity(rv.showId, rv.reviewKey))) continue;
+    const held = heldAt.get(rv.showId);
+    if (held && held >= firstSeenAt) continue;
 
     const scoredAt = rv.stages['scored'] || null;
     const collectedAt = rv.stages['review-text-collected'] || null;

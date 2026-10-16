@@ -150,14 +150,10 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   'affiliate:provider-auth:impact', // Impact API/credentials failing — monitor is blind
   'affiliate:provider-auth:posthog', // PostHog API/credentials failing — monitor is blind
 
-  // Category 2: opening-night-sla-dispatch.js only runs against the active
-  // opening-night checklist window (activeShowIds) — reviews stuck ≥60min
-  // during a live opening-night operation IS the pipeline stalling on an
-  // opening night (see card #406's "real pipeline stall?" P0). Also avoids a
-  // regression: dispatchSlaAlerts() only advances its own re-notify "peak"
-  // on disposition==='human' (scripts/lib/opening-night-sla.js) — downgrading
-  // this key would silently stop future re-notifies once one incident queued.
-  'opening-night-sla:pages-stuck',
+  // 'opening-night-sla:pages-stuck' was here (Category 2) and REMOVED
+  // 2026-10-16 (BRO-5480, owner: "Should I even get emails about this at
+  // all?"). Reviews stuck in the pipeline have no owner action; it now files
+  // a High worker card (disposition 'auto') that closes itself on drain.
 
   // Category 2 (task #1076): a revoked/unusable local Claude OAuth token
   // disables cmux-launch.js's launch gate entirely — not just tonight's
@@ -310,6 +306,71 @@ function isPageWorthyWorkflow(workflowFile) {
   return PAGE_WORTHY_WORKFLOWS.has(base);
 }
 
+/**
+ * What the OWNER does when each page arrives (BRO-5480). Owner rule BRO-4603
+ * (2026-10-04): "I only want emails if they're really urgent and need me to
+ * act on them." The July allowlist categories asked only "is it urgent?", so
+ * entries a worker can fix (opening-night-sla:pages-stuck) kept emailing.
+ * page-worthy-alerts.test.mjs fails any entry (key, prefix, final-report
+ * pattern, workflow) without a row here, so a page cannot be added without
+ * naming the owner's action. An empty action is allowed only for the frozen
+ * AWAITING_OWNER_DECISION set below, which may shrink but never grow.
+ */
+const FINAL_REPORT_ENTRY = 'on-monitor-report-*-final';
+const OWNER_ACTIONS = {
+  // Meta: the auto-fix route itself is down, so nothing else will say so.
+  'alert-router:deadman': 'Ask Claude to repair the alert pipeline: no worker cards are being filed.',
+  'e2e-canary:chain-broken': 'Ask Claude to repair the alert pipeline: no worker cards are being filed.',
+  'alert-router:usage-limit-exceeded': 'Raise or reset the Linear plan limit (a billing decision only you can make).',
+  'mac:morning-digest-missing': 'Check the Mac is on, awake and signed in.',
+  'owner-decisions:new': 'Answer the decision.',
+  // Owner opted in 2026-08-03 ("it's our only revenue stream, I do want it really strong").
+  'affiliate:dead-man': 'Check the Impact account and the site\'s ticket links (your revenue, your call).',
+  'affiliate:zero-conversions': 'Check the Impact account (your revenue, your call).',
+  'affiliate:conversions-flatline': 'Check the Impact account (your revenue, your call).',
+  'affiliate:handoff-break': 'Check the Impact account (your revenue, your call).',
+  'affiliate:provider-auth:impact': 'Re-authorize the Impact API credentials (only you hold that login).',
+  'affiliate:provider-auth:posthog': 'Re-authorize the PostHog API credentials (only you hold that login).',
+  'claude-auth:revoked': 'Log in to Claude again on the Mac.',
+  'on-monitor-auth-failed-': 'Log in to Claude again on the Mac.',
+  'broadcast:draft-creation-failed:': 'Send the opening-night email yourself; the draft was not created.',
+  'broadcast:owner-notification-failed:': 'Send the opening-night email yourself; the reminder to you failed.',
+  'broadcast:draft-unsent:': 'Send the opening-night email draft.',
+  'broadcast:deadline-draft:': 'Send the opening-night email draft before the deadline.',
+  'cookie-renew:needs-human:': 'Re-capture the expired login cookie (needs your login).',
+  'check-morning-digest-sent.yml': 'Check the Mac is on, awake and signed in.',
+  'opening-night-broadcast.yml': 'Send the opening-night email yourself.',
+  'restore-supabase.yml': 'Restore the project from the Supabase dashboard (only you hold that login).',
+  'update-theatr.yml': 'Re-capture the Theatr login from the iPhone app.',
+};
+
+// Pages that were allowlisted as "urgent" before the must-act rule and name no
+// owner action yet. Each is the owner's call (keep emailing, or move to a
+// worker card like opening-night-sla). Frozen: the test pins this exact set.
+const AWAITING_OWNER_DECISION = new Set([
+  'ugc-roundtrip:users-affected',
+  'serp-burst:tripwire',
+  'guard-escalation:stale-checkout-staleness',
+  'guard-escalation:scoring-queue-scan-failed',
+  'guard-escalation:ensemble-scoring-pipeline-crashed',
+  'guard-escalation:review-count-drift-strict-breach',
+  'on-monitor-launch-failed-',
+  'on-monitor-auth-starved-sustained-',
+  'on-monitor-escalation-',
+  'on-monitor-dead-session-',
+  FINAL_REPORT_ENTRY,
+  'broadcast:overdue:',
+  'broadcast:never-sent:',
+  'ugc:signin-redirect-broken:',
+  'opening-night-orchestrator.yml',
+  'opening-night-poller.yml',
+]);
+
+/** Every entry that can page: keys, prefixes, the final-report pattern, workflows. */
+function allPageWorthyEntries() {
+  return [...PAGE_WORTHY_CONDITION_KEYS, ...PAGE_WORTHY_PREFIXES, FINAL_REPORT_ENTRY, ...PAGE_WORTHY_WORKFLOWS];
+}
+
 module.exports = {
   PAGE_WORTHY_CONDITION_KEYS,
   PAGE_WORTHY_FINAL_REPORT_RE,
@@ -317,4 +378,7 @@ module.exports = {
   PAGE_WORTHY_WORKFLOWS,
   isPageWorthy,
   isPageWorthyWorkflow,
+  OWNER_ACTIONS,
+  AWAITING_OWNER_DECISION,
+  allPageWorthyEntries,
 };

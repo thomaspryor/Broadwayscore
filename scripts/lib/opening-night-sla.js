@@ -2,8 +2,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { routeAlert, resolveCondition } = require('./owner-alert-router');
-const { reviewIdentity, excludedReviewIdentities } = require('./stage-latency');
+const { routeAlert, resolveCondition, loadLedger } = require('./owner-alert-router');
+const { reviewIdentity, excludedReviewIdentities, latestShowHeldAt, isShowHeld } = require('./stage-latency');
 
 const DEFAULT_LOG = path.join(__dirname, '../../data/audit/stage-latency.jsonl');
 
@@ -12,6 +12,11 @@ const SLA_STATE_PATH = process.env.OPENING_NIGHT_SLA_STATE
 
 // Stable per-incident keys for the owner-alert-router.
 const SLA_PAGE_CONDITION = 'opening-night-sla:pages-stuck';
+// BRO-5480: one condition per stuck show. The bare SLA_PAGE_CONDITION is the
+// pre-BRO-5480 shared key; isSlaPageKey() still matches it so an incident left
+// open under it resolves.
+const slaPageKey = (showId) => `${SLA_PAGE_CONDITION}:${showId}`;
+const isSlaPageKey = (key) => key === SLA_PAGE_CONDITION || String(key || '').startsWith(`${SLA_PAGE_CONDITION}:`);
 const SLA_WARN_CONDITION = 'opening-night-sla:warnings-delayed';
 
 // Per-reviewKey terminal stages: a review that reached either is done from the
@@ -139,6 +144,8 @@ function evaluateSlaForReviews(latencyEntries, { warningMinutes = 30, pageMinute
 
   // Reviews the rebuild deliberately excluded as not-a-review-of-this-show.
   const excludedIds = excludedReviewIdentities(latencyEntries);
+  // Shows rebuild is still holding back as not yet open (BRO-5480).
+  const heldAt = latestShowHeldAt(latencyEntries);
 
   // Per-reviewKey stage map (earliest timestamp per stage).
   const byKey = new Map();
@@ -174,6 +181,7 @@ function evaluateSlaForReviews(latencyEntries, { warningMinutes = 30, pageMinute
     const showDone = !!showDoneAt && showDoneAt >= firstSeen;
     if (perKeyDone || showDone) continue;
     if (excludedIds.size && excludedIds.has(reviewIdentity(rv.showId, rv.reviewKey))) continue;
+    if (isShowHeld(heldAt.get(rv.showId), firstSeen, now)) continue;
 
     const elapsedMin = Math.floor((now - new Date(firstSeen)) / 60000);
     const outletId = rv.reviewKey.split(':')[0] || 'unknown';
@@ -211,10 +219,16 @@ function saveSlaState(state, statePath = SLA_STATE_PATH) {
  * checklist run (7 unrouted/undeduped pages in a single opening window).
  *
  * Semantics:
- *   - PAGES (≥60 min): disposition 'human' (email). ONE email per open
- *     incident. A count that GROWS past the last-notified peak is a state
- *     change worth one re-notify (resolve → re-open). Resolves (and the next
- *     occurrence notifies fresh) the moment the count drains to 0.
+ *   - PAGES (≥60 min): one PARKED Linear card per stuck show (disposition
+ *     'auto', key `opening-night-sla:pages-stuck:<showId>`), NOT an owner
+ *     email (BRO-5480). Owner rule BRO-4603: email only when urgent AND the
+ *     owner must act; a stuck review has no owner action. Parked, not
+ *     dispatch-at-filing: sweep-resolved-alert-cards.js (daily CI) cancels a
+ *     parked card once its condition resolves, with no Mac dependency, and
+ *     upstream self-heals (orphan-unscored, verify-all-scored) usually fix the
+ *     stall first. A show's key resolves the moment it has no stuck review;
+ *     any other open key of this family (including the pre-BRO-5480 shared
+ *     key, which carried the 'human' email disposition) resolves too.
  *   - WARNINGS (≥30 min): disposition 'digest' (queued for the daily digest,
  *     never its own email).
  *
@@ -225,7 +239,7 @@ function saveSlaState(state, statePath = SLA_STATE_PATH) {
  * @param {function} [opts.resolve=resolveCondition]  injectable for tests
  * @param {string}   [opts.statePath]                 injectable for tests
  */
-async function dispatchSlaAlerts({ warnings, pages }, { dryRun = false, route = routeAlert, resolve = resolveCondition, statePath = SLA_STATE_PATH } = {}) {
+async function dispatchSlaAlerts({ warnings, pages }, { dryRun = false, route = routeAlert, resolve = resolveCondition, statePath = SLA_STATE_PATH, readLedger = loadLedger } = {}) {
   if (dryRun) {
     if (warnings.length) console.log(`[SLA dry-run] ${warnings.length} warning(s):`, warnings.map(w => `${w.showId}/${w.outletId} (${w.elapsedMin}m)`).join(', '));
     if (pages.length) console.log(`[SLA dry-run] ${pages.length} page(s):`, pages.map(p => `${p.showId}/${p.outletId} (${p.elapsedMin}m)`).join(', '));
@@ -250,61 +264,51 @@ async function dispatchSlaAlerts({ warnings, pages }, { dryRun = false, route = 
     resolve(SLA_WARN_CONDITION);
   }
 
-  // --- Pages → human (email), dedup + growth-aware re-notify + resolve-on-drain ---
-  const state = loadSlaState(statePath);
-  const prevNotified = state.notifiedPageCount || 0;
+  // --- Pages → one parked worker card per stuck show (never an owner email) ---
+  const byShow = new Map();
+  for (const p of pages) {
+    if (!byShow.has(p.showId)) byShow.set(p.showId, []);
+    byShow.get(p.showId).push(p);
+  }
+  const liveKeys = new Set([...byShow.keys()].map(slaPageKey));
 
-  if (pages.length === 0) {
-    const wasOpen = resolve(SLA_PAGE_CONDITION);
-    if (prevNotified > 0 || wasOpen) {
-      saveSlaState({ notifiedPageCount: 0, resolvedAt: new Date().toISOString() }, statePath);
-      console.log('[SLA] page incident resolved — 0 reviews stuck.');
+  // Resolve every open key of this family that has no stuck review now.
+  let ledger = {};
+  try { ledger = (readLedger() || {}); } catch (e) { console.error('[SLA] ledger read failed:', e.message); }
+  const conds = ledger.conditions || ledger;
+  let resolvedAny = false;
+  for (const [key, c] of Object.entries(conds || {})) {
+    if (!isSlaPageKey(key) || liveKeys.has(key) || !c || c.status !== 'open') continue;
+    resolve(key);
+    resolvedAny = true;
+  }
+  if (resolvedAny) console.log('[SLA] resolved stuck-review incident(s) that drained.');
+
+  for (const [showId, items] of byShow) {
+    const list = items.map(p => `• ${p.outletId} — ${p.elapsedMin} min in-flight (${p.reviewKey})`).join('\n');
+    const res = await route({
+      conditionKey: slaPageKey(showId),
+      title: `Opening-night reviews stuck ≥60 min: ${showId} (${items.length})`,
+      description: `Reviews for ${showId} stuck in the pipeline for ≥60 min during its opening-night window (first seen, never scored, excluded or folded into a rebuild):\n${list}\n\n`
+        + `\`node scripts/verify-review-recovery.js --show=${showId} --production\` names the broken step and its fix command; `
+        + `\`node scripts/rebuild-all-reviews.js --show=${showId}\` prints why a file is excluded. Junk (wrong show, news item, listing page) should be excluded by rebuild, which emits an 'excluded' stage and clears it here (BRO-5427). `
+        + `This condition resolves on its own when the show has no stuck review, and the card is then cancelled if nobody touched it.`,
+      severity: 'error',
+      disposition: 'auto',
+      fields: [{ name: 'Stuck reviews', value: String(items.length) }],
+      // Lifecycle is resolve-on-drain; keep the time-based cooldown from
+      // refiling a second card for the same open incident.
+      cooldownHours: 24 * 30,
+    }).catch(e => { console.error(`[SLA] page route failed for ${showId}:`, e.message); return { action: 'error' }; });
+    if (res && res.action === 'auto' && res.dispatchOk === false) {
+      console.error(`[SLA] card filing failed for ${showId}: ${res.dispatchError || 'unknown'} (retries next run)`);
     }
-    return;
   }
-
-  // Count grew past the last-notified peak → treat as a NEW state worth one
-  // re-notify: resolve the open incident so routeAlert re-emails immediately.
-  if (pages.length > prevNotified && prevNotified > 0) {
-    resolve(SLA_PAGE_CONDITION);
-  }
-
-  const list = pages.map(p => `• ${p.showId} / ${p.outletId} — ${p.elapsedMin} min in-flight`).join('\n');
-  const res = await route({
-    conditionKey: SLA_PAGE_CONDITION,
-    title: `Opening Night SLA P0 — ${pages.length} review(s) stuck ≥60 min`,
-    description: `Reviews stuck in the pipeline for ≥60 min:\n${list}\n\nThis alert auto-resolves when the count drains to 0.`,
-    severity: 'error',
-    disposition: 'human',
-    fields: [{ name: 'Stuck reviews', value: String(pages.length) }],
-    // Incident lifecycle is governed by resolve-on-drain + resolve-on-growth
-    // above; make the router's time-based cooldown a non-factor (an opening
-    // window is ~2 days, so the 168h default would never fire anyway — but be
-    // explicit so a persisting incident can't surprise-re-email). ship-check #2.
-    cooldownHours: 24 * 30,
-  }).catch(e => { console.error('[SLA] page route failed:', e.message); return { action: 'error' }; });
-
-  // Advance the notified peak when the owner was actually told: either a
-  // real email went out (action:'human', delivery didn't fail) or the
-  // request was downgraded to a digest queue entry (page-worthy gate, card
-  // #611) — both are non-silent notifications under routeAlert's own
-  // contract. This MUST include 'digest': routeAlert records the condition
-  // 'open' with THIS call's cooldownHours (24*30 = 720h) regardless of
-  // which disposition actually fired, so if the peak were left at 0 on a
-  // digest downgrade, `pages.length > prevNotified && prevNotified > 0`
-  // above could never go true (prevNotified stuck at 0), the incident would
-  // never resolve-and-reopen, and every subsequent call would come back
-  // 'silent' from the ledger's own cooldown for up to 30 days instead of
-  // re-queuing a digest line on the next check (adversarial-review find,
-  // card #616 follow-up — a prior version of this comment claimed the
-  // re-queue happened; traced through owner-alert-router.js and confirmed
-  // it did not). On a Resend/policy failure routeAlert still returns
-  // action:'human' with delivered:false and does NOT record its ledger, so
-  // it retries next run — we must not advance the peak past a page nobody
-  // received (ship-check finding #4). A 'silent' refire (incident open, not
-  // growing) also leaves the peak unadvanced, same as before.
-  if (res && (res.action === 'digest' || (res.action === 'human' && res.delivered !== false))) {
-    saveSlaState({ notifiedPageCount: pages.length, lastNotifiedAt: new Date().toISOString() }, statePath);
+  // Write only on change: the state file is committed by the hourly workflow.
+  const stuckShows = [...byShow.keys()].sort();
+  const prev = loadSlaState(statePath);
+  if (JSON.stringify(prev.stuckShows || []) !== JSON.stringify(stuckShows)) {
+    saveSlaState({ stuckShows, updatedAt: new Date().toISOString() }, statePath);
   }
 }
 
@@ -315,6 +319,8 @@ module.exports = {
   loadSlaState,
   resolveSlaScope,
   SLA_PAGE_CONDITION,
+  slaPageKey,
+  isSlaPageKey,
   SLA_WARN_CONDITION,
   _DEFAULT_LOG: DEFAULT_LOG,
   _SLA_STATE_PATH: SLA_STATE_PATH,

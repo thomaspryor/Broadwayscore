@@ -167,3 +167,14 @@ test('computeLatencyStats: rebuild-excluded junk is not counted as a review (BRO
   const [s] = computeLatencyStats(entries);
   assert.equal(s.reviewCount, 1);
 });
+
+test('computeLatencyStats: a show-level held line is not counted as a review (BRO-5480)', () => {
+  const base = new Date('2026-04-15T22:00:00Z').getTime();
+  const iso = (m) => new Date(base + m * MS_MIN).toISOString();
+  const entries = [
+    ...makeEntries({ showId: 'show-a', reviewKey: 'nytimes:a:https://nytimes.com/r', firstSeen: iso(0), scored: iso(5), deployed: iso(20) }),
+    { showId: 'show-a', reviewKey: null, stage: 'held', at: iso(1), metadata: { reason: 'skippedUpcomingShows' } },
+  ];
+  const [s] = computeLatencyStats(entries);
+  assert.equal(s.reviewCount, 1);
+});

@@ -186,17 +186,14 @@ test('isTestShowId recognizes CI fixture ids but not real shows', () => {
 
 function makeHarness() {
   const calls = { routed: [], resolved: [] };
-  // Simulate the router ledger: one open incident per conditionKey; a
-  // 'human' route emails once, then goes 'silent' until resolveCondition().
+  // Simulates the router ledger: one open incident per conditionKey; an 'auto'
+  // route files a card once, then goes 'silent' until resolveCondition().
   const openIncidents = new Set();
   const route = async (opts) => {
     calls.routed.push(opts);
-    if (opts.disposition === 'human') {
-      if (openIncidents.has(opts.conditionKey)) return { action: 'silent', conditionKey: opts.conditionKey };
-      openIncidents.add(opts.conditionKey);
-      return { action: 'human', conditionKey: opts.conditionKey, delivered: true };
-    }
-    return { action: opts.disposition, conditionKey: opts.conditionKey };
+    if (openIncidents.has(opts.conditionKey)) return { action: 'silent', conditionKey: opts.conditionKey };
+    openIncidents.add(opts.conditionKey);
+    return { action: opts.disposition, conditionKey: opts.conditionKey, dispatchOk: true };
   };
   const resolve = (key) => {
     calls.resolved.push(key);
@@ -204,7 +201,8 @@ function makeHarness() {
     openIncidents.delete(key);
     return had;
   };
-  return { calls, route, resolve, openIncidents };
+  const readLedger = () => ({ conditions: Object.fromEntries([...openIncidents].map(k => [k, { status: 'open', disposition: 'auto' }])) });
+  return { calls, route, resolve, readLedger, openIncidents };
 }
 
 let stateCounter = 0;
@@ -212,65 +210,76 @@ function tmpStatePath() {
   return path.join(os.tmpdir(), `sla-state-${process.pid}-${stateCounter++}.json`);
 }
 
-test('pages email once, then dedup silently on a non-growing refire', async () => {
+const PAGE_KEY = 'opening-night-sla:pages-stuck';
+const opt = (h, statePath) => ({ route: h.route, resolve: h.resolve, readLedger: h.readLedger, statePath });
+
+test('stuck reviews file one PARKED card per show (never an owner email), then dedup silently (BRO-5480)', async () => {
   const h = makeHarness();
   const statePath = tmpStatePath();
-  const pages = [{ showId: 's', outletId: 'o', elapsedMin: 70 }];
-
-  await dispatchSlaAlerts({ warnings: [], pages }, { route: h.route, resolve: h.resolve, statePath });
-  await dispatchSlaAlerts({ warnings: [], pages }, { route: h.route, resolve: h.resolve, statePath });
-
-  const humanRoutes = h.calls.routed.filter(r => r.disposition === 'human');
-  assert.equal(humanRoutes.length, 2, 'routeAlert called both times');
-  // Only ONE actually emailed — the second was a silent refire in the router.
-  const state = JSON.parse(fs.readFileSync(statePath, 'utf8'));
-  assert.equal(state.notifiedPageCount, 1);
+  const pages = [{ showId: 's', outletId: 'o', elapsedMin: 70 }, { showId: 's', outletId: 'p', elapsedMin: 65 }];
+  await dispatchSlaAlerts({ warnings: [], pages }, opt(h, statePath));
+  await dispatchSlaAlerts({ warnings: [], pages }, opt(h, statePath));
+  const pageRoutes = h.calls.routed.filter(r => r.conditionKey.startsWith(PAGE_KEY));
+  assert.equal(pageRoutes.length, 2, 'one route per show per run');
+  for (const r of pageRoutes) {
+    assert.equal(r.conditionKey, `${PAGE_KEY}:s`);
+    assert.equal(r.disposition, 'auto');
+    assert.notEqual(r.dispatchAtFiling, true, 'parked, so the CI sweep cancels it on drain');
+  }
+  assert.equal(h.calls.routed.some(r => r.disposition === 'human'), false, 'nothing asks to email the owner');
+  assert.deepEqual(JSON.parse(fs.readFileSync(statePath, 'utf8')).stuckShows, ['s']);
   fs.rmSync(statePath, { force: true });
 });
 
-test('a growing count re-notifies once (resolve → re-open)', async () => {
+test('a second stuck show gets its own card; the first stays silent', async () => {
   const h = makeHarness();
   const statePath = tmpStatePath();
-
-  await dispatchSlaAlerts({ warnings: [], pages: [{ showId: 's1', outletId: 'o', elapsedMin: 70 }] }, { route: h.route, resolve: h.resolve, statePath });
-  // grew 1 → 3
-  await dispatchSlaAlerts({ warnings: [], pages: [
-    { showId: 's1', outletId: 'o', elapsedMin: 70 },
-    { showId: 's2', outletId: 'o', elapsedMin: 65 },
-    { showId: 's3', outletId: 'o', elapsedMin: 61 },
-  ] }, { route: h.route, resolve: h.resolve, statePath });
-
-  // The growth path resolves the open incident so the router re-emails.
-  assert.ok(h.calls.resolved.includes('opening-night-sla:pages-stuck'), 'resolved on growth');
-  const state = JSON.parse(fs.readFileSync(statePath, 'utf8'));
-  assert.equal(state.notifiedPageCount, 3, 'peak advanced to the grown count');
+  await dispatchSlaAlerts({ warnings: [], pages: [{ showId: 'a', outletId: 'o', elapsedMin: 70 }] }, opt(h, statePath));
+  await dispatchSlaAlerts({ warnings: [], pages: [{ showId: 'a', outletId: 'o', elapsedMin: 130 }, { showId: 'b', outletId: 'o', elapsedMin: 61 }] }, opt(h, statePath));
+  assert.deepEqual([...h.openIncidents].sort(), [`${PAGE_KEY}:a`, `${PAGE_KEY}:b`]);
+  assert.equal(h.calls.resolved.filter(k => k.startsWith(PAGE_KEY)).length, 0, 'no resolve-and-reopen churn');
   fs.rmSync(statePath, { force: true });
 });
 
-test('draining to 0 resolves the incident so the next occurrence notifies fresh', async () => {
+test('a show that drains resolves its own key; others stay open; the next occurrence files fresh', async () => {
   const h = makeHarness();
   const statePath = tmpStatePath();
+  await dispatchSlaAlerts({ warnings: [], pages: [{ showId: 'a', outletId: 'o', elapsedMin: 70 }, { showId: 'b', outletId: 'o', elapsedMin: 70 }] }, opt(h, statePath));
+  await dispatchSlaAlerts({ warnings: [], pages: [{ showId: 'b', outletId: 'o', elapsedMin: 130 }] }, opt(h, statePath));
+  assert.deepEqual([...h.openIncidents], [`${PAGE_KEY}:b`]);
+  await dispatchSlaAlerts({ warnings: [], pages: [] }, opt(h, statePath));
+  assert.equal(h.openIncidents.size, 0, 'all drained');
+  await dispatchSlaAlerts({ warnings: [], pages: [{ showId: 'a', outletId: 'o', elapsedMin: 62 }] }, opt(h, statePath));
+  assert.ok(h.openIncidents.has(`${PAGE_KEY}:a`), 'fresh incident, fresh card');
+  fs.rmSync(statePath, { force: true });
+});
 
-  await dispatchSlaAlerts({ warnings: [], pages: [{ showId: 's', outletId: 'o', elapsedMin: 70 }] }, { route: h.route, resolve: h.resolve, statePath });
-  assert.ok(h.openIncidents.has('opening-night-sla:pages-stuck'));
+test('the pre-BRO-5480 shared email incident left open resolves on the next run', async () => {
+  const h = makeHarness();
+  h.openIncidents.add(PAGE_KEY); // legacy shared key, opened under disposition 'human'
+  const statePath = tmpStatePath();
+  await dispatchSlaAlerts({ warnings: [], pages: [{ showId: 's', outletId: 'o', elapsedMin: 700 }] }, opt(h, statePath));
+  assert.ok(h.calls.resolved.includes(PAGE_KEY), 'legacy key resolved');
+  assert.ok(h.openIncidents.has(`${PAGE_KEY}:s`), 'and the per-show card filed');
+  fs.rmSync(statePath, { force: true });
+});
 
-  // drained
-  await dispatchSlaAlerts({ warnings: [], pages: [] }, { route: h.route, resolve: h.resolve, statePath });
-  assert.equal(h.openIncidents.has('opening-night-sla:pages-stuck'), false, 'incident resolved on drain');
-  const state = JSON.parse(fs.readFileSync(statePath, 'utf8'));
-  assert.equal(state.notifiedPageCount, 0);
-
-  // reoccurs → emails again (fresh incident)
-  await dispatchSlaAlerts({ warnings: [], pages: [{ showId: 's', outletId: 'o', elapsedMin: 62 }] }, { route: h.route, resolve: h.resolve, statePath });
-  const humanRoutes = h.calls.routed.filter(r => r.disposition === 'human' && r.conditionKey === 'opening-night-sla:pages-stuck');
-  assert.equal(humanRoutes.length, 2);
+test('the state file is rewritten only when the stuck-show set changes (it is committed hourly)', async () => {
+  const h = makeHarness();
+  const statePath = tmpStatePath();
+  await dispatchSlaAlerts({ warnings: [], pages: [] }, opt(h, statePath));
+  assert.equal(fs.existsSync(statePath), false, 'nothing stuck, nothing ever stuck: no write');
+  await dispatchSlaAlerts({ warnings: [], pages: [{ showId: 's', outletId: 'o', elapsedMin: 70 }] }, opt(h, statePath));
+  const first = fs.readFileSync(statePath, 'utf8');
+  await dispatchSlaAlerts({ warnings: [], pages: [{ showId: 's', outletId: 'o', elapsedMin: 130 }] }, opt(h, statePath));
+  assert.equal(fs.readFileSync(statePath, 'utf8'), first, 'same set: untouched');
   fs.rmSync(statePath, { force: true });
 });
 
 test('warnings route to digest disposition (never their own email)', async () => {
   const h = makeHarness();
   const statePath = tmpStatePath();
-  await dispatchSlaAlerts({ warnings: [{ showId: 's', outletId: 'o', elapsedMin: 40 }], pages: [] }, { route: h.route, resolve: h.resolve, statePath });
+  await dispatchSlaAlerts({ warnings: [{ showId: 's', outletId: 'o', elapsedMin: 40 }], pages: [] }, opt(h, statePath));
   const warnRoute = h.calls.routed.find(r => r.conditionKey === 'opening-night-sla:warnings-delayed');
   assert.ok(warnRoute, 'warning was routed');
   assert.equal(warnRoute.disposition, 'digest');
@@ -280,65 +289,8 @@ test('warnings route to digest disposition (never their own email)', async () =>
 test('empty warnings resolve the warn condition (so a fresh batch re-digests)', async () => {
   const h = makeHarness();
   const statePath = tmpStatePath();
-  await dispatchSlaAlerts({ warnings: [], pages: [] }, { route: h.route, resolve: h.resolve, statePath });
+  await dispatchSlaAlerts({ warnings: [], pages: [] }, opt(h, statePath));
   assert.ok(h.calls.resolved.includes('opening-night-sla:warnings-delayed'), 'warn condition resolved on empty');
-  fs.rmSync(statePath, { force: true });
-});
-
-test('a failed page delivery does not advance the notified peak (retries next run)', async () => {
-  const calls = { routed: [] };
-  // Router path that returns action:'human' but delivered:false (Resend down) —
-  // it does NOT record its ledger, so the incident stays fresh and retries.
-  const route = async (opts) => { calls.routed.push(opts); return { action: 'human', delivered: false, conditionKey: opts.conditionKey }; };
-  const resolve = () => false;
-  const statePath = tmpStatePath();
-
-  await dispatchSlaAlerts({ warnings: [], pages: [{ showId: 's', outletId: 'o', elapsedMin: 70 }] }, { route, resolve, statePath });
-  // Peak must NOT advance to 1 — nobody received the page.
-  const exists = fs.existsSync(statePath);
-  const state = exists ? JSON.parse(fs.readFileSync(statePath, 'utf8')) : {};
-  assert.notEqual(state.notifiedPageCount, 1, 'peak not advanced on failed delivery');
-  if (exists) fs.rmSync(statePath, { force: true });
-});
-
-test('a page-worthy-gate digest downgrade still advances the peak and re-fires on growth (card #616 follow-up)', async () => {
-  // Simulates routeAlert() downgrading disposition:'human' to action:'digest'
-  // (page-worthy gate, card #611) — the peak must still advance, or the
-  // resolve-on-growth check below can never see prevNotified > 0 and the
-  // condition goes silent under the router's own 30-day cooldown instead of
-  // re-queuing a digest line on the next stuck-count check.
-  const calls = { routed: [], resolved: [] };
-  const openIncidents = new Set();
-  const route = async (opts) => {
-    calls.routed.push(opts);
-    if (openIncidents.has(opts.conditionKey)) return { action: 'silent', conditionKey: opts.conditionKey };
-    openIncidents.add(opts.conditionKey);
-    return { action: 'digest', conditionKey: opts.conditionKey, requestedDisposition: opts.disposition };
-  };
-  const resolve = (key) => {
-    calls.resolved.push(key);
-    const had = openIncidents.has(key);
-    openIncidents.delete(key);
-    return had;
-  };
-  const statePath = tmpStatePath();
-
-  await dispatchSlaAlerts({ warnings: [], pages: [{ showId: 's1', outletId: 'o', elapsedMin: 70 }] }, { route, resolve, statePath });
-  let state = JSON.parse(fs.readFileSync(statePath, 'utf8'));
-  assert.equal(state.notifiedPageCount, 1, 'peak advances on a digest downgrade, not just a real email');
-
-  // grew 1 → 3 while still gated to digest — must resolve-and-reopen, not go silent.
-  await dispatchSlaAlerts({ warnings: [], pages: [
-    { showId: 's1', outletId: 'o', elapsedMin: 90 },
-    { showId: 's2', outletId: 'o', elapsedMin: 65 },
-    { showId: 's3', outletId: 'o', elapsedMin: 61 },
-  ] }, { route, resolve, statePath });
-
-  assert.ok(calls.resolved.includes('opening-night-sla:pages-stuck'), 'growth resolves the incident even under a digest downgrade');
-  const digestRoutes = calls.routed.filter(r => r.conditionKey === 'opening-night-sla:pages-stuck' && r.disposition === 'human');
-  assert.equal(digestRoutes.length, 2, 'both calls requested human — neither was silently skipped');
-  state = JSON.parse(fs.readFileSync(statePath, 'utf8'));
-  assert.equal(state.notifiedPageCount, 3, 'peak advanced to the grown count on the second digest downgrade');
   fs.rmSync(statePath, { force: true });
 });
 
@@ -485,4 +437,38 @@ test('resolveSlaScope: a --show filtered run never speaks for the night', () => 
   const payload = { generatedAt: 'x', shows: [], error: 'Show not found: typo' };
   assert.equal(resolveSlaScope(payload, { filtered: true }).known, false);
   assert.equal(resolveSlaScope({ generatedAt: 'x', shows: [{ show: { id: 'a' } }] }, { filtered: true }).known, false);
+});
+
+// --- BRO-5480: a show rebuild still holds back as not open does not page ---
+test('reviews on a show rebuild is holding as not-yet-open do not page; they page again once the hold goes stale', () => {
+  const now = new Date('2026-10-16T12:32:00Z');
+  const show = 'dirty-dancing-the-classic-story-on-stage-west-end-2026';
+  const entries = [
+    makeEntry(show, 'whatsonstage:james-fitzgerald:https://www.whatsonstage.com/old-review/', 'review-first-seen', 690, now),
+    { showId: show, reviewKey: null, stage: 'held', at: new Date(now - 20 * MS_MIN).toISOString(), metadata: { reason: 'skippedUpcomingShows' } },
+  ];
+  assert.equal(evaluateSlaForReviews(entries, { now, activeShowIds: [show] }).pages.length, 0, 'fresh hold: not stuck');
+  const later = new Date(now.getTime() + 3 * 60 * MS_MIN); // show opened, no held line for 3h
+  assert.equal(evaluateSlaForReviews(entries, { now: later, activeShowIds: [show] }).pages.length, 1, 'stale hold: back in flight');
+  // a hold from BEFORE the review was first seen says nothing about it
+  const early = [entries[0], { ...entries[1], at: new Date(now - 700 * MS_MIN).toISOString() }];
+  assert.equal(evaluateSlaForReviews(early, { now, activeShowIds: [show] }).pages.length, 1);
+});
+
+test('isBeforeOpeningDate: held only strictly before the opening date', () => {
+  const { isBeforeOpeningDate } = require('../../scripts/lib/stage-latency.js');
+  const now = new Date('2026-10-16T05:00:00Z');
+  assert.equal(isBeforeOpeningDate('2026-10-17', now), true);
+  assert.equal(isBeforeOpeningDate('2026-10-16', now), false, 'opening day: reviews are due');
+  assert.equal(isBeforeOpeningDate(undefined, now), false);
+  assert.equal(isBeforeOpeningDate('TBA', now), false);
+});
+
+test('isHeldBeforeOpening: upcoming with no date is held; previews with no date is not', () => {
+  const { isHeldBeforeOpening } = require('../../scripts/lib/stage-latency.js');
+  const now = new Date('2026-10-16T05:00:00Z');
+  assert.equal(isHeldBeforeOpening('skippedUpcomingShows', null, now), true);
+  assert.equal(isHeldBeforeOpening('skippedPreviewsShows', null, now), false);
+  assert.equal(isHeldBeforeOpening('skippedPreviewsShows', '2026-10-16', now), false, 'opening day');
+  assert.equal(isHeldBeforeOpening('skippedPreviewsShows', '2026-10-20', now), true);
 });

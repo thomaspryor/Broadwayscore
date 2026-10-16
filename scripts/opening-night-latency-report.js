@@ -82,6 +82,8 @@ function computeLatencyStats(entries, { showFilter, date } = {}) {
     // A showId-less deployed-live line is global (update-deploy-watermark.yml
     // has always emitted it that way), so --show=ID must not filter it out or a
     // scoped report loses its deploy terminal.
+    // A show-level 'held' line (show not open yet, BRO-5480) is not a review.
+    if (e.stage === 'held') continue;
     const isGlobalLine = !e.showId && !e.reviewKey;
     if (showFilter && !isGlobalLine && e.showId !== showFilter) continue;
 

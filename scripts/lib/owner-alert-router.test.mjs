@@ -810,10 +810,8 @@ test('isPageWorthy: allowlist matches exact keys and documented prefixes, reject
     assert.equal(router.isPageWorthy('e2e-canary:chain-broken'), true);
     assert.equal(router.isPageWorthy('on-monitor-launch-failed-2026-07-28'), true);
     assert.equal(router.isPageWorthy('broadcast:draft-creation-failed:broadway'), true);
-    // opening-night-sla.js only advances its re-notify "peak" on disposition
-    // 'human' — this MUST stay allowlisted or SLA breaches silently stop
-    // re-paging after the first downgrade (ship-check adversarial finding).
-    assert.equal(router.isPageWorthy('opening-night-sla:pages-stuck'), true);
+    // BRO-5480: stuck opening-night reviews file a worker card, never email.
+    assert.equal(router.isPageWorthy('opening-night-sla:pages-stuck'), false);
     assert.equal(router.isPageWorthy('t1-coverage:new-gaps-24h'), false);
     assert.equal(router.isPageWorthy('secrets-health:Vercel'), false);
     assert.equal(router.isPageWorthy(''), false);
