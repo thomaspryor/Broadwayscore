@@ -31,7 +31,12 @@ const {
   planSelfHealDispatch,
   executeSelfHealDispatch,
   idsClearedSinceLastRun,
+  IMAGELESS_DISPATCH_FAILED_KEY,
+  IMAGELESS_STILL_IMAGELESS_KEY,
+  buildDispatchFailedAlert,
+  buildStillImagelessAlert,
 } = require('./lib/image-trigger-guard.js');
+const { syncRollup } = require('./lib/rollup-alert.js');
 const { dispatchImageFetch } = require('./lib/dispatch-image-fetch.js');
 const { hasActiveNoArtMarker } = require('./lib/no-reliable-art.js');
 
@@ -183,49 +188,40 @@ async function main() {
   // Only shows a SUCCESSFUL dispatch actually carried get their attempt counter
   // and cooldown advanced — a failed dispatch must leave the ledger untouched so
   // the next cycle retries instead of waiting out a cooldown for work that never
-  // happened. The alert stays keyed PER SHOW: one global key would let a later
-  // batch of entirely different shows be silenced behind an earlier batch's 24h
-  // cooldown, losing per-show ownership (pre-ship review finding).
+  // happened. Failures are collected and alerted ONCE per run under a stable
+  // rollup key (BRO-5496); per-show keys filed one near-identical card per show.
+  const failedShows = [];
+  let failedError = 'unknown';
   await executeSelfHealDispatch({
     plan,
     dispatch: dispatchImageFetch,
     nowMs,
     log: (line) => console.log(line),
-    onAlert: async ({ show, error, batchIds }) => {
-      try {
-        const { routeAlert } = require('./lib/owner-alert-router.js');
-        await routeAlert({
-          conditionKey: `imageless-scored-show:dispatch-failed:${show.id}`,
-          title: `Image-fetch self-heal dispatch failed for ${show.title || show.id}`,
-          description: `${show.title || show.id} has reviews but no image on disk, and the automatic fetch-all-image-formats.yml dispatch itself failed: ${error}. It was dispatched in a batch of ${plan.due.length}: ${batchIds}`,
-          hint: `Check GITHUB_TOKEN/GH_TOKEN scope for actions:write, then re-run: gh workflow run fetch-all-image-formats.yml -f show_id=${show.id}`,
-          severity: 'error',
-          disposition: 'auto',
-          cooldownHours: 24,
-        });
-      } catch (err) {
-        console.error(`routeAlert failed: ${err.message}`);
-      }
+    onAlert: async ({ show, error }) => {
+      failedShows.push({ id: show.id, title: show.title });
+      failedError = error;
     },
   });
 
-  for (const f of orderedFlagged) {
-    const entry = entryById.get(f.id);
-    if ((entry.dispatchAttempts || 0) >= ESCALATE_AFTER_ATTEMPTS) {
-      try {
-        const { routeAlert } = require('./lib/owner-alert-router.js');
-        await routeAlert({
-          conditionKey: `imageless-scored-show:still-imageless:${f.id}`,
-          title: `${f.title || f.id} still has no image after ${entry.dispatchAttempts} self-heal attempts`,
-          description: `Self-heal has dispatched fetch-all-image-formats.yml ${entry.dispatchAttempts} times for ${f.title || f.id} but no image has landed on disk — likely no discoverable poster for this show, needs a manual source.`,
-          hint: `node scripts/fetch-show-images-auto.js --show=${f.id} --dry-run   # inspect why no candidate image is found`,
-          severity: 'warn',
-          disposition: 'auto',
-          cooldownHours: 48,
-        });
-      } catch (err) {
-        console.error(`routeAlert (escalation) failed: ${err.message}`);
+  const stillImageless = orderedFlagged
+    .filter((f) => (entryById.get(f.id).dispatchAttempts || 0) >= ESCALATE_AFTER_ATTEMPTS)
+    .map((f) => ({ id: f.id, title: f.title, attempts: entryById.get(f.id).dispatchAttempts }));
+
+  const rollups = [
+    { key: IMAGELESS_DISPATCH_FAILED_KEY, items: failedShows, opts: buildDispatchFailedAlert(failedShows, failedError), header: (added) => `More shows hit the failed self-heal dispatch (${added.length} new):` },
+    { key: IMAGELESS_STILL_IMAGELESS_KEY, items: stillImageless, opts: buildStillImagelessAlert(stillImageless), header: (added) => `More shows still imageless after repeated self-heal (${added.length} new):` },
+  ];
+  const { routeAlert, resolveQuietConditions } = require('./lib/owner-alert-router.js');
+  for (const r of rollups) {
+    try {
+      if (!r.opts) {
+        resolveQuietConditions([r.key], { quietHours: 48, reason: 'no imageless show in this state' });
+        continue;
       }
+      const routed = await routeAlert(r.opts);
+      await syncRollup({ key: r.key, items: r.items, itemId: (s) => s.id, itemBlock: (s) => `- ${s.title || s.id} (${s.id})`, header: r.header }, routed);
+    } catch (err) {
+      console.error(`routeAlert (${r.key}) failed: ${err.message}`);
     }
   }
 

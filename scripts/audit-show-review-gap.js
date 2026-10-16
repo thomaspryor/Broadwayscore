@@ -1758,6 +1758,7 @@ function planRoundupGapAlerts(results, ingestMissing, now = Date.now()) {
 // BRO-5493: every show with a residual gap this run folds into ONE alert/card.
 // The key is fixed so the next run hits the same ledger row + Linear tracker
 // (findLinearDuplicate matches the key) instead of filing one card per show.
+const { buildRollupAlert, syncRollup } = require('./lib/rollup-alert');
 const ROUNDUP_GAP_ROLLUP_KEY = 'roundup-gap:all';
 function roundupGapLegacyKey(showId) { return `roundup-gap:${showId}`; }
 function roundupGapShowBlock(g) {
@@ -1772,41 +1773,24 @@ function roundupGapShowBlock(g) {
 // was filed would be invisible. Track the shows the card already names in the
 // ledger row and comment the newly added ones on the tracker. BRO-5493.
 async function syncRollupCard(plan, result, deps = {}) {
-  const shows = (plan && plan.alert) || [];
-  if (!result || !shows.length) return { commented: 0 };
-  const router = deps.router || require('./lib/owner-alert-router');
-  const ids = shows.map((g) => g.showId);
-  const filedNow = result.action && result.action !== 'silent';
-  if (!filedNow && !result.linearIdentifier) return { commented: 0 };
-  const ledger = router.loadLedger();
-  const known = new Set(((ledger.conditions[ROUNDUP_GAP_ROLLUP_KEY] || {}).rollupShows) || []);
-  const added = filedNow ? [] : shows.filter((g) => !known.has(g.showId));
-  if (added.length) {
-    const client = deps.linearClient || require('./lib/linear-client');
-    const issue = await client.getIssue(result.linearIdentifier);
-    if (!issue || !issue.id) throw new Error(`rollup tracker ${result.linearIdentifier} not found`);
-    await client.createComment(issue.id, `More shows with roundup-listed reviews not captured (${added.length} new):\n\n${added.map(roundupGapShowBlock).join('\n')}`);
-  }
-  router.patchCondition(ROUNDUP_GAP_ROLLUP_KEY, { rollupShows: filedNow ? ids : [...new Set([...known, ...ids])] });
-  return { commented: added.length };
+  return syncRollup({
+    key: ROUNDUP_GAP_ROLLUP_KEY,
+    items: (plan && plan.alert) || [],
+    itemId: (g) => g.showId,
+    itemBlock: roundupGapShowBlock,
+    header: (added) => `More shows with roundup-listed reviews not captured (${added.length} new):`,
+  }, result, deps);
 }
 
 function buildRoundupGapAlert(plan) {
-  const shows = (plan && plan.alert) || [];
-  if (!shows.length) return null;
-  const total = shows.reduce((n, g) => n + g.counts.residual, 0);
-  const blocks = shows.map(roundupGapShowBlock);
-  const names = shows.map((g) => g.title || g.showId);
-  return {
-    conditionKey: ROUNDUP_GAP_ROLLUP_KEY,
-    title: `Roundup gaps: ${total} listed review(s) not captured across ${shows.length} show(s)`,
-    description: `The BWW / Playbill roundups list reviews the site doesn't have after this run's auto-ingest. Shows: ${names.join(', ')}.\n\n`
-      + `${blocks.join('\n')}\n\n`
-      + 'For each: grep the poller / this audit log for the URL; the EXCLUSION line names the guard that dropped it. Fix the guard, then ingest.',
-    severity: 'warning',
-    disposition: 'auto',
-    cooldownHours: 12,
-  };
+  return buildRollupAlert({
+    key: ROUNDUP_GAP_ROLLUP_KEY,
+    items: (plan && plan.alert) || [],
+    itemBlock: roundupGapShowBlock,
+    title: (shows) => `Roundup gaps: ${shows.reduce((n, g) => n + g.counts.residual, 0)} listed review(s) not captured across ${shows.length} show(s)`,
+    intro: (shows) => `The BWW / Playbill roundups list reviews the site doesn't have after this run's auto-ingest. Shows: ${shows.map((g) => g.title || g.showId).join(', ')}.`,
+    footer: 'For each: grep the poller / this audit log for the URL; the EXCLUSION line names the guard that dropped it. Fix the guard, then ingest.',
+  });
 }
 
 function computeResidualCounts(r, ingestMissing) {

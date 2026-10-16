@@ -36,7 +36,7 @@ test('no residual gaps yields no alert', () => {
 });
 
 function fakes(initial, comments) {
-  const ledger = { conditions: { [ROUNDUP_GAP_ROLLUP_KEY]: { status: 'open', rollupShows: initial } } };
+  const ledger = { conditions: { [ROUNDUP_GAP_ROLLUP_KEY]: { status: 'open', rollupMembers: initial } } };
   return {
     ledger,
     deps: {
@@ -54,7 +54,7 @@ test('a show added after the card was filed is commented on the existing card, o
   assert.equal(r1.commented, 1);
   assert.match(comments[0].body, /Show b \(b\)/);
   assert.doesNotMatch(comments[0].body, /Show a \(a\)/);
-  assert.deepEqual(ledger.conditions[ROUNDUP_GAP_ROLLUP_KEY].rollupShows.sort(), ['a', 'b']);
+  assert.deepEqual(ledger.conditions[ROUNDUP_GAP_ROLLUP_KEY].rollupMembers.sort(), ['a', 'b']);
   const r2 = await syncRollupCard(plan, { action: 'silent', linearIdentifier: 'BRO-1' }, deps);
   assert.equal(r2.commented, 0, 'same show set next run adds no comment');
   assert.equal(comments.length, 1);
@@ -66,5 +66,5 @@ test('a freshly filed card records its shows without commenting', async () => {
   const plan = planRoundupGapAlerts([row('a', 1), row('b', 1)], true, NOW);
   const r = await syncRollupCard(plan, { action: 'auto', linearIdentifier: 'BRO-2' }, deps);
   assert.equal(r.commented, 0);
-  assert.deepEqual(ledger.conditions[ROUNDUP_GAP_ROLLUP_KEY].rollupShows, ['a', 'b']);
+  assert.deepEqual(ledger.conditions[ROUNDUP_GAP_ROLLUP_KEY].rollupMembers, ['a', 'b']);
 });

@@ -231,7 +231,46 @@ function idsClearedSinceLastRun(prevById, hasImageById) {
   return [...prev.keys()].filter((id) => hasImage.get(id) === true);
 }
 
+// BRO-5496: one rollup alert per kind per run instead of one card per show.
+const IMAGELESS_DISPATCH_FAILED_KEY = 'imageless-scored-show:dispatch-failed:all';
+const IMAGELESS_STILL_IMAGELESS_KEY = 'imageless-scored-show:still-imageless:all';
+const imagelessName = (s) => s.title || s.id;
+
+/** items: [{id, title}] shown in the failed batch; error: dispatch error text. */
+function buildDispatchFailedAlert(items, error) {
+  const { buildRollupAlert } = require('./rollup-alert');
+  return buildRollupAlert({
+    key: IMAGELESS_DISPATCH_FAILED_KEY,
+    items,
+    itemBlock: (s) => `- ${imagelessName(s)} (${s.id})`,
+    title: (xs) => `Image-fetch self-heal dispatch failed for ${xs.length} show(s)`,
+    intro: (xs) => `${xs.length} show(s) have reviews but no image on disk, and the automatic fetch-all-image-formats.yml dispatch itself failed: ${error}.`,
+    hint: (xs) => `Check GITHUB_TOKEN/GH_TOKEN scope for actions:write, then re-run: gh workflow run fetch-all-image-formats.yml -f show_id=${xs.map((s) => s.id).join(',')}`,
+    severity: 'error',
+    cooldownHours: 24,
+  });
+}
+
+/** items: [{id, title, attempts}] that are still imageless after repeated self-heal. */
+function buildStillImagelessAlert(items) {
+  const { buildRollupAlert } = require('./rollup-alert');
+  return buildRollupAlert({
+    key: IMAGELESS_STILL_IMAGELESS_KEY,
+    items,
+    itemBlock: (s) => `- ${imagelessName(s)} (${s.id}): ${s.attempts} self-heal attempts, still no image`,
+    title: (xs) => `${xs.length} show(s) still have no image after repeated self-heal attempts`,
+    intro: (xs) => `Self-heal has dispatched fetch-all-image-formats.yml repeatedly for ${xs.length} show(s) but no image has landed on disk. Likely no discoverable poster, needs a manual source.`,
+    hint: (xs) => `node scripts/fetch-show-images-auto.js --show=${xs[0].id} --dry-run   # inspect why no candidate image is found`,
+    severity: 'warn',
+    cooldownHours: 48,
+  });
+}
+
 module.exports = {
+  IMAGELESS_DISPATCH_FAILED_KEY,
+  IMAGELESS_STILL_IMAGELESS_KEY,
+  buildDispatchFailedAlert,
+  buildStillImagelessAlert,
   buildImageDispatchInputs,
   planSelfHealDispatch,
   executeSelfHealDispatch,
