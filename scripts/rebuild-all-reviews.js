@@ -4047,7 +4047,7 @@ showDirs.forEach(showId => {
       // Mail 1997 of the Adelphi Chicago, scored 78). Date is the signal: a UK
       // critic covers a Broadway production at its opening. Note prefix is not
       // the "Cross-market: London outlet" one the reverse self-heal clears.
-      if (showCategory === 'broadway' && !data.wrongProduction && !shouldSkipWrongProductionAudit(data)
+      if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data)
           && !data.allowEarlyDate && !laneOk('tourCrossMarket')
           && (DUAL_MARKET_OUTLETS.has(canonicalOutlet) || DUAL_MARKET_OUTLETS.has(rawOutlet))
           && evaluateLateDualMarketUkOnBroadway({

@@ -7,14 +7,15 @@
  * Daily Mail's 1997 review of the London Adelphi Chicago, live at 78, because
  * the importer only refused reviews dated BEFORE the show (isLikelyWrongProduction).
  *
- * Pure. True when the show is category broadway, the review is dated more than
+ * Pure. True when the show is Broadway (isBroadwayCategory: null category counts), the review is dated more than
  * lagDays after opening, and the date is not inside a declared priorRuns or
  * tourLegs window (a London prior run or transfer is legitimate coverage).
  */
 const { toDateMs } = require('./date-utils');
+const { isBroadwayCategory } = require('./venue-classification');
 
 function isLateTheatreRecordReviewOfBroadwayShow(show, publishDate, { lagDays = 60, isWithinPriorRun, isWithinTourLeg } = {}) {
-  if (!show || show.category !== 'broadway' || !publishDate) return false;
+  if (!show || !isBroadwayCategory(show) || !publishDate) return false;
   const openMs = toDateMs(show.openingDate || show.previewsStartDate || '');
   const pubMs = toDateMs(publishDate);
   if (Number.isNaN(openMs) || Number.isNaN(pubMs)) return false;

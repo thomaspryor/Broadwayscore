@@ -1420,7 +1420,7 @@ function decideInclusion(review, show, guards) {
   // Mirrors rebuild-all-reviews.js's [GUARD:CROSS-MARKET-LATE-DUAL-UK] (BRO-5429).
   // A baseline predating the helper has no such guard, so the delta shows it.
   const lateDualUk = guards.__crossMarketLib?.evaluateLateDualMarketUkOnBroadway;
-  if (typeof lateDualUk === 'function' && show?.category === 'broadway' && !review.wrongProduction
+  if (typeof lateDualUk === 'function' && show && !review.wrongProduction
       && !(typeof guards.shouldSkipWrongProductionAudit === 'function' && guards.shouldSkipWrongProductionAudit(review))
       && !review.allowEarlyDate) {
     const rawOutletLd = (review.outletId || review.outlet || '').toLowerCase();
