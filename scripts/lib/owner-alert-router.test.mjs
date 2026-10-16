@@ -2402,6 +2402,30 @@ test('trackerRefileDue: gone or completed 7d+ ago only; canceled, recent, open a
   }
 });
 
+test('digest escalation and page-gated human alerts refile an old completed tracker', async () => {
+  for (const disposition of ['digest', 'human']) {
+    for (const type of ['completed', 'canceled', 'started', 'error']) {
+      const { router, calls, restore } = loadRouterWithFakes({ linearGetIssueImpl: async () => {
+        if (type === 'error') throw new Error('offline');
+        return { state: { type }, completedAt: isoAgo(200) };
+      } });
+      try {
+        const opts = { conditionKey: 'test:digest-tracker', title: 't', description: 'd', disposition, cooldownHours: 0 };
+        await router.routeAlert(opts);
+        router.patchCondition(opts.conditionKey, { lastSeen: isoAgo(1), notifyCount: 15, linearIdentifier: 'BRO-old' });
+        const result = await router.routeAlert(opts);
+        assert.equal(calls.createLinearIssue.length, type === 'completed' ? 1 : 0, `${disposition}/${type}`);
+        if (type === 'completed') {
+          assert.equal(result.action, 'auto');
+          assert.notEqual(router.loadLedger().conditions[opts.conditionKey].linearIdentifier, 'BRO-old');
+        } else {
+          assert.equal(router.loadLedger().conditions[opts.conditionKey].linearIdentifier, 'BRO-old');
+        }
+      } finally { restore(); }
+    }
+  }
+});
+
 test('routeAlert: an open tracker, or a failed tracker lookup, never refiles', async () => {
   for (const impl of [async (id) => ({ identifier: id, state: { type: 'started' } }), async () => { throw new Error('Linear down'); }]) {
     const { router, calls, restore } = loadRouterWithFakes({ linearGetIssueImpl: impl });

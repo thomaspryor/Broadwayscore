@@ -218,7 +218,7 @@ function deferredAutoIsDue(existing, nowMs, fileAfterHours = DEFERRED_AUTO_FILE_
 // once. The cost of being wrong here is asymmetric: an extra digest line
 // versus an unnoticed overage, so this matches on the FAMILY prefix and errs
 // toward keeping things visible.
-const NEVER_QUIET_CONDITION_RE = /(^provider-spend:|circuit-breaker|(^|[:-])(spend|cost|billing|quota|credits?|overspend|budget)([:-]|$))/i;
+const NEVER_QUIET_CONDITION_RE = /(^provider-spend:|circuit-breaker|(^|[:\s-])(spend|cost|billing|quota|credits?|overspend|budget)([:\s-]|$))/i;
 
 /** Is `conditionKey` a paid-usage family that must never be silenced? */
 function isNeverQuietCondition(conditionKey) {
@@ -974,7 +974,7 @@ async function routeAlert(opts) {
       && (nowMs - Date.parse(incidentOpenedAt)) / 3600000 >= fileAfterHours) {
     staleTracker = await trackerRefileDue(existing.linearIdentifier, (opts && opts.getIssueFn) || linearClient.getIssue, nowMs);
   }
-  const existingForDecision = staleTracker ? { ...existing, linearIdentifier: null } : existing;
+  let existingForDecision = staleTracker ? { ...existing, linearIdentifier: null } : existing;
 
   // A deferred incident that has reached its filing age must get past the
   // cooldown short-circuit below, or the default 168h cooldown would hold
@@ -1017,6 +1017,15 @@ async function routeAlert(opts) {
     // the release, so a condition that recurs daily is not refiled (and
     // swept again) on every incident.
     const escalationCount = digestNotifyCount - (Number.isFinite(existing?.notifyCountAtRelease) ? existing.notifyCountAtRelease : 0);
+    // Digest (including page-gated human) alerts can outlive a completed
+    // tracker too. Check only on a notifying call that could actually file,
+    // so silent refires do not add Linear reads. Human cancellations retain
+    // trackerRefileDue's explicit won't-fix protection; sweep cancellations
+    // already release their pointer through releaseSweptTracker().
+    if (!deferAuto && existing?.linearIdentifier && escalationCount > ESCALATION_NOTIFY_THRESHOLD) {
+      staleTracker = await trackerRefileDue(existing.linearIdentifier, opts.getIssueFn || linearClient.getIssue, nowMs);
+      if (staleTracker) existingForDecision = { ...existing, linearIdentifier: null };
+    }
     digestDecision = decideDigestEscalation({
       conditionKey, notifyCount: escalationCount, now: Date.now(), deferredAuto: deferAuto, fileAfterHours,
       existing: existingForDecision ? { ...existingForDecision, incidentOpenedAt } : existingForDecision,
@@ -1318,6 +1327,51 @@ function resolveQuietConditions(conditionKeys, { quietHours = INCIDENT_GAP_RESET
   return resolved;
 }
 
+// BRO-5267: absence is evidence only for known, periodically evaluated or
+// event-scoped families. Daily checks tolerate missed runs (96h); opening
+// nights and sparse audits get a week. Gap/backstop emitters throttle their
+// own routeAlert calls to every 7 days, so allow two such intervals there.
+// Dated email keys roll over daily.
+// Unknown families and durable integrity failures (e.g. push-ledger-revert,
+// alert-sender-direct-bypass) require an explicit green observation. Paid
+// usage always requires explicit recovery, even inside an allowed family.
+const ABSENCE_RESOLVE_RULES = [
+  { family: /^scheduled-email-missing:/, quietHours: 48 },
+  { family: /^(health-check:|cron-health(?:-failed)?:|alert-router:|feedback-(?:requests-live|outcomes):|geo-bots:|tier-skip-drift$)/, quietHours: 96 },
+  { family: /^(opening-night-|on-monitor-|broadcast-gate:|broadcast:overdue:|land:|direct-push:)/, quietHours: 168 },
+  { family: /^(gap:|backstop:)/, quietHours: 336 },
+  { family: /^(orphan-unscored-requeue:|review-gap:|roundup-gap:|we-aggregator-go-live:|ob-venue-go-live:|express-retry-still-thin:|slug-misroute:|outlet-ground-truth:)/, quietHours: 168 },
+];
+
+async function resolveAbsentConditions({ nowMs = Date.now(), getIssueFn = linearClient.getIssue } = {}) {
+  const ledger = loadLedger();
+  const batches = new Map();
+  const trackers = new Map();
+  for (const [key, condition] of Object.entries(ledger.conditions)) {
+    if (condition.status !== 'open' || isNeverQuietCondition(key)) continue;
+    const rule = ABSENCE_RESOLVE_RULES.find(({ family }) => family.test(key));
+    const lastSeenMs = Date.parse(condition.lastSeen || '');
+    if (!rule || !Number.isFinite(lastSeenMs) || nowMs - lastSeenMs <= rule.quietHours * 3600000) continue;
+    if (condition.linearIdentifier) {
+      const id = condition.linearIdentifier;
+      if (!trackers.has(id)) trackers.set(id, await resolveTracker(id, getIssueFn));
+      const tracker = trackers.get(id);
+      // Missing, cancelled, unreadable and still-open trackers are not Done.
+      // resolveTracker follows duplicates to the actual work item.
+      if (tracker.issue?.state?.type !== 'completed') continue;
+    }
+    if (!batches.has(rule.quietHours)) batches.set(rule.quietHours, []);
+    batches.get(rule.quietHours).push(key);
+  }
+  const resolved = [];
+  for (const [quietHours, keys] of batches) {
+    // Reload before writing and recheck lastSeen in case a caller refreshed it
+    // during the tracker reads. Keep all incident history and tracker identity.
+    resolved.push(...resolveQuietConditions(keys, { quietHours, reason: 'absent', nowMs }));
+  }
+  return resolved;
+}
+
 // Hard-removes a condition from the ledger — for synthetic/test conditions
 // only (e.g. the E2E canary's fixed conditionKeys). Real conditions should
 // use resolveCondition() so history (firstSeen/notifyCount) is preserved;
@@ -1365,6 +1419,7 @@ module.exports = {
   isPageWorthy, // re-exported for callers/tests that want to check gating without calling routeAlert
   resolveCondition,
   resolveQuietConditions,
+  resolveAbsentConditions,
   patchCondition,
   deleteCondition,
   loadLedger,

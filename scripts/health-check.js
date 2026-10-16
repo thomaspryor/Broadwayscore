@@ -41,7 +41,7 @@ const { selectUnroutedVisitorRows } = require('./lib/start-now-filing.js');
 const { untrackedPersistentRowsResult, ROW_NAME: UNTRACKED_ROWS_ROW_NAME } = require('./lib/untracked-persistent-rows.js');
 // BRO-5168: card filings per run for failing rows with no playbook route.
 const MAX_UNROUTED_FILINGS_PER_RUN = 4;
-const { routeAlert, resolveQuietConditions, readDispatchAttempts, peekDigestQueue, clearDigestQueue, toSnapshotQueuedRow } = require('./lib/owner-alert-router.js');
+const { routeAlert, resolveQuietConditions, resolveAbsentConditions, readDispatchAttempts, peekDigestQueue, clearDigestQueue, toSnapshotQueuedRow } = require('./lib/owner-alert-router.js');
 const { clearedHealthCheckKeys } = require('./lib/health-row-check-cmd.js');
 const { summarizeFailureStreak, deadmanShouldPage } = require('./lib/alert-dispatch-streak.js');
 const { readOwnerEmailLog } = require('./lib/discord-notify.js');
@@ -5987,6 +5987,11 @@ async function main() {
   // history.lastErrorFingerprint still holds YESTERDAY's error set here —
   // getDigestSubject compares against it to detect "same bad news as yesterday".
   await sendEmailDigest(allResults, history, workflowSummary, autoFixResults);
+
+  // Daily router lifecycle sweep, after this run refreshed live conditions.
+  // data-health-check.yml already commits the router ledger in this job.
+  const absentConditions = await resolveAbsentConditions();
+  console.log(`[Alert Router] resolved ${absentConditions.length} absent condition(s)`);
 
   // Only after the digest used yesterday's fingerprint: record today's set.
   updateErrorFingerprint(history, allResults, autoFixResults);
