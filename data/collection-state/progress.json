@@ -331,7 +331,12 @@
     "the-price-off-west-end-2026/britishtheatrecom--susan-novak.json",
     "the-balusters-2026/broadwayworld--unknown.json",
     "the-fear-of-13-2026/broadwayworld--unknown.json",
-    "the-fear-of-13-2026/one-minute-critic--matthew-wexler.json"
+    "the-fear-of-13-2026/one-minute-critic--matthew-wexler.json",
+    "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
+    "cats-the-jellicle-ball-2026/nysr--melissa-rose-bernardo.json",
+    "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+    "inter-alia-west-end-2026/lbc--johnny-jenkins.json",
+    "inter-alia-west-end-2026/west-end-best-friend--cara-brazier.json"
   ],
   "failed": [
     "rent-west-end-2026/city-am--adam-bloodworth.json",
@@ -598,7 +603,12 @@
     "titanique-2026/frontmezzjunkies--unknown.json",
     "titanique-2026/wsj--charles-isherwood.json",
     "titanique-2026/cititour--brian-scott-lipton.json",
-    "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json"
+    "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
+    "death-of-a-salesman-2026/dailybeast--tim-teeman.json",
+    "death-of-a-salesman-2026/talkinbroadway--unknown.json",
+    "death-of-a-salesman-2026/theatrely--kobi-kassal.json",
+    "inter-alia-west-end-2026/telegraph--unknown.json",
+    "cats-the-jellicle-ball-2026/vulture--sara-holdren.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -787,7 +797,8 @@
       "the-maids-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "end-of-the-rainbow-west-end-2026/north-west-end--zain-russell.json",
       "the-receptionist-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "broken-snow-off-broadway-2026/one-minute-critic--jerry-portwood.json"
+      "broken-snow-off-broadway-2026/one-minute-critic--jerry-portwood.json",
+      "cats-the-jellicle-ball-2026/nysr--melissa-rose-bernardo.json"
     ],
     "amp": [
       "data/review-texts/the-merchant-of-venice-2010/variety--charles-isherwood.json",
@@ -797,9 +808,7 @@
       "data/review-texts/dirty-dancing-tour-2026/variety--payton-turkeltaub.json",
       "dirty-dancing-tour-2026/variety--payton-turkeltaub.json"
     ],
-    "browserbase": [
-      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingdog": [
       "rent-west-end-2026/ground--unknown.json",
@@ -959,11 +968,15 @@
       "the-price-off-west-end-2026/britishtheatrecom--susan-novak.json",
       "the-balusters-2026/broadwayworld--unknown.json",
       "the-fear-of-13-2026/broadwayworld--unknown.json",
-      "the-fear-of-13-2026/one-minute-critic--matthew-wexler.json"
+      "the-fear-of-13-2026/one-minute-critic--matthew-wexler.json",
+      "death-of-a-salesman-2026/one-minute-critic--matthew-wexler.json",
+      "cats-the-jellicle-ball-2026/one-minute-critic--matthew-wexler.json",
+      "inter-alia-west-end-2026/lbc--johnny-jenkins.json",
+      "inter-alia-west-end-2026/west-end-best-friend--cara-brazier.json"
     ]
   },
   "startTime": "2026-10-15T21:21:39.666Z",
-  "lastProcessed": "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
+  "lastProcessed": "cats-the-jellicle-ball-2026/vulture--sara-holdren.json",
   "log": [
     {
       "t": "2026-10-16T00:16:11.438Z",
@@ -1008,45 +1021,6 @@
       "t": "2026-10-15T23:08:36.870Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-16T02:50:19.827Z",
-      "event": "bb-session",
-      "session": "c347439d",
-      "url": "https://www.talkinbroadway.com/page/ob/10_14_26b.html"
-    },
-    {
-      "t": "2026-10-16T02:50:20.763Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-16T02:51:46.081Z",
-      "event": "bb-session",
-      "session": "f08587ec",
-      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
-    },
-    {
-      "t": "2026-10-16T02:52:13.656Z",
-      "event": "bb-session",
-      "session": "aa4dd112",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654594"
-    },
-    {
-      "t": "2026-10-16T02:52:14.499Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-16T02:54:49.855Z",
-      "event": "bb-session",
-      "session": "514c9e68",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
-    },
-    {
-      "t": "2026-10-16T02:54:50.762Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
