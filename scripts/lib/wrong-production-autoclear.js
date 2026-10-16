@@ -790,7 +790,9 @@ function shouldAutoClearDatelessRevival(data, { hasUsableDate } = {}) {
  * Decide whether a "Collected-before-previews guard" hold (BRO-4855,
  * collected-before-previews.js) should be released. Same contract as
  * shouldAutoClearDatelessRevival: only our own flag (reason/note prefix), a
- * human override always wins, a unanimous ensemble wrong_production verdict
+ * human-held flag (isWrongProductionHeld) is never released, a human override
+ * (allowEarlyDate / manual clear / humanReviewedWrongProduction === false)
+ * releases it, a unanimous ensemble wrong_production verdict
  * outranks the release. Otherwise the evaluator is re-run on the CURRENT
  * record + show and the hold lifts once it no longer fires: a usable date
  * arrived (the dated guards then re-decide), the show gained priorRuns /
@@ -804,9 +806,12 @@ function shouldAutoClearDatelessRevival(data, { hasUsableDate } = {}) {
  */
 function shouldAutoClearCollectedBeforePreviews(data, { hasUsableDate, show } = {}) {
   if (!isCollectedBeforePreviewsHold(data)) return false;
+  // A person stands behind the flag (humanReviewedWrongProduction === true,
+  // approved-fix flag, manual provenance): no heuristic clears it (BRO-3585).
+  if (isWrongProductionHeld(data)) return false;
   const humanOverride = !!data.allowEarlyDate
     || !!data.wrongProductionManualClear
-    || data.humanReviewedWrongProduction === true;
+    || data.humanReviewedWrongProduction === false;
   if (humanOverride) return true;
   if (hasEnsembleConsensus(data, 'wrong_production')) return false;
   // No show record: nothing to re-evaluate against, keep the hold.

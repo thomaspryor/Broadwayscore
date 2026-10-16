@@ -22,6 +22,8 @@ const INCLUSION_FILES = [
   'scripts/lib/wrong-production-autoclear.js',
   // BRO-4855: the collected-before-previews hold (re-exported via date-guard.js).
   'scripts/lib/collected-before-previews.js',
+  // BRO-4855: resolveGuardReviewDate, the rebuild pre-opening pass's effective date.
+  'scripts/lib/backfill-publish-date.js',
   'src/lib/scoring.ts',
   'src/lib/engine.ts',
   'src/lib/data-core.ts',

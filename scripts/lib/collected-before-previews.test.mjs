@@ -125,7 +125,7 @@ describe('shouldAutoClearCollectedBeforePreviews', () => {
     assert.strictEqual(shouldAutoClearCollectedBeforePreviews({ ...held, wrongProductionManualClear: true }, { hasUsableDate: false, show: TWO_GIRLS }), true);
     const ensemble = { ...held, rejectionReason: 'wrong_production', rejectedBy: 'ensemble-scoreability-check', rejectionAgreeCount: 2 };
     assert.strictEqual(shouldAutoClearCollectedBeforePreviews(ensemble, { hasUsableDate: true, show: TWO_GIRLS }), false);
-    assert.strictEqual(shouldAutoClearCollectedBeforePreviews({ ...ensemble, humanReviewedWrongProduction: true }, { hasUsableDate: false, show: TWO_GIRLS }), true);
+    assert.strictEqual(shouldAutoClearCollectedBeforePreviews({ ...ensemble, humanReviewedWrongProduction: false }, { hasUsableDate: false, show: TWO_GIRLS }), true);
   });
 
   test('never touches another guard\'s flag', () => {
@@ -194,20 +194,36 @@ describe('human verdict wins: clear-then-flag cycle is stable', () => {
     return { d, writes };
   }
 
-  test('humanReviewedWrongProduction === true: released once, never re-flagged', () => {
-    const held = {
-      ...TWO_GIRLS_DEADLINE,
-      humanReviewedWrongProduction: true,
-      wrongProduction: true,
-      wrongProductionReason: COLLECTED_BEFORE_PREVIEWS_REASON,
-      wrongProductionNote: `${COLLECTED_BEFORE_PREVIEWS_NOTE_PREFIX}: x`,
-    };
+  const heldBase = {
+    ...TWO_GIRLS_DEADLINE,
+    wrongProduction: true,
+    wrongProductionReason: COLLECTED_BEFORE_PREVIEWS_REASON,
+    wrongProductionNote: `${COLLECTED_BEFORE_PREVIEWS_NOTE_PREFIX}: x`,
+  };
+
+  test('human-confirmed hold (humanReviewedWrongProduction === true) stays held, even when a date arrives', () => {
+    const held = { ...heldBase, humanReviewedWrongProduction: true };
+    assert.strictEqual(shouldAutoClearCollectedBeforePreviews(held, { hasUsableDate: false, show: TWO_GIRLS }), false);
+    assert.strictEqual(shouldAutoClearCollectedBeforePreviews(held, { hasUsableDate: true, show: TWO_GIRLS }), false);
+    assert.strictEqual(shouldAutoClearCollectedBeforePreviews({ ...heldBase, wrongProductionProvenance: 'manual' }, { hasUsableDate: true, show: TWO_GIRLS }), false);
+    const run1 = rebuildCycle(held, TWO_GIRLS);
+    assert.strictEqual(run1.d.wrongProduction, true);
+    assert.strictEqual(run1.writes, 0);
+  });
+
+  test('human-rejected hold (humanReviewedWrongProduction === false) releases once and is never re-flagged', () => {
+    const held = { ...heldBase, humanReviewedWrongProduction: false };
     const first = rebuildCycle(held, TWO_GIRLS);
     assert.strictEqual(first.d.wrongProduction, false);
     assert.strictEqual(first.writes, 1);
     const second = rebuildCycle(first.d, TWO_GIRLS);
     assert.strictEqual(second.d.wrongProduction, false);
     assert.strictEqual(second.writes, 0);
+  });
+
+  test('flag pass never stamps a record a human already marked (=== true)', () => {
+    const unflagged = { ...TWO_GIRLS_DEADLINE, humanReviewedWrongProduction: true };
+    assert.strictEqual(shouldFlagCollectedBeforePreviews(unflagged, { hasUsableDate: false, show: TWO_GIRLS }).flag, false);
   });
 
   test('without a human verdict the hold is stable (no writes on re-run)', () => {

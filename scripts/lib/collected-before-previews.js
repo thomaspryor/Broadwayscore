@@ -98,8 +98,9 @@ function evaluateCollectedBeforePreviews({ hasUsableDate, firstSeenAt, show, mar
 /**
  * Flag-pass decision for one review record: evaluateCollectedBeforePreviews
  * plus the record-level gate. A human wrongProduction verdict
- * (humanReviewedWrongProduction === true) always wins: the auto-clear releases
- * the hold for it, so flagging it again would flip-flop every rebuild.
+ * (humanReviewedWrongProduction === true) is already decided: never re-flag it
+ * under this guard's reason (the auto-clear also never releases such a hold,
+ * isWrongProductionHeld, BRO-3585).
  *
  * @param {object} review
  * @param {{ hasUsableDate: boolean, show: object|null }} ctx
@@ -107,7 +108,9 @@ function evaluateCollectedBeforePreviews({ hasUsableDate, firstSeenAt, show, mar
  */
 function shouldFlagCollectedBeforePreviews(review, { hasUsableDate, show } = {}) {
   if (!review) return { flag: false, reason: null };
-  if (review.humanReviewedWrongProduction === true) return { flag: false, reason: 'human_reviewed' };
+  // Either human verdict (true: already flagged by a person; false: a person
+  // rejected wrongProduction) is final for this heuristic.
+  if (typeof review.humanReviewedWrongProduction === 'boolean') return { flag: false, reason: 'human_reviewed' };
   return evaluateCollectedBeforePreviews({ hasUsableDate, firstSeenAt: review.firstSeenAt, show });
 }
 

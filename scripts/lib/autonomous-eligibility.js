@@ -181,6 +181,7 @@ const EXCLUDED_FILES = new Set([
   'scripts/lib/date-guard.js',
   'scripts/lib/wrong-production-autoclear.js',
   'scripts/lib/collected-before-previews.js',
+  'scripts/lib/backfill-publish-date.js',
   'src/lib/scoring.ts',
   'src/lib/engine.ts',
   'src/lib/data-core.ts',
