@@ -18,7 +18,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const argv = process.argv.slice(2);
 if (hasHelpFlag(argv)) {
-  console.log('audit-stale-slot-squatters.js [--show=a,b] [--min-year=2026] [--json] [--strict]');
+  console.log('audit-stale-slot-squatters.js [--show=a,b] [--min-year=2026] [--json] [--strict] [--all]');
   process.exit(0);
 }
 const arg = (k) => { const a = argv.find((x) => x.startsWith(`--${k}=`)); return a ? a.slice(k.length + 3) : null; };
@@ -63,14 +63,14 @@ try {
   const rj = JSON.parse(fs.readFileSync(REVIEWS, 'utf8'));
   for (const r of Array.isArray(rj) ? rj : rj.reviews || []) if (r && r.showId && r.outletId) haveOutlet.add(`${r.showId}|${r.outletId}`);
 } catch { /* no reviews.json: cannot tell, so keep every finding */ }
-const slotEmpty = (showId, f) => !haveOutlet.size || !haveOutlet.has(`${showId}|${String(f.file).split('--')[0]}`);
+const slotEmpty = (showId, f) => !haveOutlet.size || !haveOutlet.has(`${showId}|${(f.outletId || String(f.file).split('--')[0])}`);
 
 const found = [];
 for (const [showId, files] of tree) {
   if (onlyShows && !onlyShows.includes(showId)) continue;
   const show = byId[showId];
   if (!show || !show.openingDate || Number(String(show.openingDate).slice(0, 4)) < minYear) continue;
-  for (const r of findDroppedByWrongTwin(files)) found.push({ showId, ...r });
+  for (const r of findDroppedByWrongTwin(files)) if (argv.includes('--all') || slotEmpty(showId, { ...r, outletId: (files.find((x) => x.file === r.file).data || {}).outletId })) found.push({ showId, ...r });
   for (const r of findStaleSlotSquatters(files, show, urlOwners, showId)) if (argv.includes('--all') || slotEmpty(showId, r)) found.push({ showId, ...r });
 }
 if (argv.includes('--json')) console.log(JSON.stringify({ scanned, count: found.length, found }, null, 2));

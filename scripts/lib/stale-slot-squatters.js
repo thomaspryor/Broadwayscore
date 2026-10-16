@@ -17,10 +17,13 @@
  *    stored under it (timeout-london--andrzej-lukowski, times-uk--clive-davis).
  *    The file keeps the outlet+critic slot, so the real review's ingest collides
  *    with it. Fix: delete it and refetch the url.
+ *    These are CANDIDATES: a genuine old-production review (e.g. a 2016 revival
+ *    review under a unique url) matches too, so a human reads the file first.
  */
 
 const { toDateMs } = require('./date-utils');
 const { foldDiacritics } = require('./title-match');
+const guards = require('./review-guards');
 
 const DAY_MS = 86400000;
 const MIN_REVIEW_CHARS = 400;
@@ -28,9 +31,14 @@ const SQUATTER_AGE_DAYS = 365;
 
 function wrongContentFlag(d) {
   if (!d || typeof d !== 'object') return null;
-  // A human clear or override means the rebuild no longer treats the flag as live.
-  if (d.wrongProduction === true && !d.wrongProductionManualClear && !d.wrongProductionOverride) return 'wrongProduction';
-  if (d.wrongShow === true && !d.wrongShowManualClear) return 'wrongShow';
+  // Mirror the rebuild's clears (review-guards explainExclusion) so a human-verified file is never reported.
+  if (d.wrongProduction === true) {
+    const cleared = d.wrongProductionManualClear === true || d.wrongProductionOverride === true ||
+      d.humanReviewedWrongProduction === false ||
+      (typeof guards.isFreshWpAutoCleared === 'function' && guards.isFreshWpAutoCleared(d));
+    if (!cleared) return 'wrongProduction';
+  }
+  if (d.wrongShow === true && !guards.wrongShowCleared(d)) return 'wrongShow';
   return null;
 }
 
@@ -51,6 +59,8 @@ function findDroppedByWrongTwin(files) {
       const flag = wrongContentFlag(twin);
       if (!flag) continue;
       if (data.duplicateOfFlagInheritanceCleared === true) continue;
+      // Circular pair with different text: the rebuild keeps both (no inheritance).
+      if (twin.duplicateOf === file || twin.duplicateTextOf === file) continue;
       if (String(data.fullText || '').length < MIN_REVIEW_CHARS) continue;
       const a = textKey(data);
       const b = textKey(twin);
@@ -66,7 +76,7 @@ function findDroppedByWrongTwin(files) {
  * urlOwners: Map<normalizedUrl, Set<showId>> over the whole tree; showId: this folder.
  */
 function normalizeUrl(u) {
-  return String(u || '').toLowerCase().replace(/^https?:\/\/(www\.)?/, '').replace(/[?#].*$/, '').replace(/\/+$/, '');
+  return String(u || '').toLowerCase().replace(/^https?:\/\/(www\.)?/, '').replace(/#.*$/, '').replace(/\?(?!.*\b(?:p|id|oid|article|post)=).*$/, '').replace(/\/+$/, '');
 }
 
 function findStaleSlotSquatters(files, show, urlOwners, showId, normalize = normalizeUrl) {
@@ -74,7 +84,7 @@ function findStaleSlotSquatters(files, show, urlOwners, showId, normalize = norm
   if (Number.isNaN(opening)) return [];
   const out = [];
   for (const { file, data } of files) {
-    if (!data || data.wrongProduction !== true || !data.url || !data.publishDate) continue;
+    if (!data || wrongContentFlag(data) !== 'wrongProduction' || !data.url || !data.publishDate) continue;
     const pub = toDateMs(data.publishDate);
     if (Number.isNaN(pub) || opening - pub < SQUATTER_AGE_DAYS * DAY_MS) continue;
     const owners = urlOwners.get(normalize(data.url));

@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { findDroppedByWrongTwin, findStaleSlotSquatters } = require('./stale-slot-squatters.js');
+const { findDroppedByWrongTwin, findStaleSlotSquatters, normalizeUrl } = require('./stale-slot-squatters.js');
 
 const long = (s) => (s + ' ').repeat(80);
 const files = (...a) => a.map(([file, data]) => ({ file, data }));
@@ -59,4 +59,27 @@ test('cleared twin flag, duplicateTextOf, missing twin and bad dates', () => {
   assert.equal(findDroppedByWrongTwin(files(['a.json', { duplicateOf: 'gone.json', fullText: bad }])).length, 0);
   const f = files(['a.json', { wrongProduction: true, url: 'https://x.com/n', publishDate: 'not a date' }]);
   assert.equal(findStaleSlotSquatters(f, { openingDate: '2026-10-13' }, new Map(), 's').length, 0);
+});
+
+test('human-verified clears, circular pairs and query-id urls (ship-check review)', () => {
+  const bad = long('Revelatory Benedict Andrews');
+  const real = long('fresh review text here');
+  // humanReviewedWrongProduction=false is a clear the rebuild honours
+  assert.equal(findDroppedByWrongTwin(files(
+    ['a.json', { duplicateOf: 'b.json', fullText: real }],
+    ['b.json', { wrongProduction: true, humanReviewedWrongProduction: false, fullText: bad }])).length, 0);
+  // wrongShowOverride clears wrongShow via the shared guard
+  assert.equal(findDroppedByWrongTwin(files(
+    ['a.json', { duplicateOf: 'b.json', fullText: real }],
+    ['b.json', { wrongShow: true, wrongShowOverride: true, fullText: bad }])).length, 0);
+  // circular pair with different text: the rebuild keeps both
+  assert.equal(findDroppedByWrongTwin(files(
+    ['a.json', { duplicateOf: 'b.json', fullText: real }],
+    ['b.json', { wrongProduction: true, duplicateOf: 'a.json', fullText: bad }])).length, 0);
+  // a human-cleared wrongProduction file is never a squatter
+  const f = files(['a.json', { wrongProduction: true, wrongProductionManualClear: true, url: 'https://x.com/o', publishDate: '1977-06-30' }]);
+  assert.equal(findStaleSlotSquatters(f, { openingDate: '2026-10-13' }, new Map(), 's').length, 0);
+  // ?p=123 style urls stay distinct
+  assert.notEqual(normalizeUrl('https://x.com/?p=1'), normalizeUrl('https://x.com/?p=2'));
+  assert.equal(normalizeUrl('https://x.com/a?utm=1#z'), 'x.com/a');
 });
