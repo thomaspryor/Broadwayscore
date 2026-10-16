@@ -1002,5 +1002,35 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-16T05:39:49.544Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5429-dualuk",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5429-dualuk",
+    "description": "land.yml did not land land/bro-5429-dualuk: the unit-tests-node gate went red at 337d25af20. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38855796163",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5429-dualuk"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "337d25af203a86bf4558d28e929e9102eb6390e0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38855796163"
+      }
+    ],
+    "queuedAt": "2026-10-16T06:00:40.340Z"
   }
 ]
