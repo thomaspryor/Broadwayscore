@@ -10,7 +10,7 @@ import { getReviewKey } from '../../scripts/lib/review-list-key';
 import { catchEarlyImgError } from '@/lib/img-early-error';
 import { isLondonMarket } from '@/lib/market-utils';
 import { TIER_DISPLAY, TIER_LIST, tierPercent, type OutletTier } from '@/config/tier-display';
-import { TIER_CHIP_BOX, TierBars, tierChipTextClass } from '@/components/show-cards/OutletTierChip';
+import { TIER_CHIP_BOX, TIER_CHIP_BOX_TIGHT, TierBars, tierChipTextClass } from '@/components/show-cards/OutletTierChip';
 import { nestQuotes } from '@/lib/nest-quotes';
 
 interface Review {
@@ -487,14 +487,15 @@ export default function ReviewsList({ reviews, initialCount = 5, category, showT
       {hasTierChips && (
         // The one tier key: the whole scale at once, so the bars are learned
         // from one line, and its label links to the methodology (BRO-4905).
-        <div className="flex items-start gap-3 text-[11px] text-gray-500 mb-1" data-testid="tier-scale">
-          <Link href="/methodology#critic-score" className="leading-[18px] whitespace-nowrap hover:text-brand transition-colors" aria-label="Weighted by outlet tier. How we weight critics">
+        <div className="flex items-start gap-1.5 sm:gap-3 text-[11px] text-gray-500 mb-1" data-testid="tier-scale">
+          <Link href="/methodology#critic-score" className="leading-[18px] whitespace-nowrap hover:text-brand transition-colors max-[379px]:sr-only" aria-label="Weighted by outlet tier. How we weight critics">
             <span className="hidden sm:inline">Weighted by outlet tier · </span>Counts
           </Link>
-          <ul className="flex flex-wrap items-center gap-x-3 gap-y-1.5" aria-label="How much each tier counts">
+          {/* One row on phones (4 chips wrapped to two rows at 390px): tighter gaps, no wrap. */}
+          <ul className="flex flex-nowrap items-center gap-x-1.5 sm:gap-x-3 min-w-0 whitespace-nowrap" aria-label="How much each tier counts">
             {TIER_LIST.map(t => (
-              <li key={t} className="inline-flex items-center gap-1.5">
-                <span aria-hidden="true" className={`${TIER_CHIP_BOX} border-white/[0.12] ${tierChipTextClass(t)}`}>
+              <li key={t} className="inline-flex items-center gap-[3px] sm:gap-1.5 text-[10px] sm:text-[11px]">
+                <span aria-hidden="true" className={`${TIER_CHIP_BOX_TIGHT} border-white/[0.12] ${tierChipTextClass(t)}`}>
                   T{t}<TierBars tier={t} />
                 </span>
                 <span className="tabular-nums text-gray-400"><span className="sr-only">Tier {t}: </span>{tierPercent(t)}%</span>

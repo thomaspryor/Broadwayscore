@@ -5,6 +5,9 @@ import { TIER_DISPLAY, tierBarsLit, type OutletTier } from '@/config/tier-displa
 // render OutletTierChip, so every T1-T4 label on the site looks the same (BRO-4885).
 export const TIER_CHIP_BOX = 'inline-flex items-center gap-[3px] h-[18px] px-[5px] rounded border text-[10px] font-semibold leading-none tabular-nums tracking-[0.02em]';
 
+/** Same chip, a few px narrower on phones, for the tier key row that must fit on one line. */
+export const TIER_CHIP_BOX_TIGHT = 'inline-flex items-center gap-[2px] sm:gap-[3px] h-[18px] px-1 sm:px-[5px] rounded border text-[10px] font-semibold leading-none tabular-nums tracking-[0.02em]';
+
 /** Text color of the resting chip: Tier 1 a touch brighter, the rest gray. */
 export function tierChipTextClass(tier: OutletTier): string {
   return tier === 1 ? 'text-gray-300' : 'text-gray-400';
