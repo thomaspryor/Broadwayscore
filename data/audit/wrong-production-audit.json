@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-16T21:01:03.237Z",
+  "timestamp": "2026-10-16T21:40:16.968Z",
   "stats": {
-    "totalReviews": 57083,
-    "alreadyFlagged": 21199,
+    "totalReviews": 57085,
+    "alreadyFlagged": 21200,
     "dateGuardCatches": 193,
     "directorMismatch": 1913,
-    "tvFilmSignals": 1596,
-    "londonSignals": 2386,
+    "tvFilmSignals": 1597,
+    "londonSignals": 2387,
     "offBroadwaySignals": 514,
     "yearMismatch": 147,
-    "noPublishDate": 5289
+    "noPublishDate": 5285
   },
   "findings": [
     {
@@ -10771,6 +10771,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "file": "the-globe-and-mail--kelly-nestruck.json",
+      "score": null,
+      "publishDate": "2026-05-29",
+      "url": "https://www.theglobeandmail.com/culture/stage/article-stratford-festival-2026-death-of-a-salesman-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -35613,6 +35627,7 @@
     {
       "showId": "stories-the-tap-dance-sensation-west-end-2026",
       "file": "whatsgoodtodo--debbie-kingsland.json",
+      "score": 95,
       "publishDate": "2026-10-16",
       "url": "https://whatsgoodtodo.com/stories-the-tap-dance-sensation-at-peacock-theatre-london-review/",
       "findings": [
@@ -67668,6 +67683,20 @@
       "score": 82,
       "publishDate": "2026-05-20",
       "url": "https://www.radiotimes.com/going-out/going-out-reviews/les-liaisons-dangereuses-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "file": "redbuslondinium--unknown.json",
+      "score": null,
+      "publishDate": "2026-05-16",
+      "url": "https://redbuslondinium.uk/2026/05/16/review-les-liaisons-dangereuses-national-theatre-%E2%98%85%E2%98%85%E2%98%85/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
