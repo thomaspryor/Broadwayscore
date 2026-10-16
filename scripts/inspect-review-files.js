@@ -29,6 +29,10 @@ const shows = val('show') || (class7 ? fs.readdirSync(root, { withFileTypes: tru
 const outlets = val('outlet');
 const fileSub = val('file');
 const findTerms = val('find');
+// BRO-5444: --full prints the whole stored text and every other scalar field
+// (source, theatreRecord*, llmScore detail) for a hand re-read. Output is
+// sealed to the caller by cloud-run-script; never paste it into public files.
+const full = ARGV.includes('--full');
 if (!shows) { console.error('usage: inspect-review-files.js --show=a,b [--outlet=x] [--file=sub]'); process.exit(2); }
 function findOffsets(text, terms) {
   const lower = text.toLowerCase();
@@ -100,6 +104,11 @@ for (const show of shows) {
       excludedBy: exclusionFor(r, show, path.join(dir, f)),
       scorerSkip: scorerSkipFor(r, show, path.join(dir, f)),
       ...(findTerms ? { find: findOffsets(String(r.fullText || ''), findTerms) } : {}),
+      ...(full ? {
+        fullText: String(r.fullText || ''),
+        fields: Object.fromEntries(Object.entries(r).filter(([k, v]) => k !== 'fullText' && (v === null || typeof v !== 'object'))),
+        llmDetail: r.llmScore || null,
+      } : {}),
     }));
   }
 }
