@@ -194,19 +194,17 @@
       "silentRefires": 4
     },
     "opening-night-sla:pages-stuck": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "human",
-      "title": "Opening Night SLA P0 — 2 review(s) stuck ≥60 min",
+      "title": "Opening Night SLA P0 — 3 review(s) stuck ≥60 min",
       "firstSeen": "2026-07-24T15:48:32.752Z",
-      "incidentOpenedAt": "2026-10-15T15:07:14.167Z",
-      "lastSeen": "2026-10-16T01:26:50.875Z",
-      "lastNotifiedAt": "2026-10-15T15:07:14.167Z",
-      "lastSurfacedAt": "2026-10-15T15:07:14.167Z",
-      "notifyCount": 8,
+      "incidentOpenedAt": "2026-10-16T12:32:19.921Z",
+      "lastSeen": "2026-10-16T12:32:19.921Z",
+      "lastNotifiedAt": "2026-10-16T12:32:19.921Z",
+      "lastSurfacedAt": "2026-10-16T12:32:19.921Z",
+      "notifyCount": 9,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 2,
-      "resolvedAt": "2026-10-16T05:48:00.091Z"
+      "linearIdentifier": null
     },
     "health-check:Workflow repeat-failure: Audit Aggregator Review Gap": {
       "status": "open",
@@ -17550,13 +17548,13 @@
       "title": "Placeholder synopsis on Sea Wall",
       "firstSeen": "2026-10-14T06:14:56.426Z",
       "incidentOpenedAt": "2026-10-14T06:14:56.426Z",
-      "lastSeen": "2026-10-16T01:26:47.807Z",
+      "lastSeen": "2026-10-16T12:32:16.248Z",
       "lastNotifiedAt": "2026-10-14T06:14:56.426Z",
       "lastSurfacedAt": "2026-10-14T06:14:56.426Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 11
+      "silentRefires": 12
     },
     "opening-night-remediation-exhausted-empty-cast:unconditional-a-new-musical-memoir-off-broadway-2026": {
       "status": "open",
@@ -18656,12 +18654,13 @@
       "title": "Placeholder synopsis on School Pictures",
       "firstSeen": "2026-10-16T01:26:47.789Z",
       "incidentOpenedAt": "2026-10-16T01:26:47.789Z",
-      "lastSeen": "2026-10-16T01:26:47.789Z",
+      "lastSeen": "2026-10-16T12:32:16.223Z",
       "lastNotifiedAt": "2026-10-16T01:26:47.789Z",
       "lastSurfacedAt": "2026-10-16T01:26:47.789Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-revival-unverified-school-pictures-off-broadway-2026": {
       "status": "open",
@@ -18669,12 +18668,13 @@
       "title": "Unverified revival on School Pictures",
       "firstSeen": "2026-10-16T01:26:47.796Z",
       "incidentOpenedAt": "2026-10-16T01:26:47.796Z",
-      "lastSeen": "2026-10-16T01:26:47.796Z",
+      "lastSeen": "2026-10-16T12:32:16.232Z",
       "lastNotifiedAt": "2026-10-16T01:26:47.796Z",
       "lastSurfacedAt": "2026-10-16T01:26:47.796Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-slug-mismatch-school-pictures-off-broadway-2026": {
       "status": "open",
@@ -18682,12 +18682,13 @@
       "title": "Review URL cross-show mismatch on School Pictures",
       "firstSeen": "2026-10-16T01:26:47.801Z",
       "incidentOpenedAt": "2026-10-16T01:26:47.801Z",
-      "lastSeen": "2026-10-16T01:26:47.801Z",
+      "lastSeen": "2026-10-16T12:32:16.240Z",
       "lastNotifiedAt": "2026-10-16T01:26:47.801Z",
       "lastSurfacedAt": "2026-10-16T01:26:47.801Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "review-gap:opening-window:dirty-dancing-the-classic-story-on-stage-west-end-2026": {
       "status": "open",
@@ -18838,6 +18839,32 @@
       "lastSeen": "2026-10-16T11:05:09.943Z",
       "lastNotifiedAt": "2026-10-16T11:05:09.943Z",
       "lastSurfacedAt": "2026-10-16T11:05:09.943Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-publish-date-pre-opening:missing:memoirs-of-amorous-gentlemen-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Shipped review missing publishDate on Memoirs of Amorous Gentlemen",
+      "firstSeen": "2026-10-16T12:32:14.872Z",
+      "incidentOpenedAt": "2026-10-16T12:32:14.872Z",
+      "lastSeen": "2026-10-16T12:32:14.872Z",
+      "lastNotifiedAt": "2026-10-16T12:32:14.872Z",
+      "lastSurfacedAt": "2026-10-16T12:32:14.872Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-revival-unverified-memoirs-of-amorous-gentlemen-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Unverified revival on Memoirs of Amorous Gentlemen",
+      "firstSeen": "2026-10-16T12:32:14.928Z",
+      "incidentOpenedAt": "2026-10-16T12:32:14.928Z",
+      "lastSeen": "2026-10-16T12:32:14.928Z",
+      "lastNotifiedAt": "2026-10-16T12:32:14.928Z",
+      "lastSurfacedAt": "2026-10-16T12:32:14.928Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

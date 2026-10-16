@@ -214,5 +214,31 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-16T11:06:21.033Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:memoirs-of-amorous-gentlemen-off-broadway-2026",
+    "title": "Shipped review missing publishDate on Memoirs of Amorous Gentlemen",
+    "description": "culturesauce/Thom Geier SHIPPED with no publishDate — cannot confirm post-opening: https://culturesauce.com/duncan-sheik-memoirs-of-amorous-gentlemen-off-broadway-review/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-16T12:32:14.873Z"
+  },
+  {
+    "conditionKey": "opening-night-revival-unverified-memoirs-of-amorous-gentlemen-off-broadway-2026",
+    "title": "Unverified revival on Memoirs of Amorous Gentlemen",
+    "description": "memoirs-of-amorous-gentlemen-off-broadway-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-16T12:32:14.929Z"
   }
 ]
