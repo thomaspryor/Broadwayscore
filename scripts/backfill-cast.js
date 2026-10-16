@@ -114,6 +114,9 @@ async function main() {
     // one-pending-run concurrency group.
     const wanted = new Set(showFilter.split(',').map(s => s.trim()).filter(Boolean));
     shows = shows.filter(s => wanted.has(s.id) || wanted.has(s.slug));
+    for (const w of wanted) {
+      if (!shows.some(s => s.id === w || s.slug === w)) console.warn(`⚠️  No show found for filter entry: ${w}`);
+    }
     if (shows.length === 0) {
       console.error(`❌ No show found with id/slug: ${showFilter}`);
       process.exit(1);

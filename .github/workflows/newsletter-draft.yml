@@ -92,13 +92,9 @@ permissions:
 # Avoid racing a manual dispatch against the Saturday cron, or back-to-back
 # manual runs against each other. cancel-in-progress=false so a scheduled run
 # isn't dropped mid-flight by a manual click.
-# BRO-4870: one group PER EDITION. A shared group kept one pending run, so when
-# newsletter-draft-refresh.yml's Sunday recovery dispatched both editions at once
-# the Broadway run was evicted by the West End one. Same-edition runs (cron,
-# manual, recovery, refresh) still serialize; the two editions write different
-# Resend drafts and already overlap in the refresh matrix.
 concurrency:
-  group: newsletter-draft-${{ github.event.inputs.edition || 'broadway' }}
+  # concurrency-queue-ok: one shared group serializes writes to data/newsletter-state.json across editions (a per-edition group let two editions race it and drop an entry); a recovery dispatch evicted from the queue is retried by the next refresh run (BRO-4870)
+  group: newsletter-draft
   cancel-in-progress: false
 
 jobs:

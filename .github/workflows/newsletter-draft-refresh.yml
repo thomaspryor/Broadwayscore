@@ -62,17 +62,15 @@ permissions:
   contents: write
   actions: write
 
+concurrency:
+  # concurrency-queue-ok: one shared group serializes writes to data/newsletter-state.json across editions (a per-edition group let two editions race it and drop an entry); a recovery dispatch evicted from the queue is retried by the next refresh run (BRO-4870)
+  group: newsletter-draft
+  cancel-in-progress: false
+
 jobs:
   refresh:
     runs-on: ubuntu-latest
     timeout-minutes: 25
-    # Job-level, per edition (BRO-4870): shares newsletter-draft.yml's
-    # newsletter-draft-<edition> group, so this edition's refresh and any creation
-    # run it dispatches below queue one behind the other, and the two editions'
-    # recovery dispatches no longer evict each other from one shared group.
-    concurrency:
-      group: newsletter-draft-${{ matrix.edition }}
-      cancel-in-progress: false
     strategy:
       fail-fast: false
       matrix:
@@ -214,7 +212,7 @@ jobs:
       # send, Resend draft creation) instead of a second, drifted copy of it
       # living in this file. Runs async — this job doesn't wait for it, and
       # doesn't need to: the dispatched run shares this workflow's
-      # `newsletter-draft-<edition>` concurrency group, so it simply queues behind this
+      # `newsletter-draft` concurrency group, so it simply queues behind this
       # job rather than racing it. The subjectPrefix flags it as a recovered
       # send so the owner can tell it didn't arrive on the normal Saturday
       # schedule.
