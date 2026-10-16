@@ -33,7 +33,7 @@
  */
 
 const RECONCILABLE_FIELDS = [
-  'venue', 'synopsis', 'runtime', 'intermissions', 'ageRecommendation',
+  'venue', 'synopsis', 'synopsisSource', 'runtime', 'intermissions', 'ageRecommendation',
   'officialUrl', 'wikipediaUrl', 'ibdbUrl',
   'openingDate', 'previewsStartDate', 'openingDateSource',
   'humanCorrectedClosingDate', 'humanCorrectedOpeningDate',

@@ -3423,6 +3423,8 @@ async function discoverShows() {
         ...(show.discoverySource ? { discoverySource: show.discoverySource } : {}),
         ...(show.unconfirmedStartDate ? { unconfirmedStartDate: show.unconfirmedStartDate } : {}),
       };
+      // BRO-4856: provenance, only when the gate kept the producer copy.
+      if (showEntry.synopsis) showEntry.synopsisSource = 'discovery';
 
       // Persist TodayTix category for future type detection (backfill on re-runs)
       if (show.todayTixCategory) {

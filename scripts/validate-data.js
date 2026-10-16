@@ -72,6 +72,7 @@ const { classifyReverseCrossMarket, classifyUsOnWeCrossMarket } = require('./lib
 const { earliestShowDate, evaluatePreWindowInclusion } = require('./lib/date-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { detectRefusalPattern, SCRAPED_PAGE_CHROME_RE } = require('./lib/synopsis-validation');
+const { synopsisSourceProblem } = require('./lib/synopsis-source');
 const { checkAwardClaims, findSharedSentences, loadAwardsByShow, ledeTitleMismatch } = require('./lib/synopsis-fact-check');
 const { openingDateSourceHint, venuePageDomainSourceProblem } = require('./lib/opening-date-sources');
 const { isNonTheatricalGenre, applyGenreCategoryOverride } = require('./lib/genre-classification');
@@ -1642,6 +1643,9 @@ function validateSynopsisQuality(shows) {
   const accessibilityPattern = /\bwheelchair\b|\bhearing assist\b|\belevator access\b|\baccessible seating\b|\bada seating\b|\brestrooms\b|\bclosed captioning\b|\bassistive listening\b/i;
 
   for (const show of shows) {
+    // BRO-4856: provenance stamp must be a known writer (unstamped legacy rows are allowed).
+    const srcProblem = synopsisSourceProblem(show);
+    if (srcProblem) { error(`Show "${show.title}" (${show.id}) ${srcProblem}`); issues++; }
     if (!show.synopsis) continue;
 
     if (accessibilityPattern.test(show.synopsis)) {

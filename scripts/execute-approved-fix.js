@@ -392,6 +392,8 @@ function executeDataEdit(action) {
     }
 
     shows[idx][field] = newValue;
+    // A person-approved synopsis is manual provenance (BRO-4856).
+    if (field === 'synopsis') require('./lib/synopsis-source.js').setSynopsis(shows[idx], newValue, 'manual');
     // An approved plan is a person's correction: pin it so the date enrichers
     // cannot put the old value back (BRO-4911; closingDate cousin).
     if (field === 'openingDate') require('./lib/opening-date-guard.js').stampHumanCorrectedOpeningDate(shows[idx], newValue);

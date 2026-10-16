@@ -31,6 +31,7 @@ const {
   pickSearchCandidate,
 } = require('./lib/wikipedia-synopsis-match');
 const { cleanSearchTitle } = require('./lib/title-normalization');
+const { setSynopsis } = require('./lib/synopsis-source');
 const { isValidSynopsis, classifyBadSynopsis, synopsisAuthorMismatch } = require('./lib/synopsis-validation');
 const { isTourShow } = require('./lib/tour-family');
 const { verifyProductionMatch } = require('./lib/synopsis-production-match');
@@ -326,7 +327,7 @@ async function main() {
     }
 
     if (!DRY_RUN) {
-      show.synopsis = synopsis;
+      setSynopsis(show, synopsis, 'wikipedia');
     }
     console.log(`${synopsis.substring(0, 80)}...`);
     enriched++;

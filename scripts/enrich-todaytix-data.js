@@ -20,6 +20,7 @@ const { buildTodayTixUrl } = require('./lib/url-utils');
 const { classifyTodayTixStartDate, unconfirmedStartFlags } = require('./lib/todaytix-dates');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { gateScrapedSynopsis, truncateAtSentence } = require('./lib/synopsis-fact-check');
+const { setSynopsis } = require('./lib/synopsis-source');
 
 const USAGE = `enrich-todaytix-data.js — Enrich shows.json with TodayTix data (all categories: Broadway, OB, WE).
 
@@ -287,7 +288,7 @@ async function main() {
         if (!gate.ok) {
           changes.push(`synopsis skipped (${gate.reason})`);
         } else {
-          if (!DRY_RUN) show.synopsis = synopsis;
+          if (!DRY_RUN) setSynopsis(show, synopsis, 'todaytix');
           stats.synopsisSet++;
           changes.push(`synopsis (${synopsis.length} chars)`);
         }

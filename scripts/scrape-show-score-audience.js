@@ -35,6 +35,7 @@ const { findConflictingShowId, isShowScoreNotFoundPage, decideDeadUrlAction } = 
 const { recordSbCall, recordBdCall } = require('./lib/provider-telemetry');
 const { consultBrightData } = require('./lib/brightdata-caps');
 const { gateScrapedSynopsis } = require('./lib/synopsis-fact-check');
+const { setSynopsis } = require('./lib/synopsis-source');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -1322,7 +1323,7 @@ async function main() {
               // left unwritten for Wikipedia enrichment instead of going live.
               const gate = gateScrapedSynopsis(show, data.metadata.synopsis, { showsById: showMapById });
               if (gate.ok) {
-                show.synopsis = data.metadata.synopsis;
+                setSynopsis(show, data.metadata.synopsis, 'show-score');
                 enriched = true;
                 console.log(`  ✓ Enriched synopsis (${data.metadata.synopsis.length} chars)`);
               } else {
