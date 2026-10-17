@@ -1,16 +1,88 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-17T22:22:42.427Z",
+    "generatedAt": "2026-10-17T22:55:21.202Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
-    "auditsRun": 45,
-    "driftCount": 21,
+    "auditsRun": 53,
+    "driftCount": 19,
     "crashCount": 0,
     "anyDrift": true,
     "anyCrashed": false
   },
   "audits": [
+    {
+      "name": "backfill-eurydice-image-found",
+      "label": "backfill outcome: eurydice-image-found",
+      "command": "node scripts/lib/corpus-checks/eurydice-image-found.mjs",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "TAP version 13\n# Subtest: EURYDICE has a shows.json entry with an images block\nok 1 - EURYDICE has a shows.json entry with an images block\n  ---\n  duration_ms: 37.803672\n  ...\n# Subtest: EURYDICE poster path resolves to a real, non-placeholder file on disk\nok 2 - EURYDICE poster path resolves to a real, non-placeholder file on disk\n  ---\n  duration_ms: 36.799499\n  ...\n# Subtest: EURYDICE passes the canonical hasRealImage predicate (self-heal acceptance criteria)\nok 3 - EURYDICE passes the canonical hasRealImage predicate (self-heal acceptance criteria)\n  ---\n  duration_ms: 30.315455\n  ...\n# Subtest: the poster file on disk is a real image, not a zero-byte or tiny stub\nok 4 - the poster file on disk is a real image, not a zero-byte or tiny stub\n  ---\n  duration_ms: 29.126232\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 4\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 145.845628"
+    },
+    {
+      "name": "backfill-brothers-paranormal-show-exists",
+      "label": "backfill outcome: brothers-paranormal-show-exists",
+      "command": "node scripts/lib/corpus-checks/brothers-paranormal-show-exists.mjs",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "TAP version 13\n# Subtest: The Brothers Paranormal has a shows.json entry\nok 1 - The Brothers Paranormal has a shows.json entry\n  ---\n  duration_ms: 35.239296\n  ...\n# Subtest: The Brothers Paranormal entry has the fields CLAUDE.md rule 3 requires for a closed show\nok 2 - The Brothers Paranormal entry has the fields CLAUDE.md rule 3 requires for a closed show\n  ---\n  duration_ms: 43.290311\n  ...\n# Subtest: The Brothers Paranormal is correctly classified as Off-Broadway, not Broadway\nok 3 - The Brothers Paranormal is correctly classified as Off-Broadway, not Broadway\n  ---\n  duration_ms: 25.392554\n  ...\n# Subtest: The Brothers Paranormal dates match the cross-verified Playbill/Pan Asian Rep production run\nok 4 - The Brothers Paranormal dates match the cross-verified Playbill/Pan Asian Rep production run\n  ---\n  duration_ms: 27.783388\n  ...\n# Subtest: The Brothers Paranormal is flagged provisional with its manual-verification source recorded\nok 5 - The Brothers Paranormal is flagged provisional with its manual-verification source recorded\n  ---\n  duration_ms: 25.625726\n  ...\n# Subtest: The Brothers Paranormal passes the canonical exemption predicate (survives --all-provisional sweeps)\nok 6 - The Brothers Paranormal passes the canonical exemption predicate (survives --all-provisional sweeps)\n  ---\n  duration_ms: 25.666948\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 189.010697"
+    },
+    {
+      "name": "backfill-everybodys-talking-about-jamie-show-exists",
+      "label": "backfill outcome: everybodys-talking-about-jamie-show-exists",
+      "command": "node scripts/lib/corpus-checks/everybodys-talking-about-jamie-show-exists.mjs",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "TAP version 13\n# Subtest: Everybody's Talking About Jamie has a shows.json entry\nok 1 - Everybody's Talking About Jamie has a shows.json entry\n  ---\n  duration_ms: 34.72759\n  ...\n# Subtest: Everybody's Talking About Jamie entry matches the Playbill-confirmed Peacock Theatre revival\nok 2 - Everybody's Talking About Jamie entry matches the Playbill-confirmed Peacock Theatre revival\n  ---\n  duration_ms: 41.739063\n  ...\n# Subtest: Everybody's Talking About Jamie is correctly classified as West End / off-West-End\nok 3 - Everybody's Talking About Jamie is correctly classified as West End / off-West-End\n  ---\n  duration_ms: 25.874781\n  ...\n# Subtest: Everybody's Talking About Jamie dates match the sourced run (first preview, press night window, closing)\nok 4 - Everybody's Talking About Jamie dates match the sourced run (first preview, press night window, closing)\n  ---\n  duration_ms: 28.330883\n  ...\n# Subtest: Everybody's Talking About Jamie is flagged with its manual-verification source recorded\nok 5 - Everybody's Talking About Jamie is flagged with its manual-verification source recorded\n  ---\n  duration_ms: 26.926647\n  ...\n# Subtest: Everybody's Talking About Jamie is correctly classified provisional by the canonical predicate (isProvisional)\nok 6 - Everybody's Talking About Jamie is correctly classified provisional by the canonical predicate (isProvisional)\n  ---\n  duration_ms: 26.009374\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 189.668212"
+    },
+    {
+      "name": "backfill-standing-at-the-skys-edge-show-exists",
+      "label": "backfill outcome: standing-at-the-skys-edge-show-exists",
+      "command": "node scripts/lib/corpus-checks/standing-at-the-skys-edge-show-exists.mjs",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "TAP version 13\n# Subtest: Standing at the Sky's Edge has a shows.json entry\nok 1 - Standing at the Sky's Edge has a shows.json entry\n  ---\n  duration_ms: 38.472109\n  ...\n# Subtest: Standing at the Sky's Edge entry has the fields CLAUDE.md rule 3 requires for a closed show\nok 2 - Standing at the Sky's Edge entry has the fields CLAUDE.md rule 3 requires for a closed show\n  ---\n  duration_ms: 35.081058\n  ...\n# Subtest: Standing at the Sky's Edge is correctly classified as West End, not Broadway\nok 3 - Standing at the Sky's Edge is correctly classified as West End, not Broadway\n  ---\n  duration_ms: 29.7348\n  ...\n# Subtest: Standing at the Sky's Edge dates match the Playbill-cross-validated West End transfer run\nok 4 - Standing at the Sky's Edge dates match the Playbill-cross-validated West End transfer run\n  ---\n  duration_ms: 29.17109\n  ...\n# Subtest: Standing at the Sky's Edge is flagged provisional with its manual-verification source recorded\nok 5 - Standing at the Sky's Edge is flagged provisional with its manual-verification source recorded\n  ---\n  duration_ms: 29.052941\n  ...\n1..5\n# tests 5\n# suites 0\n# pass 5\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 167.329357"
+    },
+    {
+      "name": "backfill-amaze-review-flags",
+      "label": "backfill outcome: amaze-review-flags",
+      "command": "node scripts/lib/corpus-checks/amaze-review-flags.mjs",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "TAP version 13\n# Subtest: AMAZE entry has dates and opens no later than its earliest dated review\nok 1 - AMAZE entry has dates and opens no later than its earliest dated review\n  ---\n  duration_ms: 40.040434\n  ...\n# Subtest: no AMAZE review file carries wrongProduction without a reason; scored rows exist\nok 2 - no AMAZE review file carries wrongProduction without a reason; scored rows exist\n  ---\n  duration_ms: 72.565128\n  ...\n# Subtest: AMAZE critic score is non-null on the slim file\nok 3 - AMAZE critic score is non-null on the slim file\n  ---\n  duration_ms: 0.30549\n  ...\n1..3\n# tests 3\n# suites 0\n# pass 3\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 118.17766"
+    },
+    {
+      "name": "backfill-the-lonely-few-image",
+      "label": "backfill outcome: the-lonely-few-image",
+      "command": "node scripts/lib/corpus-checks/the-lonely-few-image.mjs",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "TAP version 13\n# Subtest: THE LONELY FEW has a shows.json entry with an images block\nok 1 - THE LONELY FEW has a shows.json entry with an images block\n  ---\n  duration_ms: 38.489015\n  ...\n# Subtest: THE LONELY FEW poster path resolves to a real, non-placeholder file on disk\nok 2 - THE LONELY FEW poster path resolves to a real, non-placeholder file on disk\n  ---\n  duration_ms: 36.414698\n  ...\n# Subtest: THE LONELY FEW passes the canonical hasRealImage predicate (self-heal acceptance criteria)\nok 3 - THE LONELY FEW passes the canonical hasRealImage predicate (self-heal acceptance criteria)\n  ---\n  duration_ms: 30.264367\n  ...\n# Subtest: the poster file on disk is a real image, not a zero-byte or tiny stub\nok 4 - the poster file on disk is a real image, not a zero-byte or tiny stub\n  ---\n  duration_ms: 29.24378\n  ...\n1..4\n# tests 4\n# suites 0\n# pass 4\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 144.606226"
+    },
+    {
+      "name": "backfill-image-healing",
+      "label": "backfill outcome: image-healing",
+      "command": "node scripts/lib/corpus-checks/image-healing.mjs",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "TAP version 13\n# Subtest: Bad Kreyòl has a shows.json entry with an images block\nok 1 - Bad Kreyòl has a shows.json entry with an images block\n  ---\n  duration_ms: 37.329337\n  ...\n# Subtest: Bad Kreyòl poster path resolves to a real, non-placeholder file on disk\nok 2 - Bad Kreyòl poster path resolves to a real, non-placeholder file on disk\n  ---\n  duration_ms: 36.184802\n  ...\n# Subtest: Bad Kreyòl passes the canonical hasRealImage predicate (self-heal acceptance criteria)\nok 3 - Bad Kreyòl passes the canonical hasRealImage predicate (self-heal acceptance criteria)\n  ---\n  duration_ms: 30.147682\n  ...\n# Subtest: Bad Kreyòl image directory passes the file-based coverage predicate (not just directory existence)\nok 4 - Bad Kreyòl image directory passes the file-based coverage predicate (not just directory existence)\n  ---\n  duration_ms: 0.42454\n  ...\n# Subtest: the poster file on disk is a real image, not a zero-byte or tiny stub\nok 5 - the poster file on disk is a real image, not a zero-byte or tiny stub\n  ---\n  duration_ms: 29.35085\n  ...\n# Subtest: findImagelessScoredShows no longer flags Bad Kreyòl now that it has a real image\nok 6 - findImagelessScoredShows no longer flags Bad Kreyòl now that it has a real image\n  ---\n  duration_ms: 29.24431\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 173.465386"
+    },
+    {
+      "name": "backfill-mystic-pizza-show-existence",
+      "label": "backfill outcome: mystic-pizza-show-existence",
+      "command": "node scripts/lib/corpus-checks/mystic-pizza-show-existence.mjs",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "    # Subtest: show has valid category/market for the regional pipeline\n    ok 2 - show has valid category/market for the regional pipeline\n      ---\n      duration_ms: 0.098549\n      ...\n    # Subtest: show has a real venue and dates\n    ok 3 - show has a real venue and dates\n      ---\n      duration_ms: 0.069705\n      ...\n    # Subtest: \"mystic pizza\" search query matches the show via the real search predicate\n    ok 4 - \"mystic pizza\" search query matches the show via the real search predicate\n      ---\n      duration_ms: 0.214964\n      ...\n    # Subtest: show has enough reviews to clear the regional min-score threshold\n    ok 5 - show has enough reviews to clear the regional min-score threshold\n      ---\n      duration_ms: 0.084347\n      ...\n    # Subtest: every ingested review has a registered outlet and a valid assignedScore\n    ok 6 - every ingested review has a registered outlet and a valid assignedScore\n      ---\n      duration_ms: 0.085979\n      ...\n    1..6\nok 1 - Mystic Pizza show existence (\\#1933)\n  ---\n  duration_ms: 1.807174\n  type: 'suite'\n  ...\n1..1\n# tests 6\n# suites 1\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 20.665029"
+    },
     {
       "name": "text-quality",
       "label": "Review text quality (full/truncated/unknown %)",
@@ -18,7 +90,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 57429\nHas fullText: 45638\n\n--- Quality Breakdown ---\n  full: 32947 (72.2%)\n  truncated: 11597 (25.4%)\n  partial: 633 (1.4%)\n  excerpt: 290 (0.6%)\n  stub: 152 (0.3%)\n  complete: 19 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 8677\n  has_footer_junk: 1871\n  ends_with_ellipsis: 165\n  has_footer_text: 102\n  paywall_or_login_prompt: 74\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 72.2% (min: 25%)\n  ✅ Truncated: 25.4% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
+      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 57432\nHas fullText: 45639\n\n--- Quality Breakdown ---\n  full: 32941 (72.2%)\n  truncated: 11604 (25.4%)\n  partial: 633 (1.4%)\n  excerpt: 290 (0.6%)\n  stub: 152 (0.3%)\n  complete: 19 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 8677\n  has_footer_junk: 1871\n  ends_with_ellipsis: 165\n  has_footer_text: 102\n  paywall_or_login_prompt: 74\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 72.2% (min: 25%)\n  ✅ Truncated: 25.4% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
     },
     {
       "name": "aggregator-truth",
@@ -72,7 +144,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "Scanned 57298 files: 5 byline/publishDate mismatches (>3d), 1 unexplained, 0 body swap(s) awaiting url repair (max 0 combined)\n  [wrongProduction] orlando-off-broadway-2026/londontheatre1--tom-carter.json: publishDate 2022-12-06, byline 2024-05-16 (+527d)\n  [UNEXPLAINED] pride-west-end-2026/independent--louis-chilton.json: publishDate 2026-06-25, byline 2021-11-04 (-1694d)\n  [isNonReview] pride-west-end-2026/london-theatre--unknown.json: publishDate 2026-06-26, byline 2021-11-03 (-1696d)\n  [duplicateOf] sherlock-holmes-west-end-2026/londontheatre1--unknown.json: publishDate 2026-05-03, byline 2026-05-31 (+28d)\n  [crossOutletDuplicate] the-price-2017/nytg--unknown.json: publishDate 2017-09-22, byline 2017-03-24 (-182d)\nFix: check the body is this review; correct publishDate (review-field-edit plan) or, if the body is another article, exclude it and refetch the url. A date-based wrongProduction contradicted by the byline: fix publishDate, then clear the flag. URL-REPAIR: set the url of the article the body now holds (review-field-edit url repair)."
+      "detail": "Scanned 57301 files: 5 byline/publishDate mismatches (>3d), 1 unexplained, 0 body swap(s) awaiting url repair (max 0 combined)\n  [wrongProduction] orlando-off-broadway-2026/londontheatre1--tom-carter.json: publishDate 2022-12-06, byline 2024-05-16 (+527d)\n  [UNEXPLAINED] pride-west-end-2026/independent--louis-chilton.json: publishDate 2026-06-25, byline 2021-11-04 (-1694d)\n  [isNonReview] pride-west-end-2026/london-theatre--unknown.json: publishDate 2026-06-26, byline 2021-11-03 (-1696d)\n  [duplicateOf] sherlock-holmes-west-end-2026/londontheatre1--unknown.json: publishDate 2026-05-03, byline 2026-05-31 (+28d)\n  [crossOutletDuplicate] the-price-2017/nytg--unknown.json: publishDate 2017-09-22, byline 2017-03-24 (-182d)\nFix: check the body is this review; correct publishDate (review-field-edit plan) or, if the body is another article, exclude it and refetch the url. A date-based wrongProduction contradicted by the byline: fix publishDate, then clear the flag. URL-REPAIR: set the url of the article the body now holds (review-field-edit url repair)."
     },
     {
       "name": "phantom-text-stars",
@@ -90,7 +162,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[audit-unknown-outlets] resolvable unknown outlets: 9 (threshold 5) across 57429 files\n  Examples (registerable outlet ids absent from outlet-registry.json):\n    stagedoor  —  backstairs-billy-west-end-2023/stagedoor--lyn-gardner.json\n    frombroadway  —  fish-off-broadway-2026/frombroadway--zachary-stewart.json\n    frombroadway  —  good-time-charlie-off-broadway-2026/frombroadway--jackson-mchenry.json\n    bellecoaches  —  high-school-musical-off-west-end-2026/bellecoaches--distinctive-systems-ltd.json\n    oazis  —  music-for-18-musicians-staged-variations-off-broadway-2026/oazis--unknown.json\n    kidsoutandabout  —  rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026/kidsoutandabout--unknown.json\n    by-clicking-here  —  side-show-2014/by-clicking-here--unknown.json\n    ratedreviewed  —  stories-the-tap-dance-sensation-west-end-2026/ratedreviewed--christine-stanton.json\n    vocal  —  the-bathroom-attendant-off-broadway-2026/vocal--unknown.json"
+      "detail": "[audit-unknown-outlets] resolvable unknown outlets: 9 (threshold 5) across 57432 files\n  Examples (registerable outlet ids absent from outlet-registry.json):\n    stagedoor  —  backstairs-billy-west-end-2023/stagedoor--lyn-gardner.json\n    frombroadway  —  fish-off-broadway-2026/frombroadway--zachary-stewart.json\n    frombroadway  —  good-time-charlie-off-broadway-2026/frombroadway--jackson-mchenry.json\n    bellecoaches  —  high-school-musical-off-west-end-2026/bellecoaches--distinctive-systems-ltd.json\n    oazis  —  music-for-18-musicians-staged-variations-off-broadway-2026/oazis--unknown.json\n    kidsoutandabout  —  rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026/kidsoutandabout--unknown.json\n    by-clicking-here  —  side-show-2014/by-clicking-here--unknown.json\n    ratedreviewed  —  stories-the-tap-dance-sensation-west-end-2026/ratedreviewed--christine-stanton.json\n    vocal  —  the-bathroom-attendant-off-broadway-2026/vocal--unknown.json"
     },
     {
       "name": "review-key-duplicates",
@@ -99,7 +171,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[audit-review-key-duplicates] duplicate reviews: 6 (threshold 5) across 57429 files\n  Examples (same showDir|outlet|critic appearing more than once):\n    im-every-woman-off-west-end-2026|theupcoming|emilia gould  —  im-every-woman-off-west-end-2026/theupcoming--unknown.json\n    purlie-victorious-2023|theater-pizzazz|ron fassler  —  purlie-victorious-2023/theater-pizzazz--ron-fassler.json\n    the-coast-of-utopia-2006|nytimes|ben brantley  —  the-coast-of-utopia-2006/nytimes--ben-brantley.json\n    the-producers-west-end-2025|timeout-london|andrzej lukowski  —  the-producers-west-end-2025/timeout-london--unknown.json\n    thelma-and-louise-a-new-musical-off-west-end-2026|thestage|holly o'mahony  —  thelma-and-louise-a-new-musical-off-west-end-2026/thestage--the-stage.json\n    waiting-for-godot-2013|nydailynews|joe dziemianowicz  —  waiting-for-godot-2013/nydailynews--joe-dziemianowicz.json"
+      "detail": "[audit-review-key-duplicates] duplicate reviews: 6 (threshold 5) across 57432 files\n  Examples (same showDir|outlet|critic appearing more than once):\n    im-every-woman-off-west-end-2026|theupcoming|emilia gould  —  im-every-woman-off-west-end-2026/theupcoming--unknown.json\n    purlie-victorious-2023|theater-pizzazz|ron fassler  —  purlie-victorious-2023/theater-pizzazz--ron-fassler.json\n    the-coast-of-utopia-2006|nytimes|ben brantley  —  the-coast-of-utopia-2006/nytimes--ben-brantley.json\n    the-producers-west-end-2025|timeout-london|andrzej lukowski  —  the-producers-west-end-2025/timeout-london--unknown.json\n    thelma-and-louise-a-new-musical-off-west-end-2026|thestage|holly o'mahony  —  thelma-and-louise-a-new-musical-off-west-end-2026/thestage--the-stage.json\n    waiting-for-godot-2013|nydailynews|joe dziemianowicz  —  waiting-for-godot-2013/nydailynews--joe-dziemianowicz.json"
     },
     {
       "name": "churn-merge-coverage",
@@ -108,7 +180,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 2 flagged, 16 exempt, 57 covered\n  ⚠️    32  data/audit/outlet-feed-reconcile.json  — no merge driver; needs a decision\n  ⚠️    31  data/show-score-candidates.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 2 flagged, 16 exempt, 57 covered\n  ⚠️    32  data/show-score-candidates.json  — no merge driver; needs a decision\n  ⚠️    31  data/audit/outlet-feed-reconcile.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     },
     {
       "name": "review-contamination",
@@ -153,7 +225,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "=== Audit Non-Review Content ===\nMode: DRY RUN | LLM: OFF\n\n\n=== RESULTS ===\nScanned: 45871 scored reviews\nAlready rejected: 606\nHeuristic high-confidence: 1\nHeuristic medium → LLM confirmed: 0\nHeuristic medium → LLM cleared: 0\nHeuristic medium → LLM failed: 0\nTotal flagged: 1\n\n--- Flagged Non-Reviews ---\n  ✗ home-2024/thewrap--robert-hofler.json\n    Type: obituary | Outlet: The Wrap | Score: 76\n    Evidence: passed away; age 78, and one of the sad ironies of his death; passed away last month at age 78\n\nAudit report: /home/runner/work/Broadwayscore/Broadwayscore/data/audit/non-review-audit.json\n\n✓ STRICT: no definitive wrong-page non-reviews among scored reviews."
+      "detail": "=== Audit Non-Review Content ===\nMode: DRY RUN | LLM: OFF\n\n\n=== RESULTS ===\nScanned: 45870 scored reviews\nAlready rejected: 607\nHeuristic high-confidence: 1\nHeuristic medium → LLM confirmed: 0\nHeuristic medium → LLM cleared: 0\nHeuristic medium → LLM failed: 0\nTotal flagged: 1\n\n--- Flagged Non-Reviews ---\n  ✗ home-2024/thewrap--robert-hofler.json\n    Type: obituary | Outlet: The Wrap | Score: 76\n    Evidence: passed away; age 78, and one of the sad ironies of his death; passed away last month at age 78\n\nAudit report: /home/runner/work/Broadwayscore/Broadwayscore/data/audit/non-review-audit.json\n\n✓ STRICT: no definitive wrong-page non-reviews among scored reviews."
     },
     {
       "name": "review-texts",
@@ -195,10 +267,10 @@
       "name": "critic-consensus-contamination",
       "label": "data/critic-consensus.json orphan/staleness — full --strict (gate = orphan key only)",
       "command": "node scripts/audit-critic-consensus-contamination.js --strict",
-      "exitCode": 1,
-      "ok": false,
+      "exitCode": 0,
+      "ok": true,
       "crashed": false,
-      "detail": "[audit-critic-consensus-contamination] 1 fail, 0 warn\n\n  [fail] the-comedy-about-spies-west-end-2025\n     REVIEWCOUNT_DRIFT:consensus=20,actual=31,diff=11\n     text: Mischief Theatre delivers another crowd-pleasing farce with this 1960s spy spoof, earning mostly positive reviews for it…"
+      "detail": "[audit-critic-consensus-contamination] 0 fail, 0 warn"
     },
     {
       "name": "synopsis-story",
@@ -216,7 +288,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "[stuck-rescore] 5 stuck needsRescore flag(s) (non-scoreable) of 2291 flagged; threshold --max=25\n     3  stale automated text verdict cleared (fullText re-fetched after rejection)\n     1  fullText added after excerpt-based scoring\n     1  fullText completed after truncated-text scoring\n    - as-you-like-it-globe-west-end-2026/the-morning-star--unknown.json  [stale automated text verdict cleared (fullText re-fetched after rejection)]\n    - buena-vista-social-club-off-broadway-2023/theater-pizzazz--carol-rocamora.json  [stale automated text verdict cleared (fullText re-fetched after rejection)]\n    - into-the-woods-west-end-2025/theatre-weekly--unknown.json  [stale automated text verdict cleared (fullText re-fetched after rejection)]\n    - the-encounter-2016/wsj--terry-teachout.json  [fullText added after excerpt-based scoring]\n    - the-standard-of-living-west-end-2026/mail-on-sunday--patrick-marmion.json  [fullText completed after truncated-text scoring]"
+      "detail": "[stuck-rescore] 5 stuck needsRescore flag(s) (non-scoreable) of 2292 flagged; threshold --max=25\n     3  stale automated text verdict cleared (fullText re-fetched after rejection)\n     1  fullText added after excerpt-based scoring\n     1  fullText completed after truncated-text scoring\n    - as-you-like-it-globe-west-end-2026/the-morning-star--unknown.json  [stale automated text verdict cleared (fullText re-fetched after rejection)]\n    - buena-vista-social-club-off-broadway-2023/theater-pizzazz--carol-rocamora.json  [stale automated text verdict cleared (fullText re-fetched after rejection)]\n    - into-the-woods-west-end-2025/theatre-weekly--unknown.json  [stale automated text verdict cleared (fullText re-fetched after rejection)]\n    - the-encounter-2016/wsj--terry-teachout.json  [fullText added after excerpt-based scoring]\n    - the-standard-of-living-west-end-2026/mail-on-sunday--patrick-marmion.json  [fullText completed after truncated-text scoring]"
     },
     {
       "name": "stale-score-input",
@@ -252,7 +324,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "Scanned 57429 files: 15 orphaned (14 baselined, 1 NEW, 6 baseline entries now fixed)\nNEW orphaned wrongProduction provenance (flag dropped, file would score):\n  cats-2016/northjerseycom--robert-feldberg.json\nFix: restore wrongProduction:true if the detection was right, else delete the wrongProduction* provenance fields.\n(run --update-baseline to drop 6 fixed entries)"
+      "detail": "Scanned 57432 files: 15 orphaned (14 baselined, 1 NEW, 6 baseline entries now fixed)\nNEW orphaned wrongProduction provenance (flag dropped, file would score):\n  cats-2016/northjerseycom--robert-feldberg.json\nFix: restore wrongProduction:true if the detection was right, else delete the wrongProduction* provenance fields.\n(run --update-baseline to drop 6 fixed entries)"
     },
     {
       "name": "duplicate-shows",
@@ -279,7 +351,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "Flag-vs-CV contradiction sweep: 260 shows in the last 30d window, 9 contradiction(s) found.\n  [wrongProduction] hay-fever-west-end-2026/theatreboard--unknown.json (336w)\n  [wrongProduction] tosca-off-broadway-2026/new-york-classical-review--george-grella.json (925w)\n  [wrongProduction] tosca-off-broadway-2026/operawire--chris-ruel.json (2816w)\n  [wrongProduction] miles-for-mary-off-broadway-2026/talkinbroadway--marc-miller.json (675w)\n  [wrongProduction] the-last-ship-west-end-2026/timeout--andrzej-lukowski.json (976w)\n  [wrongProduction] the-revlon-girl-off-west-end-2026/london-box-office--stacey-tyler.json (817w)\n  [wrongProduction] much-ado-about-nothing-2026/london-theatre--marianka-swain.json (793w)\n  [wrongProduction] gang-of-three-off-west-end-2026/london-box-office--stuart-king.json (568w)\n  [wrongProduction] a-beautiful-noise-the-neil-diamond-musical-tour-2026/dayton-local--michael-woody.json (618w)\nCoverage: examined 172 of 3764 corpus show(s) (2642 review file(s) parsed).\n  --window=30d selected 260 show(s): 123 already opened, 137 not yet opened (the window filter has no upper bound).\n  88 selected show(s) yielded no readable review file (directory missing, unreadable, empty, or every file failed to parse).\n  3592 corpus show(s) were NOT examined, of which 407 carry no usable openingDate (missing or unparseable) and are excluded at EVERY window.\n  A clean result above covers only the examined shows. It is not a statement about the corpus.\n\n(5 baselined, 4 new)\n\n⚠️  NEW flag-vs-CV contradiction(s), not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/cv-flag-contradiction-baseline.json):\n  [wrongProduction] hay-fever-west-end-2026/theatreboard--unknown.json\n  [wrongProduction] much-ado-about-nothing-2026/london-theatre--marianka-swain.json\n  [wrongProduction] gang-of-three-off-west-end-2026/london-box-office--stuart-king.json\n  [wrongProduction] a-beautiful-noise-the-neil-diamond-musical-tour-2026/dayton-local--michael-woody.json\n\nInvestigate, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-cv-flag-contradiction.js --update-baseline"
+      "detail": "Flag-vs-CV contradiction sweep: 260 shows in the last 30d window, 9 contradiction(s) found.\n  [wrongProduction] hay-fever-west-end-2026/theatreboard--unknown.json (336w)\n  [wrongProduction] tosca-off-broadway-2026/new-york-classical-review--george-grella.json (925w)\n  [wrongProduction] tosca-off-broadway-2026/operawire--chris-ruel.json (2816w)\n  [wrongProduction] miles-for-mary-off-broadway-2026/talkinbroadway--marc-miller.json (675w)\n  [wrongProduction] the-last-ship-west-end-2026/timeout--andrzej-lukowski.json (976w)\n  [wrongProduction] the-revlon-girl-off-west-end-2026/london-box-office--stacey-tyler.json (817w)\n  [wrongProduction] much-ado-about-nothing-2026/london-theatre--marianka-swain.json (793w)\n  [wrongProduction] gang-of-three-off-west-end-2026/london-box-office--stuart-king.json (568w)\n  [wrongProduction] a-beautiful-noise-the-neil-diamond-musical-tour-2026/dayton-local--michael-woody.json (618w)\nCoverage: examined 172 of 3764 corpus show(s) (2645 review file(s) parsed).\n  --window=30d selected 260 show(s): 123 already opened, 137 not yet opened (the window filter has no upper bound).\n  88 selected show(s) yielded no readable review file (directory missing, unreadable, empty, or every file failed to parse).\n  3592 corpus show(s) were NOT examined, of which 407 carry no usable openingDate (missing or unparseable) and are excluded at EVERY window.\n  A clean result above covers only the examined shows. It is not a statement about the corpus.\n\n(5 baselined, 4 new)\n\n⚠️  NEW flag-vs-CV contradiction(s), not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/cv-flag-contradiction-baseline.json):\n  [wrongProduction] hay-fever-west-end-2026/theatreboard--unknown.json\n  [wrongProduction] much-ado-about-nothing-2026/london-theatre--marianka-swain.json\n  [wrongProduction] gang-of-three-off-west-end-2026/london-box-office--stuart-king.json\n  [wrongProduction] a-beautiful-noise-the-neil-diamond-musical-tour-2026/dayton-local--michael-woody.json\n\nInvestigate, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-cv-flag-contradiction.js --update-baseline"
     },
     {
       "name": "counted-review-integrity",
@@ -306,7 +378,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "Self-contradictory clear sweep: 57321 review file(s) scanned, 11 contradiction(s).\n    11 | wrongShow + contentVerificationPromoted (#1022)\n         becky-shaw-2026/nytimes--elisabeth-vincentelli.json\n         hamlet-off-broadway-2026/ap--mark-kennedy.json\n         john-proctor-is-the-villain-west-end-2026/thestage--paul-raven.json\n         little-shop-of-horrors-off-broadway-2019/times-square-chronicles--suzanna-bowling.json\n         mamma-mia-west-end-2021/musical-theatre-review--angela-thomas.json\n         … and 6 more\n\nBaseline 11 (±15) — now 11 (+0)."
+      "detail": "Self-contradictory clear sweep: 57324 review file(s) scanned, 11 contradiction(s).\n    11 | wrongShow + contentVerificationPromoted (#1022)\n         becky-shaw-2026/nytimes--elisabeth-vincentelli.json\n         hamlet-off-broadway-2026/ap--mark-kennedy.json\n         john-proctor-is-the-villain-west-end-2026/thestage--paul-raven.json\n         little-shop-of-horrors-off-broadway-2019/times-square-chronicles--suzanna-bowling.json\n         mamma-mia-west-end-2021/musical-theatre-review--angela-thomas.json\n         … and 6 more\n\nBaseline 11 (±15) — now 11 (+0)."
     },
     {
       "name": "aggregator-archive-integrity",
@@ -324,7 +396,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "live reviews scanned: 29578\nlive reviews on look-alike/blocked host: 0\nregistry aliases naming a look-alike host: 0\nlive reviews with unregistered outlet: 0 outlet(s)\ncorpus files scanned: 57429; provisional outlets without a decision: 0\nOK: 0 problems"
+      "detail": "live reviews scanned: 29578\nlive reviews on look-alike/blocked host: 0\nregistry aliases naming a look-alike host: 0\nlive reviews with unregistered outlet: 0 outlet(s)\ncorpus files scanned: 57432; provisional outlets without a decision: 0\nOK: 0 problems"
     },
     {
       "name": "critic-outlets",
@@ -342,7 +414,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "autoclear-vs-ensemble audit: 57321 files scanned.\n  wrongProduction violations: 0\n  wrongShow violations: 0"
+      "detail": "autoclear-vs-ensemble audit: 57324 files scanned.\n  wrongProduction violations: 0\n  wrongShow violations: 0"
     },
     {
       "name": "contradicted-flag-basis",
@@ -357,10 +429,10 @@
       "name": "duplicate-of-cleared-contradiction",
       "label": "a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "command": "node scripts/audit-duplicate-of-cleared-contradiction.js --gate --max=0",
-      "exitCode": 1,
-      "ok": false,
+      "exitCode": 0,
+      "ok": true,
       "crashed": false,
-      "detail": "Duplicate-of-cleared contradiction sweep: 57429 review file(s) scanned, 6 match(es).\n  and-juliet-2022/theatermania--pete-hempstead.json -> theatermania--jesse-green.json (both claim/deny the same URL)\n  cost-of-living-2022/nytimes--jesse-green.json -> nytimes--maya-phillips.json (both claim/deny the same URL)\n  head-over-heels-2018/nytimes--jesse-green.json -> nytimes--ben-brantley.json (both claim/deny the same URL)\n  plaza-suite-2022/variety--frank-rizzo.json -> variety--daniel-daddario.json (both claim/deny the same URL)\n  the-cottage-2023/theater-life--paulanne-simmons.json -> theater-life--samuel-l-leiter.json (both claim/deny the same URL)\n  the-mystery-of-edwin-drood-2012/vulture--scott-brown.json -> vulture--jesse-green.json (both claim/deny the same URL)\n\nFAIL: 6 review file(s) carry a duplicateOf pointer AND a _duplicateOfCleared breadcrumb for the same URL (> max 0).\nThis is the #1655 class: two contradictory verdicts about the same URL collision on one record.\nFix: node scripts/audit-duplicate-of-cleared-contradiction.js --fix (retracts the dead breadcrumb; duplicateOf already governs inclusion — see the module docblock for why this is safe in bulk)."
+      "detail": "Duplicate-of-cleared contradiction sweep: 57432 review file(s) scanned, 0 match(es)."
     },
     {
       "name": "url-downgrade",
@@ -396,7 +468,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "Scanned 57429 review-text files (0 unreadable/skipped)\n  live aggregator-URL mismatches:   0\n  latent (behind exclusion flags):  1 (ceiling 2, grace +3)\n\nLATENT (invisible to the gate until an auto-clear promotes them):\n  dracula-west-end-2025/telegraph--paul-raven.json\n\n::notice::latent population shrank to 1 (ceiling 2) — tighten the pin. Set \"latentCeiling\" to 1 in scripts/.aggregator-url-latent.json."
+      "detail": "Scanned 57432 review-text files (0 unreadable/skipped)\n  live aggregator-URL mismatches:   0\n  latent (behind exclusion flags):  1 (ceiling 2, grace +3)\n\nLATENT (invisible to the gate until an auto-clear promotes them):\n  dracula-west-end-2025/telegraph--paul-raven.json\n\n::notice::latent population shrank to 1 (ceiling 2) — tighten the pin. Set \"latentCeiling\" to 1 in scripts/.aggregator-url-latent.json."
     },
     {
       "name": "awards-freshness",
@@ -414,7 +486,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "Exclusion mirror summary 2026-10-17T22:09:00.119Z: 27331/57428 excluded by the mirror; 1121/56894 disagree with the rebuild (1.97%)\n  largest rule moves: crossOutletDuplicate -15, wrongProduction +1, rejectionReason -1"
+      "detail": "Exclusion mirror summary 2026-10-17T22:41:29.633Z: 27330/57429 excluded by the mirror; 1119/56895 disagree with the rebuild (1.97%)\n  largest rule moves: cvWrongArticleHighConfidence -2, noTextOrScoreSignal +1"
     }
   ]
 }
