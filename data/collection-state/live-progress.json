@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-10-17T20:58:49.681Z",
-  "processed": 8,
-  "failed": 17,
-  "successRate": "32.0%",
+  "updatedAt": "2026-10-17T21:19:38.187Z",
+  "processed": 10,
+  "failed": 19,
+  "successRate": "34.5%",
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 6,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
@@ -55,6 +55,41 @@
       "t": "2026-10-17T20:58:41.002Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-17T21:10:53.161Z",
+      "event": "bb-session",
+      "session": "f2e9ca44",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-17T21:11:01.726Z",
+      "event": "bb-session",
+      "session": "cf4875f6",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-17T21:12:26.399Z",
+      "event": "bb-session",
+      "session": "4ecf6370",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-17T21:12:34.320Z",
+      "event": "bb-session",
+      "session": "47406910",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-17T21:17:46.280Z",
+      "event": "bb-session",
+      "session": "738e9cc2",
+      "url": "https://www.thetimes.com/recipes/entertaining/party-food/article/dates-stuffed-w"
+    },
+    {
+      "t": "2026-10-17T21:17:47.198Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }

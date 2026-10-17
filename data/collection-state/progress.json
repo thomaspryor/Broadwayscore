@@ -7,7 +7,9 @@
     "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json",
     "some-woman-west-end-2026/thereviewshub--unknown.json",
     "some-woman-west-end-2026/sunday-times--clive-davis.json",
-    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/me-ticket--unknown.json"
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/me-ticket--unknown.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/new-statesman--rachel-cunliffe.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/reviewsgate--william-russell.json"
   ],
   "failed": [
     "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
@@ -26,7 +28,9 @@
     "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/culturesauce--thom-geier.json",
     "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--roma-torre.json",
     "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/talkinbroadway--kimberly-ramirez.json",
-    "stuffed-off-west-end-2026/sunday-times--unknown.json"
+    "stuffed-off-west-end-2026/sunday-times--unknown.json",
+    "an-oak-tree-off-west-end-2026/times-uk--dominic-maxwell.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -34,7 +38,9 @@
       "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json",
       "cadel-lungs-on-legs-west-end-2026/a-youngish-perspective--trixie-smith.json",
       "some-woman-west-end-2026/thereviewshub--unknown.json",
-      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/me-ticket--unknown.json"
+      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/me-ticket--unknown.json",
+      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/new-statesman--rachel-cunliffe.json",
+      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/reviewsgate--william-russell.json"
     ],
     "amp": [],
     "browserbase": [
@@ -55,7 +61,7 @@
     ]
   },
   "startTime": "2026-10-17T20:44:46.749Z",
-  "lastProcessed": "stuffed-off-west-end-2026/sunday-times--unknown.json",
+  "lastProcessed": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json",
   "log": [
     {
       "t": "2026-10-17T20:45:53.416Z",
@@ -96,6 +102,41 @@
       "t": "2026-10-17T20:58:41.002Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-17T21:10:53.161Z",
+      "event": "bb-session",
+      "session": "f2e9ca44",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-17T21:11:01.726Z",
+      "event": "bb-session",
+      "session": "cf4875f6",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-17T21:12:26.399Z",
+      "event": "bb-session",
+      "session": "4ecf6370",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-17T21:12:34.320Z",
+      "event": "bb-session",
+      "session": "47406910",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-17T21:17:46.280Z",
+      "event": "bb-session",
+      "session": "738e9cc2",
+      "url": "https://www.thetimes.com/recipes/entertaining/party-food/article/dates-stuffed-w"
+    },
+    {
+      "t": "2026-10-17T21:17:47.198Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
