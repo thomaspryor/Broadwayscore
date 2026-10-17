@@ -35,16 +35,10 @@ const fs = require('fs');
 const path = require('path');
 const { foldDiacritics } = require('./title-match');
 const { normalizeUrl } = require('./poller-blocklist');
+const { decodeHtmlEntities } = require('./text-cleaning');
 
-function decodeEntities(s) {
-  return String(s || '')
-    .replace(/&#8217;|&#039;|&rsquo;|&#8216;/g, "'")
-    .replace(/&#8211;|&#8212;|&ndash;|&mdash;/g, '-')
-    .replace(/&amp;/g, '&')
-    .replace(/&#8230;|&hellip;/g, '...')
-    .replace(/&quot;/g, '"')
-    .replace(/<[^>]+>/g, '')
-    .trim();
+function cleanTitleText(s) {
+  return decodeHtmlEntities(String(s || '')).replace(/<[^>]+>/g, '').trim();
 }
 
 /**
@@ -52,7 +46,7 @@ function decodeEntities(s) {
  * apostrophes/punctuation → spaces, collapse whitespace.
  */
 function normalizeTitle(s) {
-  return foldDiacritics(decodeEntities(s))
+  return foldDiacritics(cleanTitleText(s))
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, ' ')
     .replace(/\s+/g, ' ')
@@ -65,7 +59,7 @@ function normalizeTitle(s) {
  * company qualifier (" at …", " by …", " – …", "(…)").
  */
 function parseReviewPost(rawTitle) {
-  const title = decodeEntities(rawTitle);
+  const title = cleanTitleText(rawTitle);
   if (!title) return null;
   if (REJECT_PREFIX.test(title)) return null;
   const m = title.match(ACCEPT_PREFIX);
@@ -172,4 +166,4 @@ function loureviewsUrlsOnDisk(reviewTextsDir) {
   return urls;
 }
 
-module.exports = { parseReviewPost, matchPostToShow, titleMatch, normalizeTitle, decodeEntities, loureviewsUrlsOnDisk };
+module.exports = { parseReviewPost, matchPostToShow, titleMatch, normalizeTitle, decodeEntities: cleanTitleText, loureviewsUrlsOnDisk };

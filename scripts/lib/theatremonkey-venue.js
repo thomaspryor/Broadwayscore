@@ -45,6 +45,7 @@ const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
 const { foldDiacritics } = require('./title-match');
+const { decodeHtmlEntities } = require('./text-cleaning');
 
 const TM_INDEX_URL = 'https://www.theatremonkey.com/shows/';
 const TM_SHOW_URL_PREFIX = 'https://www.theatremonkey.com/show/';
@@ -71,20 +72,6 @@ const MONTHS = {
   jan: '01', feb: '02', mar: '03', apr: '04', jun: '06', jul: '07', aug: '08',
   sep: '09', sept: '09', oct: '10', nov: '11', dec: '12',
 };
-
-function decodeEntities(s) {
-  return String(s)
-    .replace(/&nbsp;/gi, ' ')
-    .replace(/&(?:rsquo;|#8217;|#x2019;)/gi, '’')
-    .replace(/&(?:lsquo;|#8216;|#x2018;)/gi, '‘')
-    .replace(/&(?:rdquo;|#8221;)/gi, '”')
-    .replace(/&(?:ldquo;|#8220;)/gi, '“')
-    .replace(/&(?:quot;|#34;)/gi, '"')
-    .replace(/&(?:apos;|#39;|#039;)/gi, "'")
-    .replace(/&(?:ndash;|#8211;)/gi, '–')
-    .replace(/&(?:mdash;|#8212;)/gi, '—')
-    .replace(/&amp;/gi, '&');
-}
 
 function collapseWhitespace(s) {
   return String(s).replace(/\s+/g, ' ').trim();
@@ -120,7 +107,7 @@ function parseTheatremonkeyIndex(html) {
     if (!match) return;
     const slug = match[1];
     if (slug === 'shows' || seen.has(slug)) return;
-    const title = collapseWhitespace(decodeEntities($(el).text()));
+    const title = collapseWhitespace(decodeHtmlEntities($(el).text()));
     if (title.length < 2 || /^(Read more|Show Details|Reviews)/i.test(title)) return;
     seen.add(slug);
     entries.push({
@@ -134,7 +121,7 @@ function parseTheatremonkeyIndex(html) {
 
 function cleanVenueText(raw) {
   if (!raw) return null;
-  let v = collapseWhitespace(decodeEntities(raw));
+  let v = collapseWhitespace(decodeHtmlEntities(raw));
   v = v.replace(/[\s.,;:–—-]+$/g, '').trim();
   if (v.length < 3 || v.length > 120 || /[<>]/.test(v)) return null;
   return v;
@@ -182,7 +169,7 @@ function parseBritishDate(text, now = new Date()) {
 function extractTheatremonkeyDates(html, now = new Date()) {
   const out = { showingFrom: null, showingTo: null };
   if (!html) return out;
-  const text = collapseWhitespace(decodeEntities(html.replace(/<[^>]+>/g, ' ')));
+  const text = collapseWhitespace(decodeHtmlEntities(html.replace(/<[^>]+>/g, ' ')));
   const m = text.match(/Showing from\s+(?:[A-Za-z]+,\s*)?(\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]+\s+\d{4})(?:\s+(?:to|until|-|–)\s+(?:[A-Za-z]+,\s*)?(\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]+\s+\d{4}))?/i);
   if (!m) return out;
   out.showingFrom = parseBritishDate(m[1], now);

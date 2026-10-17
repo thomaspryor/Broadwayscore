@@ -28,6 +28,8 @@
  * sitting in the pending queue.
  */
 
+const { decodeHtmlEntities } = require('./text-cleaning');
+
 // Qualified tour phrases only: a bare "tour" also appears in Broadway
 // headlines ("Hamilton Recoups, Plans Tour") and must not reject them.
 const TOUR_RE = /\b(?:national|north american|first national|second national|us|u\.s\.|uk|u\.k\.|international|world|european|australian|asian|non[- ]equity|equity|touring|road)\s+tour\b|\btouring\s+(?:production|company|cast)\b/i;
@@ -112,12 +114,8 @@ function nonBroadwayMarker(text, { broadwayContext = false } = {}) {
   return null;
 }
 
-function decodeEntities(s) {
-  return String(s || '')
-    .replace(/&amp;/g, '&')
-    .replace(/&#0?39;|&apos;|&#8217;|&rsquo;/g, "'")
-    .replace(/&quot;|&#8220;|&#8221;|&ldquo;|&rdquo;/g, '"')
-    .replace(/&nbsp;/g, ' ')
+function cleanHeadline(s) {
+  return decodeHtmlEntities(String(s || ''))
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -152,9 +150,9 @@ function extractHeadlines(html) {
   if (!html || typeof html !== 'string') return [];
   const out = [];
   const og = metaContent(metaTags(html), ['og:title', 'twitter:title']);
-  if (og) out.push(decodeEntities(og));
+  if (og) out.push(cleanHeadline(og));
   const title = /<title[^>]*>([^<]*)<\/title>/i.exec(html);
-  if (title) out.push(decodeEntities(title[1]));
+  if (title) out.push(cleanHeadline(title[1]));
   return out.filter(Boolean);
 }
 

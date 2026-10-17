@@ -29,6 +29,7 @@
 const fs = require('fs');
 const path = require('path');
 const { fetchPage } = require('./scraper');
+const { decodeHtmlEntities } = require('./text-cleaning');
 
 const PLAYBILL_BROADWAY_URL = 'https://playbill.com/article/schedule-of-upcoming-and-announced-broadway-shows';
 // PLAYBILL_BROADWAY_LAST_SUCCESS_PATH (S4-T2): lets check-broadway-source-
@@ -46,22 +47,6 @@ const MONTHS = {
   jan: '01', feb: '02', mar: '03', apr: '04', jun: '06', jul: '07',
   aug: '08', sep: '09', sept: '09', oct: '10', nov: '11', dec: '12',
 };
-
-function decodeEntities(s) {
-  return s
-    .replace(/&nbsp;/gi, ' ')
-    .replace(/&(?:rsquo;|#8217;)/gi, '’')
-    .replace(/&(?:lsquo;|#8216;)/gi, '‘')
-    .replace(/&(?:rdquo;|#8221;)/gi, '”')
-    .replace(/&(?:ldquo;|#8220;)/gi, '“')
-    .replace(/&(?:quot;|#34;)/gi, '"')
-    .replace(/&(?:apos;|#39;)/gi, "'")
-    .replace(/&(?:hellip;|#8230;)/gi, '…')
-    .replace(/&(?:mdash;|#8212;)/gi, '—')
-    .replace(/&(?:ndash;|#8211;)/gi, '–')
-    // Last, so a literal "&amp;quot;" is not double-decoded.
-    .replace(/&amp;/gi, '&');
-}
 
 // "November 8, 2026" -> "2026-11-08". Requires a day; month-only text
 // ("February 2027") deliberately does not match — that's the caller's
@@ -114,7 +99,7 @@ const IN_THE_WORKS_RE = /IN(?:\s|&nbsp;)+THE(?:\s|&nbsp;)+WORKS\b/;
 // so a space here would yield "S CHOOL"), entities decoded, whitespace
 // collapsed.
 function visibleText(fragment) {
-  return decodeEntities(fragment.replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim();
+  return decodeHtmlEntities(fragment.replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim();
 }
 
 function isBlockStart(html, idx) {
@@ -203,7 +188,7 @@ function parsePlaybillBroadwaySchedule(html) {
     const segment = html.slice(end, nextStart);
     const lines = segment
       .split(/<br\s*\/?>/i)
-      .map(l => decodeEntities(l.replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim())
+      .map(l => decodeHtmlEntities(l.replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim())
       .filter(Boolean);
 
     let venue = null, firstPreview = null, firstPreviewApprox = null, opening = null;

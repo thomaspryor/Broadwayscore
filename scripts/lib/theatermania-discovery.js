@@ -25,6 +25,7 @@
  */
 
 const { fetchJSON } = require('./scraper');
+const { decodeHtmlEntities } = require('./text-cleaning');
 // titleMatchesShow is THIS module's only title matcher (safeSubtitlePrefix below
 // only counts words, it never matches). Its diacritic folding therefore lives in
 // rss-discovery.js — inside titleMatchesShow's local normalize() — not here
@@ -77,24 +78,9 @@ const TM_REST_REVIEWS_URL =
 const OUTLET_ID = 'theatermania';
 const OUTLET_NAME = 'TheaterMania';
 
-// Curly→straight quote/dash normalization — done here (not just entity decoding)
-// because rss-discovery.js's titleMatchesShow has a known apostrophe-class bug
-// (line 188: /['']/g is two ASCII apostrophes, doesn't fold curly variants).
-// Folding here keeps the helper usable for TM headlines containing &#8217;.
-function decodeEntities(s) {
-  return s
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&apos;/g, "'")
-    .replace(/&#39;/g, "'")
-    .replace(/&#8216;/g, "'")
-    .replace(/&#8217;/g, "'")
-    .replace(/&#8220;/g, '"')
-    .replace(/&#8221;/g, '"')
-    .replace(/&#8212;/g, '-')
-    .replace(/&#8211;/g, '-')
+// Preserve the feed's existing punctuation normalization after entity decoding.
+function normalizeFeedText(s) {
+  return decodeHtmlEntities(s)
     .replace(/[‘’]/g, "'")
     .replace(/[“”]/g, '"')
     .replace(/[–—]/g, '-');
@@ -159,7 +145,7 @@ async function discoverNewReviews(showId, show, since, options = {}) {
   const hits = [];
   for (const p of posts) {
     if (!p || !p.link) continue;
-    const title = decodeEntities((p.title && p.title.rendered) || '');
+    const title = normalizeFeedText((p.title && p.title.rendered) || '');
     if (!title) continue;
 
     // Title must contain the show name (handles co-running productions in the

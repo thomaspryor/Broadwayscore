@@ -1,4 +1,5 @@
 const { publishedStampToLocalDate, tzForMarket } = require('./local-date');
+const { decodeHtmlEntities } = require('./text-cleaning');
 /**
  * One Minute Critic Direct Discovery
  *
@@ -48,24 +49,9 @@ const NON_THEATER_CATEGORIES = new Set([
   'albums',
 ]);
 
-function decodeEntities(s) {
-  return s
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&apos;/g, "'")
-    .replace(/&#39;/g, "'")
-    .replace(/&#8216;/g, "'")
-    .replace(/&#8217;/g, "'")
-    .replace(/&#8220;/g, '"')
-    .replace(/&#8221;/g, '"')
-    .replace(/&#8212;/g, '-')
-    .replace(/&#8211;/g, '-')
-    // WordPress RSS double-encodes & as &#038; (URL params: utm_source=rss&#038;utm_medium=rss).
-    // Order matters: decode &#038; BEFORE &amp; so the result is a single ampersand,
-    // not a literal "&amp;" left over. Apply numeric form before named form for safety.
-    .replace(/&#038;/g, '&')
+// Preserve the feed's existing punctuation normalization after entity decoding.
+function normalizeFeedText(s) {
+  return decodeHtmlEntities(s)
     .replace(/[‘’]/g, "'")
     .replace(/[“”]/g, '"')
     .replace(/[–—]/g, '-');
@@ -111,13 +97,13 @@ function parseRssItems(xml) {
       const pub = dateM && dateM[1] ? new Date(dateM[1].trim()) : null;
       // RSS double-escapes ampersands as &#038; — decode entities BEFORE
       // cleanUrl so URL params parse and dedup correctly.
-      const linkRaw = decodeEntities(linkM[1].trim());
+      const linkRaw = normalizeFeedText(linkM[1].trim());
       items.push({
-        title: decodeEntities(titleM[1].trim()),
+        title: normalizeFeedText(titleM[1].trim()),
         link: cleanUrl(linkRaw),
         pubDate: pub && !isNaN(pub.getTime()) ? pub : null,
-        creator: creatorM ? decodeEntities(creatorM[1].trim()) : null,
-        categories: cats.map((c) => decodeEntities(c).toLowerCase()),
+        creator: creatorM ? normalizeFeedText(creatorM[1].trim()) : null,
+        categories: cats.map((c) => normalizeFeedText(c).toLowerCase()),
       });
     }
   }
@@ -127,8 +113,8 @@ function parseRssItems(xml) {
 // Title-match: 80% of significant words must appear with word boundaries.
 // Done in-house because rss-discovery.js's titleMatchesShow has a known
 // curly-apostrophe bug (line 188: `/['']/g` is two ASCII apostrophes, not
-// the curly pair) that misses headlines with &#8217;. Our decodeEntities
-// already folds curly→ASCII so a word-boundary match is safe.
+// the curly pair) that misses headlines with &#8217;. normalizeFeedText
+// folds decoded punctuation to ASCII so a word-boundary match is safe.
 function normalize(t) {
   // foldDiacritics BEFORE the [^a-z0-9' ] filter — otherwise "Misérables"
   // becomes "mis rables" (accented char replaced by a space) and every

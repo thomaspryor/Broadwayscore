@@ -10,16 +10,7 @@
 'use strict';
 
 const { stripBylineSuffixes } = require('./byline-normalization');
-
-function decodeEntities(s) {
-  return (s || '')
-    .replace(/&#(\d+);/g, (m, n) => { const c = parseInt(n, 10); return c <= 0x10ffff ? String.fromCodePoint(c) : m; })
-    .replace(/&amp;/g, '&')
-    .replace(/&quot;|&ldquo;|&rdquo;/g, '"')
-    .replace(/&apos;|&lsquo;|&rsquo;/g, "'")
-    .replace(/&eacute;/g, 'é')
-    .replace(/&nbsp;/g, ' ');
-}
+const { decodeHtmlEntities } = require('./text-cleaning');
 
 const REVIEWER_LINE_RE = />\s*Reviewer:\s*([A-Z][A-Za-z.'’-]+(?:\s+[A-Z][A-Za-z.'’-]+){1,3})\s*</;
 const NOT_A_PERSON_RE = /\b(?:anonymous|staff|team|editor|editorial|desk|admin|guest|verified|customer|reviews?|hub|critics?|press|night|theatre|theater|magazine|news|online|london|uk)\b|^(?:the|our)\b/i;
@@ -35,7 +26,7 @@ function extractReviewerLine(html) {
   if (!html) return null;
   const m = REVIEWER_LINE_RE.exec(String(html).replace(/&nbsp;|&#160;|&#xa0;/gi, ' '));
   if (!m) return null;
-  const name = decodeEntities(m[1]).replace(/\s+/g, ' ').trim();
+  const name = decodeHtmlEntities(m[1]).replace(/\s+/g, ' ').trim();
   if (NOT_A_PERSON_RE.test(name)) return null;
   if (name.split(' ').some((w) => w.replace(/[.'’-]/g, '').length < 2)) return null;
   return name;
@@ -90,7 +81,7 @@ function extractJsonLdAuthor(html) {
           if (a && typeof a === 'object' && a['@type'] && !/^Person$/i.test([].concat(a['@type'])[0])) continue;
           const raw = typeof a === 'string' ? a : a && a.name;
           if (typeof raw !== 'string') continue;
-          const name = stripBylineSuffixes(decodeEntities(raw).trim());
+          const name = stripBylineSuffixes(decodeHtmlEntities(raw).trim());
           if (!name || name.length < 2 || name.length > 80 || !/[A-Za-z]/.test(name)) continue;
           if (URL_LIKE_RE.test(name) || DOMAIN_LIKE_RE.test(name) || NOT_A_PERSON_RE.test(name) || PUBLISHER_RE.test(name)) continue;
           return name;
@@ -153,7 +144,7 @@ function extractByline(html) {
   for (const re of candidates) {
     const m = html.match(re);
     if (m && m[1]) {
-      let name = decodeEntities(m[1]).trim();
+      let name = decodeHtmlEntities(m[1]).trim();
       // Strip Jetpack-style "View all posts by X" prefix that leaks through
       // some <a rel=author> matches.
       name = name.replace(/^view\s+all\s+posts\s+by\s+/i, '');
@@ -181,4 +172,4 @@ function extractByline(html) {
 }
 
 module.exports = {
-  extractReviewerLine, extractByline, extractJsonLdAuthor, decodeEntities };
+  extractReviewerLine, extractByline, extractJsonLdAuthor, decodeEntities: (s) => decodeHtmlEntities(s || '') };

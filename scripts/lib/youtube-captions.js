@@ -22,6 +22,7 @@
  */
 
 const scraper = require('./scraper');
+const { decodeHtmlEntities } = require('./text-cleaning');
 
 /** Balanced-brace JSON object starting at text[start] === '{'. Returns the substring or null. */
 function sliceJsonObject(text, start) {
@@ -110,20 +111,13 @@ function publishedTimeToYmd(text, now = new Date()) {
   return null;
 }
 
-function decodeEntities(s) {
-  return String(s)
-    .replace(/&#(\d+);/g, (m, n) => { const c = Number(n); return c <= 0x10ffff ? String.fromCodePoint(c) : m; })
-    .replace(/&#x([0-9a-f]+);/gi, (m, n) => { const c = parseInt(n, 16); return c <= 0x10ffff ? String.fromCodePoint(c) : m; })
-    .replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
-}
-
 /** Scrapingdog /youtube/transcripts payload -> plain text, or null when the shape is unrecognised. */
 function sdTranscriptToText(payload) {
   const segs = payload && (Array.isArray(payload.transcripts) ? payload.transcripts
     : Array.isArray(payload.transcript) ? payload.transcript : null);
   if (!segs) return null;
   const parts = segs
-    .map(seg => decodeEntities(typeof seg === 'string' ? seg : (seg && seg.text) || '').replace(/\[[^\]]*\]/g, ' ').replace(/\s+/g, ' ').trim())
+    .map(seg => decodeHtmlEntities(typeof seg === 'string' ? seg : (seg && seg.text) || '').replace(/\[[^\]]*\]/g, ' ').replace(/\s+/g, ' ').trim())
     .filter(Boolean);
   return parts.filter((l, i) => i === 0 || l !== parts[i - 1]).join(' ').trim();
 }

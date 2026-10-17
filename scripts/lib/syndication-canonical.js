@@ -15,6 +15,8 @@
  * (resolveSyndicatedHit). Consumer: discover-opening-night-reviews.js.
  */
 
+const { decodeHtmlEntities } = require('./text-cleaning');
+
 // Hosts whose pages republish other outlets' copy. review-normalization's
 // SYNDICATION_PORTAL_HOSTS (yahoo/msn/aol.com) is the resolver-side list;
 // this one adds the reprint farms and feed readers seen in SERP.
@@ -36,14 +38,10 @@ function isSyndicationHost(url) {
   return SYNDICATION_HOSTS.some((d) => hostMatches(h, d));
 }
 
-function decodeEntities(s) {
-  return String(s).replace(/&amp;/g, '&').replace(/&#38;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
-}
-
 function attr(tag, name) {
   const m = tag.match(new RegExp(`(?<![\\w-])${name}\\s*=\\s*("([^"]*)"|'([^']*)'|([^\\s>"']+))`, 'i'));
   if (!m) return null;
-  return decodeEntities(m[2] !== undefined ? m[2] : m[3] !== undefined ? m[3] : m[4]);
+  return decodeHtmlEntities(m[2] !== undefined ? m[2] : m[3] !== undefined ? m[3] : m[4]);
 }
 
 function absolutize(href, base) {

@@ -17,6 +17,7 @@
  */
 
 const { foldDiacritics } = require('./title-match');
+const { decodeHtmlEntities } = require('./text-cleaning');
 
 // Stars may be split by a stray space or tag ("War Paint * **1/2") and may end
 // in a fraction: half stars mostly, quarter stars sometimes ("Sets **** 1/4").
@@ -39,16 +40,6 @@ function parseTitleStars(title) {
   const m = t.match(TITLE_STARS_RE);
   if (!m) return { cleanTitle: t.trim(), rating: null };
   return { cleanTitle: t.replace(TITLE_STARS_RE, '').trim(), rating: toRating(m[1], m[2]) };
-}
-
-// Raw WP HTML stripped of tags still carries entities ("Don&#8217;t", "&amp;",
-// "&nbsp;"), which would stop a title from matching its footer line.
-const NAMED_ENTITIES = { amp: '&', nbsp: ' ', quot: '"', apos: "'", lt: '<', gt: '>', rsquo: '’', lsquo: '‘', rdquo: '”', ldquo: '“', hellip: '…', ndash: '–', mdash: '—' };
-function decodeEntities(s) {
-  return String(s || '')
-    .replace(/&#(\d+);/g, (m, n) => { const c = Number(n); return c <= 0x10ffff ? String.fromCodePoint(c) : m; })
-    .replace(/&#x([0-9a-f]+);/gi, (m, h) => { const c = parseInt(h, 16); return c <= 0x10ffff ? String.fromCodePoint(c) : m; })
-    .replace(/&([a-z]+);/gi, (m, n) => NAMED_ENTITIES[n.toLowerCase()] ?? m);
 }
 
 function normTitle(s) {
@@ -97,13 +88,13 @@ function footerStars(text, titles) {
  * @returns {{cleanTitle: string, rating: string|null, source: 'wp-api-footer'|'wp-api-title'|null}}
  */
 function resolveTheaterLifeStars({ title, text, showTitles = [] }) {
-  const { cleanTitle, rating: titleRating } = parseTitleStars(decodeEntities(title));
-  const shows = showTitles.map(decodeEntities).filter(t => t.trim());
+  const { cleanTitle, rating: titleRating } = parseTitleStars(decodeHtmlEntities(String(title || '')));
+  const shows = showTitles.map(t => decodeHtmlEntities(String(t || ''))).filter(t => t.trim());
   // The post title names this show's footer only on a single-show post that is
   // about this show; on a combined column it names another show's line.
   const titleIsThisShow = !/[*★]/.test(cleanTitle)
     && (shows.length === 0 || shows.some(t => sameTitle(t, cleanTitle)));
-  const footer = footerStars(decodeEntities(text), titleIsThisShow ? [cleanTitle, ...shows] : shows);
+  const footer = footerStars(decodeHtmlEntities(String(text || '')), titleIsThisShow ? [cleanTitle, ...shows] : shows);
   if (footer) {
     // Same whole stars, half only in the title: the footer lost its fraction to
     // a separate tag or a typo the pattern does not read, so keep the half.
@@ -116,4 +107,4 @@ function resolveTheaterLifeStars({ title, text, showTitles = [] }) {
   return { cleanTitle, rating: null, source: null };
 }
 
-module.exports = { parseTitleStars, footerStars, resolveTheaterLifeStars, decodeEntities };
+module.exports = { parseTitleStars, footerStars, resolveTheaterLifeStars, decodeEntities: (s) => decodeHtmlEntities(String(s || '')) };

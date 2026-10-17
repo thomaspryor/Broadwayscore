@@ -1,4 +1,5 @@
 'use strict';
+const { decodeHtmlEntities } = require('./text-cleaning');
 
 /**
  * WhatsOnStage public WordPress REST API: West End show listings and review
@@ -42,18 +43,10 @@ const POLITE_DELAY_MS = 300;
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-const ENTITY_MAP = {
-  '&amp;': '&', '&#038;': '&', '&#8217;': '’', '&#8216;': '‘', '&#039;': "'",
-  '&rsquo;': '’', '&lsquo;': '‘', '&#8211;': '–', '&ndash;': '–',
-  '&#8212;': '—', '&mdash;': '—', '&#8220;': '“', '&#8221;': '”',
-  '&quot;': '"', '&nbsp;': ' ', '&#8230;': '…',
-};
-
 /** Decode the HTML entities WordPress puts in rendered titles, strip tags. */
-function decodeEntities(s) {
-  return String(s || '')
-    .replace(/<[^>]+>/g, '')
-    .replace(/&[#a-z0-9]+;/gi, m => ENTITY_MAP[m.toLowerCase()] ?? m)
+/** Decode rendered titles while preserving tag stripping and whitespace cleanup. */
+function cleanListingText(s) {
+  return decodeHtmlEntities(String(s || '').replace(/<[^>]+>/g, ''))
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -81,7 +74,7 @@ const WOS_VENUE_CANONICAL = [
 
 function canonicalWosVenue(name) {
   // Straight apostrophes: shows.json writes "Wyndham's Theatre", WOS "Wyndham’s".
-  const v = decodeEntities(name).replace(/[\u2018\u2019]/g, "'");
+  const v = cleanListingText(name).replace(/[\u2018\u2019]/g, "'");
   for (const [re, canonical] of WOS_VENUE_CANONICAL) if (re.test(v)) return canonical;
   return v;
 }
@@ -98,7 +91,7 @@ function parseWosShow(raw, venueById, genreById) {
   const venueId = Array.isArray(acf.the_venue) ? acf.the_venue[0] : acf.the_venue;
   return {
     wosId: raw?.id ?? null,
-    title: decodeEntities(raw?.title?.rendered),
+    title: cleanListingText(raw?.title?.rendered),
     venue: venueId != null ? canonicalWosVenue(get(venueById, venueId) || '') || null : null,
     venueId: venueId ?? null,
     previewsStartDate: wosDate(acf.preview_date),
@@ -118,8 +111,8 @@ function parseWosShow(raw, venueById, genreById) {
  * not a review title at all.
  */
 function parseWosReviewTitle(rawTitle, rawTeaser) {
-  const t = decodeEntities(rawTitle);
-  const teaser = decodeEntities(rawTeaser);
+  const t = cleanListingText(rawTitle);
+  const teaser = cleanListingText(rawTeaser);
   // Pre-2020 house style: "Review: <em>Wise Children</em> (The Old Vic)".
   const old = t.match(/^review:\s*(.+?)\s*\(([^()]+)\)\s*$/i);
   if (old) return { title: cleanReviewedTitle(old[1]), venue: old[2].replace(/^the\s+/i, '').trim() };
@@ -213,7 +206,7 @@ async function fetchVenueMap(venueIds) {
   for (let i = 0; i < ids.length; i += PAGE_SIZE) {
     const chunk = ids.slice(i, i + PAGE_SIZE);
     const r = await wosGet(`/venue?include=${chunk.join(',')}&per_page=${PAGE_SIZE}&_fields=id,title`);
-    for (const v of r.json || []) map.set(v.id, decodeEntities(v.title?.rendered));
+    for (const v of r.json || []) map.set(v.id, cleanListingText(v.title?.rendered));
     await sleep(POLITE_DELAY_MS);
   }
   return map;
@@ -258,7 +251,7 @@ async function fetchWosReviews({ after, before }) {
 
 module.exports = {
   LONDON_MARKET_ID,
-  decodeEntities,
+  decodeEntities: cleanListingText,
   canonicalWosVenue,
   wosDate,
   parseWosShow,

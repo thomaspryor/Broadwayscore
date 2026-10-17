@@ -1,4 +1,5 @@
 const { publishedStampToLocalDate } = require('./local-date');
+const { decodeHtmlEntities } = require('./text-cleaning');
 /**
  * RSS Feed Discovery for Opening Night Poller
  *
@@ -121,20 +122,6 @@ function fetchUrl(url, timeoutMs = 10000) {
  * Parse RSS 2.0 XML and extract items with title, link, pubDate.
  * Uses regex — no XML library dependency needed for simple RSS structure.
  */
-// Decode the HTML entities RSS titles actually ship. &amp;/&lt;/&gt; are the
-// obvious ones; numeric-coded curly quotes (&#8220;, &#8221;, &#8217;) and
-// &quot;/&#39;/&apos; appear in NYT Theater / Standard / Substack feeds and
-// break titleMatchesShow word-boundary matching when left raw.
-function decodeEntities(s) {
-  return s.replace(/&amp;/g, '&')
-          .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-          .replace(/&quot;/g, '"').replace(/&apos;/g, "'")
-          .replace(/&#39;/g, "'")
-          .replace(/&#8216;/g, "‘").replace(/&#8217;/g, "’")
-          .replace(/&#8220;/g, "“").replace(/&#8221;/g, "”")
-          .replace(/&#8212;/g, '—').replace(/&#8211;/g, '–');
-}
-
 function parseRSSItems(xml) {
   const items = [];
   const itemRegex = /<item[\s>]([\s\S]*?)<\/item>/gi;
@@ -159,12 +146,12 @@ function parseRSSItems(xml) {
     if (title && link) {
       const linkTrim = link.trim();
       items.push({
-        title: decodeEntities(title.trim()),
+        title: decodeHtmlEntities(title.trim()),
         link: linkTrim,
         pubDate: pubDate.trim() ? new Date(pubDate.trim()) : null,
         guid: (guid.trim() || linkTrim),
-        description: decodeEntities(description.trim()),
-        creator: decodeEntities(creator.trim()),
+        description: decodeHtmlEntities(description.trim()),
+        creator: decodeHtmlEntities(creator.trim()),
       });
     }
   }
@@ -195,11 +182,11 @@ function parseAtomItems(xml) {
     if (title && linkHref) {
       const linkTrim = linkHref.trim();
       items.push({
-        title: decodeEntities(title.trim()),
+        title: decodeHtmlEntities(title.trim()),
         link: linkTrim,
         pubDate: dateStr.trim() ? new Date(dateStr.trim()) : null,
         guid: (id.trim() || linkTrim),
-        description: decodeEntities(summary.trim()),
+        description: decodeHtmlEntities(summary.trim()),
       });
     }
   }

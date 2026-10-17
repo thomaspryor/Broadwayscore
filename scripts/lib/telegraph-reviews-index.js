@@ -29,6 +29,8 @@
  * Telegraph review.
  */
 
+const { decodeHtmlEntities } = require('./text-cleaning');
+
 const INDEX_URL = 'https://www.telegraph.co.uk/theatre/reviews/';
 
 // A structural break that still yields a HANDFUL of parseable cards is more
@@ -41,24 +43,9 @@ function stripTags(s) {
   return String(s || '').replace(/<[^>]*>/g, ' ');
 }
 
-function decodeEntities(s) {
-  return String(s || '')
-    .replace(/&amp;/g, '&')
-    .replace(/&quot;/g, '"')
-    .replace(/&#0?39;/g, "'")
-    .replace(/&apos;/g, "'")
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&#8217;|&rsquo;/g, "'")
-    .replace(/&#8216;|&lsquo;/g, "'")
-    .replace(/&#8220;|&#8221;|&ldquo;|&rdquo;/g, '"')
-    .replace(/&#8211;|&ndash;/g, '-')
-    .replace(/&#8212;|&mdash;/g, '-');
-}
 
 function cleanText(html) {
-  return decodeEntities(stripTags(html)).replace(/\s+/g, ' ').trim();
+  return decodeHtmlEntities(stripTags(html)).replace(/\s+/g, ' ').trim();
 }
 
 /**
@@ -155,7 +142,7 @@ function parseTelegraphReviewCards(html) {
       || block.match(/href=["']([^"']+)["'][^>]*data-test=["']list-headline-link["']/i);
     if (!linkMatch) continue;
 
-    let href = decodeEntities(linkMatch[1]).trim();
+    let href = decodeHtmlEntities(linkMatch[1]).trim();
     if (!href || href.startsWith('#')) continue;
     let url;
     try {

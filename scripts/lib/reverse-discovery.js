@@ -19,21 +19,12 @@
  */
 
 const { normalizeTitle } = require('./title-match');
+const { decodeHtmlEntities } = require('./text-cleaning');
 const { ukFlagshipVenueFor } = require('./uk-regional-guardian');
 
-// Minimal HTML-entity decode for WP-API title.rendered values.
-function decodeEntities(s) {
-  // Two passes: BWW's gnews sitemap double-encodes (`&amp;amp;`), so one pass
-  // left a literal "&amp;" in titles ("Grant &amp; Baranski in HAY FEVER").
-  const once = (x) => String(x || '')
-    .replace(/&#(\d+);/g, (m, n) => { const c = Number(n); return c <= 0x10ffff ? String.fromCodePoint(c) : m; })
-    .replace(/&#x([0-9a-f]+);/gi, (m, n) => { const c = parseInt(n, 16); return c <= 0x10ffff ? String.fromCodePoint(c) : m; })
-    .replace(/&amp;/g, '&')
-    .replace(/&quot;/g, '"')
-    .replace(/&apos;/g, "'")
-    .replace(/&hellip;/g, '…')
-    .replace(/&nbsp;/g, ' ');
-  return once(once(s));
+// BWW's gnews sitemap double-encodes ampersands, so retain two passes.
+function decodeDiscoveryText(s) {
+  return decodeHtmlEntities(decodeHtmlEntities(String(s || '')));
 }
 
 /**
@@ -44,7 +35,7 @@ function decodeEntities(s) {
  * CLI's parsed>0 drift guard — only a full format change alarms.
  */
 function extractShowTitleFromWetRoundup(postTitle) {
-  const decoded = decodeEntities(postTitle).trim();
+  const decoded = decodeDiscoveryText(postTitle).trim();
   const m = decoded.match(/^(.{2,120}?)\s+reviews?\s*:/i);
   if (!m) return null;
   const title = m[1].trim();
@@ -92,7 +83,7 @@ const GUARDIAN_LONDON_VENUE_TAGS = new Set([
 ]);
 function extractGuardianReview(item) {
   if (!item || !item.title) return null;
-  const decoded = decodeEntities(item.title).replace(/\s+/g, ' ').trim();
+  const decoded = decodeDiscoveryText(item.title).replace(/\s+/g, ' ').trim();
   const m = decoded.match(GUARDIAN_REVIEW_TITLE_RE);
   if (!m) return null;
   const title = m[1].replace(/[\s\u2013\u2014:-]+$/, '').trim();
@@ -103,7 +94,7 @@ function extractGuardianReview(item) {
     slugTokens = last.toLowerCase().split('-');
   } catch { /* no/invalid link: tags alone decide */ }
   const tags = (item.categories || [])
-    .map(c => decodeEntities(String(c)).replace(/[\u2018\u2019]/g, "'").trim().toLowerCase());
+    .map(c => decodeDiscoveryText(String(c)).replace(/[\u2018\u2019]/g, "'").trim().toLowerCase());
   if (tags.includes('london') || slugTokens.includes('london') || tags.some(t => GUARDIAN_LONDON_VENUE_TAGS.has(t))) {
     return { title, market: 'west-end' };
   }
@@ -169,7 +160,7 @@ function isBwwNonNycRoundup(rawTitle) {
 const BWW_LEADIN_RE = /^What\s+Did\s+(?:the\s+)?Critics\s+Think\s+O(?:f|n)\s+/i;
 
 function extractShowTitleFromBwwRoundup(rawTitle) {
-  const decoded = decodeEntities(rawTitle).trim();
+  const decoded = decodeDiscoveryText(rawTitle).trim();
   const m = decoded.match(/^Review\s+Roundup:\s*(.+)$/i);
   if (!m) return null;
   let rest = m[1].trim();
@@ -239,13 +230,13 @@ const PLAYBILL_MARKET_TAIL_RE = /\s+(?:off[- ]broadway|on\s+broadway|off[- ]west
 // coverage is redundant with the WET roundup source anyway.
 const PLAYBILL_NON_NYC_RE = /\b(?:west\s+end(?!\s+theat(?:re|er))|in\s+london|(?:national|us|uk)\s+tour|on\s+tour)\b/i;
 function isPlaybillNonNycRoundup(rawTitle) {
-  const decoded = decodeEntities(rawTitle);
+  const decoded = decodeDiscoveryText(rawTitle);
   const m = decoded.match(PLAYBILL_ROUNDUP_RE);
   return !!(m && PLAYBILL_NON_NYC_RE.test(m[1]));
 }
 
 function extractShowTitleFromPlaybillRoundup(rawTitle) {
-  const decoded = decodeEntities(rawTitle).trim();
+  const decoded = decodeDiscoveryText(rawTitle).trim();
   const m = decoded.match(PLAYBILL_ROUNDUP_RE);
   if (!m) return null;
   let rest = m[1].trim();
@@ -299,14 +290,14 @@ function isNytheaterOutOfTown(leadMarker) {
 function parseNytheaterEntryParagraph(pInner) {
   const m = String(pInner || '').match(NYT_TITLE_LINK_RE);
   if (!m) return null;
-  const lead = decodeEntities(m[1]).trim();
+  const lead = decodeDiscoveryText(m[1]).trim();
   // A genuine title paragraph's lead-in is emoji/whitespace only. Prose
   // lead-ins (rare, but body paragraphs never start with a link at all in
   // this format) would carry ASCII letters — treat those as "not a title
   // paragraph" rather than mis-parsing narrative text as a show entry.
   if (!lead || /[A-Za-z]/.test(lead)) return null;
   const url = m[2];
-  const title = decodeEntities(m[3]).trim();
+  const title = decodeDiscoveryText(m[3]).trim();
   if (!title) return null;
   const rest = String(pInner).slice(m[0].length);
   // Venue is expected immediately after the title link, separated only by
@@ -314,7 +305,7 @@ function parseNytheaterEntryParagraph(pInner) {
   // here (the Gutenberg-drift shape: venue moved into a nested <em>/<span>)
   // fails this match, surfacing as venue: null.
   const venueMatch = rest.match(/^[^(<]{0,20}\(([^()<]*)\)/);
-  const venue = venueMatch ? decodeEntities(venueMatch[1]).trim() : null;
+  const venue = venueMatch ? decodeDiscoveryText(venueMatch[1]).trim() : null;
   return { title, url, venue: venue || null, outOfTown: isNytheaterOutOfTown(lead) };
 }
 
@@ -369,7 +360,7 @@ function extractOpeningsFromNytheaterPost(post) {
   // openings happen to be out-of-town doesn't false-alarm as "0 parsed".
   let totalMatched = 0;
   for (let i = 1; i < parts.length - 1; i += 2) {
-    const header = decodeEntities(parts[i]).trim();
+    const header = decodeDiscoveryText(parts[i]).trim();
     const hm = header.match(NYT_MONTH_HEADER_RE);
     if (!hm) continue; // e.g. the trailing "*Opening Night" key header
     datePatternMatches++;
@@ -776,7 +767,7 @@ function candidateKey(c) {
 }
 
 module.exports = {
-  decodeEntities,
+  decodeEntities: decodeDiscoveryText,
   extractShowTitleFromWetRoundup,
   extractGuardianReview,
   parseGuardianReviewsRss,
