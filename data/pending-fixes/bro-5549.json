@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5549",
   "planId": "5ea4276e-5bc6-4997-881f-d092f0f136cc",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-17T15:27:30.760Z",
   "submitter": {
     "name": null,
@@ -266,5 +266,93 @@
         "description": "the-play-that-goes-wrong-2017: no commercial record yet; Broadway News reports the recoupment of its $4M capitalization and its average weekly operating expenses from SEC filings (an all-in figure). Trickle: recouped late in a 22-month run."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-17T16:20:24.809Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for redwood"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for redwood"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for redwood"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for redwood"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for redwood"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for call-me-izzy"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for call-me-izzy"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for call-me-izzy"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for call-me-izzy"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for call-me-izzy"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for call-me-izzy"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for once-upon-a-mattress-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for once-upon-a-mattress-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for once-upon-a-mattress-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for once-upon-a-mattress-2024"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-bands-visit-2017 (Windfall)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-play-that-goes-wrong-2017 (Trickle)"
+    }
+  ]
 }
