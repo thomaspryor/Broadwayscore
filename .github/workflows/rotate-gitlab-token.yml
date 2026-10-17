@@ -114,7 +114,7 @@ jobs:
           **Manual fix:**
           1. Go to https://gitlab.com/-/user_settings/personal_access_tokens
           2. Create a new token with \`api\` scope, 1 year expiry
-          3. Ask Claude Code to run: \`gh secret set GITLAB_MIRROR_TOKEN\` with the new token
+          3. Save it as the repository secret GITLAB_MIRROR_TOKEN (Settings, Secrets and variables, Actions)
 
           **If the rotation succeeded but secret update failed**, the old token is now dead.
           You MUST create a new token manually — the old one cannot be recovered." \
@@ -133,7 +133,7 @@ jobs:
           **Manual fix needed:**
           1. Go to https://gitlab.com/-/user_settings/personal_access_tokens
           2. Create a new token with \`api\` scope, 1 year expiry
-          3. Ask Claude Code to run: \`gh secret set GITLAB_MIRROR_TOKEN\` with the new token
+          3. Save it as the repository secret GITLAB_MIRROR_TOKEN (Settings, Secrets and variables, Actions)
 
           The GitLab mirror is **NOT syncing** until this is fixed." \
             --label "bug"
