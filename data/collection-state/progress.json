@@ -1268,10 +1268,7 @@
       "dr-strangelove-west-end-2024/variety--naman-ramachandran.json"
     ],
     "browserbase": [
-      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json",
-      "data/review-texts/the-cherry-orchard-west-end-2026/times-uk--clive-davis.json",
-      "the-cherry-orchard-west-end-2026/times-uk--clive-davis.json",
-      "data/review-texts/some-woman-west-end-2026/financialtimes--unknown.json"
+      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -1503,7 +1500,7 @@
     ]
   },
   "startTime": "2026-10-16T13:35:14.517Z",
-  "lastProcessed": "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+  "lastProcessed": "equus-west-end-2026/guardian--kate-wyver.json",
   "log": [
     {
       "t": "2026-10-16T14:38:18.090Z",
@@ -1887,38 +1884,48 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-17T00:18:17.152Z",
+      "t": "2026-10-17T00:44:50.442Z",
       "event": "bb-session",
-      "session": "fd0418ba",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-cherry-orchard-review"
+      "session": "a349cbfe",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
     },
     {
-      "t": "2026-10-17T00:18:17.521Z",
+      "t": "2026-10-17T00:44:51.337Z",
       "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-17T00:18:49.252Z",
+      "t": "2026-10-17T00:45:08.905Z",
       "event": "bb-session",
-      "session": "e9b0504e",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+      "session": "0a93ca12",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
     },
     {
-      "t": "2026-10-17T00:18:56.045Z",
-      "event": "bb-session",
-      "session": "b5e55fb4",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
-    },
-    {
-      "t": "2026-10-17T00:20:10.851Z",
-      "event": "bb-session",
-      "session": "049031b3",
-      "url": "https://www.ft.com/content/7a8a9df1-f4e8-4b7a-b617-5f1cad09078f"
-    },
-    {
-      "t": "2026-10-17T00:20:11.161Z",
+      "t": "2026-10-17T00:45:09.736Z",
       "event": "bb-cookie-inject",
-      "domain": "ft.com"
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-17T00:47:46.567Z",
+      "event": "bb-session",
+      "session": "46de3538",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-17T00:47:47.463Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-17T00:48:05.443Z",
+      "event": "bb-session",
+      "session": "0c30c5e0",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-17T00:48:06.277Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ],
   "recoveredAfterFailure": [
