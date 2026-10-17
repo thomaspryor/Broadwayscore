@@ -3645,13 +3645,13 @@
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
       "incidentOpenedAt": "2026-10-08T11:25:20.258Z",
-      "lastSeen": "2026-10-16T22:52:40.529Z",
+      "lastSeen": "2026-10-17T00:25:41.491Z",
       "lastNotifiedAt": "2026-10-16T18:32:46.181Z",
       "lastSurfacedAt": "2026-10-16T18:32:46.181Z",
       "notifyCount": 27,
       "cardId": null,
       "linearIdentifier": "BRO-4515",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
@@ -3659,13 +3659,13 @@
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
       "incidentOpenedAt": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-10-16T22:52:40.547Z",
+      "lastSeen": "2026-10-17T00:25:41.510Z",
       "lastNotifiedAt": "2026-10-16T18:32:46.344Z",
       "lastSurfacedAt": "2026-10-16T18:32:46.344Z",
       "notifyCount": 29,
       "cardId": null,
       "linearIdentifier": "BRO-5503",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "resolved",
@@ -4416,13 +4416,13 @@
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
       "incidentOpenedAt": "2026-10-05T11:20:30.123Z",
-      "lastSeen": "2026-10-16T22:52:40.514Z",
+      "lastSeen": "2026-10-17T00:25:41.477Z",
       "lastNotifiedAt": "2026-10-16T09:26:29.005Z",
       "lastSurfacedAt": "2026-10-14T01:40:58.305Z",
       "notifyCount": 24,
       "cardId": null,
       "linearIdentifier": "BRO-4795",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -6643,13 +6643,13 @@
       "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
       "firstSeen": "2026-09-28T19:48:00.401Z",
       "incidentOpenedAt": "2026-10-16T18:32:45.832Z",
-      "lastSeen": "2026-10-16T22:52:40.491Z",
+      "lastSeen": "2026-10-17T00:25:41.449Z",
       "lastNotifiedAt": "2026-10-16T18:32:45.832Z",
       "lastSurfacedAt": "2026-10-14T01:40:56.113Z",
       "notifyCount": 17,
       "cardId": null,
       "linearIdentifier": "BRO-5314",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-4236-prompt-blocker": {
       "status": "resolved",
@@ -16248,13 +16248,13 @@
       "title": "Corpus drift: data/review-texts folder whose name is not a shows.json id (rebuild skips every review in it)",
       "firstSeen": "2026-10-13T03:27:49.763Z",
       "incidentOpenedAt": "2026-10-13T18:12:08.276Z",
-      "lastSeen": "2026-10-16T22:52:40.566Z",
+      "lastSeen": "2026-10-17T00:25:41.529Z",
       "lastNotifiedAt": "2026-10-16T02:56:36.997Z",
       "lastSurfacedAt": "2026-10-16T02:56:36.997Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "review-gap:opening-window:red-riding-hood-off-broadway-2026": {
       "status": "open",
@@ -17115,13 +17115,13 @@
       "title": "Corpus drift: review files with wrongProduction provenance but the flag dropped (would score silently; baseline-diff)",
       "firstSeen": "2026-10-13T19:33:47.105Z",
       "incidentOpenedAt": "2026-10-13T19:33:47.105Z",
-      "lastSeen": "2026-10-16T22:52:40.479Z",
+      "lastSeen": "2026-10-17T00:25:41.437Z",
       "lastNotifiedAt": "2026-10-16T02:56:36.939Z",
       "lastSurfacedAt": "2026-10-16T02:56:36.939Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "land:land/bro-5288-dtli-ingest-guards": {
       "status": "resolved",
