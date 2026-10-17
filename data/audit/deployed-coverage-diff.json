@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-10-17T14:27:32.502Z",
+  "generatedAt": "2026-10-17T14:51:11.575Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 243,
-  "clean": 239,
-  "defective": 4,
+  "clean": 238,
+  "defective": 5,
   "byType": {
-    "score-drift": 4
+    "score-drift": 5
   },
   "shows": [
     {
@@ -24,7 +24,23 @@
       "missingFromProd": [],
       "localCount": 9,
       "deployedCount": 9,
-      "firstDefectAt": "2026-10-17T14:27:29.563Z"
+      "firstDefectAt": "2026-10-17T14:51:04.858Z"
+    },
+    {
+      "showId": "sinatra-the-musical-west-end-2026",
+      "title": "Sinatra The Musical",
+      "openingDate": "2026-06-24",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 64.6 vs local 64.67 (Δ0.07)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 42,
+      "deployedCount": 42,
+      "firstDefectAt": "2026-10-17T14:51:04.858Z"
     },
     {
       "showId": "oh-mary-2024",
@@ -40,7 +56,7 @@
       "missingFromProd": [],
       "localCount": 30,
       "deployedCount": 30,
-      "firstDefectAt": "2026-10-17T14:27:29.563Z"
+      "firstDefectAt": "2026-10-17T14:51:04.858Z"
     },
     {
       "showId": "little-shop-of-horrors-off-broadway-2019",
@@ -54,9 +70,9 @@
         }
       ],
       "missingFromProd": [],
-      "localCount": 19,
+      "localCount": 21,
       "deployedCount": 21,
-      "firstDefectAt": "2026-10-17T14:27:29.563Z"
+      "firstDefectAt": "2026-10-17T14:51:04.858Z"
     },
     {
       "showId": "hadestown-2019",
@@ -70,9 +86,9 @@
         }
       ],
       "missingFromProd": [],
-      "localCount": 46,
+      "localCount": 48,
       "deployedCount": 48,
-      "firstDefectAt": "2026-10-17T14:27:29.563Z"
+      "firstDefectAt": "2026-10-17T14:51:04.858Z"
     }
   ],
   "persistentDefective": 0,

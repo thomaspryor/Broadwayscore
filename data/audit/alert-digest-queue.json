@@ -391,7 +391,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-10-17T14:24:41.912Z"
+    "queuedAt": "2026-10-17T14:50:53.652Z"
   },
   {
     "conditionKey": "review-gap:opening-window:affluenza-off-west-end-2026",
@@ -405,7 +405,49 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-10-17T14:24:41.921Z"
+    "queuedAt": "2026-10-17T14:50:53.660Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-ask-off-broadway-2026",
+    "title": "Review gap — \"The Ask\" missing 3 cited review(s)",
+    "description": "The Ask (the-ask-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-ask-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-17T14:50:53.747Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:tru-off-west-end-2026",
+    "title": "Review gap — \"Tru\" missing 1 cited review(s) (still open — BRO-4970)",
+    "description": "Still firing after 23 notifications since it was filed. Tracked at BRO-4970.\n\nTru (tru-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tru-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-4970",
+    "fields": [],
+    "queuedAt": "2026-10-17T14:50:54.074Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard — already tracked at BRO-5546",
+    "description": "This condition already has an open tracker (BRO-5546); not filing a duplicate. It will go quiet in the digest from here.\n\nbroadway: 45.5% (442/971)\noff-broadway: 52% (185/356)\nwest-end: 81.1% (452/557)\n\nOldest gaps:\nABBA Voyage — independent (1541h)\nAladdin — ew (1541h)\n& Juliet — nydailynews (1541h)\nAs You Like It — i-paper (1541h)\nAs You Like It — standard (1541h)\n… 354 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nHeathers The Musical — dailybeast (1541h)\nThe Book of Mormon — washpost (430h)\nBuena Vista Social Club — dailybeast (430h)\nMaybe Happy Ending — washpost (430h)\nMrs. Doubtfire — dailybeast (430h)\n… 7 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5546",
+    "fields": [],
+    "queuedAt": "2026-10-17T14:51:04.699Z"
   },
   {
     "conditionKey": "review-gap:opening-window:anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
@@ -448,48 +490,6 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-17T14:24:41.997Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:the-ask-off-broadway-2026",
-    "title": "Review gap — \"The Ask\" missing 4 cited review(s)",
-    "description": "The Ask (the-ask-off-broadway-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-ask-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-17T14:24:42.085Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:tru-off-west-end-2026",
-    "title": "Review gap — \"Tru\" missing 1 cited review(s) (still open — BRO-4970)",
-    "description": "Still firing after 23 notifications since it was filed. Tracked at BRO-4970.\n\nTru (tru-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tru-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": "BRO-4970",
-    "fields": [],
-    "queuedAt": "2026-10-17T14:24:42.338Z"
-  },
-  {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard — escalated after 70 notifications",
-    "description": "Filed BRO-5546 for owner triage after 70 repeats with no tracker.\n\nbroadway: 45.5% (442/971)\noff-broadway: 52% (185/356)\nwest-end: 81% (453/559)\n\nOldest gaps:\nABBA Voyage — independent (1540h)\nAladdin — ew (1540h)\n& Juliet — nydailynews (1540h)\nAs You Like It — i-paper (1540h)\nAs You Like It — standard (1540h)\n… 355 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nHeathers The Musical — dailybeast (1540h)\nThe Book of Mormon — washpost (430h)\nBuena Vista Social Club — dailybeast (430h)\nMaybe Happy Ending — washpost (430h)\nMrs. Doubtfire — dailybeast (430h)\n… 7 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": "BRO-5546",
-    "fields": [],
-    "queuedAt": "2026-10-17T14:27:29.312Z"
   },
   {
     "conditionKey": "cron-health-failed:Update Mezzanine",
