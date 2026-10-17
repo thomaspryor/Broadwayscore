@@ -1,13 +1,48 @@
 {
-  "generatedAt": "2026-10-17T20:02:58.680Z",
+  "generatedAt": "2026-10-17T22:59:41.557Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 244,
-  "clean": 244,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 242,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "dog-mom-off-west-end-2026",
+      "title": "Dog Mom",
+      "openingDate": "2026-10-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 47.23 vs local 52.85 (Δ5.62)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 5,
+      "deployedCount": 6,
+      "firstDefectAt": "2026-10-17T22:59:38.179Z"
+    },
+    {
+      "showId": "cadel-lungs-on-legs-west-end-2026",
+      "title": "Cadel: Lungs On Legs",
+      "openingDate": "2026-10-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.13 vs local 81.88 (Δ0.25)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 10,
+      "deployedCount": 10,
+      "firstDefectAt": "2026-10-17T22:59:38.179Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
