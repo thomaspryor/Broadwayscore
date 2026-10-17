@@ -1,0 +1,91 @@
+{
+  "issueNumber": "bro-5520",
+  "planId": "6d1954bf-8c77-40bd-926c-a291238c0d65",
+  "status": "pending",
+  "createdAt": "2026-10-17T05:37:32.293Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5520: checked results from the owner’s Gemini deep research runs (2026-27 season and long-running hits; 2025-26 season). One new figure checks out: Joe Turner’s Come and Gone was capitalized at $8 million, stated by its producers in The RainMakers Collective investor Q&A (Feb 7, 2026). Two capitalizations in our data had no source and nothing behind them: Dog Day Afternoon’s $9.5M (its own note says none was reported; the number is Titanique’s) and Little Bear Ridge Road’s $4.1M (Rudin and Diller financed it alone; no coverage gives a cost). Both are cleared rather than printed as estimates. Rejected claims from the reports: Celebrity Autobiography “recouped $2.3M” (Playbill: it struggled and closed two months early), The Lion King ~$15M (a blog), Beaches’ $12.5M recoupment (Just in Time’s), All Out $31.5M (cited to an article written before the show existed).",
+    "steps": [
+      "Joe Turner: capitalization, its source, and the note sentence that said none was reported.",
+      "Dog Day Afternoon and Little Bear Ridge Road: capitalization cleared and isEstimate.capitalization set to false; the model reruns on apply."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "joe-turners-come-and-gone",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 8000000,
+        "description": "joe-turners-come-and-gone: the producers put the capitalization at $8 million in their investor Q&A (The RainMakers Collective, Feb 7 2026)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "joe-turners-come-and-gone",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "The RainMakers Collective (Feb 7, 2026), investor Q&A with lead producer Brian Anthony Moreland and co-producer Cody Lassen: \"A deep dive into the $8 million capitalization strategy.\" https://therainmakerscollective.com/Q&A/joe-turners-come-gone-qa-and-investment-memo/",
+        "description": "joe-turners-come-and-gone: cite the producers’ investor Q&A for the $8 million."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "joe-turners-come-and-gone",
+        "field": "notes",
+        "oldValue": "Commercial revival (lead producer Brian Anthony Moreland), opened Apr 25, 2026 and closed Jul 26, 2026. No capitalization reported and no recoupment announced.",
+        "newValue": "Commercial revival (lead producer Brian Anthony Moreland), opened Apr 25, 2026 and closed Jul 26, 2026. Capitalized at $8 million (the producers’ investor Q&A, The RainMakers Collective, Feb 2026); no recoupment announced.",
+        "description": "joe-turners-come-and-gone: the note no longer says no capitalization was reported."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dog-day-afternoon",
+        "field": "capitalization",
+        "oldValue": 9500000,
+        "newValue": null,
+        "description": "dog-day-afternoon: the $9.5M had no source, the record’s own note says no capitalization was reported, and it equals Titanique’s Broadway Journal figure; nothing found in trade coverage. Shown as undisclosed."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dog-day-afternoon",
+        "field": "isEstimate",
+        "oldValue": {
+          "capitalization": true
+        },
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "dog-day-afternoon: the estimate flag goes with the figure (false, the form the records already use)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "little-bear-ridge-road",
+        "field": "capitalization",
+        "oldValue": 4100000,
+        "newValue": null,
+        "description": "little-bear-ridge-road: the $4.1M had no source; the show was financed by Scott Rudin and Barry Diller with no outside investors (no Form D), and the closing coverage (THR, Variety, NYT as quoted) gives no cost. Shown as undisclosed."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "little-bear-ridge-road",
+        "field": "isEstimate",
+        "oldValue": {
+          "capitalization": true
+        },
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "little-bear-ridge-road: the estimate flag goes with the figure (false, the form the records already use)."
+      }
+    ]
+  }
+}
