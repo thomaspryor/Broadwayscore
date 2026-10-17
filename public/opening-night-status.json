@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-17T23:12:22.904Z",
+  "generatedAt": "2026-10-17T23:20:59.251Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1326,17 +1326,17 @@
       "status": "open",
       "slug": "cadel-lungs-on-legs-west-end",
       "thumbnail": "/images/shows/cadel-lungs-on-legs-west-end-2026/thumbnail.jpg",
-      "siteScore": 82.13,
+      "siteScore": 82.43,
       "liveScore": 82,
-      "scoreDrift": -0.12999999999999545,
+      "scoreDrift": -0.4300000000000068,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 10,
+      "total": 11,
       "t1": 0,
       "t2": 3,
-      "t3": 7,
-      "positive": 9,
+      "t3": 8,
+      "positive": 10,
       "mixed": 1,
       "negative": 0,
       "readiness": {
@@ -1344,7 +1344,7 @@
         "reasons": [
           "T1:0/3"
         ],
-        "highConfidence": 8,
+        "highConfidence": 9,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1605,6 +1605,18 @@
           "t2": 3,
           "t3": 7,
           "p": 9,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-17T23:20:59.251Z",
+          "rc": 11,
+          "s": 82.43,
+          "t1": 0,
+          "t2": 3,
+          "t3": 8,
+          "p": 10,
           "m": 1,
           "n": 0,
           "bc": "waiting"
@@ -2341,19 +2353,19 @@
       "status": "open",
       "slug": "memoirs-of-amorous-gentlemen-off-broadway",
       "thumbnail": "/images/shows/memoirs-of-amorous-gentlemen-off-broadway-2026/thumbnail.webp",
-      "siteScore": 63.06,
-      "liveScore": 63,
-      "scoreDrift": -0.060000000000002274,
+      "siteScore": 60.02,
+      "liveScore": 60,
+      "scoreDrift": -0.020000000000003126,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 14,
+      "total": 16,
       "t1": 2,
-      "t2": 7,
-      "t3": 5,
+      "t2": 8,
+      "t3": 6,
       "positive": 4,
       "mixed": 7,
-      "negative": 3,
+      "negative": 5,
       "readiness": {
         "ready": false,
         "reasons": [
@@ -2738,6 +2750,18 @@
           "p": 4,
           "m": 7,
           "n": 3,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-17T23:20:59.251Z",
+          "rc": 16,
+          "s": 60.02,
+          "t1": 2,
+          "t2": 8,
+          "t3": 6,
+          "p": 4,
+          "m": 7,
+          "n": 5,
           "bc": "waiting"
         }
       ]
