@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5179",
   "planId": "5a7c1e0e-5179-4c1d-9b0a-5179b0a51790",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-17T00:00:00.000Z",
   "submitter": {
     "name": null,
@@ -38,5 +38,23 @@
         "description": "events.newyorkfamily.com event listing, not a review."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-17T09:46:10.711Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran migrate-outlet-ids.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json isNonReviewReason: null -> \"manual (not a review): BRO-5179: New York Family event listing (events.newyorkfamily.com) filed under vulture\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json isNonReview: null -> true"
+    }
+  ]
 }
