@@ -1195,5 +1195,47 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-17T02:31:15.249Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-lincoln-in-the-bardo-off-broadway-2026",
+    "title": "Placeholder synopsis on Lincoln in the Bardo",
+    "description": "synopsis for lincoln-in-the-bardo-off-broadway-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-17T04:17:43.057Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-copperfield-the-new-musical-off-broadway-2026",
+    "title": "Placeholder synopsis on Copperfield! The New Musical",
+    "description": "synopsis for copperfield-the-new-musical-off-broadway-2026 is too thin (114 chars, min 120) — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-17T04:17:44.015Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:cadel-lungs-on-legs-west-end-2026",
+    "title": "Auto-remediation gave up on cadel-lungs-on-legs-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"cadel-lungs-on-legs-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-17T04:17:44.939Z"
   }
 ]
