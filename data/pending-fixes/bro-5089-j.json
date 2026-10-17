@@ -1,0 +1,359 @@
+{
+  "issueNumber": "bro-5089-j",
+  "planId": "78a6b6d6-43ad-4c41-8ed5-40418e5e1535",
+  "status": "applied",
+  "createdAt": "2026-10-12T00:34:28.561Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5089 sweep part 10/11 (apply after the bro-5080 plans): clear Broadway historical posters of other productions/shows (two-model agreement, theatre renames accounted for) and historical synopses that are producer copy, another staging's production history, another work or invented plot. No noReliableArt marker: the verified image pipeline may refill.",
+    "steps": [
+      "images cleared + source rejected",
+      "synopsis cleared for the production-verified enricher"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jagged-little-pill-2019",
+        "field": "synopsis",
+        "oldValue": "Joy, rage, love, heartache, strength, wisdom, catharsis, LIFE: everything we’ve been waiting and hoping to see on a Broadway stage for over a year is back, in this exhilarating, fearless new musical based on Alanis Morissette’s world-changing music.",
+        "newValue": null,
+        "description": "jagged-little-pill-2019: synopsis cleared (producer copy): The synopsis is promotional and evocative language highlighting emotion and return to Broadway rather than describing the show's plot or characters, so it functions as marketing copy. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "my-name-is-lucy-barton-2020",
+        "field": "synopsis",
+        "oldValue": "Award-winning actress Laura Linney returns to Broadway in the American premiere of a haunting new solo play adapted by Rona Munro from the bestselling novel by Pulitzer Prize winner Elizabeth Strout. A sold-out sensation originally produced by the London Theatre Company at the Bridge Theatre in London, Ms Linney was hailed as “luminous” by the The New York Times, “genuinely phenomenal” by Time Out London, and the play was called “deeply affecting and heartbreaking” by The Observer.",
+        "newValue": null,
+        "description": "my-name-is-lucy-barton-2020: synopsis cleared (producer copy): The text is mostly promotional praise and star-billing rather than a plot synopsis, and even misattributes the playwright (the Broadway adaptation was by Rona Munro from Elizabeth Strout's novel). (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "torch-song-2018",
+        "field": "synopsis",
+        "oldValue": "After a smash-hit run Off-Broadway, HARVEY FIERSTEIN's \"Torch Song\" heads to Broadway for a strictly limited engagement. This critically acclaimed production of the Tony Award-winning comedy stars Drama Desk Award winner MICHAEL URIE (\"Younger,\" \"Ugly Betty,\" \"Buyer & Cellar\") and Academy Award and Tony winner MERCEDES RUEHL (\"The Fisher King,\" \"Lost in Yonkers\") and is directed by Tony nominee MOISÉS KAUFMAN (\"The Laramie Project,\" \"I Am My Own Wife\").",
+        "newValue": null,
+        "description": "torch-song-2018: synopsis cleared (producer copy): The text focuses on star billing, awards, production history and praise rather than describing the play's plot or characters, so it's promotional copy rather than a synopsis. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-waverly-gallery-2018",
+        "field": "synopsis",
+        "oldValue": "Iconic actor, comedian, writer, and director Elaine May returns to Broadway for the first time in 50 years in Academy Award winner Kenneth Lonergan’s acclaimed memory play, \"The Waverly Gallery.\"",
+        "newValue": null,
+        "description": "the-waverly-gallery-2018: synopsis cleared (producer copy): The blurb emphasizes Elaine May’s star return and awards-style billing rather than summarizing the play’s plot about an elderly woman’s cognitive decline and its effect on her family and neighbors, so (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-iceman-cometh-2018",
+        "field": "synopsis",
+        "oldValue": "Two-time Oscar winner and Tony Award winner DENZEL WASHINGTON returns to Broadway in one of the signal roles in the American theatre in Eugene O’Neill’s THE ICEMAN COMETH, for 14 weeks only.",
+        "newValue": null,
+        "description": "the-iceman-cometh-2018: synopsis cleared (producer copy): The text is promotional star-billing about Denzel Washington and run length rather than describing the play's plot or themes, so it functions as marketing. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "children-of-a-lesser-god-2018",
+        "field": "synopsis",
+        "oldValue": "“If you can see one play on Broadway, it has to be CHILDREN OF A LESSER GOD” declares United Press International. The New York Times calls it “a play unlike any other” and New York Post says it’s “a joyous event full of love and passion. You will never forget it.”",
+        "newValue": null,
+        "description": "children-of-a-lesser-god-2018: synopsis cleared (producer copy): The text is entirely promotional quotes and praise rather than any description of the play's plot or characters, so it functions as marketing copy. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "three-tall-women-2018",
+        "field": "synopsis",
+        "oldValue": "Two-time Academy Award winner GLENDA JACKSON makes her long-awaited return to Broadway alongside three-time Emmy and Tony winner LAURIE METCALF and Tony nominee ALISON PILL in the Broadway premiere of Edward Albee’s Pulitzer Prize-winning masterpiece, \"Three Tall Women.\"",
+        "newValue": null,
+        "description": "three-tall-women-2018: synopsis cleared (producer copy): The text markets star casting and awards rather than summarizing the play’s plot or themes, focusing on Glenda Jackson, Laurie Metcalf, and Alison Pill returning to Broadway. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "carousel-2018",
+        "field": "synopsis",
+        "oldValue": "Rodgers & Hammerstein’s \"Carousel\" has returned to Broadway in a sumptuous production directed by three-time Tony winner Jack O’Brien, starring Joshua Henry and Jessie Mueller, with choreography by New York City Ballet’s Justin Peck. “God is in CAROUSEL,” raves The Chicago Tribune. “It’s the greatest musical ever written.”  Don’t miss the ecstatically acclaimed revival NPR calls “the best musical of the season, by far.”",
+        "newValue": null,
+        "description": "carousel-2018: synopsis cleared (producer copy): The synopsis consists mainly of promotional praise, casting/creative credits and acclaim rather than describing the plot or subject matter of Rodgers & Hammerstein's Carousel. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "angels-in-america-2018",
+        "field": "synopsis",
+        "oldValue": "A quarter-century after stunning the theatre world, one of the greatest theatrical journeys of our time returns to Broadway in an acclaimed new production from the National Theatre.",
+        "newValue": null,
+        "description": "angels-in-america-2018: synopsis cleared (producer copy): The text is promotional praise about a celebrated revival returning to Broadway and gives no plot details, so it functions as marketing rather than a synopsis. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "frozen-2018",
+        "field": "synopsis",
+        "oldValue": "For the first time, \"Frozen\" comes to life on Broadway, re-imagined for the stage in a new production by an award-winning team.",
+        "newValue": null,
+        "description": "frozen-2018: synopsis cleared (producer copy): The text contains promotional language about the Broadway premiere and production team rather than any plot details describing the story of Frozen. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "farinelli-and-the-king-2017",
+        "field": "synopsis",
+        "oldValue": "Oscar and three-time Tony winner Mark Rylance, following his acclaimed performance in the hit film Dunkirk, returns to the stage in \"Farinelli and the King\". This captivating new play arrives on Broadway after sold-out runs at Shakespeare’s Globe and on London’s West End.",
+        "newValue": null,
+        "description": "farinelli-and-the-king-2017: synopsis cleared (producer copy): The text mainly markets the production by highlighting Mark Rylance's star billing, awards, film credit and prior sold-out runs rather than describing the play's plot or characters. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "spongebob-squarepants-2017",
+        "field": "synopsis",
+        "oldValue": "A legendary roster of Grammy Award winners. A visionary director and Tony Award-winning design team. One of the world’s most beloved characters. Turn them loose on Broadway and what do you get?",
+        "newValue": null,
+        "description": "spongebob-squarepants-2017: synopsis cleared (producer copy): The blurb is promotional hype praising creators and awards rather than describing the plot or characters of the Broadway SpongeBob SquarePants musical. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "latin-history-for-morons-2017",
+        "field": "synopsis",
+        "oldValue": "A sold-out run at The Public Theater. A record-breaking engagement at Berkeley Rep. Endless critical and audience acclaim. Chalk it all up to the mad genius of Emmy Award winner John Leguizamo, standing at the head of the class in his one-man tour de force, LATIN HISTORY FOR MORONS.",
+        "newValue": null,
+        "description": "latin-history-for-morons-2017: synopsis cleared (producer copy): The synopsis is purely promotional praise and star billing rather than describing the play's subject or plot, focusing on acclaim and box-office success. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hello-dolly-2017",
+        "field": "synopsis",
+        "oldValue": "Winner of 4 Tony Awards including Best Revival of a Musical, this universally acclaimed new production of \"Hello, Dolly!' “is making people crazy happy” (The Washington Post). Two-time Tony Award-winning stage icon Donna Murphy stars in select performances as Dolly Gallagher Levi beginning July 22. \"Hello, Dolly!\" also stars Tony winner David Hyde Pierce.",
+        "newValue": null,
+        "description": "hello-dolly-2017: synopsis cleared (producer copy): The text mainly promotes awards, star casting and critical praise rather than summarizing the plot or what the show is about. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "amelie-a-new-musical-2017",
+        "field": "synopsis",
+        "oldValue": "Tony nominee Phillipa Soo returns to Broadway in AMÉLIE, a new musical based on the beloved five-time Oscar-nominated film, and \"an enchanting act of theatrical reinvention” (Los Angeles Times).",
+        "newValue": null,
+        "description": "amelie-a-new-musical-2017: synopsis cleared (producer copy): The text is promotional star-billing and acclaim without describing the plot or characters, so it functions as marketing rather than a synopsis. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "miss-saigon-2017",
+        "field": "synopsis",
+        "oldValue": "Direct from its smash London run, Cameron Mackintosh's stunning new production of Boublil and Schonberg's legendary musical MISS SAIGON lands on Broadway in March, 2017, featuring its acclaimed stars Eva Noblezada and Jon Jon Briones.",
+        "newValue": null,
+        "description": "miss-saigon-2017: synopsis cleared (producer copy): The text is promotional copy emphasizing the production's transfer, stars and acclaim rather than describing the show's plot or characters, so it functions as marketing. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pippin-2013",
+        "field": "synopsis",
+        "oldValue": "The enchanting musical PIPPIN will swing into town with a dazzling new production that won 4 Drama Desk Awards and 4 Tony Awards in 2013, including Best Revival of a Musical.",
+        "newValue": null,
+        "description": "pippin-2013: synopsis cleared (producer copy): The text is promotional and focuses on awards and praise rather than describing the plot or characters of the 2013 Broadway revival of Pippin. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kinky-boots-2013",
+        "field": "synopsis",
+        "oldValue": "The boots are back! Kinky Boots will lift your spirits to high-heeled heights! Celebrated with six Tony® Awards, including Best Musical, a Grammy® Award for Best Musical Theatre Album, and London’s Olivier Award for Best Musical, this big-hearted musical hit will have you strutting out of the theater saying “Yeah!”",
+        "newValue": null,
+        "description": "kinky-boots-2013: synopsis cleared (producer copy): The text is promotional blurb focused on awards and praise rather than describing the show's plot or characters, so it functions as marketing copy. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-house-of-blue-leaves-2011",
+        "field": "synopsis",
+        "oldValue": "This is must-see theatre at its best, as these powerhouse actors lead this searing production about sparring, unlikely lovers. See these performers like you’ve never seen them before in a play The New York Times called “the equivalent of sitting at ringside watching a prize fight.”",
+        "newValue": null,
+        "description": "the-house-of-blue-leaves-2011: synopsis cleared (producer copy): The text is promotional praise and vague character talk rather than a description of the play’s plot about Artie, his wife, his mistress, nuns, and the chaotic attempt to see Sonny and the moon landin (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "that-championship-season-2011",
+        "field": "synopsis",
+        "oldValue": "That Championship Season is a 1972 play by Jason Miller. It was the recipient of the 1973 Pulitzer Prize for Drama and the 1973 Tony Award for Best Play.",
+        "newValue": null,
+        "description": "that-championship-season-2011: synopsis cleared (producer copy): The synopsis only names the playwright and lists awards rather than describing the play's plot or content, so it functions as marketing/award blurb rather than a true synopsis. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dividing-the-estate-2008",
+        "field": "synopsis",
+        "oldValue": "Dividing the Estate is a play by Horton Foote. The play premiered at the McCarter Theatre in 1989 and Off-Broadway in 2007, winning the Outer Critics Circle Award for Outstanding New Off-Broadway Play.",
+        "newValue": null,
+        "description": "dividing-the-estate-2008: synopsis cleared (producer copy): The synopsis only lists production history and an award (premiere locations and an Outer Critics Circle win) rather than describing the play's plot or characters, so it functions as marketing/producti (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dr-seuss-how-the-grinch-stole-christmas-2007",
+        "field": "synopsis",
+        "oldValue": "THE GRINCH broke box office records for two consecutive years on Broadway during its holiday engagements at the St. James and Hilton theatres in New York.",
+        "newValue": null,
+        "description": "dr-seuss-how-the-grinch-stole-christmas-2007: synopsis cleared (producer copy): This line is promotional box-office praise rather than a plot synopsis and focuses on record-breaking runs and theatres, not the show's story. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "that-championship-season-1972",
+        "field": "synopsis",
+        "oldValue": "That Championship Season is a 1972 play by Jason Miller. It was the recipient of the 1973 Pulitzer Prize for Drama and the 1973 Tony Award for Best Play.",
+        "newValue": null,
+        "description": "that-championship-season-1972: synopsis cleared (producer copy): The synopsis only identifies the play and lists awards (Pulitzer and Tony) without describing the plot or content of the production. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "no-place-to-be-somebody-1971",
+        "field": "synopsis",
+        "oldValue": "No Place to Be Somebody is a 1969 play written by American playwright Charles Gordone. It was during his employment as a bartender in Greenwich Village that Gordone found the inspiration for his first major work, No Place to Be Somebody, for which he received the 1970 Pulitzer Prize for Drama.",
+        "newValue": null,
+        "description": "no-place-to-be-somebody-1971: synopsis cleared (producer copy): The text gives background and award information about Gordone and the play rather than describing the play's plot or characters, so it functions as marketing/background copy. (BRO-5089 sweep: Gemini and gpt-5-mini both flagged it); the production-verified enricher refills it"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T05:21:24.854Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for jagged-little-pill-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for my-name-is-lucy-barton-2020"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for torch-song-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-waverly-gallery-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-iceman-cometh-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for children-of-a-lesser-god-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for three-tall-women-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for carousel-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for angels-in-america-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for frozen-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for farinelli-and-the-king-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for spongebob-squarepants-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for latin-history-for-morons-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for hello-dolly-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for amelie-a-new-musical-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for miss-saigon-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for pippin-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for kinky-boots-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-house-of-blue-leaves-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for that-championship-season-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for dividing-the-estate-2008"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for dr-seuss-how-the-grinch-stole-christmas-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for that-championship-season-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for no-place-to-be-somebody-1971"
+    }
+  ]
+}

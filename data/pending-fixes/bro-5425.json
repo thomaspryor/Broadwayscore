@@ -1,0 +1,52 @@
+{
+  "issueNumber": "bro-5425",
+  "planId": "24785cb9-ce9e-472b-9c6c-f6c50724925a",
+  "status": "partial",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5425: publish Plaza Suite (2022) as Easy Winner. The owner approved Easy Winner on the held-verdicts review page (BRO-5092) and on 2026-10-16 accepted the BroadwayWorld forum report of recoupment as its source; labelled low confidence.",
+    "steps": [
+      "add-commercial-entry stamps humanReviewedDesignation so automation leaves the owner verdict alone."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-commercial-entry",
+        "slug": "plaza-suite-2022",
+        "entry": {
+          "designation": "Easy Winner",
+          "recouped": true,
+          "recoupedDate": "2024",
+          "recoupedSource": "Low confidence: BroadwayWorld forum thread \"& JULIET Recoups Its Investment\" (June 11, 2024), where posters list Plaza Suite among plays that recouped (\"SWEENEY, MUSIC MAN, PLAZA SUITE, and WOODS definitely recouped\"). No producer announcement found; the date is when it was reported recouped, not when it recouped.",
+          "capitalization": 8003548,
+          "capitalizationSource": "Estimate: $2,000,887 NYC theatrical tax credit to Suite 719 LLC (the Plaza Suite production company) at the 25% credit rate implies about $8.0M of production cost.",
+          "notes": "Limited-run revival of Neil Simon's comedy at the Hudson Theatre (opened Mar 28, 2022; closed Jul 10, 2022) starring Sarah Jessica Parker and Matthew Broderick; broke the Hudson's house record several times. Recoupment rests on a fan forum report, not a producer or trade announcement, so this verdict is low confidence.",
+          "sources": [
+            {
+              "type": "manual",
+              "url": "https://forum.broadwayworld.com/thread/JULIET-Recoups-Its-Investment",
+              "date": "2024-06-11"
+            },
+            {
+              "type": "trade",
+              "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+              "date": "2025-08-09"
+            }
+          ]
+        },
+        "description": "plaza-suite-2022: add commercial entry (Easy Winner, low confidence, forum-reported recoupment)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T04:40:51.881Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": false,
+      "reason": "add-commercial-entry: \"plaza-suite-2022\" already has a commercial entry (use data-edit)"
+    }
+  ]
+}

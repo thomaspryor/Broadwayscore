@@ -1,0 +1,47 @@
+{
+  "issueNumber": "bro-5110",
+  "planId": "454ff110-be55-471d-a1ef-2f341ea44cd7",
+  "status": "applied",
+  "createdAt": "2026-10-15T14:45:39.213Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Restore function words a venue slug dropped from two Orange Tree titles (BRO-5110 cousins of the Twenty Thousand Streets truncation).",
+    "steps": [
+      "Retitle \"Murder Cathedral\" -> \"Murder in the Cathedral\" (Orange Tree listing: \"Murder in the Cathedral: OT in the Church\")",
+      "Retitle \"Wives Maids\" -> \"Wives as They Were and Maids as They Are\" (Orange Tree listing: \"Wives as they were and Maids as they are\")"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "retitle-show",
+        "id": "murder-cathedral-off-west-end-2026",
+        "expectTitle": "Murder Cathedral",
+        "newTitle": "Murder in the Cathedral",
+        "reason": "Slug-derived title dropped its function words; Orange Tree lists the production as \"Murder in the Cathedral: OT in the Church\" (observed in owe-promotion-log 2026-10-14)."
+      },
+      {
+        "type": "retitle-show",
+        "id": "wives-maids-off-west-end-2026",
+        "expectTitle": "Wives Maids",
+        "newTitle": "Wives as They Were and Maids as They Are",
+        "reason": "Slug-derived title dropped its function words; Orange Tree lists the production as \"Wives as they were and Maids as they are\" (observed in owe-promotion-log 2026-10-14)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-15T15:59:47.969Z",
+  "results": [
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled murder-cathedral-off-west-end-2026: \"Murder Cathedral\" -> \"Murder in the Cathedral\""
+    },
+    {
+      "action": "retitle-show",
+      "ok": true,
+      "msg": "retitled wives-maids-off-west-end-2026: \"Wives Maids\" -> \"Wives as They Were and Maids as They Are\""
+    }
+  ]
+}

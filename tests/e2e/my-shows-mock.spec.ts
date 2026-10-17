@@ -1,0 +1,648 @@
+import { type Page } from '@playwright/test';
+import { test, expect, MOCK_TODAY } from './helpers/ugc-test';
+import { switchToListView } from './helpers/mock-helpers';
+import { filterNonCriticalErrors } from './helpers/console-errors';
+
+
+/**
+ * Comprehensive E2E tests for the My Shows page using mock mode.
+ *
+ * Mock mode (?mock=1 on localhost) bypasses auth and feature flags,
+ * injecting deterministic fake data for reliable testing.
+ *
+ * Run locally: TEST_BASE_URL=http://localhost:3456 npx playwright test tests/e2e/my-shows-mock.spec.ts
+ * Or via npm script: npm run test:my-shows
+ *
+ * These tests verify:
+ * - Page structure and content rendering
+ * - Tab switching (Diary ↔ Watchlist)
+ * - Grid/List view toggle
+ * - Sort functionality (Newest, Oldest, Top Rated, A-Z, Closing)
+ * - All three diary sections (To Be Rated, Upcoming, Past Shows)
+ * - Interactive stars on To Be Rated cards
+ * - Delete confirmation flow with auto-dismiss
+ * - ARIA accessibility (tab roles, labels)
+ * - Responsive layouts (mobile 390px + desktop 1440px)
+ * - No console errors
+ */
+
+const MOCK_URL = '/my-shows?mock=1';
+
+// Helper: wait for mock data to load
+async function waitForMockData(page: Page) {
+  await page.waitForSelector('#tab-watchlist span', { timeout: 10000 });
+}
+
+// Helper: navigate to mock page and wait for data
+async function goToMock(page: Page, tab: 'diary' | 'watchlist' = 'diary') {
+  await page.goto(`${MOCK_URL}&tab=${tab}`);
+  await waitForMockData(page);
+}
+
+// ─── Page Load & Structure ─────────────────────────────────────
+
+test.describe('My Shows — Page Structure', () => {
+  test('loads with correct title and header', async ({ page }) => {
+    await goToMock(page);
+    await expect(page).toHaveTitle(/My Shows/);
+    await expect(page.getByRole('heading', { name: 'My Shows', level: 1 })).toBeVisible();
+  });
+
+  test('stats bar shows correct counts', async ({ page }) => {
+    await goToMock(page);
+    // Counts live in the tab badges only — the "N to rate" stats line was
+    // removed entirely (owner, 2026-07-17: pushed content down, redundant
+    // with the To Be Rated section header).
+    await expect(page.locator('#tab-diary span').first()).toHaveText('9');
+    await expect(page.locator('#tab-watchlist span').first()).toHaveText('6');
+    await expect(page.getByText(/^\d+ to rate$/)).toHaveCount(0);
+  });
+
+  test('no console errors on page load', async ({ page }) => {
+    const errors: string[] = [];
+    const notFoundUrls: string[] = [];
+    page.on('console', msg => {
+      if (msg.type() === 'error') errors.push(msg.text());
+    });
+    page.on('response', response => {
+      if (response.status() === 404) {
+        const url = response.url();
+        // Ignore expected 404s: favicon, analytics, external services
+        if (!url.includes('favicon') && !url.includes('analytics') && !url.includes('supabase') && !url.includes('_vercel')) {
+          notFoundUrls.push(`404: ${url}`);
+        }
+      }
+    });
+    await goToMock(page);
+    // Single source of truth for benign console noise (favicon, analytics,
+    // DevTools, Failed-to-load-resource [covered by notFoundUrls below], Next.js
+    // RSC-prefetch degradation, etc.). See helpers/console-errors.ts (#401).
+    const critical = filterNonCriticalErrors(errors);
+    expect([...critical, ...notFoundUrls], 'Unexpected errors or 404s on page load').toEqual([]);
+  });
+});
+
+// ─── ARIA Accessibility ────────────────────────────────────────
+
+test.describe('My Shows — Accessibility', () => {
+  test('tab bar uses proper ARIA roles', async ({ page }) => {
+    await goToMock(page);
+    // tablist container
+    await expect(page.getByRole('tablist')).toBeVisible();
+    // Diary tab with selected state
+    const diaryTab = page.getByRole('tab', { name: 'Diary' });
+    await expect(diaryTab).toBeVisible();
+    await expect(diaryTab).toHaveAttribute('aria-selected', 'true');
+    // Watchlist tab not selected
+    const watchlistTab = page.getByRole('tab', { name: /Watchlist/ });
+    await expect(watchlistTab).toBeVisible();
+    await expect(watchlistTab).toHaveAttribute('aria-selected', 'false');
+  });
+
+  test('tabpanel has correct role and label', async ({ page }) => {
+    await goToMock(page);
+    const panel = page.getByRole('tabpanel');
+    await expect(panel).toBeVisible();
+  });
+
+  test('sort dropdowns have aria-labels', async ({ page }) => {
+    await goToMock(page);
+    await expect(page.getByRole('combobox', { name: 'Sort diary' })).toBeVisible();
+    // Switch to watchlist
+    await page.getByRole('tab', { name: /Watchlist/ }).click();
+    await expect(page.getByRole('combobox', { name: 'Sort watchlist' })).toBeVisible();
+  });
+
+  test('To Be Rated posters are labeled rate links', async ({ page }) => {
+    await goToMock(page);
+    // The app's design (BRO-4558): poster tiles that open the rating editor,
+    // no inline star rows.
+    const band = page.getByTestId('to-be-rated');
+    await expect(band.getByRole('link', { name: 'Rate Ragtime' })).toBeVisible();
+    await expect(band.getByRole('link', { name: 'Rate Chess' })).toBeVisible();
+  });
+
+  test('a welcome "seen it" pick with no date reads "Date not set" and links to the rating editor', async ({ page }) => {
+    await goToMock(page);
+    // BRO-4619: seen_unrated rows have no date; none is made up for them.
+    const band = page.getByTestId('to-be-rated');
+    const link = band.getByRole('link', { name: 'Rate Hadestown, date not set' });
+    await expect(link).toBeVisible();
+    await expect(link).toContainText('Date not set');
+    await expect(link).toHaveAttribute('href', /\/show\/hadestown\?rate=1$/);
+  });
+
+  test('grid/list toggle buttons have aria-labels', async ({ page }) => {
+    await goToMock(page);
+    await expect(page.getByRole('button', { name: 'Grid view' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'List view' })).toBeVisible();
+  });
+});
+
+// ─── Diary Tab — All Three Sections ────────────────────────────
+
+test.describe('My Shows — Diary Sections', () => {
+  test('To Be Rated section shows correct items', async ({ page }) => {
+    await goToMock(page);
+    await expect(page.getByRole('heading', { name: 'To Be Rated' })).toBeVisible();
+    // Ragtime and Chess are the to-be-rated items, named under their posters
+    const band = page.getByTestId('to-be-rated');
+    await expect(band.getByText('Ragtime', { exact: true })).toBeVisible();
+    await expect(band.getByText('Chess', { exact: true })).toBeVisible();
+  });
+
+  test('Upcoming section shows future watchlist items', async ({ page }) => {
+    await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
+    await expect(page.getByRole('heading', { name: 'Upcoming' })).toBeVisible();
+    // Gypsy (Sep 15) and Smash (Oct 10)
+    await expect(page.getByRole('heading', { name: 'Gypsy', level: 4 })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Smash', level: 4 })).toBeVisible();
+  });
+
+  test('past shows list under year bands', async ({ page }) => {
+    await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
+    // Year bands replace the old "Past Shows" header (app design, BRO-4558)
+    await expect(page.getByRole('heading', { name: /^20\d\d$/ }).first()).toBeVisible();
+    // All 7 reviewed shows
+    await expect(page.getByRole('heading', { name: 'Wicked', level: 4 })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Hamilton', level: 4 })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Cabaret/, level: 4 })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Merrily We Roll Along', level: 4 })).toBeVisible();
+  });
+
+  test('To Be Rated poster opens the rating editor', async ({ page }) => {
+    await goToMock(page);
+    const rate = page.getByTestId('to-be-rated').getByRole('link', { name: 'Rate Ragtime' });
+    await expect(rate).toHaveAttribute('href', /\/show\/ragtime.*\?rate=1$/);
+    // The mock page rewrites its own URL (&tab=diary) right after load, and a
+    // click in that window is swallowed by the replace; retry the click.
+    await expect(async () => {
+      await rate.click();
+      await page.waitForURL(/\/show\/ragtime.*rate=1/, { timeout: 10000, waitUntil: 'commit' });
+    }).toPass({ timeout: 45000 });
+  });
+
+  test('venue is displayed in diary list view', async ({ page }) => {
+    await goToMock(page);
+    // Diary list view should show venue names instead of badges
+    const venues = page.locator('.text-gray-500').filter({ hasText: /Theatre|Theater/ });
+    expect(await venues.count()).toBeGreaterThan(0);
+  });
+
+  test('review text is displayed for shows with notes', async ({ page }) => {
+    await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
+    await expect(page.getByText('Incredible production, Elphaba was phenomenal.')).toBeVisible();
+    await expect(page.getByText('Good but not great revival.')).toBeVisible();
+  });
+
+  test('edit links point to correct show pages', async ({ page }) => {
+    await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
+    const editLinks = page.getByRole('link', { name: 'Edit rating' });
+    const count = await editLinks.count();
+    expect(count).toBe(9); // 9 rated shows in mock data
+    // First edit link should include ?edit=1
+    const firstHref = await editLinks.first().getAttribute('href');
+    expect(firstHref).toContain('?edit=1');
+  });
+});
+
+// ─── Sorting ───────────────────────────────────────────────────
+
+test.describe('My Shows — Sorting', () => {
+  test('diary "Top Rated" sort orders correctly', async ({ page }) => {
+    await goToMock(page);
+    await page.getByRole('combobox', { name: 'Sort diary' }).selectOption('rating-desc');
+    // Past Shows should now start with 5.0 ratings
+    const ratings = await page.locator('[class*="text-amber-400"][class*="font-bold"]').allTextContents();
+    // Filter to just numeric ratings (exclude "to rate" badge)
+    const numericRatings = ratings.filter(r => /^\d/.test(r)).map(r => parseFloat(r));
+    // Should be descending
+    for (let i = 1; i < numericRatings.length; i++) {
+      expect(numericRatings[i]).toBeLessThanOrEqual(numericRatings[i - 1]);
+    }
+  });
+
+  test('diary "Oldest" sort shows oldest first', async ({ page }) => {
+    await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17); DiaryGridCard titles aren't <h4> so this test found 0 matches without it (2026-07-22)
+    await page.getByRole('combobox', { name: 'Sort diary' }).selectOption('date-asc');
+    // Book of Mormon (Mar 2024) should appear before Wicked (Dec 2025) in Past Shows
+    const cards = await page.locator('h4').allTextContents();
+    const mormonIndex = cards.indexOf('The Book of Mormon');
+    const wickedIndex = cards.indexOf('Wicked');
+    // Both cards must actually be found — an `if (mormonIndex >= 0 && wickedIndex >= 0)`
+    // guard here would let a selector drift (h4 rename, both indexOf() calls
+    // returning -1) pass this test having verified nothing (same class as the
+    // count()-without-assertion bug this session's audit script targets).
+    expect(mormonIndex, `"The Book of Mormon" not found in: ${cards.join(', ')}`).toBeGreaterThanOrEqual(0);
+    expect(wickedIndex, `"Wicked" not found in: ${cards.join(', ')}`).toBeGreaterThanOrEqual(0);
+    expect(mormonIndex).toBeLessThan(wickedIndex);
+  });
+
+  test('watchlist "A-Z" sort orders alphabetically', async ({ page }) => {
+    await goToMock(page, 'watchlist');
+    // Switch to list view so titles are easier to extract from card headings
+    const listBtn = page.getByRole('button', { name: 'List view' });
+    await listBtn.click();
+    await expect(listBtn).toHaveClass(/bg-white/, { timeout: 3000 });
+    await page.getByRole('combobox', { name: 'Sort watchlist' }).selectOption('alphabetical');
+    // Get show title headings from the watchlist cards (h4 inside card items, not the "Add" button)
+    const headings = page.locator('[role="tabpanel"] h4');
+    const titles = await headings.allTextContents();
+    // Filter to actual show titles (min 3 chars, not UI labels)
+    const showTitles = titles.filter(t => t.length > 2);
+    expect(showTitles.length).toBeGreaterThanOrEqual(5);
+    // Should be alphabetical
+    const sorted = [...showTitles].sort((a, b) => a.localeCompare(b));
+    expect(showTitles).toEqual(sorted);
+  });
+});
+
+// ─── Tab Switching ─────────────────────────────────────────────
+
+test.describe('My Shows — Tabs', () => {
+  test('switching to Watchlist tab shows watchlist content', async ({ page }) => {
+    await goToMock(page);
+    // Click Watchlist tab
+    await page.getByRole('tab', { name: /Watchlist/ }).click();
+    // URL should update
+    await expect(page).toHaveURL(/tab=watchlist/);
+    // Watchlist defaults to grid — poster cards for upcoming/undated entries;
+    // past-dated ones render as To Be Rated rows since 2026-07-20.
+    const posters = page.locator('.aspect-\\[2\\/3\\]');
+    expect(await posters.count()).toBeGreaterThanOrEqual(4);
+    // Switch to list view and verify titles
+    await page.getByRole('button', { name: 'List view' }).click();
+    await expect(page.getByRole('heading', { name: 'Gypsy', level: 4 })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Oh, Mary/, level: 4 })).toBeVisible();
+  });
+
+  test('switching back to Diary preserves sort', async ({ page }) => {
+    await goToMock(page);
+    // Change sort to Top Rated
+    await page.getByRole('combobox', { name: 'Sort diary' }).selectOption('rating-desc');
+    // Switch to Watchlist
+    await page.getByRole('tab', { name: /Watchlist/ }).click();
+    // Switch back to Diary
+    await page.getByRole('tab', { name: 'Diary' }).click();
+    // Sort should still be Top Rated
+    const sortValue = await page.getByRole('combobox', { name: 'Sort diary' }).inputValue();
+    expect(sortValue).toBe('rating-desc');
+  });
+});
+
+// ─── Grid/List Toggle ──────────────────────────────────────────
+
+test.describe('My Shows — View Toggle', () => {
+  test('diary grid view shows poster cards', async ({ page }) => {
+    await goToMock(page);
+    // Default is list view for diary; switch to grid
+    await page.getByRole('button', { name: 'Grid view' }).click();
+    // Grid cards have aspect-[2/3] poster areas
+    const posters = page.locator('.aspect-\\[2\\/3\\]');
+    expect(await posters.count()).toBeGreaterThan(0);
+  });
+
+  test('watchlist defaults to grid view', async ({ page }) => {
+    await goToMock(page, 'watchlist');
+    // Grid button should be active (highlighted)
+    const gridBtn = page.getByRole('button', { name: 'Grid view' });
+    const classes = await gridBtn.getAttribute('class');
+    expect(classes).toContain('bg-white');
+  });
+
+  test('grid posters carry no corner buttons', async ({ page }) => {
+    // Owner, 2026-10-03 (BRO-4558): no delete/edit circles on posters;
+    // tapping a poster opens the show, where it can be removed.
+    for (const tab of ['diary', 'watchlist'] as const) {
+      await goToMock(page, tab);
+      await page.getByRole('button', { name: 'Grid view' }).click();
+      const cards = page.locator('[role="tabpanel"] .group\\/grid');
+      expect(await cards.count(), `${tab}: no grid cards`).toBeGreaterThan(0);
+      await expect(cards.locator('button'), `${tab}: buttons on a poster card`).toHaveCount(0);
+    }
+  });
+
+  test('view toggle works independently per tab', async ({ page }) => {
+    await goToMock(page);
+    // Set diary to grid
+    await page.getByRole('button', { name: 'Grid view' }).click();
+    // Switch to watchlist (defaults to grid)
+    await page.getByRole('tab', { name: /Watchlist/ }).click();
+    // Switch watchlist to list
+    await page.getByRole('button', { name: 'List view' }).click();
+    // Switch back to diary — should still be grid
+    await page.getByRole('tab', { name: 'Diary' }).click();
+    const gridBtn = page.getByRole('button', { name: 'Grid view' });
+    const classes = await gridBtn.getAttribute('class');
+    expect(classes).toContain('bg-white');
+  });
+});
+
+// ─── Delete Confirmation ───────────────────────────────────────
+
+test.describe('My Shows — Delete Flow', () => {
+  test('delete shows 2-step confirmation', async ({ page }) => {
+    await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
+    // Find first delete button
+    const deleteBtn = page.getByRole('button', { name: 'Delete rating' }).first();
+    await deleteBtn.click();
+    // Should show "Delete?" and "No" buttons
+    await expect(page.getByRole('button', { name: /Delete\?/ })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'No' })).toBeVisible();
+  });
+
+  test('clicking "No" dismisses confirmation', async ({ page }) => {
+    await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
+    const deleteBtn = page.getByRole('button', { name: 'Delete rating' }).first();
+    await deleteBtn.click();
+    await expect(page.getByRole('button', { name: /Delete\?/ })).toBeVisible();
+    // Click No
+    await page.getByRole('button', { name: 'No' }).click();
+    // Confirmation should be gone, trash icon should be back
+    await expect(page.getByRole('button', { name: /Delete\?/ })).not.toBeVisible();
+    await expect(page.getByRole('button', { name: 'Delete rating' }).first()).toBeVisible();
+  });
+
+  test('delete confirmation auto-dismisses after timeout', async ({ page }) => {
+    await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
+    const deleteBtn = page.getByRole('button', { name: 'Delete rating' }).first();
+    await deleteBtn.click();
+    await expect(page.getByRole('button', { name: /Delete\?/ })).toBeVisible();
+    // Wait for auto-dismiss (4 seconds + buffer)
+    await page.waitForTimeout(5000);
+    await expect(page.getByRole('button', { name: /Delete\?/ })).not.toBeVisible();
+  });
+});
+
+// ─── Watchlist Tab ─────────────────────────────────────────────
+
+test.describe('My Shows — Watchlist', () => {
+  test('shows all 6 watchlist items', async ({ page }) => {
+    await goToMock(page, 'watchlist');
+    // Mock has 6 entries, 2 past-dated. Past-dated ones sit in the To Be
+    // Rated poster band (BRO-4558, always a grid as in the app); the other 4
+    // are poster cards in grid view and titled rows in list view. Welcome
+    // picks with no date (seen_unrated) are diary-only, not watchlist rows.
+    const posters = page.locator('[role="tabpanel"] .aspect-\\[2\\/3\\]');
+    expect(await posters.count()).toBeGreaterThanOrEqual(6);
+    const band = page.getByTestId('to-be-rated');
+    await expect(page.getByRole('heading', { name: 'To Be Rated' })).toBeVisible();
+    await expect(band.getByRole('link', { name: /^Rate / })).toHaveCount(2);
+    await page.getByRole('button', { name: 'List view' }).click();
+    const titles = page.locator('[role="tabpanel"] h4');
+    expect(await titles.count()).toBeGreaterThanOrEqual(4);
+    await expect(band.getByRole('link', { name: /^Rate / })).toHaveCount(2);
+  });
+
+  test('watchlist cards have a rate-strip of five stars', async ({ page }) => {
+    await goToMock(page, 'watchlist');
+    // The rate strip lives on WatchlistCard for past-dated entries, which
+    // only render as poster cards in the flat A-Z view (the default split
+    // routes them to the To Be Rated band). It is hover-revealed at sm+, so
+    // assert presence, not visibility.
+    await page.getByRole('combobox', { name: 'Sort watchlist' }).selectOption('alphabetical');
+    const strips = page.locator('[role="tabpanel"] [role="radiogroup"][aria-label^="Rate "]');
+    expect(await strips.count()).toBeGreaterThan(0);
+    await expect(strips.first().getByRole('button', { name: '5 stars', includeHidden: true })).toBeAttached();
+  });
+
+  test('watchlist grid has no date buttons under the posters', async ({ page }) => {
+    await goToMock(page, 'watchlist');
+    const panel = page.locator('[role="tabpanel"]');
+    await expect(panel.getByRole('button', { name: /^(Add|Change) date$/ })).toHaveCount(0);
+  });
+
+  test('watchlist remove shows confirmation', async ({ page }) => {
+    await goToMock(page, 'watchlist');
+    // Switch to list view for easier interaction
+    await page.getByRole('button', { name: 'List view' }).click();
+    const removeBtn = page.getByRole('button', { name: 'Remove from watchlist' }).first();
+    await removeBtn.click();
+    await expect(page.getByRole('button', { name: /Remove\?/ })).toBeVisible();
+  });
+});
+
+// ─── Add Show Search ───────────────────────────────────────────
+
+test.describe('My Shows — Add Show', () => {
+  test('add button opens search input', async ({ page }) => {
+    await goToMock(page);
+    const addBtn = page.getByRole('button', { name: /Add a show/ }).first();
+    await addBtn.click();
+    // Search input should appear
+    const input = page.getByPlaceholder(/Search to rate/);
+    await expect(input).toBeVisible();
+    await expect(input).toBeFocused();
+  });
+
+  test('search can be closed with X button', async ({ page }) => {
+    await goToMock(page);
+    await page.getByRole('button', { name: /Add a show/ }).first().click();
+    await expect(page.getByPlaceholder(/Search to rate/)).toBeVisible();
+    // Close it
+    await page.getByRole('button', { name: 'Close search' }).click();
+    await expect(page.getByPlaceholder(/Search to rate/)).not.toBeVisible();
+  });
+});
+
+// ─── Responsive Layout ─────────────────────────────────────────
+
+test.describe('My Shows — Mobile Layout (390px)', () => {
+  test.use({ viewport: { width: 390, height: 844 } });
+
+  test('all sections fit within viewport width', async ({ page }) => {
+    await goToMock(page);
+    // Check no horizontal overflow
+    const bodyWidth = await page.evaluate(() => document.body.scrollWidth);
+    expect(bodyWidth).toBeLessThanOrEqual(390);
+  });
+
+  test('To Be Rated is a 3-up poster grid on a full-width band', async ({ page }) => {
+    await goToMock(page, 'diary');
+    // The app's design (BRO-4558): three posters per row at phone width, on
+    // an amber band that runs to the content edges.
+    const band = page.getByTestId('to-be-rated');
+    const links = band.getByRole('link', { name: /^Rate / });
+    expect(await links.count()).toBeGreaterThanOrEqual(2);
+    const [a, b] = [await links.nth(0).boundingBox(), await links.nth(1).boundingBox()];
+    expect(a && b && Math.abs(a.y - b.y) < 2).toBeTruthy();
+    // 390px viewport, 16px gutters → three columns of ~113px.
+    expect(a!.width).toBeGreaterThan(100);
+    expect(a!.width).toBeLessThan(125);
+    // The band paints out over the 16px gutters (border-image outset, which
+    // does not widen the layout), so it reaches the screen edges.
+    const outset = await band.evaluate(el => getComputedStyle(el).borderImageOutset);
+    expect(outset).toMatch(/^0(px)? 16px$/);
+    const bandBox = await band.boundingBox();
+    expect(Math.round(bandBox!.x)).toBe(16);
+  });
+
+  test('tab bar does not overflow on mobile', async ({ page }) => {
+    await goToMock(page);
+    const tablist = page.getByRole('tablist');
+    const box = await tablist.boundingBox();
+    expect(box).toBeTruthy();
+    if (box) {
+      expect(box.width).toBeLessThanOrEqual(390);
+    }
+  });
+});
+
+test.describe('My Shows — Desktop Layout (1440px)', () => {
+  test.use({ viewport: { width: 1440, height: 900 } });
+
+  test('diary grid uses 4 columns on desktop', async ({ page }) => {
+    await goToMock(page);
+    await page.getByRole('button', { name: 'Grid view' }).click();
+    // Grid container should have grid-cols-3 sm:grid-cols-4 (resolves to 4 at 1440px)
+    const grid = page.locator('.grid.grid-cols-3.sm\\:grid-cols-4');
+    await expect(grid.first()).toBeVisible();
+  });
+
+  test('diary list shows full star ratings on desktop', async ({ page }) => {
+    await goToMock(page);
+    await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
+    // Desktop shows full 5-star display (hidden md:inline-flex)
+    const starRatings = page.locator('.hidden.md\\:inline-flex');
+    expect(await starRatings.count()).toBeGreaterThan(0);
+  });
+});
+
+// ─── Visual Regression (screenshots) ───────────────────────────
+
+// Scope snapshots to the My Shows content container, NOT the full page. fullPage
+// snapshots captured the shared header/footer too, so any unrelated chrome change
+// (e.g. adding a footer nav item) shifted everything and red'd every My Shows
+// baseline even when My Shows itself was unchanged — a recurring source of false
+// CI reds (test-ugc red 2026-06-04..06). Element-clipping decouples them: only a
+// real change inside [data-testid="my-shows-content"] moves these baselines.
+test.describe('My Shows — Visual Regression', () => {
+  const content = (page: Page) => page.getByTestId('my-shows-content');
+
+  test('diary list view at 390px', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await goToMock(page);
+    // Diary defaults to grid; without this the "list" baseline was a second grid one.
+    await switchToListView(page);
+    await expect(content(page)).toHaveScreenshot('my-shows-diary-list-390.png', {
+      animations: 'disabled',
+    });
+  });
+
+  test('diary grid view at 390px', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await goToMock(page);
+    await page.getByRole('button', { name: 'Grid view' }).click();
+    await expect(content(page)).toHaveScreenshot('my-shows-diary-grid-390.png', {
+      animations: 'disabled',
+    });
+  });
+
+  test('watchlist grid view at 390px', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await goToMock(page, 'watchlist');
+    await expect(content(page)).toHaveScreenshot('my-shows-watchlist-grid-390.png', {
+      animations: 'disabled',
+    });
+  });
+
+  test('diary list view at 1440px', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await goToMock(page);
+    // Diary defaults to grid; without this the "list" baseline was a second grid one.
+    await switchToListView(page);
+    await expect(content(page)).toHaveScreenshot('my-shows-diary-list-1440.png', {
+      animations: 'disabled',
+    });
+  });
+});
+
+// ─── iOS date-wheel semantics (regression, 2026-07-20) ─────────────────
+// iOS Safari fires `change` with TODAY the moment the wheel opens, before
+// the user picks. The shared DatePickerButton must stage coarse-pointer
+// changes and commit ONCE on close — the old per-change commit saved today
+// instantly, re-sorted the card under the open wheel and dismissed it.
+test.describe('Date picker — touch commit-on-close', () => {
+  test('mid-wheel change does not commit; picked date lands on close', async ({ page, isMobile }) => {
+    test.skip(!isMobile, 'coarse-pointer (staging) path only');
+    await goToMock(page, 'watchlist');
+    // `today` is passed in: page.evaluate runs in the browser and can't see MOCK_TODAY.
+    const result = await page.evaluate(async (today) => {
+      const panel = document.querySelector('[role="tabpanel"]')!;
+      const nb = Array.from(panel.querySelectorAll('h3')).find(h => /Not yet booked/i.test(h.textContent || ''))?.parentElement;
+      const input = nb?.querySelector('input[type="date"]') as HTMLInputElement | null;
+      if (!input) return { error: 'no input' };
+      const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')!.set!;
+      // A today-commit would MOVE this undated entry out of Not-yet-booked
+      // (today sorts as Upcoming) — card count dropping is the discriminator
+      // the old per-change-commit code fails on.
+      const cardsBefore = nb!.querySelectorAll('input[type="date"]').length;
+      // iOS: change fires with today at wheel-open
+      setter.call(input, today);
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+      await new Promise(r => setTimeout(r, 350));
+      const committedMidWheel = nb!.querySelectorAll('input[type="date"]').length !== cardsBefore;
+      // user scrolls to Sep 21, closes the wheel (focusout)
+      setter.call(input, '2026-09-21');
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+      input.dispatchEvent(new Event('focusout', { bubbles: true }));
+      await new Promise(r => setTimeout(r, 700));
+      return { committedMidWheel, landedOnClose: /Sep 21/.test(panel.textContent || '') };
+    }, MOCK_TODAY);
+    expect(result.committedMidWheel ?? false, 'date committed while wheel still open').toBe(false);
+    expect(result.landedOnClose, 'picked date did not land after closing the wheel').toBe(true);
+  });
+});
+
+// ─── Import preview (mock-mode importer) ───────────────────────
+
+test.describe('My Shows — Import preview', () => {
+  // Titles/venues pinned to closed historical productions so the catalog's
+  // od/cd never drift: Come From Away (2017) + Hadestown (2019) with
+  // pre-run dates exercise the dateSuspect deselection; venue forces the
+  // Broadway production over undated diary-tour twins of the same title.
+  const fixture = {
+    appVersion: 'e2e-fixture',
+    data: {
+      diaryEntries: [
+        { show: { name: 'The Lion King', id: 'fx1' }, rating: 3.5, date: '2019-01-05', review: null },
+        { show: { name: 'Come From Away', id: 'fx2' }, rating: 4, date: '2005-06-01', review: null, production: { theater: { name: 'Gerald Schoenfeld Theatre' } } },
+        { show: { name: 'Hadestown', id: 'fx3' }, rating: 4.5, date: '2000-01-01', review: null, production: { theater: { name: 'Walter Kerr Theatre' } } },
+      ],
+      lists: [],
+    },
+  };
+
+  test('summary names the not-selected (date-suspect) shows; singular CTA', async ({ page }) => {
+    // &importer=1: the importer is opt-in in mock mode so the mock-page
+    // visual baselines stay importer-free.
+    await page.goto(`${MOCK_URL}&importer=1`);
+    await waitForMockData(page);
+    await page.getByText('Import from Show Score, Mezzanine or Theatr').click();
+    await page.locator('input[type="file"][accept=".json"]').setInputFiles({
+      name: 'mezz-export.json',
+      mimeType: 'application/json',
+      buffer: Buffer.from(JSON.stringify(fixture)),
+    });
+    await expect(page.getByRole('heading', { name: 'Review Import' })).toBeVisible();
+    // The "not selected" chip must NAME the shows, not just count them —
+    // a bare count sent the owner scrolling a 98-row list (2026-07-21).
+    await expect(page.getByText('2 not selected: Come From Away, Hadestown')).toBeVisible();
+    // Date-mismatch rows live in their OWN section with the why + a way out.
+    await expect(page.getByRole('heading', { name: 'Not selected: date mismatch (2)' })).toBeVisible();
+    await expect(page.getByText(/You may have seen a different production/)).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Find the production I saw' })).toHaveCount(2);
+    // Rows carry the match context: market + year + venue + logged date.
+    await expect(page.getByText(/Broadway 2017 · Gerald Schoenfeld Theatre · you logged Jun 1, 2005/)).toBeVisible();
+    // Pluralization: exactly one selected show → "Import 1 Show", not "1 Shows".
+    await expect(page.getByRole('button', { name: 'Import 1 Show', exact: true })).toBeVisible();
+  });
+});

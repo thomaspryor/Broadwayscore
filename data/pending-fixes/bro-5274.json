@@ -1,0 +1,347 @@
+{
+  "issueNumber": "bro-5274",
+  "planId": "d59f4da3-8d05-4aa2-9ad5-b0f01148360e",
+  "status": "partial",
+  "createdAt": "2026-10-14T01:33:02.755374Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5274 part 1 of 3: mark the weaker file of each duplicate (showDir|outlet|critic) pair as duplicateOf its sibling so one review counts once. reviews.json already collapses the key at rebuild, so no score changes; the files and the drift audit are cleaned up.",
+    "steps": [
+      "Set duplicateOf on the weaker file of each pair (and delete one empty BWW profile-page record in part 3)."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "affluenza-off-west-end-2026/timeout-london--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "timeout-london--andrzej-lukowski.json",
+        "description": "BRO-5274: same article as timeout-london--andrzej-lukowski.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-about-eve-west-end-2019/whatsonstage--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "whatsonstage--sarah-crompton.json",
+        "description": "BRO-5274: same article as whatsonstage--sarah-crompton.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anything-goes-2011/variety--steven-suskin.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--david-rooney.json",
+        "description": "BRO-5274: same article as variety--david-rooney.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "betrayal-2013/guardian--david-cote.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "guardian--charles-isherwood.json",
+        "description": "BRO-5274: same article as guardian--charles-isherwood.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nytimes--ben-brantley.json",
+        "description": "BRO-5274: same article as nytimes--ben-brantley.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "choir-boy-2019/vulture--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "vulture--sara-holdren.json",
+        "description": "BRO-5274: same article as vulture--sara-holdren.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "degenerates-off-broadway-2026/talkinbroadway--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "talkinbroadway--marc-miller.json",
+        "description": "BRO-5274: same article as talkinbroadway--marc-miller.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "elf-2012/nytimes--neil-genzlinger.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nytimes--ben-brantley.json",
+        "description": "BRO-5274: same article as nytimes--ben-brantley.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "escape-to-margaritaville-2018/broadwaynews--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "broadwaynews--elizabeth-bradley.json",
+        "description": "BRO-5274: same article as broadwaynews--elizabeth-bradley.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "eureka-day-west-end-2022/whatsonstage--sarah-crompton.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "whatsonstage--unknown.json",
+        "description": "BRO-5274: same article as whatsonstage--unknown.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "frankie-and-johnny-in-the-clair-de-lune-2019/nytimes--jesse-green.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nytimes--ben-brantley.json",
+        "description": "BRO-5274: same article as nytimes--ben-brantley.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "funny-girl-2022/variety--aramide-tinubu.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--frank-rizzo.json",
+        "description": "BRO-5274: same article as variety--frank-rizzo.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ghetto-klown-2011/variety--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--marilyn-stasio.json",
+        "description": "BRO-5274: same article as variety--marilyn-stasio.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hadestown-west-end-2024/broadwayworld--cindy-marcolina.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "broadwayworld--michael-dale.json",
+        "description": "BRO-5274: same article as broadwayworld--michael-dale.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hughie-2016/theater-life--david-sheward.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "theater-life--eric-march.json",
+        "description": "BRO-5274: same article as theater-life--eric-march.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jajas-african-hair-braiding-2023/nysr--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nysr--melissa-rose-bernardo.json",
+        "description": "BRO-5274: same article as nysr--melissa-rose-bernardo.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jerusalem-west-end-2022/whatsonstage--sarah-crompton.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "whatsonstage--unknown.json",
+        "description": "BRO-5274: same article as whatsonstage--unknown.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jesus-christ-superstar-west-end-2026/broadwayworld--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "broadwayworld--aliya-al-hassan.json",
+        "description": "BRO-5274: same article as broadwayworld--aliya-al-hassan.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "linda-vista-2019/nydailynews--chris-jones-bway.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nydailynews--chris-jones.json",
+        "description": "BRO-5274: same article as nydailynews--chris-jones.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "linda-vista-2019/wsj--terry-teachout.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "wsj--charles-isherwood.json",
+        "description": "BRO-5274: same article as wsj--charles-isherwood.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mother-play-2024/guardian--benjamin-lee.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "guardian--adrian-horton.json",
+        "description": "BRO-5274: same article as guardian--adrian-horton.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "my-name-is-lucy-barton-2020/broadwaynews--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "broadwaynews--charles-isherwood.json",
+        "description": "BRO-5274: same article as broadwaynews--charles-isherwood.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oh-mary-2024/variety--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--aramide-tinubu.json",
+        "description": "BRO-5274: same article as variety--aramide-tinubu.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "one-man-two-guvnors-2012/timeout--david-cote.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "timeout--adam-feldman.json",
+        "description": "BRO-5274: same article as timeout--adam-feldman.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "only-fools-and-horses-west-end-2019/whatsonstage--unknown.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "whatsonstage--alun-hood.json",
+        "description": "BRO-5274: same article as whatsonstage--alun-hood.json (same url or opening text); this copy is the weaker file (same article (url or opening text))"
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T02:22:18.221Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "affluenza-off-west-end-2026/timeout-london--unknown.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "all-about-eve-west-end-2019/whatsonstage--unknown.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "anything-goes-2011/variety--steven-suskin.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "betrayal-2013/guardian--david-cote.json duplicateOf: null -> \"guardian--charles-isherwood.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bring-it-on-the-musical-2012/nytimes--charles-isherwood.json duplicateOf: null -> \"nytimes--ben-brantley.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "choir-boy-2019/vulture--jesse-green.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "degenerates-off-broadway-2026/talkinbroadway--unknown.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "elf-2012/nytimes--neil-genzlinger.json duplicateOf: null -> \"nytimes--ben-brantley.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "escape-to-margaritaville-2018/broadwaynews--unknown.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "eureka-day-west-end-2022/whatsonstage--sarah-crompton.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "frankie-and-johnny-in-the-clair-de-lune-2019/nytimes--jesse-green.json duplicateOf: null -> \"nytimes--ben-brantley.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "funny-girl-2022/variety--aramide-tinubu.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "ghetto-klown-2011/variety--unknown.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "hadestown-west-end-2024/broadwayworld--cindy-marcolina.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "hughie-2016/theater-life--david-sheward.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "jajas-african-hair-braiding-2023/nysr--unknown.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "jerusalem-west-end-2022/whatsonstage--sarah-crompton.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "jesus-christ-superstar-west-end-2026/broadwayworld--unknown.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "linda-vista-2019/nydailynews--chris-jones-bway.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "linda-vista-2019/wsj--terry-teachout.json duplicateOf: null -> \"wsj--charles-isherwood.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mother-play-2024/guardian--benjamin-lee.json duplicateOf: null -> \"guardian--adrian-horton.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "my-name-is-lucy-barton-2020/broadwaynews--unknown.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oh-mary-2024/variety--unknown.json duplicateOf: null -> \"variety--aramide-tinubu.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "one-man-two-guvnors-2012/timeout--david-cote.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "only-fools-and-horses-west-end-2019/whatsonstage--unknown.json duplicateOf: write guard kept null"
+    }
+  ]
+}

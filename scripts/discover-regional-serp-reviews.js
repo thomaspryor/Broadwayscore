@@ -1,0 +1,280 @@
+#!/usr/bin/env node
+/**
+ * discover-regional-serp-reviews.js — SERP review discovery for regional
+ * (pre-Broadway tryout) shows, beyond aggregator (BWW/Playbill Verdict) roundups.
+ *
+ * Regional shows only get reviews that happen to land in a roundup article.
+ * gather-reviews.js's isLikelyTourReview() guard (review-guards.js:741) has no
+ * carve-out for market='regional' showIds and would reject exactly the local
+ * coverage (BroadwayWorld city subdirectories, local papers) that IS the
+ * legitimate signal for a regional tryout — so nothing else searches for it.
+ * Dolly Nashville proof: BroBible + Bethany Writes were page-1 Google results
+ * invisible to the pipeline until found manually 2026-07-19 (Notion 3a3637c5).
+ *
+ * Pipeline per show:
+ *   1. Build one SERP query: "{title}" review {city} (city parsed from venue).
+ *   2. serpQuery() from lib/url-discovery.js — Bright Data first, ScrapingBee
+ *      fallback, date-windowed to the show's run to avoid cross-production noise.
+ *   3. Filter results to URLs whose domain resolves unambiguously to a
+ *      REGISTERED outlet (outlet-registry.json) — unregistered domains are
+ *      logged as candidates for manual onboarding, never auto-ingested.
+ *   4. Skip URLs the show already has a review file for (idempotent).
+ *   5. urlLooksLikeReview() sanity filter (rejects /tag/, /ticket, etc).
+ *   6. Ingest survivors via ingest-review-from-url.js (same guard chain as the
+ *      /submit-review form — operatorTrust:false, subject to all content guards).
+ *
+ * National tours (market 'tour') are searched too, with "{title}" national
+ * tour review in place of the city (BRO-4509).
+ *
+ * Usage:
+ *   node scripts/discover-regional-serp-reviews.js [--show=ID] [--dry-run]
+ *
+ * Cost: one SERP query per show (~50 in the pool since tours joined, 30
+ * regional + 20 tour, as of 2026-10; the full run takes ~3 min). Bright
+ * Data is the default primary provider (see url-discovery.js), so ScrapingBee
+ * usage should stay near zero. The workflow sets SERP_SB_MAX_CALLS_PER_RUN to
+ * bound worst-case batch-wide SERP cost — SB_CREDIT_BUDGET only bounds the
+ * page-fetch inside each spawned ingest-review-from-url.js subprocess (resets
+ * per-process, does not accumulate across shows/candidates).
+ */
+
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+const { execFileSync } = require('child_process');
+const { serpQuery } = require('./lib/url-discovery');
+const { selectDiscoveryShows, buildDiscoveryQuery, buildDiscoveryDateRange, tourCandidateIsTour, normalizeUrl, looksLikeAggregationOrReaction, resolveRegisteredOutlet } = require('./lib/regional-serp-discovery');
+const { urlLooksLikeReview } = require('./lib/review-guards');
+const { _parseDomain } = require('./lib/outlet-canonicalize');
+const { validateSerpCandidate } = require('./lib/serp-candidate-validator');
+const { serpCensusPreflight } = require('./lib/serp-census-preflight');
+
+// Hard cap on ingest subprocess wall time. A slow/paywalled fetch (WSJ took
+// ~2min in testing) must not be allowed to eat the workflow's 20-min budget
+// across every show in the pool — one bad URL fails, the rest still run.
+const INGEST_TIMEOUT_MS = 3 * 60 * 1000;
+
+const ROOT = path.join(__dirname, '..');
+const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
+const AUDIT_PATH = path.join(ROOT, 'data', 'audit', 'regional-serp-discovery.json');
+
+const args = process.argv.slice(2);
+function getArg(name) {
+  const a = args.find((x) => x.startsWith(`--${name}=`));
+  return a ? a.split('=').slice(1).join('=') : null;
+}
+function hasFlag(name) {
+  return args.includes(`--${name}`);
+}
+
+const showFilter = getArg('show');
+const dryRun = hasFlag('dry-run');
+
+
+function getExistingUrls(showId) {
+  const urls = new Set();
+  const dir = path.join(REVIEW_TEXTS_DIR, showId);
+  if (!fs.existsSync(dir)) return urls;
+  for (const file of fs.readdirSync(dir)) {
+    if (!file.endsWith('.json')) continue;
+    try {
+      const data = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
+      if (data.url) urls.add(data.url.toLowerCase().replace(/\/$/, ''));
+    } catch {
+      // skip unreadable file
+    }
+  }
+  return urls;
+}
+
+function selectRegionalShows() {
+  const showsData = require(path.join(ROOT, 'data', 'shows.json'));
+  return selectDiscoveryShows(showsData.shows, showFilter);
+}
+
+
+function ingestUrl(showId, url, outletId) {
+  if (dryRun) {
+    console.log(`  [dry-run] would ingest ${outletId}: ${url}`);
+    return { action: 'dry-run' };
+  }
+  try {
+    const out = execFileSync(
+      process.execPath,
+      [path.join(__dirname, 'ingest-review-from-url.js'), `--show=${showId}`, `--url=${url}`, `--outlet=${outletId}`],
+      { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: INGEST_TIMEOUT_MS }
+    );
+    if (/✅ Created/.test(out)) return { action: 'new', log: out };
+    if (/✅ Updated/.test(out)) return { action: 'updated', log: out };
+    return { action: 'skipped', log: out };
+  } catch (e) {
+    const output = (e.stdout || '') + (e.stderr || '');
+    const reason = e.signal === 'SIGTERM' ? `timed out after ${INGEST_TIMEOUT_MS / 1000}s` : (e.stderr || e.message).split('\n')[0];
+    console.log(`  ✗ ingest failed for ${url}: ${reason}`);
+    return { action: 'error', log: output };
+  }
+}
+
+async function processShow(show) {
+  const query = buildDiscoveryQuery(show);
+  if (!query) {
+    console.log(`⚠️  ${show.id}: could not parse city from venue "${show.venue}" — skipping`);
+    return { showId: show.id, skipped: 'no-city' };
+  }
+
+  console.log(`\n${show.id} — query: ${query}`);
+
+  const dateRange = buildDiscoveryDateRange(show);
+  const results = await serpQuery(query, { nbResults: 10, dateRange, preferSpeed: false });
+
+  if (results === null || results === undefined) {
+    // serpQuery returns null when every provider failed (revoked key,
+    // exhausted quota) and [] for a real empty search. Recording null as
+    // "0 candidates" would read as a searched-and-empty week.
+    console.log('  ✗ SERP provider chain returned nothing (provider failure, not an empty search)');
+    return { showId: show.id, query, serpFailed: true, ingested: [], newOutletCandidates: [] };
+  }
+  if (results.length === 0) {
+    console.log('  (no SERP results)');
+    return { showId: show.id, query, candidates: 0, ingested: [], newOutletCandidates: [] };
+  }
+
+  const existingUrls = getExistingUrls(show.id);
+  const ingested = [];
+  const newOutletCandidates = [];
+  let skippedExisting = 0;
+  let skippedUnregistered = 0;
+  let skippedNotReview = 0;
+
+  for (const r of results) {
+    const url = r.url;
+    if (!url) continue;
+    const norm = normalizeUrl(url);
+    if (existingUrls.has(norm)) {
+      skippedExisting++;
+      continue;
+    }
+    if (!urlLooksLikeReview(url, show.title) || looksLikeAggregationOrReaction(url, r.title)) {
+      skippedNotReview++;
+      continue;
+    }
+    // Cross-market / wrong-production hard-marker check (same guard collect-outlet-reviews.js
+    // and gather-reviews.js's SERP path rely on) — cheap, synchronous, no network cost.
+    const candidate = { url, title: r.title, snippet: r.description };
+    const validation = validateSerpCandidate({ show, candidate });
+    if (!validation.ok) {
+      console.log(`  · rejected by validateSerpCandidate (${validation.reason}): ${url}`);
+      skippedNotReview++;
+      continue;
+    }
+    if (!tourCandidateIsTour(show, candidate)) {
+      console.log(`  · rejected (tour candidate without tour marker): ${url}`);
+      skippedNotReview++;
+      continue;
+    }
+    const outletId = resolveRegisteredOutlet(url);
+    if (!outletId) {
+      const domain = _parseDomain(url);
+      console.log(`  · unregistered domain (candidate for onboarding): ${domain} — ${url}`);
+      newOutletCandidates.push({ url, domain, title: r.title || null });
+      skippedUnregistered++;
+      continue;
+    }
+
+    console.log(`  → candidate: ${outletId} — ${url}`);
+    const result = ingestUrl(show.id, url, outletId);
+    if (result.action === 'new' || result.action === 'updated') {
+      console.log(`    ✅ ${result.action}: ${outletId}`);
+      ingested.push({ url, outletId, action: result.action });
+    } else if (result.action === 'dry-run') {
+      ingested.push({ url, outletId, action: 'dry-run' });
+    } else {
+      console.log(`    (${result.action})`);
+    }
+  }
+
+  console.log(
+    `  summary: ${ingested.length} ingested, ${skippedExisting} already-known, ` +
+    `${skippedUnregistered} unregistered-domain, ${skippedNotReview} not-review-shaped`
+  );
+
+  return {
+    showId: show.id,
+    query,
+    candidates: results.length,
+    ingested,
+    newOutletCandidates,
+    skippedExisting,
+    skippedUnregistered,
+    skippedNotReview,
+  };
+}
+
+async function main() {
+  // Precondition (BRO-4139 cousin): keyless, serpQuery returns null for every
+  // show, processShow records `candidates: 0`, and the audit log is rewritten
+  // with a fresh lastRun, identical to a real "searched, found nothing" week.
+  // Refuse instead; the scheduled workflow passes both keys, so a keyless run
+  // there means a dropped secret and should go red.
+  const preflight = serpCensusPreflight(process.env, {
+    disableVar: null,
+    consequence:
+      'Every regional show would record 0 SERP candidates and the audit log would be '
+      + 'rewritten with a fresh lastRun, indistinguishable from a real empty week. Refusing to run.',
+    workflowHint: '.github/workflows/discover-regional-serp-reviews.yml',
+  });
+  if (!preflight.ok) {
+    console.error(`::error::regional SERP discovery preflight failed — ${preflight.reason}`);
+    process.exit(1);
+  }
+
+  const shows = selectRegionalShows();
+  console.log(`Regional SERP discovery — ${shows.length} show(s) in pool${dryRun ? ' (dry-run)' : ''}`);
+  if (shows.length === 0) {
+    console.log(showFilter ? `No regional/tour show found matching --show=${showFilter}` : 'No regional or tour shows in the discovery window.');
+    return;
+  }
+
+  // One show's failure (SERP provider exception, etc.) must not abort the
+  // whole run — the audit log and rebuild trigger for every other show's
+  // real ingests would be lost with it.
+  const perShow = [];
+  for (const show of shows) {
+    try {
+      perShow.push(await processShow(show));
+    } catch (e) {
+      console.error(`✗ ${show.id} failed: ${e.message}`);
+      perShow.push({ showId: show.id, error: e.message });
+    }
+  }
+
+  const totalIngested = perShow.reduce((n, s) => n + (s.ingested ? s.ingested.length : 0), 0);
+  const totalCandidateOutlets = perShow.reduce((n, s) => n + (s.newOutletCandidates ? s.newOutletCandidates.length : 0), 0);
+  console.log(`\nDone. ${totalIngested} review(s) ingested across ${shows.length} show(s). ${totalCandidateOutlets} unregistered-outlet candidate(s) logged.`);
+
+  const searched = perShow.filter((r) => !r.skipped && !r.error);
+  const serpFailed = searched.filter((r) => r.serpFailed);
+  if (searched.length > 0 && serpFailed.length === searched.length) {
+    console.error(`::error::SERP provider chain failed for all ${searched.length} regional show(s) — not writing the audit log (it would read as an empty week).`);
+    process.exit(1);
+  }
+  if (serpFailed.length > 0) console.warn(`::warning::SERP provider failure for ${serpFailed.length}/${searched.length} regional show(s): ${serpFailed.map((r) => r.showId).join(', ')}`);
+
+  if (!dryRun) {
+    fs.mkdirSync(path.dirname(AUDIT_PATH), { recursive: true });
+    fs.writeFileSync(
+      AUDIT_PATH,
+      JSON.stringify({ lastRun: new Date().toISOString(), shows: perShow }, null, 2)
+    );
+    console.log(`Audit log written: ${path.relative(ROOT, AUDIT_PATH)}`);
+  }
+}
+
+if (require.main === module) {
+  main().catch((e) => {
+    console.error('Regional SERP discovery failed:', e.stack || e.message);
+    process.exit(1);
+  });
+}
+

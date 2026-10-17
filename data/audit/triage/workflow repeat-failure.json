@@ -1,0 +1,35 @@
+{
+  "system": "workflow repeat-failure",
+  "status": "error",
+  "lastChecked": "2026-10-17T06:59:09.341Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "monitoring",
+  "details": [
+    {
+      "name": "Workflow repeat-failure: Update Critics' Take",
+      "status": "error",
+      "message": "Update Critics' Take failed 9 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Fetch Guardian Reviews via API",
+      "status": "error",
+      "message": "Fetch Guardian Reviews via API failed 3 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Check Performance Budget",
+      "status": "warn",
+      "message": "Check Performance Budget failed 2 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
+      "status": "warn",
+      "message": "Audit Aggregator Review Gap failed 2 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Update Reddit Sentiment",
+      "status": "warn",
+      "message": "Update Reddit Sentiment failed 2 times in the last 24h — likely broken, not transient."
+    }
+  ]
+}

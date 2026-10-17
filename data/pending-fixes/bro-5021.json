@@ -1,0 +1,113 @@
+{
+  "issueNumber": "bro-5021",
+  "planId": "613c4dc1-8792-455f-8d05-0b4a1a759dd3",
+  "status": "applied",
+  "createdAt": "2026-10-11T01:20:26.860Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Proof: weekly running cost about $500K. Cats: The Jellicle Ball: capitalization $16M (the $18M figure was the filing maximum).",
+    "steps": [
+      "Proof: weeklyRunningCost null -> 500000, source label, producer-confirmed methodology",
+      "Cats: The Jellicle Ball: capitalization 18000000 -> 16000000, source label, notes"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "proof",
+        "showId": "proof",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 500000,
+        "description": "Weekly running cost about $500K."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "proof",
+        "showId": "proof",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Industry sources",
+        "description": "Neutral source label."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "proof",
+        "showId": "proof",
+        "field": "costMethodology",
+        "oldValue": null,
+        "newValue": "producer-confirmed",
+        "description": "Reported cost, not our estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "showId": "cats-the-jellicle-ball",
+        "field": "capitalization",
+        "oldValue": 18000000,
+        "newValue": 16000000,
+        "description": "Capitalization $16M ($18M was the filing maximum)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "showId": "cats-the-jellicle-ball",
+        "field": "capitalizationSource",
+        "oldValue": "The Hollywood Reporter (2026): capitalized for up to $18M, according to securities filings",
+        "newValue": "Industry sources",
+        "description": "Neutral source label."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "showId": "cats-the-jellicle-ball",
+        "field": "notes",
+        "oldValue": "Reimagined ballroom-culture Cats that transferred from the Perelman Performing Arts Center to the Broadhurst. Won three Tony Awards and closed Aug 8, 2026 without announcing recoupment. Capitalized for up to $18M according to securities filings.",
+        "newValue": "Reimagined ballroom-culture Cats that transferred from the Perelman Performing Arts Center to the Broadhurst. Won three Tony Awards and closed Aug 8, 2026 without announcing recoupment. Capitalized at about $16M.",
+        "description": "Notes match the new figure."
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T01:58:53.188Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for proof"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for proof"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for proof"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for cats-the-jellicle-ball"
+    }
+  ]
+}

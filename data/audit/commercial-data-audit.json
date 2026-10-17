@@ -1,0 +1,1149 @@
+{
+  "_meta": {
+    "description": "Commercial data audit report",
+    "generatedAt": "2026-10-17T22:08:52.711Z",
+    "scriptVersion": "1.0.0"
+  },
+  "summary": {
+    "totalEntries": 278,
+    "totalShowsInShowsJson": 3764,
+    "matchStats": {
+      "matchedBySlug": 277,
+      "matchedById": 0,
+      "orphaned": 1
+    },
+    "designationDistribution": {
+      "TBD": 41,
+      "Miracle": 9,
+      "Windfall": 19,
+      "Trickle": 6,
+      "Fizzle": 34,
+      "Flop": 72,
+      "Nonprofit": 72,
+      "Tour Stop": 2,
+      "Easy Winner": 23
+    },
+    "recoupmentStats": {
+      "recouped": 57,
+      "notRecouped": 131,
+      "nullOrMissing": 90
+    },
+    "modelFalseNegatives": {
+      "count": 8,
+      "baseline": 2,
+      "shows": [
+        "mj",
+        "the-outsiders",
+        "romeo-juliet-2024",
+        "kimberly-akimbo-2022",
+        "gutenberg",
+        "the-lehman-trilogy-2021",
+        "the-piano-lesson-2022",
+        "the-play-that-goes-wrong-2017"
+      ]
+    },
+    "dataCompleteness": {
+      "hasCapitalization": 171,
+      "hasWeeklyRunningCost": 94,
+      "hasCostMethodology": 140,
+      "hasSources": 265,
+      "hasDeepResearch": 161
+    },
+    "openShowCoverage": {
+      "totalOpenPreviewsShows": 31,
+      "withCommercialData": 29,
+      "withoutCommercialData": 2,
+      "coveragePct": 94
+    },
+    "issuesSummary": {
+      "total": 178,
+      "bySeverity": {
+        "high": 9,
+        "medium": 19,
+        "low": 150
+      },
+      "byType": {
+        "orphan-entry": 1,
+        "source-quality": 116,
+        "financial-sanity": 1,
+        "methodology": 11,
+        "stale-data": 4,
+        "closed-show-tbd": 19,
+        "nonprofit-classification": 15,
+        "recoupment-pct": 1,
+        "coverage-gap": 2,
+        "model-false-negative": 8
+      }
+    }
+  },
+  "issues": [
+    {
+      "type": "orphan-entry",
+      "severity": "high",
+      "showId": "860",
+      "detail": "Commercial key \"860\" not found in shows.json (neither as slug nor ID). Title in commercial: \"TBD\"."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "chicago",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "harry-potter",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "harry-potter",
+      "detail": "sources[3] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "water-for-elephants",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "suffs",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-notebook",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "boop",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "boop",
+      "detail": "sources[3] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "boop",
+      "detail": "sources[4] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "buena-vista-social-club",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "two-strangers",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "chess",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "ragtime",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "ragtime",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "liberation",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "liberation",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "liberation",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "oedipus",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "oedipus",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "aladdin",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "queen-of-versailles",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "all-out",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "parade-2023",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "sunset-boulevard-2024",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "redwood",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "cats-the-jellicle-ball",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "cats-the-jellicle-ball",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "jersey-boys-2005",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "all-in-comedy-about-love-2024",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-picture-of-dorian-gray-2025",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "detail": "Has financial data (capitalization/weeklyRunningCost) but no structured sources array."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "appropriate",
+      "detail": "sources[3] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "appropriate",
+      "detail": "sources[4] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "appropriate",
+      "detail": "sources[5] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "real-women-have-curves",
+      "detail": "sources[3] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "purlie-victorious",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "almost-famous-2022",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "lempicka",
+      "detail": "sources[3] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "a-strange-loop-2022",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "dana-h-2021",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "natasha-pierre-and-the-great-comet-of-1812-2016",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "holler-if-ya-hear-me-2014",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "holler-if-ya-hear-me-2014",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "holler-if-ya-hear-me-2014",
+      "detail": "sources[3] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "bullets-over-broadway-2014",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-bridges-of-madison-county-2014",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-bridges-of-madison-county-2014",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-testament-of-mary-2013",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "rodgers-hammersteins-cinderella-2013",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-anarchist-2012",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-anarchist-2012",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-anarchist-2012",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "leap-of-faith-2012",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "leap-of-faith-2012",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-lyons-2012",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "godspell-2011",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "godspell-2011",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "jerusalem-2011",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "bloody-bloody-andrew-jackson-2010",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "purpose-2025",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "purpose-2025",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "purpose-2025",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "purpose-2025",
+      "detail": "sources[3] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "job-2024",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "job-2024",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "job-2024",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-cottage",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-cottage",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "fat-ham-2023",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "fat-ham-2023",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-kite-runner-2022",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-kite-runner-2022",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-kite-runner-2022",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "what-the-constitution-means-to-me-2019",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "what-the-constitution-means-to-me-2019",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-rocky-horror-show",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "schmigadoon",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "titanique",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "celebrity-autobiography",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "small-mouth-sounds",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "small-mouth-sounds",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "grey-house",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "grey-house",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-hills-of-california-2024",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-hills-of-california-2024",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "left-on-tenth-2024",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "left-on-tenth-2024",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-last-five-years-2025",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-last-five-years-2025",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "john-proctor-is-the-villain-2025",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "beaches",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "other-desert-cities",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "billy-crystal-860",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "thoughts-of-a-colored-man-2021",
+      "detail": "sources[4] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "a-dolls-house-2023",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "american-buffalo-2022",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "american-buffalo-2022",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "american-buffalo-2022",
+      "detail": "sources[3] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "death-of-a-salesman-2022",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "death-of-a-salesman-2022",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "good-night-oscar-2023",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "good-night-oscar-2023",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "macbeth-2022",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "macbeth-2022",
+      "detail": "sources[3] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "mr-saturday-night-2022",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "pictures-from-home-2023",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "take-me-out-2022",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "take-me-out-2022",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-sign-in-sidney-brusteins-window-2023",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-sign-in-sidney-brusteins-window-2023",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-sign-in-sidney-brusteins-window-2023",
+      "detail": "sources[3] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "peter-pan-goes-wrong-2023",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "peter-pan-goes-wrong-2023",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "topdog-underdog-2022",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "topdog-underdog-2022",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "financial-sanity",
+      "severity": "low",
+      "showId": "call-me-izzy",
+      "detail": "weeklyRunningCostRange is not an object."
+    },
+    {
+      "type": "methodology",
+      "severity": "low",
+      "showId": "hells-kitchen",
+      "detail": "Has deepResearch verification but costMethodology is still \"reddit-standard\". Consider upgrading to \"deep-research\"."
+    },
+    {
+      "type": "methodology",
+      "severity": "low",
+      "showId": "death-becomes-her",
+      "detail": "Has deepResearch verification but costMethodology is still \"reddit-standard\". Consider upgrading to \"deep-research\"."
+    },
+    {
+      "type": "methodology",
+      "severity": "low",
+      "showId": "buena-vista-social-club",
+      "detail": "Has deepResearch verification but costMethodology is still \"reddit-standard\". Consider upgrading to \"deep-research\"."
+    },
+    {
+      "type": "methodology",
+      "severity": "low",
+      "showId": "operation-mincemeat",
+      "detail": "Has deepResearch verification but costMethodology is still \"reddit-standard\". Consider upgrading to \"deep-research\"."
+    },
+    {
+      "type": "methodology",
+      "severity": "low",
+      "showId": "just-in-time",
+      "detail": "Has deepResearch verification but costMethodology is still \"reddit-standard\". Consider upgrading to \"deep-research\"."
+    },
+    {
+      "type": "methodology",
+      "severity": "low",
+      "showId": "chess",
+      "detail": "Has deepResearch verification but costMethodology is still \"reddit-standard\". Consider upgrading to \"deep-research\"."
+    },
+    {
+      "type": "methodology",
+      "severity": "low",
+      "showId": "ragtime",
+      "detail": "Has deepResearch verification but costMethodology is still \"reddit-standard\". Consider upgrading to \"deep-research\"."
+    },
+    {
+      "type": "methodology",
+      "severity": "low",
+      "showId": "mamma-mia",
+      "detail": "Has deepResearch verification but costMethodology is still \"reddit-standard\". Consider upgrading to \"deep-research\"."
+    },
+    {
+      "type": "methodology",
+      "severity": "low",
+      "showId": "queen-of-versailles",
+      "detail": "Has deepResearch verification but costMethodology is still \"reddit-standard\". Consider upgrading to \"deep-research\"."
+    },
+    {
+      "type": "methodology",
+      "severity": "low",
+      "showId": "smash-2025",
+      "detail": "Has deepResearch verification but costMethodology is still \"reddit-standard\". Consider upgrading to \"deep-research\"."
+    },
+    {
+      "type": "methodology",
+      "severity": "low",
+      "showId": "once-upon-a-mattress-2024",
+      "detail": "Has deepResearch verification but costMethodology is still \"reddit-standard\". Consider upgrading to \"deep-research\"."
+    },
+    {
+      "type": "stale-data",
+      "severity": "low",
+      "showId": "the-great-gatsby",
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (262 days ago)."
+    },
+    {
+      "type": "stale-data",
+      "severity": "low",
+      "showId": "stranger-things",
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-03\" (256 days ago)."
+    },
+    {
+      "type": "stale-data",
+      "severity": "low",
+      "showId": "buena-vista-social-club",
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-18\" (241 days ago)."
+    },
+    {
+      "type": "stale-data",
+      "severity": "low",
+      "showId": "operation-mincemeat",
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (262 days ago)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "ragtime",
+      "detail": "Show is closed (closed 62 days ago on 2026-08-16) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "cats-the-jellicle-ball",
+      "detail": "Show is closed (closed 70 days ago on 2026-08-08) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "proof",
+      "detail": "Show is closed (closed 90 days ago on 2026-07-19) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "leopoldstadt-2022",
+      "detail": "Show is closed (closed 1203 days ago on 2023-07-02) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "just-for-us",
+      "detail": "Show is closed (closed 1155 days ago on 2023-08-19) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "dog-day-afternoon",
+      "detail": "Show is closed (closed 97 days ago on 2026-07-12) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "joe-turners-come-and-gone",
+      "detail": "Show is closed (closed 83 days ago on 2026-07-26) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "the-fear-of-13",
+      "detail": "Show is closed (closed 111 days ago on 2026-06-28) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "titanique",
+      "detail": "Show is closed (closed 27 days ago on 2026-09-20) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "celebrity-autobiography",
+      "detail": "Show is closed (closed 118 days ago on 2026-06-21) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "beaches",
+      "detail": "Show is closed (closed 146 days ago on 2026-05-24) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "a-dolls-house-2023",
+      "detail": "Show is closed (closed 1225 days ago on 2023-06-10) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "company-2021",
+      "detail": "Show is closed (closed 1539 days ago on 2022-07-31) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "death-of-a-salesman-2022",
+      "detail": "Show is closed (closed 1371 days ago on 2023-01-15) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "good-night-oscar-2023",
+      "detail": "Show is closed (closed 1147 days ago on 2023-08-27) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "macbeth-2022",
+      "detail": "Show is closed (closed 1560 days ago on 2022-07-10) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "take-me-out-2022",
+      "detail": "Show is closed (closed 1350 days ago on 2023-02-05) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "peter-pan-goes-wrong-2023",
+      "detail": "Show is closed (closed 1182 days ago on 2023-07-23) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "the-minutes-2022",
+      "detail": "Show is closed (closed 1546 days ago on 2022-07-24) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "ragtime",
+      "detail": "Show is at \"Vivian Beaumont Theater\" (Lincoln Center Theater venue) but designation is \"TBD\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "oedipus",
+      "detail": "Show is at \"Studio 54\" (Roundabout Theatre venue) but designation is \"Fizzle\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "appropriate",
+      "detail": "Show is at \"Helen Hayes Theater\" (Second Stage Theater venue) but designation is \"Easy Winner\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+      "detail": "Show is at \"Studio 54\" (Roundabout Theatre venue) but designation is \"Flop\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "days-of-wine-and-roses",
+      "detail": "Show is at \"Studio 54\" (Roundabout Theatre venue) but designation is \"Flop\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "call-me-izzy",
+      "detail": "Show is at \"Studio 54\" (Roundabout Theatre venue) but designation is \"Fizzle\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "purpose-2025",
+      "detail": "Show is at \"Helen Hayes Theater\" (Second Stage Theater venue) but designation is \"Trickle\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "job-2024",
+      "detail": "Show is at \"Helen Hayes Theater\" (Second Stage Theater venue) but designation is \"Fizzle\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "the-cottage",
+      "detail": "Show is at \"Helen Hayes Theater\" (Second Stage Theater venue) but designation is \"Flop\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "fat-ham-2023",
+      "detail": "Show is at \"Todd Haimes Theatre\" (Roundabout Theatre venue) but designation is \"Flop\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "the-kite-runner-2022",
+      "detail": "Show is at \"Helen Hayes Theater\" (Second Stage Theater venue) but designation is \"Flop\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "what-the-constitution-means-to-me-2019",
+      "detail": "Show is at \"Helen Hayes Theater\" (Second Stage Theater venue) but designation is \"Easy Winner\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "the-rocky-horror-show",
+      "detail": "Show is at \"Studio 54\" (Roundabout Theatre venue) but designation is \"TBD\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "pictures-from-home-2023",
+      "detail": "Show is at \"Studio 54\" (Roundabout Theatre venue) but designation is \"Flop\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "the-minutes-2022",
+      "detail": "Show is at \"Studio 54\" (Roundabout Theatre venue) but designation is \"TBD\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "recoupment-pct",
+      "severity": "low",
+      "showId": "suffs",
+      "detail": "Designation is \"Fizzle\" but estimatedRecoupmentPct is [0, 10]%. Fizzle typically implies 30%+ recovery. Consider \"Flop\" if <30%."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "wanted",
+      "detail": "Open/previews show \"Wanted\" at James Earl Jones Theatre has no commercial data entry."
+    },
+    {
+      "type": "coverage-gap",
+      "severity": "low",
+      "showId": "downstate",
+      "detail": "Open/previews show \"Downstate\" at Booth Theatre has no commercial data entry."
+    },
+    {
+      "type": "model-false-negative",
+      "severity": "high",
+      "showId": "mj",
+      "detail": "Announced recouped (2023-05) but modelRecouped=false (range -63.2–99.9–217.3%). Count 8 vs baseline 2 — diagnose model inputs if this grows."
+    },
+    {
+      "type": "model-false-negative",
+      "severity": "high",
+      "showId": "the-outsiders",
+      "detail": "Announced recouped (2025-12) but modelRecouped=false (range 2.7–84–146.1%). Count 8 vs baseline 2 — diagnose model inputs if this grows."
+    },
+    {
+      "type": "model-false-negative",
+      "severity": "high",
+      "showId": "romeo-juliet-2024",
+      "detail": "Announced recouped (2025-02) but modelRecouped=false (range 62.4–99–133%). Count 8 vs baseline 2 — diagnose model inputs if this grows."
+    },
+    {
+      "type": "model-false-negative",
+      "severity": "high",
+      "showId": "kimberly-akimbo-2022",
+      "detail": "Announced recouped (2026-04) but modelRecouped=false (range -164.1–-78.1–2.7%). Count 8 vs baseline 2 — diagnose model inputs if this grows."
+    },
+    {
+      "type": "model-false-negative",
+      "severity": "high",
+      "showId": "gutenberg",
+      "detail": "Announced recouped (2024-01) but modelRecouped=false (range 62.9–95–124.7%). Count 8 vs baseline 2 — diagnose model inputs if this grows."
+    },
+    {
+      "type": "model-false-negative",
+      "severity": "high",
+      "showId": "the-lehman-trilogy-2021",
+      "detail": "Announced recouped (2022) but modelRecouped=false (range -21.5–13.6–46.7%). Count 8 vs baseline 2 — diagnose model inputs if this grows."
+    },
+    {
+      "type": "model-false-negative",
+      "severity": "high",
+      "showId": "the-piano-lesson-2022",
+      "detail": "Announced recouped (2024-03) but modelRecouped=false (range 39.2–68.5–95.8%). Count 8 vs baseline 2 — diagnose model inputs if this grows."
+    },
+    {
+      "type": "model-false-negative",
+      "severity": "high",
+      "showId": "the-play-that-goes-wrong-2017",
+      "detail": "Announced recouped (2018-08) but modelRecouped=false (range -86.9–14.3–109%). Count 8 vs baseline 2 — diagnose model inputs if this grows."
+    }
+  ]
+}

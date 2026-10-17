@@ -1,0 +1,528 @@
+{
+  "issueNumber": "bro-5089-i",
+  "planId": "50177a4f-4fbb-49f7-8ea6-ce1a0f23e65f",
+  "status": "applied",
+  "createdAt": "2026-10-12T00:34:28.561Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5089 sweep part 9/11 (apply after the bro-5080 plans): clear Broadway historical posters of other productions/shows (two-model agreement, theatre renames accounted for) and historical synopses that are producer copy, another staging's production history, another work or invented plot. No noReliableArt marker: the verified image pipeline may refill.",
+    "steps": [
+      "images cleared + source rejected",
+      "synopsis cleared for the production-verified enricher"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-wiz-1975",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-wiz-1975/thumbnail.jpg",
+          "poster": "/images/shows/the-wiz-1975/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-wiz-1975: poster and thumbnail cleared, other-production: The image shows the title 'THE WIZ' but the poster text reads 'AT THE WINTER GARDEN,' tying it to the Winter Garden Theatre rather than the Majestic Theatre listed for the production. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "duet-1975",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/duet-1975/thumbnail.jpg",
+          "poster": "/images/shows/duet-1975/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "duet-1975: poster and thumbnail cleared, wrong-show: Poster headline reads \"The Best Of Broadway\" and lists shows/titles such as \"Oklahoma!\", \"CATS\", \"Fiddler on the Roof\", and \"The Sound of Music\" — not related to Eugene O'Neill's play \"Duet\" (John/Golden Theatre, 1975). (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "duet-1975",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.halleonard.com/product/312032/best-of-broadway",
+          "google-images:https://en.wikipedia.org/wiki/Hughie"
+        ],
+        "description": "duet-1975: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-streetcar-named-desire-1973",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-streetcar-named-desire-1973/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "a-streetcar-named-desire-1973: poster and thumbnail cleared, other-production: Top of poster reads 'The Repertory Theater of Lincoln Center / Vivian Beaumont', indicating this is a Lincoln Center/Vivian Beaumont production (not the St. James Theatre), while the lower right names 'A Streetcar Named  (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-streetcar-named-desire-1973",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://playbill.com/production/a-streetcar-named-desire-st-james-theatre-vault-0000004196"
+        ],
+        "description": "a-streetcar-named-desire-1973: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "little-black-sheep-1975",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/little-black-sheep-1975/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "little-black-sheep-1975: poster and thumbnail cleared, wrong-show: The Playbill cover clearly displays the title 'Yentl' in large stylized text, not 'Little Black Sheep'. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-three-sisters-1973",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-three-sisters-1973/thumbnail.jpg",
+          "poster": "/images/shows/the-three-sisters-1973/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-three-sisters-1973: poster and thumbnail cleared, other-production: The Playbill cover text reads 'CITY CENTER ACTING COMPANY', indicating a City Center production rather than the Nederlander (National/Billy Rose/Trafalgar) theatre run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "gigi-1973",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/gigi-1973/thumbnail.jpg",
+          "poster": "/images/shows/gigi-1973/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "gigi-1973: poster and thumbnail cleared, other-production: Poster text reads 'a play by Anita Loos from the novella by Colette', which conflicts with the 1973 Gershwin Theatre credits (Alan Jay Lerner/Frederick Loewe) for that Broadway production. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "gigi-1973",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/129/medium_1655133019-gigi.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/129/preview_1655133019-gigi.jpg"
+        ],
+        "description": "gigi-1973: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ravenswood-1974",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/ravenswood-1974/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "ravenswood-1974: poster and thumbnail cleared, other-production: Poster shows names 'Johnny Farnham' and 'Colleen Hewett' and visible word 'Australian' and a stylized title that is not 'Ravenswood' — does not show Terrence McNally or director Robert Drivas or Booth Theatre, so it is a (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pacific-paradise-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/pacific-paradise-1972/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "pacific-paradise-1972: poster and thumbnail cleared, wrong-show: Image shows text 'music of HAWAII' and 'HENRY MANCINI' (an album cover) — does not display the play title 'Pacific Paradise', Palace Theatre, dates, or Playbill/programme credits. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mourning-becomes-electra-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/mourning-becomes-electra-1972/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "mourning-becomes-electra-1972: poster and thumbnail cleared, other-production: The image clearly reads 'MOURNING BECOMES ELECTRA' but also shows 'ALVIN THEATRE', so it is for a different theatre than the Circle in the Square 1972 run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mourning-becomes-electra-1972",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://playbill.com/production/mourning-becomes-electra-circle-in-the-square-theatre-vault-0000003306"
+        ],
+        "description": "mourning-becomes-electra-1972: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "medea-1973",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/medea-1973/thumbnail.jpg",
+          "poster": "/images/shows/medea-1973/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "medea-1973: poster and thumbnail cleared, other-production: The Playbill header clearly reads 'LONGACRE THEATRE', indicating a different theatre than the Circle in the Square run listed. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "medea-1973",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://playbill.com/production/medea-circle-in-the-square-theatre-vault-0000003305"
+        ],
+        "description": "medea-1973: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tricks-1973",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/tricks-1973/thumbnail.jpg",
+          "poster": "/images/shows/tricks-1973/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "tricks-1973: poster and thumbnail cleared, other-production: The poster text at the bottom reads 'A VIN THEATRE 42nd St. West of B'way' — indicating a different venue than the Neil Simon/Alvin Theatre for the 1973 Broadway run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tricks-1973",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://ovrtur.com/production/2882116"
+        ],
+        "description": "tricks-1973: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-musical-comedy-murders-of-1940-1987",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-musical-comedy-murders-of-1940-1987/thumbnail.jpg",
+          "poster": "/images/shows/the-musical-comedy-murders-of-1940-1987/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-musical-comedy-murders-of-1940-1987: poster and thumbnail cleared, other-production: The poster text reads 'Directed by Gary Slavin' — the 1987 Longacre Broadway production lists John Bishop as the director, so this image is from a different staging. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-musical-comedy-murders-of-1940-1987",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/10714/medium_1746476545-Untitled_design__10_.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/10714/preview_1746476545-Untitled_design__10_.jpg"
+        ],
+        "description": "the-musical-comedy-murders-of-1940-1987: never re-take this art source (BRO-5089)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "no-sex-please-were-british-1973",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/no-sex-please-were-british-1973/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "no-sex-please-were-british-1973: poster and thumbnail cleared, other-production: Poster text lists stars 'Ronnie Corbett, Beryl Reid, Arthur Lowe' — a different cast than the Walter Kerr (1973) Broadway production. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "toreador-1971",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/toreador-1971/thumbnail.jpg",
+          "poster": "/images/shows/toreador-1971/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "toreador-1971: poster and thumbnail cleared, other-production: The image clearly reads \"THE GAIETY THEATRE'S THE TOREADOR,\" indicating it is associated with the Gaiety Theatre rather than the Broadhurst Theatre 1970–1971 Broadway run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "happy-birthday-wanda-june-1970",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/happy-birthday-wanda-june-1970/thumbnail.jpg",
+          "poster": "/images/shows/happy-birthday-wanda-june-1970/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "happy-birthday-wanda-june-1970: poster and thumbnail cleared, other-production: The poster shows the Spanish title text 'Perro que ladra...' and the tagline '¡Soy yo, querida!' with film-style artwork and credits at the bottom—indicating a movie poster/foreign release rather than the Broadway playbi (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "light-lively-and-yiddish-1970",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/light-lively-and-yiddish-1970/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "light-lively-and-yiddish-1970: poster and thumbnail cleared, wrong-show: The image is a Yiddish-language newspaper/advertisement with a prominent Yiddish headline (אידישע ...) and producer names shown (e.g., “Grossman Goldberg Jacobson”) rather than the English title or the credited Broadway  (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-school-for-wives-1971",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-school-for-wives-1971/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-school-for-wives-1971: poster and thumbnail cleared, other-production: The poster shows modern copy 'STREAMING LIVE OCTOBER 24, 2PM & 7PM', a date/format inconsistent with the 1971 Lyceum run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-school-for-wives-1971",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.wikiwand.com/en/The_School_for_Wives"
+        ],
+        "description": "the-school-for-wives-1971: never re-take this art source (BRO-5089)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T05:17:58.232Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-wiz-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for duet-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for duet-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for a-streetcar-named-desire-1973"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for a-streetcar-named-desire-1973"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for little-black-sheep-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-three-sisters-1973"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for gigi-1973"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for gigi-1973"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for ravenswood-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for pacific-paradise-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for mourning-becomes-electra-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for mourning-becomes-electra-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for medea-1973"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for medea-1973"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for tricks-1973"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for tricks-1973"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-musical-comedy-murders-of-1940-1987"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-musical-comedy-murders-of-1940-1987"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for no-sex-please-were-british-1973"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for toreador-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for happy-birthday-wanda-june-1970"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for light-lively-and-yiddish-1970"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-school-for-wives-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-school-for-wives-1971"
+    }
+  ]
+}

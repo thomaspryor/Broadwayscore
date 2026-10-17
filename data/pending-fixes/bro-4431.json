@@ -1,0 +1,157 @@
+{
+  "issueNumber": "bro-4431",
+  "planId": "7464f315-06aa-43cb-b2a2-2be170d167a5",
+  "status": "applied",
+  "createdAt": "2026-09-30T19:40:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4431: collect the important-outlet reviews the coverage audit found missing, using the fixes that landed with this issue (multi-show fan-out, theatre.reviews paywalled rows + star relay, retry stub).",
+    "steps": [
+      "Split the already-collected multi-show articles (Vulture Holdren, Theatrely Sims) so every reviewed show gets its section",
+      "Ingest the New Yorker (Delirium + Cherry Orchard) and Theatrely September round-up URLs; the fan-out files them under each show",
+      "Ingest reviews found only on the outlets' own listings (TheaterMania, New York Theater, London Theatre, The Reviews Hub)",
+      "Re-read theatre.reviews round-ups for Cleansed, Golden Boy and Electra/Persona so paywalled Times/FT/i rows land with their stars"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --show=how-shakespeare-saved-my-life-off-broadway-2026",
+        "description": "Vulture double review -> Arias with a Twist"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --show=pre-existing-condition-off-broadway-2026",
+        "description": "Theatrely capsules -> The Body of Mary"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=delirium-off-broadway-2026 --url=https://www.newyorker.com/magazine/2026/10/05/gut-renos-of-ionesco-and-chekhov --stub-on-failure",
+        "description": "New Yorker Nussbaum: Delirium + The Cherry Orchard (Armory)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=arias-with-a-twist-off-broadway-2026 --url=https://www.theatrely.com/post/a-september-review-roundup --stub-on-failure",
+        "description": "Theatrely Sims September round-up: Arias with a Twist + The Cherry Orchard"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=beyond-the-stardust-off-broadway-2026 --url=https://www.theatermania.com/news/review-beyond-the-stardust-an-afrofuturist-dance-party_1854359/ --stub-on-failure",
+        "description": "TheaterMania Zachary Stewart"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=brooklyns-bridge-off-broadway-2026 --url=https://newyorktheater.me/2026/08/09/brooklyns-bridge-review/ --stub-on-failure",
+        "description": "New York Theater (Mandell)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026 --url=https://www.theatermania.com/news/review-the-body-of-mary-a-play-in-three-acts-of-god_1853803/ --stub-on-failure",
+        "description": "TheaterMania (found by the ground-truth audit)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-ford-hill-project-off-broadway-2026 --url=https://www.theatermania.com/news/review-the-ford-hill-project-gives-silenced-women-the-final-word_1854518/ --stub-on-failure",
+        "description": "TheaterMania (found by the ground-truth audit)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-standard-of-living-west-end-2026 --url=https://www.londontheatre.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket --stub-on-failure",
+        "description": "London Theatre (Marianka Swain)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=cleansed-off-west-end-2026 --url=https://www.thereviewshub.com/cleansed-almeida-theatre-london/ --stub-on-failure",
+        "description": "The Reviews Hub (Scott Matthewman)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hungry-women-off-broadway-2026 --url=https://www.nysun.com/article/hungry-women-unevenly-takes-aim-at-the-patriarchy --stub-on-failure",
+        "description": "NY Sun (previous fetch captured the wrong page)"
+      },
+      {
+        "type": "run-script",
+        "script": "scrape-theatre-reviews.js",
+        "args": "--shows=cleansed-off-west-end-2026,golden-boy-off-west-end-2026,electra-persona-west-end-2026 --force",
+        "description": "theatre.reviews round-ups: Times/FT/i rows without links, star relay onto the stubs"
+      }
+    ]
+  },
+  "executedAt": "2026-09-30T20:31:55.149Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran scrape-theatre-reviews.js successfully"
+    }
+  ]
+}

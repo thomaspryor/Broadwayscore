@@ -1,0 +1,237 @@
+'use client';
+
+import { useEffect, useRef, useState, FormEvent } from 'react';
+
+type FormStatus = 'idle' | 'submitting' | 'success' | 'error';
+
+const REVIEW_URL_PATTERN = /^https?:\/\/.+\..+/i;
+const REVIEW_URL_ERROR = 'Please enter a valid review URL (starting with http:// or https://).';
+
+export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
+  const [status, setStatus] = useState<FormStatus>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [urlError, setUrlError] = useState('');
+  const [shouldFocusUrl, setShouldFocusUrl] = useState(false);
+  const urlRef = useRef<HTMLInputElement>(null);
+  const submittingRef = useRef(false);
+
+  // Runs after urlError's aria-invalid/aria-describedby commit to the DOM, so a
+  // screen reader focusing the field gets the error association immediately.
+  useEffect(() => {
+    if (!shouldFocusUrl) return;
+    urlRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    urlRef.current?.focus();
+    setShouldFocusUrl(false);
+  }, [shouldFocusUrl]);
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    if (submittingRef.current) return;
+
+    if (!endpoint) {
+      setStatus('error');
+      setErrorMessage('Review submission form is not configured. Please try again later.');
+      return;
+    }
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const reviewUrl = String(data.get('review_url') || '').trim();
+
+    if (!REVIEW_URL_PATTERN.test(reviewUrl)) {
+      setUrlError(REVIEW_URL_ERROR);
+      setShouldFocusUrl(true);
+      setStatus('idle');
+      setErrorMessage('');
+      return;
+    }
+
+    setUrlError('');
+    setStatus('submitting');
+    setErrorMessage('');
+    submittingRef.current = true;
+
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        body: data,
+        headers: { Accept: 'application/json' },
+      });
+
+      if (res.ok) {
+        setStatus('success');
+        form.reset();
+      } else {
+        const json = await res.json().catch(() => null);
+        setStatus('error');
+        setErrorMessage(json?.errors?.[0]?.message || 'Something went wrong. Please try again.');
+      }
+    } catch {
+      setStatus('error');
+      setErrorMessage('Network error. Please check your connection and try again.');
+    } finally {
+      submittingRef.current = false;
+    }
+  }
+
+  if (status === 'success') {
+    return (
+      <div className="text-center py-12">
+        <div className="text-5xl mb-4">&#10003;</div>
+        <h3 className="text-2xl font-bold text-white mb-2">Review Submitted!</h3>
+        <p className="text-gray-400 mb-2">
+          Thank you for helping expand our database.
+        </p>
+        <p className="text-gray-500 text-sm mb-6">
+          Validation is running now. If approved, the review will be added and the show&apos;s score recalculated automatically within a few minutes.
+        </p>
+        <button
+          onClick={() => setStatus('idle')}
+          className="text-purple-400 hover:text-purple-300 font-medium"
+        >
+          Submit another review
+        </button>
+      </div>
+    );
+  }
+
+  const inputClasses = 'w-full px-4 py-3 bg-surface-overlay border border-white/10 rounded-lg text-white placeholder:text-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent';
+
+  return (
+    <form onSubmit={handleSubmit} noValidate className="space-y-6">
+      {/* Review URL */}
+      <div>
+        <label htmlFor="review_url" className="block text-sm font-semibold text-gray-200 mb-2">
+          Review URL <span className="text-red-500">*</span>
+        </label>
+        <input
+          type="url"
+          id="review_url"
+          name="review_url"
+          ref={urlRef}
+          required
+          aria-required="true"
+          className={`${inputClasses} ${urlError ? 'border-red-500 ring-2 ring-red-500/50' : ''}`}
+          placeholder="https://www.nytimes.com/2024/04/25/theater/..."
+          aria-invalid={urlError ? true : undefined}
+          aria-describedby="review-url-error"
+          onChange={() => setUrlError('')}
+        />
+        <p id="review-url-error" role="alert" className="mt-1.5 text-sm text-red-400 empty:hidden">
+          {urlError}
+        </p>
+        <p className="mt-1 text-xs text-gray-500/70">
+          The full URL of the review article
+        </p>
+      </div>
+
+      {/* Show Name */}
+      <div>
+        <label htmlFor="show_name" className="block text-sm font-semibold text-gray-200 mb-2">
+          Show Name
+        </label>
+        <input
+          type="text"
+          id="show_name"
+          name="show_name"
+          className={inputClasses}
+          placeholder="Hamilton, Wicked, Stereophonic, etc."
+        />
+        <p className="mt-1 text-xs text-gray-500/70">
+          Optional &mdash; we&apos;ll auto-detect if not provided
+        </p>
+      </div>
+
+      {/* Outlet Name */}
+      <div>
+        <label htmlFor="outlet_name" className="block text-sm font-semibold text-gray-200 mb-2">
+          Outlet Name
+        </label>
+        <input
+          type="text"
+          id="outlet_name"
+          name="outlet_name"
+          className={inputClasses}
+          placeholder="The New York Times, Variety, Vulture, etc."
+        />
+        <p className="mt-1 text-xs text-gray-500/70">
+          Optional &mdash; we&apos;ll auto-detect if not provided
+        </p>
+      </div>
+
+      {/* Critic Name */}
+      <div>
+        <label htmlFor="critic_name" className="block text-sm font-semibold text-gray-200 mb-2">
+          Critic Name
+        </label>
+        <input
+          type="text"
+          id="critic_name"
+          name="critic_name"
+          className={inputClasses}
+          placeholder="Jesse Green, Naveen Kumar, etc."
+        />
+        <p className="mt-1 text-xs text-gray-500/70">
+          Optional &mdash; we&apos;ll auto-detect if not provided
+        </p>
+      </div>
+
+      {/* Additional Notes */}
+      <div>
+        <label htmlFor="notes" className="block text-sm font-semibold text-gray-200 mb-2">
+          Additional Notes
+        </label>
+        <textarea
+          id="notes"
+          name="notes"
+          rows={3}
+          className={inputClasses}
+          placeholder="Any context that might be helpful..."
+        />
+      </div>
+
+      {/* Optional email for outcome notification */}
+      <div>
+        <label htmlFor="submitter_email" className="block text-sm font-semibold text-gray-200 mb-2">
+          Your Email <span className="text-gray-500 font-normal">(optional)</span>
+        </label>
+        <input
+          type="email"
+          id="submitter_email"
+          name="submitter_email"
+          className={inputClasses}
+          placeholder="you@example.com"
+          autoComplete="email"
+        />
+        <p className="mt-1 text-xs text-gray-500/70">
+          We&apos;ll let you know if the review is approved or rejected
+        </p>
+      </div>
+
+      {/* Honeypot */}
+      <input type="text" name="_gotcha" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
+
+      {/* Error message */}
+      {status === 'error' && (
+        <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
+          {errorMessage}
+        </div>
+      )}
+
+      {/* Submit */}
+      <div className="flex items-center justify-between">
+        <p className="text-sm text-gray-500">
+          <span className="text-red-500">*</span> Required fields
+        </p>
+        <button
+          type="submit"
+          disabled={status === 'submitting'}
+          className="px-8 py-3 bg-brand text-gray-900 font-semibold rounded-lg hover:bg-brand-hover transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {status === 'submitting' ? 'Submitting...' : 'Submit Review'}
+        </button>
+      </div>
+    </form>
+  );
+}

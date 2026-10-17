@@ -1,0 +1,96 @@
+name: Check Morning Digest Sent
+
+# BRO-4373: the morning digest, opening-night monitor and Friday inventory sync
+# all run from launchd on the Mac Studio, and LaunchAgents only run after GUI
+# login. FileVault means a reboot leaves the Mac at the login screen, so on
+# 2026-09-25..29 all three silently stopped for 4.5 days and nothing told the
+# owner. This job runs on GitHub, so it works while the Mac is dead: if no
+# "Morning digest" email reached the owner today (ET), it pages
+# (mac:morning-digest-missing, page-worthy allowlist, 20h cooldown).
+# 14:30 UTC = 10:30 EDT / 9:30 EST; the digest goes out at 07:30 ET, and GHA
+# cron can fire 30 min to 3 h late, so a late fire only delays the page.
+# An unreadable Resend API or an undelivered page exits 2: job red + critical
+# notify-failure email (severity 'warning' would send nothing), and never a false page.
+on:
+  schedule:
+    - cron: '30 14 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report only, no routeAlert'
+        required: false
+        default: 'false'
+        type: boolean
+      date:
+        description: 'ET day to check, YYYY-MM-DD (default: today)'
+        required: false
+        default: ''
+
+concurrency:
+  group: check-morning-digest-sent
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      - name: Check morning digest was sent
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          CHECK_DATE: ${{ inputs.date }}
+        run: |
+          ARGS=""
+          [ "$DRY_RUN" = "true" ] && ARGS="--dry-run"
+          # Validate before use: workflow_dispatch input reaches a shell.
+          if [ -n "$CHECK_DATE" ]; then
+            echo "$CHECK_DATE" | grep -qE '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' || { echo "bad date"; exit 2; }
+            ARGS="$ARGS --date=$CHECK_DATE"
+          fi
+          node scripts/check-morning-digest-sent.js $ARGS
+
+      # routeAlert()/resolveCondition() write the cooldown ledger on the
+      # runner's disk; without this commit the 20h cooldown never persists.
+      - name: Commit alert ledger
+        if: always()
+        env:
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          [ "$DRY_RUN" = "true" ] && exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          for f in data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl; do
+            [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
+          done
+          if git diff --staged --quiet; then
+            echo "No ledger change to commit."
+            exit 0
+          fi
+          git commit -m "audit: Update morning-digest liveness alert ledger [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      - name: Notify on failure
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Check Morning Digest Sent Failed (cannot verify the digest)'
+          severity: 'critical'
+          email: 'true'
+          # A blind checker for 2 daily runs is worth an email; one blip is not.
+          min_consecutive_failures: '2'
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

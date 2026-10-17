@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-4301",
+  "planId": "463a7681-aa97-4e5f-bcdc-6896130bc298",
+  "status": "partial",
+  "createdAt": "2026-10-14T06:46:48.433Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Flag the Guardian review of the Menier Chocolate Factory run of The Producers (Dec 2024) as a different production on the Garrick show. 15 of the 16 BRO-4301 reviews were already corrected; this is the last one the other-production audit lists.",
+    "steps": [
+      "Set wrongProduction true on the Guardian file; the executor retracts the rebuild auto-clear (allowEarlyDate bypass) so the flag holds.",
+      "The same-run WhatsOnStage Menier review (Sarah Crompton) already carries wrongProduction, so both Menier reviews are now treated alike."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-producers-west-end-2025/guardian--arifa-akbar.json",
+        "field": "wrongProduction",
+        "oldValue": false,
+        "newValue": true,
+        "description": "The stored text itself says the production is at the Menier Chocolate Factory (wrongProductionReason on the file); the Garrick transfer opened 2025-09-13. Not a declared prior run (a plan cannot add priorRuns), and the WhatsOnStage Menier review is flagged the same way."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T07:33:58.320Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    }
+  ]
+}

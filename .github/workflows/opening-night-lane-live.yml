@@ -1,0 +1,234 @@
+name: Opening-night lane (live)
+
+# BRO-4835 (epic BRO-4210). The opening-night lane with its real ports: scraper.fetchPage for fetching and the
+# ensemble scorer (scripts/lib/opening-night-lane/inline-score.js realFetchPorts + ensembleScoreText). Manual only.
+#
+#   mode=smoke  One archived review (already in reviews.json) through the real fetch + scoring ports in a sandbox:
+#               `opening-night-poller.js --lane-live-smoke`. Writes nothing to any repo. Pays for one fetch and one
+#               two-model scoring call. Run this first; it is the lane's first live proof.
+#   mode=night  The production lane for one show's opening night (scripts/opening-night-lane.js): arm check against
+#               data/audit/lane-rehearsal.json, night lease on the opening-night-leases branch, discovery -> fetch ->
+#               score -> publish (reviews.json compare-and-swap pushed to core data by real-ports.js). Each scored
+#               review is written to data/review-texts/<show>/ before publish and pushed to the private review-texts
+#               repo by push-review-texts, so the normal rebuild keeps it.
+#
+# Checkouts are shallow and sparse: review-texts is a blob-less clone of just data/review-texts/<show>/, core data a
+# blob-less clone of just its root *.json (shows.json, reviews.json and the other files the show-JSON generator
+# reads). Nothing uses fetch-depth 0.
+#
+# Advisory first (CLAUDE.md §19): only the ledger-commit steps are continue-on-error, so a failed run shows as failed (this is the lane's first live
+# proof) and the notify-failure step reports it; ledger commits run only on main so a branch dispatch never pushes to main. No cron and no push trigger: every run (and every cent) is a manual dispatch.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'smoke = one archived review in a sandbox; night = the production lane for one night'
+        type: choice
+        options: [smoke, night]
+        default: smoke
+      show:
+        description: 'Show id (as in shows.json)'
+        required: true
+        type: string
+      url:
+        description: 'smoke only: URL of an archived review of that show already in reviews.json'
+        required: false
+        type: string
+      night:
+        description: 'night only: opening night, YYYY-MM-DD'
+        required: false
+        type: string
+
+permissions:
+  contents: write  # night: lease branch (lease-store.js) and the alert ledger commit
+
+concurrency:
+  group: opening-night-lane-live-${{ inputs.mode }}-${{ inputs.show }}
+  cancel-in-progress: false
+
+jobs:
+  smoke:
+    if: inputs.mode == 'smoke'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Validate inputs
+        env:
+          SHOW: ${{ inputs.show }}
+          URL: ${{ inputs.url }}
+        run: |
+          printf '%s' "$SHOW" | grep -Eq '^[a-z0-9][a-z0-9-]{0,127}$' || { echo "::error::show must be a show id"; exit 1; }
+          printf '%s' "$URL" | grep -Eq '^https://[^[:space:]]+$' || { echo "::error::smoke needs url=https://... of an archived review"; exit 1; }
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Checkout core data (root JSON only)
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          sparse: 'true'
+
+      # Exit 1 unless the review was fetched, scored, persisted in the sandbox and verified (live-smoke.js).
+      - name: Live smoke (one archived review, real fetch + ensemble scoring)
+        env:
+          SHOW: ${{ inputs.show }}
+          URL: ${{ inputs.url }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        # The poller's regular cycle reads these; --lane-live-smoke never runs it, and the smoke scores with two models only.
+        # audit-secret-gap-ok: BROWSERBASE_API_KEY
+        # audit-secret-gap-ok: BROWSERBASE_PROJECT_ID
+        # audit-secret-gap-ok: GEMINI_API_KEY
+        run: node scripts/opening-night-poller.js --lane-live-smoke "--show=${SHOW}" "--url=${URL}"
+
+      # fetchPage records its paid calls in the spend ledger; the poller can also route alerts (routeAlert( ... )).
+      - name: Commit alert ledger
+        if: always() && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --cached --quiet; then echo "No alert state to commit"; exit 0; fi
+          git commit -m "audit: opening-night lane smoke alert ledger [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      - name: Commit scraper-spend ledger
+        if: always() && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: opening-night-lane-live smoke
+
+      - name: Notify on failure
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Opening-night lane live smoke failed'
+          description: 'The lane could not fetch, score and persist one archived review through its real ports (BRO-4835). The lane stays unproven live; the regular pipeline is unaffected. Read the "Live smoke" step output.'
+          severity: 'warning'
+          email: 'false'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+  night:
+    if: inputs.mode == 'night'
+    runs-on: ubuntu-latest
+    # GitHub-hosted jobs stop at 360 minutes. The lane step is capped below that so the persist and commit steps
+    # after it always get to run; a lane cut off by its cap leaves its lease to expire by TTL (30 minutes).
+    timeout-minutes: 355
+    env:
+      # The lane's lease holder (scripts/opening-night-lane.js defaults --holder to gha-$GITHUB_RUN_ID). push-review-texts'
+      # `opening-night-lease.js enforce` reverts writes under leased shows unless the lease is this holder's, which it
+      # still is when the lane step was cut off before releasing.
+      OPENING_NIGHT_LANE_HOLDER: gha-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # BRO-2388 (task #466 class): depth 1000 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 355-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 1000
+
+      - name: Validate inputs
+        env:
+          SHOW: ${{ inputs.show }}
+          NIGHT: ${{ inputs.night }}
+        run: |
+          printf '%s' "$SHOW" | grep -Eq '^[a-z0-9][a-z0-9-]{0,127}$' || { echo "::error::show must be a show id"; exit 1; }
+          printf '%s' "$NIGHT" | grep -Eq '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' || { echo "::error::night needs night=YYYY-MM-DD"; exit 1; }
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Checkout core data (root JSON only)
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          sparse: 'true'
+
+      - name: Checkout review-texts (this show only)
+        id: review_texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          sparse-paths: ${{ inputs.show }}
+
+      # Exit codes (driver.js): 0 done, 1 failure, 3 not armed / lease held elsewhere, 4 scored reviews unpublished or
+      # lease lost. 3 is a normal stand-down (the regular pipeline covers the night), so it does not fail the job.
+      - name: Run the lane
+        id: lane
+        timeout-minutes: 280
+        env:
+          # The driver's window must end before the step cap, or every night is killed mid-run (BRO-4835 review).
+          OPENING_NIGHT_LANE_WINDOW_MIN: '270'
+          SHOW: ${{ inputs.show }}
+          NIGHT: ${{ inputs.night }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          RC=0
+          npx tsx scripts/opening-night-lane.js "--show=${SHOW}" "--night=${NIGHT}" --core-dir=/tmp/core-data-checkout || RC=$?
+          echo "exit=${RC}" >> "$GITHUB_OUTPUT"
+          if [ "$RC" -eq 3 ]; then echo "::notice::lane stood down (not armed or lease held elsewhere)"; exit 0; fi
+          exit "$RC"
+
+      # Scored reviews are written to data/review-texts/<show>/ before publish, so persist them whatever the lane did.
+      - name: Push scored reviews to review-texts
+        if: always() && steps.review_texts.outcome == 'success'
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: opening-night lane reviews for ${{ inputs.show }} (${{ inputs.night }})'
+
+      # The driver pages through routeAlert( digest ) (owner-alert-router.js); its ledger and digest queue live on
+      # this runner's disk, so commit them or the cooldown/dedup state resets every run.
+      - name: Commit alert ledger
+        if: always() && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        run: |
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --cached --quiet; then echo "No alert state to commit"; exit 0; fi
+          git commit -m "audit: opening-night lane alert ledger [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      - name: Commit scraper-spend ledger
+        if: always() && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: opening-night-lane-live night
+
+      - name: Notify on failure
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Opening-night lane run failed'
+          description: 'The opening-night lane failed for this night (BRO-4835). The regular pipeline still covers it. Read the "Run the lane" step output; exit 4 means scored reviews are not yet live.'
+          severity: 'warning'
+          email: 'false'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

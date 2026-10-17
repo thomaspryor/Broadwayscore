@@ -1,0 +1,80 @@
+{
+  "issueNumber": "bro-5080-h",
+  "planId": "834f7b32-8682-4a0c-857c-c0918650c8ad",
+  "status": "applied",
+  "createdAt": "2026-10-12T00:12:12.386Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5080 part 8: Barnum 1980 shows modern art of a later staging; clear it, reject the source, mark no reliable art.",
+    "steps": [
+      "images cleared",
+      "source rejected",
+      "noReliableArt"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "barnum-1980",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/barnum-1980/thumbnail.jpg",
+          "poster": "/images/shows/barnum-1980/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "barnum-1980: poster, thumbnail and hero cleared: modern art uploaded Dec 2025 (a current staging), not the 1980 Broadway production (BRO-5080, verifier + viewed)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "barnum-1980",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/11341/medium_1764713067-Barnum_Poster.jpg"
+        ],
+        "description": "never re-take the wrong art source (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "barnum-1980",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-12",
+          "reason": "BRO-5080 sourced fact-check: art was poster-other-production",
+          "key": "barnum|st. james theatre|1980-04-30"
+        },
+        "description": "no reliable art; the image sweep and self-heal skip it until the row changes"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T04:48:30.188Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for barnum-1980"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for barnum-1980"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for barnum-1980"
+    }
+  ]
+}

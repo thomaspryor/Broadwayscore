@@ -1,0 +1,49 @@
+{
+  "issueNumber": "bro-2770",
+  "planId": "9f534918-886d-4ee2-8317-2ef997589c3d",
+  "status": "applied",
+  "createdAt": "2026-10-13T05:30:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-2770 corpus sweep: the one shipping review whose own byline date disagrees with publishDate by more than 3 days. theartsdesk shows 'by David Nice, Sunday, 22 March 2026' (author_date block on the live page); stored publishDate was 2026-03-29. Second sweep finding: orlando-off-broadway-2026 londontheatre1 (byline 'By Tom Carter / May 16, 2024', 'Orlando at the Garrick Theatre') is the London Garrick production, not the Signature Theatre run; its exclusion is right but rested only on a date guard, so record the content reason.",
+    "steps": [
+      "Set publishDate to the byline date on theartsdesk.com (created 2026-03-22; 2026-03-31 is only article:modified_time).",
+      "Record the content reason for the Orlando exclusion (London Garrick Theatre production, Neil Bartlett adaptation), so the flag no longer depends on a stale date."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "tristan-und-isolde-off-broadway-2026/artsdesk--david-nice.json",
+        "field": "publishDate",
+        "oldValue": "2026-03-29",
+        "newValue": "2026-03-22",
+        "description": "Byline date on the live page (author_date block: Sunday, 22 March 2026)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "orlando-off-broadway-2026/londontheatre1--tom-carter.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Human-checked 2026-10-13 (BRO-2770): review of the London Garrick Theatre production (Neil Bartlett adaptation), not the Signature Theatre run",
+        "description": "Content reason for an exclusion that rested on a date guard"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T07:06:45.784Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tristan-und-isolde-off-broadway-2026/artsdesk--david-nice.json publishDate: \"2026-03-29\" -> \"2026-03-22\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "orlando-off-broadway-2026/londontheatre1--tom-carter.json wrongProductionReason: null -> \"Human-checked 2026-10-13 (BRO-2770): review of the London Garrick Theatre production (Neil Bartlett adaptation), not the Signature Theatre run\""
+    }
+  ]
+}

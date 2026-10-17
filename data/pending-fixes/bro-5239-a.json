@@ -1,0 +1,192 @@
+{
+  "issueNumber": "bro-5239-a",
+  "planId": "f69443b6-96e8-41fd-8f8e-d81c8c9d06f3",
+  "status": "partial",
+  "createdAt": "2026-10-13T06:41:56.888Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5239 class 2: correct run dates on four 2026 shows whose reviews all sit just before the stored opening, and re-date one Real Ivanov review taken from its own url date.",
+    "steps": [
+      "Bloodsport: previews 2026-09-03, press night 2026-09-10 (Theatre Weekly announcement; 19 reviews dated 09-11)",
+      "Antigone Exits: previews 2026-09-26, opening 2026-10-01 (cft.org.uk listing)",
+      "Rhinoceros (A.R.T.): previews 2026-08-14, opening 2026-08-21 (A.R.T. June schedule; Boston reviews dated 08-22)",
+      "Safe House: previews 2026-09-02 (run Sep 2-13)",
+      "The Real Ivanov: This Week in New York review dated 2026-08-24 per its own article url/date, not 2026-07-14"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2026-09-03",
+        "description": "Run 3 Sep-3 Oct 2026 per the Theatre Weekly world-premiere announcement"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": "2026-09-13",
+        "newValue": "2026-09-10",
+        "description": "Press night 10 Sep 2026; 19 reviews dated 2026-09-11"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "review-derived-press-night",
+        "newValue": "manual",
+        "description": "Press night from the theatre announcement, not a review cluster"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "antigone-exits-chichester-regional-2026",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2026-09-26",
+        "description": "Minerva run 26 Sep-17 Oct 2026 per Chichester Festival Theatre listing"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "antigone-exits-chichester-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-10-04",
+        "newValue": "2026-10-01",
+        "description": "Listing gives opening 1 Oct 2026; Argus review dated 10-01"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "antigone-exits-chichester-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "guardian-review",
+        "newValue": "manual",
+        "description": "Opening from the venue listing"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2026-08-14",
+        "description": "A.R.T. run Aug 14-Sep 20, 2026 per the June schedule"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-08-24",
+        "newValue": "2026-08-21",
+        "description": "Opening night Aug 21, 2026; Boston.com and Boston Globe reviews dated 08-22"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "aggregator-roundup",
+        "newValue": "manual",
+        "description": "Opening from the A.R.T. schedule"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "safe-house-off-broadway-2026",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2026-09-02",
+        "description": "split/decision run Sep 2-13, 2026 at Theatre Row"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-real-ivanov-off-broadway-2026/this-week-in-new-york--mark-rifkin.json",
+        "field": "publishDate",
+        "oldValue": "2026-07-14",
+        "newValue": "2026-08-24",
+        "description": "Article url and page date are 2026-08-24; the stored 07-14 was an LLM year-correction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-real-ivanov-off-broadway-2026/this-week-in-new-york--mark-rifkin.json",
+        "field": "dateSource",
+        "oldValue": "llm-scoring-year-corrected",
+        "newValue": "page-date",
+        "description": "Date read from the article url/page, not a model guess"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T07:49:59.648Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for bloodsport-after-helen-of-troy-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for bloodsport-after-helen-of-troy-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "openingDateSource: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for antigone-exits-chichester-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for antigone-exits-chichester-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "openingDateSource: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "openingDateSource: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for safe-house-off-broadway-2026"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-real-ivanov-off-broadway-2026/this-week-in-new-york--mark-rifkin.json publishDate: \"2026-07-14\" -> \"2026-08-24\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-real-ivanov-off-broadway-2026/this-week-in-new-york--mark-rifkin.json dateSource: \"llm-scoring-year-corrected\" -> \"page-date\""
+    }
+  ]
+}

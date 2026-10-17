@@ -1,0 +1,387 @@
+{
+  "issueNumber": "bro-5268-c",
+  "planId": "668d6faa-fdb1-4fc5-adf4-db6f6599198b",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5268 (c): cite trade/producer reports for recoupment outcomes on the-anarchist-2012, godspell-2011, queen-of-versailles, redwood, the-piano-lesson-2022",
+    "steps": [
+      "Apply each commercial.json data-edit (compare-and-set on oldValue)",
+      "Each citation was read on the article page; excerpts are at most 15 quoted words"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-anarchist-2012",
+        "showId": "the-anarchist-2012",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "the-anarchist-2012: Variety: losses sustained from the flop"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-anarchist-2012",
+        "showId": "the-anarchist-2012",
+        "field": "recoupedSource",
+        "oldValue": "Show closed after only 2 weeks, December 16, 2012, indicating it did not recoup",
+        "newValue": "Variety (Dec 19, 2012) reported the play closed at a loss, citing the: \"losses sustained from the flop of \"The Anarchist,\"\" https://variety.com/2012/legit/news/broadway-glengarry-recoups-1118063828/",
+        "description": "the-anarchist-2012: Variety: losses sustained from the flop"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-anarchist-2012",
+        "showId": "the-anarchist-2012",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://hesherman.com/category/broadway/page/9/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/playbill-picks-the-top-theatre-stories-of-2012-smash-les-miz-theatre-renovations-rebecca-and-more-com-200974",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "http://www.curtainup.com/anarchist12.html",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://newyorktheater.me/2012/12/05/the-anarchist-review-real-life-riveting-story-turned-into-mamet-mush/",
+            "date": "2012-12-05"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://hesherman.com/category/broadway/page/9/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/playbill-picks-the-top-theatre-stories-of-2012-smash-les-miz-theatre-renovations-rebecca-and-more-com-200974",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "http://www.curtainup.com/anarchist12.html",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://newyorktheater.me/2012/12/05/the-anarchist-review-real-life-riveting-story-turned-into-mamet-mush/",
+            "date": "2012-12-05"
+          },
+          {
+            "type": "trade",
+            "url": "https://variety.com/2012/legit/news/broadway-glengarry-recoups-1118063828/",
+            "date": "2012-12-19",
+            "excerpt": "losses sustained from the flop of \"The Anarchist,\""
+          }
+        ],
+        "description": "the-anarchist-2012: Variety: losses sustained from the flop"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "godspell-2011",
+        "showId": "godspell-2011",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "godspell-2011: Variety: did not recoup"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "godspell-2011",
+        "showId": "godspell-2011",
+        "field": "recoupedSource",
+        "oldValue": "Ken Davenport blog post analyzing revival recoupment rates indicates low success rate for revivals in this period",
+        "newValue": "Variety (Aug 13, 2014) reported the 2011 revival did not recoup: \"That show didn't recoup, so none of its investors turned a profit either.\" https://variety.com/2014/legit/news/broadway-crowdfunding-investment-on-the-town-1201282160/",
+        "description": "godspell-2011: Variety: did not recoup"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "godspell-2011",
+        "showId": "godspell-2011",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2014/07/28/theater/smell-of-the-greasepaint-the-funds-of-the-crowd.html",
+            "date": "2014-07-28"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/vprr/1001/10013766.pdf",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://kendavenport.com/what-is-the-recoupment-rate-of-revivals-in-the-last-ten-years-part-iii/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2014/07/28/theater/smell-of-the-greasepaint-the-funds-of-the-crowd.html",
+            "date": "2014-07-28"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/vprr/1001/10013766.pdf",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://kendavenport.com/what-is-the-recoupment-rate-of-revivals-in-the-last-ten-years-part-iii/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://variety.com/2014/legit/news/broadway-crowdfunding-investment-on-the-town-1201282160/",
+            "date": "2014-08-13",
+            "excerpt": "That show didn't recoup, so none of its investors turned a profit either."
+          }
+        ],
+        "description": "godspell-2011: Variety: did not recoup"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "queen-of-versailles",
+        "showId": "queen-of-versailles",
+        "field": "recoupedSource",
+        "oldValue": "Show closed after only 6 weeks on Broadway, insufficient time to recoup investment",
+        "newValue": "Deadline (May 18, 2026) reported it closed without recouping: \"Recent headline-making closings without recoupment include The Queen of Versailles\" https://deadline.com/2026/05/the-outsiders-broadway-recoup-1236698348/",
+        "description": "queen-of-versailles: Deadline: closed without recoupment"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "queen-of-versailles",
+        "showId": "queen-of-versailles",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/12/the-queen-of-versailles-broadway-closing-date-2-1236643720/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2025/11/24/theater/queen-of-versailles-broadway-closing.html",
+            "date": "2025-11-24"
+          },
+          {
+            "type": "trade",
+            "url": "https://nypost.com/2025/11/25/entertainment/kristin-chenoweths-queen-of-versailles-to-end-early-after-dire-reviews/",
+            "date": "2025-11-25"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/12/the-queen-of-versailles-broadway-closing-date-2-1236643720/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2025/11/24/theater/queen-of-versailles-broadway-closing.html",
+            "date": "2025-11-24"
+          },
+          {
+            "type": "trade",
+            "url": "https://nypost.com/2025/11/25/entertainment/kristin-chenoweths-queen-of-versailles-to-end-early-after-dire-reviews/",
+            "date": "2025-11-25"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/05/the-outsiders-broadway-recoup-1236698348/",
+            "date": "2026-05-18",
+            "excerpt": "Recent headline-making closings without recoupment include The Queen of Versailles"
+          }
+        ],
+        "description": "queen-of-versailles: Deadline: closed without recoupment"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "redwood",
+        "showId": "redwood",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "redwood: Deadline: multimillion-dollar losses"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "redwood",
+        "showId": "redwood",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Deadline (Dec 31, 2025) listed Redwood among musicals that closed at a loss to investors: \"disappointing investors with multimillion-dollar losses\" https://deadline.com/2025/12/top-10-broadway-shows-2025-1236658702/",
+        "description": "redwood: Deadline: multimillion-dollar losses"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "redwood",
+        "showId": "redwood",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/05/redwood-idina-menzel-broadway-closing-date-1236383869/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/05/redwood-idina-menzel-broadway-closing-date-1236383869/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/12/top-10-broadway-shows-2025-1236658702/",
+            "date": "2025-12-31",
+            "excerpt": "disappointing investors with multimillion-dollar losses"
+          }
+        ],
+        "description": "redwood: Deadline: multimillion-dollar losses"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-piano-lesson-2022",
+        "showId": "the-piano-lesson-2022",
+        "field": "recoupedSource",
+        "oldValue": "BroadwayNews (Mar 21, 2024): The Piano Lesson recouped",
+        "newValue": "Playbill (Mar 19, 2024) reported the revival \"recouped its original investment,\" per the producers' announcement. https://playbill.com/article/2022-broadway-revival-of-the-piano-lesson-announces-recoupment",
+        "description": "the-piano-lesson-2022: Playbill: recoupment announced Mar 19, 2024"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-piano-lesson-2022",
+        "showId": "the-piano-lesson-2022",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/the-piano-lesson-recoups/",
+            "date": "2024-03-21"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/heres-whats-going-on-with-the-downstate-tax-credit/",
+            "date": "2025-08-22"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/the-piano-lesson-recoups/",
+            "date": "2024-03-21"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/heres-whats-going-on-with-the-downstate-tax-credit/",
+            "date": "2025-08-22"
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/2022-broadway-revival-of-the-piano-lesson-announces-recoupment",
+            "date": "2024-03-19",
+            "excerpt": "the production recouped its original investment"
+          }
+        ],
+        "description": "the-piano-lesson-2022: Playbill: recoupment announced Mar 19, 2024"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T16:56:18.249Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-anarchist-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-anarchist-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-anarchist-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for godspell-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for godspell-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for godspell-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for queen-of-versailles"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for queen-of-versailles"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for redwood"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for redwood"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for redwood"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-piano-lesson-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-piano-lesson-2022"
+    }
+  ]
+}

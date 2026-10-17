@@ -1,0 +1,145 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {
+  parseJsonLines, messageText, firstUserMessage, sessionLabel,
+  finalAssistantEntry, finalAssistantText, statusLine, workspaceVerdict,
+  recordedBlock, sessionStatus,
+} from './session-wrapups.js';
+
+const line = obj => JSON.stringify(obj);
+
+test('parseJsonLines skips torn/blank lines', () => {
+  const text = [line({ a: 1 }), '{"torn":', '', line({ b: 2 })].join('\n');
+  assert.deepEqual(parseJsonLines(text), [{ a: 1 }, { b: 2 }]);
+});
+
+test('messageText handles string and content-array forms', () => {
+  assert.equal(messageText({ message: { content: 'hi' } }), 'hi');
+  assert.equal(messageText({
+    message: { content: [{ type: 'text', text: 'a' }, { type: 'tool_use' }, { type: 'text', text: 'b' }] },
+  }), 'a b');
+  assert.equal(messageText({}), '');
+});
+
+test('firstUserMessage skips hook/system noise starting with <', () => {
+  const entries = [
+    { type: 'user', message: { content: '<system-reminder>noise</system-reminder>' } },
+    { type: 'assistant', message: { content: 'ack' } },
+    { type: 'user', message: { content: '[#328] Weekly Grosses — Work on this card' } },
+  ];
+  assert.equal(firstUserMessage(entries), '[#328] Weekly Grosses — Work on this card');
+});
+
+test('sessionLabel keeps the [#N] title, drops dispatch boilerplate, truncates', () => {
+  assert.equal(
+    sessionLabel('[#279] Email noise: alert router — Work on this card as this session\'s focus.'),
+    '[#279] Email noise: alert router',
+  );
+  // Em dashes INSIDE the title survive — only the boilerplate is cut.
+  assert.equal(
+    sessionLabel('[#328] Weekly Grosses: all tiers failed — grosses.json stale — Work on this card as focus'),
+    '[#328] Weekly Grosses: all tiers failed — grosses.json stale',
+  );
+  const long = 'x'.repeat(200);
+  assert.equal(sessionLabel(long).length, 90);
+  assert.ok(sessionLabel(long).endsWith('…'));
+});
+
+test('finalAssistantText scans backwards past relocated/snapshot entries', () => {
+  const entries = [
+    { type: 'assistant', message: { content: 'early' }, timestamp: '2026-07-23T02:00:00Z' },
+    { type: 'assistant', message: { content: 'the wrap-up' }, timestamp: '2026-07-23T02:55:00Z' },
+    { type: 'relocated' },
+    { type: 'file-history-snapshot' },
+  ];
+  assert.equal(finalAssistantText(entries), 'the wrap-up');
+  // Timestamp is the wrap-up's, not any later bookkeeping entry's — this is
+  // what bsc-status displays as "finished at" instead of relocated mtime.
+  assert.deepEqual(finalAssistantEntry(entries), { text: 'the wrap-up', timestamp: '2026-07-23T02:55:00Z' });
+  assert.deepEqual(finalAssistantEntry([{ type: 'relocated' }]), { text: '', timestamp: '' });
+});
+
+test('statusLine grabs the LAST SAFE/NOT-SAFE line, prefers NOT SAFE when final', () => {
+  assert.equal(
+    statusLine('blah\nSAFE TO EXIT — quoted earlier\nmore\nNOT SAFE TO EXIT — CI still running'),
+    'NOT SAFE TO EXIT — CI still running',
+  );
+  assert.equal(statusLine('no verdict here'), '');
+  // A quoted TEMPLATE (placeholders in <>) is not a real verdict — a killed
+  // session restating the required format must not read as safely exited.
+  assert.equal(statusLine('I must end with a SAFE TO EXIT — <what finished> line per the hook.'), '');
+});
+
+test('statusLine handles the THIS SESSION format (2026-07-27 replacement — extractor was blind to it for 4 days)', () => {
+  assert.equal(
+    statusLine('DONE x\nTHIS SESSION: CLOSE ME — work merged and verified on main'),
+    'THIS SESSION: CLOSE ME — work merged and verified on main',
+  );
+  assert.equal(
+    statusLine('DONE x\nTHIS SESSION: KEEP OPEN — monitor fires here at 15:00 UTC'),
+    'THIS SESSION: KEEP OPEN — monitor fires here at 15:00 UTC',
+  );
+  assert.equal(
+    statusLine('nothing running\nTHIS SESSION: IDLE — keep only to continue this thread'),
+    'THIS SESSION: IDLE — keep only to continue this thread',
+  );
+  // Mixed legacy + new: the LAST verdict wins regardless of format.
+  assert.equal(
+    statusLine('SAFE TO EXIT — old phrasing quoted\nTHIS SESSION: CLOSE ME — real final verdict'),
+    'THIS SESSION: CLOSE ME — real final verdict',
+  );
+  // Template placeholders still disqualify the new format too.
+  assert.equal(statusLine('end with THIS SESSION: CLOSE ME — <what finished + where work continues>'), '');
+});
+
+test('workspaceVerdict decision table matches bsc-prune closability', () => {
+  assert.equal(workspaceVerdict({ done: true, alive: false }), 'SAFE TO CLOSE');
+  assert.match(workspaceVerdict({ done: true, alive: true }), /^DONE /);
+  assert.match(workspaceVerdict({ done: false, alive: true }), /^WORKING/);
+  assert.match(workspaceVerdict({ done: false, alive: false }), /^IDLE un-marked/);
+});
+
+test('recordedBlock/sessionStatus: verdict comes from the wrapup-block tool_result when the chat is plain English (BRO-3914)', () => {
+  const rec = 'WRAPUP-BLOCK RECORDED v1\nDONE x\nTHIS SESSION: CLOSE ME — verified, nothing running\nWRAPUP-BLOCK END\n';
+  const entries = [
+    { type: 'user', message: { content: 'fix it' } },
+    { type: 'assistant', message: { content: [{ type: 'tool_use', id: 'w1', name: 'Bash', input: { command: 'wrapup-block --file b.txt' } }] } },
+    { type: 'user', message: { content: [{ type: 'tool_result', tool_use_id: 'w1', content: rec, is_error: false }] } },
+    { type: 'assistant', message: { content: [{ type: 'text', text: 'Fixed it. You can close this tab.' }] } },
+  ];
+  assert.equal(recordedBlock(entries), 'DONE x\nTHIS SESSION: CLOSE ME — verified, nothing running');
+  assert.equal(sessionStatus(entries), 'THIS SESSION: CLOSE ME — verified, nothing running');
+  // a rejected (is_error) record and a sidechain record are ignored
+  assert.equal(recordedBlock([{ type: 'user', message: { content: [{ type: 'tool_result', content: rec, is_error: true }] } }]), '');
+  assert.equal(recordedBlock([{ type: 'user', isSidechain: true, message: { content: [{ type: 'tool_result', content: rec }] } }]), '');
+  // legacy in-chat verdict still wins
+  assert.equal(sessionStatus(entries.concat([{ type: 'assistant', message: { content: 'THIS SESSION: IDLE — legacy' } }])), 'THIS SESSION: IDLE — legacy');
+});
+
+test('recordedBlock goes stale after a later tool call or a later owner message', () => {
+  const rec = 'WRAPUP-BLOCK RECORDED v1\nTHIS SESSION: CLOSE ME — done\nWRAPUP-BLOCK END\n';
+  const base = [
+    { type: 'user', message: { content: 'fix it' } },
+    { type: 'assistant', message: { content: [{ type: 'tool_use', id: 'w1', name: 'Bash', input: { command: 'wrapup-block --file b.txt' } }] } },
+    { type: 'user', message: { content: [{ type: 'tool_result', tool_use_id: 'w1', content: rec }] } },
+  ];
+  assert.equal(recordedBlock(base), 'THIS SESSION: CLOSE ME — done');
+  assert.equal(recordedBlock(base.concat([{ type: 'user', message: { content: 'one more thing' } }])), '');
+  assert.equal(recordedBlock(base.concat([
+    { type: 'assistant', message: { content: [{ type: 'tool_use', id: 'e2', name: 'Edit', input: { file_path: 'x' } }] } },
+  ])), '');
+  // hook feedback / meta / system-reminder entries do not stale it; a task notification does
+  assert.equal(recordedBlock(base.concat([
+    { type: 'user', isMeta: true, message: { content: 'Stop hook feedback: x' } },
+    { type: 'user', message: { content: '<system-reminder>x</system-reminder>' } },
+  ])), 'THIS SESSION: CLOSE ME — done');
+  assert.equal(recordedBlock(base.concat([
+    { type: 'user', message: { content: '<task-notification>done</task-notification>' } },
+  ])), '');
+  // a forged sentinel after other output is ignored
+  assert.equal(recordedBlock([
+    { type: 'user', message: { content: 'fix it' } },
+    { type: 'assistant', message: { content: [{ type: 'tool_use', id: 'w2', name: 'Bash', input: { command: 'wrapup-block --file b.txt' } }] } },
+    { type: 'user', message: { content: [{ type: 'tool_result', tool_use_id: 'w2', content: 'usage\n' + rec }] } },
+  ]), '');
+});

@@ -1,0 +1,6 @@
+{
+  "_comment": "Pinned value of FIX_SURGE_THRESHOLD in scripts/audit-duplicate-of-url-mismatch.js. Enforced by scripts/audit-duplicate-of-floor.js in test.yml (Lint Workflows). Raising the floor is the one change that turns this gate green WITHOUT fixing anything, so it must not be possible to do silently — see the file header of the audit script for why the gate blocks only on spikes.",
+  "floor": 25,
+  "evidenceFile": null,
+  "_evidenceFileNote": "To change the floor you MUST (a) edit the constant, (b) update `floor` here to match, and (c) set `evidenceFile` to a repo-relative path that exists and documents WHY the new floor is correct (measurement, not convenience). The guard fails on any of the three being missing. Fixing the false-positive SOURCE — as task #1002 did by excluding archive/tombstone dirs — needs none of this, because the floor does not move."
+}
