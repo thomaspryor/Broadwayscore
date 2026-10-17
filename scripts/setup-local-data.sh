@@ -314,7 +314,10 @@ if [ "${1:-}" = "--all" ]; then
 
   mkdir -p "$DATA_DIR/review-texts"
 
-  if [ -n "${REVIEW_TEXTS_SOURCE:-}" ] && [ -d "$REVIEW_TEXTS_SOURCE/.git" ]; then
+  # BRO-5253: a partial/sparse attached clone cannot be cloned locally (missing
+  # blobs), so it falls through to the network clone below.
+  . "$(dirname "${BASH_SOURCE[0]}")/lib/is-partial-clone.sh"
+  if [ -n "${REVIEW_TEXTS_SOURCE:-}" ] && [ -d "$REVIEW_TEXTS_SOURCE/.git" ] && ! is_partial_clone "$REVIEW_TEXTS_SOURCE"; then
     # BRO-5008: a cloud session with broadway-review-texts attached already has a
     # fresh clone next to this repo. Clone it locally (hardlinked objects, no
     # network, no token) and check out its origin/main, so a working branch or
