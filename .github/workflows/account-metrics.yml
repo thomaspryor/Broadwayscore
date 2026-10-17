@@ -113,7 +113,7 @@ jobs:
             if git push origin HEAD:main; then exit 0; fi
             if [ "$i" = "5" ]; then echo "::error::push failed after 5 attempts"; exit 1; fi
             sleep $((i * 3 + RANDOM % 5))
-            if ! git pull --rebase -X theirs origin main; then
+            if ! git -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull --rebase -X theirs origin main; then
               git rebase --abort 2>/dev/null || true
               git reset --hard "@{u}" 2>/dev/null || true
               echo "::error::rebase onto the new private main failed; dashboard not saved this run"

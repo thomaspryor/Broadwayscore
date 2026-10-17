@@ -445,6 +445,7 @@ runs:
           # BRO-4966: rebase onto the FETCH_HEAD fetched (time-bounded) above
           # instead of `git pull --rebase`, so no network op runs inside the
           # rebase and a timeout kill can never leave a half-done rebase.
+          # keep-run-ok: commits only core data files, which carry no autostash=regenerated attr; its per-file merges below own the policy (BRO-5552)
           if ! git rebase -X ours FETCH_HEAD; then
             git rebase --abort 2>/dev/null || true
             sleep $((RANDOM % 10 + 5))

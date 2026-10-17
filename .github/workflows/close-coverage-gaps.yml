@@ -324,7 +324,7 @@ jobs:
           sleep ${{ matrix.delay }}
 
       - name: Pull latest
-        run: git pull --rebase origin main || true
+        run: git -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull --rebase origin main || true
 
       - name: Configure git
         run: |
@@ -450,7 +450,7 @@ jobs:
         run: npm ci
 
       - name: Pull latest (after all gather jobs)
-        run: git pull --rebase origin main || true
+        run: git -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull --rebase origin main || true
 
       - name: Configure git
         run: |
@@ -541,7 +541,7 @@ jobs:
         run: npm ci
 
       - name: Pull latest (after all gather + scrape jobs)
-        run: git pull --rebase origin main || true
+        run: git -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull --rebase origin main || true
 
       - name: Configure git
         run: |

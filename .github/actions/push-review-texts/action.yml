@@ -68,6 +68,7 @@ runs:
         #    stash side (this workflow's writes; stage 3 = stash in a pop
         #    conflict). The protected-field restore below then re-adds any
         #    richer content the fresh HEAD has.
+        # keep-run-ok: rebases the separate review-texts repo, which has no autostash=regenerated paths (BRO-5552)
         if ! git pull --rebase --autostash origin main -q 2>/dev/null; then
           echo "::warning::push-review-texts: pre-stage pull hit a rebase conflict — aborted; baseline stale, push-loop resolves content-aware"
           git rebase --abort 2>/dev/null || true
@@ -384,6 +385,7 @@ runs:
         for i in 1 2 3 4 5; do
           STDERR_FILE=$(mktemp)
           # Try fast path first: if no conflicts, rebase + push succeeds immediately
+          # keep-run-ok: rebases the separate review-texts repo, which has no autostash=regenerated paths (BRO-5552)
           if git pull --rebase origin main 2>"$STDERR_FILE"; then
             cat "$STDERR_FILE" >&2
             # CROSS-SHOW OWNERSHIP GATE (2026-07-12, Notion 39b637c5-416f-8134):
@@ -533,6 +535,7 @@ runs:
                 echo "All conflicts resolved by keeping theirs — skipping our empty commit"
                 GIT_EDITOR=true git rebase --skip 2>/dev/null || true
               else
+                # keep-run-ok: rebases the separate review-texts repo, which has no autostash=regenerated paths (BRO-5552)
                 GIT_EDITOR=true git rebase --continue 2>"$STDERR_FILE.rc" || true
               fi
 
@@ -550,6 +553,7 @@ runs:
                 if git diff --cached --quiet 2>/dev/null; then
                   GIT_EDITOR=true git rebase --skip 2>"$STDERR_FILE.rc" || true
                 else
+                  # keep-run-ok: rebases the separate review-texts repo, which has no autostash=regenerated paths (BRO-5552)
                   GIT_EDITOR=true git rebase --continue 2>"$STDERR_FILE.rc" || true
                 fi
                 rebase_in_progress || break

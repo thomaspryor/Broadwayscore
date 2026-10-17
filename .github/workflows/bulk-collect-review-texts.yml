@@ -464,7 +464,7 @@ jobs:
       - name: Count remaining reviews needing fullText
         id: count-remaining
         run: |
-          git pull origin main --rebase 2>/dev/null || true
+          git -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull origin main --rebase 2>/dev/null || true
           REMAINING=$(node -e '
             const fs = require("fs");
             const path = require("path");

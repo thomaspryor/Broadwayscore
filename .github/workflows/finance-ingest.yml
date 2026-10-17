@@ -121,7 +121,7 @@ jobs:
             sleep $((i * 2))
             # -X theirs favors OUR commit's ledger on conflict (same policy as
             # push-with-retry.sh); shallow clone is fine for a fast-forward pull.
-            git pull --rebase -X theirs
+            git -c "merge.ours.driver=bash '$GITHUB_WORKSPACE/scripts/lib/merge-keep-run.sh' B %O %A %B %P" pull --rebase -X theirs
           done
 
       - name: Notify on failure
