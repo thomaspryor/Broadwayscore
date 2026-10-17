@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-17T01:47:31.801Z",
+  "generated": "2026-10-17T01:59:43.892Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 30,
+  "count": 32,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -109,6 +109,13 @@
       "field": "duplicateOf"
     },
     {
+      "showId": "operation-mincemeat-tour-2026",
+      "loserFile": "timeout--unknown.json",
+      "targetFile": "timeout--adam-feldman.json",
+      "reason": "orphaned-duplicate-heal: timeout--adam-feldman.json was flagged invalid after timeout--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
       "showId": "proof-2026",
       "loserFile": "nytimes--sarah-bahr.json",
       "targetFile": "nytimes--helen-shaw.json",
@@ -127,6 +134,13 @@
       "loserFile": "patch--unknown.json",
       "targetFile": "patch--katie-rosin.json",
       "reason": "orphaned-duplicate-heal: patch--katie-rosin.json was flagged invalid after patch--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "that-is-not-who-i-am-west-end-2022",
+      "loserFile": "theatre-bee-uk--theatre-bee-uk.json",
+      "targetFile": "theatre-bee-uk--theatre-bee.json",
+      "reason": "orphaned-duplicate-heal: theatre-bee-uk--theatre-bee.json was flagged invalid after theatre-bee-uk--theatre-bee-uk.json was pointed at it",
       "field": "duplicateOf"
     },
     {

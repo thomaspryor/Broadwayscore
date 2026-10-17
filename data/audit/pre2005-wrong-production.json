@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-17T01:46:48.876Z",
+    "generatedAt": "2026-10-17T01:59:01.440Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 91,
+    "totalFlagged": 94,
     "highConfidence": 4,
-    "mediumConfidence": 87,
+    "mediumConfidence": 90,
     "lowConfidence": 0,
-    "reassignable": 36
+    "reassignable": 39
   },
   "results": [
     {
@@ -853,6 +853,23 @@
       "showId": "nine-2003",
       "showTitle": "Nine",
       "showYear": 2003,
+      "file": "curtainup--unknown.json",
+      "outlet": "CurtainUp",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "nine-1982",
+      "signals": [
+        "revival text signals: revival, this production",
+        "year 1982 in text matches revival nine-1982",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "The Internet Theater Magazine of Reviews, Features,\n Annotated Listings\n\nThe Cast Changes -- But the Show Goes On\n By Elyse Sommer \n \n \n \n \n \n Eartha Kitt as the flamboyant Liliane La Fleur\n\n(Photo: J"
+    },
+    {
+      "showId": "nine-2003",
+      "showTitle": "Nine",
+      "showYear": 2003,
       "file": "nytimes--ben-brantley.json",
       "outlet": "The New York Times",
       "criticName": "Ben Brantley",
@@ -864,6 +881,21 @@
         "year 1982 in text matches revival nine-1982"
       ],
       "textSnippet": "Advertisement SKIP ADVERTISEMENT IT&#x27;S raining women in the glamour-saturated new production of &#x27;&#x27;Nine,&#x27;&#x27; Maury Yeston&#x27;s 1982 musical portrait of the mind of a movie direc"
+    },
+    {
+      "showId": "nine-2003",
+      "showTitle": "Nine",
+      "showYear": 2003,
+      "file": "variety--charles-isherwood.json",
+      "outlet": "Variety",
+      "criticName": "Charles Isherwood",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "nine-1982",
+      "signals": [
+        "year 1982 in text matches revival nine-1982"
+      ],
+      "textSnippet": "This review was corrected on April 22, 2003.\n\nThe lissome ghosts of conquests past haunt the anxious mind of movie director Guido Contini throughout the musical \"Nine,\" but there's another specter han"
     },
     {
       "showId": "salome-2003",
@@ -944,6 +976,23 @@
         "revival text signals: revival, new interpretation"
       ],
       "textSnippet": "Somewhere in the massive trunk of theatrical wit and wisdom that is \"Gypsy,\" there's a line for every showbiz occasion. For the highly anticipated new Broadway revival directed by Sam Mendes, it would"
+    },
+    {
+      "showId": "long-days-journey-into-night-2003",
+      "showTitle": "Long Day's Journey Into Night",
+      "showYear": 2003,
+      "file": "hollywood-reporter--david-rooney.json",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "David Rooney",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "long-days-journey-into-night-2016",
+      "signals": [
+        "revival text signals: revival, this production",
+        "year 2016 in text matches revival long-days-journey-into-night-2016",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "LONG DAYS JOURNEY INTO NIGHT Production Still 1 - Publicity - H 2016\n\nOne of the more surprising aspects of the latest Broadway revival of Long Day’s Journey Into Night, a play defined by its malignan"
     },
     {
       "showId": "long-days-journey-into-night-2003",

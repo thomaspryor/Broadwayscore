@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-17T01:55:08.304Z",
+  "timestamp": "2026-10-17T02:07:27.574Z",
   "stats": {
-    "totalReviews": 57117,
-    "alreadyFlagged": 21199,
+    "totalReviews": 57126,
+    "alreadyFlagged": 21203,
     "dateGuardCatches": 194,
-    "directorMismatch": 1937,
+    "directorMismatch": 1936,
     "tvFilmSignals": 1598,
     "londonSignals": 2398,
     "offBroadwaySignals": 515,
     "yearMismatch": 153,
-    "noPublishDate": 5257
+    "noPublishDate": 5260
   },
   "findings": [
     {
@@ -25684,7 +25684,7 @@
     {
       "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
       "file": "nytimes--elisabeth-vincentelli.json",
-      "score": 44,
+      "score": 45,
       "publishDate": "2026-10-16",
       "url": "https://www.nytimes.com/2026/10/16/theater/memoirs-of-amorous-gentlemen-review-duncan-sheik.html",
       "findings": [
@@ -29516,19 +29516,6 @@
       "score": 42,
       "publishDate": null,
       "url": "https://thirdcoastreview.com/stages/2026/10/01/review-broadway-in-chicagos-operation-mincemeat",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
-        }
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-tour-2026",
-      "file": "timeout--unknown.json",
-      "publishDate": null,
-      "url": "https://timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
