@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-17T20:43:21.069Z",
+  "timestamp": "2026-10-17T21:11:15.283Z",
   "stats": {
     "totalReviews": 57315,
     "alreadyFlagged": 21269,
@@ -7,9 +7,9 @@
     "directorMismatch": 1938,
     "tvFilmSignals": 1600,
     "londonSignals": 2409,
-    "offBroadwaySignals": 515,
+    "offBroadwaySignals": 516,
     "yearMismatch": 156,
-    "noPublishDate": 5292
+    "noPublishDate": 5293
   },
   "findings": [
     {
@@ -51720,6 +51720,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "a-ghost-in-your-ear-off-broadway-2026",
+      "file": "nytimes--elisabeth-vincentelli.json",
+      "publishDate": "2026-10-16",
+      "url": "https://www.nytimes.com/2026/10/16/theater/ghost-in-your-ear-4th-witch.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
         }
       ]
     },

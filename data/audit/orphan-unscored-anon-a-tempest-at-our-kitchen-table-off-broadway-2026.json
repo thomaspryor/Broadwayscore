@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
   "openingDate": "2026-10-14",
-  "detectedAt": "2026-10-17T20:50:21.991Z",
+  "detectedAt": "2026-10-17T21:11:03.588Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -11,8 +11,8 @@
       "criticName": "Unknown",
       "url": "https://me-ticket.com/ms/event/view/anon-a-tempest-at-our-kitchen-table-11",
       "fullTextLen": 812,
-      "dispatchActionable": false,
-      "skipReason": "not_scoreable",
+      "dispatchActionable": true,
+      "skipReason": null,
       "rescoreBlockedReason": null,
       "humanReviewScore": null,
       "adjudicatedScore": null,
@@ -24,9 +24,9 @@
     }
   ],
   "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
-  "blockedOrphanCount": 1,
+  "dispatchableOrphanCount": 1,
+  "blockedOrphanCount": 0,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }
