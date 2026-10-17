@@ -1,25 +1,35 @@
 {
   "system": "workflow repeat-failure",
   "status": "error",
-  "lastChecked": "2026-10-16T07:11:27.264Z",
+  "lastChecked": "2026-10-17T06:59:09.341Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Workflow repeat-failure: Execute Approved Fix",
-      "status": "warn",
-      "message": "Execute Approved Fix failed 9 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
-    },
-    {
-      "name": "Workflow repeat-failure: Test Suite",
+      "name": "Workflow repeat-failure: Update Critics' Take",
       "status": "error",
-      "message": "Test Suite failed 6 times in the last 24h — likely broken, not transient."
+      "message": "Update Critics' Take failed 9 times in the last 24h — likely broken, not transient."
     },
     {
-      "name": "Workflow repeat-failure: Opening Night Poller — auto",
+      "name": "Workflow repeat-failure: Fetch Guardian Reviews via API",
+      "status": "error",
+      "message": "Fetch Guardian Reviews via API failed 3 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Check Performance Budget",
       "status": "warn",
-      "message": "Opening Night Poller — auto failed 2 times in the last 24h — likely broken, not transient."
+      "message": "Check Performance Budget failed 2 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
+      "status": "warn",
+      "message": "Audit Aggregator Review Gap failed 2 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Update Reddit Sentiment",
+      "status": "warn",
+      "message": "Update Reddit Sentiment failed 2 times in the last 24h — likely broken, not transient."
     }
   ]
 }

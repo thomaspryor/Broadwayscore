@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-16T07:28:01.060Z",
+  "generatedAt": "2026-10-17T07:09:15.386Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 3751,
-  "flaggedShows": 64,
-  "flaggedFiles": 209,
+  "scannedShows": 3759,
+  "flaggedShows": 62,
+  "flaggedFiles": 207,
   "readmissionRiskFiles": 0,
   "readmissionRisks": [],
   "unevaluatedFiles": 0,
@@ -11,7 +11,7 @@
   "unreadableFiles": 0,
   "byVerdict": {
     "likely-contamination": 35,
-    "needs-human-review": 29
+    "needs-human-review": 27
   },
   "shows": [
     {
@@ -3149,7 +3149,7 @@
       "showId": "the-master-builder-off-west-end-2026",
       "title": "The Master Builder",
       "market": "west-end",
-      "status": "upcoming",
+      "status": "previews",
       "venue": "Arcola Theatre",
       "previewsStartDate": "2026-10-16",
       "openingDate": null,
@@ -3808,42 +3808,6 @@
       ]
     },
     {
-      "showId": "much-ado-about-nothing-off-west-end-2026",
-      "title": "Much Ado About Nothing",
-      "market": "west-end",
-      "status": "announced",
-      "venue": "Orange Tree Theatre",
-      "previewsStartDate": null,
-      "openingDate": null,
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Orange Tree Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2025
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "london-box-office--stuart-king.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Stuart King",
-          "publishDate": "2025-02-21",
-          "url": "https://www.londonboxoffice.co.uk/news/post/much-ado-about-nothing-theatre-royal-drury-lane-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "the-revlon-girl-off-west-end-2026",
       "title": "The Revlon Girl",
       "market": "west-end",
@@ -3981,42 +3945,6 @@
           "criticName": "Emlyn Travis",
           "publishDate": "2023-03-24",
           "url": "https://ew.com/theater/theater-reviews/bad-cinderella-review-andrew-lloyd-webber-musical/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "jane-eyre-rose-kingston-off-west-end-2026",
-      "title": "Jane Eyre",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "Rose Theatre Kingston",
-      "previewsStartDate": "2026-10-13",
-      "openingDate": null,
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Rose Theatre Kingston\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2026
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "everything-theatre--mike-carter.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "everything-theatre",
-          "criticName": "Mike Carter",
-          "publishDate": "2026-06-10",
-          "url": "https://everything-theatre.co.uk/2026/06/review-jane-eyre-convention-bread-and-roses-theatre/",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null

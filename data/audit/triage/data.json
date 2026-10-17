@@ -1,15 +1,15 @@
 {
   "system": "data",
   "status": "error",
-  "lastChecked": "2026-10-16T07:11:27.261Z",
+  "lastChecked": "2026-10-17T06:59:09.336Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
       "name": "Data: OB shows no closing signal can detect",
-      "status": "warn",
-      "message": "1 open Off-Broadway show(s) have no TodayTix id, no review texts and no closingDate, so a closure would go unnoticed. Oldest: day-of-the-hog-off-broadway-2026"
+      "status": "pass",
+      "message": "Every open Off-Broadway show has a closing signal the detector can watch"
     },
     {
       "name": "Data: OB closing candidates awaiting review",
@@ -44,7 +44,7 @@
     {
       "name": "Data: national tours added automatically",
       "status": "warn",
-      "message": "Added aint-too-proud-tour-2024, an-american-in-paris-tour-2022, anastasia-tour-2021, annie-tour-2022, company-tour-2023, dear-evan-hansen-tour-2024, jagged-little-pill-tour-2022, legally-blonde-tour-2022, les-miserables-tour-2022 from BroadwayWorld tour roundups or Tours To You schedules (dates from Tours To You + Wikipedia)."
+      "message": "Added mrs-doubtfire-tour-2023 from BroadwayWorld tour roundups or Tours To You schedules (dates from Tours To You + Wikipedia)."
     },
     {
       "name": "Data: closed national tours reopened automatically",
@@ -59,12 +59,12 @@
     {
       "name": "Data: T1/T2 silent review gaps",
       "status": "error",
-      "message": "2 discovered review(s) not reaching the composite score (1 T1). Oldest: golden-boy-off-west-end-2026 — daily-mail (rejected-unscoreable); 2 newer still in flight"
+      "message": "2 discovered review(s) not reaching the composite score (1 T1). Oldest: golden-boy-off-west-end-2026 — daily-mail (rejected-unscoreable)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
-      "status": "warn",
-      "message": "2 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Frank and Percy\" (guardian-review — missing 2d)"
+      "status": "error",
+      "message": "2 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Frank and Percy\" (guardian-review — missing 3d) — 1 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
     },
     {
       "name": "Data: armed-but-vacuous backlog cards",
@@ -74,7 +74,7 @@
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "106 of 519 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-5382 Opening-night watch 2026-10-14"
+      "message": "94 of 516 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-5432 Board workers: --slots 3 fills the cloud disk (4 codex worktrees x 1.4 GB) and starves cards"
     }
   ]
 }
