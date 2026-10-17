@@ -233,35 +233,50 @@ function nyTaxCredit({ slug, notesCredit, eligible, capitalization, qualifyingRu
 }
 
 // A dollar amount right next to "tax credit" in a record's notes: "Expected
-// ~$1.9M NY state tax credit", "a tax credit of $2.7 million". An amount
-// further away is about something else ("its $5.25M capitalization ...
-// helped by the revived tax credit").
-const NOTE_AMOUNT = String.raw`~?\$\s?(\d[\d,]*(?:\.\d+)?)\s*(million|m|k)?\b`;
+// ~$1.9M NY state tax credit", "a tax credit of $2.7 million", "$1,892,161 in
+// NYC tax credit". An amount further away is about something else ("its
+// $5.25M capitalization ... helped by the revived tax credit"). "More than"
+// and "up to" make the amount a bound, not a figure.
+const NOTE_BOUND = String.raw`(?:(more than|over|at least|upwards of|up to|as much as)\s+)?`;
+const NOTE_AMOUNT = String.raw`~?\$\s?(\d[\d,]*(?:\.\d+)?)\s*(million|mil|mm|m|k)?\b`;
 const NOTE_CREDIT_RES = [
-  new RegExp(NOTE_AMOUNT + String.raw`\s+(?:(?:ny|nyc|new|york|state|city|theatrical|theater|theatre|production|broadway)\s+){0,4}tax[\s-]*credit`, 'gi'),
-  new RegExp(String.raw`tax[\s-]*credit\s*(?:of|worth|totaling|totalling|was|is|:)?\s*(?:about|roughly|approximately|up to)?\s*` + NOTE_AMOUNT, 'gi'),
+  new RegExp(NOTE_BOUND + NOTE_AMOUNT + String.raw`\s+(?:(?:in|ny|nyc|new|york|state|city|theatrical|theater|theatre|production|broadway)\s+){0,4}tax[\s-]*credit`, 'gi'),
+  new RegExp(String.raw`tax[\s-]*credit\s*(?:of|worth|totaling|totalling|was|is|:)?\s*(?:about|roughly|approximately)?\s*` + NOTE_BOUND + NOTE_AMOUNT, 'gi'),
 ];
+const LOWER_BOUND_RE = /^(?:more than|over|at least|upwards of)$/;
 
 /**
- * Tax credit amounts a record's notes state that are more than 10% off the
- * award this module counts for the show: [{ noted, counted }]. Notes print on
- * the show card, so a guess written before the award ("Expected ~$1.9M" for
- * Glengarry, paid $2.7M) must not outlive it (BRO-5517). A show with no award
- * listed has nothing to compare with.
+ * Tax credit amounts a record's notes give that disagree with the award this
+ * module counts for the show: more than 10% off, or a bound the award breaks
+ * ("up to $1.75M" beside a $3M allocation). Notes print on the show card, so a
+ * guess written before the award ("Expected ~$1.9M" for Glengarry, paid $2.7M)
+ * must not outlive it (BRO-5517). A show with no award listed has nothing to
+ * compare with. Callers warn; none refuses a write, because a new award would
+ * otherwise block every write to an older record.
+ * @returns {{ noted: number, counted: number, bound: string, message: string }[]}
  */
 function taxCreditNoteConflicts(slug, notes) {
   const counted = RECEIVED[slug] ? RECEIVED[slug][0] : ALLOCATED[slug];
   if (counted == null || typeof notes !== 'string') return [];
-  const out = [];
+  const found = new Map();
   for (const re of NOTE_CREDIT_RES) {
     for (const m of notes.matchAll(re)) {
-      const unit = (m[2] || '').toLowerCase();
-      const n = parseFloat(m[1].replace(/,/g, ''));
+      const bound = (m[1] || '').toLowerCase();
+      const unit = (m[3] || '').toLowerCase();
+      const n = parseFloat(m[2].replace(/,/g, ''));
       const noted = unit === 'k' ? n * 1e3 : (unit || n < 1000) ? n * 1e6 : n;
-      if (Math.abs(noted - counted) > 0.1 * counted) out.push({ noted, counted });
+      const off = !bound ? Math.abs(noted - counted) > 0.1 * counted
+        : LOWER_BOUND_RE.test(bound) ? counted < 0.9 * noted
+        : counted > 1.1 * noted;
+      if (!off) continue;
+      const millions = (v) => `$${(v / 1e6).toFixed(2)}M`;
+      found.set(`${bound}|${noted}`, {
+        noted, counted, bound,
+        message: `notes give a tax credit of ${bound ? bound + ' ' : ''}${millions(noted)}, but the award counted is ${millions(counted)} (scripts/lib/ny-tax-credit.js); update the note`,
+      });
     }
   }
-  return out;
+  return [...found.values()];
 }
 
 module.exports = {

@@ -951,9 +951,8 @@ function checkDeprecatedFields() {
 function checkTaxCreditNotes() {
   const { taxCreditNoteConflicts } = require('./lib/ny-tax-credit');
   for (const [key, data] of commercialEntries) {
-    for (const { noted, counted } of taxCreditNoteConflicts(key, data.notes)) {
-      addIssue('tax-credit-note', 'medium', key,
-        `notes state a $${(noted / 1e6).toFixed(2)}M tax credit, but ESD's lists give $${(counted / 1e6).toFixed(2)}M (scripts/lib/ny-tax-credit.js); update the note.`);
+    for (const { message } of taxCreditNoteConflicts(key, data.notes)) {
+      addIssue('tax-credit-note', 'medium', key, `${message}.`);
     }
   }
 }

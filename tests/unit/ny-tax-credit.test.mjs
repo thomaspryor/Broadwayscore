@@ -9,7 +9,7 @@ import fs from 'node:fs';
 const require = createRequire(import.meta.url);
 
 const {
-  nyTaxCredit, formulaCredit, RECEIVED, ALLOCATED, LISTS_AS_OF, TAX_CREDIT_MAX, QUALIFYING_WEEKS,
+  nyTaxCredit, formulaCredit, taxCreditNoteConflicts, RECEIVED, ALLOCATED, LISTS_AS_OF, TAX_CREDIT_MAX, QUALIFYING_WEEKS,
 } = require('../../scripts/lib/ny-tax-credit');
 const { calculateRecoupment, calculateLifetimeRecoupment } = require('../../scripts/lib/recoupment-model');
 
@@ -35,8 +35,8 @@ test('a payment counts as received only from its payout date; before it, as an a
   const at = (iso) => nyTaxCredit({ ...formulaArgs, slug: 'the-outsiders', now: Date.parse(iso) });
   assert.deepEqual(at('2025-01-01'), { amount: 3_000_000, basis: 'allocated', received: false });
   assert.deepEqual(at('2025-05-22'), { amount: 3_000_000, basis: 'received', received: true });
-  // Glengarry Glen Ross: allocated $2,874,700 in Aug 2025, paid "$2.7 million"
-  // by Jun 2 2026 (Bloomberg Tax). The payment replaces the allocation.
+  // Glengarry Glen Ross: paid "$2.7 million" by Jun 2 2026 (Bloomberg Tax).
+  // Before that date the same amount counts, as an allocation.
   const glengarry = (iso) => nyTaxCredit({ ...formulaArgs, slug: 'glengarry-glen-ross-2025', now: Date.parse(iso) });
   assert.deepEqual(glengarry('2026-06-01'), { amount: 2_700_000, basis: 'allocated', received: false });
   assert.deepEqual(glengarry('2026-06-02'), { amount: 2_700_000, basis: 'received', received: true });
@@ -48,6 +48,32 @@ test('the refit formula: 13% of the cap plus qualifying running costs, capped at
   assert.equal(formulaCredit(4_000_000, -1), 520_000);
   assert.equal(formulaCredit(null, null), 0);
   assert.equal(QUALIFYING_WEEKS, 39);
+});
+
+test('notes conflicts: an amount next to "tax credit" more than 10% off the award, or a bound the award breaks', () => {
+  const c = (slug, notes) => taxCreditNoteConflicts(slug, notes).map(({ bound, noted, counted }) => [bound, noted, counted]);
+  // Glengarry Glen Ross: $2.7M counted.
+  assert.deepEqual(c('glengarry-glen-ross-2025', 'Expected ~$1.9M NY state tax credit (25% of costs).'), [['', 1_900_000, 2_700_000]]);
+  assert.deepEqual(c('glengarry-glen-ross-2025', 'Received $2.6M NY tax credit.'), []);
+  assert.deepEqual(c('glengarry-glen-ross-2025', 'Paid a tax credit of $2.7 million.'), []);
+  assert.deepEqual(c('glengarry-glen-ross-2025', 'tax credit: $800K'), [['', 800_000, 2_700_000]]);
+  assert.deepEqual(c('glengarry-glen-ross-2025', 'tax credit: $1,900,000'), [['', 1_900_000, 2_700_000]]);
+  assert.deepEqual(c('glengarry-glen-ross-2025', '$1,900,000 in NYC tax credit receipts'), [['', 1_900_000, 2_700_000]]);
+  // No unit and under 1,000 reads as millions, as parseTaxCreditFromNotes does.
+  assert.deepEqual(c('glengarry-glen-ross-2025', 'a $2 tax credit'), [['', 2_000_000, 2_700_000]]);
+  // One amount written twice reports once.
+  assert.deepEqual(c('glengarry-glen-ross-2025', 'Expected ~$1.9MM tax credit; tax credit of $1.9 mil.'), [['', 1_900_000, 2_700_000]]);
+  // Bounds against a $3M allocation (Tammy Faye; Romeo + Juliet).
+  assert.deepEqual(c('tammy-faye-2024', 'Paid more than $2 million in NY tax credit by Jun 2026.'), []);
+  assert.deepEqual(c('tammy-faye-2024', 'Paid more than $3.5M NY tax credit.'), [['more than', 3_500_000, 3_000_000]]);
+  assert.deepEqual(c('romeo-juliet-2024', 'Eligible for up to $1.75M tax credit.'), [['up to', 1_750_000, 3_000_000]]);
+  assert.deepEqual(c('romeo-juliet-2024', 'Eligible for up to $3M tax credit.'), []);
+  // An amount that is not the credit; a show with no award; no notes.
+  assert.deepEqual(c('purpose-2025', 'Recouped its $5.25M capitalization, helped by the revived NY State Broadway tax credit.'), []);
+  assert.deepEqual(c('no-such-show', 'Expected ~$1.9M tax credit.'), []);
+  assert.deepEqual(c('glengarry-glen-ross-2025', null), []);
+  assert.match(taxCreditNoteConflicts('romeo-juliet-2024', 'Eligible for up to $1.75M tax credit.')[0].message,
+    /^notes give a tax credit of up to \$1\.75M, but the award counted is \$3\.00M /);
 });
 
 test('award tables: whole dollars up to the $3M cap, dated payouts, no show on both lists', () => {

@@ -39,6 +39,7 @@ const { checkIdYearDrift, checkIngestionYearStamps } = require('./lib/id-year-dr
 // must already exist at that point (no TDZ on a crash path).
 const { commercialFileErrors, commercialFileWarnings } = require('./lib/commercial-record-checks');
 const { breakevenBelowCost } = require('./lib/commercial-breakeven');
+const { taxCreditNoteConflicts } = require('./lib/ny-tax-credit');
 const { closedStillTbd, recoupedModelDisagreements, recoupedDateNoteConflicts } = require('./lib/commercial-consistency');
 const { nonSundayWeekKeys } = require('./lib/grosses-history-repair');
 const { checkGrossOutsideRun } = require('./lib/grosses-integrity');
@@ -3593,6 +3594,14 @@ function validateCommercialJson() {
   // write guard rescales it on the next save and Friday's model run rebuilds it.
   for (const { slug, modelBreakeven, weeklyRunningCost } of breakevenBelowCost(data.shows)) {
     warn(`commercial.json: "${slug}" modelBreakeven ${modelBreakeven} is below weeklyRunningCost ${weeklyRunningCost} (stale model; run scripts/merge-model-recoupment.js)`);
+  }
+  // Notes print on the show card, so a tax credit amount they give should agree
+  // with the award the model counts (BRO-5517). Warning only: a new award must
+  // not refuse every write to an older record.
+  for (const [slug, rec] of Object.entries(data.shows || {})) {
+    for (const { message } of taxCreditNoteConflicts(slug, rec && rec.notes)) {
+      warn(`commercial.json: "${slug}" ${message}`);
+    }
   }
 
   // Report-only (BRO-4985): neither blocks, both list rows for a person.
