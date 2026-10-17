@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-17T13:19:47.932Z",
+  "timestamp": "2026-10-17T14:03:19.681Z",
   "stats": {
-    "totalReviews": 57228,
-    "alreadyFlagged": 21229,
+    "totalReviews": 57239,
+    "alreadyFlagged": 21238,
     "dateGuardCatches": 195,
     "directorMismatch": 1934,
     "tvFilmSignals": 1596,
-    "londonSignals": 2398,
-    "offBroadwaySignals": 510,
+    "londonSignals": 2399,
+    "offBroadwaySignals": 512,
     "yearMismatch": 154,
-    "noPublishDate": 5332
+    "noPublishDate": 5312
   },
   "findings": [
     {
@@ -17594,20 +17594,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
-      "file": "theater-scene--darryl-reilly.json",
-      "score": 84,
-      "publishDate": "2026-05-26",
-      "url": "https://theaterscene.org/2026/05/heated-rivalry-the-unauthorized-musical-parody/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"streaming series\""
         }
       ]
     },
@@ -46631,6 +46617,20 @@
       ]
     },
     {
+      "showId": "titanique-west-end-2024",
+      "file": "observer--olivia-ovenden.json",
+      "score": null,
+      "publishDate": "2025-05-11",
+      "url": "https://observer.co.uk/culture/theatre/article/theatre-titanique-criterion-celine-dion",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "to-kill-a-mockingbird-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 98,
@@ -62906,6 +62906,25 @@
     },
     {
       "showId": "hadestown-2019",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": null,
+      "publishDate": "April 17, 2019",
+      "url": "https://www.hollywoodreporter.com/review/hadestown-theater-review-1202512",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-2019",
       "file": "musical-theatre-review--ron-cohen.json",
       "score": 97,
       "publishDate": "April 26th, 2019",
@@ -72078,6 +72097,20 @@
     },
     {
       "showId": "oh-mary-2024",
+      "file": "thewrap--robert-hofler.json",
+      "score": null,
+      "publishDate": "2024-07-11",
+      "url": "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-2024",
       "file": "vulture--helen-shaw.json",
       "score": 90,
       "publishDate": "July 9, 2024",
@@ -73257,6 +73290,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "paddington-the-musical-west-end-2025",
+      "file": "islington-gazette--bridget-galton.json",
+      "score": null,
+      "publishDate": "2025-12-01",
+      "url": "https://www.islingtongazette.co.uk/news/25663466.paddington-musical-review-west-end-hit-show/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -76088,22 +76135,8 @@
     {
       "showId": "some-woman-west-end-2026",
       "file": "artsdesk--aleks-sierz.json",
-      "score": 57,
+      "score": 59,
       "publishDate": "2026-10-16",
-      "url": "https://theartsdesk.com/theatre/some-woman-national-theatre-review-strong-social-issues-bit-too-didactic",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "some-woman-west-end-2026",
-      "file": "artsdesk--unknown.json",
-      "score": 57,
-      "publishDate": null,
       "url": "https://theartsdesk.com/theatre/some-woman-national-theatre-review-strong-social-issues-bit-too-didactic",
       "findings": [
         {
@@ -76130,7 +76163,7 @@
     {
       "showId": "some-woman-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 61,
+      "score": 56,
       "publishDate": "2026-10-16",
       "url": "https://www.theguardian.com/stage/2026/oct/16/some-woman-review-anne-marie-duff-dorfman-theatre",
       "findings": [
