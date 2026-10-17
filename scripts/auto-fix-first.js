@@ -7,7 +7,7 @@
  *
  * gate reads the failing workflow from GITHUB_WORKFLOW_REF and the alert from
  * INPUT_TITLE / INPUT_DESCRIPTION. For an auto-fix-first workflow it files the
- * fix card (no email), holds, or sends the escalation email itself, and writes
+ * fix card or its second attempt (no email), holds, or sends the escalation email itself, and writes
  * `handled=true` (and `held=true` when nothing was sent) to GITHUB_OUTPUT so
  * the action's own send step stands down. For any other workflow, or if this
  * script crashes, it writes nothing and the action emails as before.
@@ -44,10 +44,10 @@ async function runGate() {
     setOutput('held', 'true');
     return;
   }
-  if (!res.preamble) return; // kill switch or already escalated: the action's normal send step emails
+  if (!res.preamble) return; // kill switch: the action's normal send step emails
   const { sendAlert } = require('./lib/discord-notify.js');
   const delivered = await sendAlert({
-    title: `${title} (automatic fix did not work)`,
+    title: lib.escalationTitle({ reason: res.reason, what: lib.plainName(lib.workflowKey(workflowFile), title) }),
     // BRO-5498: the owner's action first, the escalation preamble next.
     description: require('./lib/page-worthy-alerts.js').withOwnerAction('auto-fix-first:escalation:', `${res.preamble}\n\n${description}`),
     severity: 'error',
