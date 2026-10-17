@@ -79,11 +79,14 @@ function isScored(data) {
 const AWAITING_SCORE_MAX_HOURS = 36;
 
 /**
- * Sweep decision for an open `awaiting-score` submission issue (BRO-4141).
+ * Sweep decision for an awaiting-score or manual-review submission issue.
  * @returns {'close'|'escalate'|'wait'}
  */
-function decideAwaitingSubmission({ landed, ageHours }) {
+function decideAwaitingSubmission({ landed, ageHours, manualReview = false }) {
   if (landed) return 'close';
+  // Already escalated: keep it visible without posting the same warning on
+  // every rebuild. A later successful ingest can still close it above.
+  if (manualReview) return 'wait';
   return ageHours >= AWAITING_SCORE_MAX_HOURS ? 'escalate' : 'wait';
 }
 
