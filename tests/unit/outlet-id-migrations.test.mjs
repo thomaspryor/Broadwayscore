@@ -206,3 +206,15 @@ test('the Dreamgirls 1981 Campbell AP row moves to ap; the real Daily News rows 
   assert.equal(p.newData.outlet, 'Associated Press');
   assert.equal(planOutletMigration({ ...rec, criticName: 'Douglas Watt' }, 'nydailynews--douglas-watt.json'), null);
 });
+
+test('BRO-5179: vulture rows with a non-Vulture host move to their real outlet', () => {
+  const nb = planOutletMigration({ outletId: 'vulture', outlet: 'New York Notebook', url: 'https://newyorknotebook.substack.com/p/liberation' }, 'vulture--sandy-macdonald.json');
+  assert.equal(nb.rule, 'vulture-newyorknotebook-host-to-new-york-notebook');
+  assert.equal(nb.newFilename, 'new-york-notebook--sandy-macdonald.json');
+  const nyt = planOutletMigration({ outletId: 'vulture', outlet: 'New  York Times', url: 'http://theater.nytimes.com/2010/04/19/theater/reviews/19cage.html' }, 'vulture--ben-brantley.json');
+  assert.equal(nyt.rule, 'vulture-theater-nytimes-host-to-nytimes');
+  assert.equal(nyt.newData.outlet, 'The New York Times');
+  // genuine New York magazine hosts and url-less rows stay under vulture
+  assert.equal(planOutletMigration({ outletId: 'vulture', url: 'https://www.newyorkmetro.com/nymetro/arts/theater/reviews/15040/index.html' }, 'vulture--jeremy-mccarter.json'), null);
+  assert.equal(planOutletMigration({ outletId: 'vulture', url: '' }, 'vulture--scott-brown.json'), null);
+});

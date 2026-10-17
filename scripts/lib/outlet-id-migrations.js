@@ -52,6 +52,22 @@ const MIGRATIONS = [
     match: (r) => hostOf(r.url) === 'newyorksocialdiary.com',
   },
   {
+    id: 'vulture-newyorknotebook-host-to-new-york-notebook',
+    note: 'A New York Notebook (Substack) piece filed under vulture (liberation-2025, BRO-5179).',
+    from: ['vulture'],
+    to: 'new-york-notebook',
+    toName: 'New York Notebook',
+    match: (r) => hostOf(r.url) === 'newyorknotebook.substack.com',
+  },
+  {
+    id: 'vulture-theater-nytimes-host-to-nytimes',
+    note: 'A New York Times review (theater.nytimes.com) filed under vulture, a duplicate of the nytimes copy (la-cage-aux-folles-2010, BRO-5179). Same-article duplicates are resolved by migrate-outlet-ids.js.',
+    from: ['vulture'],
+    to: 'nytimes',
+    toName: 'The New York Times',
+    match: (r) => ['theater.nytimes.com', 'theater2.nytimes.com', 'nytimes.com'].includes(hostOf(r.url)),
+  },
+  {
     id: 'observer-fordham-host-to-fordham-observer',
     note: 'A Fordham University student paper review filed under observer (BRO-4976). The NY and UK Observer ids are NOT split: the registry models observer as dual-market and applies the NYC or London tier per show market already.',
     from: ['observer'],
