@@ -1,8 +1,8 @@
 {
   "issueNumber": "bro-5520",
-  "planId": "514a0106-867a-4bea-a5fe-f93e5f1c5862",
+  "planId": "63a4fff4-d2ff-410d-a195-8b667ae041a8",
   "status": "pending",
-  "createdAt": "2026-10-17T06:06:48.451Z",
+  "createdAt": "2026-10-17T06:26:14.919Z",
   "submitter": {
     "name": null,
     "email": null
@@ -41,6 +41,42 @@
         "oldValue": "Commercial revival (lead producer Brian Anthony Moreland), opened Apr 25, 2026 and closed Jul 26, 2026. No capitalization reported and no recoupment announced.",
         "newValue": "Commercial revival (lead producer Brian Anthony Moreland), opened Apr 25, 2026 and closed Jul 26, 2026. Capitalized at $8 million (the producers’ investor Q&A, The RainMakers Collective, Feb 2026); no recoupment announced.",
         "description": "joe-turners-come-and-gone: the note no longer says no capitalization was reported."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "joe-turners-come-and-gone",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/joe-turners-come-and-gone-broadway-ethel-barrymore-theatre-2026",
+            "date": "2026-07-26"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/production/joe-turners-come-and-gone-broadway-ethel-barrymore-theatre-2026",
+            "date": "2026-07-26"
+          },
+          {
+            "type": "manual",
+            "url": "https://therainmakerscollective.com/Q&A/joe-turners-come-gone-qa-and-investment-memo/",
+            "date": "2026-02-07"
+          }
+        ],
+        "description": "joe-turners-come-and-gone: add the investor Q&A to sources."
       },
       {
         "type": "data-edit",
@@ -260,6 +296,34 @@
         "type": "data-edit",
         "file": "commercial.json",
         "showSlug": "dolly-an-original-musical",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "manual",
+            "url": "https://www.dollyparton.com/news/dolly-a-true-original-musical-comes-to-broadway-this-winter",
+            "date": "2026-07-07",
+            "excerpt": "produced by Dolly Parton, Danny Nozell, Adam Speers for ATG Productions, and Gavin Kalin"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://www.dollyparton.com/news/dolly-a-true-original-musical-comes-to-broadway-this-winter",
+            "date": "2026-07-07",
+            "excerpt": "produced by Dolly Parton, Danny Nozell, Adam Speers for ATG Productions, and Gavin Kalin"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+            "date": "2026-08-12"
+          }
+        ],
+        "description": "dolly-an-original-musical: add Broadway Journal to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dolly-an-original-musical",
         "field": "notes",
         "oldValue": "Capitalization about $30M.",
         "newValue": "Capitalized at $30 million including its out-of-town tryout (Broadway Journal, Aug 2026).",
@@ -291,6 +355,42 @@
         "oldValue": "reddit-standard",
         "newValue": "trade-reported",
         "description": "cats-the-jellicle-ball: a trade-reported figure (also keeps the Reddit gap-fill from replacing it)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/cats-the-jellicle-ball-broadway-closing-date-1236643213/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/07/cats-jellicle-ball-broadway-closing-1236983195/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/cats-the-jellicle-ball-broadway-closing-date-1236643213/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/07/cats-jellicle-ball-broadway-closing-1236983195/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/cats-the-jellicle-ball-closes-to-200-ticket-average-and-more-from-last-weeks-broadway-grosses",
+            "date": "2026-08-11"
+          }
+        ],
+        "description": "cats-the-jellicle-ball: add Playbill to sources."
       },
       {
         "type": "data-edit",
@@ -328,10 +428,10 @@
           "weeklyRunningCost": true
         },
         "newValue": {
-          "weeklyRunningCost": true,
+          "weeklyRunningCost": false,
           "capitalization": true
         },
-        "description": "cats-the-jellicle-ball: the $16M prints as an estimate (\"~\")."
+        "description": "cats-the-jellicle-ball: the uncited $16M prints as an estimate (\"~\"); the Playbill-reported cost prints plain like every other trade-reported cost (its source line says \"around\")."
       },
       {
         "type": "data-edit",

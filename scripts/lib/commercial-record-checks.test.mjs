@@ -196,6 +196,9 @@ test('sources, costMethodology, productionType and originalProductionId shapes',
   assert.equal(e({ sources: [{ type: 'other', url: 'https://x.y' }] }).length, 1);
   assert.equal(e({ costMethodology: 'guess' }).length, 1);
   assert.equal(e({ productionType: 'weird' }).length, 1);
+  // null is how a plan clears it (BRO-5520); a Tour Stop still needs a real type.
+  assert.equal(e({ productionType: null }).length, 0);
+  assert.equal(e({ designation: 'Tour Stop', productionType: null }).filter((m) => /productionType/.test(m)).length, 1);
   assert.equal(e({ originalProductionId: 'nope' }, { allRecords: {} }).length, 1);
   assert.equal(e({ originalProductionId: 'a' }, { allRecords: { a: {} } }).length, 0);
 });

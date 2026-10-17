@@ -99,8 +99,10 @@ function commercialRecordErrors(showId, show, ctx = {}) {
   const out = [];
   const validProductionTypes = VALID_PRODUCTION_TYPES;
 
-  // Validate productionType
-  if (show.productionType !== undefined) {
+  // Validate productionType. null means unset, like a missing key: a plan's
+  // data-edit can only write a value, so null is how it clears the field
+  // (BRO-5520). A Tour Stop still needs a real type (below).
+  if (show.productionType != null) {
     if (!validProductionTypes.includes(show.productionType)) {
       out.push(`commercial.json: "${showId}" has invalid productionType: "${show.productionType}" (must be one of: ${validProductionTypes.join(', ')})`);
     }
