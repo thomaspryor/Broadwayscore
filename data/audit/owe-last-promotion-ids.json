@@ -1,6 +1,22 @@
 {
-  "generatedAt": "2026-10-16T18:53:10.033Z",
-  "promoted": [],
+  "generatedAt": "2026-10-17T17:54:05.415Z",
+  "promoted": [
+    {
+      "id": "man-hater-eater-off-west-end-2027",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": "https://riversidestudios.co.uk/whats-on/"
+    },
+    {
+      "id": "the-crimes-of-pete-off-west-end-2027",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": "https://riversidestudios.co.uk/whats-on/"
+    },
+    {
+      "id": "an-iliad-off-west-end-2027",
+      "source": "venue-page:rose-theatre-kingston",
+      "sourceUrl": "https://www.rosetheatre.org/whats-on"
+    }
+  ],
   "rejected": [
     {
       "title": "Triumph",
@@ -105,14 +121,6 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as surinderella-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "Vittorio Angelone: you can't Say Nothing any more",
-      "venue": "Theatre Royal Stratford East",
-      "source": "venue-page:theatre-royal-stratford-east",
-      "sourceUrl": null,
-      "kind": "skip-retired",
-      "reason": "matches retired vittorio-angelone-you-cant-say-nothing-any-more-off-west-end-2026 by id — never re-add (data/retired-show-ids.json)"
     },
     {
       "title": "STUFFED",
@@ -417,14 +425,6 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as outrageous-what-the-frock-crystal-carrington-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "Taken The Unofficial Musical",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as taken-the-unofficial-musical-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Boys Who Dance",
@@ -1027,6 +1027,14 @@
       "reason": "venue's dated listing does not confirm a run: only 4 performance(s) listed — a short booking, not a run"
     },
     {
+      "title": "Homoglobin",
+      "venue": "Riverside Studios",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: only 2 performance(s) listed — a short booking, not a run"
+    },
+    {
       "title": "In My Own Little World",
       "venue": "Riverside Studios",
       "source": "venue-page:riverside-studios",
@@ -1041,6 +1049,14 @@
       "sourceUrl": null,
       "kind": "skip-unconfirmed",
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-07))"
+    },
+    {
+      "title": "Looking at the Big Sky!",
+      "venue": "Riverside Studios",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-12-06))"
     },
     {
       "title": "Paradise Villa – A Rehearsed Reading",
