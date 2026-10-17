@@ -121,7 +121,8 @@ describe('BRO-4838 star groups', () => {
 describe('BRO-5223 chrome star groups', () => {
   const REVIEW = `Theater review by David Cote. Gerald Schoenfeld Theatre. ${BODY} It's a dull, mechanical night.`;
   const HEADLINES = ' Bars around NY will be allowed to stay open later during the World Cup A massive Portugal watch party is happening in Dumbo';
-  before(() => setKnownShowTitlesForTest(["Well, I'll Let You Go", 'Hamlet', 'Orphans', 'Harry Potter and the Cursed Child', 'Cats', 'Another Show']));
+  before(() => setKnownShowTitlesForTest(["Well, I'll Let You Go", 'Hamlet', 'Orphans', 'Harry Potter and the Cursed Child', 'Cats', 'Another Show',
+    'Score', 'The End', 'Summer', 'Company', 'Romeo + Juliet']));
   after(() => setKnownShowTitlesForTest(null));
 
   test('a chrome headline naming another show with ★★★★★ gives no score', () => {
@@ -132,7 +133,7 @@ describe('BRO-5223 chrome star groups', () => {
   test("a chrome '5 stars' next to another show's title gives no score", () => {
     assert.strictEqual(extractScore('', `${REVIEW} More reviews Hamlet ★★★★★ 5 stars Read the review`, 'timeout', 'Orphans'), null);
     assert.strictEqual(extractScore('', `${REVIEW} More reviews Hamlet ★★★★★ 5 stars Read the review`, 'timeout'), null, 'chrome heading needs no title');
-    assert.strictEqual(extractScore('', `${REVIEW} Hamlet ★★★★★ 5 stars Read the review`, 'timeout', 'Orphans'), null);
+    assert.strictEqual(extractScore('', `${REVIEW} Well, I'll Let You Go ★★★★★ 5 stars Read the review`, 'timeout', 'Orphans'), null);
   });
 
   test("the review's own headline and verdict still count", () => {
@@ -157,6 +158,32 @@ describe('BRO-5223 chrome star groups', () => {
       const r = extractScore('', t, outlet, title);
       assert.strictEqual(r && r.originalScore, want, `${t.slice(-50)} / ${title}`);
     }
+  });
+
+  test('a verdict label or a common-word known title before the stars is not another show', () => {
+    for (const label of ['Score:', 'The End', 'Summer', 'Our rating:', 'Verdict']) {
+      const r = extractScore('', `${BODY} ${label} ★★★★☆`, 'guardian', 'Cats');
+      assert.strictEqual(r && r.originalScore, '4/5 stars', label);
+    }
+  });
+
+  test('"Romeo + Juliet" names the same show as "Romeo and Juliet"', () => {
+    const r = extractScore('', `${BODY} Theater review: Romeo + Juliet (★★★★☆)`, 'timeout', 'Romeo and Juliet');
+    assert.strictEqual(r && r.originalScore, '4/5 stars');
+  });
+
+  test('"More reviews" in prose is not a chrome heading', () => {
+    for (const t of [`${BODY} More reviews are coming soon. Verdict ★★★★☆`, `${BODY} More reviews are coming soon. It is a triumph. ★★★★☆`]) {
+      const r = extractScore('', t, 'guardian', 'Cats');
+      assert.strictEqual(r && r.originalScore, '4/5 stars', t.slice(-60));
+    }
+  });
+
+  test('a verdict box outside the review <article> still counts', () => {
+    const html = `<html><body><main><article><h1>Orphans</h1><p>${REVIEW}</p></article><div class="verdict">Verdict ★★☆☆☆</div></main></body></html>`;
+    const text = `Orphans ${REVIEW} Verdict ★★☆☆☆`;
+    assert.strictEqual(extractScore('', text, 'timeout', 'Orphans').originalScore, '2/5 stars');
+    assert.strictEqual(extractScore(html, text, 'timeout', 'Orphans').originalScore, '2/5 stars');
   });
 
   test('a capitalised "Most read" sentence is not a chrome heading', () => {

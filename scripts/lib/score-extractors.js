@@ -1608,45 +1608,61 @@ function fallthroughReviewText(html, text) {
   return pick ? pick.regionText : text;
 }
 
-// Section headings that open page chrome after the review ends. Matched
-// case-sensitively on the first letter (a heading, not prose).
+// Section headings that open page chrome after the review ends.
 const CHROME_SECTION_RE = /\b(?:more\s+(?:theat(?:er|re)\s+)?reviews|related\s+(?:articles|reviews|stories|posts|content|shows)|you\s+(?:may|might)\s+also\s+(?:like|enjoy)|recommended\s+(?:for\s+you|reading|reviews))\b/gi;
 // "Theater review: Well, I'll Let You Go (" : an article headline.
 const REVIEW_HEADLINE_BEFORE_STARS = /\breview\s*:\s*([^★☆]{1,100}?)[\s(\[:\-–—]*$/i;
+// "Verdict ★★★★", "Our rating: ★★", "Score: ★★★★☆": the review's own verdict.
+const VERDICT_LABEL_BEFORE_STARS = /\b(?:verdict|(?:our\s+|star\s+)?rating|score|stars?)\s*[:\-–—(]*\s*$/i;
+
+/** A heading, not prose: capitalised, and at a line start or followed by a title (not "More reviews are coming"). */
+function isChromeHeading(text, m) {
+  if (!/^[A-Z]/.test(m[0])) return false;
+  const prev = text.slice(Math.max(0, m.index - 2), m.index);
+  if (m.index === 0 || /[\n\r|•·]\s*$/.test(prev)) return true;
+  return /^\s*[:\-–—]?\s*['‘"“]?[A-Z0-9★☆]/.test(text.slice(m.index + m[0].length, m.index + m[0].length + 6));
+}
+
+/** True when a group has its own verdict context: the critic's sign-off after it or a Verdict/Rating/Score label before it. */
+function hasOwnVerdictContext(text, g) {
+  const after = text.slice(g.index + g.raw.length, g.index + g.raw.length + 40);
+  const before = text.slice(Math.max(0, g.index - 30), g.index);
+  return SIGN_OFF_AFTER_STARS.test(after) || VERDICT_LABEL_BEFORE_STARS.test(before);
+}
 
 /**
  * True only with positive evidence that a star group rates some OTHER show:
- *  - it follows a capitalised "More reviews" / "Related ..." / "You may also
- *    like" heading in the back half of the text (applies with or without a
- *    show title), or
- *  - this show's title is known and the label right before the stars (a
- *    "Review: <title>" headline, or the words since the last sentence break)
- *    is exactly another shows.json title that neither contains nor is
+ *  - it follows a "More reviews" / "Related ..." / "You may also like"
+ *    heading in the back half of the text (applies with or without a show
+ *    title), or
+ *  - this show's title is known and the label right before the stars is
+ *    exactly another shows.json title that neither contains nor is
  *    contained in this one ("Cursed Child" still counts as Harry Potter and
- *    the Cursed Child).
+ *    the Cursed Child). For a "Review: <title>" headline any known title
+ *    counts; for a bare label the title must be 10+ characters, so a
+ *    common-word title ("Summer", "The End", "Company") is never evidence.
  * A label that merely fails to match this show (a byline, a venue) is never
- * evidence. A group followed by the critic's sign-off is always the review's.
+ * evidence, and a group with its own verdict context is always the review's.
  */
-function isForeignStarGroup(text, g, prevGroupEnd, wantedTitle, normalizeTitle) {
-  const after = text.slice(g.index + g.raw.length, g.index + g.raw.length + 40);
-  if (SIGN_OFF_AFTER_STARS.test(after)) return false;
+function isForeignStarGroup(text, g, prevGroupEnd, wantedTitle, normalizeLabel) {
+  if (hasOwnVerdictContext(text, g)) return false;
 
   for (const m of text.matchAll(CHROME_SECTION_RE)) {
     if (m.index >= g.index) break;
-    if (m.index >= text.length * 0.5 && /^[A-Z]/.test(m[0])) return true;
+    if (m.index >= text.length * 0.5 && isChromeHeading(text, m)) return true;
   }
 
   if (!wantedTitle) return false;
   const known = require('./known-show-titles').knownShowTitles();
-  const isOtherShow = (label) => {
-    const t = normalizeTitle(label);
-    return !!t && known.has(t) && !t.includes(wantedTitle) && !wantedTitle.includes(t);
+  const isOtherShow = (label, minLength) => {
+    const t = normalizeLabel(label);
+    return !!t && t.length >= minLength && known.has(t) && !t.includes(wantedTitle) && !wantedTitle.includes(t);
   };
   const before = text.slice(Math.max(prevGroupEnd, g.index - 120), g.index);
   const headline = before.match(REVIEW_HEADLINE_BEFORE_STARS);
-  if (headline) return isOtherShow(headline[1]);
+  if (headline) return isOtherShow(headline[1], 1);
   const tail = before.split(/[.!?|\n•·]\s/).pop().replace(/[\s(\[:\-–—]+$/, '');
-  return isOtherShow(tail);
+  return isOtherShow(tail, 10);
 }
 
 /**
@@ -1698,17 +1714,18 @@ function extractScore(html, text, outletId, showTitle) {
     let scanText = fallthroughReviewText(html, text);
     let allGroups = findStarGroups(scanText);
     if (scanText !== text && allGroups.length === 0) {
-      // The review element shows no stars (a header rating outside it, or
-      // stars drawn as icons). Fall back to the page text, keeping only
-      // header-position groups: chrome after the review stays excluded.
+      // The review element shows no stars (a header rating or verdict box
+      // outside it, or stars drawn as icons). Fall back to the page text,
+      // keeping header-position groups and groups with their own verdict
+      // context: unlabelled chrome after the review stays excluded.
       scanText = text;
-      allGroups = findStarGroups(text).filter(m => m.index <= text.length * 0.15);
+      allGroups = findStarGroups(text).filter(m => m.index <= text.length * 0.15 || hasOwnVerdictContext(text, m));
     }
-    const { normalizeTitle } = require('./title-match');
-    const wantedTitle = showTitle ? normalizeTitle(showTitle) : '';
+    const { normalizeShowLabel } = require('./known-show-titles');
+    const wantedTitle = showTitle ? normalizeShowLabel(showTitle) : '';
     const matches = allGroups.filter((m, i) => {
       const prevEnd = i > 0 ? allGroups[i - 1].index + allGroups[i - 1].raw.length : 0;
-      return !isForeignStarGroup(scanText, m, prevEnd, wantedTitle, normalizeTitle);
+      return !isForeignStarGroup(scanText, m, prevEnd, wantedTitle, normalizeShowLabel);
     });
     if (matches.length > 0) {
       const text = scanText; // positions below are relative to the scanned text
@@ -1752,7 +1769,7 @@ function extractScore(html, text, outletId, showTitle) {
             const idx = allGroups.indexOf(m);
             const segStart = idx > 0 ? allGroups[idx - 1].index + allGroups[idx - 1].raw.length : Math.max(0, m.index - 80);
             const before = text.slice(segStart, m.index);
-            return normalizeTitle(before).includes(wantedTitle);
+            return normalizeShowLabel(before).includes(wantedTitle);
           });
           if (named.length === 1) anchoredMatch = named[0];
         }
