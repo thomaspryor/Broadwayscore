@@ -1735,8 +1735,19 @@ function currentRunUncollected(r, { blocklist } = {}) {
   // alert unresolvable (Alice in Wonderland: 7 un-ingestable census hits, wrong
   // productions, re-fired hourly). They stay in r.missing / the audit JSON.
   const reportOnly = new Set((r.weIngestBlocked || []).filter(x => x.reason === 'serp-census-gate-off').map(x => x.url));
+  // BRO-5252 (follow-up): weIngestBlocked is only written by an --ingest-missing
+  // run after that fix. A row carried forward from before it (Alice: audited
+  // 2026-09-30, then out of the census window so never re-audited) has no block
+  // record, so its census rows kept counting and the resolver above could never
+  // clear the condition. Re-apply the census gate at read time from the row's
+  // own serpCensus tag, the BRO-5133 way. Only on rows with no aggregator
+  // round-up: before e6f8b57 the tag also marked URLs a round-up cited, so on a
+  // row with round-ups it can't tell a census-only hit from a real cited gap.
+  const serpCensusGateOn = process.env.SERP_CENSUS_INGEST === '1';
+  const tagIsCensusOnly = !serpCensusGateOn && (r.aggregatorArticles || []).length === 0;
+  const censusReportOnly = (m) => reportOnly.has(m.url) || (tagIsCensusOnly && !!m.serpCensus);
   const missing = currentRunOnly(r.missing)
-    .filter(m => !ingestedOk.has(m.url) && !refusedForGood.has(m.url) && !reportOnly.has(m.url) && stillCollectable(m, bl)).length;
+    .filter(m => !ingestedOk.has(m.url) && !refusedForGood.has(m.url) && !censusReportOnly(m) && stillCollectable(m, bl)).length;
   const citedNoUrl = currentRunCount(r.citedNoUrl);
   return missing + citedNoUrl;
 }

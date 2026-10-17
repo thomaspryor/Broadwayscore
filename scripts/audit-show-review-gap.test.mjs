@@ -719,7 +719,34 @@ test('currentRunUncollected: serp-census-gate-off rows are report-only, not unco
     weIngestBlocked: [{ url: census, host: 'a.example', priorRun: false, reason: 'serp-census-gate-off' }],
   };
   assert.equal(currentRunUncollected(row, { blocklist: null }), 1);
-  assert.equal(currentRunUncollected({ ...row, weIngestBlocked: [] }, { blocklist: null }), 2);
+  // Block record names only the census row: the untagged real gap still counts.
+  assert.equal(currentRunUncollected({ ...row, missing: [{ url: census, host: 'a.example' }, row.missing[1]] }, { blocklist: null }), 1);
+});
+
+test('currentRunUncollected: a carried-forward row with no block record still treats serpCensus rows as report-only while the gate is off (BRO-5252)', () => {
+  const { currentRunUncollected } = require('./audit-show-review-gap.js');
+  // Shape of the real 2026-09-30 Alice in Wonderland row: census-tagged misses, no weIngestBlocked.
+  const row = {
+    showId: 'x',
+    missing: [
+      { url: 'https://a.example/review-1', host: 'a.example', knownOutletId: null, serpCensus: true },
+      { url: 'https://c.example/review-3', host: 'c.example', knownOutletId: null, serpCensus: true },
+      { url: 'https://b.example/review-2', host: 'b.example' },
+    ],
+  };
+  const prev = process.env.SERP_CENSUS_INGEST;
+  try {
+    delete process.env.SERP_CENSUS_INGEST;
+    assert.equal(currentRunUncollected(row, { blocklist: null }), 1);
+    // Gate on: census rows are ingestable, so they are real gaps again.
+    process.env.SERP_CENSUS_INGEST = '1';
+    assert.equal(currentRunUncollected(row, { blocklist: null }), 3);
+    // A row with a round-up predates census-only tagging: the tag may mark a cited gap, so it still counts.
+    delete process.env.SERP_CENSUS_INGEST;
+    assert.equal(currentRunUncollected({ ...row, aggregatorArticles: ['https://www.broadwayworld.com/article/Review-Roundup-X'] }, { blocklist: null }), 3);
+  } finally {
+    if (prev === undefined) delete process.env.SERP_CENSUS_INGEST; else process.env.SERP_CENSUS_INGEST = prev;
+  }
 });
 
 test('serpCensus provenance is census-only: tagged from serpCensusOnlyUrls, never plain census membership (BRO-5252)', () => {
