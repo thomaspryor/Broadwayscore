@@ -30,9 +30,8 @@ function slugTokens(s) {
 
 function venueKeyTokens(venue) {
   const toks = [...slugTokens(venue)].filter((t) => t.length >= 2 && !VENUE_STOPWORDS.has(t));
-  // A lone short token ("tank", "new") is too weak to identify a venue.
-  if (toks.length === 0 || (toks.length === 1 && toks[0].length < 6)) return [];
-  return toks;
+  // One word ("public", "lincoln") is too weak to identify a venue.
+  return toks.length >= 2 ? toks : [];
 }
 
 function monthIndex(d) {
@@ -52,7 +51,7 @@ function monthSpan(openingDate, closingDate) {
  * @param {object} show shows.json record (priorRuns, venue, previewsStartDate, openingDate, closingDate)
  * @returns {{signal: 'prior-run-month'|'prior-run-venue', detail: string}|null}
  */
-function priorRunUrlSignal(url, show) {
+function priorRunUrlSignal(url, show, { venue = true } = {}) {
   if (!url || !show || !Array.isArray(show.priorRuns) || show.priorRuns.length === 0) return null;
   let pathname;
   try { pathname = decodeURIComponent(new URL(url).pathname).toLowerCase(); } catch { return null; }
@@ -79,11 +78,20 @@ function priorRunUrlSignal(url, show) {
     }
   }
 
-  const segs = slugTokens(pathname);
+  // Venue signal is census-only: a Show Score link naming the old venue is
+  // more likely a transfer review than an old-run review.
+  if (!venue) return null;
+  // Last path segment only, so section folders ("/lincoln-center/") never match.
+  const slug = pathname.replace(/\/+$/, '').split('/').pop();
+  const segs = slugTokens(slug);
   // Flat substring, not tokens: "st-anns-warehouse" must match "St. Ann's Warehouse".
-  const flatPath = pathname.replace(/[^a-z0-9]/g, '');
+  const flatPath = slug.replace(/[^a-z0-9]/g, '');
   const flatCurrent = String(show.venue || '').toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, '');
-  const namesCurrent = flatCurrent.length >= 6 && flatPath.includes(flatCurrent);
+  // Any distinctive word of the current venue ("warehouse") also counts: transfer
+  // reviews shorten it ("from-nyu-skirball-to-st-anns").
+  const currentWords = [...slugTokens(show.venue)].filter((t) => t.length >= 5 && !VENUE_STOPWORDS.has(t));
+  const namesCurrent = (flatCurrent.length >= 6 && flatPath.includes(flatCurrent)) || currentWords.some((t) => flatPath.includes(t))
+    || (flatCurrent.length >= 6 && flatPath.includes(flatCurrent.slice(0, 5)));
   if (!namesCurrent) {
     for (const { r } of runs) {
       const key = venueKeyTokens(r && r.venue);

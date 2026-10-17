@@ -597,7 +597,7 @@ function isBookPageUrl(href) {
 // Broadway"), so the house signal only counts on a UK-domain outlet, and never
 // for a show that declares prior runs. Returns the signal or null.
 const TRANSFERRING_COMPANIES = new Set(['national theatre', 'royal shakespeare company']);
-function otherProductionUrlSignal(u, show, serpTitle) {
+function otherProductionUrlSignal(u, show, serpTitle, { census = false } = {}) {
   let slug = '';
   let host = '';
   try {
@@ -621,7 +621,7 @@ function otherProductionUrlSignal(u, show, serpTitle) {
   );
   if (sig && sig.signal === 'venue-text' && [...TRANSFERRING_COMPANIES].some((c) => sig.detail.includes(`"${c}"`))) return null;
   // BRO-5512: a same-year earlier run (declared priorRuns) the year-only checks cannot see.
-  return sig || priorRunUrlSignal(u, show);
+  return sig || priorRunUrlSignal(u, show, { venue: census });
 }
 
 // BRO-5132: a New York show that transferred from the Edinburgh Fringe drags its
@@ -710,7 +710,7 @@ function acceptSerpCensusResult(sr, { show, showInfo }) {
   if (isUrlYearOutOfWindow(u, show)) return null;
   // Same-title production elsewhere (BRO-4190): the URL or SERP title names
   // another market's edition or a London house on a New York show.
-  if (otherProductionUrlSignal(u, show, sr.title) || edinburghFringeUrlSignal(u, show) || phillyFringeUrlSignal(u, show)) return null;
+  if (otherProductionUrlSignal(u, show, sr.title, { census: true }) || edinburghFringeUrlSignal(u, show) || phillyFringeUrlSignal(u, show)) return null;
   // Weak-specificity gate (ship-check 2026-07-24): isGenericShowTitle's raw
   // word-count test misses titles that are 2+ words on paper but reduce to a
   // SINGLE significant token once titleTokens() strips stopwords/short words

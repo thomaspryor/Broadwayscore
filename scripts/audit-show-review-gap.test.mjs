@@ -568,8 +568,13 @@ test('acceptSerpCensusResult drops same-year prior-run and Philly Fringe reviews
   // A bare priorRuns entry (no inheritReviews:false) still readmits its own URLs.
   const bare = { ...show, priorRuns: [{ openingDate: '2026-02-11', closingDate: '2026-02-21', venue: 'NYU Skirball Center for the Performing Arts' }] };
   assert.equal(otherProductionUrlSignal('https://exeuntnyc.com/reviews/kramer-fauci-at-nyu-skirball/', bare), null);
-  // Show Score path shares the signal.
   assert.equal(otherProductionUrlSignal('https://www.theatlantic.com/culture/2026/02/kramer-fauci-theater-review/1/', show).signal, 'prior-run-month');
+  // Transfer reviews that shorten the venue, and one-word venues, stay.
+  assert.ok(acceptSerpCensusResult({ url: 'https://example.com/reviews/kramer-fauci-from-nyu-skirball-to-st-anns.html', title }, { show, showInfo: info }));
+  const pub = { ...show, priorRuns: [{ openingDate: '2026-02-11', closingDate: '2026-02-21', venue: 'The Public Theater', inheritReviews: false }] };
+  assert.ok(acceptSerpCensusResult({ url: 'https://example.com/reviews/kramer-fauci-public-debate-review/', title }, { show: pub, showInfo: info }));
+  // Show Score path: venue signal off (transfer reviews), month signal on.
+  assert.equal(otherProductionUrlSignal('https://exeuntnyc.com/reviews/kramer-fauci-at-nyu-skirball/', show), null);
   // A Fringe slug naming New York is the transfer's review.
   assert.ok(acceptSerpCensusResult({ url: 'https://example.com/reviews/kramer-fauci-from-fringearts-to-new-york', title }, { show, showInfo: info }));
 });
