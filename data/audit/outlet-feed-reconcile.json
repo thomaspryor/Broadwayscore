@@ -1,11 +1,16 @@
 {
-  "generatedAt": "2026-10-17T11:31:37.022Z",
+  "generatedAt": "2026-10-17T14:27:32.980Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
     {
       "id": "dirty-dancing-the-classic-story-on-stage-west-end-2026",
       "title": "Dirty Dancing: The Classic Story on Stage",
+      "openingDate": "2026-10-16"
+    },
+    {
+      "id": "stories-the-tap-dance-sensation-west-end-2026",
+      "title": "STORIES – The Tap Dance Sensation",
       "openingDate": "2026-10-16"
     },
     {
@@ -39,6 +44,11 @@
       "openingDate": "2026-10-14"
     },
     {
+      "id": "dog-mom-off-west-end-2026",
+      "title": "Dog Mom",
+      "openingDate": "2026-10-17"
+    },
+    {
       "id": "memoirs-of-amorous-gentlemen-off-broadway-2026",
       "title": "Memoirs of Amorous Gentlemen",
       "openingDate": "2026-10-15"
@@ -62,6 +72,11 @@
       "id": "cadel-lungs-on-legs-west-end-2026",
       "title": "Cadel: Lungs On Legs",
       "openingDate": "2026-10-16"
+    },
+    {
+      "id": "the-second-best-school-shooting-off-broadway-2026",
+      "title": "The Second Best School Shooting",
+      "openingDate": "2026-10-17"
     },
     {
       "id": "two-girls-off-broadway-2026",
@@ -115,10 +130,6 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -151,54 +162,18 @@
       "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 690,
-  "matchedGaps": 5,
-  "possibleGaps": 6,
+  "itemsScanned": 693,
+  "matchedGaps": 0,
+  "possibleGaps": 8,
   "gaps": [
     {
-      "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
-      "title": "Memoirs of Amorous Gentlemen",
-      "level": "matched",
-      "outletId": "stageandcinema",
-      "url": "https://stageandcinema.com/2026/10/16/memoirs-of-amorous-gentlemen-review/",
-      "headline": "Off-Broadway Review: MEMOIRS OF AMOROUS GENTLEMEN (The Night Egg at Culture Club)",
+      "showId": "fish-off-broadway-2026",
+      "title": "Fish",
+      "level": "possible",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/good-time-charlie-fish-anon/",
+      "headline": "Good Time Charlie ***, Fish ****, Anon ***",
       "publishDate": "2026-10-16"
-    },
-    {
-      "showId": "the-ask-off-broadway-2026",
-      "title": "The Ask",
-      "level": "matched",
-      "outletId": "stageandcinema",
-      "url": "https://stageandcinema.com/2026/10/16/slug-the-ask-theater-555-review/",
-      "headline": "Off-Broadway Review: THE ASK (Theater 555 / New York)",
-      "publishDate": "2026-10-16"
-    },
-    {
-      "showId": "the-cherry-orchard-west-end-2026",
-      "title": "The Cherry Orchard",
-      "level": "matched",
-      "outletId": "plays-international",
-      "url": "https://playsinternational.org.uk/the-cherry-orchard-harold-pinter-theatre/",
-      "headline": "“The Cherry Orchard” at Harold Pinter Theatre",
-      "publishDate": "2026-10-16"
-    },
-    {
-      "showId": "the-cherry-orchard-west-end-2026",
-      "title": "The Cherry Orchard",
-      "level": "matched",
-      "outletId": "readaboutstuff",
-      "url": "https://readaboutstuff.com/2026/10/17/review-the-cherry-orchard-harold-pinter-theatre-london/",
-      "headline": "Review: The Cherry Orchard &#8211; Harold Pinter Theatre, London",
-      "publishDate": "2026-10-17"
-    },
-    {
-      "showId": "the-cherry-orchard-west-end-2026",
-      "title": "The Cherry Orchard",
-      "level": "matched",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/the-cherry-orchard-harold-pinter-theatre-london/",
-      "headline": "The Cherry Orchard – Harold Pinter Theatre, London",
-      "publishDate": "2026-10-17"
     },
     {
       "showId": "jane-eyre-rose-kingston-off-west-end-2026",
@@ -235,6 +210,15 @@
       "url": "https://www.theguardian.com/stage/2026/oct/14/the-cherry-orchard-review-kristin-scott-thomas-chekhov-harold-pinter-theatre-conor-mcpherson-ian-rickson-stephen-mangan",
       "headline": "The Cherry Orchard review – Kristin Scott Thomas makes a modern matriarch in trad, earthy Chekhov",
       "publishDate": "2026-10-14"
+    },
+    {
+      "showId": "stories-the-tap-dance-sensation-west-end-2026",
+      "title": "STORIES – The Tap Dance Sensation",
+      "level": "possible",
+      "outletId": "the-spy-in-the-stalls",
+      "url": "https://thespyinthestalls.com/2026/10/stories-2/",
+      "headline": "STORIES &#8211; THE TAP DANCE SENSATION★★★★UK Tour",
+      "publishDate": "2026-10-16"
     },
     {
       "showId": "the-ask-off-broadway-2026",

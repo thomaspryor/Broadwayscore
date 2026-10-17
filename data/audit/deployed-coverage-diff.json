@@ -1,13 +1,80 @@
 {
-  "generatedAt": "2026-10-17T11:31:36.715Z",
+  "generatedAt": "2026-10-17T14:27:32.502Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 241,
-  "clean": 241,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 243,
+  "clean": 239,
+  "defective": 4,
+  "byType": {
+    "score-drift": 4
+  },
+  "shows": [
+    {
+      "showId": "cadel-lungs-on-legs-west-end-2026",
+      "title": "Cadel: Lungs On Legs",
+      "openingDate": "2026-10-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 81.35 vs local 81.57 (Δ0.22)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 9,
+      "deployedCount": 9,
+      "firstDefectAt": "2026-10-17T14:27:29.563Z"
+    },
+    {
+      "showId": "oh-mary-2024",
+      "title": "Oh, Mary!",
+      "openingDate": "2024-07-11",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 87.43 vs local 87.49 (Δ0.06)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 30,
+      "deployedCount": 30,
+      "firstDefectAt": "2026-10-17T14:27:29.563Z"
+    },
+    {
+      "showId": "little-shop-of-horrors-off-broadway-2019",
+      "title": "Little Shop of Horrors",
+      "openingDate": "2019-09-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.06 vs local 82.85 (Δ0.21)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 19,
+      "deployedCount": 21,
+      "firstDefectAt": "2026-10-17T14:27:29.563Z"
+    },
+    {
+      "showId": "hadestown-2019",
+      "title": "Hadestown",
+      "openingDate": "2019-04-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.01 vs local 83.23 (Δ0.22)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 46,
+      "deployedCount": 48,
+      "firstDefectAt": "2026-10-17T14:27:29.563Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
