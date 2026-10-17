@@ -2,7 +2,8 @@
   "processed": [
     "jane-eyre-rose-kingston-off-west-end-2026/daily-echo--william-dalgleish.json",
     "some-woman-west-end-2026/times-uk--clive-davis.json",
-    "some-woman-west-end-2026/west-end-best-friend--oli-burgin.json"
+    "some-woman-west-end-2026/west-end-best-friend--oli-burgin.json",
+    "the-second-best-school-shooting-off-broadway-2026/theatreindc--unknown.json"
   ],
   "failed": [
     "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
@@ -20,7 +21,8 @@
     "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/culturesauce--thom-geier.json",
     "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--roma-torre.json",
     "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/talkinbroadway--kimberly-ramirez.json",
-    "stuffed-off-west-end-2026/sunday-times--unknown.json"
+    "stuffed-off-west-end-2026/sunday-times--unknown.json",
+    "the-second-best-school-shooting-off-broadway-2026/theatreinla--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -34,7 +36,8 @@
     ],
     "directCookies": [],
     "scrapingdog": [
-      "jane-eyre-rose-kingston-off-west-end-2026/daily-echo--william-dalgleish.json"
+      "jane-eyre-rose-kingston-off-west-end-2026/daily-echo--william-dalgleish.json",
+      "the-second-best-school-shooting-off-broadway-2026/theatreindc--unknown.json"
     ],
     "scrapingbee": [
       "some-woman-west-end-2026/times-uk--clive-davis.json"
@@ -44,7 +47,7 @@
     "archive": []
   },
   "startTime": "2026-10-17T07:42:34.460Z",
-  "lastProcessed": "stuffed-off-west-end-2026/sunday-times--unknown.json",
+  "lastProcessed": "the-second-best-school-shooting-off-broadway-2026/theatreinla--unknown.json",
   "log": [
     {
       "t": "2026-10-17T07:46:09.044Z",
@@ -78,6 +81,24 @@
       "t": "2026-10-17T07:52:13.097Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-17T08:00:00.140Z",
+      "event": "bb-session",
+      "session": "8de76887",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-17T08:00:07.143Z",
+      "event": "bb-session",
+      "session": "f1928352",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-17T08:05:31.454Z",
+      "event": "bb-session",
+      "session": "a807f3ee",
+      "url": "https://www.theatreinla.com/the-second-best-school-shooting/11328/"
     }
   ]
 }
