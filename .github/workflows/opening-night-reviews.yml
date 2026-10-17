@@ -22,14 +22,6 @@ on:
     - cron: '0 2,8,11,14,20,23 * * *'
   workflow_dispatch:
     inputs:
-      redispatched:
-        # BRO-5152: set by scripts/cron-redispatch.js when GitHub dropped the scheduled run.
-        # Runs as a LIGHT tick (the six 3-hourly crons), never the heavy SERP/census
-        # pass a plain manual dispatch gets.
-        description: 'Internal: re-dispatch of a dropped scheduled run (behaves like the cron)'
-        required: false
-        default: 'false'
-        type: string
       lookback_days:
         description: 'How many days back to check for openings (default 14)'
         required: false
@@ -60,18 +52,12 @@ jobs:
     steps:
       - name: Detect tick mode
         id: mode
-        env:
-          INPUT_REDISPATCHED: ${{ inputs.redispatched }}
         run: |
           # Heavy = the two legacy daily crons or any manual dispatch. Keyed on
           # github.event.schedule (NOT wall clock — GHA crons fire late and
           # wall-clock keying misfires; see enrich-west-end-dates fix #649).
-          # BRO-5152: a re-dispatch of a dropped cron (inputs.redispatched) has
-          # no cron string; it runs LIGHT like the 3-hourly ticks it replaces.
           SCHED='${{ github.event.schedule }}'
-          if [ "${INPUT_REDISPATCHED}" = "true" ]; then
-            echo "heavy=false" >> $GITHUB_OUTPUT
-          elif [ -z "$SCHED" ] || [ "$SCHED" = '0 5 * * *' ] || [ "$SCHED" = '0 17 * * *' ]; then
+          if [ -z "$SCHED" ] || [ "$SCHED" = '0 5 * * *' ] || [ "$SCHED" = '0 17 * * *' ]; then
             echo "heavy=true" >> $GITHUB_OUTPUT
           else
             echo "heavy=false" >> $GITHUB_OUTPUT

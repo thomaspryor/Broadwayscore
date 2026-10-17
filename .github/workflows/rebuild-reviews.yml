@@ -21,17 +21,8 @@ on:
     workflows: ["Collect Review Texts"]
     types: [completed]
     branches: [main]
-    # redispatch-after-hours: 26  (BRO-5152: daily; cron-redispatch.js replaces a dropped tick after 26h, before the 36h page)
   workflow_dispatch:
     inputs:
-      redispatched:
-        # BRO-5152: set by scripts/cron-redispatch.js when GitHub dropped the scheduled run.
-        # Runs exactly like the 04:00 cron (dispatch input defaults equal the cron's);
-        # commit message and summary say scheduled.
-        description: 'Internal: re-dispatch of a dropped scheduled run (behaves like the cron)'
-        required: false
-        default: 'false'
-        type: string
       reason:
         description: 'Reason for manual rebuild (for commit message)'
         required: false
@@ -773,7 +764,6 @@ jobs:
           # deliberately left unchanged, matching BRO-334's precedent.
           GIT_NET_TIMEOUT_SEC: '30'
           INPUT_REASON: ${{ inputs.reason }}
-          INPUT_REDISPATCHED: ${{ inputs.redispatched }}
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -819,7 +809,7 @@ jobs:
             COUNTS="Reviews: count not measured (before=${BEFORE:-unset}, after=${AFTER:-unset})"
           fi
 
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ "${INPUT_REDISPATCHED}" != "true" ]; then
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             REASON="${INPUT_REASON}"
             MSG="data: Rebuild reviews.json - $REASON"
           else
@@ -1045,14 +1035,13 @@ jobs:
         if: always()
         env:
           INPUT_REASON: ${{ inputs.reason }}
-          INPUT_REDISPATCHED: ${{ inputs.redispatched }}
         run: |
           echo "## Reviews Rebuild Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Before:** ${{ steps.before.outputs.count }} reviews" >> $GITHUB_STEP_SUMMARY
           echo "**After:** ${{ steps.after.outputs.count }} reviews" >> $GITHUB_STEP_SUMMARY
           echo "**Changes:** ${{ steps.changes.outputs.has_changes }}" >> $GITHUB_STEP_SUMMARY
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ "${INPUT_REDISPATCHED}" != "true" ]; then
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             echo "**Trigger:** Manual (${INPUT_REASON})" >> $GITHUB_STEP_SUMMARY
           else
             echo "**Trigger:** Scheduled (daily 4 AM UTC)" >> $GITHUB_STEP_SUMMARY
