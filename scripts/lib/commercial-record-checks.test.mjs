@@ -46,6 +46,15 @@ test('loss designation on a show that is not closed is a warning, never an error
   assert.equal(commercialFileWarnings(file, [{ slug: 'k', status: 'open' }]).length, 1);
 });
 
+test('a source link listed twice is a warning (BRO-5562)', () => {
+  const src = (url) => ({ type: 'trade', url, date: '2022-08-23' });
+  const repeats = (sources) => commercialRecordWarnings('k', { designation: 'TBD', sources }, {}).filter((m) => m.includes('already listed'));
+  assert.equal(repeats([src('https://www.broadwayjournal.com/p/a'), src('https://www.broadwayjournal.com/p/a')]).length, 1);
+  assert.match(repeats([src('https://x.test/a'), src('https://x.test/b'), src('https://x.test/a')])[0], /sources\[2\]/);
+  assert.equal(repeats([src('https://x.test/a'), src('https://x.test/b')]).length, 0);
+  assert.equal(repeats([{ type: 'manual', url: null }, { type: 'manual', url: null }]).length, 0);
+});
+
 test('a title quoted inside a quote with double marks is a warning (BRO-5549)', () => {
   const doubled = (field, text) => commercialRecordWarnings('k', { designation: 'TBD', [field]: text }, {})
     .filter((m) => m.includes('doubled quotation marks')).length;

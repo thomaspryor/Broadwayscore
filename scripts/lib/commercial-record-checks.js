@@ -418,6 +418,15 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
         out.push(`commercial.json: "${showId}" sources[${idx}].url ${url} is a homepage, not an article or filing (link the page that states it)`);
       }
     }
+    // The same link listed twice cites nothing new (BRO-5562: a plan appended
+    // an article the record already cited). Advisory (§19).
+    const seen = new Set();
+    show.sources.forEach((s, idx) => {
+      const url = s && s.url;
+      if (!url) return;
+      if (seen.has(url)) out.push(`commercial.json: "${showId}" sources[${idx}].url ${url} is already listed (drop the repeat)`);
+      seen.add(url);
+    });
   }
   if (isPrematureSilenceLabel(show, ctx.showRecord)) {
     out.push(`commercial.json: "${showId}" is "${show.designation}" on no recoupment announced but closed under ${LOSS_LABEL_MIN_DAYS} days ago (keep TBD + needsLossEvidence until it ages in)`);
