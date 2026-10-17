@@ -44,6 +44,15 @@ source "$SCRIPT_DIR/heal-phantom-shallow.sh"
 source "$SCRIPT_DIR/modify-delete-conflict.sh"   # is_modify_delete (BRO-5494)
 ensure_disk_floor   # task #968: self-heal low-disk before the push that needs the space
 
+# BRO-5551: the merge=ours driver for this script's own rebase, rebase
+# --continue, merge and cherry-pick calls (scripts/lib/merge-keep-run.sh says
+# why). Passed per command with -c and never stored in config, so a human's
+# merge and land.yml keep setup-local-data.sh's `true`. A -c value does not
+# survive into a later `rebase --continue` process, so that call passes it
+# again. The directory is single-quoted inside the driver command: fine for
+# runner and worktree paths, which never contain a quote.
+_keep_run_driver() { printf "merge.ours.driver=bash '%s/merge-keep-run.sh' %s %%O %%A %%B %%P" "$SCRIPT_DIR" "$1"; }
+
 MAX_RETRIES=${1:-7}
 # BRO-2554: validate BEFORE any arithmetic touches it (the fallback-after
 # calculation a few lines below is a `$(( ))` arithmetic context, where an
@@ -653,7 +662,7 @@ _rebase_with_captured_stderr() {
   local errfile
   errfile=$(mktemp 2>/dev/null || echo "/tmp/push-retry-rebase-err.$$.$RANDOM")
   chmod 600 "$errfile" 2>/dev/null || true
-  git rebase -X theirs "origin/$PULL_BRANCH" 2>"$errfile"
+  git -c "$(_keep_run_driver B)" rebase -X theirs "origin/$PULL_BRANCH" 2>"$errfile"
   local rc=$?
   _REBASE_REFUSAL_REASON=""
   if [ "$rc" -ne 0 ]; then
@@ -2652,7 +2661,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     # Try up to 4 rounds of conflict resolution (one per conflicting commit)
     for _round in 1 2 3 4; do
       if resolve_conflicts rebase; then
-        if GIT_EDITOR=true git rebase --continue 2>/dev/null; then
+        if GIT_EDITOR=true git -c "$(_keep_run_driver B)" rebase --continue 2>/dev/null; then
           rebase_ok=true
           RESOLUTION_PATH="rebase-resolved(${_round} round(s))"
           echo "  Rebase completed after $_round round(s) of conflict resolution"
@@ -2675,7 +2684,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   if [ "$rebase_ok" != "true" ]; then
     echo "  Trying merge fallback..."
     # -X ours in merge context = keep our branch's version
-    if git merge "origin/$PULL_BRANCH" -X ours --no-edit 2>/dev/null; then
+    if git -c "$(_keep_run_driver A)" merge "origin/$PULL_BRANCH" -X ours --no-edit 2>/dev/null; then
       echo "  Merge succeeded"
       RESOLUTION_PATH="merge(-X ours)"
       restore_protected_fields
@@ -2711,7 +2720,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
         # BRANCH) so it reflects what OUR_HEAD was actually built on.
         MERGE_BASE=$(git merge-base "$OUR_HEAD" "origin/$PULL_BRANCH" 2>/dev/null || true)
         git reset --hard "origin/$PULL_BRANCH" 2>/dev/null || true
-        if [ -n "$MERGE_BASE" ] && git cherry-pick "${MERGE_BASE}..${OUR_HEAD}" --strategy-option=theirs 2>/dev/null; then
+        if [ -n "$MERGE_BASE" ] && git -c "$(_keep_run_driver B)" cherry-pick "${MERGE_BASE}..${OUR_HEAD}" --strategy-option=theirs 2>/dev/null; then
           echo "  Cherry-pick succeeded (our changes on top of remote)"
           RESOLUTION_PATH="reset+cherry-pick(-X theirs)"
           restore_protected_fields

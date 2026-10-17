@@ -152,7 +152,7 @@ for pass in 1 2 3; do
 done
 [ "$case1_ok" = "true" ] && echo "PASS[1]: three consecutive pushes from a blobless clone landed under churn, one root, both sides intact, no fallback path"
 
-# ── Fault-injection `git` double: the FIRST `git rebase -X …` call fails with
+# ── Fault-injection `git` double: the FIRST `git [-c …] rebase -X …` call fails with
 # a caller-supplied stderr and rc, without starting a rebase; everything else
 # (including the script's own `git rebase --abort`) proxies to the real git.
 # The script resolves `git` from PATH, so this intercepts exactly the call
@@ -163,7 +163,11 @@ make_fake_git() {  # make_fake_git <bindir> <stderr-text> <rc>
   printf '%s\n' "$2" > "$1/stderr.txt"
   cat > "$1/git" <<WRAPPER
 #!/usr/bin/env bash
-if [ "\${1:-}" = "rebase" ] && [ "\${2:-}" = "-X" ] && [ ! -f "$1/fired" ]; then
+# Skip leading `-c <key=value>` options: the script's rebase passes its
+# merge driver that way (BRO-5551).
+args=("\$@")
+while [ "\${args[0]:-}" = "-c" ]; do args=("\${args[@]:2}"); done
+if [ "\${args[0]:-}" = "rebase" ] && [ "\${args[1]:-}" = "-X" ] && [ ! -f "$1/fired" ]; then
   : > "$1/fired"
   cat "$1/stderr.txt" >&2
   exit $3
