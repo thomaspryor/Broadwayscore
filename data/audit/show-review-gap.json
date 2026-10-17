@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-16T23:20:29.893Z",
+  "generatedAt": "2026-10-17T01:52:09.174Z",
   "windowDays": 1095,
-  "targets": 671,
-  "auditedThisRun": 17,
-  "carriedForward": 723,
+  "targets": 668,
+  "auditedThisRun": 12,
+  "carriedForward": 732,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 423,
-    "missingCurrentRun": 855,
+    "withGap": 429,
+    "missingCurrentRun": 877,
     "totalCitedNoUrl": 7,
-    "totalFlaggedMisses": 976,
-    "totalRecoverable": 6,
+    "totalFlaggedMisses": 982,
+    "totalRecoverable": 7,
     "totalRecovered": 15,
     "humanExcluded": 1,
-    "automatedExcluded": 143,
-    "automatedExcludedListed": 143,
-    "priorProductionCitations": 5152
+    "automatedExcluded": 150,
+    "automatedExcludedListed": 149,
+    "priorProductionCitations": 5154
   },
   "results": [
     {
@@ -11247,13 +11247,49 @@
       "status": "previews",
       "category": "west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://www.britishtheatreguide.info/reviews/angel-s-bone-aviva-studios-25587",
+        "https://www.theatrereviewsnorth.com/post/angel-s-bone-a-defining-moment-for-eno-but-you-have-to-stand-to-see-it"
+      ],
+      "dirFiles": 1,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.theatrereviewsnorth.com/post/angel-s-bone-a-defining-moment-for-eno-but-you-have-to-stand-to-see-it",
+          "host": "theatrereviewsnorth.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/angel-s-bone-aviva-studios-25587",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "british-theatre--david-chadderton.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.britishtheatreguide.info/reviews/angel-s-bone-aviva-studios-25587"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-05-13",
+          "serpCensus": true,
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -11270,7 +11306,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 1
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -11294,28 +11330,129 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Angel's Bone\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Angel's Bone\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Angel's Bone\" review london",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Angel's Bone London Coliseum review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Angel's Bone London Coliseum review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Angel's Bone London Coliseum review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 2,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 26,
+        "byReason": {
+          "non-review-host": 14,
+          "bare-host": 2,
+          "non-review-path": 4,
+          "ticketing-listing": 2,
+          "event-listing": 4
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.theatrereviewsnorth.com/post/angel-s-bone-a-defining-moment-for-eno-but-you-have-to-stand-to-see-it",
+          "host": "theatrereviewsnorth.com",
+          "outletId": "theatrereviewsnorth",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  provisional outlet \"theatrereviewsnorth\" (not in registry) — onboard to outlet-registry.json aft"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "theatrereviewsnorth.com",
+            "outlet": "theatrereviewsnorth.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrereviewsnorth.com/post/angel-s-bone-a-defining-moment-for-eno-but-you-have-to-stand-to-see-it"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.theatrereviewsnorth.com/post/angel-s-bone-a-defining-moment-for-eno-but-you-have-to-stand-to-see-it",
+            "outletId": "theatrereviewsnorth.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 1
       },
-      "computedAt": "2026-10-16T20:46:15.120Z"
+      "computedAt": "2026-10-17T01:52:09.174Z"
     },
     {
       "showId": "animal-wisdom-off-broadway-2022",
@@ -23695,35 +23832,140 @@
       "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://www.theatermania.com/news/bob-odenkirk-will-present-hospital-hour-starring-comedian-rachel-kaly-off-broadway_1853970/"
+      ],
+      "dirFiles": 1,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theatermania.com/news/bob-odenkirk-will-present-hospital-hour-starring-comedian-rachel-kaly-off-broadway_1853970/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--linda-buchwald.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatermania.com/news/bob-odenkirk-will-present-hospital-hour-starring-comedian-rachel-kaly-off-broadway_1853970/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Bob Odenkirk Presents HOSPITAL HOUR\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Bob Odenkirk Presents HOSPITAL HOUR\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Bob Odenkirk Presents HOSPITAL HOUR\" review night",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Bob Odenkirk Presents HOSPITAL HOUR The Night Egg at the Culture Club review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Bob Odenkirk Presents HOSPITAL HOUR The Night Egg at the Culture Club review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Bob Odenkirk Presents HOSPITAL HOUR The Night Egg at the Culture Club review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 10,
+        "byReason": {
+          "aggregator-internal-nav": 1,
+          "non-review-host": 7,
+          "ticketing-reseller": 1,
+          "tag-index-page": 1
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/bob-odenkirk-will-present-hospital-hour-starring-comedian-rachel-kaly-off-broadway_1853970/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.theatermania.com/news/bob-odenkirk-will-present-hospital-hour-starring-comedian-rachel-kaly-off-broadway_1853970/",
+            "outletId": "theatermania",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 1
       },
-      "computedAt": "2026-10-16T20:46:15.120Z"
+      "computedAt": "2026-10-17T01:52:09.174Z"
     },
     {
       "showId": "bone-wars-a-new-musical-off-broadway-2026",
@@ -30613,7 +30855,12 @@
         "liveCount": 6,
         "candidateCount": 10
       },
-      "computedAt": "2026-10-16T20:46:15.120Z"
+      "computedAt": "2026-10-16T20:46:15.120Z",
+      "quarantine": {
+        "nextState": "complete:1:1",
+        "since": "2026-10-17T01:52:09.267Z",
+        "lastAt": "2026-10-17T01:52:09.267Z"
+      }
     },
     {
       "showId": "call-me-izzy-2025",
@@ -46207,7 +46454,12 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-16T20:46:15.120Z"
+      "computedAt": "2026-10-16T20:46:15.120Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-17T01:52:09.267Z",
+        "lastAt": "2026-10-17T01:52:09.267Z"
+      }
     },
     {
       "showId": "dirty-dancing-tour-2026",
@@ -47589,7 +47841,12 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-10-16T20:46:15.120Z"
+      "computedAt": "2026-10-16T20:46:15.120Z",
+      "quarantine": {
+        "nextState": "incomplete:0:1",
+        "since": "2026-10-17T01:52:09.267Z",
+        "lastAt": "2026-10-17T01:52:09.267Z"
+      }
     },
     {
       "showId": "doll-day-afternoon-off-broadway-2026",
@@ -47608,12 +47865,75 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Doll Day Afternoon\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Doll Day Afternoon\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Doll Day Afternoon\" review mama",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Doll Day Afternoon La MaMa / The Downstairs review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Doll Day Afternoon La MaMa / The Downstairs review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Doll Day Afternoon La MaMa / The Downstairs review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 33,
+        "byReason": {
+          "aggregator-internal-nav": 8,
+          "non-review-host": 21,
+          "venue-production-page": 2,
+          "write-path-blocked": 1,
+          "tag-index-page": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -47626,7 +47946,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-16T17:15:02.578Z"
+      "computedAt": "2026-10-17T01:52:09.174Z"
     },
     {
       "showId": "don-giovanni-off-broadway-2025",
@@ -47809,16 +48129,38 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://nearbuzz.app/events/double-bill-tell-me-straight-aggy-the-king-s-head-theatre-london-2026-10-28-gkmdyfwe",
+        "https://nearbuzz.app/events/double-bill-tell-me-straight-aggy-the-king-s-head-theatre-london-2026-11-11",
+        "https://www.iloveeventfest.com/arts/event/double-bill-tell-me-straight-aggy-london-2026-11-10",
         "https://www.chloenelkinconsulting.com/news/paul-bradshaws-critically-acclaimed-double-bill-tell-me-straight-aggy-comes-to-the-kings-head-theatre/",
-        "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-7519268",
         "https://www.uktw.co.uk/London/The-Kings-Head-Theatre/Play/Double-Bill-tell-me-straight-aggy-A-double-billing-of-two-critically-acclaimed-queer-shows/L175728610/",
+        "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-7519268",
         "https://shouldgoto.com/theatre/double-bill-tell-me-straight-aggy",
-        "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-1132760"
+        "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-1132760",
+        "https://discountsforcarers.ticketsforgood.co.uk/events/389569-double-bill-tell-me-straight-aggy"
       ],
       "dirFiles": 3,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://nearbuzz.app/events/double-bill-tell-me-straight-aggy-the-king-s-head-theatre-london-2026-10-28-gkmdyfwe",
+          "host": "nearbuzz.app",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://nearbuzz.app/events/double-bill-tell-me-straight-aggy-the-king-s-head-theatre-london-2026-11-11",
+          "host": "nearbuzz.app",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.iloveeventfest.com/arts/event/double-bill-tell-me-straight-aggy-london-2026-11-10",
+          "host": "iloveeventfest.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
         {
           "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-7519268",
           "host": "whatnightout.uk",
@@ -47858,6 +48200,29 @@
           "priorRunSource": "flagged-file-date:2026-06-23",
           "serpCensus": true,
           "reverify": false
+        },
+        {
+          "url": "https://discountsforcarers.ticketsforgood.co.uk/events/389569-double-bill-tell-me-straight-aggy",
+          "host": "ticketsforgood.co.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "ticketsforgood--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://discountsforcarers.ticketsforgood.co.uk/events/389569-double-bill-tell-me-straight-aggy"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -47876,7 +48241,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 2
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -47926,8 +48291,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 2,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 3,
             "error": null
           },
           {
@@ -47957,30 +48322,29 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 5,
+        "resultCount": 9,
         "error": null
       },
       "candidatesRejected": {
-        "count": 19,
+        "count": 23,
         "byReason": {
-          "non-review-host": 9,
+          "non-review-host": 15,
           "ticketing-reseller": 1,
-          "non-review-path": 1,
           "census-junk-host": 2,
+          "non-review-path": 2,
+          "ticketing-listing": 1,
           "write-path-blocked": 1,
-          "ticketing-listing": 3,
-          "show-hub": 1,
-          "event-listing": 1
+          "show-hub": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [
         {
           "url": "https://www.uktw.co.uk/London/The-Kings-Head-Theatre/Play/Double-Bill-tell-me-straight-aggy-A-double-billing-of-two-critically-acclaimed-queer-shows/L175728610/",
@@ -47999,6 +48363,51 @@
       ],
       "ingestResults": [
         {
+          "url": "https://nearbuzz.app/events/double-bill-tell-me-straight-aggy-the-king-s-head-theatre-london-2026-10-28-gkmdyfwe",
+          "host": "nearbuzz.app",
+          "outletId": "nearbuzz",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://nearbuzz.app/events/double-bill-tell-me-straight-aggy-the-king-s-head-theatre-london-2026-11-11",
+          "host": "nearbuzz.app",
+          "outletId": "nearbuzz",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.iloveeventfest.com/arts/event/double-bill-tell-me-straight-aggy-london-2026-11-10",
+          "host": "iloveeventfest.com",
+          "outletId": "iloveeventfest",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
           "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-7519268",
           "host": "whatnightout.uk",
           "outletId": "whatnightout",
@@ -48012,36 +48421,6 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "⚠️  provisional outlet \"whatnightout\" (not in registry) — onboard to outlet-registry.json after revi"
-        },
-        {
-          "url": "https://www.uktw.co.uk/London/The-Kings-Head-Theatre/Play/Double-Bill-tell-me-straight-aggy-A-double-billing-of-two-critically-acclaimed-queer-shows/L175728610/",
-          "host": "uktw.co.uk",
-          "outletId": "uktw",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-        },
-        {
-          "url": "https://shouldgoto.com/theatre/double-bill-tell-me-straight-aggy",
-          "host": "shouldgoto.com",
-          "outletId": "shouldgoto",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "⚠️  provisional outlet \"shouldgoto\" (not in registry) — onboard to outlet-registry.json after review"
         },
         {
           "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-1132760",
@@ -48064,6 +48443,27 @@
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "nearbuzz.app",
+            "outlet": "nearbuzz.app",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nearbuzz.app/events/double-bill-tell-me-straight-aggy-the-king-s-head-theatre-london-2026-10-28-gkmdyfwe"
+          },
+          {
+            "outletId": "nearbuzz.app",
+            "outlet": "nearbuzz.app",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nearbuzz.app/events/double-bill-tell-me-straight-aggy-the-king-s-head-theatre-london-2026-11-11"
+          },
+          {
+            "outletId": "iloveeventfest.com",
+            "outlet": "iloveeventfest.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.iloveeventfest.com/arts/event/double-bill-tell-me-straight-aggy-london-2026-11-10"
+          },
+          {
             "outletId": "whatnightout.uk",
             "outlet": "whatnightout.uk",
             "critic": "Unknown",
@@ -48076,10 +48476,38 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-1132760"
+          },
+          {
+            "outletId": "ticketsforgood.co.uk",
+            "outlet": "ticketsforgood.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://discountsforcarers.ticketsforgood.co.uk/events/389569-double-bill-tell-me-straight-aggy"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://nearbuzz.app/events/double-bill-tell-me-straight-aggy-the-king-s-head-theatre-london-2026-10-28-gkmdyfwe",
+            "outletId": "nearbuzz.app",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://nearbuzz.app/events/double-bill-tell-me-straight-aggy-the-king-s-head-theatre-london-2026-11-11",
+            "outletId": "nearbuzz.app",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://www.iloveeventfest.com/arts/event/double-bill-tell-me-straight-aggy-london-2026-11-10",
+            "outletId": "iloveeventfest.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
           {
             "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-7519268",
             "outletId": "whatnightout.uk",
@@ -48093,13 +48521,20 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-16T17:15:02.578Z"
+          },
+          {
+            "url": "https://discountsforcarers.ticketsforgood.co.uk/events/389569-double-bill-tell-me-straight-aggy",
+            "outletId": "ticketsforgood.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 1
+        "candidateCount": 4
       },
-      "computedAt": "2026-10-16T17:15:02.578Z"
+      "computedAt": "2026-10-17T01:52:09.174Z"
     },
     {
       "showId": "dracula-west-end-2025",
@@ -81921,7 +82356,12 @@
         "liveCount": 1,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-16T20:46:15.120Z"
+      "computedAt": "2026-10-16T20:46:15.120Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-17T01:52:09.267Z",
+        "lastAt": "2026-10-17T01:52:09.267Z"
+      }
     },
     {
       "showId": "high-society-west-end-2026",
@@ -90854,7 +91294,12 @@
         "liveCount": 4,
         "candidateCount": 14
       },
-      "computedAt": "2026-10-16T20:46:15.120Z"
+      "computedAt": "2026-10-16T20:46:15.120Z",
+      "quarantine": {
+        "nextState": "incomplete:0:1",
+        "since": "2026-10-17T01:52:09.267Z",
+        "lastAt": "2026-10-17T01:52:09.267Z"
+      }
     },
     {
       "showId": "jasmines-demo-show-4-the-end-off-broadway-2026",
@@ -93578,7 +94023,12 @@
         "liveCount": 0,
         "candidateCount": 13
       },
-      "computedAt": "2026-10-16T23:20:29.893Z"
+      "computedAt": "2026-10-16T23:20:29.893Z",
+      "quarantine": {
+        "nextState": "incomplete:0:9",
+        "since": "2026-10-17T01:52:09.267Z",
+        "lastAt": "2026-10-17T01:52:09.267Z"
+      }
     },
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
@@ -93927,7 +94377,12 @@
         "liveCount": 1,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-16T23:20:29.893Z"
+      "computedAt": "2026-10-16T23:20:29.893Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-17T01:52:09.267Z",
+        "lastAt": "2026-10-17T01:52:09.267Z"
+      }
     },
     {
       "showId": "jesus-christ-superstar-west-end-2026",
@@ -119247,6 +119702,7 @@
       "aggregatorListedUrls": [
         "https://1minutecritic.com/midnight-todrick-hall-review/",
         "https://cititour.com/NYC_News/Midnight-Strikes-a-Chord/11120",
+        "https://culturesauce.com/todrick-hall-midnight-muscial-off-broadway-review/",
         "https://joshatthemovies.com/2026/10/15/theater-review-midnight/",
         "https://www.nysun.com/article/todrick-halls-midnight-chimes-unevenly",
         "https://www.newyorktheatreguide.com/reviews/midnight-off-broadway-review-todrick-hall",
@@ -119272,11 +119728,12 @@
         "https://www.timeout.com/london/theatre/midnight-at-the-never-get-review",
         "https://www.telegraph.co.uk/theatre/what-to-see/midnight-at-the-never-get-review/",
         "https://www.newyorktheatreguide.com/reviews/11-to-midnight-off-broadway-review-cost-n-mayor",
-        "https://1minutecritic.com/11-to-midnight-review-cost-n-mayor/"
+        "https://1minutecritic.com/11-to-midnight-review-cost-n-mayor/",
+        "https://www.timeout.com/newyork/theater/midnight"
       ],
-      "dirFiles": 34,
-      "dirClean": 12,
-      "inReviewsJson": 11,
+      "dirFiles": 36,
+      "dirClean": 14,
+      "inReviewsJson": 14,
       "missing": [
         {
           "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/midnight-at-the-never-get-ben-platt-menier-review-b3018771.html",
@@ -119363,7 +119820,12 @@
           "priorRunSource": "aggregator-article-date"
         }
       ],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "attitude.co.uk",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [
         {
           "url": "https://www.whatsonstage.com/news/midnight-at-the-never-get-with-ben-platt-at-menier-chocolate-factory-review_1727718/",
@@ -119436,23 +119898,107 @@
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
           "reverify": false
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/midnight",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.timeout.com/newyork/theater/midnight"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Midnight\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Midnight\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Midnight\" review daryl",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Midnight Daryl Roth Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Midnight Daryl Roth Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Midnight Daryl Roth Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 4,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 1164,
+        "count": 1206,
         "byReason": {
-          "aggregator-internal-nav": 790,
+          "aggregator-internal-nav": 792,
           "not-http-url": 211,
-          "production-database-listing": 25,
+          "production-database-listing": 28,
           "aggregator-section-root": 32,
-          "non-review-host": 104,
-          "bare-host": 2
+          "non-review-host": 130,
+          "bare-host": 2,
+          "ticketing-reseller": 5,
+          "census-junk-host": 4,
+          "roundup-page": 1,
+          "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
@@ -119474,7 +120020,7 @@
           "publishDate": "2026-02-11"
         }
       ],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -119553,8 +120099,16 @@
       "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "complete",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/midnight"
+          }
+        ],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -119568,6 +120122,12 @@
             "outletId": "cititour.com",
             "state": "live",
             "firstSeenAt": "2026-10-16T17:15:02.578Z"
+          },
+          {
+            "url": "https://culturesauce.com/todrick-hall-midnight-muscial-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
           },
           {
             "url": "https://joshatthemovies.com/2026/10/15/theater-review-midnight/",
@@ -119634,13 +120194,20 @@
             "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-10-16T05:39:49.231Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/midnight",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 12,
-        "candidateCount": 12
+        "liveCount": 13,
+        "candidateCount": 14
       },
-      "computedAt": "2026-10-16T17:15:02.578Z"
+      "computedAt": "2026-10-17T01:52:09.174Z"
     },
     {
       "showId": "milk-and-honey-amt-theater-off-broadway-2026",
@@ -131515,7 +132082,12 @@
         "liveCount": 11,
         "candidateCount": 13
       },
-      "computedAt": "2026-10-16T20:46:15.120Z"
+      "computedAt": "2026-10-16T20:46:15.120Z",
+      "quarantine": {
+        "nextState": "complete:9:9",
+        "since": "2026-10-17T01:52:09.267Z",
+        "lastAt": "2026-10-17T01:52:09.267Z"
+      }
     },
     {
       "showId": "no-singing-in-the-navy-off-broadway-2026",
@@ -142654,6 +143226,43 @@
         "candidateCount": 2
       },
       "computedAt": "2026-09-08T15:05:36.720Z"
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "title": "Other Desert Cities",
+      "openingDate": "2026-10-18",
+      "status": "previews",
+      "category": "broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-17T01:52:09.174Z"
     },
     {
       "showId": "our-sinatra-a-musical-celebration-off-broadway-2026",
@@ -157855,6 +158464,128 @@
       "computedAt": "2026-10-04T22:50:25.087Z"
     },
     {
+      "showId": "school-pictures-off-broadway-2026",
+      "title": "School Pictures",
+      "openingDate": "2026-10-18",
+      "status": "previews",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.newyorktheatreguide.com/reviews/school-pictures-off-broadway-review",
+        "https://www.vulture.com/2023/11/reviews-amusements-school-pictures-sad-boys-in-harpy-land-playwrights-horizons.html",
+        "https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boys-in-harpy-land-at-playwrights-horizons_1722069/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-ATIT2E",
+        "https://www.talkinbroadway.com/page/ob/11_20_23b.html",
+        "http://www.theaterscene.net/musicals/offbway/school-pictures/victor-gluck/",
+        "https://thefrontrowcenter.com/2023/12/school-pictures/"
+      ],
+      "dirFiles": 6,
+      "dirClean": 6,
+      "inReviewsJson": 6,
+      "missing": [
+        {
+          "url": "https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boys-in-harpy-land-at-playwrights-horizons_1722069/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boys-in-harpy-land-at-playwrights-horizons_1722069/",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boys-in-harpy-land-at-playwrights-horizons_1722069/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/school-pictures-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://www.vulture.com/2023/11/reviews-amusements-school-pictures-sad-boys-in-harpy-land-playwrights-horizons.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-ATIT2E",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/11_20_23b.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/musicals/offbway/school-pictures/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2023/12/school-pictures/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boys-in-harpy-land-at-playwrights-horizons_1722069/",
+            "outletId": "theatermania",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 6,
+        "candidateCount": 7
+      },
+      "computedAt": "2026-10-17T01:52:09.174Z"
+    },
+    {
       "showId": "schtick-a-pole-in-it-off-broadway-2026",
       "title": "Schtick A Pole In It",
       "openingDate": null,
@@ -158709,7 +159440,12 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-10-16T23:20:29.893Z"
+      "computedAt": "2026-10-16T23:20:29.893Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-17T01:52:09.267Z",
+        "lastAt": "2026-10-17T01:52:09.267Z"
+      }
     },
     {
       "showId": "seagull-true-story-off-broadway-2026",
@@ -170403,7 +171139,12 @@
         "liveCount": 8,
         "candidateCount": 11
       },
-      "computedAt": "2026-10-16T20:46:15.120Z"
+      "computedAt": "2026-10-16T20:46:15.120Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-17T01:52:09.267Z",
+        "lastAt": "2026-10-17T01:52:09.267Z"
+      }
     },
     {
       "showId": "stranger-things-2024",
@@ -172145,7 +172886,12 @@
         "liveCount": 2,
         "candidateCount": 6
       },
-      "computedAt": "2026-10-16T20:46:15.120Z"
+      "computedAt": "2026-10-16T20:46:15.120Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-17T01:52:09.267Z",
+        "lastAt": "2026-10-17T01:52:09.267Z"
+      }
     },
     {
       "showId": "suffs-2024",
@@ -178890,7 +179636,12 @@
         "liveCount": 1,
         "candidateCount": 8
       },
-      "computedAt": "2026-10-16T20:46:15.120Z"
+      "computedAt": "2026-10-16T20:46:15.120Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-17T01:52:09.267Z",
+        "lastAt": "2026-10-17T01:52:09.267Z"
+      }
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
@@ -182526,6 +183277,43 @@
         "candidateCount": 8
       },
       "computedAt": "2026-09-15T22:04:41.420Z"
+    },
+    {
+      "showId": "the-dog-show-come-sit-stay-off-broadway-2026",
+      "title": "The Dog Show: Come. Sit. Stay.",
+      "openingDate": "2026-10-18",
+      "status": "previews",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-17T01:52:09.174Z"
     },
     {
       "showId": "the-enormous-crocodile-west-end-2026",
@@ -197617,6 +198405,14 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://theatreweekly.com/interview-greg-hicks-on-the-master-builder-at-arcola-theatre/",
+        "https://www.flickermagazine.art/post/greg-hicks-the-master-builder-arcola-interview",
+        "https://theatreweekly.com/greg-hicks-to-star-in-arcola-theatre-production-of-the-master-builder/",
+        "https://www.timeout.com/london/theatre/the-master-builder-3",
+        "https://theartsdesk.com/theatre/master-builder-old-vic",
+        "https://www.londonboxoffice.co.uk/news/post/master-builder-review",
+        "https://playstosee.com/reviews/uk-reviews/the-master-builder/",
+        "https://www.arbuturian.com/culture/theatre/the-master-builder",
         "https://www.theguardian.com/stage/2025/apr/29/my-master-builder-review-ewan-mcgregor-kate-fleetwood-wyndhams-theatre-london",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/my-master-builder-ewan-mcgregor-b2742066.html",
         "https://www.telegraph.co.uk/theatre/what-to-see/my-master-builder-wyndhams-theatre-review-ewan-mcgregor/",
@@ -197624,13 +198420,36 @@
         "https://www.londontheatre.co.uk/reviews/my-master-builder-review-wyndhams-ewan-mcgregor-elizabeth-debicki-kate-fleetwood",
         "https://www.ft.com/content/a19b1a9f-57b0-41d3-8789-77ee935c91ee",
         "https://www.thestage.co.uk/reviews/my-master-builder-review-wyndhams-theatre-london-2025-ewan-mcgregor-elizabeth-debicki-michael-grandage",
-        "https://www.standard.co.uk/culture/theatre/my-master-builder-wyndham-theatre-review-ewan-mcgregor-b1225100.html",
-        "https://www.londonboxoffice.co.uk/news/post/master-builder-review"
+        "https://www.standard.co.uk/culture/theatre/my-master-builder-wyndham-theatre-review-ewan-mcgregor-b1225100.html"
       ],
       "dirFiles": 5,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://theatreweekly.com/interview-greg-hicks-on-the-master-builder-at-arcola-theatre/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/the-master-builder-3",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "serpCensus": true
+        },
+        {
+          "url": "https://playstosee.com/reviews/uk-reviews/the-master-builder/",
+          "host": "playstosee.com",
+          "knownOutletId": "plays-to-see",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.arbuturian.com/culture/theatre/the-master-builder",
+          "host": "arbuturian.com",
+          "knownOutletId": "arbuturian",
+          "serpCensus": true
+        },
         {
           "url": "https://www.theguardian.com/stage/2025/apr/29/my-master-builder-review-ewan-mcgregor-kate-fleetwood-wyndhams-theatre-london",
           "host": "theguardian.com",
@@ -197679,6 +198498,8 @@
           "url": "https://www.londontheatre.co.uk/reviews/my-master-builder-review-wyndhams-ewan-mcgregor-elizabeth-debicki-kate-fleetwood",
           "host": "londontheatre.co.uk",
           "knownOutletId": "london-theatre",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2025-04-30",
           "weRef": true,
           "weRefSources": [
             "theatre-reviews"
@@ -197722,6 +198543,76 @@
       ],
       "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://www.flickermagazine.art/post/greg-hicks-the-master-builder-arcola-interview",
+          "host": "flickermagazine.art",
+          "knownOutletId": "flicker-magazine",
+          "recoverable": true,
+          "recoverableFile": "flicker-magazine--natalia-cherepanova.json",
+          "recoverableOutletId": "flicker-magazine",
+          "recoverableCritic": "Natalia Cherepanova",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "flicker-magazine--natalia-cherepanova.json",
+              "flag": "nonReview",
+              "urlInDir": "https://www.flickermagazine.art/post/greg-hicks-the-master-builder-arcola-interview"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "nonReview"
+          ],
+          "confirmedNonReview": true,
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://theatreweekly.com/greg-hicks-to-star-in-arcola-theatre-production-of-the-master-builder/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-weekly--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theatreweekly.com/greg-hicks-to-star-in-arcola-theatre-production-of-the-master-builder/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/master-builder-old-vic",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "artsdesk--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theartsdesk.com/theatre/master-builder-old-vic"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
         {
           "url": "https://www.londonboxoffice.co.uk/news/post/master-builder-review",
           "host": "londonboxoffice.co.uk",
@@ -197769,7 +198660,7 @@
             "rows": 9,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 2
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": true,
@@ -197804,19 +198695,150 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Master Builder\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Master Builder\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Master Builder\" review arcola",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Master Builder Arcola Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Master Builder Arcola Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Master Builder Arcola Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 8,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 2,
+        "count": 27,
         "byReason": {
+          "aggregator-internal-nav": 1,
+          "non-review-host": 20,
+          "ticketing-reseller": 1,
+          "non-review-path": 1,
+          "ticket-seller-product-page": 1,
+          "ticketing-listing": 1,
           "write-path-blocked": 2
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 2,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/my-master-builder-review-wyndhams-ewan-mcgregor-elizabeth-debicki-kate-fleetwood",
+          "host": "londontheatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
       "ingestResults": [
+        {
+          "url": "https://theatreweekly.com/interview-greg-hicks-on-the-master-builder-at-arcola-theatre/",
+          "host": "theatreweekly.com",
+          "outletId": "theatre-weekly",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/the-master-builder-3",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "timeout-listing-capsule",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "the-master-builder-off-west-end-2026: https://www.timeout.com/london/theatre/the-master-builder-3 is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
+        },
+        {
+          "url": "https://playstosee.com/reviews/uk-reviews/the-master-builder/",
+          "host": "playstosee.com",
+          "outletId": "plays-to-see",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "[review-write-guard] date-implausible: the-master-builder-off-west-end-2026/plays-to-see--rebecca-co"
+        },
+        {
+          "url": "https://www.arbuturian.com/culture/theatre/the-master-builder",
+          "host": "arbuturian.com",
+          "outletId": "arbuturian",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
         {
           "url": "https://www.theguardian.com/stage/2025/apr/29/my-master-builder-review-ewan-mcgregor-kate-fleetwood-wyndhams-theatre-london",
           "host": "theguardian.com",
@@ -197831,69 +198853,24 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "the-master-builder-off-west-end-2026: https://www.theguardian.com/stage/2025/apr/29/my-master-builder-review-ewan-mcgregor-kate-fleetwood-wyndhams-theatre-london is already owned by my-master-builder-west-end-2025 — one of the two is contaminated. Inspect data/review-texts/my-master-builder-west-end-2025/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
-        },
+        }
+      ],
+      "ingestSkippedByCap": [
         {
           "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/my-master-builder-ewan-mcgregor-b2742066.html",
           "host": "independent.co.uk",
-          "outletId": "independent",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": true,
-          "conflictReason": "cross-show-url-owned",
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "the-master-builder-off-west-end-2026: https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/my-master-builder-ewan-mcgregor-b2742066.html is already owned by my-master-builder-west-end-2025 — one of the two is contaminated. Inspect data/review-texts/my-master-builder-west-end-2025/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+          "outletId": "independent"
         },
         {
           "url": "https://www.telegraph.co.uk/theatre/what-to-see/my-master-builder-wyndhams-theatre-review-ewan-mcgregor/",
           "host": "telegraph.co.uk",
-          "outletId": "sunday-telegraph",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": true,
-          "conflictReason": "cross-show-url-owned",
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "the-master-builder-off-west-end-2026: https://www.telegraph.co.uk/theatre/what-to-see/my-master-builder-wyndhams-theatre-review-ewan-mcgregor/ is already owned by my-master-builder-west-end-2025 — one of the two is contaminated. Inspect data/review-texts/my-master-builder-west-end-2025/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+          "outletId": "sunday-telegraph"
         },
         {
           "url": "https://www.timeout.com/london/theatre/my-master-builder-review",
           "host": "timeout.com",
-          "outletId": "timeout-london",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": true,
-          "conflictReason": "cross-show-url-owned",
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "the-master-builder-off-west-end-2026: https://www.timeout.com/london/theatre/my-master-builder-review is already owned by my-master-builder-west-end-2025 — one of the two is contaminated. Inspect data/review-texts/my-master-builder-west-end-2025/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+          "outletId": "timeout-london"
         },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/my-master-builder-review-wyndhams-ewan-mcgregor-elizabeth-debicki-kate-fleetwood",
-          "host": "londontheatre.co.uk",
-          "outletId": "london-theatre",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "[review-write-guard] date-implausible: the-master-builder-off-west-end-2026/london-theatre--olivia-r"
-        }
-      ],
-      "ingestSkippedByCap": [
         {
           "url": "https://www.ft.com/content/a19b1a9f-57b0-41d3-8789-77ee935c91ee",
           "host": "ft.com",
@@ -197910,9 +198887,45 @@
           "outletId": "standard"
         }
       ],
+      "recoveryResults": [],
+      "recoverySkippedByCap": [
+        {
+          "url": "https://www.flickermagazine.art/post/greg-hicks-the-master-builder-arcola-interview",
+          "host": "flickermagazine.art",
+          "file": "flicker-magazine--natalia-cherepanova.json"
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "theatre-weekly",
+            "outlet": "theatre-weekly",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreweekly.com/interview-greg-hicks-on-the-master-builder-at-arcola-theatre/"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/the-master-builder-3"
+          },
+          {
+            "outletId": "plays-to-see",
+            "outlet": "plays-to-see",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://playstosee.com/reviews/uk-reviews/the-master-builder/"
+          },
+          {
+            "outletId": "arbuturian",
+            "outlet": "arbuturian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.arbuturian.com/culture/theatre/the-master-builder"
+          },
           {
             "outletId": "guardian",
             "outlet": "guardian",
@@ -197942,13 +198955,6 @@
             "url": "https://www.timeout.com/london/theatre/my-master-builder-review"
           },
           {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre.co.uk/reviews/my-master-builder-review-wyndhams-ewan-mcgregor-elizabeth-debicki-kate-fleetwood"
-          },
-          {
             "outletId": "financialtimes",
             "outlet": "financialtimes",
             "critic": "Unknown",
@@ -197968,10 +198974,59 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.standard.co.uk/culture/theatre/my-master-builder-wyndham-theatre-review-ewan-mcgregor-b1225100.html"
+          },
+          {
+            "outletId": "flicker-magazine",
+            "outlet": "flicker-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.flickermagazine.art/post/greg-hicks-the-master-builder-arcola-interview"
+          },
+          {
+            "outletId": "theatre-weekly",
+            "outlet": "theatre-weekly",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreweekly.com/greg-hicks-to-star-in-arcola-theatre-production-of-the-master-builder/"
+          },
+          {
+            "outletId": "artsdesk",
+            "outlet": "artsdesk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theartsdesk.com/theatre/master-builder-old-vic"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://theatreweekly.com/interview-greg-hicks-on-the-master-builder-at-arcola-theatre/",
+            "outletId": "theatre-weekly",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/the-master-builder-3",
+            "outletId": "timeout-london",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://playstosee.com/reviews/uk-reviews/the-master-builder/",
+            "outletId": "plays-to-see",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://www.arbuturian.com/culture/theatre/the-master-builder",
+            "outletId": "arbuturian",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
           {
             "url": "https://www.theguardian.com/stage/2025/apr/29/my-master-builder-review-ewan-mcgregor-kate-fleetwood-wyndhams-theatre-london",
             "outletId": "guardian",
@@ -198001,13 +199056,6 @@
             "firstSeenAt": "2026-10-16T17:15:02.578Z"
           },
           {
-            "url": "https://www.londontheatre.co.uk/reviews/my-master-builder-review-wyndhams-ewan-mcgregor-elizabeth-debicki-kate-fleetwood",
-            "outletId": "london-theatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-16T17:15:02.578Z"
-          },
-          {
             "url": "https://www.ft.com/content/a19b1a9f-57b0-41d3-8789-77ee935c91ee",
             "outletId": "financialtimes",
             "state": "IN_FLIGHT",
@@ -198027,13 +199075,34 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-16T15:25:47.244Z"
+          },
+          {
+            "url": "https://www.flickermagazine.art/post/greg-hicks-the-master-builder-arcola-interview",
+            "outletId": "flicker-magazine",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://theatreweekly.com/greg-hicks-to-star-in-arcola-theatre-production-of-the-master-builder/",
+            "outletId": "theatre-weekly",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://theartsdesk.com/theatre/master-builder-old-vic",
+            "outletId": "artsdesk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 8
+        "candidateCount": 12
       },
-      "computedAt": "2026-10-16T17:15:02.578Z"
+      "computedAt": "2026-10-17T01:52:09.174Z"
     },
     {
       "showId": "the-misanthrope-west-end-2026",
@@ -205954,7 +207023,12 @@
         "liveCount": 11,
         "candidateCount": 15
       },
-      "computedAt": "2026-10-16T20:46:15.120Z"
+      "computedAt": "2026-10-16T20:46:15.120Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-17T01:52:09.267Z",
+        "lastAt": "2026-10-17T01:52:09.267Z"
+      }
     },
     {
       "showId": "the-producers-west-end-2025",
@@ -208257,35 +209331,442 @@
       "status": "upcoming",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://mdtheatreguide.com/2026/09/theatre-review-the-second-best-school-shooting-at-nextstop-theatre/",
+        "https://festmag.com/2026/08/08/review-the-second-best-school-shooting/",
+        "https://www.theatreindc.com/the-second-best-school-shooting/reviews/5319/",
+        "https://ayoungishperspective.co.uk/2026/08/08/review-the-second-best-school-shooting-at-baby-grand-pleasance-courtyard/",
+        "https://www.theatreinla.com/the-second-best-school-shooting/11328/",
+        "https://cedarnews.net/newstasks/1016181/school-shooting-theatre-review-second-best-nextstop/",
+        "https://www.whatsonstage.com/news/the-second-best-school-shooting-at-pleasance-courtyard-review_1728969/",
+        "https://broadwaybaby.com/shows/the-second-best-school-shooting/836812",
+        "https://www.sundaypost.com/fp/the-second-best-school-shooting/",
+        "https://edinburghfestivalsforkids.com/the-second-best-school-shooting-14/",
+        "https://www.thestage.co.uk/reviews/the-second-best-school-shooting-review-pleasance-courtyard-edinburgh-alice-stanley-jr"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://mdtheatreguide.com/2026/09/theatre-review-the-second-best-school-shooting-at-nextstop-theatre/",
+          "host": "mdtheatreguide.com",
+          "knownOutletId": "maryland-theatre-guide",
+          "serpCensus": true
+        },
+        {
+          "url": "https://festmag.com/2026/08/08/review-the-second-best-school-shooting/",
+          "host": "festmag.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatreindc.com/the-second-best-school-shooting/reviews/5319/",
+          "host": "theatreindc.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://ayoungishperspective.co.uk/2026/08/08/review-the-second-best-school-shooting-at-baby-grand-pleasance-courtyard/",
+          "host": "ayoungishperspective.co.uk",
+          "knownOutletId": "a-youngish-perspective",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatreinla.com/the-second-best-school-shooting/11328/",
+          "host": "theatreinla.com",
+          "knownOutletId": "theatreinla",
+          "serpCensus": true
+        },
+        {
+          "url": "https://cedarnews.net/newstasks/1016181/school-shooting-theatre-review-second-best-nextstop/",
+          "host": "cedarnews.net",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/the-second-best-school-shooting-at-pleasance-courtyard-review_1728969/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "serpCensus": true
+        },
+        {
+          "url": "https://broadwaybaby.com/shows/the-second-best-school-shooting/836812",
+          "host": "broadwaybaby.com",
+          "knownOutletId": "broadway-baby",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.sundaypost.com/fp/the-second-best-school-shooting/",
+          "host": "sundaypost.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://edinburghfestivalsforkids.com/the-second-best-school-shooting-14/",
+          "host": "edinburghfestivalsforkids.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-second-best-school-shooting-review-pleasance-courtyard-edinburgh-alice-stanley-jr",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Second Best School Shooting\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Second Best School Shooting\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 7,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Second Best School Shooting\" review soho",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Second Best School Shooting SoHo Playhouse review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Second Best School Shooting SoHo Playhouse review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Second Best School Shooting SoHo Playhouse review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 11,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 20,
+        "byReason": {
+          "aggregator-internal-nav": 5,
+          "non-review-host": 13,
+          "bare-host": 1,
+          "venue-production-page": 1
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://mdtheatreguide.com/2026/09/theatre-review-the-second-best-school-shooting-at-nextstop-theatre/",
+          "host": "mdtheatreguide.com",
+          "outletId": "maryland-theatre-guide",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://festmag.com/2026/08/08/review-the-second-best-school-shooting/",
+          "host": "festmag.com",
+          "outletId": "festmag",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.theatreindc.com/the-second-best-school-shooting/reviews/5319/",
+          "host": "theatreindc.com",
+          "outletId": "theatreindc",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://ayoungishperspective.co.uk/2026/08/08/review-the-second-best-school-shooting-at-baby-grand-pleasance-courtyard/",
+          "host": "ayoungishperspective.co.uk",
+          "outletId": "a-youngish-perspective",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.theatreinla.com/the-second-best-school-shooting/11328/",
+          "host": "theatreinla.com",
+          "outletId": "theatreinla",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://cedarnews.net/newstasks/1016181/school-shooting-theatre-review-second-best-nextstop/",
+          "host": "cedarnews.net",
+          "outletId": "cedarnews"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/the-second-best-school-shooting-at-pleasance-courtyard-review_1728969/",
+          "host": "whatsonstage.com",
+          "outletId": "whatsonstage"
+        },
+        {
+          "url": "https://broadwaybaby.com/shows/the-second-best-school-shooting/836812",
+          "host": "broadwaybaby.com",
+          "outletId": "broadway-baby"
+        },
+        {
+          "url": "https://www.sundaypost.com/fp/the-second-best-school-shooting/",
+          "host": "sundaypost.com",
+          "outletId": "sundaypost"
+        },
+        {
+          "url": "https://edinburghfestivalsforkids.com/the-second-best-school-shooting-14/",
+          "host": "edinburghfestivalsforkids.com",
+          "outletId": "edinburghfestivalsforkids"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-second-best-school-shooting-review-pleasance-courtyard-edinburgh-alice-stanley-jr",
+          "host": "thestage.co.uk",
+          "outletId": "thestage"
+        }
+      ],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "maryland-theatre-guide",
+            "outlet": "maryland-theatre-guide",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://mdtheatreguide.com/2026/09/theatre-review-the-second-best-school-shooting-at-nextstop-theatre/"
+          },
+          {
+            "outletId": "festmag.com",
+            "outlet": "festmag.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://festmag.com/2026/08/08/review-the-second-best-school-shooting/"
+          },
+          {
+            "outletId": "theatreindc.com",
+            "outlet": "theatreindc.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatreindc.com/the-second-best-school-shooting/reviews/5319/"
+          },
+          {
+            "outletId": "a-youngish-perspective",
+            "outlet": "a-youngish-perspective",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://ayoungishperspective.co.uk/2026/08/08/review-the-second-best-school-shooting-at-baby-grand-pleasance-courtyard/"
+          },
+          {
+            "outletId": "theatreinla",
+            "outlet": "theatreinla",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatreinla.com/the-second-best-school-shooting/11328/"
+          },
+          {
+            "outletId": "cedarnews.net",
+            "outlet": "cedarnews.net",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://cedarnews.net/newstasks/1016181/school-shooting-theatre-review-second-best-nextstop/"
+          },
+          {
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.whatsonstage.com/news/the-second-best-school-shooting-at-pleasance-courtyard-review_1728969/"
+          },
+          {
+            "outletId": "broadway-baby",
+            "outlet": "broadway-baby",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://broadwaybaby.com/shows/the-second-best-school-shooting/836812"
+          },
+          {
+            "outletId": "sundaypost.com",
+            "outlet": "sundaypost.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.sundaypost.com/fp/the-second-best-school-shooting/"
+          },
+          {
+            "outletId": "edinburghfestivalsforkids.com",
+            "outlet": "edinburghfestivalsforkids.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://edinburghfestivalsforkids.com/the-second-best-school-shooting-14/"
+          },
+          {
+            "outletId": "thestage",
+            "outlet": "thestage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestage.co.uk/reviews/the-second-best-school-shooting-review-pleasance-courtyard-edinburgh-alice-stanley-jr"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://mdtheatreguide.com/2026/09/theatre-review-the-second-best-school-shooting-at-nextstop-theatre/",
+            "outletId": "maryland-theatre-guide",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://festmag.com/2026/08/08/review-the-second-best-school-shooting/",
+            "outletId": "festmag.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://www.theatreindc.com/the-second-best-school-shooting/reviews/5319/",
+            "outletId": "theatreindc.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://ayoungishperspective.co.uk/2026/08/08/review-the-second-best-school-shooting-at-baby-grand-pleasance-courtyard/",
+            "outletId": "a-youngish-perspective",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://www.theatreinla.com/the-second-best-school-shooting/11328/",
+            "outletId": "theatreinla",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://cedarnews.net/newstasks/1016181/school-shooting-theatre-review-second-best-nextstop/",
+            "outletId": "cedarnews.net",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/the-second-best-school-shooting-at-pleasance-courtyard-review_1728969/",
+            "outletId": "whatsonstage",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://broadwaybaby.com/shows/the-second-best-school-shooting/836812",
+            "outletId": "broadway-baby",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://www.sundaypost.com/fp/the-second-best-school-shooting/",
+            "outletId": "sundaypost.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://edinburghfestivalsforkids.com/the-second-best-school-shooting-14/",
+            "outletId": "edinburghfestivalsforkids.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/the-second-best-school-shooting-review-pleasance-courtyard-edinburgh-alice-stanley-jr",
+            "outletId": "thestage",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 11
       },
-      "computedAt": "2026-10-16T23:20:29.893Z"
+      "computedAt": "2026-10-17T01:52:09.174Z"
     },
     {
       "showId": "the-secret-circus-musical-off-broadway-2026",
@@ -220261,13 +221742,61 @@
       "status": "previews",
       "category": "off-west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://bristolparent.co.uk/review-back-to-the-future-the-musical-is-a-spectacular-triumph-at-bristol-hippodrome/",
+        "https://www.bestoftheatre.co.uk/blog/post/caryl-churchill-triumph-public-theater-new-york-almeida",
+        "https://www.uktw.co.uk/London/Almeida-Theatre/Play/Triumph/L967094073/",
+        "https://shouldgoto.com/theatre/triumph"
+      ],
+      "dirFiles": 2,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://bristolparent.co.uk/review-back-to-the-future-the-musical-is-a-spectacular-triumph-at-bristol-hippodrome/",
+          "host": "bristolparent.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.uktw.co.uk/London/Almeida-Theatre/Play/Triumph/L967094073/",
+          "host": "uktw.co.uk",
+          "knownOutletId": "uktw",
+          "serpCensus": true
+        },
+        {
+          "url": "https://shouldgoto.com/theatre/triumph",
+          "host": "shouldgoto.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.bestoftheatre.co.uk/blog/post/caryl-churchill-triumph-public-theater-new-york-almeida",
+          "host": "bestoftheatre.co.uk",
+          "knownOutletId": "bestoftheatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bestoftheatre--erica-bond.json",
+              "flag": "clean",
+              "urlInDir": "https://www.bestoftheatre.co.uk/blog/post/caryl-churchill-triumph-public-theater-new-york-almeida"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -220284,7 +221813,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 2
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -220308,28 +221837,202 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Triumph\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Triumph\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Triumph\" review almeida",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Triumph Almeida Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Triumph Almeida Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Triumph Almeida Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 4,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 26,
+        "byReason": {
+          "aggregator-internal-nav": 1,
+          "non-review-host": 17,
+          "roundup-page": 3,
+          "non-review-path": 2,
+          "write-path-blocked": 2,
+          "news-article": 1
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 1,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://bristolparent.co.uk/review-back-to-the-future-the-musical-is-a-spectacular-triumph-at-bristol-hippodrome/",
+          "host": "bristolparent.co.uk",
+          "outletId": "bristolparent",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "⚠️  provisional outlet \"bristolparent\" (not in registry) — onboard to outlet-registry.json after rev"
+        },
+        {
+          "url": "https://www.uktw.co.uk/London/Almeida-Theatre/Play/Triumph/L967094073/",
+          "host": "uktw.co.uk",
+          "outletId": "uktw",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        },
+        {
+          "url": "https://shouldgoto.com/theatre/triumph",
+          "host": "shouldgoto.com",
+          "outletId": "shouldgoto",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "⚠️  provisional outlet \"shouldgoto\" (not in registry) — onboard to outlet-registry.json after review"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "bristolparent.co.uk",
+            "outlet": "bristolparent.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://bristolparent.co.uk/review-back-to-the-future-the-musical-is-a-spectacular-triumph-at-bristol-hippodrome/"
+          },
+          {
+            "outletId": "uktw",
+            "outlet": "uktw",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.uktw.co.uk/London/Almeida-Theatre/Play/Triumph/L967094073/"
+          },
+          {
+            "outletId": "shouldgoto.com",
+            "outlet": "shouldgoto.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://shouldgoto.com/theatre/triumph"
+          },
+          {
+            "outletId": "bestoftheatre",
+            "outlet": "bestoftheatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.bestoftheatre.co.uk/blog/post/caryl-churchill-triumph-public-theater-new-york-almeida"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://bristolparent.co.uk/review-back-to-the-future-the-musical-is-a-spectacular-triumph-at-bristol-hippodrome/",
+            "outletId": "bristolparent.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://www.uktw.co.uk/London/Almeida-Theatre/Play/Triumph/L967094073/",
+            "outletId": "uktw",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://shouldgoto.com/theatre/triumph",
+            "outletId": "shouldgoto.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://www.bestoftheatre.co.uk/blog/post/caryl-churchill-triumph-public-theater-new-york-almeida",
+            "outletId": "bestoftheatre",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 4
       },
-      "computedAt": "2026-10-16T20:46:15.120Z"
+      "computedAt": "2026-10-17T01:52:09.174Z"
     },
     {
       "showId": "trophy-boys-off-broadway-2025",
@@ -222979,6 +224682,43 @@
         "candidateCount": 16
       },
       "computedAt": "2026-10-04T17:10:48.347Z"
+    },
+    {
+      "showId": "two-girls-off-broadway-2026",
+      "title": "Two Girls",
+      "openingDate": "2026-10-18",
+      "status": "previews",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-17T01:52:09.174Z"
     },
     {
       "showId": "two-strangers-bway-2025",

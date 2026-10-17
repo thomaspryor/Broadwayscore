@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T23:20:59.511Z",
+  "generatedAt": "2026-10-17T01:52:31.641Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -64,6 +64,11 @@
       "openingDate": "2026-10-16"
     },
     {
+      "id": "two-girls-off-broadway-2026",
+      "title": "Two Girls",
+      "openingDate": "2026-10-18"
+    },
+    {
       "id": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
       "title": "The Banality of Evil: Hannah Arendt, France 1940",
       "openingDate": "2026-10-13"
@@ -79,11 +84,6 @@
       "openingDate": "2026-10-11"
     },
     {
-      "id": "king-lear-royal-exchange-regional-2026",
-      "title": "King Lear",
-      "openingDate": "2026-10-10"
-    },
-    {
       "id": "unconditional-a-new-musical-memoir-off-broadway-2026",
       "title": "UNCONDITIONAL, a new musical memoir",
       "openingDate": "2026-10-15"
@@ -95,6 +95,18 @@
     }
   ],
   "skipped": [
+    {
+      "showId": "other-desert-cities-2026",
+      "reason": "no data/review-texts directory for this show"
+    },
+    {
+      "showId": "school-pictures-off-broadway-2026",
+      "reason": "no data/review-texts directory for this show"
+    },
+    {
+      "showId": "the-dog-show-come-sit-stay-off-broadway-2026",
+      "reason": "no data/review-texts directory for this show"
+    },
     {
       "showId": "doll-day-afternoon-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
@@ -135,7 +147,7 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 708,
+  "itemsScanned": 710,
   "matchedGaps": 3,
   "possibleGaps": 7,
   "gaps": [
@@ -167,6 +179,15 @@
       "publishDate": "2026-10-16"
     },
     {
+      "showId": "fish-off-broadway-2026",
+      "title": "Fish",
+      "level": "possible",
+      "outletId": "theater-scene",
+      "url": "https://www.theaterscene.net/plays/offbway-plays/fish-2/tony-marinelli/",
+      "headline": "Fish",
+      "publishDate": "2026-10-16"
+    },
+    {
       "showId": "jane-eyre-rose-kingston-off-west-end-2026",
       "title": "Jane Eyre",
       "level": "possible",
@@ -174,15 +195,6 @@
       "url": "https://theartsdesk.com/theatre/jane-eyre-southwark-playhouse-elephant-review-self-actualization-gothic-gloom",
       "headline": "Jane Eyre, Southwark Playhouse Elephant review - self-actualization in the gothic gloom",
       "publishDate": null
-    },
-    {
-      "showId": "king-lear-royal-exchange-regional-2026",
-      "title": "King Lear",
-      "level": "possible",
-      "outletId": "off-off-online",
-      "url": "https://www.offoffonline.com/offoffonline/2026/10/9/anon",
-      "headline": "Anon",
-      "publishDate": "2026-10-15"
     },
     {
       "showId": "midnight-off-broadway-2026",

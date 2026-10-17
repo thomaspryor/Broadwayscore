@@ -1023,20 +1023,6 @@
     "queuedAt": "2026-10-16T23:20:34.832Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:sea-wall-off-broadway-2026",
-    "title": "Review gap — \"Sea Wall\" missing 1 cited review(s)",
-    "description": "Sea Wall (sea-wall-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=sea-wall-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-16T23:20:34.863Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:the-virtuous-burglar-off-west-end-2026",
     "title": "Review gap — \"The Virtuous Burglar\" missing 2 cited review(s)",
     "description": "The Virtuous Burglar (the-virtuous-burglar-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-virtuous-burglar-off-west-end-2026 --checkpoint --ingest-missing",
@@ -1139,6 +1125,48 @@
       }
     ],
     "queuedAt": "2026-10-16T23:46:35.070Z"
+  },
+  {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 61.9% of shows changed coverage state — escalated after 68 notifications",
+    "description": "Filed BRO-5516 for owner triage after 68 repeats with no tracker.\n\nreview-gap blast radius 61.9% (13/21 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: cadel-lungs-on-legs-west-end-2026, dirty-dancing-the-classic-story-on-stage-west-end-2026, dog-mom-off-west-end-2026, high-school-musical-off-west-end-2026, jane-eyre-rose-kingston-off-west-end-2026, jesus-christ-superstar-off-west-end-2026, jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026, nina-off-west-end-2026, sea-wall-off-broadway-2026, stories-the-tap-dance-sensation-west-end-2026, stuffed-off-west-end-2026, the-bodyguard-tour-2026, the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026\n\nPARTIAL write: the other 12 show(s) audited this run were NOT risky and were persisted normally. Only the 13 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5516",
+    "fields": [],
+    "queuedAt": "2026-10-17T01:52:11.771Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:fish-off-broadway-2026",
+    "title": "Review gap — \"Fish\" missing 1 cited review(s)",
+    "description": "Fish (fish-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=fish-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-17T01:52:11.947Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-second-best-school-shooting-off-broadway-2026",
+    "title": "Review gap — \"The Second Best School Shooting\" missing 6 cited review(s)",
+    "description": "The Second Best School Shooting (the-second-best-school-shooting-off-broadway-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-second-best-school-shooting-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-17T01:52:12.054Z"
   },
   {
     "conditionKey": "pending-unrecoverable:how-shakespeare-saved-my-life-off-broadway-2026",
