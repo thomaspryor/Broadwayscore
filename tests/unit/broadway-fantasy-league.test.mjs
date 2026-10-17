@@ -264,6 +264,12 @@ describe('computeAwardsPoints on scraper-shaped records', () => {
     assert.equal(r.points, sc.tonyNom);
   });
 
+  test('a record with no season does not score when a season is given (BRO-5548)', () => {
+    const awardsData = { shows: { s: { lortel: { wins: ['Outstanding Play'], nominatedFor: ['Outstanding Play'] }, tony: { season: '2026-27', nominations: 1, wins: [] } } } };
+    assert.equal(computeAwardsPoints('s', awardsData, sc, { season: '2026-27' }).points, sc.tonyNom);
+    assert.ok(computeAwardsPoints('s', awardsData, sc).points > sc.tonyNom, 'without a season filter the record still scores');
+  });
+
   test('every precursor ceremony in real awards.json scores its nominations', () => {
     const real = JSON.parse(fs.readFileSync(path.join(dataDir, 'awards.json'), 'utf8'));
     const [id] = Object.entries(real.shows).find(([, a]) => a.dramadesk && a.dramadesk.nominations == null && (a.dramadesk.nominatedFor || []).length > (a.dramadesk.wins || []).length) || [];

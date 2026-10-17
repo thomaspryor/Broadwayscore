@@ -30,10 +30,12 @@ function computeAwardsPoints(showId, awardsData, scoringConfig, opts = {}) {
   if (!rawAwards) return { points: 0, awardsList: [] };
   // opts.season ('2026-27', the Tony window label): only that season's
   // records score. A show that transferred in can carry last season's
-  // Off-Broadway Lortel/Drama Desk records under the same id.
+  // Off-Broadway Lortel/Drama Desk records under the same id, and a record
+  // with no season cannot prove it is this season's, so it does not score
+  // either (BRO-5548 audit; today only unscored Pulitzer records lack one).
   const showAwards = {};
   for (const [key, rec] of Object.entries(rawAwards)) {
-    if (opts.season && rec && typeof rec === 'object' && rec.season && rec.season !== opts.season) continue;
+    if (opts.season && rec && typeof rec === 'object' && rec.season !== opts.season) continue;
     showAwards[key] = rec;
   }
 

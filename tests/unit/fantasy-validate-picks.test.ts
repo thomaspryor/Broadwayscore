@@ -206,6 +206,10 @@ describe('canonicalFantasyEmail (one entry per inbox)', () => {
   test('other domains are only lower-cased (a + may be part of the mailbox)', () => {
     assert.equal(canonicalFantasyEmail(' Jane+Box@Example.org '), 'jane+box@example.org');
   });
+  test('an address whose local part would canonicalize to nothing stays as typed (BRO-5548)', () => {
+    assert.equal(canonicalFantasyEmail('...@Gmail.com'), '...@gmail.com');
+    assert.equal(canonicalFantasyEmail('+x@outlook.com'), '+x@outlook.com');
+  });
 });
 
 describe('per-drafter locks', () => {

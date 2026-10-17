@@ -9,6 +9,8 @@ export default function FantasyLeaderboardTable() {
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  // Bumped by "Try again": re-runs the same fetch, keeping the search box.
+  const [retry, setRetry] = useState(0);
   const [expandedRank, setExpandedRank] = useState<number | null>(null);
   const [leagueFilter, setLeagueFilter] = useState('');
   const [debouncedLeague, setDebouncedLeague] = useState('');
@@ -35,6 +37,7 @@ export default function FantasyLeaderboardTable() {
     async function fetchLeaderboard() {
       setLoading(true);
       setEmailNotFound(false);
+      setError(null);
       try {
         const url = debouncedEmail
           ? `/api/fantasy/leaderboard?email=${encodeURIComponent(debouncedEmail)}`
@@ -53,7 +56,7 @@ export default function FantasyLeaderboardTable() {
       }
     }
     fetchLeaderboard();
-  }, [debouncedLeague, debouncedEmail]);
+  }, [debouncedLeague, debouncedEmail, retry]);
 
   if (loading) {
     return (
@@ -109,7 +112,20 @@ export default function FantasyLeaderboardTable() {
       <div className="space-y-2">
         {filterBar}
         <div className="text-center py-12 bg-surface-raised/30 rounded-xl border border-white/5">
-          {emailNotFound ? (
+          {error ? (
+            // A failed load must not read as an empty season (BRO-5548 audit).
+            <>
+              <p className="text-gray-400 text-lg mb-2">{debouncedEmail ? 'That search did not work' : 'The leaderboard did not load'}</p>
+              <p className="text-gray-500 text-sm mb-6">{error}</p>
+              <button
+                type="button"
+                onClick={() => setRetry(n => n + 1)}
+                className="px-6 py-2.5 bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
+              >
+                Try again
+              </button>
+            </>
+          ) : emailNotFound ? (
             <>
               <p className="text-gray-400 text-lg mb-2">No team found for that email</p>
               <p className="text-gray-500 text-sm">Check the address you drafted with and try again.</p>

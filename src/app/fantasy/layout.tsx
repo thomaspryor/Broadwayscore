@@ -3,9 +3,10 @@ import { isFantasyListed } from '@/config/fantasy-listing';
 
 // Unlisted until fantasy-season.json listedFrom (BRO-5483): the pages work by
 // direct link but stay out of search results. Once listed, no robots key is
-// returned, so the root layout's site-wide setting applies. Static pages flip
-// at the first deploy on or after listedFrom; the dynamic ones (leaderboard,
-// league) flip per request. Every game page gets the marquee tab icon
+// returned, so the root layout's site-wide setting applies. /fantasy and
+// /fantasy/guide regenerate every 15 minutes (revalidate), the other static
+// pages flip at the first deploy on or after listedFrom, and the dynamic ones
+// (leaderboard, league) flip per request. Every game page gets the marquee tab icon
 // (BRO-5519, files from scripts/generate-fantasy-brand-assets.mjs).
 const icons: Metadata['icons'] = {
   icon: [

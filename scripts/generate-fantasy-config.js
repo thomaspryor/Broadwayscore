@@ -215,11 +215,12 @@ function inTonyWindow(show) {
   return !!show.openingDate && show.openingDate >= TONY_WINDOW.start && show.openingDate <= TONY_WINDOW.end;
 }
 
-// A show that closes before the draft opens can never earn box office or
-// critic points for anyone; keep it out of the catalog (BRO-5424: Celebrity
-// Autobiography closed in June and was still priced at $5).
+// A show that closes before the draft opens, or on opening day of the draft,
+// can never earn box office or critic points for anyone; keep it out of the
+// catalog (BRO-5424: Celebrity Autobiography closed in June and was still
+// priced at $5; BRO-5548 audit: closing on draft day is just as dead).
 function closesBeforeDraft(show) {
-  return show.status === 'closed' || (!!show.closingDate && show.closingDate < DRAFT_OPENS);
+  return show.status === 'closed' || (!!show.closingDate && show.closingDate <= DRAFT_OPENS);
 }
 
 function isEligibleBroadway(show) {

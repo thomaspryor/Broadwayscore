@@ -7,6 +7,12 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { getScoreLabel, getScoreColor, getScoreBgColor } from '@/config/score-buckets';
 import FantasyOwnershipTag from '@/components/fantasy/FantasyOwnershipTag';
 
+// Regenerated every 15 minutes: the draft-window lines and "already open"
+// lists change at midnight ET, and waiting for the next deploy (up to 6h)
+// left them stale on draft day (BRO-5548 audit). The data is bundled JSON,
+// so a regeneration needs nothing beyond the build.
+export const revalidate = 900;
+
 export const metadata: Metadata = {
   title: 'Fantasy Draft Guide',
   alternates: { canonical: `${BASE_URL}/fantasy/guide` },
@@ -36,7 +42,7 @@ function ScorePill({ score: rawScore }: { score: number }) {
 }
 
 function ShowCard({ show, variant = 'default' }: { show: { id: string } & FantasyShow; variant?: 'default' | 'muted' }) {
-  // Static page: "now" is the build time, and the site rebuilds at least every 6h.
+  // "now" is the last regeneration (refreshed in the background every 15 minutes, see revalidate).
   const locked = isShowOpenForDrafter(show);
   // Locked for everyone can also mean "opens in the days before the draft".
   const opened = !!show.openingDate && show.openingDate <= nyDate(new Date().toISOString());

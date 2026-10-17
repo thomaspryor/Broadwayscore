@@ -8,6 +8,7 @@ import {
   AWARDS_POINTS,
   PRIZE_DESCRIPTION,
   DRAFT_OPENS,
+  FANTASY_TONY_CEREMONY_YEAR,
   FANTASY_TONY_WINDOW,
   draftDeadlineDate,
   getCriticLabel,
@@ -37,6 +38,12 @@ function shortDate(iso: string): string {
   return new Date(`${iso.slice(0, 10)}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
 }
 
+// Regenerated every 15 minutes: the draft-window lines and "already open"
+// lists change at midnight ET, and waiting for the next deploy (up to 6h)
+// left them stale on draft day (BRO-5548 audit). The data is bundled JSON,
+// so a regeneration needs nothing beyond the build.
+export const revalidate = 900;
+
 export const metadata: Metadata = {
   title: 'Broadway Fantasy League',
   description: 'Draft up to 8 Broadway shows on a $100 budget. Earn points from critics, audiences, box office, and the Tony Awards. Free to play, no account needed.',
@@ -47,7 +54,7 @@ export const metadata: Metadata = {
 export default function FantasyLandingPage() {
   const info = getFantasySeasonInfo();
   const shows = getFantasyShowsSorted();
-  // Static page: "now" is the build time (the site rebuilds at least every 6h).
+  // "now" is the last regeneration (refreshed in the background every 15 minutes, see revalidate).
   // Broadway first: that's where box office points make an opened show worth a slot.
   // Broadway only in the list: an opened Off-Broadway show is worth awards
   // points alone, so it gets a count line instead of a row each.
@@ -90,26 +97,27 @@ export default function FantasyLandingPage() {
         { date: info.scoringStart, label: 'Box office scoring starts. Each team scores from the week it drafts.' },
         ...(earlyBird ? [{ date: earlyBird, label: 'Early-bird cutoff: draft by this day and your box office counts from the season start' }] : []),
         { date: deadlineDate, label: 'Draft closes at 11:59pm ET. Picks are final.' },
-        { date: FANTASY_TONY_WINDOW.end, label: 'Tony eligibility cutoff' },
+        { date: FANTASY_TONY_WINDOW.end, label: `Tony eligibility cutoff: shows must open by this date to compete at the ${FANTASY_TONY_CEREMONY_YEAR} Tonys` },
         { date: info.scoringEnd, label: 'Tony Awards night (expected date): final standings' },
       ].sort((a, b) => a.date.localeCompare(b.date))
     : [
         { date: DRAFT_OPENS, label: 'Draft opens' },
         { date: deadlineDate, label: 'Draft closes at 11:59pm ET. Picks are final.' },
         { date: info.scoringStart, label: 'Box office scoring starts for every team' },
-        { date: FANTASY_TONY_WINDOW.end, label: 'Tony eligibility cutoff' },
+        { date: FANTASY_TONY_WINDOW.end, label: `Tony eligibility cutoff: shows must open by this date to compete at the ${FANTASY_TONY_CEREMONY_YEAR} Tonys` },
         { date: info.scoringEnd, label: 'Tony Awards night (expected date): final standings' },
       ];
 
-  // Static page, so this is the build-time state (the site rebuilds at least every 6h).
+  // As of the last regeneration (see revalidate).
   const now = new Date();
   const todayNy = nyDate(now.toISOString());
   const preDraft = !isDraftOpen(now) && !isDraftClosed(now);
-  const draftStatus = isDraftClosed(now)
-    ? 'The draft is closed. Follow the race on the leaderboard.'
+  // One sentence per line (owner 2026-10-17).
+  const draftStatus: string[] = isDraftClosed(now)
+    ? ['The draft is closed.', 'Follow the race on the leaderboard.']
     : isDraftOpen(now)
-      ? `The draft is open until ${longDate(deadlineDate)} at 11:59pm ET.${lateEntry ? ' Box office counts from the week you draft, so the sooner the better.' : ''}`
-      : `The draft opens ${longDate(DRAFT_OPENS)}. Picks are due ${longDate(deadlineDate)}.${lateEntry ? ' Box office counts from the week you draft, so get in early.' : ''}`;
+      ? ['The draft is open.', `Picks are due ${longDate(deadlineDate)} at 11:59pm ET.`, ...(lateEntry ? ['Box office counts from the week you draft, so get in early.'] : [])]
+      : [`Draft opens ${longDate(DRAFT_OPENS)}.`, `Picks are due ${longDate(deadlineDate)}.`, ...(lateEntry ? ['Box office counts from the week you draft, so get in early.'] : [])];
 
   return (
     <div className="min-h-screen bg-surface text-white">
@@ -125,7 +133,7 @@ export default function FantasyLandingPage() {
           <span className="sr-only">Broadway Fantasy League</span>
         </h1>
         <p className="text-xs font-semibold uppercase tracking-widest text-brand mb-3">{seasonLabel} season</p>
-        <p className="text-3xl sm:text-4xl font-black tracking-tight text-white text-balance mb-2">Call the hits before opening night.</p>
+        <p className="text-3xl sm:text-4xl font-black leading-tight sm:leading-tight tracking-tight text-white text-balance mb-2">Call the hits before opening night.</p>
         <p className="text-lg sm:text-xl font-semibold text-brand mb-4">Pick once. Root all season.</p>
         <p className="text-lg sm:text-xl text-gray-300 max-w-xl mx-auto mb-3">
           Draft up to {info.teamSize} shows on a ${info.budget} budget.
@@ -135,7 +143,9 @@ export default function FantasyLandingPage() {
           <span className="inline-flex items-center gap-2 bg-brand/10 border border-brand/20 rounded-full px-4 py-1.5">
             <span className="text-brand text-sm font-bold">Winner gets {PRIZE_DESCRIPTION}</span>
           </span>
-          <p className="text-sm text-gray-400 mt-3">{draftStatus}</p>
+          <p className="text-sm text-gray-400 mt-3">
+            {draftStatus.map(line => <span key={line} className="block text-balance">{line}</span>)}
+          </p>
         </div>
         <div className="mb-3">
           <a
@@ -154,43 +164,6 @@ export default function FantasyLandingPage() {
           </a>
         </div>
       </section>
-
-      {/* Already open */}
-      {openedNow.length > 0 && (
-        <section className="max-w-3xl mx-auto px-4 py-6">
-          <div className="bg-surface-raised/50 rounded-xl p-6 border border-brand/20">
-            <h2 className="text-lg font-bold mb-2">
-              {preDraft
-                ? `${openedNow.length === 1 ? 'One show opens' : `${openedNow.length} shows open`} before the draft does`
-                : `${openedNow.length === 1 ? 'One show has' : `${openedNow.length} shows have`} already opened`}
-            </h2>
-            <p className="text-sm text-gray-400 mb-3">
-              {preDraft ? 'Their reviews will be public before anyone can draft' : 'Their reviews are already public'}, so they earn box office and awards points only (awards only if they close before {lateEntry ? 'your first box office week' : <>box office starts on {shortDate(info.scoringStart)}</>}).
-              The same rule applies to any show that opens before you draft: you can still pick it, but critic and audience points go only to players who drafted it before opening night.
-            </p>
-            <ul className="text-sm text-gray-300 space-y-2">
-              {alreadyOpen.map(s => (
-                <li key={s.id} className="flex items-start justify-between gap-4">
-                  <span className="min-w-0">
-                    <span className="block">{s.title}</span>
-                    <span className="block text-xs text-gray-500">
-                      {s.criticScore != null && <>CriticScore {Math.round(s.criticScore)}</>}
-                      {s.criticScore != null && s.openingDate && ' · '}
-                      {s.openingDate && <>{s.openingDate > todayNy ? 'opens' : 'opened'} {shortDate(s.openingDate)}</>}
-                    </span>
-                  </span>
-                  <span className="font-mono text-emerald-400 shrink-0">${s.price}</span>
-                </li>
-              ))}
-            </ul>
-            {alreadyOpenOffBroadway > 0 && (
-              <p className="text-xs text-gray-500 mt-3">
-                {alreadyOpenOffBroadway === 1 ? 'Plus one Off-Broadway show' : `Plus ${alreadyOpenOffBroadway} Off-Broadway shows`} (no box office, so awards points only). All are in the <a href="/fantasy/guide" className="text-brand/80 hover:text-brand">Draft Guide</a>.
-              </p>
-            )}
-          </div>
-        </section>
-      )}
 
       {/* How It Works */}
       <section className="max-w-3xl mx-auto px-4 py-12">
@@ -220,6 +193,35 @@ export default function FantasyLandingPage() {
               The season runs through Tony Awards night in June.
               Most points wins.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Season calendar: right after How It Works (owner 2026-10-17) */}
+      <section className="max-w-3xl mx-auto px-4 py-12">
+        <h2 className="text-2xl font-bold mb-6 text-center">Season Calendar</h2>
+        <div className="bg-surface-raised/50 rounded-xl p-6">
+          <ol className="space-y-3 text-sm">
+            {calendar.map(item => (
+              <li key={item.label} className="flex gap-4">
+                <span className="w-24 shrink-0 font-mono text-brand">{shortDate(item.date)}</span>
+                <span className="text-gray-300">{item.label}</span>
+              </li>
+            ))}
+          </ol>
+          <div className="grid sm:grid-cols-3 gap-4 text-sm mt-6 pt-6 border-t border-white/5">
+            <div>
+              <span className="text-gray-500">Budget</span>
+              <p className="text-white font-medium">${info.budget} for up to {info.teamSize} shows</p>
+            </div>
+            <div>
+              <span className="text-gray-500">Draftable Shows</span>
+              <p className="text-white font-medium">{info.broadwayShows} Broadway + {info.offBroadwayShows} Off-Broadway</p>
+            </div>
+            <div>
+              <span className="text-gray-500">Season</span>
+              <p className="text-white font-medium">{shortDate(DRAFT_OPENS)} to {longDate(info.scoringEnd)}</p>
+            </div>
           </div>
         </div>
       </section>
@@ -360,34 +362,42 @@ export default function FantasyLandingPage() {
         </div>
       </section>
 
-      {/* Season calendar */}
-      <section className="max-w-3xl mx-auto px-4 py-12">
-        <h2 className="text-2xl font-bold mb-6 text-center">Season Calendar</h2>
-        <div className="bg-surface-raised/50 rounded-xl p-6">
-          <ol className="space-y-3 text-sm">
-            {calendar.map(item => (
-              <li key={item.label} className="flex gap-4">
-                <span className="w-24 shrink-0 font-mono text-brand">{shortDate(item.date)}</span>
-                <span className="text-gray-300">{item.label}</span>
-              </li>
-            ))}
-          </ol>
-          <div className="grid sm:grid-cols-3 gap-4 text-sm mt-6 pt-6 border-t border-white/5">
-            <div>
-              <span className="text-gray-500">Budget</span>
-              <p className="text-white font-medium">${info.budget} for up to {info.teamSize} shows</p>
-            </div>
-            <div>
-              <span className="text-gray-500">Draftable Shows</span>
-              <p className="text-white font-medium">{info.broadwayShows} Broadway + {info.offBroadwayShows} Off-Broadway</p>
-            </div>
-            <div>
-              <span className="text-gray-500">Scoring Period</span>
-              <p className="text-white font-medium">{shortDate(info.scoringStart)} to {longDate(info.scoringEnd)}</p>
-            </div>
+      {/* Already open: a scoring exception, so it follows the scoring rules (owner 2026-10-17: leading with it made no sense) */}
+      {openedNow.length > 0 && (
+        <section className="max-w-3xl mx-auto px-4 py-6">
+          <div className="bg-surface-raised/50 rounded-xl p-6 border border-brand/20">
+            <h2 className="text-lg font-bold mb-2">
+              {preDraft
+                ? `${openedNow.length === 1 ? 'One show opens' : `${openedNow.length} shows open`} before the draft does`
+                : `${openedNow.length === 1 ? 'One show has' : `${openedNow.length} shows have`} already opened`}
+            </h2>
+            <p className="text-sm text-gray-400 mb-3">
+              {preDraft ? 'Their reviews will be out before the draft opens' : 'Their reviews are already out'}. You can still pick them, but they score box office and awards points only.
+              The same goes for any show that opens before you draft: critic and audience points go only to players who picked it before its opening day.
+            </p>
+            <ul className="text-sm text-gray-300 space-y-2">
+              {alreadyOpen.map(s => (
+                <li key={s.id} className="flex items-start justify-between gap-4">
+                  <span className="min-w-0">
+                    <span className="block">{s.title}</span>
+                    <span className="block text-xs text-gray-500">
+                      {s.criticScore != null && <>CriticScore {Math.round(s.criticScore)}</>}
+                      {s.criticScore != null && s.openingDate && ' · '}
+                      {s.openingDate && <>{s.openingDate > todayNy ? 'opens' : 'opened'} {shortDate(s.openingDate)}</>}
+                    </span>
+                  </span>
+                  <span className="font-mono text-emerald-400 shrink-0">${s.price}</span>
+                </li>
+              ))}
+            </ul>
+            {alreadyOpenOffBroadway > 0 && (
+              <p className="text-xs text-gray-500 mt-3">
+                {alreadyOpenOffBroadway === 1 ? 'Plus one Off-Broadway show' : `Plus ${alreadyOpenOffBroadway} Off-Broadway shows`} (no box office, so awards points only). All are in the <a href="/fantasy/guide" className="text-brand/80 hover:text-brand">Draft Guide</a>.
+              </p>
+            )}
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* FAQ */}
       <section className="max-w-3xl mx-auto px-4 py-12">
@@ -410,7 +420,7 @@ export default function FantasyLandingPage() {
             },
             {
               q: 'Can I pick a show that has already opened?',
-              a: 'Yes. It earns box office and awards points for you, but not critic or audience points, because those scores were public when you drafted. The same goes for audience points on a show in previews that already has an audience grade: the draft form marks those.',
+              a: 'Yes. It earns box office and awards points for you, but not critic or audience points, because those scores were public when you drafted. A show counts as opened from its opening day, so to earn its critic and audience points, pick it by the day before. The same goes for audience points on a show in previews that already has an audience grade: the draft form marks those.',
             },
             {
               q: 'Can I change my picks after submitting?',

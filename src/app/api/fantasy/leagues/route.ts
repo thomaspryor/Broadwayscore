@@ -1,5 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSupabaseClient } from '@/lib/supabase-server';
+import { canonicalFantasyEmail } from '@/config/fantasy';
+
+// Per-IP cap on top of the per-email one below: the email is unverified, so
+// random addresses would otherwise create leagues without limit (BRO-5548
+// audit). Same in-memory-per-instance shape as the draft route; counts
+// created leagues only.
+const ipLeagueMap = new Map<string, { count: number; resetAt: number }>();
+const IP_LEAGUE_LIMIT = 10;
+const IP_LEAGUE_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+
+function ipOverLeagueLimit(ip: string): boolean {
+  const entry = ipLeagueMap.get(ip);
+  return !!entry && Date.now() <= entry.resetAt && entry.count >= IP_LEAGUE_LIMIT;
+}
+
+function recordLeague(ip: string): void {
+  const now = Date.now();
+  const entry = ipLeagueMap.get(ip);
+  if (!entry || now > entry.resetAt) ipLeagueMap.set(ip, { count: 1, resetAt: now + IP_LEAGUE_WINDOW_MS });
+  else entry.count++;
+}
 
 function nanoid6(): string {
   const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -22,6 +43,10 @@ function nanoid6(): string {
  */
 export async function POST(request: NextRequest) {
   try {
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+    if (ipOverLeagueLimit(ip)) {
+      return NextResponse.json({ error: 'Too many leagues created from this connection. Try again in an hour.' }, { status: 429 });
+    }
     const body = await request.json().catch(() => null);
     if (!body) return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
 
@@ -32,10 +57,12 @@ export async function POST(request: NextRequest) {
     }
     const cleanName = name.trim().slice(0, 60);
 
-    if (!created_by_email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(created_by_email.trim())) {
+    if (typeof created_by_email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(created_by_email.trim())) {
       return NextResponse.json({ error: 'Valid email required' }, { status: 400 });
     }
-    const cleanEmail = created_by_email.toLowerCase().trim();
+    // Same canonical form as draft entries, so name+1@gmail.com cannot dodge
+    // the 5-a-day cap below or the database trigger (BRO-5548 audit).
+    const cleanEmail = canonicalFantasyEmail(created_by_email);
 
     const supabase = getServerSupabaseClient();
     if (!supabase) {
@@ -78,6 +105,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to create league' }, { status: 500 });
     }
 
+    recordLeague(ip);
     return NextResponse.json({ code, name: cleanName });
   } catch (err) {
     console.error('Fantasy league POST error:', err);

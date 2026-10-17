@@ -271,6 +271,9 @@ export function canonicalFantasyEmail(email: string): string {
   const plus = local.indexOf('+');
   if (plus > 0) local = local.slice(0, plus);
   if (domain === 'gmail.com') local = local.replace(/\./g, '');
+  // "...@gmail.com" or "+x@outlook.com" would canonicalize to "@domain",
+  // which the database rejects (a 500): keep such an address as typed.
+  if (!local) return lower;
   return `${local}@${domain}`;
 }
 

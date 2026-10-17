@@ -51,6 +51,18 @@ const awardsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'awards.json'),
 const { scoring, shows: fantasyShows, _meta: meta } = fantasyConfig;
 const weeks = grossesRaw.weeks || {};
 
+// computeAwardsPoints skips a record with no season (it cannot prove it is
+// this season's). Pulitzer records carry none and score nothing anyway; any
+// other unseasoned record on a draftable show would silently lose its points,
+// so say so in the run log (BRO-5548).
+for (const showId of Object.keys(fantasyShows)) {
+  for (const [key, rec] of Object.entries(awardsData.shows?.[showId] || {})) {
+    if (rec && typeof rec === 'object' && !rec.season && !/^pulitzer/i.test(key)) {
+      console.error(`::warning::awards.json ${showId}.${key} has no season, so it scores 0 fantasy points. Add its season.`);
+    }
+  }
+}
+
 if (meta.season !== seasonConfig.season) {
   console.error(`fantasy-league.json is for season ${meta.season} but src/config/fantasy-season.json says ${seasonConfig.season}. Run generate-fantasy-config.js first.`);
   process.exit(1);
