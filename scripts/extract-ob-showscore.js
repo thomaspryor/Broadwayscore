@@ -5,6 +5,7 @@ const { resolveOutletFromCritic, resolveOutletFromUrl } = require('./lib/review-
 // Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
 // `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
 const { parseJsonLd } = require('./lib/jsonld');
+const { isUkPageForShow } = require('./lib/show-score-canonical');
 
 const archivePath = 'data/aggregator-archive/show-score';
 const urlsData = JSON.parse(fs.readFileSync('data/show-score-urls.json', 'utf8'));
@@ -28,11 +29,14 @@ for (const [showId, url] of Object.entries(urlsData.shows)) {
   processed++;
 
   let audienceScore = null, audienceReviewCount = null;
+  const ukPage = isUkPageForShow(showsData.shows.find(s => s.id === showId), html, url);
   const jsonLd = doc.querySelectorAll('script[type="application/ld+json"]');
   for (const el of jsonLd) {
     try {
       for (const data of parseJsonLd(el.textContent)) {
         if (!data.aggregateRating) continue;
+        // BRO-5499 follow-up: a London page served at the NYC slug carries London's rating.
+        if (ukPage) continue;
         audienceScore = data.aggregateRating.ratingValue;
         audienceReviewCount = data.aggregateRating.reviewCount;
       }

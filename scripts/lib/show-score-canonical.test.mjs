@@ -47,3 +47,37 @@ test('allowsUkShowScorePage: London shows and UK regional houses yes; US regiona
   assert.equal(allowsUkShowScorePage({ category: 'off-broadway', market: 'broadway' }), false);
   assert.equal(allowsUkShowScorePage({ category: 'tour', market: 'tour' }), false);
 });
+
+// ── BRO-5499 follow-up: every path that turns a Show Score page into audience data uses the guard ──
+const { isUkPageForShow } = require('./show-score-canonical');
+const OB_SHOW = { id: 'midnight-off-broadway-2026', category: 'off-broadway', market: 'broadway', venue: 'Daryl Roth Theatre' };
+const WE_SHOW = { id: 'midnight-at-the-never-get-west-end-2026', category: 'west-end', market: 'west-end', venue: 'Apollo' };
+const UK_REGIONAL = { id: 'x-regional-2026', category: 'regional', venue: 'Chichester Festival Theatre' };
+const US_REGIONAL = { id: 'y-regional-2026', category: 'regional', venue: 'Emerson Colonial Theatre, Boston, MA' };
+const CACHED_URL = 'https://www.show-score.com/off-broadway-shows/midnight';
+
+test('isUkPageForShow: the cached-URL case that re-poisoned Midnight (US slug, London canonical)', () => {
+  assert.equal(isUkPageForShow(OB_SHOW, LONDON_AS_NYC, CACHED_URL), true);
+  assert.equal(isUkPageForShow(OB_SHOW, NYC_PAGE, CACHED_URL), false);
+});
+test('isUkPageForShow: UK shows and UK regional houses may use UK pages, US regional may not', () => {
+  assert.equal(isUkPageForShow(WE_SHOW, LONDON_AS_NYC, 'https://www.show-score.com/uk/london/west-end-shows/x'), false);
+  assert.equal(isUkPageForShow(UK_REGIONAL, LONDON_AS_NYC, CACHED_URL), false);
+  assert.equal(isUkPageForShow(US_REGIONAL, LONDON_AS_NYC, CACHED_URL), true);
+});
+
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+test('structural: every script that records a Show Score audience rating from page HTML calls the UK guard', () => {
+  const scripts = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
+  for (const f of ['scrape-show-score-audience.js', 'extract-show-score-reviews.js', 'extract-ob-showscore.js']) {
+    const src = fs.readFileSync(path.join(scripts, f), 'utf8');
+    assert.match(src, /if \(\s*isUkPageForShow\(|\bconst \w+ = isUkPageForShow\(/, `${f} must call isUkPageForShow (show-score-canonical) before recording audienceScore/sources.showScore`);
+  }
+  // processShow (cached URLs) is the path that failed, not just discovery
+  const scraper = fs.readFileSync(path.join(scripts, 'scrape-show-score-audience.js'), 'utf8');
+  const processShowBody = scraper.slice(scraper.indexOf('async function processShow('));
+  assert.ok(processShowBody.slice(0, processShowBody.indexOf('extractAudienceData(')).includes('if (isUkPageForShow('),
+    'processShow must reject a UK page before extractAudienceData()');
+});

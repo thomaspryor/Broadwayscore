@@ -70,4 +70,16 @@ function allowsUkShowScorePage(show) {
   return false;
 }
 
-module.exports = { servesUkPageForUsShow, allowsUkShowScorePage, canonicalUrlsOf, pageRatingOf, storedRatingMatchesPage, UK_PATH_RE };
+/**
+ * Single gate for "may this show's fetched Show Score page be a UK page?" used by every path that
+ * turns a Show Score page into data (URL discovery, the cached-URL scrape, both show-score.json
+ * extractors). BRO-5499 guarded only discovery, so Midnight's already-cached URL kept re-attaching
+ * London's 92%/353 ratings on every scheduled scrape.
+ */
+function isUkPageForShow(show, html, url) {
+  const { isLondonMarket } = require('./venue-classification');
+  const allowWestEnd = isLondonMarket(show && show.category) || allowsUkShowScorePage(show);
+  return servesUkPageForUsShow(html, url, { allowWestEnd });
+}
+
+module.exports = { isUkPageForShow, servesUkPageForUsShow, allowsUkShowScorePage, canonicalUrlsOf, pageRatingOf, storedRatingMatchesPage, UK_PATH_RE };

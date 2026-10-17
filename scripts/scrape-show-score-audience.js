@@ -19,7 +19,8 @@
  */
 
 const { canDiscoverShowScoreUrl } = require('./lib/showscore-status-eligibility');
-const { servesUkPageForUsShow, allowsUkShowScorePage } = require('./lib/show-score-canonical');
+const { servesUkPageForUsShow, allowsUkShowScorePage, isUkPageForShow, pageRatingOf, storedRatingMatchesPage } = require('./lib/show-score-canonical');
+const { removeSourceWithTombstone } = require('./lib/reconcile-audience-buzz');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
@@ -904,6 +905,26 @@ function getCachedUrl(showId) {
 let showFetchFailed = false;
 
 /**
+ * A US show whose Show Score page turned out to be London's: clear any rating an earlier run attached
+ * (and recompute the combined score from what remains) so the bad number does not wait for the purge.
+ */
+function dropUkShowScoreSource(show, html) {
+  const rec = audienceBuzz.shows && audienceBuzz.shows[show.id];
+  if (dryRun || !rec || !rec.sources || !rec.sources.showScore) return;
+  // Only when the stored rating IS the UK page's rating: a transient London page says nothing about a
+  // rating scraped earlier from the right page (same proof as purge-uk-show-score-audience.js).
+  if (!storedRatingMatchesPage(rec.sources.showScore, pageRatingOf(html))) return;
+  removeSourceWithTombstone(rec, 'showScore', 'Show Score page is a UK production page (canonical /uk/london/...) (BRO-5499)');
+  const { score } = calculateCombinedScore(rec.sources, { status: show.status, closingDate: show.closingDate, category: show.category });
+  rec.combinedScore = score ?? null;
+  rec.designation = score == null ? null : getDesignation(score);
+  console.log(`  Cleared stale Show Score rating for ${show.id}; combinedScore now ${rec.combinedScore}`);
+  // processShow returns null here, so the main loop's save-on-success never runs for this show.
+  // Shard runs merge through merge-show-score-shards.js instead of writing audience-buzz directly.
+  if (!shardMode) saveAudienceBuzz(audienceBuzz);
+}
+
+/**
  * Process a single show (cache-only — URL must already be in show-score-urls.json)
  */
 async function processShow(show, { rediscovered = false } = {}) {
@@ -954,6 +975,15 @@ async function processShow(show, { rediscovered = false } = {}) {
     // Looser legacy markers: skip only, never uncache on them.
     if (!html || html.includes('Page not found') || html.includes('404 -')) {
       console.log(`  SKIP: Show not found on Show Score`);
+      return null;
+    }
+
+    // BRO-5499 follow-up: Show Score serves the London page at a US slug until the transfer has a
+    // NYC page. This is the path every cached URL takes, so the guard must live here too (it was
+    // discovery-only, which let Midnight's cached URL re-attach London's 92%/353 ratings each run).
+    if (isUkPageForShow(show, html, url)) {
+      console.log(`  SKIP: ${url} is a UK Show Score page (canonical /uk/london/...), not this US production`);
+      dropUkShowScoreSource(show, html);
       return null;
     }
 

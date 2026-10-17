@@ -24,6 +24,7 @@ const { detectSiblingMisfile } = require('./lib/sibling-misfile');
 // `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
 const { parseJsonLd } = require('./lib/jsonld');
 const { makeArchiveShowChecker } = require('./lib/archive-cache-guard');
+const { isUkPageForShow } = require('./lib/show-score-canonical');
 const { filterToLiveShowIds } = require('./lib/live-show-ids');
 
 const archivePath = path.join(__dirname, '../data/aggregator-archive/show-score');
@@ -266,6 +267,14 @@ function extractShowData(html, showId, sourceUrl) {
       result._rejectAll = true;
       result._siblingMisfile = verdict;
     }
+  }
+
+  // BRO-5499 follow-up: a US show whose archived page is London's (Show Score serves it at the US
+  // slug until a NYC page exists) must not record London's audience rating. Critic tiles keep their
+  // own wrongProduction handling downstream.
+  if (isUkPageForShow(showsById[showId], html, sourceUrl)) {
+    result.audienceScore = null;
+    result.audienceReviewCount = null;
   }
 
   return result;
