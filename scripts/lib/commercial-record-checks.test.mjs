@@ -80,6 +80,7 @@ test('an unannounced-recoupment flag needs a source that says so (BRO-5562)', ()
   const prior = { designation: 'Windfall', recouped: true, recoupedDate: '2023-11', isEstimate: { recouped: true }, recoupedSource: 'Trade listing.' };
   assert.equal(flagWarn({ ...prior, notes: 'new note' }, { priorRecord: prior }), 0);
   assert.equal(flagWarn({ ...prior, recoupedSource: reported }, { priorRecord: prior }), 1);
+  assert.equal(flagWarn({ ...prior, recoupedSource: 'The producers did not announce it.' }, { priorRecord: prior }), 0);
   assert.equal(flagWarn({ ...prior }, { priorRecord: { ...prior, isEstimate: {} } }), 1);
 });
 

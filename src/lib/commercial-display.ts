@@ -463,8 +463,8 @@ const NOT_ANNOUNCED_LABEL = 'Not publicly announced';
 
 /**
  * A recouped:true record whose recoupment was never announced: the record
- * flags it (isEstimate.recouped, set by plan for Appropriate, Sweeney Todd and
- * Into the Woods) or its recoupedSource says so. Only ever downgrades the
+ * flags it (isEstimate.recouped, which the record checks require its
+ * recoupedSource to explain: BRO-5562) or its recoupedSource says so. Only ever downgrades the
  * label. humanReviewedDesignation is NOT a signal: it marks any hand-checked
  * record, and announced ones (Purpose, Gutenberg) carry it too (BRO-4623).
  */
