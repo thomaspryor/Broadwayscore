@@ -49,6 +49,7 @@ const AUDIT_DIR = path.join(__dirname, '../data/audit');
 const { getTier } = require('./lib/outlet-tiers');
 const { GEMINI_FLASH } = require('./lib/models');
 const { crossOutletPointer, skipAsAlreadyFlagged } = require('./lib/cross-outlet-pointer');
+const { wouldCloseCrossOutletCycle } = require('./lib/cross-outlet-cycle');
 
 // ============================================================
 // Text Processing
@@ -434,6 +435,15 @@ async function main() {
         try {
           const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
           if (data.crossOutletDuplicate) continue; // Already flagged
+          // BRO-5265: flagged rows stay in the comparison pool, so a flipped
+          // primary pick would flag the old primary against its own copy and
+          // close a mutual 2-cycle. The pair already has its one flagged copy.
+          let primaryData = null;
+          try { primaryData = JSON.parse(fs.readFileSync(path.join(REVIEW_TEXTS_DIR, d.showId, d.primaryFile), 'utf8')); } catch { /* missing primary: flag as before */ }
+          if (wouldCloseCrossOutletCycle(primaryData, d.showId, d.secondaryFile)) {
+            console.log(`  Skipped ${d.showId}/${d.secondaryFile}: ${d.primaryFile} is already flagged as its copy (would close a 2-cycle)`);
+            continue;
+          }
           data.crossOutletDuplicate = true;
           delete data.crossOutletClearReason; // re-flag supersedes an earlier clear breadcrumb (BRO-3872)
           data.crossOutletPrimaryFile = `${d.showId}/${d.primaryFile}`;

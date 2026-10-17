@@ -37,6 +37,7 @@ const { shouldBlockDuplicateOfGate } = require('./lib/duplicate-of-gate');
 const { findDuplicateOfCycle } = require('./lib/duplicate-cycle');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 const { clearCrossOutletFields } = require('./lib/cascade-clear-duplicate-refs');
+const { crossOutletCyclePartner } = require('./lib/cross-outlet-cycle');
 const { isCrossOutletSyndicationPair, isRenameCollisionPair } = require('./lib/syndication-pairs');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -285,6 +286,11 @@ function audit() {
             mismatches.push(twins.length
               ? { ...base, reason: 'self-reference', siblingUrl: twins[0].ref }
               : { ...base, reason: 'self-reference', action: 'clear' });
+          } else if (sameDir && crossOutletCyclePartner(data, file, showId, load)) {
+            // BRO-5265: mutual 2-cycle (the primary names this file as ITS primary).
+            // Scoring keeps exactly one copy (cross-outlet-cycle.js tiebreak), but
+            // the pair needs a byline check, so report-only (no action) for triage.
+            mismatches.push({ ...base, reason: 'crossOutlet-cycle', siblingUrl: targetFile });
           } else if (!exists) {
             // A missing primary is not proof the review is unique: the primary is
             // often just RENAMED (outlet--unknown -> outlet--critic, show-dir rename)
@@ -495,7 +501,7 @@ function main() {
   const crossOutletHealable = crossOutlet.filter(m => m.action === 'clear');
   const crossOutletRepoint = crossOutlet.filter(m => m.action === 'repoint');
   if (crossOutlet.length > 0) {
-    console.log(`crossOutletDuplicate: ${crossOutlet.length} dangling primary pointer(s) (${crossOutletHealable.length} auto-healable, ${crossOutletRepoint.length} repointable to a live copy, ${crossOutlet.length - crossOutletHealable.length - crossOutletRepoint.length} report-only: undecided renamed primary / self-reference with a twin / pointer-missing):\n`);
+    console.log(`crossOutletDuplicate: ${crossOutlet.length} primary pointer issue(s) (${crossOutletHealable.length} auto-healable, ${crossOutletRepoint.length} repointable to a live copy, ${crossOutlet.length - crossOutletHealable.length - crossOutletRepoint.length} report-only: undecided renamed primary / self-reference with a twin / pointer-missing / mutual 2-cycle):\n`);
     // Capped: the drift digest keeps only the last 40 output lines; --json has the full list.
     for (const m of crossOutlet.slice(0, 10)) console.log(`  ${m.showId}/${m.file}  → crossOutletPrimaryFile: ${m.duplicateOf}  (${m.reason}${m.reason === 'primary-renamed' ? `: ${m.siblingUrl}` : ''})`);
     if (crossOutlet.length > 10) console.log(`  … ${crossOutlet.length - 10} more (use --json)`);

@@ -4679,6 +4679,8 @@ function isRejectedAtExclusion(data) {
  * @param {boolean} [opts.forScoring] - the LLM scorer's eligibility (isScoreable) only: a legacy
  *   web-search row whose score came from an excerpt stays scoreable when its page text is
  *   scoreable, so it can be rescored (BRO-5222). Never pass it from a rebuild/inclusion path.
+ * @param {boolean} [opts.ignoreCrossOutletDuplicate] - internal (BRO-5265): skip the
+ *   crossOutletDuplicate gate. Only cross-outlet-cycle.js's "excluded otherwise" probe passes it.
  */
 function explainExclusion(data, show, filePath, opts) {
   if (!data) return 'no-data';
@@ -5009,7 +5011,17 @@ function explainExclusion(data, show, filePath, opts) {
   ) return 'nonReview';
   if (data.fabricatedEntry === true) return 'fabricatedEntry';
   if (data.isSyndicatedDuplicate === true) return 'isSyndicatedDuplicate';
-  if (data.crossOutletDuplicate === true) return 'crossOutletDuplicate';
+  // BRO-5265: a mutual 2-cycle (A names B as primary and B names A) used to drop
+  // BOTH copies. With filePath, keep exactly one (cross-outlet-cycle.js tiebreak;
+  // rebuild-all-reviews.js calls the same helper). ignoreCrossOutletDuplicate is
+  // that helper's probe for "excluded for some OTHER reason" and stops recursion.
+  if (data.crossOutletDuplicate === true && !(opts && opts.ignoreCrossOutletDuplicate)) {
+    const probeOpts = { ...(opts || {}), ignoreCrossOutletDuplicate: true };
+    const excludedOtherwise = (d, p) => explainExclusion(d, show, p, probeOpts) !== null;
+    if (require('./cross-outlet-cycle').excludeAsCrossOutletCopy(data, filePath, excludedOtherwise)) {
+      return 'crossOutletDuplicate';
+    }
+  }
   // Runtime known-syndication dedup: same critic publishes simultaneously at a
   // primary outlet and one or more secondary outlets (wire service / content-
   // sharing agreement). rebuild-all-reviews.js skips the secondary copy even

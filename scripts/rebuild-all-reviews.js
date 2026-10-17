@@ -2936,7 +2936,7 @@ showDirs.forEach(showId => {
             }
           }
           // Check if reference would be excluded by later guards
-          refExcluded = !isIncludableForRebuild(refData, showById[showId]);
+          refExcluded = !isIncludableForRebuild(refData, showById[showId], refPath);
           if (!refExcluded && refData.publishDate && showDateMap[showId] && !refData.allowEarlyDate) {
             // Same predicate as the main inclusion pass (evaluatePreWindowInclusion,
             // incl. the priorRuns exemption) — a threshold drift here would let a
@@ -3044,7 +3044,7 @@ showDirs.forEach(showId => {
             circularSameText = true;
           }
           // Check if reference would be excluded by later guards
-          refWouldBeExcluded = !isIncludableForRebuild(refData, showById[showId]);
+          refWouldBeExcluded = !isIncludableForRebuild(refData, showById[showId], refPath);
           if (!refWouldBeExcluded && refData.publishDate && showDateMap[showId] && !refData.allowEarlyDate) {
             // Same predicate as the duplicateOf replica above — the two duplicate
             // paths must agree on whether a reference is excluded or recovery
@@ -4270,7 +4270,12 @@ showDirs.forEach(showId => {
 
       // Skip cross-outlet duplicates (different critic, same text across outlets)
       // Flagged by scripts/detect-cross-outlet-duplicates.js
-      if (data.crossOutletDuplicate === true) {
+      // BRO-5265: a mutual 2-cycle keeps exactly one copy (same helper and probe as
+      // explainExclusion in review-guards.js); every other flagged row is skipped.
+      if (data.crossOutletDuplicate === true && require('./lib/cross-outlet-cycle').excludeAsCrossOutletCopy(
+        data, filePath,
+        (d, p) => !isIncludableForRebuild(d, showById[showId], p, { ignoreCrossOutletDuplicate: true }),
+      )) {
         logExclusion("skippedCrossOutletDupe", showId, file, data);
         stats.skippedCrossOutletDupe = (stats.skippedCrossOutletDupe || 0) + 1;
         return;
