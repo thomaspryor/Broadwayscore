@@ -347,5 +347,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-17T13:48:15.984Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5542-owner-copy-no-claude",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5542-owner-copy-no-claude",
+    "description": "land.yml did not land land/bro-5542-owner-copy-no-claude: the unit-tests-node gate went red at d236d18183. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39035669976",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5542-owner-copy-no-claude"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "d236d18183cc01fe0875095d4a2fd8db397db1a2"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39035669976"
+      }
+    ],
+    "queuedAt": "2026-10-17T13:52:59.282Z"
   }
 ]
