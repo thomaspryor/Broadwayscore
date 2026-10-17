@@ -67,7 +67,7 @@ function rawDetectorBasis(d) {
 // it must not hold roundup-gap:all open forever (anon-a-tempest frontmezzjunkies).
 const NONREVIEW_ARTICLE_TYPES = new Set(['preview', 'news', 'feature', 'interview', 'press-release']);
 // BRO-5391: announcement/press-release pieces (a roundup merely linked the news
-// post) are non-reviews too, via two other verdicts: a unanimous 3-model
+// post) are non-reviews too, via two other verdicts: a >=3-model-agreement
 // scoreability-ensemble rejection, or a human-verified non-review (isNotReview + nonReviewMethod 'manual-verified').
 function isEnsembleNonReview(d) {
   return !!d && d.rejectionReason === 'not_a_review' && d.rejectedBy === 'ensemble-scoreability-check'

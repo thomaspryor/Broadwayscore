@@ -621,6 +621,12 @@ test('acceptSerpCensusResult drops BWW city editions and story-collection book r
     assert.equal(classifyFlaggedMiss([{ ...ens, rejectionAgreeCount: 2 }], explain).confirmedNonReview, false);
   });
 
+  test('BRO-5391: mixed list with one unconfirmed automated file stays a gap', () => {
+    const ens = { _file: 'e--u.json', outletId: 'e', url: 'https://e.example/a', fullText: body,
+      rejectedBy: 'ensemble-scoreability-check', rejectionReason: 'not_a_review', rejectionAgreeCount: 3 };
+    assert.equal(classifyFlaggedMiss([ens, cvWrongProduction], explain).confirmedNonReview, false);
+  });
+
   test('BRO-5391: human isNotReview confirms non-review; other human assertions do not', () => {
     const hn = { ...cvWrongProduction, _file: 'h--c.json', isNotReview: true, isNonReview: true, rejectionReason: 'not_a_review', nonReviewMethod: 'manual-verified' };
     assert.equal(classifyFlaggedMiss([hn], explain).confirmedNonReview, true);
