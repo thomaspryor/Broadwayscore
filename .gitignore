@@ -90,6 +90,8 @@ data/pending-fixes/*
 !data/pending-fixes/bro-3986.json
 !data/pending-fixes/bro-4233.json
 !data/pending-fixes/bro-4734.json
+!data/pending-fixes/bro-4623-orphan-key.json
+!data/pending-fixes/bro-4623-coverage-outcome.json
 !data/pending-fixes/.gitkeep
 
 # Opening night broadcast dedup state (regenerated from Formspree sync + send receipts)
@@ -290,6 +292,7 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # PARENT directory is itself excluded, so a blanket `/docs/` would make
 # `!/docs/experiments/` a no-op (git never traverses into an excluded dir).
 /docs/*
+!/docs/bro-4623-commercial-readiness.md
 # Feature specs are cross-session deliverables (Notion cards + PRs point at
 # them) — durable-path rule, same rationale as /docs/experiments/ below.
 !/docs/specs/

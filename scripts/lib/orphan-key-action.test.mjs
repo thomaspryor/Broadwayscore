@@ -10,6 +10,38 @@ const filler = Array.from({ length: 120 }, (_, i) => `filler-show-${i}`);
 const ctx = () => ({ liveIds: new Set(['hamilton-2015', 'morgan-bassichis-can-i-be-frank-off-broadway-2026', ...filler]), retiredIds: new Set(['old-junk-2026']) });
 const base = { file: 'audience-buzz.json', reason: 'orphan of a renamed show (BRO-3248)' };
 
+const commercialCtx = () => ({ ...ctx(), liveSlugs: new Set(['hamilton', 'mamma-mia-2001']) });
+const commercialAction = { file: 'commercial.json', showId: '860', reason: 'BRO-4623: orphan research metadata without a live show' };
+
+test('drops an orphan commercial key without changing live records', () => {
+  const map = { '860': { designation: 'TBD' }, hamilton: { recouped: true } };
+  assert.equal(applyDropOrphanKey(map, commercialAction, commercialCtx()).ok, true);
+  assert.deepEqual(map, { hamilton: { recouped: true } });
+});
+
+test('commercial deletion protects both live slugs and live IDs', () => {
+  for (const showId of ['hamilton', 'hamilton-2015', 'mamma-mia-2001']) {
+    const map = { [showId]: { designation: 'TBD' } };
+    const before = structuredClone(map);
+    assert.equal(applyDropOrphanKey(map, { ...commercialAction, showId }, commercialCtx()).ok, false);
+    assert.deepEqual(map, before);
+  }
+});
+
+test('commercial deletion refuses missing slug context and a truncated shows list', () => {
+  for (const context of [ctx(), { ...commercialCtx(), liveSlugs: new Set() }, { ...commercialCtx(), liveIds: new Set(['x']) }]) {
+    const map = { '860': { designation: 'TBD' } };
+    assert.equal(applyDropOrphanKey(map, commercialAction, context).ok, false);
+    assert.ok(map['860']);
+  }
+});
+
+test('commercial orphan action only deletes, never moves research onto another show', () => {
+  const map = { '860': { designation: 'TBD' } };
+  assert.equal(applyDropOrphanKey(map, { ...commercialAction, renameTo: 'hamilton' }, commercialCtx()).ok, false);
+  assert.deepEqual(Object.keys(map), ['860']);
+});
+
 test('drops a non-live key', () => {
   const map = { 'proof-express-test-2026': {}, 'hamilton-2015': {} };
   const r = applyDropOrphanKey(map, { ...base, showId: 'proof-express-test-2026' }, ctx());

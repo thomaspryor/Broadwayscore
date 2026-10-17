@@ -189,8 +189,8 @@ async function main() {
     if (!entry) continue;
 
     // Scope guard — Off-Broadway / West End entries must never land in
-    // commercial.json (Broadway-only feature). Unresolved shows pass: adding
-    // a commercial row ahead of the shows-list update is a supported flow.
+    // commercial.json (Broadway-only feature). An explicitly named manual
+    // apply can precede the shows-list update; bulk automation cannot.
     const scopeShow = resolveScopeShow(showsBySlug, showId, entry);
     if (scopeShow && !isCommercialScope(scopeShow)) {
       console.log(`  ⛔ "${showId}" — out of commercial scope (${scopeShow.category}), skipping`);
@@ -242,6 +242,14 @@ async function main() {
     // entries (RSS-poll runs 2026-09-26 / 2026-09-28). The shared resolver
     // only accepts a real slug, or maps a show ID to its slug.
     const { slug: commercialKey, show: keyShow, resolved } = resolveCommercialSlug(showId, entry, showKeyIndex);
+    // BRO-4623: stale pending keys such as "860" survive a show rename. A
+    // bulk apply must not recreate the orphan after its approved cleanup.
+    // Keep the row pending until it resolves, or an operator names it.
+    if (!resolved && !SINGLE_SHOW && !RELEASE_HELD) {
+      console.log(`  Skipping "${showId}": no show resolves in shows.json; left pending for manual review`);
+      skipped++;
+      continue;
+    }
 
     // Safety: never auto-apply recouped:true without human review, EXCEPT when
     // a trusted scraper source + high confidence + trusted publisher domain all

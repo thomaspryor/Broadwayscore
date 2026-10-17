@@ -1,8 +1,9 @@
 'use strict';
 
 /**
- * drop-orphan-key — remove (or move) one audience-buzz.json key whose id is
- * no longer a shows.json row, for execute-approved-fix.js (BRO-3248).
+ * drop-orphan-key: remove an orphan audience-buzz.json or commercial.json
+ * key for execute-approved-fix.js (BRO-3248, BRO-4623). Audience keys can
+ * also be moved onto a live ID; commercial keys can only be removed.
  *
  *   { type: 'drop-orphan-key', file: 'audience-buzz.json', showId, reason, renameTo? }
  *
@@ -20,10 +21,10 @@
 
 const { MIN_PLAUSIBLE_SHOWS } = require('./live-show-ids');
 
-const FILES = new Set(['audience-buzz.json']);
+const FILES = new Set(['audience-buzz.json', 'commercial.json']);
 const ID_RE = /^[a-z0-9][a-z0-9-]*$/;
 
-function applyDropOrphanKey(map, action, { liveIds, retiredIds = new Set() }) {
+function applyDropOrphanKey(map, action, { liveIds, liveSlugs, retiredIds = new Set() }) {
   const { file, showId, renameTo, reason } = action || {};
   if (!FILES.has(file)) return { ok: false, reason: `drop-orphan-key: unsupported file ${file}` };
   if (!showId || !ID_RE.test(showId)) return { ok: false, reason: 'drop-orphan-key: showId missing or malformed' };
@@ -32,6 +33,13 @@ function applyDropOrphanKey(map, action, { liveIds, retiredIds = new Set() }) {
   // real show's key look like an orphan.
   if (!liveIds || liveIds.size < MIN_PLAUSIBLE_SHOWS) return { ok: false, reason: `drop-orphan-key: shows.json has ${liveIds ? liveIds.size : 0} ids (< ${MIN_PLAUSIBLE_SHOWS}), refusing on a stub` };
   if (liveIds.has(showId)) return { ok: false, reason: `drop-orphan-key ${showId}: is a live shows.json id, refusing` };
+  if (file === 'commercial.json') {
+    // Commercial records use slugs, unlike audience records. Checking only
+    // IDs would let a plan delete a real show such as hamilton (ID hamilton-2015).
+    if (!liveSlugs || liveSlugs.size === 0) return { ok: false, reason: 'drop-orphan-key: live shows.json slugs required for commercial.json' };
+    if (liveSlugs.has(showId)) return { ok: false, reason: `drop-orphan-key ${showId}: is a live shows.json slug, refusing` };
+    if (renameTo !== undefined && renameTo !== null) return { ok: false, reason: 'drop-orphan-key: commercial.json supports deletion only' };
+  }
   if (!map || !Object.prototype.hasOwnProperty.call(map, showId)) return { ok: false, reason: `drop-orphan-key ${showId}: no such key in ${file}` };
   if (renameTo !== undefined && renameTo !== null) {
     if (retiredIds.has(showId)) return { ok: false, reason: `drop-orphan-key ${showId}: retired id, its data is not moved onto ${renameTo}` };

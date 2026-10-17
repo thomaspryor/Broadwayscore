@@ -21,8 +21,8 @@
  *   review-file-op — Move/delete/rename review files in data/review-texts/
  *   review-field-edit — Compare-and-set one allowlisted field on a review file
  *                       (scripts/lib/review-field-edit.js; BRO-4216)
- *   drop-orphan-key — Remove or move one audience-buzz.json key that is not a
- *                     shows.json id (scripts/lib/orphan-key-action.js; BRO-3248)
+ *   drop-orphan-key: Remove an orphan commercial.json or audience-buzz.json
+ *                    key, or move an audience key (scripts/lib/orphan-key-action.js)
  *
  * Env vars:
  *   ISSUE_NUMBER       - GitHub issue number (reader feedback), or bro-N[-x] for
@@ -510,8 +510,9 @@ function _showIdSets() {
   if (_idSets) return _idSets;
   const data = loadJsonFile('data/shows.json');
   const liveIds = new Set((data.shows || data).map(s => s && s.id).filter(Boolean));
+  const liveSlugs = new Set((data.shows || data).map(s => s && s.slug).filter(Boolean));
   const retiredIds = new Set(loadRetiredIds().map(e => e.id));
-  _idSets = { liveIds, retiredIds };
+  _idSets = { liveIds, liveSlugs, retiredIds };
   return _idSets;
 }
 

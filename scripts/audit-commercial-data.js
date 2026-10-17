@@ -14,6 +14,7 @@
 require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
+const { getOpenCommercialCoverage } = require('./lib/commercial-coverage');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const COMMERCIAL_FILE = path.join(DATA_DIR, 'commercial.json');
@@ -107,7 +108,6 @@ for (const show of shows) {
 }
 
 const commercialEntries = Object.entries(commercial.shows);
-const commercialKeys = new Set(Object.keys(commercial.shows));
 
 // ID-keyed entries that duplicate a slug-keyed sibling (double-counted
 // pairs — the 2026-08-01 model-drift class). shows.json-backed predicate;
@@ -853,17 +853,7 @@ function checkEstimatedRecoupmentPct() {
 // ============================================
 
 function checkOpenShowCoverage() {
-  const openShows = shows.filter(s => s.status === 'open' || s.status === 'previews');
-  const withCommercial = [];
-  const withoutCommercial = [];
-
-  for (const show of openShows) {
-    if (commercialKeys.has(show.slug)) {
-      withCommercial.push(show);
-    } else {
-      withoutCommercial.push(show);
-    }
-  }
+  const { withCommercial, withoutCommercial } = getOpenCommercialCoverage(shows, commercial.shows);
 
   // Report each missing open show
   for (const show of withoutCommercial) {
@@ -875,7 +865,7 @@ function checkOpenShowCoverage() {
     );
   }
 
-  return { total: openShows.length, covered: withCommercial.length, missing: withoutCommercial.length };
+  return { total: withCommercial.length + withoutCommercial.length, covered: withCommercial.length, missing: withoutCommercial.length };
 }
 
 // ============================================
