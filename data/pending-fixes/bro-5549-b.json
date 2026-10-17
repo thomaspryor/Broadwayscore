@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5549-b",
   "planId": "34977e81-9c09-4404-938e-c3cfc50a8571",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-17T16:35:26.019Z",
   "submitter": {
     "name": null,
@@ -60,5 +60,33 @@
         "description": "the-anarchist-2012: the card printed \"The Anarchist,\"\" with doubled marks after an unfinished \"citing the:\"; single marks inside the quote."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-17T17:29:00.451Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-bands-visit-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-play-that-goes-wrong-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-bands-visit-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-play-that-goes-wrong-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-anarchist-2012"
+    }
+  ]
 }
