@@ -16,7 +16,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const { normalizeOutlet } = require('./review-normalization');
 
 const DEFAULT_REVIEW_TEXTS_DIR = path.join(__dirname, '..', '..', 'data', 'review-texts');
 
@@ -29,8 +28,11 @@ const EXCERPT_FIELDS = ['dtliExcerpt', 'bwwExcerpt', 'showScoreExcerpt', 'nycThe
  * @param {object} data parsed review-text JSON
  * @param {string} showId
  * @param {Set<string>|null} liveOutlets `${showId}|${outletId}` keys (liveOutletKeys), or null for no filter
+ * @param {((name: string) => string)|null} [normalizeOutlet] alias resolver (review-normalization's). Injected, not
+ *   required here: the audit that shares this module must stay write-free across its require
+ *   graph (safe-form allowlist), and review-normalization pulls in exclusion-logger.
  */
-function reviewTextInput(data, showId, liveOutlets = null) {
+function reviewTextInput(data, showId, liveOutlets = null, normalizeOutlet = null) {
   if (!data || typeof data !== 'object') return null;
   // Skip excluded reviews
   if (data.duplicateOf || data.wrongProduction || data.wrongShow || data.wrongAttribution ||
@@ -43,7 +45,7 @@ function reviewTextInput(data, showId, liveOutlets = null) {
   // (rebuild-all-reviews.js normalizeOutletCanonical), so an alias such as
   // metro -> metro-uk still matches.
   if (liveOutlets && !liveOutlets.has(`${showId}|${data.outletId}`)
-      && !liveOutlets.has(`${showId}|${normalizeOutlet(data.outletId || data.outlet)}`)) return null;
+      && !(normalizeOutlet && liveOutlets.has(`${showId}|${normalizeOutlet(data.outletId || data.outlet)}`))) return null;
 
   // Collect all available text (prefer full text, fall back to excerpts)
   const textParts = data.fullText ? [data.fullText] : EXCERPT_FIELDS.map(f => data[f]).filter(Boolean);
@@ -62,7 +64,7 @@ function reviewTextInput(data, showId, liveOutlets = null) {
  * Review texts the generator summarises for a show.
  * @param {string} showId
  * @param {Set<string>|null} liveOutlets
- * @param {{reviewTextsDir?: string, onWarn?: (msg: string) => void}} [opts]
+ * @param {{reviewTextsDir?: string, onWarn?: (msg: string) => void, normalizeOutlet?: (name: string) => string}} [opts]
  * @returns {object[]}
  */
 function loadReviewTexts(showId, liveOutlets = null, opts = {}) {
@@ -71,7 +73,7 @@ function loadReviewTexts(showId, liveOutlets = null, opts = {}) {
   const reviews = [];
   for (const file of fs.readdirSync(dir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json')) {
     try {
-      const row = reviewTextInput(JSON.parse(fs.readFileSync(path.join(dir, file), 'utf-8')), showId, liveOutlets);
+      const row = reviewTextInput(JSON.parse(fs.readFileSync(path.join(dir, file), 'utf-8')), showId, liveOutlets, opts.normalizeOutlet || null);
       if (row) reviews.push(row);
     } catch (err) {
       if (opts.onWarn) opts.onWarn(`Failed to parse ${file}: ${err.message}`);

@@ -3,7 +3,7 @@
  * fingerprint against the one a regeneration would write, built from the same
  * review-text inputs. Text-light shows must not drift; genuine drift must.
  */
-import { describe, it, before, after } from 'node:test';
+import { describe, it, test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
@@ -140,4 +140,16 @@ describe('generator and audit share the module', () => {
     assert.match(audit, /require\('\.\/lib\/critic-consensus-inputs'\)/);
     assert.match(audit, /consensusDriftFlags\(c, current\)/);
   });
+});
+
+test('alias outlets match only through an injected normalizer (the audit stays write-free)', () => {
+  const live = new Set(['s|metro-uk']);
+  const row = { outletId: 'metro', fullText: 'x', assignedScore: 80 };
+  assert.equal(reviewTextInput(row, 's', live), null);
+  assert.ok(reviewTextInput(row, 's', live, (n) => (n === 'metro' ? 'metro-uk' : n)));
+});
+
+test('critic-consensus-inputs does not require review-normalization (safe-form allowlist graph)', () => {
+  const src = fs.readFileSync(new URL('../../scripts/lib/critic-consensus-inputs.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(src, /require\(['"]\.\/review-normalization['"]\)/);
 });

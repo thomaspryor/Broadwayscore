@@ -46,6 +46,7 @@ const anthropic = {
 function loadReviewTexts(showId, liveOutlets = null) {
   return loadConsensusInputs(showId, liveOutlets, {
     onWarn: (msg) => console.warn(`  ⚠️  ${msg}`),
+    normalizeOutlet,
   });
 }
 
