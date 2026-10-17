@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-17T04:35:06.213Z",
+  "generatedAt": "2026-10-17T07:56:13.323Z",
   "date": "2026-10-17",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 151932,
+  "entryCount": 163537,
   "shows": [
     {
       "showId": "a-ghost-in-your-ear-off-broadway-2026",
@@ -5628,13 +5628,13 @@
     },
     {
       "showId": "jane-eyre-rose-kingston-off-west-end-2026",
-      "reviewCount": 7,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 865044,
+        "scored-to-rebuilt": 862996,
         "rebuilt-to-deployed": 74417747
       },
       "reviews_over_15min": 0,
@@ -7655,7 +7655,7 @@
     },
     {
       "showId": "the-second-best-school-shooting-off-broadway-2026",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7812,6 +7812,21 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "fish-off-broadway-2026",
+      "reviewCount": 7,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 636468,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
