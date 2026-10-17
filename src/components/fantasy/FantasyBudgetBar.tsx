@@ -39,7 +39,7 @@ export default function FantasyBudgetBar({ spent, budget, picksCount, maxPicks }
       </div>
 
       <div className="flex items-center justify-between">
-        <span className={`text-lg font-bold ${isOverBudget ? 'text-red-400' : 'text-white'}`}>
+        <span className={`text-lg font-bold ${isOverBudget ? 'text-score-skip' : 'text-white'}`}>
           ${spent} / ${budget}
         </span>
         <span className={`text-sm font-medium ${isOverBudget ? 'text-score-skip' : remaining <= 10 ? 'text-score-tepid' : 'text-status-open'}`}>

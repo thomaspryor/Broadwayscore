@@ -6,6 +6,11 @@ const config: Config = {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    // Helpers return class names as strings (score-buckets getScoreBgColor,
+    // audience grades, commercial and gold-list badges). Unscanned, 18 of
+    // them were never generated and rendered colourless (BRO-5519 review).
+    './src/config/**/*.{js,ts,jsx,tsx}',
+    './src/lib/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     fontFamily: {

@@ -20,13 +20,15 @@ function shortDate(iso: string): string {
 }
 
 function ScorePill({ score }: { score: number }) {
-  const label = getScoreLabel(score); // display label ('Mixed' for 55-64); getCriticLabel is the data/wire key
+  // Tier from the rounded score, so the colour matches the number shown.
+  const shown = Math.round(score);
+  const label = getScoreLabel(shown); // display label ('Mixed' for 55-64); getCriticLabel is the data/wire key
   // Same tier colours as every other score on the site (score-buckets).
-  const colorClass = `${getScoreBgColor(score)} ${getScoreColor(score)}`;
+  const colorClass = `${getScoreBgColor(shown)} ${getScoreColor(shown)}`;
 
   return (
     <span className={`text-xs px-2 py-0.5 rounded-full ${colorClass}`}>
-      {Math.round(score)} &middot; {label}
+      {shown} &middot; {label}
     </span>
   );
 }
@@ -64,7 +66,7 @@ function ShowCard({ show, variant = 'default' }: { show: { id: string } & Fantas
             <span className="text-[10px] bg-gray-500/20 text-gray-400 px-1.5 py-0.5 rounded">Closed</span>
           )}
           {locked && show.status !== 'closed' && (
-            <span className="text-[10px] bg-score-tepid-bg text-score-tepid px-1.5 py-0.5 rounded">{ELIGIBILITY_MARKERS.criticScoreLocked} {opened ? 'Already open' : 'Opens before the draft'}{earnsBoxOffice(show, scoringFromDate(new Date().toISOString())) ? '' : ': awards only'}</span>
+            <span className="text-[10px] border border-score-tepid/40 text-score-tepid px-1.5 py-0.5 rounded">{ELIGIBILITY_MARKERS.criticScoreLocked} {opened ? 'Already open' : 'Opens before the draft'}{earnsBoxOffice(show, scoringFromDate(new Date().toISOString())) ? '' : ': awards only'}</span>
           )}
         </div>
         <div className="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-400">

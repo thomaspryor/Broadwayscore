@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { BASE_URL } from '@/lib/seo';
+import { FANTASY_OG_IMAGE } from '@/config/fantasy-listing';
 
 export const metadata: Metadata = {
   title: 'Draft Your Team | Broadway Fantasy League',
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
     title: 'Draft Your Team | Broadway Fantasy League',
     description: 'Pick your Broadway shows once and they score all season. The best team on Tony night wins.',
     url: `${BASE_URL}/fantasy/draft`,
-    images: [{ url: `${BASE_URL}/og/fantasy.png`, width: 1200, height: 630 }],
+    images: [{ url: `${BASE_URL}${FANTASY_OG_IMAGE}`, width: 1200, height: 630 }],
   },
 };
 

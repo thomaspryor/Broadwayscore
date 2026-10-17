@@ -8,7 +8,7 @@ const CHASE_CSS =
 
 interface FantasyMarqueeProps {
   variant?: 'wide' | 'stacked';
-  /** Chasing bulbs (CSS only, respects prefers-reduced-motion). */
+  /** Chasing bulbs (CSS only, respects prefers-reduced-motion). Never in image routes: satori would draw the <style> text. */
   animated?: boolean;
   className?: string;
   /** Pixel size for renderers that need it (the share-image route); CSS sizes it on the site. */
@@ -38,7 +38,7 @@ export default function FantasyMarquee({ variant = 'wide', animated = false, cla
       {animated && <style>{CHASE_CSS}</style>}
       <rect x={art.inset} y={art.inset} width={inner} height={innerH} rx={art.radius} fill={MARQUEE_COLORS.sign} stroke={MARQUEE_COLORS.frame} strokeWidth={3} />
       {marqueeBulbs(art).map(([cx, cy], i) => (
-        <circle key={i} cx={cx} cy={cy} r={art.bulbR} fill={MARQUEE_COLORS.lit} className={animated ? `bfl-b bfl-b${i % 3}` : undefined} />
+        <circle key={i} cx={cx} cy={cy} r={art.bulbR} fill={MARQUEE_COLORS.lit} {...(animated ? { className: `bfl-b bfl-b${i % 3}` } : {})} />
       ))}
       <path d={art.broadway} fill={MARQUEE_COLORS.broadway} />
       {art.lines.map((d, i) => (

@@ -5,15 +5,14 @@
 // 900 ("FANTASY LEAGUE", 68px, +4 tracking), both SIL Open Font License; the
 // stacked mark uses 17/62/44px. Plain data, edge-safe (no React, no Node APIs).
 
-import { MARKET_BRAND } from '@/config/branding';
+import { FANTASY_MARQUEE_BRAND, MARKET_BRAND } from '@/config/branding';
 
 /** Frame and "BROADWAY" in the site's brand gold; the lit letters and bulbs are the mark's own colour. */
 export const MARQUEE_COLORS = {
-  /** surface-raised (tailwind.config) */
-  sign: '#1a1a24',
+  sign: FANTASY_MARQUEE_BRAND.sign,
   frame: MARKET_BRAND.broadway.emailColor,
   broadway: MARKET_BRAND.broadway.emailColor,
-  lit: '#ffe08a',
+  lit: FANTASY_MARQUEE_BRAND.lit,
 } as const;
 
 export interface MarqueeArt {
@@ -42,22 +41,20 @@ export const MARQUEE_STACKED: MarqueeArt = {
 };
 
 /**
- * Bulb centres evenly spaced around the inside of the frame, corners included.
- * Same layout as the launch kit mock-ups.
+ * Bulb centres evenly spaced around the inside of the frame, corners included,
+ * in clockwise order from the top-left corner, so the chase (index % 3) runs
+ * around the sign. Same layout as the launch kit mock-ups.
  */
 export function marqueeBulbs(art: Pick<MarqueeArt, 'width' | 'height' | 'inset' | 'bulbGap' | 'bulbR'>): Array<[number, number]> {
   const pad = art.inset + Math.max(art.bulbR * 2.6, 10);
   const x0 = pad, x1 = art.width - pad, y0 = pad, y1 = art.height - pad;
-  const out: Array<[number, number]> = [];
   const nx = Math.max(1, Math.round((x1 - x0) / art.bulbGap));
-  for (let i = 0; i <= nx; i++) {
-    const x = +(x0 + ((x1 - x0) * i) / nx).toFixed(1);
-    out.push([x, y0], [x, y1]);
-  }
   const ny = Math.max(1, Math.round((y1 - y0) / art.bulbGap));
-  for (let i = 1; i < ny; i++) {
-    const y = +(y0 + ((y1 - y0) * i) / ny).toFixed(1);
-    out.push([x0, y], [x1, y]);
-  }
+  const at = (a: number, b: number, i: number, n: number) => +(a + ((b - a) * i) / n).toFixed(1);
+  const out: Array<[number, number]> = [];
+  for (let i = 0; i < nx; i++) out.push([at(x0, x1, i, nx), y0]); // top, left to right
+  for (let i = 0; i < ny; i++) out.push([x1, at(y0, y1, i, ny)]); // right, top to bottom
+  for (let i = nx; i > 0; i--) out.push([at(x0, x1, i, nx), y1]); // bottom, right to left
+  for (let i = ny; i > 0; i--) out.push([x0, at(y0, y1, i, ny)]); // left, bottom to top
   return out;
 }

@@ -93,7 +93,7 @@ export default function FantasyShowPicker({
             ) : (
               <>
                 {selectedShow.criticScore != null && (
-                  <span className={`${getScoreColor(selectedShow.criticScore)} whitespace-nowrap`}>Score: {Math.round(selectedShow.criticScore)}</span>
+                  <span className={`${getScoreColor(Math.round(selectedShow.criticScore))} whitespace-nowrap`}>Score: {Math.round(selectedShow.criticScore)}</span>
                 )}
                 {selectedShow.audienceGrade != null && (
                   <span className="text-gray-300 whitespace-nowrap">
@@ -210,7 +210,7 @@ export default function FantasyShowPicker({
                       ) : (
                         <>
                           {show.criticScore != null && (
-                            <span className={`${getScoreColor(show.criticScore)} whitespace-nowrap`}>Score: {Math.round(show.criticScore)}</span>
+                            <span className={`${getScoreColor(Math.round(show.criticScore))} whitespace-nowrap`}>Score: {Math.round(show.criticScore)}</span>
                           )}
                           {show.audienceGrade != null && (
                             <span className="text-gray-300 whitespace-nowrap">

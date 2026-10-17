@@ -19,6 +19,7 @@ import {
 } from '@/config/fantasy';
 import { SCORE_BUCKETS } from '@/config/score-buckets';
 import FantasyMarquee from '@/components/fantasy/FantasyMarquee';
+import { FANTASY_OG_IMAGE } from '@/config/fantasy-listing';
 
 // Keyed by the points-table label (getCriticLabel), not the display label:
 // the 55-64 bucket displays as "Mixed" but scores as "Skippable".
@@ -44,13 +45,13 @@ export const metadata: Metadata = {
     title: 'Broadway Fantasy League',
     description: 'Draft up to 8 shows. $100 budget. Critics + box office + Tonys. Who picks the best season?',
     url: 'https://broadwayscorecard.com/fantasy',
-    images: [{ url: 'https://broadwayscorecard.com/og/fantasy.png', width: 1200, height: 630 }],
+    images: [{ url: `${BASE_URL}${FANTASY_OG_IMAGE}`, width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Broadway Fantasy League',
     description: 'Draft up to 8 shows. $100 budget. Win on Tony night.',
-    images: ['https://broadwayscorecard.com/og/fantasy.png'],
+    images: [`${BASE_URL}${FANTASY_OG_IMAGE}`],
   },
 };
 
@@ -327,7 +328,7 @@ export default function FantasyLandingPage() {
           {/* CriticScore */}
           <div className="bg-surface-raised/50 rounded-xl p-5 border border-white/5">
             <h3 className="font-semibold mb-3 flex items-center gap-2">
-              <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-score-must-see-bg text-score-must-see text-sm">★</span> CriticScore
+              <span className={`inline-flex items-center justify-center w-7 h-7 rounded-lg ${SCORE_BUCKETS[0].bgColor} ${SCORE_BUCKETS[0].color} text-sm`}>★</span> CriticScore
             </h3>
             <div className="space-y-1.5 text-sm">
               {Object.entries(CRITIC_SCORE_POINTS).map(([tier, pts]) => (

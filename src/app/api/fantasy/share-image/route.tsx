@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
         <div style={{ display: 'flex', fontSize: 26, fontWeight: 600, color: '#d4a574', letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: 28 }}>
           {`My ${seasonConfig.season.slice(0, 4)}-${seasonConfig.season.slice(-2)} season`}
         </div>
-        <div style={{ display: 'flex', fontSize: team.length > 24 ? 64 : 80, fontWeight: 800, marginTop: 12, lineHeight: 1.05 }}>
+        <div style={{ display: 'flex', fontSize: team.length > 32 ? 52 : team.length > 24 ? 64 : 80, fontWeight: 800, marginTop: 12, lineHeight: 1.05 }}>
           {team || 'My team'}
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', marginTop: dense ? 40 : 56, gap: dense ? 14 : 22 }}>
@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
             </div>
           ))}
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: 'auto', fontSize: 30, color: '#9ca3af' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: 'auto', paddingTop: 20, fontSize: 30, color: '#9ca3af' }}>
           <span>{`$${total} of $${seasonConfig.budget} spent`}</span>
           <span style={{ color: '#ffffff', fontWeight: 700 }}>broadwayscorecard.com/fantasy</span>
         </div>
