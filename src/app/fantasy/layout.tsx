@@ -2,12 +2,21 @@ import type { Metadata } from 'next';
 import { isFantasyListed } from '@/config/fantasy-listing';
 
 // Unlisted until fantasy-season.json listedFrom (BRO-5483): the pages work by
-// direct link but stay out of search results. Returning {} inherits the
-// site-wide robots setting from the root layout. Static pages flip at the
-// first deploy on or after listedFrom; the dynamic ones (leaderboard, league)
-// flip per request.
+// direct link but stay out of search results. Once listed, no robots key is
+// returned, so the root layout's site-wide setting applies. Static pages flip
+// at the first deploy on or after listedFrom; the dynamic ones (leaderboard,
+// league) flip per request. Every game page gets the marquee tab icon
+// (BRO-5519, files from scripts/generate-fantasy-brand-assets.mjs).
+const icons: Metadata['icons'] = {
+  icon: [
+    { url: '/images/fantasy/marquee-icon.svg', type: 'image/svg+xml' },
+    { url: '/images/fantasy/marquee-icon-32.png', sizes: '32x32', type: 'image/png' },
+  ],
+  apple: '/images/fantasy/marquee-icon-180.png',
+};
+
 export function generateMetadata(): Metadata {
-  return isFantasyListed() ? {} : { robots: { index: false, follow: false } };
+  return isFantasyListed() ? { icons } : { icons, robots: { index: false, follow: false } };
 }
 
 export default function FantasyLayout({ children }: { children: React.ReactNode }) {
