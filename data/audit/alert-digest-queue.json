@@ -1139,5 +1139,19 @@
       }
     ],
     "queuedAt": "2026-10-16T23:46:35.070Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:how-shakespeare-saved-my-life-off-broadway-2026",
+    "title": "1 review(s) for how-shakespeare-saved-my-life-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- publictheaterorg--175cdda1.json (publictheaterorg): no byline in page and no recoverable body https://publictheater.org/productions/season/2627/how-shakespeare-saved-my-life/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-17T01:06:01.361Z"
   }
 ]
