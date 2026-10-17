@@ -222,8 +222,27 @@ test('P1-10: a closed TBD reads "Undisclosed", a running TBD stays TBD', () => {
   const running = getDesignationDisplay('TBD', 'open');
   assert.equal(running.label, 'TBD');
   assert.equal(running.isUndisclosed, false);
+  assert.equal(running.description, 'Still running; too early to tell');
 
   assert.equal(getDesignationDisplay('Flop', 'closed').label, 'Flop');
+});
+
+test('BRO-5520: a TBD show that has not opened does not say "Still running"', async () => {
+  const upcoming = getDesignationDisplay('TBD', 'upcoming');
+  assert.equal(upcoming.label, 'TBD');
+  assert.equal(upcoming.description, 'Not open yet; too early to tell');
+  assert.equal(getDesignationDisplay('TBD', 'announced').description, 'Not open yet; too early to tell');
+  assert.equal(getDesignationDisplay('TBD', 'previews').description, 'In previews; too early to tell');
+  // Only TBD changes; other designations keep their own text.
+  assert.equal(getDesignationDisplay('Windfall', 'previews').description, getDesignationDisplay('Windfall', 'open').description);
+  // A status the map does not name (or an inherited key) gets TBD's neutral text.
+  const neutral = 'Too early to tell: still running or not open yet';
+  assert.equal(getDesignationDisplay('TBD', null).description, neutral);
+  assert.equal(getDesignationDisplay('TBD', 'toString').description, neutral);
+  // The legend (/biz guide, methodology) uses the neutral text, so it never contradicts a card.
+  const { getLegendEntries } = await import('../../src/config/commercial.ts');
+  assert.equal(getLegendEntries().find((e) => e.name === 'TBD').description, neutral);
+  assert.ok(getLegendEntries().every((e) => !/still running;/i.test(e.description)));
 });
 
 test('BRO-5020: a closed TBD that announced recoupment does not say "outcome not announced"', async () => {

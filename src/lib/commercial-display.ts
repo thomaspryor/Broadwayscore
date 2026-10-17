@@ -17,7 +17,7 @@
 // silently hide the feature everywhere.
 
 import type { ShowCommercial } from './data-types';
-import { getDesignationBadgeStyle, UNDISCLOSED_DESIGNATION, RECOUPED_UNDISCLOSED_DESIGNATION } from '@/config/commercial';
+import { getDesignationBadgeStyle, UNDISCLOSED_DESIGNATION, RECOUPED_UNDISCLOSED_DESIGNATION, TBD_STATUS_DESCRIPTIONS } from '@/config/commercial';
 import { reportedReturnLabel } from '../../scripts/lib/reported-return';
 import {
   modelDisplayGuard, displayBasis, playedWeeks, independentEstimate, isRunning,
@@ -644,11 +644,18 @@ export function getDesignationDisplay(
   const style = getDesignationBadgeStyle(designation);
   return {
     label: designation,
-    description: style.description,
+    description: (designation === 'TBD' && tbdStatusDescription(status)) || style.description,
     textClass: style.textClass,
     icon: style.icon,
     isUndisclosed: false,
   };
+}
+
+/** TBD_STATUS_DESCRIPTIONS for a status it names, else null. */
+function tbdStatusDescription(status: string | null | undefined): string | null {
+  return status && Object.prototype.hasOwnProperty.call(TBD_STATUS_DESCRIPTIONS, status)
+    ? TBD_STATUS_DESCRIPTIONS[status as keyof typeof TBD_STATUS_DESCRIPTIONS]
+    : null;
 }
 
 const PCT_CAP = 100;

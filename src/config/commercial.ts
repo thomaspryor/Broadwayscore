@@ -84,7 +84,7 @@ export const DESIGNATIONS: DesignationConfig[] = [
   {
     name: 'TBD',
     color: 'text-gray-400',
-    description: 'Still running; too early to tell',
+    description: 'Too early to tell: still running or not open yet',
     sortOrder: 5,
     showInLegend: true,
     icon: '⏳',
@@ -158,6 +158,18 @@ export const RECOUPED_UNDISCLOSED_DESIGNATION = {
   color: 'text-emerald-400',
   description: 'Closed; recouped, investor return not announced',
   icon: '✅',
+} as const;
+
+/**
+ * A TBD show's card text by status (BRO-5520: "Still running" printed for
+ * shows not yet open). TBD's own description above covers every status for
+ * the legend; a closed TBD is Undisclosed instead. See getDesignationDisplay.
+ */
+export const TBD_STATUS_DESCRIPTIONS = {
+  open: 'Still running; too early to tell',
+  previews: 'In previews; too early to tell',
+  upcoming: 'Not open yet; too early to tell',
+  announced: 'Not open yet; too early to tell',
 } as const;
 
 /** Quick lookup: designation name → config */
