@@ -156,7 +156,7 @@ function buildEmailHtml(leaderboard) {
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"></head>
 <body style="background:#09090b;color:#e4e4e7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;padding:24px;max-width:600px;margin:0 auto;">
   <div style="text-align:center;margin-bottom:24px;">
-    <h1 style="color:#d4a574;font-size:24px;margin:0;">Broadway Fantasy League</h1>
+    <h1 style="margin:0;"><img src="https://broadwayscorecard.com/images/fantasy/marquee-wide.png" width="280" height="74" alt="Broadway Fantasy League" style="display:inline-block;border:0;width:280px;height:auto;"></h1>
     <p style="color:#71717a;font-size:14px;">Weekly Update &middot; Week of ${weekEnding}</p>
   </div>
 

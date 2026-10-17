@@ -6,6 +6,13 @@
 import seasonConfig from './fantasy-season.json';
 import { featureFlags } from './feature-flags';
 
+/**
+ * The link-preview image for every game page (public/og/fantasy.png, drawn by
+ * scripts/generate-fantasy-brand-assets.mjs). Bump the version when the image
+ * changes: social sites cache previews by URL (BRO-5519 moved to the marquee).
+ */
+export const FANTASY_OG_IMAGE = '/og/fantasy.png?v=marquee';
+
 export const LISTED_FROM: string = (seasonConfig as { listedFrom?: string }).listedFrom ?? seasonConfig.draftOpens;
 
 const nyDay = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' });

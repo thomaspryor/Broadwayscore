@@ -65,6 +65,9 @@ export const metadata: Metadata = {
     }],
   },
   robots: siteRobots(),
+  // Declared as metadata (not a <link> in <head>) so a section can replace it:
+  // the Fantasy League sets its own icons in src/app/fantasy/layout.tsx.
+  icons: { icon: { url: '/favicon.svg', type: 'image/svg+xml' } },
   alternates: {
     canonical: BASE_URL,
     types: {
@@ -88,7 +91,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link
           rel="preload"
           href={INTER_LATIN_WOFF2}

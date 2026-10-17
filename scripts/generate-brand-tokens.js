@@ -36,7 +36,7 @@ const tokens = {
   gradients: BRAND.gradients,
   assets: {
     logoMain: 'https://broadwayscorecard.com/images/logo-white.png',
-    logoFantasy: 'https://broadwayscorecard.com/images/fantasy/bfl-logo.png',
+    logoFantasy: 'https://broadwayscorecard.com/images/fantasy/marquee-wide.png',
     paletteSvg: 'https://broadwayscorecard.com/brand-kit/palette.svg',
     ogImage: 'https://broadwayscorecard.com/og/home.png',
   },

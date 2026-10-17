@@ -3,7 +3,7 @@ import { BASE_URL } from '@/lib/seo';
 import { getFantasyShowsSorted, getFantasyConfig } from '@/lib/data-fantasy';
 import { ELIGIBILITY_MARKERS, isShowOpenForDrafter, isDraftOpen, isDraftClosed, earnsBoxOffice, nyDate, scoringFromDate, hasLateEntry, DRAFT_OPENS, SCORING_START, type FantasyShow } from '@/config/fantasy';
 import { getOptimizedImageUrl } from '@/lib/images';
-import { getScoreLabel } from '@/config/score-buckets';
+import { getScoreLabel, getScoreColor, getScoreBgColor } from '@/config/score-buckets';
 import FantasyOwnershipTag from '@/components/fantasy/FantasyOwnershipTag';
 
 export const metadata: Metadata = {
@@ -19,18 +19,16 @@ function shortDate(iso: string): string {
   return new Date(`${iso.slice(0, 10)}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
 }
 
-function ScorePill({ score }: { score: number }) {
+function ScorePill({ score: rawScore }: { score: number }) {
+  // Tier from the rounded score, so the colour matches the number shown.
+  const score = Math.round(rawScore);
   const label = getScoreLabel(score); // display label ('Mixed' for 55-64); getCriticLabel is the data/wire key
-  const colorClass =
-    score >= 83 ? 'bg-yellow-500/20 text-yellow-300' :
-    score >= 75 ? 'bg-emerald-500/20 text-emerald-300' :
-    score >= 65 ? 'bg-teal-500/20 text-teal-300' :
-    score >= 55 ? 'bg-orange-500/20 text-orange-300' :
-    'bg-red-500/20 text-red-300';
+  // Same tier colours as every other score on the site (score-buckets).
+  const colorClass = `${getScoreBgColor(score)} ${getScoreColor(score)}`;
 
   return (
     <span className={`text-xs px-2 py-0.5 rounded-full ${colorClass}`}>
-      {Math.round(score)} &middot; {label}
+      {score} &middot; {label}
     </span>
   );
 }
@@ -68,7 +66,7 @@ function ShowCard({ show, variant = 'default' }: { show: { id: string } & Fantas
             <span className="text-[10px] bg-gray-500/20 text-gray-400 px-1.5 py-0.5 rounded">Closed</span>
           )}
           {locked && show.status !== 'closed' && (
-            <span className="text-[10px] bg-yellow-500/15 text-yellow-300 px-1.5 py-0.5 rounded">{ELIGIBILITY_MARKERS.criticScoreLocked} {opened ? 'Already open' : 'Opens before the draft'}{earnsBoxOffice(show, scoringFromDate(new Date().toISOString())) ? '' : ': awards only'}</span>
+            <span className="text-[10px] border border-score-tepid/40 text-score-tepid px-1.5 py-0.5 rounded">{ELIGIBILITY_MARKERS.criticScoreLocked} {opened ? 'Already open' : 'Opens before the draft'}{earnsBoxOffice(show, scoringFromDate(new Date().toISOString())) ? '' : ': awards only'}</span>
           )}
         </div>
         <div className="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-400">
@@ -139,7 +137,7 @@ export default function FantasyGuidePage() {
             <p className="text-brand">Prices are provisional until the draft opens on {shortDate(DRAFT_OPENS)}, then fixed for the season.</p>
           )}
           <p>Prices reflect projected points: Tony prospects, box office outlook, weeks left to run, and known scores. The line under each show is the reasoning.</p>
-          <p><span className="text-yellow-300">{ELIGIBILITY_MARKERS.criticScoreLocked} Already open</span> = reviews are public, so the show earns box office and awards points only (awards only if it closes before {hasLateEntry() ? 'your first box office week' : <>box office starts on {shortDate(SCORING_START)}</>}).</p>
+          <p><span className="text-score-tepid">{ELIGIBILITY_MARKERS.criticScoreLocked} Already open</span> = reviews are public, so the show earns box office and awards points only (awards only if it closes before {hasLateEntry() ? 'your first box office week' : <>box office starts on {shortDate(SCORING_START)}</>}).</p>
           <p><span className="text-purple-400">OB</span> = Off-Broadway (no box office, no Tony eligibility)</p>
           <p className="text-gray-500">Shows that open after you draft earn critic and audience points for you. Audience points need the show&apos;s audience grade to be still unpublished when you draft (grades can appear in previews). Scores shown here may still change.</p>
         </div>
