@@ -51,7 +51,7 @@ function monthSpan(openingDate, closingDate) {
  * @param {object} show shows.json record (priorRuns, venue, previewsStartDate, openingDate, closingDate)
  * @returns {{signal: 'prior-run-month'|'prior-run-venue', detail: string}|null}
  */
-function priorRunUrlSignal(url, show, { venue = true } = {}) {
+function priorRunUrlSignal(url, show, { useVenue = true } = {}) {
   if (!url || !show || !Array.isArray(show.priorRuns) || show.priorRuns.length === 0) return null;
   let pathname;
   try { pathname = decodeURIComponent(new URL(url).pathname).toLowerCase(); } catch { return null; }
@@ -80,7 +80,7 @@ function priorRunUrlSignal(url, show, { venue = true } = {}) {
 
   // Venue signal is census-only: a Show Score link naming the old venue is
   // more likely a transfer review than an old-run review.
-  if (!venue) return null;
+  if (!useVenue) return null;
   // Last path segment only, so section folders ("/lincoln-center/") never match.
   const slug = pathname.replace(/\/+$/, '').split('/').pop();
   const segs = slugTokens(slug);
