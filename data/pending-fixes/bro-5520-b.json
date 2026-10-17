@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5520-b",
   "planId": "ff40901c-5ded-4b9c-b5f3-942690da67ce",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-17T07:08:13.940Z",
   "submitter": {
     "name": null,
@@ -265,5 +265,103 @@
         "description": "galileo: no commercial record yet; Broadway Journal reports its capitalization."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-17T07:48:37.207Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for book-of-mormon"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: productionType updated for a-few-good-men"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for a-few-good-men"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for a-few-good-men"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: productionType updated for school-girls-or-the-african-mean-girls-play"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for school-girls-or-the-african-mean-girls-play"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for school-girls-or-the-african-mean-girls-play"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for the-imaginary-invalid"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added paddington-the-musical (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added purple-rain (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added galileo (TBD)"
+    }
+  ]
 }
