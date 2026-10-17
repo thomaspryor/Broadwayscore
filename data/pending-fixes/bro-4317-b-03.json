@@ -1,0 +1,327 @@
+{
+  "issueNumber": "bro-4317-b-03",
+  "planId": "fcc88b11-956b-491d-b683-4cec7b67383b",
+  "status": "partial",
+  "createdAt": "2026-10-13T01:56:27.497Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4317 part 3/9: rehome review-text files from folders with no shows.json id (rebuild skips them) into the production whose run window holds the review's publishDate; drop exact duplicates of files the target already holds.",
+    "steps": [
+      "move kinky-boots-2026/financialtimes--brendan-lemon.json -> kinky-boots-2013/financialtimes--brendan-lemon.json",
+      "move kinky-boots-2026/huffpost--michael-giltz.json -> kinky-boots-2013/huffpost--michael-giltz.json",
+      "move kinky-boots-2026/northjerseycom--robert-feldberg.json -> kinky-boots-2013/northjerseycom--robert-feldberg.json",
+      "move kinky-boots-2026/nypost--elisabeth-vincentelli.json -> kinky-boots-2013/nypost--elisabeth-vincentelli.json",
+      "delete kinky-boots-2026/nytimes--ben-brantley.json",
+      "move kinky-boots-2026/talkinbroadway--matthew-murray.json -> kinky-boots-2013/talkinbroadway--matthew-murray.json",
+      "move kinky-boots-2026/vulture--christopher-bonanos.json -> kinky-boots-2013/vulture--christopher-bonanos.json",
+      "delete little-shop-of-horrors-2019/hollywood-reporter--david-rooney.json",
+      "delete little-shop-of-horrors-2019/lighting-and-sound-america--david-barbour.json",
+      "delete little-shop-of-horrors-2019/nydailynews--chris-jones.json",
+      "delete little-shop-of-horrors-2019/nypost--johnny-oleksinski.json",
+      "delete little-shop-of-horrors-2019/nysr--melissa-rose-bernardo.json",
+      "delete little-shop-of-horrors-2019/nytimes--ben-brantley.json",
+      "delete little-shop-of-horrors-2019/theatermania--zachary-stewart.json",
+      "delete little-women-the-musical-2026/artsdesk--rachel-halliburton.json",
+      "delete little-women-the-musical-2026/guardian--emma-john.json",
+      "delete little-women-the-musical-2026/thestage--julia-rank.json",
+      "delete little-women-the-musical-2026/whatsonstage--alun-hood.json",
+      "delete masquerade-2025/culturesauce--thom-geier.json",
+      "delete masquerade-2025/nyt-theater--jonathan-mandell.json",
+      "delete masquerade-2025/nytg--gillian-russo.json",
+      "delete masquerade-2025/theatermania--meg-masseron.json",
+      "delete masquerade-2025/washpost--naveen-kumar.json",
+      "delete motherfucker-off-broadway-2026/ticketwarehouse--unknown.json",
+      "delete pen-pals-2025/lighting-and-sound-america--david-barbour.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "kinky-boots-2026/financialtimes--brendan-lemon.json",
+        "destPath": "kinky-boots-2013/financialtimes--brendan-lemon.json",
+        "description": "publishDate April 4th, 2013 within 14d of kinky-boots-2013 opening 2013-04-04 (show-score dump folder)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "kinky-boots-2026/huffpost--michael-giltz.json",
+        "destPath": "kinky-boots-2013/huffpost--michael-giltz.json",
+        "description": "publishDate April 4th, 2013 within 14d of kinky-boots-2013 opening 2013-04-04 (show-score dump folder)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "kinky-boots-2026/northjerseycom--robert-feldberg.json",
+        "destPath": "kinky-boots-2013/northjerseycom--robert-feldberg.json",
+        "description": "publishDate April 5th, 2013 within 14d of kinky-boots-2013 opening 2013-04-04 (show-score dump folder)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "kinky-boots-2026/nypost--elisabeth-vincentelli.json",
+        "destPath": "kinky-boots-2013/nypost--elisabeth-vincentelli.json",
+        "description": "publishDate April 5th, 2013 within 14d of kinky-boots-2013 opening 2013-04-04 (show-score dump folder)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "kinky-boots-2026/nytimes--ben-brantley.json",
+        "description": "same-url copy already in kinky-boots-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "kinky-boots-2026/talkinbroadway--matthew-murray.json",
+        "destPath": "kinky-boots-2013/talkinbroadway--matthew-murray.json",
+        "description": "publishDate April 4th, 2013 within 14d of kinky-boots-2013 opening 2013-04-04 (show-score dump folder)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "kinky-boots-2026/vulture--christopher-bonanos.json",
+        "destPath": "kinky-boots-2013/vulture--christopher-bonanos.json",
+        "description": "publishDate April 4th, 2013 within 14d of kinky-boots-2013 opening 2013-04-04 (show-score dump folder)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "little-shop-of-horrors-2019/hollywood-reporter--david-rooney.json",
+        "description": "0/shorter-text copy already in little-shop-of-horrors-off-broadway-2019"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "little-shop-of-horrors-2019/lighting-and-sound-america--david-barbour.json",
+        "description": "0/shorter-text copy already in little-shop-of-horrors-off-broadway-2019"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "little-shop-of-horrors-2019/nydailynews--chris-jones.json",
+        "description": "0/shorter-text copy already in little-shop-of-horrors-off-broadway-2019"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "little-shop-of-horrors-2019/nypost--johnny-oleksinski.json",
+        "description": "same-url copy already in little-shop-of-horrors-off-broadway-2019"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "little-shop-of-horrors-2019/nysr--melissa-rose-bernardo.json",
+        "description": "same-url copy already in little-shop-of-horrors-off-broadway-2019"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "little-shop-of-horrors-2019/nytimes--ben-brantley.json",
+        "description": "same-url copy already in little-shop-of-horrors-off-broadway-2019"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "little-shop-of-horrors-2019/theatermania--zachary-stewart.json",
+        "description": "0/shorter-text copy already in little-shop-of-horrors-off-broadway-2019"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "little-women-the-musical-2026/artsdesk--rachel-halliburton.json",
+        "description": "same-url copy already in little-women-the-musical-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "little-women-the-musical-2026/guardian--emma-john.json",
+        "description": "same-url copy already in little-women-the-musical-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "little-women-the-musical-2026/thestage--julia-rank.json",
+        "description": "same-url copy already in little-women-the-musical-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "little-women-the-musical-2026/whatsonstage--alun-hood.json",
+        "description": "same-url copy already in little-women-the-musical-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "masquerade-2025/culturesauce--thom-geier.json",
+        "description": "same-url copy already in masquerade-off-broadway-2025"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "masquerade-2025/nyt-theater--jonathan-mandell.json",
+        "description": "same-url copy already in masquerade-off-broadway-2025"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "masquerade-2025/nytg--gillian-russo.json",
+        "description": "same-url copy already in masquerade-off-broadway-2025"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "masquerade-2025/theatermania--meg-masseron.json",
+        "description": "same-url copy already in masquerade-off-broadway-2025"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "masquerade-2025/washpost--naveen-kumar.json",
+        "description": "same-url copy already in masquerade-off-broadway-2025"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "motherfucker-off-broadway-2026/ticketwarehouse--unknown.json",
+        "description": "0/shorter-text copy already in jena-friedman-motherfucker-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "pen-pals-2025/lighting-and-sound-america--david-barbour.json",
+        "description": "same-url copy already in pen-pals-off-broadway-2025"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T02:35:29.734Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: kinky-boots-2013/financialtimes--brendan-lemon.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: kinky-boots-2013/huffpost--michael-giltz.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: kinky-boots-2013/northjerseycom--robert-feldberg.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: kinky-boots-2013/nypost--elisabeth-vincentelli.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted kinky-boots-2026/nytimes--ben-brantley.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: kinky-boots-2013/talkinbroadway--matthew-murray.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: kinky-boots-2013/vulture--christopher-bonanos.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted little-shop-of-horrors-2019/hollywood-reporter--david-rooney.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted little-shop-of-horrors-2019/lighting-and-sound-america--david-barbour.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted little-shop-of-horrors-2019/nydailynews--chris-jones.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted little-shop-of-horrors-2019/nypost--johnny-oleksinski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted little-shop-of-horrors-2019/nysr--melissa-rose-bernardo.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted little-shop-of-horrors-2019/nytimes--ben-brantley.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted little-shop-of-horrors-2019/theatermania--zachary-stewart.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted little-women-the-musical-2026/artsdesk--rachel-halliburton.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted little-women-the-musical-2026/guardian--emma-john.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted little-women-the-musical-2026/thestage--julia-rank.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted little-women-the-musical-2026/whatsonstage--alun-hood.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted masquerade-2025/culturesauce--thom-geier.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted masquerade-2025/nyt-theater--jonathan-mandell.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted masquerade-2025/nytg--gillian-russo.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted masquerade-2025/theatermania--meg-masseron.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted masquerade-2025/washpost--naveen-kumar.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted motherfucker-off-broadway-2026/ticketwarehouse--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted pen-pals-2025/lighting-and-sound-america--david-barbour.json"
+    }
+  ]
+}

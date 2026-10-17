@@ -1,0 +1,374 @@
+'use client';
+
+import { useState, useCallback } from 'react';
+import { getSupabaseClient } from '@/lib/supabase';
+import { SITE_URL } from '@/lib/site-url';
+import {
+  supabaseRestInsert,
+  supabaseRestUpdate,
+  supabaseRestDelete,
+  supabaseRestUpsert,
+  supabaseRestSelect,
+  supabaseRestRpc,
+} from '@/lib/supabase-rest';
+import type { UserList, ListItem } from '@/types/user';
+import { trackUgc } from '@/lib/ugc-analytics';
+
+const MAX_LISTS = 50;
+const MAX_ITEMS_PER_LIST = 200;
+const POSITION_GAP = 1000;
+
+export function useUserLists(userId: string | null) {
+  const [lists, setLists] = useState<UserList[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const getLists = useCallback(async (): Promise<UserList[]> => {
+    const client = getSupabaseClient();
+    if (!client || !userId) return [];
+
+    setLoading(true);
+    setError(null);
+    try {
+      // Fetch lists with item counts and preview show_ids via a single query
+      const { data: listsData, error: listsErr } = await client
+        .from('lists')
+        .select('*')
+        .eq('user_id', userId)
+        .order('updated_at', { ascending: false });
+
+      if (listsErr) throw listsErr;
+      if (!listsData || listsData.length === 0) {
+        setLists([]);
+        return [];
+      }
+
+      // Fetch all list_items for these lists in one query
+      const listIds = listsData.map((l: UserList) => l.id);
+      const { data: itemsData, error: itemsErr } = await client
+        .from('list_items')
+        .select('list_id, show_id, position')
+        .in('list_id', listIds)
+        .order('position', { ascending: true });
+
+      if (itemsErr) throw itemsErr;
+
+      // Group items by list_id
+      const itemsByList = new Map<string, string[]>();
+      for (const item of (itemsData || [])) {
+        const existing = itemsByList.get(item.list_id) || [];
+        existing.push(item.show_id);
+        itemsByList.set(item.list_id, existing);
+      }
+
+      const result: UserList[] = listsData.map((l: UserList) => {
+        const showIds = itemsByList.get(l.id) || [];
+        return {
+          ...l,
+          item_count: showIds.length,
+          preview_show_ids: showIds.slice(0, 4),
+          all_show_ids: showIds,
+        };
+      });
+
+      setLists(result);
+      return result;
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Failed to load lists';
+      setError(msg);
+      return [];
+    } finally {
+      setLoading(false);
+    }
+  }, [userId]);
+
+  const getListItems = useCallback(async (listId: string): Promise<ListItem[]> => {
+    const client = getSupabaseClient();
+    if (!client || !userId) return [];
+
+    try {
+      const { data, error: err } = await client
+        .from('list_items')
+        .select('*')
+        .eq('list_id', listId)
+        .order('position', { ascending: true });
+
+      if (err) throw err;
+      return (data || []) as ListItem[];
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Failed to load list items';
+      setError(msg);
+      return [];
+    }
+  }, [userId]);
+
+  const createList = useCallback(async (
+    name: string,
+    description?: string | null,
+    isRanked?: boolean,
+  ): Promise<UserList | null> => {
+    if (!userId) return null;
+
+    // Enforce max lists
+    if (lists.length >= MAX_LISTS) {
+      setError(`Maximum of ${MAX_LISTS} lists reached`);
+      return null;
+    }
+
+    setError(null);
+    try {
+      const { data, error: err } = await supabaseRestInsert<UserList>('lists', {
+        user_id: userId,
+        name: name.trim(),
+        description: description?.trim() || null,
+        is_ranked: isRanked ?? false,
+      });
+
+      if (err) throw new Error(err.message);
+      const newList: UserList = { ...(data as UserList), item_count: 0, preview_show_ids: [], all_show_ids: [] };
+      setLists(prev => [newList, ...prev]);
+      trackUgc('list_created', { list_id: newList.id, is_ranked: newList.is_ranked, has_description: !!newList.description, list_count: lists.length + 1 });
+      return newList;
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Failed to create list';
+      setError(msg);
+      return null;
+    }
+  }, [userId, lists.length]);
+
+  const updateList = useCallback(async (
+    listId: string,
+    updates: { name?: string; description?: string | null; is_ranked?: boolean; is_public?: boolean },
+  ): Promise<void> => {
+    if (!userId) return;
+
+    setError(null);
+    try {
+      const payload: Record<string, unknown> = {};
+      if (updates.name !== undefined) payload.name = updates.name.trim();
+      if (updates.description !== undefined) payload.description = updates.description?.trim() || null;
+      if (updates.is_ranked !== undefined) payload.is_ranked = updates.is_ranked;
+      if (updates.is_public !== undefined) payload.is_public = updates.is_public;
+
+      const { error: err } = await supabaseRestUpdate('lists', `id=eq.${listId}&user_id=eq.${userId}`, payload);
+      if (err) throw new Error(err.message);
+
+      // Optimistic update
+      setLists(prev => prev.map(l =>
+        l.id === listId ? { ...l, ...payload, updated_at: new Date().toISOString() } : l
+      ));
+      trackUgc('list_updated', { list_id: listId, fields: Object.keys(payload).sort().join(',') });
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Failed to update list';
+      setError(msg);
+      throw e instanceof Error ? e : new Error(msg);
+    }
+  }, [userId]);
+
+  const deleteList = useCallback(async (listId: string): Promise<void> => {
+    if (!userId) return;
+
+    setError(null);
+    try {
+      const { error: err } = await supabaseRestDelete('lists', `id=eq.${listId}&user_id=eq.${userId}`);
+      if (err) throw new Error(err.message);
+
+      // Optimistic update
+      setLists(prev => prev.filter(l => l.id !== listId));
+      trackUgc('list_deleted', { list_id: listId });
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Failed to delete list';
+      setError(msg);
+      throw e instanceof Error ? e : new Error(msg);
+    }
+  }, [userId]);
+
+  const addToList = useCallback(async (listId: string, showId: string): Promise<void> => {
+    if (!userId) return;
+
+    // Enforce max items
+    const list = lists.find(l => l.id === listId);
+    if (list && (list.item_count || 0) >= MAX_ITEMS_PER_LIST) {
+      setError(`Maximum of ${MAX_ITEMS_PER_LIST} shows per list reached`);
+      return;
+    }
+
+    setError(null);
+    try {
+      // Get max position for this list
+      const { data: maxData } = await supabaseRestSelect<{ position: number }>(
+        'list_items',
+        `list_id=eq.${listId}&select=position&order=position.desc&limit=1`,
+      );
+
+      const maxPos = maxData && maxData.length > 0 ? maxData[0].position : 0;
+
+      const { error: err } = await supabaseRestUpsert(
+        'list_items',
+        { list_id: listId, show_id: showId, position: maxPos + POSITION_GAP },
+        'list_id,show_id',
+        { ignoreDuplicates: true },
+      );
+
+      if (err) throw new Error(err.message);
+
+      // Optimistic update — only increment if show wasn't already in the list
+      setLists(prev => prev.map(l => {
+        if (l.id !== listId) return l;
+        const allIds = l.all_show_ids || [];
+        if (allIds.includes(showId)) return l; // Already in list, no-op
+        const previews = l.preview_show_ids || [];
+        return {
+          ...l,
+          item_count: (l.item_count || 0) + 1,
+          preview_show_ids: previews.length < 4 ? [...previews, showId] : previews,
+          all_show_ids: [...allIds, showId],
+          updated_at: new Date().toISOString(),
+        };
+      }));
+      trackUgc('list_item_added', { list_id: listId, show_id: showId, item_count: (list?.item_count || 0) + 1 });
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Failed to add to list';
+      setError(msg);
+      throw e instanceof Error ? e : new Error(msg);
+    }
+  }, [userId, lists]);
+
+  const removeFromList = useCallback(async (listId: string, showId: string): Promise<void> => {
+    if (!userId) return;
+
+    setError(null);
+    try {
+      const { error: err } = await supabaseRestDelete('list_items', `list_id=eq.${listId}&show_id=eq.${showId}`);
+      if (err) throw new Error(err.message);
+
+      // Optimistic update — backfill preview if a preview show was removed
+      setLists(prev => prev.map(l => {
+        if (l.id !== listId) return l;
+        const allIds = (l.all_show_ids || []).filter(id => id !== showId);
+        const previews = (l.preview_show_ids || []).filter(id => id !== showId);
+        // Backfill preview from remaining shows if under 4
+        if (previews.length < 4) {
+          const previewSet = new Set(previews);
+          for (const id of allIds) {
+            if (previews.length >= 4) break;
+            if (!previewSet.has(id)) { previews.push(id); previewSet.add(id); }
+          }
+        }
+        return { ...l, item_count: Math.max(0, (l.item_count || 0) - 1), preview_show_ids: previews, all_show_ids: allIds };
+      }));
+      trackUgc('list_item_removed', { list_id: listId, show_id: showId });
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Failed to remove from list';
+      setError(msg);
+      throw e instanceof Error ? e : new Error(msg);
+    }
+  }, [userId]);
+
+  const reorderList = useCallback(async (
+    listId: string,
+    itemIds: string[],
+    positions: number[],
+  ): Promise<void> => {
+    if (!userId) return;
+
+    setError(null);
+    try {
+      const { error: err } = await supabaseRestRpc('reorder_list_items', {
+        p_list_id: listId,
+        p_item_ids: itemIds,
+        p_positions: positions,
+      });
+
+      if (err) throw new Error(err.message);
+      trackUgc('list_reordered', { list_id: listId, items_moved: itemIds.length });
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Failed to reorder list';
+      setError(msg);
+      throw e instanceof Error ? e : new Error(msg);
+    }
+  }, [userId]);
+
+  const shareList = useCallback(async (listId: string): Promise<string | null> => {
+    if (!userId) return null;
+
+    const list = lists.find(l => l.id === listId);
+    if (!list) return null;
+
+    // If already public with a slug, just return the URL
+    if (list.is_public && list.share_slug) {
+      const url = `${SITE_URL}/list/${list.share_slug}`;
+      trackUgc('list_shared', { list_id: listId, was_public: true, item_count: list.item_count || 0 });
+      return url;
+    }
+
+    setError(null);
+    try {
+      const slug = list.share_slug || crypto.randomUUID().slice(0, 8);
+      const { error: err } = await supabaseRestUpdate(
+        'lists',
+        `id=eq.${listId}&user_id=eq.${userId}`,
+        { is_public: true, share_slug: slug },
+      );
+
+      if (err) throw new Error(err.message);
+
+      // Optimistic update
+      setLists(prev => prev.map(l =>
+        l.id === listId ? { ...l, is_public: true, share_slug: slug, updated_at: new Date().toISOString() } : l
+      ));
+
+      trackUgc('list_shared', { list_id: listId, was_public: false, item_count: list.item_count || 0 });
+      return `${SITE_URL}/list/${slug}`;
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Failed to share list';
+      setError(msg);
+      return null;
+    }
+  }, [userId, lists]);
+
+  const togglePublic = useCallback(async (listId: string, isPublic: boolean): Promise<void> => {
+    if (!userId) return;
+
+    setError(null);
+    try {
+      const payload: Record<string, unknown> = { is_public: isPublic };
+      // Generate slug when making public for the first time
+      if (isPublic) {
+        const list = lists.find(l => l.id === listId);
+        if (list && !list.share_slug) {
+          payload.share_slug = crypto.randomUUID().slice(0, 8);
+        }
+      }
+
+      const { error: err } = await supabaseRestUpdate('lists', `id=eq.${listId}&user_id=eq.${userId}`, payload);
+      if (err) throw new Error(err.message);
+
+      // Optimistic update
+      setLists(prev => prev.map(l =>
+        l.id === listId ? { ...l, ...payload, updated_at: new Date().toISOString() } : l
+      ));
+      trackUgc('list_visibility_changed', { list_id: listId, is_public: isPublic });
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Failed to update list visibility';
+      setError(msg);
+      throw e instanceof Error ? e : new Error(msg);
+    }
+  }, [userId, lists]);
+
+  return {
+    lists,
+    loading,
+    error,
+    getLists,
+    getListItems,
+    createList,
+    updateList,
+    deleteList,
+    addToList,
+    removeFromList,
+    reorderList,
+    shareList,
+    togglePublic,
+  };
+}

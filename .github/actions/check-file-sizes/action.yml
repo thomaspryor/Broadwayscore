@@ -1,0 +1,10 @@
+name: 'Check File Sizes'
+description: 'Detect unexpectedly large data/ files a commit step could pick up (new binaries, SQLite DBs, a bloated audit file, anything near the 100MiB push limit). Detection, not a gate: callers commit under always().'
+runs:
+  using: 'composite'
+  steps:
+    - name: Check data/ file sizes
+      shell: bash
+      # Logic and rules live in the script so they are unit-tested
+      # (tests/unit/check-file-sizes-post-stage.test.mjs, BRO-5335).
+      run: bash "${GITHUB_WORKSPACE:-.}/scripts/lib/check-file-sizes.sh"

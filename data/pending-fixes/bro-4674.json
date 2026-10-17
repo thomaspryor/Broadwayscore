@@ -1,0 +1,308 @@
+{
+  "issueNumber": "bro-4674",
+  "planId": "2975041d-cee4-46e4-b03f-ebe35acb4163",
+  "status": "applied",
+  "createdAt": "2026-10-13T21:50:20.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "(part a of 2) BRO-4674: clear the 14 un-baselined audit-sibling-title-misroute --strict hits and the same-url double counts the audit now reports. Seven files filed under a later same-title production move to the production they review (Comedy About Spies 2026 -> 2025, Cruise 2022 -> 2021). Nine copies of a review whose correct production already holds the same url (or whose url names another venue) get wrongProduction with a reason. One britishtheatre.com ticket page under Titanique West End is marked isNonReview. Three ambiguous hits (For Black Boys 2024 x2, Inter Alia 2025) were false positives fixed in market-routing.js, not here.",
+    "steps": [
+      "move the-comedy-about-spies-west-end-2026/lovelondonloveculture--emma.json -> the-comedy-about-spies-west-end-2025/ (published 2025-05-21, Noel Coward Theatre run)",
+      "move the-comedy-about-spies-west-end-2026/westendtheatre--west-end-theatre-editorial.json -> the-comedy-about-spies-west-end-2025/ (2025-05-14 round-up of the Noel Coward Theatre opening)",
+      "move the-comedy-about-spies-west-end-2026/broadwayworld--senior-franco-milazzo.json -> the-comedy-about-spies-west-end-2025/ (BWW review dated 2025-05-13 in its url, Noel Coward Theatre)",
+      "move the-comedy-about-spies-west-end-2026/noelcowardtheatre--unknown.json -> the-comedy-about-spies-west-end-2025/ (Noel Coward Theatre listing page for the 2025 run)",
+      "move the-comedy-about-spies-west-end-2026/writewatchwork--abbybathurst.json -> the-comedy-about-spies-west-end-2025/ (published 2025-06-18, seen at the Noel Coward Theatre)",
+      "move cruise-west-end-2022/standard--nick-curtis.json -> cruise-west-end-2021/ (Standard review of the Duchess Theatre run (url names the Duchess))",
+      "move cruise-west-end-2022/telegraph--dominic-cavendish.json -> cruise-west-end-2021/ (Telegraph review of the Duchess Theatre run (url names the Duchess))",
+      "flag school-pictures-off-broadway-2026/theatermania--zachary-stewart.json wrongProduction (TheaterMania review of the November 2023 Playwrights Horizons run; school-pictures-off-broadway-2023 holds the same url)",
+      "flag much-ado-about-nothing-west-end-2022/artsdesk--rachel-halliburton.json wrongProduction (Arts Desk review of the 2025 Theatre Royal Drury Lane run; much-ado-about-nothing-west-end-2025 holds the same url)",
+      "flag the-comedy-about-spies-west-end-2026/londontheatre1--unknown.json wrongProduction (London Theatre 1 review of the 2025 Noel Coward Theatre run (url names the Noel Coward))",
+      "flag the-comedy-about-spies-west-end-2026/sunday-times--unknown.json wrongProduction (2025 Times review; the-comedy-about-spies-west-end-2025/times-uk--clive-davis.json holds the same url)",
+      "flag old-times-1971/amny--matt-windman.json wrongProduction (amNY review of the 2015 revival; old-times-2015 holds the same url)",
+      "flag as-you-like-it-globe-west-end-2026/guardian--unknown.json wrongProduction (Guardian review of the RSC Stratford production (url ends as-you-like-it-review-rsc); all-male-as-you-like-it-regional-2026 holds the same url)",
+      "flag leopoldstadt-west-end-2021/artsdesk--matt-wolf.json wrongProduction (February 2020 review of the original Wyndham's run; leopoldstadt-west-end-2020 holds the same url)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/lovelondonloveculture--emma.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/lovelondonloveculture--emma.json",
+        "description": "BRO-4674: published 2025-05-21, Noel Coward Theatre run; belongs to the-comedy-about-spies-west-end-2025"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/westendtheatre--west-end-theatre-editorial.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/westendtheatre--west-end-theatre-editorial.json",
+        "description": "BRO-4674: 2025-05-14 round-up of the Noel Coward Theatre opening; belongs to the-comedy-about-spies-west-end-2025"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/broadwayworld--senior-franco-milazzo.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/broadwayworld--senior-franco-milazzo.json",
+        "description": "BRO-4674: BWW review dated 2025-05-13 in its url, Noel Coward Theatre; belongs to the-comedy-about-spies-west-end-2025"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/noelcowardtheatre--unknown.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/noelcowardtheatre--unknown.json",
+        "description": "BRO-4674: Noel Coward Theatre listing page for the 2025 run; belongs to the-comedy-about-spies-west-end-2025"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/writewatchwork--abbybathurst.json",
+        "destPath": "the-comedy-about-spies-west-end-2025/writewatchwork--abbybathurst.json",
+        "description": "BRO-4674: published 2025-06-18, seen at the Noel Coward Theatre; belongs to the-comedy-about-spies-west-end-2025"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "cruise-west-end-2022/standard--nick-curtis.json",
+        "destPath": "cruise-west-end-2021/standard--nick-curtis.json",
+        "description": "BRO-4674: Standard review of the Duchess Theatre run (url names the Duchess); belongs to cruise-west-end-2021"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "cruise-west-end-2022/telegraph--dominic-cavendish.json",
+        "destPath": "cruise-west-end-2021/telegraph--dominic-cavendish.json",
+        "description": "BRO-4674: Telegraph review of the Duchess Theatre run (url names the Duchess); belongs to cruise-west-end-2021"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "school-pictures-off-broadway-2026/theatermania--zachary-stewart.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4674: TheaterMania review of the November 2023 Playwrights Horizons run; school-pictures-off-broadway-2023 holds the same url"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "school-pictures-off-broadway-2026/theatermania--zachary-stewart.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4674: TheaterMania review of the November 2023 Playwrights Horizons run; school-pictures-off-broadway-2023 holds the same url",
+        "description": "reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "much-ado-about-nothing-west-end-2022/artsdesk--rachel-halliburton.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4674: Arts Desk review of the 2025 Theatre Royal Drury Lane run; much-ado-about-nothing-west-end-2025 holds the same url"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "much-ado-about-nothing-west-end-2022/artsdesk--rachel-halliburton.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4674: Arts Desk review of the 2025 Theatre Royal Drury Lane run; much-ado-about-nothing-west-end-2025 holds the same url",
+        "description": "reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-comedy-about-spies-west-end-2026/londontheatre1--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4674: London Theatre 1 review of the 2025 Noel Coward Theatre run (url names the Noel Coward)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-comedy-about-spies-west-end-2026/londontheatre1--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4674: London Theatre 1 review of the 2025 Noel Coward Theatre run (url names the Noel Coward)",
+        "description": "reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-comedy-about-spies-west-end-2026/sunday-times--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4674: 2025 Times review; the-comedy-about-spies-west-end-2025/times-uk--clive-davis.json holds the same url"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-comedy-about-spies-west-end-2026/sunday-times--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4674: 2025 Times review; the-comedy-about-spies-west-end-2025/times-uk--clive-davis.json holds the same url",
+        "description": "reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "old-times-1971/amny--matt-windman.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4674: amNY review of the 2015 revival; old-times-2015 holds the same url"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "old-times-1971/amny--matt-windman.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4674: amNY review of the 2015 revival; old-times-2015 holds the same url",
+        "description": "reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "as-you-like-it-globe-west-end-2026/guardian--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4674: Guardian review of the RSC Stratford production (url ends as-you-like-it-review-rsc); all-male-as-you-like-it-regional-2026 holds the same url"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "as-you-like-it-globe-west-end-2026/guardian--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4674: Guardian review of the RSC Stratford production (url ends as-you-like-it-review-rsc); all-male-as-you-like-it-regional-2026 holds the same url",
+        "description": "reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "leopoldstadt-west-end-2021/artsdesk--matt-wolf.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4674: February 2020 review of the original Wyndham's run; leopoldstadt-west-end-2020 holds the same url"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "leopoldstadt-west-end-2021/artsdesk--matt-wolf.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4674: February 2020 review of the original Wyndham's run; leopoldstadt-west-end-2020 holds the same url",
+        "description": "reason for the flag"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T23:31:16.656Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/lovelondonloveculture--emma.json → the-comedy-about-spies-west-end-2025/lovelondonloveculture--emma.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/westendtheatre--west-end-theatre-editorial.json → the-comedy-about-spies-west-end-2025/westendtheatre--west-end-theatre-editorial.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/broadwayworld--senior-franco-milazzo.json → the-comedy-about-spies-west-end-2025/broadwayworld--senior-franco-milazzo.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/noelcowardtheatre--unknown.json → the-comedy-about-spies-west-end-2025/noelcowardtheatre--unknown.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-comedy-about-spies-west-end-2026/writewatchwork--abbybathurst.json → the-comedy-about-spies-west-end-2025/writewatchwork--abbybathurst.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved cruise-west-end-2022/standard--nick-curtis.json → cruise-west-end-2021/standard--nick-curtis.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved cruise-west-end-2022/telegraph--dominic-cavendish.json → cruise-west-end-2021/telegraph--dominic-cavendish.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "school-pictures-off-broadway-2026/theatermania--zachary-stewart.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "school-pictures-off-broadway-2026/theatermania--zachary-stewart.json wrongProductionReason: null -> \"BRO-4674: TheaterMania review of the November 2023 Playwrights Horizons run; school-pictures-off-broadway-2023 holds the same url\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-west-end-2022/artsdesk--rachel-halliburton.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-west-end-2022/artsdesk--rachel-halliburton.json wrongProductionReason: null -> \"BRO-4674: Arts Desk review of the 2025 Theatre Royal Drury Lane run; much-ado-about-nothing-west-end-2025 holds the same url\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-comedy-about-spies-west-end-2026/londontheatre1--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-comedy-about-spies-west-end-2026/londontheatre1--unknown.json wrongProductionReason: null -> \"BRO-4674: London Theatre 1 review of the 2025 Noel Coward Theatre run (url names the Noel Coward)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-comedy-about-spies-west-end-2026/sunday-times--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-comedy-about-spies-west-end-2026/sunday-times--unknown.json wrongProductionReason: null -> \"BRO-4674: 2025 Times review; the-comedy-about-spies-west-end-2025/times-uk--clive-davis.json holds the same url\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "old-times-1971/amny--matt-windman.json wrongProduction: null -> true (retracted wrongProductionAutoCleared, wrongProductionAutoClearedAt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "old-times-1971/amny--matt-windman.json wrongProductionReason: null -> \"BRO-4674: amNY review of the 2015 revival; old-times-2015 holds the same url\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "as-you-like-it-globe-west-end-2026/guardian--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "as-you-like-it-globe-west-end-2026/guardian--unknown.json wrongProductionReason: null -> \"BRO-4674: Guardian review of the RSC Stratford production (url ends as-you-like-it-review-rsc); all-male-as-you-like-it-regional-2026 holds the same url\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "leopoldstadt-west-end-2021/artsdesk--matt-wolf.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "leopoldstadt-west-end-2021/artsdesk--matt-wolf.json wrongProductionReason: null -> \"BRO-4674: February 2020 review of the original Wyndham's run; leopoldstadt-west-end-2020 holds the same url\""
+    }
+  ]
+}

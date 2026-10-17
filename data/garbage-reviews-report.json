@@ -1,0 +1,5222 @@
+{
+  "generatedAt": "2026-01-29T22:45:23.520Z",
+  "dryRun": false,
+  "stats": {
+    "total": 2195,
+    "garbageWithExcerpts": 330,
+    "garbageNoExcerpts": 5,
+    "alreadyClean": 1624,
+    "noFullText": 236,
+    "fixed": 330
+  },
+  "garbageWithExcerpts": [
+    {
+      "showId": "aladdin-2014",
+      "file": "chicagotribune--chris-jones",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/aladdin-2014/chicagotribune--chris-jones.json",
+      "reason": "Paywall/subscription prompt: \"Subscribers\"",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 303
+    },
+    {
+      "showId": "aladdin-2014",
+      "file": "classicalite--patricia-reaney",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/aladdin-2014/classicalite--patricia-reaney.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 161
+    },
+    {
+      "showId": "aladdin-2014",
+      "file": "guardian--jesse-green",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/aladdin-2014/guardian--jesse-green.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 183
+    },
+    {
+      "showId": "aladdin-2014",
+      "file": "hollywood-reporter--david-rooney",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/aladdin-2014/hollywood-reporter--david-rooney.json",
+      "reason": "Legal/privacy page: \"Terms of Use\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 705
+    },
+    {
+      "showId": "aladdin-2014",
+      "file": "theater-pizzazz--sandi-durell",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/aladdin-2014/theater-pizzazz--sandi-durell.json",
+      "reason": "Newsletter form: \"Join our mailing list\"",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 168
+    },
+    {
+      "showId": "aladdin-2014",
+      "file": "theatermania--zachary-stewart",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/aladdin-2014/theatermania--zachary-stewart.json",
+      "reason": "/privacy policy.*terms of use/i",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 191
+    },
+    {
+      "showId": "aladdin-2014",
+      "file": "thisbroadsway--sandra-mcfarland",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/aladdin-2014/thisbroadsway--sandra-mcfarland.json",
+      "reason": "Legal/privacy page: \"All rights reserved.\"",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 197
+    },
+    {
+      "showId": "aladdin-2014",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/aladdin-2014/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 456
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/an-enemy-of-the-people-2024/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 374
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "file": "ew--adam-markavitz",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/an-enemy-of-the-people-2024/ew--adam-markavitz.json",
+      "reason": "Legal/privacy page: \"All rights reserved.\"",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 292
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/an-enemy-of-the-people-2024/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 285
+    },
+    {
+      "showId": "and-juliet-2022",
+      "file": "broadwaynews--brittani-samuel",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/and-juliet-2022/broadwaynews--brittani-samuel.json",
+      "reason": "Paywall/subscription prompt: \"subscribers only\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 202
+    },
+    {
+      "showId": "and-juliet-2022",
+      "file": "chicagotribune--chris-jones",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/and-juliet-2022/chicagotribune--chris-jones.json",
+      "reason": "Paywall/subscription prompt: \"Subscribers\"",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 445
+    },
+    {
+      "showId": "and-juliet-2022",
+      "file": "ew--leah-greenblatt",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/and-juliet-2022/ew--leah-greenblatt.json",
+      "reason": "/page not found/i",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 303
+    },
+    {
+      "showId": "and-juliet-2022",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/and-juliet-2022/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 303
+    },
+    {
+      "showId": "and-juliet-2022",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/and-juliet-2022/wsj--charles-isherwood.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 175
+    },
+    {
+      "showId": "appropriate-2023",
+      "file": "guardian--adrian-horton",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/appropriate-2023/guardian--adrian-horton.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 467
+    },
+    {
+      "showId": "appropriate-2023",
+      "file": "vulture--jackson-mchenry",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/appropriate-2023/vulture--jackson-mchenry.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 174
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "file": "ew--dalton-ross",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/back-to-the-future-2023/ew--dalton-ross.json",
+      "reason": "/page not found/i",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 245
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "file": "nydailynews--chris-jones",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/back-to-the-future-2023/nydailynews--chris-jones.json",
+      "reason": "Paywall/subscription prompt: \"Subscribers\"",
+      "excerpts": [
+        "bww",
+        "showScore"
+      ],
+      "bestExcerptLength": 220
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "file": "nysr--elysa-gardner",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/back-to-the-future-2023/nysr--elysa-gardner.json",
+      "reason": "Error/404 page: \"The page you are looking for\"",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 72
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "file": "nysr--steven-suskin",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/back-to-the-future-2023/nysr--steven-suskin.json",
+      "reason": "Error/404 page: \"The page you are looking for\"",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 61
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "file": "theatermania--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/back-to-the-future-2023/theatermania--adam-feldman.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 161
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "file": "variety--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/back-to-the-future-2023/variety--charles-isherwood.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 187
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/back-to-the-future-2023/wsj--charles-isherwood.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww",
+        "showScore"
+      ],
+      "bestExcerptLength": 281
+    },
+    {
+      "showId": "book-of-mormon-2011",
+      "file": "financialtimes--brendan-lemon",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/book-of-mormon-2011/financialtimes--brendan-lemon.json",
+      "reason": "Legal/privacy page: \"Privacy policy\"",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 562
+    },
+    {
+      "showId": "book-of-mormon-2011",
+      "file": "latimes--charles-mcnulty",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/book-of-mormon-2011/latimes--charles-mcnulty.json",
+      "reason": "/subscribe to (continue|read)/i",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 293
+    },
+    {
+      "showId": "book-of-mormon-2011",
+      "file": "ny-1--roma-torre",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/book-of-mormon-2011/ny-1--roma-torre.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\n\"",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 420
+    },
+    {
+      "showId": "book-of-mormon-2011",
+      "file": "timeout--david-cote",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/book-of-mormon-2011/timeout--david-cote.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 175
+    },
+    {
+      "showId": "boop-2025",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/boop-2025/timeout--adam-feldman.json",
+      "reason": "Error/404 page: \"404 \"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 538
+    },
+    {
+      "showId": "buena-vista-social-club-2025",
+      "file": "broadwaynews--brittani-samuel",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/buena-vista-social-club-2025/broadwaynews--brittani-samuel.json",
+      "reason": "Paywall/subscription prompt: \"subscribers only\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 167
+    },
+    {
+      "showId": "buena-vista-social-club-2025",
+      "file": "nydailynews--chris-jones",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/buena-vista-social-club-2025/nydailynews--chris-jones.json",
+      "reason": "Paywall/subscription prompt: \"Subscribers\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 340
+    },
+    {
+      "showId": "bug-2026",
+      "file": "chicagotribune--chris-jones",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/bug-2026/chicagotribune--chris-jones.json",
+      "reason": "Paywall/subscription prompt: \"Subscribers\"",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 303
+    },
+    {
+      "showId": "bug-2026",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/bug-2026/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 223
+    },
+    {
+      "showId": "bug-2026",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/bug-2026/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 577
+    },
+    {
+      "showId": "bug-2026",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/bug-2026/wsj--charles-isherwood.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww",
+        "showScore"
+      ],
+      "bestExcerptLength": 406
+    },
+    {
+      "showId": "cabaret-2024",
+      "file": "broadwaynews--brittani-samuel",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/cabaret-2024/broadwaynews--brittani-samuel.json",
+      "reason": "Paywall/subscription prompt: \"subscribers only\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 190
+    },
+    {
+      "showId": "cabaret-2024",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/cabaret-2024/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 250
+    },
+    {
+      "showId": "cabaret-2024",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/cabaret-2024/timeout--adam-feldman.json",
+      "reason": "Error/404 page: \"404 \"",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "cabaret-2024",
+      "file": "vulture--sara-holdren",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/cabaret-2024/vulture--sara-holdren.json",
+      "reason": "/please turn off/i",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 1227
+    },
+    {
+      "showId": "chess-2025",
+      "file": "nydailynews--chris-jones",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/chess-2025/nydailynews--chris-jones.json",
+      "reason": "Paywall/subscription prompt: \"Subscribers\"",
+      "excerpts": [
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 341
+    },
+    {
+      "showId": "chess-2025",
+      "file": "theatermania--david-gordon",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/chess-2025/theatermania--david-gordon.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 314
+    },
+    {
+      "showId": "chess-2025",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/chess-2025/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 465
+    },
+    {
+      "showId": "days-of-wine-and-roses-2024",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/days-of-wine-and-roses-2024/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 718
+    },
+    {
+      "showId": "days-of-wine-and-roses-2024",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/days-of-wine-and-roses-2024/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "death-becomes-her-2024",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/death-becomes-her-2024/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 231
+    },
+    {
+      "showId": "death-becomes-her-2024",
+      "file": "theatermania--zachary-stewart",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/death-becomes-her-2024/theatermania--zachary-stewart.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 392
+    },
+    {
+      "showId": "death-becomes-her-2024",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/death-becomes-her-2024/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 243
+    },
+    {
+      "showId": "death-becomes-her-2024",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/death-becomes-her-2024/wsj--charles-isherwood.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 87
+    },
+    {
+      "showId": "doubt-2024",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/doubt-2024/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 417
+    },
+    {
+      "showId": "doubt-2024",
+      "file": "nydailynews--chris-jones",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/doubt-2024/nydailynews--chris-jones.json",
+      "reason": "Error/404 page: \"has been removed\"",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 458
+    },
+    {
+      "showId": "doubt-2024",
+      "file": "nydailynews--chris",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/doubt-2024/nydailynews--chris.json",
+      "reason": "Error/404 page: \"has been removed\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "doubt-2024",
+      "file": "observer--david-cote",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/doubt-2024/observer--david-cote.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 364
+    },
+    {
+      "showId": "doubt-2024",
+      "file": "thestage--lane-williamson",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/doubt-2024/thestage--lane-williamson.json",
+      "reason": "Paywall/subscription prompt: \"create a free account to\"",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 482
+    },
+    {
+      "showId": "doubt-2024",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/doubt-2024/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "doubt-2024",
+      "file": "wsj--charles",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/doubt-2024/wsj--charles.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "grey-house-2023",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/grey-house-2023/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "grey-house-2023",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/grey-house-2023/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 279
+    },
+    {
+      "showId": "gutenberg-2023",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/gutenberg-2023/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 378
+    },
+    {
+      "showId": "gutenberg-2023",
+      "file": "theatermania--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/gutenberg-2023/theatermania--adam-feldman.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 120
+    },
+    {
+      "showId": "gutenberg-2023",
+      "file": "thewrap--steve-pond",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/gutenberg-2023/thewrap--steve-pond.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 162
+    },
+    {
+      "showId": "gutenberg-2023",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/gutenberg-2023/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 407
+    },
+    {
+      "showId": "gutenberg-2023",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/gutenberg-2023/wsj--charles-isherwood.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "gutenberg-2023",
+      "file": "wsj--charles",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/gutenberg-2023/wsj--charles.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "hadestown-2019",
+      "file": "carole-di-tosti--carole-di-tosti",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hadestown-2019/carole-di-tosti--carole-di-tosti.json",
+      "reason": "Newsletter form: \"Enter your email\"",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 95
+    },
+    {
+      "showId": "hadestown-2019",
+      "file": "ew--kristen-baldwin",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hadestown-2019/ew--kristen-baldwin.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 127
+    },
+    {
+      "showId": "hadestown-2019",
+      "file": "medium--christian-lewis",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hadestown-2019/medium--christian-lewis.json",
+      "reason": "Paywall/subscription prompt: \"Become a member\"",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 99
+    },
+    {
+      "showId": "hadestown-2019",
+      "file": "observer--david-cote",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hadestown-2019/observer--david-cote.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 1000
+    },
+    {
+      "showId": "hadestown-2019",
+      "file": "theatermania--zachary-stewart",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hadestown-2019/theatermania--zachary-stewart.json",
+      "reason": "/privacy policy.*terms of use/i",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 892
+    },
+    {
+      "showId": "hadestown-2019",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hadestown-2019/timeout--adam-feldman.json",
+      "reason": "Error/404 page: \"404 \"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 648
+    },
+    {
+      "showId": "hadestown-2019",
+      "file": "usatoday--elysa-gardner",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hadestown-2019/usatoday--elysa-gardner.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 143
+    },
+    {
+      "showId": "hadestown-2019",
+      "file": "vox--constance-grady",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hadestown-2019/vox--constance-grady.json",
+      "reason": "Paywall/subscription prompt: \"paywall\"",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 62
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "nbcnews--elysa-gardner",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hamilton-2015/nbcnews--elysa-gardner.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 178
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "nydailynews--joe-dziemianowicz",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hamilton-2015/nydailynews--joe-dziemianowicz.json",
+      "reason": "Paywall/subscription prompt: \"Subscribers\"",
+      "excerpts": [
+        "bww",
+        "showScore"
+      ],
+      "bestExcerptLength": 1000
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "nypost--jesse-green",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hamilton-2015/nypost--jesse-green.json",
+      "reason": "Content too short (89 chars)",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 89
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "observer--david-cote",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hamilton-2015/observer--david-cote.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 1000
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "observer--rex-reed",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hamilton-2015/observer--rex-reed.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 184
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "theatermania--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hamilton-2015/theatermania--charles-isherwood.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 135
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "thisbroadsway--sandra-mcfarland",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hamilton-2015/thisbroadsway--sandra-mcfarland.json",
+      "reason": "Legal/privacy page: \"All rights reserved.\"",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 450
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hamilton-2015/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 150
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "timeout--david-cote",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hamilton-2015/timeout--david-cote.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "wsj--terry-teachout",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hamilton-2015/wsj--terry-teachout.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww",
+        "showScore"
+      ],
+      "bestExcerptLength": 1072
+    },
+    {
+      "showId": "harmony-2023",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/harmony-2023/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "harmony-2023",
+      "file": "observer--rex-reed",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/harmony-2023/observer--rex-reed.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 165
+    },
+    {
+      "showId": "harmony-2023",
+      "file": "talkinbroadway--matthew-murray",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/harmony-2023/talkinbroadway--matthew-murray.json",
+      "reason": "Paywall/subscription prompt: \"members only\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 180
+    },
+    {
+      "showId": "harmony-2023",
+      "file": "the-new-york-sun--elysa-gardner",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/harmony-2023/the-new-york-sun--elysa-gardner.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "harmony-2023",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/harmony-2023/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "harmony-2023",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/harmony-2023/wsj--charles-isherwood.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "harry-potter-2021",
+      "file": "broadwaynews--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/harry-potter-2021/broadwaynews--charles-isherwood.json",
+      "reason": "Paywall/subscription prompt: \"subscribers only\"",
+      "excerpts": [
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 466
+    },
+    {
+      "showId": "harry-potter-2021",
+      "file": "financial-times-uk--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/harry-potter-2021/financial-times-uk--charles-isherwood.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 499
+    },
+    {
+      "showId": "harry-potter-2021",
+      "file": "forward--jay-michaelson",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/harry-potter-2021/forward--jay-michaelson.json",
+      "reason": "Paywall/subscription prompt: \"paywall\"",
+      "excerpts": [
+        "bww",
+        "showScore"
+      ],
+      "bestExcerptLength": 486
+    },
+    {
+      "showId": "harry-potter-2021",
+      "file": "limelight-magazine-au--clive-paget",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/harry-potter-2021/limelight-magazine-au--clive-paget.json",
+      "reason": "Paywall/subscription prompt: \"paywall\"",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 436
+    },
+    {
+      "showId": "harry-potter-2021",
+      "file": "national-review--kyle-smith",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/harry-potter-2021/national-review--kyle-smith.json",
+      "reason": "Paywall/subscription prompt: \"paywall\"",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 474
+    },
+    {
+      "showId": "harry-potter-2021",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/harry-potter-2021/timeout--adam-feldman.json",
+      "reason": "Error/404 page: \"404 \"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 476
+    },
+    {
+      "showId": "harry-potter-2021",
+      "file": "variety--peter-marks",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/harry-potter-2021/variety--peter-marks.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 155
+    },
+    {
+      "showId": "harry-potter-2021",
+      "file": "village-voice--michael-feingold",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/harry-potter-2021/village-voice--michael-feingold.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 493
+    },
+    {
+      "showId": "harry-potter-2021",
+      "file": "washpost--peter-marks",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/harry-potter-2021/washpost--peter-marks.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "harry-potter-2021",
+      "file": "wsj--terry-teachout",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/harry-potter-2021/wsj--terry-teachout.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 479
+    },
+    {
+      "showId": "hells-kitchen-2024",
+      "file": "broadwaynews--brittani-samuel",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hells-kitchen-2024/broadwaynews--brittani-samuel.json",
+      "reason": "Paywall/subscription prompt: \"subscribers only\"",
+      "excerpts": [
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 117
+    },
+    {
+      "showId": "hells-kitchen-2024",
+      "file": "chelsea-community-news--michael-musto",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hells-kitchen-2024/chelsea-community-news--michael-musto.json",
+      "reason": "Paywall/subscription prompt: \"paywall\"",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 1365
+    },
+    {
+      "showId": "hells-kitchen-2024",
+      "file": "hollywood-reporter--angie-han",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hells-kitchen-2024/hollywood-reporter--angie-han.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 256
+    },
+    {
+      "showId": "hells-kitchen-2024",
+      "file": "new-york-sun--elysa-gardner",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hells-kitchen-2024/new-york-sun--elysa-gardner.json",
+      "reason": "/page not found/i",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 1000
+    },
+    {
+      "showId": "hells-kitchen-2024",
+      "file": "the-new-york-sun--elysa-gardner",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hells-kitchen-2024/the-new-york-sun--elysa-gardner.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "hells-kitchen-2024",
+      "file": "theatermania--david-gordon",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hells-kitchen-2024/theatermania--david-gordon.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 160
+    },
+    {
+      "showId": "hells-kitchen-2024",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/hells-kitchen-2024/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 1510
+    },
+    {
+      "showId": "here-lies-love-2023",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/here-lies-love-2023/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 576
+    },
+    {
+      "showId": "here-lies-love-2023",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/here-lies-love-2023/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 318
+    },
+    {
+      "showId": "here-lies-love-2023",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/here-lies-love-2023/wsj--charles-isherwood.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 263
+    },
+    {
+      "showId": "here-lies-love-2023",
+      "file": "wsj--charles",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/here-lies-love-2023/wsj--charles.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 263
+    },
+    {
+      "showId": "how-to-dance-in-ohio-2023",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/how-to-dance-in-ohio-2023/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "how-to-dance-in-ohio-2023",
+      "file": "observer--david-cote",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/how-to-dance-in-ohio-2023/observer--david-cote.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "bww",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "how-to-dance-in-ohio-2023",
+      "file": "observer--jesse-green",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/how-to-dance-in-ohio-2023/observer--jesse-green.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 218
+    },
+    {
+      "showId": "how-to-dance-in-ohio-2023",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/how-to-dance-in-ohio-2023/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "how-to-dance-in-ohio-2023",
+      "file": "unknown--unknown",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/how-to-dance-in-ohio-2023/unknown--unknown.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 301
+    },
+    {
+      "showId": "i-need-that-2023",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/i-need-that-2023/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "i-need-that-2023",
+      "file": "observer--david-cote",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/i-need-that-2023/observer--david-cote.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "bww",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "i-need-that-2023",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/i-need-that-2023/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 165
+    },
+    {
+      "showId": "i-need-that-2023",
+      "file": "timeout--adam",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/i-need-that-2023/timeout--adam.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "i-need-that-2023",
+      "file": "timeout--will-gleason",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/i-need-that-2023/timeout--will-gleason.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "i-need-that-2023",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/i-need-that-2023/wsj--charles-isherwood.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 499
+    },
+    {
+      "showId": "i-need-that-2023",
+      "file": "wsj--charles",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/i-need-that-2023/wsj--charles.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 499
+    },
+    {
+      "showId": "illinoise-2024",
+      "file": "billboard--demetrios-matheou",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/illinoise-2024/billboard--demetrios-matheou.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 198
+    },
+    {
+      "showId": "illinoise-2024",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/illinoise-2024/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 493
+    },
+    {
+      "showId": "illinoise-2024",
+      "file": "hollywood-reporter--angie-han",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/illinoise-2024/hollywood-reporter--angie-han.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 222
+    },
+    {
+      "showId": "illinoise-2024",
+      "file": "nyt-theater--jonathan-mandell",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/illinoise-2024/nyt-theater--jonathan-mandell.json",
+      "reason": "Paywall/subscription prompt: \"members only\"",
+      "excerpts": [
+        "bww",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "illinoise-2024",
+      "file": "observer--jesse-green",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/illinoise-2024/observer--jesse-green.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 174
+    },
+    {
+      "showId": "illinoise-2024",
+      "file": "theatermania--jesse-green",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/illinoise-2024/theatermania--jesse-green.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 163
+    },
+    {
+      "showId": "illinoise-2024",
+      "file": "thewrap--steve-pond",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/illinoise-2024/thewrap--steve-pond.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 202
+    },
+    {
+      "showId": "illinoise-2024",
+      "file": "vulture--jackson-mchenry",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/illinoise-2024/vulture--jackson-mchenry.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 162
+    },
+    {
+      "showId": "illinoise-2024",
+      "file": "washpost--peter-marks",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/illinoise-2024/washpost--peter-marks.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 160
+    },
+    {
+      "showId": "jajas-african-hair-braiding-2023",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/jajas-african-hair-braiding-2023/timeout--adam-feldman.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 190
+    },
+    {
+      "showId": "jajas-african-hair-braiding-2023",
+      "file": "variety--maya-phillips",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/jajas-african-hair-braiding-2023/variety--maya-phillips.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 132
+    },
+    {
+      "showId": "just-for-us-2023",
+      "file": "hollywood-reporter--angie-han",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/just-for-us-2023/hollywood-reporter--angie-han.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 135
+    },
+    {
+      "showId": "just-for-us-2023",
+      "file": "nypost--johnny-oleksinski",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/just-for-us-2023/nypost--johnny-oleksinski.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 141
+    },
+    {
+      "showId": "just-for-us-2023",
+      "file": "talkinbroadway--matthew-murray",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/just-for-us-2023/talkinbroadway--matthew-murray.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 154
+    },
+    {
+      "showId": "just-for-us-2023",
+      "file": "theatermania--jesse-green",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/just-for-us-2023/theatermania--jesse-green.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 171
+    },
+    {
+      "showId": "just-for-us-2023",
+      "file": "variety--aramide-tinubu",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/just-for-us-2023/variety--aramide-tinubu.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 177
+    },
+    {
+      "showId": "just-for-us-2023",
+      "file": "vulture--helen-shaw",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/just-for-us-2023/vulture--helen-shaw.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 144
+    },
+    {
+      "showId": "just-in-time-2025",
+      "file": "dailybeast--tim-teeman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/just-in-time-2025/dailybeast--tim-teeman.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 303
+    },
+    {
+      "showId": "just-in-time-2025",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/just-in-time-2025/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 569
+    },
+    {
+      "showId": "just-in-time-2025",
+      "file": "nytimes--jesse-green",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/just-in-time-2025/nytimes--jesse-green.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 418
+    },
+    {
+      "showId": "just-in-time-2025",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/just-in-time-2025/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 596
+    },
+    {
+      "showId": "lempicka-2024",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/lempicka-2024/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 318
+    },
+    {
+      "showId": "lempicka-2024",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/lempicka-2024/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "liberation-2025",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/liberation-2025/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 252
+    },
+    {
+      "showId": "liberation-2025",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/liberation-2025/wsj--charles-isherwood.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 112
+    },
+    {
+      "showId": "mamma-mia-2025",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/mamma-mia-2025/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 271
+    },
+    {
+      "showId": "mamma-mia-2025",
+      "file": "ew--emlyn-travis",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/mamma-mia-2025/ew--emlyn-travis.json",
+      "reason": "/page not found/i",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 321
+    },
+    {
+      "showId": "mamma-mia-2025",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/mamma-mia-2025/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "marjorie-prime-2025",
+      "file": "nydailynews--chris-jones",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/marjorie-prime-2025/nydailynews--chris-jones.json",
+      "reason": "Paywall/subscription prompt: \"Subscribers\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 799
+    },
+    {
+      "showId": "marjorie-prime-2025",
+      "file": "observer--david-cote",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/marjorie-prime-2025/observer--david-cote.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 1000
+    },
+    {
+      "showId": "marjorie-prime-2025",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/marjorie-prime-2025/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 784
+    },
+    {
+      "showId": "mary-jane-2024",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/mary-jane-2024/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 168
+    },
+    {
+      "showId": "mary-jane-2024",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/mary-jane-2024/wsj--charles-isherwood.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 192
+    },
+    {
+      "showId": "maybe-happy-ending-2024",
+      "file": "broadwaynews--brittani-samuel",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/maybe-happy-ending-2024/broadwaynews--brittani-samuel.json",
+      "reason": "Paywall/subscription prompt: \"subscribers only\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 125
+    },
+    {
+      "showId": "maybe-happy-ending-2024",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/maybe-happy-ending-2024/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 406
+    },
+    {
+      "showId": "maybe-happy-ending-2024",
+      "file": "ew--shania-russell",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/maybe-happy-ending-2024/ew--shania-russell.json",
+      "reason": "/page not found/i",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 303
+    },
+    {
+      "showId": "maybe-happy-ending-2024",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/maybe-happy-ending-2024/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 303
+    },
+    {
+      "showId": "merrily-we-roll-along-2023",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/merrily-we-roll-along-2023/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 264
+    },
+    {
+      "showId": "merrily-we-roll-along-2023",
+      "file": "the-village-voice--michael-musto",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/merrily-we-roll-along-2023/the-village-voice--michael-musto.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "merrily-we-roll-along-2023",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/merrily-we-roll-along-2023/timeout--adam-feldman.json",
+      "reason": "Error/404 page: \"we can't find the page\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "merrily-we-roll-along-2023",
+      "file": "vulture--jackson-mchenry",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/merrily-we-roll-along-2023/vulture--jackson-mchenry.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 177
+    },
+    {
+      "showId": "merrily-we-roll-along-2023",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/merrily-we-roll-along-2023/wsj--charles-isherwood.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 380
+    },
+    {
+      "showId": "mj-2022",
+      "file": "broadwaynews--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/mj-2022/broadwaynews--charles-isherwood.json",
+      "reason": "Paywall/subscription prompt: \"subscribers only\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 283
+    },
+    {
+      "showId": "mj-2022",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/mj-2022/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 549
+    },
+    {
+      "showId": "mj-2022",
+      "file": "hollywood-reporter--angie-han",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/mj-2022/hollywood-reporter--angie-han.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 155
+    },
+    {
+      "showId": "mj-2022",
+      "file": "hollywood-reporter--david-rooney",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/mj-2022/hollywood-reporter--david-rooney.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 156
+    },
+    {
+      "showId": "mj-2022",
+      "file": "nydailynews--chris-jones",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/mj-2022/nydailynews--chris-jones.json",
+      "reason": "Paywall/subscription prompt: \"Subscriber\"",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 463
+    },
+    {
+      "showId": "mj-2022",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/mj-2022/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 856
+    },
+    {
+      "showId": "mj-2022",
+      "file": "usatoday--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/mj-2022/usatoday--charles-isherwood.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 180
+    },
+    {
+      "showId": "mj-2022",
+      "file": "variety--frank-rizzo",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/mj-2022/variety--frank-rizzo.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 204
+    },
+    {
+      "showId": "mj-2022",
+      "file": "wsj--terry-teachout",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/mj-2022/wsj--terry-teachout.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 151
+    },
+    {
+      "showId": "mother-play-2024",
+      "file": "nypost--johnny-oleksinski",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/mother-play-2024/nypost--johnny-oleksinski.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 125
+    },
+    {
+      "showId": "mother-play-2024",
+      "file": "nytimes--jesse-green",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/mother-play-2024/nytimes--jesse-green.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 137
+    },
+    {
+      "showId": "mother-play-2024",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/mother-play-2024/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "moulin-rouge-2019",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/moulin-rouge-2019/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww",
+        "showScore"
+      ],
+      "bestExcerptLength": 82
+    },
+    {
+      "showId": "moulin-rouge-2019",
+      "file": "ew--leah-greenblatt",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/moulin-rouge-2019/ew--leah-greenblatt.json",
+      "reason": "/page not found/i",
+      "excerpts": [
+        "bww",
+        "showScore"
+      ],
+      "bestExcerptLength": 191
+    },
+    {
+      "showId": "moulin-rouge-2019",
+      "file": "nysr--jesse-oxfeld",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/moulin-rouge-2019/nysr--jesse-oxfeld.json",
+      "reason": "Error/404 page: \"The page you are looking for\"",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 1000
+    },
+    {
+      "showId": "moulin-rouge-2019",
+      "file": "observer--david-cote",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/moulin-rouge-2019/observer--david-cote.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 63
+    },
+    {
+      "showId": "moulin-rouge-2019",
+      "file": "observer--rex-reed",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/moulin-rouge-2019/observer--rex-reed.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 157
+    },
+    {
+      "showId": "moulin-rouge-2019",
+      "file": "theatermania--jesse-green",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/moulin-rouge-2019/theatermania--jesse-green.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 137
+    },
+    {
+      "showId": "moulin-rouge-2019",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/moulin-rouge-2019/timeout--adam-feldman.json",
+      "reason": "Error/404 page: \"404 \"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 999
+    },
+    {
+      "showId": "oedipus-2025",
+      "file": "chicagotribune--chris-jones",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/oedipus-2025/chicagotribune--chris-jones.json",
+      "reason": "Paywall/subscription prompt: \"Subscriber\"",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 303
+    },
+    {
+      "showId": "oedipus-2025",
+      "file": "latimes--charles-mcnulty",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/oedipus-2025/latimes--charles-mcnulty.json",
+      "reason": "/subscribe to (continue|read)/i",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 360
+    },
+    {
+      "showId": "oedipus-2025",
+      "file": "nytimes--alexis-soloski",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/oedipus-2025/nytimes--alexis-soloski.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 289
+    },
+    {
+      "showId": "oedipus-2025",
+      "file": "nytimes--csa-alexis-soloski",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/oedipus-2025/nytimes--csa-alexis-soloski.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "bww",
+        "showScore"
+      ],
+      "bestExcerptLength": 304
+    },
+    {
+      "showId": "oedipus-2025",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/oedipus-2025/timeout--adam-feldman.json",
+      "reason": "Error/404 page: \"404 \"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 303
+    },
+    {
+      "showId": "oedipus-2025",
+      "file": "unknown--unknown",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/oedipus-2025/unknown--unknown.json",
+      "reason": "Error/404 page: \"not found\"",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 222
+    },
+    {
+      "showId": "oedipus-2025",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/oedipus-2025/wsj--charles-isherwood.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww",
+        "showScore"
+      ],
+      "bestExcerptLength": 303
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "broadwaynews--brittani-samuel",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/oh-mary-2024/broadwaynews--brittani-samuel.json",
+      "reason": "Paywall/subscription prompt: \"subscribers only\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 199
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/oh-mary-2024/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 234
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "ew--christian-holub",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/oh-mary-2024/ew--christian-holub.json",
+      "reason": "/page not found/i",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 999
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "hollywood-reporter--angie-han",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/oh-mary-2024/hollywood-reporter--angie-han.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 128
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "nyt-theater--jonathan-mandell",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/oh-mary-2024/nyt-theater--jonathan-mandell.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 147
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "observer--david-cote",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/oh-mary-2024/observer--david-cote.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 1000
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "observer--jesse-green",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/oh-mary-2024/observer--jesse-green.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 184
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "theatermania--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/oh-mary-2024/theatermania--adam-feldman.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 170
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/oh-mary-2024/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "variety--aramide-tinubu",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/oh-mary-2024/variety--aramide-tinubu.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 156
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "variety--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/oh-mary-2024/variety--charles-isherwood.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 179
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "washpost--peter-marks",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/oh-mary-2024/washpost--peter-marks.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 114
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/oh-mary-2024/wsj--charles-isherwood.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 691
+    },
+    {
+      "showId": "once-upon-a-one-more-time-2023",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/once-upon-a-one-more-time-2023/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 266
+    },
+    {
+      "showId": "once-upon-a-one-more-time-2023",
+      "file": "nytimes--jesse-green",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/once-upon-a-one-more-time-2023/nytimes--jesse-green.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 217
+    },
+    {
+      "showId": "once-upon-a-one-more-time-2023",
+      "file": "theatermania--jesse-green",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/once-upon-a-one-more-time-2023/theatermania--jesse-green.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 178
+    },
+    {
+      "showId": "once-upon-a-one-more-time-2023",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/once-upon-a-one-more-time-2023/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 337
+    },
+    {
+      "showId": "once-upon-a-one-more-time-2023",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 183
+    },
+    {
+      "showId": "operation-mincemeat-2025",
+      "file": "nydailynews--chris-jones",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/operation-mincemeat-2025/nydailynews--chris-jones.json",
+      "reason": "Paywall/subscription prompt: \"Subscriber\"",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 303
+    },
+    {
+      "showId": "operation-mincemeat-2025",
+      "file": "observer--david-cote",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/operation-mincemeat-2025/observer--david-cote.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 999
+    },
+    {
+      "showId": "operation-mincemeat-2025",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/operation-mincemeat-2025/timeout--adam-feldman.json",
+      "reason": "Error/404 page: \"404 \"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 453
+    },
+    {
+      "showId": "operation-mincemeat-2025",
+      "file": "wsj--charles",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/operation-mincemeat-2025/wsj--charles.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 1000
+    },
+    {
+      "showId": "our-town-2024",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/our-town-2024/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 307
+    },
+    {
+      "showId": "our-town-2024",
+      "file": "ny-sun--elysa-gardner",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/our-town-2024/ny-sun--elysa-gardner.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 339
+    },
+    {
+      "showId": "our-town-2024",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/our-town-2024/timeout--adam-feldman.json",
+      "reason": "Error/404 page: \"404 \"",
+      "excerpts": [
+        "bww",
+        "showScore"
+      ],
+      "bestExcerptLength": 250
+    },
+    {
+      "showId": "our-town-2024",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/our-town-2024/wsj--charles-isherwood.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww",
+        "showScore"
+      ],
+      "bestExcerptLength": 471
+    },
+    {
+      "showId": "patriots-2024",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/patriots-2024/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 87
+    },
+    {
+      "showId": "patriots-2024",
+      "file": "nypost--johnny-oleksinski",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/patriots-2024/nypost--johnny-oleksinski.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 121
+    },
+    {
+      "showId": "patriots-2024",
+      "file": "timeout--raven-snook",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/patriots-2024/timeout--raven-snook.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 90
+    },
+    {
+      "showId": "patriots-2024",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/patriots-2024/wsj--charles-isherwood.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 524
+    },
+    {
+      "showId": "patriots-2024",
+      "file": "wsj--charles",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/patriots-2024/wsj--charles.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 524
+    },
+    {
+      "showId": "prayer-for-the-french-republic-2024",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/prayer-for-the-french-republic-2024/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "prayer-for-the-french-republic-2024",
+      "file": "forward--jesse-green",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/prayer-for-the-french-republic-2024/forward--jesse-green.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 145
+    },
+    {
+      "showId": "prayer-for-the-french-republic-2024",
+      "file": "observer--david-cote",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/prayer-for-the-french-republic-2024/observer--david-cote.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "prayer-for-the-french-republic-2024",
+      "file": "observer--rex-reed",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/prayer-for-the-french-republic-2024/observer--rex-reed.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 202
+    },
+    {
+      "showId": "prayer-for-the-french-republic-2024",
+      "file": "talkinbroadway--matthew-murray",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/prayer-for-the-french-republic-2024/talkinbroadway--matthew-murray.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 174
+    },
+    {
+      "showId": "prayer-for-the-french-republic-2024",
+      "file": "theatermania--jesse-green",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/prayer-for-the-french-republic-2024/theatermania--jesse-green.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 142
+    },
+    {
+      "showId": "prayer-for-the-french-republic-2024",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/prayer-for-the-french-republic-2024/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 617
+    },
+    {
+      "showId": "prayer-for-the-french-republic-2024",
+      "file": "variety--jesse-green",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/prayer-for-the-french-republic-2024/variety--jesse-green.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 180
+    },
+    {
+      "showId": "prayer-for-the-french-republic-2024",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/prayer-for-the-french-republic-2024/wsj--charles-isherwood.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww",
+        "showScore"
+      ],
+      "bestExcerptLength": 353
+    },
+    {
+      "showId": "purlie-victorious-2023",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/purlie-victorious-2023/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "purlie-victorious-2023",
+      "file": "observer--david-cote",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/purlie-victorious-2023/observer--david-cote.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "purlie-victorious-2023",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/purlie-victorious-2023/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "queen-versailles-2025",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/queen-versailles-2025/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "queen-versailles-2025",
+      "file": "washpost--naveen-kumar",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/queen-versailles-2025/washpost--naveen-kumar.json",
+      "reason": "Show title \"queen versailles\" not mentioned",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 280
+    },
+    {
+      "showId": "ragtime-2025",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/ragtime-2025/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 397
+    },
+    {
+      "showId": "ragtime-2025",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/ragtime-2025/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 693
+    },
+    {
+      "showId": "ragtime-2025",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/ragtime-2025/wsj--charles-isherwood.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww",
+        "showScore"
+      ],
+      "bestExcerptLength": 391
+    },
+    {
+      "showId": "real-women-have-curves-2025",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/real-women-have-curves-2025/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 534
+    },
+    {
+      "showId": "real-women-have-curves-2025",
+      "file": "new-york-sun--elysa-gardner",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/real-women-have-curves-2025/new-york-sun--elysa-gardner.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 497
+    },
+    {
+      "showId": "real-women-have-curves-2025",
+      "file": "thewrap--robert-hofler",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/real-women-have-curves-2025/thewrap--robert-hofler.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "real-women-have-curves-2025",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/real-women-have-curves-2025/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 439
+    },
+    {
+      "showId": "real-women-have-curves-2025",
+      "file": "washpost--naveen-kumar",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/real-women-have-curves-2025/washpost--naveen-kumar.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 279
+    },
+    {
+      "showId": "redwood-2025",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/redwood-2025/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 362
+    },
+    {
+      "showId": "redwood-2025",
+      "file": "nysr--melissa-rose-bernardo",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/redwood-2025/nysr--melissa-rose-bernardo.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 247
+    },
+    {
+      "showId": "redwood-2025",
+      "file": "nysr--melissa-rose",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/redwood-2025/nysr--melissa-rose.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 247
+    },
+    {
+      "showId": "redwood-2025",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/redwood-2025/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 300
+    },
+    {
+      "showId": "redwood-2025",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/redwood-2025/wsj--charles-isherwood.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 53
+    },
+    {
+      "showId": "six-2021",
+      "file": "broadwaynews--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/six-2021/broadwaynews--charles-isherwood.json",
+      "reason": "Paywall/subscription prompt: \"subscribers only\"",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "six-2021",
+      "file": "ew--ruth-kinane",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/six-2021/ew--ruth-kinane.json",
+      "reason": "/page not found/i",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 999
+    },
+    {
+      "showId": "six-2021",
+      "file": "front-row-center--tulis-mccall",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/six-2021/front-row-center--tulis-mccall.json",
+      "reason": "Newsletter form: \"Join our mailing list\"",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 126
+    },
+    {
+      "showId": "six-2021",
+      "file": "observer--david-cote",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/six-2021/observer--david-cote.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 1000
+    },
+    {
+      "showId": "six-2021",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/six-2021/timeout--adam-feldman.json",
+      "reason": "Error/404 page: \"404 \"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "spamalot-2023",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/spamalot-2023/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 507
+    },
+    {
+      "showId": "spamalot-2023",
+      "file": "nypost--johnny-oleksinski",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/spamalot-2023/nypost--johnny-oleksinski.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 378
+    },
+    {
+      "showId": "spamalot-2023",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/spamalot-2023/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 614
+    },
+    {
+      "showId": "stereophonic-2024",
+      "file": "broadwaynews--brittani-samuel",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/stereophonic-2024/broadwaynews--brittani-samuel.json",
+      "reason": "Paywall/subscription prompt: \"subscribers only\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 274
+    },
+    {
+      "showId": "stereophonic-2024",
+      "file": "chicagotribune--chris-jones",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/stereophonic-2024/chicagotribune--chris-jones.json",
+      "reason": "Paywall/subscription prompt: \"Subscriber\"",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "stereophonic-2024",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/stereophonic-2024/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 240
+    },
+    {
+      "showId": "stereophonic-2024",
+      "file": "observer--david-cote",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/stereophonic-2024/observer--david-cote.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 274
+    },
+    {
+      "showId": "stereophonic-2024",
+      "file": "observer--rex-reed",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/stereophonic-2024/observer--rex-reed.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 139
+    },
+    {
+      "showId": "stereophonic-2024",
+      "file": "theatermania--jesse-green",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/stereophonic-2024/theatermania--jesse-green.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 139
+    },
+    {
+      "showId": "stereophonic-2024",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/stereophonic-2024/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "stereophonic-2024",
+      "file": "usatoday--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/stereophonic-2024/usatoday--charles-isherwood.json",
+      "reason": "Newsletter form: \"Get the latest news\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 177
+    },
+    {
+      "showId": "stereophonic-2024",
+      "file": "variety--jesse-green",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/stereophonic-2024/variety--jesse-green.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 175
+    },
+    {
+      "showId": "stranger-things-2024",
+      "file": "broadwaynews--brittani-samuel",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/stranger-things-2024/broadwaynews--brittani-samuel.json",
+      "reason": "Paywall/subscription prompt: \"subscribers only\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 226
+    },
+    {
+      "showId": "stranger-things-2024",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/stranger-things-2024/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 731
+    },
+    {
+      "showId": "stranger-things-2024",
+      "file": "ew--emlyn-travis",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/stranger-things-2024/ew--emlyn-travis.json",
+      "reason": "/page not found/i",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 1000
+    },
+    {
+      "showId": "stranger-things-2024",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/stranger-things-2024/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 333
+    },
+    {
+      "showId": "suffs-2024",
+      "file": "chelsea-community-news--michael-musto",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/suffs-2024/chelsea-community-news--michael-musto.json",
+      "reason": "Paywall/subscription prompt: \"paywall\"",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "suffs-2024",
+      "file": "observer--rex-reed",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/suffs-2024/observer--rex-reed.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 193
+    },
+    {
+      "showId": "suffs-2024",
+      "file": "timeout--regina-robbins",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/suffs-2024/timeout--regina-robbins.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "the-cottage-2023",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-cottage-2023/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "file": "broadwaynews--brittani-samuel",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
+      "reason": "Paywall/subscription prompt: \"subscribers only\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 232
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "file": "nysr--david-finkle",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-great-gatsby-2024/nysr--david-finkle.json",
+      "reason": "Error/404 page: \"The page you are looking for\"",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 1000
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "file": "observer--david-cote",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-great-gatsby-2024/observer--david-cote.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 1000
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "file": "slantmagazine--dan-rubins",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-great-gatsby-2024/slantmagazine--dan-rubins.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 1000
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-great-gatsby-2024/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 318
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "file": "ew--jess-cagle",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-lion-king-1997/ew--jess-cagle.json",
+      "reason": "Legal/privacy page: \"All rights reserved.\"",
+      "excerpts": [
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 1068
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-lion-king-1997/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 198
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "file": "timeout--jenna-scherer",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-lion-king-1997/timeout--jenna-scherer.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 669
+    },
+    {
+      "showId": "the-notebook-2024",
+      "file": "broadwaynews--brittani-samuel",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-notebook-2024/broadwaynews--brittani-samuel.json",
+      "reason": "Paywall/subscription prompt: \"subscribers only\"",
+      "excerpts": [
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 86
+    },
+    {
+      "showId": "the-notebook-2024",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-notebook-2024/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 877
+    },
+    {
+      "showId": "the-notebook-2024",
+      "file": "slantmagazine--dan-rubins",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-notebook-2024/slantmagazine--dan-rubins.json",
+      "reason": "Paywall/subscription prompt: \"paywall\"",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 478
+    },
+    {
+      "showId": "the-notebook-2024",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-notebook-2024/timeout--adam-feldman.json",
+      "reason": "Error/404 page: \"404 \"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "the-outsiders-2024",
+      "file": "broadwaynews--brittani-samuel",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-outsiders-2024/broadwaynews--brittani-samuel.json",
+      "reason": "Paywall/subscription prompt: \"subscribers only\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 213
+    },
+    {
+      "showId": "the-outsiders-2024",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-outsiders-2024/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 318
+    },
+    {
+      "showId": "the-outsiders-2024",
+      "file": "ew--emlyn-travis",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-outsiders-2024/ew--emlyn-travis.json",
+      "reason": "/page not found/i",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 999
+    },
+    {
+      "showId": "the-outsiders-2024",
+      "file": "timeout--adam",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-outsiders-2024/timeout--adam.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 150
+    },
+    {
+      "showId": "the-outsiders-2024",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-outsiders-2024/wsj--charles-isherwood.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 999
+    },
+    {
+      "showId": "the-roommate-2024",
+      "file": "broadwaynews--brittani-samuel",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-roommate-2024/broadwaynews--brittani-samuel.json",
+      "reason": "Paywall/subscription prompt: \"subscribers only\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 174
+    },
+    {
+      "showId": "the-roommate-2024",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-roommate-2024/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 402
+    },
+    {
+      "showId": "the-roommate-2024",
+      "file": "deadline--pete-hammond",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-roommate-2024/deadline--pete-hammond.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 176
+    },
+    {
+      "showId": "the-roommate-2024",
+      "file": "nypost--johnny-oleksinski",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-roommate-2024/nypost--johnny-oleksinski.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 132
+    },
+    {
+      "showId": "the-roommate-2024",
+      "file": "observer--rex-reed",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-roommate-2024/observer--rex-reed.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 79
+    },
+    {
+      "showId": "the-roommate-2024",
+      "file": "rollingstone--alexis-soloski",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-roommate-2024/rollingstone--alexis-soloski.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 160
+    },
+    {
+      "showId": "the-roommate-2024",
+      "file": "the-village-voice--michael-musto",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-roommate-2024/the-village-voice--michael-musto.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "the-roommate-2024",
+      "file": "theatermania--jesse-green",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-roommate-2024/theatermania--jesse-green.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 187
+    },
+    {
+      "showId": "the-roommate-2024",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-roommate-2024/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "the-roommate-2024",
+      "file": "variety--aramide-tinubu",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-roommate-2024/variety--aramide-tinubu.json",
+      "reason": "Show title \"the roommate\" not mentioned",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 124
+    },
+    {
+      "showId": "the-roommate-2024",
+      "file": "variety--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-roommate-2024/variety--charles-isherwood.json",
+      "reason": "No theater-related keywords found",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 157
+    },
+    {
+      "showId": "the-roommate-2024",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-roommate-2024/wsj--charles-isherwood.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 398
+    },
+    {
+      "showId": "the-shark-is-broken-2023",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-shark-is-broken-2023/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "the-shark-is-broken-2023",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-shark-is-broken-2023/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "the-shark-is-broken-2023",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-shark-is-broken-2023/wsj--charles-isherwood.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "the-shark-is-broken-2023",
+      "file": "wsj--charles",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-shark-is-broken-2023/wsj--charles.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "the-whos-tommy-2024",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-whos-tommy-2024/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 358
+    },
+    {
+      "showId": "the-whos-tommy-2024",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-whos-tommy-2024/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "the-whos-tommy-2024",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-whos-tommy-2024/wsj--charles-isherwood.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 493
+    },
+    {
+      "showId": "the-whos-tommy-2024",
+      "file": "wsj--charles",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-whos-tommy-2024/wsj--charles.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 235
+    },
+    {
+      "showId": "the-wiz-2024",
+      "file": "ny-sun--elysa-gardner",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-wiz-2024/ny-sun--elysa-gardner.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 300
+    },
+    {
+      "showId": "the-wiz-2024",
+      "file": "village-voice--michael-musto",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-wiz-2024/village-voice--michael-musto.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 457
+    },
+    {
+      "showId": "the-wiz-2024",
+      "file": "washpost--gloria-oladipo",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-wiz-2024/washpost--gloria-oladipo.json",
+      "reason": "Paywall/subscription prompt: \"members only\"",
+      "excerpts": [
+        "bww",
+        "showScore"
+      ],
+      "bestExcerptLength": 362
+    },
+    {
+      "showId": "two-strangers-bway-2025",
+      "file": "nydailynews--chris-jones",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/two-strangers-bway-2025/nydailynews--chris-jones.json",
+      "reason": "Paywall/subscription prompt: \"Subscribers\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 1000
+    },
+    {
+      "showId": "two-strangers-bway-2025",
+      "file": "nypost--johnny-oleksinski",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/two-strangers-bway-2025/nypost--johnny-oleksinski.json",
+      "reason": "Newsletter form: \"Enter your email\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 999
+    },
+    {
+      "showId": "two-strangers-bway-2025",
+      "file": "nysr--david-finkle",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/two-strangers-bway-2025/nysr--david-finkle.json",
+      "reason": "Error/404 page: \"The page you are looking for\"",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 1000
+    },
+    {
+      "showId": "uncle-vanya-2024",
+      "file": "deadline--greg-evans",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/uncle-vanya-2024/deadline--greg-evans.json",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 522
+    },
+    {
+      "showId": "uncle-vanya-2024",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/uncle-vanya-2024/timeout--adam-feldman.json",
+      "reason": "Error/404 page: \"we can't find the page\"",
+      "excerpts": [
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 414
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "file": "broadwaynews--brittani-samuel",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/water-for-elephants-2024/broadwaynews--brittani-samuel.json",
+      "reason": "Paywall/subscription prompt: \"subscribers only\"",
+      "excerpts": [
+        "dtli"
+      ],
+      "bestExcerptLength": 236
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "file": "nypost--johnny-oleksinski",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/water-for-elephants-2024/nypost--johnny-oleksinski.json",
+      "reason": "Content too short (71 chars)",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 385
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "file": "observer--rex-reed",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/water-for-elephants-2024/observer--rex-reed.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "bww",
+        "showScore"
+      ],
+      "bestExcerptLength": 232
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "file": "thestage--lane-williamson",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/water-for-elephants-2024/thestage--lane-williamson.json",
+      "reason": "Paywall/subscription prompt: \"create a free account to\"",
+      "excerpts": [
+        "bww"
+      ],
+      "bestExcerptLength": 307
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "file": "timeout--adam-feldman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/water-for-elephants-2024/timeout--adam-feldman.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 500
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/water-for-elephants-2024/wsj--charles-isherwood.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww",
+        "dtli"
+      ],
+      "bestExcerptLength": 456
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "file": "wsj--charles",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/water-for-elephants-2024/wsj--charles.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "bww",
+        "dtli",
+        "showScore"
+      ],
+      "bestExcerptLength": 456
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "front-row-center--stanford-friedman",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/wicked-2003/front-row-center--stanford-friedman.json",
+      "reason": "Newsletter form: \"Join our mailing list\"",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 323
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "observer--rex-reed",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/wicked-2003/observer--rex-reed.json",
+      "reason": "/ad ?block(er)?/i",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 301
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "timeout--david-cote",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/wicked-2003/timeout--david-cote.json",
+      "reason": "Newsletter form: \"Thanks for subscribing\"",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 202
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "village-voice--michael-feingold",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/wicked-2003/village-voice--michael-feingold.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 236
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "wsj--terry-teachout",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/wicked-2003/wsj--terry-teachout.json",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "excerpts": [
+        "showScore"
+      ],
+      "bestExcerptLength": 284
+    }
+  ],
+  "garbageNoExcerpts": [
+    {
+      "showId": "lempicka-2024",
+      "file": "wsj--charles-isherwood",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/lempicka-2024/wsj--charles-isherwood.json",
+      "url": "https://www.wsj.com/articles/lempicka-review-broadway-musical-eden-espinosa-rachel-chavkin-519b3aca",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "hasThumb": false
+    },
+    {
+      "showId": "marjorie-prime-2025",
+      "file": "chicagotribune--chris-jones",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/marjorie-prime-2025/chicagotribune--chris-jones.json",
+      "url": "https://www.chicagotribune.com/2025/12/08/review-marjorie-prime-broadway/",
+      "reason": "Paywall/subscription prompt: \"Subscriber\"",
+      "hasThumb": false
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "file": "chicagotribune--chris-jones",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-great-gatsby-2024/chicagotribune--chris-jones.json",
+      "url": "https://www.chicagotribune.com/2024/04/25/review-new-gatsby-musical-on-broadway-has-jazz-age-excess-but-none-of-the-yearning/",
+      "reason": "Paywall/subscription prompt: \"Subscriber\"",
+      "hasThumb": false
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "file": "theatermania--david-gordon",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/the-great-gatsby-2024/theatermania--david-gordon.json",
+      "url": "https://www.theatermania.com/news/review-a-no-expense-spared-great-gatsby-on-broadway-with-jeremy-jordan-belting-to-the-rafters_1738140/",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i",
+      "hasThumb": false
+    },
+    {
+      "showId": "two-strangers-bway-2025",
+      "file": "cititour--brian-scott-lipton",
+      "path": "/Users/tompryor/Broadwayscore/data/review-texts/two-strangers-bway-2025/cititour--brian-scott-lipton.json",
+      "url": "https://cititour.com/NYC_Broadway/Two-Strangers-Carry-a-Cake-Across-New-York/1344",
+      "reason": "Error/404 page: \"Doesn't Exist\"",
+      "hasThumb": true
+    }
+  ],
+  "fixed": [
+    {
+      "showId": "aladdin-2014",
+      "file": "chicagotribune--chris-jones",
+      "reason": "Paywall/subscription prompt: \"Subscribers\""
+    },
+    {
+      "showId": "aladdin-2014",
+      "file": "classicalite--patricia-reaney",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "aladdin-2014",
+      "file": "guardian--jesse-green",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "aladdin-2014",
+      "file": "hollywood-reporter--david-rooney",
+      "reason": "Legal/privacy page: \"Terms of Use\""
+    },
+    {
+      "showId": "aladdin-2014",
+      "file": "theater-pizzazz--sandi-durell",
+      "reason": "Newsletter form: \"Join our mailing list\""
+    },
+    {
+      "showId": "aladdin-2014",
+      "file": "theatermania--zachary-stewart",
+      "reason": "/privacy policy.*terms of use/i"
+    },
+    {
+      "showId": "aladdin-2014",
+      "file": "thisbroadsway--sandra-mcfarland",
+      "reason": "Legal/privacy page: \"All rights reserved.\""
+    },
+    {
+      "showId": "aladdin-2014",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "file": "ew--adam-markavitz",
+      "reason": "Legal/privacy page: \"All rights reserved.\""
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "file": "wsj--charles-isherwood",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "and-juliet-2022",
+      "file": "broadwaynews--brittani-samuel",
+      "reason": "Paywall/subscription prompt: \"subscribers only\""
+    },
+    {
+      "showId": "and-juliet-2022",
+      "file": "chicagotribune--chris-jones",
+      "reason": "Paywall/subscription prompt: \"Subscribers\""
+    },
+    {
+      "showId": "and-juliet-2022",
+      "file": "ew--leah-greenblatt",
+      "reason": "/page not found/i"
+    },
+    {
+      "showId": "and-juliet-2022",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "and-juliet-2022",
+      "file": "wsj--charles-isherwood",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "appropriate-2023",
+      "file": "guardian--adrian-horton",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "appropriate-2023",
+      "file": "vulture--jackson-mchenry",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "file": "ew--dalton-ross",
+      "reason": "/page not found/i"
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "file": "nydailynews--chris-jones",
+      "reason": "Paywall/subscription prompt: \"Subscribers\""
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "file": "nysr--elysa-gardner",
+      "reason": "Error/404 page: \"The page you are looking for\""
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "file": "nysr--steven-suskin",
+      "reason": "Error/404 page: \"The page you are looking for\""
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "file": "theatermania--adam-feldman",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "file": "variety--charles-isherwood",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "file": "wsj--charles-isherwood",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "book-of-mormon-2011",
+      "file": "financialtimes--brendan-lemon",
+      "reason": "Legal/privacy page: \"Privacy policy\""
+    },
+    {
+      "showId": "book-of-mormon-2011",
+      "file": "latimes--charles-mcnulty",
+      "reason": "/subscribe to (continue|read)/i"
+    },
+    {
+      "showId": "book-of-mormon-2011",
+      "file": "ny-1--roma-torre",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\n\""
+    },
+    {
+      "showId": "book-of-mormon-2011",
+      "file": "timeout--david-cote",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "boop-2025",
+      "file": "timeout--adam-feldman",
+      "reason": "Error/404 page: \"404 \""
+    },
+    {
+      "showId": "buena-vista-social-club-2025",
+      "file": "broadwaynews--brittani-samuel",
+      "reason": "Paywall/subscription prompt: \"subscribers only\""
+    },
+    {
+      "showId": "buena-vista-social-club-2025",
+      "file": "nydailynews--chris-jones",
+      "reason": "Paywall/subscription prompt: \"Subscribers\""
+    },
+    {
+      "showId": "bug-2026",
+      "file": "chicagotribune--chris-jones",
+      "reason": "Paywall/subscription prompt: \"Subscribers\""
+    },
+    {
+      "showId": "bug-2026",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "bug-2026",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "bug-2026",
+      "file": "wsj--charles-isherwood",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "cabaret-2024",
+      "file": "broadwaynews--brittani-samuel",
+      "reason": "Paywall/subscription prompt: \"subscribers only\""
+    },
+    {
+      "showId": "cabaret-2024",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "cabaret-2024",
+      "file": "timeout--adam-feldman",
+      "reason": "Error/404 page: \"404 \""
+    },
+    {
+      "showId": "cabaret-2024",
+      "file": "vulture--sara-holdren",
+      "reason": "/please turn off/i"
+    },
+    {
+      "showId": "chess-2025",
+      "file": "nydailynews--chris-jones",
+      "reason": "Paywall/subscription prompt: \"Subscribers\""
+    },
+    {
+      "showId": "chess-2025",
+      "file": "theatermania--david-gordon",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "chess-2025",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "days-of-wine-and-roses-2024",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "days-of-wine-and-roses-2024",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "death-becomes-her-2024",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "death-becomes-her-2024",
+      "file": "theatermania--zachary-stewart",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "death-becomes-her-2024",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "death-becomes-her-2024",
+      "file": "wsj--charles-isherwood",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "doubt-2024",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "doubt-2024",
+      "file": "nydailynews--chris-jones",
+      "reason": "Error/404 page: \"has been removed\""
+    },
+    {
+      "showId": "doubt-2024",
+      "file": "nydailynews--chris",
+      "reason": "Error/404 page: \"has been removed\""
+    },
+    {
+      "showId": "doubt-2024",
+      "file": "observer--david-cote",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "doubt-2024",
+      "file": "thestage--lane-williamson",
+      "reason": "Paywall/subscription prompt: \"create a free account to\""
+    },
+    {
+      "showId": "doubt-2024",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "doubt-2024",
+      "file": "wsj--charles",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "grey-house-2023",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "grey-house-2023",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "gutenberg-2023",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "gutenberg-2023",
+      "file": "theatermania--adam-feldman",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "gutenberg-2023",
+      "file": "thewrap--steve-pond",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "gutenberg-2023",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "gutenberg-2023",
+      "file": "wsj--charles-isherwood",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "gutenberg-2023",
+      "file": "wsj--charles",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "hadestown-2019",
+      "file": "carole-di-tosti--carole-di-tosti",
+      "reason": "Newsletter form: \"Enter your email\""
+    },
+    {
+      "showId": "hadestown-2019",
+      "file": "ew--kristen-baldwin",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "hadestown-2019",
+      "file": "medium--christian-lewis",
+      "reason": "Paywall/subscription prompt: \"Become a member\""
+    },
+    {
+      "showId": "hadestown-2019",
+      "file": "observer--david-cote",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "hadestown-2019",
+      "file": "theatermania--zachary-stewart",
+      "reason": "/privacy policy.*terms of use/i"
+    },
+    {
+      "showId": "hadestown-2019",
+      "file": "timeout--adam-feldman",
+      "reason": "Error/404 page: \"404 \""
+    },
+    {
+      "showId": "hadestown-2019",
+      "file": "usatoday--elysa-gardner",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "hadestown-2019",
+      "file": "vox--constance-grady",
+      "reason": "Paywall/subscription prompt: \"paywall\""
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "nbcnews--elysa-gardner",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "nydailynews--joe-dziemianowicz",
+      "reason": "Paywall/subscription prompt: \"Subscribers\""
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "nypost--jesse-green",
+      "reason": "Content too short (89 chars)"
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "observer--david-cote",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "observer--rex-reed",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "theatermania--charles-isherwood",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "thisbroadsway--sandra-mcfarland",
+      "reason": "Legal/privacy page: \"All rights reserved.\""
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "timeout--david-cote",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "wsj--terry-teachout",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "harmony-2023",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "harmony-2023",
+      "file": "observer--rex-reed",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "harmony-2023",
+      "file": "talkinbroadway--matthew-murray",
+      "reason": "Paywall/subscription prompt: \"members only\""
+    },
+    {
+      "showId": "harmony-2023",
+      "file": "the-new-york-sun--elysa-gardner",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "harmony-2023",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "harmony-2023",
+      "file": "wsj--charles-isherwood",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "harry-potter-2021",
+      "file": "broadwaynews--charles-isherwood",
+      "reason": "Paywall/subscription prompt: \"subscribers only\""
+    },
+    {
+      "showId": "harry-potter-2021",
+      "file": "financial-times-uk--charles-isherwood",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "harry-potter-2021",
+      "file": "forward--jay-michaelson",
+      "reason": "Paywall/subscription prompt: \"paywall\""
+    },
+    {
+      "showId": "harry-potter-2021",
+      "file": "limelight-magazine-au--clive-paget",
+      "reason": "Paywall/subscription prompt: \"paywall\""
+    },
+    {
+      "showId": "harry-potter-2021",
+      "file": "national-review--kyle-smith",
+      "reason": "Paywall/subscription prompt: \"paywall\""
+    },
+    {
+      "showId": "harry-potter-2021",
+      "file": "timeout--adam-feldman",
+      "reason": "Error/404 page: \"404 \""
+    },
+    {
+      "showId": "harry-potter-2021",
+      "file": "variety--peter-marks",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "harry-potter-2021",
+      "file": "village-voice--michael-feingold",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "harry-potter-2021",
+      "file": "washpost--peter-marks",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "harry-potter-2021",
+      "file": "wsj--terry-teachout",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "hells-kitchen-2024",
+      "file": "broadwaynews--brittani-samuel",
+      "reason": "Paywall/subscription prompt: \"subscribers only\""
+    },
+    {
+      "showId": "hells-kitchen-2024",
+      "file": "chelsea-community-news--michael-musto",
+      "reason": "Paywall/subscription prompt: \"paywall\""
+    },
+    {
+      "showId": "hells-kitchen-2024",
+      "file": "hollywood-reporter--angie-han",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "hells-kitchen-2024",
+      "file": "new-york-sun--elysa-gardner",
+      "reason": "/page not found/i"
+    },
+    {
+      "showId": "hells-kitchen-2024",
+      "file": "the-new-york-sun--elysa-gardner",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "hells-kitchen-2024",
+      "file": "theatermania--david-gordon",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "hells-kitchen-2024",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "here-lies-love-2023",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "here-lies-love-2023",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "here-lies-love-2023",
+      "file": "wsj--charles-isherwood",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "here-lies-love-2023",
+      "file": "wsj--charles",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "how-to-dance-in-ohio-2023",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "how-to-dance-in-ohio-2023",
+      "file": "observer--david-cote",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "how-to-dance-in-ohio-2023",
+      "file": "observer--jesse-green",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "how-to-dance-in-ohio-2023",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "how-to-dance-in-ohio-2023",
+      "file": "unknown--unknown",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "i-need-that-2023",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "i-need-that-2023",
+      "file": "observer--david-cote",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "i-need-that-2023",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "i-need-that-2023",
+      "file": "timeout--adam",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "i-need-that-2023",
+      "file": "timeout--will-gleason",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "i-need-that-2023",
+      "file": "wsj--charles-isherwood",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "i-need-that-2023",
+      "file": "wsj--charles",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "illinoise-2024",
+      "file": "billboard--demetrios-matheou",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "illinoise-2024",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "illinoise-2024",
+      "file": "hollywood-reporter--angie-han",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "illinoise-2024",
+      "file": "nyt-theater--jonathan-mandell",
+      "reason": "Paywall/subscription prompt: \"members only\""
+    },
+    {
+      "showId": "illinoise-2024",
+      "file": "observer--jesse-green",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "illinoise-2024",
+      "file": "theatermania--jesse-green",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "illinoise-2024",
+      "file": "thewrap--steve-pond",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "illinoise-2024",
+      "file": "vulture--jackson-mchenry",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "illinoise-2024",
+      "file": "washpost--peter-marks",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "jajas-african-hair-braiding-2023",
+      "file": "timeout--adam-feldman",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "jajas-african-hair-braiding-2023",
+      "file": "variety--maya-phillips",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "just-for-us-2023",
+      "file": "hollywood-reporter--angie-han",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "just-for-us-2023",
+      "file": "nypost--johnny-oleksinski",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "just-for-us-2023",
+      "file": "talkinbroadway--matthew-murray",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "just-for-us-2023",
+      "file": "theatermania--jesse-green",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "just-for-us-2023",
+      "file": "variety--aramide-tinubu",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "just-for-us-2023",
+      "file": "vulture--helen-shaw",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "just-in-time-2025",
+      "file": "dailybeast--tim-teeman",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "just-in-time-2025",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "just-in-time-2025",
+      "file": "nytimes--jesse-green",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "just-in-time-2025",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "lempicka-2024",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "lempicka-2024",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "liberation-2025",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "liberation-2025",
+      "file": "wsj--charles-isherwood",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "mamma-mia-2025",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "mamma-mia-2025",
+      "file": "ew--emlyn-travis",
+      "reason": "/page not found/i"
+    },
+    {
+      "showId": "mamma-mia-2025",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "marjorie-prime-2025",
+      "file": "nydailynews--chris-jones",
+      "reason": "Paywall/subscription prompt: \"Subscribers\""
+    },
+    {
+      "showId": "marjorie-prime-2025",
+      "file": "observer--david-cote",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "marjorie-prime-2025",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "mary-jane-2024",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "mary-jane-2024",
+      "file": "wsj--charles-isherwood",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "maybe-happy-ending-2024",
+      "file": "broadwaynews--brittani-samuel",
+      "reason": "Paywall/subscription prompt: \"subscribers only\""
+    },
+    {
+      "showId": "maybe-happy-ending-2024",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "maybe-happy-ending-2024",
+      "file": "ew--shania-russell",
+      "reason": "/page not found/i"
+    },
+    {
+      "showId": "maybe-happy-ending-2024",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "merrily-we-roll-along-2023",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "merrily-we-roll-along-2023",
+      "file": "the-village-voice--michael-musto",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "merrily-we-roll-along-2023",
+      "file": "timeout--adam-feldman",
+      "reason": "Error/404 page: \"we can't find the page\""
+    },
+    {
+      "showId": "merrily-we-roll-along-2023",
+      "file": "vulture--jackson-mchenry",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "merrily-we-roll-along-2023",
+      "file": "wsj--charles-isherwood",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "mj-2022",
+      "file": "broadwaynews--charles-isherwood",
+      "reason": "Paywall/subscription prompt: \"subscribers only\""
+    },
+    {
+      "showId": "mj-2022",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "mj-2022",
+      "file": "hollywood-reporter--angie-han",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "mj-2022",
+      "file": "hollywood-reporter--david-rooney",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "mj-2022",
+      "file": "nydailynews--chris-jones",
+      "reason": "Paywall/subscription prompt: \"Subscriber\""
+    },
+    {
+      "showId": "mj-2022",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "mj-2022",
+      "file": "usatoday--charles-isherwood",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "mj-2022",
+      "file": "variety--frank-rizzo",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "mj-2022",
+      "file": "wsj--terry-teachout",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "mother-play-2024",
+      "file": "nypost--johnny-oleksinski",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "mother-play-2024",
+      "file": "nytimes--jesse-green",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "mother-play-2024",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "moulin-rouge-2019",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "moulin-rouge-2019",
+      "file": "ew--leah-greenblatt",
+      "reason": "/page not found/i"
+    },
+    {
+      "showId": "moulin-rouge-2019",
+      "file": "nysr--jesse-oxfeld",
+      "reason": "Error/404 page: \"The page you are looking for\""
+    },
+    {
+      "showId": "moulin-rouge-2019",
+      "file": "observer--david-cote",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "moulin-rouge-2019",
+      "file": "observer--rex-reed",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "moulin-rouge-2019",
+      "file": "theatermania--jesse-green",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "moulin-rouge-2019",
+      "file": "timeout--adam-feldman",
+      "reason": "Error/404 page: \"404 \""
+    },
+    {
+      "showId": "oedipus-2025",
+      "file": "chicagotribune--chris-jones",
+      "reason": "Paywall/subscription prompt: \"Subscriber\""
+    },
+    {
+      "showId": "oedipus-2025",
+      "file": "latimes--charles-mcnulty",
+      "reason": "/subscribe to (continue|read)/i"
+    },
+    {
+      "showId": "oedipus-2025",
+      "file": "nytimes--alexis-soloski",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "oedipus-2025",
+      "file": "nytimes--csa-alexis-soloski",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "oedipus-2025",
+      "file": "timeout--adam-feldman",
+      "reason": "Error/404 page: \"404 \""
+    },
+    {
+      "showId": "oedipus-2025",
+      "file": "unknown--unknown",
+      "reason": "Error/404 page: \"not found\""
+    },
+    {
+      "showId": "oedipus-2025",
+      "file": "wsj--charles-isherwood",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "broadwaynews--brittani-samuel",
+      "reason": "Paywall/subscription prompt: \"subscribers only\""
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "ew--christian-holub",
+      "reason": "/page not found/i"
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "hollywood-reporter--angie-han",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "nyt-theater--jonathan-mandell",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "observer--david-cote",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "observer--jesse-green",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "theatermania--adam-feldman",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "variety--aramide-tinubu",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "variety--charles-isherwood",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "washpost--peter-marks",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "wsj--charles-isherwood",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "once-upon-a-one-more-time-2023",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "once-upon-a-one-more-time-2023",
+      "file": "nytimes--jesse-green",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "once-upon-a-one-more-time-2023",
+      "file": "theatermania--jesse-green",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "once-upon-a-one-more-time-2023",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "once-upon-a-one-more-time-2023",
+      "file": "wsj--charles-isherwood",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "operation-mincemeat-2025",
+      "file": "nydailynews--chris-jones",
+      "reason": "Paywall/subscription prompt: \"Subscriber\""
+    },
+    {
+      "showId": "operation-mincemeat-2025",
+      "file": "observer--david-cote",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "operation-mincemeat-2025",
+      "file": "timeout--adam-feldman",
+      "reason": "Error/404 page: \"404 \""
+    },
+    {
+      "showId": "operation-mincemeat-2025",
+      "file": "wsj--charles",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "our-town-2024",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "our-town-2024",
+      "file": "ny-sun--elysa-gardner",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "our-town-2024",
+      "file": "timeout--adam-feldman",
+      "reason": "Error/404 page: \"404 \""
+    },
+    {
+      "showId": "our-town-2024",
+      "file": "wsj--charles-isherwood",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "patriots-2024",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "patriots-2024",
+      "file": "nypost--johnny-oleksinski",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "patriots-2024",
+      "file": "timeout--raven-snook",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "patriots-2024",
+      "file": "wsj--charles-isherwood",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "patriots-2024",
+      "file": "wsj--charles",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "prayer-for-the-french-republic-2024",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "prayer-for-the-french-republic-2024",
+      "file": "forward--jesse-green",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "prayer-for-the-french-republic-2024",
+      "file": "observer--david-cote",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "prayer-for-the-french-republic-2024",
+      "file": "observer--rex-reed",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "prayer-for-the-french-republic-2024",
+      "file": "talkinbroadway--matthew-murray",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "prayer-for-the-french-republic-2024",
+      "file": "theatermania--jesse-green",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "prayer-for-the-french-republic-2024",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "prayer-for-the-french-republic-2024",
+      "file": "variety--jesse-green",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "prayer-for-the-french-republic-2024",
+      "file": "wsj--charles-isherwood",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "purlie-victorious-2023",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "purlie-victorious-2023",
+      "file": "observer--david-cote",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "purlie-victorious-2023",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "queen-versailles-2025",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "queen-versailles-2025",
+      "file": "washpost--naveen-kumar",
+      "reason": "Show title \"queen versailles\" not mentioned"
+    },
+    {
+      "showId": "ragtime-2025",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "ragtime-2025",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "ragtime-2025",
+      "file": "wsj--charles-isherwood",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "real-women-have-curves-2025",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "real-women-have-curves-2025",
+      "file": "new-york-sun--elysa-gardner",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "real-women-have-curves-2025",
+      "file": "thewrap--robert-hofler",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "real-women-have-curves-2025",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "real-women-have-curves-2025",
+      "file": "washpost--naveen-kumar",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "redwood-2025",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "redwood-2025",
+      "file": "nysr--melissa-rose-bernardo",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "redwood-2025",
+      "file": "nysr--melissa-rose",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "redwood-2025",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "redwood-2025",
+      "file": "wsj--charles-isherwood",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "six-2021",
+      "file": "broadwaynews--charles-isherwood",
+      "reason": "Paywall/subscription prompt: \"subscribers only\""
+    },
+    {
+      "showId": "six-2021",
+      "file": "ew--ruth-kinane",
+      "reason": "/page not found/i"
+    },
+    {
+      "showId": "six-2021",
+      "file": "front-row-center--tulis-mccall",
+      "reason": "Newsletter form: \"Join our mailing list\""
+    },
+    {
+      "showId": "six-2021",
+      "file": "observer--david-cote",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "six-2021",
+      "file": "timeout--adam-feldman",
+      "reason": "Error/404 page: \"404 \""
+    },
+    {
+      "showId": "spamalot-2023",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "spamalot-2023",
+      "file": "nypost--johnny-oleksinski",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "spamalot-2023",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "stereophonic-2024",
+      "file": "broadwaynews--brittani-samuel",
+      "reason": "Paywall/subscription prompt: \"subscribers only\""
+    },
+    {
+      "showId": "stereophonic-2024",
+      "file": "chicagotribune--chris-jones",
+      "reason": "Paywall/subscription prompt: \"Subscriber\""
+    },
+    {
+      "showId": "stereophonic-2024",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "stereophonic-2024",
+      "file": "observer--david-cote",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "stereophonic-2024",
+      "file": "observer--rex-reed",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "stereophonic-2024",
+      "file": "theatermania--jesse-green",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "stereophonic-2024",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "stereophonic-2024",
+      "file": "usatoday--charles-isherwood",
+      "reason": "Newsletter form: \"Get the latest news\""
+    },
+    {
+      "showId": "stereophonic-2024",
+      "file": "variety--jesse-green",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "stranger-things-2024",
+      "file": "broadwaynews--brittani-samuel",
+      "reason": "Paywall/subscription prompt: \"subscribers only\""
+    },
+    {
+      "showId": "stranger-things-2024",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "stranger-things-2024",
+      "file": "ew--emlyn-travis",
+      "reason": "/page not found/i"
+    },
+    {
+      "showId": "stranger-things-2024",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "suffs-2024",
+      "file": "chelsea-community-news--michael-musto",
+      "reason": "Paywall/subscription prompt: \"paywall\""
+    },
+    {
+      "showId": "suffs-2024",
+      "file": "observer--rex-reed",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "suffs-2024",
+      "file": "timeout--regina-robbins",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "the-cottage-2023",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "file": "broadwaynews--brittani-samuel",
+      "reason": "Paywall/subscription prompt: \"subscribers only\""
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "file": "nysr--david-finkle",
+      "reason": "Error/404 page: \"The page you are looking for\""
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "file": "observer--david-cote",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "file": "slantmagazine--dan-rubins",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "file": "ew--jess-cagle",
+      "reason": "Legal/privacy page: \"All rights reserved.\""
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "file": "timeout--jenna-scherer",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "the-notebook-2024",
+      "file": "broadwaynews--brittani-samuel",
+      "reason": "Paywall/subscription prompt: \"subscribers only\""
+    },
+    {
+      "showId": "the-notebook-2024",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "the-notebook-2024",
+      "file": "slantmagazine--dan-rubins",
+      "reason": "Paywall/subscription prompt: \"paywall\""
+    },
+    {
+      "showId": "the-notebook-2024",
+      "file": "timeout--adam-feldman",
+      "reason": "Error/404 page: \"404 \""
+    },
+    {
+      "showId": "the-outsiders-2024",
+      "file": "broadwaynews--brittani-samuel",
+      "reason": "Paywall/subscription prompt: \"subscribers only\""
+    },
+    {
+      "showId": "the-outsiders-2024",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "the-outsiders-2024",
+      "file": "ew--emlyn-travis",
+      "reason": "/page not found/i"
+    },
+    {
+      "showId": "the-outsiders-2024",
+      "file": "timeout--adam",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "the-outsiders-2024",
+      "file": "wsj--charles-isherwood",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "the-roommate-2024",
+      "file": "broadwaynews--brittani-samuel",
+      "reason": "Paywall/subscription prompt: \"subscribers only\""
+    },
+    {
+      "showId": "the-roommate-2024",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "the-roommate-2024",
+      "file": "deadline--pete-hammond",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "the-roommate-2024",
+      "file": "nypost--johnny-oleksinski",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "the-roommate-2024",
+      "file": "observer--rex-reed",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "the-roommate-2024",
+      "file": "rollingstone--alexis-soloski",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "the-roommate-2024",
+      "file": "the-village-voice--michael-musto",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "the-roommate-2024",
+      "file": "theatermania--jesse-green",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "the-roommate-2024",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "the-roommate-2024",
+      "file": "variety--aramide-tinubu",
+      "reason": "Show title \"the roommate\" not mentioned"
+    },
+    {
+      "showId": "the-roommate-2024",
+      "file": "variety--charles-isherwood",
+      "reason": "No theater-related keywords found"
+    },
+    {
+      "showId": "the-roommate-2024",
+      "file": "wsj--charles-isherwood",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "the-shark-is-broken-2023",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "the-shark-is-broken-2023",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "the-shark-is-broken-2023",
+      "file": "wsj--charles-isherwood",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "the-shark-is-broken-2023",
+      "file": "wsj--charles",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "the-whos-tommy-2024",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "the-whos-tommy-2024",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "the-whos-tommy-2024",
+      "file": "wsj--charles-isherwood",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "the-whos-tommy-2024",
+      "file": "wsj--charles",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "the-wiz-2024",
+      "file": "ny-sun--elysa-gardner",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "the-wiz-2024",
+      "file": "village-voice--michael-musto",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "the-wiz-2024",
+      "file": "washpost--gloria-oladipo",
+      "reason": "Paywall/subscription prompt: \"members only\""
+    },
+    {
+      "showId": "two-strangers-bway-2025",
+      "file": "nydailynews--chris-jones",
+      "reason": "Paywall/subscription prompt: \"Subscribers\""
+    },
+    {
+      "showId": "two-strangers-bway-2025",
+      "file": "nypost--johnny-oleksinski",
+      "reason": "Newsletter form: \"Enter your email\""
+    },
+    {
+      "showId": "two-strangers-bway-2025",
+      "file": "nysr--david-finkle",
+      "reason": "Error/404 page: \"The page you are looking for\""
+    },
+    {
+      "showId": "uncle-vanya-2024",
+      "file": "deadline--greg-evans",
+      "reason": "Legal/privacy page: \"All Rights Reserved.\""
+    },
+    {
+      "showId": "uncle-vanya-2024",
+      "file": "timeout--adam-feldman",
+      "reason": "Error/404 page: \"we can't find the page\""
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "file": "broadwaynews--brittani-samuel",
+      "reason": "Paywall/subscription prompt: \"subscribers only\""
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "file": "nypost--johnny-oleksinski",
+      "reason": "Content too short (71 chars)"
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "file": "observer--rex-reed",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "file": "thestage--lane-williamson",
+      "reason": "Paywall/subscription prompt: \"create a free account to\""
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "file": "timeout--adam-feldman",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "file": "wsj--charles-isherwood",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "file": "wsj--charles",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "front-row-center--stanford-friedman",
+      "reason": "Newsletter form: \"Join our mailing list\""
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "observer--rex-reed",
+      "reason": "/ad ?block(er)?/i"
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "timeout--david-cote",
+      "reason": "Newsletter form: \"Thanks for subscribing\""
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "village-voice--michael-feingold",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    },
+    {
+      "showId": "wicked-2003",
+      "file": "wsj--terry-teachout",
+      "reason": "/©\\s*\\d{4}.*all rights reserved/i"
+    }
+  ]
+}

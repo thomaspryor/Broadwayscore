@@ -1,0 +1,80 @@
+{
+  "system": "data",
+  "status": "error",
+  "lastChecked": "2026-10-17T06:59:09.336Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "monitoring",
+  "details": [
+    {
+      "name": "Data: OB shows no closing signal can detect",
+      "status": "pass",
+      "message": "Every open Off-Broadway show has a closing signal the detector can watch"
+    },
+    {
+      "name": "Data: OB closing candidates awaiting review",
+      "status": "pass",
+      "message": "No open Off-Broadway show looks closed per the weekly detector"
+    },
+    {
+      "name": "Data: tour automation stopped reporting",
+      "status": "pass",
+      "message": "All three national-tour jobs reported on schedule"
+    },
+    {
+      "name": "Data: tour review sweep held",
+      "status": "pass",
+      "message": "The daily tour sweep held nothing back"
+    },
+    {
+      "name": "Data: tour dates need a look",
+      "status": "warn",
+      "message": "1 tour(s) could not be dated automatically: spamilton-an-american-parody-tour-2018 (no schedule segment matches this tour)"
+    },
+    {
+      "name": "Data: running-tour discovery failed",
+      "status": "pass",
+      "message": "Running-tour discovery on Tours To You succeeded"
+    },
+    {
+      "name": "Data: Tours To You pages not checked",
+      "status": "pass",
+      "message": "All 225 Tours To You show pages read within 4 days"
+    },
+    {
+      "name": "Data: national tours added automatically",
+      "status": "warn",
+      "message": "Added mrs-doubtfire-tour-2023 from BroadwayWorld tour roundups or Tours To You schedules (dates from Tours To You + Wikipedia)."
+    },
+    {
+      "name": "Data: closed national tours reopened automatically",
+      "status": "pass",
+      "message": "No closed national tours reopened"
+    },
+    {
+      "name": "Data: closed national tour lists new dates",
+      "status": "warn",
+      "message": "harry-potter-tour-2024 (closed 2026-10-11, listed again from 2027-03-31: closing 2026-10-11 was checked by hand). Left closed: the page doesn't say whether it is the same tour."
+    },
+    {
+      "name": "Data: T1/T2 silent review gaps",
+      "status": "error",
+      "message": "2 discovered review(s) not reaching the composite score (1 T1). Oldest: golden-boy-off-west-end-2026 — daily-mail (rejected-unscoreable)"
+    },
+    {
+      "name": "Data: reviewed shows missing from shows.json",
+      "status": "error",
+      "message": "2 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Frank and Percy\" (guardian-review — missing 3d) — 1 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
+    },
+    {
+      "name": "Data: armed-but-vacuous backlog cards",
+      "status": "warn",
+      "message": "2 Linear card(s) carry an acceptance check that cannot tell done from not done (2 can never fail, 0 can never pass). First: BRO-5297 Triage ~150 open Notion-only cards filed after the 2026-08-20 freeze (no Linear twin)"
+    },
+    {
+      "name": "Data: undispatchable Linear backlog cards",
+      "status": "warn",
+      "message": "94 of 516 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-5432 Board workers: --slots 3 fills the cloud disk (4 codex worktrees x 1.4 GB) and starves cards"
+    }
+  ]
+}

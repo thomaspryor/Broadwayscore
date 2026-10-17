@@ -1,0 +1,84 @@
+{
+  "generatedAt": "2026-10-12T20:28:44.504Z",
+  "verdict": "ok",
+  "reason": "3 search method(s) within 0.15 of their 4-run median",
+  "regressions": [],
+  "comparedArms": 3,
+  "trendEntries": 8,
+  "latest": {
+    "date": "2026-10-12",
+    "generatedAt": "2026-10-12T20:28:44.504Z",
+    "naivePages": 2,
+    "shows": 5,
+    "informativeShows": 4,
+    "excluded": {
+      "settling": 1
+    },
+    "truthUrls": 51,
+    "onDiskUrls": 41,
+    "newFromNaive": 7,
+    "families": {
+      "naive": 0.373,
+      "onDisk": 0.804,
+      "scoped": 0.333
+    },
+    "arms": {
+      "naive-p0": 0.196,
+      "naive-p1": 0.176,
+      "onDisk": 0.804,
+      "scoped-q0": 0.235,
+      "scoped-q1": 0.118,
+      "scoped-q2": 0.078
+    },
+    "combinedRecall": 0.863,
+    "familyYield": {
+      "naive": 3.8,
+      "onDisk": 8.2,
+      "scoped": 3.4
+    },
+    "armYield": {
+      "naive-p0": 2,
+      "naive-p1": 1.8,
+      "onDisk": 8.2,
+      "scoped-q0": 2.4,
+      "scoped-q1": 1.2,
+      "scoped-q2": 0.8
+    },
+    "armsFailed": {
+      "naive-p0": 0,
+      "naive-p1": 0,
+      "onDisk": 0,
+      "scoped-q0": 0,
+      "scoped-q1": 0,
+      "scoped-q2": 0
+    },
+    "unavailableArms": [],
+    "byCategory": {
+      "off-broadway": {
+        "shows": 2,
+        "truthUrls": 7,
+        "families": {
+          "naive": 0.143,
+          "onDisk": 1,
+          "scoped": 0.143
+        }
+      },
+      "off-west-end": {
+        "shows": 3,
+        "truthUrls": 44,
+        "families": {
+          "naive": 0.409,
+          "onDisk": 0.773,
+          "scoped": 0.364
+        }
+      }
+    },
+    "sampleIds": [
+      "hound-of-the-baskervilles-off-west-end-2026",
+      "the-virtuous-burglar-off-west-end-2026",
+      "bettys-summer-vacation-the-heights-players-off-broadway-2026",
+      "a-ghost-in-your-ear-off-broadway-2026",
+      "fences-off-west-end-2026"
+    ]
+  }
+}

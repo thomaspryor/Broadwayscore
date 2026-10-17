@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1080px;
+    height: 1350px;
+    background: #0f0f14;
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: #e5e7eb;
+    overflow: hidden;
+  }
+
+  .page {
+    padding: 52px 48px 44px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ─── Header ─── */
+  .header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .eyebrow {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #d4a574;
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 1.08;
+    color: #ffffff;
+    margin-bottom: 12px;
+  }
+
+  .subtitle {
+    font-size: 19px;
+    color: #6b7280;
+    font-weight: 400;
+  }
+
+  .divider {
+    height: 1px;
+    background: rgba(212, 165, 116, 0.2);
+    margin-bottom: 24px;
+  }
+
+  /* ─── Legend ─── */
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 24px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .legend-badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 800;
+  }
+
+  .legend-badge.critic {
+    background: #d97706;
+    color: #1a1a1a;
+  }
+
+  .legend-badge.audience {
+    background: #22c55e;
+    color: #fff;
+  }
+
+  /* ─── Show Rows ─── */
+  .rows {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .show-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 20px;
+    border-radius: 16px;
+    background: #1a1a24;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  /* Rank number */
+  .rank {
+    font-size: 22px;
+    font-weight: 800;
+    color: #4b5563;
+    min-width: 32px;
+    text-align: center;
+  }
+
+  .show-row:nth-child(-n+3) .rank {
+    color: #d4a574;
+  }
+
+  /* Show name + year */
+  .show-meta {
+    width: 280px;
+    flex-shrink: 0;
+  }
+
+  .show-name {
+    font-size: 21px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .show-year {
+    font-size: 15px;
+    font-weight: 500;
+    color: #4b5563;
+    margin-top: 2px;
+  }
+
+  /* Score badges */
+  .scores {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .badge {
+    width: 56px;
+    height: 56px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 800;
+    position: relative;
+  }
+
+  .badge-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 3px;
+    color: #6b7280;
+  }
+
+  .badge-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Badge colors by score tier */
+  .badge.gold {
+    background: linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%);
+    color: #1a1a1a;
+    border: 2px solid #C8960E;
+    box-shadow: 0 0 16px rgba(218, 165, 32, 0.4), 0 4px 8px rgba(0,0,0,0.3);
+  }
+
+  .badge.recommended {
+    background: #22c55e;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+  }
+
+  .badge.worth-seeing {
+    background: #14b8a6;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(20, 184, 166, 0.3);
+  }
+
+  .badge.skippable {
+    background: #d97706;
+    color: #1a1a1a;
+    box-shadow: 0 2px 8px rgba(217, 119, 6, 0.3);
+  }
+
+  .badge.stay-away {
+    background: #ef4444;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+  }
+
+  /* Gap indicator */
+  .gap-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .gap-arrow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+    justify-content: center;
+    position: relative;
+  }
+
+  .gap-line {
+    height: 3px;
+    background: rgba(212, 165, 116, 0.4);
+    flex: 1;
+    max-width: 60px;
+    border-radius: 2px;
+  }
+
+  .gap-value {
+    font-size: 26px;
+    font-weight: 900;
+    color: #d4a574;
+    padding: 0 4px;
+    line-height: 1;
+  }
+
+  .gap-sublabel {
+    font-size: 11px;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+
+  /* ─── Footer ─── */
+  .footer {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(212, 165, 116, 0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .footer-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #d4a574, #c4956a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 900;
+    color: #0f0f14;
+  }
+
+  .footer-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: #d4a574;
+  }
+
+  .footer-url {
+    font-size: 14px;
+    font-weight: 500;
+    color: #6b7280;
+  }
+
+  .footer-stat {
+    font-size: 12px;
+    color: #374151;
+    text-align: right;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <div class="eyebrow">Broadway by the Numbers</div>
+      <h1>The Most Polarizing<br>Broadway Shows</h1>
+      <div class="subtitle">Where critics and audiences disagree the most</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-badge critic">C</div>
+        <span style="color: #9ca3af;">Critic Score</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-badge audience">A</div>
+        <span style="color: #9ca3af;">Audience Score</span>
+      </div>
+    </div>
+
+    <div class="rows" id="rows"></div>
+
+    <div class="footer">
+      <div class="footer-brand">
+        <div class="footer-icon">B</div>
+        <div>
+          <div class="footer-name">Broadway Scorecard</div>
+          <div class="footer-url">broadwayscorecard.com</div>
+        </div>
+      </div>
+      <div class="footer-stat">Based on 700+ shows · 18,000+ reviews</div>
+    </div>
+  </div>
+
+  <script>
+    const shows = [
+      { name: "Elling", year: 2010, critic: 59, audience: 25, gap: 34, dir: "critics" },
+      { name: "Don't Dress for Dinner", year: 2012, critic: 53, audience: 86, gap: 33, dir: "audience" },
+      { name: "Stick Fly", year: 2011, critic: 68, audience: 100, gap: 32, dir: "audience" },
+      { name: "The Anarchist", year: 2012, critic: 50, audience: 20, gap: 30, dir: "critics" },
+      { name: "Butley", year: 2006, critic: 71, audience: 100, gap: 29, dir: "audience" },
+      { name: "Diana, The Musical", year: 2021, critic: 41, audience: 70, gap: 29, dir: "audience" },
+      { name: "Godspell", year: 2011, critic: 55, audience: 84, gap: 29, dir: "audience" },
+      { name: "Guys and Dolls", year: 2009, critic: 44, audience: 73, gap: 29, dir: "audience" },
+      { name: "[title of show]", year: 2008, critic: 62, audience: 91, gap: 29, dir: "audience" },
+      { name: "Beetlejuice", year: 2019, critic: 56, audience: 84, gap: 28, dir: "audience" },
+    ];
+
+    function getTier(score) {
+      if (score >= 83) return "gold";
+      if (score >= 75) return "recommended";
+      if (score >= 65) return "worth-seeing";
+      if (score >= 55) return "skippable";
+      return "stay-away";
+    }
+
+    const container = document.getElementById("rows");
+
+    shows.forEach((s, i) => {
+      const criticTier = getTier(s.critic);
+      const audienceTier = getTier(s.audience);
+
+      container.innerHTML += `
+        <div class="show-row">
+          <div class="rank">${i + 1}</div>
+          <div class="show-meta">
+            <div class="show-name">${s.name}</div>
+            <div class="show-year">${s.year}</div>
+          </div>
+          <div class="scores">
+            <div class="badge-col">
+              <div class="badge ${criticTier}">${s.critic}</div>
+              <div class="badge-label">Critics</div>
+            </div>
+            <div class="gap-col">
+              <div class="gap-arrow">
+                <div class="gap-line"></div>
+                <div class="gap-value">${s.gap}</div>
+                <div class="gap-line"></div>
+              </div>
+              <div class="gap-sublabel">pt gap</div>
+            </div>
+            <div class="badge-col">
+              <div class="badge ${audienceTier}">${s.audience}</div>
+              <div class="badge-label">Audience</div>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+  </script>
+</body>
+</html>

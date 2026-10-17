@@ -1,0 +1,82 @@
+{
+  "issueNumber": "bro-5268-g",
+  "planId": "f0a046ce-2447-41a7-8f15-aa663f05e52f",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5268: cite trade/producer reports for recoupment outcomes on death-becomes-her",
+    "steps": [
+      "Apply each commercial.json data-edit (compare-and-set on oldValue)",
+      "Each citation was read on the article page; excerpts are at most 15 quoted words"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-becomes-her",
+        "showId": "death-becomes-her",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "reported-loss",
+        "description": "death-becomes-her: closed Jun 28, 2026 with a reported total loss to investors (Broadway Journal): Flop (0% returned is under the 30% Fizzle line), loss evidence now cited"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-becomes-her",
+        "showId": "death-becomes-her",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Flop",
+        "description": "death-becomes-her: closed Jun 28, 2026 with a reported total loss to investors (Broadway Journal): Flop (0% returned is under the 30% Fizzle line), loss evidence now cited"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-becomes-her",
+        "showId": "death-becomes-her",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "death-becomes-her: closed Jun 28, 2026 with a reported total loss to investors (Broadway Journal): Flop (0% returned is under the 30% Fizzle line), loss evidence now cited"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-becomes-her",
+        "showId": "death-becomes-her",
+        "field": "recoupedSource",
+        "oldValue": "Inferred: closed 30 days ago, no trade-press recoupment found",
+        "newValue": "Broadway Journal (Aug 12, 2026) reported the production closed without recouping: it \"resulted in a total loss to investors as of early February 2026.\" https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+        "description": "death-becomes-her: closed Jun 28, 2026 with a reported total loss to investors (Broadway Journal): Flop (0% returned is under the 30% Fizzle line), loss evidence now cited"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T19:51:45.008Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for death-becomes-her"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for death-becomes-her"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for death-becomes-her"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for death-becomes-her"
+    }
+  ]
+}

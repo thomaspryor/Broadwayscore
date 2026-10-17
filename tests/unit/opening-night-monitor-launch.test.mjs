@@ -1,0 +1,470 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import fs, { readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import path from 'node:path';
+import os from 'node:os';
+import { launchDecision, activeWindows, LAUNCH_INFLIGHT_GRACE_SEC } from '../../scripts/lib/opening-night-windows.js';
+
+// Card #650: the launcher previously opened a cmux workspace to run the
+// monitor — cmux refuses connections from launchd-parented process ancestry
+// ("Access denied — only processes started inside cmux can connect" /
+// broken-pipe on list-workspaces/new-workspace), which is why the launcher
+// launched a session 0/344 times. The fix runs the monitor headless via
+// scripts/lib/opening-night-monitor.js (a thin wrapper around the shared
+// scripts/lib/claude-cli.js primitive already used by autonomous-run.js and
+// bsc-runner.js under this exact launchd ancestry) and never touches cmux at
+// all. This is a structural regression guard — it fails if the launcher ever
+// re-imports the ancestry-sensitive cmux path, not just if it's called.
+test('launcher never imports the cmux launch/workspace modules', () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(src, /require\(['"]\.\/lib\/cmux-launch\.js['"]\)/, 'launcher must not require cmux-launch.js — that is the ancestry-sensitive path card #650 removed');
+  assert.doesNotMatch(src, /require\(['"]\.\/lib\/cmux-workspaces\.js['"]\)/, 'launcher must not require cmux-workspaces.js — no cmux workspace exists to probe in the headless design');
+  assert.match(src, /require\(['"]\.\/lib\/opening-night-monitor\.js['"]\)/, 'launcher must run the pass through the headless wrapper');
+});
+
+// Adversarial ship-check finding (2026-07-30): a lock that needs reclaiming
+// means the PREVIOUS pass's node process died mid-flight (SIGKILL/OOM/sleep)
+// before it ever reached its own success/failure write. Without counting
+// that as a failure, a string of process-level crashes could reclaim forever
+// (every ~90 min, HEARTBEAT_STALE_MIN) without ever reaching
+// MAX_ATTEMPTS_PER_NIGHT and paging the owner — the exact silent-forever
+// failure mode this regression guard exists to catch.
+test('reclaim-and-launch counts the abandoned attempt as a consecutive failure', () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  const reclaimBlock = src.slice(src.indexOf("if (decision.action === 'reclaim-and-launch') {"));
+  const nextBlockEnd = reclaimBlock.indexOf('\n  }\n');
+  const block = reclaimBlock.slice(0, nextBlockEnd);
+  assert.match(block, /consecutiveFailures:\s*\(nightState\.consecutiveFailures\s*\|\|\s*0\)\s*\+\s*1/, 'reclaim-and-launch must increment consecutiveFailures for the abandoned attempt');
+  assert.match(block, /writeNightState\(key,\s*nightState\)/, 'the incremented consecutiveFailures must be persisted before the new attempt proceeds');
+});
+
+// Adversarial ship-check finding (2026-07-30, independent Claude review): the
+// cmux-era design's ONLY total-spend cap was MAX_ATTEMPTS_PER_NIGHT (3 raw
+// launches, regardless of success) — an "external brake" its own comment in
+// opening-night-windows.js calls out because the session can't be trusted to
+// self-police $. Card #650's redesign passes consecutiveFailures (which
+// resets to 0 on every success) as attemptsTonight, so a mostly-successful
+// night has NO cap at all — up to ~90 opus passes across the ~31h window.
+// This guard fails if the launcher's own external $ brake is ever removed.
+test('a nightly USD spend cap overrides launch/reclaim-and-launch independently of launchDecision', () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  assert.match(src, /const NIGHTLY_USD_CAP\s*=\s*\d/, 'expected a NIGHTLY_USD_CAP constant — the external spend brake');
+  const overrideBlock = src.slice(src.indexOf('let decision = launchDecision(state);'), src.indexOf("if (opts['dry-run'])"));
+  assert.match(overrideBlock, /decision\.action === 'launch' \|\| decision\.action === 'reclaim-and-launch'/, 'the spend cap must gate BOTH launch and reclaim-and-launch — either one starts a real pass');
+  assert.match(overrideBlock, /nightState\.usdTonight[\s\S]{0,40}>=\s*NIGHTLY_USD_CAP/, 'must compare accumulated usdTonight against the cap');
+  assert.match(overrideBlock, /action:\s*'escalate'/, 'exceeding the cap must escalate (page + stop), not silently skip');
+});
+
+// BRO-3056 (BRO-3053 cousin): runClaudeCli's exitSignal only reaches the
+// owner-facing ledger/state if every projection in between re-adds it —
+// runMonitorPass's return object was fixed alongside this (see
+// scripts/lib/opening-night-monitor.test.mjs's real-SIGKILL integration
+// test), but the launcher's OWN two projections of that result — lastFailure
+// (persisted to night-state-*.json) and the launch-failed dispatch-ledger row
+// (what the escalation email points the owner at) — are separate allowlists
+// and were still silently dropping the field.
+test('the !result.ok branch carries exitSignal onto lastFailure', () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  const block = src.slice(src.indexOf('if (!result.ok) {'), src.indexOf('dispatchLedger.appendEntry({'));
+  assert.match(block, /lastFailure:\s*\{[^}]*exitSignal:\s*result\.exitSignal/, 'lastFailure must carry result.exitSignal, or an OS-killed pass is indistinguishable from any other failure in night-state.json');
+});
+
+test('the !result.ok branch carries exitSignal onto the launch-failed dispatch-ledger row', () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  const start = src.indexOf("dispatchLedger.appendEntry({\n      event: 'launch-failed'");
+  const block = src.slice(start, src.indexOf('});', start));
+  assert.match(block, /exitSignal:\s*result\.exitSignal/, "the launch-failed ledger row must carry result.exitSignal, or the escalation email's own audit trail cannot distinguish an OS kill from any other abrupt exit");
+});
+
+test('usdTonight accumulates across passes on both the success and failure write-back paths', () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  const usdTonightLine = src.split('\n').find(l => l.includes('const usdTonight ='));
+  assert.ok(usdTonightLine, 'expected a usdTonight accumulator computed once before both outcome branches');
+  assert.match(usdTonightLine, /nightState\.usdTonight \|\| 0/, 'must add onto the running total, not overwrite it');
+  assert.match(usdTonightLine, /result\.usd \|\| 0/, "must add THIS pass's spend");
+  // Both writeNightState calls after the pass resolves must persist usdTonight.
+  const postPassSrc = src.slice(src.indexOf('const usdTonight ='));
+  const writeCallStarts = [...postPassSrc.matchAll(/writeNightState\(key,/g)];
+  assert.ok(writeCallStarts.length >= 2, `expected a writeNightState call on both the failure and success paths, found ${writeCallStarts.length}`);
+  for (const m of writeCallStarts) {
+    const snippet = postPassSrc.slice(m.index, m.index + 250);
+    assert.match(snippet, /usdTonight/, `writeNightState call must persist usdTonight: ${snippet.slice(0, 100)}...`);
+  }
+});
+
+// Independently verified live: .env has ANTHROPIC_API_KEY set, and
+// load-env.js (required at the top of this file for RESEND_API_KEY/
+// OWNER_EMAIL, task #457) pulls the WHOLE .env into process.env — including
+// that key. claude-cli.js's strippedEnv forwards ANTHROPIC_API_KEY if
+// present, which would silently bill headless passes pay-per-token instead
+// of the Mac's subscription OAuth login (autonomous-run.js never hits this:
+// its launchd wrapper only greps a single field out of .env, never sources
+// the whole file).
+test('the headless pass clears ANTHROPIC_API_KEY on the oauth path so it bills the subscription login, not the API key', () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  // BRO-2759: allow-list construction moved into buildMonitorPassEnv.
+  assert.match(src, /env:\s*buildMonitorPassEnv\(process\.env/, 'runMonitorPass must take its env from buildMonitorPassEnv(process.env)');
+  const { buildMonitorPassEnv } = createRequire(import.meta.url)('../../scripts/lib/opening-night-monitor.js');
+  const env = buildMonitorPassEnv({ RESEND_API_KEY: 'r', OWNER_EMAIL: 'o@x.com' }, {});
+  assert.equal(env.RESEND_API_KEY, 'r', 'must forward RESEND_API_KEY into the spawned child');
+  assert.equal(env.OWNER_EMAIL, 'o@x.com', 'must forward OWNER_EMAIL into the spawned child');
+});
+
+// monitor-v2.md instructs the IN-PASS session to send its own parity/
+// escalation report via routeAlert (owner-alert-router.js), which needs
+// RESEND_API_KEY/OWNER_EMAIL. strippedEnv's fixed allowlist in claude-cli.js
+// does not include either, so without explicit forwarding here the report
+// would silently no-op inside the spawned child on every real opening night
+// — the exact failure class #457 already fixed for the launcher's own
+// alerts (commit 288e31efd69), but not yet for the pass it launches.
+test('the headless pass forwards RESEND_API_KEY and OWNER_EMAIL so the in-pass report email can send', () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  // BRO-2759: allow-list construction moved into buildMonitorPassEnv.
+  assert.match(src, /env:\s*buildMonitorPassEnv\(process\.env/, 'runMonitorPass must take its env from buildMonitorPassEnv(process.env)');
+  const { buildMonitorPassEnv } = createRequire(import.meta.url)('../../scripts/lib/opening-night-monitor.js');
+  const env = buildMonitorPassEnv({ RESEND_API_KEY: 'r', OWNER_EMAIL: 'o@x.com' }, {});
+  assert.equal(env.RESEND_API_KEY, 'r', 'must forward RESEND_API_KEY into the spawned child');
+  assert.equal(env.OWNER_EMAIL, 'o@x.com', 'must forward OWNER_EMAIL into the spawned child');
+});
+
+// Card #568: LOCK_DIR is the atomic test-and-set (mkdir, before the launch
+// even starts) but LOCK_META is only written AFTER launchCmuxSession()
+// resolves — up to verifyTimeoutSec(90) x 2 attempts + lateAdoptSec(60) =
+// ~240s later. A concurrent tick that lands inside that gap sees
+// lockExists=true, metaExists=false, claudeAlive=false — the exact same
+// shape as a launch that died before ever writing meta. Without a lock-age
+// signal, launchDecision can't tell "still launching" from "long dead" and
+// reclaims a still-in-flight session out from under it.
+//
+// heartbeatAgeMin is deliberately set to a large-but-realistic number here,
+// not null: HEARTBEAT is a single global file a prior night's session
+// already wrote and nothing deletes, so in production it is essentially
+// never null — an earlier version of this fix keyed off
+// heartbeatAgeMin===null and was unreachable as a result (ship-check
+// finding). metaExists is the signal that actually distinguishes in-flight
+// from pre-meta-dead.
+test('a launch actively in flight (fresh lock, no meta.json yet) is NOT reclaimed', () => {
+  const windows = activeWindows(
+    [{ id: 'giant-2026', category: 'broadway', openingDate: '2026-07-30' }],
+    new Date('2026-07-30T22:00:00Z'),
+  );
+  const d = launchDecision({
+    windows, killSwitch: false, lockExists: true,
+    heartbeatAgeMin: 2880, claudeAlive: false, attemptsTonight: 0,
+    lockAgeSec: 10, // fresh lock — well inside the grace window
+    metaExists: false,
+  });
+  assert.notEqual(d.action, 'reclaim-and-launch');
+  assert.equal(d.action, 'skip');
+});
+
+test('a lock that outlived the grace window with no meta.json IS reclaimed', () => {
+  const windows = activeWindows(
+    [{ id: 'giant-2026', category: 'broadway', openingDate: '2026-07-30' }],
+    new Date('2026-07-30T22:00:00Z'),
+  );
+  const d = launchDecision({
+    windows, killSwitch: false, lockExists: true,
+    heartbeatAgeMin: 2880, claudeAlive: false, attemptsTonight: 0,
+    lockAgeSec: LAUNCH_INFLIGHT_GRACE_SEC + 30,
+    metaExists: false,
+  });
+  assert.equal(d.action, 'reclaim-and-launch');
+});
+
+// Guards the launcher's own wiring: main() must actually compute and pass
+// lockAgeSec + metaExists into launchDecision's state, or the grace window
+// above is dead code that never fires against real ticks (same silent-
+// revert risk as the claudeAlive guard above).
+test('launcher state object passes lockAgeSec through to launchDecision', () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  const lockAgeLine = src.split('\n').find(l => l.includes('lockAgeSec:'));
+  assert.ok(lockAgeLine, 'expected a `lockAgeSec:` field in the state object literal');
+  assert.match(lockAgeLine, /lockAgeSec\(\)/, 'lockAgeSec must be computed from LOCK_DIR birthtime, not hardcoded/omitted');
+});
+
+test('launcher state object passes metaExists through to launchDecision', () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  const metaExistsLine = src.split('\n').find(l => l.includes('metaExists:'));
+  assert.ok(metaExistsLine, 'expected a `metaExists:` field in the state object literal — the in-flight grace window must key off whether THIS lock instance has written meta.json, not the global (never-null-in-practice) heartbeat file');
+});
+
+// Regression guard: the in-flight check must never key off heartbeatAgeMin,
+// even indirectly — that was the exact bug an earlier version of this fix
+// shipped with (heartbeatAgeMin is realistically never null in production).
+test('lockAgeSec is computed from birthtime, not mtime (mtime is reset by unrelated writes into the lock dir)', () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  const lockAgeFn = src.slice(src.indexOf('function lockAgeSec'), src.indexOf('function lockAgeSec') + 300);
+  assert.match(lockAgeFn, /birthtimeMs/, 'lockAgeSec must use birthtimeMs, not mtimeMs');
+});
+
+// Task #457 (2026-07-31, tao-of-glass night): the login lives in the macOS
+// Keychain, which a launchd-parented claude cannot open — passes launched
+// with ANTHROPIC_API_KEY cleared died "Not logged in" while the preflight
+// (which inherited the .env API key) reported healthy. resolvePassAuth is
+// the extracted decision: stored login first, API-key fallback only when it
+// actually works, hard fail otherwise.
+test('resolvePassAuth: stored login wins even when an API key is present', async () => {
+  const { createRequire } = await import('node:module');
+  const { resolvePassAuth } = createRequire(import.meta.url)('../../scripts/opening-night-monitor-launch.js');
+  assert.deepEqual(resolvePassAuth({ storedLoginOk: true, apiKeyPresent: true, apiKeyPingOk: true }), { mode: 'oauth' });
+});
+
+test('resolvePassAuth: falls back to api-key only when the key ping actually succeeded', async () => {
+  const { createRequire } = await import('node:module');
+  const { resolvePassAuth } = createRequire(import.meta.url)('../../scripts/opening-night-monitor-launch.js');
+  assert.deepEqual(resolvePassAuth({ storedLoginOk: false, apiKeyPresent: true, apiKeyPingOk: true }), { mode: 'api-key' });
+  assert.deepEqual(resolvePassAuth({ storedLoginOk: false, apiKeyPresent: true, apiKeyPingOk: false }), { mode: 'fail' });
+  assert.deepEqual(resolvePassAuth({ storedLoginOk: false, apiKeyPresent: false, apiKeyPingOk: false }), { mode: 'fail' });
+});
+
+// Structural guard: the pass env must key off auth.mode — a regression back
+// to the unconditional ANTHROPIC_API_KEY:'' literal recreates the exact
+// always-fails-under-launchd pass this fix removed.
+test('pass env forwards the API key only under auth.mode api-key', () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  // BRO-2759: the branch moved into buildMonitorPassEnv (behaviour covered by
+  // opening-night-monitor-env.test.mjs); the launcher must still hand it auth.mode.
+  assert.match(src, /buildMonitorPassEnv\(process\.env,\s*\{\s*authMode:\s*auth\.mode\s*\}\)/, 'pass env must branch on auth.mode');
+  // BRO-4141: the stored-login probe lives in scripts/lib/claude-cli.js
+  // (authPing({ ANTHROPIC_API_KEY: '' }) with hooks disabled). A local fork
+  // here is exactly how the hooks-off fix never reached this launcher.
+  assert.match(src, /cliAuth\.preflightAuth\(/, 'preflight must delegate to the shared claude-cli.js probe');
+  assert.doesNotMatch(src, /Reply with exactly: pong/, 'no forked auth ping in the launcher');
+});
+
+// BRO-4141: a ping that times out because the Mac is overloaded is not a
+// revoked login. Owner is paged at once only for auth-rejected; starved /
+// spawn-error pages only after STARVED_PREFLIGHT_PAGE_AFTER ticks in a row.
+test('authFailureRouting: auth-rejected pages immediately, starvation only when sustained', async () => {
+  const { createRequire } = await import('node:module');
+  const req = createRequire(import.meta.url);
+  const { authFailureRouting, STARVED_PREFLIGHT_PAGE_AFTER: N } = req('../../scripts/opening-night-monitor-launch.js');
+  assert.deepEqual(authFailureRouting({ reason: 'auth-rejected', consecutiveStarved: 0 }), { page: true, kind: 'auth' });
+  assert.deepEqual(authFailureRouting({ reason: undefined, consecutiveStarved: 0 }), { page: true, kind: 'auth' });
+  for (const reason of ['spawn-starved', 'spawn-error']) {
+    assert.deepEqual(authFailureRouting({ reason, consecutiveStarved: 1 }), { page: false, kind: 'starved' });
+    assert.deepEqual(authFailureRouting({ reason, consecutiveStarved: N - 1 }), { page: false, kind: 'starved' });
+    assert.deepEqual(authFailureRouting({ reason, consecutiveStarved: N }), { page: true, kind: 'starved' });
+  }
+});
+
+// The real timeout shape: spawnSync kills at 120s with SIGTERM -> starved.
+test('a 120s ping timeout classifies as spawn-starved (digest), not auth-rejected (page)', async () => {
+  const { createRequire } = await import('node:module');
+  const { classifyAuthPingFailure } = createRequire(import.meta.url)('../../scripts/lib/claude-cli.js');
+  const e = Object.assign(new Error('spawnSync claude ETIMEDOUT'), { code: 'ETIMEDOUT' });
+  assert.equal(classifyAuthPingFailure({ error: e, status: null, signal: 'SIGTERM' }), 'spawn-starved');
+  assert.equal(classifyAuthPingFailure({ status: 143, signal: null }), 'spawn-starved');
+  assert.equal(classifyAuthPingFailure({ status: 1, signal: null }), 'auth-rejected');
+});
+
+// Card #693: this launcher runs under launchd in the SHARED ~/Broadwayscore
+// checkout. Its routeAlert cooldown state must land on a ledger that a
+// parallel session's `git checkout`/`reset --hard` cannot wipe — the live
+// failure was the same on-monitor-launch-failed alert emailing twice 21 min
+// apart through a cooldownHours: 3 window, with the git-tracked ledger showing
+// neither send. routeAlert itself is REAL here — only the Linear issue
+// creation (BRO-375: createLinearIssue(), scripts/lib/linear-issue-create.js)
+// and the Resend sender are stubbed — so this asserts the cooldown actually
+// holds end-to-end through the launcher, not merely that a path gets logged.
+test('alert(): a second launch-failure inside the cooldown is suppressed, and the tracked ledger is never touched', async () => {
+  const require = createRequire(import.meta.url);
+  const routerPath = require.resolve('../../scripts/lib/owner-alert-router.js');
+  const discordPath = require.resolve('../../scripts/lib/discord-notify.js');
+  const linearIssueCreatePath = require.resolve('../../scripts/lib/linear-issue-create.js');
+  const linearClientPath = require.resolve('../../scripts/lib/linear-client.js');
+  const launcher = require('../../scripts/opening-night-monitor-launch.js');
+
+  // A ledger outside any git checkout — where a local sender gets routed.
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'alert-router-launcher-'));
+  const pinnedLedger = path.join(tmpDir, 'state', 'alert-ledger.json');
+  const priorEnv = process.env.ALERT_LEDGER_PATH;
+  process.env.ALERT_LEDGER_PATH = pinnedLedger;
+  // BRO-1699: owner-alert-router.js now refuses to write the REAL attempts
+  // log under node:test unless ALERT_ATTEMPTS_LOG_PATH is set (same guard
+  // class as the ledger above) — must be set BEFORE require() below resolves
+  // ATTEMPTS_LOG_PATH, or logDispatchAttempt() throws internally (swallowed
+  // by its own non-fatal try/catch, so this test kept passing while silently
+  // never writing an attempt row — caught by code-review, not by this test).
+  const priorAttemptsLogEnv = process.env.ALERT_ATTEMPTS_LOG_PATH;
+  const attemptsLog = path.join(tmpDir, 'alert-router-attempts.jsonl');
+  process.env.ALERT_ATTEMPTS_LOG_PATH = attemptsLog;
+
+  const priorRouterCache = require.cache[routerPath];
+  const priorDiscordCache = require.cache[discordPath];
+  const priorLinearIssueCreateCache = require.cache[linearIssueCreatePath];
+  const priorLinearClientCache = require.cache[linearClientPath];
+  delete require.cache[routerPath];
+  delete require.cache[discordPath];
+  delete require.cache[linearIssueCreatePath];
+  delete require.cache[linearClientPath];
+
+  // No Linear issue creation, no Resend email, no writes into the repo's
+  // data/audit/.
+  const dispatches = [];
+  require.cache[linearIssueCreatePath] = {
+    id: linearIssueCreatePath, filename: linearIssueCreatePath, loaded: true,
+    exports: {
+      createLinearIssue: async (opts) => {
+        dispatches.push(opts);
+        return { issue: { id: 'fake-uuid', identifier: 'BRO-999', title: opts.title }, mode: 'park', stateName: 'Backlog' };
+      },
+    },
+  };
+  require.cache[discordPath] = {
+    id: discordPath, filename: discordPath, loaded: true,
+    exports: { sendAlert: async () => true },
+  };
+  // Stub linear-client's searchIssues (rail-2 cross-system dedupe, run inside
+  // routeAlert() before dispatchCard/createLinearIssue is even reached) so
+  // this test never depends on live Linear API state or LINEAR_API_KEY being
+  // present — a real environment on this machine has real issues, and
+  // 'test:launcher-launch-failed' is not guaranteed to be unmatched there.
+  require.cache[linearClientPath] = {
+    id: linearClientPath, filename: linearClientPath, loaded: true,
+    exports: { searchIssues: async () => null },
+  };
+
+  const router = require(routerPath);
+  const realWriteFileSync = fs.writeFileSync;
+  const realReadFileSync = fs.readFileSync;
+  // No fs remap needed for the attempts log anymore — ATTEMPTS_LOG_PATH
+  // already resolved to attemptsLog at require() time via the env var above.
+
+  const readTracked = () => {
+    try { return realReadFileSync(router._TRACKED_LEDGER_PATH, 'utf8'); } catch { return null; }
+  };
+  const trackedBefore = readTracked();
+
+  const logs = [];
+  const realConsoleLog = console.log;
+  console.log = (...args) => logs.push(args.join(' '));
+  launcher.alert.loggedLedger = false; // the resolved path is logged once per process
+  try {
+    const opts = {
+      conditionKey: 'test:launcher-launch-failed',
+      title: 'monitor pass FAILED (test)',
+      description: 'test',
+      disposition: 'auto',
+      cooldownHours: 3,
+    };
+    const first = await launcher.alert(opts);
+    assert.equal(first.action, 'auto', 'first failure of the night notifies');
+    assert.equal(dispatches.length, 1);
+    assert.ok(fs.existsSync(pinnedLedger), 'cooldown state landed on the machine-local ledger');
+
+    // Nothing was written into the git-tracked ledger, so there is no
+    // uncommitted edit for a parallel session's checkout/reset to wipe — the
+    // whole failure mode is gone rather than merely narrowed.
+    assert.equal(trackedBefore, readTracked(), 'the launcher must not touch the git-tracked ledger');
+
+    const second = await launcher.alert(opts);
+    assert.equal(second.action, 'silent', 'second failure inside the 3h cooldown must not re-notify');
+    assert.equal(dispatches.length, 1, 'exactly one dispatch — the live bug sent two 21 min apart');
+
+    const ledgerLine = logs.find(l => l.includes('alert ledger:'));
+    assert.ok(ledgerLine, 'the tick logs which ledger it used');
+    assert.ok(ledgerLine.includes(pinnedLedger), `expected the resolved ledger path in: ${ledgerLine}`);
+    assert.ok(ledgerLine.includes('survives git ops'), 'a non-tracked ledger must be reported as git-safe');
+  } finally {
+    console.log = realConsoleLog;
+    fs.writeFileSync = realWriteFileSync;
+    if (priorRouterCache) require.cache[routerPath] = priorRouterCache; else delete require.cache[routerPath];
+    if (priorDiscordCache) require.cache[discordPath] = priorDiscordCache; else delete require.cache[discordPath];
+    if (priorLinearIssueCreateCache) require.cache[linearIssueCreatePath] = priorLinearIssueCreateCache; else delete require.cache[linearIssueCreatePath];
+    if (priorLinearClientCache) require.cache[linearClientPath] = priorLinearClientCache; else delete require.cache[linearClientPath];
+    if (priorEnv === undefined) delete process.env.ALERT_LEDGER_PATH; else process.env.ALERT_LEDGER_PATH = priorEnv;
+    if (priorAttemptsLogEnv === undefined) delete process.env.ALERT_ATTEMPTS_LOG_PATH; else process.env.ALERT_ATTEMPTS_LOG_PATH = priorAttemptsLogEnv;
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  }
+});
+
+// BRO-4141 review: route on the STORED-login probe's reason. A revoked login
+// plus an API-key probe that timed out must still page as auth at once, and a
+// sustained starvation page must use its own key (not auth-failed's cooldown).
+test('auth failure routing keys off storedReason; sustained starvation has its own page key', async () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  assert.match(src, /const failReason = auth\.storedReason \|\| auth\.reason;/);
+  assert.match(src, /on-monitor-auth-starved-sustained-\$\{/);
+  const { createRequire } = await import('node:module');
+  const req = createRequire(import.meta.url);
+  const { isPageWorthy } = req('../../scripts/lib/page-worthy-alerts.js');
+  assert.equal(isPageWorthy('on-monitor-auth-starved-sustained-2026-09-25'), true);
+  assert.equal(isPageWorthy('on-monitor-auth-starved-2026-09-25'), false);
+  const { worseAuthPingReason } = req('../../scripts/lib/claude-cli.js');
+  // merged reason says starved, which is why the launcher must not use it alone
+  assert.equal(worseAuthPingReason('auth-rejected', 'spawn-starved'), 'spawn-starved');
+});
+
+// BRO-4141 (Codex review): the unit routing test passed while the counter
+// could never exceed 1 in production (carryForwardNightState dropped it).
+// Drive REAL consecutive ticks through the persisted counter file.
+test('handleAuthFailure: 3 consecutive starved ticks page once; auth-rejected pages at once; success clears', async () => {
+  const require = createRequire(import.meta.url);
+  const routerPath = require.resolve('../../scripts/lib/owner-alert-router.js');
+  const launcherPath = require.resolve('../../scripts/opening-night-monitor-launch.js');
+  const realRouter = require(routerPath);
+  const calls = [];
+  require.cache[routerPath].exports = { ...realRouter,
+    ledgerPath: () => '/dev/null', isLocalLedger: () => true,
+    routeAlert: async o => { calls.push(o); return { action: 'stub' }; } };
+  delete require.cache[launcherPath];
+  const L = require(launcherPath);
+  const { mkdtempSync, rmSync } = require('node:fs');
+  const tmpDir = mkdtempSync(require('node:path').join(require('node:os').tmpdir(), 'on-starved-'));
+  process.env.ON_MONITOR_STARVED_DIR = tmpDir;
+  const key = `test-bro4141-${process.pid}`;
+  const windows = [{ showId: 'x-show' }];
+  const now = new Date('2026-09-25T04:00:00Z');
+  const starved = { ok: false, reason: 'spawn-starved', storedReason: 'spawn-starved', detail: 'ETIMEDOUT' };
+  try {
+    L.writeStarvedCount(key, 0);
+    const r1 = await L.handleAuthFailure({ auth: starved, key, windows, now });
+    const r2 = await L.handleAuthFailure({ auth: starved, key, windows, now });
+    const r3 = await L.handleAuthFailure({ auth: starved, key, windows, now });
+    assert.deepEqual([r1.page, r2.page, r3.page], [false, false, true]);
+    assert.equal(L.readStarvedCount(key), 3);
+    assert.deepEqual(calls.map(c => c.disposition), ['digest', 'digest', 'human']);
+    assert.match(calls[2].conditionKey, /^on-monitor-auth-starved-sustained-2026-09-25$/);
+    // revoked stored login + timed-out key probe: merged reason says starved,
+    // but it must page as AUTH immediately and reset the starved streak.
+    calls.length = 0;
+    const r4 = await L.handleAuthFailure({ auth: { ok: false, reason: 'spawn-starved', storedReason: 'auth-rejected', detail: 'Not logged in' }, key, windows, now });
+    assert.equal(r4.kind, 'auth');
+    assert.equal(calls[0].conditionKey, 'on-monitor-auth-failed-2026-09-25');
+    assert.equal(L.readStarvedCount(key), 0);
+  } finally {
+    L.writeStarvedCount(key, 0);
+    delete process.env.ON_MONITOR_STARVED_DIR;
+    rmSync(tmpDir, { recursive: true, force: true });
+    require.cache[routerPath].exports = realRouter;
+    delete require.cache[launcherPath];
+  }
+});
+
+// BRO-4141 (2026-09-30): "[CRITICAL] … escalating … nightly spend cap reached
+// ($202.66 >= $200)" paged the owner. Every escalate reason is a deliberate
+// stop, so it must route to the digest; dead-pipeline keys still page.
+test('monitor escalate (spend/attempt/no-progress stop) is digest-only; dead-pipeline keys still page', async () => {
+  const { createRequire } = await import('node:module');
+  const req = createRequire(import.meta.url);
+  const { isPageWorthy } = req('../../scripts/lib/page-worthy-alerts.js');
+  assert.equal(isPageWorthy('on-monitor-attempts-exhausted-on-monitor-2026-09-29'), false);
+  assert.equal(isPageWorthy('on-monitor-auth-failed-2026-09-30'), true);
+  assert.equal(isPageWorthy('on-monitor-launch-failed-on-monitor-2026-09-29'), true);
+  // Codex review: a launcher that keeps dying until the cap is the one
+  // escalate meaning "pipeline dead" — it must keep paging under its own key.
+  assert.equal(isPageWorthy('on-monitor-dead-session-on-monitor-2026-09-29'), true);
+  const { launchDecision, MAX_ATTEMPTS_PER_NIGHT } = req('../../scripts/lib/opening-night-windows.js');
+  const base = { windows: [{ showId: 'x' }], killSwitch: false, claudeAlive: false, metaExists: true };
+  const dead = launchDecision({ ...base, lockExists: true, heartbeatAgeMin: 999, lockAgeSec: 99999, attemptsTonight: MAX_ATTEMPTS_PER_NIGHT });
+  assert.equal(dead.action, 'escalate'); assert.equal(dead.dead, true);
+  const capped = launchDecision({ ...base, lockExists: false, attemptsTonight: MAX_ATTEMPTS_PER_NIGHT });
+  assert.equal(capped.action, 'escalate'); assert.ok(!capped.dead);
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  const esc = src.slice(src.indexOf("decision.action === 'escalate'"), src.indexOf("decision.action === 'escalate'") + 1800);
+  assert.match(esc, /decision\.dead \? `on-monitor-dead-session-\$\{key\}` : `on-monitor-attempts-exhausted-\$\{key\}`/);
+  assert.match(esc, /disposition: decision\.dead \? 'human' : 'digest'/);
+});

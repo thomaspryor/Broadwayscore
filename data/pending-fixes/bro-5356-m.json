@@ -1,0 +1,33 @@
+{
+  "issueNumber": "bro-5356-m",
+  "planId": "b1d4a7f1-ab82-4ab9-8049-676e385b5ca9",
+  "status": "applied",
+  "createdAt": "2026-10-14T19:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5356 (m): recompute the stale invalid tier on 2 A Christmas Carol Goes Wrong prior-run reviews whose wrongProduction flag the rebuild already cleared.",
+    "steps": [
+      "reclassify-invalid-reviews --file on 2 rows"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "reclassify-invalid-reviews.js",
+        "args": "--file=christmas-carol-goes-wrong-west-end-2026/standard--nick-curtis.json,christmas-carol-goes-wrong-west-end-2026/timeout-london--anya-ryan.json --apply",
+        "description": "BRO-5356 cousin: the rebuild auto-cleared wrongProduction on these two Apollo Theatre reviews (2025-12-15) because the show's priorRuns covers that date, but contentTier stayed 'invalid' ('Wrong production'), so explainExclusion returns contentTierInvalid and both are off the site. Same stale-tier class as plan l; classifyContentTier gives complete (4,809 and 4,229 chars)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T19:52:53.945Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran reclassify-invalid-reviews.js successfully"
+    }
+  ]
+}

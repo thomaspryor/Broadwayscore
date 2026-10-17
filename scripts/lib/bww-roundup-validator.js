@@ -1,0 +1,336 @@
+/**
+ * BWW Review Roundup content validator (shared module).
+ *
+ * Detects whether fetched HTML is a real BWW Review Roundup article
+ * vs. the BWW homepage or a redirect. Used by both gather-reviews.js
+ * and scrape-bww-reviews.js.
+ */
+
+const { TRYOUT_URL_MARKERS } = require('./content-filters');
+const { shortTitleCandidate, hasSubtitleTail } = require('./title-normalization');
+const { foldDiacritics } = require('./title-match');
+
+/**
+ * Check if "Review Roundup" appears in the <title> tag (not just anywhere on the page).
+ * The BWW homepage contains "Review Roundup" in teaser links but NOT in its title.
+ */
+function hasReviewRoundupInTitle(html) {
+  const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+  return titleMatch ? titleMatch[1].includes('Review Roundup') : false;
+}
+
+/**
+ * Check if HTML looks like a real BWW Review Roundup (not the homepage or a redirect).
+ *
+ * On opening night, the BWW homepage contains "Review Roundup", "Opens-On-Broadway",
+ * and other text in teaser links — but lacks article-specific schema.org markup and
+ * does NOT have "Review Roundup" in the <title> tag.
+ */
+function isBWWRoundupContent(html) {
+  if (!html.includes('Review Roundup')) return false;
+
+  // Reject the BWW homepage early — its title starts with "BroadwayWorld:"
+  const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+  if (titleMatch && titleMatch[1].includes('BroadwayWorld:')) return false;
+
+  // Primary markers (full HTML with schema.org) — these never appear on the homepage
+  if (html.includes('BlogPosting') || html.includes('articleBody') || html.includes('Photo Credit:')) return true;
+
+  // Secondary markers (proxy-rendered HTML may strip schema.org but keep article content)
+  // Require "Review Roundup" in the <title> tag to distinguish from homepage teaser links
+  if (hasReviewRoundupInTitle(html)) {
+    if (html.includes('Opens-on-Broadway') || html.includes('Opens-On-Broadway') ||
+        html.includes('Opens-in-the-West-End') || html.includes('Opens-In-London')) return true;
+  }
+
+  // Fallback: require "Review Roundup" in the <title> tag (not just anywhere on the page)
+  if (html.length > 5000 && hasReviewRoundupInTitle(html)) return true;
+
+  return false;
+}
+
+// Stop words stripped before title matching — must be lowercase
+const TITLE_STOP_WORDS = new Set(['the', 'and', 'for', 'from', 'with', 'that', 'this', 'its', 'a', 'an', 'of', 'in', 'on', 'at', 'by']);
+
+// TRYOUT_URL_MARKERS lives in content-filters.js as a single source of truth.
+// Re-imported above so the BWW slug validator stays aligned with the general
+// SERP prefilter applied in url-discovery.js (Schmigadoon 2026 Bug #8).
+
+/**
+ * Normalize a show title into matchable words: lowercase, split on hyphens (BWW slugs
+ * split on hyphens too — "Pre-Existing Condition" must become ["pre","existing",
+ * "condition"] to match slug segments ["pre","existing","condition",...], not collapse
+ * into "preexisting"), strip remaining punctuation, remove stop words.
+ * Mirrors the logic in findBWWRoundupLinkOnHomepage (gather-reviews.js).
+ */
+function normalizeTitleWords(title) {
+  return foldDiacritics(title)
+    .toLowerCase()
+    .replace(/[-_]/g, ' ')
+    .replace(/[^a-z0-9\s]/g, '')
+    .split(/\s+/)
+    .filter(w => w.length > 0 && !TITLE_STOP_WORDS.has(w));
+}
+
+/**
+ * Validate that a discovered BWW roundup URL slug actually matches the show being gathered.
+ *
+ * Prevents SERP returning the wrong show's roundup — e.g. the Becky Shaw BWW RR when
+ * searching for "Proof Broadway 2026" (Becky Shaw mentions "Proof" in its Pulitzer context,
+ * causing a spurious SERP match). Confirmed incident: 2026-04-16 opening night poller.
+ *
+ * Logic:
+ *  - Single meaningful-word titles (e.g. "Proof", "Cats", "Wit"): require exact segment match
+ *    in the URL slug. Prevents substring false positives ("fear" matching "fear-of-13").
+ *  - 2-word titles: require both words present in slug (100%).
+ *  - 3+ word titles: require ≥80% of meaningful words present in slug.
+ *
+ * Returns true (valid) when:
+ *  - URL is null/empty (can't validate — don't block)
+ *  - URL has no "Review-Roundup-" segment (unexpected format — don't block)
+ *  - Title normalizes to zero words (edge case — don't block)
+ *  - The slug matches the title per above rules
+ *
+ * Returns false (invalid) when a mismatch is detected.
+ */
+// Boilerplate verbs BWW uses immediately after a title in a Review-Roundup URL.
+// E.g. "…/Review-Roundup-FEAR-Opens-on-Broadway-…" → next-after-title is "opens".
+// Used as the terminator disambiguator for single-word titles so "Fear" doesn't
+// accidentally match the slug for "Fear of 13".
+const BWW_SLUG_BOILERPLATE = new Set([
+  'opens', 'opening', 'returns', 'returning', 'reopens', 'reopening',
+  'comes', 'coming', 'closes', 'closing', 'begins', 'beginning',
+  'previews', 'preview', 'starts', 'starting', 'updating', 'live',
+  'premieres', 'premiering', 'debuts', 'debuting', 'extends', 'extending',
+  // Event descriptors BWW places directly after a title on TRYOUT roundups:
+  // "Review-Roundup-THE-OUTSIDERS-World-Premiere-Opens-at-La-Jolla-Playhouse".
+  // Without these, a single-word title ("The Outsiders" -> "outsiders" after
+  // stop-words) found no valid terminator and its own roundup was rejected —
+  // a tier-3 gather with 80 searches returned 0 reviews for a show whose
+  // roundup lists a full set of critics (2026-08-05).
+  // Only ever consulted for the segment IMMEDIATELY after an already-matched
+  // title word, so this cannot make an unrelated slug match.
+  'world', 'premiere', 'revival', 'transfer', 'tryout', 'regional',
+]);
+
+// Market words that follow a preposition after a title (e.g. "…-on-Broadway-…").
+const BWW_MARKET_WORDS = new Set([
+  'broadway', 'london', 'end', 'west-end', 'off-broadway', 'off',
+]);
+
+// Short prepositions BWW uses between title and market/date:
+// "…-BERNHARDTHAMLET-on-Broadway-20180925" / "…-TITLE-in-the-West-End-…".
+const POST_TITLE_PREPOSITIONS = new Set(['on', 'in', 'at', 'to', 'for']);
+
+// Known BWW slug prefix phrases that can appear BEFORE the title in a slug.
+// Each is a sequence of lowercase segments that must match the slug head.
+//   []                                  — title starts at segment 0 (most common)
+//   ['the']                             — "Review-Roundup-THE-{title}-…"
+//   ['the','critics','weigh','in','on'] — "…-The-Critics-Weigh-In-on-{title}-…"
+// Add a new prefix here if we spot a BWW variant in the wild that rejects a real
+// single-word title roundup (parity test in tests/unit/bww-homepage-scan.test.mjs).
+const BWW_SLUG_TITLE_PREFIXES = [
+  [],
+  ['the'],
+  ['the', 'critics', 'weigh', 'in', 'on'],
+];
+
+/**
+ * Decide whether the slug segment immediately AFTER the title word is a valid
+ * terminator for a BWW Review-Roundup slug. Accepted shapes:
+ *   - end of slug
+ *   - a known boilerplate verb ("opens", "returns", "updating", …)
+ *   - a 4-digit year or 8-digit YYYYMMDD date
+ *   - a short preposition followed by a market word or year/date
+ *     (covers the "TITLE-on-Broadway-YYYYMMDD" variant that the 2018 Bernhardt/Hamlet
+ *     roundup uses)
+ */
+function isPostTitleTerminator(segments, idx) {
+  const seg = segments[idx];
+  if (!seg) return true;
+  if (BWW_SLUG_BOILERPLATE.has(seg)) return true;
+  if (/^\d{4}$/.test(seg) || /^\d{8}$/.test(seg)) return true;
+  if (POST_TITLE_PREPOSITIONS.has(seg)) {
+    const next = segments[idx + 1];
+    if (!next) return true;
+    if (BWW_MARKET_WORDS.has(next)) return true;
+    if (/^\d{4}$/.test(next) || /^\d{8}$/.test(next)) return true;
+    // "on-the-West-End" style: skip a leading "the" and check the word after.
+    if (next === 'the') {
+      const afterThe = segments[idx + 2];
+      if (afterThe && (BWW_MARKET_WORDS.has(afterThe) || /^\d{4}$/.test(afterThe) || /^\d{8}$/.test(afterThe))) return true;
+    }
+  }
+  return false;
+}
+
+function singleWordTitleMatchesSlug(titleWord, slugSegmentsArray) {
+  const segs = slugSegmentsArray;
+  for (const prefix of BWW_SLUG_TITLE_PREFIXES) {
+    if (prefix.length > segs.length) continue;
+    let prefixOk = true;
+    for (let i = 0; i < prefix.length; i++) {
+      if (segs[i] !== prefix[i]) { prefixOk = false; break; }
+    }
+    if (!prefixOk) continue;
+    const titleIdx = prefix.length;
+    if (segs[titleIdx] === titleWord && isPostTitleTerminator(segs, titleIdx + 1)) return true;
+  }
+  return false;
+}
+
+function titleWordsPassSlugCheck(title, slugSegments, slugSegmentsArray) {
+  const titleWords = normalizeTitleWords(title);
+  if (titleWords.length === 0) return true; // all stop words — can't validate
+  if (titleWords.length === 1) {
+    // Title word must appear at a known BWW prefix offset AND be followed by a
+    // valid post-title terminator. Prevents "Fear" matching "fear-of-13-…" while
+    // accepting the "Review-Roundup-The-Critics-Weigh-In-on-TITLE-on-Broadway-…"
+    // variant (2018 Bernhardt/Hamlet archive).
+    const w = titleWords[0];
+    if (Array.isArray(slugSegmentsArray) && singleWordTitleMatchesSlug(w, slugSegmentsArray)) return true;
+    // 2-arg legacy call path (Set only, no array): fall back to the Set check so
+    // the module stays backward-compatible. Not reached from production today.
+    if (slugSegmentsArray === undefined && slugSegments.has(w)) return true;
+    return false;
+  }
+  const matchedCount = titleWords.filter(w => slugSegments.has(w)).length;
+  const threshold = titleWords.length <= 2 ? 1.0 : 0.8;
+  return matchedCount / titleWords.length >= threshold;
+}
+
+function validateBWWRoundupUrlMatchesShow(url, showTitle, showCategory) {
+  if (!url || !showTitle) return true; // can't validate, don't block
+
+  const slugMatch = url.match(/Review-Roundup-(.+)/i);
+  if (!slugMatch) return true; // unexpected URL format — don't block
+
+  const slug = slugMatch[1].toLowerCase();
+
+  // Reject tryout / pre-Broadway / regional variants of the same show — UNLESS
+  // the show we are gathering for IS that tryout.
+  //
+  // These markers exist to stop a BROADWAY show inheriting reviews of its
+  // out-of-town run: "Hamilton" must not absorb the Public Theater roundup.
+  // But regional tryouts are first-class catalog entries now (feedback-pipeline
+  // content requests, 2026-08-05), and for THOSE shows the tryout roundup is
+  // not a contaminant — it is the only correct source in existence.
+  //
+  // Concretely: 'the-outsiders-world-premiere-regional-2023' was rejected from
+  // its own La Jolla roundup because the slug contains both "world-premiere"
+  // and "la-jolla", so a tier-3 gather with 80 searches returned 0 reviews for
+  // a show whose roundup lists a full set of critics.
+  //
+  // Gated on the show's category rather than on the markers themselves, so the
+  // Broadway protection is completely unchanged — a regional show simply stops
+  // being protected from its own market.
+  const showIsTryout = String(showCategory || '').toLowerCase() === 'regional';
+  if (!showIsTryout) {
+    for (const marker of TRYOUT_URL_MARKERS) {
+      if (slug.includes(marker)) return false;
+    }
+  }
+
+  const slugSegmentsArray = slug.split(/[-_]/);
+  const slugSegments = new Set(slugSegmentsArray);
+
+  if (titleWordsPassSlugCheck(showTitle, slugSegments, slugSegmentsArray)) return true;
+
+  // Short-title fallback for comma-subtitled shows ("Beaches, A New Musical" → "Beaches").
+  // BWW slug often carries only the short title ("Review-Roundup-BEACHES-Opens-on-Broadway").
+  // Beaches 2026-04-22: 0 of 22 opening-night reviews passed before this fallback.
+  const shortTitle = hasSubtitleTail(showTitle) ? shortTitleCandidate(showTitle) : null; // BRO-3711
+  if (shortTitle && titleWordsPassSlugCheck(shortTitle, slugSegments, slugSegmentsArray)) return true;
+
+  // Colon-subtitled shows ("Our Sinatra: A Musical Celebration" → "Our
+  // Sinatra"): BWW slugs drop the subtitle the same way. The whole roundup
+  // was rejected on 2026-09-27 for exactly this. Head must be >=2 content
+  // words so a bare "Hamlet: ..." can't match any Hamlet roundup.
+  const colonIdx = showTitle.indexOf(':');
+  if (colonIdx > 0) {
+    const head = showTitle.slice(0, colonIdx).trim();
+    if (normalizeTitleWords(head).length >= 2 && titleWordsPassSlugCheck(head, slugSegments, slugSegmentsArray)) return true;
+  }
+
+  return false;
+}
+
+/**
+ * Detect Cloudflare challenge / interstitial pages.
+ *
+ * BWW's domain is intermittently gated behind Cloudflare's "Just a moment..."
+ * interstitial. Providers that can't solve the challenge (Bright Data, ScrapingBee,
+ * plain fetch, Playwright) return HTTP 200 with a challenge HTML page. Detecting it
+ * lets callers stop iterating — every subsequent fetch to the same BWW domain during
+ * the gated window returns the same challenge, so continuing through additional SERP
+ * results or URL guesses only wastes credits and wall-clock time.
+ *
+ * Rocky Horror 2026-04-23 opening night: 25+ consecutive BWW fetches burned
+ * ScrapingBee credits because no caller short-circuited after the first challenge.
+ *
+ * Detection strategy (two tiers, intentionally generous on the STRONG-marker path):
+ *  - STRONG markers (`cf_chl_opt` AND `challenge-platform`) are sufficient regardless
+ *    of page size. Cloudflare's JS-heavy managed-challenge variant can reach ~40-60KB
+ *    with embedded Turnstile telemetry; those markers never appear in legitimate BWW
+ *    article HTML, so size-independent detection is safe and avoids a false-negative
+ *    on large challenge variants. A SINGLE strong marker is trusted up to 100KB.
+ *  - WEAK markers (`Just a moment` in <title>, "Enable JavaScript and cookies",
+ *    or legacy meta-refresh cf-chl-bypass) are size-gated to <25KB to prevent any
+ *    theoretical false-positive on a real article quoting the phrase in body text.
+ */
+function isCloudflareChallenge(html) {
+  if (typeof html !== 'string' || html.length === 0) return false;
+
+  // Strong markers — never appear in real BWW article HTML, trusted regardless of size.
+  const hasCfChlOpt = html.includes('cf_chl_opt');
+  const hasChallengePlatform = html.includes('challenge-platform');
+  if (hasCfChlOpt && hasChallengePlatform) return true;
+  if ((hasCfChlOpt || hasChallengePlatform) && html.length < 100000) return true;
+
+  // Weak markers — size-gated to avoid false positives on real articles.
+  if (html.length < 25000) {
+    const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+    if (titleMatch && /Just a moment/i.test(titleMatch[1])) return true;
+    if (html.includes('Enable JavaScript and cookies to continue')) return true;
+    if (/<meta[^>]+http-equiv=["']?refresh["']?[^>]*(?:cf-chl-bypass|__cf_|cf-wrapper)/i.test(html)) return true;
+  }
+  return false;
+}
+
+/**
+ * Lightweight validity check for a fetched BWW Opera article page
+ * (/bwwopera/article/Review-{slug}-{YYYYMMDD}).
+ *
+ * Opera articles never carry "Review Roundup" markers (they're single-critic
+ * articles, not multi-critic roundups), so they fail isBWWRoundupContent.
+ * This separate check confirms the response is a real BWW article body and
+ * not the BWW homepage, a Cloudflare interstitial, or a 404 redirect.
+ *
+ * Accept when:
+ *   - HTML looks substantive (>5KB)
+ *   - Not a Cloudflare challenge
+ *   - <title> doesn't start with "BroadwayWorld:" (BWW homepage redirect)
+ *   - Contains either the .author-area byline anchor OR a .disnep-area body
+ *     wrapper that the opera extractor reads from (verified 2026-04-29 against
+ *     Innocence Sasanow review).
+ */
+function isBWWOperaArticleContent(html) {
+  if (typeof html !== 'string' || html.length < 5000) return false;
+  if (isCloudflareChallenge(html)) return false;
+
+  const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+  if (titleMatch && titleMatch[1].includes('BroadwayWorld:')) return false;
+
+  // Either the author byline or the body wrapper must be present.
+  // class= matching is loose (single quotes, attribute order) to survive
+  // proxy-rendered HTML variants.
+  if (/class=["'][^"']*author-area/i.test(html)) return true;
+  if (/class=["'][^"']*disnep-area/i.test(html)) return true;
+  // Fall back to the og:url marker so a reshuffled DOM still passes if it
+  // declares itself as a /bwwopera/article/Review- canonical.
+  if (/property=["']og:url["'][^>]*content=["'][^"']*\/bwwopera\/article\/Review-/i.test(html)) return true;
+
+  return false;
+}
+
+module.exports = { isBWWRoundupContent, isBWWOperaArticleContent, validateBWWRoundupUrlMatchesShow, isCloudflareChallenge };

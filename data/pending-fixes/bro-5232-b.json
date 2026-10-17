@@ -1,0 +1,337 @@
+{
+  "issueNumber": "bro-5232-b",
+  "planId": "80aa0f00-6288-4707-bdd9-37cbd4e41dfc",
+  "status": "applied",
+  "createdAt": "2026-10-13T09:05:05.171Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5232 batch b: byline/outlet/production fixes for BRO-5222 follow-up rows, each cited to the live page, an aggregator or a sitemap.",
+    "steps": [
+      "duplicateOf or wrongAttribution for cross-outlet copies",
+      "isNonReview for reviews that do not exist",
+      "wrongProduction for other-production texts",
+      "criticName for wrong bylines"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "13-2008/broadway-space--ben-brantley.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: DTLI lists the Broadway Space entry with no critic name, only a generic (quote omitted) search link that the scraper misread as a byline; the excerpt is a first-person blog post (same text as broadway-space--unknown.json), not Brantley, whose 13 review is the nytimes sibling. Real blogger name unkno Evidence: https://didtheylikeit.com/shows/13-reviews/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "13-2008/broadway-space--ben-brantley.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: critic credit is wrong, real author unnamed; evidence https://didtheylikeit.com/shows/13-reviews/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-little-night-music-2009/ap--ben-brantley.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: DTLI AP entry (seattlepi.com link) has no critic name, only a misparsed Brantley search link; its excerpt (quote omitted) appears verbatim in ap--michael-kuchwara.json. Evidence: https://didtheylikeit.com/shows/little-night-music-broadway/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-little-night-music-2009/ap--ben-brantley.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: copy of ap--michael-kuchwara.json credited to the wrong outlet/critic; evidence https://didtheylikeit.com/shows/little-night-music-broadway/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "glengarry-glen-ross-2012/washpost--ben-brantley.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: The excerpt ((quote omitted)) is the AP review (quote omitted); Washington Examiner copy has meta author (quote omitted). WaPo carried the AP wire; no ap sibling exists for this show. Evidence: https://www.washingtonexaminer.com/news/121800/review-mamets-glengarry-glen-ross-crackles/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "glengarry-glen-ross-2012/washpost--ben-brantley.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: byline/outlet wrong, real: ap / Mark Kennedy; evidence https://www.washingtonexaminer.com/news/121800/review-mamets-glengarry-glen-ross-crackles/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "la-bete-2010/ap--ben-brantley.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: DTLI AP entry (washingtonexaminer link) shows no critic, only a misparsed Brantley search link; dtliExcerpt is the same opening ((quote omitted)) as ap--mark-kennedy.json. Its bwwExcerpt is Brantley NYT text, also wrong here. Evidence: https://didtheylikeit.com/shows/la-bete/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "la-bete-2010/ap--ben-brantley.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: copy of ap--mark-kennedy.json credited to the wrong outlet/critic; evidence https://didtheylikeit.com/shows/la-bete/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "eclipsed-2016/wsj--charles-isherwood.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: In 2016 Isherwood was NYT critic (sibling nytimes row); he joined WSJ only in 2022. The WSJ review of Eclipsed is Terry Teachout's (sibling wsj--terry-teachout.json, a different URL); this row's URL/excerpt look fabricated. Evidence: https://en.wikipedia.org/wiki/Charles_Isherwood"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "eclipsed-2016/wsj--charles-isherwood.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://en.wikipedia.org/wiki/Charles_Isherwood",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "head-over-heels-2018/usatoday--charles-isherwood.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: URL is an unrelated local news story (White House TN mayor marijuana plea); Isherwood reviewed the show for Broadway News, never USA Today. Evidence: https://en.wikipedia.org/wiki/Charles_Isherwood"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "head-over-heels-2018/usatoday--charles-isherwood.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://en.wikipedia.org/wiki/Charles_Isherwood",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "linda-vista-2019/usatoday--charles-isherwood.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Isherwood reviewed Linda Vista for Broadway News (sibling); he never wrote for USA Today, and this generic web-search excerpt shares no text with that review. Evidence: https://en.wikipedia.org/wiki/Charles_Isherwood"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "linda-vista-2019/usatoday--charles-isherwood.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://en.wikipedia.org/wiki/Charles_Isherwood",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "three-tall-women-2018/usatoday--charles-isherwood.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: URL is an unrelated news story (community cleans up vandalized patio shop); Isherwood reviewed the show for Broadway News, never USA Today. Evidence: https://en.wikipedia.org/wiki/Charles_Isherwood"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "three-tall-women-2018/usatoday--charles-isherwood.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://en.wikipedia.org/wiki/Charles_Isherwood",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ring-of-fire-2006/hollywood-reporter--david-rooney.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: The row URL redirects to an unrelated THR business story ((quote omitted), AP byline); Rooney was at Variety in 2006, not THR. Excerpt is from an LLM web-search and unsupported. Evidence: https://www.hollywoodreporter.com/business/business-news/power-players-90s-119047/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ring-of-fire-2006/hollywood-reporter--david-rooney.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://www.hollywoodreporter.com/business/business-news/power-players-90s-119047/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-peewee-herman-show-2010/ap--david-rooney.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: BWW roundup mislabels Rooney as (quote omitted) with an abcnews link; the excerpt (quote omitted) appears verbatim in the THR review (meta author David Rooney). Evidence: https://www.broadwayworld.com/article/Review-Roundup-THE-PEEWEE-HERMAN-SHOW-20101111"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-peewee-herman-show-2010/ap--david-rooney.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: copy of hollywood-reporter--david-rooney.json credited to the wrong outlet/critic; evidence https://www.broadwayworld.com/article/Review-Roundup-THE-PEEWEE-HERMAN-SHOW-20101111",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-threepenny-opera-2006/hollywood-reporter--david-rooney.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: The row URL redirects to an unrelated THR ratings story (Kimberly Nordyke/AP); Rooney was at Variety in 2006. Excerpt is from an LLM web-search and unsupported. Evidence: https://www.hollywoodreporter.com/business/business-news/holidays-hurt-hills-as-finale-124875/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-threepenny-opera-2006/hollywood-reporter--david-rooney.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://www.hollywoodreporter.com/business/business-news/holidays-hurt-hills-as-finale-124875/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "master-class-2011/abc-news--mark-kennedy.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: BWW credits the AP review to Mark Kennedy, linked to ABC News (AP wire copy); the excerpt matches ap--mark-kennedy.json 100%. Evidence: https://www.broadwayworld.com/article/Review-Roundup-MASTER-CLASS-on-Broadway-Updating-Live-20110707"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "master-class-2011/abc-news--mark-kennedy.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: copy of ap--mark-kennedy.json credited to the wrong outlet/critic; evidence https://www.broadwayworld.com/article/Review-Roundup-MASTER-CLASS-on-Broadway-Updating-Live-20110707",
+        "description": "Reason for the flag above."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T12:14:16.983Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "13-2008/broadway-space--ben-brantley.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "13-2008/broadway-space--ben-brantley.json wrongAttributionReason: null -> \"BRO-5232: critic credit is wrong, real author unnamed; evidence https://didtheylikeit.com/shows/13-reviews/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-little-night-music-2009/ap--ben-brantley.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-little-night-music-2009/ap--ben-brantley.json wrongAttributionReason: null -> \"BRO-5232: copy of ap--michael-kuchwara.json credited to the wrong outlet/critic; evidence https://didtheylikeit.com/shows/little-night-music-broadway/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2012/washpost--ben-brantley.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2012/washpost--ben-brantley.json wrongAttributionReason: null -> \"BRO-5232: byline/outlet wrong, real: ap / Mark Kennedy; evidence https://www.washingtonexaminer.com/news/121800/review-mamets-glengarry-glen-ross-crackles/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "la-bete-2010/ap--ben-brantley.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "la-bete-2010/ap--ben-brantley.json wrongAttributionReason: null -> \"BRO-5232: copy of ap--mark-kennedy.json credited to the wrong outlet/critic; evidence https://didtheylikeit.com/shows/la-bete/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "eclipsed-2016/wsj--charles-isherwood.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "eclipsed-2016/wsj--charles-isherwood.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://en.wikipedia.org/wiki/Charles_Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "head-over-heels-2018/usatoday--charles-isherwood.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "head-over-heels-2018/usatoday--charles-isherwood.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://en.wikipedia.org/wiki/Charles_Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "linda-vista-2019/usatoday--charles-isherwood.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "linda-vista-2019/usatoday--charles-isherwood.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://en.wikipedia.org/wiki/Charles_Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "three-tall-women-2018/usatoday--charles-isherwood.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "three-tall-women-2018/usatoday--charles-isherwood.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://en.wikipedia.org/wiki/Charles_Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ring-of-fire-2006/hollywood-reporter--david-rooney.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ring-of-fire-2006/hollywood-reporter--david-rooney.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://www.hollywoodreporter.com/business/business-news/power-players-90s-119047/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-peewee-herman-show-2010/ap--david-rooney.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-peewee-herman-show-2010/ap--david-rooney.json wrongAttributionReason: null -> \"BRO-5232: copy of hollywood-reporter--david-rooney.json credited to the wrong outlet/critic; evidence https://www.broadwayworld.com/article/Review-Roundup-THE-PEEWEE-HERMAN-SHOW-20101111\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-threepenny-opera-2006/hollywood-reporter--david-rooney.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-threepenny-opera-2006/hollywood-reporter--david-rooney.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://www.hollywoodreporter.com/business/business-news/holidays-hurt-hills-as-finale-124875/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "master-class-2011/abc-news--mark-kennedy.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "master-class-2011/abc-news--mark-kennedy.json wrongAttributionReason: null -> \"BRO-5232: copy of ap--mark-kennedy.json credited to the wrong outlet/critic; evidence https://www.broadwayworld.com/article/Review-Roundup-MASTER-CLASS-on-Broadway-Updating-Live-20110707\""
+    }
+  ]
+}

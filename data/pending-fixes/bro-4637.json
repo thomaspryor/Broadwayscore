@@ -1,0 +1,420 @@
+{
+  "issueNumber": "bro-4637",
+  "planId": "1a3a429a-64cf-4a5e-9921-fbe76cff2f18",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4623 part 8: replace 'Trade press / deep research synthesis' capitalization source lines with the outlet that reported each figure, remove the A Beautiful Noise and Redwood figures (no press or SEC source found), fix Some Like It Hot's note (it did not win Best Musical), and drop unsourced weekly-cost estimates from the notes touched.",
+    "steps": [
+      "Checked 2026-10-04: Some Like It Hot $19.5M (Broadway Journal, Sep 28, 2023); Paradise Square up to $15M (The Hollywood Reporter, Jul 11, 2022); Into the Woods $4M (Broadway Journal, Aug 25, 2023); Tommy $15.7M (Rolling Stone citing the NYT, Jun 26, 2024); Funny Girl $16.5M (Deadline, Aug 7, 2023); Frozen around $35M (The Hollywood Reporter, May 14, 2020).",
+      "Single-outlet figures kept with attribution: The Music Man $24M (NYT, Sep 13, 2022, quoted by ArtsJournal and Queerty); Pretty Woman $17M (Forbes, Aug 23, 2018).",
+      "No figure found for A Beautiful Noise (Deadline, Broadway News, Playbill closing articles; Broadway Journal; SEC search) or Redwood (Deadline, THR, NBC NY closing articles; SEC search), so both capitalizations become null.",
+      "Chess: SEC Form D/A (Chess Champion LLC, Jan 5, 2026) shows $15M fully sold; the source line drops internal research notes."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "some-like-it-hot-2022",
+        "showId": "some-like-it-hot-2022",
+        "field": "capitalizationSource",
+        "oldValue": "Trade press / deep research synthesis",
+        "newValue": "Broadway Journal (Sep 2023): $19.5M",
+        "description": "some-like-it-hot-2022: capitalizationSource (unsourced line; wrong Best Musical claim)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "some-like-it-hot-2022",
+        "showId": "some-like-it-hot-2022",
+        "field": "notes",
+        "oldValue": "Broadway musical that opened Nov 2022 and closed Dec 2023. Capitalized at $19.5M with ~$900K weekly running costs. Despite strong reviews and Tony wins (Best Musical), could not sustain ticket sales and closed without recouping. Grossed $70.7M over 440 performances.",
+        "newValue": "Musical that opened Dec 2022 and closed Dec 30, 2023 without recouping its $19.5M capitalization (Broadway Journal). Nominated for Best Musical and won four 2023 Tony Awards, including Best Leading Actor in a Musical for J. Harrison Ghee. Grossed $70.7M over 440 performances.",
+        "description": "some-like-it-hot-2022: notes (unsourced line; wrong Best Musical claim)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "some-like-it-hot-2022",
+        "showId": "some-like-it-hot-2022",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/shubert-produced-some-like-it-hot-to-close",
+            "date": "2023-09-28"
+          }
+        ],
+        "description": "some-like-it-hot-2022: sources (unsourced line; wrong Best Musical claim)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-beautiful-noise-the-neil-diamond-musical-2022",
+        "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+        "field": "capitalization",
+        "oldValue": 20000000,
+        "newValue": null,
+        "description": "a-beautiful-noise-the-neil-diamond-musical-2022: capitalization (no source for the figure)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-beautiful-noise-the-neil-diamond-musical-2022",
+        "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+        "field": "capitalizationSource",
+        "oldValue": "Trade press / deep research synthesis",
+        "newValue": null,
+        "description": "a-beautiful-noise-the-neil-diamond-musical-2022: capitalizationSource (no source for the figure)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-beautiful-noise-the-neil-diamond-musical-2022",
+        "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+        "field": "notes",
+        "oldValue": "Jukebox musical about Neil Diamond that opened Dec 2022 and closed June 2024. Capitalized at ~$20M with ~$1.09M weekly running costs. Despite moderate grosses (~$700K-$900K weekly), the high operating costs and capitalization meant it closed well short of recoupment after 18 months.",
+        "newValue": "Neil Diamond jukebox musical that opened Dec 2022 and closed Jun 2024 without announcing recoupment. Its Broadway capitalization was not reported.",
+        "description": "a-beautiful-noise-the-neil-diamond-musical-2022: notes (no source for the figure)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-music-man-2022",
+        "showId": "the-music-man-2022",
+        "field": "capitalizationSource",
+        "oldValue": "Trade press / deep research synthesis",
+        "newValue": "The New York Times (Sep 2022): $24M",
+        "description": "the-music-man-2022: capitalizationSource (unsourced line)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-music-man-2022",
+        "showId": "the-music-man-2022",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2022/09/13/theater/music-man-broadway-closing.html",
+            "date": "2022-09-13"
+          }
+        ],
+        "description": "the-music-man-2022: sources (unsourced line)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paradise-square-2022",
+        "showId": "paradise-square-2022",
+        "field": "capitalizationSource",
+        "oldValue": "Trade press / deep research synthesis",
+        "newValue": "The Hollywood Reporter (Jul 2022): capitalized for up to $15M",
+        "description": "paradise-square-2022: capitalizationSource (unsourced line and estimates)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paradise-square-2022",
+        "showId": "paradise-square-2022",
+        "field": "notes",
+        "oldValue": "Original musical that opened April 2022 and closed July 2022 after only 109 performances. Capitalized at ~$15M with ~$599K weekly running costs. Despite a Joaquina Kalukango Tony win, very poor ticket sales ($200K-$350K weekly gross vs $599K breakeven) led to rapid closure and near-total loss of investment.",
+        "newValue": "Original musical that opened Apr 2022 and closed Jul 2022 without recouping. Capitalized for up to $15M (The Hollywood Reporter). Joaquina Kalukango won the 2022 Tony for Best Leading Actress in a Musical, but weak sales and reports of late payments led to an early closing.",
+        "description": "paradise-square-2022: notes (unsourced line and estimates)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paradise-square-2022",
+        "showId": "paradise-square-2022",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-musical-paradise-square-to-close-after-tony-win-1235178082/",
+            "date": "2022-07-11"
+          }
+        ],
+        "description": "paradise-square-2022: sources (unsourced line and estimates)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "pretty-woman-the-musical-2018",
+        "showId": "pretty-woman-the-musical-2018",
+        "field": "capitalizationSource",
+        "oldValue": "Trade press / deep research synthesis",
+        "newValue": "Forbes (Aug 2018): $17M initial investment",
+        "description": "pretty-woman-the-musical-2018: capitalizationSource (unsourced line)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "into-the-woods-2022",
+        "showId": "into-the-woods-2022",
+        "field": "capitalizationSource",
+        "oldValue": "Trade press / deep research synthesis",
+        "newValue": "Broadway Journal (Aug 2023): $4M",
+        "description": "into-the-woods-2022: capitalizationSource (unsourced line; unsourced recoupment timing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "into-the-woods-2022",
+        "showId": "into-the-woods-2022",
+        "field": "notes",
+        "oldValue": "Encores! transfer revival that opened June 2022 at the St. James. Low $4M capitalization (Encores! transfer, minimal set) and strong demand allowed recoupment in approximately 3-4 months. Extended multiple times through closing in Jan 2023. Grossed $48.6M over 293 performances — exceptional ROI on the modest investment.",
+        "newValue": "Encores! revival that transferred to the St. James in summer 2022 and closed in Jan 2023 after extensions. Low $4M capitalization; Broadway Journal lists it among the 2022-23 season's commercial winners. Grossed $48.6M over 293 performances.",
+        "description": "into-the-woods-2022: notes (unsourced line; unsourced recoupment timing)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-whos-tommy",
+        "showId": "the-whos-tommy",
+        "field": "capitalizationSource",
+        "oldValue": "Trade press / deep research synthesis",
+        "newValue": "Rolling Stone (Jun 2024), citing The New York Times: $15.7M",
+        "description": "the-whos-tommy: capitalizationSource (unsourced line)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "funny-girl-2022",
+        "showId": "funny-girl-2022",
+        "field": "capitalizationSource",
+        "oldValue": "Trade press / deep research synthesis",
+        "newValue": "Deadline (Aug 2023): $16.5M",
+        "description": "funny-girl-2022: capitalizationSource (unsourced line)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "frozen-2018",
+        "showId": "frozen-2018",
+        "field": "capitalizationSource",
+        "oldValue": "Hollywood Reporter",
+        "newValue": "The Hollywood Reporter (May 2020): capitalized at around $35M",
+        "description": "frozen-2018: capitalizationSource (homepage link; unsourced estimates)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "frozen-2018",
+        "showId": "frozen-2018",
+        "field": "notes",
+        "oldValue": "Disney Theatrical production that opened Mar 2018. One of the most expensive Broadway musicals at ~$35M. Had $63M advance by opening. Grossed $1.5-2M/week during holidays, ran 825 performances with strong sales. COVID shutdown in Mar 2020 halted the run; Disney announced May 2020 it would not reopen. Estimated ~$120-130M total gross — impressive but insufficient to recoup the massive capitalization given 2 years of ~$1M/week costs.",
+        "newValue": "Disney Theatrical production that opened Mar 2018 and played 825 performances. Capitalized at around $35M (The Hollywood Reporter). Disney said in May 2020 it would not reopen after the COVID shutdown. Disney rarely confirms profitability and no recoupment was announced.",
+        "description": "frozen-2018: notes (homepage link; unsourced estimates)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "frozen-2018",
+        "showId": "frozen-2018",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com",
+            "date": "2020-05-01"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/news/general-news/disneys-frozen-will-not-reopen-broadway-1294385/",
+            "date": "2020-05-14"
+          }
+        ],
+        "description": "frozen-2018: sources (homepage link; unsourced estimates)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "redwood",
+        "showId": "redwood",
+        "field": "capitalization",
+        "oldValue": 16000000,
+        "newValue": null,
+        "description": "redwood: capitalization (no source for the figure; unsourced estimates)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "redwood",
+        "showId": "redwood",
+        "field": "capitalizationSource",
+        "oldValue": "SEC filing / NYT (May 2025)",
+        "newValue": null,
+        "description": "redwood: capitalizationSource (no source for the figure; unsourced estimates)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "redwood",
+        "showId": "redwood",
+        "field": "notes",
+        "oldValue": "Idina Menzel star vehicle. $16M cap. Weekly nut ~$650K (Menzel's star salary was major expense). Grossed $800-900K at ~90% capacity in spring, yielding small weekly profits, but sales softened after Tony shutout. Closed May 18, 2025 after only 4 months. Menzel was only contracted through May — couldn't extend with replacement. Investors recovered estimated 20-30% of capital. Roundabout co-presented earlier Off-Broadway workshop.",
+        "newValue": "Idina Menzel star vehicle. Closed May 18, 2025 after receiving no Tony nominations (Deadline). No capitalization reported and no recoupment announced.",
+        "description": "redwood: notes (no source for the figure; unsourced estimates)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "redwood",
+        "showId": "redwood",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/05/redwood-idina-menzel-broadway-closing-date-1236383869/",
+            "date": null
+          }
+        ],
+        "description": "redwood: sources (no source for the figure; unsourced estimates)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chess",
+        "showId": "chess",
+        "field": "capitalizationSource",
+        "oldValue": "SEC Form D/A filing (Chess Champion LLC, CIK 0002074648, amended Jan 5, 2026). Fully capitalized at $15M. Shubert Organization connection. c/o TT Partners.",
+        "newValue": "SEC Form D/A (Chess Champion LLC, Jan 5, 2026): $15M, fully sold",
+        "description": "chess: capitalizationSource (internal research notes in source line)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-05T01:14:16.080Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for some-like-it-hot-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for some-like-it-hot-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for some-like-it-hot-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for a-beautiful-noise-the-neil-diamond-musical-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for a-beautiful-noise-the-neil-diamond-musical-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for a-beautiful-noise-the-neil-diamond-musical-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-music-man-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-music-man-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for paradise-square-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for paradise-square-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for paradise-square-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for pretty-woman-the-musical-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for into-the-woods-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for into-the-woods-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-whos-tommy"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for funny-girl-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for frozen-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for frozen-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for frozen-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for redwood"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for redwood"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for redwood"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for redwood"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for chess"
+    }
+  ]
+}

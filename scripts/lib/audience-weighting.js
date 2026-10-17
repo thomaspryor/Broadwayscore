@@ -1,0 +1,185 @@
+/**
+ * Shared audience weighting module
+ *
+ * Calculates combined audience buzz score from Show Score, Mezzanine, Theatr,
+ * Broadway.com, SeatPlan, LBO, LTD (London Theatre Direct), and Reddit sources.
+ * Pure proportional weighting by reviewCount volume with an 80% single-source ceiling.
+ *
+ * Reddit quality gates:
+ *   - Minimum 50 classified comments (below = too noisy)
+ *   - Recency: excluded for shows closed >3 years ago (nostalgic mentions, not fresh reviews)
+ *   - Score calibration: +8 points (capped at 95) to align Reddit's scale with SS/Mezzanine
+ *
+ * Used by: scrape-reddit-sentiment.js, recalculate-audience-buzz.js,
+ *          scrape-mezzanine-audience.js, scrape-show-score-audience.js,
+ *          scrape-broadway-com-audience.js, scrape-seatplan-audience.js,
+ *          scrape-lbo-audience.js, scrape-ltd-audience.js,
+ *          merge-reddit-shards.js, merge-show-score-shards.js
+ */
+
+// Inlined from venue-classification.isLondonMarket: requiring that module pulls
+// dynamic data requires into safe-form check scripts' graphs
+// (safe-form-allowlist.test.mjs). Keep the two in sync.
+const LONDON_CATEGORIES = new Set(['west-end', 'off-west-end']);
+const isLondonMarket = (category) => LONDON_CATEGORIES.has(category);
+
+const MIN_REDDIT_ITEMS = 50;
+const REDDIT_RECENCY_YEARS = 3;
+const MAX_SINGLE_SOURCE_WEIGHT = 0.80;
+// Theatr is a 3-way thumb vote (like / mixed / dislike). Below 10 votes the
+// score is statistically meaningless (single voter = 100 or 0). Skip it from
+// both combined-score weighting AND display. Matches Reddit's MIN_REDDIT_ITEMS
+// philosophy: each source needs minimum signal before it counts.
+const MIN_THEATR_VOTES = 10;
+
+// Reddit scores average ~5 points below Mezzanine (the most neutral source) on the same
+// shows — a systematic scale difference, not a signal difference. Calibrating to
+// Mezzanine rather than ShowScore (which is +15 above Reddit, inflated by self-selection).
+// Analysis: +5 aligns Reddit with Mezzanine across 284 head-to-head shows.
+const REDDIT_SCORE_CALIBRATION = 5;
+const REDDIT_CALIBRATION_CAP = 95;
+
+/**
+ * Check if Reddit data should be included for this show
+ * @param {object} reddit - { score, reviewCount }
+ * @param {object} [showInfo] - { closingDate?: string, status?: string }
+ * @returns {boolean}
+ */
+// Broadway.com lists only Broadway productions, so on a tour or regional entry
+// sharing a Broadway title its rating can only be the Broadway run's. The
+// Reddit scraper searches r/Broadway by title, which a national tour shares
+// with its parent: 6 tours carried the Broadway rating and Broadway Reddit
+// chatter, e.g. the Oh, Mary! tour's "A-" two weeks after launch (BRO-4601).
+// A regional world premiere has no Broadway twin, so its Reddit data stays.
+function isBroadwayComMarket(category) {
+  return !isLondonMarket(category) && category !== 'tour' && category !== 'regional';
+}
+function isRedditMarket(category) {
+  return category !== 'tour';
+}
+
+// Below MIN_REDDIT_ITEMS a Reddit sample never enters the combined score. The
+// scraper's backoff (reddit-post-filters.js) uses the same predicate, so the
+// grade rule and the scrape-skip rule cannot drift apart (BRO-4777).
+function isRedditBelowVolumeFloor(reddit) {
+  return reddit.reviewCount < MIN_REDDIT_ITEMS;
+}
+
+function isRedditEligible(reddit, showInfo) {
+  if (!reddit || reddit.score == null) return false;
+  if (!isRedditMarket(showInfo?.category)) return false;
+  // Manual contamination suppression: a generic/collision-prone title whose
+  // Reddit sample was poisoned by roundup/megathread chatter can be flagged
+  // `suppressed:true` to drop it from the combined score without deleting the
+  // data. Self-clears on the next scrape (the scraper writes a fresh reddit
+  // object). See scripts/audit-audience-buzz-contamination.js
+  // REDDIT_GENERIC_VOLUME_INFLATION + scripts/neutralize-contaminated-reddit-buzz.js.
+  if (reddit.suppressed) return false;
+  if (isRedditBelowVolumeFloor(reddit)) return false;
+
+  // Recency gate: exclude closed shows >3 years ago
+  if (showInfo && showInfo.status === 'closed' && showInfo.closingDate) {
+    const closed = new Date(showInfo.closingDate);
+    const cutoff = new Date();
+    cutoff.setFullYear(cutoff.getFullYear() - REDDIT_RECENCY_YEARS);
+    if (closed < cutoff) return false;
+  }
+
+  return true;
+}
+
+/**
+ * Calculate combined Audience Buzz score with proportional weighting
+ *
+ * @param {object} sources - { showScore?, mezzanine?, theatr?, broadwayCom?, reddit? } each with { score, reviewCount }
+ * @param {object} [showInfo] - { closingDate?: string, status?: string } — pass to enable Reddit recency gate
+ * @returns {{ score: number|null, weights: object|null }}
+ */
+function calculateCombinedScore(sources, showInfo) {
+  const active = [];
+
+  if (sources.showScore?.score != null && sources.showScore.reviewCount > 0) {
+    active.push({ name: 'showScore', score: sources.showScore.score, volume: sources.showScore.reviewCount });
+  }
+  if (sources.mezzanine?.score != null && sources.mezzanine.reviewCount > 0) {
+    active.push({ name: 'mezzanine', score: sources.mezzanine.score, volume: sources.mezzanine.reviewCount });
+  }
+  if (sources.theatr?.score != null && sources.theatr.reviewCount >= MIN_THEATR_VOTES) {
+    active.push({ name: 'theatr', score: sources.theatr.score, volume: sources.theatr.reviewCount });
+  }
+  // Broadway.com is US only: on a London show it can only be the Broadway
+  // production's rating (4 West End shows carried one, 2026-09-29). Same for
+  // tours and regionals (isBroadwayComMarket).
+  if (sources.broadwayCom?.score != null && sources.broadwayCom.reviewCount > 0 && isBroadwayComMarket(showInfo?.category)) {
+    active.push({ name: 'broadwayCom', score: sources.broadwayCom.score, volume: sources.broadwayCom.reviewCount });
+  }
+  if (sources.seatplan?.score != null && sources.seatplan.reviewCount > 0) {
+    active.push({ name: 'seatplan', score: sources.seatplan.score, volume: sources.seatplan.reviewCount });
+  }
+  if (sources.lbo?.score != null && sources.lbo.reviewCount > 0) {
+    active.push({ name: 'lbo', score: sources.lbo.score, volume: sources.lbo.reviewCount });
+  }
+  if (sources.ltd?.score != null && sources.ltd.reviewCount > 0) {
+    active.push({ name: 'ltd', score: sources.ltd.score, volume: sources.ltd.reviewCount });
+  }
+  if (isRedditEligible(sources.reddit, showInfo)) {
+    // Calibrate Reddit score to align with ShowScore/Mezzanine scale
+    const calibrated = Math.min(sources.reddit.score + REDDIT_SCORE_CALIBRATION, REDDIT_CALIBRATION_CAP);
+    active.push({ name: 'reddit', score: calibrated, volume: sources.reddit.reviewCount });
+  }
+
+  if (active.length === 0) {
+    return { score: null, weights: null };
+  }
+
+  // Solo source — 100% weight, no ceiling needed
+  if (active.length === 1) {
+    const weights = { showScore: 0, mezzanine: 0, reddit: 0, theatr: 0, broadwayCom: 0, seatplan: 0, lbo: 0, ltd: 0 };
+    weights[active[0].name] = 100;
+    return { score: Math.round(active[0].score * 100) / 100, weights };
+  }
+
+  // Proportional weighting by volume
+  const totalVolume = active.reduce((sum, s) => sum + s.volume, 0);
+  const weighted = active.map(s => ({ ...s, weight: s.volume / totalVolume }));
+
+  // Apply weight ceiling — no single source >80%
+  const max = weighted.reduce((a, b) => a.weight > b.weight ? a : b);
+  if (max.weight > MAX_SINGLE_SOURCE_WEIGHT) {
+    const excess = max.weight - MAX_SINGLE_SOURCE_WEIGHT;
+    const others = weighted.filter(w => w.name !== max.name);
+    const othersTotal = others.reduce((sum, w) => sum + w.weight, 0);
+    max.weight = MAX_SINGLE_SOURCE_WEIGHT;
+    for (const w of others) {
+      w.weight += excess * (w.weight / othersTotal);
+    }
+  }
+
+  let combinedScore = 0;
+  for (const w of weighted) {
+    combinedScore += w.score * w.weight;
+  }
+
+  const weights = { showScore: 0, mezzanine: 0, reddit: 0, theatr: 0, broadwayCom: 0, seatplan: 0, lbo: 0, ltd: 0 };
+  for (const w of weighted) {
+    weights[w.name] = Math.round(w.weight * 100);
+  }
+
+  return { score: Math.round(combinedScore * 100) / 100, weights };
+}
+
+/**
+ * Derive audience designation from combined score.
+ * Thresholds match data-audience.ts getAudienceGrade().
+ * Single source of truth — all scrapers should call this instead of inlining.
+ */
+function getDesignation(score) {
+  if (score == null) return null;
+  if (score >= 88) return 'Loving';
+  if (score >= 78) return 'Liking';
+  if (score >= 68) return 'Shrugging';
+  if (score >= 53) return 'Disliking';
+  return 'Loathing';
+}
+
+module.exports = { calculateCombinedScore, getDesignation, isRedditEligible, isRedditBelowVolumeFloor, isBroadwayComMarket, isRedditMarket, MIN_REDDIT_ITEMS, REDDIT_RECENCY_YEARS, REDDIT_SCORE_CALIBRATION, REDDIT_CALIBRATION_CAP, MIN_THEATR_VOTES };

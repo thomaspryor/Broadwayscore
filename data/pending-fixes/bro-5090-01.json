@@ -1,0 +1,371 @@
+{
+  "issueNumber": "bro-5090-01",
+  "planId": "5923f12a-1e3d-4874-a399-006220a84893",
+  "status": "partial",
+  "createdAt": "2026-10-12T11:57:00.096Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5090 part 1: correct 25 critic bylines and publish dates. The legacy LLM web-search step (Feb 2026 backfill) invented them; each review page's own metadata (JSON-LD/meta author, published time) says otherwise.",
+    "steps": [
+      "Page byline at https://ew.com/theater/2017/06/22/1984-ew-stage-review/?srsltid=AfmBOoqQsbVE9dQmtJlcdcePQgtL9nR2e_aMI9UlHKgjIYQx6m_W90zb is Isabella Biedenharn; Tim Stack came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.nytimes.com/2013/11/14/theater/reviews/billy-crystal-brings-700-sundays-back-to-broadway.html is Jason Zinoman; Ben Brantley came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.nytimes.com/2012/11/20/theater/reviews/a-christmas-story-the-musical-at-the-lunt-fontanne-theater.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.nytimes.com/2019/03/21/theater/aint-too-proud-review-the-temptations.html is Ben Brantley; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.wsj.com/articles/aint-too-proud-the-life-and-times-of-the-temptations-review-soulful-songs-leaden-book-11553214600?gaa_at=eafs&gaa_n=AWEtsqeuYRvD3ykfsOEtTTDn05XQmyy7Lafx3SsymkcLGt9m7vRboWlc9d0I&gaa_ts=698b9094&gaa_sig=86P6jIWByrT4MVw7siMxztCoxIfFbRU4PUomxQGE3Y1Sf3uPtEyvR7ndKdtAj3A-VwtOXsg5o9b7SF6sj0sc3w%3D%3D is Terry Teachout; Charles Isherwood came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.wsj.com/articles/all-my-sons-review-a-classic-soars-11556220135?gaa_at=eafs&gaa_n=AWEtsqdMdxl7LzwJ_5_QziGgE7D5houJYINr4nHLxbWwLextnMrqNp5sfwsd&gaa_ts=698c83ee&gaa_sig=koaMRlPIuPV3F-lfB2yGMA0xajxO4JwZUJSOfFpUWDs765K3p2NfAWB1vGiHGA-G9fg2mNPhbCT5-rLWQ60xGg%3D%3D is Terry Teachout; Charles Isherwood came from the legacy web-search step and is not on the page.",
+      "Page byline at http://www.nytimes.com/2014/03/07/theater/bryan-cranston-as-president-johnson-in-all-the-way.html?_r=0 is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
+      "Page byline at http://www.nytimes.com/2015/11/09/theater/review-allegiance-a-musical-history-lesson-about-interned-japanese-americans.html?_r=0 is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
+      "Page byline at http://www.nytimes.com/2015/04/13/theater/review-an-american-in-paris-a-romance-of-song-and-step.html?_r=0 is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.nytimes.com/2012/09/28/theater/reviews/an-enemy-of-the-people-at-samuel-j-friedman-theater.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
+      "Page byline at https://ew.com/theater/2017/04/24/anastasia-broadway-review/?srsltid=AfmBOopb1X7jg1W8KrUv9XF-r6Doq1gJSQJi4xihyZIF0daa3ZMpLoOs is Caitlin Brody; David Canfield came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.wsj.com/articles/anastasia-review-the-real-thing-1493152968?gaa_at=eafs&gaa_n=AWEtsqdkYwKTQng_OYZPfplfbb48NRz6dfG_qBgIYxC0Xo-65OQAwRDutL9d&gaa_ts=698bfd7e&gaa_sig=C8DwpOX433wHBh_vNeSPVMIIFpjtVfqrWSK9C5JLd6qHZnhZhoyxxGA-9wfwvasZI8lXbpOaa2yJoJl6TUC0-Q%3D%3D is Edward Rothstein; Terry Teachout came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.nytimes.com/2019/03/10/theater/review-be-more-chill-joe-iconis.html is Ben Brantley; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at http://www.vulture.com/2013/10/theater-review-broadways-big-fish.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at http://www.nytimes.com/2014/02/07/theater/bronx-bombers-at-circle-in-the-square.html?_r=1 is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.nytimes.com/2012/08/02/theater/reviews/bring-it-on-the-musical-at-st-james-theater.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--charles-isherwood.json for this url, so this web-search copy is a duplicate of it.",
+      "Page byline at http://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html?_r=0 is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.nytimes.com/2018/04/11/theater/review-children-of-a-lesser-god-broadway.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--jesse-green.json for this url, so this web-search copy is a duplicate of it.",
+      "Page byline at https://www.nytimes.com/2019/01/08/theater/choir-boy-review.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.wsj.com/articles/clydes-lynn-nottage-kate-whoriskey-uzo-aduba-ron-cephas-jones-ednumd-donovan-reza-salazar-kara-young-11637794641 is Terry Teachout; Charles Isherwood came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.nytimes.com/2024/01/28/theater/days-of-wine-and-roses-review-broadway.html is Laura Collins-Hughes; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.nytimes.com/2016/12/04/theater/dear-evan-hansen-review.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.nytimes.com/2016/03/09/theater/review-mayhem-gambling-disco-in-disaster-its-all-there-for-the-spoofing.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
+      "Page byline at http://www.nytimes.com/2014/10/24/theater/josh-radner-and-gretchen-mol-star-in-disgraced-on-broadway.html?_r=0 is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.nytimes.com/2012/11/19/theater/reviews/elf-starring-jordan-gelber-at-al-hirschfeld-theater.html is Neil Genzlinger; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--neil-genzlinger.json for this url, so this web-search copy is a duplicate of it."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "1984-2017/ew--tim-stack.json",
+        "field": "criticName",
+        "oldValue": "Tim Stack",
+        "newValue": "Isabella Biedenharn",
+        "description": "Page byline at https://ew.com/theater/2017/06/22/1984-ew-stage-review/?srsltid=AfmBOoqQsbVE9dQmtJlcdcePQgtL9nR2e_aMI9UlHKgjIYQx6m_W90zb is Isabella Biedenharn; Tim Stack came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "700-sundays-2013/nytimes--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Jason Zinoman",
+        "description": "Page byline at https://www.nytimes.com/2013/11/14/theater/reviews/billy-crystal-brings-700-sundays-back-to-broadway.html is Jason Zinoman; Ben Brantley came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-christmas-story-the-musical-2012/nytimes--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Charles Isherwood",
+        "description": "Page byline at https://www.nytimes.com/2012/11/20/theater/reviews/a-christmas-story-the-musical-at-the-lunt-fontanne-theater.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "aint-too-proud-2019/nytimes--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Ben Brantley",
+        "description": "Page byline at https://www.nytimes.com/2019/03/21/theater/aint-too-proud-review-the-temptations.html is Ben Brantley; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "aint-too-proud-2019/wsj--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Terry Teachout",
+        "description": "Page byline at https://www.wsj.com/articles/aint-too-proud-the-life-and-times-of-the-temptations-review-soulful-songs-leaden-book-11553214600?gaa_at=eafs&gaa_n=AWEtsqeuYRvD3ykfsOEtTTDn05XQmyy7Lafx3SsymkcLGt9m7vRboWlc9d0I&gaa_ts=698b9094&gaa_sig=86P6jIWByrT4MVw7siMxztCoxIfFbRU4PUomxQGE3Y1Sf3uPtEyvR7ndKdtAj3A-VwtOXsg5o9b7SF6sj0sc3w%3D%3D is Terry Teachout; Charles Isherwood came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-my-sons-2019/wsj--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Terry Teachout",
+        "description": "Page byline at https://www.wsj.com/articles/all-my-sons-review-a-classic-soars-11556220135?gaa_at=eafs&gaa_n=AWEtsqdMdxl7LzwJ_5_QziGgE7D5houJYINr4nHLxbWwLextnMrqNp5sfwsd&gaa_ts=698c83ee&gaa_sig=koaMRlPIuPV3F-lfB2yGMA0xajxO4JwZUJSOfFpUWDs765K3p2NfAWB1vGiHGA-G9fg2mNPhbCT5-rLWQ60xGg%3D%3D is Terry Teachout; Charles Isherwood came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-the-way-2014/nytimes--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Charles Isherwood",
+        "description": "Page byline at http://www.nytimes.com/2014/03/07/theater/bryan-cranston-as-president-johnson-in-all-the-way.html?_r=0 is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "allegiance-2015/nytimes--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Charles Isherwood",
+        "description": "Page byline at http://www.nytimes.com/2015/11/09/theater/review-allegiance-a-musical-history-lesson-about-interned-japanese-americans.html?_r=0 is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-american-in-paris-2015/nytimes--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Charles Isherwood",
+        "description": "Page byline at http://www.nytimes.com/2015/04/13/theater/review-an-american-in-paris-a-romance-of-song-and-step.html?_r=0 is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-enemy-of-the-people-2012/nytimes--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Charles Isherwood",
+        "description": "Page byline at https://www.nytimes.com/2012/09/28/theater/reviews/an-enemy-of-the-people-at-samuel-j-friedman-theater.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anastasia-2017/ew--david-canfield.json",
+        "field": "criticName",
+        "oldValue": "David Canfield",
+        "newValue": "Caitlin Brody",
+        "description": "Page byline at https://ew.com/theater/2017/04/24/anastasia-broadway-review/?srsltid=AfmBOopb1X7jg1W8KrUv9XF-r6Doq1gJSQJi4xihyZIF0daa3ZMpLoOs is Caitlin Brody; David Canfield came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anastasia-2017/wsj--terry-teachout.json",
+        "field": "criticName",
+        "oldValue": "Terry Teachout",
+        "newValue": "Edward Rothstein",
+        "description": "Page byline at https://www.wsj.com/articles/anastasia-review-the-real-thing-1493152968?gaa_at=eafs&gaa_n=AWEtsqdkYwKTQng_OYZPfplfbb48NRz6dfG_qBgIYxC0Xo-65OQAwRDutL9d&gaa_ts=698bfd7e&gaa_sig=C8DwpOX433wHBh_vNeSPVMIIFpjtVfqrWSK9C5JLd6qHZnhZhoyxxGA-9wfwvasZI8lXbpOaa2yJoJl6TUC0-Q%3D%3D is Edward Rothstein; Terry Teachout came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "be-more-chill-2019/nytimes--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Ben Brantley",
+        "description": "Page byline at https://www.nytimes.com/2019/03/10/theater/review-be-more-chill-joe-iconis.html is Ben Brantley; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "big-fish-2013/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Scott Brown",
+        "description": "Page byline at http://www.vulture.com/2013/10/theater-review-broadways-big-fish.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bronx-bombers-2014/nytimes--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Charles Isherwood",
+        "description": "Page byline at http://www.nytimes.com/2014/02/07/theater/bronx-bombers-at-circle-in-the-square.html?_r=1 is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bring-it-on-the-musical-2012/nytimes--ben-brantley.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nytimes--charles-isherwood.json",
+        "description": "Page byline at https://www.nytimes.com/2012/08/02/theater/reviews/bring-it-on-the-musical-at-st-james-theater.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--charles-isherwood.json for this url, so this web-search copy is a duplicate of it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-2016/nytimes--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Charles Isherwood",
+        "description": "Page byline at http://www.nytimes.com/2016/08/01/theater/cats-broadway-revival-review.html?_r=0 is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "children-of-a-lesser-god-2018/nytimes--ben-brantley.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nytimes--jesse-green.json",
+        "description": "Page byline at https://www.nytimes.com/2018/04/11/theater/review-children-of-a-lesser-god-broadway.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--jesse-green.json for this url, so this web-search copy is a duplicate of it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "choir-boy-2019/nytimes--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Jesse Green",
+        "description": "Page byline at https://www.nytimes.com/2019/01/08/theater/choir-boy-review.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clydes-2021/wsj--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Terry Teachout",
+        "description": "Page byline at https://www.wsj.com/articles/clydes-lynn-nottage-kate-whoriskey-uzo-aduba-ron-cephas-jones-ednumd-donovan-reza-salazar-kara-young-11637794641 is Terry Teachout; Charles Isherwood came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "days-of-wine-and-roses-2024/nytimes--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Laura Collins-Hughes",
+        "description": "Page byline at https://www.nytimes.com/2024/01/28/theater/days-of-wine-and-roses-review-broadway.html is Laura Collins-Hughes; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dear-evan-hansen-2016/nytimes--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Charles Isherwood",
+        "description": "Page byline at https://www.nytimes.com/2016/12/04/theater/dear-evan-hansen-review.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "disaster-2016/nytimes--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Charles Isherwood",
+        "description": "Page byline at https://www.nytimes.com/2016/03/09/theater/review-mayhem-gambling-disco-in-disaster-its-all-there-for-the-spoofing.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "disgraced-2014/nytimes--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Charles Isherwood",
+        "description": "Page byline at http://www.nytimes.com/2014/10/24/theater/josh-radner-and-gretchen-mol-star-in-disgraced-on-broadway.html?_r=0 is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "elf-2012/nytimes--ben-brantley.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nytimes--neil-genzlinger.json",
+        "description": "Page byline at https://www.nytimes.com/2012/11/19/theater/reviews/elf-starring-jordan-gelber-at-al-hirschfeld-theater.html is Neil Genzlinger; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--neil-genzlinger.json for this url, so this web-search copy is a duplicate of it."
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T12:02:07.865Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "1984-2017/ew--tim-stack.json criticName: \"Tim Stack\" -> \"Isabella Biedenharn\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "700-sundays-2013/nytimes--ben-brantley.json criticName: \"Ben Brantley\" -> \"Jason Zinoman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-christmas-story-the-musical-2012/nytimes--ben-brantley.json criticName: \"Ben Brantley\" -> \"Charles Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "aint-too-proud-2019/nytimes--jesse-green.json criticName: \"Jesse Green\" -> \"Ben Brantley\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "aint-too-proud-2019/wsj--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"Terry Teachout\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-my-sons-2019/wsj--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"Terry Teachout\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-the-way-2014/nytimes--ben-brantley.json criticName: \"Ben Brantley\" -> \"Charles Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "allegiance-2015/nytimes--ben-brantley.json criticName: \"Ben Brantley\" -> \"Charles Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-american-in-paris-2015/nytimes--ben-brantley.json criticName: \"Ben Brantley\" -> \"Charles Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-enemy-of-the-people-2012/nytimes--ben-brantley.json criticName: \"Ben Brantley\" -> \"Charles Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anastasia-2017/ew--david-canfield.json criticName: \"David Canfield\" -> \"Caitlin Brody\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anastasia-2017/wsj--terry-teachout.json criticName: \"Terry Teachout\" -> \"Edward Rothstein\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "be-more-chill-2019/nytimes--jesse-green.json criticName: \"Jesse Green\" -> \"Ben Brantley\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "big-fish-2013/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Scott Brown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bronx-bombers-2014/nytimes--ben-brantley.json criticName: \"Ben Brantley\" -> \"Charles Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "bring-it-on-the-musical-2012/nytimes--ben-brantley.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-2016/nytimes--ben-brantley.json criticName: \"Ben Brantley\" -> \"Charles Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "children-of-a-lesser-god-2018/nytimes--ben-brantley.json duplicateOf: null -> \"nytimes--jesse-green.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "choir-boy-2019/nytimes--ben-brantley.json criticName: \"Ben Brantley\" -> \"Jesse Green\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "clydes-2021/wsj--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"Terry Teachout\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "days-of-wine-and-roses-2024/nytimes--jesse-green.json criticName: \"Jesse Green\" -> \"Laura Collins-Hughes\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dear-evan-hansen-2016/nytimes--ben-brantley.json criticName: \"Ben Brantley\" -> \"Charles Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "disaster-2016/nytimes--ben-brantley.json criticName: \"Ben Brantley\" -> \"Charles Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "disgraced-2014/nytimes--ben-brantley.json criticName: \"Ben Brantley\" -> \"Charles Isherwood\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "elf-2012/nytimes--ben-brantley.json duplicateOf: write guard kept null"
+    }
+  ]
+}

@@ -1,0 +1,266 @@
+{
+  "_comment": "Critic/outlet tenure flags checked by hand and found correct (BRO-5222). key = <showId>/<file>#<kind>:<criticSlug> (as printed by scripts/audit-critic-tenure.js); evidence = a link showing the byline at that outlet. maxUnresolved is a ratchet: tests/acceptance/critic-tenure-flags.test.mjs fails if unresolved flags exceed it, so lower it as flags are fixed or reviewed (BRO-5232 takes it to 0).",
+  "maxUnresolved": 0,
+  "reviewed": [
+    {
+      "key": "angels-in-america-2018/woman-around-town--alix-cohen.json#unsupported_pair:alix-cohen",
+      "evidence": "https://womanaroundtown.com/sections/playing-around/angels-america-outstanding-production/",
+      "note": "BRO-5232: byline at this outlet confirmed (high confidence)"
+    },
+    {
+      "key": "frozen-2018/woman-around-town--alix-cohen.json#unsupported_pair:alix-cohen",
+      "evidence": "https://womanaroundtown.com/sections/playing-around/frozen-lacks-shimmer/",
+      "note": "BRO-5232: byline at this outlet confirmed (high confidence)"
+    },
+    {
+      "key": "harry-potter-2021/woman-around-town--alix-cohen.json#unsupported_pair:alix-cohen",
+      "evidence": "https://womanaroundtown.com/sections/playing-around/harry-potter-cursed-child/",
+      "note": "BRO-5232: byline at this outlet confirmed (high confidence)"
+    },
+    {
+      "key": "hello-dolly-2017/woman-around-town--alix-cohen.json#unsupported_pair:alix-cohen",
+      "evidence": "https://womanaroundtown.com/sections/playing-around/hello-dolly-hello-bette/",
+      "note": "BRO-5232: byline at this outlet confirmed (high confidence)"
+    },
+    {
+      "key": "kiss-me-kate-2019/woman-around-town--alix-cohen.json#unsupported_pair:alix-cohen",
+      "evidence": "https://womanaroundtown.com/sections/playing-around/kiss-kate-kelli-yes-snap-no/",
+      "note": "BRO-5232: byline at this outlet confirmed (high confidence)"
+    },
+    {
+      "key": "the-children-2017/woman-around-town--alix-cohen.json#unsupported_pair:alix-cohen",
+      "evidence": "https://womanaroundtown.com/sections/playing-around/children-lady-tiger/",
+      "note": "BRO-5232: byline at this outlet confirmed (high confidence)"
+    },
+    {
+      "key": "something-rotten-2015/zeal-nyc--brian-scott-lipton.json#unsupported_pair:brian-scott-lipton",
+      "evidence": "https://www.show-score.com/shows/something-rotten/paginate_critic_reviews?page=3",
+      "note": "BRO-5232: byline at this outlet confirmed (medium confidence)"
+    },
+    {
+      "key": "copenhagen-2000/the-nation--carol-rocamora.json#unsupported_pair:carol-rocamora",
+      "evidence": "https://complete-review.com/reviews/fraynm/cophagen.htm",
+      "note": "BRO-5232: byline at this outlet confirmed (high confidence)"
+    },
+    {
+      "key": "pride-west-end-2026/observer--david-benedict.json#unsupported_pair:david-benedict",
+      "evidence": "https://observer.co.uk/culture/theatre/article/how-to-make-a-movie-musical",
+      "note": "BRO-5232: byline at this outlet confirmed (high confidence)"
+    },
+    {
+      "key": "how-to-succeed-in-business-without-really-trying-2011/nytheatre--david-gordon.json#unsupported_pair:david-gordon",
+      "evidence": "https://www.broadwayworld.com/reviews/How-to-Succeed-in-Business-Without-Really-Trying?id=329757",
+      "note": "BRO-5232: byline at this outlet confirmed (medium confidence)"
+    },
+    {
+      "key": "the-peewee-herman-show-2010/nytheatre--david-gordon.json#unsupported_pair:david-gordon",
+      "evidence": "https://www.broadwayworld.com/reviews/The-Pee-wee-Herman-Show",
+      "note": "BRO-5232: byline at this outlet confirmed (medium confidence)"
+    },
+    {
+      "key": "paradise-west-end-2021/sunday-times--david-jays.json#unsupported_pair:david-jays",
+      "evidence": "https://www.thetimes.com/culture/theatre-dance/article/paradise-review-lesley-sharp-is-the-national-theatres-greatest-weapon-z529ln06r",
+      "note": "BRO-5232: byline at this outlet confirmed (medium confidence)"
+    },
+    {
+      "key": "scenes-with-girls-west-end-2020/sunday-times--david-jays.json#unsupported_pair:david-jays",
+      "evidence": "https://www.thetimes.com/profile/david-jays",
+      "note": "BRO-5232: byline at this outlet confirmed (low confidence)"
+    },
+    {
+      "key": "the-upstart-crow-west-end-2020/sunday-times--david-jays.json#unsupported_pair:david-jays",
+      "evidence": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-the-upstart-crow-gielgud-a-number-bridge-theatre-cc0vnkmng",
+      "note": "BRO-5232: byline at this outlet confirmed (medium confidence)"
+    },
+    {
+      "key": "proof-2000/nydailynews--david-kaufman.json#unsupported_pair:david-kaufman",
+      "evidence": "https://complete-review.com/reviews/usplays/auburnd1.htm",
+      "note": "BRO-5232: byline at this outlet confirmed (high confidence)"
+    },
+    {
+      "key": "bluets-west-end-2024/express-uk--holly-omahony.json#unsupported_pair:holly-o-mahony",
+      "evidence": "https://www.express.co.uk/entertainment/theatre/1904670/Bluets-review-theatre-House-of-the-Dragon-Emma-D-Arcy-Ben-Whishaw",
+      "note": "BRO-5232: byline at this outlet confirmed (high confidence)"
+    },
+    {
+      "key": "the-upstart-crow-west-end-2020/observer--holly-williams.json#unsupported_pair:holly-williams",
+      "evidence": "https://www.theguardian.com/stage/2020/feb/23/upstart-crow-review-david-mitchell-ben-elton",
+      "note": "BRO-5232: byline at this outlet confirmed (high confidence)"
+    },
+    {
+      "key": "peter-gynt-west-end-2019/camdennewjournal--howard-loxton.json#unsupported_pair:howard-loxton",
+      "evidence": "https://www.camdennewjournal.co.uk/article/review-peter-gynt-at-national-theatre-olivier",
+      "note": "BRO-5232: byline at this outlet confirmed (high confidence)"
+    },
+    {
+      "key": "fences-2010/slantmagazine--jason-clark.json#unsupported_pair:jason-clark",
+      "evidence": "https://www.slantmagazine.com/theater/fences-at-the-cort-theatre/",
+      "note": "BRO-5232: byline at this outlet confirmed (medium confidence)"
+    },
+    {
+      "key": "a-day-in-the-death-of-joe-egg-west-end-2019/metro-uk--john-nathan.json#unsupported_pair:john-nathan",
+      "evidence": "https://www.broadwayworld.com/westend/article/Review-Roundup-A-DAY-IN-THE-DEATH-OF-JOE-EGG-Revival-At-Trafalgar-Studios-20191003",
+      "note": "BRO-5232: byline at this outlet confirmed (high confidence)"
+    },
+    {
+      "key": "dear-evan-hansen-west-end-2019/metro-uk--john-nathan.json#unsupported_pair:john-nathan",
+      "evidence": "https://www.broadwayworld.com/article/Review-Roundup-DEAR-EVAN-HANSEN-Opens-On-The-West-End--Read-The-Reviews-20191119",
+      "note": "BRO-5232: byline at this outlet confirmed (high confidence)"
+    },
+    {
+      "key": "only-fools-and-horses-west-end-2019/metro-uk--john-nathan.json#unsupported_pair:john-nathan",
+      "evidence": "https://www.thestar.co.uk/arts-and-culture/only-fools-horses-the-musical-casting-announcement-at-sheffield-city-hall-4664916",
+      "note": "BRO-5232: byline at this outlet confirmed (medium confidence)"
+    },
+    {
+      "key": "rosmersholm-west-end-2019/metro-uk--john-nathan.json#unsupported_pair:john-nathan",
+      "evidence": "https://www.broadwayworld.com/westend/article/Review-Roundup-Critics-Weigh-in-on-ROSMERSHOLM-20190507",
+      "note": "BRO-5232: byline at this outlet confirmed (high confidence)"
+    },
+    {
+      "key": "that-is-not-who-i-am-west-end-2022/metro-uk--john-nathan.json#unsupported_pair:john-nathan",
+      "evidence": "https://metro.co.uk/2022/06/20/that-is-not-who-i-am-review-gripping-production-subverts-conventions-16857185/",
+      "note": "BRO-5232: byline at this outlet confirmed (high confidence)"
+    },
+    {
+      "key": "the-american-clock-west-end-2019/metro-uk--john-nathan.json#unsupported_pair:john-nathan",
+      "evidence": "https://www.broadwayworld.com/article/Review-Roundup-Rachel-Chavkin-Directs-AN-AMERICAN-CLOCK-At-The-Old-Vic-20190215",
+      "note": "BRO-5232: byline at this outlet confirmed (high confidence)"
+    },
+    {
+      "key": "the-great-british-bake-off-musical-west-end-2023/metro-uk--john-nathan.json#unsupported_pair:john-nathan",
+      "evidence": "https://metro.co.uk/2023/03/08/the-great-british-bake-off-musical-review-a-feelgood-musical-18408229/",
+      "note": "BRO-5232: byline at this outlet confirmed (high confidence)"
+    },
+    {
+      "key": "waitress-west-end-2019/metro-uk--john-nathan.json#unsupported_pair:john-nathan",
+      "evidence": "https://www.broadwayworld.com/article/Review-Roundup-Rachel-Chavkin-Directs-AN-AMERICAN-CLOCK-At-The-Old-Vic-20190215",
+      "note": "BRO-5232: byline at this outlet confirmed (medium confidence)"
+    },
+    {
+      "key": "man-and-boy-2011/yonkers-tribune--john-simon.json#unsupported_pair:john-simon",
+      "evidence": "https://www.broadwayworld.com/reviews-critics/John-Simon",
+      "note": "BRO-5232: byline at this outlet confirmed (medium confidence)"
+    },
+    {
+      "key": "the-mountaintop-2011/yonkers-tribune--john-simon.json#unsupported_pair:john-simon",
+      "evidence": "https://www.broadwayworld.com/reviews-critics/John-Simon",
+      "note": "BRO-5232: byline at this outlet confirmed (medium confidence)"
+    },
+    {
+      "key": "king-charles-iii-2015/gay-socialites--jonathan-warman.json#unsupported_pair:jonathan-warman",
+      "evidence": "https://www.show-score.com/shows/king-charles-iii/paginate_critic_reviews?page=5",
+      "note": "BRO-5232: byline at this outlet confirmed (medium confidence)"
+    },
+    {
+      "key": "hex-west-end-2022/daily-mail--libby-purves.json#unsupported_pair:libby-purves",
+      "evidence": "https://www.dailymail.com/tvshowbiz/article-11519309/More-noisy-enchanting-not-villain-sight-LIBBY-PURVES-reviews-Hex.html",
+      "note": "BRO-5232: byline at this outlet confirmed (high confidence)"
+    },
+    {
+      "key": "othello-west-end-2022/daily-mail--libby-purves.json#unsupported_pair:libby-purves",
+      "evidence": "https://www.dailymail.co.uk/tvshowbiz/article-11492489/LIBBY-PURVES-reviews-Othello.html",
+      "note": "BRO-5232: byline at this outlet confirmed (high confidence)"
+    },
+    {
+      "key": "wicked-2003/njcom--michael-sommers.json#unsupported_pair:michael-sommers",
+      "evidence": "https://forum.broadwayworld.com/thread/At-least-one-critic-loves--Wicked",
+      "note": "BRO-5232: byline at this outlet confirmed (medium confidence)"
+    },
+    {
+      "key": "rocky-2014/huffpost--rex-reed.json#unsupported_pair:rex-reed",
+      "evidence": "https://www.huffpost.com/entry/rocky-is-a-broadway-ko_b_4960831",
+      "note": "BRO-5232: byline at this outlet confirmed (high confidence)"
+    },
+    {
+      "key": "the-lion-king-west-end-2021/express-uk--robert-gore-langton.json#unsupported_pair:robert-gore-langton",
+      "evidence": "https://www.londontheatredirect.com/news/show-of-the-week-disneys-the-lion-king-at-the-lyceum-theatre",
+      "note": "BRO-5232: byline at this outlet confirmed (medium confidence)"
+    },
+    {
+      "key": "a-kind-of-people-west-end-2019/times-uk--sam-marlowe.json#unsupported_pair:sam-marlowe",
+      "evidence": "https://www.show-score.com/uk/london/west-end-shows/a-kind-of-people-london",
+      "note": "BRO-5232: byline at this outlet confirmed (medium confidence)"
+    },
+    {
+      "key": "fiddler-on-the-roof-west-end-2019/times-uk--sam-marlowe.json#unsupported_pair:sam-marlowe",
+      "evidence": "https://www.broadwayworld.com/westend/article/Review-Roundup-Were-Critics-Charmed-by-FIDDLER-ON-THE-ROOF-20190328",
+      "note": "BRO-5232: byline at this outlet confirmed (high confidence)"
+    },
+    {
+      "key": "ghost-stories-west-end-2019/times-uk--sam-marlowe.json#unsupported_pair:sam-marlowe",
+      "evidence": "https://www.show-score.com/uk/london/west-end-shows/ghost-stories-london",
+      "note": "BRO-5232: byline at this outlet confirmed (medium confidence)"
+    },
+    {
+      "key": "midnight-movie-west-end-2019/times-uk--sam-marlowe.json#unsupported_pair:sam-marlowe",
+      "evidence": "https://www.show-score.com/uk/london/west-end-shows/midnight-movie-london",
+      "note": "BRO-5232: byline at this outlet confirmed (medium confidence)"
+    },
+    {
+      "key": "mary-poppins-west-end-2019/sunday-express--stefan-kyriazis.json#unsupported_pair:stefan-kyriazis",
+      "evidence": "https://www.express.co.uk/entertainment/theatre/1477244/Mary-Poppins-musical-review-2021-London-theatre-Zizi-Strallen-Charlie-Stemp-Petula-Clark",
+      "note": "BRO-5232: byline at this outlet confirmed (medium confidence)"
+    },
+    {
+      "key": "the-hills-of-california-west-end-2024/sunday-express--stefan-kyriazis.json#unsupported_pair:stefan-kyriazis",
+      "evidence": "https://www.express.co.uk/entertainment/theatre/1867905/Hills-of-California-review-Jerusalem-Jez-Butterworth-play",
+      "note": "BRO-5232: byline at this outlet confirmed (medium confidence)"
+    },
+    {
+      "key": "oklahoma-2019/theater-pizzazz--sandi-durell.json#byline_contradicted:sandi-durell",
+      "evidence": "https://theaterpizzazz.com/an-oklahoma-not-too-familiar/",
+      "note": "BRO-5232: live page bylined to Sandi Durell; the other name in the text is the author of an earlier review it cites (high confidence)"
+    },
+    {
+      "key": "a-taste-of-honey-west-end-2019/sunday-times--jane-edwardes.json#unsupported_pair:jane-edwardes",
+      "evidence": "http://web.archive.org/web/20191215013229/https://www.thetimes.co.uk/article/theatre-review-a-taste-of-honey-the-duchess-of-malfi-fairview-ravens-spassky-vs-fischer-73lmqfqmt",
+      "note": "BRO-5232: Sunday Times roundup of 15 Dec 2019, author meta names Jane Edwardes (cloud byline check run 38394312235); Show Score lists the same review under her name"
+    },
+    {
+      "key": "faith-hope-and-charity-west-end-2019/sunday-times--jane-edwardes.json#unsupported_pair:jane-edwardes",
+      "evidence": "https://www.thetimes.com/uk/article/theatre-review-faith-hope-and-charity-big-the-musical-astana-ballet-the-king-of-hells-palace-2wpsmqdw2",
+      "note": "BRO-5232: Sunday Times roundup, author meta names Jane Edwardes (cloud byline check run 38394312235)"
+    },
+    {
+      "key": "the-lion-king-1997/njcom--michael-sommers.json#unsupported_pair:michael-sommers",
+      "evidence": "https://www.show-score.com/broadway-shows/the-lion-king",
+      "note": "BRO-5232: Show Score lists this review as NJ.com, Michael Sommers, 14 Nov 1997 (the Star-Ledger; the row url is a reprint named pr_tlk_njsl111497)"
+    },
+    {
+      "key": "when-we-have-sufficiently-tortured-each-other-west-end-2019/islington-gazette--bridget-galton.json#unsupported_pair:bridget-galton",
+      "evidence": "https://www.theatrerecord.com/archive/volume/39/dest/2_when_we_have_sufficiently_tor",
+      "note": "BRO-5232: listed under this outlet by Theatre Record, the subscriber aggregator the row was extracted from; its page is paywalled and outlet logins are not available to cloud runs, so not re-confirmed past that listing"
+    },
+    {
+      "key": "fosse-1999/financialtimes--david-jays.json#unsupported_pair:david-jays",
+      "evidence": "https://www.theatrerecord.com/archive/volume/20/page/139",
+      "note": "BRO-5232: listed under this outlet by Theatre Record, the subscriber aggregator the row was extracted from; its page is paywalled and outlet logins are not available to cloud runs, so not re-confirmed past that listing"
+    },
+    {
+      "key": "best-of-enemies-west-end-2022/daily-mail--libby-purves.json#unsupported_pair:libby-purves",
+      "evidence": "https://www.theatrerecord.com/archive/2022/11/2736-best-of-enemies",
+      "note": "BRO-5232: listed under this outlet by Theatre Record, the subscriber aggregator the row was extracted from; its page is paywalled and outlet logins are not available to cloud runs, so not re-confirmed past that listing; Theatre Record lists Purves under the Daily Mail for five shows 2022-2026"
+    },
+    {
+      "key": "my-sons-a-queer-but-what-can-you-do-west-end-2023/daily-mail--libby-purves.json#unsupported_pair:libby-purves",
+      "evidence": "https://www.theatrerecord.com/archive/2023/2/3096-my-son-s-a-queer-but",
+      "note": "BRO-5232: listed under this outlet by Theatre Record, the subscriber aggregator the row was extracted from; its page is paywalled and outlet logins are not available to cloud runs, so not re-confirmed past that listing; Theatre Record lists Purves under the Daily Mail for five shows 2022-2026"
+    },
+    {
+      "key": "small-island-west-end-2019/financialtimes--matt-trueman.json#unsupported_pair:matt-trueman",
+      "evidence": "https://www.theatrerecord.com/archive/volume/39/dest/9_small_island",
+      "note": "BRO-5232: listed under this outlet by Theatre Record, the subscriber aggregator the row was extracted from; its page is paywalled and outlet logins are not available to cloud runs, so not re-confirmed past that listing"
+    },
+    {
+      "key": "mischief-movie-night-west-end-2020/thestage--theo-bosanquet.json#unsupported_pair:theo-bosanquet",
+      "evidence": "https://www.theatrerecord.com/archive/volume/40/dest/24_mischief_movie_night",
+      "note": "BRO-5232: listed under this outlet by Theatre Record, the subscriber aggregator the row was extracted from; its page is paywalled and outlet logins are not available to cloud runs, so not re-confirmed past that listing; the old thestage.co.uk review url now 404s"
+    },
+    {
+      "key": "jane-eyre-rose-kingston-off-west-end-2026/daily-mail--libby-purves.json#unsupported_pair:libby-purves",
+      "evidence": "https://www.dailymail.co.uk/tvshowbiz/article-11492489/LIBBY-PURVES-reviews-Othello.html",
+      "note": "BRO-5232: Purves reviews for the Daily Mail (2022 bylines confirmed on Othello and Hex). This row comes from the Theatre Record listing https://www.theatrerecord.com/archive/2026/10/39248-jane-eyre (paywalled; the row-level byline was not re-confirmed, and no Daily Mail article URL was found on 2026-10-13)."
+    }
+  ]
+}

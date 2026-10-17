@@ -1,0 +1,191 @@
+{
+  "issueNumber": "bro-5499-d",
+  "planId": "b9432f1e-1abd-44b0-9387-3231e82f5052",
+  "status": "partial",
+  "createdAt": "2026-10-16T17:26:05.009Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5499 (d): Memoirs publish dates (and Paranormal Activity Boston) set to the printed local date.",
+    "steps": [
+      "edit"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "paranormal-activity-boston-regional-2026/theater-mirror--michele.json",
+        "field": "publishDate",
+        "oldValue": "2026-07-19",
+        "newValue": "2026-07-18",
+        "description": "BRO-5499: printed date"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "memoirs-of-amorous-gentlemen-off-broadway-2026/culturesauce--thom-geier.json",
+        "field": "publishDate",
+        "oldValue": "2026-10-16",
+        "newValue": "2026-10-15",
+        "description": "BRO-5499: page prints October 15, 2026"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "memoirs-of-amorous-gentlemen-off-broadway-2026/culturesauce--thom-geier.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "human-page-verified",
+        "description": "BRO-5499: date checked against the article page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "memoirs-of-amorous-gentlemen-off-broadway-2026/nysr--david-finkle.json",
+        "field": "publishDate",
+        "oldValue": "2026-10-16",
+        "newValue": "2026-10-15",
+        "description": "BRO-5499: page prints October 15, 2026 11:00 pm"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "memoirs-of-amorous-gentlemen-off-broadway-2026/nysr--david-finkle.json",
+        "field": "dateSource",
+        "oldValue": "google-news-rss",
+        "newValue": "human-page-verified",
+        "description": "BRO-5499: date checked against the article page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "memoirs-of-amorous-gentlemen-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+        "field": "publishDate",
+        "oldValue": "2026-10-16",
+        "newValue": "2026-10-15",
+        "description": "BRO-5499: page prints October 15, 2026"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "memoirs-of-amorous-gentlemen-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "human-page-verified",
+        "description": "BRO-5499: date checked against the article page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "memoirs-of-amorous-gentlemen-off-broadway-2026/nytg--gillian-russo.json",
+        "field": "publishDate",
+        "oldValue": "2026-10-16",
+        "newValue": "2026-10-15",
+        "description": "BRO-5499: byline prints October 15, 2026"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "memoirs-of-amorous-gentlemen-off-broadway-2026/nytg--gillian-russo.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "human-page-verified",
+        "description": "BRO-5499: date checked against the article page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "memoirs-of-amorous-gentlemen-off-broadway-2026/vulture--jackson-mchenry.json",
+        "field": "publishDate",
+        "oldValue": "2026-10-16",
+        "newValue": "2026-10-15",
+        "description": "BRO-5499: listed in Playbill's Oct 15 reviews article; first seen 03:45 UTC Oct 16"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "memoirs-of-amorous-gentlemen-off-broadway-2026/vulture--jackson-mchenry.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "human-page-verified",
+        "description": "BRO-5499: date checked against the article page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "memoirs-of-amorous-gentlemen-off-broadway-2026/pages-on-stages--unknown.json",
+        "field": "publishDate",
+        "oldValue": "2026-10-16",
+        "newValue": "2026-10-15",
+        "description": "BRO-5499: WordPress post permalink 2026/10/15 (the page prints no date; the permalink is the CMS post date)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "memoirs-of-amorous-gentlemen-off-broadway-2026/pages-on-stages--unknown.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "human-page-verified",
+        "description": "BRO-5499: date checked against the article page"
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T20:11:25.646Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paranormal-activity-boston-regional-2026/theater-mirror--michele.json publishDate: \"2026-07-19\" -> \"2026-07-18\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "memoirs-of-amorous-gentlemen-off-broadway-2026/culturesauce--thom-geier.json publishDate: \"2026-10-16\" -> \"2026-10-15\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "memoirs-of-amorous-gentlemen-off-broadway-2026/culturesauce--thom-geier.json dateSource: null -> \"human-page-verified\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "memoirs-of-amorous-gentlemen-off-broadway-2026/nysr--david-finkle.json publishDate: \"2026-10-16\" -> \"2026-10-15\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "memoirs-of-amorous-gentlemen-off-broadway-2026/nysr--david-finkle.json dateSource: \"google-news-rss\" -> \"human-page-verified\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "memoirs-of-amorous-gentlemen-off-broadway-2026/nyt-theater--jonathan-mandell.json publishDate: \"2026-10-16\" -> \"2026-10-15\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "memoirs-of-amorous-gentlemen-off-broadway-2026/nyt-theater--jonathan-mandell.json dateSource: null -> \"human-page-verified\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "memoirs-of-amorous-gentlemen-off-broadway-2026/nytg--gillian-russo.json publishDate: \"2026-10-16\" -> \"2026-10-15\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "memoirs-of-amorous-gentlemen-off-broadway-2026/nytg--gillian-russo.json dateSource: null -> \"human-page-verified\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "memoirs-of-amorous-gentlemen-off-broadway-2026/vulture--jackson-mchenry.json publishDate: \"2026-10-16\" -> \"2026-10-15\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "memoirs-of-amorous-gentlemen-off-broadway-2026/vulture--jackson-mchenry.json dateSource: null -> \"human-page-verified\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "Review file not found: memoirs-of-amorous-gentlemen-off-broadway-2026/pages-on-stages--unknown.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "Review file not found: memoirs-of-amorous-gentlemen-off-broadway-2026/pages-on-stages--unknown.json"
+    }
+  ]
+}
