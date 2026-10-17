@@ -46,6 +46,20 @@ test('loss designation on a show that is not closed is a warning, never an error
   assert.equal(commercialFileWarnings(file, [{ slug: 'k', status: 'open' }]).length, 1);
 });
 
+test('a title quoted inside a quote with double marks is a warning (BRO-5549)', () => {
+  const doubled = (field, text) => commercialRecordWarnings('k', { designation: 'TBD', [field]: text }, {})
+    .filter((m) => m.includes('doubled quotation marks')).length;
+  // The printed shapes from the-bands-visit-2017 and the-anarchist-2012.
+  assert.equal(doubled('recoupedSource', 'Broadway News (Sep 10, 2018): "“The Band’s Visit” has recouped its $8.75 million capitalization." https://www.broadwaynews.com/a/'), 1);
+  assert.equal(doubled('recoupedSource', 'Variety (Dec 19, 2012): "losses sustained from the flop of "The Anarchist,"" https://variety.com/b/'), 1);
+  assert.equal(doubled('capitalizationSource', 'a "“b”" c'), 1);
+  assert.equal(doubled('weeklyRunningCostSource', 'a "“b”" c'), 1);
+  assert.equal(doubled('notes', 'a "“b”" c'), 1);
+  assert.equal(doubled('recoupedSource', 'Broadway News (Sep 10, 2018): "‘The Band’s Visit’ has recouped its $8.75 million capitalization." https://www.broadwaynews.com/a/'), 0);
+  assert.equal(doubled('recoupedSource', 'BroadwayWorld forum (May 24, 2025): the "official" capitalization is $4.9 million'), 0);
+  assert.equal(commercialRecordErrors('k', { designation: 'TBD', recoupedSource: 'a "“b”" c' }, {}).filter((m) => m.includes('quotation')).length, 0);
+});
+
 test('stale-closure Fizzle is undone when the show is running again, hand labels are not', () => {
   const auto = { designation: 'Fizzle', recouped: false, recoupedSource: 'Inferred: closed 40 days ago, no trade-press recoupment found', classifiedBy: 'classify-stale-closures', classifiedAt: 'x', classifiedReason: 'y', capitalization: 5e6 };
   const undone = undoAutoFizzleOnRunningShow(auto, { slug: 'k', status: 'open' });

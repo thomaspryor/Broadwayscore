@@ -27,6 +27,9 @@ const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 // prints it only through publicSourceText(), and a cost whose source that
 // drops reads "Estimate" (src/lib/commercial-display.ts, BRO-4666).
 const PUBLIC_TEXT_FIELDS = ['notes', 'capitalizationSource', 'recoupedSource'];
+// Two double quotation marks in a row, straight or curly: a quoted title at
+// the edge of a quote, printed as ""The Band's Visit" has recouped" (BRO-5549).
+const DOUBLED_QUOTE_RE = /["“”]{2}/;
 // Research-pipeline wording that reached the public page (BRO-4623): "SEC
 // filings (GPT Deep Research)", "Trade press / deep research synthesis",
 // "Auto-enrolled stub; awaiting model + curation", "Auto-designated ...".
@@ -418,6 +421,15 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
   }
   if (isPrematureSilenceLabel(show, ctx.showRecord)) {
     out.push(`commercial.json: "${showId}" is "${show.designation}" on no recoupment announced but closed under ${LOSS_LABEL_MIN_DAYS} days ago (keep TBD + needsLossEvidence until it ages in)`);
+  }
+  // The card prints these as written, so a title quoted inside a quote takes
+  // single marks. Advisory (§19); the approved-fix runner refuses it on the
+  // records a plan touches.
+  for (const field of [...PUBLIC_TEXT_FIELDS, 'weeklyRunningCostSource']) {
+    const doubled = typeof show[field] === 'string' && DOUBLED_QUOTE_RE.exec(show[field]);
+    if (doubled) {
+      out.push(`commercial.json: "${showId}" ${field} has doubled quotation marks (${doubled[0]}); quote a title inside a quote with single marks`);
+    }
   }
   return out;
 }
