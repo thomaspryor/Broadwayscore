@@ -399,7 +399,7 @@ test('createExcludedStageEmitter writes each excluded review once, across runs (
 
 test('same-identity dedup and date-mismatch reasons are never terminal (would silence the KEPT review)', () => {
   for (const r of ['skippedDuplicateUrl', 'skippedDuplicateOf', 'skippedDuplicateText', 'skippedWithinShowDupe',
-    'skippedFingerprintDedup', 'skippedUnknownCriticDedup', 'skippedPlaceholderBylineTwin', 'skippedSameArticleNamedTwin',
+    'skippedFingerprintDedup', 'skippedUnknownCriticDedup', 'skippedPlaceholderBylineTwin', 'skippedSameArticleNamedTwin', 'skippedGluedBylineTwin',
     'skippedCircularDuplicateTiebreak', 'skippedDateMismatch', 'skippedLateDateMismatch']) {
     assert.equal(TERMINAL_EXCLUSION_REASONS.has(r), false, r);
   }

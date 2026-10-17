@@ -30,6 +30,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry, outletOwnsUrlDomain, reviewSlugNamesDifferentShow } = require('./lib/review-normalization');
+const { findGluedBylineTwins } = require('./lib/glued-byline-twin'); // BRO-5104
 const { decideUnknownTwinUrlCarry, decideDuplicateTwinUrlCarry, decidePlaceholderBylineTwin, decideSameArticleNamedTwin } = require('./lib/review-text-identity');
 const { BLOCKLIST_FILENAME } = require('./lib/poller-blocklist');
 const { parseAgreeingConflictedReview } = require('./lib/conflict-markers');
@@ -2587,6 +2588,10 @@ showDirs.forEach(showId => {
     sortMeta.set(f, meta);
   }
 
+  // BRO-5104: url-less roundup rows whose byline has a word glued on front
+  // ("Brenner Helen Shaw") twin a full row at the same outlet; dropped below.
+  const gluedBylineLosers = findGluedBylineTwins(bylineRecoveryRecords);
+
   // Read-only lookup: file -> recoverable criticName, used ONLY at reviews.json
   // emission time (see the `review.criticName` build below) to display the real
   // byline for a scored "Unknown" file when a same-URL sibling (often flagged
@@ -5009,6 +5014,15 @@ showDirs.forEach(showId => {
         }
       }
 
+      // BRO-5104 — glued-byline twin (see lib/glued-byline-twin.js): same outlet,
+      // no url, byline = a kept row's name with extra leading words.
+      if (gluedBylineLosers.has(file)) {
+        logExclusion("skippedGluedBylineTwin", showId, file, data, { twinOf: gluedBylineLosers.get(file) });
+        stats.skippedGluedBylineTwin = (stats.skippedGluedBylineTwin || 0) + 1;
+        console.log(`  [GLUED-BYLINE TWIN] ${showId}/${file}: "${data.criticName}" is ${gluedBylineLosers.get(file)} with extra leading words (skipping)`);
+        return;
+      }
+
       // Unknown-outlet dedup: if the outlet is "unknown" but a file from a real outlet
       // exists for this same critic in this show's directory, skip the unknown entry.
       // This catches Show-Score shadow entries (e.g., unknown--samuel-l-leiter.json) when
@@ -6278,6 +6292,7 @@ const output = {
       skippedFingerprintDedup: stats.skippedFingerprintDedup || 0,
       skippedUnknownCriticDedup: stats.skippedUnknownCriticDedup || 0,
       skippedPlaceholderBylineTwin: stats.skippedPlaceholderBylineTwin || 0,
+      skippedGluedBylineTwin: stats.skippedGluedBylineTwin || 0,
       skippedSameArticleNamedTwin: stats.skippedSameArticleNamedTwin || 0,
       unknownTwinUrlCarried: stats.unknownTwinUrlCarried || 0,
       skippedUnknownOutletDedup: stats.skippedUnknownOutletDedup || 0,
@@ -6760,6 +6775,7 @@ if (stats.staleContentVerificationCleared > 0) {
 console.log(`  Resolved (default critic from outlet registry): ${stats.resolvedDefaultCritic || 0}`);
 console.log(`  Skipped (unknown critic dedup): ${stats.skippedUnknownCriticDedup || 0}`);
 console.log(`  Skipped (placeholder-byline twin of a named review): ${stats.skippedPlaceholderBylineTwin || 0}`);
+console.log(`  Skipped (glued-byline twin of a full review): ${stats.skippedGluedBylineTwin || 0}`);
 console.log(`  Skipped (same article under another critic, same outlet): ${stats.skippedSameArticleNamedTwin || 0}`);
 console.log(`  Unknown-twin URL carried to named entry: ${stats.unknownTwinUrlCarried || 0}`);
 console.log(`  Skipped (unknown outlet dedup): ${stats.skippedUnknownOutletDedup || 0}`);
