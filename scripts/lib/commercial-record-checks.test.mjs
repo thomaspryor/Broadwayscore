@@ -53,6 +53,13 @@ test('a source link listed twice is a warning (BRO-5562)', () => {
   assert.match(repeats([src('https://x.test/a'), src('https://x.test/b'), src('https://x.test/a')])[0], /sources\[2\]/);
   assert.equal(repeats([src('https://x.test/a'), src('https://x.test/b')]).length, 0);
   assert.equal(repeats([{ type: 'manual', url: null }, { type: 'manual', url: null }]).length, 0);
+  // http/https and a trailing slash are the same link.
+  assert.equal(repeats([src('https://x.test/a/'), src('http://x.test/a')]).length, 1);
+  // A repeat the record already had does not refuse an unrelated write; a new one does.
+  const prior = { designation: 'TBD', sources: [src('https://x.test/a'), src('https://x.test/a')] };
+  const warn = (rec) => commercialRecordWarnings('k', rec, { priorRecord: prior }).filter((m) => m.includes('already listed')).length;
+  assert.equal(warn({ ...prior, notes: 'new note' }), 0);
+  assert.equal(warn({ ...prior, sources: [...prior.sources, src('https://x.test/b'), src('https://x.test/b')] }), 1);
 });
 
 test('a title quoted inside a quote with double marks is a warning (BRO-5549)', () => {
