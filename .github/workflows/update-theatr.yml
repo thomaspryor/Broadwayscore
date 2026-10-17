@@ -231,7 +231,7 @@ jobs:
           # Two failures in a row, not one: single runs fail on a token race
           # right after a good run (5x in Oct 2026) and recover on their own.
           title: 'Theatr audience scores stopped updating'
-          description: 'The Theatr update has failed twice in a row, so Theatr audience scores on the site are not refreshing. The usual cause is that the Theatr login expired. Tell Claude "Theatr is broken" and it will find the cause and send you steps if the login needs re-capturing from the Theatr app.'
+          description: 'The Theatr update has failed twice in a row, so Theatr audience scores on the site are not refreshing. The usual cause is that the Theatr login expired. Only you can fix that: re-capture the Theatr login from the Theatr app on your iPhone. Nothing else is needed.'
           severity: 'critical'
           email: 'true'
           min_consecutive_failures: '2'

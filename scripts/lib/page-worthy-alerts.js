@@ -298,8 +298,10 @@ function isPageWorthyWorkflow(workflowFile) {
 const FINAL_REPORT_ENTRY = 'on-monitor-report-*-final';
 const OWNER_ACTIONS = {
   // Meta: the auto-fix route itself is down, so nothing else will say so.
-  'alert-router:deadman': 'Ask Claude to repair the alert pipeline: no worker cards are being filed.',
-  'e2e-canary:chain-broken': 'Ask Claude to repair the alert pipeline: no worker cards are being filed.',
+  // BRO-5542 (owner 2026-10-16): never "ask Claude". Nothing the owner can do
+  // fixes these; the email is the notice because the card route is what broke.
+  'alert-router:deadman': 'Nothing is needed from you. The part of the automation that starts fixes is failing, so problems are not being fixed on their own right now. It retries on every scheduled health check.',
+  'e2e-canary:chain-broken': 'Nothing is needed from you. The daily test of the part of the automation that starts fixes failed, so problems may not be fixed on their own right now. The test runs again every day.',
   'alert-router:usage-limit-exceeded': 'Raise or reset the Linear plan limit (a billing decision only you can make).',
   'mac:morning-digest-missing': 'Check the Mac is on, awake and signed in.',
   'owner-decisions:new': 'Answer the decision.',
