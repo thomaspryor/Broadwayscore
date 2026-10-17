@@ -527,7 +527,8 @@
     "shucked-tour-2024/san-diego-union-tribune--pam-kragen.json",
     "shucked-tour-2024/the-charlotte-ledger--lawrence-toppman.json",
     "the-curious-case-of-benjamin-button-west-end-2024/nytimes--unknown.json",
-    "our-town-2024/broadwaynews--brittani-samuel.json"
+    "our-town-2024/broadwaynews--brittani-samuel.json",
+    "the-cherry-orchard-west-end-2026/times-uk--clive-davis.json"
   ],
   "failed": [
     "othello-west-end-2022/standard--unknown.json",
@@ -903,7 +904,15 @@
     "romeo-juliet-2024/variety--charles-isherwood.json",
     "left-on-tenth-2024/variety--aramide-tinubu.json",
     "left-on-tenth-2024/washpost--peter-marks.json",
-    "sunset-boulevard-2024/wsj--charles-isherwood.json"
+    "sunset-boulevard-2024/wsj--charles-isherwood.json",
+    "some-woman-west-end-2026/guardian--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json",
+    "some-woman-west-end-2026/financialtimes--unknown.json",
+    "some-woman-west-end-2026/sunday-times--clive-davis.json",
+    "stuffed-off-west-end-2026/nytg--unknown.json",
+    "stuffed-off-west-end-2026/sunday-times--unknown.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1246,7 +1255,10 @@
       "dr-strangelove-west-end-2024/variety--naman-ramachandran.json"
     ],
     "browserbase": [
-      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/the-cherry-orchard-west-end-2026/times-uk--clive-davis.json",
+      "the-cherry-orchard-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/some-woman-west-end-2026/financialtimes--unknown.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -1476,7 +1488,7 @@
     ]
   },
   "startTime": "2026-10-16T13:35:14.517Z",
-  "lastProcessed": "our-town-2024/broadwaynews--brittani-samuel.json",
+  "lastProcessed": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json",
   "log": [
     {
       "t": "2026-10-16T14:38:18.090Z",
@@ -1858,6 +1870,40 @@
       "t": "2026-10-16T23:54:07.451Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-17T00:18:17.152Z",
+      "event": "bb-session",
+      "session": "fd0418ba",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-cherry-orchard-review"
+    },
+    {
+      "t": "2026-10-17T00:18:17.521Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-17T00:18:49.252Z",
+      "event": "bb-session",
+      "session": "e9b0504e",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-17T00:18:56.045Z",
+      "event": "bb-session",
+      "session": "b5e55fb4",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-17T00:20:10.851Z",
+      "event": "bb-session",
+      "session": "049031b3",
+      "url": "https://www.ft.com/content/7a8a9df1-f4e8-4b7a-b617-5f1cad09078f"
+    },
+    {
+      "t": "2026-10-17T00:20:11.161Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
     }
   ],
   "recoveredAfterFailure": [
