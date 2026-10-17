@@ -159,6 +159,12 @@ const NON_REVIEW_PATH_PATTERNS = [
   // opening-night-off-broadway/ was Becoming Hamlet's residual census "gap".
   // 0 of 21,083 reviews.json URLs have a path segment starting "photo(s)-".
   /(^|\/)photos?-/i,
+  // Mid-slug photo-release news: 24-ore.com/en/todrick-halls-midnight-begins-
+  // off-broadway-previews-first-photos-released-after-one-week-delay/ was
+  // Midnight's residual census "gap" (BRO-5134). 0 of 27,151 reviews.json URLs.
+  // ("begins-...-previews" alone is NOT here: 1 real frontmezzjunkies review.)
+  /(^|[-/])first-photos([-/]|$)/i,
+  /(^|[-/])photos-(are-)?released([-/]|$)/i,
 ];
 
 // A site's own utility page at the path root: /submit/, /contact-us, /about,

@@ -191,6 +191,10 @@ test('classifyReviewUrl: news-announcement slugs rejected; "first-look" reviews 
   assert.equal(classifyReviewUrl('https://monstagigz.com/2026/07/14/first-look-theatre-midnight-at-the-never-get-starring-ben-platt-at-the-menier-chocolate-factory/').ok, true);
   assert.equal(classifyReviewUrl('https://www.thereviewshub.com/burlesque-the-musical-savoy-theatre-london/').ok, true);
   assert.equal(classifyReviewUrl('https://openingnight.online/photos-becoming-hamlet-celebrates-opening-night-off-broadway/').ok, false);
+  // BRO-5134: Midnight's census "gap" was a previews/photo-release news post.
+  assert.equal(classifyReviewUrl('https://24-ore.com/en/todrick-halls-midnight-begins-off-broadway-previews-first-photos-released-after-one-week-delay/').ok, false);
+  assert.equal(classifyReviewUrl('https://example.com/news/show-x-photos-are-released/').ok, false);
+  assert.equal(classifyReviewUrl('https://frontmezzjunkies.com/2026/03/30/a-story-that-still-demands-to-be-heard-joe-turners-come-and-gone-begins-broadway-previews/').ok, true);
 });
 
 test('classifyReviewUrl: myreviewer home-video (DVD/Blu-ray) reviews rejected, other sections pass', () => {
