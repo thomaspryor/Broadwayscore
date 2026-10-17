@@ -528,5 +528,36 @@
       }
     ],
     "queuedAt": "2026-10-17T14:48:28.896Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-5355-mvchwwd3",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-5355-mvchwwd3",
+    "description": "land.yml did not land land/job/linear-BRO-5355-mvchwwd3: the rebase gate went red at 500b1a3084. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-5355-mvchwwd3 @ 500b1a3084 (origin/land/job/linear-BRO-5355-mvchwwd3) → origin/main @ c581e2734c REFUSED: rebase: branch would not rebase cleanly onto origin/main @ c581e2734c: Rebasing (1/1) error: could not apply 500b1a30845... fix(gap-audit): viagogo any-TLD + me-ticket are non-review hosts; baseline Met Macbeth CV contradiction (BRO-5355) hint: Resolve all conflicts  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39041768247",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-5355-mvchwwd3"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "500b1a308454e0bd05c6709198800c291647beb2"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39041768247"
+      }
+    ],
+    "queuedAt": "2026-10-17T15:25:55.762Z"
   }
 ]
