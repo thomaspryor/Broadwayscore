@@ -400,6 +400,7 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   { host: /(^|\.)reviews\.io$/, reason: 'ugc-platform' },
   { host: /(^|\.)feefo\.com$/, reason: 'ugc-platform' },
   { host: /(^|\.)sitejabber\.com$/, reason: 'ugc-platform' },
+  { host: /(^|\.)festies\.co\.uk$/, reason: 'ugc-platform' }, // BRO-5132: Fringe fan-review app
   // BRO-2774. Mirrors the two entries added to domain-filters.js that
   // classifyReviewUrl does NOT get for free: it borrows TICKET_DOMAINS only
   // (see the matchesDomainSet call below), so BRO-2774's ents24.com and

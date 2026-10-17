@@ -522,3 +522,13 @@ test('BRO-5377: axs.com locale-prefixed /uk/events/ ticket pages are ticketing-r
   assert.equal(namedNonReviewReason('https://www.axs.com/uk/theatre-review-sweat-75388'), null);
   assert.equal(namedNonReviewReason('https://www.axs.com/theatre-review-sweat-at-arena-stage-75388'), null);
 });
+
+test('BRO-5132: festies.co.uk Fringe fan-review pages are UGC, not review-gap candidates', () => {
+  for (const u of [
+    'https://festies.co.uk/@TrashP/events/2026/elf-lyons-is-the-woman-on-the-edge',
+    'https://festies.co.uk/@em_dashes/events/2026/elf-lyons-is-the-woman-on-the-edge',
+  ]) {
+    assert.equal(namedNonReviewReason(u), 'ugc-platform', u);
+    assert.equal(classifyGapCandidateUrl(u).ok, false, u);
+  }
+});

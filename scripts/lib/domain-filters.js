@@ -296,6 +296,10 @@ const UGC_PLATFORM_DOMAINS = new Set([
   // Customer-review platforms: a Trustpilot review of a ticket seller was
   // submitted as an Affluenza "review" (BRO-4838, 2026-10-07).
   'trustpilot.com', 'reviews.io', 'feefo.com', 'sitejabber.com',
+  // Edinburgh Fringe audience-review app: festies.co.uk/@<user>/events/... pages
+  // are fan posts. Five of them alerted as "missing cited reviews" for the NY
+  // run of Elf Lyons: The Woman on the Edge (BRO-5132).
+  'festies.co.uk',
 ]);
 
 // Content-farm look-alikes (BRO-4419): hosts whose name imitates a real outlet
