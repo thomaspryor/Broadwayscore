@@ -109,7 +109,7 @@ function nonProductionRefusal(row, action, reviewCount) {
   return null;
 }
 
-function applyRetireShow(shows, action, { retire, now, reviewCount } = {}) {
+function applyRetireShow(shows, action, { retire, now, reviewCount, isRetired } = {}) {
   const a = action || {};
   if (typeof a.id !== 'string' || !ID_RE.test(a.id)) return { ok: false, reason: 'retire-show: id must be a lowercase-kebab show id' };
   if (typeof a.reason !== 'string' || !a.reason.trim()) return { ok: false, reason: `retire-show ${a.id}: a reason is required` };
@@ -132,6 +132,17 @@ function applyRetireShow(shows, action, { retire, now, reviewCount } = {}) {
     if (why) return { ok: false, reason: `retire-show ${a.id}: ${why}` };
   } else if (row.provisional !== true) {
     return { ok: false, reason: `retire-show ${a.id}: only provisional (automated, uncorroborated) rows can be retired by a plan, a duplicate named with duplicateOf, or a non-production named with nonProduction + evidenceUrl` };
+  }
+  // A row whose id the registry already holds was re-minted after its retirement (the
+  // venue-page promoter ignored the registry until BRO-5557). `reMinted: true` removes just
+  // the row; the registry entry and archive from the first retirement stay as they are.
+  if (a.reMinted !== undefined && a.reMinted !== true) return { ok: false, reason: `retire-show ${a.id}: reMinted must be true when present` };
+  if (a.reMinted === true) {
+    const registry = require('./retired-show-ids');
+    const held = typeof isRetired === 'function' ? isRetired(a.id) : registry.isRetiredId(a.id);
+    if (!held) return { ok: false, reason: `retire-show ${a.id}: reMinted names an id the retired registry does not hold` };
+    shows.splice(idx, 1);
+    return { ok: true, msg: `removed re-minted ${a.id} ("${row.title}" @ ${row.venue}); the registry already held the id` };
   }
   const doRetire = typeof retire === 'function' ? retire : require('./retired-show-ids').retireId;
   try {

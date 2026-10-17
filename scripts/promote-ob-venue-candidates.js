@@ -70,6 +70,10 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 // instead of re-deriving it. Re-exported below unchanged so existing callers
 // (tests, this file's own module.exports) keep working.
 const { findExistingMatch } = require('./lib/candidate-dedup');
+// Retired-id registry (data/retired-show-ids.json): promote-owe-venue-candidates.js already refuses
+// a retired id; this promoter did not, so the NYU Skirball Il Cimento duplicate retired on
+// 2026-10-13 was re-minted under the same id three days later (BRO-5557).
+const { matchesRetired, loadRetiredIds } = require('./lib/retired-show-ids');
 
 const USAGE = `promote-ob-venue-candidates.js — Promote venue-discovered OB candidates from staging → shows.json.
 
@@ -719,6 +723,7 @@ async function main() {
     process.exit(1);
   }
   const existingIds = new Set(showsData.shows.map(s => s.id));
+  const retiredEntries = loadRetiredIds();
   const existingSlugs = new Set(showsData.shows.map(s => s.slug).filter(Boolean));
   // Existing OB/regional shows, as findExistingMatch() expects. Include
   // 'regional' alongside 'off-broadway': regional candidates are added to
@@ -959,6 +964,12 @@ async function main() {
       skipped.push({ candidate: c, reason });
       remainingStaged.push(c);
       logEntry({ kind: misroute ? 'skip-west-end-misroute' : 'skip-invalid-venue', title: c.title, venue: c.venue });
+      continue;
+    }
+    const retiredHit = matchesRetired({ id: entry.id, title: entry.title, venue: entry.venue }, retiredEntries);
+    if (retiredHit) {
+      skipped.push({ candidate: c, reason: `matches retired ${retiredHit.id} by ${retiredHit.matchedBy} (data/retired-show-ids.json), never re-add` });
+      logEntry({ kind: 'skip-retired', title: c.title, venue: c.venue, id: entry.id, retiredId: retiredHit.id, matchedBy: retiredHit.matchedBy });
       continue;
     }
     if (existingIds.has(entry.id)) {

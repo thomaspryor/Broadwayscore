@@ -180,7 +180,7 @@ const FIELD_VALUE_CHECKS = {
   // the text, since '' is not a url change for url-change-invariant).
   url: (v, record, ctx = {}) => {
     const { isAggregatorPageUrl } = require('./review-slot-guards');
-    const { classifyReviewUrl } = require('./non-review-url-patterns');
+    const { classifyReviewUrl, listingPageUrlReason } = require('./non-review-url-patterns');
     const current = record.url || '';
     const currentAggregator = isAggregatorPageUrl(current);
     // BRO-5183: a legacy web-search row the scorer already excludes for want of
@@ -191,6 +191,11 @@ const FIELD_VALUE_CHECKS = {
     const unverifiedSearchUrl = isLegacyWebSearchOnly(record) && isUnverifiableWebSearchRow(record);
     const currentWrong = currentAggregator
       || (current && classifyReviewUrl(current).ok === false)
+      // A tag / category / author index (theatermania.com/tags/<show>/): the
+      // rebuild already drops a row on it (rebuild-all-reviews.js listingPageUrlReason),
+      // but classifyReviewUrl does not list it, so a file auto-pinned onto one
+      // could never be repaired (A Ghost in Your Ear / TheaterMania, BRO-5557).
+      || (current && !!listingPageUrlReason(current))
       || ctx.currentUrlOwnedByOtherCritic === true
       || ctx.currentUrlOwnedByOtherShow === true
       || unverifiedSearchUrl;

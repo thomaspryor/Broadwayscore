@@ -22,7 +22,7 @@
 
 const { normalizeTitle, titleTokens, jaccard } = require('./title-match');
 const { titlesMatch } = require('./title-normalization');
-const { isSubtitleVariantOf, isColonSegmentVariant, levenshteinDistance, venuesMatch } = require('./deduplication');
+const { isSubtitleVariantOf, isColonSegmentVariant, isSameSubtitleTail, levenshteinDistance, venuesMatch } = require('./deduplication');
 
 const DEFAULT_DEDUP_JACCARD_THRESHOLD = 0.80;
 const DEFAULT_TYPO_EDIT_DISTANCE_MAX = 3;
@@ -139,6 +139,11 @@ function findExistingMatchAtVenue(candidate, cands, { jaccardThreshold, typoEdit
     // Check 7b already used this, but this path did not (2026-09-28 dup).
     if (isColonSegmentVariant(candidate.title, e.title)) {
       return { match: e, reason: `colon-segment-of: "${e.title}"` };
+    }
+    // Same distinctive subtitle behind a different credit list (Il Cimento at
+    // NYU Skirball: "A: Title" vs "A & B: Title", BRO-5557).
+    if (isSameSubtitleTail(candidate.title, e.title)) {
+      return { match: e, reason: `same-subtitle-as: "${e.title}"` };
     }
     if (cNorm.length >= typoMinTitleLength && eNorm.length >= typoMinTitleLength) {
       const dist = levenshteinDistance(cNorm, eNorm);

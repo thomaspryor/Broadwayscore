@@ -156,3 +156,30 @@ test('nonProduction: a non-provisional announced row with no reviews retires wit
   assert.match(entry.reason, /evidence: https:\/\/kilntheatre\.com/);
   assert.ok(matchesRetired({ id: 'the-stranger-2-off-west-end-2027', title: 'The Stranger 2', venue: 'Kiln Theatre' }, loadRetiredIds({ listPath: paths.listPath })), 'title+venue block keeps it from returning');
 });
+
+// BRO-5557: the Il Cimento duplicate was retired 2026-10-13 and re-minted under the same id;
+// retire-show refuses a second retirement, so reMinted removes just the row.
+test('reMinted removes a re-added row whose id the registry already holds, and nothing else', () => {
+  const { paths, retire } = scratch();
+  const base = row('x-off-west-end-2026', 'X');
+  const held = (id) => loadRetiredIds({ listPath: paths.listPath }).some((e) => e.id === id);
+  assert.equal(applyRetireShow([structuredClone(base)], { id: base.id, expectTitle: 'X', reason: 'first retirement' }, { retire }).ok, true);
+  const shows = [structuredClone(base), row('keep-off-west-end-2026', 'Keep')];
+  const plain = applyRetireShow(shows, { id: base.id, expectTitle: 'X', reason: 'again' }, { retire });
+  assert.equal(plain.ok, false);
+  assert.match(plain.reason, /already retired/);
+  const r = applyRetireShow(shows, { id: base.id, expectTitle: 'X', reason: 'row came back', reMinted: true }, { retire, isRetired: held });
+  assert.equal(r.ok, true, r.reason);
+  assert.deepEqual(shows.map((s) => s.id), ['keep-off-west-end-2026']);
+  assert.equal(loadRetiredIds({ listPath: paths.listPath }).length, 1, 'the registry is not written twice');
+});
+
+test('reMinted refuses an id the registry does not hold, a non-provisional row, or a non-true flag', () => {
+  const { paths } = scratch();
+  const held = (id) => loadRetiredIds({ listPath: paths.listPath }).some((e) => e.id === id);
+  const shows = [row('y-off-west-end-2026', 'Y'), row('z-off-west-end-2026', 'Z', { provisional: false })];
+  assert.match(applyRetireShow(shows, { id: 'y-off-west-end-2026', expectTitle: 'Y', reason: 'r', reMinted: true }, { isRetired: held }).reason, /does not hold/);
+  assert.match(applyRetireShow(shows, { id: 'z-off-west-end-2026', expectTitle: 'Z', reason: 'r', reMinted: true }, { isRetired: () => true }).reason, /only provisional/);
+  assert.match(applyRetireShow(shows, { id: 'y-off-west-end-2026', expectTitle: 'Y', reason: 'r', reMinted: 'yes' }, { isRetired: () => true }).reason, /reMinted must be true/);
+  assert.equal(shows.length, 2);
+});

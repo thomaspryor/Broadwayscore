@@ -275,6 +275,11 @@ function normalizeTitleUncached(title) {
     // Remove common subtitles/suffixes
     .replace(/:\s*.+$/, '')           // Remove everything after colon
     .replace(/\s*-\s*.+$/, '')        // Remove everything after dash
+    // Spaced en/em dash tagline ("ANON \u2013 a tempest at our kitchen table"). The ASCII
+    // rule above never saw it, so isSubtitleVariantOf (which compares these
+    // normalized forms) missed "Anne Washburn's ANON" vs that title and the
+    // BWW roundup promoter minted a second ANON show (BRO-5557).
+    .replace(/\s+[\u2013\u2014]\s+.+$/, '')
     .replace(/\s*\(.+\)$/, '')        // Remove parenthetical at end
     .replace(/\s+on\s+broadway$/i, '') // Remove "on Broadway"
     .replace(/\s+the\s+musical$/i, '') // Remove "The Musical"
@@ -798,6 +803,36 @@ function isColonSegmentVariant(titleA, titleB) {
   return MUSICAL_SUFFIX_RE.test(longStr) && key === colonSegmentKey(longStr.replace(MUSICAL_SUFFIX_RE, ''));
 }
 
+/**
+ * Same subtitle, one credit list extending the other: "Anne Teresa De
+ * Keersmaeker: Il Cimento dell'Armonia e dell'Inventione" (TodayTix) vs "Anne
+ * Teresa De Keersmaeker & Radouan Mriziga: Il Cimento ..." (venue page). Neither
+ * title is a prefix, colon segment or normalized twin of the other, so the venue
+ * promoter minted a second NYU Skirball row (BRO-5557). Colon subtitles only:
+ * a dash tail is usually the company or house ("Tosca - English National
+ * Opera" vs "Angel Bones - English National Opera" are different shows). The
+ * tail must be distinctive (12+ letters) and the shorter head (2+ words) must
+ * be a leading run of the longer head, so two unrelated acts with one tagline,
+ * or a prefixed special engagement, never match. Callers must also require the same venue.
+ */
+function isSameSubtitleTail(titleA, titleB) {
+  const split = (t) => {
+    const str = String(t || '');
+    const i = str.indexOf(':');
+    return i < 0 ? null : { head: colonSegmentKey(str.slice(0, i)), tail: colonSegmentKey(str.slice(i + 1)) };
+  };
+  const a = split(titleA);
+  const b = split(titleB);
+  if (!a || !b || a.tail.replace(/ /g, '').length < 12 || a.tail !== b.tail || a.head === b.head) return false;
+  const wa = a.head.split(' ').filter(w => w && w !== 'and');
+  const wb = b.head.split(' ').filter(w => w && w !== 'and');
+  const [few, many] = wa.length <= wb.length ? [wa, wb] : [wb, wa];
+  // A credit list grows at the END ("A" -> "A & B"); "Grown-Up Nights: Jim
+  // Henson's Fraggle Rock" vs "Jim Henson's Fraggle Rock" is a prefix, a
+  // different engagement, and must stay apart.
+  return few.length >= 2 && few.every((w, i) => many[i] === w);
+}
+
 // Double-bill / pairing separators: " / " (spaced or not), " & ", " and ".
 // A lone "/" without spaces is included because slugify/normalizeTitle
 // already treat it as a word separator (BRO-3191, "Electra/Persona").
@@ -1010,6 +1045,18 @@ function checkForDuplicate(newShow, existingShows) {
         return {
           isDuplicate: true,
           reason: `Slug prefix match: "${newSlug}" vs "${existing.slug}"`,
+          existingShow: existing
+        };
+      }
+    }
+
+    // Check 7e: Same venue + same distinctive subtitle behind a different
+    // credit list (isSameSubtitleTail; the Il Cimento NYU Skirball dup).
+    if (venuesMatch(newShow.venue, existing.venue) && isSameSubtitleTail(newShow.title, existing.title)) {
+      if (!isMultiProduction(newShow, existing)) {
+        return {
+          isDuplicate: true,
+          reason: `Same venue + same subtitle: "${newShow.title}" vs "${existing.title}"`,
           existingShow: existing
         };
       }
@@ -1268,6 +1315,7 @@ module.exports = {
   isLongClosedTwin,
   isSubtitleVariantOf,
   isColonSegmentVariant,
+  isSameSubtitleTail,
   aliasCanonical,
   venuesMatch,
   KNOWN_DUPLICATES,

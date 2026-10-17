@@ -3795,8 +3795,14 @@ function _flipFlopShouldTakeIncoming(existingUrl, incomingUrl, existing) {
   // elsewhere, so never let this hop an auto-pin to a different outlet.
   const host = (u) => { try { return new URL(u).hostname.replace(/^www\./, '').toLowerCase(); } catch { return null; } };
   if (!host(existingUrl) || host(existingUrl) !== host(incomingUrl)) return false;
-  const { namedNonReviewReason } = require('./non-review-url-patterns');
-  if (namedNonReviewReason(existingUrl || '') && !namedNonReviewReason(incomingUrl || '')) return true;
+  const { namedNonReviewReason, listingPageUrlReason } = require('./non-review-url-patterns');
+  // A tag / category / author index (theatermania.com/tags/<show>/) is just as
+  // non-review as a named page: the poller alternated between such a page and a
+  // news article, the breaker pinned the index, and a complete review sat
+  // unscored under it (A Ghost in Your Ear, TheaterMania, BRO-5557). Both
+  // reasons must be clear on the incoming side so one index cannot hop to another.
+  const nonReview = (u) => namedNonReviewReason(u || '') || listingPageUrlReason(u || '');
+  if (nonReview(existingUrl) && !nonReview(incomingUrl)) return true;
   // Corroboration tie-break (School Girls 2026-09-29): BWW's roundup linked
   // Theatrely with a stray trailing 'j' (a 404) while Playbill Verdict had the
   // real url; the poller alternated and the breaker pinned the 404 because

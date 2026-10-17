@@ -625,3 +625,17 @@ test('allowCrossMarket can be set true (a UK critic who reviewed the NYC product
   assert.equal(applyReviewFieldEdit(rec, { field: 'allowCrossMarket', oldValue: null, newValue: false }, stamp).ok, false);
   assert.equal(applyReviewFieldEdit(rec, { field: 'allowCrossMarket', oldValue: null, newValue: 'yes' }, stamp).ok, false);
 });
+
+// BRO-5557: a tag index url is provably wrong. A Ghost in Your Ear's TheaterMania
+// review was auto-pinned onto theatermania.com/tags/<show>/, which the rebuild
+// drops, and classifyReviewUrl alone did not call it wrong, so it could not be repaired.
+test('url repair: a tag-index url is repairable to the real review url', () => {
+  const tags = 'https://www.theatermania.com/tags/a-ghost-in-your-ear/';
+  const real = 'https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/';
+  const res = applyReviewFieldEdit({ outletId: 'theatermania', url: tags }, { field: 'url', oldValue: tags, newValue: real }, stamp);
+  assert.equal(res.ok, true, res.reason);
+  assert.equal(res.record.url, real);
+  // a real review url is still never replaced
+  const keep = applyReviewFieldEdit({ outletId: 'theatermania', url: real }, { field: 'url', oldValue: real, newValue: tags }, stamp);
+  assert.equal(keep.ok, false);
+});

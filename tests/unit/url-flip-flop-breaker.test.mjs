@@ -48,6 +48,16 @@ describe('_flipFlopShouldTakeIncoming', () => {
     const other = 'https://other-outlet.com/reviews/x';
     assert.equal(_flipFlopShouldTakeIncoming(WRONG, other, { url: WRONG, dtliUrl: other }), false);
   });
+  test('a tag-index page yields to a non-index url on the same host (BRO-5557)', () => {
+    const tags = 'https://www.theatermania.com/tags/a-ghost-in-your-ear/';
+    const review = 'https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/';
+    assert.equal(_flipFlopShouldTakeIncoming(tags, review, { url: tags }), true);
+    // one tag index never hops to another, and a real review is never replaced by an index
+    assert.equal(_flipFlopShouldTakeIncoming(tags, 'https://www.theatermania.com/tags/other-show/', { url: tags }), false);
+    assert.equal(_flipFlopShouldTakeIncoming(review, tags, { url: review }), false);
+    // different host stays pinned
+    assert.equal(_flipFlopShouldTakeIncoming(tags, 'https://www.vulture.com/article/x.html', { url: tags }), false);
+  });
   test('named non-review page yields to a review url on the same host', () => {
     const news = 'https://www.thestage.co.uk/news/some-casting-news';
     const review = 'https://www.thestage.co.uk/reviews/some-show-review-theatre-london';

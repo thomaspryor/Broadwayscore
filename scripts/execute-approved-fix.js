@@ -477,6 +477,8 @@ function executeRetireShow(action) {
     // (still in shows.json) and the registry agree and the plan can re-run.
     let reverted = false;
     let revertError = null;
+    // reMinted removed only the row: the registry entry is the FIRST retirement's, never ours to revert.
+    if (action.reMinted === true) return { ok: false, reason: `retire-show ${action.id}: shows.json save failed (${e.message}); registry untouched (reMinted)` };
     try { reverted = unretireId(action.id); } catch (re) { revertError = re.message; }
     const tail = reverted ? 'registry entry reverted' : `registry entry NOT reverted (${revertError || 'not found'}) — remove ${action.id} from data/retired-show-ids.json and data/deleted-shows.json by hand`;
     return { ok: false, reason: `retire-show ${action.id}: shows.json save failed (${e.message}); ${tail}` };
