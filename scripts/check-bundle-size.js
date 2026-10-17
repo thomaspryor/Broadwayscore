@@ -23,6 +23,7 @@ const { execSync } = require('child_process');
 const BASELINE_PATH = path.join(__dirname, '../data/audit/bundle-size-baseline.json');
 const HISTORY_PATH = path.join(__dirname, '../data/audit/bundle-size-history.json');
 const { foldHistoryByDay } = require('./lib/history-fold-by-day');
+const { bundleBuildEnv } = require('./lib/bundle-build-env');
 
 const SHARED_JS_WARN_DELTA = 5; // kB
 const PAGE_JS_WARN_DELTA = 10;  // kB
@@ -37,6 +38,7 @@ function parseBuildOutput() {
   try {
     output = execSync('npm run build 2>&1', {
       cwd: path.join(__dirname, '..'),
+      env: bundleBuildEnv(),
       encoding: 'utf8',
       timeout: 600_000, // 10 min
       maxBuffer: 50 * 1024 * 1024,
@@ -46,6 +48,9 @@ function parseBuildOutput() {
     output = e.stdout || '';
     if (!output.includes('First Load JS')) {
       console.error('Build failed without producing size output.');
+      // execSync buffers the build log. Preserve the failure details so CI
+      // reports the cause instead of only a misleading performance alert.
+      console.error(output.trim().split('\n').slice(-30).join('\n'));
       process.exit(1);
     }
   }
