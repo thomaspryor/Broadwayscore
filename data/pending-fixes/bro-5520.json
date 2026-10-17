@@ -1,17 +1,17 @@
 {
   "issueNumber": "bro-5520",
-  "planId": "6d1954bf-8c77-40bd-926c-a291238c0d65",
+  "planId": "514a0106-867a-4bea-a5fe-f93e5f1c5862",
   "status": "pending",
-  "createdAt": "2026-10-17T05:37:32.293Z",
+  "createdAt": "2026-10-17T06:06:48.451Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-5520: checked results from the owner’s Gemini deep research runs (2026-27 season and long-running hits; 2025-26 season). One new figure checks out: Joe Turner’s Come and Gone was capitalized at $8 million, stated by its producers in The RainMakers Collective investor Q&A (Feb 7, 2026). Two capitalizations in our data had no source and nothing behind them: Dog Day Afternoon’s $9.5M (its own note says none was reported; the number is Titanique’s) and Little Bear Ridge Road’s $4.1M (Rudin and Diller financed it alone; no coverage gives a cost). Both are cleared rather than printed as estimates. Rejected claims from the reports: Celebrity Autobiography “recouped $2.3M” (Playbill: it struggled and closed two months early), The Lion King ~$15M (a blog), Beaches’ $12.5M recoupment (Just in Time’s), All Out $31.5M (cited to an article written before the show existed).",
+    "summary": "BRO-5520: checked results from the owner’s Gemini and ChatGPT deep research runs (2026-27 season and long-running hits; 2025-26 season; nonprofit shows). Each figure below was opened at its source. New: Joe Turner’s Come and Gone $8M (producers’ investor Q&A), Here There Are Blueberries $7M max (SEC Form D), Paddington $31M, Purple Rain $29.5M and Galileo $23M (Broadway Journal, new records), Dolly $30M now cited to Broadway Journal, CATS: The Jellicle Ball’s running cost ~$1M (Playbill, replacing an $850K Reddit estimate), Little Bear Ridge Road’s $4.1M now cited to its SEC Form D ($4,095,000). Cleared: Dog Day Afternoon $9.5M and Damn Yankees $19M (no source; message-board guesses). Flagged as enhancements: A Few Good Men and School Girls (named commercial co-producers). Not applied (could not open the source from here): The Washington Post’s Oedipus $6.5M, The Lion King ~$20M (NYT 2003), Aladdin $12-15M projected (LA Times 2014), Variety’s Cats \"failed to recoup\", NYT’s Beaches investor losses, IBDB’s Jun 23 2026 Rocky Horror producer change. Rejected: Celebrity Autobiography \"recouped $2.3M\", All Out $31.5M, Beaches $12.5M recoupment, Rocky Horror \"fully recouped\".",
     "steps": [
-      "Joe Turner: capitalization, its source, and the note sentence that said none was reported.",
-      "Dog Day Afternoon and Little Bear Ridge Road: capitalization cleared and isEstimate.capitalization set to false; the model reruns on apply."
+      "Edits read every oldValue from live data; three add-commercial-entry actions create the new records as TBD.",
+      "productionType becomes plan-editable in the same change (scripts/lib/feedback-pipeline-fields.js); the record checks validate its values."
     ],
     "riskLevel": "low",
     "actions": [
@@ -31,7 +31,7 @@
         "field": "capitalizationSource",
         "oldValue": null,
         "newValue": "The RainMakers Collective (Feb 7, 2026), investor Q&A with lead producer Brian Anthony Moreland and co-producer Cody Lassen: \"A deep dive into the $8 million capitalization strategy.\" https://therainmakerscollective.com/Q&A/joe-turners-come-gone-qa-and-investment-memo/",
-        "description": "joe-turners-come-and-gone: cite the producers’ investor Q&A for the $8 million."
+        "description": "joe-turners-come-and-gone: cite the investor Q&A."
       },
       {
         "type": "data-edit",
@@ -49,7 +49,7 @@
         "field": "capitalization",
         "oldValue": 9500000,
         "newValue": null,
-        "description": "dog-day-afternoon: the $9.5M had no source, the record’s own note says no capitalization was reported, and it equals Titanique’s Broadway Journal figure; nothing found in trade coverage. Shown as undisclosed."
+        "description": "dog-day-afternoon: the $9.5M had no source, the record’s own note says none was reported, and it equals Titanique’s Broadway Journal figure; Gemini, ChatGPT and a trade search found none. Shown as undisclosed."
       },
       {
         "type": "data-edit",
@@ -62,7 +62,7 @@
         "newValue": {
           "capitalization": false
         },
-        "description": "dog-day-afternoon: the estimate flag goes with the figure (false, the form the records already use)."
+        "description": "dog-day-afternoon: the estimate flag goes with the figure."
       },
       {
         "type": "data-edit",
@@ -70,8 +70,17 @@
         "showSlug": "little-bear-ridge-road",
         "field": "capitalization",
         "oldValue": 4100000,
-        "newValue": null,
-        "description": "little-bear-ridge-road: the $4.1M had no source; the show was financed by Scott Rudin and Barry Diller with no outside investors (no Form D), and the closing coverage (THR, Variety, NYT as quoted) gives no cost. Shown as undisclosed."
+        "newValue": 4095000,
+        "description": "little-bear-ridge-road: the SEC Form D gives the exact offering, $4,095,000 (shown $4.1M, as before)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "little-bear-ridge-road",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Little Bear Broadway Ltd Liability Co, CIK 0002091922, filed Oct 29, 2025): total offering amount $4,095,000. https://www.sec.gov/Archives/edgar/data/2091922/000209192225000001/xslFormDX01/primary_doc.xml",
+        "description": "little-bear-ridge-road: cite the Form D."
       },
       {
         "type": "data-edit",
@@ -84,7 +93,390 @@
         "newValue": {
           "capitalization": false
         },
-        "description": "little-bear-ridge-road: the estimate flag goes with the figure (false, the form the records already use)."
+        "description": "little-bear-ridge-road: a filed figure, no longer an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "little-bear-ridge-road",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://variety.com/2025/film/news/scott-rudin-broadway-return-little-bear-ridge-road-1236448608/",
+            "date": "2025-07-08"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/12/little-bear-ridge-road-closing-date-1236647056/",
+            "date": "2025-12-12"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://variety.com/2025/film/news/scott-rudin-broadway-return-little-bear-ridge-road-1236448608/",
+            "date": "2025-07-08"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/12/little-bear-ridge-road-closing-date-1236647056/",
+            "date": "2025-12-12"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2091922/000209192225000001/xslFormDX01/primary_doc.xml",
+            "date": "2025-10-29"
+          }
+        ],
+        "description": "little-bear-ridge-road: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "here-there-are-blueberries",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 7000000,
+        "description": "here-there-are-blueberries: SEC Form D maximum capitalization $7,000,000 (minimum $5,000,000), the Proof convention."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "here-there-are-blueberries",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Blueberries Broadway Ltd Liability Co, CIK 0002154984, filed Sep 14, 2026): \"The maximum capitalization is $7,000,000. The minimum capitalization is $5,000,000.\" https://www.sec.gov/Archives/edgar/data/2154984/000215498426000001/xslFormDX01/primary_doc.xml",
+        "description": "here-there-are-blueberries: cite the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "here-there-are-blueberries",
+        "field": "notes",
+        "oldValue": "No public data found for production capitalization, weekly running cost, or recoupment; show is upcoming for a limited engagement starting Nov 9, 2026.",
+        "newValue": "Capitalized at up to $7 million (minimum $5 million) per its SEC Form D (Sep 14, 2026); no weekly running cost or recoupment reported; show is upcoming for a limited engagement starting Nov 9, 2026.",
+        "description": "here-there-are-blueberries: the note reports the Form D."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "here-there-are-blueberries",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://shubert.nyc/press/the-pulitzer-prize-finalist-here-there-are-blueberries-to-open-on-broadway-this-fall/",
+            "date": "2026-08-27"
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Here_There_Are_Blueberries",
+            "date": "2026-09-17"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://shubert.nyc/press/the-pulitzer-prize-finalist-here-there-are-blueberries-to-open-on-broadway-this-fall/",
+            "date": "2026-08-27"
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Here_There_Are_Blueberries",
+            "date": "2026-09-17"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2154984/000215498426000001/xslFormDX01/primary_doc.xml",
+            "date": "2026-09-14"
+          }
+        ],
+        "description": "here-there-are-blueberries: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "damn-yankees",
+        "field": "capitalization",
+        "oldValue": 19000000,
+        "newValue": null,
+        "description": "damn-yankees: the $19M (\"Industry sources\") traces only to BroadwayWorld message-board guesses of $18-20M; Gemini and ChatGPT found no filing or trade report, and the SEC title search is empty. Shown as undisclosed."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "damn-yankees",
+        "field": "capitalizationSource",
+        "oldValue": "Industry sources",
+        "newValue": null,
+        "description": "damn-yankees: no source left to print."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "damn-yankees",
+        "field": "isEstimate",
+        "oldValue": {
+          "capitalization": true
+        },
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "damn-yankees: the estimate flag goes with the figure."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "damn-yankees",
+        "field": "notes",
+        "oldValue": "Capitalization about $19M.",
+        "newValue": "No capitalization reported.",
+        "description": "damn-yankees: the note no longer repeats the $19M."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dolly-an-original-musical",
+        "field": "capitalizationSource",
+        "oldValue": "Industry sources",
+        "newValue": "Broadway Journal (Philip Boroff, Aug 12, 2026): \"The Dolly Parton musical Dolly ($30 million)\"; the figure includes its out-of-town tryout. https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+        "description": "dolly-an-original-musical: Broadway Journal reports the $30M, from the producers’ filings."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dolly-an-original-musical",
+        "field": "isEstimate",
+        "oldValue": {
+          "capitalization": true
+        },
+        "newValue": {
+          "capitalization": false
+        },
+        "description": "dolly-an-original-musical: a reported figure, no longer an estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dolly-an-original-musical",
+        "field": "notes",
+        "oldValue": "Capitalization about $30M.",
+        "newValue": "Capitalized at $30 million including its out-of-town tryout (Broadway Journal, Aug 2026).",
+        "description": "dolly-an-original-musical: the note cites the report."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "field": "weeklyRunningCost",
+        "oldValue": 850000,
+        "newValue": 1000000,
+        "description": "cats-the-jellicle-ball: Playbill reports weekly running costs of around $1 million (was an $850K Reddit analyst estimate)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "field": "weeklyRunningCostSource",
+        "oldValue": "Estimate by u/Boring_Waltz_9545 on r/Broadway, \"GROSSES ANALYSIS- Week Ending August 9\" (2026-08-11) https://www.reddit.com/r/Broadway/comments/1vloonj/grosses_analysis_week_ending_august_9/",
+        "newValue": "Playbill (Logan Culwell-Block, Aug 11, 2026): \"With weekly running costs reported to be around $1 million\". https://playbill.com/article/cats-the-jellicle-ball-closes-to-200-ticket-average-and-more-from-last-weeks-broadway-grosses",
+        "description": "cats-the-jellicle-ball: cite Playbill."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "field": "costMethodology",
+        "oldValue": "reddit-standard",
+        "newValue": "trade-reported",
+        "description": "cats-the-jellicle-ball: a trade-reported figure (also keeps the Reddit gap-fill from replacing it)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "running",
+        "description": "cats-the-jellicle-ball: Playbill calls it weekly running costs."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "book-of-mormon",
+        "field": "capitalizationSource",
+        "oldValue": "Press announcement",
+        "newValue": "The Hollywood Reporter (Nov 29, 2011): \"has recouped its capitalization of $11.4 million in just eight months\". https://www.hollywoodreporter.com/news/general-news/book-of-mormon-recoup-267128/",
+        "description": "book-of-mormon: the bare label \"Press announcement\" becomes the cited quote already in recoupedSource."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "field": "capitalizationSource",
+        "oldValue": "Industry sources",
+        "newValue": "Estimate (industry sources; other reports say up to $18 million). The producers have not disclosed it.",
+        "description": "cats-the-jellicle-ball: the $16M has no citation; other reports say up to $18M."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "field": "isEstimate",
+        "oldValue": {
+          "weeklyRunningCost": true
+        },
+        "newValue": {
+          "weeklyRunningCost": true,
+          "capitalization": true
+        },
+        "description": "cats-the-jellicle-ball: the $16M prints as an estimate (\"~\")."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "field": "notes",
+        "oldValue": "Reimagined ballroom-culture Cats that transferred from the Perelman Performing Arts Center to the Broadhurst. Won three Tony Awards and closed Aug 8, 2026 without announcing recoupment. Capitalized at about $16M.",
+        "newValue": "Reimagined ballroom-culture Cats that transferred from the Perelman Performing Arts Center to the Broadhurst. Won three Tony Awards and closed Aug 8, 2026 without announcing recoupment. Capitalization not disclosed; estimated at $16M to $18M.",
+        "description": "cats-the-jellicle-ball: the note gives the range."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-few-good-men",
+        "field": "productionType",
+        "oldValue": null,
+        "newValue": "enhancement",
+        "description": "a-few-good-men: produced by LCT in association with No Guarantees Productions, Tom Kirdahy, Kevin Ryan, Lamar Richardson and Mary Sullivan (O&M/DKC release, Sep 1 2026): an enhancement, like Ragtime."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-few-good-men",
+        "field": "notes",
+        "oldValue": "Lincoln Center Theater (nonprofit) production at the Vivian Beaumont (TheaterMania, Jun 23, 2026); no capitalization reported.",
+        "newValue": "Lincoln Center Theater (nonprofit) production at the Vivian Beaumont (TheaterMania, Jun 23, 2026), in association with No Guarantees Productions, Tom Kirdahy, Kevin Ryan, Lamar Richardson and Mary Sullivan (O&M/DKC, Sep 1, 2026); no capitalization reported.",
+        "description": "a-few-good-men: name the co-producers."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-few-good-men",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.theatermania.com/news/bradley-whitford-and-aaron-sorkin-to-team-up-for-broadway-revival-of-a-few-good-men_1842777/",
+            "date": "2026-06-23",
+            "excerpt": "Tom Blyth will also star in the Lincoln Center Theater production at the Beaumont."
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.theatermania.com/news/bradley-whitford-and-aaron-sorkin-to-team-up-for-broadway-revival-of-a-few-good-men_1842777/",
+            "date": "2026-06-23",
+            "excerpt": "Tom Blyth will also star in the Lincoln Center Theater production at the Beaumont."
+          },
+          {
+            "type": "trade",
+            "url": "https://omdkc.com/a-few-good-men-at-lincoln-center-theater-announces-complete-cast-creative-team/",
+            "date": "2026-09-01"
+          }
+        ],
+        "description": "a-few-good-men: add the release to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "school-girls-or-the-african-mean-girls-play",
+        "field": "productionType",
+        "oldValue": null,
+        "newValue": "enhancement",
+        "description": "school-girls-or-the-african-mean-girls-play: MTC: \"Produced in association with Chase This Productions and Susan Kelechi Watson.\""
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "school-girls-or-the-african-mean-girls-play",
+        "field": "nonprofitOrg",
+        "oldValue": null,
+        "newValue": "Manhattan Theatre Club",
+        "description": "school-girls-or-the-african-mean-girls-play: the presenting nonprofit, missing on the record."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "school-girls-or-the-african-mean-girls-play",
+        "field": "notes",
+        "oldValue": "A Manhattan Theatre Club production at the Samuel J. Friedman Theatre, MTC's Broadway home, in a limited engagement. MTC is a nonprofit, so the production runs on a subscriber-funded model with no investor recoupment. No capitalization, weekly running cost or recoupment figures have been published.",
+        "newValue": "A Manhattan Theatre Club production at the Samuel J. Friedman Theatre, MTC's Broadway home, in a limited engagement. Produced in association with Chase This Productions and Susan Kelechi Watson (MTC). No capitalization, weekly running cost or recoupment figures have been published.",
+        "description": "school-girls-or-the-african-mean-girls-play: the note named no co-producers and said there were no investors."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-imaginary-invalid",
+        "field": "nonprofitOrg",
+        "oldValue": null,
+        "newValue": "Roundabout Theatre Company",
+        "description": "the-imaginary-invalid: the presenting nonprofit, missing on the record (its note already says Roundabout)."
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "paddington-the-musical",
+        "entry": {
+          "designation": "TBD",
+          "capitalization": 31000000,
+          "capitalizationSource": "Broadway Journal (Philip Boroff, Aug 12, 2026): \"Paddington ($31 million)\". https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+          "notes": "Capitalized at $31 million (Broadway Journal, Aug 2026); upcoming, no weekly running cost reported.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+              "date": "2026-08-12"
+            }
+          ]
+        },
+        "description": "paddington-the-musical: no commercial record yet; Broadway Journal reports its capitalization."
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "purple-rain",
+        "entry": {
+          "designation": "TBD",
+          "capitalization": 29500000,
+          "capitalizationSource": "Broadway Journal (Philip Boroff, Aug 12, 2026): \"Purple Rain ($29.5 million)\"; the figure includes its out-of-town tryout. https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+          "notes": "Capitalized at $29.5 million, including its out-of-town tryout (Broadway Journal, Aug 2026); upcoming, no weekly running cost reported.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+              "date": "2026-08-12"
+            }
+          ]
+        },
+        "description": "purple-rain: no commercial record yet; Broadway Journal reports its capitalization."
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "galileo",
+        "entry": {
+          "designation": "TBD",
+          "capitalization": 23000000,
+          "capitalizationSource": "Broadway Journal (Philip Boroff, Aug 12, 2026): \"Galileo ($23 million)\". https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+          "notes": "Capitalized at $23 million (Broadway Journal, Aug 2026); upcoming, no weekly running cost reported.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+              "date": "2026-08-12"
+            }
+          ]
+        },
+        "description": "galileo: no commercial record yet; Broadway Journal reports its capitalization."
       }
     ]
   }

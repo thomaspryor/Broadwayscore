@@ -94,6 +94,11 @@ const FEEDBACK_EDITABLE_FIELDS = {
     // A cited cost supersedes the free-text estimate beside it (same linked
     // group in merge-commercial-data.js, BRO-5515).
     'weeklyRunningCostNote',
+    // A nonprofit run with commercial co-producers is an 'enhancement' and
+    // counts on /biz like a commercial one (hasNoInvestorsToRepay); research
+    // that finds the credit must be able to record it (BRO-5520). Values and
+    // the Tour Stop pairing are checked by commercial-record-checks.js.
+    'productionType',
   ],
   'audience-buzz.json': ['title'],
   // Only auto-fix-feedback-bug.js's append-winner path handles this file —

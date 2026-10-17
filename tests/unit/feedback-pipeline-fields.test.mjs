@@ -193,6 +193,16 @@ describe('feedback-pipeline-fields', () => {
   });
 });
 
+test('productionType is editable only on the human-approved path, and the record checks refuse a bad value (BRO-5520)', () => {
+  const { FEEDBACK_EDITABLE_FIELDS: human, AUTO_FIX_EDITABLE_FIELDS: auto } = require('../../scripts/lib/feedback-pipeline-fields');
+  const { commercialRecordErrors } = require('../../scripts/lib/commercial-record-checks');
+  assert.ok(human['commercial.json'].includes('productionType'));
+  assert.ok(!auto['commercial.json'].includes('productionType'));
+  const productionTypeErrors = (productionType) => commercialRecordErrors('x', { designation: 'Nonprofit', productionType }).filter((m) => /productionType/.test(m));
+  assert.deepEqual(productionTypeErrors('enhancement'), []);
+  assert.equal(productionTypeErrors('co-pro').length, 1);
+});
+
 test('a reported "% returned" figure is editable only on the human-approved path (BRO-5073)', () => {
   const { FEEDBACK_EDITABLE_FIELDS: human, AUTO_FIX_EDITABLE_FIELDS: auto } = require('../../scripts/lib/feedback-pipeline-fields');
   for (const f of ['estimatedRecoupmentPct', 'estimatedRecoupmentSource', 'estimatedRecoupmentDate']) {
