@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-17T16:57:28.813Z",
+  "generatedAt": "2026-10-17T17:16:54.597Z",
   "date": "2026-10-17",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 185823,
+  "entryCount": 186422,
   "shows": [
     {
       "showId": "a-ghost-in-your-ear-off-broadway-2026",
@@ -448,7 +448,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 808080,
         "scored-to-rebuilt": 598370,
         "rebuilt-to-deployed": 89934633
       },
@@ -2372,13 +2372,13 @@
     },
     {
       "showId": "fences-off-west-end-2026",
-      "reviewCount": 14,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 4364101,
+        "scored-to-rebuilt": 261252,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -2452,8 +2452,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 2527027,
-        "scored-to-rebuilt": 1502834,
+        "collected-to-scored": 3412940,
+        "scored-to-rebuilt": 444629,
         "rebuilt-to-deployed": 101929160
       },
       "reviews_over_15min": 0,
@@ -7635,7 +7635,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 1011684,
         "scored-to-rebuilt": 179831,
         "rebuilt-to-deployed": 2767719
       },
@@ -8505,9 +8505,54 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 1536762,
+        "collected-to-scored": 2585586,
+        "scored-to-rebuilt": 1532062,
         "rebuilt-to-deployed": 4107428
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "angels-bone-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "all-male-as-you-like-it-regional-2026",
+      "reviewCount": 19,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 4282309,
+        "scored-to-rebuilt": 251103,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "anansi-the-spider-west-end-2026",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
