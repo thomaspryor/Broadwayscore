@@ -274,50 +274,6 @@
       "confidence": "medium",
       "researchedAt": "2026-10-10T21:14:57.571Z"
     },
-    "harry-potter-2021": {
-      "title": "Harry Potter and the Cursed Child",
-      "slug": "harry-potter",
-      "openingDate": "2018-04-22",
-      "status": "open",
-      "capitalization": 68500000,
-      "capitalizationSource": "NYT headline 'At $68 Million, the Most Expensive Broadway Nonmusical Play Ever' and Seattle Times/Facebook post referencing '$68.5M spent bringing Harry Potter play to Broadway' and '$35.5 million to capitalize the show'",
-      "weeklyRunningCost": null,
-      "costMethodology": "trade-reported",
-      "recouped": true,
-      "recoupedDate": null,
-      "recoupedSource": "Broadway News article titled 'Harry Potter and the Cursed Child recoups investment' at https://www.broadwaynews.com/harry-potter-and-the-cursed-child-recoups-investment/",
-      "designation": "Windfall",
-      "notes": "Harry Potter and the Cursed Child was capitalized at approximately $68.5 million, making it the most expensive Broadway non-musical play ever produced. The show has confirmed recoupment per Broadway News. It has been running since April 2018 as an open-ended commercial engagement. While long-running, it does not yet meet the Miracle threshold of a decade-defining, 10+ year phenomenon with extraordinary profit multiples on par with Hamilton or The Lion King.",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.nytimes.com/2018/04/14/theater/harry-potter-broadway.html",
-          "date": "2018-04-14"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwaynews.com/harry-potter-and-the-cursed-child-recoups-investment/",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/harry-potters-cursed-returns",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/harry-potter-the-cursed-box-office-yardstick",
-          "date": null
-        },
-        {
-          "type": "reddit",
-          "url": "https://www.reddit.com/r/Broadway/comments/13p5d0p/current_broadway_shows_that_have_recouped_their/",
-          "date": null
-        }
-      ],
-      "confidence": "medium",
-      "researchedAt": "2026-10-10T21:25:04.738Z"
-    },
     "aladdin-2014": {
       "title": "Aladdin",
       "slug": "aladdin",
@@ -1969,40 +1925,6 @@
       "confidence": "low",
       "researchedAt": "2026-10-10T21:38:07.092Z"
     },
-    "oh-mary-2024": {
-      "title": "Oh, Mary!",
-      "slug": "oh-mary",
-      "openingDate": "2024-07-11",
-      "status": "open",
-      "capitalization": 4500000,
-      "capitalizationSource": "Variety article explicitly states '$4.5 Million Broadway Investment' recouped",
-      "weeklyRunningCost": null,
-      "costMethodology": "trade-reported",
-      "recouped": true,
-      "recoupedDate": "2024-11",
-      "recoupedSource": "Playbill article dated 2024-11-25 confirms recoupment; Variety article headline confirms '$4.5 Million Broadway Investment' recouped",
-      "designation": "Windfall",
-      "notes": "Oh, Mary! recouped its $4.5 million capitalization by November 2024, roughly four months after opening on July 11, 2024. It is an open-ended commercial run scheduled through July 2027, and has broken all-time box office records at the Lyceum Theatre. The run is long but not yet in the decade-long phenomenon category required for Miracle designation.",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://variety.com/2024/legit/news/cole-escola-oh-mary-recoups-broadway-investment-1236222553/",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://playbill.com/article/oh-mary-is-broadway-seasons-1st-show-to-recoup",
-          "date": "2024-11-25"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.facebook.com/BroadwayWorld/posts/the-broadway-production-of-oh-mary-has-broken-two-all-time-box-office-records-at/1541997100876903/",
-          "date": null
-        }
-      ],
-      "confidence": "high",
-      "researchedAt": "2026-10-10T21:15:55.492Z"
-    },
     "the-outsiders-2024": {
       "title": "The Outsiders",
       "slug": "the-outsiders",
@@ -2120,9 +2042,24 @@
           "no fetched page states a hard capitalization or outcome"
         ]
       }
+    },
+    "hells-kitchen": {
+      "recouped": true,
+      "_recoupedClaim": true,
+      "recoupedDate": null,
+      "recoupedSource": "https://playbill.com/article/hells-kitchen-profit-interest-sold-to-ovation-rights",
+      "confidence": "high",
+      "evidence": "The unique setup immediately returns the initial investment for the musical to its investors.",
+      "sourceHost": "playbill.com",
+      "detectedBy": "recoupment-announcement-scraper",
+      "detectedAt": "2026-10-17T00:22:04.516Z",
+      "researchedAt": "2026-10-17T00:22:04.516Z",
+      "promoteRecommended": true,
+      "verifyAttempts": 1,
+      "lastVerifyAttemptAt": "2026-10-17T00:22:19.052Z"
     }
   },
-  "lastUpdated": "2026-10-15T06:51:26.840Z",
+  "lastUpdated": "2026-10-17T00:22:19.052Z",
   "hardTruthFindings": {
     "collectedAt": "2026-10-11",
     "card": "BRO-5017",
