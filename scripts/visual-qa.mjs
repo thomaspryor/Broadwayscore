@@ -27,6 +27,7 @@ import { createHash } from 'node:crypto';
 import { chromium } from 'playwright';
 import { computeContentHash, generateRunId, VERDICT_SCHEMA_VERSION } from './lib/verdict-hash.mjs';
 import { parseDemoFeatures, detectFlagGatedChangedFiles } from './lib/visual-qa-flag-awareness.mjs';
+import { rolePromptHeader, parseVerdictJson } from './lib/visual-qa-prompt.mjs';
 
 // Load .env into process.env without external dotenv dependency.
 // Only sets keys not already in env (so explicit env overrides .env).
@@ -386,64 +387,10 @@ async function captureScreenshots({ url, paths, branch, outDir, elements }) {
 }
 
 // ── LLM review ──────────────────────────────────────────────────────────────
-// Checklist baked into the prompt (was references/checklist.md in the
-// earlier draft — moved inline so the runner is the single source of truth).
-const REVIEW_CHECKLIST = `You are comparing an IMPLEMENTATION screenshot to a REFERENCE design image.
-
-CRITICAL ANTI-HALLUCINATION RULES:
-- If the two images appear IDENTICAL or near-identical, return {"verdict": "PASS", "issues": []}.
-- If you cannot identify a SPECIFIC, NAMEABLE difference with a quoted text snippet or a measurable
-  visual property (color hex/pill width/etc.), DO NOT INVENT ONE. Return PASS.
-- Vision models commonly hallucinate small numeric/text differences in show titles, scores, dates —
-  if you find yourself listing "score X in ref vs Y in impl" for many items, you are HALLUCINATING.
-  Stop and return PASS unless you can quote the exact pixel coordinates where the difference appears.
-- The reference image and the implementation may differ in dynamic content (today's date, scores
-  that change with new data). DO NOT flag dynamic content differences. Flag only LAYOUT, COPY,
-  STYLING, COLOR, and TYPOGRAPHY issues.
-- If the reference shows a single UI component (a card, a pill, a section) and the implementation
-  shows a full page, look ONLY at the implementation region that corresponds to the reference.
-
-Return ONLY a JSON object: {"verdict": "PASS" | "FAIL", "issues": ["specific issue 1", ...]}.
-No markdown wrapper, no commentary, no leading text.
-
-HARD FAILURES (auto FAIL — must be specific & quotable):
-1. Copy mismatch — STATIC text content differs (label, button text, headline).
-   Example: design says "HISTORICAL ACCURACY", implementation says "ACCURACY" → FAIL.
-   NOT a failure: show titles, scores, dates (those are dynamic data).
-2. Typography case mismatch — UPPERCASE in design rendered as lowercase (or vice versa),
-   tracked letter-spacing dropped, font weight obviously changed.
-3. Missing element — design shows a UI element implementation does not render at all.
-4. Layout overflow — content extends past viewport/container; text VISIBLY clipped/cut-off (not
-   just truncated with ellipsis); horizontal scroll where there shouldn't be one.
-5. Tap-target violation on mobile widths (≤414) — interactive element height < 44px.
-
-SOFT SIGNALS (note but only FAIL if severe):
-6. Color/glow intensity dramatically different (e.g., gold pill vs no gold pill).
-7. Proportion >25% off.
-8. Border-radius mismatch only if visually jarring.
-
-If you cannot see one of the images, return {"verdict": "FAIL", "issues": ["could not load image: <which one>"]}.`;
-
+// The prompts (checklist, BEFORE-role handling) and the verdict parser live in
+// scripts/lib/visual-qa-prompt.mjs (BRO-5555).
 function imageToBase64(path) {
   return readFileSync(path).toString('base64');
-}
-
-// Per-ref roles change the PASS criterion. Default ('goal') keeps current
-// behaviour: implementation MUST match the reference. The 'before' role
-// flips it: the reference is the state the user wants CHANGED, so the
-// implementation MUST differ from the reference. Mixed sets are supported —
-// each reference's role is announced inline before its image.
-function rolePromptHeader(refRoles) {
-  if (!refRoles || refRoles.length === 0) return REVIEW_CHECKLIST;
-  const hasBefore = refRoles.includes('before');
-  if (!hasBefore) return REVIEW_CHECKLIST;
-  return REVIEW_CHECKLIST + `\n\nPER-REFERENCE ROLES (override the default PASS criterion):
-- A reference labelled GOAL is the state to match — pass if impl resembles it (default).
-- A reference labelled BEFORE is the state to move AWAY from — pass if impl differs
-  from it in the intended direction. A diff against a BEFORE reference is the user's
-  requested change, not a regression. Do NOT FAIL the verdict because the impl differs
-  from a BEFORE reference; only FAIL if the impl looks identical to the BEFORE reference
-  (the change didn't land) or if there are NEW regressions unrelated to the BEFORE diff.`;
 }
 
 async function reviewWithOpenAI({ refPaths, refRoles, implPaths, apiKey, model = 'gpt-5.4-mini' }) {
@@ -482,7 +429,7 @@ async function reviewWithOpenAI({ refPaths, refRoles, implPaths, apiKey, model =
   const body = await res.json();
   const content = body?.choices?.[0]?.message?.content;
   if (!content) throw new Error('OpenAI returned no content');
-  return parseVerdictJson(content);
+  return parseVerdictJson(content, { beforeOnly: roles.length > 0 && roles.every(r => r === 'before') });
 }
 
 async function reviewWithGemini({ refPaths, refRoles, implPaths, apiKey, model = 'gemini-2.5-pro' }) {
@@ -518,21 +465,7 @@ async function reviewWithGemini({ refPaths, refRoles, implPaths, apiKey, model =
   const body = await res.json();
   const content = body?.candidates?.[0]?.content?.parts?.[0]?.text;
   if (!content) throw new Error('Gemini returned no content (' + JSON.stringify(body).slice(0, 200) + ')');
-  return parseVerdictJson(content);
-}
-
-function parseVerdictJson(content) {
-  // LLMs sometimes wrap JSON in ```json ... ``` despite instructions; strip.
-  let s = content.trim();
-  const fence = s.match(/^```(?:json)?\s*([\s\S]*?)\s*```$/);
-  if (fence) s = fence[1];
-  let parsed;
-  try { parsed = JSON.parse(s); }
-  catch (err) { throw new Error(`Invalid JSON in verdict: ${err.message} — content was: ${s.slice(0, 200)}`); }
-  if (!parsed || typeof parsed !== 'object') throw new Error('Verdict is not an object');
-  if (parsed.verdict !== 'PASS' && parsed.verdict !== 'FAIL') throw new Error(`Verdict must be "PASS" or "FAIL", got "${parsed.verdict}"`);
-  if (!Array.isArray(parsed.issues)) throw new Error('Issues must be an array');
-  return { verdict: parsed.verdict, issues: parsed.issues.map(String) };
+  return parseVerdictJson(content, { beforeOnly: roles.length > 0 && roles.every(r => r === 'before') });
 }
 
 // Wraps a single LLM call with one retry + fail-closed error capture.
