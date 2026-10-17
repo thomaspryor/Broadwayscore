@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-10-17T10:10:07.353Z",
+  "generatedAt": "2026-10-17T11:31:36.715Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 242,
+  "checked": 241,
   "clean": 241,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "into-the-woods-noel-coward-west-end-2026",
-      "title": "Into the Woods",
-      "openingDate": "2026-10-07",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 88.47 vs local 88.25 (Δ0.22)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 32,
-      "deployedCount": 32,
-      "firstDefectAt": "2026-10-17T10:10:00.401Z"
-    }
-  ],
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

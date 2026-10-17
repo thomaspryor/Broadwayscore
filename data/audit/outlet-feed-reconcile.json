@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-17T10:10:11.904Z",
+  "generatedAt": "2026-10-17T11:31:37.022Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -131,10 +131,6 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
-      "outletId": "plays-international",
-      "error": "AggregateError"
-    },
-    {
       "outletId": "musical-theatre-review",
       "error": "HTTP 401 for https://musicaltheatrereview.com/feed/"
     },
@@ -149,10 +145,14 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 702,
-  "matchedGaps": 4,
+  "itemsScanned": 690,
+  "matchedGaps": 5,
   "possibleGaps": 6,
   "gaps": [
     {
@@ -171,6 +171,15 @@
       "outletId": "stageandcinema",
       "url": "https://stageandcinema.com/2026/10/16/slug-the-ask-theater-555-review/",
       "headline": "Off-Broadway Review: THE ASK (Theater 555 / New York)",
+      "publishDate": "2026-10-16"
+    },
+    {
+      "showId": "the-cherry-orchard-west-end-2026",
+      "title": "The Cherry Orchard",
+      "level": "matched",
+      "outletId": "plays-international",
+      "url": "https://playsinternational.org.uk/the-cherry-orchard-harold-pinter-theatre/",
+      "headline": "“The Cherry Orchard” at Harold Pinter Theatre",
       "publishDate": "2026-10-16"
     },
     {
