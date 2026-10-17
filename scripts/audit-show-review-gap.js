@@ -621,7 +621,7 @@ function otherProductionUrlSignal(u, show, serpTitle, { census = false } = {}) {
   );
   if (sig && sig.signal === 'venue-text' && [...TRANSFERRING_COMPANIES].some((c) => sig.detail.includes(`"${c}"`))) return null;
   // BRO-5512: a same-year earlier run (declared priorRuns) the year-only checks cannot see.
-  return sig || priorRunUrlSignal(u, show, { venue: census });
+  return sig || priorRunUrlSignal(u, show, { useVenue: census });
 }
 
 // BRO-5132: a New York show that transferred from the Edinburgh Fringe drags its
