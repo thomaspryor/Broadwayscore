@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-17T17:16:54.597Z",
+  "generatedAt": "2026-10-17T19:30:36.794Z",
   "date": "2026-10-17",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 186422,
+  "entryCount": 191664,
   "shows": [
     {
       "showId": "a-ghost-in-your-ear-off-broadway-2026",
@@ -147,13 +147,13 @@
     },
     {
       "showId": "paddington-the-musical-west-end-2025",
-      "reviewCount": 30,
+      "reviewCount": 32,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 1930864,
-        "scored-to-rebuilt": 254808,
+        "collected-to-scored": 19124559,
+        "scored-to-rebuilt": 722255,
         "rebuilt-to-deployed": 10167117
       },
       "reviews_over_15min": 0,
@@ -372,13 +372,13 @@
     },
     {
       "showId": "hadestown-2019",
-      "reviewCount": 49,
+      "reviewCount": 51,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 3156730,
-        "scored-to-rebuilt": 251173,
+        "collected-to-scored": 5910394,
+        "scored-to-rebuilt": 251174,
         "rebuilt-to-deployed": 10167119
       },
       "reviews_over_15min": 0,
@@ -2447,7 +2447,7 @@
     },
     {
       "showId": "blood-of-my-blood-west-end-2026",
-      "reviewCount": 19,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4102,13 +4102,13 @@
     },
     {
       "showId": "cats-the-jellicle-ball-2026",
-      "reviewCount": 34,
+      "reviewCount": 36,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 1628382,
-        "scored-to-rebuilt": 540689,
+        "collected-to-scored": 6947323,
+        "scored-to-rebuilt": 722211,
         "rebuilt-to-deployed": 177760836
       },
       "reviews_over_15min": 0,
@@ -4237,13 +4237,13 @@
     },
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
-      "reviewCount": 29,
+      "reviewCount": 33,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 3054353,
+        "scored-to-rebuilt": 722211,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -6485,7 +6485,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 775436,
-        "scored-to-rebuilt": 440603,
+        "scored-to-rebuilt": 438432,
         "rebuilt-to-deployed": 91860090
       },
       "reviews_over_15min": 5,
@@ -7630,13 +7630,13 @@
     },
     {
       "showId": "dog-mom-off-west-end-2026",
-      "reviewCount": 3,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 1011684,
-        "scored-to-rebuilt": 179831,
+        "scored-to-rebuilt": 177726,
         "rebuilt-to-deployed": 2767719
       },
       "reviews_over_15min": 0,
@@ -7660,13 +7660,13 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
-      "reviewCount": 46,
+      "reviewCount": 47,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 2382008,
+        "scored-to-rebuilt": 722200,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -8130,8 +8130,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 896823,
+        "collected-to-scored": 14797648,
+        "scored-to-rebuilt": 894334,
         "rebuilt-to-deployed": 27592920
       },
       "reviews_over_15min": 0,
@@ -8140,13 +8140,13 @@
     },
     {
       "showId": "titanique-west-end-2024",
-      "reviewCount": 23,
+      "reviewCount": 26,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 887503,
+        "collected-to-scored": 18684768,
+        "scored-to-rebuilt": 722250,
         "rebuilt-to-deployed": 27592911
       },
       "reviews_over_15min": 0,
@@ -8275,7 +8275,7 @@
     },
     {
       "showId": "the-producers-west-end-2025",
-      "reviewCount": 19,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8290,13 +8290,13 @@
     },
     {
       "showId": "hamilton-2015",
-      "reviewCount": 43,
+      "reviewCount": 44,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 5988683,
-        "scored-to-rebuilt": 916772,
+        "collected-to-scored": 9739179,
+        "scored-to-rebuilt": 916770,
         "rebuilt-to-deployed": 9501514
       },
       "reviews_over_15min": 0,
@@ -8305,13 +8305,13 @@
     },
     {
       "showId": "the-great-gatsby-2024",
-      "reviewCount": 32,
+      "reviewCount": 33,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 18211231,
+        "scored-to-rebuilt": 722230,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -8410,13 +8410,13 @@
     },
     {
       "showId": "giant-2026",
-      "reviewCount": 27,
+      "reviewCount": 28,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 916768,
+        "collected-to-scored": 2974788,
+        "scored-to-rebuilt": 916767,
         "rebuilt-to-deployed": 9501515
       },
       "reviews_over_15min": 0,
@@ -8520,8 +8520,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 10753714,
+        "scored-to-rebuilt": 722214,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -8530,7 +8530,7 @@
     },
     {
       "showId": "all-male-as-you-like-it-regional-2026",
-      "reviewCount": 19,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8552,6 +8552,51 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "broken-glass-west-end-2026",
+      "reviewCount": 19,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 2826749,
+        "scored-to-rebuilt": 722200,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "marie-and-rosetta-west-end-2026",
+      "reviewCount": 9,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 2775623,
+        "scored-to-rebuilt": 722202,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "anne-washburns-anon-off-broadway-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 514646,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
