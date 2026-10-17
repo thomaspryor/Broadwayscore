@@ -1,43 +1,21 @@
 {
-  "updatedAt": "2026-10-17T16:43:15.627Z",
-  "processed": 375,
-  "failed": 221,
-  "successRate": "62.9%",
+  "updatedAt": "2026-10-17T16:56:29.420Z",
+  "processed": 391,
+  "failed": 245,
+  "successRate": "61.5%",
   "tierBreakdown": {
-    "playwright": 197,
+    "playwright": 200,
     "amp": 9,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 26,
-    "scrapingbee": 16,
+    "scrapingdog": 27,
+    "scrapingbee": 17,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 123
+    "archive": 134
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-10-17T14:38:38.786Z",
-      "event": "bb-session",
-      "session": "cc3d64e4",
-      "url": "https://www.nytimes.com/2025/03/19/theater/buena-vista-social-club-review-broadw"
-    },
-    {
-      "t": "2026-10-17T14:38:39.715Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-17T14:38:57.090Z",
-      "event": "bb-session",
-      "session": "c0cda446",
-      "url": "https://www.nytimes.com/2025/03/19/theater/buena-vista-social-club-review-broadw"
-    },
-    {
-      "t": "2026-10-17T14:38:57.933Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-10-17T15:02:11.949Z",
       "event": "bb-session",
@@ -123,6 +101,28 @@
     },
     {
       "t": "2026-10-17T16:15:50.420Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-17T16:48:28.376Z",
+      "event": "bb-session",
+      "session": "c59efa5f",
+      "url": "https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pi"
+    },
+    {
+      "t": "2026-10-17T16:48:29.108Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-17T16:48:47.007Z",
+      "event": "bb-session",
+      "session": "fe1d70d3",
+      "url": "https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pi"
+    },
+    {
+      "t": "2026-10-17T16:48:47.686Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
