@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-17T01:59:43.892Z",
+  "generated": "2026-10-17T03:55:29.291Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 32,
+  "count": 31,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -106,13 +106,6 @@
       "loserFile": "variety--frank-rizzo.json",
       "targetFile": "variety--maya-phillips.json",
       "reason": "orphaned-duplicate-heal: variety--maya-phillips.json was flagged invalid after variety--frank-rizzo.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "operation-mincemeat-tour-2026",
-      "loserFile": "timeout--unknown.json",
-      "targetFile": "timeout--adam-feldman.json",
-      "reason": "orphaned-duplicate-heal: timeout--adam-feldman.json was flagged invalid after timeout--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {

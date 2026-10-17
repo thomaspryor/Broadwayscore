@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-10-17T02:07:27.574Z",
+  "timestamp": "2026-10-17T04:01:39.621Z",
   "stats": {
     "totalReviews": 57126,
-    "alreadyFlagged": 21203,
+    "alreadyFlagged": 21204,
     "dateGuardCatches": 194,
-    "directorMismatch": 1936,
+    "directorMismatch": 1934,
     "tvFilmSignals": 1598,
     "londonSignals": 2398,
     "offBroadwaySignals": 515,
@@ -5056,24 +5056,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"amazon prime\""
-        }
-      ]
-    },
-    {
-      "showId": "book-of-mormon-tour-2022",
-      "file": "theatermania--linda-buchwald.json",
-      "publishDate": "2026-03-17",
-      "url": "https://www.theatermania.com/news/josh-gad-andrew-rannells-nikki-m-james-and-rory-omalley-will-make-surprise-appearances-at-the-book-of-mormon-for-its-15th-anniversary_1828245/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
         }
       ]
     },
