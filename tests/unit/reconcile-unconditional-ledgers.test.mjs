@@ -1,4 +1,4 @@
-// BRO-2463: audit/feedback-request-ledger.json and audit/express-retry-queue.json
+// BRO-2463/BRO-5310: audit/feedback-request-ledger.json and the JSONL audit logs
 // are optInReconcile:false, so (like alert-digest-queue.json, BRO-257) a clean
 // `git rebase -X theirs` append/append hunk drops the remote writer's entry
 // without ever reaching push-with-retry.sh's conflict case arm. push-with-retry
@@ -21,6 +21,8 @@ const EXPRESS = { file: 'data/audit/express-retry-queue.json' };
 const CASES = [
   { file: 'data/audit/express-retry-queue.json', e2eOnly: true, mk: (id) => ({ showId: id, market: 'broadway', queuedAt: `2026-10-13T00:00:0${id.length}Z`, dueAt: '2026-10-13T01:00:00Z', attempted: false }) },
   { file: 'data/audit/feedback-request-ledger.json', mk: (id) => ({ key: `req-${id}`, status: 'open' }) },
+  { file: 'data/audit/alert-router-attempts.jsonl', jsonl: true, prunes: true, mk: (id) => ({ ts: '2026-10-13T00:00:00Z', conditionKey: id, title: id, ok: true, error: null }) },
+  { file: 'data/audit/breaker-transitions.jsonl', jsonl: true, mk: (id) => ({ ts: '2026-10-13T00:00:00Z', conditionKey: id, from: 'ok', to: 'tripped', prevTs: null }) },
 ];
 
 const git = (cwd, ...a) => execFileSync('git', a, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
@@ -32,32 +34,41 @@ for (const c of CASES) {
     assert.ok(line.includes(c.file), `${c.file} missing from the targeted reconcile call`);
   });
 
-  test(`merger restores the remote append a clean -X theirs rebase drops (${c.file})`, () => {
-    const entry = CORE_DATA_MERGE_REGISTRY.find((e) => c.file.endsWith(e.file));
-    assert.ok(entry && entry.merge, 'registered merger');
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro2463-'));
-    try {
-      git(dir, 'init', '-q', '-b', 'main');
-      git(dir, 'config', 'user.email', 't@t'); git(dir, 'config', 'user.name', 't');
-      const f = path.join(dir, c.file);
-      fs.mkdirSync(path.dirname(f), { recursive: true });
-      const write = (arr) => fs.writeFileSync(f, JSON.stringify({ entries: arr }, null, 2) + '\n');
-      write([]); git(dir, 'add', '-A'); git(dir, 'commit', '-qm', 'base');
-      git(dir, 'checkout', '-qb', 'local');
-      write([c.mk('bb')]); git(dir, 'commit', '-qam', 'local append');
-      git(dir, 'checkout', '-q', 'main');
-      write([c.mk('a')]); git(dir, 'commit', '-qam', 'remote append');
-      git(dir, 'checkout', '-q', 'local');
-      git(dir, 'rebase', '-X', 'theirs', 'main');
-      const after = JSON.parse(fs.readFileSync(f, 'utf8')).entries;
-      assert.equal(after.length, 1, 'precondition: -X theirs silently dropped the remote entry');
-      execFileSync('node', [RECONCILE, 'main', c.file], { cwd: dir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
-      const merged = JSON.parse(fs.readFileSync(f, 'utf8')).entries;
-      assert.equal(merged.length, 2, 'both writers survive after reconcile');
-    } finally {
-      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
-    }
-  });
+  for (const prune of c.prunes ? [false, true] : [false]) {
+    test(`merger restores the remote append a clean -X theirs rebase drops (${c.file}${prune ? ', with retention prune' : ''})`, () => {
+      const entry = CORE_DATA_MERGE_REGISTRY.find((e) => c.file.endsWith(e.file));
+      assert.ok(entry && entry.merge, 'registered merger');
+      const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro2463-'));
+      try {
+        git(dir, 'init', '-q', '-b', 'main');
+        git(dir, 'config', 'user.email', 't@t'); git(dir, 'config', 'user.name', 't');
+        const f = path.join(dir, c.file);
+        fs.mkdirSync(path.dirname(f), { recursive: true });
+        const write = (arr) => fs.writeFileSync(f, c.jsonl
+          ? arr.map((e) => JSON.stringify(e)).join('\n') + (arr.length ? '\n' : '')
+          : JSON.stringify({ entries: arr }, null, 2) + '\n');
+        const read = () => c.jsonl
+          ? fs.readFileSync(f, 'utf8').split('\n').filter(Boolean).map((line) => JSON.parse(line))
+          : JSON.parse(fs.readFileSync(f, 'utf8')).entries;
+        // Router attempts prune after 30 days. A stale remote keeps the old
+        // row, so reconciliation must distinguish our delete from its append.
+        const baseEntries = prune ? [{ ...c.mk('pruned'), ts: '2026-09-01T00:00:00Z' }] : [];
+        write(baseEntries); git(dir, 'add', '-A'); git(dir, 'commit', '-qm', 'base');
+        const base = git(dir, 'rev-parse', 'HEAD').trim();
+        git(dir, 'checkout', '-qb', 'local');
+        write([c.mk('bb')]); git(dir, 'commit', '-qam', 'local append');
+        git(dir, 'checkout', '-q', 'main');
+        write([...baseEntries, c.mk('a')]); git(dir, 'commit', '-qam', 'remote append');
+        git(dir, 'checkout', '-q', 'local');
+        git(dir, 'rebase', '-X', 'theirs', 'main');
+        assert.deepEqual(read(), [c.mk('bb')], 'precondition: -X theirs silently dropped the remote entry');
+        execFileSync('node', [RECONCILE, 'main', c.file], { cwd: dir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], env: { ...process.env, PUSH_RECONCILE_BASE: base } });
+        assert.deepEqual(read(), [c.mk('bb'), c.mk('a')], 'both writers survive and pruned rows stay deleted');
+      } finally {
+        fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+      }
+    });
+  }
 }
 
 test('express-retry-queue.json stays OUT of the unconditional call until it has a three-way merger (pruned entries would be resurrected)', () => {

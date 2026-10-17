@@ -1975,8 +1975,11 @@ reconcile_merged_json() {
   # their cards uncheckable. Both run additions-only (registry localReconcile):
   # only keys the base proves the remote added come back, shared keys keep the
   # rebase's own blend, and with no readable base nothing is added.
+  # BRO-5310: include the router-attempt and breaker-transition JSONL logs.
+  # Router attempts use SCRIPT_ENTRY_BASE to preserve 30-day retention prunes;
+  # breaker transitions only append and use their registered union merger.
   local ledger_out
-  ledger_out=$(PUSH_RECONCILE_BASE="$SCRIPT_ENTRY_BASE" node "$SCRIPT_DIR/reconcile-merged-json.js" "origin/$PULL_BRANCH" data/audit/alert-digest-queue.json data/audit/feedback-request-ledger.json data/audit/alert-ledger.json data/audit/guard-escalation-state.json) || ledger_out=""
+  ledger_out=$(PUSH_RECONCILE_BASE="$SCRIPT_ENTRY_BASE" node "$SCRIPT_DIR/reconcile-merged-json.js" "origin/$PULL_BRANCH" data/audit/alert-digest-queue.json data/audit/feedback-request-ledger.json data/audit/alert-ledger.json data/audit/guard-escalation-state.json data/audit/alert-router-attempts.jsonl data/audit/breaker-transitions.jsonl) || ledger_out=""
   if [ -n "$ledger_out" ]; then
     out="${out}${out:+$'\n'}${ledger_out}"
   fi
