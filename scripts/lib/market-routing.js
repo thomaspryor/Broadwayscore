@@ -441,13 +441,15 @@ function isStrictlyUkUrl(url) {
 
 function tourTargetDecision(showId, sibData, { url, publishDate, dateSource }) {
   if (!sibData || sibData.category !== 'tour') return null;
-  if (url && isStrictlyUkUrl(url)) return { action: 'reject', reason: 'tour: UK outlet reviews a UK production' };
+  // The shared writer forwards this reason to ingest's "Skipped:" output.
+  // Use its classified refusal code so a correct rejection is not a gap (BRO-5489).
+  if (url && isStrictlyUkUrl(url)) return { action: 'reject', reason: 'tour-review: UK outlet reviews a UK production' };
   const tours = [{ id: showId, openingDate: sibData.openingDate, closingDate: sibData.closingDate },
     ...(sibData.siblings || []).filter(s => s.category === 'tour')];
   if (!publishDate || /url/i.test(String(dateSource || ''))) return null;
   const pick = pickTourForDate(tours, { publishDate });
   if (pick.tourId && pick.tourId !== showId) return { action: 'reroute', targetShowId: pick.tourId, reason: `tour: date fits ${pick.tourId}` };
-  if (pick.reason === 'outside-tour-windows') return { action: 'reject', reason: 'tour: review date is outside every tour of this title' };
+  if (pick.reason === 'outside-tour-windows') return { action: 'reject', reason: 'tour-review: review date is outside every tour of this title' };
   return null;
 }
 
