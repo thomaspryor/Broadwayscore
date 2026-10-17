@@ -56,6 +56,7 @@ async function main() {
       else throw e;
     }
   }
+  if (!/^BRO-\d+$/.test(String(id))) throw new Error(`unexpected card id: ${id}`);
   console.log(`fix card: ${id}${open ? ' (already open)' : ' (filed)'}`);
   if (process.env.GITHUB_OUTPUT) require('fs').appendFileSync(process.env.GITHUB_OUTPUT, `card=${id}\n`);
 }
