@@ -56,6 +56,12 @@ export default function LeaguePage(props: { params: Promise<{ code: string }> })
         return;
       }
       const [metaData, lbData] = await Promise.all([metaRes.json(), lbRes.json()]);
+      // The standings API answers 200 with { entries: [], error } when the
+      // database fails; that must not read as an empty league (BRO-5548).
+      if (lbData.error) {
+        setError('Could not load the league standings. Please try again.');
+        return;
+      }
       setMeta(metaData);
       setEntries(lbData.entries || []);
     } catch {
@@ -77,6 +83,11 @@ export default function LeaguePage(props: { params: Promise<{ code: string }> })
     <div className="min-h-screen bg-surface text-white flex items-center justify-center">
       <div className="text-center">
         <p className="text-gray-400 mb-4">{error}</p>
+        {error !== 'League not found.' && (
+          <button type="button" onClick={() => load()} className="block mx-auto mb-4 px-6 py-2.5 bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors">
+            Try again
+          </button>
+        )}
         <Link href="/fantasy" className="text-brand hover:underline">← Back to Fantasy League</Link>
       </div>
     </div>
