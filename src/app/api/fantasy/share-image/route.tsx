@@ -2,6 +2,7 @@ import { ImageResponse } from '@vercel/og';
 import { NextRequest } from 'next/server';
 import { interFontOption } from '@/lib/og-fonts';
 import seasonConfig from '@/config/fantasy-season.json';
+import FantasyMarquee from '@/components/fantasy/FantasyMarquee';
 import fantasyLeague from '../../../../../data/fantasy-league.json';
 
 export const runtime = 'edge';
@@ -38,10 +39,12 @@ export async function GET(request: NextRequest) {
     (
       <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '#0a0a0f', color: '#ffffff', padding: '80px', fontFamily: 'Inter', position: 'relative' }}>
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'radial-gradient(ellipse at top right, rgba(212,165,116,0.18), transparent 55%)' }} />
-        <div style={{ display: 'flex', fontSize: 30, fontWeight: 600, color: '#d4a574', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-          {`Broadway Fantasy League ${seasonConfig.season}`}
+        {/* The marquee is the name (BRO-5519); pure SVG, so satori draws it without a font. */}
+        <FantasyMarquee width={dense ? 340 : 420} height={dense ? 90 : 112} decorative />
+        <div style={{ display: 'flex', fontSize: 26, fontWeight: 600, color: '#d4a574', letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: 28 }}>
+          {`My ${seasonConfig.season.slice(0, 4)}-${seasonConfig.season.slice(-2)} season`}
         </div>
-        <div style={{ display: 'flex', fontSize: team.length > 24 ? 64 : 80, fontWeight: 800, marginTop: 24, lineHeight: 1.05 }}>
+        <div style={{ display: 'flex', fontSize: team.length > 24 ? 64 : 80, fontWeight: 800, marginTop: 12, lineHeight: 1.05 }}>
           {team || 'My team'}
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', marginTop: dense ? 40 : 56, gap: dense ? 14 : 22 }}>

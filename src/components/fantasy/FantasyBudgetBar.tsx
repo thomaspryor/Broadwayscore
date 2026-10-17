@@ -12,16 +12,14 @@ export default function FantasyBudgetBar({ spent, budget, picksCount, maxPicks }
   const remaining = budget - spent;
   const percentage = Math.min((spent / budget) * 100, 100);
   const isOverBudget = spent > budget;
-  const isWarning = percentage >= 90;
   const isCaution = percentage >= 70;
 
+  // Design-system status tokens: danger, warning, success.
   const barColor = isOverBudget
-    ? 'bg-red-500'
-    : isWarning
-    ? 'bg-red-400'
+    ? 'bg-score-skip'
     : isCaution
-    ? 'bg-yellow-400'
-    : 'bg-emerald-400';
+    ? 'bg-score-tepid'
+    : 'bg-status-open';
 
   return (
     <div className="rounded-xl bg-surface-raised/80 border border-white/10 p-4">
@@ -44,7 +42,7 @@ export default function FantasyBudgetBar({ spent, budget, picksCount, maxPicks }
         <span className={`text-lg font-bold ${isOverBudget ? 'text-red-400' : 'text-white'}`}>
           ${spent} / ${budget}
         </span>
-        <span className={`text-sm font-medium ${isOverBudget ? 'text-red-400' : remaining <= 10 ? 'text-yellow-400' : 'text-emerald-400'}`}>
+        <span className={`text-sm font-medium ${isOverBudget ? 'text-score-skip' : remaining <= 10 ? 'text-score-tepid' : 'text-status-open'}`}>
           {isOverBudget ? `$${spent - budget} over!` : `$${remaining} left`}
         </span>
       </div>

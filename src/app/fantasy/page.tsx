@@ -18,6 +18,7 @@ import {
   nyDate,
 } from '@/config/fantasy';
 import { SCORE_BUCKETS } from '@/config/score-buckets';
+import FantasyMarquee from '@/components/fantasy/FantasyMarquee';
 
 // Keyed by the points-table label (getCriticLabel), not the display label:
 // the 55-64 bucket displays as "Mixed" but scores as "Skippable".
@@ -124,22 +125,18 @@ export default function FantasyLandingPage() {
     <div className="min-h-screen bg-surface text-white">
       {/* Hero */}
       <section className="max-w-3xl mx-auto px-4 pt-12 sm:pt-20 pb-12 text-center">
-        {/* BFL Shield Logo — extra padding prevents crown clip on mobile */}
-        <div className="mb-5 flex justify-center pt-2">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/images/fantasy/bfl-logo.png"
-            alt="Broadway Fantasy League"
-            width={600}
-            height={387}
-            className="w-[160px] sm:w-[200px] h-auto drop-shadow-[0_0_20px_rgba(212,165,116,0.3)]"
+        {/* The marquee is the name (BRO-5519); the headline says what the game rewards. */}
+        <h1 className="mb-6">
+          <FantasyMarquee
+            animated
+            decorative
+            className="block mx-auto w-[300px] sm:w-[440px] h-auto drop-shadow-[0_0_24px_rgba(255,224,138,0.18)]"
           />
-        </div>
-        <p className="text-xs font-semibold uppercase tracking-widest text-brand mb-3">{seasonLabel} season</p>
-        <h1 className="text-4xl sm:text-5xl font-black mb-3 tracking-tight">
-          <span className="text-white">Broadway</span>{' '}
-          <span className="text-gradient">Fantasy League</span>
+          <span className="sr-only">Broadway Fantasy League</span>
         </h1>
+        <p className="text-xs font-semibold uppercase tracking-widest text-brand mb-3">{seasonLabel} season</p>
+        <p className="text-3xl sm:text-4xl font-black tracking-tight text-white text-balance mb-2">Call the hits before opening night.</p>
+        <p className="text-lg sm:text-xl font-semibold text-brand mb-4">Pick once. Root all season.</p>
         <p className="text-lg sm:text-xl text-gray-300 max-w-xl mx-auto mb-3">
           Draft up to {info.teamSize} shows on a ${info.budget} budget.
           Earn points from critics, audiences, box office, and the Tony Awards.
@@ -330,7 +327,7 @@ export default function FantasyLandingPage() {
           {/* CriticScore */}
           <div className="bg-surface-raised/50 rounded-xl p-5 border border-white/5">
             <h3 className="font-semibold mb-3 flex items-center gap-2">
-              <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-yellow-400/15 text-yellow-400 text-sm">★</span> CriticScore
+              <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-score-must-see-bg text-score-must-see text-sm">★</span> CriticScore
             </h3>
             <div className="space-y-1.5 text-sm">
               {Object.entries(CRITIC_SCORE_POINTS).map(([tier, pts]) => (
