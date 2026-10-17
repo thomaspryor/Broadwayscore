@@ -1,0 +1,13 @@
+[
+  "scripts/audit-closing-dates.js|data/audit/closing-date-discrepancies.json",
+  "scripts/audit-cross-production.js|data/audit/cross-production-audit.json",
+  "scripts/audit-opening-dates.js|data/audit/opening-date-discrepancies.json",
+  "scripts/audit-outlet-registry.js|data/audit/outlet-registry-gaps.json",
+  "scripts/audit-we-closing-dates.js|data/audit/we-closing-date-discrepancies.json",
+  "scripts/enrich-card-acceptance.js|data/audit/card-enrichment-log.jsonl",
+  "scripts/opening-night-checklist.js|data/audit/score-history.jsonl",
+  "scripts/outlet-listing-poller.js|data/audit/outlet-poller-rejected-urls.json",
+  "scripts/sweep-we-aggregators.js|data/audit/needs-human-review.json",
+  "scripts/sweep-we-aggregators.js|data/audit/url-guess-hits.json",
+  "scripts/validate-restaurant-names.js|data/audit/restaurant-validation.json"
+]

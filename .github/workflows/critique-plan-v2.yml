@@ -1,0 +1,83 @@
+name: Critique Plan with LLMs
+
+on:
+  workflow_dispatch:
+
+jobs:
+  critique:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Create critique script
+        run: |
+          cat > critique.js << 'SCRIPT'
+          const fs = require('fs');
+          const https = require('https');
+
+          const plan = fs.readFileSync('docs/plans/data-governance-v2.md', 'utf8');
+
+          const prompt = `You are a senior software architect reviewing a data governance plan. Be HIGHLY CRITICAL. Find problems.
+
+          CONTEXT: Site has data quality issues - 141 duplicate critics, 48 unknown outlets, 24 bad display names, 300 null dates.
+
+          Critique for: Gaps, Risks, Over-engineering, Timeline realism, Alternative approaches.
+
+          THE PLAN:
+          ${plan}`;
+
+          async function critiqueOpenAI() {
+            const apiKey = process.env.OPENAI_API_KEY;
+            if (!apiKey) { console.log('OpenAI: SKIPPED - no key'); return; }
+
+            const res = await fetch('https://api.openai.com/v1/chat/completions', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+              body: JSON.stringify({ model: 'gpt-4o', messages: [{ role: 'user', content: prompt }], max_tokens: 4000 })
+            });
+            const data = await res.json();
+            console.log('=== OPENAI GPT-4o CRITIQUE ===\n');
+            console.log(data.choices?.[0]?.message?.content || JSON.stringify(data.error));
+          }
+
+          async function critiqueGemini() {
+            const apiKey = process.env.GEMINI_API_KEY;
+            if (!apiKey) { console.log('Gemini: SKIPPED - no key'); return; }
+
+            const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + apiKey, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { maxOutputTokens: 4000 } })
+            });
+            const data = await res.json();
+            console.log('\n=== GOOGLE GEMINI CRITIQUE ===\n');
+            console.log(data.candidates?.[0]?.content?.parts?.[0]?.text || JSON.stringify(data.error || data));
+          }
+
+          (async () => {
+            await critiqueOpenAI();
+            await critiqueGemini();
+          })();
+          SCRIPT
+
+      - name: Run critique
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node critique.js
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Critique Plan V2 Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

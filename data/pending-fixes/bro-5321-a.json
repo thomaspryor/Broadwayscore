@@ -1,0 +1,206 @@
+{
+  "issueNumber": "bro-5321-a",
+  "planId": "74c490f8-30ea-421f-a05c-1d7bbc12cf1e",
+  "status": "applied",
+  "createdAt": "2026-10-14T02:23:41.780Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5321 step 1: identical review text filed under two critics. Removes 3 Variety double counts (Anything Goes 2011, Deuce 2007, Radio Golf 2007) and corrects the shown critic on Deuce and Radio Golf to David Rooney (Variety page bylines). Points the two already-flagged EW Matt Windman copies at the kept Greenblatt/Quinn rows.",
+    "steps": [
+      "EW: duplicateOf + reason on the flagged Windman copies",
+      "Variety deuce/radio-golf: critic fix on the row whose url and text match, flag the other copy",
+      "Variety Anything Goes: flag the Koehler-url copy"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-waverly-gallery-2018/ew--matt-windman.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "ew--leah-greenblatt.json",
+        "description": "BRO-5321: same article as ew--leah-greenblatt.json. The EW page JSON-LD author is Leah Greenblatt (https://ew.com/theater/2018/10/25/the-waverly-gallery-review/, read https://github.com/thomaspryor/Broadwayscore/actions/runs/38500346035); Matt Windman reviews for amNY. Stored text is identical."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-waverly-gallery-2018/ew--matt-windman.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "url-collision-detected-at-write",
+        "description": "BRO-5321: the value the write guard sets for a same-url copy."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-waverly-gallery-2018/ew--matt-windman.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: EW review is by Leah Greenblatt (ew--leah-greenblatt.json), JSON-LD author on https://ew.com/theater/2018/10/25/the-waverly-gallery-review/",
+        "description": "Reason for the existing flag."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "torch-song-2018/ew--matt-windman.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "ew--dave-quinn.json",
+        "description": "BRO-5321: same article as ew--dave-quinn.json. The EW page JSON-LD author is Dave Quinn (https://ew.com/theater/2018/11/01/torch-song-broadway-review/, read https://github.com/thomaspryor/Broadwayscore/actions/runs/38500346035); Matt Windman reviews for amNY. Stored text is identical."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "torch-song-2018/ew--matt-windman.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "url-collision-detected-at-write",
+        "description": "BRO-5321: the value the write guard sets for a same-url copy."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "torch-song-2018/ew--matt-windman.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: EW review is by Dave Quinn (ew--dave-quinn.json), JSON-LD author on https://ew.com/theater/2018/11/01/torch-song-broadway-review/",
+        "description": "Reason for the existing flag."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "deuce-2007/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "David Rooney",
+        "description": "BRO-5321: the Variety page at this url is bylined David Rooney (meta + JSON-LD author, https://variety.com/2007/legit/reviews/deuce-1200558823/, read https://github.com/thomaspryor/Broadwayscore/actions/runs/38500346035) and the stored text is that article. Isherwood was at the NYT in 2007. Url, text and score are right; only the critic was wrong."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "deuce-2007/variety--david-rooney.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321: this row's url (https://variety.com/2007/legit/reviews/deuce-1200558841/) is a different Variety page (Terry Morgan) but its stored text is identical to variety--charles-isherwood.json, Rooney's review at https://variety.com/2007/legit/reviews/deuce-1200558823/. One article counted twice; keep the row whose url matches the text."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "deuce-2007/variety--david-rooney.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: text is Rooney's review at https://variety.com/2007/legit/reviews/deuce-1200558823/ (variety--charles-isherwood.json); this url is another page (Terry Morgan)",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "radio-golf-2007/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "David Rooney",
+        "description": "BRO-5321: the Variety page at this url is bylined David Rooney (meta + JSON-LD author, https://variety.com/2007/legit/reviews/radio-golf-1200558947/, read https://github.com/thomaspryor/Broadwayscore/actions/runs/38500346035) and the stored text is that article. Isherwood was at the NYT in 2007. Url, text and score are right; only the critic was wrong."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "radio-golf-2007/variety--david-rooney.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321: this row's url (https://variety.com/2007/legit/reviews/radio-golf-1200556194/) is a different Variety page (no author signal) but its stored text is identical to variety--charles-isherwood.json, Rooney's review at https://variety.com/2007/legit/reviews/radio-golf-1200558947/. One article counted twice; keep the row whose url matches the text."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "radio-golf-2007/variety--david-rooney.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: text is Rooney's review at https://variety.com/2007/legit/reviews/radio-golf-1200558947/ (variety--charles-isherwood.json); this url is another page (no author signal)",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anything-goes-2011/variety--charles-isherwood.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5321: url https://variety.com/2011/legit/reviews/anything-goes-1117945052/ is bylined Robert Koehler (meta + JSON-LD, read https://github.com/thomaspryor/Broadwayscore/actions/runs/38500346035), but the stored text is Steven Suskin's Broadway review (https://variety.com/2011/legit/reviews/anything-goes-1117944987/), already counted as variety--david-rooney.json. Isherwood was at the NYT in 2011."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anything-goes-2011/variety--charles-isherwood.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5321: text is Suskin's review (variety--david-rooney.json); url is Koehler's page",
+        "description": "Reason for the flag above."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T03:30:30.529Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-waverly-gallery-2018/ew--matt-windman.json duplicateOf: null -> \"ew--leah-greenblatt.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-waverly-gallery-2018/ew--matt-windman.json duplicateReason: null -> \"url-collision-detected-at-write\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-waverly-gallery-2018/ew--matt-windman.json wrongAttributionReason: null -> \"BRO-5321: EW review is by Leah Greenblatt (ew--leah-greenblatt.json), JSON-LD author on https://ew.com/theater/2018/10/25/the-waverly-gallery-review/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "torch-song-2018/ew--matt-windman.json duplicateOf: null -> \"ew--dave-quinn.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "torch-song-2018/ew--matt-windman.json duplicateReason: null -> \"url-collision-detected-at-write\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "torch-song-2018/ew--matt-windman.json wrongAttributionReason: null -> \"BRO-5321: EW review is by Dave Quinn (ew--dave-quinn.json), JSON-LD author on https://ew.com/theater/2018/11/01/torch-song-broadway-review/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "deuce-2007/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "deuce-2007/variety--david-rooney.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "deuce-2007/variety--david-rooney.json wrongAttributionReason: null -> \"BRO-5321: text is Rooney's review at https://variety.com/2007/legit/reviews/deuce-1200558823/ (variety--charles-isherwood.json); this url is another page (Terry Morgan)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "radio-golf-2007/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "radio-golf-2007/variety--david-rooney.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "radio-golf-2007/variety--david-rooney.json wrongAttributionReason: null -> \"BRO-5321: text is Rooney's review at https://variety.com/2007/legit/reviews/radio-golf-1200558947/ (variety--charles-isherwood.json); this url is another page (no author signal)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anything-goes-2011/variety--charles-isherwood.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anything-goes-2011/variety--charles-isherwood.json wrongAttributionReason: null -> \"BRO-5321: text is Suskin's review (variety--david-rooney.json); url is Koehler's page\""
+    }
+  ]
+}

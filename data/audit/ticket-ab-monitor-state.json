@@ -1,0 +1,42 @@
+{
+  "significanceAlertedAt": 1785160304144,
+  "lastRunAt": "2026-09-14T18:28:01.497Z",
+  "lastSummary": {
+    "flag": "ticket-single-button",
+    "days": 14,
+    "startDate": "2026-08-31",
+    "endDate": "2026-09-14",
+    "restartClamped": false,
+    "postbackCoverage": 0.696,
+    "totalConversions": 23,
+    "flagHealthy": true,
+    "flagHealthProblem": null,
+    "variants": [
+      {
+        "name": "multi",
+        "clicks": 124,
+        "users": 53,
+        "convUsers": 3,
+        "convCount": 3,
+        "joinCoverage": 1
+      },
+      {
+        "name": "single",
+        "clicks": 119,
+        "users": 50,
+        "convUsers": 7,
+        "convCount": 13,
+        "joinCoverage": 1
+      }
+    ],
+    "primary": {
+      "p": 0.1530854380919573,
+      "significant": false,
+      "suppressed": null,
+      "degenerate": null,
+      "underpowered": true,
+      "underpoweredNote": "min 3 converting users/variant (floor 5 — conversion estimate unstable below this)",
+      "note": "normal approximation marginal (a success/failure cell < 5) — treat p as rough"
+    }
+  }
+}

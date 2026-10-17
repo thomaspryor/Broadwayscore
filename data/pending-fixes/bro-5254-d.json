@@ -1,0 +1,46 @@
+{
+  "issueNumber": "bro-5254-d",
+  "planId": "3adabec9-e15d-4127-b158-6409dfbb5875",
+  "status": "applied",
+  "createdAt": "2026-10-14T01:21:48.467Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5254 follow-up after the full rescore (llm-ensemble run 38490603674). (1) Keep the pre-strip score where the rescore moved 5+ points or changed bucket (the strip removes no review content; parent-approved rule). (2) Drop a lightly edited excerpt repeated as the first paragraph (78 live Variety rows per --dup-leads on main, all with 89%+ of the lead's content words in order in paragraph 2, ragtime-1998 among them). A lead-only drop queues no rescore (the verdict text is unchanged) and records no score baseline.",
+    "steps": [
+      "Run strip-variety-promo-bleed.js --restore-big-moves --apply.",
+      "Run strip-variety-promo-bleed.js --apply --limit=200 (only lead-only rows remain strippable; no rescore).",
+      "Then --ab, scoring-delta.js and test-temporal-override-regression.js."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "strip-variety-promo-bleed.js",
+        "args": "--restore-big-moves --apply",
+        "description": "BRO-5254: keep the pre-strip score where the full rescore moved 5+ or changed bucket"
+      },
+      {
+        "type": "run-script",
+        "script": "strip-variety-promo-bleed.js",
+        "args": "--apply --limit=200",
+        "description": "BRO-5254: drop the repeated excerpt lead paragraph from live Variety texts (no rescore)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T02:11:56.339Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran strip-variety-promo-bleed.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran strip-variety-promo-bleed.js successfully"
+    }
+  ]
+}

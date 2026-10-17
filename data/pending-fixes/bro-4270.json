@@ -1,0 +1,335 @@
+{
+  "issueNumber": "bro-4270",
+  "planId": "7f36b340-e452-4f82-a6ac-8bb9564f83ce",
+  "status": "partial",
+  "createdAt": "2026-10-14T01:34:46.631134Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4270: 11 review files hold a BroadwayWorld show-hub URL and the hub page's description text (no article), and 1 holds a regional production's review under the Broadway show. Mark them not-a-review / wrong production so they stop counting toward scores. 4 other hub-URL files carry real review text with no resolvable article URL and are left alone.",
+    "steps": [
+      "Set isNonReview + reason on 11 hub-page files.",
+      "Set wrongProduction + reason on the Something Rotten Berko file."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "cabaret-2014/broadwayworld--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4270: the url is the BroadwayWorld show hub page and the stored text is the production description/navigation, not a review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cabaret-2014/broadwayworld--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): BroadwayWorld show hub page /shows/<Title>-<id>.html (production landing page), no article text (BRO-4270)",
+        "description": "Human reason; the manual prefix stops the classifier re-stamping it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clydes-2021/broadwayworld--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4270: the url is the BroadwayWorld show hub page and the stored text is the production description/navigation, not a review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clydes-2021/broadwayworld--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): BroadwayWorld show hub page /shows/<Title>-<id>.html (production landing page), no article text (BRO-4270)",
+        "description": "Human reason; the manual prefix stops the classifier re-stamping it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-of-a-salesman-2022/broadwayworld--team-bww.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4270: the url is the BroadwayWorld show hub page and the stored text is the production description/navigation, not a review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-of-a-salesman-2022/broadwayworld--team-bww.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): BroadwayWorld show hub page /shows/<Title>-<id>.html (production landing page), no article text (BRO-4270)",
+        "description": "Human reason; the manual prefix stops the classifier re-stamping it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "glengarry-glen-ross-2005/broadwayworld--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4270: the url is the BroadwayWorld show hub page and the stored text is the production description/navigation, not a review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "glengarry-glen-ross-2005/broadwayworld--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): BroadwayWorld show hub page /shows/<Title>-<id>.html (production landing page), no article text (BRO-4270)",
+        "description": "Human reason; the manual prefix stops the classifier re-stamping it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4270: the url is the BroadwayWorld show hub page and the stored text is the production description/navigation, not a review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): BroadwayWorld show hub page /shows/<Title>-<id>.html (production landing page), no article text (BRO-4270)",
+        "description": "Human reason; the manual prefix stops the classifier re-stamping it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "grangeville-off-broadway-2026/broadwayworld--team-bww.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4270: the url is the BroadwayWorld show hub page and the stored text is the production description/navigation, not a review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "grangeville-off-broadway-2026/broadwayworld--team-bww.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): BroadwayWorld show hub page /shows/<Title>-<id>.html (production landing page), no article text (BRO-4270)",
+        "description": "Human reason; the manual prefix stops the classifier re-stamping it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "miles-for-mary-off-broadway-2026/broadwayworld--bww-news-desk.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4270: the url is the BroadwayWorld show hub page and the stored text is the production description/navigation, not a review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "miles-for-mary-off-broadway-2026/broadwayworld--bww-news-desk.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): BroadwayWorld show hub page /shows/<Title>-<id>.html (production landing page), no article text (BRO-4270)",
+        "description": "Human reason; the manual prefix stops the classifier re-stamping it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "on-the-town-1971/broadwayworld--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4270: the url is the BroadwayWorld show hub page and the stored text is the production description/navigation, not a review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "on-the-town-1971/broadwayworld--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): BroadwayWorld show hub page /shows/<Title>-<id>.html (production landing page), no article text (BRO-4270)",
+        "description": "Human reason; the manual prefix stops the classifier re-stamping it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "othello-off-broadway-2026/broadwayworld--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4270: the url is the BroadwayWorld show hub page and the stored text is the production description/navigation, not a review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "othello-off-broadway-2026/broadwayworld--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): BroadwayWorld show hub page /shows/<Title>-<id>.html (production landing page), no article text (BRO-4270)",
+        "description": "Human reason; the manual prefix stops the classifier re-stamping it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "talleys-folly-1980/broadwayworld--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4270: the url is the BroadwayWorld show hub page and the stored text is the production description/navigation, not a review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "talleys-folly-1980/broadwayworld--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): BroadwayWorld show hub page /shows/<Title>-<id>.html (production landing page), no article text (BRO-4270)",
+        "description": "Human reason; the manual prefix stops the classifier re-stamping it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-hope-theory-off-broadway-2026/broadwayworld--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4270: the url is the BroadwayWorld show hub page and the stored text is the production description/navigation, not a review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-hope-theory-off-broadway-2026/broadwayworld--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): BroadwayWorld show hub page /shows/<Title>-<id>.html (production landing page), no article text (BRO-4270)",
+        "description": "Human reason; the manual prefix stops the classifier re-stamping it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "something-rotten-2015/broadwayworld--roy-berko.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4270: BroadwayWorld lists Roy Berko's Something Rotten review as the Beck Center for the Arts regional production (July 2022), not the 2015 Broadway run; the stored url is the Broadway show hub."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "something-rotten-2015/broadwayworld--roy-berko.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Roy Berko's BroadwayWorld review covers the Beck Center for the Arts production (2022), not the 2015 Broadway production (BRO-4270)",
+        "description": "Reason for the wrongProduction verdict."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T02:22:37.883Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cabaret-2014/broadwayworld--unknown.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cabaret-2014/broadwayworld--unknown.json isNonReviewReason: null -> \"manual (not a review): BroadwayWorld show hub page /shows/<Title>-<id>.html (production landing page), no article text (BRO-4270)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "clydes-2021/broadwayworld--unknown.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "clydes-2021/broadwayworld--unknown.json isNonReviewReason: null -> \"manual (not a review): BroadwayWorld show hub page /shows/<Title>-<id>.html (production landing page), no article text (BRO-4270)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "isNonReview: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-of-a-salesman-2022/broadwayworld--team-bww.json isNonReviewReason: null -> \"manual (not a review): BroadwayWorld show hub page /shows/<Title>-<id>.html (production landing page), no article text (BRO-4270)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "isNonReview: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "glengarry-glen-ross-2005/broadwayworld--unknown.json isNonReviewReason: null -> \"manual (not a review): BroadwayWorld show hub page /shows/<Title>-<id>.html (production landing page), no article text (BRO-4270)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "grace-pervades-west-end-2026/broadwayworld--team-bww.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "grace-pervades-west-end-2026/broadwayworld--team-bww.json isNonReviewReason: null -> \"manual (not a review): BroadwayWorld show hub page /shows/<Title>-<id>.html (production landing page), no article text (BRO-4270)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "grangeville-off-broadway-2026/broadwayworld--team-bww.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "grangeville-off-broadway-2026/broadwayworld--team-bww.json isNonReviewReason: null -> \"manual (not a review): BroadwayWorld show hub page /shows/<Title>-<id>.html (production landing page), no article text (BRO-4270)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "miles-for-mary-off-broadway-2026/broadwayworld--bww-news-desk.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "miles-for-mary-off-broadway-2026/broadwayworld--bww-news-desk.json isNonReviewReason: null -> \"manual (not a review): BroadwayWorld show hub page /shows/<Title>-<id>.html (production landing page), no article text (BRO-4270)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "on-the-town-1971/broadwayworld--unknown.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "on-the-town-1971/broadwayworld--unknown.json isNonReviewReason: null -> \"manual (not a review): BroadwayWorld show hub page /shows/<Title>-<id>.html (production landing page), no article text (BRO-4270)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "isNonReview: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "isNonReviewReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "talleys-folly-1980/broadwayworld--unknown.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "talleys-folly-1980/broadwayworld--unknown.json isNonReviewReason: null -> \"manual (not a review): BroadwayWorld show hub page /shows/<Title>-<id>.html (production landing page), no article text (BRO-4270)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-hope-theory-off-broadway-2026/broadwayworld--unknown.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-hope-theory-off-broadway-2026/broadwayworld--unknown.json isNonReviewReason: null -> \"manual (not a review): BroadwayWorld show hub page /shows/<Title>-<id>.html (production landing page), no article text (BRO-4270)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "something-rotten-2015/broadwayworld--roy-berko.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "something-rotten-2015/broadwayworld--roy-berko.json wrongProductionReason: null -> \"Roy Berko's BroadwayWorld review covers the Beck Center for the Arts production (2022), not the 2015 Broadway production (BRO-4270)\""
+    }
+  ]
+}

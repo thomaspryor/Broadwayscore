@@ -1,0 +1,341 @@
+{
+  "issueNumber": "bro-4599-c",
+  "planId": "bd6b3d24-a750-4274-8bda-03b5b7346aea",
+  "status": "applied",
+  "createdAt": "2026-10-12T12:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Articles filed under 2+ shows with one shared pull quote (audit-shared-url-quote.js): give each show its own section quote and score, flag misfiled copies, human-clear flags that misread a multi-show column. Part 3 of 6.",
+    "steps": [
+      "loves-labours-lost-globe-west-end-2026: per-show fix",
+      "magic-mike-live-west-end-2021: per-show fix",
+      "misery-2015: per-show fix",
+      "miss-saigon-2017: per-show fix",
+      "much-ado-about-nothing-globe-off-west-end-2026: per-show fix",
+      "network-2018: per-show fix",
+      "new-born-off-broadway-2026: per-show fix",
+      "no-mans-land-2013: per-show fix"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "loves-labours-lost-globe-west-end-2026/whatsonstage--michael-davies.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "different production (company and venue)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "loves-labours-lost-globe-west-end-2026/whatsonstage--michael-davies.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4599: Guildford Shakespeare Co/Orange Tree double bill at Braboeuf Manor, Guildford, not the Shakespeare's Globe production",
+        "description": "reason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "magic-mike-live-west-end-2021/timeout-london--andrzej-lukowski.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "article reviews The Tempest, not Magic Mike Live"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "misery-2015/huffpost--michael-giltz.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 25,
+        "description": "1 out of 4 stars for Misery"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "misery-2015/huffpost--michael-giltz.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: Three-show column, Misery section rated 1/4 stars: a bad idea poorly executed; 25. originalScore A is bogus and should be cleared.",
+        "description": "section score"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "miss-saigon-2017/out-magazine--michael-musto.json",
+        "field": "llmPullQuote",
+        "oldValue": "But the story grabbed me, as teenage Kim works in a sex club run by a raunchy character known as the Engineer, falling for an American GI, Chris, who feels she deserves better.",
+        "newValue": "And I must have really gotten old because I enjoyed it a lot more than in '91, when I found it screechingly cheesy.",
+        "description": "Saigon section verdict, not plot summary"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--matt-trueman.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "different production (company and venue)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--matt-trueman.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4599: Guildford Shakespeare Co/Orange Tree double bill at Braboeuf Manor, Guildford, not the Shakespeare's Globe production",
+        "description": "reason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--michael-davies.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "different production (company and venue)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--michael-davies.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4599: Guildford Shakespeare Co/Orange Tree double bill at Braboeuf Manor, Guildford, not the Shakespeare's Globe production",
+        "description": "reason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--mickey-jo-boucher.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "different production (company and venue)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--mickey-jo-boucher.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4599: Guildford Shakespeare Co/Orange Tree double bill at Braboeuf Manor, Guildford, not the Shakespeare's Globe production",
+        "description": "reason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "network-2018/wsj--terry-teachout.json",
+        "field": "llmPullQuote",
+        "oldValue": "As jukebox musicals go, though, this one is a badly broken record.",
+        "newValue": "If you’re willing to pay Broadway prices to see Mr. Cranston give a tremendous performance, there’s a chance you’ll go home happy.",
+        "description": "Network section verdict"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "network-2018/wsj--terry-teachout.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 45,
+        "description": "section verdict"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "network-2018/wsj--terry-teachout.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: Network section is negative-mixed: musty period piece, supporting cast lacks force, but Cranston tremendous.",
+        "description": "explain section-only score"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "new-born-off-broadway-2026/nysr--frank-scheck.json",
+        "field": "llmPullQuote",
+        "oldValue": "Both are eminently worth a visit.",
+        "newValue": "Running 110 minutes without an intermission, the evening adds up to less than the sum of its parts. But as a showcase for its trio of talented actors, it works beautifully.",
+        "description": "from New Born section"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "new-born-off-broadway-2026/nysr--frank-scheck.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 67,
+        "description": "section verdict mixed-positive"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "new-born-off-broadway-2026/nysr--frank-scheck.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: New Born section is mixed-positive: first two monologues slight or overstuffed, Jackman's third strong; evening less than sum of parts but good actor showcase.",
+        "description": "explains section verdict"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "no-mans-land-2013/nydailynews--joe-dziemianowicz.json",
+        "field": "llmPullQuote",
+        "oldValue": "More familiar but a bit less successful, Mathias’ “Godot” needs a shot of dread.",
+        "newValue": "McKellen’s silent slow-burn response speaks volumes. He’s got one of the most expressive faces, voices and command of body language on the planet.",
+        "description": "from No Man's Land section"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "no-mans-land-2013/nydailynews--joe-dziemianowicz.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 80,
+        "description": "section verdict positive"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "no-mans-land-2013/nydailynews--joe-dziemianowicz.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: No Man's Land section is positive: stars and supporting cast praised, no reservations stated.",
+        "description": "explains section verdict"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "no-mans-land-2013/usatoday--elysa-gardner.json",
+        "field": "llmPullQuote",
+        "oldValue": "Both Land and Godot, in fact, prove that the most challenging and unsettling material can make for accessible, even buoyant, entertainment.",
+        "newValue": "Hirst, played here by a marvelously deadpan Stewart, listens and drinks while Spooner — McKellen, exquisite in his poised buffoonery — babbles on.",
+        "description": "from No Man's Land section"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "no-mans-land-2013/usatoday--elysa-gardner.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 85,
+        "description": "explicit per-show stars"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "no-mans-land-2013/usatoday--elysa-gardner.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-4599: Critic gives No Man's Land 3.5 of 4 stars (upper 4/5 band); section is positive.",
+        "description": "explains section verdict"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T13:56:05.817Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "loves-labours-lost-globe-west-end-2026/whatsonstage--michael-davies.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "loves-labours-lost-globe-west-end-2026/whatsonstage--michael-davies.json wrongProductionReason: null -> \"BRO-4599: Guildford Shakespeare Co/Orange Tree double bill at Braboeuf Manor, Guildford, not the Shakespeare's Globe production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "magic-mike-live-west-end-2021/timeout-london--andrzej-lukowski.json wrongShow: null -> true (retracted _previousWrongShowClear, clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongShowOverride, wrongShowOverrideAt, wrongShowOverrideReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "misery-2015/huffpost--michael-giltz.json humanReviewScore: null -> 25"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "misery-2015/huffpost--michael-giltz.json humanReviewNote: null -> \"BRO-4599: Three-show column, Misery section rated 1/4 stars: a bad idea poorly executed; 25. originalScore A is bogus and should be cleared.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "miss-saigon-2017/out-magazine--michael-musto.json llmPullQuote: \"But the story grabbed me, as teenage Kim works in a sex club run by a raunchy character known as the Engineer, falling for an American GI, Chris, who feels she deserves better.\" -> \"And I must have really gotten old because I enjoyed it a lot more than in '91, when I found it screechingly cheesy.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--matt-trueman.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--matt-trueman.json wrongProductionReason: null -> \"BRO-4599: Guildford Shakespeare Co/Orange Tree double bill at Braboeuf Manor, Guildford, not the Shakespeare's Globe production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--michael-davies.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--michael-davies.json wrongProductionReason: null -> \"BRO-4599: Guildford Shakespeare Co/Orange Tree double bill at Braboeuf Manor, Guildford, not the Shakespeare's Globe production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--mickey-jo-boucher.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-globe-off-west-end-2026/whatsonstage--mickey-jo-boucher.json wrongProductionReason: null -> \"BRO-4599: Guildford Shakespeare Co/Orange Tree double bill at Braboeuf Manor, Guildford, not the Shakespeare's Globe production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "network-2018/wsj--terry-teachout.json llmPullQuote: \"As jukebox musicals go, though, this one is a badly broken record.\" -> \"If you’re willing to pay Broadway prices to see Mr. Cranston give a tremendous performance, there’s a chance you’ll go home happy.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "network-2018/wsj--terry-teachout.json humanReviewScore: null -> 45"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "network-2018/wsj--terry-teachout.json humanReviewNote: null -> \"BRO-4599: Network section is negative-mixed: musty period piece, supporting cast lacks force, but Cranston tremendous.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "new-born-off-broadway-2026/nysr--frank-scheck.json llmPullQuote: \"Both are eminently worth a visit.\" -> \"Running 110 minutes without an intermission, the evening adds up to less than the sum of its parts. But as a showcase for its trio of talented actors, it works beautifully.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "new-born-off-broadway-2026/nysr--frank-scheck.json humanReviewScore: null -> 67"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "new-born-off-broadway-2026/nysr--frank-scheck.json humanReviewNote: null -> \"BRO-4599: New Born section is mixed-positive: first two monologues slight or overstuffed, Jackman's third strong; evening less than sum of parts but good actor showcase.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "no-mans-land-2013/nydailynews--joe-dziemianowicz.json llmPullQuote: \"More familiar but a bit less successful, Mathias’ “Godot” needs a shot of dread.\" -> \"McKellen’s silent slow-burn response speaks volumes. He’s got one of the most expressive faces, voices and command of body language on the planet.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "no-mans-land-2013/nydailynews--joe-dziemianowicz.json humanReviewScore: null -> 80"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "no-mans-land-2013/nydailynews--joe-dziemianowicz.json humanReviewNote: null -> \"BRO-4599: No Man's Land section is positive: stars and supporting cast praised, no reservations stated.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "no-mans-land-2013/usatoday--elysa-gardner.json llmPullQuote: \"Both Land and Godot, in fact, prove that the most challenging and unsettling material can make for accessible, even buoyant, entertainment.\" -> \"Hirst, played here by a marvelously deadpan Stewart, listens and drinks while Spooner — McKellen, exquisite in his poised buffoonery — babbles on.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "no-mans-land-2013/usatoday--elysa-gardner.json humanReviewScore: null -> 85"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "no-mans-land-2013/usatoday--elysa-gardner.json humanReviewNote: null -> \"BRO-4599: Critic gives No Man's Land 3.5 of 4 stars (upper 4/5 band); section is positive.\""
+    }
+  ]
+}

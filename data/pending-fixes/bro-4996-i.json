@@ -1,0 +1,532 @@
+{
+  "issueNumber": "bro-4996-i",
+  "planId": "1701206f-a2c6-42e1-943f-3bd26288e43c",
+  "status": "applied",
+  "createdAt": "2026-10-10T23:43:50.409Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4996 (9): visual QA of the re-fetch for the 78 cleaned rows found 14 formats refilled with another production's art (5 from our own broadwayscorecard.com pages, now blocked in the fetcher). Null them and reject each Google source.",
+    "steps": [
+      "Null each wrong format (compare-and-set)",
+      "Add its recorded Google source to rejectedImageUrls (add-only)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "summer-brave-1975",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/summer-brave-1975/thumbnail.jpg",
+          "poster": "/images/shows/summer-brave-1975/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": "/images/shows/summer-brave-1975/thumbnail.jpg",
+          "hero": null
+        },
+        "description": "summer-brave-1975: poster refetched with another production's art (BRO-4996 visual QA)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "summer-brave-1975",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://broadwayscorecard.com/show/summer-brave-1975"
+        ],
+        "description": "summer-brave-1975: never re-take that source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "anything-goes-2002",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/anything-goes-2002/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "anything-goes-2002: thumbnail refetched with another production's art (BRO-4996 visual QA)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "anything-goes-2002",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/444/medium_anything_goes.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/444/preview_anything_goes.jpg"
+        ],
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/444/medium_anything_goes.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/444/preview_anything_goes.jpg",
+          "google-images:https://broadwayscorecard.com/show/anything-goes-2011"
+        ],
+        "description": "anything-goes-2002: never re-take that source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "andrew-doherty-sad-gay-aids-play-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/andrew-doherty-sad-gay-aids-play-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/andrew-doherty-sad-gay-aids-play-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": "/images/shows/andrew-doherty-sad-gay-aids-play-off-west-end-2026/thumbnail.jpg",
+          "hero": null
+        },
+        "description": "andrew-doherty-sad-gay-aids-play-off-west-end-2026: poster refetched with another production's art (BRO-4996 visual QA)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "andrew-doherty-sad-gay-aids-play-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/62/medium_1711643050-chicks_in_heaven_poster_graphic__2_.jpg"
+        ],
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/62/medium_1711643050-chicks_in_heaven_poster_graphic__2_.jpg",
+          "google-images:https://broadwayscorecard.com/show/andrew-doherty-sad-gay-aids-play-off-west-end"
+        ],
+        "description": "andrew-doherty-sad-gay-aids-play-off-west-end-2026: never re-take that source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jumpers-1974",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/jumpers-1974/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "jumpers-1974: thumbnail refetched with another production's art (BRO-4996 visual QA)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jumpers-1974",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://www.theaterdiary.com/parse/files/C7TsezAg3jnX9jHLsC9KFEteyKePkwLtB46dDpfh/4f6915b5a0db7222f2a05f235b574f67_file.jpeg"
+        ],
+        "newValue": [
+          "https://www.theaterdiary.com/parse/files/C7TsezAg3jnX9jHLsC9KFEteyKePkwLtB46dDpfh/4f6915b5a0db7222f2a05f235b574f67_file.jpeg",
+          "google-images:https://broadwayscorecard.com/show/jumpers-1974"
+        ],
+        "description": "jumpers-1974: never re-take that source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "as-you-like-it-1986",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/as-you-like-it-1986/thumbnail.jpg",
+          "poster": "/images/shows/as-you-like-it-1986/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "as-you-like-it-1986: poster/thumbnail refetched with another production's art (BRO-4996 visual QA)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "as-you-like-it-1986",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/3U0tLhi9lUgxTwBviLa0Po/084336493d31ebe7d5e53b84048264d8/TodayTix_480x720_Globe_AsYouLikeIt__1_.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3fSkIdMveCZ7sXbBfOJtq7/2049331717f90d827c7b73e7ca4022de/TodayTix_1080x1080_Globe_AsYouLikeIt.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/cJMHvDlpXm3YPIbB0QmT7/9ddfc6a8fa4739908b141b407292b69a/TodayTix_1440x580_Globe_AsYouLikeIt__1_.jpg?fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/3U0tLhi9lUgxTwBviLa0Po/084336493d31ebe7d5e53b84048264d8/TodayTix_480x720_Globe_AsYouLikeIt__1_.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3fSkIdMveCZ7sXbBfOJtq7/2049331717f90d827c7b73e7ca4022de/TodayTix_1080x1080_Globe_AsYouLikeIt.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/cJMHvDlpXm3YPIbB0QmT7/9ddfc6a8fa4739908b141b407292b69a/TodayTix_1440x580_Globe_AsYouLikeIt__1_.jpg?fm=webp&q=90",
+          "google-images:https://broadwayscorecard.com/show/as-you-like-it-globe-west-end"
+        ],
+        "description": "as-you-like-it-1986: never re-take that source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hay-fever-1970",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/hay-fever-1970/thumbnail.jpg",
+          "poster": "/images/shows/hay-fever-1970/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/hay-fever-1970/poster.jpg",
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "hay-fever-1970: thumbnail refetched with another production's art (BRO-4996 visual QA)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hay-fever-1970",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://www.theaterdiary.com/parse/files/C7TsezAg3jnX9jHLsC9KFEteyKePkwLtB46dDpfh/5acafb62b2f071ea9d43f65afaee1056_file.jpeg"
+        ],
+        "newValue": [
+          "https://www.theaterdiary.com/parse/files/C7TsezAg3jnX9jHLsC9KFEteyKePkwLtB46dDpfh/5acafb62b2f071ea9d43f65afaee1056_file.jpeg",
+          "google-images:https://www.instagram.com/p/Dd_gjJvofZe/"
+        ],
+        "description": "hay-fever-1970: never re-take that source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-pajama-game-1973",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-pajama-game-1973/thumbnail.jpg",
+          "poster": "/images/shows/the-pajama-game-1973/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/the-pajama-game-1973/poster.jpg",
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "the-pajama-game-1973: thumbnail refetched with another production's art (BRO-4996 visual QA)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-pajama-game-1973",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/473/medium_the_pajama_game.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/473/preview_the_pajama_game.jpg"
+        ],
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/473/medium_the_pajama_game.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/473/preview_the_pajama_game.jpg",
+          "google-images:https://ovrtur.com/recording/178946005"
+        ],
+        "description": "the-pajama-game-1973: never re-take that source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pippin-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/pippin-1972/thumbnail.jpg",
+          "poster": "/images/shows/pippin-1972/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": "/images/shows/pippin-1972/thumbnail.jpg",
+          "hero": null
+        },
+        "description": "pippin-1972: poster refetched with another production's art (BRO-4996 visual QA)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pippin-1972",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/469/medium_pippin.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/469/preview_pippin.jpg"
+        ],
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/469/medium_pippin.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/469/preview_pippin.jpg",
+          "google-images:https://www.broadwayposters.com/products/pippin-1972-repro?srsltid=AU7gw4UemdZIOqMcRpi1cu4eVMYzuJvU6G4qaWt2X5Dt1QzZI9d_Xfyv"
+        ],
+        "description": "pippin-1972: never re-take that source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "on-the-twentieth-century-1978",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/on-the-twentieth-century-1978/thumbnail.jpg",
+          "poster": "/images/shows/on-the-twentieth-century-1978/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/on-the-twentieth-century-1978/poster.jpg",
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "on-the-twentieth-century-1978: thumbnail refetched with another production's art (BRO-4996 visual QA)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "on-the-twentieth-century-1978",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/185/medium_onthetwentiethcentury2.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/185/preview_onthetwentiethcentury2.jpg"
+        ],
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/185/medium_onthetwentiethcentury2.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/185/preview_onthetwentiethcentury2.jpg",
+          "google-images:https://www.nyc-arts.org/events/on-the-twentieth-century/"
+        ],
+        "description": "on-the-twentieth-century-1978: never re-take that source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mornings-at-seven-1980",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/mornings-at-seven-1980/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "mornings-at-seven-1980: thumbnail refetched with another production's art (BRO-4996 visual QA)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mornings-at-seven-1980",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/6877/medium_1634221412-mornings2.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/6877/preview_1634221412-mornings2.jpg"
+        ],
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/6877/medium_1634221412-mornings2.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/6877/preview_1634221412-mornings2.jpg",
+          "google-images:https://www.broadway.com/shows/mornings-at-seven/"
+        ],
+        "description": "mornings-at-seven-1980: never re-take that source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "private-lives-2025",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/private-lives-2025/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "private-lives-2025: thumbnail refetched with another production's art (BRO-4996 visual QA)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "private-lives-2025",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/6069/medium_1625317295-Private_Lives__Copy_.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/6069/preview_1625317295-Private_Lives__Copy_.jpg"
+        ],
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/6069/medium_1625317295-Private_Lives__Copy_.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/6069/preview_1625317295-Private_Lives__Copy_.jpg",
+          "google-images:https://playbill.com/production/private-lives-times-square-theatre-vault-0000010969"
+        ],
+        "description": "private-lives-2025: never re-take that source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-dolls-house-play-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-dolls-house-play-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/a-dolls-house-play-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "a-dolls-house-play-off-west-end-2026: poster/thumbnail refetched with another production's art (BRO-4996 visual QA)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-dolls-house-play-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1WbbBgLll2zMmJpb43UznU/f7d7b0646862ff32c1783cd944a9c79b/Dolls_House_Tony_Noms_poster-silvery__3_.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1WbbBgLll2zMmJpb43UznU/f7d7b0646862ff32c1783cd944a9c79b/Dolls_House_Tony_Noms_poster-silvery__3_.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1WbbBgLll2zMmJpb43UznU/f7d7b0646862ff32c1783cd944a9c79b/Dolls_House_Tony_Noms_poster-silvery__3_.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1WbbBgLll2zMmJpb43UznU/f7d7b0646862ff32c1783cd944a9c79b/Dolls_House_Tony_Noms_poster-silvery__3_.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1WbbBgLll2zMmJpb43UznU/f7d7b0646862ff32c1783cd944a9c79b/Dolls_House_Tony_Noms_poster-silvery__3_.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1WbbBgLll2zMmJpb43UznU/f7d7b0646862ff32c1783cd944a9c79b/Dolls_House_Tony_Noms_poster-silvery__3_.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90",
+          "google-images:https://playbill.com/production/a-dolls-house-broadway-hudson-theatre-2023"
+        ],
+        "description": "a-dolls-house-play-off-west-end-2026: never re-take that source (BRO-4996)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T00:08:05.776Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for summer-brave-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for summer-brave-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for anything-goes-2002"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for anything-goes-2002"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for andrew-doherty-sad-gay-aids-play-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for andrew-doherty-sad-gay-aids-play-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for jumpers-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for jumpers-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for as-you-like-it-1986"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for as-you-like-it-1986"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for hay-fever-1970"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for hay-fever-1970"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-pajama-game-1973"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-pajama-game-1973"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for pippin-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for pippin-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for on-the-twentieth-century-1978"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for on-the-twentieth-century-1978"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for mornings-at-seven-1980"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for mornings-at-seven-1980"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for private-lives-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for private-lives-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for a-dolls-house-play-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for a-dolls-house-play-off-west-end-2026"
+    }
+  ]
+}

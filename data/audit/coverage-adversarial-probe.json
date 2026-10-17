@@ -1,0 +1,162 @@
+{
+  "generatedAt": "2026-10-12T21:16:38.052Z",
+  "days": 45,
+  "pages": 1,
+  "sample": [
+    "cosi-fan-tutte-off-broadway-2026",
+    "a-thousand-natural-shocks-off-broadway-2026",
+    "savage-and-simon-says-a-double-bill-off-west-end-2026",
+    "the-cherry-orchard-riverside-studios-off-west-end-2026",
+    "degenerates-off-broadway-2026"
+  ],
+  "shows": [
+    {
+      "showId": "cosi-fan-tutte-off-broadway-2026",
+      "title": "Così fan tutte",
+      "openingDate": "2026-09-23",
+      "sampleState": "measured",
+      "sampleReason": "opened 19d ago",
+      "naiveQuery": "Così fan tutte Metropolitan Opera House review",
+      "candidates": [
+        {
+          "url": "https://operawire.com/metropolitan-opera-2026-27-review-cosi-fan-tutte/",
+          "state": "live",
+          "reason": null
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 10
+        }
+      ],
+      "onDiskCount": 34
+    },
+    {
+      "showId": "a-thousand-natural-shocks-off-broadway-2026",
+      "title": "A Thousand Natural Shocks",
+      "openingDate": "2026-10-02",
+      "sampleState": "measured",
+      "sampleReason": "opened 10d ago",
+      "naiveQuery": "A Thousand Natural Shocks The Secret Theatre review",
+      "candidates": [],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 10
+        }
+      ],
+      "onDiskCount": 8
+    },
+    {
+      "showId": "savage-and-simon-says-a-double-bill-off-west-end-2026",
+      "title": "Savage & Simon Says: A Double Bill",
+      "openingDate": "2026-09-24",
+      "sampleState": "measured",
+      "sampleReason": "opened 18d ago",
+      "naiveQuery": "Savage and Simon Says: A Double Bill Lyric Hammersmith review",
+      "candidates": [
+        {
+          "url": "https://www.londontheatregeek.co.uk/shows/savage-and-simon-says-a-double-bill",
+          "state": "excluded",
+          "reason": "wrongShow"
+        },
+        {
+          "url": "https://huddlepin.com/events/lyric-hammersmith-theatre/savage-and-simon-says-a-double-bill-2026",
+          "state": "gap",
+          "reason": null
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 10
+        }
+      ],
+      "onDiskCount": 1
+    },
+    {
+      "showId": "the-cherry-orchard-riverside-studios-off-west-end-2026",
+      "title": "The Cherry Orchard",
+      "openingDate": "2026-09-08",
+      "sampleState": "measured",
+      "sampleReason": "opened 34d ago",
+      "naiveQuery": "The Cherry Orchard Riverside Studios review",
+      "candidates": [
+        {
+          "url": "https://www.londonpubtheatres.com/review-the-cherry-orchard-at-riverside-studios-8-12-september-2026",
+          "state": "gap",
+          "reason": null
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-cherry-orchard-review-riverside-studios-london-rep-radical-classical",
+          "state": "gap",
+          "reason": null
+        },
+        {
+          "url": "https://www.londonboxoffice.co.uk/news/post/review-the-cherry-orchard-riverside-studios",
+          "state": "excluded",
+          "reason": "aggregator-own-page"
+        },
+        {
+          "url": "https://playstosee.com/reviews/the-cherry-orchard-5/",
+          "state": "gap",
+          "reason": null
+        },
+        {
+          "url": "https://www.thereviewshub.com/the-cherry-orchard-riverside-studios-london/",
+          "state": "gap",
+          "reason": null
+        },
+        {
+          "url": "https://rhombusrota.co.uk/2026/09/10/the-cherry-orchard-rep-radical-classical-at-riverside-studios-review/",
+          "state": "gap",
+          "reason": null
+        },
+        {
+          "url": "https://www.reviewsgate.co.uk/all-reviews/cherry-orchard-by-anton-chekhov-translation-by-lara-wadersc-swan",
+          "state": "gap",
+          "reason": null
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 10
+        }
+      ],
+      "onDiskCount": 0
+    },
+    {
+      "showId": "degenerates-off-broadway-2026",
+      "title": "Degenerates",
+      "openingDate": "2026-09-29",
+      "sampleState": "measured",
+      "sampleReason": "opened 13d ago",
+      "naiveQuery": "Degenerates Playwrights Horizons/Peter Jay Sharp Theater review",
+      "candidates": [
+        {
+          "url": "https://exeuntnyc.com/reviews/review-degenerates-at-playwrights-horizons/",
+          "state": "live",
+          "reason": null
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 10
+        }
+      ],
+      "onDiskCount": 19
+    }
+  ],
+  "summary": {
+    "verdict": "gaps-found",
+    "measured": 5,
+    "gapCount": 7,
+    "gapShows": [
+      "savage-and-simon-says-a-double-bill-off-west-end-2026",
+      "the-cherry-orchard-riverside-studios-off-west-end-2026"
+    ]
+  }
+}

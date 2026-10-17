@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-4398-c",
+  "planId": "76eecfa7-4cec-4f78-9c37-ad377942382c",
+  "status": "applied",
+  "createdAt": "2026-10-01T20:26:26.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Remove a duplicate catalog row: death-note-the-musical-west-end-2027 ('Death Note The Musical', Barbican Theatre, upcoming 2027-03-23) is the same Barbican production as death-note-the-musical-west-end-2026 ('Death Note: The Musical', Barbican Centre, open since 2026-08-11, closing 2027-05-15, 35 reviews). The duplicate has no reviews.",
+    "steps": [
+      "Retire death-note-the-musical-west-end-2027 as a duplicate of death-note-the-musical-west-end-2026 (id-only)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "retire-show",
+        "id": "death-note-the-musical-west-end-2027",
+        "expectTitle": "Death Note The Musical",
+        "duplicateOf": "death-note-the-musical-west-end-2026",
+        "reason": "Duplicate of death-note-the-musical-west-end-2026: same production at the Barbican, same closing date 2027-05-15; 0 reviews on this row, 35 on the kept one",
+        "description": "Retire duplicate Death Note row"
+      }
+    ]
+  },
+  "executedAt": "2026-10-01T21:02:14.146Z",
+  "results": [
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired death-note-the-musical-west-end-2027 (\"Death Note The Musical\" @ Barbican Theatre)"
+    }
+  ]
+}

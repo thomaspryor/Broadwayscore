@@ -1,0 +1,163 @@
+{
+  "issueNumber": "bro-5073-c",
+  "planId": "442a2c27-2394-4264-87f1-e2f84f55ff1b",
+  "status": "applied",
+  "createdAt": "2026-10-11T21:00:16.578Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Six, The Outsiders, Matilda: replace estimated or missing weekly running costs with reported, cited figures",
+    "steps": [
+      "Six: weekly cost $400K estimate -> $469K reported breakeven (Broadway Journal 2020)",
+      "The Outsiders: $725K estimate -> $963K average weekly operating expense from AG filings (BroadwayWorld 2026)",
+      "Matilda: add $584,452 fixed weekly expenses (Bloomberg 2013)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "six",
+        "showId": "six",
+        "field": "weeklyRunningCost",
+        "oldValue": 400000,
+        "newValue": 469000,
+        "description": "six: reported weekly cost, quote checked on the page (BRO-5073)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "six",
+        "showId": "six",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (Jan 16, 2020): \"Its weekly breakeven, after deductions, is $469,000.\" https://www.broadwayjournal.com/p/cheap-six-could-make-investors-whole-in-record-time",
+        "description": "six: reported weekly cost, quote checked on the page (BRO-5073)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "six",
+        "showId": "six",
+        "field": "costMethodology",
+        "oldValue": "industry-estimate",
+        "newValue": "trade-reported",
+        "description": "six: reported weekly cost, quote checked on the page (BRO-5073)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-outsiders",
+        "showId": "the-outsiders",
+        "field": "weeklyRunningCost",
+        "oldValue": 725000,
+        "newValue": 963000,
+        "description": "the-outsiders: reported weekly cost, quote checked on the page (BRO-5073)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-outsiders",
+        "showId": "the-outsiders",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "BroadwayWorld (Oct 5, 2026): \"averaged a weekly operating expense of $963,000 in the 52 week period ending March 15, 2026, according to financial statements filed with the New York State Attorney General's Office\" https://www.broadwayworld.com/article/Big-Hits-Small-Houses-Why-Off-Broadway-Is-Having-a-Moment-20261005",
+        "description": "the-outsiders: reported weekly cost, quote checked on the page (BRO-5073)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-outsiders",
+        "showId": "the-outsiders",
+        "field": "costMethodology",
+        "oldValue": "reddit-standard",
+        "newValue": "trade-reported",
+        "description": "the-outsiders: reported weekly cost, quote checked on the page (BRO-5073)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-outsiders",
+        "showId": "the-outsiders",
+        "field": "isEstimate",
+        "oldValue": {
+          "weeklyRunningCost": true
+        },
+        "newValue": {
+          "weeklyRunningCost": false
+        },
+        "description": "the-outsiders: cost is now reported, not estimated (BRO-5073)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "matilda-the-musical-2013",
+        "showId": "matilda-the-musical-2013",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 584452,
+        "description": "matilda: reported weekly cost, quote checked on the page (BRO-5073)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "matilda-the-musical-2013",
+        "showId": "matilda-the-musical-2013",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Bloomberg via Philadelphia Inquirer (Mar 27, 2013): \"Its fixed weekly expenses are relatively low at $584,452, plus 7 percent of grosses payable to the landlord\" https://www.inquirer.com/philly/entertainment/20130327_Investors_scurry_for_a_piece_of__Matilda_.html",
+        "description": "matilda: reported weekly cost, quote checked on the page (BRO-5073)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T22:20:58.102Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for six"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for six"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for six"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for the-outsiders"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for the-outsiders"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for the-outsiders"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for the-outsiders"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for matilda-the-musical-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for matilda-the-musical-2013"
+    }
+  ]
+}

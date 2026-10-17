@@ -1,0 +1,15 @@
+{
+  "shows": [
+    "three-days-of-rain",
+    "rhinoceros",
+    "other-desert-cities",
+    "joe-turners-come-and-gone"
+  ],
+  "triggers": {
+    "three-days-of-rain": "new-show",
+    "rhinoceros": "new-show",
+    "other-desert-cities": "pre-opening",
+    "joe-turners-come-and-gone": "sweep-requeue-low-conf"
+  },
+  "updatedAt": "2026-10-17T20:33:06.803Z"
+}

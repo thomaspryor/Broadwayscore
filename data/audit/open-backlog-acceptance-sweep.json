@@ -1,0 +1,280 @@
+{
+  "generatedAt": "2026-10-17T07:04:02.362Z",
+  "shadow": true,
+  "checkoutSha": "4fe69a0028beed7e8b9388c2560a3d71ce0db4a7",
+  "totalCandidates": 542,
+  "eligibleCandidates": 92,
+  "checked": 30,
+  "truncated": true,
+  "fetchError": null,
+  "counts": {
+    "pass": 16,
+    "fail": 1,
+    "unverifiable": 13
+  },
+  "alreadyDone": [
+    {
+      "id": "BRO-5480",
+      "name": "Owner email policy: opening-night SLA goes to a worker card, every page-worthy key must name the owner's action",
+      "verifyCmd": "node --test scripts/lib/page-worthy-alerts.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5479",
+      "name": "Poller failures: email owner only for Broadway openings, route the rest to the auto-fixer",
+      "verifyCmd": "node --test tests/unit/poller-failure-audience.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5430",
+      "name": "Morning digest: stop listing automation-owned problems to the owner; show real card status instead of 'being watched'",
+      "verifyCmd": "node --test scripts/lib/digest-snapshots.test.mjs scripts/lib/autonomous-email-render.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5427",
+      "name": "Opening-night SLA: duplicate P0 emails + junk reviews paging as stuck",
+      "verifyCmd": "node --test tests/unit/opening-night-sla.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5396",
+      "name": "Syndicated duplicates: 23 secondaries point at a primary file that no longer exists (excluded for nothing)",
+      "verifyCmd": "node --test scripts/lib/syndicated-duplicate-heal.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5366",
+      "name": "Weekly Video Reviews stale 207h: TikTok creator scans failing via yt-dlp (4 creators unscanned 15-23 days)",
+      "verifyCmd": "node scripts/audit-cron-health-coverage.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-5316",
+      "name": "Triage the 99 baselined orphaned data/audit writes (BRO-2420 audit)",
+      "verifyCmd": "node --test tests/unit/audit-orphaned-audit-writes.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5307",
+      "name": "Enforce CLAUDE.md §12.8 audit-regex-patterns run for content-quality.js pattern edits",
+      "verifyCmd": "node --test scripts/tests/verify-edits-scoring-gate.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5302",
+      "name": "Opening Night Orchestrator: alert-state push 403s (contents: read), emails owner after every full 5h run; same gap in opening-night-reviews + outlet-listing-poller",
+      "verifyCmd": "node --test tests/unit/audit-workflow-hygiene-push-permission.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5297",
+      "name": "Triage ~150 open Notion-only cards filed after the 2026-08-20 freeze (no Linear twin)",
+      "verifyCmd": "test -f docs/notion-orphan-triage.md",
+      "detail": null
+    },
+    {
+      "id": "BRO-5267",
+      "name": "Alert ledger: 267 conditions stay 'open' after their emitter stopped seeing them (no rollover/absence resolve)",
+      "verifyCmd": "node --test tests/unit/alert-ledger-absence-resolve.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5266",
+      "name": "Data-backfill cards get node --test acceptance commands, pushing workers to write world-state tests into blocking unit jobs",
+      "verifyCmd": "node --test scripts/enrich-card-acceptance.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5238",
+      "name": "Human wrong-production clear should override stale ensemble rejectionReason in inclusion gate",
+      "verifyCmd": "node --test scripts/lib/review-guards.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5231",
+      "name": "P2: 439 url-corrected reviews still ship the OLD url's body and score (needsRefetch never drains)",
+      "verifyCmd": "node --test tests/unit/url-corrected-refetch-drain.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5223",
+      "name": "unicode-stars-fallthrough extractor reads stars from page chrome about other shows",
+      "verifyCmd": "node --test tests/unit/score-extractors.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5193",
+      "name": "Missing show: The Da Vinci Code",
+      "verifyCmd": "node scripts/validate-data.js",
+      "detail": null
+    }
+  ],
+  "failing": [
+    {
+      "id": "BRO-5384",
+      "name": "Codex lane: ~2 cards per 2h, half rejected, 96% of the ChatGPT allowance unused — make it parallel, route it fitting cards, give fix rounds time",
+      "verifyCmd": "node --test scripts/verify-bro-5384-codex-throughput.test.mjs",
+      "detail": "TAP version 13\n# Subtest: Codex runner: >= 4 cards per firing and >= 40% landed since the parallel slots (BRO-5384)\nnot ok 1 - Codex runner: >= 4 cards per firing and >= 40% landed since the parallel slots (BRO-5384)\n  ---\n  duration_ms: 2.294047\n  location: '/tmp/open-backlog-sweep-dRfrWy/main/scripts/verify-bro-5384-codex-throughput.test.mjs:20:1'\n  failureType: 'testCodeFailure'\n  error: 'LINEA"
+    }
+  ],
+  "unverifiable": [
+    {
+      "id": "BRO-5351",
+      "name": "Collector derives publishDate from the review URL (collect-review-texts.js:4858) against CLAUDE.md section 3",
+      "verifyCmd": "node --test tests/unit/collect-review-texts-url-publishdate.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/collect-review-texts-url-publishdate.test.mjs"
+    },
+    {
+      "id": "BRO-5344",
+      "name": "Aggregator excerpts on WSJ rows that appear nowhere in the critic's stored full text (paraphrases or another production)",
+      "verifyCmd": "node --test tests/unit/verifier-excerpt-anchor.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/verifier-excerpt-anchor.test.mjs"
+    },
+    {
+      "id": "BRO-5336",
+      "name": "Outlet registry: 168 displayNames are mashed-together domains (Hackneycitizen, Stanforddaily)",
+      "verifyCmd": "node --test tests/unit/outlet-registry-display-names.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/outlet-registry-display-names.test.mjs"
+    },
+    {
+      "id": "BRO-5320",
+      "name": "Wrong-run review copies surfaced by the BRO-5261 audit fix: Leopoldstadt 2021, Comedy About Spies 2026 and 5 opt-out prior-run rows",
+      "verifyCmd": "node --test tests/unit/run-contamination-wrong-run.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/run-contamination-wrong-run.test.mjs"
+    },
+    {
+      "id": "BRO-5299",
+      "name": "Comedy About Spies 2026: two Adelphi reviews excluded as wrong production",
+      "verifyCmd": "node --test tests/unit/ensemble-return-run-wrong-production.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/ensemble-return-run-wrong-production.test.mjs"
+    },
+    {
+      "id": "BRO-5298",
+      "name": "Write-time guard: refuse a review url a same-title sibling production already holds",
+      "verifyCmd": "node --test scripts/lib/review-file-writer-same-title-sibling-url.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/review-file-writer-same-title-sibling-url.test.mjs"
+    },
+    {
+      "id": "BRO-5293",
+      "name": "Audit workflows whose always() commit step publishes data after a failed validate step",
+      "verifyCmd": "node --test tests/unit/audit-always-commit-after-validate.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/audit-always-commit-after-validate.test.mjs"
+    },
+    {
+      "id": "BRO-5292",
+      "name": "Content verifier (claude-haiku) reads our own '[...]' sample marker as truncation and rejects real long reviews",
+      "verifyCmd": "node --test scripts/lib/classify-sample.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/classify-sample.test.mjs"
+    },
+    {
+      "id": "BRO-5265",
+      "name": "17 mutual crossOutletDuplicate 2-cycles exclude both copies of a review",
+      "verifyCmd": "node --test tests/unit/cross-outlet-duplicate-cycle.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/cross-outlet-duplicate-cycle.test.mjs"
+    },
+    {
+      "id": "BRO-5260",
+      "name": "11 complete review texts still carry a stale ensemble not_a_review rejection made before the full text was fetched",
+      "verifyCmd": "node --test tests/unit/ensemble-rejection-requeue.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/ensemble-rejection-requeue.test.mjs"
+    },
+    {
+      "id": "BRO-5258",
+      "name": "audit-provisional-venues red 33 of 34 runs: Playbill match picks a different production (school-pictures, mystic-pizza)",
+      "verifyCmd": "node --test scripts/validate-show-venue.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/validate-show-venue.test.mjs"
+    },
+    {
+      "id": "BRO-5253",
+      "name": "Cloud bootstrap: review-texts copy fails on a partial (blobless/sparse) attached clone",
+      "verifyCmd": "node --test tests/unit/setup-local-data-partial-clone.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/setup-local-data-partial-clone.test.mjs"
+    },
+    {
+      "id": "BRO-5240",
+      "name": "Verify the 68 'inferred-from-reviews' WE/OWE opening dates stamped under the old -1 offset",
+      "verifyCmd": "node --test scripts/infer-press-night-from-reviews.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/infer-press-night-from-reviews.test.mjs"
+    }
+  ],
+  "landedButOpen": [
+    {
+      "id": "BRO-5480",
+      "name": "Owner email policy: opening-night SLA goes to a worker card, every page-worthy key must name the owner's action",
+      "branch": "land/bro-5480-sweep-dac",
+      "sha": "8b51acdc45879e1e7d750930c5fa24b2f0403dfb",
+      "landedAt": "2026-10-16T14:03:38.684Z"
+    },
+    {
+      "id": "BRO-5479",
+      "name": "Poller failures: email owner only for Broadway openings, route the rest to the auto-fixer",
+      "branch": "land/bro-5479-poller-broadway-email",
+      "sha": "5da8034c7fb6a7f6dd662ae58402911dd3e4c1dd",
+      "landedAt": "2026-10-16T15:59:16.142Z"
+    },
+    {
+      "id": "BRO-5430",
+      "name": "Morning digest: stop listing automation-owned problems to the owner; show real card status instead of 'being watched'",
+      "branch": "land/bro-5430-coverage-quotes",
+      "sha": "e49e646b200312d6b07db0ebb29d19b120b5834b",
+      "landedAt": "2026-10-16T08:47:32.446Z"
+    },
+    {
+      "id": "BRO-5427",
+      "name": "Opening-night SLA: duplicate P0 emails + junk reviews paging as stuck",
+      "branch": "land/bro-5427-sla-dup-emails",
+      "sha": "f1f0696c576898d24fe4c09f1ba41a24ad06b18e",
+      "landedAt": "2026-10-16T05:28:14.296Z"
+    },
+    {
+      "id": "BRO-5366",
+      "name": "Weekly Video Reviews stale 207h: TikTok creator scans failing via yt-dlp (4 creators unscanned 15-23 days)",
+      "branch": "land/bro-5366-tiktok-scan-retry",
+      "sha": "079dfe6e9504190d3988be7312e5ef7b4fd894c5",
+      "landedAt": "2026-10-14T23:31:45.412Z"
+    },
+    {
+      "id": "BRO-5316",
+      "name": "Triage the 99 baselined orphaned data/audit writes (BRO-2420 audit)",
+      "branch": "land/codex-bro-5316",
+      "sha": "0335ecb85d63b74d37ec2a5d447e7a24df1a9381",
+      "landedAt": "2026-10-17T04:13:15.820Z"
+    },
+    {
+      "id": "BRO-5307",
+      "name": "Enforce CLAUDE.md §12.8 audit-regex-patterns run for content-quality.js pattern edits",
+      "branch": "land/codex-bro-5307",
+      "sha": "44f32ee0aa5aee96a4250bf8d986d4016f943f70",
+      "landedAt": "2026-10-17T02:05:03.072Z"
+    },
+    {
+      "id": "BRO-5302",
+      "name": "Opening Night Orchestrator: alert-state push 403s (contents: read), emails owner after every full 5h run; same gap in opening-night-reviews + outlet-listing-poller",
+      "branch": "land/bro-5302-permission-gaps",
+      "sha": "6384e5aa7e8f5a5c45d56fda140db2612f9a022f",
+      "landedAt": "2026-10-14T02:29:11.805Z"
+    },
+    {
+      "id": "BRO-5297",
+      "name": "Triage ~150 open Notion-only cards filed after the 2026-08-20 freeze (no Linear twin)",
+      "branch": "land/codex-bro-5297",
+      "sha": "cd0f0c15a23eec1f8463a43aed1f37f3ad71b85a",
+      "landedAt": "2026-10-14T14:36:54.768Z"
+    },
+    {
+      "id": "BRO-5267",
+      "name": "Alert ledger: 267 conditions stay 'open' after their emitter stopped seeing them (no rollover/absence resolve)",
+      "branch": "land/codex-bro-5267",
+      "sha": "ae892502d0035455b38e14c40df1d950a18a5978",
+      "landedAt": "2026-10-16T02:14:36.698Z"
+    },
+    {
+      "id": "BRO-5231",
+      "name": "P2: 439 url-corrected reviews still ship the OLD url's body and score (needsRefetch never drains)",
+      "branch": "land/bro-5231-url-corrected-drain",
+      "sha": "5c3038a5c4814e0816cc990e25a777af083610d2",
+      "landedAt": "2026-10-13T07:55:30.948Z"
+    }
+  ]
+}

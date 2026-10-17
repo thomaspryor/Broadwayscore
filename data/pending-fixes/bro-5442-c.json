@@ -1,0 +1,74 @@
+{
+  "issueNumber": "bro-5442-c",
+  "planId": "65e476a4-a5e1-4d5e-ae5a-e73419d42a3b",
+  "status": "applied",
+  "createdAt": "2026-10-16T09:10:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5442 (c): flag the Brighton Beach Memoirs 2009 LA Times closing piece isNonReview (decided on its lead) and re-file the Dreamgirls 1981 AP review by Mary Campbell from the Daily News / Douglas Watt row to ap--mary-campbell.json. A rescore follows (it scored the Watt quote, 42, not Campbell's rave).",
+    "steps": [
+      "flag",
+      "migrate",
+      "rename"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "brighton-beach-memoirs-2009/latimes--james-c-taylor.json",
+        "field": "isNonReviewReason",
+        "oldValue": "BRO-5442: LA Times Culture Monster blog piece on why the revival closed after nine performances; news analysis, not a review.",
+        "newValue": "BRO-5442: news piece, not a review. Deciding sentence: the headline ('What really happened with Broadway's Brighton Beach Memoirs') and the opening paragraph are about why the revival closed after nine performances. This overrules the 2026-08-15 nonReviewOverride (reverify-nulled-cv-promoted.js), which read it as a review of the staging.",
+        "description": "BRO-5442: decided on the lead, per the owner's rule."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "brighton-beach-memoirs-2009/latimes--james-c-taylor.json",
+        "field": "isNonReview",
+        "oldValue": false,
+        "newValue": true,
+        "description": "BRO-5442: the lead is about the closing (news)."
+      },
+      {
+        "type": "run-script",
+        "script": "migrate-outlet-ids.js",
+        "args": "--apply --rule=dreamgirls-1981-campbell-nydailynews-to-ap",
+        "description": "BRO-5442: move Mary Campbell's AP review off the Daily News id (one-file rule)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "rename",
+        "sourcePath": "dreamgirls-1981/ap--douglas-watt.json",
+        "destPath": "dreamgirls-1981/ap--mary-campbell.json",
+        "description": "BRO-5442: the file name carried Douglas Watt; the review is Mary Campbell's (byline in the text)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T09:11:44.593Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "brighton-beach-memoirs-2009/latimes--james-c-taylor.json isNonReviewReason: \"BRO-5442: LA Times Culture Monster blog piece on why the revival closed after nine performances; news analysis, not a review.\" -> \"BRO-5442: news piece, not a review. Deciding sentence: the headline ('What really happened with Broadway's Brighton Beach Memoirs') and the opening paragraph are about why the revival closed after nine performances. This overrules the 2026-08-15 nonReviewOverride (reverify-nulled-cv-promoted.js), which read it as a review of the staging.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "brighton-beach-memoirs-2009/latimes--james-c-taylor.json isNonReview: false -> true"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran migrate-outlet-ids.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved dreamgirls-1981/ap--douglas-watt.json → dreamgirls-1981/ap--mary-campbell.json",
+      "cleared": []
+    }
+  ]
+}

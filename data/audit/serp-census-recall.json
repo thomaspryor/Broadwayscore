@@ -1,0 +1,854 @@
+{
+  "generatedAt": "2026-10-12T20:28:44.504Z",
+  "naivePages": 2,
+  "settlingHours": 24,
+  "totals": {
+    "shows": 5,
+    "excluded": [],
+    "undatedCandidates": 5,
+    "truthUrls": 51,
+    "scopedUrls": 17,
+    "naiveUrls": 19,
+    "onDiskUrls": 41,
+    "newFromNaive": 7,
+    "perArm": {
+      "naive-p0": {
+        "found": 10,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.196
+      },
+      "naive-p1": {
+        "found": 9,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.176
+      },
+      "onDisk": {
+        "found": 41,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.804
+      },
+      "scoped-q0": {
+        "found": 12,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.235
+      },
+      "scoped-q1": {
+        "found": 6,
+        "queries": 5,
+        "failed": 0,
+        "recall": 0.118
+      },
+      "scoped-q2": {
+        "found": 4,
+        "queries": 1,
+        "failed": 0,
+        "recall": 0.078
+      }
+    },
+    "perFamily": {
+      "naive": {
+        "found": 19,
+        "arms": 2,
+        "failed": 0,
+        "recall": 0.373
+      },
+      "onDisk": {
+        "found": 41,
+        "arms": 1,
+        "failed": 0,
+        "recall": 0.804
+      },
+      "scoped": {
+        "found": 17,
+        "arms": 3,
+        "failed": 0,
+        "recall": 0.333
+      }
+    },
+    "byCategory": {
+      "off-broadway": {
+        "shows": 2,
+        "truthUrls": 7,
+        "families": {
+          "naive": {
+            "found": 1,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.143
+          },
+          "onDisk": {
+            "found": 7,
+            "arms": 1,
+            "failed": 0,
+            "recall": 1
+          },
+          "scoped": {
+            "found": 1,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.143
+          }
+        }
+      },
+      "off-west-end": {
+        "shows": 3,
+        "truthUrls": 44,
+        "families": {
+          "naive": {
+            "found": 18,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.409
+          },
+          "onDisk": {
+            "found": 34,
+            "arms": 1,
+            "failed": 0,
+            "recall": 0.773
+          },
+          "scoped": {
+            "found": 16,
+            "arms": 3,
+            "failed": 0,
+            "recall": 0.364
+          }
+        }
+      }
+    },
+    "scopedRecall": 0.333,
+    "naiveRecall": 0.373
+  },
+  "shows": [
+    {
+      "showId": "hound-of-the-baskervilles-off-west-end-2026",
+      "title": "Hound of the Baskervilles",
+      "market": "off-west-end",
+      "openingDate": "2026-10-10",
+      "sampleState": "measured",
+      "sampleReason": "opened 2d ago",
+      "geo": "gb",
+      "naiveQuery": "Hound of the Baskervilles King's Head Theatre review",
+      "counts": {
+        "truth": 15,
+        "scoped": 4,
+        "naive": 7,
+        "onDisk": 7
+      },
+      "recall": {
+        "scoped": 0.267,
+        "naive": 0.467,
+        "onDisk": 0.467,
+        "censusPlusDisk": 0.6
+      },
+      "newFromNaive": [
+        "https://eventsforlondon.co.uk/event/the-hound-of-the-baskervilles-kings-head-theatre/2026-10-09/",
+        "https://www.yeahlifestyle.com/review-the-hound-of-the-baskervilles/",
+        "https://www.uktw.co.uk/London/The-Kings-Head-Theatre/Play/The-Hound-of-the-Baskervilles/L632393166/",
+        "https://fairypoweredproductions.com/the-hound-of-the-baskervilles-review-2/",
+        "https://www.brawtheatre.com/review-hound-of-the-baskervilles-perth-theatre/",
+        "https://quayslife.com/reviews/the-hound-of-the-baskervilles-review/"
+      ],
+      "missedByCensus": [
+        "https://everything-theatre.co.uk/2026/10/review-the-hound-of-the-baskervilles-kings-head-theatre/",
+        "https://eventsforlondon.co.uk/event/the-hound-of-the-baskervilles-kings-head-theatre/2026-10-09/",
+        "https://www.yeahlifestyle.com/review-the-hound-of-the-baskervilles/",
+        "https://www.uktw.co.uk/London/The-Kings-Head-Theatre/Play/The-Hound-of-the-Baskervilles/L632393166/",
+        "https://fairypoweredproductions.com/the-hound-of-the-baskervilles-review-2/",
+        "https://www.brawtheatre.com/review-hound-of-the-baskervilles-perth-theatre/",
+        "https://quayslife.com/reviews/the-hound-of-the-baskervilles-review/",
+        "https://eventsforlondon.co.uk/event/the-hound-of-the-baskervilles-kings-head-theatre/2026-10-06/",
+        "https://www.londonboxoffice.co.uk/news/post/review-hound-baskervilles",
+        "https://pembrokeshire-herald.com/150478/review-the-hound-of-the-baskervilles-at-the-torch-theatre/",
+        "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/the-hound-of-the-baskervilles_1731944/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Hound of the Baskervilles\" West End review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 3,
+          "urls": [
+            "https://uk.news.yahoo.com/torch-theatres-hound-baskervilles-review-092227074.html",
+            "https://www.evans-crittens.com/2026/10/the-hound-of-the-baskervilles-at-the-torch-theatre-milford-haven.html",
+            "https://www.westerntelegraph.co.uk/news/26621738.torch-theatre-milford-havens-hound-baskervilles-review/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Hound of the Baskervilles\" review king",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 2,
+          "urls": [
+            "https://vraibook.com/product/the-hound-of-the-baskervilles-arthur-conan-doyle/",
+            "https://www.westerntelegraph.co.uk/news/26621738.torch-theatre-milford-havens-hound-baskervilles-review/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Hound of the Baskervilles King's Head Theatre review",
+          "page": 0,
+          "geo": "gb",
+          "raw": 9,
+          "accepted": 4,
+          "urls": [
+            "https://everything-theatre.co.uk/2026/10/review-the-hound-of-the-baskervilles-kings-head-theatre/",
+            "https://eventsforlondon.co.uk/event/the-hound-of-the-baskervilles-kings-head-theatre/2026-10-09/",
+            "https://www.yeahlifestyle.com/review-the-hound-of-the-baskervilles/",
+            "https://www.uktw.co.uk/London/The-Kings-Head-Theatre/Play/The-Hound-of-the-Baskervilles/L632393166/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Hound of the Baskervilles King's Head Theatre review",
+          "page": 1,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 3,
+          "urls": [
+            "https://fairypoweredproductions.com/the-hound-of-the-baskervilles-review-2/",
+            "https://www.brawtheatre.com/review-hound-of-the-baskervilles-perth-theatre/",
+            "https://quayslife.com/reviews/the-hound-of-the-baskervilles-review/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 7,
+          "accepted": 7,
+          "urls": [
+            "https://www.evans-crittens.com/2026/10/the-hound-of-the-baskervilles-at-the-torch-theatre-milford-haven.html",
+            "https://eventsforlondon.co.uk/event/the-hound-of-the-baskervilles-kings-head-theatre/2026-10-06/",
+            "https://everything-theatre.co.uk/2026/10/review-the-hound-of-the-baskervilles-kings-head-theatre/",
+            "https://www.londonboxoffice.co.uk/news/post/review-hound-baskervilles",
+            "https://pembrokeshire-herald.com/150478/review-the-hound-of-the-baskervilles-at-the-torch-theatre/",
+            "https://www.westerntelegraph.co.uk/news/26621738.torch-theatre-milford-havens-hound-baskervilles-review/",
+            "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/the-hound-of-the-baskervilles_1731944/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "the-virtuous-burglar-off-west-end-2026",
+      "title": "The Virtuous Burglar",
+      "market": "off-west-end",
+      "openingDate": "2026-10-09",
+      "sampleState": "measured",
+      "sampleReason": "opened 3d ago",
+      "geo": "gb",
+      "naiveQuery": "The Virtuous Burglar Riverside Studios review",
+      "counts": {
+        "truth": 6,
+        "scoped": 2,
+        "naive": 3,
+        "onDisk": 4
+      },
+      "recall": {
+        "scoped": 0.333,
+        "naive": 0.5,
+        "onDisk": 0.667,
+        "censusPlusDisk": 0.833
+      },
+      "newFromNaive": [
+        "https://www.whatsonstage.com/news/the-virtuous-burglar_12240/"
+      ],
+      "missedByCensus": [
+        "https://broadwaybaby.com/shows/the-virtuous-burglar/702098",
+        "https://www.whatsonstage.com/news/the-virtuous-burglar_12240/",
+        "https://ayoungishperspective.co.uk/2026/10/09/review-the-virtuous-burglar/",
+        "https://www.concordtheatricals.co.uk/p/12004/the-virtuous-burglar"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"The Virtuous Burglar\" West End review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://loureviews.blog/2026/10/10/play-review-the-virtuous-burglar-at-riverside-studios/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"The Virtuous Burglar\" review riverside",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://loureviews.blog/2026/10/10/play-review-the-virtuous-burglar-at-riverside-studios/amp/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "The Virtuous Burglar Riverside Studios review",
+          "page": 0,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://loureviews.blog/2026/10/10/play-review-the-virtuous-burglar-at-riverside-studios/amp/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "The Virtuous Burglar Riverside Studios review",
+          "page": 1,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 2,
+          "urls": [
+            "https://broadwaybaby.com/shows/the-virtuous-burglar/702098",
+            "https://www.whatsonstage.com/news/the-virtuous-burglar_12240/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 4,
+          "accepted": 4,
+          "urls": [
+            "https://ayoungishperspective.co.uk/2026/10/09/review-the-virtuous-burglar/",
+            "https://broadwaybaby.com/shows/the-virtuous-burglar/702098",
+            "https://www.concordtheatricals.co.uk/p/12004/the-virtuous-burglar",
+            "https://loureviews.blog/2026/10/10/play-review-the-virtuous-burglar-at-riverside-studios/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "bettys-summer-vacation-the-heights-players-off-broadway-2026",
+      "title": "Betty's Summer Vacation (The Heights Players)",
+      "market": "off-broadway",
+      "openingDate": "2026-10-09",
+      "sampleState": "measured",
+      "sampleReason": "opened 3d ago",
+      "geo": "us",
+      "naiveQuery": "Betty's Summer Vacation (The Heights Players) The John Bourne Theatre review",
+      "counts": {
+        "truth": 0,
+        "scoped": 0,
+        "naive": 0,
+        "onDisk": 0
+      },
+      "recall": {
+        "scoped": 1,
+        "naive": 1,
+        "onDisk": 1,
+        "censusPlusDisk": 1
+      },
+      "newFromNaive": [],
+      "missedByCensus": [],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Betty's Summer Vacation (The Heights Players)\" Off-Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 1,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Betty's Summer Vacation (The Heights Players)\" review john",
+          "page": 0,
+          "geo": null,
+          "raw": 1,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Betty's Summer Vacation (The Heights Players) The John Bourne Theatre review",
+          "page": 0,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Betty's Summer Vacation (The Heights Players) The John Bourne Theatre review",
+          "page": 1,
+          "geo": "us",
+          "raw": 8,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 0,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "a-ghost-in-your-ear-off-broadway-2026",
+      "title": "A Ghost In Your Ear",
+      "market": "off-broadway",
+      "openingDate": "2026-10-09",
+      "sampleState": "measured",
+      "sampleReason": "opened 3d ago",
+      "geo": "us",
+      "naiveQuery": "A Ghost In Your Ear Audible’s Minetta Lane Theatre review",
+      "counts": {
+        "truth": 7,
+        "scoped": 1,
+        "naive": 1,
+        "onDisk": 7
+      },
+      "recall": {
+        "scoped": 0.143,
+        "naive": 0.143,
+        "onDisk": 1,
+        "censusPlusDisk": 1
+      },
+      "newFromNaive": [],
+      "missedByCensus": [
+        "https://variety.com/2026/legit/news/ghost-in-your-ear-horror-play-minetta-lane-audible-theater-1236827653/",
+        "https://ihorror.com/a-ghost-in-your-ear-headphone-horror-off-broadway/",
+        "https://www.nyc.com/broadway_tickets/a_ghost_in_your_ear.446248341083275264/",
+        "https://www.theatermania.com/tags/a-ghost-in-your-ear/",
+        "https://www.timeout.com/newyork/theater/a-ghost-in-your-ear",
+        "https://www.voiceoverherald.com/a-ghost-in-your-ear-audiobook-horror-play-off-broadway-audible/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"A Ghost In Your Ear\" Off-Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 1,
+          "urls": [
+            "https://www.theatermania.com/news/interview-writer-director-jamie-armitage-wants-to-put-a-ghost-in-your-ear_1855461/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"A Ghost In Your Ear\" review audible",
+          "page": 0,
+          "geo": null,
+          "raw": 8,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "A Ghost In Your Ear Audible’s Minetta Lane Theatre review",
+          "page": 0,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://variety.com/2026/legit/news/ghost-in-your-ear-horror-play-minetta-lane-audible-theater-1236827653/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "A Ghost In Your Ear Audible’s Minetta Lane Theatre review",
+          "page": 1,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 7,
+          "accepted": 7,
+          "urls": [
+            "https://ihorror.com/a-ghost-in-your-ear-headphone-horror-off-broadway/",
+            "https://www.nyc.com/broadway_tickets/a_ghost_in_your_ear.446248341083275264/",
+            "https://www.theatermania.com/news/interview-writer-director-jamie-armitage-wants-to-put-a-ghost-in-your-ear_1855461/",
+            "https://www.theatermania.com/tags/a-ghost-in-your-ear/",
+            "https://www.timeout.com/newyork/theater/a-ghost-in-your-ear",
+            "https://variety.com/2026/legit/news/ghost-in-your-ear-horror-play-minetta-lane-audible-theater-1236827653/",
+            "https://www.voiceoverherald.com/a-ghost-in-your-ear-audiobook-horror-play-off-broadway-audible/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "fences-off-west-end-2026",
+      "title": "Fences",
+      "market": "off-west-end",
+      "openingDate": "2026-10-09",
+      "sampleState": "measured",
+      "sampleReason": "opened 3d ago",
+      "geo": "gb",
+      "naiveQuery": "Fences Lyric Hammersmith review",
+      "counts": {
+        "truth": 23,
+        "scoped": 10,
+        "naive": 8,
+        "onDisk": 23
+      },
+      "recall": {
+        "scoped": 0.435,
+        "naive": 0.348,
+        "onDisk": 1,
+        "censusPlusDisk": 1
+      },
+      "newFromNaive": [],
+      "missedByCensus": [
+        "https://www.londontheatre1.com/reviews/fences-lyric-hammersmith-theatre/",
+        "https://ayoungishperspective.co.uk/2026/10/03/review-fences/",
+        "https://www.theguardian.com/stage/2026/sep/17/fences-review-leeds-playhouse-august-wilson",
+        "https://www.jackstage.co.uk/post/august-wilson-s-fences-review-a-searing-domestic-account-on-the-black-american-experience",
+        "https://www.londontheatredirect.com/news/lyn-gardners-top-ten-reasons-to-see-fences-at-the-lyric-hammersmith",
+        "https://www.myviewfromthestalls.co.uk/post/review-fences-oxford-playhouse",
+        "https://northwestend.com/fences-lyric-hammersmith/",
+        "https://northernartsreview.co.uk/central-north/review-august-wilsons-fences-at-leeds-playhouse/",
+        "https://number9reviews.blogspot.com/2026/09/theatre-review-fences-courtyard-theatre.html",
+        "https://oxfordshireguardian.co.uk/review-fences-delivered-a-powerful-night-of-theatre-at-oxford-playhouse/",
+        "https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse",
+        "https://www.thetimes.com/culture/theatre-dance/article/fences-review-no-big-concepts-just-fizzing-drama-5hqjvz73j",
+        "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/fences_1722012/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Fences\" West End review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 7,
+          "urls": [
+            "https://liamodell.com/2026/10/09/fences-review-play-lyric-hammersmith-theatre-london-home-manchester-nottingham-playhouse/",
+            "https://www.londonboxoffice.co.uk/news/post/fences-lyric-hammersmith-review",
+            "https://www.britishtheatreguide.info/reviews/fences-oxford-playhous-26068",
+            "https://www.thereviewshub.com/fences-lyric-hammersmith-london/",
+            "https://www.londontheatredirect.com/news/august-wilsons-fences-review-a-powerful-portrait-of-family-prejudice-and-masculinity",
+            "https://theatrevibe.co.uk/2026/10/11/review-fences-lyric-hammersmith-2026/",
+            "https://ayoungishperspective.co.uk/2026/10/12/review-fences-2/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Fences\" review lyric",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 3,
+          "urls": [
+            "https://www.allthatdazzles.co.uk/post/review-fences-lyric-hammersmith",
+            "https://ayoungishperspective.co.uk/2026/10/12/review-fences-2/",
+            "https://ground.news/article/review-fences-at-lyric-theatre-hammersmith-uk-tour"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q2",
+          "query": "\"Fences\" Bailey review",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 4,
+          "urls": [
+            "https://ayoungishperspective.co.uk/2026/10/12/review-fences-2/",
+            "https://www.allthatdazzles.co.uk/post/review-fences-lyric-hammersmith",
+            "https://www.timeout.com/london/theatre/fences-2-review",
+            "https://www.londontheatredirect.com/news/august-wilsons-fences-review-a-powerful-portrait-of-family-prejudice-and-masculinity"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Fences Lyric Hammersmith review",
+          "page": 0,
+          "geo": "gb",
+          "raw": 9,
+          "accepted": 4,
+          "urls": [
+            "https://www.thereviewshub.com/fences-lyric-hammersmith-london/",
+            "https://www.britishtheatreguide.info/reviews/fences-oxford-playhous-26068",
+            "https://liamodell.com/2026/10/09/fences-review-play-lyric-hammersmith-theatre-london-home-manchester-nottingham-playhouse/",
+            "https://www.allthatdazzles.co.uk/post/review-fences-lyric-hammersmith"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Fences Lyric Hammersmith review",
+          "page": 1,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 4,
+          "urls": [
+            "https://www.londontheatre1.com/reviews/fences-lyric-hammersmith-theatre/",
+            "https://theatrevibe.co.uk/2026/10/11/review-fences-lyric-hammersmith-2026/",
+            "https://www.londonboxoffice.co.uk/news/post/fences-lyric-hammersmith-review",
+            "https://www.londontheatredirect.com/news/august-wilsons-fences-review-a-powerful-portrait-of-family-prejudice-and-masculinity"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 23,
+          "accepted": 23,
+          "urls": [
+            "https://ayoungishperspective.co.uk/2026/10/03/review-fences/",
+            "https://ayoungishperspective.co.uk/2026/10/12/review-fences-2/",
+            "https://www.allthatdazzles.co.uk/post/review-fences-lyric-hammersmith",
+            "https://www.britishtheatreguide.info/reviews/fences-oxford-playhous-26068",
+            "https://ground.news/article/review-fences-at-lyric-theatre-hammersmith-uk-tour",
+            "https://www.theguardian.com/stage/2026/sep/17/fences-review-leeds-playhouse-august-wilson",
+            "https://www.jackstage.co.uk/post/august-wilson-s-fences-review-a-searing-domestic-account-on-the-black-american-experience",
+            "https://liamodell.com/2026/10/09/fences-review-play-lyric-hammersmith-theatre-london-home-manchester-nottingham-playhouse/",
+            "https://www.londonboxoffice.co.uk/news/post/fences-lyric-hammersmith-review",
+            "https://www.londontheatre1.com/reviews/fences-lyric-hammersmith-theatre/",
+            "https://www.londontheatredirect.com/news/august-wilsons-fences-review-a-powerful-portrait-of-family-prejudice-and-masculinity",
+            "https://www.londontheatredirect.com/news/lyn-gardners-top-ten-reasons-to-see-fences-at-the-lyric-hammersmith",
+            "https://www.myviewfromthestalls.co.uk/post/review-fences-oxford-playhouse",
+            "https://northwestend.com/fences-lyric-hammersmith/",
+            "https://northernartsreview.co.uk/central-north/review-august-wilsons-fences-at-leeds-playhouse/",
+            "https://number9reviews.blogspot.com/2026/09/theatre-review-fences-courtyard-theatre.html",
+            "https://oxfordshireguardian.co.uk/review-fences-delivered-a-powerful-night-of-theatre-at-oxford-playhouse/",
+            "https://theatrevibe.co.uk/2026/10/11/review-fences-lyric-hammersmith-2026/",
+            "https://www.thereviewshub.com/fences-lyric-hammersmith-london/",
+            "https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse",
+            "https://www.timeout.com/london/theatre/fences-2-review",
+            "https://www.thetimes.com/culture/theatre-dance/article/fences-review-no-big-concepts-just-fizzing-drama-5hqjvz73j",
+            "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/fences_1722012/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    }
+  ],
+  "providerOutage": false,
+  "onDiskUnavailable": false,
+  "trend": {
+    "entry": {
+      "date": "2026-10-12",
+      "generatedAt": "2026-10-12T20:28:44.504Z",
+      "naivePages": 2,
+      "shows": 5,
+      "informativeShows": 4,
+      "excluded": {
+        "settling": 1
+      },
+      "truthUrls": 51,
+      "onDiskUrls": 41,
+      "newFromNaive": 7,
+      "families": {
+        "naive": 0.373,
+        "onDisk": 0.804,
+        "scoped": 0.333
+      },
+      "arms": {
+        "naive-p0": 0.196,
+        "naive-p1": 0.176,
+        "onDisk": 0.804,
+        "scoped-q0": 0.235,
+        "scoped-q1": 0.118,
+        "scoped-q2": 0.078
+      },
+      "combinedRecall": 0.863,
+      "familyYield": {
+        "naive": 3.8,
+        "onDisk": 8.2,
+        "scoped": 3.4
+      },
+      "armYield": {
+        "naive-p0": 2,
+        "naive-p1": 1.8,
+        "onDisk": 8.2,
+        "scoped-q0": 2.4,
+        "scoped-q1": 1.2,
+        "scoped-q2": 0.8
+      },
+      "armsFailed": {
+        "naive-p0": 0,
+        "naive-p1": 0,
+        "onDisk": 0,
+        "scoped-q0": 0,
+        "scoped-q1": 0,
+        "scoped-q2": 0
+      },
+      "unavailableArms": [],
+      "byCategory": {
+        "off-broadway": {
+          "shows": 2,
+          "truthUrls": 7,
+          "families": {
+            "naive": 0.143,
+            "onDisk": 1,
+            "scoped": 0.143
+          }
+        },
+        "off-west-end": {
+          "shows": 3,
+          "truthUrls": 44,
+          "families": {
+            "naive": 0.409,
+            "onDisk": 0.773,
+            "scoped": 0.364
+          }
+        }
+      },
+      "sampleIds": [
+        "hound-of-the-baskervilles-off-west-end-2026",
+        "the-virtuous-burglar-off-west-end-2026",
+        "bettys-summer-vacation-the-heights-players-off-broadway-2026",
+        "a-ghost-in-your-ear-off-broadway-2026",
+        "fences-off-west-end-2026"
+      ]
+    },
+    "judgement": {
+      "verdict": "ok",
+      "reason": "3 search method(s) within 0.15 of their 4-run median",
+      "regressions": [],
+      "latest": {
+        "date": "2026-10-12",
+        "generatedAt": "2026-10-12T20:28:44.504Z",
+        "naivePages": 2,
+        "shows": 5,
+        "informativeShows": 4,
+        "excluded": {
+          "settling": 1
+        },
+        "truthUrls": 51,
+        "onDiskUrls": 41,
+        "newFromNaive": 7,
+        "families": {
+          "naive": 0.373,
+          "onDisk": 0.804,
+          "scoped": 0.333
+        },
+        "arms": {
+          "naive-p0": 0.196,
+          "naive-p1": 0.176,
+          "onDisk": 0.804,
+          "scoped-q0": 0.235,
+          "scoped-q1": 0.118,
+          "scoped-q2": 0.078
+        },
+        "combinedRecall": 0.863,
+        "familyYield": {
+          "naive": 3.8,
+          "onDisk": 8.2,
+          "scoped": 3.4
+        },
+        "armYield": {
+          "naive-p0": 2,
+          "naive-p1": 1.8,
+          "onDisk": 8.2,
+          "scoped-q0": 2.4,
+          "scoped-q1": 1.2,
+          "scoped-q2": 0.8
+        },
+        "armsFailed": {
+          "naive-p0": 0,
+          "naive-p1": 0,
+          "onDisk": 0,
+          "scoped-q0": 0,
+          "scoped-q1": 0,
+          "scoped-q2": 0
+        },
+        "unavailableArms": [],
+        "byCategory": {
+          "off-broadway": {
+            "shows": 2,
+            "truthUrls": 7,
+            "families": {
+              "naive": 0.143,
+              "onDisk": 1,
+              "scoped": 0.143
+            }
+          },
+          "off-west-end": {
+            "shows": 3,
+            "truthUrls": 44,
+            "families": {
+              "naive": 0.409,
+              "onDisk": 0.773,
+              "scoped": 0.364
+            }
+          }
+        },
+        "sampleIds": [
+          "hound-of-the-baskervilles-off-west-end-2026",
+          "the-virtuous-burglar-off-west-end-2026",
+          "bettys-summer-vacation-the-heights-players-off-broadway-2026",
+          "a-ghost-in-your-ear-off-broadway-2026",
+          "fences-off-west-end-2026"
+        ]
+      },
+      "comparedArms": 3,
+      "skipped": []
+    }
+  }
+}

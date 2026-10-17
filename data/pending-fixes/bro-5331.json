@@ -1,0 +1,461 @@
+{
+  "issueNumber": "bro-5331",
+  "planId": "207882b5-dfe9-4ca0-89f3-764e60221c5e",
+  "status": "applied",
+  "createdAt": "2026-10-14T04:21:15.854Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5331: vision sweep found wrong posters on 35 live shows. Point shows.json at the replaced art (TodayTix/venue posters), and null the art on 8 rows where no honest art exists, marking them noReliableArt.",
+    "steps": [
+      "Update images for rows whose files changed extension or gained a poster",
+      "Null images + reject wrong sources + set noReliableArt on the 8 art-less rows"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-score-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "poster": "/images/shows/the-score-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/the-score-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/the-score-regional-2026/hero.webp"
+        },
+        "newValue": {
+          "poster": "/images/shows/the-score-regional-2026/poster.jpg",
+          "thumbnail": "/images/shows/the-score-regional-2026/thumbnail.jpg",
+          "hero": "/images/shows/the-score-regional-2026/hero.webp"
+        },
+        "description": "the-score-regional-2026: art replaced with the TodayTix poster for the STC run (files are .jpg now)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-quiet-revolution-of-laurent-clerc-off-west-end-2027",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-quiet-revolution-of-laurent-clerc-off-west-end-2027/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/the-quiet-revolution-of-laurent-clerc-off-west-end-2027/thumbnail.jpg",
+          "poster": "/images/shows/the-quiet-revolution-of-laurent-clerc-off-west-end-2027/poster.jpg",
+          "hero": null
+        },
+        "description": "the-quiet-revolution-of-laurent-clerc-off-west-end-2027: poster was null while a wrong thumbnail showed; both now the venue's own art (BRO-5331)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "montgomery-an-american-musical-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/montgomery-an-american-musical-off-broadway-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/montgomery-an-american-musical-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/montgomery-an-american-musical-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "description": "montgomery-an-american-musical-off-broadway-2026: poster was null while a wrong thumbnail showed; both now the venue's own art (BRO-5331)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/catarina-and-the-beauty-of-killing-fascists-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/catarina-and-the-beauty-of-killing-fascists-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "catarina-and-the-beauty-of-killing-fascists-west-end-2026: only untitled production photos exist (BRO-5331 sweep); the held image was a signage/stage photo, not key art"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://www.theaterdiary.com/parse/files/C7TsezAg3jnX9jHLsC9KFEteyKePkwLtB46dDpfh/423347210c4f5451d015d300812d6d0a_Catarina%20and%20the%20Beauty%20of%20Killing%20Fascists%20national%20theatre.jpg"
+        ],
+        "description": "catarina-and-the-beauty-of-killing-fascists-west-end-2026: never re-take the wrong source (BRO-5331)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-14",
+          "reason": "only untitled production photos exist (BRO-5331 sweep); the held image was a signage/stage photo, not key art",
+          "key": "catarina and the beauty of killing fascists|national theatre|2026-09-21"
+        },
+        "description": "catarina-and-the-beauty-of-killing-fascists-west-end-2026: no reliable art; sweeps skip it until the row changes (BRO-5331)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "orlando-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/orlando-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/orlando-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "orlando-off-west-end-2026: held image was a US venue season graphic; New Diorama art could not be fetched (BRO-5331)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "orlando-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/5527/medium_1663843796-ORLANDO.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/5527/preview_1663843796-ORLANDO.jpg"
+        ],
+        "description": "orlando-off-west-end-2026: never re-take the wrong source (BRO-5331)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "orlando-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-14",
+          "reason": "held image was a US venue season graphic; New Diorama art could not be fetched (BRO-5331)",
+          "key": "orlando: a pornobiography|new diorama theatre|"
+        },
+        "description": "orlando-off-west-end-2026: no reliable art; sweeps skip it until the row changes (BRO-5331)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-moth-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-moth-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/the-moth-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-moth-off-west-end-2026: held image was a Devin Townsend gig poster; only an untitled press collage exists (BRO-5331)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-moth-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-14",
+          "reason": "held image was a Devin Townsend gig poster; only an untitled press collage exists (BRO-5331)",
+          "key": "the moth|finborough theatre|"
+        },
+        "description": "the-moth-off-west-end-2026: no reliable art; sweeps skip it until the row changes (BRO-5331)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "eulogy-off-west-end-2027",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/eulogy-off-west-end-2027/thumbnail.jpg",
+          "poster": "/images/shows/eulogy-off-west-end-2027/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "eulogy-off-west-end-2027: held image was another Eulogy (Circle & Star); DARKFIELD key art not found (BRO-5331)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "eulogy-off-west-end-2027",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-14",
+          "reason": "held image was another Eulogy (Circle & Star); DARKFIELD key art not found (BRO-5331)",
+          "key": "eulogy|young vic|"
+        },
+        "description": "eulogy-off-west-end-2027: no reliable art; sweeps skip it until the row changes (BRO-5331)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "baby-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/baby-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/baby-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "baby-off-west-end-2026: held image was a US Baby staging; Brixton House play has only an untitled photo, row officialUrl is another show (BRO-5331)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "baby-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-14",
+          "reason": "held image was a US Baby staging; Brixton House play has only an untitled photo, row officialUrl is another show (BRO-5331)",
+          "key": "baby|brixton house|"
+        },
+        "description": "baby-off-west-end-2026: no reliable art; sweeps skip it until the row changes (BRO-5331)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-the-way-home-off-broadway-2027",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/all-the-way-home-off-broadway-2027/thumbnail.jpg",
+          "poster": "/images/shows/all-the-way-home-off-broadway-2027/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "all-the-way-home-off-broadway-2027: held image was the 1963 film poster; York NEW2NY concert has no art yet (BRO-5331)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-the-way-home-off-broadway-2027",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-14",
+          "reason": "held image was the 1963 film poster; York NEW2NY concert has no art yet (BRO-5331)",
+          "key": "all the way home|theater at st. jean's|"
+        },
+        "description": "all-the-way-home-off-broadway-2027: no reliable art; sweeps skip it until the row changes (BRO-5331)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "we-are-happy-to-serve-you-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/we-are-happy-to-serve-you-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/we-are-happy-to-serve-you-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "we-are-happy-to-serve-you-off-broadway-2026: held image was a coffee-cup product shot; no show art found (BRO-5331)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "we-are-happy-to-serve-you-off-broadway-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-14",
+          "reason": "held image was a coffee-cup product shot; no show art found (BRO-5331)",
+          "key": "we are happy to serve you|the players theatre|"
+        },
+        "description": "we-are-happy-to-serve-you-off-broadway-2026: no reliable art; sweeps skip it until the row changes (BRO-5331)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-carol-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-christmas-carol-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/a-christmas-carol-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "a-christmas-carol-west-end-2026: held image was a US musical staging; no 2026 Old Vic key art verified (BRO-5331)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-carol-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://d2rawotm8xdpob.cloudfront.net/v0/b/theatr-app.appspot.com/o/shows/1753887889912-xbvbswge6c8.jpg"
+        ],
+        "newValue": [
+          "https://d2rawotm8xdpob.cloudfront.net/v0/b/theatr-app.appspot.com/o/shows/1753887889912-xbvbswge6c8.jpg",
+          "https://www.theaterdiary.com/parse/files/C7TsezAg3jnX9jHLsC9KFEteyKePkwLtB46dDpfh/4f025431fb36d00e4231a94d1b92e928_a%20christmas%20carol%2024%2025.jpg"
+        ],
+        "description": "a-christmas-carol-west-end-2026: never re-take the wrong source (BRO-5331)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-carol-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-14",
+          "reason": "held image was a US musical staging; no 2026 Old Vic key art verified (BRO-5331)",
+          "key": "a christmas carol|the old vic|2026-11-24"
+        },
+        "description": "a-christmas-carol-west-end-2026: no reliable art; sweeps skip it until the row changes (BRO-5331)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T04:59:28.198Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-score-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-quiet-revolution-of-laurent-clerc-off-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for montgomery-an-american-musical-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for catarina-and-the-beauty-of-killing-fascists-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for catarina-and-the-beauty-of-killing-fascists-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for catarina-and-the-beauty-of-killing-fascists-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for orlando-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for orlando-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for orlando-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-moth-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for the-moth-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for eulogy-off-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for eulogy-off-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for baby-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for baby-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for all-the-way-home-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for all-the-way-home-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for we-are-happy-to-serve-you-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for we-are-happy-to-serve-you-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for a-christmas-carol-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for a-christmas-carol-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for a-christmas-carol-west-end-2026"
+    }
+  ]
+}

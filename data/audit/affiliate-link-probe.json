@@ -1,0 +1,121 @@
+{
+  "base": "https://broadwayscorecard.com",
+  "pagesChecked": 5,
+  "pagesFailed": 0,
+  "destinationsChecked": 3,
+  "destinationsBroken": 0,
+  "destinationsSkipped": 0,
+  "allDestinationsSkipped": false,
+  "results": [
+    {
+      "id": "aladdin-2014",
+      "slug": "aladdin",
+      "status": "open",
+      "todaytixId": 105,
+      "expectLinks": true,
+      "url": "https://broadwayscorecard.com/show/aladdin",
+      "verdict": "pass",
+      "linksFound": 10,
+      "clientOnly": false,
+      "problems": [],
+      "destinations": [
+        "https://www.todaytix.com/nyc/shows/105-aladdin-on-broadway",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470321",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470322",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470323",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470324",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470326",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470325",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470328",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470327",
+        "https://www.todaytix.com/nyc/shows/105-aladdin-on-broadway"
+      ]
+    },
+    {
+      "id": "and-juliet-2022",
+      "slug": "and-juliet",
+      "status": "open",
+      "todaytixId": 25598,
+      "expectLinks": true,
+      "url": "https://broadwayscorecard.com/show/and-juliet",
+      "verdict": "pass",
+      "linksFound": 12,
+      "clientOnly": false,
+      "problems": [],
+      "destinations": [
+        "https://www.todaytix.com/nyc/shows/25598-and-juliet-on-broadway",
+        "https://www.todaytix.com/booking/seating-plan?showId=25598&showtimeId=2352761",
+        "https://www.todaytix.com/booking/seating-plan?showId=25598&showtimeId=2352763",
+        "https://www.todaytix.com/booking/seating-plan?showId=25598&showtimeId=2352765",
+        "https://www.todaytix.com/booking/seating-plan?showId=25598&showtimeId=2352774",
+        "https://www.todaytix.com/booking/seating-plan?showId=25598&showtimeId=2352790",
+        "https://www.todaytix.com/booking/seating-plan?showId=25598&showtimeId=2352792",
+        "https://www.todaytix.com/booking/seating-plan?showId=25598&showtimeId=2352923",
+        "https://www.todaytix.com/booking/seating-plan?showId=25598&showtimeId=2352926",
+        "https://www.todaytix.com/nyc/shows/25598-and-juliet-on-broadway",
+        "https://www.todaytix.com/nyc/shows/25598-&-juliet-on-broadway"
+      ]
+    },
+    {
+      "id": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
+      "slug": "austentatious-an-improvised-jane-austen-novel-west-end",
+      "status": "open",
+      "todaytixId": 43897,
+      "expectLinks": true,
+      "url": "https://broadwayscorecard.com/show/austentatious-an-improvised-jane-austen-novel-west-end",
+      "verdict": "pass",
+      "linksFound": 1,
+      "clientOnly": false,
+      "problems": [],
+      "destinations": [
+        "https://www.todaytix.com/london/shows/43897-austentatious-an-improvised-jane-austen-novel"
+      ]
+    },
+    {
+      "id": "a-ghost-in-your-ear-off-broadway-2026",
+      "slug": "a-ghost-in-your-ear-off-broadway",
+      "status": "open",
+      "todaytixId": 47577,
+      "expectLinks": true,
+      "url": "https://broadwayscorecard.com/show/a-ghost-in-your-ear-off-broadway",
+      "verdict": "pass",
+      "linksFound": 1,
+      "clientOnly": false,
+      "problems": [],
+      "destinations": [
+        "https://www.todaytix.com/nyc/shows/47577-a-ghost-in-your-ear"
+      ]
+    },
+    {
+      "id": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
+      "slug": "the-25th-annual-putnam-county-spelling-bee-off-broadway",
+      "status": "closed",
+      "todaytixId": 44388,
+      "expectLinks": false,
+      "url": "https://broadwayscorecard.com/show/the-25th-annual-putnam-county-spelling-bee-off-broadway",
+      "verdict": "pass",
+      "linksFound": 0,
+      "clientOnly": false,
+      "problems": [],
+      "destinations": []
+    }
+  ],
+  "destChecks": [
+    {
+      "dest": "https://www.todaytix.com/nyc/shows/105-aladdin-on-broadway",
+      "verdict": "ok",
+      "detail": "HTTP 200"
+    },
+    {
+      "dest": "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470321",
+      "verdict": "ok",
+      "detail": "HTTP 200"
+    },
+    {
+      "dest": "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470322",
+      "verdict": "ok",
+      "detail": "HTTP 200"
+    }
+  ],
+  "updatedAt": "2026-10-12T21:29:19.434Z"
+}

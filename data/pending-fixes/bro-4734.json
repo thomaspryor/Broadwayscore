@@ -1,0 +1,397 @@
+{
+  "issueNumber": "bro-4734",
+  "planId": "3136b26f-161e-413b-b50b-33e3d49b8425",
+  "status": "partial",
+  "createdAt": "2026-10-15T05:25:44.296Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Null 17 landscape poster references on non-closed shows. The corresponding poster files are removed in this change; existing thumbnails remain available.",
+    "steps": [
+      "Apply compare-and-set image edits to the private core-data catalog.",
+      "Run node scripts/check-image-aspect.js --audit --active-posters after the image deletions land."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-paparazzi-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-paparazzi-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/the-paparazzi-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/the-paparazzi-off-broadway-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-paparazzi-off-broadway-2026: null landscape poster (270x186); preserve thumbnail fallback (BRO-4734)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "our-house-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/our-house-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/our-house-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/our-house-off-broadway-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "our-house-off-broadway-2026: null landscape poster (248x203); preserve thumbnail fallback (BRO-4734)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "miracle-on-south-division-street-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/miracle-on-south-division-street-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/miracle-on-south-division-street-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/miracle-on-south-division-street-off-broadway-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "miracle-on-south-division-street-off-broadway-2026: null landscape poster (225x224); preserve thumbnail fallback (BRO-4734)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "north-star-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/north-star-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/north-star-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/north-star-off-broadway-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "north-star-off-broadway-2026: null landscape poster (269x187); preserve thumbnail fallback (BRO-4734)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "legend-the-music-of-bob-marley-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/legend-the-music-of-bob-marley-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/legend-the-music-of-bob-marley-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/legend-the-music-of-bob-marley-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "legend-the-music-of-bob-marley-off-west-end-2026: null landscape poster (300x168); preserve thumbnail fallback (BRO-4734)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "voices-from-ukraine-overview-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/voices-from-ukraine-overview-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/voices-from-ukraine-overview-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/voices-from-ukraine-overview-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "voices-from-ukraine-overview-off-west-end-2026: null landscape poster (318x159); preserve thumbnail fallback (BRO-4734)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "what-we-talk-about-when-we-talk-about-anne-frank-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/what-we-talk-about-when-we-talk-about-anne-frank-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/what-we-talk-about-when-we-talk-about-anne-frank-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/what-we-talk-about-when-we-talk-about-anne-frank-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "what-we-talk-about-when-we-talk-about-anne-frank-off-west-end-2026: null landscape poster (300x168); preserve thumbnail fallback (BRO-4734)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kevin-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/kevin-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/kevin-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/kevin-off-broadway-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "kevin-off-broadway-2026: null landscape poster (420x315); preserve thumbnail fallback (BRO-4734)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cranford-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/cranford-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/cranford-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/cranford-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "cranford-off-west-end-2026: null landscape poster (800x500); preserve thumbnail fallback (BRO-4734)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/peter-pan-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/peter-pan-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/peter-pan-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "peter-pan-west-end-2026: null landscape poster (1200x675); preserve thumbnail fallback (BRO-4734)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pulman-and-stilgoe-hooray-for-hollywood-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/pulman-and-stilgoe-hooray-for-hollywood-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/pulman-and-stilgoe-hooray-for-hollywood-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/pulman-and-stilgoe-hooray-for-hollywood-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "pulman-and-stilgoe-hooray-for-hollywood-west-end-2026: null landscape poster (1200x675); preserve thumbnail fallback (BRO-4734)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-radium-girls-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-radium-girls-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/the-radium-girls-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/the-radium-girls-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-radium-girls-off-west-end-2026: null landscape poster (1012x506); preserve thumbnail fallback (BRO-4734)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-quiet-revolution-of-laurent-clerc-off-west-end-2027",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-quiet-revolution-of-laurent-clerc-off-west-end-2027/thumbnail.jpg",
+          "poster": "/images/shows/the-quiet-revolution-of-laurent-clerc-off-west-end-2027/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/the-quiet-revolution-of-laurent-clerc-off-west-end-2027/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-quiet-revolution-of-laurent-clerc-off-west-end-2027: null landscape poster (1200x675); preserve thumbnail fallback (BRO-4734)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "father-christmas-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/father-christmas-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/father-christmas-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/father-christmas-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "father-christmas-off-west-end-2026: null landscape poster (1200x450); preserve thumbnail fallback (BRO-4734)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "franky-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/franky-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/franky-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/franky-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "franky-off-west-end-2026: null landscape poster (1200x675); preserve thumbnail fallback (BRO-4734)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "gianni-schicchi-off-west-end-2027",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/gianni-schicchi-off-west-end-2027/thumbnail.jpg",
+          "poster": "/images/shows/gianni-schicchi-off-west-end-2027/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/gianni-schicchi-off-west-end-2027/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "gianni-schicchi-off-west-end-2027: null landscape poster (1200x675); preserve thumbnail fallback (BRO-4734)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "montgomery-an-american-musical-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/montgomery-an-american-musical-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/montgomery-an-american-musical-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/montgomery-an-american-musical-off-broadway-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "montgomery-an-american-musical-off-broadway-2026: null landscape poster (1200x675); preserve thumbnail fallback (BRO-4734)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T01:04:26.966Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-paparazzi-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for our-house-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for miracle-on-south-division-street-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for north-star-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for legend-the-music-of-bob-marley-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for voices-from-ukraine-overview-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for what-we-talk-about-when-we-talk-about-anne-frank-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for kevin-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for cranford-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for peter-pan-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "images: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-radium-girls-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "images: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "images: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "images: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "images: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "images: current value doesn't match expected (data changed since plan was created)"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "issueNumber": "bro-4891-e",
+  "planId": "f4799d5d-f04b-423f-9e45-d5d74a4eb1ae",
+  "status": "partial",
+  "createdAt": "2026-10-13T04:19:41.693Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4891: clear the stale automated wrong-production rejection on The Upcoming review of John Proctor Is the Villain (West End 2026) so it can be scored",
+    "steps": [
+      "Null rejectionReason/rejectedAt/rejectedBy/wrongProductionProvenance"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "john-proctor-is-the-villain-west-end-2026/theupcoming--unknown.json",
+        "field": "rejectionReason",
+        "oldValue": "wrong_production",
+        "newValue": null,
+        "description": "BRO-4891: ensemble scoreability check (2026-08-08) rejected this as wrong_production because the page header names the 2027 Wyndham's transfer; the review is dated 23 April 2026 and covers the Royal Court run on this page (wrongProduction cleared by plan bro-4891-d). The stale stamp keeps it out of scoring."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "john-proctor-is-the-villain-west-end-2026/theupcoming--unknown.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-08-08T00:46:25.414Z",
+        "newValue": null,
+        "description": "BRO-4891: ensemble scoreability check (2026-08-08) rejected this as wrong_production because the page header names the 2027 Wyndham's transfer; the review is dated 23 April 2026 and covers the Royal Court run on this page (wrongProduction cleared by plan bro-4891-d). The stale stamp keeps it out of scoring."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "john-proctor-is-the-villain-west-end-2026/theupcoming--unknown.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "BRO-4891: ensemble scoreability check (2026-08-08) rejected this as wrong_production because the page header names the 2027 Wyndham's transfer; the review is dated 23 April 2026 and covers the Royal Court run on this page (wrongProduction cleared by plan bro-4891-d). The stale stamp keeps it out of scoring."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "john-proctor-is-the-villain-west-end-2026/theupcoming--unknown.json",
+        "field": "wrongProductionProvenance",
+        "oldValue": "content",
+        "newValue": null,
+        "description": "BRO-4891: ensemble scoreability check (2026-08-08) rejected this as wrong_production because the page header names the 2027 Wyndham's transfer; the review is dated 23 April 2026 and covers the Royal Court run on this page (wrongProduction cleared by plan bro-4891-d). The stale stamp keeps it out of scoring."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T05:00:30.518Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "john-proctor-is-the-villain-west-end-2026/theupcoming--unknown.json rejectionReason: \"wrong_production\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "john-proctor-is-the-villain-west-end-2026/theupcoming--unknown.json rejectedAt: \"2026-08-08T00:46:25.414Z\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "john-proctor-is-the-villain-west-end-2026/theupcoming--unknown.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "Field \"wrongProductionProvenance\" not allowed for review-field-edit"
+    }
+  ]
+}

@@ -1,0 +1,185 @@
+// BRO-4398: the retire-show plan action. Requires the real module and the
+// real retireId against a scratch registry (CLAUDE.md §15).
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+
+const require = createRequire(import.meta.url);
+const { applyRetireShow } = require('./retire-show-action.js');
+const { retireId, unretireId, loadRetiredIds, matchesRetired } = require('./retired-show-ids.js');
+const { mergeRetiredRecords } = require('./merge-retired-ids.js');
+
+const row = (id, title, extra = {}) => ({ id, title, venue: 'Kiln Theatre', category: 'off-west-end', status: 'announced', provisional: true, ...extra });
+
+function scratch() {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'retire-show-'));
+  const paths = { listPath: path.join(dir, 'retired-show-ids.json'), archivePath: path.join(dir, 'deleted-shows.json') };
+  return { paths, retire: (id, opts) => retireId(id, { ...opts, ...paths }) };
+}
+
+test('retires a provisional row: registry + archive written, row removed, title+venue blocked on request', () => {
+  const { paths, retire } = scratch();
+  const shows = [row('sense-and-sensibility-off-west-end-2026', 'Sense And Sensibility'), row('nine-night-off-west-end-2026', 'Nine Night')];
+  const r = applyRetireShow(shows, { id: 'sense-and-sensibility-off-west-end-2026', expectTitle: 'Sense And Sensibility', reason: 'Kiln cinema screening, not a production', blockTitleVenue: true }, { retire });
+  assert.equal(r.ok, true, r.reason);
+  assert.deepEqual(shows.map(s => s.id), ['nine-night-off-west-end-2026']);
+  const entries = loadRetiredIds({ listPath: paths.listPath });
+  assert.equal(entries.length, 1);
+  assert.ok(matchesRetired({ id: 'other-id', title: 'Sense And Sensibility', venue: 'Kiln Theatre' }, entries), 'title+venue block fires under another id');
+  assert.equal(JSON.parse(fs.readFileSync(paths.archivePath, 'utf8'))[0].title, 'Sense And Sensibility');
+});
+
+test('refuses: wrong title, non-provisional row, missing reason, unknown id, already retired — nothing removed', () => {
+  const { retire } = scratch();
+  const shows = [row('a-off-west-end-2026', 'A'), row('b-off-west-end-2026', 'B', { provisional: false })];
+  const cases = [
+    [{ id: 'a-off-west-end-2026', expectTitle: 'Not A', reason: 'x' }, /plan expected/],
+    [{ id: 'b-off-west-end-2026', expectTitle: 'B', reason: 'x' }, /only provisional/],
+    [{ id: 'a-off-west-end-2026', expectTitle: 'A', reason: ' ' }, /reason is required/],
+    [{ id: 'zzz', expectTitle: 'A', reason: 'x' }, /no show with id/],
+    [{ id: 'a-off-west-end-2026', reason: 'x' }, /expectTitle is required/],
+  ];
+  for (const [action, re] of cases) {
+    const r = applyRetireShow(shows, action, { retire });
+    assert.equal(r.ok, false);
+    assert.match(r.reason, re);
+  }
+  assert.equal(shows.length, 2);
+  assert.equal(applyRetireShow(shows, { id: 'a-off-west-end-2026', expectTitle: 'A', reason: 'x' }, { retire }).ok, true);
+  shows.push(row('a-off-west-end-2026', 'A'));
+  const again = applyRetireShow(shows, { id: 'a-off-west-end-2026', expectTitle: 'A', reason: 'x' }, { retire });
+  assert.equal(again.ok, false);
+  assert.match(again.reason, /already retired/);
+  assert.equal(shows.length, 2, 'the row stays when the registry refuses');
+});
+
+test('unretireId reverts a retirement in both files (the save-failure rollback)', () => {
+  const { paths, retire } = scratch();
+  retire('x-off-west-end-2026', { reason: 'r', archivedRow: row('x-off-west-end-2026', 'X') });
+  retire('y-off-west-end-2026', { reason: 'r', archivedRow: row('y-off-west-end-2026', 'Y') });
+  assert.equal(unretireId('x-off-west-end-2026', paths), true);
+  assert.deepEqual(loadRetiredIds({ listPath: paths.listPath }).map(e => e.id), ['y-off-west-end-2026']);
+  assert.deepEqual(JSON.parse(fs.readFileSync(paths.archivePath, 'utf8')).map(e => e.id), ['y-off-west-end-2026']);
+  assert.equal(unretireId('x-off-west-end-2026', paths), false);
+});
+
+test('mergeRetiredRecords: union by id, ours first, nothing dropped on a push race', () => {
+  const { merged, stats } = mergeRetiredRecords([{ id: 'a' }, { id: 'b', reason: 'ours' }], [{ id: 'b', reason: 'remote' }, { id: 'c' }]);
+  assert.deepEqual(merged.map(e => e.id), ['a', 'b', 'c']);
+  assert.equal(merged[1].reason, 'ours');
+  assert.equal(stats.added, 1);
+});
+
+test('duplicateOf: a non-provisional duplicate with no reviews at the same house retires id-only; anything else refuses', () => {
+  const { retire, paths } = scratch();
+  const kept = { id: 'death-note-the-musical-west-end-2026', title: 'Death Note: The Musical', venue: 'Barbican Centre', market: 'west-end', previewsStartDate: '2026-07-30', openingDate: '2026-08-11', closingDate: '2027-05-15' };
+  const dup = { id: 'death-note-the-musical-west-end-2027', title: 'Death Note The Musical', venue: 'Barbican Theatre', market: 'west-end', previewsStartDate: '2027-03-23', closingDate: '2027-05-15' };
+  const base = { id: dup.id, expectTitle: dup.title, reason: 'duplicate of the 2026 row', duplicateOf: kept.id };
+  const none = () => 0;
+  const cases = [
+    [{ ...base, blockTitleVenue: true }, none, /id-only/],
+    [{ ...base, duplicateOf: 'nope' }, none, /not in shows.json/],
+    [{ ...base, duplicateOf: dup.id }, none, /another show id/],
+    [base, () => 3, /3 review/],
+    [base, undefined, /review count unavailable/],
+  ];
+  for (const [action, reviewCount, re] of cases) {
+    const shows = [{ ...kept }, { ...dup }];
+    const r = applyRetireShow(shows, action, { retire, reviewCount });
+    assert.equal(r.ok, false, String(re));
+    assert.match(r.reason, re);
+    assert.equal(shows.length, 2);
+  }
+  const otherHouse = [{ ...kept, venue: 'Almeida Theatre' }, { ...dup }];
+  assert.match(applyRetireShow(otherHouse, base, { retire, reviewCount: none }).reason, /same house/);
+  const prefixHouse = [{ ...kept, venue: 'Lyric Theatre' }, { ...dup, venue: 'Lyric Hammersmith' }];
+  assert.match(applyRetireShow(prefixHouse, base, { retire, reviewCount: none }).reason, /same house/, 'Lyric Theatre is not Lyric Hammersmith');
+  const revival = [{ ...kept, closingDate: '2026-12-01' }, { ...dup }];
+  assert.match(applyRetireShow(revival, base, { retire, reviewCount: none }).reason, /revival or return run/);
+  const otherMarket = [{ ...kept, market: 'broadway' }, { ...dup }];
+  assert.match(applyRetireShow(otherMarket, base, { retire, reviewCount: none }).reason, /market/);
+  const shows = [{ ...kept }, { ...dup }];
+  const ok = applyRetireShow(shows, base, { retire, reviewCount: none });
+  assert.equal(ok.ok, true, ok.reason);
+  assert.deepEqual(shows.map(s => s.id), [kept.id]);
+  const entry = loadRetiredIds({ listPath: paths.listPath }).find(e => e.id === dup.id);
+  assert.deepEqual([entry.title, entry.venue], [null, null]);
+  // A strict title subset at the same house passes ("860" in "Billy Crystal 860",
+  // BRO-5014); an unrelated title at the same house still refuses.
+  const bc = { id: 'billy-crystal-860-2026', title: 'Billy Crystal 860', venue: 'Imperial Theatre', market: 'broadway', previewsStartDate: '2026-10-01', openingDate: '2026-10-21', closingDate: '2027-01-03' };
+  const t860 = { id: '860-2026', title: '860', venue: 'Imperial Theatre', market: 'broadway', previewsStartDate: '2026-10-21' };
+  const retire860 = { id: t860.id, expectTitle: '860', reason: 'duplicate', duplicateOf: bc.id };
+  const unrelated = [{ ...bc, title: 'Moulin Rouge!' }, { ...t860 }];
+  assert.match(applyRetireShow(unrelated, retire860, { retire, reviewCount: none }).reason, /does not match/);
+  const subsetShows = [{ ...bc }, { ...t860 }];
+  const sub = applyRetireShow(subsetShows, retire860, { retire, reviewCount: none });
+  assert.equal(sub.ok, true, sub.reason);
+  assert.deepEqual(subsetShows.map(s => s.id), [bc.id]);
+  // Without duplicateOf, a non-provisional row still refuses.
+  assert.match(applyRetireShow([{ ...dup }], { id: dup.id, expectTitle: dup.title, reason: 'x' }, { retire, reviewCount: none }).reason, /only provisional/);
+});
+
+test('nonProduction: a non-provisional announced row with no reviews retires with an evidence URL; anything else refuses (BRO-4449/BRO-4505)', () => {
+  const { retire, paths } = scratch();
+  const film = row('the-stranger-2-off-west-end-2026', 'The Stranger 2', { provisional: undefined });
+  const base = { id: film.id, expectTitle: film.title, reason: 'Kiln cinema screening, not a stage production', nonProduction: true, evidenceUrl: 'https://kilntheatre.com/whats-on/the-stranger-2/', blockTitleVenue: true };
+  const none = () => 0;
+  const cases = [
+    [{ ...base, evidenceUrl: undefined }, {}, none, /evidenceUrl/],
+    [{ ...base, evidenceUrl: 'http://kilntheatre.com/x' }, {}, none, /evidenceUrl/],
+    [{ ...base, nonProduction: 'yes' }, {}, none, /must be true/],
+    [{ ...base, duplicateOf: 'other-show' }, {}, none, /exclusive/],
+    [base, { status: 'open' }, none, /announced\/upcoming/],
+    [base, { status: 'closed' }, none, /announced\/upcoming/],
+    [base, { openingDate: '2026-10-01' }, none, /real run/],
+    [base, {}, () => 2, /2 review/],
+    [base, {}, undefined, /review count unavailable/],
+  ];
+  for (const [action, extra, reviewCount, re] of cases) {
+    const shows = [{ ...film, ...extra }];
+    const r = applyRetireShow(shows, action, { retire, reviewCount });
+    assert.equal(r.ok, false, String(re));
+    assert.match(r.reason, re);
+    assert.equal(shows.length, 1);
+  }
+  // Without nonProduction a non-provisional row still refuses.
+  const plain = applyRetireShow([{ ...film }], { id: film.id, expectTitle: film.title, reason: 'x' }, { retire, reviewCount: none });
+  assert.match(plain.reason, /only provisional/);
+  const shows = [{ ...film }, row('keep-me-2026', 'Keep Me')];
+  const ok = applyRetireShow(shows, base, { retire, reviewCount: none });
+  assert.equal(ok.ok, true, ok.reason);
+  assert.deepEqual(shows.map(s => s.id), ['keep-me-2026']);
+  const entry = loadRetiredIds({ listPath: paths.listPath }).find(e => e.id === film.id);
+  assert.match(entry.reason, /evidence: https:\/\/kilntheatre\.com/);
+  assert.ok(matchesRetired({ id: 'the-stranger-2-off-west-end-2027', title: 'The Stranger 2', venue: 'Kiln Theatre' }, loadRetiredIds({ listPath: paths.listPath })), 'title+venue block keeps it from returning');
+});
+
+// BRO-5557: the Il Cimento duplicate was retired 2026-10-13 and re-minted under the same id;
+// retire-show refuses a second retirement, so reMinted removes just the row.
+test('reMinted removes a re-added row whose id the registry already holds, and nothing else', () => {
+  const { paths, retire } = scratch();
+  const base = row('x-off-west-end-2026', 'X');
+  const held = (id) => loadRetiredIds({ listPath: paths.listPath }).some((e) => e.id === id);
+  assert.equal(applyRetireShow([structuredClone(base)], { id: base.id, expectTitle: 'X', reason: 'first retirement' }, { retire }).ok, true);
+  const shows = [structuredClone(base), row('keep-off-west-end-2026', 'Keep')];
+  const plain = applyRetireShow(shows, { id: base.id, expectTitle: 'X', reason: 'again' }, { retire });
+  assert.equal(plain.ok, false);
+  assert.match(plain.reason, /already retired/);
+  const r = applyRetireShow(shows, { id: base.id, expectTitle: 'X', reason: 'row came back', reMinted: true }, { retire, isRetired: held });
+  assert.equal(r.ok, true, r.reason);
+  assert.deepEqual(shows.map((s) => s.id), ['keep-off-west-end-2026']);
+  assert.equal(loadRetiredIds({ listPath: paths.listPath }).length, 1, 'the registry is not written twice');
+});
+
+test('reMinted refuses an id the registry does not hold, a non-provisional row, or a non-true flag', () => {
+  const { paths } = scratch();
+  const held = (id) => loadRetiredIds({ listPath: paths.listPath }).some((e) => e.id === id);
+  const shows = [row('y-off-west-end-2026', 'Y'), row('z-off-west-end-2026', 'Z', { provisional: false })];
+  assert.match(applyRetireShow(shows, { id: 'y-off-west-end-2026', expectTitle: 'Y', reason: 'r', reMinted: true }, { isRetired: held }).reason, /does not hold/);
+  assert.match(applyRetireShow(shows, { id: 'z-off-west-end-2026', expectTitle: 'Z', reason: 'r', reMinted: true }, { isRetired: () => true }).reason, /only provisional/);
+  assert.match(applyRetireShow(shows, { id: 'y-off-west-end-2026', expectTitle: 'Y', reason: 'r', reMinted: 'yes' }, { isRetired: () => true }).reason, /reMinted must be true/);
+  assert.equal(shows.length, 2);
+});
