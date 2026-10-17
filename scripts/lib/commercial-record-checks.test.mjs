@@ -55,6 +55,14 @@ test('a title quoted inside a quote with double marks is a warning (BRO-5549)', 
   assert.equal(doubled('capitalizationSource', 'a "“b”" c'), 1);
   assert.equal(doubled('weeklyRunningCostSource', 'a "“b”" c'), 1);
   assert.equal(doubled('notes', 'a "“b”" c'), 1);
+  assert.equal(doubled('notes', 'an empty curly pair “” here'), 1);
+  // A quote ending on a quoted title is the same defect at the other edge.
+  assert.equal(doubled('recoupedSource', 'Playbill: "the musical “Six.”" https://playbill.com/c/'), 1);
+  // A write is judged on the text it changes: an old value it leaves alone does not refuse it.
+  const old = { designation: 'TBD', recoupedSource: 'a "“b”" c' };
+  const flagged = (rec, prior) => commercialRecordWarnings('k', rec, { priorRecord: prior }).some((m) => m.includes('doubled quotation marks'));
+  assert.equal(flagged({ ...old, notes: 'new note' }, old), false);
+  assert.equal(flagged({ ...old, recoupedSource: 'x "“y”" z' }, old), true);
   assert.equal(doubled('recoupedSource', 'Broadway News (Sep 10, 2018): "‘The Band’s Visit’ has recouped its $8.75 million capitalization." https://www.broadwaynews.com/a/'), 0);
   assert.equal(doubled('recoupedSource', 'BroadwayWorld forum (May 24, 2025): the "official" capitalization is $4.9 million'), 0);
   assert.equal(commercialRecordErrors('k', { designation: 'TBD', recoupedSource: 'a "“b”" c' }, {}).filter((m) => m.includes('quotation')).length, 0);

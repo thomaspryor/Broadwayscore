@@ -358,12 +358,12 @@ function commercialRecordErrors(showId, show, ctx = {}) {
 const { addedPlaceholderSources } = require('./commercial-sources');
 
 /**
- * Rules that depend on shows.json state as well as the record. validate-data.js
- * reports these as warnings: a status flip (update-show-status.js reopening a
- * closed show) can create one without any commercial.json write, and an error
- * there would block the daily status commit with nothing to clear it. The
- * writers that DO write the record (plan runner, add-commercial-entry) treat
- * them as errors for that record.
+ * Rules that depend on shows.json state as well as the record, plus new rules
+ * landing advisory first (§19). validate-data.js reports these as warnings: a
+ * status flip (update-show-status.js reopening a closed show) can create one
+ * without any commercial.json write, and an error there would block the daily
+ * status commit with nothing to clear it. The writers that DO write the record
+ * (plan runner, add-commercial-entry, tips) treat them as errors for that record.
  */
 function commercialRecordWarnings(showId, show, ctx = {}) {
   const out = [];
@@ -423,9 +423,10 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
     out.push(`commercial.json: "${showId}" is "${show.designation}" on no recoupment announced but closed under ${LOSS_LABEL_MIN_DAYS} days ago (keep TBD + needsLossEvidence until it ages in)`);
   }
   // The card prints these as written, so a title quoted inside a quote takes
-  // single marks. Advisory (§19); the approved-fix runner refuses it on the
-  // records a plan touches.
+  // single marks. Advisory (§19); a writer passes ctx.priorRecord so only text
+  // the write changes counts, as with the placeholder links above.
   for (const field of [...PUBLIC_TEXT_FIELDS, 'weeklyRunningCostSource']) {
+    if (ctx.priorRecord && ctx.priorRecord[field] === show[field]) continue;
     const doubled = typeof show[field] === 'string' && DOUBLED_QUOTE_RE.exec(show[field]);
     if (doubled) {
       out.push(`commercial.json: "${showId}" ${field} has doubled quotation marks (${doubled[0]}); quote a title inside a quote with single marks`);
