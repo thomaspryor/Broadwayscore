@@ -109,7 +109,7 @@ function buildConfirmationHtml(opts: {
   <div style="max-width:520px;margin:0 auto;padding:32px 16px;">
     <div style="background:#111111;border:1px solid #1f1f1f;border-radius:16px;overflow:hidden;">
       <div style="padding:28px 28px 20px;border-bottom:1px solid #1f1f1f;text-align:center;">
-        <div style="font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Broadway Scorecard</div>
+        <img src="${SITE}/images/fantasy/marquee-wide.png" width="240" height="64" alt="Broadway Fantasy League" style="display:block;margin:0 auto 14px;border:0;width:240px;height:auto;">
         <div style="font-size:24px;font-weight:900;color:#ffffff;letter-spacing:-0.03em;">${opts.practice ? 'Your practice team is saved' : 'Your team is locked in'}</div>
         <div style="font-size:13px;color:#6b7280;margin-top:4px;">Broadway Fantasy League &middot; ${escapeHtml(FANTASY_SEASON)} season</div>
       </div>

@@ -5,6 +5,7 @@ import type { FantasyShow } from '@/config/fantasy';
 import { ELIGIBILITY_MARKERS, isShowOpenForDrafter, isAudienceLockedForEntry, earnsBoxOffice, scoringFromDate } from '@/config/fantasy';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { showFormatTitle } from '@/lib/show-format';
+import { getScoreColor } from '@/config/score-buckets';
 import FantasyOwnershipTag from './FantasyOwnershipTag';
 
 interface FantasyShowPickerProps {
@@ -86,16 +87,16 @@ export default function FantasyShowPicker({
           <div className="flex items-center gap-x-2 gap-y-0.5 flex-wrap text-xs text-gray-400 mt-0.5">
             <span className="whitespace-nowrap">{showFormatTitle(selectedShow.type)}</span>
             {isShowOpenForDrafter(selectedShow, now) ? (
-              <span className="text-yellow-400 whitespace-nowrap">
+              <span className="text-score-tepid whitespace-nowrap">
                 {ELIGIBILITY_MARKERS.criticScoreLocked} Already open{earnsBoxOffice(selectedShow, boxOfficeFrom) ? '' : ': awards only'}
               </span>
             ) : (
               <>
                 {selectedShow.criticScore != null && (
-                  <span className="text-yellow-400 whitespace-nowrap">Score: {Math.round(selectedShow.criticScore)}</span>
+                  <span className={`${getScoreColor(Math.round(selectedShow.criticScore))} whitespace-nowrap`}>Score: {Math.round(selectedShow.criticScore)}</span>
                 )}
                 {selectedShow.audienceGrade != null && (
-                  <span className="text-yellow-400 whitespace-nowrap">
+                  <span className="text-gray-300 whitespace-nowrap">
                     Grade: {selectedShow.audienceGrade}
                     {isAudienceLockedForEntry(selectedShow.audienceGradeSince, now.toISOString()) && <span className="text-gray-500"> (public: no audience pts)</span>}
                   </span>
@@ -203,16 +204,16 @@ export default function FantasyShowPicker({
                     <div className="flex items-center gap-x-2 gap-y-0.5 flex-wrap text-xs text-gray-400 mt-0.5">
                       <span className="whitespace-nowrap">{showFormatTitle(show.type)}</span>
                       {isShowOpenForDrafter(show, now) ? (
-                        <span className="text-yellow-400 whitespace-nowrap">
+                        <span className="text-score-tepid whitespace-nowrap">
                           {ELIGIBILITY_MARKERS.criticScoreLocked} Already open{earnsBoxOffice(show, boxOfficeFrom) ? '' : ': awards only'}{show.criticScore != null ? ` · Score ${Math.round(show.criticScore)}` : ''}
                         </span>
                       ) : (
                         <>
                           {show.criticScore != null && (
-                            <span className="text-yellow-400 whitespace-nowrap">Score: {Math.round(show.criticScore)}</span>
+                            <span className={`${getScoreColor(Math.round(show.criticScore))} whitespace-nowrap`}>Score: {Math.round(show.criticScore)}</span>
                           )}
                           {show.audienceGrade != null && (
-                            <span className="text-yellow-400 whitespace-nowrap">
+                            <span className="text-gray-300 whitespace-nowrap">
                               Grade: {show.audienceGrade}
                               {isAudienceLockedForEntry(show.audienceGradeSince, now.toISOString()) && <span className="text-gray-500"> (public: no audience pts)</span>}
                             </span>

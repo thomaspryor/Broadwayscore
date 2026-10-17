@@ -8,6 +8,12 @@
  * Email (inline styles): Use the `emailColor` values since CSS gradients don't work in email.
  */
 
+/** Broadway Fantasy League marquee mark (BRO-5519): sign face (surface-raised) and lit letters/bulbs. */
+export const FANTASY_MARQUEE_BRAND = {
+  sign: '#1a1a24',
+  lit: '#ffe08a',
+} as const;
+
 export const MARKET_BRAND = {
   broadway: {
     /** Logo text: first part (white) */
