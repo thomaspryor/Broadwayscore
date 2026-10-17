@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-17T17:11:26.020Z",
+  "timestamp": "2026-10-17T18:05:18.394Z",
   "stats": {
-    "totalReviews": 57300,
-    "alreadyFlagged": 21252,
-    "dateGuardCatches": 195,
-    "directorMismatch": 1934,
+    "totalReviews": 57305,
+    "alreadyFlagged": 21256,
+    "dateGuardCatches": 194,
+    "directorMismatch": 1937,
     "tvFilmSignals": 1600,
-    "londonSignals": 2404,
+    "londonSignals": 2406,
     "offBroadwaySignals": 515,
     "yearMismatch": 155,
-    "noPublishDate": 5309
+    "noPublishDate": 5306
   },
   "findings": [
     {
@@ -20860,20 +20860,6 @@
     },
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 94,
-      "publishDate": "2026-10-06",
-      "url": "https://www.timeout.com/london/news/review-into-the-woods-bridge-theatre-121125",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "timeout-london--reviewer.json",
       "score": 98,
       "publishDate": "2026-10-07",
@@ -22137,6 +22123,20 @@
     },
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "camdennewjournal--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.camdennewjournal.co.uk/article/review-john-proctor-is-the-villain-at-royal-court-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "everything-theatre--molly-g.json",
       "score": 82,
       "publishDate": "2026-03-31",
@@ -22183,6 +22183,20 @@
       "score": 82,
       "publishDate": "2026-03-27",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/john-proctor-is-the-villain-review-royal-court-b2946888.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "islingtontribune--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.islingtontribune.co.uk/article/review-john-proctor-is-the-villain-at-royal-court-theatre",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -22301,6 +22315,44 @@
       "score": 79,
       "publishDate": "2026-03-29",
       "url": "https://playsinternational.org.uk/john-proctor-is-the-villain-royal-court-jerwood-theatre-downstairs/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "redbuslondinium--unknown.json",
+      "score": null,
+      "publishDate": "2026-04-09",
+      "url": "https://redbuslondinium.uk/2026/04/09/review-john-proctor-is-a-villain-royal-court/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "south-london--michael-holland.json",
+      "score": null,
+      "publishDate": "2026-04-11",
+      "url": "https://southlondon.co.uk/lifestyle/review-john-proctor-is-the-villain-at-royal-court/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -56599,20 +56651,6 @@
       ]
     },
     {
-      "showId": "captain-corellis-mandolin-west-end-2019",
-      "file": "times-uk--ann-treneman.json",
-      "score": 83,
-      "publishDate": "April 29th, 2019",
-      "url": "https://www.thetimes.co.uk/article/captain-corellis-mandolin-at-rose-theatre-kingston-upon-thames-review-hpqqwtk5z",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 66d before show (April 29th, 2019 vs 2019-07-04)"
-        }
-      ]
-    },
-    {
       "showId": "care-west-end-2026",
       "file": "british-theatre--shiroma-silva.json",
       "score": 77,
@@ -60366,7 +60404,7 @@
     {
       "showId": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026",
       "file": "broadwayworld--gary-naylor.json",
-      "score": 62,
+      "score": 59,
       "publishDate": "2026-10-09",
       "url": "https://www.broadwayworld.com/westend/article/Review-END-OF-THE-WORLD-AND-HARD-BOILED-WONDERLAND-Barbican-Theatre-20261009",
       "findings": [
@@ -60436,7 +60474,7 @@
     {
       "showId": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 59,
+      "score": 62,
       "publishDate": "2026-10-08",
       "url": "https://www.timeout.com/london/theatre/end-of-the-world-and-hard-boiled-wonderland-review",
       "findings": [
