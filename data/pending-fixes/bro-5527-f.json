@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5527-f",
   "planId": "556c6f3c-eb76-4d2c-ac75-cd7b7f3a4813",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-17T07:50:17.559Z",
   "submitter": {
     "name": null,
@@ -82,5 +82,33 @@
         "description": "tina-2019: the notes said no capitalization was reported; it was filed."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-17T08:53:47.817Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for tina-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for tina-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for tina-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for tina-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for tina-2019"
+    }
+  ]
 }
