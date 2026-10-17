@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-17T01:52:31.641Z",
+  "generatedAt": "2026-10-17T04:56:05.722Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -115,10 +115,6 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -147,9 +143,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 710,
+  "itemsScanned": 715,
   "matchedGaps": 3,
-  "possibleGaps": 7,
+  "possibleGaps": 8,
   "gaps": [
     {
       "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
@@ -176,6 +172,15 @@
       "outletId": "plays-international",
       "url": "https://playsinternational.org.uk/the-cherry-orchard-harold-pinter-theatre/",
       "headline": "“The Cherry Orchard” at Harold Pinter Theatre",
+      "publishDate": "2026-10-16"
+    },
+    {
+      "showId": "fish-off-broadway-2026",
+      "title": "Fish",
+      "level": "possible",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/good-time-charlie-fish-anon/",
+      "headline": "Good Time Charlie ***, Fish ****, Anon ***",
       "publishDate": "2026-10-16"
     },
     {
