@@ -36,6 +36,9 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   'rejectedAt', 'rejectedBy', 'rejectionReason', 'rejectionReasoning',
   // verdict flags and their human-clear markers
   'wrongAttribution', 'wrongAttributionReason',
+  // BRO-4695: persist an attribution audit's checked, legitimate byline via
+  // approved fixes too. Write the evidence note before setting the marker.
+  'crossOutletVerifiedNote', 'crossOutletVerified',
   'wrongProduction', 'wrongProductionReason', 'wrongProductionManualClear',
   // allowCrossMarket (BRO-5499): TRUE ONLY. The rebuild's cross-market guard excludes any .co.uk / london-region
   // outlet reviewing a NYC show and the CV cannot override it; a UK critic who really reviewed the NYC production
@@ -118,6 +121,11 @@ function isSelfSyndicationPointer(record, ctx = {}) {
 
 // Per-field value checks beyond "scalar". Returns an error string or null.
 const FIELD_VALUE_CHECKS = {
+  crossOutletVerifiedNote: (v) => (typeof v === 'string' && v.trim().length >= 20
+    ? null : 'crossOutletVerifiedNote must record the checked byline evidence (20+ chars)'),
+  crossOutletVerified: (v, record) => (v === true && record.wrongAttribution !== true
+    && typeof record.crossOutletVerifiedNote === 'string' && record.crossOutletVerifiedNote.trim().length >= 20
+    ? null : 'crossOutletVerified may only be set true after an evidence note, with no wrongAttribution flag'),
   allowCrossMarket: (v) => (v === true ? null : 'allowCrossMarket may only be set to true'),
   // BRO-4415: or when the executor's syndicated-duplicate-heal decision (ctx.syndicatedHeal) is 'clear':
   // the primary is excluded for a reason that does not apply to this copy.

@@ -12,6 +12,46 @@ const { applyReviewFieldEdit, resolveReviewPath, REVIEW_TEXT_EDITABLE_FIELDS } =
 
 const stamp = { fixId: 'bro-4202', at: '2026-09-28T00:00:00.000Z' };
 
+test('cross-outlet verification persists through the real writer and clears the audit', async (t) => {
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'cross-outlet-verified-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  fs.mkdirSync(path.join(root, 'show'));
+  const file = 'show/guardian--david-cote.json';
+  const rec = { showId: 'show', outletId: 'guardian', criticName: 'David Cote', assignedScore: 51 };
+  fs.writeFileSync(path.join(root, file), JSON.stringify(rec));
+  const { executeReviewFieldEditIn } = require('./review-field-edit.js');
+  const note = 'BRO-4695: the outlet page explicitly credits David Cote.';
+  for (const [field, newValue] of [['crossOutletVerifiedNote', note], ['crossOutletVerified', true]]) {
+    const res = executeReviewFieldEditIn(root, { file, field, oldValue: null, newValue }, stamp);
+    assert.equal(res.ok, true, res.reason);
+  }
+  const after = JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
+  assert.equal(after.crossOutletVerified, true);
+  assert.equal(after.crossOutletVerifiedNote, note);
+  assert.equal(after.assignedScore, rec.assignedScore);
+  const { isTriagedOut } = require('./cross-outlet-triage.js');
+  const { explainExclusion } = require('./review-guards.js');
+  assert.equal(isTriagedOut(after, explainExclusion), true);
+});
+
+test('cross-outlet verification requires an evidence note and cannot contradict wrongAttribution', () => {
+  const action = { field: 'crossOutletVerified', oldValue: null, newValue: true };
+  assert.equal(applyReviewFieldEdit({}, action, stamp).ok, false);
+  const rec = { crossOutletVerifiedNote: 'BRO-4695: page byline checked against the stored critic.' };
+  assert.equal(applyReviewFieldEdit(rec, action, stamp).ok, true);
+  assert.equal(applyReviewFieldEdit({ ...rec, wrongAttribution: true }, action, stamp).ok, false);
+  for (const newValue of [false, null, 1, 'true']) {
+    assert.equal(applyReviewFieldEdit(rec, { ...action, newValue }, stamp).ok, false);
+  }
+  for (const newValue of [null, '', '   ', 'too short', true]) {
+    assert.equal(applyReviewFieldEdit({}, { field: 'crossOutletVerifiedNote', oldValue: null, newValue }, stamp).ok, false);
+  }
+  assert.equal(applyReviewFieldEdit({ ...rec, crossOutletVerified: true }, action, stamp).ok, false, 'compare-and-set still applies');
+  assert.equal(applyReviewFieldEdit({ ...rec, _locked: true }, action, stamp).ok, false, 'locks still apply');
+});
+
 test('sets a verdict flag when the old value matches, and stamps provenance', () => {
   // mass-west-end-2026 times-uk--dominic-maxwell (BRO-4202)
   const rec = { outletId: 'times-uk', criticName: 'Dominic Maxwell' };
