@@ -117,5 +117,22 @@ test('fallback enrichment preserves existing ticket links, official sites and cl
 
 test('the scheduled writer supplies both venue registries to the shared fallback', () => {
   const writer = readFileSync(new URL('../../scripts/ob-discovery-ticket-links.js', import.meta.url), 'utf8');
-  assert.match(writer, /venueFallbackUrl\(show,\s*OB_VENUE_CONFIGS,\s*OWE_VENUE_CONFIGS\)/);
+  assert.match(writer, /venueFallbackUrl\(show,\s*OB_VENUE_CONFIGS,\s*loadLondonFallbackConfigs\(\)\)/);
+  assert.match(writer, /londonReaderConfigs\(OWE_VENUE_CONFIGS,\s*require\('\.\/discover-new-shows'\)\.VENUE_LISTING_PAGES\)/);
+});
+
+test('London fallback also covers Off-West End link-reader venues outside OWE_VENUE_CONFIGS (BRO-5190)', () => {
+  const { londonReaderConfigs } = require('../../scripts/lib/ob-venue-reader-coverage.js');
+  const { OWE_VENUE_CONFIGS } = require('../../scripts/lib/venue-listing-discover.js');
+  const { VENUE_LISTING_PAGES } = require('../../scripts/discover-new-shows.js');
+  const london = londonReaderConfigs(OWE_VENUE_CONFIGS, VENUE_LISTING_PAGES);
+  for (const [venue, expected] of [
+    ['Marylebone Theatre', 'https://marylebonetheatre.com/'],
+    ['The Other Palace', 'https://theotherpalace.co.uk/'],
+    ['Finborough Theatre', 'https://www.finboroughtheatre.co.uk/'],
+  ]) {
+    assert.equal(venueFallbackUrl({ category: 'off-west-end', venue }, nyVenues, london), expected);
+  }
+  // A palace that is not The Other Palace must not borrow its box office.
+  assert.equal(venueFallbackUrl({ category: 'off-west-end', venue: 'Alexandra Palace Theatre' }, nyVenues, london), null);
 });

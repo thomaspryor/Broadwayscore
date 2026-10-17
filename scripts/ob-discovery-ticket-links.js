@@ -48,6 +48,7 @@ const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { discoverOfficialUrl } = require('./lib/official-url-discovery');
 const { OB_VENUE_CONFIGS, OWE_VENUE_CONFIGS } = require('./lib/venue-listing-discover');
 const { findDeadEndShows, venueFallbackUrl } = require('./lib/ob-ticket-link-gaps');
+const { londonReaderConfigs } = require('./lib/ob-venue-reader-coverage');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -92,7 +93,7 @@ async function main() {
       console.log(`✓ official site (SERP): ${url}`);
       serpFound++;
     } else {
-      url = venueFallbackUrl(show, OB_VENUE_CONFIGS, OWE_VENUE_CONFIGS);
+      url = venueFallbackUrl(show, OB_VENUE_CONFIGS, loadLondonFallbackConfigs());
       if (url) {
         console.log(`✓ venue fallback: ${url}`);
         venueFound++;
@@ -120,6 +121,18 @@ async function main() {
   } else {
     console.log('No changes needed.');
   }
+}
+
+// London fallback list = dated OWE readers + Off-West End link-reader venues
+// (VENUE_LISTING_PAGES: Marylebone Theatre, The Other Palace, ...), the same
+// union check-off-broadway-source-coverage.js uses (BRO-5190). Lazy so the
+// heavy discover-new-shows require only happens when a fallback is needed.
+let londonFallbackConfigs = null;
+function loadLondonFallbackConfigs() {
+  if (!londonFallbackConfigs) {
+    londonFallbackConfigs = londonReaderConfigs(OWE_VENUE_CONFIGS, require('./discover-new-shows').VENUE_LISTING_PAGES);
+  }
+  return londonFallbackConfigs;
 }
 
 if (require.main === module) {
