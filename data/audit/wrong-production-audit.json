@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-17T14:58:10.381Z",
+  "timestamp": "2026-10-17T15:09:06.593Z",
   "stats": {
-    "totalReviews": 57299,
-    "alreadyFlagged": 21246,
+    "totalReviews": 57300,
+    "alreadyFlagged": 21247,
     "dateGuardCatches": 196,
     "directorMismatch": 1934,
-    "tvFilmSignals": 1598,
+    "tvFilmSignals": 1597,
     "londonSignals": 2404,
     "offBroadwaySignals": 514,
     "yearMismatch": 155,
-    "noPublishDate": 5319
+    "noPublishDate": 5318
   },
   "findings": [
     {
@@ -16826,20 +16826,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
-        }
-      ]
-    },
-    {
-      "showId": "hadestown-2019",
-      "file": "latimes--ashley-lee.json",
-      "score": null,
-      "publishDate": "2019-06-04",
-      "url": "https://www.latimes.com/entertainment/arts/la-et-cm-hadestown-anais-mitchell-history-20190604-story.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
