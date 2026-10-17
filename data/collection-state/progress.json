@@ -1,22 +1,58 @@
 {
-  "processed": [],
+  "processed": [
+    "jane-eyre-rose-kingston-off-west-end-2026/daily-echo--william-dalgleish.json",
+    "some-woman-west-end-2026/sunday-times--clive-davis.json",
+    "some-woman-west-end-2026/west-end-best-friend--oli-burgin.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/new-statesman--rachel-cunliffe.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/reviewsgate--william-russell.json"
+  ],
   "failed": [
     "stuffed-off-west-end-2026/nytg--unknown.json",
-    "stuffed-off-west-end-2026/sunday-times--unknown.json"
+    "stuffed-off-west-end-2026/sunday-times--unknown.json",
+    "an-oak-tree-off-west-end-2026/times-uk--dominic-maxwell.json",
+    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+    "some-woman-west-end-2026/guardian--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json",
+    "some-woman-west-end-2026/financialtimes--unknown.json",
+    "some-woman-west-end-2026/thestage--sam-marlowe.json",
+    "some-woman-west-end-2026/times-uk--clive-davis.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "some-woman-west-end-2026/west-end-best-friend--oli-burgin.json",
+      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/new-statesman--rachel-cunliffe.json",
+      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/reviewsgate--william-russell.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/some-woman-west-end-2026/sunday-times--clive-davis.json",
+      "some-woman-west-end-2026/sunday-times--clive-davis.json"
+    ],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "jane-eyre-rose-kingston-off-west-end-2026/daily-echo--william-dalgleish.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-10-17T07:08:08.271Z",
-  "lastProcessed": "stuffed-off-west-end-2026/sunday-times--unknown.json",
-  "log": []
+  "lastProcessed": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json",
+  "log": [
+    {
+      "t": "2026-10-17T07:38:51.405Z",
+      "event": "bb-session",
+      "session": "effd1659",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/some-woman-review-anne-ma"
+    },
+    {
+      "t": "2026-10-17T07:38:51.865Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
