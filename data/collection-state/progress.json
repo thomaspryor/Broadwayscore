@@ -179,8 +179,10 @@
     "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
     "witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json",
     "dog-mom-off-west-end-2026/thereviewshub--unknown.json",
+    "the-second-best-school-shooting-off-broadway-2026/broadway-baby--unknown.json",
     "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json",
-    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/ground--unknown.json"
+    "memoirs-of-amorous-gentlemen-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "some-woman-west-end-2026/sunday-times--clive-davis.json"
   ],
   "failed": [
     "the-second-best-school-shooting-off-broadway-2026/theatreinla--unknown.json",
@@ -302,11 +304,9 @@
     "some-woman-west-end-2026/guardian--unknown.json",
     "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
     "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json",
-    "some-woman-west-end-2026/financialtimes--unknown.json",
-    "some-woman-west-end-2026/sunday-times--clive-davis.json",
-    "stuffed-off-west-end-2026/nytg--unknown.json",
-    "stuffed-off-west-end-2026/sunday-times--unknown.json",
-    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json"
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "some-woman-west-end-2026/financialtimes--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -409,7 +409,8 @@
       "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json",
       "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
       "witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json",
-      "dog-mom-off-west-end-2026/thereviewshub--unknown.json"
+      "dog-mom-off-west-end-2026/thereviewshub--unknown.json",
+      "memoirs-of-amorous-gentlemen-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [
       "data/review-texts/harry-potter-and-the-cursed-child-one-part-west-end-2026/deadline--jake-kanter.json",
@@ -423,6 +424,10 @@
       "data/review-texts/some-woman-west-end-2026/sunday-times--clive-davis.json",
       "some-woman-west-end-2026/sunday-times--clive-davis.json",
       "data/review-texts/stuffed-off-west-end-2026/sunday-times--unknown.json"
+    ],
+    "browserbase": [
+      "data/review-texts/some-woman-west-end-2026/sunday-times--clive-davis.json",
+      "some-woman-west-end-2026/sunday-times--clive-davis.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -523,7 +528,7 @@
     ]
   },
   "startTime": "2026-10-17T20:29:38.578Z",
-  "lastProcessed": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/ground--unknown.json",
+  "lastProcessed": "some-woman-west-end-2026/thestage--sam-marlowe.json",
   "log": [
     {
       "t": "2026-10-17T22:12:59.444Z",
@@ -620,54 +625,42 @@
       "domain": "wsj.com"
     },
     {
-      "t": "2026-10-17T22:59:13.028Z",
+      "t": "2026-10-17T23:04:32.618Z",
       "event": "bb-session",
-      "session": "14b3cbcc",
+      "session": "9f2440de",
+      "url": "https://www.theatreinla.com/the-second-best-school-shooting/11328/"
+    },
+    {
+      "t": "2026-10-17T23:05:44.978Z",
+      "event": "bb-session",
+      "session": "e1677af1",
       "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
     },
     {
-      "t": "2026-10-17T22:59:20.900Z",
+      "t": "2026-10-17T23:05:52.947Z",
       "event": "bb-session",
-      "session": "4849c801",
+      "session": "1e3e5827",
       "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
     },
     {
-      "t": "2026-10-17T23:00:41.947Z",
+      "t": "2026-10-17T23:07:10.260Z",
       "event": "bb-session",
-      "session": "1a8f5943",
+      "session": "2974dfc8",
       "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
     },
     {
-      "t": "2026-10-17T23:02:50.779Z",
+      "t": "2026-10-17T23:10:07.058Z",
       "event": "bb-session",
-      "session": "2caf6dda",
+      "session": "e6737045",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/some-woman-review-anne-ma"
     },
     {
-      "t": "2026-10-17T23:02:51.501Z",
+      "t": "2026-10-17T23:10:07.756Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-10-17T23:05:52.675Z",
-      "event": "bb-session",
-      "session": "c25d3797",
-      "url": "https://www.thetimes.com/recipes/entertaining/party-food/article/dates-stuffed-w"
-    },
-    {
-      "t": "2026-10-17T23:05:53.384Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-10-17T23:07:21.524Z",
-      "event": "bb-session",
-      "session": "a82cbb14",
-      "url": "https://ground.news/article/the-banality-of-evil-hannah-arendt-france-1940"
     }
   ],
   "recoveredAfterFailure": [
-    "a-ghost-in-your-ear-off-broadway-2026/theatermania--zachary-stewart.json",
-    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/ground--unknown.json"
+    "a-ghost-in-your-ear-off-broadway-2026/theatermania--zachary-stewart.json"
   ]
 }
