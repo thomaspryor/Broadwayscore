@@ -1,17 +1,25 @@
 {
   "processed": [
-    "jane-eyre-rose-kingston-off-west-end-2026/daily-echo--william-dalgleish.json"
+    "some-woman-west-end-2026/times-uk--clive-davis.json",
+    "some-woman-west-end-2026/west-end-best-friend--oli-burgin.json"
   ],
   "failed": [
     "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
-    "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
-    "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json"
+    "some-woman-west-end-2026/guardian--unknown.json",
+    "some-woman-west-end-2026/financialtimes--unknown.json",
+    "some-woman-west-end-2026/sunday-times--clive-davis.json",
+    "some-woman-west-end-2026/thestage--sam-marlowe.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "some-woman-west-end-2026/west-end-best-friend--oli-burgin.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/some-woman-west-end-2026/times-uk--clive-davis.json",
+      "some-woman-west-end-2026/times-uk--clive-davis.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "jane-eyre-rose-kingston-off-west-end-2026/daily-echo--william-dalgleish.json"
@@ -22,7 +30,7 @@
     "archive": []
   },
   "startTime": "2026-10-17T04:43:07.937Z",
-  "lastProcessed": "jane-eyre-rose-kingston-off-west-end-2026/daily-echo--william-dalgleish.json",
+  "lastProcessed": "some-woman-west-end-2026/west-end-best-friend--oli-burgin.json",
   "log": [
     {
       "t": "2026-10-17T04:43:27.288Z",
@@ -35,6 +43,17 @@
       "event": "bb-session",
       "session": "def9e1fc",
       "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-17T05:51:27.686Z",
+      "event": "bb-session",
+      "session": "9d914718",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/some-woman-review-anne-ma"
+    },
+    {
+      "t": "2026-10-17T05:51:28.557Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
