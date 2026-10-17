@@ -97,3 +97,20 @@ test('runWithRetries survives a throwing pause and defaults to 3 attempts', () =
   assert.equal(calls, 3);
   assert.equal(r.ok, false);
 });
+
+// BRO-5537: TikTok rejects yt-dlp's un-impersonated item_list API calls, so
+// every TikTok listing must go through curl_cffi; YouTube must stay unchanged.
+const { buildListingCommand, TIKTOK_IMPERSONATE_TARGET } = require('../../scripts/lib/video-pipeline-health.js');
+
+test('buildListingCommand impersonates a browser for TikTok listings only', () => {
+  const tt = buildListingCommand({ platform: 'tiktok', url: 'https://www.tiktok.com/@broadwayben', limit: 300 });
+  assert.match(tt, new RegExp(`^yt-dlp --impersonate ${TIKTOK_IMPERSONATE_TARGET} `));
+  assert.ok(tt.includes('"https://www.tiktok.com/@broadwayben"'));
+  assert.ok(tt.includes('--playlist-items 1-300'));
+  // A creator with no primaryPlatform is listed from its TikTok URL, so it is impersonated too.
+  assert.match(buildListingCommand({ platform: undefined, url: 'https://www.tiktok.com/@x', limit: 5 }), /--impersonate /);
+  const yt = buildListingCommand({ platform: 'youtube', url: 'https://www.youtube.com/@mickeyjotheatre/videos', limit: 200 });
+  assert.equal(yt.includes('--impersonate'), false);
+  assert.ok(yt.startsWith('yt-dlp --flat-playlist --print "%(id)s\t%(title)s\t%(upload_date)s\t%(duration_string)s\t%(view_count)s"'));
+  assert.ok(yt.endsWith('--playlist-items 1-200 --sleep-interval 1 2>&1'));
+});

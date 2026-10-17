@@ -26,7 +26,7 @@
 const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
-const { findStaleCreators, runWithRetries } = require('../lib/video-pipeline-health');
+const { findStaleCreators, runWithRetries, buildListingCommand } = require('../lib/video-pipeline-health');
 const { preserveLlmFlags } = require('../lib/video-discovery-merge');
 
 const CREATORS_PATH = path.join(__dirname, '../../data/video-creators.json');
@@ -51,7 +51,7 @@ function scanCreator(creator, limit) {
   console.log(`  Fetching up to ${limit} videos from ${url}...`);
 
   {
-    const cmd = `yt-dlp --flat-playlist --print "%(id)s\t%(title)s\t%(upload_date)s\t%(duration_string)s\t%(view_count)s" "${url}" --playlist-items 1-${limit} --sleep-interval 1 2>&1`;
+    const cmd = buildListingCommand({ platform, url, limit });
     const listing = runWithRetries(() => {
       const out = execSync(cmd, { encoding: 'utf8', timeout: 300000 });
       // An empty listing that exits 0 would overwrite the creator's good discovery file with 0 videos.

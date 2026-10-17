@@ -97,4 +97,23 @@ function runWithRetries(fn, { attempts = SCAN_ATTEMPTS, pause = () => {} } = {})
   return { ok: false, error, attempts };
 }
 
-module.exports = { runWithRetries, scanErrorLine, SCAN_ATTEMPTS, detectTranscriptOutages, findStaleCreators, isVideoSpecificError, MIN_ERRORED_ATTEMPTS, MAX_SCAN_AGE_DAYS };
+// BRO-5537: yt-dlp fetches TikTok's /api/creator/item_list/ through its plain
+// urllib handler even though curl_cffi is installed (only the profile page is
+// impersonated). TikTok answers most of those with a 270-byte text/html bot
+// page, read as "Failed to parse JSON": 2 of 16 attempts listed anything, and
+// 5 of 6 TikTok creators failed all 3 retries on 2026-10-16. --impersonate
+// sends every request through curl_cffi: 12 of 12 attempts, and all 7 TikTok
+// creators listed 300 of 300 videos. YouTube lists fine without it.
+const TIKTOK_IMPERSONATE_TARGET = 'chrome';
+
+/**
+ * The yt-dlp command that lists a creator's feed for discover-videos.js.
+ * @param {{platform:string, url:string, limit:number}} opts platform is the
+ *   creator's primaryPlatform; anything but 'youtube' is listed as TikTok.
+ */
+function buildListingCommand({ platform, url, limit }) {
+  const impersonate = platform === 'youtube' ? '' : ` --impersonate ${TIKTOK_IMPERSONATE_TARGET}`;
+  return `yt-dlp${impersonate} --flat-playlist --print "%(id)s\t%(title)s\t%(upload_date)s\t%(duration_string)s\t%(view_count)s" "${url}" --playlist-items 1-${limit} --sleep-interval 1 2>&1`;
+}
+
+module.exports = { buildListingCommand, TIKTOK_IMPERSONATE_TARGET, runWithRetries, scanErrorLine, SCAN_ATTEMPTS, detectTranscriptOutages, findStaleCreators, isVideoSpecificError, MIN_ERRORED_ATTEMPTS, MAX_SCAN_AGE_DAYS };
