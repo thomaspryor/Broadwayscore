@@ -64,6 +64,8 @@ test('the signed-in-users alert files a START-NOW card and no longer asks the ow
   const yml = fs.readFileSync(path.join(ROOT, '.github/workflows/test-ugc-roundtrip.yml'), 'utf8');
   assert.match(yml, /file-ugc-fix-card\.js/);
   assert.doesNotMatch(yml, BANNED);
+  assert.match(yml, /FIX_CARD: \$\{\{ steps\.fixcard\.outputs\.card \}\}/);
+  assert.match(yml, /process\.env\.FIX_CARD\s*\?/);
   const { buildCard } = require('../file-ugc-fix-card.js');
   const { startNowUnpickableReason } = require('./cloud-worker-pick.js');
   const card = buildCard({ failed: 'x', runUrl: 'u' });
