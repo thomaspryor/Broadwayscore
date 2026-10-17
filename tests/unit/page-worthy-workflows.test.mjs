@@ -126,6 +126,8 @@ test('exactly the AUTO_FIX_FIRST_WORKFLOWS callers pass auto_fix_first, each wit
       for (const step of job.steps || []) {
         if (!/notify-failure/.test(String(step.uses || '')) || step.with?.auto_fix_first === undefined) continue;
         callers.add(file);
+        // BRO-5541: the sweep reads this step's outcome to tell a real failure from a preempted cancel.
+        assert.equal(step.name, require('../../scripts/lib/auto-fix-first.js').NOTIFY_STEP_NAME, `${file}: the paging step must be named exactly NOTIFY_STEP_NAME`);
         assert.match(String(step.with.auto_fix_first), /vars\.AUTO_FIX_FIRST_DISABLED != 'true'/, `${file}: auto_fix_first must honor the kill switch`);
         assert.match(String(step.with.linear_api_key), /secrets\.LINEAR_API_KEY/, `${file}: needs linear_api_key`);
       }

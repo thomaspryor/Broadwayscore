@@ -114,5 +114,5 @@ test('withOwnerAction: workflow refs resolve to their file; prototype keys and u
   assert.equal(withOwnerAction(ref, 'body'), `What to do: ${OWNER_ACTIONS['update-theatr.yml']}\n\nbody`);
   assert.equal(withOwnerAction('constructor', 'body'), 'body');
   assert.equal(withOwnerAction('', 'body'), 'body');
-  assert.match(withOwnerAction('auto-fix-first:escalation:', 'pre'), /^What to do: .*did not run or did not work/);
+  assert.match(withOwnerAction('auto-fix-first:escalation:', 'pre'), /^What to do: Nothing is needed from you\. .*automatic fix/);
 });

@@ -16,7 +16,10 @@ const { verifyCommand } = require('./linear-drain-parked.js');
 const H = 3600000;
 const NOW = Date.parse('2026-10-16T12:00:00Z');
 const iso = (msAgo) => new Date(NOW - msAgo).toISOString();
-const card = (o = {}) => ({ identifier: 'BRO-1', url: 'https://linear.app/x/BRO-1', createdAt: iso(1 * H), state: { type: 'unstarted' }, comments: [], ...o });
+// Second-attempt cards by default (BRO-5541): the escalation rules below are
+// the ones that email. first() is a first attempt, which retries instead.
+const card = (o = {}) => ({ identifier: 'BRO-1', url: 'https://linear.app/x/BRO-1', title: 'Auto-fix (second try): Poller failed', description: 'x\n\nauto-fix-first-key: k\n\nauto-fix-first-attempt: 2\n', createdAt: iso(1 * H), state: { type: 'unstarted' }, comments: [], ...o });
+const first = (o = {}) => card({ title: 'Auto-fix: Poller failed', description: 'x\n\nauto-fix-first-key: k\n', ...o });
 const decide = (cards, redAgo, canFile = true) => afx.decide({ cards, redObservedAt: redAgo === null ? null : NOW - redAgo, nowMs: NOW, canFile }).action + ':' + afx.decide({ cards, redObservedAt: redAgo === null ? null : NOW - redAgo, nowMs: NOW, canFile }).reason;
 
 test('decide: no card files on a fresh failure; the sweep never files', () => {
@@ -56,9 +59,10 @@ test('decide: a card closed as Duplicate is not open', () => {
   assert.equal(decide([dup, real], null), 'hold:fix-in-progress');
 });
 
-test('decide: an escalated card passes (alert emails as before), and cards older than 24h are a past incident', () => {
+test('decide: after the owner was told, the alert holds (no repeat emails); cards older than 24h are a past incident', () => {
   const esc = card({ createdAt: iso(4 * H), comments: [{ body: `${afx.ESCALATED_MARKER} x` }] });
-  assert.equal(decide([esc], 0), 'pass:already-escalated');
+  assert.equal(decide([esc], 0), 'hold:already-escalated');
+  assert.equal(decide([first({ identifier: 'BRO-0', createdAt: iso(8 * H), comments: [{ body: `${afx.ESCALATED_MARKER} x` }] }), card({ createdAt: iso(1 * H) })], 0), 'hold:already-escalated', 'any escalated card in the lookback holds');
   assert.equal(decide([card({ createdAt: iso(25 * H) })], 0), 'file:no-card');
 });
 
@@ -154,7 +158,7 @@ test('sweep: an undelivered email leaves the card unmarked; one workflow error d
   assert.deepEqual(out.slice(1).map((r) => r.action), ['hold', 'hold']);
 });
 
-test('latestRedFromRuns: newest failure or cancel (a timed-out hang pages as cancelled) counts, success clears, in-progress and skipped decide nothing', () => {
+test('latestRedFromRuns: newest failure counts, success clears, in-progress and skipped decide nothing, a cancel with unknown jobs counts (fail loud)', () => {
   const t = '2026-10-16T11:00:00Z';
   assert.equal(afx.latestRedFromRuns([{ status: 'completed', conclusion: 'failure', updated_at: t }]), Date.parse(t));
   assert.equal(afx.latestRedFromRuns([{ status: 'completed', conclusion: 'success' }, { status: 'completed', conclusion: 'failure', updated_at: t }]), null);
@@ -177,9 +181,11 @@ test('decide: a worker that gave up (card back in Todo, startedAt set) escalates
   assert.equal(decide([gaveUp], null), 'escalate:not-started');
 });
 
-test('decide: canceled without a Done sibling escalates even with no new red; a Done sibling (VERIFY passed) holds', () => {
+test('decide: canceled without a Done sibling escalates only on red after the cancel; a Done sibling (VERIFY passed) holds', () => {
   const canceled = card({ createdAt: iso(2 * H), canceledAt: iso(1 * H), state: { type: 'canceled' } });
-  assert.equal(decide([canceled], null), 'escalate:fix-canceled');
+  assert.equal(decide([canceled], 0.5 * H), 'escalate:fix-canceled');
+  assert.equal(decide([canceled], null), 'hold:fix-canceled-green', 'green pipeline: a canceled card is no reason to page or retry');
+  assert.equal(decide([canceled], 1.5 * H), 'hold:fix-canceled-green', 'red only before the cancel');
   const done = card({ identifier: 'BRO-2', createdAt: iso(2 * H), completedAt: iso(0.5 * H), state: { type: 'completed' } });
   assert.equal(decide([canceled, done], null), 'hold:fix-just-closed', 'a duplicate canceled beside a Done card is not a failed fix');
 });
@@ -196,7 +202,7 @@ test('sweep: unreadable GitHub runs count as still red (fail loud); not-started 
   assert.ok(policy.isPageWorthy(d.sent[0].conditionKey), 'escalation key is page-worthy');
   const d2 = deps({ cards: [card({ createdAt: iso(4 * H) })] });
   await afx.sweep({ nowMs: NOW, env: {}, deps: d2 });
-  assert.match(d2.sent[0].title, /automatic fix never ran/);
+  assert.match(d2.sent[0].title, /no automatic fix has started/);
 });
 
 test('buildCard: the key line survives a markdown round-trip (own paragraph)', () => {
@@ -217,4 +223,151 @@ test('the gate and the sweep send one escalation per card: same Resend key as ro
   const key = afx.escalationIdempotencyKey(c, NOW);
   assert.equal(key, router.alertIdempotencyKey('auto-fix-first:escalation:BRO-7', router.DEFAULT_COOLDOWN_HOURS, NOW));
   assert.notEqual(key, afx.escalationIdempotencyKey({ identifier: 'BRO-8' }, NOW), 'one key per card');
+});
+
+// ---- BRO-5541: one definition of a failing run, a second attempt, owner copy ----
+
+const FIXTURE = require('./fixtures/auto-fix-first/poller-runs-2026-10-17T0756Z.json');
+
+test('replay 2026-10-17 07:56Z (real poller runs): Express-preempted cancels are not failures, so the sweep sends nothing', async () => {
+  const nowMs = Date.parse(FIXTURE.asOf);
+  const poller = afx.workflowKey(FIXTURE.workflow);
+  // The real BRO-5494 card (first attempt, Done 20:03Z) with its real key line.
+  const bro5494 = { ...FIXTURE.card, id: 'x', url: 'https://linear.app/x/BRO-5494', title: 'Auto-fix: Opening Night Poller Failed', description: afx.buildCard({ key: poller, alertTitle: 'Opening Night Poller Failed', nowMs: Date.parse(FIXTURE.card.createdAt) }).description, comments: [] };
+  const fetched = [];
+  const d = deps();
+  d.lookupCards = async (key) => (key === poller ? [bro5494] : []);
+  d.latestRedAt = async (wf) => afx.latestRedAtFromRuns(wf === FIXTURE.workflow ? FIXTURE.runs : [], async (id) => { fetched.push(id); return FIXTURE.jobs[id]; });
+  const out = await afx.sweep({ nowMs, env: {}, deps: d });
+  assert.deepEqual(out.map((r) => `${r.action}:${r.reason}`), ['hold:fix-just-closed']);
+  assert.equal(d.sent.length, 0, 'no owner email');
+  assert.equal(d.filed.length, 0, 'no second attempt either: nothing failed');
+  assert.equal(fetched.length, 5, 'jobs read only for the five cancels before the first deciding run');
+  // The incident itself: counting every cancel as red (no jobs known) is what paged.
+  const oldRed = afx.latestRedFromRuns(FIXTURE.runs);
+  assert.equal(oldRed, Date.parse('2026-10-17T06:19:47Z'));
+  assert.notEqual(afx.decide({ cards: [bro5494], redObservedAt: oldRed, nowMs, canFile: false }).action, 'hold');
+});
+
+test('runIsRed: a cancel is red only when its Notify step ran or was cut off; superseded, preempted and unfinished runs are not', () => {
+  const run = (conclusion) => ({ status: 'completed', conclusion });
+  const job = (...steps) => [{ steps: steps.map(([name, conclusion]) => ({ name, conclusion })) }];
+  const N = afx.NOTIFY_STEP_NAME;
+  assert.equal(afx.runIsRed(run('failure')), true);
+  assert.equal(afx.runIsRed(run('timed_out')), true);
+  assert.equal(afx.runIsRed(run('success')), false);
+  assert.equal(afx.runIsRed(run('skipped')), false);
+  assert.equal(afx.runIsRed({ status: 'in_progress', conclusion: null }), false);
+  assert.equal(afx.runIsRed(run('cancelled'), job(['Check for Express preemption', 'success'], [N, 'skipped'])), false, 'Express takeover');
+  assert.equal(afx.runIsRed(run('cancelled'), job([N, 'success'])), true, 'timeout-minutes hang: the pager paged');
+  assert.equal(afx.runIsRed(run('cancelled'), job([N, 'cancelled'])), true, 'Notify cut off mid-send still counts');
+  assert.equal(afx.runIsRed(run('cancelled'), []), false, 'pending run replaced in the concurrency queue');
+  assert.equal(afx.runIsRed(run('cancelled'), [{ steps: [] }]), false, 'job never started a step');
+  assert.equal(afx.runIsRed(run('cancelled'), job(['Set up job', 'success'])), true, 'no Notify step found: fail loud');
+  assert.equal(afx.runIsRed(run('cancelled')), true, 'jobs unknown: fail loud');
+  for (const id of Object.keys(FIXTURE.jobs)) assert.equal(afx.runIsRed({ status: 'completed', conclusion: 'cancelled' }, FIXTURE.jobs[id]), false, `real run ${id}`);
+});
+
+test('latestRedAtFromRuns: a jobs fetch error counts the cancel as red; a preempted cancel is passed over to the run below it', async () => {
+  const t = '2026-10-16T11:00:00Z';
+  const cancel = { id: 1, status: 'completed', conclusion: 'cancelled', updated_at: t };
+  const fail = { id: 2, status: 'completed', conclusion: 'failure', updated_at: '2026-10-16T10:00:00Z' };
+  assert.equal(await afx.latestRedAtFromRuns([cancel], async () => { throw new Error('HTTP 502'); }), Date.parse(t));
+  const skipped = [{ steps: [{ name: afx.NOTIFY_STEP_NAME, conclusion: 'skipped' }] }];
+  assert.equal(await afx.latestRedAtFromRuns([cancel, fail], async () => skipped), Date.parse(fail.updated_at));
+  assert.equal(await afx.latestRedAtFromRuns([cancel, { status: 'completed', conclusion: 'success' }], async () => skipped), null);
+});
+
+test('decide: a first fix that did not hold files a second attempt; not-started and second attempts escalate', () => {
+  assert.equal(decide([first({ createdAt: iso(4 * H), state: { type: 'started' } })], 0), 'retry:still-red');
+  assert.equal(decide([first({ createdAt: iso(6 * H), state: { type: 'started' } })], 6 * H), 'retry:stalled');
+  assert.equal(decide([first({ createdAt: iso(2 * H), canceledAt: iso(1 * H), state: { type: 'canceled' } })], 0.5 * H), 'retry:fix-canceled');
+  assert.equal(decide([first({ createdAt: iso(5 * H), completedAt: iso(3 * H), state: { type: 'completed' } })], 1 * H), 'retry:red-after-fix');
+  assert.equal(decide([first({ createdAt: iso(4 * H) })], null), 'escalate:not-started', 'no worker picked it up: a second card in the same pool would only delay the owner');
+  assert.equal(afx.decide({ cards: [first({ createdAt: iso(4 * H), state: { type: 'started' } })], redObservedAt: NOW, nowMs: NOW, canFile: false }).attempt, 2);
+  // Once attempt 2 exists, attempt 1 no longer decides anything.
+  const old = first({ identifier: 'BRO-0', createdAt: iso(8 * H), canceledAt: iso(1 * H), state: { type: 'canceled' } });
+  assert.equal(decide([old, card({ createdAt: iso(1 * H) })], 0), 'hold:fix-window');
+  assert.equal(decide([old, card({ createdAt: iso(5 * H), completedAt: iso(3 * H), state: { type: 'completed' } })], 1 * H), 'escalate:red-after-fix');
+});
+
+test('buildCard: a second attempt is pickable, names the first card, carries its own attempt paragraph and the same key', () => {
+  const key = 'workflow-red:opening-night-poller.yml';
+  const c = afx.buildCard({ key, alertTitle: 'Poller failed', nowMs: NOW, attempt: 2, previous: { url: 'https://linear.app/x/BRO-1' } });
+  assert.equal(startNowUnpickableReason({ title: c.title, description: c.description, priority: 2, mode: 'dispatch' }), null);
+  assert.equal(c.title, 'Auto-fix (second try): Poller failed');
+  assert.equal(afx.cardKey(c), key);
+  assert.equal(afx.cardAttempt(c), 2);
+  assert.match(c.description, /\n\nauto-fix-first-attempt: 2\n/);
+  assert.match(c.description, /BRO-1/);
+  assert.ok(verifyCommand({ description: c.description }));
+  assert.equal(afx.alertTitleOf(c), 'Poller failed');
+  assert.equal(afx.cardAttempt(afx.buildCard({ key, alertTitle: 't', nowMs: NOW })), 1);
+});
+
+const retryDeps = (o) => { const d = deps(o); d.superseded = []; d.supersede = async (c, body) => { d.superseded.push({ c, body }); }; return d; };
+
+test('gate: a fresh failure after a failed first fix files the second attempt on Opus, retires the first card, sends nothing', async () => {
+  const d = retryDeps({ cards: [first({ createdAt: iso(5 * H), completedAt: iso(3 * H), state: { type: 'completed' } })] });
+  const r = await afx.gate({ key: 'workflow-red:opening-night-poller.yml', alertTitle: 'Poller failed', runUrl: 'https://github.com/r/actions/runs/9', nowMs: NOW, env: {}, deps: d });
+  assert.equal(r.email, false);
+  assert.equal(r.action, 'retry');
+  assert.equal(d.filed.length, 1);
+  assert.equal(d.filed[0].model, 'opus');
+  assert.equal(afx.cardAttempt(d.filed[0]), 2);
+  assert.match(d.superseded[0].body, new RegExp(`^${afx.SUPERSEDED_MARKER}.*attempt 2`));
+  const d2 = retryDeps({ cards: [first({ createdAt: iso(5 * H), completedAt: iso(3 * H), state: { type: 'completed' } })] });
+  d2.fileCard = async () => { throw new Error('Linear down'); };
+  const r2 = await afx.gate({ key: 'workflow-red:opening-night-poller.yml', alertTitle: 'Poller failed', nowMs: NOW, env: {}, deps: d2 });
+  assert.equal(r2.email, true, 'a second attempt that cannot be filed emails at once');
+  assert.match(r2.preamble, /could not be started \(Linear down\)/);
+});
+
+test('gate: after the escalation email, later failures send nothing more (held)', async () => {
+  const d = deps({ cards: [card({ createdAt: iso(4 * H), comments: [{ body: `${afx.ESCALATED_MARKER} x` }] })] });
+  const r = await afx.gate({ key: 'workflow-red:opening-night-orchestrator.yml', alertTitle: 'x', nowMs: NOW, env: {}, deps: d });
+  assert.equal(r.email, false);
+  assert.equal(r.reason, 'already-escalated');
+});
+
+test('sweep: a first fix still red files the second attempt and emails nothing; a failed filing emails at once', async () => {
+  const started = first({ createdAt: iso(4 * H), state: { type: 'started' } });
+  const d = retryDeps({ cards: [started], red: NOW - 10 * 60000 });
+  const out = await afx.sweep({ nowMs: NOW, env: {}, deps: d });
+  assert.ok(out.every((r) => r.action === 'retry' && r.reason === 'still-red'));
+  assert.equal(d.sent.length, 0);
+  assert.equal(d.filed.length, 3);
+  assert.equal(d.filed[0].title, 'Auto-fix (second try): Poller failed');
+  assert.equal(d.superseded.length, 3);
+  const d2 = retryDeps({ cards: [started], red: NOW - 10 * 60000 });
+  d2.fileCard = async () => { throw new Error('Linear 500'); };
+  const out2 = await afx.sweep({ nowMs: NOW, env: {}, deps: d2 });
+  assert.ok(out2.every((r) => r.action === 'escalate' && r.reason === 'file-failed'));
+  assert.equal(d2.sent.length, 3);
+  assert.match(d2.sent[0].description, /could not be started \(Linear 500\)/);
+  assert.match(d2.comments[0].body, new RegExp(`^${afx.ESCALATED_MARKER}`));
+});
+
+test('owner copy (owner 2026-10-16): never asks him to open Claude or do what a computer can do, no em dashes, says what broke and what happens next', () => {
+  const banned = /claude|paste|open a session/i;
+  const reasons = ['not-started', 'still-red', 'stalled', 'fix-canceled', 'red-after-fix', 'file-failed'];
+  const texts = [];
+  for (const reason of reasons) {
+    for (const c of [card({ createdAt: iso(5 * H), completedAt: iso(2 * H) }), first({ createdAt: iso(5 * H), completedAt: iso(2 * H) })]) {
+      for (const key of [...require('./page-worthy-alerts.js').AUTO_FIX_FIRST_WORKFLOWS].map(afx.workflowKey)) {
+        const t = afx.escalationPreamble({ reason, card: c, error: 'Linear down', nowMs: NOW, what: afx.plainName(key) });
+        assert.match(t, /^The (opening-night|nightly)/, `${reason}: says what broke first`);
+        assert.match(t, /\nThe automation (has stopped|will not|tries)/, `${reason}: says what happens next`);
+        texts.push(t);
+      }
+    }
+  }
+  const { OWNER_ACTIONS } = require('./page-worthy-alerts.js');
+  for (const k of ['auto-fix-first:escalation:', 'opening-night-orchestrator.yml', 'opening-night-poller.yml']) texts.push(OWNER_ACTIONS[k]);
+  for (const t of texts) {
+    assert.doesNotMatch(t, banned, t);
+    assert.ok(!t.includes('—'), `em dash in: ${t}`);
+  }
+  assert.match(afx.escalationPreamble({ reason: 'red-after-fix', card: card({ createdAt: iso(5 * H), completedAt: iso(2 * H) }), nowMs: NOW, what: 'X' }),
+    /^X is still failing\. Two automatic fixes were tried\. The second finished at 2026-10-16T10:00:00Z, but it failed again afterwards\.\nThe automation has stopped retrying for now and will not email you about this again before 2026-10-17T07:00:00Z\. If it is still failing after that, it starts a new automatic fix by itself\.$/);
 });

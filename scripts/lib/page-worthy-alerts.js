@@ -323,7 +323,12 @@ const OWNER_ACTIONS = {
   'update-theatr.yml': 'Re-capture the Theatr login from the iPhone app.',
   // Owner 2026-10-16 (BRO-5479): "A except for Broadway openings. I want to know
   // then." A Broadway poll emails right away; other markets auto-fix first.
-  'opening-night-poller.yml': 'Ask Claude to fix the review poller before the Broadway opening reviews land.',
+  // BRO-5541, owner 2026-10-16: "I hate getting emailed about issues that can
+  // be fixed just by me pasting it into a Claude session." The three
+  // auto-fix-first rows below are the owner's own exception to the must-act
+  // rule (he chose to hear about these), so they say what is happening and
+  // that nothing is needed, never "ask Claude" (auto-fix-first.test.mjs).
+  'opening-night-poller.yml': 'Nothing is needed from you. You asked to hear about Broadway opening-night review poller failures; the automation is handling the fix.',
   // Mac-side launcher (opening-night-monitor-launch.js, launchd): only a
   // person at the Mac can fix these, and the Mac-local digest is never read.
   'on-monitor-launch-failed-': 'Check the Mac is on and not frozen; restart it if needed. Tonight\'s opening-night monitor could not start.',
@@ -335,9 +340,9 @@ const OWNER_ACTIONS = {
   'broadcast:never-sent:': 'Send the opening-night email; it never went out.',
   // BRO-5477: files a worker card first and emails only when that automatic
   // fix failed or never started.
-  'opening-night-orchestrator.yml': 'Ask Claude to fix it: opening-night review collection is down and the automatic fix did not work.',
+  'opening-night-orchestrator.yml': 'Nothing is needed from you. The nightly opening-night review collection failed, so tonight\'s reviews may reach the site late.',
   // BRO-5477: sent only after the automatic fix card failed or never started.
-  'auto-fix-first:escalation:': 'Ask Claude to fix the failing opening-night workflow; the automatic fix did not run or did not work.',
+  'auto-fix-first:escalation:': 'Nothing is needed from you. You asked to be told when the automatic fix for an opening-night failure does not work; what broke and what happens next are below.',
 };
 
 // Pages that were allowlisted as "urgent" before the must-act rule and name no
