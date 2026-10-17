@@ -56,6 +56,8 @@ on:
       # scripts/audit-test-yml-lib-deps.js — advisory CI check that catches
       # this shape of gap going forward).
       - 'scripts/check-orphan-commits.js'
+      # BRO-5542: scripts/lib/owner-copy-no-claude.test.mjs requires it (fix-card text check).
+      - 'scripts/file-ugc-fix-card.js'
       # BRO-5499: top-level tests scripts/fix-utc-shifted-publish-dates.test.mjs and scripts/purge-uk-show-score-audience.test.mjs
       - 'scripts/fix-utc-shifted-publish-dates.js'
       - 'scripts/purge-uk-show-score-audience.js'
