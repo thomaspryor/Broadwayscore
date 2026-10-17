@@ -25,6 +25,7 @@ const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { hasRealImage } = require('./lib/show-images.js');
+const { isTourShow } = require('./lib/tour-family.js');
 const {
   findImagelessScoredShows,
   DEFAULT_THRESHOLD_HOURS,
@@ -114,6 +115,8 @@ async function main() {
     noReliableArt: hasActiveNoArtMarker(s),
     reviewCount: reviewCountByShow[s.id] || 0,
     sinceMs: resolveSinceMs(s),
+    // BRO-5506: fetch-all-image-formats skips tours, so dispatch the parent.
+    dispatchId: isTourShow(s) && s.tourOf ? s.tourOf : undefined,
   }));
 
   const marked = normalized.filter((s) => s.noReliableArt && !s.hasImages);

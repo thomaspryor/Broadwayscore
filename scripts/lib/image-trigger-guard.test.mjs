@@ -295,3 +295,24 @@ test('executeSelfHealDispatch: a due show dropped from the batch gets NO cooldow
   assert.equal(byId['   '].dispatchAttempts, 0, 'a show the dispatch never carried must not be counted as attempted');
   assert.equal(byId['   '].lastDispatchedAt, null, 'and must not start a cooldown that suppresses its next real retry');
 });
+
+test('BRO-5506: a tour is healed by dispatching its parent, and the tour is credited the attempt', async () => {
+  const now = Date.parse('2026-10-17T00:00:00Z');
+  const orderedFlagged = [
+    { id: 'company-tour-2023', title: 'Company', dispatchId: 'company-2021' },
+    { id: 'plain-show', title: 'Plain' },
+    { id: 'cooling-show', title: 'Cooling' },
+  ];
+  const prevById = new Map([['cooling-show', { dispatchAttempts: 1, lastDispatchedAt: new Date(now - 3600e3).toISOString() }]]);
+  const plan = planSelfHealDispatch({ orderedFlagged, prevById, nowMs: now, cooldownHours: 12, maxDispatchesPerRun: 5 });
+  assert.equal(plan.dispatchInputs.length, 1);
+  assert.equal(plan.dispatchInputs[0].inputs.show_id, 'company-2021,plain-show', 'tour id must never be dispatched');
+  const calls = [];
+  const res = await executeSelfHealDispatch({ plan, nowMs: now, dispatch: async (ids) => { calls.push(ids); return { ok: true }; } });
+  assert.equal(calls.length, 1);
+  const by = new Map(plan.entries.map((e) => [e.id, e]));
+  assert.equal(by.get('company-tour-2023').dispatchAttempts, 1);
+  assert.equal(by.get('plain-show').dispatchAttempts, 1);
+  assert.equal(by.get('cooling-show').dispatchAttempts, 1, 'cooling show not credited');
+  assert.deepEqual(res.dispatched.sort(), ['company-tour-2023', 'plain-show']);
+});
