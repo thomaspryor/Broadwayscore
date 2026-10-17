@@ -523,6 +523,8 @@ test('BRO-5377: axs.com locale-prefixed /uk/events/ ticket pages are ticketing-r
   assert.equal(namedNonReviewReason('https://www.axs.com/theatre-review-sweat-at-arena-stage-75388'), null);
 });
 
+const { ingestRefusalReason, submissionNonReviewReason } = require('./non-review-url-patterns.js');
+
 test('BRO-5132: festies.co.uk Fringe fan-review pages are UGC, not review-gap candidates', () => {
   for (const u of [
     'https://festies.co.uk/@TrashP/events/2026/elf-lyons-is-the-woman-on-the-edge',
@@ -530,5 +532,10 @@ test('BRO-5132: festies.co.uk Fringe fan-review pages are UGC, not review-gap ca
   ]) {
     assert.equal(namedNonReviewReason(u), 'ugc-platform', u);
     assert.equal(classifyGapCandidateUrl(u).ok, false, u);
+    assert.equal(ingestRefusalReason(u), 'ugc-platform', u);
+    assert.equal(submissionNonReviewReason(u), 'ugc-platform', u);
   }
+  // The named-critic exemption stays vocal.media's alone.
+  assert.equal(submissionNonReviewReason('https://vocal.media/critique/some-show-review'), null);
+  assert.equal(submissionNonReviewReason('https://www.trustpilot.com/review/example.com'), 'ugc-platform');
 });

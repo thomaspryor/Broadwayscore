@@ -801,7 +801,9 @@ function submissionNonReviewReason(url) {
   try { u = new URL(url); } catch { return null; }
   if (/(^|\.)newyorkcitytheatre\.com$/i.test(u.hostname) && /^\/reviews\/\d+/.test(u.pathname)) return null;
   const named = namedNonReviewReason(url);
-  if (named && named !== 'ugc-platform') return named;
+  // BRO-5132: the critique exemption is vocal.media's alone; a Trustpilot or
+  // festies.co.uk fan page has no named-critic form and is refused here too.
+  if (named && (named !== 'ugc-platform' || !/(^|\.)vocal\.media$/i.test(u.hostname))) return named;
   // BRO-5275: the validator ran isBlockedReviewUrl first but this shared
   // decision (the writer's only submission guard) did not, so 13 files for
   // show-score, showify, broadwaylog, recast and inyougo pages, each under its
