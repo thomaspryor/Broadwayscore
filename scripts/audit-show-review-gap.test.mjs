@@ -544,6 +544,36 @@ test('acceptSerpCensusResult drops Edinburgh Fringe reviews and the venue site o
   assert.ok(acceptSerpCensusResult({ url: 'https://tank.com/elf-lyons-the-woman-on-the-edge-review', title }, { show: tank, showInfo: info }));
 });
 
+// BRO-5512: Kramer/Fauci's February NYU Skirball run shares the calendar year with
+// the October St. Ann's run, so year-only checks passed its reviews through.
+test('acceptSerpCensusResult drops same-year prior-run and Philly Fringe reviews (BRO-5512)', () => {
+  const { otherProductionUrlSignal } = require('./audit-show-review-gap.js');
+  const show = { id: 'kramerfauci-st-anns-off-broadway-2026', title: 'Kramer/Fauci', category: 'off-broadway', venue: "St. Ann's Warehouse", previewsStartDate: '2026-09-27', openingDate: '2026-10-04', closingDate: '2026-10-24', priorRuns: [{ openingDate: '2026-02-11', closingDate: '2026-02-21', venue: 'NYU Skirball Center for the Performing Arts', inheritReviews: false }] };
+  const info = { title: show.title, cast: [], creativeNames: [] };
+  const title = 'Kramer/Fauci review';
+  for (const url of [
+    'https://www.theatlantic.com/culture/2026/02/kramer-fauci-theater-review-buckley-vidal-debate/686080/',
+    'https://exeuntnyc.com/reviews/kramer-fauci-at-nyu-skirball/',
+    'https://www.broadstreetreview.com/reviews/philly-fringe-2026-fringearts-presents-daniel-fishs-kramer-fauci',
+  ]) assert.equal(acceptSerpCensusResult({ url, title }, { show, showInfo: info }), null, url);
+  // Current-run reviews stay: October month, St. Ann's named, no venue/month signal.
+  for (const url of [
+    'https://www.nytimes.com/2026/10/05/theater/kramer-fauci-review.html',
+    'https://www.vulture.com/article/kramer-fauci-daniel-fish-play-st-anns-nyc.html',
+    'https://example.com/2026/10/kramer-fauci-from-nyu-skirball-to-st-anns-warehouse-review/',
+  ]) assert.ok(acceptSerpCensusResult({ url, title }, { show, showInfo: info }), url);
+  // No declared prior run: month/venue signals never fire.
+  const { priorRuns, ...noRuns } = show;
+  assert.equal(otherProductionUrlSignal('https://exeuntnyc.com/reviews/kramer-fauci-at-nyu-skirball/', noRuns), null);
+  // A bare priorRuns entry (no inheritReviews:false) still readmits its own URLs.
+  const bare = { ...show, priorRuns: [{ openingDate: '2026-02-11', closingDate: '2026-02-21', venue: 'NYU Skirball Center for the Performing Arts' }] };
+  assert.equal(otherProductionUrlSignal('https://exeuntnyc.com/reviews/kramer-fauci-at-nyu-skirball/', bare), null);
+  // Show Score path shares the signal.
+  assert.equal(otherProductionUrlSignal('https://www.theatlantic.com/culture/2026/02/kramer-fauci-theater-review/1/', show).signal, 'prior-run-month');
+  // A Fringe slug naming New York is the transfer's review.
+  assert.ok(acceptSerpCensusResult({ url: 'https://example.com/reviews/kramer-fauci-from-fringearts-to-new-york', title }, { show, showInfo: info }));
+});
+
 test('acceptSerpCensusResult drops a novel review whose slug spells "bookreview" (BRO-4540)', () => {
   const show = { id: 'a-thousand-natural-shocks-off-broadway-2026', title: 'A Thousand Natural Shocks', category: 'off-broadway', venue: 'The Tank', openingDate: '2026-10-01' };
   const info = { title: show.title, cast: [], creativeNames: [] };
