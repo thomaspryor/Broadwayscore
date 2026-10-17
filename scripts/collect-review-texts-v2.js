@@ -494,7 +494,8 @@ async function updateReviewJson(review, text, archivePath, method) {
     const outletId = review.data.outletId || '';
 
     // Old regex extraction (for comparison logging)
-    const regexResult = extractScore(html, text, outletId);
+    // BRO-5223: the show title lets the fallthrough refuse another show's stars.
+    const regexResult = extractScore(html, text, outletId, require('./lib/known-show-titles').showTitleForId(review.data.showId));
 
     // New LLM extraction (primary — async)
     let llmResult = null;

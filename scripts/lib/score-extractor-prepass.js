@@ -114,7 +114,8 @@ function runScoreExtractorPrePass(data, opts) {
 
   let extracted;
   try {
-    extracted = extractScore('', text, outletId);
+    // BRO-5223: the show title lets the fallthrough refuse another show's stars.
+    extracted = extractScore('', text, outletId, data.showTitle || require('./known-show-titles').showTitleForId(data.showId));
   } catch {
     // Extractor errors must never block the surrounding write. Fall through.
     return null;
