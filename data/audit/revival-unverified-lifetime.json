@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-10-16T07:29:41.275Z",
-  "scanned": 2619,
-  "showsWithViolations": 74,
-  "totalViolations": 74,
+  "updatedAt": "2026-10-17T07:11:17.135Z",
+  "scanned": 2629,
+  "showsWithViolations": 59,
+  "totalViolations": 59,
   "newSinceLastRun": 1,
   "newViolationKeys": [
-    "legally-blonde-tour-2027"
+    "memoirs-of-amorous-gentlemen-off-broadway-2026"
   ],
   "violationKeys": [
     "the-lost-boys-2026",
@@ -60,27 +60,12 @@
     "affluenza-off-west-end-2026",
     "tru-off-west-end-2026",
     "degenerates-off-broadway-2026",
+    "memoirs-of-amorous-gentlemen-off-broadway-2026",
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
     "school-pictures-off-broadway-2026",
     "lost-in-del-valle-return-off-broadway-2026",
-    "and-juliet-tour-2024",
-    "beetlejuice-tour-2026",
-    "the-notebook-tour-2025",
-    "the-outsiders-tour-2025",
-    "water-for-elephants-tour-2025",
     "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
     "elektra-off-broadway-2026",
-    "operation-mincemeat-tour-2026",
-    "the-wiz-tour-2026",
-    "beauty-and-the-beast-tour-2025",
-    "the-sound-of-music-tour-2025",
-    "spamalot-tour-2025",
-    "the-music-man-tour-2026",
-    "mamma-mia-tour-2026",
-    "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
-    "legally-blonde-tour-2027",
-    "shucked-tour-2027",
-    "the-whos-tommy-tour-2026",
     "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026"
   ],
   "hits": [
@@ -553,6 +538,15 @@
       ]
     },
     {
+      "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
+      "title": "Memoirs of Amorous Gentlemen",
+      "openingDate": "2026-10-15",
+      "message": "memoirs-of-amorous-gentlemen-off-broadway-2026 review text mentions \"revival\" 9x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
       "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
       "title": "Rhinoceros",
       "openingDate": "2026-08-21",
@@ -580,51 +574,6 @@
       ]
     },
     {
-      "showId": "and-juliet-tour-2024",
-      "title": "& Juliet",
-      "openingDate": "2024-09-22",
-      "message": "and-juliet-tour-2024 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "beetlejuice-tour-2026",
-      "title": "Beetlejuice",
-      "openingDate": "2026-02-13",
-      "message": "beetlejuice-tour-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "the-notebook-tour-2025",
-      "title": "The Notebook",
-      "openingDate": "2025-09-06",
-      "message": "the-notebook-tour-2025 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "the-outsiders-tour-2025",
-      "title": "The Outsiders",
-      "openingDate": "2025-09-17",
-      "message": "the-outsiders-tour-2025 review text mentions \"revival\" 53x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "title": "Water for Elephants",
-      "openingDate": "2025-09-27",
-      "message": "water-for-elephants-tour-2025 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
       "showId": "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
       "title": "Going Bacharach: The Songs of an Icon",
       "openingDate": "2026-09-16",
@@ -638,105 +587,6 @@
       "title": "Elektra",
       "openingDate": null,
       "message": "elektra-off-broadway-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "operation-mincemeat-tour-2026",
-      "title": "Operation Mincemeat",
-      "openingDate": "2026-09-20",
-      "message": "operation-mincemeat-tour-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "the-wiz-tour-2026",
-      "title": "The Wiz",
-      "openingDate": "2026-09-26",
-      "message": "the-wiz-tour-2026 review text mentions \"revival\" 6x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "beauty-and-the-beast-tour-2025",
-      "title": "Beauty and the Beast",
-      "openingDate": "2025-06-25",
-      "message": "beauty-and-the-beast-tour-2025 review text mentions \"revival\" 6x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "the-sound-of-music-tour-2025",
-      "title": "The Sound of Music",
-      "openingDate": "2025-09-05",
-      "message": "the-sound-of-music-tour-2025 review text mentions \"revival\" 6x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "spamalot-tour-2025",
-      "title": "Spamalot",
-      "openingDate": "2025-12-01",
-      "message": "spamalot-tour-2025 review text mentions \"revival\" 51x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "the-music-man-tour-2026",
-      "title": "The Music Man",
-      "openingDate": "2026-01-12",
-      "message": "the-music-man-tour-2026 review text mentions \"revival\" 10x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "mamma-mia-tour-2026",
-      "title": "Mamma Mia!",
-      "openingDate": "2026-03-05",
-      "message": "mamma-mia-tour-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
-      "title": "A Beautiful Noise, The Neil Diamond Musical",
-      "openingDate": "2026-10-30",
-      "message": "a-beautiful-noise-the-neil-diamond-musical-tour-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "legally-blonde-tour-2027",
-      "title": "Legally Blonde",
-      "openingDate": "2027-01-19",
-      "message": "legally-blonde-tour-2027 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "shucked-tour-2027",
-      "title": "Shucked",
-      "openingDate": "2027-01-12",
-      "message": "shucked-tour-2027 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "the-whos-tommy-tour-2026",
-      "title": "The Who's Tommy",
-      "openingDate": "2026-10-06",
-      "message": "the-whos-tommy-tour-2026 review text mentions \"revival\" 7x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
