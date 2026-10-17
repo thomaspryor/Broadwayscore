@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5265-b",
   "planId": "0f95b02f-599f-4e5a-a80d-ed09c3a3dde6",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-17T21:00:49.566Z",
   "submitter": {
     "name": null,
@@ -128,5 +128,78 @@
         "description": "Clear crossOutletDuplicate on front-row-center--tulis-mccall.json so the review counts once (nytg--unknown.json stays flagged as its copy)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-17T21:55:39.393Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "long-days-journey-into-night-2016/dctheatrescene--jonathan-mandell.json crossOutletClearReason: null -> \"BRO-5265 hand clear: mutual crossOutletDuplicate 2-cycle with nyt-theater--david-nounou.json dropped both copies; both rows are Jonathan Mandell (newyorktheater.me is his blog); keep the DC Theatre Scene byline copy.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "long-days-journey-into-night-2016/dctheatrescene--jonathan-mandell.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "next-fall-2010/backstage--david-sheward.json crossOutletClearReason: null -> \"BRO-5265 hand clear: mutual crossOutletDuplicate 2-cycle with broadwayworld--stephanie-zacharek.json dropped both copies; the BroadwayWorld row is a roundup page (isRoundupArticle) carrying the Back Stage text; the Back Stage row is the outlet's own review.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "next-fall-2010/backstage--david-sheward.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oh-mary-west-end-2025/standard--nick-curtis.json crossOutletClearReason: null -> \"BRO-5265 hand clear: mutual crossOutletDuplicate 2-cycle with guardian-uk--unknown.json dropped both copies; the guardian-uk row url is an inkl.com repost labelled \\\"Evening Standard ... Nick Curtis\\\"; the Standard row is the outlet's own review.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oh-mary-west-end-2025/standard--nick-curtis.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "on-the-twentieth-century-2015/nytg--brian-scott-lipton.json crossOutletClearReason: null -> \"BRO-5265 hand clear: mutual crossOutletDuplicate 2-cycle with front-row-center--tulis-mccall.json dropped both copies; same text as Tulis McCall's FRC review; FRC McCall is a known syndication secondary of NYTG (knownSyndicationSecondary), so the NYTG copy is the one that counts.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "on-the-twentieth-century-2015/nytg--brian-scott-lipton.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-bands-visit-2017/theater-life--isa-goldberg.json crossOutletClearReason: null -> \"BRO-5265 hand clear: mutual crossOutletDuplicate 2-cycle with off-script-with-dan-dwyer--dan-dwyer.json dropped both copies; the Theater Life page is signed \\\"By: Isa Goldberg\\\"; the tumblr repost is already excluded blockedReviewUrl.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-bands-visit-2017/theater-life--isa-goldberg.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-humans-2016/front-row-center--kathleen-campion.json crossOutletClearReason: null -> \"BRO-5265 hand clear: mutual crossOutletDuplicate 2-cycle with nytg--tulis-mccall.json dropped both copies; the NYTG copy carries \\\"Review by Kathleen Campion\\\"; keep her FRC byline copy.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-humans-2016/front-row-center--kathleen-campion.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-price-2017/front-row-center--tulis-mccall.json crossOutletClearReason: null -> \"BRO-5265 hand clear: mutual crossOutletDuplicate 2-cycle with nytg--unknown.json dropped both copies; the NYTG copy carries \\\"Review by Tulis McCall\\\" and is already excluded wrongProduction; keep her FRC byline copy.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-price-2017/front-row-center--tulis-mccall.json crossOutletDuplicate: true -> false"
+    }
+  ]
 }
