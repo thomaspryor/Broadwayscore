@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-17T23:20:51.015Z",
+  "timestamp": "2026-10-17T23:43:23.110Z",
   "stats": {
-    "totalReviews": 57328,
-    "alreadyFlagged": 21270,
+    "totalReviews": 57332,
+    "alreadyFlagged": 21271,
     "dateGuardCatches": 195,
     "directorMismatch": 1938,
     "tvFilmSignals": 1600,
-    "londonSignals": 2409,
+    "londonSignals": 2410,
     "offBroadwaySignals": 516,
     "yearMismatch": 156,
-    "noPublishDate": 5295
+    "noPublishDate": 5296
   },
   "findings": [
     {
@@ -60505,6 +60505,19 @@
       "score": 90,
       "publishDate": "2026-10-09",
       "url": "https://www.theguardian.com/stage/2026/oct/09/end-of-the-world-and-hard-boiled-wonderland-review-haruki-murakami-barbican-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026",
+      "file": "plays-to-see--sonya-tarkhanova.json",
+      "publishDate": "2026-10-10",
+      "url": "https://playstosee.com/reviews/the-end-of-the-world-and-the-hard-boiled-wonderland/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
