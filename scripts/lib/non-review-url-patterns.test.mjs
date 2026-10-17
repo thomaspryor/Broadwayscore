@@ -539,3 +539,15 @@ test('BRO-5132: festies.co.uk Fringe fan-review pages are UGC, not review-gap ca
   assert.equal(submissionNonReviewReason('https://vocal.media/critique/some-show-review'), null);
   assert.equal(submissionNonReviewReason('https://www.trustpilot.com/review/example.com'), 'ugc-platform');
 });
+
+test('BRO-5355: viagogo (any TLD) and me-ticket event pages are not review candidates', () => {
+  for (const u of [
+    'https://www.viagogo.pl/Theatre-Tickets/Theatre/Anon-A-Tempest-At-Our-Kitchen-Table-Tickets/E-162101583',
+    'https://www.viagogo.co.uk/Theatre-Tickets/x/E-1',
+    'https://me-ticket.com/ko/event/view/anon-a-tempest-at-our-kitchen-table-13',
+    'https://me-ticket.com/ms/event/view/anon-a-tempest-at-our-kitchen-table-11',
+  ]) {
+    assert.equal(classifyGapCandidateUrl(u).ok, false, u);
+  }
+  assert.equal(classifyGapCandidateUrl('https://www.vulture.com/article/anon-review.html').ok, true);
+});

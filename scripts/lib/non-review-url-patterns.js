@@ -37,6 +37,9 @@ const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes } = require('
 const NON_REVIEW_HOST_PATTERNS = [
   /^facebook\.com$/, /^instagram\.com$/, /^twitter\.com$/, /^x\.com$/,
   /^youtube\.com$/, /^tiktok\.com$/, /^threads\.net$/, /^bsky\.app$/, /^linkedin\.com$/,
+  // Ticket resellers span every regional TLD (BRO-5355: viagogo.pl, me-ticket.com/ko|ms
+  // event pages slipped past the .com/.dk-only domain list as 'missing' reviews).
+  /^viagogo\./, /^me-ticket\./,
   /^pinterest\./, /^reddit\.com$/, /^t\.me$/, /^whatsapp\./,
   // Podcast platforms (BRO-4540: redcircle.com/shows/a-thousand-natural-shocks-
   // with-gabe-s-dunn was a census gap). 0 of 26,591 reviews.json URLs.
