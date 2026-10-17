@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-17T04:17:14.703Z",
-  "processed": 103,
-  "failed": 73,
-  "successRate": "58.5%",
+  "updatedAt": "2026-10-17T04:25:36.188Z",
+  "processed": 105,
+  "failed": 90,
+  "successRate": "53.8%",
   "tierBreakdown": {
-    "playwright": 69,
+    "playwright": 71,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 16,
+    "scrapingdog": 17,
     "scrapingbee": 4,
     "brightdata": 7,
     "archiveToday": 0,
     "archive": 121
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-10-17T01:41:15.748Z",
@@ -28,16 +28,43 @@
       "domain": "thetimes.com"
     },
     {
-      "t": "2026-10-17T04:08:27.094Z",
+      "t": "2026-10-17T04:18:10.847Z",
       "event": "bb-session",
-      "session": "4bc35522",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+      "session": "2f925532",
+      "url": "https://www.talkinbroadway.com/page/ob/10_14_26b.html"
     },
     {
-      "t": "2026-10-17T04:08:34.155Z",
+      "t": "2026-10-17T04:18:11.782Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-17T04:20:33.118Z",
       "event": "bb-session",
-      "session": "08c586c0",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+      "session": "804f6ac1",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-17T04:21:18.997Z",
+      "event": "bb-session",
+      "session": "eea61578",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654594"
+    },
+    {
+      "t": "2026-10-17T04:21:19.857Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-17T04:24:03.496Z",
+      "event": "bb-session",
+      "session": "707781d7",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-17T04:24:04.379Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
