@@ -1,69 +1,63 @@
 {
-  "runDate": "2026-10-17T21:00:05.583Z",
+  "runDate": "2026-10-17T21:43:06.801Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "dirty-dancing-the-classic-story-on-stage-west-end-2026,stories-the-tap-dance-sensation-west-end-2026,some-woman-west-end-2026,midnight-off-broadway-2026,anon-a-tempest-at-our-kitchen-table-off-broadway-2026,stuffed-off-west-end-2026,memoirs-of-amorous-gentlemen-off-broadway-2026,sea-wall-off-broadway-2026,jane-eyre-rose-kingston-off-west-end-2026,cadel-lungs-on-legs-west-end-2026,the-bodyguard-tour-2026,unconditional-a-new-musical-memoir-off-broadway-2026,doll-day-afternoon-off-broadway-2026,anne-washburns-anon-off-broadway-2026",
+    "showFilter": "a-ghost-in-your-ear-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 8,
-    "failed": 17,
+    "processed": 2,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "32.0%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 2,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 1,
+    "scrapingdog": 0,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 21,
-    "tier1Success": 12,
+    "tier1Attempts": 4,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 5,
-    "tier1_5Success": 1,
-    "tier1_9Attempts": 5,
-    "tier1_9Success": 1,
-    "tier2Attempts": 8,
-    "tier2Success": 1,
-    "tier3Attempts": 6,
-    "tier3Success": 1,
-    "tier3_6Attempts": 4,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 0,
+    "tier1_9Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 12,
+    "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 16,
-    "scrapingBeePageCredits": 32,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 5,
-    "browserbaseMinutesUsed": 0.9,
-    "urlDiscoveryAttempts": 2,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 8,
-    "failed": 17,
+    "processed": 2,
+    "failed": 2,
     "shows": [
-      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
-      "cadel-lungs-on-legs-west-end-2026",
-      "jane-eyre-rose-kingston-off-west-end-2026",
-      "midnight-off-broadway-2026",
-      "some-woman-west-end-2026",
-      "stories-the-tap-dance-sensation-west-end-2026",
-      "stuffed-off-west-end-2026"
+      "a-ghost-in-your-ear-off-broadway-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -72,132 +66,44 @@
     }
   },
   "processed": [
-    "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json",
-    "stories-the-tap-dance-sensation-west-end-2026/thereviewshub--the-reviews-hub-london.json",
-    "cadel-lungs-on-legs-west-end-2026/a-youngish-perspective--trixie-smith.json",
-    "stories-the-tap-dance-sensation-west-end-2026/theupcoming--scarlett-bruin.json",
-    "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json",
-    "some-woman-west-end-2026/thereviewshub--unknown.json",
-    "some-woman-west-end-2026/sunday-times--clive-davis.json",
-    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/me-ticket--unknown.json"
+    "a-ghost-in-your-ear-off-broadway-2026/theatermania--zachary-stewart.json",
+    "a-ghost-in-your-ear-off-broadway-2026/the-recs--randall-david-cook.json"
   ],
   "failed": [
-    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
-    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
-    "some-woman-west-end-2026/guardian--unknown.json",
-    "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
-    "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json",
-    "midnight-off-broadway-2026/chicagotribune--unknown.json",
-    "midnight-off-broadway-2026/eventsfy--unknown.json",
-    "some-woman-west-end-2026/financialtimes--unknown.json",
-    "some-woman-west-end-2026/thestage--sam-marlowe.json",
-    "some-woman-west-end-2026/times-uk--clive-davis.json",
-    "stuffed-off-west-end-2026/nytg--unknown.json",
-    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/theatermania--zachary-stewart.json",
-    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/timeout--unknown.json",
-    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/culturesauce--thom-geier.json",
-    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--roma-torre.json",
-    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/talkinbroadway--kimberly-ramirez.json",
-    "stuffed-off-west-end-2026/sunday-times--unknown.json"
+    "a-ghost-in-your-ear-off-broadway-2026/timeout--unknown.json",
+    "a-ghost-in-your-ear-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json",
-      "stories-the-tap-dance-sensation-west-end-2026/thereviewshub--the-reviews-hub-london.json",
-      "cadel-lungs-on-legs-west-end-2026/a-youngish-perspective--trixie-smith.json",
-      "stories-the-tap-dance-sensation-west-end-2026/theupcoming--scarlett-bruin.json",
-      "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json",
-      "some-woman-west-end-2026/thereviewshub--unknown.json",
-      "some-woman-west-end-2026/sunday-times--clive-davis.json",
-      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/me-ticket--unknown.json"
+      "a-ghost-in-your-ear-off-broadway-2026/theatermania--zachary-stewart.json",
+      "a-ghost-in-your-ear-off-broadway-2026/the-recs--randall-david-cook.json"
     ],
     "failed": [
-      "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
-      "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
-      "some-woman-west-end-2026/guardian--unknown.json",
-      "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
-      "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json",
-      "midnight-off-broadway-2026/chicagotribune--unknown.json",
-      "midnight-off-broadway-2026/eventsfy--unknown.json",
-      "some-woman-west-end-2026/financialtimes--unknown.json",
-      "some-woman-west-end-2026/thestage--sam-marlowe.json",
-      "some-woman-west-end-2026/times-uk--clive-davis.json",
-      "stuffed-off-west-end-2026/nytg--unknown.json",
-      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/theatermania--zachary-stewart.json",
-      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/timeout--unknown.json",
-      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/culturesauce--thom-geier.json",
-      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--roma-torre.json",
-      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/talkinbroadway--kimberly-ramirez.json",
-      "stuffed-off-west-end-2026/sunday-times--unknown.json"
+      "a-ghost-in-your-ear-off-broadway-2026/timeout--unknown.json",
+      "a-ghost-in-your-ear-off-broadway-2026/talkinbroadway--unknown.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json",
-      "cadel-lungs-on-legs-west-end-2026/a-youngish-perspective--trixie-smith.json",
-      "some-woman-west-end-2026/thereviewshub--unknown.json",
-      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/me-ticket--unknown.json"
+      "a-ghost-in-your-ear-off-broadway-2026/theatermania--zachary-stewart.json",
+      "a-ghost-in-your-ear-off-broadway-2026/the-recs--randall-david-cook.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/stuffed-off-west-end-2026/sunday-times--unknown.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
-      "stories-the-tap-dance-sensation-west-end-2026/theupcoming--scarlett-bruin.json"
-    ],
-    "scrapingbee": [
-      "some-woman-west-end-2026/sunday-times--clive-davis.json"
-    ],
+    "scrapingdog": [],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "stories-the-tap-dance-sensation-west-end-2026/thereviewshub--the-reviews-hub-london.json",
-      "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {
-    "cityking": {
+    "Talkin' Broadway": {
       "count": 1,
-      "domain": "cityking.com",
+      "domain": "talkinbroadway.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Londonlivinglarge": {
-      "count": 1,
-      "domain": "londonlivinglarge.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Guardian": {
-      "count": 1,
-      "domain": "theguardian.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "eventsfy": {
-      "count": 1,
-      "domain": "eventsfy.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Times (UK)": {
-      "count": 1,
-      "domain": "thetimes.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "New York Theatre Guide": {
-      "count": 1,
-      "domain": "newyorktheatreguide.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
+      "isKnownBlocked": true
     }
   },
   "urlDiscoveries": []
