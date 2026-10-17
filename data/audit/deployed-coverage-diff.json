@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-10-17T17:53:19.024Z",
+  "generatedAt": "2026-10-17T18:19:21.540Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 245,
-  "clean": 244,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "fences-off-west-end-2026",
-      "title": "Fences",
-      "openingDate": "2026-10-09",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 84.23 vs local 84.34 (Δ0.11)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 13,
-      "deployedCount": 13,
-      "firstDefectAt": "2026-10-17T17:53:16.370Z"
-    }
-  ],
+  "clean": 245,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

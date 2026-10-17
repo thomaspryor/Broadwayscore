@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-17T17:50:22.652Z",
+  "generatedAt": "2026-10-17T18:15:37.224Z",
   "windowDays": 1095,
-  "targets": 668,
-  "auditedThisRun": 11,
-  "carriedForward": 738,
+  "targets": 681,
+  "auditedThisRun": 15,
+  "carriedForward": 734,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 430,
-    "missingCurrentRun": 878,
+    "missingCurrentRun": 872,
     "totalCitedNoUrl": 7,
-    "totalFlaggedMisses": 979,
+    "totalFlaggedMisses": 982,
     "totalRecoverable": 12,
     "totalRecovered": 21,
     "humanExcluded": 1,
-    "automatedExcluded": 150,
-    "automatedExcludedListed": 147,
-    "priorProductionCitations": 5171
+    "automatedExcluded": 153,
+    "automatedExcludedListed": 150,
+    "priorProductionCitations": 5169
   },
   "results": [
     {
@@ -11501,8 +11501,8 @@
         "https://thewindowcard.com/anon-ann-washburn-analysis/",
         "https://www.vulture.com/article/anon-play-washburn-mcc-theater-review.html"
       ],
-      "dirFiles": 0,
-      "dirClean": 0,
+      "dirFiles": 2,
+      "dirClean": 2,
       "inReviewsJson": 0,
       "missing": [
         {
@@ -11511,21 +11511,9 @@
           "knownOutletId": "culturesauce"
         },
         {
-          "url": "https://www.nytimes.com/2026/10/14/theater/anon-review-anne-washburn.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "serpCensus": true
-        },
-        {
           "url": "https://thewindowcard.com/anon-ann-washburn-analysis/",
           "host": "thewindowcard.com",
           "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.vulture.com/article/anon-play-washburn-mcc-theater-review.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
           "serpCensus": true
         }
       ],
@@ -11585,15 +11573,16 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 302,
+        "count": 307,
         "byReason": {
           "not-http-url": 49,
-          "non-review-host": 29,
-          "aggregator-internal-nav": 211,
+          "non-review-host": 32,
+          "aggregator-internal-nav": 213,
           "aggregator-section-root": 6,
-          "roundup-page": 3,
-          "venue-production-page": 1,
-          "ticketing-listing": 2,
+          "roundup-page": 2,
+          "venue-production-page": 2,
+          "ticketing-reseller": 1,
+          "ticketing-listing": 1,
           "census-junk-host": 1
         }
       },
@@ -11617,21 +11606,6 @@
           "reason": "anne-washburns-anon-off-broadway-2026: https://culturesauce.com/anon-anne-washburn-off-broadway-review/ is already owned by anon-a-tempest-at-our-kitchen-table-off-broadway-2026 — one of the two is contaminated. Inspect data/review-texts/anon-a-tempest-at-our-kitchen-table-off-broadway-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
         },
         {
-          "url": "https://www.nytimes.com/2026/10/14/theater/anon-review-anne-washburn.html",
-          "host": "nytimes.com",
-          "outletId": "nytimes",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
           "url": "https://thewindowcard.com/anon-ann-washburn-analysis/",
           "host": "thewindowcard.com",
           "outletId": "thewindowcard",
@@ -11645,21 +11619,6 @@
           "unclassified": false,
           "zeroChar": true,
           "reason": "⚠️  provisional outlet \"thewindowcard\" (not in registry) — onboard to outlet-registry.json after rev"
-        },
-        {
-          "url": "https://www.vulture.com/article/anon-play-washburn-mcc-theater-review.html",
-          "host": "vulture.com",
-          "outletId": "vulture",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -11674,63 +11633,47 @@
             "url": "https://culturesauce.com/anon-anne-washburn-off-broadway-review/"
           },
           {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nytimes.com/2026/10/14/theater/anon-review-anne-washburn.html"
-          },
-          {
             "outletId": "thewindowcard.com",
             "outlet": "thewindowcard.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://thewindowcard.com/anon-ann-washburn-analysis/"
-          },
-          {
-            "outletId": "vulture",
-            "outlet": "vulture",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.vulture.com/article/anon-play-washburn-mcc-theater-review.html"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.nytimes.com/2026/10/14/theater/anon-review-anne-washburn.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/anon-play-washburn-mcc-theater-review.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
+          },
+          {
             "url": "https://culturesauce.com/anon-anne-washburn-off-broadway-review/",
             "outletId": "culturesauce",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2026/10/14/theater/anon-review-anne-washburn.html",
-            "outletId": "nytimes",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
             "url": "https://thewindowcard.com/anon-ann-washburn-analysis/",
             "outletId": "thewindowcard.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
-          },
-          {
-            "url": "https://www.vulture.com/article/anon-play-washburn-mcc-theater-review.html",
-            "outletId": "vulture",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 0,
+        "liveCount": 2,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-17T17:50:22.652Z"
+      "computedAt": "2026-10-17T18:15:37.224Z"
     },
     {
       "showId": "annie-wobbler-revisited-off-west-end-2026",
@@ -24114,7 +24057,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 5,
+            "results": 1,
             "accepted": 0,
             "error": null
           }
@@ -24125,11 +24068,10 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 17,
+        "count": 15,
         "byReason": {
-          "non-review-host": 13,
+          "non-review-host": 12,
           "aggregator-internal-nav": 1,
-          "write-path-blocked": 1,
           "ticketing-reseller": 1,
           "tag-index-page": 1
         }
@@ -24162,12 +24104,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-17T10:09:43.451Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-17T17:50:22.720Z",
-        "lastAt": "2026-10-17T17:50:22.720Z"
-      }
+      "computedAt": "2026-10-17T18:15:37.224Z"
     },
     {
       "showId": "bone-wars-a-new-musical-off-broadway-2026",
@@ -31151,8 +31088,8 @@
       "computedAt": "2026-10-17T14:24:41.672Z",
       "quarantine": {
         "nextState": "complete:1:1",
-        "since": "2026-10-17T17:50:22.720Z",
-        "lastAt": "2026-10-17T17:50:22.720Z"
+        "since": "2026-10-17T18:15:37.322Z",
+        "lastAt": "2026-10-17T18:15:37.322Z"
       }
     },
     {
@@ -47343,12 +47280,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 32,
+        "count": 31,
         "byReason": {
           "non-review-host": 21,
-          "aggregator-internal-nav": 3,
-          "census-junk-host": 2,
+          "aggregator-internal-nav": 2,
           "ticketing-reseller": 2,
+          "census-junk-host": 2,
           "write-path-blocked": 2,
           "bare-host": 1,
           "ticket-seller-product-page": 1
@@ -47397,14 +47334,14 @@
             "outletId": "edinburghguide.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-17T17:50:22.652Z"
+      "computedAt": "2026-10-17T18:15:37.224Z"
     },
     {
       "showId": "dirty-dancing-tour-2026",
@@ -48521,25 +48458,22 @@
         "https://www.londontheatre1.com/reviews/dog-mom-southwark-playhouse-borough/",
         "https://theqr.co.uk/2026/10/13/canine-logic-and-reinvention-in-southwarks-dog-mom/",
         "https://thespyinthestalls.com/2026/10/dog-mom/",
-        "https://www.london-unattached.com/dog-mom-southwark-playhouse/",
         "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn",
         "https://readaboutstuff.com/2026/09/29/interview-ajay-chowdhury-chats-to-read-about-stuff-ahead-of-dog-mom/",
-        "https://shouldgoto.com/theatre/dog-mom",
         "https://www.uktw.co.uk/London/Southwark-Playhouse-Borough/Play/Dog-Mom/L536895171/",
+        "https://shouldgoto.com/theatre/dog-mom",
         "https://dogforum.co.uk/threads/forum-competition-award-winning-comedy-dog-mom-at-londons-southwark-playhouse.97692/"
       ],
-      "dirFiles": 7,
-      "dirClean": 3,
+      "dirFiles": 8,
+      "dirClean": 4,
       "inReviewsJson": 3,
-      "missing": [
+      "missing": [],
+      "dirOnly": [
         {
-          "url": "https://www.london-unattached.com/dog-mom-southwark-playhouse/",
           "host": "london-unattached.com",
-          "knownOutletId": "london-unattached",
-          "serpCensus": true
+          "count": 1
         }
       ],
-      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://theqr.co.uk/2026/10/13/canine-logic-and-reinvention-in-southwarks-dog-mom/",
@@ -48726,7 +48660,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           },
           {
@@ -48742,16 +48676,17 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 10,
+        "resultCount": 9,
         "error": null
       },
       "candidatesRejected": {
-        "count": 25,
+        "count": 28,
         "byReason": {
-          "non-review-host": 17,
+          "non-review-host": 20,
           "aggregator-internal-nav": 3,
-          "census-junk-host": 3,
+          "census-junk-host": 2,
           "write-path-blocked": 1,
+          "bare-host": 1,
           "review-hub-page": 1
         }
       },
@@ -48759,38 +48694,20 @@
       "automatedExcludedListed": 4,
       "unextractable": [
         {
-          "url": "https://shouldgoto.com/theatre/dog-mom",
-          "host": "shouldgoto.com",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "zeroCharAttempts": 4
-        },
-        {
           "url": "https://www.uktw.co.uk/London/Southwark-Playhouse-Borough/Play/Dog-Mom/L536895171/",
           "host": "uktw.co.uk",
           "knownOutletId": "uktw",
           "serpCensus": true,
           "zeroCharAttempts": 4
-        }
-      ],
-      "ingestResults": [
+        },
         {
-          "url": "https://www.london-unattached.com/dog-mom-southwark-playhouse/",
-          "host": "london-unattached.com",
-          "outletId": "london-unattached",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
+          "url": "https://shouldgoto.com/theatre/dog-mom",
+          "host": "shouldgoto.com",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "zeroCharAttempts": 4
         }
       ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -48842,20 +48759,13 @@
             "url": "https://www.londontheatre1.com/reviews/dog-mom-southwark-playhouse-borough/",
             "outletId": "londontheatre1.com",
             "state": "live",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
             "url": "https://thespyinthestalls.com/2026/10/dog-mom/",
             "outletId": "thespyinthestalls.com",
             "state": "live",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
-          },
-          {
-            "url": "https://www.london-unattached.com/dog-mom-southwark-playhouse/",
-            "outletId": "london-unattached",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
             "url": "https://theqr.co.uk/2026/10/13/canine-logic-and-reinvention-in-southwarks-dog-mom/",
@@ -48869,28 +48779,28 @@
             "outletId": "flicker-magazine",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
             "url": "https://readaboutstuff.com/2026/09/29/interview-ajay-chowdhury-chats-to-read-about-stuff-ahead-of-dog-mom/",
             "outletId": "readaboutstuff",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
             "url": "https://dogforum.co.uk/threads/forum-competition-award-winning-comedy-dog-mom-at-londons-southwark-playhouse.97692/",
             "outletId": "dogforum.co.uk",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 3,
-        "candidateCount": 8
+        "candidateCount": 7
       },
-      "computedAt": "2026-10-17T17:50:22.652Z"
+      "computedAt": "2026-10-17T18:15:37.224Z"
     },
     {
       "showId": "doll-day-afternoon-off-broadway-2026",
@@ -49586,8 +49496,8 @@
       "computedAt": "2026-10-17T11:28:25.970Z",
       "quarantine": {
         "nextState": "incomplete:0:2",
-        "since": "2026-10-17T17:50:22.720Z",
-        "lastAt": "2026-10-17T17:50:22.720Z"
+        "since": "2026-10-17T18:15:37.322Z",
+        "lastAt": "2026-10-17T18:15:37.322Z"
       }
     },
     {
@@ -83092,9 +83002,10 @@
         "https://www.disneytickets.co.uk/high-school-musical-tickets",
         "https://www.timeout.com/london/theatre/high-school-musical",
         "https://jadar.uk/2026/08/28/review-high-school-musical/",
-        "https://activities.bookpebble.co.uk/activity/fresh-arts-high-school-musical-at-the-troubadour-theatre-wembley-5941d490-c377-417d-8187-20d8b8fc8e92",
         "https://oneshowatatime.co.uk/2026/08/28/high-school-musical-a-fantastically-joyous-production-theatre-review/",
-        "https://kidify.co.uk/day-out/high-school-musical"
+        "https://kidify.co.uk/day-out/high-school-musical",
+        "https://activities.bookpebble.co.uk/activity/fresh-arts-high-school-musical-at-the-troubadour-theatre-wembley-5941d490-c377-417d-8187-20d8b8fc8e92",
+        "https://www.jackstage.co.uk/post/disney-s-high-school-musical-review-theatre-meets-interactive-sports-stadium"
       ],
       "dirFiles": 18,
       "dirClean": 2,
@@ -83349,6 +83260,29 @@
           ],
           "serpCensus": true,
           "reverify": true
+        },
+        {
+          "url": "https://www.jackstage.co.uk/post/disney-s-high-school-musical-review-theatre-meets-interactive-sports-stadium",
+          "host": "jackstage.co.uk",
+          "knownOutletId": "jackstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "jackstage--jack-davey.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.jackstage.co.uk/post/disney-s-high-school-musical-review-theatre-meets-interactive-sports-stadium"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -83367,7 +83301,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0
+            "fetchErrors": 1
           },
           "lbo-roundup": {
             "found": false,
@@ -83438,7 +83372,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -83448,30 +83382,29 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 4,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 8,
+        "resultCount": 9,
         "error": null
       },
       "candidatesRejected": {
-        "count": 453,
+        "count": 454,
         "byReason": {
-          "non-review-host": 60,
+          "not-http-url": 38,
+          "non-review-host": 62,
           "aggregator-internal-nav": 276,
-          "bare-host": 2,
-          "write-path-blocked": 2,
-          "news-article": 1,
-          "ticket-seller-product-page": 2,
+          "aggregator-section-root": 8,
+          "roundup-page": 50,
           "ticketing-listing": 1,
           "census-junk-host": 3,
-          "not-http-url": 38,
-          "production-database-listing": 10,
-          "aggregator-section-root": 8,
-          "roundup-page": 50
+          "write-path-blocked": 2,
+          "bare-host": 2,
+          "ticket-seller-product-page": 2,
+          "production-database-listing": 10
         }
       },
       "dedupedVariants": [],
@@ -83485,7 +83418,7 @@
           "publishDate": "2019-11-11"
         }
       ],
-      "automatedExcludedListed": 6,
+      "automatedExcludedListed": 7,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -83642,6 +83575,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://kidify.co.uk/day-out/high-school-musical"
+          },
+          {
+            "outletId": "jackstage",
+            "outlet": "jackstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.jackstage.co.uk/post/disney-s-high-school-musical-review-theatre-meets-interactive-sports-stadium"
           }
         ],
         "suppressedMissing": [],
@@ -83700,18 +83640,20 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-13T04:11:59.529Z"
+          },
+          {
+            "url": "https://www.jackstage.co.uk/post/disney-s-high-school-musical-review-theatre-meets-interactive-sports-stadium",
+            "outletId": "jackstage",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 1,
-        "candidateCount": 8
+        "candidateCount": 9
       },
-      "computedAt": "2026-10-17T11:28:25.970Z",
-      "quarantine": {
-        "nextState": "incomplete:1:7",
-        "since": "2026-10-17T17:50:22.720Z",
-        "lastAt": "2026-10-17T17:50:22.720Z"
-      }
+      "computedAt": "2026-10-17T18:15:37.224Z"
     },
     {
       "showId": "high-society-west-end-2026",
@@ -130904,9 +130846,9 @@
         "https://theatreweekly.com/first-look-rehearsal-images-released-for-orange-tree-theatres-murder-in-the-cathedral/",
         "https://letterboxd.com/film/murder-in-the-cathedral/details/",
         "https://oxinabox.co.uk/it-made-such-a-lasting-impression-on-me-otg-gives-t-s-eliots-murder-in-the-cathedral-a-fresh-lick-of-paint-at-oxford-playhouse/",
-        "https://www.myviewfromthestalls.co.uk/post/review-murder-in-the-cathedral-oxford-playhouse",
         "https://www.theatreroyal.org.uk/events/murder-in-the-cathedral/",
-        "https://ayoungishperspective.co.uk/2026/04/27/review-murder-in-the-cathedral/",
+        "https://www.myviewfromthestalls.co.uk/post/review-murder-in-the-cathedral-oxford-playhouse",
+        "https://fairypoweredproductions.com/orange-tree-theatre-announce-full-casting-for-t-s-eliots-murder-in-the-cathedral-at-richmonds-st-john-the-divine-church/",
         "https://susanelkin.co.uk/articles/murder-cathedral-susan-elkin-reviews/",
         "https://fairypoweredproductions.com/orange-tree-theatre-announce-full-casting-for-t-s-eliots-murder-in-the-cathedral-at-richmonds-st-john-the-divine-church/",
         "https://www.visitrichmond.co.uk/outdoor-activities/t-s-eliots-murder-in-the-cathedral-p2468781",
@@ -130994,31 +130936,6 @@
           "reverify": true
         },
         {
-          "url": "https://www.myviewfromthestalls.co.uk/post/review-murder-in-the-cathedral-oxford-playhouse",
-          "host": "myviewfromthestalls.co.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "myviewfromthestalls--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.myviewfromthestalls.co.uk/post/review-murder-in-the-cathedral-oxford-playhouse"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-04-23",
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
           "url": "https://www.theatreroyal.org.uk/events/murder-in-the-cathedral/",
           "host": "theatreroyal.org.uk",
           "knownOutletId": null,
@@ -131042,9 +130959,9 @@
           "reverify": true
         },
         {
-          "url": "https://ayoungishperspective.co.uk/2026/04/27/review-murder-in-the-cathedral/",
-          "host": "ayoungishperspective.co.uk",
-          "knownOutletId": "a-youngish-perspective",
+          "url": "https://www.myviewfromthestalls.co.uk/post/review-murder-in-the-cathedral-oxford-playhouse",
+          "host": "myviewfromthestalls.co.uk",
+          "knownOutletId": null,
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -131052,9 +130969,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "a-youngish-perspective--unknown.json",
+              "file": "myviewfromthestalls--unknown.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://ayoungishperspective.co.uk/2026/04/27/review-murder-in-the-cathedral/"
+              "urlInDir": "https://www.myviewfromthestalls.co.uk/post/review-murder-in-the-cathedral-oxford-playhouse"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -131062,7 +130979,7 @@
             "wrongProduction"
           ],
           "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-04-27",
+          "priorRunSource": "flagged-file-date:2026-04-23",
           "serpCensus": true,
           "reverify": false
         },
@@ -131152,7 +131069,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 2
+            "fetchErrors": 1
           },
           "lbo-roundup": {
             "found": false,
@@ -131193,7 +131110,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -131203,7 +131120,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -131223,7 +131140,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -131239,13 +131156,13 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 12,
+        "resultCount": 11,
         "error": null
       },
       "candidatesRejected": {
-        "count": 31,
+        "count": 33,
         "byReason": {
-          "non-review-host": 19,
+          "non-review-host": 21,
           "aggregator-internal-nav": 3,
           "write-path-blocked": 3,
           "bare-host": 2,
@@ -131450,7 +131367,7 @@
         "liveCount": 0,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-17T17:50:22.652Z"
+      "computedAt": "2026-10-17T18:15:37.224Z"
     },
     {
       "showId": "murder-she-didnt-write-west-end-2025",
@@ -145085,7 +145002,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-17T17:50:22.652Z"
+      "computedAt": "2026-10-17T18:15:37.224Z"
     },
     {
       "showId": "our-sinatra-a-musical-celebration-off-broadway-2026",
@@ -151576,13 +151493,14 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 36,
+        "count": 34,
         "byReason": {
-          "non-review-host": 28,
-          "aggregator-internal-nav": 2,
+          "non-review-host": 26,
+          "aggregator-internal-nav": 3,
           "venue-production-page": 2,
-          "census-junk-host": 2,
-          "write-path-blocked": 2
+          "census-junk-host": 1,
+          "write-path-blocked": 1,
+          "static-asset": 1
         }
       },
       "dedupedVariants": [],
@@ -151596,7 +151514,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-17T17:50:22.652Z"
+      "computedAt": "2026-10-17T18:15:37.224Z"
     },
     {
       "showId": "queen-versailles-2025",
@@ -160694,7 +160612,7 @@
         "liveCount": 6,
         "candidateCount": 7
       },
-      "computedAt": "2026-10-17T17:50:22.652Z"
+      "computedAt": "2026-10-17T18:15:37.224Z"
     },
     {
       "showId": "schtick-a-pole-in-it-off-broadway-2026",
@@ -160870,12 +160788,12 @@
         "https://www.nytimes.com/2019/02/14/theater/sea-wall-a-life-review-jake-gyllenhaal-tom-sturridge.html",
         "https://observer.com/2019/02/sea-wall-a-life-review-jake-gyllenhaal-tom-sturridge-probe-pain/",
         "https://variety.com/2019/legit/reviews/sea-wall-a-life-review-jake-gyllenhaal-1203140091/",
-        "https://www.whatsonstage.com/news/andrew-scott-to-star-in-sea-wall-film-and-two-week-new-york-run_1731693/",
-        "https://www.intermissionmagazine.ca/reviews/sea-wall-assembly/",
         "https://www.timeout.com/newyork/theater/sea-wall",
+        "https://www.intermissionmagazine.ca/reviews/sea-wall-assembly/",
+        "https://www.hollywoodreporter.com/lifestyle/arts/andrew-scott-sea-wall-off-broadway-feature-film-capture-1236700162/",
         "https://www.nytheaterscene.com/RevN-Sea-Wall-A-Life-DR.html"
       ],
-      "dirFiles": 6,
+      "dirFiles": 7,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
@@ -161055,9 +160973,9 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.whatsonstage.com/news/andrew-scott-to-star-in-sea-wall-film-and-two-week-new-york-run_1731693/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
+          "url": "https://www.timeout.com/newyork/theater/sea-wall",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
           "serpCensus": true
         },
         {
@@ -161069,9 +160987,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.timeout.com/newyork/theater/sea-wall",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
+          "url": "https://www.hollywoodreporter.com/lifestyle/arts/andrew-scott-sea-wall-off-broadway-feature-film-capture-1236700162/",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
           "serpCensus": true
         }
       ],
@@ -161275,7 +161193,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -161285,7 +161203,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
@@ -161295,19 +161213,17 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 244,
+        "count": 245,
         "byReason": {
-          "non-review-host": 64,
-          "aggregator-internal-nav": 123,
-          "non-review-path": 1,
           "not-http-url": 11,
-          "production-database-listing": 23,
+          "non-review-host": 62,
+          "aggregator-internal-nav": 126,
           "aggregator-section-root": 8,
           "roundup-page": 5,
-          "ticketing-reseller": 1,
-          "census-junk-host": 1,
-          "ticketing-listing": 1,
           "venue-production-page": 5,
+          "ticketing-reseller": 3,
+          "ticketing-listing": 2,
+          "production-database-listing": 22,
           "review-hub-page": 1
         }
       },
@@ -161484,21 +161400,6 @@
       ],
       "ingestResults": [
         {
-          "url": "https://www.whatsonstage.com/news/andrew-scott-to-star-in-sea-wall-film-and-two-week-new-york-run_1731693/",
-          "host": "whatsonstage.com",
-          "outletId": "whatsonstage",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
           "url": "https://www.timeout.com/newyork/theater/sea-wall",
           "host": "timeout.com",
           "outletId": "timeout-london",
@@ -161512,6 +161413,21 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "sea-wall-off-broadway-2026: https://www.timeout.com/newyork/theater/sea-wall is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/lifestyle/arts/andrew-scott-sea-wall-off-broadway-feature-film-capture-1236700162/",
+          "host": "hollywoodreporter.com",
+          "outletId": "hollywood-reporter",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -161519,18 +161435,18 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.whatsonstage.com/news/andrew-scott-to-star-in-sea-wall-film-and-two-week-new-york-run_1731693/"
-          },
-          {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/newyork/theater/sea-wall"
+          },
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/andrew-scott-sea-wall-off-broadway-feature-film-capture-1236700162/"
           },
           {
             "outletId": "theater-scene",
@@ -161543,18 +161459,18 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.whatsonstage.com/news/andrew-scott-to-star-in-sea-wall-film-and-two-week-new-york-run_1731693/",
-            "outletId": "whatsonstage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T10:09:43.451Z"
-          },
-          {
             "url": "https://www.timeout.com/newyork/theater/sea-wall",
             "outletId": "timeout-london",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-17T10:09:43.451Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/andrew-scott-sea-wall-off-broadway-feature-film-capture-1236700162/",
+            "outletId": "hollywood-reporter",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
             "url": "https://www.nytheaterscene.com/RevN-Sea-Wall-A-Life-DR.html",
@@ -161568,12 +161484,7 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-10-17T10:09:43.451Z",
-      "quarantine": {
-        "nextState": "incomplete:0:1",
-        "since": "2026-10-17T17:50:22.720Z",
-        "lastAt": "2026-10-17T17:50:22.720Z"
-      }
+      "computedAt": "2026-10-17T18:15:37.224Z"
     },
     {
       "showId": "seagull-true-story-off-broadway-2026",
@@ -173118,8 +173029,8 @@
       "computedAt": "2026-10-17T14:24:41.672Z",
       "quarantine": {
         "nextState": "no-census-yet:0:0",
-        "since": "2026-10-17T17:50:22.720Z",
-        "lastAt": "2026-10-17T17:50:22.720Z"
+        "since": "2026-10-17T18:15:37.322Z",
+        "lastAt": "2026-10-17T18:15:37.322Z"
       }
     },
     {
@@ -174910,8 +174821,8 @@
       "computedAt": "2026-10-17T11:28:25.970Z",
       "quarantine": {
         "nextState": "incomplete:2:6",
-        "since": "2026-10-17T17:50:22.720Z",
-        "lastAt": "2026-10-17T17:50:22.720Z"
+        "since": "2026-10-17T18:15:37.322Z",
+        "lastAt": "2026-10-17T18:15:37.322Z"
       }
     },
     {
@@ -181562,9 +181473,9 @@
       },
       "computedAt": "2026-10-17T11:28:25.970Z",
       "quarantine": {
-        "nextState": "incomplete:2:7",
-        "since": "2026-10-17T17:50:22.720Z",
-        "lastAt": "2026-10-17T17:50:22.720Z"
+        "nextState": "incomplete:2:6",
+        "since": "2026-10-17T18:15:37.322Z",
+        "lastAt": "2026-10-17T18:15:37.322Z"
       }
     },
     {
@@ -185363,7 +185274,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-17T17:50:22.652Z"
+      "computedAt": "2026-10-17T18:15:37.224Z"
     },
     {
       "showId": "the-enormous-crocodile-west-end-2026",
@@ -201079,8 +200990,8 @@
       "computedAt": "2026-10-17T11:28:25.970Z",
       "quarantine": {
         "nextState": "incomplete:0:7",
-        "since": "2026-10-17T17:50:22.720Z",
-        "lastAt": "2026-10-17T17:50:22.720Z"
+        "since": "2026-10-17T18:15:37.322Z",
+        "lastAt": "2026-10-17T18:15:37.322Z"
       }
     },
     {
@@ -208559,9 +208470,8 @@
         "https://www.reviewsgate.co.uk/reviews-archive-part-2/the-prime-of-miss-jean-brodie",
         "https://ground.news/article/the-prime-of-miss-jean-brodie-review-spectacular",
         "https://www.scotsman.com/arts-and-culture/the-prime-of-miss-jean-brodie-the-muriel-spark-fax-which-gave-playwright-go-ahead-for-radical-adaptation-9232721",
-        "https://www.aol.com/articles/ingenious-production-prime-miss-jean-115106000.html",
+        "https://www.yahoo.com/entertainment/tv/articles/ingenious-production-prime-miss-jean-115106935.html",
         "https://theweek.com/culture-life/theatre/the-prime-of-miss-jean-brodie-review",
-        "https://www.express.co.uk/entertainment/theatre/978894/theatre-reviews-prime-miss-jean-brodie-finishing-picture",
         "https://www.heraldscotland.com/news/26547748.prime-miss-jean-brodie-edinburgh-lyceum-need-know/"
       ],
       "dirFiles": 26,
@@ -208577,15 +208487,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.aol.com/articles/ingenious-production-prime-miss-jean-115106000.html",
-          "host": "aol.com",
-          "knownOutletId": "travel-aol",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.express.co.uk/entertainment/theatre/978894/theatre-reviews-prime-miss-jean-brodie-finishing-picture",
-          "host": "express.co.uk",
-          "knownOutletId": "sunday-express",
+          "url": "https://www.yahoo.com/entertainment/tv/articles/ingenious-production-prime-miss-jean-115106935.html",
+          "host": "yahoo.com",
+          "knownOutletId": "yahoo",
           "serpCensus": true
         }
       ],
@@ -208785,13 +208689,13 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 16,
+        "resultCount": 15,
         "error": null
       },
       "candidatesRejected": {
@@ -208815,9 +208719,9 @@
       ],
       "ingestResults": [
         {
-          "url": "https://www.aol.com/articles/ingenious-production-prime-miss-jean-115106000.html",
-          "host": "aol.com",
-          "outletId": "travel-aol",
+          "url": "https://www.yahoo.com/entertainment/tv/articles/ingenious-production-prime-miss-jean-115106935.html",
+          "host": "yahoo.com",
+          "outletId": "yahoo",
           "provisional": false,
           "ok": false,
           "noop": false,
@@ -208828,21 +208732,6 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "Fetch failed: All scraping methods failed"
-        },
-        {
-          "url": "https://www.express.co.uk/entertainment/theatre/978894/theatre-reviews-prime-miss-jean-brodie-finishing-picture",
-          "host": "express.co.uk",
-          "outletId": "sunday-express",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "[review-write-guard] date-implausible: the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/sund"
         }
       ],
       "ingestSkippedByCap": [],
@@ -208850,18 +208739,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "travel-aol",
-            "outlet": "travel-aol",
+            "outletId": "yahoo",
+            "outlet": "yahoo",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.aol.com/articles/ingenious-production-prime-miss-jean-115106000.html"
-          },
-          {
-            "outletId": "sunday-express",
-            "outlet": "sunday-express",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.express.co.uk/entertainment/theatre/978894/theatre-reviews-prime-miss-jean-brodie-finishing-picture"
+            "url": "https://www.yahoo.com/entertainment/tv/articles/ingenious-production-prime-miss-jean-115106935.html"
           },
           {
             "outletId": "the-scotsman",
@@ -208891,97 +208773,90 @@
             "url": "https://www.theguardian.com/stage/2026/oct/11/the-prime-of-miss-jean-brodie-review-muriel-spark-royal-lyceum-edinburgh-tour",
             "outletId": "theguardian.com",
             "state": "live",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-prime-of-miss-jean-brodie-national-theatre-of-scotland/",
             "outletId": "telegraph.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
             "url": "https://www.whatsonstage.com/news/the-prime-of-miss-jean-brodie-at-royal-lyceum-theatre-and-on-tour-review_1734843/",
             "outletId": "whatsonstage.com",
             "state": "live",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
             "url": "https://uktheatrenetwork.com/2026/10/10/the-prime-of-miss-jean-brodie-at-the-royal-lyceum-theatre-edinburgh/",
             "outletId": "uktheatrenetwork.com",
             "state": "live",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
             "url": "https://www.mixuptheatre.com/post/theatre-review-the-prime-of-miss-jean-brodie",
             "outletId": "mixuptheatre.com",
             "state": "live",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
             "url": "https://www.thetimes.com/culture/theatre-dance/article/the-prime-of-miss-jean-brodie-review-nk3mmsrbz",
             "outletId": "thetimes.com",
             "state": "live",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
             "url": "https://www.heraldscotland.com/life_style/26626439.review-prime-miss-jean-brodie-royal-lyceum-theatre-edinburgh/",
             "outletId": "heraldscotland.com",
             "state": "live",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
             "url": "https://theweek.com/culture-life/theatre/the-prime-of-miss-jean-brodie-review",
             "outletId": "theweek.com",
             "state": "live",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
             "url": "https://www.heraldscotland.com/news/26547748.prime-miss-jean-brodie-edinburgh-lyceum-need-know/",
             "outletId": "heraldscotland.com",
             "state": "live",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
-            "url": "https://www.aol.com/articles/ingenious-production-prime-miss-jean-115106000.html",
-            "outletId": "travel-aol",
+            "url": "https://www.yahoo.com/entertainment/tv/articles/ingenious-production-prime-miss-jean-115106935.html",
+            "outletId": "yahoo",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
-          },
-          {
-            "url": "https://www.express.co.uk/entertainment/theatre/978894/theatre-reviews-prime-miss-jean-brodie-finishing-picture",
-            "outletId": "sunday-express",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
             "url": "https://www.scotsman.com/arts-and-culture/edinburgh-festivals/the-prime-of-miss-jean-brodie-review-lyceum-edinburgh-9279438",
             "outletId": "the-scotsman",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
             "url": "https://ground.news/article/the-prime-of-miss-jean-brodie-review-spectacular",
             "outletId": "ground",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
             "url": "https://www.scotsman.com/arts-and-culture/the-prime-of-miss-jean-brodie-the-muriel-spark-fax-which-gave-playwright-go-ahead-for-radical-adaptation-9232721",
             "outletId": "the-scotsman",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 8,
-        "candidateCount": 12
+        "candidateCount": 11
       },
-      "computedAt": "2026-10-17T17:50:22.652Z"
+      "computedAt": "2026-10-17T18:15:37.224Z"
     },
     {
       "showId": "the-producers-west-end-2025",
@@ -211281,7 +211156,7 @@
       "showId": "the-second-best-school-shooting-off-broadway-2026",
       "title": "The Second Best School Shooting",
       "openingDate": "2026-10-17",
-      "status": "upcoming",
+      "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
@@ -211291,14 +211166,14 @@
         "https://edinburgh-reviews.co.uk/review-the-second-best-school-shooting-fringe-2026/",
         "https://www.theatreinla.com/the-second-best-school-shooting/11328/",
         "https://www.gofundme.com/f/help-bring-the-second-best-school-shooting-to-the-stage",
-        "https://www.whatsonstage.com/news/the-second-best-school-shooting-at-pleasance-courtyard-review_1728969/",
+        "https://broadwaybaby.com/shows/the-second-best-school-shooting/836812",
         "https://www.sundaypost.com/fp/the-second-best-school-shooting/",
-        "https://www.thestage.co.uk/reviews/the-second-best-school-shooting-review-pleasance-courtyard-edinburgh-alice-stanley-jr",
+        "https://www.whatsonstage.com/news/the-second-best-school-shooting-at-pleasance-courtyard-review_1728969/",
         "https://edinburghfestivalsforkids.com/the-second-best-school-shooting-14/"
       ],
-      "dirFiles": 9,
+      "dirFiles": 11,
       "dirClean": 1,
-      "inReviewsJson": 0,
+      "inReviewsJson": 1,
       "missing": [
         {
           "url": "https://www.gofundme.com/f/help-bring-the-second-best-school-shooting-to-the-stage",
@@ -211306,18 +211181,6 @@
           "knownOutletId": null,
           "priorRun": true,
           "priorRunSource": "pending-file-date:2025-06-05",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/the-second-best-school-shooting-at-pleasance-courtyard-review_1728969/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "serpCensus": true
-        },
-        {
-          "url": "https://edinburghfestivalsforkids.com/the-second-best-school-shooting-14/",
-          "host": "edinburghfestivalsforkids.com",
-          "knownOutletId": null,
           "serpCensus": true
         }
       ],
@@ -211358,13 +211221,13 @@
           "dirFlags": [
             {
               "file": "theatreindc--unknown.json",
-              "flag": "clean",
+              "flag": "wrongShow",
               "urlInDir": "https://www.theatreindc.com/the-second-best-school-shooting/reviews/5319/"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "rejectionReason"
+            "wrongShow"
           ],
           "serpCensus": true,
           "reverify": true
@@ -211416,6 +211279,29 @@
           "reverify": true
         },
         {
+          "url": "https://broadwaybaby.com/shows/the-second-best-school-shooting/836812",
+          "host": "broadwaybaby.com",
+          "knownOutletId": "broadway-baby",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadway-baby--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://broadwaybaby.com/shows/the-second-best-school-shooting/836812"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
           "url": "https://www.sundaypost.com/fp/the-second-best-school-shooting/",
           "host": "sundaypost.com",
           "knownOutletId": null,
@@ -211439,9 +211325,9 @@
           "reverify": true
         },
         {
-          "url": "https://www.thestage.co.uk/reviews/the-second-best-school-shooting-review-pleasance-courtyard-edinburgh-alice-stanley-jr",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
+          "url": "https://www.whatsonstage.com/news/the-second-best-school-shooting-at-pleasance-courtyard-review_1728969/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -211449,9 +211335,32 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "thestage--natasha-tripney.json",
+              "file": "whatsonstage--alex-wood.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.thestage.co.uk/reviews/the-second-best-school-shooting-review-pleasance-courtyard-edinburgh-alice-stanley-jr"
+              "urlInDir": "https://www.whatsonstage.com/news/the-second-best-school-shooting-at-pleasance-courtyard-review_1728969/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://edinburghfestivalsforkids.com/the-second-best-school-shooting-14/",
+          "host": "edinburghfestivalsforkids.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "edinburghfestivalsforkids--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://edinburghfestivalsforkids.com/the-second-best-school-shooting-14/"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -211475,7 +211384,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 5,
+            "results": 1,
             "accepted": 0,
             "error": null
           },
@@ -211485,7 +211394,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 1,
+            "results": 3,
             "accepted": 0,
             "error": null
           },
@@ -211526,15 +211435,16 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 17,
+        "count": 20,
         "byReason": {
-          "non-review-host": 12,
+          "non-review-host": 14,
           "aggregator-internal-nav": 4,
-          "venue-production-page": 1
+          "venue-production-page": 1,
+          "bare-host": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 6,
+      "automatedExcludedListed": 8,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -211544,56 +211454,11 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [
-        {
-          "url": "https://www.whatsonstage.com/news/the-second-best-school-shooting-at-pleasance-courtyard-review_1728969/",
-          "host": "whatsonstage.com",
-          "outletId": "whatsonstage",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://edinburghfestivalsforkids.com/the-second-best-school-shooting-14/",
-          "host": "edinburghfestivalsforkids.com",
-          "outletId": "edinburghfestivalsforkids",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.whatsonstage.com/news/the-second-best-school-shooting-at-pleasance-courtyard-review_1728969/"
-          },
-          {
-            "outletId": "edinburghfestivalsforkids.com",
-            "outlet": "edinburghfestivalsforkids.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://edinburghfestivalsforkids.com/the-second-best-school-shooting-14/"
-          },
           {
             "outletId": "festmag.com",
             "outlet": "festmag.com",
@@ -211623,6 +211488,13 @@
             "url": "https://www.theatreinla.com/the-second-best-school-shooting/11328/"
           },
           {
+            "outletId": "broadway-baby",
+            "outlet": "broadway-baby",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://broadwaybaby.com/shows/the-second-best-school-shooting/836812"
+          },
+          {
             "outletId": "sundaypost.com",
             "outlet": "sundaypost.com",
             "critic": "Unknown",
@@ -211630,11 +211502,18 @@
             "url": "https://www.sundaypost.com/fp/the-second-best-school-shooting/"
           },
           {
-            "outletId": "thestage",
-            "outlet": "thestage",
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.thestage.co.uk/reviews/the-second-best-school-shooting-review-pleasance-courtyard-edinburgh-alice-stanley-jr"
+            "url": "https://www.whatsonstage.com/news/the-second-best-school-shooting-at-pleasance-courtyard-review_1728969/"
+          },
+          {
+            "outletId": "edinburghfestivalsforkids.com",
+            "outlet": "edinburghfestivalsforkids.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://edinburghfestivalsforkids.com/the-second-best-school-shooting-14/"
           }
         ],
         "suppressedMissing": [],
@@ -211643,20 +211522,6 @@
             "url": "https://mdtheatreguide.com/2026/09/theatre-review-the-second-best-school-shooting-at-nextstop-theatre/",
             "outletId": "mdtheatreguide.com",
             "state": "live",
-            "firstSeenAt": "2026-10-17T01:52:09.174Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/the-second-best-school-shooting-at-pleasance-courtyard-review_1728969/",
-            "outletId": "whatsonstage",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-17T01:52:09.174Z"
-          },
-          {
-            "url": "https://edinburghfestivalsforkids.com/the-second-best-school-shooting-14/",
-            "outletId": "edinburghfestivalsforkids.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
             "firstSeenAt": "2026-10-17T01:52:09.174Z"
           },
           {
@@ -211688,6 +211553,13 @@
             "firstSeenAt": "2026-10-17T01:52:09.174Z"
           },
           {
+            "url": "https://broadwaybaby.com/shows/the-second-best-school-shooting/836812",
+            "outletId": "broadway-baby",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
+          },
+          {
             "url": "https://www.sundaypost.com/fp/the-second-best-school-shooting/",
             "outletId": "sundaypost.com",
             "state": "IN_FLIGHT",
@@ -211695,8 +211567,15 @@
             "firstSeenAt": "2026-10-17T01:52:09.174Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/the-second-best-school-shooting-review-pleasance-courtyard-edinburgh-alice-stanley-jr",
-            "outletId": "thestage",
+            "url": "https://www.whatsonstage.com/news/the-second-best-school-shooting-at-pleasance-courtyard-review_1728969/",
+            "outletId": "whatsonstage",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://edinburghfestivalsforkids.com/the-second-best-school-shooting-14/",
+            "outletId": "edinburghfestivalsforkids.com",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-17T01:52:09.174Z"
@@ -211706,12 +211585,7 @@
         "liveCount": 1,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-17T11:28:25.970Z",
-      "quarantine": {
-        "nextState": "incomplete:1:8",
-        "since": "2026-10-17T17:50:22.720Z",
-        "lastAt": "2026-10-17T17:50:22.720Z"
-      }
+      "computedAt": "2026-10-17T18:15:37.224Z"
     },
     {
       "showId": "the-secret-circus-musical-off-broadway-2026",
@@ -226267,7 +226141,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-17T17:50:22.652Z"
+      "computedAt": "2026-10-17T18:15:37.224Z"
     },
     {
       "showId": "two-strangers-bway-2025",
@@ -228312,22 +228186,12 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/",
-        "https://stageraw.com/unconditional-a-musical-memoir/"
+        "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/"
       ],
       "dirFiles": 1,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://stageraw.com/unconditional-a-musical-memoir/",
-          "host": "stageraw.com",
-          "knownOutletId": "stage-raw",
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2025-02-18",
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
       "flaggedMisses": [
         {
@@ -228414,32 +228278,22 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 2,
+        "resultCount": 1,
         "error": null
       },
       "candidatesRejected": {
         "count": 22,
         "byReason": {
-          "non-review-host": 16,
-          "aggregator-internal-nav": 1,
+          "non-review-host": 14,
+          "aggregator-internal-nav": 3,
           "census-junk-host": 2,
           "write-path-blocked": 1,
-          "bare-host": 2
+          "merch-store": 2
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
       "unextractable": [],
-      "weIngestBlocked": [
-        {
-          "url": "https://stageraw.com/unconditional-a-musical-memoir/",
-          "host": "stageraw.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -228458,14 +228312,14 @@
             "outletId": "theatreinla",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+            "firstSeenAt": "2026-10-17T18:15:37.224Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-17T17:50:22.652Z"
+      "computedAt": "2026-10-17T18:15:37.224Z"
     },
     {
       "showId": "under-the-shadow-off-west-end-2026",
