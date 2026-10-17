@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-17T01:30:02.913Z",
+  "timestamp": "2026-10-17T01:55:08.304Z",
   "stats": {
     "totalReviews": 57117,
-    "alreadyFlagged": 21198,
+    "alreadyFlagged": 21199,
     "dateGuardCatches": 194,
-    "directorMismatch": 1931,
-    "tvFilmSignals": 1597,
-    "londonSignals": 2394,
-    "offBroadwaySignals": 514,
+    "directorMismatch": 1937,
+    "tvFilmSignals": 1598,
+    "londonSignals": 2398,
+    "offBroadwaySignals": 515,
     "yearMismatch": 153,
-    "noPublishDate": 5258
+    "noPublishDate": 5257
   },
   "findings": [
     {
@@ -21750,6 +21750,20 @@
     },
     {
       "showId": "joe-turners-come-and-gone-2009",
+      "file": "artsfuse--robert-israel.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://artsfuse.org/263505/theater-review-joe-turners-come-and-gone-a-stirring-dramatic-experience/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lloyd richards\" from joe-turners-come-and-gone-1988"
+        }
+      ]
+    },
+    {
+      "showId": "joe-turners-come-and-gone-2009",
       "file": "newsday--linda-winer.json",
       "score": 79,
       "publishDate": "2009-04-17",
@@ -24595,6 +24609,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "long-days-journey-into-night-2003",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.hollywoodreporter.com/news/general-news/jessica-lange-long-days-journey-888187/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jonathan kent\" from long-days-journey-into-night-2016"
         }
       ]
     },
@@ -28027,10 +28055,38 @@
     },
     {
       "showId": "nine-2003",
+      "file": "curtainup--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://www.curtainup.com/nine.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"tommy tune\" from nine-1982"
+        }
+      ]
+    },
+    {
+      "showId": "nine-2003",
       "file": "nytimes--ben-brantley.json",
       "score": 69,
       "publishDate": "April 11, 2003",
       "url": "http://www.nytimes.com/2003/04/11/movies/theater-review-gals-gams-and-glamour.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"tommy tune\" from nine-1982"
+        }
+      ]
+    },
+    {
+      "showId": "nine-2003",
+      "file": "variety--charles-isherwood.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://variety.com/2003/legit/reviews/nine-6-1200542289/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -29460,6 +29516,19 @@
       "score": 42,
       "publishDate": null,
       "url": "https://thirdcoastreview.com/stages/2026/10/01/review-broadway-in-chicagos-operation-mincemeat",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-tour-2026",
+      "file": "timeout--unknown.json",
+      "publishDate": null,
+      "url": "https://timeout.com/newyork/theater/operation-mincemeat-musical-broadway-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -37381,6 +37450,25 @@
       ]
     },
     {
+      "showId": "that-is-not-who-i-am-west-end-2022",
+      "file": "theatre-bee-uk--theatre-bee-uk.json",
+      "score": null,
+      "publishDate": "June 27th, 2022",
+      "url": "https://www.theatrebee.com/post/review-of-that-is-not-who-i-am",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
       "file": "nysr--roma-torre.json",
       "score": 80,
@@ -43499,6 +43587,20 @@
       "score": 86,
       "publishDate": "February 24, 2006",
       "url": "https://www.nytimes.com/2006/02/24/theater/reviews/24paja.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george abbott\" from the-pajama-game-1973"
+        }
+      ]
+    },
+    {
+      "showId": "the-pajama-game-2006",
+      "file": "variety--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://variety.com/2006/legit/reviews/the-pajama-game-5-1200518102/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -72781,6 +72883,20 @@
       ]
     },
     {
+      "showId": "opening-night-west-end-2024",
+      "file": "standard--elizabeth-gregory.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.standard.co.uk/culture/theatre/sheridan-smith-opening-night-west-end-musical-best-stage-roles-b1147528.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "operation-mincemeat-2025",
       "file": "culturesauce--thom-geier.json",
       "score": 80,
@@ -74969,6 +75085,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
+        }
+      ]
+    },
+    {
+      "showId": "salome-2003",
+      "file": "talkinbroadway--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.talkinbroadway.com/world/Salome.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"st. ann's warehouse\""
         }
       ]
     },
@@ -80886,6 +81016,20 @@
       ]
     },
     {
+      "showId": "the-frogs-2004",
+      "file": "whatsonstage--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.whatsonstage.com/news/the-frogs-at-southwark-playhouse-borough-review_1679310/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-girl-who-fell-west-end-2019",
       "file": "whatsonstage--daniel-perks.json",
       "score": 77,
@@ -85248,6 +85392,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "the-woman-in-white-2005",
+      "file": "timeout--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.timeout.com/newyork/theater/the-woman-in-white",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
