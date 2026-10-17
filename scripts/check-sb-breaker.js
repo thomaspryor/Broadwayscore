@@ -29,6 +29,7 @@ Env:
   SB_BREAKER_BURST_FACTOR                    multiplier on the plan fair share (default 1.5)
   SB_OPENING_WINDOW_RESERVE_PER_SHOW_CREDITS per-show reserve for opening-window shows (default 3000)
   SB_BREAKER_STATE_PATH                      override the state file location (tests)
+  SB_BREAKER_SHOWS_PATH                      override the shows.json read for the opening-window reserve (tests)
   PROVIDER_SPEND_DAILY_PATH                  override the daily provider-spend ledger read for the 14-day median
 `);
   process.exit(0);
@@ -46,7 +47,9 @@ const { recordTransitionSafely } = require('./lib/breaker-transitions');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const STATE_PATH = process.env.SB_BREAKER_STATE_PATH || caps.DEFAULT_STATE_PATH;
-const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
+// SB_BREAKER_SHOWS_PATH: test seam, so the opening-window reserve does not
+// depend on whatever data/shows.json the runner happens to hold.
+const SHOWS_PATH = process.env.SB_BREAKER_SHOWS_PATH || path.join(__dirname, '..', 'data', 'shows.json');
 
 function loadState() {
   try {

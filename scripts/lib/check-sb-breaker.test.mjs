@@ -83,7 +83,12 @@ function run({ dayCredits = 0, env = {}, args = [], history = [], prevState = 't
         ALERT_DIGEST_QUEUE_PATH: path.join(dir, 'alert-digest-queue.json'),
         ALERT_ATTEMPTS_LOG_PATH: path.join(dir, 'alert-router-attempts.jsonl'),
         SCRAPER_SPEND_LEDGER_PATH: path.join(dir, 'scraper-spend.jsonl'),
-        SB_OPENING_WINDOW_RESERVE_PER_SHOW_CREDITS: '1',
+        // No shows file → no opening-window shows → no reserve. CI's real
+        // data/shows.json can hold opening-week shows (land run 39004637890).
+        SB_BREAKER_SHOWS_PATH: path.join(dir, 'no-shows.json'),
+        // Isolate the cached core-data/telemetry reads from the runner too.
+        GITHUB_WORKFLOW: '',
+        BD_OPENING_NIGHT: '',
         ...env,
       },
     });
