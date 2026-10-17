@@ -642,6 +642,34 @@
     "queuedAt": "2026-10-17T16:05:57.002Z"
   },
   {
+    "conditionKey": "ob-venue-go-live:twelve-maids-an-original-musical-off-broadway-2027",
+    "title": "Twelve Maids: An Original Musical @ The Players Theatre — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-06-17 to 2027-07-18, 16 performances). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/twelve-maids-an-original-musical-off-broadway-2027",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-17T16:55:10.615Z"
+  },
+  {
+    "conditionKey": "regional-go-live:anne-washburns-anon-off-broadway-2026",
+    "title": "Anne Washburn's ANON @ MCC Theater — off-Broadway show live and scoring",
+    "description": "Auto-promoted from an aggregator roundup (https://www.broadwayworld.com/article/Review-Roundup-Anne-Washburns-ANON-Opens-at-MCC-20261015). Reviews ingest automatically via the daily aggregator scrape. Cosmetic enrichment still manual: images (poster/hero), cast + creative team, exact previews/opening/closing dates, audience scrapers (scrape-reddit-sentiment.js / scrape-mezzanine-audience.js). See memory/project_regional_expansion_watchlist.md.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/anne-washburns-anon-off-broadway-2026",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-17T16:55:10.623Z"
+  },
+  {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it — escalated after 141 notifications",
     "description": "Filed BRO-5554 for owner triage after 141 repeats with no tracker.\n\nmain test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
