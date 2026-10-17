@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-17T04:06:42.945Z",
+  "generatedAt": "2026-10-17T04:14:35.599Z",
   "threshold": 50,
   "summary": {
     "totalSyndicatedPairs": 1,
-    "newlyFlagged": 1,
-    "alreadyFlagged": 0,
-    "criticsAffected": 1,
-    "showsAffected": 1,
-    "avgSimilarity": 72,
-    "avgScoreDiff": 23
+    "newlyFlagged": 0,
+    "alreadyFlagged": 1,
+    "criticsAffected": 0,
+    "showsAffected": 0,
+    "avgSimilarity": 0,
+    "avgScoreDiff": 0
   },
   "syndicationPairs": [
     {
@@ -96,20 +96,7 @@
       "count": 0
     }
   ],
-  "flagged": [
-    {
-      "critic": "Matt Windman",
-      "showId": "cyrano-de-bergerac-2012",
-      "primaryOutlet": "newsday",
-      "secondaryOutlet": "amny",
-      "primaryFile": "newsday--linda-winer.json",
-      "secondaryFile": "amny--matt-windman.json",
-      "similarity": 72,
-      "primaryScore": 39,
-      "secondaryScore": 62,
-      "scoreDiff": 23
-    }
-  ],
+  "flagged": [],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
