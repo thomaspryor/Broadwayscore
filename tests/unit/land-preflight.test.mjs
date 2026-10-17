@@ -599,3 +599,66 @@ test('workflow checks: run only when workflows change, block on exit 1, fail ope
   assert.equal(v.decision, 'block');
   assert.match(v.message, /Workflow checks \(CI would go red/);
 });
+
+// BRO-5520: two session plans over the action cap reached land.yml, which
+// refused the first about 40 minutes later; the push hook now says so up front.
+test('pending plans: a branch adding a pending bro-* plan over the cap blocks; within the cap, applied, numbered, or only on main does not (BRO-5520)', async () => {
+  const { checkPendingPlans, judgeLand } = await import('../../scripts/lib/land-preflight.mjs');
+  const { MAX_PLAN_ACTIONS } = (await import('../../scripts/lib/pending-fix-limits.js')).default;
+  const planJson = (n, status = 'pending') => JSON.stringify({
+    issueNumber: 'bro-1', planId: 'p-1', status,
+    plan: { actions: Array.from({ length: n }, () => ({ type: 'data-edit', file: 'shows.json', showSlug: 's', field: 'title', oldValue: null, newValue: 'x' })) },
+  }, null, 2) + '\n';
+  const check = (extra = {}) => checkPendingPlans({ base: 'main', tip: 'HEAD', cwd: d, ...extra });
+  const d = baseRepo();
+  // Already on main: land judges new failures only, so it is not this branch's to fix.
+  write(d, 'data/pending-fixes/bro-0.json', planJson(MAX_PLAN_ACTIONS + 5));
+  sh(d, 'git add -A && git commit -qm "plan on main" && git checkout -qb feat && echo two > g.txt && git commit -qam other');
+  assert.equal(check().status, 'clean');
+  // Numbered plans are the feedback pipeline's, outside the land test's scope.
+  write(d, 'data/pending-fixes/925.json', planJson(MAX_PLAN_ACTIONS + 1));
+  sh(d, 'git add -A && git commit -qm numbered');
+  assert.equal(check().status, 'clean');
+  write(d, 'data/pending-fixes/bro-1.json', planJson(MAX_PLAN_ACTIONS));
+  sh(d, 'git add -A && git commit -qm plan');
+  assert.equal(check().status, 'pass');
+  const fits = sh(d, 'git rev-parse HEAD');
+  write(d, 'data/pending-fixes/bro-1.json', planJson(MAX_PLAN_ACTIONS + 1));
+  sh(d, 'git commit -qam bigger');
+  const bad = check();
+  assert.equal(bad.status, 'fail');
+  assert.deepEqual(bad.problems, [`data/pending-fixes/bro-1.json: ${MAX_PLAN_ACTIONS + 1} actions (max ${MAX_PLAN_ACTIONS}); split it into bro-1-b.json`]);
+  const v = judgeLand({ cwd: d, src: 'HEAD', target: 'land/x', base: 'main', fetch: false, checkTests: false });
+  assert.equal(v.decision, 'block');
+  assert.match(v.message, /Pending data plans \(execute-approved-fix\.js refuses these at apply time/);
+  assert.match(v.message, /split it into bro-1-b\.json/);
+  // The plan is read from the tree land would apply when there is one.
+  assert.equal(check({ landedTip: fits }).status, 'pass');
+  // An applied plan is history, not a pending apply.
+  write(d, 'data/pending-fixes/bro-1.json', planJson(MAX_PLAN_ACTIONS + 1, 'applied'));
+  sh(d, 'git commit -qam applied');
+  assert.equal(check().status, 'pass');
+  // A status the executor does not know warns and never blocks (BRO-5015).
+  write(d, 'data/pending-fixes/bro-1-b.json', planJson(1, 'approved'));
+  sh(d, 'git add -A && git commit -qm typo');
+  const typo = check();
+  assert.equal(typo.status, 'pass');
+  assert.match(typo.warnings.join('\n'), /bro-1-b\.json: status "approved" will not run/);
+  // A renamed plan is judged under its new name (--no-renames: delete + add).
+  write(d, 'data/pending-fixes/bro-3.json', planJson(MAX_PLAN_ACTIONS + 2));
+  sh(d, 'git add -A && git commit -qm three');
+  sh(d, 'git mv data/pending-fixes/bro-3.json data/pending-fixes/bro-4.json && git commit -qm rename');
+  assert.match(check().problems.join('\n'), /data\/pending-fixes\/bro-4\.json: 27 actions/);
+  // A deleted plan has nothing left to apply, even one main carries.
+  sh(d, 'git rm -q data/pending-fixes/bro-4.json data/pending-fixes/bro-0.json && git commit -qm gone');
+  assert.equal(check().status, 'pass');
+  // Plain git diff pairs bro-0's delete with 925.json's add as a rename (similar
+  // JSON), and --diff-filter=AM would then drop the add: hence --no-renames.
+  assert.match(sh(d, 'git diff --name-status --no-renames main...HEAD -- data/pending-fixes'), /^D\tdata\/pending-fixes\/bro-0\.json$/m);
+  // Broken JSON fails the land test's JSON.parse, so it blocks too.
+  write(d, 'data/pending-fixes/bro-2.json', '{ "status": "pending", ');
+  sh(d, 'git add -A && git commit -qm broken');
+  assert.match(check().problems.join('\n'), /bro-2\.json: not valid JSON/);
+  // The other checks never depend on the plan checks loading.
+  assert.equal(check({ load: () => { throw new Error('boom'); } }).status, 'skip');
+});

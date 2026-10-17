@@ -550,6 +550,51 @@ export function checkWorkflowChecks({ base, tip, cwd, landedTip = null, run = sp
   }
 }
 
+// BRO-5520: two session plans of 41 and 49 actions (the cap is 25) reached
+// land.yml, which refused the first on tests/unit/pending-fix-plans.test.mjs
+// about 40 minutes later. Same checks (scripts/lib/pending-fix-plan-checks.js)
+// on the bro-* plans this branch adds or changes, read from the tree land would
+// apply. The module loads only when a plan changed, and a load failure or a
+// throw inside it is a SKIP, so the other checks never depend on it.
+export const PENDING_PLAN_RE = /^data\/pending-fixes\/bro-[^/]+\.json$/;
+const loadPlanChecks = () => require('./pending-fix-plan-checks.js');
+
+/** -> { status: 'clean' | 'pass' | 'fail' | 'skip', problems?, warnings?, reason? } */
+export function checkPendingPlans({ base, tip, cwd, landedTip = null, load = loadPlanChecks }) {
+  // quotePath off: a non-ASCII name would otherwise print quoted and miss PENDING_PLAN_RE.
+  const diff = git(cwd, ['-c', 'core.quotePath=false', 'diff', '--name-only', '--no-renames', '--diff-filter=AM', `${base}...${tip}`, '--', 'data/pending-fixes']);
+  if (!ok(diff)) return { status: 'skip', reason: 'diff vs base failed' };
+  const files = out(diff).split('\n').filter((f) => PENDING_PLAN_RE.test(f));
+  if (files.length === 0) return { status: 'clean', reason: 'no bro-* plans changed' };
+  try {
+    const checks = load();
+    const problems = [];
+    const warnings = [];
+    for (const f of files) {
+      // The branch adds or changes f, so it is in the tree read (a main-side
+      // delete of it would be a rebase conflict, and then tip is read).
+      const shown = git(cwd, ['show', `${landedTip || tip}:${f}`]);
+      if (!ok(shown)) {
+        warnings.push(`${f}: could not be read to check it (${(shown.stderr || 'git show failed').trim().slice(0, 80)})`);
+        continue;
+      }
+      let plan;
+      try {
+        plan = JSON.parse(shown.stdout);
+      } catch (e) {
+        problems.push(`${f}: not valid JSON (${String(e.message).slice(0, 80)})`);
+        continue;
+      }
+      problems.push(...checks.pendingPlanProblems(f, plan));
+      const statusWarning = checks.planStatusWarning(f, plan);
+      if (statusWarning) warnings.push(statusWarning);
+    }
+    return problems.length ? { status: 'fail', problems, warnings } : { status: 'pass', warnings };
+  } catch (e) {
+    return { status: 'skip', reason: `pending plan checks failed: ${String(e && e.message).slice(0, 120)}` };
+  }
+}
+
 function fetchBase(cwd) {
   const r = git(cwd, ['-c', 'gc.auto=0', '-c', 'maintenance.auto=false', 'fetch', '-q', 'origin', 'main'], { timeout: 20000 });
   return ok(r) ? null : r.timedOut ? 'fetch timed out' : `fetch failed: ${r.stderr.trim().slice(0, 120)}`;
@@ -570,7 +615,7 @@ function testTreeDirty(cwd) {
   return paths.filter((p) => TEST_FILE_RE.test(p) || isManifest(p) || p.startsWith('.github/workflows/'));
 }
 
-export function blockMessage({ target, rebase, tests, base, botOwned, staleRevert, manifests, workflows }) {
+export function blockMessage({ target, rebase, tests, base, botOwned, staleRevert, manifests, workflows, pendingPlans }) {
   const lines = [`LAND PREFLIGHT: land.yml would refuse this push to ${target}. Fix it on the branch and push again (about 30 minutes saved).`];
   if (rebase?.status === 'conflict') {
     lines.push(
@@ -595,6 +640,11 @@ export function blockMessage({ target, rebase, tests, base, botOwned, staleRever
   if (workflows?.status === 'fail') {
     lines.push('', '* Workflow checks (CI would go red on these):');
     for (const p of workflows.problems) lines.push(`   - ${p}`);
+  }
+  if (pendingPlans?.status === 'fail') {
+    lines.push('', '* Pending data plans (execute-approved-fix.js refuses these at apply time, and tests/unit/pending-fix-plans.test.mjs fails on them):');
+    for (const p of pendingPlans.problems) lines.push(`   - ${p}`);
+    lines.push('   Split an oversized plan by show (each show\'s actions together, in order) into <id>.json, <id>-b.json, ..., each with its own planId.');
   }
   if (staleRevert?.status === 'fail') {
     lines.push(
@@ -665,10 +715,12 @@ export function judgeLand({ cwd, src, target, base = 'origin/main', fetch = true
   detail.manifests = manifests;
   const workflows = (seams.checkWorkflowChecks || checkWorkflowChecks)({ base, tip: src, cwd, landedTip: rebase.status === 'clean' ? rebase.tip : null });
   detail.workflows = workflows;
-  const warnings = [...(tests.warnings || []), ...(seams.retiredManifestWarnings || retiredManifestWarnings)({ base, src, cwd })];
+  const pendingPlans = (seams.checkPendingPlans || checkPendingPlans)({ base, tip: src, cwd, landedTip: rebase.status === 'clean' ? rebase.tip : null });
+  detail.pendingPlans = pendingPlans;
+  const warnings = [...(tests.warnings || []), ...(pendingPlans.warnings || []), ...(seams.retiredManifestWarnings || retiredManifestWarnings)({ base, src, cwd })];
   detail.warnings = warnings;
-  if ([rebase.status === 'conflict', tests.status, botOwned.status, staleRevert.status, manifests.status, workflows.status].some((x) => x === true || x === 'fail')) {
-    const message = blockMessage({ target, rebase, tests, base, botOwned, staleRevert, manifests, workflows });
+  if ([rebase.status === 'conflict', tests.status, botOwned.status, staleRevert.status, manifests.status, workflows.status, pendingPlans.status].some((x) => x === true || x === 'fail')) {
+    const message = blockMessage({ target, rebase, tests, base, botOwned, staleRevert, manifests, workflows, pendingPlans });
     return { decision: 'block', message: warnings.length ? `${message}\n\nAlso: ${warnings.join('\n')}` : message, warnings, detail };
   }
   return { decision: rebase.status === 'skip' && tests.status === 'skip' ? 'skip' : 'allow', warnings, detail };
@@ -787,7 +839,7 @@ export function runHook({ command, cwd, env = process.env, seams = {}, transcrip
     const checkTests = srcIsHead && dirty.length === 0;
     const v = judgeLand({ cwd: root, src: t.src || 'HEAD', target: t.dst, checkTests, seams });
     if (!checkTests) v.detail.tests = { status: 'skip', reason: srcIsHead ? `uncommitted test files: ${dirty.slice(0, 3).join(', ')}` : 'pushed ref is not HEAD' };
-    logEvent(root, { event: v.decision, target: t.dst, rebase: v.detail.rebase?.status, tests: v.detail.tests?.status, botOwned: v.detail.botOwned?.status, staleRevert: v.detail.staleRevert?.status, fetch: v.detail.fetch || null, skipReason: v.detail.rebase?.reason || null });
+    logEvent(root, { event: v.decision, target: t.dst, rebase: v.detail.rebase?.status, tests: v.detail.tests?.status, botOwned: v.detail.botOwned?.status, staleRevert: v.detail.staleRevert?.status, pendingPlans: v.detail.pendingPlans?.status, fetch: v.detail.fetch || null, skipReason: v.detail.rebase?.reason || null });
     results.push(v);
   }
   const blocked = results.filter((r) => r.decision === 'block');
