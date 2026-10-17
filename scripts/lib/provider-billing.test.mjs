@@ -6,7 +6,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  parseBdZoneCost, parseBdBalance, countBbSessionsOnDay, sumBbMinutesOnDay, parseSbUsage, parseSdAccount, sbUsageFields,
+  parseBdZoneCost, parseBdBalance, countBbSessionsOnDay, bbPayloadCoversDay, sumBbMinutesOnDay, parseSbUsage, sbCostReportFields, parseSdAccount, sbUsageFields,
 } = require('./provider-billing.js');
 
 test('parseBdZoneCost sums cost and reqs_* across customers', () => {
@@ -43,8 +43,32 @@ test('countBbSessionsOnDay counts only the requested UTC day', () => {
     { noCreatedAt: true },
   ];
   assert.equal(countBbSessionsOnDay(sessions, '2026-07-30'), 2);
-  assert.equal(countBbSessionsOnDay({ data: sessions }, '2026-07-29'), 1);
+  assert.equal(countBbSessionsOnDay({ data: sessions }, '2026-07-30'), 2);
   assert.equal(countBbSessionsOnDay({ nonsense: true }, '2026-07-30'), null);
+});
+
+test('Browserbase truncation guard (BRO-3010): a list that does not reach back before the day is unknown, never an undercount', () => {
+  const full = [
+    { createdAt: '2026-07-30T10:00:00+00:00', startedAt: '2026-07-30T10:00:00+00:00', endedAt: '2026-07-30T10:01:00+00:00' },
+    { createdAt: '2026-07-28T09:00:00+00:00' },
+  ];
+  assert.equal(bbPayloadCoversDay(full, '2026-07-30'), true);
+  assert.equal(countBbSessionsOnDay(full, '2026-07-30'), 1);
+  assert.equal(sumBbMinutesOnDay(full, '2026-07-30'), 1);
+  // Oldest session is inside the target day: the server may have cut the list.
+  const truncated = [
+    { createdAt: '2026-07-30T23:00:00+00:00' },
+    { createdAt: '2026-07-30T05:00:00+00:00' },
+  ];
+  assert.equal(bbPayloadCoversDay(truncated, '2026-07-30'), false);
+  assert.equal(countBbSessionsOnDay(truncated, '2026-07-30'), null);
+  assert.equal(sumBbMinutesOnDay({ data: truncated }, '2026-07-30'), null);
+  // A session starting exactly at midnight does not prove the day is complete.
+  assert.equal(bbPayloadCoversDay([{ createdAt: '2026-07-30T00:00:00+00:00' }], '2026-07-30'), false);
+  // Empty list is complete (no sessions ever); no parseable timestamps is not.
+  assert.equal(countBbSessionsOnDay([], '2026-07-30'), 0);
+  assert.equal(bbPayloadCoversDay([{ noCreatedAt: true }], '2026-07-30'), false);
+  assert.equal(bbPayloadCoversDay(full, 'garbage'), false);
 });
 
 test('sumBbMinutesOnDay (BRO-3240): sums real duration for the requested day, skips sessions missing timestamps', () => {
@@ -92,4 +116,14 @@ test('parseSdAccount', () => {
     { cycleUsed: 189655, limit: 1000000, daysToRenewal: 26 },
   );
   assert.equal(parseSdAccount({ pack: 'standard' }), null);
+});
+
+test('sbCostReportFields (BRO-3010): the cost-report line the python one-liner used to compute', () => {
+  const now = new Date('2026-10-17T05:00:00Z');
+  const json = { max_api_credit: 1000000, used_api_credit: 412345, renewal_subscription_date: '2026-11-04T18:40:36.521772' };
+  // days_left = floor(17.79) = 17, elapsed 14, projected 412345/14*31 = 913050
+  assert.deepEqual(sbCostReportFields(json, now), { reportLine: '41.2|91|412345|1000000|913050', renewalLabel: 'Nov 04' });
+  assert.deepEqual(sbCostReportFields({}, now), { reportLine: '0.0|0|0|1|0', renewalLabel: 'unknown' });
+  assert.throws(() => sbCostReportFields({ used_api_credit: '5' }, now));
+  assert.throws(() => sbCostReportFields({ used_api_credit: 5, max_api_credit: 10, renewal_subscription_date: 'soon' }, now));
 });

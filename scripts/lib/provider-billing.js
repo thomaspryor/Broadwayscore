@@ -65,9 +65,39 @@ function parseBdBalance(json) {
  * @returns {number|null} null when the payload shape is unrecognizable
  */
 function countBbSessionsOnDay(json, dayIso) {
-  const items = Array.isArray(json) ? json : json && Array.isArray(json.data) ? json.data : null;
+  const items = _bbItems(json);
   if (!items) return null;
+  if (!bbPayloadCoversDay(items, dayIso)) return null;
   return items.filter((s) => typeof s?.createdAt === 'string' && s.createdAt.startsWith(dayIso)).length;
+}
+
+function _bbItems(json) {
+  return Array.isArray(json) ? json : json && Array.isArray(json.data) ? json.data : null;
+}
+
+/**
+ * Pagination guard (BRO-3010 S2). GET /v1/sessions takes no page/limit/cursor
+ * parameters (Browserbase API reference + sdk-node SessionListParams, checked
+ * 2026-10-17: only `q` and `status`), so there is no next page to fetch. The
+ * real risk is the server silently returning a TRUNCATED list (most recent N),
+ * which would undercount the target day. A complete list for an account with
+ * history always contains a session created BEFORE the target day; when the
+ * oldest session in the payload is on/after the target day's start, the day
+ * may be cut short, so the count is "unknown" (null), never a low number.
+ * An empty list is a complete answer (no sessions ever → 0).
+ * @returns {boolean}
+ */
+function bbPayloadCoversDay(items, dayIso) {
+  if (!Array.isArray(items)) return false;
+  if (items.length === 0) return true;
+  const dayStart = Date.parse(`${dayIso}T00:00:00Z`);
+  if (!Number.isFinite(dayStart)) return false;
+  let oldest = Infinity;
+  for (const s of items) {
+    const t = typeof s?.createdAt === 'string' ? Date.parse(s.createdAt) : NaN;
+    if (Number.isFinite(t) && t < oldest) oldest = t;
+  }
+  return oldest < dayStart;
 }
 
 /**
@@ -100,8 +130,9 @@ function countBbSessionsOnDay(json, dayIso) {
  * @returns {number|null} null when the payload shape is unrecognizable
  */
 function sumBbMinutesOnDay(json, dayIso) {
-  const items = Array.isArray(json) ? json : json && Array.isArray(json.data) ? json.data : null;
+  const items = _bbItems(json);
   if (!items) return null;
+  if (!bbPayloadCoversDay(items, dayIso)) return null;
   let ms = 0;
   for (const s of items) {
     if (typeof s?.createdAt !== 'string' || !s.createdAt.startsWith(dayIso)) continue;
@@ -133,6 +164,37 @@ function parseSbUsage(json) {
     cap: f.max ?? null,
     renewalDate: (f.renewalAt || '').slice(0, 10) || null,
   };
+}
+
+const _MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+/**
+ * The weekly cost report's ScrapingBee line (scraper-cost-report.yml), moved
+ * off an inline python /usage parser onto sbUsageFields (BRO-3010). Same
+ * maths and defaults as the python it replaced: used defaults 0, cap 0/absent
+ * reads as 1, days_left = floor((renewal day 00:00Z - now) / 1 day) clamped to
+ * >= 1 (30 without a renewal date), projection over a 31-day cycle.
+ * @returns {{reportLine: string, renewalLabel: string}}
+ *   reportLine = "pct_used|proj_pct|used|cap|projected_abs"; renewalLabel = "Nov 04" | "unknown"
+ */
+function sbCostReportFields(json, now = new Date()) {
+  const f = sbUsageFields(json);
+  const used = f.used == null ? 0 : f.used;
+  const cap = f.max || 1;
+  if (typeof used !== 'number' || typeof cap !== 'number') throw new Error('non-numeric /usage credits');
+  const renewal = typeof f.renewalAt === 'string' ? f.renewalAt : '';
+  const rMs = renewal ? Date.parse(`${renewal.slice(0, 10)}T00:00:00Z`) : NaN;
+  if (renewal && !Number.isFinite(rMs)) throw new Error(`unparseable renewal date ${renewal}`);
+  const daysLeft = renewal ? Math.max(Math.floor((rMs - now.getTime()) / 86400000), 1) : 30;
+  const daysElapsed = Math.max(31 - daysLeft, 1);
+  const projected = renewal ? (used / daysElapsed) * 31 : used;
+  const pct = (used / cap) * 100;
+  const projPct = (projected / cap) * 100;
+  const reportLine = `${pct.toFixed(1)}|${projPct.toFixed(0)}|${used}|${cap}|${projected.toFixed(0)}`;
+  const renewalLabel = renewal
+    ? `${_MONTHS[new Date(rMs).getUTCMonth()]} ${String(new Date(rMs).getUTCDate()).padStart(2, '0')}`
+    : 'unknown';
+  return { reportLine, renewalLabel };
 }
 
 /** ScrapingDog /account → {cycleUsed, limit, daysToRenewal}|null */
@@ -196,9 +258,11 @@ module.exports = {
   parseBdZoneCost,
   parseBdBalance,
   countBbSessionsOnDay,
+  bbPayloadCoversDay,
   sumBbMinutesOnDay,
   sbUsageFields,
   parseSbUsage,
+  sbCostReportFields,
   parseSdAccount,
   fetchBdZoneCostDay,
   fetchBdBalance,
@@ -206,3 +270,20 @@ module.exports = {
   fetchSbUsage,
   fetchSdAccount,
 };
+
+// CLI for workflows: `echo "$SB_USAGE" | node scripts/lib/provider-billing.js --sb-report-line|--sb-renewal`.
+// Exits non-zero on unparseable input so the workflow's `|| echo <fallback>` applies.
+if (require.main === module) {
+  const mode = process.argv[2];
+  if (mode !== '--sb-report-line' && mode !== '--sb-renewal') {
+    console.error('usage: provider-billing.js --sb-report-line|--sb-renewal  (ScrapingBee /usage JSON on stdin)');
+    process.exit(2);
+  }
+  try {
+    const out = sbCostReportFields(JSON.parse(require('fs').readFileSync(0, 'utf8')));
+    console.log(mode === '--sb-renewal' ? out.renewalLabel : out.reportLine);
+  } catch (err) {
+    console.error(`provider-billing.js ${mode}: ${err.message}`);
+    process.exit(1);
+  }
+}
