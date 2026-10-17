@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5515",
   "planId": "fae8ecbc-1640-42d5-ae71-443b1d2a842d",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-17T02:37:50.633Z",
   "submitter": {
     "name": null,
@@ -166,5 +166,63 @@
         "description": "plaza-suite-2022: the capitalization is an estimate (capitalizationSource: 'Estimate: $2,000,887 NYC theatrical tax credit ... at the 25% credit rate'), so it prints with '~' like Hangmen, POTUS and The Minutes, whose caps were inferred the same way."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-17T04:12:25.455Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for appropriate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for appropriate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: commercialConversion updated for appropriate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for appropriate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for appropriate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostNote updated for appropriate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for stephen-sondheims-old-friends-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for stephen-sondheims-old-friends-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for stephen-sondheims-old-friends-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for stephen-sondheims-old-friends-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for plaza-suite-2022"
+    }
+  ]
 }
