@@ -787,6 +787,9 @@ function main() {
   });
 
   const allViolations = violations.length + titleViolations.length + operaTitleViolations.length;
+  stamp.violations = allViolations;
+  stamp.violationNames = [...violations, ...titleViolations, ...operaTitleViolations]
+    .map(v => `${v.family}::${v.index}`);
 
   if (args.json) {
     const out = {

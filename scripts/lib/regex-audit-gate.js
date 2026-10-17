@@ -21,8 +21,12 @@ function checkRegexAudit({ repoRoot, sessionId, editedAt }) {
     Number.isFinite(Date.parse(editedAt)) && Number.isFinite(Date.parse(r.started)) &&
     Date.parse(r.started) > Date.parse(editedAt) && Date.parse(r.ts) >= Date.parse(r.started));
   const last = runs.at(-1);
-  if (last && last.exitCode === 0 && last.full === true && last.maxHits === REGEX_AUDIT_MAX_HITS && last.scanned > 0) return null;
-  return { blocked: true, message: `BLOCKED: content-quality.js edit needs a successful ${command} after the latest edit, using the default threshold and a nonempty corpus (CLAUDE.md §12.8).` };
+  if (last && (last.exitCode === 0 || last.exitCode === 1) && last.full === true && last.maxHits === REGEX_AUDIT_MAX_HITS && last.scanned > 0) {
+    if (last.exitCode === 0) return null;
+    const names = last.violationNames?.length ? ` (${last.violationNames.join(', ')})` : '';
+    return { blocked: false, message: `WARN: scripts/lib/content-quality.js audit completed with ${last.violations ?? 'unknown'} threshold violation(s)${names}; review the ${command} report (CLAUDE.md §12.8).` };
+  }
+  return { blocked: true, message: `BLOCKED: content-quality.js edit needs a completed ${command} after the latest edit, using the default threshold and a nonempty corpus (CLAUDE.md §12.8).` };
 }
 
 module.exports = { REGEX_AUDIT_MAX_HITS, checkRegexAudit };

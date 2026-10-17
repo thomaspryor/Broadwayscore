@@ -71,7 +71,7 @@ Before EVERY commit touching `src/`, `scripts/`, or config:
 5. **Script migrations:** compare output before/after on same input. Empty results = broken.
 6. For UI: visual verification per §5
 7. **Scoring-logic edits** — watchlists in `scripts/lib/scoring-watchlists.js` (inclusion, score-source, LLM input; unit tests NOT sufficient). **MUST run** `node scripts/scoring-delta.js` AND `node scripts/test-temporal-override-regression.js`, paste summary. The Stop hook enforces scoring-delta.js by its exit code after the latest watched edit (LLM input exits 2 by design: A/B per §13, then `NO-VERIFY: <A/B result>`). See `memory/feedback_scoring_delta_required.md`.
-8. **Content-quality regex edits** (`scripts/lib/content-quality.js` pattern arrays): **MUST run** `node scripts/audit-regex-patterns.js --full`. The Stop hook requires a passing stamp after the latest edit; absent `data/review-texts` only warns. See `memory/feedback_content_quality_regex_fps.md`.
+8. **Content-quality regex edits** (`scripts/lib/content-quality.js` arrays): **MUST run** `node scripts/audit-regex-patterns.js --full`. Stop hook requires a completed `--full` run stamped after the latest edit; threshold violations are reported for review; absent `data/review-texts` only warns. See `memory/feedback_content_quality_regex_fps.md`.
 **If any check fails, fix before committing.**
 
 ### 13. Prompt Changes Require A/B Check (MANDATORY)

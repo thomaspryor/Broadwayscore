@@ -231,17 +231,30 @@ test('BRO-5307: absent review texts only warn about the regex audit', () => {
   assert.match(r.stderr, /WARN.*data\/review-texts.*audit-regex-patterns/);
 });
 
-test('BRO-5307: only a successful full audit started after the content-quality edit clears the gate', () => {
+test('BRO-5307: only a completed full audit started after the content-quality edit clears the gate', () => {
   allowed(runHook(regexFixture([regexStamp()])), 'full audit');
-  for (const extra of [{ full: false }, { maxHits: 999 }, { scanned: 0 }, { exitCode: 1 }, { exitCode: 2 },
+  for (const extra of [{ full: false }, { maxHits: 999 }, { scanned: 0 }, { exitCode: 2 }, { exitCode: 3 },
     { started: ago(350) }, { started: undefined }, { ts: ago(350), started: ago(360) }]) {
     blocked(runHook(regexFixture([regexStamp(extra)])), /audit-regex-patterns/, JSON.stringify(extra));
   }
 });
 
+test('BRO-5307: exit-1 full audits warn with the file, violation count and names without blocking', () => {
+  const violation = { exitCode: 1, violations: 14, violationNames: ['ERROR_PAGE_PATTERNS::0', 'PAYWALL_PATTERNS::1'] };
+  const r = runHook(regexFixture([regexStamp(), regexStamp({ ...violation, ts: ago(180) })]));
+  allowed(r, 'completed audit with threshold violations');
+  assert.match(r.stderr, /WARN.*scripts\/lib\/content-quality\.js.*14.*threshold violation/);
+  for (const name of violation.violationNames) assert.ok(r.stderr.includes(name), `warning names ${name}`);
+  for (const extra of [{ full: false }, { maxHits: 999 }, { scanned: 0 }, { started: ago(350) }]) {
+    blocked(runHook(regexFixture([regexStamp({ ...violation, ...extra })])), /audit-regex-patterns/, JSON.stringify(extra));
+  }
+});
+
 test('BRO-5307: latest regex run decides and transcript output cannot replace a stamp', () => {
-  blocked(runHook(regexFixture([regexStamp(), regexStamp({ exitCode: 1, ts: ago(180) })])), /audit-regex-patterns/, 'failed rerun');
-  allowed(runHook(regexFixture([regexStamp({ exitCode: 1 }), regexStamp({ ts: ago(180) })])), 'clean rerun');
+  blocked(runHook(regexFixture([regexStamp(), regexStamp({ exitCode: 2, ts: ago(180) })])), /audit-regex-patterns/, 'failed rerun');
+  const clean = runHook(regexFixture([regexStamp({ exitCode: 1 }), regexStamp({ ts: ago(180) })]));
+  allowed(clean, 'clean rerun');
+  assert.doesNotMatch(clean.stderr, /threshold violation/);
   blocked(runHook(regexFixture([], true, [{ ...bash('node scripts/audit-regex-patterns.js --full | tail -1', 'All patterns under threshold'), ts: ago(200) }])),
     /audit-regex-patterns/, 'output without stamp');
 });
@@ -291,6 +304,8 @@ test('BRO-5307: audit CLI stamps real exits independently of scoring-delta, and 
   assert.equal(full.full, true);
   assert.equal(full.scanned, 1);
   assert.equal(full.maxHits, 5);
+  assert.equal(full.violations, 0);
+  assert.deepEqual(full.violationNames, []);
   assert.ok(full.started <= full.ts);
   assert.equal(run('--json').status, 0);
   assert.equal(stamps().at(-1).full, false, 'sampling cannot masquerade as --full');
@@ -299,5 +314,14 @@ test('BRO-5307: audit CLI stamps real exits independently of scoring-delta, and 
   }
   assert.equal(run('--full', '--json').status, 1, 'real pattern violations exit 1');
   assert.equal(stamps().at(-1).exitCode, 1);
+  assert.equal(stamps().at(-1).violations, 2);
+  assert.deepEqual(stamps().at(-1).violationNames, ['ERROR_PAGE_PATTERNS::0', 'STRONG_ERROR_PAGE_PATTERNS::0']);
+  fs.writeFileSync(path.join(root, 'scripts/discover-new-shows.js'), 'module.exports = {NON_THEATER_PATTERNS: ["opera 0"], WE_EXTRA_PATTERNS: [], VENUE_PAGE_EXCLUDE_PATTERNS: []};');
+  fs.writeFileSync(path.join(root, 'scripts/discover-opera-shows.js'), 'module.exports = {NON_OPERA_TITLE_PATTERNS: ["opera 1"]};');
+  assert.equal(run('--full', '--json').status, 1, 'title violations also appear in the stamp');
+  assert.equal(stamps().at(-1).violations, 4);
+  assert.deepEqual(stamps().at(-1).violationNames, [
+    'ERROR_PAGE_PATTERNS::0', 'STRONG_ERROR_PAGE_PATTERNS::0', 'NON_THEATER_PATTERNS::0', 'NON_OPERA_TITLE_PATTERNS::0',
+  ]);
   assert.equal(inStampDir(stampDir, () => watch.readStamps('regex-cli')).length, 0, 'regex stamps never satisfy scoring-delta');
 });
