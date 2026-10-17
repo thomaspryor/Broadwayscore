@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-16T21:45:30.290Z",
+    "lastUpdated": "2026-10-17T10:37:25.771Z",
     "version": "2.1.0",
     "lastChange": "BRO-5373: split The Mail on Sunday (mail-on-sunday, splitFrom daily-mail) out of daily-mail"
   },
@@ -13001,6 +13001,15 @@
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
       "regionInferredAt": "2026-10-16T21:45:30.290Z"
+    },
+    "manchestertheatres": {
+      "displayName": "Manchestertheatres",
+      "tier": 3,
+      "aliases": [
+        "manchestertheatres"
+      ],
+      "displayNameInferred": true,
+      "domain": "manchestertheatres.com"
     }
   },
   "_aliasIndex": {
