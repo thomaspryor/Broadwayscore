@@ -4622,6 +4622,12 @@ function setMultiProdGuardShows(shows) {
 function isRejectedByReasonExclusion(data) {
   if (!data) return false;
   if (data.rejectionReason) {
+    // BRO-5238: a human wrong-production clear (wrongProductionManualClear /
+    // wrongProductionOverride / humanReviewedWrongProduction:false) overrides a
+    // 'wrong_production' rejection, exactly as isRejectedAtExclusion already
+    // honours it for the rejectedAt stamp. Without this the clear only worked
+    // if a second plan also nulled rejectionReason (BRO-4891 theupcoming).
+    if (data.rejectionReason === 'wrong_production' && rejectedAtHumanCleared(data)) return false;
     const isJsonLdStarNotAReview = data.rejectionReason === 'not_a_review' &&
       (data.originalScoreSource === 'json-ld' || data.aggregatorStarsSource === 'json-ld') &&
       require('./score-extractors').KNOWN_STAR_OUTLETS.has(data.outletId);

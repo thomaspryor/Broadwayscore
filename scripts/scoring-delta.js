@@ -195,6 +195,8 @@ const FLAG_FIELDS = new Set([
   'scoreProvenance', 'productionCorroborated', 'aggregatorStars', 'originalScore',
   'originalScoreNormalized', 'originalScoreSource', 'aggregatorStarsSource',
   'scoreSource', 'humanReviewScore', 'firstSeenAt', 'outletHeadline', 'outletStandfirst',
+  // BRO-5238: decideInclusion's rejectionReason / rejectedBy branches.
+  'rejectionReason', 'rejectedBy',
 ]);
 
 // Detect flag-field changes in data/review-texts/ (a separate git repo from
@@ -568,8 +570,15 @@ function loadBaselineGuards() {
   // can require() them independently from the working-tree version.
   const tmpDir = fs.mkdtempSync(path.join(require('os').tmpdir(), 'scoring-delta-'));
   TMP_DIRS_TO_CLEAN.push(tmpDir);
-  const baselineLibDir = path.join(tmpDir, 'lib');
+  // Mirror the repo layout (<tmp>/scripts/lib + <tmp>/data -> repo data/) so a
+  // baseline lib's `__dirname/../../data/...` require resolves. With a flat
+  // <tmp>/lib it resolved to /tmp/data and every Phase A replay died with
+  // MODULE_NOT_FOUND on data/west-end-venues.json (venue-classification.js,
+  // reached via cross-market-guard -> tr-late-review-guard; BRO-5238). Same
+  // fix Phase B (loadBaselineRebuildHelpers) already carries.
+  const baselineLibDir = path.join(tmpDir, 'scripts', 'lib');
   fs.mkdirSync(baselineLibDir, { recursive: true });
+  fs.symlinkSync(path.join(REPO_ROOT, 'data'), path.join(tmpDir, 'data'), 'dir');
 
   // Materialize ALL of BASE_REF's scripts/lib first, so a transitive require
   // added to any sandboxed guard resolves to its baseline copy. The hand-picked
@@ -1202,7 +1211,12 @@ function decideInclusion(review, show, guards) {
   // baseline side keeps the baseline's rule and the delta shows the flip.
   const wsExplicitlyCleared = typeof guards.wrongShowExplicitlyCleared === 'function' && guards.wrongShowExplicitlyCleared(review);
   if (review.wrongShow === true && !wsExplicitlyCleared && !wrongShowCleared && !inWindowVetoed('wrongShow') && !laneOk('wrongProduction')) return { included: false, reason: 'wrongShow' };
-  if (review.wrongProduction === true && !wrongProductionCleared && !inWindowVetoed('wrongProduction') && !laneOk('wrongProduction')) return { included: false, reason: 'wrongProduction' };
+  // BRO-5238: a human wrong-production clear admits the file, as in
+  // rebuild-all-reviews.js:3558 and explainExclusion. Without it every
+  // wrongProduction:true + wrongProductionManualClear file replayed as excluded.
+  const wpHumanCleared = review.wrongProductionManualClear === true || review.wrongProductionOverride === true
+    || review.humanReviewedWrongProduction === false;
+  if (review.wrongProduction === true && !wpHumanCleared && !wrongProductionCleared && !inWindowVetoed('wrongProduction') && !laneOk('wrongProduction')) return { included: false, reason: 'wrongProduction' };
   // Collected-before-previews HOLD (BRO-4855) — mirrors the rebuild's flag pass
   // (pre-opening loop, dateless branch): same skip gates (wpAuditOpen, url-
   // correction withhold, routedFromShowId, allowEarlyDate, dateless manual
@@ -1233,6 +1247,22 @@ function decideInclusion(review, show, guards) {
   // branch here, so the gate could detect the field changed yet never
   // actually model a wrongAttribution-driven flip in either direction.
   if (review.wrongAttribution === true) return { included: false, reason: 'wrongAttribution' };
+  // BRO-5238: mirror explainExclusion's three rejection gates via the same
+  // canonical helpers rebuild-all-reviews.js calls. Before this, rejectedAt
+  // sat in FLAG_FIELDS with no branch here, so a guard edit that flips
+  // rejection-excluded files (or a rejection-flag sweep) replayed as 0 flips.
+  // typeof-guarded: a pre-BRO-4404 baseline has no helper exports.
+  if (!laneOk('wrongProduction')) {
+    if (typeof guards.isRejectedByReasonExclusion === 'function' && guards.isRejectedByReasonExclusion(review)) {
+      return { included: false, reason: 'rejectionReason' };
+    }
+    if (Array.isArray(review.rejectedBy) && review.rejectedBy.length >= 2) {
+      return { included: false, reason: 'rejectedByMultipleModels' };
+    }
+    if (typeof guards.isRejectedAtExclusion === 'function' && guards.isRejectedAtExclusion(review)) {
+      return { included: false, reason: 'rejectedAt' };
+    }
+  }
   if (review.duplicateOf) return { included: false, reason: 'duplicateOf' };
   if (review.isRoundupArticle && !laneOk('roundupUrlSwap')) {
     const isStale = typeof guards.isLikelyStaleRoundupFlag === 'function'
@@ -1727,6 +1757,10 @@ function main() {
         && (baseline.evaluateLateDateGuard?.toString() || '') === (working.evaluateLateDateGuard?.toString() || '')
         && (baseline.evaluateUrlYearGuard?.toString() || '') === (working.evaluateUrlYearGuard?.toString() || '')
         && (baseline.evaluateDirectorGuard?.toString() || '') === (working.evaluateDirectorGuard?.toString() || '')
+        // BRO-5238: rejection helpers decideInclusion / explainExclusion delegate to.
+        && (baseline.isRejectedByReasonExclusion?.toString() || '') === (working.isRejectedByReasonExclusion?.toString() || '')
+        && (baseline.isRejectedAtExclusion?.toString() || '') === (working.isRejectedAtExclusion?.toString() || '')
+        && (baseline.rejectedAtHumanCleared?.toString() || '') === (working.rejectedAtHumanCleared?.toString() || '')
         // Threshold constants are free variables of the pre-opening gate — a
         // constant-only edit leaves the function source identical (same trap
         // as PRE_WINDOW_DAYS above), so compare by value.

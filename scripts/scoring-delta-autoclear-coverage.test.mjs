@@ -143,7 +143,8 @@ describe('scoring-delta.js decideInclusion auto-clear replay', () => {
 // isNonReview-driven flip — the exact class of change this ticket's audit
 // sweeps make — so scoring-delta.js always reported "0 flips" for them. Fixed
 // by mirroring rebuild-all-reviews.js:3570 (incl. isNonReviewDemotedByFreshCV).
-const KNOWN_UNCOVERED = new Set(['suspectedMisattribution', 'fabricatedEntry', 'rejectedAt']);
+// rejectedAt closed (BRO-5238): decideInclusion now replays the rejection gates.
+const KNOWN_UNCOVERED = new Set(['suspectedMisattribution', 'fabricatedEntry']);
 describe('scoring-delta.js FLAG_FIELDS / decideInclusion coverage', () => {
   test('every FLAG_FIELDS name is referenced inside decideInclusion, or explicitly listed as a known gap', () => {
     const { FLAG_FIELDS } = require('./scoring-delta.js');

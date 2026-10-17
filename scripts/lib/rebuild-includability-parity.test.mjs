@@ -56,6 +56,7 @@ const NEW_REBUILD_EXCLUDES = d => isRejectedByReasonExclusion(d) || isRejectedAt
 function classifyFlip(d) {
   if (d.rejectionReason === 'not_a_review' && (d.originalScoreSource === 'json-ld' || d.aggregatorStarsSource === 'json-ld')) return 'json-ld-star';
   if (d.rejectionReason === 'not_a_review') return 'independent-excerpt-score';
+  if (d.rejectionReason === 'wrong_production' && rejectedAtHumanCleared(d)) return 'human-wp-clear';
   if (!d.rejectionReason && d.rejectedAt) return 'rejectedAt-wp-auto-clear-or-excerpt';
   return 'unexplained';
 }
@@ -91,6 +92,8 @@ test('synthetic matrix: helpers agree with explainExclusion on rejection-shaped 
     { rejectedAt: '2026-01-01T00:00:00Z' },
     { rejectedAt: '2026-01-01T00:00:00Z', textFetchedAt: '2026-03-01T00:00:00Z' },
     { rejectedAt: '2026-01-01T00:00:00Z', wrongProduction: true, wrongProductionManualClear: true },
+    { rejectionReason: 'wrong_production', rejectedAt: '2026-01-01T00:00:00Z', wrongProductionManualClear: true },
+    { rejectionReason: 'wrong_production', rejectedAt: '2026-01-01T00:00:00Z', wrongProductionOverride: true },
   ];
   for (const c of cases) {
     const d = { ...base, ...c };

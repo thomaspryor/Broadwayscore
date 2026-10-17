@@ -604,3 +604,31 @@ test('isNonReviewDemotedByFreshCV: manual provenance fields alone protect the fl
     assert.equal(isNonReviewDemotedByFreshCV(data), false, JSON.stringify(prov));
   }
 });
+
+// BRO-5238: a human wrong-production clear must override a 'wrong_production'
+// rejectionReason, matching isRejectedAtExclusion's rejectedAtHumanCleared check.
+test('isRejectedByReasonExclusion: human wrong-production clear overrides wrong_production rejection (BRO-5238)', () => {
+  const { isRejectedByReasonExclusion, isRejectedAtExclusion } = require('./review-guards.js');
+  const rejected = {
+    outletId: 'theupcoming',
+    rejectionReason: 'wrong_production',
+    rejectedAt: '2026-09-01T00:00:00Z',
+    rejectedBy: 'ensemble-scoreability-check',
+  };
+  assert.equal(isRejectedByReasonExclusion(rejected), true, 'uncleared wrong_production stays excluded');
+  for (const clear of [
+    { wrongProductionManualClear: true },
+    { wrongProductionOverride: true },
+    { humanReviewedWrongProduction: false },
+  ]) {
+    const d = { ...rejected, wrongProduction: false, ...clear };
+    assert.equal(isRejectedByReasonExclusion(d), false, JSON.stringify(clear));
+    assert.equal(isRejectedAtExclusion(d), false, `rejectedAt sibling agrees: ${JSON.stringify(clear)}`);
+  }
+  // The clear is scoped to wrong_production: it does not lift other verdicts.
+  for (const reason of ['garbage_text', 'not_a_review', 'wrong_show']) {
+    assert.equal(isRejectedByReasonExclusion({ rejectionReason: reason, wrongProductionManualClear: true }), true, reason);
+  }
+  // A non-true flag value is not a clear.
+  assert.equal(isRejectedByReasonExclusion({ ...rejected, wrongProductionManualClear: 'yes' }), true);
+});
