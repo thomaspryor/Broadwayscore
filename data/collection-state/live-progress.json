@@ -1,26 +1,60 @@
 {
-  "updatedAt": "2026-10-17T20:31:52.816Z",
-  "processed": 3,
-  "failed": 1,
-  "successRate": "75.0%",
+  "updatedAt": "2026-10-17T20:58:49.681Z",
+  "processed": 8,
+  "failed": 17,
+  "successRate": "32.0%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 4,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingdog": 1,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 2
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-10-17T20:31:20.112Z",
+      "t": "2026-10-17T20:45:53.416Z",
       "event": "bb-session",
-      "session": "b0ab2aa0",
-      "url": "https://www.theatreinla.com/the-second-best-school-shooting/11328/"
+      "session": "5b94a55f",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-17T20:46:00.420Z",
+      "event": "bb-session",
+      "session": "fa72ae25",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-17T20:47:08.575Z",
+      "event": "bb-session",
+      "session": "053aae02",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-17T20:58:39.974Z",
+      "event": "bb-session",
+      "session": "d450e363",
+      "url": "https://www.thetimes.com/recipes/entertaining/party-food/article/dates-stuffed-w"
+    },
+    {
+      "t": "2026-10-17T20:58:40.330Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-17T20:58:40.688Z",
+      "event": "bb-session",
+      "session": "13adf52b",
+      "url": "https://www.talkinbroadway.com/page/ob/10_14_26b.html"
+    },
+    {
+      "t": "2026-10-17T20:58:41.002Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
