@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-16T23:33:52.514Z",
+  "timestamp": "2026-10-17T00:13:13.270Z",
   "stats": {
     "totalReviews": 57082,
-    "alreadyFlagged": 21193,
-    "dateGuardCatches": 192,
+    "alreadyFlagged": 21197,
+    "dateGuardCatches": 193,
     "directorMismatch": 1915,
     "tvFilmSignals": 1598,
-    "londonSignals": 2391,
+    "londonSignals": 2393,
     "offBroadwaySignals": 514,
     "yearMismatch": 146,
-    "noPublishDate": 5275
+    "noPublishDate": 5261
   },
   "findings": [
     {
@@ -67298,6 +67298,19 @@
       ]
     },
     {
+      "showId": "left-on-tenth-2024",
+      "file": "playbill--molly-higgins.json",
+      "publishDate": "2024-10-23",
+      "url": "https://playbill.com/article/read-the-reviews-for-broadways-left-on-tenth",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "lemons-lemons-lemons-lemons-lemons-west-end-2023",
       "file": "british-theatre--robert-tanitch.json",
       "score": 58,
@@ -79709,6 +79722,20 @@
     },
     {
       "showId": "the-curious-case-of-benjamin-button-west-end-2024",
+      "file": "nytimes--isabella-kwai.json",
+      "score": 64,
+      "publishDate": "2024-11-05",
+      "url": "https://www.nytimes.com/2024/11/05/theater/benjamin-button-musical-west-end.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-curious-case-of-benjamin-button-west-end-2024",
       "file": "thereviewshub--andrew-houghton.json",
       "score": 97,
       "publishDate": "2024-11-07",
@@ -85024,6 +85051,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "the-years-west-end-2025",
+      "file": "whatsonstage--alun-hood.json",
+      "publishDate": "2024-08-02",
+      "url": "https://www.whatsonstage.com/news/the-years-at-the-almeida-theatre-review_1619423/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 175d before show (2024-08-02 vs 2025-01-24)"
         }
       ]
     },
