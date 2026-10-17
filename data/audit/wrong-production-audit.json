@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-17T00:13:13.270Z",
+  "timestamp": "2026-10-17T00:55:02.530Z",
   "stats": {
-    "totalReviews": 57082,
+    "totalReviews": 57116,
     "alreadyFlagged": 21197,
     "dateGuardCatches": 193,
-    "directorMismatch": 1915,
+    "directorMismatch": 1931,
     "tvFilmSignals": 1598,
-    "londonSignals": 2393,
+    "londonSignals": 2394,
     "offBroadwaySignals": 514,
-    "yearMismatch": 146,
-    "noPublishDate": 5261
+    "yearMismatch": 153,
+    "noPublishDate": 5259
   },
   "findings": [
     {
@@ -3481,6 +3481,58 @@
       ]
     },
     {
+      "showId": "back-to-the-future-tour-2024",
+      "file": "fwtx--john-henry.json",
+      "publishDate": "2026-03-23",
+      "url": "https://fwtx.com/culture/back-to-the-future-musical-lands-at-bass-hall/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-tour-2024",
+      "file": "maryland-theatre-guide--unknown.json",
+      "publishDate": "2026-02-27",
+      "url": "https://mdtheatreguide.com/2026/02/theatre-review-back-to-the-future-the-musical-at-the-hippodrome-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-tour-2024",
+      "file": "rachelsreviewstheatre--unknown.json",
+      "publishDate": "2026-06-11",
+      "url": "https://rachelsreviewstheatre.com/2026/06/11/back-to-the-future-the-musical-is-a-theme-park-musical-but-thats-entertaining-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-tour-2024",
+      "file": "wkrn--colleen-guerry.json",
+      "publishDate": "2026-03-19",
+      "url": "https://www.wkrn.com/news/local-news/nashville/sci-fi-comedy-back-to-the-future-the-musical-zooms-into-tpac/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
       "showId": "backstairs-billy-west-end-2023",
       "file": "timeout-london--tom-wicker.json",
       "score": 81,
@@ -5004,6 +5056,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"amazon prime\""
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
+      "file": "theatermania--linda-buchwald.json",
+      "publishDate": "2026-03-17",
+      "url": "https://www.theatermania.com/news/josh-gad-andrew-rannells-nikki-m-james-and-rory-omalley-will-make-surprise-appearances-at-the-book-of-mormon-for-its-15th-anniversary_1828245/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
         }
       ]
     },
@@ -23725,6 +23795,125 @@
       ]
     },
     {
+      "showId": "les-miserables-tour-2022",
+      "file": "boston-herald--jed-gottlieb.json",
+      "publishDate": "2026-06-05",
+      "url": "https://www.bostonherald.com/2026/06/05/catch-an-amazing-les-miserables/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2022 (1x). 2026 matches production: les-miserables-arena-concert-spectacular-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-tour-2022",
+      "file": "calgary-herald--unknown.json",
+      "publishDate": "2026-03-05",
+      "url": "https://calgaryherald.com/entertainment/theatre/review-masterful-performances-give-rise-to-an-extraordinary-retelling-of-les-miserables",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2022 (0x). 2026 matches production: les-miserables-arena-concert-spectacular-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-tour-2022",
+      "file": "chasingsupermom--bekki.json",
+      "publishDate": "2026-04-01",
+      "url": "https://chasingsupermom.com/2026/04/01/les-miserables-in-portland-now-through-april-5th-full-show-review/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2022 (0x). 2026 matches production: les-miserables-arena-concert-spectacular-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-tour-2022",
+      "file": "new-city-stage--dennis-polkow.json",
+      "publishDate": "2026-05-19",
+      "url": "https://www.newcitystage.com/2026/05/19/a-last-less-elaborate-look-at-a-reimagined-les-miserables/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (3x) more than 2022 (0x). 2026 matches production: les-miserables-arena-concert-spectacular-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-tour-2022",
+      "file": "pioneer-press--rob-hubbard.json",
+      "publishDate": "2026-02-18",
+      "url": "https://www.twincities.com/2026/02/18/stirring-les-miserables-resonates-with-resolve-and-sadness/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2022 (0x). 2026 matches production: les-miserables-arena-concert-spectacular-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-tour-2022",
+      "file": "rachelsreviewstheatre--unknown.json",
+      "publishDate": "2026-07-02",
+      "url": "https://rachelsreviewstheatre.com/2026/07/02/les-miserables-at-tuacahn-is-a-triumph-review/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2022 (0x). 2026 matches production: les-miserables-arena-concert-spectacular-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-tour-2022",
+      "file": "seattles-child--cheryl-murfin.json",
+      "publishDate": "2026-04-17",
+      "url": "https://www.seattleschild.com/les-miserables-seattle-parent-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (3x) more than 2022 (0x). 2026 matches production: les-miserables-arena-concert-spectacular-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-tour-2022",
+      "file": "third-coast-review--unknown.json",
+      "publishDate": "2026-05-15",
+      "url": "https://thirdcoastreview.com/stages/2026/05/15/les-miserables-broadway-in-chicago",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        }
+      ]
+    },
+    {
       "showId": "les-miserables-west-end-2021",
       "file": "british-theatre--philip-fisher.json",
       "score": 90,
@@ -26209,6 +26398,32 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2019 (2x) more than 2022 (0x). 2019 matches production: moulin-rouge-2019"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-tour-2022",
+      "file": "broadwayworld--doug-poms.json",
+      "publishDate": "2026-06-21",
+      "url": "https://www.broadwayworld.com/washington-dc/article/Review-MOULIN-ROUGE-THE-MUSICAL-at-The-Kennedy-Center-20260621",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-tour-2022",
+      "file": "broadwayworld--theresa-bertram.json",
+      "publishDate": "2026-07-10",
+      "url": "https://www.broadwayworld.com/little-rock/article/Review-MOULIN-ROUGE-THE-MUSICAL-at-Walton-Arts-Center-in-Fayetteville-20260710",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
         }
       ]
     },
@@ -34305,6 +34520,45 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
+      "file": "broadwayworld--jonathan-netek.json",
+      "publishDate": "2026-03-25",
+      "url": "https://www.broadwayworld.com/houston/article/Review-SOME-LIKE-IT-HOT-at-Broadway-At-The-Hobby-Center-20260325",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
+      "file": "houston-press--margaret-downing.json",
+      "publishDate": "2026-03-18",
+      "url": "https://www.houstonpress.com/arts/some-like-it-hot-the-musical-told-with-a-modern-eye/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
+      "file": "playbill--logan-culwell-block.json",
+      "publishDate": "2026-04-24",
+      "url": "https://playbill.com/article/some-like-it-hot-national-tour-sets-final-performance",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
         }
       ]
     },
@@ -42763,6 +43017,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2023 (2x) more than 2025 (0x). 2023 matches production: the-outsiders-world-premiere-regional-2023"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
+      "file": "broadwayworld--elizabeth-cortes.json",
+      "publishDate": "2026-02-04",
+      "url": "https://www.broadwayworld.com/south-carolina/article/Review-THE-OUTSIDERS-at-Peace-Center-20260204",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
         }
       ]
     },
@@ -78350,7 +78617,7 @@
     {
       "showId": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": 78,
+      "score": 81,
       "publishDate": "2026-10-13",
       "url": "https://theatreandtonic.co.uk/blog/the-banality-of-evil-arcola-theatre-review",
       "findings": [
@@ -79023,6 +79290,20 @@
       "score": 82,
       "publishDate": "2026-10-14",
       "url": "https://www.timeout.com/london/news/the-cherry-orchard-review-kristin-scott-thomas-harold-pinter-theatre-101426",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-cherry-orchard-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 61,
+      "publishDate": "2026-10-14",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-cherry-orchard-review-kristin-scott-thomas-gc88pnwh6",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
