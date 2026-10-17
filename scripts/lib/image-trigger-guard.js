@@ -128,7 +128,11 @@ function planSelfHealDispatch({ orderedFlagged, prevById, nowMs, cooldownHours, 
     due,
     deferred,
     entries,
-    dispatchInputs: buildImageDispatchInputs(due.map((f) => f.id)),
+    // BRO-5506: the fetcher drops national tours (they inherit their parent's
+    // art), so a tour is healed by dispatching its PARENT. `dispatchId` is that
+    // override; absent, the show's own id is dispatched.
+    dispatchIdById: new Map(due.map((f) => [f.id, f.dispatchId || f.id])),
+    dispatchInputs: buildImageDispatchInputs(due.map((f) => f.dispatchId || f.id)),
   };
 }
 
@@ -174,9 +178,12 @@ async function executeSelfHealDispatch({ plan, dispatch, nowMs, onAlert, log = (
       // work that never happened, which is precisely the ledger corruption
       // this whole fix exists to stop (see planSelfHealDispatch's BRO-2672
       // note). Deriving from batchIds makes the two impossible to diverge.
-      for (const id of String(batchIds).split(',')) {
-        const entry = entryById.get(id);
-        if (!entry) continue;
+      const carried = new Set(String(batchIds).split(','));
+      const dispatchIdById = plan.dispatchIdById || new Map();
+      for (const entry of plan.entries) {
+        const id = entry.id;
+        if (!carried.has(dispatchIdById.get(id) || id)) continue;
+        if (plan.dispatchIdById && !dispatchIdById.has(id)) continue;
         entry.dispatchAttempts = (entry.dispatchAttempts || 0) + 1;
         entry.lastDispatchedAt = new Date(nowMs).toISOString();
         dispatched.push(id);
