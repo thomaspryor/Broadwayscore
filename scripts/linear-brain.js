@@ -23,6 +23,7 @@
 require('./lib/load-env').loadEnv();
 
 const { createLinearIssue } = require('./lib/linear-issue-create');
+const { warnPriorAnswers } = require('./lib/owner-decision-recall');
 const { hasHelpFlag } = require('./lib/cli-help');
 const linearClient = require('./lib/linear-client');
 const { checkLinearDoneTransition } = require('./lib/linear-done-gate');
@@ -197,10 +198,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // Injectable I/O seams — real Linear client by default, same convention
   // scripts/linear-next.js's main() uses (deps default to the live module,
   // tests pass stubs so no live Linear API call or gate side effect happens
-  // under `node --test`). Only the `update` command's Done-transition path
-  // needs these; every other command still lazily requires linear-client.js
-  // inline, unchanged.
+  // under `node --test`). Create injects filing and advisory recall; update
+  // injects the reads and writes needed by its transition gates.
   const {
+    createLinearIssue: createLinearIssueFn = createLinearIssue,
     getIssue: getIssueFn = linearClient.getIssue,
     getTeam: getTeamFn = linearClient.getTeam,
     updateIssue: updateIssueFn = linearClient.updateIssue,
@@ -700,7 +701,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   }
   const notes = newAnyway ? `${args.notes || ''}\n\nFiled with --new-anyway: ${newAnyway}`.trim() : (args.notes || '');
   try {
-    const result = await createLinearIssue({
+    const result = await createLinearIssueFn({
       title,
       description: notes,
       dispatch: args.dispatch,
@@ -755,6 +756,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     } catch (e) {
       console.error(`[linear-brain] acceptance-arming check failed (issue was still created): ${e.message}`);
     }
+    await warnPriorAnswers(title, {
+      fetchCards: deps.fetchAnsweredCards,
+      timeoutMs: deps.ownerRecallTimeoutMs,
+    });
     // One-line nudge (owner 2026-10-03: the filer knows best how hard a card
     // is). Advisory only: without it the dispatcher's P0/retry rule decides.
     if (args.model === undefined) {
@@ -773,7 +778,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
 }
 
 // Exported (not auto-invoked) when required as a module — the injectable
-// `deps` param above only exists so tests can drive `update`'s Done-gate
+// `deps` param above lets tests drive create and update's Done-gate
 // end-to-end without a live LINEAR_API_KEY, same convention as
 // scripts/linear-next.js's main(argv, deps).
 if (require.main === module) {

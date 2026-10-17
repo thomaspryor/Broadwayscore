@@ -12,6 +12,8 @@
  *   node scripts/lib/owner-decision-recall.js "email pop-up"
  */
 
+const fs = require('fs');
+const path = require('path');
 const { TERMINAL_STATE_TYPES } = require('./linear-state-types.js');
 
 const STOPWORDS = new Set(('a an and are as at be by for from has have how in is it its of on or so that the this to was we when ' +
@@ -19,6 +21,9 @@ const STOPWORDS = new Set(('a an and are as at be by for from has have how in is
 const ANSWER_RE = /\bowner (answered|declined|picked|chose)\b|\bowner decision (on the decisions page|\(?\d{4}-)/i;
 const QUESTION_RE = /DECISION NEEDED/;
 const MIN_SHARED = 2;
+const CACHE_FILE = path.resolve(__dirname, '../../.cache/owner-decision-recall.json');
+const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+const CACHE_VERSION = 1;
 
 function tokens(text) {
   const out = new Set();
@@ -40,16 +45,24 @@ function commentBodies(card) {
   return nodes.map((n) => ({ body: String(n.body || ''), createdAt: n.createdAt || null }));
 }
 
+function isAnswerComment(comment) {
+  return ANSWER_RE.test(comment.body) && !QUESTION_RE.test(comment.body);
+}
+
+function summarizeAnswer(card, comment) {
+  const when = comment.createdAt || card.canceledAt || card.completedAt || card.updatedAt || null;
+  return { text: comment.body.replace(/\s+/g, ' ').trim().slice(0, 240), date: when ? String(when).slice(0, 10) : null };
+}
+
 // The text of the answer, and when it was given, or null when the closed card
 // holds no owner answer (a card closed as obsolete is not an answer).
 function answerOf(card) {
   if (!card || !isTerminal(card)) return null;
-  const hit = commentBodies(card).find((c) => ANSWER_RE.test(c.body) && !QUESTION_RE.test(c.body));
-  const when = (hit && hit.createdAt) || card.canceledAt || card.completedAt || card.updatedAt || null;
-  let text = hit ? hit.body : null;
-  if (!text && card.state.type === 'canceled' && ANSWER_RE.test(String(card.description || '')) && !QUESTION_RE.test(String(card.description || ''))) text = card.description;
-  if (!text) return null;
-  return { text: text.replace(/\s+/g, ' ').trim().slice(0, 240), date: when ? String(when).slice(0, 10) : null };
+  const hit = commentBodies(card).find(isAnswerComment);
+  if (hit) return summarizeAnswer(card, hit);
+  const description = { body: String(card.description || '') };
+  if (card.state.type === 'canceled' && isAnswerComment(description)) return summarizeAnswer(card, description);
+  return null;
 }
 
 function cardTokens(card) {
@@ -63,10 +76,19 @@ function findPriorAnswers(topic, cards, { minShared = MIN_SHARED } = {}) {
   const need = Math.min(Math.max(minShared, Math.ceil(want.size * 0.34)), 4, want.size);
   const found = [];
   for (const card of cards || []) {
-    const answer = answerOf(card);
+    let answer = answerOf(card);
     if (!answer) continue;
-    const have = cardTokens(card);
-    const shared = [...want].filter((t) => have.has(t)).length;
+    const sharedWith = (have) => [...want].filter((t) => have.has(t)).length;
+    let shared = sharedWith(cardTokens(card));
+    // Never pool a long thread's words: only a single comment carrying the
+    // strict owner-answer marker can independently establish another topic.
+    for (const comment of commentBodies(card).filter(isAnswerComment)) {
+      const commentShared = sharedWith(tokens(comment.body));
+      if (commentShared > shared) {
+        shared = commentShared;
+        answer = summarizeAnswer(card, comment);
+      }
+    }
     if (shared >= need) found.push({ stateType: card.state.type, identifier: card.identifier, title: card.title, url: card.url || null, ...answer, shared });
   }
   return found.sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')) || b.shared - a.shared);
@@ -92,21 +114,95 @@ const CLOSED_QUERY = `query($teamKey: String!, $after: String) {
   }) {
     pageInfo { hasNextPage endCursor }
     nodes { id identifier title description url updatedAt canceledAt completedAt state { type }
-      comments(first: 30, orderBy: createdAt) { nodes { body createdAt } } }
+      comments(first: 30, orderBy: createdAt) { pageInfo { hasNextPage endCursor } nodes { body createdAt } } }
   }
 }`;
 
-// Newest closed cards that carry an owner answer. maxPages bounds the read.
-async function fetchAnsweredCards({ maxPages = 30, linear = require('./linear-client') } = {}) {
+const COMMENTS_QUERY = `query($id: String!, $after: String) {
+  issue(id: $id) {
+    comments(first: 50, after: $after, orderBy: createdAt) {
+      pageInfo { hasNextPage endCursor }
+      nodes { body createdAt }
+    }
+  }
+}`;
+
+// Cache only complete reads. A page cap, timeout or API failure must not hide
+// answers for a whole day. The cache is local, ignored, and best effort.
+async function fetchAnsweredCards({ maxPages = 30, linear = require('./linear-client'), cacheFile = CACHE_FILE,
+  now = Date.now, timeoutMs = Infinity } = {}) {
+  const startedAt = now();
+  if (cacheFile) {
+    try {
+      const cache = JSON.parse(fs.readFileSync(cacheFile, 'utf8'));
+      const age = startedAt - cache.fetchedAt;
+      if (cache.version === CACHE_VERSION && cache.teamKey === linear.TEAM_KEY && age >= 0 && age < CACHE_TTL_MS && Array.isArray(cache.cards)) {
+        return cache.cards.filter((card) => answerOf(card));
+      }
+    } catch { /* Missing or corrupt cache: read Linear. */ }
+  }
+  const read = (query, variables) => {
+    if (!Number.isFinite(timeoutMs)) return linear.graphql(query, variables);
+    const remaining = timeoutMs - (now() - startedAt);
+    if (remaining <= 0) throw new Error('owner-answer lookup timed out');
+    // Bound the request itself too: a Promise.race alone leaves network I/O
+    // and retries alive after the advisory has returned to its caller.
+    return linear.graphql(query, variables, { timeoutMs: remaining, maxAttempts: 1 });
+  };
   const out = [];
   let after = null;
+  let complete = false;
   for (let page = 0; page < maxPages; page++) {
-    const data = await linear.graphql(CLOSED_QUERY, { teamKey: linear.TEAM_KEY, after });
-    out.push(...data.issues.nodes.filter((c) => answerOf(c)));
-    if (!data.issues.pageInfo.hasNextPage) break;
+    const data = await read(CLOSED_QUERY, { teamKey: linear.TEAM_KEY, after });
+    for (const card of data.issues.nodes) {
+      let comments = card.comments;
+      const nodes = [...(comments?.nodes || [])];
+      const seen = new Set();
+      while (comments?.pageInfo?.hasNextPage) {
+        const cursor = comments.pageInfo.endCursor;
+        if (!cursor || seen.has(cursor)) throw new Error('Incomplete owner-answer comment pagination');
+        seen.add(cursor);
+        const next = await read(COMMENTS_QUERY, { id: card.id, after: cursor });
+        comments = next.issue?.comments;
+        if (!comments) throw new Error('Owner-answer issue disappeared while reading comments');
+        nodes.push(...comments.nodes);
+      }
+      const fullCard = { ...card, comments: { nodes } };
+      if (answerOf(fullCard)) out.push(fullCard);
+    }
+    if (!data.issues.pageInfo.hasNextPage) { complete = true; break; }
     after = data.issues.pageInfo.endCursor;
+    if (!after) throw new Error('Incomplete owner-answer issue pagination');
+  }
+  if (complete && cacheFile) {
+    const tmp = `${cacheFile}.${process.pid}.tmp`;
+    try {
+      fs.mkdirSync(path.dirname(cacheFile), { recursive: true });
+      fs.writeFileSync(tmp, JSON.stringify({ version: CACHE_VERSION, teamKey: linear.TEAM_KEY, fetchedAt: startedAt, cards: out }), { mode: 0o600 });
+      fs.renameSync(tmp, cacheFile);
+    } catch { /* A read-only checkout must still be able to file cards. */ }
+    finally { try { fs.unlinkSync(tmp); } catch { /* Already renamed or not written. */ } }
   }
   return out;
+}
+
+// Advisory only. Creation has already succeeded; a cold cache or broken Linear
+// read cannot invalidate that result or outlive automated filers' 60s budget.
+async function warnPriorAnswers(topic, { fetchCards = fetchAnsweredCards, timeoutMs = 8000, warn = console.error } = {}) {
+  let timer;
+  try {
+    const cards = await Promise.race([
+      Promise.resolve().then(() => fetchCards({ timeoutMs })),
+      new Promise((_, reject) => { timer = setTimeout(() => reject(new Error(`lookup timed out after ${timeoutMs}ms`)), timeoutMs); }),
+    ]);
+    for (const prior of findPriorAnswers(topic, cards).slice(0, 3)) {
+      warn(`[linear-brain] prior owner answer: ${prior.identifier} (${prior.date || 'undated'}) ${prior.url || ''}\n  ${prior.text}`);
+    }
+  } catch (err) {
+    warn(`[linear-brain] owner-answer recall skipped (issue was still created): ${err.message}`);
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 async function main(argv = process.argv.slice(2)) {
@@ -122,4 +218,4 @@ if (require.main === module) {
   main().then((c) => { process.exitCode = c; }, (e) => { console.error(e.message); process.exitCode = 3; });
 }
 
-module.exports = { tokens, answerOf, findPriorAnswers, splitAnswered, fetchAnsweredCards, CLOSED_QUERY };
+module.exports = { tokens, answerOf, findPriorAnswers, splitAnswered, fetchAnsweredCards, warnPriorAnswers, CLOSED_QUERY };
