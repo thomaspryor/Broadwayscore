@@ -11,6 +11,13 @@ on:
     - cron: '0 * * * *'  # every hour, on the hour
   workflow_dispatch:
     inputs:
+      redispatched:
+        # BRO-5152: set by scripts/cron-redispatch.js when GitHub dropped the scheduled run.
+        # Input defaults (dry_run false, 24h window, all feeds) equal the cron's.
+        description: 'Internal: re-dispatch of a dropped scheduled run (behaves like the cron)'
+        required: false
+        default: 'false'
+        type: string
       dry_run:
         description: 'Dry run (poll + classify, no writes)'
         required: false

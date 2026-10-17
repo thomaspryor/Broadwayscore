@@ -4,7 +4,17 @@ on:
   schedule:
     # Daily at 6 AM UTC (1 AM EST)
     - cron: '0 6 * * *'
-  workflow_dispatch: {}
+    # redispatch-after-hours: 26  (BRO-5152: daily; cron-redispatch.js replaces a dropped tick after 26h, before the 36h page)
+  workflow_dispatch:
+    inputs:
+      redispatched:
+        # BRO-5152: set by scripts/cron-redispatch.js when GitHub dropped the scheduled run.
+        # Nothing in this workflow branches on the trigger, so it runs exactly like the
+        # cron.
+        description: 'Internal: re-dispatch of a dropped scheduled run (behaves like the cron)'
+        required: false
+        default: 'false'
+        type: string
 
 # Public TodayTix API — no scraping secrets needed.
 # Exempt from BD/SB lint rule (direct REST API, not web scraping).

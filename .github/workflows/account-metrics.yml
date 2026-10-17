@@ -22,6 +22,13 @@ on:
     - cron: '41 7 * * *'     # signin-check (also runs the metrics job)
   workflow_dispatch:
     inputs:
+      redispatched:
+        # BRO-5152: set by scripts/cron-redispatch.js when GitHub dropped the scheduled run.
+        # Runs the 3-hourly metrics job only, never the 07:41 signin-check job.
+        description: 'Internal: re-dispatch of a dropped scheduled run (behaves like the cron)'
+        required: false
+        default: 'false'
+        type: string
       simulate:
         description: 'Dry-run an alert instead of a real run (sends nothing)'
         required: false
@@ -144,7 +151,9 @@ jobs:
 
   signin-check:
     # Never during a dry run: this job routes real alerts.
-    if: (github.event.schedule == '41 7 * * *' || inputs.signin_check == true) && inputs.simulate != 'signin-stalled'
+    # BRO-5152: a re-dispatch (inputs.redispatched) replaces a 3-hourly metrics
+    # tick; it never runs the signin check.
+    if: (github.event.schedule == '41 7 * * *' || (inputs.signin_check == true && inputs.redispatched != 'true')) && inputs.simulate != 'signin-stalled'
     runs-on: ubuntu-latest
     concurrency:
       group: account-signin-check

@@ -21,7 +21,16 @@ on:
     # (opening-night-checklist.yml :17, opening-night-completeness-check.yml
     # every 15 min) so they don't all contend for runner minutes at once.
     - cron: '50 * * * *'
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      redispatched:
+        # BRO-5152: set by scripts/cron-redispatch.js when GitHub dropped the scheduled run.
+        # Nothing in this workflow branches on the trigger, so it runs exactly like the
+        # cron.
+        description: 'Internal: re-dispatch of a dropped scheduled run (behaves like the cron)'
+        required: false
+        default: 'false'
+        type: string
 
 concurrency:
   group: opening-night-express-retry-check

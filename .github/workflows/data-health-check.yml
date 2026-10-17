@@ -21,7 +21,16 @@ on:
     # (2026-10-09) reverted this from a stale copy of the file; it was
     # restored and is now pinned by tests/unit/digest-feeder-cron-timing.test.mjs.
     - cron: '15 2 * * *'
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      redispatched:
+        # BRO-5152: set by scripts/cron-redispatch.js when GitHub dropped the scheduled run.
+        # Nothing in this workflow branches on the trigger, so it runs exactly like the
+        # 02:15 cron.
+        description: 'Internal: re-dispatch of a dropped scheduled run (behaves like the cron)'
+        required: false
+        default: 'false'
+        type: string
 
 # Ship-check finding (card #374): a manual workflow_dispatch overlapping the
 # 02:15 cron would let two runs read-modify-write data/audit/alert-router-attempts.jsonl

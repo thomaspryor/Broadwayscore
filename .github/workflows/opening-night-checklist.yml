@@ -6,6 +6,14 @@ on:
     - cron: '17 * * * *'
   workflow_dispatch:
     inputs:
+      redispatched:
+        # BRO-5152: set by scripts/cron-redispatch.js when GitHub dropped the scheduled run.
+        # Input defaults (no show_id, dry_run false) equal the cron's; nothing branches
+        # on the trigger.
+        description: 'Internal: re-dispatch of a dropped scheduled run (behaves like the cron)'
+        required: false
+        default: 'false'
+        type: string
       show_id:
         description: 'Specific show ID to check (optional — defaults to all shows near opening)'
         required: false

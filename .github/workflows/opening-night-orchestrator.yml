@@ -38,6 +38,14 @@ on:
     - cron: '0 21 * * *'   # West End late evening (BRO-2730) — covers the 21-22Z press embargo lift
   workflow_dispatch:
     inputs:
+      redispatched:
+        # BRO-5152: set by scripts/cron-redispatch.js when GitHub dropped the scheduled run.
+        # A re-dispatch has no cron string, so it polls ALL markets (market resolves empty, run titled
+        # (auto)) with the cron's 10-iteration cap, not the 16-iteration manual default.
+        description: 'Internal: re-dispatch of a dropped scheduled run (behaves like the cron)'
+        required: false
+        default: 'false'
+        type: string
       show_id:
         description: 'Show ID to poll (leave empty for auto-discovery)'
         required: false
@@ -143,6 +151,8 @@ jobs:
               echo "Unknown cron hour $HOUR — defaulting to broadway"
             fi
           else
+            # Also the BRO-5152 re-dispatch path (inputs.redispatched): it has no
+            # cron string to name its market, so it covers all markets.
             echo "market=" >> $GITHUB_OUTPUT
             echo "Manual dispatch without market — polling all markets"
           fi
@@ -471,7 +481,9 @@ jobs:
           # coverage during the first 80 min (the window when most reviews drop) is
           # unchanged. Early-exit on broadcast-complete still applies. Manual dispatches
           # can override with -f max_iterations=16.
-          MAX_ITERATIONS=${{ inputs.max_iterations || 10 }}
+          # BRO-5152: a re-dispatched dropped cron takes the cron's 10, not the
+          # dispatch input's default of 16.
+          MAX_ITERATIONS=${{ inputs.redispatched == 'true' && 10 || inputs.max_iterations || 10 }}
           # BRO-66: scheduled (cron) runs never populate `inputs.*`, so this
           # fallback — not the workflow_dispatch default of 15 above — is the
           # cadence every opening night actually runs at. It used to fall back
