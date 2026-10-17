@@ -16,10 +16,10 @@
  *   1. SERP discovery of the show's own dedicated website
  *      (scripts/lib/official-url-discovery.js, shared with
  *      enrich-official-urls.js).
- *   2. Known OB venue homepage fallback (scripts/lib/venue-listing-discover.js
- *      OB_VENUE_CONFIGS) — for shows at a recognized OB non-profit whose own
- *      site SERP can't find, the venue's own site (which lists the show) is
- *      still a genuine, unmonetized "Official Site" link.
+ *   2. Known venue homepage fallback (scripts/lib/venue-listing-discover.js
+ *      OB_VENUE_CONFIGS / OWE_VENUE_CONFIGS) for the show's market. When SERP
+ *      can't find a dedicated show site, the venue's own site (which lists
+ *      the show) is still an unmonetized "Official Site" link.
  *
  * Usage:
  *   node scripts/ob-discovery-ticket-links.js [--dry-run] [--limit=N] [--time-budget-min=N]
@@ -46,7 +46,7 @@ if (hasHelpFlag(process.argv.slice(2))) {
 
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { discoverOfficialUrl } = require('./lib/official-url-discovery');
-const { OB_VENUE_CONFIGS } = require('./lib/venue-listing-discover');
+const { OB_VENUE_CONFIGS, OWE_VENUE_CONFIGS } = require('./lib/venue-listing-discover');
 const { findDeadEndShows, venueFallbackUrl } = require('./lib/ob-ticket-link-gaps');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
@@ -92,7 +92,7 @@ async function main() {
       console.log(`✓ official site (SERP): ${url}`);
       serpFound++;
     } else {
-      url = venueFallbackUrl(show, OB_VENUE_CONFIGS);
+      url = venueFallbackUrl(show, OB_VENUE_CONFIGS, OWE_VENUE_CONFIGS);
       if (url) {
         console.log(`✓ venue fallback: ${url}`);
         venueFound++;

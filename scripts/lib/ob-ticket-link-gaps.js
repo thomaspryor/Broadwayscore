@@ -62,11 +62,14 @@ function significantTokens(s) {
  * so abbreviations resolve ("Irish Rep" config ⇔ "Irish Repertory Theatre"
  * venue) and so a short config name like "BAM" can't accidentally match an
  * unrelated venue purely by character overlap (e.g. "Alabama Theatre").
+ * When both market registries are supplied, Off-West End uses the London
+ * registry only. Keeping them separate prevents a NY namesake from winning.
  */
-function venueFallbackUrl(show, venueConfigs) {
+function venueFallbackUrl(show, venueConfigs, oweVenueConfigs = venueConfigs) {
   const venueTokens = significantTokens(show && show.venue);
   if (venueTokens.length === 0) return null;
-  const match = (venueConfigs || []).find((v) => {
+  const configs = show && show.category === 'off-west-end' ? oweVenueConfigs : venueConfigs;
+  const match = (configs || []).find((v) => {
     const configTokens = significantTokens(v.name);
     if (configTokens.length === 0) return false;
     return configTokens.every((ct) =>
