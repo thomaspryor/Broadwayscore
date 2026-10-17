@@ -114,8 +114,9 @@ function SourceText({ text }: { text: string }) {
     <>
       {sourceTextSegments(text).map((seg, i) =>
         seg.kind === 'link' ? (
-          <a key={i} href={seg.href} target="_blank" rel="noopener noreferrer" className="underline decoration-white/20 hover:text-brand">
+          <a key={i} href={seg.href} target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-300">
             {seg.label}
+            <span className="sr-only">, the cited source (opens in a new tab)</span>
           </a>
         ) : (
           seg.text
@@ -405,6 +406,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
                     className="underline hover:text-gray-300"
                   >
                     {attributionLink.label}
+                    <span className="sr-only"> (opens in a new tab)</span>
                   </a>
                 ) : (
                   attributionLink?.label

@@ -24,6 +24,7 @@ import {
   getDesignationDisplay,
   getNonprofitTag,
   publicSourceText,
+  sourceTextLink,
   LOSS_ON_SILENCE_CAVEAT,
   type RecoupedCellSummary,
 } from '@/lib/commercial-display';
@@ -93,7 +94,9 @@ function RecoupedCell({ show }: { show: CommercialShowRow }) {
   const cell: RecoupedCellSummary = getRecoupedCellSummary(show);
 
   if (cell.kind === 'recouped') {
-    const source = publicSourceText(show.recoupedSource);
+    // The tooltip and screen-reader label read the citation, not its raw URLs.
+    const publicSource = publicSourceText(show.recoupedSource);
+    const source = publicSource ? sourceTextLink(publicSource, null).label : null;
     return (
       <div>
         <div className="flex items-center gap-1.5">

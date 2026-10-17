@@ -228,4 +228,12 @@ test('sourceTextLink: one link, no raw URL text, the quoted URL wins over the fa
   assert.deepEqual(sourceTextLink('Trade press report', null), { label: 'Trade press report', href: null });
   // A bare URL keeps a readable label.
   assert.deepEqual(sourceTextLink('https://www.sec.gov/x', null), { label: 'sec.gov', href: 'https://www.sec.gov/x' });
+  // Two cited URLs (oh-mary): the first is the link, and the "Also:" left behind is dropped.
+  const twoUrls = 'Playbill (Nov 25, 2024): "has officially recouped its production costs on Broadway" https://playbill.com/article/oh-mary-is-broadway-seasons-1st-show-to-recoup Also: https://deadline.com/2024/11/oh-mary-broadway-recoups-1236186683/';
+  assert.deepEqual(sourceTextLink(twoUrls, null), {
+    label: 'Playbill (Nov 25, 2024): "has officially recouped its production costs on Broadway"',
+    href: 'https://playbill.com/article/oh-mary-is-broadway-seasons-1st-show-to-recoup',
+  });
+  // A URL in parentheses leaves no empty "()".
+  assert.deepEqual(sourceTextLink('Variety (https://variety.com/a)', null), { label: 'Variety', href: 'https://variety.com/a' });
 });

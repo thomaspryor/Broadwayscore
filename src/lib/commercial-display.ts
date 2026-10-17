@@ -817,6 +817,15 @@ export function sourceTextSegments(text: string): SourceTextSegment[] {
 export function sourceTextLink(text: string, fallbackHref: string | null): { label: string; href: string | null } {
   const segs = sourceTextSegments(text);
   const link = segs.find((seg) => seg.kind === 'link');
-  const label = segs.map((seg) => (seg.kind === 'text' ? seg.text : '')).join('').replace(/\s{2,}/g, ' ').trim();
+  // With the URLs gone, drop what only introduced them: an empty "()" and a
+  // trailing "Also:" before a second citation (Oh, Mary!'s Playbill + Deadline).
+  const label = segs
+    .map((seg) => (seg.kind === 'text' ? seg.text : ''))
+    .join('')
+    .replace(/\(\s*\)/g, '')
+    .replace(/\s{2,}/g, ' ')
+    .replace(/(?:\s*\b(?:also|see also|and|via)\s*:?)+\s*$/i, '')
+    .replace(/[\s,;:]+$/, '')
+    .trim();
   return { label: label || (link && link.kind === 'link' ? link.label : text), href: link && link.kind === 'link' ? link.href : fallbackHref };
 }
