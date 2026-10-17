@@ -1717,9 +1717,14 @@ function openingWindowConditionKey(showId) {
 // window filter here: resolving needs 96h of quiet, so a gap that last fired
 // after ~day 17 leaves the 21-day window before it could resolve and would
 // stay open forever. Keys that were never opened are a no-op in the router.
-function openingWindowClearedKeys(results) {
+// BRO-5252: a show past its window is quiet too, whatever its row counts. The
+// alert loop below skips it, so the condition can never fire again, and a row
+// carried forward from before the census-gate fix (Alice in Wonderland: last
+// audited 2026-09-30, 11 report-only census hits) otherwise kept it open
+// forever. Counting is untouched: the gap stays in the audit JSON and digest.
+function openingWindowClearedKeys(results, now = Date.now()) {
   return (results || [])
-    .filter(r => r && r.showId && currentRunUncollected(r) <= 0)
+    .filter(r => r && r.showId && (!inOpeningWindow({ openingDate: r.openingDate }, now) || currentRunUncollected(r) <= 0))
     .map(r => openingWindowConditionKey(r.showId));
 }
 
@@ -1735,19 +1740,8 @@ function currentRunUncollected(r, { blocklist } = {}) {
   // alert unresolvable (Alice in Wonderland: 7 un-ingestable census hits, wrong
   // productions, re-fired hourly). They stay in r.missing / the audit JSON.
   const reportOnly = new Set((r.weIngestBlocked || []).filter(x => x.reason === 'serp-census-gate-off').map(x => x.url));
-  // BRO-5252 (follow-up): weIngestBlocked is only written by an --ingest-missing
-  // run after that fix. A row carried forward from before it (Alice: audited
-  // 2026-09-30, then out of the census window so never re-audited) has no block
-  // record, so its census rows kept counting and the resolver above could never
-  // clear the condition. Re-apply the census gate at read time from the row's
-  // own serpCensus tag, the BRO-5133 way. Only on rows with no aggregator
-  // round-up: before e6f8b57 the tag also marked URLs a round-up cited, so on a
-  // row with round-ups it can't tell a census-only hit from a real cited gap.
-  const serpCensusGateOn = process.env.SERP_CENSUS_INGEST === '1';
-  const tagIsCensusOnly = !serpCensusGateOn && (r.aggregatorArticles || []).length === 0;
-  const censusReportOnly = (m) => reportOnly.has(m.url) || (tagIsCensusOnly && !!m.serpCensus);
   const missing = currentRunOnly(r.missing)
-    .filter(m => !ingestedOk.has(m.url) && !refusedForGood.has(m.url) && !censusReportOnly(m) && stillCollectable(m, bl)).length;
+    .filter(m => !ingestedOk.has(m.url) && !refusedForGood.has(m.url) && !reportOnly.has(m.url) && stillCollectable(m, bl)).length;
   const citedNoUrl = currentRunCount(r.citedNoUrl);
   return missing + citedNoUrl;
 }
@@ -2890,7 +2884,7 @@ async function main(argv = process.argv.slice(2)) {
       // the per-show condition stayed 'open' forever and its card's
       // check-alert-condition-absent VERIFY could never pass.
       try {
-        const cleared = resolveQuietConditions(openingWindowClearedKeys(reportedResults), { reason: 'review-gap: no uncollected cited reviews on the latest audit' });
+        const cleared = resolveQuietConditions(openingWindowClearedKeys(reportedResults), { reason: 'review-gap: no uncollected cited reviews on the latest audit, or show past its opening window' });
         if (cleared.length) console.log(`[Alert Router] resolved ${cleared.length} cleared opening-window gap condition(s): ${cleared.join(', ')}`);
       } catch (e) {
         console.error(`::warning::resolving cleared opening-window gap conditions failed: ${(e.message || '').slice(0, 120)}`);
