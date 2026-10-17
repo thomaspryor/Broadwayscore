@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5557",
   "planId": "b747e87f-6913-4cfc-a5d6-ba29f480f95a",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-17T18:08:10.171Z",
   "submitter": {
     "name": null,
@@ -30,5 +30,18 @@
         "description": "Retire duplicate Il Cimento row"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-17T19:02:20.991Z",
+  "results": [
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired anne-washburns-anon-off-broadway-2026 (\"Anne Washburn's ANON\" @ MCC Theater)"
+    },
+    {
+      "action": "retire-show",
+      "ok": false,
+      "reason": "retire-show anne-teresa-de-keersmaeker-radouan-mriziga-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027: retireId(anne-teresa-de-keersmaeker-radouan-mriziga-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027): already retired — refusing to retire twice"
+    }
+  ]
 }
