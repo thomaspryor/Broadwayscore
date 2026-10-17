@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-17T12:59:09.181Z",
+  "timestamp": "2026-10-17T13:19:47.932Z",
   "stats": {
-    "totalReviews": 57223,
-    "alreadyFlagged": 21228,
+    "totalReviews": 57228,
+    "alreadyFlagged": 21229,
     "dateGuardCatches": 195,
-    "directorMismatch": 1933,
+    "directorMismatch": 1934,
     "tvFilmSignals": 1596,
-    "londonSignals": 2397,
+    "londonSignals": 2398,
     "offBroadwaySignals": 510,
     "yearMismatch": 154,
-    "noPublishDate": 5340
+    "noPublishDate": 5332
   },
   "findings": [
     {
@@ -20073,6 +20073,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-2022",
+      "file": "amny--matt-windman.json",
+      "score": null,
+      "publishDate": "July 10, 2022",
+      "url": "https://www.amny.com/entertainment/broadway/into-the-woods-revival-review-july-2022/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
         }
       ]
     },
@@ -63176,6 +63190,7 @@
     {
       "showId": "hamilton-2015",
       "file": "theatermania--zachary-stewart.json",
+      "score": null,
       "publishDate": "August 6, 2015",
       "url": "http://www.theatermania.com/broadway/reviews/hamilton_73764.html",
       "findings": [
@@ -76067,6 +76082,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
+      "file": "artsdesk--aleks-sierz.json",
+      "score": 57,
+      "publishDate": "2026-10-16",
+      "url": "https://theartsdesk.com/theatre/some-woman-national-theatre-review-strong-social-issues-bit-too-didactic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
