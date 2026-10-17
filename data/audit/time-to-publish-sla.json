@@ -1,30 +1,30 @@
 {
-  "generatedAt": "2026-10-16T07:30:03.371Z",
-  "scope": "2 opening window(s): dirty-dancing-the-classic-story-on-stage-west-end-2026 (2026-10-16), sea-wall-off-broadway-2026 (2026-10-16)",
+  "generatedAt": "2026-10-17T07:11:32.487Z",
+  "scope": "2 opening window(s): the-second-best-school-shooting-off-broadway-2026 (2026-10-17), dirty-dancing-the-classic-story-on-stage-west-end-2026 (2026-10-16)",
   "degraded": null,
   "windows": [
     {
-      "showId": "dirty-dancing-the-classic-story-on-stage-west-end-2026",
-      "openingDate": "2026-10-16",
-      "from": "2026-10-15T00:00:00.000Z",
-      "to": "2026-10-20T23:59:59.999Z"
+      "showId": "the-second-best-school-shooting-off-broadway-2026",
+      "openingDate": "2026-10-17",
+      "from": "2026-10-16T00:00:00.000Z",
+      "to": "2026-10-21T23:59:59.999Z"
     },
     {
-      "showId": "sea-wall-off-broadway-2026",
+      "showId": "dirty-dancing-the-classic-story-on-stage-west-end-2026",
       "openingDate": "2026-10-16",
       "from": "2026-10-15T00:00:00.000Z",
       "to": "2026-10-20T23:59:59.999Z"
     }
   ],
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "logEntryCount": 240023,
-  "logOldestEntryAt": "2026-10-13T18:12:21.592Z",
+  "logEntryCount": 161983,
+  "logOldestEntryAt": "2026-10-14T22:51:39.444Z",
   "publishTimesLoaded": 0,
   "verdict": {
     "verdict": "insufficient-data",
     "pass": false,
     "evaluated": 0,
-    "inFlight": 3,
+    "inFlight": 0,
     "compliant": 0,
     "compliancePct": null,
     "p50Ms": null,
@@ -35,39 +35,5 @@
     "breaches": [],
     "byBasis": {}
   },
-  "records": [
-    {
-      "showId": "dirty-dancing-the-classic-story-on-stage-west-end-2026",
-      "outletId": "all-that-dazzles-uk",
-      "reviewKey": "all-that-dazzles-uk:sam-waite:https://www.allthatdazzles.co.uk/post/review-dirty-dancing-dominion-theatre-1",
-      "basis": null,
-      "firstSeenAt": "2026-10-16T01:02:17.554Z",
-      "liveAt": null,
-      "pipelineMinutes": null,
-      "publishedToLiveMinutes": null,
-      "stuckAtStage": "review-first-seen"
-    },
-    {
-      "showId": "dirty-dancing-the-classic-story-on-stage-west-end-2026",
-      "outletId": "london-theatre",
-      "reviewKey": "london-theatre:marianka-swain:https://www.londontheatre.co.uk/reviews/dirty-dancing-review-dominion-theatre",
-      "basis": null,
-      "firstSeenAt": "2026-10-16T01:02:18.091Z",
-      "liveAt": null,
-      "pipelineMinutes": null,
-      "publishedToLiveMinutes": null,
-      "stuckAtStage": "review-first-seen"
-    },
-    {
-      "showId": "dirty-dancing-the-classic-story-on-stage-west-end-2026",
-      "outletId": "whatsonstage",
-      "reviewKey": "whatsonstage:james-fitzgerald:https://www.whatsonstage.com/london-theatre/reviews/dirty-dancing-dominion-2022-west-end-review_55891.html",
-      "basis": null,
-      "firstSeenAt": "2026-10-16T01:02:18.551Z",
-      "liveAt": null,
-      "pipelineMinutes": null,
-      "publishedToLiveMinutes": null,
-      "stuckAtStage": "review-first-seen"
-    }
-  ]
+  "records": []
 }

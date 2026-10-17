@@ -1,50 +1,30 @@
 {
-  "generatedAt": "2026-10-16T07:29:53.662Z",
+  "generatedAt": "2026-10-17T07:11:30.188Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "107aec7289a5cc7e7eeecd53c597024a4ca98375",
-  "state": "RED",
-  "consecutiveFailures": 6,
-  "consecutiveSuccesses": 0,
-  "greenSince": null,
-  "greenForHours": null,
+  "latestRunHeadSha": "a7fda4a84a18af442b344d2b55168bdd22b6e417",
+  "state": "GREEN",
+  "consecutiveFailures": 0,
+  "consecutiveSuccesses": 67,
+  "greenSince": "2026-10-16T08:07:00Z",
+  "greenForHours": 23.075052222222222,
   "greenDurationIsFloor": false,
-  "redSince": "2026-10-16T06:01:03Z",
-  "redForHours": 1.4807394444444444,
+  "redSince": null,
+  "redForHours": null,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-10-16T05:33:55Z",
-  "latestFailedRunId": "38863517622",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38863517622",
-  "decidedRuns": 99,
+  "lastSuccessAt": "2026-10-17T06:44:18Z",
+  "latestFailedRunId": null,
+  "latestFailedRunUrl": null,
+  "decidedRuns": 100,
   "verdictLag": {
-    "verdictSha": "107aec7289a5cc7e7eeecd53c597024a4ca98375",
-    "verdictAt": "2026-10-16T06:50:39Z",
-    "verdictAgeHours": 0.6540727777777777,
-    "newerHeads": 1,
-    "runsInFlight": 1,
+    "verdictSha": "a7fda4a84a18af442b344d2b55168bdd22b6e417",
+    "verdictAt": "2026-10-17T06:44:18Z",
+    "verdictAgeHours": 0.45338555555555554,
+    "newerHeads": 0,
+    "runsInFlight": 0,
     "lagging": false
   },
-  "failingJobs": [
-    {
-      "name": "Unit Tests",
-      "steps": [
-        "Run unit tests (no-data-dependency)"
-      ]
-    },
-    {
-      "name": "Test Summary",
-      "steps": [
-        "Check results"
-      ]
-    }
-  ],
-  "failingPaths": [
-    {
-      "path": "tests/unit/slug-redirects.test.ts",
-      "job": "Unit Tests",
-      "step": "Run unit tests (no-data-dependency)",
-      "evidence": "not ok 1 - every emitted critic alias resolves: canonical exists, and the old slug resolves to it unless the old slug is still a live profile (exact match wins)"
-    }
-  ],
-  "topFailingJob": "Unit Tests"
+  "failingJobs": [],
+  "failingPaths": [],
+  "topFailingJob": null
 }
