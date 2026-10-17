@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-17T20:25:37.832Z",
+  "generatedAt": "2026-10-17T20:43:28.525Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,23 +12,23 @@
       "status": "open",
       "slug": "dog-mom-off-west-end",
       "thumbnail": "/images/shows/dog-mom-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 51.76,
-      "liveScore": 52,
-      "scoreDrift": 0.240000000000002,
+      "siteScore": 53.5,
+      "liveScore": 54,
+      "scoreDrift": 0.5,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 4,
+      "total": 5,
       "t1": 0,
       "t2": 2,
-      "t3": 2,
+      "t3": 3,
       "positive": 0,
-      "mixed": 2,
+      "mixed": 3,
       "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "4/8 total",
+          "5/8 total",
           "T1:0/3",
           "hi-conf:3/6"
         ],
@@ -178,6 +178,18 @@
           "t3": 2,
           "p": 0,
           "m": 2,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-17T20:43:28.525Z",
+          "rc": 5,
+          "s": 53.5,
+          "t1": 0,
+          "t2": 2,
+          "t3": 3,
+          "p": 0,
+          "m": 3,
           "n": 2,
           "bc": "waiting"
         }
