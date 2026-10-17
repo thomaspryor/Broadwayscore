@@ -59,7 +59,7 @@ const ESTIMATE_SOURCE_RE = /^\s*(?:estimat\w*|est\.|~)/i;
  * source. A cited capitalization is a reported figure (BRO-4623) and prints
  * plain; an uncited one cannot read as reported, the same rule as the weekly
  * cost (BRO-4666).
- * @param {{ isEstimate?: { capitalization?: boolean, weeklyRunningCost?: boolean, recouped?: boolean } | null, capitalizationSource?: string | null }} commercial
+ * @param {{ isEstimate?: Record<string, boolean | undefined> | null, capitalizationSource?: string | null }} commercial
  * @returns {boolean}
  */
 function isEstimatedCapitalization(commercial) {
