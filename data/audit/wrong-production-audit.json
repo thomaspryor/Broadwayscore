@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-17T18:05:18.394Z",
+  "timestamp": "2026-10-17T18:26:25.696Z",
   "stats": {
     "totalReviews": 57305,
-    "alreadyFlagged": 21256,
+    "alreadyFlagged": 21260,
     "dateGuardCatches": 194,
-    "directorMismatch": 1937,
+    "directorMismatch": 1938,
     "tvFilmSignals": 1600,
-    "londonSignals": 2406,
+    "londonSignals": 2408,
     "offBroadwaySignals": 515,
     "yearMismatch": 155,
-    "noPublishDate": 5306
+    "noPublishDate": 5297
   },
   "findings": [
     {
@@ -21106,6 +21106,20 @@
       "score": 84,
       "publishDate": "2025-12-12",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/into-the-woods-bridge-theatre-sondheim-review-b2883199.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "islingtontribune--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.islingtontribune.co.uk/article/review-into-the-woods-at-bridge-theatre",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -56207,6 +56221,20 @@
     },
     {
       "showId": "broken-glass-west-end-2026",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": null,
+      "publishDate": "2026-03-04",
+      "url": "https://www.allthatdazzles.co.uk/post/review-broken-glass-young-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "broken-glass-west-end-2026",
       "file": "broadwayworld--alexander-cohen.json",
       "score": 61,
       "publishDate": "2026-03-04",
@@ -61993,6 +62021,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "giant-2026",
+      "file": "exeunt-magazine--unknown.json",
+      "score": null,
+      "publishDate": "2026-03-27",
+      "url": "https://exeuntnyc.com/reviews/review-giant-at-the-music-box/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
