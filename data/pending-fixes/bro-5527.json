@@ -368,6 +368,15 @@
           }
         ],
         "description": "american-buffalo-2022: add the Form D to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-buffalo-2022",
+        "field": "recoupedSource",
+        "oldValue": "Trade-press summary of a Deadline report (via IMDb news) said the producers had not disclosed capitalization and that the production would not recoup its investment.",
+        "newValue": "Trade-press summary of a Deadline report (via IMDb news) said the production would not recoup its investment.",
+        "description": "american-buffalo-2022: drop the stale \"capitalization not disclosed\" clause now that the Form D figure is cited."
       }
     ]
   }
