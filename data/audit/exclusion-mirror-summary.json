@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-17T00:54:52.900Z",
-  "totalScanned": 57224,
-  "totalExcluded": 27234,
+  "generatedAt": "2026-10-17T01:29:47.610Z",
+  "totalScanned": 57225,
+  "totalExcluded": 27237,
   "ruleCounts": {
-    "wrongProduction": 18310,
+    "wrongProduction": 18311,
     "duplicateOf": 1862,
     "wrongShow": 1784,
     "unverifiableWebSearchRow": 960,
-    "rejectionReason": 926,
-    "noTextOrScoreSignal": 750,
+    "rejectionReason": 928,
+    "noTextOrScoreSignal": 749,
     "nonReview": 478,
     "wrongAttribution": 309,
     "blockedReviewUrl": 241,
@@ -29,7 +29,7 @@
     "directorMismatch": 24,
     "combinedReviewOfOtherMemberOnly": 18,
     "fabricatedEntry": 15,
-    "urlYearReroute": 12,
+    "urlYearReroute": 13,
     "wrongContentFlagsUncleared": 12,
     "tourContaminationInText": 9,
     "lateDateMismatch": 8,
@@ -42,25 +42,26 @@
     "personalRepost": 1
   },
   "ruleDeltas": {
+    "wrongProduction": 1,
+    "rejectionReason": 2,
     "noTextOrScoreSignal": -1,
-    "bodylessAggregatorScoreUncorroborated": -1,
-    "contentTierInvalid": 2
+    "urlYearReroute": 1
   },
-  "previousGeneratedAt": "2026-10-17T00:12:58.937Z",
+  "previousGeneratedAt": "2026-10-17T00:54:52.900Z",
   "mirror": {
     "comparedShows": 2549,
-    "comparedFiles": 56695,
-    "agreeExcluded": 26471,
-    "agreeIncluded": 29103,
-    "mirrorOnly": 237,
-    "rebuildOnly": 884,
-    "disagreements": 1121,
-    "disagreementRate": 0.0198,
+    "comparedFiles": 56696,
+    "agreeExcluded": 26475,
+    "agreeIncluded": 29105,
+    "mirrorOnly": 236,
+    "rebuildOnly": 880,
+    "disagreements": 1116,
+    "disagreementRate": 0.0197,
     "mirrorOnlyByRule": {
       "duplicateOf": 82,
       "cvWrongArticleHighConfidence": 62,
-      "noTextOrScoreSignal": 39,
       "contentTierInvalid": 38,
+      "noTextOrScoreSignal": 38,
       "wrongProduction": 10,
       "previewPlaceholder": 3,
       "wrongShow": 2,
@@ -69,7 +70,7 @@
     "rebuildOnlyByReason": {
       "skippedDuplicateText": 229,
       "skippedUnknownCriticDedup": 221,
-      "skippedNoScore": 88,
+      "skippedNoScore": 84,
       "skippedCrossMarket": 70,
       "skippedInvalidUrl": 63,
       "skippedPreOpening": 46,
@@ -97,5 +98,5 @@
     "notComparedShows": 77,
     "notComparedFiles": 529
   },
-  "previousDisagreementRate": 0.0192
+  "previousDisagreementRate": 0.0198
 }
