@@ -58,6 +58,8 @@ test('a New York Times ArtsBeat link is the newspaper, not a blog (BRO-5562)', (
     'Financing Broadway blog listing capitalization at $14 million',
     'Estimate from a blog post https://example.blogspot.com/x',
     'Broadway & Me blog https://broadwayandme.blogspot.com/2010/12/x.html',
+    // A look-alike host only starts with the newspaper's name.
+    'Reported at https://artsbeat.blogs.nytimes.com.example.net/x',
   ]) {
     assert.equal(publicSourceText(blog), null, `should drop: ${blog}`);
   }

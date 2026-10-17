@@ -26,7 +26,7 @@ const INTERNAL_TOKEN_RE = /\b[a-z][A-Za-z]*\s?[:=]\s?(?:true|false|null)\b|\b[a-
 const URL_RE = /\bhttps?:\/\/\S+/gi;
 // The New York Times ran its theater news (ArtsBeat) on blogs.nytimes.com, so
 // a link there is the newspaper, not a blog (BRO-5562).
-const NEWSPAPER_BLOG_HOST_RE = /\b[\w.-]*blogs\.nytimes\.com\b/gi;
+const NEWSPAPER_BLOG_HOST_RE = /\b[\w.-]*blogs\.nytimes\.com(?=[/:?#\s]|$)/gi;
 
 // Bracketed pipeline annotations appended to otherwise publishable notes:
 // "[Auto-designated Fizzle: ...]" (scripts/cleanup-commercial-data.js) and

@@ -1,8 +1,8 @@
 {
   "issueNumber": "bro-5562-c",
-  "planId": "91ec9a33-23a7-4d0e-b4ec-0c86ab48e34e",
+  "planId": "1c93c90d-2445-4cdb-98a2-13ba3999d873",
   "status": "pending",
-  "createdAt": "2026-10-17T22:41:26.316Z",
+  "createdAt": "2026-10-17T22:45:13.465Z",
   "submitter": {
     "name": null,
     "email": null
@@ -181,7 +181,7 @@
         "showSlug": "a-beautiful-noise-the-neil-diamond-musical-2022",
         "field": "capitalizationSource",
         "oldValue": null,
-        "newValue": "SEC Form D filing (Beautiful Noise LLC, CIK 0001897092; Ken Davenport, a lead producer, is principal of its manager; Dec 3, 2021): total offering amount $20,000,000, of which $975,000 had been sold to 9 investors at filing. https://www.sec.gov/Archives/edgar/data/1897092/000189709221000001/xslFormDX01/primary_doc.xml",
+        "newValue": "SEC Form D filing (Beautiful Noise LLC, CIK 0001897092; Ken Davenport, a lead producer, is principal of its manager; Dec 3, 2021): an offering of up to $20,000,000, of which $975,000 had been sold to 9 investors at filing. https://www.sec.gov/Archives/edgar/data/1897092/000189709221000001/xslFormDX01/primary_doc.xml",
         "description": "a-beautiful-noise-the-neil-diamond-musical-2022: cite the Form D."
       },
       {
@@ -198,6 +198,15 @@
           }
         ],
         "description": "a-beautiful-noise-the-neil-diamond-musical-2022: add the cited article(s) to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-beautiful-noise-the-neil-diamond-musical-2022",
+        "field": "notes",
+        "oldValue": "Neil Diamond jukebox musical that opened Dec 2022 and closed Jun 2024 without announcing recoupment. Its Broadway capitalization was not reported.",
+        "newValue": "Neil Diamond jukebox musical that opened Dec 2022 and closed Jun 2024 without announcing recoupment. No capitalization was reported in the press; its SEC Form D allowed an offering of up to $20 million.",
+        "description": "a-beautiful-noise-the-neil-diamond-musical-2022: the notes said no capitalization existed."
       },
       {
         "type": "data-edit",

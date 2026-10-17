@@ -1,8 +1,8 @@
 {
   "issueNumber": "bro-5562-b",
-  "planId": "60d27f60-70de-4f1b-9914-aa1344bf3570",
+  "planId": "f568f74e-9e60-46de-9f1e-8c63a4911feb",
   "status": "pending",
-  "createdAt": "2026-10-17T22:41:26.316Z",
+  "createdAt": "2026-10-17T22:45:13.465Z",
   "submitter": {
     "name": null,
     "email": null
@@ -89,6 +89,15 @@
           }
         ],
         "description": "chicago: add the cited article(s) to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chicago",
+        "field": "notes",
+        "oldValue": "Longest-running American musical in Broadway history. $700M+ Broadway gross. Low-cost concert staging was revolutionary. No weekly running cost has been reported; the ~$500K figure is an estimate for a union musical with a full onstage orchestra. Recouped. Whitney Leavitt's Feb-Mar 2026 run set highest grossing period in show's 29-year history ($1.46M week of 3/15/26).",
+        "newValue": "Longest-running American musical in Broadway history. $700M+ Broadway gross. Low-cost concert staging was revolutionary. Weekly expenses were just under $600,000 at the beginning of 2020, per its financial statement filed with the New York Attorney General (Broadway Journal). Recouped. Whitney Leavitt's Feb-Mar 2026 run set highest grossing period in show's 29-year history ($1.46M week of 3/15/26).",
+        "description": "chicago: the notes called the weekly cost an unreported estimate."
       },
       {
         "type": "data-edit",
@@ -289,6 +298,15 @@
           }
         ],
         "description": "jerusalem-2011: add the cited article(s) to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "jerusalem-2011",
+        "field": "notes",
+        "oldValue": "No financial information found for Jerusalem (2011). The evidence provided discusses The River, a different show starring Hugh Jackman.",
+        "newValue": "The New York Times reported its capitalization was believed to be between $2.5 million and $3.5 million (May 25, 2011); no recoupment was announced.",
+        "description": "jerusalem-2011: the old notes said no financial information existed and discussed another show."
       }
     ]
   }
