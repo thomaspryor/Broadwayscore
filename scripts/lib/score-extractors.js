@@ -1530,6 +1530,137 @@ function hasRatingContext(text, g) {
   return SIGN_OFF_AFTER_STARS.test(after) || RATING_LABEL_BEFORE_STARS.test(before);
 }
 
+// ---------------------------------------------------------------------------
+// BRO-5223: page chrome around the review (a "More reviews" / "Related" rail,
+// a headline list of other articles) carries star ratings for OTHER shows.
+// Time Out's Orphans (2013) page ended with "Theater review: Well, I'll Let
+// You Go (★★★★★) is a mourning glory" and the fallthrough stored 5/5 (100)
+// for a 2/5 review. Two defences: narrow the scan to the review's own HTML
+// element when one can be identified, and refuse groups whose label names
+// some other title.
+// ---------------------------------------------------------------------------
+
+const HTML_ENTITY_MAP = { amp: '&', nbsp: ' ', lt: '<', gt: '>', quot: '"', apos: "'", starf: '★', star: '☆', bigstar: '★', frac12: '½', half: '½' };
+
+function htmlFragmentToText(fragment) {
+  return fragment
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/<(script|style|noscript|template|svg)\b[\s\S]*?<\/\1>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+    .replace(/&#(\d+);/g, (_, d) => String.fromCodePoint(parseInt(d, 10)))
+    .replace(/&([a-z0-9]+);/gi, (m, n) => (HTML_ENTITY_MAP[n.toLowerCase()] ?? m))
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/** Balanced [start, end) extent of the `tag` element whose open tag starts at `openIndex`. */
+function elementExtent(html, tag, openIndex) {
+  const re = new RegExp(`<(/?)${tag}\\b[^>]*>`, 'gi');
+  re.lastIndex = openIndex;
+  let depth = 0;
+  let m;
+  while ((m = re.exec(html)) !== null) {
+    depth += m[1] ? -1 : 1;
+    if (depth === 0) return [openIndex, m.index + m[0].length];
+  }
+  return null; // unclosed: not a usable region
+}
+
+/**
+ * The text the star fallthrough should scan. When `html` has an element that
+ * holds the review body, scan only that element's text; otherwise `text`.
+ *
+ * An element counts as the review body only when its text is at least half
+ * the length of `text` or contains the opening of `text`, so a related-show
+ * <article> card ("<article><h3>Another Show</h3><p>★★★★☆</p></article>") is
+ * never chosen just because it is an <article>. Preference: the <article>
+ * holding the page's <h1> (keeps header stars that sit beside the headline),
+ * then [itemprop=articleBody], then the longest qualifying <article>.
+ *
+ * @returns {string}
+ */
+function fallthroughReviewText(html, text) {
+  if (!html || !text || !/<article\b|itemprop\s*=\s*["']?articleBody/i.test(html)) return text;
+  const stripped = html.replace(/<!--[\s\S]*?-->/g, ' ').replace(/<(script|style|noscript|template)\b[\s\S]*?<\/\1>/gi, ' ');
+  const normText = text.replace(/\s+/g, ' ').trim();
+  const opening = normText.slice(0, 200);
+  const holdsBody = (regionText) => regionText.length >= normText.length * 0.5
+    || (opening.length >= 40 && regionText.includes(opening));
+
+  const candidates = [];
+  for (const m of stripped.matchAll(/<article\b[^>]*>/gi)) {
+    const ext = elementExtent(stripped, 'article', m.index);
+    if (!ext) continue;
+    const fragment = stripped.slice(ext[0], ext[1]);
+    candidates.push({ kind: /<h1\b/i.test(fragment) ? 'article-h1' : 'article', regionText: htmlFragmentToText(fragment) });
+  }
+  for (const m of stripped.matchAll(/<([a-z][a-z0-9]*)\b[^>]*\bitemprop\s*=\s*["']?articleBody\b[^>]*>/gi)) {
+    const ext = elementExtent(stripped, m[1], m.index);
+    if (!ext) continue;
+    candidates.push({ kind: 'articleBody', regionText: htmlFragmentToText(stripped.slice(ext[0], ext[1])) });
+  }
+  const qualifying = candidates.filter(c => c.regionText && holdsBody(c.regionText));
+  const pick = qualifying.find(c => c.kind === 'article-h1')
+    || qualifying.find(c => c.kind === 'articleBody')
+    || qualifying.sort((a, b) => b.regionText.length - a.regionText.length)[0];
+  return pick ? pick.regionText : text;
+}
+
+// Section headings that open page chrome after the review ends.
+const CHROME_SECTION_RE = /\b(?:more\s+(?:theat(?:er|re)\s+)?reviews|related\s+(?:articles|reviews|stories|posts|content|shows)|you\s+(?:may|might)\s+also\s+(?:like|enjoy)|recommended\s+(?:for\s+you|reading|reviews)|most\s+(?:popular|read))\b/gi;
+// "Theater review: Well, I'll Let You Go (" : another article's headline.
+const REVIEW_HEADLINE_BEFORE_STARS = /\breview\s*:\s*([^★☆]{1,100}?)[\s(\[:\-–—]*$/i;
+// Words that make a label the verdict line rather than a title.
+const VERDICT_LABEL_BEFORE_STARS = /\b(?:verdict|ratings?|rated|score|grade|stars?|out\s+of\s+(?:five|5)|says|our\s+view)\s*[:\-–—(]*\s*$/i;
+const TITLE_SMALL_WORDS = new Set(['a', 'an', 'the', 'of', 'and', 'or', 'in', 'on', 'at', 'to', 'for', 'with', 'from', 'by', 'de', 'la', 'le', '&']);
+
+/**
+ * True when a star group belongs to page chrome rather than this review:
+ * it sits after a "More reviews"/"Related" heading in the back half of the
+ * text, or its label names another title (a "Review: <other show>" headline,
+ * or, past the page header and when this show's title is known, a
+ * title-cased name that is not it).
+ * A group followed by the critic's sign-off is always the review's own.
+ */
+function isForeignStarGroup(text, g, prevGroupEnd, wantedTitle, normalizeTitle) {
+  const after = text.slice(g.index + g.raw.length, g.index + g.raw.length + 40);
+  if (SIGN_OFF_AFTER_STARS.test(after)) return false;
+  const len = text.length;
+  const leading = g.index <= len * 0.15;
+
+  for (const m of text.matchAll(CHROME_SECTION_RE)) {
+    if (m.index >= g.index) break;
+    // Headings are capitalised; prose ("the most popular musical") is not.
+    if (m.index >= len * 0.5 && /^[A-Z]/.test(m[0])) return true;
+  }
+
+  const windowStart = Math.max(prevGroupEnd, g.index - 120);
+  const before = text.slice(windowStart, g.index);
+  const namesThisShow = (s) => !!wantedTitle && normalizeTitle(s).includes(wantedTitle);
+
+  const headline = before.match(REVIEW_HEADLINE_BEFORE_STARS);
+  if (headline && /[a-z]/i.test(headline[1])) {
+    if (wantedTitle) return !namesThisShow(headline[1]);
+    // Title unknown: a headline at the top is the page's own; one further
+    // down is another article's.
+    return !leading;
+  }
+
+  // The page header (byline, photo credit, the review's own title) sits in
+  // the leading 15% and often runs straight into the stars ("Neil Dowden in
+  // the West End ★★★★★"), so the title-shaped-label test is for later groups.
+  if (!wantedTitle || leading || VERDICT_LABEL_BEFORE_STARS.test(before)) return false;
+  // The label right before the stars: back to the last sentence break.
+  const tail = before.split(/[.!?|\n•·]\s/).pop().replace(/[\s(\[:\-–—]+$/, '');
+  const words = tail.split(/\s+/).filter(Boolean).slice(-6);
+  if (words.length === 0 || namesThisShow(tail)) return false;
+  const content = words.filter(w => !TITLE_SMALL_WORDS.has(w.toLowerCase()));
+  if (content.length === 0) return false;
+  const capped = content.filter(w => /^['‘"“(]?[A-Z0-9]/.test(w)).length;
+  return capped === content.length;
+}
+
 /**
  * Main extraction function - tries outlet-specific extractor first,
  * then falls back to generic extractors
@@ -1574,8 +1705,18 @@ function extractScore(html, text, outletId, showTitle) {
   // or decorative separators. Only trust stars in the first or last 15% of the text.
   // Pre-mortem (2026-04-22) flagged this as a P0 landmine for false positives.
   if (KNOWN_STAR_OUTLETS.has(outletId)) {
-    const matches = findStarGroups(text);
+    // BRO-5223: scan the review's own element when the HTML has one, and drop
+    // star groups that belong to page chrome or name another show.
+    const scanText = fallthroughReviewText(html, text);
+    const { normalizeTitle } = require('./title-match');
+    const wantedTitle = showTitle ? normalizeTitle(showTitle) : '';
+    const allGroups = findStarGroups(scanText);
+    const matches = allGroups.filter((m, i) => {
+      const prevEnd = i > 0 ? allGroups[i - 1].index + allGroups[i - 1].raw.length : 0;
+      return !isForeignStarGroup(scanText, m, prevEnd, wantedTitle, normalizeTitle);
+    });
     if (matches.length > 0) {
+      const text = scanText; // positions below are relative to the scanned text
       const len = text.length;
       const anchoredMatches = matches.filter(m => {
         const pos = m.index;
@@ -1606,8 +1747,6 @@ function extractScore(html, text, outletId, showTitle) {
       if (soleTrusted) {
         anchoredMatch = anchoredMatches[0];
       } else if (anchoredMatches.length > 0 && showTitle) {
-        const { normalizeTitle } = require('./title-match');
-        const wantedTitle = normalizeTitle(showTitle);
         if (wantedTitle) {
           // Bound each label window to the text BETWEEN this group and the
           // previous star group (any match, not just anchored ones) — a fixed
@@ -1615,8 +1754,8 @@ function extractScore(html, text, outletId, showTitle) {
           // them tightly ("Phaedra ***** Sylvia *** Standing..."), making both
           // Sylvia's AND Phaedra's groups look "named" for Sylvia.
           const named = anchoredMatches.filter(m => {
-            const idx = matches.indexOf(m);
-            const segStart = idx > 0 ? matches[idx - 1].index + matches[idx - 1].raw.length : Math.max(0, m.index - 80);
+            const idx = allGroups.indexOf(m);
+            const segStart = idx > 0 ? allGroups[idx - 1].index + allGroups[idx - 1].raw.length : Math.max(0, m.index - 80);
             const before = text.slice(segStart, m.index);
             return normalizeTitle(before).includes(wantedTitle);
           });
