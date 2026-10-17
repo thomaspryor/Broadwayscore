@@ -25,7 +25,7 @@ const { buildVenueContext: _expandVenueContext } = require('./venue-aliases');
 const { getCvStyle } = require('./outlet-canonicalize');
 const { hasOpinionLanguage, stripLeadingJsonBlob } = require('./content-quality');
 const { stripConsentLayerPrefix } = require('./text-cleaning');
-const { buildClassifySample } = require('./classify-sample');
+const { buildClassifySample, applySampleMarkerCarveout, isSampled } = require('./classify-sample');
 
 /**
  * Extract a sensible publication year from a URL path.
@@ -548,6 +548,18 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
         wpFlag = false;
       }
 
+      // BRO-5292: a "truncated" call that only cites our own "[...]" sample
+      // marker is a misread of the sample, not of the article.
+      const markerCarve = applySampleMarkerCarveout(
+        { isValid, truncated: parsed.truncated, issues: parsed.issues || [], wrongArticle: parsed.wrongArticle, wrongProduction: wpFlag, isFilmTv: filmTvFlag, articleType: parsed.articleType },
+        isSampled(scrapedText, CV_WINDOW_CHARS + CV_TAIL_CHARS),
+        scrapedText
+      );
+      if (markerCarve.applied) {
+        console.log(`    ✓ Sample-marker carve-out: dropped ${markerCarve.dropped.length} "[...]" truncation issue(s)${markerCarve.isValid !== isValid ? ', isValid→true' : ''}`);
+        isValid = markerCarve.isValid;
+      }
+
       if (urlYearConflict) {
         console.log(`    ⚠ URL-year/publishDate conflict: URL says ${urlYearConflict.urlYear}, publishDate says ${urlYearConflict.publishYear} (${urlYearConflict.gapYears}yr gap)`);
       }
@@ -555,8 +567,9 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
       return {
         isValid,
         confidence: wpFlag ? wpConfidence : filmTvFlag ? filmTvConfidence : (parsed.confidence || 'medium'),
-        issues: parsed.issues || [],
-        truncated: parsed.truncated || false,
+        issues: markerCarve.issues,
+        truncated: markerCarve.truncated,
+        sampleMarkerCarveoutApplied: markerCarve.applied,
         wrongArticle: parsed.wrongArticle || false,
         articleType: parsed.articleType || 'review',
         articleTypeConfidence: parsed.articleTypeConfidence || 'medium',
