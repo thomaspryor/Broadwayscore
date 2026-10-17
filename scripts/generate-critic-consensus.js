@@ -21,6 +21,8 @@ import { refusalRetryDecision, excerptOptionsForAttempt, formatReviewExcerpts, R
 // concurrency group keeps a single pending run, so per-show dispatches were
 // cancelling each other (56 of 58 lost on 2026-10-04).
 import { parseShowListArg, describeShowFilter } from './lib/parse-show-list-arg.js';
+import reviewNormalization from './lib/review-normalization.js';
+const { normalizeOutlet } = reviewNormalization;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
