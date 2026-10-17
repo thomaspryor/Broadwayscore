@@ -5,7 +5,7 @@ import path from 'path';
 import { BASE_URL } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Research · Broadway Scorecard',
+  title: 'Research',
   description:
     'Original data studies of Broadway, Off-Broadway, and West End productions, drawn from 17,000+ scored critic reviews and 70,000+ audience ratings.',
   alternates: { canonical: `${BASE_URL}/research` },

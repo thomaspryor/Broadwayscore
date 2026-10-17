@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { BASE_URL } from '@/lib/seo';
+import { fantasySocial } from '@/config/fantasy-social';
 import FantasyLeaderboardTable from '@/components/fantasy/FantasyLeaderboardTable';
 import { getFantasySeasonInfo } from '@/lib/data-fantasy';
 import { hasLateEntry } from '@/config/fantasy';
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
   title: 'Fantasy League Leaderboard',
   alternates: { canonical: `${BASE_URL}/fantasy/leaderboard` },
   description: 'See who\'s winning the Broadway Fantasy League. Rankings updated daily with points from critics, audiences, box office, and Tony Awards.',
+  ...fantasySocial('Leaderboard | Broadway Fantasy League', '/fantasy/leaderboard', 'See who\'s winning the Broadway Fantasy League, updated daily.'),
 };
 
 // Leaderboard fetches entries client-side from Supabase API

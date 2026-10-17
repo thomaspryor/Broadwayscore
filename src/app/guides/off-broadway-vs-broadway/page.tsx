@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { getBroadwayShows, getOffBroadwayShows } from '@/lib/data-core';
-import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 import Breadcrumb from '@/components/Breadcrumb';
 
 const currentYear = new Date().getFullYear();
@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   description: `Discover the real difference between Broadway and Off-Broadway — theater size, ticket prices, locations, and what to expect. Find which is right for your next NYC theater outing.`,
   alternates: { canonical: `${BASE_URL}/guides/off-broadway-vs-broadway` },
   openGraph: {
+    images: [SITE_OG_IMAGE],
     title: `Off-Broadway vs Broadway: What's the Difference? (${currentYear})`,
     description: `The real difference between Broadway and Off-Broadway explained — theater size, ticket prices, locations, and which is right for you.`,
     url: `${BASE_URL}/guides/off-broadway-vs-broadway`,

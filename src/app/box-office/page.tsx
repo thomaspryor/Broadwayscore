@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { getBroadwayShows } from '@/lib/data-core';
 import { getShowGrosses, getGrossesWeekEnding, getGrossesLastUpdated } from '@/lib/data-grosses';
-import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 import { ThisWeekTable, AllTimeTable } from '@/components/SortableBoxOfficeTable';
 import { featureFlags } from '@/config/feature-flags';
 import { getBoxOfficeMarketPage } from '@/lib/data-commercial';
@@ -23,6 +23,7 @@ export const metadata: Metadata = {
     canonical: `${BASE_URL}/box-office`,
   },
   openGraph: {
+    images: [SITE_OG_IMAGE],
     title: 'Box Office Scorecard - Broadway Weekly Grosses',
     description: 'Weekly grosses, capacity, and all-time box office stats for every Broadway show.',
     url: `${BASE_URL}/box-office`,

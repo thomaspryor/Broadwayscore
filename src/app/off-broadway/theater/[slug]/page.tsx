@@ -11,7 +11,7 @@ import {
 } from '@/lib/data-core';
 import type { Theater } from '@/lib/data-types';
 import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
-import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 import { ScoreBadge, FormatPill, ProductionPill, StatusBadge, getScoreTier } from '@/components/show-cards';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getBroadwayDuration } from '@/lib/date-utils';
@@ -60,6 +60,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
     description,
     alternates: { canonical: canonicalUrl },
     openGraph: {
+      images: [SITE_OG_IMAGE],
       title: `${theater.name} — Off-Broadway Theater`,
       description,
       url: canonicalUrl,
@@ -67,7 +68,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
       siteName: 'Broadway Scorecard',
     },
     twitter: {
-      card: 'summary',
+      card: 'summary_large_image',
       title: `${theater.name} — Off-Broadway Theater`,
       description,
     },

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { getBroadwayShows } from '@/lib/data-core';
-import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 import Breadcrumb from '@/components/Breadcrumb';
 
 const currentYear = new Date().getFullYear();
@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   description: `Plan your first Broadway show in ${currentYear} with confidence. Discover when to arrive, what to expect, theater etiquette, and insider tips for the perfect night out.`,
   alternates: { canonical: `${BASE_URL}/guides/broadway-first-timer-guide` },
   openGraph: {
+    images: [SITE_OG_IMAGE],
     title: `Your First Broadway Show: The Complete Guide (${currentYear})`,
     description: `First time on Broadway? Here's what to expect — from buying tickets to stage door, with practical tips from experienced theatergoers.`,
     url: `${BASE_URL}/guides/broadway-first-timer-guide`,

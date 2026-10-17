@@ -11,7 +11,7 @@ import { BeatTheCriticsClient } from './BeatTheCriticsClient';
 import { BASE_URL } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Beat the Critics | Tony Award Picks | Broadway Scorecard',
+  title: 'Beat the Critics | Tony Award Picks',
   description: 'Make your Tony Award picks and see how you stack up against top critics and the CriticScore algorithm.',
   alternates: {
     canonical: `${BASE_URL}/beat-the-critics`,

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, BASE_URL, TONY_OG_IMAGE } from '@/lib/seo';
 import { getTonySeasonWindowFor, type TonyCategory, type SerializedTonyShow } from '@/lib/data-tony-predictions';
 import { getNomineesByCategory } from '@/lib/data-tony-nominees';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -21,6 +21,7 @@ export const metadata: Metadata = {
     canonical: `${BASE_URL}/tony-awards/winners-2026`,
   },
   openGraph: {
+    images: [TONY_OG_IMAGE],
     title: `2026 Tony Award Winners — Broadway Scorecard`,
     description: `Who won the 2026 Tony Awards? Data-driven predictions ranked by critic score, audience grade, and GoldDerby win odds.`,
     url: `${BASE_URL}/tony-awards/winners-2026`,

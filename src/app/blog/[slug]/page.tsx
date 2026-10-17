@@ -8,7 +8,7 @@ import {
   postSlugsQuery,
   type PostDetail,
 } from '@/sanity/queries';
-import { BASE_URL } from '@/lib/seo';
+import { BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 
 export const revalidate = 3600;
 
@@ -26,13 +26,13 @@ export async function generateMetadata(
   const post = await client.fetch<PostDetail | null>(postBySlugQuery, { slug: params.slug });
   if (!post) return { title: 'Post not found' };
   return {
-    title: `${post.title} · Broadway Scorecard`,
+    title: post.title,
     description: post.excerpt,
     alternates: { canonical: `${BASE_URL}/blog/${params.slug}` },
     openGraph: {
       title: post.title,
       description: post.excerpt,
-      images: post.heroImage?.url ? [post.heroImage.url] : undefined,
+      images: post.heroImage?.url ? [post.heroImage.url] : [SITE_OG_IMAGE],
     },
   };
 }

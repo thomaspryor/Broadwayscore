@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { BASE_URL } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Terms of Service - Broadway Scorecard',
+  title: 'Terms of Service',
   description: 'Terms of Service for Broadway Scorecard. Guidelines for acceptable use of our aggregated Broadway review scores and data.',
   alternates: {
     canonical: `${BASE_URL}/terms`,

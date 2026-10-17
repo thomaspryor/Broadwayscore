@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { BASE_URL, generateBreadcrumbSchema } from '@/lib/seo';
+import { BASE_URL, generateBreadcrumbSchema, TONY_OG_IMAGE } from '@/lib/seo';
 import { getTonySeasonWindowFor } from '@/lib/data-tony-predictions';
 import { getNomineesByCategory } from '@/lib/data-tony-nominees';
 import { PressPicksBoard, type BoardCategory, type BoardSource } from './PressPicksBoard';
@@ -24,6 +24,7 @@ export const metadata: Metadata = {
   description: `Who ${SOURCES.length} critics predict will win at the ${season.ceremonyYear} Tony Awards, category by category — plus a "should win" view. See where the press agrees and where it splits.`,
   alternates: { canonical: `${BASE_URL}/tony-awards/press-picks` },
   openGraph: {
+    images: [TONY_OG_IMAGE],
     title: `${season.ceremonyYear} Tony Awards — Critic Press Picks`,
     description: `Every ${season.ceremonyYear} Tony category with the predicted winner from ${SOURCES.length} outlets. Toggle to "should win" to see critics' personal favorites.`,
     url: `${BASE_URL}/tony-awards/press-picks`,

@@ -1,9 +1,8 @@
 import { Metadata } from 'next';
 import { getAllOffBroadwayTheaters, getAllOffBroadwayComplexes } from '@/lib/data-core';
-import { generateBreadcrumbSchema } from '@/lib/seo';
+import { generateBreadcrumbSchema, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 import OffBroadwayTheaterIndexClient from './OffBroadwayTheaterIndexClient';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 export const metadata: Metadata = {
   title: { absolute: 'Off-Broadway Theaters — All NYC Venues' },
@@ -13,6 +12,7 @@ export const metadata: Metadata = {
     canonical: `${BASE_URL}/off-broadway/theater`,
   },
   openGraph: {
+    images: [SITE_OG_IMAGE],
     title: 'Off-Broadway Theaters',
     description:
       'Browse every Off-Broadway theater in New York City and see what shows are currently playing.',

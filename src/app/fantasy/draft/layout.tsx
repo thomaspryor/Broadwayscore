@@ -1,18 +1,13 @@
 import { Metadata } from 'next';
 import { BASE_URL } from '@/lib/seo';
-import { FANTASY_OG_IMAGE } from '@/config/fantasy-listing';
+import { fantasySocial } from '@/config/fantasy-social';
 
 export const metadata: Metadata = {
   title: 'Draft Your Team | Broadway Fantasy League',
   description: 'Pick up to 8 Broadway shows within a $100 budget. Earn points from critics, audiences, box office, and Tony Awards. Free, no account needed.',
   // Without this the root layout's homepage canonical applies here.
   alternates: { canonical: `${BASE_URL}/fantasy/draft` },
-  openGraph: {
-    title: 'Draft Your Team | Broadway Fantasy League',
-    description: 'Pick your Broadway shows once and they score all season. The best team on Tony night wins.',
-    url: `${BASE_URL}/fantasy/draft`,
-    images: [{ url: `${BASE_URL}${FANTASY_OG_IMAGE}`, width: 1200, height: 630 }],
-  },
+  ...fantasySocial('Draft Your Team | Broadway Fantasy League', '/fantasy/draft'),
 };
 
 export default function FantasyDraftLayout({ children }: { children: React.ReactNode }) {

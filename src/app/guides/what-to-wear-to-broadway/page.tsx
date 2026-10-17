@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 import Breadcrumb from '@/components/Breadcrumb';
 
 const currentYear = new Date().getFullYear();
@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   description: `Find out what to wear to a Broadway show in ${currentYear}. No official dress code — smart casual is the sweet spot. Get outfit tips for tourist trips, date nights, and opening nights.`,
   alternates: { canonical: `${BASE_URL}/guides/what-to-wear-to-broadway` },
   openGraph: {
+    images: [SITE_OG_IMAGE],
     title: `What to Wear to a Broadway Show (${currentYear})`,
     description: `Broadway dress code guide: what most people wear, what to avoid, and tips for every occasion.`,
     url: `${BASE_URL}/guides/what-to-wear-to-broadway`,

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { getBroadwayShows } from '@/lib/data-core';
 import { getLotteryRush, getLotteryShowCount, getRushShowCount } from '@/lib/data-lottery';
-import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ScoreBadge } from '@/components/show-cards';
 import ShowImage from '@/components/ShowImage';
@@ -47,6 +47,7 @@ export const metadata: Metadata = {
   description: `The ultimate guide to cheap Broadway tickets in ${currentYear}. TKTS booth, digital lotteries, rush tickets, discount codes, and insider tips to see shows for $30-50.`,
   alternates: { canonical: `${BASE_URL}/guides/cheap-broadway-tickets` },
   openGraph: {
+    images: [SITE_OG_IMAGE],
     title: `How to Get Cheap Broadway Tickets (${currentYear})`,
     description: `Save hundreds on Broadway tickets. TKTS, lotteries, rush tickets, and more discount strategies explained.`,
     url: `${BASE_URL}/guides/cheap-broadway-tickets`,

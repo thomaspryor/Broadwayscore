@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { getAllTheaters } from '@/lib/data-core';
-import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 import Breadcrumb from '@/components/Breadcrumb';
 
 export const metadata: Metadata = {
@@ -11,13 +11,14 @@ export const metadata: Metadata = {
     canonical: `${BASE_URL}/broadway-theaters-map`,
   },
   openGraph: {
+    images: [SITE_OG_IMAGE],
     title: 'Broadway Theaters Map - All NYC Theater Venues',
     description: 'Explore all Broadway theaters in New York City with current shows and addresses.',
     url: `${BASE_URL}/broadway-theaters-map`,
     type: 'article',
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: 'Broadway Theaters Map',
     description: 'Explore all Broadway theaters in New York City with current shows and addresses.',
   },

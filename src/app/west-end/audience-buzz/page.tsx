@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { getAllShows } from '@/lib/data-core';
 import { getAudienceBuzz, getAudienceBuzzLastUpdated, getAudienceGrade } from '@/lib/data-audience';
-import { generateBreadcrumbSchema, marketAlternates, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, marketAlternates, BASE_URL, WEST_END_OG_IMAGE } from '@/lib/seo';
 import { AudienceBuzzTable } from '@/components/SortableAudienceBuzzTable';
 import { featureFlags } from '@/config/feature-flags';
 import { getSourcesForMarket, getSourceNames, SOURCE_DESCRIPTIONS } from '@/config/audience-sources';
@@ -16,6 +16,7 @@ export const metadata: Metadata = {
   description: `AudienceGrade ratings for West End shows from ${weSourceNames}. See which shows audiences love based on verified reviews.`,
   alternates: marketAlternates('westEnd', '/audience-buzz'),
   openGraph: {
+    images: [WEST_END_OG_IMAGE],
     title: 'West End Audience Scorecard - Real Audience Ratings',
     description: 'What do audiences really think? Combined AudienceGrade ratings from verified review platforms for every West End show.',
     url: `${BASE_URL}/west-end/audience-buzz`,

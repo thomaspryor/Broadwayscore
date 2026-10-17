@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { BASE_URL } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Official Rules — Beat the Critics Prize Draw | Broadway Scorecard',
+  title: 'Official Rules — Beat the Critics Prize Draw',
   alternates: { canonical: `${BASE_URL}/beat-the-critics/rules` },
   robots: { index: false },
 };

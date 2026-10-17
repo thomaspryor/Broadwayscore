@@ -4,6 +4,7 @@
 
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 import { notFound } from 'next/navigation';
 
 import { featureFlags } from '@/config/feature-flags';
@@ -25,7 +26,6 @@ export function generateStaticParams() {
   }));
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 export async function generateMetadata(props: { params: Promise<{ season: string }> }): Promise<Metadata> {
   const params = await props.params;
@@ -36,6 +36,7 @@ export async function generateMetadata(props: { params: Promise<{ season: string
       canonical: `${BASE_URL}/biz/season/${params.season}`,
     },
     openGraph: {
+      images: [SITE_OG_IMAGE],
       title: `${params.season} Broadway Season`,
       description: `Commercial data and recoupment metrics for the ${params.season} Broadway season.`,
       url: `${BASE_URL}/biz/season/${params.season}`,

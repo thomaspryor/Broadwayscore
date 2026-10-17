@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { BASE_URL } from '@/lib/seo';
+import { fantasySocial } from '@/config/fantasy-social';
 import { getFantasyShowsSorted, getFantasyConfig } from '@/lib/data-fantasy';
 import { ELIGIBILITY_MARKERS, isShowOpenForDrafter, isDraftOpen, isDraftClosed, earnsBoxOffice, nyDate, scoringFromDate, hasLateEntry, DRAFT_OPENS, SCORING_START, type FantasyShow } from '@/config/fantasy';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
   title: 'Fantasy Draft Guide',
   alternates: { canonical: `${BASE_URL}/fantasy/guide` },
   description: 'Every draftable show with prices, the reasoning behind each price, scores, and eligibility. Your cheat sheet for the Broadway Fantasy League draft.',
+  ...fantasySocial('Draft Guide | Broadway Fantasy League', '/fantasy/guide', 'Every draftable show with its price and the reasoning behind it. Your cheat sheet for the Broadway Fantasy League.'),
 };
 
 const PREMIUM_MIN = 20;

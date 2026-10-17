@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!data) {
     // Client-rendered shell returns 200 for unknown slugs: keep it out of the index
-    return { title: 'List Not Found — Broadway Scorecard', robots: { index: false, follow: false } };
+    return { title: 'List Not Found', robots: { index: false, follow: false } };
   }
 
   const { list, profile, showIds } = data;
@@ -62,7 +62,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     || `${count} show${count !== 1 ? 's' : ''} ${list.is_ranked ? 'ranked' : 'curated'} on Broadway Scorecard`;
 
   return {
-    title: `${title} — Broadway Scorecard`,
+    title,
     description,
     alternates: { canonical: `${BASE_URL}/list/${shareTokenFromParam(slug)}` },
     openGraph: {

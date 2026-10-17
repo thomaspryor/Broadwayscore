@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
-import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, BASE_URL, TONY_OG_IMAGE } from '@/lib/seo';
 import { getTonySeasonWindow, hasNominationsBeenAnnounced } from '@/lib/data-tony-predictions';
 import { tonySeasonForCeremonyYear } from '@/lib/tony-cutoffs';
 import { getNomineesByCategory } from '@/lib/data-tony-nominees';
@@ -24,6 +24,7 @@ export const metadata: Metadata = {
     canonical: `${BASE_URL}/tony-awards/nominees`,
   },
   openGraph: {
+    images: [TONY_OG_IMAGE],
     title: `${season.ceremonyYear} Tony Nominations Center — Broadway Scorecard`,
     description: `All ${season.label} Tony nominees with critic scores, audience grades, and crowd-sourced win odds from GoldDerby, Polymarket, and Kalshi.`,
     url: `${BASE_URL}/tony-awards/nominees`,

@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { getBroadwayShows } from '@/lib/data-core';
 import { getAudienceBuzz, getAudienceBuzzLastUpdated, getAudienceGrade, MIN_AUDIENCE_REVIEWS } from '@/lib/data-audience';
 import type { AudienceBuzzData } from '@/lib/data-types';
-import { generateBreadcrumbSchema, marketAlternates, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, marketAlternates, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ComputedShow } from '@/lib/engine';
 import { AudienceBuzzTable } from '@/components/SortableAudienceBuzzTable';
@@ -17,6 +17,7 @@ export const metadata: Metadata = {
   description: `AudienceGrade ratings for Broadway shows from ${bwSourceNames}. See which shows audiences love, like, or loathe based on real reviews.`,
   alternates: marketAlternates('broadway', '/audience-buzz'),
   openGraph: {
+    images: [SITE_OG_IMAGE],
     title: 'Broadway Audience Scorecard - Real Broadway Audience Ratings',
     description: `What do audiences really think? Combined AudienceGrade ratings from ${bwSourceNames} for every Broadway show.`,
     url: `${BASE_URL}/audience-buzz`,

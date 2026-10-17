@@ -15,7 +15,7 @@ import {
 import type { GoldListMarket, VenueTier } from '@/config/gold-lists';
 import { getGoldListSeasons, getSeasonsForList } from '@/lib/data-gold-list-badges';
 import { GoldListBadge } from '@/components/gold-list/GoldListBadge';
-import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 import Breadcrumb from '@/components/Breadcrumb';
 
 export const metadata: Metadata = {
@@ -25,6 +25,7 @@ export const metadata: Metadata = {
     canonical: `${BASE_URL}/lists`,
   },
   openGraph: {
+    images: [SITE_OG_IMAGE],
     title: 'Gold Lists — Broadway & West End',
     description: 'Curated rankings of the best Broadway and West End shows by critics, audiences, box office, and demand.',
     url: `${BASE_URL}/lists`,

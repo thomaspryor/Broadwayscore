@@ -1,9 +1,8 @@
 import { Metadata } from 'next';
 import { getAllLondonTheaters, getAllWestEndComplexes } from '@/lib/data-core';
-import { generateBreadcrumbSchema } from '@/lib/seo';
+import { generateBreadcrumbSchema, BASE_URL, WEST_END_OG_IMAGE } from '@/lib/seo';
 import LondonTheaterIndexClient from './LondonTheaterIndexClient';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 export const metadata: Metadata = {
   title: { absolute: 'West End Theatres — All London Venues' },
@@ -13,6 +12,7 @@ export const metadata: Metadata = {
     canonical: `${BASE_URL}/west-end/theater`,
   },
   openGraph: {
+    images: [WEST_END_OG_IMAGE],
     title: 'West End Theatres',
     description:
       'Browse every West End and Off-West End theatre in London and see what shows are currently playing.',

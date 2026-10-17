@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { getBroadwayShows } from '@/lib/data-core';
 import { getCastChanges, getCastChangesLastUpdated, getAllCastChangeShowIds } from '@/lib/data-cast';
 import type { CastEvent } from '@/lib/data-types';
-import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import { ScoreBadge } from '@/components/show-cards';
@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     canonical: `${BASE_URL}/cast-changes`,
   },
   openGraph: {
+    images: [SITE_OG_IMAGE],
     title: 'Broadway Cast Changes - Who\'s Coming & Going',
     description: 'Track upcoming Broadway cast changes. Departures, arrivals, limited engagements, and stunt casting across all open shows.',
     url: `${BASE_URL}/cast-changes`,

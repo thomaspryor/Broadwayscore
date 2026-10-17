@@ -9,7 +9,7 @@ import FooterMarketContent from '@/components/FooterMarketContent';
 import { isCategoryEnabled } from '@/lib/markets';
 import FooterExploreCards from '@/components/FooterExploreCards';
 import FooterBranding from '@/components/FooterBranding';
-import { generateOrganizationSchema, generateWebSiteSchema, BASE_URL } from '@/lib/seo';
+import { generateOrganizationSchema, generateWebSiteSchema, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 import { siteRobots } from '@/lib/indexable-deploy';
 import { getDataStats, getMarketStats } from '@/lib/data-core';
 import MarketNav from '@/components/MarketNav';
@@ -27,9 +27,6 @@ import HeaderSecondaryMarketLink from '@/components/HeaderSecondaryMarketLink';
 // first paint — the latin-ext subset loads on demand via its unicode-range.
 const INTER_LATIN_WOFF2 = '/fonts/Inter-latin-var.3100e775.woff2';
 
-// Static OG image (API routes don't work with static export)
-const homeOgImageUrl = `${BASE_URL}/og/home.png`;
-
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
@@ -39,31 +36,19 @@ export const metadata: Metadata = {
   description: 'Comprehensive theater ratings combining critic reviews, AudienceGrade ratings, and community buzz. Find the best shows on Broadway, the West End, and Off-Broadway with transparent, data-driven scores.',
   keywords: ['Broadway', 'West End', 'Off-Broadway', 'theater', 'musicals', 'reviews', 'ratings', 'scorecard', 'critic reviews', 'AudienceGrade'],
   authors: [{ name: 'Broadway Scorecard' }],
+  // Link-preview defaults only (BRO-5529). Next fills og:title and
+  // og:description from each page's own title and description when openGraph
+  // leaves them out, and a page's twitter title, description and image from
+  // its openGraph. Set here, the homepage's values overrode them, so every
+  // page without its own openGraph (and on X, every page without its own
+  // twitter) previewed as the homepage. The homepage sets its own in page.tsx.
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: BASE_URL,
     siteName: 'Broadway Scorecard',
-    title: 'Broadway Scorecard - Aggregated Broadway Show Ratings',
-    description: 'Comprehensive theater ratings combining critic reviews, AudienceGrade ratings, and community buzz for Broadway, West End, and Off-Broadway.',
-    images: [{
-      url: homeOgImageUrl,
-      width: 1200,
-      height: 630,
-      alt: 'Broadway Scorecard - Aggregated Broadway Show Ratings',
-    }],
+    images: [SITE_OG_IMAGE],
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Broadway Scorecard',
-    description: 'Aggregated theater ratings from critics, audiences, and community buzz for Broadway, West End, and Off-Broadway.',
-    images: [{
-      url: homeOgImageUrl,
-      width: 1200,
-      height: 630,
-      alt: 'Broadway Scorecard - Aggregated Broadway Show Ratings',
-    }],
-  },
+  twitter: { card: 'summary_large_image' },
   robots: siteRobots(),
   // Declared as metadata (not a <link> in <head>) so a section can replace it:
   // the Fantasy League sets its own icons in src/app/fantasy/layout.tsx.

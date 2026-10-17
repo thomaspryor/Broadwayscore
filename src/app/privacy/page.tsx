@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { BASE_URL } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy - Broadway Scorecard',
+  title: 'Privacy Policy',
   description: 'Privacy policy for Broadway Scorecard website and mobile app.',
   alternates: { canonical: `${BASE_URL}/privacy` },
   openGraph: {

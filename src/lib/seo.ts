@@ -14,6 +14,35 @@ import { displaysCriticScore } from './critic-score-display';
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
+/**
+ * The site's default link-preview image. A page's openGraph replaces the root
+ * layout's wholesale, images included, so a page that sets openGraph lists its
+ * own images: this one, or the West End or Tony card below (BRO-5529,
+ * tests/unit/social-preview-metadata.test.ts).
+ */
+export const SITE_OG_IMAGE = {
+  url: `${BASE_URL}/og/home.png`,
+  width: 1200,
+  height: 630,
+  alt: 'Broadway Scorecard - Aggregated Broadway Show Ratings',
+};
+
+/** The West End card, for London pages (/west-end, /off-west-end, /olivier-awards). */
+export const WEST_END_OG_IMAGE = {
+  url: `${BASE_URL}/og/west-end.png`,
+  width: 1200,
+  height: 630,
+  alt: 'West End Scorecard - Aggregated London Theatre Ratings',
+};
+
+/** The Tony Awards card, for /tony-awards and /award-score pages. */
+export const TONY_OG_IMAGE = {
+  url: `${BASE_URL}/og/tony-awards.png`,
+  width: 1200,
+  height: 630,
+  alt: 'Tony Awards - Broadway Scorecard',
+};
+
 // Ensure image URLs are absolute for OG tags and JSON-LD
 export function toAbsoluteUrl(url: string): string {
   if (!url) return '';

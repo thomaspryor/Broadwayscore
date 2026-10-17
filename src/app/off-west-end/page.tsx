@@ -6,7 +6,7 @@ import { Metadata } from 'next';
 import { getOffWestEndShows, getMarketStats } from '@/lib/data-core';
 import { getAwardWinnerSets } from '@/lib/data-awards';
 import { serializeShowForClient } from '@/lib/serialize-show';
-import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL, WEST_END_OG_IMAGE } from '@/lib/seo';
 import OffWestEndPageClient from '@/components/OffWestEndPageClient';
 import type { OffWestEndShow } from '@/components/OffWestEndPageClient';
 import { featureFlags } from '@/config/feature-flags';
@@ -23,6 +23,7 @@ export const metadata: Metadata = {
     canonical: `${BASE_URL}/off-west-end`,
   },
   openGraph: {
+    images: [WEST_END_OG_IMAGE],
     title: 'Off-West End Scorecard - London Theatre Ratings',
     description: 'Aggregated CriticScore ratings for Off-West End shows from The Guardian, Telegraph, Time Out, WhatsOnStage, and more.',
     url: `${BASE_URL}/off-west-end`,

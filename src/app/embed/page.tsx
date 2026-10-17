@@ -4,7 +4,7 @@ import { BASE_URL } from '@/lib/seo';
 
 // Reachable by URL but intentionally not linked from main nav while we test outreach.
 export const metadata: Metadata = {
-  title: 'Embed a CriticScore badge · Broadway Scorecard',
+  title: 'Embed a CriticScore badge',
   description:
     'Free embeddable CriticScore badge for any Broadway, Off-Broadway, or West End show. Paste one line of HTML. Auto light/dark, links back, no tracking.',
   alternates: { canonical: `${BASE_URL}/embed` },

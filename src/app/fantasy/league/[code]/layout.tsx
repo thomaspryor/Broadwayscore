@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { BASE_URL } from '@/lib/seo';
-import { FANTASY_OG_IMAGE } from '@/config/fantasy-listing';
+import { fantasySocial, FANTASY_SOCIAL_LINE } from '@/config/fantasy-social';
 
 // Private league pages list players' team names and exist to be shared by
 // link, never found by search: always noindex (this overrides the listing
@@ -9,16 +9,13 @@ import { FANTASY_OG_IMAGE } from '@/config/fantasy-listing';
 // homepage nor previews as the homepage card (BRO-5483 review).
 export async function generateMetadata({ params }: { params: Promise<{ code: string }> }): Promise<Metadata> {
   const { code } = await params;
-  const url = `${BASE_URL}/fantasy/league/${encodeURIComponent(code)}`;
-  const title = 'Join my Broadway Fantasy League';
-  const description = 'Pick your Broadway shows once and they score all season. The best team on Tony night wins.';
+  const path = `/fantasy/league/${encodeURIComponent(code)}`;
   return {
     title: 'Private League | Broadway Fantasy League',
-    description,
+    description: FANTASY_SOCIAL_LINE,
     robots: { index: false, follow: false },
-    alternates: { canonical: url },
-    openGraph: { title, description, url, images: [{ url: `${BASE_URL}${FANTASY_OG_IMAGE}`, width: 1200, height: 630 }] },
-    twitter: { card: 'summary_large_image', title, description },
+    alternates: { canonical: `${BASE_URL}${path}` },
+    ...fantasySocial('Join my Broadway Fantasy League', path),
   };
 }
 

@@ -5,7 +5,7 @@ import { getBroadwayShows } from '@/lib/data-core';
 import { computeSiteAwardScore } from '@/lib/awards-scoring';
 import { SortableAwardScoreTable } from '@/components/SortableAwardScoreTable';
 import { featureFlags } from '@/config/feature-flags';
-import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, BASE_URL, TONY_OG_IMAGE } from '@/lib/seo';
 
 // tonySeason in awards.json is stored in short format "YYYY-YY" which
 // matches the URL slug directly — no conversion needed.
@@ -56,6 +56,7 @@ export async function generateMetadata(props: { params: Promise<{ season: string
     description: `Prestige-weighted award scores for the ${label} Broadway season — Tony Awards, Pulitzer Prize, Drama Desk, Outer Critics Circle, Drama League, and NYDCC.`,
     alternates: { canonical: `${BASE_URL}/award-score/${params.season}` },
     openGraph: {
+      images: [TONY_OG_IMAGE],
       title: `${label} Broadway Award Scorecard`,
       description: `Which shows dominated the ${label} Broadway awards season? See scores across seven ceremonies.`,
       url: `${BASE_URL}/award-score/${params.season}`,

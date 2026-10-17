@@ -6,7 +6,7 @@ import { Metadata } from 'next';
 import { getOffBroadwayShows, getNotableOffBroadwayShows, getMarketStats } from '@/lib/data-core';
 import { getAwardWinnerSets } from '@/lib/data-awards';
 import { createShowSerializer } from '@/lib/serialize-show';
-import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
+import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 import { isRecentlyOpenedAwaitingReviews } from '@/lib/recently-opened';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { hasEnoughReviews } from '@/config/score-buckets';
@@ -27,6 +27,7 @@ export const metadata: Metadata = {
     canonical: `${BASE_URL}/off-broadway`,
   },
   openGraph: {
+    images: [SITE_OG_IMAGE],
     title: 'Off-Broadway Scorecard - NYC Show Ratings',
     description: 'Aggregated CriticScore ratings for Off-Broadway shows from The New York Times, Vulture, Variety, and more.',
     url: `${BASE_URL}/off-broadway`,

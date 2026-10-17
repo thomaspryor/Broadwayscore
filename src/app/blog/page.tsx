@@ -7,7 +7,7 @@ import { postsListQuery, type PostListItem } from '@/sanity/queries';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: 'Blog · Broadway Scorecard',
+  title: 'Blog',
   description: 'Editorial, essays, and the story behind the scores.',
   alternates: { canonical: `${BASE_URL}/blog` },
 };

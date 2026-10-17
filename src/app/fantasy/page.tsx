@@ -19,7 +19,7 @@ import {
 } from '@/config/fantasy';
 import { SCORE_BUCKETS } from '@/config/score-buckets';
 import FantasyMarquee from '@/components/fantasy/FantasyMarquee';
-import { FANTASY_OG_IMAGE } from '@/config/fantasy-listing';
+import { fantasySocial } from '@/config/fantasy-social';
 
 // Keyed by the points-table label (getCriticLabel), not the display label:
 // the 55-64 bucket displays as "Mixed" but scores as "Skippable".
@@ -41,18 +41,7 @@ export const metadata: Metadata = {
   title: 'Broadway Fantasy League',
   description: 'Draft up to 8 Broadway shows on a $100 budget. Earn points from critics, audiences, box office, and the Tony Awards. Free to play, no account needed.',
   alternates: { canonical: `${BASE_URL}/fantasy` },
-  openGraph: {
-    title: 'Broadway Fantasy League',
-    description: 'Draft up to 8 shows. $100 budget. Critics + box office + Tonys. Who picks the best season?',
-    url: 'https://broadwayscorecard.com/fantasy',
-    images: [{ url: `${BASE_URL}${FANTASY_OG_IMAGE}`, width: 1200, height: 630 }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Broadway Fantasy League',
-    description: 'Draft up to 8 shows. $100 budget. Win on Tony night.',
-    images: [`${BASE_URL}${FANTASY_OG_IMAGE}`],
-  },
+  ...fantasySocial('Broadway Fantasy League', '/fantasy'),
 };
 
 export default function FantasyLandingPage() {

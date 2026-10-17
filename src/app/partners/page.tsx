@@ -7,7 +7,7 @@ import { isCategoryEnabled } from '@/lib/markets';
 import { displaysCriticScore } from '@/lib/critic-score-display';
 
 export const metadata: Metadata = {
-  title: 'Partner Embeds — Broadway Scorecard',
+  title: 'Partner Embeds',
   description: 'Embed CriticScore badges on your site. Copy-paste snippets for iframes and SVG images. Free to use with attribution.',
   alternates: { canonical: `${BASE_URL}/partners` },
   openGraph: {
