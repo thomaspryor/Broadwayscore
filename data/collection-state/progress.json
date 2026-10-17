@@ -3,7 +3,11 @@
     "jane-eyre-rose-kingston-off-west-end-2026/daily-echo--william-dalgleish.json",
     "some-woman-west-end-2026/times-uk--clive-davis.json",
     "some-woman-west-end-2026/west-end-best-friend--oli-burgin.json",
-    "the-second-best-school-shooting-off-broadway-2026/theatreindc--unknown.json"
+    "the-second-best-school-shooting-off-broadway-2026/theatreindc--unknown.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/new-statesman--rachel-cunliffe.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/reviewsgate--william-russell.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/british-theatre--keith-mckenna.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/jamr--unknown.json"
   ],
   "failed": [
     "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
@@ -22,22 +26,29 @@
     "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--roma-torre.json",
     "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/talkinbroadway--kimberly-ramirez.json",
     "stuffed-off-west-end-2026/sunday-times--unknown.json",
-    "the-second-best-school-shooting-off-broadway-2026/theatreinla--unknown.json"
+    "the-second-best-school-shooting-off-broadway-2026/theatreinla--unknown.json",
+    "an-oak-tree-off-west-end-2026/times-uk--dominic-maxwell.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "some-woman-west-end-2026/west-end-best-friend--oli-burgin.json"
+      "some-woman-west-end-2026/west-end-best-friend--oli-burgin.json",
+      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/new-statesman--rachel-cunliffe.json",
+      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/reviewsgate--william-russell.json",
+      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/british-theatre--keith-mckenna.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/some-woman-west-end-2026/sunday-times--clive-davis.json",
-      "some-woman-west-end-2026/sunday-times--clive-davis.json"
+      "some-woman-west-end-2026/sunday-times--clive-davis.json",
+      "data/review-texts/stuffed-off-west-end-2026/sunday-times--unknown.json"
     ],
     "directCookies": [],
     "scrapingdog": [
       "jane-eyre-rose-kingston-off-west-end-2026/daily-echo--william-dalgleish.json",
-      "the-second-best-school-shooting-off-broadway-2026/theatreindc--unknown.json"
+      "the-second-best-school-shooting-off-broadway-2026/theatreindc--unknown.json",
+      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/jamr--unknown.json"
     ],
     "scrapingbee": [
       "some-woman-west-end-2026/times-uk--clive-davis.json"
@@ -47,7 +58,7 @@
     "archive": []
   },
   "startTime": "2026-10-17T07:42:34.460Z",
-  "lastProcessed": "the-second-best-school-shooting-off-broadway-2026/theatreinla--unknown.json",
+  "lastProcessed": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/jamr--unknown.json",
   "log": [
     {
       "t": "2026-10-17T07:46:09.044Z",
@@ -99,6 +110,40 @@
       "event": "bb-session",
       "session": "a807f3ee",
       "url": "https://www.theatreinla.com/the-second-best-school-shooting/11328/"
+    },
+    {
+      "t": "2026-10-17T08:53:23.845Z",
+      "event": "bb-session",
+      "session": "29c09faf",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-17T08:53:31.803Z",
+      "event": "bb-session",
+      "session": "f6609501",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-17T08:55:58.667Z",
+      "event": "bb-session",
+      "session": "f1736566",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/some-woman-review-anne-ma"
+    },
+    {
+      "t": "2026-10-17T08:55:59.452Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-17T08:59:23.682Z",
+      "event": "bb-session",
+      "session": "e7affba2",
+      "url": "https://www.thetimes.com/recipes/entertaining/party-food/article/dates-stuffed-w"
+    },
+    {
+      "t": "2026-10-17T08:59:24.472Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
