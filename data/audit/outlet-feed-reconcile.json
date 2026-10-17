@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-17T04:56:05.722Z",
+  "generatedAt": "2026-10-17T06:29:17.568Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -115,6 +115,10 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -143,9 +147,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 715,
+  "itemsScanned": 711,
   "matchedGaps": 3,
-  "possibleGaps": 8,
+  "possibleGaps": 6,
   "gaps": [
     {
       "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
@@ -172,24 +176,6 @@
       "outletId": "plays-international",
       "url": "https://playsinternational.org.uk/the-cherry-orchard-harold-pinter-theatre/",
       "headline": "“The Cherry Orchard” at Harold Pinter Theatre",
-      "publishDate": "2026-10-16"
-    },
-    {
-      "showId": "fish-off-broadway-2026",
-      "title": "Fish",
-      "level": "possible",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/good-time-charlie-fish-anon/",
-      "headline": "Good Time Charlie ***, Fish ****, Anon ***",
-      "publishDate": "2026-10-16"
-    },
-    {
-      "showId": "fish-off-broadway-2026",
-      "title": "Fish",
-      "level": "possible",
-      "outletId": "theater-scene",
-      "url": "https://www.theaterscene.net/plays/offbway-plays/fish-2/tony-marinelli/",
-      "headline": "Fish",
       "publishDate": "2026-10-16"
     },
     {
