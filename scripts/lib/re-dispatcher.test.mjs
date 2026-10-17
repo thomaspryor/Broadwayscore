@@ -119,7 +119,8 @@ test('every live opted-in workflow treats redispatched=true as its scheduled run
   const opted = parseCriticalCronEntries(yaml).filter((e) => acceptsRedispatch(fs.readFileSync(path.join(dir, e.workflow), 'utf8')));
   assert.ok(opted.length >= 2, `expected the BRO-4282 crons opted in, got ${opted.map((e) => e.workflow)}`);
   for (const e of opted) {
-    const text = fs.readFileSync(path.join(dir, e.workflow), 'utf8');
+    // Comments do not count: a mention in a comment must not satisfy the check.
+    const text = fs.readFileSync(path.join(dir, e.workflow), 'utf8').replace(/^\s*#.*$/gm, '');
     // Any branch on how the run started must also consult the flag.
     if (/github\.event_name|github\.event\.schedule/.test(text)) {
       assert.match(text, /inputs\.redispatched/, `${e.workflow} branches on its trigger but never reads inputs.redispatched`);

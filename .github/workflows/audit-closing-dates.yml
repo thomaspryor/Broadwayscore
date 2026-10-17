@@ -8,16 +8,8 @@ name: Audit Closing Dates
 on:
   schedule:
     - cron: '0 14 * * *'  # Daily 14:00 UTC — after update-show-status (8am) and one full enrich cycle (10:30)
-    # redispatch-after-hours: 26  (BRO-5152: daily; cron-redispatch.js replaces a dropped tick after 26h, before the 36h page)
   workflow_dispatch:
     inputs:
-      redispatched:
-        # BRO-5152: set by scripts/cron-redispatch.js when GitHub dropped the scheduled run.
-        # Input defaults (dry_run false, 14-min budget) equal the cron's.
-        description: 'Internal: re-dispatch of a dropped scheduled run (behaves like the cron)'
-        required: false
-        default: 'false'
-        type: string
       dry_run:
         description: 'Dry run (no changes)'
         required: false

@@ -7,17 +7,8 @@ on:
     # Weekly ShowScore status refresh — Wednesdays 6 AM UTC
     - cron: '0 6 * * 3'
   # Allow manual triggering
-    # redispatch-after-hours: 26  (BRO-5152: daily; cron-redispatch.js replaces a dropped tick after 26h, before the 36h page)
   workflow_dispatch:
     inputs:
-      redispatched:
-        # BRO-5152: set by scripts/cron-redispatch.js when GitHub dropped the scheduled run.
-        # Runs the daily 08:00 path (no Wednesday Show Score pass); input defaults equal
-        # the cron's.
-        description: 'Internal: re-dispatch of a dropped scheduled run (behaves like the cron)'
-        required: false
-        default: 'false'
-        type: string
       skip_discovery:
         description: 'Skip new show discovery'
         required: false
@@ -164,9 +155,7 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
         run: |
           SS_FLAG=""
-          # Auto-enable ShowScore on Wednesday schedule (cron index 1). A BRO-5152
-          # re-dispatch (inputs.redispatched) carries no cron string, so it runs
-          # the daily path; the weekly pass waits for its own Wednesday tick.
+          # Auto-enable ShowScore on Wednesday schedule (cron index 1)
           if [ "${{ github.event.schedule }}" = "0 6 * * 3" ]; then
             SS_FLAG="--include-showscore"
             echo "Weekly ShowScore refresh enabled (Wednesday schedule)"

@@ -5,14 +5,6 @@ on:
     - cron: '0 11 * * *'  # Daily at 11 AM UTC (≤noon requirement, complements 9am per-show SERP)
   workflow_dispatch:
     inputs:
-      redispatched:
-        # BRO-5152: set by scripts/cron-redispatch.js when GitHub dropped the scheduled run.
-        # Input defaults (dry_run false, lookback 7 = the script default) equal the
-        # cron's.
-        description: 'Internal: re-dispatch of a dropped scheduled run (behaves like the cron)'
-        required: false
-        default: 'false'
-        type: string
       dry_run:
         description: 'Dry run (log discoveries, no files written)'
         required: false
