@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-17T08:17:33.584Z",
+  "timestamp": "2026-10-17T10:22:53.873Z",
   "stats": {
-    "totalReviews": 57132,
-    "alreadyFlagged": 21207,
+    "totalReviews": 57141,
+    "alreadyFlagged": 21222,
     "dateGuardCatches": 194,
-    "directorMismatch": 1934,
+    "directorMismatch": 1933,
     "tvFilmSignals": 1598,
-    "londonSignals": 2399,
+    "londonSignals": 2398,
     "offBroadwaySignals": 515,
     "yearMismatch": 153,
-    "noPublishDate": 5261
+    "noPublishDate": 5257
   },
   "findings": [
     {
@@ -3496,6 +3496,7 @@
     {
       "showId": "back-to-the-future-tour-2024",
       "file": "maryland-theatre-guide--unknown.json",
+      "score": 79,
       "publishDate": "2026-02-27",
       "url": "https://mdtheatreguide.com/2026/02/theatre-review-back-to-the-future-the-musical-at-the-hippodrome-theatre/",
       "findings": [
@@ -3509,6 +3510,7 @@
     {
       "showId": "back-to-the-future-tour-2024",
       "file": "rachelsreviewstheatre--unknown.json",
+      "score": 74,
       "publishDate": "2026-06-11",
       "url": "https://rachelsreviewstheatre.com/2026/06/11/back-to-the-future-the-musical-is-a-theme-park-musical-but-thats-entertaining-review/",
       "findings": [
@@ -3522,6 +3524,7 @@
     {
       "showId": "back-to-the-future-tour-2024",
       "file": "wkrn--colleen-guerry.json",
+      "score": 85,
       "publishDate": "2026-03-19",
       "url": "https://www.wkrn.com/news/local-news/nashville/sci-fi-comedy-back-to-the-future-the-musical-zooms-into-tpac/",
       "findings": [
@@ -4206,7 +4209,7 @@
     {
       "showId": "beetlejuice-west-end-2026",
       "file": "readaboutstuff--dan-english.json",
-      "score": 62,
+      "score": 55,
       "publishDate": "2026-06-12",
       "url": "https://readaboutstuff.com/2026/06/12/review-beetlejuice-the-musical-prince-edward-theatre-london/",
       "findings": [
@@ -4234,7 +4237,7 @@
     {
       "showId": "beetlejuice-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 56,
+      "score": 57,
       "publishDate": "2026-05-29",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/beetlejuice-musical-review/",
       "findings": [
@@ -4425,7 +4428,7 @@
     {
       "showId": "beetlejuice-west-end-2026",
       "file": "whatsonstage--alex-wood.json",
-      "score": 68,
+      "score": 67,
       "publishDate": "2026-05-29",
       "url": "https://www.whatsonstage.com/news/beetlejuice-in-the-west-end-review_1722801/",
       "findings": [
@@ -13904,7 +13907,7 @@
     {
       "showId": "flamenc-oh-off-west-end-2026",
       "file": "everything-theatre--alan-fitter.json",
-      "score": 56,
+      "score": 58,
       "publishDate": "2026-10-02",
       "url": "https://everything-theatre.co.uk/2026/10/review-flamenc-oh-peacock-theatre/",
       "findings": [
@@ -20805,6 +20808,20 @@
     },
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 94,
+      "publishDate": null,
+      "url": "https://www.timeout.com/london/news/review-into-the-woods-bridge-theatre-121125",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "timeout-london--reviewer.json",
       "score": 98,
       "publishDate": "2026-10-07",
@@ -21727,20 +21744,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "joe-turners-come-and-gone-2009",
-      "file": "artsfuse--robert-israel.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://artsfuse.org/263505/theater-review-joe-turners-come-and-gone-a-stirring-dramatic-experience/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"lloyd richards\" from joe-turners-come-and-gone-1988"
         }
       ]
     },
@@ -23804,7 +23807,7 @@
     },
     {
       "showId": "les-miserables-tour-2022",
-      "file": "calgary-herald--unknown.json",
+      "file": "calgary-herald--louis-b-hobson.json",
       "publishDate": "2026-03-05",
       "url": "https://calgaryherald.com/entertainment/theatre/review-masterful-performances-give-rise-to-an-extraordinary-retelling-of-les-miserables",
       "findings": [
@@ -23818,6 +23821,7 @@
     {
       "showId": "les-miserables-tour-2022",
       "file": "chasingsupermom--bekki.json",
+      "score": 90,
       "publishDate": "2026-04-01",
       "url": "https://chasingsupermom.com/2026/04/01/les-miserables-in-portland-now-through-april-5th-full-show-review/",
       "findings": [
@@ -23831,6 +23835,7 @@
     {
       "showId": "les-miserables-tour-2022",
       "file": "new-city-stage--dennis-polkow.json",
+      "score": 75,
       "publishDate": "2026-05-19",
       "url": "https://www.newcitystage.com/2026/05/19/a-last-less-elaborate-look-at-a-reimagined-les-miserables/",
       "findings": [
@@ -23844,6 +23849,7 @@
     {
       "showId": "les-miserables-tour-2022",
       "file": "pioneer-press--rob-hubbard.json",
+      "score": 87,
       "publishDate": "2026-02-18",
       "url": "https://www.twincities.com/2026/02/18/stirring-les-miserables-resonates-with-resolve-and-sadness/",
       "findings": [
@@ -23857,6 +23863,7 @@
     {
       "showId": "les-miserables-tour-2022",
       "file": "rachelsreviewstheatre--unknown.json",
+      "score": 90,
       "publishDate": "2026-07-02",
       "url": "https://rachelsreviewstheatre.com/2026/07/02/les-miserables-at-tuacahn-is-a-triumph-review/",
       "findings": [
@@ -23870,6 +23877,7 @@
     {
       "showId": "les-miserables-tour-2022",
       "file": "seattles-child--cheryl-murfin.json",
+      "score": 77,
       "publishDate": "2026-04-17",
       "url": "https://www.seattleschild.com/les-miserables-seattle-parent-review/",
       "findings": [
@@ -24591,20 +24599,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "long-days-journey-into-night-2003",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.hollywoodreporter.com/news/general-news/jessica-lange-long-days-journey-888187/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jonathan kent\" from long-days-journey-into-night-2016"
         }
       ]
     },
@@ -26413,6 +26407,7 @@
     {
       "showId": "moulin-rouge-tour-2022",
       "file": "broadwayworld--doug-poms.json",
+      "score": 78,
       "publishDate": "2026-06-21",
       "url": "https://www.broadwayworld.com/washington-dc/article/Review-MOULIN-ROUGE-THE-MUSICAL-at-The-Kennedy-Center-20260621",
       "findings": [
@@ -26426,6 +26421,7 @@
     {
       "showId": "moulin-rouge-tour-2022",
       "file": "broadwayworld--theresa-bertram.json",
+      "score": 94,
       "publishDate": "2026-07-10",
       "url": "https://www.broadwayworld.com/little-rock/article/Review-MOULIN-ROUGE-THE-MUSICAL-at-Walton-Arts-Center-in-Fayetteville-20260710",
       "findings": [
@@ -28038,7 +28034,7 @@
     {
       "showId": "nine-2003",
       "file": "curtainup--unknown.json",
-      "score": null,
+      "score": 78,
       "publishDate": null,
       "url": "http://www.curtainup.com/nine.html",
       "findings": [
@@ -28066,7 +28062,7 @@
     {
       "showId": "nine-2003",
       "file": "variety--charles-isherwood.json",
-      "score": null,
+      "score": 58,
       "publishDate": null,
       "url": "https://variety.com/2003/legit/reviews/nine-6-1200542289/",
       "findings": [
@@ -29197,7 +29193,7 @@
     {
       "showId": "only-fools-and-horses-west-end-2019",
       "file": "guardian--mark-lawson.json",
-      "score": 60,
+      "score": 58,
       "publishDate": "February 20th, 2019",
       "url": "https://www.theguardian.com/stage/2019/feb/20/only-fools-and-horses-the-musical-review-vintage-gags-need-better-tunes",
       "findings": [
@@ -29266,7 +29262,7 @@
     {
       "showId": "only-fools-and-horses-west-end-2019",
       "file": "timeout-london--tom-wicker.json",
-      "score": 61,
+      "score": 59,
       "publishDate": "October 1st, 2021",
       "url": "https://www.timeout.com/london/theatre/only-fools-and-horses-the-musical-review",
       "findings": [
@@ -29280,7 +29276,7 @@
     {
       "showId": "only-fools-and-horses-west-end-2019",
       "file": "whatsonstage--alun-hood.json",
-      "score": 68,
+      "score": 64,
       "publishDate": "February 20th, 2019",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/only-fools-and-horses-musical-haymarket_48539.html",
       "findings": [
@@ -30222,7 +30218,7 @@
     {
       "showId": "paranormal-activity-west-end-2025",
       "file": "guardian--kate-wyver.json",
-      "score": 87,
+      "score": 88,
       "publishDate": "December 16th, 2025",
       "url": "https://www.theguardian.com/stage/2025/dec/16/paranormal-activity-review-ambassadors-theatre-london",
       "findings": [
@@ -30332,7 +30328,7 @@
     {
       "showId": "paranormal-activity-west-end-2025",
       "file": "thestage--tom-wicker.json",
-      "score": 87,
+      "score": 82,
       "publishDate": "December 16th, 2025",
       "url": "https://www.thestage.co.uk/reviews/paranormal-activity-review-ambassadors-theatre-london-felix-barrett",
       "findings": [
@@ -34564,6 +34560,7 @@
     {
       "showId": "some-like-it-hot-tour-2024",
       "file": "broadwayworld--jonathan-netek.json",
+      "score": 88,
       "publishDate": "2026-03-25",
       "url": "https://www.broadwayworld.com/houston/article/Review-SOME-LIKE-IT-HOT-at-Broadway-At-The-Hobby-Center-20260325",
       "findings": [
@@ -43080,6 +43077,7 @@
     {
       "showId": "the-outsiders-tour-2025",
       "file": "broadwayworld--elizabeth-cortes.json",
+      "score": 89,
       "publishDate": "2026-02-04",
       "url": "https://www.broadwayworld.com/south-carolina/article/Review-THE-OUTSIDERS-at-Peace-Center-20260204",
       "findings": [
@@ -43567,7 +43565,7 @@
     {
       "showId": "the-pajama-game-2006",
       "file": "variety--unknown.json",
-      "score": null,
+      "score": 85,
       "publishDate": null,
       "url": "https://variety.com/2006/legit/reviews/the-pajama-game-5-1200518102/",
       "findings": [
@@ -54034,7 +54032,7 @@
     {
       "showId": "avenue-q-west-end-2026",
       "file": "radio-times--joanna-magill.json",
-      "score": 75,
+      "score": 77,
       "publishDate": "2026-04-17",
       "url": "https://www.radiotimes.com/going-out/going-out-reviews/avenue-q-review/",
       "findings": [
@@ -54622,7 +54620,7 @@
     {
       "showId": "beetlejuice-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 79,
+      "score": 75,
       "publishDate": "2026-05-28",
       "url": "https://theatreweekly.com/review-beetlejuice-the-musical-at-prince-edward-theatre/",
       "findings": [
@@ -63002,7 +63000,7 @@
     {
       "showId": "hadestown-west-end-2024",
       "file": "all-that-dazzles-uk--unknown.json",
-      "score": 77,
+      "score": 81,
       "publishDate": null,
       "url": "https://www.allthatdazzles.co.uk/post/review-hadestown-lyric-theatre",
       "findings": [
@@ -72535,7 +72533,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "broadwayworld--aliya-al-hassan.json",
-      "score": 89,
+      "score": 97,
       "publishDate": "2025-01-15",
       "url": "https://www.broadwayworld.com/westend/article/Review-OLIVER-Gielgud-Theatre-20250115",
       "findings": [
@@ -72549,7 +72547,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "daily-mail--georgina-brown.json",
-      "score": 93,
+      "score": 95,
       "publishDate": "2024-07-26",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-13674445/Oliver-review-Dickens-writes-GEORGINA-BROWN.html",
       "findings": [
@@ -72605,7 +72603,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "standard--unknown.json",
-      "score": 94,
+      "score": 96,
       "publishDate": "January 15th, 2025",
       "url": "https://www.standard.co.uk/culture/theatre/oliver-gielgud-theatre-review-cameron-mackintosh-matthew-bourne-b1204920.html",
       "findings": [
@@ -72647,7 +72645,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "theatre-weekly--unknown.json",
-      "score": 96,
+      "score": 94,
       "publishDate": null,
       "url": "https://theatreweekly.com/review-oliver-at-the-gielgud-theatre-london/",
       "findings": [
@@ -75060,7 +75058,7 @@
     {
       "showId": "salome-2003",
       "file": "talkinbroadway--unknown.json",
-      "score": null,
+      "score": 39,
       "publishDate": null,
       "url": "https://www.talkinbroadway.com/world/Salome.html",
       "findings": [
@@ -75228,7 +75226,7 @@
     {
       "showId": "schmigadoon-2026",
       "file": "timeout--unknown.json",
-      "score": 78,
+      "score": 80,
       "publishDate": "2026-04-23",
       "url": "https://www.timeout.com/newyork/theater/schmigadoon",
       "findings": [
@@ -76511,7 +76509,7 @@
     },
     {
       "showId": "spring-awakening-2015",
-      "file": "wsj--unknown.json",
+      "file": "wsj--lizzie-simon.json",
       "score": null,
       "publishDate": null,
       "url": "https://www.wsj.com/articles/spring-awakening-reimagined-and-a-new-season-of-dance-1442792731?gaa_at=eafs&gaa_n=AWEtsqeK8uHd9joBgQoDVW2XX143b9cl55hWRbOcV3wn8m6eZqq_5LpxRJSn&gaa_ts=69d03acf&gaa_sig=CU6qIfelQsTTaERymS7kvGdCkTZgpbVilVdmHlqG6w_nWvC-DSUsccuQTNDS5O2QubYaAZ8U6xLmAdj5jTX7Pw%3D%3D",
@@ -76805,7 +76803,7 @@
     },
     {
       "showId": "still-no-idea-west-end-2018",
-      "file": "guardian--unknown.json",
+      "file": "guardian--brian-logan.json",
       "score": 82,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2018/nov/08/still-no-idea-review-royal-court-london-lisa-hammond-rachael-spence",
@@ -76931,7 +76929,7 @@
     },
     {
       "showId": "stories-west-end-2018",
-      "file": "guardian--unknown.json",
+      "file": "guardian--susannah-clapp.json",
       "score": null,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2018/oct/20/company-sondheim-gielgud-review-measure-for-measure-donmar-stories-nina-raine-national",
@@ -80998,20 +80996,6 @@
       ]
     },
     {
-      "showId": "the-frogs-2004",
-      "file": "whatsonstage--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.whatsonstage.com/news/the-frogs-at-southwark-playhouse-borough-review_1679310/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "the-girl-who-fell-west-end-2019",
       "file": "whatsonstage--daniel-perks.json",
       "score": 77,
@@ -84531,7 +84515,7 @@
     {
       "showId": "the-story-west-end-2026",
       "file": "broadwayworld--clementine-scott.json",
-      "score": 58,
+      "score": 57,
       "publishDate": "2026-09-03",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-STORY-National-Theatre-20260903",
       "findings": [
@@ -84573,7 +84557,7 @@
     {
       "showId": "the-story-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-09-04",
       "url": "https://www.theguardian.com/stage/2026/sep/04/the-story-review-letitia-wright-national-theatre-london",
       "findings": [
@@ -84656,7 +84640,7 @@
     {
       "showId": "the-story-west-end-2026",
       "file": "londontheatre1--unknown.json",
-      "score": 56,
+      "score": 55,
       "publishDate": "2026-09-03",
       "url": "https://www.londontheatre1.com/reviews/the-story-national-theatre/",
       "findings": [
@@ -84793,7 +84777,7 @@
     {
       "showId": "the-story-west-end-2026",
       "file": "west-end-wilma--westendwilma.json",
-      "score": 79,
+      "score": 81,
       "publishDate": "2026-09-05",
       "url": "https://westendwilma.com/review-the-story-national-theatre-2026/",
       "findings": [
@@ -85380,7 +85364,7 @@
     {
       "showId": "the-woman-in-white-2005",
       "file": "timeout--unknown.json",
-      "score": null,
+      "score": 25,
       "publishDate": null,
       "url": "https://www.timeout.com/newyork/theater/the-woman-in-white",
       "findings": [
