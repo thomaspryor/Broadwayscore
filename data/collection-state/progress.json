@@ -126,32 +126,24 @@
     "rent-west-end-2026/financialtimes--sarah-hemming.json",
     "into-the-woods-noel-coward-west-end-2026/london-theatre-reviews--unknown.json",
     "bull-off-west-end-2026/whatsonstage--unknown.json",
-    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
-    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/the-scotsman--david-hepburn.json",
-    "mystic-pizza-tour-2026/talkinbroadway--arthur-dorman.json",
-    "la-boheme-off-broadway-2026/parterre-box--unknown.json",
-    "delirium-off-broadway-2026/brooklyneagle--brooklyn-eagle-staff.json",
-    "cosi-fan-tutte-off-broadway-2026/bachtrack--susan-stempleski.json",
-    "macbeth-off-broadway-2026/thewrap--robert-hofler.json",
-    "darkling-off-west-end-2026/thestage--holly-omahony.json",
-    "golden-boy-off-west-end-2026/thestage--dave-fargnoli.json",
-    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/off-off-online--deirdre-donovan.json",
-    "man-to-man-west-end-2026/deadline--katie-campione.json",
-    "man-to-man-west-end-2026/deadline--pete-hammond.json",
-    "man-to-man-west-end-2026/carlwoodward--carl-woodward.json",
-    "man-to-man-west-end-2026/latimes--alexandra-del-rosario.json",
-    "man-to-man-west-end-2026/plays-to-see--tim-hochstrasser.json",
-    "jane-eyre-off-west-end-2026/broadwayworld--stephi-wild.json",
-    "as-you-like-it-globe-west-end-2026/guardian--miriam-gillinson.json",
-    "white-rabbit-red-rabbit-west-end-2026/guardian--david-jays.json",
-    "white-rabbit-red-rabbit-west-end-2026/thestage--dave-fargnoli.json",
-    "white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json",
-    "white-rabbit-red-rabbit-west-end-2026/whatsonstage--alex-wood.json",
-    "beetlejuice-west-end-2026/guardian--chris-wiegand.json",
-    "beetlejuice-west-end-2026/amny--matt-windman.json",
-    "the-rocky-horror-show-2026/thereviewshub--daniel-wood.json",
-    "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
-    "the-rocky-horror-show-2026/sfgate--lily-janiak.json"
+    "the-second-best-school-shooting-off-broadway-2026/theatreinla--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/theatermania--zachary-stewart.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/timeout--unknown.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/culturesauce--thom-geier.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--roma-torre.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/talkinbroadway--kimberly-ramirez.json",
+    "fish-off-broadway-2026/timeout--unknown.json",
+    "fish-off-broadway-2026/exeunt-magazine--unknown.json",
+    "a-ghost-in-your-ear-off-broadway-2026/timeout--unknown.json",
+    "a-ghost-in-your-ear-off-broadway-2026/talkinbroadway--unknown.json",
+    "triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+    "soon-off-broadway-2026/latimes--lucas-villa.json",
+    "soon-off-broadway-2026/playbill--unknown.json",
+    "slam-frank-off-broadway-2026/timeout--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -208,7 +200,9 @@
       "avenue-q-west-end-2026/britishtheatrecom--susan-novak.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "the-second-best-school-shooting-off-broadway-2026/theatreindc--unknown.json",
@@ -279,6 +273,47 @@
     ]
   },
   "startTime": "2026-10-17T12:06:47.640Z",
-  "lastProcessed": "avenue-q-west-end-2026/britishtheatrecom--susan-novak.json",
-  "log": []
+  "lastProcessed": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json",
+  "log": [
+    {
+      "t": "2026-10-17T13:22:11.073Z",
+      "event": "bb-session",
+      "session": "8b8f01f4",
+      "url": "https://www.talkinbroadway.com/page/ob/10_14_26b.html"
+    },
+    {
+      "t": "2026-10-17T13:22:11.795Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-17T13:22:38.911Z",
+      "event": "bb-session",
+      "session": "7a54ec54",
+      "url": "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/attachment/alyssa-may-go"
+    },
+    {
+      "t": "2026-10-17T13:22:47.414Z",
+      "event": "bb-session",
+      "session": "c4ddd2ba",
+      "url": "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/attachment/alyssa-may-go"
+    },
+    {
+      "t": "2026-10-17T13:25:12.388Z",
+      "event": "bb-session",
+      "session": "95684269",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-17T13:26:23.807Z",
+      "event": "bb-session",
+      "session": "b6f8cb28",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654594"
+    },
+    {
+      "t": "2026-10-17T13:26:24.441Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }

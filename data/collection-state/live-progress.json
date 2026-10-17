@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-10-17T13:19:17.417Z",
-  "processed": 125,
-  "failed": 67,
-  "successRate": "65.1%",
+  "updatedAt": "2026-10-17T13:28:25.196Z",
+  "processed": 61,
+  "failed": 59,
+  "successRate": "50.8%",
   "tierBreakdown": {
     "playwright": 61,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 15,
     "scrapingbee": 5,
@@ -14,6 +14,47 @@
     "archiveToday": 0,
     "archive": 41
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-10-17T13:22:11.073Z",
+      "event": "bb-session",
+      "session": "8b8f01f4",
+      "url": "https://www.talkinbroadway.com/page/ob/10_14_26b.html"
+    },
+    {
+      "t": "2026-10-17T13:22:11.795Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-17T13:22:38.911Z",
+      "event": "bb-session",
+      "session": "7a54ec54",
+      "url": "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/attachment/alyssa-may-go"
+    },
+    {
+      "t": "2026-10-17T13:22:47.414Z",
+      "event": "bb-session",
+      "session": "c4ddd2ba",
+      "url": "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/attachment/alyssa-may-go"
+    },
+    {
+      "t": "2026-10-17T13:25:12.388Z",
+      "event": "bb-session",
+      "session": "95684269",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-17T13:26:23.807Z",
+      "event": "bb-session",
+      "session": "b6f8cb28",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654594"
+    },
+    {
+      "t": "2026-10-17T13:26:24.441Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
