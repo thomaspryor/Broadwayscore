@@ -11,38 +11,58 @@ const fs = require('fs');
 const path = require('path');
 const { normalizeTitle } = require('./title-match');
 
-let cached = null;
-let byId = null;
+/**
+ * normalizeTitle() with "+" read as "and", so "Romeo + Juliet" and "Romeo and
+ * Juliet" compare equal here. Kept local: the shared normalizeTitle keeps them
+ * apart on purpose for scrapers matching distinct productions.
+ */
+function normalizeShowLabel(s) {
+  return normalizeTitle(String(s || '').replace(/\+/g, ' and '));
+}
 
-/** @returns {Set<string>} normalizeTitle() of each shows.json title */
-function knownShowTitles() {
-  if (cached) return cached;
-  cached = new Set();
+let titles = null; // Set of normalized titles
+let byId = null;   // Map showId -> title
+
+function load() {
+  if (titles && byId) return;
+  const t = new Set();
+  const m = new Map();
   try {
     const raw = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'shows.json'), 'utf8'));
     for (const s of (raw.shows || raw)) {
-      const t = s && normalizeTitle(s.title || '');
-      if (t) cached.add(t);
+      if (!s) continue;
+      if (s.id) m.set(s.id, s.title || '');
+      const n = normalizeShowLabel(s.title);
+      if (n) t.add(n);
     }
   } catch { /* shows.json unavailable: no known titles */ }
-  return cached;
+  if (!titles) titles = t;
+  if (!byId) byId = m;
+}
+
+/** @returns {Set<string>} normalizeShowLabel() of each shows.json title */
+function knownShowTitles() {
+  load();
+  return titles;
 }
 
 /** shows.json title for a show id, or '' when unknown. */
 function showTitleForId(showId) {
-  if (!byId) {
-    byId = new Map();
-    try {
-      const raw = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'shows.json'), 'utf8'));
-      for (const s of (raw.shows || raw)) if (s && s.id) byId.set(s.id, s.title || '');
-    } catch { /* shows.json unavailable */ }
-  }
+  load();
   return (showId && byId.get(showId)) || '';
 }
 
-/** Tests: replace the set with these titles (normalized here); null reloads from disk. */
-function setKnownShowTitlesForTest(titles) {
-  cached = titles ? new Set(titles.map(normalizeTitle).filter(Boolean)) : null;
+/**
+ * Tests: replace the known-title set with these titles (normalized here),
+ * leaving the id lookup alone; null drops both caches so they reload from disk.
+ */
+function setKnownShowTitlesForTest(list) {
+  if (list) {
+    titles = new Set(list.map(normalizeShowLabel).filter(Boolean));
+  } else {
+    titles = null;
+    byId = null;
+  }
 }
 
-module.exports = { knownShowTitles, showTitleForId, setKnownShowTitlesForTest };
+module.exports = { knownShowTitles, showTitleForId, normalizeShowLabel, setKnownShowTitlesForTest };
