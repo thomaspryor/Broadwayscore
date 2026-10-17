@@ -450,20 +450,6 @@
     "queuedAt": "2026-10-17T14:51:04.699Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
-    "title": "Review gap — \"ANON – a tempest at our kitchen table\" missing 1 cited review(s)",
-    "description": "ANON – a tempest at our kitchen table (anon-a-tempest-at-our-kitchen-table-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=anon-a-tempest-at-our-kitchen-table-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-17T14:24:41.949Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:de-profundis-off-west-end-2026",
     "title": "Review gap — \"De Profundis\" missing 8 cited review(s)",
     "description": "De Profundis (de-profundis-off-west-end-2026): 8 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=de-profundis-off-west-end-2026 --checkpoint --ingest-missing",
@@ -730,5 +716,47 @@
       }
     ],
     "queuedAt": "2026-10-17T17:19:53.516Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:anne-washburns-anon-off-broadway-2026",
+    "title": "Review gap — \"Anne Washburn's ANON\" missing 2 cited review(s)",
+    "description": "Anne Washburn's ANON (anne-washburns-anon-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=anne-washburns-anon-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-17T17:50:23.177Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:jane-eyre-rose-kingston-off-west-end-2026",
+    "title": "Review gap — \"Jane Eyre\" missing 5 cited review(s)",
+    "description": "Jane Eyre (jane-eyre-rose-kingston-off-west-end-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=jane-eyre-rose-kingston-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-17T17:50:23.411Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-bodyguard-tour-2026",
+    "title": "Review gap — \"The Bodyguard\" missing 2 cited review(s)",
+    "description": "The Bodyguard (the-bodyguard-tour-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-bodyguard-tour-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-17T17:50:23.640Z"
   }
 ]

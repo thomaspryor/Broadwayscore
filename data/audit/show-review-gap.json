@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-17T14:50:53.502Z",
+  "generatedAt": "2026-10-17T17:50:22.652Z",
   "windowDays": 1095,
-  "targets": 684,
-  "auditedThisRun": 18,
-  "carriedForward": 728,
+  "targets": 668,
+  "auditedThisRun": 11,
+  "carriedForward": 738,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 423,
-    "missingCurrentRun": 865,
+    "withGap": 430,
+    "missingCurrentRun": 878,
     "totalCitedNoUrl": 7,
-    "totalFlaggedMisses": 968,
-    "totalRecoverable": 6,
-    "totalRecovered": 15,
+    "totalFlaggedMisses": 979,
+    "totalRecoverable": 12,
+    "totalRecovered": 21,
     "humanExcluded": 1,
-    "automatedExcluded": 137,
-    "automatedExcludedListed": 135,
-    "priorProductionCitations": 5160
+    "automatedExcluded": 150,
+    "automatedExcludedListed": 147,
+    "priorProductionCitations": 5171
   },
   "results": [
     {
@@ -11485,6 +11485,252 @@
         "candidateCount": 13
       },
       "computedAt": "2026-08-27T01:23:51.910Z"
+    },
+    {
+      "showId": "anne-washburns-anon-off-broadway-2026",
+      "title": "Anne Washburn's ANON",
+      "openingDate": "2026-10-15",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-Anne-Washburns-ANON-Opens-at-MCC-20261015"
+      ],
+      "aggregatorListedUrls": [
+        "https://culturesauce.com/anon-anne-washburn-off-broadway-review/",
+        "https://www.nytimes.com/2026/10/14/theater/anon-review-anne-washburn.html",
+        "https://thewindowcard.com/anon-ann-washburn-analysis/",
+        "https://www.vulture.com/article/anon-play-washburn-mcc-theater-review.html"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://culturesauce.com/anon-anne-washburn-off-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": "culturesauce"
+        },
+        {
+          "url": "https://www.nytimes.com/2026/10/14/theater/anon-review-anne-washburn.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "serpCensus": true
+        },
+        {
+          "url": "https://thewindowcard.com/anon-ann-washburn-analysis/",
+          "host": "thewindowcard.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.vulture.com/article/anon-play-washburn-mcc-theater-review.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"Anne Washburn's ANON\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Anne Washburn's ANON\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Anne Washburn's ANON MCC Theater review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Anne Washburn's ANON MCC Theater review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Anne Washburn's ANON MCC Theater review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 4,
+        "queriesTotal": 4,
+        "resultCount": 3,
+        "error": null
+      },
+      "candidatesRejected": {
+        "count": 302,
+        "byReason": {
+          "not-http-url": 49,
+          "non-review-host": 29,
+          "aggregator-internal-nav": 211,
+          "aggregator-section-root": 6,
+          "roundup-page": 3,
+          "venue-production-page": 1,
+          "ticketing-listing": 2,
+          "census-junk-host": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://culturesauce.com/anon-anne-washburn-off-broadway-review/",
+          "host": "culturesauce.com",
+          "outletId": "culturesauce",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "anne-washburns-anon-off-broadway-2026: https://culturesauce.com/anon-anne-washburn-off-broadway-review/ is already owned by anon-a-tempest-at-our-kitchen-table-off-broadway-2026 — one of the two is contaminated. Inspect data/review-texts/anon-a-tempest-at-our-kitchen-table-off-broadway-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "https://www.nytimes.com/2026/10/14/theater/anon-review-anne-washburn.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://thewindowcard.com/anon-ann-washburn-analysis/",
+          "host": "thewindowcard.com",
+          "outletId": "thewindowcard",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "⚠️  provisional outlet \"thewindowcard\" (not in registry) — onboard to outlet-registry.json after rev"
+        },
+        {
+          "url": "https://www.vulture.com/article/anon-play-washburn-mcc-theater-review.html",
+          "host": "vulture.com",
+          "outletId": "vulture",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "culturesauce",
+            "outlet": "culturesauce",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://culturesauce.com/anon-anne-washburn-off-broadway-review/"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2026/10/14/theater/anon-review-anne-washburn.html"
+          },
+          {
+            "outletId": "thewindowcard.com",
+            "outlet": "thewindowcard.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://thewindowcard.com/anon-ann-washburn-analysis/"
+          },
+          {
+            "outletId": "vulture",
+            "outlet": "vulture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.vulture.com/article/anon-play-washburn-mcc-theater-review.html"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://culturesauce.com/anon-anne-washburn-off-broadway-review/",
+            "outletId": "culturesauce",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/10/14/theater/anon-review-anne-washburn.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          },
+          {
+            "url": "https://thewindowcard.com/anon-ann-washburn-analysis/",
+            "outletId": "thewindowcard.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/anon-play-washburn-mcc-theater-review.html",
+            "outletId": "vulture",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 4
+      },
+      "computedAt": "2026-10-17T17:50:22.652Z"
     },
     {
       "showId": "annie-wobbler-revisited-off-west-end-2026",
@@ -23916,7 +24162,12 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-17T10:09:43.451Z"
+      "computedAt": "2026-10-17T10:09:43.451Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-17T17:50:22.720Z",
+        "lastAt": "2026-10-17T17:50:22.720Z"
+      }
     },
     {
       "showId": "bone-wars-a-new-musical-off-broadway-2026",
@@ -30897,7 +31148,12 @@
         "liveCount": 7,
         "candidateCount": 10
       },
-      "computedAt": "2026-10-17T14:24:41.672Z"
+      "computedAt": "2026-10-17T14:24:41.672Z",
+      "quarantine": {
+        "nextState": "complete:1:1",
+        "since": "2026-10-17T17:50:22.720Z",
+        "lastAt": "2026-10-17T17:50:22.720Z"
+      }
     },
     {
       "showId": "call-me-izzy-2025",
@@ -46822,7 +47078,9 @@
         "https://everything-theatre.co.uk/2023/01/review-dirty-dancing-dominion-theatre-2/",
         "https://www.londontheatre.co.uk/reviews/dirty-dancing-review-dominion-theatre",
         "https://shystrangemanic.com/2022/02/dirty-dancing-at-the-dominion-theatre.html",
-        "https://www.whatsonstage.com/london-theatre/reviews/dirty-dancing-dominion-2022-west-end-review_55891.html"
+        "https://www.whatsonstage.com/london-theatre/reviews/dirty-dancing-dominion-2022-west-end-review_55891.html",
+        "https://www.lastminutetheatretickets.com/review-of-dirty-dancing-the-classic-story-on-stage/",
+        "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462"
       ],
       "dirFiles": 9,
       "dirClean": 1,
@@ -46841,6 +47099,14 @@
           "knownOutletId": "shy-strange-manic",
           "priorRun": true,
           "priorRunSource": "show-score-url-year"
+        },
+        {
+          "url": "https://www.lastminutetheatretickets.com/review-of-dirty-dancing-the-classic-story-on-stage/",
+          "host": "lastminutetheatretickets.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2013-09-13",
+          "serpCensus": true
         }
       ],
       "dirOnly": [
@@ -46945,6 +47211,29 @@
           "priorRun": true,
           "priorRunSource": "flagged-file-date:February 9th, 2022",
           "reverify": false
+        },
+        {
+          "url": "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462",
+          "host": "edinburghguide.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "edinburghguide--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -46993,15 +47282,80 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Dirty Dancing: The Classic Story on Stage\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Dirty Dancing: The Classic Story on Stage\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Dirty Dancing: The Classic Story on Stage\" review capital",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Dirty Dancing: The Classic Story on Stage Capital Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Dirty Dancing: The Classic Story on Stage Capital Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Dirty Dancing: The Classic Story on Stage Capital Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 32,
+        "byReason": {
+          "non-review-host": 21,
+          "aggregator-internal-nav": 3,
+          "census-junk-host": 2,
+          "ticketing-reseller": 2,
+          "write-path-blocked": 2,
+          "bare-host": 1,
+          "ticket-seller-product-page": 1
+        }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -47015,20 +47369,42 @@
           "host": "shystrangemanic.com",
           "priorRun": true,
           "reason": "prior-run"
+        },
+        {
+          "url": "https://www.lastminutetheatretickets.com/review-of-dirty-dancing-the-classic-story-on-stage/",
+          "host": "lastminutetheatretickets.com",
+          "priorRun": true,
+          "reason": "prior-run"
         }
       ],
       "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "edinburghguide.com",
+            "outlet": "edinburghguide.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462",
+            "outletId": "edinburghguide.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 1
       },
-      "computedAt": "2026-10-17T10:09:43.451Z"
+      "computedAt": "2026-10-17T17:50:22.652Z"
     },
     {
       "showId": "dirty-dancing-tour-2026",
@@ -48136,18 +48512,33 @@
     {
       "showId": "dog-mom-off-west-end-2026",
       "title": "Dog Mom",
-      "openingDate": null,
-      "status": "previews",
+      "openingDate": "2026-10-17",
+      "status": "open",
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.londonboxoffice.co.uk/news/post/dog-mom-southwark-playhouse-borough-review",
-        "https://theqr.co.uk/2026/10/13/canine-logic-and-reinvention-in-southwarks-dog-mom/"
+        "https://www.londontheatre1.com/reviews/dog-mom-southwark-playhouse-borough/",
+        "https://theqr.co.uk/2026/10/13/canine-logic-and-reinvention-in-southwarks-dog-mom/",
+        "https://thespyinthestalls.com/2026/10/dog-mom/",
+        "https://www.london-unattached.com/dog-mom-southwark-playhouse/",
+        "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn",
+        "https://readaboutstuff.com/2026/09/29/interview-ajay-chowdhury-chats-to-read-about-stuff-ahead-of-dog-mom/",
+        "https://shouldgoto.com/theatre/dog-mom",
+        "https://www.uktw.co.uk/London/Southwark-Playhouse-Borough/Play/Dog-Mom/L536895171/",
+        "https://dogforum.co.uk/threads/forum-competition-award-winning-comedy-dog-mom-at-londons-southwark-playhouse.97692/"
       ],
-      "dirFiles": 5,
-      "dirClean": 1,
-      "inReviewsJson": 1,
-      "missing": [],
+      "dirFiles": 7,
+      "dirClean": 3,
+      "inReviewsJson": 3,
+      "missing": [
+        {
+          "url": "https://www.london-unattached.com/dog-mom-southwark-playhouse/",
+          "host": "london-unattached.com",
+          "knownOutletId": "london-unattached",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [
         {
@@ -48164,6 +48555,75 @@
               "file": "theqr--will-quinn.json",
               "flag": "clean",
               "urlInDir": "https://theqr.co.uk/2026/10/13/canine-logic-and-reinvention-in-southwarks-dog-mom/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn",
+          "host": "flickermagazine.art",
+          "knownOutletId": "flicker-magazine",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "flicker-magazine--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://readaboutstuff.com/2026/09/29/interview-ajay-chowdhury-chats-to-read-about-stuff-ahead-of-dog-mom/",
+          "host": "readaboutstuff.com",
+          "knownOutletId": "readaboutstuff",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "readaboutstuff--dan-english.json",
+              "flag": "clean",
+              "urlInDir": "https://readaboutstuff.com/2026/09/29/interview-ajay-chowdhury-chats-to-read-about-stuff-ahead-of-dog-mom/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://dogforum.co.uk/threads/forum-competition-award-winning-comedy-dog-mom-at-londons-southwark-playhouse.97692/",
+          "host": "dogforum.co.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "dogforum--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://dogforum.co.uk/threads/forum-competition-award-winning-comedy-dog-mom-at-londons-southwark-playhouse.97692/"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -48190,7 +48650,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0
+            "fetchErrors": 2
           },
           "lbo-roundup": {
             "found": true,
@@ -48227,16 +48687,16 @@
       "serpCensus": {
         "ran": true,
         "complete": true,
-        "query": "\"Dog Mom\" West End review",
+        "query": "\"Dog Mom\" West End review 2026",
         "queryStatus": [
           {
             "arm": "primary",
-            "query": "\"Dog Mom\" West End review",
+            "query": "\"Dog Mom\" West End review 2026",
             "page": 0,
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 4,
             "error": null
           },
           {
@@ -48246,7 +48706,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -48256,7 +48716,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -48266,7 +48726,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 3,
             "error": null
           },
           {
@@ -48276,35 +48736,98 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 2,
+        "resultCount": 10,
         "error": null
       },
       "candidatesRejected": {
-        "count": 27,
+        "count": 25,
         "byReason": {
-          "non-review-host": 24,
-          "aggregator-internal-nav": 2,
+          "non-review-host": 17,
+          "aggregator-internal-nav": 3,
+          "census-junk-host": 3,
+          "write-path-blocked": 1,
           "review-hub-page": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
-      "unextractable": [],
+      "automatedExcludedListed": 4,
+      "unextractable": [
+        {
+          "url": "https://shouldgoto.com/theatre/dog-mom",
+          "host": "shouldgoto.com",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "zeroCharAttempts": 4
+        },
+        {
+          "url": "https://www.uktw.co.uk/London/Southwark-Playhouse-Borough/Play/Dog-Mom/L536895171/",
+          "host": "uktw.co.uk",
+          "knownOutletId": "uktw",
+          "serpCensus": true,
+          "zeroCharAttempts": 4
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.london-unattached.com/dog-mom-southwark-playhouse/",
+          "host": "london-unattached.com",
+          "outletId": "london-unattached",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "london-unattached",
+            "outlet": "london-unattached",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.london-unattached.com/dog-mom-southwark-playhouse/"
+          },
           {
             "outletId": "theqr",
             "outlet": "theqr",
             "critic": "Unknown",
             "stars": null,
             "url": "https://theqr.co.uk/2026/10/13/canine-logic-and-reinvention-in-southwarks-dog-mom/"
+          },
+          {
+            "outletId": "flicker-magazine",
+            "outlet": "flicker-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn"
+          },
+          {
+            "outletId": "readaboutstuff",
+            "outlet": "readaboutstuff",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://readaboutstuff.com/2026/09/29/interview-ajay-chowdhury-chats-to-read-about-stuff-ahead-of-dog-mom/"
+          },
+          {
+            "outletId": "dogforum.co.uk",
+            "outlet": "dogforum.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://dogforum.co.uk/threads/forum-competition-award-winning-comedy-dog-mom-at-londons-southwark-playhouse.97692/"
           }
         ],
         "suppressedMissing": [],
@@ -48316,18 +48839,58 @@
             "firstSeenAt": "2026-10-17T04:53:29.079Z"
           },
           {
+            "url": "https://www.londontheatre1.com/reviews/dog-mom-southwark-playhouse-borough/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          },
+          {
+            "url": "https://thespyinthestalls.com/2026/10/dog-mom/",
+            "outletId": "thespyinthestalls.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          },
+          {
+            "url": "https://www.london-unattached.com/dog-mom-southwark-playhouse/",
+            "outletId": "london-unattached",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          },
+          {
             "url": "https://theqr.co.uk/2026/10/13/canine-logic-and-reinvention-in-southwarks-dog-mom/",
             "outletId": "theqr",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-16T01:58:23.533Z"
+          },
+          {
+            "url": "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn",
+            "outletId": "flicker-magazine",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          },
+          {
+            "url": "https://readaboutstuff.com/2026/09/29/interview-ajay-chowdhury-chats-to-read-about-stuff-ahead-of-dog-mom/",
+            "outletId": "readaboutstuff",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          },
+          {
+            "url": "https://dogforum.co.uk/threads/forum-competition-award-winning-comedy-dog-mom-at-londons-southwark-playhouse.97692/",
+            "outletId": "dogforum.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 1,
-        "candidateCount": 2
+        "liveCount": 3,
+        "candidateCount": 8
       },
-      "computedAt": "2026-10-17T11:28:25.970Z"
+      "computedAt": "2026-10-17T17:50:22.652Z"
     },
     {
       "showId": "doll-day-afternoon-off-broadway-2026",
@@ -49020,7 +49583,12 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-17T11:28:25.970Z"
+      "computedAt": "2026-10-17T11:28:25.970Z",
+      "quarantine": {
+        "nextState": "incomplete:0:2",
+        "since": "2026-10-17T17:50:22.720Z",
+        "lastAt": "2026-10-17T17:50:22.720Z"
+      }
     },
     {
       "showId": "dracula-west-end-2025",
@@ -57599,13 +58167,12 @@
           "write-path-blocked": 2,
           "ticketing-listing": 1,
           "not-http-url": 233,
-          "production-database-listing": 2,
+          "production-database-listing": 3,
           "aggregator-section-root": 22,
           "bare-host": 4,
           "unparseable-url": 1,
           "roundup-page": 3,
-          "show-listing-page": 1,
-          "production-database-listing": 3
+          "show-listing-page": 1
         }
       },
       "dedupedVariants": [
@@ -83139,7 +83706,12 @@
         "liveCount": 1,
         "candidateCount": 8
       },
-      "computedAt": "2026-10-17T11:28:25.970Z"
+      "computedAt": "2026-10-17T11:28:25.970Z",
+      "quarantine": {
+        "nextState": "incomplete:1:7",
+        "since": "2026-10-17T17:50:22.720Z",
+        "lastAt": "2026-10-17T17:50:22.720Z"
+      }
     },
     {
       "showId": "high-society-west-end-2026",
@@ -119718,11 +120290,10 @@
           "write-path-blocked": 1,
           "ticketing-listing": 1,
           "not-http-url": 61,
-          "production-database-listing": 9,
+          "production-database-listing": 10,
           "aggregator-section-root": 11,
           "bare-host": 3,
-          "roundup-page": 6,
-          "production-database-listing": 10
+          "roundup-page": 6
         }
       },
       "dedupedVariants": [],
@@ -130336,8 +130907,8 @@
         "https://www.myviewfromthestalls.co.uk/post/review-murder-in-the-cathedral-oxford-playhouse",
         "https://www.theatreroyal.org.uk/events/murder-in-the-cathedral/",
         "https://ayoungishperspective.co.uk/2026/04/27/review-murder-in-the-cathedral/",
-        "https://fairypoweredproductions.com/orange-tree-theatre-announce-full-casting-for-t-s-eliots-murder-in-the-cathedral-at-richmonds-st-john-the-divine-church/",
         "https://susanelkin.co.uk/articles/murder-cathedral-susan-elkin-reviews/",
+        "https://fairypoweredproductions.com/orange-tree-theatre-announce-full-casting-for-t-s-eliots-murder-in-the-cathedral-at-richmonds-st-john-the-divine-church/",
         "https://www.visitrichmond.co.uk/outdoor-activities/t-s-eliots-murder-in-the-cathedral-p2468781",
         "https://tseliot.com/editorials/murder-in-the-cathedral",
         "https://www.whatsonstage.com/news/site-specific-murder-in-the-cathedral-reveals-cast-joining-david-suchet_1728795/",
@@ -130581,7 +131152,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0
+            "fetchErrors": 2
           },
           "lbo-roundup": {
             "found": false,
@@ -130672,14 +131243,14 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 32,
+        "count": 31,
         "byReason": {
           "non-review-host": 19,
           "aggregator-internal-nav": 3,
-          "bare-host": 2,
           "write-path-blocked": 3,
+          "bare-host": 2,
           "news-article": 1,
-          "non-review-path": 3,
+          "non-review-path": 2,
           "event-listings-page": 1
         }
       },
@@ -130879,7 +131450,7 @@
         "liveCount": 0,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-17T11:28:25.970Z"
+      "computedAt": "2026-10-17T17:50:22.652Z"
     },
     {
       "showId": "murder-she-didnt-write-west-end-2025",
@@ -144432,9 +145003,9 @@
       "candidatesRejected": {
         "count": 281,
         "byReason": {
+          "not-http-url": 35,
           "non-review-host": 15,
           "aggregator-internal-nav": 227,
-          "not-http-url": 35,
           "aggregator-section-root": 4
         }
       },
@@ -144514,7 +145085,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-17T10:09:43.451Z"
+      "computedAt": "2026-10-17T17:50:22.652Z"
     },
     {
       "showId": "our-sinatra-a-musical-celebration-off-broadway-2026",
@@ -150954,7 +151525,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 2,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -151005,11 +151576,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 24,
+        "count": 36,
         "byReason": {
-          "non-review-host": 21,
+          "non-review-host": 28,
           "aggregator-internal-nav": 2,
-          "venue-production-page": 1
+          "venue-production-page": 2,
+          "census-junk-host": 2,
+          "write-path-blocked": 2
         }
       },
       "dedupedVariants": [],
@@ -151023,7 +151596,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-17T10:09:43.451Z"
+      "computedAt": "2026-10-17T17:50:22.652Z"
     },
     {
       "showId": "queen-versailles-2025",
@@ -160121,7 +160694,7 @@
         "liveCount": 6,
         "candidateCount": 7
       },
-      "computedAt": "2026-10-17T10:09:43.451Z"
+      "computedAt": "2026-10-17T17:50:22.652Z"
     },
     {
       "showId": "schtick-a-pole-in-it-off-broadway-2026",
@@ -160995,7 +161568,12 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-10-17T10:09:43.451Z"
+      "computedAt": "2026-10-17T10:09:43.451Z",
+      "quarantine": {
+        "nextState": "incomplete:0:1",
+        "since": "2026-10-17T17:50:22.720Z",
+        "lastAt": "2026-10-17T17:50:22.720Z"
+      }
     },
     {
       "showId": "seagull-true-story-off-broadway-2026",
@@ -172537,7 +173115,12 @@
         "liveCount": 10,
         "candidateCount": 13
       },
-      "computedAt": "2026-10-17T14:24:41.672Z"
+      "computedAt": "2026-10-17T14:24:41.672Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-17T17:50:22.720Z",
+        "lastAt": "2026-10-17T17:50:22.720Z"
+      }
     },
     {
       "showId": "stranger-things-2024",
@@ -174324,7 +174907,12 @@
         "liveCount": 2,
         "candidateCount": 7
       },
-      "computedAt": "2026-10-17T11:28:25.970Z"
+      "computedAt": "2026-10-17T11:28:25.970Z",
+      "quarantine": {
+        "nextState": "incomplete:2:6",
+        "since": "2026-10-17T17:50:22.720Z",
+        "lastAt": "2026-10-17T17:50:22.720Z"
+      }
     },
     {
       "showId": "suffs-2024",
@@ -180972,7 +181560,12 @@
         "liveCount": 2,
         "candidateCount": 8
       },
-      "computedAt": "2026-10-17T11:28:25.970Z"
+      "computedAt": "2026-10-17T11:28:25.970Z",
+      "quarantine": {
+        "nextState": "incomplete:2:7",
+        "since": "2026-10-17T17:50:22.720Z",
+        "lastAt": "2026-10-17T17:50:22.720Z"
+      }
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
@@ -184770,7 +185363,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-17T11:28:25.970Z"
+      "computedAt": "2026-10-17T17:50:22.652Z"
     },
     {
       "showId": "the-enormous-crocodile-west-end-2026",
@@ -200483,7 +201076,12 @@
         "liveCount": 0,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-17T11:28:25.970Z"
+      "computedAt": "2026-10-17T11:28:25.970Z",
+      "quarantine": {
+        "nextState": "incomplete:0:7",
+        "since": "2026-10-17T17:50:22.720Z",
+        "lastAt": "2026-10-17T17:50:22.720Z"
+      }
     },
     {
       "showId": "the-misanthrope-west-end-2026",
@@ -207948,35 +208546,442 @@
       "status": "open",
       "category": "regional",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [],
+      "aggregatorListedUrls": [
+        "https://www.theguardian.com/stage/2026/oct/11/the-prime-of-miss-jean-brodie-review-muriel-spark-royal-lyceum-edinburgh-tour",
+        "https://list.co.uk/news/the-prime-of-miss-jean-brodie-theatre-review-sparkling-ambiguity-49282",
+        "https://www.telegraph.co.uk/theatre/what-to-see/the-prime-of-miss-jean-brodie-national-theatre-of-scotland/",
+        "https://www.whatsonstage.com/news/the-prime-of-miss-jean-brodie-at-royal-lyceum-theatre-and-on-tour-review_1734843/",
+        "https://uktheatrenetwork.com/2026/10/10/the-prime-of-miss-jean-brodie-at-the-royal-lyceum-theatre-edinburgh/",
+        "https://www.mixuptheatre.com/post/theatre-review-the-prime-of-miss-jean-brodie",
+        "https://www.scotsman.com/arts-and-culture/edinburgh-festivals/the-prime-of-miss-jean-brodie-review-lyceum-edinburgh-9279438",
+        "https://www.thetimes.com/culture/theatre-dance/article/the-prime-of-miss-jean-brodie-review-nk3mmsrbz",
+        "https://www.heraldscotland.com/life_style/26626439.review-prime-miss-jean-brodie-royal-lyceum-theatre-edinburgh/",
+        "https://www.reviewsgate.co.uk/reviews-archive-part-2/the-prime-of-miss-jean-brodie",
+        "https://ground.news/article/the-prime-of-miss-jean-brodie-review-spectacular",
+        "https://www.scotsman.com/arts-and-culture/the-prime-of-miss-jean-brodie-the-muriel-spark-fax-which-gave-playwright-go-ahead-for-radical-adaptation-9232721",
+        "https://www.aol.com/articles/ingenious-production-prime-miss-jean-115106000.html",
+        "https://theweek.com/culture-life/theatre/the-prime-of-miss-jean-brodie-review",
+        "https://www.express.co.uk/entertainment/theatre/978894/theatre-reviews-prime-miss-jean-brodie-finishing-picture",
+        "https://www.heraldscotland.com/news/26547748.prime-miss-jean-brodie-edinburgh-lyceum-need-know/"
+      ],
+      "dirFiles": 26,
+      "dirClean": 19,
+      "inReviewsJson": 20,
+      "missing": [
+        {
+          "url": "https://www.reviewsgate.co.uk/reviews-archive-part-2/the-prime-of-miss-jean-brodie",
+          "host": "reviewsgate.co.uk",
+          "knownOutletId": "reviewsgate",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2018-05-17",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.aol.com/articles/ingenious-production-prime-miss-jean-115106000.html",
+          "host": "aol.com",
+          "knownOutletId": "travel-aol",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.express.co.uk/entertainment/theatre/978894/theatre-reviews-prime-miss-jean-brodie-finishing-picture",
+          "host": "express.co.uk",
+          "knownOutletId": "sunday-express",
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "ayoungishperspective.co.uk",
+          "count": 1
+        },
+        {
+          "host": "bouquetsbrickbatsreviews.com",
+          "count": 1
+        },
+        {
+          "host": "britishtheatreguide.info",
+          "count": 1
+        },
+        {
+          "host": "corrblimey.uk",
+          "count": 1
+        },
+        {
+          "host": "northwestend.com",
+          "count": 1
+        },
+        {
+          "host": "playstosee.com",
+          "count": 1
+        },
+        {
+          "host": "theatreandtonic.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
+          "count": 1
+        },
+        {
+          "host": "thestage.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thestudentnews.co.uk",
+          "count": 1
+        },
+        {
+          "host": "westendbestfriend.co.uk",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://list.co.uk/news/the-prime-of-miss-jean-brodie-theatre-review-sparkling-ambiguity-49282",
+          "host": "list.co.uk",
+          "knownOutletId": "the-list",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "the-list--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://list.co.uk/news/the-prime-of-miss-jean-brodie-theatre-review-sparkling-ambiguity-49282"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2020-10-18",
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://www.scotsman.com/arts-and-culture/edinburgh-festivals/the-prime-of-miss-jean-brodie-review-lyceum-edinburgh-9279438",
+          "host": "scotsman.com",
+          "knownOutletId": "the-scotsman",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "the-scotsman--joyce-mcmillan.json",
+              "flag": "clean",
+              "urlInDir": "https://www.scotsman.com/arts-and-culture/edinburgh-festivals/the-prime-of-miss-jean-brodie-review-lyceum-edinburgh-9279438"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "contentTierInvalid"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://ground.news/article/the-prime-of-miss-jean-brodie-review-spectacular",
+          "host": "ground.news",
+          "knownOutletId": "ground",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "ground--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://ground.news/article/the-prime-of-miss-jean-brodie-review-spectacular"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://www.scotsman.com/arts-and-culture/the-prime-of-miss-jean-brodie-the-muriel-spark-fax-which-gave-playwright-go-ahead-for-radical-adaptation-9232721",
+          "host": "scotsman.com",
+          "knownOutletId": "the-scotsman",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "the-scotsman--jane-bradley.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.scotsman.com/arts-and-culture/the-prime-of-miss-jean-brodie-the-muriel-spark-fax-which-gave-playwright-go-ahead-for-radical-adaptation-9232721"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Prime of Miss Jean Brodie\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Prime of Miss Jean Brodie\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 5,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Prime of Miss Jean Brodie\" review lyceum",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Prime of Miss Jean Brodie Royal Lyceum Theatre, Edinburgh review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Prime of Miss Jean Brodie Royal Lyceum Theatre, Edinburgh review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Prime of Miss Jean Brodie Royal Lyceum Theatre, Edinburgh review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 16,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 19,
+        "byReason": {
+          "non-review-host": 14,
+          "aggregator-internal-nav": 4,
+          "census-junk-host": 1
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 3,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.reviewsgate.co.uk/reviews-archive-part-2/the-prime-of-miss-jean-brodie",
+          "host": "reviewsgate.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.aol.com/articles/ingenious-production-prime-miss-jean-115106000.html",
+          "host": "aol.com",
+          "outletId": "travel-aol",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "https://www.express.co.uk/entertainment/theatre/978894/theatre-reviews-prime-miss-jean-brodie-finishing-picture",
+          "host": "express.co.uk",
+          "outletId": "sunday-express",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "[review-write-guard] date-implausible: the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/sund"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "travel-aol",
+            "outlet": "travel-aol",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.aol.com/articles/ingenious-production-prime-miss-jean-115106000.html"
+          },
+          {
+            "outletId": "sunday-express",
+            "outlet": "sunday-express",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.express.co.uk/entertainment/theatre/978894/theatre-reviews-prime-miss-jean-brodie-finishing-picture"
+          },
+          {
+            "outletId": "the-scotsman",
+            "outlet": "the-scotsman",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.scotsman.com/arts-and-culture/edinburgh-festivals/the-prime-of-miss-jean-brodie-review-lyceum-edinburgh-9279438"
+          },
+          {
+            "outletId": "ground",
+            "outlet": "ground",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://ground.news/article/the-prime-of-miss-jean-brodie-review-spectacular"
+          },
+          {
+            "outletId": "the-scotsman",
+            "outlet": "the-scotsman",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.scotsman.com/arts-and-culture/the-prime-of-miss-jean-brodie-the-muriel-spark-fax-which-gave-playwright-go-ahead-for-radical-adaptation-9232721"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.theguardian.com/stage/2026/oct/11/the-prime-of-miss-jean-brodie-review-muriel-spark-royal-lyceum-edinburgh-tour",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          },
+          {
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-prime-of-miss-jean-brodie-national-theatre-of-scotland/",
+            "outletId": "telegraph.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/the-prime-of-miss-jean-brodie-at-royal-lyceum-theatre-and-on-tour-review_1734843/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          },
+          {
+            "url": "https://uktheatrenetwork.com/2026/10/10/the-prime-of-miss-jean-brodie-at-the-royal-lyceum-theatre-edinburgh/",
+            "outletId": "uktheatrenetwork.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          },
+          {
+            "url": "https://www.mixuptheatre.com/post/theatre-review-the-prime-of-miss-jean-brodie",
+            "outletId": "mixuptheatre.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          },
+          {
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/the-prime-of-miss-jean-brodie-review-nk3mmsrbz",
+            "outletId": "thetimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          },
+          {
+            "url": "https://www.heraldscotland.com/life_style/26626439.review-prime-miss-jean-brodie-royal-lyceum-theatre-edinburgh/",
+            "outletId": "heraldscotland.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          },
+          {
+            "url": "https://theweek.com/culture-life/theatre/the-prime-of-miss-jean-brodie-review",
+            "outletId": "theweek.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          },
+          {
+            "url": "https://www.heraldscotland.com/news/26547748.prime-miss-jean-brodie-edinburgh-lyceum-need-know/",
+            "outletId": "heraldscotland.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          },
+          {
+            "url": "https://www.aol.com/articles/ingenious-production-prime-miss-jean-115106000.html",
+            "outletId": "travel-aol",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          },
+          {
+            "url": "https://www.express.co.uk/entertainment/theatre/978894/theatre-reviews-prime-miss-jean-brodie-finishing-picture",
+            "outletId": "sunday-express",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          },
+          {
+            "url": "https://www.scotsman.com/arts-and-culture/edinburgh-festivals/the-prime-of-miss-jean-brodie-review-lyceum-edinburgh-9279438",
+            "outletId": "the-scotsman",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          },
+          {
+            "url": "https://ground.news/article/the-prime-of-miss-jean-brodie-review-spectacular",
+            "outletId": "ground",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          },
+          {
+            "url": "https://www.scotsman.com/arts-and-culture/the-prime-of-miss-jean-brodie-the-muriel-spark-fax-which-gave-playwright-go-ahead-for-radical-adaptation-9232721",
+            "outletId": "the-scotsman",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          }
+        ],
         "censusSchema": 3,
-        "liveCount": 0,
-        "candidateCount": 0
+        "liveCount": 8,
+        "candidateCount": 12
       },
-      "computedAt": "2026-10-17T11:28:25.970Z"
+      "computedAt": "2026-10-17T17:50:22.652Z"
     },
     {
       "showId": "the-producers-west-end-2025",
@@ -210701,7 +211706,12 @@
         "liveCount": 1,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-17T11:28:25.970Z"
+      "computedAt": "2026-10-17T11:28:25.970Z",
+      "quarantine": {
+        "nextState": "incomplete:1:8",
+        "since": "2026-10-17T17:50:22.720Z",
+        "lastAt": "2026-10-17T17:50:22.720Z"
+      }
     },
     {
       "showId": "the-secret-circus-musical-off-broadway-2026",
@@ -225257,7 +226267,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-17T11:28:25.970Z"
+      "computedAt": "2026-10-17T17:50:22.652Z"
     },
     {
       "showId": "two-strangers-bway-2025",
@@ -227302,8 +228312,8 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://stageraw.com/unconditional-a-musical-memoir/",
-        "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/"
+        "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/",
+        "https://stageraw.com/unconditional-a-musical-memoir/"
       ],
       "dirFiles": 1,
       "dirClean": 0,
@@ -227316,18 +228326,34 @@
           "priorRun": true,
           "priorRunSource": "pending-file-date:2025-02-18",
           "serpCensus": true
-        },
-        {
-          "url": "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/",
-          "host": "hollywoodtimes.net",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2025-02-22",
-          "serpCensus": true
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/",
+          "host": "theatreinla.com",
+          "knownOutletId": "theatreinla",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatreinla--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -227351,7 +228377,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 3,
             "accepted": 0,
             "error": null
           },
@@ -227372,7 +228398,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -227382,7 +228408,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
@@ -227392,18 +228418,17 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 26,
+        "count": 22,
         "byReason": {
-          "non-review-host": 18,
-          "aggregator-internal-nav": 3,
-          "bare-host": 1,
-          "write-path-blocked": 1,
+          "non-review-host": 16,
+          "aggregator-internal-nav": 1,
           "census-junk-host": 2,
-          "merch-store": 1
+          "write-path-blocked": 1,
+          "bare-host": 2
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -227411,26 +228436,36 @@
           "host": "stageraw.com",
           "priorRun": true,
           "reason": "prior-run"
-        },
-        {
-          "url": "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/",
-          "host": "hollywoodtimes.net",
-          "priorRun": true,
-          "reason": "prior-run"
         }
       ],
       "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "theatreinla",
+            "outlet": "theatreinla",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/",
+            "outletId": "theatreinla",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-17T17:50:22.652Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 1
       },
-      "computedAt": "2026-10-17T10:09:43.451Z"
+      "computedAt": "2026-10-17T17:50:22.652Z"
     },
     {
       "showId": "under-the-shadow-off-west-end-2026",

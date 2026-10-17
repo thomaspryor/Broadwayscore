@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-17T14:51:11.906Z",
+  "generatedAt": "2026-10-17T17:53:19.437Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -107,6 +107,11 @@
       "id": "nina-off-west-end-2026",
       "title": "Nina",
       "openingDate": "2026-10-12"
+    },
+    {
+      "id": "anne-washburns-anon-off-broadway-2026",
+      "title": "Anne Washburn's ANON",
+      "openingDate": "2026-10-15"
     }
   ],
   "skipped": [
@@ -129,6 +134,10 @@
   ],
   "feedsChecked": 73,
   "feedsFailed": [
+    {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
@@ -156,9 +165,13 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 714,
+  "itemsScanned": 686,
   "matchedGaps": 0,
   "possibleGaps": 7,
   "gaps": [

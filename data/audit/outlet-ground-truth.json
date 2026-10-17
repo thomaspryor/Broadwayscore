@@ -1,26 +1,26 @@
 {
-  "generatedAt": "2026-10-17T11:31:26.133Z",
+  "generatedAt": "2026-10-17T17:53:07.548Z",
   "phase": "done",
   "days": 21,
-  "shows": 64,
+  "shows": 67,
   "sources": {
     "theatermania": {
-      "queries": 32,
-      "listed": 13,
+      "queries": 33,
+      "listed": 14,
       "errors": 0
     },
     "whatsonstage": {
-      "queries": 32,
+      "queries": 34,
       "listed": 10,
       "errors": 0
     },
     "nysr": {
-      "queries": 32,
+      "queries": 33,
       "listed": 13,
       "errors": 0
     },
     "newyorktheater": {
-      "queries": 32,
+      "queries": 33,
       "listed": 6,
       "errors": 0
     },
@@ -30,19 +30,24 @@
       "errors": 0
     },
     "theatre-reviews": {
-      "queries": 32,
+      "queries": 34,
       "listed": 70,
       "errors": 0
     }
   },
   "listingTruncated": false,
-  "listed": 113,
+  "listed": 114,
   "ingested": [
     {
       "showId": "a-ghost-in-your-ear-off-broadway-2026",
       "url": "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/",
       "ok": false,
       "error": "Command failed: node /home/runner/work/Broadwayscore/Broadwayscore/scripts/ingest-review-from-url.js --show=a-ghost-in-your-ear-off-broadway-2026 --url=https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/ --stub-on-failure"
+    },
+    {
+      "showId": "triumph-off-broadway-2026",
+      "url": "https://www.theatermania.com/news/review-triumph-caryl-churchills-riff-on-the-katie-zacharia-of-it-all_1857423/",
+      "ok": true
     }
   ],
   "missing": [
