@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-17T11:40:05.980Z",
+  "timestamp": "2026-10-17T12:23:56.356Z",
   "stats": {
-    "totalReviews": 57146,
-    "alreadyFlagged": 21227,
-    "dateGuardCatches": 194,
+    "totalReviews": 57222,
+    "alreadyFlagged": 21226,
+    "dateGuardCatches": 195,
     "directorMismatch": 1933,
-    "tvFilmSignals": 1598,
-    "londonSignals": 2398,
-    "offBroadwaySignals": 515,
+    "tvFilmSignals": 1596,
+    "londonSignals": 2397,
+    "offBroadwaySignals": 509,
     "yearMismatch": 153,
-    "noPublishDate": 5253
+    "noPublishDate": 5346
   },
   "findings": [
     {
@@ -35975,7 +35975,7 @@
     },
     {
       "showId": "stranger-things-2024",
-      "file": "people--httpswwwfacebookcompeoplemag.json",
+      "file": "people--dave-quinn.json",
       "publishDate": "2025-05-14",
       "url": "https://people.com/broadway-stranger-things-cast-side-by-side-with-the-tv-actors-who-originated-the-roles-11732981",
       "findings": [
@@ -44629,20 +44629,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "the-producers-west-end-2025",
-      "file": "standard--nick-curtis.json",
-      "score": 97,
-      "publishDate": "2025-09-16",
-      "url": "https://www.standard.co.uk/culture/theatre/the-producers-garrick-theatre-review-mel-brooks-b1247818.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -62892,25 +62878,6 @@
     },
     {
       "showId": "hadestown-2019",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 94,
-      "publishDate": "April 17th, 2019",
-      "url": "https://www.hollywoodreporter.com/news/general-news/hadestown-theater-review-1202512/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
-      "showId": "hadestown-2019",
       "file": "musical-theatre-review--ron-cohen.json",
       "score": 97,
       "publishDate": "April 26th, 2019",
@@ -62948,20 +62915,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "hadestown-2019",
-      "file": "theatermania--zachary-stewart.json",
-      "score": 91,
-      "publishDate": "April 17, 2019",
-      "url": "http://www.theatermania.com/off-broadway/reviews/hadestown-_77163.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
         }
       ]
     },
@@ -63203,6 +63156,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "timeout--david-cote.json",
+      "publishDate": "February 17, 2015",
+      "url": "http://www.timeout.com/newyork/theater/hamilton",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 146d before show (February 17, 2015 vs 2015-07-13)"
         }
       ]
     },
@@ -72056,7 +72022,7 @@
     },
     {
       "showId": "oh-mary-2024",
-      "file": "theatermania--unknown.json",
+      "file": "theatermania--zachary-stewart.json",
       "score": 93,
       "publishDate": "2024-07-11",
       "url": "https://www.theatermania.com/news/review-oh-mary-cole-escolas-riotous-broadway-debut_1744785/",
@@ -72065,62 +72031,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
-        }
-      ]
-    },
-    {
-      "showId": "oh-mary-2024",
-      "file": "theatermania--zachary-stewart.json",
-      "score": 92,
-      "publishDate": "July 11, 2024",
-      "url": "https://www.theatermania.com/news/review-oh-mary-cole-escolas-riotous-broadway-debut_1744785/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
-        }
-      ]
-    },
-    {
-      "showId": "oh-mary-2024",
-      "file": "thewrap--robert-hofler.json",
-      "score": 91,
-      "publishDate": "July 11, 2024",
-      "url": "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
-        }
-      ]
-    },
-    {
-      "showId": "oh-mary-2024",
-      "file": "variety--aramide-tinubu.json",
-      "score": 92,
-      "publishDate": "July 10, 2024",
-      "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"lortel\""
-        }
-      ]
-    },
-    {
-      "showId": "oh-mary-2024",
-      "file": "variety--unknown.json",
-      "score": 91,
-      "publishDate": "2024-07-12",
-      "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"lortel\""
         }
       ]
     },
@@ -77078,20 +76988,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Contains TV/film keyword: \"episode 7\""
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-2024",
-      "file": "nytg--kyle-turner.json",
-      "score": 73,
-      "publishDate": "April 22, 2025",
-      "url": "https://www.newyorktheatreguide.com/reviews/stranger-things-the-first-shadow-broadway-review",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Contains TV/film keyword: \"season 5\""
         }
       ]
     },
