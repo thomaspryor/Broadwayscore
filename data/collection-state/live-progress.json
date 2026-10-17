@@ -1,71 +1,104 @@
 {
-  "updatedAt": "2026-10-17T14:46:34.888Z",
-  "processed": 157,
-  "failed": 117,
-  "successRate": "57.3%",
+  "updatedAt": "2026-10-17T15:05:27.208Z",
+  "processed": 265,
+  "failed": 145,
+  "successRate": "64.6%",
   "tierBreakdown": {
-    "playwright": 78,
+    "playwright": 128,
     "amp": 7,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 8,
-    "scrapingbee": 7,
-    "brightdata": 0,
+    "scrapingdog": 18,
+    "scrapingbee": 12,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 49
+    "archive": 95
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-10-17T13:46:09.720Z",
+      "t": "2026-10-17T13:22:11.073Z",
       "event": "bb-session",
-      "session": "91e3f04b",
-      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
+      "session": "8b8f01f4",
+      "url": "https://www.talkinbroadway.com/page/ob/10_14_26b.html"
     },
     {
-      "t": "2026-10-17T13:46:10.111Z",
+      "t": "2026-10-17T13:22:11.795Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-17T13:22:38.911Z",
+      "event": "bb-session",
+      "session": "7a54ec54",
+      "url": "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/attachment/alyssa-may-go"
+    },
+    {
+      "t": "2026-10-17T13:22:47.414Z",
+      "event": "bb-session",
+      "session": "c4ddd2ba",
+      "url": "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/attachment/alyssa-may-go"
+    },
+    {
+      "t": "2026-10-17T13:25:12.388Z",
+      "event": "bb-session",
+      "session": "95684269",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-17T13:26:23.807Z",
+      "event": "bb-session",
+      "session": "b6f8cb28",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654594"
+    },
+    {
+      "t": "2026-10-17T13:26:24.441Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-17T14:38:38.786Z",
+      "event": "bb-session",
+      "session": "cc3d64e4",
+      "url": "https://www.nytimes.com/2025/03/19/theater/buena-vista-social-club-review-broadw"
+    },
+    {
+      "t": "2026-10-17T14:38:39.715Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-17T14:43:04.616Z",
+      "t": "2026-10-17T14:38:57.090Z",
       "event": "bb-session",
-      "session": "60887a93",
-      "url": "https://www.talkinbroadway.com/page/ob/10_14_26b.html"
+      "session": "c0cda446",
+      "url": "https://www.nytimes.com/2025/03/19/theater/buena-vista-social-club-review-broadw"
     },
     {
-      "t": "2026-10-17T14:43:05.311Z",
+      "t": "2026-10-17T14:38:57.933Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-17T14:43:32.374Z",
+      "t": "2026-10-17T15:02:11.949Z",
       "event": "bb-session",
-      "session": "cfb0bc88",
-      "url": "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/attachment/alyssa-may-go"
+      "session": "305462f4",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
     },
     {
-      "t": "2026-10-17T14:43:40.835Z",
-      "event": "bb-session",
-      "session": "85228ff1",
-      "url": "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/attachment/alyssa-may-go"
-    },
-    {
-      "t": "2026-10-17T14:46:08.915Z",
-      "event": "bb-session",
-      "session": "57d2a25b",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654594"
-    },
-    {
-      "t": "2026-10-17T14:46:09.620Z",
+      "t": "2026-10-17T15:02:12.848Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-17T14:46:10.997Z",
+      "t": "2026-10-17T15:02:30.560Z",
       "event": "bb-session",
-      "session": "07bf805b",
-      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+      "session": "e77f00c8",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-17T15:02:31.393Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
