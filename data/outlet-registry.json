@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-17T15:42:19.437Z",
+    "lastUpdated": "2026-10-17T23:13:30.854Z",
     "version": "2.1.0",
     "lastChange": "BRO-5373: split The Mail on Sunday (mail-on-sunday, splitFrom daily-mail) out of daily-mail"
   },
@@ -13042,6 +13042,18 @@
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
       "regionInferredAt": "2026-10-17T15:42:19.437Z"
+    },
+    "number9reviews": {
+      "displayName": "Number9reviews",
+      "tier": 3,
+      "aliases": [
+        "number9reviews"
+      ],
+      "displayNameInferred": true,
+      "domain": "number9reviews.blogspot.com",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-10-17T23:13:30.854Z"
     }
   },
   "_aliasIndex": {
