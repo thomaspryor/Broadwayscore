@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { conversionOf, isConvertedToCommercial, commercialRunWeeks, conversionShapeProblems } = require('./commercial-conversion');
+const { conversionOf, isConvertedToCommercial, commercialRunWeeks, recoupClockStart, conversionShapeProblems } = require('./commercial-conversion');
 const { commercialRecordErrors } = require('./commercial-record-checks');
 const { hasNoInvestorsToRepay } = require('./commercial-designations');
 const { calculateRecoupment, calculateLifetimeRecoupment, SPLIT_RUN_ERROR } = require('./recoupment-model');
@@ -96,4 +96,11 @@ test('the model does not charge nonprofit weeks to a commercial capitalization: 
   const converted = { ...comm, commercialConversion: { date: '2024-03-25', sourceUrl: 'https://playbill.com/article/broadways-appropriate-extension-begins-march-25' } };
   assert.deepEqual(calculateRecoupment(show, converted, allTime, weekly), { error: SPLIT_RUN_ERROR, warnings: [SPLIT_RUN_ERROR] });
   assert.equal(calculateLifetimeRecoupment(show, converted, allTime).error, SPLIT_RUN_ERROR);
+});
+
+test('recoupClockStart: opening night, the commercial start for a run that switched, null when the switch is undated', () => {
+  assert.equal(recoupClockStart({}, '2023-12-18'), '2023-12-18');
+  assert.equal(recoupClockStart(null, null), null);
+  assert.equal(recoupClockStart({ commercialConversion: { date: '2024-03-25', sourceUrl: 'https://x.test/a' } }, '2023-12-18'), '2024-03-25');
+  assert.equal(recoupClockStart({ commercialConversion: { date: null, sourceUrl: 'https://x.test/a' } }, '2026-04-23'), null);
 });

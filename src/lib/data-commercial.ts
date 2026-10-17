@@ -51,7 +51,7 @@ import {
   hasNoInvestorsToRepay,
 } from './commercial-display';
 import { reportedReturn } from '../../scripts/lib/reported-return';
-import { conversionOf, isConvertedToCommercial, commercialRunWeeks } from '../../scripts/lib/commercial-conversion';
+import { conversionOf, isConvertedToCommercial, commercialRunWeeks, recoupClockStart } from '../../scripts/lib/commercial-conversion';
 import {
   computeMarketMedianByWeek,
   computeShowStatus,
@@ -549,7 +549,8 @@ export function getRecentRecoupments(months: number = 24): RecentRecoupmentShow[
       slug,
       title: show.title,
       season: getSeason(show.openingDate) || 'Unknown',
-      weeksToRecoup: calculateWeeksToRecoup(show.openingDate, data.recoupedDate, show.closingDate),
+      weeksToRecoup: calculateWeeksToRecoup(recoupClockStart(data, show.openingDate), data.recoupedDate, show.closingDate),
+      fromCommercialRun: isConvertedToCommercial(data),
       capitalization: data.capitalization ?? null,
       capitalizationIsEstimate: isEstimatedCapitalization(data),
       recoupDate: data.recoupedDate,
@@ -676,7 +677,7 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
     trend: running ? getRecoupmentTrend(slug) : 'unknown',
     recouped: data.recouped,
     recoupmentNotAnnounced: isUnannouncedRecoupment(data),
-    recoupedWeeks: calculateWeeksToRecoup(show.openingDate, data.recoupedDate, show.closingDate),
+    recoupedWeeks: calculateWeeksToRecoup(recoupClockStart(data, show.openingDate), data.recoupedDate, show.closingDate),
     lossCaveat: lossBasisCaveat(data),
     designationBasis: data.designationBasis ?? null,
   };

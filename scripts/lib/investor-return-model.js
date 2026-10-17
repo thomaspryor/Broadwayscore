@@ -31,6 +31,7 @@
 
 const rm = require('./recoupment-model');
 const { costForWeek, breakEvenRatio, costIndexAt } = require('./cost-for-week');
+const { nyTaxCredit, QUALIFYING_WEEKS } = require('./ny-tax-credit');
 
 const WEEK_MS = 7 * 86400000;
 /** Standard Broadway split of net profits after recoupment (investors' half). */
@@ -145,9 +146,8 @@ function calculateInvestorReturn(show, commercial, grossesAllTime, grossesWeekly
   // Costs for each week, once (scenario multipliers scale them).
   const costs = weeks.map((w) => costForWeek(commercial, w.date, { show, category, fallbackCost }));
   if (costs.some((c) => !c)) return { error: 'No cost figure and no category estimate', warnings };
-  const firstYearCost = costs.slice(0, 52).reduce((s, c) => s + c.cost, 0);
-  const taxCredit = notesCredit !== null ? notesCredit
-    : (eligibleCredit ? Math.min(rm.TAX_CREDIT_RATE * (cap + firstYearCost), rm.TAX_CREDIT_MAX) : 0);
+  const qualifyingCost = costs.slice(0, QUALIFYING_WEEKS).reduce((s, c) => s + c.cost, 0);
+  const taxCredit = nyTaxCredit({ slug, notesCredit, eligible: eligibleCredit, capitalization: cap, qualifyingRunningCosts: qualifyingCost, now }).amount;
   const creditWeek = isClosed ? weeks.length - 1 : Math.min(rm.TAX_CREDIT_LAG_WEEKS, weeks.length - 1);
 
   const isLimitedRun = !!(show.closingDate && show.openingDate && (Date.parse(show.closingDate) - Date.parse(show.openingDate)) < 200 * 86400000);

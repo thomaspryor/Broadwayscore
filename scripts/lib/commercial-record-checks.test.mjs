@@ -286,3 +286,14 @@ test('prior links: whitespace changes do not warn, a second entry on an old plac
   const reused = { ...old, sources: [...old.sources, { type: 'trade', url: 'https://www.amny.com', date: '2026-10-12', excerpt: 'investors got back 55%' }] };
   assert.deepEqual(commercialRecordWarnings('x', reused, { priorRecord: old }).filter((m) => /homepage/.test(m)).map((m) => m.match(/sources\[(\d)\]/)[1]), ['1']);
 });
+
+// BRO-5517: "Old Friends Broadway LP" (Merrily We Roll Along's offering) was cited as the Sondheim revue's capitalization.
+test('a Nonprofit record citing an SEC filing warns; a commercial one or a non-SEC host does not', () => {
+  const rec = (designation, url) => ({ designation, recouped: null, sources: [{ type: 'sec', url, date: '2024-06-18' }] });
+  const nonprofitSec = (r) => commercialRecordWarnings('x', r).filter((m) => /Nonprofit but cites an SEC filing/.test(m));
+  assert.equal(nonprofitSec(rec('Nonprofit', 'https://www.sec.gov/Archives/edgar/data/1977214/000197721424000001/xslFormDX01/primary_doc.xml')).length, 1);
+  assert.equal(nonprofitSec(rec('Nonprofit', 'https://efts.sec.gov/LATEST/search-index?q=x')).length, 1);
+  assert.equal(nonprofitSec(rec('TBD', 'https://www.sec.gov/Archives/edgar/data/1/2/primary_doc.xml')).length, 0);
+  assert.equal(nonprofitSec(rec('Nonprofit', 'https://www.notsec.gov/x')).length, 0);
+  assert.equal(nonprofitSec({ designation: 'Nonprofit' }).length, 0);
+});

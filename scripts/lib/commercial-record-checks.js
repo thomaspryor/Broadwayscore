@@ -384,6 +384,13 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
   if (show.recouped === true && Array.isArray(est) && est.length === 2 && est.every((v) => typeof v === 'number') && Math.max(...est) < 100) {
     out.push(`commercial.json: "${showId}" is recouped but carries estimatedRecoupmentPct [${est.join(', ')}] (an earlier share returned; ground truth reads it before the recoupment, so remove it)`);
   }
+  // A nonprofit run raises no investor money, so a Form D on it is almost
+  // always another production's offering matched by name (BRO-5517: "Old
+  // Friends Broadway LP" is Merrily We Roll Along's partnership, cited as the
+  // Sondheim revue's $12M capitalization). Converted runs are not Nonprofit.
+  if (show.designation === 'Nonprofit' && Array.isArray(show.sources) && show.sources.some((s) => /(?:^|\.)sec\.gov\//.test(String((s && s.url) || '').replace(/^https?:\/\//, '')))) {
+    out.push(`commercial.json: "${showId}" is Nonprofit but cites an SEC filing (a nonprofit run has no investor offering; check the filing names this production, or drop it)`);
+  }
   // A hard-sourced cost whose quote says all-in or breakeven, with no
   // explicit weeklyRunningCostBasis (BRO-5093): the costBasis model would
   // read the text guess instead of a checked tag.

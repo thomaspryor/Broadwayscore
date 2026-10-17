@@ -91,6 +91,9 @@ const FEEDBACK_EDITABLE_FIELDS = {
     'needsLossEvidence', 'designationBasis',
     'estimatedRecoupmentPct', 'estimatedRecoupmentSource', 'estimatedRecoupmentDate',
     'weeklyRunningCostBasis', 'commercialConversion',
+    // A cited cost supersedes the free-text estimate beside it (same linked
+    // group in merge-commercial-data.js, BRO-5515).
+    'weeklyRunningCostNote',
   ],
   'audience-buzz.json': ['title'],
   // Only auto-fix-feedback-bug.js's append-winner path handles this file —

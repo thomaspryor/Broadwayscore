@@ -489,6 +489,9 @@ export default function MethodologyPage() {
               <strong className="text-white">Plays</strong> show our model&apos;s estimate, which adds up what the show has taken in each week, takes off its running costs, and compares the result with what it cost to put up.
             </Bullet>
             <Bullet>
+              <strong className="text-white">New York&apos;s theater tax credit</strong> pays back part of a production&apos;s costs, up to $3 million for a Broadway show. We count the amount the state actually paid or set aside for each show, from Empire State Development&apos;s records. For a show not yet on those lists we estimate it from what similar shows received.
+            </Bullet>
+            <Bullet>
               <strong className="text-white">No estimate</strong> comes with the reason: the capitalization was never published, the running costs were never reported, the show is too new, or the figure does not apply (nonprofit productions and tour stops raise and repay their money differently).
             </Bullet>
             <Bullet>
@@ -507,7 +510,7 @@ export default function MethodologyPage() {
               <strong className="text-white">Trend</strong> compares the last 4 weeks of sales with the 4 weeks before.
             </Bullet>
             <Bullet>
-              <strong className="text-white">Weeks to recoup</strong> counts from opening night to the reported recoupment date. If only the month was reported we use the middle of the month. If only the year was reported we leave it blank.
+              <strong className="text-white">Weeks to recoup</strong> counts from opening night to the reported recoupment date, or for a nonprofit show that went commercial, from the start of its commercial run. If only the month was reported we use the middle of the month. If only the year was reported we leave it blank.
             </Bullet>
           </ul>
           <p className="text-gray-400 text-xs mt-3">

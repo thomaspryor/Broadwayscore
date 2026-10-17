@@ -66,6 +66,21 @@ function commercialRunWeeks(rec, weeks) {
 }
 
 /**
+ * Where a run's clock to recoupment starts: opening night, or for a run that
+ * switched, the first day of its commercial run (its investors' money went in
+ * then). Null when the switch date is not reported: counting from the
+ * nonprofit opening would credit the commercial run with weeks it never had.
+ * @param {{ commercialConversion?: unknown } | null | undefined} rec
+ * @param {string | null | undefined} openingDate - the show's opening (YYYY-MM-DD)
+ * @returns {string | null}
+ */
+function recoupClockStart(rec, openingDate) {
+  const conversion = conversionOf(rec);
+  if (!conversion) return openingDate || null;
+  return conversion.date;
+}
+
+/**
  * Shape problems in a record's commercialConversion (empty when absent or
  * well formed). Cross-field rules live in commercial-record-checks.js.
  * @param {unknown} value
@@ -83,4 +98,4 @@ function conversionShapeProblems(value) {
   return out;
 }
 
-module.exports = { conversionOf, isConvertedToCommercial, commercialRunWeeks, conversionShapeProblems };
+module.exports = { conversionOf, isConvertedToCommercial, commercialRunWeeks, recoupClockStart, conversionShapeProblems };

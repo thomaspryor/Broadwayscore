@@ -40,7 +40,7 @@ describe('applyShadowReturnFields', () => {
 
 describe('clearStaleModelFields', () => {
   it('clears the shadow fields with the live run fields', () => {
-    const comm = { modelRecoupmentPct: [1, 2, 3], modelRecouped: false, modelRecoupmentPctV2: [1, 2, 3], modelInvestorMultiple: [0, 0, 0], designation: 'TBD' };
+    const comm = { modelRecoupmentPct: [1, 2, 3], modelRecouped: false, modelDataQuality: 'medium', modelRecoupmentPctV2: [1, 2, 3], modelInvestorMultiple: [0, 0, 0], designation: 'TBD' };
     clearStaleModelFields(comm);
     assert.deepStrictEqual(comm, { designation: 'TBD' });
   });

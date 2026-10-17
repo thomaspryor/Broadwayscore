@@ -458,16 +458,22 @@ export function getNonprofitTag(
 /** Re-exported for client components: one rule for who has investors to repay (BRO-5502). */
 export { hasNoInvestorsToRepay };
 
+// A source that says the figure is an estimate ("Estimate: $2,000,887 NYC
+// theatrical tax credit ... at the 25% credit rate", Plaza Suite, BRO-5517).
+const ESTIMATE_SOURCE_RE = /^\s*(?:estimated?|est\.|approx(?:imately|\.)?|roughly|about|~)\b/i;
+
 /**
  * True when the capitalization should carry the "~" estimate marker: the
- * record flags it, or it has no publishable source. A cited capitalization is
- * a reported figure (BRO-4623) and prints plain; an uncited one cannot read
- * as reported, the same rule as the weekly cost (BRO-4666).
+ * record flags it, its source says it is an estimate, or it has no publishable
+ * source. A cited capitalization is a reported figure (BRO-4623) and prints
+ * plain; an uncited one cannot read as reported, the same rule as the weekly
+ * cost (BRO-4666).
  */
 export function isEstimatedCapitalization(
   commercial: Pick<ShowCommercial, 'isEstimate' | 'capitalizationSource'>
 ): boolean {
   if (commercial.isEstimate?.capitalization === true) return true;
+  if (ESTIMATE_SOURCE_RE.test(commercial.capitalizationSource || '')) return true;
   return !publicSourceText(commercial.capitalizationSource);
 }
 

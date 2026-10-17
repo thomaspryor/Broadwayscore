@@ -36,6 +36,7 @@ const { isBroadwayCategory } = cjsRequire(path.join(repo, 'scripts/lib/venue-cla
 const { classifyEntry } = await import('./section-credential-guard.mjs');
 const { pluralize, pluralNoun } = cjsRequire(path.join(repo, 'scripts/lib/pluralize'));
 const { isFreshRecoupmentNews } = cjsRequire(path.join(repo, 'scripts/lib/recoupment-news'));
+const { recoupClockStart, isConvertedToCommercial } = cjsRequire(path.join(repo, 'scripts/lib/commercial-conversion'));
 const { isUkRegionalVenue } = cjsRequire(path.join(repo, 'scripts/lib/market-label'));
 const { getSeasonForDate, getSeasonDates, isEligibleForSeasonStanding } = cjsRequire(path.join(repo, 'scripts/lib/broadway-seasons'));
 // NEWSLETTER_TEST_REVIEWS_PATH / NEWSLETTER_TEST_SHOWS_PATH: TEST-ONLY override
@@ -1687,23 +1688,25 @@ function commercialSection() {
     fresh.push({ show, c });
   });
   if (!fresh.length) return null;
-  // Compute weeks-to-recoup from show.openingDate to the middle of the
-  // recoupedDate month (recoupedDate is YYYY-MM monthly granularity). Falls
-  // back to "" when openingDate is missing so the row still renders.
-  function weeksToRecoupLabel(show, recoupedDateYM) {
-    if (!show?.openingDate || !recoupedDateYM) return '';
-    const m = /^(\d{4})-(\d{2})$/.exec(recoupedDateYM);
+  // Compute weeks-to-recoup from opening night (for a run that switched from
+  // a nonprofit, from its commercial start: recoupClockStart) to the middle
+  // of the recoupedDate month (recoupedDate is YYYY-MM monthly granularity).
+  // Falls back to "" when there is no start date so the row still renders.
+  function weeksToRecoupLabel(show, c) {
+    const start = recoupClockStart(c, show?.openingDate);
+    if (!start || !c.recoupedDate) return '';
+    const m = /^(\d{4})-(\d{2})$/.exec(c.recoupedDate);
     if (!m) return '';
     const recoupMid = new Date(`${m[1]}-${m[2]}-15T12:00:00`);
-    const open = new Date(show.openingDate + 'T12:00:00');
+    const open = new Date(start + 'T12:00:00');
     const weeks = Math.round((recoupMid - open) / (7 * 86400000));
     if (!isFinite(weeks) || weeks <= 0) return '';
-    return ` in ${pluralize(weeks, 'week')}`;
+    return ` in ${pluralize(weeks, 'week')}${isConvertedToCommercial(c) ? ' of its commercial run' : ''}`;
   }
   const rows = fresh.map((f, i, arr) => {
     const isLast = i === arr.length - 1;
     const cap = f.c.capitalization ? '$' + (f.c.capitalization / 1e6).toFixed(1) + 'M' : '—';
-    const weeksTail = weeksToRecoupLabel(f.show, f.c.recoupedDate);
+    const weeksTail = weeksToRecoupLabel(f.show, f.c);
     return `<tr>
       <td valign="middle" width="68" style="padding:12px 10px 12px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">${thumb(f.show, 56)}</td>
       <td valign="middle" style="padding:12px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">
@@ -2866,14 +2869,15 @@ const newsworthyInputs = {
         if (!show || isOperaShow(show)) continue;
         // Same weeks-to-recoup math the section uses.
         const m = /^(\d{4})-(\d{2})$/.exec(c.recoupedDate);
+        const start = recoupClockStart(c, show.openingDate);
         let weeksToRecoup = null;
-        if (m && show.openingDate) {
+        if (m && start) {
           const recoupMid = new Date(`${m[1]}-${m[2]}-15T12:00:00`);
-          const open = new Date(show.openingDate + 'T12:00:00');
+          const open = new Date(start + 'T12:00:00');
           const w = Math.round((recoupMid - open) / (7 * 86400000));
           if (isFinite(w) && w > 0) weeksToRecoup = w;
         }
-        out.push({ show, weeksToRecoup });
+        out.push({ show, weeksToRecoup, fromCommercialRun: isConvertedToCommercial(c) });
       }
       return out;
     } catch { return []; }

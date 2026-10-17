@@ -160,6 +160,13 @@ test('a single recurring kind (recoupment) still dedupes to one — no per-show 
   assert.deepEqual(kinds, ['recoupment']);
 });
 
+test('a run that switched from a nonprofit says its weeks count from the commercial run (BRO-5515)', () => {
+  const [switched] = scoreCandidates({ recoupments: [{ show: { id: 'a', slug: 'a', title: 'Show A' }, weeksToRecoup: 12, fromCommercialRun: true }] });
+  assert.equal(switched.headline, 'Show A recoups in 12 weeks of its commercial run');
+  const [plain] = scoreCandidates({ recoupments: [{ show: { id: 'b', slug: 'b', title: 'Show B' }, weeksToRecoup: 20 }] });
+  assert.equal(plain.headline, 'Show B recoups in 20 weeks');
+});
+
 // ── Delacorte Theater is Free Shakespeare in the Park, not off-Broadway ─────
 // Regression guard for 2026-08-16: the OB opening headline unconditionally
 // said "opens off-Broadway", which misdescribes an outdoor, seasonal Public

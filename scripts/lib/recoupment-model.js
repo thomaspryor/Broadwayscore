@@ -21,6 +21,7 @@ const { isCitedReportedWeeklyCost, REPORTED_COST_METHODOLOGIES } = require('./wa
 const { previewWeeksFromWeekly } = require('./preview-weeks');
 const { runWindow, weeksInOwnRun, COVID_DARK_START, COVID_DARK_END } = require('./run-window');
 const { taxCreditCited } = require('./tax-credit-cited');
+const { nyTaxCredit, QUALIFYING_WEEKS, TAX_CREDIT_MAX, TAX_CREDIT_RATE, TAX_CREDIT_PROGRAM_START, TAX_CREDIT_PROGRAM_END } = require('./ny-tax-credit');
 const { splitCosts, fixedNutFromBasis } = require('./cost-split');
 const { sourcedGrossParticipation, weeklyParticipationCost, starDealUnknown } = require('./gross-participation');
 const { isConvertedToCommercial } = require('./commercial-conversion');
@@ -110,20 +111,16 @@ const CAP_EXCLUDES_RESERVE = /\b(?:exclud\w*|not\s+includ\w*|plus|in\s+addition\
 const TAX_CREDIT_LAG_WEEKS = 78; // ~18 months
 
 /**
- * NYC Musical and Theatrical Production Tax Credit (enacted 2021, allocations
- * through 2027): 25% of qualified production + operating costs, capped at $3M
- * per production. Shows running at any point from Aug 2021 qualify, including
- * COVID reopenings — NOT just shows that opened after 2021.
+ * NYC Musical and Theatrical Production Tax Credit: the amount, the program
+ * window and the award lists live in ny-tax-credit.js (BRO-5517). Shows
+ * running at any point from Aug 2021 qualify, including COVID reopenings —
+ * NOT just shows that opened after 2021.
  */
-const TAX_CREDIT_PROGRAM_START = new Date('2021-08-01');
 // SVOG awards were first paid in late May 2021. A run replayed as of an
 // earlier date (backtest asOf) had not received one (BRO-5073: Dear Evan
 // Hansen replayed at its July 2017 recoupment read 937% with a 2021 grant
 // netted off its cap). Live runs are always past this date.
 const SVOG_FIRST_AWARDS = new Date('2021-05-25');
-const TAX_CREDIT_PROGRAM_END = new Date('2027-12-31');
-const TAX_CREDIT_MAX = 3000000;
-const TAX_CREDIT_RATE = 0.25;
 
 /**
  * Estimated-nut era adjustment: cost defaults are calibrated to 2025-26
@@ -640,19 +637,21 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   const { previewWeeks, totalRunWeeks, darkWeeks } = runWindow(show, { now, playedOnly: !!(opts.playedWeeksOnly || asOf) });
   if (darkWeeks > 0) warnings.push(`Excluded ${darkWeeks} COVID dark weeks`);
 
-  // Tax credit amount (needs run length): 25% of cap + first-year running costs.
+  // Tax credit amount (needs run length): a published ESD award, else the
+  // formula on the cap + the first QUALIFYING_WEEKS of running costs (BRO-5517).
   // notesCredit is null when the notes say nothing usable, 0 when they say the
   // credit was NOT received (BRO-4623: All Out), or a parsed dollar amount.
-  const expectedTaxCredit = notesCredit !== null
-    ? notesCredit
-    : (eligibleForTaxCredit
-        ? Math.min(TAX_CREDIT_RATE * (capitalization + weeklyNut * Math.min(Math.max(totalRunWeeks, 0), 52)), TAX_CREDIT_MAX)
-        : 0);
+  const credit = nyTaxCredit({
+    slug, notesCredit, eligible: eligibleForTaxCredit, capitalization, now,
+    qualifyingRunningCosts: weeklyNut * Math.min(Math.max(totalRunWeeks, 0), QUALIFYING_WEEKS),
+  });
+  const expectedTaxCredit = credit.amount;
   // Shadow (BRO-4989): a running show's credit counts only once a source says
-  // it was received. A closed show keeps it: the credit does get paid.
+  // it was received (an ESD payment counts). A closed show keeps it: the
+  // credit does get paid.
   // opts.taxCreditPre (BRO-5073): pre-credit basis, no credit at all, so the
   // backtest can score a pre-credit truth figure like with like.
-  const taxCreditExcluded = opts.taxCreditPre || (opts.taxCreditCitedOnly && !isClosed && !taxCreditCited(commercial).cited) ? expectedTaxCredit : 0;
+  const taxCreditExcluded = opts.taxCreditPre || (opts.taxCreditCitedOnly && !isClosed && !credit.received && !taxCreditCited(commercial).cited) ? expectedTaxCredit : 0;
   const taxCreditAmount = expectedTaxCredit - taxCreditExcluded;
   if (notesCredit === 0) {
     warnings.push(NO_TAX_CREDIT_FROM_NOTES_WARNING);
@@ -1125,19 +1124,20 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
 
   // NY tax credit only for shows whose run overlaps the 2021-2027 program
   // (long-runners still open in Aug 2021 qualified via the reopening provision).
-  // Same formula as the weekly model: 25% of cap + first-year running costs.
+  // Same helper as the weekly model (BRO-5517); a long-runner is past the
+  // qualifying weeks, so they all count.
   const closedBeforeCreditProgram = show.closingDate &&
     new Date(show.closingDate) < TAX_CREDIT_PROGRAM_START;
   // BRO-4623: an explicit "did not receive the tax credit" in the notes wins.
-  // Only the explicit 0 is honored here; parsed amounts keep the existing
-  // formula so long-runner estimates do not churn.
   const notesCredit = parseTaxCreditFromNotes(commercial.notes);
   if (notesCredit === 0) warnings.push(NO_TAX_CREDIT_FROM_NOTES_WARNING);
-  const expectedTaxCredit = (closedBeforeCreditProgram || notesCredit === 0)
-    ? 0
-    : Math.min(TAX_CREDIT_RATE * (capitalization + weeklyNut * 52), TAX_CREDIT_MAX);
+  const credit = nyTaxCredit({
+    slug, notesCredit, eligible: !closedBeforeCreditProgram, capitalization,
+    qualifyingRunningCosts: weeklyNut * QUALIFYING_WEEKS,
+  });
+  const expectedTaxCredit = credit.amount;
   // Shadow (BRO-4989): same running-only, cited-only rule as the weekly model.
-  const taxCreditExcluded = opts.taxCreditPre || (opts.taxCreditCitedOnly && !isClosedRun && !taxCreditCited(commercial).cited) ? expectedTaxCredit : 0;
+  const taxCreditExcluded = opts.taxCreditPre || (opts.taxCreditCitedOnly && !isClosedRun && !credit.received && !taxCreditCited(commercial).cited) ? expectedTaxCredit : 0;
   const taxCredit = expectedTaxCredit - taxCreditExcluded;
 
   // Run duration

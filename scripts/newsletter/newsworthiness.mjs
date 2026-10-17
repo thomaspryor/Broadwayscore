@@ -260,7 +260,8 @@ export function scoreCandidates(input) {
   for (const r of (input.recoupments || [])) {
     const weeks = r.weeksToRecoup;
     const fastBump = (weeks && weeks > 0 && weeks < 12) ? WEIGHTS.RECOUPMENT_FAST_BUMP : 0;
-    const tail = (weeks && weeks > 0) ? ` recoups in ${pluralize(weeks, 'week')}` : ' recoups';
+    // A run that switched from a nonprofit counts from its commercial start (recoupClockStart).
+    const tail = (weeks && weeks > 0) ? ` recoups in ${pluralize(weeks, 'week')}${r.fromCommercialRun ? ' of its commercial run' : ''}` : ' recoups';
     out.push({
       kind: 'recoupment',
       weight: WEIGHTS.RECOUPMENT_BASE + fastBump,

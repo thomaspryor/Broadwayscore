@@ -576,6 +576,8 @@ export interface RecentRecoupmentShow {
   season: string;
   /** null when only the recoupment year is known (calculateWeeksToRecoup). */
   weeksToRecoup: number | null;
+  /** weeksToRecoup counts from the switch to a commercial run, not opening night (recoupClockStart). */
+  fromCommercialRun: boolean;
   capitalization: number | null;
   /** isEstimatedCapitalization(): true when the record flags its capitalization as an estimate or cites no publishable source (prints "~"). */
   capitalizationIsEstimate: boolean;
