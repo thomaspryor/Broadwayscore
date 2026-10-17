@@ -99,5 +99,102 @@
       }
     ],
     "queuedAt": "2026-10-17T07:07:01.484Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:antigone-exits-chichester-regional-2026",
+    "title": "Review gap — \"Antigone Exits\" missing 2 cited review(s)",
+    "description": "Antigone Exits (antigone-exits-chichester-regional-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=antigone-exits-chichester-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-17T10:09:44.146Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:king-lear-royal-exchange-regional-2026",
+    "title": "Review gap — \"King Lear\" missing 2 cited review(s)",
+    "description": "King Lear (king-lear-royal-exchange-regional-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=king-lear-royal-exchange-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-17T10:09:44.225Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
+    "title": "Review gap — \"The Prime of Miss Jean Brodie\" missing 2 cited review(s)",
+    "description": "The Prime of Miss Jean Brodie (the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-17T10:09:44.282Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h — escalated after 59 notifications",
+    "description": "Filed BRO-5532 for owner triage after 59 repeats with no tracker.\n\n119 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5532",
+    "fields": [
+      {
+        "name": "Oh, Mary! — nytg (361h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"oh-mary-tour-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Oh, Mary! — nytimes (361h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"oh-mary-tour-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Oh, Mary! — observer (361h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"oh-mary-tour-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Oh, Mary! — theatermania (361h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"oh-mary-tour-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Oh, Mary! — theatrely (361h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"oh-mary-tour-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Oh, Mary! — thewrap (361h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"oh-mary-tour-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Oh, Mary! — timeout (361h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"oh-mary-tour-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Oh, Mary! — usatoday (361h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"oh-mary-tour-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Oh, Mary! — vulture (361h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"oh-mary-tour-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Operation Mincemeat — broadwaynews (319h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"operation-mincemeat-tour-2026\" -f max_tier=3 -f aggregators_only=false"
+      }
+    ],
+    "queuedAt": "2026-10-17T10:10:11.577Z"
   }
 ]

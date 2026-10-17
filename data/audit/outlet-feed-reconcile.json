@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-17T06:29:17.568Z",
+  "generatedAt": "2026-10-17T10:10:11.904Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -131,6 +131,10 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
+      "outletId": "plays-international",
+      "error": "AggregateError"
+    },
+    {
       "outletId": "musical-theatre-review",
       "error": "HTTP 401 for https://musicaltheatrereview.com/feed/"
     },
@@ -147,8 +151,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 711,
-  "matchedGaps": 3,
+  "itemsScanned": 702,
+  "matchedGaps": 4,
   "possibleGaps": 6,
   "gaps": [
     {
@@ -173,10 +177,19 @@
       "showId": "the-cherry-orchard-west-end-2026",
       "title": "The Cherry Orchard",
       "level": "matched",
-      "outletId": "plays-international",
-      "url": "https://playsinternational.org.uk/the-cherry-orchard-harold-pinter-theatre/",
-      "headline": "“The Cherry Orchard” at Harold Pinter Theatre",
-      "publishDate": "2026-10-16"
+      "outletId": "readaboutstuff",
+      "url": "https://readaboutstuff.com/2026/10/17/review-the-cherry-orchard-harold-pinter-theatre-london/",
+      "headline": "Review: The Cherry Orchard &#8211; Harold Pinter Theatre, London",
+      "publishDate": "2026-10-17"
+    },
+    {
+      "showId": "the-cherry-orchard-west-end-2026",
+      "title": "The Cherry Orchard",
+      "level": "matched",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/the-cherry-orchard-harold-pinter-theatre-london/",
+      "headline": "The Cherry Orchard – Harold Pinter Theatre, London",
+      "publishDate": "2026-10-17"
     },
     {
       "showId": "jane-eyre-rose-kingston-off-west-end-2026",
