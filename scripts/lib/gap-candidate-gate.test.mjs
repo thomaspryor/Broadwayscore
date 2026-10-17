@@ -225,4 +225,10 @@ test('undated wrongProduction file with a high-confidence venue verdict is prior
   assert.strictEqual(flaggedFilePriorRunDate([{ wrongProduction: true, contentVerification: { ...cv, confidence: 'low' } }], show), null);
   assert.strictEqual(flaggedFilePriorRunDate([{ wrongProduction: true }], show), null);
   assert.strictEqual(flaggedFilePriorRunDate([{ wrongProduction: true, contentVerification: cv }, { publishDate: '2026-10-16' }], show), null);
+  // verifier names the record's OWN venue (tour-stop false positive): real review, stays a gap
+  const own = { openingDate: '2026-10-15', venue: 'La MaMa / The Club' };
+  assert.strictEqual(flaggedFilePriorRunDate([{ wrongProduction: true, contentVerification: { ...cv, reviewedVenue: 'La MaMa' } }], own), null);
+  // dated after opening but venue-verified: label is the venue, not the date
+  assert.strictEqual(flaggedFilePriorRunDate([{ wrongProduction: true, publishDate: '2026-10-16', contentVerification: cv }], show), 'venue-verified:Skylight Theatre in Los Feliz');
+  assert.strictEqual(flaggedFilePriorRunDate([{ wrongShow: true, contentVerification: cv }], show), null);
 });

@@ -249,12 +249,13 @@ function flaggedFilePriorRunDate(dirFiles, show) {
   if (process.env.GAP_FLAGGED_PRIOR_RUN_DISABLED === '1') return null; // kill switch
   const files = (dirFiles || []).filter((d) => d && (d.wrongProduction || d.wrongShow));
   if (files.length === 0 || files.length !== (dirFiles || []).length) return null; // a clean/other-state file means no verdict
+  let label = null;
   for (const d of files) {
-    if (isPublishDateBeforeRun(d.publishDate, show) || isVenueVerifiedOtherProduction(d)) continue;
-    return null;
+    const before = isPublishDateBeforeRun(d.publishDate, show);
+    if (!before && !isVenueVerifiedOtherProduction(d, show)) return null;
+    if (!label) label = before ? d.publishDate : `venue-verified:${d.contentVerification.reviewedVenue}`;
   }
-  const dated = files.find((d) => d.publishDate);
-  return dated ? dated.publishDate : `venue-verified:${files[0].contentVerification.reviewedVenue}`;
+  return label;
 }
 
 /**
@@ -264,9 +265,11 @@ function flaggedFilePriorRunDate(dirFiles, show) {
  * on (BRO-5380: UNCONDITIONAL's NYC run vs the 2025 Skylight Theatre LA run,
  * theatreinla roundup held roundup-gap open with no date to compare).
  */
-function isVenueVerifiedOtherProduction(d) {
+function isVenueVerifiedOtherProduction(d, show) {
   const cv = d && d.contentVerification;
-  return !!(d.wrongProduction && cv && cv.wrongProduction === true && cv.confidence === 'high' && cv.reviewedVenue);
+  // The verifier also flags own-venue tour stops (BRO-4884); those are real reviews.
+  const { reviewedAtOwnVenue } = require('./tour-stop-carveout');
+  return !!(d.wrongProduction && cv && !reviewedAtOwnVenue(cv.reviewedVenue, show) && cv.wrongProduction === true && cv.confidence === 'high' && cv.reviewedVenue);
 }
 
 // Roundups whose own verdict lives ONLY inside the roundup (no standalone review
