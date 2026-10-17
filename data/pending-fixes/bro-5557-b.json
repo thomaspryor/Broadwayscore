@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5557-b",
   "planId": "7e101cbe-3cff-4166-92c8-d8e979cff7f3",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-17T18:08:10.171Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,18 @@
         "description": "The stored url is a TheaterMania tag index; Playbill Verdict names the real review url"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-17T20:56:14.508Z",
+  "results": [
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "removed re-minted anne-teresa-de-keersmaeker-radouan-mriziga-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027 (\"Anne Teresa De Keersmaeker & Radouan Mriziga: Il Cimento dell'Armonia e dell'Inventione\" @ NYU Skirball); the registry already held the id"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-ghost-in-your-ear-off-broadway-2026/theatermania--zachary-stewart.json url: \"https://www.theatermania.com/tags/a-ghost-in-your-ear/\" -> \"https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/\""
+    }
+  ]
 }
