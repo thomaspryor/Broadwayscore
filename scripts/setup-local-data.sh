@@ -314,9 +314,10 @@ if [ "${1:-}" = "--all" ]; then
 
   mkdir -p "$DATA_DIR/review-texts"
 
-  # BRO-5253: a partial/sparse attached clone cannot be cloned locally (missing
+  # BRO-5253: a partial (blobless) attached clone cannot be cloned locally (missing
   # blobs), so it falls through to the network clone below.
-  . "$(dirname "${BASH_SOURCE[0]}")/lib/is-partial-clone.sh"
+  # shellcheck source=lib/is-partial-clone.sh
+  . "$SCRIPT_DIR/lib/is-partial-clone.sh" || { echo "FATAL: cannot load lib/is-partial-clone.sh" >&2; exit 1; }
   if [ -n "${REVIEW_TEXTS_SOURCE:-}" ] && [ -d "$REVIEW_TEXTS_SOURCE/.git" ] && ! is_partial_clone "$REVIEW_TEXTS_SOURCE"; then
     # BRO-5008: a cloud session with broadway-review-texts attached already has a
     # fresh clone next to this repo. Clone it locally (hardlinked objects, no

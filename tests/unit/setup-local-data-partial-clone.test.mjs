@@ -30,10 +30,10 @@ test('extensions.partialclone is partial', () => {
   git(d, 'config', 'extensions.partialclone', 'origin');
   assert.equal(partial(d), true);
 });
-test('sparse checkout is partial', () => {
+test('sparse checkout alone keeps all objects, so is not partial', () => {
   const d = fresh();
   git(d, 'config', 'core.sparseCheckout', 'true');
-  assert.equal(partial(d), true);
+  assert.equal(partial(d), false);
 });
 test('setup-local-data.sh uses the guard', () => {
   assert.match(readFileSync('scripts/setup-local-data.sh', 'utf8'), /! is_partial_clone "\$REVIEW_TEXTS_SOURCE"/);
