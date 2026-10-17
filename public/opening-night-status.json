@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-17T22:41:51.699Z",
+  "generatedAt": "2026-10-17T23:12:22.904Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,27 +12,27 @@
       "status": "open",
       "slug": "dog-mom-off-west-end",
       "thumbnail": "/images/shows/dog-mom-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 52.85,
-      "liveScore": 53,
-      "scoreDrift": 0.14999999999999858,
+      "siteScore": 46.25,
+      "liveScore": 46,
+      "scoreDrift": -0.25,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 6,
       "t1": 0,
-      "t2": 2,
+      "t2": 3,
       "t3": 3,
       "positive": 0,
       "mixed": 3,
-      "negative": 2,
+      "negative": 3,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/8 total",
+          "6/8 total",
           "T1:0/3",
-          "hi-conf:4/6"
+          "hi-conf:5/6"
         ],
-        "highConfidence": 4,
+        "highConfidence": 5,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -199,6 +199,18 @@
           "p": 0,
           "m": 3,
           "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-17T23:12:22.904Z",
+          "rc": 6,
+          "s": 46.25,
+          "t1": 0,
+          "t2": 3,
+          "t3": 3,
+          "p": 0,
+          "m": 3,
+          "n": 3,
           "bc": "waiting"
         }
       ]
@@ -2416,10 +2428,6 @@
         },
         {
           "name": "Entertainment Weekly",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Post",
           "isDualMarket": false
         },
         {
