@@ -1364,5 +1364,36 @@
       }
     ],
     "queuedAt": "2026-10-17T06:08:56.443Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5519-fantasy-marquee",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-5519-fantasy-marquee",
+    "description": "land.yml did not land land/bro-5519-fantasy-marquee: the scripts-lib-tests gate went red at 66443fa4b9. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39008143757",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5519-fantasy-marquee"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "66443fa4b90444ce9b844f9c045b2367b87ab40f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39008143757"
+      }
+    ],
+    "queuedAt": "2026-10-17T06:37:40.125Z"
   }
 ]
