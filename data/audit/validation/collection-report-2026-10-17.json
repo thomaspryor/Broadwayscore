@@ -1,62 +1,67 @@
 {
-  "runDate": "2026-10-17T07:10:25.914Z",
+  "runDate": "2026-10-17T07:54:57.115Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "stuffed-off-west-end-2026",
+    "showFilter": "dirty-dancing-the-classic-story-on-stage-west-end-2026,some-woman-west-end-2026,midnight-off-broadway-2026,anon-a-tempest-at-our-kitchen-table-off-broadway-2026,stuffed-off-west-end-2026,memoirs-of-amorous-gentlemen-off-broadway-2026,sea-wall-off-broadway-2026,jane-eyre-rose-kingston-off-west-end-2026,cadel-lungs-on-legs-west-end-2026,the-bodyguard-tour-2026,unconditional-a-new-musical-memoir-off-broadway-2026,doll-day-afternoon-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 2,
+    "processed": 3,
+    "failed": 16,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "15.8%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingdog": 1,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 0,
+    "tier1Attempts": 16,
+    "tier1Success": 9,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier1_9Attempts": 1,
-    "tier1_9Success": 0,
-    "tier2Attempts": 2,
+    "tier1_5Attempts": 3,
+    "tier1_5Success": 1,
+    "tier1_9Attempts": 3,
+    "tier1_9Success": 1,
+    "tier2Attempts": 5,
     "tier2Success": 1,
-    "tier3Attempts": 1,
+    "tier3Attempts": 3,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
+    "tier3_6Attempts": 3,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
-    "tier4Success": 0,
-    "totalFailed": 2,
-    "scrapingBeePageCredits": 10,
+    "tier4Attempts": 9,
+    "tier4Success": 1,
+    "totalFailed": 14,
+    "scrapingBeePageCredits": 21,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 0.8,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 0,
-    "failed": 2,
+    "processed": 3,
+    "failed": 16,
     "shows": [
+      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
+      "cadel-lungs-on-legs-west-end-2026",
+      "jane-eyre-rose-kingston-off-west-end-2026",
+      "midnight-off-broadway-2026",
+      "some-woman-west-end-2026",
       "stuffed-off-west-end-2026"
     ],
     "outOfScopeShows": [],
@@ -65,36 +70,109 @@
       "failed": 0
     }
   },
-  "processed": [],
+  "processed": [
+    "jane-eyre-rose-kingston-off-west-end-2026/daily-echo--william-dalgleish.json",
+    "some-woman-west-end-2026/times-uk--clive-davis.json",
+    "some-woman-west-end-2026/west-end-best-friend--oli-burgin.json"
+  ],
   "failed": [
+    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+    "some-woman-west-end-2026/guardian--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "some-woman-west-end-2026/financialtimes--unknown.json",
+    "some-woman-west-end-2026/sunday-times--clive-davis.json",
+    "some-woman-west-end-2026/thestage--sam-marlowe.json",
     "stuffed-off-west-end-2026/nytg--unknown.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/theatermania--zachary-stewart.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/timeout--unknown.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/culturesauce--thom-geier.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--roma-torre.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/talkinbroadway--kimberly-ramirez.json",
     "stuffed-off-west-end-2026/sunday-times--unknown.json"
   ],
   "cumulativeResumedState": {
-    "processed": [],
+    "processed": [
+      "jane-eyre-rose-kingston-off-west-end-2026/daily-echo--william-dalgleish.json",
+      "some-woman-west-end-2026/times-uk--clive-davis.json",
+      "some-woman-west-end-2026/west-end-best-friend--oli-burgin.json"
+    ],
     "failed": [
+      "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+      "some-woman-west-end-2026/guardian--unknown.json",
+      "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
+      "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json",
+      "midnight-off-broadway-2026/chicagotribune--unknown.json",
+      "midnight-off-broadway-2026/eventsfy--unknown.json",
+      "some-woman-west-end-2026/financialtimes--unknown.json",
+      "some-woman-west-end-2026/sunday-times--clive-davis.json",
+      "some-woman-west-end-2026/thestage--sam-marlowe.json",
       "stuffed-off-west-end-2026/nytg--unknown.json",
+      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/theatermania--zachary-stewart.json",
+      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/timeout--unknown.json",
+      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/culturesauce--thom-geier.json",
+      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--roma-torre.json",
+      "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/talkinbroadway--kimberly-ramirez.json",
       "stuffed-off-west-end-2026/sunday-times--unknown.json"
     ]
   },
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "some-woman-west-end-2026/west-end-best-friend--oli-burgin.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/some-woman-west-end-2026/sunday-times--clive-davis.json",
+      "some-woman-west-end-2026/sunday-times--clive-davis.json"
+    ],
     "directCookies": [],
-    "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingdog": [
+      "jane-eyre-rose-kingston-off-west-end-2026/daily-echo--william-dalgleish.json"
+    ],
+    "scrapingbee": [
+      "some-woman-west-end-2026/times-uk--clive-davis.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "failuresByOutlet": {
+    "cityking": {
+      "count": 1,
+      "domain": "cityking.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Guardian": {
+      "count": 1,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "eventsfy": {
+      "count": 1,
+      "domain": "eventsfy.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
     "New York Theatre Guide": {
       "count": 1,
       "domain": "newyorktheatreguide.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
+    },
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
     }
   },
   "urlDiscoveries": []
