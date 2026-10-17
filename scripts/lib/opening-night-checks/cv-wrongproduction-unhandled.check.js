@@ -60,6 +60,8 @@ function withinTemporalWindow(publishDate, openingDate) {
  *   (explainExclusion === 'wrongProduction') AND no shipped row carries this
  *   file's own url+outlet+critic (opts.exactShipped), so the row it matched
  *   belongs to a sibling file (e.g. a mis-split byline).
+ * - 'duplicate-not-shipped': a duplicateOf copy of an existing sibling file
+ *   that the rebuild excludes; the shipped row is the sibling's.
  * - 'prior-run-or-tour-leg': published inside an operator-declared priorRuns /
  *   tourLegs window, which the rebuild's CV pre-pass deliberately honors
  *   (never an inheritReviews:false window, BRO-5285).
@@ -80,6 +82,21 @@ function handledReason(data, show, filePath, opts = {}) {
   if (shouldSkipWrongProductionAudit(data)) return 'rebuild-skip-audit';
   if (data.wrongProduction === true && show && !opts.exactShipped
       && explainExclusion(data, show, filePath) === 'wrongProduction') return 'not-shipped';
+  // A duplicate copy (same url+outlet+critic as its duplicateOf target, so
+  // exactShipped is always true for it) that the rebuild drops: the shipped
+  // row is the target's, and the target is judged on its own in this sweep.
+  // The target must carry its own verdict (a CV result or a clear): when it was
+  // never verified, this copy's CV is the only check on that url and stays.
+  if (show && typeof data.duplicateOf === 'string' && data.duplicateOf
+      && data.duplicateOf !== path.basename(filePath)
+      && explainExclusion(data, show, filePath) != null) {
+    let target = null;
+    try { target = JSON.parse(fs.readFileSync(path.join(path.dirname(filePath), data.duplicateOf), 'utf8')); } catch { /* missing/unreadable */ }
+    if (target && (target.contentVerification
+        || CLEAR_FLAGS.some((f) => target[f] === true) || shouldSkipWrongProductionAudit(target))) {
+      return 'duplicate-not-shipped';
+    }
+  }
   if (show && ((isWithinPriorRun(data.publishDate, show.priorRuns) && !isWithinOptOutPriorRun(data.publishDate, show.priorRuns))
       || isWithinTourLeg(data.publishDate, show.tourLegs))) {
     return 'prior-run-or-tour-leg';

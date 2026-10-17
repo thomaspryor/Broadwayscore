@@ -108,8 +108,19 @@ function clearWrongProductionFlags(data, opts = {}) {
     if (!wrongShowOnly) data.contentVerification.wrongProduction = false;
     data.contentVerification.wrongArticle = false;
     data.contentVerification.isFilmTv = false;
-    data.contentVerification.reasoning =
-      `Superseded by ${source} recovery${reason ? `: ${reason}` : ''}`.trim();
+    const wrapper = `Superseded by ${source} recovery${reason ? `: ${reason}` : ''}`.trim();
+    // BRO-5437: wrongShowOnly leaves cv.wrongProduction standing, so the
+    // verifier's reasoning behind that verdict is still live evidence (incl.
+    // its "[OVERRIDE: review within Nd of opening ...]" marker, which the
+    // cv-wrongproduction lifetime sweep keys off). Replacing it outright
+    // turned already-handled low-confidence reviews into "NEW unhandled" hits
+    // (pride-west-end-2026 british-theatre, 2026-10-16). Keep it after the
+    // wrapper.
+    const prior = String(data.contentVerification.reasoning || '').trim();
+    const keepVerdict = wrongShowOnly && data.contentVerification.wrongProduction === true && prior;
+    data.contentVerification.reasoning = !keepVerdict ? wrapper
+      : prior.startsWith(wrapper) ? prior
+        : `${wrapper} | wrongProduction verdict kept: ${prior}`;
   }
 
   // 3. A stale contentTier:'invalid' otherwise permanently blocks

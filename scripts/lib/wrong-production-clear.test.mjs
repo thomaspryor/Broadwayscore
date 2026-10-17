@@ -209,3 +209,24 @@ test('BRO-2740: wrongShowOnly leaves wrongProduction provenance intact', () => {
   assert.equal(data.wrongProductionDetectedBy, 'auto-triage-cross-production');
   assert.equal(data.wrongShow, undefined);
 });
+
+test('BRO-5437: wrongShowOnly keeps the still-live wrongProduction reasoning (and its OVERRIDE marker)', () => {
+  const orig = '[OVERRIDE: review within 3d of opening, likely correct production] Venue named differently.';
+  const data = { wrongShow: true, contentVerification: { wrongProduction: true, wrongArticle: true, confidence: 'low', reasoning: orig } };
+  clearWrongProductionFlags(data, { source: 'clear-stale-wrong-show-flags.js', reason: 'stale wrongShow', wrongShowOnly: true });
+  assert.match(data.contentVerification.reasoning, /^Superseded by clear-stale-wrong-show-flags\.js recovery: stale wrongShow/);
+  assert.ok(data.contentVerification.reasoning.endsWith(orig), data.contentVerification.reasoning);
+  // Idempotent: a second clear does not stack another copy of the wrapper.
+  const once = data.contentVerification.reasoning;
+  clearWrongProductionFlags(data, { source: 'clear-stale-wrong-show-flags.js', reason: 'stale wrongShow', wrongShowOnly: true });
+  assert.equal(data.contentVerification.reasoning, once);
+});
+
+test('BRO-5437: full clear and wrongShowOnly-with-no-live-verdict still use the bare wrapper', () => {
+  const full = { wrongProduction: true, contentVerification: { wrongProduction: true, reasoning: 'old' } };
+  clearWrongProductionFlags(full, { source: 'x.js' });
+  assert.equal(full.contentVerification.reasoning, 'Superseded by x.js recovery');
+  const ws = { wrongShow: true, contentVerification: { wrongProduction: false, wrongArticle: true, reasoning: 'old' } };
+  clearWrongProductionFlags(ws, { source: 'x.js', wrongShowOnly: true });
+  assert.equal(ws.contentVerification.reasoning, 'Superseded by x.js recovery');
+});

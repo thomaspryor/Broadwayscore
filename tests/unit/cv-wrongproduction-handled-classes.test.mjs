@@ -78,6 +78,16 @@ const FILES = {
     wrongProduction: true,
     contentVerification: { wrongProduction: true, confidence: 'high', reasoning: 'Tryout review.', issues: [] },
   }),
+  // A duplicateOf copy of a sibling that carries its own clean CV verdict: the
+  // rebuild drops the copy, so the shipped row is the target's.
+  'dup-target.json': file('dup', { contentVerification: { wrongProduction: false, confidence: 'high', reasoning: '', issues: [] } }),
+  'dup-copy.json': file('dup', { duplicateOf: 'dup-target.json',
+    contentVerification: { wrongProduction: true, confidence: 'high', reasoning: 'Tour review.', issues: [] } }),
+  // Same shape, but the target was never verified: the copy's CV is the only
+  // check on that url, so it stays a violation.
+  'dup-unverified-target.json': (() => { const d = file('dupu', {}); delete d.contentVerification; return d; })(),
+  'dup-unverified-copy.json': file('dupu', { duplicateOf: 'dup-unverified-target.json',
+    contentVerification: { wrongProduction: true, confidence: 'high', reasoning: 'Tour review.', issues: [] } }),
 };
 
 let tmpRoot;
@@ -89,7 +99,7 @@ before(() => {
   const dir = path.join(tmpRoot, SHOW.id);
   fs.mkdirSync(dir, { recursive: true });
   for (const [name, data] of Object.entries(FILES)) fs.writeFileSync(path.join(dir, name), JSON.stringify(data));
-  const shipped = Object.values(FILES).filter((d) => d.outletId !== 'not-shipped').map((d) => ({ showId: SHOW.id, outletId: d.outletId, criticName: d.criticName, url: d.url }));
+  const shipped = Object.values(FILES).filter((d) => d.outletId !== 'not-shipped' && !d.duplicateOf).map((d) => ({ showId: SHOW.id, outletId: d.outletId, criticName: d.criticName, url: d.url }));
   const ctx = { reviewTextsRoot: tmpRoot, reviewsDoc: { [SHOW.id]: shipped } };
   result = check.run(SHOW, { ...ctx, setAsideHandled: true });
   plainResult = check.run(SHOW, ctx);
@@ -101,7 +111,7 @@ describe('cv-wrongproduction-unhandled handled classes (BRO-5437)', () => {
   it('still reports the real bypass shapes as errors', () => {
     assert.equal(result.severity, 'error');
     const flagged = result.details.violations.map((v) => v.filename).sort();
-    assert.deepEqual(flagged, ['high.json', 'juan-a-ramirez.json', 'low-no-override.json']);
+    assert.deepEqual(flagged, ['dup-unverified-copy.json', 'high.json', 'juan-a-ramirez.json', 'low-no-override.json']);
   });
 
   it('sets aside each documented handled class, by reason', () => {
@@ -111,11 +121,12 @@ describe('cv-wrongproduction-unhandled handled classes (BRO-5437)', () => {
       'manual-clear-reason': 1,
       'rebuild-skip-audit': 1,
       'not-shipped': 1,
+      'duplicate-not-shipped': 1,
     });
   });
 
   it('the opening-night run (no setAsideHandled) still reports every class', () => {
-    assert.equal(plainResult.details.violations.length, 8);
+    assert.equal(plainResult.details.violations.length, 10);
   });
 
   it('handledReason: an override marker whose current date left the 30-day window is not handled', () => {
@@ -149,6 +160,12 @@ describe('cv-wrongproduction-unhandled handled classes (BRO-5437)', () => {
     const d = file('x', { wrongProductionManualClear: 'false',
       contentVerification: { wrongProduction: true, confidence: 'high', reasoning: 'x', issues: [] } });
     assert.equal(check.handledReason(d, SHOW, '/nonexistent/x.json'), null);
+  });
+
+  it('handledReason: a duplicateOf pointing at a missing file is not handled', () => {
+    const d = file('x', { duplicateOf: 'gone.json', contentVerification: { wrongProduction: true,
+      confidence: 'high', reasoning: 'x', issues: [] } });
+    assert.equal(check.handledReason(d, SHOW, path.join(tmpRoot, SHOW.id, 'x.json')), null);
   });
 
   it('handledReason: temporal override is only honored at low confidence', () => {

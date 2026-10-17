@@ -1,15 +1,15 @@
 {
   "issueNumber": "bro-5437",
-  "planId": "edac6c28-5cb7-4af2-990b-47c175bc22ad",
+  "planId": "896a23c9-e550-4fb1-8993-b466483ca42f",
   "status": "pending",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-5437: curator-clear 5 shipped reviews whose CV.wrongProduction verdict is a demonstrable false positive (renamed venue or wrong market assumption), so the cv-wrongproduction lifetime sweep stops listing them. These reviews already ship; no score changes.",
+    "summary": "BRO-5437: curator-clear 8 shipped reviews whose CV.wrongProduction verdict is a demonstrable false positive (renamed venue or wrong market assumption), so the cv-wrongproduction lifetime sweep stops listing them. These reviews already ship; no score changes.",
     "steps": [
-      "Set wrongProductionManualClear on 5 review-texts files (compare-and-set from absent)."
+      "Set wrongProductionManualClear on 8 review-texts files (compare-and-set from absent)."
     ],
     "riskLevel": "low",
     "actions": [
@@ -52,6 +52,30 @@
         "oldValue": null,
         "newValue": true,
         "description": "BRO-5437: CV assumed a Broadway St. James run; this show is the Off-Broadway production, which the review body places at Asylum NYC, its 2022 home before the move to the Daryl Roth. The 2022-08-05 review is of this run."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pride-west-end-2026/british-theatre--keith-mckenna.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5437: CV called the National Theatre Dorfman run \"not a West End production\"; shows.json lists this show at the Dorfman Theatre (opened 2026-06-25) and the review header names National Theatre, The Dorfman, 11 June-12 September 2026, published 2026-06-28. The OVERRIDE reasoning was overwritten by a wrongShow-only clear (helper fixed in the same change)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pride-west-end-2026/musical-theatre-review--unknown.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5437: CV objected that the Dorfman is not a West End venue; shows.json lists this show at the Dorfman Theatre and the review names Pride at the Dorfman, National Theatre, until 12 September 2026 (this run). Kept the temporal OVERRIDE but publishDate is null, so the sweep cannot re-check the window."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stories-the-tap-dance-sensation-west-end-2026/thereviewshub--sonny-waheed.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5437: CV (native low confidence) assumed the review belongs to the declared 2024 prior run; it was published 2026-10-16, the opening date of this 2026 Peacock Theatre return engagement, and its URL slug is the 2026 (\"26-\") Peacock listing."
       }
     ]
   }
