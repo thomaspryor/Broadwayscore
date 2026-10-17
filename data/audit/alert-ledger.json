@@ -236,7 +236,7 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -247,7 +247,8 @@
       "lastSurfacedAt": "2026-10-17T16:53:37.704Z",
       "notifyCount": 141,
       "cardId": null,
-      "linearIdentifier": "BRO-5554"
+      "linearIdentifier": "BRO-5554",
+      "resolvedAt": "2026-10-17T17:28:01.982Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -19665,7 +19666,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:25534026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"only hosts with occurrences >= 2 are drained\"",
       "firstSeen": "2026-10-17T15:43:25.220Z",
@@ -19682,7 +19683,9 @@
         "runId": "39044957873",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39044957873"
       },
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-10-17T17:28:01.762Z",
+      "resolveReason": "job-green"
     },
     "land:land/job/linear-BRO-5355-mvchwwd3": {
       "status": "resolved",
