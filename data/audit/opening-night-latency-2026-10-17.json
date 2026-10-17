@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-17T12:42:58.021Z",
+  "generatedAt": "2026-10-17T13:48:16.566Z",
   "date": "2026-10-17",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 173689,
+  "entryCount": 177223,
   "shows": [
     {
       "showId": "a-ghost-in-your-ear-off-broadway-2026",
@@ -1536,7 +1536,7 @@
     },
     {
       "showId": "cat-cohen-broad-strokes-off-broadway-2026",
-      "reviewCount": 18,
+      "reviewCount": 17,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2567,7 +2567,7 @@
     },
     {
       "showId": "the-standard-of-living-west-end-2026",
-      "reviewCount": 36,
+      "reviewCount": 35,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5572,13 +5572,13 @@
     },
     {
       "showId": "some-woman-west-end-2026",
-      "reviewCount": 14,
+      "reviewCount": 16,
       "median_e2e_ms": 85296679,
       "p90_e2e_ms": 95489900,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 3816931,
-        "scored-to-rebuilt": 433228,
+        "scored-to-rebuilt": 453404,
         "rebuilt-to-deployed": 79616419
       },
       "reviews_over_15min": 5,
@@ -7355,7 +7355,7 @@
     },
     {
       "showId": "death-becomes-her-2024",
-      "reviewCount": 32,
+      "reviewCount": 33,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
