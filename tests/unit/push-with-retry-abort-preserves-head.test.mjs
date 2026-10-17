@@ -53,7 +53,11 @@ function makeFakeGitDir(tmp) {
   fs.mkdirSync(dir);
   const realGit = execSync('command -v git').toString().trim();
   fs.writeFileSync(path.join(dir, 'git'), `#!/usr/bin/env bash
-case "$1" in
+# Skip leading \`-c <key=value>\` options: the script passes its merge
+# driver that way (BRO-5551).
+args=("\$@")
+while [ "\${args[0]:-}" = "-c" ]; do args=("\${args[@]:2}"); done
+case "\${args[0]:-}" in
   rebase|merge)
     for a in "$@"; do if [ "$a" = "-X" ]; then exit 1; fi; done
     ;;

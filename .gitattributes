@@ -4,10 +4,13 @@ src/config/feature-flags.ts merge=ours
 # Bot-churned audit state files, rewritten by crons tens-to-hundreds of times
 # per 3 days. Each writer emits a COMPLETE fresh snapshot (latest-wins), so they
 # don't need a real 3-way merge. Without a merge driver a human's plain `git
-# merge` to main conflicts on them. CI bots do NOT use these drivers: push-with-
-# retry.sh resolves with `git rebase -X theirs` / `git merge -X ours` (strategy
-# options, not the per-path attribute). The driver matters ONLY for a human's
-# bare `git merge`. See Notion 387637c5-416f-8114.
+# merge` to main conflicts on them. CI runners never register merge.ours.driver,
+# and an undefined driver makes git TEXT-merge silently, so push-with-retry.sh
+# passes its own (scripts/lib/merge-keep-run.sh, BRO-5551) on each rebase /
+# merge / cherry-pick: a path also marked autostash=regenerated keeps this run's
+# file whole; every other merge=ours path keeps the -X theirs / -X ours text
+# merge. `-X` alone blended two whole snapshots whose edits did not overlap.
+# See Notion 387637c5-416f-8114.
 #   union  → append-only JSONL log: keep both sides' lines, never conflicts (git built-in).
 #   ours   → single-state JSON: keep on-branch side; next cron regenerates. Requires
 #            `git config merge.ours.driver true` (registered by setup-local-data.sh;
@@ -448,6 +451,8 @@ data/audit/rebuild-score-drift.json autostash=regenerated
 data/audit/cross-show-fingerprint-collisions.json autostash=regenerated
 data/audit/validation-baseline.json autostash=regenerated
 data/audit/skipped-alias-collisions.json autostash=regenerated
+# audit-show-review-gap.js rebuilds it in full from the audit results each run (BRO-5551).
+data/audit/unknown-aggregator-outlets.json autostash=regenerated
 data/audit/validation/collection-report-*.json autostash=regenerated
 public/data/admin/locks.json autostash=regenerated
 public/data/admin/critic-coverage.json autostash=regenerated

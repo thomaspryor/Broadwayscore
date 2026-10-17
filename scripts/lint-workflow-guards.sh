@@ -177,8 +177,10 @@ check_merge_drivers() {
   # A custom `merge=<name>` driver in .gitattributes silently NO-OPS unless
   # `git config merge.<name>.driver ...` is registered (feature-flags.ts
   # merge=ours sat broken this way until 830c1f5b48). Canonical registration
-  # point is setup-local-data.sh (CI bots use push-with-retry.sh strategy
-  # options, not per-path drivers). Built-in drivers need no registration.
+  # point is setup-local-data.sh. CI runners never register it: push-with-
+  # retry.sh passes merge-keep-run.sh per command instead, and
+  # merge-keep-run.test.mjs pins that (BRO-5551). Built-in drivers need no
+  # registration.
   local BUILTIN="union text binary"
   local REG_FILE="scripts/setup-local-data.sh"
   local MISSING="" DRIVERS d
