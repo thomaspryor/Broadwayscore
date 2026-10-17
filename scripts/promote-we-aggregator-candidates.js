@@ -42,6 +42,8 @@ const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { findExistingMatch } = require('./lib/candidate-dedup');
+// A retired id must not be re-minted (promote-owe and promote-ob already refuse; BRO-5557).
+const { matchesRetired } = require('./lib/retired-show-ids');
 const { WEST_END_VENUES, normalizeVenueName, sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { foldDiacritics } = require('./lib/title-match');
 const { withMarketSuffix } = require('./lib/market-slug');
@@ -458,6 +460,11 @@ async function evaluateCandidates(candidates, ctx) {
       // pattern as the OB script's identical guard.
       if (!entry.venue) {
         reject(c, 'skip-invalid-venue', `venue "${c.venue}" failed sanitizeVenueForWrite (placeholder/neighbourhood blob)`);
+        continue;
+      }
+      const retiredHit = matchesRetired({ id: entry.id, title: entry.title, venue: entry.venue });
+      if (retiredHit) {
+        reject(c, 'skip-retired', `matches retired ${retiredHit.id} by ${retiredHit.matchedBy} (data/retired-show-ids.json), never re-add`, { id: entry.id, retiredId: retiredHit.id });
         continue;
       }
       if (existingIds.has(entry.id)) {

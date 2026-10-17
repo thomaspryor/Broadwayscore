@@ -29,6 +29,8 @@
 'use strict';
 
 const { titleSaysMusical } = require('./lib/title-says-musical');
+// A retired id must not be re-minted (BRO-5557: promote-ob-venue-candidates re-added one).
+const { matchesRetired } = require('./lib/retired-show-ids');
 const fs = require('fs');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
@@ -187,6 +189,9 @@ function main() {
     const subtitleDup = !exactDup && findSubtitleDuplicateTitle(knownShows, entry.title, entry.venue);
     if (exactDup) { skipped.push({ entry, reason: 'duplicate title+venue' }); continue; }
     if (subtitleDup) { skipped.push({ entry, reason: `subtitle-stripped duplicate of "${subtitleDup}"` }); continue; }
+    // venue-write-guard-ok: read-only probe of the retired registry, nothing is written to a venue field
+    const retiredHit = matchesRetired({ id: entry.id, title: entry.title, venue: entry.venue });
+    if (retiredHit) { skipped.push({ entry, reason: `matches retired ${retiredHit.id} by ${retiredHit.matchedBy}` }); continue; }
     if (existingIds.has(entry.id)) { skipped.push({ entry, reason: 'duplicate id' }); continue; }
     if (!entry.openingDate && !entry.closingDate) { skipped.push({ entry, reason: 'no opening or closing date from Playbill' }); continue; }
     toPromote.push(entry);

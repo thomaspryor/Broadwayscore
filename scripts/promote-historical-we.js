@@ -39,6 +39,8 @@ const fs = require('fs');
 const path = require('path');
 
 const { titleSaysMusical } = require('./lib/title-says-musical');
+// A retired id must not be re-minted (BRO-5557).
+const { matchesRetired } = require('./lib/retired-show-ids');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { buildVenueTitlePool, findExactDuplicate, findSubtitleDuplicateTitle } = require('./lib/venue-title-dedup-pool');
@@ -238,6 +240,9 @@ function planPromotions({ candidates, shows, approvals, only, today }) {
     if (dup) { skipped.push({ title: c.title, reason: `duplicate of ${dup.id || dup.title}` }); continue; }
     const subtitleDup = findSubtitleDuplicateTitle(pool, entry.title, entry.venue, dupOpts);
     if (subtitleDup) { skipped.push({ title: c.title, reason: `subtitle-variant duplicate of "${subtitleDup}"` }); continue; }
+    // venue-write-guard-ok: read-only probe of the retired registry, nothing is written to a venue field
+    const retiredHit = matchesRetired({ id: entry.id, title: entry.title, venue: entry.venue });
+    if (retiredHit) { skipped.push({ title: c.title, reason: `matches retired ${retiredHit.id} by ${retiredHit.matchedBy}` }); continue; }
     if (existingIds.has(entry.id)) { skipped.push({ title: c.title, reason: `id ${entry.id} already exists` }); continue; }
     toPromote.push(entry);
     if (inferShowType(cand, musicalTitles).guessed) typeGuessed.push(entry.id);
