@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-17T14:29:58.956Z",
-  "processed": 208,
-  "failed": 102,
-  "successRate": "67.1%",
+  "updatedAt": "2026-10-17T14:46:34.888Z",
+  "processed": 157,
+  "failed": 117,
+  "successRate": "57.3%",
   "tierBreakdown": {
-    "playwright": 101,
+    "playwright": 78,
     "amp": 7,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 15,
-    "scrapingbee": 6,
-    "brightdata": 1,
+    "scrapingdog": 8,
+    "scrapingbee": 7,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 73
+    "archive": 49
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-10-17T13:46:09.720Z",
@@ -26,6 +26,46 @@
       "t": "2026-10-17T13:46:10.111Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-17T14:43:04.616Z",
+      "event": "bb-session",
+      "session": "60887a93",
+      "url": "https://www.talkinbroadway.com/page/ob/10_14_26b.html"
+    },
+    {
+      "t": "2026-10-17T14:43:05.311Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-17T14:43:32.374Z",
+      "event": "bb-session",
+      "session": "cfb0bc88",
+      "url": "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/attachment/alyssa-may-go"
+    },
+    {
+      "t": "2026-10-17T14:43:40.835Z",
+      "event": "bb-session",
+      "session": "85228ff1",
+      "url": "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/attachment/alyssa-may-go"
+    },
+    {
+      "t": "2026-10-17T14:46:08.915Z",
+      "event": "bb-session",
+      "session": "57d2a25b",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654594"
+    },
+    {
+      "t": "2026-10-17T14:46:09.620Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-17T14:46:10.997Z",
+      "event": "bb-session",
+      "session": "07bf805b",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
     }
   ]
 }
