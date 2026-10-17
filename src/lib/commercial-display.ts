@@ -24,6 +24,7 @@ import {
   analystRange, estimateFitsDesignation, RUNNING_SHOWN_MAX,
 } from '../../scripts/lib/model-display-guard';
 import { hasNoInvestorsToRepay } from '../../scripts/lib/commercial-designations';
+import { publicSourceText, isEstimatedCapitalization } from '../../scripts/lib/public-source-text';
 import { conversionOf } from '../../scripts/lib/commercial-conversion';
 
 export type RecoupmentDisplayMode = 'announced' | 'analyst' | 'model' | 'none';
@@ -314,45 +315,6 @@ export function getCitedSourceUrl(sources: SourceList): string | null {
   return hit?.url ?? null;
 }
 
-// Internal research-tooling language that must never be printed as a public
-// source line (records carried "GPT DR Batch 3: ~$800-900K...", "Trade press /
-// deep research synthesis", "SEC filings (GPT Deep Research)"). The data text
-// is being cleaned separately; this is the guard against it coming back.
-// "Auto-enrolled stub; awaiting model + curation." is the placeholder note
-// scripts/initialize-commercial-stub.js writes on every new record.
-// "Per policy applied 2026-05-24: ..." and "Kept ... per owner review" are
-// hand-edit notes about our own process (BRO-4669). A blog or Reddit
-// characterisation ("Financing Broadway blog states it closed at a loss") is
-// not a citation the page may print (BRO-5020 Group C); the label still shows.
-const INTERNAL_SOURCE_RE =
-  /(?:chat)?gpt|deep[\s-]*research|\bDR\s*batch\b|\breddit\b|\bblog(?:s|ger|post)?\b|\bconsensus\b|\bsynthes[ie][sz]|\binferred\b|industry[\s-]*estimate|\bauto[\s-]*enroll?ed\b|\bawaiting\s+(?:the\s+)?(?:model|curation|research)\b|\bper\s+policy\b|\bowner\s+(?:review|decision|sign-?off)\b/i;
-
-// Record field names written as code: "recouped:null because no public
-// citation", "designation=Nonprofit" (BRO-4669). Case-sensitive (a lowercase
-// field name) so prose like "Based on a True story" never matches; tested with
-// URLs removed so a query string ("?type=D") is not mistaken for one.
-const INTERNAL_TOKEN_RE = /\b[a-z][A-Za-z]*\s?[:=]\s?(?:true|false|null)\b|\b[a-z][A-Za-z]*=[A-Z]/;
-const URL_RE = /\bhttps?:\/\/\S+/gi;
-
-// Bracketed pipeline annotations appended to otherwise publishable notes:
-// "[Auto-designated Fizzle: ...]" (scripts/cleanup-commercial-data.js) and
-// "[PLAUSIBILITY WARNING: ...]" (the research/backfill scripts). Only the
-// bracket is internal, so it is cut and the rest of the note survives.
-const INTERNAL_ANNOTATION_RE = /\[\s*(?:auto[\s-]*(?:designated|enroll?ed)|plausibility\s+warning)\b[^\]]*\]/gi;
-
-/**
- * Source text that is safe to print verbatim, else null. Callers render no
- * source line (or a methodology label) when this returns null.
- */
-export function publicSourceText(text: string | null | undefined): string | null {
-  if (typeof text !== 'string') return null;
-  const stripped = text.replace(INTERNAL_ANNOTATION_RE, ' ');
-  const trimmed = (stripped === text ? text : stripped.replace(/[ \t]{2,}/g, ' ')).trim();
-  if (!trimmed) return null;
-  if (INTERNAL_SOURCE_RE.test(trimmed) || INTERNAL_TOKEN_RE.test(trimmed.replace(URL_RE, ' '))) return null;
-  return trimmed;
-}
-
 /**
  * The part of a commercial record the show page may send to the browser.
  * BizBuzzCard is a client component, so whatever object it receives lands in
@@ -458,24 +420,8 @@ export function getNonprofitTag(
 /** Re-exported for client components: one rule for who has investors to repay (BRO-5502). */
 export { hasNoInvestorsToRepay };
 
-// A source that says the figure is an estimate ("Estimate: $2,000,887 NYC
-// theatrical tax credit ... at the 25% credit rate", Plaza Suite, BRO-5517).
-const ESTIMATE_SOURCE_RE = /^\s*(?:estimated?|est\.|approx(?:imately|\.)?|roughly|about|~)\b/i;
-
-/**
- * True when the capitalization should carry the "~" estimate marker: the
- * record flags it, its source says it is an estimate, or it has no publishable
- * source. A cited capitalization is a reported figure (BRO-4623) and prints
- * plain; an uncited one cannot read as reported, the same rule as the weekly
- * cost (BRO-4666).
- */
-export function isEstimatedCapitalization(
-  commercial: Pick<ShowCommercial, 'isEstimate' | 'capitalizationSource'>
-): boolean {
-  if (commercial.isEstimate?.capitalization === true) return true;
-  if (ESTIMATE_SOURCE_RE.test(commercial.capitalizationSource || '')) return true;
-  return !publicSourceText(commercial.capitalizationSource);
-}
+/** Which source text may be printed, and which capitalization is our estimate: shared with the newsletter (BRO-5517). */
+export { publicSourceText, isEstimatedCapitalization };
 
 /** costMethodology values whose weekly running cost is our estimate, not a reported figure. */
 export const ESTIMATED_COST_METHODS: ReadonlySet<string> = new Set(['industry-estimate', 'deep-research', 'reddit-standard']);

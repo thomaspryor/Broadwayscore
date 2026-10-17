@@ -35,6 +35,11 @@ test('a payment counts as received only from its payout date; before it, as an a
   const at = (iso) => nyTaxCredit({ ...formulaArgs, slug: 'the-outsiders', now: Date.parse(iso) });
   assert.deepEqual(at('2025-01-01'), { amount: 3_000_000, basis: 'allocated', received: false });
   assert.deepEqual(at('2025-05-22'), { amount: 3_000_000, basis: 'received', received: true });
+  // Glengarry Glen Ross: allocated $2,874,700 in Aug 2025, paid "$2.7 million"
+  // by Jun 2 2026 (Bloomberg Tax). The payment replaces the allocation.
+  const glengarry = (iso) => nyTaxCredit({ ...formulaArgs, slug: 'glengarry-glen-ross-2025', now: Date.parse(iso) });
+  assert.deepEqual(glengarry('2026-06-01'), { amount: 2_700_000, basis: 'allocated', received: false });
+  assert.deepEqual(glengarry('2026-06-02'), { amount: 2_700_000, basis: 'received', received: true });
 });
 
 test('the refit formula: 13% of the cap plus qualifying running costs, capped at $3M', () => {
@@ -46,10 +51,11 @@ test('the refit formula: 13% of the cap plus qualifying running costs, capped at
 });
 
 test('award tables: whole dollars up to the $3M cap, dated payouts, no show on both lists', () => {
+  const today = new Date().toISOString().slice(0, 10);
   for (const [slug, [amt, paid]] of Object.entries(RECEIVED)) {
     assert.ok(Number.isInteger(amt) && amt > 0 && amt <= TAX_CREDIT_MAX, `${slug}: ${amt}`);
-    // ESD's first payout was Aug 4 2022; the latest reported, by Jun 2 2026.
-    assert.ok(/^\d{4}-\d{2}-\d{2}$/.test(paid) && paid >= '2022-08-04' && paid <= '2026-06-02', `${slug}: ${paid}`);
+    // ESD's first payout was Aug 4 2022; a payment cannot be dated after today.
+    assert.ok(/^\d{4}-\d{2}-\d{2}$/.test(paid) && paid >= '2022-08-04' && paid <= today, `${slug}: ${paid}`);
   }
   for (const [slug, amt] of Object.entries(ALLOCATED)) assert.ok(Number.isInteger(amt) && amt > 0 && amt <= TAX_CREDIT_MAX, `${slug}: ${amt}`);
   assert.deepEqual(Object.keys(RECEIVED).filter((k) => k in ALLOCATED), []);

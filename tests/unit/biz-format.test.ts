@@ -69,6 +69,12 @@ test('isEstimatedCapitalization: a cited figure is reported unless the record fl
 test('isEstimatedCapitalization: a source that says it is an estimate prints "~" (BRO-5517, Plaza Suite)', () => {
   assert.equal(isEstimatedCapitalization({ capitalizationSource: 'Estimate: $2,000,887 NYC theatrical tax credit to Suite 719 LLC at the 25% credit rate' }), true);
   assert.equal(isEstimatedCapitalization({ capitalizationSource: 'Estimated from the tax credit, https://example.com/a' }), true);
+  // The short markers, written the usual way (a "$" or a space after them).
+  assert.equal(isEstimatedCapitalization({ capitalizationSource: '~$8M per Variety, https://example.com/a' }), true);
+  assert.equal(isEstimatedCapitalization({ capitalizationSource: 'Est. $5M per Variety, https://example.com/a' }), true);
+  // A rounded reported figure is still reported.
+  assert.equal(isEstimatedCapitalization({ capitalizationSource: 'About $12M per the SEC filing, https://www.sec.gov/x' }), false);
+  assert.equal(isEstimatedCapitalization({ capitalizationSource: 'Approximately $5M per SEC Form D, https://www.sec.gov/x' }), false);
   // A reported figure that merely mentions an estimate elsewhere stays reported.
   assert.equal(isEstimatedCapitalization({ capitalizationSource: CITED }), false);
 });

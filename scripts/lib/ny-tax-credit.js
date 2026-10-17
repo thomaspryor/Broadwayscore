@@ -232,8 +232,40 @@ function nyTaxCredit({ slug, notesCredit, eligible, capitalization, qualifyingRu
   return { amount: formulaCredit(capitalization, qualifyingRunningCosts), basis: 'formula', received: false };
 }
 
+// A dollar amount right next to "tax credit" in a record's notes: "Expected
+// ~$1.9M NY state tax credit", "a tax credit of $2.7 million". An amount
+// further away is about something else ("its $5.25M capitalization ...
+// helped by the revived tax credit").
+const NOTE_AMOUNT = String.raw`~?\$\s?(\d[\d,]*(?:\.\d+)?)\s*(million|m|k)?\b`;
+const NOTE_CREDIT_RES = [
+  new RegExp(NOTE_AMOUNT + String.raw`\s+(?:(?:ny|nyc|new|york|state|city|theatrical|theater|theatre|production|broadway)\s+){0,4}tax[\s-]*credit`, 'gi'),
+  new RegExp(String.raw`tax[\s-]*credit\s*(?:of|worth|totaling|totalling|was|is|:)?\s*(?:about|roughly|approximately|up to)?\s*` + NOTE_AMOUNT, 'gi'),
+];
+
+/**
+ * Tax credit amounts a record's notes state that are more than 10% off the
+ * award this module counts for the show: [{ noted, counted }]. Notes print on
+ * the show card, so a guess written before the award ("Expected ~$1.9M" for
+ * Glengarry, paid $2.7M) must not outlive it (BRO-5517). A show with no award
+ * listed has nothing to compare with.
+ */
+function taxCreditNoteConflicts(slug, notes) {
+  const counted = RECEIVED[slug] ? RECEIVED[slug][0] : ALLOCATED[slug];
+  if (counted == null || typeof notes !== 'string') return [];
+  const out = [];
+  for (const re of NOTE_CREDIT_RES) {
+    for (const m of notes.matchAll(re)) {
+      const unit = (m[2] || '').toLowerCase();
+      const n = parseFloat(m[1].replace(/,/g, ''));
+      const noted = unit === 'k' ? n * 1e3 : (unit || n < 1000) ? n * 1e6 : n;
+      if (Math.abs(noted - counted) > 0.1 * counted) out.push({ noted, counted });
+    }
+  }
+  return out;
+}
+
 module.exports = {
-  nyTaxCredit, formulaCredit,
+  nyTaxCredit, formulaCredit, taxCreditNoteConflicts,
   RECEIVED, ALLOCATED, SOURCES, LISTS_AS_OF,
   TAX_CREDIT_MAX, TAX_CREDIT_RATE, FORMULA_RATE, QUALIFYING_WEEKS,
   TAX_CREDIT_PROGRAM_START, TAX_CREDIT_PROGRAM_END,

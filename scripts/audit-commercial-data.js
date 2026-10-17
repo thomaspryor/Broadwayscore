@@ -942,6 +942,23 @@ function checkDeprecatedFields() {
 }
 
 // ============================================
+// CHECK: Tax credit amounts in notes vs the ESD award lists (BRO-5517)
+// ============================================
+// The notes print on the show card. When an award is added to
+// scripts/lib/ny-tax-credit.js, a note written before it ("Expected ~$1.9M")
+// goes stale with no record write to warn on, so the weekly audit sweeps it.
+
+function checkTaxCreditNotes() {
+  const { taxCreditNoteConflicts } = require('./lib/ny-tax-credit');
+  for (const [key, data] of commercialEntries) {
+    for (const { noted, counted } of taxCreditNoteConflicts(key, data.notes)) {
+      addIssue('tax-credit-note', 'medium', key,
+        `notes state a $${(noted / 1e6).toFixed(2)}M tax credit, but ESD's lists give $${(counted / 1e6).toFixed(2)}M (scripts/lib/ny-tax-credit.js); update the note.`);
+    }
+  }
+}
+
+// ============================================
 // CHECK 16: Recoupment trade press citation
 // ============================================
 
@@ -1097,6 +1114,7 @@ const coverageStats = checkOpenShowCoverage();
 checkTourStopConsistency();
 checkDeprecatedFields();
 checkRecoupmentCitations();
+checkTaxCreditNotes();
 const modelFnStats = checkModelFalseNegatives();
 
 // ============================================

@@ -297,3 +297,15 @@ test('a Nonprofit record citing an SEC filing warns; a commercial one or a non-S
   assert.equal(nonprofitSec(rec('Nonprofit', 'https://www.notsec.gov/x')).length, 0);
   assert.equal(nonprofitSec({ designation: 'Nonprofit' }).length, 0);
 });
+
+test('notes that state a tax credit far from the ESD award warn; a matching or unrelated amount does not (BRO-5517)', () => {
+  const credit = (id, notes) => commercialRecordWarnings(id, { designation: 'TBD', recouped: null, notes }).filter((m) => /tax credit, but ESD/.test(m));
+  // Glengarry Glen Ross: paid $2.7M by Jun 2 2026.
+  assert.deepEqual(credit('glengarry-glen-ross-2025', 'Expected ~$1.9M NY state tax credit (25% of costs).'), [
+    'commercial.json: "glengarry-glen-ross-2025" notes state a $1.90M tax credit, but ESD\'s lists give $2.70M (scripts/lib/ny-tax-credit.js); update the note',
+  ]);
+  assert.equal(credit('glengarry-glen-ross-2025', 'Paid a tax credit of $2.7 million by Jun 2026.').length, 0);
+  // An amount that is not the credit, and a show with no award listed.
+  assert.equal(credit('purpose-2025', 'Recouped its $5.25M capitalization, helped by the revived NY State Broadway tax credit.').length, 0);
+  assert.equal(credit('no-such-show', 'Expected ~$1.9M tax credit.').length, 0);
+});

@@ -72,6 +72,7 @@ const CITATION_FIELDS = ['capitalizationSource', 'recoupedSource'];
 const LOSS_DESIGNATIONS = ['Flop', 'Fizzle'];
 const { VALID_DESIGNATION_BASES, DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel } = require('./commercial-designations');
 const { conversionOf, conversionShapeProblems } = require('./commercial-conversion');
+const { taxCreditNoteConflicts } = require('./ny-tax-credit');
 const { COST_BASES, BASIS_CUE_TEXT } = require('./cost-split');
 
 /** The research wording in `text` outside any URL, or null. */
@@ -390,6 +391,12 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
   // Sondheim revue's $12M capitalization). Converted runs are not Nonprofit.
   if (show.designation === 'Nonprofit' && Array.isArray(show.sources) && show.sources.some((s) => /(?:^|\.)sec\.gov\//.test(String((s && s.url) || '').replace(/^https?:\/\//, '')))) {
     out.push(`commercial.json: "${showId}" is Nonprofit but cites an SEC filing (a nonprofit run has no investor offering; check the filing names this production, or drop it)`);
+  }
+  // Notes print on the show card: a tax credit amount they state must agree
+  // with the award the model counts (BRO-5517: Glengarry's "Expected ~$1.9M"
+  // stood beside a $2.7M payment).
+  for (const { noted, counted } of taxCreditNoteConflicts(showId, show.notes)) {
+    out.push(`commercial.json: "${showId}" notes state a $${(noted / 1e6).toFixed(2)}M tax credit, but ESD's lists give $${(counted / 1e6).toFixed(2)}M (scripts/lib/ny-tax-credit.js); update the note`);
   }
   // A hard-sourced cost whose quote says all-in or breakeven, with no
   // explicit weeklyRunningCostBasis (BRO-5093): the costBasis model would
