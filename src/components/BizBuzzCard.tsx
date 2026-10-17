@@ -13,6 +13,8 @@ import {
   getRecoupmentAttribution,
   getDesignationDisplay,
   publicSourceText,
+  sourceTextSegments,
+  sourceTextLink,
   isEstimatedRunningCost,
   isEstimatedCapitalization,
   getWeeklyCostSourceLabel,
@@ -105,6 +107,24 @@ function ChevronDown({ className }: { className?: string }) {
   );
 }
 
+// A source line with any cited URL shown as a short link (its host name),
+// not a raw URL clipped at the card's edge (BRO-5520).
+function SourceText({ text }: { text: string }) {
+  return (
+    <>
+      {sourceTextSegments(text).map((seg, i) =>
+        seg.kind === 'link' ? (
+          <a key={i} href={seg.href} target="_blank" rel="noopener noreferrer" className="underline decoration-white/20 hover:text-brand">
+            {seg.label}
+          </a>
+        ) : (
+          seg.text
+        )
+      )}
+    </>
+  );
+}
+
 // Trend indicator component (4-week average gross vs the prior 4 weeks)
 function TrendIndicator({ trend }: { trend: RecoupmentTrend }) {
   if (trend === 'unknown') return null;
@@ -161,6 +181,8 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
   const analystRange = displayMode === 'analyst' && !reportedReturnLine ? getDisplayableAnalystRange({ ...commercial, status: showStatus }) : null;
   const showModelBar = displayMode === 'model' && !reportedReturnLine;
   const attribution = displayMode === 'announced' ? getRecoupmentAttribution(commercial) : null;
+  // One link with no raw URL text: the line is clamped to two lines (BRO-5520).
+  const attributionLink = attribution?.sourceText ? sourceTextLink(attribution.sourceText, attribution.sourceUrl) : null;
 
   // Source lines print only publishable text: records can carry internal
   // research notes ("GPT DR Batch 3...", "deep research synthesis"), which
@@ -375,17 +397,17 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
             {attribution.sourceText && (
               <p className="text-xs text-gray-500 mt-1 line-clamp-2">
                 Source:{' '}
-                {attribution.sourceUrl ? (
+                {attributionLink?.href ? (
                   <a
-                    href={attribution.sourceUrl}
+                    href={attributionLink.href}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="underline hover:text-gray-300"
                   >
-                    {attribution.sourceText}
+                    {attributionLink.label}
                   </a>
                 ) : (
-                  attribution.sourceText
+                  attributionLink?.label
                 )}
               </p>
             )}
@@ -447,8 +469,8 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
 
         {/* Source Attribution (visible without expanding) */}
         {capSourceText && !hasDetails && (
-          <p className="text-xs text-gray-500">
-            Source: {capSourceText}
+          <p className="text-xs text-gray-500 break-words">
+            Source: <SourceText text={capSourceText} />
           </p>
         )}
 
@@ -472,13 +494,13 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
                 )}
                 {/* The recoupment date and source print once, in the attribution block above. */}
                 {capSourceText && (
-                  <p className="text-xs text-gray-500">
-                    Capitalization source: {capSourceText}
+                  <p className="text-xs text-gray-500 break-words">
+                    Capitalization source: <SourceText text={capSourceText} />
                   </p>
                 )}
                 {weeklyCostSourceText && (
-                  <p className="text-xs text-gray-500 mt-1">
-                    Weekly cost source: {weeklyCostSourceText}
+                  <p className="text-xs text-gray-500 mt-1 break-words">
+                    Weekly cost source: <SourceText text={weeklyCostSourceText} />
                   </p>
                 )}
               </div>

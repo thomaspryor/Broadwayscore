@@ -777,3 +777,46 @@ export function formatRecoupedDate(date: string | null | undefined): string | nu
   if (idx < 0 || idx > 11) return year;
   return `${MONTHS[idx]} ${year}`;
 }
+
+export type SourceTextSegment = { kind: 'text'; text: string } | { kind: 'link'; href: string; label: string };
+
+// A URL inside printed source text, ending on a character that is not
+// sentence punctuation ("... primary_doc.xml." keeps its full stop as text).
+const SOURCE_URL_RE = /(https?:\/\/[^\s<>"')]*[^\s<>"').,;:!?])/g;
+
+/**
+ * Printed source text split into plain text and links, so the show card can
+ * render a cited filing or article as a short clickable label (the host name,
+ * "sec.gov") instead of a raw URL clipped at the card's edge (BRO-5520). Only
+ * http(s) URLs become links; anything else stays text.
+ */
+export function sourceTextSegments(text: string): SourceTextSegment[] {
+  const out: SourceTextSegment[] = [];
+  let last = 0;
+  for (const m of text.matchAll(SOURCE_URL_RE)) {
+    const start = m.index ?? 0;
+    let label: string;
+    try {
+      label = new URL(m[0]).hostname.replace(/^www\./, '');
+    } catch {
+      continue;
+    }
+    if (start > last) out.push({ kind: 'text', text: text.slice(last, start) });
+    out.push({ kind: 'link', href: m[0], label });
+    last = start + m[0].length;
+  }
+  if (last < text.length) out.push({ kind: 'text', text: text.slice(last) });
+  return out;
+}
+
+/**
+ * A source line shown as one link (the recoupment attribution, clamped to two
+ * lines, where an inline link at the end would be cut off): its text without
+ * raw URLs, pointing at the first URL it quotes, else at the fallback.
+ */
+export function sourceTextLink(text: string, fallbackHref: string | null): { label: string; href: string | null } {
+  const segs = sourceTextSegments(text);
+  const link = segs.find((seg) => seg.kind === 'link');
+  const label = segs.map((seg) => (seg.kind === 'text' ? seg.text : '')).join('').replace(/\s{2,}/g, ' ').trim();
+  return { label: label || (link && link.kind === 'link' ? link.label : text), href: link && link.kind === 'link' ? link.href : fallbackHref };
+}

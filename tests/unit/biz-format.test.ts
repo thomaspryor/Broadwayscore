@@ -21,7 +21,7 @@ import {
   formatDevelopmentDate,
   sortNewestFirst,
 } from '../../src/lib/biz-format';
-import { isEstimatedCapitalization, toPublicShowCommercial } from '../../src/lib/commercial-display';
+import { isEstimatedCapitalization, toPublicShowCommercial, sourceTextSegments, sourceTextLink } from '../../src/lib/commercial-display';
 import type { ShowCommercial } from '../../src/lib/data-types';
 
 test('formatCurrency: null/undefined render em-dash, never $0', () => {
@@ -198,4 +198,34 @@ test('sortNewestFirst: recoupments and closings interleave by date, newest first
     sortNewestFirst([{ d: '2025-12' }, { d: '2026' }, { d: '2026-01' }], (r) => r.d).map((r) => r.d),
     ['2026-01', '2026', '2025-12'],
   );
+});
+
+test('sourceTextSegments: a cited URL becomes a link labelled by its host (BRO-5520)', () => {
+  const formD = 'https://www.sec.gov/Archives/edgar/data/2153516/000215351626000001/xslFormDX01/primary_doc.xml';
+  assert.deepEqual(sourceTextSegments(`SEC Form D (Paranormal Broadway Ltd Liability Co): total offering $8,000,000 ${formD}`), [
+    { kind: 'text', text: 'SEC Form D (Paranormal Broadway Ltd Liability Co): total offering $8,000,000 ' },
+    { kind: 'link', href: formD, label: 'sec.gov' },
+  ]);
+  // A full stop after the URL stays text; two URLs; a source with none.
+  assert.deepEqual(sourceTextSegments('See https://playbill.com/article/x. Also https://www.broadwayjournal.com/p/y'), [
+    { kind: 'text', text: 'See ' },
+    { kind: 'link', href: 'https://playbill.com/article/x', label: 'playbill.com' },
+    { kind: 'text', text: '. Also ' },
+    { kind: 'link', href: 'https://www.broadwayjournal.com/p/y', label: 'broadwayjournal.com' },
+  ]);
+  assert.deepEqual(sourceTextSegments('Hollywood Reporter (Nov 29, 2011)'), [{ kind: 'text', text: 'Hollywood Reporter (Nov 29, 2011)' }]);
+  // Only http(s) URLs become links.
+  assert.deepEqual(sourceTextSegments('javascript:alert(1) ftp://x.y'), [{ kind: 'text', text: 'javascript:alert(1) ftp://x.y' }]);
+});
+
+test('sourceTextLink: one link, no raw URL text, the quoted URL wins over the fallback (BRO-5520)', () => {
+  const quoted = 'Broadway News (Mar 23, 2023): "made back its investment in December of 2022." https://www.broadwaynews.com/broadways-six-recoups/';
+  assert.deepEqual(sourceTextLink(quoted, 'https://www.broadwayworld.com/x'), {
+    label: 'Broadway News (Mar 23, 2023): "made back its investment in December of 2022."',
+    href: 'https://www.broadwaynews.com/broadways-six-recoups/',
+  });
+  assert.deepEqual(sourceTextLink('Hollywood Reporter (Nov 29, 2011)', 'https://www.hollywoodreporter.com/a'), { label: 'Hollywood Reporter (Nov 29, 2011)', href: 'https://www.hollywoodreporter.com/a' });
+  assert.deepEqual(sourceTextLink('Trade press report', null), { label: 'Trade press report', href: null });
+  // A bare URL keeps a readable label.
+  assert.deepEqual(sourceTextLink('https://www.sec.gov/x', null), { label: 'sec.gov', href: 'https://www.sec.gov/x' });
 });
