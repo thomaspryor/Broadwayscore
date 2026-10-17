@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-10-17T15:09:06.593Z",
+  "timestamp": "2026-10-17T15:43:39.636Z",
   "stats": {
     "totalReviews": 57300,
-    "alreadyFlagged": 21247,
-    "dateGuardCatches": 196,
+    "alreadyFlagged": 21248,
+    "dateGuardCatches": 195,
     "directorMismatch": 1934,
-    "tvFilmSignals": 1597,
+    "tvFilmSignals": 1598,
     "londonSignals": 2404,
     "offBroadwaySignals": 514,
     "yearMismatch": 155,
@@ -17076,6 +17076,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "hamilton-2015",
+      "file": "newsday--linda-winer.json",
+      "score": 89,
+      "publishDate": "August 6, 2015",
+      "url": "http://www.newsday.com/entertainment/theater/hamilton-review-even-better-on-broadway-1.10711524",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -54147,6 +54161,7 @@
     {
       "showId": "baby-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
+      "score": 80,
       "publishDate": "2026-10-16",
       "url": "https://theatreandtonic.co.uk/blog/baby-brixton-house-review",
       "findings": [
@@ -60297,6 +60312,7 @@
     {
       "showId": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026",
       "file": "all-that-dazzles-uk--sam-admin.json",
+      "score": 80,
       "publishDate": "2026-10-09",
       "url": "https://www.allthatdazzles.co.uk/post/review-end-of-the-world-and-hard-boiled-wonderland-barbican-theatre",
       "findings": [
@@ -60310,7 +60326,7 @@
     {
       "showId": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 83,
+      "score": 85,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/end-world-and-hard-boiled-wonderland-barbican-highly-enjoyable-piece-theatrical-craftsmanship",
       "findings": [
@@ -60352,6 +60368,7 @@
     {
       "showId": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026",
       "file": "guardian--arifa-akbar.json",
+      "score": 90,
       "publishDate": "2026-10-09",
       "url": "https://www.theguardian.com/stage/2026/oct/09/end-of-the-world-and-hard-boiled-wonderland-review-haruki-murakami-barbican-theatre-london",
       "findings": [
@@ -60365,6 +60382,7 @@
     {
       "showId": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026",
       "file": "theatreandtonic--eleanor-bywater.json",
+      "score": 76,
       "publishDate": "2026-10-09",
       "url": "https://theatreandtonic.co.uk/blog/end-of-the-world-and-hard-boiled-wonderland-at-the-barbican-theatre",
       "findings": [
@@ -60378,6 +60396,7 @@
     {
       "showId": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026",
       "file": "theupcoming--unknown.json",
+      "score": 64,
       "publishDate": "2026-10-09",
       "url": "https://www.theupcoming.co.uk/2026/10/09/end-of-the-world-and-hard-boiled-wonderland-at-barbican-theatre-theatre-review/",
       "findings": [
@@ -63327,20 +63346,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "hamilton-2015",
-      "file": "timeout--david-cote.json",
-      "score": 91,
-      "publishDate": "February 17, 2015",
-      "url": "http://www.timeout.com/newyork/theater/hamilton",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 146d before show (February 17, 2015 vs 2015-07-13)"
         }
       ]
     },
