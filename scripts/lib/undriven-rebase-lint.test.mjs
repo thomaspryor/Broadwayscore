@@ -19,6 +19,9 @@ test('flags undriven pull --rebase / rebase / merge / cherry-pick', () => {
     'GIT_EDITOR=true git rebase --continue',
     'git merge origin/main -X ours --no-edit',
     'git cherry-pick abc123',
+    'git pull --no-rebase -X ours origin main',
+    'git pull -r origin main',
+    'git -C data pull --rebase',
   ]) assert.equal(findUndriven(l).length, 1, l);
 });
 
@@ -33,6 +36,7 @@ test('accepts driven, marked, comment and non-content calls', () => {
     'git merge-file --ours a b c',
     'git pull --rebase origin main # keep-run-ok: separate repo',
     'scripts/lib/push-with-retry.sh git rebase',
+    `git ${DRV.replace(' B ',' A ')} pull --no-rebase -X ours origin main`,
   ]) assert.deepEqual(findUndriven(l), [], l);
   assert.deepEqual(findUndriven('# keep-run-ok: other repo\ngit pull --rebase'), []);
 });

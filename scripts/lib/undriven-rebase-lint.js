@@ -10,8 +10,8 @@ const path = require('path');
 
 // Verbs that can replay or merge file content. --abort/--skip/--quit and
 // merge-base/merge-file/merge-tree never write a blend.
-const CALL = /\bgit\s+(?:-c\s+(?:"[^"]*"|'[^']*'|\S+)\s+)*(pull\b[^\n]*?--rebase|rebase\b(?!\s+--(?:abort|skip|quit))|merge\b(?![-\w])(?!\s+--abort)|cherry-pick\b(?!\s+--(?:abort|quit|skip)))/;
-const OK = /merge-keep-run\.sh|push-with-retry|keep-run-ok:/;
+const CALL = /\bgit\s+(?:-[cC]\s+(?:"[^"]*"|'[^']*'|\S+)\s+)*(pull\b(?=[^\n]*(?:--(?:no-)?rebase|\s-r\b|-X\s))|rebase\b(?!\s+--(?:abort|skip|quit))|merge\b(?![-\w])(?!\s+--abort)|cherry-pick\b(?!\s+--(?:abort|quit|skip)))/;
+const OK = /merge-keep-run\.sh|^[^#]*push-with-retry\.sh|keep-run-ok:/;
 
 function findUndriven(text) {
   const lines = text.split('\n');
