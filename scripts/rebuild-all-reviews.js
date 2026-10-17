@@ -2575,6 +2575,7 @@ showDirs.forEach(showId => {
         outletId: normalizeOutletCanonical(d.outletId || d.outlet),
         url: d.url,
         criticName: d.criticName,
+        scored: meta.hasScore === 1, // BRO-5104
         fullText: d.fullText,
         // filePath is required here: omitting it makes isIncludableForRebuild
         // treat EVERY duplicateOf file as excluded (explainExclusion's

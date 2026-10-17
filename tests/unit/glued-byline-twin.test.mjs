@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { findGluedBylineTwins, isGluedVariantOf } = require('../../scripts/lib/glued-byline-twin.js');
 
-const full = { file: 'nytimes--helen-shaw.json', outletId: 'nytimes', criticName: 'Helen Shaw', url: 'https://www.nytimes.com/x' };
+const full = { file: 'nytimes--helen-shaw.json', outletId: 'nytimes', criticName: 'Helen Shaw', scored: true, url: 'https://www.nytimes.com/x' };
 const glued = { file: 'nytimes--brenner-helen-shaw.json', outletId: 'nytimes', criticName: 'Brenner Helen Shaw' };
 
 test('BRO-5104: glued byline without url is linked to the full review (NYT As You Like It)', () => {
@@ -14,7 +14,7 @@ test('BRO-5104: glued byline without url is linked to the full review (NYT As Yo
 
 test('BRO-5104: Slave Play broadwayworld case', () => {
   const a = { file: 'bww--murray-alexander-cohen.json', outletId: 'broadwayworld', criticName: 'Murray Alexander Cohen' };
-  const b = { file: 'bww--alexander-cohen.json', outletId: 'broadwayworld', criticName: 'Alexander Cohen' };
+  const b = { file: 'bww--alexander-cohen.json', outletId: 'broadwayworld', criticName: 'Alexander Cohen', scored: true };
   assert.equal(findGluedBylineTwins([a, b]).get(a.file), b.file);
 });
 
@@ -30,4 +30,16 @@ test('one-word winner, same name, non-suffix and 3+ extra words are left alone',
   assert.equal(isGluedVariantOf('Helen Shaw Brenner', 'Helen Shaw'), false);
   assert.equal(isGluedVariantOf('A B C Helen Shaw', 'Helen Shaw'), false);
   assert.equal(isGluedVariantOf('Brenner Helen Shaw', 'Helen Shaw'), true);
+});
+
+test('an unscored winner is never used (it could be dropped later and erase the outlet)', () => {
+  assert.equal(findGluedBylineTwins([glued, { ...full, scored: false }]).size, 0);
+});
+
+test('both rows url-less (Why Am I So Single shape) and chained losers resolve to the full row', () => {
+  const a = { file: 'a.json', outletId: 'broadwayworld', criticName: 'Kaan Aliya Al-Hassan' };
+  const b = { file: 'b.json', outletId: 'broadwayworld', criticName: 'Aliya Al-Hassan', scored: true };
+  assert.deepEqual([...findGluedBylineTwins([a, b])], [['a.json', 'b.json']]);
+  const x = { file: 'x.json', outletId: 'nytimes', criticName: 'X Brenner Helen Shaw' };
+  assert.equal(findGluedBylineTwins([x, { ...glued, scored: true }, full]).get('x.json'), full.file);
 });

@@ -9,7 +9,7 @@
  *
  * Rule: same show + same outlet, the loser has NO url and its folded name is
  * the winner's folded name with 1-2 extra leading words; the winner is an
- * unflagged row with a real name of 2+ words (so "Shaw" never absorbs
+ * unflagged, scored row with a real name of 2+ words (so "Shaw" never absorbs
  * "Helen Shaw" and one-word bylines are left alone). Pure.
  */
 
@@ -37,7 +37,8 @@ function isGluedVariantOf(loserName, winnerName) {
 }
 
 /**
- * @param {{file:string, outletId:string, criticName?:string, url?:string, flagged?:boolean}[]} records
+ * Caller passes ONE show's rows (the rebuild builds them per show dir).
+ * @param {{file:string, outletId:string, criticName?:string, url?:string, flagged?:boolean, scored?:boolean}[]} records
  *   one show's rows. outletId must already be canonical.
  * @returns {Map<string,string>} loser file -> winner file
  */
@@ -52,7 +53,10 @@ function findGluedBylineTwins(records) {
   for (const rows of byOutlet.values()) {
     for (const loser of rows) {
       if (loser.url) continue;
-      const winner = rows.find(w => w !== loser && !w.flagged && isGluedVariantOf(loser.criticName, w.criticName));
+      // The winner must be unflagged and scored (an unscored winner can be
+      // dropped later by skippedNoScore, which would erase the outlet), and
+      // must not itself be a glued loser.
+      const winner = rows.find(w => w !== loser && !w.flagged && w.scored && !(!w.url && rows.some(x => x !== w && isGluedVariantOf(w.criticName, x.criticName))) && isGluedVariantOf(loser.criticName, w.criticName));
       if (winner) losers.set(loser.file, winner.file);
     }
   }
