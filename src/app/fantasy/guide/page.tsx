@@ -19,16 +19,16 @@ function shortDate(iso: string): string {
   return new Date(`${iso.slice(0, 10)}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
 }
 
-function ScorePill({ score }: { score: number }) {
+function ScorePill({ score: rawScore }: { score: number }) {
   // Tier from the rounded score, so the colour matches the number shown.
-  const shown = Math.round(score);
-  const label = getScoreLabel(shown); // display label ('Mixed' for 55-64); getCriticLabel is the data/wire key
+  const score = Math.round(rawScore);
+  const label = getScoreLabel(score); // display label ('Mixed' for 55-64); getCriticLabel is the data/wire key
   // Same tier colours as every other score on the site (score-buckets).
-  const colorClass = `${getScoreBgColor(shown)} ${getScoreColor(shown)}`;
+  const colorClass = `${getScoreBgColor(score)} ${getScoreColor(score)}`;
 
   return (
     <span className={`text-xs px-2 py-0.5 rounded-full ${colorClass}`}>
-      {shown} &middot; {label}
+      {score} &middot; {label}
     </span>
   );
 }
