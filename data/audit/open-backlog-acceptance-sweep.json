@@ -1,18 +1,36 @@
 {
-  "generatedAt": "2026-10-16T07:16:07.644Z",
+  "generatedAt": "2026-10-17T07:04:02.362Z",
   "shadow": true,
-  "checkoutSha": "29efe056b39e18aa71ebf8bdf010c89724265f75",
-  "totalCandidates": 522,
-  "eligibleCandidates": 98,
+  "checkoutSha": "4fe69a0028beed7e8b9388c2560a3d71ce0db4a7",
+  "totalCandidates": 542,
+  "eligibleCandidates": 92,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 14,
-    "fail": 0,
-    "unverifiable": 16
+    "pass": 16,
+    "fail": 1,
+    "unverifiable": 13
   },
   "alreadyDone": [
+    {
+      "id": "BRO-5480",
+      "name": "Owner email policy: opening-night SLA goes to a worker card, every page-worthy key must name the owner's action",
+      "verifyCmd": "node --test scripts/lib/page-worthy-alerts.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5479",
+      "name": "Poller failures: email owner only for Broadway openings, route the rest to the auto-fixer",
+      "verifyCmd": "node --test tests/unit/poller-failure-audience.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5430",
+      "name": "Morning digest: stop listing automation-owned problems to the owner; show real card status instead of 'being watched'",
+      "verifyCmd": "node --test scripts/lib/digest-snapshots.test.mjs scripts/lib/autonomous-email-render.test.mjs",
+      "detail": null
+    },
     {
       "id": "BRO-5427",
       "name": "Opening-night SLA: duplicate P0 emails + junk reviews paging as stuck",
@@ -90,22 +108,17 @@
       "name": "Missing show: The Da Vinci Code",
       "verifyCmd": "node scripts/validate-data.js",
       "detail": null
-    },
-    {
-      "id": "BRO-5192",
-      "name": "Missing show: You Will Get Sick",
-      "verifyCmd": "node scripts/validate-data.js",
-      "detail": null
     }
   ],
-  "failing": [],
-  "unverifiable": [
+  "failing": [
     {
       "id": "BRO-5384",
       "name": "Codex lane: ~2 cards per 2h, half rejected, 96% of the ChatGPT allowance unused — make it parallel, route it fitting cards, give fix rounds time",
       "verifyCmd": "node --test scripts/verify-bro-5384-codex-throughput.test.mjs",
-      "detail": "ran no passing tests (all skipped or none ran)"
-    },
+      "detail": "TAP version 13\n# Subtest: Codex runner: >= 4 cards per firing and >= 40% landed since the parallel slots (BRO-5384)\nnot ok 1 - Codex runner: >= 4 cards per firing and >= 40% landed since the parallel slots (BRO-5384)\n  ---\n  duration_ms: 2.294047\n  location: '/tmp/open-backlog-sweep-dRfrWy/main/scripts/verify-bro-5384-codex-throughput.test.mjs:20:1'\n  failureType: 'testCodeFailure'\n  error: 'LINEA"
+    }
+  ],
+  "unverifiable": [
     {
       "id": "BRO-5351",
       "name": "Collector derives publishDate from the review URL (collect-review-texts.js:4858) against CLAUDE.md section 3",
@@ -183,21 +196,30 @@
       "name": "Verify the 68 'inferred-from-reviews' WE/OWE opening dates stamped under the old -1 offset",
       "verifyCmd": "node --test scripts/infer-press-night-from-reviews.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/infer-press-night-from-reviews.test.mjs"
-    },
-    {
-      "id": "BRO-5190",
-      "name": "No ticket provider shown for top-traffic shows beyond TodayTix",
-      "verifyCmd": "node --test tests/unit/ticket-click-provider-agnostic.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/ticket-click-provider-agnostic.test.mjs"
-    },
-    {
-      "id": "BRO-5179",
-      "name": "Re-file 6 real reviews stored under outletId vulture with a non-Vulture url host",
-      "verifyCmd": "node --test tests/unit/outlet-id-migrations-vulture-hosts.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/outlet-id-migrations-vulture-hosts.test.mjs"
     }
   ],
   "landedButOpen": [
+    {
+      "id": "BRO-5480",
+      "name": "Owner email policy: opening-night SLA goes to a worker card, every page-worthy key must name the owner's action",
+      "branch": "land/bro-5480-sweep-dac",
+      "sha": "8b51acdc45879e1e7d750930c5fa24b2f0403dfb",
+      "landedAt": "2026-10-16T14:03:38.684Z"
+    },
+    {
+      "id": "BRO-5479",
+      "name": "Poller failures: email owner only for Broadway openings, route the rest to the auto-fixer",
+      "branch": "land/bro-5479-poller-broadway-email",
+      "sha": "5da8034c7fb6a7f6dd662ae58402911dd3e4c1dd",
+      "landedAt": "2026-10-16T15:59:16.142Z"
+    },
+    {
+      "id": "BRO-5430",
+      "name": "Morning digest: stop listing automation-owned problems to the owner; show real card status instead of 'being watched'",
+      "branch": "land/bro-5430-coverage-quotes",
+      "sha": "e49e646b200312d6b07db0ebb29d19b120b5834b",
+      "landedAt": "2026-10-16T08:47:32.446Z"
+    },
     {
       "id": "BRO-5427",
       "name": "Opening-night SLA: duplicate P0 emails + junk reviews paging as stuck",
@@ -211,6 +233,20 @@
       "branch": "land/bro-5366-tiktok-scan-retry",
       "sha": "079dfe6e9504190d3988be7312e5ef7b4fd894c5",
       "landedAt": "2026-10-14T23:31:45.412Z"
+    },
+    {
+      "id": "BRO-5316",
+      "name": "Triage the 99 baselined orphaned data/audit writes (BRO-2420 audit)",
+      "branch": "land/codex-bro-5316",
+      "sha": "0335ecb85d63b74d37ec2a5d447e7a24df1a9381",
+      "landedAt": "2026-10-17T04:13:15.820Z"
+    },
+    {
+      "id": "BRO-5307",
+      "name": "Enforce CLAUDE.md §12.8 audit-regex-patterns run for content-quality.js pattern edits",
+      "branch": "land/codex-bro-5307",
+      "sha": "44f32ee0aa5aee96a4250bf8d986d4016f943f70",
+      "landedAt": "2026-10-17T02:05:03.072Z"
     },
     {
       "id": "BRO-5302",
