@@ -2188,12 +2188,13 @@
       "title": "Cron stale 3+ consecutive days: Weekly Video Reviews",
       "firstSeen": "2026-08-29T16:01:08.858Z",
       "incidentOpenedAt": "2026-10-16T15:53:47.855Z",
-      "lastSeen": "2026-10-16T15:53:47.855Z",
+      "lastSeen": "2026-10-17T14:48:28.990Z",
       "lastNotifiedAt": "2026-10-16T15:53:47.855Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-5495"
+      "linearIdentifier": "BRO-5495",
+      "silentRefires": 1
     },
     "opening-night-publish-date-pre-opening:electra-persona-west-end-2026": {
       "status": "resolved",
@@ -17147,10 +17148,10 @@
       "title": "Cron's latest run failed (not yet stale): Update Mezzanine",
       "firstSeen": "2026-10-13T18:44:50.742Z",
       "incidentOpenedAt": "2026-10-13T18:44:50.742Z",
-      "lastSeen": "2026-10-16T15:53:47.739Z",
-      "lastNotifiedAt": "2026-10-16T15:53:47.739Z",
-      "lastSurfacedAt": "2026-10-16T15:53:47.739Z",
-      "notifyCount": 4,
+      "lastSeen": "2026-10-17T14:48:28.883Z",
+      "lastNotifiedAt": "2026-10-17T14:48:28.883Z",
+      "lastSurfacedAt": "2026-10-17T14:48:28.883Z",
+      "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -19649,6 +19650,19 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-5545"
+    },
+    "cron-health-failed:Clear Stale Wrong-Production Flags": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Cron's latest run failed (not yet stale): Clear Stale Wrong-Production Flags",
+      "firstSeen": "2026-10-17T14:48:28.895Z",
+      "incidentOpenedAt": "2026-10-17T14:48:28.895Z",
+      "lastSeen": "2026-10-17T14:48:28.895Z",
+      "lastNotifiedAt": "2026-10-17T14:48:28.895Z",
+      "lastSurfacedAt": "2026-10-17T14:48:28.895Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
