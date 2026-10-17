@@ -5,9 +5,12 @@
  * by me pasting it into a Claude session"). test-ugc-roundtrip.yml runs this
  * before it emails the owner, so the email can say a fix is already running.
  *
- * Literal START-NOW line, Todo, P1 (cloud-worker-pick.js takes it straight
- * away; a dispatchAtFiling card would wait for the Mac). An open card from the
- * last 24h is reused, so a failing check files one card, not one per run.
+ * Literal START-NOW line, Todo, priority 1 (Urgent; cloud-worker-pick.js takes it
+ * straight away, where a dispatchAtFiling card would wait for the Mac). An open
+ * card is reused (marker lookup, then the near-duplicate twin), so a failing
+ * check files one card, not one per run.
+ * The VERIFY line is the only safe form a worker may run; it guards the urgency
+ * rules, not the live result, so the card tells the worker to quote the re-run.
  * Prints `card=BRO-N` to $GITHUB_OUTPUT (empty when nothing could be filed).
  * Env: FAILED_CHECKS, RUN_URL.
  */
@@ -16,9 +19,8 @@ const KEY_LINE = `ugc-fix-key: ${KEY}`;
 const DAY_MS = 24 * 3600000;
 
 function buildCard({ failed, runUrl }) {
-  const { startNowLine } = require('./lib/start-now-filing.js');
   const description = [
-    startNowLine('the Mac drain').replace('visitor-facing daily health row (digest-audience.js)', 'signed-in users may be affected by this failing live check'),
+    'START-NOW: signed-in users may be affected by this failing live check. Any worker may take it once the Mac drain has not claimed it.',
     KEY_LINE,
     '',
     `The daily live check of sign-in, saving and privacy (test-ugc-roundtrip.yml) failed and its automatic database restore did not fix it. Failing checks: ${failed || 'see the run log'}.`,
@@ -45,8 +47,14 @@ async function main() {
   let id = open && open.identifier;
   if (!id) {
     const { createLinearIssue } = require('./lib/linear-issue-create.js');
-    const { issue } = await createLinearIssue({ ...card, priority: 1, dispatch: true, source: 'ugc-roundtrip' });
-    id = issue.identifier;
+    try {
+      const { issue } = await createLinearIssue({ ...card, priority: 1, dispatch: true, source: 'ugc-roundtrip' });
+      id = issue.identifier;
+    } catch (e) {
+      // An older open card with this title (quiet for over a day) is still the fix.
+      if (e && e.code === 'NEAR_DUPLICATE_OPEN' && e.twin && e.twin.identifier) id = e.twin.identifier;
+      else throw e;
+    }
   }
   console.log(`fix card: ${id}${open ? ' (already open)' : ' (filed)'}`);
   if (process.env.GITHUB_OUTPUT) require('fs').appendFileSync(process.env.GITHUB_OUTPUT, `card=${id}\n`);

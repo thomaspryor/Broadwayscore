@@ -305,6 +305,9 @@ const OWNER_ACTIONS = {
   'alert-router:usage-limit-exceeded': 'Raise or reset the Linear plan limit (a billing decision only you can make).',
   'mac:morning-digest-missing': 'Check the Mac is on, awake and signed in.',
   'owner-decisions:new': 'Answer the decision.',
+  // BRO-5542: test-ugc-roundtrip.yml starts a START-NOW fix card first and the
+  // email says whether it did; the owner has nothing to do either way.
+  'ugc-roundtrip:users-affected': 'Nothing is needed from you. The email says whether a fix was started automatically; signed-in users may be affected until it lands.',
   // Owner opted in 2026-08-03 ("it's our only revenue stream, I do want it really strong").
   'affiliate:dead-man': 'Check the Impact account and the site\'s ticket links (your revenue, your call).',
   'affiliate:zero-conversions': 'Check the Impact account (your revenue, your call).',
@@ -351,9 +354,8 @@ const OWNER_ACTIONS = {
 // owner action yet. Each is the owner's call (keep emailing, or move to a
 // worker card like opening-night-sla). Frozen: the test pins this exact set.
 const AWAITING_OWNER_DECISION = new Set([
-  // Readers affected; the owner kept these as emails (option A, 2026-10-16)
+  // Readers affected; the owner kept this as an email (option A, 2026-10-16)
   // without naming an action yet.
-  'ugc-roundtrip:users-affected',
   'ugc:signin-redirect-broken:',
 ]);
 

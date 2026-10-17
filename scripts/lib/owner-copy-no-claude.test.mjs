@@ -67,6 +67,7 @@ test('the signed-in-users alert files a START-NOW card and no longer asks the ow
   const { buildCard } = require('../file-ugc-fix-card.js');
   const { startNowUnpickableReason } = require('./cloud-worker-pick.js');
   const card = buildCard({ failed: 'x', runUrl: 'u' });
-  assert.match(card.description, /^START-NOW:/);
+  assert.match(card.description, /^START-NOW: /);
+  assert.match(card.description, /^VERIFY: /m);
   assert.equal(startNowUnpickableReason({ ...card, priority: 1, mode: 'dispatch' }), null);
 });

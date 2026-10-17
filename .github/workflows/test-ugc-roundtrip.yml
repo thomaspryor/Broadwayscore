@@ -101,7 +101,7 @@ jobs:
       # BRO-5542: start the fix before telling the owner. The card is a
       # START-NOW worker card (scripts/file-ugc-fix-card.js); its id feeds the
       # email below so the email only claims a fix when one was filed.
-      - name: File fix card — signed-in users affected
+      - name: File fix card, signed-in users affected
         id: fixcard
         if: >-
           always() &&
@@ -135,8 +135,8 @@ jobs:
               conditionKey: 'ugc-roundtrip:users-affected',
               title: 'Urgent: signed-in users may be unable to save, or may see data that is not theirs',
               description: process.env.FIX_CARD
-                ? `A live check of sign-in, saving or privacy failed and the automatic database restore did not fix it. Failing checks: ${failed}. A fix has already been started automatically (${process.env.FIX_CARD}). Nothing is needed from you.`
-                : `A live check of sign-in, saving or privacy failed and the automatic database restore did not fix it. Failing checks: ${failed}. The automation could not start a fix by itself this time, so signed-in users may stay affected until the next daily check (about 8am Eastern) tries again.`,
+                ? `A live check of sign-in, saving or privacy failed and it was not fixed automatically. Failing checks: ${failed}. A fix has already been started automatically (${process.env.FIX_CARD}). Nothing is needed from you.`
+                : `A live check of sign-in, saving or privacy failed and it was not fixed automatically. Failing checks: ${failed}. The automation could not start a fix this time, so signed-in users may stay affected. Nothing you can do from here: the check runs again at about 8am Eastern and after each site deploy, and starts the fix then if it is still failing.`,
               severity: 'critical',
               disposition: 'human',
               cooldownHours: 12,

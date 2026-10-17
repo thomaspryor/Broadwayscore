@@ -82,7 +82,7 @@ test('no stale rows: every owner action and awaiting entry is a live page', () =
 });
 
 test('the awaiting-decision set may shrink but never grow (pinned)', () => {
-  const PINNED = ['ugc-roundtrip:users-affected', 'ugc:signin-redirect-broken:'];
+  const PINNED = ['ugc:signin-redirect-broken:'];
   const extra = [...AWAITING_OWNER_DECISION].filter((k) => !PINNED.includes(k));
   assert.deepEqual(extra, [], 'a new page must name the owner action; it cannot join the awaiting set');
 });
@@ -97,7 +97,8 @@ test('ownerActionFor: exact key, longest prefix, final report; null for awaiting
   assert.equal(ownerActionFor('broadcast:overdue:some-show'), OWNER_ACTIONS['broadcast:overdue:']);
   assert.equal(ownerActionFor('on-monitor-dead-session-2026-10-16'), OWNER_ACTIONS['on-monitor-dead-session-']);
   assert.equal(ownerActionFor('on-monitor-report-on-monitor-2026-09-21-show-a-parity-final'), OWNER_ACTIONS['on-monitor-report-*-final']);
-  assert.equal(ownerActionFor('ugc-roundtrip:users-affected'), null);
+  assert.equal(ownerActionFor('ugc-roundtrip:users-affected'), OWNER_ACTIONS['ugc-roundtrip:users-affected']);
+  assert.equal(ownerActionFor('ugc:signin-redirect-broken:x'), null);
   assert.equal(ownerActionFor('not-a-page'), null);
 });
 
