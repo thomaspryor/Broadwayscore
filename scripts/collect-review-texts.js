@@ -5100,7 +5100,8 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     const outletId = data.outletId || review.outletId || '';
 
     // Old regex extraction (for comparison logging)
-    const regexResult = extractScore(html, text, outletId);
+    // BRO-5223: the show title lets the fallthrough refuse another show's stars.
+    const regexResult = extractScore(html, text, outletId, require('./lib/known-show-titles').showTitleForId(data.showId || review.showId));
 
     // New LLM extraction (primary — async)
     let llmResult = null;
@@ -5191,7 +5192,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       );
 
     if (hasReliableExtractor && hasFullText && html && isUnverifiedOrAggregator && !wasCleared) {
-      const rescoreResult = extractScore(html, data.fullText, outletId);
+      const rescoreResult = extractScore(html, data.fullText, outletId, require('./lib/known-show-titles').showTitleForId(data.showId));
       if (rescoreResult && rescoreResult.normalizedScore != null) {
         const prevScore = data.originalScore || '(none)';
         const prevSource = data.scoreSource || '(none)';

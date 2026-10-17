@@ -1046,7 +1046,8 @@ function getBestScore(data, opts = {}) {
   // score disagrees strongly (>25pt delta AND different bucket) with high confidence,
   // trust the LLM and flag for human review.
   if (!effectiveOriginalScore && (isKnownStarOutlet || isTier15Cleared) && data.fullText && data.scoreConfidence !== 'low') {
-    const recovered = extractScore('', data.fullText, data.outletId, data.showTitle);
+    // BRO-5223: the show title lets the fallthrough refuse another show's stars.
+    const recovered = extractScore('', data.fullText, data.outletId, data.showTitle || require('./known-show-titles').showTitleForId(data.showId));
     if (recovered && recovered.normalizedScore != null) {
       // Only trust unicode-stars and word-stars sources — these are unambiguous
       const TRUSTED_RECOVERY_SOURCES = new Set(['unicode-stars', 'unicode-stars-fallthrough', 'word-stars']);
