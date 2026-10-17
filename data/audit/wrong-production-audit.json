@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-17T18:36:01.840Z",
+  "timestamp": "2026-10-17T20:12:00.388Z",
   "stats": {
-    "totalReviews": 57306,
-    "alreadyFlagged": 21261,
+    "totalReviews": 57314,
+    "alreadyFlagged": 21269,
     "dateGuardCatches": 194,
     "directorMismatch": 1938,
     "tvFilmSignals": 1600,
-    "londonSignals": 2408,
+    "londonSignals": 2409,
     "offBroadwaySignals": 515,
-    "yearMismatch": 155,
-    "noPublishDate": 5296
+    "yearMismatch": 156,
+    "noPublishDate": 5292
   },
   "findings": [
     {
@@ -6853,7 +6853,7 @@
     {
       "showId": "cats-the-jellicle-ball-2026",
       "file": "frontmezzjunkies--unknown.json",
-      "score": null,
+      "score": 91,
       "publishDate": "2026-04-13",
       "url": "https://frontmezzjunkies.com/2026/04/13/glitter-fur-and-full-commitment-cats-the-jellicle-ball-and-titanique-refuse-to-behave-on-broadway/",
       "findings": [
@@ -21117,7 +21117,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "islingtontribune--unknown.json",
-      "score": null,
+      "score": 87,
       "publishDate": null,
       "url": "https://www.islingtontribune.co.uk/article/review-into-the-woods-at-bridge-theatre",
       "findings": [
@@ -22138,7 +22138,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "camdennewjournal--unknown.json",
-      "score": null,
+      "score": 77,
       "publishDate": null,
       "url": "https://www.camdennewjournal.co.uk/article/review-john-proctor-is-the-villain-at-royal-court-theatre",
       "findings": [
@@ -22208,7 +22208,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "islingtontribune--unknown.json",
-      "score": null,
+      "score": 78,
       "publishDate": null,
       "url": "https://www.islingtontribune.co.uk/article/review-john-proctor-is-the-villain-at-royal-court-theatre",
       "findings": [
@@ -22345,7 +22345,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "redbuslondinium--unknown.json",
-      "score": null,
+      "score": 86,
       "publishDate": "2026-04-09",
       "url": "https://redbuslondinium.uk/2026/04/09/review-john-proctor-is-a-villain-royal-court/",
       "findings": [
@@ -22364,7 +22364,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "south-london--michael-holland.json",
-      "score": null,
+      "score": 89,
       "publishDate": "2026-04-11",
       "url": "https://southlondon.co.uk/lifestyle/review-john-proctor-is-the-villain-at-royal-court/",
       "findings": [
@@ -29967,6 +29967,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"harold prince\" from pacific-overtures-1976"
+        }
+      ]
+    },
+    {
+      "showId": "paddington-the-musical-west-end-2025",
+      "file": "liamodell--unknown.json",
+      "score": null,
+      "publishDate": "2025-12-03",
+      "url": "https://liamodell.com/2025/12/03/paddington-the-musical-review-savoy-theatre-london-cast-arti-shah-delilah-bennett-cardy-tom-fletcher-bonnie-langford-brenda-edwards/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2027 (6x) more than 2025 (0x). 2027 matches production: paddington-the-musical-2026"
         }
       ]
     },
@@ -46770,7 +46784,7 @@
     {
       "showId": "titanique-west-end-2024",
       "file": "observer--olivia-ovenden.json",
-      "score": null,
+      "score": 82,
       "publishDate": "2025-05-11",
       "url": "https://observer.co.uk/culture/theatre/article/theatre-titanique-criterion-celine-dion",
       "findings": [
@@ -56222,7 +56236,7 @@
     {
       "showId": "broken-glass-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": null,
+      "score": 64,
       "publishDate": "2026-03-04",
       "url": "https://www.allthatdazzles.co.uk/post/review-broken-glass-young-vic",
       "findings": [
@@ -56236,7 +56250,7 @@
     {
       "showId": "broken-glass-west-end-2026",
       "file": "broadwayworld--alexander-cohen.json",
-      "score": 61,
+      "score": 60,
       "publishDate": "2026-03-04",
       "url": "https://www.broadwayworld.com/westend/article/Review-BROKEN-GLASS-Young-Vic-20260304",
       "findings": [
@@ -60487,7 +60501,7 @@
     },
     {
       "showId": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026",
-      "file": "theupcoming--unknown.json",
+      "file": "theupcoming--thomas-messner.json",
       "score": 64,
       "publishDate": "2026-10-09",
       "url": "https://www.theupcoming.co.uk/2026/10/09/end-of-the-world-and-hard-boiled-wonderland-at-barbican-theatre-theatre-review/",
@@ -62027,7 +62041,7 @@
     {
       "showId": "giant-2026",
       "file": "exeunt-magazine--unknown.json",
-      "score": null,
+      "score": 94,
       "publishDate": "2026-03-27",
       "url": "https://exeuntnyc.com/reviews/review-giant-at-the-music-box/",
       "findings": [
@@ -67201,7 +67215,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "indiependent--lucy-curtis.json",
-      "score": 90,
+      "score": 89,
       "publishDate": "2026-03-29",
       "url": "https://www.indiependent.co.uk/explosive-entertainment-john-proctor-is-the-villain-review/",
       "findings": [
@@ -73518,7 +73532,7 @@
     {
       "showId": "paddington-the-musical-west-end-2025",
       "file": "islington-gazette--bridget-galton.json",
-      "score": null,
+      "score": 86,
       "publishDate": "2025-12-01",
       "url": "https://www.islingtongazette.co.uk/news/25663466.paddington-musical-review-west-end-hit-show/",
       "findings": [
@@ -77345,6 +77359,20 @@
     },
     {
       "showId": "stranger-things-2024",
+      "file": "slate--sam-adams.json",
+      "score": null,
+      "publishDate": "2025-04-23",
+      "url": "https://slate.com/culture/2025/04/stranger-things-broadway-first-shadow-netflix-play-review.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-2024",
       "file": "the-interested-bystander--cary-wong.json",
       "score": 75,
       "publishDate": null,
@@ -78289,7 +78317,7 @@
     },
     {
       "showId": "tartuffe-west-end-2019",
-      "file": "guardian--unknown.json",
+      "file": "guardian--michael-billington.json",
       "score": 61,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2019/feb/22/tartuffe-the-imposter-review-national-theatre-lyttelton",
@@ -78639,7 +78667,7 @@
     },
     {
       "showId": "the-antipodes-west-end-2019",
-      "file": "guardian--unknown.json",
+      "file": "guardian--michael-billington.json",
       "score": 56,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2019/oct/31/the-antipodes-review-annie-baker-dorfman-theatre",
