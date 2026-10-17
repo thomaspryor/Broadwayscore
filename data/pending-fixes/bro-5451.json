@@ -1,8 +1,11 @@
 {
   "issueNumber": "bro-5451",
   "planId": "7b1b7a14-d5f5-412c-a71a-21c3f65f1763",
-  "status": "pending",
-  "submitter": {"name": null, "email": null},
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
   "plan": {
     "summary": "BRO-5451: the Harry Potter and the Cursed Child national tour (harry-potter-tour-2024) was closed on 2026-10-11, the last stop on the Tours To You page when the entry was auto-created. The page now lists the same tour resuming 2027-03-31 (Buffalo, Shea's PAC) through 2027-09-12 (Cleveland), with no relaunch, so the closing was a hiatus. The hand-verified closing blocks the automatic reopen and keeps the health row 'closed national tour lists new dates' firing. Clear closingDate and reopen it.",
     "steps": [
@@ -11,8 +14,37 @@
     ],
     "riskLevel": "low",
     "actions": [
-      {"type": "data-edit", "file": "shows.json", "showId": "harry-potter-tour-2024", "field": "closingDate", "oldValue": "2026-10-11", "newValue": null, "description": "harry-potter-tour-2024: clear closingDate 2026-10-11, tour resumes 2027-03-31 and runs to 2027-09-12"},
-      {"type": "data-edit", "file": "shows.json", "showId": "harry-potter-tour-2024", "field": "status", "oldValue": "closed", "newValue": "open", "description": "harry-potter-tour-2024: status closed -> open (same tour on hiatus)"}
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "harry-potter-tour-2024",
+        "field": "closingDate",
+        "oldValue": "2026-10-11",
+        "newValue": null,
+        "description": "harry-potter-tour-2024: clear closingDate 2026-10-11, tour resumes 2027-03-31 and runs to 2027-09-12"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "harry-potter-tour-2024",
+        "field": "status",
+        "oldValue": "closed",
+        "newValue": "open",
+        "description": "harry-potter-tour-2024: status closed -> open (same tour on hiatus)"
+      }
     ]
-  }
+  },
+  "executedAt": "2026-10-17T17:28:51.298Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for harry-potter-tour-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for harry-potter-tour-2024"
+    }
+  ]
 }
