@@ -673,7 +673,11 @@
       ],
       "domain": "cititour.com",
       "accessModel": "free",
-      "region": "us"
+      "region": "us",
+      "standingCoverage": true,
+      "standingMarkets": [
+        "broadway"
+      ]
     },
     "newjerseystage": {
       "displayName": "New Jersey Stage",
@@ -801,7 +805,11 @@
         "theaterscene.com",
         "nytheaterscene.com"
       ],
-      "accessModel": "free"
+      "accessModel": "free",
+      "standingCoverage": true,
+      "standingMarkets": [
+        "broadway"
+      ]
     },
     "village-voice": {
       "displayName": "Village Voice",
