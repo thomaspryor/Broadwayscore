@@ -1,14 +1,14 @@
 {
   "issueNumber": "bro-5562-d",
-  "planId": "58239f9b-2dee-4c1c-a534-5a0767fbb368",
+  "planId": "7721e95d-b0fb-4c00-88ea-75c5729eb37f",
   "status": "pending",
-  "createdAt": "2026-10-17T22:53:15.840Z",
+  "createdAt": "2026-10-17T23:07:00.762Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-5562 (part d): The Great Society (2019) and Torch Song (2018) were commercial productions recorded as nonprofit: Playbill says The Great Society was not an LCT production and its Form D shows $4.3M from 38 investors; Torch Song LLC raised investor money and the NYT reported it had not recouped. Both become Flop.",
+    "summary": "BRO-5562 (part d): The Great Society (2019) and Torch Song (2018) were commercial productions recorded as nonprofit: Playbill says The Great Society was not an LCT production and its Form D shows $4.3M from 38 investors; Torch Song LLC raised investor money and the NYT reported it had not recouped. Both become Flop. Chicago and Sweeney Todd (2023) no longer read \"Not publicly announced\": their sources report the recoupment (New York Theatre Guide; BroadwayWorld). Into the Woods keeps it, with Broadway Journal quoted saying it did not announce.",
     "steps": [
       "Edits read every oldValue from live data; every quote was opened at its URL."
     ],
@@ -224,6 +224,26 @@
         "oldValue": "Mike Nichols' revival of Harold Pinter's play with Daniel Craig, Rachel Weisz and Rafe Spall at the Ethel Barrymore, Oct 2013 to Jan 5, 2014 (14-week limited run). Grossed just over $17.5M and set a record for a play with a $1.44M week. Recouped about ten weeks into the run (The Hollywood Reporter); capitalization not disclosed.",
         "newValue": "Mike Nichols' revival of Harold Pinter's play with Daniel Craig, Rachel Weisz and Rafe Spall at the Ethel Barrymore, Oct 2013 to Jan 5, 2014 (14-week limited run). Grossed just over $17.5M and set a record for a play with a $1.44M week. Recouped about ten weeks into the run (The Hollywood Reporter); its SEC Form D (Betrayal Broadway LLC, July 2013) set the offering at up to $4.2 million.",
         "description": "betrayal-2013: the notes said the capitalization was not disclosed; bro-5560 added the Form D figure."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sweeney-todd-2023",
+        "field": "isEstimate",
+        "oldValue": {
+          "recouped": true
+        },
+        "newValue": {},
+        "description": "sweeney-todd-2023: BroadwayWorld reports it recouped in November 2023 (its recoupedSource quotes it), so the card should not say the recoupment was never announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "into-the-woods-2022",
+        "field": "recoupedSource",
+        "oldValue": "Broadway Journal (Aug 25, 2023) lists Into the Woods among the 2022-23 season's commercial winners; the month of recoupment was not reported.",
+        "newValue": "Broadway Journal (Aug 25, 2023) lists Into the Woods among the 2022-23 season's \"commercial winners\" but says Prima Facie \"is the only show from 2022-23 to announce that it recouped,\" so Into the Woods did not announce it; the month was not reported. https://broadwayjournal.com/solo-shows-deliver-as-aspiring-blockbusters-struggle/",
+        "description": "into-the-woods-2022: quote the article, including that it did not announce (why the card says \"Not publicly announced\")."
       }
     ]
   }

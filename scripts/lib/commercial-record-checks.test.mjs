@@ -64,6 +64,25 @@ test('a source link listed twice is a warning (BRO-5562)', () => {
   assert.equal(warn({ ...prior, sources: [...prior.sources, src('https://x.test/a')] }), 1);
 });
 
+test('an unannounced-recoupment flag needs a source that says so (BRO-5562)', () => {
+  const flagWarn = (rec, ctx = {}) => commercialRecordWarnings('k', { designation: 'Windfall', recouped: true, recoupedDate: '2023-11', ...rec }, ctx)
+    .filter((m) => m.includes('Not publicly announced')).length;
+  const reported = 'BroadwayWorld (Aug 1, 2025): "They recouped their $14.5 million capitalization in November, 2023." https://www.broadwayworld.com/a/';
+  // The sweeney-todd-2023 shape: a reported recoupment still flagged.
+  assert.equal(flagWarn({ isEstimate: { recouped: true }, recoupedSource: reported }), 1);
+  // A source that says why, or no flag, is fine (phantom-of-the-opera-1988, appropriate).
+  assert.equal(flagWarn({ isEstimate: { recouped: true }, recoupedSource: 'No public announcement found.' }), 0);
+  assert.equal(flagWarn({ isEstimate: { recouped: true }, recoupedSource: 'Counted as recouped as an editorial judgment.' }), 0);
+  assert.equal(flagWarn({ isEstimate: {}, recoupedSource: reported }), 0);
+  assert.equal(flagWarn({ recouped: false, isEstimate: { recouped: true }, recoupedSource: reported }), 0);
+  // A write that leaves an old flagged source alone does not warn; one that
+  // changes the source, or sets the flag, does.
+  const prior = { designation: 'Windfall', recouped: true, recoupedDate: '2023-11', isEstimate: { recouped: true }, recoupedSource: 'Trade listing.' };
+  assert.equal(flagWarn({ ...prior, notes: 'new note' }, { priorRecord: prior }), 0);
+  assert.equal(flagWarn({ ...prior, recoupedSource: reported }, { priorRecord: prior }), 1);
+  assert.equal(flagWarn({ ...prior }, { priorRecord: { ...prior, isEstimate: {} } }), 1);
+});
+
 test('a title quoted inside a quote with double marks is a warning (BRO-5549)', () => {
   const doubled = (field, text) => commercialRecordWarnings('k', { designation: 'TBD', [field]: text }, {})
     .filter((m) => m.includes('doubled quotation marks')).length;

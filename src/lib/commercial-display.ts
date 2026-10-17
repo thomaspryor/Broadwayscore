@@ -24,7 +24,7 @@ import {
   analystRange, estimateFitsDesignation, RUNNING_SHOWN_MAX,
 } from '../../scripts/lib/model-display-guard';
 import { hasNoInvestorsToRepay } from '../../scripts/lib/commercial-designations';
-import { publicSourceText, isEstimatedCapitalization } from '../../scripts/lib/public-source-text';
+import { publicSourceText, isEstimatedCapitalization, saysRecoupmentUnannounced } from '../../scripts/lib/public-source-text';
 import { conversionOf } from '../../scripts/lib/commercial-conversion';
 
 export type RecoupmentDisplayMode = 'announced' | 'analyst' | 'model' | 'none';
@@ -329,7 +329,7 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
   const recoupedSource =
     publicSourceText(rawRecoupedSource) ??
     // Keep the "no announcement" signal getRecoupmentAttribution reads, without the internal wording.
-    (rawRecoupedSource && NOT_ANNOUNCED_RE.test(rawRecoupedSource) ? NOT_ANNOUNCED_LABEL : null);
+    (rawRecoupedSource && saysRecoupmentUnannounced(rawRecoupedSource) ? NOT_ANNOUNCED_LABEL : null);
   return {
     designation: commercial.designation,
     capitalization: commercial.capitalization,
@@ -459,15 +459,6 @@ export function getWeeklyCostSourceLabel(
   return publicSourceText(commercial.weeklyRunningCostSource) as string;
 }
 
-// recoupedSource prose that says outright there was no announcement. Used
-// ONLY to downgrade the label ("Not publicly announced"), never to claim an
-// announcement, so a missed phrase under-claims instead of fabricating one.
-// (Aladdin: "Disney never formally announces recoupment."; Lion King and
-// Aladdin later read "Disney does not announce recoupments.", which the
-// pattern missed, so both printed as announced: BRO-4722.)
-const NOT_ANNOUNCED_RE =
-  /\bno (?:public |producer |formal )?announcement\b|\bnever (?:formally |publicly )?announce[sd]?\b|\bnot (?:been )?(?:formally |publicly )?announced\b|\b(?:does|do|did) not (?:formally |publicly )?announce(?:s|ments?)?\b|\beditorial\b/i;
-
 const NOT_ANNOUNCED_LABEL = 'Not publicly announced';
 
 /**
@@ -481,7 +472,7 @@ export function isUnannouncedRecoupment(
   commercial: Pick<ShowCommercial, 'recouped' | 'isEstimate' | 'recoupedSource'>
 ): boolean {
   if (commercial.recouped !== true) return false;
-  return commercial.isEstimate?.recouped === true || NOT_ANNOUNCED_RE.test(commercial.recoupedSource ?? '');
+  return commercial.isEstimate?.recouped === true || saysRecoupmentUnannounced(commercial.recoupedSource);
 }
 
 export interface RecoupmentAttribution {

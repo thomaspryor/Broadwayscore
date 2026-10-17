@@ -50,6 +50,25 @@ function publicSourceText(text) {
   return trimmed;
 }
 
+// recoupedSource prose that says outright there was no announcement. Used
+// ONLY to downgrade the label ("Not publicly announced"), never to claim an
+// announcement, so a missed phrase under-claims instead of fabricating one.
+// (Aladdin: "Disney never formally announces recoupment."; Lion King and
+// Aladdin later read "Disney does not announce recoupments.", which the
+// pattern missed, so both printed as announced: BRO-4722.) The record checks
+// read it too (BRO-5562), so the site and the data share one rule.
+const NOT_ANNOUNCED_RE =
+  /\bno (?:public |producer |formal )?announcement\b|\bnever (?:formally |publicly )?announce[sd]?\b|\bnot (?:been )?(?:formally |publicly )?announced\b|\b(?:does|do|did) not (?:formally |publicly )?announce(?:s|ments?)?\b|\beditorial\b/i;
+
+/**
+ * True when a recoupedSource says the recoupment was never announced.
+ * @param {string | null | undefined} text
+ * @returns {boolean}
+ */
+function saysRecoupmentUnannounced(text) {
+  return NOT_ANNOUNCED_RE.test(text || '');
+}
+
 // A source that opens by calling the figure an estimate: "Estimate: $2,000,887
 // NYC theatrical tax credit ... at the 25% credit rate" (Plaza Suite),
 // "Estimated from ...", "Est. $5M", "~$8M". Only an explicit marker counts:
@@ -71,4 +90,4 @@ function isEstimatedCapitalization(commercial) {
   return !publicSourceText(commercial.capitalizationSource);
 }
 
-module.exports = { publicSourceText, isEstimatedCapitalization };
+module.exports = { publicSourceText, isEstimatedCapitalization, saysRecoupmentUnannounced };

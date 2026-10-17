@@ -356,6 +356,7 @@ function commercialRecordErrors(showId, show, ctx = {}) {
 }
 
 const { addedPlaceholderSources } = require('./commercial-sources');
+const { saysRecoupmentUnannounced } = require('./public-source-text');
 
 /**
  * Rules that depend on shows.json state as well as the record, plus new rules
@@ -437,6 +438,17 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
       if (sofar >= Math.max(1, priorCount.get(key) || 0)) out.push(`commercial.json: "${showId}" sources[${idx}].url ${s.url} is already listed (drop the repeat)`);
       seen.set(key, sofar + 1);
     });
+  }
+  // isEstimate.recouped makes the card say "Not publicly announced", so the
+  // source must say why (BRO-5562: bro-5268-e quoted BroadwayWorld's report
+  // that Sweeney Todd recouped in November 2023 and left the flag set).
+  // Advisory (§19); only a write that sets the flag or changes the source counts.
+  if (show.recouped === true && show.isEstimate && show.isEstimate.recouped === true && !saysRecoupmentUnannounced(show.recoupedSource)) {
+    const prior = ctx.priorRecord;
+    const flaggedBefore = !!(prior && prior.recouped === true && prior.isEstimate && prior.isEstimate.recouped === true);
+    if (!flaggedBefore || prior.recoupedSource !== show.recoupedSource) {
+      out.push(`commercial.json: "${showId}" isEstimate.recouped prints "Not publicly announced" but recoupedSource does not say it went unannounced (clear the flag if the source reports the recoupment)`);
+    }
   }
   if (isPrematureSilenceLabel(show, ctx.showRecord)) {
     out.push(`commercial.json: "${showId}" is "${show.designation}" on no recoupment announced but closed under ${LOSS_LABEL_MIN_DAYS} days ago (keep TBD + needsLossEvidence until it ages in)`);
