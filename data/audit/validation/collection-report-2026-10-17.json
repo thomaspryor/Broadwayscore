@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-10-17T04:44:21.330Z",
+  "runDate": "2026-10-17T06:49:54.391Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "cadel-lungs-on-legs-west-end-2026",
+    "showFilter": "stuffed-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 1,
+    "failed": 2,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -32,12 +32,12 @@
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 2,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier1_9Attempts": 1,
     "tier1_9Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 1,
     "tier3Attempts": 1,
     "tier3Success": 0,
     "tier3_6Attempts": 1,
@@ -45,19 +45,19 @@
     "tier4Attempts": 1,
     "tier4Success": 0,
     "totalFailed": 1,
-    "scrapingBeePageCredits": 1,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.6,
-    "urlDiscoveryAttempts": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
     "processed": 0,
-    "failed": 1,
+    "failed": 2,
     "shows": [
-      "cadel-lungs-on-legs-west-end-2026"
+      "stuffed-off-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -67,12 +67,14 @@
   },
   "processed": [],
   "failed": [
-    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json"
+    "stuffed-off-west-end-2026/nytg--unknown.json",
+    "stuffed-off-west-end-2026/sunday-times--unknown.json"
   ],
   "cumulativeResumedState": {
     "processed": [],
     "failed": [
-      "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json"
+      "stuffed-off-west-end-2026/nytg--unknown.json",
+      "stuffed-off-west-end-2026/sunday-times--unknown.json"
     ]
   },
   "tierDetails": {
@@ -86,14 +88,6 @@
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {
-    "cityking": {
-      "count": 1,
-      "domain": "cityking.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
