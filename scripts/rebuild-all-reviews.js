@@ -4775,6 +4775,16 @@ showDirs.forEach(showId => {
         }
       }
 
+      // BRO-5104 — glued-byline twin (see lib/glued-byline-twin.js): same outlet,
+      // no url, same article, byline = a kept row's name with extra leading words.
+      if (gluedBylineLosers.has(file)) {
+        logExclusion("skippedGluedBylineTwin", showId, file, data, { twinOf: gluedBylineLosers.get(file) });
+        stats.skippedGluedBylineTwin = (stats.skippedGluedBylineTwin || 0) + 1;
+        console.log(`  [GLUED-BYLINE TWIN] ${showId}/${file}: "${data.criticName}" is ${gluedBylineLosers.get(file)} with extra leading words (skipping)`);
+        return;
+      }
+
+      // (runs before the fingerprint registration so a loser never claims the winner's fingerprint)
       // Cross-show + within-show duplicate text detection.
       // Same fullText fingerprint = same review. Catches:
       //   - Cross-show contamination (review for show A filed under show B)
@@ -5013,15 +5023,6 @@ showDirs.forEach(showId => {
           console.log(`  [SAME-ARTICLE TWIN] ${showId}/${file}: "${data.criticName}" has near-identical text to ${keptFile && keptFile.file} at ${outletKey} (skipping)`);
           return;
         }
-      }
-
-      // BRO-5104 — glued-byline twin (see lib/glued-byline-twin.js): same outlet,
-      // no url, byline = a kept row's name with extra leading words.
-      if (gluedBylineLosers.has(file)) {
-        logExclusion("skippedGluedBylineTwin", showId, file, data, { twinOf: gluedBylineLosers.get(file) });
-        stats.skippedGluedBylineTwin = (stats.skippedGluedBylineTwin || 0) + 1;
-        console.log(`  [GLUED-BYLINE TWIN] ${showId}/${file}: "${data.criticName}" is ${gluedBylineLosers.get(file)} with extra leading words (skipping)`);
-        return;
       }
 
       // Unknown-outlet dedup: if the outlet is "unknown" but a file from a real outlet

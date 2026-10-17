@@ -7,7 +7,7 @@
  * to the full review and the outlet counts twice (NYT on RSC As You Like It,
  * Broadwayworld on Slave Play: "Murray Alexander Cohen" vs "Alexander Cohen").
  *
- * Rule: same show + same outlet, the loser has NO url and its folded name is
+ * Rule: same show + same outlet, the loser has NO url, no article text and its folded name is
  * the winner's folded name with 1-2 extra leading words; the winner is an
  * unflagged, scored row with a real name of 2+ words (so "Shaw" never absorbs
  * "Helen Shaw" and one-word bylines are left alone). Pure.
@@ -16,6 +16,9 @@
 'use strict';
 
 const MAX_EXTRA_LEADING_WORDS = 2;
+// A roundup-parser row carries no article text (live: fullText empty); a real
+// critic's own review has prose, so a loser with text is never a glued twin.
+const MAX_STUB_TEXT_CHARS = 50;
 
 function words(name) {
   return String(name || '')
@@ -52,7 +55,7 @@ function findGluedBylineTwins(records) {
   const losers = new Map();
   for (const rows of byOutlet.values()) {
     for (const loser of rows) {
-      if (loser.url) continue;
+      if (loser.url || String(loser.fullText || '').trim().length >= MAX_STUB_TEXT_CHARS) continue;
       // The winner must be unflagged and scored (an unscored winner can be
       // dropped later by skippedNoScore, which would erase the outlet), and
       // must not itself be a glued loser.
