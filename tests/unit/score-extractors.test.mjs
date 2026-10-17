@@ -4,13 +4,14 @@
  * Culture Sauce "Cats" (★★★★☆ at the end of the text).
  * Uses the real extractScore/getBestScore so a production regression fails here.
  */
-import { test, describe } from 'node:test';
+import { test, describe, before, after } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { extractScore, KNOWN_STAR_OUTLETS } = require('../../scripts/lib/score-extractors.js');
 const { getBestScore } = require('../../scripts/lib/rebuild-helpers.js');
+const { setKnownShowTitlesForTest } = require('../../scripts/lib/known-show-titles.js');
 
 const BODY = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '.repeat(40);
 
@@ -114,20 +115,23 @@ describe('BRO-4838 star groups', () => {
 // BRO-5223: stars in page chrome (a "More reviews"/"Related" rail, a headline
 // list of other articles) rated OTHER shows. Time Out's Orphans (2013) ended
 // with "Theater review: Well, I'll Let You Go (★★★★★) is a mourning glory" and
-// the fallthrough stored 5/5 (100) for a 2/5 review.
+// the fallthrough stored 5/5 (100) for a 2/5 review. A group is dropped only
+// with positive evidence it is another show's: a chrome heading, or a label
+// that IS another known show title. Never because a label fails to match.
 describe('BRO-5223 chrome star groups', () => {
   const REVIEW = `Theater review by David Cote. Gerald Schoenfeld Theatre. ${BODY} It's a dull, mechanical night.`;
   const HEADLINES = ' Bars around NY will be allowed to stay open later during the World Cup A massive Portugal watch party is happening in Dumbo';
+  before(() => setKnownShowTitlesForTest(["Well, I'll Let You Go", 'Hamlet', 'Orphans', 'Harry Potter and the Cursed Child', 'Cats', 'Another Show']));
+  after(() => setKnownShowTitlesForTest(null));
 
   test('a chrome headline naming another show with ★★★★★ gives no score', () => {
     const t = `${REVIEW} Ladies and gentlemen, NYC is getting a new area code: 465 Theater review: Well, I'll Let You Go (★★★★★) is a mourning glory${HEADLINES}`;
     assert.strictEqual(extractScore('', t, 'timeout', 'Orphans'), null);
-    assert.strictEqual(extractScore('', t, 'timeout'), null, 'no show title passed (collect-review-texts-v2)');
   });
 
   test("a chrome '5 stars' next to another show's title gives no score", () => {
-    const t = `${REVIEW} More reviews Hamlet ★★★★★ 5 stars Read the review`;
-    assert.strictEqual(extractScore('', t, 'timeout', 'Orphans'), null);
+    assert.strictEqual(extractScore('', `${REVIEW} More reviews Hamlet ★★★★★ 5 stars Read the review`, 'timeout', 'Orphans'), null);
+    assert.strictEqual(extractScore('', `${REVIEW} More reviews Hamlet ★★★★★ 5 stars Read the review`, 'timeout'), null, 'chrome heading needs no title');
     assert.strictEqual(extractScore('', `${REVIEW} Hamlet ★★★★★ 5 stars Read the review`, 'timeout', 'Orphans'), null);
   });
 
@@ -137,6 +141,27 @@ describe('BRO-5223 chrome star groups', () => {
     assert.strictEqual(extractScore('', `${BODY} Orphans ★★☆☆☆`, 'timeout', 'Orphans').originalScore, '2/5 stars');
     assert.strictEqual(extractScore('', `${BODY} Verdict: ★★★★☆`, 'guardian', 'Cats').originalScore, '4/5 stars');
     assert.strictEqual(extractScore('', `${BODY} It is a dull night. ★★☆☆☆`, 'timeout', 'Orphans').originalScore, '2/5 stars');
+  });
+
+  test('a byline, venue or short title before a trailing verdict is not another show', () => {
+    const cases = [
+      [`${BODY} Neil Dowden ★★★★☆`, 'guardian', 'Cats', '4/5 stars'],
+      [`${BODY} At the Gielgud Theatre ★★★★☆`, 'guardian', 'Cats', '4/5 stars'],
+      [`${BODY} BY ADAM FELDMAN ★★☆☆☆`, 'timeout', 'Orphans', '2/5 stars'],
+      [`${BODY} Cursed Child ★★★★☆`, 'guardian', 'Harry Potter and the Cursed Child', '4/5 stars'],
+      [`${BODY} Theater review: Cursed Child (★★★★☆)`, 'timeout', 'Harry Potter and the Cursed Child', '4/5 stars'],
+      [`${BODY} Theater review: Orphans ★★☆☆☆`, 'timeout', undefined, '2/5 stars'],
+      [`${BODY} Theater review: Well, I'll Let You Go (★★★★★)`, 'timeout', undefined, '5/5 stars'],
+    ];
+    for (const [t, outlet, title, want] of cases) {
+      const r = extractScore('', t, outlet, title);
+      assert.strictEqual(r && r.originalScore, want, `${t.slice(-50)} / ${title}`);
+    }
+  });
+
+  test('a capitalised "Most read" sentence is not a chrome heading', () => {
+    const t = `${BODY} Most read novels never reach the stage. ${BODY} ★★★★☆`;
+    assert.strictEqual(extractScore('', t, 'guardian', 'Cats').originalScore, '4/5 stars');
   });
 
   const page = (reviewWrap, related) => `<html><head><title>Orphans</title></head><body>
@@ -154,7 +179,8 @@ describe('BRO-5223 chrome star groups', () => {
   });
 
   test('a related <article> that is not the review body is never the scan region', () => {
-    // Review body is a plain <div>; the only <article> is the related card.
+    // Review body is a plain <div>; the only <article> is the related card, so
+    // the text path decides: "Another Show" is a known show title.
     const html = page(inner => `<div class="body">${inner}</div>`, RELATED);
     assert.strictEqual(extractScore(html, PAGE_TEXT, 'timeout', 'Orphans'), null);
   });
@@ -166,6 +192,13 @@ describe('BRO-5223 chrome star groups', () => {
     const html2 = page(inner => `<div itemprop="articleBody">${inner}<p>★★☆☆☆</p></div>`, RELATED);
     const text2 = `Things to do Orphans ${REVIEW} ★★☆☆☆ Another Show ★★★★☆ Read the review`;
     assert.strictEqual(extractScore(html2, text2, 'timeout', 'Orphans').originalScore, '2/5 stars');
+  });
+
+  test('a header rating outside the review element still counts', () => {
+    // Stars sit in a header above the <article>, as icons the element text lacks.
+    const html = `<html><body><header><span class="rating">★★★★☆</span></header><article><h1>Orphans</h1><p>${REVIEW}</p></article></body></html>`;
+    const text = `★★★★☆ Orphans ${REVIEW}`;
+    assert.strictEqual(extractScore(html, text, 'timeout', 'Orphans').originalScore, '4/5 stars');
   });
 });
 
