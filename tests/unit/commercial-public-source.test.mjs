@@ -47,6 +47,22 @@ test('publicSourceText drops internal research-tooling language', () => {
   }
 });
 
+test('a New York Times ArtsBeat link is the newspaper, not a blog (BRO-5562)', () => {
+  for (const nyt of [
+    'The New York Times (Dec 15, 2014): "The show\'s weekly running costs are about $625,000." https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2014/12/15/the-last-ship-rises-with-sting-in-the-cast/',
+    'NYT ArtsBeat reported the closing. http://artsbeat.blogs.nytimes.com/2014/05/01/x/',
+  ]) {
+    assert.equal(publicSourceText(nyt), nyt, `should keep: ${nyt}`);
+  }
+  for (const blog of [
+    'Financing Broadway blog listing capitalization at $14 million',
+    'Estimate from a blog post https://example.blogspot.com/x',
+    'Broadway & Me blog https://broadwayandme.blogspot.com/2010/12/x.html',
+  ]) {
+    assert.equal(publicSourceText(blog), null, `should drop: ${blog}`);
+  }
+});
+
 test('publicSourceText drops hand-edit process notes and field names written as code (BRO-4669)', () => {
   // The live wording these records carried before the BRO-4669 plan.
   const internal = [

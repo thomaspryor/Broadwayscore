@@ -24,6 +24,9 @@ const INTERNAL_SOURCE_RE =
 // URLs removed so a query string ("?type=D") is not mistaken for one.
 const INTERNAL_TOKEN_RE = /\b[a-z][A-Za-z]*\s?[:=]\s?(?:true|false|null)\b|\b[a-z][A-Za-z]*=[A-Z]/;
 const URL_RE = /\bhttps?:\/\/\S+/gi;
+// The New York Times ran its theater news (ArtsBeat) on blogs.nytimes.com, so
+// a link there is the newspaper, not a blog (BRO-5562).
+const NEWSPAPER_BLOG_HOST_RE = /\b[\w.-]*blogs\.nytimes\.com\b/gi;
 
 // Bracketed pipeline annotations appended to otherwise publishable notes:
 // "[Auto-designated Fizzle: ...]" (scripts/cleanup-commercial-data.js) and
@@ -43,7 +46,7 @@ function publicSourceText(text) {
   const stripped = text.replace(INTERNAL_ANNOTATION_RE, ' ');
   const trimmed = (stripped === text ? text : stripped.replace(/[ \t]{2,}/g, ' ')).trim();
   if (!trimmed) return null;
-  if (INTERNAL_SOURCE_RE.test(trimmed) || INTERNAL_TOKEN_RE.test(trimmed.replace(URL_RE, ' '))) return null;
+  if (INTERNAL_SOURCE_RE.test(trimmed.replace(NEWSPAPER_BLOG_HOST_RE, 'nytimes.com')) || INTERNAL_TOKEN_RE.test(trimmed.replace(URL_RE, ' '))) return null;
   return trimmed;
 }
 
