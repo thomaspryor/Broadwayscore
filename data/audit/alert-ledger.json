@@ -236,20 +236,18 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
-      "disposition": "digest",
+      "status": "open",
+      "disposition": "auto",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-16T06:37:51.389Z",
-      "lastSeen": "2026-10-16T08:10:13.331Z",
-      "lastNotifiedAt": "2026-10-16T06:37:51.389Z",
-      "lastSurfacedAt": "2026-10-12T12:08:38.296Z",
-      "notifyCount": 140,
+      "incidentOpenedAt": "2026-10-17T16:53:37.704Z",
+      "lastSeen": "2026-10-17T16:53:37.704Z",
+      "lastNotifiedAt": "2026-10-17T16:53:37.704Z",
+      "lastSurfacedAt": "2026-10-17T16:53:37.704Z",
+      "notifyCount": 141,
       "cardId": null,
-      "linearIdentifier": "BRO-3030",
-      "silentRefires": 3,
-      "resolvedAt": "2026-10-16T08:25:14.391Z"
+      "linearIdentifier": "BRO-5554"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -19667,7 +19665,7 @@
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"only hosts with occurrences >= 2 are drained\"",
       "firstSeen": "2026-10-17T15:43:25.220Z",
       "incidentOpenedAt": "2026-10-17T15:43:25.220Z",
-      "lastSeen": "2026-10-17T16:16:05.510Z",
+      "lastSeen": "2026-10-17T16:53:37.690Z",
       "lastNotifiedAt": "2026-10-17T15:43:25.220Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
@@ -19679,7 +19677,7 @@
         "runId": "39044957873",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39044957873"
       },
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/job/linear-BRO-5355-mvchwwd3": {
       "status": "resolved",
