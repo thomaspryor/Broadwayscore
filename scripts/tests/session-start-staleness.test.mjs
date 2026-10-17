@@ -12,6 +12,7 @@ import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { execFileSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
+import { realNowMs } from '../../tests/helpers/clock-shift.mjs';
 
 const require = createRequire(import.meta.url);
 const {
@@ -557,8 +558,9 @@ test('--bg-sync process: really runs detached-style, logs the outcome, and only 
     assert.equal(run().status, 0);
     assert.match(fs.readFileSync(log, 'utf8'), /another catch-up is already running/);
     assert.equal(fs.readFileSync(path.join(t.stale, 'scripts', 'a.js'), 'utf8').trim(), 'code1', 'not synced while locked');
-    // a stale lock (90+ minutes old) is taken over
-    const old = new Date(Date.now() - 100 * 60 * 1000);
+    // a stale lock (90+ minutes old) is taken over. Real (unshifted) clock: the
+    // spawned --bg-sync child reads real time, so the lock mtime must too.
+    const old = new Date(realNowMs() - 100 * 60 * 1000);
     fs.utimesSync(lock, old, old);
     assert.equal(run().status, 0);
     assert.match(fs.readFileSync(log, 'utf8'), /synced \w+ -> \w+ \(2 commits\)/);
