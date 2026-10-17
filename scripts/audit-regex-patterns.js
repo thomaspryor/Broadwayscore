@@ -51,6 +51,8 @@ const path = require('path');
 
 const CONTENT_QUALITY = require('./lib/content-quality.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { writeStamp } = require('./lib/scoring-watchlists');
+const { REGEX_AUDIT_MAX_HITS: DEFAULT_MAX_HITS } = require('./lib/regex-audit-gate');
 
 // Pattern families we gate. Keys must match exported names from content-quality.js.
 // Add new families here when they land in content-quality.js — the gate will pick them up.
@@ -430,7 +432,6 @@ const PATTERN_CALIBRATION = {
   },
 };
 
-const DEFAULT_MAX_HITS = 5;
 const DEFAULT_SAMPLE_SHOWS = 400;
 const MAX_REVIEWS_PER_SHOW = 30;
 
@@ -766,8 +767,11 @@ function reportText({ scanned, counts, violations, args, families }) {
 
 function main() {
   const args = parseArgs(process.argv);
+  const stamp = { started: new Date().toISOString(), full: args.full, maxHits: args.maxHits, scanned: 0 };
+  process.on('exit', exitCode => writeStamp({ ...stamp, exitCode }, process.env.CLAUDE_CODE_SESSION_ID, 'regex-audit'));
   const families = loadPatterns();
   const { scanned, counts } = scanCorpus({ full: args.full, families });
+  stamp.scanned = scanned;
   const violations = evaluate({ counts, maxHits: args.maxHits });
 
   const titleFamilies = loadTitleExcludeFamilies();

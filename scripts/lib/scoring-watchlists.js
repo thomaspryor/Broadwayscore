@@ -119,19 +119,19 @@ const SCORE_VALUE_FILES = [
   ...LLM_INPUT_FILES,
 ];
 
-const stampFile = (sessionId) => path.join(process.env.SCORING_DELTA_STAMP_DIR || path.join(os.tmpdir(), 'scoring-delta-stamps'),
-  `${String(sessionId || 'nosession').replace(/[^\w.-]/g, '_')}.jsonl`);
+const stampFile = (sessionId, kind = '') => path.join(process.env.SCORING_DELTA_STAMP_DIR || path.join(os.tmpdir(), 'scoring-delta-stamps'),
+  `${String(sessionId || 'nosession').replace(/[^\w.-]/g, '_')}${kind ? '.' + kind.replace(/[^\w.-]/g, '_') : ''}.jsonl`);
 
-function writeStamp(stamp, sessionId = process.env.CLAUDE_CODE_SESSION_ID) {
+function writeStamp(stamp, sessionId = process.env.CLAUDE_CODE_SESSION_ID, kind = '') {
   try {
-    fs.mkdirSync(path.dirname(stampFile(sessionId)), { recursive: true });
-    fs.appendFileSync(stampFile(sessionId), JSON.stringify({ ts: new Date().toISOString(), ...stamp }) + '\n');
+    fs.mkdirSync(path.dirname(stampFile(sessionId, kind)), { recursive: true });
+    fs.appendFileSync(stampFile(sessionId, kind), JSON.stringify({ ts: new Date().toISOString(), ...stamp }) + '\n');
   } catch { /* a stamp is evidence for the Stop hook, never a reason to fail the run */ }
 }
 
-function readStamps(sessionId) {
+function readStamps(sessionId, kind = '') {
   try {
-    return fs.readFileSync(stampFile(sessionId), 'utf8').split('\n').filter(Boolean)
+    return fs.readFileSync(stampFile(sessionId, kind), 'utf8').split('\n').filter(Boolean)
       .map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
   } catch { return []; }
 }

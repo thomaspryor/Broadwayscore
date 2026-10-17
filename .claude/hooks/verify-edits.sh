@@ -1147,21 +1147,8 @@ for _i in range(len(events) - 1, -1, -1):
             sys.exit(0)
         break  # only the most recent assistant_text counts
 
-# NO-VERIFY bypass idempotency (card 387, 2026-07-24): a bypass declared once
-# for the current gate-relevant edit-set must not have to be restated on
-# every later turn-end. The generic/scoring/shipcheck/visual "verified" paths
-# below are already idempotent for free — they scan forward from last_edit_idx,
-# which is a stable index in the append-only transcript, so a qualifying Bash
-# found once stays found on every future replay. NO-VERIFY was the ONE
-# exception: it was scanned only from the last USER message onward (needed so
-# same-turn NO-VERIFY written before the Edit call is still seen), which means
-# a bypass declared in turn N goes out of range the moment turn N+1 starts,
-# even with zero new edits — forcing the same declaration to be retyped every
-# turn (owner report, screenshot of session 1013c9a2). Fix: persist the
-# fingerprint of the edit-set (qualifying edits + audit-sweep writes, both
-# monotonic) at which NO-VERIFY was last honored; short-circuit here while it
-# still matches. A NEW qualifying edit or sweep-write changes the fingerprint
-# and re-arms every gate below immediately.
+# NO-VERIFY satisfaction persists for this edit-set across later turns (card 387).
+# New qualifying edits or sweep writes change the fingerprint and re-arm gates.
 _edit_fingerprint = total_qualifying_edits * 1000003 + sweep_write_count
 _state_path = '/tmp/verify-edits-satisfied-' + \
     hashlib.md5(sys.argv[1].encode()).hexdigest()[:16] + '.json'
@@ -1406,15 +1393,22 @@ SCORING_LOGIC_FALLBACK = ('scripts/lib/review-guards.js', 'scripts/rebuild-all-r
                           'src/lib/scoring.ts', 'src/lib/engine.ts', 'src/lib/data-core.ts')
 
 def _scoring_state():
+    regex_edit = next((result_ts_by_id.get(p[2], '') for k, p in reversed(events) if k == 'tool'
+                       and p[0] in ('Edit', 'Write', 'NotebookEdit') and p[2] not in tool_refused_ids
+                       and (p[1].get('file_path') or '').endswith('/scripts/lib/content-quality.js')), None)
     try:
         import subprocess as _ss
         js = ("const w=require(process.argv[1]);process.stdout.write(JSON.stringify({files:[...new Set(["
-              "...w.INCLUSION_FILES,...w.SCORE_VALUE_FILES])],llm:w.LLM_INPUT_FILES,stamps:w.readStamps(process.argv[2])}))")
+              "...w.INCLUSION_FILES,...w.SCORE_VALUE_FILES])],llm:w.LLM_INPUT_FILES,stamps:w.readStamps(process.argv[2]),"
+              "regex:require(require('path').join(require('path').dirname(process.argv[1]),'regex-audit-gate.js'))"
+              ".checkRegexAudit({repoRoot:process.env.VE_REPO_ROOT,sessionId:process.argv[2],editedAt:JSON.parse(process.argv[3])})}))")
         lib = os.path.join(os.environ.get('VE_REPO_ROOT', '.'), 'scripts', 'lib', 'scoring-watchlists.js')
         sid = os.path.basename(sys.argv[1]).rsplit('.', 1)[0]
-        return json.loads(_ss.run(['node', '-e', js, lib, sid], capture_output=True, text=True, timeout=8).stdout)
+        return json.loads(_ss.run(['node', '-e', js, lib, sid, json.dumps(regex_edit)], capture_output=True, text=True, timeout=8).stdout)
     except Exception:
-        return {'files': list(SCORING_LOGIC_FALLBACK), 'llm': [], 'stamps': [], 'noload': True}
+        present = os.path.isdir(os.path.join(os.environ.get('VE_REPO_ROOT', '.'), 'data/review-texts'))
+        regex = {'blocked': present, 'message': ('BLOCKED: cannot load regex-audit gate; run node scripts/audit-regex-patterns.js --full.' if present else 'WARN: data/review-texts is absent; audit-regex-patterns.js --full could not be verified.')} if regex_edit is not None else None
+        return {'files': list(SCORING_LOGIC_FALLBACK), 'llm': [], 'stamps': [], 'noload': True, 'regex': regex}
 
 # ─── BWSC visual-QA gate (added 2026-05-24) ──────────────────────────────────
 # Edits to files producing rendered HTML require a verdict.json from
@@ -1831,6 +1825,11 @@ if no_verify:
     print(_chain_or_ok())
     sys.exit(0)
 
+if _sc.get('regex'):
+    print(_sc['regex']['message'], file=sys.stderr)
+    if _sc['regex']['blocked']:
+        _ve_final('UNVERIFIED_REGEX')
+
 if scoring_edit or ran_audit_sweep:
     # The LATEST scoring-delta.js run after the latest watched edit / sweep
     # write decides (a re-run after fixing data setup clears an exit 1). Exit 0
@@ -1993,6 +1992,7 @@ if [[ "$result" == HUMAN_TIME_ESTIMATE:* ]]; then
   exit 2
 fi
 
+if [[ "$result" == UNVERIFIED_REGEX ]]; then exit 2; fi
 if [[ "$result" == SCORING_FAILED:* || "$result" == UNVERIFIED_SCORING:* ]]; then
   fname="${result#*:}"; kind="${fname##*:}"; fname="${fname%:*}"
   [[ "$fname" == "audit-sweep" ]] && what="audit sweep of data/review-texts/" || what="scoring-logic edit (\`${fname}\`)"
