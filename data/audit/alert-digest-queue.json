@@ -915,5 +915,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-17T20:30:00.099Z"
+  },
+  {
+    "conditionKey": "corpus-drift:cv-flag-contradiction",
+    "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff) — escalated after 21 notifications",
+    "description": "Filed BRO-5563 for owner triage after 21 repeats with no tracker.\n\ncheck-corpus-drift.js audit \"cv-flag-contradiction\" (node scripts/audit-cv-flag-contradiction.js --window=30 --strict) has been drifting. Latest output:\n\nFlag-vs-CV contradiction sweep: 260 shows in the last 30d window, 9 contradiction(s) found.\n  [wrongProduction] hay-fever-west-end-2026/theatreboard--unknown.json (336w)\n  [wrongProduction] tosca-off-broadway-2026/new-york-classical-review--george-grella.json (925w)\n  [wrongProduction] tosca-off-broadway-2026/operawire--chris-ruel.json (2816w)\n  [wrongProduction] miles-for-mary-off-broadway-2026/talkinbroadway--marc-miller.json (675w)\n  [wrongProduction] the-last-ship-west-end-2026/timeout--andrzej-lukowski.json (976w)\n  [wrongProduction] the-revlon-girl-off-west-end-2026/london-box-office--stacey-tyler.json (817w)\n  [wrongProduction] much-ado-about-nothing-2026/london-theatre--marianka-swain.json (793w)\n  [wrongProduction] gang-of-three-off-west-end-2026/london-box-office--stuart-king.json (568w)\n  [wrongProduction] a-beautiful-noise-the-neil-diamond-musical-tour-2026/dayton-local--michael-woody.json (618w)\nCoverage: examined 172 of 3764 corpus show(s) (2642 review file(s) parsed).\n  --window=30d selected 260 show(s): 123 already opened, 137 not yet opened (the window filter has no upper bound).\n  88 selected show(s) yielded no readable review file (directory missing, unreadable, empty, or every file failed to parse).\n  3592 corpus show(s) were NOT examined, of which 407 carry no usable openingDate (missing or unparseable) and are excluded at EVERY window.\n  A clean result above covers only the examined shows. It is not a statement about the corpus.\n\n(5 baselined, 4 new)\n\n⚠️  NEW flag-vs-CV contradiction(s), not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/cv-flag-contradiction-baseline.json):\n  [wrongProduction] hay-fever-west-end-2026/theatreboard--unknown.json\n  [wrongProduction] much-ado-about-nothing-2026/london-theatre--marianka-swain.json\n  [wrongProduction] gang-of-three-off-west-end-2026/london-box-office--stuart-king.json\n  [wrongProduction] a-beautiful-noise-the-neil-diamond-musical-tour-2026/dayton-local--michael-woody.json\n\nInvestigate, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-cv-flag-contradiction.js --update-baseline",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5563",
+    "fields": [],
+    "queuedAt": "2026-10-17T22:22:44.793Z"
   }
 ]
