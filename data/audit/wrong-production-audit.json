@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-17T21:11:15.283Z",
+  "timestamp": "2026-10-17T21:56:17.053Z",
   "stats": {
     "totalReviews": 57315,
-    "alreadyFlagged": 21269,
-    "dateGuardCatches": 194,
+    "alreadyFlagged": 21268,
+    "dateGuardCatches": 195,
     "directorMismatch": 1938,
     "tvFilmSignals": 1600,
     "londonSignals": 2409,
     "offBroadwaySignals": 516,
     "yearMismatch": 156,
-    "noPublishDate": 5293
+    "noPublishDate": 5292
   },
   "findings": [
     {
@@ -17376,6 +17376,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2016 (2x) more than 2018 (0x). 2016 matches production: harry-potter-and-the-cursed-child-both-parts-west-end-2021"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "file": "deadline--joe-utichi.json",
+      "score": 90,
+      "publishDate": "2016-07-30",
+      "url": "https://deadline.com/2016/07/harry-potter-and-the-cursed-child-review-gala-premiere-1201794779/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 3723d before show (2016-07-30 vs 2026-10-09)"
         }
       ]
     },
@@ -51726,6 +51740,7 @@
     {
       "showId": "a-ghost-in-your-ear-off-broadway-2026",
       "file": "nytimes--elisabeth-vincentelli.json",
+      "score": 63,
       "publishDate": "2026-10-16",
       "url": "https://www.nytimes.com/2026/10/16/theater/ghost-in-your-ear-4th-witch.html",
       "findings": [
