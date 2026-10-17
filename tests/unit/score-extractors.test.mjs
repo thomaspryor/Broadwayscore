@@ -233,3 +233,8 @@ test('BRO-5223: lower-case prose that reads like a chrome heading does not hide 
   const t = `${BODY} It may be the most popular revival of the year. ${BODY} ★★★★☆`;
   assert.strictEqual(extractScore('', t, 'guardian', 'Cats').originalScore, '4/5 stars');
 });
+
+test('BRO-5223: an out-of-range numeric entity in the review HTML does not throw', () => {
+  const html = `<html><body><article><h1>Orphans</h1><p>&#99999999; &#x110000; ${BODY}</p></article></body></html>`;
+  assert.doesNotThrow(() => extractScore(html, `Orphans ${BODY}`, 'timeout', 'Orphans'));
+});

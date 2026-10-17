@@ -1547,8 +1547,8 @@ function htmlFragmentToText(fragment) {
     .replace(/<!--[\s\S]*?-->/g, ' ')
     .replace(/<(script|style|noscript|template)\b[\s\S]*?<\/\1>/gi, ' ')
     .replace(/<[^>]+>/g, ' ')
-    .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
-    .replace(/&#(\d+);/g, (_, d) => String.fromCodePoint(parseInt(d, 10)))
+    .replace(/&#x([0-9a-f]+);/gi, (m, h) => { const c = parseInt(h, 16); return c <= 0x10ffff ? String.fromCodePoint(c) : m; })
+    .replace(/&#(\d+);/g, (m, d) => { const c = parseInt(d, 10); return c <= 0x10ffff ? String.fromCodePoint(c) : m; })
     .replace(/&([a-z0-9]+);/gi, (m, n) => (HTML_ENTITY_MAP[n.toLowerCase()] ?? m))
     .replace(/\s+/g, ' ')
     .trim();
