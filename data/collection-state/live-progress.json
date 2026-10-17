@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-17T15:05:27.208Z",
-  "processed": 265,
-  "failed": 145,
-  "successRate": "64.6%",
+  "updatedAt": "2026-10-17T15:32:08.764Z",
+  "processed": 319,
+  "failed": 181,
+  "successRate": "63.8%",
   "tierBreakdown": {
-    "playwright": 128,
+    "playwright": 157,
     "amp": 7,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 18,
-    "scrapingbee": 12,
+    "scrapingdog": 25,
+    "scrapingbee": 14,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 95
+    "archive": 111
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-10-17T13:22:11.073Z",
@@ -97,6 +97,28 @@
     },
     {
       "t": "2026-10-17T15:02:31.393Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-17T15:07:15.668Z",
+      "event": "bb-session",
+      "session": "06573215",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-17T15:07:16.584Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-17T15:07:34.853Z",
+      "event": "bb-session",
+      "session": "a843fd5d",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-17T15:07:35.690Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
