@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-17T15:55:20.075Z",
+  "timestamp": "2026-10-17T17:11:26.020Z",
   "stats": {
     "totalReviews": 57300,
-    "alreadyFlagged": 21248,
+    "alreadyFlagged": 21252,
     "dateGuardCatches": 195,
     "directorMismatch": 1934,
-    "tvFilmSignals": 1598,
+    "tvFilmSignals": 1600,
     "londonSignals": 2404,
-    "offBroadwaySignals": 514,
+    "offBroadwaySignals": 515,
     "yearMismatch": 155,
-    "noPublishDate": 5318
+    "noPublishDate": 5309
   },
   "findings": [
     {
@@ -6847,6 +6847,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "file": "frontmezzjunkies--unknown.json",
+      "score": null,
+      "publishDate": "2026-04-13",
+      "url": "https://frontmezzjunkies.com/2026/04/13/glitter-fur-and-full-commitment-cats-the-jellicle-ball-and-titanique-refuse-to-behave-on-broadway/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"barrow street\""
         }
       ]
     },
@@ -35982,12 +36001,19 @@
     {
       "showId": "stories-the-tap-dance-sensation-west-end-2026",
       "file": "times-uk--donald-hutera-contributor.json",
-      "score": null,
+      "score": 72,
+      "publishDate": "2024-10-24",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/stories-review-rb-dance-company-peacock-theatre-5c6q83q2d",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 720d before show (2024-10-24 vs 2026-10-14)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
