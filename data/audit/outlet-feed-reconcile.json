@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-17T18:19:22.033Z",
+  "generatedAt": "2026-10-17T20:02:59.000Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -107,11 +107,6 @@
       "id": "nina-off-west-end-2026",
       "title": "Nina",
       "openingDate": "2026-10-12"
-    },
-    {
-      "id": "anne-washburns-anon-off-broadway-2026",
-      "title": "Anne Washburn's ANON",
-      "openingDate": "2026-10-15"
     }
   ],
   "skipped": [
@@ -165,16 +160,30 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 686,
-  "matchedGaps": 0,
+  "itemsScanned": 713,
+  "matchedGaps": 2,
   "possibleGaps": 7,
   "gaps": [
+    {
+      "showId": "dog-mom-off-west-end-2026",
+      "title": "Dog Mom",
+      "level": "matched",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/dog-mom-southwark-playhouse-borough-london/",
+      "headline": "Dog Mom – Southwark Playhouse Borough, London",
+      "publishDate": "2026-10-17"
+    },
+    {
+      "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
+      "title": "Memoirs of Amorous Gentlemen",
+      "level": "matched",
+      "outletId": "nypost",
+      "url": "https://nypost.com/2026/10/17/entertainment/memoirs-of-amorous-gentlemen-review-the-musical-duncan-sheik-was-working-on-when-he-died-is-an-awkward-letdown/",
+      "headline": "&#8216;Memoirs of Amorous Gentlemen&#8217; review: Musical Duncan Sheik was working on when he died is an awkward letdown",
+      "publishDate": "2026-10-17"
+    },
     {
       "showId": "jane-eyre-rose-kingston-off-west-end-2026",
       "title": "Jane Eyre",

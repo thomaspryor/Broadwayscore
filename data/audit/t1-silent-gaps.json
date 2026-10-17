@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-17T18:15:51.780Z",
+  "generatedAt": "2026-10-17T20:02:47.768Z",
   "windowDays": 45,
-  "showsScanned": 180,
+  "showsScanned": 179,
   "gaps": [
     {
       "showId": "stuffed-off-west-end-2026",
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=stuffed-off-west-end-2026",
       "firstSeen": "2026-10-15T15:44:57.921Z",
-      "fileAgeHours": 50.512187777777775,
+      "fileAgeHours": 52.29579361111111,
       "gapSeenAt": "2026-10-16T12:12:23.731Z",
-      "nonTerminalAgeHours": 30.05779111111111
+      "nonTerminalAgeHours": 31.84001027777778
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -36,15 +36,15 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 601.5863444444444,
+      "fileAgeHours": 603.3698733333333,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 152.6079936111111
+      "nonTerminalAgeHours": 154.39021277777778
     },
     {
       "showId": "triumph-off-broadway-2026",
       "title": "Triumph",
       "openingDate": "2026-10-08",
-      "file": "theatermania--unknown.json",
+      "file": "theatermania--david-gordon.json",
       "outletId": "theatermania",
       "tier": 2,
       "type": "empty-body",
@@ -54,12 +54,12 @@
         "ok": false,
         "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
       },
-      "recoveryCount": 0,
+      "recoveryCount": 1,
       "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=triumph-off-broadway-2026 --url=https://www.theatermania.com/news/review-triumph-caryl-churchills-riff-on-the-katie-zacharia-of-it-all_1857423/ --outlet=theatermania   # run LOCALLY (cookie jar lives on the Mac)",
+      "fix": "node scripts/ingest-review-from-url.js --show=triumph-off-broadway-2026 --url=https://www.theatermania.com/news/review-triumph-caryl-churchills-riff-on-the-katie-zacharia-of-it-all_1857423/ --outlet=theatermania --critic=\"David Gordon\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-17T17:53:07.432Z",
-      "fileAgeHours": 0.3788222222222222,
-      "gapSeenAt": "2026-10-17T18:15:51.779Z",
+      "fileAgeHours": 2.1611069444444446,
+      "gapSeenAt": "2026-10-17T20:02:47.768Z",
       "nonTerminalAgeHours": 0
     }
   ],
