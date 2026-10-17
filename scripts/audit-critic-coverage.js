@@ -16,6 +16,8 @@
  *   --mode=historical   archive-era sweep (totalReviews>=200, no date floor,
  *                       excludes active set, capped at top 100)
  *   --dry-run           print selected critics + counts and exit (no scraping)
+ *   --discover-author-pages  one-off NYT/New Yorker/Vulture discovery; append
+ *                       verified slugs only, without running the coverage audit
  */
 const fs = require('fs');
 const path = require('path');
@@ -30,6 +32,7 @@ const { computeCriticCoverage } = require(path.join(__dirname, 'lib/check-critic
 const { buildCadenceReport } = require(path.join(__dirname, 'lib/outlet-cadence.js'));
 const { updateHeartbeatState } = require(path.join(__dirname, 'lib/outlet-heartbeat-state.js'));
 const { MAIN_REPO_ROOT } = require('./lib/repo-root');
+const { selectActiveCritics, discoveryCandidates, discoverAuthorPages } = require('./lib/critic-author-page-discovery');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 
@@ -39,8 +42,12 @@ const limitArg = args.find(a => a.startsWith('--limit='));
 const onlyArg  = args.find(a => a.startsWith('--only='));
 const modeArg  = args.find(a => a.startsWith('--mode='));
 const dryRun   = args.includes('--dry-run');
+const discover = args.includes('--discover-author-pages');
 
 const mode = modeArg ? modeArg.split('=')[1] : 'default';
+if (discover && mode !== 'default') {
+  throw new Error('--discover-author-pages only supports active critics (mode=default)');
+}
 
 // ── Data files ───────────────────────────────────────────────────────────────
 // critic-registry.json lives in the private data repo; fall back to main.
@@ -82,16 +89,8 @@ for (const r of rev.reviews) {
 
 // Active set: critics that default mode selects (lastDate>=2025-01-01 AND totalReviews>=20)
 // This is computed regardless of mode so historical can exclude it.
-const activeSet = new Set();
-for (const [slug, c] of Object.entries(reg.critics)) {
-  if (c.displayName === 'Unknown') continue;
-  const tier = tierMap[c.primaryOutlet];
-  if (tier !== 1 && tier !== 2) continue;
-  const lastDate = last[c.displayName];
-  if (!lastDate || lastDate < '2025-01-01') continue;
-  if (c.totalReviews < 20) continue;
-  activeSet.add(slug);
-}
+const activeCritics = selectActiveCritics(reg, rev.reviews, outlets);
+const activeSet = new Set(activeCritics.map(c => c.slug));
 
 let critics = [];
 
@@ -109,17 +108,7 @@ if (mode === 'historical') {
   critics.sort((a,b) => b.total - a.total);
   critics = critics.slice(0, 100); // cap at top 100
 } else {
-  // Default mode: lastDate>=2025-01-01 AND totalReviews>=20
-  for (const [slug, c] of Object.entries(reg.critics)) {
-    if (c.displayName === 'Unknown') continue;
-    const tier = tierMap[c.primaryOutlet];
-    if (tier !== 1 && tier !== 2) continue;
-    const lastDate = last[c.displayName];
-    if (!lastDate || lastDate < '2025-01-01') continue;
-    if (c.totalReviews < 20) continue;
-    critics.push({ slug, name: c.displayName, outlet: c.primaryOutlet, tier, total: c.totalReviews, lastDate });
-  }
-  critics.sort((a,b) => b.total - a.total);
+  critics = activeCritics;
 }
 
 // Apply CLI filters (layer on top of mode selection)
@@ -133,6 +122,12 @@ if (onlyArg) {
 
 // ── Dry-run (print selection and exit) ───────────────────────────────────────
 if (dryRun) {
+  if (discover) {
+    const candidates = discoveryCandidates(critics, authorOverrides);
+    console.log(`Author-page discovery: ${candidates.length} missing active overrides`);
+    for (const c of candidates) console.log(`${c.slug} (${c.key}): ${c.url}`);
+    process.exit(0);
+  }
   if (mode === 'historical') {
     console.log(`Selected ${critics.length} critics for historical audit (mode=historical)`);
   } else {
@@ -149,7 +144,7 @@ if (dryRun) {
 }
 
 const modeLabel = mode === 'historical' ? 'historical T1/T2 critics' : 'active T1/T2 critics';
-console.error(`Auditing ${critics.length} ${modeLabel} (full missing capture)`);
+if (!discover) console.error(`Auditing ${critics.length} ${modeLabel} (full missing capture)`);
 
 // ── Core ─────────────────────────────────────────────────────────────────────
 const CONC = 4;
@@ -272,6 +267,21 @@ async function runOutletHeartbeat() {
 }
 
 (async () => {
+  if (discover) {
+    // Read the unfiltered file so schema metadata and other outlet overrides survive.
+    const outPath = path.join(REPO_ROOT, 'data/critic-author-pages.json');
+    const original = JSON.parse(fs.readFileSync(outPath, 'utf8'));
+    const { fetchPage, cleanup } = require('./lib/scraper');
+    const { overrides, results } = await discoverAuthorPages(critics, original, fetchPage)
+      .finally(() => cleanup());
+    const added = results.filter(r => r.status === 'added').length;
+    if (added) fs.writeFileSync(outPath, JSON.stringify(overrides, null, 2) + '\n');
+    for (const r of results) console.log(`${r.slug} (${r.key}): ${r.status}${r.reason ? ` (${r.reason})` : ''}`);
+    console.log(`Author-page discovery: ${added} added, ${results.length - added} skipped`);
+    // A failed probe must remain visible to one-off callers, even with partial success.
+    if (results.some(r => r.status === 'skipped')) process.exitCode = 1;
+    return;
+  }
   await runBatch();
   REPORT.sort((a,b) => (b.missingCount||0) - (a.missingCount||0));
   const auditDir = path.join(REPO_ROOT, 'data/audit');
