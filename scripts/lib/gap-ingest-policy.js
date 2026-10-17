@@ -249,8 +249,24 @@ function flaggedFilePriorRunDate(dirFiles, show) {
   if (process.env.GAP_FLAGGED_PRIOR_RUN_DISABLED === '1') return null; // kill switch
   const files = (dirFiles || []).filter((d) => d && (d.wrongProduction || d.wrongShow));
   if (files.length === 0 || files.length !== (dirFiles || []).length) return null; // a clean/other-state file means no verdict
-  for (const d of files) if (!isPublishDateBeforeRun(d.publishDate, show)) return null;
-  return files[0].publishDate;
+  for (const d of files) {
+    if (isPublishDateBeforeRun(d.publishDate, show) || isVenueVerifiedOtherProduction(d)) continue;
+    return null;
+  }
+  const dated = files.find((d) => d.publishDate);
+  return dated ? dated.publishDate : `venue-verified:${files[0].contentVerification.reviewedVenue}`;
+}
+
+/**
+ * An UNDATED flagged file (form-submitted roundup page, no publishDate) whose
+ * high-confidence content verdict names the venue it actually reviewed. The
+ * venue mismatch is the same independent content check the dated path relies
+ * on (BRO-5380: UNCONDITIONAL's NYC run vs the 2025 Skylight Theatre LA run,
+ * theatreinla roundup held roundup-gap open with no date to compare).
+ */
+function isVenueVerifiedOtherProduction(d) {
+  const cv = d && d.contentVerification;
+  return !!(d.wrongProduction && cv && cv.wrongProduction === true && cv.confidence === 'high' && cv.reviewedVenue);
 }
 
 // Roundups whose own verdict lives ONLY inside the roundup (no standalone review

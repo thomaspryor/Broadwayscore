@@ -216,3 +216,13 @@ test('flagged wrongProduction files dated before the run are prior-run, press-ni
   process.env.GAP_FLAGGED_PRIOR_RUN_DISABLED = '1';
   try { assert.strictEqual(flaggedFilePriorRunDate([old], show), null); } finally { delete process.env.GAP_FLAGGED_PRIOR_RUN_DISABLED; }
 });
+
+test('undated wrongProduction file with a high-confidence venue verdict is prior-run (BRO-5380 UNCONDITIONAL LA roundup)', () => {
+  const { flaggedFilePriorRunDate } = require('./gap-ingest-policy.js');
+  const show = { openingDate: '2026-10-15' };
+  const cv = { wrongProduction: true, confidence: 'high', reviewedVenue: 'Skylight Theatre in Los Feliz' };
+  assert.strictEqual(flaggedFilePriorRunDate([{ wrongProduction: true, contentVerification: cv }], show), 'venue-verified:Skylight Theatre in Los Feliz');
+  assert.strictEqual(flaggedFilePriorRunDate([{ wrongProduction: true, contentVerification: { ...cv, confidence: 'low' } }], show), null);
+  assert.strictEqual(flaggedFilePriorRunDate([{ wrongProduction: true }], show), null);
+  assert.strictEqual(flaggedFilePriorRunDate([{ wrongProduction: true, contentVerification: cv }, { publishDate: '2026-10-16' }], show), null);
+});
