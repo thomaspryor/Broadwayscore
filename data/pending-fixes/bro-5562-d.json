@@ -1,8 +1,8 @@
 {
   "issueNumber": "bro-5562-d",
-  "planId": "cfe48d67-9523-4f79-86d2-9ad4b5812a0c",
+  "planId": "58239f9b-2dee-4c1c-a534-5a0767fbb368",
   "status": "pending",
-  "createdAt": "2026-10-17T22:45:13.465Z",
+  "createdAt": "2026-10-17T22:53:15.840Z",
   "submitter": {
     "name": null,
     "email": null
@@ -18,19 +18,19 @@
         "type": "data-edit",
         "file": "commercial.json",
         "showSlug": "the-great-society-2019",
-        "field": "designation",
-        "oldValue": "Nonprofit",
-        "newValue": "Flop",
-        "description": "the-great-society-2019: a commercial production (Playbill: not a Lincoln Center Theater production; Form D investors), closed with no recoupment announced; the model returns about 0%."
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "the-great-society-2019: closed in 2019, no recoupment ever announced."
       },
       {
         "type": "data-edit",
         "file": "commercial.json",
         "showSlug": "the-great-society-2019",
-        "field": "designationBasis",
-        "oldValue": null,
-        "newValue": "no-recoupment-announced",
-        "description": "the-great-society-2019: closed in 2019, no recoupment ever announced."
+        "field": "designation",
+        "oldValue": "Nonprofit",
+        "newValue": "Flop",
+        "description": "the-great-society-2019: a commercial production (Playbill: not a Lincoln Center Theater production; Form D investors), closed with no recoupment announced; the model returns about 0%."
       },
       {
         "type": "data-edit",
@@ -140,19 +140,19 @@
         "type": "data-edit",
         "file": "commercial.json",
         "showSlug": "torch-song-2018",
-        "field": "designation",
-        "oldValue": "Nonprofit",
-        "newValue": "Flop",
-        "description": "torch-song-2018: a commercial transfer (Torch Song LLC raised investor money; lead producer Richie Jackson) that the NYT reported had not recouped; the model returns about 0%."
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "reported-loss",
+        "description": "torch-song-2018: the NYT reported it had not recouped."
       },
       {
         "type": "data-edit",
         "file": "commercial.json",
         "showSlug": "torch-song-2018",
-        "field": "designationBasis",
-        "oldValue": null,
-        "newValue": "reported-loss",
-        "description": "torch-song-2018: the NYT reported it had not recouped."
+        "field": "designation",
+        "oldValue": "Nonprofit",
+        "newValue": "Flop",
+        "description": "torch-song-2018: a commercial transfer (Torch Song LLC raised investor money; lead producer Richie Jackson) that the NYT reported had not recouped; the model returns about 0%."
       },
       {
         "type": "data-edit",
@@ -206,6 +206,15 @@
           }
         ],
         "description": "torch-song-2018: add the cited article(s) to sources."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "betrayal-2013",
+        "field": "recoupedSource",
+        "oldValue": "The Hollywood Reporter (Jan 2014): recouped roughly ten weeks into its 14-week limited run; budget not disclosed.",
+        "newValue": "The Hollywood Reporter (Jan 2014): recouped roughly ten weeks into its 14-week limited run.",
+        "description": "betrayal-2013: the line said the budget was not disclosed; bro-5560 added its Form D figure."
       },
       {
         "type": "data-edit",

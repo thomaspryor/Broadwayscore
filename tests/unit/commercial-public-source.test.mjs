@@ -51,6 +51,11 @@ test('a New York Times ArtsBeat link is the newspaper, not a blog (BRO-5562)', (
   for (const nyt of [
     'The New York Times (Dec 15, 2014): "The show\'s weekly running costs are about $625,000." https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2014/12/15/the-last-ship-rises-with-sting-in-the-cast/',
     'NYT ArtsBeat reported the closing. http://artsbeat.blogs.nytimes.com/2014/05/01/x/',
+    // The host ends at a quote, a bracket, a comma or the sentence's full stop.
+    'NYT ArtsBeat ("artsbeat.blogs.nytimes.com") reported the closing.',
+    'Reported by The New York Times (artsbeat.blogs.nytimes.com), May 2014.',
+    'Reported by artsbeat.blogs.nytimes.com, May 2014.',
+    'Reported by artsbeat.blogs.nytimes.com.',
   ]) {
     assert.equal(publicSourceText(nyt), nyt, `should keep: ${nyt}`);
   }
@@ -60,6 +65,7 @@ test('a New York Times ArtsBeat link is the newspaper, not a blog (BRO-5562)', (
     'Broadway & Me blog https://broadwayandme.blogspot.com/2010/12/x.html',
     // A look-alike host only starts with the newspaper's name.
     'Reported at https://artsbeat.blogs.nytimes.com.example.net/x',
+    'Reported at https://artsbeat.blogs.nytimes.company.test/x',
   ]) {
     assert.equal(publicSourceText(blog), null, `should drop: ${blog}`);
   }

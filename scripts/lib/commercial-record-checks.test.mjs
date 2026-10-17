@@ -60,6 +60,8 @@ test('a source link listed twice is a warning (BRO-5562)', () => {
   const warn = (rec) => commercialRecordWarnings('k', rec, { priorRecord: prior }).filter((m) => m.includes('already listed')).length;
   assert.equal(warn({ ...prior, notes: 'new note' }), 0);
   assert.equal(warn({ ...prior, sources: [...prior.sources, src('https://x.test/b'), src('https://x.test/b')] }), 1);
+  // A third copy of a link the record already had twice is a new repeat.
+  assert.equal(warn({ ...prior, sources: [...prior.sources, src('https://x.test/a')] }), 1);
 });
 
 test('a title quoted inside a quote with double marks is a warning (BRO-5549)', () => {

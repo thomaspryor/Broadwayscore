@@ -420,22 +420,22 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
     }
     // The same link listed twice cites nothing new (BRO-5562: a plan appended
     // an article the record already cited). Advisory (§19); like the
-    // placeholder links above, a repeat the record already had does not count.
+    // placeholder links above, only a copy beyond what the record already
+    // carried counts.
     const sameLink = (url) => String(url).replace(/^https?:\/\//i, '').replace(/\/+$/, '');
-    const repeatedBefore = new Set();
-    const priorSeen = new Set();
+    const priorCount = new Map();
     for (const s of (ctx.priorRecord && Array.isArray(ctx.priorRecord.sources)) ? ctx.priorRecord.sources : []) {
       if (!s || !s.url) continue;
       const key = sameLink(s.url);
-      if (priorSeen.has(key)) repeatedBefore.add(key);
-      priorSeen.add(key);
+      priorCount.set(key, (priorCount.get(key) || 0) + 1);
     }
-    const seen = new Set();
+    const seen = new Map();
     show.sources.forEach((s, idx) => {
       if (!s || !s.url) return;
       const key = sameLink(s.url);
-      if (seen.has(key) && !repeatedBefore.has(key)) out.push(`commercial.json: "${showId}" sources[${idx}].url ${s.url} is already listed (drop the repeat)`);
-      seen.add(key);
+      const sofar = seen.get(key) || 0;
+      if (sofar >= Math.max(1, priorCount.get(key) || 0)) out.push(`commercial.json: "${showId}" sources[${idx}].url ${s.url} is already listed (drop the repeat)`);
+      seen.set(key, sofar + 1);
     });
   }
   if (isPrematureSilenceLabel(show, ctx.showRecord)) {
