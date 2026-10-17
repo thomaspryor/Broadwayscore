@@ -66,7 +66,19 @@ function rawDetectorBasis(d) {
 // round-up merely linked an article. Re-verifying it only reproduces the verdict, so
 // it must not hold roundup-gap:all open forever (anon-a-tempest frontmezzjunkies).
 const NONREVIEW_ARTICLE_TYPES = new Set(['preview', 'news', 'feature', 'interview', 'press-release']);
+// BRO-5391: announcement/press-release pieces (a roundup merely linked the news
+// post) are non-reviews too, via two other verdicts: a unanimous 3-model
+// scoreability-ensemble rejection, or a human-verified non-review (isNotReview + nonReviewMethod 'manual-verified').
+function isEnsembleNonReview(d) {
+  return !!d && d.rejectionReason === 'not_a_review' && d.rejectedBy === 'ensemble-scoreability-check'
+    && Number(d.rejectionAgreeCount) >= 3;
+}
+function isHumanConfirmedNonReview(d) {
+  return !!d && d.isNotReview === true && d.rejectionReason === 'not_a_review'
+    && d.nonReviewMethod === 'manual-verified';
+}
 function isConfirmedNonReviewFile(d) {
+  if (isEnsembleNonReview(d) || isHumanConfirmedNonReview(d)) return true;
   const cv = d && d.contentVerification;
   if (!cv || cv.isValid !== false || cv.confidence !== 'high') return false;
   if (cv.articleTypeConfidence !== 'high' || !NONREVIEW_ARTICLE_TYPES.has(cv.articleType)) return false;
@@ -91,7 +103,10 @@ function classifyFlaggedMiss(files, explain) {
     const r = reason || rawDetectorBasis(d) || 'unknown';
     if (!basis.includes(r)) basis.push(r);
   }
-  const confirmedNonReview = !human && list.length > 0 && list.every(isConfirmedNonReviewFile);
+  // A human assertion normally means "never second-guess"; it only counts as a
+  // confirmed non-review when the human said so (isNotReview), not e.g. wrongProduction.
+  const confirmedNonReview = list.length > 0 && list.every(isConfirmedNonReviewFile)
+    && (!human || list.every(isHumanConfirmedNonReview));
   return { exclusion: human ? 'humanExcluded' : 'automatedExcluded', basis, confirmedNonReview };
 }
 

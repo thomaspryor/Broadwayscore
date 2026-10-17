@@ -614,6 +614,20 @@ test('acceptSerpCensusResult drops BWW city editions and story-collection book r
     assert.deepEqual(c.basis, ['wrongProduction']);
   });
 
+  test('BRO-5391: unanimous ensemble not_a_review (announcement) is confirmedNonReview', () => {
+    const ens = { _file: 'e--u.json', outletId: 'e', url: 'https://e.example/announce', fullText: body,
+      rejectedBy: 'ensemble-scoreability-check', rejectionReason: 'not_a_review', rejectionAgreeCount: 3 };
+    assert.equal(classifyFlaggedMiss([ens], explain).confirmedNonReview, true);
+    assert.equal(classifyFlaggedMiss([{ ...ens, rejectionAgreeCount: 2 }], explain).confirmedNonReview, false);
+  });
+
+  test('BRO-5391: human isNotReview confirms non-review; other human assertions do not', () => {
+    const hn = { ...cvWrongProduction, _file: 'h--c.json', isNotReview: true, isNonReview: true, rejectionReason: 'not_a_review', nonReviewMethod: 'manual-verified' };
+    assert.equal(classifyFlaggedMiss([hn], explain).confirmedNonReview, true);
+    assert.equal(classifyFlaggedMiss([humanLocked], explain).confirmedNonReview, false);
+    assert.equal(classifyFlaggedMiss([cvWrongProduction], explain).confirmedNonReview, false);
+  });
+
   test('BRO-4971: showNotMentioned exclusion is automatedExcluded and names its detector', () => {
     const c = classifyFlaggedMiss([showNotMentioned], explain);
     assert.equal(c.exclusion, 'automatedExcluded');
