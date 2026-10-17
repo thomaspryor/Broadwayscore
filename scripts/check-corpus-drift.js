@@ -98,6 +98,24 @@ function saveGuardState(state) {
 // Each audit: how to run it and how to read its exit code. `crashCodes` are
 // exit codes that mean "could not run" (a real error) vs "ran and found drift".
 const AUDITS = [
+  // BRO-5266: these backfill acceptance probes pin live world state. Preserve
+  // their checks in the advisory corpus monitor, outside blocking unit jobs.
+  ...[
+    'eurydice-image-found',
+    'brothers-paranormal-show-exists',
+    'everybodys-talking-about-jamie-show-exists',
+    'standing-at-the-skys-edge-show-exists',
+    'amaze-review-flags',
+    'the-lonely-few-image',
+    'image-healing',
+    'mystic-pizza-show-existence',
+  ].map(name => ({
+    name: `backfill-${name}`,
+    label: `backfill outcome: ${name}`,
+    script: `lib/corpus-checks/${name}.mjs`,
+    args: [],
+    crashCodes: [], // 0 = held, 1 = data drift (including missing input data)
+  })),
   {
     name: 'text-quality',
     label: 'Review text quality (full/truncated/unknown %)',

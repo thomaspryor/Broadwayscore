@@ -15,6 +15,23 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { buildVerdict, decideExit, AUDITS, routePerAuditAlerts } = require('../../scripts/check-corpus-drift.js');
 
+test('BRO-5266: backfill world-state probes run as corpus audits, outside blocking unit collection', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const { collectNodeUnitTests } = require('../../scripts/lib/unit-test-collection.js');
+  const root = path.resolve(import.meta.dirname, '../..');
+  const collected = new Set(collectNodeUnitTests(root));
+  const probes = AUDITS.filter(audit => audit.name.startsWith('backfill-'));
+  assert.equal(probes.length, 8);
+  for (const probe of probes) {
+    assert.ok(fs.existsSync(path.join(root, 'scripts', probe.script)), probe.script);
+    assert.equal(collected.has(`scripts/${probe.script}`), false);
+    const oldTest = `tests/unit/${path.basename(probe.script, '.mjs')}.test.mjs`;
+    assert.equal(collected.has(oldTest), false, oldTest);
+    assert.equal(probe.crashCodes.includes(1), false, 'data drift must remain advisory');
+  }
+});
+
 const ok = (name) => ({ name, ok: true, crashed: false, exitCode: 0 });
 const drift = (name) => ({ name, ok: false, crashed: false, exitCode: 1 });
 const crashed = (name) => ({ name, ok: false, crashed: true, exitCode: 2 });

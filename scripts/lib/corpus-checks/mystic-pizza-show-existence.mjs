@@ -1,7 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: this regional entry was added by hand and
-// verified directly against Playbill (CLAUDE.md's manual-stub rule), not
-// produced by an enricher — there is no data/precursors/ source file for it
-// to derive expectations from.
+// BRO-5266: live-data acceptance, run by check-corpus-drift.js AUDITS.
 /**
  * Regression coverage for card #1933 (missing-show, zero-results search):
  * users searching "mystic pizza" got zero results because no production existed
@@ -17,7 +14,7 @@ import { dirname, resolve } from 'node:path';
 import { createRequire } from 'node:module';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = resolve(__dirname, '..', '..');
+const ROOT = resolve(__dirname, '..', '..', '..');
 const require = createRequire(import.meta.url);
 
 const { matchesShowSearchQuery } = require(resolve(ROOT, 'scripts/lib/show-search-match.js'));

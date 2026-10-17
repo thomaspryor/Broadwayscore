@@ -1,13 +1,11 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: structural check against the shows.json
-// entry itself — there is no separate precursor source; the entry IS the
-// fact being pinned.
+// BRO-5266: live-data acceptance, run by check-corpus-drift.js AUDITS.
 /**
  * Task #1938 / Notion 3d4637c5-416f-810b-b23c-c84ffab9531f: "everybody's
  * talking about jamie" was searched with zero results. The well-known
  * production is the West End musical (Sheffield Crucible 2017 -> Apollo
  * Theatre 2017-2021). Playbill has no /production/ page for that original
  * Apollo run, but it does index the 2024 limited-run revival at the Peacock
- * Theatre (8 Feb - 23 Mar 2024) — confirmed via
+ * Theatre (8 Feb - 23 Mar 2024) - confirmed via
  * playbill.com/production/everybodys-talking-about-jamie-london-peacock-theatre-2024
  * and validate-show-venue.js --show (clean match, no mismatch). Added that
  * production rather than the un-indexed 2017 Apollo run so the entry passes
@@ -23,10 +21,10 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { isProvisional } = require('../../scripts/validate-show-venue.js');
+const { isProvisional } = require('../../../scripts/validate-show-venue.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = path.join(__dirname, '..', '..');
+const REPO_ROOT = path.join(__dirname, '..', '..', '..');
 const SHOW_ID = 'everybodys-talking-about-jamie-west-end-2024';
 
 function loadShow() {
@@ -74,7 +72,7 @@ test("Everybody's Talking About Jamie is flagged with its manual-verification so
   assert.equal(show.discoverySource, 'manual-user-request');
   // The row started life provisional; the 2026 data audit (S2-T12) verified
   // its venue and dates against Playbill and cleared the flag with a
-  // provisionalClearedBy breadcrumb. Either state is the tracked one — what
+  // provisionalClearedBy breadcrumb. Either state is the tracked one - what
   // must never happen is a silent clear with no record.
   if (show.provisional !== true) {
     assert.match(String(show.provisionalClearedBy || ''), /Playbill/i,
@@ -85,5 +83,5 @@ test("Everybody's Talking About Jamie is flagged with its manual-verification so
 test("Everybody's Talking About Jamie is correctly classified provisional by the canonical predicate (isProvisional)", () => {
   const show = loadShow();
   assert.equal(isProvisional(show), true,
-    'isProvisional() in scripts/validate-show-venue.js drives --all-provisional sweeps — the raw provisional:true field alone does not prove this entry is actually picked up by that check');
+    'isProvisional() in scripts/validate-show-venue.js drives --all-provisional sweeps - the raw provisional:true field alone does not prove this entry is actually picked up by that check');
 });

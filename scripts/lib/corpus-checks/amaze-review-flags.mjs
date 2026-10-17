@@ -1,3 +1,4 @@
+// BRO-5266: live-data acceptance, run by check-corpus-drift.js AUDITS.
 /**
  * BRO-2820: AMAZE (New World Stages) was labelled amaze-off-broadway-2026 with no
  * dates, so 9 reviews dated 2025-08-13 were bulk-flagged wrongProduction with an
@@ -12,7 +13,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const ID = 'amaze-magic-off-broadway-2025';
 const OLD_ID = 'amaze-off-broadway-2026';
 const readJson = (p) => JSON.parse(fs.readFileSync(path.join(root, p), 'utf8'));

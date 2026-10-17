@@ -23,6 +23,85 @@ function fakeNotionBrain(calls) {
 // path so fixture card IDs never land in the repo's real audit log.
 const SCRATCH_LOG_PATH = path.join(os.tmpdir(), `enrich-card-acceptance-test-${process.pid}.jsonl`);
 
+test('BRO-5266: data-backfill card is armed with a read-only data command', async () => {
+  const card = {
+    id: 'BRO-2684', name: 'Backfill reviews/images', category: 'Data Quality', tags: [],
+    notes: 'Recover images and reviews for brooklyns-bridge-off-broadway-2026.',
+  };
+  const command = 'node scripts/lib/verify-data-backfill.js --show=brooklyns-bridge-off-broadway-2026 --images --reviews=1';
+  let written;
+  const result = await enrichOneCard(card, {
+    callLLM: async prompt => {
+      assert.match(prompt, /DATA OUTCOME/);
+      return JSON.stringify({ command, acceptanceCriteria: `## Acceptance criteria\n\`${command}\`` });
+    },
+    writeCard: async (_card, notes) => { written = notes; },
+    logPath: SCRATCH_LOG_PATH,
+  });
+  assert.equal(result.action, 'llm-enriched');
+  assert.equal(evaluateVerifiability(written).cmd, command);
+  assert.doesNotMatch(written, /--test|\.test\./);
+});
+
+test('BRO-5266: data drafts cannot use unit tests or code-only fallback commands', async () => {
+  for (const command of [
+    'node --test scripts/lib/reviews-backfill.test.mjs',
+    'npx tsx --test tests/unit/backfill.test.ts',
+    'node scripts/lib/reviews-backfill.test.mjs',
+    'npx tsc --noEmit', 'npx next lint', 'test -f scripts/enrich-card-acceptance.js',
+  ]) {
+    let writes = 0;
+    const result = await enrichOneCard({ name: 'Backfill reviews/images', tags: [] }, {
+      callLLM: async () => JSON.stringify({ command, acceptanceCriteria: `## Acceptance criteria\n\`${command}\`` }),
+      writeCard: async () => { writes++; },
+    });
+    assert.equal(result.action, 'failed', command);
+    assert.match(result.detail, /data-outcome/, command);
+    assert.equal(writes, 0, command);
+  }
+});
+
+test('BRO-5266: data-outcome refusal retries once with the data-specific reason', async () => {
+  let calls = 0;
+  const good = 'node scripts/lib/verify-data-backfill.js --show=eurydice-off-broadway-2026 --images';
+  const result = await enrichOneCard({ name: 'Recover poster images', tags: [] }, {
+    dryRun: true,
+    callLLM: async prompt => {
+      if (calls++) assert.match(prompt, /read-only verify or audit command/);
+      const command = calls === 1 ? 'node --test tests/unit/images.test.mjs' : good;
+      return JSON.stringify({ command, acceptanceCriteria: `## Acceptance criteria\n\`${command}\`` });
+    },
+  });
+  assert.equal(result.action, 'llm-enriched');
+  assert.equal(result.detail, good);
+  assert.equal(calls, 2);
+});
+
+test('BRO-5266: data classifiers preserve code cards about backfill infrastructure', () => {
+  const { isDataOutcomeCard } = require('./enrich-card-acceptance.js');
+  for (const name of [
+    'Backfill reviews/images',
+    'Network-tier publishDate backfill: close the remaining ~2900 undated reviews',
+    'The Stage + WaPo recent-gap bulk backfill via #876 infra',
+    'Run scripts/backfill-fetch-abandonment.js against the real failed-fetches.json ledger',
+  ]) assert.equal(isDataOutcomeCard({ name }), true, name);
+  assert.equal(isDataOutcomeCard({ name: 'Repair entries', category: 'Data Quality' }), true);
+  assert.equal(isDataOutcomeCard({ name: 'Repair entries', tags: ['data-backfill'] }), true);
+  assert.equal(isDataOutcomeCard({ name: 'Duplicate review URL blocking validate-data.js', category: 'Data Quality' }), true);
+  for (const name of [
+    'Data-backfill cards get node --test acceptance commands',
+    'Fix backfill parser logic', 'Add backfill validation tests',
+    'Backfill script drops review files', 'Fix the score badge',
+    'Add per-file exclusion logging to rebuild-all-reviews.js',
+    'BSC Daily: Workflow repeat-failure: Fetch Guardian Reviews via API',
+    'BWW reverse-discovery source: freshness/backfill visibility for missed cron runs',
+    'P1: cycle-clear leaves same-URL review clusters fully unsuppressed; no canonical rule',
+    'NYC rollout: verify + rebuild + deploy (after backfill drain completes)',
+    'P1: successful rescores never clear needsRescore, queue grew while draining nightly',
+  ]) assert.equal(isDataOutcomeCard({ name }), false, name);
+  assert.equal(isDataOutcomeCard({ name: 'Audit generator produces false-balance framing', category: 'Data Quality' }), false);
+});
+
 test('already-armed card is skipped with zero LLM calls and zero writes', async () => {
   const calls = [];
   let llmCalled = false;
@@ -852,7 +931,7 @@ test('enrichOneCard: honors opts.writeCard (Linear path) and never calls opts.no
   const notionCalls = [];
   const writeCalls = [];
   const card = {
-    id: 'issue-uuid-1', name: 'Fetch Guardian Reviews via API', category: null, tags: [],
+    id: 'issue-uuid-1', name: 'Fix Guardian Reviews API workflow', category: null, tags: [],
     identifier: 'BRO-440', notes: '## Problem\nWorkflow keeps failing.',
   };
   const r = await enrichOneCard(card, {

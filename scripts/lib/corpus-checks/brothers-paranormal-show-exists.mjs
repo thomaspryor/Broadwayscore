@@ -1,13 +1,11 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: structural check against the shows.json
-// entry itself — there is no separate precursor source; the entry IS the
-// fact being pinned.
+// BRO-5266: live-data acceptance, run by check-corpus-drift.js AUDITS.
 /**
  * Task #1937 / BRO-3888: "brothers paranormal" was searched 2x in 7 days
  * with zero results. Confirmed via Playbill news article + Pan Asian
  * Repertory Theatre's own site + 7 independent critic reviews (New Yorker,
  * BroadwayWorld, TheaterScene.net, Exeunt, Theatre's Leiter Side, Theater
  * That Matters, NYC Splash) that the real production is "The Brothers
- * Paranormal" by Prince Gomolvilas — a 2019 Off-Broadway world premiere at
+ * Paranormal" by Prince Gomolvilas - a 2019 Off-Broadway world premiere at
  * the Beckett Theatre at Theatre Row (Pan Asian Repertory Theatre), not a
  * Broadway show as the zero-results card guessed. No Playbill
  * /production/ page exists for it (validate-show-venue.js confirmed 0 SERP
@@ -24,10 +22,10 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { isExemptFromPlaybillCheck, isProvisional } = require('../../scripts/validate-show-venue.js');
+const { isExemptFromPlaybillCheck, isProvisional } = require('../../../scripts/validate-show-venue.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = path.join(__dirname, '..', '..');
+const REPO_ROOT = path.join(__dirname, '..', '..', '..');
 const SHOW_ID = 'the-brothers-paranormal-off-broadway-2019';
 
 function loadShow() {
@@ -67,7 +65,7 @@ test('The Brothers Paranormal is flagged provisional with its manual-verificatio
   assert.equal(show.discoverySource, 'manual-user-request');
   assert.equal(show.provisional, true);
   assert.equal(show.noPlaybillProductionPage, true,
-    'no playbill.com/production/ page exists for this show — validate-show-venue.js cannot resolve it, so this field records that the venue/date match was confirmed by hand instead');
+    'no playbill.com/production/ page exists for this show - validate-show-venue.js cannot resolve it, so this field records that the venue/date match was confirmed by hand instead');
 });
 
 test('The Brothers Paranormal passes the canonical exemption predicate (survives --all-provisional sweeps)', () => {
@@ -75,5 +73,5 @@ test('The Brothers Paranormal passes the canonical exemption predicate (survives
   assert.equal(isExemptFromPlaybillCheck(show), true,
     'a noPlaybillProductionPage entry needs a statusBackfillSource of >50 chars (isExemptFromPlaybillCheck in scripts/validate-show-venue.js) or validate-show-venue.js --all-provisional will re-flag it as unresolved-provisional');
   assert.equal(isProvisional(show), false,
-    'isExemptFromPlaybillCheck must short-circuit isProvisional — this is the actual behavior the data change depends on, not just the raw field values');
+    'isExemptFromPlaybillCheck must short-circuit isProvisional - this is the actual behavior the data change depends on, not just the raw field values');
 });

@@ -1,6 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: structural check against the shows.json
-// entry itself — there is no separate precursor source; the entry IS the
-// fact being pinned.
+// BRO-5266: live-data acceptance, run by check-corpus-drift.js AUDITS.
 /**
  * Notion card / task #1939: "standing at the sky's edge" was searched 1x in
  * 7 days with zero results. Confirmed via Wikipedia + Playbill + Olivier
@@ -12,7 +10,7 @@
  * resolved a matching Playbill /production/ page for this entry (SERP +
  * Playwright, opening date within the 30-day tolerance), so unlike a
  * no-Playbill-page entry this one needs no isExemptFromPlaybillCheck escape
- * hatch — it is expected to keep passing ordinary --all-provisional sweeps.
+ * hatch - it is expected to keep passing ordinary --all-provisional sweeps.
  */
 
 import { test } from 'node:test';
@@ -22,7 +20,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = path.join(__dirname, '..', '..');
+const REPO_ROOT = path.join(__dirname, '..', '..', '..');
 const SHOW_ID = 'standing-at-the-skys-edge-west-end-2024';
 
 function loadShow() {
@@ -63,7 +61,7 @@ test("Standing at the Sky's Edge is flagged provisional with its manual-verifica
   assert.equal(show.discoverySource, 'manual-user-request');
   // The row started life provisional; the 2026 data audit (S2-T12) verified
   // its venue and dates against Playbill and cleared the flag with a
-  // provisionalClearedBy breadcrumb. Either state is the tracked one — what
+  // provisionalClearedBy breadcrumb. Either state is the tracked one - what
   // must never happen is a silent clear with no record.
   if (show.provisional !== true) {
     assert.match(String(show.provisionalClearedBy || ''), /Playbill/i,

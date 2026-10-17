@@ -1,12 +1,10 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: structural check (file exists on disk, non-placeholder
-// hash, predicate returns true) — there is no precursor source file for images, the
-// image file itself IS the source of truth; nothing here pins a scraped/derived fact.
+// BRO-5266: live-data acceptance, run by check-corpus-drift.js AUDITS.
 /**
  * BRO-2651 regression: EURYDICE (eurydice-off-broadway-2026) was auto-filed by
  * owner-alert-router after 5 failed self-heal image fetches. A real poster
  * (Maya Hawke / Sarah Ruhl / Signature Theatre, 400x631 JPEG) landed via
  * fetch-all-image-formats.yml on 2026-09-07 (commit e55a8812d7a) but the
- * Linear card was never auto-closed — the drain that verifies parked
+ * Linear card was never auto-closed - the drain that verifies parked
  * machine-checkable issues hadn't shipped yet. This asserts the fix actually
  * held: the real shows.json entry points at a real, non-placeholder file on
  * disk, using the canonical predicate (CLAUDE.md rule 15), not a re-implementation.
@@ -20,10 +18,10 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { hasRealImage, imageOnDisk } = require('../../scripts/lib/show-images.js');
+const { hasRealImage, imageOnDisk } = require('../../../scripts/lib/show-images.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = path.join(__dirname, '..', '..');
+const REPO_ROOT = path.join(__dirname, '..', '..', '..');
 const SHOW_ID = 'eurydice-off-broadway-2026';
 
 function loadShow() {
@@ -47,12 +45,12 @@ test('EURYDICE poster path resolves to a real, non-placeholder file on disk', ()
 test('EURYDICE passes the canonical hasRealImage predicate (self-heal acceptance criteria)', () => {
   const show = loadShow();
   assert.equal(hasRealImage(show), true,
-    'eurydice-off-broadway-2026 must have at least one real image — this is the condition the imageless-scored-show audit checks');
+    'eurydice-off-broadway-2026 must have at least one real image - this is the condition the imageless-scored-show audit checks');
 });
 
 test('the poster file on disk is a real image, not a zero-byte or tiny stub', () => {
   const show = loadShow();
   const abs = path.join(REPO_ROOT, 'public', show.images.poster);
   const stat = fs.statSync(abs);
-  assert.ok(stat.size > 10000, `poster.jpg is only ${stat.size} bytes — looks like a stub, not real key art`);
+  assert.ok(stat.size > 10000, `poster.jpg is only ${stat.size} bytes - looks like a stub, not real key art`);
 });
