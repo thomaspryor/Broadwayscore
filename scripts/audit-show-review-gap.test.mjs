@@ -764,7 +764,7 @@ test('ingest-refused URL: classified expected without spawning; splitGapCounts i
   assert.equal(splitGapCounts({ flaggedMisses: [{ url: 'a', confirmedNonReview: true }, { url: 'b' }] }).total, 1);
 });
 
-test('openingWindowClearedKeys: a show past its opening window is quiet even when its carried-forward row still counts a gap (BRO-5252)', () => {
+test('openingWindowClearedKeys: a show past its opening window with only census-tagged gaps is quiet; a non-census gap keeps it open (BRO-5252)', () => {
   const { openingWindowClearedKeys } = require('./audit-show-review-gap.js');
   const now = Date.parse('2026-10-18T00:00:00Z');
   // Real Alice in Wonderland shape: last audited 2026-09-30, census-tagged misses, no weIngestBlocked.
@@ -772,9 +772,12 @@ test('openingWindowClearedKeys: a show past its opening window is quiet even whe
     showId, openingDate,
     missing: [{ url: `https://a.example/${showId}-review`, host: 'a.example', knownOutletId: null, serpCensus: true }],
   });
+  const realGap = gapRow('real-gap-tour-2026', '2026-09-20');
+  realGap.missing.push({ url: 'https://b.example/show-score-cited-review', host: 'b.example' });
   const keys = openingWindowClearedKeys([
-    gapRow('alice-in-wonderland-off-broadway-2026', '2026-09-26'), // day 22: out of window
+    gapRow('alice-in-wonderland-off-broadway-2026', '2026-09-26'), // day 22, census-only: quiet
     gapRow('fresh-show-2026', '2026-10-10'),                       // day 8: still alerting
+    realGap,                                                       // past window but a non-census gap: stays open
   ], now);
   assert.deepEqual(keys, ['review-gap:opening-window:alice-in-wonderland-off-broadway-2026']);
 });

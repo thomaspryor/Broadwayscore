@@ -1717,18 +1717,21 @@ function openingWindowConditionKey(showId) {
 // window filter here: resolving needs 96h of quiet, so a gap that last fired
 // after ~day 17 leaves the 21-day window before it could resolve and would
 // stay open forever. Keys that were never opened are a no-op in the router.
-// BRO-5252: a show past its window is quiet too, whatever its row counts. The
-// alert loop below skips it, so the condition can never fire again, and a row
-// carried forward from before the census-gate fix (Alice in Wonderland: last
-// audited 2026-09-30, 11 report-only census hits) otherwise kept it open
-// forever. Counting is untouched: the gap stays in the audit JSON and digest.
+// BRO-5252: a show past its window whose only uncollected rows are SERP-census
+// hits is quiet too. The alert loop below skips it, so it can never fire again,
+// and a row carried forward from before the census-gate fix (Alice in
+// Wonderland: last audited 2026-09-30, 11 census hits, all other productions)
+// has no weIngestBlocked record, so it otherwise stayed open forever. A past-
+// window row with any non-census gap stays open, so its card can't close on a
+// review that is still missing.
 function openingWindowClearedKeys(results, now = Date.now()) {
   return (results || [])
-    .filter(r => r && r.showId && (!inOpeningWindow({ openingDate: r.openingDate }, now) || currentRunUncollected(r) <= 0))
+    .filter(r => r && r.showId && (currentRunUncollected(r) <= 0
+      || (!inOpeningWindow({ openingDate: r.openingDate }, now) && currentRunUncollected(r, { ignoreCensusTagged: true }) <= 0)))
     .map(r => openingWindowConditionKey(r.showId));
 }
 
-function currentRunUncollected(r, { blocklist } = {}) {
+function currentRunUncollected(r, { blocklist, ignoreCensusTagged = false } = {}) {
   const ingestedOk = new Set((r.ingestResults || []).filter(x => x.ok).map(x => x.url));
   const bl = blocklist !== undefined ? blocklist : loadBlocklist(path.join(REVIEW_TEXTS_DIR, r.showId || ''));
   // BRO-5134: an ingest the writer correctly and permanently refused (expected
@@ -1741,7 +1744,7 @@ function currentRunUncollected(r, { blocklist } = {}) {
   // productions, re-fired hourly). They stay in r.missing / the audit JSON.
   const reportOnly = new Set((r.weIngestBlocked || []).filter(x => x.reason === 'serp-census-gate-off').map(x => x.url));
   const missing = currentRunOnly(r.missing)
-    .filter(m => !ingestedOk.has(m.url) && !refusedForGood.has(m.url) && !reportOnly.has(m.url) && stillCollectable(m, bl)).length;
+    .filter(m => !ingestedOk.has(m.url) && !refusedForGood.has(m.url) && !reportOnly.has(m.url) && !(ignoreCensusTagged && m.serpCensus) && stillCollectable(m, bl)).length;
   const citedNoUrl = currentRunCount(r.citedNoUrl);
   return missing + citedNoUrl;
 }
@@ -2884,7 +2887,7 @@ async function main(argv = process.argv.slice(2)) {
       // the per-show condition stayed 'open' forever and its card's
       // check-alert-condition-absent VERIFY could never pass.
       try {
-        const cleared = resolveQuietConditions(openingWindowClearedKeys(reportedResults), { reason: 'review-gap: no uncollected cited reviews on the latest audit, or show past its opening window' });
+        const cleared = resolveQuietConditions(openingWindowClearedKeys(reportedResults), { reason: 'review-gap: no uncollected cited reviews on the latest audit, or show past its opening window with only SERP-census gaps' });
         if (cleared.length) console.log(`[Alert Router] resolved ${cleared.length} cleared opening-window gap condition(s): ${cleared.join(', ')}`);
       } catch (e) {
         console.error(`::warning::resolving cleared opening-window gap conditions failed: ${(e.message || '').slice(0, 120)}`);
