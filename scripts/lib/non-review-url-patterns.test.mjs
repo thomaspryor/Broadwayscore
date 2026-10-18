@@ -555,3 +555,10 @@ test('BRO-5355: viagogo (any TLD) and me-ticket event pages are not review candi
   }
   assert.equal(classifyGapCandidateUrl('https://www.vulture.com/article/anon-review.html').ok, true);
 });
+
+test('BRO-5377: theatermap.nyc /shows/ listing pages are event-listing; other paths and lookalikes untouched', () => {
+  assert.equal(namedNonReviewReason('https://www.theatermap.nyc/shows/jena-friedman'), 'event-listing');
+  assert.equal(classifyGapCandidateUrl('https://theatermap.nyc/shows/jena-friedman').ok, false);
+  assert.equal(namedNonReviewReason('https://www.theatermap.nyc/reviews/some-show'), null);
+  assert.equal(namedNonReviewReason('https://www.nottheatermap.nyc/shows/x'), null);
+});

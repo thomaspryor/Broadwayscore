@@ -458,6 +458,9 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // SoHo Playhouse is a registered outlet, so only its show pages are listed:
   // seven /see-a-show/ pages were ingested as "reviews" and later rejected.
   { host: /(^|\.)sohoplayhouse\.com$/, path: /^\/see-a-show\//i, reason: 'venue-production-page' },
+  // BRO-5377: TheaterMap.nyc /shows/<slug> is a what's-on listing (TheaterEvent
+  // schema, dates, ticket link) the SERP census surfaced as a cited review.
+  { host: /(^|\.)theatermap\.nyc$/, path: /^\/shows\//i, reason: 'event-listing' },
   // BRO-4540 re-audit: listing pages on hosts that also publish reviews. Their
   // reviews live elsewhere (stagebuddy /theater/, /reviews/; chiswickcalendar
   // /<slug>-review/; britishtheatre /review-...; didtheylikeit /shows/<show>/<review>/).
