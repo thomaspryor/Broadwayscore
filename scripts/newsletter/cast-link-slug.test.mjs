@@ -33,3 +33,13 @@ test('ignores cast of non-Broadway shows and empty input', () => {
   assert.equal(r.slugFor('A B'), 'a-b');
   assert.equal(buildCastLinkResolver(undefined, shows).slugFor('X Y'), 'x-y');
 });
+
+test('an older spelling of a renamed person counts toward ambiguity', () => {
+  const r = buildCastLinkResolver([
+    entry('Noel Coward', '1'),
+    entry('Noel Coward', '2', 's2', 'obc'),
+    entry('Noël Coward', '2', 's1', 'current'),
+  ], shows);
+  assert.equal(r.slugFor('Noel Coward'), null);
+  assert.equal(r.slugFor('Noël Coward'), 'noel-coward-2');
+});

@@ -24,6 +24,7 @@ function buildCastLinkResolver(castEntries, shows) {
   const bwayIds = new Set(broadwayShows(shows).map((s) => s.id));
   const identities = actorIdentitiesInPageOrder(castEntries || [], bwayIds);
   const slugs = assignUniqueSlugs(identities.map((a) => a.name));
+  const slugById = new Map(identities.map((a, i) => [a.ibdbPersonId, slugs[i]]));
   const byName = new Map(); // name -> Set of page slugs
   const collidingBases = new Set(); // bare slugs more than one identity wants
   const seenBases = new Set();
@@ -34,6 +35,15 @@ function buildCastLinkResolver(castEntries, shows) {
     if (seenBases.has(base)) collidingBases.add(base);
     seenBases.add(base);
   });
+  // Older spellings of a person (the page shows only the latest "current" one)
+  // still point at that person's page, and count toward ambiguity.
+  for (const m of castEntries || []) {
+    if (!m || !m.ibdbPersonId || !m.name || !bwayIds.has(m.showId)) continue;
+    const slug = slugById.get(m.ibdbPersonId);
+    if (!slug) continue;
+    if (!byName.has(m.name)) byName.set(m.name, new Set());
+    byName.get(m.name).add(slug);
+  }
   return {
     slugFor(name) {
       const exact = byName.get(name);

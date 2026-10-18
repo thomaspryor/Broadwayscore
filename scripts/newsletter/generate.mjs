@@ -592,7 +592,7 @@ function castResolver() {
   const manifestPath = path.join(repo, 'data/cast-manifest.json');
   let entries = [];
   try {
-    if (!fs.existsSync(manifestPath)) cjsRequire('child_process').execFileSync('node', [path.join(repo, 'scripts/build-cast-manifest.js')], { stdio: 'ignore' });
+    if (!fs.existsSync(manifestPath)) cjsRequire('child_process').execFileSync(process.execPath, [path.join(repo, 'scripts/build-cast-manifest.js')], { stdio: 'ignore', timeout: 120000 });
     entries = JSON.parse(fs.readFileSync(manifestPath, 'utf8')).entries || [];
   } catch (e) { console.warn(`[newsletter] cast manifest unavailable (${e.message}); /cast links use plain slugs`); }
   if (!entries.length) console.warn('[newsletter] cast manifest empty; /cast links use plain slugs');
