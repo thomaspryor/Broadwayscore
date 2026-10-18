@@ -160,10 +160,23 @@ describe('a reported cost sets the level (BRO-5632)', () => {
   it('his figure close to a reported one never stands in for it (two-strangers)', () => {
     // Forbes' $480,577 is within 0.12% of his $480,000: still the reported anchor.
     const reported = trade('2025-11-20', 480_577, { dateBasis: 'migrated', note: 'migrated from weeklyRunningCost (trade-reported)' });
-    const record = { costHistory: [reported, ...weekly('2025-11-25', 20, 480_000)] };
+    const record = {
+      weeklyRunningCost: 480_577, costMethodology: 'trade-reported',
+      weeklyRunningCostSource: 'Forbes (Nov 17, 2025): fixed weekly operating costs of $480,577',
+      costHistory: [reported, ...weekly('2025-11-25', 20, 480_000)],
+    };
     assert.strictEqual(hasCostAnchor(record), true);
     const c = costForWeek(record, '2026-02-01');
     assert.ok(c.anchors.length && c.anchors.every((a) => a.sourceType === 'trade'), JSON.stringify(c.anchors));
+  });
+
+  it('an uncited "reported" copy does not shut his figures out (illinoise)', () => {
+    // illinoise: trade-reported $625K that cites nothing; its note says the figure is Reddit analysis.
+    const migrated = trade('2024-08-10', 625_000, { dateBasis: 'migrated', note: 'migrated from weeklyRunningCost (trade-reported)' });
+    const record = { weeklyRunningCost: 625_000, costMethodology: 'trade-reported', costHistory: [migrated, ...weekly('2024-04-23', 16, 610_000)] };
+    assert.strictEqual(hasCostAnchor(record), false);
+    const c = costForWeek(record, '2024-06-02');
+    assert.ok(c.anchors.some((a) => a.sourceType === 'reddit-standard'), JSON.stringify(c.anchors));
   });
 
   it('still uses his figures when nothing reported is held', () => {
