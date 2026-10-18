@@ -1356,5 +1356,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-18T04:42:42.514Z"
+  },
+  {
+    "conditionKey": "land:land/bro-waltz-full-archive",
+    "title": "Landing blocked: rebase red on land/bro-waltz-full-archive",
+    "description": "land.yml did not land land/bro-waltz-full-archive: the rebase gate went red at 9c45d9dd96. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-waltz-full-archive @ 9c45d9dd96 (origin/land/bro-waltz-full-archive) → origin/main @ 8d924d7c97 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 8d924d7c97: Rebasing (1/4) error: could not apply 448916ccb9e... fix(BRO-5600): Waltz scraper reads his whole archive, not a year hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm <confli Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39097276432",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-waltz-full-archive"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "9c45d9dd96023f26905e71ec50ba7482d1a4cfee"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39097276432"
+      }
+    ],
+    "queuedAt": "2026-10-18T04:51:16.077Z"
   }
 ]
