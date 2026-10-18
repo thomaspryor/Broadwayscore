@@ -215,7 +215,8 @@ async function fetchFromReddit() {
   }
 
   console.log(`Total posts fetched: ${allPosts.length}`);
-  return allPosts;
+  // Newest first, as from the archive.
+  return allPosts.sort((a, b) => b.created_utc - a.created_utc);
 }
 
 // ---------------------------------------------------------------------------
