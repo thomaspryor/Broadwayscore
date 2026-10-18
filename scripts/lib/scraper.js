@@ -2012,7 +2012,12 @@ function verifyFetchedUrl(html, expectedUrl) {
     const base = ROOT_RELATIVE_RE.test(cleaned) ? expectedUrl : undefined;
     try {
       const parsed = new URL(cleaned, base);
-      return parsed.hostname.toLowerCase() + parsed.pathname.replace(/\/$/, '');
+      // Percent-encoding hex case is not significant (%e2 === %E2) and an encoded
+      // path equals its decoded form: thepegreview.com's canonical carries
+      // lowercase %e2%98%85 while the requested URL has %E2%98%85 (BRO-5514).
+      let path = parsed.pathname;
+      try { path = decodeURIComponent(path); } catch { /* malformed escape: keep raw */ }
+      return parsed.hostname.toLowerCase() + path.replace(/\/$/, '');
     } catch { return cleaned.toLowerCase().replace(/\/$/, ''); }
   }
 
