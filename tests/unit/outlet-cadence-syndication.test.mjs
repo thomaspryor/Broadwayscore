@@ -53,16 +53,14 @@ test('only a scored matching critic at the configured primary supplies cadence c
   assert.equal(row(report, 'nydailynews').reviewCount, 2);
 });
 
-test('syndicated dates stay in their show market, including markets with no secondary history', () => {
+test('syndicated dates stay in their show market and require secondary history in that market', () => {
   const report = buildCadenceReport([
     ...history, pulse,
     review('chicagotribune', 'Chris Jones', '2026-08-25', { showId: 'london' }),
     review('chicagotribune', 'Chris Jones', '2026-08-26', { showId: 'excluded' }),
   ], outlets, { marketOf: id => id === 'london' ? 'west-end' : id === 'excluded' ? null : 'broadway' });
   assert.equal(row(report, 'nydailynews').status, 'red');
-  assert.equal(row(report, 'nydailynews', 'west-end').lastReviewDate, '2026-08-25');
-  assert.equal(row(report, 'nydailynews', 'west-end').status, 'unknown');
-  assert.equal(row(report, 'nydailynews', 'west-end').reviewCount, 1);
+  assert.equal(row(report, 'nydailynews', 'west-end'), undefined);
 });
 
 test('an existing scored secondary copy is counted once regardless of input order or publication day', () => {
@@ -83,19 +81,24 @@ test('both TheaterMania critics credit WhatsOnStage and preserve its original re
     pulse,
     review('theatermania', 'Zachary Stewart', '2026-08-24'),
     review('theatermania', 'David Gordon', '2026-08-25'),
+    review('whatsonstage', 'Original Critic', '2026-08-19'),
     review('whatsonstage', 'Original Critic', '2026-08-26'),
   ], outlets);
-  assert.equal(row(report, 'whatsonstage').reviewCount, 3);
+  assert.equal(row(report, 'whatsonstage').reviewCount, 4);
   assert.equal(row(report, 'whatsonstage').lastReviewDate, '2026-08-26');
   assert.equal(row(report, 'whatsonstage').status, 'green');
 });
 
 test('secondary credit respects its own registry tier, even when the primary is outside maxTier', () => {
-  const reviews = [review('hollywood-reporter', 'David Rooney', '2026-08-25')];
+  const reviews = [
+    review('reuters', 'Original Critic', '2026-01-01'),
+    review('reuters', 'Original Critic', '2026-01-08'),
+    review('hollywood-reporter', 'David Rooney', '2026-08-25'),
+  ];
   assert.equal(row(buildCadenceReport(reviews, outlets), 'reuters'), undefined);
-  assert.equal(row(buildCadenceReport(reviews, outlets, { maxTier: 3 }), 'reuters').reviewCount, 1);
+  assert.equal(row(buildCadenceReport(reviews, outlets, { maxTier: 3 }), 'reuters').reviewCount, 3);
   const filtered = buildCadenceReport(reviews, { ...outlets, 'hollywood-reporter': { tier: 3 }, reuters: { tier: 2 } });
-  assert.equal(row(filtered, 'reuters').reviewCount, 1);
+  assert.equal(row(filtered, 'reuters').reviewCount, 3);
   assert.equal(row(filtered, 'hollywood-reporter'), undefined);
   assert.equal(row(buildCadenceReport(reviews, { 'hollywood-reporter': { tier: 1 } }), 'reuters'), undefined);
 });
@@ -104,4 +107,27 @@ test('secondary activity does not flow backward to primary outlets', () => {
   const report = buildCadenceReport([review('nydailynews', 'Chris Jones', '2026-08-25')], outlets);
   assert.equal(row(report, 'chicagotribune'), undefined);
   assert.equal(row(report, 'nydailynews').reviewCount, 1);
+});
+
+test('stale syndicated critics cannot establish a secondary cadence without its own market history', () => {
+  const syndicated = [
+    review('theatermania', 'Zachary Stewart', '2026-04-01'),
+    review('theatermania', 'David Gordon', '2026-04-08'),
+    review('theatermania', 'Zachary Stewart', '2026-04-15'),
+    review('theatermania', 'David Gordon', '2026-04-22'),
+    review('theatermania', 'Another Critic', '2026-08-25'),
+  ];
+  const original = review('whatsonstage', 'Original Critic', '2021-12-10');
+  for (const own of [
+    [],
+    [original],
+    [original, review('whatsonstage', 'Original Critic', 'invalid-date')],
+    [original, review('whatsonstage', 'Original Critic', '2026-08-25', { assignedScore: null })],
+    [original, review('whatsonstage', 'Original Critic', '2026-08-25', { market: 'west-end' })],
+  ]) {
+    const before = buildCadenceReport([...own, pulse], outlets);
+    const after = buildCadenceReport([...own, pulse, ...syndicated], outlets);
+    assert.equal(row(after, 'theatermania').status, 'green');
+    assert.deepEqual(row(after, 'whatsonstage'), row(before, 'whatsonstage'));
+  }
 });
