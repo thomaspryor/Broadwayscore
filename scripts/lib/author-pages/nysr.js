@@ -117,10 +117,16 @@ async function fetch(nysrSlug) {
     if (!html || html.length < 5000) break;
 
     // Soft-404 / no posts found
-    if (isEmptyPage(html)) break;
+    if (isEmptyPage(html)) {
+      console.warn(`  [nysr] WARN: ${pageUrl} returned ${html.length} bytes but 0 articles parsed - possible soft-404 or no posts found`);
+      break;
+    }
 
     const items = parseReviews(html);
-    if (items.length === 0) break;
+    if (items.length === 0) {
+      console.warn(`  [nysr] WARN: ${pageUrl} returned ${html.length} bytes but 0 articles parsed - possible structural drift or no recent bylines`);
+      break;
+    }
 
     // Wrap-guard: stop if first URL repeats (pagination out of bounds)
     const firstUrl = items[0] && items[0].url;

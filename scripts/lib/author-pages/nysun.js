@@ -28,7 +28,10 @@ async function fetch(nysunSlug) {
   // The homepage title is just "The New York Sun" (no pipe-separated prefix).
   const titleMatch = html.match(/<title>([^<]+)<\/title>/i);
   const pageTitle = titleMatch ? titleMatch[1] : '';
-  if (!pageTitle.includes('|')) return [];
+  if (!pageTitle.includes('|')) {
+    console.warn(`  [nysun] WARN: ${url} returned ${html.length} bytes but 0 articles parsed - possible soft-404 or author page title changed`);
+    return [];
+  }
 
   // Extract article slugs — each article is wrapped in <article class="group/article-teaser">
   // with <a href="/article/{slug}"> immediately inside.
@@ -73,6 +76,9 @@ async function fetch(nysunSlug) {
     });
   }
 
+  if (articles.length === 0) {
+    console.warn(`  [nysun] WARN: ${url} returned ${html.length} bytes but 0 articles parsed - possible structural drift or no recent bylines`);
+  }
   return articles;
 }
 

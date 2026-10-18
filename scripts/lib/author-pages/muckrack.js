@@ -35,6 +35,9 @@ async function fetch(slug, maxPages = 2) {
       all.push({ url: u, title, source: 'muckrack' });
       foundOnPage++;
     }
+    if (foundOnPage === 0) {
+      console.warn(`  [muckrack] WARN: ${url} returned ${html.length} bytes but 0 articles parsed - possible structural drift, filtered links, or no recent bylines`);
+    }
     if (foundOnPage < 10) break;
   }
   return all;

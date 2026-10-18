@@ -127,10 +127,16 @@ async function fetch(bwwSlug) {
     if (!html || html.length < 5000) break;
 
     // Soft-404 early stop
-    if (isSoft404(html)) break;
+    if (isSoft404(html)) {
+      console.warn(`  [bww] WARN: ${pageUrl} returned ${html.length} bytes but 0 articles parsed - possible soft-404 or critic page title changed`);
+      break;
+    }
 
     const items = parseReviews(html);
-    if (items.length === 0) break;
+    if (items.length === 0) {
+      console.warn(`  [bww] WARN: ${pageUrl} returned ${html.length} bytes but 0 articles parsed - possible structural drift or no recent bylines`);
+      break;
+    }
 
     // Last-URL-stop: BWW pagination wraps on out-of-bounds pages
     const firstUrl = items[0] && items[0].url;
