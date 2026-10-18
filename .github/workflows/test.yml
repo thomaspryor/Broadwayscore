@@ -3169,6 +3169,10 @@ on:
       - 'scripts/llm-scoring/ensemble.ts'
       - 'scripts/llm-scoring/types.ts'
       - 'scripts/llm-scoring/gemini-calibration-ema.js'
+      # BRO-4335: re-ensemble-scores.ts reapplies the tail stretch; its exported
+      # plan/skip logic is pinned by scripts/llm-scoring/tail-stretch.test.mjs.
+      - 'scripts/re-ensemble-scores.ts'
+      - 'scripts/llm-scoring/tail-stretch.test.mjs'
       # Duplicate-dispatch guard (task #542): pure predicate for the
       # EnterWorktree same-name collision + CI-red double-fix incidents.
       # Test lives in tests/unit/ (node --test batch, not globbed) — path-listed

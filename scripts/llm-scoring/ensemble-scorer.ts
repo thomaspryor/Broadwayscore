@@ -819,7 +819,7 @@ export class EnsembleReviewScorer {
       llmScore: {
         score: ensembleResult.score,
         confidence: cappedConfidence,
-        range: { low: ensembleResult.score - 5, high: ensembleResult.score + 5 },
+        range: { low: Math.max(0, ensembleResult.score - 5), high: Math.min(100, ensembleResult.score + 5) },
         bucket: ensembleResult.bucket,
         thumb: ensembleResult.bucket === 'Rave' || ensembleResult.bucket === 'Positive' ? 'Up' :
                ensembleResult.bucket === 'Mixed' ? 'Flat' : 'Down',

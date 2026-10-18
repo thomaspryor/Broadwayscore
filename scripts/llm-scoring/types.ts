@@ -162,7 +162,7 @@ export interface EnsembleResult {
   ensembleVersion?: 'v1' | 'v2';
   /** Only 1 of N≥2 started models succeeded — score is unreliable, exclude from compositeScore */
   singleModelEmergency?: boolean;
-  /** Set only when applyTailStretch() ran (ENSEMBLE_TAIL_STRETCH=1, llm-v6 review; BRO-4335): pre-stretch combined score + knot-set id */
+  /** Set only when applyTailStretch() moved the score (ENSEMBLE_TAIL_STRETCH=1, llm-v6 review; BRO-4335): pre-stretch combined score + knot-set id */
   tailStretch?: { preStretchScore: number; knots: string };
   /** Individual model results */
   modelResults: {

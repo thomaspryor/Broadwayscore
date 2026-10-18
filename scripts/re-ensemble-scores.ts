@@ -31,7 +31,13 @@ const { isEnabled: isTailStretchEnabled } = require('./lib/monotone-stretch');
 // ========================================
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
-const PROGRESS_FILE = path.join(__dirname, '..', 'data', 're-ensemble-progress.json');
+/**
+ * Resume checkpoint, one per mode: a tail-stretch run's processed list must never
+ * make a later flag-off (rollback) run skip those same files, or vice versa.
+ */
+export function progressFileFor(tailStretch: boolean): string {
+  return path.join(__dirname, '..', 'data', tailStretch ? 're-ensemble-progress-tail-stretch.json' : 're-ensemble-progress.json');
+}
 const CHECKPOINT_INTERVAL = 500;
 
 // ========================================
@@ -108,6 +114,102 @@ export function recomputeEnsemble(data: any, opts?: { tailStretch?: boolean }): 
   return applyTailStretch(result, data.scoreSource, { enabled: !!(opts && opts.tailStretch) });
 }
 
+export type ReensemblePlan =
+  | { action: 'skip'; reason: string }
+  | { action: 'unchanged'; result: EnsembleResult }
+  | { action: 'capped'; result: EnsembleResult }
+  | { action: 'changed'; result: EnsembleResult }
+  | { action: 'restamp'; result: EnsembleResult };
+
+const stampKey = (stamp: unknown) => JSON.stringify(stamp ?? null);
+
+/**
+ * Decide what a re-ensemble run does with one review file (pure, no I/O).
+ *
+ * Tail-stretch run (BRO-4335): only stretch a score that is still the plain
+ * combine of its stored per-model scores (or, if already stamped, whose stamped
+ * pre-stretch score still equals that combine). Anything else is 'combine drift'
+ * (the stored score moved for some other reason) and is left alone, so a flag-on
+ * run can only ever apply the stretch, never re-decluster unrelated scores.
+ *
+ * 'restamp' = score already right but the tailStretch stamp is wrong (e.g. a stale
+ * stamp left on a flag-off rollback where the stretch had been a no-op).
+ */
+export function planReensemble(data: any, opts?: { tailStretch?: boolean; maxDelta?: number }): ReensemblePlan {
+  const tailStretch = !!(opts && opts.tailStretch);
+  const maxDelta = opts && opts.maxDelta != null ? opts.maxDelta : 20;
+  const skipReason = shouldSkip(data, { tailStretch });
+  if (skipReason) return { action: 'skip', reason: skipReason };
+
+  const result = recomputeEnsemble(data, { tailStretch });
+  const stored = data.llmScore.score;
+  const existingStamp = data.ensembleData.tailStretch;
+
+  if (tailStretch) {
+    const pre = result.tailStretch ? result.tailStretch.preStretchScore : result.score;
+    const expectedPre = existingStamp ? existingStamp.preStretchScore : stored;
+    if (pre !== expectedPre) return { action: 'skip', reason: 'combine drift' };
+  }
+
+  if (result.score === stored) {
+    return stampKey(existingStamp) === stampKey(result.tailStretch)
+      ? { action: 'unchanged', result }
+      : { action: 'restamp', result };
+  }
+  if (Math.abs(result.score - stored) > maxDelta) return { action: 'capped', result };
+  return { action: 'changed', result };
+}
+
+/** Write the tailStretch stamp to match the result: set it, or drop a stale one. */
+export function applyStamp(data: any, result: EnsembleResult): void {
+  if (result.tailStretch) {
+    data.ensembleData.tailStretch = result.tailStretch;
+  } else if (data.ensembleData.tailStretch) {
+    delete data.ensembleData.tailStretch;
+  }
+}
+
+/** Apply a 'changed' plan's result to the review record in place. */
+export function applyReensemble(data: any, result: EnsembleResult): void {
+  const oldLlmScore = data.llmScore.score;
+  const newScore = result.score;
+
+  // Preserve old score
+  if (!data.llmMetadata) data.llmMetadata = {};
+  data.llmMetadata.previousScore = oldLlmScore;
+
+  // Update LLM score fields
+  data.llmScore.score = newScore;
+  data.llmScore.bucket = result.bucket;
+  data.llmScore.thumb = scoreToThumb(newScore);
+
+  // Update assignedScore only if it matched the old LLM score
+  // (otherwise a higher-priority source like originalScore was used)
+  if (data.assignedScore === oldLlmScore) {
+    data.assignedScore = newScore;
+  }
+
+  // Update ensemble metadata
+  data.ensembleData.ensembleSource = result.source;
+  data.ensembleData.modelAgreement = result.agreement;
+  data.ensembleData.needsReview = result.needsReview || false;
+  data.ensembleData.needsReviewReasons = result.reviewReason ? [result.reviewReason] : [];
+  // Which majority/outlier weight set produced this score (task #384 Phase B) —
+  // written so mixed v1/v2 batches are distinguishable once ENSEMBLE_V2 ships.
+  if (result.ensembleVersion) {
+    data.ensembleData.ensembleVersion = result.ensembleVersion;
+  }
+  // Propagate emergency flag (task #1122, same gap class as #384's ensembleVersion fix) —
+  // score excluded from compositeScore until human review clears it.
+  if (result.singleModelEmergency) {
+    data.ensembleData.singleModelEmergency = true;
+  }
+  // BRO-4335: record the pre-stretch score; drop a stale stamp on a flag-off rollback.
+  applyStamp(data, result);
+
+  data.rescoreReason = result.tailStretch ? 're-ensemble-tail-stretch' : 're-ensemble-v2-decluster';
+}
+
 // ========================================
 // MAIN
 // ========================================
@@ -119,6 +221,7 @@ async function main() {
   const maxDeltaArg = args.find(a => a.startsWith('--max-delta='))?.split('=')[1];
   const maxDelta = maxDeltaArg ? parseInt(maxDeltaArg) : 20; // Default: cap at 20-point change
   const tailStretch = isTailStretchEnabled();
+  const PROGRESS_FILE = progressFileFor(tailStretch);
 
   console.log(`Re-ensemble scores${dryRun ? ' (DRY RUN)' : ''}`);
   console.log(`Max delta: ${maxDelta} (changes beyond this are skipped)`);
@@ -149,6 +252,8 @@ async function main() {
   let changed = 0;
   let errors = 0;
   let capped = 0;
+  let restamped = 0;
+  let drift = 0;
   const changeDetails: Array<{ file: string; oldScore: number; newScore: number; oldBucket: string; newBucket: string }> = [];
   const cappedDetails: Array<{ file: string; oldScore: number; newScore: number; delta: number }> = [];
   const newProcessedFiles: string[] = [];
@@ -171,21 +276,27 @@ async function main() {
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
-        const skipReason = shouldSkip(data, { tailStretch });
-        if (skipReason) {
+        const plan = planReensemble(data, { tailStretch, maxDelta });
+        if (plan.action === 'skip') {
           skipped++;
+          if (plan.reason === 'combine drift') drift++;
           continue;
         }
 
-        // Reconstruct ModelScore[] from stored data, run the live combine (+ tail stretch when on)
-        const result = recomputeEnsemble(data, { tailStretch });
-
         const oldLlmScore = data.llmScore.score;
+        const result = plan.result;
         const newScore = result.score;
 
-        if (oldLlmScore === newScore) {
+        if (plan.action === 'unchanged') {
           unchanged++;
-        } else if (Math.abs(newScore - oldLlmScore) > maxDelta) {
+        } else if (plan.action === 'restamp') {
+          // Score already right; only the tailStretch stamp is stale/missing.
+          restamped++;
+          if (!dryRun) {
+            applyStamp(data, result);
+            fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+          }
+        } else if (plan.action === 'capped') {
           // Safety cap: skip extreme changes (likely broken old defaults)
           capped++;
           cappedDetails.push({ file: relPath, oldScore: oldLlmScore, newScore, delta: newScore - oldLlmScore });
@@ -195,45 +306,7 @@ async function main() {
           changeDetails.push({ file: relPath, oldScore: oldLlmScore, newScore, oldBucket, newBucket: result.bucket });
 
           if (!dryRun) {
-            // Preserve old score
-            if (!data.llmMetadata) data.llmMetadata = {};
-            data.llmMetadata.previousScore = oldLlmScore;
-
-            // Update LLM score fields
-            data.llmScore.score = newScore;
-            data.llmScore.bucket = result.bucket;
-            data.llmScore.thumb = scoreToThumb(newScore);
-
-            // Update assignedScore only if it matched the old LLM score
-            // (otherwise a higher-priority source like originalScore was used)
-            if (data.assignedScore === oldLlmScore) {
-              data.assignedScore = newScore;
-            }
-
-            // Update ensemble metadata
-            data.ensembleData.ensembleSource = result.source;
-            data.ensembleData.modelAgreement = result.agreement;
-            data.ensembleData.needsReview = result.needsReview || false;
-            data.ensembleData.needsReviewReasons = result.reviewReason ? [result.reviewReason] : [];
-            // Which majority/outlier weight set produced this score (task #384 Phase B) —
-            // written so mixed v1/v2 batches are distinguishable once ENSEMBLE_V2 ships.
-            if (result.ensembleVersion) {
-              data.ensembleData.ensembleVersion = result.ensembleVersion;
-            }
-            // Propagate emergency flag (task #1122, same gap class as #384's ensembleVersion fix) —
-            // score excluded from compositeScore until human review clears it.
-            if (result.singleModelEmergency) {
-              data.ensembleData.singleModelEmergency = true;
-            }
-            // BRO-4335: record the pre-stretch score; drop a stale stamp on a flag-off rollback.
-            if (result.tailStretch) {
-              data.ensembleData.tailStretch = result.tailStretch;
-            } else if (data.ensembleData.tailStretch) {
-              delete data.ensembleData.tailStretch;
-            }
-
-            data.rescoreReason = result.tailStretch ? 're-ensemble-tail-stretch' : 're-ensemble-v2-decluster';
-
+            applyReensemble(data, result);
             fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
           }
         }
@@ -267,6 +340,9 @@ async function main() {
   console.log(`Changed:      ${changed}`);
   console.log(`Capped (>${maxDelta}pt): ${capped}`);
   console.log(`Errors:       ${errors}`);
+  // Printed only when non-zero so a flag-off run with no stamps on disk prints exactly what it always did.
+  if (restamped > 0) console.log(`Restamped (tailStretch stamp only): ${restamped}`);
+  if (drift > 0) console.log(`Skipped, combine drift (tail-stretch run): ${drift}`);
 
   if (changeDetails.length > 0) {
     console.log(`\n=== CHANGED SCORES (${dryRun ? 'PREVIEW' : 'APPLIED'}) ===`);

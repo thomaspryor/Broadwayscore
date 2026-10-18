@@ -16,7 +16,7 @@ require('ts-node/register');
 
 const { ensembleScoreFromArray, applyTailStretch, scoreToBucket, TAIL_STRETCH_KNOTS_ID } = require('./ensemble');
 const { EnsembleReviewScorer } = require('./ensemble-scorer');
-const { shouldSkip, recomputeEnsemble } = require('../re-ensemble-scores');
+const { shouldSkip, recomputeEnsemble, planReensemble, applyReensemble, applyStamp, progressFileFor } = require('../re-ensemble-scores');
 
 function ms(model, score) {
   return { model, score, bucket: scoreToBucket(score), confidence: 'high' };
@@ -127,6 +127,7 @@ describe('finalizeScoredFile (live path, sync + --batch share it)', () => {
     const onFile = strip(scorer.finalizeScoredFile(reviewFile, ens, prep).scoredFile);
     assert.equal(onFile.llmScore.score, 99);
     assert.equal(onFile.assignedScore, 99);
+    assert.deepEqual(onFile.llmScore.range, { low: 94, high: 100 }, 'range clamped to 0..100');
     assert.equal(onFile.ensembleData.claudeScore, 95);
     assert.deepEqual(onFile.ensembleData.tailStretch, { preStretchScore: 95, knots: TAIL_STRETCH_KNOTS_ID });
     // anchored path untouched even with the flag on
@@ -169,16 +170,69 @@ describe('re-ensemble-scores.ts reapply (stored per-model scores, no API calls)'
     }
   });
 
-  test('recomputeEnsemble flag on: stretched from raw per-model scores, idempotent across reruns', () => {
+  /** Run one file through the script's real per-file decision + write path. */
+  function runOnce(data, opts) {
+    const plan = planReensemble(data, opts);
+    if (plan.action === 'changed') applyReensemble(data, plan.result);
+    else if (plan.action === 'restamp') applyStamp(data, plan.result);
+    return plan;
+  }
+
+  test('flag on: stretch applied once, rerun hits the real unchanged branch, flag-off rollback restores', () => {
     const r = rec();
-    const first = recomputeEnsemble(r, { tailStretch: true });
-    assert.equal(first.score, 99);
-    // a rerun reads the same raw per-model scores (stretch never writes them), so it lands on the same score
-    r.llmScore.score = first.score;
-    assert.equal(recomputeEnsemble(r, { tailStretch: true }).score, 99);
-    // flag-off rerun rolls back to the plain combine
-    const back = recomputeEnsemble(r);
-    assert.equal(back.score, 95);
-    assert.equal(back.tailStretch, undefined);
+    const first = runOnce(r, { tailStretch: true });
+    assert.equal(first.action, 'changed');
+    assert.equal(r.llmScore.score, 99);
+    assert.equal(r.assignedScore, 99);
+    assert.equal(r.ensembleData.claudeScore, 95, 'per-model scores stay raw');
+    assert.deepEqual(r.ensembleData.tailStretch, { preStretchScore: 95, knots: TAIL_STRETCH_KNOTS_ID });
+    assert.equal(r.rescoreReason, 're-ensemble-tail-stretch');
+
+    const second = runOnce(r, { tailStretch: true });
+    assert.equal(second.action, 'unchanged');
+    assert.equal(r.llmScore.score, 99);
+
+    const back = runOnce(r);
+    assert.equal(back.action, 'changed');
+    assert.equal(r.llmScore.score, 95);
+    assert.equal(r.assignedScore, 95);
+    assert.equal('tailStretch' in r.ensembleData, false);
+    assert.equal(runOnce(r).action, 'unchanged');
+  });
+
+  test('flag on: a no-op stretch (<= 88) writes no stamp', () => {
+    const ed = { claudeScore: 80, claudeBucket: 'Positive', openaiScore: 80, openaiBucket: 'Positive', geminiScore: 80, geminiBucket: 'Positive' };
+    const r = rec({ llmScore: { score: 80, bucket: 'Positive' }, assignedScore: 80, ensembleData: ed });
+    assert.equal(runOnce(r, { tailStretch: true }).action, 'unchanged');
+    assert.equal('tailStretch' in r.ensembleData, false);
+  });
+
+  test('rollback drops a stale stamp even when the score is unchanged', () => {
+    const r = rec({ llmScore: { score: 95, bucket: 'Rave' } });
+    r.ensembleData.tailStretch = { preStretchScore: 95, knots: 'tail-only-v1' };
+    const plan = runOnce(r);
+    assert.equal(plan.action, 'restamp');
+    assert.equal('tailStretch' in r.ensembleData, false);
+    assert.equal(r.llmScore.score, 95);
+    assert.equal(runOnce(r).action, 'unchanged');
+  });
+
+  test('flag on: combine drift (stored score is not the plain combine) is skipped, not re-declustered', () => {
+    // stored 91 but per-model scores combine to 95: something else moved this score
+    const r = rec({ llmScore: { score: 91, bucket: 'Rave' }, assignedScore: 91 });
+    assert.deepEqual(runOnce(r, { tailStretch: true }), { action: 'skip', reason: 'combine drift' });
+    assert.equal(r.llmScore.score, 91);
+    // stamped file whose stamped pre-stretch no longer matches the combine: also drift
+    const s = rec({ llmScore: { score: 99, bucket: 'Rave' } });
+    s.ensembleData.tailStretch = { preStretchScore: 94, knots: 'tail-only-v1' };
+    assert.equal(planReensemble(s, { tailStretch: true }).reason, 'combine drift');
+    // flag off keeps the old behaviour: drift is re-ensembled as before
+    assert.equal(planReensemble(rec({ llmScore: { score: 91, bucket: 'Rave' } })).action, 'changed');
+  });
+
+  test('progress checkpoint is per mode, so a rollback run is never skipped by a stretch run', () => {
+    assert.match(progressFileFor(false), /re-ensemble-progress\.json$/);
+    assert.match(progressFileFor(true), /re-ensemble-progress-tail-stretch\.json$/);
+    assert.notEqual(progressFileFor(true), progressFileFor(false));
   });
 });

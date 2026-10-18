@@ -449,7 +449,9 @@ export const TAIL_STRETCH_KNOTS_ID = 'tail-only-v1';
  * scores were never part of the fit.
  *
  * Default OFF: unless ENSEMBLE_TAIL_STRETCH=1 (or opts.enabled === true) this
- * returns the SAME object untouched, so flag-off output is byte-identical.
+ * returns the SAME object untouched, so flag-off output is byte-identical. It also
+ * returns the same object when the stretch is a no-op (score <= 88), so the
+ * tailStretch stamp only ever marks a score that actually moved.
  * Never mutates its input. Rejected / all-failed results pass through.
  * Bucket is re-derived from the stretched score (Rave min is 83 and the stretch
  * is identity to 88, so no bucket can change with the approved knots).
@@ -465,6 +467,8 @@ export function applyTailStretch(
   if (typeof result.score !== 'number' || !Number.isFinite(result.score)) return result;
 
   const stretched = monotoneStretch.stretchScore(result.score, { enabled: true });
+  // Stamp only a real change: a no-op stretch (score <= 88) leaves the result as-is.
+  if (stretched === result.score) return result;
   return {
     ...result,
     score: stretched,
