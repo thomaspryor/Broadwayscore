@@ -21,6 +21,7 @@
 'use strict';
 
 const { EXCERPT_FIELDS } = require('./excerpt-fields');
+const { foldDiacritics } = require('./title-match');
 
 // Below this normalized length, short matches are far more likely to be
 // legitimate shared boilerplate (a pull-quote, a common turn of phrase) than
@@ -225,7 +226,7 @@ function findCrossShowMatches(targetShowId, targetFile, data, index, { titles = 
  * criteria on false positives).
  */
 function phraseOf(s) {
-  return ` ${String(s || '').normalize('NFKC').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()} `;
+  return ` ${foldDiacritics(String(s || '').normalize('NFKC')).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()} `;
 }
 
 /**
