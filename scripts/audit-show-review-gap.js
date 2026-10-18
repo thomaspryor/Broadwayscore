@@ -1748,7 +1748,15 @@ function currentRunUncollected(r, { blocklist, ignoreCensusTagged = false } = {}
   // this audit can never collect them. Counting them made the opening-window
   // alert unresolvable (Alice in Wonderland: 7 un-ingestable census hits, wrong
   // productions, re-fired hourly). They stay in r.missing / the audit JSON.
-  const reportOnly = new Set((r.weIngestBlocked || []).filter(x => x.reason === 'serp-census-gate-off').map(x => x.url));
+  // BRO-5513: ingestBlockReason returns the FIRST matching reason, so on a WE
+  // show a census-only URL is blocked as 'we-gate-off' and never carries
+  // 'serp-census-gate-off' (Measure for Measure, Riverside: Folger DC, Austin,
+  // RSC Stratford hits re-fired the alert hourly). Judge by provenance: a
+  // census-tagged row blocked while the census gate is OFF is report-only (with
+  // the gate ON, a we-gate-off hold is a real pending gap and still counts).
+  const censusUrls = new Set((r.missing || []).filter(m => m && m.serpCensus).map(m => m.url));
+  const reportOnly = new Set((r.weIngestBlocked || [])
+    .filter(x => x.reason === 'serp-census-gate-off' || (censusUrls.has(x.url) && !x.censusGateOn)).map(x => x.url));
   const missing = currentRunOnly(r.missing)
     .filter(m => !ingestedOk.has(m.url) && !refusedForGood.has(m.url) && !reportOnly.has(m.url) && !(ignoreCensusTagged && m.serpCensus) && stillCollectable(m, bl)).length;
   const citedNoUrl = currentRunCount(r.citedNoUrl);
@@ -2296,7 +2304,7 @@ async function main(argv = process.argv.slice(2)) {
       const weBlocked = r.missing.filter(blockedPred);
       const eligibleMissing = r.missing.filter(m => !blockedPred(m));
       if (weBlocked.length > 0) {
-        r.weIngestBlocked = weBlocked.map(m => ({ url: m.url, host: m.host, priorRun: !!m.priorRun, reason: ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources: lowTrust, serpCensusGateOn }) }));
+        r.weIngestBlocked = weBlocked.map(m => ({ url: m.url, host: m.host, priorRun: !!m.priorRun, reason: ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources: lowTrust, serpCensusGateOn }), censusGateOn: serpCensusGateOn }));
         const nPrior = weBlocked.filter(isPriorProductionCitation).length;
         console.log(`  ⛔ ${weBlocked.length} URL(s) not ingested (${nPrior} prior-production — permanently report-only${nPrior < weBlocked.length ? `; ${weBlocked.length - nPrior} WE_GAP_INGEST unset — report-only mode` : ''})`);
       }

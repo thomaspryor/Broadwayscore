@@ -722,6 +722,24 @@ test('currentRunUncollected: serp-census-gate-off rows are report-only, not unco
   assert.equal(currentRunUncollected({ ...row, weIngestBlocked: [] }, { blocklist: null }), 2);
 });
 
+test('currentRunUncollected: census-tagged row blocked as we-gate-off is report-only; non-census we-gate-off still counts (BRO-5513)', () => {
+  const { currentRunUncollected } = require('./audit-show-review-gap.js');
+  const census = 'https://a.example/review-1';
+  const weRef = 'https://b.example/review-2';
+  const row = {
+    showId: 'x',
+    missing: [{ url: census, host: 'a.example', serpCensus: true }, { url: weRef, host: 'b.example', weRef: true }],
+    weIngestBlocked: [
+      { url: census, host: 'a.example', priorRun: false, reason: 'we-gate-off' },
+      { url: weRef, host: 'b.example', priorRun: false, reason: 'we-gate-off' },
+    ],
+  };
+  assert.equal(currentRunUncollected(row, { blocklist: null }), 1);
+  // census gate ON: the we-gate hold is a real pending gap
+  const on = { ...row, weIngestBlocked: row.weIngestBlocked.map(x => ({ ...x, censusGateOn: true })) };
+  assert.equal(currentRunUncollected(on, { blocklist: null }), 2);
+});
+
 test('serpCensus provenance is census-only: tagged from serpCensusOnlyUrls, never plain census membership (BRO-5252)', () => {
   const src = fs.readFileSync(new URL('./audit-show-review-gap.js', import.meta.url), 'utf8');
   assert.match(src, /serpCensusOnlyUrls = new Set\(\[\.\.\.serpCensusUrls\]\.filter\(u => !aggUrls\.has\(u\)\)\)/);
