@@ -3101,12 +3101,12 @@ if (IS_WE && !process.env.LEDE_OVERRIDE) {
 // "A quiet week on Broadway." reads as a self-contradiction stapled in front
 // of real Broadway news (second-opinion review, 2026-09-07).
 let _bwOpener = '';
-if (quietBroadwayWeek && !process.env.LEDE_OVERRIDE && newsworthyCandidates[0]?.kind === 'we-gold-opening') {
+if (quietBroadwayWeek && !process.env.LEDE_OVERRIDE && newsworthyCandidates[0]?.kind === 'we-opening') {
   // >= 1, not >= 2 (Codex adversarial review, 2026-09-07): a single relaxed-
   // gate WE story is exactly the confusing case this opener exists for — a
   // Broadway-branded email launching straight into "Electra / Persona opens
   // to decent reviews" with zero framing. weOpeningStories() is already
-  // guaranteed non-empty here (the >=1 gate above requires a we-gold-opening
+  // guaranteed non-empty here (the >=1 gate above requires a we-opening
   // candidate, and weGoldEvents is built from this same function's output).
   const _stories = weOpeningStories();
   if (_stories.length >= 1) _bwOpener = 'A quiet week on Broadway.';

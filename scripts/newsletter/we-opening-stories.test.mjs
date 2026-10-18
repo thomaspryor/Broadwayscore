@@ -8,7 +8,7 @@
 // newsworthiness.mjs's own per-item gold bump could still re-rank a later,
 // gold-tier show ahead of an earlier, more-reviewed, non-gold show when
 // picking the subject — reintroducing the exact divergence that commit was
-// meant to close. Fixed by capping each we-gold-opening candidate's weight at
+// meant to close. Fixed by capping each we-opening candidate's weight at
 // the previous (list-order) candidate's weight (weOpeningStoriesCap in
 // newsworthiness.mjs), so weGoldOpenings' input order always wins.
 //
