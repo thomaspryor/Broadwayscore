@@ -322,6 +322,40 @@ test('(a) no origin/main and no reachable remote: inconclusive, not a violation'
   fs.rmSync(fakeRepo, { recursive: true, force: true });
 });
 
+test('(a) a cached origin/main is checked without fetching an offline remote', (t) => {
+  const { root, clone } = makeOriginAndClone({ withScopeLib: true });
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  assert.equal(checkScopeLibOnOrigin({ repoRoot: clone }).ok, true);
+  assert.equal(git(clone, 'remote', 'remove', 'origin').status, 0);
+  // Removing the remote removes its tracking refs. Restore the fetched tip.
+  const tip = git(clone, 'rev-parse', 'FETCH_HEAD').stdout.trim();
+  assert.equal(git(clone, 'update-ref', 'refs/remotes/origin/main', tip).status, 0);
+  const r = checkScopeLibOnOrigin({ repoRoot: clone });
+  assert.equal(r.ok, true, r.detail);
+  assert.notEqual(r.inconclusive, true, r.detail);
+});
+
+test('(a) a failed Git probe after resolving the ref is inconclusive, never confirmed absent', (t) => {
+  const root = makeTmpDir();
+  const oldPath = process.env.PATH;
+  t.after(() => {
+    process.env.PATH = oldPath;
+    fs.rmSync(root, { recursive: true, force: true });
+  });
+  // Simulate an operational Git failure after the cached ref was resolved.
+  fs.writeFileSync(path.join(root, 'git'), `#!/bin/sh
+case "$1" in
+  rev-parse) exit 0;;
+  cat-file) echo 'fatal: unable to read object' >&2; exit 128;;
+  *) exit 1;;
+esac
+`, { mode: 0o755 });
+  process.env.PATH = `${root}:${oldPath}`;
+  const r = checkScopeLibOnOrigin({ repoRoot: root });
+  assert.equal(r.ok, true, r.detail);
+  assert.equal(r.inconclusive, true, r.detail);
+});
+
 test(
   '(b) scripts/lib/infra-review-scope.js is present on origin/main',
   { skip: !fs.existsSync(path.join(REPO_ROOT, '.git')) && 'not a git checkout' },

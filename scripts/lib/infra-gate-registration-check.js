@@ -83,7 +83,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { spawnSync } = require('child_process');
-const { repoDepthArgs } = require('./shallow-fetch-args.js');
+const { fetchOriginMain, pathExistsOnOriginMain } = require('./origin-main-path-check.js');
 
 const HOOK_REL_PATH = '.claude/hooks/infra-plan-review-gate.sh';
 const SETTINGS_REL_PATH = '.claude/settings.json';
@@ -170,54 +170,24 @@ function checkHookFileExists({ hookPath }) {
  */
 function checkScopeLibOnOrigin({ repoRoot }) {
   if (!repoRoot) return { ok: false, detail: 'no repoRoot given' };
-  // A checkout without an origin/main remote-tracking ref cannot answer this
-  // question as-is. actions/checkout defaults to fetch-depth: 1, and on a
-  // pull_request event it fetches only refs/pull/<n>/merge — so origin/main is
-  // absent and `git cat-file origin/main:<path>` exits non-zero for a reason
-  // that has nothing to do with the file. Reporting that as a FAILURE made
-  // every PR's Unit Tests job red regardless of its diff (observed on PR #573,
-  // run 31563016374, while the same test passed on push-to-main runs of the
-  // same commit range).
-  //
-  // Fetch the ref rather than giving up: this check exists to catch a silently
-  // broken safety gate, so "we couldn't look" is a hole, not an answer. Same
-  // shape as autofix-canary.js's markerExistsOnOriginMain — depth-bounded, so
-  // a shallow CI clone pulls the delta and not the whole ~2.1 GB history
-  // (task #466 class). Only if the fetch ITSELF fails (offline, no remote) do
-  // we fall back to inconclusive.
-  const hasOriginMain = () =>
-    spawnSync('git', ['rev-parse', '--verify', '--quiet', 'origin/main'], {
-      cwd: repoRoot,
-      encoding: 'utf8',
-      timeout: 15000,
-    }).status === 0;
-  if (!hasOriginMain()) {
-    const depthArgs = repoDepthArgs({ repoRoot });
-    // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
-    spawnSync('git', ['fetch', ...depthArgs, '--quiet', 'origin', 'main'], {
-      cwd: repoRoot,
-      encoding: 'utf8',
-      timeout: 30000,
-    });
-    if (!hasOriginMain()) {
-      return {
-        ok: true,
-        inconclusive: true,
-        detail:
-          'no origin/main ref in this checkout and `git fetch origin main` could not create one (offline / no remote) — cannot verify, not treating as a violation',
-      };
-    }
+  // Preserve the cached-ref policy: fetch only when origin/main is unavailable.
+  const hasOriginMain = spawnSync('git', ['rev-parse', '--verify', '--quiet', 'origin/main'], {
+    cwd: repoRoot, encoding: 'utf8', timeout: 15000,
+  }).status === 0;
+  const opts = { repo: repoRoot, attempts: 1 };
+  if (!hasOriginMain && !fetchOriginMain(opts)) {
+    return {
+      ok: true,
+      inconclusive: true,
+      detail: 'no origin/main ref in this checkout and `git fetch origin main` could not create one (offline / no remote); cannot verify, not treating as a violation',
+    };
   }
-  const r = spawnSync('git', ['cat-file', '-e', `origin/main:${SCOPE_LIB_REPO_PATH}`], {
-    cwd: repoRoot,
-    encoding: 'utf8',
-    timeout: 15000,
-  });
-  if (r.error) return { ok: false, detail: `git check failed to run: ${r.error.message}` };
-  if (r.status === 0) {
-    return { ok: true, detail: `${SCOPE_LIB_REPO_PATH} present on origin/main` };
+  const exists = pathExistsOnOriginMain(SCOPE_LIB_REPO_PATH, opts);
+  if (exists === null) {
+    return { ok: true, inconclusive: true, detail: 'could not resolve the scope lib on origin/main; cannot verify, not treating as a violation' };
   }
-  return { ok: false, detail: `${SCOPE_LIB_REPO_PATH} missing on origin/main (git cat-file exit ${r.status}) — the hook would classify nothing` };
+  if (exists) return { ok: true, detail: `${SCOPE_LIB_REPO_PATH} present on origin/main` };
+  return { ok: false, detail: `${SCOPE_LIB_REPO_PATH} missing on origin/main; the hook would classify nothing` };
 }
 
 /**
