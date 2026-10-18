@@ -1502,5 +1502,36 @@
       }
     ],
     "queuedAt": "2026-10-18T05:46:24.261Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5336-outlet-display-names",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5336-outlet-display-names",
+    "description": "land.yml did not land land/bro-5336-outlet-display-names: the unit-tests-node gate went red at a24272b034. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39100982663",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5336-outlet-display-names"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "a24272b034a85682c555c8c23c05b14caf61ee3d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39100982663"
+      }
+    ],
+    "queuedAt": "2026-10-18T06:09:50.207Z"
   }
 ]
