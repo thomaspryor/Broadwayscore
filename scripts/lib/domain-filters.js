@@ -404,7 +404,8 @@ function getRegistryDeclaredHosts() {
   if (registryDeclaredHostsCache) return registryDeclaredHostsCache;
   try {
     registryDeclaredHostsCache = declaredHostsFromRegistry(JSON.parse(require('fs').readFileSync(OUTLET_REGISTRY_PATH, 'utf8')));
-  } catch {
+  } catch (err) {
+    console.warn(`[domain-filters] outlet registry unreadable, no blog-host exemptions applied: ${err.message}`);
     registryDeclaredHostsCache = new Set();
   }
   return registryDeclaredHostsCache;
