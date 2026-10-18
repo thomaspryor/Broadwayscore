@@ -291,7 +291,33 @@ function hasNamedDifferentDirectorSignal(cvIssues, cvReasoning, show, fullText) 
     if (mentions >= 2) return false;
   }
 
+  if (_namesOnlyPriorProductionDirectors(cvNamedLastNames, show, fullText)) return false;
+
   return true;
+}
+
+/**
+ * BRO-5637: every CV-named director directed an EARLIER, already-closed
+ * production of this title (prior-run-sibling buildPriorProductionDirectors),
+ * and the text names this production's own director in full at least once.
+ * That is a revival review recalling the earlier staging ("Joe Mantello's 2011
+ * production"), not a review of a different staging, so the bypass must not
+ * keep the flag. The full-name mention keeps a misdated old review (a 2011
+ * Mantello review stamped with a 2026 scrape date) excluded; a bare surname is
+ * not enough because some are common words ("Gold", "Price"). The lineage is
+ * looked up by show.id: callers pass trimmed show objects.
+ */
+function _namesOnlyPriorProductionDirectors(cvNamedLastNames, show, fullText) {
+  const prior = show && show.id ? getMultiProdGuards().priorDirectors[show.id] : null;
+  if (!prior || prior.size === 0) return false;
+  const priorLastNames = new Set([...prior.keys()].map(_normLastName).filter(Boolean));
+  if (![...cvNamedLastNames].every(n => priorLastNames.has(n))) return false;
+  const esc = t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return (show.creativeTeam || []).filter(c => _isStageDirectorRole(c.role)).some(c => {
+    const parts = String(c.name || '').trim().split(/\s+/).filter(Boolean);
+    if (parts.length < 2) return false;
+    return new RegExp('\\b' + parts.map(esc).join('\\s+') + '\\b', 'i').test(fullText);
+  });
 }
 
 // BRO-2836: an unreadable date must never look identical to "the guard
@@ -4604,10 +4630,11 @@ function getMultiProdGuards() {
 }
 /** Test seam (and cache reset): build the lookups from an explicit shows list. */
 function setMultiProdGuardShows(shows) {
-  const { buildMultiProdDirectorGuard } = require('./prior-run-sibling');
+  const { buildMultiProdDirectorGuard, buildPriorProductionDirectors } = require('./prior-run-sibling');
   _multiProdGuardsCache = {
     year: buildMultiProdYearGuard(shows || []),
     director: buildMultiProdDirectorGuard(shows || []),
+    priorDirectors: buildPriorProductionDirectors(shows || [], _isStageDirectorRole),
   };
   return _multiProdGuardsCache;
 }

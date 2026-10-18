@@ -113,6 +113,62 @@ function isReturnOfProduction(newer, older) {
 }
 
 /**
+ * Directors of EARLIER, already-closed productions of the same title (BRO-5637).
+ *
+ * A revival's opening-night reviews routinely name the earlier staging's
+ * director ("Joe Mantello's 2011 production"). When the CV verdict repeats
+ * that name, review-guards' named-different-director bypass read it as proof
+ * of a different staging and kept a genuine review excluded. This map lets
+ * the bypass tell a historical reference from a different staging.
+ *
+ * Grouped by baseTitle across all categories (an Off-Broadway premiere is as
+ * historical as an earlier Broadway run). Only productions whose closingDate
+ * is strictly before this production's earliest date count, and a director
+ * who also leads a same-title production that has NOT closed by then is
+ * dropped: that staging could really be the review's subject. Unparseable
+ * dates never qualify (fail closed).
+ *
+ * @param {Array<object>} shows shows.json entries
+ * @param {(role: string) => boolean} isDirectorRole which creativeTeam roles
+ *   count (review-guards passes its stage-director predicate)
+ * @returns {Object<string, Map<string,string>>} showId -> Map(directorLower -> priorShowId)
+ */
+function buildPriorProductionDirectors(shows, isDirectorRole) {
+  const { earliestShowDate } = require('./date-guard');
+  const directorsOf = (s) => (s.creativeTeam || [])
+    .filter(ct => ct && ct.name && isDirectorRole(String(ct.role || '')))
+    .map(ct => ct.name.toLowerCase());
+  const out = {};
+  const titleGroups = {};
+  for (const s of shows) {
+    const base = baseTitle(s);
+    if (!base) continue;
+    (titleGroups[base] = titleGroups[base] || []).push(s);
+  }
+  for (const prods of Object.values(titleGroups)) {
+    if (prods.length < 2) continue;
+    for (const thisShow of prods) {
+      const start = ymd(earliestShowDate(thisShow));
+      if (!start) continue;
+      const prior = new Map();
+      const notClosed = new Set();
+      for (const other of prods) {
+        if (other === thisShow || other.id === thisShow.id) continue;
+        const closed = ymd(other.closingDate);
+        const isPrior = !!closed && closed < start;
+        for (const name of directorsOf(other)) {
+          if (!isPrior) notClosed.add(name);
+          else if (!prior.has(name)) prior.set(name, other.id);
+        }
+      }
+      for (const name of notClosed) prior.delete(name);
+      if (prior.size > 0) out[thisShow.id] = prior;
+    }
+  }
+  return out;
+}
+
+/**
  * Directors named on NEWER same-market productions of the same title, per older
  * production. Reviews in an older production's folder that mention such a
  * director are excluded as likely misfiled ("validated pattern" in the rebuild),
@@ -435,6 +491,7 @@ module.exports = {
   matchingPriorRunFor,
   baseTitle,
   buildMultiProdDirectorGuard,
+  buildPriorProductionDirectors,
   findPriorRunSiblings,
   preWindowExemptPriorRuns,
   inheritPriorRunReviews,

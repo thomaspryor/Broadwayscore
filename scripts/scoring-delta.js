@@ -1664,6 +1664,8 @@ function main() {
         && (baseline.__priorRunSiblingLib?.findPriorRunSiblings?.toString() || '') === (working.__priorRunSiblingLib?.findPriorRunSiblings?.toString() || '')
         // BRO-5373: the director guard's map (ordering, earliest newer start).
         && (baseline.__priorRunSiblingLib?.buildMultiProdDirectorGuard?.toString() || '') === (working.__priorRunSiblingLib?.buildMultiProdDirectorGuard?.toString() || '')
+        // BRO-5637: the prior-production director map the named-director bypass reads.
+        && (baseline.__priorRunSiblingLib?.buildPriorProductionDirectors?.toString() || '') === (working.__priorRunSiblingLib?.buildPriorProductionDirectors?.toString() || '')
         // Same rationale for isWithinTourLeg: evaluatePreWindowInclusion's own
         // toString() doesn't capture the source of a function it CALLS, so an
         // edit only inside isWithinTourLeg would otherwise go undetected here.
