@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-18T08:34:40.861Z",
+  "generatedAt": "2026-10-18T10:12:41.387Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -127,6 +127,10 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -143,6 +147,10 @@
       "error": "HTTP 401 for https://musicaltheatrereview.com/feed/"
     },
     {
+      "outletId": "theatre-vibe",
+      "error": "HTTP 403 for https://theatrevibe.co.uk/feed/"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -155,9 +163,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 721,
+  "itemsScanned": 717,
   "matchedGaps": 2,
-  "possibleGaps": 7,
+  "possibleGaps": 6,
   "gaps": [
     {
       "showId": "cadel-lungs-on-legs-west-end-2026",
@@ -212,15 +220,6 @@
       "url": "https://www.theguardian.com/stage/2026/oct/14/the-cherry-orchard-review-kristin-scott-thomas-chekhov-harold-pinter-theatre-conor-mcpherson-ian-rickson-stephen-mangan",
       "headline": "The Cherry Orchard review – Kristin Scott Thomas makes a modern matriarch in trad, earthy Chekhov",
       "publishDate": "2026-10-14"
-    },
-    {
-      "showId": "stories-the-tap-dance-sensation-west-end-2026",
-      "title": "STORIES – The Tap Dance Sensation",
-      "level": "possible",
-      "outletId": "the-spy-in-the-stalls",
-      "url": "https://thespyinthestalls.com/2026/10/stories-2/",
-      "headline": "STORIES &#8211; THE TAP DANCE SENSATION★★★★UK Tour",
-      "publishDate": "2026-10-16"
     },
     {
       "showId": "the-ask-off-broadway-2026",
