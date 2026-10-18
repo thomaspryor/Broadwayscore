@@ -4951,6 +4951,15 @@ function explainExclusion(data, show, filePath, opts) {
         if (refData.duplicateOf) {
           // Reference also a dupe but pointing elsewhere (not back at us) —
           // rebuild's `refAlsoDupe` branch lets this through. Fall through.
+        } else if (
+          // BRO-5501 parity with rebuild-all-reviews.js: a pointer at a
+          // content-flagged twin whose text is a DIFFERENT article no longer
+          // inherits the flag there, so this predicate must not exclude it
+          // either (it would never get scored otherwise).
+          textsConfirmedDifferent(data.fullText, refData.fullText) &&
+          ['wrongShow', 'wrongProduction', 'nonReview'].includes(explainExclusion(refData, show, refPath))
+        ) {
+          // Fall through to the remaining guards on this file's own fields.
         } else {
           // Reference exists and carries no unresolved duplicateOf of its
           // own → legitimate dup, skip.

@@ -166,3 +166,23 @@ describe('duplicateOfInheritedFlag: different-article twins (BRO-5501)', () => {
     assert.equal(textsConfirmedDifferent('too short', other2024), false);
   });
 });
+
+describe('explainExclusion parity with the rebuild (BRO-5501)', () => {
+  const { explainExclusion } = require('../../scripts/lib/review-guards.js');
+  const words = (seed, n) => Array.from({ length: n }, (_, i) => `${seed}${(i * 7919) % 997}`).join(' ');
+
+  function pair(aText, twinText) {
+    writeFile('twin-parity.json', basePayload({ wrongProduction: true, fullText: twinText }));
+    const aPath = writeFile('a-parity.json', basePayload({ duplicateOf: 'twin-parity.json', fullText: aText }));
+    return explainExclusion(JSON.parse(fs.readFileSync(aPath, 'utf8')), undefined, aPath);
+  }
+
+  test('same text as the flagged twin stays excluded as duplicateOf', () => {
+    const t = words('same', 300);
+    assert.notEqual(pair(t, t), null);
+  });
+
+  test('a different article under the flagged twin is not excluded as duplicateOf', () => {
+    assert.notEqual(pair(words('alpha', 300), words('omega', 300)), 'duplicateOf');
+  });
+});
