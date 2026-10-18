@@ -81,12 +81,22 @@ const CRITICAL_OUTLETS = {
     // registration wall that still carries extractable page furniture;
     // vacuousControl re-fetches without cookies so a probe URL that ages out
     // of the wall warns instead of passing silently.
+    //
+    // liveRoute 'cookie-plain' (BRO-5566): ScrapingBee premium never
+    // authenticates the Stage session — forwarded Spb-Cookie and the
+    // `cookies` param both come back on the Reggate registration gate (body 0)
+    // with the same cookies plain HTTPS reads at 3315 chars (re-verified
+    // 2026-10-17). Production fetches the Stage via the cookies-plain tier
+    // (scraper.js pageChainOrder), so Layer 3 probes that route, with the
+    // same classifyWalledProbe() verdict renew-cookies.js --probe-only uses.
     testUrl: COOKIE_PROBES.thestage.url,
     authCookies: ['USERSECURE', 'USER'],
     minCookies: 3, // VISITOR + USER + USERSECURE is the floor; AWS LB cookies are bonuses
     minBodyChars: COOKIE_PROBES.thestage.minBody,
     wallMarker: COOKIE_PROBES.thestage.wallMarker,
+    gateMarker: COOKIE_PROBES.thestage.gateMarker,
     vacuousControl: true,
+    liveRoute: 'cookie-plain',
   },
   variety: {
     envVar: 'VARIETY_COOKIES',
@@ -117,6 +127,15 @@ const CRITICAL_OUTLETS = {
     authCookies: ['authId'],
     minCookies: 15, // Times bundle historically has 20+ cookies; <15 signals stale
     minBodyChars: 1200,
+    // BRO-5566: no CI route can see a Times login. Plain HTTPS (cookies or
+    // not) gets the toadmash "Verifying Device" interstitial; ScrapingBee
+    // premium + render_js gets past it but serves the logged-out paywall with
+    // the subscriber cookies forwarded either way, while a real Chrome on the
+    // Mac with the same cookies reads the article (recover-thetimes-browser.js
+    // --auth-only: 2775 chars, 2026-10-17). Layer 3 had failed every run since
+    // at least 2026-09-08 without the cookies ever being dead. Layer 1+2
+    // (authId expiry) stay the CI signal; the live check is the Mac command.
+    ciLiveUnverifiable: 'no CI route authenticates a Times session (plain HTTPS hits the device-verification wall; ScrapingBee serves the logged-out paywall even with valid cookies). Layer 1+2 are the CI signal; live check on the Mac: node scripts/recover-thetimes-browser.js --auth-only',
   },
   nypost: {
     // No NYPOST_COOKIES secret exists (card #582 leads confirmed it's absent from
@@ -447,6 +466,51 @@ async function checkLiveAccess(fileKey, testUrl, cookies, authCookies, minBodyCh
   }
 }
 
+// --- Layer 3 (walled, production route): cookie-plain + zero-cookie control ---
+// For outlets whose production fetch is the cookies-plain tier and whose
+// ScrapingBee route cannot carry the login (thestage, BRO-5566). Same verdict
+// function as renew-cookies.js --probe-only, so CI and the Mac agree.
+
+const PLAIN_UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36';
+
+// Map a classifyWalledProbe() verdict to a Layer 3 result. Only 'logged-out'
+// (the recognised registration gate came back WITH cookies) is a failure;
+// 'error' means the page was something else (challenge, block, redesign) and
+// says nothing about the cookies, so it warns instead of paging.
+function walledVerdictToResult(verdict, withBody, withoutBody, minBody) {
+  const detail = `with cookies ${withBody} chars, without ${withoutBody}, floor ${minBody}, via cookie-plain`;
+  switch (verdict) {
+    case 'logged-in': return { status: 'pass', message: `OK logged-in (${detail})` };
+    case 'logged-out': return { status: 'fail', message: `Logged out: registration gate served with cookies (${detail})` };
+    case 'vacuous': return { status: 'warn', message: `VACUOUS: testUrl is readable without cookies (${detail}) — pick a recent walled article in scripts/lib/cookie-probes.js` };
+    default: return { status: 'warn', message: `Probe page not recognised (${detail}) — challenge/block/redesign, not a cookie verdict` };
+  }
+}
+
+async function fetchProbePage(url, withCookies) {
+  const headers = { 'User-Agent': PLAIN_UA, Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 'Accept-Language': 'en-GB,en;q=0.9' };
+  if (withCookies) {
+    const cookieHeader = buildCookieHeaderForUrl(url);
+    if (!cookieHeader) return null;
+    headers.Cookie = cookieHeader;
+  }
+  const res = await fetch(url, { headers, redirect: 'follow', signal: AbortSignal.timeout(30000) });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const html = await res.text();
+  return { html, body: extractArticleTextFromUrl(html, url) || '' };
+}
+
+async function checkLiveAccessWalledPlain(testUrl, { minBodyChars, wallMarker, gateMarker }) {
+  try {
+    const [withCookies, withoutCookies] = await Promise.all([fetchProbePage(testUrl, true), fetchProbePage(testUrl, false)]);
+    if (!withCookies) return { status: 'warn', message: 'No cookie header for this domain' };
+    const verdict = classifyWalledProbe({ withCookies, withoutCookies, minBody: minBodyChars, wallMarker, gateMarker });
+    return walledVerdictToResult(verdict, withCookies.body.length, withoutCookies.body.length, minBodyChars);
+  } catch (err) {
+    return { status: 'warn', message: `cookie-plain probe error: ${err.message} (not a cookie verdict)` };
+  }
+}
+
 // --- Layer 3 (no-auth outlets): plain fetch, no cookies, no ScrapingBee ---
 // For outlets with no hard paywall on theater reviews (nypost, hollywoodreporter):
 // mirrors the production scrape path, which sends no auth to these domains.
@@ -705,6 +769,17 @@ async function main() {
         return { name: fileKey, layer: 3, status: 'skip', message: msg, isCritical: true };
       }
 
+      if (config.ciLiveUnverifiable) {
+        const live = { status: 'warn', message: `Live check skipped in CI: ${config.ciLiveUnverifiable}` };
+        console.log(`${icons[live.status]} ${fileKey}: ${live.message}`);
+        return { name: fileKey, layer: 3, status: live.status, message: live.message, isCritical: true };
+      }
+      if (config.liveRoute === 'cookie-plain') {
+        const live = await checkLiveAccessWalledPlain(config.testUrl, config);
+        console.log(`${icons[live.status]} ${fileKey}: ${live.message}`);
+        return { name: fileKey, layer: 3, status: live.status, message: live.message, isCritical: true };
+      }
+
       // Proxy-blocked outlets (WSJ, New Yorker) use plain HTTPS + cookies instead of
       // ScrapingBee. Post PR #260, fetchWithCookiesPlain is the primary path gather/collect
       // take for these domains, so this is the real end-to-end verification.
@@ -858,7 +933,11 @@ async function main() {
   }
 }
 
-main().catch(err => {
-  console.error('Cookie health check failed:', err);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Cookie health check failed:', err);
+    process.exit(1);
+  });
+}
+
+module.exports = { CRITICAL_OUTLETS, walledVerdictToResult, checkLiveAccessWalledPlain };
