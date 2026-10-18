@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5632",
   "planId": "7fd6b36d-0bbb-4714-a772-dc9ded584caa",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-18T14:44:03.505Z",
   "submitter": {
     "name": null,
@@ -51,5 +51,28 @@
         "description": "sweeney-todd-2023: the quote excludes royalties and percentage rent: a running cost."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-18T16:19:41.634Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for parade-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for parade-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for sweeney-todd-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for sweeney-todd-2023"
+    }
+  ]
 }
