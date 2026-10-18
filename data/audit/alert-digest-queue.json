@@ -326,20 +326,6 @@
     "queuedAt": "2026-10-18T14:06:36.386Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:the-ask-off-broadway-2026",
-    "title": "Review gap — \"The Ask\" missing 3 cited review(s)",
-    "description": "The Ask (the-ask-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-ask-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-18T14:06:36.518Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:larger-than-life-starring-wallace-and-gromit-shaun-and-more-off-west-end-2026",
     "title": "Review gap — \"Larger Than Life: Starring Wallace & Gromit, Shaun and More\" missing 3 cited review(s)",
     "description": "Larger Than Life: Starring Wallace & Gromit, Shaun and More (larger-than-life-starring-wallace-and-gromit-shaun-and-more-off-west-end-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=larger-than-life-starring-wallace-and-gromit-shaun-and-more-off-west-end-2026 --checkpoint --ingest-missing",
@@ -1080,5 +1066,33 @@
       }
     ],
     "queuedAt": "2026-10-18T21:52:51.675Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:other-desert-cities-2026",
+    "title": "Review gap — \"Other Desert Cities\" missing 3 cited review(s)",
+    "description": "Other Desert Cities (other-desert-cities-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=other-desert-cities-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-18T22:55:47.376Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:two-girls-off-broadway-2026",
+    "title": "Review gap — \"Two Girls\" missing 1 cited review(s)",
+    "description": "Two Girls (two-girls-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=two-girls-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-18T22:55:47.432Z"
   }
 ]

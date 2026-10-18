@@ -3356,6 +3356,7 @@ function createReviewFile(showId, reviewData, options = {}) {
     // outletId (not URL alone) via isRoundupPageAsReview so a review legitimately
     // SOURCED from a roundup page under a different outlet still gets through —
     // same policy the rebuild-time gate already applies (see isRoundupPageAsReview).
+    // audit-only: roundup validation of an already resolved review identity, not archive-row ingest
     if (isRoundupPageAsReview({ url: reviewData.url, outletId: reviewData.outletId || normalizedOutletId })) {
       const roundupReason = isRoundupUrl(reviewData.url).reason;
       console.log(`    ✗ Skipping ${filename}: roundup URL (${roundupReason})`);
@@ -3391,6 +3392,7 @@ function createReviewFile(showId, reviewData, options = {}) {
     const decision = resolveWriteTarget({
       showId,
       url: reviewData.url,
+      // audit-only: market routing of an already resolved review identity, not archive-row ingest
       outletId: reviewData.outletId || normalizedOutletId,
       publishDate: reviewData.publishDate,
       dateSource: reviewData.dateSource,
@@ -4875,7 +4877,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           console.log(`    ✓ SD:  ${sdReviews.length} reviews from archive`);
           for (const r of sdReviews) {
             foundReviews.push({
-              outlet: r.outlet, outletId: normalizeOutlet(r.outlet || ''),
+              outlet: r.outlet, outletId: resolveArchiveRowOutletId({ outletLabel: r.outlet, sourceOutletId: 'stagedoor' }),
               criticName: 'Unknown', url: '',
               excerpt: r.excerpt || '',
               score: r.stars ? Math.round((r.stars / 5) * 100) : null,
@@ -5249,6 +5251,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
             break;
           }
 
+          // audit-only: retry uses the persisted review identity, not an archive-row identity
           const outletId = data.outletId || normalizeOutlet(data.outlet);
           const outletName = data.outlet || outletId;
           process.stdout.write(`  ${outletName} (${file})... `);

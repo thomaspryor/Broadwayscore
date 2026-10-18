@@ -48,7 +48,8 @@ function resolveArchiveRowOutletId({ url, outletLabel, cachedOutletId, sourceOut
 
 // --- WE-aggregator wiring guard (source lint) -------------------------------
 //
-// Bans the row-ingest shape `outletId: r.outletId || <anything>`. fc5596d0813
+// Bans `outletId: subject.outletId || <anything>` for any subject, including
+// optional chaining and assignments. fc5596d0813
 // removed three variants of it, all of which re-introduced stale/divergent
 // outletIds because they trusted a scrape-era cached ID instead of recomputing
 // identity:
@@ -62,7 +63,8 @@ function resolveArchiveRowOutletId({ url, outletLabel, cachedOutletId, sourceOut
 // normalizeOutlet() fallback") would still catch the third shape while
 // permitting the first two forever — the two most likely to recur, since
 // normalizeOutlet is what a developer reaches for when they ARE thinking about
-// outlet identity. A genuine non-ingest use DECLARES itself with a trailing
+// outlet identity. A non-ingest use or documented identity-policy exception
+// DECLARES itself with a trailing
 // `// audit-only: <reason>` on, or on the line DIRECTLY above, the match — the same
 // convention as the repo's `# hygiene-*-ok:` workflow markers and the
 // .alert-sender-baseline.json exemption ledgers. The reason is mandatory: a
@@ -72,7 +74,7 @@ function resolveArchiveRowOutletId({ url, outletLabel, cachedOutletId, sourceOut
 // test can require() it and feed it fixtures (CLAUDE.md rule 15) — without
 // that, nothing proves the guard still matches anything at all, which is
 // exactly how a "false positive fix" silently turns into a dead gate.
-const RAW_OUTLET_ID_INGEST_RE = /outletId\s*[:=]\s*(?:r|review|lboReview)\.outletId\s*\|\|/g;
+const RAW_OUTLET_ID_INGEST_RE = /outletId\s*[:=]\s*[\w$]+\??\.outletId\s*\|\|/g;
 const AUDIT_ONLY_RE = /\/\/\s*audit-only:\s*\S/;
 const COMMENT_ONLY_RE = /^\s*\/\//;
 

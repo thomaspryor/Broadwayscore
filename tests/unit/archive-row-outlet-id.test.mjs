@@ -99,8 +99,8 @@ describe('WE-aggregator ingestion wiring', () => {
   // SAME rows as gather-reviews — a raw `X.outletId || normalizeOutlet(...)`
   // there re-introduces the divergence (ship-check P1, 2026-07-12).
   const WIRED = [
-    { file: 'scripts/gather-reviews.js', minCalls: 4, label: 'LBO, WET, TR, TS cache blocks' },
-    { file: 'scripts/opening-night-poller.js', minCalls: 4, label: 'poller LBO, WET, TR, TS blocks' },
+    { file: 'scripts/gather-reviews.js', minCalls: 5, label: 'LBO, WET, TR, SD, TS cache blocks' },
+    { file: 'scripts/opening-night-poller.js', minCalls: 5, label: 'poller LBO, WET, TR, SD, TS blocks' },
     { file: 'scripts/scrape-theatre-reviews.js', minCalls: 1, label: 'TR sweep writer' },
     { file: 'scripts/scrape-thestage-roundups.js', minCalls: 1, label: 'TS sweep writer' },
   ];
@@ -112,13 +112,18 @@ describe('WE-aggregator ingestion wiring', () => {
       const calls = contents.match(/resolveArchiveRowOutletId\s*\(/g) || [];
       assert.ok(calls.length >= w.minCalls,
         `expected ≥${w.minCalls} resolveArchiveRowOutletId call sites (${w.label}), found ${calls.length}`);
+      if (w.label.includes('SD')) {
+        assert.ok(
+          /outletId:\s*resolveArchiveRowOutletId\(\{ outletLabel: r\.outlet, sourceOutletId: 'stagedoor' \}\)/.test(contents),
+          'Stagedoor label-only rows must use the shared resolver');
+      }
       // Un-exempted matches only. A genuine non-ingest use (rejected-review
       // telemetry, say) declares itself with `// audit-only: <reason>` rather
       // than being narrowed out of the guard — see findRawOutletIdIngestLines.
       const raw = findRawOutletIdIngestLines(contents);
       assert.deepStrictEqual(raw, [],
         `${w.file} has a row-ingest site trusting .outletId directly — route it through `
-        + `resolveArchiveRowOutletId, or declare why it is not row ingest with an `
+        + `resolveArchiveRowOutletId, or document an identity-policy exception or non-ingest use with an `
         + `\`// audit-only: <reason>\` annotation ON the matching line or the line DIRECTLY above it:\n`
         + raw.map((f) => `  ${w.file}:${f.line}  ${f.text}`).join('\n'));
     });
@@ -150,12 +155,22 @@ describe('raw outletId ingest guard (positive control)', () => {
       findRawOutletIdIngestLines("outletId:\n  r.outletId ||\n  'unknown',").length, 1);
   });
 
-  test('all three guarded subject names are detected', () => {
-    for (const subject of ['r', 'review', 'lboReview']) {
-      assert.strictEqual(
-        findRawOutletIdIngestLines(`outletId: ${subject}.outletId || 'unknown',`).length, 1,
-        `subject "${subject}" must still be caught`);
+  test('arbitrary subjects, including optional chaining, are detected', () => {
+    for (const subject of ['r', 'review', 'lboReview', 'resolved', 'reviewData', 'row', '_cached', '$row']) {
+      for (const access of ['.', '?.']) {
+        for (const operator of [':', '=']) {
+          assert.strictEqual(
+            findRawOutletIdIngestLines(`outletId ${operator} ${subject}${access}outletId || 'unknown',`).length, 1,
+            `subject "${subject}" with ${access} and ${operator} must be caught`);
+        }
+      }
     }
+  });
+
+  test('the real multi-line Playbill optional-chain form is caught', () => {
+    assert.deepStrictEqual(findRawOutletIdIngestLines(
+      `outletId: resolved?.outletId\n  || (link.outletDomain ? link.outletDomain.replace(/\\./g, '-') : 'unknown'),`),
+    [{ line: 1, text: 'outletId: resolved?.outletId' }]);
   });
 
   test('an audit-only annotation WITH a reason exempts the line', () => {
@@ -191,9 +206,11 @@ describe('raw outletId ingest guard (positive control)', () => {
       `// audit-only: too far away\n\n${HISTORICAL_SHAPES[1]}`).length, 1);
   });
 
-  // The two shipped exemptions are the only ones. A third has to be added
+  // Two telemetry exemptions, three validation/retry uses of existing review
+  // identities, and the pending Playbill identity decision.
+  // Any additional exemption has to be added
   // deliberately, in a diff that changes this number.
-  test('exactly two audit-only exemptions exist across the guarded files', () => {
+  test('exactly six audit-only exemptions exist across the guarded files', () => {
     const files = [
       'scripts/gather-reviews.js',
       'scripts/opening-night-poller.js',
@@ -204,8 +221,8 @@ describe('raw outletId ingest guard (positive control)', () => {
       const c = readFileSync(resolve(ROOT, f), 'utf8').match(/\/\/\s*audit-only:/g) || [];
       return n + c.length;
     }, 0);
-    assert.strictEqual(total, 2,
-      'a new `// audit-only:` exemption was added to a guarded file — confirm it really is not row ingest, then update this count');
+    assert.strictEqual(total, 6,
+      'a new `// audit-only:` exemption needs a documented reason and an explicit count update');
   });
 
   test('clean routed code produces no findings', () => {
