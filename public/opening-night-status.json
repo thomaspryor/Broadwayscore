@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-18T13:58:47.740Z",
+  "generatedAt": "2026-10-18T14:19:59.228Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -2163,27 +2163,27 @@
       "slug": "angels-bone-west-end",
       "thumbnail": "/images/shows/angels-bone-west-end-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": 40,
+      "liveScore": 50,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 2,
+      "total": 4,
       "t1": 0,
-      "t2": 0,
-      "t3": 2,
+      "t2": 1,
+      "t3": 3,
       "positive": 0,
-      "mixed": 0,
+      "mixed": 2,
       "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/8 total",
+          "4/8 total",
           "T1:0/3",
-          "T2:0/2",
-          "hi-conf:2/6"
+          "T2:1/2",
+          "hi-conf:4/6"
         ],
-        "highConfidence": 2,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2291,10 +2291,6 @@
           "isDualMarket": false
         },
         {
-          "name": "London Theatre",
-          "isDualMarket": false
-        },
-        {
           "name": "LondonTheatre1",
           "isDualMarket": false
         },
@@ -2313,6 +2309,18 @@
           "t3": 2,
           "p": 0,
           "m": 0,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-18T14:19:59.228Z",
+          "rc": 4,
+          "s": 50,
+          "t1": 0,
+          "t2": 1,
+          "t3": 3,
+          "p": 0,
+          "m": 2,
           "n": 2,
           "bc": "waiting"
         }
