@@ -1,0 +1,75 @@
+{
+  "issueNumber": "bro-5299",
+  "planId": "7b38c07d-3051-43e3-b23b-15b2b1a0a074",
+  "status": "pending",
+  "createdAt": "2026-10-18T02:59:26.287Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5299: restore two genuine 2026 Adelphi reviews of The Comedy About Spies (west-end-2026). Theatre Flyer was rejected as wrong_production against the 2025 Noel Coward run though it reviews the returning Adelphi engagement: clear the flag and the ensemble rejection. Theatre and Tonic holds a different article (By Royal Appointment) under the correct Adelphi url: delete the file so ingest-urls re-fetches it (the live page was checked and is the Adelphi review). The prompt-side cause is fixed in scripts/lib/prior-runs-note.js.",
+    "steps": [
+      "Null the ensemble rejection fields on thetheatreflyer-co-uk--unknown.json (rejectedAt, rejectedBy, rejectionReason, rejectionReasoning) while the flag is still set.",
+      "Set wrongProductionManualClear, then clear wrongProduction (the write guard re-tiers the record from invalid to complete).",
+      "Delete theatreandtonic--penny-walshe.json (stored text is By Royal Appointment, wrong article); then dispatch ingest-urls.yml for show_id=the-comedy-about-spies-west-end-2026 with url https://theatreandtonic.co.uk/blog/the-comedy-about-spies-adelphi-theatre-review theatreandtonic, and rebuild."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-comedy-about-spies-west-end-2026/thetheatreflyer-co-uk--unknown.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-08-22T21:30:09.255Z",
+        "newValue": null,
+        "description": "BRO-5299: ensemble rejection was wrong (return engagement)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-comedy-about-spies-west-end-2026/thetheatreflyer-co-uk--unknown.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "BRO-5299: ensemble rejection was wrong (return engagement)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-comedy-about-spies-west-end-2026/thetheatreflyer-co-uk--unknown.json",
+        "field": "rejectionReason",
+        "oldValue": "wrong_production",
+        "newValue": null,
+        "description": "BRO-5299: ensemble rejection was wrong (return engagement)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-comedy-about-spies-west-end-2026/thetheatreflyer-co-uk--unknown.json",
+        "field": "rejectionReasoning",
+        "oldValue": "claude: The review covers The Comedy About Spies at the Adelphi Theatre in 2026, whereas the specified production ran at the Noël Coward Theatre from April to August 2025. Different venue and date range = wrong production.; openai: The review discusses a production at the Adelphi Theatre in 2026, which does not match the specified venue and date range for the target production at the West End (Off-West End) or the earlier run at Noël Coward Theatre.",
+        "newValue": null,
+        "description": "BRO-5299: ensemble rejection was wrong (return engagement)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-comedy-about-spies-west-end-2026/thetheatreflyer-co-uk--unknown.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5299: the Theatre Flyer review is of the 2026 Adelphi engagement (url ends adelphi-theatre-2026; text: \"celebrating its return to the West End\"). The ensemble compared it with the declared 2025 Noel Coward run and rejected it; a return engagement is this production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-comedy-about-spies-west-end-2026/thetheatreflyer-co-uk--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5299: cleared after the manual-clear marker (text names the Adelphi return engagement)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-comedy-about-spies-west-end-2026/theatreandtonic--penny-walshe.json",
+        "description": "BRO-5299: stored fullText is the By Royal Appointment review (a different show), CV-promoted wrongProduction. The url is the correct Adelphi review (live page checked); delete so ingest-urls re-fetches it."
+      }
+    ]
+  }
+}

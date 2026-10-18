@@ -21,6 +21,7 @@ const { getMarketLabel, isNonMetroMarket, getRegionalPromptContext, isTourMarket
 // reviewed as the Tom Stoppard Theatre, was rejected as wrong_production).
 const { otherVenueNames } = require('../lib/venue-aliases');
 const { isShortPartialReview } = require('../lib/scorable-text');
+const { buildPriorRunsNote } = require('../lib/prior-runs-note');
 
 // ========================================
 // TYPES
@@ -207,21 +208,11 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
     if (isOpera) {
       contextParts.push('NOTE: This is an opera production at the Metropolitan Opera. Reviews discussing opera, the Met, conductors, sopranos/tenors/bass voices, libretto, arias, and musical performance ARE valid for this show — do NOT flag the review as wrong_show or wrong_production for being about opera at the Met.');
     }
-    const validPriorRuns = Array.isArray(review.priorRuns)
-      ? review.priorRuns.filter(p => p && typeof p === 'object')
-      : [];
-    if (validPriorRuns.length > 0) {
-      const sanitize = (s: string) => s.replace(/\s+/g, ' ').trim().slice(0, 200);
-      const legs = validPriorRuns
-        .map(p => {
-          const dates = p.openingDate || p.closingDate
-            ? ` (${p.openingDate || 'unknown'} to ${p.closingDate || 'unknown'})`
-            : '';
-          const kind = p.note === 'tour leg' ? ' [tour leg]' : '';
-          return `${p.venue ? sanitize(p.venue) : 'earlier run'}${dates}${kind}`;
-        })
-        .join('; ');
-      contextParts.push(`NOTE: This same production also played declared earlier runs/tour legs: ${legs}. A review qualifies as THIS production only if it matches a listed venue AND falls within that leg's date range (or reviews the current venue during the current engagement). Any other staging — including earlier stagings by the same company, even at the same venue in a different year — is wrong_production.`);
+    // Note text lives in scripts/lib/prior-runs-note.js (pure, unit-tested; BRO-5299
+    // added the return-engagement clause).
+    const priorRunsNote = buildPriorRunsNote(review.priorRuns);
+    if (priorRunsNote) {
+      contextParts.push(priorRunsNote);
       if (review.publishDate) {
         contextParts.push(`Review published: ${review.publishDate}`);
       }
