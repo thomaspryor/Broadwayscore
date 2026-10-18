@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-18T13:51:53.149Z",
-  "windowDays": 1095,
-  "targets": 684,
-  "auditedThisRun": 15,
-  "carriedForward": 737,
+  "generatedAt": "2026-10-18T14:06:35.764Z",
+  "windowDays": 21,
+  "targets": 9,
+  "auditedThisRun": 9,
+  "carriedForward": 742,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 428,
-    "missingCurrentRun": 857,
+    "missingCurrentRun": 855,
     "totalCitedNoUrl": 7,
-    "totalFlaggedMisses": 960,
-    "totalRecoverable": 8,
-    "totalRecovered": 14,
+    "totalFlaggedMisses": 964,
+    "totalRecoverable": 9,
+    "totalRecovered": 15,
     "humanExcluded": 1,
-    "automatedExcluded": 158,
-    "automatedExcludedListed": 129,
-    "priorProductionCitations": 5135
+    "automatedExcluded": 165,
+    "automatedExcludedListed": 133,
+    "priorProductionCitations": 5149
   },
   "results": [
     {
@@ -474,21 +474,15 @@
         "https://theaterpizzazz.com/a-ghost-in-your-ear-gets-in-your-head-2/",
         "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/",
         "https://www.theatrely.com/post/a-ghost-in-your-ear-in-one-and-out-the-other-review",
-        "https://hauntedattractionnetwork.com/a-ghost-in-your-ear-nyc/",
+        "https://www.nytimes.com/2026/10/16/theater/ghost-in-your-ear-4th-witch.html",
         "https://www.offoffonline.com/offoffonline/2026/10/7/a-ghost-in-your-ear",
-        "https://variety.com/2026/legit/news/ghost-in-your-ear-horror-play-minetta-lane-audible-theater-1236827653/",
-        "https://www.nyctourism.com/events/a-ghost-in-your-ear/"
+        "https://www.wsj.com/articles/anon-and-a-ghost-in-your-ear-review-minds-unraveling-off-broadway-77d2284f",
+        "https://variety.com/2026/legit/news/ghost-in-your-ear-horror-play-minetta-lane-audible-theater-1236827653/"
       ],
-      "dirFiles": 27,
-      "dirClean": 12,
-      "inReviewsJson": 11,
-      "missing": [
-        {
-          "url": "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania"
-        }
-      ],
+      "dirFiles": 28,
+      "dirClean": 14,
+      "inReviewsJson": 13,
+      "missing": [],
       "dirOnly": [
         {
           "host": "lightingandsoundamerica.com",
@@ -505,9 +499,9 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://hauntedattractionnetwork.com/a-ghost-in-your-ear-nyc/",
-          "host": "hauntedattractionnetwork.com",
-          "knownOutletId": null,
+          "url": "https://www.wsj.com/articles/anon-and-a-ghost-in-your-ear-review-minds-unraveling-off-broadway-77d2284f",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -515,17 +509,18 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "hauntedattractionnetwork--philip-hernandez.json",
+              "file": "wsj--charles-isherwood.json",
               "flag": "clean",
-              "urlInDir": "https://hauntedattractionnetwork.com/a-ghost-in-your-ear-nyc/"
+              "urlInDir": "https://www.wsj.com/articles/anon-and-a-ghost-in-your-ear-review-minds-unraveling-off-broadway-77d2284f"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
             "rejectionReason"
           ],
+          "confirmedNonReview": true,
           "serpCensus": true,
-          "reverify": true
+          "reverify": false
         },
         {
           "url": "https://variety.com/2026/legit/news/ghost-in-your-ear-horror-play-minetta-lane-audible-theater-1236827653/",
@@ -549,29 +544,6 @@
           ],
           "serpCensus": true,
           "reverify": true
-        },
-        {
-          "url": "https://www.nyctourism.com/events/a-ghost-in-your-ear/",
-          "host": "nyctourism.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nyctourism--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nyctourism.com/events/a-ghost-in-your-ear/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "serpCensus": true,
-          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -587,8 +559,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 1,
+            "results": 9,
+            "accepted": 5,
             "error": null
           },
           {
@@ -598,7 +570,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 4,
+            "accepted": 1,
             "error": null
           },
           {
@@ -628,7 +600,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           }
         ],
@@ -638,74 +610,44 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 414,
+        "count": 412,
         "byReason": {
-          "roundup-page": 1,
-          "non-review-host": 62,
-          "write-path-blocked": 1,
+          "non-review-host": 50,
+          "venue-production-page": 1,
           "aggregator-internal-nav": 257,
-          "not-http-url": 68,
-          "production-database-listing": 8,
-          "aggregator-section-root": 11,
           "bare-host": 1,
-          "census-junk-host": 4,
-          "ticketing-listing": 1
+          "production-database-listing": 9,
+          "ticketing-listing": 1,
+          "non-review-path": 1,
+          "census-junk-host": 2,
+          "not-http-url": 78,
+          "aggregator-section-root": 11,
+          "roundup-page": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 3,
+      "automatedExcludedListed": 1,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "❌ Stale merge: url, fullText still hold a pre-existing value at /home/runner/work/Broadwayscore/Broa"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/"
-          },
-          {
-            "outletId": "hauntedattractionnetwork.com",
-            "outlet": "hauntedattractionnetwork.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://hauntedattractionnetwork.com/a-ghost-in-your-ear-nyc/"
-          },
           {
             "outletId": "variety",
             "outlet": "variety",
             "critic": "Unknown",
             "stars": null,
             "url": "https://variety.com/2026/legit/news/ghost-in-your-ear-horror-play-minetta-lane-audible-theater-1236827653/"
-          },
-          {
-            "outletId": "nyctourism.com",
-            "outlet": "nyctourism.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nyctourism.com/events/a-ghost-in-your-ear/"
           }
         ],
-        "suppressedMissing": [],
+        "suppressedMissing": [
+          {
+            "outletId": "wsj",
+            "outlet": "wsj",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.wsj.com/articles/anon-and-a-ghost-in-your-ear-review-minds-unraveling-off-broadway-77d2284f"
+          }
+        ],
         "candidates": [
           {
             "url": "https://therecs.co.uk/a-ghost-in-your-ear-audibles-minetta-lane-theatre/",
@@ -744,10 +686,22 @@
             "firstSeenAt": "2026-10-15T10:17:27.731Z"
           },
           {
+            "url": "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
             "url": "https://www.theatrely.com/post/a-ghost-in-your-ear-in-one-and-out-the-other-review",
             "outletId": "theatrely.com",
             "state": "live",
             "firstSeenAt": "2026-10-15T01:10:51.119Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/10/16/theater/ghost-in-your-ear-4th-witch.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-18T14:06:35.764Z"
           },
           {
             "url": "https://www.offoffonline.com/offoffonline/2026/10/7/a-ghost-in-your-ear",
@@ -756,18 +710,11 @@
             "firstSeenAt": "2026-10-13T23:45:26.813Z"
           },
           {
-            "url": "https://www.theatermania.com/news/review-a-ghost-in-your-ear-the-curse-of-daddy-issues-in-an-audiobook_1857147/",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-15T01:10:51.119Z"
-          },
-          {
-            "url": "https://hauntedattractionnetwork.com/a-ghost-in-your-ear-nyc/",
-            "outletId": "hauntedattractionnetwork.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T14:24:41.672Z"
+            "url": "https://www.wsj.com/articles/anon-and-a-ghost-in-your-ear-review-minds-unraveling-off-broadway-77d2284f",
+            "outletId": "wsj",
+            "state": "SUPPRESSED",
+            "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-10-18T14:06:35.764Z"
           },
           {
             "url": "https://variety.com/2026/legit/news/ghost-in-your-ear-horror-play-minetta-lane-audible-theater-1236827653/",
@@ -775,20 +722,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-15T16:27:21.493Z"
-          },
-          {
-            "url": "https://www.nyctourism.com/events/a-ghost-in-your-ear/",
-            "outletId": "nyctourism.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-15T23:35:34.762Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 7,
+        "liveCount": 9,
         "candidateCount": 11
       },
-      "computedAt": "2026-10-17T14:24:41.672Z"
+      "computedAt": "2026-10-18T14:06:35.764Z"
     },
     {
       "showId": "a-life-in-four-seasons-west-end-2026",
@@ -42125,77 +42065,40 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://everything-theatre.co.uk/2026/10/review-de-profundis-coronet-theatre/",
+        "https://corrblimey.uk/2026/10/06/review-berliner-ensemble-de-profundis-by-oscar-wilde-the-coronet-theatre-london/",
         "https://theatreweekly.com/review-berliner-ensemble-de-profundis-at-the-coronet-theatre/",
         "https://www.theguardian.com/stage/2026/oct/05/de-profundis-review-oscar-wilde-coronet-theatre-london",
-        "https://fringereview.co.uk/review/fringereview-uk/2026/de-profundis/",
-        "https://www.timeout.com/london/theatre/de-profundis-2",
         "https://www.broadwayworld.com/westend/article/Review-DE-PROFUNDIS-The-Coronet-Theatre-20261003",
-        "https://corrblimey.uk/2026/10/06/review-berliner-ensemble-de-profundis-by-oscar-wilde-the-coronet-theatre-london/",
+        "https://playsinternational.org.uk/de-profundis-coronet-theatre/",
+        "https://fringereview.co.uk/review/fringereview-uk/2026/de-profundis/",
         "https://theartsdesk.com/theatre/de-profundis-berliner-ensemble-coronet-theatre-review-madness-beneath-method",
-        "https://thecontextengine.ca/dossier/stage%2F2026%2Foct%2F05%2Fde-profundis-review-oscar-wilde-coronet-theatre-london",
-        "https://www.aol.ca/articles/profundis-review-oscar-wilde-brought-122622000.html",
-        "https://rss-stream.lovable.app/en/articles/de-profundis-review-oscar-wilde-brought-alive-with-ac0w3w",
         "https://loureviews.blog/2026/10/05/berliner-ensemble-de-profundis-by-oscar-wilde-at-coronet-theatre/",
+        "https://viewfromthegods.co.uk/2026/10/07/10-6-26-de-profundis-coronet/",
+        "https://ayoungishperspective.co.uk/2026/10/05/review-berliner-ensemble-de-profundis/",
+        "https://www.aol.co.uk/articles/profundis-review-oscar-wilde-brought-122622000.html",
+        "https://thespyinthestalls.com/2026/10/de-profundis/",
+        "https://www.timeout.com/london/theatre/de-profundis-2",
         "https://www.thestage.co.uk/reviews/de-profundis-review-coronet-theatre-london-oscar-wilde-berliner-ensemble",
         "https://www.uktw.co.uk/London/The-Coronet/Play/De-Profundis/L1410119577/",
-        "https://playsinternational.org.uk/de-profundis-coronet-theatre/",
-        "https://thespyinthestalls.com/2026/10/de-profundis/",
         "https://shouldgoto.com/theatre/berliner-ensemble-de-profundis-by-oscar-wilde",
-        "https://ayoungishperspective.co.uk/2026/10/05/review-berliner-ensemble-de-profundis/",
         "https://www.berliner-ensemble.de/en/production/de-profundis",
         "https://theatreweekly.com/berliner-ensembles-acclaimed-production-of-de-profundis-receives-uk-premiere-at-the-coronet-theatre/",
-        "https://viewfromthegods.co.uk/2026/10/07/10-6-26-de-profundis-coronet/",
         "https://playstosee.com/reviews/uk-reviews/de-profundis-2/"
       ],
-      "dirFiles": 10,
-      "dirClean": 9,
-      "inReviewsJson": 9,
+      "dirFiles": 16,
+      "dirClean": 12,
+      "inReviewsJson": 11,
       "missing": [
+        {
+          "url": "https://www.aol.co.uk/articles/profundis-review-oscar-wilde-brought-122622000.html",
+          "host": "aol.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
         {
           "url": "https://www.timeout.com/london/theatre/de-profundis-2",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
-          "serpCensus": true
-        },
-        {
-          "url": "https://corrblimey.uk/2026/10/06/review-berliner-ensemble-de-profundis-by-oscar-wilde-the-coronet-theatre-london/",
-          "host": "corrblimey.uk",
-          "knownOutletId": "corrblimey",
-          "serpCensus": true
-        },
-        {
-          "url": "https://thecontextengine.ca/dossier/stage%2F2026%2Foct%2F05%2Fde-profundis-review-oscar-wilde-coronet-theatre-london",
-          "host": "thecontextengine.ca",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.aol.ca/articles/profundis-review-oscar-wilde-brought-122622000.html",
-          "host": "aol.ca",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://rss-stream.lovable.app/en/articles/de-profundis-review-oscar-wilde-brought-alive-with-ac0w3w",
-          "host": "lovable.app",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/de-profundis-review-coronet-theatre-london-oscar-wilde-berliner-ensemble",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "bestoftheatre"
-        },
-        {
-          "url": "https://www.uktw.co.uk/London/The-Coronet/Play/De-Profundis/L1410119577/",
-          "host": "uktw.co.uk",
-          "knownOutletId": "uktw",
           "serpCensus": true
         },
         {
@@ -42209,32 +42112,38 @@
           "host": "berliner-ensemble.de",
           "knownOutletId": null,
           "serpCensus": true
-        },
-        {
-          "url": "https://viewfromthegods.co.uk/2026/10/07/10-6-26-de-profundis-coronet/",
-          "host": "viewfromthegods.co.uk",
-          "knownOutletId": "viewfromthegods",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 5,
-          "weRefStarsSource": "bestoftheatre"
-        },
-        {
-          "url": "https://playstosee.com/reviews/uk-reviews/de-profundis-2/",
-          "host": "playstosee.com",
-          "knownOutletId": "plays-to-see",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 2.5,
-          "weRefStarsSource": "bestoftheatre"
         }
       ],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "thecontextengine.ca",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [
+        {
+          "url": "https://corrblimey.uk/2026/10/06/review-berliner-ensemble-de-profundis-by-oscar-wilde-the-coronet-theatre-london/",
+          "host": "corrblimey.uk",
+          "knownOutletId": "corrblimey",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "corrblimey--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://corrblimey.uk/2026/10/06/review-berliner-ensemble-de-profundis-by-oscar-wilde-the-coronet-theatre-london/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
         {
           "url": "https://theartsdesk.com/theatre/de-profundis-berliner-ensemble-coronet-theatre-review-madness-beneath-method",
           "host": "theartsdesk.com",
@@ -42262,6 +42171,57 @@
           "weRefStars": 4,
           "weRefStarsSource": "bestoftheatre",
           "reverify": true
+        },
+        {
+          "url": "https://viewfromthegods.co.uk/2026/10/07/10-6-26-de-profundis-coronet/",
+          "host": "viewfromthegods.co.uk",
+          "knownOutletId": "viewfromthegods",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "viewfromthegods--simon-jenner.json",
+              "flag": "clean",
+              "urlInDir": "https://viewfromthegods.co.uk/2026/10/07/10-6-26-de-profundis-coronet/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "isSyndicatedDuplicate"
+          ],
+          "weRef": true,
+          "weRefSources": [
+            "bestoftheatre"
+          ],
+          "weRefStars": 5,
+          "weRefStarsSource": "bestoftheatre",
+          "reverify": true
+        },
+        {
+          "url": "https://www.uktw.co.uk/London/The-Coronet/Play/De-Profundis/L1410119577/",
+          "host": "uktw.co.uk",
+          "knownOutletId": "uktw",
+          "recoverable": true,
+          "recoverableFile": "uktw--unknown.json",
+          "recoverableOutletId": "uktw",
+          "recoverableCritic": "Unknown",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "uktw--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.uktw.co.uk/archive/London/The-Coronet/Play/De-Profundis/L1410119577/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "noTextOrScoreSignal"
+          ],
+          "serpCensus": true,
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -42280,7 +42240,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 1
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -42306,11 +42266,11 @@
         },
         "allSourcesFailed": false,
         "currentRunRows": 12,
-        "corroborated": 8,
+        "corroborated": 10,
         "perSource": {
           "bestoftheatre": {
-            "cited": 9,
-            "corroborated": 8
+            "cited": 12,
+            "corroborated": 10
           }
         }
       },
@@ -42326,7 +42286,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 6,
+            "accepted": 8,
             "error": null
           },
           {
@@ -42345,7 +42305,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 3,
             "error": null
           },
@@ -42356,7 +42316,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -42376,28 +42336,43 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 20,
+        "resultCount": 19,
         "error": null
       },
       "candidatesRejected": {
         "count": 18,
         "byReason": {
-          "roundup-page": 1,
           "non-review-host": 12,
-          "write-path-blocked": 4,
+          "roundup-page": 2,
+          "write-path-blocked": 3,
           "event-listings-page": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 4,
       "unextractable": [],
       "ingestResults": [
+        {
+          "url": "https://www.aol.co.uk/articles/profundis-review-oscar-wilde-brought-122622000.html",
+          "host": "aol.co.uk",
+          "outletId": "aol",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
         {
           "url": "https://www.timeout.com/london/theatre/de-profundis-2",
           "host": "timeout.com",
@@ -42414,54 +42389,9 @@
           "reason": "de-profundis-off-west-end-2026: https://www.timeout.com/london/theatre/de-profundis-2 is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
         },
         {
-          "url": "https://corrblimey.uk/2026/10/06/review-berliner-ensemble-de-profundis-by-oscar-wilde-the-coronet-theatre-london/",
-          "host": "corrblimey.uk",
-          "outletId": "corrblimey",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://thecontextengine.ca/dossier/stage%2F2026%2Foct%2F05%2Fde-profundis-review-oscar-wilde-coronet-theatre-london",
-          "host": "thecontextengine.ca",
-          "outletId": "thecontextengine",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.aol.ca/articles/profundis-review-oscar-wilde-brought-122622000.html",
-          "host": "aol.ca",
-          "outletId": "aol",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "Fetch failed: All scraping methods failed"
-        },
-        {
-          "url": "https://rss-stream.lovable.app/en/articles/de-profundis-review-oscar-wilde-brought-alive-with-ac0w3w",
-          "host": "lovable.app",
-          "outletId": "lovable",
+          "url": "https://shouldgoto.com/theatre/berliner-ensemble-de-profundis-by-oscar-wilde",
+          "host": "shouldgoto.com",
+          "outletId": "shouldgoto",
           "provisional": true,
           "ok": false,
           "noop": false,
@@ -42471,100 +42401,61 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": true,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=rss-stream.lovable.app): Scrapingdog HTTP 400: Oops! S"
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://www.thestage.co.uk/reviews/de-profundis-review-coronet-theatre-london-oscar-wilde-berliner-ensemble",
-          "host": "thestage.co.uk",
-          "outletId": "thestage"
-        },
-        {
-          "url": "https://www.uktw.co.uk/London/The-Coronet/Play/De-Profundis/L1410119577/",
-          "host": "uktw.co.uk",
-          "outletId": "uktw"
-        },
-        {
-          "url": "https://shouldgoto.com/theatre/berliner-ensemble-de-profundis-by-oscar-wilde",
-          "host": "shouldgoto.com",
-          "outletId": "shouldgoto"
+          "reason": "⚠️  provisional outlet \"shouldgoto\" (not in registry) — onboard to outlet-registry.json after review"
         },
         {
           "url": "https://www.berliner-ensemble.de/en/production/de-profundis",
           "host": "berliner-ensemble.de",
-          "outletId": "berliner-ensemble"
-        },
-        {
-          "url": "https://viewfromthegods.co.uk/2026/10/07/10-6-26-de-profundis-coronet/",
-          "host": "viewfromthegods.co.uk",
-          "outletId": "viewfromthegods"
-        },
-        {
-          "url": "https://playstosee.com/reviews/uk-reviews/de-profundis-2/",
-          "host": "playstosee.com",
-          "outletId": "plays-to-see"
+          "outletId": "berliner-ensemble",
+          "provisional": true,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "credited-person-as-critic",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "de-profundis-off-west-end-2026: https://www.berliner-ensemble.de/en/production/de-profundis was refused because its byline is a creative team member of this same show — the mis-parsed-roundup-row shape validate-data.js errors on. Expected rejection; if this person genuinely reviewed the show, ingest it with scripts/ingest-manual-review.js (operator entries are exempt). If the name is wrong on the SHOW side instead, fix that credit in shows.json."
         }
       ],
-      "recoveryResults": [],
-      "recoverySkippedByCap": [
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
         {
           "url": "https://theartsdesk.com/theatre/de-profundis-berliner-ensemble-coronet-theatre-review-madness-beneath-method",
           "host": "theartsdesk.com",
-          "file": "artsdesk--unknown.json"
+          "file": "artsdesk--unknown.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0
+        }
+      ],
+      "recoverySkippedByCap": [
+        {
+          "url": "https://www.uktw.co.uk/London/The-Coronet/Play/De-Profundis/L1410119577/",
+          "host": "uktw.co.uk",
+          "file": "uktw--unknown.json"
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "aol.co.uk",
+            "outlet": "aol.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.aol.co.uk/articles/profundis-review-oscar-wilde-brought-122622000.html"
+          },
+          {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/london/theatre/de-profundis-2"
-          },
-          {
-            "outletId": "corrblimey",
-            "outlet": "corrblimey",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://corrblimey.uk/2026/10/06/review-berliner-ensemble-de-profundis-by-oscar-wilde-the-coronet-theatre-london/"
-          },
-          {
-            "outletId": "thecontextengine.ca",
-            "outlet": "thecontextengine.ca",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thecontextengine.ca/dossier/stage%2F2026%2Foct%2F05%2Fde-profundis-review-oscar-wilde-coronet-theatre-london"
-          },
-          {
-            "outletId": "aol.ca",
-            "outlet": "aol.ca",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.aol.ca/articles/profundis-review-oscar-wilde-brought-122622000.html"
-          },
-          {
-            "outletId": "lovable.app",
-            "outlet": "lovable.app",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://rss-stream.lovable.app/en/articles/de-profundis-review-oscar-wilde-brought-alive-with-ac0w3w"
-          },
-          {
-            "outletId": "thestage",
-            "outlet": "thestage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thestage.co.uk/reviews/de-profundis-review-coronet-theatre-london-oscar-wilde-berliner-ensemble"
-          },
-          {
-            "outletId": "uktw",
-            "outlet": "uktw",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.uktw.co.uk/London/The-Coronet/Play/De-Profundis/L1410119577/"
           },
           {
             "outletId": "shouldgoto.com",
@@ -42581,18 +42472,11 @@
             "url": "https://www.berliner-ensemble.de/en/production/de-profundis"
           },
           {
-            "outletId": "viewfromthegods",
-            "outlet": "viewfromthegods",
+            "outletId": "corrblimey",
+            "outlet": "corrblimey",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://viewfromthegods.co.uk/2026/10/07/10-6-26-de-profundis-coronet/"
-          },
-          {
-            "outletId": "plays-to-see",
-            "outlet": "plays-to-see",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://playstosee.com/reviews/uk-reviews/de-profundis-2/"
+            "url": "https://corrblimey.uk/2026/10/06/review-berliner-ensemble-de-profundis-by-oscar-wilde-the-coronet-theatre-london/"
           },
           {
             "outletId": "artsdesk",
@@ -42600,6 +42484,20 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://theartsdesk.com/theatre/de-profundis-berliner-ensemble-coronet-theatre-review-madness-beneath-method"
+          },
+          {
+            "outletId": "viewfromthegods",
+            "outlet": "viewfromthegods",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://viewfromthegods.co.uk/2026/10/07/10-6-26-de-profundis-coronet/"
+          },
+          {
+            "outletId": "uktw",
+            "outlet": "uktw",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.uktw.co.uk/London/The-Coronet/Play/De-Profundis/L1410119577/"
           }
         ],
         "suppressedMissing": [],
@@ -42623,20 +42521,8 @@
             "firstSeenAt": "2026-10-17T14:24:41.672Z"
           },
           {
-            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/de-profundis/",
-            "outletId": "fringereview.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-17T14:24:41.672Z"
-          },
-          {
             "url": "https://www.broadwayworld.com/westend/article/Review-DE-PROFUNDIS-The-Coronet-Theatre-20261003",
             "outletId": "broadwayworld.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-17T14:24:41.672Z"
-          },
-          {
-            "url": "https://loureviews.blog/2026/10/05/berliner-ensemble-de-profundis-by-oscar-wilde-at-coronet-theatre/",
-            "outletId": "loureviews.blog",
             "state": "live",
             "firstSeenAt": "2026-10-17T14:24:41.672Z"
           },
@@ -42647,8 +42533,14 @@
             "firstSeenAt": "2026-10-17T14:24:41.672Z"
           },
           {
-            "url": "https://thespyinthestalls.com/2026/10/de-profundis/",
-            "outletId": "thespyinthestalls.com",
+            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/de-profundis/",
+            "outletId": "fringereview.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T14:24:41.672Z"
+          },
+          {
+            "url": "https://loureviews.blog/2026/10/05/berliner-ensemble-de-profundis-by-oscar-wilde-at-coronet-theatre/",
+            "outletId": "loureviews.blog",
             "state": "live",
             "firstSeenAt": "2026-10-17T14:24:41.672Z"
           },
@@ -42659,56 +42551,39 @@
             "firstSeenAt": "2026-10-17T14:24:41.672Z"
           },
           {
+            "url": "https://thespyinthestalls.com/2026/10/de-profundis/",
+            "outletId": "thespyinthestalls.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T14:24:41.672Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/de-profundis-review-coronet-theatre-london-oscar-wilde-berliner-ensemble",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T14:24:41.672Z"
+          },
+          {
             "url": "https://theatreweekly.com/berliner-ensembles-acclaimed-production-of-de-profundis-receives-uk-premiere-at-the-coronet-theatre/",
             "outletId": "theatreweekly.com",
             "state": "live",
             "firstSeenAt": "2026-10-17T23:30:21.846Z"
           },
           {
+            "url": "https://playstosee.com/reviews/uk-reviews/de-profundis-2/",
+            "outletId": "playstosee.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T14:24:41.672Z"
+          },
+          {
+            "url": "https://www.aol.co.uk/articles/profundis-review-oscar-wilde-brought-122622000.html",
+            "outletId": "aol.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-18T14:06:35.764Z"
+          },
+          {
             "url": "https://www.timeout.com/london/theatre/de-profundis-2",
             "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T14:24:41.672Z"
-          },
-          {
-            "url": "https://corrblimey.uk/2026/10/06/review-berliner-ensemble-de-profundis-by-oscar-wilde-the-coronet-theatre-london/",
-            "outletId": "corrblimey",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T14:24:41.672Z"
-          },
-          {
-            "url": "https://thecontextengine.ca/dossier/stage%2F2026%2Foct%2F05%2Fde-profundis-review-oscar-wilde-coronet-theatre-london",
-            "outletId": "thecontextengine.ca",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T23:30:21.846Z"
-          },
-          {
-            "url": "https://www.aol.ca/articles/profundis-review-oscar-wilde-brought-122622000.html",
-            "outletId": "aol.ca",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T23:30:21.846Z"
-          },
-          {
-            "url": "https://rss-stream.lovable.app/en/articles/de-profundis-review-oscar-wilde-brought-alive-with-ac0w3w",
-            "outletId": "lovable.app",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T23:30:21.846Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/de-profundis-review-coronet-theatre-london-oscar-wilde-berliner-ensemble",
-            "outletId": "thestage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T14:24:41.672Z"
-          },
-          {
-            "url": "https://www.uktw.co.uk/London/The-Coronet/Play/De-Profundis/L1410119577/",
-            "outletId": "uktw",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-17T14:24:41.672Z"
@@ -42728,15 +42603,8 @@
             "firstSeenAt": "2026-10-17T14:24:41.672Z"
           },
           {
-            "url": "https://viewfromthegods.co.uk/2026/10/07/10-6-26-de-profundis-coronet/",
-            "outletId": "viewfromthegods",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T14:24:41.672Z"
-          },
-          {
-            "url": "https://playstosee.com/reviews/uk-reviews/de-profundis-2/",
-            "outletId": "plays-to-see",
+            "url": "https://corrblimey.uk/2026/10/06/review-berliner-ensemble-de-profundis-by-oscar-wilde-the-coronet-theatre-london/",
+            "outletId": "corrblimey",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-17T14:24:41.672Z"
@@ -42747,13 +42615,27 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-17T14:24:41.672Z"
+          },
+          {
+            "url": "https://viewfromthegods.co.uk/2026/10/07/10-6-26-de-profundis-coronet/",
+            "outletId": "viewfromthegods",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-17T14:24:41.672Z"
+          },
+          {
+            "url": "https://www.uktw.co.uk/London/The-Coronet/Play/De-Profundis/L1410119577/",
+            "outletId": "uktw",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-17T14:24:41.672Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 9,
-        "candidateCount": 21
+        "liveCount": 11,
+        "candidateCount": 19
       },
-      "computedAt": "2026-10-17T23:30:21.846Z"
+      "computedAt": "2026-10-18T14:06:35.764Z"
     },
     {
       "showId": "dead-outlaw-2025",
@@ -52609,54 +52491,27 @@
         "https://everything-theatre.co.uk/2026/10/review-end-of-the-world-and-hard-boiled-wonderland-barbican/",
         "https://www.theupcoming.co.uk/2026/10/09/end-of-the-world-and-hard-boiled-wonderland-at-barbican-theatre-theatre-review/",
         "https://theatreandtonic.co.uk/blog/end-of-the-world-and-hard-boiled-wonderland-at-the-barbican-theatre",
+        "https://www.thestage.co.uk/reviews/end-of-the-world-and-hard-boiled-wonderland-review-barbican-theatre-london-haruki-murakami",
         "https://www.thereviewshub.com/end-of-the-world-and-hard-boiled-wonderland-barbican-theatre-london/",
-        "https://theartsdesk.com/theatre/end-world-and-hard-boiled-wonderland-barbican-highly-enjoyable-piece-theatrical-craftsmanship",
-        "https://www.theartsdesk.com/theatre/end-world-and-hard-boiled-wonderland-barbican-highly-enjoyable-piece-theatrical-craftsmanship",
         "https://www.allthatdazzles.co.uk/post/review-end-of-the-world-and-hard-boiled-wonderland-barbican-theatre",
-        "https://bakchormeeboy.com/2026/04/05/%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%86-theatre-review-end-of-the-world-and-hard-boiled-wonderland-by-horipro-inc/",
-        "https://allscifiallthetime.com/hard-boiled-wonderland-and-the-end-of-the-world-a-no-spoiler-review/",
+        "https://theartsdesk.com/theatre/end-world-and-hard-boiled-wonderland-barbican-highly-enjoyable-piece-theatrical-craftsmanship",
+        "https://www.timeout.com/london/theatre/end-of-the-world-and-hard-boiled-wonderland-review",
         "https://www.broadwayworld.com/westend/article/Review-END-OF-THE-WORLD-AND-HARD-BOILED-WONDERLAND-Barbican-Theatre-20261009",
-        "https://www.aol.co.uk/articles/end-world-hard-boiled-wonderland-135335000.html",
-        "https://playstosee.com/reviews/the-end-of-the-world-and-the-hard-boiled-wonderland/"
+        "https://playstosee.com/reviews/the-end-of-the-world-and-the-hard-boiled-wonderland/",
+        "https://www.aol.co.uk/articles/end-world-hard-boiled-wonderland-135335000.html"
       ],
-      "dirFiles": 11,
-      "dirClean": 11,
-      "inReviewsJson": 11,
+      "dirFiles": 13,
+      "dirClean": 12,
+      "inReviewsJson": 12,
       "missing": [
-        {
-          "url": "https://bakchormeeboy.com/2026/04/05/%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%86-theatre-review-end-of-the-world-and-hard-boiled-wonderland-by-horipro-inc/",
-          "host": "bakchormeeboy.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://allscifiallthetime.com/hard-boiled-wonderland-and-the-end-of-the-world-a-no-spoiler-review/",
-          "host": "allscifiallthetime.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
         {
           "url": "https://www.aol.co.uk/articles/end-world-hard-boiled-wonderland-135335000.html",
           "host": "aol.co.uk",
           "knownOutletId": null,
           "serpCensus": true
-        },
-        {
-          "url": "https://playstosee.com/reviews/the-end-of-the-world-and-the-hard-boiled-wonderland/",
-          "host": "playstosee.com",
-          "knownOutletId": "plays-to-see",
-          "serpCensus": true
         }
       ],
       "dirOnly": [
-        {
-          "host": "thestage.co.uk",
-          "count": 1
-        },
-        {
-          "host": "timeout.com",
-          "count": 1
-        },
         {
           "host": "thetimes.com",
           "count": 1
@@ -52679,7 +52534,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 1
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -52750,7 +52605,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -52776,53 +52631,22 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 13,
+        "resultCount": 12,
         "error": null
       },
       "candidatesRejected": {
-        "count": 19,
+        "count": 17,
         "byReason": {
-          "roundup-page": 1,
-          "non-review-host": 11,
-          "write-path-blocked": 5,
-          "tag-index-page": 1,
-          "static-asset": 1
+          "non-review-host": 10,
+          "non-review-path": 1,
+          "roundup-page": 2,
+          "write-path-blocked": 4
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "ingestResults": [
-        {
-          "url": "https://bakchormeeboy.com/2026/04/05/%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%86-theatre-review-end-of-the-world-and-hard-boiled-wonderland-by-horipro-inc/",
-          "host": "bakchormeeboy.com",
-          "outletId": "bakchormeeboy",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "Fetch failed: All scraping methods failed"
-        },
-        {
-          "url": "https://allscifiallthetime.com/hard-boiled-wonderland-and-the-end-of-the-world-a-no-spoiler-review/",
-          "host": "allscifiallthetime.com",
-          "outletId": "allscifiallthetime",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
         {
           "url": "https://www.aol.co.uk/articles/end-world-hard-boiled-wonderland-135335000.html",
           "host": "aol.co.uk",
@@ -52837,21 +52661,6 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "Fetch failed: All scraping methods failed"
-        },
-        {
-          "url": "https://playstosee.com/reviews/the-end-of-the-world-and-the-hard-boiled-wonderland/",
-          "host": "playstosee.com",
-          "outletId": "plays-to-see",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -52859,32 +52668,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "bakchormeeboy.com",
-            "outlet": "bakchormeeboy.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://bakchormeeboy.com/2026/04/05/%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%86-theatre-review-end-of-the-world-and-hard-boiled-wonderland-by-horipro-inc/"
-          },
-          {
-            "outletId": "allscifiallthetime.com",
-            "outlet": "allscifiallthetime.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://allscifiallthetime.com/hard-boiled-wonderland-and-the-end-of-the-world-a-no-spoiler-review/"
-          },
-          {
             "outletId": "aol.co.uk",
             "outlet": "aol.co.uk",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.aol.co.uk/articles/end-world-hard-boiled-wonderland-135335000.html"
-          },
-          {
-            "outletId": "plays-to-see",
-            "outlet": "plays-to-see",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://playstosee.com/reviews/the-end-of-the-world-and-the-hard-boiled-wonderland/"
           }
         ],
         "suppressedMissing": [],
@@ -52914,20 +52702,14 @@
             "firstSeenAt": "2026-10-17T14:24:41.672Z"
           },
           {
+            "url": "https://www.thestage.co.uk/reviews/end-of-the-world-and-hard-boiled-wonderland-review-barbican-theatre-london-haruki-murakami",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-18T14:06:35.764Z"
+          },
+          {
             "url": "https://www.thereviewshub.com/end-of-the-world-and-hard-boiled-wonderland-barbican-theatre-london/",
             "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-17T14:24:41.672Z"
-          },
-          {
-            "url": "https://theartsdesk.com/theatre/end-world-and-hard-boiled-wonderland-barbican-highly-enjoyable-piece-theatrical-craftsmanship",
-            "outletId": "theartsdesk.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-17T14:24:41.672Z"
-          },
-          {
-            "url": "https://www.theartsdesk.com/theatre/end-world-and-hard-boiled-wonderland-barbican-highly-enjoyable-piece-theatrical-craftsmanship",
-            "outletId": "theartsdesk.com",
             "state": "live",
             "firstSeenAt": "2026-10-17T14:24:41.672Z"
           },
@@ -52938,24 +52720,28 @@
             "firstSeenAt": "2026-10-17T14:24:41.672Z"
           },
           {
+            "url": "https://theartsdesk.com/theatre/end-world-and-hard-boiled-wonderland-barbican-highly-enjoyable-piece-theatrical-craftsmanship",
+            "outletId": "theartsdesk.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T14:24:41.672Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/end-of-the-world-and-hard-boiled-wonderland-review",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-18T14:06:35.764Z"
+          },
+          {
             "url": "https://www.broadwayworld.com/westend/article/Review-END-OF-THE-WORLD-AND-HARD-BOILED-WONDERLAND-Barbican-Theatre-20261009",
             "outletId": "broadwayworld.com",
             "state": "live",
             "firstSeenAt": "2026-10-17T14:24:41.672Z"
           },
           {
-            "url": "https://bakchormeeboy.com/2026/04/05/%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%86-theatre-review-end-of-the-world-and-hard-boiled-wonderland-by-horipro-inc/",
-            "outletId": "bakchormeeboy.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T23:30:21.846Z"
-          },
-          {
-            "url": "https://allscifiallthetime.com/hard-boiled-wonderland-and-the-end-of-the-world-a-no-spoiler-review/",
-            "outletId": "allscifiallthetime.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T23:30:21.846Z"
+            "url": "https://playstosee.com/reviews/the-end-of-the-world-and-the-hard-boiled-wonderland/",
+            "outletId": "playstosee.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T14:24:41.672Z"
           },
           {
             "url": "https://www.aol.co.uk/articles/end-world-hard-boiled-wonderland-135335000.html",
@@ -52963,20 +52749,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-17T14:24:41.672Z"
-          },
-          {
-            "url": "https://playstosee.com/reviews/the-end-of-the-world-and-the-hard-boiled-wonderland/",
-            "outletId": "plays-to-see",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T14:24:41.672Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 8,
+        "liveCount": 11,
         "candidateCount": 12
       },
-      "computedAt": "2026-10-17T23:30:21.846Z"
+      "computedAt": "2026-10-18T14:06:35.764Z"
     },
     {
       "showId": "english-2025",
@@ -57088,11 +56867,10 @@
         "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/",
         "https://www.theaterscene.net/plays/offbway-plays/fish-2/tony-marinelli/",
         "https://www.theatermania.com/news/review-fish-a-coming-of-age-comedy-about-isis_1856705/",
-        "https://www.timeout.com/newyork/theater/fish",
-        "https://news.frombroadway.com/post/review-roundup-fish-wp-theater",
+        "https://totaltheater1.wordpress.com/2026/10/16/fish-2/",
         "https://synthesizer-accordion-e2w3.squarespace.com/fish-at-wp-theater"
       ],
-      "dirFiles": 17,
+      "dirFiles": 18,
       "dirClean": 7,
       "inReviewsJson": 7,
       "missing": [
@@ -57461,6 +57239,12 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://totaltheater1.wordpress.com/2026/10/16/fish-2/",
+          "host": "totaltheater1.wordpress.com",
+          "knownOutletId": "totaltheater1",
+          "serpCensus": true
+        },
+        {
           "url": "https://synthesizer-accordion-e2w3.squarespace.com/fish-at-wp-theater",
           "host": "synthesizer-accordion-e2w3.squarespace.com",
           "knownOutletId": null,
@@ -57625,53 +57409,6 @@
           "priorRun": true,
           "priorRunSource": "flagged-file-date:April 3rd, 2024",
           "reverify": false
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/fish",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.timeout.com/newyork/theater/fish"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://news.frombroadway.com/post/review-roundup-fish-wp-theater",
-          "host": "frombroadway.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "frombroadway--zachary-stewart.json",
-              "flag": "clean",
-              "urlInDir": "https://news.frombroadway.com/post/review-roundup-fish-wp-theater"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "suspectedMisattribution"
-          ],
-          "serpCensus": true,
-          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -57707,7 +57444,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -57718,7 +57455,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -57728,31 +57465,31 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 6,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
         "count": 1465,
         "byReason": {
-          "roundup-page": 3,
-          "non-review-host": 95,
-          "write-path-blocked": 3,
-          "not-http-url": 233,
-          "aggregator-internal-nav": 1099,
-          "aggregator-section-root": 22,
-          "bare-host": 3,
-          "unparseable-url": 1,
+          "non-review-host": 96,
           "venue-production-page": 1,
-          "show-listing-page": 1,
+          "aggregator-internal-nav": 1099,
+          "bare-host": 3,
           "production-database-listing": 2,
           "ticketing-listing": 1,
-          "census-junk-host": 1
+          "census-junk-host": 1,
+          "not-http-url": 233,
+          "aggregator-section-root": 22,
+          "roundup-page": 3,
+          "write-path-blocked": 2,
+          "unparseable-url": 1,
+          "show-listing-page": 1
         }
       },
       "dedupedVariants": [
@@ -57786,7 +57523,7 @@
           "publishDate": "2017-11-09"
         }
       ],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -58104,6 +57841,21 @@
       ],
       "ingestResults": [
         {
+          "url": "https://totaltheater1.wordpress.com/2026/10/16/fish-2/",
+          "host": "totaltheater1.wordpress.com",
+          "outletId": "totaltheater1",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
           "url": "https://synthesizer-accordion-e2w3.squarespace.com/fish-at-wp-theater",
           "host": "synthesizer-accordion-e2w3.squarespace.com",
           "outletId": "synthesizer-accordion-e2w3",
@@ -58124,25 +57876,18 @@
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "totaltheater1",
+            "outlet": "totaltheater1",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://totaltheater1.wordpress.com/2026/10/16/fish-2/"
+          },
+          {
             "outletId": "synthesizer-accordion-e2w3.squarespace.com",
             "outlet": "synthesizer-accordion-e2w3.squarespace.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://synthesizer-accordion-e2w3.squarespace.com/fish-at-wp-theater"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/newyork/theater/fish"
-          },
-          {
-            "outletId": "frombroadway.com",
-            "outlet": "frombroadway.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://news.frombroadway.com/post/review-roundup-fish-wp-theater"
           }
         ],
         "suppressedMissing": [],
@@ -58172,32 +57917,25 @@
             "firstSeenAt": "2026-10-13T04:11:59.529Z"
           },
           {
+            "url": "https://totaltheater1.wordpress.com/2026/10/16/fish-2/",
+            "outletId": "totaltheater1",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-18T14:06:35.764Z"
+          },
+          {
             "url": "https://synthesizer-accordion-e2w3.squarespace.com/fish-at-wp-theater",
             "outletId": "synthesizer-accordion-e2w3.squarespace.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-17T22:59:21.861Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/theater/fish",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T22:59:21.861Z"
-          },
-          {
-            "url": "https://news.frombroadway.com/post/review-roundup-fish-wp-theater",
-            "outletId": "frombroadway.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T23:30:21.846Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 4,
-        "candidateCount": 7
+        "candidateCount": 6
       },
-      "computedAt": "2026-10-17T23:30:21.846Z"
+      "computedAt": "2026-10-18T14:06:35.764Z"
     },
     {
       "showId": "fishing-for-alaska-off-broadway-2026",
@@ -91366,19 +91104,26 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.allthatdazzles.co.uk/post/review-jane-eyre-rose-theatre",
-        "https://timeandleisure.co.uk/things-to-do/review-jane-eyre-rose-theatre/",
         "https://www.westendbestfriend.co.uk/news/review-jane-eyre-rose-theatre-kingston-tour",
-        "https://northwestend.com/jane-eyre-rose-theatre/",
         "https://www.whatsonstage.com/news/jane-eyre-at-mercury-theatre-and-on-tour-review_1734669/",
+        "https://timeandleisure.co.uk/things-to-do/review-jane-eyre-rose-theatre/",
+        "https://broadwaybaby.com/shows/jane-eyre/838635",
+        "https://www.uktw.co.uk/Worthing/Connaught-Theatre/Musical/Jane-Eyre/L756044034/",
+        "https://www.allthatdazzles.co.uk/post/review-jane-eyre-rose-theatre",
+        "https://www.curtaincallreviews.co.uk/jane-eyre",
+        "https://northwestend.com/jane-eyre-rose-theatre/",
+        "https://kingston.nub.news/news/local-features/review-electrifying-jane-eyre-adaptation-captivates-theatre-audiences-in-kingston-311482",
+        "https://www.britishtheatreguide.info/reviews/jane-eyre-the-southwark-playh-25995",
         "https://brightonsource.co.uk/reviews/jane-eyre-review/",
         "https://www.londontheatre.co.uk/reviews/jane-eyre",
         "https://www.britishtheatreguide.info/reviews/jane-eyre-the-southwark-playh-25995",
         "https://ayoungishperspective.co.uk/2026/09/11/review-jane-eyre/",
         "https://kingston.nub.news/news/local-features/review-electrifying-jane-eyre-adaptation-captivates-theatre-audiences-in-kingston-311482",
         "https://blackeyedtheatre.co.uk/press-reviews/jane-eyre/",
-        "https://www.theguardian.com/stage/2026/sep/09/jane-eyre-a-musical-review-southwark-playhouse-elephant-london-charlotte-bronte",
         "https://www.southernartsreviews.co.uk/review-jane-eyre/",
+        "https://www.theguardian.com/stage/2026/sep/09/jane-eyre-a-musical-review-southwark-playhouse-elephant-london-charlotte-bronte",
+        "https://www.londontheatre.co.uk/reviews/jane-eyre",
+        "https://ayoungishperspective.co.uk/2026/09/11/review-jane-eyre/",
         "https://everything-theatre.co.uk/2026/06/review-jane-eyre-convention-bread-and-roses-theatre/",
         "https://www.londonboxoffice.co.uk/news/post/jane-eyre-southwark-playhouse-elephant-review"
       ],
@@ -91386,6 +91131,18 @@
       "dirClean": 7,
       "inReviewsJson": 8,
       "missing": [
+        {
+          "url": "https://www.uktw.co.uk/Worthing/Connaught-Theatre/Musical/Jane-Eyre/L756044034/",
+          "host": "uktw.co.uk",
+          "knownOutletId": "uktw",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/jane-eyre-the-southwark-playh-25995",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
+          "serpCensus": true
+        },
         {
           "url": "https://brightonsource.co.uk/reviews/jane-eyre-review/",
           "host": "brightonsource.co.uk",
@@ -91595,7 +91352,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 5,
             "error": null
           },
           {
@@ -91605,7 +91362,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 5,
+            "accepted": 0,
             "error": null
           },
           {
@@ -91614,8 +91371,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 4,
+            "results": 9,
+            "accepted": 2,
             "error": null
           },
           {
@@ -91625,7 +91382,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 5,
             "error": null
           },
           {
@@ -91635,7 +91392,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           }
         ],
@@ -91645,11 +91402,11 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 27,
+        "count": 25,
         "byReason": {
-          "non-review-host": 16,
-          "write-path-blocked": 1,
-          "not-http-url": 10
+          "non-review-host": 15,
+          "not-http-url": 9,
+          "write-path-blocked": 1
         }
       },
       "dedupedVariants": [],
@@ -91670,6 +91427,21 @@
         }
       ],
       "ingestResults": [
+        {
+          "url": "https://www.uktw.co.uk/Worthing/Connaught-Theatre/Musical/Jane-Eyre/L756044034/",
+          "host": "uktw.co.uk",
+          "outletId": "uktw",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
         {
           "url": "https://www.britishtheatreguide.info/reviews/jane-eyre-the-southwark-playh-25995",
           "host": "britishtheatreguide.info",
@@ -91735,6 +91507,13 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "uktw",
+            "outlet": "uktw",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.uktw.co.uk/Worthing/Connaught-Theatre/Musical/Jane-Eyre/L756044034/"
+          },
           {
             "outletId": "british-theatre",
             "outlet": "british-theatre",
@@ -91806,6 +91585,12 @@
             "firstSeenAt": "2026-10-17T14:24:41.672Z"
           },
           {
+            "url": "https://www.curtaincallreviews.co.uk/jane-eyre",
+            "outletId": "curtaincallreviews.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T14:24:41.672Z"
+          },
+          {
             "url": "https://northwestend.com/jane-eyre-rose-theatre/",
             "outletId": "northwestend.com",
             "state": "live",
@@ -91816,6 +91601,13 @@
             "outletId": "kingston.nub.news",
             "state": "live",
             "firstSeenAt": "2026-10-17T14:24:41.672Z"
+          },
+          {
+            "url": "https://www.uktw.co.uk/Worthing/Connaught-Theatre/Musical/Jane-Eyre/L756044034/",
+            "outletId": "uktw",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-18T14:06:35.764Z"
           },
           {
             "url": "https://www.britishtheatreguide.info/reviews/jane-eyre-the-southwark-playh-25995",
@@ -91871,7 +91663,7 @@
         "liveCount": 5,
         "candidateCount": 12
       },
-      "computedAt": "2026-10-18T13:51:53.149Z"
+      "computedAt": "2026-10-18T14:06:35.764Z"
     },
     {
       "showId": "jasmines-demo-show-4-the-end-off-broadway-2026",
@@ -131899,99 +131691,39 @@
     {
       "showId": "night-of-january-16th-off-broadway-2026",
       "title": "Night of January 16th",
-      "openingDate": null,
-      "status": "previews",
+      "openingDate": "2026-10-07",
+      "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.theatermania.com/news/review-ayn-rands-night-of-january-16th-gets-a-campy-guilty-pleasure-revival_1856992/",
-        "https://www.truehollywoodtalk.com/night-of-january-16th-at-theatre-row-in-new-york-city/",
-        "https://theatre.fandom.com/wiki/Ayn_Rand%27s_Night_of_January_16th_(_1935_)",
-        "https://aynrandanalyzed.com/night-of-january-16th/",
-        "https://rochestermedia.com/review-avon-players-night-of-january-16th-delivers-courtroom-drama-and-a-surprise-ending/"
+        "https://www.theaterscene.net/plays/offbway-plays/night-of-january-16th/victor-gluck/"
       ],
-      "dirFiles": 6,
-      "dirClean": 1,
-      "inReviewsJson": 1,
-      "missing": [
+      "dirFiles": 7,
+      "dirClean": 3,
+      "inReviewsJson": 3,
+      "missing": [],
+      "dirOnly": [
         {
-          "url": "https://www.truehollywoodtalk.com/night-of-january-16th-at-theatre-row-in-new-york-city/",
           "host": "truehollywoodtalk.com",
-          "knownOutletId": "truehollywoodtalk",
-          "serpCensus": true
-        },
-        {
-          "url": "https://aynrandanalyzed.com/night-of-january-16th/",
-          "host": "aynrandanalyzed.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2025-09-12",
-          "serpCensus": true
+          "count": 1
         }
       ],
-      "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://theatre.fandom.com/wiki/Ayn_Rand%27s_Night_of_January_16th_(_1935_)",
-          "host": "fandom.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "fandom--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://theatre.fandom.com/wiki/Ayn_Rand%27s_Night_of_January_16th_(_1935_)"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://rochestermedia.com/review-avon-players-night-of-january-16th-delivers-courtroom-drama-and-a-surprise-ending/",
-          "host": "rochestermedia.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "rochestermedia--sarah-hovis.json",
-              "flag": "clean",
-              "urlInDir": "https://rochestermedia.com/review-avon-players-night-of-january-16th-delivers-courtroom-drama-and-a-surprise-ending/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
         "ran": true,
         "complete": true,
-        "query": "\"Night of January 16th\" Off-Broadway review",
+        "query": "\"Night of January 16th\" Off-Broadway review 2026",
         "queryStatus": [
           {
             "arm": "primary",
-            "query": "\"Night of January 16th\" Off-Broadway review",
+            "query": "\"Night of January 16th\" Off-Broadway review 2026",
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 2,
             "error": null
           },
@@ -132001,7 +131733,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -132022,7 +131754,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -132032,79 +131764,31 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 5,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 33,
+        "count": 41,
         "byReason": {
-          "non-review-host": 24,
-          "aggregator-internal-nav": 4,
-          "ticketing-reseller": 1,
-          "bare-host": 1,
-          "ticketing-listing": 1,
+          "non-review-host": 14,
+          "venue-production-page": 3,
+          "aggregator-internal-nav": 3,
           "production-database-listing": 1,
-          "venue-production-page": 1
+          "not-http-url": 20
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 2,
+      "automatedExcludedListed": 0,
       "unextractable": [],
-      "weIngestBlocked": [
-        {
-          "url": "https://aynrandanalyzed.com/night-of-january-16th/",
-          "host": "aynrandanalyzed.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://www.truehollywoodtalk.com/night-of-january-16th-at-theatre-row-in-new-york-city/",
-          "host": "truehollywoodtalk.com",
-          "outletId": "truehollywoodtalk",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "truehollywoodtalk",
-            "outlet": "truehollywoodtalk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.truehollywoodtalk.com/night-of-january-16th-at-theatre-row-in-new-york-city/"
-          },
-          {
-            "outletId": "fandom.com",
-            "outlet": "fandom.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatre.fandom.com/wiki/Ayn_Rand%27s_Night_of_January_16th_(_1935_)"
-          },
-          {
-            "outletId": "rochestermedia.com",
-            "outlet": "rochestermedia.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://rochestermedia.com/review-avon-players-night-of-january-16th-delivers-courtroom-drama-and-a-surprise-ending/"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -132114,32 +131798,17 @@
             "firstSeenAt": "2026-10-13T23:45:26.813Z"
           },
           {
-            "url": "https://www.truehollywoodtalk.com/night-of-january-16th-at-theatre-row-in-new-york-city/",
-            "outletId": "truehollywoodtalk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-13T23:45:26.813Z"
-          },
-          {
-            "url": "https://theatre.fandom.com/wiki/Ayn_Rand%27s_Night_of_January_16th_(_1935_)",
-            "outletId": "fandom.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-13T02:55:59.865Z"
-          },
-          {
-            "url": "https://rochestermedia.com/review-avon-players-night-of-january-16th-delivers-courtroom-drama-and-a-surprise-ending/",
-            "outletId": "rochestermedia.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-13T23:45:26.813Z"
+            "url": "https://www.theaterscene.net/plays/offbway-plays/night-of-january-16th/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-18T14:06:35.764Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 1,
-        "candidateCount": 4
+        "liveCount": 2,
+        "candidateCount": 2
       },
-      "computedAt": "2026-10-13T23:45:26.813Z"
+      "computedAt": "2026-10-18T14:06:35.764Z"
     },
     {
       "showId": "night-side-songs-off-broadway-2026",
@@ -178981,20 +178650,12 @@
         "https://thefrontrowcenter.com/2026/10/the-ask-2/",
         "https://exeuntnyc.com/reviews/review-the-ask-at-the-wild-project/",
         "https://www.timeout.com/newyork/theater/the-ask",
-        "https://www.theatrebeyondbroadway.com/reviews/the-ask",
-        "https://www.theatrely.com/post/generations-collide-in-the-ask-review",
-        "http://www.theaterscene.net/plays/offbway-plays/the-ask/tony-marinelli/"
+        "https://www.theatrely.com/post/generations-collide-in-the-ask-review"
       ],
-      "dirFiles": 5,
+      "dirFiles": 6,
       "dirClean": 4,
       "inReviewsJson": 4,
       "missing": [
-        {
-          "url": "https://thefrontrowcenter.com/2026/10/the-ask-2/",
-          "host": "thefrontrowcenter.com",
-          "knownOutletId": "front-row-center",
-          "serpCensus": true
-        },
         {
           "url": "https://exeuntnyc.com/reviews/review-the-ask-at-the-wild-project/",
           "host": "exeuntnyc.com",
@@ -179008,29 +178669,13 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.theatrebeyondbroadway.com/reviews/the-ask",
-          "host": "theatrebeyondbroadway.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
           "url": "https://www.theatrely.com/post/generations-collide-in-the-ask-review",
           "host": "theatrely.com",
           "knownOutletId": "theatrely",
           "serpCensus": true
-        },
-        {
-          "url": "http://www.theaterscene.net/plays/offbway-plays/the-ask/tony-marinelli/",
-          "host": "theaterscene.net",
-          "knownOutletId": "theater-scene",
-          "serpCensus": true
         }
       ],
       "dirOnly": [
-        {
-          "host": "newyorker.com",
-          "count": 1
-        },
         {
           "host": "stageandcinema.com",
           "count": 1
@@ -179081,47 +178726,33 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 4,
         "queriesTotal": 4,
-        "resultCount": 8,
+        "resultCount": 6,
         "error": null
       },
       "candidatesRejected": {
-        "count": 19,
+        "count": 24,
         "byReason": {
-          "aggregator-internal-nav": 1,
-          "production-database-listing": 1,
-          "non-review-host": 9,
+          "non-review-host": 12,
+          "venue-production-page": 2,
+          "aggregator-internal-nav": 2,
           "bare-host": 3,
           "ticketing-reseller": 1,
-          "census-junk-host": 1,
-          "venue-production-page": 2,
-          "ticketing-listing": 1
+          "production-database-listing": 1,
+          "ticketing-listing": 1,
+          "non-review-path": 1,
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "ingestResults": [
-        {
-          "url": "https://thefrontrowcenter.com/2026/10/the-ask-2/",
-          "host": "thefrontrowcenter.com",
-          "outletId": "front-row-center",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
         {
           "url": "https://exeuntnyc.com/reviews/review-the-ask-at-the-wild-project/",
           "host": "exeuntnyc.com",
@@ -179153,21 +178784,6 @@
           "reason": "⚠️  outletId drift detected — operator input \"timeout-london\" resolved to \"timeout-london\" but URL d"
         },
         {
-          "url": "https://www.theatrebeyondbroadway.com/reviews/the-ask",
-          "host": "theatrebeyondbroadway.com",
-          "outletId": "theatrebeyondbroadway",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  provisional outlet \"theatrebeyondbroadway\" (not in registry) — onboard to outlet-registry.json a"
-        },
-        {
           "url": "https://www.theatrely.com/post/generations-collide-in-the-ask-review",
           "host": "theatrely.com",
           "outletId": "theatrely",
@@ -179183,23 +178799,10 @@
           "reason": "[review-write-guard] date-implausible: the-ask-off-broadway-2026/theatrely--andrew-martini.json → qu"
         }
       ],
-      "ingestSkippedByCap": [
-        {
-          "url": "http://www.theaterscene.net/plays/offbway-plays/the-ask/tony-marinelli/",
-          "host": "theaterscene.net",
-          "outletId": "theater-scene"
-        }
-      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "front-row-center",
-            "outlet": "front-row-center",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thefrontrowcenter.com/2026/10/the-ask-2/"
-          },
           {
             "outletId": "exeunt-magazine",
             "outlet": "exeunt-magazine",
@@ -179215,25 +178818,11 @@
             "url": "https://www.timeout.com/newyork/theater/the-ask"
           },
           {
-            "outletId": "theatrebeyondbroadway.com",
-            "outlet": "theatrebeyondbroadway.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatrebeyondbroadway.com/reviews/the-ask"
-          },
-          {
             "outletId": "theatrely",
             "outlet": "theatrely",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatrely.com/post/generations-collide-in-the-ask-review"
-          },
-          {
-            "outletId": "theater-scene",
-            "outlet": "theater-scene",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.theaterscene.net/plays/offbway-plays/the-ask/tony-marinelli/"
           }
         ],
         "suppressedMissing": [],
@@ -179252,9 +178841,8 @@
           },
           {
             "url": "https://thefrontrowcenter.com/2026/10/the-ask-2/",
-            "outletId": "front-row-center",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
             "firstSeenAt": "2026-10-18T05:25:47.776Z"
           },
           {
@@ -179272,37 +178860,18 @@
             "firstSeenAt": "2026-10-18T05:25:47.776Z"
           },
           {
-            "url": "https://www.theatrebeyondbroadway.com/reviews/the-ask",
-            "outletId": "theatrebeyondbroadway.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T14:50:53.502Z"
-          },
-          {
             "url": "https://www.theatrely.com/post/generations-collide-in-the-ask-review",
             "outletId": "theatrely",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-17T22:59:21.861Z"
-          },
-          {
-            "url": "http://www.theaterscene.net/plays/offbway-plays/the-ask/tony-marinelli/",
-            "outletId": "theater-scene",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-18T05:25:47.776Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 2,
-        "candidateCount": 8
+        "liveCount": 3,
+        "candidateCount": 6
       },
-      "computedAt": "2026-10-18T05:25:47.776Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-18T10:12:15.957Z",
-        "lastAt": "2026-10-18T10:12:15.957Z"
-      }
+      "computedAt": "2026-10-18T14:06:35.764Z"
     },
     {
       "showId": "the-balusters-2026",
@@ -182276,29 +181845,41 @@
       "openingDate": "2026-10-13",
       "status": "open",
       "category": "west-end",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-CHERRY-ORCHARD-Opens-on-Broadway-Updating-Live-20161016"
+      ],
       "aggregatorListedUrls": [
+        "http://www.nytimes.com/2016/10/17/theater/the-cherry-orchard-review.html",
+        "https://www.timeout.com/newyork/blog/broadway-review-diane-lane-suffers-beautifully-in-the-cherry-orchard-101416",
+        "http://www.hollywoodreporter.com/review/cherry-orchard-review-938659",
+        "http://deadline.com/2016/10/cherry-orchard-diane-lane-broadway-review-1201837103/",
+        "http://www.vulture.com/2016/10/theater-review-the-cherry-orchard.html",
+        "http://www.ew.com/article/2016/10/16/cherry-orchard-ew-stage-review",
+        "http://www.nydailynews.com/entertainment/theater-arts/diane-lane-leads-fruitless-cherry-orchard-article-1.2831068",
+        "http://www.newsday.com/entertainment/theater/cherry-orchard-review-diane-lane-stars-in-letdown-of-an-update-1.12463362",
+        "http://www.thewrap.com/the-cherry-orchard-broadway-review-diane-lane-stars-in-an-overripe-revival/",
+        "http://www.nbcnewyork.com/entertainment/the-scene/Cherry-Orchard-Roundabout-Diane-Lane-Review-397190051.html",
+        "http://www.amny.com/entertainment/the-cherry-orchard-review-diana-lane-stars-in-disjointed-revival-1.12462906",
+        "http://www.nj.com/entertainment/index.ssf/2016/10/the_cherry_orchard_review_diane_lane_cant_bring_th.html",
+        "http://www.northjersey.com/arts-and-entertainment/theater-review-the-cherry-orchard-with-diane-lane-1.1677715",
+        "https://www.theguardian.com/stage/2016/oct/16/the-cherry-orchard-review-diane-lane",
         "https://www.theguardian.com/stage/2026/oct/14/the-cherry-orchard-review-kristin-scott-thomas-chekhov-harold-pinter-theatre-conor-mcpherson-ian-rickson-stephen-mangan",
+        "https://www.whatsonstage.com/news/the-cherry-orchard-with-kristin-scott-thomas-review-a-smart-and-salty-west-end-revival_1734872/",
         "https://www.timeout.com/london/news/the-cherry-orchard-review-kristin-scott-thomas-harold-pinter-theatre-101426",
         "https://theatre.reviews/review/cherry-orchard-kristin-scott-thomas-review/",
-        "https://www.whatsonstage.com/news/the-cherry-orchard-with-kristin-scott-thomas-review-a-smart-and-salty-west-end-revival_1734872/",
         "https://www.londontheatre.co.uk/reviews/the-cherry-orchard-review-harold-pinter-theatre",
         "https://theatresoutheast.com/the-cherry-orchard-harold-pinter-theatre-review/",
         "https://www.allthatdazzles.co.uk/post/review-the-cherry-orchard-harold-pinter-theatre",
-        "https://www.thestage.co.uk/reviews/the-cherry-orchard-review-harold-pinter-theatre-london-kristin-scott-thomas-conor-mcpherson",
-        "https://monstagigz.com/2026/10/06/theatre-review-the-cherry-orchard-starring-kristin-scott-thomas-stephen-mangan-at-the-harold-pinter-theatre/",
         "https://theatreandtonic.co.uk/blog/the-cherry-orchard-starring-kristin-scott-thomas-review",
         "https://matineemouse.substack.com/p/the-cherry-orchard-review",
-        "https://www.thereviewshub.com/the-cherry-orchard-harold-pinter-theatre-london/",
-        "https://loureviews.blog/2026/10/15/play-review-the-cherry-orchard-at-harold-pinter-theatre/",
-        "https://firstnightmagazine.com/2026/10/15/review-of-the-cherry-orchard-2026-harold-pinter-theatre-connor-mcphersons-sapped-adaptation-is-too-green-to-blossom/",
-        "https://thespyinthestalls.com/2026/10/the-cherry-orchard-2/",
-        "https://northwestend.com/the-cherry-orchard-harold-pinter-theatre/",
-        "https://www.telegraph.co.uk/theatre/what-to-see/the-cherry-orchard-review/",
-        "https://www.timeout.com/london/theatre/the-cherry-orchard-16",
         "https://www.thetimes.com/culture/theatre-dance/article/the-cherry-orchard-review-kristin-scott-thomas-gc88pnwh6",
-        "https://www.wheeliegoodshow.com/post/the-cherry-orchard-harold-pinter-theatre-london",
+        "https://www.telegraph.co.uk/theatre/what-to-see/the-cherry-orchard-review/",
+        "https://thespyinthestalls.com/2026/10/the-cherry-orchard-2/",
+        "https://www.adventuresintheatreland.com/post/the-cherry-orchard-harold-pinter-theatre",
+        "https://www.timeout.com/london/theatre/the-cherry-orchard-16",
+        "https://www.thereviewshub.com/the-cherry-orchard-harold-pinter-theatre-london/",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cherry-orchard-review-kristin-scott-thomas-steven-mangan-b3066484.html",
+        "https://www.thestage.co.uk/reviews/the-cherry-orchard-review-harold-pinter-theatre-london-kristin-scott-thomas-conor-mcpherson",
         "https://www.cityam.com/the-cherry-orchard-noel-coward-theatre-kristin-scott-thomas-is-luminous/",
         "https://www.standard.co.uk/culture/theatre/the-cherry-orchard-review-b1300867.html",
         "https://www.ft.com/content/e36fa65e-f5e7-4d8b-aa68-4a96c4f5a8e5",
@@ -182306,32 +181887,87 @@
         "https://www.dailymail.com/tvshowbiz/article-16206943/Kristins-PATRICK-MARMION-shares-night-review-Cherry-Orchard.html",
         "https://www.londonboxoffice.co.uk/news/post/the-cherry-orchard-harold-pinter-theatre-review",
         "https://www.jackstage.co.uk/post/the-cherry-orchard-review-kristin-scott-thomas-is-inspiring-in-this-beautiful-revival",
+        "https://northwestend.com/the-cherry-orchard-harold-pinter-theatre/",
         "https://www.theupcoming.co.uk/2026/10/09/the-cherry-orchard-at-harold-pinter-theatre-theatre-review/",
         "https://playsinternational.org.uk/the-cherry-orchard-harold-pinter-theatre/",
+        "https://readaboutstuff.com/2026/10/17/review-the-cherry-orchard-harold-pinter-theatre-london/",
+        "https://loureviews.blog/2026/10/15/play-review-the-cherry-orchard-at-harold-pinter-theatre/",
         "https://www.westendbestfriend.co.uk/news/review-the-cherry-orchard-harold-pinter-theatre",
         "https://liamodell.com/2026/10/14/the-cherry-orchard-review-harold-pinter-theatre-london-kristin-scott-thomas-stephen-mangan-ruby-bentall-anton-chekhov-summary/",
         "https://theatreweekly.com/review-the-cherry-orchard-at-harold-pinter-theatre/",
         "https://www.dailymail.co.uk/tvshowbiz/article-16206943/Kristins-PATRICK-MARMION-shares-night-review-Cherry-Orchard.html",
+        "https://firstnightmagazine.com/2026/10/15/review-of-the-cherry-orchard-2026-harold-pinter-theatre-connor-mcphersons-sapped-adaptation-is-too-green-to-blossom/",
         "https://www.observer.co.uk/culture/theatre/article/the-cherry-orchard-kristin-scott-thomas-is-a-study-of-sharpness-and-fragility",
         "https://www.britishtheatreguide.info/reviews/the-cherry-orch-harold-pinter-t-26118",
-        "https://curtaincallreviews.co.uk/the-cherry-orchard-1"
+        "https://curtaincallreviews.co.uk/the-cherry-orchard-1",
+        "https://www.thetimes.com/culture/theatre-dance/article/the-cherry-orchard-review-n08ph70j2"
       ],
       "dirFiles": 84,
       "dirClean": 39,
       "inReviewsJson": 40,
       "missing": [
         {
+          "url": "http://www.nytimes.com/2016/10/17/theater/the-cherry-orchard-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/cherry-orchard-review-938659",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://deadline.com/2016/10/cherry-orchard-diane-lane-broadway-review-1201837103/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.vulture.com/2016/10/theater-review-the-cherry-orchard.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.ew.com/article/2016/10/16/cherry-orchard-ew-stage-review",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/the-cherry-orchard-review-diana-lane-stars-in-disjointed-revival-1.12462906",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nj.com/entertainment/index.ssf/2016/10/the_cherry_orchard_review_diane_lane_cant_bring_th.html",
+          "host": "nj.com",
+          "knownOutletId": "njcom",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
           "url": "https://theatre.reviews/review/cherry-orchard-kristin-scott-thomas-review/",
           "host": "theatre.reviews",
           "knownOutletId": null,
-          "serpCensus": true
+          "weRef": true,
+          "weRefSources": [
+            "bestoftheatre"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "bestoftheatre"
         }
       ],
       "dirOnly": [
-        {
-          "host": "adventuresintheatreland.com",
-          "count": 1
-        },
         {
           "host": "maryamphilpottblog.wordpress.com",
           "count": 1
@@ -182345,23 +181981,23 @@
           "count": 1
         },
         {
-          "host": "readaboutstuff.com",
-          "count": 1
-        },
-        {
           "host": "stagedtheatre.co.uk",
           "count": 1
         },
         {
           "host": "therecs.co.uk",
           "count": 1
+        },
+        {
+          "host": "wheeliegoodshow.com",
+          "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://monstagigz.com/2026/10/06/theatre-review-the-cherry-orchard-starring-kristin-scott-thomas-stephen-mangan-at-the-harold-pinter-theatre/",
-          "host": "monstagigz.com",
-          "knownOutletId": "monstagigz",
+          "url": "https://www.timeout.com/newyork/blog/broadway-review-diane-lane-suffers-beautifully-in-the-cherry-orchard-101416",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -182369,17 +182005,144 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "monstagigz--unknown.json",
+              "file": "timeout--unknown.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://monstagigz.com/2026/10/06/theatre-review-the-cherry-orchard-starring-kristin-scott-thomas-stephen-mangan-at-the-harold-pinter-theatre/"
+              "urlInDir": "https://www.timeout.com/newyork/blog/broadway-review-diane-lane-suffers-beautifully-in-the-cherry-orchard-101416"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "previewPlaceholder"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/diane-lane-leads-fruitless-cherry-orchard-article-1.2831068",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nydailynews--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nydailynews.com/entertainment/theater-arts/diane-lane-leads-fruitless-cherry-orchard-article-1.2831068"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "previewPlaceholder"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/cherry-orchard-review-diane-lane-stars-in-letdown-of-an-update-1.12463362",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "newsday--linda-winer.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.newsday.com/entertainment/theater/cherry-orchard-review-diane-lane-stars-in-letdown-of-an-update-1.12463362"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
             "wrongProduction"
           ],
-          "serpCensus": true,
-          "reverify": true
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.thewrap.com/the-cherry-orchard-broadway-review-diane-lane-stars-in-an-overripe-revival/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thewrap--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.thewrap.com/the-cherry-orchard-broadway-review-diane-lane-stars-in-an-overripe-revival/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "previewPlaceholder"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.nbcnewyork.com/entertainment/the-scene/Cherry-Orchard-Roundabout-Diane-Lane-Review-397190051.html",
+          "host": "nbcnewyork.com",
+          "knownOutletId": "nbcny",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nbcny--robert-kahn.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nbcnewyork.com/entertainment/the-scene/Cherry-Orchard-Roundabout-Diane-Lane-Review-397190051.html"
+            },
+            {
+              "file": "nbcny--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nbcnewyork.com/entertainment/the-scene/Cherry-Orchard-Roundabout-Diane-Lane-Review-397190051.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction",
+            "previewPlaceholder"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.northjersey.com/arts-and-entertainment/theater-review-the-cherry-orchard-with-diane-lane-1.1677715",
+          "host": "northjersey.com",
+          "knownOutletId": "northjerseycom",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "northjerseycom--robert-feldberg.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.northjersey.com/arts-and-entertainment/theater-review-the-cherry-orchard-with-diane-lane-1.1677715"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "https://www.timeout.com/london/theatre/the-cherry-orchard-16",
@@ -182498,7 +182261,7 @@
       ],
       "citedNoUrl": [],
       "weReference": {
-        "rowCount": 50,
+        "rowCount": 53,
         "sources": {
           "westendtheatre": {
             "found": true,
@@ -182523,7 +182286,7 @@
           },
           "bestoftheatre": {
             "found": true,
-            "rows": 30,
+            "rows": 33,
             "emptyParse": false,
             "error": null,
             "fetchErrors": 0
@@ -182537,8 +182300,8 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 50,
-        "corroborated": 29,
+        "currentRunRows": 53,
+        "corroborated": 31,
         "perSource": {
           "theatre-reviews": {
             "cited": 13,
@@ -182549,8 +182312,8 @@
             "corroborated": 4
           },
           "bestoftheatre": {
-            "cited": 30,
-            "corroborated": 28
+            "cited": 32,
+            "corroborated": 30
           },
           "lbo-roundup": {
             "cited": 1,
@@ -182580,7 +182343,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 3,
+            "accepted": 0,
             "error": null
           },
           {
@@ -182590,7 +182353,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -182610,7 +182373,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -182620,26 +182383,79 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 6,
+            "accepted": 4,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 20,
+        "resultCount": 15,
         "error": null
       },
       "candidatesRejected": {
-        "count": 13,
+        "count": 311,
         "byReason": {
-          "non-review-host": 10,
-          "roundup-page": 2,
-          "ticketing-listing": 1
+          "non-review-host": 26,
+          "aggregator-internal-nav": 226,
+          "census-junk-host": 1,
+          "not-http-url": 52,
+          "aggregator-section-root": 4,
+          "roundup-page": 2
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 2,
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-CHERRY-ORCHARD-Opens-on-Broadway-Updating-Live-20161016",
+          "publishDate": "2016-10-16"
+        }
+      ],
+      "automatedExcludedListed": 1,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "http://www.nytimes.com/2016/10/17/theater/the-cherry-orchard-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/cherry-orchard-review-938659",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://deadline.com/2016/10/cherry-orchard-diane-lane-broadway-review-1201837103/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.vulture.com/2016/10/theater-review-the-cherry-orchard.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.ew.com/article/2016/10/16/cherry-orchard-ew-stage-review",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/the-cherry-orchard-review-diana-lane-stars-in-disjointed-revival-1.12462906",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.nj.com/entertainment/index.ssf/2016/10/the_cherry_orchard_review_diane_lane_cant_bring_th.html",
+          "host": "nj.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
       "ingestResults": [
         {
           "url": "https://theatre.reviews/review/cherry-orchard-kristin-scott-thomas-review/",
@@ -182669,13 +182485,6 @@
             "url": "https://theatre.reviews/review/cherry-orchard-kristin-scott-thomas-review/"
           },
           {
-            "outletId": "monstagigz",
-            "outlet": "monstagigz",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://monstagigz.com/2026/10/06/theatre-review-the-cherry-orchard-starring-kristin-scott-thomas-stephen-mangan-at-the-harold-pinter-theatre/"
-          },
-          {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
             "critic": "Unknown",
@@ -182693,8 +182502,20 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.theguardian.com/stage/2016/oct/16/the-cherry-orchard-review-diane-lane",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-18T14:06:35.764Z"
+          },
+          {
             "url": "https://www.theguardian.com/stage/2026/oct/14/the-cherry-orchard-review-kristin-scott-thomas-chekhov-harold-pinter-theatre-conor-mcpherson-ian-rickson-stephen-mangan",
             "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-14T02:28:29.917Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/the-cherry-orchard-with-kristin-scott-thomas-review-a-smart-and-salty-west-end-revival_1734872/",
+            "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-10-14T02:28:29.917Z"
           },
@@ -182703,12 +182524,6 @@
             "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-10-16T23:20:29.893Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/the-cherry-orchard-with-kristin-scott-thomas-review-a-smart-and-salty-west-end-revival_1734872/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-14T02:28:29.917Z"
           },
           {
             "url": "https://www.londontheatre.co.uk/reviews/the-cherry-orchard-review-harold-pinter-theatre",
@@ -182729,12 +182544,6 @@
             "firstSeenAt": "2026-10-14T02:28:29.917Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/the-cherry-orchard-review-harold-pinter-theatre-london-kristin-scott-thomas-conor-mcpherson",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-14T14:20:53.735Z"
-          },
-          {
             "url": "https://theatreandtonic.co.uk/blog/the-cherry-orchard-starring-kristin-scott-thomas-review",
             "outletId": "theatreandtonic.co.uk",
             "state": "live",
@@ -182747,34 +182556,10 @@
             "firstSeenAt": "2026-10-16T17:15:02.578Z"
           },
           {
-            "url": "https://www.thereviewshub.com/the-cherry-orchard-harold-pinter-theatre-london/",
-            "outletId": "thereviewshub.com",
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/the-cherry-orchard-review-kristin-scott-thomas-gc88pnwh6",
+            "outletId": "thetimes.com",
             "state": "live",
-            "firstSeenAt": "2026-10-17T14:50:53.502Z"
-          },
-          {
-            "url": "https://loureviews.blog/2026/10/15/play-review-the-cherry-orchard-at-harold-pinter-theatre/",
-            "outletId": "loureviews.blog",
-            "state": "live",
-            "firstSeenAt": "2026-10-15T12:23:26.665Z"
-          },
-          {
-            "url": "https://firstnightmagazine.com/2026/10/15/review-of-the-cherry-orchard-2026-harold-pinter-theatre-connor-mcphersons-sapped-adaptation-is-too-green-to-blossom/",
-            "outletId": "firstnightmagazine.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-16T10:22:00.998Z"
-          },
-          {
-            "url": "https://thespyinthestalls.com/2026/10/the-cherry-orchard-2/",
-            "outletId": "thespyinthestalls.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-15T12:23:26.665Z"
-          },
-          {
-            "url": "https://northwestend.com/the-cherry-orchard-harold-pinter-theatre/",
-            "outletId": "northwestend.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-17T22:59:21.861Z"
+            "firstSeenAt": "2026-10-16T23:20:29.893Z"
           },
           {
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-cherry-orchard-review/",
@@ -182783,16 +182568,28 @@
             "firstSeenAt": "2026-10-14T02:28:29.917Z"
           },
           {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/the-cherry-orchard-review-kristin-scott-thomas-gc88pnwh6",
-            "outletId": "thetimes.com",
+            "url": "https://thespyinthestalls.com/2026/10/the-cherry-orchard-2/",
+            "outletId": "thespyinthestalls.com",
             "state": "live",
-            "firstSeenAt": "2026-10-16T23:20:29.893Z"
+            "firstSeenAt": "2026-10-15T12:23:26.665Z"
           },
           {
-            "url": "https://www.wheeliegoodshow.com/post/the-cherry-orchard-harold-pinter-theatre-london",
-            "outletId": "wheeliegoodshow.com",
+            "url": "https://www.adventuresintheatreland.com/post/the-cherry-orchard-harold-pinter-theatre",
+            "outletId": "adventuresintheatreland.com",
             "state": "live",
-            "firstSeenAt": "2026-10-18T08:32:02.058Z"
+            "firstSeenAt": "2026-10-18T14:06:35.764Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/the-cherry-orchard-harold-pinter-theatre-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T14:50:53.502Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/the-cherry-orchard-review-harold-pinter-theatre-london-kristin-scott-thomas-conor-mcpherson",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-14T14:20:53.735Z"
           },
           {
             "url": "https://www.cityam.com/the-cherry-orchard-noel-coward-theatre-kristin-scott-thomas-is-luminous/",
@@ -182831,6 +182628,12 @@
             "firstSeenAt": "2026-10-16T10:22:00.998Z"
           },
           {
+            "url": "https://northwestend.com/the-cherry-orchard-harold-pinter-theatre/",
+            "outletId": "northwestend.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T22:59:21.861Z"
+          },
+          {
             "url": "https://www.theupcoming.co.uk/2026/10/09/the-cherry-orchard-at-harold-pinter-theatre-theatre-review/",
             "outletId": "theupcoming.co.uk",
             "state": "live",
@@ -182841,6 +182644,18 @@
             "outletId": "playsinternational.org.uk",
             "state": "live",
             "firstSeenAt": "2026-10-17T14:50:53.502Z"
+          },
+          {
+            "url": "https://readaboutstuff.com/2026/10/17/review-the-cherry-orchard-harold-pinter-theatre-london/",
+            "outletId": "readaboutstuff.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-18T14:06:35.764Z"
+          },
+          {
+            "url": "https://loureviews.blog/2026/10/15/play-review-the-cherry-orchard-at-harold-pinter-theatre/",
+            "outletId": "loureviews.blog",
+            "state": "live",
+            "firstSeenAt": "2026-10-15T12:23:26.665Z"
           },
           {
             "url": "https://www.westendbestfriend.co.uk/news/review-the-cherry-orchard-harold-pinter-theatre",
@@ -182861,6 +182676,12 @@
             "firstSeenAt": "2026-10-14T14:20:53.735Z"
           },
           {
+            "url": "https://firstnightmagazine.com/2026/10/15/review-of-the-cherry-orchard-2026-harold-pinter-theatre-connor-mcphersons-sapped-adaptation-is-too-green-to-blossom/",
+            "outletId": "firstnightmagazine.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-16T10:22:00.998Z"
+          },
+          {
             "url": "https://www.observer.co.uk/culture/theatre/article/the-cherry-orchard-kristin-scott-thomas-is-a-study-of-sharpness-and-fragility",
             "outletId": "observer.co.uk",
             "state": "live",
@@ -182879,18 +182700,17 @@
             "firstSeenAt": "2026-10-17T14:50:53.502Z"
           },
           {
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/the-cherry-orchard-review-n08ph70j2",
+            "outletId": "thetimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-18T14:06:35.764Z"
+          },
+          {
             "url": "https://theatre.reviews/review/cherry-orchard-kristin-scott-thomas-review/",
             "outletId": "theatre.reviews",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-17T22:59:21.861Z"
-          },
-          {
-            "url": "https://monstagigz.com/2026/10/06/theatre-review-the-cherry-orchard-starring-kristin-scott-thomas-stephen-mangan-at-the-harold-pinter-theatre/",
-            "outletId": "monstagigz",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-16T17:15:02.578Z"
           },
           {
             "url": "https://www.timeout.com/london/theatre/the-cherry-orchard-16",
@@ -182908,10 +182728,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 31,
+        "liveCount": 32,
         "candidateCount": 35
       },
-      "computedAt": "2026-10-18T08:32:02.058Z"
+      "computedAt": "2026-10-18T14:06:35.764Z"
     },
     {
       "showId": "the-children-off-west-end-2026",
@@ -211774,10 +211594,11 @@
       "status": "open",
       "category": "tour",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-SOUND-OF-MUSIC-North-American-Tour-20250924",
-        "https://www.broadwayworld.com/article/Review-Roundup-Kate-Rockwell-Stars-in-THE-SOUND-OF-MUSIC-at-The-Muny-20210804"
+        "https://www.broadwayworld.com/article/Review-Roundup-Kate-Rockwell-Stars-in-THE-SOUND-OF-MUSIC-at-The-Muny-20210804",
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-SOUND-OF-MUSIC-North-American-Tour-20250924"
       ],
       "aggregatorListedUrls": [
+        "https://www.stltoday.com/entertainment/arts-and-theatre/reviews/the-muny-comes-alive-with-captivating-storybook-production-of-the-sound-of-music/article_f82c357e-abfa-5d14-bfd0-068bba2e6aff.html",
         "https://mdtheatreguide.com/2025/09/theatre-review-the-sound-of-music-at-the-kennedy-center/",
         "https://www.daytonlocal.com/news/entertainment/review-2025-the-sound-of-music-schuster-center/",
         "https://www.thesuburban.com/columnists/mike_cohen_cohen_chatter/the-hills-are-alive-at-mirvish-with-the-sound-of-music/article_72e9ab9f-f497-44fc-b848-c43871574f15.html",
@@ -211786,24 +211607,23 @@
         "https://www.timesunion.com/theater/article/sound-of-music-proctors-theater-review-21957259.php",
         "https://chroniclet.com/news/464529/cleveland-stages-alive-with-family-musicals-sound-of-music-talking-about-jamie/",
         "https://dailybruin.com/2026/05/20/theater-review-the-sound-of-music-arrives-at-pantages-theatre-brings-standout-acting-singing",
-        "https://www.ocregister.com/2026/06/04/review-sound-of-music-delivers-all-your-favorite-things-in-costa-mesa/",
-        "https://www.stltoday.com/entertainment/arts-and-theatre/reviews/the-muny-comes-alive-with-captivating-storybook-production-of-the-sound-of-music/article_f82c357e-abfa-5d14-bfd0-068bba2e6aff.html"
+        "https://www.ocregister.com/2026/06/04/review-sound-of-music-delivers-all-your-favorite-things-in-costa-mesa/"
       ],
-      "dirFiles": 30,
-      "dirClean": 23,
-      "inReviewsJson": 22,
+      "dirFiles": 32,
+      "dirClean": 24,
+      "inReviewsJson": 23,
       "missing": [
-        {
-          "url": "https://chroniclet.com/news/464529/cleveland-stages-alive-with-family-musicals-sound-of-music-talking-about-jamie/",
-          "host": "chroniclet.com",
-          "knownOutletId": null
-        },
         {
           "url": "https://www.stltoday.com/entertainment/arts-and-theatre/reviews/the-muny-comes-alive-with-captivating-storybook-production-of-the-sound-of-music/article_f82c357e-abfa-5d14-bfd0-068bba2e6aff.html",
           "host": "stltoday.com",
           "knownOutletId": "st-louis-post-dispatch",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://chroniclet.com/news/464529/cleveland-stages-alive-with-family-musicals-sound-of-music-talking-about-jamie/",
+          "host": "chroniclet.com",
+          "knownOutletId": null
         }
       ],
       "dirOnly": [
@@ -211813,7 +211633,7 @@
         },
         {
           "host": "broadwayworld.com",
-          "count": 12
+          "count": 13
         },
         {
           "host": "cleveland.com",
@@ -211948,7 +211768,7 @@
         "liveCount": 8,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-17T14:24:41.672Z"
+      "computedAt": "2026-10-18T14:06:35.764Z"
     },
     {
       "showId": "the-spy-who-came-in-from-the-cold-west-end-2025",
