@@ -73,7 +73,7 @@ const URL_RE = /\bhttps?:\/\/\S+/gi;
 // something that reads like a checked source.
 const CITATION_FIELDS = ['capitalizationSource', 'recoupedSource'];
 const LOSS_DESIGNATIONS = ['Flop', 'Fizzle'];
-const { VALID_DESIGNATION_BASES, DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel } = require('./commercial-designations');
+const { VALID_DESIGNATION_BASES, DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct } = require('./commercial-designations');
 const { conversionOf, conversionShapeProblems } = require('./commercial-conversion');
 const { COST_BASES, BASIS_CUE_TEXT } = require('./cost-split');
 
@@ -153,8 +153,9 @@ function commercialRecordErrors(showId, show, ctx = {}) {
     }
   }
 
-  // Validate originalProductionId references an existing show
-  if (show.originalProductionId !== undefined) {
+  // Validate originalProductionId references an existing show. A data plan
+  // clears a field by writing null, so null counts as absent (BRO-5602).
+  if (show.originalProductionId != null) {
     if (!ctx.allRecords || !ctx.allRecords[show.originalProductionId]) {
       out.push(`commercial.json: "${showId}" originalProductionId "${show.originalProductionId}" does not reference an existing show in commercial.json`);
     }
@@ -173,8 +174,8 @@ function commercialRecordErrors(showId, show, ctx = {}) {
     }
   }
 
-  // Validate estimatedRecoupmentDate format
-  if (show.estimatedRecoupmentDate !== undefined) {
+  // Validate estimatedRecoupmentDate format (null = cleared, as above)
+  if (show.estimatedRecoupmentDate != null) {
     if (!dateRegex.test(show.estimatedRecoupmentDate)) {
       out.push(`commercial.json: "${showId}" estimatedRecoupmentDate must be YYYY-MM-DD format, got "${show.estimatedRecoupmentDate}"`);
     }
@@ -379,6 +380,14 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
   // label resting on silence waits ~6 months after closing. Advisory (§19).
   if (LOSS_DESIGNATIONS.includes(show.designation) && show.designationBasis == null) {
     out.push(`commercial.json: "${showId}" has designation "${show.designation}" with no designationBasis (reported-loss, no-recoupment-announced or notes-stated)`);
+  }
+  // Fizzle is an estimated 30% or more returned, Flop under it, so a loss
+  // label must agree with the record's own estimate (BRO-5602: suffs was a
+  // Fizzle beside "0-10% returned"). Advisory (§19).
+  const returnedPct = ownReturnedEstimatePct(show);
+  if (LOSS_DESIGNATIONS.includes(show.designation) && returnedPct != null
+      && (returnedPct >= FIZZLE_MIN_RETURNED_PCT ? 'Fizzle' : 'Flop') !== show.designation) {
+    out.push(`commercial.json: "${showId}" is "${show.designation}" but its own estimate puts ${returnedPct}% returned (Fizzle is ${FIZZLE_MIN_RETURNED_PCT}% or more, Flop under)`);
   }
   if (show.designationBasis != null && !LOSS_DESIGNATIONS.includes(show.designation)) {
     out.push(`commercial.json: "${showId}" has designationBasis "${show.designationBasis}" on a non-loss designation "${show.designation || 'missing'}" (remove it)`);

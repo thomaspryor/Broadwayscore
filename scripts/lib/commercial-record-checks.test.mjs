@@ -30,6 +30,30 @@ test('outcome policy: win needs recouped=true, loss needs recouped=false, recoup
   assert.equal(e({ designation: 'TBD', recouped: true, recoupedDate: '2024/01' }).length, 1);
 });
 
+test('a Fizzle or Flop that contradicts the record\'s own returned estimate is a warning (BRO-5602)', () => {
+  const closed = { showRecord: { slug: 'k', status: 'closed' } };
+  const w = (rec) => commercialRecordWarnings('k', { recouped: false, designationBasis: 'reported-loss', ...rec }, closed)
+    .filter((m) => m.includes('its own estimate')).length;
+  assert.equal(w({ designation: 'Fizzle', estimatedRecoupmentPct: [0, 10] }), 1); // suffs
+  assert.equal(w({ designation: 'Fizzle', estimatedRecoupmentPct: [20, 30] }), 1); // call-me-izzy: 25% is under 30
+  assert.equal(w({ designation: 'Flop', estimatedRecoupmentPct: [0, 10] }), 0);
+  assert.equal(w({ designation: 'Flop', analystRecoupPct: [20, 40] }), 1); // 30% is a Fizzle
+  assert.equal(w({ designation: 'Fizzle', analystRecoupPct: [20, 40], estimatedRecoupmentPct: [0, 10] }), 0); // the analyst's range wins
+  assert.equal(w({ designation: 'Flop', estimatedRecoupmentPct: 45 }), 1);
+  assert.equal(w({ designation: 'Fizzle' }), 0); // no estimate on the record: nothing to contradict
+  assert.equal(w({ designation: 'Easy Winner', recouped: true, estimatedRecoupmentPct: [0, 10] }), 0);
+  assert.equal(commercialRecordErrors('k', { designation: 'Fizzle', recouped: false, designationBasis: 'reported-loss', estimatedRecoupmentPct: [0, 10] }, closed).length, 0);
+});
+
+test('a field a data plan cleared (null) is absent, not a malformed value (BRO-5602)', () => {
+  const rec = { designation: 'Flop', recouped: false, designationBasis: 'reported-loss' };
+  const errs = (extra) => commercialRecordErrors('k', { ...rec, ...extra }, { allRecords: { k: rec } });
+  assert.deepEqual(errs({ estimatedRecoupmentDate: null, estimatedRecoupmentPct: null, estimatedRecoupmentSource: null }), []);
+  assert.deepEqual(errs({ originalProductionId: null }), []);
+  assert.equal(errs({ estimatedRecoupmentDate: '2026/02/03' }).length, 1);
+  assert.equal(errs({ originalProductionId: 'missing-show' }).length, 1);
+});
+
 test('loss designation on a show that is not closed is a warning, never an error', () => {
   const rec = { designation: 'Flop', recouped: false, designationBasis: 'reported-loss' };
   const w = (status) => commercialRecordWarnings('k', rec, { showRecord: { slug: 'k', status } }).length;

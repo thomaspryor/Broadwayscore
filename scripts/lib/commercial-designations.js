@@ -34,6 +34,18 @@ const TRICKLE_MAX_MULTIPLE = 1.5;
 const MIRACLE_MIN_YEARS = 10;
 /** Closed without recouping: this % or more of capitalization returned = Fizzle, under it = Flop. */
 const FIZZLE_MIN_RETURNED_PCT = 30;
+/**
+ * The % of capitalization the record's own estimate says came back: the
+ * analyst's range first, then an outside estimate; a range counts as its
+ * midpoint. null when the record has neither.
+ */
+function ownReturnedEstimatePct(entry) {
+  for (const v of [entry?.analystRecoupPct, entry?.estimatedRecoupmentPct]) {
+    if (Array.isArray(v) && v.length === 2 && v.every(Number.isFinite)) return (v[0] + v[1]) / 2;
+    if (Number.isFinite(v)) return v;
+  }
+  return null;
+}
 /** Classes the recoupment rule never moves. */
 const DESIGNATIONS_OUTSIDE_RULE = Object.freeze(['Easy Winner', 'Nonprofit', 'Tour Stop']);
 
@@ -101,6 +113,6 @@ module.exports = {
   hasNoInvestorsToRepay,
   DESIGNATION_BASES, VALID_DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel,
   VALID_DESIGNATIONS, canonicalDesignation,
-  TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, DESIGNATIONS_OUTSIDE_RULE,
+  TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, DESIGNATIONS_OUTSIDE_RULE,
   MODEL_CONTRADICTION, modelContradictsDesignation,
 };
