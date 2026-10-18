@@ -15,10 +15,14 @@ const STAGE = {
   url: 'https://www.thestage.co.uk/reviews/antigone-exits-review-chichester-festival-theatre-nina-segal',
   fullText: 'Antigone Exits review at Chichester Festival Theatre: Nina Segal reworks Sophocles with a cast that keeps stepping out of the story',
 };
+const TELEGRAPH = {
+  url: 'https://www.telegraph.co.uk/theatre/what-to-see/antigone-exits-review/',
+  fullText: 'Antigone Exits, Chichester: a bracing and strangely funny retelling that never loses its nerve',
+};
 const AOL = 'https://www.aol.co.uk/articles/antigone-exits-review-emotions-run-104342000.html';
 
 test('AOL reprint of the held Guardian review is a dup (Antigone Exits, real case)', () => {
-  const v = syndicatedReprintOf({ candidateUrl: AOL, heldFiles: [STAGE, GUARDIAN], showTitle: 'Antigone Exits', venue: 'Chichester Festival Theatre, Chichester' });
+  const v = syndicatedReprintOf({ candidateUrl: AOL, heldFiles: [STAGE, GUARDIAN, TELEGRAPH], showTitle: 'Antigone Exits', venue: 'Chichester Festival Theatre, Chichester' });
   assert.equal(v.dup, true);
   assert.equal(v.matchedUrl, GUARDIAN.url);
   assert.equal(v.reason, 'syndicated-reprint');
@@ -54,4 +58,13 @@ test('slugTokens drops the numeric portal id and .html', () => {
 
 test('fullhouse.me show-diary pages are not gap candidates', () => {
   assert.deepEqual(classifyGapCandidateUrl('https://fullhouse.me/dc-production/antigone-exits-2026'), { ok: false, reason: 'census-junk-host' });
+});
+
+test('small corpus (under 3 held files) never dedupes: a reprint of an unheld outlet keeps alerting', () => {
+  const yahoo = 'https://uk.news.yahoo.com/antigone-exits-review-chichester-festival-theatre-120000.html';
+  const v = syndicatedReprintOf({ candidateUrl: yahoo, heldFiles: [STAGE], showTitle: 'Antigone Exits', venue: 'Minerva Theatre' });
+  assert.equal(v.dup, false);
+  const lear = { url: 'https://x.example/lear', fullText: 'REVIEW: KING LEAR | ROYAL EXCHANGE THEATRE a bold staging' };
+  const v2 = syndicatedReprintOf({ candidateUrl: 'https://www.yahoo.com/review-king-lear-royal-exchange-170000344.html', heldFiles: [lear], showTitle: 'King Lear' });
+  assert.equal(v2.dup, false);
 });

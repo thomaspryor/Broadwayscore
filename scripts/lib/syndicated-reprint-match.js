@@ -81,6 +81,8 @@ function orderedWithinSpan(hay, needle, maxSpan) {
  * @param {string} [p.venue]
  * @returns {{dup: boolean, matchedUrl?: string, reason?: string}}
  */
+const MIN_HELD_FOR_RARITY = 3;
+
 function syndicatedReprintOf({ candidateUrl, heldFiles, showTitle, venue }) {
   if (!candidateUrl || !isSyndicationHost(candidateUrl)) return { dup: false };
   const slug = slugTokens(candidateUrl);
@@ -94,7 +96,10 @@ function syndicatedReprintOf({ candidateUrl, heldFiles, showTitle, venue }) {
   // "royal exchange" opens most King Lear reviews, "emotions run" opens one.
   const known = new Set([...words(showTitle), ...words(venue), ...GENERIC]);
   const df = (t) => held.filter((h) => h.head.includes(t)).length;
-  const rareMax = Math.max(1, Math.floor(held.length / 3));
+  // Rarity is meaningless with few held reviews (every word is "rare" in a
+  // one-file corpus), so a small show never dedupes: it keeps alerting.
+  if (held.length < MIN_HELD_FOR_RARITY) return { dup: false };
+  const rareMax = Math.floor(held.length / 3);
   if (slug.filter((t) => !known.has(t) && df(t) <= rareMax).length < MIN_DISTINCTIVE) return { dup: false };
   const maxSpan = slug.length * MAX_SPAN_FACTOR;
   for (const h of held) {
