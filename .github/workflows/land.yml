@@ -180,8 +180,9 @@ jobs:
           echo "rebased: $(git rev-list --count "$BASE"..HEAD) commit(s), $(git diff --name-only "$BASE"...HEAD | wc -l | tr -d ' ') file(s) changed"
           git diff --name-only "$BASE"...HEAD | sed 's/^/  /'
 
-      # BRO-4299: a branch whose diff vs the base is inert-only (data/, docs/,
-      # memory/, *.md ...) has the base's verification-relevant tree, so the
+      # BRO-4299: a branch whose diff vs the base touches only bot churn
+      # (SKIP_SAFE_RE in the optimizer; docs are not churn, tests read them,
+      # BRO-5648) has the base's verification-relevant tree, so the
       # new-failures-vs-base verdict is empty by construction; skip both
       # gauntlets and their setup (~10-30 runner-min). Logic + tests:
       # scripts/lib/land-gauntlet-optimizer.js, scripts/land-gauntlet-optimizer.test.mjs.
@@ -268,7 +269,7 @@ jobs:
       # ── Base gauntlet: origin/main @ base, reused when already measured ─────
       # Key = sha256 over the base tree's VERIFICATION-RELEVANT paths
       # (scripts/lib/land-gate-delta.js --code-hash: INERT_FOR_VERIFICATION_RE
-      # from land-branch.js excluded, test manifests/CLAUDE.md kept), not the
+      # from land-branch.js excluded, HASH_ALWAYS_RELEVANT_RE kept), not the
       # raw base sha — main moves every minute or two on bot data churn, and a
       # raw-sha key would never hit — salted per UTC day, because the private
       # core data the unit batches read is in no tree hash at all.

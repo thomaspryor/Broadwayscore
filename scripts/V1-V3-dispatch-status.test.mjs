@@ -21,7 +21,7 @@ const MAX_HOOK_FILES = 18;
 const MAX_HOOK_LINES = 5305; // BRO-5359: +9 review-coverage gate call in verify-edits.sh (the one Stop hook wired in every cloud container); BRO-5228: +9 create_session model guard (an omitted model inherited the parent's Opus); BRO-5221: +lib/home-hook-runner.sh (multi-repo sessions ran no hooks at all); BRO-2394: +3 in github-main-guard.sh calling scripts/lib/mcp-push-visual-gate.sh (the logic stays out of hooks/)
 
 // Retired hooks whose script must STAY: old cloud snapshots still call them, so they are unregistered but never
-// deleted (scripts/tests/cloud-settings-guards.test.mjs asserts the same; .claude/CLOUD.md documents it).
+// deleted (scripts/tests/cloud-settings-guards.test.mjs asserts the same).
 const RETIRED_KEPT = ['notion-create-block.sh'];
 
 const topLevel = readdirSync(HOOKS, { withFileTypes: true }).filter((e) => e.isFile()).map((e) => e.name);
