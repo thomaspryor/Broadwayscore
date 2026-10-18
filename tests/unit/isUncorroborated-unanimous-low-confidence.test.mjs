@@ -12,7 +12,7 @@ const base = () => ({
   ensembleData: { ensembleSource: 'ensemble-unanimous', claudeScore: 85, openaiScore: 85, geminiScore: 90 },
 });
 
-test('BRO-305 case: 2/5 junk star, unanimous Rave, low confidence -> uncorroborated', () => {
+test('BRO-5200 (found in BRO-305): 2/5 junk star, unanimous Rave, low confidence -> uncorroborated', () => {
   assert.equal(isUncorroboratedGenericStar(base(), 40), true);
 });
 test('low confidence without a unanimous ensemble still keeps the star', () => {
