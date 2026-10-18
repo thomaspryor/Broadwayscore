@@ -186,5 +186,33 @@
       }
     ],
     "queuedAt": "2026-10-18T09:54:11.356Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:ilford-boy-west-end-2026",
+    "title": "Auto-remediation gave up on ilford-boy-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"ilford-boy-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-18T11:14:55.532Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:dog-mom-off-west-end-2026",
+    "title": "Auto-remediation gave up on dog-mom-off-west-end-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"dog-mom-off-west-end-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-18T11:14:55.583Z"
   }
 ]
