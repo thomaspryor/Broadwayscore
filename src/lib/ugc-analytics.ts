@@ -17,6 +17,7 @@
  *   stamps into Impact subId1 hrefs and breaks the PostHog↔Impact join.
  */
 import { track } from '@vercel/analytics';
+import { isStaleDeployError, reloadOnStaleDeploy } from './stale-deploy-reload';
 
 type Primitive = string | number | boolean | null;
 export type UgcProps = Record<string, Primitive | undefined>;
@@ -186,6 +187,7 @@ export function reportUgcError(op: string, info: UgcErrorInfo, extra: UgcProps =
  */
 export function reportPageCrash(error: Error & { digest?: string }, boundary: 'page' | 'root'): void {
   if (typeof window === 'undefined') return;
+
   phCapture('page_crash', clean({
     boundary,
     error_name: error?.name || 'Error',
@@ -198,6 +200,9 @@ export function reportPageCrash(error: Error & { digest?: string }, boundary: 'p
   } catch {
     // never throw from an error page
   }
+  // A tab that outlived a deploy crashes into the boundary too; reload to the new
+  // build after the crash is recorded.
+  if (isStaleDeployError(error)) reloadOnStaleDeploy();
 }
 
 /** "POST /rest/v1/reviews?x=y" → "insert reviews"; rpc/auth/functions likewise. */

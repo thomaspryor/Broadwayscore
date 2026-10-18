@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import { isAuthCallbackPath, isPrivateSharePath, posthogBeforeSend, sentryScrub, vercelBeforeSend } from '@/lib/analytics/redact-url';
 import { gaInitScript } from '@/lib/analytics/ga-init-script';
 import { applyAnalyticsUser, flushUgcOutbox } from '@/lib/ugc-analytics';
+import { installStaleDeployReload } from '@/lib/stale-deploy-reload';
 
 interface SentryEvent {
   exception?: { values?: Array<{ stacktrace?: { frames?: Array<{ filename?: string }> } }> };
@@ -37,6 +38,9 @@ export default function AnalyticsWrapper() {
   // navigation made GA send the plans URL as page_referrer, and it also means
   // Back re-enters plans as a document, never through the router.
   const pathname = usePathname();
+  // Stale tab after a deploy: reload once instead of dead clicks (BRO-5565).
+  useEffect(() => installStaleDeployReload(), []);
+
   useEffect(() => {
     if (!pathname) return;
     try {
