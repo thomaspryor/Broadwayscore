@@ -1176,5 +1176,36 @@
       }
     ],
     "queuedAt": "2026-10-18T02:24:11.432Z"
+  },
+  {
+    "conditionKey": "land:land/worktree-memsync-rollback-5567",
+    "title": "Landing blocked: unit-tests-node red on land/worktree-memsync-rollback-5567",
+    "description": "land.yml did not land land/worktree-memsync-rollback-5567: the unit-tests-node gate went red at 8c5ca67058. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39090055606",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/worktree-memsync-rollback-5567"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "8c5ca67058391538d5ac217f38d95f27e5538939"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39090055606"
+      }
+    ],
+    "queuedAt": "2026-10-18T03:03:36.447Z"
   }
 ]
