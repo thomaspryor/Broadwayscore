@@ -11,7 +11,7 @@ const { fetchOriginMain, pathExistsOnOriginMain } = require('./origin-main-path-
 
 function fixture(t) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'origin-main-path-'));
-  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const seed = path.join(root, 'seed');
   const git = (repo, ...args) => execFileSync('git', args, {
     cwd: repo, encoding: 'utf8', stdio: 'pipe',
