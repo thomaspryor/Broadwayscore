@@ -131,3 +131,12 @@ test("another show's loss two sentences on is not this show's (the Variety CATS 
   // The sentence right after the title still counts.
   assert.equal(classifyClaim(loss, pad('CATS: The Jellicle Ball, which opened in 2026, will close on Aug. 8. The show did not recoup its investment.'), cats).verdict, 'confirmed');
 });
+
+test('the live record is found by slug, as commercial.json is keyed', () => {
+  const { recordFor, recordStatus } = require('../../scripts/verify-deep-research-claims.js');
+  const commercial = { 'stranger-things': { capitalization: 29000000 }, 'old-id-2001': { capitalization: 1 } };
+  assert.equal(recordFor(commercial, { id: 'stranger-things-2024', slug: 'stranger-things' }).capitalization, 29000000);
+  assert.equal(recordFor(commercial, { id: 'old-id-2001', slug: 'old-id' }).capitalization, 1);
+  assert.equal(recordFor(commercial, { id: 'x-2020', slug: 'x' }), null);
+  assert.equal(recordStatus({ field: 'capitalization', value: 29000000 }, recordFor(commercial, { id: 'stranger-things-2024', slug: 'stranger-things' })), 'same');
+});

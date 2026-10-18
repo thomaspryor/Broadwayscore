@@ -19,6 +19,9 @@ const { resolveShow } = require('./lib/resolve-show');
 
 const FIELD_ON_RECORD = { capitalization: 'capitalization', 'weekly running cost': 'weeklyRunningCost' };
 
+/** The commercial.json record for a show: keyed by slug (feedback_commercial_slug_keys), with old id keys as a fallback. */
+const recordFor = (commercial, show) => (show && (commercial[show.slug] || commercial[show.id])) || null;
+
 /** How the claim compares with what the live record already says. */
 function recordStatus(claim, record) {
   const field = FIELD_ON_RECORD[claim.field];
@@ -64,7 +67,7 @@ async function main() {
       page = pages.get(claim.source_url);
     }
     const out = classifyClaim(claim, page, show);
-    results.push({ ...raw, slug: show ? show.id : null, ...out, record: show ? recordStatus(claim, commercial[show.id]) : 'n/a' });
+    results.push({ ...raw, slug: show ? show.slug : null, ...out, record: show ? recordStatus(claim, recordFor(commercial, show)) : 'n/a' });
   }
   const counts = {};
   for (const r of results) counts[r.verdict] = (counts[r.verdict] || 0) + 1;
@@ -74,4 +77,4 @@ async function main() {
 }
 
 if (require.main === module) main().catch(error => { console.error(error.message); process.exitCode = 1; });
-module.exports = { recordStatus };
+module.exports = { recordStatus, recordFor };
