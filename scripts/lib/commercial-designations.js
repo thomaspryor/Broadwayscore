@@ -86,38 +86,41 @@ function lossDesignationFor(returnedPct) {
 }
 /**
  * Whether our model is what sizes this record's loss label: a loss label, no
- * human lock, and no estimate of the record's own (that one is sized by the
- * writer that sets it).
+ * human lock, and no estimate of the record's own. Previews of a model change
+ * use it to see which labels the change can move.
  */
 function modelSizesLossLabel(entry) {
   return isLossDesignation(entry?.designation) && entry.humanReviewedDesignation !== true
     && ownReturnedEstimatePct(entry) === null;
 }
 /**
- * The loss label a record should move to when our model sizes it: Fizzle or
- * Flop by the model's middle figure, Did Not Recoup once its inputs are too
- * thin. null when the label already fits or is not the model's to move.
+ * The loss label an unlocked record's recorded estimate supports, when it is
+ * not the one it carries: Fizzle or Flop by returnedEstimatePct (its own
+ * estimate, else our model's middle figure), Did Not Recoup with none. null
+ * when the label fits, is locked by a person, or is not a loss label.
  */
-function modelSizedLossLabel(entry) {
-  if (!modelSizesLossLabel(entry)) return null;
+function resizedLossLabel(entry) {
+  if (!isLossDesignation(entry?.designation) || entry.humanReviewedDesignation === true) return null;
   const sized = lossDesignationFor(returnedEstimatePct(entry));
   return sized === entry.designation ? null : sized;
 }
 /** More loss labels than this moving in one model run is a model change, not drift. */
 const MODEL_LOSS_RESIZE_LIMIT = 3;
 /**
- * The loss-label moves the model writer makes after a run, so a model change
- * that carries a closed show across the 30% line carries its label too
- * (BRO-5643: jagged-little-pill stayed a Fizzle at 27%). Above `limit` moves
- * none is applied and all are held for review, like update-commercial-data.js's
- * designation circuit breaker.
+ * The loss-label moves the model writer makes after a run. It is the daily
+ * catch-all for label sizes as for model figures, so a label follows its
+ * estimate whichever writer moved it: a model change that carries a closed
+ * show across the 30% line (BRO-5643: jagged-little-pill stayed a Fizzle at
+ * 27%), or an analyst post that does (scrape-boring-waltz-costs.js writes the
+ * estimate, never the label). Above `limit` moves none is applied and all are
+ * held for review, like update-commercial-data.js's designation circuit breaker.
  * @param {Array<[string, object]>} entries [key, record] pairs the run covered
  * @returns {{ moves: Array<{ key: string, from: string, to: string }>, held: boolean }}
  */
 function planModelLossResizes(entries, limit = MODEL_LOSS_RESIZE_LIMIT) {
   const moves = [];
   for (const [key, entry] of entries) {
-    const to = modelSizedLossLabel(entry);
+    const to = resizedLossLabel(entry);
     if (to) moves.push({ key, from: entry.designation, to });
   }
   return { moves, held: moves.length > limit };
@@ -191,6 +194,6 @@ module.exports = {
   VALID_DESIGNATIONS, canonicalDesignation,
   TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, returnedEstimatePct, DESIGNATIONS_OUTSIDE_RULE,
   LOSS_DESIGNATIONS, isLossDesignation, lossDesignationFor,
-  modelSizesLossLabel, modelSizedLossLabel, MODEL_LOSS_RESIZE_LIMIT, planModelLossResizes,
+  modelSizesLossLabel, resizedLossLabel, MODEL_LOSS_RESIZE_LIMIT, planModelLossResizes,
   MODEL_CONTRADICTION, modelContradictsDesignation,
 };

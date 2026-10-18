@@ -582,6 +582,18 @@ export function lossBasisCaveat(c: LossBasisSignals | null | undefined): string 
 }
 
 /**
+ * A loss label describes a show as it closed. Some shows recoup later, from
+ * tours, licensing and other income after the Broadway run, so the card says
+ * the label can change (owner 2026-10-18, BRO-5645).
+ */
+export const LOSS_CAN_CHANGE_NOTE = 'This can change if the show recoups later, from tours or licensing.';
+
+/** The can-change note for a loss label; null for every other designation. */
+export function lossCanChangeNote(c: Pick<ShowCommercial, 'designation'> | null | undefined): string | null {
+  return c && isLossDesignation(c.designation) ? LOSS_CAN_CHANGE_NOTE : null;
+}
+
+/**
  * The research notes the show card prints under "Show details". On a loss
  * label no source reported, our notes ("closed without recouping, investors
  * got nothing") would read as a reported fact, so they stay off the page and

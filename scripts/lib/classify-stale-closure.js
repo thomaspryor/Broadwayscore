@@ -6,10 +6,10 @@
 // Which loss label: Fizzle or Flop only when an estimate of how much came
 // back supports one (owner 2026-10-18, BRO-5623). With none the row stays
 // TBD, shown as Undisclosed, and is flagged needsLossEvidence: labelling a
-// silent closure Did Not Recoup instead is the owner's call, not made yet
-// (BRO-5636: two of the nine candidates, The Music Man 2022 and John Proctor
-// Is the Villain, may have recouped quietly). Manual review via
-// humanReviewedDesignation can upgrade or downgrade.
+// silent closure Did Not Recoup is a person's call per show. The owner
+// labelled seven that way by data plan (BRO-5645) and kept The Music Man 2022
+// and John Proctor Is the Villain Undisclosed, since they may have recouped
+// quietly. Manual review via humanReviewedDesignation can upgrade or downgrade.
 //
 // Why direct-to-commercial.json (per Code Design reviewer redesign):
 // Inferred-Fizzle is deterministic policy from local state — not a "claim
