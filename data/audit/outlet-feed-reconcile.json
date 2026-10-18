@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-17T23:30:43.866Z",
+  "generatedAt": "2026-10-18T00:42:00.748Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -19,14 +19,14 @@
       "openingDate": "2026-10-13"
     },
     {
-      "id": "fish-off-broadway-2026",
-      "title": "Fish",
-      "openingDate": "2026-10-11"
-    },
-    {
       "id": "some-woman-west-end-2026",
       "title": "Some Woman",
       "openingDate": "2026-10-15"
+    },
+    {
+      "id": "other-desert-cities-2026",
+      "title": "Other Desert Cities",
+      "openingDate": "2026-10-18"
     },
     {
       "id": "midnight-off-broadway-2026",
@@ -52,6 +52,11 @@
       "id": "memoirs-of-amorous-gentlemen-off-broadway-2026",
       "title": "Memoirs of Amorous Gentlemen",
       "openingDate": "2026-10-15"
+    },
+    {
+      "id": "school-pictures-off-broadway-2026",
+      "title": "School Pictures",
+      "openingDate": "2026-10-18"
     },
     {
       "id": "the-ask-off-broadway-2026",
@@ -89,14 +94,14 @@
       "openingDate": "2026-10-13"
     },
     {
+      "id": "the-dog-show-come-sit-stay-off-broadway-2026",
+      "title": "The Dog Show: Come. Sit. Stay.",
+      "openingDate": "2026-10-18"
+    },
+    {
       "id": "the-bodyguard-tour-2026",
       "title": "The Bodyguard",
       "openingDate": "2026-10-15"
-    },
-    {
-      "id": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
-      "title": "The Prime of Miss Jean Brodie",
-      "openingDate": "2026-10-11"
     },
     {
       "id": "unconditional-a-new-musical-memoir-off-broadway-2026",
@@ -111,15 +116,7 @@
   ],
   "skipped": [
     {
-      "showId": "other-desert-cities-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
-      "showId": "school-pictures-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
-      "showId": "the-dog-show-come-sit-stay-off-broadway-2026",
+      "showId": "copperfield-the-new-musical-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     },
     {
@@ -150,6 +147,10 @@
       "error": "HTTP 401 for https://musicaltheatrereview.com/feed/"
     },
     {
+      "outletId": "theatre-vibe",
+      "error": "HTTP 403 for https://theatrevibe.co.uk/feed/"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -160,21 +161,16 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 716,
-  "matchedGaps": 3,
+  "itemsScanned": 690,
+  "matchedGaps": 2,
   "possibleGaps": 7,
   "gaps": [
-    {
-      "showId": "dog-mom-off-west-end-2026",
-      "title": "Dog Mom",
-      "level": "matched",
-      "outletId": "all-that-dazzles-uk",
-      "url": "https://www.allthatdazzles.co.uk/post/review-dog-mom-southwark-playhouse-borough",
-      "headline": "Review: Dog Mom (Southwark Playhouse Borough)",
-      "publishDate": "2026-10-17"
-    },
     {
       "showId": "some-woman-west-end-2026",
       "title": "Some Woman",

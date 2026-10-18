@@ -1,78 +1,13 @@
 {
-  "generatedAt": "2026-10-17T23:30:43.369Z",
+  "generatedAt": "2026-10-18T00:42:00.237Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 244,
-  "clean": 241,
-  "defective": 3,
-  "byType": {
-    "missing-from-prod": 2,
-    "score-drift": 3
-  },
-  "shows": [
-    {
-      "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
-      "title": "Memoirs of Amorous Gentlemen",
-      "openingDate": "2026-10-15",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "2 scored outlet(s) absent from the deployed payload: nypost, one-minute-critic"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 63.06 vs local 60.02 (Δ3.04)"
-        }
-      ],
-      "missingFromProd": [
-        "nypost",
-        "one-minute-critic"
-      ],
-      "localCount": 16,
-      "deployedCount": 14,
-      "firstDefectAt": "2026-10-17T23:30:38.602Z"
-    },
-    {
-      "showId": "the-ask-off-broadway-2026",
-      "title": "The Ask",
-      "openingDate": "2026-10-13",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: newyorker"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 66.13 vs local 61.76 (Δ4.37)"
-        }
-      ],
-      "missingFromProd": [
-        "newyorker"
-      ],
-      "localCount": 4,
-      "deployedCount": 3,
-      "firstDefectAt": "2026-10-17T23:30:38.602Z"
-    },
-    {
-      "showId": "cadel-lungs-on-legs-west-end-2026",
-      "title": "Cadel: Lungs On Legs",
-      "openingDate": "2026-10-16",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 82.77 vs local 82.43 (Δ0.34)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 10,
-      "deployedCount": 10,
-      "firstDefectAt": "2026-10-17T22:59:38.179Z"
-    }
-  ],
+  "checked": 242,
+  "clean": 242,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

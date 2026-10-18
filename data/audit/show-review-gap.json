@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-10-17T23:30:21.846Z",
-  "windowDays": 21,
-  "targets": 3,
-  "auditedThisRun": 3,
-  "carriedForward": 746,
+  "generatedAt": "2026-10-18T00:39:13.929Z",
+  "windowDays": 1095,
+  "targets": 664,
+  "auditedThisRun": 10,
+  "carriedForward": 741,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 430,
-    "missingCurrentRun": 852,
+    "withGap": 433,
+    "missingCurrentRun": 874,
     "totalCitedNoUrl": 7,
-    "totalFlaggedMisses": 970,
+    "totalFlaggedMisses": 966,
     "totalRecoverable": 10,
     "totalRecovered": 15,
     "humanExcluded": 1,
-    "automatedExcluded": 163,
-    "automatedExcludedListed": 138,
+    "automatedExcluded": 162,
+    "automatedExcludedListed": 134,
     "priorProductionCitations": 5100
   },
   "results": [
@@ -11465,7 +11465,12 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-17T20:02:37.323Z"
+      "computedAt": "2026-10-17T20:02:37.323Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-18T00:39:14.023Z",
+        "lastAt": "2026-10-18T00:39:14.023Z"
+      }
     },
     {
       "showId": "animal-wisdom-off-broadway-2022",
@@ -24093,7 +24098,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 4,
             "accepted": 0,
             "error": null
           },
@@ -24103,7 +24108,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 1,
+            "results": 0,
             "accepted": 0,
             "error": null
           }
@@ -24114,11 +24119,10 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 15,
+        "count": 10,
         "byReason": {
-          "non-review-host": 12,
           "aggregator-internal-nav": 1,
-          "ticketing-reseller": 1,
+          "non-review-host": 8,
           "tag-index-page": 1
         }
       },
@@ -24150,12 +24154,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-17T18:15:37.224Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-17T20:02:37.381Z",
-        "lastAt": "2026-10-17T20:02:37.381Z"
-      }
+      "computedAt": "2026-10-18T00:39:13.929Z"
     },
     {
       "showId": "bone-wars-a-new-musical-off-broadway-2026",
@@ -38938,6 +38937,43 @@
       "computedAt": "2026-09-24T00:16:09.587Z"
     },
     {
+      "showId": "copperfield-the-new-musical-off-broadway-2026",
+      "title": "Copperfield! The New Musical",
+      "openingDate": "2026-10-19",
+      "status": "previews",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-18T00:39:13.929Z"
+    },
+    {
       "showId": "cosi-fan-tutte-off-broadway-2026",
       "title": "Così fan tutte",
       "openingDate": "2026-09-23",
@@ -46960,8 +46996,8 @@
         "https://www.londontheatre.co.uk/reviews/dirty-dancing-review-dominion-theatre",
         "https://shystrangemanic.com/2022/02/dirty-dancing-at-the-dominion-theatre.html",
         "https://www.whatsonstage.com/london-theatre/reviews/dirty-dancing-dominion-2022-west-end-review_55891.html",
-        "https://www.lastminutetheatretickets.com/review-of-dirty-dancing-the-classic-story-on-stage/",
-        "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462"
+        "https://musicaltheatrereview.com/london-venue-change-for-dirty-dancing-the-classic-story-on-stage/",
+        "https://www.lastminutetheatretickets.com/review-of-dirty-dancing-the-classic-story-on-stage/"
       ],
       "dirFiles": 9,
       "dirClean": 1,
@@ -46980,6 +47016,12 @@
           "knownOutletId": "shy-strange-manic",
           "priorRun": true,
           "priorRunSource": "show-score-url-year"
+        },
+        {
+          "url": "https://musicaltheatrereview.com/london-venue-change-for-dirty-dancing-the-classic-story-on-stage/",
+          "host": "musicaltheatrereview.com",
+          "knownOutletId": "musical-theatre-review",
+          "serpCensus": true
         },
         {
           "url": "https://www.lastminutetheatretickets.com/review-of-dirty-dancing-the-classic-story-on-stage/",
@@ -47092,29 +47134,6 @@
           "priorRun": true,
           "priorRunSource": "flagged-file-date:February 9th, 2022",
           "reverify": false
-        },
-        {
-          "url": "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462",
-          "host": "edinburghguide.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "edinburghguide--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "serpCensus": true,
-          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -47194,7 +47213,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -47204,7 +47223,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -47224,19 +47243,20 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 31,
+        "count": 32,
         "byReason": {
-          "non-review-host": 21,
-          "aggregator-internal-nav": 2,
+          "aggregator-internal-nav": 3,
+          "non-review-host": 20,
+          "bare-host": 1,
           "ticketing-reseller": 2,
           "census-junk-host": 2,
           "write-path-blocked": 2,
-          "bare-host": 1,
-          "ticket-seller-product-page": 1
+          "ticket-seller-product-page": 1,
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -47258,34 +47278,50 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [],
+      "ingestResults": [
+        {
+          "url": "https://musicaltheatrereview.com/london-venue-change-for-dirty-dancing-the-classic-story-on-stage/",
+          "host": "musicaltheatrereview.com",
+          "outletId": "musical-theatre-review",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "edinburghguide.com",
-            "outlet": "edinburghguide.com",
+            "outletId": "musical-theatre-review",
+            "outlet": "musical-theatre-review",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462"
+            "url": "https://musicaltheatrereview.com/london-venue-change-for-dirty-dancing-the-classic-story-on-stage/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462",
-            "outletId": "edinburghguide.com",
+            "url": "https://musicaltheatrereview.com/london-venue-change-for-dirty-dancing-the-classic-story-on-stage/",
+            "outletId": "musical-theatre-review",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T18:15:37.224Z"
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-17T18:15:37.224Z"
+      "computedAt": "2026-10-18T00:39:13.929Z"
     },
     {
       "showId": "dirty-dancing-tour-2026",
@@ -48401,17 +48437,27 @@
         "https://www.londonboxoffice.co.uk/news/post/dog-mom-southwark-playhouse-borough-review",
         "https://www.londontheatre1.com/reviews/dog-mom-southwark-playhouse-borough/",
         "https://theqr.co.uk/2026/10/13/canine-logic-and-reinvention-in-southwarks-dog-mom/",
+        "https://www.thereviewshub.com/dog-mom-southwark-playhouse-borough-london/",
+        "https://www.allthatdazzles.co.uk/post/review-dog-mom-southwark-playhouse-borough",
+        "https://theatreandtonic.co.uk/blog/dog-mom-at-southwark-playhouse-borough-review",
         "https://thespyinthestalls.com/2026/10/dog-mom/",
         "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn",
-        "https://readaboutstuff.com/2026/09/29/interview-ajay-chowdhury-chats-to-read-about-stuff-ahead-of-dog-mom/",
-        "https://www.uktw.co.uk/London/Southwark-Playhouse-Borough/Play/Dog-Mom/L536895171/",
         "https://shouldgoto.com/theatre/dog-mom",
+        "https://www.uktw.co.uk/London/Southwark-Playhouse-Borough/Play/Dog-Mom/L536895171/",
+        "https://readaboutstuff.com/2026/09/29/interview-ajay-chowdhury-chats-to-read-about-stuff-ahead-of-dog-mom/",
         "https://dogforum.co.uk/threads/forum-competition-award-winning-comedy-dog-mom-at-londons-southwark-playhouse.97692/"
       ],
-      "dirFiles": 8,
-      "dirClean": 4,
-      "inReviewsJson": 3,
-      "missing": [],
+      "dirFiles": 11,
+      "dirClean": 6,
+      "inReviewsJson": 6,
+      "missing": [
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-dog-mom-southwark-playhouse-borough",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [
         {
           "host": "london-unattached.com",
@@ -48439,8 +48485,9 @@
           "basis": [
             "rejectionReason"
           ],
+          "confirmedNonReview": true,
           "serpCensus": true,
-          "reverify": true
+          "reverify": false
         },
         {
           "url": "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn",
@@ -48485,8 +48532,9 @@
           "basis": [
             "rejectionReason"
           ],
+          "confirmedNonReview": true,
           "serpCensus": true,
-          "reverify": true
+          "reverify": false
         },
         {
           "url": "https://dogforum.co.uk/threads/forum-competition-award-winning-comedy-dog-mom-at-londons-southwark-playhouse.97692/",
@@ -48508,8 +48556,9 @@
           "basis": [
             "rejectionReason"
           ],
+          "confirmedNonReview": true,
           "serpCensus": true,
-          "reverify": true
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -48528,7 +48577,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 2
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": true,
@@ -48574,7 +48623,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 7,
             "error": null
           },
           {
@@ -48583,8 +48632,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 1,
+            "results": 9,
+            "accepted": 0,
             "error": null
           },
           {
@@ -48604,7 +48653,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -48620,47 +48669,64 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 9,
+        "resultCount": 12,
         "error": null
       },
       "candidatesRejected": {
-        "count": 28,
+        "count": 22,
         "byReason": {
-          "non-review-host": 20,
-          "aggregator-internal-nav": 3,
+          "aggregator-internal-nav": 1,
+          "non-review-host": 17,
           "census-junk-host": 2,
           "write-path-blocked": 1,
-          "bare-host": 1,
           "review-hub-page": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 4,
+      "automatedExcludedListed": 1,
       "unextractable": [
-        {
-          "url": "https://www.uktw.co.uk/London/Southwark-Playhouse-Borough/Play/Dog-Mom/L536895171/",
-          "host": "uktw.co.uk",
-          "knownOutletId": "uktw",
-          "serpCensus": true,
-          "zeroCharAttempts": 4
-        },
         {
           "url": "https://shouldgoto.com/theatre/dog-mom",
           "host": "shouldgoto.com",
           "knownOutletId": null,
           "serpCensus": true,
           "zeroCharAttempts": 4
+        },
+        {
+          "url": "https://www.uktw.co.uk/London/Southwark-Playhouse-Borough/Play/Dog-Mom/L536895171/",
+          "host": "uktw.co.uk",
+          "knownOutletId": "uktw",
+          "serpCensus": true,
+          "zeroCharAttempts": 4
         }
       ],
+      "ingestResults": [
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-dog-mom-southwark-playhouse-borough",
+          "host": "allthatdazzles.co.uk",
+          "outletId": "all-that-dazzles-uk",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "london-unattached",
-            "outlet": "london-unattached",
+            "outletId": "all-that-dazzles-uk",
+            "outlet": "all-that-dazzles-uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.london-unattached.com/dog-mom-southwark-playhouse/"
+            "url": "https://www.allthatdazzles.co.uk/post/review-dog-mom-southwark-playhouse-borough"
           },
           {
             "outletId": "theqr",
@@ -48706,45 +48772,64 @@
             "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
+            "url": "https://www.thereviewshub.com/dog-mom-southwark-playhouse-borough-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/dog-mom-at-southwark-playhouse-borough-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
             "url": "https://thespyinthestalls.com/2026/10/dog-mom/",
             "outletId": "thespyinthestalls.com",
             "state": "live",
             "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
+            "url": "https://www.allthatdazzles.co.uk/post/review-dog-mom-southwark-playhouse-borough",
+            "outletId": "all-that-dazzles-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
             "url": "https://theqr.co.uk/2026/10/13/canine-logic-and-reinvention-in-southwarks-dog-mom/",
             "outletId": "theqr",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-16T01:58:23.533Z"
           },
           {
             "url": "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn",
             "outletId": "flicker-magazine",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
             "url": "https://readaboutstuff.com/2026/09/29/interview-ajay-chowdhury-chats-to-read-about-stuff-ahead-of-dog-mom/",
             "outletId": "readaboutstuff",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
             "url": "https://dogforum.co.uk/threads/forum-competition-award-winning-comedy-dog-mom-at-londons-southwark-playhouse.97692/",
             "outletId": "dogforum.co.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-17T18:15:37.224Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 3,
-        "candidateCount": 7
+        "liveCount": 5,
+        "candidateCount": 10
       },
-      "computedAt": "2026-10-17T18:15:37.224Z"
+      "computedAt": "2026-10-18T00:39:13.929Z"
     },
     {
       "showId": "doll-day-afternoon-off-broadway-2026",
@@ -48763,12 +48848,75 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Doll Day Afternoon\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Doll Day Afternoon\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Doll Day Afternoon\" review mama",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Doll Day Afternoon La MaMa / The Downstairs review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Doll Day Afternoon La MaMa / The Downstairs review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Doll Day Afternoon La MaMa / The Downstairs review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 33,
+        "byReason": {
+          "aggregator-internal-nav": 7,
+          "non-review-host": 23,
+          "write-path-blocked": 1,
+          "review-hub-page": 1,
+          "show-hub": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -48781,7 +48929,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-17T20:02:37.323Z"
+      "computedAt": "2026-10-18T00:39:13.929Z"
     },
     {
       "showId": "don-giovanni-off-broadway-2025",
@@ -49227,7 +49375,12 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-10-17T20:02:37.323Z"
+      "computedAt": "2026-10-17T20:02:37.323Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-18T00:39:14.023Z",
+        "lastAt": "2026-10-18T00:39:14.023Z"
+      }
     },
     {
       "showId": "dracula-west-end-2025",
@@ -83439,7 +83592,12 @@
         "liveCount": 1,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-17T18:15:37.224Z"
+      "computedAt": "2026-10-17T18:15:37.224Z",
+      "quarantine": {
+        "nextState": "incomplete:1:7",
+        "since": "2026-10-18T00:39:14.023Z",
+        "lastAt": "2026-10-18T00:39:14.023Z"
+      }
     },
     {
       "showId": "high-society-west-end-2026",
@@ -106569,6 +106727,43 @@
       "computedAt": "2026-10-03T23:39:15.002Z"
     },
     {
+      "showId": "lincoln-in-the-bardo-off-broadway-2026",
+      "title": "Lincoln in the Bardo",
+      "openingDate": "2026-10-19",
+      "status": "upcoming",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-18T00:39:13.929Z"
+    },
+    {
       "showId": "little-bear-ridge-road-2025",
       "title": "Little Bear Ridge Road",
       "openingDate": "2025-10-30",
@@ -120850,9 +121045,9 @@
       },
       "computedAt": "2026-10-17T14:50:53.502Z",
       "quarantine": {
-        "nextState": "complete:13:13",
-        "since": "2026-10-17T20:02:37.381Z",
-        "lastAt": "2026-10-17T20:02:37.381Z"
+        "nextState": "complete:14:14",
+        "since": "2026-10-18T00:39:14.023Z",
+        "lastAt": "2026-10-18T00:39:14.023Z"
       }
     },
     {
@@ -130071,7 +130266,12 @@
         "liveCount": 0,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-17T18:15:37.224Z"
+      "computedAt": "2026-10-17T18:15:37.224Z",
+      "quarantine": {
+        "nextState": "incomplete:0:7",
+        "since": "2026-10-18T00:39:14.023Z",
+        "lastAt": "2026-10-18T00:39:14.023Z"
+      }
     },
     {
       "showId": "murder-she-didnt-write-west-end-2025",
@@ -143610,7 +143810,18 @@
         "http://www.newsday.com/entertainment/theater/other-desert-cities-is-a-broadway-gem-1.3292020",
         "http://www.washingtonpost.com/lifestyle/style/playwright-jon-robin-baitzs-other-desert-cities-is-a-strong-serio-comedy/2011/11/03/gIQA8ZehjM_story.html",
         "http://www.usatoday.com/life/theater/reviews/story/2011-11-03/other-desert-cities/51064886/1",
-        "http://www.ny1.com/content/ny1_living/on_stage/150158/ny1-theater-review---other-desert-cities-"
+        "http://www.ny1.com/content/ny1_living/on_stage/150158/ny1-theater-review---other-desert-cities-",
+        "https://harrisonline.com/other-desert-cities/",
+        "https://newyorktheater.me/2026/09/10/other-desert-cities-original-broadway-review/",
+        "https://aroundthetownchicago.com/theatre-reviews/other-desert-cities-2/",
+        "https://www.theatermania.com/news/julia-louis-dreyfus-allison-janney-to-star-in-broadway-revival-of-other-desert-cities_1838254/",
+        "https://donshewey.com/theater_reviews/other-desert-cities-bway.html",
+        "https://mdtheatreguide.com/2026/01/theatre-review-other-desert-cities-at-the-colonial-players-of-annapolis/",
+        "https://www.floridatheateronstage.com/reviews/report-from-new-york-visit-other-desert-cities/",
+        "https://www.nytix.com/shows/other-desert-cities",
+        "https://www.nytimes.com/2026/05/26/theater/dreyfus-harris-janney-keery-other-desert-cities-broadway.html",
+        "https://frontmezzjunkies.com/tag/other-desert-cities/",
+        "https://artsfuse.org/76008/fuse-theater-review-another-view-of-other-desert-cities-2/"
       ],
       "dirFiles": 0,
       "dirClean": 0,
@@ -143678,6 +143889,72 @@
           "knownOutletId": "ny1",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://harrisonline.com/other-desert-cities/",
+          "host": "harrisonline.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://newyorktheater.me/2026/09/10/other-desert-cities-original-broadway-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "serpCensus": true
+        },
+        {
+          "url": "https://aroundthetownchicago.com/theatre-reviews/other-desert-cities-2/",
+          "host": "aroundthetownchicago.com",
+          "knownOutletId": "around-the-town-chicago",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatermania.com/news/julia-louis-dreyfus-allison-janney-to-star-in-broadway-revival-of-other-desert-cities_1838254/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "serpCensus": true
+        },
+        {
+          "url": "https://donshewey.com/theater_reviews/other-desert-cities-bway.html",
+          "host": "donshewey.com",
+          "knownOutletId": "donshewey",
+          "serpCensus": true
+        },
+        {
+          "url": "https://mdtheatreguide.com/2026/01/theatre-review-other-desert-cities-at-the-colonial-players-of-annapolis/",
+          "host": "mdtheatreguide.com",
+          "knownOutletId": "maryland-theatre-guide",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.floridatheateronstage.com/reviews/report-from-new-york-visit-other-desert-cities/",
+          "host": "floridatheateronstage.com",
+          "knownOutletId": "florida-theater-on-stage",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.nytix.com/shows/other-desert-cities",
+          "host": "nytix.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.nytimes.com/2026/05/26/theater/dreyfus-harris-janney-keery-other-desert-cities-broadway.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "serpCensus": true
+        },
+        {
+          "url": "https://frontmezzjunkies.com/tag/other-desert-cities/",
+          "host": "frontmezzjunkies.com",
+          "knownOutletId": "frontmezzjunkies",
+          "serpCensus": true
+        },
+        {
+          "url": "https://artsfuse.org/76008/fuse-theater-review-another-view-of-other-desert-cities-2/",
+          "host": "artsfuse.org",
+          "knownOutletId": "artsfuse",
+          "serpCensus": true
         }
       ],
       "dirOnly": [],
@@ -143685,16 +143962,88 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Other Desert Cities\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Other Desert Cities\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Other Desert Cities\" review hudson",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Other Desert Cities\" Hickey review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Other Desert Cities Hudson Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Other Desert Cities Hudson Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Other Desert Cities Hudson Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 5,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 11,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 281,
+        "count": 328,
         "byReason": {
+          "aggregator-internal-nav": 232,
           "not-http-url": 35,
-          "non-review-host": 15,
-          "aggregator-internal-nav": 227,
-          "aggregator-section-root": 4
+          "production-database-listing": 1,
+          "aggregator-section-root": 4,
+          "non-review-host": 45,
+          "bare-host": 1,
+          "ticketing-reseller": 8,
+          "census-junk-host": 1,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -143762,18 +144111,281 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
+      "ingestResults": [
+        {
+          "url": "https://harrisonline.com/other-desert-cities/",
+          "host": "harrisonline.com",
+          "outletId": "harrisonline",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://newyorktheater.me/2026/09/10/other-desert-cities-original-broadway-review/",
+          "host": "newyorktheater.me",
+          "outletId": "nyt-theater",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://aroundthetownchicago.com/theatre-reviews/other-desert-cities-2/",
+          "host": "aroundthetownchicago.com",
+          "outletId": "around-the-town-chicago",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.theatermania.com/news/julia-louis-dreyfus-allison-janney-to-star-in-broadway-revival-of-other-desert-cities_1838254/",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        },
+        {
+          "url": "https://donshewey.com/theater_reviews/other-desert-cities-bway.html",
+          "host": "donshewey.com",
+          "outletId": "donshewey",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://mdtheatreguide.com/2026/01/theatre-review-other-desert-cities-at-the-colonial-players-of-annapolis/",
+          "host": "mdtheatreguide.com",
+          "outletId": "maryland-theatre-guide"
+        },
+        {
+          "url": "https://www.floridatheateronstage.com/reviews/report-from-new-york-visit-other-desert-cities/",
+          "host": "floridatheateronstage.com",
+          "outletId": "florida-theater-on-stage"
+        },
+        {
+          "url": "https://www.nytix.com/shows/other-desert-cities",
+          "host": "nytix.com",
+          "outletId": "nytix"
+        },
+        {
+          "url": "https://www.nytimes.com/2026/05/26/theater/dreyfus-harris-janney-keery-other-desert-cities-broadway.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes"
+        },
+        {
+          "url": "https://frontmezzjunkies.com/tag/other-desert-cities/",
+          "host": "frontmezzjunkies.com",
+          "outletId": "frontmezzjunkies"
+        },
+        {
+          "url": "https://artsfuse.org/76008/fuse-theater-review-another-view-of-other-desert-cities-2/",
+          "host": "artsfuse.org",
+          "outletId": "artsfuse"
+        }
+      ],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "harrisonline.com",
+            "outlet": "harrisonline.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://harrisonline.com/other-desert-cities/"
+          },
+          {
+            "outletId": "nyt-theater",
+            "outlet": "nyt-theater",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://newyorktheater.me/2026/09/10/other-desert-cities-original-broadway-review/"
+          },
+          {
+            "outletId": "around-the-town-chicago",
+            "outlet": "around-the-town-chicago",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://aroundthetownchicago.com/theatre-reviews/other-desert-cities-2/"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/julia-louis-dreyfus-allison-janney-to-star-in-broadway-revival-of-other-desert-cities_1838254/"
+          },
+          {
+            "outletId": "donshewey",
+            "outlet": "donshewey",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://donshewey.com/theater_reviews/other-desert-cities-bway.html"
+          },
+          {
+            "outletId": "maryland-theatre-guide",
+            "outlet": "maryland-theatre-guide",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://mdtheatreguide.com/2026/01/theatre-review-other-desert-cities-at-the-colonial-players-of-annapolis/"
+          },
+          {
+            "outletId": "florida-theater-on-stage",
+            "outlet": "florida-theater-on-stage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.floridatheateronstage.com/reviews/report-from-new-york-visit-other-desert-cities/"
+          },
+          {
+            "outletId": "nytix.com",
+            "outlet": "nytix.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytix.com/shows/other-desert-cities"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2026/05/26/theater/dreyfus-harris-janney-keery-other-desert-cities-broadway.html"
+          },
+          {
+            "outletId": "frontmezzjunkies",
+            "outlet": "frontmezzjunkies",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://frontmezzjunkies.com/tag/other-desert-cities/"
+          },
+          {
+            "outletId": "artsfuse",
+            "outlet": "artsfuse",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://artsfuse.org/76008/fuse-theater-review-another-view-of-other-desert-cities-2/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://harrisonline.com/other-desert-cities/",
+            "outletId": "harrisonline.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2026/09/10/other-desert-cities-original-broadway-review/",
+            "outletId": "nyt-theater",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
+            "url": "https://aroundthetownchicago.com/theatre-reviews/other-desert-cities-2/",
+            "outletId": "around-the-town-chicago",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/julia-louis-dreyfus-allison-janney-to-star-in-broadway-revival-of-other-desert-cities_1838254/",
+            "outletId": "theatermania",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
+            "url": "https://donshewey.com/theater_reviews/other-desert-cities-bway.html",
+            "outletId": "donshewey",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
+            "url": "https://mdtheatreguide.com/2026/01/theatre-review-other-desert-cities-at-the-colonial-players-of-annapolis/",
+            "outletId": "maryland-theatre-guide",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
+            "url": "https://www.floridatheateronstage.com/reviews/report-from-new-york-visit-other-desert-cities/",
+            "outletId": "florida-theater-on-stage",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
+            "url": "https://www.nytix.com/shows/other-desert-cities",
+            "outletId": "nytix.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/05/26/theater/dreyfus-harris-janney-keery-other-desert-cities-broadway.html",
+            "outletId": "nytimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
+            "url": "https://frontmezzjunkies.com/tag/other-desert-cities/",
+            "outletId": "frontmezzjunkies",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
+            "url": "https://artsfuse.org/76008/fuse-theater-review-another-view-of-other-desert-cities-2/",
+            "outletId": "artsfuse",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 11
       },
-      "computedAt": "2026-10-17T18:15:37.224Z"
+      "computedAt": "2026-10-18T00:39:13.929Z"
     },
     {
       "showId": "our-sinatra-a-musical-celebration-off-broadway-2026",
@@ -157682,7 +158294,12 @@
         "liveCount": 1,
         "candidateCount": 5
       },
-      "computedAt": "2026-10-17T22:59:21.861Z"
+      "computedAt": "2026-10-17T22:59:21.861Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-18T00:39:14.023Z",
+        "lastAt": "2026-10-18T00:39:14.023Z"
+      }
     },
     {
       "showId": "sabrage-off-west-end-2026",
@@ -159262,7 +159879,10 @@
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=-ATIT2E",
         "https://www.talkinbroadway.com/page/ob/11_20_23b.html",
         "http://www.theaterscene.net/musicals/offbway/school-pictures/victor-gluck/",
-        "https://thefrontrowcenter.com/2023/12/school-pictures/"
+        "https://thefrontrowcenter.com/2023/12/school-pictures/",
+        "https://www.timeout.com/newyork/theater/school-pictures",
+        "https://airmail.news/arts-intel/events/school-pictures-and-two-girls",
+        "https://www.theaterscene.net/musicals/offbway/school-pictures/victor-gluck/"
       ],
       "dirFiles": 6,
       "dirClean": 6,
@@ -159272,6 +159892,18 @@
           "url": "https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boys-in-harpy-land-at-playwrights-horizons_1722069/",
           "host": "theatermania.com",
           "knownOutletId": "theatermania"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/school-pictures",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "serpCensus": true
+        },
+        {
+          "url": "https://airmail.news/arts-intel/events/school-pictures-and-two-girls",
+          "host": "airmail.news",
+          "knownOutletId": "airmail",
+          "serpCensus": true
         }
       ],
       "dirOnly": [],
@@ -159279,12 +159911,76 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"School Pictures\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"School Pictures\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"School Pictures\" review cherry",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "School Pictures Cherry Lane Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "School Pictures Cherry Lane Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "School Pictures Cherry Lane Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 4,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 34,
+        "byReason": {
+          "aggregator-internal-nav": 6,
+          "non-review-host": 23,
+          "show-listing-page": 1,
+          "merch-store": 1,
+          "venue-production-page": 1,
+          "review-hub-page": 2
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -159304,6 +160000,36 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (no-changes)"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/school-pictures",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "timeout-listing-capsule",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "school-pictures-off-broadway-2026: https://www.timeout.com/newyork/theater/school-pictures is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
+        },
+        {
+          "url": "https://airmail.news/arts-intel/events/school-pictures-and-two-girls",
+          "host": "airmail.news",
+          "outletId": "airmail",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -159316,6 +160042,20 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boys-in-harpy-land-at-playwrights-horizons_1722069/"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/school-pictures"
+          },
+          {
+            "outletId": "airmail",
+            "outlet": "airmail",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://airmail.news/arts-intel/events/school-pictures-and-two-girls"
           }
         ],
         "suppressedMissing": [],
@@ -159357,18 +160097,38 @@
             "firstSeenAt": "2026-10-17T01:52:09.174Z"
           },
           {
+            "url": "https://www.theaterscene.net/musicals/offbway/school-pictures/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
             "url": "https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boys-in-harpy-land-at-playwrights-horizons_1722069/",
             "outletId": "theatermania",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-17T01:52:09.174Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/school-pictures",
+            "outletId": "timeout-london",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
+            "url": "https://airmail.news/arts-intel/events/school-pictures-and-two-girls",
+            "outletId": "airmail",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 6,
-        "candidateCount": 7
+        "candidateCount": 9
       },
-      "computedAt": "2026-10-17T18:15:37.224Z"
+      "computedAt": "2026-10-18T00:39:13.929Z"
     },
     {
       "showId": "schtick-a-pole-in-it-off-broadway-2026",
@@ -160240,7 +161000,12 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-10-17T18:15:37.224Z"
+      "computedAt": "2026-10-17T18:15:37.224Z",
+      "quarantine": {
+        "nextState": "incomplete:0:1",
+        "since": "2026-10-18T00:39:14.023Z",
+        "lastAt": "2026-10-18T00:39:14.023Z"
+      }
     },
     {
       "showId": "seagull-true-story-off-broadway-2026",
@@ -173590,7 +174355,12 @@
         "liveCount": 2,
         "candidateCount": 6
       },
-      "computedAt": "2026-10-17T20:02:37.323Z"
+      "computedAt": "2026-10-17T20:02:37.323Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-18T00:39:14.023Z",
+        "lastAt": "2026-10-18T00:39:14.023Z"
+      }
     },
     {
       "showId": "suffs-2024",
@@ -180296,7 +181066,12 @@
         "liveCount": 2,
         "candidateCount": 8
       },
-      "computedAt": "2026-10-17T20:02:37.323Z"
+      "computedAt": "2026-10-17T20:02:37.323Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-18T00:39:14.023Z",
+        "lastAt": "2026-10-18T00:39:14.023Z"
+      }
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
@@ -183720,35 +184495,215 @@
       "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://nitelifeexchange.com/the-dog-show-come-sit-stay-a-new-comedy-at-the-triad-theater-from-tuesday-october-13-sunday-november-29/",
+        "https://www.picturethispost.com/30-minutes-from-broadway-entertainment-presents-the-dog-show-come-sit-stay-preview/",
+        "https://lessons.talkalmanmusic.com/shows/event/triad-the/the-dog-show-come-sit-stay-2026-10-16"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://nitelifeexchange.com/the-dog-show-come-sit-stay-a-new-comedy-at-the-triad-theater-from-tuesday-october-13-sunday-november-29/",
+          "host": "nitelifeexchange.com",
+          "knownOutletId": "nitelifeexchange-com",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.picturethispost.com/30-minutes-from-broadway-entertainment-presents-the-dog-show-come-sit-stay-preview/",
+          "host": "picturethispost.com",
+          "knownOutletId": "picture-this-post",
+          "serpCensus": true
+        },
+        {
+          "url": "https://lessons.talkalmanmusic.com/shows/event/triad-the/the-dog-show-come-sit-stay-2026-10-16",
+          "host": "talkalmanmusic.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Dog Show: Come. Sit. Stay.\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Dog Show: Come. Sit. Stay.\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Dog Show: Come. Sit. Stay.\" review triad",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Dog Show: Come. Sit. Stay. The Triad Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Dog Show: Come. Sit. Stay. The Triad Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Dog Show: Come. Sit. Stay. The Triad Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 36,
+        "byReason": {
+          "aggregator-internal-nav": 8,
+          "non-review-host": 20,
+          "bare-host": 2,
+          "non-review-path": 2,
+          "merch-store": 1,
+          "venue-production-page": 3
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://nitelifeexchange.com/the-dog-show-come-sit-stay-a-new-comedy-at-the-triad-theater-from-tuesday-october-13-sunday-november-29/",
+          "host": "nitelifeexchange.com",
+          "outletId": "nitelifeexchange-com",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.picturethispost.com/30-minutes-from-broadway-entertainment-presents-the-dog-show-come-sit-stay-preview/",
+          "host": "picturethispost.com",
+          "outletId": "picture-this-post",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://lessons.talkalmanmusic.com/shows/event/triad-the/the-dog-show-come-sit-stay-2026-10-16",
+          "host": "talkalmanmusic.com",
+          "outletId": "talkalmanmusic",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "nitelifeexchange-com",
+            "outlet": "nitelifeexchange-com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nitelifeexchange.com/the-dog-show-come-sit-stay-a-new-comedy-at-the-triad-theater-from-tuesday-october-13-sunday-november-29/"
+          },
+          {
+            "outletId": "picture-this-post",
+            "outlet": "picture-this-post",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.picturethispost.com/30-minutes-from-broadway-entertainment-presents-the-dog-show-come-sit-stay-preview/"
+          },
+          {
+            "outletId": "talkalmanmusic.com",
+            "outlet": "talkalmanmusic.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://lessons.talkalmanmusic.com/shows/event/triad-the/the-dog-show-come-sit-stay-2026-10-16"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://nitelifeexchange.com/the-dog-show-come-sit-stay-a-new-comedy-at-the-triad-theater-from-tuesday-october-13-sunday-november-29/",
+            "outletId": "nitelifeexchange-com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
+            "url": "https://www.picturethispost.com/30-minutes-from-broadway-entertainment-presents-the-dog-show-come-sit-stay-preview/",
+            "outletId": "picture-this-post",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
+            "url": "https://lessons.talkalmanmusic.com/shows/event/triad-the/the-dog-show-come-sit-stay-2026-10-16",
+            "outletId": "talkalmanmusic.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 3
       },
-      "computedAt": "2026-10-17T18:15:37.224Z"
+      "computedAt": "2026-10-18T00:39:13.929Z"
     },
     {
       "showId": "the-enormous-crocodile-west-end-2026",
@@ -199552,7 +200507,12 @@
         "liveCount": 0,
         "candidateCount": 10
       },
-      "computedAt": "2026-10-17T20:02:37.323Z"
+      "computedAt": "2026-10-17T20:02:37.323Z",
+      "quarantine": {
+        "nextState": "incomplete:0:7",
+        "since": "2026-10-18T00:39:14.023Z",
+        "lastAt": "2026-10-18T00:39:14.023Z"
+      }
     },
     {
       "showId": "the-misanthrope-west-end-2026",
@@ -210145,7 +211105,12 @@
         "liveCount": 1,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-17T18:15:37.224Z"
+      "computedAt": "2026-10-17T18:15:37.224Z",
+      "quarantine": {
+        "nextState": "incomplete:1:5",
+        "since": "2026-10-18T00:39:14.023Z",
+        "lastAt": "2026-10-18T00:39:14.023Z"
+      }
     },
     {
       "showId": "the-secret-circus-musical-off-broadway-2026",
@@ -222312,7 +223277,12 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-17T20:02:37.323Z"
+      "computedAt": "2026-10-17T20:02:37.323Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-18T00:39:14.023Z",
+        "lastAt": "2026-10-18T00:39:14.023Z"
+      }
     },
     {
       "showId": "trophy-boys-off-broadway-2025",
@@ -224970,35 +225940,252 @@
       "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07",
+        "https://www.timeout.com/newyork/theater/two-girls",
+        "https://airmail.news/arts-intel/events/school-pictures-and-two-girls",
+        "https://www.yahoo.com/entertainment/articles/two-girls-one-cup-inspired-192755191.html"
+      ],
+      "dirFiles": 6,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07",
+          "host": "howdidimissthat.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/two-girls",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "serpCensus": true
+        },
+        {
+          "url": "https://airmail.news/arts-intel/events/school-pictures-and-two-girls",
+          "host": "airmail.news",
+          "knownOutletId": "airmail",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.yahoo.com/entertainment/articles/two-girls-one-cup-inspired-192755191.html",
+          "host": "yahoo.com",
+          "knownOutletId": "yahoo",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Two Girls\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Two Girls\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Two Girls\" review cherry",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Two Girls Cherry Lane Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Two Girls Cherry Lane Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Two Girls Cherry Lane Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 4,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 20,
+        "byReason": {
+          "aggregator-internal-nav": 3,
+          "non-review-host": 12,
+          "census-junk-host": 1,
+          "tag-index-page": 1,
+          "non-review-path": 1,
+          "venue-production-page": 1,
+          "review-hub-page": 1
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07",
+          "host": "howdidimissthat.com",
+          "outletId": "howdidimissthat",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/two-girls",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "timeout-listing-capsule",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "two-girls-off-broadway-2026: https://www.timeout.com/newyork/theater/two-girls is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
+        },
+        {
+          "url": "https://airmail.news/arts-intel/events/school-pictures-and-two-girls",
+          "host": "airmail.news",
+          "outletId": "airmail",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "two-girls-off-broadway-2026: https://airmail.news/arts-intel/events/school-pictures-and-two-girls is already owned by school-pictures-off-broadway-2026 — one of the two is contaminated. Inspect data/review-texts/school-pictures-off-broadway-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "https://www.yahoo.com/entertainment/articles/two-girls-one-cup-inspired-192755191.html",
+          "host": "yahoo.com",
+          "outletId": "yahoo",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "howdidimissthat.com",
+            "outlet": "howdidimissthat.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/two-girls"
+          },
+          {
+            "outletId": "airmail",
+            "outlet": "airmail",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://airmail.news/arts-intel/events/school-pictures-and-two-girls"
+          },
+          {
+            "outletId": "yahoo",
+            "outlet": "yahoo",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.yahoo.com/entertainment/articles/two-girls-one-cup-inspired-192755191.html"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07",
+            "outletId": "howdidimissthat.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/two-girls",
+            "outletId": "timeout-london",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
+            "url": "https://airmail.news/arts-intel/events/school-pictures-and-two-girls",
+            "outletId": "airmail",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
+            "url": "https://www.yahoo.com/entertainment/articles/two-girls-one-cup-inspired-192755191.html",
+            "outletId": "yahoo",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 4
       },
-      "computedAt": "2026-10-17T18:15:37.224Z"
+      "computedAt": "2026-10-18T00:39:13.929Z"
     },
     {
       "showId": "two-strangers-bway-2025",
@@ -227176,7 +228363,12 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-17T18:15:37.224Z"
+      "computedAt": "2026-10-17T18:15:37.224Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-18T00:39:14.023Z",
+        "lastAt": "2026-10-18T00:39:14.023Z"
+      }
     },
     {
       "showId": "under-the-shadow-off-west-end-2026",
