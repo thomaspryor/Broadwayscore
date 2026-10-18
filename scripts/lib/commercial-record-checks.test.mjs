@@ -55,6 +55,13 @@ test('a source link listed twice is a warning (BRO-5562)', () => {
   assert.equal(repeats([{ type: 'manual', url: null }, { type: 'manual', url: null }]).length, 0);
   // http/https and a trailing slash are the same link.
   assert.equal(repeats([src('https://x.test/a/'), src('http://x.test/a')]).length, 1);
+  // So are www. and utm_ tracking tags; a different query, port or #fragment, or a non-web link, is not.
+  assert.equal(repeats([src('https://x.test/a'), src('https://www.x.test/a?utm_source=chatgpt.com')]).length, 1);
+  assert.equal(repeats([src('https://x.test/a?id=1&utm_medium=x'), src('https://x.test/a?id=1')]).length, 1);
+  assert.equal(repeats([src('https://x.test/a?id=1'), src('https://x.test/a?id=2')]).length, 0);
+  assert.equal(repeats([src('https://x.test/#/page1'), src('https://x.test/#/page2')]).length, 0);
+  assert.equal(repeats([src('https://x.test:8080/a'), src('https://x.test/a')]).length, 0);
+  assert.equal(repeats([src('mailto:press@x.test'), src('https://x.test')]).length, 0);
   // A repeat the record already had does not refuse an unrelated write; a new one does.
   const prior = { designation: 'TBD', sources: [src('https://x.test/a'), src('https://x.test/a')] };
   const warn = (rec) => commercialRecordWarnings('k', rec, { priorRecord: prior }).filter((m) => m.includes('already listed')).length;
@@ -73,6 +80,10 @@ test('an unannounced-recoupment flag needs a source that says so (BRO-5562)', ()
   // A source that says why, or no flag, is fine (phantom-of-the-opera-1988, appropriate).
   assert.equal(flagWarn({ isEstimate: { recouped: true }, recoupedSource: 'No public announcement found.' }), 0);
   assert.equal(flagWarn({ isEstimate: { recouped: true }, recoupedSource: 'Counted as recouped as an editorial judgment.' }), 0);
+  // The data's own wording for an unannounced recoupment must not refuse a flagged write.
+  assert.equal(flagWarn({ isEstimate: { recouped: true }, recoupedSource: 'No recoupment was announced. Inferred from grosses.' }), 0);
+  // A newspaper's editorial is not our editorial judgment.
+  assert.equal(flagWarn({ isEstimate: { recouped: true }, recoupedSource: 'Variety editorial (Jan 2024): the show recouped.' }), 1);
   assert.equal(flagWarn({ isEstimate: {}, recoupedSource: reported }), 0);
   assert.equal(flagWarn({ recouped: false, isEstimate: { recouped: true }, recoupedSource: reported }), 0);
   // A write that leaves an old flagged source alone does not warn; one that

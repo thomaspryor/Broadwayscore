@@ -423,7 +423,22 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
     // an article the record already cited). Advisory (§19); like the
     // placeholder links above, only a copy beyond what the record already
     // carried counts.
-    const sameLink = (url) => String(url).replace(/^https?:\/\//i, '').replace(/\/+$/, '');
+    // http/https, www., a trailing slash and utm_ tracking tags (research
+    // tools add ?utm_source=chatgpt.com) do not make a new link. A port, a
+    // #fragment (hash-routed pages, PDF pages) and a non-web link do: this
+    // refuses a touched record, so it may only merge links that are the same.
+    const sameLink = (url) => {
+      const raw = String(url).trim();
+      if (!/^https?:\/\//i.test(raw)) return raw.replace(/\/+$/, '');
+      try {
+        const u = new URL(raw);
+        for (const key of [...u.searchParams.keys()]) if (/^utm_/i.test(key)) u.searchParams.delete(key);
+        const query = u.searchParams.toString();
+        return `${u.host.replace(/^www\./, '')}${u.pathname.replace(/\/+$/, '')}${query ? `?${query}` : ''}${u.hash}`;
+      } catch {
+        return raw.replace(/^https?:\/\//i, '').replace(/\/+$/, '');
+      }
+    };
     const priorCount = new Map();
     for (const s of (ctx.priorRecord && Array.isArray(ctx.priorRecord.sources)) ? ctx.priorRecord.sources : []) {
       if (!s || !s.url) continue;
