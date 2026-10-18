@@ -42,19 +42,30 @@ function run(show, context) {
         const texts = fs.readdirSync(showDir)
           .filter(f => f.endsWith('.json'))
           .map(f => {
+            const filePath = path.join(showDir, f);
+            let data;
             try {
-              const filePath = path.join(showDir, f);
-              const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-              // Only texts the rebuild would actually include. A rejected
-              // file (not_a_review, wrongShow, roundup...) is not this show's
-              // review, so its "revival" mentions are about some other show
-              // (BRO-5439: a Deadline tour-news item naming another play's
-              // Best Revival nomination tripped Titanique West End).
-              if (!isIncludableForRebuild(data, show, filePath)) return '';
-              return data.fullText || '';
+              data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
             } catch {
               return '';
             }
+            // Only texts the rebuild would actually include. A rejected
+            // file (not_a_review, wrongShow, roundup...) is not this show's
+            // review, so its "revival" mentions are about some other show
+            // (BRO-5439: a Deadline tour-news item naming another play's
+            // Best Revival nomination tripped Titanique West End). A file
+            // can stay includable on an excerpt score after its fullText was
+            // rejected, so a rejected fullText never counts either. If the
+            // guard throws, count the file: this check only warns, so a
+            // broken guard must not silently zero every show's signal.
+            if (data.rejectionReason) return '';
+            let includable = true;
+            try {
+              includable = isIncludableForRebuild(data, show, filePath);
+            } catch {
+              includable = true;
+            }
+            return includable ? (data.fullText || '') : '';
           });
         mentionCount = countRevivalMentions(texts);
       } catch {
