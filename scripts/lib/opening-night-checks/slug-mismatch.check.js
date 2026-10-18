@@ -220,7 +220,11 @@ function isIdOnlyCmsUrl(urlSlug) {
  * fulltext-mentions-show.check.js so the two checks agree on what a mention is.
  */
 function buildMentionRegex(show, opts) {
+  // opts.minWords (BRO-4427): keep only multi-word slugs, so a one-word core
+  // title or id stem ("cabaret" from "Cabaret at the Kit Kat Club") never counts.
+  const minWords = (opts && opts.minWords) || 1;
   const patterns = buildAcceptSlugs(show, opts)
+    .filter(s => s.split(/[^A-Za-z0-9]+/).filter(Boolean).length >= minWords)
     .map(s => escapeRegex(s).replace(/\\-/g, '[^A-Za-z0-9]*'))
     .filter(s => s.length >= 3);
   if (patterns.length === 0) return null;

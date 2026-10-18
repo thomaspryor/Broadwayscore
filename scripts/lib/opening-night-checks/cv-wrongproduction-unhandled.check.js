@@ -68,7 +68,7 @@ function isCorroboratedTemporalOverride(data, show) {
   if (OTHER_SHOW_RE.test(cvText)) return false;
   // A one-word title (Company, Six, Hair) appears in ledes of unrelated reviews.
   if (String(show.title || '').trim().split(/\s+/).length < 2) return false;
-  const mentionRe = buildMentionRegex(show, { titleWords: false });
+  const mentionRe = buildMentionRegex(show, { titleWords: false, minWords: 2 });
   const segments = [data.fullText, data.bwwExcerpt, data.dtliExcerpt, data.showScoreExcerpt, data.pullQuote]
     .filter((t) => typeof t === 'string' && t);
   return sourceTextNamesShow(segments, mentionRe);

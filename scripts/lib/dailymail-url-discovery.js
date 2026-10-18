@@ -22,7 +22,7 @@ const { foldDiacritics: foldAccents } = require('./title-match');
 const SHINGLE = 6;
 
 function normWords(s) {
-  return foldAccents(String(s || '').toLowerCase())
+  return foldAccents(String(s || '')).toLowerCase()
     .replace(/&#x27;|&#39;|&#039;|’|‘/g, "'")
     .replace(/&[a-z#0-9]+;/g, ' ')
     .replace(/[^a-z0-9' ]+/g, ' ')

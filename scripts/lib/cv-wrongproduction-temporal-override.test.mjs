@@ -75,3 +75,9 @@ test('sweep mode (setAsideHandled) still counts the warning', () => {
   assert.equal(r.severity, 'warning');
   assert.equal(r.details.warnings.length, 1);
 });
+
+test('a one-word slug variant of a multi-word title is not a mention', () => {
+  const show = { id: 'cabaret-2024', title: 'Cabaret at the Kit Kat Club', openingDate: '2026-10-01', category: 'broadway' };
+  assert.equal(run({ fullText: 'Cabaret is back and louder than ever. '.repeat(5), contentVerification: cv() }, { show }).severity, 'error');
+  assert.equal(run({ fullText: 'Cabaret at the Kit Kat Club is back and louder than ever. '.repeat(3), contentVerification: cv() }, { show }).severity, 'warning');
+});
