@@ -13,7 +13,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { createOrMergeReviewFile } = require('./review-file-writer.js');
 const { buildSiblingIndex } = require('./market-routing.js');
-const { findSameTitleSiblingUrlHolder, hasRoutingDate, isCountedSameUrlCopy } = require('./sibling-same-url.js');
+const { findSameTitleSiblingUrlHolder, sameTitleSiblingUrlRefusal, hasRoutingDate, isCountedSameUrlCopy, urlSlugYear } = require('./sibling-same-url.js');
 const { classifyReason, isDurableRejection } = require('./ingest-skip-classify.js');
 
 // Fictional ids so the live shows.json can never change the verdicts.
@@ -93,14 +93,65 @@ test('a legitimately dated review is left to the date router, not refused by thi
     // In-window publishDate and no sibling copy: written.
     const fresh = write(dir, { url: 'https://www.thetimes.com/culture/theatre-dance/article/spy-farce-2026-review-qq12', publishDate: '2026-08-07' });
     assert.equal(fresh.action, 'new');
-    // Dated, and the sibling holds the url: Guard A2 stands aside (whatever else
-    // decides, the reason is never this guard's).
-    const dated = write(dir, { criticName: 'Clive Davis', url: URL, publishDate: '2026-08-07' });
-    assert.notEqual(dated.reason, `same-title-sibling-url:${OLD}`);
-    // A /YYYY/MM/ url path also counts as a date.
+    // Dated (in this run's window) and the sibling holds the url: Guard A2
+    // stands aside; the new copy is then refused by Guard I's cross-show
+    // ownership check, not by this guard.
+    const dir2 = tmp();
+    try {
+      seedOld(dir2);
+      const dated = write(dir2, { criticName: 'Clive Davis', url: URL, publishDate: '2026-08-07' });
+      assert.deepEqual([dated.action, dated.reason], ['skipped', `cross-show-url-owned:${OLD}`]);
+      assert.equal(sameTitleSiblingUrlRefusal({ showId: NEW, url: URL, publishDate: '2026-08-07', siblingIndex: SIBLINGS, reviewTextsDir: dir2 }), null);
+    } finally { fs.rmSync(dir2, { recursive: true, force: true }); }
     assert.equal(hasRoutingDate({ url: 'https://www.theguardian.com/stage/2026/aug/07/spy-farce-review' }), true);
     assert.equal(hasRoutingDate({ url: URL, publishDate: null }), false);
     assert.equal(hasRoutingDate({ url: URL, publishDate: 'not a date' }), false);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('a slug-year url counts as dated on both write paths', () => {
+  const dir = tmp();
+  try {
+    const slugUrl = 'https://www.standard.co.uk/culture/theatre/spy-farce-review-2025-a4360871.html';
+    put(dir, OLD, 'standard--nick-curtis.json', { outletId: 'standard', outlet: 'Evening Standard', criticName: 'Nick Curtis', url: slugUrl, source: 'theatre-record' });
+    assert.equal(urlSlugYear(slugUrl), 2025);
+    assert.equal(urlSlugYear(URL), null);
+    assert.equal(hasRoutingDate({ url: slugUrl }), true);
+    assert.equal(sameTitleSiblingUrlRefusal({ showId: NEW, url: slugUrl, siblingIndex: SIBLINGS, reviewTextsDir: dir }), null);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('an aggregator / round-up page url is left to its own guards', () => {
+  const dir = tmp();
+  try {
+    const agg = 'https://www.showscore.com/london/shows/spy-farce-bro5298/critic-reviews';
+    put(dir, OLD, 'showscore--unknown.json', { outletId: 'showscore', outlet: 'Show Score', criticName: 'Unknown', url: agg, source: 'show-score' });
+    assert.equal(findSameTitleSiblingUrlHolder({ showId: NEW, url: agg, siblingIndex: SIBLINGS, reviewTextsDir: dir }).showId, OLD);
+    assert.equal(sameTitleSiblingUrlRefusal({ showId: NEW, url: agg, siblingIndex: SIBLINGS, reviewTextsDir: dir }), null);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('duplicate pointers and combined articles do not block (Guard I parity, BRO-5373)', () => {
+  for (const extra of [{ duplicateTextOf: 'times-uk--dominic-maxwell.json' }, { duplicateOf: 'x.json' }, { isCombinedReview: true }]) {
+    assert.equal(isCountedSameUrlCopy({ url: URL, ...extra }), false, JSON.stringify(extra));
+    const dir = tmp();
+    try {
+      seedOld(dir, extra);
+      assert.equal(sameTitleSiblingUrlRefusal({ showId: NEW, url: URL, siblingIndex: SIBLINGS, reviewTextsDir: dir }), null);
+      assert.equal(write(dir, { url: URL }).action, 'new', JSON.stringify(extra));
+    } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  }
+});
+
+test('a dated write Guard A reroutes to the sibling merges there instead of being refused', () => {
+  const dir = tmp();
+  try {
+    seedOld(dir);
+    // Dated 2025-05-14: 8 days from the 2025 opening, ~450 from the 2026 one.
+    const r = write(dir, { criticName: 'Clive Davis', url: URL, publishDate: '2025-05-14' });
+    assert.notEqual(r.action, 'skipped', r.reason);
+    assert.equal(path.basename(path.dirname(r.filepath)), OLD);
+    assert.deepEqual(newFiles(dir), []);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
 

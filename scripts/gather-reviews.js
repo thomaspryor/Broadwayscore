@@ -75,7 +75,7 @@ function fallbackOutletIdFromHost(hostname) {
   return id && !(registry && registry.outlets && registry.outlets[id]) ? id : 'unknown';
 }
 const { findSiblingUrlOwner } = require('./lib/review-url-collision');
-const { findSameTitleSiblingUrlHolder, hasRoutingDate } = require('./lib/sibling-same-url');
+const { sameTitleSiblingUrlRefusal, urlSlugYear } = require('./lib/sibling-same-url');
 const { findMatchingReviewFile } = require('./lib/review-file-match');
 const { verifyProduction, quickDateCheck, getShowData, verifierCategoryFor } = require('./lib/production-verifier');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
@@ -3419,19 +3419,19 @@ function createReviewFile(showId, reviewData, options = {}) {
   // sibling production already holds the url (show-score-playwright wrote three
   // 2020 Leopoldstadt reviews under leopoldstadt-west-end-2021 off a Show Score
   // page listing both runs). Same predicate as review-file-writer Guard A2.
-  // Skipped when this show's folder already holds the url (a merge, not a copy),
-  // and when the url carries a slug year: the cross-show URL-index check below
-  // re-homes on that year (shouldTakeUrlOwnership), and refusing here would pre-empt it.
-  if (reviewData.url && typeof reviewData.wrongProduction !== 'boolean' && options.allowCrossMarket !== true
-      && !laneBypasses(reviewData, 'tourCrossMarket') && !getSkipCrossShowDupeIds().has(showId)
-      && !hasRoutingDate({ url: reviewData.url, publishDate: reviewData.publishDate })
-      && !/(?:[\/\-_.])((?:19|20)\d\d)(?:[\/\-_.]|$)/.test(reviewData.url)) {
-    const holder = findSameTitleSiblingUrlHolder({
-      showId, url: reviewData.url, reviewTextsDir: REVIEW_TEXTS_DIR,
-      siblingIndex: getSiblingIndex(), skipShowIds: options._marketVisited,
+  // One verdict shared with the writer (sibling-same-url.js
+  // sameTitleSiblingUrlRefusal): a url year token counts as a date, so the
+  // cross-show URL-index re-home below (shouldTakeUrlOwnership) still decides those.
+  {
+    const refusal = sameTitleSiblingUrlRefusal({
+      showId, url: reviewData.url, publishDate: reviewData.publishDate, reviewTextsDir: REVIEW_TEXTS_DIR,
+      siblingIndex: getSiblingIndex(),
+      skipShowIds: [options._marketVisited, options._crossShowVisited].flatMap((v) => (v instanceof Set ? [...v] : [])),
+      bypass: typeof reviewData.wrongProduction === 'boolean' || options.allowCrossMarket === true
+        || getSkipCrossShowDupeIds().has(showId) || laneBypasses(reviewData, 'tourCrossMarket'),
     });
-    if (holder && !findSiblingUrlOwner({ showDir: path.join(REVIEW_TEXTS_DIR, showId), url: reviewData.url })) {
-      console.log(`    ✗ Skipping ${filename}: undated, and ${holder.showId}/${holder.file} already holds ${reviewData.url}`);
+    if (refusal) {
+      console.log(`    ✗ Skipping ${filename}: undated, and ${refusal.holder.showId}/${refusal.holder.file} already holds ${reviewData.url}`);
       return 'sameTitleSiblingUrl';
     }
   }
@@ -3598,10 +3598,7 @@ function createReviewFile(showId, reviewData, options = {}) {
           const m = String(reviewData.publishDate).match(/\b((?:19|20)\d\d)\b/);
           if (m) reviewYear = parseInt(m[1]);
         }
-        if (!reviewYear && reviewData.url) {
-          const m = reviewData.url.match(/(?:[\/\-_.])((?:19|20)\d\d)(?:[\/\-_.]|$)/);
-          if (m) reviewYear = parseInt(m[1]);
-        }
+        if (!reviewYear && reviewData.url) reviewYear = urlSlugYear(reviewData.url);
 
         // Re-home the URL to this show ONLY when the review's own year is
         // strictly closer to it than to the incumbent. Unknown review year or a

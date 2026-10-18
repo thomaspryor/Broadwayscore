@@ -23,24 +23,65 @@ const { sameUrlKey } = require('./review-url-collision');
 
 /**
  * True when a file would count toward a score for same-url purposes: not
- * flagged wrong production/show, not a non-review, not a duplicate or round-up.
- * The audit (audit-sibling-title-misroute.js) and the write guards share it.
+ * flagged wrong production/show, not a non-review, not a duplicate pointer
+ * (duplicateOf/duplicateTextOf defer to the file they name, BRO-5373) and not
+ * a round-up or combined multi-show article. Matches url-ownership.js
+ * _isBlockingOwnerCopy (Guard I) plus the non-review flags. The audit
+ * (audit-sibling-title-misroute.js) and the write guards share it.
  */
 function isCountedSameUrlCopy(d) {
-  if (!d) return false;
+  if (!d || typeof d !== 'object') return false;
   if (d.wrongProduction === true || d.wrongShow === true) return false;
   if (d.isNonReview === true || d.nonReviewFlag === true || d.nonReviewContent === true) return false;
-  return !d.duplicateOf && d.isRoundupArticle !== true;
+  if (d.isRoundupArticle === true || d.isCombinedReview === true) return false;
+  return !d.duplicateOf && !d.duplicateTextOf;
 }
 
 /**
- * Does this write carry a date the market router can route on? A parseable
- * publishDate, or a /YYYY/MM/ url path. classifyMarketRouting scores no signal
- * without one, which is the gap this guard closes.
+ * A 4-digit year token in the url (`-2021-`, `/2020/`, `.2019.`). The same
+ * token gather-reviews' cross-show URL-index check re-homes on.
+ * @returns {number|null}
+ */
+function urlSlugYear(url) {
+  if (!url || typeof url !== 'string') return null;
+  const m = url.match(/(?:[\/\-_.])((?:19|20)\d\d)(?:[\/\-_.]|$)/);
+  return m ? parseInt(m[1], 10) : null;
+}
+
+/**
+ * Does this write carry a date something downstream can route on? A
+ * parseable publishDate, or a year token in the url (/YYYY/MM/ paths
+ * included). Without one classifyMarketRouting scores no signal, which is
+ * the gap the same-title sibling guard closes.
  */
 function hasRoutingDate({ url, publishDate } = {}) {
   if (publishDate && require('./date-utils').parseDate(String(publishDate))) return true;
-  return require('./review-guards').urlYearFromPath(url) != null;
+  return urlSlugYear(url) != null;
+}
+
+// Per-process cache of a sibling folder's counted urls (sameUrlKey -> files),
+// rebuilt when the folder's mtime moves (a file added, removed or renamed).
+// An in-place edit does not move the mtime, so every hit is re-read before it
+// is trusted; a url swapped in place is missed (fail open, never a false refusal).
+const _folderCache = new Map();
+function _folderUrlKeys(dir) {
+  let mtimeMs;
+  try { mtimeMs = fs.statSync(dir).mtimeMs; } catch { return null; }
+  const hit = _folderCache.get(dir);
+  if (hit && hit.mtimeMs === mtimeMs) return hit.keys;
+  const keys = new Map();
+  let names = [];
+  try { names = fs.readdirSync(dir).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json').sort(); } catch { return null; }
+  for (const file of names) {
+    let data;
+    try { data = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')); } catch { continue; }
+    const k = data && sameUrlKey(data.url);
+    if (!k) continue;
+    if (!keys.has(k)) keys.set(k, []);
+    keys.get(k).push(file);
+  }
+  _folderCache.set(dir, { mtimeMs, keys });
+  return keys;
 }
 
 /**
@@ -52,7 +93,7 @@ function hasRoutingDate({ url, publishDate } = {}) {
  * @param {string} args.url
  * @param {Map} args.siblingIndex  buildSiblingIndex() output
  * @param {string} args.reviewTextsDir
- * @param {Set<string>|Array<string>} [args.skipShowIds]  e.g. the reroute chain this write came through
+ * @param {Iterable<string>} [args.skipShowIds]  the reroute chain this write came through
  * @param {(data: object) => boolean} [args.isCounted]
  * @returns {{showId: string, file: string, url: string}|null}
  */
@@ -64,16 +105,36 @@ function findSameTitleSiblingUrlHolder({ showId, url, siblingIndex, reviewTextsD
   for (const sib of (entry && entry.siblings) || []) {
     if (!sib || !sib.id || sib.id === showId || skip.has(sib.id)) continue;
     const dir = path.join(reviewTextsDir, sib.id);
-    let names;
-    try { names = fs.readdirSync(dir).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json').sort(); } catch { continue; }
-    for (const file of names) {
+    const keys = _folderUrlKeys(dir);
+    for (const file of (keys && keys.get(key)) || []) {
       let data;
       try { data = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')); } catch { continue; }
-      if (!data || !data.url || sameUrlKey(data.url) !== key || !isCounted(data)) continue;
+      if (!data || sameUrlKey(data.url) !== key || !isCounted(data)) continue;
       return { showId: sib.id, file, url: data.url };
     }
   }
   return null;
+}
+
+/**
+ * The write-time verdict both writers use (review-file-writer Guard A2 and
+ * gather-reviews createReviewFile), so the two paths cannot disagree.
+ * Refuses an UNDATED write whose url a same-title sibling holds a counted copy
+ * of, unless this show's own folder already holds the url (a merge into an
+ * existing pair is the audit's to settle). Aggregator/round-up page urls are
+ * left to their own guards. Caller-specific opt-outs go in `bypass`.
+ *
+ * @returns {{reason: string, holder: {showId: string, file: string, url: string}}|null}
+ */
+function sameTitleSiblingUrlRefusal({ showId, url, publishDate, siblingIndex, reviewTextsDir, skipShowIds, bypass = false } = {}) {
+  if (bypass || !url || !showId || !reviewTextsDir) return null;
+  if (hasRoutingDate({ url, publishDate })) return null;
+  if (require('./review-slot-guards').isAggregatorPageUrl(url)) return null;
+  const holder = findSameTitleSiblingUrlHolder({ showId, url, siblingIndex, reviewTextsDir, skipShowIds });
+  if (!holder) return null;
+  const { findSiblingUrlOwner } = require('./review-url-collision');
+  if (findSiblingUrlOwner({ showDir: path.join(reviewTextsDir, showId), url })) return null;
+  return { reason: `same-title-sibling-url:${holder.showId}`, holder };
 }
 
 /**
@@ -120,4 +181,8 @@ function findSiblingSameUrlPairs(siblingIndex, loadFiles, isCounted, skipPair = 
   return pairs;
 }
 
-module.exports = { findSiblingSameUrlPairs, findSameTitleSiblingUrlHolder, isCountedSameUrlCopy, hasRoutingDate };
+module.exports = {
+  findSiblingSameUrlPairs, findSameTitleSiblingUrlHolder, sameTitleSiblingUrlRefusal,
+  isCountedSameUrlCopy, hasRoutingDate, urlSlugYear,
+  _resetSiblingFolderCache: () => _folderCache.clear(),
+};

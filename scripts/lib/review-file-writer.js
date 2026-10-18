@@ -36,7 +36,7 @@ const {
 // Lazy: scripts/lib is copied flat into fixtures and sparse checkouts that carry no subdirectory, so a top-level require would break them.
 const laneBypasses = (...args) => require('./opening-night-lane/trust-model').laneBypasses(...args);
 const { findSiblingUrlOwner } = require('./review-url-collision');
-const { findSameTitleSiblingUrlHolder, hasRoutingDate } = require('./sibling-same-url');
+const { sameTitleSiblingUrlRefusal } = require('./sibling-same-url');
 const { findMergedDuplicateOwner } = require('./merged-duplicate-urls');
 const { isStaleNonReviewSlot, isAggregatorPageUrl, flaggedSlotSupersededBy } = require('./review-slot-guards');
 const { isSameArticleBodyUpgrade } = require('./stale-merge-check');
@@ -793,22 +793,23 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
   // leopoldstadt-west-end-2021, counting each on both productions. Guard I
   // below covers only NEW files; this also covers a merge that would move an
   // existing file of this show onto the sibling's url. A dated write is left
-  // to Guard A (the date decided where it goes). Skipped when this show's
-  // folder already holds the url (that pair is the audit's to settle), when
-  // the caller set wrongProduction either way, on allowCrossMarket, and for a
-  // lane review. Siblings in this write's reroute chain are exempt, as in Guard I.
-  if (input.url && typeof fields.wrongProduction !== 'boolean' && fields.allowCrossMarket !== true
-      && !laneHolds('tourCrossMarket')
-      && !hasRoutingDate({ url: input.url, publishDate: input.publishDate || fields.publishDate })) {
-    const holder = findSameTitleSiblingUrlHolder({
-      showId, url: input.url, reviewTextsDir,
+  // to Guard A (the date decided where it goes). One verdict shared with
+  // gather-reviews (sibling-same-url.js sameTitleSiblingUrlRefusal). Bypassed
+  // when the caller set wrongProduction either way, on allowCrossMarket, for a
+  // _skipCrossShowDupe show and for a lane review; siblings in this write's
+  // reroute chain are exempt, as in Guard I.
+  {
+    const refusal = sameTitleSiblingUrlRefusal({
+      showId, url: input.url, publishDate: input.publishDate || fields.publishDate, reviewTextsDir,
       siblingIndex: options.siblingIndex || _getSiblingIndex(),
       skipShowIds: _rerouteVisited,
+      bypass: typeof fields.wrongProduction === 'boolean' || fields.allowCrossMarket === true
+        || (_getShowById(showId) || {})._skipCrossShowDupe === true || laneHolds('tourCrossMarket'),
     });
-    if (holder && !findSiblingUrlOwner({ showDir: path.join(reviewTextsDir, showId), url: input.url })) {
-      console.warn(`  ⛔ Same-title sibling url: ${input.url} is held by ${holder.showId}/${holder.file} and this write is undated — refusing under ${showId}`);
+    if (refusal) {
+      console.warn(`  ⛔ Same-title sibling url: ${input.url} is held by ${refusal.holder.showId}/${refusal.holder.file} and this write is undated — refusing under ${showId}`);
       // Same skip shape as Guard I's cross-show-url-owned (a CONFLICT reason in ingest-skip-classify).
-      return { action: 'skipped', reason: `same-title-sibling-url:${holder.showId}` };
+      return { action: 'skipped', reason: refusal.reason };
     }
   }
 
