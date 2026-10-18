@@ -594,7 +594,8 @@ function castResolver() {
   try {
     if (!fs.existsSync(manifestPath)) cjsRequire('child_process').execFileSync('node', [path.join(repo, 'scripts/build-cast-manifest.js')], { stdio: 'ignore' });
     entries = JSON.parse(fs.readFileSync(manifestPath, 'utf8')).entries || [];
-  } catch { /* no cast data: plain slugs, as before */ }
+  } catch (e) { console.warn(`[newsletter] cast manifest unavailable (${e.message}); /cast links use plain slugs`); }
+  if (!entries.length) console.warn('[newsletter] cast manifest empty; /cast links use plain slugs');
   _castResolver = entries.length ? buildCastLinkResolver(entries, shows) : { slugFor: (n) => castSlugify(n) };
   return _castResolver;
 }
