@@ -148,8 +148,9 @@ async function main() {
   const add = fs_ => findings.push(...fs_);
 
   // 1. Data checks (no network).
+  const artAttempts = (() => { try { return readJson('data/tour-art-attempts.json'); } catch { return {}; } })();
   for (const t of tours) {
-    add(A.checkTourData({ show: t, parent: byId.get(t.tourOf), schedule: schedules[t.id], tickets: tickets[t.id] || [], others: schedules, today, shows }));
+    add(A.checkTourData({ show: t, parent: byId.get(t.tourOf), schedule: schedules[t.id], tickets: tickets[t.id] || [], others: schedules, today, shows, artSearchedNone: (artAttempts[t.id] || {}).result === 'none' || !((schedules[t.id] || {}).stops || []).length }));
   }
   for (const id of Object.keys(schedules)) {
     const s = byId.get(id);

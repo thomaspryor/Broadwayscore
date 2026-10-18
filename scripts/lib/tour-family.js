@@ -211,6 +211,8 @@ function tourFallbackArt(tour, parent) {
   const isArchived = v => typeof v === 'string' && v.startsWith('/images/shows/');
   const images = {};
   for (const k of ['thumbnail', 'poster']) if (isArchived(theirs[k])) images[k] = theirs[k];
+  // A parent with only a hero (an-american-in-paris-2015) still beats no art.
+  if (!Object.keys(images).length && isArchived(theirs.hero)) return { hero: theirs.hero, thumbnail: null, poster: null };
   return Object.keys(images).length ? { hero: null, ...images } : null;
 }
 
@@ -219,7 +221,11 @@ function applyTourInheritance(shows) {
   const byId = new Map((shows || []).map(s => [s.id, s]));
   const changed = [];
   for (const tour of (shows || []).filter(isTourShow)) {
-    const patch = tourInheritance(tour, byId.get(tour.tourOf), shows);
+    const parent = byId.get(tour.tourOf);
+    // Last resort: a tour the dated rule refuses (or one fetch-tour-images.js
+    // never visits, like a closed tour) still shows its parent's key art
+    // rather than none (BRO-5491).
+    const patch = tourInheritance(tour, parent, shows) || (() => { const fb = tourFallbackArt(tour, parent); return fb ? { images: fb } : null; })();
     if (!patch) continue;
     Object.assign(tour, patch);
     changed.push(tour.id);

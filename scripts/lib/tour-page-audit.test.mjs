@@ -118,3 +118,13 @@ test('schedule-city checks tolerate a one-day build lag', () => {
   assert.deepEqual(run(off, off, '/tours/ames-ia'), ['schedule-city-dead-link']);
   assert.deepEqual(run(on, null, null), ['schedule-city-unlinked'], 'no prev set keeps the old single-day rule');
 });
+
+test('poster-missing: parentless tour whose art search found nothing warns, anything else errors (BRO-5491)', async () => {
+  const { checkTourData } = (await import('node:module')).createRequire(import.meta.url)('./tour-page-audit.js');
+  const show = { id: 'x-tour-2026', title: 'X', category: 'tour', images: { hero: null, thumbnail: null, poster: null } };
+  const f = o => checkTourData({ show, today: '2026-10-18', ...o }).filter(x => /^poster-/.test(x.code || x.check || ''));
+  const level = o => { const r = f(o); return r.length ? [r[0].level || r[0].severity, r[0].code || r[0].check] : null; };
+  assert.deepEqual(level({}), ['error', 'poster-missing']);
+  assert.deepEqual(level({ artSearchedNone: true }), ['warn', 'poster-unfindable']);
+  assert.deepEqual(level({ artSearchedNone: true, parent: { id: 'x-2020', title: 'X', category: 'broadway' } }), ['error', 'poster-missing']);
+});

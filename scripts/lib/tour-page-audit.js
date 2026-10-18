@@ -230,7 +230,7 @@ function rangeMatchesStop(text, stop) {
  * allowed art to same-title productions in the parent's category or Broadway.
  * tourOf is optional (BRO-4931): a standalone touring show has none.
  */
-function checkTourData({ show, parent, schedule, tickets = [], others = {}, today, listed = false, shows = null }) {
+function checkTourData({ show, parent, schedule, tickets = [], others = {}, today, listed = false, shows = null, artSearchedNone = false }) {
   const out = [];
   const w = `data:${show.id}`;
   const stops = (schedule && schedule.stops) || [];
@@ -247,7 +247,13 @@ function checkTourData({ show, parent, schedule, tickets = [], others = {}, toda
   }
 
   const imgs = show.images || {};
-  if (!imgs.poster && !imgs.thumbnail && !imgs.hero) out.push(finding('error', 'poster-missing', w, 'no poster, thumbnail or hero image'));
+  if (!imgs.poster && !imgs.thumbnail && !imgs.hero) {
+    // A standalone tour has no parent art to fall back on; once
+    // fetch-tour-images.js searched its stops and found none (it retries
+    // weekly), or it has no stops to search, the gap is the world's, not a pipeline fault (BRO-5491).
+    const unfindable = !parent && artSearchedNone;
+    out.push(finding(unfindable ? 'warn' : 'error', unfindable ? 'poster-unfindable' : 'poster-missing', w, unfindable ? 'no poster found on any TodayTix listing or stop page; retried weekly' : 'no poster, thumbnail or hero image'));
+  }
   const artIds = new Set(allowedTourArtIds(show, shows || (parent ? [parent] : [])));
   for (const [k, v] of Object.entries(imgs)) {
     const m = typeof v === 'string' && v.match(/\/images\/shows\/([^/]+)\//);

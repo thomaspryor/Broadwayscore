@@ -219,3 +219,15 @@ test('tourFallbackArt: parent art for an imageless tour, however long ago the pa
   assert.equal(tourFallbackArt(tour, { ...parent, title: 'Other' }), null);
   assert.equal(tourFallbackArt(tour, { ...parent, images: { poster: 'https://x/y.jpg' } }), null, 'remote URLs never spread');
 });
+
+test('applyTourInheritance: imageless tour gets parent art, hero-only parent included (BRO-5491)', async () => {
+  const { applyTourInheritance } = await import('./tour-family.js').then(m => m.default || m);
+  const mk = (images) => ({ id: 'p-2015', title: 'P', category: 'broadway', status: 'closed', closingDate: '2016-01-01', images });
+  const tour = () => ({ id: 'p-tour-2022', title: 'P', category: 'tour', tourOf: 'p-2015', openingDate: '2022-01-01', images: { hero: null, thumbnail: null, poster: null } });
+  const heroOnly = [mk({ hero: '/images/shows/p-2015/hero.webp', thumbnail: null, poster: null }), tour()];
+  assert.deepEqual(applyTourInheritance(heroOnly), ['p-tour-2022']);
+  assert.equal(heroOnly[1].images.hero, '/images/shows/p-2015/hero.webp');
+  assert.equal(tourImageProblems(heroOnly[1], heroOnly).length, 0);
+  const none = [mk({ hero: null, thumbnail: null, poster: null }), tour()];
+  assert.deepEqual(applyTourInheritance(none), []);
+});
