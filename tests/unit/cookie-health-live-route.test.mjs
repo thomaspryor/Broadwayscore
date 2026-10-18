@@ -12,10 +12,11 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-process.env.THESTAGE_COOKIES = JSON.stringify([
+// cookie-loader reads individual cookie env vars as base64 JSON.
+process.env.THESTAGE_COOKIES = Buffer.from(JSON.stringify([
   { name: 'USER', value: 'u', domain: '.thestage.co.uk' },
   { name: 'USERSECURE', value: 's', domain: '.thestage.co.uk' },
-]);
+])).toString('base64');
 const health = require('../../scripts/check-cookie-health.js');
 const { COOKIE_PROBES } = require('../../scripts/lib/cookie-probes.js');
 
@@ -79,7 +80,39 @@ test('HTTP error warns (network/IP block is not a cookie verdict)', async () => 
   globalThis.fetch = async () => ({ ok: false, status: 403, text: async () => '' });
   const r = await health.checkLiveAccessWalledPlain(stage.testUrl, { ...stage, minBodyChars: 200 });
   assert.equal(r.status, 'warn');
-  assert.match(r.message, /HTTP 403/);
+  assert.match(r.message, /probe error/);
+});
+
+test('logout still fails when the zero-cookie control is blocked (403)', async () => {
+  globalThis.fetch = async (url, opts) => (opts.headers.Cookie
+    ? { ok: true, status: 200, text: async () => gate }
+    : { ok: false, status: 403, text: async () => '' });
+  const r = await health.checkLiveAccessWalledPlain(stage.testUrl, { ...stage, minBodyChars: 200 });
+  assert.equal(r.status, 'fail', r.message);
+});
+
+test('logout still fails when the control is a challenge page', async () => {
+  stubFetch(gate, challenge);
+  const r = await health.checkLiveAccessWalledPlain(stage.testUrl, { ...stage, minBodyChars: 200 });
+  assert.equal(r.status, 'fail', r.message);
+});
+
+test('gate page with enough teaser prose to clear the floor still fails', async () => {
+  const teaserGate = article.replace('</body>', '<a href="/register?utm_source=Reggate">Register</a></body>');
+  stubFetch(teaserGate, gate);
+  const r = await health.checkLiveAccessWalledPlain(stage.testUrl, { ...stage, minBodyChars: 200 });
+  assert.equal(r.status, 'fail', r.message);
+});
+
+test('with-cookies leg sends the production cookies-plain headers', async () => {
+  let cookieReq;
+  globalThis.fetch = async (url, opts) => {
+    if (opts.headers.Cookie) cookieReq = opts.headers;
+    return { ok: true, status: 200, text: async () => article };
+  };
+  await health.checkLiveAccessWalledPlain(stage.testUrl, { ...stage, minBodyChars: 200 });
+  assert.match(cookieReq.Cookie, /USER=u/);
+  assert.equal(cookieReq['Sec-Fetch-Mode'], 'navigate', 'fetchWithCookiesPlain headers, not a lookalike');
 });
 
 test('walledVerdictToResult: only logged-out fails', () => {
