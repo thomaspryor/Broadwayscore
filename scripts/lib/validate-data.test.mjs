@@ -26,6 +26,11 @@ test('title-cased Roman numerals are upper-cased', () => {
   assert.equal(fixMisCasedRomanNumerals('Rocky Ii (Revival)').title, 'Rocky II (Revival)');
 });
 
+test('Vi/Xi are numerals right after a regnal name', () => {
+  assert.equal(fixMisCasedRomanNumerals('Henry Vi, Part One').title, 'Henry VI, Part One');
+  assert.equal(fixMisCasedRomanNumerals('Louis Xi').title, 'Louis XI');
+});
+
 test('correct, ambiguous and non-numeral tokens are left alone', () => {
   for (const t of [
     'Richard II', 'Henry VIII', 'V for Vendetta', 'Malcolm X',

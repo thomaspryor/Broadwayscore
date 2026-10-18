@@ -355,6 +355,8 @@ function classifyShowTitle(showId, title, opts = {}) {
 // a real name or word: "Vi" (a given name) and "Xi" (the Greek letter, a
 // surname). A fully lowercase "ii" is left alone (could be deliberate).
 const ROMAN_TITLE_CASE_EXCLUDED = new Set(['vi', 'xi']);
+// ...except right after a regnal name, where it is certainly a numeral.
+const ROMAN_REGNAL_PREV = new Set(['henry', 'louis', 'pius', 'part', 'act', 'chapter', 'edward', 'richard', 'george', 'charles', 'james', 'william']);
 const ROMAN_TITLE_CASE_TOKEN = /(?<![\p{L}\p{M}\p{N}])([IVX][ivx]+)(?![\p{L}\p{M}\p{N}])/gu;
 
 /**
@@ -365,9 +367,14 @@ const ROMAN_TITLE_CASE_TOKEN = /(?<![\p{L}\p{M}\p{N}])([IVX][ivx]+)(?![\p{L}\p{M
 function fixMisCasedRomanNumerals(title) {
   if (typeof title !== 'string' || !title) return { title, tokens: [] };
   const tokens = [];
-  const fixed = title.replace(ROMAN_TITLE_CASE_TOKEN, (tok) => {
+  const fixed = title.replace(ROMAN_TITLE_CASE_TOKEN, (tok, _g, offset, whole) => {
     const bare = tok.toLowerCase();
-    if (!ROMAN_NUMERALS.has(bare) || ROMAN_TITLE_CASE_EXCLUDED.has(bare)) return tok;
+    if (!ROMAN_NUMERALS.has(bare)) return tok;
+    if (ROMAN_TITLE_CASE_EXCLUDED.has(bare)) {
+      // "Henry Vi", "Louis Xi": a numeral right after a regnal name.
+      const prev = /([\p{L}]+)\s+$/u.exec(whole.slice(0, offset));
+      if (!prev || !ROMAN_REGNAL_PREV.has(prev[1].toLowerCase())) return tok;
+    }
     tokens.push(tok);
     return tok.toUpperCase();
   });
