@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-18T08:32:27.913Z",
+  "timestamp": "2026-10-18T08:45:25.064Z",
   "stats": {
-    "totalReviews": 57391,
-    "alreadyFlagged": 21319,
+    "totalReviews": 57401,
+    "alreadyFlagged": 21323,
     "dateGuardCatches": 195,
     "directorMismatch": 1952,
-    "tvFilmSignals": 1609,
-    "londonSignals": 2420,
+    "tvFilmSignals": 1610,
+    "londonSignals": 2422,
     "offBroadwaySignals": 521,
     "yearMismatch": 157,
-    "noPublishDate": 5243
+    "noPublishDate": 5240
   },
   "findings": [
     {
@@ -35031,6 +35031,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "publishDate": "2026-10-18",
+      "url": "https://www.allthatdazzles.co.uk/post/review-some-woman-dorfman-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -87448,6 +87466,19 @@
       ]
     },
     {
+      "showId": "two-girls-off-broadway-2026",
+      "file": "airmail--air-mail.json",
+      "publishDate": null,
+      "url": "https://airmail.news/arts-intel/events/school-pictures-and-two-girls",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "two-palestinians-go-dogging-west-end-2022",
       "file": "the-spectator-uk--lloyd-evans.json",
       "score": 10,
@@ -89148,7 +89179,7 @@
       "showId": "you-will-get-sick-off-broadway-2022",
       "file": "theater-scene--darryl-reilly.json",
       "score": 75,
-      "publishDate": null,
+      "publishDate": "November 7th, 2022",
       "url": "https://theaterscene.org/2022/11/you-will-get-sick/",
       "findings": [
         {
