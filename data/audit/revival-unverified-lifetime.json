@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-10-17T07:11:17.135Z",
-  "scanned": 2629,
+  "updatedAt": "2026-10-18T07:33:38.350Z",
+  "scanned": 2636,
   "showsWithViolations": 59,
   "totalViolations": 59,
   "newSinceLastRun": 1,
   "newViolationKeys": [
-    "memoirs-of-amorous-gentlemen-off-broadway-2026"
+    "titanique-west-end-2024"
   ],
   "violationKeys": [
     "the-lost-boys-2026",
@@ -39,6 +39,7 @@
     "man-to-man-west-end-2026",
     "cabaret-at-the-kit-kat-club-west-end-2021",
     "operation-mincemeat-west-end-2024",
+    "titanique-west-end-2024",
     "death-note-the-musical-west-end-2026",
     "a-christmas-carol-west-end-2026",
     "the-story-west-end-2026",
@@ -63,7 +64,6 @@
     "memoirs-of-amorous-gentlemen-off-broadway-2026",
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
     "school-pictures-off-broadway-2026",
-    "lost-in-del-valle-return-off-broadway-2026",
     "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
     "elektra-off-broadway-2026",
     "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026"
@@ -109,7 +109,7 @@
       "showId": "stranger-things-2024",
       "title": "Stranger Things: The First Shadow",
       "openingDate": "2025-04-22",
-      "message": "stranger-things-2024 review text mentions \"revival\" 6x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "stranger-things-2024 review text mentions \"revival\" 5x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -136,7 +136,7 @@
       "showId": "the-great-gatsby-2024",
       "title": "The Great Gatsby",
       "openingDate": "2024-04-25",
-      "message": "the-great-gatsby-2024 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "the-great-gatsby-2024 review text mentions \"revival\" 6x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -181,7 +181,7 @@
       "showId": "hadestown-2019",
       "title": "Hadestown",
       "openingDate": "2019-04-17",
-      "message": "hadestown-2019 review text mentions \"revival\" 13x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "hadestown-2019 review text mentions \"revival\" 14x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -298,7 +298,7 @@
       "showId": "the-mousetrap-west-end-2021",
       "title": "The Mousetrap",
       "openingDate": "1952-11-25",
-      "message": "the-mousetrap-west-end-2021 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "the-mousetrap-west-end-2021 review text mentions \"revival\" 5x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -344,6 +344,15 @@
       "title": "Operation Mincemeat",
       "openingDate": "2023-05-09",
       "message": "operation-mincemeat-west-end-2024 review text mentions \"revival\" 8x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "titanique-west-end-2024",
+      "title": "Titanique",
+      "openingDate": "2025-01-08",
+      "message": "titanique-west-end-2024 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -541,7 +550,7 @@
       "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
       "title": "Memoirs of Amorous Gentlemen",
       "openingDate": "2026-10-15",
-      "message": "memoirs-of-amorous-gentlemen-off-broadway-2026 review text mentions \"revival\" 9x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "memoirs-of-amorous-gentlemen-off-broadway-2026 review text mentions \"revival\" 14x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -560,15 +569,6 @@
       "title": "School Pictures",
       "openingDate": "2026-10-18",
       "message": "school-pictures-off-broadway-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "lost-in-del-valle-return-off-broadway-2026",
-      "title": "Lost in Del Valle",
-      "openingDate": "2026-09-23",
-      "message": "lost-in-del-valle-return-off-broadway-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]

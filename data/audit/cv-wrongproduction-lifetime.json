@@ -1,23 +1,21 @@
 {
-  "updatedAt": "2026-10-17T07:09:14.971Z",
-  "scanned": 2629,
-  "showsWithViolations": 132,
-  "totalViolations": 171,
-  "newSinceLastRun": 3,
+  "updatedAt": "2026-10-18T07:31:47.564Z",
+  "scanned": 2636,
+  "showsWithViolations": 119,
+  "totalViolations": 151,
+  "newSinceLastRun": 1,
   "handled": {
-    "temporal-override-low-confidence": 826,
+    "temporal-override-low-confidence": 787,
     "not-shipped": 63,
+    "duplicate-not-shipped": 52,
     "rebuild-skip-audit": 32,
     "manual-clear-reason": 15,
-    "prior-run-or-tour-leg": 44
+    "prior-run-or-tour-leg": 39
   },
   "newViolationKeys": [
-    "pride-west-end-2026::british-theatre--keith-mckenna.json",
-    "stories-the-tap-dance-sensation-west-end-2026::thereviewshub--sonny-waheed.json",
-    "stories-the-tap-dance-sensation-west-end-2026::thereviewshub--unknown.json"
+    "school-pictures-off-broadway-2026::lighting-and-sound-america--david-barbour.json"
   ],
   "violationKeys": [
-    "schmigadoon-2026::washpost--naveen-kumar.json",
     "the-fear-of-13-2026::theatre-reviews-limited--david-roberts.json",
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
     "ragtime-2025::america-magazine--weinert-kendt.json",
@@ -35,20 +33,16 @@
     "children-of-a-lesser-god-2018::theater-news-online--brian-scott-lipton.json",
     "frozen-2018::jks-theatre-scene--jeff-kyler.json",
     "charlie-and-the-chocolate-factory-2017::stageandcinema--tony-frankel.json",
-    "the-cherry-orchard-2016::njcom--christopher-kelly.json",
     "she-loves-me-2016::ap--mark-kennedy.json",
     "she-loves-me-2016::the-clyde-fitch-report--david-finkle.json",
     "she-loves-me-2016::theatre-is-easy--dan-dinero.json",
     "the-real-thing-2014::amny--matt-windman.json",
-    "the-big-knife-2013::amny--matt-windman.json",
-    "born-yesterday-2011::new-jersey-newsroom--michael-sommers.json",
     "anything-goes-2011::new-jersey-newsroom--michael-sommers.json",
     "west-side-story-2009::latimes--charles-mcnulty.json",
     "cymbeline-2007::nytimes--ben-brantley.json",
     "the-color-purple-2005::nytimes--alissa-wilkinson.json",
     "rent-1996::newyorker--john-lahr-1996.json",
     "titanic-1997::vulture--jackson-mchenry.json",
-    "working-1978::timeout--david-cote.json",
     "a-raisin-in-the-sun-2004::huffpost--david-finkle.json",
     "the-receptionist-off-broadway-2026::culturesauce--thom-geier.json",
     "the-receptionist-off-broadway-2026::theatre-reviews-limited--unknown.json",
@@ -58,7 +52,6 @@
     "masquerade-off-broadway-2025::nytimes--alexis-soloski.json",
     "girl-interrupted-off-broadway-2026::theatrely--joey-sims.json",
     "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026::new-york-classical-review--george-grella.json",
-    "hadestown-west-end-2024::london-theatre--julia-rank.json",
     "the-devil-wears-prada-west-end-2024::broadwayworld--aliya-al-hassan.json",
     "mj-the-musical-west-end-2024::timeout-london--andrzej-lukowski.json",
     "oliver-west-end-2024::standard--nick-curtis.json",
@@ -69,7 +62,6 @@
     "cyrano-de-bergerac-west-end-2026::artsdesk--unknown.json",
     "cyrano-de-bergerac-west-end-2026::standard--fiona-mountford.json",
     "wicked-west-end-2021::timeout--honour-bayes.json",
-    "the-producers-west-end-2025::times-uk--unknown.json",
     "the-phantom-of-the-opera-west-end-1986::britishtheatrecom--douglas-mayo.json",
     "the-phantom-of-the-opera-west-end-1986::guardian--lyndsey-winship.json",
     "into-the-woods-west-end-2025::1883magazine--nick-barr.json",
@@ -77,40 +69,30 @@
     "into-the-woods-west-end-2025::theartsdispatch--the-arts-dispatch.json",
     "witness-for-the-prosecution-west-end-2022::london-theatre--will-longman.json",
     "relics-west-end-2026::artsdesk--unknown.json",
-    "pride-west-end-2026::british-theatre--keith-mckenna.json",
-    "pride-west-end-2026::musical-theatre-review--unknown.json",
-    "pride-west-end-2026::plays-to-see--unknown.json",
     "sting-west-end-2026::artsdesk--aleks-sierz.json",
     "between-the-river-and-the-sea-west-end-2026::artsdesk--aleks-sierz.json",
     "blood-of-my-blood-west-end-2026::guardian--unknown.json",
     "archduke-west-end-2026::artsdesk--unknown.json",
     "the-enormous-crocodile-west-end-2026::musical-theatre-review--unknown.json",
-    "hercules-west-end-2025::telegraph--unknown.json",
     "titanique-west-end-2024::telegraph--dominic-cavendish.json",
     "cats-the-jellicle-ball-off-broadway-2024::thewrap--robert-hofler.json",
-    "titanique-off-broadway-2022::nypost--johnny-oleksinski.json",
     "burlesque-west-end-2026::telegraph--claire-allfree.json",
     "mass-west-end-2026::artsdesk--demetrios-matheou.json",
     "cats-west-end-2026::jonathan-baz--jonathan-baz.json",
     "dark-of-the-moon-west-end-2026::artsdesk--unknown.json",
     "dark-of-the-moon-west-end-2026::musical-theatre-review--unknown.json",
     "sherlock-holmes-west-end-2026::standard--nick-curtis.json",
-    "stories-the-tap-dance-sensation-west-end-2026::thereviewshub--sonny-waheed.json",
-    "stories-the-tap-dance-sensation-west-end-2026::thereviewshub--unknown.json",
     "trainspotting-the-musical-west-end-2026::musical-theatre-review--unknown.json",
     "now-you-see-me-live-west-end-2026::london-box-office--stuart-king.json",
     "the-oresteia-west-end-2026::artsdesk--unknown.json",
-    "the-oresteia-west-end-2026::standard--nick-curtis.json",
     "celebrity-autobiography-2026::cititour--brian-scott-lipton.json",
     "turandot-off-broadway-2025::new-york-classical-review--george-grella.json",
     "heathers-the-musical-off-west-end-2026::voice-magazine--sam-nead.json",
     "the-smile-of-her-off-west-end-2026::jonathan-baz--florit-shoihetruns.json",
-    "the-smile-of-her-off-west-end-2026::theatre-vibe--unknown.json",
     "rent-west-end-2026::readaboutstuff--dan-english.json",
     "lets-love-off-broadway-2026::thewrap--robert-hofler.json",
     "shit-meet-fan-off-broadway-2024::vulture--sara-holdren.json",
     "darkling-off-west-end-2026::voice-magazine--moni-fernandez.json",
-    "darkling-off-west-end-2026::voice-magazine--unknown.json",
     "black-swan-regional-2026::metrmag--kevin-t-baldwin.json",
     "the-first-year-off-west-end-2026::a-youngish-perspective--unknown.json",
     "the-first-year-off-west-end-2026::liamodell--liam-odell.json",
@@ -124,8 +106,7 @@
     "les-miserables-arena-concert-spectacular-off-broadway-2026::nypost--johnny-oleksinski.json",
     "a-small-and-quiet-light-off-west-end-2026::artsdesk--aleks-sierz.json",
     "a-small-and-quiet-light-off-west-end-2026::plays-international--unknown.json",
-    "grease-the-immersive-movie-musical-off-west-end-2026::london-box-office--miriam-gibson.json",
-    "grease-the-immersive-movie-musical-off-west-end-2026::london-box-office--stuart-king.json",
+    "school-pictures-off-broadway-2026::lighting-and-sound-america--david-barbour.json",
     "sylvia-west-end-2023::standard--nick-curtis.json",
     "crybabies-the-scaring-off-west-end-2026::london-box-office--stuart-king.json",
     "operation-mincemeat-tour-2026::boston-globe--unknown.json",
@@ -153,7 +134,6 @@
     "old-friends-west-end-2023::artsdesk--helen-hawkins.json",
     "old-friends-west-end-2023::lost-in-theatreland--amy-rye.json",
     "old-friends-west-end-2023::whatsonstage--sarah-crompton.json",
-    "the-motive-and-the-cue-west-end-2023::all-that-dazzles-uk--sam-waite.json",
     "plaza-suite-west-end-2024::whatsonstage--sarah-crompton.json",
     "a-mirror-west-end-2024::thestage--anya-ryan.json",
     "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024::west-end-best-friend--eliza-harris.json",
@@ -181,7 +161,6 @@
     "what-if-if-only-west-end-2021::london-theatre--marianka-swain.json",
     "manor-west-end-2021::london-theatre--unknown.json",
     "trouble-in-mind-west-end-2021::london-theatre--unknown.json",
-    "to-kill-a-mockingbird-west-end-2022::i-paper--sam-marlowe.json",
     "much-ado-about-nothing-west-end-2022::london-theatre--unknown.json",
     "much-ado-about-nothing-west-end-2022::the-spectator-uk--unknown.json",
     "seven-methods-of-killing-kylie-jenner-west-end-2021::timeout-london--alice-saville.json",
@@ -190,27 +169,6 @@
     "the-importance-of-being-earnest-west-end-2024::londontheatre1--unknown.json"
   ],
   "hits": [
-    {
-      "showId": "schmigadoon-2026",
-      "title": "Schmigadoon!",
-      "openingDate": "2026-04-20",
-      "message": "washpost/Thomas Floyd (washpost--naveen-kumar.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped content is a genuine Broadway review (of 'The Lost Boys' musical, with critical assessment throughout), but  — https://www.washingtonpost.com/entertainment/theater/2026/05/06/lost-boys-schmigadoon-beaches-broadway-review/",
-      "violations": [
-        {
-          "filename": "washpost--naveen-kumar.json",
-          "url": "https://www.washingtonpost.com/entertainment/theater/2026/05/06/lost-boys-schmigadoon-beaches-broadway-review/",
-          "outletId": "washpost",
-          "criticName": "Thomas Floyd",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "The scraped content is a genuine Broadway review (of 'The Lost Boys' musical, with critical assessment throughout), but ",
-          "cvIssues": [
-            "Review is of 'The Lost Boys' musical, not 'Schmigadoon!'",
-            "Text is truncated mid-sentence at 9452 characters"
-          ]
-        }
-      ]
-    },
     {
       "showId": "the-fear-of-13-2026",
       "title": "The Fear of 13",
@@ -540,27 +498,6 @@
       ]
     },
     {
-      "showId": "the-cherry-orchard-2016",
-      "title": "The Cherry Orchard",
-      "openingDate": "2016-10-16",
-      "message": "njcom/Christopher Kelly (njcom--christopher-kelly.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid review of 'The Cherry Orchard' on Broadway by the expected critic (Christopher Kelly, NJ.com). However,  — https://www.nj.com/entertainment/index.ssf/2016/10/the_cherry_orchard_review_diane_lane_cant_bring_th.html",
-      "violations": [
-        {
-          "filename": "njcom--christopher-kelly.json",
-          "url": "https://www.nj.com/entertainment/index.ssf/2016/10/the_cherry_orchard_review_diane_lane_cant_bring_th.html",
-          "outletId": "njcom",
-          "criticName": "Christopher Kelly",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "This is a valid review of 'The Cherry Orchard' on Broadway by the expected critic (Christopher Kelly, NJ.com). However, ",
-          "cvIssues": [
-            "Venue mismatch: Review describes American Airlines Theatre, but expected venue is Todd Haimes Theatre",
-            "Both venues are Roundabout theatres on Broadway, but they are different theaters — this is the wrong production/revival"
-          ]
-        }
-      ]
-    },
-    {
       "showId": "she-loves-me-2016",
       "title": "She Loves Me",
       "openingDate": "2016-03-17",
@@ -624,48 +561,6 @@
           "cvIssues": [
             "Review publish date (2026-03-25) is approximately 16 years AFTER the Broadway opening date (2014-10-30), which is an enormous temporal gap inconsistent with a standard review cycle",
             "The scraped review does not match the expected 2014 Broadway production — it describes Ewan McGregor and Maggie Gyllenhaal in the leads, but McGregor was not in the 2014 Roundabout revival (which starred Jeremy Irons and Michelle Dockery)"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "the-big-knife-2013",
-      "title": "The Big Knife",
-      "openingDate": "2013-04-16",
-      "message": "amny/Matt Windman (amny--matt-windman.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate theater review with strong critical assessment, but the venue mismatch (American Airlines Theatre v — http://www.amny.com/urbanite-1.812039/theater-review-the-big-knife-1-star-1.5083984",
-      "violations": [
-        {
-          "filename": "amny--matt-windman.json",
-          "url": "http://www.amny.com/urbanite-1.812039/theater-review-the-big-knife-1-star-1.5083984",
-          "outletId": "amny",
-          "criticName": "Matt Windman",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "This is a legitimate theater review with strong critical assessment, but the venue mismatch (American Airlines Theatre v",
-          "cvIssues": [
-            "Review describes American Airlines Theatre at 227 W. 42nd St., but expected venue is Todd Haimes Theatre",
-            "Expected Broadway opening date is 2013-04-16, but review publish date is 2026-03-14 — 13 years in the future, indicating a data mismatch or this reviews a different production entirely"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "born-yesterday-2011",
-      "title": "Born Yesterday",
-      "openingDate": "2011-04-24",
-      "message": "new-jersey-newsroom/Michael Sommers (new-jersey-newsroom--michael-sommers.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate Broadway review of 'Born Yesterday,' but it reviews the 2011 revival at the Cort Theatre (later ren — http://www.newjerseynewsroom.com/movies/review-born-yesterday-revival-delivers-timely-laughter",
-      "violations": [
-        {
-          "filename": "new-jersey-newsroom--michael-sommers.json",
-          "url": "http://www.newjerseynewsroom.com/movies/review-born-yesterday-revival-delivers-timely-laughter",
-          "outletId": "new-jersey-newsroom",
-          "criticName": "Michael Sommers",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "This is a legitimate Broadway review of 'Born Yesterday,' but it reviews the 2011 revival at the Cort Theatre (later ren",
-          "cvIssues": [
-            "Venue mismatch: Review describes 'Cort Theatre' but expected venue is 'James Earl Jones Theatre'",
-            "The Cort Theatre is now called the James Earl Jones Theatre, but this review appears to be from an earlier production (cast includes Nina Arianda, Robert Sean Leonard, Jim Belushi - consistent with 2011 revival at Cort)"
           ]
         }
       ]
@@ -792,27 +687,6 @@
           "cvIssues": [
             "Review is for Encores! production at New York Theatre Workshop (off-Broadway), not Broadway production at Lunt-Fontanne Theatre",
             "Expected opening date 1997-04-23 (original Broadway run) does not match this 2024 Encores! revival"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "working-1978",
-      "title": "Working",
-      "openingDate": "1978-05-14",
-      "message": "timeout/David Cote (timeout--david-cote.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate theater review with critical assessment, but it evaluates an Off-Broadway production at 59E59 Theat — https://www.timeout.com/newyork/theater/working",
-      "violations": [
-        {
-          "filename": "timeout--david-cote.json",
-          "url": "https://www.timeout.com/newyork/theater/working",
-          "outletId": "timeout",
-          "criticName": "David Cote",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "This is a legitimate theater review with critical assessment, but it evaluates an Off-Broadway production at 59E59 Theat",
-          "cvIssues": [
-            "Review is of an Off-Broadway production at 59E59 Theaters, not the Broadway production at Richard Rodgers Theatre",
-            "Critic explicitly states 'Off Broadway theater review' in opening line"
           ]
         }
       ]
@@ -983,26 +857,6 @@
           "cvReasoning": "[OVERRIDE: review within 2d of opening, likely correct production] The review describes a production that had its world ",
           "cvIssues": [
             "Review discusses a different production of 'El Último Sueño de Frida y Diego' that premiered at San Diego Opera in 2022 and mentions other venues, indicating it is not specifically reviewing the Met Opera production."
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "hadestown-west-end-2024",
-      "title": "Hadestown",
-      "openingDate": "2024-02-22",
-      "message": "london-theatre/Marianka Swain (london-theatre--julia-rank.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The review explicitly states the production is at the 'National Theatre's Olivier', which is a London venue but not a We — https://www.londontheatre.co.uk/reviews/hadestown-review-lyric-theatre",
-      "violations": [
-        {
-          "filename": "london-theatre--julia-rank.json",
-          "url": "https://www.londontheatre.co.uk/reviews/hadestown-review-lyric-theatre",
-          "outletId": "london-theatre",
-          "criticName": "Marianka Swain",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "The review explicitly states the production is at the 'National Theatre's Olivier', which is a London venue but not a We",
-          "cvIssues": [
-            "wrong production"
           ]
         }
       ]
@@ -1199,27 +1053,6 @@
       ]
     },
     {
-      "showId": "the-producers-west-end-2025",
-      "title": "The Producers",
-      "openingDate": "2025-09-13",
-      "message": "times-uk/Dominic Maxwell (times-uk--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a review of Patrick Marber's production at the Menier Chocolate Factory (a pre-West End tryout venue), not a rev — https://www.thetimes.com/culture/theatre-dance/article/the-producers-review-a-five-star-show-for-our-turbulent-times-lmkt79vkw",
-      "violations": [
-        {
-          "filename": "times-uk--unknown.json",
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/the-producers-review-a-five-star-show-for-our-turbulent-times-lmkt79vkw",
-          "outletId": "times-uk",
-          "criticName": "Dominic Maxwell",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "This is a review of Patrick Marber's production at the Menier Chocolate Factory (a pre-West End tryout venue), not a rev",
-          "cvIssues": [
-            "Review evaluates the Menier Chocolate Factory pre-West End production, not the Garrick Theatre West End run",
-            "Text explicitly states 'in a more deluxe and even more delightful version of a production that opened at the Menier Chocolate Factory'"
-          ]
-        }
-      ]
-    },
-    {
       "showId": "the-phantom-of-the-opera-west-end-1986",
       "title": "The Phantom of the Opera",
       "openingDate": "1986-10-09",
@@ -1339,52 +1172,6 @@
       ]
     },
     {
-      "showId": "pride-west-end-2026",
-      "title": "Pride",
-      "openingDate": "2026-06-25",
-      "message": "british-theatre/Keith Mckenna (british-theatre--keith-mckenna.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: Superseded by clear-stale-wrong-show-flags.js recovery: [2026-10-16 cleared stale wrongShow — predicate + Sonnet confirm — https://www.britishtheatreguide.info/reviews/pride-national-theatr-25693\nmusical-theatre-review/Unknown (musical-theatre-review--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a production of 'Pride' at the D — https://musicaltheatrereview.com/pride-dorfman-national-theatre/\nplays-to-see/Wilder Gutterson (plays-to-see--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate review of the musical 'Pride,' but it reviews the National Theatre production (with transfer to Bri — https://playstosee.com/reviews/pride/",
-      "violations": [
-        {
-          "filename": "british-theatre--keith-mckenna.json",
-          "url": "https://www.britishtheatreguide.info/reviews/pride-national-theatr-25693",
-          "outletId": "british-theatre",
-          "criticName": "Keith Mckenna",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "Superseded by clear-stale-wrong-show-flags.js recovery: [2026-10-16 cleared stale wrongShow — predicate + Sonnet confirm",
-          "cvIssues": [
-            "The content is a preview rather than a review, lacking a critic's evaluation of the show's quality.",
-            "The review discusses a performance at the National Theatre, which is not a West End production."
-          ]
-        },
-        {
-          "filename": "musical-theatre-review--unknown.json",
-          "url": "https://musicaltheatrereview.com/pride-dorfman-national-theatre/",
-          "outletId": "musical-theatre-review",
-          "criticName": "Unknown",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 1d of opening, likely correct production] The review discusses a production of 'Pride' at the D",
-          "cvIssues": [
-            "Review is for a production at the Dorfman Theatre, which is not a West End venue."
-          ]
-        },
-        {
-          "filename": "plays-to-see--unknown.json",
-          "url": "https://playstosee.com/reviews/pride/",
-          "outletId": "plays-to-see",
-          "criticName": "Wilder Gutterson",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "This is a legitimate review of the musical 'Pride,' but it reviews the National Theatre production (with transfer to Bri",
-          "cvIssues": [
-            "Review describes National Theatre production (opening until 12 September, transferring to Bridge Theatre on 12 November), not Dorfman Theatre",
-            "Expected West End opening date is 2026-06-25, but review describes a production at National Theatre with a closing date of 12 September (year unspecified in excerpt, but context suggests earlier production)"
-          ]
-        }
-      ]
-    },
-    {
       "showId": "sting-west-end-2026",
       "title": "Sting",
       "openingDate": "2026-06-23",
@@ -1486,27 +1273,6 @@
       ]
     },
     {
-      "showId": "hercules-west-end-2025",
-      "title": "Hercules",
-      "openingDate": "2025-06-24",
-      "message": "telegraph/Claire Allfree (telegraph--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped content is a review by Claire Allfree published on 25 June 2025, but the expected West End opening date is 1 — https://www.telegraph.co.uk/art/reviews/hercules-disney-review-theatre-royal-drury-lane/",
-      "violations": [
-        {
-          "filename": "telegraph--unknown.json",
-          "url": "https://www.telegraph.co.uk/art/reviews/hercules-disney-review-theatre-royal-drury-lane/",
-          "outletId": "telegraph",
-          "criticName": "Claire Allfree",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "The scraped content is a review by Claire Allfree published on 25 June 2025, but the expected West End opening date is 1",
-          "cvIssues": [
-            "Review publish date (25 June 2025) is BEFORE the expected West End opening date (10 July 2025)",
-            "This is a preview review written before the West End opening, not a post-opening review"
-          ]
-        }
-      ]
-    },
-    {
       "showId": "titanique-west-end-2024",
       "title": "Titanique",
       "openingDate": "2025-01-08",
@@ -1544,27 +1310,6 @@
           "cvIssues": [
             "Wrong Production",
             "Truncated"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "titanique-off-broadway-2022",
-      "title": "Titanique",
-      "openingDate": "2022-06-14",
-      "message": "nypost/Johnny Oleksinski (nypost--johnny-oleksinski.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The review explicitly mentions the 'off-Broadway cuckoo camp-fest at the Asylum in Chelsea' and 'Asylum NYC', indicating — https://nypost.com/2022/08/05/titanique-the-musical-review-titanic-parody-hits-the-mark/",
-      "violations": [
-        {
-          "filename": "nypost--johnny-oleksinski.json",
-          "url": "https://nypost.com/2022/08/05/titanique-the-musical-review-titanic-parody-hits-the-mark/",
-          "outletId": "nypost",
-          "criticName": "Johnny Oleksinski",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "The review explicitly mentions the 'off-Broadway cuckoo camp-fest at the Asylum in Chelsea' and 'Asylum NYC', indicating",
-          "cvIssues": [
-            "Wrong production: The review is for an Off-Broadway production at Asylum NYC, not the Broadway production at the St. James Theatre.",
-            "Truncated: The scraped content ends mid-sentence."
           ]
         }
       ]
@@ -1688,40 +1433,6 @@
       ]
     },
     {
-      "showId": "stories-the-tap-dance-sensation-west-end-2026",
-      "title": "STORIES – The Tap Dance Sensation",
-      "openingDate": null,
-      "message": "thereviewshub/Sonny Waheed (thereviewshub--sonny-waheed.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a genuine review of STORIES with substantive critical evaluation of the performance, choreography, casting and d — https://www.thereviewshub.com/26-stories-the-tap-dance-sensation-peacock-theatre-london-2/\nthereviewshub/Sonny Waheed (thereviewshub--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a valid review of STORIES – The Tap Dance Sensation with detailed critical assessment of choreography, cast, des — https://www.thereviewshub.com/26-stories-the-tap-dance-sensation-peacock-theatre-london-2/",
-      "violations": [
-        {
-          "filename": "thereviewshub--sonny-waheed.json",
-          "url": "https://www.thereviewshub.com/26-stories-the-tap-dance-sensation-peacock-theatre-london-2/",
-          "outletId": "thereviewshub",
-          "criticName": "Sonny Waheed",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "This is a genuine review of STORIES with substantive critical evaluation of the performance, choreography, casting and d",
-          "cvIssues": [
-            "Review publish date (2026-10-16) is more than 1.5 years in the future from the declared earlier run at Peacock Theatre (2024-10-23 to 2024-11-02)",
-            "No venue is explicitly named in the scraped text"
-          ]
-        },
-        {
-          "filename": "thereviewshub--unknown.json",
-          "url": "https://www.thereviewshub.com/26-stories-the-tap-dance-sensation-peacock-theatre-london-2/",
-          "outletId": "thereviewshub",
-          "criticName": "Sonny Waheed",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "This is a valid review of STORIES – The Tap Dance Sensation with detailed critical assessment of choreography, cast, des",
-          "cvIssues": [
-            "Review does not name the venue where the performance was seen",
-            "Expected venue is Peacock Theatre; review contains no venue identification"
-          ]
-        }
-      ]
-    },
-    {
       "showId": "trainspotting-the-musical-west-end-2026",
       "title": "Trainspotting the musical",
       "openingDate": "2026-07-22",
@@ -1763,7 +1474,7 @@
       "showId": "the-oresteia-west-end-2026",
       "title": "The Oresteia",
       "openingDate": "2026-07-14",
-      "message": "artsdesk/Unknown (artsdesk--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 3d of opening, likely correct production] The review discusses a timeline that spans from 2016  — https://theartsdesk.com/theatre/oresteia-bridge-theatre-review-no-turn-left-un-stoned-greek-tragedy\nstandard/Nick Curtis (standard--nick-curtis.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 7d of opening, likely correct production] The review discusses a production directed by Simon S — https://www.standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
+      "message": "artsdesk/Unknown (artsdesk--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 3d of opening, likely correct production] The review discusses a timeline that spans from 2016  — https://theartsdesk.com/theatre/oresteia-bridge-theatre-review-no-turn-left-un-stoned-greek-tragedy",
       "violations": [
         {
           "filename": "artsdesk--unknown.json",
@@ -1775,18 +1486,6 @@
           "cvReasoning": "[OVERRIDE: review within 3d of opening, likely correct production] The review discusses a timeline that spans from 2016 ",
           "cvIssues": [
             "Review describes a production set in 2016 to 2026, indicating it is not the West End production opening in July 2026."
-          ]
-        },
-        {
-          "filename": "standard--nick-curtis.json",
-          "url": "https://www.standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
-          "outletId": "standard",
-          "criticName": "Nick Curtis",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 7d of opening, likely correct production] The review discusses a production directed by Simon S",
-          "cvIssues": [
-            "Review describes a different production of 'The Oresteia' that is not the West End version opening in July 2026."
           ]
         }
       ]
@@ -1856,7 +1555,7 @@
       "showId": "the-smile-of-her-off-west-end-2026",
       "title": "The Smile Of Her",
       "openingDate": "2026-07-16",
-      "message": "jonathan-baz/Florit ShoihetRuns (jonathan-baz--florit-shoihetruns.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 20d of opening, likely correct production] This is a legitimate theater review of 'The Smile Of — http://www.jonathanbaz.com/2026/07/the-smile-of-her-review.html\ntheatre-vibe/Lizzie Loveridge (theatre-vibe--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: While this is a genuine review of a play called 'The Smile Of Her' featuring Christine Lahti, the review's content and l — https://theatrevibe.co.uk/2026/07/18/review-the-smile-of-her-marylebone-theatre-2026/",
+      "message": "jonathan-baz/Florit ShoihetRuns (jonathan-baz--florit-shoihetruns.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 20d of opening, likely correct production] This is a legitimate theater review of 'The Smile Of — http://www.jonathanbaz.com/2026/07/the-smile-of-her-review.html",
       "violations": [
         {
           "filename": "jonathan-baz--florit-shoihetruns.json",
@@ -1869,19 +1568,6 @@
           "cvIssues": [
             "Review describes a production starring Christine Lahti as the performer, but expected critic is 'Florit ShoihetRuns' and outlet is 'Jonathan Baz' — these metadata fields do not match the scraped content at all",
             "No byline or critic attribution found in scraped text"
-          ]
-        },
-        {
-          "filename": "theatre-vibe--unknown.json",
-          "url": "https://theatrevibe.co.uk/2026/07/18/review-the-smile-of-her-marylebone-theatre-2026/",
-          "outletId": "theatre-vibe",
-          "criticName": "Lizzie Loveridge",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "While this is a genuine review of a play called 'The Smile Of Her' featuring Christine Lahti, the review's content and l",
-          "cvIssues": [
-            "Review describes a one-woman show starring Christine Lahti (a major American actress) performing her own autobiographical play",
-            "The scraped review makes no mention of Marylebone Theatre or any London venue"
           ]
         }
       ]
@@ -1951,7 +1637,7 @@
       "showId": "darkling-off-west-end-2026",
       "title": "Darkling",
       "openingDate": "2026-09-16",
-      "message": "voice-magazine/Moni Fernandez (voice-magazine--moni-fernandez.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 2d of opening, likely correct production] The content of the review discusses a different narra — https://www.voicemag.uk/review/16880/darkling-at-bush-theatre\nvoice-magazine/Moni Fernandez (voice-magazine--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 2d of opening, likely correct production] The content of the review does not pertain to the Off — https://www.voicemag.uk/review/16880/darkling-at-bush-theatre",
+      "message": "voice-magazine/Moni Fernandez (voice-magazine--moni-fernandez.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 2d of opening, likely correct production] The content of the review discusses a different narra — https://www.voicemag.uk/review/16880/darkling-at-bush-theatre",
       "violations": [
         {
           "filename": "voice-magazine--moni-fernandez.json",
@@ -1963,18 +1649,6 @@
           "cvReasoning": "[OVERRIDE: review within 2d of opening, likely correct production] The content of the review discusses a different narra",
           "cvIssues": [
             "The review describes a production set in 80s Bhopal, India, which does not match the Off-West End production of 'Darkling' at Bush Theatre in London."
-          ]
-        },
-        {
-          "filename": "voice-magazine--unknown.json",
-          "url": "https://www.voicemag.uk/review/16880/darkling-at-bush-theatre",
-          "outletId": "voice-magazine",
-          "criticName": "Moni Fernandez",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 2d of opening, likely correct production] The content of the review does not pertain to the Off",
-          "cvIssues": [
-            "The review describes a production set in 80s Bhopal, India, which does not match the Off-West End production of 'Darkling' opening at Bush Theatre in 2026."
           ]
         }
       ]
@@ -2195,35 +1869,22 @@
       ]
     },
     {
-      "showId": "grease-the-immersive-movie-musical-off-west-end-2026",
-      "title": "Grease: The Immersive Movie Musical",
-      "openingDate": null,
-      "message": "london-box-office/Shehrazade Zafar-Arif (london-box-office--miriam-gibson.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped review evaluates Secret Cinema's 'Grease the Immersive Movie Musical' production, a distinct immersive theat — https://www.londonboxoffice.co.uk/news/post/review-grease-the-immersive-movie-musical\nlondon-box-office/Shehrazade Zafar-Arif (london-box-office--stuart-king.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped review evaluates Secret Cinema's Grease immersive production, not the Evolution London - Battersea staging s — https://www.londonboxoffice.co.uk/news/post/review-grease-the-immersive-movie-musical",
+      "showId": "school-pictures-off-broadway-2026",
+      "title": "School Pictures",
+      "openingDate": "2026-10-18",
+      "message": "lighting-and-sound-america/David Barbour (lighting-and-sound-america--david-barbour.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] The scraped content evaluates a different production  — http://www.lightingandsoundamerica.com/news/story.asp?ID=-ATIT2E",
       "violations": [
         {
-          "filename": "london-box-office--miriam-gibson.json",
-          "url": "https://www.londonboxoffice.co.uk/news/post/review-grease-the-immersive-movie-musical",
-          "outletId": "london-box-office",
-          "criticName": "Shehrazade Zafar-Arif",
+          "filename": "lighting-and-sound-america--david-barbour.json",
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-ATIT2E",
+          "outletId": "lighting-and-sound-america",
+          "criticName": "David Barbour",
           "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "The scraped review evaluates Secret Cinema's 'Grease the Immersive Movie Musical' production, a distinct immersive theat",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 0d of opening, likely correct production] The scraped content evaluates a different production ",
           "cvIssues": [
-            "Review describes Secret Cinema's production, not Evolution London production",
-            "Text is truncated mid-sentence at character 4979"
-          ]
-        },
-        {
-          "filename": "london-box-office--stuart-king.json",
-          "url": "https://www.londonboxoffice.co.uk/news/post/review-grease-the-immersive-movie-musical",
-          "outletId": "london-box-office",
-          "criticName": "Shehrazade Zafar-Arif",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "The scraped review evaluates Secret Cinema's Grease immersive production, not the Evolution London - Battersea staging s",
-          "cvIssues": [
-            "Review describes Secret Cinema's production, not Evolution London venue mentioned in expected data",
-            "No mention of Evolution London - Battersea anywhere in scraped content"
+            "The review is for a different show, 'Amusements', not 'School Pictures'.",
+            "The review discusses a performance at the Peter Jay Sharp Theatre, not the Cherry Lane Theatre."
           ]
         }
       ]
@@ -2727,27 +2388,6 @@
           "cvIssues": [
             "Reviewed venue is Tom Stoppard Theatre, not Gielgud Theatre as expected",
             "Review states 'Luke Sheppard's West End revival is now officially open at the Tom Stoppard Theatre' — this is a different West End venue than the expected Gielgud Theatre"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "the-motive-and-the-cue-west-end-2023",
-      "title": "The Motive and the Cue",
-      "openingDate": "2023-12-18",
-      "message": "all-that-dazzles-uk/Sam - Admin (all-that-dazzles-uk--sam-waite.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a genuine review of the West End production at Noël Coward Theatre with correct cast/director/venue details. How — https://www.allthatdazzles.co.uk/post/review-the-motive-and-the-cue-no%C3%ABl-coward-theatre",
-      "violations": [
-        {
-          "filename": "all-that-dazzles-uk--sam-waite.json",
-          "url": "https://www.allthatdazzles.co.uk/post/review-the-motive-and-the-cue-no%C3%ABl-coward-theatre",
-          "outletId": "all-that-dazzles-uk",
-          "criticName": "Sam - Admin",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "This is a genuine review of the West End production at Noël Coward Theatre with correct cast/director/venue details. How",
-          "cvIssues": [
-            "Review publish date (2026-10-11) is 2+ years after West End opening (2023-12-18) and after the show's closing date (2024-03-23), making it anachronistic and invalid",
-            "The scraped text explicitly states the show 'plays at the Noël Coward Theatre until March 23rd 2024', yet the review is dated 2026-10-11 — nearly 2.5 years after closure"
           ]
         }
       ]
@@ -3291,27 +2931,6 @@
           "cvIssues": [
             "Review describes National Theatre production, not a West End venue",
             "Expected venue is Dorfman Theatre; scraped text states 'National Theatre'"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "to-kill-a-mockingbird-west-end-2022",
-      "title": "To Kill a Mockingbird",
-      "openingDate": "2022-03-31",
-      "message": "i-paper/Sam Marlowe (i-paper--sam-marlowe.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The review discusses a Broadway version of 'To Kill a Mockingbird' and does not evaluate the West End production, indica — https://inews.co.uk/culture/arts/to-kill-a-mockingbird-gielgud-theatre-review-rafe-spall-plays-the-hero-in-a-tremendous-reimagining-1550710",
-      "violations": [
-        {
-          "filename": "i-paper--sam-marlowe.json",
-          "url": "https://inews.co.uk/culture/arts/to-kill-a-mockingbird-gielgud-theatre-review-rafe-spall-plays-the-hero-in-a-tremendous-reimagining-1550710",
-          "outletId": "i-paper",
-          "criticName": "Sam Marlowe",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "The review discusses a Broadway version of 'To Kill a Mockingbird' and does not evaluate the West End production, indica",
-          "cvIssues": [
-            "Review describes a Broadway production, not the West End production.",
-            "Review is truncated and ends mid-sentence."
           ]
         }
       ]
