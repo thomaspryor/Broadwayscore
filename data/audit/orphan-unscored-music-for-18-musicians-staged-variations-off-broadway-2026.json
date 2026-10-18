@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "music-for-18-musicians-staged-variations-off-broadway-2026",
   "openingDate": "2026-10-17",
-  "detectedAt": "2026-10-18T14:19:32.666Z",
+  "detectedAt": "2026-10-18T14:31:21.467Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "amny--emily-davenport-salcedo.json",
+      "outletId": "amny",
+      "criticName": "Emily Davenport-Salcedo",
+      "url": "https://www.amny.com/entertainment/music/the-danny-awards-nyc-disabled-musicians/",
+      "fullTextLen": 4216,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "oazis--unknown.json",
       "outletId": "oazis",
@@ -23,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }
