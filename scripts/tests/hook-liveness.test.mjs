@@ -408,17 +408,23 @@ const SELF_SKIP_COPY =
   '   [ "${BASH_SOURCE[0]}" != "$HOME/.claude/hooks/infra-plan-review-gate.sh" ]; then\n' +
   '  exit 0\nfi\ncat >/dev/null\nexit 2\n';
 
-function delegationFixture({ registerMaster }) {
+const GATE_MATCHER = 'Edit|Write|MultiEdit|NotebookEdit|Bash';
+
+// masterEvent/masterMatcher: where the user settings register the master
+// (null = not registered at all). masterExit: what the master returns.
+function delegationFixture({ masterEvent = 'PreToolUse', masterMatcher = GATE_MATCHER, masterExit = 2 } = {}) {
   const home = makeTmpDir();
   const repo = makeTmpDir();
-  writeHook(home, '.claude/hooks/infra-plan-review-gate.sh', '#!/usr/bin/env bash\ncat >/dev/null\nexit 2\n');
+  writeHook(home, '.claude/hooks/infra-plan-review-gate.sh', `#!/usr/bin/env bash\ncat >/dev/null\nexit ${masterExit}\n`);
   writeHook(home, '.claude/hooks/other.sh', '#!/usr/bin/env bash\ncat >/dev/null\nexit 0\n');
   writeHook(repo, '.claude/hooks/infra-plan-review-gate.sh', SELF_SKIP_COPY);
   const userSettings = writeSettings(home, [
-    { event: 'PreToolUse', command: registerMaster ? 'bash ~/.claude/hooks/infra-plan-review-gate.sh' : 'bash ~/.claude/hooks/other.sh' },
+    masterEvent
+      ? { event: masterEvent, matcher: masterMatcher, command: 'bash ~/.claude/hooks/infra-plan-review-gate.sh' }
+      : { event: 'PreToolUse', matcher: GATE_MATCHER, command: 'bash ~/.claude/hooks/other.sh' },
   ]);
   const repoSettings = writeSettings(repo, [
-    { event: 'PreToolUse', command: 'bash .claude/hooks/infra-plan-review-gate.sh' },
+    { event: 'PreToolUse', matcher: GATE_MATCHER, command: 'bash .claude/hooks/infra-plan-review-gate.sh' },
   ]);
   // Repo source listed FIRST so the master's registration comes from a later source.
   return runHookLivenessCheck({
@@ -432,18 +438,34 @@ function delegationFixture({ registerMaster }) {
 }
 
 test('a repo copy delegating to a REGISTERED master passes, and the master itself is still probed', () => {
-  const result = delegationFixture({ registerMaster: true });
+  const result = delegationFixture();
   assert.equal(result.ok, true, result.summary);
   const repoEntry = result.hooks.find((h) => h.label === 'repo');
   assert.match(repoEntry.detail, /delegates to user-level master/);
 });
 
 test('a repo copy delegating to an UNREGISTERED master FAILS (nothing enforces the gate)', () => {
-  const result = delegationFixture({ registerMaster: false });
+  const result = delegationFixture({ masterEvent: null });
   assert.equal(result.ok, false);
   const repoEntry = result.hooks.find((h) => h.label === 'repo');
   assert.equal(repoEntry.ok, false);
   assert.match(repoEntry.detail, /UNREGISTERED MASTER/);
+});
+
+test('a master registered only under Stop, or under a PreToolUse matcher without Edit+Bash, does not count as delegation coverage', () => {
+  for (const opts of [{ masterEvent: 'Stop' }, { masterMatcher: 'Read' }]) {
+    const result = delegationFixture(opts);
+    const repoEntry = result.hooks.find((h) => h.label === 'repo');
+    assert.equal(repoEntry.ok, false, JSON.stringify(opts));
+    assert.match(repoEntry.detail, /UNREGISTERED MASTER/);
+  }
+});
+
+test('a delegating repo copy does not mask a registered master that fails to block', () => {
+  const result = delegationFixture({ masterExit: 0 });
+  assert.equal(result.ok, false);
+  const userEntry = result.hooks.find((h) => h.label === 'user');
+  assert.match(userEntry.detail, /SYNTHETIC-BLOCK PROBE FAILED/);
 });
 
 // ── settings-source failure (e.g. a whole settings.json missing) surfaces too ──

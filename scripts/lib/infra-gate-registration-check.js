@@ -91,6 +91,11 @@ const SCOPE_LIB_REPO_PATH = 'scripts/lib/infra-review-scope.js';
 const DEFAULT_PROBE_TARGET = 'scripts/lib/backlog-drain.js'; // known 'critical' tier, never EXEMPT
 const GUARD_LAUNCHD_LABEL = 'com.broadwayscore.hook-syntax-guard';
 
+/** The gate only enforces when its PreToolUse matcher covers both direct edits and Bash. */
+function matcherCoversGateScope(matcher) {
+  return typeof matcher === 'string' && matcher.includes('Edit') && matcher.includes('Bash');
+}
+
 /**
  * @param {object} a
  * @param {string} a.settingsPath  path to a ~/.claude/settings.json (or a fixture standing in for one)
@@ -123,9 +128,7 @@ function checkSettingsRegistration({ settingsPath }) {
   // coverage of BOTH the direct edit tools and Bash, since scope-scope.js's
   // hardest-won fix (bashWriteTargets) exists specifically because Bash is
   // the dodge that closes.
-  const adequatelyScoped = matchingEntries.some((entry) =>
-    typeof entry.matcher === 'string' && entry.matcher.includes('Edit') && entry.matcher.includes('Bash')
-  );
+  const adequatelyScoped = matchingEntries.some((entry) => matcherCoversGateScope(entry.matcher));
   if (!adequatelyScoped) {
     const matchers = matchingEntries.map((e) => e.matcher).join(', ');
     return {
@@ -682,8 +685,13 @@ function runHookLivenessCheck({ settingsSources, repoRoot, sessionId } = {}) {
     unmatchedCommands.push(...(loaded.unmatched || []));
     loadedSources.push({ src, loaded });
   }
+  // Only registrations that actually gate edits count as coverage: a master
+  // registered under Stop, or under a PreToolUse matcher without Edit+Bash,
+  // never fires on a real edit.
   const registeredPaths = new Set(
-    loadedSources.flatMap(({ loaded }) => loaded.hooks.map((h) => path.resolve(h.absPath))),
+    loadedSources.flatMap(({ loaded }) => loaded.hooks
+      .filter((h) => h.event === 'PreToolUse' && matcherCoversGateScope(h.matcher))
+      .map((h) => path.resolve(h.absPath))),
   );
 
   let probeCount = 0;
