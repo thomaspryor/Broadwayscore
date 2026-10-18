@@ -24,7 +24,6 @@ const FIELD_ALIASES = {
 const HEDGE_RE = /^(?:up to|nearly|about|roughly|approximately|around|almost|~)\s*/i; // "just under X" and "a little over X" are not X: left unparsed
 // A page this short is a paywall, consent wall or error page, never the article. SEC filings are exempt.
 const MIN_ARTICLE_CHARS = 600;
-const OUTCOME_WINDOW = 400;
 const LOSS_RE = /\b(?:not|never|didn'?t|did not|failed to|without)\b(?!\s+(?:yet|the first)\b)[^.]{0,40}\brecoup|\blos(?:t|ing|es)\b[^.]{0,30}\b(?:investment|capitali[sz]ation|money|capital)\b|\b(?:closed|shuttered) at a (?:total )?loss\b/i;
 
 function hostOf(url) {
@@ -52,16 +51,20 @@ function quoteOnPage(quote, text) {
 /** Whether a report's outcome value claims a loss ("did not recoup", "lost its investment"). */
 const claimsLoss = (value) => /\b(?:not|never|loss|lost|fail(?:ed|s)?|didn'?t)\b/i.test(String(value ?? ''));
 
-/** Recoupment language matching the claim within OUTCOME_WINDOW of a title form (buildShowTitleVariants), as whole words. */
+/**
+ * Recoupment language matching the claim in a sentence that names the show (a title form from
+ * buildShowTitleVariants, as whole words) or in the sentence right after it ("The show closed without
+ * recouping."). A fixed character window was too loose: Variety's CATS: The Jellicle Ball closing story
+ * says "the show failed to recoup" two sentences later about Sunset Blvd.
+ */
 function outcomeNearTitle(wantsLoss, rawText, titles) {
   // Same folding as the title forms (diacritics, apostrophes, "&"), so "The Who's Tommy" and "Les Misérables" match.
-  const text = normalizeForMention(rawText);
-  for (const title of titles) {
-    const re = new RegExp(`(?<![a-z0-9])${title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![a-z0-9])`, 'g');
-    for (const m of text.matchAll(re)) {
-      const around = text.slice(Math.max(0, m.index - OUTCOME_WINDOW), m.index + m[0].length + OUTCOME_WINDOW);
-      if (wantsLoss ? LOSS_RE.test(around) : (/recoup/i.test(around) && !LOSS_RE.test(around))) return true;
-    }
+  const sentences = String(rawText).split(/(?<=[.!?][”"’)\]]*)\s+(?=[“"‘(]?[A-Z])/).map(normalizeForMention);
+  const res = titles.map(title => new RegExp(`(?<![a-z0-9])${title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![a-z0-9])`));
+  for (let i = 0; i < sentences.length; i++) {
+    if (!res.some(re => re.test(sentences[i]))) continue;
+    const around = `${sentences[i]} ${sentences[i + 1] || ''}`;
+    if (wantsLoss ? LOSS_RE.test(around) : (/recoup/i.test(around) && !LOSS_RE.test(around))) return true;
   }
   return false;
 }
