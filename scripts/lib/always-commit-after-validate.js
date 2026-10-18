@@ -1,0 +1,274 @@
+/**
+ * always-commit-after-validate.js (BRO-5293) — pure decision logic.
+ *
+ * Finds workflow jobs where a step that runs scripts/validate-data.js is
+ * followed by a commit/push step that still runs after that validation FAILED
+ * (`if: always()` / `failure()` / `!cancelled()`, or any commit step when the
+ * validate step itself is `continue-on-error: true` / `|| true`), never looks
+ * at the validate step's outcome, and stages data/ files. That shape publishes
+ * data validate-data.js rejected. BRO-3511 fixed generate-theater-tips.yml by
+ * giving the validate step an id and gating the protected `git add` on
+ * VALIDATE_OUTCOME (= steps.validate.outcome); that form passes here.
+ *
+ * Many always() commits are intentional (partial scrape progress). Annotate the
+ * commit step (inside it, or on the comment lines directly above it) with
+ * `# always-commit-ok: <reason>` to exempt it.
+ *
+ * Line-based parser, same approach as the other workflow audits (the repo has
+ * no YAML dependency): jobs are keys at indent 2 under `jobs:`, steps are list
+ * items under a job's `steps:` key.
+ */
+'use strict';
+
+// An actual invocation, not a mention in an echo/comment.
+const VALIDATE_RE = /\bnode\s+(?:[\w./-]*\/)?validate-data\.js\b/;
+const INLINE_HANDLED_RE = /\bif\s+node\s+(?:[\w./-]*\/)?validate-data\.js\b/;
+const ALWAYS_IF_RE = /\b(?:always|failure)\s*\(\s*\)|!\s*cancelled\s*\(\s*\)/;
+const EXEMPT_RE = /#\s*always-commit-ok:\s*\S/;
+const COMMIT_RE = /\bgit\s+(?:commit|push)\b|push-with-retry\.sh\b/;
+
+const indentOf = (l) => l.length - l.trimStart().length;
+const isComment = (l) => l.trimStart().startsWith('#');
+
+/** Split workflow text into jobs: [{ name, steps: [{ name, id, startLine, lines, leadComments }] }]. */
+function parseJobs(text) {
+  const lines = String(text).split('\n');
+  const jobsIdx = lines.findIndex((l) => /^jobs:\s*(?:#.*)?$/.test(l));
+  if (jobsIdx === -1) return [];
+  const jobs = [];
+  let job = null;
+  let stepsIndent = -1; // indent of the job's `steps:` key, -1 when not inside it
+  let step = null;
+  const closeStep = (end) => {
+    if (!step) return;
+    step.lines = lines.slice(step.startLine, end);
+    // Trailing comment lines belong to the NEXT step's lead comments, not this body.
+    while (step.lines.length && (step.lines[step.lines.length - 1].trim() === '' || isComment(step.lines[step.lines.length - 1]))) step.lines.pop();
+    const body = step.lines.filter((l) => !isComment(l));
+    const nm = body.join('\n').match(/^\s*(?:- )?name:\s*(.+?)\s*$/m);
+    step.name = nm ? nm[1].replace(/^['"]|['"]$/g, '') : '(unnamed)';
+    const id = body.join('\n').match(/^\s*(?:- )?id:\s*['"]?([\w-]+)['"]?\s*$/m);
+    step.id = id ? id[1] : null;
+    job.steps.push(step);
+    step = null;
+  };
+  for (let i = jobsIdx + 1; i < lines.length; i++) {
+    const l = lines[i];
+    if (l.trim() === '' || isComment(l)) continue;
+    const ind = indentOf(l);
+    if (ind === 0) { closeStep(i); break; } // left the jobs: map
+    if (ind === 2) {
+      closeStep(i);
+      const m = l.match(/^ {2}([\w-]+)\s*:/);
+      job = m ? { name: m[1], steps: [] } : null;
+      if (job) jobs.push(job);
+      stepsIndent = -1;
+      continue;
+    }
+    if (!job) continue;
+    if (stepsIndent === -1) {
+      if (/^\s*steps\s*:\s*$/.test(l)) stepsIndent = ind;
+      continue;
+    }
+    if (ind <= stepsIndent && !/^\s*- /.test(l)) { closeStep(i); stepsIndent = /^\s*steps\s*:\s*$/.test(l) ? ind : -1; continue; }
+    if (/^\s*- /.test(l) && ind >= stepsIndent && ind <= stepsIndent + 2) {
+      closeStep(i);
+      // Comment lines directly above the step marker (annotation slot).
+      const lead = [];
+      for (let k = i - 1; k > jobsIdx && isComment(lines[k]); k--) lead.unshift(lines[k]);
+      step = { startLine: i, leadComments: lead };
+    }
+  }
+  closeStep(lines.length);
+  return jobs;
+}
+
+/** The step's `if:` expression (single line), or ''. */
+function stepIf(step) {
+  for (const l of step.lines) {
+    if (isComment(l)) continue;
+    const m = l.match(/^\s*(?:- )?if:\s*(.+?)\s*$/);
+    if (m) return m[1];
+  }
+  return '';
+}
+
+/** Non-comment shell lines, with `\` continuations joined. */
+function shellText(step) {
+  return step.lines.filter((l) => !isComment(l)).join('\n').replace(/\\\n\s*/g, ' ');
+}
+
+/**
+ * Data files validate-data.js reads (and so "protects"): a commit of one of
+ * these after validation failed publishes data the validator rejected. Several
+ * are gitignored core data in this repo (they reach the private repo through
+ * push-core-data, which already refuses via validate-data.js's
+ * ${RUNNER_TEMP}/.skip-push-core-data sentinel); listing them is harmless.
+ * theater-metadata.json is not read by validate-data.js itself but BRO-3511
+ * gated it on the validate outcome, so it is treated as protected too.
+ */
+const PROTECTED_FILES = [
+  'shows.json', 'reviews.json', 'grosses.json', 'grosses-history.json', 'show-schedules.json',
+  'commercial.json', 'actor-images.json', 'awards.json', 'awards-confirmed-ties.json',
+  'critic-consensus.json', 'lottery-rush.json', 'outlet-registry.json', 'outlet-tiers.json',
+  'tony-nominations.json', 'audience-buzz.json', 'todaytix-showtimes.json', 'image-sources.json',
+  'retired-show-ids.json', 'theater-metadata.json',
+];
+const PROTECTED_DIRS = ['review-texts', 'cast', 'aggregator-archive'];
+// Composite actions that commit protected data. push-core-data is NOT listed:
+// it reads the validate-data.js refusal sentinel and skips on failure.
+const PROTECTED_PUSH_ACTIONS = { 'push-review-texts': 'data/review-texts/' };
+
+const STAGE_CMD_RE = /\b(?:git\s+add|git-add-existing\.sh|git-add-safe\.sh|stage-data-changes\.sh)\b(.*)/;
+
+/** Which protected path a single `git add`-style operand stages, or null. */
+function protectedOperand(arg) {
+  const a = arg.replace(/^['"]|['"]$/g, '').replace(/^\.\//, '');
+  if (a === 'data' || a === 'data/' || a === 'data/*' || a === 'data/*.json') return a;
+  if (!a.startsWith('data/')) return null;
+  const rest = a.slice(5).replace(/\/+$/, '');
+  if (PROTECTED_FILES.includes(rest)) return a;
+  const top = rest.split('/')[0];
+  if (PROTECTED_DIRS.includes(top)) return a;
+  return null;
+}
+
+/**
+ * Protected data paths a step's shell text stages (deduped), [] when none.
+ * Whole-tree adds (`git add -A` / `.` / `--all`) and a bare
+ * stage-data-changes.sh (= all of data/) count as staging everything.
+ */
+function protectedStaged(text) {
+  const out = new Set();
+  for (const raw of text.split('\n')) {
+    const line = raw.replace(/\s#.*$/, '');
+    const m = line.match(STAGE_CMD_RE);
+    if (!m) continue;
+    const isStageData = /stage-data-changes\.sh/.test(m[0]);
+    const args = m[1].split(/[;&|]/)[0].trim().split(/\s+/).filter(Boolean);
+    const paths = args.filter((a) => !a.startsWith('-') && !a.startsWith('2>') && a !== '>/dev/null');
+    if (isStageData && paths.length === 0) { out.add('data/ (stage-data-changes.sh)'); continue; }
+    if (!isStageData && args.some((a) => a === '-A' || a === '--all') && paths.length === 0) { out.add('-A (whole tree)'); continue; }
+    if (!isStageData && paths.length === 1 && paths[0] === '.') { out.add('. (whole tree)'); continue; }
+    for (const a of paths) { const p = protectedOperand(a); if (p) out.add(p); }
+  }
+  return [...out];
+}
+
+/** Back-compat boolean form. */
+const stagesData = (text) => protectedStaged(text).length > 0;
+
+/** For a `uses:` step, the protected data path its composite action commits, or null. */
+function protectedAction(step) {
+  for (const l of step.lines) {
+    const m = l.match(/^\s*(?:- )?uses:\s*\.\/\.github\/actions\/([\w-]+)/);
+    if (m && PROTECTED_PUSH_ACTIONS[m[1]]) return { action: m[1], path: PROTECTED_PUSH_ACTIONS[m[1]] };
+  }
+  return null;
+}
+
+/** True when the validate step's own failure does not fail the job. */
+function validateIsSoft(step) {
+  const t = shellText(step);
+  if (step.lines.some((l) => /^\s*(?:- )?continue-on-error:\s*true\b/.test(l))) return true;
+  return t.split('\n').some((l) => VALIDATE_RE.test(l) && /\|\|\s*(?:true|:|echo\b)/.test(l));
+}
+
+const idRe = (id) => id.replace(/[.*+?^${}()|[\]\\-]/g, '\\$&');
+
+/**
+ * Ids whose result, if the commit step reads it, counts as consulting
+ * validation: every validate step, plus any later "gate" step that itself reads
+ * a validate step's outcome/outputs (update-show-status.yml's commit-gate).
+ */
+function guardIds(stepsBefore, validates) {
+  const ids = new Set(validates.map((v) => v.id).filter(Boolean));
+  for (const st of stepsBefore) {
+    if (!st.id || ids.has(st.id)) continue;
+    const t = st.lines.join('\n');
+    for (const id of [...ids]) {
+      if (new RegExp(`steps\\.${idRe(id)}\\.(?:outcome|conclusion|outputs)\\b`).test(t)) { ids.add(st.id); break; }
+    }
+  }
+  return ids;
+}
+
+/** True when the commit step consults validation (an outcome ref, VALIDATE_OUTCOME-style env, or the refusal sentinel). */
+function referencesOutcome(commitStep, ids) {
+  const t = commitStep.lines.filter((l) => !isComment(l)).join('\n');
+  for (const id of ids) {
+    if (new RegExp(`steps\\.${idRe(id)}\\.(?:outcome|conclusion|outputs)\\b`).test(t)) return true;
+  }
+  return /\bVALIDAT\w*_(?:OUTCOME|RESULT|STATUS|OK)\b|\.skip-push-core-data\b/.test(t);
+}
+
+function isExempt(step) {
+  return step.lines.concat(step.leadComments || []).some((l) => EXEMPT_RE.test(l));
+}
+
+/**
+ * Offenders in one workflow's text.
+ * Returns [{ job, validateStep, validateLine, commitStep, commitLine, staged, reason }] (lines 1-based).
+ */
+function findAlwaysCommitAfterValidate(text) {
+  const out = [];
+  for (const job of parseJobs(text)) {
+    const validates = [];
+    job.steps.forEach((step, idx) => {
+      const body = shellText(step);
+      const isCommit = COMMIT_RE.test(body);
+      if (VALIDATE_RE.test(body) && !isCommit) {
+        // `if node scripts/validate-data.js; then` handles a failure inline, so
+        // the step itself never fails on bad data: not a gate this rule tracks.
+        if (!INLINE_HANDLED_RE.test(body)) validates.push(step);
+        return;
+      }
+      if (!validates.length) return;
+      const act = protectedAction(step);
+      if (!isCommit && !act) return;
+      const staged = act ? [act.path] : protectedStaged(body);
+      if (!staged.length) return;
+      const last = validates[validates.length - 1];
+      const cond = stepIf(step);
+      const runsAfterFailure = ALWAYS_IF_RE.test(cond);
+      const soft = validateIsSoft(last);
+      if (!runsAfterFailure && !soft) return;
+      if (isExempt(step) || referencesOutcome(step, guardIds(job.steps.slice(0, idx), validates))) return;
+      out.push({
+        job: job.name,
+        validateStep: last.name,
+        validateLine: last.startLine + 1,
+        commitStep: step.name,
+        commitLine: step.startLine + 1,
+        staged,
+        reason: runsAfterFailure
+          ? `runs on \`if: ${cond}\` without checking the validate step's outcome`
+          : 'validate step is soft (continue-on-error / || true) and this step does not check its outcome',
+      });
+    });
+  }
+  return out;
+}
+
+/** Run over a directory of workflow files. Returns [{ file, ...finding }]. */
+function auditWorkflowDir(dir, fs = require('fs'), path = require('path')) {
+  const files = fs.readdirSync(dir).filter((f) => /\.ya?ml$/.test(f)).sort();
+  const out = [];
+  for (const f of files) {
+    for (const hit of findAlwaysCommitAfterValidate(fs.readFileSync(path.join(dir, f), 'utf8'))) {
+      out.push({ file: f, ...hit });
+    }
+  }
+  return out;
+}
+
+module.exports = {
+  parseJobs,
+  stagesData,
+  protectedStaged,
+  PROTECTED_FILES,
+  PROTECTED_DIRS,
+  findAlwaysCommitAfterValidate,
+  auditWorkflowDir,
+  EXEMPT_RE,
+};
