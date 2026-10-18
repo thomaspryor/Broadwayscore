@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Reddit \"reviews are in\" post drafts for WE/OWE/OB openings (BRO-4333). Written by scripts/draft-reddit-opening-posts.js, shown in the opening digest email.",
-    "lastRun": "2026-10-17T06:13:48.929Z"
+    "lastRun": "2026-10-18T06:38:04.688Z"
   },
   "drafts": {
     "delirium-off-broadway-2026": {
@@ -726,29 +726,34 @@
       "showTitle": "Some Woman",
       "market": "west-end",
       "subreddit": "TheWestEnd",
-      "score": 63,
-      "reviewCount": 14,
+      "score": 66,
+      "reviewCount": 16,
       "url": "https://westendscorecard.com/show/some-woman-west-end",
-      "notability": 37,
+      "notability": 38,
       "createdAt": "2026-10-17T06:12:56.480Z",
       "status": "ready",
-      "source": "claude-sonnet-5-5",
-      "lintProblems": [],
-      "title": "Reviews are in for Some Woman at the National. 63/100 from 14 critics, with a BroadwayWorld rave and a Times pan",
-      "body": "I found 14 reviews: 2 raves, 4 positive, 3 mixed, 5 negative. It just opened at the National Theatre with Anne-Marie Duff.\n\nhttps://westendscorecard.com/show/some-woman-west-end\n\nCindy Marcolina at BroadwayWorld went all in: \"Running unbroken at just under two hours, the show is perfect.\" Meanwhile Clive Davis at The Times wrote that Edmundson and director Blanche McIntyre are \"so busy ticking off boxes about misogyny and faceless bureaucracy that they overlook the basics.\" And Anya Ryan at London Theatre said \"Duff does her very best with the contrived material.\"\n\nDuff gets praised pretty much everywhere, and the twisty plot is where most of the pans come from.\n\nNo audience grade yet, since hardly any users have reviewed it on Show Score.\n\nI haven't seen this one yet, and I remain undecided on going. Anyone seen it?",
-      "why": "It leads with the show, the number, and the review count, then the hook of a flat-out BroadwayWorld rave sitting next to a Times pan, with Duff praised and the plot taking the blame, all in Tom's quote-driven voice.",
-      "expectedPushback": "\"Who cares about a number, it's a new play at the National, just go and decide for yourself.\"",
-      "suggestedReply": "Totally fair, and I'll probably end up doing exactly that. I mostly just like having what everyone wrote in one place.",
-      "personalLines": [
-        "I haven't seen this one yet, and I remain undecided on going.",
-        "I haven't seen this one yet, but Duff might be enough to get me in the door.",
-        "I haven't seen this one yet, and the plot complaints have me a bit wary. Would you see it?"
+      "source": "template",
+      "lintProblems": [
+        "body has number 2 that is not in the fact sheet"
       ],
-      "submitUrl": "https://www.reddit.com/r/TheWestEnd/submit?type=TEXT&title=Reviews+are+in+for+Some+Woman+at+the+National.+63%2F100+from+14+critics%2C+with+a+BroadwayWorld+rave+and+a+Times+pan&text=I+found+14+reviews%3A+2+raves%2C+4+positive%2C+3+mixed%2C+5+negative.+It+just+opened+at+the+National+Theatre+with+Anne-Marie+Duff.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fsome-woman-west-end%0A%0ACindy+Marcolina+at+BroadwayWorld+went+all+in%3A+%22Running+unbroken+at+just+under+two+hours%2C+the+show+is+perfect.%22+Meanwhile+Clive+Davis+at+The+Times+wrote+that+Edmundson+and+director+Blanche+McIntyre+are+%22so+busy+ticking+off+boxes+about+misogyny+and+faceless+bureaucracy+that+they+overlook+the+basics.%22+And+Anya+Ryan+at+London+Theatre+said+%22Duff+does+her+very+best+with+the+contrived+material.%22%0A%0ADuff+gets+praised+pretty+much+everywhere%2C+and+the+twisty+plot+is+where+most+of+the+pans+come+from.%0A%0ANo+audience+grade+yet%2C+since+hardly+any+users+have+reviewed+it+on+Show+Score.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I+remain+undecided+on+going.+Anyone+seen+it%3F",
-      "oldRedditSubmitUrl": "https://old.reddit.com/r/TheWestEnd/submit?selftext=true&title=Reviews+are+in+for+Some+Woman+at+the+National.+63%2F100+from+14+critics%2C+with+a+BroadwayWorld+rave+and+a+Times+pan&text=I+found+14+reviews%3A+2+raves%2C+4+positive%2C+3+mixed%2C+5+negative.+It+just+opened+at+the+National+Theatre+with+Anne-Marie+Duff.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fsome-woman-west-end%0A%0ACindy+Marcolina+at+BroadwayWorld+went+all+in%3A+%22Running+unbroken+at+just+under+two+hours%2C+the+show+is+perfect.%22+Meanwhile+Clive+Davis+at+The+Times+wrote+that+Edmundson+and+director+Blanche+McIntyre+are+%22so+busy+ticking+off+boxes+about+misogyny+and+faceless+bureaucracy+that+they+overlook+the+basics.%22+And+Anya+Ryan+at+London+Theatre+said+%22Duff+does+her+very+best+with+the+contrived+material.%22%0A%0ADuff+gets+praised+pretty+much+everywhere%2C+and+the+twisty+plot+is+where+most+of+the+pans+come+from.%0A%0ANo+audience+grade+yet%2C+since+hardly+any+users+have+reviewed+it+on+Show+Score.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I+remain+undecided+on+going.+Anyone+seen+it%3F",
+      "title": "16 reviews are in for Some Woman. 66/100",
+      "body": "It opened at National Theatre, and I found 16 reviews: 3 raves, 5 positive, 3 mixed, 5 negative. That works out to a 66/100.\n\nAnne-Marie Duff delivers a powerhouse performance in this topical drama about misogyny and middle-aged women, but critics are divided on Helen Edmundson's implausible plotting and far-fetched twists that undermine its important themes.\n\nNo audience grade yet, since hardly any users have reviewed it on any of the sites.\n\nI haven't seen it yet. Anyone been?\n\nhttps://westendscorecard.com/show/some-woman-west-end",
+      "why": "Template fallback: plain roundup with the score, breakdown and critic consensus.",
+      "expectedPushback": "Someone may say numbers can't capture theater.",
+      "suggestedReply": "Totally fair, the number is just a quick way to see where critics landed. The reviews themselves are the fun part.",
+      "personalLines": [
+        "I haven't seen it yet, and now I really want to.",
+        "Still undecided on going to this one."
+      ],
+      "submitUrl": "https://www.reddit.com/r/TheWestEnd/submit?type=TEXT&title=16+reviews+are+in+for+Some+Woman.+66%2F100&text=It+opened+at+National+Theatre%2C+and+I+found+16+reviews%3A+3+raves%2C+5+positive%2C+3+mixed%2C+5+negative.+That+works+out+to+a+66%2F100.%0A%0AAnne-Marie+Duff+delivers+a+powerhouse+performance+in+this+topical+drama+about+misogyny+and+middle-aged+women%2C+but+critics+are+divided+on+Helen+Edmundson%27s+implausible+plotting+and+far-fetched+twists+that+undermine+its+important+themes.%0A%0ANo+audience+grade+yet%2C+since+hardly+any+users+have+reviewed+it+on+any+of+the+sites.%0A%0AI+haven%27t+seen+it+yet.+Anyone+been%3F%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fsome-woman-west-end",
+      "oldRedditSubmitUrl": "https://old.reddit.com/r/TheWestEnd/submit?selftext=true&title=16+reviews+are+in+for+Some+Woman.+66%2F100&text=It+opened+at+National+Theatre%2C+and+I+found+16+reviews%3A+3+raves%2C+5+positive%2C+3+mixed%2C+5+negative.+That+works+out+to+a+66%2F100.%0A%0AAnne-Marie+Duff+delivers+a+powerhouse+performance+in+this+topical+drama+about+misogyny+and+middle-aged+women%2C+but+critics+are+divided+on+Helen+Edmundson%27s+implausible+plotting+and+far-fetched+twists+that+undermine+its+important+themes.%0A%0ANo+audience+grade+yet%2C+since+hardly+any+users+have+reviewed+it+on+any+of+the+sites.%0A%0AI+haven%27t+seen+it+yet.+Anyone+been%3F%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fsome-woman-west-end",
       "crosspostSubreddit": null,
       "crosspostSubmitUrl": null,
-      "emailedAt": "2026-10-17T06:14:06.688Z"
+      "emailedAt": "2026-10-17T06:14:06.688Z",
+      "refreshedAt": "2026-10-18T06:37:38.774Z",
+      "previousReviewCount": 14,
+      "previousScore": 63,
+      "reminderAt": "2026-10-18T06:38:23.564Z"
     },
     "midnight-off-broadway-2026": {
       "showId": "midnight-off-broadway-2026",
@@ -764,20 +769,53 @@
       "source": "claude-sonnet-5-5",
       "lintProblems": [],
       "title": "Reviews are in for Midnight. 74/100 from 14 critics, and not a single negative review",
-      "body": "Todrick Hall's Midnight opened at the Daryl Roth Theatre, and I found 14 reviews: 5 raves, 2 positive, 7 mixed, zero negative. Audiences are at an A+ (across Show Score, Mezzanine, Reddit, Theatr, and Broadway.com).\n\nhttps://broadwayscorecard.com/show/midnight-off-broadway\n\nDan Rubins at Slant Magazine wrote that it \"sounds, looks, and innovates like the best new musical of the year.\" Meanwhile the mixed reviews mostly want an editor. Brian Scott Lipton at Cititour said \"there's no denying someone else should have looked at all these elements.\" Elysa Gardner at The New York Sun thought much of it felt like a showcase. A lot of critics also found the runtime a stretch, which I GET.\n\nSo critics seem to love the choreography and the singing, but wish Hall had handed off some of the jobs. Anyone seen it? Does the A+ match what you saw?\n\nI haven't seen this one yet, and I'm leaning toward going.",
-      "why": "Zero negative reviews alongside an A+ audience grade is a clear hook, and the Slant rave against the Cititour 'needs an editor' quote shows both sides without me analyzing it.",
-      "expectedPushback": "Seven mixed reviews and the title still says 'not a single negative'? That's spin.",
-      "suggestedReply": "Ha, fair, that's why I put the whole breakdown in the post. Seven of them are mixed, and I'd rather you see the actual quotes than just trust my headline.",
+      "body": "It opened at the Daryl Roth Theatre with Todrick Hall, and I found 14 reviews: 5 raves, 2 positive, 7 mixed, zero negative. Audiences are at an A- (across Mezzanine, Reddit, Theatr, and Broadway.com).\n\nhttps://broadwayscorecard.com/show/midnight-off-broadway\n\nDan Rubins at Slant Magazine wrote \"Midnight already sounds, looks, and innovates like the best new musical of the year.\" Meanwhile Brian Scott Lipton at Cititour said someone else should have looked at all these elements, which might have made it \"a more satisfying (and shorter) event\". A lot of the mixed ones are about the length and feeling overstuffed, but even they praise the vocals and choreography. Which I GET.\n\nI haven't seen this one yet, and I remain undecided on going. Anyone seen it?",
+      "why": "The hook is that a 74 here has zero negative reviews, just raves on one side and length complaints on the other, with two short, plainly introduced quotes showing the split, which makes the number mean something without treating it like a grade.",
+      "expectedPushback": "Half the reviews are 'mixed' and the audiences give it an A-, so who cares what critics think, just go see it.",
+      "suggestedReply": "Ha, fair, and honestly the A- from audiences is a big part of why I'm still curious. I just like having the critics' take next to it, and I'd rather hear from people who've actually seen it.",
       "personalLines": [
-        "I haven't seen this one yet, and I'm leaning toward going.",
-        "Still undecided on this one, since the length worries me a little.",
-        "I haven't seen it yet, but that A+ from audiences has me curious."
+        "Still undecided on this one.",
+        "The length gives me pause, but the vocals and choreography have me curious.",
+        "Now I'm curious enough to start looking at tickets."
       ],
-      "submitUrl": "https://www.reddit.com/r/offbroadwayNYC/submit?type=TEXT&title=Reviews+are+in+for+Midnight.+74%2F100+from+14+critics%2C+and+not+a+single+negative+review&text=Todrick+Hall%27s+Midnight+opened+at+the+Daryl+Roth+Theatre%2C+and+I+found+14+reviews%3A+5+raves%2C+2+positive%2C+7+mixed%2C+zero+negative.+Audiences+are+at+an+A%2B+%28across+Show+Score%2C+Mezzanine%2C+Reddit%2C+Theatr%2C+and+Broadway.com%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fmidnight-off-broadway%0A%0ADan+Rubins+at+Slant+Magazine+wrote+that+it+%22sounds%2C+looks%2C+and+innovates+like+the+best+new+musical+of+the+year.%22+Meanwhile+the+mixed+reviews+mostly+want+an+editor.+Brian+Scott+Lipton+at+Cititour+said+%22there%27s+no+denying+someone+else+should+have+looked+at+all+these+elements.%22+Elysa+Gardner+at+The+New+York+Sun+thought+much+of+it+felt+like+a+showcase.+A+lot+of+critics+also+found+the+runtime+a+stretch%2C+which+I+GET.%0A%0ASo+critics+seem+to+love+the+choreography+and+the+singing%2C+but+wish+Hall+had+handed+off+some+of+the+jobs.+Anyone+seen+it%3F+Does+the+A%2B+match+what+you+saw%3F%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I%27m+leaning+toward+going.",
-      "oldRedditSubmitUrl": "https://old.reddit.com/r/offbroadwayNYC/submit?selftext=true&title=Reviews+are+in+for+Midnight.+74%2F100+from+14+critics%2C+and+not+a+single+negative+review&text=Todrick+Hall%27s+Midnight+opened+at+the+Daryl+Roth+Theatre%2C+and+I+found+14+reviews%3A+5+raves%2C+2+positive%2C+7+mixed%2C+zero+negative.+Audiences+are+at+an+A%2B+%28across+Show+Score%2C+Mezzanine%2C+Reddit%2C+Theatr%2C+and+Broadway.com%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fmidnight-off-broadway%0A%0ADan+Rubins+at+Slant+Magazine+wrote+that+it+%22sounds%2C+looks%2C+and+innovates+like+the+best+new+musical+of+the+year.%22+Meanwhile+the+mixed+reviews+mostly+want+an+editor.+Brian+Scott+Lipton+at+Cititour+said+%22there%27s+no+denying+someone+else+should+have+looked+at+all+these+elements.%22+Elysa+Gardner+at+The+New+York+Sun+thought+much+of+it+felt+like+a+showcase.+A+lot+of+critics+also+found+the+runtime+a+stretch%2C+which+I+GET.%0A%0ASo+critics+seem+to+love+the+choreography+and+the+singing%2C+but+wish+Hall+had+handed+off+some+of+the+jobs.+Anyone+seen+it%3F+Does+the+A%2B+match+what+you+saw%3F%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I%27m+leaning+toward+going.",
+      "submitUrl": "https://www.reddit.com/r/offbroadwayNYC/submit?type=TEXT&title=Reviews+are+in+for+Midnight.+74%2F100+from+14+critics%2C+and+not+a+single+negative+review&text=It+opened+at+the+Daryl+Roth+Theatre+with+Todrick+Hall%2C+and+I+found+14+reviews%3A+5+raves%2C+2+positive%2C+7+mixed%2C+zero+negative.+Audiences+are+at+an+A-+%28across+Mezzanine%2C+Reddit%2C+Theatr%2C+and+Broadway.com%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fmidnight-off-broadway%0A%0ADan+Rubins+at+Slant+Magazine+wrote+%22Midnight+already+sounds%2C+looks%2C+and+innovates+like+the+best+new+musical+of+the+year.%22+Meanwhile+Brian+Scott+Lipton+at+Cititour+said+someone+else+should+have+looked+at+all+these+elements%2C+which+might+have+made+it+%22a+more+satisfying+%28and+shorter%29+event%22.+A+lot+of+the+mixed+ones+are+about+the+length+and+feeling+overstuffed%2C+but+even+they+praise+the+vocals+and+choreography.+Which+I+GET.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I+remain+undecided+on+going.+Anyone+seen+it%3F",
+      "oldRedditSubmitUrl": "https://old.reddit.com/r/offbroadwayNYC/submit?selftext=true&title=Reviews+are+in+for+Midnight.+74%2F100+from+14+critics%2C+and+not+a+single+negative+review&text=It+opened+at+the+Daryl+Roth+Theatre+with+Todrick+Hall%2C+and+I+found+14+reviews%3A+5+raves%2C+2+positive%2C+7+mixed%2C+zero+negative.+Audiences+are+at+an+A-+%28across+Mezzanine%2C+Reddit%2C+Theatr%2C+and+Broadway.com%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fmidnight-off-broadway%0A%0ADan+Rubins+at+Slant+Magazine+wrote+%22Midnight+already+sounds%2C+looks%2C+and+innovates+like+the+best+new+musical+of+the+year.%22+Meanwhile+Brian+Scott+Lipton+at+Cititour+said+someone+else+should+have+looked+at+all+these+elements%2C+which+might+have+made+it+%22a+more+satisfying+%28and+shorter%29+event%22.+A+lot+of+the+mixed+ones+are+about+the+length+and+feeling+overstuffed%2C+but+even+they+praise+the+vocals+and+choreography.+Which+I+GET.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I+remain+undecided+on+going.+Anyone+seen+it%3F",
       "crosspostSubreddit": "Broadway",
-      "crosspostSubmitUrl": "https://www.reddit.com/r/Broadway/submit?type=TEXT&title=Reviews+are+in+for+Midnight.+74%2F100+from+14+critics%2C+and+not+a+single+negative+review&text=Todrick+Hall%27s+Midnight+opened+at+the+Daryl+Roth+Theatre%2C+and+I+found+14+reviews%3A+5+raves%2C+2+positive%2C+7+mixed%2C+zero+negative.+Audiences+are+at+an+A%2B+%28across+Show+Score%2C+Mezzanine%2C+Reddit%2C+Theatr%2C+and+Broadway.com%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fmidnight-off-broadway%0A%0ADan+Rubins+at+Slant+Magazine+wrote+that+it+%22sounds%2C+looks%2C+and+innovates+like+the+best+new+musical+of+the+year.%22+Meanwhile+the+mixed+reviews+mostly+want+an+editor.+Brian+Scott+Lipton+at+Cititour+said+%22there%27s+no+denying+someone+else+should+have+looked+at+all+these+elements.%22+Elysa+Gardner+at+The+New+York+Sun+thought+much+of+it+felt+like+a+showcase.+A+lot+of+critics+also+found+the+runtime+a+stretch%2C+which+I+GET.%0A%0ASo+critics+seem+to+love+the+choreography+and+the+singing%2C+but+wish+Hall+had+handed+off+some+of+the+jobs.+Anyone+seen+it%3F+Does+the+A%2B+match+what+you+saw%3F%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I%27m+leaning+toward+going.",
-      "emailedAt": "2026-10-17T06:14:13.838Z"
+      "crosspostSubmitUrl": "https://www.reddit.com/r/Broadway/submit?type=TEXT&title=Reviews+are+in+for+Midnight.+74%2F100+from+14+critics%2C+and+not+a+single+negative+review&text=It+opened+at+the+Daryl+Roth+Theatre+with+Todrick+Hall%2C+and+I+found+14+reviews%3A+5+raves%2C+2+positive%2C+7+mixed%2C+zero+negative.+Audiences+are+at+an+A-+%28across+Mezzanine%2C+Reddit%2C+Theatr%2C+and+Broadway.com%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fmidnight-off-broadway%0A%0ADan+Rubins+at+Slant+Magazine+wrote+%22Midnight+already+sounds%2C+looks%2C+and+innovates+like+the+best+new+musical+of+the+year.%22+Meanwhile+Brian+Scott+Lipton+at+Cititour+said+someone+else+should+have+looked+at+all+these+elements%2C+which+might+have+made+it+%22a+more+satisfying+%28and+shorter%29+event%22.+A+lot+of+the+mixed+ones+are+about+the+length+and+feeling+overstuffed%2C+but+even+they+praise+the+vocals+and+choreography.+Which+I+GET.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I+remain+undecided+on+going.+Anyone+seen+it%3F",
+      "emailedAt": "2026-10-17T06:14:13.838Z",
+      "refreshedAt": "2026-10-18T06:38:04.688Z",
+      "previousReviewCount": 14,
+      "previousScore": 74,
+      "reminderAt": "2026-10-18T06:38:30.825Z"
+    },
+    "memoirs-of-amorous-gentlemen-off-broadway-2026": {
+      "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
+      "showTitle": "Memoirs of Amorous Gentlemen",
+      "market": "off-broadway",
+      "subreddit": "offbroadwayNYC",
+      "score": 60,
+      "reviewCount": 16,
+      "url": "https://broadwayscorecard.com/show/memoirs-of-amorous-gentlemen-off-broadway",
+      "notability": 11,
+      "createdAt": "2026-10-18T06:37:09.697Z",
+      "status": "ready",
+      "source": "claude-sonnet-5-5",
+      "lintProblems": [],
+      "title": "16 reviews are in for Memoirs of Amorous Gentlemen. 60/100, with no raves but a lot of love for Sophia Anne Caruso",
+      "body": "It opened at The Night Egg at the Culture Club, and I found 16 reviews: 0 raves, 6 positive, 5 mixed, 5 negative. Audiences are at a B- (across Show Score, Mezzanine, and Theatr).\n\nhttps://broadwayscorecard.com/show/memoirs-of-amorous-gentlemen-off-broadway\n\nMost critics liked Duncan Sheik's score and Caruso, but felt the show was tamer than its premise. Robert Hofler at TheWrap was one of the positive reviews, writing that it's \"worth seeing, not for all its tepid raciness but Sheik’s music, Caruso’s singing and her delightfully furry armpits.\" Meanwhile Johnny Oleksinski at the New York Post wrote \"Rob Ashford's direction has all the elegance of a meat mallet.\" Which I GET, as a line, even if I'm sorry for Ashford.\n\nSo it sounds like a lovely-sounding show that doesn't quite deliver on the kink. I haven't seen this one yet, and I remain undecided on going. Anyone seen it?",
+      "why": "Leads with the number and the odd shape of the split (no raves, but plenty of praise for Caruso and the score), then lets a positive and a negative quote carry the post in Tom's casual voice.",
+      "expectedPushback": "A 60 is a 60, but who cares, it's a Duncan Sheik musical with Sophia Anne Caruso and I'm going regardless of some number.",
+      "suggestedReply": "Totally fair, and honestly the quotes are the more useful part. A lot of the critics liked the score and Caruso too, so I get why people would still want to go.",
+      "personalLines": [
+        "I haven't seen this one yet, and I'm still undecided on going.",
+        "I haven't seen it yet, but the score and Caruso have me curious.",
+        "I haven't seen it yet, and I'm not sure this one's for me."
+      ],
+      "submitUrl": "https://www.reddit.com/r/offbroadwayNYC/submit?type=TEXT&title=16+reviews+are+in+for+Memoirs+of+Amorous+Gentlemen.+60%2F100%2C+with+no+raves+but+a+lot+of+love+for+Sophia+Anne+Caruso&text=It+opened+at+The+Night+Egg+at+the+Culture+Club%2C+and+I+found+16+reviews%3A+0+raves%2C+6+positive%2C+5+mixed%2C+5+negative.+Audiences+are+at+a+B-+%28across+Show+Score%2C+Mezzanine%2C+and+Theatr%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fmemoirs-of-amorous-gentlemen-off-broadway%0A%0AMost+critics+liked+Duncan+Sheik%27s+score+and+Caruso%2C+but+felt+the+show+was+tamer+than+its+premise.+Robert+Hofler+at+TheWrap+was+one+of+the+positive+reviews%2C+writing+that+it%27s+%22worth+seeing%2C+not+for+all+its+tepid+raciness+but+Sheik%E2%80%99s+music%2C+Caruso%E2%80%99s+singing+and+her+delightfully+furry+armpits.%22+Meanwhile+Johnny+Oleksinski+at+the+New+York+Post+wrote+%22Rob+Ashford%27s+direction+has+all+the+elegance+of+a+meat+mallet.%22+Which+I+GET%2C+as+a+line%2C+even+if+I%27m+sorry+for+Ashford.%0A%0ASo+it+sounds+like+a+lovely-sounding+show+that+doesn%27t+quite+deliver+on+the+kink.+I+haven%27t+seen+this+one+yet%2C+and+I+remain+undecided+on+going.+Anyone+seen+it%3F",
+      "oldRedditSubmitUrl": "https://old.reddit.com/r/offbroadwayNYC/submit?selftext=true&title=16+reviews+are+in+for+Memoirs+of+Amorous+Gentlemen.+60%2F100%2C+with+no+raves+but+a+lot+of+love+for+Sophia+Anne+Caruso&text=It+opened+at+The+Night+Egg+at+the+Culture+Club%2C+and+I+found+16+reviews%3A+0+raves%2C+6+positive%2C+5+mixed%2C+5+negative.+Audiences+are+at+a+B-+%28across+Show+Score%2C+Mezzanine%2C+and+Theatr%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fmemoirs-of-amorous-gentlemen-off-broadway%0A%0AMost+critics+liked+Duncan+Sheik%27s+score+and+Caruso%2C+but+felt+the+show+was+tamer+than+its+premise.+Robert+Hofler+at+TheWrap+was+one+of+the+positive+reviews%2C+writing+that+it%27s+%22worth+seeing%2C+not+for+all+its+tepid+raciness+but+Sheik%E2%80%99s+music%2C+Caruso%E2%80%99s+singing+and+her+delightfully+furry+armpits.%22+Meanwhile+Johnny+Oleksinski+at+the+New+York+Post+wrote+%22Rob+Ashford%27s+direction+has+all+the+elegance+of+a+meat+mallet.%22+Which+I+GET%2C+as+a+line%2C+even+if+I%27m+sorry+for+Ashford.%0A%0ASo+it+sounds+like+a+lovely-sounding+show+that+doesn%27t+quite+deliver+on+the+kink.+I+haven%27t+seen+this+one+yet%2C+and+I+remain+undecided+on+going.+Anyone+seen+it%3F",
+      "crosspostSubreddit": "Broadway",
+      "crosspostSubmitUrl": "https://www.reddit.com/r/Broadway/submit?type=TEXT&title=16+reviews+are+in+for+Memoirs+of+Amorous+Gentlemen.+60%2F100%2C+with+no+raves+but+a+lot+of+love+for+Sophia+Anne+Caruso&text=It+opened+at+The+Night+Egg+at+the+Culture+Club%2C+and+I+found+16+reviews%3A+0+raves%2C+6+positive%2C+5+mixed%2C+5+negative.+Audiences+are+at+a+B-+%28across+Show+Score%2C+Mezzanine%2C+and+Theatr%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fmemoirs-of-amorous-gentlemen-off-broadway%0A%0AMost+critics+liked+Duncan+Sheik%27s+score+and+Caruso%2C+but+felt+the+show+was+tamer+than+its+premise.+Robert+Hofler+at+TheWrap+was+one+of+the+positive+reviews%2C+writing+that+it%27s+%22worth+seeing%2C+not+for+all+its+tepid+raciness+but+Sheik%E2%80%99s+music%2C+Caruso%E2%80%99s+singing+and+her+delightfully+furry+armpits.%22+Meanwhile+Johnny+Oleksinski+at+the+New+York+Post+wrote+%22Rob+Ashford%27s+direction+has+all+the+elegance+of+a+meat+mallet.%22+Which+I+GET%2C+as+a+line%2C+even+if+I%27m+sorry+for+Ashford.%0A%0ASo+it+sounds+like+a+lovely-sounding+show+that+doesn%27t+quite+deliver+on+the+kink.+I+haven%27t+seen+this+one+yet%2C+and+I+remain+undecided+on+going.+Anyone+seen+it%3F",
+      "emailedAt": "2026-10-18T06:38:27.224Z"
     }
   }
 }
