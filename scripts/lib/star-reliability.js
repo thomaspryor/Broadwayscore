@@ -252,7 +252,9 @@ function ratingPrintedInText(data) {
   }
   const m = String(det.starsRaw).match(/(\d+(?:\.\d+)?)\s*(?:\/|out of)\s*(\d+)/i);
   if (!m) return false;
-  return new RegExp('\\b' + m[1].replace('.', '\\.') + '\\s*(?:/|out of)\\s*' + m[2] + '\\b', 'i').test(text);
+  const n = m[1].replace('.', '\\.');
+  // Needs star context: a bare "4/5" is also a date or a page counter.
+  return new RegExp('\\b' + n + '\\s*out of\\s*' + m[2] + '\\b|\\b' + n + '\\s*/\\s*' + m[2] + '\\s*stars?\\b', 'i').test(text);
 }
 
 /**
@@ -372,7 +374,7 @@ function detectBandFromReviewFile(data) {
     }
 
     // Letter grade: longest-alternation first (`A-` doesn't truncate to `A`).
-    const lg = raw.match(/(A\+|A-|B\+|B-|C\+|C-|D\+|D-|A|B|C|D|F)(?:\b|$)/);
+    const lg = raw.replace(/[\u2013\u2014\u2212]/g, '-').match(/(A\+|A-|B\+|B-|C\+|C-|D\+|D-|A|B|C|D|F)(?:\b|$)/);
     if (lg) {
       const grade = lg[1].toUpperCase();
       const range = LETTER_GRADE_BANDS[grade];

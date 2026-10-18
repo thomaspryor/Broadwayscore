@@ -269,3 +269,12 @@ test('BRO-4840 the audit writes a counts-only report (no file names) for the dig
   for (const k of ['publishedJoined', 'publishedOutOfBand', 'queuedForRescore']) assert.equal(typeof c[k], 'number', k);
   assert.doesNotMatch(JSON.stringify(c), /\.json"/, 'counts only: no review-text file names');
 });
+
+test('BRO-4840 review fixes: clamp ignores cleared ratings and ticket pages; bare 4/5 is not a printed rating; en-dash grades', () => {
+  const base = { originalScore: '1/5', originalScoreSource: 'star-icon', scoreSource: 'anchored-v6', llmScore: { score: 88, band: { floor: 71, ceiling: 90 } }, fullText: longText('') };
+  assert.equal(getBestScore({ ...base, url: 'https://x.com/wicked-on-broadway-tickets-and-information' }).score, 88);
+  assert.equal(getBestScore({ ...base, originalScoreCleared: true }).score, 88);
+  assert.equal(sr.ratingPrintedInText({ originalScore: '4/5', fullText: longText('previews begin 4/5 at the Gershwin') }), false);
+  assert.equal(sr.ratingPrintedInText({ originalScore: '4/5', fullText: longText('We give it 4/5 stars.') }), true);
+  assert.equal(sr.detectBandFromReviewFile({ outletId: 'culturesauce', originalScore: 'B–', fullText: longText('Grade: B–') }).highReliability, true);
+});

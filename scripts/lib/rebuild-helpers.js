@@ -1456,6 +1456,9 @@ const MODEL_SCORE_SOURCES_NOT_CLAMPED = new Set(['human-review', 'adjudicated'])
 function getBestScore(data, opts = {}) {
   const result = getBestScoreUnclamped(data, opts);
   if (!result || MODEL_SCORE_SOURCES_NOT_CLAMPED.has(result.source)) return result;
+  // A rating the pipeline already cleared, or one read off a ticket/info page, is not the critic's rating (the earlier
+  // precedence steps ignored it; the clamp must not bring it back).
+  if (data.originalScoreCleared || /tickets?-and-information|\/tickets\b/i.test(data.url || '')) return result;
   const v = publishedScoreViolation(data, result.score, { unanimousTol: Infinity });
   if (!v || v.kind !== 'star-band') return result;
   const clamped = Math.min(v.ceiling, Math.max(v.floor, result.score));
