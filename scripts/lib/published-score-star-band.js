@@ -60,7 +60,10 @@ function publishedScoreViolation(data, score, { tol = DEFAULT_TOL, unanimousTol 
   // Model consensus is the only evidence when the outlet printed no rating of its own. A printed rating outranks it
   // (BRO-4840: a 100 from "10/10" or a 40 from "2/5" is the critic's call, not a drift), and so does a verdict that
   // read the text and chose the score on purpose (a human override or an adjudication).
-  const bucket = hasPrimaryRating(data) || isDeliberateVerdict(data, score) ? null : unanimousBucket(data);
+  // An anchored verdict (llmScore.band) was placed in a rating's band on purpose, even when that rating is an aggregator
+  // relay (Times UK stars via Show Score): the consensus cannot overrule it, and a rescore would re-anchor to the same band.
+  const anchored = !!(data.llmScore && data.llmScore.band);
+  const bucket = hasPrimaryRating(data) || anchored || isDeliberateVerdict(data, score) ? null : unanimousBucket(data);
   if (bucket) {
     const [lo, hi] = BUCKET_RANGES[bucket];
     if (score < lo - unanimousTol || score > hi + unanimousTol) {

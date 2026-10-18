@@ -50,7 +50,7 @@ try {
   }
 } catch { /* no reviews.json: the published check reports 0 joined rows, which the summary line makes visible */ }
 
-const out = { scanned: 0, alreadyQueued: 0, unanchored: [], outOfBand: [], publishedJoined: 0, publishedOutOfBand: [] };
+const out = { scanned: 0, alreadyQueued: 0, unanchored: [], outOfBand: [], publishedJoined: 0, publishedOutOfBand: [], publishedQueued: [] };
 for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json'))) {
   const showId = path.basename(path.dirname(f));
   const show = showById.get(showId);
@@ -66,7 +66,8 @@ for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json')
     const v = publishedScoreViolation(d, pub.score, { tol: TOL });
     // A reasoned text dispute of a rating that the article does not print stands (getBestScore keeps it, BRO-4839).
     const standingDispute = pub.source === 'adjudicated' && adjudicationStandsAgainstRating(d);
-    if (v && !standingDispute) out.publishedOutOfBand.push({ file: rel, score: pub.score, source: pub.source, kind: v.kind, detail: v.detail });
+    // A file already flagged needsRescore is being repaired by the drain; it is reported, not failed.
+    if (v && !standingDispute) (d.needsRescore === true ? out.publishedQueued : out.publishedOutOfBand).push({ file: rel, score: pub.score, source: pub.source, kind: v.kind, detail: v.detail });
   }
   if (!shouldUseAnchoredMode({ category, envFlag: false })) continue;
   out.scanned++;
@@ -81,6 +82,6 @@ for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json')
 const bySource = {};
 for (const r of out.publishedOutOfBand) bySource[r.source] = (bySource[r.source] || 0) + 1;
 console.log(`scanned=${out.scanned} alreadyQueued=${out.alreadyQueued} unanchored=${out.unanchored.length} outOfBand=${out.outOfBand.length}`);
-console.log(`published: joined=${out.publishedJoined} outOfBand=${out.publishedOutOfBand.length} bySource=${JSON.stringify(bySource)}`);
+console.log(`published: joined=${out.publishedJoined} outOfBand=${out.publishedOutOfBand.length} queuedForRescore=${out.publishedQueued.length} bySource=${JSON.stringify(bySource)}`);
 if (jsonArg) fs.writeFileSync(jsonArg.split('=')[1], JSON.stringify(out, null, 2));
 if (process.argv.includes('--strict') && (out.publishedOutOfBand.length || out.publishedJoined === 0)) process.exit(1);
