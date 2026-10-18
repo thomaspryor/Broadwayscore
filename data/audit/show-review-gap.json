@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-18T18:08:23.842Z",
-  "windowDays": 1095,
-  "targets": 685,
-  "auditedThisRun": 8,
-  "carriedForward": 744,
+  "generatedAt": "2026-10-18T19:17:41.748Z",
+  "windowDays": 21,
+  "targets": 1,
+  "auditedThisRun": 1,
+  "carriedForward": 751,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 426,
-    "missingCurrentRun": 835,
+    "withGap": 425,
+    "missingCurrentRun": 831,
     "totalCitedNoUrl": 7,
-    "totalFlaggedMisses": 956,
+    "totalFlaggedMisses": 953,
     "totalRecoverable": 9,
     "totalRecovered": 15,
     "humanExcluded": 1,
     "automatedExcluded": 156,
-    "automatedExcludedListed": 125,
-    "priorProductionCitations": 5166
+    "automatedExcludedListed": 126,
+    "priorProductionCitations": 5175
   },
   "results": [
     {
@@ -92405,127 +92405,13 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.sohoplayhouse.com/see-a-show/jena-friedman-motherfucker",
-        "https://thecomedybureau.com/show/jena-friedman-motherfucker-in-nyc/2026-10-06/",
-        "https://www.axs.com/events/1630006/jena-friedman-motherfucker-tickets",
-        "http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-2026-10-09-19-00-00-3501103",
-        "https://ticketx.com/jena-friedman-tickets/soho-playhouse-2026-10-11-19-pm/3d493100-89b0-4899-9d02-6c198f7d2462",
-        "https://www.ticketsmarter.com/e/jena-friedman-motherfucker-tickets-new-york-10-4-2026-soho-playhouse-main-theatre/3501098",
-        "https://www.ticketwarehouse.com/events/comedy-tickets/3501104/jena-friedman-motherfucker-2026-10-10-19-00-00",
-        "https://viptickets.com/events/3501104/jena-friedman-tickets",
-        "https://www.axs.com/uk/events/1629908/jena-friedman-motherfucker-tickets"
-      ],
-      "dirFiles": 7,
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://www.sohoplayhouse.com/see-a-show/jena-friedman-motherfucker",
-          "host": "sohoplayhouse.com",
-          "knownOutletId": "sohoplayhouse",
-          "serpCensus": true
-        },
-        {
-          "url": "https://thecomedybureau.com/show/jena-friedman-motherfucker-in-nyc/2026-10-06/",
-          "host": "thecomedybureau.com",
-          "knownOutletId": "thecomedybureau",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.ticketsmarter.com/e/jena-friedman-motherfucker-tickets-new-york-10-4-2026-soho-playhouse-main-theatre/3501098",
-          "host": "ticketsmarter.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.ticketwarehouse.com/events/comedy-tickets/3501104/jena-friedman-motherfucker-2026-10-10-19-00-00",
-          "host": "ticketwarehouse.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.axs.com/uk/events/1629908/jena-friedman-motherfucker-tickets",
-          "host": "axs.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.axs.com/events/1630006/jena-friedman-motherfucker-tickets",
-          "host": "axs.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "axs--unknown.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.axs.com/events/1630006/jena-friedman-motherfucker-tickets"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-2026-10-09-19-00-00-3501103",
-          "host": "oklahomatickets.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "oklahomatickets--unknown.json",
-              "flag": "clean",
-              "urlInDir": "http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-2026-10-09-19-00-00-3501103"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://ticketx.com/jena-friedman-tickets/soho-playhouse-2026-10-11-19-pm/3d493100-89b0-4899-9d02-6c198f7d2462",
-          "host": "ticketx.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "ticketx--unknown.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://ticketx.com/jena-friedman-tickets/soho-playhouse-2026-10-11-19-pm/3d493100-89b0-4899-9d02-6c198f7d2462"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://viptickets.com/events/3501104/jena-friedman-tickets",
-          "host": "viptickets.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "viptickets--unknown.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://viptickets.com/events/3501104/jena-friedman-tickets"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -92539,7 +92425,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 2,
+            "results": 1,
             "accepted": 0,
             "error": null
           },
@@ -92549,7 +92435,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 2,
             "accepted": 0,
             "error": null
           },
@@ -92559,7 +92445,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 3,
             "accepted": 0,
             "error": null
           },
@@ -92570,7 +92456,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -92580,7 +92466,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 0,
             "error": null
           },
           {
@@ -92590,218 +92476,37 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 9,
+        "resultCount": 0,
         "error": null
       },
       "candidatesRejected": {
-        "count": 31,
+        "count": 35,
         "byReason": {
-          "non-review-host": 13,
-          "non-review-path": 6,
-          "venue-production-page": 7,
-          "ticketing-reseller": 5
+          "non-review-host": 17,
+          "non-review-path": 5,
+          "venue-production-page": 2,
+          "ticketing-reseller": 10,
+          "event-listing": 1
         }
       },
       "dedupedVariants": [],
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://www.sohoplayhouse.com/see-a-show/jena-friedman-motherfucker",
-          "host": "sohoplayhouse.com",
-          "outletId": "sohoplayhouse",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": true,
-          "conflictReason": "cross-show-url-owned",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "jena-friedman-motherfucker-off-broadway-2026: https://www.sohoplayhouse.com/see-a-show/jena-friedman-motherfucker is already owned by motherfucker-off-broadway-2026 — one of the two is contaminated. Inspect data/review-texts/motherfucker-off-broadway-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
-        },
-        {
-          "url": "https://thecomedybureau.com/show/jena-friedman-motherfucker-in-nyc/2026-10-06/",
-          "host": "thecomedybureau.com",
-          "outletId": "thecomedybureau",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
-        },
-        {
-          "url": "https://www.ticketsmarter.com/e/jena-friedman-motherfucker-tickets-new-york-10-4-2026-soho-playhouse-main-theatre/3501098",
-          "host": "ticketsmarter.com",
-          "outletId": "ticketsmarter",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=ticketsmarter.com): Scrapingdog HTTP 400: Oops! Someth"
-        },
-        {
-          "url": "https://www.ticketwarehouse.com/events/comedy-tickets/3501104/jena-friedman-motherfucker-2026-10-10-19-00-00",
-          "host": "ticketwarehouse.com",
-          "outletId": "ticketwarehouse",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  provisional outlet \"ticketwarehouse\" (not in registry) — onboard to outlet-registry.json after r"
-        },
-        {
-          "url": "https://www.axs.com/uk/events/1629908/jena-friedman-motherfucker-tickets",
-          "host": "axs.com",
-          "outletId": "axs",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "spawnSync node ETIMEDOUT"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "thecomedybureau",
-            "outlet": "thecomedybureau",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thecomedybureau.com/show/jena-friedman-motherfucker-in-nyc/2026-10-06/"
-          },
-          {
-            "outletId": "ticketsmarter.com",
-            "outlet": "ticketsmarter.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.ticketsmarter.com/e/jena-friedman-motherfucker-tickets-new-york-10-4-2026-soho-playhouse-main-theatre/3501098"
-          },
-          {
-            "outletId": "ticketwarehouse.com",
-            "outlet": "ticketwarehouse.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.ticketwarehouse.com/events/comedy-tickets/3501104/jena-friedman-motherfucker-2026-10-10-19-00-00"
-          },
-          {
-            "outletId": "axs.com",
-            "outlet": "axs.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.axs.com/uk/events/1629908/jena-friedman-motherfucker-tickets"
-          },
-          {
-            "outletId": "axs.com",
-            "outlet": "axs.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.axs.com/events/1630006/jena-friedman-motherfucker-tickets"
-          },
-          {
-            "outletId": "oklahomatickets.com",
-            "outlet": "oklahomatickets.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-2026-10-09-19-00-00-3501103"
-          },
-          {
-            "outletId": "ticketx.com",
-            "outlet": "ticketx.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://ticketx.com/jena-friedman-tickets/soho-playhouse-2026-10-11-19-pm/3d493100-89b0-4899-9d02-6c198f7d2462"
-          },
-          {
-            "outletId": "viptickets.com",
-            "outlet": "viptickets.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://viptickets.com/events/3501104/jena-friedman-tickets"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://thecomedybureau.com/show/jena-friedman-motherfucker-in-nyc/2026-10-06/",
-            "outletId": "thecomedybureau",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-06T17:49:47.573Z"
-          },
-          {
-            "url": "https://www.ticketsmarter.com/e/jena-friedman-motherfucker-tickets-new-york-10-4-2026-soho-playhouse-main-theatre/3501098",
-            "outletId": "ticketsmarter.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-07T22:35:00.711Z"
-          },
-          {
-            "url": "https://www.ticketwarehouse.com/events/comedy-tickets/3501104/jena-friedman-motherfucker-2026-10-10-19-00-00",
-            "outletId": "ticketwarehouse.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-07T22:35:00.711Z"
-          },
-          {
-            "url": "https://www.axs.com/uk/events/1629908/jena-friedman-motherfucker-tickets",
-            "outletId": "axs.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-07T22:35:00.711Z"
-          },
-          {
-            "url": "https://www.axs.com/events/1630006/jena-friedman-motherfucker-tickets",
-            "outletId": "axs.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-07T22:35:00.711Z"
-          },
-          {
-            "url": "http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-2026-10-09-19-00-00-3501103",
-            "outletId": "oklahomatickets.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-07T09:33:11.946Z"
-          },
-          {
-            "url": "https://ticketx.com/jena-friedman-tickets/soho-playhouse-2026-10-11-19-pm/3d493100-89b0-4899-9d02-6c198f7d2462",
-            "outletId": "ticketx.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-07T09:33:11.946Z"
-          },
-          {
-            "url": "https://viptickets.com/events/3501104/jena-friedman-tickets",
-            "outletId": "viptickets.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-05T17:43:35.209Z"
-          }
-        ],
+        "candidates": [],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 7
+        "candidateCount": 0
       },
-      "computedAt": "2026-10-07T22:35:00.711Z"
+      "computedAt": "2026-10-18T19:17:41.748Z"
     },
     {
       "showId": "jersey-boys-tour-2026",
