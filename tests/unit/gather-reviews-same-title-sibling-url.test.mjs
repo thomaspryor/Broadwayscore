@@ -1,3 +1,4 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: reads data/shows.json only for the set of show ids to skip when absent; asserts nothing about its contents
 // BRO-5298: gather-reviews createReviewFile (its own write chokepoint, not a
 // caller of review-file-writer) refuses an UNDATED review whose url a
 // same-title sibling production already holds, through the same
