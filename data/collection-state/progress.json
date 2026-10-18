@@ -324,7 +324,9 @@
     "school-pictures-off-broadway-2026/theatermania--zachary-stewart.json",
     "other-desert-cities-2026/around-the-town-chicago--unknown.json",
     "other-desert-cities-2026/harrisonline--unknown.json",
-    "school-pictures-off-broadway-2026/lighting-and-sound-america--david-barbour.json"
+    "school-pictures-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
+    "the-cherry-orchard-west-end-2026/curtain-call-reviews--ruth-hawkins.json",
+    "the-cherry-orchard-west-end-2026/times-uk--dominic-maxwell.json"
   ],
   "failed": [
     "the-second-best-school-shooting-off-broadway-2026/theatreinla--unknown.json",
@@ -536,7 +538,6 @@
     "larger-than-life-starring-wallace-and-gromit-shaun-and-more-off-west-end-2026/firstnews--unknown.json",
     "the-ask-off-broadway-2026/newyorker--helen-shaw.json",
     "the-cherry-orchard-west-end-2026/theupcoming--jim-compton-hall.json",
-    "the-cherry-orchard-west-end-2026/times-uk--dominic-maxwell.json",
     "high-school-musical-off-west-end-2026/bellecoaches--distinctive-systems-ltd.json",
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/talkinbroadway--unknown.json",
     "the-sound-of-music-tour-2025/talkinbroadway--unknown.json",
@@ -568,7 +569,17 @@
     "soon-off-broadway-2026/playbill--unknown.json",
     "slam-frank-off-broadway-2026/timeout--unknown.json",
     "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
-    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json"
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json",
+    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
+    "some-woman-west-end-2026/guardian--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json",
+    "some-woman-west-end-2026/sunday-times--clive-davis.json",
+    "stuffed-off-west-end-2026/nytg--unknown.json",
+    "stuffed-off-west-end-2026/sunday-times--unknown.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json",
+    "the-cherry-orchard-west-end-2026/theatremonkey--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -759,7 +770,8 @@
       "school-pictures-off-broadway-2026/theatermania--zachary-stewart.json",
       "other-desert-cities-2026/around-the-town-chicago--unknown.json",
       "other-desert-cities-2026/harrisonline--unknown.json",
-      "school-pictures-off-broadway-2026/lighting-and-sound-america--david-barbour.json"
+      "school-pictures-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
+      "the-cherry-orchard-west-end-2026/curtain-call-reviews--ruth-hawkins.json"
     ],
     "amp": [
       "data/review-texts/harry-potter-and-the-cursed-child-one-part-west-end-2026/deadline--jake-kanter.json",
@@ -772,7 +784,10 @@
       "tender-off-west-end-2026/deadline--zac-ntim.json"
     ],
     "browserbase": [
-      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/stuffed-off-west-end-2026/sunday-times--unknown.json",
+      "data/review-texts/the-cherry-orchard-west-end-2026/times-uk--dominic-maxwell.json",
+      "the-cherry-orchard-west-end-2026/times-uk--dominic-maxwell.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -955,7 +970,7 @@
     ]
   },
   "startTime": "2026-10-17T20:29:38.578Z",
-  "lastProcessed": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json",
+  "lastProcessed": "the-cherry-orchard-west-end-2026/times-uk--dominic-maxwell.json",
   "log": [
     {
       "t": "2026-10-17T22:12:59.444Z",
@@ -1162,11 +1177,52 @@
       "t": "2026-10-18T01:31:26.262Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-18T01:49:53.885Z",
+      "event": "bb-session",
+      "session": "28b3bfab",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-18T01:50:01.713Z",
+      "event": "bb-session",
+      "session": "e672c678",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-18T01:51:34.361Z",
+      "event": "bb-session",
+      "session": "7496c91f",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-18T01:56:15.127Z",
+      "event": "bb-session",
+      "session": "38d2a7b8",
+      "url": "https://www.thetimes.com/recipes/entertaining/party-food/article/dates-stuffed-w"
+    },
+    {
+      "t": "2026-10-18T01:56:15.843Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-18T01:58:53.492Z",
+      "event": "bb-session",
+      "session": "02834a3b",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-cherry-orchard-review"
+    },
+    {
+      "t": "2026-10-18T01:58:54.237Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ],
   "recoveredAfterFailure": [
     "a-ghost-in-your-ear-off-broadway-2026/theatermania--zachary-stewart.json",
     "hadestown-2019/theater-life--isa-goldberg.json",
-    "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json"
+    "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json",
+    "the-cherry-orchard-west-end-2026/times-uk--dominic-maxwell.json"
   ]
 }
