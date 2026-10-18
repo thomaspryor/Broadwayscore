@@ -134,7 +134,9 @@ const CRITICAL_OUTLETS = {
     // Mac with the same cookies reads the article (recover-thetimes-browser.js
     // --auth-only: 2775 chars, 2026-10-17). Layer 3 had failed every run since
     // at least 2026-09-08 without the cookies ever being dead. Layer 1+2
-    // (authId expiry) stay the CI signal; the live check is the Mac command.
+    // (authId expiry) stay the CI signal. A server-side revocation is caught at
+    // use: the only Times consumer, recover-thetimes-browser.js, runs a live
+    // auth test first and exits 1 ("Auth test FAILED") before collecting.
     ciLiveUnverifiable: 'no CI route authenticates a Times session (plain HTTPS hits the device-verification wall; ScrapingBee serves the logged-out paywall even with valid cookies). Layer 1+2 are the CI signal; live check on the Mac: node scripts/recover-thetimes-browser.js --auth-only',
   },
   nypost: {
@@ -471,8 +473,6 @@ async function checkLiveAccess(fileKey, testUrl, cookies, authCookies, minBodyCh
 // ScrapingBee route cannot carry the login (thestage, BRO-5566). Same verdict
 // function as renew-cookies.js --probe-only, so CI and the Mac agree.
 
-const PLAIN_UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36';
-
 // Map a classifyWalledProbe() verdict to a Layer 3 result. Only 'logged-out'
 // (the recognised registration gate came back WITH cookies) is a failure;
 // 'error' means the page was something else (challenge, block, redesign) and
@@ -487,28 +487,56 @@ function walledVerdictToResult(verdict, withBody, withoutBody, minBody) {
   }
 }
 
-async function fetchProbePage(url, withCookies) {
-  const headers = { 'User-Agent': PLAIN_UA, Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 'Accept-Language': 'en-GB,en;q=0.9' };
-  if (withCookies) {
-    const cookieHeader = buildCookieHeaderForUrl(url);
-    if (!cookieHeader) return null;
-    headers.Cookie = cookieHeader;
-  }
-  const res = await fetch(url, { headers, redirect: 'follow', signal: AbortSignal.timeout(30000) });
+// With-cookies leg goes through fetchWithCookiesPlain itself (same headers,
+// timeout and cookie loader as scraper.js's cookies-plain tier), so this
+// probes the production path, not a lookalike. The zero-cookie control reuses
+// the same request minus the Cookie header.
+async function fetchControlPage(url) {
+  let referer;
+  try { referer = new URL(url).origin + '/'; } catch { return null; }
+  const res = await fetch(url, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+      'Accept-Language': 'en-US,en;q=0.9',
+      'Referer': referer,
+    },
+    redirect: 'follow',
+    signal: AbortSignal.timeout(20000),
+  });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const html = await res.text();
-  return { html, body: extractArticleTextFromUrl(html, url) || '' };
+  return res.text();
 }
 
 async function checkLiveAccessWalledPlain(testUrl, { minBodyChars, wallMarker, gateMarker }) {
-  try {
-    const [withCookies, withoutCookies] = await Promise.all([fetchProbePage(testUrl, true), fetchProbePage(testUrl, false)]);
-    if (!withCookies) return { status: 'warn', message: 'No cookie header for this domain' };
-    const verdict = classifyWalledProbe({ withCookies, withoutCookies, minBody: minBodyChars, wallMarker, gateMarker });
-    return walledVerdictToResult(verdict, withCookies.body.length, withoutCookies.body.length, minBodyChars);
-  } catch (err) {
-    return { status: 'warn', message: `cookie-plain probe error: ${err.message} (not a cookie verdict)` };
+  // Independent legs: a failed control must never hide a logout seen with cookies.
+  const [withRes, ctlRes] = await Promise.allSettled([fetchWithCookiesPlain(testUrl), fetchControlPage(testUrl)]);
+  const withHtml = withRes.status === 'fulfilled' && withRes.value ? withRes.value.content : null;
+  if (typeof withHtml !== 'string' || withHtml.length === 0) {
+    const why = withRes.status === 'rejected' ? withRes.reason.message : 'fetch failed or no cookie header (see log above)';
+    return { status: 'warn', message: `cookie-plain probe error: ${why} (not a cookie verdict)` };
   }
+  const withCookies = { html: withHtml, body: extractArticleTextFromUrl(withHtml, testUrl) || '' };
+  const ctlHtml = ctlRes.status === 'fulfilled' ? ctlRes.value : null;
+  const withoutCookies = typeof ctlHtml === 'string'
+    ? { html: ctlHtml, body: extractArticleTextFromUrl(ctlHtml, testUrl) || '' }
+    : null;
+  const withoutLen = withoutCookies ? withoutCookies.body.length : 'n/a';
+
+  // The recognised registration gate in the WITH-cookies page is a logout,
+  // even if teaser prose clears the body floor (logged-in HTML never carries
+  // the gate link; verified 2026-10-17).
+  if (gateMarker && gateMarker.test(withHtml)) {
+    return walledVerdictToResult('logged-out', withCookies.body.length, withoutLen, minBodyChars);
+  }
+  // Cookie verdict first, from the with-cookies page alone.
+  let verdict = classifyWalledProbe({ withCookies, minBody: minBodyChars, wallMarker, gateMarker });
+  // Vacuous check only when the control actually came back.
+  if (verdict === 'logged-in' && withoutCookies
+      && classifyWalledProbe({ withCookies, withoutCookies, minBody: minBodyChars, wallMarker }) === 'vacuous') {
+    verdict = 'vacuous';
+  }
+  return walledVerdictToResult(verdict, withCookies.body.length, withoutLen, minBodyChars);
 }
 
 // --- Layer 3 (no-auth outlets): plain fetch, no cookies, no ScrapingBee ---
@@ -770,7 +798,7 @@ async function main() {
       }
 
       if (config.ciLiveUnverifiable) {
-        const live = { status: 'warn', message: `Live check skipped in CI: ${config.ciLiveUnverifiable}` };
+        const live = { status: 'warn', message: `Live check unverified: ${config.ciLiveUnverifiable}` };
         console.log(`${icons[live.status]} ${fileKey}: ${live.message}`);
         return { name: fileKey, layer: 3, status: live.status, message: live.message, isCritical: true };
       }
