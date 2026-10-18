@@ -46,14 +46,13 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execFileSync } = require('child_process');
 const dispatchLedger = require('./dispatch-ledger.js');
 const dispatchReconcile = require('./dispatch-reconcile.js');
 const { outcomeWindowTs } = dispatchReconcile;
 // syncTasks no longer imported: Linear filings need no task-mirror sync
 // (BRO-286) — the identifier fileCard returns is directly dispatchable.
 const { fileCard, dispatchDetached } = require('./digest-autofix.js');
-const { repoDepthArgs } = require('./shallow-fetch-args.js');
+const { fetchOriginMain, pathExistsOnOriginMain, isPathAbsentFromTreeError } = require('./origin-main-path-check.js');
 
 const REPO = path.join(__dirname, '..', '..');
 const CANARY_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'autofix-canary-ledger.jsonl');
@@ -460,67 +459,18 @@ function readJsonlLedger(p) {
 // process's local disk. A local existsSync check would see the marker as
 // permanently absent even on a fully successful fix (Codex adversarial
 // review, task #1225).
-// @returns {boolean|null} true=present, false=CONFIRMED absent (cat-file -e
-//   exit 1), null=could not resolve this run (fetch failed, or any other git
+// @returns {boolean|null} true=present, false=CONFIRMED absent from the tree,
+//   null=could not resolve this run (fetch failed, or any other git
 //   error) — deliberately distinct from `false`: a transient network/git
 //   hiccup must never be scored the same as a confirmed-absent marker, or a
 //   genuinely successful canary could be recorded canary-fail on a bad
 //   connection alone (Codex re-review, task #1225). Callers must treat null
 //   as "still unresolved", same as an in-flight dispatch under the orphan
 //   bound — not as failure evidence.
-/**
- * Pure classifier for a `git cat-file -e <tree-ish>:<path>` failure: does
- * this error mean the path is CONFIRMED absent from the tree (as opposed to
- * a transient/unexpected git or network failure)? Exit code is NOT a
- * reliable signal here — see the caller's comment — so this matches the
- * stderr text git actually prints for that case.
- * @returns {boolean}
- */
-function isPathAbsentFromTreeError(err) {
-  const stderrText = err && err.stderr ? String(err.stderr) : '';
-  return /does not exist in/.test(stderrText);
-}
-
 function markerExistsOnOriginMain(dateStr, log = () => {}) {
-  // Depth-bound the fetch (task #466 class): reachable from ~170 shallow
-  // (fetch-depth: 1) CI checkouts, where an unbounded `git fetch origin
-  // main` pulls the WHOLE ~2.1 GB / 165k-commit repo instead of the small
-  // delta and stalls until timeout. Same helper acceptance-check-core.js
-  // uses for the identical reason.
-  // repoDepthArgs() is this derivation extracted verbatim — it fails open to []
-  // the same way this inline copy did. infra-gate-registration-check.js needs
-  // the identical "fetch origin/main from a possibly-shallow checkout" step, so
-  // it lives in shallow-fetch-args.js next to the pure function it feeds rather
-  // than being pasted a third time.
-  const depthArgs = repoDepthArgs({ repoRoot: REPO });
-  try {
-    // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
-    execFileSync('git', ['fetch', ...depthArgs, '--quiet', 'origin', 'main'], { cwd: REPO, timeout: 30000, stdio: 'pipe' });
-  } catch (err) {
-    log(`[autofix-canary] WARN could not fetch origin/main to check the ${dateStr} marker (network/git issue) — unresolved this run, not evidence of absence: ${String(err.message).slice(0, 120)}`);
-    return null;
-  }
-  try {
-    execFileSync('git', ['cat-file', '-e', `origin/main:${canaryMarkerRelPath(dateStr)}`], { cwd: REPO, timeout: 10000, stdio: 'pipe' });
-    return true;
-  } catch (err) {
-    // `git cat-file -e <tree-ish>:<path>` for a path absent from that tree
-    // prints "fatal: path '<path>' does not exist in '<tree-ish>'" and exits
-    // 128 on this git version — NOT exit 1 (exit 1 is what older docs/some
-    // git releases document for a missing bare object SHA, which this call
-    // never passes). Checked directly against the actual git binary here:
-    // an existing path exits 0, a missing tree path exits 128, and even an
-    // invalid raw object name exits 128. A status-only check therefore never
-    // matches a genuinely-missing marker, so the confirmed-absent branch was
-    // unreachable and the canary could never self-report a marker-absent
-    // failure (found chasing #1264's RECHECK — BRO-326's 2026-08-13 marker
-    // sat >24h past the orphan window still logging "could not confirm").
-    // Match on the stderr message, not the exit code, so this is portable
-    // across git versions either way.
-    if (isPathAbsentFromTreeError(err)) return false; // confirmed absent from the tree
-    log(`[autofix-canary] WARN could not check origin/main for the ${dateStr} marker: ${String(err.message).slice(0, 120)}`);
-    return null;
-  }
+  const opts = { repo: REPO, log, attempts: 1 };
+  if (!fetchOriginMain(opts)) return null;
+  return pathExistsOnOriginMain(canaryMarkerRelPath(dateStr), opts);
 }
 
 /**

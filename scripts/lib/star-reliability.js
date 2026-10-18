@@ -69,7 +69,8 @@ function isGenericPatternStar(data) {
  * A generic-pattern star that the ensemble LLM contradicts across a bucket
  * boundary by more than 25 points is not corroborated by anything: ignore it
  * rather than let it outrank the model read. Same thresholds as the
- * originalScore-llm-conflict check in rebuild-helpers.js getBestScore().
+ * originalScore-llm-conflict check in rebuild-helpers.js getBestScore(). (That check still skips low confidence; this one
+ * additionally accepts low confidence when the ensemble was unanimous, BRO-5200.)
  *
  * Live failure (BRO-4499, reader report 2026-10-01): Chicago Tribune / Chris
  * Jones on Operation Mincemeat, a rave ("a lot of fun and very clever to

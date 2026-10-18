@@ -31,22 +31,14 @@
  * worktree legitimately lacks gitignored paths, and a naive fs.existsSync
  * would report those as "missing" — the same class of mistake an earlier
  * version of BRO-2968's audit made (reporting an environment artefact as a
- * live bug). `git cat-file -e origin/main:<path>` and its null-on-transient-
- * failure convention are copied from autofix-canary.js's
- * markerExistsOnOriginMain, which already solved this exact problem for a
- * different marker path (CLAUDE.md §15 — one implementation would be nicer,
- * but that function is git-fetch-coupled to a single caller's marker path
- * story; isPathAbsentFromTreeError, the actually-shared piece, IS reused
- * as-is below).
+ * live bug). The shared origin-main-path-check.js oracle handles the
+ * depth-bounded fetch and null-on-unresolved Git probe for all callers.
  */
 'use strict';
 
 const path = require('path');
-const { execFileSync } = require('child_process');
-
 const { extractCheckPaths } = require('./autonomous-triage-core.js');
-const { repoDepthArgs } = require('./shallow-fetch-args.js');
-const { isPathAbsentFromTreeError } = require('./autofix-canary.js');
+const { fetchOriginMain, pathExistsOnOriginMain: checkOriginMainPath } = require('./origin-main-path-check.js');
 
 const REPO = path.join(__dirname, '..', '..');
 
@@ -86,57 +78,9 @@ function extractCheckFilePaths(cmd) {
   return extractCheckPaths(cmd);
 }
 
-/**
- * Does `relPath` exist in origin/main's tree right now?
- * @returns {boolean|null} true=present, false=CONFIRMED absent, null=could
- *   not resolve this run (fetch/git failure) — never scored as "missing".
- */
-function pathExistsOnOriginMain(relPath, { repo = REPO, ref = 'origin/main', log = () => {} } = {}) {
-  try {
-    // `cat-file -t`, not `-e`: -e answers "is there an object here", which is
-    // TRUE for a directory (a tree) as well as a file (a blob). Both commands
-    // this module judges are file assertions — `test -f <dir>` always exits 1,
-    // and `node --test <dir>` does not run a dir as a test file — so counting a
-    // tree as "present" would report an unpassable check as satisfied and, for
-    // the vacuous bucket, call a check that can only ever FAIL one that can
-    // never fail (ship-check finding). resolveCheckPaths already makes exactly
-    // this distinction with statSync().isFile() — autonomous-triage-core.js:469.
-    const type = execFileSync('git', ['cat-file', '-t', `${ref}:${relPath}`], {
-      cwd: repo, timeout: 10000, stdio: 'pipe', encoding: 'utf8',
-    }).trim();
-    return type === 'blob';
-  } catch (err) {
-    if (isPathAbsentFromTreeError(err)) return false;
-    log(`[card-premises-auditor] WARN could not check ${ref} for ${relPath}: ${String(err.message).slice(0, 120)}`);
-    return null;
-  }
-}
-
-// Depth-bound the fetch (same reasoning as autofix-canary.js's
-// markerExistsOnOriginMain): most CI checkouts are shallow, and an unbounded
-// `git fetch origin main` from one pulls the whole repo instead of the delta.
-function fetchOriginMain({ repo = REPO, log = () => {}, attempts = 3, sleepMs = (ms) => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms) } = {}) {
-  const depthArgs = repoDepthArgs({ repoRoot: repo });
-  // ~20 worktrees share one .git, so a concurrent fetch can hold
-  // refs/remotes/origin/main.lock; one collision must not become a spurious
-  // "unverified" refusal downstream (BRO-3435). Retry only lock collisions,
-  // with jitter; any other failure returns false at once.
-  for (let i = 1; i <= attempts; i++) {
-    try {
-      // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
-      execFileSync('git', ['fetch', ...depthArgs, '--quiet', 'origin', 'main'], { cwd: repo, timeout: 30000, stdio: 'pipe' });
-      return true;
-    } catch (err) {
-      const text = `${err.message || ''} ${err.stderr || ''}`;
-      if (i < attempts && /\.lock|cannot lock ref|Unable to create/i.test(text)) {
-        sleepMs(200 + Math.floor(Math.random() * 600));
-        continue;
-      }
-      log(`[card-premises-auditor] WARN could not fetch origin/main: ${String(err.message).slice(0, 120)}`);
-      return false;
-    }
-  }
-  return false;
+// Both acceptance-command forms assert a file, so directories are absent.
+function pathExistsOnOriginMain(relPath, opts = {}) {
+  return checkOriginMainPath(relPath, { ...opts, fileOnly: true });
 }
 
 // ── Vacuous-check detection (BRO-3378) ──────────────────────────────────────
