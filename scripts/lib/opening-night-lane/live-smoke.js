@@ -7,7 +7,7 @@ const path = require('path');
 const { createInlineScoring, ensembleScoreText, realFetchPorts } = require('./inline-score');
 const { runLaneNight } = require('./lane-runner');
 const publish = require('./publish');
-const { nonReviewReason } = require('./discovery');
+const { nonReviewReason, canonicalUrl } = require('./discovery');
 const { resolveOutletFromUrl } = require('../review-normalization');
 
 async function runLiveSmoke({ show, review, workDir, fetchPorts, scorer } = {}) {
@@ -16,6 +16,7 @@ async function runLiveSmoke({ show, review, workDir, fetchPorts, scorer } = {}) 
   }
   // Discovery silently drops URLs it does not take for a review (e.g. a /news/ path), which shows up only as admitted:0.
   // Say why up front instead, before any paid call.
+  if (!canonicalUrl(review.url)) throw new Error(`live smoke: discovery would reject ${review.url} (wrapped-url)`);
   const notReview = nonReviewReason(review.url);
   if (notReview) throw new Error(`live smoke: discovery would reject ${review.url} (${notReview}); pick a review article URL`);
   if (!resolveOutletFromUrl(review.url)) throw new Error(`live smoke: discovery would reject ${review.url} (unknown-outlet-host)`);
