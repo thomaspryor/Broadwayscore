@@ -24,13 +24,11 @@ test('live registry: at most 10 displayNames are the capitalized run-together id
   );
 });
 
-test('src/config/outlet-tiers.json names (also shown on the site) carry no capitalized run-together id', () => {
-  const tiers = require('../../src/config/outlet-tiers.json');
-  const asOutlets = Object.fromEntries(Object.entries(tiers).map(([id, t]) => [id, { displayName: t && t.name }]));
-  assert.deepEqual(findRunTogetherSlugDisplayNames(asOutlets), []);
-});
+// outlet-tiers.json names are intentionally not checked: src/lib/data-reviews.ts slugifies them into
+// public /critics/outlets URLs, so renaming one 404s the old page (BRO-5336 review).
 
 test('shape detection: long run-together slug matches, real names and short ids do not', () => {
+  assert.equal(isRunTogetherSlugDisplayName('lifewithlilred', 'Life With Lil Red'), false);
   assert.equal(isRunTogetherSlugDisplayName('hackneycitizen', 'Hackneycitizen'), true);
   assert.equal(isRunTogetherSlugDisplayName('hackneycitizen', 'Hackney Citizen'), false);
   assert.equal(isRunTogetherSlugDisplayName('variety', 'Variety'), false);
