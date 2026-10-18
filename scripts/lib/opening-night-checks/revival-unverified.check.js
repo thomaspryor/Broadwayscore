@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const { hasSameMarketTitleMatch, isTourShow, countRevivalMentions } = require('../opening-night-completeness.js');
+const { isIncludableForRebuild } = require('../review-guards');
 
 const name = 'revival-unverified';
 const description = 'Show shares a canonical title with an earlier production (or review text repeatedly says "revival") but isRevival is not set';
@@ -42,7 +43,14 @@ function run(show, context) {
           .filter(f => f.endsWith('.json'))
           .map(f => {
             try {
-              const data = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
+              const filePath = path.join(showDir, f);
+              const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+              // Only texts the rebuild would actually include. A rejected
+              // file (not_a_review, wrongShow, roundup...) is not this show's
+              // review, so its "revival" mentions are about some other show
+              // (BRO-5439: a Deadline tour-news item naming another play's
+              // Best Revival nomination tripped Titanique West End).
+              if (!isIncludableForRebuild(data, show, filePath)) return '';
               return data.fullText || '';
             } catch {
               return '';

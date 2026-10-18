@@ -171,6 +171,21 @@ describe('revival-unverified check', () => {
     assert.equal(result.ok, true);
   });
 
+  it('"revival" mentions in a rejected (excluded) review file do not count → ok (BRO-5439 Titanique WE)', () => {
+    const showId = 'rejected-news-2026';
+    const showDir = path.join(tmpRoot, showId);
+    fs.mkdirSync(showDir, { recursive: true });
+    fs.writeFileSync(path.join(showDir, 'deadline--greg-evans.json'), JSON.stringify({
+      fullText: 'Tour news. The Best Revival of a Play nominee tours. Another revival. A third revival.',
+      rejectionReason: 'not_a_review',
+      rejectedBy: 'ensemble-scoreability-check',
+    }));
+
+    const show = { id: showId, status: 'open', isRevival: false, title: 'Unrelated Musical' };
+    const result = revivalCheck.run(show, makeContext({ shows: [show], reviewTextsRoot: tmpRoot }));
+    assert.equal(result.ok, true, result.message);
+  });
+
   it('closed historical show → ok (out of scope)', () => {
     const show = { id: 'whoopi-goldberg-1984', status: 'closed', isRevival: false, title: 'Whoopi Goldberg' };
     const result = revivalCheck.run(show, makeContext({ shows: [show] }));
