@@ -37,7 +37,7 @@ const { commercialRecordErrors } = require('./lib/commercial-record-checks');
 const { hasHelpFlag } = require('./lib/cli-help');
 const { waltzAnchor, appendWaltzAnchors, waltzJumpFlags, castEventsFor, shouldAlertNoAnchors } = require('./lib/waltz-cost-history');
 const { buildFitRows, summarizeFit, recordFit } = require('./lib/waltz-model-fit');
-const { applyAnalystRecoupEstimates } = require('./lib/waltz-recoup-estimates');
+const { applyAnalystRecoupEstimates, runsNear } = require('./lib/waltz-recoup-estimates');
 
 // Commercial-specific aliases (same as update-commercial-data.js)
 const COMMERCIAL_ALIASES = {
@@ -92,8 +92,8 @@ the gap-fill; without it the history is previewed only.
 The newest "Estimated percentage recouped" per show is stored on the record
 (analystRecoupPct/AsOf/Url, scripts/lib/waltz-recoup-estimates.js, BRO-5502).
   --dry-run         print the changes, write nothing
-  --backfill        read his whole post archive, not just the last year; history
-                    only, it never changes a current weeklyRunningCost
+  --backfill        history preview only: it never changes a current
+                    weeklyRunningCost (every run reads his whole archive)
   --record-history  write costHistory anchors (shadow rollout, BRO-4989)`;
 
 // ---------------------------------------------------------------------------
@@ -376,6 +376,13 @@ async function main() {
       skippedOther.push({ slug, reason: 'not a Broadway show' });
       continue;
     }
+    // His whole archive is read, so an old post can name a title a later
+    // revival now owns: the figure must date from this production's run.
+    if (!runsNear(show, data.postDate)) {
+      stats.skipped++;
+      skippedOther.push({ slug, reason: `his figure (${data.postDate}) is from outside this production's run` });
+      continue;
+    }
 
     stats.matched++;
     const existing = commercial.shows?.[slug];
@@ -426,6 +433,7 @@ async function main() {
     if (!matchCache.has(showName)) matchCache.set(showName, matchShowName(showName, lookup));
     const show = matchCache.get(showName);
     if (!show || !isBroadwayShow(show)) { if (!show) historyUnmatched.add(showName); continue; }
+    if (post.created_utc && !runsNear(show, new Date(post.created_utc * 1000).toISOString().slice(0, 10))) continue;
     historyItems.push({ slug: show.slug || show.id, anchor: waltzAnchor(post, cost) });
   }
   // The gap-fill above may have patched records in place (not in dry-run);
