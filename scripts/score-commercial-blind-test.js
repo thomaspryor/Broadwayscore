@@ -23,15 +23,14 @@
 
 const fs = require('fs');
 const path = require('path');
-const { canonicalDesignation } = require('./lib/commercial-designations');
+const { canonicalDesignation, isLossDesignation } = require('./lib/commercial-designations');
 
 const RECOUPED = new Set(['Miracle', 'Windfall', 'Easy Winner', 'Trickle']);
-const LOST = new Set(['Fizzle', 'Flop']);
 const CAP_TOLERANCE = 0.2;
 
 function outcomeClass(d) {
   if (RECOUPED.has(d)) return 'recouped';
-  if (LOST.has(d)) return 'lost';
+  if (isLossDesignation(d)) return 'lost';
   if (d === 'Nonprofit') return 'nonprofit';
   return null;
 }

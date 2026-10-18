@@ -35,6 +35,14 @@ describe('applyCommercialFieldEdit', () => {
     assert.equal(c.shows['grey-house'].designationBasis, 'no-recoupment-announced');
   });
 
+  it('keeps a reported-loss basis when a Flop becomes Did Not Recoup (BRO-5636)', () => {
+    const c = { shows: { 'leap-of-faith-2012': { designation: 'Flop', designationBasis: 'reported-loss', recouped: false } } };
+    const r = applyCommercialFieldEdit(c, 'leap-of-faith-2012', 'designation', 'Flop', 'Did Not Recoup', NOW);
+    assert.equal(r.ok, true);
+    assert.equal(c.shows['leap-of-faith-2012'].designation, 'Did Not Recoup');
+    assert.equal(c.shows['leap-of-faith-2012'].designationBasis, 'reported-loss');
+  });
+
   it('settles the basis for a lowercase loss label, as the write guard will canonicalise it', () => {
     const c = { shows: { x: { designation: 'TBD' } } };
     applyCommercialFieldEdit(c, 'x', 'designation', 'TBD', 'flop', NOW);

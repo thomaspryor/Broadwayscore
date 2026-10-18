@@ -463,7 +463,7 @@ export interface ShowCommercial {
   recoupedSource?: string | null;
   /** Owner-reviewed editorial keep (Q3 policy) — survives CI merges. */
   humanReviewedDesignation?: boolean;
-  /** What a Fizzle/Flop rests on (owner policy B, BRO-5020). Anything but 'reported-loss' prints a caveat (lossBasisCaveat). */
+  /** What a loss label rests on (owner policy B, BRO-5020). Anything but 'reported-loss' prints a caveat (lossBasisCaveat). */
   designationBasis?: 'reported-loss' | 'no-recoupment-announced' | 'notes-stated';
   nonprofitOrg?: string;
   /** A nonprofit run's switch to a commercial run; date null when not reported (BRO-5508, scripts/lib/commercial-conversion.js). */
@@ -635,7 +635,7 @@ export interface CommercialShowRow {
   recoupedWeeks: number | null;
   /** lossBasisCaveat(): "Based on no recoupment being announced" for a loss label no source reported, else null. */
   lossCaveat: string | null;
-  /** What a Fizzle/Flop rests on (lossOutcomePhrase reads it). */
+  /** What a loss label rests on (lossOutcomePhrase reads it). */
   designationBasis: ShowCommercial['designationBasis'] | null;
 }
 

@@ -15,7 +15,7 @@ const data = { shows: { 'x-show': { designation: 'TBD' } } };
 const change = (newValue, confidence) => ({ slug: 'x-show', field: 'designation', oldValue: 'TBD', newValue, confidence, source: 'test' });
 
 describe('update-commercial-data loss-label freeze', () => {
-  for (const loss of ['Fizzle', 'Flop']) {
+  for (const loss of ['Fizzle', 'Flop', 'Did Not Recoup']) {
     it(`flags TBD -> ${loss} at medium confidence instead of applying it`, () => {
       const r = filterByConfidence([change(loss, 'medium')], data);
       assert.equal(r.applied.length, 0);
@@ -40,10 +40,30 @@ describe('update-commercial-data applyChanges stamps designationBasis', () => {
     return commercial.shows['x-show'];
   };
   it('a loss label from a sourced article is a reported loss and drops the evidence flag', () => {
-    const r = run({ designation: 'TBD', needsLossEvidence: true }, 'Flop');
+    const r = run({ designation: 'TBD', needsLossEvidence: true, estimatedRecoupmentPct: [0, 10] }, 'Flop');
     assert.equal(r.designation, 'Flop');
     assert.equal(r.designationBasis, 'reported-loss');
     assert.equal('needsLossEvidence' in r, false);
+  });
+  it('sizes the loss label it writes by the record\'s own estimate, whatever was proposed (BRO-5636)', () => {
+    assert.equal(run({ designation: 'TBD' }, 'Flop').designation, 'Did Not Recoup'); // no estimate behind a size
+    assert.equal(run({ designation: 'TBD', modelDataQuality: 'medium', modelReturnedExCreditPct: [20, 40, 60] }, 'Did Not Recoup').designation, 'Fizzle');
+    assert.equal(run({ designation: 'TBD', modelDataQuality: 'low', modelReturnedExCreditPct: [20, 40, 60] }, 'Fizzle').designation, 'Did Not Recoup');
+    // An estimate applied in the same batch counts.
+    const commercial = { _meta: {}, shows: { 'x-show': { designation: 'TBD' } } };
+    applyChanges([
+      { slug: 'x-show', field: 'designation', oldValue: 'TBD', newValue: 'Did Not Recoup', confidence: 'high', source: 'Deadline' },
+      { slug: 'x-show', field: 'estimatedRecoupmentPct', oldValue: null, newValue: [0, 5], confidence: 'high', source: 'Deadline' },
+    ], [], commercial, new Map());
+    assert.equal(commercial.shows['x-show'].designation, 'Flop');
+    // An estimate alone sizes a loss label already on the row.
+    const dnr = { _meta: {}, shows: { 'x-show': { designation: 'Did Not Recoup', recouped: false, designationBasis: 'reported-loss' } } };
+    applyChanges([{ slug: 'x-show', field: 'estimatedRecoupmentPct', oldValue: null, newValue: [35, 45], confidence: 'high', source: 'Deadline' }], [], dnr, new Map());
+    assert.equal(dnr.shows['x-show'].designation, 'Fizzle');
+    // A locked label is left as a person set it.
+    const locked = { _meta: {}, shows: { 'x-show': { designation: 'Did Not Recoup', recouped: false, humanReviewedDesignation: true } } };
+    applyChanges([{ slug: 'x-show', field: 'estimatedRecoupmentPct', oldValue: null, newValue: [35, 45], confidence: 'high', source: 'Deadline' }], [], locked, new Map());
+    assert.equal(locked.shows['x-show'].designation, 'Did Not Recoup');
   });
   it('a win label clears a stale loss basis', () => {
     const r = run({ designation: 'Fizzle', designationBasis: 'no-recoupment-announced' }, 'Windfall');

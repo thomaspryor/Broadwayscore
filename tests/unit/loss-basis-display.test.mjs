@@ -43,6 +43,19 @@ test('lossOutcomePhrase: only a reported loss says "did not recoup" or "without 
   assert.equal(lossOutcomePhrase({ designation: 'TBD' }, 'closing'), 'closed');
 });
 
+test('Did Not Recoup reads like any loss label: caveat on silence, reported wording only when reported (BRO-5636)', () => {
+  const silence = { designation: 'Did Not Recoup', designationBasis: 'no-recoupment-announced' };
+  const reported = { designation: 'Did Not Recoup', designationBasis: 'reported-loss' };
+  assert.equal(lossBasisCaveat(silence), LOSS_ON_SILENCE_CAVEAT);
+  assert.equal(lossBasisCaveat(reported), null);
+  assert.equal(isReportedLoss(reported), true);
+  assert.equal(lossOutcomePhrase(silence, 'cell'), 'No recoupment announced');
+  assert.equal(lossOutcomePhrase(silence, 'closing'), 'closed with no recoupment announced');
+  // Its label already says it did not recoup; the % column says what is missing.
+  assert.equal(lossOutcomePhrase(reported, 'cell'), 'Amount returned not reported');
+  assert.equal(lossOutcomePhrase(reported, 'closing'), 'closed without recouping');
+});
+
 test('no page or component hardcodes a loss phrase outside lossOutcomePhrase', async () => {
   const { spawnSync } = await import('node:child_process');
   const r = spawnSync('git', ['grep', '-n', '-i', '-E', 'did not recoup|without recouping|closed as a flop|lost money|never recouped', '--', 'src/app', 'src/components'], { encoding: 'utf8' });

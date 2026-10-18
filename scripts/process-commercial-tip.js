@@ -20,6 +20,7 @@ const https = require('https');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 const { buildTipRecord } = require('./lib/commercial-tip-record');
+const { FIZZLE_MIN_RETURNED_PCT } = require('./lib/commercial-designations');
 
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
@@ -264,6 +265,7 @@ Rules:
 - Low confidence: unverified claim, vague details, or contradicts known data
 - NEVER propose changing designation to/from Miracle, Nonprofit, or Tour Stop
 - TBD->Windfall is OK if recoupment is officially announced
+- A show that closed without recouping: "Fizzle" (${FIZZLE_MIN_RETURNED_PCT}% or more of its capitalization came back) or "Flop" (under ${FIZZLE_MIN_RETURNED_PCT}%) only when the tip's source states how much came back, proposed with estimatedRecoupmentPct as [low, high]; otherwise "Did Not Recoup"
 - Be conservative: only propose changes you're confident about`;
 
   try {

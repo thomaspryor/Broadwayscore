@@ -7,9 +7,9 @@
 //                 (trade press, filings, deep research, a grosses post), not
 //                 our own inference ("Inferred:", "Estimated:")
 //   recouped      recouped === true with a recoupedSource: truth is >= 100
-//   failed        closed, recouped === false, designated Fizzle or Flop:
-//                 truth is < 100 (the Fizzle/Flop split is not used; it can
-//                 lean on older model output)
+//   failed        closed, recouped === false, any loss label (Fizzle, Flop,
+//                 Did Not Recoup): truth is < 100 (the Fizzle/Flop split is
+//                 not used; it can lean on older model output)
 //
 // A model central inside the truth range scores 0; outside, the distance to
 // the nearest edge in points. Pure functions; the CLI is
@@ -24,6 +24,8 @@
 // outcome (did not recoup, closed at a loss): a cited capitalization or budget
 // alone is inference about the outcome (checker, 2026-10-10). A reported-pct
 // row is 'reported' only when its source also states a figure (BRO-5073).
+
+const { isLossDesignation } = require('./commercial-designations');
 
 const OWN_INFERENCE = /^\s*(inferred|estimated)\b/i;
 // A stated figure for the money returned or lost: a percentage beside
@@ -180,7 +182,7 @@ function truthCandidates(comm, show, now) {
     out.push({ kind: 'recouped', lo: 100, hi: Infinity, source: String(comm.recoupedSource) });
   }
   const closed = show && show.closingDate && new Date(show.closingDate) <= now;
-  if (closed && comm.recouped === false && (comm.designation === 'Fizzle' || comm.designation === 'Flop')) {
+  if (closed && comm.recouped === false && isLossDesignation(comm.designation)) {
     out.push({ kind: 'failed', lo: -Infinity, hi: 99.99, source: `designation ${comm.designation}` });
   }
   return out;

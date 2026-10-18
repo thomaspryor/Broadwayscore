@@ -23,7 +23,7 @@
  *
  * Signals:
  *   WEEKLY_GT_CAP            (fail) — weeklyRunningCost > capitalization (impossible)
- *   DESIG_RECOUPED_CONTRA    (fail) — recouped:true with "Flop"/"Fizzle"
+ *   DESIG_RECOUPED_CONTRA    (fail) — recouped:true with a loss label (Fizzle, Flop, Did Not Recoup)
  *                                       or recouped:false with "Miracle"/"Windfall"
  *   CAP_OUTLIER              (fail) — capitalization < $100k or > $100M
  *   WEEKLY_OUTLIER           (fail) — weeklyRunningCost < $20k or > $2M
@@ -44,6 +44,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isCommercialScope, resolveScopeShow } = require('./lib/commercial-scope');
+const { isLossDesignation } = require('./lib/commercial-designations');
 
 const ROOT = path.join(__dirname, '..');
 const COMMERCIAL_FILE = path.join(ROOT, 'data', 'commercial.json');
@@ -104,7 +105,7 @@ function audit() {
     }
 
     // DESIG_RECOUPED_CONTRA — recoupment status disagrees with designation
-    if (x.recouped === true && (x.designation === 'Flop' || x.designation === 'Fizzle')) {
+    if (x.recouped === true && isLossDesignation(x.designation)) {
       flags.push(`DESIG_RECOUPED_CONTRA:${x.designation}+recouped`);
     }
     if (x.recouped === false && (x.designation === 'Miracle' || x.designation === 'Windfall')) {

@@ -52,7 +52,7 @@ const { CLAUDE_SONNET } = require('./lib/models');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
 const { proposeDesignation } = require('./lib/designation-rule');
-const { DESIGNATION_BASES } = require('./lib/commercial-designations');
+const { DESIGNATION_BASES, FIZZLE_MIN_RETURNED_PCT, isLossDesignation, lossDesignationFor, returnedEstimatePct } = require('./lib/commercial-designations');
 const { recoupClaimDesignationAction } = require('./lib/commercial-apply-gate');
 
 // Universal scraper with Bright Data → ScrapingBee → Playwright fallback
@@ -1338,7 +1338,7 @@ RULES:
    - "low": Inferred from a single Reddit comment, speculation, or unclear data
 3. NEVER auto-upgrade a designation to "Miracle" -- that requires extraordinary long-term proof.
 4. You MAY upgrade TBD -> Windfall if the show has CONFIRMED recoupment (high or medium confidence).
-5. You MAY upgrade TBD -> Fizzle or Flop if the show has CONFIRMED closing without recouping.
+5. You MAY upgrade TBD -> a loss label if the show has CONFIRMED closing without recouping: Fizzle (${FIZZLE_MIN_RETURNED_PCT}% or more of the capitalization returned) or Flop (under ${FIZZLE_MIN_RETURNED_PCT}%) only when a source states how much came back, and propose that figure as estimatedRecoupmentPct too; otherwise "Did Not Recoup".
 6. Designation changes between non-TBD categories (e.g., Fizzle -> Windfall) should be flagged, not auto-applied.
 7. productionType changes should be flagged, not auto-applied.
 8. For estimatedRecoupmentPct: use [low, high] ranges. Cite source.
@@ -1646,7 +1646,7 @@ function filterByConfidence(proposedChanges, commercialData) {
 
       // A loss label needs a directly stated loss (BRO-5020): "strongly
       // implied" (medium) goes to a person, like the stale-closure classifier.
-      if (oldValue === 'TBD' && (newValue === 'Fizzle' || newValue === 'Flop') && effectiveConfidence !== 'high') {
+      if (oldValue === 'TBD' && isLossDesignation(newValue) && effectiveConfidence !== 'high') {
         flagged.push({ ...change, flagReason: `TBD -> ${newValue} needs a cited loss source (high confidence); got ${effectiveConfidence}` });
         continue;
       }
@@ -1735,6 +1735,7 @@ function applyChanges(applied, newEntries, commercial, showKeyIndex) {
     applyChanges._circuitBreakerTriggered = null;
   }
 
+  const toSize = new Set();
   for (const change of applied) {
     const { slug, field, newValue } = change;
 
@@ -1774,9 +1775,10 @@ function applyChanges(applied, newEntries, commercial, showKeyIndex) {
     // so it is a reported loss; any other label drops the loss basis and flag.
     if (field === 'designation') {
       const row = commercial.shows[slug];
-      if (newValue === 'Fizzle' || newValue === 'Flop') {
+      if (isLossDesignation(newValue)) {
         row.designationBasis = DESIGNATION_BASES.REPORTED_LOSS;
         delete row.needsLossEvidence;
+        toSize.add(slug);
       } else {
         delete row.designationBasis;
         if (newValue !== 'TBD') delete row.needsLossEvidence;
@@ -1790,6 +1792,9 @@ function applyChanges(applied, newEntries, commercial, showKeyIndex) {
       row.designation = 'TBD';
       for (const k of ['designationBasis', 'needsLossEvidence', 'classifiedBy', 'classifiedAt', 'classifiedReason']) delete row[k];
     }
+
+    // A new estimate can size a loss label already on the row (BRO-5636).
+    if ((field === 'estimatedRecoupmentPct' || field === 'analystRecoupPct') && isLossDesignation(commercial.shows[slug].designation)) toSize.add(slug);
 
     // For estimatedRecoupmentPct, add source + date
     if (field === 'estimatedRecoupmentPct') {
@@ -1811,6 +1816,21 @@ function applyChanges(applied, newEntries, commercial, showKeyIndex) {
       if (!showData.costMethodology && showData.weeklyRunningCost == null && costSourceBasis(change.source)) {
         showData.costMethodology = methodologyForCostSource(change.source);
       }
+    }
+  }
+
+  // A loss label this pass wrote, or whose estimate it changed, takes the
+  // size the record's own evidence supports, whatever the model proposed:
+  // Fizzle or Flop with an estimate, Did Not Recoup without (owner
+  // 2026-10-18, BRO-5636). After every change, so an estimate applied in the
+  // same batch counts.
+  for (const slug of toSize) {
+    const row = commercial.shows[slug];
+    if (!isLossDesignation(row.designation) || row.humanReviewedDesignation === true) continue;
+    const sized = lossDesignationFor(returnedEstimatePct(row));
+    if (sized !== row.designation) {
+      console.log(`  [SIZE] ${slug}.designation: ${row.designation} -> ${sized} (by its recorded estimate)`);
+      row.designation = sized;
     }
   }
 
@@ -1848,6 +1868,8 @@ function applyChanges(applied, newEntries, commercial, showKeyIndex) {
       continue;
     }
     if (changed.length) console.log(`  [CLEAN] New entry ${key}: cleared research wording in ${changed.join(', ')}`);
+    // Sized by its own evidence, like a changed row (BRO-5636).
+    if (isLossDesignation(record.designation)) record.designation = lossDesignationFor(returnedEstimatePct(record));
 
     commercial.shows[key] = record;
     changeCount++;

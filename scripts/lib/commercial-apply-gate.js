@@ -2,7 +2,7 @@
 // Tested by tests/unit/commercial-apply-gate.test.mjs.
 
 const { TRUSTED_RECOUPMENT_HOSTS } = require('./trusted-recoupment-domains');
-const { VALID_DESIGNATIONS, canonicalDesignation, DESIGNATION_BASES, VALID_DESIGNATION_BASES } = require('./commercial-designations');
+const { VALID_DESIGNATIONS, canonicalDesignation, DESIGNATION_BASES, VALID_DESIGNATION_BASES, isLossDesignation, lossDesignationFor, returnedEstimatePct } = require('./commercial-designations');
 const { checkRecoupmentProduction } = require('./recoupment-production-guard');
 const { addedPlaceholderSources } = require('./commercial-sources');
 
@@ -164,17 +164,13 @@ function isAutoApplyableClaim(entry, autoApplyClaimsFrom, show) {
   return true;
 }
 
-// Loss designations a verified recoupment contradicts (validate-data.js
-// rejects Fizzle/Flop with recouped:true).
-const LOSS_DESIGNATIONS = new Set(['Fizzle', 'Flop']);
-
 /**
  * What a verified recoupment claim may do to the existing designation
  * (BRO-4623 item 5). classify-stale-closures.js auto-labels a closed show
  * "Fizzle" 30 days after closing when it finds no recoupment news; Purpose
  * then recouped ~9 months after closing via the revived NY State tax credit.
  *   'keep'  - no loss designation in the way; the claim overlays as before
- *   'reset' - an INFERRED Fizzle/Flop (classifiedBy classify-stale-closures,
+ *   'reset' - an INFERRED loss label (classifiedBy classify-stale-closures,
  *             or designationBasis 'no-recoupment-announced', no human lock):
  *             the silence it was inferred from is gone, so the designation
  *             goes back to TBD for research/model to set (owner policy B,
@@ -185,7 +181,9 @@ const LOSS_DESIGNATIONS = new Set(['Fizzle', 'Flop']);
 function recoupClaimDesignationAction(existing) {
   if (!existing) return 'keep';
   const designation = canonicalDesignation(existing.designation) || existing.designation;
-  if (!LOSS_DESIGNATIONS.has(designation)) return 'keep';
+  // A verified recoupment contradicts every loss label (validate-data.js
+  // rejects one with recouped:true).
+  if (!isLossDesignation(designation)) return 'keep';
   if (existing.humanReviewedDesignation === true) return 'block';
   if (existing.classifiedBy === 'classify-stale-closures') return 'reset';
   if (existing.designationBasis === DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED) return 'reset';
@@ -299,13 +297,21 @@ function buildCommercialEntry(entry, existing, opts = {}) {
       }
     }
   }
+  // A loss label from research takes the size the record being written can
+  // support, not the one the research named (owner 2026-10-18, BRO-5636): a
+  // from-scratch write carries no estimate, so it is Did Not Recoup until one
+  // is recorded. An owner's approved or locked label is a person's verdict.
+  const locked = entry.ownerApproved === true || existing?.humanReviewedDesignation === true || result.humanReviewedDesignation === true;
+  if (designation && isLossDesignation(result.designation) && !locked) {
+    result.designation = lossDesignationFor(returnedEstimatePct(result));
+  }
   stampDesignationBasis(result, entry, existing);
   // A later automated research refresh must not erase a verdict waiting for
   // the closure window. A verified recoupment still supersedes the loss.
   if (result.recouped === true) {
     delete result.ownerDesignationAfterWindow;
     delete result.ownerDesignationReviewedAt;
-  } else if (existing && ['Flop', 'Fizzle'].includes(existing.ownerDesignationAfterWindow)) {
+  } else if (existing && isLossDesignation(existing.ownerDesignationAfterWindow)) {
     result.ownerDesignationAfterWindow = existing.ownerDesignationAfterWindow;
     result.ownerDesignationReviewedAt = existing.ownerDesignationReviewedAt;
     if (existing.designation === 'TBD' && entry.ownerApproved !== true) {
@@ -320,7 +326,7 @@ function buildCommercialEntry(entry, existing, opts = {}) {
 }
 
 /**
- * Every Fizzle/Flop carries a designationBasis (owner policy B, BRO-5020).
+ * Every loss label carries a designationBasis (owner policy B, BRO-5020).
  * Order: the pending entry's own valid basis, then the existing record's basis
  * when the label is unchanged, else 'no-recoupment-announced' (the cautious
  * default: the page then says the label rests on silence). Any other label
@@ -328,7 +334,7 @@ function buildCommercialEntry(entry, existing, opts = {}) {
  */
 function stampDesignationBasis(result, entry, existing) {
   const d = result.designation;
-  if (d === 'Fizzle' || d === 'Flop') {
+  if (isLossDesignation(d)) {
     if (VALID_DESIGNATION_BASES.includes(entry && entry.designationBasis)) {
       result.designationBasis = entry.designationBasis;
     } else if (existing && existing.designation === d && VALID_DESIGNATION_BASES.includes(existing.designationBasis)) {

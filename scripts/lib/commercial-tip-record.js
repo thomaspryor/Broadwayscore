@@ -18,6 +18,7 @@
  */
 const { sanitizeForPublicRecord, commercialRecordErrors, commercialRecordWarnings } = require('./commercial-record-checks');
 const { stampDesignationBasis } = require('./commercial-apply-gate');
+const { isLossDesignation, lossDesignationFor, returnedEstimatePct } = require('./commercial-designations');
 
 function changedFields(before, after) {
   const fields = new Set([...Object.keys(before), ...Object.keys(after)]);
@@ -37,6 +38,12 @@ function buildTipRecord(commercial, showList, slug, proposedChanges) {
     if (change.isEstimate && change.field !== 'designation') {
       draft.isEstimate = { ...(draft.isEstimate || {}), [change.field]: true };
     }
+  }
+  // A loss label the tip names takes the size the record's evidence supports
+  // (owner 2026-10-18, BRO-5636): an estimate the tip adds counts. A label a
+  // person locked stays as they set it.
+  if (proposedChanges.some((c) => c.field === 'designation') && isLossDesignation(draft.designation) && existing.humanReviewedDesignation !== true) {
+    draft.designation = lossDesignationFor(returnedEstimatePct(draft));
   }
   // Every loss label carries a basis (owner policy B, BRO-5020): the tip's
   // own, else the unchanged label's, else the cautious silence basis.

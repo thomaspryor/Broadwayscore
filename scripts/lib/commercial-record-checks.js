@@ -72,8 +72,7 @@ const URL_RE = /\bhttps?:\/\/\S+/gi;
 // research output, so a writer clears the field rather than trimming it to
 // something that reads like a checked source.
 const CITATION_FIELDS = ['capitalizationSource', 'recoupedSource'];
-const LOSS_DESIGNATIONS = ['Flop', 'Fizzle'];
-const { VALID_DESIGNATION_BASES, DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, returnedEstimatePct } = require('./commercial-designations');
+const { VALID_DESIGNATION_BASES, DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, returnedEstimatePct, isLossDesignation, lossDesignationFor } = require('./commercial-designations');
 const { conversionOf, conversionShapeProblems } = require('./commercial-conversion');
 const { COST_BASES, BASIS_CUE_TEXT } = require('./cost-split');
 
@@ -202,13 +201,13 @@ function commercialRecordErrors(showId, show, ctx = {}) {
 
   // Outcome-driven designation policy (memory/feedback_enhancement_deal_designation_policy.md):
   // Easy Winner / Windfall / Miracle imply the production recouped — require recouped=true.
-  // Flop / Fizzle imply it did not — require recouped=false (null means we don't know).
+  // Loss labels (Fizzle, Flop, Did Not Recoup) imply it did not — require recouped=false (null means we don't know).
   // Catches the purpose-2025 / floyd-collins-2025 class of inconsistency.
   const WIN_DESIGNATIONS = ['Easy Winner', 'Windfall', 'Miracle'];
   if (WIN_DESIGNATIONS.includes(show.designation) && show.recouped !== true) {
     out.push(`commercial.json: "${showId}" has designation "${show.designation}" but recouped=${JSON.stringify(show.recouped)} (policy: win-designations require recouped=true with hard citation, see memory/feedback_enhancement_deal_designation_policy.md)`);
   }
-  if (LOSS_DESIGNATIONS.includes(show.designation) && show.recouped !== false) {
+  if (isLossDesignation(show.designation) && show.recouped !== false) {
     out.push(`commercial.json: "${showId}" has designation "${show.designation}" but recouped=${JSON.stringify(show.recouped)} (policy: loss-designations require recouped=false with hard citation; demote to "Nonprofit" or "TBD" if outcome unknown)`);
   }
   // designationBasis (owner policy B, BRO-5020): what a loss label rests on.
@@ -373,25 +372,34 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
   // show that is still running it is a guess shown as a result (two-strangers
   // was a "Flop" while open, BRO-4623). Skipped without the shows.json record.
   const runStatus = ctx.showRecord && ctx.showRecord.status;
-  if (LOSS_DESIGNATIONS.includes(show.designation) && runStatus && runStatus !== 'closed') {
+  if (isLossDesignation(show.designation) && runStatus && runStatus !== 'closed') {
     out.push(`commercial.json: "${showId}" has designation "${show.designation}" but the show's status is "${runStatus}" (loss designations are for closed runs; use "TBD" until it closes)`);
   }
   // Owner policy B (BRO-5020): every loss label says what it rests on, and a
   // label resting on silence waits ~6 months after closing. Advisory (§19).
-  if (LOSS_DESIGNATIONS.includes(show.designation) && show.designationBasis == null) {
+  if (isLossDesignation(show.designation) && show.designationBasis == null) {
     out.push(`commercial.json: "${showId}" has designation "${show.designation}" with no designationBasis (reported-loss, no-recoupment-announced or notes-stated)`);
   }
   // Fizzle is an estimated 30% or more returned, Flop under it, so a loss
   // label must agree with its estimate: the record's own, else our model's
   // when its inputs are decent (BRO-5602: suffs was a Fizzle beside "0-10%
-  // returned"; BRO-5623). Advisory (§19).
+  // returned"; BRO-5623). With no estimate the label is Did Not Recoup, and a
+  // Did Not Recoup that gains one takes its size (owner 2026-10-18, BRO-5636).
+  // Advisory (§19). A writer passing ctx.priorRecord counts it only when the
+  // write changed the label or the estimate: a model figure that drifted
+  // since must not block an unrelated edit to the record.
   const returnedPct = returnedEstimatePct(show);
-  if (LOSS_DESIGNATIONS.includes(show.designation) && returnedPct != null
-      && (returnedPct >= FIZZLE_MIN_RETURNED_PCT ? 'Fizzle' : 'Flop') !== show.designation) {
-    const whose = ownReturnedEstimatePct(show) != null ? 'its own estimate' : 'our model (decent inputs)';
-    out.push(`commercial.json: "${showId}" is "${show.designation}" but ${whose} puts ${returnedPct}% returned (Fizzle is ${FIZZLE_MIN_RETURNED_PCT}% or more, Flop under)`);
+  const prior = ctx.priorRecord;
+  const sizeInputsChanged = !prior || prior.designation !== show.designation || returnedEstimatePct(prior) !== returnedPct;
+  if (sizeInputsChanged && isLossDesignation(show.designation) && lossDesignationFor(returnedPct) !== show.designation) {
+    if (returnedPct == null) {
+      out.push(`commercial.json: "${showId}" is "${show.designation}" but has no estimate of how much came back (use "Did Not Recoup" until a source or a decent model gives one)`);
+    } else {
+      const whose = ownReturnedEstimatePct(show) != null ? 'its own estimate' : 'our model (decent inputs)';
+      out.push(`commercial.json: "${showId}" is "${show.designation}" but ${whose} puts ${returnedPct}% returned (Fizzle is ${FIZZLE_MIN_RETURNED_PCT}% or more, Flop under)`);
+    }
   }
-  if (show.designationBasis != null && !LOSS_DESIGNATIONS.includes(show.designation)) {
+  if (show.designationBasis != null && !isLossDesignation(show.designation)) {
     out.push(`commercial.json: "${showId}" has designationBasis "${show.designationBasis}" on a non-loss designation "${show.designation || 'missing'}" (remove it)`);
   }
   // A dated "% returned" range below 100 on a show that later recouped
@@ -575,7 +583,7 @@ function sanitizeForPublicRecord(entry, show, { ownerApproved = false, now = Dat
     out[field] = CITATION_FIELDS.includes(field) ? null : stripInternalWording(out[field]);
     changed.push(field);
   }
-  if (LOSS_DESIGNATIONS.includes(out.designation) && showStatus && showStatus !== 'closed') {
+  if (isLossDesignation(out.designation) && showStatus && showStatus !== 'closed') {
     out.designation = 'TBD';
     delete out.designationBasis;
     changed.push('designation');
@@ -598,10 +606,10 @@ function sanitizeForPublicRecord(entry, show, { ownerApproved = false, now = Dat
     out.needsLossEvidence = true;
     changed.push('designation');
   }
-  if (ownerApproved === true && showStatus === 'closed' && LOSS_DESIGNATIONS.includes(out.designation)) {
+  if (ownerApproved === true && showStatus === 'closed' && isLossDesignation(out.designation)) {
     out.humanReviewedDesignation = true;
   }
   return { entry: out, changed, holdReason };
 }
 
-module.exports = { commercialRecordErrors, commercialRecordWarnings, commercialFileErrors, commercialFileWarnings, sanitizeForPublicRecord, stripInternalWording, internalWordingIn, VALID_COST_METHODOLOGIES, VALID_PRODUCTION_TYPES, INTERNAL_TEXT_RE, PUBLIC_TEXT_FIELDS, CITATION_FIELDS, LOSS_DESIGNATIONS };
+module.exports = { commercialRecordErrors, commercialRecordWarnings, commercialFileErrors, commercialFileWarnings, sanitizeForPublicRecord, stripInternalWording, internalWordingIn, VALID_COST_METHODOLOGIES, VALID_PRODUCTION_TYPES, INTERNAL_TEXT_RE, PUBLIC_TEXT_FIELDS, CITATION_FIELDS };

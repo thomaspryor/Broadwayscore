@@ -88,7 +88,7 @@ describe('classifyStaleClosure', () => {
     // beaches, cats-the-jellicle-ball and titanique carry only [0, 0]).
     assert.equal(lossLabelFor({ analystRecoupPct: [0, 0] }), 'Flop');
     assert.equal(lossLabelFor({ analystRecoupPct: [20, 40], estimatedRecoupmentPct: [0, 10] }), 'Fizzle');
-    assert.deepEqual(closedTbdLossAction({ designation: 'TBD', analystRecoupPct: [0, 0] }, { status: 'closed', closingDate: '2025-01-01' }, { now: Date.parse('2026-10-18') }),
+    assert.deepEqual(closedTbdLossAction({ ...researched, analystRecoupPct: [0, 0] }, { status: 'closed', closingDate: '2025-01-01' }, { now: Date.parse('2026-10-18') }),
       { action: 'label', designation: 'Flop', designationBasis: 'no-recoupment-announced' });
     const r = classifyStaleClosure({
       show: { status: 'closed', closingDate: daysBefore(200) },
@@ -158,8 +158,8 @@ describe('classifyStaleClosure', () => {
     assert.ok(r.reason.includes('recouped'));
   });
 
-  it('skips already-classified Flop / Fizzle', () => {
-    for (const d of ['Flop', 'Fizzle']) {
+  it('skips already-classified Flop / Fizzle / Did Not Recoup', () => {
+    for (const d of ['Flop', 'Fizzle', 'Did Not Recoup']) {
       const r = classifyStaleClosure({
         show: { status: 'closed', closingDate: daysBefore(45) },
         entry: { designation: d }, now: NOW,
@@ -254,6 +254,24 @@ describe('classifyStaleClosure', () => {
   });
 });
 
+describe('Did Not Recoup (BRO-5636)', () => {
+  it('applies a saved owner verdict of Did Not Recoup once the window passes, with no estimate needed', () => {
+    const r = classifyStaleClosure({
+      show: { status: 'closed', closingDate: daysBefore(LOSS_LABEL_MIN_DAYS + 10) },
+      entry: { designation: 'TBD', ownerDesignationAfterWindow: 'Did Not Recoup' }, now: NOW,
+    });
+    assert.equal(r.action, 'classify-fizzle');
+    assert.equal(r.designation, 'Did Not Recoup');
+    assert.equal(r.designationBasis, DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED);
+    assert.equal(r.humanReviewedDesignation, true);
+  });
+  it('undoes a silence-basis Did Not Recoup when the show runs again', () => {
+    const out = undoAutoFizzleOnRunningShow({ designation: 'Did Not Recoup', recouped: false, designationBasis: DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED }, { status: 'open' });
+    assert.equal(out.designation, 'TBD');
+    assert.equal(out.recouped, null);
+  });
+});
+
 describe('undoAutoFizzleOnRunningShow', () => {
   it('clears the classifier label and its designationBasis when the show runs again', () => {
     const entry = {
@@ -288,12 +306,23 @@ describe('undoAutoFizzleOnRunningShow', () => {
 
 describe('closedTbdLossAction (cleanup-commercial-data step 4, policy B)', () => {
   const closed = (d) => ({ status: 'closed', closingDate: daysBefore(d), title: 'X' });
-  it('labels a closed TBD 6+ months on with the silence basis, flags a recent one', () => {
-    assert.deepEqual(closedTbdLossAction({ designation: 'TBD', modelDataQuality: 'medium', modelReturnedExCreditPct: [20, 40, 60] }, closed(400), { now: NOW }),
+  const researched = { designation: 'TBD', researchAttempts: 1 };
+  const estimate = { modelDataQuality: 'medium', modelReturnedExCreditPct: [20, 40, 60] };
+  it('labels a researched closed TBD 6+ months on with the silence basis, flags a recent one', () => {
+    assert.deepEqual(closedTbdLossAction({ ...researched, ...estimate }, closed(400), { now: NOW }),
       { action: 'label', designation: 'Fizzle', designationBasis: 'no-recoupment-announced' });
     // No estimate behind a Fizzle or Flop: flag it, never a default label (BRO-5623).
-    assert.deepEqual(closedTbdLossAction({ designation: 'TBD' }, closed(400), { now: NOW }), { action: 'flag' });
-    assert.deepEqual(closedTbdLossAction({ designation: 'TBD' }, closed(60), { now: NOW }), { action: 'flag' });
+    assert.deepEqual(closedTbdLossAction(researched, closed(400), { now: NOW }), { action: 'flag' });
+    assert.deepEqual(closedTbdLossAction(researched, closed(60), { now: NOW }), { action: 'flag' });
+  });
+  it('never labels a row nobody researched, as the classifier does not (BRO-5636)', () => {
+    assert.deepEqual(closedTbdLossAction({ designation: 'TBD', ...estimate }, closed(400), { now: NOW }), { action: 'flag' });
+    assert.equal(closedTbdLossAction({ designation: 'TBD', ...estimate, needsLossEvidence: true }, closed(400), { now: NOW }), null);
+  });
+  it('leaves a row waiting on an owner verdict of any loss label to the classifier', () => {
+    for (const d of ['Fizzle', 'Flop', 'Did Not Recoup']) {
+      assert.equal(closedTbdLossAction({ ...researched, ...estimate, ownerDesignationAfterWindow: d }, closed(400), { now: NOW }), null, d);
+    }
   });
   it('leaves locked, recouped, non-TBD, running, already-ruled rows alone', () => {
     assert.equal(closedTbdLossAction({ designation: 'TBD', humanReviewedDesignation: true }, closed(400), { now: NOW }), null);

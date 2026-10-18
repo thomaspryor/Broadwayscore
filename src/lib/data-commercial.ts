@@ -19,7 +19,7 @@ import type {
   CommercialShowRow,
 } from './data-types';
 import type { CommercialDesignation, RecoupmentTrend } from '@/config/commercial';
-import { getDesignationSortOrder } from '@/config/commercial';
+import { getDesignationSortOrder, DESIGNATION_MAP } from '@/config/commercial';
 import { getShowGrosses, getGrossesWeekEnding } from './data-grosses';
 import {
   calculateWeeksToRecoup,
@@ -51,6 +51,7 @@ import {
   hasNoInvestorsToRepay,
 } from './commercial-display';
 import { reportedReturn } from '../../scripts/lib/reported-return';
+import { isLossDesignation } from '../../scripts/lib/commercial-designations';
 import { conversionOf, isConvertedToCommercial, commercialRunWeeks, recoupClockStart } from '../../scripts/lib/commercial-conversion';
 import {
   computeMarketMedianByWeek,
@@ -230,7 +231,9 @@ export function getCommercialModelLastRun(): string | null {
  * Get commercial designation description
  */
 export function getDesignationDescription(designation: CommercialDesignation): string {
-  return commercial._meta.designations[designation] || '';
+  // The config is the one source of designation wording; commercial.json's
+  // _meta.designations has no entry for Did Not Recoup (BRO-5636).
+  return DESIGNATION_MAP[designation]?.description || '';
 }
 
 // ============================================
@@ -585,7 +588,7 @@ export function getRecentClosings(months: number = 6): RecentClosing[] {
 
     if (data.recouped === true) continue;
 
-    const wasFlop = data.designation === 'Flop' || data.designation === 'Fizzle';
+    const wasFlop = isLossDesignation(data.designation);
 
     results.push({
       slug: show.slug,

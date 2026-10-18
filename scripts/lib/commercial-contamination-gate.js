@@ -13,7 +13,7 @@
  * The per-push CATASTROPHE class is the FAIL severity — impossible or
  * self-contradictory commercial physics:
  *   WEEKLY_GT_CAP          weeklyRunningCost > capitalization (impossible)
- *   DESIG_RECOUPED_CONTRA  recouped:true with "Flop"/"Fizzle" (or false + "Miracle")
+ *   DESIG_RECOUPED_CONTRA  recouped:true with a loss label (or false + "Miracle")
  *   CAP_OUTLIER            capitalization < $100k or > $100M
  *   WEEKLY_OUTLIER         weeklyRunningCost < $20k or > $2M
  * The first two are logical contradictions (zero-FP by construction); the outlier

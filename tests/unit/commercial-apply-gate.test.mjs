@@ -314,8 +314,10 @@ describe('commercial-apply-gate', () => {
     });
 
     it('buildCommercialEntry writes the canonical spelling ("flop" -> "Flop")', () => {
-      const result = gate.buildCommercialEntry({ designation: 'flop', recouped: false }, null, {});
+      // An estimate on the record keeps the size (a bare "flop" is Did Not Recoup, BRO-5636).
+      const result = gate.buildCommercialEntry({ designation: 'flop', recouped: false }, { designation: 'TBD', estimatedRecoupmentPct: [0, 10] }, { mergeExisting: true });
       assert.equal(result.designation, 'Flop');
+      assert.equal(gate.buildCommercialEntry({ designation: 'did-not-recoup', recouped: false }, null, {}).designation, 'Did Not Recoup');
     });
 
     it('an unknown designation never overwrites the existing one on auto-apply', () => {
@@ -479,9 +481,11 @@ describe('designationBasis on every loss label (BRO-5020 policy B)', () => {
   it('keeps a valid basis from the entry, else from an unchanged existing label', () => {
     assert.equal(gate.buildCommercialEntry({ designation: 'Flop', designationBasis: 'reported-loss' }, null).designationBasis, 'reported-loss');
     assert.equal(gate.buildCommercialEntry({ designation: 'Flop', designationBasis: 'bogus' }, null).designationBasis, 'no-recoupment-announced');
-    assert.equal(gate.buildCommercialEntry({ designation: 'Flop' }, { designation: 'Flop', designationBasis: 'reported-loss' }).designationBasis, 'reported-loss');
+    const sized = { estimatedRecoupmentPct: [0, 10] }; // a Flop needs an estimate behind it (BRO-5636)
+    const merge = { mergeExisting: true };
+    assert.equal(gate.buildCommercialEntry({ designation: 'Flop' }, { ...sized, designation: 'Flop', designationBasis: 'reported-loss' }, merge).designationBasis, 'reported-loss');
     // A changed label does not inherit the old row's basis.
-    assert.equal(gate.buildCommercialEntry({ designation: 'Flop' }, { designation: 'Fizzle', designationBasis: 'reported-loss' }).designationBasis, 'no-recoupment-announced');
+    assert.equal(gate.buildCommercialEntry({ designation: 'Flop' }, { ...sized, designation: 'Fizzle', designationBasis: 'reported-loss' }, merge).designationBasis, 'no-recoupment-announced');
   });
   it('a non-loss label drops the basis; a settled label drops the evidence flag, TBD keeps it', () => {
     const win = gate.buildCommercialEntry({ designation: 'Windfall', recouped: true }, { designation: 'Fizzle', designationBasis: 'reported-loss', needsLossEvidence: true }, { isClaimAutoApply: true });
@@ -489,6 +493,32 @@ describe('designationBasis on every loss label (BRO-5020 policy B)', () => {
     assert.equal(win.needsLossEvidence, undefined);
     const tbd = gate.buildCommercialEntry({ notes: 'x' }, { designation: 'TBD', needsLossEvidence: true }, { isClaimAutoApply: true });
     assert.equal(tbd.needsLossEvidence, true);
+  });
+  it('Did Not Recoup is a loss label: it keeps or gets a basis and settles the evidence flag (BRO-5636)', () => {
+    const r = gate.buildCommercialEntry({ designation: 'Did Not Recoup', recouped: false }, { designation: 'TBD', needsLossEvidence: true });
+    assert.equal(r.designationBasis, 'no-recoupment-announced');
+    assert.equal(r.needsLossEvidence, undefined);
+    assert.equal(gate.buildCommercialEntry({ designation: 'Did Not Recoup' }, { designation: 'Did Not Recoup', designationBasis: 'reported-loss' }).designationBasis, 'reported-loss');
+    const row = { designation: 'Did Not Recoup', designationBasis: 'reported-loss' };
+    gate.stampDesignationBasis(row, { designationBasis: row.designationBasis }, null); // the data-plan field edit
+    assert.equal(row.designationBasis, 'reported-loss');
+  });
+  it('research names a loss; the record being written sizes it (BRO-5636)', () => {
+    assert.equal(gate.buildCommercialEntry({ designation: 'Flop', recouped: false }, null).designation, 'Did Not Recoup');
+    const existing = { designation: 'TBD', modelDataQuality: 'high', modelReturnedExCreditPct: [10, 20, 30] };
+    assert.equal(gate.buildCommercialEntry({ designation: 'Did Not Recoup', recouped: false }, existing, { mergeExisting: true }).designation, 'Flop');
+    // A from-scratch write keeps none of the old figures, so it claims no size.
+    assert.equal(gate.buildCommercialEntry({ designation: 'Fizzle', recouped: false }, { designation: 'TBD', analystRecoupPct: [10, 20] }).designation, 'Did Not Recoup');
+    // A label a person locked, or an owner-approved row, keeps its size.
+    assert.equal(gate.buildCommercialEntry({ designation: 'Flop', recouped: false }, { designation: 'Flop', humanReviewedDesignation: true }).designation, 'Flop');
+    assert.equal(gate.buildCommercialEntry({ designation: 'Flop', recouped: false, ownerApproved: true }, null).designation, 'Flop');
+    assert.equal(gate.buildCommercialEntry({ designation: 'Windfall', recouped: true }, null).designation, 'Windfall');
+  });
+  it('recoupment news resets a silence-basis Did Not Recoup and leaves a reported or locked one to a person', () => {
+    const silence = { designation: 'Did Not Recoup', recouped: false, designationBasis: 'no-recoupment-announced' };
+    assert.equal(gate.recoupClaimDesignationAction(silence), 'reset');
+    assert.equal(gate.recoupClaimDesignationAction({ ...silence, designationBasis: 'reported-loss' }), 'block');
+    assert.equal(gate.recoupClaimDesignationAction({ ...silence, humanReviewedDesignation: true }), 'block');
   });
   it('the public-record sanitizer drops the basis when it un-labels a running show', () => {
     const { entry } = checks.sanitizeForPublicRecord({ designation: 'Fizzle', designationBasis: 'no-recoupment-announced' }, { status: 'open' });
@@ -535,7 +565,7 @@ describe('held-row release (BRO-5041)', () => {
     assert.deepEqual(gate.withoutRecoupmentClaim(loss), loss);
   });
   it('mergeExisting keeps the record fields the row does not carry and merges sources', () => {
-    const existing = { designation: 'TBD', capitalization: 4e6, capitalizationSource: 'SEC filing', modelRecouped: false, sources: [{ url: 'https://a.example/1' }] };
+    const existing = { designation: 'TBD', capitalization: 4e6, capitalizationSource: 'SEC filing', modelRecouped: false, estimatedRecoupmentPct: [0, 10], sources: [{ url: 'https://a.example/1' }] };
     const row = { designation: 'Flop', sources: [{ url: 'https://b.example/2' }, { url: 'https://a.example/1' }] };
     const merged = gate.buildCommercialEntry(row, existing, { mergeExisting: true });
     assert.equal(merged.designation, 'Flop');
