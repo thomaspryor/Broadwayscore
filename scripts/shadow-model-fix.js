@@ -68,6 +68,7 @@ const USAGE = `Usage: node scripts/shadow-model-fix.js --fix=${Object.keys(FIXES
 if (require('./lib/cli-help').hasHelpFlag(args)) { console.log(USAGE); process.exit(0); }
 const FIX = FIXES[args.find((a) => a.startsWith('--fix='))?.split('=')[1]];
 if (!FIX) { console.error(USAGE); process.exit(2); }
+const OFF = Object.fromEntries(Object.keys(FIX.opts).map((k) => [k, false]));
 const OUT = args.find((a) => a.startsWith('--out='))?.split('=')[1];
 const ONLY = args.find((a) => a.startsWith('--show='))?.split('=')[1];
 
@@ -117,7 +118,9 @@ function main() {
     const run = (opts) => (tier === 'weekly-model'
       ? calculateRecoupment(show, comm, all, weekly, opts)
       : calculateLifetimeRecoupment(show, comm, all, opts));
-    const live = run({});
+    // The fix's options forced off: some are already live for musicals
+    // (MUSICAL_LIVE_OPTS, BRO-5598), so a bare run would already include them.
+    const live = run(OFF);
     if (live.error) continue;
     modeled++;
     if (!FIX.affected(show, weekly, live)) continue;
@@ -127,8 +130,8 @@ function main() {
     const newPct = pcts(fixed);
     let isolated = null;
     if (FIX.isolate && FIX.isolate.when(show)) {
-      const base = run(FIX.isolate.opts);
-      const both = run({ ...FIX.isolate.opts, ...FIX.opts });
+      const base = run({ ...OFF, ...FIX.isolate.opts });
+      const both = run({ ...OFF, ...FIX.isolate.opts, ...FIX.opts });
       if (!base.error && !both.error) isolated = { basePct: pcts(base), fixedPct: pcts(both) };
     }
     const running = !show.closingDate || new Date(show.closingDate) > new Date();

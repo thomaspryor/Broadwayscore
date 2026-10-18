@@ -143,6 +143,12 @@ function exportShow(slug) {
 
   // Weekly waterfall (central scenario)
   lines.push('=== WEEKLY WATERFALL (CENTRAL SCENARIO) ===');
+  // This rebuild keeps the old simple path (estimated preview weeks, one flat
+  // nut, flat deductions). Musicals' headline above runs MUSICAL_LIVE_OPTS
+  // (BRO-5598), so say where the two part ways rather than look like a match.
+  if (/^musical/.test(classifyShow(show))) {
+    lines.push('Note,"Simplified rebuild. The headline figures above also count only preview weeks missing from the weekly grosses, cost each week at its own date, and (on a cited running cost) deduct more as gross rises against cost. Totals below can differ from the headline."');
+  }
   lines.push([
     'Week', 'Phase', 'Weekly Gross', 'Variable Costs', 'Variable Rate',
     'Theater Overage', 'Fixed Costs (nut)', 'Marketing Surcharge',
