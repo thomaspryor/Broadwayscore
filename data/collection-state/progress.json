@@ -3,7 +3,10 @@
     "the-second-best-school-shooting-off-broadway-2026/broadway-baby--unknown.json",
     "school-pictures-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
     "memoirs-of-amorous-gentlemen-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "a-ghost-in-your-ear-off-broadway-2026/the-recs--randall-david-cook.json"
+    "a-ghost-in-your-ear-off-broadway-2026/the-recs--randall-david-cook.json",
+    "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "good-time-charlie-off-broadway-2026/the-recs--unknown.json",
+    "soon-off-broadway-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "the-second-best-school-shooting-off-broadway-2026/cedarnews--cedar-news-editorial-team.json",
@@ -21,7 +24,12 @@
     "fish-off-broadway-2026/timeout--unknown.json",
     "fish-off-broadway-2026/exeunt-magazine--unknown.json",
     "a-ghost-in-your-ear-off-broadway-2026/timeout--unknown.json",
-    "a-ghost-in-your-ear-off-broadway-2026/talkinbroadway--unknown.json"
+    "a-ghost-in-your-ear-off-broadway-2026/talkinbroadway--unknown.json",
+    "triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+    "soon-off-broadway-2026/latimes--lucas-villa.json",
+    "soon-off-broadway-2026/playbill--unknown.json",
+    "slam-frank-off-broadway-2026/timeout--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -29,19 +37,25 @@
       "the-second-best-school-shooting-off-broadway-2026/broadway-baby--unknown.json",
       "school-pictures-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
       "memoirs-of-amorous-gentlemen-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "a-ghost-in-your-ear-off-broadway-2026/the-recs--randall-david-cook.json"
+      "a-ghost-in-your-ear-off-broadway-2026/the-recs--randall-david-cook.json",
+      "good-time-charlie-off-broadway-2026/the-recs--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "soon-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+    ]
   },
   "startTime": "2026-10-18T02:27:07.746Z",
-  "lastProcessed": "a-ghost-in-your-ear-off-broadway-2026/the-recs--randall-david-cook.json",
+  "lastProcessed": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
   "log": [
     {
       "t": "2026-10-18T02:41:08.190Z",
@@ -94,6 +108,81 @@
       "event": "bb-session",
       "session": "685e756b",
       "url": "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/attachment/alyssa-may-go"
+    },
+    {
+      "t": "2026-10-18T04:08:34.058Z",
+      "event": "bb-session",
+      "session": "5305646d",
+      "url": "https://cedarnews.net/newstasks/1016181/school-shooting-theatre-review-second-be"
+    },
+    {
+      "t": "2026-10-18T04:08:52.588Z",
+      "event": "bb-session",
+      "session": "a0d5f797",
+      "url": "https://cedarnews.net/newstasks/1016181/school-shooting-theatre-review-second-be"
+    },
+    {
+      "t": "2026-10-18T04:10:12.662Z",
+      "event": "bb-session",
+      "session": "784d3942",
+      "url": "https://www.theatreinla.com/the-second-best-school-shooting/11328/"
+    },
+    {
+      "t": "2026-10-18T04:13:09.804Z",
+      "event": "bb-session",
+      "session": "3be7c279",
+      "url": "https://www.talkinbroadway.com/page/ob/10_14_26b.html"
+    },
+    {
+      "t": "2026-10-18T04:13:10.641Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-18T04:13:12.483Z",
+      "event": "bb-session",
+      "session": "32ce0f27",
+      "url": "https://www.newyorker.com/goings-on-about-town/the-ask"
+    },
+    {
+      "t": "2026-10-18T04:13:13.401Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-18T04:13:53.561Z",
+      "event": "bb-session",
+      "session": "fc2dc944",
+      "url": "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/attachment/alyssa-may-go"
+    },
+    {
+      "t": "2026-10-18T04:14:02.649Z",
+      "event": "bb-session",
+      "session": "d6aa156e",
+      "url": "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/attachment/alyssa-may-go"
+    },
+    {
+      "t": "2026-10-18T04:16:23.461Z",
+      "event": "bb-session",
+      "session": "e457cbb3",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-18T04:16:23.923Z",
+      "event": "bb-session",
+      "session": "011747fc",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654594"
+    },
+    {
+      "t": "2026-10-18T04:16:24.826Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-18T04:17:14.512Z",
+      "event": "bb-session",
+      "session": "6c7d6571",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
     }
   ]
 }
