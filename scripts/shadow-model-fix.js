@@ -21,10 +21,11 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { calculateRecoupment, calculateLifetimeRecoupment } = require('./lib/recoupment-model');
-const { classifyTier, TIERS } = require('./lib/model-return-v2');
+const { classifyTier, TIERS, modelReturnV2 } = require('./lib/model-return-v2');
 const { previewWeeksFromWeekly } = require('./lib/preview-weeks');
 const { makeGrossesLookup } = require('./lib/grosses-lookup');
-const { modelContradictsDesignation: contradiction } = require('./lib/commercial-designations');
+const { modelContradictsDesignation: contradiction, modelSizesLossLabel, lossDesignationFor, returnedEstimatePct } = require('./lib/commercial-designations');
+const { RETURNED_SO_FAR_OPTS } = require('./lib/model-run-fields');
 
 const futureClosing = (show) => !!show.closingDate && new Date(show.closingDate) > new Date();
 const covered = (show, weekly, live) => previewWeeksFromWeekly(
@@ -148,6 +149,24 @@ function main() {
     if (contradiction(oldPct[1], comm.designation) !== contradiction(newPct[1], comm.designation)) {
       effects.push(`designation-contradiction flag ${contradiction(oldPct[1], comm.designation)} -> ${contradiction(newPct[1], comm.designation)}`);
     }
+    // A loss label our model sizes follows its returned-so-far figure, which
+    // the model writer re-reads every run (BRO-5643): a fix that carries it
+    // across the 30% line moves a public label.
+    if (modelSizesLossLabel(comm)) {
+      // The fields the writer stores (model-run-fields.js), read in the same order.
+      const label = (opts, main) => {
+        const r = run({ ...OFF, ...opts, ...RETURNED_SO_FAR_OPTS });
+        return lossDesignationFor(returnedEstimatePct({
+          modelDataQuality: main.dataQuality,
+          modelReturnedExCreditPct: r.error ? undefined : pcts(r),
+          modelRecoupmentPctV2: modelReturnV2(main, show)?.recoupmentPctV2,
+          modelRecoupmentPct: pcts(main),
+        }));
+      };
+      const before = label({}, live);
+      const after = label(FIX.opts, fixed);
+      if (before !== after) effects.push(`loss label ${before} -> ${after}`);
+    }
     rows.push({
       slug: key, tier, designation: comm.designation || null, recouped: comm.recouped ?? null,
       why: FIX.why(show, weekly, live),
@@ -172,7 +191,8 @@ function main() {
     atRiskFlips: rows.filter((r) => has(r, 'At Risk')).map((r) => r.slug),
     approachingFlips: rows.filter((r) => has(r, 'Approaching')).map((r) => r.slug),
     contradictionFlagFlips: rows.filter((r) => has(r, 'designation-contradiction')).map((r) => r.slug),
-    designationChanges: 0, // these fixes write no designation
+    designationChanges: rows.filter((r) => has(r, 'loss label')).length,
+    lossLabelFlips: rows.filter((r) => has(r, 'loss label')).map((r) => `${r.slug}: ${r.effects.find((e) => e.startsWith('loss label'))}`),
   };
   if (FIX.isolate) {
     const iso = rows.filter((r) => r.isolated);

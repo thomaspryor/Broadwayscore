@@ -22,7 +22,7 @@ const { createCommercialWriteGuard } = require('./lib/commercial-write-guard');
 const { classifyTier } = require('./lib/model-return-v2');
 const { clearStaleModelFields, applyShadowReturnFields, applyReturnedSoFarFields, RETURNED_SO_FAR_OPTS } = require('./lib/model-run-fields');
 const { makeGrossesLookup } = require('./lib/grosses-lookup');
-const { modelContradictsDesignation } = require('./lib/commercial-designations');
+const { modelContradictsDesignation, planModelLossResizes, MODEL_LOSS_RESIZE_LIMIT } = require('./lib/commercial-designations');
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -184,6 +184,19 @@ function main() {
     }
   }
 
+  // Loss labels our model sizes follow its new figures (BRO-5643), after every
+  // branch above: one that cleared a record's model fields leaves no estimate,
+  // so its Fizzle or Flop becomes Did Not Recoup. Too many moves at once are
+  // held for review instead of written.
+  const resize = planModelLossResizes(keys.map((key) => [key, commercial.shows[key]]));
+  for (const { key, from, to } of resize.moves) {
+    console.log(`  [SIZE] ${key}.designation: ${from} -> ${to} (by our model)${resize.held ? ', held' : ''}`);
+    if (!resize.held) commercial.shows[key].designation = to;
+  }
+  if (resize.held) {
+    console.log(`::warning title=Loss labels held::${resize.moves.length} loss labels would move with the model's new figures (limit ${MODEL_LOSS_RESIZE_LIMIT}); none written. Check the [SIZE] lines and relabel by data plan.`);
+  }
+
   // Final sweep: normalize sources[] for every show. LLM-generated source entries
   // frequently have type="other" or non-YYYY-MM-DD dates that fail validation.
   // This runs AFTER all other commercial pipeline steps, catching any bad records
@@ -215,6 +228,7 @@ function main() {
   console.log(`  Tier 2 (simplified-lifetime):  ${tier2} shows`);
   console.log(`  Tier 3 (ai-estimated):         ${tier3} shows`);
   console.log(`  Designation contradictions:     ${contradictions}`);
+  console.log(`  Loss labels re-sized:           ${resize.held ? `0 (${resize.moves.length} held)` : resize.moves.length}`);
   console.log(`  Total:                          ${tier1 + tier2 + tier3} shows`);
 }
 
