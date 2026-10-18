@@ -377,7 +377,7 @@ function matchesDomainSet(hostname, domainSet) {
 // (name.tumblr.com). The bare platform and every subdomain no outlet declares
 // stay blocked. A subdomain that a data/outlet-registry.json outlet declares as
 // its `domain` or in its `domainAliases` is that outlet's own site: Dan Dwyer's
-// dandwyeroffscript.tumblr.com (off-script-with-dan-dwyer) had 30 review files
+// dandwyeroffscript.tumblr.com (off-script-with-dan-dwyer) had 36 review files
 // dropped as blockedReviewUrl because the whole tumblr.com host was blocked
 // (BRO-5273).
 const USER_BLOG_SOCIAL_DOMAINS = new Set(['tumblr.com']);
