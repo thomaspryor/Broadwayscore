@@ -430,6 +430,48 @@
     "queuedAt": "2026-10-18T14:01:16.776Z"
   },
   {
+    "conditionKey": "review-gap:opening-window:anne-washburns-anon-off-broadway-2026",
+    "title": "Review gap — \"Anne Washburn's ANON\" missing 2 cited review(s)",
+    "description": "Anne Washburn's ANON (anne-washburns-anon-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=anne-washburns-anon-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-18T14:30:25.891Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:jane-eyre-rose-kingston-off-west-end-2026",
+    "title": "Review gap — \"Jane Eyre\" missing 4 cited review(s)",
+    "description": "Jane Eyre (jane-eyre-rose-kingston-off-west-end-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=jane-eyre-rose-kingston-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-18T14:30:25.992Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-bodyguard-tour-2026",
+    "title": "Review gap — \"The Bodyguard\" missing 3 cited review(s)",
+    "description": "The Bodyguard (the-bodyguard-tour-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-bodyguard-tour-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-18T14:30:26.076Z"
+  },
+  {
     "conditionKey": "opening-night-placeholder-synopsis-music-for-18-musicians-staged-variations-off-broadway-2026",
     "title": "Placeholder synopsis on Music for 18 Musicians: Staged Variations",
     "description": "synopsis for music-for-18-musicians-staged-variations-off-broadway-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
