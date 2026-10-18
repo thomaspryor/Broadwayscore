@@ -41,6 +41,7 @@ function loadDone(ledgerDir, show, night, onDiskUrls = []) {
  *   fetchReview(candidate) -> {outletId?, outlet, criticName, fullText, aggregator?, publishDate?}   (throws to retry)
  *   scoreReview(row, fetched) -> number | {score, extra}   (called only for rows without a fallback score; `extra` fields are merged into the row)
  *   publishPorts {updateReviews, regenShow, deploy, fetchLiveShow, pushData?, isLeased?} OR makePublishPorts(clock),
+ *   missingOutlets? (T1/T2 outlet ids still missing, or a function returning them; gates the SERP phase),
  *   reviewTextsDir? (persist scored rows before marking done, also in a dry-run sandbox),
  *   dryRun?, onDiskUrls?, now() -> ms, wait(ms) -> Promise, forkClock?(startMs) -> {now, wait},
  *   latency {fetchMs, scoreMs}, passIntervalMs, maxPasses, windowMs (how long the lane runs), startedAt?, publishTimeoutMs, pollMs
@@ -49,7 +50,7 @@ function loadDone(ledgerDir, show, night, onDiskUrls = []) {
 async function runLaneNight({
   show, night, openingDate, timeZone, adapters, fetchText, ledgerDir, fetchReview, scoreReview, publishPorts, makePublishPorts, dryRun = false,
   onDiskUrls = [], maxInflight = 2, now, wait, forkClock, latency = {}, passIntervalMs = 2 * 60 * 1000, maxPasses = 1000, windowMs = 6 * 60 * 60 * 1000,
-  startedAt, publishTimeoutMs, pollMs, reviewTextsDir, shouldStop = () => false,
+  startedAt, publishTimeoutMs, pollMs, reviewTextsDir, shouldStop = () => false, missingOutlets = [],
 } = {}) {
   for (const [k, v] of Object.entries({ show, night, adapters, fetchText, ledgerDir, fetchReview, scoreReview, now, wait })) {
     if (v === undefined || v === null) throw new Error(`lane-runner: ${k} is required`);
@@ -58,7 +59,7 @@ async function runLaneNight({
   const persistReview = reviewTextsDir ? createLaneReviewWriter({ reviewTextsDir, show, night }) : null;
   const t0 = startedAt === undefined ? now() : startedAt;
   const seen = loadDone(ledgerDir, show.id, night, onDiskUrls);
-  const memo = { rejected: {} };
+  const memo = discovery.loadMemo(ledgerDir, show.id, night); // survives a restart: final rejections are not re-fetched
   const errors = [];
   const admitted = [];
   const published = [];
@@ -103,10 +104,12 @@ async function runLaneNight({
   let stopped = false;
   for (; passes < maxPasses && now() - t0 < windowMs; passes++) {
     if (shouldStop()) { stopped = true; break; }
-    const pass = await discovery.runDiscoveryPass({ show, night, now: now(), startedAt: t0, adapters, fetchText, seen, memo, timeZone });
+    const pass = await discovery.runDiscoveryPass({ show, night, now: now(), startedAt: t0, adapters, fetchText, seen, memo, timeZone,
+      missingOutlets: typeof missingOutlets === 'function' ? missingOutlets() : missingOutlets });
     errors.push(...pass.errors);
     const stamp = now();
     discovery.recordDiscovered(ledgerDir, { show: show.id, night, admitted: pass.admitted, now: stamp });
+    try { discovery.saveMemo(ledgerDir, show.id, night, memo); } catch (e) { errors.push({ adapter: 'memo', error: String((e && e.message) || e).slice(0, 150) }); }
 
     for (const a of pass.admitted) {
       try {

@@ -25,6 +25,8 @@
  * A pass returns what is NEW: not on disk, not in the night's ledger (`seen`), and not a final rejection recorded
  * in `memo`. Reuse over rewrite: the BWW, DTLI and feed parsers and the outlet resolver are the existing ones.
  */
+const fs = require('fs');
+const path = require('path');
 const { findBWWRoundupLinkOnHomepage } = require('../bww-homepage-scan');
 const { findDTLIShowLinkOnHomepage } = require('../dtli-homepage-scan');
 const { parseFeedItems, titleMatchesShow, urlSlugMatchesShow } = require('../rss-discovery');
@@ -38,6 +40,7 @@ const DEFAULT_FETCH_TIMEOUT_MS = 15000;
 const DEFAULT_PASS_DEADLINE_MS = 90000;
 const MAX_SOURCES_PER_ADAPTER = 12; // feeds or index pages per pass
 const MAX_DATE_CHECK_ATTEMPTS = 3;
+const MAX_UNWRAP_TRIES = 3;
 
 // Hosts an aggregator page links to that are never reviews: social, ticketing, ads, affiliates, search, aggregators.
 const NON_REVIEW_HOSTS = [
@@ -46,7 +49,7 @@ const NON_REVIEW_HOSTS = [
   'amzn.to', 'doubleclick.net', 'googleadservices.com', 'googlesyndication.com', 'adservice.google.com',
   'ticketmaster.com', 'telecharge.com', 'todaytix.com', 'ticketweb.com', 'seatgeek.com', 'stubhub.com',
   'broadway.com', 'luckyseat.com', 'goldstar.com', 'vividseats.com', 'viagogo.com',
-  'broadwayworld.com', 'didtheylikeit.com', 'playbill.com', 'showscore.com', 'wikipedia.org', 'ibdb.com',
+  'broadwayworld.com', 'didtheylikeit.com', 'playbill.com', 'showscore.com', 'show-score.com', 'wikipedia.org', 'ibdb.com',
 ];
 // Short links and feed/redirect wrappers: the real article is only known after a fetch, so they are refused.
 const WRAPPER_HOSTS = [
@@ -66,6 +69,7 @@ const NON_REVIEW_SEGMENTS = new Set([
 const NON_REVIEW_SLUG = /\b(opens[-\s]tonight|extends|extension|extended|casting|cast[-\s]album|announces?|announced|first[-\s]look|photos?|photo[-\s]gallery|red[-\s]carpet|opening[-\s]night[-\s](?:photos|party|arrivals)|interview|q[-\s]?and[-\s]?a|behind[-\s]the[-\s]scenes|giveaway|obituary)\b/i;
 const REVIEW_SIGNAL = /(\breview(?:s|ed)?\b|\bcritic'?s?[-\s]pick\b|\/reviews?\/|\b(?:\d|one|two|three|four|five)(?:\.5)?[-\s]stars?\b)/i;
 
+const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
 const hostOf = (url) => { try { return new URL(url).hostname.replace(/^www\./, '').toLowerCase(); } catch { return null; } };
 const hostMatches = (host, list) => !!host && list.some((h) => host === h || host.endsWith(`.${h}`));
 
@@ -166,10 +170,18 @@ function extractPublishDate(html) {
     [/<meta[^>]+itemprop=["']datePublished["'][^>]*content=["']([^"']+)["']/i, s],
     [/<time\b[^>]*\bdatetime=["']([^"']+)["']/i, bodyScope(s)],
   ];
+  // Talkin' Broadway pages carry no structured data: the date is in the "Theatre Review by {Critic} - {Month D, YYYY}" byline.
+  const tb = s.match(/Theatre Review by\s*(?:<[^>]*>\s*)*[A-Za-z][\w.'-]*(?:\s+[A-Za-z][\w.'-]*){0,3}\s*(?:<[^>]*>\s*)*-\s*(?:<[^>]*>\s*)*([A-Z][a-z]+\.?\s+\d{1,2},\s+\d{4})/);
+  if (tb) tries.push([/^(.*)$/, tb[1]]);
   for (const [re, scope] of tries) {
     const m = scope.match(re);
     if (!m) continue;
     const raw = m[1].trim();
+    const written = raw.match(/^([A-Z][a-z]+)\.?\s+(\d{1,2}),\s+(\d{4})$/);
+    if (written) {
+      const mo = MONTHS.indexOf(written[1].slice(0, 3).toLowerCase());
+      return mo < 0 ? null : `${written[3]}-${String(mo + 1).padStart(2, '0')}-${String(written[2]).padStart(2, '0')}`;
+    }
     if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw;
     if (/(Z|[+-]\d{2}:?\d{2})$/i.test(raw) && !Number.isNaN(Date.parse(raw))) return new Date(raw).toISOString();
     // No zone: the instant is unknown, but the calendar date the outlet wrote is safe inside a +/-1 day window.
@@ -204,11 +216,39 @@ function dtliAdapter({ homeUrl = 'https://didtheylikeit.com/' } = {}) {
   };
 }
 
-// The shared feed parser returns pubDate as a Date; the trust model wants an ISO string with a zone.
-function toIso(v) {
-  if (!v) return null;
-  const d = v instanceof Date ? v : new Date(v);
-  return Number.isNaN(d.getTime()) ? null : d.toISOString();
+// The shared feed parser returns pubDate as a Date, parsed in the SERVER's zone when the feed wrote none, and an Atom
+// <updated> is the last edit, not the publish time. Neither is a trustworthy instant, so the raw text is re-read:
+//   - RSS pubDate / dc:date WITH a zone: the instant, used as is.
+//   - zoneless RSS date, or any Atom <updated>: only the calendar day the feed wrote, as a fallback; the article page
+//     decides the date (needsDate) and the fallback stands only when the page has none.
+const ZONE_SUFFIX = /(Z|GMT|UTC?|UT|[ECMP][SD]T|[+-]\d{2}:?\d{2})\s*$/i;
+function writtenDay(raw) {
+  const iso = String(raw).match(/^(\d{4}-\d{2}-\d{2})/);
+  if (iso) return iso[1];
+  const rfc = String(raw).match(/(\d{1,2})\s+([A-Za-z]{3})[a-z]*\.?\s+(\d{4})/);
+  const mo = rfc ? MONTHS.indexOf(rfc[2].toLowerCase()) : -1;
+  return mo < 0 ? null : `${rfc[3]}-${String(mo + 1).padStart(2, '0')}-${String(rfc[1]).padStart(2, '0')}`;
+}
+function feedDateInfo(raw, { atom }) {
+  const text = String(raw || '').trim();
+  if (!text) return { publishDate: null, fallbackDate: null, needsDate: true };
+  if (!atom && ZONE_SUFFIX.test(text) && !Number.isNaN(Date.parse(text))) return { publishDate: new Date(text).toISOString(), fallbackDate: null, needsDate: false };
+  return { publishDate: null, fallbackDate: writtenDay(text), needsDate: true };
+}
+/** parseFeedItems plus the date evidence above, keyed by the raw link of each item/entry block. */
+function parseFeedEntries(xml) {
+  const text = String(xml || '');
+  const atom = text.includes('<feed') && text.includes('<entry');
+  const dates = new Map();
+  for (const m of text.matchAll(/<(item|entry)[\s>]([\s\S]*?)<\/\1>/gi)) {
+    const block = m[2];
+    const link = ((block.match(/<link[^>]*rel=["']alternate["'][^>]*href=["']([^"']+)["']/) || block.match(/<link[^>]*href=["']([^"']+)["']/) || block.match(/<link[^>]*>([\s\S]*?)<\/link>/) || [])[1] || '').trim();
+    const grab = (tag) => (block.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`, 'i')) || [])[1];
+    const raw = atom ? (grab('updated') || grab('published')) : (grab('pubDate') || grab('dc:date'));
+    const onlyPublished = atom && !grab('updated');
+    if (link) dates.set(link, onlyPublished ? { ...feedDateInfo(raw, { atom: false }) } : feedDateInfo(raw, { atom }));
+  }
+  return parseFeedItems(text).map((it) => ({ ...it, date: dates.get(it.link) || feedDateInfo('', { atom }) }));
 }
 
 function rssAdapter({ feeds }) {
@@ -218,13 +258,12 @@ function rssAdapter({ feeds }) {
       const out = [];
       for (const feed of (feeds || []).slice(0, MAX_SOURCES_PER_ADAPTER)) {
         let items;
-        try { items = parseFeedItems(await fetchText(feed.url)); } catch { continue; } // one dead feed never hides the others
+        try { items = parseFeedEntries(await fetchText(feed.url)); } catch { continue; } // one dead feed never hides the others
         for (const it of items) {
           if (!it.link) continue;
           // fuzzy: an outlet's own typo in headline + slug (CATERINA, BRO-4001).
           if (!titleMatchesShow(it.title, show.title, { fuzzy: true }) && !urlSlugMatchesShow(it.link, show.title, { fuzzy: true })) continue;
-          const iso = toIso(it.pubDate);
-          out.push({ url: it.link, title: it.title, source: 'outlet-index', publishDate: iso, needsDate: !iso, via: feed.name || feed.url, outletId: hostOf(it.link) === hostOf(feed.url) ? feed.outletId : undefined });
+          out.push({ url: it.link, title: it.title, source: 'outlet-index', ...it.date, via: feed.name || feed.url, outletId: hostOf(it.link) === hostOf(feed.url) ? feed.outletId : undefined });
         }
       }
       return out;
@@ -253,6 +292,169 @@ function sectionIndexAdapter({ outlets }) {
   };
 }
 
+/** Show Score: the "Read more" outlet links on the show's critic-review tiles. Show-page-vouched, so aggregator claims. */
+function showScoreAdapter({ urlMap = {}, allShows = [] } = {}) {
+  return {
+    name: 'show-score', kind: 'aggregator', phase: 'cheap',
+    async discover({ show, fetchText }) {
+      const ss = require('../show-score-discover');
+      const page = ss.showScoreUrlForShow(show, urlMap, allShows);
+      if (!page) return [];
+      // fetchAllShowScoreReviewUrls swallows fetch errors; keep the first one so an outage is reported, not read as "no reviews".
+      let firstError = null;
+      const urls = await ss.fetchAllShowScoreReviewUrls(page, async (u) => { try { return await fetchText(u); } catch (e) { firstError = firstError || e; throw e; } });
+      if (!urls.length && firstError) throw firstError;
+      return urls.filter((u) => !hostMatches(hostOf(u), NON_REVIEW_HOSTS)).map((u) => ({ url: u, title: '', source: 'aggregator', aggregatorCited: true, via: page }));
+    },
+  };
+}
+
+/** Playbill Verdict: the category page -> this show's "Read the reviews" roundup -> the links it cites. */
+function playbillVerdictAdapter() {
+  return {
+    name: 'playbill-verdict', kind: 'aggregator', phase: 'cheap',
+    async discover({ show, fetchText }) {
+      const { searchPlaybillVerdict } = require('../playbill-verdict-discover');
+      const hit = await searchPlaybillVerdict(show, { fetchHtml: (u) => fetchText(u) });
+      if (!hit) return [];
+      return extractCitedLinks(await fetchText(hit.articleUrl), hit.articleUrl).map((l) => ({ url: l.url, fetchUrl: l.rawUrl, title: l.text, source: 'aggregator', aggregatorCited: true, via: hit.articleUrl }));
+    },
+  };
+}
+
+const unescapeJs = (v) => String(v).replace(/\\u003d/gi, '=').replace(/\\u0026/gi, '&').replace(/\\\//g, '/').replace(/&amp;/g, '&');
+
+/**
+ * The publisher URL behind a Google News wrapper page, or null. Only a URL on the item's own source host counts (the
+ * wrapper's opaque token is never read, and a page full of unrelated links is not a destination): canonical, og:url,
+ * meta refresh, a JS location, data-n-au, then a single distinct anchor.
+ */
+function publisherUrlFromWrapperPage(html, sourceUrl) {
+  const sourceHost = hostOf(sourceUrl);
+  if (!sourceHost) return null;
+  const accept = (value) => {
+    const u = resolveUrl(unescapeJs(value || ''), 'https://news.google.com/');
+    const host = u && hostOf(u);
+    if (!host || host === 'news.google.com' || !(host === sourceHost || host.endsWith(`.${sourceHost}`) || sourceHost.endsWith(`.${host}`))) return null;
+    return /^https?:/i.test(u) && nonReviewReason(u) !== 'homepage' ? u : null;
+  };
+  const s = String(html || '');
+  const single = [
+    /<link[^>]+rel=["']canonical["'][^>]*href=["']([^"']+)["']/i, /<link[^>]+href=["']([^"']+)["'][^>]*rel=["']canonical["']/i,
+    /<meta[^>]+property=["']og:url["'][^>]*content=["']([^"']+)["']/i, /<meta[^>]+content=["']([^"']+)["'][^>]*property=["']og:url["']/i,
+    /<meta[^>]+http-equiv=["']refresh["'][^>]*content=["'][^"']*url=([^"']+)["']/i,
+    /location\.(?:replace|assign)\(\s*["']([^"']+)["']\s*\)/i, /window\.location(?:\.href)?\s*=\s*["']([^"']+)["']/i,
+  ];
+  for (const re of single) { const u = accept((s.match(re) || [])[1]); if (u) return u; }
+  const found = new Set();
+  for (const m of s.matchAll(/data-n-au=["']([^"']+)["']/gi)) { const u = accept(m[1]); if (u) found.add(u); }
+  for (const a of extractAnchors(s, 'https://news.google.com/')) { const u = accept(a.url); if (u) found.add(u); }
+  return found.size === 1 ? [...found][0] : null;
+}
+
+/**
+ * Google News RSS search. Every item link is a news.google.com wrapper: it is unwrapped through the item's own
+ * <source url> host, and an item whose publisher cannot be resolved is dropped (the wrapper itself is never emitted).
+ * Resolutions are cached for the process so a 2-minute loop does not re-open the same wrapper; a failed one is retried
+ * up to MAX_UNWRAP_TRIES times. Fetches are capped per pass by `maxUnwrap`.
+ */
+function googleNewsAdapter({ maxUnwrap = 8 } = {}) {
+  const resolved = new Map(); // wrapper link -> { url|null, tries }
+  return {
+    name: 'google-news', kind: 'feed', phase: 'cheap',
+    async discover({ show, fetchText }) {
+      const london = /west[-\s]?end|london/i.test(String(show.category || ''));
+      const q = new URLSearchParams({ q: `"${show.title}" review`, hl: london ? 'en-GB' : 'en-US', gl: london ? 'GB' : 'US', ceid: london ? 'GB:en' : 'US:en' });
+      const xml = await fetchText(`https://news.google.com/rss/search?${q}`);
+      const out = [];
+      let unwrapped = 0;
+      for (const m of String(xml).matchAll(/<item[\s>]([\s\S]*?)<\/item>/gi)) {
+        const grab = (tag) => ((m[1].match(new RegExp(`<${tag}[^>]*>(?:<!\\[CDATA\\[)?([\\s\\S]*?)(?:\\]\\]>)?</${tag}>`, 'i')) || [])[1] || '').trim();
+        const title = grab('title').replace(/&amp;/g, '&');
+        const link = grab('link');
+        const sourceUrl = ((m[1].match(/<source[^>]*\burl=["']([^"']+)["']/i) || [])[1] || '').trim();
+        if (hostOf(link) !== 'news.google.com' || !sourceUrl || !resolveOutletFromUrl(sourceUrl)) continue; // unknown publishers are never ingested blind
+        if (!titleMatchesShow(title, show.title, { fuzzy: true })) continue;
+        let r = resolved.get(link);
+        if (!r || (!r.url && r.tries < MAX_UNWRAP_TRIES)) {
+          if (unwrapped >= maxUnwrap) continue;
+          unwrapped++;
+          let url = null;
+          try { url = publisherUrlFromWrapperPage(await fetchText(link, { preferPlaywright: true, skipVerify: true }), sourceUrl); } catch { /* counted below */ }
+          r = { url, tries: ((r && r.tries) || 0) + 1 };
+          resolved.set(link, r);
+        }
+        if (!r.url) continue;
+        const date = feedDateInfo(grab('pubDate'), { atom: false });
+        out.push({ url: r.url, title, source: 'outlet-index', ...date, via: 'google-news' });
+      }
+      return out;
+    },
+  };
+}
+
+// Talkin' Broadway review pages are dated files, not slugs ("/page/ob/10_09_26.html"), and their link text is the show title
+// with no "review" word, so the usual review-signal test cannot apply. The path shape stands in for it. The date comes from
+// the page's "Theatre Review by ... - Month D, YYYY" byline (extractPublishDate), never from the filename.
+const TB_REVIEW_PATH = /^\/page\/(?:ob|bwaybway|westend)\/\d{2}_\d{2}_\d{2}[a-z]?\.html?$/i;
+function talkinBroadwayAdapter({ indexUrls = ['https://www.talkinbroadway.com/page/ob/index.html', 'https://www.talkinbroadway.com/page/bwaybway/index.html'] } = {}) {
+  return {
+    name: 'talkin-broadway', kind: 'outlet-index', phase: 'cheap',
+    async discover({ show, fetchText }) {
+      const out = [];
+      let failures = 0;
+      for (const indexUrl of indexUrls.slice(0, MAX_SOURCES_PER_ADAPTER)) {
+        let html;
+        try { html = await fetchText(indexUrl); } catch { failures++; continue; }
+        for (const a of extractAnchors(bodyScope(html), indexUrl)) {
+          let u; try { u = new URL(a.url); } catch { continue; }
+          if (hostOf(a.url) !== 'talkinbroadway.com' || !TB_REVIEW_PATH.test(u.pathname)) continue;
+          if (!titleMatchesShow(a.text, show.title, { fuzzy: true })) continue;
+          out.push({ url: a.url, title: a.text, source: 'outlet-index', publishDate: null, needsDate: true, reviewSignalGiven: true, via: indexUrl, outletId: 'talkinbroadway' });
+        }
+      }
+      if (failures && failures === Math.min(indexUrls.length, MAX_SOURCES_PER_ADAPTER)) throw new Error('every Talkin\' Broadway index failed');
+      return out;
+    },
+  };
+}
+
+/**
+ * Site-restricted web search for T1/T2 outlets still missing (phase 'serp': the pass only runs it after +3h). `search(query)`
+ * is injected and returns [{url,title}]. `limit` caps both the SEARCHES run and the results returned, so a burst of
+ * missing outlets cannot burn SERP credits. Results carry no trustworthy date: it is read from the article.
+ */
+function serpAdapter({ search, domainFor } = {}) {
+  if (typeof search !== 'function') throw new Error('serpAdapter: search(query) is required');
+  const domain = domainFor || ((id) => {
+    if (/\./.test(String(id))) return String(id).replace(/^www\./, '');
+    const o = require('../../../data/outlet-registry.json').outlets[id];
+    return o && o.domain ? String(o.domain).replace(/^www\./, '') : null;
+  });
+  return {
+    name: 'serp', kind: 'serp', phase: 'serp',
+    async discover({ show, missingOutlets = [], limit = 5 }) {
+      const out = [];
+      let searches = 0; let failures = 0; let lastError = null;
+      for (const id of missingOutlets) {
+        if (searches >= limit || out.length >= limit) break;
+        const dom = domain(id);
+        if (!dom) continue;
+        searches++;
+        let results;
+        try { results = await search(`site:${dom} "${show.title}" review`); } catch (e) { failures++; lastError = e; continue; }
+        for (const r of results || []) {
+          if (!r || !r.url || !(hostOf(r.url) === dom || (hostOf(r.url) || '').endsWith(`.${dom}`))) continue;
+          if (!titleMatchesShow(r.title || '', show.title, { fuzzy: true }) && !urlSlugMatchesShow(r.url, show.title, { fuzzy: true })) continue;
+          out.push({ url: r.url, title: r.title || '', source: 'outlet-index', publishDate: null, needsDate: true, via: 'serp', outletId: id.includes('.') ? undefined : id });
+        }
+      }
+      if (searches && failures === searches) throw lastError;
+      return out.slice(0, limit);
+    },
+  };
+}
+
 // ---- the pass --------------------------------------------------------------------------------------------------
 
 /** SERP runs only once the lane has been up for 3 hours AND at least one T1/T2 outlet is still missing. */
@@ -263,13 +465,13 @@ function serpAllowed({ startedAt, now, missingOutlets = [], afterMs = SERP_AFTER
 
 /** Wrap a fetch so one hung request cannot hang the pass. The orphaned request is left to finish on its own. */
 function withTimeout(fetchText, ms, remainingMs = () => Infinity) {
-  return (url) => {
+  return (url, opts) => {
     const budget = Math.min(ms, remainingMs());
     if (budget <= 0) return Promise.reject(new Error(`pass deadline reached before fetching ${url}`));
     let timer;
     const timeout = new Promise((_, reject) => { timer = setTimeout(() => reject(new Error(`fetch timed out after ${budget}ms: ${url}`)), budget); });
     // The timer is cleared on settle, so it never keeps the process alive past a finished fetch.
-    return Promise.race([Promise.resolve().then(() => fetchText(url)), timeout]).finally(() => clearTimeout(timer));
+    return Promise.race([Promise.resolve().then(() => fetchText(url, opts)), timeout]).finally(() => clearTimeout(timer));
   };
 }
 
@@ -357,7 +559,7 @@ async function runDiscoveryPass({
     if (c.source === 'aggregator') {
       // An aggregator page lists many links; only ones on a KNOWN outlet's host are taken, the rest are reported.
       if (!resolveOutletFromUrl(c.url)) { unknownHosts.add(hostOf(c.url)); reject(c, key, 'unknown-outlet-host'); continue; }
-    } else if (!hasReviewSignal(c.url, c.title)) {
+    } else if (!c.reviewSignalGiven && !hasReviewSignal(c.url, c.title)) {
       reject(c, key, 'not-review-like'); continue;
     }
 
@@ -365,7 +567,7 @@ async function runDiscoveryPass({
     if (c.source === 'outlet-index' && !publishDate && c.needsDate) {
       if (dateChecks >= maxDateChecks) { deferredDateChecks.push(c.url); continue; } // tried first next pass: attempts is still 0
       dateChecks++;
-      try { publishDate = extractPublishDate(await fetchText(c.fetchUrl || c.url)); } catch (e) {
+      try { publishDate = extractPublishDate(await fetchText(c.fetchUrl || c.url)) || c.fallbackDate || null; } catch (e) {
         errors.push({ adapter: c.adapter, error: `date check ${c.url}: ${String((e && e.message) || e).slice(0, 150)}` });
         const prev = memo.rejected[key] || { attempts: 0 };
         memo.rejected[key] = { reason: 'date-check-failed', attempts: prev.attempts + 1 };
@@ -378,6 +580,26 @@ async function runDiscoveryPass({
     else reject(c, key, verdict.reason);
   }
   return { admitted, rejected, unknownHosts: [...unknownHosts].filter(Boolean).sort(), errors, deferredDateChecks, serpRan, deadlineHit };
+}
+
+/**
+ * The rejection memo survives a restart: without it a restarted lane re-fetches every final rejection once more, and the
+ * date-check rotation starts over. A missing or torn file is an empty memo (fail open to re-checking, never to admitting).
+ */
+function memoPath(ledgerDir, show, night) { return ledger.ledgerPath(ledgerDir, show, night).replace(/\.jsonl$/, '.memo.json'); }
+function loadMemo(ledgerDir, show, night) {
+  try {
+    const m = JSON.parse(fs.readFileSync(memoPath(ledgerDir, show, night), 'utf8'));
+    return { rejected: m && typeof m.rejected === 'object' && m.rejected ? m.rejected : {} };
+  } catch { return { rejected: {} }; }
+}
+function saveMemo(ledgerDir, show, night, memo) {
+  const file = memoPath(ledgerDir, show, night);
+  const tmp = `${file}.${process.pid}.tmp`;
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(tmp, JSON.stringify({ rejected: (memo && memo.rejected) || {} }));
+  fs.renameSync(tmp, file); // atomic: a crash mid-write never leaves a torn memo
+  return file;
 }
 
 /** The set of keys the lane must not emit again: the night's ledger plus URLs already on disk, all canonicalised. */
@@ -398,6 +620,7 @@ function recordDiscovered(ledgerDir, { show, night, admitted, now = Date.now() }
 
 module.exports = {
   SERP_AFTER_MS, NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, extractAnchors, extractCitedLinks, extractPublishDate,
-  nonReviewReason, hasReviewSignal, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, serpAllowed,
+  nonReviewReason, hasReviewSignal, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, talkinBroadwayAdapter, serpAdapter,
+  publisherUrlFromWrapperPage, parseFeedEntries, serpAllowed, memoPath, loadMemo, saveMemo,
   runDiscoveryPass, loadSeen, recordDiscovered,
 };

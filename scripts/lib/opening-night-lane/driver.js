@@ -92,6 +92,14 @@ function onDiskUrlsFor(reviewsFile, showId) {
   try { return JSON.parse(fs.readFileSync(reviewsFile, 'utf8')).reviews.filter((r) => r && r.showId === showId && r.url).map((r) => r.url); } catch { return []; }
 }
 
+/** Site-restricted web search through the shared SERP chain (Bright Data, then ScrapingBee). Required lazily: it is only used after +3h. */
+function realSerpSearch(env) {
+  return async (query) => {
+    const { serpQuery } = require('../url-discovery');
+    return (await serpQuery(query, { nbResults: 10, brightDataKey: env.BRIGHTDATA_TOKEN, scrapingBeeKey: env.SCRAPINGBEE_API_KEY, log: () => {} })) || [];
+  };
+}
+
 /**
  * Real dependencies. Checks the scorer keys before anything claims a lease. `routeAlert` and `ScorerClass`
  * (EnsembleReviewScorer, TypeScript, hence `npx tsx`) are passed in by the CLI rather than required here: anything this
@@ -123,8 +131,8 @@ function buildRealLaneDeps({
       const { fetchPage } = require('../scraper');
       const scorer = new ScorerClass(env.ANTHROPIC_API_KEY, env.OPENAI_API_KEY, env.GEMINI_API_KEY, env.OPENROUTER_API_KEY);
       const scoring = inline.createInlineScoring({ show, night, ledgerDir, now: Date.now, ...inline.realFetchPorts(), scoreText: inline.ensembleScoreText(scorer) });
-      const fetchText = async (url) => {
-        const r = await fetchPage(url);
+      const fetchText = async (url, opts) => {
+        const r = await fetchPage(url, opts);
         if (!r || !r.content) throw new Error(`fetchText: no content for ${url}`);
         return r.content;
       };
@@ -133,7 +141,13 @@ function buildRealLaneDeps({
         // A CI job caps the lane step below the 6 h default window; without this it is always killed mid-run (BRO-4835).
         ...(Number(process.env.OPENING_NIGHT_LANE_WINDOW_MIN) > 0 ? { windowMs: Number(process.env.OPENING_NIGHT_LANE_WINDOW_MIN) * 60 * 1000 } : {}),
         reviewTextsDir: path.join(repoDir, 'data', 'review-texts'),
-        adapters: [discovery.bwwRoundupAdapter(), discovery.dtliAdapter(), discovery.rssAdapter({ feeds: adaptersConfig.feeds || [] }), discovery.sectionIndexAdapter({ outlets: adaptersConfig.outlets || [] })],
+        adapters: [
+          discovery.bwwRoundupAdapter(), discovery.dtliAdapter(), discovery.showScoreAdapter(), discovery.playbillVerdictAdapter(),
+          discovery.talkinBroadwayAdapter(), discovery.googleNewsAdapter(),
+          discovery.rssAdapter({ feeds: adaptersConfig.feeds || [] }), discovery.sectionIndexAdapter({ outlets: adaptersConfig.outlets || [] }),
+          discovery.serpAdapter({ search: adaptersConfig.search || realSerpSearch(env) }),
+        ],
+        missingOutlets: adaptersConfig.missingOutlets || [],
         fetchReview: scoring.fetchReview, scoreReview: scoring.scoreReview,
         // One instance for the whole night: its push queue and pending merges must be shared by every batch.
         publishPorts: createRealPublishPorts({ show: show.id, repoDir, coreDir, holder }),
