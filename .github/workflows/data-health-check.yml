@@ -396,7 +396,7 @@ jobs:
       - name: Published score star-band audit
         if: always()
         continue-on-error: true
-        timeout-minutes: 3
+        timeout-minutes: 1
         run: node scripts/audit-star-band-drift.js --strict --counts=data/audit/star-band-drift.json
 
       # BRO-4719: email the owner when a card newly carries a "DECISION
