@@ -96,7 +96,7 @@ async function probe(t) {
       : `body ${body.length} / need ${t.minBody}`;
   }
   const botBlocked = !error && !ok && isBotChallenge(html);
-  if (botBlocked) detail = `bot challenge page (html ${htmlLen}) — login state unknown`;
+  if (botBlocked) detail = `bot challenge page — login state unknown; ${detail}`;
   return { outlet: t.outlet, ok, detail, error, url: t.url, knownLoggedOut: t.knownLoggedOut || null, botBlocked };
 }
 
@@ -127,12 +127,13 @@ async function probe(t) {
       console.log(`❌ ${bad.length} outlet(s) not returning full text: ${bad.map((r) => r.outlet).join(', ')}`);
       console.log('   → Log into those sites in Safari, then re-run:');
       console.log('     python3 scripts/extract-safari-cookies.py --push');
-    } else {
+    } else if (!blocked.length) {
       console.log('✅ All probed outlets return full review text (known-logged-out outlets excluded).');
     }
   }
 
   // knownLoggedOut targets report honestly but don't gate the exit code.
+  // A bot-checked outlet still exits 1: its login is unverified, not healthy.
   process.exit(results.some((r) => !r.ok && !r.knownLoggedOut) ? 1 : 0);
 })().catch((e) => {
   console.error('verify-cookie-login failed:', e.stack || e.message);

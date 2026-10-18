@@ -60,7 +60,7 @@ function classifyWalledProbe({ withCookies, withoutCookies, minBody, wallMarker,
 // Device"). A page like this says nothing about the login: re-logging in
 // cannot clear it, so callers must not report it as logged-out (2026-10-18:
 // The Times and WSJ challenges were sending the owner to re-login in Safari).
-const BOT_CHALLENGE_RE = /captcha-delivery\.com|<title>\s*(?:Verifying Device|Just a moment\.\.\.)\s*<\/title>|Access is temporarily restricted|slide right to secure|challenges\.cloudflare\.com/i;
+const BOT_CHALLENGE_RE = /captcha-delivery\.com|<title>\s*(?:Verifying Device|Just a moment\.\.\.)\s*<\/title>|Access is temporarily restricted|slide right to secure/i;
 
 function isBotChallenge(html) {
   return BOT_CHALLENGE_RE.test(String(html || ''));
