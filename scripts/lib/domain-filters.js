@@ -346,6 +346,10 @@ const CENSUS_JUNK_DOMAINS = new Set([
   // review-texts and 0 rows in reviews.json for each.
   'theatricalindex.com', 'broadwaylog.app', 'operabase.com', 'ticketswap.com',
   'zeffy.com', 'askonasholt.com',
+  // BRO-5489: FullHouse, a show-diary app ("Track every show you see"). Its
+  // /dc-production/<show> pages are production listings; one (Antigone Exits,
+  // now 404) held the opening-window gap alert open. 0 files, 0 reviews.json rows.
+  'fullhouse.me',
   // A novelist's blog: its "My Favorite Bit" author interviews share titles
   // with plays (A Thousand Natural Shocks, BRO-4540).
   'maryrobinettekowal.com',

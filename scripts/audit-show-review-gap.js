@@ -266,6 +266,8 @@ const { auditExitDecision } = require('./lib/aggregator-gap-audit-exit');
 // classifyReviewUrl and this audit share one implementation.
 const { classifyReviewUrl, classifyGapCandidateUrl, registrableHost, hostOf } = require('./lib/non-review-url-patterns');
 const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
+const { syndicatedReprintOf } = require('./lib/syndicated-reprint-match'); // BRO-5489
+const { isSyndicationHost } = require('./lib/syndication-canonical');
 const { parseHistoricalDate } = require('./lib/date-utils');
 
 // provisionalOutletIdFromHost lives in scripts/lib/outlet-canonicalize.js so the
@@ -1264,6 +1266,19 @@ async function auditShow(show, opts = {}) {
         });
         continue;
       }
+      // BRO-5489: an aol/yahoo/msn reprint of a review we already hold (the
+      // portal is never the outlet; the Antigone Exits AOL copy of the
+      // Guardian review re-alerted hourly). Recorded like the variant above.
+      const reprint = syndicatedReprintOf({
+        candidateUrl: aggUrl,
+        heldFiles: dirData.filter(d => !d._exactMatchOnly && isCoveredFile(d, show)),
+        showTitle: show.title,
+        venue: show.venue,
+      });
+      if (reprint.dup) {
+        result.dedupedVariants.push({ url: aggUrl, host: aggHost, matchedUrl: reprint.matchedUrl, outletId: null, reason: reprint.reason });
+        continue;
+      }
       result.missing.push({ url: aggUrl, host: aggHost, knownOutletId });
     } else {
       const clean = dirFiles.filter(d => isCoveredFile(d, show));
@@ -1703,10 +1718,26 @@ function ingestMissingUrl(showId, url, knownOutletId) {
 // Score pages, podcasts) — 15 repeats on Lost in Del Valle / Midnight. Re-apply
 // the current gate and the show's blocklist at read time so a stale row can
 // never alert on a URL a fresh audit would drop.
-function stillCollectable(m, blocklist) {
+function stillCollectable(m, blocklist, row) {
   if (!m || !m.url) return true;
   if (!classifyGapCandidateUrl(m.url).ok) return false;
-  return !findBlockedEntry(blocklist, m.url);
+  if (findBlockedEntry(blocklist, m.url)) return false;
+  // BRO-5489: same reprint dedupe auditShow applies, re-run at read time so a
+  // carried-forward row stops alerting on a portal copy of a held review.
+  return !(row && isSyndicationHost(m.url) && isHeldReprint(row, m.url));
+}
+
+// Read-time reprint check. Only clean files with text vouch (classifyShowFile,
+// no show context needed); a missing review-texts dir vouches for nothing, so
+// the URL stays a gap (fail-open to alerting).
+let _venueById = null;
+function isHeldReprint(row, url) {
+  if (!_venueById) {
+    _venueById = new Map();
+    try { for (const s of loadShows()) _venueById.set(s.id, s.venue || ''); } catch { /* no shows.json: venue unknown */ }
+  }
+  const heldFiles = loadDirFiles(row.showId).filter(d => classifyShowFile(d) === 'clean');
+  return syndicatedReprintOf({ candidateUrl: url, heldFiles, showTitle: row.title, venue: _venueById.get(row.showId) }).dup;
 }
 
 function openingWindowConditionKey(showId) {
@@ -1758,7 +1789,7 @@ function currentRunUncollected(r, { blocklist, ignoreCensusTagged = false } = {}
   const reportOnly = new Set((r.weIngestBlocked || [])
     .filter(x => x.reason === 'serp-census-gate-off' || (censusUrls.has(x.url) && !x.censusGateOn)).map(x => x.url));
   const missing = currentRunOnly(r.missing)
-    .filter(m => !ingestedOk.has(m.url) && !refusedForGood.has(m.url) && !reportOnly.has(m.url) && !(ignoreCensusTagged && m.serpCensus) && stillCollectable(m, bl)).length;
+    .filter(m => !ingestedOk.has(m.url) && !refusedForGood.has(m.url) && !reportOnly.has(m.url) && !(ignoreCensusTagged && m.serpCensus) && stillCollectable(m, bl, r)).length;
   const citedNoUrl = currentRunCount(r.citedNoUrl);
   return missing + citedNoUrl;
 }
