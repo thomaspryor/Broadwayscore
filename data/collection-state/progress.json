@@ -5,7 +5,13 @@
     "angels-bone-west-end-2026/jackstage--unknown.json"
   ],
   "failed": [
-    "angels-bone-west-end-2026/bachtrack--unknown.json"
+    "harry-potter-2021/newyorker--conde-nast.json",
+    "fat-ham-2023/newyorker--vinson-cunningham.json",
+    "the-parisian-woman-2017/newyorker--hilton-als.json",
+    "doctor-zhivago-2015/newyorker--conde-nast.json",
+    "the-anarchist-2012/newyorker--henry-alford.json",
+    "brief-encounter-2010/newyorker--uncredited.json",
+    "south-pacific-2008/newyorker--john-lahr.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -24,7 +30,63 @@
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-10-18T14:58:36.144Z",
-  "lastProcessed": "angels-bone-west-end-2026/jackstage--unknown.json",
-  "log": []
+  "startTime": "2026-10-18T14:54:01.922Z",
+  "lastProcessed": "august-osage-county-2007/newyorker--hilton-als.json",
+  "log": [
+    {
+      "t": "2026-10-18T14:55:01.616Z",
+      "event": "bb-session",
+      "session": "aa02dd5f",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/harry-potter-and-the-curs"
+    },
+    {
+      "t": "2026-10-18T14:55:02.599Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-18T14:55:43.966Z",
+      "event": "bb-session",
+      "session": "f59fcfaf",
+      "url": "https://www.newyorker.com/magazine/2023/05/22/fat-ham-theatre-review"
+    },
+    {
+      "t": "2026-10-18T14:55:44.881Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-18T14:56:25.337Z",
+      "event": "bb-session",
+      "session": "462dee1e",
+      "url": "https://www.newyorker.com/magazine/2017/12/11/the-parisian-woman-reviewed"
+    },
+    {
+      "t": "2026-10-18T14:56:26.225Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-18T14:57:02.267Z",
+      "event": "bb-session",
+      "session": "89aa507c",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/doctor-zhivago-2"
+    },
+    {
+      "t": "2026-10-18T14:57:03.173Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-18T14:57:56.121Z",
+      "event": "bb-session",
+      "session": "66326099",
+      "url": "https://www.newyorker.com/humor/daily-shouts/backstage-at-broadways-the-anarchis"
+    },
+    {
+      "t": "2026-10-18T14:57:57.048Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    }
+  ]
 }
