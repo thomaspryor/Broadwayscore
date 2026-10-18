@@ -1,70 +1,21 @@
 {
-  "updatedAt": "2026-10-18T11:41:19.066Z",
-  "processed": 506,
-  "failed": 450,
-  "successRate": "52.9%",
+  "updatedAt": "2026-10-18T11:41:56.731Z",
+  "processed": 560,
+  "failed": 485,
+  "successRate": "53.6%",
   "tierBreakdown": {
-    "playwright": 250,
+    "playwright": 269,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 42,
-    "scrapingbee": 39,
-    "brightdata": 23,
+    "scrapingdog": 47,
+    "scrapingbee": 41,
+    "brightdata": 28,
     "archiveToday": 0,
-    "archive": 168
+    "archive": 193
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 22,
   "recentActivity": [
-    {
-      "t": "2026-10-18T08:58:09.568Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T08:58:26.225Z",
-      "event": "bb-session",
-      "session": "1417bfdc",
-      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
-    },
-    {
-      "t": "2026-10-18T08:58:26.640Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T09:02:30.573Z",
-      "event": "bb-session",
-      "session": "6aaeeb64",
-      "url": "https://www.wsj.com/articles/SB106748686155075900"
-    },
-    {
-      "t": "2026-10-18T09:02:31.040Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T09:02:48.466Z",
-      "event": "bb-session",
-      "session": "3d161743",
-      "url": "https://www.wsj.com/articles/SB106748686155075900"
-    },
-    {
-      "t": "2026-10-18T09:02:48.905Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T10:42:30.342Z",
-      "event": "bb-session",
-      "session": "fbc9dc5b",
-      "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89"
-    },
-    {
-      "t": "2026-10-18T10:42:30.801Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-10-18T10:42:47.474Z",
       "event": "bb-session",
@@ -95,6 +46,83 @@
     },
     {
       "t": "2026-10-18T10:50:54.403Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-18T11:16:47.756Z",
+      "event": "bb-session",
+      "session": "8b516450",
+      "url": "https://www.wsj.com/articles/swept-away-review-the-avett-brothers-set-sail-on-br"
+    },
+    {
+      "t": "2026-10-18T11:16:48.270Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-18T11:17:05.008Z",
+      "event": "bb-session",
+      "session": "b4276917",
+      "url": "https://www.wsj.com/articles/swept-away-review-the-avett-brothers-set-sail-on-br"
+    },
+    {
+      "t": "2026-10-18T11:17:05.457Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-18T11:20:46.303Z",
+      "event": "bb-session",
+      "session": "72a0ffdc",
+      "url": "https://www.wsj.com/articles/sunset-blvd-review-nicole-scherzingers-norma-desmon"
+    },
+    {
+      "t": "2026-10-18T11:20:46.742Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-18T11:21:03.397Z",
+      "event": "bb-session",
+      "session": "7ec574ec",
+      "url": "https://www.wsj.com/articles/sunset-blvd-review-nicole-scherzingers-norma-desmon"
+    },
+    {
+      "t": "2026-10-18T11:21:03.847Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-18T11:34:59.200Z",
+      "event": "bb-session",
+      "session": "ef3be2e7",
+      "url": "https://www.nytimes.com/2024/09/12/theater/why-am-i-so-single-review-london.html"
+    },
+    {
+      "t": "2026-10-18T11:34:59.671Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-18T11:35:16.882Z",
+      "event": "bb-session",
+      "session": "5110f80e",
+      "url": "https://www.nytimes.com/2024/09/12/theater/why-am-i-so-single-review-london.html"
+    },
+    {
+      "t": "2026-10-18T11:35:17.300Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-18T11:39:40.812Z",
+      "event": "bb-session",
+      "session": "cf2f5b7d",
+      "url": "https://www.nytimes.com/2024/07/19/theater/slave-play-black-out-london.html"
+    },
+    {
+      "t": "2026-10-18T11:39:41.309Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
