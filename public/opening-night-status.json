@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-18T15:17:32.332Z",
+  "generatedAt": "2026-10-18T17:51:54.948Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1525,25 +1525,25 @@
       "status": "open",
       "slug": "dog-mom-off-west-end",
       "thumbnail": "/images/shows/dog-mom-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 51.33,
-      "liveScore": 51,
-      "scoreDrift": -0.3299999999999983,
+      "siteScore": 50.25,
+      "liveScore": 50,
+      "scoreDrift": -0.25,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 8,
+      "total": 10,
       "t1": 0,
       "t2": 3,
-      "t3": 5,
+      "t3": 7,
       "positive": 1,
       "mixed": 4,
-      "negative": 3,
+      "negative": 5,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:0/3"
         ],
-        "highConfidence": 6,
+        "highConfidence": 8,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1758,6 +1758,18 @@
           "p": 1,
           "m": 4,
           "n": 3,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-18T17:51:54.948Z",
+          "rc": 10,
+          "s": 50.25,
+          "t1": 0,
+          "t2": 3,
+          "t3": 7,
+          "p": 1,
+          "m": 4,
+          "n": 5,
           "bc": "waiting"
         }
       ]
@@ -2162,27 +2174,26 @@
       "status": "open",
       "slug": "angels-bone-west-end",
       "thumbnail": "/images/shows/angels-bone-west-end-2026/thumbnail.jpg",
-      "siteScore": 52.94,
-      "liveScore": 53,
-      "scoreDrift": 0.060000000000002274,
+      "siteScore": 61.39,
+      "liveScore": 61,
+      "scoreDrift": -0.39000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 7,
       "t1": 0,
-      "t2": 2,
-      "t3": 3,
-      "positive": 0,
+      "t2": 3,
+      "t3": 4,
+      "positive": 2,
       "mixed": 3,
       "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/8 total",
-          "T1:0/3",
-          "hi-conf:4/6"
+          "7/8 total",
+          "T1:0/3"
         ],
-        "highConfidence": 4,
+        "highConfidence": 7,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2323,6 +2334,18 @@
           "t2": 2,
           "t3": 3,
           "p": 0,
+          "m": 3,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-18T17:51:54.948Z",
+          "rc": 7,
+          "s": 61.39,
+          "t1": 0,
+          "t2": 3,
+          "t3": 4,
+          "p": 2,
           "m": 3,
           "n": 2,
           "bc": "waiting"
@@ -3828,6 +3851,10 @@
         },
         {
           "name": "The Spectator (UK)",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Reviews Hub",
           "isDualMarket": false
         }
       ],

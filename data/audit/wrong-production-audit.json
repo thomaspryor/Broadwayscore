@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-18T15:17:19.953Z",
+  "timestamp": "2026-10-18T17:51:45.281Z",
   "stats": {
-    "totalReviews": 57485,
-    "alreadyFlagged": 21356,
+    "totalReviews": 57492,
+    "alreadyFlagged": 21354,
     "dateGuardCatches": 196,
-    "directorMismatch": 1951,
+    "directorMismatch": 1952,
     "tvFilmSignals": 1610,
-    "londonSignals": 2434,
+    "londonSignals": 2436,
     "offBroadwaySignals": 523,
     "yearMismatch": 156,
-    "noPublishDate": 5226
+    "noPublishDate": 5228
   },
   "findings": [
     {
@@ -23,6 +23,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "1536-off-west-end-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": null,
+      "publishDate": "2025-05-18",
+      "url": "https://www.whatsonstage.com/news/1536-at-the-almeida-theatre-review_1677762/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lyndsey turner\" from 1536-west-end-2026"
         }
       ]
     },
@@ -2958,6 +2972,7 @@
     {
       "showId": "angels-bone-west-end-2026",
       "file": "british-theatre--vera-liber.json",
+      "score": 77,
       "publishDate": "2026-10-18",
       "url": "https://www.britishtheatreguide.info/reviews/angel-s-bones-london-coliseum-26131",
       "findings": [
@@ -55724,6 +55739,20 @@
     },
     {
       "showId": "blood-of-my-blood-west-end-2026",
+      "file": "fringereview--unknown.json",
+      "score": 89,
+      "publishDate": "2026-10-16",
+      "url": "https://fringereview.co.uk/review/fringereview-uk/2026/blood-of-my-blood/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
       "file": "guardian--unknown.json",
       "score": 82,
       "publishDate": "2026-10-10",
@@ -78260,6 +78289,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "stuffed-off-west-end-2026",
+      "file": "british-theatre--unknown.json",
+      "score": 74,
+      "publishDate": "2026-10-18",
+      "url": "https://www.britishtheatreguide.info/reviews/stuffed-new-diorama-the-26132",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
