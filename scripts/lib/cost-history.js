@@ -74,6 +74,8 @@ function anchorErrors(anchor) {
   return errs;
 }
 
+const REPORTED_SOURCE_TYPES = new Set(['producer-confirmed', 'sec', 'trade']);
+
 /**
  * True when a researched anchor in `anchors` carries the migrated legacy
  * anchor's figure (within 0.5%), whatever its kind: it is the same report,
@@ -83,7 +85,11 @@ function anchorErrors(anchor) {
  * never count as the researched copy.
  */
 function seedRepeatsLegacy(legacy, anchors) {
+  // A reported legacy figure is only repeated by a reported seed, so an
+  // estimate that happens to match it never removes the reported anchor.
+  const reported = REPORTED_SOURCE_TYPES.has(legacy.sourceType);
   return anchors.some((a) => a !== legacy && a.dateBasis !== 'migrated' && a.sourceType !== 'reddit-standard'
+    && (!reported || REPORTED_SOURCE_TYPES.has(a.sourceType))
     && Math.abs(a.amount / legacy.amount - 1) <= 0.005);
 }
 

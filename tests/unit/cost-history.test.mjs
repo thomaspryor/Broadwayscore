@@ -226,6 +226,12 @@ describe('one report counts once (BRO-5632)', () => {
     assert.deepStrictEqual(h.map((a) => a.kind), ['break-even']);
   });
 
+  it('keeps a reported legacy figure when only an estimate seed repeats it', () => {
+    const estimate = { ...seed, kind: 'running-cost', sourceType: 'industry-estimate' };
+    const h = historyWithSeeds(record, show, [estimate]);
+    assert.ok(h.some((a) => a.dateBasis === 'migrated' && a.sourceType === 'trade'), JSON.stringify(h));
+  });
+
   it('keeps the legacy figure when only a Reddit figure repeats it', () => {
     const his = { asOf: '2024-04-02', amount: 960000, kind: 'running-cost', sourceType: 'reddit-standard', sourceUrl: 'https://www.reddit.com/comments/x', postId: 'x' };
     const h = historyWithSeeds(record, show, [his]);

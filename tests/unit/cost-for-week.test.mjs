@@ -9,7 +9,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '..');
-const { costForWeek, weeklyCostStatus, costIndexAt, carry } = require('../../scripts/lib/cost-for-week');
+const { costForWeek, weeklyCostStatus, costIndexAt, carry, hasCostAnchor } = require('../../scripts/lib/cost-for-week');
 const { anchorErrors } = require('../../scripts/lib/cost-history');
 const { backtest, loadSeries, MAX_MEDIAN_ERROR } = require('../../scripts/lib/cost-index-backtest');
 
@@ -155,6 +155,15 @@ describe('a reported cost sets the level (BRO-5632)', () => {
     const seedOnly = costForWeek({ costHistory: [seed] }, '2024-05-05');
     assert.ok(seedOnly.cost > 850_000 && seedOnly.cost < 950_000, `break-even carried as a running cost: ${seedOnly.cost}`);
     assert.strictEqual(both.cost, seedOnly.cost);
+  });
+
+  it('his figure close to a reported one never stands in for it (two-strangers)', () => {
+    // Forbes' $480,577 is within 0.12% of his $480,000: still the reported anchor.
+    const reported = trade('2025-11-20', 480_577, { dateBasis: 'migrated', note: 'migrated from weeklyRunningCost (trade-reported)' });
+    const record = { costHistory: [reported, ...weekly('2025-11-25', 20, 480_000)] };
+    assert.strictEqual(hasCostAnchor(record), true);
+    const c = costForWeek(record, '2026-02-01');
+    assert.ok(c.anchors.length && c.anchors.every((a) => a.sourceType === 'trade'), JSON.stringify(c.anchors));
   });
 
   it('still uses his figures when nothing reported is held', () => {
