@@ -109,7 +109,8 @@ function syndicatedDuplicateHealPlan({ data, file, folder, io, explain }) {
 const decodeEntities = (t) => String(t || '')
   .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)))
   .replace(/&(?:amp|quot|apos|nbsp);/g, ' ');
-const normText = (t) => decodeEntities(t).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+const { foldDiacritics } = require('./title-match');
+const normText = (t) => foldDiacritics(decodeEntities(t)).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 
 const WINDOW = 60;
 const MIN_WINDOW_HITS = 4; // of 12: a shared quote or boilerplate line is 1-2 windows, a copy of the article is most of them
