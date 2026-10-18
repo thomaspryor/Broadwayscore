@@ -94,14 +94,17 @@ function lossDesignationFor(returnedPct) {
 /**
  * Our best guess at the size of a Did Not Recoup loss (owner 2026-10-18,
  * BRO-5647: "People want to know what we think"): Fizzle or Flop by the
- * model's middle figure at any data quality. Shown beside the label as a
- * marked estimate, never as the label. null for any other label, or with no
- * model reading.
+ * record's own estimate, else the model's middle figure at any data quality.
+ * The musical model's display hold covers the % bar, not this sort: the
+ * Fizzle/Flop split already reads it for closed musicals. Shown beside the
+ * label as a marked estimate, never as the label. null for any other label,
+ * or with no estimate at all.
  */
 function likelyLossDesignation(entry) {
   if (entry?.designation !== 'Did Not Recoup') return null;
-  const mid = modelMiddleReturnedPct(entry);
-  return mid === null ? null : lossDesignationFor(mid);
+  const own = ownReturnedEstimatePct(entry);
+  const pct = own !== null ? own : modelMiddleReturnedPct(entry);
+  return pct === null ? null : lossDesignationFor(pct);
 }
 /**
  * Whether our model is what sizes this record's loss label: a loss label, no

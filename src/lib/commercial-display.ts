@@ -600,7 +600,8 @@ export function likelyLossLine(c: Parameters<typeof likelyLossDesignation>[0]): 
   return d ? `Likely: ${d}` : null;
 }
 
-/** What the Likely line rests on, for its tooltip and the card. */
+/** What the Likely line rests on: the card prints it, the /biz cell's tooltip says it in full. */
+export const LIKELY_LOSS_BASIS = 'our estimate from weekly grosses and costs';
 export const LIKELY_LOSS_NOTE = 'Our estimate from weekly grosses and costs. No source has reported what investors got back.';
 
 /** The can-change note for a loss label; null for every other designation. */
