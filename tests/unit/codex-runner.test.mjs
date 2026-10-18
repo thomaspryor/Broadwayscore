@@ -319,7 +319,9 @@ test('emptyBatchVerdict: an empty node unit batch fails closed; empty scripts/li
   // daily-runner wires it in and lists the node batch through the tree's collector, not the manifest file.
   const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
   assert.match(src, /R\.emptyBatchVerdict\(b\.gate, b\.files\)/);
-  assert.match(src, /nodeUnitTestsForTree\(WT\)/);
+  // BRO-5649: through the sandbox (it is the tree's code), never require()d into the runner.
+  assert.match(src, /C\.nodeUnitTestsForTree\(process\.argv\[2\]\)/);
+  assert.doesNotMatch(src, /require\(path\.join\(ROOT, 'scripts\/lib\/unit-test-collection\.js'\)\)/);
   assert.doesNotMatch(src, /read\('tests\/unit-test-manifest\.txt'\)/);
 });
 
@@ -680,17 +682,35 @@ test('launchRunDir: one slot per card, a STOP reaches every slot, the mutex seri
   assert.equal(lone.withMutex('x', () => 7), 7);
 });
 
-test('the Claude check compares failing tests with fresh main and counts only new ones', () => {
+test('the Claude check reads (never runs) the change, compares with fresh main, and gets the diff inline', () => {
   const tpl = readFileSync(join(ROOT, 'scripts/codex/check-prompt.md'), 'utf8');
   assert.match(tpl, /\{\{BASE\}\}/);
   assert.match(tpl, /only a failure this change adds counts/i);
-  assert.match(tpl, /never base SHIP-WITH-FIXES or REJECT on them/);
+  assert.match(tpl, /only tools are Read, Grep and Glob/);
+  assert.doesNotMatch(tpl, /node --test|You may run/);
   const filled = r.fillPrompt(tpl, { id: 'BRO-1', title: 't', body: 'b', base: '/w/base' });
-  assert.ok(filled.includes('cd /w/base && node --test') && !filled.includes('{{BASE}}'));
+  assert.ok(filled.includes('/w/base') && !filled.includes('{{BASE}}'));
   assert.match(r.fillPrompt('{{BASE}}', {}), /not available/);
   const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
   assert.match(src, /prepareBase\(\); base = BASE_WT;/);
   assert.match(src, /'--add-dir', \.\.\.data\.dirs, \.\.\.\(base \? \[base\] : \[\]\)/);
+  // BRO-5649: the reviewer holds the auth token, so it gets no tool that can run the change's code.
+  assert.match(src, /const CHECK_TOOLS = 'Read,Grep,Glob';/);
+  assert.match(src, /'--tools', CHECK_TOOLS,\n  \];/);
+  assert.doesNotMatch(src, /'--allowedTools'/, 'an allow rule would widen reads past the worktree and --add-dir dirs');
+  assert.match(src, /## The diff \(origin\/main\.\.\.HEAD\)/);
+  assert.doesNotMatch(src, /Bash\(node --test/);
+  // An env key goes to the sandbox; a cloud login file keeps the reviewer as the runner, reads denied.
+  assert.match(src, /if \(R\.reviewerSandboxAuth\(process\.env\)\)/);
+  assert.equal(src.split("'--settings', JSON.stringify({ permissions: { deny: R.REVIEWER_READ_DENY } })").length, 3, 'both reviewer paths carry the deny rules');
+});
+
+test('reviewerSandboxAuth and REVIEWER_READ_DENY', () => {
+  assert.equal(r.reviewerSandboxAuth({ ANTHROPIC_API_KEY: 'k' }), true);
+  assert.equal(r.reviewerSandboxAuth({ CLAUDE_CODE_OAUTH_TOKEN: 't' }), true);
+  assert.equal(r.reviewerSandboxAuth({ CLAUDE_SESSION_INGRESS_TOKEN_FILE: '/f' }), false);
+  for (const rule of ['Read(//root/**)', 'Read(//proc/**)', 'Read(**/.env)', 'Read(//home/*/.claude/**)']) assert.ok(r.REVIEWER_READ_DENY.includes(rule), rule);
+  assert.ok(r.REVIEWER_READ_DENY.every((x) => /^Read\((\/\/|\*\*\/)/.test(x)), 'absolute rules need the // prefix');
 });
 
 test('board-workers.md starts three slots with budgets that leave a SHIP-WITH-FIXES round', () => {

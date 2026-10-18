@@ -59,12 +59,19 @@ const linear = require(path.join(ROOT, 'scripts/lib/linear-client.js'));
 const { verifyCommand } = require(path.join(ROOT, 'scripts/lib/linear-drain-parked.js'));
 const { makeVerifyCmdEvidence } = require(path.join(ROOT, 'scripts/lib/linear-cmd-execution.js'));
 const R = require(path.join(ROOT, 'scripts/lib/codex-runner.js'));
-const { nodeUnitTestsForTree } = require(path.join(ROOT, 'scripts/lib/unit-test-collection.js'));
+const { createSandbox, sandboxUser, judgeLandSandboxed, readSandboxFile, JSON_MARK } = require(path.join(ROOT, 'scripts/lib/codex-sandbox.js'));
 
 const RUNNER_CARD = process.env.CODEX_RUNNER_CARD || 'BRO-4745';
 // --slot k (set by the --slots launcher): this runner's worktrees and lock (BRO-5384).
 const SLOT = Number(arg('slot', 0)) || 0;
 const SLOT_NAMES = R.slotNames(SLOT);
+// BRO-5649: the tree's tests, collector, land preflight and the Claude check run as this keyless
+// user: a same-uid child reads this process's keys from /proc/<ppid>/environ, scrubbed env or not.
+const SB = createSandbox({ user: sandboxUser(SLOT), root: ROOT });
+function requireSandbox() {
+  const s = SB.ensure();
+  if (!s.ok) throw new Error(`could not start the test sandbox, so the change was not judged: ${s.why}`);
+}
 // The launch's shared run dir (STOP file, card claims, land-check mutex); '' for a lone runner.
 const RUN_DIR = typeof arg('run-dir', '') === 'string' ? arg('run-dir', '') : '';
 const WT = path.join(ROOT, '.claude/worktrees', SLOT_NAMES.wt);
@@ -169,12 +176,12 @@ const withLandMutex = (fn) => {
 };
 
 /**
- * Env for the Codex, unit-test and Claude-check shells: no service keys or tokens (so no
- * paid fetches, LLM rescoring or Linear writes) and git pushes rewritten to nowhere.
- * Only the reviewer keeps Claude's session vars (it needs them to authenticate).
+ * Env for the Codex shell: no service keys or tokens (so no paid fetches, LLM rescoring or
+ * Linear writes) and git pushes rewritten to nowhere. The land checks and the Claude check
+ * run as the sandbox user instead (SB, BRO-5649); Codex itself still runs as this uid.
  */
-function scrubbedEnv({ reviewer = false } = {}) {
-  return R.scrubEnv(process.env, { reviewer });
+function scrubbedEnv() {
+  return R.scrubEnv(process.env);
 }
 
 const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -192,7 +199,10 @@ async function linearBrain(args) {
   return r;
 }
 
+/** ROOT's git common dir (absolute): every runner worktree's .git must point into its worktrees/. */
+const gitCommonDir = () => git(['rev-parse', '--path-format=absolute', '--git-common-dir'], ROOT);
 function setupWorktree() {
+  if (SB.dropStale(WT, { gitCommon: gitCommonDir() })) log(`removed ${WT}: a sandboxed run that did not finish left it owned by the sandbox`);
   if (!fs.existsSync(path.join(WT, '.git'))) {
     sh('git', ['worktree', 'prune']);
     git(['fetch', 'origin', 'main'], ROOT);
@@ -203,7 +213,11 @@ function setupWorktree() {
 /** Link <tree>/node_modules to ROOT's (a dangling link is replaced). Node finds ROOT's copy from a nested tree anyway, but tests that copy the tree to /tmp follow this link. */
 function linkNodeModules(tree) {
   const link = path.join(tree, 'node_modules');
-  if (!fs.existsSync(link)) { fs.rmSync(link, { force: true }); fs.symlinkSync(path.join(ROOT, 'node_modules'), link); }
+  const want = path.join(ROOT, 'node_modules');
+  let ok = false;
+  try { ok = fs.lstatSync(link).isSymbolicLink() && fs.readlinkSync(link) === want; } catch { /* missing */ }
+  // Anything else (a dangling link, or a dir the sandbox put there) is replaced.
+  if (!ok) { fs.rmSync(link, { recursive: true, force: true }); fs.symlinkSync(want, link); }
 }
 
 /** Least free space across the worktrees and data copies (ROOT), Codex sessions and test temp files, or null. */
@@ -230,7 +244,8 @@ function pruneDisk() {
     }).filter(Boolean);
   } catch { /* unreadable tmp: nothing to prune */ }
   const stale = R.staleTmpEntries(entries, Date.now());
-  for (const name of stale) fs.rmSync(path.join(tmp, name), { recursive: true, force: true });
+  // A test that ignored TMPDIR leaves sandbox-owned entries: EACCES here, never a crash.
+  for (const name of stale) { try { fs.rmSync(path.join(tmp, name), { recursive: true, force: true }); } catch (e) { log(`pruneDisk: ${name} kept (${e.code || e.message})`); } }
   // Safe beside a sibling slot's `git worktree add`: git locks a worktree while it initializes.
   sh('git', ['worktree', 'prune'], { cwd: ROOT });
   if (stale.length) log(`pruneDisk: removed ${stale.length} stale temp dir(s): ${stale.slice(0, 8).join(', ')}`);
@@ -325,30 +340,51 @@ function runCodex(id, prompt, tag, timeoutMs = CODEX_TIMEOUT_MS) {
   return { code: r.code, report, out: r.out };
 }
 
+/** The reviewer's whole tool list: reading only (see runCheck). */
+const CHECK_TOOLS = 'Read,Grep,Glob';
 function runCheck(card, body, codexReport, tag, data) {
   const tpl = fs.readFileSync(path.join(ROOT, 'scripts/codex/check-prompt.md'), 'utf8');
   // Fresh main beside the change, so the reviewer counts only test failures the change adds
   // (BRO-5384: 16 of BRO-4820's 17 cited failures failed on main too). Same tree land judges against.
   let base = '';
   try { prepareBase(); base = BASE_WT; } catch (e) { log(`${card.identifier}: no base worktree for the check (${e.message.split('\n')[0]})`); }
-  const prompt = R.fillPrompt(tpl, { id: card.identifier, title: card.title, body, extra: fence(tail(codexReport, 6000)), data: data.lines.join('\n'), worktree: WT, base });
+  // The reviewer has no tool that runs code (BRO-5649), so the runner hands it the diff.
+  const diff = (() => { try { return git(['diff', '--no-ext-diff', '--no-textconv', 'origin/main...HEAD'], WT); } catch (e) { return `(the diff could not be computed: ${e.message.split('\n')[0]})`; } })();
+  const prompt = `${R.fillPrompt(tpl, { id: card.identifier, title: card.title, body, extra: fence(tail(codexReport, 6000)), data: data.lines.join('\n'), worktree: WT, base })}\n\n## The diff (origin/main...HEAD)\n\n${fence(diff.length > 120_000 ? `${diff.slice(0, 120_000)}\n... (truncated: read the rest of the changed files in the worktree)` : diff)}\n`;
   fs.writeFileSync(path.join(LOG_DIR, `${card.identifier}-${tag}-prompt.md`), prompt);
   const head = git(['rev-parse', 'HEAD']);
-  // The reviewer runs tests unsandboxed: drop the review-texts link so no test writes into the
-  // shared clone (land.yml runs without it too). It reads the texts through --add-dir instead.
+  // Drop the review-texts link (land.yml runs without it too); the reviewer reads the texts through --add-dir.
   for (const d of R.DATA_DIRS) R.dropDataDir(path.join(WT, 'data', d), WT);
-  // cwd is the worktree so plain git/node commands work; --setting-sources user keeps
-  // the project's session hooks out of this one-shot reviewer (CLAUDE.md still loads).
-  // Prompt on stdin: --allowedTools and --add-dir are variadic and swallow a positional.
+  // cwd is the worktree, the root of what it may read; --restricted keeps the project's session
+  // hooks and settings out of this one-shot reviewer.
+  // Prompt on stdin: --add-dir is variadic and swallows a positional.
   // --add-dir: the data the worktree links to (review texts live outside it), or the
   // reviewer is denied every read there.
   const model = pickCheckModel(card.identifier);
-  const r = sh('claude', ['-p', '--model', model, '--setting-sources', 'user', '--output-format', 'json',
+  requireSandbox();
+  // The reviewer holds Claude auth, so it gets no tool that runs code: any of Bash's commands (node,
+  // git -c, sed's e, sort's compress-program) would run the tree's code next to that auth.
+  // --restricted: no code-running tools and no settings files; --strict-mcp-config: no MCP servers.
+  const args = ['-p', '--model', model, '--restricted', '--strict-mcp-config', '--output-format', 'json',
     '--max-budget-usd', String(OPTS.checkMaxUsd),
     ...(data.dirs.length || base ? ['--add-dir', ...data.dirs, ...(base ? [base] : [])] : []),
-    '--allowedTools', 'Read,Grep,Glob,Bash(git:*),Bash(node:*),Bash(npx tsc:*),Bash(cd:*),Bash(ls:*),Bash(find:*),Bash(rg:*),Bash(sed:*),Bash(grep:*),Bash(head:*),Bash(tail:*),Bash(wc:*),Bash(jq:*),Bash(cat:*),Bash(sort:*),Bash(diff:*)',
-    '--disallowedTools', 'Edit,Write,NotebookEdit,Bash(git push:*),Bash(git commit:*),Bash(git reset:*),Bash(git checkout:*),Bash(git stash:*),Bash(git rebase:*),Bash(git merge:*),Bash(sed -i:*),Bash(sed --in-place:*),Bash(find * -delete*),Bash(find * -exec*),Bash(find * -execdir*),Bash(find * -ok*)',
-  ], { cwd: WT, timeoutMs: 30 * 60_000, env: scrubbedEnv({ reviewer: true }), input: prompt });
+    // No --allowedTools: unallowed reads outside the worktree and --add-dir dirs are refused in -p mode,
+    // so its reach is those dirs (minus REVIEWER_READ_DENY), never the rest of the machine.
+    '--tools', CHECK_TOOLS,
+  ];
+  let r;
+  if (R.reviewerSandboxAuth(process.env)) {
+    // Auth is an env key (the GitHub lanes): run as the sandbox too, so a read the diff talks it
+    // into cannot reach runner-only files. The key goes through a file, never argv.
+    // Only the login itself (and ANTHROPIC_* endpoint config): the session's other CLAUDE_* tokens stay out.
+    const auth = Object.fromEntries(Object.entries(process.env).filter(([k]) => /^ANTHROPIC_/.test(k) || k === 'CLAUDE_CODE_OAUTH_TOKEN'));
+    r = SB.run(WT, 'claude', [...args, '--settings', JSON.stringify({ permissions: { deny: R.REVIEWER_READ_DENY } })], { timeoutMs: 30 * 60_000, input: prompt, secretEnv: auth });
+  } else {
+    // A cloud container's login is a root-only file the sandbox cannot use, so the reviewer runs as
+    // the runner with its reads denied on the places runner secrets live.
+    r = sh('claude', [...args, '--settings', JSON.stringify({ permissions: { deny: R.REVIEWER_READ_DENY } })],
+      { cwd: WT, timeoutMs: 30 * 60_000, env: R.scrubEnv(process.env, { reviewer: true }), input: prompt });
+  }
   fs.writeFileSync(path.join(LOG_DIR, `${card.identifier}-${tag}.log`), r.out);
   // The verdict is about the committed HEAD. A moved HEAD means the reviewer committed or
   // checked out, so its verdict is void. Leftover files are test residue (tests rewrite
@@ -409,24 +445,29 @@ function commitAttempt(card, attempt, message = null) {
 // texts, like land.yml. Returns null when clean, else the failure text.
 const BASE_WT = path.join(ROOT, '.claude/worktrees', SLOT_NAMES.base);
 function unitBatch(cwd, files) {
-  // Same scrubbed env as Codex: the file list and tests come from Codex's branch.
-  const r = sh('node', ['--test', '--test-reporter=tap', '--test-timeout', '300000', ...files], { cwd, timeoutMs: 40 * 60_000, env: scrubbedEnv() });
+  // As the sandbox (the caller hands it the tree): the file list and tests come from Codex's branch.
+  const r = SB.run(cwd, 'node', ['--test', '--test-reporter=tap', '--test-timeout', '300000', ...files], { timeoutMs: 40 * 60_000 });
   return { exit: r.code, text: r.out, root: cwd };
 }
 function lintWorkflows(cwd, gauntlet) {
   const out = fs.mkdtempSync(path.join(os.tmpdir(), 'codex-lw-'));
   try {
-    sh('bash', [gauntlet, out], { cwd, timeoutMs: 30 * 60_000, env: { ...scrubbedEnv(), GAUNTLET_GATES: 'lint-workflows' } });
-    const exit = Number(fs.readFileSync(path.join(out, 'lint-workflows.exit'), 'utf8').trim());
-    return { exit: Number.isFinite(exit) ? exit : null, text: fs.readFileSync(path.join(out, 'lint-workflows.log'), 'utf8'), root: cwd };
-  } catch { return { exit: null, text: '', root: cwd }; } finally { fs.rmSync(out, { recursive: true, force: true }); }
+    fs.chmodSync(out, 0o777); // the sandbox writes the gate's .exit and .log here
+    SB.run(cwd, 'bash', [gauntlet, out], { timeoutMs: 30 * 60_000, env: { GAUNTLET_GATES: 'lint-workflows' } });
+    // The sandbox wrote these: regular files only, so a planted symlink cannot make the runner read its own secrets.
+    const exitText = readSandboxFile(path.join(out, 'lint-workflows.exit'));
+    const exit = exitText === null ? NaN : Number(exitText.trim());
+    return { exit: Number.isFinite(exit) ? exit : null, text: readSandboxFile(path.join(out, 'lint-workflows.log')) || '', root: cwd };
+  } catch { return { exit: null, text: '', root: cwd }; } finally { SB.remove(out); }
 }
 function cleanTree(cwd) {
   git(['reset', '-q', '--hard', 'HEAD'], cwd);
   git(['clean', '-qfdx', '-e', 'node_modules'], cwd);
 }
 function prepareBase() {
+  if (SB.dropStale(BASE_WT, { gitCommon: gitCommonDir() })) log(`removed ${BASE_WT}: a sandboxed run that did not finish left it owned by the sandbox`);
   if (!fs.existsSync(path.join(BASE_WT, '.git'))) {
+    sh('git', ['worktree', 'prune'], { cwd: ROOT });
     git(['worktree', 'add', '--detach', BASE_WT, 'origin/main'], ROOT);
   }
   linkNodeModules(BASE_WT);
@@ -446,8 +487,14 @@ function newLandFailuresNow() {
   try { return landFailuresWith(D, gauntlet); } finally { fs.rmSync(gauntlet, { force: true }); }
 }
 function landFailuresWith(D, gauntlet) {
+  requireSandbox();
   for (const d of R.DATA_DIRS) R.dropDataDir(path.join(WT, 'data', d), WT); // the link, or a dir a test made
-  const nodeFiles = (() => { try { return nodeUnitTestsForTree(WT); } catch { return []; } })();
+  // ROOT's nodeUnitTestsForTree loads the tree's own collector (the tree's code), so it runs in the sandbox. Anything but a list -> [].
+  const nodeFiles = (() => {
+    const { value } = SB.runMarked(WT, `const C=require(process.argv[1]);console.log(${JSON.stringify(JSON_MARK)}+JSON.stringify(C.nodeUnitTestsForTree(process.argv[2])))`,
+      [path.join(ROOT, 'scripts/lib/unit-test-collection.js'), WT], { timeoutMs: 120_000 });
+    return Array.isArray(value) && value.every((f) => typeof f === 'string') ? value : [];
+  })();
   const libTests = fs.readdirSync(path.join(WT, 'scripts/lib')).filter((f) => f.endsWith('.test.mjs')).map((f) => `scripts/lib/${f}`);
   const batches = [
     // BRO-2483: the tree's own collector (or, in a pre-BRO-2483 tree, its manifest). Empty fails closed below.
@@ -458,11 +505,13 @@ function landFailuresWith(D, gauntlet) {
   const branch = new Map();
   // Re-stamp before every batch: each one blocks up to 40 min and the keep-alive interval
   // cannot fire during spawnSync, so without this a live run outlives LOCK_STALE_MS here.
-  for (const b of batches) {
-    keepLock();
-    const empty = R.emptyBatchVerdict(b.gate, b.files);
-    branch.set(b.gate, empty ? { ...empty, root: WT } : b.run(WT, b.files));
-  }
+  SB.withTrees([WT], () => {
+    for (const b of batches) {
+      keepLock();
+      const empty = R.emptyBatchVerdict(b.gate, b.files);
+      branch.set(b.gate, empty ? { ...empty, root: WT } : b.run(WT, b.files));
+    }
+  });
   // Some tests rewrite tracked files (data/audit/*.json). The attempt is already committed,
   // so put the tree back: otherwise the next commit sweeps them in and the reviewer's
   // dirty-tree guard throws its verdict away.
@@ -478,7 +527,7 @@ function landFailuresWith(D, gauntlet) {
   if (red.length) {
     keepLock();
     prepareBase();
-    for (const b of red) {
+    SB.withTrees([BASE_WT], () => { for (const b of red) {
       keepLock();
       const br = branch.get(b.gate);
       let base;
@@ -491,15 +540,23 @@ function landFailuresWith(D, gauntlet) {
       if (d.verdict === 'pass') continue;
       const lines = d.newFailures.map((f) => `- ${f.file}::${f.name}${f.payload ? `\n${String(f.payload).slice(0, 600)}` : ''}`);
       report.push(`${b.gate}: ${d.reason}\n${lines.join('\n') || tail(br.text, 2000)}`);
-    }
+    } });
     cleanTree(BASE_WT);
   }
   return report.length ? R.redactSecrets(report.join('\n\n'), process.env) : null;
 }
 
+// main's land-preflight.mjs judges the tree, but loads and runs the tree's own collector, audit and
+// workflow checks, so it runs in the sandbox (BRO-5649). The runner fetches; the sandbox writes the
+// rebase preview's objects to its own object dir, reading the repo's through alternates. A preflight
+// that cannot run blocks: it never counts as a pass.
 async function landPreflight(ref) {
-  const { judgeLand } = await import(path.join(ROOT, 'scripts/lib/land-preflight.mjs'));
-  return judgeLand({ cwd: WT, src: 'HEAD', target: `refs/heads/${ref}` });
+  requireSandbox();
+  try { git(['-c', 'gc.auto=0', 'fetch', '-q', 'origin', 'main']); } catch (e) { log(`land preflight: fetch failed (${e.message.split('\n')[0]}); using cached main`); }
+  const objects = git(['rev-parse', '--path-format=absolute', '--git-common-dir']) + '/objects';
+  const { value, out } = judgeLandSandboxed(SB, { preflight: path.join(ROOT, 'scripts/lib/land-preflight.mjs'), cwd: WT, target: `refs/heads/${ref}`, objects });
+  if (value && ['allow', 'block', 'skip'].includes(value.decision)) return value;
+  return { decision: 'block', message: `the land preflight could not run in the test sandbox: ${R.redactSecrets(tail(out, 800), process.env)}` };
 }
 
 function waitForLand(ref) {
@@ -1400,5 +1457,5 @@ async function runPr(n) {
   }
 }
 
-module.exports = { newLandFailures, provideData, takeLock, refreshLock, readLock, releaseLock, weeklyPct, recoverOrphans };
+module.exports = { newLandFailures, landPreflight, provideData, takeLock, refreshLock, readLock, releaseLock, weeklyPct, recoverOrphans };
 if (require.main === module) main().catch((e) => { log(`runner failed: ${e && e.stack ? e.stack : e}`); process.exit(1); });

@@ -259,6 +259,15 @@ function keepEnvVar(name, { reviewer = false } = {}) {
   return !SECRET_ENV.test(name);
 }
 
+/** True when the reviewer's Claude login is an env key the sandbox user can be handed (BRO-5649). */
+function reviewerSandboxAuth(env) {
+  return Boolean(env.ANTHROPIC_API_KEY || env.CLAUDE_CODE_OAUTH_TOKEN);
+}
+// Where runner secrets live, for a reviewer that has to run as the runner (a cloud container's
+// login is a root-only file). Its tools are Read/Grep/Glob, so these rules close its reach.
+const REVIEWER_READ_DENY = ['/root/**', '/home/*/.claude/**', '/home/*/.ssh/**', '/home/*/.config/**', '/proc/**', '/etc/shadow', '/run/**', '/var/run/**', '**/.env', '**/.env.*', '**/.git/config', '**/.git/credentials']
+  .map((p) => `Read(${p.startsWith('/') ? `/${p}` : p})`); // Read rules cover Grep and Glob too
+
 // Pushes from the Codex or reviewer shells go nowhere: only the runner lands, after the check.
 const PUSH_BLOCK = 'https://push-blocked.invalid/';
 const PUSH_PREFIXES = ['https://github.com/', 'http://github.com/', 'git@github.com:', 'ssh://git@github.com/'];
@@ -1029,6 +1038,8 @@ module.exports = {
   orphanAction,
   keepEnvVar,
   scrubEnv,
+  reviewerSandboxAuth,
+  REVIEWER_READ_DENY,
   redactSecrets,
   cardBody,
   AUTH_MARKER,
