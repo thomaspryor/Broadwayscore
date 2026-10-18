@@ -41,7 +41,7 @@ describe('getBestScore — explicit scores', () => {
   test('P0: human review score wins over everything', () => {
     const data = {
       humanReviewScore: 75,
-      originalScore: '5/5',
+      originalScore: '4/5',
       llmScore: { score: 90, confidence: 'high' },
       ensembleData: {},
       fullText: 'x'.repeat(200),

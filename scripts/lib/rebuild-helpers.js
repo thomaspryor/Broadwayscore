@@ -9,7 +9,7 @@ const { BUCKET_SCORES, THUMB_SCORES, scoreToBucket, scoreToThumb, OUTLET_VERIFIE
 const { parseOriginalScore } = require('./score-parsers');
 const { decodeHtmlEntities, cleanText } = require('./text-cleaning');
 const { AGGREGATOR_SCORE_SOURCES: AGGREGATOR_SOURCES_SET } = require('./review-normalization');
-const { isUncorroboratedGenericStar, adjudicationSidedWithStars, adjudicationContradictsRecordStar, adjudicationStarBasisGone, adjudicationDisputesRatingValidly } = require('./star-reliability');
+const { isUncorroboratedGenericStar, adjudicationSidedWithStars, adjudicationContradictsRecordStar, adjudicationStarBasisGone, ratingPrintedInText } = require('./star-reliability');
 const { publishedScoreViolation } = require('./published-score-star-band');
 const { isToBeCalculatedScored } = require('./scorable-text');
 
@@ -734,10 +734,9 @@ function getBestScoreUnclamped(data, opts = {}) {
     // Only the SELF-CONTRADICTING adjudications: an "Auto-accepted ..." that kept a stale LLM score, or a verdict that
     // says it sided with the star yet landed outside it. A reasoned text dispute of a rating (thumbs, "neither", an LLM
     // read of a pan whose "grade" the text never prints) is a different thing and stands.
-    // BRO-4840: so is an auto-adjudication that just prefers the review's tone over a printed rating without claiming
-    // the rating itself is wrong, or that claims it while the article prints that very rating.
+    // BRO-4840: so is an auto-adjudication of a rating the article itself prints (the rating is verifiably the critic's own).
     const selfContradicting = /^Auto-accepted/i.test(data.adjudicationNote || '') || adjudicationSidedWithStars(data)
-      || (/^Auto-adjudicated/i.test(data.adjudicationNote || '') && !adjudicationDisputesRatingValidly(data));
+      || (/^Auto-adjudicated/i.test(data.adjudicationNote || '') && ratingPrintedInText(data));
     const outsideStarBand = !outsideAnchoredBand && selfContradicting
       && !!publishedScoreViolation(data, data.adjudicatedScore, { unanimousTol: Infinity });
     if (!hasVerifiedStarScore && !outsideAnchoredBand && !outsideStarBand && !staleStarBasis) {

@@ -256,14 +256,14 @@ function ratingPrintedInText(data) {
 }
 
 /**
- * An adjudication may overrule a printed rating only by showing the rating is wrong (a mis-extracted star, another
- * show's page), and never when the article prints that very rating itself. A verdict that merely prefers the review's
- * tone over its rating ("sided with llm", "sided with thumbs") does not stand (BRO-4840: a printed C+ shown as 48).
+ * Does an auto-adjudication that disagrees with the critic's rating still STAND (BRO-4839: a reasoned text dispute of
+ * a rating, "sided with llm / thumbs / neither", is not a self-contradiction)? Not when the article prints that very
+ * rating itself (BRO-4840: Digital Journal prints "2.5 out of 5 stars", EW ends "C+ (Tickets:", yet both were
+ * adjudicated down to 25 and 48): the rating is then verifiably the critic's own and the star rule binds.
  */
-const RATING_ERROR_CLAIM_RE = /data error|misattribut|mis-?extract|extraction error|\b(?:star|rating|grade)\b[^.]{0,40}\b(?:error|mistake|wrong|incorrect|stale|spurious)|\b(?:error|mistake|wrong|incorrect)\b[^.]{0,30}\b(?:star|rating|grade)\b/i;
-function adjudicationDisputesRatingValidly(data) {
+function adjudicationStandsAgainstRating(data) {
   const note = (data && data.adjudicationNote) || '';
-  return RATING_ERROR_CLAIM_RE.test(note) && !ratingPrintedInText(data);
+  return /^Auto-adjudicated/i.test(note) && !adjudicationSidedWithStars(data) && !ratingPrintedInText(data);
 }
 
 /**
@@ -440,7 +440,7 @@ module.exports = {
   isHighReliabilityStar,
   letterGradeCredible,
   ratingPrintedInText,
-  adjudicationDisputesRatingValidly,
+  adjudicationStandsAgainstRating,
   printedLetterGrades,
   isGenericPatternStar,
   isUncorroboratedGenericStar,

@@ -27,7 +27,7 @@ const path = require('path');
 const glob = require('glob');
 const { needsLateStarReanchor } = require('./lib/late-star-anchor');
 const { humanScoreOutsideStarBand } = require('./lib/human-score-star-guard');
-const { shouldUseAnchoredMode } = require('./lib/star-reliability');
+const { shouldUseAnchoredMode, adjudicationStandsAgainstRating } = require('./lib/star-reliability');
 const { publishedScoreViolation } = require('./lib/published-score-star-band');
 const { canonicalizeUrlForDedup } = require('./lib/review-guards');
 
@@ -64,7 +64,9 @@ for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json')
   if (pub) {
     out.publishedJoined++;
     const v = publishedScoreViolation(d, pub.score, { tol: TOL });
-    if (v) out.publishedOutOfBand.push({ file: rel, score: pub.score, source: pub.source, kind: v.kind, detail: v.detail });
+    // A reasoned text dispute of a rating that the article does not print stands (getBestScore keeps it, BRO-4839).
+    const standingDispute = pub.source === 'adjudicated' && adjudicationStandsAgainstRating(d);
+    if (v && !standingDispute) out.publishedOutOfBand.push({ file: rel, score: pub.score, source: pub.source, kind: v.kind, detail: v.detail });
   }
   if (!shouldUseAnchoredMode({ category, envFlag: false })) continue;
   out.scanned++;

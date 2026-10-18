@@ -191,3 +191,57 @@ test('rescoreFixesBandContradiction: out-of-band current score yes; in-band, rel
   assert.equal(sb.rescoreFixesBandContradiction({ ...threeStar, assignedScore: 93, humanReviewScore: 60 }), false, "a served human score wins");
   assert.equal(sb.rescoreFixesBandContradiction({ ...threeStar, assignedScore: 93, humanReviewScore: 60, humanReviewScoreProvisional: true }), true);
 });
+
+// ---- BRO-4840: triage of the remaining published drift ----
+const sr = require('../../scripts/lib/star-reliability.js');
+const longText = (extra) => 'The production opens with a long scene of people talking. '.repeat(10) + extra;
+
+test('BRO-4840 human override outside the critic\'s rating band is refused; inside it still wins', () => {
+  const base = { originalScore: '3/5 stars', originalScoreSource: 'unicode-stars', fullText: longText('') };
+  const stats = {};
+  const out = getBestScore({ ...base, humanReviewScore: 100, llmScore: { score: 60 } }, { stats });
+  assert.notEqual(out && out.source, 'human-review', 'a printed 3/5 cannot be overridden to 100');
+  assert.equal(stats.humanReviewScoreOutsideStarBandSkipped, 1);
+  assert.deepEqual(getBestScore({ ...base, humanReviewScore: 62 }), { score: 62, source: 'human-review' });
+  assert.deepEqual(getBestScore({ humanReviewScore: 100, fullText: longText('') }), { score: 100, source: 'human-review' }, 'no rating, nothing to contradict');
+});
+
+test('BRO-4840 a model score outside a trusted rating\'s band is pulled to the band edge; a deliberate verdict is left alone', () => {
+  const d = { originalScore: '5/5 stars', originalScoreSource: 'unicode-stars', scoreSource: 'anchored-v6', llmScore: { score: 88, band: { floor: 71, ceiling: 90 } }, fullText: longText('') };
+  const stats = {};
+  const r = getBestScore(d, { stats });
+  assert.ok(r.score >= 91 && r.score <= 100, `clamped into 91-100, got ${r.score}`);
+  assert.equal(stats.scoreClampedToStarBand, 1);
+  assert.equal(sb.publishedScoreViolation(d, r.score), null);
+});
+
+test('BRO-4840 a letter grade is the outlet\'s rating only if the outlet prints grades or its text prints this one', () => {
+  const grade = (outletId, text, v) => sr.detectBandFromReviewFile({ outletId, originalScore: v, scoreSource: 'letter-grade', fullText: text });
+  assert.equal(grade('nytg', longText('Becca, a grade-A spoilsport.'), 'A').highReliability, false, 'a stray "grade-A" is not a grade');
+  assert.equal(grade('bloomberg', longText('What the Stars Mean:'), 'A').highReliability, false);
+  assert.equal(grade('ew', longText(''), 'B+').highReliability, true, 'EW prints grades in its header, which the text scrape misses');
+  assert.equal(grade('ew', longText('Grade: B'), 'A-').highReliability, false, 'EW text printing a different grade');
+  assert.equal(grade('theater-scene', longText('Grade: A'), 'A').highReliability, true, 'text prints it');
+  assert.equal(sr.letterGradeCredible({ outletId: 'culturesauce', fullText: longText('Grade: B–') }, 'B-'), true, 'en dash normalised');
+});
+
+test('BRO-4840 model consensus only judges a review with no printed rating and no deliberate verdict', () => {
+  const ens = { modelAgreement: 'All 3 models agree: Positive' };
+  assert.ok(sb.publishedScoreViolation({ ensembleData: ens }, 30), 'no rating: models are the only evidence');
+  assert.equal(sb.publishedScoreViolation({ ensembleData: ens, originalScore: '10/10' }, 100), null, 'the printed rating wins');
+  assert.equal(sb.publishedScoreViolation({ ensembleData: ens, humanReviewScore: 30 }, 30), null, 'a human verdict read the text');
+  assert.equal(sb.publishedScoreViolation({ ensembleData: ens, adjudicatedScore: 30 }, 30), null);
+});
+
+test('BRO-4840 an auto-adjudication of a rating the article prints itself does not stand; one on an unprinted rating does', () => {
+  const printed = { outletId: 'digital-journal', originalScore: '2.5/5 stars', scoreSource: 'numeric-stars-cleared', fullText: longText('garners 2.5 out of 5 stars.'),
+    adjudicatedScore: 25, adjudicationNote: 'Auto-adjudicated (high confidence, sided with llm): the rating is a data error', llmScore: { score: 60 } };
+  assert.equal(sr.ratingPrintedInText(printed), true);
+  assert.equal(sr.adjudicationStandsAgainstRating(printed), false);
+  assert.notEqual(getBestScore(printed).source, 'adjudicated');
+  const unprinted = { ...printed, outletId: 'daily-mail', originalScore: '5/5 stars', fullText: longText('I lost patience with the muddle.') };
+  assert.equal(sr.adjudicationStandsAgainstRating(unprinted), true);
+  const eww = { outletId: 'ew', originalScore: 'C+', scoreSource: 'letter-grade', fullText: longText('dramatically inert. C+ (Tickets: Telecharge.com)'), adjudicatedScore: 48, adjudicationNote: 'Auto-adjudicated (high confidence, sided with llm): grade contradicts' };
+  assert.equal(sr.ratingPrintedInText(eww), true);
+  assert.notEqual(getBestScore(eww).source, 'adjudicated');
+});

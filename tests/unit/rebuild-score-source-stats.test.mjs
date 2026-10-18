@@ -26,7 +26,7 @@ const helpersSrc = fs.readFileSync(path.join(ROOT, 'scripts/lib/rebuild-helpers.
 const rebuildSrc = fs.readFileSync(path.join(ROOT, 'scripts/rebuild-all-reviews.js'), 'utf8');
 
 function getBestScoreBody() {
-  const start = helpersSrc.indexOf('function getBestScore(');
+  const start = helpersSrc.indexOf('function getBestScoreUnclamped(');
   assert.ok(start > 0, 'getBestScore must exist');
   const end = helpersSrc.indexOf('\n}\n', start);
   return helpersSrc.slice(start, end);
