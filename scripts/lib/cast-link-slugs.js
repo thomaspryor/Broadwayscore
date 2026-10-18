@@ -1,0 +1,48 @@
+'use strict';
+
+/**
+ * cast-link-slugs.js — the /cast/<slug> a person's name resolves to on the
+ * site, for the newsletter (BRO-5165).
+ *
+ * src/lib/data-actors.ts numbers colliding names over actorIdentitiesInPageOrder
+ * (the second identity whose name slugs the same becomes '<slug>-2'). A bare
+ * slugify(name) therefore links the second person to the first person's page.
+ * This replays the same assignment so each identity gets its real slug, and
+ * leaves out a name that belongs to two identities rather than guess.
+ */
+
+const { slugify, assignUniqueSlugs } = require('./url-slug');
+const { broadwayShows, actorIdentitiesInPageOrder } = require('./page-name-sources');
+
+/**
+ * @param {object[]} castEntries data/cast-manifest.json entries
+ * @param {object[]} shows       data/shows.json rows
+ * @returns {{ slugFor: (name: string) => string|null }}
+ *   slugFor — the page slug, or null when the name is ambiguous (link nothing)
+ */
+function buildCastLinkResolver(castEntries, shows) {
+  const bwayIds = new Set(broadwayShows(shows).map((s) => s.id));
+  const identities = actorIdentitiesInPageOrder(castEntries || [], bwayIds);
+  const slugs = assignUniqueSlugs(identities.map((a) => a.name));
+  const byName = new Map(); // name -> Set of page slugs
+  const collidingBases = new Set(); // bare slugs more than one identity wants
+  const seenBases = new Set();
+  identities.forEach((a, i) => {
+    if (!byName.has(a.name)) byName.set(a.name, new Set());
+    byName.get(a.name).add(slugs[i]);
+    const base = slugify(a.name);
+    if (seenBases.has(base)) collidingBases.add(base);
+    seenBases.add(base);
+  });
+  return {
+    slugFor(name) {
+      const exact = byName.get(name);
+      if (exact) return exact.size === 1 ? [...exact][0] : null;
+      const base = slugify(name);
+      if (!base || collidingBases.has(base)) return null;
+      return base;
+    },
+  };
+}
+
+module.exports = { buildCastLinkResolver };

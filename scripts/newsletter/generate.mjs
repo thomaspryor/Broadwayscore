@@ -583,9 +583,24 @@ function outletLink(name, inner) {
 // The site's /cast/<slug> pages use url-slug.js slugify (folds accents:
 // "José" -> jose); an unfolded copy here linked accented names to 404s.
 const { slugify: castSlugify, foldDiacritics } = cjsRequire('../lib/url-slug.js');
+// Colliding names get '-2', '-3' on the site (BRO-5165); replay that over the
+// cast manifest (built from data/cast when absent) and skip an ambiguous name.
+let _castResolver;
+function castResolver() {
+  if (_castResolver) return _castResolver;
+  const { buildCastLinkResolver } = cjsRequire('../lib/cast-link-slugs.js');
+  const manifestPath = path.join(repo, 'data/cast-manifest.json');
+  let entries = [];
+  try {
+    if (!fs.existsSync(manifestPath)) cjsRequire('child_process').execFileSync('node', [path.join(repo, 'scripts/build-cast-manifest.js')], { stdio: 'ignore' });
+    entries = JSON.parse(fs.readFileSync(manifestPath, 'utf8')).entries || [];
+  } catch { /* no cast data: plain slugs, as before */ }
+  _castResolver = entries.length ? buildCastLinkResolver(entries, shows) : { slugFor: (n) => castSlugify(n) };
+  return _castResolver;
+}
 function castLink(name, inner) {
   if (!name) return inner;
-  const slug = castSlugify(name);
+  const slug = castResolver().slugFor(name);
   if (!slug) return inner;
   return `<a href="${SITE}/cast/${slug}" style="color:inherit;text-decoration:none">${inner}</a>`;
 }
