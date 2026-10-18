@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-18T08:45:37.922Z",
+  "generatedAt": "2026-10-18T11:36:19.838Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1525,23 +1525,22 @@
       "status": "open",
       "slug": "dog-mom-off-west-end",
       "thumbnail": "/images/shows/dog-mom-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 50.28,
-      "liveScore": 50,
-      "scoreDrift": -0.28000000000000114,
+      "siteScore": 51.33,
+      "liveScore": 51,
+      "scoreDrift": -0.3299999999999983,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
+      "total": 8,
       "t1": 0,
       "t2": 3,
-      "t3": 4,
+      "t3": 5,
       "positive": 1,
-      "mixed": 3,
+      "mixed": 4,
       "negative": 3,
       "readiness": {
         "ready": false,
         "reasons": [
-          "7/8 total",
           "T1:0/3"
         ],
         "highConfidence": 6,
@@ -1746,6 +1745,18 @@
           "t3": 4,
           "p": 1,
           "m": 3,
+          "n": 3,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-18T11:36:19.838Z",
+          "rc": 8,
+          "s": 51.33,
+          "t1": 0,
+          "t2": 3,
+          "t3": 5,
+          "p": 1,
+          "m": 4,
           "n": 3,
           "bc": "waiting"
         }
@@ -2862,9 +2873,9 @@
       "status": "open",
       "slug": "cadel-lungs-on-legs-west-end",
       "thumbnail": "/images/shows/cadel-lungs-on-legs-west-end-2026/thumbnail.jpg",
-      "siteScore": 82.43,
+      "siteScore": 81.73,
       "liveScore": 82,
-      "scoreDrift": -0.4300000000000068,
+      "scoreDrift": 0.269999999999996,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -3156,6 +3167,18 @@
           "m": 1,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-18T11:36:19.838Z",
+          "rc": 11,
+          "s": 81.73,
+          "t1": 0,
+          "t2": 3,
+          "t3": 8,
+          "p": 10,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -3169,9 +3192,9 @@
       "status": "open",
       "slug": "some-woman-west-end",
       "thumbnail": "/images/shows/some-woman-west-end-2026/thumbnail.webp",
-      "siteScore": 67.29,
+      "siteScore": 67.26,
       "liveScore": 67,
-      "scoreDrift": -0.29000000000000625,
+      "scoreDrift": -0.2600000000000051,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -3185,7 +3208,7 @@
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 14,
+        "highConfidence": 15,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -3442,6 +3465,18 @@
           "t": "2026-10-18T08:45:37.922Z",
           "rc": 17,
           "s": 67.29,
+          "t1": 8,
+          "t2": 6,
+          "t3": 3,
+          "p": 8,
+          "m": 4,
+          "n": 5,
+          "bc": "preview-sent-earlier"
+        },
+        {
+          "t": "2026-10-18T11:36:19.838Z",
+          "rc": 17,
+          "s": 67.26,
           "t1": 8,
           "t2": 6,
           "t3": 3,
