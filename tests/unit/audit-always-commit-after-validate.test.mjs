@@ -103,14 +103,97 @@ test('protectedStaged recognises whole-tree and stage-data-changes.sh adds', () 
   assert.deepEqual(protectedStaged('git add data/cast/foo.json 2>/dev/null || true'), ['data/cast/foo.json']);
 });
 
-test('generate-theater-tips.yml (BRO-3511 fixed shape) is NOT flagged', () => {
-  const text = fs.readFileSync(path.join(WF_DIR, 'generate-theater-tips.yml'), 'utf8');
-  const steps = parseJobs(text).flatMap((j) => j.steps.map((s) => s.name));
+// Inline copy of the BRO-3511 guarded shape from generate-theater-tips.yml, so
+// this test pins the rule, not whatever that workflow says today.
+const THEATER_TIPS_FIXTURE = [
+  'jobs:',
+  '  generate-tips:',
+  '    runs-on: ubuntu-latest',
+  '    steps:',
+  '      - name: Merge tips into theater metadata',
+  '        id: merge',
+  "        if: ${{ github.event_name == 'schedule' || inputs.dry_run != true }}",
+  '        run: node scripts/merge-theater-tips.js',
+  '',
+  '      - name: Validate data',
+  '        id: validate',
+  "        if: ${{ github.event_name == 'schedule' || inputs.dry_run != true }}",
+  '        run: node scripts/validate-data.js',
+  '',
+  '      - name: Commit and push if changed',
+  '        if: always()',
+  '        env:',
+  '          MERGE_OUTCOME: ${{ steps.merge.outcome }}',
+  '          VALIDATE_OUTCOME: ${{ steps.validate.outcome }}',
+  '        run: |',
+  '          git add data/theater-tips-scraped.json data/theater-tips-draft.json',
+  '          for o in "$MERGE_OUTCOME" "$VALIDATE_OUTCOME"; do',
+  '            if [ "$o" != "success" ] && [ "$o" != "skipped" ]; then',
+  '              git checkout -- data/theater-metadata.json || true',
+  '              PUBLISH_METADATA=false',
+  '            fi',
+  '          done',
+  '          if [ "${PUBLISH_METADATA:-true}" = "true" ]; then git add data/theater-metadata.json; fi',
+  '          if git diff --staged --quiet; then echo none; else',
+  '            git commit -m "chore: Update theater tips data (automated)"',
+  '            bash scripts/lib/push-with-retry.sh',
+  '          fi',
+].join('\n');
+
+test('generate-theater-tips (BRO-3511 guarded shape, inline fixture) is NOT flagged', () => {
+  const steps = parseJobs(THEATER_TIPS_FIXTURE).flatMap((j) => j.steps.map((s) => s.name));
   assert.ok(steps.includes('Validate data') && steps.includes('Commit and push if changed'), 'parser sees the steps');
-  assert.deepEqual(findAlwaysCommitAfterValidate(text), []);
-  // Same commit step with the outcome guard stripped IS flagged: the guard is what passes it.
-  const stripped = text.replace(/^.*(?:MERGE|VALIDATE)_OUTCOME.*$\n/gm, '');
-  assert.equal(findAlwaysCommitAfterValidate(stripped).length, 1);
+  assert.deepEqual(findAlwaysCommitAfterValidate(THEATER_TIPS_FIXTURE), []);
+  // The outcome guard is what passes it: strip it and the same step is flagged.
+  const stripped = THEATER_TIPS_FIXTURE.replace(/^.*(?:MERGE|VALIDATE)_OUTCOME.*$\n/gm, '');
+  const hits = findAlwaysCommitAfterValidate(stripped);
+  assert.equal(hits.length, 1);
+  assert.deepEqual(hits[0].staged, ['data/theater-metadata.json']);
+});
+
+test('multi-line `if: >-` / `if: |` blocks are read as the joined expression', () => {
+  for (const marker of ['>-', '|', '>']) {
+    const step = [
+      '      - name: Commit and push',
+      `        if: ${marker}`,
+      '          always() &&',
+      "          github.ref == 'refs/heads/main'",
+      ...OFFENDER.slice(2),
+    ];
+    const hits = findAlwaysCommitAfterValidate(wf(step));
+    assert.equal(hits.length, 1, marker);
+    assert.match(hits[0].reason, /always\(\) && github\.ref == 'refs\/heads\/main'/);
+    // A guarded multi-line if passes.
+    const guarded = [...step.slice(0, 4), "          && steps.validate.outcome == 'success'", ...step.slice(4)];
+    assert.equal(findAlwaysCommitAfterValidate(wf(guarded)).length, 0, `${marker} guarded`);
+  }
+  // A multi-line if without always() after a hard validate is not flagged.
+  const plain = ['      - name: Commit and push', '        if: >-', "          github.ref == 'refs/heads/main'", ...OFFENDER.slice(2)];
+  assert.equal(findAlwaysCommitAfterValidate(wf(plain)).length, 0);
+});
+
+test('every git add on one line is considered (`git add a && git add b && git commit`)', () => {
+  assert.deepEqual(
+    protectedStaged('git add data/audit/x.json && git add data/awards.json && git commit -m x'),
+    ['data/awards.json'],
+  );
+  assert.deepEqual(protectedStaged('git add data/audit/ ; git add data/cast/ || true'), ['data/cast/']);
+  const step = OFFENDER.map((l) => l.replace('git add data/show-schedules.json data/audit/',
+    'git add data/audit/ && git add data/lottery-rush.json && git commit -m y'));
+  assert.equal(findAlwaysCommitAfterValidate(wf(step)).length, 1);
+});
+
+test('git add -u / --update and shell-variable operands count as unknown-path staging', () => {
+  assert.deepEqual(protectedStaged('git add -u'), ['-u (all tracked files)']);
+  assert.deepEqual(protectedStaged('git add --update'), ['-u (all tracked files)']);
+  assert.deepEqual(protectedStaged('git add -u data/audit/'), [], 'scoped -u judged by its pathspec');
+  assert.deepEqual(protectedStaged('git add "$FILE"'), ['$FILE (unknown paths)']);
+  assert.deepEqual(protectedStaged('git add ${TARGETS} 2>/dev/null || true'), ['${TARGETS} (unknown paths)']);
+  assert.deepEqual(protectedStaged('git add data/audit/${{ matrix.domain }}.json'), [], '${{ }} is not a shell var');
+  for (const add of ['git add -u', 'git add "$FILE"']) {
+    const step = OFFENDER.map((l) => l.replace('git add data/show-schedules.json data/audit/', add));
+    assert.equal(findAlwaysCommitAfterValidate(wf(step)).length, 1, add);
+  }
 });
 
 test('runs over the real .github/workflows without throwing', () => {

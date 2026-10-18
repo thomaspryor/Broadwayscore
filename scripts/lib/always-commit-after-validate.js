@@ -83,12 +83,25 @@ function parseJobs(text) {
   return jobs;
 }
 
-/** The step's `if:` expression (single line), or ''. */
+/**
+ * The step's `if:` expression, or ''. A block scalar (`if: >-`, `if: |`, ...)
+ * or a value continued on more-indented lines is joined into one expression.
+ */
 function stepIf(step) {
-  for (const l of step.lines) {
-    if (isComment(l)) continue;
-    const m = l.match(/^\s*(?:- )?if:\s*(.+?)\s*$/);
-    if (m) return m[1];
+  const lines = step.lines;
+  for (let i = 0; i < lines.length; i++) {
+    if (isComment(lines[i])) continue;
+    const m = lines[i].match(/^(\s*)(?:- )?if:\s*(.*?)\s*$/);
+    if (!m) continue;
+    const keyIndent = indentOf(lines[i]) + (lines[i].trimStart().startsWith('- ') ? 2 : 0);
+    const parts = /^[|>][+-]?\d*$/.test(m[2]) ? [] : [m[2]];
+    for (let k = i + 1; k < lines.length; k++) {
+      const l = lines[k];
+      if (l.trim() === '') continue;
+      if (indentOf(l) <= keyIndent) break;
+      if (!isComment(l)) parts.push(l.trim());
+    }
+    return parts.join(' ').trim();
   }
   return '';
 }
@@ -135,22 +148,34 @@ function protectedOperand(arg) {
 
 /**
  * Protected data paths a step's shell text stages (deduped), [] when none.
- * Whole-tree adds (`git add -A` / `.` / `--all`) and a bare
- * stage-data-changes.sh (= all of data/) count as staging everything.
+ * Every stage command on a line is considered (`git add a && git add b`).
+ * Whole-tree adds (`git add -A` / `.` / `--all`, or `-u`/`--update` with no
+ * pathspec), a bare stage-data-changes.sh (= all of data/), and an operand
+ * that is a shell variable (`git add "$FILE"`, paths unknown statically) all
+ * count as staging protected data. `${{ }}` expressions are not shell vars.
  */
 function protectedStaged(text) {
   const out = new Set();
   for (const raw of text.split('\n')) {
-    const line = raw.replace(/\s#.*$/, '');
-    const m = line.match(STAGE_CMD_RE);
-    if (!m) continue;
-    const isStageData = /stage-data-changes\.sh/.test(m[0]);
-    const args = m[1].split(/[;&|]/)[0].trim().split(/\s+/).filter(Boolean);
-    const paths = args.filter((a) => !a.startsWith('-') && !a.startsWith('2>') && a !== '>/dev/null');
-    if (isStageData && paths.length === 0) { out.add('data/ (stage-data-changes.sh)'); continue; }
-    if (!isStageData && args.some((a) => a === '-A' || a === '--all') && paths.length === 0) { out.add('-A (whole tree)'); continue; }
-    if (!isStageData && paths.length === 1 && paths[0] === '.') { out.add('. (whole tree)'); continue; }
-    for (const a of paths) { const p = protectedOperand(a); if (p) out.add(p); }
+    const line = raw.replace(/\s#.*$/, '').replace(/\$\{\{[^}]*\}\}/g, 'EXPR');
+    for (const seg of line.split(/&&|\|\||[;|]/)) {
+      const m = seg.match(STAGE_CMD_RE);
+      if (!m) continue;
+      const isStageData = /stage-data-changes\.sh/.test(m[0]);
+      const args = m[1].trim().split(/\s+/).filter(Boolean)
+        .filter((a) => !/^\d?>/.test(a) && a !== '/dev/null');
+      const flags = args.filter((a) => a.startsWith('-') && a !== '--');
+      const paths = args.filter((a) => !a.startsWith('-'));
+      if (isStageData && paths.length === 0) { out.add('data/ (stage-data-changes.sh)'); continue; }
+      if (!isStageData && paths.length === 0 && flags.some((a) => a === '-A' || a === '--all')) { out.add('-A (whole tree)'); continue; }
+      if (!isStageData && paths.length === 0 && flags.some((a) => a === '-u' || a === '--update')) { out.add('-u (all tracked files)'); continue; }
+      if (!isStageData && paths.length === 1 && paths[0] === '.') { out.add('. (whole tree)'); continue; }
+      for (const a of paths) {
+        const p = protectedOperand(a);
+        if (p) out.add(p);
+        else if (/\$/.test(a)) out.add(`${a.replace(/^['"]|['"]$/g, '')} (unknown paths)`);
+      }
+    }
   }
   return [...out];
 }
