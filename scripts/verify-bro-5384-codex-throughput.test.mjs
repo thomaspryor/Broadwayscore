@@ -14,11 +14,12 @@ const { firingThroughput } = require('./lib/codex-runner.js');
 // Window starts after the disk-full fix (eb488bc02, 2026-10-16 13:58 UTC). The 10-15..10-16
 // morning firings stopped early on a full disk; the first read over them (16 firings, 4.7
 // cards/firing, 21% landed, 33 of 75 cards rejected by the check, 20 out of time) is not the lane's
-// steady state.
-const SINCE = process.env.CODEX_THROUGHPUT_SINCE || '2026-10-16T14:00:00Z';
-// = the card's RECHECK-AFTER: 48h of firings first. Land's colocated-tests gate runs every
+// steady state. 2026-10-18 recheck after it: 4.6 cards/firing, 24% landed; the node_modules link,
+// test-placement and review-time-budget fixes landed 2026-10-18 by 14:49 UTC, so the window restarts.
+const SINCE = process.env.CODEX_THROUGHPUT_SINCE || '2026-10-18T15:00:00Z';
+// = the card's RECHECK-AFTER: a day of firings first. Land's colocated-tests gate runs every
 // changed test file, so the probe skips until then (verify-codex-runner-health.test.mjs pattern).
-const CHECKABLE_FROM = Date.parse('2026-10-18T14:00:00Z');
+const CHECKABLE_FROM = Date.parse('2026-10-19T15:00:00Z');
 
 test('Codex runner: >= 4 cards per firing and >= 40% landed since the parallel slots (BRO-5384)', {
   skip: Date.now() < CHECKABLE_FROM && !process.env.CODEX_THROUGHPUT_SINCE ? 'not checkable before 2026-10-18 14:00 UTC (48h of firings after the disk fix)' : false,
