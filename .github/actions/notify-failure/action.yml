@@ -43,7 +43,9 @@ inputs:
       alert on every failure). Set '2' for high-frequency crons (30-45 min cadence)
       whose one-off failures self-resolve on the next run — a single push-contention
       or scraper blip never pages; persistent breakage still does (the next failed
-      run alerts). Cancelled/skipped runs don't reset the streak.
+      run alerts). Cancelled runs count when their Notify step ran or was cut
+      off. Skipped Notify steps (e.g. Express takeovers), queued cancellations,
+      and skipped runs neither extend nor reset the streak.
     required: false
     default: '1'
 
@@ -174,8 +176,9 @@ runs:
                 status: 'completed',
                 per_page: 30,
               });
-              // Cancelled/skipped runs say nothing about health — they neither
-              // extend nor reset the streak.
+              // BRO-3931: use the auto-fix sweep's Notify-step evidence for
+              // cancelled runs, so timeout cancellations extend the streak but
+              // Express takeovers and queued cancellations do not.
               // Sort by COMPLETION time (updated_at), not created_at: runs of
               // high-frequency crons overlap, and in creation order an
               // interleaved success keeps resetting the streak to exactly the
@@ -183,15 +186,14 @@ runs:
               // two "streak 2" pages in 28 min). In completion order a recent
               // success correctly suppresses transient races, while a real
               // outage — nothing but failures completing — still pages.
-              const prior = (recent.data.workflow_runs || [])
-                .filter(r => r.id !== context.runId)
-                .filter(r => !['cancelled', 'skipped'].includes(r.conclusion))
-                .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
-              let streak = 1; // this run
-              for (const r of prior) {
-                if (r.conclusion === 'failure') streak++;
-                else break;
-              }
+              const { failureStreak } = require('./scripts/lib/notify-failure-streak.js');
+              const streak = await failureStreak(recent.data.workflow_runs, context.runId,
+                runId => github.paginate(github.rest.actions.listJobsForWorkflowRun, {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  run_id: runId,
+                  per_page: 100,
+                }));
               const pastThreshold = streak - minConsecutive;
               if (pastThreshold >= 0 && pastThreshold % 4 === 0) {
                 console.log(`[Streak] ${streak} consecutive failure(s) — threshold ${minConsecutive} reached, alerting.`);
