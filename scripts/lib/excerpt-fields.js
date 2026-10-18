@@ -8,6 +8,7 @@
  */
 
 const { isLegacyWebSearchOnly } = require('./legacy-web-search');
+const { foldDiacritics } = require('./url-slug');
 
 const EXCERPT_FIELDS = [
   'dtliExcerpt',
@@ -77,7 +78,7 @@ const MIN_FULLTEXT_CHARS = 300;
 const MIN_FRAGMENT_WORDS = 5;
 
 function normalizeWords(text) {
-  return String(text || '')
+  return foldDiacritics(String(text || ''))
     .toLowerCase()
     .replace(/&(?:rsquo|lsquo|apos|#39|#8217|#8216|#x27|#x2019);/g, "'")
     .replace(/&amp;|&(?![#\w]+;)/g, ' and ')

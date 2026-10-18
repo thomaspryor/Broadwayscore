@@ -63,3 +63,8 @@ test('every excerpt failing returns empty; legacy web-search rows still return e
   const row = { ...base, dtliExcerpt: 'Unrelated words that never occur in this review text', bwwExcerpt: 'Another unrelated sentence from some other production entirely' };
   assert.equal(verifierExcerpt(row, SKIP), '');
 });
+
+test('accented letters fold instead of shredding words (Les Misérables)', () => {
+  const t = { contentTier: 'complete', fullText: 'Les Misérables returns to Broadway with a thundering, utterly moving new staging tonight. '.repeat(6) };
+  assert.equal(isQuoteOfFullText('Les Miserables returns to Broadway with a thundering', t), true);
+});
