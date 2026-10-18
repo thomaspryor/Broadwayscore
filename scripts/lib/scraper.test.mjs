@@ -56,6 +56,13 @@ test('Cloudflare interstitial is still treated as garbage', () => {
   assert.equal(s.isChallengeOrGarbage('<title>Just a moment...</title>'), true);
 });
 
+test('Akamai "Access Denied" (dailymail.co.uk to a throttled IP) is garbage, not a Playwright success (BRO-716)', () => {
+  const akamai = '<html><head> <title>Access Denied</title> </head><body> <h1>Access Denied</h1> You don\'t have permission to access "http://www.dailymail.co.uk/home/sitemaparchive/day_20260515.html" on this server.<p> Reference #18.ceb52e17.1792286261.589ab499 </p><p>https://errors.edgesuite.net/18.ceb52e17.1792286261.589ab499</p></body></html>';
+  assert.equal(s.isChallengeOrGarbage(akamai), true);
+  // An article that merely quotes the phrase, with no Access Denied title, survives.
+  assert.equal(s.isChallengeOrGarbage('<title>Review: The Trial</title><p>"You don\'t have permission to access this room," he says.</p>'), false);
+});
+
 test('a large WAF "Access Denied" robot-block page is garbage, a review quoting the phrase is not (BRO-5133)', () => {
   const pad = 'x'.repeat(19000);
   const block = `<html><head><title>Access Denied</title></head><body>Your access to this page has been blocked. Your request appears similar to malicious requests sent by robots.${pad}</body></html>`;
