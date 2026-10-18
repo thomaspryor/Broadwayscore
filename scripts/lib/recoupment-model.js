@@ -529,8 +529,13 @@ function getPreviewGrossMultiplier(previewWeek) {
  * turns one off (shadow comparisons).
  */
 const MUSICAL_LIVE_OPTS = Object.freeze({ previewsFromWeekly: true, datedCosts: true, varBandMusicalsCited: true });
+// Keyed on classifyShow (the category the variable-cost rates use), so opera
+// counts as a musical and a solo show ('special') keeps the old path.
+// An explicit undefined in opts leaves the default on.
 function withMusicalDefaults(show, opts) {
-  return (show.type || 'musical') === 'musical' ? { ...MUSICAL_LIVE_OPTS, ...opts } : opts;
+  if (!/^musical/.test(classifyShow(show))) return opts;
+  const set = Object.fromEntries(Object.entries(opts).filter(([, v]) => v !== undefined));
+  return { ...MUSICAL_LIVE_OPTS, ...set };
 }
 
 function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, opts = {}) {
@@ -783,8 +788,17 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   // When gross is above theater breakpoint: gross × (1 - varRate - 0.07) + rentInNut = nut
   // → gross = (nut - rentInNut) / (1 - varRate - 0.07)
   // Simplified: gross = nut × (1 - rentPct) / (1 - varRate - theaterPct)
-  const breakeven = (runNut * (1 - THEATER_DEAL.rentPctOfNut)) /
+  // With the cited-cost band (BRO-5598) deductions rise with gross, so there is
+  // no closed form: bisect the steady-state week (27: full nut, no opening
+  // push). Profit still rises with gross (the band's slope stays well under 1).
+  let breakeven = (runNut * (1 - THEATER_DEAL.rentPctOfNut)) /
     (1 - baseVarRate - THEATER_DEAL.pctOfGross);
+  if (citedBand && runNut > 0) {
+    const profitAt = (g) => calcWeeklyProfit(g, runNut, baseVarRate, false, 27, false, null, weeklySchedule.length, show.type || 'musical', category, costPath).profit;
+    let lo = 0, hi = runNut * 10;
+    for (let i = 0; i < 60; i++) { const mid = (lo + hi) / 2; if (profitAt(mid) < 0) lo = mid; else hi = mid; }
+    breakeven = hi;
+  }
 
   // --- Data quality ---
   const grossDataSource = weeklySchedule[0]?._source || 'unknown';
