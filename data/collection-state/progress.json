@@ -1,201 +1,30 @@
 {
   "processed": [
-    "wicked-2003/wsj--terry-teachout.json",
-    "la-boheme-off-broadway-2025/wsj--by-tim-page.json"
+    "angels-bone-west-end-2026/british-theatre--unknown.json",
+    "angels-bone-west-end-2026/broadwayworld--unknown.json",
+    "angels-bone-west-end-2026/jackstage--unknown.json"
   ],
   "failed": [
-    "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
-    "trouble-in-mind-west-end-2021/wsj--terry-teachout.json",
-    "funny-girl-2002/wsj--charles-isherwood.json",
-    "the-price-off-west-end-2026/wsj--unknown.json",
-    "and-juliet-2022/wsj--charles-isherwood.json",
-    "little-shop-of-horrors-off-broadway-2019/wsj--charles-isherwood.json",
-    "aladdin-2014/wsj--terry-teachout.json",
-    "book-of-mormon-2011/wsj--terry-teachout.json",
-    "titanique-2026/wsj--charles-isherwood.json",
-    "swept-away-2024/wsj--charles-isherwood.json",
-    "sunset-boulevard-2024/wsj--charles-isherwood.json",
-    "the-roommate-2024/wsj--charles-isherwood.json",
-    "home-2024/wsj--charles-isherwood.json",
-    "the-whos-tommy-2024/wsj--charles-isherwood.json",
-    "an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
-    "i-need-that-2023/wsj--charles-isherwood.json",
-    "gutenberg-2023/wsj--charles-isherwood.json",
-    "new-york-new-york-2023/wsj--charles-isherwood.json"
+    "angels-bone-west-end-2026/bachtrack--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "angels-bone-west-end-2026/british-theatre--unknown.json",
+      "angels-bone-west-end-2026/jackstage--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
-      "book-of-mormon-2011/wsj--terry-teachout.json"
+    "scrapingdog": [],
+    "scrapingbee": [
+      "angels-bone-west-end-2026/broadwayworld--unknown.json"
     ],
-    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "wicked-2003/wsj--terry-teachout.json",
-      "la-boheme-off-broadway-2025/wsj--by-tim-page.json"
-    ]
+    "archive": []
   },
-  "startTime": "2026-10-18T14:41:03.912Z",
-  "lastProcessed": "new-york-new-york-2023/wsj--charles-isherwood.json",
-  "log": [
-    {
-      "t": "2026-10-18T14:41:53.740Z",
-      "event": "bb-session",
-      "session": "2685c545",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
-    {
-      "t": "2026-10-18T14:41:54.440Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T14:42:11.721Z",
-      "event": "bb-session",
-      "session": "32be4e0b",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
-    {
-      "t": "2026-10-18T14:42:12.308Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T14:43:24.352Z",
-      "event": "bb-session",
-      "session": "2cb39bfa",
-      "url": "http://online.wsj.com/article/SB10001424052748704050204576218451086713370.html?m"
-    },
-    {
-      "t": "2026-10-18T14:43:25.058Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T14:43:42.271Z",
-      "event": "bb-session",
-      "session": "20fa2f50",
-      "url": "http://online.wsj.com/article/SB10001424052748704050204576218451086713370.html?m"
-    },
-    {
-      "t": "2026-10-18T14:43:43.109Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T14:44:55.135Z",
-      "event": "bb-session",
-      "session": "5a231508",
-      "url": "https://www.wsj.com/articles/SB106748686155075900"
-    },
-    {
-      "t": "2026-10-18T14:44:55.725Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T14:45:13.417Z",
-      "event": "bb-session",
-      "session": "4978bded",
-      "url": "https://www.wsj.com/articles/SB106748686155075900"
-    },
-    {
-      "t": "2026-10-18T14:45:14.042Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T14:46:01.858Z",
-      "event": "bb-session",
-      "session": "e150ed85",
-      "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89"
-    },
-    {
-      "t": "2026-10-18T14:46:02.497Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T14:46:19.534Z",
-      "event": "bb-session",
-      "session": "0411fb16",
-      "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89"
-    },
-    {
-      "t": "2026-10-18T14:46:20.159Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T14:47:01.862Z",
-      "event": "bb-session",
-      "session": "1b552058",
-      "url": "https://www.wsj.com/articles/swept-away-review-the-avett-brothers-set-sail-on-br"
-    },
-    {
-      "t": "2026-10-18T14:47:02.511Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T14:47:19.728Z",
-      "event": "bb-session",
-      "session": "111df7b2",
-      "url": "https://www.wsj.com/articles/swept-away-review-the-avett-brothers-set-sail-on-br"
-    },
-    {
-      "t": "2026-10-18T14:47:20.406Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T14:48:03.037Z",
-      "event": "bb-session",
-      "session": "18b7e49b",
-      "url": "https://www.wsj.com/articles/sunset-blvd-review-nicole-scherzingers-norma-desmon"
-    },
-    {
-      "t": "2026-10-18T14:48:03.667Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T14:48:20.831Z",
-      "event": "bb-session",
-      "session": "245a5fc9",
-      "url": "https://www.wsj.com/articles/sunset-blvd-review-nicole-scherzingers-norma-desmon"
-    },
-    {
-      "t": "2026-10-18T14:48:21.550Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T14:49:33.387Z",
-      "event": "bb-session",
-      "session": "47893d5d",
-      "url": "https://www.wsj.com/articles/the-roommate-review-on-broadway-an-odd-couple-in-io"
-    },
-    {
-      "t": "2026-10-18T14:49:34.003Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T14:49:51.073Z",
-      "event": "bb-session",
-      "session": "f6f4e7d2",
-      "url": "https://www.wsj.com/articles/the-roommate-review-on-broadway-an-odd-couple-in-io"
-    },
-    {
-      "t": "2026-10-18T14:49:51.700Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    }
-  ]
+  "startTime": "2026-10-18T14:58:36.144Z",
+  "lastProcessed": "angels-bone-west-end-2026/jackstage--unknown.json",
+  "log": []
 }
