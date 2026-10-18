@@ -97,6 +97,7 @@ const LLM_INPUT_FILES = [
   'scripts/lib/content-quality.js',
   'scripts/lib/text-cleaning.js',
   'scripts/llm-scoring/input-builder.ts',
+  'scripts/lib/prior-runs-note.js',
   // text-quality.js requires EXCERPT_FIELDS from here: it decides which
   // excerpt fields getBestTextForScoring() falls back to.
   'scripts/lib/excerpt-fields.js',

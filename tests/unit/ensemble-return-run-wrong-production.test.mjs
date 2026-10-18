@@ -50,7 +50,7 @@ describe('prior-runs note: return engagement', () => {
   test('earlier-staging exclusion is intact (2025 reviews still wrong_production)', () => {
     const note = buildPriorRunsNote(PRIOR_RUNS);
     assert.match(note, /Any other staging .* is wrong_production/);
-    assert.match(note, /flag it only when the review itself describes seeing the earlier run's venue or dates/);
+    assert.match(note, /for the declared earlier run only, flag it when the review itself describes seeing the earlier run's venue or dates/);
   });
 
   test('buildScoringInput for the Adelphi return review includes the rule and the publish date', () => {
