@@ -51,6 +51,16 @@ function runsNear(show, date) {
 }
 
 /**
+ * His newest figure from this production's run: a late recap or a title a
+ * later revival now owns must not hide an in-run figure.
+ * @param {object} show
+ * @param {Array<{postDate: string}>} figures newest first
+ */
+function newestFigureInRun(show, figures) {
+  return figures.find((f) => runsNear(show, f.postDate));
+}
+
+/**
  * The analyst's newest figure for each show.
  * @param {Array<{created_utc?: number, selftext?: string, permalink?: string, url?: string}>} posts any order
  * @param {(name: string) => ({slug?: string, id?: string, previewsStartDate?: string|null, openingDate?: string|null, closingDate?: string|null} | null)} matchShow
@@ -111,6 +121,6 @@ function applyAnalystRecoupEstimates(records, posts, matchShow, { apply = true }
 }
 
 module.exports = {
-  latestRecoupEstimates, analystRecoupPatch, applyAnalystRecoupEstimates, runsNear,
+  latestRecoupEstimates, analystRecoupPatch, applyAnalystRecoupEstimates, runsNear, newestFigureInRun,
   FIELDS, MAX_DAYS_BEFORE_START, MAX_DAYS_AFTER_CLOSE, MAX_PCT,
 };

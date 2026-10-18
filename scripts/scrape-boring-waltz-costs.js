@@ -37,7 +37,7 @@ const { commercialRecordErrors } = require('./lib/commercial-record-checks');
 const { hasHelpFlag } = require('./lib/cli-help');
 const { waltzAnchor, appendWaltzAnchors, waltzJumpFlags, castEventsFor, shouldAlertNoAnchors } = require('./lib/waltz-cost-history');
 const { buildFitRows, summarizeFit, recordFit } = require('./lib/waltz-model-fit');
-const { applyAnalystRecoupEstimates, runsNear } = require('./lib/waltz-recoup-estimates');
+const { applyAnalystRecoupEstimates, runsNear, newestFigureInRun } = require('./lib/waltz-recoup-estimates');
 
 // Commercial-specific aliases (same as update-commercial-data.js)
 const COMMERCIAL_ALIASES = {
@@ -319,7 +319,7 @@ async function main() {
 
   // Posts are returned newest-first by Reddit.
   // Extract costs, keeping only the MOST RECENT estimate per show.
-  const costByShow = new Map(); // showName → { cost, postTitle, postDate, permalink }
+  const costByShow = new Map(); // showName → his figures, newest first: [{ cost, postTitle, postDate, permalink }]
   // Every plausible figure in every post, for costHistory (BRO-4989).
   const historyByName = []; // { showName, post, cost }
 
@@ -334,15 +334,13 @@ async function main() {
         continue;
       }
       historyByName.push({ showName: entry.showName, post, cost: entry.cost });
-      // Only keep the first (most recent) occurrence of each show
-      if (!costByShow.has(entry.showName)) {
-        costByShow.set(entry.showName, {
-          cost: entry.cost,
-          postTitle: post.title,
-          postDate,
-          permalink: post.permalink,
-        });
-      }
+      if (!costByShow.has(entry.showName)) costByShow.set(entry.showName, []);
+      costByShow.get(entry.showName).push({
+        cost: entry.cost,
+        postTitle: post.title,
+        postDate,
+        permalink: post.permalink,
+      });
     }
   }
 
@@ -356,7 +354,7 @@ async function main() {
   const skippedOther = []; // every other skip, with its reason
   const seenSlugs = new Set();
 
-  for (const [showName, data] of costByShow) {
+  for (const [showName, figures] of costByShow) {
     const show = matchShowName(showName, lookup);
 
     if (!show) {
@@ -376,11 +374,12 @@ async function main() {
       skippedOther.push({ slug, reason: 'not a Broadway show' });
       continue;
     }
-    // His whole archive is read, so an old post can name a title a later
-    // revival now owns: the figure must date from this production's run.
-    if (!runsNear(show, data.postDate)) {
+    // His whole archive is read, so the newest post naming a title can
+    // predate or postdate this production's run.
+    const data = newestFigureInRun(show, figures);
+    if (!data) {
       stats.skipped++;
-      skippedOther.push({ slug, reason: `his figure (${data.postDate}) is from outside this production's run` });
+      skippedOther.push({ slug, reason: `none of his figures (newest ${figures[0].postDate}) is from this production's run` });
       continue;
     }
 

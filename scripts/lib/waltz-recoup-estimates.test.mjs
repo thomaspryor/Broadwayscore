@@ -6,7 +6,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  latestRecoupEstimates, analystRecoupPatch, applyAnalystRecoupEstimates, runsNear,
+  latestRecoupEstimates, analystRecoupPatch, applyAnalystRecoupEstimates, runsNear, newestFigureInRun,
 } = require('./waltz-recoup-estimates.js');
 
 // Blocks as the analyst writes them (Week Ending October 11, 2026 post).
@@ -64,6 +64,17 @@ test('a production that was not running near the post never takes the figure', (
   assert.equal(runsNear({ previewsStartDate: '2024-03-29', closingDate: '2026-08-01' }, '2026-10-13'), true); // post-mortem window
   const future = (name) => (match(name) ? { slug: 'the-great-gatsby-2030', previewsStartDate: '2030-01-01' } : null);
   assert.equal(latestRecoupEstimates([post('2026-10-13', GATSBY('10%-30%'))], future).size, 0);
+});
+
+test('a late recap or an earlier production does not hide his figure from the run', () => {
+  const show = { previewsStartDate: '2024-09-01', closingDate: '2025-01-05' };
+  const recap = { postDate: '2025-09-30', cost: 700000 }; // 268 days after closing
+  const inRun = { postDate: '2024-12-10', cost: 650000 };
+  const tooEarly = { postDate: '2024-03-01', cost: 900000 }; // an earlier production of the title
+  assert.equal(newestFigureInRun(show, [recap, inRun, tooEarly]), inRun);
+  assert.equal(newestFigureInRun(show, [inRun, recap]), inRun);
+  assert.equal(newestFigureInRun(show, [recap, tooEarly]), undefined);
+  assert.equal(newestFigureInRun({}, [recap]), recap); // no dates on file: nothing to check against
 });
 
 test('implausible figures are dropped, a reversed range is put in order', () => {
