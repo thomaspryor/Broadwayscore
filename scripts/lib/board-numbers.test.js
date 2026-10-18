@@ -160,18 +160,24 @@ test('BRO-5488: a failed by-source read drops the line instead of printing zeros
   assert.doesNotMatch(B.renderBoardNumbersLines(m).join('\n'), /by source/);
 });
 
-test('fetchParkedBacklog counts Backlog cards with a PARKED line (BRO-5626)', async () => {
-  const nodes = [{ description: 'PARKED: needs a worktree\n\nbody' }, { description: 'no park here' }, { description: 'x\nPARKED: y' }, { description: null }];
+test('BRO-5626: parked count reads Backlog PARKED cards and leaves out owner-waiting, owner-hold and machine parks', async () => {
+  const nodes = [
+    { identifier: 'BRO-1', description: 'x\nPARKED: needs a key', labels: { nodes: [] } },
+    { identifier: 'BRO-2', description: 'UNPARKED (BRO-5626 drain 2026-10-18): moved', labels: { nodes: [] } },
+    { identifier: 'BRO-3', description: 'PARKED: owner call', labels: { nodes: [{ name: 'awaiting-owner' }] } },
+    { identifier: 'BRO-4', description: 'PARKED: needs owner decision on the design', labels: { nodes: [] } },
+    { identifier: 'BRO-5', description: `PARKED: ${require('./linear-drain-parked.js').AUTO_FILED_MARKER}`, labels: { nodes: [] } },
+  ];
   const calls = [];
-  const r = await B.fetchParkedBacklog({ graphql: async (q, v) => { calls.push(v.filter); return { issues: { pageInfo: { hasNextPage: false }, nodes } }; } });
-  assert.deepEqual(r, { count: 2, truncated: false });
+  const r = await B.fetchParkedCards({ graphql: async (q, v) => { calls.push(v.filter); return { issues: { pageInfo: { hasNextPage: false }, nodes } }; } });
+  assert.equal(r.count, 1);
   assert.equal(calls[0].state.type.eq, 'backlog');
+  assert.equal(calls[0].description.contains, 'PARKED');
 });
 
-test('Board numbers shows "Parked, never picked" and n/a when unread (BRO-5626)', () => {
-  const ok = B.buildBoardNumbers({ data: { parked: { count: 183 } } });
-  assert.equal(ok.parked, 183);
-  assert.match(B.renderBoardNumbersLines(ok).join('\n'), /Parked, never picked: 183 /);
-  const bad = B.buildBoardNumbers({ data: { parked: { error: 'boom' } } });
+test('BRO-5626: the parked line renders a number, or n/a when the read fails', () => {
+  const ok = B.buildBoardNumbers({ data: { parked: { count: 41 } } });
+  assert.match(B.renderBoardNumbersLines(ok).join('\n'), /Parked, never picked: 41 \(Backlog cards with a PARKED line/);
+  const bad = B.buildBoardNumbers({ data: { parked: { error: 'x' } } });
   assert.match(B.renderBoardNumbersLines(bad).join('\n'), /Parked, never picked: n\/a\n/);
 });

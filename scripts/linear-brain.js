@@ -42,6 +42,7 @@ Usage:
   node scripts/linear-brain.js create "Issue title" --notes "description" \\
     [--dispatch | --park "<reason>"] [--priority 0-4] [--project-id <id>] \\
     [--model opus|sonnet] [--source <filer>] [--new-anyway "<reason>"] [--dedupe-opt-out <name>]
+    [--no-verify "<reason>"]
   node scripts/linear-brain.js find "search term"
   node scripts/linear-brain.js get <BRO-N>
   node scripts/linear-brain.js update <BRO-N> [--state "<name>"] [--comment "<text>"] \\
@@ -50,6 +51,12 @@ Usage:
   node scripts/linear-brain.js --probe [--timeout-ms N]
 
   create: --dispatch or --park "<reason>" is REQUIRED. Neither given → exit 2.
+          Technical work with a safe VERIFY files --dispatch (Todo, any
+          priority). --park only for a real block: owner call, missing key
+          or access, Mac-only, a date or event, spend (BRO-5626).
+          A session card with no safe VERIFY (and no real-block park or
+          owner-judgment marker) prints VERIFY-ADVISORY; --no-verify
+          "<reason>" files it with the reason on the card.
           --model stamps "Model: Opus|Sonnet" on the card; the worker that
           picks it up uses that model (Opus picks count against the daily
           Opus cap, and a card that failed before still moves up to Opus).
@@ -698,11 +705,18 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     console.error('--new-anyway needs a reason of at least 10 characters (why this is not the open card it matched).');
     process.exit(1);
   }
+  // BRO-5626: --no-verify "<reason>" files a session card with no safe VERIFY; the reason stays on the card.
+  const noVerify = args['no-verify'];
+  if (noVerify === true || (typeof noVerify === 'string' && noVerify.trim().length < 10)) {
+    console.error('--no-verify needs a reason of at least 10 characters (why this card has no safe VERIFY command).');
+    process.exit(1);
+  }
   if (args['dedupe-opt-out'] === true) {
     console.error('--dedupe-opt-out needs a name from scripts/lib/card-dedupe.js DEDUPE_OPT_OUTS.');
     process.exit(1);
   }
-  const notes = newAnyway ? `${args.notes || ''}\n\nFiled with --new-anyway: ${newAnyway}`.trim() : (args.notes || '');
+  let notes = newAnyway ? `${args.notes || ''}\n\nFiled with --new-anyway: ${newAnyway}`.trim() : (args.notes || '');
+  if (noVerify) notes = `${notes}\n\nFiled with --no-verify: ${noVerify}`.trim();
   try {
     const result = await createLinearIssueFn({
       title,
@@ -716,6 +730,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       source: typeof args.source === 'string' ? args.source
         : (process.env.GITHUB_WORKFLOW ? `workflow:${process.env.GITHUB_WORKFLOW}` : 'session'),
       newAnyway: newAnyway || undefined,
+      noVerify: noVerify || undefined,
       dedupeOptOut: typeof args['dedupe-opt-out'] === 'string' ? args['dedupe-opt-out'] : undefined,
     });
     console.log(JSON.stringify(result.issue, null, 2));

@@ -128,6 +128,7 @@ test('not started -> skip; missing spawnedTs -> refuse', () => {
 test('classifyZombieComment recognises each machine shape', () => {
   assert.equal(classifyZombieComment('**Session report (paused)**\n\nx'), 'report');
   assert.equal(classifyZombieComment('just a note'), 'unclassified');
+  assert.equal(classifyZombieComment('Claimed by https://claude.ai/code/session_X at 2026-10-18T13:10:00Z'), 'machine');
   assert.equal(classifyZombieComment(`${ZOMBIE_RESET_MARKER}: x`), 'own-reset');
 });
 

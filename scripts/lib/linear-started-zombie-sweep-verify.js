@@ -54,7 +54,8 @@ function classifyZombieComment(body) {
   if (parseSessionReportStatus(trimmed) || isCompletePrEvidence(trimmed)) return 'report';
   if (DISPATCH_COMMENT_CORRELATION_RE.test(trimmed)
     || trimmed.startsWith(BYPASS_LINE_PREFIX)
-    || /^\*\*Re-arm \(auto\b/.test(trimmed)) return 'machine';
+    || /^\*\*Re-arm \(auto\b/.test(trimmed)
+    || /^Claimed by /.test(trimmed)) return 'machine';  // BRO-5626 claim trace, posted right after spawn
   return 'unclassified';
 }
 

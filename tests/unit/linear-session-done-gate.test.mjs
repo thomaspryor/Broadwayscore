@@ -453,3 +453,78 @@ test('claim: reopening a routine Todo issue does NOT print the concluded-state w
     assert.doesNotMatch(h.getErrors(), /a concluded state/);
   });
 });
+
+// ── claim leaves a trace (BRO-5626) ────────────────────────────────────────
+
+test('claim: posts a "Claimed by" comment naming the session', async () => {
+  await withStubbedExit(async () => {
+    const prev = process.env.CLAUDE_CODE_REMOTE_SESSION_ID;
+    process.env.CLAUDE_CODE_REMOTE_SESSION_ID = 'cse_TEST123';
+    try {
+      const calls = mockFetch({
+        issue: { description: 'Just a todo.', state: { id: 'state-todo', name: 'Todo', type: 'unstarted' } },
+        updateShouldBeCalled: true,
+      });
+      await cmdClaim({ issue: 'BRO-9458' });
+      const c = calls.find((x) => x.query.includes('commentCreate'));
+      assert.ok(c, 'a claim comment was posted');
+      assert.match(JSON.stringify(c.variables), /Claimed by https:\/\/claude\.ai\/code\/session_TEST123 at /);
+    } finally {
+      if (prev === undefined) delete process.env.CLAUDE_CODE_REMOTE_SESSION_ID; else process.env.CLAUDE_CODE_REMOTE_SESSION_ID = prev;
+    }
+  });
+});
+
+test('claim: an already-started card with no claim comment warns that another session may hold it', async () => {
+  await withStubbedExit(async (h) => {
+    const calls = mockFetch({ issue: { description: 'x', state: { id: 'state-ip', name: 'In Progress', type: 'started' } } });
+    await cmdClaim({ issue: 'BRO-9458' });
+    assert.match(h.getErrors(), /no session left a claim comment\. If your parent did not claim it for you, another session may hold it/);
+    // the session that lost a race must not leave the newest "Claimed by" on the card
+    assert.equal(calls.filter((x) => x.query.includes('commentCreate')).length, 0);
+  });
+});
+
+test('claim: an already-started card names its last holder', async () => {
+  await withStubbedExit(async (h) => {
+    mockFetch({
+      issue: {
+        description: 'x',
+        state: { id: 'state-ip', name: 'In Progress', type: 'started' },
+        comments: [
+          { id: 'c1', body: 'Dispatched abc to job-1 at 2026-10-18T13:08:28Z (headless)', createdAt: '2026-10-18T13:08:28.000Z', user: { name: 'Bob' } },
+          { id: 'c2', body: 'unrelated note', createdAt: '2026-10-18T13:09:00.000Z', user: { name: 'Bob' } },
+        ],
+      },
+    });
+    await cmdClaim({ issue: 'BRO-9458' });
+    assert.match(h.getErrors(), /Last holder: \[2026-10-18T13:08:28\.000Z\] Dispatched abc to job-1/);
+  });
+});
+
+test('claim: re-claiming a card this session already holds posts no second comment', async () => {
+  await withStubbedExit(async (h) => {
+    const prev = process.env.CLAUDE_CODE_REMOTE_SESSION_ID;
+    process.env.CLAUDE_CODE_REMOTE_SESSION_ID = 'cse_TEST123';
+    try {
+      const calls = mockFetch({
+        issue: {
+          description: 'x',
+          state: { id: 'state-ip', name: 'In Progress', type: 'started' },
+          comments: [{ id: 'c1', body: 'Claimed by https://claude.ai/code/session_TEST123 at 2026-10-18T13:10:00Z', createdAt: '2026-10-18T13:10:00.000Z', user: { name: 'Bob' } }],
+        },
+      });
+      await cmdClaim({ issue: 'BRO-9458' });
+      assert.match(h.getErrors(), /Last holder \(this session\)/);
+      assert.equal(calls.filter((x) => x.query.includes('commentCreate')).length, 0);
+    } finally {
+      if (prev === undefined) delete process.env.CLAUDE_CODE_REMOTE_SESSION_ID; else process.env.CLAUDE_CODE_REMOTE_SESSION_ID = prev;
+    }
+  });
+});
+
+test('claim: the host-only session ref never counts as "this session"', () => {
+  const lsr = require('../../scripts/lib/linear-session-reporting.js');
+  assert.equal(lsr.isSessionSpecificRef(lsr.claimSessionRef({}, 'mac')), false);
+  assert.equal(lsr.isSessionSpecificRef(lsr.claimSessionRef({ CLAUDE_CODE_REMOTE_SESSION_ID: 'cse_A' }, 'mac')), true);
+});
