@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-18T19:43:46.731Z",
+  "timestamp": "2026-10-18T20:10:20.305Z",
   "stats": {
-    "totalReviews": 57514,
-    "alreadyFlagged": 21366,
+    "totalReviews": 57525,
+    "alreadyFlagged": 21371,
     "dateGuardCatches": 196,
     "directorMismatch": 1952,
     "tvFilmSignals": 1609,
-    "londonSignals": 2436,
+    "londonSignals": 2437,
     "offBroadwaySignals": 523,
     "yearMismatch": 156,
-    "noPublishDate": 5225
+    "noPublishDate": 5229
   },
   "findings": [
     {
@@ -87591,6 +87591,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "triumph-off-west-end-2026",
+      "file": "travelbeginsat40--mark-bibby-jackson.json",
+      "publishDate": "2026-10-18",
+      "url": "https://www.travelbeginsat40.com/2026/10/caryl-churchills-triumph-review-almeida-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
