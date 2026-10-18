@@ -106,6 +106,12 @@ function qualityFor(halfWidth, hasAnchor) {
   return 'low';
 }
 
+// Sources that report a show's own cost. Reddit "standard" figures and our
+// industry estimates are category guesses (often dated to when we wrote them),
+// so they never count as an anchor (BRO-4989 checker: anchors are trade or
+// producer sourced).
+const REPORTED_ANCHOR_SOURCES = new Set(['producer-confirmed', 'sec', 'trade']);
+
 /**
  * Cost-equivalent anchors: break-even anchors are converted to a running
  * cost with the category ratio so both kinds feed one series.
@@ -113,6 +119,11 @@ function qualityFor(halfWidth, hasAnchor) {
 function costAnchors(record, show, category) {
   // Malformed anchors are skipped (check-cost-anchors.js reports them).
   let hist = Array.isArray(record?.costHistory) ? record.costHistory.filter((a) => anchorErrors(a).length === 0) : [];
+  // A reported cost sets the level, so Boring Waltz's figures stay out of a
+  // history that holds one (BRO-4666: his figures never go over a reported
+  // cost). Kept in, his post nearest the week out-weighed it (BRO-5632:
+  // Merrily's $950K trade figure read as $803K in May 2024).
+  if (hist.some((a) => REPORTED_ANCHOR_SOURCES.has(a.sourceType))) hist = hist.filter((a) => a.sourceType !== 'reddit-standard');
   if (!hist.length) {
     const legacy = legacyCostAnchor(record || {}, show);
     hist = legacy ? [legacy] : [];
@@ -124,12 +135,6 @@ function costAnchors(record, show, category) {
     baseHalfWidth: (SOURCE_TIERS[a.sourceType] || SOURCE_TIERS['industry-estimate']).halfWidth,
   }));
 }
-
-// Sources that report a show's own cost. Reddit "standard" figures and our
-// industry estimates are category guesses (often dated to when we wrote them),
-// so they never count as an anchor (BRO-4989 checker: anchors are trade or
-// producer sourced).
-const REPORTED_ANCHOR_SOURCES = new Set(['producer-confirmed', 'sec', 'trade']);
 
 /**
  * Does the record hold a reported cost figure for this show (producer, SEC or

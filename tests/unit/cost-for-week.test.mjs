@@ -133,3 +133,25 @@ describe('one cost function (no new direct weeklyRunningCost math)', () => {
     assert.deepStrictEqual(extra, [], `New direct readers of weeklyRunningCost; use costForWeek() from scripts/lib/cost-for-week.js: ${extra.join(', ')}`);
   });
 });
+
+describe('a reported cost sets the level (BRO-5632)', () => {
+  const waltz = (asOf, amount) => ({ asOf, amount, kind: 'running-cost', sourceType: 'reddit-standard', sourceUrl: 'https://www.reddit.com/comments/' + asOf, postId: 'p' + asOf });
+  const weekly = (from, n, amount) => Array.from({ length: n }, (_, i) => waltz(new Date(Date.parse(from) + i * 7 * 86400000).toISOString().slice(0, 10), amount));
+
+  it("leaves his weekly figures out of a history that holds a trade cost", () => {
+    // Merrily-shaped: one trade figure, then his posts every week at a lower level.
+    const record = { costHistory: [trade('2023-10-10', 950_000), ...weekly('2023-10-17', 40, 800_000)] };
+    const withHim = costForWeek(record, '2024-05-05');
+    const tradeOnly = costForWeek({ costHistory: [trade('2023-10-10', 950_000)] }, '2024-05-05');
+    assert.ok(tradeOnly.cost > 900_000, `trade figure carried: ${tradeOnly.cost}`);
+    assert.strictEqual(withHim.cost, tradeOnly.cost);
+    assert.ok(withHim.anchors.every((a) => a.sourceType === 'trade'), JSON.stringify(withHim.anchors));
+  });
+
+  it('still uses his figures when nothing reported is held', () => {
+    const record = { costHistory: weekly('2024-01-07', 10, 700_000) };
+    const c = costForWeek(record, '2024-02-04');
+    assert.ok(Math.abs(c.cost - 700_000) / 700_000 < 0.02, `got ${c.cost}`);
+    assert.ok(c.anchors.every((a) => a.sourceType === 'reddit-standard'));
+  });
+});
