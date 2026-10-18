@@ -19,7 +19,7 @@ function git(cwd, ...args) {
 }
 
 const tmpDirs = [];
-after(() => { for (const d of tmpDirs) fs.rmSync(d, { recursive: true, force: true }); });
+after(() => { for (const d of tmpDirs) fs.rmSync(d, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); });
 
 function setup({ foreignCommit }) {
   const t = fs.mkdtempSync(path.join(os.tmpdir(), 'memsync-rollback-'));
