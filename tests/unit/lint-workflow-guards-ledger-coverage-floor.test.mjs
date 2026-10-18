@@ -23,6 +23,7 @@ const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const GUARD = path.join(REPO, 'scripts/lint-workflow-guards.sh');
 const CHECKER = path.join(REPO, 'scripts/lib/ledger-coverage-check.js');
 const REQUIRE_GRAPH = path.join(REPO, 'scripts/lib/require-graph-ast.js');
+const TEXT_UTILS = path.join(REPO, 'scripts/lib/workflow-guard-text-utils.js');
 const SCANNER = path.join(REPO, 'scripts/lib/scan-alert-ledger-gaps.js');
 const GLOB_GUARD = path.join(REPO, 'scripts/lib/workflow-glob-guard.js');
 
@@ -67,6 +68,7 @@ function runGuard({ workflowCount = MIN_WORKFLOWS } = {}) {
     symlinkSync(NODE_MODULES, path.join(dir, 'node_modules'));
     copyFileSync(GUARD, path.join(dir, 'scripts/lint-workflow-guards.sh'));
     copyFileSync(REQUIRE_GRAPH, path.join(dir, 'scripts/lib/require-graph-ast.js'));
+    copyFileSync(TEXT_UTILS, path.join(dir, 'scripts/lib/workflow-guard-text-utils.js'));
     copyFileSync(SCANNER, path.join(dir, 'scripts/lib/scan-alert-ledger-gaps.js'));
     copyFileSync(GLOB_GUARD, path.join(dir, 'scripts/lib/workflow-glob-guard.js'));
     copyFileSync(CHECKER, path.join(dir, 'scripts/lib/ledger-coverage-check.js'));

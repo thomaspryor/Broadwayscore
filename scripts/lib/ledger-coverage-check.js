@@ -54,6 +54,7 @@
 const fs = require('fs');
 const path = require('path');
 const { findTrackedCallerScripts } = require('./require-graph-ast');
+const { joinBackslashContinuations, matchForLoopStart, COMMENT_LINE_RE, DONE_RE } = require('./workflow-guard-text-utils');
 
 const LEDGER_FILE = 'scraper-spend-ledger.jsonl';
 const LEDGER_PATH = 'data/audit/scraper-spend-ledger.jsonl';
@@ -83,57 +84,6 @@ const TRACKED_TARGETS = new Map([
 ]);
 const JOB_KEY_RE = /^  ([A-Za-z0-9_.-]+):\s*$/;
 const SCRIPT_INVOKE_RE = /\bnode\s+(?:--[\w-]+(?:=\S+)?\s+)*scripts\/([A-Za-z0-9_./-]+\.js)/g;
-const COMMENT_LINE_RE = /^\s*#/;
-
-// A bash `for VAR in <list>; do` on one line, tolerating a trailing
-// `# comment` after `do` (task #763's exemption-marker convention lives
-// there). Same pattern as scripts/lib/alert-ledger-commit-check.js's
-// matchForLoopStart — several ledger-committing workflows (audit-aggregator-
-// gap.yml, audit-census-recall.yml, coverage-adversarial-probe.yml) stage
-// the ledger file via a shared `for f in <file-list>; do git add "$f"; done`
-// loop, not a standalone `git add data/audit/scraper-spend-ledger.jsonl`
-// line — missing this pattern would false-positive all three.
-const FOR_LOOP_INLINE_DO_RE = /^\s*for\s+(\w+)\s+in\s+(.+?);\s*do\s*(?:#.*)?$/;
-const FOR_LOOP_HEADER_RE = /^\s*for\s+(\w+)\s+in\s+(.+?)\s*$/;
-const BARE_DO_RE = /^\s*do\s*$/;
-const DONE_RE = /^\s*done\s*$/;
-
-// Joins bash `\`-continued lines (audit-census-recall.yml and others spread
-// a long `for f in <files>; do` list across multiple lines this way) into
-// one logical line per statement, so matchForLoopStart sees the whole list.
-function joinBackslashContinuations(lines) {
-  const result = [];
-  let buffer = '';
-  let buffering = false;
-  for (const line of lines) {
-    const continues = /\\\s*$/.test(line);
-    const stripped = line.replace(/\\\s*$/, '');
-    buffer = buffering ? buffer + ' ' + stripped.trim() : stripped;
-    if (continues) {
-      buffering = true;
-    } else {
-      result.push(buffer);
-      buffer = '';
-      buffering = false;
-    }
-  }
-  if (buffering) result.push(buffer);
-  return result;
-}
-
-// Returns { varName, list, bodyStart } if `line` (at index i in jobLines)
-// starts a `for VAR in <list>; do` loop — inline or with `do` on the next
-// line — else null. bodyStart is the index of the first line inside the loop.
-function matchForLoopStart(jobLines, i) {
-  const line = jobLines[i];
-  let m = line.match(FOR_LOOP_INLINE_DO_RE);
-  if (m) return { varName: m[1], list: m[2], bodyStart: i + 1 };
-  m = line.match(FOR_LOOP_HEADER_RE);
-  if (m && jobLines[i + 1] && BARE_DO_RE.test(jobLines[i + 1])) {
-    return { varName: m[1], list: m[2], bodyStart: i + 2 };
-  }
-  return null;
-}
 
 /**
  * findLedgerScripts(scriptsDir) -> Set<string>

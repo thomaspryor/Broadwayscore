@@ -60,6 +60,7 @@
  */
 
 const { findTrackedCallerScripts } = require('./require-graph-ast');
+const { joinBackslashContinuations, matchForLoopStart, COMMENT_LINE_RE, DONE_RE } = require('./workflow-guard-text-utils');
 
 const JOB_KEY_RE = /^  ([A-Za-z0-9_.-]+):\s*$/;
 const ROUTE_ALERT_CALL_RE = /\b(routeAlert|resolveCondition)\s*\(/;
@@ -94,41 +95,6 @@ const NODE_SCRIPT_INVOKE_RE = /\bnode\s+(?:--[\w-]+(?:=\S+)?\s+)*scripts\/([A-Za
 // run did not modify is a harmless no-op, so over-broad is the safe direction.
 const ATTEMPTS_LOG_FILE = 'alert-router-attempts.jsonl';
 
-// Matches a bash `for VAR in <list>; do` on one line. A separate check below
-// handles the `for VAR in <list>` / `do` split-across-two-lines form. Tolerates
-// a trailing `# comment` after `do` (valid bash) — task #763's
-// `# workflow-line-length-ok:` exemption marker lives exactly there on
-// audit-aggregator-gap.yml's for-loop line, and an anchored `do\s*$` silently
-// stopped recognizing the loop the moment that marker was appended.
-const FOR_LOOP_INLINE_DO_RE = /^\s*for\s+(\w+)\s+in\s+(.+?);\s*do\s*(?:#.*)?$/;
-const FOR_LOOP_HEADER_RE = /^\s*for\s+(\w+)\s+in\s+(.+?)\s*$/;
-const BARE_DO_RE = /^\s*do\s*$/;
-const DONE_RE = /^\s*done\s*$/;
-// KNOWN LIMITATION (BRO-3051 /ship-check pass): text-based, not YAML/JS-aware.
-// A line whose first non-whitespace char is `#` inside a `script: |` block
-// could in principle be data within a JS template literal rather than a real
-// comment (e.g. a string starting with "# ${routeAlert(...)}"), which would
-// then be wrongly skipped by both this and jobStagesFile()'s pre-existing
-// comment-skip. Same class of blind spot the header above already accepts
-// for subprocess-indirect callers; no workflow in this repo writes calls
-// that way today, and a real parser is out of proportion to a heuristic,
-// non-blocking advisory lint.
-const COMMENT_LINE_RE = /^\s*#/;
-
-// Returns { varName, list, bodyStart } if `line` (at index i in jobLines)
-// starts a `for VAR in <list>; do` loop — inline or with `do` on the next
-// line — else null. bodyStart is the index of the first line inside the loop.
-function matchForLoopStart(jobLines, i) {
-  const line = jobLines[i];
-  let m = line.match(FOR_LOOP_INLINE_DO_RE);
-  if (m) return { varName: m[1], list: m[2], bodyStart: i + 1 };
-  m = line.match(FOR_LOOP_HEADER_RE);
-  if (m && jobLines[i + 1] && BARE_DO_RE.test(jobLines[i + 1])) {
-    return { varName: m[1], list: m[2], bodyStart: i + 2 };
-  }
-  return null;
-}
-
 function splitJobs(workflowYamlText) {
   const lines = workflowYamlText.split('\n');
   const jobsIdx = lines.findIndex(l => /^jobs:\s*$/.test(l));
@@ -145,20 +111,6 @@ function splitJobs(workflowYamlText) {
     return { name: job.name, lines: lines.slice(job.start, end) };
   });
 }
-
-// A `git add`/`git-add-existing.sh` invocation line that ends in a bare
-// line-continuation backslash — the multi-line form where path arguments are
-// listed one per line below it (finance-ingest.yml's dmarc job, weekly-video-
-// reviews.yml, opening-night-checklist.yml). Requires \b before "git" so it
-// doesn't match inside an unrelated longer token.
-const GIT_ADD_CONTINUATION_START_RE = /\b(?:git add|git-add-existing\.sh)\b.*\\\s*$/;
-// A path-argument continuation line: just a bare path (optionally trailing
-// slash for a directory), optionally ending in another continuation
-// backslash. Rejects lines with quotes, `${VAR}` expansions, or trailing
-// flags/redirects — those fall through to "stop scanning" below rather than
-// risk a false match.
-const BARE_PATH_LINE_RE = /^[\w./-]+\s*\\?\s*$/;
-const TRAILING_BACKSLASH_RE = /\\\s*$/;
 
 // True if `line` runs `git add -A` or `git add .` — both stage the WHOLE
 // worktree (or the whole current directory, which is the repo root in every
@@ -207,16 +159,16 @@ function lineStagesPathViaDirArg(line, filePath) {
 // True if any non-comment line both invokes `git add` (or the
 // git-add-existing.sh helper) AND mentions `fileName` directly, OR a
 // `for VAR in ...fileName...; do` loop's body (before the matching `done`)
-// stages "$VAR", OR fileName appears on one of the bare continuation lines
-// following a multi-line `git add \` / `git-add-existing.sh \` invocation,
-// OR the job stages it broadly via `git add -A`/`git add .`/a covering
-// directory operand (BRO-3671). Comment lines are skipped — a commented-out
+// stages "$VAR", OR the job stages it broadly via `git add -A`/`git add .`/
+// a covering directory operand (BRO-3671). Backslash continuations are joined
+// before matching. Comment lines are skipped: a commented-out
 // `# git add data/audit/alert-ledger.json` (or a prose mention) must not
 // read as real staging.
 function jobStagesFile(jobLines, fileName) {
+  const lines = joinBackslashContinuations(jobLines);
   const filePath = LEDGER_DIR + fileName;
-  for (let i = 0; i < jobLines.length; i++) {
-    const line = jobLines[i];
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
     if (COMMENT_LINE_RE.test(line)) continue;
 
     if (line.includes(fileName) && (/git add\b/.test(line) || /git-add-existing\.sh/.test(line))) {
@@ -226,23 +178,11 @@ function jobStagesFile(jobLines, fileName) {
     if (lineIsBroadGitAdd(line)) return true;
     if (lineStagesPathViaDirArg(line, filePath)) return true;
 
-    if (GIT_ADD_CONTINUATION_START_RE.test(line)) {
-      let continued = true;
-      for (let j = i + 1; continued && j < jobLines.length; j++) {
-        const contLine = jobLines[j];
-        if (COMMENT_LINE_RE.test(contLine)) continue;
-        const trimmed = contLine.trim();
-        if (!BARE_PATH_LINE_RE.test(trimmed)) break;
-        if (contLine.includes(fileName)) return true;
-        continued = TRAILING_BACKSLASH_RE.test(trimmed);
-      }
-    }
-
-    const loopMatch = matchForLoopStart(jobLines, i);
+    const loopMatch = matchForLoopStart(lines, i);
     if (loopMatch && loopMatch.list.includes(fileName)) {
       const stageRe = new RegExp(`git add\\b.*\\$\\{?${loopMatch.varName}\\b`);
-      for (let j = loopMatch.bodyStart; j < jobLines.length && !DONE_RE.test(jobLines[j]); j++) {
-        if (!COMMENT_LINE_RE.test(jobLines[j]) && stageRe.test(jobLines[j])) return true;
+      for (let j = loopMatch.bodyStart; j < lines.length && !DONE_RE.test(lines[j]); j++) {
+        if (!COMMENT_LINE_RE.test(lines[j]) && stageRe.test(lines[j])) return true;
       }
     }
   }

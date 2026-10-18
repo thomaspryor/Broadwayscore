@@ -24,6 +24,7 @@ const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const SCANNER = path.join(REPO, 'scripts/lib/scan-alert-ledger-gaps.js');
 const CHECKER = path.join(REPO, 'scripts/lib/alert-ledger-commit-check.js');
 const REQUIRE_GRAPH = path.join(REPO, 'scripts/lib/require-graph-ast.js');
+const TEXT_UTILS = path.join(REPO, 'scripts/lib/workflow-guard-text-utils.js');
 
 function findNodeModules(startDir) {
   let dir = startDir;
@@ -55,6 +56,7 @@ function runCli({ checkerOverride } = {}) {
     symlinkSync(NODE_MODULES, path.join(dir, 'node_modules'));
     copyFileSync(SCANNER, path.join(dir, 'scripts/lib/scan-alert-ledger-gaps.js'));
     copyFileSync(REQUIRE_GRAPH, path.join(dir, 'scripts/lib/require-graph-ast.js'));
+    copyFileSync(TEXT_UTILS, path.join(dir, 'scripts/lib/workflow-guard-text-utils.js'));
     if (checkerOverride !== undefined) {
       writeFileSync(path.join(dir, 'scripts/lib/alert-ledger-commit-check.js'), checkerOverride);
     } else {
