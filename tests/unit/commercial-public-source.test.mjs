@@ -75,6 +75,10 @@ test('a source line that is only a vague attribution names no source (BRO-5562)'
   for (const vague of ['Industry sources', 'industry sources.', 'Trade sources', 'Sources', 'Theatre source']) {
     assert.equal(publicSourceText(vague), null, `should drop: ${vague}`);
   }
+  // A line that names its source still prints, so the anchor cannot drift into a substring match.
+  for (const named of ['Sources: SEC Form D', 'Source: Variety', 'Variety', 'Industry sources (Variety)']) {
+    assert.equal(publicSourceText(named), named, `should keep: ${named}`);
+  }
   // A longer line that mentions one is judged as a whole (the cats-the-jellicle-ball shape).
   const cats = 'Estimate (industry sources; other reports say up to $18 million). The producers have not published a figure.';
   assert.equal(publicSourceText(cats), cats);
