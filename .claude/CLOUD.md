@@ -80,6 +80,10 @@ The first loop refreshes a stale cached checkout (`create_session` workers ran O
 
 It cannot change auto mode (the classifier reads `autoMode` only from user, managed or `--settings` sources; BRO-5008). When it refuses an owner-requested action, say so plainly and offer the nearest allowed route (a `land/<name>` branch, a dispatched workflow, a Linear card).
 
+## Owner's investor figures (confidential)
+
+The owner invests in Broadway shows. Producers' figures from those investments (capitalization, weekly budgets, returns over time) live in the private core-data clone under `private/` (rules in `private/README.md` there; CI copies only repo-root `*.json` into `data/`, so the folder never reaches a build). Use them to train and test the recoupment model and to fact-check privately. Never put a figure on the site, in Linear, a PR, a commit message, an artifact, a public CI log or a file in this repo; a public number changes only when a public source supports it. When the owner sends new figures, add them to `private/` and push the clone directly. This is the one exception to the next section, because a pending-fix plan is public.
+
 ## Fixing private data (review-texts, core data) from cloud
 
 Don't clone and push the private repos. Route the edit through CI (BRO-4216):
