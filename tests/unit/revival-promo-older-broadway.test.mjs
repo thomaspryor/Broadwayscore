@@ -102,7 +102,10 @@ const PLAN_D_INCLUDE = [
 ];
 
 test('other productions\' reviews and junk rows stay out of older pages', { skip: SKIP }, () => {
-  for (const rel of MUST_EXCLUDE) assert.ok(verdict(rel), `${rel} would be counted`);
+  for (const rel of MUST_EXCLUDE) {
+    if (!fs.existsSync(path.join(TEXTS, rel))) continue; // junk row deleted outright
+    assert.ok(verdict(rel), `${rel} would be counted`);
+  }
 });
 
 test('genuine reviews cleared of false wrong-production verdicts are counted', { skip: SKIP }, () => {
