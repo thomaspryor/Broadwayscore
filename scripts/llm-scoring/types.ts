@@ -162,6 +162,8 @@ export interface EnsembleResult {
   ensembleVersion?: 'v1' | 'v2';
   /** Only 1 of N≥2 started models succeeded — score is unreliable, exclude from compositeScore */
   singleModelEmergency?: boolean;
+  /** Set only when applyTailStretch() moved the score (ENSEMBLE_TAIL_STRETCH=1, llm-v6 review; BRO-4335): pre-stretch combined score + knot-set id */
+  tailStretch?: { preStretchScore: number; knots: string };
   /** Individual model results */
   modelResults: {
     claude?: ModelScore;
@@ -329,6 +331,8 @@ export interface ScoredReviewFile extends ReviewTextFile {
     singleModelEmergency?: boolean;
     /** Which majority/outlier weight set produced this score (task #384 Phase B). Only set on the ensemble-majority path. */
     ensembleVersion?: 'v1' | 'v2';
+    /** BRO-4335: present only when the tail stretch ran (pre-stretch score + knot-set id) */
+    tailStretch?: { preStretchScore: number; knots: string };
   };
 }
 

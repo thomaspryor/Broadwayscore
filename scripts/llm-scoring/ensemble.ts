@@ -429,6 +429,54 @@ function multiModelEnsemble(results: ModelScore[]): EnsembleResult {
   };
 }
 
+// ========================================
+// TAIL STRETCH (BRO-4335)
+// ========================================
+
+const monotoneStretch = require('../lib/monotone-stretch.js') as {
+  stretchScore: (score: number, opts?: { enabled?: boolean }) => number;
+  isEnabled: (opts?: { enabled?: boolean }) => boolean;
+};
+
+/** Knot-set id stamped on stretched results, so a later knot change is detectable on disk. */
+export const TAIL_STRETCH_KNOTS_ID = 'tail-only-v1';
+
+/**
+ * Post-combine monotone tail stretch (scripts/lib/monotone-stretch.js, owner-approved
+ * tail-only knots: identity to 88, 95 -> 99). Runs after ensembleScoreFromArray()
+ * and applies ONLY to unanchored V6 reviews (scoreSource 'llm-v6'): anchored-v6
+ * scores are already pinned to the critic's own star/grade band, and V5/unstamped
+ * scores were never part of the fit.
+ *
+ * Default OFF: unless ENSEMBLE_TAIL_STRETCH=1 (or opts.enabled === true) this
+ * returns the SAME object untouched, so flag-off output is byte-identical. It also
+ * returns the same object when the stretch is a no-op (score <= 88), so the
+ * tailStretch stamp only ever marks a score that actually moved.
+ * Never mutates its input. Rejected / all-failed results pass through.
+ * Bucket is re-derived from the stretched score (Rave min is 83 and the stretch
+ * is identity to 88, so no bucket can change with the approved knots).
+ */
+export function applyTailStretch(
+  result: EnsembleResult,
+  scoreSource: string | null | undefined,
+  opts?: { enabled?: boolean }
+): EnsembleResult {
+  if (!monotoneStretch.isEnabled(opts)) return result;
+  if (scoreSource !== 'llm-v6') return result;
+  if (result.rejected || result.allModelsFailed) return result;
+  if (typeof result.score !== 'number' || !Number.isInteger(result.score)) return result;
+
+  const stretched = monotoneStretch.stretchScore(result.score, { enabled: true });
+  // Stamp only a real change: a no-op stretch (score <= 88) leaves the result as-is.
+  if (stretched === result.score) return result;
+  return {
+    ...result,
+    score: stretched,
+    bucket: scoreToBucket(stretched),
+    tailStretch: { preStretchScore: result.score, knots: TAIL_STRETCH_KNOTS_ID },
+  };
+}
+
 /**
  * Convert a SimplifiedLLMResult to a ModelScore
  */
