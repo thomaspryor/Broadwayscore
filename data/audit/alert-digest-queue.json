@@ -214,5 +214,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-18T11:14:55.583Z"
+  },
+  {
+    "conditionKey": "star-band:regressions",
+    "title": "Star-band detector: 27 review(s) flagged for anchored re-score",
+    "description": "{\"unanchored\":7,\"false-truncation\":20} across the whole corpus, by market {\"broadway\":17,\"west-end\":9,\"regional\":1}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [unanchored] pirates-the-penzance-musical-2025/culturesauce--thom-geier.json 4/5 stars band 71-90\n- [unanchored] mike-birbiglia-the-old-man-and-the-pool-2022/ew--yolanda-machado.json A band 89-94\n- [unanchored] my-fair-lady-2018/nysr--steven-suskin.json 5/5 stars band 91-100\n- [unanchored] the-book-of-mormon-west-end-2024/metro-uk--claire-allfree.json 5/5 stars band 91-100\n- [unanchored] oliver-west-end-2024/sunday-times--dominic-maxwell.json 4/5 stars band 71-90\n- [unanchored] the-mousetrap-west-end-2021/guardian--arifa-akbar.json 3/5 band 51-70\n- [unanchored] the-ask-off-broadway-2026/front-row-center--sarah-downs.json 2.2/5 stars band 31-50\n- [false-truncation] pirates-the-penzance-musical-2025/culturesauce--thom-geier.json score 78 scored with a truncation warning on a complete-tier text\n- [false-truncation] into-the-woods-2022/theater-pizzazz--samuel-l-leiter.json score 84 scored with a truncation warning on a complete-tier text\n- [false-truncation] miss-saigon-2017/theater-pizzazz--samuel-l-leiter.json score 73 scored with a truncation warning on a complete-tier text",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-18T11:48:38.754Z"
   }
 ]
