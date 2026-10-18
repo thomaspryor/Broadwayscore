@@ -62,6 +62,8 @@ const COMMERCIAL_ALIASES = {
   'sunset blvd': 'sunset-boulevard-2024',
   // A typo in nine of the 2025-26 posts.
   'two stranger (carry a cake across new york)': 'two-strangers',
+  "sondheim's old friends": 'stephen-sondheims-old-friends-2025',
+  'a wonderful world': 'a-wonderful-world-the-louis-armstrong-musical-2024',
   'giant musical': 'giant',
   "sondheim's old friends": 'stephen-sondheims-old-friends-2025',
   'a wonderful world': 'a-wonderful-world-the-louis-armstrong-musical-2024',
@@ -72,7 +74,9 @@ const COMMERCIAL_ALIASES = {
 // ---------------------------------------------------------------------------
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
-// One-time backfill of his whole archive (BRO-4989). The weekly run reads a year.
+// History preview of his whole archive with no cost writes (BRO-4989). Every
+// run reads the whole archive now: a one-year window left every musical that
+// closed more than a year ago without his weekly cost (14 shows, BRO-5600).
 const BACKFILL = args.includes('--backfill');
 // costHistory writes are opt-in until the shadow rollout turns them on in the
 // workflow (BRO-4989: no commercial.json history writes before BRO-4985 lands).
