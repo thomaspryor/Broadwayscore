@@ -52,7 +52,7 @@ const { CLAUDE_SONNET } = require('./lib/models');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
 const { proposeDesignation } = require('./lib/designation-rule');
-const { DESIGNATION_BASES, FIZZLE_MIN_RETURNED_PCT, isLossDesignation } = require('./lib/commercial-designations');
+const { DESIGNATION_BASES, FIZZLE_MIN_RETURNED_PCT, isLossDesignation, lossDesignationFor, returnedEstimatePct } = require('./lib/commercial-designations');
 const { recoupClaimDesignationAction } = require('./lib/commercial-apply-gate');
 
 // Universal scraper with Bright Data → ScrapingBee → Playwright fallback
@@ -1735,6 +1735,7 @@ function applyChanges(applied, newEntries, commercial, showKeyIndex) {
     applyChanges._circuitBreakerTriggered = null;
   }
 
+  const lossLabelled = new Set();
   for (const change of applied) {
     const { slug, field, newValue } = change;
 
@@ -1777,6 +1778,7 @@ function applyChanges(applied, newEntries, commercial, showKeyIndex) {
       if (isLossDesignation(newValue)) {
         row.designationBasis = DESIGNATION_BASES.REPORTED_LOSS;
         delete row.needsLossEvidence;
+        lossLabelled.add(slug);
       } else {
         delete row.designationBasis;
         if (newValue !== 'TBD') delete row.needsLossEvidence;
@@ -1811,6 +1813,20 @@ function applyChanges(applied, newEntries, commercial, showKeyIndex) {
       if (!showData.costMethodology && showData.weeklyRunningCost == null && costSourceBasis(change.source)) {
         showData.costMethodology = methodologyForCostSource(change.source);
       }
+    }
+  }
+
+  // A loss label this pass wrote takes the size the record's own evidence
+  // supports, whatever the model proposed: Fizzle or Flop with an estimate,
+  // Did Not Recoup without (owner 2026-10-18, BRO-5636). After every change,
+  // so an estimate applied in the same batch counts.
+  for (const slug of lossLabelled) {
+    const row = commercial.shows[slug];
+    if (!isLossDesignation(row.designation) || row.humanReviewedDesignation === true) continue;
+    const sized = lossDesignationFor(returnedEstimatePct(row));
+    if (sized !== row.designation) {
+      console.log(`  [SIZE] ${slug}.designation: ${row.designation} -> ${sized} (by its recorded estimate)`);
+      row.designation = sized;
     }
   }
 

@@ -51,7 +51,8 @@ test('Did Not Recoup reads like any loss label: caveat on silence, reported word
   assert.equal(isReportedLoss(reported), true);
   assert.equal(lossOutcomePhrase(silence, 'cell'), 'No recoupment announced');
   assert.equal(lossOutcomePhrase(silence, 'closing'), 'closed with no recoupment announced');
-  assert.equal(lossOutcomePhrase(reported, 'cell'), 'Did not recoup');
+  // Its label already says it did not recoup; the % column says what is missing.
+  assert.equal(lossOutcomePhrase(reported, 'cell'), 'Amount returned not reported');
   assert.equal(lossOutcomePhrase(reported, 'closing'), 'closed without recouping');
 });
 

@@ -597,14 +597,19 @@ export function publicNotesText(
 /**
  * Every public phrase that says a show lost money goes through here, so an
  * unreported loss never reads as "did not recoup":
- *  - 'cell'    the /biz table's % column ("Did not recoup" / "No recoupment announced")
+ *  - 'cell'    the /biz table's % column ("Did not recoup" / "No recoupment announced";
+ *              a reported Did Not Recoup says what is missing instead, since its
+ *              label beside it already says it did not recoup, BRO-5636)
  *  - 'closing' the /biz timeline ("closed as a flop" / "closed without recouping" /
  *              "closed with no recoupment announced"; "closed" for any other label)
  */
 export function lossOutcomePhrase(c: LossBasisSignals, form: 'cell' | 'closing'): string {
   const isLoss = isLossDesignation(c.designation);
   const reported = isReportedLoss(c);
-  if (form === 'cell') return reported ? 'Did not recoup' : 'No recoupment announced';
+  if (form === 'cell') {
+    if (!reported) return 'No recoupment announced';
+    return c.designation === 'Did Not Recoup' ? 'Amount returned not reported' : 'Did not recoup';
+  }
   if (!isLoss) return 'closed';
   if (!reported) return 'closed with no recoupment announced';
   return c.designation === 'Flop' ? 'closed as a flop' : 'closed without recouping';

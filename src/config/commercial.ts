@@ -105,7 +105,7 @@ export const DESIGNATIONS: DesignationConfig[] = [
   {
     // A loss with no estimate of its size (owner 2026-10-18, BRO-5636).
     name: 'Did Not Recoup',
-    color: 'text-rose-400',
+    color: 'text-rose-300',
     description: 'Closed without recouping; no estimate of how much came back',
     sortOrder: 7,
     showInLegend: true,

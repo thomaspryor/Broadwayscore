@@ -72,7 +72,7 @@ const URL_RE = /\bhttps?:\/\/\S+/gi;
 // research output, so a writer clears the field rather than trimming it to
 // something that reads like a checked source.
 const CITATION_FIELDS = ['capitalizationSource', 'recoupedSource'];
-const { VALID_DESIGNATION_BASES, DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, returnedEstimatePct, LOSS_DESIGNATIONS, isLossDesignation, lossDesignationFor } = require('./commercial-designations');
+const { VALID_DESIGNATION_BASES, DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, returnedEstimatePct, isLossDesignation, lossDesignationFor } = require('./commercial-designations');
 const { conversionOf, conversionShapeProblems } = require('./commercial-conversion');
 const { COST_BASES, BASIS_CUE_TEXT } = require('./cost-split');
 
@@ -385,9 +385,13 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
   // when its inputs are decent (BRO-5602: suffs was a Fizzle beside "0-10%
   // returned"; BRO-5623). With no estimate the label is Did Not Recoup, and a
   // Did Not Recoup that gains one takes its size (owner 2026-10-18, BRO-5636).
-  // Advisory (§19).
+  // Advisory (§19). A writer passing ctx.priorRecord counts it only when the
+  // write changed the label or the estimate: a model figure that drifted
+  // since must not block an unrelated edit to the record.
   const returnedPct = returnedEstimatePct(show);
-  if (isLossDesignation(show.designation) && lossDesignationFor(returnedPct) !== show.designation) {
+  const prior = ctx.priorRecord;
+  const sizeInputsChanged = !prior || prior.designation !== show.designation || returnedEstimatePct(prior) !== returnedPct;
+  if (sizeInputsChanged && isLossDesignation(show.designation) && lossDesignationFor(returnedPct) !== show.designation) {
     if (returnedPct == null) {
       out.push(`commercial.json: "${showId}" is "${show.designation}" but has no estimate of how much came back (use "Did Not Recoup" until a source or a decent model gives one)`);
     } else {
@@ -608,4 +612,4 @@ function sanitizeForPublicRecord(entry, show, { ownerApproved = false, now = Dat
   return { entry: out, changed, holdReason };
 }
 
-module.exports = { commercialRecordErrors, commercialRecordWarnings, commercialFileErrors, commercialFileWarnings, sanitizeForPublicRecord, stripInternalWording, internalWordingIn, VALID_COST_METHODOLOGIES, VALID_PRODUCTION_TYPES, INTERNAL_TEXT_RE, PUBLIC_TEXT_FIELDS, CITATION_FIELDS, LOSS_DESIGNATIONS };
+module.exports = { commercialRecordErrors, commercialRecordWarnings, commercialFileErrors, commercialFileWarnings, sanitizeForPublicRecord, stripInternalWording, internalWordingIn, VALID_COST_METHODOLOGIES, VALID_PRODUCTION_TYPES, INTERNAL_TEXT_RE, PUBLIC_TEXT_FIELDS, CITATION_FIELDS };

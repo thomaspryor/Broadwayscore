@@ -2,7 +2,7 @@
 // Tested by tests/unit/commercial-apply-gate.test.mjs.
 
 const { TRUSTED_RECOUPMENT_HOSTS } = require('./trusted-recoupment-domains');
-const { VALID_DESIGNATIONS, canonicalDesignation, DESIGNATION_BASES, VALID_DESIGNATION_BASES, isLossDesignation } = require('./commercial-designations');
+const { VALID_DESIGNATIONS, canonicalDesignation, DESIGNATION_BASES, VALID_DESIGNATION_BASES, isLossDesignation, lossDesignationFor, returnedEstimatePct } = require('./commercial-designations');
 const { checkRecoupmentProduction } = require('./recoupment-production-guard');
 const { addedPlaceholderSources } = require('./commercial-sources');
 
@@ -296,6 +296,14 @@ function buildCommercialEntry(entry, existing, opts = {}) {
         result.sources = normalized;
       }
     }
+  }
+  // A loss label from research takes the size the record's own evidence
+  // supports, not the one the research named (owner 2026-10-18, BRO-5636).
+  // The evidence includes the record being replaced: its model figures come
+  // back on the next model run. An owner's approved or locked label is a
+  // person's verdict and stays.
+  if (designation && isLossDesignation(result.designation) && entry.ownerApproved !== true && result.humanReviewedDesignation !== true) {
+    result.designation = lossDesignationFor(returnedEstimatePct({ ...(existing || {}), ...result }));
   }
   stampDesignationBasis(result, entry, existing);
   // A later automated research refresh must not erase a verdict waiting for

@@ -336,9 +336,21 @@ test('a reader tip that sets a loss label gets a designationBasis (BRO-5020 poli
   const r2 = buildTipRecord(commercial, showList, 'k', [{ field: 'designation', newValue: 'Flop' }, { field: 'recouped', newValue: false }, { field: 'estimatedRecoupmentPct', newValue: [0, 10] }, { field: 'designationBasis', newValue: 'reported-loss' }]);
   assert.equal(r2.refusedReason, null);
   assert.equal(r2.record.designationBasis, 'reported-loss');
-  // A size with nothing behind it is refused (owner 2026-10-18, BRO-5636).
+  // A size with nothing behind it becomes Did Not Recoup (owner 2026-10-18, BRO-5636).
   const r3 = buildTipRecord(commercial, showList, 'k', [{ field: 'designation', newValue: 'Fizzle' }, { field: 'recouped', newValue: false }]);
-  assert.match(r3.refusedReason, /no estimate of how much came back/);
+  assert.equal(r3.refusedReason, null);
+  assert.equal(r3.record.designation, 'Did Not Recoup');
+});
+
+test('the size check counts only when the write changed the label or the estimate (BRO-5636)', () => {
+  const closed = { slug: 'k', status: 'closed' };
+  const fizzle = { designation: 'Fizzle', recouped: false, designationBasis: 'reported-loss', modelDataQuality: 'medium', modelReturnedExCreditPct: [20, 40, 60] };
+  const drifted = { ...fizzle, modelDataQuality: 'low' };
+  const sized = (rec, prior) => commercialRecordWarnings('k', rec, { showRecord: closed, priorRecord: prior }).filter((m) => /no estimate of how much came back|% returned \(Fizzle is/.test(m)).length;
+  assert.equal(sized(drifted, undefined), 1, 'validate-data (no prior record) still reports it');
+  assert.equal(sized({ ...drifted, notes: 'edited' }, drifted), 0, 'an unrelated edit after the model drifted is not blocked');
+  assert.equal(sized({ ...drifted, designation: 'Flop' }, drifted), 1, 'a write that changes the label is checked');
+  assert.equal(sized({ ...fizzle, modelDataQuality: 'low' }, fizzle), 1, 'a write that drops the estimate is checked');
 });
 
 test('a silence-basis loss label on a show closed under LOSS_LABEL_MIN_DAYS waits as TBD + needsLossEvidence (BRO-5020)', () => {

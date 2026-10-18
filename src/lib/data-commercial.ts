@@ -19,7 +19,7 @@ import type {
   CommercialShowRow,
 } from './data-types';
 import type { CommercialDesignation, RecoupmentTrend } from '@/config/commercial';
-import { getDesignationSortOrder } from '@/config/commercial';
+import { getDesignationSortOrder, DESIGNATION_MAP } from '@/config/commercial';
 import { getShowGrosses, getGrossesWeekEnding } from './data-grosses';
 import {
   calculateWeeksToRecoup,
@@ -231,7 +231,9 @@ export function getCommercialModelLastRun(): string | null {
  * Get commercial designation description
  */
 export function getDesignationDescription(designation: CommercialDesignation): string {
-  return commercial._meta.designations[designation] || '';
+  // The config is the one source of designation wording; commercial.json's
+  // _meta.designations has no entry for Did Not Recoup (BRO-5636).
+  return DESIGNATION_MAP[designation]?.description || '';
 }
 
 // ============================================
