@@ -666,6 +666,62 @@ const SCORE_SOURCE_LABELS = Object.freeze([
   'llmScore-thumb-boosted',
 ]);
 
+/**
+ * Tier 1.5 clears ("extraction-no-evidence-in-text"): an audit cleared the
+ * star because textContainsStarRating() could not find it in fullText.
+ */
+function isTier15ClearedRecord(data) {
+  return data.originalScoreCleared === true &&
+    !!data.originalScoreClearedReason && data.originalScoreClearedReason.startsWith('extraction-no-evidence');
+}
+
+/**
+ * The tier-1.5 clear was incorrect when:
+ * (a) the outlet is a KNOWN_STAR_OUTLET (they DO publish star ratings), or
+ * (b) the scoreSource is unicode-stars / word-stars (unambiguous formats that
+ *     were correctly extracted but sat in HTML structure, not the body text), or
+ * (c) the outlet has a real (non-noScore) extractor.
+ * Never for outlets explicitly marked as no-score (noScoreExtractor): their
+ * unicode-stars extractions came from aggregator page structure.
+ * Shared by P0.4 (llm-v6 fall-through, BRO-4490) and P0.5 (recovery).
+ */
+function isTier15OverrideActive(data) {
+  if (!isTier15ClearedRecord(data)) return false;
+  const { OUTLET_EXTRACTORS } = require('./score-extractors');
+  const outletExtractor = OUTLET_EXTRACTORS[data.outletId];
+  const isNoScoreOutlet = outletExtractor && outletExtractor('', '')?.__skipGeneric;
+  if (isNoScoreOutlet) return false;
+  const UNAMBIGUOUS_STAR_SOURCES = new Set(['unicode-stars', 'word-stars']);
+  return KNOWN_STAR_OUTLETS.has(data.outletId) || UNAMBIGUOUS_STAR_SOURCES.has(data.scoreSource) || !!outletExtractor;
+}
+
+/**
+ * BRO-4490: the star a tier-1.5 override recovers on an llm-v6 file, or null.
+ * The llm-v6 early return used to ship the unanchored LLM score before P0.5
+ * could recover the wrongly cleared star (stranger-things plays-international:
+ * a printed 3/5 shown as 76). Only an unambiguous rating string from a
+ * non-LOW-reliability extraction counts, and a recovered star the ensemble
+ * contradicts across a bucket boundary (>25 points, the P0.5 conflict rule) is
+ * not trusted: some tier-1.5 clears were right (an FP extraction the LLM read
+ * as a pan), so those keep the LLM verdict and are queued for a human check.
+ * @returns {{ star: string, flat: number, conflict: boolean } | null}
+ */
+function tier15RecoveredStarForV6(data) {
+  if (!data || data.originalScore || data.previousOriginalScore == null) return null;
+  if (!isTier15OverrideActive(data)) return null;
+  const raw = String(data.previousOriginalScore);
+  if (!isUnambiguousRatingString(raw)) return null;
+  if (data.originalScoreSource && LOW_RELIABILITY_STAR_SOURCES.has(data.originalScoreSource)) return null;
+  const flat = parseOriginalScore(raw, data.outletId);
+  if (flat === null || !Number.isFinite(flat)) return null;
+  const llm = data.llmScore && data.llmScore.score;
+  const llmConf = data.llmScore && data.llmScore.confidence;
+  const bucket = (v) => (v >= 70 ? 'positive' : v <= 40 ? 'negative' : 'mixed');
+  const conflict = typeof llm === 'number' && llmConf !== 'low'
+    && Math.abs(flat - llm) > 25 && bucket(flat) !== bucket(llm);
+  return { star: raw, flat, conflict };
+}
+
 function getBestScoreUnclamped(data, opts = {}) {
   const stats = opts.stats || {};
   const flagForHumanReview = opts.flagForHumanReview || (() => {});
@@ -823,7 +879,20 @@ function getBestScoreUnclamped(data, opts = {}) {
       && data.originalScore
       && lateStarReliable
       && parseOriginalScore(data.originalScore, data.outletId) !== null;
-    if (!llmV6HasLateStar) {
+    // BRO-4490: a wrongly cleared tier-1.5 star is recovered by P0.5; let it
+    // through unless the ensemble contradicts it (then flag, keep the LLM).
+    let tier15Recovery = null;
+    if (effectiveV6Source === 'llm-v6' && !llmV6HasLateStar) {
+      tier15Recovery = tier15RecoveredStarForV6(data);
+      if (tier15Recovery && tier15Recovery.conflict) {
+        inc('tier15RecoveryLlmConflict');
+        flagForHumanReview(data, 'tier15-recovery-llm-conflict',
+          `recovered tier-1.5 star "${tier15Recovery.star}" (=${tier15Recovery.flat}) vs llm-v6 ${data.llmScore.score}`);
+        tier15Recovery = null;
+      }
+      if (tier15Recovery) inc('tier15RecoveryOverV6');
+    }
+    if (!llmV6HasLateStar && !tier15Recovery) {
       const v6Score = data.llmScore.score;
       // S6-T6 / BRO-4287: the aggregator editors' thumbs contradict the v6
       // verdict → emit the verdict unchanged but queue it for adjudication.
@@ -892,19 +961,8 @@ function getBestScoreUnclamped(data, opts = {}) {
   // (b) The scoreSource is unicode-stars or word-stars — these are unambiguous formats
   //     that were correctly extracted but textContainsStarRating() couldn't find in fullText
   //     because the stars were in HTML structure, not the article body text.
-  const isTier15Cleared = data.originalScoreCleared === true &&
-    data.originalScoreClearedReason && data.originalScoreClearedReason.startsWith('extraction-no-evidence');
-  const UNAMBIGUOUS_STAR_SOURCES = new Set(['unicode-stars', 'word-stars']);
-  // Don't override for outlets explicitly marked as no-score (noScoreExtractor).
-  // Their unicode-stars extractions came from aggregator page structure, not the outlet.
-  const { OUTLET_EXTRACTORS } = require('./score-extractors');
-  const outletExtractor = OUTLET_EXTRACTORS[data.outletId];
-  const isNoScoreOutlet = outletExtractor && outletExtractor('', '')?.__skipGeneric;
-  // Also override for outlets with real extractors (not noScoreExtractor) — they're
-  // recognized star-rating outlets whose scores were incorrectly cleared.
-  const hasRealExtractor = outletExtractor && !isNoScoreOutlet;
-  const isTier15Override = isTier15Cleared && !isNoScoreOutlet &&
-    (isKnownStarOutlet || UNAMBIGUOUS_STAR_SOURCES.has(data.scoreSource) || hasRealExtractor);
+  const isTier15Cleared = isTier15ClearedRecord(data);
+  const isTier15Override = isTier15OverrideActive(data);
   const scoreCleared = data.originalScoreCleared === true && !isTier15Override;
   // Also skip if scoreSource is a known aggregator source — these should be in
   // aggregatorStars, not originalScore (prevents re-contamination even if
@@ -1493,6 +1551,8 @@ module.exports = {
   aggregatorStarsCorroboratedByFullText,
   getBestScore,
   SCORE_SOURCE_LABELS,
+  isTier15OverrideActive,
+  tier15RecoveredStarForV6,
   // URL date extraction
   extractDateFromUrl,
   // Dedup tiebreaking

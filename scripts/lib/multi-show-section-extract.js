@@ -179,6 +179,6 @@ function isolateMultiShowSectionForShowId(url, text, showId) {
 const MULTI_SHOW_NOT_FOUND_REASON = 'multi_show_section_not_found';
 
 module.exports = {
-  extractShowSection, findSectionHeadings, headingShowName, normSectionText: norm, isMultiShowPostUrl, isolateMultiShowSection,
+  extractShowSection, findSectionHeadings, headingShowName, normSectionText: norm, sectionTitleVariants, isMultiShowPostUrl, isolateMultiShowSection,
   isolateMultiShowSectionForShowId, isolatedSectionWriteFields, MULTI_SHOW_NOT_FOUND_REASON,
 };

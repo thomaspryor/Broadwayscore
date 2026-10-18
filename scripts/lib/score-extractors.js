@@ -1684,6 +1684,18 @@ function extractScore(html, text, outletId, showTitle) {
   // Clean HTML to avoid CSS/JS false positives
   const cleanedHtml = cleanHtmlForScoring(html);
 
+  // BRO-4490: a multi-review column (FT) carries one verdict run per show.
+  // Take this show's section's run, or nothing when the section can't be told
+  // apart: a page-level rating (json-ld) or the first/last run would be a guess.
+  const { isMultiVerdictOutlet, pickShowVerdict } = require('./multi-verdict-sections');
+  if (isMultiVerdictOutlet(outletId) && text) {
+    const verdict = pickShowVerdict(text, showTitle);
+    if (verdict.status === 'ambiguous') return null;
+    if (verdict.status === 'matched') {
+      return { originalScore: verdict.originalScore, normalizedScore: starsToNumeric(verdict.filled, 5), source: 'unicode-stars', outlet: outletId };
+    }
+  }
+
   // Try outlet-specific extractor first
   // Some outlets (Telegraph) have rating elements that cleanHtmlForScoring corrupts,
   // so try raw HTML first, then cleaned HTML as fallback

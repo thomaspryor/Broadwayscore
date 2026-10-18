@@ -15,6 +15,12 @@
  *   --execute    Actually write changes (default: dry run that still fetches)
  *   --delay=N    Delay between requests in ms (default: 2000)
  *   --dry-run    Don't fetch, just list targets
+ *   --tier15-cleared  (BRO-4490) also target files whose star a tier-1.5 audit
+ *                cleared ("extraction-no-evidence-in-text") at an outlet the
+ *                rebuild trusts for that clear (isTier15OverrideActive). A fresh
+ *                star is written only when it comes from the page structure
+ *                (isScoreClearSupersededBy), which retires the clear; then
+ *                late-star-anchor queues the anchored re-score.
  */
 
 const fs = require('fs');
@@ -28,7 +34,8 @@ require('./lib/load-env').loadEnv();
 
 const { extractScore, OUTLET_EXTRACTORS, EXTRACTOR_VERSION, OUTLET_VERIFIED_SOURCES } = require('./lib/score-extractors');
 const { fetchPage: fetchPageScraper, cleanup: cleanupScraper } = require('./lib/scraper');
-const { setExtractedScore } = require('./lib/score-routing');
+const { setExtractedScore, isScoreClearSupersededBy } = require('./lib/score-routing');
+const { isTier15OverrideActive } = require('./lib/rebuild-helpers');
 const { AGGREGATOR_DOMAINS } = require('./lib/aggregator-domains');
 const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -43,6 +50,7 @@ const delayArg = args.find(a => a.startsWith('--delay='));
 const execute = args.includes('--execute');
 const dryRun = args.includes('--dry-run');
 const replaceAggregator = args.includes('--replace-aggregator');
+const tier15Cleared = args.includes('--tier15-cleared');
 const outlet = outletArg ? outletArg.split('=')[1] : null;
 const limit = limitArg ? parseInt(limitArg.split('=')[1]) : 5;
 const delay = delayArg ? parseInt(delayArg.split('=')[1]) : 2000;
@@ -243,7 +251,8 @@ async function main() {
         const isSSSource = data.source === 'show-score' || data.source === 'show-score-playwright' || data.source === 'showscore-roundup';
         const hasUnverifiedSSScore = isSSSource && data.originalScore && !OUTLET_VERIFIED_SOURCES.has(data.scoreSource);
         const hasAggregatorScore = replaceAggregator && data.originalScore && AGGREGATOR_SOURCES.has(data.scoreSource);
-        if (data.originalScoreCleared) continue; // Deliberately cleared by P0 audit
+        // Deliberately cleared by P0 audit (a tier-1.5 clear is retried on request)
+        if (data.originalScoreCleared && !(tier15Cleared && isTier15OverrideActive(data))) continue;
         if (data.originalScore && !hasUnverifiedSSScore && !hasAggregatorScore) continue;
         if (!data.url) continue; // No URL to fetch
         // Skip reviews where URL points to an aggregator (contaminated data)
@@ -348,6 +357,13 @@ async function main() {
             console.log(`  Playwright retry failed: ${e.message}`);
           }
         }
+      }
+
+      // A cleared star comes back only from the page structure: a text match is
+      // what the tier-1.5 audit already found no evidence for.
+      if (result && result.originalScore && t.data.originalScoreCleared && !isScoreClearSupersededBy(t.data, result.source)) {
+        console.log(`  FOUND ${result.originalScore} [${result.source}], not a structural star: the clear stands`);
+        result = null;
       }
 
       if (result && result.originalScore) {
