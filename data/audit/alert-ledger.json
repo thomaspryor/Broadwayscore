@@ -19946,19 +19946,23 @@
       "silentRefires": 2
     },
     "test-yml:red:Unit Tests:4fb7ef20": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \".claude/CLOUD.md stays under its byte cap\"",
       "firstSeen": "2026-10-18T02:51:46.727Z",
-      "incidentOpenedAt": "2026-10-18T02:51:46.727Z",
-      "lastSeen": "2026-10-18T02:51:46.727Z",
-      "lastNotifiedAt": "2026-10-18T02:51:46.727Z",
+      "incidentOpenedAt": "2026-10-18T07:14:47.946Z",
+      "lastSeen": "2026-10-18T07:14:47.946Z",
+      "lastNotifiedAt": "2026-10-18T07:14:47.946Z",
       "lastSurfacedAt": null,
-      "notifyCount": 1,
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-5594",
-      "resolvedAt": "2026-10-18T03:54:18.177Z",
-      "resolveReason": "job-green"
+      "linearIdentifier": "BRO-5609",
+      "dispatch": {
+        "requestedAt": "2026-10-18T07:14:47.946Z",
+        "mode": "dispatch-at-filing",
+        "runId": "39105837664",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39105837664"
+      }
     },
     "land:land/job/linear-BRO-716-mvd2yiv0": {
       "status": "open",
