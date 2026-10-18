@@ -11,14 +11,17 @@ require('./lib/load-env').loadEnv();
 const linear = require('./lib/linear-client.js');
 const { firingThroughput } = require('./lib/codex-runner.js');
 
-// The 07:41 UTC firing on 2026-10-15 is the first with --slots 3 (a50cc9300 landed 06:49).
-const SINCE = process.env.CODEX_THROUGHPUT_SINCE || '2026-10-15T07:30:00Z';
-// = the card's RECHECK-AFTER: a day of firings first. Land's colocated-tests gate runs every
+// Window starts after the disk-full fix (eb488bc02, 2026-10-16 13:58 UTC). The 10-15..10-16
+// morning firings stopped early on a full disk; the first read over them (16 firings, 4.7
+// cards/firing, 21% landed, 33 of 75 cards rejected by the check, 20 out of time) is not the lane's
+// steady state.
+const SINCE = process.env.CODEX_THROUGHPUT_SINCE || '2026-10-16T14:00:00Z';
+// = the card's RECHECK-AFTER: 48h of firings first. Land's colocated-tests gate runs every
 // changed test file, so the probe skips until then (verify-codex-runner-health.test.mjs pattern).
-const CHECKABLE_FROM = Date.parse('2026-10-16T08:00:00Z');
+const CHECKABLE_FROM = Date.parse('2026-10-18T14:00:00Z');
 
 test('Codex runner: >= 4 cards per firing and >= 40% landed since the parallel slots (BRO-5384)', {
-  skip: Date.now() < CHECKABLE_FROM && !process.env.CODEX_THROUGHPUT_SINCE ? 'not checkable before 2026-10-16 08:00 UTC (a day of firings)' : false,
+  skip: Date.now() < CHECKABLE_FROM && !process.env.CODEX_THROUGHPUT_SINCE ? 'not checkable before 2026-10-18 14:00 UTC (48h of firings after the disk fix)' : false,
 }, async () => {
   const comments = ((await linear.listIssueComments(['BRO-4745'])).get('BRO-4745') || []).filter((c) => c.createdAt >= SINCE);
   const t = firingThroughput(comments);
