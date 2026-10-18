@@ -195,6 +195,31 @@ function recordUrlOwner(url, showId, file, reviewTextsDir, record = null) {
   if (arr) arr.push(entry); else _index.map.set(key, [entry]);
 }
 
+/**
+ * Does any file (flagged or not) in this one show folder already carry `url`,
+ * under the SAME normalization the ownership index uses? Read fresh from disk,
+ * so files this process created or merged are seen. BRO-5298: the sibling-url
+ * guard must not refuse a write whose url (or a ?srsltid= / www / trailing-slash
+ * variant of it) is already here; review-url-collision's sameUrlKey keeps the
+ * query string and would miss those. Fails open (false) on an unreadable dir.
+ */
+function showDirHoldsUrl(showDir, url) {
+  if (!_isOwnableUrl(url)) return false;
+  const key = _normalizeUrl(url);
+  if (!key) return false;
+  let files;
+  try {
+    files = fs.readdirSync(showDir).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json');
+  } catch { return false; }
+  for (const f of files) {
+    try {
+      const d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
+      if (d && _isOwnableUrl(d.url) && _normalizeUrl(d.url) === key) return true;
+    } catch { /* unreadable file cannot prove the url is here */ }
+  }
+  return false;
+}
+
 /** Test hook — drop the process cache. */
 function _resetUrlOwnershipIndex() {
   _index = null;
@@ -206,6 +231,7 @@ module.exports = {
   findCrossShowOwners,
   shouldBlockCrossShowCreate,
   recordUrlOwner,
+  showDirHoldsUrl,
   _resetUrlOwnershipIndex,
   _isBlockingOwnerCopy,
   _isLiveSameShowCopy,

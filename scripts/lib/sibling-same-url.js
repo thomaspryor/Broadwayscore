@@ -15,6 +15,7 @@
  * Report-only: which copy is wrong needs a person (or a date) to decide.
  */
 const { sameUrlKey } = require('./review-url-collision');
+const { shouldBlockCrossShowCreate } = require('./url-ownership');
 
 /**
  * @param {Map<string, {siblings: Array<{id: string}>}>} siblingIndex  buildSiblingIndex() output
@@ -60,4 +61,69 @@ function findSiblingSameUrlPairs(siblingIndex, loadFiles, isCounted, skipPair = 
   return pairs;
 }
 
-module.exports = { findSiblingSameUrlPairs };
+const _venueKey = (v) => String(v || '').trim().toLowerCase();
+
+/**
+ * True when one of the two entries declares the other as an earlier run it
+ * inherits reviews from (shows.json priorRuns, matched by id or venue, the
+ * same test market-routing's sibling-venue branch uses). A declared prior run
+ * is the operator saying "same production", so one article filed under both
+ * is that production's own coverage, not a misroute this guard should judge.
+ */
+function isDeclaredPriorRunPair(showId, siblingId, siblingIndex) {
+  const entry = siblingIndex && siblingIndex.get(showId);
+  const sibEntry = siblingIndex && siblingIndex.get(siblingId);
+  const sib = entry && (entry.siblings || []).find((s) => s.id === siblingId);
+  if (entry && entry.inheritedRunIds && entry.inheritedRunIds.has(siblingId)) return true;
+  if (entry && entry.inheritedRunVenues && sib && sib.venue && entry.inheritedRunVenues.has(_venueKey(sib.venue))) return true;
+  if (sibEntry && sibEntry.inheritedRunIds && sibEntry.inheritedRunIds.has(showId)) return true;
+  if (sibEntry && sibEntry.inheritedRunVenues && entry && entry.venue && sibEntry.inheritedRunVenues.has(_venueKey(entry.venue))) return true;
+  return false;
+}
+
+/**
+ * Write-time twin of findSiblingSameUrlPairs (BRO-5298): should a write of
+ * `url` under `showId` be refused because a same-title sibling production
+ * already holds the url in a live (counted) file?
+ *
+ * The writer's Guard I (url-ownership.js) refuses a NEW file whose url another
+ * show holds, but a MERGE skips it: a write that lands on an existing file in
+ * this show (matched by outlet + critic) and fills or swaps that file's url
+ * only checked this show's own folder (findSiblingUrlOwner). That is how an
+ * undated serp/Show Score row put the 2025 Times review onto
+ * the-comedy-about-spies-west-end-2026 and three 2020 reviews onto
+ * leopoldstadt-west-end-2021.
+ *
+ * Not refused:
+ *   - the url is already in this show's folder (`targetHoldsUrl`): the pair
+ *     already exists, refusing would only stop that file self-healing; the
+ *     detection audit (audit-sibling-title-misroute same-url) reports it;
+ *   - the sibling copy is not live (flagged, duplicate pointer, roundup or
+ *     combined article, split-section sibling): shouldBlockCrossShowCreate's
+ *     rules, so this guard and Guard I can never disagree about liveness;
+ *   - market routing just rerouted this write away from that sibling (`visited`);
+ *   - the two entries are a declared prior-run pair (isDeclaredPriorRunPair).
+ *
+ * Pure: the caller supplies `owners` (findCrossShowOwners output).
+ *
+ * @param {object} args
+ * @param {string} args.showId
+ * @param {Array<{showId: string, file: string, blocking: boolean, splitGroup?: string|null, splitShows?: string[]|null}>} args.owners
+ * @param {Map<string, object>} args.siblingIndex  buildSiblingIndex() output
+ * @param {Set<string>} [args.visited]  shows market routing rerouted this write away from
+ * @param {boolean} [args.targetHoldsUrl]  a file in showId's own folder already has the url
+ * @returns {{showId: string, file: string}|null} the sibling copy that holds the url
+ */
+function siblingUrlHolder({ showId, owners, siblingIndex, visited = null, targetHoldsUrl = false } = {}) {
+  if (targetHoldsUrl || !showId || !siblingIndex) return null;
+  const entry = siblingIndex.get(showId);
+  if (!entry || !Array.isArray(entry.siblings) || entry.siblings.length === 0) return null;
+  const sibIds = new Set(entry.siblings.map((s) => s.id));
+  const candidates = (owners || []).filter((o) => o && sibIds.has(o.showId)
+    && !(visited && visited.has(o.showId))
+    && !isDeclaredPriorRunPair(showId, o.showId, siblingIndex));
+  const verdict = shouldBlockCrossShowCreate(candidates, null, showId);
+  return verdict.block ? verdict.owner : null;
+}
+
+module.exports = { findSiblingSameUrlPairs, siblingUrlHolder, isDeclaredPriorRunPair };

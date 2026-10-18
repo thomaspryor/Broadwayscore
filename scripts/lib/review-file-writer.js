@@ -36,6 +36,7 @@ const {
 // Lazy: scripts/lib is copied flat into fixtures and sparse checkouts that carry no subdirectory, so a top-level require would break them.
 const laneBypasses = (...args) => require('./opening-night-lane/trust-model').laneBypasses(...args);
 const { findSiblingUrlOwner } = require('./review-url-collision');
+const { siblingUrlHolder } = require('./sibling-same-url');
 const { findMergedDuplicateOwner } = require('./merged-duplicate-urls');
 const { isStaleNonReviewSlot, isAggregatorPageUrl, flaggedSlotSupersededBy } = require('./review-slot-guards');
 const { isSameArticleBodyUpgrade } = require('./stale-merge-check');
@@ -59,7 +60,7 @@ const { evaluateCreditedPersonAsCritic } = require('./creative-as-critic');
 
 // One-shot latch for the Guard F2 inert warning (see its call site).
 let _creditGuardInertWarned = false;
-const { findCrossShowOwners, shouldBlockCrossShowCreate, recordUrlOwner } = require('./url-ownership');
+const { findCrossShowOwners, shouldBlockCrossShowCreate, recordUrlOwner, showDirHoldsUrl } = require('./url-ownership');
 const { decodeHtmlEntities, hasUndecodedHtmlEntities, hasJsonLdArtifact } = require('./text-cleaning');
 const { emitStage } = require('./stage-latency');
 const { shouldSkipAggregatorUrlWrite, shouldRefuseAggregatorOutletRefinement, hasPreservableAggregatorScore, isAggregatorReviewSource } = require('./aggregator-domains');
@@ -1118,6 +1119,37 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
   if (isShowDirHiddenBySparseCheckout(reviewTextsDir, showId)) {
     console.warn(`  ⛔ Refusing write: ${showId}/ is tracked but outside this sparse checkout — add it to the sparse set and re-run`);
     return { action: 'skipped', reason: 'show-dir-outside-sparse-checkout', guardRefused: true };
+  }
+
+  // --- Guard N: same-title sibling production already holds this url (BRO-5298) ---
+  // Guard I below refuses a NEW file whose url another show holds, but a write
+  // that MERGES into an existing file here (outlet + critic match) and fills or
+  // swaps its url only checked this show's own folder, so one article ended up
+  // counted on two productions of the same title (BRO-4674: 10 pairs, e.g. the
+  // 2025 Times review on the-comedy-about-spies-west-end-2026). Runs before the
+  // create/merge fork so both paths are covered; decision in
+  // sibling-same-url.js siblingUrlHolder (exemptions documented there). Same
+  // escape hatches as Guard I (fields.allowCrossShowUrl) plus operator entries
+  // and aggregator-verified lane reviews. Shows with no same-title sibling
+  // never reach the corpus-wide url index.
+  if (input.url && fields.allowCrossShowUrl !== true && input.source !== 'manual-entry'
+      && fields.wrongProduction !== true && !laneHolds('wrongProduction')) {
+    const siblingIndex = _getSiblingIndex();
+    const sibEntry = siblingIndex.get(showId);
+    if (sibEntry && sibEntry.siblings && sibEntry.siblings.length) {
+      const owners = findCrossShowOwners(input.url, showId, reviewTextsDir);
+      const holder = owners.length ? siblingUrlHolder({
+        showId,
+        owners,
+        siblingIndex,
+        visited: _rerouteVisited,
+        targetHoldsUrl: showDirHoldsUrl(showDir, input.url),
+      }) : null;
+      if (holder) {
+        console.warn(`  ⛔ Sibling-production URL: ${input.url} is live at ${holder.showId}/${holder.file} (same title) — refusing write under ${showId}`);
+        return { action: 'skipped', reason: `cross-show-url-owned:${holder.showId}`, siblingFile: path.join(holder.showId, holder.file) };
+      }
+    }
   }
 
   // --- Try to find existing file ---
