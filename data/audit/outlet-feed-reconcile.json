@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-18T10:12:41.387Z",
+  "generatedAt": "2026-10-18T13:52:26.061Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -69,9 +69,19 @@
       "openingDate": "2026-10-16"
     },
     {
+      "id": "music-for-18-musicians-staged-variations-off-broadway-2026",
+      "title": "Music for 18 Musicians: Staged Variations",
+      "openingDate": "2026-10-17"
+    },
+    {
       "id": "jane-eyre-rose-kingston-off-west-end-2026",
       "title": "Jane Eyre",
       "openingDate": "2026-10-15"
+    },
+    {
+      "id": "angels-bone-west-end-2026",
+      "title": "Angel's Bone",
+      "openingDate": "2026-10-17"
     },
     {
       "id": "cadel-lungs-on-legs-west-end-2026",
@@ -112,6 +122,11 @@
       "id": "nina-off-west-end-2026",
       "title": "Nina",
       "openingDate": "2026-10-12"
+    },
+    {
+      "id": "larger-than-life-starring-wallace-and-gromit-shaun-and-more-off-west-end-2026",
+      "title": "Larger Than Life: Starring Wallace & Gromit, Shaun and More",
+      "openingDate": "2026-10-14"
     }
   ],
   "skipped": [
@@ -147,10 +162,6 @@
       "error": "HTTP 401 for https://musicaltheatrereview.com/feed/"
     },
     {
-      "outletId": "theatre-vibe",
-      "error": "HTTP 403 for https://theatrevibe.co.uk/feed/"
-    },
-    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -161,19 +172,32 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 717,
-  "matchedGaps": 2,
+  "itemsScanned": 692,
+  "matchedGaps": 5,
   "possibleGaps": 6,
   "gaps": [
     {
-      "showId": "cadel-lungs-on-legs-west-end-2026",
-      "title": "Cadel: Lungs On Legs",
+      "showId": "angels-bone-west-end-2026",
+      "title": "Angel's Bone",
       "level": "matched",
-      "outletId": "liamodell",
-      "url": "https://liamodell.com/2026/10/18/cadel-lungs-on-legs-review-riverside-studios-hammersmith-london-cadel-evans-tour-de-france/",
-      "headline": "‘CADEL: Lungs on Legs’ review – Propelling and exhilarating endurance theatre",
+      "outletId": "british-theatre",
+      "url": "https://www.britishtheatreguide.info/reviews/angel-s-bones-london-coliseum-26131",
+      "headline": "Angel’s Bone",
+      "publishDate": "2026-10-18"
+    },
+    {
+      "showId": "angels-bone-west-end-2026",
+      "title": "Angel's Bone",
+      "level": "matched",
+      "outletId": "jackstage",
+      "url": "https://www.jackstage.co.uk/post/eno-s-angel-s-bone-review-a-cinematic-expose-of-human-trafficking",
+      "headline": "ENO's Angel's Bone Review: a cinematic exposé of human trafficking",
       "publishDate": "2026-10-18"
     },
     {
@@ -183,6 +207,24 @@
       "outletId": "readaboutstuff",
       "url": "https://readaboutstuff.com/2026/10/18/review-dog-mom-southwark-playhouse-borough-london/",
       "headline": "Review: Dog Mom &#8211; Southwark Playhouse Borough, London",
+      "publishDate": "2026-10-18"
+    },
+    {
+      "showId": "dog-mom-off-west-end-2026",
+      "title": "Dog Mom",
+      "level": "matched",
+      "outletId": "pinkprincetheatre",
+      "url": "https://www.pinkprincetheatre.com/post/review-dog-mom-southwark-playhouse",
+      "headline": "REVIEW: DOG MOM @ SOUTHWARK PLAYHOUSE",
+      "publishDate": "2026-10-18"
+    },
+    {
+      "showId": "stuffed-off-west-end-2026",
+      "title": "Stuffed",
+      "level": "matched",
+      "outletId": "british-theatre",
+      "url": "https://www.britishtheatreguide.info/reviews/stuffed-new-diorama-the-26132",
+      "headline": "Stuffed",
       "publishDate": "2026-10-18"
     },
     {
