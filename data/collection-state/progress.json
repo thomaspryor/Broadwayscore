@@ -1,15 +1,35 @@
 {
   "processed": [
-    "the-second-best-school-shooting-off-broadway-2026/broadway-baby--unknown.json"
+    "the-second-best-school-shooting-off-broadway-2026/broadway-baby--unknown.json",
+    "school-pictures-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
+    "memoirs-of-amorous-gentlemen-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "a-ghost-in-your-ear-off-broadway-2026/the-recs--randall-david-cook.json"
   ],
   "failed": [
     "the-second-best-school-shooting-off-broadway-2026/cedarnews--cedar-news-editorial-team.json",
-    "the-second-best-school-shooting-off-broadway-2026/theatreinla--unknown.json"
+    "the-second-best-school-shooting-off-broadway-2026/theatreinla--unknown.json",
+    "school-pictures-off-broadway-2026/airmail--air-mail.json",
+    "midnight-off-broadway-2026/timeout--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/theatermania--zachary-stewart.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/timeout--unknown.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/culturesauce--thom-geier.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--roma-torre.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/talkinbroadway--kimberly-ramirez.json",
+    "the-ask-off-broadway-2026/newyorker--helen-shaw.json",
+    "fish-off-broadway-2026/timeout--unknown.json",
+    "fish-off-broadway-2026/exeunt-magazine--unknown.json",
+    "a-ghost-in-your-ear-off-broadway-2026/timeout--unknown.json",
+    "a-ghost-in-your-ear-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "the-second-best-school-shooting-off-broadway-2026/broadway-baby--unknown.json"
+      "the-second-best-school-shooting-off-broadway-2026/broadway-baby--unknown.json",
+      "school-pictures-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
+      "memoirs-of-amorous-gentlemen-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "a-ghost-in-your-ear-off-broadway-2026/the-recs--randall-david-cook.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -21,6 +41,59 @@
     "archive": []
   },
   "startTime": "2026-10-18T02:27:07.746Z",
-  "lastProcessed": "the-second-best-school-shooting-off-broadway-2026/theatreinla--unknown.json",
-  "log": []
+  "lastProcessed": "a-ghost-in-your-ear-off-broadway-2026/the-recs--randall-david-cook.json",
+  "log": [
+    {
+      "t": "2026-10-18T02:41:08.190Z",
+      "event": "bb-session",
+      "session": "8a6e1b8a",
+      "url": "https://cedarnews.net/newstasks/1016181/school-shooting-theatre-review-second-be"
+    },
+    {
+      "t": "2026-10-18T02:41:25.034Z",
+      "event": "bb-session",
+      "session": "1cc93bf6",
+      "url": "https://cedarnews.net/newstasks/1016181/school-shooting-theatre-review-second-be"
+    },
+    {
+      "t": "2026-10-18T02:42:53.490Z",
+      "event": "bb-session",
+      "session": "52f237dd",
+      "url": "https://www.theatreinla.com/the-second-best-school-shooting/11328/"
+    },
+    {
+      "t": "2026-10-18T02:46:08.091Z",
+      "event": "bb-session",
+      "session": "2d126437",
+      "url": "https://www.talkinbroadway.com/page/ob/10_14_26b.html"
+    },
+    {
+      "t": "2026-10-18T02:46:08.371Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-18T02:46:11.569Z",
+      "event": "bb-session",
+      "session": "aec5dc27",
+      "url": "https://www.newyorker.com/goings-on-about-town/the-ask"
+    },
+    {
+      "t": "2026-10-18T02:46:11.954Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-18T02:46:51.944Z",
+      "event": "bb-session",
+      "session": "d05103b5",
+      "url": "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/attachment/alyssa-may-go"
+    },
+    {
+      "t": "2026-10-18T02:46:59.467Z",
+      "event": "bb-session",
+      "session": "685e756b",
+      "url": "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/attachment/alyssa-may-go"
+    }
+  ]
 }
