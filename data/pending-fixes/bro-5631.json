@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5631",
   "planId": "dc818f04-5a03-4ba1-b496-cd2286f72b30",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -52,5 +52,28 @@
         "description": "The Almeida run closed 7 June 2025; the 2026 transfer is 1536-west-end-2026."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-18T15:59:44.751Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for 1536-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for 1536-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for 1536-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for 1536-off-west-end-2026"
+    }
+  ]
 }
