@@ -184,6 +184,23 @@ test('a press-night cluster of early-dated stored reviews stays a gap (Grease im
   assert.strictEqual(pendingPriorRunUrls(two, show).size, 2);
 });
 
+test('a press-night cluster 25 months before the run is the earlier production (BRO-5225 The Ask, Wild Project 2024)', () => {
+  const { pendingPriorRunUrls } = require('./gap-ingest-policy.js');
+  const show = { previewsStartDate: '2026-10-06', openingDate: '2026-10-13' };
+  const cluster = [
+    { url: 'https://www.theatrebeyondbroadway.com/reviews/the-ask', publishDate: '2024-09-08' },
+    { url: 'https://exeuntnyc.com/reviews/review-the-ask-at-the-wild-project/', publishDate: '2024-09-13' },
+    { url: 'https://www.theatrely.com/post/generations-collide-in-the-ask-review', publishDate: '2024-09-21' },
+    { url: 'http://www.theaterscene.net/plays/offbway-plays/the-ask/tony-marinelli/', publishDate: '2024-09-13' },
+  ];
+  assert.strictEqual(pendingPriorRunUrls(cluster, show).size, 4);
+  // boundary: 539d back stays a gap cluster, 541d back is prior-run
+  const mk = (d) => ['a.com', 'b.com', 'c.com'].map((h) => ({ url: `https://${h}/r`, publishDate: d }));
+  const s2 = { previewsStartDate: '2026-10-06' };
+  assert.strictEqual(pendingPriorRunUrls(mk('2025-04-14'), s2).size, 0);
+  assert.strictEqual(pendingPriorRunUrls(mk('2025-04-12'), s2).size, 3);
+});
+
 test('a roundup citing its own verdict with no link is not a missing review (BRO-4790 WET Last Ship)', () => {
   const { isRoundupSelfCitation } = require('./gap-ingest-policy.js');
   assert.strictEqual(isRoundupSelfCitation({ outletId: 'westendtheatre', outletName: 'WestendTheatre.com', source: 'westendtheatre' }), true);

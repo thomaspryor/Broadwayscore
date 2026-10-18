@@ -206,12 +206,16 @@ function isPublishDateBeforeRun(publishDate, show, graceDays = 90) {
   return !findMatchingPriorRun(publishDate, show.priorRuns);
 }
 
+// A press-night cluster dated further back than this cannot be this run on wrong dates.
+const PRESS_NIGHT_CLUSTER_MAX_DAYS = 540;
+
 /**
  * The gap URLs a show's _pending/ files prove are a prior production
  * (isPublishDateBeforeRun), except a press-night cluster: 3+ hosts dated within
  * 14 days of each other is an opening this show record does not know about
  * (Grease immersive: seven 2025-08-05/06 reviews against a 2026-07-22 start),
- * which may be this very production on wrong dates, so it stays a gap.
+ * which may be this very production on wrong dates, so it stays a gap (unless it is
+ * more than PRESS_NIGHT_CLUSTER_MAX_DAYS before the run: then it is the earlier production).
  * @param {Array<{url:string, publishDate:string}>} pending stored review files
  * @param {object} show shows.json record
  * @returns {Map<string,string>} url -> publishDate for URLs to tag prior-run
@@ -228,7 +232,12 @@ function pendingPriorRunUrls(pending, show) {
   for (const p of early) {
     const t = toDateMs(p.publishDate);
     const hosts = new Set(early.filter((q) => Math.abs(toDateMs(q.publishDate) - t) <= 14 * 86400000).map((q) => hostOf(q.url)));
-    if (hosts.size < 3) out.set(p.url, p.publishDate);
+    // A cluster more than PRESS_NIGHT_CLUSTER_MAX_DAYS before the run cannot be this
+    // production on wrong dates (The Ask 2026 vs a Sept 2024 Wild Project run: six
+    // hosts, 25 months early, held roundup-gap open): it is the earlier run.
+    const start = toDateMs((show && (show.previewsStartDate || show.openingDate)) || '');
+    const tooFarBack = Number.isFinite(start) && start - t > PRESS_NIGHT_CLUSTER_MAX_DAYS * 86400000;
+    if (hosts.size < 3 || tooFarBack) out.set(p.url, p.publishDate);
   }
   return out;
 }
