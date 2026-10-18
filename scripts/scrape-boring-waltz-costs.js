@@ -62,8 +62,6 @@ const COMMERCIAL_ALIASES = {
   'sunset blvd': 'sunset-boulevard-2024',
   // A typo in nine of the 2025-26 posts.
   'two stranger (carry a cake across new york)': 'two-strangers',
-  "sondheim's old friends": 'stephen-sondheims-old-friends-2025',
-  'a wonderful world': 'a-wonderful-world-the-louis-armstrong-musical-2024',
   'giant musical': 'giant',
   "sondheim's old friends": 'stephen-sondheims-old-friends-2025',
   'a wonderful world': 'a-wonderful-world-the-louis-armstrong-musical-2024',
