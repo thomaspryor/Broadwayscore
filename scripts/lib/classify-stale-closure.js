@@ -24,18 +24,18 @@ const RECENT_SIGNAL_DAYS_DEFAULT = 30;
 // because some shows recoup after they close (The Piano Lesson took about 14
 // months). Before that the row stays TBD and is flagged needsLossEvidence.
 const {
-  FIZZLE_MIN_RETURNED_PCT, DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS: LOSS_LABEL_MIN_DAYS_DEFAULT,
+  FIZZLE_MIN_RETURNED_PCT, DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS: LOSS_LABEL_MIN_DAYS_DEFAULT, ownReturnedEstimatePct,
 } = require('./commercial-designations');
 
 /**
  * Fizzle or Flop for a closed, unrecouped show, by the returned-% rule
- * (>= FIZZLE_MIN_RETURNED_PCT returned is Fizzle). With no reported
- * estimatedRecoupmentPct the softer label, Fizzle, is used.
+ * (>= FIZZLE_MIN_RETURNED_PCT returned is Fizzle). With no returned estimate
+ * on the record the softer label, Fizzle, is used.
  */
 function lossLabelFor(entry) {
-  const est = entry?.estimatedRecoupmentPct;
-  const pct = Array.isArray(est) && est.length === 2 && est.every(Number.isFinite) ? (est[0] + est[1]) / 2
-    : Number.isFinite(est) ? est : null;
+  // The analyst's range, else an outside estimate: the same reading the
+  // record check uses, so the label it writes never draws its warning (BRO-5602).
+  const pct = ownReturnedEstimatePct(entry);
   if (pct === null) return 'Fizzle';
   return pct >= FIZZLE_MIN_RETURNED_PCT ? 'Fizzle' : 'Flop';
 }

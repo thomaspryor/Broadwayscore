@@ -68,6 +68,12 @@ describe('classifyStaleClosure', () => {
     assert.equal(lossLabelFor({ estimatedRecoupmentPct: [30, 50] }), 'Fizzle');
     assert.equal(lossLabelFor({ estimatedRecoupmentPct: 20 }), 'Flop');
     assert.equal(lossLabelFor({}), 'Fizzle');
+    // The analyst's range counts and wins over an outside estimate (BRO-5602:
+    // beaches, cats-the-jellicle-ball and titanique carry only [0, 0]).
+    assert.equal(lossLabelFor({ analystRecoupPct: [0, 0] }), 'Flop');
+    assert.equal(lossLabelFor({ analystRecoupPct: [20, 40], estimatedRecoupmentPct: [0, 10] }), 'Fizzle');
+    assert.deepEqual(closedTbdLossAction({ designation: 'TBD', analystRecoupPct: [0, 0] }, { status: 'closed', closingDate: '2025-01-01' }, { now: Date.parse('2026-10-18') }),
+      { action: 'label', designation: 'Flop', designationBasis: 'no-recoupment-announced' });
     const r = classifyStaleClosure({
       show: { status: 'closed', closingDate: daysBefore(200) },
       entry: { ...researched, estimatedRecoupmentPct: [5, 15] }, now: NOW,

@@ -23,7 +23,7 @@
  */
 
 const {
-  TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, DESIGNATIONS_OUTSIDE_RULE,
+  TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, DESIGNATIONS_OUTSIDE_RULE, ownReturnedEstimatePct,
 } = require('./commercial-designations');
 const UNCHANGED = new Set(DESIGNATIONS_OUTSIDE_RULE);
 /** Off until the model is explained against reported returns (see header). */
@@ -63,10 +63,9 @@ function proposeDesignation({ record, show, model, now = Date.now(), modelTiebre
   if (recouped !== true) {
     if (!closed) return keep('running', current === 'TBD' || !current ? 'still running, not recouped' : 'still running; designation kept');
     if (recouped === null) return keep('no-evidence', 'closed, recoupment unknown and no usable model');
-    const est = record.estimatedRecoupmentPct; // [low, high] reported estimate
-    const pct = Array.isArray(est) && est.every(Number.isFinite) ? (est[0] + est[1]) / 2
-      : Number.isFinite(est) ? est
-        : modelOk ? model.central.recoupedPct : null;
+    // The analyst's range, else an outside estimate, else the model (BRO-5602).
+    const own = ownReturnedEstimatePct(record);
+    const pct = own !== null ? own : modelOk ? model.central.recoupedPct : null;
     if (pct === null) return keep('no-evidence', 'closed unrecouped, no returned % to split Fizzle/Flop');
     if (current === 'Fizzle' || current === 'Flop') return keep('unrecouped', `${current} kept (this rule does not move Fizzle/Flop)`);
     // Near the recoup line, or near the Fizzle/Flop line: low confidence.
