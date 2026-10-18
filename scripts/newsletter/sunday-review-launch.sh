@@ -68,6 +68,10 @@ fi
 # Atomic test-and-set: mkdir fails if another instance already holds the
 # lock. A concurrent tick loses the race here and exits clean rather than
 # launching a second overlapping Opus session against the same checkout.
+# A run is alarm-bounded at CLAUDE_TIMEOUT_SEC (1h), so a lock older than 2h was
+# orphaned by a crash/reboot mid-run (the EXIT trap never fired); clear it or
+# every later Sunday skips forever (BRO-5567).
+find "$LOCK_DIR" -maxdepth 0 -mmin +120 -exec rmdir {} \; 2>/dev/null || true
 if ! mkdir "$LOCK_DIR" 2>/dev/null; then
   echo "$(date -u +%FT%TZ): lock held (another run already in flight) — skipping"
   exit 0
