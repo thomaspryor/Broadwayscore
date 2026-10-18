@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-18T05:26:04.106Z",
+  "generatedAt": "2026-10-18T08:34:40.861Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -127,10 +127,6 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -157,23 +153,28 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 692,
-  "matchedGaps": 1,
+  "itemsScanned": 721,
+  "matchedGaps": 2,
   "possibleGaps": 7,
   "gaps": [
     {
-      "showId": "some-woman-west-end-2026",
-      "title": "Some Woman",
+      "showId": "cadel-lungs-on-legs-west-end-2026",
+      "title": "Cadel: Lungs On Legs",
       "level": "matched",
-      "outletId": "all-that-dazzles-uk",
-      "url": "https://www.allthatdazzles.co.uk/post/review-some-woman-dorfman-theatre",
-      "headline": "Review: Some Woman (Dorfman Theatre)",
+      "outletId": "liamodell",
+      "url": "https://liamodell.com/2026/10/18/cadel-lungs-on-legs-review-riverside-studios-hammersmith-london-cadel-evans-tour-de-france/",
+      "headline": "‘CADEL: Lungs on Legs’ review – Propelling and exhilarating endurance theatre",
+      "publishDate": "2026-10-18"
+    },
+    {
+      "showId": "dog-mom-off-west-end-2026",
+      "title": "Dog Mom",
+      "level": "matched",
+      "outletId": "readaboutstuff",
+      "url": "https://readaboutstuff.com/2026/10/18/review-dog-mom-southwark-playhouse-borough-london/",
+      "headline": "Review: Dog Mom &#8211; Southwark Playhouse Borough, London",
       "publishDate": "2026-10-18"
     },
     {

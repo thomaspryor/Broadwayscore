@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-18T05:25:47.776Z",
+  "generatedAt": "2026-10-18T08:32:02.058Z",
   "windowDays": 1095,
-  "targets": 678,
+  "targets": 677,
   "auditedThisRun": 17,
   "carriedForward": 734,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 431,
-    "missingCurrentRun": 880,
+    "withGap": 430,
+    "missingCurrentRun": 871,
     "totalCitedNoUrl": 7,
-    "totalFlaggedMisses": 962,
-    "totalRecoverable": 9,
+    "totalFlaggedMisses": 966,
+    "totalRecoverable": 8,
     "totalRecovered": 14,
     "humanExcluded": 1,
-    "automatedExcluded": 163,
-    "automatedExcludedListed": 130,
-    "priorProductionCitations": 5103
+    "automatedExcluded": 166,
+    "automatedExcludedListed": 134,
+    "priorProductionCitations": 5147
   },
   "results": [
     {
@@ -11887,8 +11887,7 @@
       ],
       "aggregatorListedUrls": [
         "https://frontmezzjunkies.com/2026/10/15/anon-a-tempest-at-our-kitchen-table-unleashes-suburban-panic-at-mcc-theater/",
-        "https://culturesauce.com/anon-anne-washburn-off-broadway-review/",
-        "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/"
+        "https://culturesauce.com/anon-anne-washburn-off-broadway-review/"
       ],
       "dirFiles": 14,
       "dirClean": 8,
@@ -11913,6 +11912,10 @@
         },
         {
           "host": "theaterpizzazz.com",
+          "count": 1
+        },
+        {
+          "host": "theatermania.com",
           "count": 1
         }
       ],
@@ -11939,30 +11942,6 @@
           ],
           "confirmedNonReview": true,
           "reverify": false
-        },
-        {
-          "url": "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--linda-buchwald.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "confirmedNonReview": true,
-          "serpCensus": true,
-          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -11988,7 +11967,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 6,
+            "results": 7,
             "accepted": 0,
             "error": null
           },
@@ -12009,7 +11988,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -12018,29 +11997,29 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 5,
+            "results": 6,
             "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 1,
+        "resultCount": 0,
         "error": null
       },
       "candidatesRejected": {
-        "count": 317,
+        "count": 318,
         "byReason": {
-          "non-review-host": 26,
-          "ticketing-reseller": 5,
-          "ticketing-listing": 1,
-          "aggregator-internal-nav": 216,
           "not-http-url": 49,
-          "production-database-listing": 3,
+          "non-review-host": 27,
+          "aggregator-internal-nav": 216,
           "aggregator-section-root": 6,
           "roundup-page": 5,
-          "census-junk-host": 3,
           "venue-production-page": 2,
+          "production-database-listing": 3,
+          "ticketing-reseller": 5,
+          "ticketing-listing": 1,
+          "census-junk-host": 3,
           "news-article": 1
         }
       },
@@ -12056,13 +12035,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://frontmezzjunkies.com/2026/10/15/anon-a-tempest-at-our-kitchen-table-unleashes-suburban-panic-at-mcc-theater/"
-          },
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/"
           }
         ],
         "suppressedMissing": [],
@@ -12079,20 +12051,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-15T10:17:27.731Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T22:59:21.861Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 1,
-        "candidateCount": 3
+        "candidateCount": 2
       },
-      "computedAt": "2026-10-17T22:59:21.861Z"
+      "computedAt": "2026-10-18T08:32:02.058Z"
     },
     {
       "showId": "anonymous-off-broadway-2026",
@@ -24128,7 +24093,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -24138,7 +24103,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 2,
             "accepted": 0,
             "error": null
           }
@@ -24149,10 +24114,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 10,
+        "count": 17,
         "byReason": {
+          "non-review-host": 13,
           "aggregator-internal-nav": 1,
-          "non-review-host": 8,
+          "ticketing-reseller": 1,
+          "write-path-blocked": 1,
           "tag-index-page": 1
         }
       },
@@ -24184,7 +24151,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-18T00:39:13.929Z"
+      "computedAt": "2026-10-18T08:32:02.058Z"
     },
     {
       "showId": "bone-wars-a-new-musical-off-broadway-2026",
@@ -39010,7 +38977,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-18T00:39:13.929Z"
+      "computedAt": "2026-10-18T08:32:02.058Z"
     },
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
@@ -47036,9 +47003,11 @@
         "https://shystrangemanic.com/2022/02/dirty-dancing-at-the-dominion-theatre.html",
         "https://www.whatsonstage.com/london-theatre/reviews/dirty-dancing-dominion-2022-west-end-review_55891.html",
         "https://musicaltheatrereview.com/london-venue-change-for-dirty-dancing-the-classic-story-on-stage/",
-        "https://www.lastminutetheatretickets.com/review-of-dirty-dancing-the-classic-story-on-stage/"
+        "https://www.lastminutetheatretickets.com/review-of-dirty-dancing-the-classic-story-on-stage/",
+        "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462",
+        "https://www.thereviewshub.com/dirty-dancing-the-classic-story-on-stage-dominion-theatre/"
       ],
-      "dirFiles": 9,
+      "dirFiles": 10,
       "dirClean": 1,
       "inReviewsJson": 1,
       "missing": [
@@ -47057,12 +47026,6 @@
           "priorRunSource": "show-score-url-year"
         },
         {
-          "url": "https://musicaltheatrereview.com/london-venue-change-for-dirty-dancing-the-classic-story-on-stage/",
-          "host": "musicaltheatrereview.com",
-          "knownOutletId": "musical-theatre-review",
-          "serpCensus": true
-        },
-        {
           "url": "https://www.lastminutetheatretickets.com/review-of-dirty-dancing-the-classic-story-on-stage/",
           "host": "lastminutetheatretickets.com",
           "knownOutletId": null,
@@ -47071,12 +47034,7 @@
           "serpCensus": true
         }
       ],
-      "dirOnly": [
-        {
-          "host": "thereviewshub.com",
-          "count": 1
-        }
-      ],
+      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://www.londontheatre.co.uk/reviews/dirty-dancing-the-classic-story-on-stage-review-dominion-theatre",
@@ -47173,6 +47131,53 @@
           "priorRun": true,
           "priorRunSource": "flagged-file-date:February 9th, 2022",
           "reverify": false
+        },
+        {
+          "url": "https://musicaltheatrereview.com/london-venue-change-for-dirty-dancing-the-classic-story-on-stage/",
+          "host": "musicaltheatrereview.com",
+          "knownOutletId": "musical-theatre-review",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "musical-theatre-review--angela-thomas.json",
+              "flag": "clean",
+              "urlInDir": "https://musicaltheatrereview.com/london-venue-change-for-dirty-dancing-the-classic-story-on-stage/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462",
+          "host": "edinburghguide.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "edinburghguide--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -47262,7 +47267,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -47272,30 +47277,30 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 3,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 32,
+        "count": 31,
         "byReason": {
-          "aggregator-internal-nav": 3,
           "non-review-host": 20,
-          "bare-host": 1,
+          "aggregator-internal-nav": 2,
           "ticketing-reseller": 2,
           "census-junk-host": 2,
+          "bare-host": 1,
           "write-path-blocked": 2,
-          "ticket-seller-product-page": 1,
-          "non-review-path": 1
+          "non-review-path": 1,
+          "ticket-seller-product-page": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -47317,23 +47322,7 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [
-        {
-          "url": "https://musicaltheatrereview.com/london-venue-change-for-dirty-dancing-the-classic-story-on-stage/",
-          "host": "musicaltheatrereview.com",
-          "outletId": "musical-theatre-review",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
@@ -47344,23 +47333,43 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://musicaltheatrereview.com/london-venue-change-for-dirty-dancing-the-classic-story-on-stage/"
+          },
+          {
+            "outletId": "edinburghguide.com",
+            "outlet": "edinburghguide.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.thereviewshub.com/dirty-dancing-the-classic-story-on-stage-dominion-theatre/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-18T08:32:02.058Z"
+          },
           {
             "url": "https://musicaltheatrereview.com/london-venue-change-for-dirty-dancing-the-classic-story-on-stage/",
             "outletId": "musical-theatre-review",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
+            "url": "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462",
+            "outletId": "edinburghguide.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-18T08:32:02.058Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 0,
-        "candidateCount": 1
+        "liveCount": 1,
+        "candidateCount": 3
       },
-      "computedAt": "2026-10-18T00:39:13.929Z"
+      "computedAt": "2026-10-18T08:32:02.058Z"
     },
     {
       "showId": "dirty-dancing-tour-2026",
@@ -48480,29 +48489,18 @@
         "https://www.allthatdazzles.co.uk/post/review-dog-mom-southwark-playhouse-borough",
         "https://theatreandtonic.co.uk/blog/dog-mom-at-southwark-playhouse-borough-review",
         "https://thespyinthestalls.com/2026/10/dog-mom/",
+        "https://www.london-unattached.com/dog-mom-southwark-playhouse/",
         "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn",
         "https://shouldgoto.com/theatre/dog-mom",
         "https://www.uktw.co.uk/London/Southwark-Playhouse-Borough/Play/Dog-Mom/L536895171/",
         "https://readaboutstuff.com/2026/09/29/interview-ajay-chowdhury-chats-to-read-about-stuff-ahead-of-dog-mom/",
         "https://dogforum.co.uk/threads/forum-competition-award-winning-comedy-dog-mom-at-londons-southwark-playhouse.97692/"
       ],
-      "dirFiles": 11,
-      "dirClean": 6,
-      "inReviewsJson": 6,
-      "missing": [
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-dog-mom-southwark-playhouse-borough",
-          "host": "allthatdazzles.co.uk",
-          "knownOutletId": "all-that-dazzles-uk",
-          "serpCensus": true
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "london-unattached.com",
-          "count": 1
-        }
-      ],
+      "dirFiles": 12,
+      "dirClean": 7,
+      "inReviewsJson": 7,
+      "missing": [],
+      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://theqr.co.uk/2026/10/13/canine-logic-and-reinvention-in-southwarks-dog-mom/",
@@ -48682,7 +48680,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -48708,14 +48706,14 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 12,
+        "resultCount": 13,
         "error": null
       },
       "candidatesRejected": {
-        "count": 22,
+        "count": 20,
         "byReason": {
+          "non-review-host": 15,
           "aggregator-internal-nav": 1,
-          "non-review-host": 17,
           "census-junk-host": 2,
           "write-path-blocked": 1,
           "review-hub-page": 1
@@ -48739,34 +48737,9 @@
           "zeroCharAttempts": 4
         }
       ],
-      "ingestResults": [
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-dog-mom-southwark-playhouse-borough",
-          "host": "allthatdazzles.co.uk",
-          "outletId": "all-that-dazzles-uk",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "all-that-dazzles-uk",
-            "outlet": "all-that-dazzles-uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.allthatdazzles.co.uk/post/review-dog-mom-southwark-playhouse-borough"
-          },
           {
             "outletId": "theqr",
             "outlet": "theqr",
@@ -48817,6 +48790,12 @@
             "firstSeenAt": "2026-10-18T00:39:13.929Z"
           },
           {
+            "url": "https://www.allthatdazzles.co.uk/post/review-dog-mom-southwark-playhouse-borough",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
             "url": "https://theatreandtonic.co.uk/blog/dog-mom-at-southwark-playhouse-borough-review",
             "outletId": "theatreandtonic.co.uk",
             "state": "live",
@@ -48829,11 +48808,10 @@
             "firstSeenAt": "2026-10-17T18:15:37.224Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-dog-mom-southwark-playhouse-borough",
-            "outletId": "all-that-dazzles-uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+            "url": "https://www.london-unattached.com/dog-mom-southwark-playhouse/",
+            "outletId": "london-unattached.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-18T08:32:02.058Z"
           },
           {
             "url": "https://theqr.co.uk/2026/10/13/canine-logic-and-reinvention-in-southwarks-dog-mom/",
@@ -48865,10 +48843,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 5,
-        "candidateCount": 10
+        "liveCount": 7,
+        "candidateCount": 11
       },
-      "computedAt": "2026-10-18T00:39:13.929Z"
+      "computedAt": "2026-10-18T08:32:02.058Z"
     },
     {
       "showId": "doll-day-afternoon-off-broadway-2026",
@@ -48948,10 +48926,10 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 33,
+        "count": 35,
         "byReason": {
-          "aggregator-internal-nav": 7,
-          "non-review-host": 23,
+          "non-review-host": 24,
+          "aggregator-internal-nav": 8,
           "write-path-blocked": 1,
           "review-hub-page": 1,
           "show-hub": 1
@@ -48968,7 +48946,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-18T00:39:13.929Z"
+      "computedAt": "2026-10-18T08:32:02.058Z"
     },
     {
       "showId": "don-giovanni-off-broadway-2025",
@@ -82952,79 +82930,31 @@
       "status": "open",
       "category": "off-west-end",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-Disneys-HIGH-SCHOOL-MUSICAL-THE-MUSICAL-THE-SERIES-20191111"
+        "https://playbill.com/article/what-do-critics-think-of-high-school-musical-the-musical-the-series"
       ],
       "aggregatorListedUrls": [
-        "https://variety.com/2019/tv/reviews/high-school-musical-the-musical-the-series-review-disney-plus-1203390218/",
-        "https://www.vulture.com/2019/11/high-school-musical-the-musical-the-series-review.html",
-        "https://www.usatoday.com/story/entertainment/tv/2019/11/11/high-school-musical-musical-series-review-great-nostalgia-disney-plus/2519110001/",
-        "https://www.forbes.com/sites/scottmendelson/2019/11/05/the-first-disney-tv-shows-high-school-musical-world-according-to-jeff-goldblum-and-encore-are-disappointly-inessential/",
-        "https://www.indiewire.com/2019/11/high-school-musical-the-musical-the-series-review-1202188330/",
         "https://tv.avclub.com/the-cast-of-disney-s-high-school-musical-reboot-are-alr-1839459992",
-        "https://www.insider.com/high-school-musical-the-series-tv-review-disney-plus-2019-11",
         "https://collider.com/high-school-musical-the-musical-the-series-review/",
-        "https://decider.com/2019/11/08/high-school-musical-the-musical-the-series-disney-plus-stream-it-or-skip-it/",
-        "https://decider.com/2019/11/05/high-school-musical-the-musical-the-series-review-disney-plus/",
         "https://comicbook.com/tv-shows/2019/11/04/high-school-musical-the-musical-the-series-review-disney-plus/",
-        "https://kiddoadventures.com/2026/10/13/high-school-musical-london-review-does-it-live-up-to-the-original-film/",
-        "https://maninlondon.com/high-school-musical-troubadour-wembley-park-theatre-london/",
-        "https://www.disneytickets.co.uk/high-school-musical-tickets",
-        "https://www.timeout.com/london/theatre/high-school-musical",
-        "https://jadar.uk/2026/08/28/review-high-school-musical/",
-        "https://www.whatsonstage.com/news/high-school-musical-revival-take-a-sneak-peek-at-the-set-designs-for-salford-and-london_1726697/",
-        "https://kidify.co.uk/day-out/high-school-musical",
-        "https://oneshowatatime.co.uk/2026/08/28/high-school-musical-a-fantastically-joyous-production-theatre-review/"
+        "https://decider.com/2019/11/08/high-school-musical-the-musical-the-series-disney-plus-stream-it-or-skip-it/",
+        "https://www.forbes.com/sites/scottmendelson/2019/11/05/the-first-disney-tv-shows-high-school-musical-world-according-to-jeff-goldblum-and-encore-are-disappointly-inessential/",
+        "https://www.hollywoodreporter.com/review/high-school-musical-musical-series-forky-asks-a-question-review-1253996",
+        "https://www.indiewire.com/2019/11/high-school-musical-the-musical-the-series-review-1202188330/",
+        "https://www.insider.com/high-school-musical-the-series-tv-review-disney-plus-2019-11",
+        "https://www.vulture.com/2019/11/high-school-musical-the-musical-the-series-review.html",
+        "https://www.nytimes.com/2019/11/12/arts/television/high-school-musical-review-disney-plus.html",
+        "https://www.usatoday.com/story/entertainment/tv/2019/11/11/high-school-musical-musical-series-review-great-nostalgia-disney-plus/2519110001/",
+        "https://www.vanityfair.com/hollywood/2019/11/high-school-musical-series-disney-plus",
+        "https://variety.com/2019/tv/reviews/high-school-musical-the-musical-the-series-review-disney-plus-1203390218/"
       ],
       "dirFiles": 18,
       "dirClean": 2,
       "inReviewsJson": 1,
       "missing": [
         {
-          "url": "https://variety.com/2019/tv/reviews/high-school-musical-the-musical-the-series-review-disney-plus-1203390218/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.vulture.com/2019/11/high-school-musical-the-musical-the-series-review.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.usatoday.com/story/entertainment/tv/2019/11/11/high-school-musical-musical-series-review-great-nostalgia-disney-plus/2519110001/",
-          "host": "usatoday.com",
-          "knownOutletId": "usatoday",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.forbes.com/sites/scottmendelson/2019/11/05/the-first-disney-tv-shows-high-school-musical-world-according-to-jeff-goldblum-and-encore-are-disappointly-inessential/",
-          "host": "forbes.com",
-          "knownOutletId": "forbes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.indiewire.com/2019/11/high-school-musical-the-musical-the-series-review-1202188330/",
-          "host": "indiewire.com",
-          "knownOutletId": "indiewire",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "https://tv.avclub.com/the-cast-of-disney-s-high-school-musical-reboot-are-alr-1839459992",
           "host": "avclub.com",
           "knownOutletId": "av-club",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.insider.com/high-school-musical-the-series-tv-review-disney-plus-2019-11",
-          "host": "insider.com",
-          "knownOutletId": null,
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -83036,6 +82966,13 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://comicbook.com/tv-shows/2019/11/04/high-school-musical-the-musical-the-series-review-disney-plus/",
+          "host": "comicbook.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
           "url": "https://decider.com/2019/11/08/high-school-musical-the-musical-the-series-disney-plus-stream-it-or-skip-it/",
           "host": "decider.com",
           "knownOutletId": "decider",
@@ -83043,16 +82980,65 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://decider.com/2019/11/05/high-school-musical-the-musical-the-series-review-disney-plus/",
-          "host": "decider.com",
-          "knownOutletId": "decider",
+          "url": "https://www.forbes.com/sites/scottmendelson/2019/11/05/the-first-disney-tv-shows-high-school-musical-world-according-to-jeff-goldblum-and-encore-are-disappointly-inessential/",
+          "host": "forbes.com",
+          "knownOutletId": "forbes",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://comicbook.com/tv-shows/2019/11/04/high-school-musical-the-musical-the-series-review-disney-plus/",
-          "host": "comicbook.com",
+          "url": "https://www.hollywoodreporter.com/review/high-school-musical-musical-series-forky-asks-a-question-review-1253996",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.indiewire.com/2019/11/high-school-musical-the-musical-the-series-review-1202188330/",
+          "host": "indiewire.com",
+          "knownOutletId": "indiewire",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.insider.com/high-school-musical-the-series-tv-review-disney-plus-2019-11",
+          "host": "insider.com",
           "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/2019/11/high-school-musical-the-musical-the-series-review.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2019/11/12/arts/television/high-school-musical-review-disney-plus.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.usatoday.com/story/entertainment/tv/2019/11/11/high-school-musical-musical-series-review-great-nostalgia-disney-plus/2519110001/",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vanityfair.com/hollywood/2019/11/high-school-musical-series-disney-plus",
+          "host": "vanityfair.com",
+          "knownOutletId": "vanityfair",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2019/tv/reviews/high-school-musical-the-musical-the-series-review-disney-plus-1203390218/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         }
@@ -83061,176 +83047,13 @@
         {
           "host": "bellecoaches.co.uk",
           "count": 1
+        },
+        {
+          "host": "kiddoadventures.com",
+          "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://maninlondon.com/high-school-musical-troubadour-wembley-park-theatre-london/",
-          "host": "maninlondon.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "maninlondon--alan-greenhalgh.json",
-              "flag": "clean",
-              "urlInDir": "https://maninlondon.com/high-school-musical-troubadour-wembley-park-theatre-london/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://www.disneytickets.co.uk/high-school-musical-tickets",
-          "host": "disneytickets.co.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "disneytickets--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.disneytickets.co.uk/high-school-musical-tickets"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/high-school-musical",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout-london--unknown.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.timeout.com/london/theatre/high-school-musical"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongShow"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://jadar.uk/2026/08/28/review-high-school-musical/",
-          "host": "jadar.uk",
-          "knownOutletId": "jadar",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "jadar--jay-darcy.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://jadar.uk/2026/08/28/review-high-school-musical/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/high-school-musical-revival-take-a-sneak-peek-at-the-set-designs-for-salford-and-london_1726697/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "whatsonstage--tom-millward.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.whatsonstage.com/news/high-school-musical-revival-take-a-sneak-peek-at-the-set-designs-for-salford-and-london_1726697/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-07-03",
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://kidify.co.uk/day-out/high-school-musical",
-          "host": "kidify.co.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "kidify--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://kidify.co.uk/day-out/high-school-musical"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://oneshowatatime.co.uk/2026/08/28/high-school-musical-a-fantastically-joyous-production-theatre-review/",
-          "host": "oneshowatatime.co.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "oneshowatatime--leyla-demirel.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://oneshowatatime.co.uk/2026/08/28/high-school-musical-a-fantastically-joyous-production-theatre-review/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -83277,130 +83100,34 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"High School Musical\" West End review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"High School Musical\" West End review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"High School Musical\" review troubadour",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "High School Musical Troubadour Wembley Park Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "High School Musical Troubadour Wembley Park Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "High School Musical Troubadour Wembley Park Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 8,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 312,
+        "count": 143,
         "byReason": {
-          "aggregator-internal-nav": 224,
-          "not-http-url": 32,
+          "not-http-url": 6,
+          "non-review-host": 20,
+          "aggregator-internal-nav": 52,
           "aggregator-section-root": 4,
-          "non-review-host": 42,
-          "bare-host": 2,
-          "census-junk-host": 3,
-          "write-path-blocked": 1,
-          "ticketing-listing": 1,
-          "ticket-seller-product-page": 2,
-          "ugc-platform": 1
+          "roundup-page": 50,
+          "production-database-listing": 10,
+          "write-path-blocked": 1
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Disneys-HIGH-SCHOOL-MUSICAL-THE-MUSICAL-THE-SERIES-20191111",
+          "url": "https://playbill.com/article/what-do-critics-think-of-high-school-musical-the-musical-the-series",
           "publishDate": "2019-11-11"
         }
       ],
-      "automatedExcludedListed": 3,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://variety.com/2019/tv/reviews/high-school-musical-the-musical-the-series-review-disney-plus-1203390218/",
-          "host": "variety.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.vulture.com/2019/11/high-school-musical-the-musical-the-series-review.html",
-          "host": "vulture.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.usatoday.com/story/entertainment/tv/2019/11/11/high-school-musical-musical-series-review-great-nostalgia-disney-plus/2519110001/",
-          "host": "usatoday.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.forbes.com/sites/scottmendelson/2019/11/05/the-first-disney-tv-shows-high-school-musical-world-according-to-jeff-goldblum-and-encore-are-disappointly-inessential/",
-          "host": "forbes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.indiewire.com/2019/11/high-school-musical-the-musical-the-series-review-1202188330/",
-          "host": "indiewire.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
           "url": "https://tv.avclub.com/the-cast-of-disney-s-high-school-musical-reboot-are-alr-1839459992",
           "host": "avclub.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.insider.com/high-school-musical-the-series-tv-review-disney-plus-2019-11",
-          "host": "insider.com",
           "priorRun": true,
           "reason": "prior-run"
         },
@@ -83411,20 +83138,68 @@
           "reason": "prior-run"
         },
         {
+          "url": "https://comicbook.com/tv-shows/2019/11/04/high-school-musical-the-musical-the-series-review-disney-plus/",
+          "host": "comicbook.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
           "url": "https://decider.com/2019/11/08/high-school-musical-the-musical-the-series-disney-plus-stream-it-or-skip-it/",
           "host": "decider.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://decider.com/2019/11/05/high-school-musical-the-musical-the-series-review-disney-plus/",
-          "host": "decider.com",
+          "url": "https://www.forbes.com/sites/scottmendelson/2019/11/05/the-first-disney-tv-shows-high-school-musical-world-according-to-jeff-goldblum-and-encore-are-disappointly-inessential/",
+          "host": "forbes.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://comicbook.com/tv-shows/2019/11/04/high-school-musical-the-musical-the-series-review-disney-plus/",
-          "host": "comicbook.com",
+          "url": "https://www.hollywoodreporter.com/review/high-school-musical-musical-series-forky-asks-a-question-review-1253996",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.indiewire.com/2019/11/high-school-musical-the-musical-the-series-review-1202188330/",
+          "host": "indiewire.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.insider.com/high-school-musical-the-series-tv-review-disney-plus-2019-11",
+          "host": "insider.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.vulture.com/2019/11/high-school-musical-the-musical-the-series-review.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nytimes.com/2019/11/12/arts/television/high-school-musical-review-disney-plus.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.usatoday.com/story/entertainment/tv/2019/11/11/high-school-musical-musical-series-review-great-nostalgia-disney-plus/2519110001/",
+          "host": "usatoday.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.vanityfair.com/hollywood/2019/11/high-school-musical-series-disney-plus",
+          "host": "vanityfair.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://variety.com/2019/tv/reviews/high-school-musical-the-musical-the-series-review-disney-plus-1203390218/",
+          "host": "variety.com",
           "priorRun": true,
           "reason": "prior-run"
         }
@@ -83432,107 +83207,15 @@
       "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "maninlondon.com",
-            "outlet": "maninlondon.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://maninlondon.com/high-school-musical-troubadour-wembley-park-theatre-london/"
-          },
-          {
-            "outletId": "disneytickets.co.uk",
-            "outlet": "disneytickets.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.disneytickets.co.uk/high-school-musical-tickets"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/london/theatre/high-school-musical"
-          },
-          {
-            "outletId": "jadar",
-            "outlet": "jadar",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://jadar.uk/2026/08/28/review-high-school-musical/"
-          },
-          {
-            "outletId": "kidify.co.uk",
-            "outlet": "kidify.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://kidify.co.uk/day-out/high-school-musical"
-          },
-          {
-            "outletId": "oneshowatatime.co.uk",
-            "outlet": "oneshowatatime.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://oneshowatatime.co.uk/2026/08/28/high-school-musical-a-fantastically-joyous-production-theatre-review/"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://kiddoadventures.com/2026/10/13/high-school-musical-london-review-does-it-live-up-to-the-original-film/",
-            "outletId": "kiddoadventures.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-13T19:50:25.664Z"
-          },
-          {
-            "url": "https://maninlondon.com/high-school-musical-troubadour-wembley-park-theatre-london/",
-            "outletId": "maninlondon.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-13T19:50:25.664Z"
-          },
-          {
-            "url": "https://www.disneytickets.co.uk/high-school-musical-tickets",
-            "outletId": "disneytickets.co.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-13T04:11:59.529Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/high-school-musical",
-            "outletId": "timeout-london",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-13T04:11:59.529Z"
-          },
-          {
-            "url": "https://jadar.uk/2026/08/28/review-high-school-musical/",
-            "outletId": "jadar",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-14T14:20:53.735Z"
-          },
-          {
-            "url": "https://kidify.co.uk/day-out/high-school-musical",
-            "outletId": "kidify.co.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-13T04:11:59.529Z"
-          },
-          {
-            "url": "https://oneshowatatime.co.uk/2026/08/28/high-school-musical-a-fantastically-joyous-production-theatre-review/",
-            "outletId": "oneshowatatime.co.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-16T20:46:15.120Z"
-          }
-        ],
+        "candidates": [],
         "censusSchema": 3,
-        "liveCount": 1,
-        "candidateCount": 7
+        "liveCount": 0,
+        "candidateCount": 0
       },
-      "computedAt": "2026-10-18T04:02:40.408Z"
+      "computedAt": "2026-10-18T08:32:02.058Z"
     },
     {
       "showId": "high-society-west-end-2026",
@@ -93495,7 +93178,11 @@
       "category": "off-west-end",
       "aggregatorArticles": [
         "https://playbill.com/article/what-did-critics-think-of-nbcs-jesus-christ-superstar-live-in-concert-starring-john-legend",
-        "https://playbill.com/article/read-reviews-for-jesus-christ-superstar-at-lyric-opera-of-chicago"
+        "https://playbill.com/article/read-reviews-for-jesus-christ-superstar-at-lyric-opera-of-chicago",
+        "https://www.broadwayworld.com/article/Review-Roundup-JESUS-CHRIST-SUPERSTAR-at-the-Hollywood-Bowl-Starring-Cynthia-Erivo-Adam-Lambert-and-More-20250804",
+        "https://www.broadwayworld.com/article/Review-Roundup-JESUS-CHRIST-SUPERSTAR-on-Broadway-Updating-LIVE-20120322",
+        "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-in-on-the-50th-Anniversary-Tour-of-JESUS-CHRIST-SUPERSTAR-20191017",
+        "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-JESUS-CHRIST-SUPERSTAR-Resumes-What-Are-the-Critics-Saying-20211110"
       ],
       "aggregatorListedUrls": [
         "http://deadline.com/2018/04/jesus-christ-superstar-live-review-john-legend-sara-bareilles-brandon-victor-dixon-andrew-lloyd-webber-1202356696/",
@@ -93508,23 +93195,75 @@
         "http://variety.com/2018/tv/reviews/jesus-christ-superstar-live-in-concert-nbc-john-legend-brandon-victor-dixon-sara-bareilles-1202741222/",
         "https://chicago.suntimes.com/entertainment/lyric-operas-jesus-christ-superstar-a-glorious-rock-opera-celebration/",
         "http://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-jesus-christ-superstar-lyric-review-0430-story.html",
+        "https://variety.com/2025/music/concert-reviews/jesus-christ-superstar-cynthia-erivo-adam-lambert-hollywood-bowl-review-1236477734/",
+        "https://www.thewrap.com/jesus-christ-superstar-review-cynthia-erivo-adam-lambert-hollywood-bowl/",
+        "https://www.theguardian.com/stage/2025/aug/04/jesus-christ-superstar-review-cynthia-erivo",
+        "https://weliveentertainment.com/we-live-entertainment/concerts/theater-review-jesus-christ-superstar-hollywood-bowl-absolutely-divine-spectacle/",
+        "http://theater.nytimes.com/2012/03/23/theater/reviews/jesus-christ-superstar-at-the-neil-simon-theater.html",
+        "http://www.usatoday.com/life/theater/reviews/story/2012-03-22/jesus-christ-superstar-once-musicals/53713214/1",
+        "http://www.crescent-news.com/ap%20entertainment/2012/03/22/ap-review-jesus-christ-superstar-overly-flashy",
+        "http://www.hollywoodreporter.com/review/jesus-christ-superstar-theater-review-andrew-lloyd-webber-303387",
+        "http://www.backstage.com/bso/reviews-movie-tv-reviews/ny-review-jesus-christ-superstar-1006552952.story",
+        "http://www.amny.com/urbanite-1.812039/theater-review-jesus-christ-superstar-3-5-stars-1.3618340",
+        "http://www.chicagotribune.com/entertainment/chi-ent-jesus-christ-superstar-review-20120322,0,1543035.column",
+        "http://www.newsday.com/entertainment/theater/a-very-serious-jesus-christ-superstar-1.3616182",
+        "http://blogs.villagevoice.com/dailymusto/2012/03/jesus_christ_su.php",
+        "http://www.nydailynews.com/entertainment/jesus-christ-superstar-rocks-broadway-article-1.1048973",
+        "https://www.austin360.com/entertainmentlife/20191010/why-this-jesus-christ-superstar-is-one-of-great-revivals-in-musical-theater-history",
+        "https://www.austinchronicle.com/daily/arts/2019-10-15/review-jesus-christ-superstar/",
+        "https://www.latimes.com/entertainment-arts/story/2019-10-31/jesus-christ-superstar-national-tour-pantages",
+        "https://947thewave.radio.com/blogs/deborah-howell/jesus-christ-superstar-hollywood-pantages",
+        "https://patch.com/california/hollywood/jesus-christ-superstar-still-rocks-after-50-years",
+        "https://www.sandiegouniontribune.com/entertainment/theater/story/2019-11-14/review-new-touring-production-of-jesus-christ-superstar-boasts-rock-n-roll-power-but-not-a-lot-of-clarity",
+        "http://www.sandiegostory.com/jesus-christ-superstar-rocks-and-shocks-at-civic-theatre/",
+        "https://www.spokesman.com/stories/2019/nov/21/updated-jesus-christ-superstar-keeps-the-rock-in-r/",
+        "https://www.latinlifedenver.com/community/it-all-the-buzz-jesus-christ-superstar-returns-to-denver-thru-dec-1-only/",
+        "http://www.becauseitoldyouso.com/2019/12/broadway-in-tucson-review-jesus-christ.html",
+        "https://www.omaha.com/entertainment/review-th-anniversary-tour-of-jesus-christ-superstar-shines-like/article_4241cf00-0b2b-5096-a8fb-81fc56a01d87.html",
+        "https://thereader.com/theater-2/jesus-christ-superstar-revival-is-divine-entertainment",
+        "http://www.theatrebloom.com/2019/12/jesus-christ-superstar-at-the-hippodrome-theatre/",
+        "https://dcmetrotheaterarts.com/2019/12/18/jesus-christ-superstar-hits-the-road-to-50/",
+        "https://www.post-gazette.com/ae/theater-dance/2020/01/01/Review-Cutting-edge-Jesus-Christ-Superstar-thrills-tour-Pittsburgh/stories/202001010155",
+        "https://chasingsupermom.com/2021/09/jesus-christ-superstar-comes-to-portland/",
+        "https://www.seattletimes.com/entertainment/theater/review-a-brisk-jesus-christ-superstar-marks-the-return-of-broadway-at-the-paramount/",
+        "https://popwrapped.com/jesus-christ-superstar-brings-broadway-back-to-san-fran/",
+        "https://sfist.com/2021/10/15/jesus-christ-superstar-at-the-golden-gate-theater-is-a-brash/",
+        "https://www.newportbeachindy.com/a-glorious-jesus-christ-superstar-marks-return-of-touring-musicals-to-segerstrom-center/",
+        "https://stageandcinema.com/2021/11/11/jesus-christ-superstar-national-tour/",
+        "https://shepherdexpress.com/culture/theater/jesus-christ-superstar-rocks-at-marcus-performing-arts-cen/",
+        "https://www.bostonglobe.com/2022/01/07/arts/jesus-christ-superstar-with-swagger-imbued-with-sorrow/",
+        "https://www.wishtv.com/lifestylelive/jesus-christ-superstar-brings-worldwide-50th-anniversary-tour-to-indianapolis/",
+        "https://www.cleveland.com/entertainment/2022/02/rebooted-jesus-christ-superstar-50th-anniversary-tour-gets-off-to-stunning-start-in-cleveland.html",
+        "https://www.washingtonpost.com/theater-dance/2022/02/24/jesus-christ-superstar-kennedy-center/",
+        "https://mdtheatreguide.com/2022/02/theatre-review-jesus-christ-superstar-at-the-kennedy-center/",
+        "https://nbc-2.com/news/2022/03/16/2s-review-jesus-christ-superstar/",
+        "https://greenvillejournal.com/arts-culture/review-jesus-christ-superstar-a-powerful-go-for-broke-production-at-peace-center/",
+        "https://gephardtdaily.com/local/review-jesus-christ-superstar-delivers-powerhouse-passion/",
+        "https://thisisreno.com/2022/05/heaven-on-their-minds-jesus-christ-superstar-at-the-pioneer/",
+        "https://theatricalmusings.com/musical-2/touring-production-of-jesus-christ-superstar-offers-a-relatable-titular-character/",
+        "https://attractionsmagazine.com/theater-review-the-50th-anniversary-tour-of-jesus-christ-superstar-breathes-new-life-into-a-modern-classic/",
+        "https://www.newcitystage.com/2022/07/26/the-passion-of-the-superstar-a-review-of-jesus-christ-superstar-at-broadway-in-chicago/",
+        "https://chicago.suntimes.com/2022/7/21/23273090/jesus-christ-superstar-review-cadillac-palace-chicago",
         "https://musicaltheatrereview.com/glenn-close-to-play-herod-for-the-final-drury-lane-performances-of-jesus-christ-superstar/",
-        "https://ilovemanchester.com/review-jesus-christ-superstar-at-palace-theatre",
-        "https://entertheatre.com/shows/jesus-christ-superstar/theatre-royal-drury-lane",
+        "https://www.theatrebookings.com/musical/jesus-christ-superstar",
         "https://www.londontheatre.co.uk/reviews/jesus-christ-superstar-review-theatre-royal-drury-lane",
         "https://rolandcat.substack.com/p/review-jesus-christ-superstar-palladium",
         "https://musicaltheatrereview.com/jesus-christ-superstar-london-palladium/",
-        "https://www.britishtheatreguide.info/reviews/jesus-christ-su-the-london-pall-25719",
-        "https://littlelondonwhispers.substack.com/p/london-theatre-review-jesus-christ",
+        "https://whatnightout.uk/london/events/jesus-christ-superstar-1018644",
+        "https://whatnightout.uk/london/events/jesus-christ-superstar-7511017",
         "https://www.allthatdazzles.co.uk/post/review-jesus-christ-superstar-london-palladium",
         "https://www.timeout.com/london/theatre/jesus-christ-superstar-review",
-        "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-in-london-and-on-tour-review_1726828/",
-        "https://www.telegraph.co.uk/theatre/what-to-see/jesus-christ-superstar-review/",
+        "https://www.westendbestfriend.co.uk/news/review-jesus-christ-superstar-london-palladium",
+        "https://www.broadwayworld.com/westend/article/Review-JESUS-CHRIST-SUPERSTAR-Starring-Sam-Ryder-20260707",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html",
+        "https://www.standard.co.uk/culture/theatre/jesus-christ-superstar-review-b1289073.html",
+        "https://www.thestage.co.uk/long-reviews/jesus-christ-superstar-review-london-palladium-sam-ryder",
+        "https://www.timeout.com/london/news/jesus-christ-superstar-palladium-2026-070726",
         "https://www.theguardian.com/stage/2026/jul/08/jesus-christ-superstar-review-sam-ryder",
-        "https://www.timeout.com/london/news/jesus-christ-superstar-palladium-2026-070726"
+        "https://www.telegraph.co.uk/theatre/what-to-see/jesus-christ-superstar-review/",
+        "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-in-london-and-on-tour-review_1726828/"
       ],
-      "dirFiles": 7,
+      "dirFiles": 8,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
@@ -93599,17 +93338,352 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://ilovemanchester.com/review-jesus-christ-superstar-at-palace-theatre",
-          "host": "ilovemanchester.com",
-          "knownOutletId": "ilovemanchester",
+          "url": "https://variety.com/2025/music/concert-reviews/jesus-christ-superstar-cynthia-erivo-adam-lambert-hollywood-bowl-review-1236477734/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
           "priorRun": true,
-          "priorRunSource": "pending-file-date:2015-04-14",
-          "serpCensus": true
+          "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://entertheatre.com/shows/jesus-christ-superstar/theatre-royal-drury-lane",
-          "host": "entertheatre.com",
+          "url": "https://www.thewrap.com/jesus-christ-superstar-review-cynthia-erivo-adam-lambert-hollywood-bowl/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/aug/04/jesus-christ-superstar-review-cynthia-erivo",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://weliveentertainment.com/we-live-entertainment/concerts/theater-review-jesus-christ-superstar-hollywood-bowl-absolutely-divine-spectacle/",
+          "host": "weliveentertainment.com",
+          "knownOutletId": "weliveentertainment",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://theater.nytimes.com/2012/03/23/theater/reviews/jesus-christ-superstar-at-the-neil-simon-theater.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.usatoday.com/life/theater/reviews/story/2012-03-22/jesus-christ-superstar-once-musicals/53713214/1",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.crescent-news.com/ap%20entertainment/2012/03/22/ap-review-jesus-christ-superstar-overly-flashy",
+          "host": "crescent-news.com",
           "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/jesus-christ-superstar-theater-review-andrew-lloyd-webber-303387",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.backstage.com/bso/reviews-movie-tv-reviews/ny-review-jesus-christ-superstar-1006552952.story",
+          "host": "backstage.com",
+          "knownOutletId": "backstage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.amny.com/urbanite-1.812039/theater-review-jesus-christ-superstar-3-5-stars-1.3618340",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.chicagotribune.com/entertainment/chi-ent-jesus-christ-superstar-review-20120322,0,1543035.column",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/a-very-serious-jesus-christ-superstar-1.3616182",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://blogs.villagevoice.com/dailymusto/2012/03/jesus_christ_su.php",
+          "host": "villagevoice.com",
+          "knownOutletId": "village-voice",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/jesus-christ-superstar-rocks-broadway-article-1.1048973",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.austin360.com/entertainmentlife/20191010/why-this-jesus-christ-superstar-is-one-of-great-revivals-in-musical-theater-history",
+          "host": "austin360.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.austinchronicle.com/daily/arts/2019-10-15/review-jesus-christ-superstar/",
+          "host": "austinchronicle.com",
+          "knownOutletId": "the-austin-chronicle",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2019-10-31/jesus-christ-superstar-national-tour-pantages",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://947thewave.radio.com/blogs/deborah-howell/jesus-christ-superstar-hollywood-pantages",
+          "host": "radio.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://patch.com/california/hollywood/jesus-christ-superstar-still-rocks-after-50-years",
+          "host": "patch.com",
+          "knownOutletId": "patch",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.sandiegouniontribune.com/entertainment/theater/story/2019-11-14/review-new-touring-production-of-jesus-christ-superstar-boasts-rock-n-roll-power-but-not-a-lot-of-clarity",
+          "host": "sandiegouniontribune.com",
+          "knownOutletId": "san-diego-union-tribune",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.sandiegostory.com/jesus-christ-superstar-rocks-and-shocks-at-civic-theatre/",
+          "host": "sandiegostory.com",
+          "knownOutletId": "san-diego-story",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.spokesman.com/stories/2019/nov/21/updated-jesus-christ-superstar-keeps-the-rock-in-r/",
+          "host": "spokesman.com",
+          "knownOutletId": "the-spokesman-review",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.latinlifedenver.com/community/it-all-the-buzz-jesus-christ-superstar-returns-to-denver-thru-dec-1-only/",
+          "host": "latinlifedenver.com",
+          "knownOutletId": "latin-life-denver",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.becauseitoldyouso.com/2019/12/broadway-in-tucson-review-jesus-christ.html",
+          "host": "becauseitoldyouso.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.omaha.com/entertainment/review-th-anniversary-tour-of-jesus-christ-superstar-shines-like/article_4241cf00-0b2b-5096-a8fb-81fc56a01d87.html",
+          "host": "omaha.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://thereader.com/theater-2/jesus-christ-superstar-revival-is-divine-entertainment",
+          "host": "thereader.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.theatrebloom.com/2019/12/jesus-christ-superstar-at-the-hippodrome-theatre/",
+          "host": "theatrebloom.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://dcmetrotheaterarts.com/2019/12/18/jesus-christ-superstar-hits-the-road-to-50/",
+          "host": "dcmetrotheaterarts.com",
+          "knownOutletId": "dc-theater-arts",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.post-gazette.com/ae/theater-dance/2020/01/01/Review-Cutting-edge-Jesus-Christ-Superstar-thrills-tour-Pittsburgh/stories/202001010155",
+          "host": "post-gazette.com",
+          "knownOutletId": "pittsburgh-post-gazette",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://chasingsupermom.com/2021/09/jesus-christ-superstar-comes-to-portland/",
+          "host": "chasingsupermom.com",
+          "knownOutletId": "chasingsupermom",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.seattletimes.com/entertainment/theater/review-a-brisk-jesus-christ-superstar-marks-the-return-of-broadway-at-the-paramount/",
+          "host": "seattletimes.com",
+          "knownOutletId": "seattle-times",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://popwrapped.com/jesus-christ-superstar-brings-broadway-back-to-san-fran/",
+          "host": "popwrapped.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://sfist.com/2021/10/15/jesus-christ-superstar-at-the-golden-gate-theater-is-a-brash/",
+          "host": "sfist.com",
+          "knownOutletId": "sfist",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newportbeachindy.com/a-glorious-jesus-christ-superstar-marks-return-of-touring-musicals-to-segerstrom-center/",
+          "host": "newportbeachindy.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://stageandcinema.com/2021/11/11/jesus-christ-superstar-national-tour/",
+          "host": "stageandcinema.com",
+          "knownOutletId": "stageandcinema",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://shepherdexpress.com/culture/theater/jesus-christ-superstar-rocks-at-marcus-performing-arts-cen/",
+          "host": "shepherdexpress.com",
+          "knownOutletId": "shepherd-express",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.bostonglobe.com/2022/01/07/arts/jesus-christ-superstar-with-swagger-imbued-with-sorrow/",
+          "host": "bostonglobe.com",
+          "knownOutletId": "boston-globe",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.wishtv.com/lifestylelive/jesus-christ-superstar-brings-worldwide-50th-anniversary-tour-to-indianapolis/",
+          "host": "wishtv.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.cleveland.com/entertainment/2022/02/rebooted-jesus-christ-superstar-50th-anniversary-tour-gets-off-to-stunning-start-in-cleveland.html",
+          "host": "cleveland.com",
+          "knownOutletId": "cleveland-plain-dealer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.washingtonpost.com/theater-dance/2022/02/24/jesus-christ-superstar-kennedy-center/",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://mdtheatreguide.com/2022/02/theatre-review-jesus-christ-superstar-at-the-kennedy-center/",
+          "host": "mdtheatreguide.com",
+          "knownOutletId": "maryland-theatre-guide",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nbc-2.com/news/2022/03/16/2s-review-jesus-christ-superstar/",
+          "host": "nbc-2.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://greenvillejournal.com/arts-culture/review-jesus-christ-superstar-a-powerful-go-for-broke-production-at-peace-center/",
+          "host": "greenvillejournal.com",
+          "knownOutletId": "greenville-journal",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://gephardtdaily.com/local/review-jesus-christ-superstar-delivers-powerhouse-passion/",
+          "host": "gephardtdaily.com",
+          "knownOutletId": "gephardt-daily",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://thisisreno.com/2022/05/heaven-on-their-minds-jesus-christ-superstar-at-the-pioneer/",
+          "host": "thisisreno.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://theatricalmusings.com/musical-2/touring-production-of-jesus-christ-superstar-offers-a-relatable-titular-character/",
+          "host": "theatricalmusings.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://attractionsmagazine.com/theater-review-the-50th-anniversary-tour-of-jesus-christ-superstar-breathes-new-life-into-a-modern-classic/",
+          "host": "attractionsmagazine.com",
+          "knownOutletId": "attractions",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newcitystage.com/2022/07/26/the-passion-of-the-superstar-a-review-of-jesus-christ-superstar-at-broadway-in-chicago/",
+          "host": "newcitystage.com",
+          "knownOutletId": "new-city-stage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://chicago.suntimes.com/2022/7/21/23273090/jesus-christ-superstar-review-cadillac-palace-chicago",
+          "host": "suntimes.com",
+          "knownOutletId": "chicago-sun-times",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrebookings.com/musical/jesus-christ-superstar",
+          "host": "theatrebookings.com",
+          "knownOutletId": "theatrebookings",
           "serpCensus": true
         },
         {
@@ -93625,9 +93699,15 @@
           "serpCensus": true
         },
         {
-          "url": "https://musicaltheatrereview.com/jesus-christ-superstar-london-palladium/",
-          "host": "musicaltheatrereview.com",
-          "knownOutletId": "musical-theatre-review",
+          "url": "https://whatnightout.uk/london/events/jesus-christ-superstar-1018644",
+          "host": "whatnightout.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://whatnightout.uk/london/events/jesus-christ-superstar-7511017",
+          "host": "whatnightout.uk",
+          "knownOutletId": null,
           "serpCensus": true
         },
         {
@@ -93637,26 +93717,44 @@
           "serpCensus": true
         },
         {
+          "url": "https://www.westendbestfriend.co.uk/news/review-jesus-christ-superstar-london-palladium",
+          "host": "westendbestfriend.co.uk",
+          "knownOutletId": "west-end-best-friend",
+          "serpCensus": true
+        },
+        {
           "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html",
           "host": "independent.co.uk",
           "knownOutletId": "independent",
           "weRef": true,
           "weRefSources": [
+            "theatre-reviews",
             "lbo-roundup"
           ],
           "weRefStars": 4,
-          "weRefStarsSource": "lbo-roundup"
+          "weRefStarsSource": "theatre-reviews"
         },
         {
-          "url": "https://www.theguardian.com/stage/2026/jul/08/jesus-christ-superstar-review-sam-ryder",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
+          "url": "https://www.standard.co.uk/culture/theatre/jesus-christ-superstar-review-b1289073.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
           "weRef": true,
           "weRefSources": [
-            "lbo-roundup"
+            "theatre-reviews"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "theatre-reviews"
+        },
+        {
+          "url": "https://www.thestage.co.uk/long-reviews/jesus-christ-superstar-review-london-palladium-sam-ryder",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
           ],
           "weRefStars": 3,
-          "weRefStarsSource": "lbo-roundup"
+          "weRefStarsSource": "theatre-reviews"
         },
         {
           "url": "https://www.timeout.com/london/news/jesus-christ-superstar-palladium-2026-070726",
@@ -93664,62 +93762,27 @@
           "knownOutletId": "timeout-london",
           "weRef": true,
           "weRefSources": [
+            "theatre-reviews",
             "lbo-roundup"
-          ]
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "theatre-reviews"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/jul/08/jesus-christ-superstar-review-sam-ryder",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews",
+            "lbo-roundup"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "theatre-reviews"
         }
       ],
       "dirOnly": [],
       "flaggedMisses": [
-        {
-          "url": "https://www.britishtheatreguide.info/reviews/jesus-christ-su-the-london-pall-25719",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "british-theatre--anita-marguerite-butler.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.britishtheatreguide.info/reviews/jesus-christ-su-the-london-pall-25719"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-07-08",
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://littlelondonwhispers.substack.com/p/london-theatre-review-jesus-christ",
-          "host": "littlelondonwhispers.substack.com",
-          "knownOutletId": "littlelondonwhispers",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "littlelondonwhispers--little-london-whispers.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://littlelondonwhispers.substack.com/p/london-theatre-review-jesus-christ"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-07-13",
-          "serpCensus": true,
-          "reverify": false
-        },
         {
           "url": "https://www.timeout.com/london/theatre/jesus-christ-superstar-review",
           "host": "timeout.com",
@@ -93744,9 +93807,9 @@
           "reverify": true
         },
         {
-          "url": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-in-london-and-on-tour-review_1726828/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
+          "url": "https://www.broadwayworld.com/westend/article/Review-JESUS-CHRIST-SUPERSTAR-Starring-Sam-Ryder-20260707",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -93754,9 +93817,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "whatsonstage--sarah-crompton.json",
+              "file": "broadwayworld--aliya-al-hassan.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-in-london-and-on-tour-review_1726828/"
+              "urlInDir": "https://www.broadwayworld.com/westend/article/Review-JESUS-CHRIST-SUPERSTAR-Starring-Sam-Ryder-20260707"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -93767,10 +93830,10 @@
           "priorRunSource": "flagged-file-date:2026-07-07",
           "weRef": true,
           "weRefSources": [
-            "lbo-roundup"
+            "theatre-reviews"
           ],
-          "weRefStars": 5,
-          "weRefStarsSource": "lbo-roundup",
+          "weRefStars": 4,
+          "weRefStarsSource": "theatre-reviews",
           "reverify": false
         },
         {
@@ -93802,6 +93865,36 @@
           "weRefStars": 5,
           "weRefStarsSource": "lbo-roundup",
           "reverify": false
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-in-london-and-on-tour-review_1726828/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--sarah-crompton.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/jesus-christ-superstar-with-sam-ryder-in-london-and-on-tour-review_1726828/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-07-07",
+          "weRef": true,
+          "weRefSources": [
+            "lbo-roundup"
+          ],
+          "weRefStars": 5,
+          "weRefStarsSource": "lbo-roundup",
+          "reverify": false
         }
       ],
       "citedNoUrl": [
@@ -93825,7 +93918,7 @@
         }
       ],
       "weReference": {
-        "rowCount": 7,
+        "rowCount": 14,
         "sources": {
           "westendtheatre": {
             "found": false,
@@ -93835,11 +93928,11 @@
             "fetchErrors": 0
           },
           "theatre-reviews": {
-            "found": false,
-            "rows": 0,
+            "found": true,
+            "rows": 7,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 2
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": true,
@@ -93864,11 +93957,15 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 7,
+        "currentRunRows": 14,
         "corroborated": 0,
         "perSource": {
           "lbo-roundup": {
             "cited": 3,
+            "corroborated": 0
+          },
+          "theatre-reviews": {
+            "cited": 1,
             "corroborated": 0
           }
         }
@@ -93884,8 +93981,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 2,
+            "results": 5,
+            "accepted": 0,
             "error": null
           },
           {
@@ -93895,7 +93992,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -93931,24 +94028,24 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 11,
+        "resultCount": 10,
         "error": null
       },
       "candidatesRejected": {
-        "count": 279,
+        "count": 1589,
         "byReason": {
-          "non-review-host": 63,
-          "write-path-blocked": 6,
-          "non-review-path": 1,
-          "ticketing-listing": 1,
-          "aggregator-internal-nav": 153,
-          "not-http-url": 12,
+          "not-http-url": 343,
+          "non-review-host": 128,
+          "aggregator-internal-nav": 1051,
+          "aggregator-section-root": 24,
           "production-database-listing": 30,
-          "aggregator-section-root": 8,
-          "census-junk-host": 1,
-          "bare-host": 1,
-          "news-article": 2,
-          "show-hub": 1
+          "ticketing-listing": 1,
+          "census-junk-host": 2,
+          "news-article": 1,
+          "bare-host": 2,
+          "write-path-blocked": 5,
+          "unparseable-url": 1,
+          "event-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -93960,12 +94057,35 @@
         {
           "url": "https://playbill.com/article/read-reviews-for-jesus-christ-superstar-at-lyric-opera-of-chicago",
           "publishDate": "2018-04-30"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-JESUS-CHRIST-SUPERSTAR-at-the-Hollywood-Bowl-Starring-Cynthia-Erivo-Adam-Lambert-and-More-20250804",
+          "publishDate": "2025-08-04"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-JESUS-CHRIST-SUPERSTAR-on-Broadway-Updating-LIVE-20120322",
+          "publishDate": "2012-03-22"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-in-on-the-50th-Anniversary-Tour-of-JESUS-CHRIST-SUPERSTAR-20191017",
+          "publishDate": "2019-10-17"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-National-Tour-of-JESUS-CHRIST-SUPERSTAR-Resumes-What-Are-the-Critics-Saying-20211110",
+          "publishDate": "2021-11-10"
         }
       ],
       "automatedExcludedListed": 1,
       "unextractable": [
         {
           "url": "https://musicaltheatrereview.com/glenn-close-to-play-herod-for-the-final-drury-lane-performances-of-jesus-christ-superstar/",
+          "host": "musicaltheatrereview.com",
+          "knownOutletId": "musical-theatre-review",
+          "serpCensus": true,
+          "zeroCharAttempts": 5
+        },
+        {
+          "url": "https://musicaltheatrereview.com/jesus-christ-superstar-london-palladium/",
           "host": "musicaltheatrereview.com",
           "knownOutletId": "musical-theatre-review",
           "serpCensus": true,
@@ -94034,33 +94154,306 @@
           "reason": "prior-run"
         },
         {
-          "url": "https://ilovemanchester.com/review-jesus-christ-superstar-at-palace-theatre",
-          "host": "ilovemanchester.com",
+          "url": "https://variety.com/2025/music/concert-reviews/jesus-christ-superstar-cynthia-erivo-adam-lambert-hollywood-bowl-review-1236477734/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.thewrap.com/jesus-christ-superstar-review-cynthia-erivo-adam-lambert-hollywood-bowl/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/aug/04/jesus-christ-superstar-review-cynthia-erivo",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://weliveentertainment.com/we-live-entertainment/concerts/theater-review-jesus-christ-superstar-hollywood-bowl-absolutely-divine-spectacle/",
+          "host": "weliveentertainment.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://theater.nytimes.com/2012/03/23/theater/reviews/jesus-christ-superstar-at-the-neil-simon-theater.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.usatoday.com/life/theater/reviews/story/2012-03-22/jesus-christ-superstar-once-musicals/53713214/1",
+          "host": "usatoday.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.crescent-news.com/ap%20entertainment/2012/03/22/ap-review-jesus-christ-superstar-overly-flashy",
+          "host": "crescent-news.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/jesus-christ-superstar-theater-review-andrew-lloyd-webber-303387",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.backstage.com/bso/reviews-movie-tv-reviews/ny-review-jesus-christ-superstar-1006552952.story",
+          "host": "backstage.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.amny.com/urbanite-1.812039/theater-review-jesus-christ-superstar-3-5-stars-1.3618340",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.chicagotribune.com/entertainment/chi-ent-jesus-christ-superstar-review-20120322,0,1543035.column",
+          "host": "chicagotribune.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/a-very-serious-jesus-christ-superstar-1.3616182",
+          "host": "newsday.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://blogs.villagevoice.com/dailymusto/2012/03/jesus_christ_su.php",
+          "host": "villagevoice.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/jesus-christ-superstar-rocks-broadway-article-1.1048973",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.austin360.com/entertainmentlife/20191010/why-this-jesus-christ-superstar-is-one-of-great-revivals-in-musical-theater-history",
+          "host": "austin360.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.austinchronicle.com/daily/arts/2019-10-15/review-jesus-christ-superstar/",
+          "host": "austinchronicle.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2019-10-31/jesus-christ-superstar-national-tour-pantages",
+          "host": "latimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://947thewave.radio.com/blogs/deborah-howell/jesus-christ-superstar-hollywood-pantages",
+          "host": "radio.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://patch.com/california/hollywood/jesus-christ-superstar-still-rocks-after-50-years",
+          "host": "patch.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.sandiegouniontribune.com/entertainment/theater/story/2019-11-14/review-new-touring-production-of-jesus-christ-superstar-boasts-rock-n-roll-power-but-not-a-lot-of-clarity",
+          "host": "sandiegouniontribune.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.sandiegostory.com/jesus-christ-superstar-rocks-and-shocks-at-civic-theatre/",
+          "host": "sandiegostory.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.spokesman.com/stories/2019/nov/21/updated-jesus-christ-superstar-keeps-the-rock-in-r/",
+          "host": "spokesman.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.latinlifedenver.com/community/it-all-the-buzz-jesus-christ-superstar-returns-to-denver-thru-dec-1-only/",
+          "host": "latinlifedenver.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.becauseitoldyouso.com/2019/12/broadway-in-tucson-review-jesus-christ.html",
+          "host": "becauseitoldyouso.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.omaha.com/entertainment/review-th-anniversary-tour-of-jesus-christ-superstar-shines-like/article_4241cf00-0b2b-5096-a8fb-81fc56a01d87.html",
+          "host": "omaha.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://thereader.com/theater-2/jesus-christ-superstar-revival-is-divine-entertainment",
+          "host": "thereader.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.theatrebloom.com/2019/12/jesus-christ-superstar-at-the-hippodrome-theatre/",
+          "host": "theatrebloom.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://dcmetrotheaterarts.com/2019/12/18/jesus-christ-superstar-hits-the-road-to-50/",
+          "host": "dcmetrotheaterarts.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.post-gazette.com/ae/theater-dance/2020/01/01/Review-Cutting-edge-Jesus-Christ-Superstar-thrills-tour-Pittsburgh/stories/202001010155",
+          "host": "post-gazette.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://chasingsupermom.com/2021/09/jesus-christ-superstar-comes-to-portland/",
+          "host": "chasingsupermom.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.seattletimes.com/entertainment/theater/review-a-brisk-jesus-christ-superstar-marks-the-return-of-broadway-at-the-paramount/",
+          "host": "seattletimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://popwrapped.com/jesus-christ-superstar-brings-broadway-back-to-san-fran/",
+          "host": "popwrapped.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://sfist.com/2021/10/15/jesus-christ-superstar-at-the-golden-gate-theater-is-a-brash/",
+          "host": "sfist.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.newportbeachindy.com/a-glorious-jesus-christ-superstar-marks-return-of-touring-musicals-to-segerstrom-center/",
+          "host": "newportbeachindy.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://stageandcinema.com/2021/11/11/jesus-christ-superstar-national-tour/",
+          "host": "stageandcinema.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://shepherdexpress.com/culture/theater/jesus-christ-superstar-rocks-at-marcus-performing-arts-cen/",
+          "host": "shepherdexpress.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.bostonglobe.com/2022/01/07/arts/jesus-christ-superstar-with-swagger-imbued-with-sorrow/",
+          "host": "bostonglobe.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.wishtv.com/lifestylelive/jesus-christ-superstar-brings-worldwide-50th-anniversary-tour-to-indianapolis/",
+          "host": "wishtv.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.cleveland.com/entertainment/2022/02/rebooted-jesus-christ-superstar-50th-anniversary-tour-gets-off-to-stunning-start-in-cleveland.html",
+          "host": "cleveland.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.washingtonpost.com/theater-dance/2022/02/24/jesus-christ-superstar-kennedy-center/",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://mdtheatreguide.com/2022/02/theatre-review-jesus-christ-superstar-at-the-kennedy-center/",
+          "host": "mdtheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://nbc-2.com/news/2022/03/16/2s-review-jesus-christ-superstar/",
+          "host": "nbc-2.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://greenvillejournal.com/arts-culture/review-jesus-christ-superstar-a-powerful-go-for-broke-production-at-peace-center/",
+          "host": "greenvillejournal.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://gephardtdaily.com/local/review-jesus-christ-superstar-delivers-powerhouse-passion/",
+          "host": "gephardtdaily.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://thisisreno.com/2022/05/heaven-on-their-minds-jesus-christ-superstar-at-the-pioneer/",
+          "host": "thisisreno.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://theatricalmusings.com/musical-2/touring-production-of-jesus-christ-superstar-offers-a-relatable-titular-character/",
+          "host": "theatricalmusings.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://attractionsmagazine.com/theater-review-the-50th-anniversary-tour-of-jesus-christ-superstar-breathes-new-life-into-a-modern-classic/",
+          "host": "attractionsmagazine.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.newcitystage.com/2022/07/26/the-passion-of-the-superstar-a-review-of-jesus-christ-superstar-at-broadway-in-chicago/",
+          "host": "newcitystage.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://chicago.suntimes.com/2022/7/21/23273090/jesus-christ-superstar-review-cadillac-palace-chicago",
+          "host": "suntimes.com",
           "priorRun": true,
           "reason": "prior-run"
         }
       ],
       "ingestResults": [
         {
-          "url": "https://musicaltheatrereview.com/glenn-close-to-play-herod-for-the-final-drury-lane-performances-of-jesus-christ-superstar/",
-          "host": "musicaltheatrereview.com",
-          "outletId": "musical-theatre-review",
+          "url": "https://www.theatrebookings.com/musical/jesus-christ-superstar",
+          "host": "theatrebookings.com",
+          "outletId": "theatrebookings",
           "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=musicaltheatrereview.com): Scrapingdog HTTP 400: Oops!"
-        },
-        {
-          "url": "https://entertheatre.com/shows/jesus-christ-superstar/theatre-royal-drury-lane",
-          "host": "entertheatre.com",
-          "outletId": "entertheatre",
-          "provisional": true,
           "ok": true,
           "noop": false,
           "conflict": false,
@@ -94115,13 +94508,38 @@
           "unclassified": false,
           "zeroChar": true,
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=musicaltheatrereview.com): Scrapingdog HTTP 400: Oops!"
+        },
+        {
+          "url": "https://whatnightout.uk/london/events/jesus-christ-superstar-1018644",
+          "host": "whatnightout.uk",
+          "outletId": "whatnightout",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [
         {
+          "url": "https://whatnightout.uk/london/events/jesus-christ-superstar-7511017",
+          "host": "whatnightout.uk",
+          "outletId": "whatnightout"
+        },
+        {
           "url": "https://www.allthatdazzles.co.uk/post/review-jesus-christ-superstar-london-palladium",
           "host": "allthatdazzles.co.uk",
           "outletId": "all-that-dazzles-uk"
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-jesus-christ-superstar-london-palladium",
+          "host": "westendbestfriend.co.uk",
+          "outletId": "west-end-best-friend"
         },
         {
           "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html",
@@ -94129,25 +94547,35 @@
           "outletId": "independent"
         },
         {
-          "url": "https://www.theguardian.com/stage/2026/jul/08/jesus-christ-superstar-review-sam-ryder",
-          "host": "theguardian.com",
-          "outletId": "guardian"
+          "url": "https://www.standard.co.uk/culture/theatre/jesus-christ-superstar-review-b1289073.html",
+          "host": "standard.co.uk",
+          "outletId": "standard"
+        },
+        {
+          "url": "https://www.thestage.co.uk/long-reviews/jesus-christ-superstar-review-london-palladium-sam-ryder",
+          "host": "thestage.co.uk",
+          "outletId": "thestage"
         },
         {
           "url": "https://www.timeout.com/london/news/jesus-christ-superstar-palladium-2026-070726",
           "host": "timeout.com",
           "outletId": "timeout-london"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/jul/08/jesus-christ-superstar-review-sam-ryder",
+          "host": "theguardian.com",
+          "outletId": "guardian"
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "entertheatre.com",
-            "outlet": "entertheatre.com",
+            "outletId": "theatrebookings",
+            "outlet": "theatrebookings",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://entertheatre.com/shows/jesus-christ-superstar/theatre-royal-drury-lane"
+            "url": "https://www.theatrebookings.com/musical/jesus-christ-superstar"
           },
           {
             "outletId": "london-theatre",
@@ -94164,11 +94592,18 @@
             "url": "https://rolandcat.substack.com/p/review-jesus-christ-superstar-palladium"
           },
           {
-            "outletId": "musical-theatre-review",
-            "outlet": "musical-theatre-review",
+            "outletId": "whatnightout.uk",
+            "outlet": "whatnightout.uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://musicaltheatrereview.com/jesus-christ-superstar-london-palladium/"
+            "url": "https://whatnightout.uk/london/events/jesus-christ-superstar-1018644"
+          },
+          {
+            "outletId": "whatnightout.uk",
+            "outlet": "whatnightout.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://whatnightout.uk/london/events/jesus-christ-superstar-7511017"
           },
           {
             "outletId": "all-that-dazzles-uk",
@@ -94178,6 +94613,13 @@
             "url": "https://www.allthatdazzles.co.uk/post/review-jesus-christ-superstar-london-palladium"
           },
           {
+            "outletId": "west-end-best-friend",
+            "outlet": "west-end-best-friend",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westendbestfriend.co.uk/news/review-jesus-christ-superstar-london-palladium"
+          },
+          {
             "outletId": "independent",
             "outlet": "independent",
             "critic": "Unknown",
@@ -94185,11 +94627,18 @@
             "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html"
           },
           {
-            "outletId": "guardian",
-            "outlet": "guardian",
+            "outletId": "standard",
+            "outlet": "standard",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.theguardian.com/stage/2026/jul/08/jesus-christ-superstar-review-sam-ryder"
+            "url": "https://www.standard.co.uk/culture/theatre/jesus-christ-superstar-review-b1289073.html"
+          },
+          {
+            "outletId": "thestage",
+            "outlet": "thestage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestage.co.uk/long-reviews/jesus-christ-superstar-review-london-palladium-sam-ryder"
           },
           {
             "outletId": "timeout-london",
@@ -94197,6 +94646,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/london/news/jesus-christ-superstar-palladium-2026-070726"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/2026/jul/08/jesus-christ-superstar-review-sam-ryder"
           },
           {
             "outletId": "timeout-london",
@@ -94223,11 +94679,11 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://entertheatre.com/shows/jesus-christ-superstar/theatre-royal-drury-lane",
-            "outletId": "entertheatre.com",
+            "url": "https://www.theatrebookings.com/musical/jesus-christ-superstar",
+            "outletId": "theatrebookings",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-17T22:59:21.861Z"
+            "firstSeenAt": "2026-10-18T08:32:02.058Z"
           },
           {
             "url": "https://www.londontheatre.co.uk/reviews/jesus-christ-superstar-review-theatre-royal-drury-lane",
@@ -94244,11 +94700,18 @@
             "firstSeenAt": "2026-10-17T06:28:57.991Z"
           },
           {
-            "url": "https://musicaltheatrereview.com/jesus-christ-superstar-london-palladium/",
-            "outletId": "musical-theatre-review",
+            "url": "https://whatnightout.uk/london/events/jesus-christ-superstar-1018644",
+            "outletId": "whatnightout.uk",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-17T06:28:57.991Z"
+            "firstSeenAt": "2026-10-18T08:32:02.058Z"
+          },
+          {
+            "url": "https://whatnightout.uk/london/events/jesus-christ-superstar-7511017",
+            "outletId": "whatnightout.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T08:32:02.058Z"
           },
           {
             "url": "https://www.allthatdazzles.co.uk/post/review-jesus-christ-superstar-london-palladium",
@@ -94258,6 +94721,13 @@
             "firstSeenAt": "2026-10-17T06:28:57.991Z"
           },
           {
+            "url": "https://www.westendbestfriend.co.uk/news/review-jesus-christ-superstar-london-palladium",
+            "outletId": "west-end-best-friend",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T08:32:02.058Z"
+          },
+          {
             "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jesus-christ-superstar-sam-ryder-review-london-palladium-b3010513.html",
             "outletId": "independent",
             "state": "IN_FLIGHT",
@@ -94265,15 +94735,29 @@
             "firstSeenAt": "2026-10-16T15:25:47.244Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/jul/08/jesus-christ-superstar-review-sam-ryder",
-            "outletId": "guardian",
+            "url": "https://www.standard.co.uk/culture/theatre/jesus-christ-superstar-review-b1289073.html",
+            "outletId": "standard",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T08:32:02.058Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/long-reviews/jesus-christ-superstar-review-london-palladium-sam-ryder",
+            "outletId": "thestage",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T08:32:02.058Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/news/jesus-christ-superstar-palladium-2026-070726",
+            "outletId": "timeout-london",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-16T15:25:47.244Z"
           },
           {
-            "url": "https://www.timeout.com/london/news/jesus-christ-superstar-palladium-2026-070726",
-            "outletId": "timeout-london",
+            "url": "https://www.theguardian.com/stage/2026/jul/08/jesus-christ-superstar-review-sam-ryder",
+            "outletId": "guardian",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-16T15:25:47.244Z"
@@ -94302,9 +94786,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 10
+        "candidateCount": 13
       },
-      "computedAt": "2026-10-17T22:59:21.861Z"
+      "computedAt": "2026-10-18T08:32:02.058Z"
     },
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
@@ -106796,7 +107280,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-18T00:39:13.929Z"
+      "computedAt": "2026-10-18T08:32:02.058Z"
     },
     {
       "showId": "little-bear-ridge-road-2025",
@@ -119112,19 +119596,21 @@
         "https://t2conline.com/memoirs-of-amorous-gentlemen-a-beautifully-decadent-world-with-a-star-at-its-center/",
         "https://www.vulture.com/article/reviews-memoirs-of-amorous-gentlemen-and-a-ghost-in-your-ear.html",
         "https://www.thewrap.com/creative-content/theater/memoirs-of-amorous-gentlemen-off-broadway-review/",
+        "https://nypost.com/2026/10/17/entertainment/memoirs-of-amorous-gentlemen-review-the-musical-duncan-sheik-was-working-on-when-he-died-is-an-awkward-letdown/",
+        "https://thefrontrowcenter.com/2026/10/memoirs-of-amorous-gentlemen/",
         "https://www.amnewscurtainraiser.com/2026/08/memoirs-of-amorous-gentlemen-off.html"
       ],
-      "dirFiles": 25,
-      "dirClean": 14,
-      "inReviewsJson": 14,
+      "dirFiles": 27,
+      "dirClean": 16,
+      "inReviewsJson": 16,
       "missing": [],
       "dirOnly": [
         {
-          "host": "thefrontrowcenter.com",
+          "host": "nysun.com",
           "count": 1
         },
         {
-          "host": "nysun.com",
+          "host": "1minutecritic.com",
           "count": 1
         },
         {
@@ -119176,7 +119662,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 5,
+            "accepted": 6,
             "error": null
           },
           {
@@ -119186,7 +119672,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -119195,8 +119681,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 2,
             "error": null
           },
           {
@@ -119222,24 +119708,23 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 10,
+        "resultCount": 12,
         "error": null
       },
       "candidatesRejected": {
         "count": 391,
         "byReason": {
-          "non-review-host": 45,
-          "write-path-blocked": 1,
-          "ticketing-listing": 1,
-          "aggregator-internal-nav": 252,
           "not-http-url": 61,
-          "production-database-listing": 10,
+          "non-review-host": 47,
+          "aggregator-internal-nav": 251,
           "aggregator-section-root": 11,
-          "roundup-page": 4,
+          "roundup-page": 3,
+          "production-database-listing": 10,
           "census-junk-host": 2,
-          "venue-production-page": 1,
-          "merch-store": 1,
-          "bare-host": 2
+          "bare-host": 2,
+          "write-path-blocked": 2,
+          "non-review-path": 1,
+          "merch-store": 1
         }
       },
       "dedupedVariants": [],
@@ -119319,6 +119804,18 @@
             "firstSeenAt": "2026-10-16T17:15:02.578Z"
           },
           {
+            "url": "https://nypost.com/2026/10/17/entertainment/memoirs-of-amorous-gentlemen-review-the-musical-duncan-sheik-was-working-on-when-he-died-is-an-awkward-letdown/",
+            "outletId": "nypost.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-18T08:32:02.058Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2026/10/memoirs-of-amorous-gentlemen/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-18T08:32:02.058Z"
+          },
+          {
             "url": "https://www.amnewscurtainraiser.com/2026/08/memoirs-of-amorous-gentlemen-off.html",
             "outletId": "amnewscurtainraiser.com",
             "state": "GAP",
@@ -119327,10 +119824,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 10,
-        "candidateCount": 11
+        "liveCount": 12,
+        "candidateCount": 13
       },
-      "computedAt": "2026-10-17T22:59:21.861Z"
+      "computedAt": "2026-10-18T08:32:02.058Z"
     },
     {
       "showId": "meow-meow-off-broadway-2026",
@@ -144052,13 +144549,11 @@
         "https://www.theatermania.com/news/julia-louis-dreyfus-allison-janney-to-star-in-broadway-revival-of-other-desert-cities_1838254/",
         "https://donshewey.com/theater_reviews/other-desert-cities-bway.html",
         "https://mdtheatreguide.com/2026/01/theatre-review-other-desert-cities-at-the-colonial-players-of-annapolis/",
-        "https://www.floridatheateronstage.com/reviews/report-from-new-york-visit-other-desert-cities/",
         "https://www.nytix.com/shows/other-desert-cities",
         "https://www.nytimes.com/2026/05/26/theater/dreyfus-harris-janney-keery-other-desert-cities-broadway.html",
-        "https://frontmezzjunkies.com/tag/other-desert-cities/",
-        "https://artsfuse.org/76008/fuse-theater-review-another-view-of-other-desert-cities-2/"
+        "https://frontmezzjunkies.com/tag/other-desert-cities/"
       ],
-      "dirFiles": 0,
+      "dirFiles": 4,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
@@ -144126,45 +144621,15 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://harrisonline.com/other-desert-cities/",
-          "host": "harrisonline.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://newyorktheater.me/2026/09/10/other-desert-cities-original-broadway-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "serpCensus": true
-        },
-        {
-          "url": "https://aroundthetownchicago.com/theatre-reviews/other-desert-cities-2/",
-          "host": "aroundthetownchicago.com",
-          "knownOutletId": "around-the-town-chicago",
-          "serpCensus": true
-        },
-        {
           "url": "https://www.theatermania.com/news/julia-louis-dreyfus-allison-janney-to-star-in-broadway-revival-of-other-desert-cities_1838254/",
           "host": "theatermania.com",
           "knownOutletId": "theatermania",
           "serpCensus": true
         },
         {
-          "url": "https://donshewey.com/theater_reviews/other-desert-cities-bway.html",
-          "host": "donshewey.com",
-          "knownOutletId": "donshewey",
-          "serpCensus": true
-        },
-        {
           "url": "https://mdtheatreguide.com/2026/01/theatre-review-other-desert-cities-at-the-colonial-players-of-annapolis/",
           "host": "mdtheatreguide.com",
           "knownOutletId": "maryland-theatre-guide",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.floridatheateronstage.com/reviews/report-from-new-york-visit-other-desert-cities/",
-          "host": "floridatheateronstage.com",
-          "knownOutletId": "florida-theater-on-stage",
           "serpCensus": true
         },
         {
@@ -144184,16 +144649,103 @@
           "host": "frontmezzjunkies.com",
           "knownOutletId": "frontmezzjunkies",
           "serpCensus": true
-        },
-        {
-          "url": "https://artsfuse.org/76008/fuse-theater-review-another-view-of-other-desert-cities-2/",
-          "host": "artsfuse.org",
-          "knownOutletId": "artsfuse",
-          "serpCensus": true
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://harrisonline.com/other-desert-cities/",
+          "host": "harrisonline.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "harrisonline--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://harrisonline.com/other-desert-cities/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://newyorktheater.me/2026/09/10/other-desert-cities-original-broadway-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nyt-theater--jonathan-mandell.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://newyorktheater.me/2026/09/10/other-desert-cities-original-broadway-review/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://aroundthetownchicago.com/theatre-reviews/other-desert-cities-2/",
+          "host": "aroundthetownchicago.com",
+          "knownOutletId": "around-the-town-chicago",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "around-the-town-chicago--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://aroundthetownchicago.com/theatre-reviews/other-desert-cities-2/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://donshewey.com/theater_reviews/other-desert-cities-bway.html",
+          "host": "donshewey.com",
+          "knownOutletId": "donshewey",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "donshewey--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://donshewey.com/theater_reviews/other-desert-cities-bway.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -144207,7 +144759,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 1,
             "error": null
           },
@@ -144258,27 +144810,27 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 11,
+        "resultCount": 9,
         "error": null
       },
       "candidatesRejected": {
-        "count": 328,
+        "count": 329,
         "byReason": {
-          "aggregator-internal-nav": 232,
           "not-http-url": 35,
-          "production-database-listing": 1,
-          "aggregator-section-root": 4,
           "non-review-host": 45,
-          "bare-host": 1,
+          "aggregator-internal-nav": 231,
+          "aggregator-section-root": 4,
+          "production-database-listing": 2,
           "ticketing-reseller": 8,
-          "census-junk-host": 1,
-          "ticketing-listing": 1
+          "ticketing-listing": 1,
+          "census-junk-host": 2,
+          "bare-host": 1
         }
       },
       "dedupedVariants": [],
@@ -144288,7 +144840,7 @@
           "publishDate": "2011-11-03"
         }
       ],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 4,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -144348,51 +144900,6 @@
       ],
       "ingestResults": [
         {
-          "url": "https://harrisonline.com/other-desert-cities/",
-          "host": "harrisonline.com",
-          "outletId": "harrisonline",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://newyorktheater.me/2026/09/10/other-desert-cities-original-broadway-review/",
-          "host": "newyorktheater.me",
-          "outletId": "nyt-theater",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://aroundthetownchicago.com/theatre-reviews/other-desert-cities-2/",
-          "host": "aroundthetownchicago.com",
-          "outletId": "around-the-town-chicago",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
           "url": "https://www.theatermania.com/news/julia-louis-dreyfus-allison-janney-to-star-in-broadway-revival-of-other-desert-cities_1838254/",
           "host": "theatermania.com",
           "outletId": "theatermania",
@@ -144408,9 +144915,9 @@
           "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
         },
         {
-          "url": "https://donshewey.com/theater_reviews/other-desert-cities-bway.html",
-          "host": "donshewey.com",
-          "outletId": "donshewey",
+          "url": "https://mdtheatreguide.com/2026/01/theatre-review-other-desert-cities-at-the-colonial-players-of-annapolis/",
+          "host": "mdtheatreguide.com",
+          "outletId": "maryland-theatre-guide",
           "provisional": false,
           "ok": true,
           "noop": false,
@@ -144421,64 +144928,57 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://mdtheatreguide.com/2026/01/theatre-review-other-desert-cities-at-the-colonial-players-of-annapolis/",
-          "host": "mdtheatreguide.com",
-          "outletId": "maryland-theatre-guide"
-        },
-        {
-          "url": "https://www.floridatheateronstage.com/reviews/report-from-new-york-visit-other-desert-cities/",
-          "host": "floridatheateronstage.com",
-          "outletId": "florida-theater-on-stage"
         },
         {
           "url": "https://www.nytix.com/shows/other-desert-cities",
           "host": "nytix.com",
-          "outletId": "nytix"
+          "outletId": "nytix",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         },
         {
           "url": "https://www.nytimes.com/2026/05/26/theater/dreyfus-harris-janney-keery-other-desert-cities-broadway.html",
           "host": "nytimes.com",
-          "outletId": "nytimes"
+          "outletId": "nytimes",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         },
         {
           "url": "https://frontmezzjunkies.com/tag/other-desert-cities/",
           "host": "frontmezzjunkies.com",
-          "outletId": "frontmezzjunkies"
-        },
-        {
-          "url": "https://artsfuse.org/76008/fuse-theater-review-another-view-of-other-desert-cities-2/",
-          "host": "artsfuse.org",
-          "outletId": "artsfuse"
+          "outletId": "frontmezzjunkies",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
         }
       ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "harrisonline.com",
-            "outlet": "harrisonline.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://harrisonline.com/other-desert-cities/"
-          },
-          {
-            "outletId": "nyt-theater",
-            "outlet": "nyt-theater",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://newyorktheater.me/2026/09/10/other-desert-cities-original-broadway-review/"
-          },
-          {
-            "outletId": "around-the-town-chicago",
-            "outlet": "around-the-town-chicago",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://aroundthetownchicago.com/theatre-reviews/other-desert-cities-2/"
-          },
           {
             "outletId": "theatermania",
             "outlet": "theatermania",
@@ -144487,25 +144987,11 @@
             "url": "https://www.theatermania.com/news/julia-louis-dreyfus-allison-janney-to-star-in-broadway-revival-of-other-desert-cities_1838254/"
           },
           {
-            "outletId": "donshewey",
-            "outlet": "donshewey",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://donshewey.com/theater_reviews/other-desert-cities-bway.html"
-          },
-          {
             "outletId": "maryland-theatre-guide",
             "outlet": "maryland-theatre-guide",
             "critic": "Unknown",
             "stars": null,
             "url": "https://mdtheatreguide.com/2026/01/theatre-review-other-desert-cities-at-the-colonial-players-of-annapolis/"
-          },
-          {
-            "outletId": "florida-theater-on-stage",
-            "outlet": "florida-theater-on-stage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.floridatheateronstage.com/reviews/report-from-new-york-visit-other-desert-cities/"
           },
           {
             "outletId": "nytix.com",
@@ -144529,36 +145015,36 @@
             "url": "https://frontmezzjunkies.com/tag/other-desert-cities/"
           },
           {
-            "outletId": "artsfuse",
-            "outlet": "artsfuse",
+            "outletId": "harrisonline.com",
+            "outlet": "harrisonline.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://artsfuse.org/76008/fuse-theater-review-another-view-of-other-desert-cities-2/"
+            "url": "https://harrisonline.com/other-desert-cities/"
+          },
+          {
+            "outletId": "nyt-theater",
+            "outlet": "nyt-theater",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://newyorktheater.me/2026/09/10/other-desert-cities-original-broadway-review/"
+          },
+          {
+            "outletId": "around-the-town-chicago",
+            "outlet": "around-the-town-chicago",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://aroundthetownchicago.com/theatre-reviews/other-desert-cities-2/"
+          },
+          {
+            "outletId": "donshewey",
+            "outlet": "donshewey",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://donshewey.com/theater_reviews/other-desert-cities-bway.html"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://harrisonline.com/other-desert-cities/",
-            "outletId": "harrisonline.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-18T00:39:13.929Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2026/09/10/other-desert-cities-original-broadway-review/",
-            "outletId": "nyt-theater",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-18T00:39:13.929Z"
-          },
-          {
-            "url": "https://aroundthetownchicago.com/theatre-reviews/other-desert-cities-2/",
-            "outletId": "around-the-town-chicago",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-18T00:39:13.929Z"
-          },
           {
             "url": "https://www.theatermania.com/news/julia-louis-dreyfus-allison-janney-to-star-in-broadway-revival-of-other-desert-cities_1838254/",
             "outletId": "theatermania",
@@ -144567,22 +145053,8 @@
             "firstSeenAt": "2026-10-18T00:39:13.929Z"
           },
           {
-            "url": "https://donshewey.com/theater_reviews/other-desert-cities-bway.html",
-            "outletId": "donshewey",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-18T00:39:13.929Z"
-          },
-          {
             "url": "https://mdtheatreguide.com/2026/01/theatre-review-other-desert-cities-at-the-colonial-players-of-annapolis/",
             "outletId": "maryland-theatre-guide",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-18T00:39:13.929Z"
-          },
-          {
-            "url": "https://www.floridatheateronstage.com/reviews/report-from-new-york-visit-other-desert-cities/",
-            "outletId": "florida-theater-on-stage",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-18T00:39:13.929Z"
@@ -144609,8 +145081,29 @@
             "firstSeenAt": "2026-10-18T00:39:13.929Z"
           },
           {
-            "url": "https://artsfuse.org/76008/fuse-theater-review-another-view-of-other-desert-cities-2/",
-            "outletId": "artsfuse",
+            "url": "https://harrisonline.com/other-desert-cities/",
+            "outletId": "harrisonline.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2026/09/10/other-desert-cities-original-broadway-review/",
+            "outletId": "nyt-theater",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
+            "url": "https://aroundthetownchicago.com/theatre-reviews/other-desert-cities-2/",
+            "outletId": "around-the-town-chicago",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
+            "url": "https://donshewey.com/theater_reviews/other-desert-cities-bway.html",
+            "outletId": "donshewey",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-18T00:39:13.929Z"
@@ -144618,9 +145111,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 11
+        "candidateCount": 9
       },
-      "computedAt": "2026-10-18T00:39:13.929Z"
+      "computedAt": "2026-10-18T08:32:02.058Z"
     },
     {
       "showId": "our-sinatra-a-musical-celebration-off-broadway-2026",
@@ -160150,33 +160643,68 @@
         "http://www.theaterscene.net/musicals/offbway/school-pictures/victor-gluck/",
         "https://thefrontrowcenter.com/2023/12/school-pictures/",
         "https://www.timeout.com/newyork/theater/school-pictures",
-        "https://airmail.news/arts-intel/events/school-pictures-and-two-girls",
-        "https://www.theaterscene.net/musicals/offbway/school-pictures/victor-gluck/"
+        "https://www.theaterscene.net/musicals/offbway/school-pictures/victor-gluck/",
+        "https://airmail.news/arts-intel/events/school-pictures-and-two-girls"
       ],
-      "dirFiles": 6,
+      "dirFiles": 9,
       "dirClean": 6,
       "inReviewsJson": 6,
       "missing": [
-        {
-          "url": "https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boys-in-harpy-land-at-playwrights-horizons_1722069/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania"
-        },
         {
           "url": "https://www.timeout.com/newyork/theater/school-pictures",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
           "serpCensus": true
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boys-in-harpy-land-at-playwrights-horizons_1722069/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--zachary-stewart.json",
+              "flag": "clean",
+              "urlInDir": "https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boys-in-harpy-land-at-playwrights-horizons_1722069/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "urlYearReroute"
+          ],
+          "reverify": true
         },
         {
           "url": "https://airmail.news/arts-intel/events/school-pictures-and-two-girls",
           "host": "airmail.news",
           "knownOutletId": "airmail",
-          "serpCensus": true
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "airmail--air-mail.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://airmail.news/arts-intel/events/school-pictures-and-two-girls"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
         }
       ],
-      "dirOnly": [],
-      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -160201,7 +160729,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -160221,7 +160749,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -160241,35 +160769,21 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 34,
+        "count": 32,
         "byReason": {
-          "aggregator-internal-nav": 6,
-          "non-review-host": 23,
-          "show-listing-page": 1,
-          "merch-store": 1,
+          "non-review-host": 22,
+          "aggregator-internal-nav": 5,
           "venue-production-page": 1,
-          "review-hub-page": 2
+          "bare-host": 1,
+          "merch-store": 1,
+          "show-listing-page": 1,
+          "review-hub-page": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 2,
       "unextractable": [],
       "ingestResults": [
-        {
-          "url": "https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boys-in-harpy-land-at-playwrights-horizons_1722069/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (no-changes)"
-        },
         {
           "url": "https://www.timeout.com/newyork/theater/school-pictures",
           "host": "timeout.com",
@@ -160284,21 +160798,6 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "school-pictures-off-broadway-2026: https://www.timeout.com/newyork/theater/school-pictures is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
-        },
-        {
-          "url": "https://airmail.news/arts-intel/events/school-pictures-and-two-girls",
-          "host": "airmail.news",
-          "outletId": "airmail",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -160306,18 +160805,18 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boys-in-harpy-land-at-playwrights-horizons_1722069/"
-          },
-          {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/newyork/theater/school-pictures"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boys-in-harpy-land-at-playwrights-horizons_1722069/"
           },
           {
             "outletId": "airmail",
@@ -160372,18 +160871,18 @@
             "firstSeenAt": "2026-10-18T00:39:13.929Z"
           },
           {
-            "url": "https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boys-in-harpy-land-at-playwrights-horizons_1722069/",
-            "outletId": "theatermania",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-17T01:52:09.174Z"
-          },
-          {
             "url": "https://www.timeout.com/newyork/theater/school-pictures",
             "outletId": "timeout-london",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boys-in-harpy-land-at-playwrights-horizons_1722069/",
+            "outletId": "theatermania",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-17T01:52:09.174Z"
           },
           {
             "url": "https://airmail.news/arts-intel/events/school-pictures-and-two-girls",
@@ -160397,7 +160896,7 @@
         "liveCount": 6,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-18T00:39:13.929Z"
+      "computedAt": "2026-10-18T08:32:02.058Z"
     },
     {
       "showId": "schtick-a-pole-in-it-off-broadway-2026",
@@ -166991,28 +167490,34 @@
       "aggregatorListedUrls": [
         "https://www.londontheatre.co.uk/reviews/some-woman-review-national-theatre",
         "https://www.theguardian.com/stage/2026/oct/16/some-woman-review-anne-marie-duff-dorfman-theatre",
-        "https://www.thereviewshub.com/some-woman-national-theatre-london/",
         "https://www.timeout.com/london/theatre/some-woman-review",
+        "https://www.thereviewshub.com/some-woman-national-theatre-london/",
         "https://www.londonboxoffice.co.uk/news/post/some-woman-dorfman-national-theatre-review",
         "https://www.londontheatre1.com/reviews/some-woman-national-theatre/",
-        "https://www.whatsonstage.com/news/some-woman-with-anne-marie-duff-at-the-national-theatre-review_1735148/",
         "https://www.thetimes.com/culture/theatre-dance/article/some-woman-review-anne-marie-duff-5k3c3226b",
+        "https://www.whatsonstage.com/news/some-woman-with-anne-marie-duff-at-the-national-theatre-review_1735148/",
+        "https://www.allthatdazzles.co.uk/post/review-some-woman-dorfman-theatre",
         "https://www.telegraph.co.uk/theatre/what-to-see/anne-marie-duff-some-woman-review/",
-        "https://theartsdesk.com/theatre/some-woman-national-theatre-review-strong-social-issues-bit-too-didactic",
         "https://www.theatremonkey.com/show/some-woman/",
         "https://www.westendbestfriend.co.uk/news/review-some-woman-national-theatre",
         "https://www.london-unattached.com/some-woman-dorfman-national-theatre/",
-        "https://www.britishtheatre.com/posts/national-theatre-reveals-lead-casting-for-some-woman-world-premiere",
+        "https://www.thestage.co.uk/reviews/some-woman-review-dorfman-theatre-national-theatre-london",
         "https://www.broadwayworld.com/westend/article/Review-SOME-WOMAN-starring-Anne-Marie-Duff-National-Theatre-20261016",
         "https://www.theartsdesk.com/theatre/some-woman-national-theatre-review-strong-social-issues-bit-too-didactic",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/some-woman-national-theatre-review-b3068031.html",
-        "https://www.thestage.co.uk/reviews/some-woman-review-dorfman-theatre-national-theatre-london",
         "https://www.ft.com/content/7a8a9df1-f4e8-4b7a-b617-5f1cad09078f"
       ],
       "dirFiles": 32,
-      "dirClean": 14,
+      "dirClean": 15,
       "inReviewsJson": 16,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-some-woman-dorfman-theatre",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [
         {
@@ -167066,57 +167571,6 @@
           "confirmedNonReview": true,
           "serpCensus": true,
           "reverify": false
-        },
-        {
-          "url": "https://www.britishtheatre.com/posts/national-theatre-reveals-lead-casting-for-some-woman-world-premiere",
-          "host": "britishtheatre.com",
-          "knownOutletId": "britishtheatrecom",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "britishtheatrecom--susan-novak.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.britishtheatre.com/posts/national-theatre-reveals-lead-casting-for-some-woman-world-premiere"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-05-06",
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://www.ft.com/content/7a8a9df1-f4e8-4b7a-b617-5f1cad09078f",
-          "host": "ft.com",
-          "knownOutletId": "financialtimes",
-          "recoverable": true,
-          "recoverableFile": "financialtimes--unknown.json",
-          "recoverableOutletId": "financialtimes",
-          "recoverableCritic": "Unknown",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "financialtimes--unknown.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.ft.com/content/7a8a9df1-f4e8-4b7a-b617-5f1cad09078f?syn-25a6b1a6=1"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "noTextOrScoreSignal"
-          ],
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -167135,7 +167589,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 2
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": true,
@@ -167161,7 +167615,7 @@
         },
         "allSourcesFailed": false,
         "currentRunRows": 16,
-        "corroborated": 13,
+        "corroborated": 14,
         "perSource": {
           "lbo-roundup": {
             "cited": 1,
@@ -167169,7 +167623,7 @@
           },
           "bestoftheatre": {
             "cited": 15,
-            "corroborated": 13
+            "corroborated": 14
           }
         }
       },
@@ -167185,7 +167639,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 7,
+            "accepted": 6,
             "error": null
           },
           {
@@ -167215,7 +167669,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -167235,44 +167689,55 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 15,
+        "resultCount": 14,
         "error": null
       },
       "candidatesRejected": {
         "count": 21,
         "byReason": {
-          "non-review-host": 16,
-          "ticketing-reseller": 1,
-          "ticketing-listing": 1,
+          "non-review-host": 17,
           "roundup-page": 1,
-          "venue-production-page": 2
+          "venue-production-page": 2,
+          "ticketing-reseller": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 2,
+      "automatedExcludedListed": 1,
       "unextractable": [],
-      "recoveryResults": [
+      "ingestResults": [
         {
-          "url": "https://www.ft.com/content/7a8a9df1-f4e8-4b7a-b617-5f1cad09078f",
-          "host": "ft.com",
-          "file": "financialtimes--unknown.json",
-          "recovered": false,
-          "skipped": false,
+          "url": "https://www.allthatdazzles.co.uk/post/review-some-woman-dorfman-theatre",
+          "host": "allthatdazzles.co.uk",
+          "outletId": "all-that-dazzles-uk",
           "provisional": false,
-          "starFallback": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=ft.com): Scrapingdog HTTP 400: Oops! Something went wr",
-          "recoveryCount": 1
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         }
       ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "all-that-dazzles-uk",
+            "outlet": "all-that-dazzles-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.allthatdazzles.co.uk/post/review-some-woman-dorfman-theatre"
+          },
           {
             "outletId": "thereviewshub",
             "outlet": "thereviewshub",
@@ -167286,13 +167751,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatremonkey.com/show/some-woman/"
-          },
-          {
-            "outletId": "financialtimes",
-            "outlet": "financialtimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.ft.com/content/7a8a9df1-f4e8-4b7a-b617-5f1cad09078f"
           }
         ],
         "suppressedMissing": [],
@@ -167328,28 +167786,22 @@
             "firstSeenAt": "2026-10-16T17:15:02.578Z"
           },
           {
-            "url": "https://www.whatsonstage.com/news/some-woman-with-anne-marie-duff-at-the-national-theatre-review_1735148/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-16T17:15:02.578Z"
-          },
-          {
             "url": "https://www.thetimes.com/culture/theatre-dance/article/some-woman-review-anne-marie-duff-5k3c3226b",
             "outletId": "thetimes.com",
             "state": "live",
             "firstSeenAt": "2026-10-16T23:20:29.893Z"
           },
           {
+            "url": "https://www.whatsonstage.com/news/some-woman-with-anne-marie-duff-at-the-national-theatre-review_1735148/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-16T17:15:02.578Z"
+          },
+          {
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/anne-marie-duff-some-woman-review/",
             "outletId": "telegraph.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-17T06:28:57.991Z"
-          },
-          {
-            "url": "https://theartsdesk.com/theatre/some-woman-national-theatre-review-strong-social-issues-bit-too-didactic",
-            "outletId": "theartsdesk.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-16T17:15:02.578Z"
           },
           {
             "url": "https://www.westendbestfriend.co.uk/news/review-some-woman-national-theatre",
@@ -167362,6 +167814,12 @@
             "outletId": "london-unattached.com",
             "state": "live",
             "firstSeenAt": "2026-10-17T14:50:53.502Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/some-woman-review-dorfman-theatre-national-theatre-london",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-16T17:15:02.578Z"
           },
           {
             "url": "https://www.broadwayworld.com/westend/article/Review-SOME-WOMAN-starring-Anne-Marie-Duff-National-Theatre-20261016",
@@ -167382,10 +167840,17 @@
             "firstSeenAt": "2026-10-16T23:20:29.893Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/some-woman-review-dorfman-theatre-national-theatre-london",
-            "outletId": "thestage.co.uk",
+            "url": "https://www.ft.com/content/7a8a9df1-f4e8-4b7a-b617-5f1cad09078f",
+            "outletId": "ft.com",
             "state": "live",
-            "firstSeenAt": "2026-10-16T17:15:02.578Z"
+            "firstSeenAt": "2026-10-16T23:20:29.893Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-some-woman-dorfman-theatre",
+            "outletId": "all-that-dazzles-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-18T08:32:02.058Z"
           },
           {
             "url": "https://www.thereviewshub.com/some-woman-national-theatre-london/",
@@ -167400,20 +167865,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-17T22:59:21.861Z"
-          },
-          {
-            "url": "https://www.ft.com/content/7a8a9df1-f4e8-4b7a-b617-5f1cad09078f",
-            "outletId": "financialtimes",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-16T23:20:29.893Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 14,
-        "candidateCount": 17
+        "liveCount": 15,
+        "candidateCount": 18
       },
-      "computedAt": "2026-10-17T22:59:21.861Z"
+      "computedAt": "2026-10-18T08:32:02.058Z"
     },
     {
       "showId": "soon-off-broadway-2026",
@@ -182649,56 +183107,51 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.theguardian.com/stage/2026/oct/14/the-cherry-orchard-review-kristin-scott-thomas-chekhov-harold-pinter-theatre-conor-mcpherson-ian-rickson-stephen-mangan",
-        "https://www.whatsonstage.com/news/the-cherry-orchard-with-kristin-scott-thomas-review-a-smart-and-salty-west-end-revival_1734872/",
         "https://www.timeout.com/london/news/the-cherry-orchard-review-kristin-scott-thomas-harold-pinter-theatre-101426",
         "https://theatre.reviews/review/cherry-orchard-kristin-scott-thomas-review/",
+        "https://www.whatsonstage.com/news/the-cherry-orchard-with-kristin-scott-thomas-review-a-smart-and-salty-west-end-revival_1734872/",
         "https://www.londontheatre.co.uk/reviews/the-cherry-orchard-review-harold-pinter-theatre",
         "https://theatresoutheast.com/the-cherry-orchard-harold-pinter-theatre-review/",
-        "https://loureviews.blog/2026/10/15/play-review-the-cherry-orchard-at-harold-pinter-theatre/",
         "https://www.allthatdazzles.co.uk/post/review-the-cherry-orchard-harold-pinter-theatre",
         "https://www.thestage.co.uk/reviews/the-cherry-orchard-review-harold-pinter-theatre-london-kristin-scott-thomas-conor-mcpherson",
         "https://monstagigz.com/2026/10/06/theatre-review-the-cherry-orchard-starring-kristin-scott-thomas-stephen-mangan-at-the-harold-pinter-theatre/",
         "https://theatreandtonic.co.uk/blog/the-cherry-orchard-starring-kristin-scott-thomas-review",
         "https://matineemouse.substack.com/p/the-cherry-orchard-review",
         "https://www.thereviewshub.com/the-cherry-orchard-harold-pinter-theatre-london/",
-        "https://www.telegraph.co.uk/theatre/what-to-see/the-cherry-orchard-review/",
-        "https://www.thetimes.com/culture/theatre-dance/article/the-cherry-orchard-review-kristin-scott-thomas-gc88pnwh6",
-        "https://www.timeout.com/london/theatre/the-cherry-orchard-16",
+        "https://loureviews.blog/2026/10/15/play-review-the-cherry-orchard-at-harold-pinter-theatre/",
         "https://firstnightmagazine.com/2026/10/15/review-of-the-cherry-orchard-2026-harold-pinter-theatre-connor-mcphersons-sapped-adaptation-is-too-green-to-blossom/",
-        "https://www.londonboxoffice.co.uk/news/post/the-cherry-orchard-harold-pinter-theatre-review",
-        "https://www.standard.co.uk/culture/theatre/the-cherry-orchard-review-b1300867.html",
-        "https://playsinternational.org.uk/the-cherry-orchard-harold-pinter-theatre/",
-        "https://theatreweekly.com/review-the-cherry-orchard-at-harold-pinter-theatre/",
+        "https://thespyinthestalls.com/2026/10/the-cherry-orchard-2/",
+        "https://northwestend.com/the-cherry-orchard-harold-pinter-theatre/",
+        "https://www.telegraph.co.uk/theatre/what-to-see/the-cherry-orchard-review/",
+        "https://www.timeout.com/london/theatre/the-cherry-orchard-16",
+        "https://www.thetimes.com/culture/theatre-dance/article/the-cherry-orchard-review-kristin-scott-thomas-gc88pnwh6",
+        "https://www.wheeliegoodshow.com/post/the-cherry-orchard-harold-pinter-theatre-london",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cherry-orchard-review-kristin-scott-thomas-steven-mangan-b3066484.html",
         "https://www.cityam.com/the-cherry-orchard-noel-coward-theatre-kristin-scott-thomas-is-luminous/",
+        "https://www.standard.co.uk/culture/theatre/the-cherry-orchard-review-b1300867.html",
         "https://www.ft.com/content/e36fa65e-f5e7-4d8b-aa68-4a96c4f5a8e5",
         "https://www.broadwayworld.com/westend/article/Review-THE-CHERRY-ORCHARD-starring-Kristin-Scott-Thomas-Harold-Pinter-Theatre-20261014",
         "https://www.dailymail.com/tvshowbiz/article-16206943/Kristins-PATRICK-MARMION-shares-night-review-Cherry-Orchard.html",
-        "https://thespyinthestalls.com/2026/10/the-cherry-orchard-2/",
+        "https://www.londonboxoffice.co.uk/news/post/the-cherry-orchard-harold-pinter-theatre-review",
         "https://www.jackstage.co.uk/post/the-cherry-orchard-review-kristin-scott-thomas-is-inspiring-in-this-beautiful-revival",
-        "https://northwestend.com/the-cherry-orchard-harold-pinter-theatre/",
         "https://www.theupcoming.co.uk/2026/10/09/the-cherry-orchard-at-harold-pinter-theatre-theatre-review/",
+        "https://playsinternational.org.uk/the-cherry-orchard-harold-pinter-theatre/",
         "https://www.westendbestfriend.co.uk/news/review-the-cherry-orchard-harold-pinter-theatre",
         "https://liamodell.com/2026/10/14/the-cherry-orchard-review-harold-pinter-theatre-london-kristin-scott-thomas-stephen-mangan-ruby-bentall-anton-chekhov-summary/",
+        "https://theatreweekly.com/review-the-cherry-orchard-at-harold-pinter-theatre/",
         "https://www.dailymail.co.uk/tvshowbiz/article-16206943/Kristins-PATRICK-MARMION-shares-night-review-Cherry-Orchard.html",
         "https://www.observer.co.uk/culture/theatre/article/the-cherry-orchard-kristin-scott-thomas-is-a-study-of-sharpness-and-fragility",
         "https://www.britishtheatreguide.info/reviews/the-cherry-orch-harold-pinter-t-26118",
         "https://curtaincallreviews.co.uk/the-cherry-orchard-1"
       ],
-      "dirFiles": 82,
-      "dirClean": 37,
-      "inReviewsJson": 38,
+      "dirFiles": 84,
+      "dirClean": 39,
+      "inReviewsJson": 40,
       "missing": [
         {
           "url": "https://theatre.reviews/review/cherry-orchard-kristin-scott-thomas-review/",
           "host": "theatre.reviews",
           "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://theatresoutheast.com/the-cherry-orchard-harold-pinter-theatre-review/",
-          "host": "theatresoutheast.com",
-          "knownOutletId": "theatre-south-east",
           "serpCensus": true
         }
       ],
@@ -182729,10 +183182,6 @@
         },
         {
           "host": "therecs.co.uk",
-          "count": 1
-        },
-        {
-          "host": "wheeliegoodshow.com",
           "count": 1
         }
       ],
@@ -182782,36 +183231,6 @@
           ],
           "confirmedNonReview": true,
           "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://theatreweekly.com/review-the-cherry-orchard-at-harold-pinter-theatre/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatre-weekly--greg-stewart.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theatreweekly.com/review-the-cherry-orchard-at-harold-pinter-theatre/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2024-05-02",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 3,
-          "weRefStarsSource": "bestoftheatre",
           "reverify": false
         },
         {
@@ -182873,6 +183292,36 @@
           "weRefStars": 2,
           "weRefStarsSource": "theatre-reviews",
           "reverify": false
+        },
+        {
+          "url": "https://theatreweekly.com/review-the-cherry-orchard-at-harold-pinter-theatre/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-weekly--greg-stewart.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theatreweekly.com/review-the-cherry-orchard-at-harold-pinter-theatre/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2024-05-02",
+          "weRef": true,
+          "weRefSources": [
+            "bestoftheatre"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "bestoftheatre",
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -182891,7 +183340,7 @@
             "rows": 13,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 2
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": true,
@@ -182949,7 +183398,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 7,
+            "accepted": 6,
             "error": null
           },
           {
@@ -182979,7 +183428,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -182999,22 +183448,21 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 6,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 21,
+        "resultCount": 20,
         "error": null
       },
       "candidatesRejected": {
-        "count": 16,
+        "count": 13,
         "byReason": {
-          "non-review-host": 9,
-          "ticketing-listing": 2,
-          "roundup-page": 4,
-          "aggregator-roundup": 1
+          "non-review-host": 10,
+          "roundup-page": 2,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -183035,21 +183483,6 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "unknown-outlet-aggregator-host (theatre.reviews)"
-        },
-        {
-          "url": "https://theatresoutheast.com/the-cherry-orchard-harold-pinter-theatre-review/",
-          "host": "theatresoutheast.com",
-          "outletId": "theatre-south-east",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -183062,13 +183495,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://theatre.reviews/review/cherry-orchard-kristin-scott-thomas-review/"
-          },
-          {
-            "outletId": "theatre-south-east",
-            "outlet": "theatre-south-east",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatresoutheast.com/the-cherry-orchard-harold-pinter-theatre-review/"
           },
           {
             "outletId": "monstagigz",
@@ -183101,16 +183527,16 @@
             "firstSeenAt": "2026-10-14T02:28:29.917Z"
           },
           {
-            "url": "https://www.whatsonstage.com/news/the-cherry-orchard-with-kristin-scott-thomas-review-a-smart-and-salty-west-end-revival_1734872/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-14T02:28:29.917Z"
-          },
-          {
             "url": "https://www.timeout.com/london/news/the-cherry-orchard-review-kristin-scott-thomas-harold-pinter-theatre-101426",
             "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-10-16T23:20:29.893Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/the-cherry-orchard-with-kristin-scott-thomas-review-a-smart-and-salty-west-end-revival_1734872/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-14T02:28:29.917Z"
           },
           {
             "url": "https://www.londontheatre.co.uk/reviews/the-cherry-orchard-review-harold-pinter-theatre",
@@ -183119,10 +183545,10 @@
             "firstSeenAt": "2026-10-14T02:28:29.917Z"
           },
           {
-            "url": "https://loureviews.blog/2026/10/15/play-review-the-cherry-orchard-at-harold-pinter-theatre/",
-            "outletId": "loureviews.blog",
+            "url": "https://theatresoutheast.com/the-cherry-orchard-harold-pinter-theatre-review/",
+            "outletId": "theatresoutheast.com",
             "state": "live",
-            "firstSeenAt": "2026-10-15T12:23:26.665Z"
+            "firstSeenAt": "2026-10-17T22:59:21.861Z"
           },
           {
             "url": "https://www.allthatdazzles.co.uk/post/review-the-cherry-orchard-harold-pinter-theatre",
@@ -183155,6 +183581,30 @@
             "firstSeenAt": "2026-10-17T14:50:53.502Z"
           },
           {
+            "url": "https://loureviews.blog/2026/10/15/play-review-the-cherry-orchard-at-harold-pinter-theatre/",
+            "outletId": "loureviews.blog",
+            "state": "live",
+            "firstSeenAt": "2026-10-15T12:23:26.665Z"
+          },
+          {
+            "url": "https://firstnightmagazine.com/2026/10/15/review-of-the-cherry-orchard-2026-harold-pinter-theatre-connor-mcphersons-sapped-adaptation-is-too-green-to-blossom/",
+            "outletId": "firstnightmagazine.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-16T10:22:00.998Z"
+          },
+          {
+            "url": "https://thespyinthestalls.com/2026/10/the-cherry-orchard-2/",
+            "outletId": "thespyinthestalls.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-15T12:23:26.665Z"
+          },
+          {
+            "url": "https://northwestend.com/the-cherry-orchard-harold-pinter-theatre/",
+            "outletId": "northwestend.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T22:59:21.861Z"
+          },
+          {
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-cherry-orchard-review/",
             "outletId": "telegraph.co.uk",
             "state": "live",
@@ -183167,34 +183617,22 @@
             "firstSeenAt": "2026-10-16T23:20:29.893Z"
           },
           {
-            "url": "https://firstnightmagazine.com/2026/10/15/review-of-the-cherry-orchard-2026-harold-pinter-theatre-connor-mcphersons-sapped-adaptation-is-too-green-to-blossom/",
-            "outletId": "firstnightmagazine.com",
+            "url": "https://www.wheeliegoodshow.com/post/the-cherry-orchard-harold-pinter-theatre-london",
+            "outletId": "wheeliegoodshow.com",
             "state": "live",
-            "firstSeenAt": "2026-10-16T10:22:00.998Z"
-          },
-          {
-            "url": "https://www.londonboxoffice.co.uk/news/post/the-cherry-orchard-harold-pinter-theatre-review",
-            "outletId": "londonboxoffice.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-15T04:30:21.497Z"
-          },
-          {
-            "url": "https://www.standard.co.uk/culture/theatre/the-cherry-orchard-review-b1300867.html",
-            "outletId": "standard.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-16T17:15:02.578Z"
-          },
-          {
-            "url": "https://playsinternational.org.uk/the-cherry-orchard-harold-pinter-theatre/",
-            "outletId": "playsinternational.org.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-17T14:50:53.502Z"
+            "firstSeenAt": "2026-10-18T08:32:02.058Z"
           },
           {
             "url": "https://www.cityam.com/the-cherry-orchard-noel-coward-theatre-kristin-scott-thomas-is-luminous/",
             "outletId": "cityam.com",
             "state": "live",
             "firstSeenAt": "2026-10-15T12:23:26.665Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/the-cherry-orchard-review-b1300867.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-16T17:15:02.578Z"
           },
           {
             "url": "https://www.ft.com/content/e36fa65e-f5e7-4d8b-aa68-4a96c4f5a8e5",
@@ -183209,10 +183647,10 @@
             "firstSeenAt": "2026-10-15T12:23:26.665Z"
           },
           {
-            "url": "https://thespyinthestalls.com/2026/10/the-cherry-orchard-2/",
-            "outletId": "thespyinthestalls.com",
+            "url": "https://www.londonboxoffice.co.uk/news/post/the-cherry-orchard-harold-pinter-theatre-review",
+            "outletId": "londonboxoffice.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-15T12:23:26.665Z"
+            "firstSeenAt": "2026-10-15T04:30:21.497Z"
           },
           {
             "url": "https://www.jackstage.co.uk/post/the-cherry-orchard-review-kristin-scott-thomas-is-inspiring-in-this-beautiful-revival",
@@ -183221,16 +183659,16 @@
             "firstSeenAt": "2026-10-16T10:22:00.998Z"
           },
           {
-            "url": "https://northwestend.com/the-cherry-orchard-harold-pinter-theatre/",
-            "outletId": "northwestend.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-17T22:59:21.861Z"
-          },
-          {
             "url": "https://www.theupcoming.co.uk/2026/10/09/the-cherry-orchard-at-harold-pinter-theatre-theatre-review/",
             "outletId": "theupcoming.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-16T10:22:00.998Z"
+          },
+          {
+            "url": "https://playsinternational.org.uk/the-cherry-orchard-harold-pinter-theatre/",
+            "outletId": "playsinternational.org.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T14:50:53.502Z"
           },
           {
             "url": "https://www.westendbestfriend.co.uk/news/review-the-cherry-orchard-harold-pinter-theatre",
@@ -183276,13 +183714,6 @@
             "firstSeenAt": "2026-10-17T22:59:21.861Z"
           },
           {
-            "url": "https://theatresoutheast.com/the-cherry-orchard-harold-pinter-theatre-review/",
-            "outletId": "theatre-south-east",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T22:59:21.861Z"
-          },
-          {
             "url": "https://monstagigz.com/2026/10/06/theatre-review-the-cherry-orchard-starring-kristin-scott-thomas-stephen-mangan-at-the-harold-pinter-theatre/",
             "outletId": "monstagigz",
             "state": "GAP",
@@ -183305,10 +183736,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 29,
-        "candidateCount": 34
+        "liveCount": 31,
+        "candidateCount": 35
       },
-      "computedAt": "2026-10-17T22:59:21.861Z"
+      "computedAt": "2026-10-18T08:32:02.058Z"
     },
     {
       "showId": "the-children-off-west-end-2026",
@@ -184898,34 +185329,95 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://nitelifeexchange.com/the-dog-show-come-sit-stay-a-new-comedy-at-the-triad-theater-from-tuesday-october-13-sunday-november-29/",
+        "https://getdogschool.com/trainer/come-sit-stay-pet-resorts/",
         "https://www.picturethispost.com/30-minutes-from-broadway-entertainment-presents-the-dog-show-come-sit-stay-preview/",
         "https://lessons.talkalmanmusic.com/shows/event/triad-the/the-dog-show-come-sit-stay-2026-10-16"
       ],
-      "dirFiles": 0,
+      "dirFiles": 3,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
         {
-          "url": "https://nitelifeexchange.com/the-dog-show-come-sit-stay-a-new-comedy-at-the-triad-theater-from-tuesday-october-13-sunday-november-29/",
-          "host": "nitelifeexchange.com",
-          "knownOutletId": "nitelifeexchange-com",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.picturethispost.com/30-minutes-from-broadway-entertainment-presents-the-dog-show-come-sit-stay-preview/",
-          "host": "picturethispost.com",
-          "knownOutletId": "picture-this-post",
-          "serpCensus": true
-        },
-        {
-          "url": "https://lessons.talkalmanmusic.com/shows/event/triad-the/the-dog-show-come-sit-stay-2026-10-16",
-          "host": "talkalmanmusic.com",
+          "url": "https://getdogschool.com/trainer/come-sit-stay-pet-resorts/",
+          "host": "getdogschool.com",
           "knownOutletId": null,
           "serpCensus": true
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://nitelifeexchange.com/the-dog-show-come-sit-stay-a-new-comedy-at-the-triad-theater-from-tuesday-october-13-sunday-november-29/",
+          "host": "nitelifeexchange.com",
+          "knownOutletId": "nitelifeexchange-com",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nitelifeexchange-com--nitelife-exchange.json",
+              "flag": "clean",
+              "urlInDir": "https://nitelifeexchange.com/the-dog-show-come-sit-stay-a-new-comedy-at-the-triad-theater-from-tuesday-october-13-sunday-november-29/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://www.picturethispost.com/30-minutes-from-broadway-entertainment-presents-the-dog-show-come-sit-stay-preview/",
+          "host": "picturethispost.com",
+          "knownOutletId": "picture-this-post",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "picture-this-post--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.picturethispost.com/30-minutes-from-broadway-entertainment-presents-the-dog-show-come-sit-stay-preview/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://lessons.talkalmanmusic.com/shows/event/triad-the/the-dog-show-come-sit-stay-2026-10-16",
+          "host": "talkalmanmusic.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "talkalmanmusic--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://lessons.talkalmanmusic.com/shows/event/triad-the/the-dog-show-come-sit-stay-2026-10-16"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -184949,8 +185441,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 0,
+            "results": 9,
+            "accepted": 1,
             "error": null
           },
           {
@@ -184986,58 +185478,28 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 3,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 36,
+        "count": 32,
         "byReason": {
-          "aggregator-internal-nav": 8,
-          "non-review-host": 20,
-          "bare-host": 2,
-          "non-review-path": 2,
-          "merch-store": 1,
-          "venue-production-page": 3
+          "non-review-host": 21,
+          "aggregator-internal-nav": 5,
+          "venue-production-page": 3,
+          "bare-host": 1,
+          "non-review-path": 1,
+          "merch-store": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://nitelifeexchange.com/the-dog-show-come-sit-stay-a-new-comedy-at-the-triad-theater-from-tuesday-october-13-sunday-november-29/",
-          "host": "nitelifeexchange.com",
-          "outletId": "nitelifeexchange-com",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.picturethispost.com/30-minutes-from-broadway-entertainment-presents-the-dog-show-come-sit-stay-preview/",
-          "host": "picturethispost.com",
-          "outletId": "picture-this-post",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://lessons.talkalmanmusic.com/shows/event/triad-the/the-dog-show-come-sit-stay-2026-10-16",
-          "host": "talkalmanmusic.com",
-          "outletId": "talkalmanmusic",
+          "url": "https://getdogschool.com/trainer/come-sit-stay-pet-resorts/",
+          "host": "getdogschool.com",
+          "outletId": "getdogschool",
           "provisional": true,
           "ok": true,
           "noop": false,
@@ -185054,6 +185516,13 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "getdogschool.com",
+            "outlet": "getdogschool.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://getdogschool.com/trainer/come-sit-stay-pet-resorts/"
+          },
           {
             "outletId": "nitelifeexchange-com",
             "outlet": "nitelifeexchange-com",
@@ -185079,6 +185548,13 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://getdogschool.com/trainer/come-sit-stay-pet-resorts/",
+            "outletId": "getdogschool.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T08:32:02.058Z"
+          },
+          {
             "url": "https://nitelifeexchange.com/the-dog-show-come-sit-stay-a-new-comedy-at-the-triad-theater-from-tuesday-october-13-sunday-november-29/",
             "outletId": "nitelifeexchange-com",
             "state": "IN_FLIGHT",
@@ -185102,9 +185578,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 3
+        "candidateCount": 4
       },
-      "computedAt": "2026-10-18T00:39:13.929Z"
+      "computedAt": "2026-10-18T08:32:02.058Z"
     },
     {
       "showId": "the-enormous-crocodile-west-end-2026",
@@ -226287,21 +226763,14 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07",
         "https://www.timeout.com/newyork/theater/two-girls",
         "https://airmail.news/arts-intel/events/school-pictures-and-two-girls",
         "https://www.yahoo.com/entertainment/articles/two-girls-one-cup-inspired-192755191.html"
       ],
-      "dirFiles": 6,
+      "dirFiles": 7,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
-        {
-          "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07",
-          "host": "howdidimissthat.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
         {
           "url": "https://www.timeout.com/newyork/theater/two-girls",
           "host": "timeout.com",
@@ -226346,7 +226815,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -226356,8 +226825,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 1,
+            "results": 8,
+            "accepted": 0,
             "error": null
           },
           {
@@ -226367,7 +226836,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -226377,46 +226846,31 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
-        "count": 20,
+        "count": 34,
         "byReason": {
-          "aggregator-internal-nav": 3,
-          "non-review-host": 12,
-          "census-junk-host": 1,
-          "tag-index-page": 1,
-          "non-review-path": 1,
+          "non-review-host": 23,
+          "aggregator-internal-nav": 6,
           "venue-production-page": 1,
-          "review-hub-page": 1
+          "ticketing-listing": 1,
+          "census-junk-host": 1,
+          "bare-host": 1,
+          "write-path-blocked": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "ingestResults": [
-        {
-          "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07",
-          "host": "howdidimissthat.com",
-          "outletId": "howdidimissthat",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
         {
           "url": "https://www.timeout.com/newyork/theater/two-girls",
           "host": "timeout.com",
@@ -226437,15 +226891,15 @@
           "host": "airmail.news",
           "outletId": "airmail",
           "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": true,
-          "conflictReason": "cross-show-url-owned",
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
           "expected": false,
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "two-girls-off-broadway-2026: https://airmail.news/arts-intel/events/school-pictures-and-two-girls is already owned by school-pictures-off-broadway-2026 — one of the two is contaminated. Inspect data/review-texts/school-pictures-off-broadway-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+          "reason": null
         },
         {
           "url": "https://www.yahoo.com/entertainment/articles/two-girls-one-cup-inspired-192755191.html",
@@ -226467,13 +226921,6 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "howdidimissthat.com",
-            "outlet": "howdidimissthat.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07"
-          },
           {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
@@ -226499,13 +226946,6 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07",
-            "outletId": "howdidimissthat.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-18T00:39:13.929Z"
-          },
-          {
             "url": "https://www.timeout.com/newyork/theater/two-girls",
             "outletId": "timeout-london",
             "state": "IN_FLIGHT",
@@ -226529,9 +226969,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 4
+        "candidateCount": 3
       },
-      "computedAt": "2026-10-18T00:39:13.929Z"
+      "computedAt": "2026-10-18T08:32:02.058Z"
     },
     {
       "showId": "two-strangers-bway-2025",
@@ -228575,154 +229015,25 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/",
-        "https://stageraw.com/unconditional-a-musical-memoir/",
-        "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/"
-      ],
-      "dirFiles": 1,
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://stageraw.com/unconditional-a-musical-memoir/",
-          "host": "stageraw.com",
-          "knownOutletId": "stage-raw",
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2025-02-18",
-          "serpCensus": true
-        },
-        {
-          "url": "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/",
-          "host": "hollywoodtimes.net",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2025-02-22",
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/",
-          "host": "theatreinla.com",
-          "knownOutletId": "theatreinla",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatreinla--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:venue-verified:Skylight Theatre in Los Feliz",
-          "serpCensus": true,
-          "reverify": false
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"UNCONDITIONAL, a new musical memoir\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"UNCONDITIONAL, a new musical memoir\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"UNCONDITIONAL, a new musical memoir\" review mama",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "UNCONDITIONAL, a new musical memoir La MaMa / The Club review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "UNCONDITIONAL, a new musical memoir La MaMa / The Club review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "UNCONDITIONAL, a new musical memoir La MaMa / The Club review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 3,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 33,
-        "byReason": {
-          "aggregator-internal-nav": 3,
-          "non-review-host": 24,
-          "bare-host": 2,
-          "roundup-page": 1,
-          "census-junk-host": 1,
-          "write-path-blocked": 1,
-          "merch-store": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
       "unextractable": [],
-      "weIngestBlocked": [
-        {
-          "url": "https://stageraw.com/unconditional-a-musical-memoir/",
-          "host": "stageraw.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/",
-          "host": "hollywoodtimes.net",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -228732,7 +229043,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-18T04:02:40.408Z"
+      "computedAt": "2026-10-18T08:32:02.058Z"
     },
     {
       "showId": "under-the-shadow-off-west-end-2026",

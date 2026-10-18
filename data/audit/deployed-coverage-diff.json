@@ -1,30 +1,239 @@
 {
-  "generatedAt": "2026-10-18T05:26:03.778Z",
+  "generatedAt": "2026-10-18T08:34:40.414Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 246,
-  "clean": 245,
-  "defective": 1,
+  "clean": 234,
+  "defective": 12,
   "byType": {
-    "score-drift": 1
+    "missing-from-prod": 6,
+    "score-drift": 11
   },
   "shows": [
     {
-      "showId": "the-mousetrap-west-end-2021",
-      "title": "The Mousetrap",
-      "openingDate": "1952-11-25",
+      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
+      "title": "Who’s Afraid of Virginia Woolf?",
+      "openingDate": "2026-09-30",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: times-uk"
+        }
+      ],
+      "missingFromProd": [
+        "times-uk"
+      ],
+      "localCount": 41,
+      "deployedCount": 41,
+      "firstDefectAt": "2026-10-18T08:34:36.251Z"
+    },
+    {
+      "showId": "masquerade-off-broadway-2025",
+      "title": "Masquerade",
+      "openingDate": "2025-09-29",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: nyt-theater"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 70.76 vs local 71.37 (Δ0.61)"
+        }
+      ],
+      "missingFromProd": [
+        "nyt-theater"
+      ],
+      "localCount": 16,
+      "deployedCount": 15,
+      "firstDefectAt": "2026-10-18T08:34:36.251Z"
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "title": "Heathers The Musical",
+      "openingDate": "2025-06-30",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: vulture"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 76.87 vs local 74.31 (Δ2.56)"
+        }
+      ],
+      "missingFromProd": [
+        "vulture"
+      ],
+      "localCount": 21,
+      "deployedCount": 20,
+      "firstDefectAt": "2026-10-18T08:34:36.251Z"
+    },
+    {
+      "showId": "stranger-things-2024",
+      "title": "Stranger Things: The First Shadow",
+      "openingDate": "2025-04-22",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: variety"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 64.18 vs local 64.1 (Δ0.08)"
+        }
+      ],
+      "missingFromProd": [
+        "variety"
+      ],
+      "localCount": 36,
+      "deployedCount": 35,
+      "firstDefectAt": "2026-10-18T08:34:36.251Z"
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "title": "The Great Gatsby",
+      "openingDate": "2024-04-25",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: theater-pizzazz"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 57.23 vs local 57.77 (Δ0.54)"
+        }
+      ],
+      "missingFromProd": [
+        "theater-pizzazz"
+      ],
+      "localCount": 30,
+      "deployedCount": 29,
+      "firstDefectAt": "2026-10-18T08:34:36.251Z"
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
+      "title": "The Book of Mormon",
+      "openingDate": "2013-03-21",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: telegraph"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 74.84 vs local 76.68 (Δ1.84)"
+        }
+      ],
+      "missingFromProd": [
+        "telegraph"
+      ],
+      "localCount": 16,
+      "deployedCount": 15,
+      "firstDefectAt": "2026-10-18T08:34:36.251Z"
+    },
+    {
+      "showId": "the-ask-off-broadway-2026",
+      "title": "The Ask",
+      "openingDate": "2026-10-13",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 67.87 vs local 69.24 (Δ1.37)"
+          "detail": "deployed cs 59.81 vs local 59.48 (Δ0.33)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 5,
+      "deployedCount": 5,
+      "firstDefectAt": "2026-10-18T08:34:36.251Z"
+    },
+    {
+      "showId": "nina-off-west-end-2026",
+      "title": "Nina",
+      "openingDate": "2026-10-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.74 vs local 77.67 (Δ1.07)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 11,
+      "deployedCount": 12,
+      "firstDefectAt": "2026-10-18T08:34:36.251Z"
+    },
+    {
+      "showId": "a-small-and-quiet-light-off-west-end-2026",
+      "title": "A Small And Quiet Light",
+      "openingDate": "2026-09-27",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 59.76 vs local 62.26 (Δ2.5)"
         }
       ],
       "missingFromProd": [],
       "localCount": 13,
+      "deployedCount": 14,
+      "firstDefectAt": "2026-10-18T08:34:36.251Z"
+    },
+    {
+      "showId": "macbeth-off-broadway-2026",
+      "title": "Macbeth",
+      "openingDate": "2026-09-22",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 80.51 vs local 80.83 (Δ0.32)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 12,
       "deployedCount": 13,
-      "firstDefectAt": "2026-10-18T05:25:58.116Z"
+      "firstDefectAt": "2026-10-18T08:34:36.251Z"
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "title": "Avenue Q",
+      "openingDate": "2026-04-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 81.66 vs local 81.75 (Δ0.09)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 35,
+      "deployedCount": 36,
+      "firstDefectAt": "2026-10-18T08:34:36.251Z"
+    },
+    {
+      "showId": "six-2021",
+      "title": "SIX",
+      "openingDate": "2021-10-03",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.17 vs local 81.87 (Δ0.3)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 30,
+      "deployedCount": 30,
+      "firstDefectAt": "2026-10-18T08:34:36.251Z"
     }
   ],
   "persistentDefective": 0,
