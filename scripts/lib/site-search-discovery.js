@@ -1478,11 +1478,10 @@ async function searchOutletSites(showTitle, outletIds, options = {}) {
 
 /**
  * Which SITE_SEARCH_ENDPOINTS keys are worth querying for a given show right now.
- * Pure selection logic used by gather-reviews.js's STEP 1c (#767). opening-night-poller.js
- * still has its own two hand-written selection blocks (SSR + JS phases) — this helper does
- * not yet replace them, so "missing outlet" filtering can still drift between the two
- * callers if one is edited without the other. A follow-up should migrate the poller onto
- * this same helper to close that gap.
+ * Pure selection logic shared by gather-reviews.js's STEP 1c (#767) and
+ * opening-night-poller.js's SSR and JS phases (BRO-3383). The poller passes an empty
+ * found set for its unconditional free SSR pass and the accumulated found set
+ * for its missing-outlet-only JS pass.
  *
  * Missing-check is keyed on the EFFECTIVE outlet id: a sibling entry (e.g.
  * 'telegraph-search' → 'telegraph') must not re-fire for an outlet already covered

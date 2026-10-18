@@ -45,7 +45,7 @@ const {
 
 const { checkRSSFeeds } = require('./lib/rss-discovery');
 const { discoverGoogleNewsReviews } = require('./lib/google-news-rss');
-const { searchOutletSites, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
+const { searchOutletSites, selectApplicableSiteSearchOutlets, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
 const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
 // 1 Minute Critic direct-discovery. Its RSS feed isn't in rss-discovery.js's
 // outlet list, and the T3 SERP fallback below is Broadway-only, so without
@@ -1704,12 +1704,7 @@ async function pollCycle() {
   // bachtrack/parterre/operawire/nycr/cva would fire on every Broadway show, burning
   // ~5 extra HTTP calls per poll cycle across 700+ Broadway shows.
   const ssrSiteSearchIds = !SKIP_SITE_SEARCH
-    ? Object.keys(SITE_SEARCH_ENDPOINTS).filter(id => {
-        const ep = SITE_SEARCH_ENDPOINTS[id];
-        return !ep.requiresJs
-          && (!ep.market || ep.market === market)
-          && (!ep.applies || ep.applies(show));
-      })
+    ? selectApplicableSiteSearchOutlets(market, show, new Set(), false)
     : [];
 
   const [aggSettled, rssSettled, ssrSettled, omcSettled, googleNewsSettled] = await Promise.allSettled([
@@ -1757,17 +1752,8 @@ async function pollCycle() {
     // actually found and get re-suppressed with no fresh attempts.
     for (const id of foundAfterParallel) delete jsOutletMisses[id];
 
-    const allJsIds = Object.keys(SITE_SEARCH_ENDPOINTS).filter(id => {
-      const ep = SITE_SEARCH_ENDPOINTS[id];
-      // Missing-check keyed on the EFFECTIVE outlet id: a sibling entry
-      // ('telegraph-search' → 'telegraph') must not re-fire a paid JS render
-      // for an outlet the free SSR pass already covered (task #720).
-      const effectiveId = (ep.outletIdOverride || id).toLowerCase();
-      return ep.requiresJs
-        && (!ep.market || ep.market === market)
-        && (!ep.applies || ep.applies(show))
-        && !foundAfterParallel.has(effectiveId);
-    });
+    const allJsIds = selectApplicableSiteSearchOutlets(market, show, foundAfterParallel, true)
+      .filter(id => SITE_SEARCH_ENDPOINTS[id].requiresJs);
     const inOpeningWindow = isInOpeningWindow(show);
     const givenUpIds = allJsIds.filter(id => {
       const ep = SITE_SEARCH_ENDPOINTS[id];
