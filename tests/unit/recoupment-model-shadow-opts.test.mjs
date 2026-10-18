@@ -62,21 +62,26 @@ describe('datedCosts (checker #3, shadow)', () => {
     ...comm,
     costHistory: [{ asOf: iso(first), amount, kind: 'running-cost', sourceType: 'trade', sourceUrl: 'https://example.com/a' }],
   });
-  test('weekly: each week priced by costForWeek; default unchanged', () => {
-    const live = calculateRecoupment(show, anchored(800_000), null, weekly);
+  // Live for musicals since BRO-5598; { datedCosts: false } is the old path
+  // (and what a play still gets by default).
+  const OFF = { datedCosts: false };
+  test('weekly: each week priced by costForWeek; musical default on, play default off', () => {
+    const live = calculateRecoupment(show, anchored(800_000), null, weekly, OFF);
     const dated = calculateRecoupment(show, anchored(800_000), null, weekly, { datedCosts: true });
-    assert.deepEqual(calculateRecoupment(show, anchored(800_000), null, weekly, {}), live);
+    assert.deepEqual(calculateRecoupment(show, anchored(800_000), null, weekly, {}), dated);
+    const play = { ...show, type: 'play' };
+    assert.deepEqual(calculateRecoupment(play, anchored(800_000), null, weekly), calculateRecoupment(play, anchored(800_000), null, weekly, OFF));
     assert.notEqual(dated.recoupmentPctCentral, live.recoupmentPctCentral);
     // The anchor drives each week's cost: a higher one returns less.
     const pricier = calculateRecoupment(show, anchored(900_000), null, weekly, { datedCosts: true });
     assert.ok(pricier.recoupmentPctCentral < dated.recoupmentPctCentral);
   });
-  test('lifetime: run-average dated cost; default unchanged', () => {
+  test('lifetime: run-average dated cost; musical default on', () => {
     const long = { ...show, previewsStartDate: '2015-01-01', openingDate: '2015-02-01' };
     const all = { gross: 400_000_000, performances: 3000 };
-    const live = calculateLifetimeRecoupment(long, anchored(800_000), all);
+    const live = calculateLifetimeRecoupment(long, anchored(800_000), all, OFF);
     const dated = calculateLifetimeRecoupment(long, anchored(800_000), all, { datedCosts: true });
-    assert.deepEqual(calculateLifetimeRecoupment(long, anchored(800_000), all, {}), live);
+    assert.deepEqual(calculateLifetimeRecoupment(long, anchored(800_000), all, {}), dated);
     assert.ok(Number.isFinite(dated.recoupmentPctCentral));
     assert.notEqual(dated.recoupmentPctCentral, live.recoupmentPctCentral);
   });
@@ -87,13 +92,13 @@ describe('datedCosts (checker #3, shadow)', () => {
     const { weeklyRunningCost, ...noAnchor } = comm;
     assert.equal(weeklyRunningCost, 800_000);
     const strip = (r) => ({ ...r, warnings: r.warnings.filter((w) => !/No reported cost anchor/.test(w)) });
-    const live = calculateRecoupment(show, noAnchor, null, weekly);
+    const live = calculateRecoupment(show, noAnchor, null, weekly, OFF);
     const dated = calculateRecoupment(show, noAnchor, null, weekly, { datedCosts: true });
     assert.ok(dated.warnings.includes('No reported cost anchor (producer, SEC or trade): dated costs off, flat era deflator kept'));
     assert.deepEqual(strip(dated), live);
     const long = { ...show, previewsStartDate: '2013-01-15', openingDate: '2013-03-03' };
     const all = { gross: 400_000_000, performances: 3000 };
-    const liveL = calculateLifetimeRecoupment(long, noAnchor, all);
+    const liveL = calculateLifetimeRecoupment(long, noAnchor, all, OFF);
     assert.deepEqual(strip(calculateLifetimeRecoupment(long, noAnchor, all, { datedCosts: true })), liveL);
   });
 
@@ -101,7 +106,7 @@ describe('datedCosts (checker #3, shadow)', () => {
     const strip = (r) => ({ ...r, warnings: r.warnings.filter((w) => !/No reported cost anchor/.test(w)) });
     for (const costMethodology of ['reddit-standard', 'industry-estimate', undefined]) {
       const guess = { ...comm, weeklyRunningCost: 800_000, costMethodology };
-      const live = calculateRecoupment(show, guess, null, weekly);
+      const live = calculateRecoupment(show, guess, null, weekly, OFF);
       const dated = calculateRecoupment(show, guess, null, weekly, { datedCosts: true });
       assert.ok(dated.warnings.some((w) => /No reported cost anchor/.test(w)), String(costMethodology));
       assert.deepEqual(strip(dated), live);
@@ -138,5 +143,23 @@ describe('musicals-only variable-cost shapes (BRO-5091, shadow)', () => {
   test('the ramp adds nothing before week 26', () => {
     const at = iso(weeksFrom(first, 20));
     assert.equal(pct(show, { varBandMusicalsRamp: true, asOf: at }), pct(show, { asOf: at }));
+  });
+});
+
+describe('varBandMusicalsCited (BRO-5598, live for musicals)', () => {
+  const cited = { ...comm, costMethodology: 'trade-reported', weeklyRunningCostSource: 'Broadway Journal (Jan 9, 2024): "weekly running costs of $800,000" https://www.broadwayjournal.com/p/example' };
+  const pct = (s, c, opts) => calculateRecoupment(s, c, null, weekly, opts).recoupmentPctCentral;
+  test('a cited running cost on a musical takes the band by default', () => {
+    assert.ok(pct(show, cited) < pct(show, cited, { varBandMusicalsCited: false }));
+    assert.equal(pct(show, cited), pct(show, cited, { varBandMusicals: true, varBandMusicalsCited: false }));
+  });
+  test('an uncited, all-in or breakeven cost, and any play, skip it', () => {
+    assert.equal(pct(show, comm), pct(show, comm, { varBandMusicalsCited: false }));
+    for (const weeklyRunningCostBasis of ['all-in', 'breakeven']) {
+      const c = { ...cited, weeklyRunningCostBasis };
+      assert.equal(pct(show, c), pct(show, c, { varBandMusicalsCited: false }), weeklyRunningCostBasis);
+    }
+    const play = { ...show, type: 'play' };
+    assert.equal(pct(play, cited, { varBandMusicalsCited: true }), pct(play, cited));
   });
 });
