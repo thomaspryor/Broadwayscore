@@ -130,7 +130,7 @@ function buildUrlOwnershipIndex(reviewTextsDir, { force = false } = {}) {
     if (!stat.isDirectory()) continue;
     let files;
     try {
-      files = fs.readdirSync(dir).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json');
+      files = fs.readdirSync(dir).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json' && !f.startsWith('_'));
     } catch { continue; }
     for (const f of files) {
       let data;
@@ -209,7 +209,7 @@ function showDirHoldsUrl(showDir, url) {
   if (!key) return false;
   let files;
   try {
-    files = fs.readdirSync(showDir).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json');
+    files = fs.readdirSync(showDir).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json' && !f.startsWith('_'));
   } catch { return false; }
   for (const f of files) {
     try {
