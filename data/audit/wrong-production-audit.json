@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-18T11:36:07.336Z",
+  "timestamp": "2026-10-18T12:47:50.013Z",
   "stats": {
-    "totalReviews": 57410,
-    "alreadyFlagged": 21344,
+    "totalReviews": 57437,
+    "alreadyFlagged": 21345,
     "dateGuardCatches": 195,
-    "directorMismatch": 1952,
-    "tvFilmSignals": 1608,
-    "londonSignals": 2423,
-    "offBroadwaySignals": 520,
-    "yearMismatch": 157,
-    "noPublishDate": 5224
+    "directorMismatch": 1950,
+    "tvFilmSignals": 1607,
+    "londonSignals": 2433,
+    "offBroadwaySignals": 521,
+    "yearMismatch": 156,
+    "noPublishDate": 5235
   },
   "findings": [
     {
@@ -7785,20 +7785,6 @@
     },
     {
       "showId": "chicago-1996",
-      "file": "nydailynews--howard-kissel.json",
-      "score": 93,
-      "publishDate": "November 14, 1996",
-      "url": "https://www.nydailynews.com/2015/11/13/chicago-revival-is-a-class-act-1996-review/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bob fosse\" from chicago-1975"
-        }
-      ]
-    },
-    {
-      "showId": "chicago-1996",
       "file": "nytimes--ben-brantley.json",
       "score": 90,
       "publishDate": "November 15, 1996",
@@ -7827,20 +7813,6 @@
     },
     {
       "showId": "chicago-1996",
-      "file": "theatermania--zachary-stewart.json",
-      "score": 91,
-      "publishDate": "January 31, 2023",
-      "url": "https://www.theatermania.com/broadway/reviews/review-chicago-broadway-jinkx-monsoon_94821.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bob fosse\" from chicago-1975"
-        }
-      ]
-    },
-    {
-      "showId": "chicago-1996",
       "file": "time--richard-zoglin.json",
       "score": 89,
       "publishDate": "April 22, 2014",
@@ -7859,20 +7831,6 @@
       "score": null,
       "publishDate": "April 22, 2014",
       "url": "http://www.time.com/time/magazine/article/0,9171,985604,00.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bob fosse\" from chicago-1975"
-        }
-      ]
-    },
-    {
-      "showId": "chicago-1996",
-      "file": "variety--greg-evans.json",
-      "score": 91,
-      "publishDate": "November 23, 1996",
-      "url": "http://www.variety.com/review/VE1117432920.html?categoryid=33&cs=1&query=chicago+revival+1996",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -12964,7 +12922,7 @@
       "showId": "fawlty-towers-west-end-2024",
       "file": "city-am--adam-bloodworth.json",
       "score": 68,
-      "publishDate": null,
+      "publishDate": "2024-05-15",
       "url": "https://www.cityam.com/fawlty-towers-play-review-is-john-cleese-reboot-any-good/",
       "findings": [
         {
@@ -12999,20 +12957,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "fawlty-towers-west-end-2024",
-      "file": "london-box-office--emmie-newitt.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.londonboxoffice.co.uk/news/post/fawlty-towers-the-play-extends-2025",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -13064,20 +13008,6 @@
       "score": 55,
       "publishDate": "May 16th, 2024",
       "url": "https://www.timeout.com/london/theatre/fawlty-towers-review",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "fawlty-towers-west-end-2024",
-      "file": "variety--naman-ramachandran.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://variety.com/2024/theater/global/fawlty-towers-john-cleese-stage-play-racial-slurs-1235989568/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -17445,23 +17375,9 @@
     },
     {
       "showId": "harry-potter-2021",
-      "file": "telegraph--diana-snyder.json",
+      "file": "telegraph--diane-snyder.json",
       "score": 87,
       "publishDate": "2018-04-22T20:11:20-04:00",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/could-become-longest-running-broadway-play-harry-potter-cursed/",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2016 (2x) more than 2018 (1x). 2016 matches production: harry-potter-and-the-cursed-child-both-parts-west-end-2021"
-        }
-      ]
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "telegraph--diane-snyder.json",
-      "score": 88,
-      "publishDate": "2018-04-23",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/could-become-longest-running-broadway-play-harry-potter-cursed/",
       "findings": [
         {
@@ -29694,9 +29610,8 @@
     {
       "showId": "operation-mincemeat-2025",
       "file": "ew--shania-russell.json",
-      "score": 92,
-      "publishDate": "March 20, 2025",
-      "url": "https://ew.com/operation-mincemeat-broadway-review-2025",
+      "publishDate": "2025-03-20",
+      "url": "https://ew.com/operation-mincemeat-review-british-hit-delivers-broadway-11697974",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -31762,6 +31677,20 @@
       "score": 60,
       "publishDate": "2024-01-29",
       "url": "https://www.ft.com/content/a54582cc-baf2-44b4-b8fe-68b3d677e9a6",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john benjamin hickey\" from plaza-suite-2022"
+        }
+      ]
+    },
+    {
+      "showId": "plaza-suite-west-end-2024",
+      "file": "financialtimes--unknown.json",
+      "score": null,
+      "publishDate": "2024-01-29",
+      "url": "https://www.ft.com/content/a54582cc-baf2-44b4-b8fe-68b3d677e9a6?syn-25a6b1a6=1",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -45136,6 +45065,20 @@
     },
     {
       "showId": "the-producers-west-end-2025",
+      "file": "standard--nick-curtis.json",
+      "score": null,
+      "publishDate": "September 16th, 2025",
+      "url": "https://www.standard.co.uk/culture/theatre/the-producers-garrick-theatre-review-mel-brooks-b1247818.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
       "file": "the-jewish-chronicle--john-nathan.json",
       "score": 87,
       "publishDate": "2025-09-17",
@@ -51856,6 +51799,20 @@
     },
     {
       "showId": "a-christmas-carol-west-end-2023",
+      "file": "telegraph--claire-allfree.json",
+      "score": null,
+      "publishDate": "2023-11-23",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/christmas-carol-old-vic-christopher-ecclestons-jack-thorne/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2023",
       "file": "thestage--tom-wicker.json",
       "score": 82,
       "publishDate": "2023-11-23",
@@ -53733,6 +53690,19 @@
     },
     {
       "showId": "an-enemy-of-the-people-west-end-2024",
+      "file": "daily-mail--jason-chester.json",
+      "publishDate": "2024-02-21",
+      "url": "https://www.dailymail.com/tvshowbiz/article-13107921/Matt-Smiths-Enemy-People-panned-critics-praise-actors-passable-performance-condemn-clumsy-conservative-revival-Ibsens-classic-play-fine-supporting-cast-stop-falling-apart.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "an-enemy-of-the-people-west-end-2024",
       "file": "daily-mail--patrick-marmion.json",
       "score": 5,
       "publishDate": "2024-02-22",
@@ -53874,20 +53844,6 @@
       "score": 91,
       "publishDate": "2022-12-23",
       "url": "https://frontmezzjunkies.com/2022/12/23/juliet-the-new-broadway-musical/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "and-juliet-2022",
-      "file": "theatermania--hayley-levitt.json",
-      "score": 85,
-      "publishDate": "2022-11-17",
-      "url": "https://www.theatermania.com/broadway/news/review-and-juliet-musical-broadway_94560.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -56171,6 +56127,20 @@
       "score": 62,
       "publishDate": null,
       "url": "https://www.nytimes.com/2024/05/27/theater/bluets-royal-court-theater-ben-whishaw.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "bluets-west-end-2024",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": null,
+      "publishDate": "May 25th, 2024",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/bluets-royal-court-review-maggie-nelson/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -60141,6 +60111,20 @@
     },
     {
       "showId": "dugsi-dayz-west-end-2024",
+      "file": "partially-obstructed-view--view-my-complete.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://partially-obstructed-view.blogspot.com/2024/05/theatre-review-dugsi-dayz.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "dugsi-dayz-west-end-2024",
       "file": "telegraph--claire-allfree.json",
       "score": 78,
       "publishDate": "2024-05-05",
@@ -60229,6 +60213,20 @@
       "score": 63,
       "publishDate": "2024-07-24",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "echo-every-cold-hearted-oxygen-west-end-2024",
+      "file": "telegraph--dzifa-benson.json",
+      "score": 91,
+      "publishDate": "July 22nd, 2024",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/echo-royal-court-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -61633,6 +61631,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "fawlty-towers-west-end-2024",
+      "file": "daily-mail--unknown.json",
+      "score": 76,
+      "publishDate": "2024-05-16",
+      "url": "https://www.dailymail.com/tvshowbiz/article-13424715/Fawlty-Towers-Play-Review-Shamelessly-recycled-fine-reproduction-vintage-antique-time-stood-writes-PATRICK-MARMION.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -65445,6 +65457,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "high-society-west-end-2026",
+      "file": "london-theatre--marianka-swain.json",
+      "score": 88,
+      "publishDate": "June 4th, 2026",
+      "url": "https://www.londontheatre.co.uk/theatre-news/news/get-to-know-the-swellegant-cast-of-high-society-at-the-barbican",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -70752,6 +70778,19 @@
       ]
     },
     {
+      "showId": "maybe-happy-ending-2024",
+      "file": "njcom--unknown.json",
+      "publishDate": "2025-05-01",
+      "url": "https://www.nj.com/entertainment/2025/05/nj-nominees-at-2025-tonys-dead-outlaw-romeo-juliet-maybe-happy-ending-john-proctor-and-more.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"minetta lane\""
+        }
+      ]
+    },
+    {
       "showId": "mean-girls-2018",
       "file": "stagezine--david-nounou.json",
       "score": 85,
@@ -71216,6 +71255,20 @@
       "score": 77,
       "publishDate": "2024-07-03",
       "url": "https://www.londonboxoffice.co.uk/news/post/mnemonic-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "mnemonic-west-end-2024",
+      "file": "telegraph--nick-ferris.json",
+      "score": 73,
+      "publishDate": "July 3rd, 2024",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/mnemonic-nationals-olivier-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -72082,20 +72135,6 @@
       "score": null,
       "publishDate": null,
       "url": "https://www.radiotimes.com/going-out/tickets/next-to-normal-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
-        }
-      ]
-    },
-    {
-      "showId": "next-to-normal-west-end-2024",
-      "file": "the-spectator-uk--lloyd-evans.json",
-      "score": 43,
-      "publishDate": null,
-      "url": "https://www.spectator.co.uk/article/punishingly-dull-but-the-crowd-loved-it-next-to-normal-at-wyndhams-theatre-reviewed/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -75427,6 +75466,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2024",
+      "file": "metro-uk--kitty-chrisp.json",
+      "score": null,
+      "publishDate": "2024-05-24",
+      "url": "https://metro.co.uk/2024/05/24/tom-holland-gets-cosy-zendaya-mixed-romeo-juliet-reviews-20902553/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -83904,6 +83957,20 @@
     },
     {
       "showId": "the-other-place-west-end-2024",
+      "file": "financialtimes--unknown.json",
+      "score": null,
+      "publishDate": "2024-10-10",
+      "url": "https://www.ft.com/content/446591eb-2315-46cc-b3d0-0e6c47a20472?syn-25a6b1a6=1",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-other-place-west-end-2024",
       "file": "guardian--arifa-akbar.json",
       "score": 80,
       "publishDate": "October 9th, 2024",
@@ -84795,6 +84862,19 @@
       "showId": "the-real-thing-west-end-2024",
       "file": "telegraph--dominic-cavendish.json",
       "score": 62,
+      "publishDate": "2024-09-04",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-real-thing-old-vic-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-real-thing-west-end-2024",
+      "file": "telegraph--unknown.json",
       "publishDate": "2024-09-04",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-real-thing-old-vic-review/",
       "findings": [
@@ -87681,6 +87761,20 @@
       "score": null,
       "publishDate": "2024-04-05",
       "url": "https://www.londontheatre1.com/reviews/underdog-the-other-other-bronte-at-the-dorfman-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "underdog-the-other-other-bronte-west-end-2024",
+      "file": "partially-obstructed-view--view-my-complete.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://partially-obstructed-view.blogspot.com/2024/04/theatre-review-underdog-other-other.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
