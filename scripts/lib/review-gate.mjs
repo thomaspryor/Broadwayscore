@@ -1072,9 +1072,10 @@ const DATA_ONLY_HEADS = new Set(['echo', 'printf', 'grep', 'egrep', 'fgrep', 'ca
 
 function looksLikeUnparsedMergeIngress(tokens) {
   // tokenize() does not parse substitutions, so `echo $(git merge x)` keeps
-  // the live command inside this segment: only exempt when none is present.
+  // the live command inside this segment, and a single `&` is not a segment
+  // split either: only exempt when neither is present (redirects like 2>&1 ok).
   const head = withoutEnvPrefix(tokens)[0];
-  if (head !== undefined && DATA_ONLY_HEADS.has(basename(head)) && !tokens.some(t => /\$\(|`|<\(|>\(/.test(t))) return false;
+  if (head !== undefined && DATA_ONLY_HEADS.has(basename(head)) && !tokens.some(t => /\$\(|`|<\(|>\(/.test(t) || (t.includes('&') && !/^(\d*>&\d*-?|&>>?)$/.test(t)))) return false;
   // A substitution opener glued to a word (`git, $(git) hides the command name.
   tokens = tokens.map(t => t.replace(/^(\$\(|`|<\(|>\()+/, ''));
   for (let i = 0; i < tokens.length; i++) {

@@ -165,6 +165,7 @@ test('parse: BRO-2905 - a wrapper name passed as DATA to a read-only command is 
     "printf '%s\\n' 'scripts/merge-worktree-to-main.sh'",
     'grep -n merge-worktree-to-main.sh notes.txt',
     'echo git merge test',
+    'grep -n merge-worktree-to-main.sh notes.txt 2>&1',
   ]) {
     const ingress = parseMergeIngress(cmd, { currentBranch: 'main' });
     assert.equal(ingress.isMerge, false, cmd);
@@ -178,6 +179,9 @@ test('parse: BRO-2905 - data-only heads still fail closed when they execute some
     'cat <( git merge x)',
     'echo `git merge x`',
     'rg --pre scripts/merge-worktree-to-main.sh pat',
+    'echo x & git merge feat',
+    'test -f a & git merge feat',
+    'head f & bash scripts/merge-worktree-to-main.sh feat',
   ]) {
     const ingress = parseMergeIngress(cmd, { currentBranch: 'main' });
     assert.equal(ingress.unparsedFailClosed, true, cmd);
