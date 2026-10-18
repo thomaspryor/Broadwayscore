@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-18T17:44:21.292Z",
+  "generatedAt": "2026-10-18T18:11:40.001Z",
   "date": "2026-10-18",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 258715,
+  "entryCount": 261377,
   "shows": [
     {
       "showId": "a-ghost-in-your-ear-off-broadway-2026",
@@ -2297,13 +2297,13 @@
     },
     {
       "showId": "stuffed-off-west-end-2026",
-      "reviewCount": 3,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 661497,
+        "scored-to-rebuilt": 605236,
         "rebuilt-to-deployed": 235865913
       },
       "reviews_over_15min": 0,
