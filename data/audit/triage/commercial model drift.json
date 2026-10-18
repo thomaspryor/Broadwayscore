@@ -1,15 +1,15 @@
 {
   "system": "commercial model drift",
-  "status": "warn",
-  "lastChecked": "2026-10-17T06:59:09.337Z",
+  "status": "pass",
+  "lastChecked": "2026-10-18T07:16:48.711Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Commercial model drift",
-      "status": "warn",
-      "message": "ai-estimated tier count up 24 (108 → 132)"
+      "status": "pass",
+      "message": "2 modelDesignationFlag contradiction(s), 118 ai-estimated shows (stable vs prior week)"
     }
   ]
 }

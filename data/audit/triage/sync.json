@@ -1,7 +1,7 @@
 {
   "system": "sync",
-  "status": "pass",
-  "lastChecked": "2026-10-17T06:59:09.335Z",
+  "status": "warn",
+  "lastChecked": "2026-10-18T07:16:48.708Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Sync: review-texts vs reviews.json",
       "status": "pass",
-      "message": "57240 files, 29470 reviews (surplus: 27770)"
+      "message": "57504 files, 29599 reviews (surplus: 27905)"
     },
     {
       "name": "Sync: open show coverage",
@@ -23,18 +23,18 @@
     },
     {
       "name": "Sync: cast coverage",
-      "status": "pass",
-      "message": "30 active Broadway shows all have cast data"
+      "status": "warn",
+      "message": "1 missing file: Downstate"
     },
     {
       "name": "Sync: baseline drift",
       "status": "pass",
-      "message": "3759 shows, 228 open, 29470 reviews (all at or above baseline)"
+      "message": "3764 shows, 231 open, 29599 reviews (all at or above baseline)"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 10/11/2026 (6d ago)"
+      "message": "weekEnding 10/11/2026 (7d ago)"
     }
   ]
 }
