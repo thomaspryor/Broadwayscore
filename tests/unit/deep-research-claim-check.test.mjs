@@ -168,3 +168,16 @@ test('another show in the same sentence, or a hedged recoupment, is not confirme
   assert.equal(ok.verdict, 'confirmed');
   assert.match(ok.quote, /recouped its investment/);
 });
+
+test('a year in brackets picks that production, and a year no production has matches nothing (the Proof 2000 case)', () => {
+  const { showForClaim } = require('../../scripts/verify-deep-research-claims.js');
+  const shows = [
+    { id: 'proof-2026', slug: 'proof', title: 'Proof', openingDate: '2026-04-16', status: 'closed' },
+    { id: 'proof-2000', slug: 'proof-2000', title: 'Proof', openingDate: '2000-10-24', status: 'closed' },
+    { id: '1984-2017', slug: '1984', title: '1984', openingDate: '2017-06-22', status: 'closed' },
+  ];
+  assert.equal(showForClaim('Proof (2000 Broadway production)', shows).slug, 'proof-2000');
+  assert.equal(showForClaim('Proof', shows).slug, 'proof');
+  assert.equal(showForClaim('Proof (1991 production)', shows), null);
+  assert.equal(showForClaim('1984', shows).slug, '1984');
+});

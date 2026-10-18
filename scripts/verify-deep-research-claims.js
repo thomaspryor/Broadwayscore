@@ -15,12 +15,23 @@ const path = require('path');
 const zlib = require('zlib');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { classifyClaim, claimsLoss, normalizeClaim } = require('./lib/deep-research-claim-check');
-const { resolveShow } = require('./lib/resolve-show');
+const { resolveShow, resolveShowMatches } = require('./lib/resolve-show');
 
 const FIELD_ON_RECORD = { capitalization: 'capitalization', 'weekly running cost': 'weeklyRunningCost' };
 
 /** The commercial.json record for a show: keyed by slug (feedback_commercial_slug_keys), with old id keys as a fallback. */
 const recordFor = (commercial, show) => (show && (commercial[show.slug] || commercial[show.id])) || null;
+
+/**
+ * The show a claim names. A year in brackets ("Proof (2000 Broadway production)") picks the production that
+ * opened that year, and none opening that year is no match: a recoupment from 2000 must never land on the 2026 revival.
+ */
+function showForClaim(name, shows) {
+  const year = (String(name).match(/\([^)]*\b((?:19|20)\d{2})\b[^)]*\)/) || [])[1];
+  if (!year) return resolveShow(name, shows);
+  const sameYear = resolveShowMatches(name, shows).filter(s => String(s.openingDate || s.previewsStartDate || '').startsWith(year));
+  return sameYear.length ? resolveShow(name, sameYear) : null;
+}
 
 /** How the claim compares with what the live record already says. */
 function recordStatus(claim, record) {
@@ -57,7 +68,7 @@ async function main() {
   const results = [];
   for (const raw of claims) {
     const claim = normalizeClaim(raw);
-    const show = typeof claim.show === 'string' ? resolveShow(claim.show, shows) : null;
+    const show = typeof claim.show === 'string' ? showForClaim(claim.show, shows) : null;
     let page = null;
     if (claim.source_url && show) {
       if (!pages.has(claim.source_url)) {
@@ -77,4 +88,4 @@ async function main() {
 }
 
 if (require.main === module) main().catch(error => { console.error(error.message); process.exitCode = 1; });
-module.exports = { recordStatus, recordFor };
+module.exports = { recordStatus, recordFor, showForClaim };
