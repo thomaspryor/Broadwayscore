@@ -3328,6 +3328,10 @@ on:
       # colocated-tested) is under scripts/lib/**; this thin CLI wrapper is
       # path-listed so a solo edit triggers CI.
       - 'scripts/audit-get-route-dispatch.js'
+      # BRO-5293: always() commit-after-validate audit. Logic is under
+      # scripts/lib/** (colocated-tested); this thin advisory CLI wrapper is
+      # path-listed so a solo edit triggers CI.
+      - 'scripts/audit-always-commit-after-validate.js'
       # BRO-4313: raw-mean-of-assignedScore audit CLI (logic in
       # scripts/lib/raw-mean-scores.js, colocated-tested); path-listed so a solo
       # edit triggers CI.
