@@ -52,6 +52,17 @@ test('the live smoke uses real HTML extractors and persists ensemble fields thro
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
 
+test('the live smoke names the reason when discovery would drop the archived URL (first live run: silent admitted:0)', async () => {
+  const { runLiveSmoke } = require('../../scripts/lib/opening-night-lane/live-smoke.js');
+  const show = { id: 'mystic-pizza-regional-2025', title: 'Mystic Pizza', openingDate: '2025-02-02' };
+  const review = { showId: show.id, outletId: 'theatermania', url: 'https://www.theatermania.com/news/review-mystic-pizza-comes-with-lots-of-tasty-toppings-at-paper-mill-playhouse_1762630/' };
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4835-reject-'));
+  try {
+    await assert.rejects(runLiveSmoke({ show, review, workDir: dir, fetchPorts: {}, scorer: {} }), /discovery would reject .*non-review-path/);
+    assert.deepEqual(fs.readdirSync(dir), [], 'nothing written before the preflight passes');
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
 test('a failed persistence leaves no scored ledger event, so a restart can recover', async () => {
   const s = sandbox();
   try {
