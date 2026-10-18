@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-18T15:04:48.510Z",
+  "timestamp": "2026-10-18T15:17:19.953Z",
   "stats": {
     "totalReviews": 57485,
     "alreadyFlagged": 21356,
     "dateGuardCatches": 196,
     "directorMismatch": 1951,
-    "tvFilmSignals": 1609,
+    "tvFilmSignals": 1610,
     "londonSignals": 2434,
     "offBroadwaySignals": 523,
     "yearMismatch": 156,
-    "noPublishDate": 5227
+    "noPublishDate": 5226
   },
   "findings": [
     {
@@ -2952,6 +2952,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "angels-bone-west-end-2026",
+      "file": "british-theatre--vera-liber.json",
+      "publishDate": "2026-10-18",
+      "url": "https://www.britishtheatreguide.info/reviews/angel-s-bones-london-coliseum-26131",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },

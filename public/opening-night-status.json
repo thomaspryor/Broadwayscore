@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-18T15:04:58.760Z",
+  "generatedAt": "2026-10-18T15:17:32.332Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -2162,25 +2162,24 @@
       "status": "open",
       "slug": "angels-bone-west-end",
       "thumbnail": "/images/shows/angels-bone-west-end-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": 50,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 1,
+      "siteScore": 52.94,
+      "liveScore": 53,
+      "scoreDrift": 0.060000000000002274,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 4,
+      "total": 5,
       "t1": 0,
-      "t2": 1,
+      "t2": 2,
       "t3": 3,
       "positive": 0,
-      "mixed": 2,
+      "mixed": 3,
       "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "4/8 total",
+          "5/8 total",
           "T1:0/3",
-          "T2:1/2",
           "hi-conf:4/6"
         ],
         "highConfidence": 4,
@@ -2313,6 +2312,18 @@
           "t3": 3,
           "p": 0,
           "m": 2,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-18T15:17:32.332Z",
+          "rc": 5,
+          "s": 52.94,
+          "t1": 0,
+          "t2": 2,
+          "t3": 3,
+          "p": 0,
+          "m": 3,
           "n": 2,
           "bc": "waiting"
         }
