@@ -63,6 +63,8 @@ const COMMERCIAL_ALIASES = {
   // A typo in nine of the 2025-26 posts.
   'two stranger (carry a cake across new york)': 'two-strangers',
   'giant musical': 'giant',
+  "sondheim's old friends": 'stephen-sondheims-old-friends-2025',
+  'a wonderful world': 'a-wonderful-world-the-louis-armstrong-musical-2024',
 };
 
 // ---------------------------------------------------------------------------
@@ -114,8 +116,9 @@ function getCommercialPath() {
 
 const REDDIT_USER = 'Boring_Waltz_9545';
 const ARCHIVE_SEARCH_URL = 'https://arctic-shift.photon-reddit.com/api/posts/search';
-const LOOKBACK_DAYS = 365;
-const ARCHIVE_MAX_PAGES = BACKFILL ? 30 : 5;
+// Read his whole archive every run (BRO-5600): a 365-day window left musicals
+// that closed earlier without his weekly cost. ~134 grosses posts since 2024-04.
+const ARCHIVE_MAX_PAGES = 30;
 // The alert window: a post this recent with no anchor landing means the parse broke.
 const ALERT_WINDOW_DAYS = 8;
 
@@ -145,11 +148,9 @@ async function fetchArchivePage(params) {
 
 async function fetchFromArchive() {
   const posts = [];
-  const after = Math.floor(Date.now() / 1000) - LOOKBACK_DAYS * 86400;
   let before = null;
   for (let page = 1; page <= ARCHIVE_MAX_PAGES; page++) {
     const params = { author: REDDIT_USER, subreddit: 'Broadway', limit: '100', sort: 'desc' };
-    if (!BACKFILL) params.after = String(after);
     if (before) params.before = String(before);
     const batch = await fetchArchivePage(params);
     console.log(`  Archive page ${page}: ${batch.length} posts`);

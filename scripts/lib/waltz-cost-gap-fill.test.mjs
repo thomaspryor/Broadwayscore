@@ -194,3 +194,12 @@ test('the patch flags an estimate, names the post, stamps the record, and keeps 
   const patched = { designation: 'TBD', ...rec, ...patch };
   assert.deepEqual(commercialRecordErrors('some-show', patched, {}), []);
 });
+
+// BRO-5600: the scraper must read his whole archive, not a rolling window.
+import { readFileSync as _readScraper } from 'node:fs';
+test('scraper reads the whole Waltz archive (no date window) and aliases the two odd titles', () => {
+  const src = _readScraper(new URL('../scrape-boring-waltz-costs.js', import.meta.url), 'utf8');
+  assert.ok(!/LOOKBACK_DAYS/.test(src), 'rolling lookback window must not return');
+  assert.ok(!/params\.after\s*=/.test(src), 'archive query must not be date-limited');
+  assert.ok(src.includes("'a wonderful world'") && src.includes('sondheim\'s old friends'));
+});
