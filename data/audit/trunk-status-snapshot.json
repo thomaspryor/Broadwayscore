@@ -1,30 +1,50 @@
 {
-  "generatedAt": "2026-10-17T07:11:30.188Z",
+  "generatedAt": "2026-10-18T07:33:49.712Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "a7fda4a84a18af442b344d2b55168bdd22b6e417",
-  "state": "GREEN",
-  "consecutiveFailures": 0,
-  "consecutiveSuccesses": 67,
-  "greenSince": "2026-10-16T08:07:00Z",
-  "greenForHours": 23.075052222222222,
+  "latestRunHeadSha": "1d08725a8262737000c94470794284b6e9eb82c5",
+  "state": "RED",
+  "consecutiveFailures": 2,
+  "consecutiveSuccesses": 0,
+  "greenSince": null,
+  "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": null,
-  "redForHours": null,
+  "redSince": "2026-10-18T06:52:08Z",
+  "redForHours": 0.69492,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-10-17T06:44:18Z",
-  "latestFailedRunId": null,
-  "latestFailedRunUrl": null,
+  "lastSuccessAt": "2026-10-18T06:34:50Z",
+  "latestFailedRunId": "39105837664",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39105837664",
   "decidedRuns": 100,
   "verdictLag": {
-    "verdictSha": "a7fda4a84a18af442b344d2b55168bdd22b6e417",
-    "verdictAt": "2026-10-17T06:44:18Z",
-    "verdictAgeHours": 0.45338555555555554,
+    "verdictSha": "1d08725a8262737000c94470794284b6e9eb82c5",
+    "verdictAt": "2026-10-18T06:56:46Z",
+    "verdictAgeHours": 0.6176977777777778,
     "newerHeads": 0,
     "runsInFlight": 0,
     "lagging": false
   },
-  "failingJobs": [],
-  "failingPaths": [],
-  "topFailingJob": null
+  "failingJobs": [
+    {
+      "name": "Unit Tests",
+      "steps": [
+        "Run unit tests (no-data-dependency)"
+      ]
+    },
+    {
+      "name": "Test Summary",
+      "steps": [
+        "Check results"
+      ]
+    }
+  ],
+  "failingPaths": [
+    {
+      "path": "scripts/tests/global-instructions.test.mjs",
+      "job": "Unit Tests",
+      "step": "Run unit tests (no-data-dependency)",
+      "evidence": "not ok 2775 - .claude/CLOUD.md stays under its byte cap"
+    }
+  ],
+  "topFailingJob": "Unit Tests"
 }
