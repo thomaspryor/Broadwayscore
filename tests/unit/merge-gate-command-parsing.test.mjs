@@ -160,28 +160,26 @@ test('parse: "sudo /usr/bin/git merge <branch>" (absolute-path git, not a bare "
   assert.equal(ingress.unparsedFailClosed, true);
 });
 
-test('parse: known documented trade-off — a quoted DATA argument that happens to equal the wrapper path also fails closed', () => {
-  // printf's format-string argument here is DATA, not an invocation — but
-  // tokenize() drops which tokens were quoted before this function ever sees
-  // them, and a quoted COMMAND name is legal shell that must still be caught
-  // (see the comment above looksLikeUnparsedMergeIngress's call site). This
-  // pins the accepted cost so it reads as a documented decision, not an
-  // overlooked regression, per the adversarial review that raised it.
-  const ingress = parseMergeIngress("printf '%s\\n' 'scripts/merge-worktree-to-main.sh'", { currentBranch: 'main' });
-  assert.equal(ingress.isMerge, true);
-  assert.equal(ingress.unparsedFailClosed, true);
+test('parse: BRO-2905 - a wrapper name passed as DATA to a read-only command is not a merge', () => {
+  for (const cmd of [
+    "printf '%s\\n' 'scripts/merge-worktree-to-main.sh'",
+    'grep -n merge-worktree-to-main.sh notes.txt',
+    'echo git merge test',
+  ]) {
+    const ingress = parseMergeIngress(cmd, { currentBranch: 'main' });
+    assert.equal(ingress.isMerge, false, cmd);
+    assert.equal(ingress.unparsedFailClosed, false, cmd);
+  }
 });
 
-test('parse: known documented trade-off — an UNQUOTED echo of the literal words "git" then "merge" fails closed too', () => {
-  // No real merge happens here — this is the deliberate, safe-direction cost
-  // of the token-level catch-all: it cannot distinguish "these two words
-  // appear in an echoed status line" from "this file is a wrapper this
-  // parser doesn't recognise." Failing closed (recoverable via the hook's
-  // NO-SHIP-CHECK/REVIEW_GATE_DISABLE escape hatches) is the intentional
-  // trade-off per the issue's non-negotiable; a QUOTED echo argument (the
-  // realistic case — see the commit-message test above) is unaffected,
-  // because tokenize() keeps a quoted string as one token.
-  const ingress = parseMergeIngress('echo git merge test', { currentBranch: 'main' });
-  assert.equal(ingress.isMerge, true);
-  assert.equal(ingress.unparsedFailClosed, true);
+test('parse: BRO-2905 - data-only heads still fail closed when they execute something', () => {
+  for (const cmd of [
+    'echo $(scripts/merge-worktree-to-main.sh feat)',
+    'cat <( git merge x)',
+    'echo `git merge x`',
+    'rg --pre scripts/merge-worktree-to-main.sh pat',
+  ]) {
+    const ingress = parseMergeIngress(cmd, { currentBranch: 'main' });
+    assert.equal(ingress.unparsedFailClosed, true, cmd);
+  }
 });

@@ -1064,7 +1064,19 @@ function basename(p) {
 // `strace -f`, a future coreutil), or `git` appearing anywhere ahead of a
 // `merge` subcommand. This is the BRO-2436 non-negotiable: an unrecognised
 // shape must not read as "not a merge".
+// BRO-2905: commands that only READ their arguments as data. A wrapper name
+// quoted into one of these (`printf '%s\n' 'scripts/merge-…sh'`, `grep -n
+// merge-…sh file`) is not an invocation. `rg` is excluded on purpose
+// (`--pre CMD` executes CMD); sudo/env/xargs/find/bash stay caught.
+const DATA_ONLY_HEADS = new Set(['echo', 'printf', 'grep', 'egrep', 'fgrep', 'cat', 'head', 'tail', 'ls', 'wc', 'diff', 'stat', 'test', '[', 'basename', 'dirname', 'realpath', 'readlink']);
+
 function looksLikeUnparsedMergeIngress(tokens) {
+  // tokenize() does not parse substitutions, so `echo $(git merge x)` keeps
+  // the live command inside this segment: only exempt when none is present.
+  const head = withoutEnvPrefix(tokens)[0];
+  if (head !== undefined && DATA_ONLY_HEADS.has(basename(head)) && !tokens.some(t => /\$\(|`|<\(|>\(/.test(t))) return false;
+  // A substitution opener glued to a word (`git, $(git) hides the command name.
+  tokens = tokens.map(t => t.replace(/^(\$\(|`|<\(|>\()+/, ''));
   for (let i = 0; i < tokens.length; i++) {
     if (basename(tokens[i]) === MERGE_WRAPPER_BASENAME) return true;
     // basename(), not exact equality — `sudo /usr/bin/git merge feat` is a
