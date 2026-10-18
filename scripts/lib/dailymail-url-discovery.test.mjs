@@ -73,3 +73,17 @@ test('parseDayArchive + isCandidatePath keep theatre reviews and drop wires/film
   assert.equal(links.length, 3);
   assert.deepEqual(links.filter(L.isCandidatePath), ['/tvshowbiz/article-16051459/GEORGINA-BROWN-Roger-Allam-cuckold-comedy-class.html']);
 });
+
+test('one stock phrase shared with the lead review does not move firstMatch to the top (review finding)', () => {
+  const paras = ['Rating: Five stars', 'It is one of the best of the year, a lead review about a wholly different play with nothing in common.', ...BUNDLED.slice(2)];
+  const m = L.matchReview(REVIEW + ' Truly one of the best of the', paras);
+  assert.equal(m.firstMatch, 7);
+  assert.equal(L.parseSectionRating(paras, m.firstMatch).stars, 3);
+});
+
+test('the rating lookback stops at the previous review\'s body (review finding)', () => {
+  const paras = ['Rating: Four stars', 'Body of review B, long enough to be a real paragraph of criticism and clearly not a heading line at all.', 'Les Misérables / Sondheim Theatre', ...BUNDLED.slice(7)];
+  const m = L.matchReview(REVIEW, paras);
+  assert.equal(m.firstMatch, 3);
+  assert.equal(L.parseSectionRating(paras, m.firstMatch), null);
+});

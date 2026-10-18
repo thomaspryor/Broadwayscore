@@ -81,12 +81,16 @@ function matchReview(fullText, paras) {
   let lastMatch = -1;
   paras.forEach((p, k) => {
     const w = normWords(p);
-    let hit = false;
+    const total = Math.max(0, w.length - SHINGLE + 1);
+    let hits = 0;
     for (let i = 0; i + SHINGLE <= w.length; i++) {
       const g = w.slice(i, i + SHINGLE).join(' ');
-      if (want.has(g)) { found.add(g); hit = true; }
+      if (want.has(g)) { found.add(g); hits++; }
     }
-    if (hit) {
+    // A paragraph only anchors the span when it is mostly the review's text.
+    // One stock phrase ("one of the best of the") shared with the lead review
+    // must not drag firstMatch up to paragraph 1 and its rating with it.
+    if (hits >= 3 || (total && hits / total >= 0.5)) {
       if (firstMatch < 0) firstMatch = k;
       lastMatch = k;
     }
@@ -121,6 +125,9 @@ function parseSectionRating(paras, firstMatch) {
   for (let k = firstMatch - 1; k >= Math.max(0, firstMatch - 4); k--) {
     const stars = parseRatingLine(paras[k]);
     if (stars) return { stars, line: paras[k] };
+    // A body paragraph means we have walked back into the PREVIOUS review:
+    // any rating above it is that review's, not this one's.
+    if (String(paras[k] || '').length > 100) break;
   }
   // Some lead reviews open with the rating as the first body paragraph.
   const own = parseRatingLine(paras[firstMatch]);
@@ -146,7 +153,9 @@ function titleNamesShow(pageTitle, showTitle) {
  * depth alone (> 4 paragraphs in) also means secondary.
  */
 function classifyPlacement(paras, firstMatch, pageTitle, showTitle) {
-  if (pageTitle && showTitle && titleNamesShow(pageTitle, showTitle)) return 'lead';
+  // Title naming the show counts only near the top: bundle headlines can name
+  // several shows, and one-word titles (Cats, Company) turn up by chance.
+  if (firstMatch <= 6 && pageTitle && showTitle && titleNamesShow(pageTitle, showTitle)) return 'lead';
   if (firstMatch > 4) return 'secondary';
   for (let k = 0; k < Math.max(0, firstMatch - 2); k++) {
     if (parseRatingLine(paras[k]) || /^verdict\s*:/i.test(paras[k] || '')) return 'secondary';
