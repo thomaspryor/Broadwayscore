@@ -87,3 +87,7 @@ test('the rating lookback stops at the previous review\'s body (review finding)'
   assert.equal(m.firstMatch, 3);
   assert.equal(L.parseSectionRating(paras, m.firstMatch), null);
 });
+
+test('normWords folds diacritics instead of shredding the word', () => {
+  assert.deepEqual(L.normWords('Les Misérables'), ['les', 'miserables']);
+});
