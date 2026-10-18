@@ -22,6 +22,9 @@ test('a Did Not Recoup show carries our best guess as a marked Likely line (owne
   // Order: ex-credit, then V2, then the original figure; a malformed tuple is skipped.
   assert.equal(likelyLossLine({ ...dnr, modelReturnedExCreditPct: [1, 2], modelRecoupmentPctV2: [20, 45, 70], modelRecoupmentPct: [0, 5, 10] }), 'Likely: Fizzle');
   assert.equal(likelyLossLine({ ...dnr, modelRecoupmentPct: [0, 5, 10] }), 'Likely: Flop');
+  // The record's own estimate comes first, as for the Fizzle/Flop split.
+  assert.equal(likelyLossLine({ ...dnr, analystRecoupPct: [40, 50], modelReturnedExCreditPct: [0, 12, 30] }), 'Likely: Fizzle');
+  assert.equal(likelyLossLine({ ...dnr, estimatedRecoupmentPct: 5 }), 'Likely: Flop');
   // No reading, no guess.
   assert.equal(likelyLossLine(dnr), null);
   assert.equal(likelyLossLine(null), null);

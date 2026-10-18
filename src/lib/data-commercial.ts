@@ -126,7 +126,8 @@ const commercial: CommercialFile = (() => {
     const guarded = applyModelDisplayGuard(data, showBySlug.get(slug), now);
     const rr = reportedReturn(data, showBySlug.get(slug));
     // From the unguarded record: the guard can hide the bar, and the best guess still stands (BRO-5647).
-    const likelyLoss = likelyLossLine(data);
+    // A reported return says what came back, so no guess beside it.
+    const likelyLoss = rr ? null : likelyLossLine(data);
     shows[slug] = { ...guarded, ...(rr ? { reportedReturn: rr } : {}), ...(likelyLoss ? { likelyLoss } : {}) };
   }
   return { ...file, shows };
