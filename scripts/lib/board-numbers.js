@@ -26,7 +26,6 @@ const { landedPerLane } = require('./codex-runner.js');
 const { isAutofixFiledIssue } = require('./autofix-filed-marker.js');
 const { isAwaitingOwner } = require('./owner-approval-channel.js');
 const cardDedupe = require('./card-dedupe.js');
-const { isAutomationParked } = require('./headless-dispatchability.js');
 
 const TEAM_KEY = 'BRO';
 const PRIORITY_LABELS = [[1, 'Urgent'], [2, 'High'], [3, 'Medium'], [4, 'Low'], [0, 'No priority']];
@@ -93,29 +92,28 @@ async function fetchStuckCards({ graphql, now = new Date(), teamKey = TEAM_KEY, 
   return { count, truncated: true };
 }
 
-const PARKED_QUERY = `query ParkedBacklog($filter: IssueFilter, $after: String) {
-  issues(filter: $filter, first: 250, after: $after, includeArchived: false) {
-    pageInfo { hasNextPage endCursor }
-    nodes { description }
-  }
-}`;
-const PARKED_LINE_RE = /^\s*PARKED\s*:/im;
-
 /**
- * BRO-5626: Backlog cards a session or alert parked ("PARKED:" line) and nothing has picked up.
- * The cloud unpark pass (linear-promote-parked.js) drains the technical ones; this count makes
- * the rest visible every morning. -> { count, truncated }
+ * Parked cards (BRO-5626): open Backlog cards with a PARKED line. The cloud picker never takes
+ * them, and the daily unpark drain (scripts/linear-unpark-drain.js) moves only the takeable ones
+ * with a safe VERIFY, so what is left waits on a real block or on someone writing a VERIFY.
+ * Owner-waiting cards are left out: "Waiting on you" counts them.
  */
-async function fetchParkedBacklog({ graphql, teamKey = TEAM_KEY, graphqlOpts = GRAPHQL_OPTS } = {}) {
-  const filter = { team: { key: { eq: teamKey } }, state: { type: { eq: 'backlog' } } };
+async function fetchParkedCards({ graphql, teamKey = TEAM_KEY, graphqlOpts = GRAPHQL_OPTS } = {}) {
+  const { PARKED_SENTINEL_RE, isAutomationParked } = require('./headless-dispatchability.js');
+  const { hasPersonParkHold } = require('./cloud-worker-pick.js');
+  // Owner holds count as waiting on you and machine parks age into the picker, so neither is "never picked".
+  const neverPicked = (n) => {
+    const desc = n.description || '';
+    return PARKED_SENTINEL_RE.test(desc) && !isAwaitingOwner(n) && !isAutomationParked(desc) && !hasPersonParkHold(desc);
+  };
+  const filter = { team: { key: { eq: teamKey } }, state: { type: { eq: 'backlog' } }, description: { contains: 'PARKED' } };
   let count = 0;
   let after = null;
   for (let page = 0; page < MAX_PAGES; page++) {
-    const data = await graphql(PARKED_QUERY, { filter, after }, graphqlOpts);
+    const data = await graphql(STUCK_QUERY, { filter, after }, graphqlOpts);
     const conn = data && data.issues;
-    if (!conn || !Array.isArray(conn.nodes)) throw new Error('Linear returned no issues connection for the parked-backlog count');
-    // Machine-filed parks are excluded: the picker takes those on its own after 3 days.
-    count += conn.nodes.filter((n) => PARKED_LINE_RE.test(n.description || '') && !isAutomationParked(n.description)).length;
+    if (!conn || !Array.isArray(conn.nodes)) throw new Error('Linear returned no issues connection for the parked-card count');
+    count += conn.nodes.filter(neverPicked).length;
     if (!conn.pageInfo || !conn.pageInfo.hasNextPage) return { count, truncated: false };
     after = conn.pageInfo.endCursor;
   }
@@ -202,7 +200,7 @@ function readLanded({ cwd = process.cwd(), exec = execFileSync, nowMs = Date.now
 }
 
 /** Every live read, each fail-soft on its own: a missing piece renders "n/a", never blocks the digest. */
-async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLandedFn = readLanded, fetchInflow = fetchInflowCounts, fetchOpen = fetchOpenByPriority, fetchStuck = fetchStuckCards, fetchBySource = fetchInflowBySource, fetchParked = fetchParkedBacklog } = {}) {
+async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLandedFn = readLanded, fetchInflow = fetchInflowCounts, fetchOpen = fetchOpenByPriority, fetchStuck = fetchStuckCards, fetchBySource = fetchInflowBySource, fetchParked = fetchParkedCards } = {}) {
   const soft = async (fn) => { try { return await fn(); } catch (err) { return { error: String(err && err.message || err).slice(0, 120) }; } };
   // Sequential on purpose: backlog-inflow-ratio.js walks one at a time because of Linear rate limits.
   const open = await soft(() => fetchOpen({ graphql }));
@@ -251,9 +249,8 @@ function buildBoardNumbers({ data = {}, waiting = null, stuck = null, technicalI
     stuckCards: ok(data.stuckCards) ? num(data.stuckCards.count) : null,
     stuckCardsFloor: ok(data.stuckCards) && !!data.stuckCards.truncated,
     technicalInReview: num(technicalInReview),
-    bySource: ok(data.bySource) ? data.bySource : null,
     parked: ok(data.parked) ? num(data.parked.count) : null,
-    parkedFloor: ok(data.parked) && !!data.parked.truncated,
+    bySource: ok(data.bySource) ? data.bySource : null,
     lanes: { d1: data.landed1 || null, d7: data.landed7 || null },
     floors,
   };
@@ -299,5 +296,5 @@ function renderBoardNumbersHtml(m, esc = (s) => String(s)) {
 }
 
 module.exports = {
-  fetchParkedBacklog, fetchOpenByPriority, fetchStuckCards, fetchInflowBySource, summarizeInflowBySource, readLanded, fetchBoardNumbersData, buildBoardNumbers, renderBoardNumbersLines, renderBoardNumbersHtml, PRIORITY_LABELS,
+  fetchOpenByPriority, fetchStuckCards, fetchParkedCards, fetchInflowBySource, summarizeInflowBySource, readLanded, fetchBoardNumbersData, buildBoardNumbers, renderBoardNumbersLines, renderBoardNumbersHtml, PRIORITY_LABELS,
 };

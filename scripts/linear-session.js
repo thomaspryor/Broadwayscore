@@ -205,6 +205,26 @@ async function cmdClaim(args) {
     result = issue;
   } else {
     result = issue;
+    // BRO-5626: "noop" means the card was already started. Say who holds it, so a worker can tell
+    // its parent's claim from another session's. The --title path's listIssues() carries no
+    // comments, so re-read the card first. A noop posts nothing: the loser of a race must not
+    // become the card's newest "Claimed by".
+    let full = issue;
+    if (!(issue.comments && (issue.comments.nodes || Array.isArray(issue.comments)))) {
+      full = (await linear.getIssue(issue.identifier).catch(() => null)) || issue;
+    }
+    const holder = lsr.latestHolderComment(full);
+    const ref = lsr.claimSessionRef();
+    const own = !!holder && lsr.isSessionSpecificRef(ref) && String(holder.body).includes(ref);
+    console.error(holder
+      ? `[linear-session] ${issue.identifier} is already "${plan.stateName}". Last holder${own ? ' (this session)' : ''}: [${holder.createdAt}] ${String(holder.body).slice(0, 200)}`
+      : `[linear-session] ${issue.identifier} is already "${plan.stateName}" and no session left a claim comment. If your parent did not claim it for you, another session may hold it: check before working.`);
+  }
+  // BRO-5626: leave a trace on the card so the next claimer sees who holds it. Never fails the claim.
+  if (plan.action !== 'noop') try {
+    await linear.createComment(result.id, lsr.buildClaimComment({ sessionRef: lsr.claimSessionRef(), ts: new Date().toISOString() }));
+  } catch (e) {
+    console.error(`[linear-session] WARN could not post the claim comment: ${e.message}`);
   }
 
   console.log(lsr.buildIssueIdMarker(result.id));

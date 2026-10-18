@@ -319,7 +319,41 @@ function evaluateSessionClose({ trackedEditsMade, reportedIssueId, bypassText })
   };
 }
 
+// BRO-5626: a claim left no trace on the card, so a worker whose claim came back "noop" could not
+// tell "my parent claimed it for me" from "another session holds it" (BRO-5626 itself: a Mac job
+// took the card 95s after it was filed, and the cloud worker started on it anyway).
+const HOLDER_COMMENT_RE = /^(?:Claimed by |Dispatched\b)/;
+
+/** Which session this process is: the cloud session id, the local one, or the host name. */
+function claimSessionRef(env = process.env, host = require('os').hostname()) {
+  // The env var is cse_<id>; the session's link is claude.ai/code/session_<id>.
+  if (env.CLAUDE_CODE_REMOTE_SESSION_ID) return `https://claude.ai/code/${String(env.CLAUDE_CODE_REMOTE_SESSION_ID).replace(/^cse_/, 'session_')}`;
+  if (env.CLAUDE_CODE_SESSION_ID) return `local session ${env.CLAUDE_CODE_SESSION_ID} on ${host}`;
+  return `a session on ${host}`;
+}
+
+/** False for the host-only fallback, which every session on that machine shares. */
+function isSessionSpecificRef(ref) {
+  return !String(ref).startsWith('a session on ');
+}
+
+function buildClaimComment({ sessionRef, ts }) {
+  return `Claimed by ${sessionRef} at ${ts}`;
+}
+
+/** The newest claim or dispatch comment on the issue, or null. */
+function latestHolderComment(issue) {
+  const nodes = (issue && issue.comments && (issue.comments.nodes || issue.comments)) || [];
+  const holders = (Array.isArray(nodes) ? nodes : []).filter((c) => c && HOLDER_COMMENT_RE.test(String(c.body || '')));
+  holders.sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
+  return holders[0] || null;
+}
+
 module.exports = {
+  claimSessionRef,
+  buildClaimComment,
+  isSessionSpecificRef,
+  latestHolderComment,
   CLAIM_STATE_NAME,
   STATUS_TO_STATE_NAME,
   ISSUE_ID_MARKER_PREFIX,
