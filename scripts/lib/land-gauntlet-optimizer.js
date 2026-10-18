@@ -1,0 +1,73 @@
+#!/usr/bin/env node
+'use strict';
+//
+// land-gauntlet-optimizer.js — decides how much of land.yml's gauntlet a
+// land/** push has to pay for (BRO-4299: Land was ~50% of Actions minutes, the
+// 3,000-min plan ran out 2026-09-28; each run is base + branch, ~10-16 min each).
+//
+// The base gauntlet is already cached (land-gate-delta.js --code-hash). What
+// was still paid in full: a branch whose diff against the base touches ONLY
+// inert paths (data/, docs/, memory/, *.md ... — INERT_FOR_VERIFICATION_RE in
+// land-branch.js). Its verification-relevant tree is identical to the base's,
+// so "new failures vs base" is empty by construction; running base + branch
+// (npm ci, core data, tsc, lint, unit batches) measures nothing.
+//
+//   decideGauntletPlan({ changedFiles, strict }) →
+//     { skipGauntlet, reason, inertOnly, changed }
+//   skipBase({ skipGauntlet, strict, cacheHit, artifactHit }) → boolean
+//
+// Safe defaults: an empty/unknown diff runs the gauntlet; LAND_STRICT_GATES=1
+// (the rollback switch) and LAND_GAUNTLET_SKIP_INERT=0 both force a full run.
+//
+// CLI (land.yml "Plan the gauntlet" step):
+//   node scripts/lib/land-gauntlet-optimizer.js --base <sha> --head <sha> [--github-output F]
+
+const { execFileSync } = require('child_process');
+const fs = require('fs');
+// isCacheKeyRelevant = !inert, plus tests/ and the CLAUDE.md anchors.
+const { isCacheKeyRelevant } = require('./land-gate-delta.js');
+
+function decideGauntletPlan({ changedFiles, strict = false, disabled = false } = {}) {
+  const files = (changedFiles || []).map(String).filter(Boolean);
+  const base = { skipGauntlet: false, inertOnly: false, changed: files.length };
+  if (strict) return { ...base, reason: 'LAND_STRICT_GATES=1 — full gauntlet (rollback switch)' };
+  if (disabled) return { ...base, reason: 'LAND_GAUNTLET_SKIP_INERT=0 — full gauntlet' };
+  if (!files.length) return { ...base, reason: 'no changed files known — full gauntlet' };
+  const relevant = files.filter(isCacheKeyRelevant);
+  if (relevant.length) {
+    return { ...base, reason: `${relevant.length} verification-relevant file(s) changed (e.g. ${relevant[0]}) — full gauntlet` };
+  }
+  return { skipGauntlet: true, inertOnly: true, changed: files.length, reason: `all ${files.length} changed file(s) are inert for verification — gauntlet skipped` };
+}
+
+/** The base run is needed only when the branch gauntlet runs and nothing measured the base. */
+function skipBase({ skipGauntlet = false, strict = false, cacheHit = false, artifactHit = false } = {}) {
+  if (strict) return true; // strict mode never uses a base (land-gate-delta.js --strict)
+  return Boolean(skipGauntlet || cacheHit || artifactHit);
+}
+
+function main(argv = process.argv.slice(2)) {
+  const arg = (n) => { const i = argv.indexOf(`--${n}`); return i >= 0 ? argv[i + 1] : null; };
+  const baseSha = arg('base');
+  const head = arg('head') || 'HEAD';
+  if (!baseSha) { console.error('usage: land-gauntlet-optimizer.js --base <sha> [--head <sha>] [--github-output F]'); return 2; }
+  let changedFiles = [];
+  try {
+    changedFiles = execFileSync('git', ['diff', '--name-only', `${baseSha}...${head}`], { encoding: 'utf8' }).split('\n').filter(Boolean);
+  } catch (e) {
+    console.error(`could not diff ${baseSha}...${head}: ${e.message.split('\n')[0]} — full gauntlet`);
+  }
+  const plan = decideGauntletPlan({
+    changedFiles,
+    strict: process.env.LAND_STRICT_GATES === '1',
+    disabled: process.env.LAND_GAUNTLET_SKIP_INERT === '0',
+  });
+  console.log(plan.reason);
+  const out = arg('github-output');
+  if (out) fs.appendFileSync(out, `skip_gauntlet=${plan.skipGauntlet}\n`);
+  return 0;
+}
+
+if (require.main === module) process.exit(main());
+
+module.exports = { decideGauntletPlan, skipBase };
