@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-18T06:13:41.846Z",
+  "runDate": "2026-10-18T06:24:43.580Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 72,
+    "processed": 0,
+    "failed": 54,
     "skipped": 0,
-    "successRate": "2.7%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 40,
@@ -28,45 +28,37 @@
     "archive": 6
   },
   "statistics": {
-    "tier1Attempts": 16,
-    "tier1Success": 4,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 11,
-    "tier1_9Success": 1,
-    "tier2Attempts": 10,
+    "tier1_9Attempts": 0,
+    "tier1_9Success": 0,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 12,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 11,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 15,
-    "tier4Success": 3,
-    "totalFailed": 71,
-    "scrapingBeePageCredits": 10,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 54,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 57,
+    "urlDiscoveryAttempts": 54,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 2,
-    "failed": 72,
+    "processed": 0,
+    "failed": 54,
     "shows": [
-      "9-to-5-the-musical-west-end-2019",
-      "a-very-expensive-poison-west-end-2019",
       "aint-no-mo-2022",
       "all-my-sons-2008",
-      "all-my-sons-west-end-2019",
-      "amelie-a-new-musical-2017",
-      "amelie-west-end-2021",
-      "an-american-in-paris-tour-2022",
-      "and-juliet-west-end-2019",
-      "anna-x-west-end-2021",
       "appropriate-2023",
       "clybourne-park-2012",
       "come-back-little-sheba-2008",
@@ -85,7 +77,6 @@
       "kiss-me-kate-2019",
       "macbeth-2008",
       "mary-jane-2024",
-      "michael-r-jackson-wake-up-call-off-broadway-2026",
       "motown-the-musical-2013",
       "ohio-state-murders-2022",
       "on-a-clear-day-you-can-see-forever-2011",
@@ -94,7 +85,6 @@
       "reasons-to-be-pretty-2009",
       "red-2010",
       "rodgers-hammersteins-cinderella-2013",
-      "ruthless-the-musical-off-broadway-2015",
       "sea-wall-a-life-2019",
       "shrek-the-musical-2008",
       "suffs-2024",
@@ -110,7 +100,6 @@
       "the-waverly-gallery-2018",
       "the-whos-tommy-2024",
       "the-wiz-2024",
-      "time-stands-still-2010",
       "topdog-underdog-2022",
       "tuck-everlasting-2016",
       "waitress-2021",
@@ -119,24 +108,12 @@
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 68,
-      "failed": 134
+      "processed": 70,
+      "failed": 151
     }
   },
-  "processed": [
-    "9-to-5-the-musical-west-end-2019/standard--fiona-mountford.json",
-    "ruthless-the-musical-off-broadway-2015/theater-pizzazz--michael-lee-stever.json"
-  ],
+  "processed": [],
   "failed": [
-    "9-to-5-the-musical-west-end-2019/times-uk--dominic-maxwell.json",
-    "and-juliet-west-end-2019/times-uk--clive-davis.json",
-    "amelie-west-end-2021/times-uk--clive-davis.json",
-    "anna-x-west-end-2021/whatsonstage--sarah-crompton.json",
-    "all-my-sons-west-end-2019/times-uk--dominic-maxwell.json",
-    "all-my-sons-west-end-2019/whatsonstage--sarah-crompton.json",
-    "a-very-expensive-poison-west-end-2019/times-uk--dominic-maxwell.json",
-    "michael-r-jackson-wake-up-call-off-broadway-2026/broadway-journal--philip-boroff.json",
-    "michael-r-jackson-wake-up-call-off-broadway-2026/exeunt-magazine--alison-walls.json",
     "tammy-faye-2024/stageandcinema--mike-mineo.json",
     "yellow-face-2024/nypost--johnny-oleksinski.json",
     "the-hills-of-california-2024/times-uk--ann-treneman.json",
@@ -154,7 +131,6 @@
     "ohio-state-murders-2022/hollywood-reporter--anita-gates.json",
     "aint-no-mo-2022/usatoday--matthew-j-palm.json",
     "topdog-underdog-2022/rollingstone--david-fear.json",
-    "an-american-in-paris-tour-2022/ap--jennifer-farrar.json",
     "waitress-2021/vulture--helen-shaw.json",
     "the-inheritance-2019/usatoday--charles-isherwood.json",
     "sea-wall-a-life-2019/usatoday--charles-isherwood.json",
@@ -166,15 +142,8 @@
     "escape-to-margaritaville-2018/vulture--jesse-green.json",
     "farinelli-and-the-king-2017/observer--rex-reed.json",
     "indecent-2017/usatoday--elysa-gardner.json",
-    "amelie-a-new-musical-2017/nytg--david-gordon.json",
     "tuck-everlasting-2016/usatoday--elysa-gardner.json",
     "eclipsed-2016/observer--rex-reed.json",
-    "ruthless-the-musical-off-broadway-2015/curtainup--simon-saltzman.json",
-    "ruthless-the-musical-off-broadway-2015/local-theatre-ny--hannah-brown.json",
-    "ruthless-the-musical-off-broadway-2015/stagebuddy--jose-solis.json",
-    "ruthless-the-musical-off-broadway-2015/talkinbroadway--matthew-murray.json",
-    "ruthless-the-musical-off-broadway-2015/thisbroadsway--sandra-mcfarland.json",
-    "ruthless-the-musical-off-broadway-2015/times-square-chronicles--suzanna-bowling.json",
     "hedwig-and-the-angry-inch-2014/rollingstone--rob-sheffield.json",
     "motown-the-musical-2013/observer--rex-reed.json",
     "rodgers-hammersteins-cinderella-2013/vulture--jesse-green.json",
@@ -185,7 +154,6 @@
     "jesus-christ-superstar-2012/stageandcinema--jonas-schwartz.json",
     "on-a-clear-day-you-can-see-forever-2011/vulture--jesse-green.json",
     "red-2010/chicagotribune--chris-jones.json",
-    "time-stands-still-2010/hollywood-reporter--unknown.json",
     "ragtime-2009/nydailynews--joe-dziemianowicz.json",
     "hamlet-2009/nydailynews--joe-dziemianowicz.json",
     "hamlet-2009/usatoday--elysa-gardner.json",
@@ -518,56 +486,6 @@
       "ruthless-the-musical-off-broadway-2015/theater-pizzazz--michael-lee-stever.json"
     ]
   },
-  "failuresByOutlet": {
-    "The Times (UK)": {
-      "count": 5,
-      "domain": "thetimes.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Associated Press": {
-      "count": 1,
-      "domain": "abcnews.go.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "New York Theatre Guide": {
-      "count": 1,
-      "domain": "newyorktheatreguide.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "CurtainUp": {
-      "count": 1,
-      "domain": "curtainup.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Talkin' Broadway": {
-      "count": 1,
-      "domain": "talkinbroadway.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Times Square Chronicles": {
-      "count": 1,
-      "domain": "backup.t2conline.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "This Broadway": {
-      "count": 1,
-      "domain": "thisbroadsway.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
