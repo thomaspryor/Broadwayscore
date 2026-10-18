@@ -66,7 +66,9 @@ const NEW = 'the-comedy-about-spies-west-end-2026';
 const URL_ = 'https://www.thetimes.com/culture/theatre-dance/article/the-comedy-about-spies-review-bro5298-test';
 let haveShows = false;
 try {
-  const ids = new Set(require('../../data/shows.json').shows.map((s) => s.id));
+  // fs read, not require(): shows.json is core data, not a code dependency (audit-test-yml-lib-deps).
+  const showsPath = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..', 'data', 'shows.json');
+  const ids = new Set(JSON.parse(fs.readFileSync(showsPath, 'utf8')).shows.map((s) => s.id));
   haveShows = ids.has(OLD) && ids.has(NEW);
 } catch { /* no core data checkout */ }
 const skip = haveShows ? false : 'needs data/shows.json with the Comedy About Spies pair';
