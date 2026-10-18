@@ -30,6 +30,7 @@ const path = require('path');
 const { decodeHtmlEntities } = require('./text-cleaning');
 const { isUrlProvenanceWrongProduction } = require('./wrongproduction-provenance');
 const { logExclusion } = require('./exclusion-logger');
+const { AP_WIRE_URL } = require('./ap-wire-detect');
 
 // Score sources from aggregator sites — these are third-party star ratings,
 // not the outlet's own score. Used to prevent contamination at both ingestion
@@ -1743,6 +1744,10 @@ function resolveOutletFromUrl(url) {
     // News portals republish wire/partner copy under their own domain, so the
     // host never names the publisher (BRO-4502: AP reviews on news.yahoo.com).
     if (isSyndicationPortalHost(hostname)) return null;
+    // AP wire copy on a partner newspaper's own domain (BRO-5289:
+    // online.wsj.com/article/AP<32 hex>.html is Mark Kennedy's AP review,
+    // not a WSJ review). The host names the partner, the path names AP.
+    if (AP_WIRE_URL.test(parsedUrl.pathname)) return null;
 
     // Path-aware overrides for shared-domain outlets (before domain lookup)
     // timeout.com hosts both Time Out New York and Time Out London under different paths
