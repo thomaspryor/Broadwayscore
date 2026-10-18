@@ -1,36 +1,11 @@
 {
-  "generatedAt": "2026-10-17T07:04:23.989Z",
-  "bannerText": "152/167 Done(14d) verified on main · 12 FAILED · 0 vacuous · 7 stuck-but-done",
+  "generatedAt": "2026-10-18T07:23:35.284Z",
+  "bannerText": "145/159 Done(14d) verified on main · 10 FAILED · 0 vacuous · 17 stuck-but-done",
   "items": [
-    {
-      "title": "FAILED BRO-5282 — P1: landing throughput is now the bottleneck (23 landings queued, ~2h wait, ~15 lands/hour)",
-      "detail": "TAP version 13 # fatal: Not a valid commit name 245b878352e94aa53e4aa822f68c6e7fc629c172 # Subtest: BRO-5282: a merge train has landed in production, and all of its commits are on…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5282/p1-landing-throughput-is-now-the-bottleneck-23-landings-queued-2h-wait"
-    },
-    {
-      "title": "FAILED BRO-4903 — Accounts audit follow-ups needing owner decisions: after-first-save sheet (0 of 33 on phones), signed-out My Shows for device-saved shows, Apple relay email registration, Google OAuth brand verification",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/accounts-audit-decisions.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4903/accounts-audit-follow-ups-needing-owner-decisions-after-first-save"
-    },
-    {
-      "title": "FAILED BRO-4697 — BSC Daily: Data quality: slug-mismatch lifetime sweep",
-      "detail": "[check-health-row-absent] FAIL: \"Data quality: slug-mismatch lifetime sweep\" still listed in the 2026-10-17T06:59:37.592Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4697/bsc-daily-data-quality-slug-mismatch-lifetime-sweep"
-    },
-    {
-      "title": "FAILED BRO-4359 — Alert when an opened show has a cached Show Score URL but no Show Score audience score",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/health-check.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4359/alert-when-an-opened-show-has-a-cached-show-score-url-but-no-show"
-    },
     {
       "title": "FAILED BRO-4254 — App: label tour (and regional) productions correctly before the web tour flag goes on",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/tour-labeling.test.mjs",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4254/app-label-tour-and-regional-productions-correctly-before-the-web-tour"
-    },
-    {
-      "title": "FAILED BRO-3016 — Forbes / Marc Hershberg walkthrough — never scheduled, and untracked outside 60 crown handoff files until now",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/hershberg-walkthrough-decision.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3016/forbes-marc-hershberg-walkthrough-never-scheduled-and-untracked"
     },
     {
       "title": "FAILED BRO-5496 — Fold per-show imageless-scored-show:dispatch-failed alerts into one card per run",
@@ -41,7 +16,32 @@
       "title": "FAILED BRO-5494 — Auto-fix: Opening Night Poller Failed",
       "detail": "To get started with GitHub CLI, please run: gh auth login Alternatively, populate the GH_TOKEN environment variable with a GitHub API authentication token. gh run list failed: Com…",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5494/auto-fix-opening-night-poller-failed"
+    },
+    {
+      "title": "FAILED BRO-5493 — Fold audit-show-review-gap per-show router alerts into one alert per run",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-show-review-gap.test.js",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5493/fold-audit-show-review-gap-per-show-router-alerts-into-one-alert-per"
+    },
+    {
+      "title": "FAILED BRO-5484 — Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
+      "detail": "[check-alert-condition-absent] FAIL: \"corpus-drift:sibling-title-misroute\" still firing — open, last fired 2026-10-18T05:44:34.575Z (1.7h ago, within 168h)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5484/corpus-drift-same-title-sibling-review-misrouted-to-the-wrong"
+    },
+    {
+      "title": "FAILED BRO-5482 — Morning digest: full board numbers block (open by priority, added/completed 24h+7d, stuck, waiting on owner, Codex vs Claude)",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/board-numbers-digest.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5482/morning-digest-full-board-numbers-block-open-by-priority"
+    },
+    {
+      "title": "FAILED BRO-5448 — BSC Daily: Data quality: stale announced shows",
+      "detail": "[check-health-row-absent] FAIL: \"Data quality: stale announced shows\" still listed in the 2026-10-18T07:16:56.478Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5448/bsc-daily-data-quality-stale-announced-shows"
+    },
+    {
+      "title": "FAILED BRO-5426 — Opening Night Poller: fast_path rebuild hits 5-min step timeout, owner gets repeated investigation emails",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/workflow-rebuild-step-timeout.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5426/opening-night-poller-fast-path-rebuild-hits-5-min-step-timeout-owner"
     }
   ],
-  "moreCount": 11
+  "moreCount": 19
 }
