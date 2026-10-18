@@ -148,6 +148,15 @@ describe('a reported cost sets the level (BRO-5632)', () => {
     assert.ok(withHim.anchors.every((a) => a.sourceType === 'trade'), JSON.stringify(withHim.anchors));
   });
 
+  it('a stored migrated copy of a seed figure counts once (water-for-elephants)', () => {
+    const seed = trade('2024-03-21', 960_000, { kind: 'break-even' });
+    const migrated = trade('2024-03-21', 960_000, { dateBasis: 'migrated', note: 'migrated from weeklyRunningCost (trade-reported)' });
+    const both = costForWeek({ costHistory: [seed, migrated, ...weekly('2024-03-26', 30, 750_000)] }, '2024-05-05');
+    const seedOnly = costForWeek({ costHistory: [seed] }, '2024-05-05');
+    assert.ok(seedOnly.cost > 850_000 && seedOnly.cost < 950_000, `break-even carried as a running cost: ${seedOnly.cost}`);
+    assert.strictEqual(both.cost, seedOnly.cost);
+  });
+
   it('still uses his figures when nothing reported is held', () => {
     const record = { costHistory: weekly('2024-01-07', 10, 700_000) };
     const c = costForWeek(record, '2024-02-04');
