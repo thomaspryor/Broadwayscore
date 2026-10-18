@@ -144,7 +144,7 @@ test('two same-kind openings for different shows both survive dedupe, ahead of a
     closingsThisWeek: [{ id: 'enormous-crocodile', slug: 'enormous-crocodile', title: 'The Enormous Crocodile', closingDate: '2026-08-22' }],
   });
   const { sentences, kinds } = buildLedeSentences(candidates, 3);
-  assert.deepEqual(kinds, ['we-gold-opening', 'we-gold-opening', 'closing-final'], kinds.join(', '));
+  assert.deepEqual(kinds, ['we-opening', 'we-opening', 'closing-final'], kinds.join(', '));
   assert.ok(sentences.some(s => s.includes('Death Note')), sentences.join(' '));
   assert.ok(sentences.some(s => s.includes('How the Other Half Loves')), sentences.join(' '));
 });
@@ -216,7 +216,7 @@ test('3 same-week openings fill the lede cap; a same-week closing does not displ
     closingsThisWeek: [{ id: 'd', slug: 'd', title: 'Show D', closingDate: '2026-08-22' }],
   });
   const { kinds, showRefs } = buildLedeSentences(candidates, 3);
-  assert.deepEqual(kinds, ['we-gold-opening', 'we-gold-opening', 'we-gold-opening']);
+  assert.deepEqual(kinds, ['we-opening', 'we-opening', 'we-opening']);
   assert.deepEqual(showRefs.map(s => s.id), ['a', 'b', 'c']);
 });
 
@@ -338,7 +338,7 @@ test('a later item\'s Critical Gold score cannot outrank an earlier, non-gold we
     ],
     aggregateScore: (id) => ({ avg: scores[id] }),
   });
-  const weCandidates = candidates.filter((c) => c.kind === 'we-gold-opening');
+  const weCandidates = candidates.filter((c) => c.kind === 'we-opening');
   assert.deepEqual(weCandidates.map((c) => c.show.id), ['first', 'second']);
   assert.ok(weCandidates[0].weight > weCandidates[1].weight, `expected 'first' to outweigh 'second' despite its gold bump; got ${JSON.stringify(weCandidates.map((c) => c.weight))}`);
 });
@@ -370,7 +370,7 @@ test('a real West End opening still leads the WE subject/lede over a bigger Broa
     bwOpenings: [{ show: broadwayShow }],
     aggregateScore: (id) => ({ avg: scores[id] }),
   });
-  assert.equal(candidates[0].kind, 'we-gold-opening');
+  assert.equal(candidates[0].kind, 'we-opening');
   assert.equal(candidates[0].show.id, 'we-show');
 });
 
@@ -384,7 +384,7 @@ test('a non-gold Off West End opening still beats a Broadway opening — the tig
     bwOpenings: [{ show: broadwayShow }],
     aggregateScore: (id) => ({ avg: scores[id] }),
   });
-  assert.equal(candidates[0].kind, 'we-gold-opening');
+  assert.equal(candidates[0].kind, 'we-opening');
   assert.equal(candidates[0].show.id, 'owe-show');
 });
 

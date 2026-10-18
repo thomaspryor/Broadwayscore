@@ -180,8 +180,8 @@ export function scoreCandidates(input) {
       verdictTier: tier, verdictPrefix: `${s.title} ${verb}${loc} to `, openingVenue: 'Broadway' });
   }
 
-  // 1b. West End Gold openings — only Critical Gold WE shows enter the scorer.
-  // Non-gold WE shows stay in London Openings but never lead the subject line.
+  // 1b. West End and Off West End openings. The caller selects the feed
+  // for the edition and week; candidate kind does not imply a score tier.
   // weOpeningStoriesCap tracks the lowest weight assigned so far in THIS list
   // — enforced below as a hard ceiling for every later item, so weGoldOpenings'
   // input order (weOpeningStories() in generate.mjs — most-reviewed-first,
@@ -227,7 +227,7 @@ export function scoreCandidates(input) {
     const headline = verdict
       ? `${s.title}${venueSuffix} opens${loc} to ${verdict}`
       : `${s.title}${venueSuffix} opens${loc}`;
-    out.push({ kind: 'we-gold-opening', weight: weWeight, headline, show: s, slug: s.slug,
+    out.push({ kind: 'we-opening', weight: weWeight, headline, show: s, slug: s.slug,
       verdictTier: tier, verdictPrefix: `${s.title}${venueSuffix} opens${loc} to `,
       openingVenue: isWeEdition ? (isWestEndVenue ? 'the West End' : 'Off West End') : 'London' });
   }
@@ -373,7 +373,7 @@ export function rankOpeningsInInputOrder(out) {
 // sentence went to an unrelated closing). Non-opening kinds (recoupment,
 // closing, mover, tony, buzz) are still one-example-per-kind — those really
 // do read repetitive/low-value as multiple near-identical sentences.
-const PER_SHOW_KINDS = new Set(['bw-opening', 'bw-reopening', 'ob-opening', 'ob-reopening', 'we-gold-opening']);
+const PER_SHOW_KINDS = new Set(['bw-opening', 'bw-reopening', 'ob-opening', 'ob-reopening', 'we-opening']);
 
 // Dedupe by `kind` so the subject doesn't read "Show A recoups, Show B recoups, …"
 // — except opening kinds, which dedupe per show (see PER_SHOW_KINDS above) so
