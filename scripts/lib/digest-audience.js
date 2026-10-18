@@ -60,7 +60,7 @@ const INTERNAL_CHECK_NAMES = new Set([
 // internal; every data/scrape/deploy/email workflow stays 'visitors' (and any
 // workflow not listed here defaults to 'visitors').
 const INTERNAL_WORKFLOWS = new Set([
-  'Test Suite', 'Land', 'Autonomous Merge', 'Dependabot Auto-Merge',
+  'Test Suite', 'Land', 'Autonomous Merge', 'Dependabot PR Cards',
   'Check Direct Push To Main', 'Check Push Ledger', 'Check Linear Drain Health',
   'Guard — No Orphan Commit', 'Diagnose Shallow Fetch', 'Diag — push-with-retry fetch timing',
   'Mirror to GitLab', 'Mirror Core Data to GitLab', 'Mirror Review Texts to GitLab', 'Rotate GitLab Mirror Token',
