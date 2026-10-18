@@ -191,7 +191,9 @@ function setupWorktree() {
     git(['worktree', 'add', '--detach', WT, 'origin/main'], ROOT);
   }
   const nm = path.join(ROOT, 'node_modules');
-  if (fs.existsSync(nm) && !fs.existsSync(path.join(WT, 'node_modules'))) fs.symlinkSync(nm, path.join(WT, 'node_modules'));
+  const link = path.join(WT, 'node_modules');
+  // Always link (a dangling link is replaced): Node finds ROOT's copy from WT anyway, but tests that copy the tree to /tmp follow this link.
+  if (!fs.existsSync(link)) { fs.rmSync(link, { force: true }); fs.symlinkSync(nm, link); }
 }
 
 /** Least free space across the worktrees and data copies (ROOT), Codex sessions and test temp files, or null. */
@@ -1071,6 +1073,14 @@ function ensureTools() {
   }
   for (const tool of ['codex', 'claude']) {
     if (sh(tool, ['--version'], { timeoutMs: 60_000 }).code !== 0) { log(`${tool} CLI missing`); process.exit(2); }
+  }
+  // A cloud container can start without node_modules. Then the land checks fail ~300 tests on
+  // both trees, and a slot linked before another lane installs them fails tests that copy the
+  // repo to /tmp (they link <tree>/node_modules) while the base passes: REJECTs Codex did not cause.
+  if (!fs.existsSync(path.join(ROOT, 'node_modules', '.package-lock.json'))) {
+    const ci = sh('npm', ['ci', '--no-audit', '--no-fund', '--loglevel=error'], { timeoutMs: 900_000 });
+    log(`node_modules was missing, npm ci: exit ${ci.code}${ci.code ? ` ${tail(ci.out, 300)}` : ''}`);
+    if (ci.code !== 0) process.exit(2);
   }
 }
 
