@@ -112,12 +112,49 @@ function findCorroboration(show, text) {
   return { signal: null };
 }
 
+/** True for a title with exactly one non-structural token ("Gloria", "Paddington"). */
+function isOneWordTitle(title) {
+  return titleTokens(title).filter(t => !STRUCTURAL.has(t)).length === 1;
+}
+
+/**
+ * BRO-4891: a one-word title fuzzy-matches any work containing that word
+ * (gloria-2026 collected 11 "On Your Feet!" reviews because they name Gloria
+ * Estefan). Such a candidate must carry the production's year or venue.
+ * Cast/creative names do not count here: they are exactly what over-matches.
+ * @returns {{signal: 'year'|'venue'|null, term?: string}}
+ */
+function findYearOrVenue(show, text) {
+  const hay = norm(text);
+  for (const t of venueTerms(show.venue || show.theater)) if (hasPhrase(hay, t)) return { signal: 'venue', term: t };
+  for (const d of [show.openingDate, show.previewsStartDate]) {
+    const y = String(d || '').slice(0, 4);
+    if (/^\d{4}$/.test(y) && hasPhrase(hay, y)) return { signal: 'year', term: y };
+  }
+  return { signal: null };
+}
+
 /**
  * Candidate-generation gate. ok:true for non-generic titles (no behavior change).
  * @returns {{ok: boolean, reason?: string, detail?: string, signal?: string}}
  */
 function checkGenericTitleCandidate({ show, candidate, df }) {
   if (_DISABLED || !show || !candidate || !show.title) return { ok: true };
+  const freq = df || getTokenDocFreq();
+  // Only a word that also sits in another show's title is ambiguous ("Gloria"
+  // vs "A Night with Gloria Steinem"); a unique one like "Hamilton" is not.
+  if (isOneWordTitle(show.title) && !isGenericTitle(show.title, freq)
+      && titleTokens(show.title).some(t => !STRUCTURAL.has(t) && (freq.get(t) || 0) >= 2)) {
+    const text1 = `${candidate.title || ''} ${candidate.snippet || ''} ${candidate.url || ''}`;
+    const yv = findYearOrVenue(show, text1);
+    if (yv.signal) return { ok: true, signal: yv.signal };
+    if (!show.openingDate && !show.venue && !show.theater) return { ok: true, signal: 'unverifiable' };
+    return {
+      ok: false,
+      reason: 'one-word-title-needs-year-or-venue',
+      detail: `"${show.title}" is a one-word title; candidate names neither its year nor its venue`,
+    };
+  }
   if (!isGenericTitle(show.title, df || getTokenDocFreq())) return { ok: true };
   // Nothing to corroborate with (new/slug-only shows): accept the small
   // contamination risk rather than silently under-collect (cf. url-discovery's
@@ -138,5 +175,5 @@ function _resetCachesForTest(df = null) { _dfCache = df; }
 
 module.exports = {
   COMMON_TOKEN_MIN_TITLES, buildTokenDocFreq, isGenericTitle, findCorroboration,
-  checkGenericTitleCandidate, _resetCachesForTest,
+  checkGenericTitleCandidate, isOneWordTitle, findYearOrVenue, _resetCachesForTest,
 };
