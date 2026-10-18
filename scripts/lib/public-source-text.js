@@ -69,12 +69,13 @@ function publicSourceText(text) {
 // missed phrase refuses a correctly flagged write, so the data's own wording
 // ("No recoupment was announced.", "Recouped without an announcement.",
 // contractions) is covered. "Editorial" counts only as our editorial judgment,
-// never a newspaper's editorial. A recoupment that went unannounced at first
-// and was confirmed later in the same sentence ("previously unannounced ...
-// confirmed by Deadline", "not announced until 2024", "no recoupment was
-// announced at the time; BroadwayWorld later reported it") is a reported one,
-// the Sweeney Todd shape this card fixed.
-const LATER_REPORT = String.raw`(?![^.]*\b(?:until|later|subsequently|confirmed|revealed|disclosed|at the time)\b)`;
+// never a newspaper's editorial. It errs toward "unannounced" on purpose: a
+// false match only downgrades the label, while a miss prints an unannounced
+// recoupment as announced and refuses a correctly flagged write. So there is
+// no "confirmed later" exception: a lookahead for one (BRO-5562 review) also
+// cancelled plain wordings ("estimated at the time of closing", "confirmed by
+// grosses analysis"), and "previously unannounced, confirmed by Deadline"
+// reads as unannounced. Write a later report as the source itself instead.
 const NOT_ANNOUNCED_RE = new RegExp([
   String.raw`\bno (?:public |producer |formal )?(?:recoupment )?announcement\b`,
   String.raw`\bno (?:public |formal )?recoupment (?:was |has been |had been |is )?(?:formally |publicly )?announced\b`,
@@ -84,7 +85,7 @@ const NOT_ANNOUNCED_RE = new RegExp([
   String.raw`\b(?:not|(?:is|are|was|were|has|have|had)n['’]t) (?:been )?(?:formally |publicly )?announced\b`,
   String.raw`\b(?:does|do|did)(?: not|n['’]t) (?:formally |publicly )?announce(?:s|ments?)?\b`,
   String.raw`\beditorial judg(?:e)?ment\b`,
-].map((alt) => alt + LATER_REPORT).join('|'), 'i');
+].join('|'), 'i');
 
 /**
  * True when a recoupedSource says the recoupment was never announced.
