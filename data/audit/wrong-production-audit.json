@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-18T04:15:14.620Z",
+  "timestamp": "2026-10-18T05:28:08.206Z",
   "stats": {
     "totalReviews": 57382,
-    "alreadyFlagged": 21285,
+    "alreadyFlagged": 21308,
     "dateGuardCatches": 196,
-    "directorMismatch": 1952,
+    "directorMismatch": 1954,
     "tvFilmSignals": 1608,
-    "londonSignals": 2420,
-    "offBroadwaySignals": 520,
+    "londonSignals": 2421,
+    "offBroadwaySignals": 521,
     "yearMismatch": 158,
-    "noPublishDate": 5296
+    "noPublishDate": 5242
   },
   "findings": [
     {
@@ -8642,6 +8642,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "company-tour-2023",
+      "file": "chicagotribune--chris-jones.json",
+      "score": null,
+      "publishDate": "2023-11-02",
+      "url": "https://www.chicagotribune.com/2023/11/02/review-company-at-the-cadillac-palace-has-a-stellar-cast-though-this-will-never-be-my-favorite-company/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from company-2021"
         }
       ]
     },
@@ -28449,6 +28463,20 @@
       "score": 69,
       "publishDate": "April 11, 2003",
       "url": "http://www.nytimes.com/2003/04/11/movies/theater-review-gals-gams-and-glamour.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"tommy tune\" from nine-1982"
+        }
+      ]
+    },
+    {
+      "showId": "nine-2003",
+      "file": "talkinbroadway--matthew-murray.json",
+      "score": null,
+      "publishDate": "2003-04-10",
+      "url": "https://www.talkinbroadway.com/world/Nine.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -62506,6 +62534,20 @@
       ]
     },
     {
+      "showId": "glory-days-2008",
+      "file": "washpost--peter-marks.json",
+      "score": null,
+      "publishDate": "2008-05-07",
+      "url": "https://www.washingtonpost.com/archive/style/2008/05/07/glory-days-graduates-too-soon-to-broadway/5af33044-1bbc-40ac-b505-eb3ecd2f7f86/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
+        }
+      ]
+    },
+    {
       "showId": "golden-boy-2012",
       "file": "bloomberg--jeremy-gerard.json",
       "score": 45,
@@ -79337,6 +79379,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "the-authenticator-west-end-2026",
+      "file": "theupcoming--jim-compton-hall.json",
+      "score": null,
+      "publishDate": "2026-04-03",
+      "url": "https://www.theupcoming.co.uk/2026/04/03/the-authenticator-at-the-national-theatre-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },

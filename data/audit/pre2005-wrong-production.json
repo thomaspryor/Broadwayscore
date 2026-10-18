@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-18T04:06:36.062Z",
+    "generatedAt": "2026-10-18T05:18:56.116Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 96,
+    "totalFlagged": 99,
     "highConfidence": 4,
-    "mediumConfidence": 92,
+    "mediumConfidence": 95,
     "lowConfidence": 0,
-    "reassignable": 39
+    "reassignable": 40
   },
   "results": [
     {
@@ -886,6 +886,21 @@
       "showId": "nine-2003",
       "showTitle": "Nine",
       "showYear": 2003,
+      "file": "talkinbroadway--matthew-murray.json",
+      "outlet": "Talkin' Broadway",
+      "criticName": "Matthew Murray",
+      "publishDate": "2003-04-10",
+      "confidence": "medium",
+      "suggestedShowId": "nine-1982",
+      "signals": [
+        "year 1982 in text matches revival nine-1982"
+      ],
+      "textSnippet": "Theatre Review by Matthew Murray - April 10, 2003 Roundabout Theatre Company presents Nine Book by Arthur Kopit. Music and lyrics by Maury Yeston. Adaptation from the Italian by Mario Fratti. Directed"
+    },
+    {
+      "showId": "nine-2003",
+      "showTitle": "Nine",
+      "showYear": 2003,
       "file": "variety--charles-isherwood.json",
       "outlet": "Variety",
       "criticName": "Charles Isherwood",
@@ -1066,6 +1081,21 @@
         "revival text signals: revival, new revival"
       ],
       "textSnippet": "  BREATHLESSNESS, vertigo and that scary-sweet exhilaration of being out of control: there are few highs to equal the experience of floating in the upper altitudes of comedy. In the spectacularly funn"
+    },
+    {
+      "showId": "the-women-2001",
+      "showTitle": "The Women",
+      "showYear": 2001,
+      "file": "talkinbroadway--matthew-murray.json",
+      "outlet": "Talkin' Broadway",
+      "criticName": "Matthew Murray",
+      "publishDate": "2001-11-09",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, new production, this production, new revival"
+      ],
+      "textSnippet": "Theatre Review by Matthew Murray - November 9, 2001 The Women by Clare Boothe Luce. Directed by Scott Elliott. Set designed by Derek McLane. Costumes designed by Isaac Mizrahi. Lighting designed by Br"
     },
     {
       "showId": "into-the-woods-2002",
@@ -1265,6 +1295,21 @@
         "modern references: masks, hamilton"
       ],
       "textSnippet": "Talkin' Broadway Review: Gem of the Ocean\n\nTheatre Review by Matthew Murray \n - December 6, 2004\n\nGem of the Ocean by August Wilson. Directed by Kenny Leon. Set design by David Gallo. Costume design b"
+    },
+    {
+      "showId": "gem-of-the-ocean-2004",
+      "showTitle": "Gem of the Ocean",
+      "showYear": 2004,
+      "file": "theatermania--unknown.json",
+      "outlet": "TheaterMania",
+      "criticName": "Unknown",
+      "publishDate": "2004-12-06",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "modern references: hamilton"
+      ],
+      "textSnippet": "Waiting for Gem of the Ocean to begin and taking in David Gallo’s not-yet illuminated version of a large parlor at 1839 Wylie Avenue in Pittsburgh’s Hill district circa 1904, I realized something that"
     },
     {
       "showId": "master-haroldand-the-boys-2003",
