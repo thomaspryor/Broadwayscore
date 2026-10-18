@@ -1,162 +1,201 @@
 {
   "processed": [
-    "harry-potter-2021/newyorker--unknown.json",
-    "sexual-misconduct-of-the-middle-classes-off-broadway-2026/newyorker--unknown.json",
-    "pictures-from-home-2023/newyorker--conde-nast.json",
-    "the-play-that-goes-wrong-2017/newyorker--michael-schulman.json",
-    "the-price-2017/newyorker--hilton-als.json",
-    "doctor-zhivago-2015/newyorker--unknown.json",
-    "the-anarchist-2012/newyorker--henry-alford.json",
-    "lombardi-2010/newyorker--uncredited.json",
-    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-    "august-osage-county-2007/newyorker--hilton-als.json"
+    "book-of-mormon-2011/wsj--terry-teachout.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "la-boheme-off-broadway-2025/wsj--by-tim-page.json"
   ],
   "failed": [
-    "the-ask-off-broadway-2026/newyorker--helen-shaw.json",
-    "fat-ham-2023/newyorker--vinson-cunningham.json",
-    "the-parisian-woman-2017/newyorker--hilton-als.json",
-    "the-realistic-joneses-2014/newyorker--conde-nast.json",
-    "brief-encounter-2010/newyorker--uncredited.json",
-    "next-to-normal-2009/newyorker--conde-nast.json",
-    "south-pacific-2008/newyorker--john-lahr.json"
+    "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
+    "trouble-in-mind-west-end-2021/wsj--terry-teachout.json",
+    "funny-girl-2002/wsj--charles-isherwood.json",
+    "the-price-off-west-end-2026/wsj--unknown.json",
+    "and-juliet-2022/wsj--charles-isherwood.json",
+    "little-shop-of-horrors-off-broadway-2019/wsj--charles-isherwood.json",
+    "aladdin-2014/wsj--terry-teachout.json",
+    "titanique-2026/wsj--charles-isherwood.json",
+    "swept-away-2024/wsj--charles-isherwood.json",
+    "sunset-boulevard-2024/wsj--charles-isherwood.json",
+    "the-roommate-2024/wsj--charles-isherwood.json",
+    "home-2024/wsj--charles-isherwood.json",
+    "the-whos-tommy-2024/wsj--charles-isherwood.json",
+    "an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
+    "i-need-that-2023/wsj--charles-isherwood.json",
+    "gutenberg-2023/wsj--charles-isherwood.json",
+    "company-tour-2023/wsj--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
     "browserbase": [],
-    "directCookies": [
-      "harry-potter-2021/newyorker--unknown.json",
-      "pictures-from-home-2023/newyorker--conde-nast.json",
-      "the-play-that-goes-wrong-2017/newyorker--michael-schulman.json",
-      "doctor-zhivago-2015/newyorker--unknown.json"
+    "directCookies": [],
+    "scrapingdog": [
+      "book-of-mormon-2011/wsj--terry-teachout.json"
     ],
-    "scrapingdog": [],
-    "scrapingbee": [
-      "the-price-2017/newyorker--hilton-als.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "sexual-misconduct-of-the-middle-classes-off-broadway-2026/newyorker--unknown.json",
-      "the-anarchist-2012/newyorker--henry-alford.json",
-      "lombardi-2010/newyorker--uncredited.json",
-      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-      "august-osage-county-2007/newyorker--hilton-als.json"
+      "wicked-2003/wsj--terry-teachout.json",
+      "la-boheme-off-broadway-2025/wsj--by-tim-page.json"
     ]
   },
-  "startTime": "2026-10-18T13:07:47.878Z",
-  "lastProcessed": "august-osage-county-2007/newyorker--hilton-als.json",
+  "startTime": "2026-10-18T13:09:04.965Z",
+  "lastProcessed": "company-tour-2023/wsj--charles-isherwood.json",
   "log": [
     {
-      "t": "2026-10-18T13:08:39.644Z",
+      "t": "2026-10-18T13:10:01.012Z",
       "event": "bb-session",
-      "session": "f1527182",
-      "url": "https://www.newyorker.com/goings-on-about-town/the-ask"
+      "session": "1611cced",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
     },
     {
-      "t": "2026-10-18T13:08:40.160Z",
+      "t": "2026-10-18T13:10:01.886Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-18T13:09:16.032Z",
+      "t": "2026-10-18T13:10:19.542Z",
       "event": "bb-session",
-      "session": "fd1029f3",
-      "url": "https://www.newyorker.com/goings-on-about-town/theatre/harry-potter-and-the-curs"
+      "session": "0f9ca0f5",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
     },
     {
-      "t": "2026-10-18T13:09:16.546Z",
+      "t": "2026-10-18T13:10:20.331Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-18T13:10:23.965Z",
+      "t": "2026-10-18T13:11:31.740Z",
       "event": "bb-session",
-      "session": "dbbfe23d",
-      "url": "https://www.newyorker.com/magazine/2023/05/22/fat-ham-theatre-review"
+      "session": "55b1fab8",
+      "url": "http://online.wsj.com/article/SB10001424052748704050204576218451086713370.html?m"
     },
     {
-      "t": "2026-10-18T13:10:24.424Z",
+      "t": "2026-10-18T13:11:32.647Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-18T13:11:57.761Z",
+      "t": "2026-10-18T13:11:50.174Z",
       "event": "bb-session",
-      "session": "e6e015e6",
-      "url": "https://www.newyorker.com/magazine/2023/02/27/pictures-from-home-cornelia-street"
+      "session": "8cad56d6",
+      "url": "http://online.wsj.com/article/SB10001424052748704050204576218451086713370.html?m"
     },
     {
-      "t": "2026-10-18T13:11:58.271Z",
+      "t": "2026-10-18T13:11:51.039Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-18T13:12:41.176Z",
+      "t": "2026-10-18T13:12:49.797Z",
       "event": "bb-session",
-      "session": "993e1288",
-      "url": "https://www.newyorker.com/magazine/2017/12/11/the-parisian-woman-reviewed"
+      "session": "948d1f6c",
+      "url": "https://www.wsj.com/articles/SB106748686155075900"
     },
     {
-      "t": "2026-10-18T13:12:41.685Z",
+      "t": "2026-10-18T13:12:50.701Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-18T13:13:24.888Z",
+      "t": "2026-10-18T13:13:08.904Z",
       "event": "bb-session",
-      "session": "125b4ee1",
-      "url": "http://www.newyorker.com/culture/culture-desk/the-play-that-goes-wrong-is-quite-"
+      "session": "dfc80f5b",
+      "url": "https://www.wsj.com/articles/SB106748686155075900"
     },
     {
-      "t": "2026-10-18T13:13:25.385Z",
+      "t": "2026-10-18T13:13:09.756Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-18T13:14:32.308Z",
+      "t": "2026-10-18T13:13:53.669Z",
       "event": "bb-session",
-      "session": "98c1edfa",
-      "url": "https://www.newyorker.com/goings-on-about-town/theatre/doctor-zhivago-2"
+      "session": "3543a7c0",
+      "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89"
     },
     {
-      "t": "2026-10-18T13:14:32.790Z",
+      "t": "2026-10-18T13:13:54.574Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-18T13:15:59.120Z",
+      "t": "2026-10-18T13:14:12.078Z",
       "event": "bb-session",
-      "session": "73a01bb6",
-      "url": "https://www.newyorker.com/goings-on-about-town/theatre/the-realistic-joneses-2"
+      "session": "4c478778",
+      "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89"
     },
     {
-      "t": "2026-10-18T13:15:59.701Z",
+      "t": "2026-10-18T13:14:12.893Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-18T13:16:43.683Z",
+      "t": "2026-10-18T13:14:55.092Z",
       "event": "bb-session",
-      "session": "0ee23dc6",
-      "url": "https://www.newyorker.com/humor/daily-shouts/backstage-at-broadways-the-anarchis"
+      "session": "ad44edc6",
+      "url": "https://www.wsj.com/articles/swept-away-review-the-avett-brothers-set-sail-on-br"
     },
     {
-      "t": "2026-10-18T13:16:44.179Z",
+      "t": "2026-10-18T13:14:55.925Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-18T13:17:31.173Z",
+      "t": "2026-10-18T13:15:13.423Z",
       "event": "bb-session",
-      "session": "274b69ee",
-      "url": "http://www.newyorker.com/arts/events/theatre/lombardi-circle-in-the-square"
+      "session": "279e1abb",
+      "url": "https://www.wsj.com/articles/swept-away-review-the-avett-brothers-set-sail-on-br"
     },
     {
-      "t": "2026-10-18T13:17:31.684Z",
+      "t": "2026-10-18T13:15:14.269Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-18T13:15:56.298Z",
+      "event": "bb-session",
+      "session": "77b96275",
+      "url": "https://www.wsj.com/articles/sunset-blvd-review-nicole-scherzingers-norma-desmon"
+    },
+    {
+      "t": "2026-10-18T13:15:57.097Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-18T13:16:14.644Z",
+      "event": "bb-session",
+      "session": "e840a093",
+      "url": "https://www.wsj.com/articles/sunset-blvd-review-nicole-scherzingers-norma-desmon"
+    },
+    {
+      "t": "2026-10-18T13:16:15.484Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-18T13:17:26.423Z",
+      "event": "bb-session",
+      "session": "d105b5f9",
+      "url": "https://www.wsj.com/articles/the-roommate-review-on-broadway-an-odd-couple-in-io"
+    },
+    {
+      "t": "2026-10-18T13:17:27.280Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-18T13:17:44.828Z",
+      "event": "bb-session",
+      "session": "1747c37a",
+      "url": "https://www.wsj.com/articles/the-roommate-review-on-broadway-an-odd-couple-in-io"
+    },
+    {
+      "t": "2026-10-18T13:17:45.718Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
