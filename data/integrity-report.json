@@ -1,145 +1,115 @@
 {
-  "timestamp": "2026-08-16T03:58:29.458Z",
+  "timestamp": "2026-10-18T07:58:10.357Z",
   "hasIssues": true,
   "current": {
+    "date": "2026-10-18",
+    "totalReviews": 57504,
+    "unknownOutlets": 18,
+    "duplicates": 5,
+    "syncDelta": 27906
+  },
+  "previous": {
     "date": "2026-08-16",
     "totalReviews": 42599,
     "unknownOutlets": 28,
     "duplicates": 17,
     "syncDelta": 22813
   },
-  "previous": {
-    "date": "2026-07-26",
-    "totalReviews": 40668,
-    "unknownOutlets": 5,
-    "duplicates": 8,
-    "syncDelta": 21572
-  },
   "issues": [
     {
       "type": "unknown_outlets",
       "severity": "critical",
-      "message": "28 reviews have unknown outlets",
+      "message": "18 reviews have unknown outlets",
       "examples": [
         {
-          "file": "data/review-texts/anansi-the-spider-west-end-2026/openairtheatreheritage--unknown.json",
-          "outletId": "openairtheatreheritage",
-          "outlet": "openairtheatreheritage"
+          "file": "data/review-texts/back-to-the-future-2023/whose-title-is-something-of-a-misnomer--the-musical.json",
+          "outletId": "whose-title-is-something-of-a-misnomer",
+          "outlet": "whose-title-is-something-of-a-misnomer"
         },
         {
-          "file": "data/review-texts/as-you-like-it-globe-west-end-2026/amazon--thea-sharrock.json",
-          "outletId": "amazon",
-          "outlet": "amazon"
+          "file": "data/review-texts/backstairs-billy-west-end-2023/stagedoor--lyn-gardner.json",
+          "outletId": "stagedoor",
+          "outlet": "stagedoor"
         },
         {
-          "file": "data/review-texts/as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
-          "outletId": "letterboxd",
-          "outlet": "letterboxd"
+          "file": "data/review-texts/buffy-revamped-west-end-2026/ticketswitch--unknown.json",
+          "outletId": "ticketswitch",
+          "outlet": "ticketswitch"
         },
         {
-          "file": "data/review-texts/as-you-like-it-globe-west-end-2026/marquee--unknown.json",
-          "outletId": "marquee",
-          "outlet": "marquee"
+          "file": "data/review-texts/fish-off-broadway-2026/frombroadway--zachary-stewart.json",
+          "outletId": "frombroadway",
+          "outlet": "frombroadway"
         },
         {
-          "file": "data/review-texts/as-you-like-it-globe-west-end-2026/myreviewer--unknown.json",
-          "outletId": "myreviewer",
-          "outlet": "myreviewer"
+          "file": "data/review-texts/good-time-charlie-off-broadway-2026/frombroadway--jackson-mchenry.json",
+          "outletId": "frombroadway",
+          "outlet": "frombroadway"
         },
         {
-          "file": "data/review-texts/brainiac-live-west-end-2026/chelmsfordtheatre--unknown.json",
-          "outletId": "chelmsfordtheatre",
-          "outlet": "chelmsfordtheatre"
+          "file": "data/review-texts/grand-horizons-2020/the-unthinkable-happens--grand-horizons.json",
+          "outletId": "the-unthinkable-happens",
+          "outlet": "the-unthinkable-happens"
         },
         {
-          "file": "data/review-texts/cat-cohen-broad-strokes-off-broadway-2026/show-score--unknown.json",
-          "outletId": "show-score",
-          "outlet": "show-score"
+          "file": "data/review-texts/high-school-musical-off-west-end-2026/bellecoaches--distinctive-systems-ltd.json",
+          "outletId": "bellecoaches",
+          "outlet": "bellecoaches"
         },
         {
-          "file": "data/review-texts/dinosaur-world-live-off-west-end-2026/inyougo--unknown.json",
-          "outletId": "inyougo",
-          "outlet": "inyougo"
+          "file": "data/review-texts/just-for-one-day-the-live-aid-musical-west-end-2025/a-hopeful-antidote-to-trying-times-photo-credit--one-day.json",
+          "outletId": "a-hopeful-antidote-to-trying-times-photo-credit",
+          "outlet": "a-hopeful-antidote-to-trying-times-photo-credit"
         },
         {
-          "file": "data/review-texts/disruption-off-broadway-2026/boxofficeticketsales--unknown.json",
-          "outletId": "boxofficeticketsales",
-          "outlet": "boxofficeticketsales"
+          "file": "data/review-texts/music-for-18-musicians-staged-variations-off-broadway-2026/oazis--unknown.json",
+          "outletId": "oazis",
+          "outlet": "oazis"
         },
         {
-          "file": "data/review-texts/disruption-off-broadway-2026/scorebig--unknown.json",
-          "outletId": "scorebig",
-          "outlet": "scorebig"
+          "file": "data/review-texts/nina-off-west-end-2026/oazis--unknown.json",
+          "outletId": "oazis",
+          "outlet": "oazis"
         }
       ]
     },
     {
       "type": "duplicates",
-      "severity": "critical",
-      "message": "17 duplicate reviews detected",
+      "severity": "warning",
+      "message": "5 duplicate reviews detected",
       "examples": [
         {
-          "file": "data/review-texts/a-midsummer-nights-dream-globe-west-end-2026/standard--tim-bano.json",
-          "key": "a-midsummer-nights-dream-globe-west-end-2026|standard|nick curtis"
+          "file": "data/review-texts/im-every-woman-off-west-end-2026/theupcoming--unknown.json",
+          "key": "im-every-woman-off-west-end-2026|theupcoming|emilia gould"
         },
         {
-          "file": "data/review-texts/american-idiot-2010/variety--steven-suskin.json",
-          "key": "american-idiot-2010|variety|steven suskin"
+          "file": "data/review-texts/the-coast-of-utopia-2006/nytimes--ben-brantley.json",
+          "key": "the-coast-of-utopia-2006|nytimes|ben brantley"
         },
         {
-          "file": "data/review-texts/an-ideal-husband-west-end-2026/financialtimes--tim-bano.json",
-          "key": "an-ideal-husband-west-end-2026|financialtimes|tim bano"
+          "file": "data/review-texts/the-producers-west-end-2025/timeout-london--unknown.json",
+          "key": "the-producers-west-end-2025|timeout-london|andrzej lukowski"
         },
         {
-          "file": "data/review-texts/anything-goes-2011/variety--steven-suskin.json",
-          "key": "anything-goes-2011|variety|steven suskin"
+          "file": "data/review-texts/thelma-and-louise-a-new-musical-off-west-end-2026/thestage--the-stage.json",
+          "key": "thelma-and-louise-a-new-musical-off-west-end-2026|thestage|holly o'mahony"
         },
         {
-          "file": "data/review-texts/carmen-off-broadway-2025/broadwayworld--richard-sasanow.json",
-          "key": "carmen-off-broadway-2025|broadwayworld|richard sasanow"
-        },
-        {
-          "file": "data/review-texts/dear-evan-hansen-2016/dailybeast--william-wolf.json",
-          "key": "dear-evan-hansen-2016|dailybeast|tim teeman"
-        },
-        {
-          "file": "data/review-texts/festen-2006/nytimes--ben-brantley.json",
-          "key": "festen-2006|nytimes|ben brantley"
-        },
-        {
-          "file": "data/review-texts/hadestown-west-end-2024/broadwayworld--michael-dale.json",
-          "key": "hadestown-west-end-2024|broadwayworld|cindy marcolina"
-        },
-        {
-          "file": "data/review-texts/jesus-christ-superstar-west-end-2026/broadwayworld--unknown.json",
-          "key": "jesus-christ-superstar-west-end-2026|broadwayworld|aliya al-hassan"
-        },
-        {
-          "file": "data/review-texts/jesus-christ-superstar-west-end-2026/londontheatre1--unknown.json",
-          "key": "jesus-christ-superstar-west-end-2026|londontheatre1|chris omaweng"
+          "file": "data/review-texts/waiting-for-godot-2013/nydailynews--joe-dziemianowicz.json",
+          "key": "waiting-for-godot-2013|nydailynews|joe dziemianowicz"
         }
       ]
     },
     {
       "type": "sync_delta",
       "severity": "critical",
-      "message": "review-texts (42599) and reviews.json (19786) are out of sync by 22813 reviews"
-    },
-    {
-      "type": "unknown_outlets_degradation",
-      "severity": "warning",
-      "message": "Unknown outlets increased from 5 to 28"
-    },
-    {
-      "type": "duplicates_degradation",
-      "severity": "warning",
-      "message": "Duplicates increased from 8 to 17"
+      "message": "review-texts (57504) and reviews.json (29598) are out of sync by 27906 reviews"
     }
   ],
   "summary": {
-    "totalReviews": 42599,
-    "unknownOutlets": 28,
-    "duplicates": 17,
-    "syncDelta": 22813
+    "totalReviews": 57504,
+    "unknownOutlets": 18,
+    "duplicates": 5,
+    "syncDelta": 27906
   }
 }
