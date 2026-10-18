@@ -379,3 +379,6 @@ test('verifyContent call sites no longer hardcode isLongRunningProduction: false
     );
   }
 });
+
+// BRO-4427: temporal-override warning downgrade (the card's acceptance file imports its tests).
+import './cv-wrongproduction-temporal-override.test.mjs';

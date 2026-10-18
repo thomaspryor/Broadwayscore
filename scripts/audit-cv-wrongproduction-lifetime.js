@@ -157,6 +157,7 @@ function main() {
     : listShowDirs(REVIEW_TEXTS_DIR, { silent: true }).length;
 
   const hits = [];
+  let corroboratedWarnings = 0;
   // BRO-5437: files the check recognized as already handled by a documented
   // pipeline decision, by reason, so the snapshot shows what was set aside.
   const handled = {};
@@ -165,6 +166,9 @@ function main() {
     for (const [k, n] of Object.entries((result.details && result.details.handledCounts) || {})) {
       handled[k] = (handled[k] || 0) + n;
     }
+    // BRO-4427: corroborated temporal overrides are non-blocking warnings in the
+    // check, but still standing debt: counted here so they never go invisible.
+    corroboratedWarnings += ((result.details && result.details.warnings) || []).length;
     if (result.severity === 'error') {
       hits.push({
         showId: show.id,
@@ -225,10 +229,11 @@ function main() {
       totalViolations,
       newSinceLastRun,
       handled,
+      corroboratedWarnings,
       hits,
     }, null, 2));
   } else {
-    console.log(`cv-wrongproduction-unhandled lifetime sweep (#1731): ${scanned} show(s) with review-texts scanned, ${hits.length} show(s) with unhandled violations (${totalViolations} review(s), ${newSinceLastRun} new since last run).`);
+    console.log(`cv-wrongproduction-unhandled lifetime sweep (#1731): ${scanned} show(s) with review-texts scanned, ${hits.length} show(s) with unhandled violations (${totalViolations} review(s), ${newSinceLastRun} new since last run). Downgraded to warnings (temporal override, review text names the show): ${corroboratedWarnings}.`);
     const handledTotal = Object.values(handled).reduce((a, b) => a + b, 0);
     if (handledTotal > 0) {
       console.log(`Already handled by a documented pipeline decision (not counted): ${handledTotal} — ${Object.entries(handled).map(([k, n]) => `${k}=${n}`).join(', ')}.`);

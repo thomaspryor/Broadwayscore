@@ -10,6 +10,7 @@ const {
 } = require('../review-guards');
 const { isWithinPriorRun, isWithinOptOutPriorRun, isWithinTourLeg } = require('../wrong-production-autoclear');
 const { parseDate } = require('../date-utils');
+const { buildMentionRegex, sourceTextNamesShow } = require('./slug-mismatch.check');
 
 const name = 'cv-wrongproduction-unhandled';
 const description = 'Source file has contentVerification.wrongProduction=true without top-level clear flag AND still appears in reviews.json (the juan-a-ramirez bypass class)';
@@ -43,6 +44,32 @@ function withinTemporalWindow(publishDate, openingDate) {
   const o = parseDate(openingDate);
   if (!p || !o || Number.isNaN(p.getTime()) || Number.isNaN(o.getTime())) return false;
   return Math.abs(p.getTime() - o.getTime()) <= TEMPORAL_WINDOW_DAYS * 86400000;
+}
+
+/**
+ * BRO-4427: the verifier's temporal override fired (low confidence + OVERRIDE
+ * marker, publishDate inside the opening window, no current different-show or
+ * named-director evidence) AND the review's own text names the show by its full
+ * title or alias in the lede. Whole-title only (titleWords:false) and lede only
+ * (sourceTextNamesShow's first 1500 chars), so a roundup or an article about
+ * another show that mentions this one in passing stays an error.
+ */
+// The verifier's own words for "this is some other show/production", wider than
+// hasStrongDifferentShowSignal's markers: corroboration is refused on any of them.
+const OTHER_SHOW_RE = /\b(?:different|another|other|wrong)\s+(?:show|production|musical|play|revival|staging)\b|\b(?:is|are|was|about|reviews?|covers?)\s+(?:about|for|of)\b/i;
+
+function isCorroboratedTemporalOverride(data, show) {
+  const cv = data.contentVerification || {};
+  if (cv.confidence !== 'low' || !TEMPORAL_OVERRIDE_RE.test(String(cv.reasoning || ''))) return false;
+  if (!show || !withinTemporalWindow(data.publishDate, show.openingDate)) return false;
+  if (hasStrongDifferentShowSignal(cv.issues, cv.reasoning)
+      || hasNamedDifferentDirectorSignal(cv.issues, cv.reasoning, show, data.fullText)) return false;
+  const cvText = [...(Array.isArray(cv.issues) ? cv.issues : []), String(cv.reasoning || '').replace(TEMPORAL_OVERRIDE_RE, '')].join(' ');
+  if (OTHER_SHOW_RE.test(cvText)) return false;
+  const mentionRe = buildMentionRegex(show, { titleWords: false });
+  const segments = [data.fullText, data.bwwExcerpt, data.dtliExcerpt, data.showScoreExcerpt, data.pullQuote]
+    .filter((t) => typeof t === 'string' && t);
+  return sourceTextNamesShow(segments, mentionRe);
 }
 
 /**
@@ -137,6 +164,9 @@ function run(show, context) {
   }
 
   const violations = [];
+  // BRO-4427: corroborated temporal overrides. Reported (and counted by the
+  // lifetime audit) but not blocking.
+  const warnings = [];
   const handledCounts = {};
   // url+outlet+critic of every file whose own top-level wrongProduction is not
   // set: the files that can account for a shipped row (BRO-5437 not-shipped).
@@ -187,7 +217,8 @@ function run(show, context) {
       continue;
     }
 
-    violations.push({
+    const target = isCorroboratedTemporalOverride(data, show) ? warnings : violations;
+    target.push({
       filename,
       url: data.url || '(no url on file)',
       outletId: data.outletId,
@@ -199,6 +230,16 @@ function run(show, context) {
     });
   }
 
+  if (violations.length === 0 && warnings.length > 0) {
+    return {
+      ok: true,
+      severity: 'warning',
+      message: warnings.map(v =>
+        `${v.outletId}/${v.criticName} (${v.filename}) CV.wrongProduction=true from a temporal override, review text names the show — ${v.url}`
+      ).join('\n'),
+      details: { warnings, handledCounts, showId: show.id },
+    };
+  }
   if (violations.length === 0) {
     return {
       ok: true,
@@ -218,6 +259,7 @@ function run(show, context) {
     message,
     details: {
       violations,
+      warnings,
       handledCounts,
       showId: show.id,
       requiredClearFlags: CLEAR_FLAGS,
@@ -239,4 +281,4 @@ function run(show, context) {
   };
 }
 
-module.exports = { name, description, run, handledReason, CLEAR_FLAGS };
+module.exports = { name, description, run, handledReason, isCorroboratedTemporalOverride, CLEAR_FLAGS };
