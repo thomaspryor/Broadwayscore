@@ -1238,5 +1238,36 @@
       }
     ],
     "queuedAt": "2026-10-18T03:39:48.818Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5298-sibling-url-guard",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5298-sibling-url-guard",
+    "description": "land.yml did not land land/bro-5298-sibling-url-guard: the unit-tests-node gate went red at ea02752774. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39093204871",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5298-sibling-url-guard"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "ea02752774e0de754611eef3b6144b6ff29d403e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39093204871"
+      }
+    ],
+    "queuedAt": "2026-10-18T03:49:01.434Z"
   }
 ]
