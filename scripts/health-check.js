@@ -4689,6 +4689,36 @@ function coverageHolesResults(report, now = Date.now()) {
   return out;
 }
 
+const STAR_BAND_DRIFT_STALE_MS = 3 * 24 * 60 * 60 * 1000; // audit-star-band-drift.js runs daily in data-health-check.yml
+
+/**
+ * BRO-4840: surface the daily published-score audit in the digest. A review whose PUBLISHED score contradicts the
+ * critic's own rating is the live harm (a printed 2/5 shown as 91). Warn only; the audit step itself runs --strict.
+ */
+function starBandDriftResults(report, now = Date.now()) {
+  if (!report || typeof report !== 'object') return [];
+  const out = [];
+  const n = Number(report.publishedOutOfBand) || 0;
+  if (n > 0) {
+    out.push({
+      name: 'Data: published scores outside the critic\'s rating',
+      status: 'warn',
+      message: `${n} published review score(s) contradict the critic's own rating or every model's verdict (${Number(report.queuedForRescore) || 0} more already queued for rescore), of ${report.publishedJoined != null ? report.publishedJoined : '?'} checked`,
+      hint: 'node scripts/audit-star-band-drift.js --json=/tmp/drift.json lists the rows (publishedOutOfBand); rebuild-reviews clamps model scores into band, so what remains is a human override, an adjudication or a wrong stored rating (BRO-4840).',
+    });
+  }
+  const at = Date.parse(report.generatedAt);
+  if (!Number.isFinite(at) || now - at > STAR_BAND_DRIFT_STALE_MS) {
+    out.push({
+      name: 'Data: published scores outside the critic\'s rating',
+      status: 'warn',
+      message: 'data/audit/star-band-drift.json is missing a readable generatedAt or is more than 3 days old',
+      hint: 'data-health-check.yml refreshes it daily (its "Published score star-band audit" step); check that workflow\'s last runs.',
+    });
+  }
+  return out;
+}
+
 function cardVerifiabilityBacklogResults(drainMetric, linearReport, now = Date.now()) {
   const results = [];
   // BRO-3619: the armed-but-vacuous bucket (a `test -f` on a file already on main passes before any work is done).
@@ -5924,6 +5954,9 @@ async function main() {
     let coverageHoles = null;
     try { coverageHoles = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/coverage-holes.json'), 'utf8')); } catch { /* audit not yet run */ }
     if (coverageHoles) allResults.push(...coverageHolesResults(coverageHoles));
+    let starBandDrift = null;
+    try { starBandDrift = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/star-band-drift.json'), 'utf8')); } catch { /* audit not yet run */ }
+    if (starBandDrift) allResults.push(...starBandDriftResults(starBandDrift));
     let drainMetric = null;
     try { drainMetric = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/backlog-drain-metric.json'), 'utf8')); } catch { /* drain not yet run */ }
     if (cvLinear || drainMetric) {
@@ -6054,4 +6087,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { generateApproveUrl, checkAuditFreshness, checkSweepReportStaleness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness };
+module.exports = { generateApproveUrl, checkAuditFreshness, checkSweepReportStaleness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness };

@@ -17,7 +17,7 @@
  *                 human override, relayed rating. Joined to the review-text file by showId + normalised URL, in ALL
  *                 markets. This is the check the llmScore-only inventory above could not make.
  *
- * Usage: node scripts/audit-star-band-drift.js [--tol=2] [--json=PATH] [--strict]
+ * Usage: node scripts/audit-star-band-drift.js [--tol=2] [--json=PATH] [--counts=PATH] [--strict]
  *   --strict   exit 1 when any publishedOutOfBand row exists (CI/health use once the backlog is triaged)
  */
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -35,6 +35,7 @@ const ROOT = path.join(__dirname, '..');
 const tolArg = process.argv.find(a => a.startsWith('--tol='));
 const TOL = tolArg ? Number(tolArg.split('=')[1]) : 2;
 const jsonArg = process.argv.find(a => a.startsWith('--json='));
+const countsArg = process.argv.find(a => a.startsWith('--counts='));
 
 const showsRaw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
 const showsArr = Array.isArray(showsRaw) ? showsRaw : (showsRaw.shows || []);
@@ -83,5 +84,10 @@ const bySource = {};
 for (const r of out.publishedOutOfBand) bySource[r.source] = (bySource[r.source] || 0) + 1;
 console.log(`scanned=${out.scanned} alreadyQueued=${out.alreadyQueued} unanchored=${out.unanchored.length} outOfBand=${out.outOfBand.length}`);
 console.log(`published: joined=${out.publishedJoined} outOfBand=${out.publishedOutOfBand.length} queuedForRescore=${out.publishedQueued.length} bySource=${JSON.stringify(bySource)}`);
+if (countsArg) {
+  const kinds = {};
+  for (const r of out.publishedOutOfBand) kinds[r.kind] = (kinds[r.kind] || 0) + 1;
+  fs.writeFileSync(countsArg.split('=')[1], JSON.stringify({ generatedAt: new Date().toISOString(), publishedJoined: out.publishedJoined, publishedOutOfBand: out.publishedOutOfBand.length, queuedForRescore: out.publishedQueued.length, bySource, kinds }, null, 2) + '\n');
+}
 if (jsonArg) fs.writeFileSync(jsonArg.split('=')[1], JSON.stringify(out, null, 2));
 if (process.argv.includes('--strict') && (out.publishedOutOfBand.length || out.publishedJoined === 0)) process.exit(1);

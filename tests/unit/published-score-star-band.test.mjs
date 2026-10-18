@@ -165,7 +165,7 @@ test('audit-star-band-drift reports published out-of-band scores joined from rev
     const plain = run([`--json=${json}`]);
     if (plain.code !== 0) console.error(plain.out);
     assert.equal(plain.code, 0);
-    assert.match(plain.out, /published: joined=1 outOfBand=1 bySource=\{"adjudicated":1\}/);
+    assert.match(plain.out, /published: joined=1 outOfBand=1 queuedForRescore=0 bySource=\{"adjudicated":1\}/);
     const rows = JSON.parse(fs.readFileSync(json, 'utf8')).publishedOutOfBand;
     assert.equal(rows[0].kind, 'star-band');
     assert.equal(rows[0].score, 91);
@@ -244,4 +244,28 @@ test('BRO-4840 an auto-adjudication of a rating the article prints itself does n
   const eww = { outletId: 'ew', originalScore: 'C+', scoreSource: 'letter-grade', fullText: longText('dramatically inert. C+ (Tickets: Telecharge.com)'), adjudicatedScore: 48, adjudicationNote: 'Auto-adjudicated (high confidence, sided with llm): grade contradicts' };
   assert.equal(sr.ratingPrintedInText(eww), true);
   assert.notEqual(getBestScore(eww).source, 'adjudicated');
+});
+
+test('BRO-4840 health digest row: warns on published drift and on a stale/missing audit, silent when clean and fresh', () => {
+  const { starBandDriftResults } = require('../../scripts/health-check.js');
+  const now = Date.parse('2026-10-18T12:00:00Z');
+  const fresh = { generatedAt: '2026-10-18T00:00:00Z', publishedJoined: 28977, publishedOutOfBand: 0, queuedForRescore: 0 };
+  assert.deepEqual(starBandDriftResults(fresh, now), []);
+  assert.deepEqual(starBandDriftResults(null, now), []);
+  const drift = starBandDriftResults({ ...fresh, publishedOutOfBand: 7, queuedForRescore: 2 }, now);
+  assert.equal(drift.length, 1);
+  assert.equal(drift[0].status, 'warn');
+  assert.match(drift[0].message, /7 published review score/);
+  assert.match(drift[0].message, /2 more already queued/);
+  const stale = starBandDriftResults({ ...fresh, generatedAt: '2026-10-01T00:00:00Z' }, now);
+  assert.match(stale[0].message, /3 days old/);
+});
+
+test('BRO-4840 the audit writes a counts-only report (no file names) for the digest', () => {
+  const out = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'sbd-')), 'counts.json');
+  execFileSync('node', [path.join(process.cwd(), 'scripts/audit-star-band-drift.js'), `--counts=${out}`], { stdio: 'pipe' });
+  const c = JSON.parse(fs.readFileSync(out, 'utf8'));
+  assert.ok(Number.isFinite(Date.parse(c.generatedAt)));
+  for (const k of ['publishedJoined', 'publishedOutOfBand', 'queuedForRescore']) assert.equal(typeof c[k], 'number', k);
+  assert.doesNotMatch(JSON.stringify(c), /\.json"/, 'counts only: no review-text file names');
 });
