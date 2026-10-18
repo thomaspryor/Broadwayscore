@@ -72,16 +72,57 @@ test('a New York Times ArtsBeat link is the newspaper, not a blog (BRO-5562)', (
 });
 
 test('a source line that is only a vague attribution names no source (BRO-5562)', () => {
-  for (const vague of ['Industry sources', 'industry sources.', 'Trade sources', 'Sources', 'Theatre source']) {
+  for (const vague of [
+    'Industry sources', 'industry sources.', 'Trade sources', 'Sources', 'Theatre source',
+    // Rewordings of the same nothing.
+    'Sources:', 'Industry sources —', 'Industry sources (unnamed)', 'Per industry sources', 'Broadway sources',
+    'Industry source(s)', 'According to industry sources', 'Sources say', 'Anonymous producer sources said.',
+  ]) {
     assert.equal(publicSourceText(vague), null, `should drop: ${vague}`);
   }
   // A line that names its source still prints, so the anchor cannot drift into a substring match.
-  for (const named of ['Sources: SEC Form D', 'Source: Variety', 'Variety', 'Industry sources (Variety)']) {
+  for (const named of [
+    'Sources: SEC Form D', 'Source: Variety', 'Variety', 'Industry sources (Variety)', 'Per Variety',
+    'Broadway News / Deadline', 'Industry sources; Variety (Mar 2024)',
+  ]) {
     assert.equal(publicSourceText(named), named, `should keep: ${named}`);
   }
   // A longer line that mentions one is judged as a whole (the cats-the-jellicle-ball shape).
   const cats = 'Estimate (industry sources; other reports say up to $18 million). The producers have not published a figure.';
   assert.equal(publicSourceText(cats), cats);
+});
+
+test('saysRecoupmentUnannounced reads the data\'s own wording for an unannounced recoupment (BRO-5562)', () => {
+  const { saysRecoupmentUnannounced } = createRequire(import.meta.url)('../../scripts/lib/public-source-text.js');
+  for (const unannounced of [
+    'Disney does not announce recoupments.', 'Disney never formally announces recoupment.',
+    'No producer announcement; the date is an estimate.', 'Into the Woods did not announce it.',
+    // Live phrasings the first version missed, which the record checks would refuse on a flagged write.
+    'No recoupment was announced.', 'No recoupment announced.', 'Recouped without an announcement.',
+    'Unannounced; inferred from grosses.', "Disney doesn't announce recoupments.", 'Disney doesn’t announce recoupments.',
+    "The producers didn't announce it.", "It wasn't announced.", 'Counted as recouped as an editorial judgment.',
+    'No formal recoupment announcement was made.', 'No public recoupment announcement was made.',
+    'No recoupment has been announced.', 'Recoupment was never announced publicly.',
+    // A neutral "reported" later in the sentence is not a later report of the recoupment (into-the-woods-2022).
+    'So Into the Woods did not announce it; the month was not reported.',
+  ]) {
+    assert.equal(saysRecoupmentUnannounced(unannounced), true, `should read as unannounced: ${unannounced}`);
+  }
+  for (const reported of [
+    'BroadwayWorld (Aug 1, 2025): "They recouped their $14.5 million capitalization in November, 2023."',
+    'Variety editorial (Jan 2024): the show recouped.', 'Producers announced recoupment (Playbill, May 2024).',
+    'The recoupment announcement came in May 2024 (Deadline).',
+    'Recouped per Variety; editorial decision to list the date.',
+    // Unannounced at first, confirmed later in the same sentence: a reported recoupment (the sweeney-todd-2023 shape).
+    'The previously unannounced recoupment was confirmed by Deadline.',
+    'No recoupment announced yet; Variety later confirmed it recouped.',
+    'It was not announced until 2024 (Variety).',
+    'No recoupment was announced at the time; BroadwayWorld reported in August 2025 that it recouped.',
+    'Recouped without a formal announcement, as Playbill subsequently disclosed.',
+    '', null, undefined,
+  ]) {
+    assert.equal(saysRecoupmentUnannounced(reported), false, `should not read as unannounced: ${reported}`);
+  }
 });
 
 test('publicSourceText drops hand-edit process notes and field names written as code (BRO-4669)', () => {

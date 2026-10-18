@@ -31,8 +31,11 @@ const NEWSPAPER_BLOG_HOST_RE = /\b[\w.-]*blogs\.nytimes\.com(?!\.?[\w-])/gi;
 // A source line that is only a vague attribution ("Industry sources", "Trade
 // sources") names no source, so it cannot make a figure read as reported
 // (BRO-5562: proof's $500K weekly cost printed as reported on "Industry
-// sources"). A longer line that mentions one is judged as a whole.
-const VAGUE_ATTRIBUTION_RE = /^(?:(?:industry|trade|insider|producer|theat(?:er|re)|market|press)\s+)?sources?\.?$/i;
+// sources"). Rewordings of the same nothing count too ("Per industry sources",
+// "Industry source(s)", "Sources say", "Sources:"). A longer line that names
+// one ("Sources: SEC Form D", "Industry sources (Variety)") is judged as a whole.
+const VAGUE_ATTRIBUTION_RE =
+  /^(?:(?:according to|per|via|from|citing)\s+)?(?:(?:unnamed|anonymous|unidentified)\s+)?(?:(?:industry|trade|insider|producer|production|theat(?:er|re)|broadway|market|press|financial)\s+)?sources?(?:\s*\(s\))?(?:\s*\((?:unnamed|anonymous|not named)\))?(?:\s+(?:say|says|said|report|reports|reported|indicate|indicated|suggest|suggested))?[\s.:;,–—-]*$/i;
 
 // Bracketed pipeline annotations appended to otherwise publishable notes:
 // "[Auto-designated Fizzle: ...]" (scripts/cleanup-commercial-data.js) and
@@ -62,9 +65,26 @@ function publicSourceText(text) {
 // (Aladdin: "Disney never formally announces recoupment."; Lion King and
 // Aladdin later read "Disney does not announce recoupments.", which the
 // pattern missed, so both printed as announced: BRO-4722.) The record checks
-// read it too (BRO-5562), so the site and the data share one rule.
-const NOT_ANNOUNCED_RE =
-  /\bno (?:public |producer |formal )?announcement\b|\bnever (?:formally |publicly )?announce[sd]?\b|\bnot (?:been )?(?:formally |publicly )?announced\b|\b(?:does|do|did) not (?:formally |publicly )?announce(?:s|ments?)?\b|\beditorial\b/i;
+// read it too (BRO-5562), so the site and the data share one rule; there a
+// missed phrase refuses a correctly flagged write, so the data's own wording
+// ("No recoupment was announced.", "Recouped without an announcement.",
+// contractions) is covered. "Editorial" counts only as our editorial judgment,
+// never a newspaper's editorial. A recoupment that went unannounced at first
+// and was confirmed later in the same sentence ("previously unannounced ...
+// confirmed by Deadline", "not announced until 2024", "no recoupment was
+// announced at the time; BroadwayWorld later reported it") is a reported one,
+// the Sweeney Todd shape this card fixed.
+const LATER_REPORT = String.raw`(?![^.]*\b(?:until|later|subsequently|confirmed|revealed|disclosed|at the time)\b)`;
+const NOT_ANNOUNCED_RE = new RegExp([
+  String.raw`\bno (?:public |producer |formal )?(?:recoupment )?announcement\b`,
+  String.raw`\bno (?:public |formal )?recoupment (?:was |has been |had been |is )?(?:formally |publicly )?announced\b`,
+  String.raw`\bwithout (?:an? |any )?(?:public |formal )?announcement\b`,
+  String.raw`\bunannounced\b`,
+  String.raw`\bnever (?:formally |publicly )?announce[sd]?\b`,
+  String.raw`\b(?:not|(?:is|are|was|were|has|have|had)n['’]t) (?:been )?(?:formally |publicly )?announced\b`,
+  String.raw`\b(?:does|do|did)(?: not|n['’]t) (?:formally |publicly )?announce(?:s|ments?)?\b`,
+  String.raw`\beditorial judg(?:e)?ment\b`,
+].map((alt) => alt + LATER_REPORT).join('|'), 'i');
 
 /**
  * True when a recoupedSource says the recoupment was never announced.
