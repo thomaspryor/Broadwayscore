@@ -80,6 +80,7 @@
 'use strict';
 
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const { spawnSync } = require('child_process');
 const { repoDepthArgs } = require('./shallow-fetch-args.js');
@@ -234,6 +235,36 @@ function isProbeTargetStillCritical({ repoRoot, targetPath }) {
   } catch {
     return null;
   }
+}
+
+const INFRA_GATE_BASENAME = 'infra-plan-review-gate.sh';
+// The project copy's self-skip preamble (BRO-4238): it exits 0 whenever the
+// user-level master FILE exists, so probing it always "fails". Matched on this
+// exact line so an unrelated mention of the path doesn't count.
+const SELF_SKIP_MARKER = 'if [ -f "$HOME/.claude/hooks/infra-plan-review-gate.sh" ]';
+
+/**
+ * Does this copy of the gate defer to a user-level master, and is that master
+ * actually registered? The preamble checks file existence only, so a master
+ * file that settings.json no longer registers means NOTHING enforces the gate.
+ * Assumes homeDir matches the $HOME the hook sees at runtime (true under
+ * launchd and interactive sessions).
+ *
+ * @returns {{state: 'none'|'delegates'|'unregistered-master', detail?: string}}
+ */
+function classifyGateDelegation({ hookPath, homeDir, registeredPaths }) {
+  const master = path.resolve(homeDir, '.claude', 'hooks', INFRA_GATE_BASENAME);
+  if (path.resolve(hookPath) === master || !fs.existsSync(master)) return { state: 'none' };
+  let text = '';
+  try { text = fs.readFileSync(hookPath, 'utf8'); } catch { return { state: 'none' }; }
+  if (!text.includes(SELF_SKIP_MARKER)) return { state: 'none' };
+  if (registeredPaths.has(master)) {
+    return { state: 'delegates', detail: `delegates to user-level master ${master} (probed via its own registration)` };
+  }
+  return {
+    state: 'unregistered-master',
+    detail: `DELEGATES TO AN UNREGISTERED MASTER: this copy exits 0 because ${master} exists, but no settings source registers it — the gate is not enforced anywhere`,
+  };
 }
 
 /**
@@ -639,6 +670,9 @@ function runHookLivenessCheck({ settingsSources, repoRoot, sessionId } = {}) {
   const sourceFailures = [];
   const unmatchedCommands = [];
 
+  // Two passes: a delegating project copy is only trustworthy if the master
+  // it defers to is itself registered, which may come from a later source.
+  const loadedSources = [];
   for (const src of sources) {
     const loaded = loadRegisteredHooks(src);
     if (!loaded.ok) {
@@ -646,14 +680,33 @@ function runHookLivenessCheck({ settingsSources, repoRoot, sessionId } = {}) {
       continue;
     }
     unmatchedCommands.push(...(loaded.unmatched || []));
+    loadedSources.push({ src, loaded });
+  }
+  const registeredPaths = new Set(
+    loadedSources.flatMap(({ loaded }) => loaded.hooks.map((h) => path.resolve(h.absPath))),
+  );
+
+  let probeCount = 0;
+  for (const { src, loaded } of loadedSources) {
     for (const entry of loaded.hooks) {
       const requireExecutable = commandInvokesPathDirectly(entry.command, entry.rawPath);
       const liveness = checkHookLiveness({ hookPath: entry.absPath, requireExecutable });
       let probe = null;
-      if (repoRoot && liveness.ok && path.basename(entry.absPath) === 'infra-plan-review-gate.sh') {
-        probe = probeSyntheticBlock({ hookPath: entry.absPath, repoRoot, sessionId: effectiveSessionId });
+      let delegation = null;
+      if (repoRoot && liveness.ok && path.basename(entry.absPath) === INFRA_GATE_BASENAME) {
+        delegation = classifyGateDelegation({ hookPath: entry.absPath, homeDir: src.homeDir || os.homedir(), registeredPaths });
+        if (delegation.state === 'none') {
+          // Distinct session id per probe: the gate fails open after
+          // MAX_BLOCKS_PER_FILE blocks keyed on session+path, so reusing one id
+          // across probes of the same target would eventually false-FAIL.
+          probe = probeSyntheticBlock({ hookPath: entry.absPath, repoRoot, sessionId: `${effectiveSessionId}-${probeCount++}` });
+        }
       }
-      const ok = liveness.ok && (!probe || probe.ok);
+      const delegationFailed = delegation && delegation.state === 'unregistered-master';
+      const ok = liveness.ok && (!probe || probe.ok) && !delegationFailed;
+      let detail = liveness.detail;
+      if (probe && !probe.ok) detail = `${liveness.detail}; SYNTHETIC-BLOCK PROBE FAILED: ${probe.detail}`;
+      else if (delegation && delegation.state !== 'none') detail = `${liveness.detail}; ${delegation.detail}`;
       hooks.push({
         label: entry.label,
         event: entry.event,
@@ -661,7 +714,7 @@ function runHookLivenessCheck({ settingsSources, repoRoot, sessionId } = {}) {
         absPath: entry.absPath,
         ok,
         unvalidatable: !!liveness.unvalidatable,
-        detail: probe && !probe.ok ? `${liveness.detail}; SYNTHETIC-BLOCK PROBE FAILED: ${probe.detail}` : liveness.detail,
+        detail,
       });
     }
   }
@@ -787,6 +840,7 @@ module.exports = {
   resolveHookPath,
   loadRegisteredHooks,
   runHookLivenessCheck,
+  classifyGateDelegation,
   checkGuardHeartbeat,
   buildHookLivenessAlertPayload,
 };

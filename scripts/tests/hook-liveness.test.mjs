@@ -397,6 +397,55 @@ test('runHookLivenessCheck does NOT run the synthetic-block probe against hooks 
   assert.equal(result.ok, true, result.summary);
 });
 
+// ── BRO-5567: the repo copy self-skips when the user-level master exists ──
+// Probing that copy always exits 0 by design, which made hook-liveness FAIL on
+// every run. It must pass when the master is registered (and probed), and FAIL
+// loudly when the master file exists but nothing registers it.
+
+const SELF_SKIP_COPY =
+  '#!/usr/bin/env bash\n' +
+  'if [ -f "$HOME/.claude/hooks/infra-plan-review-gate.sh" ] && \\\n' +
+  '   [ "${BASH_SOURCE[0]}" != "$HOME/.claude/hooks/infra-plan-review-gate.sh" ]; then\n' +
+  '  exit 0\nfi\ncat >/dev/null\nexit 2\n';
+
+function delegationFixture({ registerMaster }) {
+  const home = makeTmpDir();
+  const repo = makeTmpDir();
+  writeHook(home, '.claude/hooks/infra-plan-review-gate.sh', '#!/usr/bin/env bash\ncat >/dev/null\nexit 2\n');
+  writeHook(home, '.claude/hooks/other.sh', '#!/usr/bin/env bash\ncat >/dev/null\nexit 0\n');
+  writeHook(repo, '.claude/hooks/infra-plan-review-gate.sh', SELF_SKIP_COPY);
+  const userSettings = writeSettings(home, [
+    { event: 'PreToolUse', command: registerMaster ? 'bash ~/.claude/hooks/infra-plan-review-gate.sh' : 'bash ~/.claude/hooks/other.sh' },
+  ]);
+  const repoSettings = writeSettings(repo, [
+    { event: 'PreToolUse', command: 'bash .claude/hooks/infra-plan-review-gate.sh' },
+  ]);
+  // Repo source listed FIRST so the master's registration comes from a later source.
+  return runHookLivenessCheck({
+    settingsSources: [
+      { settingsPath: repoSettings, homeDir: home, baseDir: repo, label: 'repo' },
+      { settingsPath: userSettings, homeDir: home, baseDir: home, label: 'user' },
+    ],
+    repoRoot: REPO_ROOT,
+    sessionId: `hook-liveness-test-${randomUUID()}`,
+  });
+}
+
+test('a repo copy delegating to a REGISTERED master passes, and the master itself is still probed', () => {
+  const result = delegationFixture({ registerMaster: true });
+  assert.equal(result.ok, true, result.summary);
+  const repoEntry = result.hooks.find((h) => h.label === 'repo');
+  assert.match(repoEntry.detail, /delegates to user-level master/);
+});
+
+test('a repo copy delegating to an UNREGISTERED master FAILS (nothing enforces the gate)', () => {
+  const result = delegationFixture({ registerMaster: false });
+  assert.equal(result.ok, false);
+  const repoEntry = result.hooks.find((h) => h.label === 'repo');
+  assert.equal(repoEntry.ok, false);
+  assert.match(repoEntry.detail, /UNREGISTERED MASTER/);
+});
+
 // ── settings-source failure (e.g. a whole settings.json missing) surfaces too ──
 
 test('a missing settings.json source is reported as a source failure, not silently skipped', () => {
