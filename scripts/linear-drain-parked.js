@@ -59,6 +59,10 @@
  * backlog-drain.js) currently wires attempt-memory.js's loadParkOverrides()
  * in — same inherited gap, not new here.
  *
+ * BRO-5626: the Mac is being retired. The cloud replacement is scripts/linear-promote-parked.js (hourly,
+ * .github/workflows/linear-promote-parked.yml): it moves technically-parked cards with a safe VERIFY to Todo
+ * for the cloud workers instead of spawning local sessions.
+ *
  * Kill switch: LINEAR_NEXT_DISABLED=1 is checked here too (not just inside
  * linear-next.js) so a disabled run logs ONE clear line instead of spawning
  * N children that would each individually refuse.

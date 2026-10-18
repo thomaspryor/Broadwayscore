@@ -9,6 +9,9 @@
  *     [--dispatch | --park "<reason>"] [--priority 0-4] [--project-id <id>] \
  *     [--model opus|sonnet] [--source <filer>] [--new-anyway "<reason>"] [--dedupe-opt-out <name>]
  *
+ * BRO-5626: a session --park whose reason is technical (no owner/access/Mac/date block) and whose notes carry
+ * a safe VERIFY line files in Todo (auto-Todo), so the workers pick it; a real block stays in Backlog.
+ *
  * --dispatch or --park "<reason>" is REQUIRED — there is no default
  * disposition. Neither given → exit 2, usage message names both.
  *
@@ -733,6 +736,8 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       console.error(`ROLLED-UP: ${result.issue.identifier} ("${result.issue.title}") collects this filer's repeated findings of this kind; the notes were added there as a comment, no new card`);
     } else if (result.mode === 'dispatch') {
       console.error(`ISSUE-FILED: ${result.issue.identifier} ("${result.issue.title}") — state=${result.stateName}, not yet running (bsc-next Linear support pending #1303)`);
+    } else if (result.autoTodo) {
+      console.error(`ISSUE-FILED: ${result.issue.identifier} ("${result.issue.title}") — state=${result.stateName} (auto-Todo: the park reason is technical and the notes carry a safe VERIFY, so a worker can pick it up; BRO-5626)`);
     } else {
       console.error(`PARKED: ${result.issue.identifier} ("${result.issue.title}") — state=${result.stateName}`);
     }

@@ -92,6 +92,34 @@ async function fetchStuckCards({ graphql, now = new Date(), teamKey = TEAM_KEY, 
   return { count, truncated: true };
 }
 
+const PARKED_QUERY = `query ParkedBacklog($filter: IssueFilter, $after: String) {
+  issues(filter: $filter, first: 250, after: $after, includeArchived: false) {
+    pageInfo { hasNextPage endCursor }
+    nodes { description }
+  }
+}`;
+const PARKED_LINE_RE = /^\s*PARKED\s*:/im;
+
+/**
+ * BRO-5626: Backlog cards a session or alert parked ("PARKED:" line) and nothing has picked up.
+ * The cloud unpark pass (linear-promote-parked.js) drains the technical ones; this count makes
+ * the rest visible every morning. -> { count, truncated }
+ */
+async function fetchParkedBacklog({ graphql, teamKey = TEAM_KEY, graphqlOpts = GRAPHQL_OPTS } = {}) {
+  const filter = { team: { key: { eq: teamKey } }, state: { type: { eq: 'backlog' } } };
+  let count = 0;
+  let after = null;
+  for (let page = 0; page < MAX_PAGES; page++) {
+    const data = await graphql(PARKED_QUERY, { filter, after }, graphqlOpts);
+    const conn = data && data.issues;
+    if (!conn || !Array.isArray(conn.nodes)) throw new Error('Linear returned no issues connection for the parked-backlog count');
+    count += conn.nodes.filter((n) => PARKED_LINE_RE.test(n.description || '')).length;
+    if (!conn.pageInfo || !conn.pageInfo.hasNextPage) return { count, truncated: false };
+    after = conn.pageInfo.endCursor;
+  }
+  return { count, truncated: true };
+}
+
 const RECENT_QUERY = `query RecentCards($filter: IssueFilter, $after: String) {
   issues(filter: $filter, first: 100, after: $after, includeArchived: true) {
     pageInfo { hasNextPage endCursor }
@@ -172,7 +200,7 @@ function readLanded({ cwd = process.cwd(), exec = execFileSync, nowMs = Date.now
 }
 
 /** Every live read, each fail-soft on its own: a missing piece renders "n/a", never blocks the digest. */
-async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLandedFn = readLanded, fetchInflow = fetchInflowCounts, fetchOpen = fetchOpenByPriority, fetchStuck = fetchStuckCards, fetchBySource = fetchInflowBySource } = {}) {
+async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLandedFn = readLanded, fetchInflow = fetchInflowCounts, fetchOpen = fetchOpenByPriority, fetchStuck = fetchStuckCards, fetchBySource = fetchInflowBySource, fetchParked = fetchParkedBacklog } = {}) {
   const soft = async (fn) => { try { return await fn(); } catch (err) { return { error: String(err && err.message || err).slice(0, 120) }; } };
   // Sequential on purpose: backlog-inflow-ratio.js walks one at a time because of Linear rate limits.
   const open = await soft(() => fetchOpen({ graphql }));
@@ -180,6 +208,7 @@ async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLande
   const d7 = await soft(() => fetchInflow({ graphql, now, windowDays: 7 }));
   const stuckCards = await soft(() => fetchStuck({ graphql, now }));
   const bySource = await soft(() => fetchBySource({ graphql, now }));
+  const parked = await soft(() => fetchParked({ graphql }));
   let landed = null;
   try { landed = readLandedFn({ cwd, nowMs: now.getTime() }); } catch { /* n/a */ }
   return {
@@ -188,6 +217,7 @@ async function fetchBoardNumbersData({ graphql, now = new Date(), cwd, readLande
     d7,
     stuckCards,
     bySource,
+    parked,
     landed1: landed ? landed.d1 : null,
     landed7: landed ? landed.d7 : null,
   };
@@ -208,7 +238,7 @@ function buildBoardNumbers({ data = {}, waiting = null, stuck = null, technicalI
   const pick = (w, k) => (ok(w) ? num(w[k]) : null);
   // fetchInflowCounts also walks an open count we never use; only truncation of the counts we show matters.
   const shownTrunc = (w) => ok(w) && (w.truncatedCounts || []).some((n) => n !== 'open');
-  const floors = !!((ok(data.open) && !!data.open.truncated) || shownTrunc(data.d1) || shownTrunc(data.d7) || (ok(data.stuckCards) && data.stuckCards.truncated));
+  const floors = !!((ok(data.open) && !!data.open.truncated) || shownTrunc(data.d1) || shownTrunc(data.d7) || (ok(data.stuckCards) && data.stuckCards.truncated) || (ok(data.parked) && data.parked.truncated));
   return {
     open,
     added: { d1: pick(data.d1, 'created'), d7: pick(data.d7, 'created') },
@@ -220,6 +250,8 @@ function buildBoardNumbers({ data = {}, waiting = null, stuck = null, technicalI
     stuckCardsFloor: ok(data.stuckCards) && !!data.stuckCards.truncated,
     technicalInReview: num(technicalInReview),
     bySource: ok(data.bySource) ? data.bySource : null,
+    parked: ok(data.parked) ? num(data.parked.count) : null,
+    parkedFloor: ok(data.parked) && !!data.parked.truncated,
     lanes: { d1: data.landed1 || null, d7: data.landed7 || null },
     floors,
   };
@@ -243,6 +275,7 @@ function renderBoardNumbersLines(m) {
   }
   lines.push(`Completed: ${show(m.completed.d1)} in 24h, ${show(m.completed.d7)} in 7 days`);
   lines.push(`Canceled: ${show(m.canceled.d1)} in 24h, ${show(m.canceled.d7)} in 7 days`);
+  lines.push(`Parked, never picked: ${show(m.parked)}${m.parked === null ? '' : ' (Backlog cards with a PARKED line)'}`);
   lines.push(`Waiting on you: ${show(m.waiting)}`);
   lines.push(`Stuck cards: ${show(m.stuckCards)}${m.stuckCards === null ? '' : ' (In Progress or In Review, no update in 48h+, not waiting on you)'}`);
   lines.push(`Stuck alerts: ${show(m.stuck)}${m.technicalInReview ? ` (plus ${m.technicalInReview} technical cards parked In Review)` : ''}`);
@@ -264,5 +297,5 @@ function renderBoardNumbersHtml(m, esc = (s) => String(s)) {
 }
 
 module.exports = {
-  fetchOpenByPriority, fetchStuckCards, fetchInflowBySource, summarizeInflowBySource, readLanded, fetchBoardNumbersData, buildBoardNumbers, renderBoardNumbersLines, renderBoardNumbersHtml, PRIORITY_LABELS,
+  fetchParkedBacklog, fetchOpenByPriority, fetchStuckCards, fetchInflowBySource, summarizeInflowBySource, readLanded, fetchBoardNumbersData, buildBoardNumbers, renderBoardNumbersLines, renderBoardNumbersHtml, PRIORITY_LABELS,
 };

@@ -275,9 +275,27 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   }
 
   const team = await linear.getTeam();
-  const state = pickStateForMode(team.states, disposition.mode);
+  let state = pickStateForMode(team.states, disposition.mode);
 
   const filed = effectiveCreatePriority({ priority, mode: disposition.mode, title });
+  // BRO-5626: a session discovery parked for a technical reason with a safe VERIFY is pickable work, not a
+  // block. File it in Todo (no PARKED sentinel) so the workers take it; 183 such cards sat in Backlog
+  // untouched once the Mac drain died. Sessions-only path (reuseTwin), fails open to the parked filing.
+  let autoTodo = false;
+  let parkReason = disposition.reason;
+  if (reuseTwin && disposition.mode === 'park' && !filed.clamped) {
+    try {
+      const promo = require('./linear-promote-parked.js');
+      const parkedBody = `PARKED: ${disposition.reason}\n\n${body}`;
+      const d = promo.promotionDecision({ title, description: parkedBody, priority: filed.priority, state: { type: 'backlog' } });
+      if (d.promote) {
+        state = pickStateForMode(team.states, 'dispatch');
+        autoTodo = true;
+      }
+    } catch (e) {
+      console.warn(`[linear-issue-create] auto-Todo check failed open (filing parked): ${e.message}`);
+    }
+  }
   if (filed.clamped) {
     console.warn(`[linear-issue-create] parked issue filed at Medium, not P0/P1 (BRO-4487): "${title}"`);
   }
@@ -296,7 +314,8 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
     : '';
   const footer = cardDedupe.sourceFooter(cardSource, kind);
   const finalDescription = `${
-    disposition.mode === 'park' ? `PARKED: ${disposition.reason}${clampNote}\n\n${body}`.trim() : body
+    autoTodo ? `${require('./linear-promote-parked.js').UNPARKED_PREFIX} ${parkReason}\n\n${body}`.trim()
+      : disposition.mode === 'park' ? `PARKED: ${disposition.reason}${clampNote}\n\n${body}`.trim() : body
   }\n\n${footer}`.trim();
 
   // Built lazily (not at module load) so requiring this file never reads
@@ -333,7 +352,7 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   // successful create into a reported failure.
   recordCreated({ identifier: issue?.identifier, title });
 
-  return { issue, mode: disposition.mode, stateName: state.name };
+  return { issue, mode: disposition.mode, stateName: state.name, autoTodo };
 }
 
 const OPEN_TWIN_QUERY = `query($teamKey: String!, $title: String!) {

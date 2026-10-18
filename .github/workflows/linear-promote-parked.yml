@@ -1,0 +1,56 @@
+name: Unpark technical Linear cards
+
+# BRO-5626: the Mac drain (linear-drain-parked.js via launchd) was the only thing
+# that moved a technically-parked Backlog card to where a worker could take it. It
+# last ran 2026-09-19, and cloud-worker-pick.js then skipped ~183 cards as
+# 'parked-or-backlog' forever. This hourly pass moves the ones with a technical park
+# reason and a safe VERIFY to Todo (rules + tests: scripts/lib/linear-promote-parked).
+# It only moves state; the picker's own guards still run on every pick.
+# Kill switch: repo variable LINEAR_PROMOTE_PARKED_DISABLED=1.
+
+on:
+  schedule:
+    - cron: '41 * * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Preview only, move nothing'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  promote:
+    name: Move technical parked cards to Todo
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: linear-promote-parked
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          sparse-checkout: |
+            scripts
+            .github/actions
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+      - name: Promote
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          LINEAR_PROMOTE_PARKED_DISABLED: ${{ vars.LINEAR_PROMOTE_PARKED_DISABLED }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then node scripts/linear-promote-parked.js --dry-run; else node scripts/linear-promote-parked.js; fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Parked-card unpark pass failed'
+          description: 'hourly pass could not read Linear or move technical parked cards to Todo (BRO-5626)'
+          severity: 'warning'

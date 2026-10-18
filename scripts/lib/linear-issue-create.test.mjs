@@ -488,3 +488,23 @@ test('BRO-5488: a near-duplicate of a router/autofix card files instead of notin
   assert.equal(r.mode, 'park');
   assert.equal(board.comments.length, 0);
 }));
+
+test('BRO-5626: a session discovery with a technical park and a safe VERIFY files in Todo, no PARKED sentinel', () => withTeam(async () => {
+  const notes = 'Problem: x\nVERIFY: node --test scripts/lib/cloud-worker-pick.test.mjs';
+  const board = fakeBoard({ open: [] });
+  const r = await createLinearIssue({ title: 'Tighten the picker skip counter for parked cards', description: notes, park: 'needs its own session, several files', priority: 3, client: board.client, reuseTwin: true });
+  assert.equal(r.autoTodo, true);
+  assert.equal(r.stateName, 'Todo');
+  assert.doesNotMatch(board.created[0].description, /^\s*PARKED\s*:/im);
+  // Real blocks and unarmed cards stay parked; the alert router (no reuseTwin) is untouched.
+  const mac = fakeBoard({ open: [] });
+  const m = await createLinearIssue({ title: 'Rebuild the simulator fixture set', description: notes, park: 'needs the owner Mac simulator', priority: 3, client: mac.client, reuseTwin: true });
+  assert.equal(m.autoTodo, false);
+  assert.equal(m.stateName, 'Backlog');
+  const bare = fakeBoard({ open: [] });
+  const b = await createLinearIssue({ title: 'Look into the flaky thing nobody can verify', description: 'Problem: x', park: 'needs its own session', priority: 3, client: bare.client, reuseTwin: true });
+  assert.equal(b.autoTodo, false);
+  const router = fakeBoard({ open: [] });
+  const a = await createLinearIssue({ title: 'Tighten the picker skip counter v2', description: notes, park: 'needs its own session, several files', priority: 3, client: router.client });
+  assert.equal(a.autoTodo, false);
+}));

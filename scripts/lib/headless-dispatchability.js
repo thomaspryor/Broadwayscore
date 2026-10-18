@@ -398,6 +398,7 @@ module.exports = {
   isDrainableSessionParked,
   parkReasonAdvisory,
   OWNER_HOLD_PARK_RE,
+  OWNER_ONLY_PARK_RE,
   TECHNICAL_PARK_RE,
   // Exported so a test can assert this array holds the SHARED owner-judgment
   // regex object rather than a fourth handwritten copy (task #1154).
