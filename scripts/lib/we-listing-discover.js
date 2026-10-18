@@ -44,6 +44,7 @@
 
 const { WEST_END_VENUES } = require('./venue-classification');
 const { foldDiacritics } = require('./title-match');
+const { fixMisCasedRomanNumerals } = require('./title-display-case');
 // Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
 // `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
 const { parseJsonLd, hasJsonLdType } = require('./jsonld');
@@ -406,9 +407,11 @@ const TITLE_CASE_LOWERCASE = new Set(['of', 'the', 'a', 'an', 'and', 'or', 'to',
 /** "how-the-other-half-loves" -> "How the Other Half Loves". */
 function slugToTitle(slug) {
   const words = slug.split('-').filter(Boolean);
-  return words
+  const title = words
     .map((w, i) => (i > 0 && TITLE_CASE_LOWERCASE.has(w)) ? w : w[0].toUpperCase() + w.slice(1))
     .join(' ');
+  // BRO-4567: "richard-ii" must not become "Richard Ii".
+  return fixMisCasedRomanNumerals(title).title;
 }
 
 /**

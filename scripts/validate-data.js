@@ -590,7 +590,7 @@ function validateRequiredFields(shows) {
  * `og:title`), not a command that guesses for them.
  */
 function validateShowTitles(shows) {
-  info('Checking show titles for scrape artifacts (URL fragment / venue suffix / ALL-CAPS)...');
+  info('Checking show titles for scrape artifacts (URL fragment / venue suffix / Roman-numeral case / ALL-CAPS)...');
   const venueVocabulary = buildVenueVocabulary(shows);
   let bad = 0;
 
@@ -619,7 +619,7 @@ function validateShowTitles(shows) {
     if (!result.changed) continue;
     bad++;
     const how = result.steps.map(st => st.kind).join(' + ');
-    error(`Show "${show.title}" (${show.id}) has a scrape artifact in its title (${how}). Expected: "${result.title}". Fix with: node scripts/fix-show-titles.js --apply. If the current title is genuinely correct, widen the exemptions in scripts/lib/title-venue-suffix.js for the parenthetical case.`);
+    error(`Show "${show.title}" (${show.id}) has a scrape artifact in its title (${how}). Expected: "${result.title}". Fix with: node scripts/fix-show-titles.js --apply. If the current title is genuinely correct, widen the exemptions in scripts/lib/title-venue-suffix.js for the parenthetical case, or ROMAN_TITLE_CASE_EXCLUDED in scripts/lib/title-display-case.js for a title-cased Roman numeral.`);
   }
 
   // titleCaseNormalizedAt/From were written by fix-shouted-titles.js, deleted

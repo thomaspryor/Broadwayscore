@@ -347,6 +347,33 @@ function classifyShowTitle(showId, title, opts = {}) {
   return { action: 'convert', title: next, from: title };
 }
 
+// BRO-4567: a Roman numeral written in TITLE case ("Richard Ii", "Henry
+// Viii") is a slug-capitalising artifact, never a stylisation. Unlike the
+// shouted-title case this IS deterministic to repair: the numeral's correct
+// form is all-caps. Only multi-letter numerals count (a lone "V"/"X" is
+// already right), and two are excluded because the title-cased form is also
+// a real name or word: "Vi" (a given name) and "Xi" (the Greek letter, a
+// surname). A fully lowercase "ii" is left alone (could be deliberate).
+const ROMAN_TITLE_CASE_EXCLUDED = new Set(['vi', 'xi']);
+const ROMAN_TITLE_CASE_TOKEN = /(?<![\p{L}\p{M}\p{N}])([IVX][ivx]+)(?![\p{L}\p{M}\p{N}])/gu;
+
+/**
+ * Find and repair title-cased Roman numerals in a title.
+ * @param {string} title
+ * @returns {{title: string, tokens: string[]}} tokens = the mis-cased tokens found
+ */
+function fixMisCasedRomanNumerals(title) {
+  if (typeof title !== 'string' || !title) return { title, tokens: [] };
+  const tokens = [];
+  const fixed = title.replace(ROMAN_TITLE_CASE_TOKEN, (tok) => {
+    const bare = tok.toLowerCase();
+    if (!ROMAN_NUMERALS.has(bare) || ROMAN_TITLE_CASE_EXCLUDED.has(bare)) return tok;
+    tokens.push(tok);
+    return tok.toUpperCase();
+  });
+  return { title: fixed, tokens };
+}
+
 module.exports = {
   isShoutedTitle,
   needsManualReview,
@@ -361,5 +388,7 @@ module.exports = {
   MINOR_WORDS,
   KEEP_UPPER,
   ROMAN_NUMERALS,
+  ROMAN_TITLE_CASE_EXCLUDED,
+  fixMisCasedRomanNumerals,
   AMBIGUOUS_REJECTED,
 };

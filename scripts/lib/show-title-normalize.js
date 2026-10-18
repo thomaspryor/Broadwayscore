@@ -8,6 +8,8 @@
  *      ("The Cherry Orchard (Park Avenue Armory)")    -> title-venue-suffix.js
  *   2. a heading captured from a source that doesn't preserve true casing
  *      ("AMERICA, WHO HURT YOU?")                     -> title-display-case.js
+ *   3. a Roman numeral title-cased by slug capitalising
+ *      ("Richard Ii", BRO-4567)                       -> title-display-case.js
  *
  * BRO-3920 retired algorithmic title-casing as a fix for (2): guessing a
  * casing from the shouted string alone already shipped wrong output
@@ -45,6 +47,7 @@ const MAX_VENUE_STRIP_PASSES = 4;
 const {
   isShoutedTitle,
   isExemptFromTitleCase,
+  fixMisCasedRomanNumerals,
 } = require('./title-display-case');
 
 /**
@@ -54,7 +57,7 @@ const {
  *   title: string,            // what the title SHOULD be (venue-suffix repairs only)
  *   changed: boolean,
  *   manualReview: boolean,    // shouted casing detected — a human owes us a source lookup
- *   steps: Array<{kind:'venue-suffix', from:string, to:string, oracle?:string}>
+ *   steps: Array<{kind:'venue-suffix'|'roman-numeral-case', from:string, to:string, oracle?:string}>
  * }}
  */
 function normalizeShowTitle(show, ctx = {}) {
@@ -77,6 +80,16 @@ function normalizeShowTitle(show, ctx = {}) {
     if (venueResult.action !== 'strip') break;
     steps.push({ kind: 'venue-suffix', from: title, to: venueResult.title, oracle: venueResult.oracle });
     title = venueResult.title;
+  }
+
+  // 1b. BRO-4567: title-cased Roman numerals ("Richard Ii" -> "Richard II").
+  // Deterministic (the numeral's only correct form is upper case), so this
+  // repairs rather than flags; validate-data.js errors with the expected
+  // title and fix-show-titles.js --apply writes it.
+  const roman = fixMisCasedRomanNumerals(title);
+  if (roman.tokens.length) {
+    steps.push({ kind: 'roman-numeral-case', from: title, to: roman.title });
+    title = roman.title;
   }
 
   // 2. shouted casing, on the now-stripped title — DETECT, never guess-fix.
