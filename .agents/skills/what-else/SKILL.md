@@ -138,7 +138,7 @@ the same class are one piece of work, not four.
 For each spark that survives all three tests, create a **Linear** issue via
 `node scripts/linear-brain.js create "<spark title>" --park "<why it needs its own session>" --model opus|sonnet --notes "..."`
 (`--model`: Opus for multi-file, architectural or hard-to-debug work; Sonnet for mechanical single-file or data fixes. The worker reads it at dispatch.)
-(`--dispatch` instead of `--park` for P0/P1; `--priority 1|2|3`). Notion is
+(`--dispatch` instead of `--park` for P0/P1; `--priority 1|2|3`.) A technical discovery with a safe `VERIFY:` line needs no real block, so a `--park` reason like "needs its own session" files it straight into Todo (BRO-5626: auto-Todo, the workers pick it). Reserve `--park` for a real block: owner decision, missing access, the owner's Mac, or waiting on a date; name that block in the reason, and a reason naming one stays in Backlog. Notion is
 retired: its create exits 6, so never use `notion-brain.js`.
 - **Notes:** Self-contained handoff using this structure:
   ```
