@@ -204,3 +204,12 @@ test('runs over the real .github/workflows without throwing', () => {
     assert.ok(h.file && h.job && h.commitStep && h.validateStep && h.staged.length, JSON.stringify(h));
   }
 });
+
+test('flags a validate-data.js workflow the parser cannot read; passes a normal one', () => {
+  const os = require('os');
+  const { unscannableWorkflows } = require('../../scripts/lib/always-commit-after-validate.js');
+  const d = fs.mkdtempSync(path.join(os.tmpdir(), 'acv-'));
+  fs.writeFileSync(path.join(d, 'odd.yml'), 'jobs:\n    j:\n        steps:\n            - run: node scripts/validate-data.js\n');
+  fs.writeFileSync(path.join(d, 'ok.yml'), 'jobs:\n  j:\n    steps:\n      - name: v\n        run: node scripts/validate-data.js\n');
+  assert.deepEqual(unscannableWorkflows(d), ['odd.yml']);
+});

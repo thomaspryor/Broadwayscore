@@ -16,7 +16,7 @@
 'use strict';
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { auditWorkflowDir } = require('./lib/always-commit-after-validate.js');
+const { auditWorkflowDir, unscannableWorkflows } = require('./lib/always-commit-after-validate.js');
 
 const USAGE = `audit-always-commit-after-validate.js — advisory: always() commits that publish data after a failed validate-data.js.
 
@@ -37,6 +37,10 @@ try {
   console.log(`::warning::always-commit-after-validate: could not scan ${dir}: ${e.message}`);
   process.exit(0);
 }
+
+let unscannable = [];
+try { unscannable = unscannableWorkflows(dir); } catch { /* scan above already warned */ }
+for (const f of unscannable) console.log(`::warning::always-commit-after-validate: ${f} mentions validate-data.js but parsed to no steps (unsupported layout); not audited`);
 
 if (argv.includes('--json')) {
   process.stdout.write(JSON.stringify({ count: hits.length, offenders: hits }, null, 2) + '\n');

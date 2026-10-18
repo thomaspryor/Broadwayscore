@@ -276,6 +276,17 @@ function findAlwaysCommitAfterValidate(text) {
 }
 
 /** Run over a directory of workflow files. Returns [{ file, ...finding }]. */
+// Files that mention validate-data.js but parse to no step: the line parser
+// does not understand their layout, so "no finding" would be a silent pass.
+function unscannableWorkflows(dir, fs = require('fs'), path = require('path')) {
+  const files = fs.readdirSync(dir).filter((f) => /\.ya?ml$/.test(f)).sort();
+  return files.filter((f) => {
+    const text = fs.readFileSync(path.join(dir, f), 'utf8');
+    if (!/validate-data\.js/.test(text)) return false;
+    return !parseJobs(text).some((j) => j.steps && j.steps.length);
+  });
+}
+
 function auditWorkflowDir(dir, fs = require('fs'), path = require('path')) {
   const files = fs.readdirSync(dir).filter((f) => /\.ya?ml$/.test(f)).sort();
   const out = [];
@@ -295,5 +306,6 @@ module.exports = {
   PROTECTED_DIRS,
   findAlwaysCommitAfterValidate,
   auditWorkflowDir,
+  unscannableWorkflows,
   EXEMPT_RE,
 };
