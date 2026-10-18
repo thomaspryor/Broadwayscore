@@ -66,16 +66,23 @@ describe('calculateRecoupment schedule', () => {
   const comm = { capitalization: 20_000_000, weeklyRunningCost: 800_000 };
   const weekly = Object.fromEntries(sundays('2025-03-02', 30).map((d) => [d, { gross: 1_200_000, performances: 8 }]));
 
-  test('live (default) still estimates the previews on top of the weekly rows', () => {
-    const live = calculateRecoupment(show, comm, null, weekly);
-    assert.equal(live.previewWeeks, 4);
-    assert.equal(live.totalRunWeeks, 30 + 4);
+  test('option off (the play path) still estimates the previews on top of the weekly rows', () => {
+    const old = calculateRecoupment(show, comm, null, weekly, { previewsFromWeekly: false });
+    assert.equal(old.previewWeeks, 4);
+    assert.equal(old.totalRunWeeks, 30 + 4);
   });
 
-  test('shadow option: weekly rows from first preview get 0 synthetic preview weeks', () => {
+  test('option on: weekly rows from first preview get 0 synthetic preview weeks', () => {
     const fixed = calculateRecoupment(show, comm, null, weekly, { previewsFromWeekly: true });
     assert.equal(fixed.totalRunWeeks, 30);
-    assert.notEqual(fixed.recoupmentPctCentral, calculateRecoupment(show, comm, null, weekly).recoupmentPctCentral);
+    assert.notEqual(fixed.recoupmentPctCentral, calculateRecoupment(show, comm, null, weekly, { previewsFromWeekly: false }).recoupmentPctCentral);
+  });
+
+  test('live: on by default for a musical (BRO-5598), off for a play', () => {
+    assert.equal(calculateRecoupment(show, comm, null, weekly).totalRunWeeks, 30);
+    const play = { ...show, type: 'play' };
+    assert.equal(calculateRecoupment(play, comm, null, weekly).totalRunWeeks, 30 + 4);
+    assert.deepEqual(calculateRecoupment(play, comm, null, weekly), calculateRecoupment(play, comm, null, weekly, { previewsFromWeekly: false }));
   });
 
   test('shadow option: covered weekly rows are flagged as previews, later rows are not', () => {

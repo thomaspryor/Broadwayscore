@@ -512,7 +512,27 @@ function getPreviewGrossMultiplier(previewWeek) {
  *   on top of both.
  * @returns {object} RecoupmentModelResult
  */
+/**
+ * Musical calibration (BRO-5598): three former shadow options are live for
+ * musicals only, so the live play bar is unchanged.
+ *   previewsFromWeekly  estimate only the preview weeks the weekly grosses
+ *                       do not already cover (BRO-5002: they were counted twice)
+ *   datedCosts          each week's cost from its own date (cost index, BRO-4989)
+ *   varBandMusicalsCited the varBand deduction shape (BRO-5073), only on a cited
+ *                       running cost: an estimated cost was fitted to the old
+ *                       flat deduction, and an all-in or breakeven figure
+ *                       already holds the gross-linked costs
+ * Timing backtest, musicals: MAE 18.4 -> 14.1, inside 34 -> 37 of 60; reported
+ * truth musicals 4.6 -> 3.7, 0 new false recouped. An explicit false in opts
+ * turns one off (shadow comparisons).
+ */
+const MUSICAL_LIVE_OPTS = Object.freeze({ previewsFromWeekly: true, datedCosts: true, varBandMusicalsCited: true });
+function withMusicalDefaults(show, opts) {
+  return (show.type || 'musical') === 'musical' ? { ...MUSICAL_LIVE_OPTS, ...opts } : opts;
+}
+
 function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, opts = {}) {
+  opts = withMusicalDefaults(show, opts);
   const warnings = [];
   if (isConvertedToCommercial(commercial)) return { error: SPLIT_RUN_ERROR, warnings: [SPLIT_RUN_ERROR] };
   if (opts.ownRunOnly) {
@@ -564,8 +584,9 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   const split = opts.costSplit && !basisNut ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null;
   const baseVarRate = split ? split.varRate : getBaseVariableRate(category);
   const runNut = split ? split.fixedNut : weeklyNut;
-  const costPath = opts.stepSmall || opts.stepLate || opts.costGrowth || opts.varBand || opts.varOverage || opts.varBandMusicals || opts.varOverageMusicals || opts.varBandMusicalsRamp
-    ? { stepSmall: !!opts.stepSmall, stepLate: !!opts.stepLate, costGrowth: !!opts.costGrowth, varBand: !!opts.varBand, varOverage: !!opts.varOverage, varBandMusicals: !!opts.varBandMusicals, varOverageMusicals: !!opts.varOverageMusicals, varBandMusicalsRamp: !!opts.varBandMusicalsRamp } : null; // shadow, BRO-5073/5091
+  const citedBand = !!opts.varBandMusicalsCited && isCitedReportedWeeklyCost(commercial) && !['all-in', 'breakeven'].includes(commercial.weeklyRunningCostBasis);
+  const costPath = opts.stepSmall || opts.stepLate || opts.costGrowth || opts.varBand || opts.varOverage || opts.varBandMusicals || opts.varOverageMusicals || opts.varBandMusicalsRamp || citedBand
+    ? { stepSmall: !!opts.stepSmall, stepLate: !!opts.stepLate, costGrowth: !!opts.costGrowth, varBand: !!opts.varBand, varOverage: !!opts.varOverage, varBandMusicals: !!opts.varBandMusicals || citedBand, varOverageMusicals: !!opts.varOverageMusicals, varBandMusicalsRamp: !!opts.varBandMusicalsRamp } : null; // shadow, BRO-5073/5091
 
   // --- Star deal ---
   const slug = show.slug || show.id;
@@ -1090,6 +1111,7 @@ function parseTaxCreditFromNotes(notes) {
  * The blended weekly nut is deflated to a run-average (current nut reflects end-of-run costs).
  */
 function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}) {
+  opts = withMusicalDefaults(show, opts);
   const warnings = ['Simplified lifetime model (10+ year run)'];
   if (isConvertedToCommercial(commercial)) return { error: SPLIT_RUN_ERROR, warnings: [SPLIT_RUN_ERROR] };
 
@@ -1249,6 +1271,7 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
 // ---------------------------------------------------------------------------
 
 module.exports = {
+  MUSICAL_LIVE_OPTS,
   calculateRecoupment,
   calculateLifetimeRecoupment,
   SPLIT_RUN_ERROR,
