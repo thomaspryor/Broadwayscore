@@ -12,7 +12,7 @@
  * Pure: no I/O. The scraper fetches and writes.
  */
 
-const { addAnchors } = require('./cost-history');
+const { addAnchors, historyWithSeeds } = require('./cost-history');
 
 /** One week between his posts plus slack: two figures further apart are not a "single-week" jump. */
 const MAX_JUMP_GAP_DAYS = 10;
@@ -48,7 +48,7 @@ function waltzAnchor(post, cost) {
  * Append his figures to each matched record's costHistory.
  * @param {object} commercialShows - commercial.json `shows` (mutated only when apply is true)
  * @param {{slug: string, anchor: object}[]} items
- * @param {{apply?: boolean}} [opts]
+ * @param {{apply?: boolean, seeds?: Record<string, object[]>, showsBySlug?: Record<string, object>}} [opts]
  * @returns {{ added: number, duplicates: number, refused: {slug, errors}[], noRecord: string[], perSlug: Record<string, number> }}
  */
 function appendWaltzAnchors(commercialShows, items, opts = {}) {
@@ -61,7 +61,15 @@ function appendWaltzAnchors(commercialShows, items, opts = {}) {
   for (const [slug, anchors] of bySlug) {
     const record = commercialShows?.[slug];
     if (!record) { out.noRecord.push(slug); continue; }
-    const res = addAnchors(record.costHistory, anchors);
+    // A record with no history yet starts from its reported cost (legacy
+    // weeklyRunningCost + researched seeds). Without this, his first Reddit
+    // anchor would replace that figure in costAnchors(), and hasCostAnchor()
+    // would turn dated costs off for the shows that have a reported cost
+    // (BRO-5604: 11 of 45 lost it).
+    const base = Array.isArray(record.costHistory) && record.costHistory.length
+      ? record.costHistory
+      : historyWithSeeds(record, opts.showsBySlug?.[slug], opts.seeds?.[slug] || []);
+    const res = addAnchors(base, anchors);
     out.added += res.added.length;
     out.duplicates += res.duplicates;
     for (const r of res.refused) out.refused.push({ slug, errors: r.errors });

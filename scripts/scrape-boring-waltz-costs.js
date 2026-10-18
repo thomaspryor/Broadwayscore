@@ -436,7 +436,9 @@ async function main() {
   }
   // The gap-fill above may have patched records in place (not in dry-run);
   // anchors go onto the same objects.
-  const history = appendWaltzAnchors(commercial.shows, historyItems, { apply: WRITE_HISTORY });
+  const costSeeds = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'cost-anchor-seeds.json'), 'utf8')).anchors || {};
+  const showsBySlug = Object.fromEntries(shows.map((s) => [s.slug || s.id, s]));
+  const history = appendWaltzAnchors(commercial.shows, historyItems, { apply: WRITE_HISTORY, seeds: costSeeds, showsBySlug });
   console.log('\n=== Cost history (every dated figure) ===');
   console.log(`Figures read: ${historyItems.length} | anchors ${WRITE_HISTORY ? "added" : "that would be added (preview)"}: ${history.added} | already stored: ${history.duplicates} | refused: ${history.refused.length} | no commercial record: ${history.noRecord.length}`);
   for (const r of history.refused.slice(0, 10)) console.log(`  REFUSED ${r.slug}: ${r.errors.join('; ')}`);
