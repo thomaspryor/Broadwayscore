@@ -75,3 +75,11 @@ test('a page URL with a query string or hash is still treated as the document', 
   const r = classifyIssue({ title: 'RangeError: Maximum call stack size exceeded.', culprit: 'x', count: '3', userCount: '1' }, ev([doc('/lists/box-office-gold/all-time?ref=x#top', 225)]));
   assert.equal(r.noise, true);
 });
+
+// Real titles from BROADWAY-SCORECARD-A (iOS Safari, frame "global code" at /browse/...:1:3) and -2D (KaiOS Firefox 84).
+test('known injected / ancient-engine errors are noise even when their frame is on our domain', () => {
+  const g = classifyIssue({ title: "ReferenceError: Can't find variable: _G", culprit: 'global code(browse/short-broadway-shows)', count: '11', userCount: '2' }, ev([doc('/browse/short-broadway-shows', 1)]));
+  assert.equal(g.noise, true);
+  const k = classifyIssue({ title: 'SyntaxError: private fields are not currently supported', culprit: '?(chunks/7757)', count: '1', userCount: '1' }, ev([chunk('7757-abc', 1)]));
+  assert.equal(k.noise, true);
+});

@@ -31,6 +31,9 @@ const NOISE_MESSAGE_PATTERNS = [
   /Object Not Found Matching Id/i,
   /a\[e\] is not a function/i,
   /instantSearchSDKJSBridgeClearHighlight/i,
+  // Injected by in-app browsers / ancient engines, found in the 2026-10 digest (BRO-5565):
+  /Can't find variable: _G\b/,
+  /private fields are not currently supported/i,
   /fb_xd_fragment/i,
   /googletag/i,
   /google-analytics/i,
