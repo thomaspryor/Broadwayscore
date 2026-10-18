@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-10-18T00:54:53.187Z",
+  "timestamp": "2026-10-18T01:09:09.622Z",
   "stats": {
     "totalReviews": 57378,
     "alreadyFlagged": 21278,
     "dateGuardCatches": 195,
-    "directorMismatch": 1948,
-    "tvFilmSignals": 1603,
-    "londonSignals": 2412,
-    "offBroadwaySignals": 517,
-    "yearMismatch": 158,
+    "directorMismatch": 1951,
+    "tvFilmSignals": 1607,
+    "londonSignals": 2420,
+    "offBroadwaySignals": 520,
+    "yearMismatch": 159,
     "noPublishDate": 5297
   },
   "findings": [
@@ -494,6 +494,39 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "a-chorus-line-1975",
+      "file": "independent--kate-bassett.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/theatre-review-shrinks-secrets-and-all-that-jazz-in-a-chorus-line-8508128.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob avian\" from a-chorus-line-2006"
+        }
+      ]
+    },
+    {
+      "showId": "a-chorus-line-1975",
+      "file": "timeout--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.timeout.com/newyork/theater/a-chorus-line-1",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob avian\" from a-chorus-line-2006"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2006 (2x) more than 1975 (1x). 2006 matches production: a-chorus-line-2006"
         }
       ]
     },
@@ -1979,6 +2012,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
+      "file": "sunday-times--dominic-maxwell.json",
+      "publishDate": "2025-11-21",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/all-my-sons-theatre-review-bryan-cranston-h2xqh238h",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -22477,6 +22523,24 @@
     },
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "sunday-times--clive-davis.json",
+      "publishDate": "2026-03-27",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/john-proctor-is-the-villain-review-arthur-miller-for-the-metoo-era-kx3bcrjbl",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "telegraph--claire-allfree.json",
       "score": 78,
       "publishDate": "2026-03-27",
@@ -23500,6 +23564,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "legally-blonde-tour-2022",
+      "file": "thewrap--robert-hofler.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.thewrap.com/reese-witherspoon-says-she-is-reviewing-audition-tapes-for-legally-blonde-prequel/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
         }
       ]
     },
@@ -27654,6 +27732,25 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 491d before show (November 17th, 2024 vs 2026-03-23)"
+        }
+      ]
+    },
+    {
+      "showId": "my-brilliant-friend-part-1-part-2-west-end-2019",
+      "file": "standard--nick-curtis.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.standard.co.uk/culture/theatre/my-brilliant-friend-review-elena-ferrantes-story-makes-a-triumphant-transition-to-stage-a4297721.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -34369,6 +34466,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"richard eyre\" from skylight-1996"
+        }
+      ]
+    },
+    {
+      "showId": "small-island-west-end-2019",
+      "file": "standard--veronica-lee.json",
+      "publishDate": null,
+      "url": "https://www.standard.co.uk/culture/theatre/edinburgh-fringe-2019-sht-theatre-drink-rum-with-expats-review-dark-notes-from-another-small-island-a4205356.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -51945,6 +52055,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "a-good-house-west-end-2025",
+      "file": "everything-theatre--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://everything-theatre.co.uk/2025/01/review-a-good-house-royal-court-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -72557,6 +72681,20 @@
     },
     {
       "showId": "oh-mary-2024",
+      "file": "theatermania--unknown.json",
+      "score": null,
+      "publishDate": "July 11, 2024",
+      "url": "https://www.theatermania.com/news/review-oh-mary-cole-escolas-riotous-broadway-debut_1744785/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-2024",
       "file": "theatermania--zachary-stewart.json",
       "score": 93,
       "publishDate": "2024-07-11",
@@ -73699,6 +73837,19 @@
       ]
     },
     {
+      "showId": "our-generation-west-end-2022",
+      "file": "independent--unknown.json",
+      "publishDate": null,
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/our-generation-dorfman-theatre-b2027583.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
       "showId": "p-rn-play-west-end-2025",
       "file": "guardian--chris-wiegand.json",
       "score": 82,
@@ -73904,6 +74055,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "paradise-west-end-2021",
+      "file": "londongrip--alan-price.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://londongrip.co.uk/2022/04/forbidden-paradise-lubitsch-1924-review-by-alan-price/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -79687,6 +79852,19 @@
     },
     {
       "showId": "the-brightening-air-west-end-2025",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "April 25th, 2025",
+      "url": "https://www.londontheatre.co.uk/reviews/the-brightening-air-review-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-brightening-air-west-end-2025",
       "file": "theatre-weekly--greg-stewart.json",
       "score": 88,
       "publishDate": "2025-04-24",
@@ -82095,6 +82273,20 @@
     },
     {
       "showId": "the-importance-of-being-earnest-west-end-2024",
+      "file": "standard--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.standard.co.uk/culture/theatre/the-importance-of-being-earnest-national-theatre-review-ncuti-gatwa-b1197140.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-importance-of-being-earnest-west-end-2024",
       "file": "thereviewshub--stephen-bates.json",
       "score": 87,
       "publishDate": "2024-11-29",
@@ -84409,6 +84601,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-producers-west-end-2025",
+      "file": "juliarank--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://juliarank.substack.com/p/review-the-producers-garrick-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -87199,6 +87405,20 @@
       ]
     },
     {
+      "showId": "twilight-los-angeles-1992-1994",
+      "file": "nytg--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.newyorktheatreguide.com/reviews/anna-deavere-smith-twilight-los-angeles-1992-signature-theatre-review",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
+        }
+      ]
+    },
+    {
       "showId": "two-palestinians-go-dogging-west-end-2022",
       "file": "the-spectator-uk--lloyd-evans.json",
       "score": 10,
@@ -88892,6 +89112,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "you-will-get-sick-off-broadway-2022",
+      "file": "theater-scene--darryl-reilly.json",
+      "score": 75,
+      "publishDate": null,
+      "url": "https://theaterscene.org/2022/11/you-will-get-sick/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     }
