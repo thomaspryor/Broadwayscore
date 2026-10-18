@@ -56,7 +56,7 @@ function withinTemporalWindow(publishDate, openingDate) {
  */
 // The verifier's own words for "this is some other show/production", wider than
 // hasStrongDifferentShowSignal's markers: corroboration is refused on any of them.
-const OTHER_SHOW_RE = /\b(?:different|another|other|wrong)\s+(?:show|production|musical|play|revival|staging)\b|\b(?:is|are|was|about|reviews?|covers?)\s+(?:about|for|of)\b/i;
+const OTHER_SHOW_RE = /\b(?:different|another|other|wrong|earlier|previous|original|prior)\s+(?:show|production|musical|play|revival|staging|cast|run|version)\b|\b(?:cast|casts)\b|\b(?:london|west end|tour|touring|regional|off-broadway|off broadway|national|revival|staging|premiere|workshop|concert)\b|\b(?:19|20)\d\d\b/i;
 
 function isCorroboratedTemporalOverride(data, show) {
   const cv = data.contentVerification || {};
@@ -66,6 +66,8 @@ function isCorroboratedTemporalOverride(data, show) {
       || hasNamedDifferentDirectorSignal(cv.issues, cv.reasoning, show, data.fullText)) return false;
   const cvText = [...(Array.isArray(cv.issues) ? cv.issues : []), String(cv.reasoning || '').replace(TEMPORAL_OVERRIDE_RE, '')].join(' ');
   if (OTHER_SHOW_RE.test(cvText)) return false;
+  // A one-word title (Company, Six, Hair) appears in ledes of unrelated reviews.
+  if (String(show.title || '').trim().split(/\s+/).length < 2) return false;
   const mentionRe = buildMentionRegex(show, { titleWords: false });
   const segments = [data.fullText, data.bwwExcerpt, data.dtliExcerpt, data.showScoreExcerpt, data.pullQuote]
     .filter((t) => typeof t === 'string' && t);
@@ -209,6 +211,11 @@ function run(show, context) {
     const exactShipped = matchedRows.length === 0 || matchedRows.some(r => !siblingKeys.has(
       `${r.url}::${r.outletId}::${r.criticName}`) || (r.url === data.url
       && r.outletId === data.outletId && r.criticName === data.criticName));
+    // BRO-4427: judged before the sweep's set-aside so the lifetime audit counts them.
+    if (isCorroboratedTemporalOverride(data, show)) {
+      warnings.push({ filename, url: data.url || '(no url on file)', outletId: data.outletId, criticName: data.criticName, cvConfidence: cv.confidence });
+      continue;
+    }
     const handled = context.setAsideHandled
       ? handledReason(data, show, path.join(showDir, filename), { exactShipped })
       : null;
@@ -217,8 +224,7 @@ function run(show, context) {
       continue;
     }
 
-    const target = isCorroboratedTemporalOverride(data, show) ? warnings : violations;
-    target.push({
+    violations.push({
       filename,
       url: data.url || '(no url on file)',
       outletId: data.outletId,
