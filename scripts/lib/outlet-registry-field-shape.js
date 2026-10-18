@@ -1,7 +1,7 @@
 /**
  * outlet-registry-field-shape.js
  *
- * The starScale / multiAuthor shape check for outlet-registry.json entries,
+ * The region / starScale / multiAuthor check for outlet-registry.json entries,
  * extracted out of validate-data.js so a test can require() the real decision
  * instead of restating it (CLAUDE.md rule 15).
  *
@@ -22,6 +22,15 @@
 
 const ALLOWED_STAR_SCALES = new Set([4, 5, 10, 100]);
 
+// BRO-3251: one spelling per region. `us` is country-level coverage, not a
+// synonym for NYC. Missing regions remain valid for unclassified outlets.
+// New geographic regions belong here after verifying the outlet's scope.
+const ALLOWED_OUTLET_REGIONS = new Set([
+  'nyc', 'london', 'us', 'uk', 'dual', 'baltimore', 'boston', 'chicago',
+  'los-angeles', 'nashville', 'nj', 'philadelphia', 'pittsburgh',
+  'san-francisco', 'washington-dc',
+]);
+
 /**
  * @param {string} id     outlet id, for the message
  * @param {object} entry  the registry entry
@@ -30,6 +39,10 @@ const ALLOWED_STAR_SCALES = new Set([4, 5, 10, 100]);
 function outletFieldShapeErrors(id, entry) {
   const errors = [];
   if (!entry || typeof entry !== 'object') return errors;
+
+  if (entry.region !== undefined && !ALLOWED_OUTLET_REGIONS.has(entry.region)) {
+    errors.push(`[registry-field] outlet "${id}": region=${JSON.stringify(entry.region)} is invalid; must be one of ${[...ALLOWED_OUTLET_REGIONS].join(', ')}. Use nyc for NYC coverage, washington-dc for DC, and us for broader US coverage; omit region when unclassified.`);
+  }
 
   if (entry.starScale !== undefined) {
     if (typeof entry.starScale !== 'number' || !ALLOWED_STAR_SCALES.has(entry.starScale)) {

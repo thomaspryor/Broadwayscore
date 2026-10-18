@@ -12,7 +12,7 @@
  *
  * @param {object} reg - parsed outlet-registry.json ({ outlets: { id: {...} } })
  * @returns {{
- *   outletRegionMap: Record<string,string>,   // id + lowercased aliases -> region ('london'|'new-york'|'us'|'dual'|...)
+ *   outletRegionMap: Record<string,string>,   // id + lowercased aliases -> region ('london'|'nyc'|'us'|'dual'|...)
  *   dualMarket: Set<string>,                   // ids + lowercased aliases with isDualMarket:true
  *   internationalTradeOutlets: Set<string>,    // ids + lowercased aliases with coversInternational:true
  *   tier12Outlets: Set<string>,                // ids + lowercased aliases at tier 1 or 2
@@ -172,9 +172,9 @@ function backfillMissingOutletRegions(outlets, outletShowCategories, isLondonMar
  * Broadway show passed intact (see the failure modes documented on
  * gather-reviews.js's validateBWWRoundupGeography). Do not re-invert it.
  *
- * 'nyc' and 'national' currently match ZERO outlets in the registry; they are
- * kept deliberately as defensive synonyms so a future writer using either
- * spelling is not silently classified foreign.
+ * 'nyc' is the canonical NYC spelling (BRO-3251). Legacy 'new-york' and
+ * 'national' remain defensive synonyms for callers with older registry data;
+ * the registry field validator rejects them for new edits.
  */
 const BROADWAY_LOCAL_REGIONS = new Set(['us', 'dual', 'national', 'nyc', 'new-york']);
 
@@ -203,7 +203,8 @@ const WEST_END_LOCAL_REGIONS = new Set(['london', 'uk', 'national-uk', 'national
  * gather-reviews.js's loadOutlets().
  */
 const UK_SERP_REGIONS = new Set(['london', 'uk']);
-const US_SERP_REGIONS = new Set(['us', 'chicago', 'los-angeles', 'philadelphia', 'boston', 'san-francisco', 'dual']);
+// Retagging a country-tagged NYC outlet must preserve its SERP eligibility.
+const US_SERP_REGIONS = new Set(['us', 'nyc', 'chicago', 'los-angeles', 'philadelphia', 'boston', 'san-francisco', 'dual']);
 
 /**
  * True when an outlet's registry region is local to the Broadway / off-Broadway
