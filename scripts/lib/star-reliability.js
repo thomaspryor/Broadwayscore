@@ -86,7 +86,11 @@ function isUncorroboratedGenericStar(data, starScore) {
   if (!gated || !Number.isFinite(starScore)) return false;
   const llm = data.llmScore && data.llmScore.score;
   const conf = data.llmScore && data.llmScore.confidence;
-  if (!llm || conf === 'low' || Math.abs(starScore - llm) <= 25) return false;
+  // A low-confidence read (truncated tier) still corroborates the drop when the
+  // whole ensemble agreed (BRO-5200: death-becomes-her-tour-2026 hercampus,
+  // junk 2/5 vs 85/85/90 unanimous Rave, llmScore.confidence 'low').
+  const unanimous = data.ensembleData && data.ensembleData.ensembleSource === 'ensemble-unanimous';
+  if (!llm || (conf === 'low' && !unanimous) || Math.abs(starScore - llm) <= 25) return false;
   const bucket = (x) => (x >= 70 ? 'positive' : x <= 40 ? 'negative' : 'mixed');
   return bucket(starScore) !== bucket(llm);
 }
