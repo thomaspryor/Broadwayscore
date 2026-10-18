@@ -213,3 +213,72 @@ test('flags a validate-data.js workflow the parser cannot read; passes a normal 
   fs.writeFileSync(path.join(d, 'ok.yml'), 'jobs:\n  j:\n    steps:\n      - name: v\n        run: node scripts/validate-data.js\n');
   assert.deepEqual(unscannableWorkflows(d), ['odd.yml']);
 });
+
+const twoCommits = (c1Tail, c2Lead = []) => wf([
+  '      - name: Commit C1',
+  '        if: always()',
+  '        run: |',
+  '          git add data/awards.json',
+  '          git commit -m c1',
+  ...c1Tail,
+  '',
+  ...c2Lead,
+  '      - name: Commit C2',
+  '        if: always()',
+  '        run: |',
+  '          git add data/cast/',
+  '          git commit -m c2',
+]);
+
+test('a trailing deeper-indented annotation stays with its own step (C1), not the next (C2)', () => {
+  const hits = findAlwaysCommitAfterValidate(twoCommits(['          # always-commit-ok: c1 progress is wanted']));
+  assert.deepEqual(hits.map((h) => h.commitStep), ['Commit C2']);
+  // Annotation at the step-marker indent above C2 is C2's lead comment.
+  const lead = findAlwaysCommitAfterValidate(twoCommits([], ['      # always-commit-ok: c2 progress']));
+  assert.deepEqual(lead.map((h) => h.commitStep), ['Commit C1']);
+});
+
+test('push-aggregator-archive action after validate is flagged', () => {
+  const st = ['      - name: Push archive', '        if: always()', '        uses: ./.github/actions/push-aggregator-archive'];
+  const hits = findAlwaysCommitAfterValidate(wf(st));
+  assert.equal(hits.length, 1);
+  assert.deepEqual(hits[0].staged, ['data/aggregator-archive/']);
+});
+
+const customValidate = (runLines) => [
+  'jobs:',
+  '  build:',
+  '    runs-on: ubuntu-latest',
+  '    steps:',
+  '      - name: Validate data',
+  '        run: |',
+  ...runLines.map((l) => `          ${l}`),
+  '',
+  ...OFFENDER,
+].join('\n');
+
+test('inline `if node validate-data.js; then` is a hard gate when the else branch exits non-zero', () => {
+  const hard = customValidate(['if node scripts/validate-data.js; then', '  echo ok', 'else', '  echo bad', '  exit 1', 'fi']);
+  assert.equal(findAlwaysCommitAfterValidate(hard).length, 1);
+  const handled = customValidate(['if node scripts/validate-data.js; then', '  echo ok', 'else', '  git checkout -- data/shows.json', 'fi']);
+  assert.equal(findAlwaysCommitAfterValidate(handled).length, 0);
+});
+
+test('an echo mentioning validate-data.js is not a validate step', () => {
+  assert.equal(findAlwaysCommitAfterValidate(customValidate(['echo "run node scripts/validate-data.js locally"'])).length, 0);
+  assert.equal(findAlwaysCommitAfterValidate(customValidate(["printf '%s' 'node scripts/validate-data.js'"])).length, 0);
+  assert.equal(findAlwaysCommitAfterValidate(customValidate(['echo start && node scripts/validate-data.js'])).length, 1);
+});
+
+test('CLI exits 0 and --json parses', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const cli = path.join(ROOT, 'scripts', 'audit-always-commit-after-validate.js');
+  const plain = spawnSync(process.execPath, [cli], { encoding: 'utf8' });
+  assert.equal(plain.status, 0, plain.stderr);
+  const j = spawnSync(process.execPath, [cli, '--json'], { encoding: 'utf8' });
+  assert.equal(j.status, 0, j.stderr);
+  const parsed = JSON.parse(j.stdout);
+  assert.equal(typeof parsed.count, 'number');
+  assert.ok(Array.isArray(parsed.offenders));
+  assert.equal(parsed.count, parsed.offenders.length);
+});

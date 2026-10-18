@@ -23,6 +23,23 @@
 // An actual invocation, not a mention in an echo/comment.
 const VALIDATE_RE = /\bnode\s+(?:[\w./-]*\/)?validate-data\.js\b/;
 const INLINE_HANDLED_RE = /\bif\s+node\s+(?:[\w./-]*\/)?validate-data\.js\b/;
+// A non-zero exit inside the step (e.g. the else branch of an inline if).
+const HARD_EXIT_RE = /\bexit\s+(?:[1-9]|"?\$)/;
+
+/**
+ * True when the shell text really runs validate-data.js: a command segment
+ * (split on && || ; |) that is not an echo/printf message mentioning it.
+ */
+function invokesValidate(text) {
+  for (const line of String(text).split('\n')) {
+    for (const seg of line.split(/&&|\|\||[;|]/)) {
+      const t = seg.trim().replace(/^(?:-\s+)?(?:run:\s*)?/, '');
+      if (/^(?:echo|printf)\b/.test(t)) continue;
+      if (VALIDATE_RE.test(t)) return true;
+    }
+  }
+  return false;
+}
 const ALWAYS_IF_RE = /\b(?:always|failure)\s*\(\s*\)|!\s*cancelled\s*\(\s*\)/;
 const EXEMPT_RE = /#\s*always-commit-ok:\s*\S/;
 const COMMIT_RE = /\bgit\s+(?:commit|push)\b|push-with-retry\.sh\b/;
@@ -42,8 +59,10 @@ function parseJobs(text) {
   const closeStep = (end) => {
     if (!step) return;
     step.lines = lines.slice(step.startLine, end);
-    // Trailing comment lines belong to the NEXT step's lead comments, not this body.
-    while (step.lines.length && (step.lines[step.lines.length - 1].trim() === '' || isComment(step.lines[step.lines.length - 1]))) step.lines.pop();
+    // Trailing comment lines at the step-marker indent belong to the NEXT
+    // step's lead comments; deeper-indented ones stay in this step's body.
+    const last = () => step.lines[step.lines.length - 1];
+    while (step.lines.length > 1 && (last().trim() === '' || (isComment(last()) && indentOf(last()) <= step.markerIndent))) step.lines.pop();
     const body = step.lines.filter((l) => !isComment(l));
     const nm = body.join('\n').match(/^\s*(?:- )?name:\s*(.+?)\s*$/m);
     step.name = nm ? nm[1].replace(/^['"]|['"]$/g, '') : '(unnamed)';
@@ -75,8 +94,12 @@ function parseJobs(text) {
       closeStep(i);
       // Comment lines directly above the step marker (annotation slot).
       const lead = [];
-      for (let k = i - 1; k > jobsIdx && isComment(lines[k]); k--) lead.unshift(lines[k]);
-      step = { startLine: i, leadComments: lead };
+      for (let k = i - 1; k > jobsIdx && (lines[k].trim() === '' || isComment(lines[k])); k--) {
+        if (lines[k].trim() === '') break;
+        if (indentOf(lines[k]) > ind) break; // belongs to the previous step's body
+        lead.unshift(lines[k]);
+      }
+      step = { startLine: i, markerIndent: ind, leadComments: lead };
     }
   }
   closeStep(lines.length);
@@ -130,7 +153,10 @@ const PROTECTED_FILES = [
 const PROTECTED_DIRS = ['review-texts', 'cast', 'aggregator-archive'];
 // Composite actions that commit protected data. push-core-data is NOT listed:
 // it reads the validate-data.js refusal sentinel and skips on failure.
-const PROTECTED_PUSH_ACTIONS = { 'push-review-texts': 'data/review-texts/' };
+const PROTECTED_PUSH_ACTIONS = {
+  'push-review-texts': 'data/review-texts/',
+  'push-aggregator-archive': 'data/aggregator-archive/',
+};
 
 const STAGE_CMD_RE = /\b(?:git\s+add|git-add-existing\.sh|git-add-safe\.sh|stage-data-changes\.sh)\b(.*)/;
 
@@ -196,7 +222,7 @@ function protectedAction(step) {
 function validateIsSoft(step) {
   const t = shellText(step);
   if (step.lines.some((l) => /^\s*(?:- )?continue-on-error:\s*true\b/.test(l))) return true;
-  return t.split('\n').some((l) => VALIDATE_RE.test(l) && /\|\|\s*(?:true|:|echo\b)/.test(l));
+  return t.split('\n').some((l) => invokesValidate(l) && /\|\|\s*(?:true|:|echo\b)/.test(l));
 }
 
 const idRe = (id) => id.replace(/[.*+?^${}()|[\]\\-]/g, '\\$&');
@@ -242,10 +268,11 @@ function findAlwaysCommitAfterValidate(text) {
     job.steps.forEach((step, idx) => {
       const body = shellText(step);
       const isCommit = COMMIT_RE.test(body);
-      if (VALIDATE_RE.test(body) && !isCommit) {
+      if (invokesValidate(body) && !isCommit) {
         // `if node scripts/validate-data.js; then` handles a failure inline, so
         // the step itself never fails on bad data: not a gate this rule tracks.
-        if (!INLINE_HANDLED_RE.test(body)) validates.push(step);
+        // An inline if whose else branch exits non-zero is still a hard gate.
+        if (!INLINE_HANDLED_RE.test(body) || HARD_EXIT_RE.test(body)) validates.push(step);
         return;
       }
       if (!validates.length) return;
