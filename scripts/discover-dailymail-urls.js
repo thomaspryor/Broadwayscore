@@ -114,6 +114,15 @@ function windowDays(isoDate) {
 
 /** Write a matched URL (and the section's own star rating, if parsed) to the review file. */
 function applyEntry(t, entry) {
+  // Re-read: a long run can outlive CI/other sessions flagging the file or
+  // filling its URL, and writing the stale snapshot back would undo that.
+  let fresh;
+  try { fresh = JSON.parse(fs.readFileSync(t.filePath, 'utf8')); } catch { return false; }
+  if (fresh.url || fresh.wrongShow || fresh.wrongProduction || fresh.duplicateOf) {
+    console.log(`skip  ${t.file} (changed on disk since it was read)`);
+    return false;
+  }
+  t = { ...t, data: fresh };
   const update = {
     url: entry.url,
     urlDiscoveredBy: 'dailymail-url-discovery',
@@ -134,6 +143,7 @@ function applyEntry(t, entry) {
     });
   }
   safeWriteReview(t.filePath, { ...t.data, ...update });
+  return true;
 }
 
 /** --from-report: apply a reviewed dry-run report without fetching anything again. */
@@ -141,14 +151,22 @@ function applyFromReport(reportPath) {
   const { matches } = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
   // Keyed by show + critic, not file name: an outlet rename (daily-mail-- →
   // mail-on-sunday--) between the report and the apply must not lose the match.
-  const byFile = new Map(loadTargets().map(t => [criticKey(t.file), t]));
+  const targets = loadTargets();
+  const exact = new Map(targets.map(t => [t.file, t]));
+  const byCritic = new Map();
+  for (const t of targets) {
+    const k = criticKey(t.file);
+    byCritic.set(k, byCritic.has(k) ? null : t); // null = ambiguous (both outlet prefixes present)
+  }
+  resolveSameShowCollisions(matches); // URLs may have landed on sibling files since the report
   let written = 0;
   for (const entry of matches) {
     if (!entry.writeUrl) continue;
-    const t = byFile.get(criticKey(entry.file));
+    const t = exact.get(entry.file) || byCritic.get(criticKey(entry.file));
     if (!t) { console.log(`skip  ${entry.file} (now has a URL, or no longer a target)`); continue; }
     if (t.data.wrongShow || t.data.wrongProduction || t.data.duplicateOf) { console.log(`skip  ${entry.file} (flagged since the report)`); continue; }
-    if (APPLY) { applyEntry(t, entry); written++; }
+    if (APPLY && !applyEntry(t, entry)) continue;
+    if (APPLY) written++;
     console.log(`${APPLY ? 'WROTE' : 'would write'} ${t.file} → ${entry.url}${entry.sectionRating ? ` (${entry.sectionRating})` : ''}`);
   }
   console.log(`\n${written} written${APPLY ? '' : ' (dry run; --apply to write)'}`);
@@ -289,7 +307,7 @@ async function main() {
     delete entry._t;
     const tag = entry.writeUrl ? 'WRITE' : 'skip ';
     console.log(`${tag} ${entry.textOverlap.toFixed(2)} ${entry.placement.padEnd(9)} ${(entry.sectionRating || '-').padEnd(9)} ${t.file}\n        ${entry.url}`);
-    if (APPLY && entry.writeUrl) { applyEntry(t, entry); written++; }
+    if (APPLY && entry.writeUrl && applyEntry(t, entry)) written++;
   }
   console.log(`\n${report.length} matched, ${report.filter(r => r.writeUrl).length} writable${APPLY ? `, ${written} written` : ' (dry run; --apply to write)'}`);
   if (OUT) {
