@@ -15,21 +15,23 @@ interface ShowPageBookmarkProps {
   size?: 'sm' | 'md' | 'compact';
 }
 
-// sm/compact: negative offsets compensate for the ~20% whitespace the 24-unit
-// viewBox keeps around the bookmark glyph — with positive offsets the icon
-// floated ~8px off the thumbnail corner (owner report, 2026-07-19). The svg
-// box overflows the rounded corner; those thumbnails are overflow-hidden so
-// only empty space is clipped. md (show-page hero) keeps positive offsets:
-// its poster container is overflow-VISIBLE, so a negative offset would hang
-// the svg box outside the poster (review, 2026-07-19).
-// Offsets are calibrated against the glyph's whitespace inside the 24-unit
-// viewBox (path spans x 5-19, y 3-21 → ~21% right / ~12.5% top padding at
-// w-7 ≈ 5.8px / 3.5px). Target ≈ 3.5-4px VISUAL gap on both axes:
-// top-0 keeps the top's natural 3.5px; -right-0.5 (-2px) trims the right to
-// ~3.8px. The first attempt (-right-1) left <2px — read as touching the edge
-// (owner, 2026-07-20); the original (+right-0.5) left ~8px — too far.
+// ROOT CAUSE of the repeated "bookmark floats too far from the corner"
+// regressions (owner, 2026-07-19/20/Oct-18): globals.css forces every <button>
+// to min 44x44 on mobile (<=640px). This button's glyph box is only 28x32, so
+// the svg sat centered inside a 44x44 button: +8px right, +6px top of extra
+// gap that no top/right offset tuning accounted for (live measure: 11.5px top /
+// 11.8px right). Offset-tweaking without measuring kept missing it.
+// Fix: sm opts out of the global minimum (min-h-0 min-w-0) so the button IS the
+// svg box, then offsets are exact. The 44px tap area comes back as an invisible
+// ::after (thumbnails are overflow-hidden, so it is clipped to the card image).
+// Glyph padding inside the 24-unit viewBox at w-7 h-8 (scale 1.167, content
+// centered vertically): right 5.8px, top 5.5px. So top-0 right-0 gives a
+// ~5.5-6px visual gap on both axes (owner: "half the current distance").
+// tests/unit/bookmark-corner-gap.test.mjs pins this.
+// md (show-page hero) keeps positive offsets: its poster container is
+// overflow-VISIBLE and was tuned against the 44px box. compact is untouched.
 const SIZES = {
-  sm: { button: 'top-0 -right-0.5 p-0', icon: 'w-7 h-8' },
+  sm: { button: "top-0 right-0 p-0 min-h-0 min-w-0 after:content-[''] after:absolute after:-inset-2", icon: 'w-7 h-8' },
   md: { button: 'top-1 right-1 p-0', icon: 'w-8 h-9' },
   compact: { button: 'top-0 -right-0.5 p-0', icon: 'w-7 h-8' },
 };
