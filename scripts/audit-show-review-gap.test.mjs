@@ -797,3 +797,11 @@ test('openingWindowClearedKeys: a row for a retired show id counts as cleared ev
   // Without liveShowIds the old behaviour holds: both still gapped.
   assert.deepEqual(openingWindowClearedKeys(rows, now), []);
 });
+
+test('plausibleLiveShowIds: a stub shows.json yields null so retired-id clearing never mass-resolves (BRO-5349)', () => {
+  const { plausibleLiveShowIds, MIN_PLAUSIBLE_SHOWS } = require('./lib/live-show-ids.js');
+  assert.equal(plausibleLiveShowIds(new Set()), null);
+  assert.equal(plausibleLiveShowIds(null), null);
+  const full = new Set(Array.from({ length: MIN_PLAUSIBLE_SHOWS }, (_, i) => `s${i}`));
+  assert.equal(plausibleLiveShowIds(full), full);
+});

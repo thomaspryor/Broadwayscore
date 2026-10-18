@@ -51,4 +51,16 @@ function loadLiveShowIds(showsPath = require('path').join(__dirname, '../../data
   }
 }
 
-module.exports = { filterToLiveShowIds, loadLiveShowIds, MIN_PLAUSIBLE_SHOWS };
+/**
+ * liveIds when it clears the floor, else null. For readers that filter
+ * carried-forward per-show rows (BRO-5349: the review-gap audit keeps a row
+ * for a retired id for ~395 days) and must skip the filter, not treat every
+ * row as retired, when shows.json is a stub.
+ * @param {Set<string>|null} liveIds
+ * @returns {Set<string>|null}
+ */
+function plausibleLiveShowIds(liveIds) {
+  return liveIds && liveIds.size >= MIN_PLAUSIBLE_SHOWS ? liveIds : null;
+}
+
+module.exports = { filterToLiveShowIds, loadLiveShowIds, plausibleLiveShowIds, MIN_PLAUSIBLE_SHOWS };

@@ -47,3 +47,11 @@ test('buildSnapshot adds advisory rows for reviews in outlet feeds that are not 
   assert.match(snap.bannerText, /1 new show\(s\) with reviews in outlet feeds/);
   assert.equal(buildSnapshot({ results: [] }, 'now').items.length, 0);
 });
+
+test('buildSnapshot drops rows for show ids not in shows.json (BRO-5349)', () => {
+  const row = (showId) => ({ showId, title: showId, censusVerdict: { verdict: 'incomplete', liveCount: 1, candidateCount: 3 }, missing: [{ url: 'a' }, { url: 'b' }] });
+  const audit = { results: [row('live-show-2026'), row('retired-dupe-2026')] };
+  const ids = (s) => s.items.map((it) => it.title);
+  assert.deepStrictEqual(ids(buildSnapshot(audit, '2026-10-18T00:00:00Z', null, new Set(['live-show-2026']))), ['live-show-2026']);
+  assert.strictEqual(buildSnapshot(audit, '2026-10-18T00:00:00Z').items.length, 2);
+});

@@ -25,6 +25,7 @@ const { coverageDigestItems } = require('./lib/coverage-digest.js');
 const { digestItems: feedGapItems } = require('./lib/outlet-feed-reconcile.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { coverageGateDisabled } = require('./lib/coverage-gate.js');
+const { loadLiveShowIds, plausibleLiveShowIds } = require('./lib/live-show-ids.js');
 
 const REPO = path.join(__dirname, '..');
 const GAP_AUDIT_PATH = path.join(REPO, 'data', 'audit', 'show-review-gap.json');
@@ -55,8 +56,11 @@ function readFeedReconcile(nowMs = Date.now()) {
   } catch { return null; }
 }
 
-function buildSnapshot(gapAudit, nowIso, feedReconcile = null) {
-  const items = coverageDigestItems(gapAudit?.results || [], { limit: LIMIT });
+// BRO-5349: the gap audit carries rows for retired/merged show ids forward;
+// pass liveShowIds (ids in shows.json) so they never reach the digest.
+function buildSnapshot(gapAudit, nowIso, feedReconcile = null, liveShowIds = null) {
+  const rows = (gapAudit?.results || []).filter((r) => !liveShowIds || (r && liveShowIds.has(r.showId)));
+  const items = coverageDigestItems(rows, { limit: LIMIT });
   const feedItems = feedGapItems(feedReconcile?.gaps || [], LIMIT).map((it) => ({ ...it, detail: `${it.detail} (advisory)` }));
   const all = [...items, ...feedItems].slice(0, LIMIT);
   const bannerText = all.length === 0
@@ -119,7 +123,7 @@ function main() {
     }
   }
 
-  const snapshot = buildSnapshot(gapAudit, nowIso, fixtureArg ? null : readFeedReconcile());
+  const snapshot = buildSnapshot(gapAudit, nowIso, fixtureArg ? null : readFeedReconcile(), fixtureArg ? null : plausibleLiveShowIds(loadLiveShowIds()));
   console.log(`[coverage-digest] ${snapshot.bannerText}`);
   for (const it of snapshot.items) console.log(`  · ${it.title}: ${it.detail}`);
 

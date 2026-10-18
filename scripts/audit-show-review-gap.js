@@ -128,6 +128,7 @@ const { KNOWN_STAR_OUTLETS } = require('./lib/score-extractors');
 
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
+const { plausibleLiveShowIds } = require('./lib/live-show-ids');
 const REVIEWS_PATH = path.join(ROOT, 'data', 'reviews.json');
 const OUTLET_REGISTRY_PATH = path.join(ROOT, 'data', 'outlet-registry.json');
 // REVIEW_TEXTS_DIR can be overridden via env so local runs can point at the
@@ -2854,8 +2855,10 @@ async function main(argv = process.argv.slice(2)) {
   const reportedResults = reportedAudit.results;
   // BRO-5349: rows for ids no longer in shows.json (retired duplicates) are
   // carried forward forever; they must never alert, only resolve.
-  const liveShowIds = new Set(allShows.map(s => s && s.id).filter(Boolean));
-  const liveReportedResults = reportedResults.filter(r => r && liveShowIds.has(r.showId));
+  // null on an implausibly small shows.json: no filter, never a mass resolve.
+  const liveShowIds = plausibleLiveShowIds(new Set(allShows.map(s => s && s.id).filter(Boolean)));
+  const liveReportedResults = liveShowIds ? reportedResults.filter(r => r && liveShowIds.has(r.showId)) : reportedResults;
+  if (liveShowIds && liveReportedResults.length < reportedResults.length) console.log(`Ignoring ${reportedResults.length - liveReportedResults.length} row(s) on file for show ids no longer in shows.json (alerts only resolve).`);
   console.log(`Summary: ${reportedAudit.counts.withGap}/${reportedResults.length} shows on file with gaps (${results.length} audited this run) | ${reportedAudit.counts.missingCurrentRun} URLs not in dir | ${reportedAudit.counts.totalFlaggedMisses} URLs in dir but flagged out (${reportedAudit.counts.totalRecoverable} recoverable, ${reportedAudit.counts.totalRecovered} self-healed, ${reportedAudit.counts.humanExcluded} human-excluded, ${reportedAudit.counts.automatedExcludedListed} automated-excluded to re-verify) | ${outletsWritten.length} unknown outlets${reportedAudit.counts.priorProductionCitations ? ` | +${reportedAudit.counts.priorProductionCitations} prior-production citation(s) on file, permanently report-only, NOT counted above` : ''}`);
   if (useCheckpoint) {
     console.log(`Checkpoint: ${results.length} shows audited this run${budgetHit ? ' (time-budget partial — remaining shows resume next run)' : ' (full eligible set complete)'}. State: ${CHECKPOINT_PATH}`);
@@ -2983,7 +2986,7 @@ async function main(argv = process.argv.slice(2)) {
 
   // Opening-window alert (BRO-4272): CI runs only (manual runs have an operator
   // watching stdout and no committed ledger).
-  // Same inputs and gates as the opening-window alert above: reportedResults (the
+  // Same inputs and gates as the opening-window alert above: liveReportedResults (the
   // blast-radius-accepted set) and never on --dry-run.
   if (!dryRun && useCheckpoint && process.env.GITHUB_ACTIONS === 'true') {
     const plan = planRoundupGapAlerts(liveReportedResults, ingestMissing);
