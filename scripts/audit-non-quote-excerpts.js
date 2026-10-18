@@ -2,13 +2,15 @@
 /**
  * BRO-5344: count aggregator excerpt fields whose leading 8 words are absent
  * from the row's complete stored fullText (paraphrase or another production),
- * by source field and outlet. verifierExcerpt() skips these.
+ * by source field and outlet (rows per outlet). verifierExcerpt(data, {skipNonQuotes:true}) skips these.
  *
  *   node scripts/audit-non-quote-excerpts.js [--json] [--dir=<review-texts dir>]
  */
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { exitOnHelp } = require('./lib/cli-help.js');
+exitOnHelp(module);
 const { EXCERPT_FIELDS, isQuoteOfFullText } = require('./lib/excerpt-fields');
 
 function scan(dir) {
@@ -26,13 +28,15 @@ function scan(dir) {
       try { d = JSON.parse(fs.readFileSync(path.join(sd, f), 'utf8')); } catch { continue; }
       if (!d || d.contentTier !== 'complete') continue;
       checked++;
+      let rowBad = false;
       for (const field of EXCERPT_FIELDS) {
         if (d[field] && !isQuoteOfFullText(d[field], d)) {
           byField[field] = (byField[field] || 0) + 1;
-          byOutlet[d.outletId || '?'] = (byOutlet[d.outletId || '?'] || 0) + 1;
+          rowBad = true;
           rows.push({ showId: show, file: f, field });
         }
       }
+      if (rowBad) byOutlet[d.outletId || '?'] = (byOutlet[d.outletId || '?'] || 0) + 1;
     }
   }
   return { checked, total: rows.length, byField, byOutlet, rows };

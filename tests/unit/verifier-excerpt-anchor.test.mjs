@@ -52,3 +52,14 @@ test('spaced ellipsis, bracketed inserts and entities do not read as non-quotes'
   assert.equal(isQuoteOfFullText('[Smith] is a wonderful actor and the show is a triumph', t), true);
   assert.equal(isQuoteOfFullText('Rock &amp; roll never dies', { ...t, fullText: t.fullText + ' ' }), true);
 });
+
+test('numeric and curly entities decode to the apostrophe', () => {
+  const t = { contentTier: 'complete', fullText: "It's a wonderful night at the theater and the cast is superb. ".repeat(8) };
+  assert.equal(isQuoteOfFullText('It&#39;s a wonderful night at the theater and the', t), true);
+  assert.equal(isQuoteOfFullText('It&rsquo;s a wonderful night at the theater and the', t), true);
+});
+
+test('every excerpt failing returns empty; legacy web-search rows still return empty', () => {
+  const row = { ...base, dtliExcerpt: 'Unrelated words that never occur in this review text', bwwExcerpt: 'Another unrelated sentence from some other production entirely' };
+  assert.equal(verifierExcerpt(row, SKIP), '');
+});
