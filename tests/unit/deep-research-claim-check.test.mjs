@@ -122,3 +122,12 @@ test('a running show that has not yet recouped is not a loss, and "Recouped (not
   assert.equal(claimsLoss('did not recoup'), true);
   assert.equal(claimsLoss("didn't recoup"), true);
 });
+
+test("another show's loss two sentences on is not this show's (the Variety CATS / Sunset Blvd. case)", () => {
+  const cats = { title: 'CATS: The Jellicle Ball', openingDate: '2026-04-07' };
+  const loss = { show: cats.title, field: 'outcome for investors', value: 'did not recoup', source_url: 'https://variety.com/a', quote: '' };
+  const page = pad('Sales fell after “The Jellicle Ball” lost the best revival Tony to “Ragtime.” Lloyd Webber’s “Sunset Blvd.” was remounted in 2024 and won a Tony. However, the show failed to recoup its investment.');
+  assert.notEqual(classifyClaim(loss, page, cats).verdict, 'confirmed');
+  // The sentence right after the title still counts.
+  assert.equal(classifyClaim(loss, pad('CATS: The Jellicle Ball, which opened in 2026, will close on Aug. 8. The show did not recoup its investment.'), cats).verdict, 'confirmed');
+});
