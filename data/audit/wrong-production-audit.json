@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-18T23:03:30.102Z",
+  "timestamp": "2026-10-18T23:14:52.253Z",
   "stats": {
-    "totalReviews": 57527,
-    "alreadyFlagged": 21371,
+    "totalReviews": 57531,
+    "alreadyFlagged": 21372,
     "dateGuardCatches": 196,
     "directorMismatch": 1952,
-    "tvFilmSignals": 1609,
-    "londonSignals": 2437,
+    "tvFilmSignals": 1610,
+    "londonSignals": 2438,
     "offBroadwaySignals": 523,
     "yearMismatch": 156,
-    "noPublishDate": 5229
+    "noPublishDate": 5230
   },
   "findings": [
     {
@@ -29959,6 +29959,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "file": "hollywood-reporter--caitlin-huston.json",
+      "publishDate": "2026-10-13",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-star-other-desert-cities-a-few-good-men-860-1236729226/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -65418,6 +65431,19 @@
       "file": "theatre-weekly--unknown.json",
       "publishDate": "2026-10-12",
       "url": "https://theatreweekly.com/first-look-production-images-released-for-london-run-of-disneys-high-school-musical/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "high-school-musical-off-west-end-2026",
+      "file": "tickadoo--unknown.json",
+      "publishDate": "2026-10-05",
+      "url": "https://www.tickadoo.com/zh-hant-hk/blogs-and-news/high-school-musical-full-cast-troubadour-wembley-park",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
