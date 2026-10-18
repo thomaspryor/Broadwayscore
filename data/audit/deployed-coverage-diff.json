@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-10-18T14:30:47.092Z",
+  "generatedAt": "2026-10-18T17:45:49.676Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 247,
-  "clean": 245,
-  "defective": 2,
+  "clean": 246,
+  "defective": 1,
   "byType": {
-    "score-drift": 2
+    "score-drift": 1
   },
   "shows": [
     {
@@ -18,28 +18,12 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 62.01 vs local 62.77 (Δ0.76)"
+          "detail": "deployed cs 61.41 vs local 60.72 (Δ0.69)"
         }
       ],
       "missingFromProd": [],
       "localCount": 4,
       "deployedCount": 4,
-      "firstDefectAt": "2026-10-18T14:30:42.323Z"
-    },
-    {
-      "showId": "de-profundis-off-west-end-2026",
-      "title": "De Profundis",
-      "openingDate": "2026-10-02",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 82.85 vs local 83.53 (Δ0.68)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 12,
-      "deployedCount": 13,
       "firstDefectAt": "2026-10-18T14:30:42.323Z"
     }
   ],
