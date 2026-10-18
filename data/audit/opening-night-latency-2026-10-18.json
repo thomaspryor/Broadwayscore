@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-18T18:11:40.001Z",
+  "generatedAt": "2026-10-18T20:50:48.226Z",
   "date": "2026-10-18",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 261377,
+  "entryCount": 275802,
   "shows": [
     {
       "showId": "a-ghost-in-your-ear-off-broadway-2026",
@@ -479,13 +479,13 @@
     },
     {
       "showId": "witness-for-the-prosecution-west-end-2022",
-      "reviewCount": 15,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 11150,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -2392,8 +2392,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 90352,
-        "scored-to-rebuilt": 142894,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 140715,
         "rebuilt-to-deployed": 77823404
       },
       "reviews_over_15min": 0,
@@ -2447,14 +2447,14 @@
     },
     {
       "showId": "blood-of-my-blood-west-end-2026",
-      "reviewCount": 21,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 3412940,
-        "scored-to-rebuilt": 350285,
-        "rebuilt-to-deployed": 155557710
+        "collected-to-scored": 4298853,
+        "scored-to-rebuilt": 255941,
+        "rebuilt-to-deployed": 129467923
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -8140,7 +8140,7 @@
     },
     {
       "showId": "oliver-west-end-2024",
-      "reviewCount": 20,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8928,21 +8928,6 @@
         "collected-to-scored": 11650125,
         "scored-to-rebuilt": 1874304,
         "rebuilt-to-deployed": 10032367
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "buffy-revamped-west-end-2026",
-      "reviewCount": 1,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": 5580840,
-        "scored-to-rebuilt": 4710650,
-        "rebuilt-to-deployed": 7198835
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -10082,6 +10067,51 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "1536-west-end-2026",
+      "reviewCount": 17,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 594440,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "1536-off-west-end-2026",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 594437,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "death-of-a-salesman-west-end-2019",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 594433,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
