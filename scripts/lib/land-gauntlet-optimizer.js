@@ -7,10 +7,10 @@
 //
 // The base gauntlet is already cached (land-gate-delta.js --code-hash). What
 // was still paid in full: a branch whose diff against the base touches ONLY
-// inert paths (data/, docs/, memory/, *.md ... — INERT_FOR_VERIFICATION_RE in
-// land-branch.js). Its verification-relevant tree is identical to the base's,
-// so "new failures vs base" is empty by construction; running base + branch
-// (npm ci, core data, tsc, lint, unit batches) measures nothing.
+// bot-churn paths (data/audit/, data/pending-fixes/, show images, *.jsonl,
+// *.log). Its verification-relevant tree is identical to the base's, so "new
+// failures vs base" is empty by construction; running base + branch (npm ci,
+// core data, tsc, lint, unit batches) measures nothing.
 //
 //   decideGauntletPlan({ changedFiles, strict }) →
 //     { skipGauntlet, reason, inertOnly, changed }
@@ -25,9 +25,10 @@ const { execFileSync } = require('child_process');
 const fs = require('fs');
 // Narrower than land-branch.js's inert set: the gauntlet READS tracked
 // data/*.json (outlet-registry.json via a unit test; awards.json etc. via tsc
-// resolveJsonModule) and *.txt exemption lists (audit-cron-health-coverage), so
-// only bot-churn/doc paths are safe to skip verification for.
-const SKIP_SAFE_RE = /^(data\/audit\/|data\/pending-fixes\/|docs\/|memory\/|cloud-memory\/|public\/images\/shows\/)|^public\/opening-night-status\.json$|\.(md|jsonl|log)$/;
+// resolveJsonModule), *.txt exemption lists (audit-cron-health-coverage) and
+// docs (byte caps, inventories; see HASH_ALWAYS_RELEVANT_RE in
+// land-gate-delta.js), so only bot-churn paths are safe to skip verification for.
+const SKIP_SAFE_RE = /^(data\/audit\/|data\/pending-fixes\/|public\/images\/shows\/)|^public\/opening-night-status\.json$|\.(jsonl|log)$/;
 const { isCacheKeyRelevant } = require('./land-gate-delta.js');
 const isSkipSafe = (f) => !isCacheKeyRelevant(f) && SKIP_SAFE_RE.test(f);
 

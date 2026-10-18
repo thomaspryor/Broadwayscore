@@ -25,7 +25,6 @@ Each is a copy of a `~/.claude/hooks/` master and self-skips when `$HOME/.claude
 - Review gates (BRO-5359): a cloud `land/*` push over 30 gated lines needs a real `/ship-check` with its reviewers (and `npm run build` for `src/`); the Stop hook refuses `SAFE TO EXIT` after a hollow ship-check, did-it-work, what-else or early close-out. Rules: `scripts/lib/review-coverage.mjs` header.
 - `enterworktree-guard.sh`: worktree name collisions only. `whitespace-nowrap-lint.sh`: CSS overflow warning.
 - `block-prompting-remote-tools.sh` (cloud-only): `send_later`, `create_trigger` and `add_repo` prompt the owner's phone in every mode (`requiresUserInteraction`). It denies self-initiated scheduling and loop re-arms (wait in-turn with a background Bash loop or Monitor, or `subscribe_pr_activity`; ScheduleWakeup is best-effort), re-attaching Broadwayscore, and `list_sessions` (use `get_session` by id). Owner-requested reminders (`initiation: human_request`) and other repos pass. Kill switch `REMOTE_TOOL_BLOCKER_DISABLE=1`.
-- `notion-create-block.sh`: retired and unregistered (the board is Linear).
 
 ## Slash commands available in cloud
 
@@ -38,7 +37,7 @@ Only `.claude/commands/` in this repo (`ls .claude/commands/`). The planning sui
 A finished change is yours to land, same session, no asking:
 
 1. Run the CLAUDE.md §12 checks in your worktree, then `git push origin HEAD:refs/heads/land/bro-N-<slug>`. The card in the name lets the hourly stranded pass (BRO-4802, `land-retry-cancelled.js --stranded`) re-run evicted refs and route refusals to the card. If git push is refused: `mcp__github__create_branch` with `land/<name>`, or dispatch `land.yml` with `branch=land/<name>` (the full `land/…` name). A commit message with `[skip ci]` gets no push-triggered run: dispatch `land.yml` by hand (BRO-4231).
-   - `pre-push-land-preflight.sh` (BRO-4593) previews the land rebase and test registration on every `git push … land/*` and blocks with the fix. That is not a land refusal: fix the branch, never route around it. New tests need no manifest edit; the retired `tests/unit-test-manifest.txt` is ignored; `scripts/verify-*` probes need `OPT_IN` in `scripts/lib/unit-test-collection.js`. Land rebases and drops merge commits, so squash: `git fetch origin main`, merge `origin/main`, `git reset --soft origin/main`, commit once.
+   - `pre-push-land-preflight.sh` (BRO-4593) previews the land rebase and test registration on every `git push … land/*` and blocks with the fix. That is not a land refusal: fix the branch, never route around it. New tests need no manifest edit; `scripts/verify-*` probes need `OPT_IN` in `scripts/lib/unit-test-collection.js`. Land rebases and drops merge commits, so squash: `git fetch origin main`, merge `origin/main`, `git reset --soft origin/main`, commit once.
    - Optional full pre-flight: `bash scripts/lib/land-gauntlet.sh <scratchpad-dir>` (~16 min). Trust the exit codes of `tsc`, `tsc-llm-scoring`, `next-lint`, `scripts-lib-tests`, `unit-tests-tsx`, `bash-integration`; `unit-tests-node` exits 1 on origin/main too, so read its `not ok` names; `lint-workflows` needs actionlint (absent). It rewrites tracked `data/audit/*` and `data/gold-lists-computed.json`: `git checkout --` them before committing.
 2. `land.yml` rebases onto main, re-runs the blocking gates, fast-forwards main and deletes the ref. Wait in the same turn: `run_in_background` Bash on `node scripts/lib/wait-for-land.js land/<name> 60` (exit 0 landed, 1 refused, 2 timeout, 3 bad ref; waits through evictions), then one `mcp__github__actions_list` on `land.yml` for the verdict (LANDUNCHECKED counts only that). After a hand dispatch, check that run too. `Land: cancelled` with the ref present: read the card's newest comments first, then `node scripts/land-retry-cancelled.js --run=<id>` or re-dispatch. Stopping a land? Cancelling is not enough (the stranded pass and its worker re-run it): push a zero-diff revert onto the ref and say so on the card; to ship later, apply the diff to a fresh branch off `origin/main` (a rebase drops it).
    - **Cloud card worker:** a `pick.resume` from `node scripts/cloud-worker-pick.js` overrides the routine's steps 3-5. Don't claim anew: follow `pick.resume.instructions`. Run the card's verify on main first and skip to step 7 if it passes. `refused`: check out `pick.resume.landRef`, fix, push the same ref. `evicted`: `node scripts/land-retry-cancelled.js --run=<id>`. Follow Land to its verdict, then continue at step 6.
@@ -76,7 +75,7 @@ The setup script runs after the clones, before Claude starts, cached across sess
 for d in /home/user/Broadwayscore /home/user/broadwayscore; do [ -d "$d/.git" ] && git -C "$d" fetch -q origin main && git -C "$d" merge -q --ff-only origin/main; done; for d in /home/user/*/; do [ -f "$d/scripts/install-home-claude-config.js" ] && node "$d/scripts/install-home-claude-config.js"; done; true
 ```
 
-The first loop refreshes a stale cached checkout (`create_session` workers ran Oct 13 hooks for days, so no new gate ran); editing it rebuilds the cache. Later drift: startup fetches 40s, then retries detached.
+The first loop refreshes a stale cached checkout; editing it rebuilds the cache. Later drift: startup fetches 40s, then retries detached.
 
 It cannot change auto mode (the classifier reads `autoMode` only from user, managed or `--settings` sources; BRO-5008). When it refuses an owner-requested action, say so plainly and offer the nearest allowed route (a `land/<name>` branch, a dispatched workflow, a Linear card).
 
@@ -114,7 +113,7 @@ If that reports DRIFT or nothing, no hooks fire: run `bash scripts/cloud-bootstr
 
 ## Production API keys from a phone session (BRO-5008)
 
-The environment has PostHog, Sentry and Supabase keys (owner added 2026-10-18, read+write, verified from a cloud session): `POSTHOG_PERSONAL_API_KEY` + `POSTHOG_PROJECT_ID` (US host us.posthog.com), `SENTRY_AUTH_TOKEN` + `SENTRY_ORG` + `SENTRY_PROJECT` (personal token), `SUPABASE_SERVICE_ROLE_KEY` (a new-style `sb_secret_` key named claude-cloud; works as the `apikey` header and in supabase-js), `SUPABASE_ACCESS_TOKEN` (Management API, project-scoped) + `SUPABASE_PROJECT_REF`, `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_ANON_KEY`. Use them directly. It has no scraper, GA4 or Anthropic keys, and the owner should not paste them (BRO-4622). `node scripts/cloud-run-script.js [--review-texts] [--timeout=MIN] scripts/<x>.js [args...]` dispatches `run-script.yml`, runs the script as on origin/main with read/analysis keys, and prints its sealed output and exit code. It needs `gh`; without it (GitHub MCP only) dispatch `run-script.yml` via `mcp__github__actions_run_trigger` (`script`, `args_json`, `pubkey_b64` from `generateKeyPair()` in `scripts/lib/sealed-output.js`, `request_id`), read `mcp__github__get_job_logs`, and `open()` the sealed block. Paywalled pages: `scripts/fetch-page-probe.js`. Land new scripts first. Nothing is pushed, so data changes still go through `execute-approved-fix.yml` or their own workflows. Withheld: RESEND, VERCEL_TOKEN, outlet logins, cookies.
+The environment has PostHog, Sentry and Supabase keys (read+write): `POSTHOG_PERSONAL_API_KEY` + `POSTHOG_PROJECT_ID` (US host us.posthog.com), `SENTRY_AUTH_TOKEN` + `SENTRY_ORG` + `SENTRY_PROJECT` (personal token), `SUPABASE_SERVICE_ROLE_KEY` (a new-style `sb_secret_` key named claude-cloud; works as the `apikey` header and in supabase-js), `SUPABASE_ACCESS_TOKEN` (Management API, project-scoped) + `SUPABASE_PROJECT_REF`, `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_ANON_KEY`. Use them directly. It has no scraper, GA4 or Anthropic keys, and the owner should not paste them (BRO-4622). `node scripts/cloud-run-script.js [--review-texts] [--timeout=MIN] scripts/<x>.js [args...]` dispatches `run-script.yml`, runs the script as on origin/main with read/analysis keys, and prints its sealed output and exit code. It needs `gh`; without it (GitHub MCP only) dispatch `run-script.yml` via `mcp__github__actions_run_trigger` (`script`, `args_json`, `pubkey_b64` from `generateKeyPair()` in `scripts/lib/sealed-output.js`, `request_id`), read `mcp__github__get_job_logs`, and `open()` the sealed block. Paywalled pages: `scripts/fetch-page-probe.js`. Land new scripts first. Nothing is pushed, so data changes still go through `execute-approved-fix.yml` or their own workflows. Withheld: RESEND, VERCEL_TOKEN, outlet logins, cookies.
 
 ## Phone or Mac? (BRO-5008)
 
@@ -130,19 +129,16 @@ The owner works from the iPhone/iPad most of the time. Before saying something n
 |---|---|---|
 | Live memory dir | NO, read the `cloud-memory/` mirror | YES (auto-loaded) |
 | `~/.claude/commands/`, `~/.claude/skills/` | NO, only the repo's `.claude/` copies | YES |
-| Bright Data / Browserbase scrapers | YES if secrets uploaded | YES |
 | Local `.env` | NO, use `cloud-run-script.js` | YES |
-| Repo hooks in multi-repo sessions | Only via `install-home-claude-config.js` in the setup script | YES |
-| `claude-sync` for `~/.claude` | NO | YES |
 | `bsc-next.js --id` cmux dispatch | NO, use `create_session` | YES |
 
 ## When in doubt
 
-Do what you can from cloud first: most "local-only" things have a cloud route (GitHub MCP for `gh`, `land/<name>` for merging, `execute-approved-fix.yml` for private data, `create_session` for cmux dispatch). If something truly needs the owner's Mac, say so in one plain line and keep going. Never ask the owner to switch to a local session or to make a technical choice they can't evaluate.
+Do what you can from cloud first: most "local-only" things have a cloud route (sections above). If something truly needs the owner's Mac, say so in one plain line and keep going. Never ask the owner to switch to a local session or to make a technical choice they can't evaluate.
 
 ## Starting a worker session (BRO-5040)
 
-Owner 2026-10-11: "Trigger sessions yourself." The board worker's queue is weeks deep, so "queued for the worker" is never a finish line. Anything important that comes up while the owner is here (a P0/P1, a bug they raised, a fix your work turned up) gets its own session now:
+The board worker's queue is weeks deep, so "queued for the worker" is never a finish line (owner, 2026-10-11). Anything important that comes up while the owner is here (a P0/P1, a bug they raised, a fix your work turned up) gets its own session now:
 
 1. File or claim the card first; it carries the handoff and a safe-form `VERIFY:` line. File it `--park`: the board worker also takes `--dispatch` cards (BRO-5604).
 2. **Model (BRO-5228):** pass `model` from `node scripts/session-model.js BRO-N ...` (`--no-card` without one); omitted, it inherits your Opus. Mixed batch: Sonnet; Opus cards go to an Opus subagent.

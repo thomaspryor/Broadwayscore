@@ -338,11 +338,18 @@ function formatSummary({ decisions, baseMeta, branchMeta, baseSource }) {
 // ── Base cache key: a hash of the verification-relevant tree ────────────────
 
 // Paths INERT_FOR_VERIFICATION_RE calls inert that a gate's verdict does
-// depend on: the unit-test manifests (.txt — which files the batches run),
-// CLAUDE.md (the claude-md-integrity audit) and anything under tests/. They
-// are part of the cache key even though land-branch.js's re-check rule
-// ignores them (Claude adversarial review).
-const HASH_ALWAYS_RELEVANT_RE = /^(tests\/|CLAUDE\.md$|scripts\/lib\/claude-md-anchors\.json$)/;
+// depend on: the unit-test manifests (.txt — which files the batches run) and
+// anything under tests/, plus tracked docs, because tests read them (the
+// CLAUDE.md integrity audit, the .claude/CLOUD.md and AGENTS.md byte caps,
+// docs/ and memory/ inventories). They are part of the cache key even though
+// land-branch.js's re-check rule ignores them (Claude adversarial review), and
+// land-gauntlet-optimizer.js never skips the gauntlet for them: 8aa74a7f6
+// landed CLOUD.md 503B over its cap through a skipped gauntlet and test.yml
+// stayed red on main (BRO-5648). Doc-only commits were 15 of 2,980 on main in
+// the 14 days before, about one extra gauntlet a day. data/audit/ data files
+// stay out: bots rewrite them every few minutes, and tests read their snapshots
+// as live checks.
+const HASH_ALWAYS_RELEVANT_RE = /^(tests\/|docs\/|memory\/|cloud-memory\/|scripts\/lib\/claude-md-anchors\.json$)|\.md$/;
 
 function isCacheKeyRelevant(file) {
   return HASH_ALWAYS_RELEVANT_RE.test(file) || !isInertForVerification(file);

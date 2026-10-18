@@ -390,7 +390,7 @@ test('computeCodeTreeHash ignores INERT paths (bot data churn) and changes on an
   const sha = 'd'.repeat(40);
   const listing = (extra) => ['100644 blob aaaa\tscripts/lib/x.js', '100644 blob bbbb\t.github/workflows/land.yml', `100644 blob cccc\tdata/audit/ledger.json`, ...extra].join('\n');
   const a = computeCodeTreeHash(sha, { lsTree: () => listing([]) });
-  const churn = computeCodeTreeHash(sha, { lsTree: () => listing(['100644 blob ffff\tdata/shows.json', '100644 blob eeee\tmemory/x.md', '100644 blob 1111\tpublic/data/shows/foo.json']) });
+  const churn = computeCodeTreeHash(sha, { lsTree: () => listing(['100644 blob ffff\tdata/shows.json', '100644 blob eeee\tdata/audit/x.jsonl', '100644 blob 1111\tpublic/data/shows/foo.json']) });
   const code = computeCodeTreeHash(sha, { lsTree: () => listing(['100644 blob 9999\tscripts/lib/y.js']) });
   const blobChange = computeCodeTreeHash(sha, { lsTree: () => listing([]).replace('aaaa', 'a2a2') });
   assert.equal(a.hash, churn.hash);
@@ -398,11 +398,11 @@ test('computeCodeTreeHash ignores INERT paths (bot data churn) and changes on an
   assert.notEqual(a.hash, code.hash);
   assert.notEqual(a.hash, blobChange.hash);
   // "inert" by land-branch.js's rule but load-bearing for a gate verdict: in the key anyway
-  for (const f of ['tests/unit-test-manifest.txt', 'tests/unit-test-manifest-tsx.txt', 'CLAUDE.md', 'tests/unit/foo.test.mjs', 'scripts/lib/claude-md-anchors.json']) {
+  for (const f of ['tests/unit-test-manifest.txt', 'tests/unit-test-manifest-tsx.txt', 'CLAUDE.md', 'AGENTS.md', '.claude/CLOUD.md', '.claude/commands/ship-check.md', 'docs/x.txt', 'memory/notes.md', 'cloud-memory/MEMORY.md', 'sprint-plan-x.md', 'tests/unit/foo.test.mjs', 'scripts/lib/claude-md-anchors.json']) {
     assert.equal(isCacheKeyRelevant(f), true, f);
     assert.notEqual(a.hash, computeCodeTreeHash(sha, { lsTree: () => listing([`100644 blob 7777\t${f}`]) }).hash, f);
   }
-  for (const f of ['data/shows.json', 'memory/notes.md', 'docs/x.txt', 'data/audit/x.jsonl']) assert.equal(isCacheKeyRelevant(f), false, f);
+  for (const f of ['data/shows.json', 'data/audit/x.json', 'data/audit/x.jsonl', 'data/pending-fixes/a.json', 'public/images/shows/x/poster.webp']) assert.equal(isCacheKeyRelevant(f), false, f);
   assert.throws(() => computeCodeTreeHash('short'), /40-hex/);
 });
 
