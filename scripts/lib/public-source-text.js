@@ -77,13 +77,14 @@ function publicSourceText(text) {
 // grosses analysis"), and "previously unannounced, confirmed by Deadline"
 // reads as unannounced. Write a later report as the source itself instead.
 const NOT_ANNOUNCED_RE = new RegExp([
-  String.raw`\bno (?:public |producer |formal )?(?:recoupment )?announcement\b`,
-  String.raw`\bno (?:public |formal )?recoupment (?:was |has been |had been |is )?(?:formally |publicly )?announced\b`,
-  String.raw`\bwithout (?:an? |any )?(?:public |formal )?announcement\b`,
+  String.raw`\bno (?:public |producer |formal |official )?(?:recoupment )?announcement\b`,
+  String.raw`\bno (?:public |formal |official )?recoupment (?:was |has been |had been |is )?(?:formally |publicly |officially )?announced\b`,
+  String.raw`\bwithout (?:an? |any )?(?:public |formal |official )?announc(?:ement|ing)\b`,
   String.raw`\bunannounced\b`,
-  String.raw`\bnever (?:formally |publicly )?announce[sd]?\b`,
-  String.raw`\b(?:not|(?:is|are|was|were|has|have|had)n['’]t) (?:been )?(?:formally |publicly )?announced\b`,
-  String.raw`\b(?:does|do|did)(?: not|n['’]t) (?:formally |publicly )?announce(?:s|ments?)?\b`,
+  String.raw`\bnever (?:formally |publicly |officially )?(?:announce[sd]?|disclosed)\b`,
+  String.raw`\b(?:not|(?:is|are|was|were|has|have|had)n['’]t) (?:yet )?(?:been )?(?:formally |publicly |officially )?(?:announced|disclosed)\b`,
+  String.raw`\b(?:does|do|did)(?: not|n['’]t) (?:formally |publicly |officially )?announce(?:s|ments?)?\b`,
+  String.raw`(?:\b(?:never|not)|n['’]t) (?:made?|make|issued?) (?:an? |any )?(?:public |formal |official )?announcement\b`,
   String.raw`\beditorial judg(?:e)?ment\b`,
 ].join('|'), 'i');
 

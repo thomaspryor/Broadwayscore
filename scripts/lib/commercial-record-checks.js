@@ -462,7 +462,7 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
     const prior = ctx.priorRecord;
     const flaggedBefore = !!(prior && prior.recouped === true && prior.isEstimate && prior.isEstimate.recouped === true);
     if (!flaggedBefore || prior.recoupedSource !== show.recoupedSource) {
-      out.push(`commercial.json: "${showId}" isEstimate.recouped prints "Not publicly announced" but recoupedSource does not say it went unannounced (clear the flag if the source reports the recoupment)`);
+      out.push(`commercial.json: "${showId}" isEstimate.recouped prints "Not publicly announced" but recoupedSource does not say it went unannounced (if it did, say "No recoupment was announced."; if the source reports the recoupment, clear the flag)`);
     }
   }
   if (isPrematureSilenceLabel(show, ctx.showRecord)) {

@@ -109,6 +109,11 @@ test('saysRecoupmentUnannounced reads the data\'s own wording for an unannounced
     'Not publicly announced; estimated at the time of closing.', 'No recoupment was announced at the time of closing.',
     'Disney does not announce recoupments; confirmed by grosses analysis.', 'No recoupment announced; not confirmed.',
     'Never announced; it remained unannounced until closing.',
+    // More of the data's own wording ("shows that recouped without announcing it") and its near relatives.
+    'Recouped without announcing it.', 'Not officially announced.', 'Never officially announced.',
+    'No official announcement; inferred from grosses.', 'Recoupment has not yet been announced.',
+    'The producers never made an announcement.', 'The producers did not make an announcement.',
+    "The producers didn't make an announcement.", 'Recoupment was never publicly disclosed.',
     // Errs toward the downgrade by design: a later report belongs in the source itself, not after "unannounced".
     'The previously unannounced recoupment was confirmed by Deadline.',
   ]) {
