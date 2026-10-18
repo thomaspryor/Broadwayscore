@@ -106,4 +106,39 @@ function syndicatedDuplicateHealPlan({ data, file, folder, io, explain }) {
   return { decision: 'clear', reason: `primary-only exclusion (${label})`, cleared, ...withWhy };
 }
 
-module.exports = { syndicatedDuplicateHealPlan, classifyPrimaryExclusion, MIN_SIMILARITY };
+const decodeEntities = (t) => String(t || '')
+  .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)))
+  .replace(/&(?:amp|quot|apos|nbsp);/g, ' ');
+const normText = (t) => decodeEntities(t).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+
+/**
+ * BRO-5396: a secondary whose primary file no longer exists. Finds the live
+ * (non-duplicate) file in the SAME show folder that holds the same article, so
+ * the pointer can be repointed to it instead of cleared (clearing would score
+ * the article twice). Same article = a 80-char normalized snippet of the
+ * secondary's text, taken at three offsets, found in the candidate's text.
+ *
+ * @param {object} p
+ * @param {object} p.data   the secondary's record
+ * @param {string} p.file   the secondary's filename
+ * @param {string[]} p.siblings  filenames in the secondary's show folder
+ * @param {(f:string)=>object} p.read
+ * @returns {string|null} the sibling filename, or null when no live copy exists
+ */
+function findLiveSyndicationPrimary({ data, file, siblings, read }) {
+  const own = normText(data && data.fullText);
+  if (own.length < 400) return null;
+  const snips = [150, 600, 1200].filter((o) => own.length >= o + 80).map((o) => own.slice(o, o + 80));
+  if (!snips.length) return null;
+  for (const f of siblings) {
+    if (f === file || !f.endsWith('.json') || f.startsWith('_') || f === 'failed-fetches.json') continue;
+    let k;
+    try { k = read(f); } catch { continue; }
+    if (!k || k.isSyndicatedDuplicate === true || !k.fullText) continue;
+    const txt = normText(k.fullText);
+    if (snips.some((sn) => txt.includes(sn))) return f;
+  }
+  return null;
+}
+
+module.exports = { syndicatedDuplicateHealPlan, classifyPrimaryExclusion, findLiveSyndicationPrimary, MIN_SIMILARITY };

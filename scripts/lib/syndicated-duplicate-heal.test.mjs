@@ -107,3 +107,19 @@ test('classifyPrimaryExclusion: unknown reasons default to shared', () => {
   assert.equal(classifyPrimaryExclusion({}, 'cvWrongArticleHighConfidence', {}).scope, 'shared');
   assert.equal(classifyPrimaryExclusion({}, 'crossOutletDuplicate', {}).scope, 'shared');
 });
+
+test('findLiveSyndicationPrimary (BRO-5396): same article in a live sibling, entity-decoded; none when no copy or only duplicates', async () => {
+  const { findLiveSyndicationPrimary } = (await import('node:module')).createRequire(import.meta.url)('./syndicated-duplicate-heal.js');
+  const body = Array.from({ length: 90 }, (_, i) => `word${i} sentence about the show`).join(' ');
+  const files = {
+    'sec.json': { fullText: body.replace('word3 ', '&#8220;word3 ') },
+    'prim.json': { fullText: `Intro. ${body} Outro.` },
+    'other.json': { fullText: 'something entirely different '.repeat(40) },
+    'dup.json': { fullText: body, isSyndicatedDuplicate: true },
+  };
+  const read = (f) => files[f];
+  const siblings = Object.keys(files);
+  assert.equal(findLiveSyndicationPrimary({ data: files['sec.json'], file: 'sec.json', siblings, read }), 'prim.json');
+  assert.equal(findLiveSyndicationPrimary({ data: files['sec.json'], file: 'sec.json', siblings: ['sec.json', 'other.json', 'dup.json'], read }), null);
+  assert.equal(findLiveSyndicationPrimary({ data: { fullText: 'short' }, file: 'sec.json', siblings, read }), null);
+});

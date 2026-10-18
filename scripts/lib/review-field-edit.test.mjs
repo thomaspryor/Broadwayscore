@@ -642,6 +642,23 @@ test('BRO-4415: a syndication mark naming another file clears only on the heal d
   assert.equal(applyReviewFieldEdit(rec, { ...flag, newValue: true }, stamp, { ...ctx, syndicatedHeal: true }).ok, false, 'never sets the mark');
 });
 
+test('BRO-5396: a dangling syndication pointer clears only with no live copy, and repoints only to the live copy the executor found', () => {
+  const rec = { isSyndicatedDuplicate: true, syndicatedPrimaryFile: 'bug-2026/gone--pat.json' };
+  const ctx = { folder: 'bug-2026', file: 'ny--pat.json' };
+  const flag = { field: 'isSyndicatedDuplicate', oldValue: true, newValue: false };
+  const clear = { field: 'syndicatedPrimaryFile', oldValue: rec.syndicatedPrimaryFile, newValue: null };
+  const repoint = { field: 'syndicatedPrimaryFile', oldValue: rec.syndicatedPrimaryFile, newValue: 'bug-2026/live--pat.json' };
+  for (const a of [flag, clear]) {
+    assert.equal(applyReviewFieldEdit(rec, a, stamp, ctx).ok, false, `${a.field}: refused without the dangling context`);
+    assert.equal(applyReviewFieldEdit(rec, a, stamp, { ...ctx, syndicatedDanglingClear: true }).ok, true, `${a.field}: cleared when no live copy`);
+  }
+  assert.equal(applyReviewFieldEdit(rec, repoint, stamp, ctx).ok, false, 'repoint refused without the executor finding a copy');
+  assert.equal(applyReviewFieldEdit(rec, repoint, stamp, { ...ctx, syndicatedRepointTo: 'other--pat.json' }).ok, false, 'repoint refused to a different file');
+  const ok = applyReviewFieldEdit(rec, repoint, stamp, { ...ctx, syndicatedRepointTo: 'live--pat.json' });
+  assert.equal(ok.ok, true);
+  assert.equal(ok.record.syndicatedPrimaryFile, 'bug-2026/live--pat.json');
+});
+
 test('isRoundupArticle is clear-only (BRO-4914): false passes, true and null are refused', () => {
   const rec = { outletId: 'theater-life', isRoundupArticle: true, roundupDetail: '4 other shows mentioned 3+ times' };
   const ok = applyReviewFieldEdit(rec, { field: 'isRoundupArticle', oldValue: true, newValue: false }, stamp);

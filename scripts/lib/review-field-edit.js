@@ -129,10 +129,13 @@ const FIELD_VALUE_CHECKS = {
   allowCrossMarket: (v) => (v === true ? null : 'allowCrossMarket may only be set to true'),
   // BRO-4415: or when the executor's syndicated-duplicate-heal decision (ctx.syndicatedHeal) is 'clear':
   // the primary is excluded for a reason that does not apply to this copy.
-  isSyndicatedDuplicate: (v, record, ctx = {}) => (v === false && (isSelfSyndicationPointer(record, ctx) || ctx.syndicatedHeal === true)
+  isSyndicatedDuplicate: (v, record, ctx = {}) => (v === false && (isSelfSyndicationPointer(record, ctx) || ctx.syndicatedHeal === true || ctx.syndicatedDanglingClear === true)
     ? null : 'isSyndicatedDuplicate may only be cleared (false), and only when syndicatedPrimaryFile points at this same file or its primary is excluded for a primary-only reason (syndicated-duplicate-heal)'),
-  syndicatedPrimaryFile: (v, record, ctx = {}) => (v === null && (isSelfSyndicationPointer(record, ctx) || ctx.syndicatedHeal === true)
-    ? null : 'syndicatedPrimaryFile may only be cleared (null), and only when it points at this same file or its primary is excluded for a primary-only reason (syndicated-duplicate-heal)'),
+  // BRO-5396: a pointer whose primary file is gone is cleared when no live copy of the article exists
+  // (ctx.syndicatedDanglingClear), or repointed to the live same-show copy the executor found (ctx.syndicatedRepointTo).
+  syndicatedPrimaryFile: (v, record, ctx = {}) => (((v === null && (isSelfSyndicationPointer(record, ctx) || ctx.syndicatedHeal === true || ctx.syndicatedDanglingClear === true))
+    || (typeof v === 'string' && ctx.syndicatedRepointTo && v === `${ctx.folder}/${ctx.syndicatedRepointTo}`))
+    ? null : 'syndicatedPrimaryFile may only be cleared (null) when it points at this same file, its primary is excluded for a primary-only reason, or its primary file is gone with no live copy; or repointed to the live same-show copy of a gone primary'),
   isRoundupArticle: (v) => (v === false ? null : 'isRoundupArticle may only be cleared (false)'),
   crossOutletDuplicate: (v) => (v === false ? null : 'crossOutletDuplicate may only be cleared (false)'),
   isNotReview: (v, record) => (v === false && record.isNotReviewManualClear === true
@@ -504,6 +507,29 @@ function syndicatedHealDecision(reviewTextsDir, ctx, record) {
   } catch { return 'keep'; }
 }
 
+/**
+ * BRO-5396: the pointer's primary file is gone. Returns {syndicatedRepointTo} (a live same-show copy holds the
+ * article) or {syndicatedDanglingClear: true} (none does, so the secondary is the only copy). {} when the pointer
+ * resolves to an existing file.
+ */
+function syndicatedDanglingContext(reviewTextsDir, ctx, record) {
+  const fs = require('fs');
+  const path = require('path');
+  try {
+    const ptr = record.syndicatedPrimaryFile;
+    const slash = ptr.indexOf('/');
+    const ptrFolder = slash >= 0 ? ptr.slice(0, slash) : ctx.folder;
+    if (fs.existsSync(path.join(reviewTextsDir, ptrFolder, path.basename(ptr)))) return {};
+    const dir = path.join(reviewTextsDir, ctx.folder);
+    const { findLiveSyndicationPrimary } = require('./syndicated-duplicate-heal');
+    const live = findLiveSyndicationPrimary({
+      data: record, file: ctx.file, siblings: fs.readdirSync(dir),
+      read: (f) => JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')),
+    });
+    return live ? { syndicatedRepointTo: live } : { syndicatedDanglingClear: true };
+  } catch { return {}; }
+}
+
 function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
   const fs = require('fs');
   const path = require('path');
@@ -530,6 +556,7 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
   if ((action.field === 'isSyndicatedDuplicate' || action.field === 'syndicatedPrimaryFile')
       && typeof record.syndicatedPrimaryFile === 'string' && !isSelfSyndicationPointer(record, ctx)) {
     ctx.syndicatedHeal = syndicatedHealDecision(reviewTextsDir, ctx, record) === 'clear';
+    Object.assign(ctx, syndicatedDanglingContext(reviewTextsDir, ctx, record));
   }
   const res = applyReviewFieldEdit(record, action, stamp, ctx);
   if (!res.ok) return res;
