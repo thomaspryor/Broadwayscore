@@ -2189,13 +2189,13 @@
       "title": "Cron stale 3+ consecutive days: Weekly Video Reviews",
       "firstSeen": "2026-08-29T16:01:08.858Z",
       "incidentOpenedAt": "2026-10-16T15:53:47.855Z",
-      "lastSeen": "2026-10-17T14:48:28.990Z",
+      "lastSeen": "2026-10-18T15:12:15.314Z",
       "lastNotifiedAt": "2026-10-16T15:53:47.855Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-5495",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-publish-date-pre-opening:electra-persona-west-end-2026": {
       "status": "resolved",
@@ -17229,10 +17229,10 @@
       "title": "Cron's latest run failed (not yet stale): Update Mezzanine",
       "firstSeen": "2026-10-13T18:44:50.742Z",
       "incidentOpenedAt": "2026-10-13T18:44:50.742Z",
-      "lastSeen": "2026-10-17T14:48:28.883Z",
-      "lastNotifiedAt": "2026-10-17T14:48:28.883Z",
-      "lastSurfacedAt": "2026-10-17T14:48:28.883Z",
-      "notifyCount": 5,
+      "lastSeen": "2026-10-18T15:12:15.202Z",
+      "lastNotifiedAt": "2026-10-18T15:12:15.202Z",
+      "lastSurfacedAt": "2026-10-18T15:12:15.202Z",
+      "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -20378,6 +20378,45 @@
       "cardId": null,
       "linearIdentifier": null,
       "silentRefires": 1
+    },
+    "cron-health-failed:Commercial Weekly Orchestrator": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Cron's latest run failed (not yet stale): Commercial Weekly Orchestrator",
+      "firstSeen": "2026-10-18T15:12:15.173Z",
+      "incidentOpenedAt": "2026-10-18T15:12:15.173Z",
+      "lastSeen": "2026-10-18T15:12:15.173Z",
+      "lastNotifiedAt": "2026-10-18T15:12:15.173Z",
+      "lastSurfacedAt": "2026-10-18T15:12:15.173Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health-failed:Account Metrics": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Cron's latest run failed (not yet stale): Account Metrics",
+      "firstSeen": "2026-10-18T15:12:15.186Z",
+      "incidentOpenedAt": "2026-10-18T15:12:15.186Z",
+      "lastSeen": "2026-10-18T15:12:15.186Z",
+      "lastNotifiedAt": "2026-10-18T15:12:15.186Z",
+      "lastSurfacedAt": "2026-10-18T15:12:15.186Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health-failed:Audit Aggregator Review Gap": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Cron's latest run failed (not yet stale): Audit Aggregator Review Gap",
+      "firstSeen": "2026-10-18T15:12:15.211Z",
+      "incidentOpenedAt": "2026-10-18T15:12:15.211Z",
+      "lastSeen": "2026-10-18T15:12:15.211Z",
+      "lastNotifiedAt": "2026-10-18T15:12:15.211Z",
+      "lastSurfacedAt": "2026-10-18T15:12:15.211Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }

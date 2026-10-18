@@ -543,5 +543,81 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-18T14:57:33.821Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Commercial Weekly Orchestrator",
+    "title": "Cron's latest run failed (not yet stale): Commercial Weekly Orchestrator",
+    "description": "Commercial Weekly Orchestrator: Latest run failed (last success 186h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39139321486",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39139321486)"
+      }
+    ],
+    "queuedAt": "2026-10-18T15:12:15.174Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Account Metrics",
+    "title": "Cron's latest run failed (not yet stale): Account Metrics",
+    "description": "Account Metrics: Latest run failed (last success 4h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39139321486",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39139321486)"
+      }
+    ],
+    "queuedAt": "2026-10-18T15:12:15.186Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Update Mezzanine",
+    "title": "Cron's latest run failed (not yet stale): Update Mezzanine",
+    "description": "Update Mezzanine: Latest run failed (last success 2h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39139321486",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39139321486)"
+      }
+    ],
+    "queuedAt": "2026-10-18T15:12:15.203Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Audit Aggregator Review Gap",
+    "title": "Cron's latest run failed (not yet stale): Audit Aggregator Review Gap",
+    "description": "Audit Aggregator Review Gap: Latest run failed (last success 1h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39139321486",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39139321486)"
+      }
+    ],
+    "queuedAt": "2026-10-18T15:12:15.211Z"
   }
 ]
