@@ -236,7 +236,7 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -250,7 +250,8 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 142,
       "sweptTracker": "BRO-5554",
-      "silentRefires": 6
+      "silentRefires": 6,
+      "resolvedAt": "2026-10-18T23:27:49.025Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -20018,7 +20019,7 @@
       "silentRefires": 10
     },
     "test-yml:red:Unit Tests:4fb7ef20": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \".claude/CLOUD.md stays under its byte cap\"",
       "firstSeen": "2026-10-18T02:51:46.727Z",
@@ -20035,7 +20036,9 @@
         "runId": "39105837664",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39105837664"
       },
-      "silentRefires": 5
+      "silentRefires": 5,
+      "resolvedAt": "2026-10-18T23:27:48.838Z",
+      "resolveReason": "job-green"
     },
     "land:land/job/linear-BRO-716-mvd2yiv0": {
       "status": "open",
