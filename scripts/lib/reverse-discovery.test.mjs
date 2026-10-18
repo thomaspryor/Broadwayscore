@@ -606,3 +606,8 @@ test('BRO-4689: dash-subtitle catalogue title matches its BWW headline head', ()
   const idx2 = buildShowTitleIndex([{ id: 'h', title: 'Hamlet – a new version', category: 'off-broadway', status: 'open' }], 'nyc');
   assert.equal(titleMatchesIndex('Hamlet', idx2), false);
 });
+
+test('BRO-4689: caps single-word dash head applies to NYC only', () => {
+  const we = buildShowTitleIndex([{ id: 's', title: 'STORIES – The Tap Dance Sensation', category: 'off-west-end', status: 'open' }], 'we');
+  assert.equal(titleMatchesIndex('Stories', we), false);
+});

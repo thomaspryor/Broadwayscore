@@ -664,7 +664,8 @@ function buildShowTitleIndex(shows, market = null) {
     if (s.title && /\s[\u2013\u2014]\s/.test(s.title)) {
       const rawHead = s.title.split(/\s[\u2013\u2014]\s/)[0].trim();
       const head = normalizeTitle(rawHead);
-      const capsWord = /^[A-Z0-9]{4,}$/.test(rawHead);
+      // NYC only: BWW sets titles in capitals; a caps WE entry ('STORIES') would hide an unrelated 'Stories'.
+      const capsWord = /^[A-Z0-9]{4,}$/.test(rawHead) && NYC_CATEGORIES.has(s.category);
       if (head && ((head.includes(' ') && head.length >= 6) || capsWord)) raws.push(rawHead);
     }
     // Mirror extractShowTitleFromBwwRoundup's market-tail split: a catalog

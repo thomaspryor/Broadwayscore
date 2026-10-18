@@ -4491,7 +4491,7 @@ function reverseDiscoveryBacklogResults(report, state, now = new Date()) {
     (c) => c && EVIDENCE_SOURCES.has(c.source) && (!isStillMissing || isStillMissing(c)) &&
       // Candidates written before extractGuardianReview learned to drop
       // cross-tagged film/TV reviews stay in the report until the next audit run.
-      !(c.source === 'guardian-review' && !/^https?:\/\/(www\.)?theguardian\.com\/stage\//.test(c.url || ''))
+      !(c.source === 'guardian-review' && c.url && !/^https?:\/\/[^/]*theguardian\.com\/stage\//.test(c.url))
   );
   const ranked = rankReverseDiscoveryBacklog({
     candidates: reviewed,
