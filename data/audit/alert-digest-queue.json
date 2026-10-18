@@ -650,5 +650,36 @@
       }
     ],
     "queuedAt": "2026-10-18T15:23:51.754Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5626-unpark-drain-2",
+    "title": "Landing blocked: rebase red on land/bro-5626-unpark-drain-2",
+    "description": "land.yml did not land land/bro-5626-unpark-drain-2: the rebase gate went red at abaad51824. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5626-unpark-drain-2 @ abaad51824 (origin/land/bro-5626-unpark-drain-2) → origin/main @ 28e1139d6c REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 28e1139d6c: Rebasing (1/1) error: could not apply abaad518249... feat(BRO-5626): one cloud unpark drain, dispatch-by-default filing, parked digest line, front-door VERIFY advisory hint: Resolve all conflicts manually,  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39139664780",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5626-unpark-drain-2"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "abaad51824987b50c494db279cda89cc44f866ed"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39139664780"
+      }
+    ],
+    "queuedAt": "2026-10-18T15:46:11.455Z"
   }
 ]
