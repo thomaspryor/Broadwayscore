@@ -23,7 +23,7 @@ import {
   modelDisplayGuard, displayBasis, playedWeeks, independentEstimate, isRunning,
   analystRange, estimateFitsDesignation, RUNNING_SHOWN_MAX,
 } from '../../scripts/lib/model-display-guard';
-import { hasNoInvestorsToRepay, isLossDesignation } from '../../scripts/lib/commercial-designations';
+import { hasNoInvestorsToRepay, isLossDesignation, likelyLossDesignation } from '../../scripts/lib/commercial-designations';
 import { publicSourceText, isEstimatedCapitalization, saysRecoupmentUnannounced } from '../../scripts/lib/public-source-text';
 import { conversionOf } from '../../scripts/lib/commercial-conversion';
 
@@ -344,6 +344,7 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     recoupedSource,
     humanReviewedDesignation: commercial.humanReviewedDesignation,
     ...(commercial.designationBasis ? { designationBasis: commercial.designationBasis } : {}),
+    ...(commercial.likelyLoss ? { likelyLoss: commercial.likelyLoss } : {}),
     notes: publicNotesText(commercial) ?? undefined,
     sources: commercial.sources?.map(({ type, url, date }) => ({ type, url, date })),
     investorMultiple: commercial.investorMultiple,
@@ -587,6 +588,20 @@ export function lossBasisCaveat(c: LossBasisSignals | null | undefined): string 
  * the label can change (owner 2026-10-18, BRO-5645).
  */
 export const LOSS_CAN_CHANGE_NOTE = 'This can change if the show recoups later, from tours or licensing.';
+
+/**
+ * Our best guess at how a Did Not Recoup show did (owner 2026-10-18, BRO-5647:
+ * "People want to know what we think"): "Likely: Flop" or "Likely: Fizzle"
+ * from the model's middle figure, shown beside the label and marked as ours.
+ * null for every other label and when the model has no reading.
+ */
+export function likelyLossLine(c: Parameters<typeof likelyLossDesignation>[0]): string | null {
+  const d = likelyLossDesignation(c);
+  return d ? `Likely: ${d}` : null;
+}
+
+/** What the Likely line rests on, for its tooltip and the card. */
+export const LIKELY_LOSS_NOTE = 'Our estimate from weekly grosses and costs. No source has reported what investors got back.';
 
 /** The can-change note for a loss label; null for every other designation. */
 export function lossCanChangeNote(c: Pick<ShowCommercial, 'designation'> | null | undefined): string | null {

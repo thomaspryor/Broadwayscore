@@ -26,6 +26,7 @@ import {
   publicSourceText,
   sourceTextLink,
   LOSS_ON_SILENCE_CAVEAT,
+  LIKELY_LOSS_NOTE,
   type RecoupedCellSummary,
 } from '@/lib/commercial-display';
 import { isRunningStatus } from '@/lib/commercial-metrics';
@@ -342,6 +343,11 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                     {show.lossCaveat && (
                       <div className="text-xs text-gray-500 whitespace-nowrap" title={LOSS_ON_SILENCE_CAVEAT} data-testid="loss-basis-tag">
                         No recoupment announced
+                      </div>
+                    )}
+                    {show.likelyLoss && (
+                      <div className="text-xs text-gray-300 whitespace-nowrap" title={LIKELY_LOSS_NOTE} data-testid="likely-loss">
+                        {show.likelyLoss}
                       </div>
                     )}
                   </td>
