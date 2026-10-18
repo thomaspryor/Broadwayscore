@@ -57,7 +57,10 @@ Usage:
 Options:
   --list=PATH               check only this backlog list (default: the whole corpus)
   --file=SHOW/FILE.json     check only this file (repeatable; wins over --list)
-  --plan-out=DIR            write auto-flag-eligible rows as pending-fix plans (bro-4159.json, -b, ...)
+  --plan-out=DIR            write auto-flag-eligible scored+unflagged rows as pending-fix plans
+                            (<issue>.json, <issue>-p2.json, ...); refuses to overwrite an existing plan
+  --issue=ID                plan id for --plan-out (default bro-4159)
+  --shows-path=PATH         shows.json for target titles (default data/shows.json; optional)
   --review-texts-dir=PATH   override resolveReviewTextsDir()
   --report-path=PATH        default: data/audit/cross-show-excerpt-contamination-report.json
   --apply                   write wrongShow flags for auto-flag-eligible high-confidence matches
@@ -77,6 +80,8 @@ function parseArgs(argv) {
     list: arg(argv, 'list', null),
     files: argv.filter((a) => a.startsWith('--file=')).map((a) => a.slice('--file='.length)).filter(Boolean),
     planOut: arg(argv, 'plan-out', null),
+    issue: arg(argv, 'issue', 'bro-4159'),
+    showsPath: arg(argv, 'shows-path', path.join(ROOT, 'data', 'shows.json')),
     reviewTextsDir: arg(argv, 'review-texts-dir', null),
     reportPath: arg(argv, 'report-path', path.join(ROOT, 'data', 'audit', 'cross-show-excerpt-contamination-report.json')),
   };
@@ -130,6 +135,17 @@ function walkCorpus(reviewTextsDir) {
   return { records: out, malformed, unreadableDirs };
 }
 
+/** id -> [title]; empty map when shows.json is absent (cloud/worktree). */
+function loadTitlesById(showsPath) {
+  const out = new Map();
+  try {
+    const raw = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+    const shows = Array.isArray(raw) ? raw : (raw.shows || []);
+    for (const s of shows) if (s && s.id && s.title) out.set(s.id, [s.title]);
+  } catch { /* titles derive from the show id alone */ }
+  return out;
+}
+
 function isScored(data) {
   return !!(data && data.llmScore && data.llmScore.score);
 }
@@ -180,6 +196,8 @@ function main() {
   let highConfidenceCount = 0;
   let autoFlagEligible = 0;
   let applied = 0;
+  let targetOwnsSkipped = 0;
+  const titlesById = loadTitlesById(opts.showsPath);
 
   for (const rel of backlog) {
     const parsed = splitRel(rel);
@@ -218,7 +236,7 @@ function main() {
       continue;
     }
 
-    const matches = findCrossShowMatches(showId, file, rec.data, index)
+    const matches = findCrossShowMatches(showId, file, rec.data, index, { titles: titlesById.get(showId) || [] })
       .sort((a, b) => b.matchLength - a.matchLength);
 
     if (matches.length > 0) withMatches++;
@@ -229,12 +247,21 @@ function main() {
     // match can be auto-flag-eligible while the single longest match isn't
     // (e.g. the longest match is an uncorroborated duplicate-slug pair while
     // a shorter match is a verified wrongFullText hit).
-    const eligibleMatch = matches.find((m) => shouldAutoFlag(m)) || null;
+    // BRO-4159: if ANY match's quarantined text looks like the target show's
+    // own review, nothing auto-flags this file; a human decides.
+    const ownsText = matches.some((m) => m.targetOwnsText);
+    const eligibleMatch = ownsText ? null : (matches.find((m) => shouldAutoFlag(m)) || null);
     let action = matches.length === 0 ? 'no-match' : 'needs-manual-review';
+    if (ownsText) {
+      targetOwnsSkipped++;
+      action = 'needs-manual-review-target-owns-text';
+    }
     if (eligibleMatch) {
       autoFlagEligible++;
       action = 'auto-flag-eligible';
-      if (!flagged && !wrongShowCleared(rec.data)) planRows.push({ rel, match: eligibleMatch });
+      if (scored && !flagged && !wrongShowCleared(rec.data)) {
+        planRows.push({ rel, match: eligibleMatch, oldValue: rec.data.wrongShow ?? null });
+      }
       if (opts.apply && !flagged) {
         try {
           const data = JSON.parse(fs.readFileSync(rec.filePath, 'utf8'));
@@ -305,12 +332,24 @@ function main() {
       autoFlagEligible,
       applied,
       autoFlagEligibleUnflagged: planRows.length,
+      targetOwnsTextSkipped: targetOwnsSkipped,
     },
     files: perFile,
   };
 
   if (opts.planOut) {
-    const plans = buildFlagPlans(planRows, { makeId: () => crypto.randomUUID() });
+    let plans;
+    try {
+      plans = buildFlagPlans(planRows, { issue: opts.issue, makeId: () => crypto.randomUUID() });
+    } catch (e) {
+      console.error(e.message);
+      process.exit(2);
+    }
+    const existing = plans.map(({ name }) => path.join(opts.planOut, `${name}.json`)).filter((f) => fs.existsSync(f));
+    if (existing.length > 0) {
+      console.error(`Refusing to overwrite existing plan file(s): ${existing.join(', ')}. Pass a new --issue=ID.`);
+      process.exit(2);
+    }
     fs.mkdirSync(opts.planOut, { recursive: true });
     for (const { name, plan } of plans) {
       const out = path.join(opts.planOut, `${name}.json`);
@@ -334,10 +373,11 @@ function main() {
   console.log(`  high confidence:      ${highConfidenceCount}`);
   console.log(`  auto-flag-eligible:   ${autoFlagEligible}`);
   console.log(`    not yet flagged:      ${planRows.length}`);
+  console.log(`  target owns text (skipped): ${targetOwnsSkipped}`);
   if (opts.apply) console.log(`  applied:              ${applied}`);
   console.log(`Report written: ${opts.reportPath}`);
   if (!opts.apply && planRows.length > 0) {
-    console.log('\nRun with --apply to flag auto-flag-eligible matches as wrongShow.');
+    console.log('\nRun with --plan-out=data/pending-fixes to write these as approved-fix plans (wrongShow edits).');
   }
 }
 

@@ -120,6 +120,14 @@ function isGarbageNotReviewCorroboration(entry) {
   return NOT_REVIEW_REASON_PATTERN.test(reason);
 }
 
+function verdictTextOf(data) {
+  const parts = [data.wrongShowReason, data.wrongProductionReason, data.rejectionReason, data.rejectionReasoning];
+  if (data.contentVerification) {
+    try { parts.push(JSON.stringify(data.contentVerification)); } catch { /* ignore */ }
+  }
+  return parts.filter((p) => typeof p === 'string' && p).join(' ').slice(0, 4000);
+}
+
 /**
  * Build an in-memory index: normalizedText -> [{showId, file, field,
  * wrongShow, wrongProduction, criticName}]. `records` is an iterable of
@@ -143,6 +151,9 @@ function buildExcerptIndex(records) {
         wrongShowReason: data.wrongShowReason || null,
         wrongProductionReason: data.wrongProductionReason || null,
         criticName: data.criticName || null,
+        // BRO-4159: why the matched record's text was judged wrong. If that
+        // reason names the TARGET show, the text is the target's own review.
+        verdictText: verdictTextOf(data),
       });
     }
   }
@@ -154,7 +165,7 @@ function buildExcerptIndex(records) {
  * matches recorded in `index`. Returns one entry per (targetField,
  * indexEntry) pair whose showId differs from targetShowId.
  */
-function findCrossShowMatches(targetShowId, targetFile, data, index) {
+function findCrossShowMatches(targetShowId, targetFile, data, index, { titles = [] } = {}) {
   const matches = [];
   for (const { field, text } of extractIndexableFields(data)) {
     const norm = normalizeExcerptText(text);
@@ -176,7 +187,10 @@ function findCrossShowMatches(targetShowId, targetFile, data, index) {
         confidence: norm.length >= HIGH_CONFIDENCE_LENGTH ? 'high' : 'medium',
         isGarbageNotReview: isGarbageNotReviewCorroboration(entry),
         excerpt: text.slice(0, 300),
+        matchedVerdictText: entry.verdictText || '',
       });
+      const m = matches[matches.length - 1];
+      m.targetOwnsText = targetOwnsMatchedText(m, targetShowId, titles, text);
     }
   }
   return matches;
@@ -210,13 +224,51 @@ function findCrossShowMatches(targetShowId, targetFile, data, index) {
  * but require manual verification before flagging (per BRO-461's acceptance
  * criteria on false positives).
  */
+function phraseOf(s) {
+  return ` ${String(s || '').normalize('NFKC').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()} `;
+}
+
+/**
+ * Title phrases that identify a show: its id with year/market stripped
+ * (hyphens as spaces), the same without a leading "the", and any titles the
+ * caller knows (shows.json). Phrases under 4 chars are dropped as too generic.
+ */
+function targetShowPhrases(showId, titles = []) {
+  const base = baseShowId(showId).replace(/-/g, ' ');
+  const out = new Set();
+  for (const t of [showId.replace(/-/g, ' '), base, base.replace(/^the /, ''), ...titles]) {
+    const p = phraseOf(t).trim();
+    if (p.length >= 4) out.add(p);
+    const noThe = p.replace(/^the /, '');
+    if (noThe.length >= 4) out.add(noThe);
+  }
+  return [...out];
+}
+
+/**
+ * BRO-4159 (review finding): another show's wrongFullText can be the TARGET
+ * show's real review (HP's quarantined copy of a Shadowlands review vs the
+ * Shadowlands file's own excerpt). Flagging the target then removes a genuine
+ * review. True when the matched record's verdict (wrongShowReason etc.) names
+ * the target show, or the matched text itself names the target's title: the
+ * match is then left for manual review, never auto-flagged.
+ */
+function targetOwnsMatchedText(match, targetShowId, titles = [], fullText = '') {
+  const hay = phraseOf(`${match.matchedVerdictText || ''} ${fullText || match.excerpt || ''}`);
+  const idHay = String(match.matchedVerdictText || '').toLowerCase();
+  if (idHay.includes(String(targetShowId).toLowerCase())) return true;
+  return targetShowPhrases(targetShowId, titles).some((p) => hay.includes(` ${p} `));
+}
+
 function shouldAutoFlag(match) {
   return (
     match.confidence === 'high' &&
     !match.sameBase &&
     match.matchedField === 'wrongFullText' &&
     (match.matchedWrongProduction || match.matchedWrongShow) &&
-    !match.isGarbageNotReview
+    !match.isGarbageNotReview &&
+    // BRO-4159: the quarantined text may be the target show's own review.
+    !match.targetOwnsText
   );
 }
 
@@ -267,12 +319,12 @@ function selectAuditTargets(records, { files = [], list = null } = {}) {
  * show. Data changes go through approved-fix plans, never a direct --apply on
  * the shared review-texts repo from a worker.
  */
-function buildWrongShowFlagAction(rel, match) {
+function buildWrongShowFlagAction(rel, match, oldValue = null) {
   return {
     type: 'review-field-edit',
     file: rel,
     field: 'wrongShow',
-    oldValue: null,
+    oldValue: oldValue === undefined ? null : oldValue,
     newValue: true,
     description: `BRO-4159 cross-show excerpt audit: ${match.targetField} (${match.matchLength} chars) is verbatim the text ${match.matchedShowId}/${match.matchedFile} holds as ${match.matchedField}, already verified wrong-show content (matched file wrongShow=${!!match.matchedWrongShow}, wrongProduction=${!!match.matchedWrongProduction}).`,
   };
@@ -283,12 +335,21 @@ function buildWrongShowFlagAction(rel, match) {
  * plans, chunked to the executor's action cap. Returns [{name, plan}] where
  * name is the data/pending-fixes file basename (bro-4159, bro-4159-b, ...).
  */
+// execute-approved-fix.js accepts plan ids matching this (ISSUE_NUMBER check).
+const PLAN_ID_RE = /^[a-z0-9][a-z0-9-]*$/i;
+
+/** Part 0 is the issue id itself; later parts are <issue>-p2, -p3, ... (no 26-part ceiling). */
+function planName(issue, i) {
+  if (!PLAN_ID_RE.test(String(issue))) throw new Error(`invalid plan issue id: ${issue}`);
+  return i === 0 ? String(issue) : `${issue}-p${i + 1}`;
+}
+
 function buildFlagPlans(eligible, { issue = 'bro-4159', maxActions = 25, createdAt = new Date().toISOString(), makeId } = {}) {
   const rows = [...eligible].sort((a, b) => a.rel.localeCompare(b.rel));
   const chunks = [];
   for (let i = 0; i < rows.length; i += maxActions) chunks.push(rows.slice(i, i + maxActions));
   return chunks.map((chunk, i) => {
-    const name = i === 0 ? issue : `${issue}-${String.fromCharCode(97 + i)}`;
+    const name = planName(issue, i);
     const shows = [...new Set(chunk.map((r) => r.match.matchedShowId))];
     return {
       name,
@@ -299,10 +360,10 @@ function buildFlagPlans(eligible, { issue = 'bro-4159', maxActions = 25, created
         createdAt,
         submitter: { name: null, email: null },
         plan: {
-          summary: `${issue.toUpperCase()} (part ${i + 1} of ${chunks.length}): flag wrongShow on ${chunk.length} excerpt-only review(s) whose excerpt text is verbatim content already verified as wrong-show elsewhere (audit-cross-show-excerpt-contamination.js corpus-wide run, shouldAutoFlag bar). Matched against: ${shows.slice(0, 8).join(', ')}${shows.length > 8 ? ', ...' : ''}.`,
+          summary: `${String(issue).toUpperCase()} (part ${i + 1} of ${chunks.length}): flag wrongShow on ${chunk.length} excerpt-only review(s) whose excerpt text is verbatim content already verified as wrong-show elsewhere (audit-cross-show-excerpt-contamination.js corpus-wide run, shouldAutoFlag bar). Matched against: ${shows.slice(0, 8).join(', ')}${shows.length > 8 ? ', ...' : ''}.`,
           steps: chunk.map((r) => `Flag ${r.rel} wrongShow (matches ${r.match.matchedShowId}/${r.match.matchedFile}).`),
           riskLevel: 'Low',
-          actions: chunk.map((r) => buildWrongShowFlagAction(r.rel, r.match)),
+          actions: chunk.map((r) => buildWrongShowFlagAction(r.rel, r.match, r.oldValue ?? null)),
         },
       },
     };
@@ -310,6 +371,10 @@ function buildFlagPlans(eligible, { issue = 'bro-4159', maxActions = 25, created
 }
 
 module.exports = {
+  PLAN_ID_RE,
+  planName,
+  targetShowPhrases,
+  targetOwnsMatchedText,
   isAuditableShowDir,
   selectAuditTargets,
   buildWrongShowFlagAction,
