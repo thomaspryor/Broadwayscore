@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-18T01:39:42.391Z",
+    "lastUpdated": "2026-10-18T08:20:07.486Z",
     "version": "2.1.0",
     "lastChange": "BRO-5373: split The Mail on Sunday (mail-on-sunday, splitFrom daily-mail) out of daily-mail"
   },
@@ -13079,6 +13079,38 @@
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
       "regionInferredAt": "2026-10-18T01:39:42.391Z"
+    },
+    "timesbookshop": {
+      "displayName": "Timesbookshop",
+      "tier": 3,
+      "aliases": [
+        "timesbookshop"
+      ],
+      "displayNameInferred": true,
+      "domain": "timesbookshop.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-10-18T08:20:07.486Z"
+    },
+    "ticketswitch": {
+      "displayName": "Ticketswitch",
+      "tier": 3,
+      "aliases": [
+        "ticketswitch"
+      ],
+      "displayNameInferred": true,
+      "domain": "theatrelondon.ticketswitch.com",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-10-18T08:20:07.486Z"
+    },
+    "oazis": {
+      "displayName": "Oazis",
+      "tier": 3,
+      "aliases": [
+        "oazis"
+      ],
+      "domain": "oazis.app"
     }
   },
   "_aliasIndex": {
