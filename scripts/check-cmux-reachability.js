@@ -57,8 +57,13 @@ function repairSocketMode() {
       fs.rmSync(path.join(CMUX_DIR, old), { force: true });
     }
     const tmp = `${CMUX_CONFIG}.tmp-${process.pid}`;
-    fs.writeFileSync(tmp, plan.newText, { mode: 0o600 });
-    fs.renameSync(tmp, CMUX_CONFIG);
+    try {
+      fs.writeFileSync(tmp, plan.newText, { mode: 0o600 });
+      fs.renameSync(tmp, CMUX_CONFIG);
+    } catch (err) {
+      fs.rmSync(tmp, { force: true }); // it holds the password
+      throw err;
+    }
     let reloaded = false;
     try {
       // Usually refused while the socket still denies launchd; then the
