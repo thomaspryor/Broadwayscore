@@ -235,7 +235,85 @@ function stillExcerptOnly(data) {
   return !(data && data.fullText && data.fullText.trim());
 }
 
+/**
+ * Underscore dirs (_pending, _superseded-misattributed) are holding areas, not
+ * shows: a superseded copy "matches" its own original under another id and
+ * would surface as cross-show noise (13 such rows on the 2026-10-18 run).
+ */
+function isAuditableShowDir(name) {
+  return typeof name === 'string' && name.length > 0 && !name.startsWith('_');
+}
+
+/**
+ * BRO-4159: which files the audit checks. BRO-461 shipped with a fixed
+ * 259-file backlog list as the only target (a list that lived on one Mac), so
+ * contamination outside it (the Book of Mormon West End Guardian row filled
+ * from Brigadoon's WestEndTheatre.com roundup) was never looked at. The
+ * default is now the whole corpus; --list and --file narrow it.
+ *   files: explicit "<show>/<file>.json" targets (wins when non-empty)
+ *   list:  backlog lines (used when given and no files)
+ *   else:  every record in the corpus, sorted for a stable report
+ */
+function selectAuditTargets(records, { files = [], list = null } = {}) {
+  if (files && files.length > 0) return { mode: 'files', targets: [...files] };
+  if (Array.isArray(list)) return { mode: 'list', targets: [...list] };
+  const targets = records.map((r) => `${r.showId}/${r.file}`).sort();
+  return { mode: 'corpus', targets };
+}
+
+/**
+ * One review-field-edit action (execute-approved-fix.js) that sets wrongShow
+ * on a file whose excerpt matched verified wrong-show text under another
+ * show. Data changes go through approved-fix plans, never a direct --apply on
+ * the shared review-texts repo from a worker.
+ */
+function buildWrongShowFlagAction(rel, match) {
+  return {
+    type: 'review-field-edit',
+    file: rel,
+    field: 'wrongShow',
+    oldValue: null,
+    newValue: true,
+    description: `BRO-4159 cross-show excerpt audit: ${match.targetField} (${match.matchLength} chars) is verbatim the text ${match.matchedShowId}/${match.matchedFile} holds as ${match.matchedField}, already verified wrong-show content (matched file wrongShow=${!!match.matchedWrongShow}, wrongProduction=${!!match.matchedWrongProduction}).`,
+  };
+}
+
+/**
+ * Turn the audit's auto-flag-eligible rows ({rel, match}) into pending-fix
+ * plans, chunked to the executor's action cap. Returns [{name, plan}] where
+ * name is the data/pending-fixes file basename (bro-4159, bro-4159-b, ...).
+ */
+function buildFlagPlans(eligible, { issue = 'bro-4159', maxActions = 25, createdAt = new Date().toISOString(), makeId } = {}) {
+  const rows = [...eligible].sort((a, b) => a.rel.localeCompare(b.rel));
+  const chunks = [];
+  for (let i = 0; i < rows.length; i += maxActions) chunks.push(rows.slice(i, i + maxActions));
+  return chunks.map((chunk, i) => {
+    const name = i === 0 ? issue : `${issue}-${String.fromCharCode(97 + i)}`;
+    const shows = [...new Set(chunk.map((r) => r.match.matchedShowId))];
+    return {
+      name,
+      plan: {
+        issueNumber: name,
+        planId: makeId ? makeId(name) : null,
+        status: 'pending',
+        createdAt,
+        submitter: { name: null, email: null },
+        plan: {
+          summary: `${issue.toUpperCase()} (part ${i + 1} of ${chunks.length}): flag wrongShow on ${chunk.length} excerpt-only review(s) whose excerpt text is verbatim content already verified as wrong-show elsewhere (audit-cross-show-excerpt-contamination.js corpus-wide run, shouldAutoFlag bar). Matched against: ${shows.slice(0, 8).join(', ')}${shows.length > 8 ? ', ...' : ''}.`,
+          steps: chunk.map((r) => `Flag ${r.rel} wrongShow (matches ${r.match.matchedShowId}/${r.match.matchedFile}).`),
+          riskLevel: 'Low',
+          actions: chunk.map((r) => buildWrongShowFlagAction(r.rel, r.match)),
+        },
+      },
+    };
+  });
+}
+
 module.exports = {
+  isAuditableShowDir,
+  selectAuditTargets,
+  buildWrongShowFlagAction,
+  buildFlagPlans,
   MIN_MATCH_LENGTH,
   HIGH_CONFIDENCE_LENGTH,
   normalizeExcerptText,

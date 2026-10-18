@@ -18,8 +18,14 @@
  * fields against it. An exact (post-normalization) text match filed under a
  * DIFFERENT showId is the contamination signal.
  *
+ * BRO-4159: the default target is now the WHOLE corpus (every excerpt-only
+ * file), not BRO-461's fixed 259-file backlog. --list/--file narrow it.
+ * --plan-out=DIR writes the auto-flag-eligible rows as pending-fix plans
+ * (review-field-edit wrongShow actions) for execute-approved-fix.js.
+ *
  * Usage:
  *   node scripts/audit-cross-show-excerpt-contamination.js
+ *   node scripts/audit-cross-show-excerpt-contamination.js --plan-out=data/pending-fixes
  *   node scripts/audit-cross-show-excerpt-contamination.js --apply
  *   node scripts/audit-cross-show-excerpt-contamination.js --list=/path/to/list.txt
  *   node scripts/audit-cross-show-excerpt-contamination.js --review-texts-dir=/path
@@ -27,7 +33,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const os = require('os');
+const crypto = require('crypto');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -38,6 +44,9 @@ const {
   findCrossShowMatches,
   shouldAutoFlag,
   stillExcerptOnly,
+  selectAuditTargets,
+  buildFlagPlans,
+  isAuditableShowDir,
 } = require('./lib/excerpt-contamination-audit');
 
 const USAGE = `audit-cross-show-excerpt-contamination.js — BRO-461 excerpt cross-show audit.
@@ -46,7 +55,9 @@ Usage:
   node scripts/audit-cross-show-excerpt-contamination.js [options]
 
 Options:
-  --list=PATH               backlog list (default: ~/Documents/claude-outputs/excerpt-only-unscored-backfill-2026-07-26.txt)
+  --list=PATH               check only this backlog list (default: the whole corpus)
+  --file=SHOW/FILE.json     check only this file (repeatable; wins over --list)
+  --plan-out=DIR            write auto-flag-eligible rows as pending-fix plans (bro-4159.json, -b, ...)
   --review-texts-dir=PATH   override resolveReviewTextsDir()
   --report-path=PATH        default: data/audit/cross-show-excerpt-contamination-report.json
   --apply                   write wrongShow flags for auto-flag-eligible high-confidence matches
@@ -63,7 +74,9 @@ function arg(args, name, fallback = null) {
 function parseArgs(argv) {
   return {
     apply: argv.includes('--apply'),
-    list: arg(argv, 'list', path.join(os.homedir(), 'Documents', 'claude-outputs', 'excerpt-only-unscored-backfill-2026-07-26.txt')),
+    list: arg(argv, 'list', null),
+    files: argv.filter((a) => a.startsWith('--file=')).map((a) => a.slice('--file='.length)).filter(Boolean),
+    planOut: arg(argv, 'plan-out', null),
     reviewTextsDir: arg(argv, 'review-texts-dir', null),
     reportPath: arg(argv, 'report-path', path.join(ROOT, 'data', 'audit', 'cross-show-excerpt-contamination-report.json')),
   };
@@ -91,7 +104,7 @@ function walkCorpus(reviewTextsDir) {
   const out = [];
   let malformed = 0;
   let unreadableDirs = 0;
-  const showDirs = listShowDirs(reviewTextsDir).filter((d) => d !== '_pending');
+  const showDirs = listShowDirs(reviewTextsDir).filter(isAuditableShowDir);
   for (const showId of showDirs) {
     const showPath = path.join(reviewTextsDir, showId);
     let files;
@@ -137,14 +150,15 @@ function main() {
     process.exit(2);
   }
 
-  let backlog;
-  try {
-    backlog = loadBacklogList(opts.list);
-  } catch (e) {
-    console.error(e.message);
-    process.exit(2);
+  let listLines = null;
+  if (opts.list) {
+    try {
+      listLines = loadBacklogList(opts.list);
+    } catch (e) {
+      console.error(e.message);
+      process.exit(2);
+    }
   }
-  console.log(`[audit-cross-show-excerpt-contamination] backlog: ${opts.list} (${backlog.length} entries)`);
 
   console.log('[audit-cross-show-excerpt-contamination] scanning corpus (single pass)…');
   const { records, malformed, unreadableDirs } = walkCorpus(reviewTextsDir);
@@ -152,6 +166,9 @@ function main() {
   console.log(`[audit-cross-show-excerpt-contamination] ${records.length} files scanned (${malformed} malformed, ${unreadableDirs} unreadable dirs), building index…`);
   const index = buildExcerptIndex(records);
   console.log(`[audit-cross-show-excerpt-contamination] index built: ${index.size} distinct normalized text entries`);
+  const { mode, targets: backlog } = selectAuditTargets(records, { files: opts.files, list: listLines });
+  console.log(`[audit-cross-show-excerpt-contamination] target: ${mode}${mode === 'list' ? ` ${opts.list}` : ''} (${backlog.length} entries)`);
+  const planRows = [];
 
   const perFile = [];
   let missing = 0;
@@ -217,6 +234,7 @@ function main() {
     if (eligibleMatch) {
       autoFlagEligible++;
       action = 'auto-flag-eligible';
+      if (!flagged && !wrongShowCleared(rec.data)) planRows.push({ rel, match: eligibleMatch });
       if (opts.apply && !flagged) {
         try {
           const data = JSON.parse(fs.readFileSync(rec.filePath, 'utf8'));
@@ -228,7 +246,7 @@ function main() {
           if (!data.wrongShow && !data.wrongProduction && !wrongShowCleared(data)) {
             data.wrongShow = true;
             invalidateWrongShowAutoClear(data);
-            data.wrongShowReason = `Cross-attribution (BRO-461 excerpt-only backfill audit): ${eligibleMatch.targetField} content verbatim-matches ${eligibleMatch.matchedShowId}/${eligibleMatch.matchedFile}'s ${eligibleMatch.matchedField}, which already carries verified wrong-show content for the identical text (match length ${eligibleMatch.matchLength} chars).`;
+            data.wrongShowReason = `Cross-attribution (BRO-461/BRO-4159 excerpt-only cross-show audit): ${eligibleMatch.targetField} content verbatim-matches ${eligibleMatch.matchedShowId}/${eligibleMatch.matchedFile}'s ${eligibleMatch.matchedField}, which already carries verified wrong-show content for the identical text (match length ${eligibleMatch.matchLength} chars).`;
             data.crossAttributionAudit = {
               detectedShowId: eligibleMatch.matchedShowId,
               evidence: `${eligibleMatch.targetField} text verbatim-matches ${eligibleMatch.matchedShowId}/${eligibleMatch.matchedFile} (${eligibleMatch.matchedField})`,
@@ -267,7 +285,9 @@ function main() {
     generatedAt: new Date().toISOString(),
     config: {
       reviewTextsDir,
+      target: mode,
       listPath: opts.list,
+      files: opts.files,
       apply: opts.apply,
     },
     summary: {
@@ -284,9 +304,21 @@ function main() {
       highConfidence: highConfidenceCount,
       autoFlagEligible,
       applied,
+      autoFlagEligibleUnflagged: planRows.length,
     },
     files: perFile,
   };
+
+  if (opts.planOut) {
+    const plans = buildFlagPlans(planRows, { makeId: () => crypto.randomUUID() });
+    fs.mkdirSync(opts.planOut, { recursive: true });
+    for (const { name, plan } of plans) {
+      const out = path.join(opts.planOut, `${name}.json`);
+      fs.writeFileSync(out, `${JSON.stringify(plan, null, 2)}\n`);
+      console.log(`Plan written: ${out} (${plan.plan.actions.length} actions)`);
+    }
+    if (plans.length === 0) console.log('No auto-flag-eligible unflagged files: no plan written.');
+  }
 
   fs.mkdirSync(path.dirname(opts.reportPath), { recursive: true });
   fs.writeFileSync(opts.reportPath, `${JSON.stringify(report, null, 2)}\n`);
@@ -301,9 +333,10 @@ function main() {
   console.log(`With cross-show match:  ${withMatches}`);
   console.log(`  high confidence:      ${highConfidenceCount}`);
   console.log(`  auto-flag-eligible:   ${autoFlagEligible}`);
+  console.log(`    not yet flagged:      ${planRows.length}`);
   if (opts.apply) console.log(`  applied:              ${applied}`);
   console.log(`Report written: ${opts.reportPath}`);
-  if (!opts.apply && autoFlagEligible > 0) {
+  if (!opts.apply && planRows.length > 0) {
     console.log('\nRun with --apply to flag auto-flag-eligible matches as wrongShow.');
   }
 }
