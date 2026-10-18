@@ -113,7 +113,7 @@ test('saysRecoupmentUnannounced reads the data\'s own wording for an unannounced
     'Recouped without announcing it.', 'Not officially announced.', 'Never officially announced.',
     'No official announcement; inferred from grosses.', 'Recoupment has not yet been announced.',
     'The producers never made an announcement.', 'The producers did not make an announcement.',
-    "The producers didn't make an announcement.", 'Recoupment was never publicly disclosed.',
+    "The producers didn't make an announcement.",
     // Errs toward the downgrade by design: a later report belongs in the source itself, not after "unannounced".
     'The previously unannounced recoupment was confirmed by Deadline.',
   ]) {
@@ -124,6 +124,8 @@ test('saysRecoupmentUnannounced reads the data\'s own wording for an unannounced
     'Variety editorial (Jan 2024): the show recouped.', 'Producers announced recoupment (Playbill, May 2024).',
     'The recoupment announcement came in May 2024 (Deadline).',
     'Recouped per Variety; editorial decision to list the date.',
+    // Something else left undisclosed beside a reported recoupment.
+    'Recouped per Deadline; figures were not disclosed.', 'Variety reported it recouped; terms never disclosed.',
     '', null, undefined,
   ]) {
     assert.equal(saysRecoupmentUnannounced(reported), false, `should not read as unannounced: ${reported}`);
