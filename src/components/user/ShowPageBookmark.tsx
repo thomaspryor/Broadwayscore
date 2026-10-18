@@ -21,19 +21,21 @@ interface ShowPageBookmarkProps {
 // the svg sat centered inside a 44x44 button: +8px right, +6px top of extra
 // gap that no top/right offset tuning accounted for (live measure: 11.5px top /
 // 11.8px right). Offset-tweaking without measuring kept missing it.
-// Fix: sm opts out of the global minimum (min-h-0 min-w-0) so the button IS the
-// svg box, then offsets are exact. The 44px tap area comes back as an invisible
-// ::after (thumbnails are overflow-hidden, so it is clipped to the card image).
+// Fix: sm and compact opt out of the global minimum (min-h-0 min-w-0) so the
+// button IS the svg box, then offsets are exact. The old 44x44 tap area comes
+// back as an invisible ::after anchored to the top-right corner and growing
+// 16px left and 12px down (28+16 x 32+12 = 44x44); a symmetric -inset-2 only
+// gave ~36x40 once the thumbnail's overflow-hidden clipped it (review, Oct 2026).
 // Glyph padding inside the 24-unit viewBox at w-7 h-8 (scale 1.167, content
 // centered vertically): right 5.8px, top 5.5px. So top-0 right-0 gives a
 // ~5.5-6px visual gap on both axes (owner: "half the current distance").
 // tests/unit/bookmark-corner-gap.test.mjs pins this.
-// md (show-page hero) keeps positive offsets: its poster container is
-// overflow-VISIBLE and was tuned against the 44px box. compact is untouched.
+// md (show-page hero, legacy) keeps positive offsets: tuned against the 44px box.
+const CORNER_BUTTON = "top-0 right-0 p-0 min-h-0 min-w-0 after:content-[''] after:absolute after:top-0 after:right-0 after:-left-4 after:-bottom-3";
 const SIZES = {
-  sm: { button: "top-0 right-0 p-0 min-h-0 min-w-0 after:content-[''] after:absolute after:-inset-2", icon: 'w-7 h-8' },
+  sm: { button: CORNER_BUTTON, icon: 'w-7 h-8' },
   md: { button: 'top-1 right-1 p-0', icon: 'w-8 h-9' },
-  compact: { button: 'top-0 -right-0.5 p-0', icon: 'w-7 h-8' },
+  compact: { button: CORNER_BUTTON, icon: 'w-7 h-8' },
 };
 
 /**

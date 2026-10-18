@@ -9,7 +9,8 @@ import { readFileSync } from 'node:fs';
 const src = readFileSync(new URL('../../src/components/user/ShowPageBookmark.tsx', import.meta.url), 'utf8');
 const css = readFileSync(new URL('../../src/app/globals.css', import.meta.url), 'utf8');
 
-const sm = src.match(/sm:\s*\{\s*button:\s*(["'])(.*?)\1/s)?.[2] ?? '';
+const corner = src.match(/const CORNER_BUTTON = (["'])(.*?)\1;/s)?.[2] ?? '';
+const sm = corner;
 
 test('global mobile rule still inflates every button to 44px (so the opt-out is needed)', () => {
   assert.match(css, /button,\s*a,\s*\[role="button"\]\s*\{[^}]*min-height:\s*44px/s);
@@ -26,7 +27,13 @@ test('sm bookmark uses non-negative corner offsets (glyph padding already suppli
   assert.doesNotMatch(sm, /(^|\s)-(top|right)-/);
 });
 
-test('sm bookmark keeps a 44px tap area via ::after', () => {
+test('tap area is 44x44 (28x32 glyph box + 16px left + 12px down), not clipped smaller', () => {
   assert.match(sm, /after:absolute/);
-  assert.match(sm, /after:-inset-2/);
+  assert.match(sm, /after:-left-4/);
+  assert.match(sm, /after:-bottom-3/);
+});
+
+test('sm AND compact both use the corner button (compact was inflated the same way in the mobile hero)', () => {
+  assert.match(src, /sm:\s*\{\s*button:\s*CORNER_BUTTON/);
+  assert.match(src, /compact:\s*\{\s*button:\s*CORNER_BUTTON/);
 });
