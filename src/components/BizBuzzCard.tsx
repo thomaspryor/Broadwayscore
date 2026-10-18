@@ -22,6 +22,7 @@ import {
   getConversionSourceLabel,
   hasCommercialCard,
   lossBasisCaveat,
+  lossCanChangeNote,
   publicNotesText,
   getDisplayableAnalystRange,
   hasNoInvestorsToRepay,
@@ -168,6 +169,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
   const producerLine = getNonprofitProducerLine(commercial);
   const isNonprofit = commercial.designation === 'Nonprofit';
   const lossCaveat = lossBasisCaveat(commercial);
+  const lossCanChange = lossCanChangeNote(commercial);
 
   // Display rules (src/lib/commercial-display.ts, unit-tested):
   //  - recouped:true → the recoupment record, never an estimate (Q1).
@@ -291,6 +293,12 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           {reportedReturnLine && (
             <p className="text-[13px] text-gray-300 mt-1.5 leading-[1.4]" data-testid="reported-return">
               {reportedReturnLine}
+            </p>
+          )}
+          {/* A loss label describes the show as it closed; tours and licensing can still pay it back (BRO-5645). */}
+          {lossCanChange && (
+            <p className="text-xs text-gray-500 mt-1 leading-[1.4]" data-testid="loss-can-change">
+              {lossCanChange}
             </p>
           )}
           {producerLine && !isNonprofit && (

@@ -11,8 +11,19 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-const { lossBasisCaveat, LOSS_ON_SILENCE_CAVEAT, toPublicShowCommercial, publicSourceText, lossOutcomePhrase, isReportedLoss, publicNotesText } =
+const { lossBasisCaveat, LOSS_ON_SILENCE_CAVEAT, toPublicShowCommercial, publicSourceText, lossOutcomePhrase, isReportedLoss, publicNotesText, lossCanChangeNote, LOSS_CAN_CHANGE_NOTE } =
   await import('../../src/lib/commercial-display.ts');
+
+test('every loss label says it can change if the show recoups later (owner 2026-10-18, BRO-5645)', () => {
+  assert.match(LOSS_CAN_CHANGE_NOTE, /recoups later, from tours or licensing/);
+  for (const designation of ['Fizzle', 'Did Not Recoup', 'Flop']) {
+    assert.equal(lossCanChangeNote({ designation }), LOSS_CAN_CHANGE_NOTE, designation);
+  }
+  for (const designation of ['TBD', 'Windfall', 'Trickle', 'Nonprofit', 'Tour Stop']) {
+    assert.equal(lossCanChangeNote({ designation }), null, designation);
+  }
+  assert.equal(lossCanChangeNote(null), null);
+});
 
 test('the caveat is shown for every loss label no source reported', () => {
   assert.equal(LOSS_ON_SILENCE_CAVEAT, 'Based on no recoupment being announced');
