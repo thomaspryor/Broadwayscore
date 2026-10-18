@@ -37,3 +37,12 @@ test('sm AND compact both use the corner button (compact was inflated the same w
   assert.match(src, /sm:\s*\{\s*button:\s*CORNER_BUTTON/);
   assert.match(src, /compact:\s*\{\s*button:\s*CORNER_BUTTON/);
 });
+
+// Keyboard users tabbing across cards on desktop: the unsaved bookmark is
+// sm:opacity-0 until hover, so focus must reveal it and show a ring (the ring is
+// inset because the thumbnail's overflow-hidden would crop an outer one).
+test('unsaved sm bookmark becomes visible and ringed on keyboard focus', () => {
+  assert.match(src, /sm:focus-visible:opacity-100/);
+  assert.match(src, /focus-visible:ring-2/);
+  assert.match(src, /focus-visible:ring-inset/);
+});
