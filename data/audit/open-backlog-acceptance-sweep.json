@@ -1,18 +1,24 @@
 {
-  "generatedAt": "2026-10-17T07:04:02.362Z",
+  "generatedAt": "2026-10-18T07:23:25.472Z",
   "shadow": true,
-  "checkoutSha": "4fe69a0028beed7e8b9388c2560a3d71ce0db4a7",
-  "totalCandidates": 542,
-  "eligibleCandidates": 92,
+  "checkoutSha": "8dca476233726f512e55ac72b56881deec7daabc",
+  "totalCandidates": 567,
+  "eligibleCandidates": 56,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 16,
+    "pass": 19,
     "fail": 1,
-    "unverifiable": 13
+    "unverifiable": 10
   },
   "alreadyDone": [
+    {
+      "id": "BRO-5565",
+      "name": "Investigate Sentry weekly digest: TypeError x8, RangeError x3 (New), UgcError apple_sign_in",
+      "verifyCmd": "node --test tests/unit/sentry-triage-classify.test.js",
+      "detail": null
+    },
     {
       "id": "BRO-5480",
       "name": "Owner email policy: opening-night SLA goes to a worker card, every page-worthy key must name the owner's action",
@@ -26,21 +32,9 @@
       "detail": null
     },
     {
-      "id": "BRO-5430",
-      "name": "Morning digest: stop listing automation-owned problems to the owner; show real card status instead of 'being watched'",
-      "verifyCmd": "node --test scripts/lib/digest-snapshots.test.mjs scripts/lib/autonomous-email-render.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-5427",
       "name": "Opening-night SLA: duplicate P0 emails + junk reviews paging as stuck",
       "verifyCmd": "node --test tests/unit/opening-night-sla.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5396",
-      "name": "Syndicated duplicates: 23 secondaries point at a primary file that no longer exists (excluded for nothing)",
-      "verifyCmd": "node --test scripts/lib/syndicated-duplicate-heal.test.mjs",
       "detail": null
     },
     {
@@ -56,123 +50,93 @@
       "detail": null
     },
     {
-      "id": "BRO-5307",
-      "name": "Enforce CLAUDE.md §12.8 audit-regex-patterns run for content-quality.js pattern edits",
-      "verifyCmd": "node --test scripts/tests/verify-edits-scoring-gate.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5302",
-      "name": "Opening Night Orchestrator: alert-state push 403s (contents: read), emails owner after every full 5h run; same gap in opening-night-reviews + outlet-listing-poller",
-      "verifyCmd": "node --test tests/unit/audit-workflow-hygiene-push-permission.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5297",
-      "name": "Triage ~150 open Notion-only cards filed after the 2026-08-20 freeze (no Linear twin)",
-      "verifyCmd": "test -f docs/notion-orphan-triage.md",
-      "detail": null
-    },
-    {
-      "id": "BRO-5267",
-      "name": "Alert ledger: 267 conditions stay 'open' after their emitter stopped seeing them (no rollover/absence resolve)",
-      "verifyCmd": "node --test tests/unit/alert-ledger-absence-resolve.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5266",
-      "name": "Data-backfill cards get node --test acceptance commands, pushing workers to write world-state tests into blocking unit jobs",
-      "verifyCmd": "node --test scripts/enrich-card-acceptance.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5238",
-      "name": "Human wrong-production clear should override stale ensemble rejectionReason in inclusion gate",
-      "verifyCmd": "node --test scripts/lib/review-guards.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-5231",
       "name": "P2: 439 url-corrected reviews still ship the OLD url's body and score (needsRefetch never drains)",
       "verifyCmd": "node --test tests/unit/url-corrected-refetch-drain.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-5223",
-      "name": "unicode-stars-fallthrough extractor reads stars from page chrome about other shows",
-      "verifyCmd": "node --test tests/unit/score-extractors.test.mjs",
+      "id": "BRO-5113",
+      "name": "Owner Flop/Fizzle verdicts on recently closed shows are lost when the closure window passes",
+      "verifyCmd": "node --test scripts/lib/classify-stale-closure.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-5193",
-      "name": "Missing show: The Da Vinci Code",
+      "id": "BRO-5088",
+      "name": "Fact-check 1 follow-up: unsourced director rows, Steinberg-as-Broadway site tables, findTheater substring matching, Covid closings",
+      "verifyCmd": "node --test scripts/lib/broadway-theaters-studio54.test.mjs scripts/lib/ibdb-directed-by.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5028",
+      "name": "Weekly commercial update: regex grosses parser is dead, every run falls back to Sonnet",
+      "verifyCmd": "node --test tests/unit/reddit-grosses.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5003",
+      "name": "Recoupment model: running shows with an announced closing count future weeks as played",
+      "verifyCmd": "node --test tests/unit/recoupment-model-shadow-opts.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4973",
+      "name": "Opening-night audit 2026-10-10",
+      "verifyCmd": "node --test tests/unit/audit-report.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4919",
+      "name": "Revival-promo leftovers after BRO-4890: Much Ado Globe contamination and Drury Lane rehoming, Woolf 2012/West End 2026, Salesman 2012/2026, Saigon Michael Dale",
       "verifyCmd": "node scripts/validate-data.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-4914",
+      "name": "London Into the Woods + Evita pages: refetches, rescoring calls and the 52 own-domain roundup flags left over from BRO-4888",
+      "verifyCmd": "node scripts/validate-data.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-4910",
+      "name": "Into the Woods Broadway pages: bylines and refetches that need the live outlet pages (Observer, NYT, amNY, Front Mezz Junkies, Talkin' Broadway, 2002 reviews)",
+      "verifyCmd": "node scripts/validate-data.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-4870",
+      "name": "Triage 17 dispatched workflows that keep only one pending run (BRO-4859 baseline)",
+      "verifyCmd": "node --test tests/unit/queue-eviction-baseline-empty.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4856",
+      "name": "Synopsis provenance stamp + arm synopsis fact checks as blocking after BRO-4853 plan applies",
+      "verifyCmd": "node scripts/validate-data.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-4813",
+      "name": "Triage 24 stranded land/** refs that name no card (interactive-session branches)",
+      "verifyCmd": "node --test scripts/lib/land-stranded-refs.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4781",
+      "name": "Backfill: run verify-commercial-sources over GPT/Deep Research commercial figures in CI and fix via pending-fixes (BRO-4758 follow-up)",
+      "verifyCmd": "node --test tests/unit/commercial-source-verify.test.mjs",
       "detail": null
     }
   ],
   "failing": [
     {
-      "id": "BRO-5384",
-      "name": "Codex lane: ~2 cards per 2h, half rejected, 96% of the ChatGPT allowance unused — make it parallel, route it fitting cards, give fix rounds time",
-      "verifyCmd": "node --test scripts/verify-bro-5384-codex-throughput.test.mjs",
-      "detail": "TAP version 13\n# Subtest: Codex runner: >= 4 cards per firing and >= 40% landed since the parallel slots (BRO-5384)\nnot ok 1 - Codex runner: >= 4 cards per firing and >= 40% landed since the parallel slots (BRO-5384)\n  ---\n  duration_ms: 2.294047\n  location: '/tmp/open-backlog-sweep-dRfrWy/main/scripts/verify-bro-5384-codex-throughput.test.mjs:20:1'\n  failureType: 'testCodeFailure'\n  error: 'LINEA"
+      "id": "BRO-4623",
+      "name": "Commercial scorecard launch-readiness audit (accuracy, freshness, coverage) before Forbes interview",
+      "verifyCmd": "node scripts/check-workflow-run-status.js --workflow=commercial-weekly.yml --expect=success",
+      "detail": "To get started with GitHub CLI, please run:  gh auth login\nAlternatively, populate the GH_TOKEN environment variable with a GitHub API authentication token.\ngh run list failed: Command failed: gh run list --workflow commercial-weekly.yml --limit 1 --json conclusion,status,headBranch,url\nTo get started with GitHub CLI, please run:  gh auth login\nAlternatively, populate the GH_TOKEN environment vari"
     }
   ],
   "unverifiable": [
-    {
-      "id": "BRO-5351",
-      "name": "Collector derives publishDate from the review URL (collect-review-texts.js:4858) against CLAUDE.md section 3",
-      "verifyCmd": "node --test tests/unit/collect-review-texts-url-publishdate.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/collect-review-texts-url-publishdate.test.mjs"
-    },
-    {
-      "id": "BRO-5344",
-      "name": "Aggregator excerpts on WSJ rows that appear nowhere in the critic's stored full text (paraphrases or another production)",
-      "verifyCmd": "node --test tests/unit/verifier-excerpt-anchor.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/verifier-excerpt-anchor.test.mjs"
-    },
-    {
-      "id": "BRO-5336",
-      "name": "Outlet registry: 168 displayNames are mashed-together domains (Hackneycitizen, Stanforddaily)",
-      "verifyCmd": "node --test tests/unit/outlet-registry-display-names.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/outlet-registry-display-names.test.mjs"
-    },
-    {
-      "id": "BRO-5320",
-      "name": "Wrong-run review copies surfaced by the BRO-5261 audit fix: Leopoldstadt 2021, Comedy About Spies 2026 and 5 opt-out prior-run rows",
-      "verifyCmd": "node --test tests/unit/run-contamination-wrong-run.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/run-contamination-wrong-run.test.mjs"
-    },
-    {
-      "id": "BRO-5299",
-      "name": "Comedy About Spies 2026: two Adelphi reviews excluded as wrong production",
-      "verifyCmd": "node --test tests/unit/ensemble-return-run-wrong-production.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/ensemble-return-run-wrong-production.test.mjs"
-    },
-    {
-      "id": "BRO-5298",
-      "name": "Write-time guard: refuse a review url a same-title sibling production already holds",
-      "verifyCmd": "node --test scripts/lib/review-file-writer-same-title-sibling-url.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/review-file-writer-same-title-sibling-url.test.mjs"
-    },
-    {
-      "id": "BRO-5293",
-      "name": "Audit workflows whose always() commit step publishes data after a failed validate step",
-      "verifyCmd": "node --test tests/unit/audit-always-commit-after-validate.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/audit-always-commit-after-validate.test.mjs"
-    },
-    {
-      "id": "BRO-5292",
-      "name": "Content verifier (claude-haiku) reads our own '[...]' sample marker as truncation and rejects real long reviews",
-      "verifyCmd": "node --test scripts/lib/classify-sample.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/classify-sample.test.mjs"
-    },
-    {
-      "id": "BRO-5265",
-      "name": "17 mutual crossOutletDuplicate 2-cycles exclude both copies of a review",
-      "verifyCmd": "node --test tests/unit/cross-outlet-duplicate-cycle.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/cross-outlet-duplicate-cycle.test.mjs"
-    },
     {
       "id": "BRO-5260",
       "name": "11 complete review texts still carry a stale ensemble not_a_review rejection made before the full text was fetched",
@@ -186,19 +150,62 @@
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/validate-show-venue.test.mjs"
     },
     {
-      "id": "BRO-5253",
-      "name": "Cloud bootstrap: review-texts copy fails on a partial (blobless/sparse) attached clone",
-      "verifyCmd": "node --test tests/unit/setup-local-data-partial-clone.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/setup-local-data-partial-clone.test.mjs"
+      "id": "BRO-5151",
+      "name": "Wire LINEAR_API_KEY / RESEND_API_KEY / OWNER_EMAIL into the ~150 workflow steps the secret-gap audit still flags",
+      "verifyCmd": "node --test tests/unit/workflow-secret-gaps-budget.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/workflow-secret-gaps-budget.test.mjs"
     },
     {
-      "id": "BRO-5240",
-      "name": "Verify the 68 'inferred-from-reviews' WE/OWE opening dates stamped under the old -1 offset",
-      "verifyCmd": "node --test scripts/infer-press-night-from-reviews.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/infer-press-night-from-reviews.test.mjs"
+      "id": "BRO-5123",
+      "name": "Star deals: find sources for the 3 old deals, then checker before/after for the sourcedStarDeals live switch (BRO-5029 follow-up)",
+      "verifyCmd": "node --test tests/unit/star-deals-sourced.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/star-deals-sourced.test.mjs"
+    },
+    {
+      "id": "BRO-5055",
+      "name": "🚨 BSC Rebuild: 49 reviews dropped [SUSPICIOUS]",
+      "verifyCmd": "node --test tests/unit/commercial-gate.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/commercial-gate.test.mjs"
+    },
+    {
+      "id": "BRO-4998",
+      "name": "Week of 2026-10-05 newsletter shows: wrong-production reviews, missing reviews, bad dates (audit)",
+      "verifyCmd": "node --test tests/unit/newsletter-2026-10-05-audit.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/newsletter-2026-10-05-audit.test.mjs"
+    },
+    {
+      "id": "BRO-4927",
+      "name": "Hollywood Reporter Broadway reviews fell from ~28/yr to 3-8/yr since 2023: collection gap or real cutback?",
+      "verifyCmd": "test -f docs/hollywood-reporter-coverage-gap.md",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: docs/hollywood-reporter-coverage-gap.md"
+    },
+    {
+      "id": "BRO-4567",
+      "name": "Fix stored title \"Richard Ii\" -> \"Richard II\" and flag mis-cased Roman numerals in validate-data",
+      "verifyCmd": "node --test scripts/lib/validate-data.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/validate-data.test.mjs"
+    },
+    {
+      "id": "BRO-4559",
+      "name": "iOS app: show the 'Most reviews from N years ago' caveat the website shows",
+      "verifyCmd": "node --test tests/unit/review-age-caveat.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/review-age-caveat.test.mjs"
+    },
+    {
+      "id": "BRO-4490",
+      "name": "Cleared and LLM-misread star ratings still steer some shipped scores (31 tier-1.5-cleared llm-v6 files; FT multi-review star runs)",
+      "verifyCmd": "node --test scripts/lib/late-star-anchor.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/late-star-anchor.test.mjs"
     }
   ],
   "landedButOpen": [
+    {
+      "id": "BRO-5565",
+      "name": "Investigate Sentry weekly digest: TypeError x8, RangeError x3 (New), UgcError apple_sign_in",
+      "branch": "land/bro-5565-triage-noise",
+      "sha": "6d027a4c0eae33555fe6c01cad5004fb14ef1904",
+      "landedAt": "2026-10-18T03:37:22.215Z"
+    },
     {
       "id": "BRO-5480",
       "name": "Owner email policy: opening-night SLA goes to a worker card, every page-worthy key must name the owner's action",
@@ -212,13 +219,6 @@
       "branch": "land/bro-5479-poller-broadway-email",
       "sha": "5da8034c7fb6a7f6dd662ae58402911dd3e4c1dd",
       "landedAt": "2026-10-16T15:59:16.142Z"
-    },
-    {
-      "id": "BRO-5430",
-      "name": "Morning digest: stop listing automation-owned problems to the owner; show real card status instead of 'being watched'",
-      "branch": "land/bro-5430-coverage-quotes",
-      "sha": "e49e646b200312d6b07db0ebb29d19b120b5834b",
-      "landedAt": "2026-10-16T08:47:32.446Z"
     },
     {
       "id": "BRO-5427",
@@ -242,39 +242,81 @@
       "landedAt": "2026-10-17T04:13:15.820Z"
     },
     {
-      "id": "BRO-5307",
-      "name": "Enforce CLAUDE.md §12.8 audit-regex-patterns run for content-quality.js pattern edits",
-      "branch": "land/codex-bro-5307",
-      "sha": "44f32ee0aa5aee96a4250bf8d986d4016f943f70",
-      "landedAt": "2026-10-17T02:05:03.072Z"
-    },
-    {
-      "id": "BRO-5302",
-      "name": "Opening Night Orchestrator: alert-state push 403s (contents: read), emails owner after every full 5h run; same gap in opening-night-reviews + outlet-listing-poller",
-      "branch": "land/bro-5302-permission-gaps",
-      "sha": "6384e5aa7e8f5a5c45d56fda140db2612f9a022f",
-      "landedAt": "2026-10-14T02:29:11.805Z"
-    },
-    {
-      "id": "BRO-5297",
-      "name": "Triage ~150 open Notion-only cards filed after the 2026-08-20 freeze (no Linear twin)",
-      "branch": "land/codex-bro-5297",
-      "sha": "cd0f0c15a23eec1f8463a43aed1f37f3ad71b85a",
-      "landedAt": "2026-10-14T14:36:54.768Z"
-    },
-    {
-      "id": "BRO-5267",
-      "name": "Alert ledger: 267 conditions stay 'open' after their emitter stopped seeing them (no rollover/absence resolve)",
-      "branch": "land/codex-bro-5267",
-      "sha": "ae892502d0035455b38e14c40df1d950a18a5978",
-      "landedAt": "2026-10-16T02:14:36.698Z"
-    },
-    {
       "id": "BRO-5231",
       "name": "P2: 439 url-corrected reviews still ship the OLD url's body and score (needsRefetch never drains)",
       "branch": "land/bro-5231-url-corrected-drain",
       "sha": "5c3038a5c4814e0816cc990e25a777af083610d2",
       "landedAt": "2026-10-13T07:55:30.948Z"
+    },
+    {
+      "id": "BRO-5113",
+      "name": "Owner Flop/Fizzle verdicts on recently closed shows are lost when the closure window passes",
+      "branch": "land/codex-bro-5113",
+      "sha": "482cd89f0e362625d47e43f5d03934480ab88ee2",
+      "landedAt": "2026-10-15T21:51:51.330Z"
+    },
+    {
+      "id": "BRO-5088",
+      "name": "Fact-check 1 follow-up: unsourced director rows, Steinberg-as-Broadway site tables, findTheater substring matching, Covid closings",
+      "branch": "land/bro-5088-findtheater",
+      "sha": "ad0529a8eaeaa77ee245e6b870bca467a555b8a0",
+      "landedAt": "2026-10-14T11:49:32.837Z"
+    },
+    {
+      "id": "BRO-5028",
+      "name": "Weekly commercial update: regex grosses parser is dead, every run falls back to Sonnet",
+      "branch": "land/codex-bro-5028",
+      "sha": "4bca80d90f0ca4c8debb76f2b05e996209a7a834",
+      "landedAt": "2026-10-14T12:23:57.412Z"
+    },
+    {
+      "id": "BRO-4973",
+      "name": "Opening-night audit 2026-10-10",
+      "branch": "land/codex-bro-4973",
+      "sha": "479d485f3da6d659f8758b29fed10e9dcbcaa1a3",
+      "landedAt": "2026-10-17T00:29:39.517Z"
+    },
+    {
+      "id": "BRO-4919",
+      "name": "Revival-promo leftovers after BRO-4890: Much Ado Globe contamination and Drury Lane rehoming, Woolf 2012/West End 2026, Salesman 2012/2026, Saigon Michael Dale",
+      "branch": "land/bro-4919-revival-promo",
+      "sha": "95925bd9893b57e4dafacff2595e2c8451bbbb03",
+      "landedAt": "2026-10-16T21:45:44.901Z"
+    },
+    {
+      "id": "BRO-4914",
+      "name": "London Into the Woods + Evita pages: refetches, rescoring calls and the 52 own-domain roundup flags left over from BRO-4888",
+      "branch": "land/bro-4914-roundup-flags",
+      "sha": "8a06831511bc02cef16b172664b61e160f6ed267",
+      "landedAt": "2026-10-16T21:37:14.363Z"
+    },
+    {
+      "id": "BRO-4910",
+      "name": "Into the Woods Broadway pages: bylines and refetches that need the live outlet pages (Observer, NYT, amNY, Front Mezz Junkies, Talkin' Broadway, 2002 reviews)",
+      "branch": "land/bro-4910-into-the-woods",
+      "sha": "5b6f214456059738e2f3228638ef79a3051686d7",
+      "landedAt": "2026-10-16T21:41:31.989Z"
+    },
+    {
+      "id": "BRO-4870",
+      "name": "Triage 17 dispatched workflows that keep only one pending run (BRO-4859 baseline)",
+      "branch": "land/bro-4870-queue-eviction",
+      "sha": "f85af7bcdf8b8b56d10b8060c4f541e3d3b1906d",
+      "landedAt": "2026-10-16T21:52:17.746Z"
+    },
+    {
+      "id": "BRO-4856",
+      "name": "Synopsis provenance stamp + arm synopsis fact checks as blocking after BRO-4853 plan applies",
+      "branch": "land/bro-4856-synopsis-source",
+      "sha": "34e6785545ecf2283371831d1424e3947d91ea63",
+      "landedAt": "2026-10-16T07:52:51.035Z"
+    },
+    {
+      "id": "BRO-4813",
+      "name": "Triage 24 stranded land/** refs that name no card (interactive-session branches)",
+      "branch": "land/codex-bro-4813",
+      "sha": "e9e04920a35816acff16b294dfa99084c21bc34e",
+      "landedAt": "2026-10-14T08:13:13.794Z"
     }
   ]
 }
