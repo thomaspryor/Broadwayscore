@@ -4488,7 +4488,10 @@ function reverseDiscoveryBacklogResults(report, state, now = new Date()) {
   const { EVIDENCE_SOURCES } = require('./lib/reverse-discovery-backlog');
   const isStillMissing = buildStillMissingPredicate();
   const reviewed = ((report && report.candidates) || []).filter(
-    (c) => c && EVIDENCE_SOURCES.has(c.source) && (!isStillMissing || isStillMissing(c))
+    (c) => c && EVIDENCE_SOURCES.has(c.source) && (!isStillMissing || isStillMissing(c)) &&
+      // Candidates written before extractGuardianReview learned to drop
+      // cross-tagged film/TV reviews stay in the report until the next audit run.
+      !(c.source === 'guardian-review' && !/^https?:\/\/(www\.)?theguardian\.com\/stage\//.test(c.url || ''))
   );
   const ranked = rankReverseDiscoveryBacklog({
     candidates: reviewed,

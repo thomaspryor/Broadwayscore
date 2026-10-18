@@ -590,3 +590,19 @@ test('BRO-4689: buildShowTitleIndex refuses an unknown market key', () => {
   assert.doesNotThrow(() => buildShowTitleIndex(SHOWS, 'we'));
   assert.doesNotThrow(() => buildShowTitleIndex(SHOWS));
 });
+
+test('BRO-4689: Guardian film/TV cross-tagged review is not a production candidate', () => {
+  const film = { title: 'Frank and Percy review – bromance becomes romance', link: 'https://www.theguardian.com/film/2026/oct/13/frank-and-percy-review-bromance', categories: ['London'] };
+  assert.equal(extractGuardianReview(film), null);
+  const stage = { ...film, link: 'https://www.theguardian.com/stage/2026/oct/13/frank-and-percy-review-london' };
+  assert.equal(extractGuardianReview(stage)?.market, 'west-end');
+});
+
+test('BRO-4689: dash-subtitle catalogue title matches its BWW headline head', () => {
+  const shows = [{ id: 'anon-1', title: 'ANON – a tempest at our kitchen table', category: 'off-broadway', status: 'open' }];
+  const idx = buildShowTitleIndex(shows, 'nyc');
+  assert.equal(titleMatchesIndex("Anne Washburn's ANON", idx), true);
+  // a lowercase one-word head must not swallow an unrelated new show
+  const idx2 = buildShowTitleIndex([{ id: 'h', title: 'Hamlet – a new version', category: 'off-broadway', status: 'open' }], 'nyc');
+  assert.equal(titleMatchesIndex('Hamlet', idx2), false);
+});

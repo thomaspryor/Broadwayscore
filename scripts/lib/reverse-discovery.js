@@ -90,8 +90,12 @@ function extractGuardianReview(item) {
   if (!title || /^review/i.test(title)) return null;
   let slugTokens = [];
   try {
-    const last = new URL(item.link).pathname.split('/').filter(Boolean).pop() || '';
-    slugTokens = last.toLowerCase().split('-');
+    const parts = new URL(item.link).pathname.split('/').filter(Boolean);
+    // The theatre+tone feed also carries cross-tagged film/TV/music reviews
+    // ("Frank and Percy", /film/): only the stage section is a production
+    // review (BRO-4689). A link that fails to parse falls through to tags.
+    if (parts[0] && parts[0] !== 'stage') return null;
+    slugTokens = (parts.pop() || '').toLowerCase().split('-');
   } catch { /* no/invalid link: tags alone decide */ }
   const tags = (item.categories || [])
     .map(c => decodeDiscoveryText(String(c)).replace(/[\u2018\u2019]/g, "'").trim().toLowerCase());
@@ -652,6 +656,16 @@ function buildShowTitleIndex(shows, market = null) {
     if (s.title && s.title.includes(':')) {
       const head = normalizeTitle(s.title.split(':')[0]);
       if (head && head.includes(' ') && head.length >= 6) raws.push(s.title.split(':')[0]);
+    }
+    // Pre-dash subtitle head ("ANON – a tempest at our kitchen table" is
+    // headlined "Anne Washburn's ANON" by BWW; BRO-4689). Same guard idea as
+    // the ":" head, plus an all-caps single word (>=4 letters) because BWW
+    // sets such titles in capitals; a bare lowercase one-word head stays out.
+    if (s.title && /\s[\u2013\u2014]\s/.test(s.title)) {
+      const rawHead = s.title.split(/\s[\u2013\u2014]\s/)[0].trim();
+      const head = normalizeTitle(rawHead);
+      const capsWord = /^[A-Z0-9]{4,}$/.test(rawHead);
+      if (head && ((head.includes(' ') && head.length >= 6) || capsWord)) raws.push(rawHead);
     }
     // Mirror extractShowTitleFromBwwRoundup's market-tail split: a catalog
     // title that itself ends "on Broadway"/"Off-Broadway" ("10 Things I Hate
