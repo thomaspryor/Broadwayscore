@@ -508,6 +508,16 @@ async function main() {
     }
   }
 
+  // Hand-verified cast files (source starts with "manual") are never reprocessed,
+  // even under --force: the SERP backfill is what produced the wrong-production
+  // casts they replace (BRO-5606).
+  shows = shows.filter(s => {
+    try {
+      const src = JSON.parse(fs.readFileSync(path.join(CAST_DIR, `${s.id}.json`), 'utf8')).source;
+      return !(typeof src === 'string' && src.startsWith('manual'));
+    } catch { return true; }
+  });
+
   if (limit > 0) shows = shows.slice(0, limit);
 
   console.log(`  Shows to process: ${shows.length}`);
