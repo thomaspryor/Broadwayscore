@@ -6,6 +6,7 @@ Rules that apply to you:
 - Do NOT commit, push, land, open PRs, touch Linear, or edit .github/workflows/**. Leave your changes in the working tree.
 - Do NOT run npm install, setup-local-data.sh, data:check, /ship-check, /wrap-up or any other session skill, and do not start nested Codex or Claude runs.
 - Never copy logic into a test: require() the real function, extracting it to scripts/lib/ if needed (CLAUDE.md section 15). A new tests/unit file runs in CI automatically (scripts/lib/unit-test-collection.js collects it); do not edit tests/unit-test-manifest.txt, which is retired and ignored.
+- A test for a top-level scripts/*.js fails the land check unless test.yml lists that script in on.push.paths (scripts/audit-toplevel-script-test-yml-coverage.js), and you cannot edit test.yml. Move the logic you test into scripts/lib/ (already covered) and test it there. A scripts/lib/ test that requires a top-level script fails the same way (scripts/audit-test-yml-lib-deps.js).
 - Scripts are tested by running them against real data (3+ diverse cases); `node --check` is syntax only.
 - Scoring-logic edits (scripts/lib/review-guards.js, scripts/rebuild-all-reviews.js, src/lib/{scoring,engine,data-core}.ts, scripts/lib/{rebuild-helpers,score-extractors,score-parsers,review-normalization,score-routing}.js): run `node scripts/scoring-delta.js` and `node scripts/test-temporal-override-regression.js` and paste their summaries.
 - Content-quality regex edits (scripts/lib/content-quality.js pattern arrays): run `node scripts/audit-regex-patterns.js --full`.
