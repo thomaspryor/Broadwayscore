@@ -9,6 +9,7 @@ import { ToggleBar, StatGrid } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
 import { getReviewKey } from '../../../../scripts/lib/review-list-key';
 import { nestQuotes } from '@/lib/nest-quotes';
+import { getInitials } from '@/lib/name-initials';
 
 type SortMode = 'recent' | 'highest' | 'lowest';
 type MarketFilter = 'all' | 'broadway' | 'west-end' | 'off-west-end' | 'off-broadway';
@@ -187,7 +188,7 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
         <div className="flex items-center gap-3 mb-3">
           <div className="w-12 h-12 rounded-full bg-surface-overlay flex items-center justify-center flex-shrink-0">
             <span className="text-white font-bold text-lg">
-              {critic.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}
+              {getInitials(critic.name)}
             </span>
           </div>
           <div>

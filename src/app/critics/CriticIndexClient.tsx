@@ -6,6 +6,7 @@ import { getScoreClass } from '@/lib/critic-page-utils';
 import HowThisWorks from '@/components/HowThisWorks';
 import { ToggleBar, ColumnHeader } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
+import { getInitials } from '@/lib/name-initials';
 
 type SortMode = 'reviews' | 'reviews-asc' | 'highest' | 'lowest' | 'alpha';
 
@@ -40,7 +41,7 @@ function CriticCard({ critic }: { critic: CriticSummary }) {
       {/* Avatar */}
       <div className="w-10 h-10 rounded-full bg-surface-overlay flex items-center justify-center flex-shrink-0">
         <span className="text-white font-bold text-sm">
-          {critic.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}
+          {getInitials(critic.name)}
         </span>
       </div>
 

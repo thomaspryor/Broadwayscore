@@ -8,6 +8,7 @@ import { getScoreTextColor, ordinalSuffix } from '@/lib/critic-page-utils';
 import { ToggleBar, StatGrid, ScoreBadge } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
 import { nestQuotes } from '@/lib/nest-quotes';
+import { getInitials } from '@/lib/name-initials';
 
 type SortMode = 'recent' | 'highest' | 'lowest';
 
@@ -192,7 +193,7 @@ export default function VideoCreatorDetailClient({ creator }: { creator: VideoCr
         <div className="flex items-center gap-3 mb-3">
           <div className="w-12 h-12 rounded-full bg-surface-overlay flex items-center justify-center flex-shrink-0">
             <span className="text-white font-bold text-lg">
-              {creator.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}
+              {getInitials(creator.name)}
             </span>
           </div>
           <div>

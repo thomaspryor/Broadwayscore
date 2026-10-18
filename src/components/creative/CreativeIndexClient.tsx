@@ -6,6 +6,7 @@ import { getScoreClass } from '@/lib/critic-page-utils';
 import { ColumnHeader } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
 import { catchEarlyImgError } from '@/lib/img-early-error';
+import { getInitials } from '@/lib/name-initials';
 
 type SortColumn = 'name' | 'obc' | 'shows' | 'avg';
 type SortDir = 'asc' | 'desc';
@@ -49,7 +50,7 @@ function ProfileCard({ profile, routePath, showObc }: { profile: CreativeProfile
       ) : (
         <div className="w-10 h-10 rounded-full bg-surface-overlay flex items-center justify-center flex-shrink-0">
           <span className="text-white font-bold text-sm">
-            {profile.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}
+            {getInitials(profile.name)}
           </span>
         </div>
       )}

@@ -10,6 +10,7 @@ import { getScoreTier, ScoreBadge, FormatPill, ProductionPill, StatGrid, ColumnH
 import { TrophyIcon } from '@/components/icons';
 import Breadcrumb from '@/components/Breadcrumb';
 import { catchEarlyImgError } from '@/lib/img-early-error';
+import { getInitials } from '@/lib/name-initials';
 
 type SortCol = 'date' | 'score';
 type SortDir = 'asc' | 'desc';
@@ -228,7 +229,7 @@ export default function ActorDetailClient({
           ) : (
             <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-surface-overlay flex items-center justify-center flex-shrink-0">
               <span className="text-white font-bold text-xl sm:text-2xl">
-                {profile.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}
+                {getInitials(profile.name)}
               </span>
             </div>
           )}
