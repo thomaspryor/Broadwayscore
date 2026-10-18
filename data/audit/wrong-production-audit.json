@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-18T00:33:28.260Z",
+  "timestamp": "2026-10-18T00:54:53.187Z",
   "stats": {
-    "totalReviews": 57365,
-    "alreadyFlagged": 21274,
+    "totalReviews": 57378,
+    "alreadyFlagged": 21278,
     "dateGuardCatches": 195,
     "directorMismatch": 1948,
     "tvFilmSignals": 1603,
     "londonSignals": 2412,
     "offBroadwaySignals": 517,
-    "yearMismatch": 157,
-    "noPublishDate": 5293
+    "yearMismatch": 158,
+    "noPublishDate": 5297
   },
   "findings": [
     {
@@ -29907,6 +29907,19 @@
       ]
     },
     {
+      "showId": "other-desert-cities-2026",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "publishDate": "2026-09-10",
+      "url": "https://newyorktheater.me/2026/09/10/other-desert-cities-original-broadway-review/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2011 (6x) more than 2026 (2x). 2011 matches production: other-desert-cities-2011"
+        }
+      ]
+    },
+    {
       "showId": "our-generation-west-end-2022",
       "file": "london-theatre--lizzie-akita.json",
       "score": 78,
@@ -38595,7 +38608,7 @@
     },
     {
       "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
-      "file": "culturesauce--unknown.json",
+      "file": "culturesauce--thom-geier.json",
       "score": 96,
       "publishDate": "2026-09-20",
       "url": "https://culturesauce.com/the-cherry-orchard-chekhov-meets-parasite-in-simon-stones-brilliant-update-off-broadway-review/",
@@ -79716,7 +79729,7 @@
     },
     {
       "showId": "the-car-man-west-end-2026",
-      "file": "a-youngish-perspective--unknown.json",
+      "file": "a-youngish-perspective--steffan-eldridge.json",
       "score": 80,
       "publishDate": "2026-06-25",
       "url": "https://ayoungishperspective.co.uk/2026/06/25/review-the-car-man/",
@@ -81004,7 +81017,7 @@
     },
     {
       "showId": "the-end-of-history-west-end-2019",
-      "file": "guardian--unknown.json",
+      "file": "guardian--michael-billington.json",
       "score": 56,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2019/jul/04/the-end-of-history-review-jack-thorne-john-tiffany-royal-court",
@@ -81074,7 +81087,7 @@
     },
     {
       "showId": "the-enormous-crocodile-west-end-2026",
-      "file": "plays-to-see--unknown.json",
+      "file": "plays-to-see--marlow-getz.json",
       "score": 77,
       "publishDate": "2025-08-20",
       "url": "https://playstosee.com/reviews/the-enormous-crocodile-the-musical/",
