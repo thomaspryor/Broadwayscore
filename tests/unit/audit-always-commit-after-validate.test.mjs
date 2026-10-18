@@ -1,6 +1,7 @@
 // BRO-5293: an `if: always()` commit step after a failed validate-data.js step
 // published data the validator rejected (BRO-3511 fixed generate-theater-tips.yml).
 // require()s the real lib (CLAUDE.md §15), never a copy of the logic.
+// TESTS-VS-DERIVED-DATA-EXEMPT: fixtures only name data/*.json paths as strings; the test asserts workflow-parsing logic, not data facts
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
