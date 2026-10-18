@@ -597,8 +597,8 @@ function fixRoundFits({ deadlineMs, nowMs, hardEndMs, wrapUpMs, landChecksMs = L
 function execBudgetMs({ untilMs, nowMs, capMs, landChecksMs = LAND_CHECKS_MS }) {
   return Math.min(capMs, Math.max(FIX_EXEC_MIN_MS, untilMs - nowMs - landChecksMs - REVIEW_RESERVE_MS));
 }
-/** Time a card needs before the wrap-up so its review fits: verify, a minimum exec, the land checks, the review. */
-const CARD_VERIFY_MS = 5 * 60_000;
+/** Time a card needs before the wrap-up so its review fits: verify (its 10-min timeout), a minimum exec, the land checks, the review. */
+const CARD_VERIFY_MS = 10 * 60_000;
 function cardStartMs(landChecksMs = LAND_CHECKS_MS) {
   return CARD_VERIFY_MS + FIX_EXEC_MIN_MS + landChecksMs + REVIEW_RESERVE_MS;
 }

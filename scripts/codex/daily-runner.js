@@ -190,10 +190,12 @@ function setupWorktree() {
     git(['fetch', 'origin', 'main'], ROOT);
     git(['worktree', 'add', '--detach', WT, 'origin/main'], ROOT);
   }
-  const nm = path.join(ROOT, 'node_modules');
-  const link = path.join(WT, 'node_modules');
-  // Always link (a dangling link is replaced): Node finds ROOT's copy from WT anyway, but tests that copy the tree to /tmp follow this link.
-  if (!fs.existsSync(link)) { fs.rmSync(link, { force: true }); fs.symlinkSync(nm, link); }
+  linkNodeModules(WT);
+}
+/** Link <tree>/node_modules to ROOT's (a dangling link is replaced). Node finds ROOT's copy from a nested tree anyway, but tests that copy the tree to /tmp follow this link. */
+function linkNodeModules(tree) {
+  const link = path.join(tree, 'node_modules');
+  if (!fs.existsSync(link)) { fs.rmSync(link, { force: true }); fs.symlinkSync(path.join(ROOT, 'node_modules'), link); }
 }
 
 /** Least free space across the worktrees and data copies (ROOT), Codex sessions and test temp files, or null. */
@@ -418,15 +420,15 @@ function cleanTree(cwd) {
 function prepareBase() {
   if (!fs.existsSync(path.join(BASE_WT, '.git'))) {
     git(['worktree', 'add', '--detach', BASE_WT, 'origin/main'], ROOT);
-    if (!fs.existsSync(path.join(BASE_WT, 'node_modules'))) fs.symlinkSync(path.join(ROOT, 'node_modules'), path.join(BASE_WT, 'node_modules'));
   }
+  linkNodeModules(BASE_WT);
   git(['checkout', '-q', '-f', '--detach', cardBase], BASE_WT);
   git(['clean', '-qfdx', '-e', 'node_modules'], BASE_WT);
   provideData(BASE_WT, { reviewTexts: false });
 }
 function newLandFailures() {
   const t0 = Date.now();
-  try { return withLandMutex(newLandFailuresNow); } finally { landChecksMs = Math.max(R.LAND_CHECKS_MS, Date.now() - t0); }
+  try { return withLandMutex(newLandFailuresNow); } finally { landChecksMs = Math.min(2 * R.LAND_CHECKS_MS, Math.max(R.LAND_CHECKS_MS, Date.now() - t0)); }
 }
 function newLandFailuresNow() {
   const D = require(path.join(ROOT, 'scripts/lib/land-gate-delta.js'));
@@ -1080,7 +1082,8 @@ function ensureTools() {
   // A cloud container can start without node_modules. Then the land checks fail ~300 tests on
   // both trees, and a slot linked before another lane installs them fails tests that copy the
   // repo to /tmp (they link <tree>/node_modules) while the base passes: REJECTs Codex did not cause.
-  if (!fs.existsSync(path.join(ROOT, 'node_modules', '.package-lock.json'))) {
+  // Only when there is no node_modules at all: npm ci deletes it first, and another lane may be using or installing it.
+  if (!fs.existsSync(path.join(ROOT, 'node_modules'))) {
     const ci = sh('npm', ['ci', '--no-audit', '--no-fund', '--loglevel=error'], { timeoutMs: 900_000 });
     log(`node_modules was missing, npm ci: exit ${ci.code}${ci.code ? ` ${tail(ci.out, 300)}` : ''}`);
     if (ci.code !== 0) process.exit(2);

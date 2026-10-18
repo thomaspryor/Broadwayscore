@@ -573,12 +573,12 @@ test('execBudgetMs / cardStartMs: every exec leaves the land checks and the revi
   // Exec + land checks + review always fit when the card was allowed to start.
   for (const land of [15, 25]) {
     const startLatest = until - r.cardStartMs(land * 60_000);
-    const execStart = startLatest + 5 * 60_000; // after verify
+    const execStart = startLatest + 10 * 60_000; // after the slowest verify (its 10-min timeout)
     const exec = r.execBudgetMs({ untilMs: until, nowMs: execStart, capMs: cap, landChecksMs: land * 60_000 });
     assert.ok(execStart + exec + land * 60_000 + r.REVIEW_RESERVE_MS <= until, `land ${land} min`);
   }
   // A card is no longer started with 60 min left before the hard stop (52 usable): its review would not fit.
-  assert.equal(min(r.cardStartMs()), 65);
+  assert.equal(min(r.cardStartMs()), 70);
   assert.ok(60 * 60_000 - 8 * 60_000 < r.cardStartMs());
   assert.equal(r.fixRoundFits({ deadlineMs: until, nowMs: t0 + 50 * 60_000, hardEndMs: t0 + 112 * 60_000, wrapUpMs: 8 * 60_000, landChecksMs: 15 * 60_000 }), false);
   assert.equal(r.fixRoundFits({ deadlineMs: until, nowMs: t0 + 40 * 60_000, hardEndMs: t0 + 112 * 60_000, wrapUpMs: 8 * 60_000, landChecksMs: 15 * 60_000 }), true);
@@ -587,11 +587,12 @@ test('execBudgetMs / cardStartMs: every exec leaves the land checks and the revi
 
 test('daily-runner: execs, fix rounds and card starts use the measured land-check time (BRO-5384)', () => {
   const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
-  assert.match(src, /finally \{ landChecksMs = Math\.max\(R\.LAND_CHECKS_MS, Date\.now\(\) - t0\); \}/);
+  assert.match(src, /finally \{ landChecksMs = Math\.min\(2 \* R\.LAND_CHECKS_MS, Math\.max\(R\.LAND_CHECKS_MS, Date\.now\(\) - t0\)\); \}/);
   assert.match(src, /const runExecMs = \(\) => R\.execBudgetMs\(\{ untilMs: HARD_END_MS - WRAP_UP_MS, nowMs: Date\.now\(\), capMs: CODEX_TIMEOUT_MS, landChecksMs \}\)/);
   assert.match(src, /const fixExecMs = \(\) => Math\.min\(runExecMs\(\),/);
   assert.match(src, /fitsBeforeHardStop\(R\.cardStartMs\(landChecksMs\)\)/);
   assert.doesNotMatch(src, /CARD_START_MIN_MS/);
+  assert.match(src, /linkNodeModules\(BASE_WT\);/, 'the base tree is linked like the slot tree');
 });
 
 test('daily-runner: a SHIP-WITH-FIXES with no time left is carried, never bounced; a carry is resumed', () => {
