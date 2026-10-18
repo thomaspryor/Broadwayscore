@@ -8,7 +8,7 @@ writer needs a known place in this graph.
 
 | Repo | Role | Workflows | Reached from this repo via |
 |---|---|---|---|
-| `thomaspryor/Broadwayscore` (main) | code + all pipelines (285 workflows here) | this directory | n/a |
+| `thomaspryor/Broadwayscore` (main) | code + all pipelines (286 workflows here) | this directory | n/a |
 | `thomaspryor/broadway-scorecard-data` (private) | core data: shows.json, reviews.json, commercial.json | `submit-indexnow.yml`, `theatr-review-discovery.yml` (own repo) | `checkout-core-data` (read), `push-core-data` (write) |
 | `thomaspryor/broadway-review-texts` (private) | review texts + aggregator archive | none checked in locally | `checkout-review-texts`/`checkout-aggregator-archive` (read), `push-review-texts`/`push-aggregator-archive` (write) |
 
@@ -317,7 +317,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 
 | Secret | Used by (cross-repo writers) |
 |---|---|
-| `ANTHROPIC_API_KEY` | 42 cross-repo writers (of 67 workflows using it) |
+| `ANTHROPIC_API_KEY` | 42 cross-repo writers (of 68 workflows using it) |
 | `APPROVAL_HMAC_SECRET` | 3 cross-repo writers (of 6 workflows using it): `auto-fix-feedback-bug.yml`, `process-review-submission.yml`, `update-mezzanine.yml` |
 | `BLOOMBERG_EMAIL` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
 | `BLOOMBERG_PASSWORD` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
@@ -375,7 +375,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `REDDIT_CLIENT_SECRET` | 2 cross-repo writers (of 4 workflows using it): `bulk-reddit-sentiment.yml`, `update-reddit-sentiment.yml` |
 | `RESEND_API_KEY` | 69 cross-repo writers (of 126 workflows using it) |
 | `RESEND_WE_AUDIENCE_ID` | 2 cross-repo writers (of 2 workflows using it): `opening-night-broadcast.yml`, `recreate-broadcast-draft.yml` |
-| `REVIEW_TEXTS_TOKEN` | 134 cross-repo writers (of 231 workflows using it) |
+| `REVIEW_TEXTS_TOKEN` | 134 cross-repo writers (of 232 workflows using it) |
 | `SCRAPINGBEE_API_KEY` | 75 cross-repo writers (of 100 workflows using it) |
 | `SCRAPINGDOG_API_KEY` | 78 cross-repo writers (of 102 workflows using it) |
 | `SUPABASE_SERVICE_ROLE_KEY` | 1 cross-repo writers (of 6 workflows using it): `update-mezzanine.yml` |

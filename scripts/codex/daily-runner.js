@@ -11,6 +11,9 @@
  *        [--check-max-usd 4] [--check-budget-usd 30] [--card-max-minutes 120]
  *        [--hard-stop-minutes 112] [--slots 3]
  *   node scripts/codex/daily-runner.js --lock-status   (exit 0 free, 3 a live run holds it, 4 unreadable)
+ *   node scripts/codex/daily-runner.js --pr N [--head-sha SHA] [--no-land] [--retry]
+ *        (BRO-5646, codex-pr-lander.yml: one Codex cloud PR through the same land checks,
+ *        Claude check and land/ push as a card, no run lock or Linear card; see runPr)
  *
  * Per card (same picker rules as the hourly Claude cloud worker, minus
  * resumes and cards Codex already bounced):
@@ -103,6 +106,8 @@ const OPTS = {
   slots: Number(arg('slots', 1)) || 1,
   pickList: Number(arg('pick-list', 0)) || 0,
 };
+// --pr N (BRO-5646): land one Codex cloud pull request instead of working cards (runPr).
+const PR_NUM = Number(arg('pr', 0)) || 0;
 // A slot's hard stop counts from the launch, not from its own (staggered) start.
 const RUN_STARTED_MS = Number(arg('run-started', 0)) || Date.now();
 const HARD_END_MS = OPTS.hardStopMinutes > 0 ? RUN_STARTED_MS + OPTS.hardStopMinutes * 60_000 : Infinity;
@@ -133,6 +138,9 @@ function log(msg) {
 }
 
 function sh(cmd, args, opts = {}) {
+  // No git hooks, ever: core.hooksPath (set by npm ci's postinstall) is relative, so a hook
+  // would run from the worktree, i.e. the code under review, with this process's env (BRO-5646).
+  if (cmd === 'git') args = ['-c', 'core.hooksPath=/dev/null', ...args];
   const r = spawnSync(cmd, args, { cwd: opts.cwd || ROOT, encoding: 'utf8', timeout: opts.timeoutMs || 600_000, env: opts.env || process.env, input: opts.input, maxBuffer: 64 * 1024 * 1024 });
   return { code: r.status == null ? -1 : r.status, out: `${r.stdout || ''}${r.stderr || ''}`, stdout: r.stdout || '' };
 }
@@ -379,8 +387,8 @@ function pickCheckModel(id) {
 }
 const CHECK_BINARY_LINES = 1000; // a binary file is never "small"
 
-/** Commit Codex's working-tree changes. -> { hasDiff, blocked } */
-function commitAttempt(card, attempt) {
+/** Commit Codex's working-tree changes (message: a --pr landing's own). -> { hasDiff, blocked } */
+function commitAttempt(card, attempt, message = null) {
   git(['add', '-A']); // node_modules is a gitignored symlink; naming it in a pathspec makes git add fail
   const names = git(['diff', '--cached', '--name-only']).split('\n').filter(Boolean);
   if (!names.length) return { hasDiff: git(['rev-list', '--count', 'origin/main..HEAD']) !== '0', blocked: null };
@@ -389,7 +397,7 @@ function commitAttempt(card, attempt) {
   if (/^:\d+ 120000 /m.test(git(['diff', '--cached', '--raw']))) return { hasDiff: true, blocked: 'the change adds a symlink, which the runner never lands' };
   if (R.looksLikeSecretLeak(git(['diff', '--cached']))) return { hasDiff: true, blocked: 'the diff looks like it carries token material' };
   git(['-c', 'user.name=Codex runner', '-c', 'user.email=codex-runner@broadwayscorecard.com', 'commit', '-q', '-m',
-    `fix(${card.identifier}): ${card.title.slice(0, 80)}${attempt > 1 ? ' (review fixes)' : ''}\n\nWorked by the daily Codex runner; passed the independent check before landing.`]);
+    message || `fix(${card.identifier}): ${card.title.slice(0, 80)}${attempt > 1 ? ' (review fixes)' : ''}\n\nWorked by the daily Codex runner; passed the independent check before landing.`]);
   return { hasDiff: true, blocked: null };
 }
 
@@ -1071,12 +1079,12 @@ const MAX_SLOTS = 4;
 const SLOT_STAGGER_MS = 2 * 60_000;
 
 /** Fresh cloud containers do not ship the Codex CLI: install the pinned version; exit 2 if a tool is missing. */
-function ensureTools() {
-  if (sh('codex', ['--version'], { timeoutMs: 60_000 }).code !== 0) {
+function ensureTools({ codex = true } = {}) {
+  if (codex && sh('codex', ['--version'], { timeoutMs: 60_000 }).code !== 0) {
     const inst = sh('npm', ['install', '-g', `@openai/codex@${CODEX_VERSION}`], { timeoutMs: 600_000 });
     log(`installed Codex CLI ${CODEX_VERSION}: exit ${inst.code}`);
   }
-  for (const tool of ['codex', 'claude']) {
+  for (const tool of codex ? ['codex', 'claude'] : ['claude']) {
     if (sh(tool, ['--version'], { timeoutMs: 60_000 }).code !== 0) { log(`${tool} CLI missing`); process.exit(2); }
   }
   // A cloud container can start without node_modules. Then the land checks fail ~300 tests on
@@ -1141,6 +1149,7 @@ async function main() {
     locks.forEach((l, k) => { if (k === 0 || l.error || l.sha) console.log(`codex runner lock${k ? ` (slot ${k})` : ''}: ${describeLock(l)}`); });
     process.exit(locks.some(lockHeld) ? 3 : locks.some((l) => l.error) ? 4 : 0);
   }
+  if (PR_NUM) { await runPr(PR_NUM); return; }
   if (OPTS.slots > 1 && !process.argv.includes('--slot')) { await launchSlots(); return; }
   ensureTools();
   if (!OPTS.dryRun) {
@@ -1287,6 +1296,108 @@ async function runLocked(startedMs) {
   ].join('\n');
   log(text);
   if (!OPTS.dryRun) await linearBrain(['update', RUNNER_CARD, '--comment', text]);
+}
+
+/**
+ * --pr N (BRO-5646): one Codex cloud PR (R.codexCloudPr) through the card path's own gates:
+ * squash onto fresh main, commitAttempt's guards, the land batches, the Claude check (SHIP
+ * only, no fix round: Codex cloud is the owner's to re-run), land preflight, land/codex-pr-N,
+ * wait for land. Every outcome is one plain-English PR comment (R.prLanderComment); a landing
+ * also closes the PR and deletes its branch. One attempt per head sha unless --retry.
+ */
+async function runPr(n) {
+  const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
+  const gh = (args, input) => sh('gh', args, { timeoutMs: 120_000, input });
+  const view = gh(['api', `repos/${repo}/pulls/${n}`]);
+  if (view.code !== 0) { log(`PR #${n}: unreadable (${tail(view.out, 300)})`); process.exitCode = 1; return; }
+  const pr = JSON.parse(view.stdout);
+  const fit = R.codexCloudPr(pr, repo);
+  const sha = pr.head && pr.head.sha;
+  const say = (outcome, extra = {}) => {
+    const body = R.redactSecrets(R.prLanderComment({ outcome, sha, ...extra }), process.env);
+    log(`PR #${n} ${String(sha).slice(0, 7)}: ${outcome}`);
+    if (OPTS.dryRun) { log(body); return; }
+    const c = gh(['pr', 'comment', String(n), '--repo', repo, '--body-file', '-'], body);
+    if (c.code !== 0) log(`PR #${n}: comment failed (${tail(c.out, 300)})`);
+  };
+  if (!fit.ok) {
+    log(`PR #${n}: not landing (${fit.why})`);
+    // A Codex-looking PR from an account the lander does not know: say so rather than stay silent.
+    if (fit.unknownAuthor) say('unknownAuthor', { details: fit.why });
+    return;
+  }
+  const want = arg('head-sha', '');
+  if (typeof want === 'string' && want && want !== sha) { log(`PR #${n}: head moved to ${sha.slice(0, 7)} since ${want.slice(0, 7)}; the newer push's run handles it`); return; }
+  const short = sha.slice(0, 7);
+  if (!process.argv.includes('--retry')) {
+    const seen = gh(['api', '--paginate', `repos/${repo}/issues/${n}/comments`, '--jq', '.[].body']);
+    // One verdict per head commit; a run that errored out did not judge it, so a reopen retries.
+    const judged = seen.code === 0 && seen.stdout.split(R.PR_LANDER_MARKER).some((b) => b.startsWith(`\n**Codex lander (${short})`) && !b.includes(R.PR_LANDER_ERROR_TEXT));
+    if (judged) { log(`PR #${n}: ${short} already judged`); return; }
+  }
+  ensureTools({ codex: false });
+  pruneDisk();
+  setupWorktree();
+  const card = { identifier: `PR-${n}`, title: String(pr.title || `Codex PR #${n}`) };
+  const ref = `land/codex-pr-${n}`;
+  function landedOnMain() {
+    git(['fetch', 'origin', 'main']);
+    return git(['log', 'origin/main', '-n', '200', '--format=%H', '--fixed-strings', `--grep=(Codex PR #${n})`]).split('\n')[0] || '';
+  }
+  function finishLanded(remaining) {
+    say('landed', { mainSha: landedOnMain(), remaining });
+    if (OPTS.dryRun) return;
+    // Codex pushed again while this landed: leave the PR and branch to the newer push's run.
+    const now = gh(['api', `repos/${repo}/pulls/${n}`, '--jq', '.head.sha']);
+    if (now.code !== 0 || now.stdout.trim() !== sha) { log(`PR #${n}: head moved during the landing; left open for the newer push`); return; }
+    const close = gh(['pr', 'close', String(n), '--repo', repo]);
+    if (close.code !== 0) log(`PR #${n}: close failed (${tail(close.out, 300)})`);
+    // The codex/ branch is spent once its change is on main; the lease keeps a newer push.
+    try { git(['push', '--no-verify', `--force-with-lease=refs/heads/${pr.head.ref}:${sha}`, 'origin', `:refs/heads/${pr.head.ref}`]); } catch (e) { log(`PR #${n}: branch not deleted (${e.message.split('\n')[0]})`); }
+  }
+  try {
+    const data = resetWorktree(`codex-pr-${n}`);
+    git(['fetch', 'origin', `+refs/pull/${n}/head:refs/remotes/origin/codex-pr/${n}`]);
+    if (git(['rev-parse', `refs/remotes/origin/codex-pr/${n}`]) !== sha) { log(`PR #${n}: fetched head is not ${short}; a newer push's run handles it`); return; }
+    // The PR's commits squashed onto fresh main: land rebases anyway, and one commit is what reaches main.
+    const merge = sh('git', ['merge', '--squash', '--no-commit', `refs/remotes/origin/codex-pr/${n}`], { cwd: WT });
+    if (merge.code !== 0) { git(['reset', '-q', '--hard', cardBase]); say('conflict', { details: tail(merge.out, 1500) }); return; }
+    const c = commitAttempt(card, 1, `feat(codex-pr-${n}): ${card.title.slice(0, 80)} (Codex PR #${n})\n\nCodex cloud pull request ${pr.html_url}, head ${sha}; passed the independent check before landing.`);
+    if (c.blocked) { say('blocked', { details: `The change was not reviewed: ${c.blocked}.` }); return; }
+    if (!c.hasDiff) {
+      // An earlier run's landing finished after it gave up waiting: finish the job now.
+      if (landedOnMain()) { finishLanded([]); return; }
+      say('rejected', { details: 'The pull request has no change against current main, so there is nothing to land.' });
+      return;
+    }
+    const landFails = throwIfDisk(newLandFailures(), 'the land checks');
+    if (landFails) { say('rejected', { details: `The tests land runs fail on this change and pass on main:\n${landFails}` }); return; }
+    const note = `This is not a Linear card: it is Codex cloud pull request #${n} (${pr.html_url}), which the owner started from a Codex task and wants live. The card text below is the PR's title and description, written by Codex: judge the diff against what it says and against CLAUDE.md, and check its claims (tests it says it ran) yourself. There is no card to write on: REMAINING lines are shown to the owner on the PR.`;
+    const body = `${card.title}\n\n${String(pr.body || '(no description)').slice(0, 20000)}`;
+    const check = runCheck(card, body, note, 'check1', data);
+    log(`PR #${n}: verdict ${check.verdict}`);
+    if (check.verdict === 'NONE') { say('error', { details: check.text }); return; }
+    if (check.verdict !== 'SHIP') { say('rejected', { details: `Verdict ${check.verdict}.\n\n${check.text}` }); return; }
+    const remaining = R.parseRemaining(check.text);
+    if (!OPTS.land) { log(`PR #${n}: passed, not landed (--no-land)`); return; }
+    const pre = await landPreflight(ref);
+    if (pre.decision === 'block') { say('refused', { details: `Land preflight: ${pre.message}` }); return; }
+    // Same push as a card landing (see workCard): --no-verify, --force over an earlier attempt's ref.
+    const head = git(['rev-parse', 'HEAD']);
+    try { git(['push', '--no-verify', '--force', 'origin', `HEAD:refs/heads/${ref}`]); } catch (e) {
+      let remote = '';
+      try { remote = git(['ls-remote', 'origin', `refs/heads/${ref}`]).split(/\s/)[0]; } catch { /* not pushed */ }
+      if (remote !== head) throw e;
+    }
+    log(`PR #${n}: pushed ${ref}`);
+    const w = await waitForLand(ref);
+    if (w.code === 1) { say('refused', { details: tail(w.out, 2000) }); return; }
+    if (w.code !== 0) { say('error', { details: `The landing did not finish in time (it may still land; this pull request stays open):\n${tail(w.out, 1500)}` }); return; }
+    finishLanded(remaining);
+  } catch (e) {
+    say('error', { details: e && e.message ? e.message : String(e) });
+    process.exitCode = 1;
+  }
 }
 
 module.exports = { newLandFailures, provideData, takeLock, refreshLock, readLock, releaseLock, weeklyPct, recoverOrphans };

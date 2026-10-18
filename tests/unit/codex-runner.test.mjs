@@ -866,3 +866,51 @@ test('codexCardFit: workflow_dispatch input edits are a workflow edit (BRO-5152)
   const fit = r.codexCardFit({ title: 'Redispatch keeps the show id', description: 'Make the retry declare the redispatched workflow_dispatch input so the second run sees it.' });
   assert.equal(fit.skip, 'workflow-edit');
 });
+
+test('codexCloudPr: only Codex cloud PRs by the owner or the Codex app, never card-runner branches (BRO-5646)', () => {
+  const repo = 'thomaspryor/Broadwayscore';
+  const pr = (o = {}) => ({ state: 'open', head: { ref: 'codex/fix-footer-link', repo: { full_name: repo } }, base: { ref: 'main' }, user: { login: 'thomaspryor', type: 'User' }, ...o });
+  assert.deepEqual(r.codexCloudPr(pr(), repo), { ok: true });
+  assert.equal(r.codexCloudPr(pr({ user: { login: 'chatgpt-codex-connector[bot]', type: 'Bot' } }), repo).ok, true);
+  for (const ref of ['codex/bro-123', 'codex/BRO-3367-fix', 'claude/x', 'land/codex-pr-4']) {
+    assert.equal(r.codexCloudPr(pr({ head: { ref, repo: { full_name: repo } } }), repo).ok, false, ref);
+  }
+  assert.match(r.codexCloudPr(pr({ head: { ref: 'codex/x', repo: { full_name: 'someone/Broadwayscore' } } }), repo).why, /fork/);
+  assert.match(r.codexCloudPr(pr({ base: { ref: 'dev' } }), repo).why, /not main/);
+  assert.match(r.codexCloudPr(pr({ user: { login: 'stranger', type: 'User' } }), repo).why, /not the owner/);
+  assert.match(r.codexCloudPr(pr({ user: { login: 'dependabot[bot]', type: 'Bot' } }), repo).why, /not the owner/);
+  assert.match(r.codexCloudPr(pr({ state: 'closed' }), repo).why, /closed/);
+  assert.equal(r.codexCloudPr(null, repo).ok, false);
+});
+
+test('prLanderComment: marker, head sha, plain lines, remaining list, fenced details (BRO-5646)', () => {
+  const landed = r.prLanderComment({ outcome: 'landed', sha: 'abcdef1234567', mainSha: '1234567890ab' });
+  assert.ok(landed.startsWith(r.PR_LANDER_MARKER));
+  assert.match(landed, /\*\*Codex lander \(abcdef1\):\*\* This change is on main now \(commit 1234567\)/);
+  assert.doesNotMatch(landed, /<details>/);
+  const rej = r.prLanderComment({ outcome: 'rejected', sha: 'ffff000', remaining: ['add a test'], details: 'VERDICT: REJECT\n```js\nx\n```' });
+  assert.match(rej, /Not put live/);
+  assert.match(rej, /- add a test/);
+  assert.equal((rej.match(/```/g) || []).length, 2, 'only the outer fence survives');
+  assert.match(r.prLanderComment({ outcome: 'weird', sha: '' }), /\*\*Codex lander:\*\* Outcome: weird/);
+  const log = 'Codex runner\tfeat(codex-pr-12): x (Codex PR #12)\nCodex runner\tfix(BRO-10): a\nClaude\tCodex PR #13 mention';
+  assert.deepEqual(r.landedPerLane(log), { codex: 2, claude: 0 });
+});
+
+test('Codex PR lander: unknown authors are told, errors do not count as a verdict, the runner never runs git hooks (BRO-5646)', () => {
+  const repo = 'thomaspryor/Broadwayscore';
+  const fit = r.codexCloudPr({ state: 'open', head: { ref: 'codex/x', repo: { full_name: repo } }, base: { ref: 'main' }, user: { login: 'someone-new', type: 'User' } }, repo);
+  assert.equal(fit.unknownAuthor, true);
+  assert.match(r.prLanderComment({ outcome: 'unknownAuthor', sha: 'abc1234', details: fit.why }), /Not checked/);
+  assert.ok(r.prLanderComment({ outcome: 'error', sha: 'abc1234' }).includes(r.PR_LANDER_ERROR_TEXT));
+  assert.ok(!r.prLanderComment({ outcome: 'rejected', sha: 'abc1234' }).includes(r.PR_LANDER_ERROR_TEXT));
+  const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
+  assert.match(src, /if \(cmd === 'git'\) args = \['-c', 'core\.hooksPath=\/dev\/null', \.\.\.args\]/);
+});
+
+test('AGENTS.md tells Codex cloud tasks to edit in place, not in a side worktree (BRO-5646)', () => {
+  // A cloud task that followed CLAUDE.md's worktree rule showed "no diff", so no Create PR button.
+  const agents = readFileSync(join(ROOT, 'AGENTS.md'), 'utf8');
+  assert.match(agents, /## Codex cloud tasks[^\n]*edit in place/);
+  assert.match(agents, /do not create a git worktree/);
+});

@@ -6,6 +6,14 @@ design system, scoring, scraping, deployment, email safety). This file holds onl
 Codex. Don't copy CLAUDE.md rules here: the copies drifted (this file still listed the old T3 weight
 0.35 months after `src/config/scoring.ts` moved it to 0.40). Change the rule in CLAUDE.md instead.
 
+## Codex cloud tasks (chatgpt.com/codex): edit in place (BRO-5646)
+Work in the checkout the task started in. CLAUDE.md's worktree, Linear, landing and finish-chain
+steps are for Claude sessions: do not create a git worktree, another clone or a branch, and do not
+push. Codex cloud builds the task's diff, and the owner's "Create PR" button, from the starting
+checkout only; a change made in a side worktree shows as "no diff" and cannot be landed. After
+"Create PR", `.github/workflows/codex-pr-lander.yml` tests, reviews and lands the PR, and comments
+in plain English on it if it does not.
+
 ## Codex setup
 Claude's own guards (`.claude/settings.json` hooks, run through `scripts/codex/hook-adapter.js`), live
 web search and sandbox network reach you via `~/.codex`, which `node scripts/codex/install.js` sets up

@@ -704,7 +704,8 @@ function leaveToCodex(issue, { nowMs, verify = '', startNow = false } = {}) {
 /**
  * Cards landed per lane from `git log --format=%an%x09%s` lines: distinct BRO ids in commit
  * subjects by "Codex runner" vs by "Claude" (every Claude session, not just the board's Claude
- * lane; bots and the owner are left out). -> { codex, claude }
+ * lane; bots and the owner are left out). A Codex cloud PR landing (subject names
+ * "Codex PR #N", no BRO id) counts once as PR #N in the Codex lane (BRO-5646). -> { codex, claude }
  */
 function landedPerLane(logText) {
   const ids = { codex: new Set(), claude: new Set() };
@@ -712,9 +713,59 @@ function landedPerLane(logText) {
     const [author, ...rest] = line.split('\t');
     const lane = author === 'Codex runner' ? 'codex' : author === 'Claude' ? 'claude' : null;
     if (!lane) continue;
-    for (const id of rest.join('\t').match(/\bBRO-\d+\b/g) || []) ids[lane].add(id);
+    const subject = rest.join('\t');
+    const found = subject.match(/\bBRO-\d+\b/g) || (lane === 'codex' && subject.match(/\bCodex PR #\d+\b/g)) || [];
+    for (const id of found) ids[lane].add(id);
   }
   return { codex: ids.codex.size, claude: ids.claude.size };
+}
+
+// Codex cloud PRs (BRO-5646). Codex cloud's "Create PR" pushes a codex/<task-slug> branch.
+// Claude sessions also push codex/bro-N and codex/BRO-N-fix batch branches (unreviewed Codex
+// attempts) and the card runner names its local branch codex/bro-N, so those never count.
+const CODEX_PR_AUTHORS = ['thomaspryor'];
+/**
+ * Is this pull_request_target payload's PR a Codex cloud PR the lander should land?
+ * -> { ok: true } or { ok: false, why }
+ */
+function codexCloudPr(pr, repoFullName) {
+  if (!pr || typeof pr !== 'object') return { ok: false, why: 'no pull request' };
+  const head = String((pr.head && pr.head.ref) || '');
+  if (!/^codex\//i.test(head)) return { ok: false, why: `head ${head} is not a codex/ branch` };
+  if (/^codex\/bro-\d+(-fix)?$/i.test(head)) return { ok: false, why: `head ${head} is a card-runner or batch branch, not Codex cloud` };
+  if (!pr.head.repo || pr.head.repo.full_name !== repoFullName) return { ok: false, why: 'head is on a fork' };
+  if (!pr.base || pr.base.ref !== 'main') return { ok: false, why: `base is ${pr.base && pr.base.ref}, not main` };
+  const user = pr.user || {};
+  const login = String(user.login || '');
+  // The owner's account (Codex cloud opens PRs as the connected GitHub user), or the Codex app's bot.
+  const bot = user.type === 'Bot' && /codex|chatgpt|openai/i.test(login);
+  if (!CODEX_PR_AUTHORS.includes(login) && !bot) return { ok: false, unknownAuthor: true, why: `author ${login} is not the owner or the Codex app` };
+  if (pr.state && pr.state !== 'open') return { ok: false, why: `pull request is ${pr.state}` };
+  return { ok: true };
+}
+
+const PR_LANDER_MARKER = '<!-- codex-pr-lander -->';
+const PR_LANDER_ERROR_TEXT = 'The automatic check hit an error of its own';
+const PR_LANDER_HEADS = {
+  landed: (mainSha) => `This change is on main now${mainSha ? ` (commit ${String(mainSha).slice(0, 7)})` : ''}. It goes live on broadwayscorecard.com with the next deploy, usually within 30 minutes. Closing this pull request; nothing else is needed.`,
+  rejected: () => 'Not put live. The independent Claude check found problems with this change (details below). Ask Codex to fix them in the same task and press "Update PR"; the check runs again on its own.',
+  conflict: () => 'Not put live. This change clashes with newer work already on main. Ask Codex to update the task from the latest main and press "Update PR"; the check runs again on its own.',
+  blocked: () => 'Not put live. This change touches something the automatic lane never lands on its own (details below), so it was left open, unlanded.',
+  refused: () => 'Not put live. It passed the Claude check, but the final landing checks refused it (details below). Ask Codex to fix what they name and press "Update PR"; the check runs again on its own.',
+  error: () => `Not put live. ${PR_LANDER_ERROR_TEXT}, so this change was not judged (details below). Pressing "Update PR" with a change, or closing and reopening this pull request, tries again.`,
+  unknownAuthor: () => 'Not checked. This looks like a Codex pull request, but it was opened by an account the automatic lane does not know (details below), so it was left alone.',
+};
+/**
+ * The plain-English PR comment for one lander outcome (a PR_LANDER_HEADS key). details: the
+ * reviewer's or gate's text, folded under the plain lines.
+ */
+function prLanderComment({ outcome, sha, mainSha, remaining = [], details = '' }) {
+  const short = String(sha || '').slice(0, 7);
+  const head = (PR_LANDER_HEADS[outcome] || (() => `Outcome: ${outcome}`))(mainSha);
+  const left = remaining.length ? `\n\nThe check also listed things this change does not do yet:\n${remaining.map((x) => `- ${x}`).join('\n')}` : '';
+  const fenced = String(details).replace(/```/g, "'''").slice(-6000);
+  const more = details ? `\n\n<details><summary>Details</summary>\n\n\`\`\`\n${fenced}\n\`\`\`\n</details>` : '';
+  return `${PR_LANDER_MARKER}\n**Codex lander${short ? ` (${short})` : ''}:** ${head}${left}${more}`;
 }
 
 function fixRoundDeadline({ verdict, swfRoundUsed, cardDeadlineMs, runEndMs }) {
@@ -960,6 +1011,10 @@ module.exports = {
   fixRoundDeadline,
   checkModel,
   landedPerLane,
+  codexCloudPr,
+  prLanderComment,
+  PR_LANDER_MARKER,
+  PR_LANDER_ERROR_TEXT,
   leaveToCodex,
   slotArgs,
   carryPatch,
