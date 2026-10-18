@@ -27,6 +27,7 @@ const { execFileSync } = require('child_process');
 require('./lib/load-env.js').loadEnv(path.join(__dirname, '..'));
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { cmuxSpawnEnv } = require('./lib/cmux-socket-auth.js');
 const { runReachabilityCheck } = require('./lib/cmux-reachability-check.js');
 const { planSocketModeRepair, backupsToPrune } = require('./lib/cmux-socket-mode-repair.js');
 
@@ -69,7 +70,7 @@ function repairSocketMode() {
     try {
       // Usually refused while the socket still denies launchd; then the
       // repair takes effect at the next cmux restart.
-      execFileSync(CMUX_BIN, ['reload-config'], { stdio: 'ignore', timeout: 10000 });
+      execFileSync(CMUX_BIN, ['reload-config'], { stdio: 'ignore', timeout: 10000, env: cmuxSpawnEnv(process.env) });
       reloaded = true;
     } catch { /* expected while locked out */ }
     return `REPAIRED cmux socket mode ${plan.fromMode} -> password; ` +
