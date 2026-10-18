@@ -465,3 +465,19 @@ describe('verifyFetchedUrl', () => {
   });
 });
 
+
+describe('verifyFetchedUrl percent-encoding (BRO-5514)', () => {
+  const page = (c) => `<html><head><title>x</title><link rel="canonical" href="${c}"></head></html>`;
+  const req = 'https://thepegreview.com/2026/10/04/%E2%98%85%E2%98%85if-we-could-talk-to-the-animals/';
+  test('lowercase-hex canonical equals uppercase-hex request', () => {
+    const r = verifyFetchedUrl(page(req.replace(/%E2/g, '%e2').replace(/%98/g, '%98').replace(/%85/g, '%85').toLowerCase()), req);
+    assert.equal(r.verified, true);
+  });
+  test('raw unicode canonical equals encoded request', () => {
+    assert.equal(verifyFetchedUrl(page('https://thepegreview.com/2026/10/04/★★if-we-could-talk-to-the-animals/'), req).verified, true);
+  });
+  test('different slug still rejected', () => {
+    const r = verifyFetchedUrl(page('https://thepegreview.com/2026/10/04/%e2%98%85other-show/'), req);
+    assert.equal(r.reason, 'url_mismatch');
+  });
+});
