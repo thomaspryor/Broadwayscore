@@ -67,6 +67,8 @@ on:
       - 'scripts/check-score-integrity.js'
       # BRO-4988: weekly grosses integrity runner, tested by tests/unit/grosses-integrity.test.mjs.
       - 'scripts/check-grosses-integrity.js'
+      # BRO-5626: daily unpark drain, tested by scripts/linear-unpark-drain.test.mjs.
+      - 'scripts/linear-unpark-drain.js'
       # BRO-3579: multi-run workflow-status wrapper + its manifest-registered test.
       - 'scripts/check-workflow-run-status.js'
       # scripts/backtest-recoupment-ground-truth.js runs in unit-tests (advisory model backtest, BRO-4989)

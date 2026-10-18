@@ -134,7 +134,46 @@ function selectDrainCandidates(issues, { limit = 6, alreadyAttempted = new Set()
     .slice(0, Math.max(0, limit));
 }
 
+// BRO-5626: the cloud replacement for this drain's dead Mac dispatch. A
+// session park whose every reason is worker-takeable (no owner hold, nothing
+// only the owner can supply, no real block; headless-dispatchability.js
+// isWorkerTakeableParkReason) and whose card a cloud worker could finish
+// (safe VERIFY, no other headless blocker: cloud-worker-pick.js
+// headlessUnfitReason) moves to Todo with its PARKED lines rewritten, so the
+// picker's own default-deny rule sees an ordinary Todo card.
+const UNPARK_PRIORITIES = new Set([1, 2, 3, 4]);
+
+/** Why the unpark drain leaves this card parked, or null when it may move it to Todo. */
+const UNPARKED_BY_DRAIN_RE = /^\s*UNPARKED \(BRO-5626 drain/im;
+
+function unparkSkipReason(issue) {
+  if (!issue || !issue.identifier) return 'malformed';
+  if (!issue.state || !PARKED_STATE_TYPES.has(issue.state.type)) return 'not-parked-state';
+  if (!UNPARK_PRIORITIES.has(Number(issue.priority))) return 'untriaged-priority';
+  const hd = require('./headless-dispatchability.js');
+  const notes = issue.description || '';
+  if (!hd.PARKED_SENTINEL_RE.test(notes)) return 'no-park-line';
+  // Labels come only with the full read; the list read passes and is re-checked.
+  if (require('./owner-approval-channel.js').isAwaitingOwner(issue)) return 'awaiting-owner';
+  // Unparked once and parked again: a person or session put it back on purpose.
+  if (UNPARKED_BY_DRAIN_RE.test(notes)) return 're-parked';
+  if (hd.isAutomationParked(notes)) return 'machine-park';
+  if (!hd.hasOnlyWorkerTakeableParks(notes)) return 'real-park-reason';
+  const unfit = require('./cloud-worker-pick.js').headlessUnfitReason(issue, { allowParkedSentinel: true });
+  return unfit || null;
+}
+
+const PARK_LINE_PREFIX_RE = /^(\s*)PARKED\s*:/gim;
+
+/** The description with every PARKED line marked UNPARKED by `tag`, reason kept. */
+function unparkDescription(description, tag) {
+  return String(description || '').replace(PARK_LINE_PREFIX_RE, (_m, lead) => `${lead}UNPARKED (${tag}):`);
+}
+
 module.exports = {
+  UNPARK_PRIORITIES,
+  unparkSkipReason,
+  unparkDescription,
   AUTO_FILED_MARKER,
   DISPATCH_AT_FILING_MARKER,
   PARKED_STATE_TYPES,

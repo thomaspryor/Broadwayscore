@@ -159,3 +159,25 @@ test('BRO-5488: a failed by-source read drops the line instead of printing zeros
   const m = B.buildBoardNumbers({ data: { bySource: { error: 'boom' } } });
   assert.doesNotMatch(B.renderBoardNumbersLines(m).join('\n'), /by source/);
 });
+
+test('BRO-5626: parked count reads Backlog PARKED cards and leaves out owner-waiting, owner-hold and machine parks', async () => {
+  const nodes = [
+    { identifier: 'BRO-1', description: 'x\nPARKED: needs a key', labels: { nodes: [] } },
+    { identifier: 'BRO-2', description: 'UNPARKED (BRO-5626 drain 2026-10-18): moved', labels: { nodes: [] } },
+    { identifier: 'BRO-3', description: 'PARKED: owner call', labels: { nodes: [{ name: 'awaiting-owner' }] } },
+    { identifier: 'BRO-4', description: 'PARKED: needs owner decision on the design', labels: { nodes: [] } },
+    { identifier: 'BRO-5', description: `PARKED: ${require('./linear-drain-parked.js').AUTO_FILED_MARKER}`, labels: { nodes: [] } },
+  ];
+  const calls = [];
+  const r = await B.fetchParkedCards({ graphql: async (q, v) => { calls.push(v.filter); return { issues: { pageInfo: { hasNextPage: false }, nodes } }; } });
+  assert.equal(r.count, 1);
+  assert.equal(calls[0].state.type.eq, 'backlog');
+  assert.equal(calls[0].description.contains, 'PARKED');
+});
+
+test('BRO-5626: the parked line renders a number, or n/a when the read fails', () => {
+  const ok = B.buildBoardNumbers({ data: { parked: { count: 41 } } });
+  assert.match(B.renderBoardNumbersLines(ok).join('\n'), /Parked, never picked: 41 \(Backlog cards with a PARKED line/);
+  const bad = B.buildBoardNumbers({ data: { parked: { error: 'x' } } });
+  assert.match(B.renderBoardNumbersLines(bad).join('\n'), /Parked, never picked: n\/a\n/);
+});
