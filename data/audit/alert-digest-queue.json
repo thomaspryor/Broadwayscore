@@ -996,7 +996,7 @@
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
     "description": "main test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39159331266",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39158983791",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -1005,7 +1005,7 @@
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39159331266)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39158983791)"
       },
       {
         "name": "Previous failed run",
@@ -1020,6 +1020,6 @@
         "value": "Unit Tests"
       }
     ],
-    "queuedAt": "2026-10-18T19:51:33.841Z"
+    "queuedAt": "2026-10-18T19:51:45.721Z"
   }
 ]
