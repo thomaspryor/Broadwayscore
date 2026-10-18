@@ -1,25 +1,25 @@
 {
-  "runDate": "2026-10-18T13:42:02.017Z",
+  "runDate": "2026-10-18T13:44:04.644Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 20,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "",
-    "aggressive": true,
+    "showFilter": "dirty-dancing-the-classic-story-on-stage-west-end-2026,stories-the-tap-dance-sensation-west-end-2026,some-woman-west-end-2026,midnight-off-broadway-2026,dog-mom-off-west-end-2026,memoirs-of-amorous-gentlemen-off-broadway-2026,sea-wall-off-broadway-2026,jane-eyre-rose-kingston-off-west-end-2026,cadel-lungs-on-legs-west-end-2026,the-second-best-school-shooting-off-broadway-2026,the-bodyguard-tour-2026,unconditional-a-new-musical-memoir-off-broadway-2026,doll-day-afternoon-off-broadway-2026",
+    "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 9,
+    "processed": 10,
+    "failed": 13,
     "skipped": 0,
-    "successRate": "25.0%"
+    "successRate": "43.5%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 5,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
@@ -28,47 +28,43 @@
     "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 19,
+    "tier1Success": 10,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 9,
-    "tier1_5Success": 0,
-    "tier1_9Attempts": 7,
-    "tier1_9Success": 3,
-    "tier2Attempts": 10,
-    "tier2Success": 1,
-    "tier3Attempts": 0,
+    "tier1_5Success": 2,
+    "tier1_9Attempts": 5,
+    "tier1_9Success": 0,
+    "tier2Attempts": 7,
+    "tier2Success": 0,
+    "tier3Attempts": 5,
     "tier3Success": 0,
     "tier3_6Attempts": 5,
     "tier3_6Success": 0,
-    "tier4Attempts": 10,
+    "tier4Attempts": 16,
     "tier4Success": 4,
-    "totalFailed": 4,
-    "scrapingBeePageCredits": 10,
+    "totalFailed": 13,
+    "scrapingBeePageCredits": 24,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 9,
-    "browserbaseMinutesUsed": 2.2,
-    "urlDiscoveryAttempts": 4,
+    "browserbaseMinutesUsed": 3.3,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 3,
-    "failed": 9,
+    "processed": 10,
+    "failed": 13,
     "shows": [
-      "august-osage-county-2007",
-      "bloody-bloody-andrew-jackson-2010",
-      "brief-encounter-2010",
-      "doctor-zhivago-2015",
-      "fat-ham-2023",
-      "harry-potter-2021",
-      "lombardi-2010",
-      "next-to-normal-2009",
-      "south-pacific-2008",
-      "the-anarchist-2012",
-      "the-parisian-woman-2017",
-      "the-realistic-joneses-2014"
+      "cadel-lungs-on-legs-west-end-2026",
+      "dog-mom-off-west-end-2026",
+      "jane-eyre-rose-kingston-off-west-end-2026",
+      "memoirs-of-amorous-gentlemen-off-broadway-2026",
+      "midnight-off-broadway-2026",
+      "some-woman-west-end-2026",
+      "stories-the-tap-dance-sensation-west-end-2026",
+      "the-second-best-school-shooting-off-broadway-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -77,61 +73,136 @@
     }
   },
   "processed": [
-    "lombardi-2010/newyorker--uncredited.json",
-    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-    "august-osage-county-2007/newyorker--hilton-als.json"
+    "dog-mom-off-west-end-2026/thereviewshub--unknown.json",
+    "the-second-best-school-shooting-off-broadway-2026/cedarnews--cedar-news-editorial-team.json",
+    "dog-mom-off-west-end-2026/notesfromrowh--helena6.json",
+    "the-second-best-school-shooting-off-broadway-2026/broadway-baby--unknown.json",
+    "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json",
+    "stories-the-tap-dance-sensation-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "stories-the-tap-dance-sensation-west-end-2026/theupcoming--scarlett-bruin.json",
+    "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json",
+    "memoirs-of-amorous-gentlemen-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "some-woman-west-end-2026/sunday-times--clive-davis.json"
   ],
   "failed": [
-    "harry-potter-2021/newyorker--conde-nast.json",
-    "fat-ham-2023/newyorker--vinson-cunningham.json",
-    "the-parisian-woman-2017/newyorker--hilton-als.json",
-    "doctor-zhivago-2015/newyorker--conde-nast.json",
-    "the-realistic-joneses-2014/newyorker--conde-nast.json",
-    "the-anarchist-2012/newyorker--henry-alford.json",
-    "brief-encounter-2010/newyorker--uncredited.json",
-    "next-to-normal-2009/newyorker--conde-nast.json",
-    "south-pacific-2008/newyorker--john-lahr.json"
+    "the-second-best-school-shooting-off-broadway-2026/theatreinla--unknown.json",
+    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
+    "midnight-off-broadway-2026/timeout--unknown.json",
+    "some-woman-west-end-2026/guardian--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "midnight-off-broadway-2026/openingnight--edward-a-kliszus.json",
+    "some-woman-west-end-2026/financialtimes--unknown.json",
+    "some-woman-west-end-2026/thestage--sam-marlowe.json",
+    "some-woman-west-end-2026/times-uk--clive-davis.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "lombardi-2010/newyorker--uncredited.json",
-      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-      "august-osage-county-2007/newyorker--hilton-als.json"
+      "dog-mom-off-west-end-2026/thereviewshub--unknown.json",
+      "the-second-best-school-shooting-off-broadway-2026/cedarnews--cedar-news-editorial-team.json",
+      "dog-mom-off-west-end-2026/notesfromrowh--helena6.json",
+      "the-second-best-school-shooting-off-broadway-2026/broadway-baby--unknown.json",
+      "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json",
+      "stories-the-tap-dance-sensation-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+      "stories-the-tap-dance-sensation-west-end-2026/theupcoming--scarlett-bruin.json",
+      "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json",
+      "memoirs-of-amorous-gentlemen-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "some-woman-west-end-2026/sunday-times--clive-davis.json"
     ],
     "failed": [
-      "harry-potter-2021/newyorker--conde-nast.json",
-      "fat-ham-2023/newyorker--vinson-cunningham.json",
-      "the-parisian-woman-2017/newyorker--hilton-als.json",
-      "doctor-zhivago-2015/newyorker--conde-nast.json",
-      "the-realistic-joneses-2014/newyorker--conde-nast.json",
-      "the-anarchist-2012/newyorker--henry-alford.json",
-      "brief-encounter-2010/newyorker--uncredited.json",
-      "next-to-normal-2009/newyorker--conde-nast.json",
-      "south-pacific-2008/newyorker--john-lahr.json"
+      "the-second-best-school-shooting-off-broadway-2026/theatreinla--unknown.json",
+      "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+      "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
+      "midnight-off-broadway-2026/timeout--unknown.json",
+      "some-woman-west-end-2026/guardian--unknown.json",
+      "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
+      "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json",
+      "midnight-off-broadway-2026/chicagotribune--unknown.json",
+      "midnight-off-broadway-2026/eventsfy--unknown.json",
+      "midnight-off-broadway-2026/openingnight--edward-a-kliszus.json",
+      "some-woman-west-end-2026/financialtimes--unknown.json",
+      "some-woman-west-end-2026/thestage--sam-marlowe.json",
+      "some-woman-west-end-2026/times-uk--clive-davis.json"
     ]
   },
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "dog-mom-off-west-end-2026/thereviewshub--unknown.json",
+      "dog-mom-off-west-end-2026/notesfromrowh--helena6.json",
+      "the-second-best-school-shooting-off-broadway-2026/broadway-baby--unknown.json",
+      "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json",
+      "memoirs-of-amorous-gentlemen-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-second-best-school-shooting-off-broadway-2026/cedarnews--cedar-news-editorial-team.json",
+      "the-second-best-school-shooting-off-broadway-2026/cedarnews--cedar-news-editorial-team.json",
+      "data/review-texts/some-woman-west-end-2026/sunday-times--clive-davis.json",
+      "some-woman-west-end-2026/sunday-times--clive-davis.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "lombardi-2010/newyorker--uncredited.json",
-      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-      "august-osage-county-2007/newyorker--hilton-als.json"
+      "stories-the-tap-dance-sensation-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+      "stories-the-tap-dance-sensation-west-end-2026/theupcoming--scarlett-bruin.json",
+      "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json"
     ]
   },
   "failuresByOutlet": {
-    "The New Yorker": {
-      "count": 2,
-      "domain": "newyorker.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
+    "Theatre in LA": {
+      "count": 1,
+      "domain": "theatreinla.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "cityking": {
+      "count": 1,
+      "domain": "cityking.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Londonlivinglarge": {
+      "count": 1,
+      "domain": "londonlivinglarge.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Guardian": {
+      "count": 1,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "eventsfy": {
+      "count": 1,
+      "domain": "eventsfy.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "OpeningNight.Online": {
+      "count": 1,
+      "domain": "openingnight.online",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Times (UK)": {
+      "count": 1,
+      "domain": "thetimes.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": []
