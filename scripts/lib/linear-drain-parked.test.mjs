@@ -51,3 +51,100 @@ test('the sync gate drain-parked runs first survives a dirty ledger with duplica
   assert.match(out, /# pass [1-9]/);
   assert.match(out, /# fail 0/);
 });
+
+// BRO-5626: the cloud unpark drain. Reasons taken from live parked cards on 2026-10-18.
+const hd = require(path.join(HERE, 'headless-dispatchability.js'));
+const TAKEABLE = [
+  'triaged from retired Notion backlog (BRO-5297)',
+  'Needs its own session: parameterize hard-coded paths, add a test, review and land',
+  'shared-infra edit (score-routing.js is in the section-18 review scope) plus a corpus delta measurement',
+  'found while fixing BRO-5351; cloud worker queue picks it up',
+  'low impact, small follow-up for next session',
+];
+const HELD = [
+  'routine audit log',
+  'needs live BrightData/ScrapingBee credit spend',
+  'mostly edits ~/.claude (private claude-sync repo, Mac only)',
+  'small data fix; review stays excluded until moved',
+  'Not yet 2+ real instances',
+  'needs a live provider test with real keys',
+  'needs researched venue URLs plus a PostHog key for the traffic check',
+  'needs blind PDF parsing via CI only (TR creds not in cloud containers)',
+  'needs a session with data/review-texts attached',
+  'this needs a week of per-lane outcomes and its own design',
+  'needs live capture during a real opening',
+  'cosmetic; dispatch when touching score routing',
+  'waiting on the owner to pick a design',
+  'Candidate missing production: add only after validate-show-venue.js confirms (never auto-add)',
+  'risky bulk rewrite of shows.json',
+  // BRO-5626 ship-check: actions a worker must not take on its own.
+  'bulk rescore of 400 reviews after the prompt change',
+  'sends the opening-night broadcast email',
+  'deletes stale rows from production Supabase',
+  'deploy to prod after the migration',
+  'depends on BRO-5100 landing first',
+  'after BRO-5200 merges',
+  'force-push to rewrite history on main',
+  'iOS app TestFlight build',
+  'dispatch 40 gather runs',
+  'costs ScrapingBee credits',
+  'edits ~/.claude hooks',
+  'once the new aggregator is live',
+  'manual check by hand',
+  'drop the legacy table',
+  'running in 3 cloud sessions started by the BRO-5221 session',
+  '',
+];
+
+test('BRO-5626: worker-takeable park reasons pass, real blocks and owner holds do not', () => {
+  for (const r of TAKEABLE) assert.equal(hd.isWorkerTakeableParkReason(r), true, r);
+  for (const r of HELD) assert.equal(hd.isWorkerTakeableParkReason(r), false, r);
+});
+
+test('BRO-5626: block words are word-bounded', () => {
+  for (const r of ['fix the tokenizer split', 'monkeypatch removal']) assert.equal(hd.isWorkerTakeableParkReason(r), true, r);
+});
+
+test('BRO-5626: every PARKED line must be takeable, machine parks are left to the picker', () => {
+  assert.equal(lib.unparkSkipReason(issue(10, `PARKED: ${TAKEABLE[0]}${VERIFY}`)), null);
+  assert.equal(lib.unparkSkipReason(issue(11, `PARKED: ${TAKEABLE[0]}\nPARKED: waiting on the owner${VERIFY}`)), 'real-park-reason');
+  assert.equal(lib.unparkSkipReason(issue(12, `PARKED: ${lib.AUTO_FILED_MARKER}${VERIFY}`)), 'machine-park');
+  assert.equal(lib.unparkSkipReason(issue(13, `no park line${VERIFY}`)), 'no-park-line');
+});
+
+test('BRO-5626: unparkSkipReason needs a safe VERIFY, a triaged priority and an open parked state', () => {
+  assert.equal(lib.unparkSkipReason(issue(20, `PARKED: ${TAKEABLE[0]}`)), 'no-safe-verify');
+  assert.equal(lib.unparkSkipReason(issue(21, `PARKED: ${TAKEABLE[0]}${VERIFY}`, { priority: 0 })), 'untriaged-priority');
+  assert.equal(lib.unparkSkipReason(issue(22, `PARKED: ${TAKEABLE[0]}${VERIFY}`, { state: { type: 'started' } })), 'not-parked-state');
+  assert.equal(lib.unparkSkipReason(issue(23, `PARKED: ${TAKEABLE[0]}${VERIFY}`, { title: 'iOS app crash on launch' })), 'ios-app-repo');
+});
+
+test('BRO-5626: an unparked card is an ordinary Todo card to the picker', () => {
+  const cwp = require(path.join(HERE, 'cloud-worker-pick.js'));
+  const desc = `Intro\n  PARKED: ${TAKEABLE[0]}\nPARKED: ${TAKEABLE[1]}${VERIFY}`;
+  const out = lib.unparkDescription(desc, 'BRO-5626 drain 2026-10-18');
+  assert.doesNotMatch(out, /^\s*PARKED\s*:/im);
+  assert.match(out, /^ {2}UNPARKED \(BRO-5626 drain 2026-10-18\): triaged from retired Notion backlog/m);
+  const moved = issue(30, out, { state: { type: 'unstarted' }, priority: 3, updatedAt: '2026-10-01T00:00:00Z' });
+  assert.equal(cwp.headlessUnfitReason(moved), null);
+  assert.equal(lib.unparkSkipReason(moved), 'no-park-line');
+  // Paused later, it goes back to Backlog as a paused card, not a parked one.
+  assert.equal(cwp.isPausedBacklog({ ...moved, state: { type: 'backlog' } }), true);
+});
+
+test('BRO-5626: awaiting-owner label and a re-parked card are left alone', () => {
+  const desc = `PARKED: ${TAKEABLE[0]}${VERIFY}`;
+  assert.equal(lib.unparkSkipReason(issue(40, desc, { labels: { nodes: [{ name: 'awaiting-owner' }] } })), 'awaiting-owner');
+  const reparked = `UNPARKED (BRO-5626 drain 2026-10-18): ${TAKEABLE[0]}\nPARKED: ${TAKEABLE[1]}${VERIFY}`;
+  assert.equal(lib.unparkSkipReason(issue(41, reparked)), 're-parked');
+  const filedTodo = `UNPARKED (BRO-5626 filed in Todo 2026-10-18): ${TAKEABLE[0]}\nPARKED: ${TAKEABLE[1]}${VERIFY}`;
+  assert.equal(lib.unparkSkipReason(issue(42, filedTodo)), 're-parked');
+});
+
+test('BRO-5626: owner wording in the body and wait reasons hold the card (ported from linear-promote-parked)', () => {
+  assert.equal(lib.unparkSkipReason(issue(50, `PARKED: ${TAKEABLE[0]}\n\nDECISION NEEDED: pick a layout${VERIFY}`)), 'owner-text');
+  assert.equal(lib.unparkSkipReason(issue(51, `PARKED: ${TAKEABLE[0]}\n\nBlocked on the owner for wording.${VERIFY}`)), 'owner-text');
+  for (const r of ['waiting for the BRO-5000 fix', 'after the quota resets', 'in 3 days', 'recheck 2026-11-01', 'wait until Monday']) {
+    assert.equal(hd.isWorkerTakeableParkReason(r), false, r);
+  }
+});

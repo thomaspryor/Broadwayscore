@@ -174,7 +174,30 @@ function effectiveCreatePriority({ priority, mode, title }) {
  *   the match; the reason is kept on the card.
  * @returns {Promise<{issue: object, mode: 'dispatch'|'park'|'reused'|'rolled-up', stateName: string}>}
  */
-async function createLinearIssue({ title, description, dispatch, park, priority, projectId, model, client, reuseTwin = false, source, dedupeOptOut, newAnyway }) {
+// BRO-5626 step 6: a session card with no safe acceptance command is the vague
+// card nobody can verify or pick. Advisory first (CLAUDE.md 19): measured
+// 2026-10-18, 12 of 75 session cards filed in 7 days had none (a floor: some
+// were armed later). LINEAR_CREATE_VERIFY_ENFORCE=1 refuses instead of warning.
+const VERIFY_GATE_ENFORCE = process.env.LINEAR_CREATE_VERIFY_ENFORCE === '1';
+const MISSING_VERIFY_MESSAGE = 'add a VERIFY: <safe command> or mark it as an owner/access card';
+
+/**
+ * PURE. Why a new card fails the front-door VERIFY rule, or null. Only session
+ * cards are checked: workflow filers (digest-autofix, the alert router, CI-red)
+ * write their own VERIFY. A park whose reason is a real owner, key, Mac or date
+ * block is exempt, and so is an owner-judgment marker (evaluateVerifiability
+ * counts it as armed). noVerify is the caller's logged --no-verify reason.
+ */
+function missingVerifyReason({ source, mode, parkReason, body, noVerify }) {
+  if (source !== 'session' || noVerify) return null;
+  const hd = require('./headless-dispatchability');
+  if (mode === 'park' && !hd.isWorkerTakeableParkReason(parkReason)) return null;
+  const v = require('./verify-gate.js').evaluateVerifiability(body || '', []);
+  if (v.armed) return null;
+  return `${MISSING_VERIFY_MESSAGE} (${v.reason || 'no acceptance command found'})`;
+}
+
+async function createLinearIssue({ title, description, dispatch, park, priority, projectId, model, client, reuseTwin = false, source, dedupeOptOut, newAnyway, noVerify }) {
   if (dedupeOptOut !== undefined && !Object.prototype.hasOwnProperty.call(cardDedupe.DEDUPE_OPT_OUTS, dedupeOptOut)) {
     throw new Error(`createLinearIssue: dedupeOptOut "${dedupeOptOut}" is not in card-dedupe.js DEDUPE_OPT_OUTS; add it there with its reason, or drop it`);
   }
@@ -275,6 +298,19 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   }
 
   const team = await linear.getTeam();
+  let missingVerify = null;
+  try {
+    missingVerify = missingVerifyReason({ source: cardSource, mode: disposition.mode, parkReason: disposition.reason, body, noVerify });
+  } catch (e) {
+    console.warn(`[linear-issue-create] VERIFY check failed open: ${e.message}`);
+  }
+  if (missingVerify && VERIFY_GATE_ENFORCE) {
+    const err = new Error(`Card refused: ${missingVerify}. Or pass --no-verify "<reason>". Nothing was filed.`);
+    err.missingVerify = true;
+    throw err;
+  }
+  if (missingVerify) console.warn(`[linear-issue-create] VERIFY-ADVISORY: ${missingVerify}. Or pass --no-verify "<reason>" (BRO-5626).`);
+
   let state = pickStateForMode(team.states, disposition.mode);
 
   const filed = effectiveCreatePriority({ priority, mode: disposition.mode, title });
@@ -282,13 +318,12 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   // block. File it in Todo (no PARKED sentinel) so the workers take it; 183 such cards sat in Backlog
   // untouched once the Mac drain died. Sessions-only path (reuseTwin), fails open to the parked filing.
   let autoTodo = false;
-  let parkReason = disposition.reason;
   if (reuseTwin && disposition.mode === 'park' && !filed.clamped) {
     try {
-      const promo = require('./linear-promote-parked.js');
+      // Same rule the daily unpark drain applies (scripts/linear-unpark-drain.js), so a card it would move is filed in Todo.
       const parkedBody = `PARKED: ${disposition.reason}\n\n${body}`;
-      const d = promo.promotionDecision({ title, description: parkedBody, priority: filed.priority, state: { type: 'backlog' } });
-      if (d.promote) {
+      const why = require('./linear-drain-parked.js').unparkSkipReason({ identifier: 'BRO-new', title, description: parkedBody, priority: filed.priority, state: { type: 'backlog' } });
+      if (!why) {
         state = pickStateForMode(team.states, 'dispatch');
         autoTodo = true;
       }
@@ -305,6 +340,9 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
     try {
       const advisory = require('./headless-dispatchability').parkReasonAdvisory(disposition.reason);
       if (advisory) console.warn(`[linear-issue-create] ${advisory}`);
+      // BRO-5626: sessions parked technical discoveries by default, and nothing picked them up.
+      const takeable = cardSource === 'session' && !autoTodo && require('./headless-dispatchability').takeableParkAdvisory(disposition.reason);
+      if (takeable) console.warn(`[linear-issue-create] ${takeable}`);
     } catch (e) {
       console.warn(`[linear-issue-create] park-reason advisory failed (filing continues): ${e.message}`);
     }
@@ -314,7 +352,7 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
     : '';
   const footer = cardDedupe.sourceFooter(cardSource, kind);
   const finalDescription = `${
-    autoTodo ? `${require('./linear-promote-parked.js').UNPARKED_PREFIX} ${parkReason}\n\n${body}`.trim()
+    autoTodo ? require('./linear-drain-parked.js').unparkDescription(`PARKED: ${disposition.reason}\n\n${body}`, `BRO-5626 filed in Todo ${new Date().toISOString().slice(0, 10)}`).trim()
       : disposition.mode === 'park' ? `PARKED: ${disposition.reason}${clampNote}\n\n${body}`.trim() : body
   }\n\n${footer}`.trim();
 
@@ -540,5 +578,5 @@ async function reuseOpenTwin({ title, body, client, mode = 'park' }) {
 
 module.exports = {
   createLinearIssue, reuseOpenTwin, reuseNearDuplicate, rollUpFlood, defaultFindOpenIssueByTitle, twinServes, pickStateForMode, isUsageLimitExceeded, USAGE_LIMIT_MESSAGE,
-  effectiveCreatePriority, priorityFromTitle, PARKED_MAX_PRIORITY, PARKED_CLAMP_MARKER, DEFAULT_CREATE_PRIORITY,
+  effectiveCreatePriority, priorityFromTitle, missingVerifyReason, MISSING_VERIFY_MESSAGE, PARKED_MAX_PRIORITY, PARKED_CLAMP_MARKER, DEFAULT_CREATE_PRIORITY,
 };

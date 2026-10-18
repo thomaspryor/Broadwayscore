@@ -250,6 +250,52 @@ function isDrainableSessionParked(notes) {
 // advisory quiet; it never widens what drains.
 const OWNER_ONLY_PARK_RE = /\bmac\b|launchd|simulator|money|spend|subscription|credits|\bpaid\b|payment|price|login|log[- ]in|sign[- ]?in|oauth|cookie|password|account|calendar|schedul|taste|visual-qa approval|owner-review|product (?:call|decision)|irreversib|bulk/i;
 
+// BRO-5626: what a session park can name that a worker really cannot get past:
+// a key or credential, a date or event to wait for, a card that is a log and
+// not work, work deferred to whoever next touches the code, a risky change, or
+// the private review-texts corpus a cloud container may not carry.
+// Word-bounded so "tokenizer" or "untilted" don't hold a card.
+const REAL_BLOCK_PARK_RE = /\b(?:api[- ]?keys?|keys?|tokens?|secrets?|credentials?|creds?)\b|review-texts|\ba week of\b|\bdays of\b|\bduring a real\b|\bnot work\b|\b(?:audit|watch) log\b|\bwhen (?:touching|we|the)\b|\bbefore dispatching\b|\buntil\b|\bwaits? (?:on|for)\b|\bnot yet\b|\bconfirm(?:ing)? (?:the )?pattern\b|\bdeliberate look\b|\blive provider\b|\broadmap\b|\brisky\b|\bnever auto|\bwaiting (?:on|for)\b|\bwait (?:for|until)\b|\bafter (?:the |a |\d)|\bin \d+ (?:days?|weeks?)\b|\b\d{4}-\d{2}-\d{2}\b|\breset\b/i;
+
+/**
+ * True when a session's park reason names no owner hold, nothing only the owner
+ * can supply, and no real block (BRO-5626). The Mac drain's allowlist
+ * (isDrainableSessionParked) left 89 such cards unpicked on 2026-10-18:
+ * "triaged from retired Notion backlog", "needs its own session", "§18 review
+ * first". Only the unpark drain (scripts/linear-unpark-drain.js) uses this; the
+ * picker keeps its default-deny rule and sees the card once the drain has
+ * moved it to Todo.
+ */
+// BRO-5626 ship-check: actions a worker must not take just because a card reached
+// Todo (spend, prod writes, email, deploys, other repos, dependencies, waits).
+// The drain is default-allow on park reasons, so this list errs wide: a false
+// hold only leaves a card parked, a miss moves an unsafe one.
+const RISKY_ACTION_PARK_RE = /\baccess\b|\bdeploy|\bprod(?:uction)?\b|\bdelet|\bdrop\b|\bmigrat|\be-?mails?\b|\bbroadcast|\bsend\b|\bre-?scor|\bbulk\b|\bmass\b|force[- ]push|\bios\b|app store|testflight|\bdepends? on\b|\bblocked by\b|\bafter BRO-\d+|\bBRO-\d+\s+(?:lands?|merges?|ships?|is done)|\bonce\b|opening night|reviews? drops?|\bsupabase\b|\bvercel\b|~\/\.claude|\bhooks?\b|\bmac\b|\bdispatch(?:es)? \d+|(?<![-§])\b\d{2,}\s+(?:runs|reviews|cards|shows|dispatches|issues|rows|files)\b|prompt change|§ ?13|\ba\/b\b|\bspend|\bcredits?\b|\bcost|\bpaid\b|\bbilling\b|\bowner\b|\bhuman\b|\bmanual|\bby hand\b|irreversible|destructive|\brunning in\b|in[- ]flight|\bstarted by\b|another session|being worked/i;
+
+function isWorkerTakeableParkReason(reason) {
+  const r = String(reason || '').trim();
+  if (!r || isAutomationParked(`PARKED: ${r}`)) return false;
+  return !OWNER_HOLD_PARK_RE.test(r) && !OWNER_ONLY_PARK_RE.test(r) && !REAL_BLOCK_PARK_RE.test(r) && !RISKY_ACTION_PARK_RE.test(r);
+}
+
+/** Every PARKED line on the card is worker-takeable (at least one line). */
+function hasOnlyWorkerTakeableParks(notes) {
+  const reasons = [...String(notes || '').matchAll(PARK_REASON_LINES_RE)].map((m) => m[1].trim());
+  return reasons.length > 0 && reasons.every(isWorkerTakeableParkReason);
+}
+
+/**
+ * BRO-5626, warn-only, session filers: the park reason names nothing that stops
+ * a worker, so --park only delays the card until the daily unpark drain. Null
+ * when the reason holds the card for a real reason.
+ */
+function takeableParkAdvisory(reason) {
+  if (!isWorkerTakeableParkReason(reason)) return null;
+  return 'PARK-ADVISORY: this park reason names nothing a worker cannot do (no owner call, key, date, spend or Mac). '
+    + 'File it with --dispatch and a VERIFY line so it lands in Todo. Parked, it waits for the daily unpark drain, '
+    + 'which moves it to Todo only if it has a safe VERIFY (BRO-5626).';
+}
+
 /**
  * Warn-only filing advisory: the park reason reads as an owner hold but names
  * nothing only the owner can supply. Returns the warning text, or null.
@@ -396,7 +442,13 @@ module.exports = {
   UI_CARD_CLASS_RE,
   isAutomationParked,
   isDrainableSessionParked,
+  isWorkerTakeableParkReason,
+  hasOnlyWorkerTakeableParks,
+  REAL_BLOCK_PARK_RE,
+  RISKY_ACTION_PARK_RE,
+  OWNER_ONLY_PARK_RE,
   parkReasonAdvisory,
+  takeableParkAdvisory,
   OWNER_HOLD_PARK_RE,
   OWNER_ONLY_PARK_RE,
   TECHNICAL_PARK_RE,
