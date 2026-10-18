@@ -374,6 +374,8 @@ function costPathFactor(weekNumber, path) {
  *               gap-filled weeks), so a little ahead of weeks played. The
  *               window was tuned on the rows it is scored on: promote only
  *               after a holdout check. Plays are never ramped.
+ *   varBandMusicalsCited varBandMusicals only on a cited running cost (not
+ *               all-in or breakeven); live for musicals (BRO-5598)
  * Returns the extra variable cost in dollars (0 when neither is set).
  */
 const VAR_BAND = { fromRatio: 0.9, toRatio: 1.5, low: 0.12, high: 0.235 };
@@ -691,9 +693,10 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
     return { error: 'No gross data available', warnings: ['No grosses data'] };
   }
 
-  // Shadow only (BRO-4989 checker #3): each week's cost from its own date
-  // (dated anchors carried by the Broadway cost index, costForWeek) instead
-  // of one current figure for the whole run. Live passes no opts.
+  // BRO-4989 checker #3: each week's cost from its own date (dated anchors
+  // carried by the Broadway cost index, costForWeek) instead of one current
+  // figure for the whole run. Live for musicals (MUSICAL_LIVE_OPTS), shadow
+  // for plays.
   // A record with no cost figure at all keeps the live nut (flat era
   // deflator): a category estimate is never carried back by the index.
   const datedCosts = opts.datedCosts && datedCostsApply(show, commercial, warnings);
