@@ -762,8 +762,9 @@ export class EnsembleReviewScorer {
     }
 
     // BRO-4335: monotone tail stretch, llm-v6 only, default OFF
-    // (ENSEMBLE_TAIL_STRETCH=1). Flag off returns the same object, so output is
-    // unchanged. Applied here, the one point both the sync and --batch paths
+    // (ENSEMBLE_TAIL_STRETCH=1). Flag off returns the same object, so the score is
+    // unchanged (the llmScore.range clamp to 0..100 below is the one intentional
+    // flag-off change). Applied here, the one point both the sync and --batch paths
     // share, so the stored per-model scores stay raw and re-ensemble-scores.ts
     // can reapply it idempotently.
     ensembleResult = applyTailStretch(ensembleResult, anchoredBandScoreSource);

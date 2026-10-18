@@ -464,7 +464,7 @@ export function applyTailStretch(
   if (!monotoneStretch.isEnabled(opts)) return result;
   if (scoreSource !== 'llm-v6') return result;
   if (result.rejected || result.allModelsFailed) return result;
-  if (typeof result.score !== 'number' || !Number.isFinite(result.score)) return result;
+  if (typeof result.score !== 'number' || !Number.isInteger(result.score)) return result;
 
   const stretched = monotoneStretch.stretchScore(result.score, { enabled: true });
   // Stamp only a real change: a no-op stretch (score <= 88) leaves the result as-is.
