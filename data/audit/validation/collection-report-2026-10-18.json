@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-18T05:30:00.739Z",
+  "runDate": "2026-10-18T05:45:51.886Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 55,
+    "failed": 54,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -28,7 +28,7 @@
     "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 1,
+    "tier1Attempts": 0,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
@@ -42,20 +42,20 @@
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 55,
+    "totalFailed": 54,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 55,
+    "urlDiscoveryAttempts": 54,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
     "processed": 0,
-    "failed": 55,
+    "failed": 54,
     "shows": [
       "aint-no-mo-2022",
       "all-my-sons-2008",
@@ -87,7 +87,6 @@
       "rodgers-hammersteins-cinderella-2013",
       "sea-wall-a-life-2019",
       "shrek-the-musical-2008",
-      "sticks-and-bones-1972",
       "suffs-2024",
       "tammy-faye-2024",
       "the-collaboration-2022",
@@ -168,8 +167,7 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
-    "sticks-and-bones-1972/ew--jason-clark.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
   ],
   "cumulativeResumedState": {
     "processed": [
@@ -466,14 +464,6 @@
       "the-women-2001/talkinbroadway--unknown.json"
     ]
   },
-  "failuresByOutlet": {
-    "Entertainment Weekly": {
-      "count": 1,
-      "domain": "ew.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
