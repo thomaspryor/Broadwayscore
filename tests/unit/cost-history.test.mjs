@@ -6,7 +6,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 
 const {
-  addAnchors, anchorErrors, anchorKey, dateFromText, legacyCostAnchor, sourceTypeForMethodology,
+  addAnchors, anchorErrors, anchorKey, dateFromText, legacyCostAnchor, sourceTypeForMethodology, historyWithSeeds,
 } = require('../../scripts/lib/cost-history');
 const {
   waltzAnchor, appendWaltzAnchors, waltzJumpFlags, shouldAlertNoAnchors, castEventsFor,
@@ -207,5 +207,34 @@ describe('weekly cost checks', () => {
     // the queue worker's own field (deep-research-commercial.js)
     assert.strictEqual(recentlyResearched({ lastResearchedAt: '2026-09-20T10:00:00Z', deepResearch: { verifiedDate: '2026-02-03' } }, NOW), true);
     assert.strictEqual(recentlyResearched({ lastResearchedAt: null, researchAttempts: 0 }, NOW), false);
+  });
+});
+
+describe('one report counts once (BRO-5632)', () => {
+  // Water for Elephants: the legacy field holds Broadway Journal's $960K as a
+  // running cost; the researched seed holds the same report as a break-even.
+  const record = {
+    weeklyRunningCost: 960000, costMethodology: 'trade-reported',
+    weeklyRunningCostSource: 'Broadway Journal (Nov 6, 2023): "it will need to sell at least $960,000 of tickets each week"',
+    sources: [{ type: 'trade', url: 'https://www.broadwayjournal.com/p/inside-broadways-1-million-nut-cases', date: '2023-11-06' }],
+  };
+  const show = { openingDate: '2024-03-21', closingDate: '2024-12-08' };
+  const seed = { asOf: '2024-03-21', amount: 960000, kind: 'break-even', sourceType: 'trade', sourceUrl: 'https://www.broadwayjournal.com/p/inside-broadways-1-million-nut-cases' };
+
+  it('drops the legacy copy when a seed repeats its figure under another kind', () => {
+    const h = historyWithSeeds(record, show, [seed]);
+    assert.deepStrictEqual(h.map((a) => a.kind), ['break-even']);
+  });
+
+  it('keeps a reported legacy figure when only an estimate seed repeats it', () => {
+    const estimate = { ...seed, kind: 'running-cost', sourceType: 'industry-estimate' };
+    const h = historyWithSeeds(record, show, [estimate]);
+    assert.ok(h.some((a) => a.dateBasis === 'migrated' && a.sourceType === 'trade'), JSON.stringify(h));
+  });
+
+  it('keeps the legacy figure when only a Reddit figure repeats it', () => {
+    const his = { asOf: '2024-04-02', amount: 960000, kind: 'running-cost', sourceType: 'reddit-standard', sourceUrl: 'https://www.reddit.com/comments/x', postId: 'x' };
+    const h = historyWithSeeds(record, show, [his]);
+    assert.ok(h.some((a) => a.dateBasis === 'migrated'), JSON.stringify(h));
   });
 });

@@ -74,12 +74,29 @@ function anchorErrors(anchor) {
   return errs;
 }
 
+const REPORTED_SOURCE_TYPES = new Set(['producer-confirmed', 'sec', 'trade']);
+
+/**
+ * True when a researched anchor in `anchors` carries the migrated legacy
+ * anchor's figure (within 0.5%), whatever its kind: it is the same report,
+ * and the seed knows its real date and kind (Hamilton's $643K is a 2017
+ * figure, not 2025; Water for Elephants' $960K is a break-even gross, which
+ * the legacy field held as a running cost, BRO-5632). His Reddit figures
+ * never count as the researched copy.
+ */
+function seedRepeatsLegacy(legacy, anchors) {
+  // A reported legacy figure is only repeated by a reported seed, so an
+  // estimate that happens to match it never removes the reported anchor.
+  const reported = REPORTED_SOURCE_TYPES.has(legacy.sourceType);
+  return anchors.some((a) => a !== legacy && a.dateBasis !== 'migrated' && a.sourceType !== 'reddit-standard'
+    && (!reported || REPORTED_SOURCE_TYPES.has(a.sourceType))
+    && Math.abs(a.amount / legacy.amount - 1) <= 0.005);
+}
+
 /**
  * Costs history for a record that has no costHistory yet: its migrated
  * weeklyRunningCost plus researched seed anchors (data/cost-anchor-seeds.json).
- * When a seed carries the same running-cost figure as the legacy field
- * (within 0.5%), the legacy copy is dropped: it is the same report, and the
- * seed knows its real date (Hamilton's $643K is a 2017 figure, not 2025).
+ * A legacy figure a seed repeats is dropped (seedRepeatsLegacy).
  * A record that already has costHistory is returned as is.
  */
 function historyWithSeeds(record, show, seeds = []) {
@@ -87,8 +104,7 @@ function historyWithSeeds(record, show, seeds = []) {
   // so one bad row can never stop the model.
   if (Array.isArray(record?.costHistory) && record.costHistory.length) return record.costHistory.filter((a) => anchorErrors(a).length === 0);
   const legacy = legacyCostAnchor(record || {}, show);
-  const sameFigure = legacy && seeds.some((a) => a.kind === 'running-cost' && Math.abs(a.amount / legacy.amount - 1) <= 0.005);
-  const base = legacy && !sameFigure ? [legacy] : [];
+  const base = legacy && !seedRepeatsLegacy(legacy, seeds) ? [legacy] : [];
   return addAnchors(base, seeds).history;
 }
 
@@ -241,6 +257,7 @@ module.exports = {
   dateFromText,
   isRealDate,
   legacyCostAnchor,
+  seedRepeatsLegacy,
   historyWithSeeds,
   newestAnchor,
 };

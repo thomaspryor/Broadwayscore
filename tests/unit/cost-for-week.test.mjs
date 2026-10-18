@@ -9,7 +9,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '..');
-const { costForWeek, weeklyCostStatus, costIndexAt, carry } = require('../../scripts/lib/cost-for-week');
+const { costForWeek, weeklyCostStatus, costIndexAt, carry, hasCostAnchor } = require('../../scripts/lib/cost-for-week');
 const { anchorErrors } = require('../../scripts/lib/cost-history');
 const { backtest, loadSeries, MAX_MEDIAN_ERROR } = require('../../scripts/lib/cost-index-backtest');
 
@@ -131,5 +131,45 @@ describe('one cost function (no new direct weeklyRunningCost math)', () => {
     } catch (e) { out = e.stdout || ''; }
     const extra = out.trim().split('\n').filter(Boolean).filter((f) => !baseline.has(f));
     assert.deepStrictEqual(extra, [], `New direct readers of weeklyRunningCost; use costForWeek() from scripts/lib/cost-for-week.js: ${extra.join(', ')}`);
+  });
+});
+
+describe('a reported cost sets the level (BRO-5632)', () => {
+  const waltz = (asOf, amount) => ({ asOf, amount, kind: 'running-cost', sourceType: 'reddit-standard', sourceUrl: 'https://www.reddit.com/comments/' + asOf, postId: 'p' + asOf });
+  const weekly = (from, n, amount) => Array.from({ length: n }, (_, i) => waltz(new Date(Date.parse(from) + i * 7 * 86400000).toISOString().slice(0, 10), amount));
+
+  it("leaves his weekly figures out of a history that holds a trade cost", () => {
+    // Merrily-shaped: one trade figure, then his posts every week at a lower level.
+    const record = { costHistory: [trade('2023-10-10', 950_000), ...weekly('2023-10-17', 40, 800_000)] };
+    const withHim = costForWeek(record, '2024-05-05');
+    const tradeOnly = costForWeek({ costHistory: [trade('2023-10-10', 950_000)] }, '2024-05-05');
+    assert.ok(tradeOnly.cost > 900_000, `trade figure carried: ${tradeOnly.cost}`);
+    assert.strictEqual(withHim.cost, tradeOnly.cost);
+    assert.ok(withHim.anchors.every((a) => a.sourceType === 'trade'), JSON.stringify(withHim.anchors));
+  });
+
+  it('a stored migrated copy of a seed figure counts once (water-for-elephants)', () => {
+    const seed = trade('2024-03-21', 960_000, { kind: 'break-even' });
+    const migrated = trade('2024-03-21', 960_000, { dateBasis: 'migrated', note: 'migrated from weeklyRunningCost (trade-reported)' });
+    const both = costForWeek({ costHistory: [seed, migrated, ...weekly('2024-03-26', 30, 750_000)] }, '2024-05-05');
+    const seedOnly = costForWeek({ costHistory: [seed] }, '2024-05-05');
+    assert.ok(seedOnly.cost > 850_000 && seedOnly.cost < 950_000, `break-even carried as a running cost: ${seedOnly.cost}`);
+    assert.strictEqual(both.cost, seedOnly.cost);
+  });
+
+  it('his figure close to a reported one never stands in for it (two-strangers)', () => {
+    // Forbes' $480,577 is within 0.12% of his $480,000: still the reported anchor.
+    const reported = trade('2025-11-20', 480_577, { dateBasis: 'migrated', note: 'migrated from weeklyRunningCost (trade-reported)' });
+    const record = { costHistory: [reported, ...weekly('2025-11-25', 20, 480_000)] };
+    assert.strictEqual(hasCostAnchor(record), true);
+    const c = costForWeek(record, '2026-02-01');
+    assert.ok(c.anchors.length && c.anchors.every((a) => a.sourceType === 'trade'), JSON.stringify(c.anchors));
+  });
+
+  it('still uses his figures when nothing reported is held', () => {
+    const record = { costHistory: weekly('2024-01-07', 10, 700_000) };
+    const c = costForWeek(record, '2024-02-04');
+    assert.ok(Math.abs(c.cost - 700_000) / 700_000 < 0.02, `got ${c.cost}`);
+    assert.ok(c.anchors.every((a) => a.sourceType === 'reddit-standard'));
   });
 });

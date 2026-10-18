@@ -12,7 +12,9 @@
  * $800K x index(2023)/index(2008) in 2023. Between two anchors the carried
  * values are blended by time and source quality; outside them the nearest
  * anchor is carried. The range widens with a weaker source and with distance
- * from the anchor. A record with no anchor at all falls back to its legacy
+ * from the anchor. A reported figure (producer, SEC, trade) sets the level:
+ * Boring Waltz's weekly figures count only where the history holds none
+ * (BRO-4666, BRO-5632). A record with no anchor at all falls back to its legacy
  * weeklyRunningCost (as a migrated anchor), then to the category estimate.
  *
  * Every new consumer must use this: tests/unit/cost-for-week.test.mjs fails
@@ -23,7 +25,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { SOURCE_TIERS, legacyCostAnchor, anchorErrors } = require('./cost-history');
+const { SOURCE_TIERS, legacyCostAnchor, anchorErrors, seedRepeatsLegacy } = require('./cost-history');
 
 const INDEX_PATH = path.join(__dirname, '..', '..', 'data', 'broadway-cost-index.json');
 const DAY_MS = 86400000;
@@ -106,6 +108,12 @@ function qualityFor(halfWidth, hasAnchor) {
   return 'low';
 }
 
+// Sources that report a show's own cost. Reddit "standard" figures and our
+// industry estimates are category guesses (often dated to when we wrote them),
+// so they never count as an anchor (BRO-4989 checker: anchors are trade or
+// producer sourced).
+const REPORTED_ANCHOR_SOURCES = new Set(['producer-confirmed', 'sec', 'trade']);
+
 /**
  * Cost-equivalent anchors: break-even anchors are converted to a running
  * cost with the category ratio so both kinds feed one series.
@@ -113,6 +121,14 @@ function qualityFor(halfWidth, hasAnchor) {
 function costAnchors(record, show, category) {
   // Malformed anchors are skipped (check-cost-anchors.js reports them).
   let hist = Array.isArray(record?.costHistory) ? record.costHistory.filter((a) => anchorErrors(a).length === 0) : [];
+  // A history seeded before BRO-5632 can hold the migrated legacy copy of a
+  // seed's figure under another kind; the seed wins, as in historyWithSeeds().
+  hist = hist.filter((a) => a.dateBasis !== 'migrated' || !seedRepeatsLegacy(a, hist));
+  // A reported cost sets the level, so Boring Waltz's figures stay out of a
+  // history that holds one (BRO-4666: his figures never go over a reported
+  // cost). Kept in, his post nearest the week out-weighed it (BRO-5632:
+  // Merrily's $950K trade figure read as $803K in May 2024).
+  if (hist.some((a) => REPORTED_ANCHOR_SOURCES.has(a.sourceType))) hist = hist.filter((a) => a.sourceType !== 'reddit-standard');
   if (!hist.length) {
     const legacy = legacyCostAnchor(record || {}, show);
     hist = legacy ? [legacy] : [];
@@ -124,12 +140,6 @@ function costAnchors(record, show, category) {
     baseHalfWidth: (SOURCE_TIERS[a.sourceType] || SOURCE_TIERS['industry-estimate']).halfWidth,
   }));
 }
-
-// Sources that report a show's own cost. Reddit "standard" figures and our
-// industry estimates are category guesses (often dated to when we wrote them),
-// so they never count as an anchor (BRO-4989 checker: anchors are trade or
-// producer sourced).
-const REPORTED_ANCHOR_SOURCES = new Set(['producer-confirmed', 'sec', 'trade']);
 
 /**
  * Does the record hold a reported cost figure for this show (producer, SEC or
