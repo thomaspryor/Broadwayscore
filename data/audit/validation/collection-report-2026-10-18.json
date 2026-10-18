@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-18T13:57:31.481Z",
+  "runDate": "2026-10-18T14:04:06.478Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 20,
@@ -11,72 +11,62 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 18,
+    "processed": 3,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "10.0%"
+    "successRate": "30.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
+    "scrapingdog": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 3
   },
   "statistics": {
     "tier1Attempts": 0,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 14,
+    "tier1_5Attempts": 7,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 10,
-    "tier1_9Success": 5,
-    "tier2Attempts": 10,
+    "tier1_9Attempts": 6,
+    "tier1_9Success": 2,
+    "tier2Attempts": 8,
     "tier2Success": 0,
-    "tier3Attempts": 12,
-    "tier3Success": 5,
-    "tier3_6Attempts": 8,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 4,
     "tier3_6Success": 0,
-    "tier4Attempts": 13,
-    "tier4Success": 3,
-    "totalFailed": 14,
-    "scrapingBeePageCredits": 50,
+    "tier4Attempts": 7,
+    "tier4Success": 4,
+    "totalFailed": 4,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 14,
-    "browserbaseMinutesUsed": 7.8,
-    "urlDiscoveryAttempts": 5,
+    "browserbaseSessionsUsed": 7,
+    "browserbaseMinutesUsed": 1.8,
+    "urlDiscoveryAttempts": 4,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 2,
-    "failed": 18,
+    "processed": 3,
+    "failed": 7,
     "shows": [
-      "aladdin-2014",
-      "an-enemy-of-the-people-2024",
-      "and-juliet-2022",
-      "book-of-mormon-2011",
-      "company-tour-2023",
-      "cosi-fan-tutte-off-broadway-2026",
-      "funny-girl-2002",
-      "gutenberg-2023",
-      "home-2024",
-      "i-need-that-2023",
-      "la-boheme-off-broadway-2025",
-      "little-shop-of-horrors-off-broadway-2019",
-      "sunset-boulevard-2024",
-      "swept-away-2024",
-      "the-price-off-west-end-2026",
-      "the-roommate-2024",
-      "the-whos-tommy-2024",
-      "titanique-2026",
-      "trouble-in-mind-west-end-2021",
-      "wicked-2003"
+      "august-osage-county-2007",
+      "bloody-bloody-andrew-jackson-2010",
+      "brief-encounter-2010",
+      "doctor-zhivago-2015",
+      "fat-ham-2023",
+      "harry-potter-2021",
+      "lombardi-2010",
+      "south-pacific-2008",
+      "the-anarchist-2012",
+      "the-parisian-woman-2017"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -85,53 +75,33 @@
     }
   },
   "processed": [
-    "book-of-mormon-2011/wsj--terry-teachout.json",
-    "la-boheme-off-broadway-2025/wsj--by-tim-page.json"
+    "lombardi-2010/newyorker--uncredited.json",
+    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
+    "august-osage-county-2007/newyorker--hilton-als.json"
   ],
   "failed": [
-    "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
-    "trouble-in-mind-west-end-2021/wsj--terry-teachout.json",
-    "funny-girl-2002/wsj--charles-isherwood.json",
-    "the-price-off-west-end-2026/wsj--unknown.json",
-    "and-juliet-2022/wsj--charles-isherwood.json",
-    "little-shop-of-horrors-off-broadway-2019/wsj--charles-isherwood.json",
-    "aladdin-2014/wsj--terry-teachout.json",
-    "wicked-2003/wsj--terry-teachout.json",
-    "titanique-2026/wsj--charles-isherwood.json",
-    "swept-away-2024/wsj--charles-isherwood.json",
-    "sunset-boulevard-2024/wsj--charles-isherwood.json",
-    "the-roommate-2024/wsj--charles-isherwood.json",
-    "home-2024/wsj--charles-isherwood.json",
-    "the-whos-tommy-2024/wsj--charles-isherwood.json",
-    "an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
-    "i-need-that-2023/wsj--charles-isherwood.json",
-    "gutenberg-2023/wsj--charles-isherwood.json",
-    "company-tour-2023/wsj--charles-isherwood.json"
+    "harry-potter-2021/newyorker--conde-nast.json",
+    "fat-ham-2023/newyorker--vinson-cunningham.json",
+    "the-parisian-woman-2017/newyorker--hilton-als.json",
+    "doctor-zhivago-2015/newyorker--conde-nast.json",
+    "the-anarchist-2012/newyorker--henry-alford.json",
+    "brief-encounter-2010/newyorker--uncredited.json",
+    "south-pacific-2008/newyorker--john-lahr.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "book-of-mormon-2011/wsj--terry-teachout.json",
-      "la-boheme-off-broadway-2025/wsj--by-tim-page.json"
+      "lombardi-2010/newyorker--uncredited.json",
+      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
+      "august-osage-county-2007/newyorker--hilton-als.json"
     ],
     "failed": [
-      "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
-      "trouble-in-mind-west-end-2021/wsj--terry-teachout.json",
-      "funny-girl-2002/wsj--charles-isherwood.json",
-      "the-price-off-west-end-2026/wsj--unknown.json",
-      "and-juliet-2022/wsj--charles-isherwood.json",
-      "little-shop-of-horrors-off-broadway-2019/wsj--charles-isherwood.json",
-      "aladdin-2014/wsj--terry-teachout.json",
-      "wicked-2003/wsj--terry-teachout.json",
-      "titanique-2026/wsj--charles-isherwood.json",
-      "swept-away-2024/wsj--charles-isherwood.json",
-      "sunset-boulevard-2024/wsj--charles-isherwood.json",
-      "the-roommate-2024/wsj--charles-isherwood.json",
-      "home-2024/wsj--charles-isherwood.json",
-      "the-whos-tommy-2024/wsj--charles-isherwood.json",
-      "an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
-      "i-need-that-2023/wsj--charles-isherwood.json",
-      "gutenberg-2023/wsj--charles-isherwood.json",
-      "company-tour-2023/wsj--charles-isherwood.json"
+      "harry-potter-2021/newyorker--conde-nast.json",
+      "fat-ham-2023/newyorker--vinson-cunningham.json",
+      "the-parisian-woman-2017/newyorker--hilton-als.json",
+      "doctor-zhivago-2015/newyorker--conde-nast.json",
+      "the-anarchist-2012/newyorker--henry-alford.json",
+      "brief-encounter-2010/newyorker--uncredited.json",
+      "south-pacific-2008/newyorker--john-lahr.json"
     ]
   },
   "tierDetails": {
@@ -139,22 +109,20 @@
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
-      "book-of-mormon-2011/wsj--terry-teachout.json"
-    ],
+    "scrapingdog": [],
     "scrapingbee": [],
-    "brightdata": [
-      "wicked-2003/wsj--terry-teachout.json"
-    ],
+    "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "la-boheme-off-broadway-2025/wsj--by-tim-page.json"
+      "lombardi-2010/newyorker--uncredited.json",
+      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
+      "august-osage-county-2007/newyorker--hilton-als.json"
     ]
   },
   "failuresByOutlet": {
-    "The Wall Street Journal": {
+    "The New Yorker": {
       "count": 2,
-      "domain": "wsj.com",
+      "domain": "newyorker.com",
       "hasCredentials": true,
       "isPaywalled": true,
       "isKnownBlocked": true
