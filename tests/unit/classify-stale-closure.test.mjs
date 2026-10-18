@@ -22,6 +22,8 @@ describe('classifyStaleClosure', () => {
   });
 
   const researched = { designation: 'TBD', researchAttempts: 1, lastResearchedAt: daysBefore(20) };
+  // A decent model estimate (BRO-5623): what a Fizzle/Flop must rest on.
+  const researchedEst = { ...researched, modelDataQuality: 'medium', modelReturnedExCreditPct: [20, 40, 60] };
 
   it('flags (never labels) a researched TBD closed under ~6 months with no recoupment news (policy B)', () => {
     // Some shows recoup after closing, so silence is not yet a loss.
@@ -37,7 +39,7 @@ describe('classifyStaleClosure', () => {
   it('labels a researched TBD closed 6+ months with basis no-recoupment-announced (policy B)', () => {
     const r = classifyStaleClosure({
       show: { status: 'closed', closingDate: daysBefore(200) },
-      entry: researched, pending: null, archive: null, now: NOW,
+      entry: researchedEst, pending: null, archive: null, now: NOW,
     });
     assert.equal(r.action, 'classify-fizzle');
     assert.equal(r.designation, 'Fizzle');
@@ -47,7 +49,7 @@ describe('classifyStaleClosure', () => {
 
   it('the 6-month guard is exact at the boundary', () => {
     const at = (d) => classifyStaleClosure({
-      show: { status: 'closed', closingDate: daysBefore(d) }, entry: researched, now: NOW,
+      show: { status: 'closed', closingDate: daysBefore(d) }, entry: researchedEst, now: NOW,
     }).action;
     assert.equal(LOSS_LABEL_MIN_DAYS, 183);
     assert.equal(at(LOSS_LABEL_MIN_DAYS - 1), 'flag-needs-loss-evidence');
@@ -63,11 +65,25 @@ describe('classifyStaleClosure', () => {
     assert.equal(r.designation, undefined);
   });
 
-  it('splits Fizzle/Flop by the reported returned %, Fizzle when none is reported', () => {
+  it('never labels without an estimate: a researched closure with none stays TBD, flagged (BRO-5623)', () => {
+    const r = classifyStaleClosure({
+      show: { status: 'closed', closingDate: daysBefore(300) },
+      entry: researched, pending: null, archive: null, now: NOW,
+    });
+    assert.equal(r.action, 'flag-needs-loss-evidence');
+    assert.equal(r.designation, undefined);
+  });
+
+  it('splits Fizzle/Flop by the returned %: own estimate, else a decent model, else no label', () => {
     assert.equal(lossLabelFor({ estimatedRecoupmentPct: [5, 15] }), 'Flop');
     assert.equal(lossLabelFor({ estimatedRecoupmentPct: [30, 50] }), 'Fizzle');
     assert.equal(lossLabelFor({ estimatedRecoupmentPct: 20 }), 'Flop');
-    assert.equal(lossLabelFor({}), 'Fizzle');
+    assert.equal(lossLabelFor({}), null);
+    // Our model's middle when its inputs are decent (owner 2026-10-18, BRO-5623).
+    assert.equal(lossLabelFor({ modelDataQuality: 'medium', modelReturnedExCreditPct: [-29, -6.2, 15.2] }), 'Flop'); // tootsie-2019
+    assert.equal(lossLabelFor({ modelDataQuality: 'high', modelRecoupmentPct: [20, 35, 50] }), 'Fizzle');
+    assert.equal(lossLabelFor({ modelDataQuality: 'low', modelReturnedExCreditPct: [-205, -160, -116] }), null); // thin inputs claim nothing
+    assert.equal(lossLabelFor({ modelDataQuality: 'medium', modelReturnedExCreditPct: [40, 60, 80], estimatedRecoupmentPct: [0, 10] }), 'Flop'); // own estimate first
     // The analyst's range counts and wins over an outside estimate (BRO-5602:
     // beaches, cats-the-jellicle-ball and titanique carry only [0, 0]).
     assert.equal(lossLabelFor({ analystRecoupPct: [0, 0] }), 'Flop');
@@ -117,7 +133,7 @@ describe('classifyStaleClosure', () => {
     // left it TBD forever.
     const r = classifyStaleClosure({
       show: { status: 'closed', closingDate: daysBefore(629) },
-      entry: { designation: 'TBD', researchAttempts: 1, lastResearchedAt: daysBefore(20) },
+      entry: { designation: 'TBD', researchAttempts: 1, lastResearchedAt: daysBefore(20), modelDataQuality: 'medium', modelReturnedExCreditPct: [56, 84, 110] },
       pending: null, archive: null, now: NOW,
     });
     assert.equal(r.action, 'classify-fizzle');
@@ -273,8 +289,10 @@ describe('undoAutoFizzleOnRunningShow', () => {
 describe('closedTbdLossAction (cleanup-commercial-data step 4, policy B)', () => {
   const closed = (d) => ({ status: 'closed', closingDate: daysBefore(d), title: 'X' });
   it('labels a closed TBD 6+ months on with the silence basis, flags a recent one', () => {
-    assert.deepEqual(closedTbdLossAction({ designation: 'TBD' }, closed(400), { now: NOW }),
+    assert.deepEqual(closedTbdLossAction({ designation: 'TBD', modelDataQuality: 'medium', modelReturnedExCreditPct: [20, 40, 60] }, closed(400), { now: NOW }),
       { action: 'label', designation: 'Fizzle', designationBasis: 'no-recoupment-announced' });
+    // No estimate behind a Fizzle or Flop: flag it, never a default label (BRO-5623).
+    assert.deepEqual(closedTbdLossAction({ designation: 'TBD' }, closed(400), { now: NOW }), { action: 'flag' });
     assert.deepEqual(closedTbdLossAction({ designation: 'TBD' }, closed(60), { now: NOW }), { action: 'flag' });
   });
   it('leaves locked, recouped, non-TBD, running, already-ruled rows alone', () => {

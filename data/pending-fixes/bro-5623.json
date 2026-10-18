@@ -1,0 +1,64 @@
+{
+  "issueNumber": "bro-5623",
+  "planId": "46aa204b-8226-4670-a7ec-88ba670facff",
+  "status": "pending",
+  "createdAt": "2026-10-18T12:55:17.294Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5623: five closed shows carried the default Fizzle (30% or more returned) with no estimate behind it; our model with decent inputs puts each under 30%, so they become Flop (owner decision 2026-10-18).",
+    "steps": [
+      "Each edit reads its oldValue from live commercial.json."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tootsie-2019",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Flop",
+        "description": "tootsie-2019: Fizzle claims 30% or more returned with no estimate behind it (the old default); our model, with decent inputs, puts about -6% returned, under 30%, so Flop (owner decision 2026-10-18, option A)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-whos-tommy",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Flop",
+        "description": "the-whos-tommy: Fizzle claims 30% or more returned with no estimate behind it (the old default); our model, with decent inputs, puts about 10% returned, under 30%, so Flop (owner decision 2026-10-18, option A)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "purlie-victorious",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Flop",
+        "description": "purlie-victorious: Fizzle claims 30% or more returned with no estimate behind it (the old default); our model, with decent inputs, puts about -6% returned, under 30%, so Flop (owner decision 2026-10-18, option A)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "shucked-2023",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Flop",
+        "description": "shucked-2023: Fizzle claims 30% or more returned with no estimate behind it (the old default); our model, with decent inputs, puts about 7% returned, under 30%, so Flop (owner decision 2026-10-18, option A)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-christmas-carol-2019",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Flop",
+        "description": "a-christmas-carol-2019: Fizzle claims 30% or more returned with no estimate behind it (the old default); our model, with decent inputs, puts about -20% returned, under 30%, so Flop (owner decision 2026-10-18, option A)."
+      }
+    ]
+  }
+}

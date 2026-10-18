@@ -33,7 +33,7 @@ test('outcome policy: win needs recouped=true, loss needs recouped=false, recoup
 test('a Fizzle or Flop that contradicts the record\'s own returned estimate is a warning (BRO-5602)', () => {
   const closed = { showRecord: { slug: 'k', status: 'closed' } };
   const w = (rec) => commercialRecordWarnings('k', { recouped: false, designationBasis: 'reported-loss', ...rec }, closed)
-    .filter((m) => m.includes('its own estimate')).length;
+    .filter((m) => m.includes('% returned (Fizzle is')).length;
   assert.equal(w({ designation: 'Fizzle', estimatedRecoupmentPct: [0, 10] }), 1); // suffs
   assert.equal(w({ designation: 'Fizzle', estimatedRecoupmentPct: [20, 30] }), 1); // call-me-izzy: 25% is under 30
   assert.equal(w({ designation: 'Flop', estimatedRecoupmentPct: [0, 10] }), 0);
@@ -41,6 +41,10 @@ test('a Fizzle or Flop that contradicts the record\'s own returned estimate is a
   assert.equal(w({ designation: 'Fizzle', analystRecoupPct: [20, 40], estimatedRecoupmentPct: [0, 10] }), 0); // the analyst's range wins
   assert.equal(w({ designation: 'Flop', estimatedRecoupmentPct: 45 }), 1);
   assert.equal(w({ designation: 'Fizzle' }), 0); // no estimate on the record: nothing to contradict
+  // Our model counts when its inputs are decent (BRO-5623); thin inputs do not.
+  assert.equal(w({ designation: 'Fizzle', modelDataQuality: 'medium', modelReturnedExCreditPct: [-29, -6.2, 15.2] }), 1);
+  assert.equal(w({ designation: 'Flop', modelDataQuality: 'medium', modelReturnedExCreditPct: [-29, -6.2, 15.2] }), 0);
+  assert.equal(w({ designation: 'Fizzle', modelDataQuality: 'low', modelReturnedExCreditPct: [-29, -6.2, 15.2] }), 0);
   assert.equal(w({ designation: 'Easy Winner', recouped: true, estimatedRecoupmentPct: [0, 10] }), 0);
   assert.equal(commercialRecordErrors('k', { designation: 'Fizzle', recouped: false, designationBasis: 'reported-loss', estimatedRecoupmentPct: [0, 10] }, closed).length, 0);
 });

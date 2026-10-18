@@ -46,6 +46,23 @@ function ownReturnedEstimatePct(entry) {
   }
   return null;
 }
+/** Model data qualities good enough to split Fizzle from Flop. */
+const SPLIT_MODEL_QUALITIES = new Set(['medium', 'high']);
+/**
+ * The % returned that a Fizzle/Flop rests on: the record's own estimate, else
+ * the middle of our model's returned-so-far figure when its inputs are decent.
+ * null when neither: then no Fizzle or Flop is claimed (owner 2026-10-18,
+ * BRO-5623: "We shouldn't default to a random claim").
+ */
+function returnedEstimatePct(entry) {
+  const own = ownReturnedEstimatePct(entry);
+  if (own !== null) return own;
+  if (!SPLIT_MODEL_QUALITIES.has(entry?.modelDataQuality)) return null;
+  for (const v of [entry.modelReturnedExCreditPct, entry.modelRecoupmentPctV2, entry.modelRecoupmentPct]) {
+    if (Array.isArray(v) && v.length === 3 && v.every(Number.isFinite)) return v[1];
+  }
+  return null;
+}
 /** Classes the recoupment rule never moves. */
 const DESIGNATIONS_OUTSIDE_RULE = Object.freeze(['Easy Winner', 'Nonprofit', 'Tour Stop']);
 
@@ -113,6 +130,6 @@ module.exports = {
   hasNoInvestorsToRepay,
   DESIGNATION_BASES, VALID_DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel,
   VALID_DESIGNATIONS, canonicalDesignation,
-  TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, DESIGNATIONS_OUTSIDE_RULE,
+  TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, returnedEstimatePct, DESIGNATIONS_OUTSIDE_RULE,
   MODEL_CONTRADICTION, modelContradictsDesignation,
 };

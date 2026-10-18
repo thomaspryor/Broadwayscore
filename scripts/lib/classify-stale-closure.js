@@ -24,19 +24,21 @@ const RECENT_SIGNAL_DAYS_DEFAULT = 30;
 // because some shows recoup after they close (The Piano Lesson took about 14
 // months). Before that the row stays TBD and is flagged needsLossEvidence.
 const {
-  FIZZLE_MIN_RETURNED_PCT, DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS: LOSS_LABEL_MIN_DAYS_DEFAULT, ownReturnedEstimatePct,
+  FIZZLE_MIN_RETURNED_PCT, DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS: LOSS_LABEL_MIN_DAYS_DEFAULT, returnedEstimatePct,
 } = require('./commercial-designations');
 
 /**
  * Fizzle or Flop for a closed, unrecouped show, by the returned-% rule
- * (>= FIZZLE_MIN_RETURNED_PCT returned is Fizzle). With no returned estimate
- * on the record the softer label, Fizzle, is used.
+ * (>= FIZZLE_MIN_RETURNED_PCT returned is Fizzle). With no estimate (the
+ * record's own, or the model's with decent inputs) there is no label: the
+ * row stays TBD, shown as Undisclosed, and is flagged needsLossEvidence
+ * (BRO-5623).
  */
 function lossLabelFor(entry) {
-  // The analyst's range, else an outside estimate: the same reading the
-  // record check uses, so the label it writes never draws its warning (BRO-5602).
-  const pct = ownReturnedEstimatePct(entry);
-  if (pct === null) return 'Fizzle';
+  // The same reading the record check uses, so the label it writes never
+  // draws its warning (BRO-5602, BRO-5623).
+  const pct = returnedEstimatePct(entry);
+  if (pct === null) return null;
   return pct >= FIZZLE_MIN_RETURNED_PCT ? 'Fizzle' : 'Flop';
 }
 
@@ -205,12 +207,19 @@ function classifyStaleClosure({ show, entry, pending, archive, now, thresholds }
       reason: `closed ${Math.floor(daysClosed)}d ago (< ${lossLabelMinDays}d), ${reviewEvidence}, no trade-press recoupment found yet`,
     };
   }
+  const designation = ownerDesignation || lossLabelFor(entry);
+  if (!designation) {
+    return {
+      action: 'flag-needs-loss-evidence',
+      reason: `closed ${Math.floor(daysClosed)}d ago, no recoupment found, and no estimate of how much came back to choose Fizzle or Flop`,
+    };
+  }
   return {
     action: 'classify-fizzle',
     reason: ownerDesignation
       ? `owner-reviewed ${ownerDesignation}; closed ${Math.floor(daysClosed)}d ago, closure window passed`
       : `closed ${Math.floor(daysClosed)}d ago, deep-researched, no trade-press recoupment found`,
-    designation: ownerDesignation || lossLabelFor(entry),
+    designation,
     designationBasis: DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED,
     ...(ownerDesignation ? { humanReviewedDesignation: true } : {}),
     confidence: 'high',
@@ -287,10 +296,11 @@ function closedTbdLossAction(entry, show, { now = Date.now(), lossLabelMinDays =
   if (entry.productionType && SKIP_PRODUCTION_TYPES.has(entry.productionType)) return null;
   const days = daysAgo(show.closingDate, now);
   if (!Number.isFinite(days)) return null;
-  if (requireLossEvidence || days < lossLabelMinDays) {
+  const designation = lossLabelFor(entry);
+  if (requireLossEvidence || days < lossLabelMinDays || !designation) {
     return 'needsLossEvidence' in entry ? null : { action: 'flag' };
   }
-  return { action: 'label', designation: lossLabelFor(entry), designationBasis: DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED };
+  return { action: 'label', designation, designationBasis: DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED };
 }
 
 module.exports = {

@@ -46,7 +46,10 @@ test('Fizzle verdicts are preserved too, and research-only labels are never mark
   const automated = release({ ...pending, ownerApproved: false });
   assert.equal(automated.ownerDesignationAfterWindow, undefined);
   assert.equal(automated.ownerDesignationReviewedAt, undefined);
-  const result = classifyStaleClosure({ show, entry: { ...automated, researchAttempts: 1 }, now: afterWindow });
+  // A label needs an estimate behind it (BRO-5623): with none the row is only flagged.
+  assert.equal(classifyStaleClosure({ show, entry: { ...automated, researchAttempts: 1 }, now: afterWindow }).action, 'flag-needs-loss-evidence');
+  const withEstimate = { ...automated, researchAttempts: 1, modelDataQuality: 'medium', modelReturnedExCreditPct: [20, 40, 60] };
+  const result = classifyStaleClosure({ show, entry: withEstimate, now: afterWindow });
   assert.equal(result.designation, 'Fizzle');
   assert.notEqual(buildClassifiedClosureEntry(automated, show, result, afterWindow).humanReviewedDesignation, true);
 });
@@ -89,7 +92,8 @@ test('automated refreshes retain deferred verdicts; cleanup leaves them to the c
 
 test('invalid deferred labels are ignored and an approved mature loss is locked immediately', () => {
   const entry = { designation: 'TBD', researchAttempts: 1, ownerDesignationAfterWindow: 'Miracle' };
-  const result = classifyStaleClosure({ show, entry, now: afterWindow });
+  assert.equal(classifyStaleClosure({ show, entry, now: afterWindow }).action, 'flag-needs-loss-evidence'); // no estimate: no label (BRO-5623)
+  const result = classifyStaleClosure({ show, entry: { ...entry, modelDataQuality: 'medium', modelReturnedExCreditPct: [20, 40, 60] }, now: afterWindow });
   assert.equal(result.designation, 'Fizzle');
   assert.notEqual(result.humanReviewedDesignation, true);
   const mature = sanitizeForPublicRecord(buildCommercialEntry(pending),
