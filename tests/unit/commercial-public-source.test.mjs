@@ -105,6 +105,12 @@ test('saysRecoupmentUnannounced reads the data\'s own wording for an unannounced
     'No recoupment has been announced.', 'Recoupment was never announced publicly.',
     // A neutral "reported" later in the sentence is not a later report of the recoupment (into-the-woods-2022).
     'So Into the Woods did not announce it; the month was not reported.',
+    // Plain wordings a "confirmed later" lookahead wrongly cancelled (BRO-5562 review).
+    'Not publicly announced; estimated at the time of closing.', 'No recoupment was announced at the time of closing.',
+    'Disney does not announce recoupments; confirmed by grosses analysis.', 'No recoupment announced; not confirmed.',
+    'Never announced; it remained unannounced until closing.',
+    // Errs toward the downgrade by design: a later report belongs in the source itself, not after "unannounced".
+    'The previously unannounced recoupment was confirmed by Deadline.',
   ]) {
     assert.equal(saysRecoupmentUnannounced(unannounced), true, `should read as unannounced: ${unannounced}`);
   }
@@ -113,12 +119,6 @@ test('saysRecoupmentUnannounced reads the data\'s own wording for an unannounced
     'Variety editorial (Jan 2024): the show recouped.', 'Producers announced recoupment (Playbill, May 2024).',
     'The recoupment announcement came in May 2024 (Deadline).',
     'Recouped per Variety; editorial decision to list the date.',
-    // Unannounced at first, confirmed later in the same sentence: a reported recoupment (the sweeney-todd-2023 shape).
-    'The previously unannounced recoupment was confirmed by Deadline.',
-    'No recoupment announced yet; Variety later confirmed it recouped.',
-    'It was not announced until 2024 (Variety).',
-    'No recoupment was announced at the time; BroadwayWorld reported in August 2025 that it recouped.',
-    'Recouped without a formal announcement, as Playbill subsequently disclosed.',
     '', null, undefined,
   ]) {
     assert.equal(saysRecoupmentUnannounced(reported), false, `should not read as unannounced: ${reported}`);
