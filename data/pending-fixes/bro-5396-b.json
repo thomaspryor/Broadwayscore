@@ -1,13 +1,13 @@
 {
   "issueNumber": "bro-5396-b",
-  "planId": "4adff9e0-154d-4dca-a208-c9b9036cd434",
+  "planId": "d785722c-0008-451c-9881-fa3d5d4e9199",
   "status": "pending",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "Clear 11 dangling syndication marks where the primary file is gone and no live copy exists (BRO-5396)",
+    "summary": "Clear 10 dangling syndication marks where the primary file is gone and no live copy exists (BRO-5396)",
     "steps": [
       "Each secondary points at a primary file that no longer exists, so it is excluded for nothing.",
       "A live same-show file holding the same article (text match) gets the pointer; otherwise the mark is cleared so the review scores."
@@ -139,22 +139,6 @@
         "file": "the-cher-show-2018/wamc--bob-goepfert.json",
         "field": "syndicatedPrimaryFile",
         "oldValue": "the-cher-show-2018/the-saratogian--bob-goepfert.json",
-        "newValue": null,
-        "description": "Clear dangling syndication pointer: primary file is gone and no live copy exists"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "the-inheritance-2019/nydailynews--chris-jones.json",
-        "field": "isSyndicatedDuplicate",
-        "oldValue": true,
-        "newValue": false,
-        "description": "Clear syndication mark: primary file is gone and no live copy of the article exists"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "the-inheritance-2019/nydailynews--chris-jones.json",
-        "field": "syndicatedPrimaryFile",
-        "oldValue": "the-inheritance-2019/chicagotribune--chris-jones-bway.json",
         "newValue": null,
         "description": "Clear dangling syndication pointer: primary file is gone and no live copy exists"
       },

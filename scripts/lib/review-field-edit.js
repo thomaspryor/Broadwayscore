@@ -522,10 +522,12 @@ function syndicatedDanglingContext(reviewTextsDir, ctx, record) {
     if (fs.existsSync(path.join(reviewTextsDir, ptrFolder, path.basename(ptr)))) return {};
     const dir = path.join(reviewTextsDir, ctx.folder);
     const { findLiveSyndicationPrimary } = require('./syndicated-duplicate-heal');
-    const live = findLiveSyndicationPrimary({
+    const found = findLiveSyndicationPrimary({
       data: record, file: ctx.file, siblings: fs.readdirSync(dir),
       read: (f) => JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')),
     });
+    if (found.undecidable) return {}; // could not tell whether a live copy exists: refuse to clear
+    const live = found.file;
     return live ? { syndicatedRepointTo: live } : { syndicatedDanglingClear: true };
   } catch { return {}; }
 }

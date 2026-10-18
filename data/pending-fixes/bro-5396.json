@@ -1,13 +1,13 @@
 {
   "issueNumber": "bro-5396",
-  "planId": "7e2e0b01-6ed5-4b66-a5c7-c226b3a7b63c",
+  "planId": "90a77f8a-8a1f-4c07-b3ba-3bb6a724c8ea",
   "status": "pending",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "Repoint 14 dangling syndication pointers to the live same-show copy of the article (BRO-5396)",
+    "summary": "Repoint 15 dangling syndication pointers to the live same-show copy of the article (BRO-5396)",
     "steps": [
       "Each secondary points at a primary file that no longer exists, so it is excluded for nothing.",
       "A live same-show file holding the same article (text match) gets the pointer; otherwise the mark is cleared so the review scores."
@@ -92,6 +92,14 @@
         "field": "syndicatedPrimaryFile",
         "oldValue": "the-great-society-2019/chicagotribune--chris-jones-bway.json",
         "newValue": "the-great-society-2019/chicagotribune--chris-jones.json",
+        "description": "Repoint dangling syndication pointer to the live same-show copy of the article"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-inheritance-2019/nydailynews--chris-jones.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "the-inheritance-2019/chicagotribune--chris-jones-bway.json",
+        "newValue": "the-inheritance-2019/chicagotribune--chris-jones.json",
         "description": "Repoint dangling syndication pointer to the live same-show copy of the article"
       },
       {

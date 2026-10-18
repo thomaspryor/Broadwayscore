@@ -108,18 +108,22 @@ test('classifyPrimaryExclusion: unknown reasons default to shared', () => {
   assert.equal(classifyPrimaryExclusion({}, 'crossOutletDuplicate', {}).scope, 'shared');
 });
 
-test('findLiveSyndicationPrimary (BRO-5396): same article in a live sibling, entity-decoded; none when no copy or only duplicates', async () => {
-  const { findLiveSyndicationPrimary } = (await import('node:module')).createRequire(import.meta.url)('./syndicated-duplicate-heal.js');
-  const body = Array.from({ length: 90 }, (_, i) => `word${i} sentence about the show`).join(' ');
+test('findLiveSyndicationPrimary (BRO-5396): matches full and partial copies, ignores duplicates, refuses when it cannot tell', () => {
+  const { findLiveSyndicationPrimary } = require('./syndicated-duplicate-heal.js');
+  const body = Array.from({ length: 120 }, (_, i) => `word${i} sentence about the show`).join(' ');
+  const half = body.slice(Math.floor(body.length * 0.6));
   const files = {
     'sec.json': { fullText: body.replace('word3 ', '&#8220;word3 ') },
-    'prim.json': { fullText: `Intro. ${body} Outro.` },
-    'other.json': { fullText: 'something entirely different '.repeat(40) },
+    'full.json': { fullText: `Intro. ${body} Outro.` },
+    'half.json': { fullText: `${half} ${half.length > 0 ? 'tail' : ''}` },
+    'other.json': { fullText: 'something entirely different '.repeat(60) },
     'dup.json': { fullText: body, isSyndicatedDuplicate: true },
   };
-  const read = (f) => files[f];
-  const siblings = Object.keys(files);
-  assert.equal(findLiveSyndicationPrimary({ data: files['sec.json'], file: 'sec.json', siblings, read }), 'prim.json');
-  assert.equal(findLiveSyndicationPrimary({ data: files['sec.json'], file: 'sec.json', siblings: ['sec.json', 'other.json', 'dup.json'], read }), null);
-  assert.equal(findLiveSyndicationPrimary({ data: { fullText: 'short' }, file: 'sec.json', siblings, read }), null);
+  const read = (f) => { if (f === 'bad.json') throw new Error('parse'); return files[f]; };
+  const run = (siblings, data = files['sec.json']) => findLiveSyndicationPrimary({ data, file: 'sec.json', siblings, read });
+  assert.deepEqual(run(['sec.json', 'full.json']), { file: 'full.json', undecidable: false });
+  assert.deepEqual(run(['sec.json', 'half.json']), { file: 'half.json', undecidable: false }, 'partial copy found from the candidate side');
+  assert.deepEqual(run(['sec.json', 'other.json', 'dup.json']), { file: null, undecidable: false });
+  assert.equal(run(['sec.json', 'other.json', 'bad.json']).undecidable, true, 'unparseable sibling');
+  assert.equal(run(['sec.json', 'full.json'], { fullText: 'short' }).undecidable, true, 'short secondary');
 });

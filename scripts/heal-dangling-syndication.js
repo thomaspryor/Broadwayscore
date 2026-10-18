@@ -17,7 +17,8 @@ const crypto = require('crypto');
 const { findLiveSyndicationPrimary } = require('./lib/syndicated-duplicate-heal');
 
 const arg = (n) => (process.argv.find((a) => a.startsWith(`--${n}=`)) || '').split('=').slice(1).join('=') || null;
-const ROOT = arg('dir') || path.join(__dirname, '..', 'data', 'review-texts');
+const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
+const ROOT = arg('dir') || resolveReviewTextsDir();
 
 const rows = [];
 for (const sid of fs.readdirSync(ROOT)) {
@@ -34,8 +35,9 @@ for (const sid of fs.readdirSync(ROOT)) {
     const slash = ptr.indexOf('/');
     const ptrFolder = slash >= 0 ? ptr.slice(0, slash) : sid;
     if (fs.existsSync(path.join(ROOT, ptrFolder, path.basename(ptr)))) continue;
-    const live = findLiveSyndicationPrimary({ data, file: f, siblings, read });
-    rows.push({ sid, f, ptr, live });
+    const found = findLiveSyndicationPrimary({ data, file: f, siblings, read });
+    if (!found.file && found.undecidable) { console.log(`UNDECIDABLE ${sid}/${f} <- ${ptr} (short text or unparseable sibling): left alone`); continue; }
+    rows.push({ sid, f, ptr, live: found.file });
   }
 }
 for (const r of rows) console.log(`${r.live ? 'REPOINT' : 'CLEAR  '} ${r.sid}/${r.f} <- ${r.ptr}${r.live ? ` => ${r.live}` : ''}`);

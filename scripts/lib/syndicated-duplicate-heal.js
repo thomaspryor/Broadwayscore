@@ -111,34 +111,51 @@ const decodeEntities = (t) => String(t || '')
   .replace(/&(?:amp|quot|apos|nbsp);/g, ' ');
 const normText = (t) => decodeEntities(t).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 
+const WINDOW = 60;
+const MIN_WINDOW_HITS = 4; // of 12: a shared quote or boilerplate line is 1-2 windows, a copy of the article is most of them
+const windows = (t, n) => {
+  if (t.length < WINDOW) return [];
+  const out = [];
+  for (let i = 0; i < n; i++) {
+    const at = Math.floor(((t.length - WINDOW) * i) / Math.max(1, n - 1));
+    out.push(t.slice(at, at + WINDOW));
+  }
+  return out;
+};
+
 /**
  * BRO-5396: a secondary whose primary file no longer exists. Finds the live
  * (non-duplicate) file in the SAME show folder that holds the same article, so
  * the pointer can be repointed to it instead of cleared (clearing would score
- * the article twice). Same article = a 80-char normalized snippet of the
- * secondary's text, taken at three offsets, found in the candidate's text.
+ * the article twice). Same article = a 60-char normalized window sampled across
+ * either text found in the other (both directions, so a partial copy such as an
+ * OCR of the back half matches too).
+ *
+ * `undecidable` is true when the answer cannot be trusted (the secondary has
+ * too little text, or a sibling would not parse): callers must refuse to clear.
  *
  * @param {object} p
  * @param {object} p.data   the secondary's record
  * @param {string} p.file   the secondary's filename
  * @param {string[]} p.siblings  filenames in the secondary's show folder
  * @param {(f:string)=>object} p.read
- * @returns {string|null} the sibling filename, or null when no live copy exists
+ * @returns {{file: string|null, undecidable: boolean}}
  */
 function findLiveSyndicationPrimary({ data, file, siblings, read }) {
   const own = normText(data && data.fullText);
-  if (own.length < 400) return null;
-  const snips = [150, 600, 1200].filter((o) => own.length >= o + 80).map((o) => own.slice(o, o + 80));
-  if (!snips.length) return null;
+  if (own.length < 400) return { file: null, undecidable: true };
+  const ownWin = windows(own, 12);
+  let undecidable = false;
   for (const f of siblings) {
     if (f === file || !f.endsWith('.json') || f.startsWith('_') || f === 'failed-fetches.json') continue;
     let k;
-    try { k = read(f); } catch { continue; }
+    try { k = read(f); } catch { undecidable = true; continue; }
     if (!k || k.isSyndicatedDuplicate === true || !k.fullText) continue;
     const txt = normText(k.fullText);
-    if (snips.some((sn) => txt.includes(sn))) return f;
+    const hits = Math.max(ownWin.filter((w) => txt.includes(w)).length, windows(txt, 12).filter((w) => own.includes(w)).length);
+    if (hits >= MIN_WINDOW_HITS) return { file: f, undecidable: false };
   }
-  return null;
+  return { file: null, undecidable };
 }
 
 module.exports = { syndicatedDuplicateHealPlan, classifyPrimaryExclusion, findLiveSyndicationPrimary, MIN_SIMILARITY };
