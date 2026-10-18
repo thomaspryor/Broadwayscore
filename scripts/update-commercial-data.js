@@ -1735,7 +1735,7 @@ function applyChanges(applied, newEntries, commercial, showKeyIndex) {
     applyChanges._circuitBreakerTriggered = null;
   }
 
-  const lossLabelled = new Set();
+  const toSize = new Set();
   for (const change of applied) {
     const { slug, field, newValue } = change;
 
@@ -1778,7 +1778,7 @@ function applyChanges(applied, newEntries, commercial, showKeyIndex) {
       if (isLossDesignation(newValue)) {
         row.designationBasis = DESIGNATION_BASES.REPORTED_LOSS;
         delete row.needsLossEvidence;
-        lossLabelled.add(slug);
+        toSize.add(slug);
       } else {
         delete row.designationBasis;
         if (newValue !== 'TBD') delete row.needsLossEvidence;
@@ -1792,6 +1792,9 @@ function applyChanges(applied, newEntries, commercial, showKeyIndex) {
       row.designation = 'TBD';
       for (const k of ['designationBasis', 'needsLossEvidence', 'classifiedBy', 'classifiedAt', 'classifiedReason']) delete row[k];
     }
+
+    // A new estimate can size a loss label already on the row (BRO-5636).
+    if ((field === 'estimatedRecoupmentPct' || field === 'analystRecoupPct') && isLossDesignation(commercial.shows[slug].designation)) toSize.add(slug);
 
     // For estimatedRecoupmentPct, add source + date
     if (field === 'estimatedRecoupmentPct') {
@@ -1816,11 +1819,12 @@ function applyChanges(applied, newEntries, commercial, showKeyIndex) {
     }
   }
 
-  // A loss label this pass wrote takes the size the record's own evidence
-  // supports, whatever the model proposed: Fizzle or Flop with an estimate,
-  // Did Not Recoup without (owner 2026-10-18, BRO-5636). After every change,
-  // so an estimate applied in the same batch counts.
-  for (const slug of lossLabelled) {
+  // A loss label this pass wrote, or whose estimate it changed, takes the
+  // size the record's own evidence supports, whatever the model proposed:
+  // Fizzle or Flop with an estimate, Did Not Recoup without (owner
+  // 2026-10-18, BRO-5636). After every change, so an estimate applied in the
+  // same batch counts.
+  for (const slug of toSize) {
     const row = commercial.shows[slug];
     if (!isLossDesignation(row.designation) || row.humanReviewedDesignation === true) continue;
     const sized = lossDesignationFor(returnedEstimatePct(row));
@@ -1864,6 +1868,8 @@ function applyChanges(applied, newEntries, commercial, showKeyIndex) {
       continue;
     }
     if (changed.length) console.log(`  [CLEAN] New entry ${key}: cleared research wording in ${changed.join(', ')}`);
+    // Sized by its own evidence, like a changed row (BRO-5636).
+    if (isLossDesignation(record.designation)) record.designation = lossDesignationFor(returnedEstimatePct(record));
 
     commercial.shows[key] = record;
     changeCount++;

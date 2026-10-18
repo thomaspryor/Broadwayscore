@@ -52,3 +52,12 @@ test('a real slug and low-confidence entries behave as before', () => {
   assert.equal(n, 1);
   assert.deepEqual(Object.keys(commercial.shows), ['ragtime']);
 });
+
+test('a new entry\'s loss label is sized by its own evidence (BRO-5636)', () => {
+  const commercial = fresh();
+  applyChanges([], [{ slug: 'the-balusters', confidence: 'high', data: { designation: 'Flop', recouped: false } }], commercial, showsBySlug);
+  assert.equal(commercial.shows['the-balusters'].designation, 'Did Not Recoup');
+  const sized = fresh();
+  applyChanges([], [{ slug: 'the-balusters', confidence: 'high', data: { designation: 'Did Not Recoup', recouped: false, estimatedRecoupmentPct: [0, 10] } }], sized, showsBySlug);
+  assert.equal(sized.shows['the-balusters'].designation, 'Flop');
+});

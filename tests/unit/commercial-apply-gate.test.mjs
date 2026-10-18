@@ -315,7 +315,7 @@ describe('commercial-apply-gate', () => {
 
     it('buildCommercialEntry writes the canonical spelling ("flop" -> "Flop")', () => {
       // An estimate on the record keeps the size (a bare "flop" is Did Not Recoup, BRO-5636).
-      const result = gate.buildCommercialEntry({ designation: 'flop', recouped: false }, { designation: 'TBD', estimatedRecoupmentPct: [0, 10] }, {});
+      const result = gate.buildCommercialEntry({ designation: 'flop', recouped: false }, { designation: 'TBD', estimatedRecoupmentPct: [0, 10] }, { mergeExisting: true });
       assert.equal(result.designation, 'Flop');
       assert.equal(gate.buildCommercialEntry({ designation: 'did-not-recoup', recouped: false }, null, {}).designation, 'Did Not Recoup');
     });
@@ -482,9 +482,10 @@ describe('designationBasis on every loss label (BRO-5020 policy B)', () => {
     assert.equal(gate.buildCommercialEntry({ designation: 'Flop', designationBasis: 'reported-loss' }, null).designationBasis, 'reported-loss');
     assert.equal(gate.buildCommercialEntry({ designation: 'Flop', designationBasis: 'bogus' }, null).designationBasis, 'no-recoupment-announced');
     const sized = { estimatedRecoupmentPct: [0, 10] }; // a Flop needs an estimate behind it (BRO-5636)
-    assert.equal(gate.buildCommercialEntry({ designation: 'Flop' }, { ...sized, designation: 'Flop', designationBasis: 'reported-loss' }).designationBasis, 'reported-loss');
+    const merge = { mergeExisting: true };
+    assert.equal(gate.buildCommercialEntry({ designation: 'Flop' }, { ...sized, designation: 'Flop', designationBasis: 'reported-loss' }, merge).designationBasis, 'reported-loss');
     // A changed label does not inherit the old row's basis.
-    assert.equal(gate.buildCommercialEntry({ designation: 'Flop' }, { ...sized, designation: 'Fizzle', designationBasis: 'reported-loss' }).designationBasis, 'no-recoupment-announced');
+    assert.equal(gate.buildCommercialEntry({ designation: 'Flop' }, { ...sized, designation: 'Fizzle', designationBasis: 'reported-loss' }, merge).designationBasis, 'no-recoupment-announced');
   });
   it('a non-loss label drops the basis; a settled label drops the evidence flag, TBD keeps it', () => {
     const win = gate.buildCommercialEntry({ designation: 'Windfall', recouped: true }, { designation: 'Fizzle', designationBasis: 'reported-loss', needsLossEvidence: true }, { isClaimAutoApply: true });
@@ -502,10 +503,15 @@ describe('designationBasis on every loss label (BRO-5020 policy B)', () => {
     gate.stampDesignationBasis(row, { designationBasis: row.designationBasis }, null); // the data-plan field edit
     assert.equal(row.designationBasis, 'reported-loss');
   });
-  it('research names a loss; the record\'s own evidence sizes it (BRO-5636)', () => {
+  it('research names a loss; the record being written sizes it (BRO-5636)', () => {
     assert.equal(gate.buildCommercialEntry({ designation: 'Flop', recouped: false }, null).designation, 'Did Not Recoup');
     const existing = { designation: 'TBD', modelDataQuality: 'high', modelReturnedExCreditPct: [10, 20, 30] };
     assert.equal(gate.buildCommercialEntry({ designation: 'Did Not Recoup', recouped: false }, existing, { mergeExisting: true }).designation, 'Flop');
+    // A from-scratch write keeps none of the old figures, so it claims no size.
+    assert.equal(gate.buildCommercialEntry({ designation: 'Fizzle', recouped: false }, { designation: 'TBD', analystRecoupPct: [10, 20] }).designation, 'Did Not Recoup');
+    // A label a person locked, or an owner-approved row, keeps its size.
+    assert.equal(gate.buildCommercialEntry({ designation: 'Flop', recouped: false }, { designation: 'Flop', humanReviewedDesignation: true }).designation, 'Flop');
+    assert.equal(gate.buildCommercialEntry({ designation: 'Flop', recouped: false, ownerApproved: true }, null).designation, 'Flop');
     assert.equal(gate.buildCommercialEntry({ designation: 'Windfall', recouped: true }, null).designation, 'Windfall');
   });
   it('recoupment news resets a silence-basis Did Not Recoup and leaves a reported or locked one to a person', () => {

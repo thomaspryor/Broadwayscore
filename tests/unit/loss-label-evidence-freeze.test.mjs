@@ -56,6 +56,14 @@ describe('update-commercial-data applyChanges stamps designationBasis', () => {
       { slug: 'x-show', field: 'estimatedRecoupmentPct', oldValue: null, newValue: [0, 5], confidence: 'high', source: 'Deadline' },
     ], [], commercial, new Map());
     assert.equal(commercial.shows['x-show'].designation, 'Flop');
+    // An estimate alone sizes a loss label already on the row.
+    const dnr = { _meta: {}, shows: { 'x-show': { designation: 'Did Not Recoup', recouped: false, designationBasis: 'reported-loss' } } };
+    applyChanges([{ slug: 'x-show', field: 'estimatedRecoupmentPct', oldValue: null, newValue: [35, 45], confidence: 'high', source: 'Deadline' }], [], dnr, new Map());
+    assert.equal(dnr.shows['x-show'].designation, 'Fizzle');
+    // A locked label is left as a person set it.
+    const locked = { _meta: {}, shows: { 'x-show': { designation: 'Did Not Recoup', recouped: false, humanReviewedDesignation: true } } };
+    applyChanges([{ slug: 'x-show', field: 'estimatedRecoupmentPct', oldValue: null, newValue: [35, 45], confidence: 'high', source: 'Deadline' }], [], locked, new Map());
+    assert.equal(locked.shows['x-show'].designation, 'Did Not Recoup');
   });
   it('a win label clears a stale loss basis', () => {
     const r = run({ designation: 'Fizzle', designationBasis: 'no-recoupment-announced' }, 'Windfall');
