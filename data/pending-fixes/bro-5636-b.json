@@ -1,14 +1,14 @@
 {
   "issueNumber": "bro-5636-b",
-  "planId": "82ebdfd7-3ea1-4bcc-a82b-989169252f76",
+  "planId": "0e59cdbd-7895-420e-84c9-5976ad4b48a5",
   "status": "pending",
-  "createdAt": "2026-10-18T17:54:09.631Z",
+  "createdAt": "2026-10-18T18:56:20.460Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-5636 (part b): 5 more become \"Did Not Recoup\"; three keep their Flop with the quoted estimate recorded (Dancin' about 10%, Leap of Faith and Ragtime 2009 lost everything).",
+    "summary": "BRO-5636 (part b): 5 more become \"Did Not Recoup\"; three keep their Flop with the quoted estimate recorded (Dancin' about 10%, Leap of Faith and Ragtime 2009 lost everything); 7 loss labels whose cited source states the loss get basis reported-loss.",
     "steps": [
       "Each edit reads its oldValue from live commercial.json."
     ],
@@ -148,6 +148,69 @@
         "oldValue": "Flop",
         "newValue": "Did Not Recoup",
         "description": "torch-song-2018: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays reported-loss."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cabaret-2024",
+        "field": "designationBasis",
+        "oldValue": "notes-stated",
+        "newValue": "reported-loss",
+        "description": "cabaret-2024: its cited source states the loss (\"Broadway Journal (Sep 7, 2025) reported the production \"hasn't returned any money to investors, resulting in a total loss to-date,\" so investors had recouped 0%\"), so the label rests on a reported loss, not on silence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hells-kitchen",
+        "field": "designationBasis",
+        "oldValue": "notes-stated",
+        "newValue": "reported-loss",
+        "description": "hells-kitchen: its cited source states the loss (\"Broadway Journal (Oct 12, 2026): Alicia Keys told The New York Times that when the show closed on Broadway, \"investors had been paid back 60% of their stakes\"; \"), so the label rests on a reported loss, not on silence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-whos-tommy",
+        "field": "designationBasis",
+        "oldValue": "notes-stated",
+        "newValue": "reported-loss",
+        "description": "the-whos-tommy: its cited source states the loss (\"The New York Times, as relayed by Rolling Stone (Jun 26, 2024), reported the revival had not recouped its capitalization when it announced its closing: \"Tommy w\"), so the label rests on a reported loss, not on silence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mrs-doubtfire-2021",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "mrs-doubtfire-2021: its cited source states the loss (\"Broadway Journal reported on 2022-06-13 that the Broadway run 'closed at a loss on May 29'.\"), so the label rests on a reported loss, not on silence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beetlejuice-2022",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "beetlejuice-2022: its cited source states the loss (\"The New York Times closure report republished by ArtDaily said Beetlejuice had not recouped its $21 million investment by its January 8, 2023 Broadway closing. \"), so the label rests on a reported loss, not on silence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mr-saturday-night-2022",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "mr-saturday-night-2022: its cited source states the loss (\"BroadwayWorld later described Mr. Saturday Night as having closed at a loss. https://www.broadwayworld.com/article/The-Art-of-Recasting-20250801\"), so the label rests on a reported loss, not on silence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-buffalo-2022",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "american-buffalo-2022: its cited source states the loss (\"Trade-press summary of a Deadline report (via IMDb news) said the production would not recoup its investment.\"), so the label rests on a reported loss, not on silence."
       }
     ]
   }
