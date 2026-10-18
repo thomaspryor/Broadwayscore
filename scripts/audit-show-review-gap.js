@@ -1724,9 +1724,14 @@ function openingWindowConditionKey(showId) {
 // has no weIngestBlocked record, so it otherwise stayed open forever. A past-
 // window row with any non-census gap stays open, so its card can't close on a
 // review that is still missing.
-function openingWindowClearedKeys(results, now = Date.now()) {
+// BRO-5349: mergeGapAudit carries every row forward, so a show later retired as
+// a duplicate (motherfucker-off-broadway-2026, merged into jena-friedman-…)
+// kept its last pre-retirement row and alerted for two weeks on an id that no
+// longer exists. Pass liveShowIds (the ids in shows.json) and a row for any
+// other id counts as cleared.
+function openingWindowClearedKeys(results, now = Date.now(), { liveShowIds } = {}) {
   return (results || [])
-    .filter(r => r && r.showId && (currentRunUncollected(r) <= 0
+    .filter(r => r && r.showId && ((liveShowIds && !liveShowIds.has(r.showId)) || currentRunUncollected(r) <= 0
       || (!inOpeningWindow({ openingDate: r.openingDate }, now) && currentRunUncollected(r, { ignoreCensusTagged: true }) <= 0)))
     .map(r => openingWindowConditionKey(r.showId));
 }
@@ -2847,6 +2852,10 @@ async function main(argv = process.argv.slice(2)) {
   // matches the file a reader would open to debug the discrepancy.
   const reportedAudit = (partial && quarantined) ? quarantined : audit;
   const reportedResults = reportedAudit.results;
+  // BRO-5349: rows for ids no longer in shows.json (retired duplicates) are
+  // carried forward forever; they must never alert, only resolve.
+  const liveShowIds = new Set(allShows.map(s => s && s.id).filter(Boolean));
+  const liveReportedResults = reportedResults.filter(r => r && liveShowIds.has(r.showId));
   console.log(`Summary: ${reportedAudit.counts.withGap}/${reportedResults.length} shows on file with gaps (${results.length} audited this run) | ${reportedAudit.counts.missingCurrentRun} URLs not in dir | ${reportedAudit.counts.totalFlaggedMisses} URLs in dir but flagged out (${reportedAudit.counts.totalRecoverable} recoverable, ${reportedAudit.counts.totalRecovered} self-healed, ${reportedAudit.counts.humanExcluded} human-excluded, ${reportedAudit.counts.automatedExcludedListed} automated-excluded to re-verify) | ${outletsWritten.length} unknown outlets${reportedAudit.counts.priorProductionCitations ? ` | +${reportedAudit.counts.priorProductionCitations} prior-production citation(s) on file, permanently report-only, NOT counted above` : ''}`);
   if (useCheckpoint) {
     console.log(`Checkpoint: ${results.length} shows audited this run${budgetHit ? ' (time-budget partial — remaining shows resume next run)' : ' (full eligible set complete)'}. State: ${CHECKPOINT_PATH}`);
@@ -2887,12 +2896,12 @@ async function main(argv = process.argv.slice(2)) {
       // the per-show condition stayed 'open' forever and its card's
       // check-alert-condition-absent VERIFY could never pass.
       try {
-        const cleared = resolveQuietConditions(openingWindowClearedKeys(reportedResults), { reason: 'review-gap: no uncollected cited reviews on the latest audit, or show past its opening window with only SERP-census gaps' });
+        const cleared = resolveQuietConditions(openingWindowClearedKeys(reportedResults, Date.now(), { liveShowIds }), { reason: 'review-gap: no uncollected cited reviews on the latest audit, show past its opening window with only SERP-census gaps, or show id retired' });
         if (cleared.length) console.log(`[Alert Router] resolved ${cleared.length} cleared opening-window gap condition(s): ${cleared.join(', ')}`);
       } catch (e) {
         console.error(`::warning::resolving cleared opening-window gap conditions failed: ${(e.message || '').slice(0, 120)}`);
       }
-      for (const r of reportedResults) {
+      for (const r of liveReportedResults) {
         if (!r || !r.showId || !inOpeningWindow({ openingDate: r.openingDate })) continue;
         const conditionKey = openingWindowConditionKey(r.showId);
         const uncollected = currentRunUncollected(r);
@@ -2977,7 +2986,7 @@ async function main(argv = process.argv.slice(2)) {
   // Same inputs and gates as the opening-window alert above: reportedResults (the
   // blast-radius-accepted set) and never on --dry-run.
   if (!dryRun && useCheckpoint && process.env.GITHUB_ACTIONS === 'true') {
-    const plan = planRoundupGapAlerts(reportedResults, ingestMissing);
+    const plan = planRoundupGapAlerts(liveReportedResults, ingestMissing);
     const alertOpts = buildRoundupGapAlert(plan);
     if (alertOpts || plan.resolve.length) {
       const { routeAlert, resolveQuietConditions } = require('./lib/owner-alert-router');

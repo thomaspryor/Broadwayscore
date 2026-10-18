@@ -781,3 +781,19 @@ test('openingWindowClearedKeys: a show past its opening window with only census-
   ], now);
   assert.deepEqual(keys, ['review-gap:opening-window:alice-in-wonderland-off-broadway-2026']);
 });
+
+test('openingWindowClearedKeys: a row for a retired show id counts as cleared even with a live gap (BRO-5349)', () => {
+  const { openingWindowClearedKeys } = require('./audit-show-review-gap.js');
+  const now = Date.parse('2026-10-05T00:00:00Z');
+  const gapRow = (showId) => ({
+    showId, openingDate: '2026-10-01',
+    missing: [{ url: `https://b.example/${showId}-review`, host: 'b.example' }],
+  });
+  // motherfucker-off-broadway-2026 was retired as a duplicate of the jena-friedman id;
+  // its pre-retirement row is carried forward by mergeGapAudit.
+  const rows = [gapRow('motherfucker-off-broadway-2026'), gapRow('jena-friedman-motherfucker-off-broadway-2026')];
+  const liveShowIds = new Set(['jena-friedman-motherfucker-off-broadway-2026']);
+  assert.deepEqual(openingWindowClearedKeys(rows, now, { liveShowIds }), ['review-gap:opening-window:motherfucker-off-broadway-2026']);
+  // Without liveShowIds the old behaviour holds: both still gapped.
+  assert.deepEqual(openingWindowClearedKeys(rows, now), []);
+});
