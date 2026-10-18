@@ -2,6 +2,7 @@
 const { TRUSTED_RECOUPMENT_HOSTS } = require('./trusted-recoupment-domains');
 const { normalizeSources } = require('./commercial-sources');
 const { foldDiacritics } = require('./title-match');
+const { buildShowTitleVariants } = require('./show-title-variants');
 
 function pageText(page) {
   return String(page || '').replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, ' ')
@@ -32,9 +33,17 @@ function tidyQuote(text, from, to) {
   return q.trim();
 }
 
-/** True when `year` appears within YEAR_WINDOW of the figure and no other year is closer to it. */
+/**
+ * True when the figure's year is `year`: the last year earlier in the figure's own sentence ("The 2012
+ * production ... was capitalized at $12.5 million, before the 2025 revival" is 2012's), else the year
+ * nearest the figure within YEAR_WINDOW.
+ */
 function nearestYearIs(text, start, end, year) {
   const lo = Math.max(0, start - YEAR_WINDOW);
+  // Sentence start: the last ". " / "! " / "? " before the figure (a decimal point has no space after it).
+  const sentenceStart = Math.max(lo, ...[...text.slice(lo, start).matchAll(/[.!?]\s+/g)].map(m => lo + m.index + m[0].length));
+  const before = [...text.slice(sentenceStart, start).matchAll(/\b(?:19|20)\d{2}\b/g)];
+  if (before.length) return before[before.length - 1][0] === year;
   const slice = text.slice(lo, end + YEAR_WINDOW);
   let best = null;
   for (const m of slice.matchAll(/\b(?:19|20)\d{2}\b/g)) {
@@ -49,14 +58,15 @@ function verifyFigure(figure, page, context = {}) {
   const text = pageText(page);
   let pattern;
   if (typeof figure === 'number' && Number.isFinite(figure) && figure > 0) {
-    pattern = /(?<![\w.,])\$?\s*(\d{1,3}(?:,\d{3})+|\d+(?:\.\d+)?)\s*(million|billion|[mb]\b)?(?![\w,]|\.\d)/gi;
+    pattern = /(?<![\w.,])\$?\s*(\d{1,3}(?:,\d{3})+|\d+(?:\.\d+)?)\s*(million|billion|[mb]\b)?(?!\w|[.,]\d)/gi;
   } else if (typeof figure === 'string' && /^\d{4}(-(?:0[1-9]|1[0-2]))?$/.test(figure)) {
     const [year, month] = figure.split('-');
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     pattern = month ? new RegExp(`\\b(?:${months[Number(month) - 1]}|${months[Number(month) - 1].slice(0, 3)}\\.?)\\s+(?:\\d{1,2}(?:st|nd|rd|th)?,?\\s+)?${year}\\b`, 'gi') : new RegExp(`\\b${year}\\b`, 'g');
   } else return { found: false, quote: null };
 
-  const title = key(context.title);
+  // context.titles: every form the page may name the show by (buildShowTitleVariants); context.title: one.
+  const titles = (Array.isArray(context.titles) ? context.titles : [context.title]).map(key).filter(Boolean);
   const headKey = ` ${headText(page)} `;
   for (const match of text.matchAll(pattern)) {
     if (typeof figure === 'number') {
@@ -72,9 +82,9 @@ function verifyFigure(figure, page, context = {}) {
     // Same production: the title is in the page's own <title>/<h1> or close to the figure (a roundup
     // page naming other shows does not count just because the title appears in its nav), and the opening
     // year is the nearest year to the figure (an earlier production's year closer by fails closed).
-    if (title) {
-      const around = key(text.slice(Math.max(0, match.index - TITLE_WINDOW), end + TITLE_WINDOW));
-      if (!(` ${around} `).includes(` ${title} `) && !headKey.includes(` ${title} `)) continue;
+    if (titles.length) {
+      const around = ` ${key(text.slice(Math.max(0, match.index - TITLE_WINDOW), end + TITLE_WINDOW))} `;
+      if (!titles.some(title => around.includes(` ${title} `) || headKey.includes(` ${title} `))) continue;
     }
     if (context.year && !nearestYearIs(text, match.index, end, context.year)) continue;
     if (context.field === 'capitalization' && !/capitaliz|budget|investment|cost to (?:mount|produce)|\braised\b|offering|amount sold|totalAmountSold|totalOfferingAmount/i.test(quote)) continue;
@@ -119,7 +129,7 @@ function createSourceVerifier({ fetchPage = (...args) => require('./scraper').fe
           ));
         }
         const page = await cache.get(source.url);
-        const result = verifyFigure(entry[field], page.content, { title: show.title, year, field });
+        const result = verifyFigure(entry[field], page.content, { titles: buildShowTitleVariants(show.title), year, field });
         if (result.found) { evidence[field] = { ...result, source }; fieldCapped = false; sawFetchFailure = false; break; }
         if (page.failed) sawFetchFailure = true;
       }
