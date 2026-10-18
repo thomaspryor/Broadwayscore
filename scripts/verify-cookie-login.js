@@ -32,7 +32,7 @@
 
 const { fetchPage } = require('./lib/scraper');
 const { extractArticleTextFromUrl } = require('./lib/article-extractor');
-const { COOKIE_PROBES } = require('./lib/cookie-probes');
+const { COOKIE_PROBES, isBotChallenge } = require('./lib/cookie-probes');
 
 // Stable review URLs per subscription/paywalled outlet. minBody is the floor
 // below which we treat the result as a paywall/extractor failure — real theater
@@ -46,7 +46,10 @@ const TARGETS = [
   // ABSENT. knownLoggedOut stays until renew-cookies.js has had its first
   // supervised live run (BRO-4183); report the true state but don't gate exit 1.
   { outlet: 'thestage',  url: COOKIE_PROBES.thestage.url, minBody: COOKIE_PROBES.thestage.minBody, wallMarker: COOKIE_PROBES.thestage.wallMarker, knownLoggedOut: 'renewed by scripts/renew-cookies.js (BRO-4183) pending first supervised run' },
-  { outlet: 'wsj',       url: 'https://www.wsj.com/articles/gypsy-review-audra-mcdonalds-turn-on-broadway-ff528df3', minBody: 1500 },
+  // WSJ answers non-browser fetches with 401 or a one-paragraph preview even
+  // for a live subscriber session (task #779); only recover-wsj-browser.js can
+  // read it, so this plain-fetch probe cannot prove the login either way.
+  { outlet: 'wsj',       url: 'https://www.wsj.com/articles/gypsy-review-audra-mcdonalds-turn-on-broadway-ff528df3', minBody: 1500, knownLoggedOut: 'plain fetch is always previewed; check with recover-wsj-browser.js --auth-only' },
   { outlet: 'newyorker', url: 'https://www.newyorker.com/magazine/2023/03/20/dolls-house-review-broadway-jessica-chastain', minBody: 1500 },
   { outlet: 'wapo',      url: 'https://www.washingtonpost.com/entertainment/theater/2025/04/10/boop-smash-broadway-review/', minBody: 1500 },
   { outlet: 'ft',        url: 'https://www.ft.com/content/681beb68-5155-11df-bed9-00144feab49a', minBody: 1200 },
@@ -92,7 +95,9 @@ async function probe(t) {
       ? `wall marker present (html ${htmlLen}, body ${body.length})`
       : `body ${body.length} / need ${t.minBody}`;
   }
-  return { outlet: t.outlet, ok, detail, error, url: t.url, knownLoggedOut: t.knownLoggedOut || null };
+  const botBlocked = !error && !ok && isBotChallenge(html);
+  if (botBlocked) detail = `bot challenge page (html ${htmlLen}) — login state unknown`;
+  return { outlet: t.outlet, ok, detail, error, url: t.url, knownLoggedOut: t.knownLoggedOut || null, botBlocked };
 }
 
 (async () => {
@@ -107,12 +112,17 @@ async function probe(t) {
   } else {
     console.log('\n=== Cookie login verification (extracted body length) ===\n');
     for (const r of results) {
-      const mark = r.error ? '⚠️  ERROR     ' : r.ok ? '✅ logged-in  ' : r.knownLoggedOut ? '⚠️  logged-out' : '❌ LOGGED-OUT ';
+      const mark = r.error ? '⚠️  ERROR     ' : r.ok ? '✅ logged-in  ' : r.botBlocked ? '🤖 BOT-CHECK ' : r.knownLoggedOut ? '⚠️  logged-out' : '❌ LOGGED-OUT ';
       const suffix = !r.ok && r.knownLoggedOut ? ` [expected: ${r.knownLoggedOut}]` : '';
       console.log(`${mark} ${r.outlet.padEnd(11)} ${r.error || r.detail}${suffix}`);
     }
-    const bad = results.filter((r) => !r.ok && !r.knownLoggedOut);
+    const bad = results.filter((r) => !r.ok && !r.knownLoggedOut && !r.botBlocked);
+    const blocked = results.filter((r) => r.botBlocked);
     console.log('');
+    if (blocked.length) {
+      console.log(`🤖 ${blocked.length} outlet(s) answered with an anti-bot check, so their login could not be tested: ${blocked.map((r) => r.outlet).join(', ')}`);
+      console.log('   Logging in again will not help; retry later.');
+    }
     if (bad.length) {
       console.log(`❌ ${bad.length} outlet(s) not returning full text: ${bad.map((r) => r.outlet).join(', ')}`);
       console.log('   → Log into those sites in Safari, then re-run:');

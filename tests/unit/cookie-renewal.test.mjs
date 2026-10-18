@@ -19,7 +19,7 @@ import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-const { classifyWalledProbe, COOKIE_PROBES } = require('../../scripts/lib/cookie-probes.js');
+const { classifyWalledProbe, COOKIE_PROBES, isBotChallenge } = require('../../scripts/lib/cookie-probes.js');
 const renew = require('../../scripts/lib/cookie-renew.js');
 const loader = require('../../scripts/lib/cookie-loader.js');
 
@@ -259,4 +259,16 @@ test('extractor --from-local --push: a failed secret push exits non-zero', () =>
   const { out, result } = runExtractor('push-fail');
   assert.match(out, /✗ COOKIES_BUNDLE_1: HTTP 403/);
   assert.equal(result.exit, 1);
+});
+
+test('isBotChallenge: anti-bot pages are not read as a logout', () => {
+  // Shapes captured live 2026-10-18 (The Times homepage, WSJ article).
+  assert.equal(isBotChallenge('<html><head><title>Verifying Device</title></head><body>Verifying your device, please wait</body>'), true);
+  assert.equal(isBotChallenge('<iframe src="https://geo.captcha-delivery.com/captcha/?initialCid=x"></iframe>'), true);
+  assert.equal(isBotChallenge('<h1>Access is temporarily restricted</h1>'), true);
+  assert.equal(isBotChallenge('<title>Just a moment...</title>'), true);
+  // A real paywall teaser or article is not a bot check.
+  assert.equal(isBotChallenge('<p>Subscribe to continue reading</p>'), false);
+  assert.equal(isBotChallenge('<article><p>When a consummate musical-theater artist</p></article>'), false);
+  assert.equal(isBotChallenge(null), false);
 });

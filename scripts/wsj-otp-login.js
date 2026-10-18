@@ -169,7 +169,7 @@ async function main() {
     // Dow Jones SSO now interposes a "Create Passkey / Not now" screen after
     // the code is accepted (seen 2026-10-18); without dismissing it the page
     // never leaves dowjones.com and the wait below times out.
-    const notNow = page.getByRole('button', { name: /^not now$/i });
+    const notNow = page.getByRole('button', { name: /^not now$/i }).first();
     try {
       await notNow.waitFor({ state: 'visible', timeout: 15000 });
       console.log('Dismissing passkey prompt ("Not now")...');
