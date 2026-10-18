@@ -1,44 +1,21 @@
 {
-  "updatedAt": "2026-10-18T08:59:18.920Z",
-  "processed": 258,
-  "failed": 278,
-  "successRate": "48.1%",
+  "updatedAt": "2026-10-18T09:32:49.868Z",
+  "processed": 321,
+  "failed": 315,
+  "successRate": "50.5%",
   "tierBreakdown": {
-    "playwright": 136,
+    "playwright": 172,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 23,
-    "scrapingbee": 20,
+    "scrapingdog": 34,
+    "scrapingbee": 25,
     "brightdata": 17,
     "archiveToday": 0,
-    "archive": 68
+    "archive": 82
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-10-18T07:06:43.678Z",
-      "event": "bb-session",
-      "session": "96375e3e",
-      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
-    },
-    {
-      "t": "2026-10-18T07:06:50.559Z",
-      "event": "bb-session",
-      "session": "63791e3f",
-      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
-    },
-    {
-      "t": "2026-10-18T08:14:48.085Z",
-      "event": "bb-session",
-      "session": "adf7f666",
-      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
-    },
-    {
-      "t": "2026-10-18T08:14:48.558Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-10-18T08:15:05.218Z",
       "event": "bb-session",
@@ -124,6 +101,28 @@
     },
     {
       "t": "2026-10-18T08:58:26.640Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-18T09:02:30.573Z",
+      "event": "bb-session",
+      "session": "6aaeeb64",
+      "url": "https://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-10-18T09:02:31.040Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-18T09:02:48.466Z",
+      "event": "bb-session",
+      "session": "3d161743",
+      "url": "https://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-10-18T09:02:48.905Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
