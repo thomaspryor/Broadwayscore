@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-10-18T18:12:29.560Z",
+  "generatedAt": "2026-10-18T19:19:14.542Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 247,
-  "clean": 246,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "the-ask-off-broadway-2026",
-      "title": "The Ask",
-      "openingDate": "2026-10-13",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 61.41 vs local 60.72 (Δ0.69)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 4,
-      "deployedCount": 4,
-      "firstDefectAt": "2026-10-18T14:30:42.323Z"
-    }
-  ],
+  "clean": 247,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

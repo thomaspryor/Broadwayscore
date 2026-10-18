@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-18T18:12:29.942Z",
+  "generatedAt": "2026-10-18T19:19:14.864Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -142,6 +142,10 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -168,9 +172,13 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 724,
+  "itemsScanned": 695,
   "matchedGaps": 0,
   "possibleGaps": 6,
   "gaps": [
