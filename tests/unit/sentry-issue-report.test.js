@@ -1,6 +1,6 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { safePath, safeText, summarizeEvent } = require('../../scripts/sentry-issue-report.js');
+const { safePath, safeText, summarizeEvent } = require('../../scripts/lib/sentry-report-format.js');
 
 test('safePath drops query/hash and masks private share tokens', () => {
   assert.equal(safePath('https://broadwayscorecard.com/auth/callback#access_token=abc&x=1'), '/auth/callback');
