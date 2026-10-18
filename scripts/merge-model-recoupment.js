@@ -22,7 +22,7 @@ const { createCommercialWriteGuard } = require('./lib/commercial-write-guard');
 const { classifyTier } = require('./lib/model-return-v2');
 const { clearStaleModelFields, applyShadowReturnFields, applyReturnedSoFarFields, RETURNED_SO_FAR_OPTS } = require('./lib/model-run-fields');
 const { makeGrossesLookup } = require('./lib/grosses-lookup');
-const { modelContradictsDesignation, modelSizedLossLabel } = require('./lib/commercial-designations');
+const { modelContradictsDesignation, planModelLossResizes, MODEL_LOSS_RESIZE_LIMIT } = require('./lib/commercial-designations');
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -78,7 +78,7 @@ const { getWeeklyData, getGrossesAllTime } = makeGrossesLookup(grosses, grossesH
 
 function main() {
   const today = new Date().toISOString().split('T')[0];
-  let tier1 = 0, tier2 = 0, tier3 = 0, contradictions = 0, resizedLabels = 0;
+  let tier1 = 0, tier2 = 0, tier3 = 0, contradictions = 0;
 
   // Build show lookup by slug
   const showBySlug = {};
@@ -165,14 +165,6 @@ function main() {
       ? calculateRecoupment(show, comm, grossAllTime, weeklyData, RETURNED_SO_FAR_OPTS)
       : calculateLifetimeRecoupment(show, comm, grossAllTime, RETURNED_SO_FAR_OPTS));
 
-    // A loss label the model sizes follows the model's new figure (BRO-5643).
-    const resized = modelSizedLossLabel(comm);
-    if (resized) {
-      console.log(`  [SIZE] ${key}.designation: ${comm.designation} -> ${resized} (by our model)`);
-      comm.designation = resized;
-      resizedLabels++;
-    }
-
     // Flag designation contradictions
     if (comm.designation && result.recoupmentPctCentral != null) {
       const pct = result.recoupmentPctCentral;
@@ -190,6 +182,19 @@ function main() {
     if (DRY_RUN) {
       console.log(`${key}: ${tier} | ${result.recoupmentPctLow}–${result.recoupmentPctCentral}–${result.recoupmentPctHigh}%`);
     }
+  }
+
+  // Loss labels our model sizes follow its new figures (BRO-5643), after every
+  // branch above: one that cleared a record's model fields leaves no estimate,
+  // so its Fizzle or Flop becomes Did Not Recoup. Too many moves at once are
+  // held for review instead of written.
+  const resize = planModelLossResizes(keys.map((key) => [key, commercial.shows[key]]));
+  for (const { key, from, to } of resize.moves) {
+    console.log(`  [SIZE] ${key}.designation: ${from} -> ${to} (by our model)${resize.held ? ', held' : ''}`);
+    if (!resize.held) commercial.shows[key].designation = to;
+  }
+  if (resize.held) {
+    console.log(`::warning title=Loss labels held::${resize.moves.length} loss labels would move with the model's new figures (limit ${MODEL_LOSS_RESIZE_LIMIT}); none written. Check the [SIZE] lines and relabel by data plan.`);
   }
 
   // Final sweep: normalize sources[] for every show. LLM-generated source entries
@@ -223,7 +228,7 @@ function main() {
   console.log(`  Tier 2 (simplified-lifetime):  ${tier2} shows`);
   console.log(`  Tier 3 (ai-estimated):         ${tier3} shows`);
   console.log(`  Designation contradictions:     ${contradictions}`);
-  console.log(`  Loss labels re-sized:           ${resizedLabels}`);
+  console.log(`  Loss labels re-sized:           ${resize.held ? `0 (${resize.moves.length} held)` : resize.moves.length}`);
   console.log(`  Total:                          ${tier1 + tier2 + tier3} shows`);
 }
 

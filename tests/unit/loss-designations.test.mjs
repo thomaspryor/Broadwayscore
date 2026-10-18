@@ -50,7 +50,24 @@ describe('loss labels', () => {
     assert.equal(D.modelSizedLossLabel({ designation: 'Fizzle', humanReviewedDesignation: true, ...model(5) }), null);
     for (const designation of ['TBD', 'Windfall', 'Trickle', 'Nonprofit', undefined]) {
       assert.equal(D.modelSizedLossLabel({ designation, ...model(5) }), null, String(designation));
+      assert.equal(D.modelSizesLossLabel({ designation, ...model(5) }), false, String(designation));
     }
+    // Without the returned-so-far figure the label reads V2, then the live figure.
+    assert.equal(D.modelSizedLossLabel({ designation: 'Fizzle', modelDataQuality: 'medium', modelRecoupmentPctV2: [0, 20, 40] }), 'Flop');
+    assert.equal(D.modelSizedLossLabel({ designation: 'Flop', modelDataQuality: 'medium', modelRecoupmentPct: [20, 40, 60] }), 'Fizzle');
+    // A branch that cleared the model fields leaves no estimate: Did Not Recoup.
+    assert.equal(D.modelSizedLossLabel({ designation: 'Flop' }), 'Did Not Recoup');
+  });
+  it('planModelLossResizes holds every move when a run would move more than the limit', () => {
+    const drifted = (i) => [`show-${i}`, { designation: 'Fizzle', modelDataQuality: 'medium', modelReturnedExCreditPct: [0, 10, 20] }];
+    const fits = ['fits', { designation: 'Flop', modelDataQuality: 'medium', modelReturnedExCreditPct: [0, 10, 20] }];
+    const few = D.planModelLossResizes([drifted(1), fits, ['gone', null]]);
+    assert.deepEqual(few, { moves: [{ key: 'show-1', from: 'Fizzle', to: 'Flop' }], held: false });
+    const atLimit = Array.from({ length: D.MODEL_LOSS_RESIZE_LIMIT }, (_, i) => drifted(i));
+    assert.equal(D.planModelLossResizes(atLimit).held, false);
+    const many = D.planModelLossResizes([...atLimit, drifted(99)]);
+    assert.equal(many.held, true);
+    assert.equal(many.moves.length, D.MODEL_LOSS_RESIZE_LIMIT + 1);
   });
   it('a silence-basis Did Not Recoup waits out the 6-month window like a Fizzle', () => {
     const show = { closingDate: '2026-09-01' };
