@@ -84,6 +84,21 @@ function lossDesignationFor(returnedPct) {
   if (returnedPct == null) return 'Did Not Recoup';
   return returnedPct >= FIZZLE_MIN_RETURNED_PCT ? 'Fizzle' : 'Flop';
 }
+/**
+ * The loss label a record should move to when our model is what sizes it
+ * (no estimate of its own, no human lock): Fizzle or Flop by the model's
+ * middle figure, Did Not Recoup once its inputs are too thin. null when the
+ * label already fits or is not the model's to move. The model writer applies
+ * it after every run, so a model change that carries a closed show across
+ * the 30% line carries its label too (BRO-5643: jagged-little-pill stayed a
+ * Fizzle at 27%).
+ */
+function modelSizedLossLabel(entry) {
+  if (!isLossDesignation(entry?.designation) || entry.humanReviewedDesignation === true) return null;
+  if (ownReturnedEstimatePct(entry) !== null) return null;
+  const sized = lossDesignationFor(returnedEstimatePct(entry));
+  return sized === entry.designation ? null : sized;
+}
 /** Classes the recoupment rule never moves. */
 const DESIGNATIONS_OUTSIDE_RULE = Object.freeze(['Easy Winner', 'Nonprofit', 'Tour Stop']);
 
@@ -152,6 +167,6 @@ module.exports = {
   DESIGNATION_BASES, VALID_DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel,
   VALID_DESIGNATIONS, canonicalDesignation,
   TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, returnedEstimatePct, DESIGNATIONS_OUTSIDE_RULE,
-  LOSS_DESIGNATIONS, isLossDesignation, lossDesignationFor,
+  LOSS_DESIGNATIONS, isLossDesignation, lossDesignationFor, modelSizedLossLabel,
   MODEL_CONTRADICTION, modelContradictsDesignation,
 };

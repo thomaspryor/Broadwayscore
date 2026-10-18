@@ -22,7 +22,7 @@ const { createCommercialWriteGuard } = require('./lib/commercial-write-guard');
 const { classifyTier } = require('./lib/model-return-v2');
 const { clearStaleModelFields, applyShadowReturnFields, applyReturnedSoFarFields, RETURNED_SO_FAR_OPTS } = require('./lib/model-run-fields');
 const { makeGrossesLookup } = require('./lib/grosses-lookup');
-const { modelContradictsDesignation } = require('./lib/commercial-designations');
+const { modelContradictsDesignation, modelSizedLossLabel } = require('./lib/commercial-designations');
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -78,7 +78,7 @@ const { getWeeklyData, getGrossesAllTime } = makeGrossesLookup(grosses, grossesH
 
 function main() {
   const today = new Date().toISOString().split('T')[0];
-  let tier1 = 0, tier2 = 0, tier3 = 0, contradictions = 0;
+  let tier1 = 0, tier2 = 0, tier3 = 0, contradictions = 0, resizedLabels = 0;
 
   // Build show lookup by slug
   const showBySlug = {};
@@ -165,6 +165,14 @@ function main() {
       ? calculateRecoupment(show, comm, grossAllTime, weeklyData, RETURNED_SO_FAR_OPTS)
       : calculateLifetimeRecoupment(show, comm, grossAllTime, RETURNED_SO_FAR_OPTS));
 
+    // A loss label the model sizes follows the model's new figure (BRO-5643).
+    const resized = modelSizedLossLabel(comm);
+    if (resized) {
+      console.log(`  [SIZE] ${key}.designation: ${comm.designation} -> ${resized} (by our model)`);
+      comm.designation = resized;
+      resizedLabels++;
+    }
+
     // Flag designation contradictions
     if (comm.designation && result.recoupmentPctCentral != null) {
       const pct = result.recoupmentPctCentral;
@@ -215,6 +223,7 @@ function main() {
   console.log(`  Tier 2 (simplified-lifetime):  ${tier2} shows`);
   console.log(`  Tier 3 (ai-estimated):         ${tier3} shows`);
   console.log(`  Designation contradictions:     ${contradictions}`);
+  console.log(`  Loss labels re-sized:           ${resizedLabels}`);
   console.log(`  Total:                          ${tier1 + tier2 + tier3} shows`);
 }
 

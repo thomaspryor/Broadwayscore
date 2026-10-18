@@ -35,6 +35,23 @@ describe('loss labels', () => {
     assert.equal(D.lossDesignationFor(D.FIZZLE_MIN_RETURNED_PCT - 0.1), 'Flop');
     assert.equal(D.lossDesignationFor(D.FIZZLE_MIN_RETURNED_PCT), 'Fizzle');
   });
+  it('modelSizedLossLabel moves a label only when our model is what sizes it (BRO-5643)', () => {
+    const model = (central, quality = 'medium') => ({ modelDataQuality: quality, modelReturnedExCreditPct: [central - 20, central, central + 20] });
+    // jagged-little-pill-2019: a Fizzle left behind when the model's figure fell to 27%.
+    assert.equal(D.modelSizedLossLabel({ designation: 'Fizzle', ...model(27) }), 'Flop');
+    assert.equal(D.modelSizedLossLabel({ designation: 'Flop', ...model(45) }), 'Fizzle');
+    assert.equal(D.modelSizedLossLabel({ designation: 'Did Not Recoup', ...model(12, 'high') }), 'Flop');
+    assert.equal(D.modelSizedLossLabel({ designation: 'Fizzle', ...model(45, 'low') }), 'Did Not Recoup');
+    assert.equal(D.modelSizedLossLabel({ designation: 'Flop', ...model(10) }), null, 'already fits');
+    assert.equal(D.modelSizedLossLabel({ designation: 'Did Not Recoup' }), null, 'no estimate at all');
+    // Not the model's to move: the record's own estimate, a human lock, a label that is not a loss.
+    assert.equal(D.modelSizedLossLabel({ designation: 'Fizzle', estimatedRecoupmentPct: [10, 10], ...model(45) }), null);
+    assert.equal(D.modelSizedLossLabel({ designation: 'Fizzle', analystRecoupPct: [0, 20], ...model(45) }), null);
+    assert.equal(D.modelSizedLossLabel({ designation: 'Fizzle', humanReviewedDesignation: true, ...model(5) }), null);
+    for (const designation of ['TBD', 'Windfall', 'Trickle', 'Nonprofit', undefined]) {
+      assert.equal(D.modelSizedLossLabel({ designation, ...model(5) }), null, String(designation));
+    }
+  });
   it('a silence-basis Did Not Recoup waits out the 6-month window like a Fizzle', () => {
     const show = { closingDate: '2026-09-01' };
     const entry = { designation: 'Did Not Recoup', designationBasis: D.DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED };
