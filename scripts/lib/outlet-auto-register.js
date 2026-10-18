@@ -66,22 +66,100 @@ const compactName = (v) => foldDiacritics(String(v || '')).toLowerCase()
   .replace(/\.(com|co\.uk|org|net|uk|ca|au)$/, '')
   .replace(/[^a-z0-9]/g, '');
 
+// Decode the handful of HTML entities a <meta content> / <title> carries.
+function decodeHtmlText(v) {
+  return String(v || '')
+    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
+    .replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&apos;|&#039;/g, "'")
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&nbsp;/g, ' ')
+    .replace(/&ndash;/g, '\u2013').replace(/&mdash;/g, '\u2014').replace(/&rsaquo;/g, '\u203a').replace(/&raquo;/g, '\u00bb')
+    .replace(/&rsquo;|&lsquo;/g, "'").replace(/&hellip;/g, '...')
+    .replace(/\s+/g, ' ').trim();
+}
+
+function metaContent(html, attr, value) {
+  const esc = value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const a = new RegExp(`<meta[^>]+${attr}=["']${esc}["'][^>]*content=["']([^"']+)["']`, 'i').exec(html);
+  if (a) return decodeHtmlText(a[1]);
+  const b = new RegExp(`<meta[^>]+content=["']([^"']+)["'][^>]*${attr}=["']${esc}["']`, 'i').exec(html);
+  return b ? decodeHtmlText(b[1]) : null;
+}
+
+/**
+ * Masthead-name candidates from a fetched homepage (BRO-5336), strongest first:
+ * og:site_name, application-name, then the <title> and its " | " / " - "
+ * segments. Callers must still gate them through deriveOutletDisplayName,
+ * which only accepts a candidate that spells the outlet's id or domain.
+ *
+ * @param {string} html
+ * @returns {string[]}
+ */
+function extractSiteNames(html) {
+  const src = String(html || '');
+  const out = [];
+  // Trailing separators/ornaments ("Rachel Weinberg Reviews -", "Istvan Dugalin \u27a4") are not part of the name.
+  const push = (v) => {
+    const t = decodeHtmlText(v).replace(/[\s\-\u2013\u2014|:\u00b7\u2022\u00bb\u203a\u27a4\u25ba\u2605]+$/u, '').trim();
+    if (t && !out.includes(t)) out.push(t);
+  };
+  const og = metaContent(src, 'property', 'og:site_name') || metaContent(src, 'name', 'og:site_name');
+  if (og) push(og);
+  const app = metaContent(src, 'name', 'application-name');
+  if (app) push(app);
+  const t = /<title[^>]*>([\s\S]*?)<\/title>/i.exec(src);
+  if (t) {
+    const title = decodeHtmlText(t[1]);
+    push(title);
+    for (const seg of title.split(/\s+[|\u2013\u2014\-\u00b7:]\s+/)) push(seg);
+  }
+  return out;
+}
+
+/** compactName with a leading "the" dropped ("The Hudson Review" -> hudsonreview). */
+const compactNoThe = (v) => compactName(String(v || '').replace(/^\s*the\s+/i, ''));
+
+/**
+ * True for a candidate name that spells the outlet's id or its domain's first
+ * label (sddowntownnews.com for sandiegodowntownnews), with or without a
+ * leading "The".
+ */
+function nameSpellsOutlet(name, outletId, domain) {
+  const targets = new Set([compactName(outletId), compactNoThe(outletId)]);
+  const label = String(domain || '').toLowerCase().replace(/^www\./, '').split('.')[0];
+  if (label) { targets.add(compactName(label)); targets.add(compactNoThe(label)); }
+  targets.delete('');
+  return targets.has(compactName(name)) || targets.has(compactNoThe(name));
+}
+
 /**
  * Display name for a newly auto-registered outlet (BRO-4468). The old writers
  * used the capitalized slug, which is wrong for every compound id
  * (newjerseystage -> "Newjerseystage", liamodell -> "Liamodell").
  *
- * Prefers the most common `outlet` string the outlet's own review files carry,
- * accepted only when it spells the same id once spaces/punctuation are removed
- * ("New Jersey Stage" for newjerseystage), so a critic name or a different
- * outlet's label can never become the display name. Falls back to the
- * hyphen-split capitalized slug and reports `inferred: true` when that fallback
- * is for a single run-together token (the case a human must look at).
+ * Order of preference:
+ *   1. siteNames (BRO-5336): the outlet's own og:site_name / <title>, from
+ *      extractSiteNames() on its homepage, accepted when it spells the id or
+ *      the domain label ("San Diego Downtown News" for sandiegodowntownnews /
+ *      sddowntownnews.com). The first accepted candidate wins.
+ *   2. the most common `outlet` string the outlet's own review files carry,
+ *      accepted only when it spells the same id, so a critic name or a
+ *      different outlet's label can never become the display name.
+ *   3. the hyphen-split capitalized slug, reported `inferred: true` when that
+ *      fallback is for a single run-together token (the case a human must
+ *      look at; validate-data.js warns on that shape).
  *
- * @param {{outletId: string, reviewOutletNames?: Array<string|null|undefined>}} facts
+ * @param {{outletId: string, reviewOutletNames?: Array<string|null|undefined>, siteNames?: Array<string|null|undefined>, domain?: string|null}} facts
  * @returns {{displayName: string, inferred: boolean}}
  */
-function deriveOutletDisplayName({ outletId, reviewOutletNames = [] }) {
+function deriveOutletDisplayName({ outletId, reviewOutletNames = [], siteNames = [], domain = null }) {
+  for (const raw of siteNames) {
+    const name = String(raw || '').trim();
+    if (name.length < 2 || name.length > 60) continue;
+    if (name === name.toLowerCase()) continue; // a bare lowercase slug is no masthead
+    if (!nameSpellsOutlet(name, outletId, domain)) continue;
+    return { displayName: name, inferred: false };
+  }
   const idCompact = compactName(outletId);
   const counts = new Map();
   for (const raw of reviewOutletNames) {
@@ -96,6 +174,53 @@ function deriveOutletDisplayName({ outletId, reviewOutletNames = [] }) {
   if (best) return { displayName: best[0], inferred: false };
   const displayName = String(outletId).split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   return { displayName, inferred: !String(outletId).includes('-') && String(outletId).length >= 8 };
+}
+
+/**
+ * Fetch an outlet's homepage and return its masthead name when one spells the
+ * id or domain (BRO-5336). The fetcher is injected (pass scraper.fetchPage)
+ * so this file stays network-free and testable. Never throws: a failed fetch
+ * resolves to { displayName: null, siteNames: [], error }.
+ *
+ * @param {{outletId: string, domain: string|null, fetchPage: (url: string, opts?: object) => Promise<{content: string}>}} args
+ * @returns {Promise<{displayName: string|null, siteNames: string[], error?: string}>}
+ */
+async function resolveMastheadName({ outletId, domain, fetchPage }) {
+  if (!domain || typeof fetchPage !== 'function') return { displayName: null, siteNames: [], error: 'no domain' };
+  let siteNames = [];
+  try {
+    const page = await fetchPage(`https://${domain}/`, { skipVerify: true });
+    siteNames = extractSiteNames(page && page.content);
+  } catch (err) {
+    return { displayName: null, siteNames: [], error: `fetch failed: ${err && err.message}` };
+  }
+  const { displayName } = deriveOutletDisplayName({ outletId, domain, siteNames });
+  // Only a name the page itself offered counts; the slug fallback is not a masthead.
+  return { displayName: siteNames.includes(displayName) ? displayName : null, siteNames };
+}
+
+/**
+ * BRO-5336 shape: a displayName that is just the capitalized run-together id
+ * ("Hackneycitizen" for hackneycitizen). Long (12+ chars) single tokens only,
+ * so real one-word mastheads ("Variety", "Playbill") never match.
+ */
+function isRunTogetherSlugDisplayName(outletId, displayName) {
+  const d = String(displayName || '');
+  return /^[A-Z][a-z]{11,}$/.test(d) && d.toLowerCase() === String(outletId || '').replace(/-/g, '');
+}
+
+/**
+ * @param {Record<string, {displayName?: string, displayNameReviewed?: boolean}>} outlets
+ * @returns {Array<{outletId: string, displayName: string}>} entries in that shape
+ *   (an entry stamped displayNameReviewed is a deliberate one-word name and skipped)
+ */
+function findRunTogetherSlugDisplayNames(outlets) {
+  const rows = [];
+  for (const [id, entry] of Object.entries(outlets || {})) {
+    if (!entry || entry.displayNameReviewed) continue;
+    if (isRunTogetherSlugDisplayName(id, entry.displayName)) rows.push({ outletId: id, displayName: entry.displayName });
+  }
+  return rows;
 }
 
 /**
@@ -233,7 +358,12 @@ module.exports = {
   criticNameSlugs,
   decideOutletAutoRegistration,
   deriveOutletDisplayName,
+  extractSiteNames,
+  findRunTogetherSlugDisplayNames,
+  isRunTogetherSlugDisplayName,
   isUnusableOutletSlug,
+  nameSpellsOutlet,
+  resolveMastheadName,
   mergeStagingEntries,
   loadStagedOutletIds,
 };

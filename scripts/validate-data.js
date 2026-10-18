@@ -2868,6 +2868,28 @@ function validateOutletRegistryDuplicates() {
 }
 
 /**
+ * BRO-5336: displayNames that are just the capitalized run-together id
+ * ("Hackneycitizen"). They render under every review on the site. Advisory
+ * warning; the count ceiling lives in
+ * tests/unit/outlet-registry-display-names.test.mjs. Fix with the real
+ * masthead (node scripts/audit-registry-slug-displaynames.js --fetch --apply),
+ * or stamp displayNameReviewed:true when the one-word name is genuine.
+ */
+function validateOutletRegistrySlugDisplayNames() {
+  const registryFile = path.join(DATA_DIR, 'outlet-registry.json');
+  if (!fs.existsSync(registryFile)) return;
+  const { findRunTogetherSlugDisplayNames } = require('./lib/outlet-auto-register');
+  const registry = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
+  const rows = findRunTogetherSlugDisplayNames(registry.outlets || registry);
+  if (rows.length === 0) {
+    ok('No slug-shaped outlet displayNames in outlet-registry.json');
+    return;
+  }
+  const sample = rows.slice(0, 10).map((r) => `${r.outletId} -> "${r.displayName}"`).join(', ');
+  warn(`[registry-slug-displayname] ${rows.length} outlet displayName(s) are the capitalized id, not the masthead (${sample}${rows.length > 10 ? ', ...' : ''}). Run node scripts/audit-registry-slug-displaynames.js --fetch --apply`);
+}
+
+/**
  * Primary-domain collisions must be declared edition pairs.
  * Logic lives in scripts/lib/outlet-registry-domain-collisions.js (§15);
  * colocated test: tests/unit/outlet-registry-domain-collisions.test.mjs.
@@ -5453,6 +5475,7 @@ function runValidation() {
   validateOutletRegistryDuplicates();
   console.log('');
   validateOutletRegistryDomainCollisions();
+  validateOutletRegistrySlugDisplayNames();
   console.log('');
   validateOutletRegistryFields();
   console.log('');

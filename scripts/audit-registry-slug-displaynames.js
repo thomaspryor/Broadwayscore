@@ -11,8 +11,14 @@
  * have a proposal waiting (a better label exists and is not applied). Entries
  * with no review label are listed only; stamp `displayNameReviewed` to hide one.
  *
- * Usage: node scripts/audit-registry-slug-displaynames.js [--json] [--max=N]
+ * Usage: node scripts/audit-registry-slug-displaynames.js [--json] [--max=N] [--fetch [--apply]]
  * Needs data/review-texts (run through cloud-run-script.js --review-texts in cloud).
+ *
+ * --fetch (BRO-5336): for every run-together slug displayName ("Hackneycitizen")
+ * with a domain, fetch the outlet homepage through fetchPage() and propose its
+ * og:site_name / <title> when that spells the id or domain (the acceptance
+ * rule is deriveOutletDisplayName's). --apply writes accepted names to
+ * data/outlet-registry.json. Unaccepted rows are listed for a human.
  */
 
 const fs = require('fs');
@@ -62,9 +68,38 @@ function collectNames(reviewTextsDir, wanted) {
   return names;
 }
 
+async function fetchMastheads({ apply }) {
+  const { fetchPage } = require('./lib/scraper');
+  const { resolveMastheadName, findRunTogetherSlugDisplayNames } = require('./lib/outlet-auto-register');
+  const registryPath = path.join(ROOT, 'data', 'outlet-registry.json');
+  const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+  const outlets = registry.outlets || registry;
+  const fixes = [];
+  const unresolved = [];
+  for (const { outletId, displayName: current } of findRunTogetherSlugDisplayNames(outlets)) {
+    const domain = outlets[outletId].domain;
+    if (!domain) { unresolved.push({ outletId, current, reason: 'no domain' }); continue; }
+    const r = await resolveMastheadName({ outletId, domain, fetchPage });
+    if (r.error) { unresolved.push({ outletId, current, reason: r.error }); continue; }
+    if (!r.displayName || r.displayName === current) unresolved.push({ outletId, current, reason: `no masthead spells the id (page offered: ${r.siteNames.slice(0, 3).join(' / ') || 'nothing'})` });
+    else fixes.push({ outletId, current, proposed: r.displayName });
+  }
+  for (const f of fixes) console.log(`  ${f.outletId}: "${f.current}" -> "${f.proposed}"`);
+  for (const u of unresolved) console.log(`  ${u.outletId}: "${u.current}" left (${u.reason})`);
+  if (apply && fixes.length) {
+    for (const f of fixes) outlets[f.outletId].displayName = f.proposed;
+    fs.writeFileSync(registryPath, JSON.stringify(registry, null, 2));
+  }
+  console.log(`[audit-registry-slug-displaynames --fetch] ${fixes.length} masthead name(s) found${apply ? ' and applied' : ''}, ${unresolved.length} left`);
+}
+
 function main() {
   if (hasHelpFlag(process.argv)) {
-    console.log('Usage: node scripts/audit-registry-slug-displaynames.js [--json] [--max=N]');
+    console.log('Usage: node scripts/audit-registry-slug-displaynames.js [--json] [--max=N] [--fetch [--apply]]');
+    return;
+  }
+  if (process.argv.includes('--fetch')) {
+    fetchMastheads({ apply: process.argv.includes('--apply') }).catch((err) => { console.error(err); process.exitCode = 1; });
     return;
   }
   const max = Number((process.argv.find((a) => a.startsWith('--max=')) || '').slice(6));
