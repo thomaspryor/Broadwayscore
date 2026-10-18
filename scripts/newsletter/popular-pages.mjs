@@ -13,7 +13,8 @@
 // Algorithm:
 //   1. Query GA4 twice — last 7 days AND the 7 days before that — in a
 //      single multi-range report.
-//   2. Filter to /show/{slug} paths.
+//   2. Filter to /show/{slug} paths and exclude Direct traffic from both weeks
+//      (BRO-2503: the same bot-inflated channel identified in BRO-44).
 //   3. Compute growth = thisWeek_views / max(priorWeek_views, FLOOR).
 //      FLOOR prevents 0 → tiny → "infinite growth" noise.
 //   4. Require thisWeek_views ≥ MIN_THIS_WEEK_VIEWS for noise control
@@ -27,10 +28,8 @@ import fs from 'node:fs';
 import { createRequire } from 'node:module';
 
 const cjsRequire = createRequire(import.meta.url);
-
-const MIN_THIS_WEEK_VIEWS = 30;  // noise floor
-const PRIOR_FLOOR = 5;           // divisor floor — keeps 0 → small ratios sane
-const MIN_GROWTH = 1.5;          // must be at least 1.5× to count as climbing
+const { rankTrendingShowPages } = cjsRequire('../lib/newsletter-trending.js');
+export { rankTrendingShowPages };
 
 function loadEnv(repo) {
   const envPath = path.join(repo, '.env');
@@ -96,8 +95,8 @@ export async function fetchTrendingShowPages({ repo, days = 7, limit = 5, asOf =
     return null;
   }
 
-  // Multi-range report. GA4 returns one row per (pagePath × dateRange).
-  // The range name lands in dimensionValues[1] when ≥2 dateRanges are passed.
+  // Multi-range report: one row per (pagePath, channel, dateRange).
+  // The implicit range name is appended at dimensionValues[2].
   const off = (n) => { const d = new Date(asOf + 'T12:00:00'); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); };
   const dateRanges = asOf && /^\d{4}-\d{2}-\d{2}$/.test(asOf)
     ? [
@@ -113,41 +112,23 @@ export async function fetchTrendingShowPages({ repo, days = 7, limit = 5, asOf =
     [res] = await client.runReport({
       property: `properties/${propertyId}`,
       dateRanges,
-      dimensions: [{ name: 'pagePath' }],
+      dimensions: [{ name: 'pagePath' }, { name: 'sessionDefaultChannelGroup' }],
       metrics: [{ name: 'screenPageViews' }],
+      dimensionFilter: {
+        filter: { fieldName: 'pagePath', stringFilter: { matchType: 'BEGINS_WITH', value: '/show/' } },
+      },
       orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
-      limit: 200, // generous — filter to show pages then sort by growth
+      // Channel breakdown multiplies rows. Keep both weeks' baselines instead
+      // of taking only the 200 busiest page/channel/range combinations.
+      limit: 100000,
     });
+    if (res.rowCount > (res.rows || []).length) throw new Error('incomplete show-page channel report');
   } catch (err) {
     process.stderr.write(`[trending-pages] GA4 query failed: ${err.message}\n`);
     return null;
   }
 
-  const showRe = /^\/show\/([a-z0-9-]+)\/?$/i;
-  const bySlug = new Map();
-  for (const row of (res.rows || [])) {
-    const pagePath = row.dimensionValues?.[0]?.value || '';
-    const rangeName = row.dimensionValues?.[1]?.value || '';
-    const m = showRe.exec(pagePath);
-    if (!m) continue;
-    const slug = m[1];
-    const views = parseInt(row.metricValues?.[0]?.value || '0', 10);
-    if (!bySlug.has(slug)) bySlug.set(slug, { slug, views: 0, prior: 0 });
-    const entry = bySlug.get(slug);
-    if (rangeName === 'thisWeek' || rangeName === 'date_range_0') entry.views = views;
-    else if (rangeName === 'priorWeek' || rangeName === 'date_range_1') entry.prior = views;
-  }
-
-  const climbers = [];
-  for (const entry of bySlug.values()) {
-    if (entry.views < MIN_THIS_WEEK_VIEWS) continue;
-    const priorEffective = Math.max(entry.prior, PRIOR_FLOOR);
-    const growth = entry.views / priorEffective;
-    if (growth < MIN_GROWTH) continue;
-    climbers.push({ ...entry, growth });
-  }
-  climbers.sort((a, b) => b.growth - a.growth);
-  return climbers.slice(0, limit);
+  return rankTrendingShowPages(res.rows || [], { limit });
 }
 
 // Backwards-compatible alias — generator imports `fetchPopularShowPages`.
