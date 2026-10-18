@@ -225,7 +225,21 @@ if [ -n "$DO_COMMIT" ] && [ -z "$DRY_RUN" ]; then
           if [ -n "$PUSHED" ]; then
             echo "sync-memory-to-repo: cloud-memory committed and pushed to main" >&2
           else
-            echo "sync-memory-to-repo: commit created but push failed (offline/race) — it will ride out with the next push" >&2
+            # Nothing else pushes this commit: checkout-sync only pushes
+            # ledger-only commits and refuses to fast-forward past a local
+            # non-ledger commit, so leaving it here stranded the shared
+            # checkout 146 commits behind on 2026-10-17 (BRO-5567). Take our
+            # own commit(s) back off, keeping the mirror as uncommitted
+            # changes the next session-stop retries. Only when every
+            # non-merge commit ahead of origin is ours; anyone else's stays.
+            BASE=$(git -C "$REPO" merge-base HEAD origin/main 2>/dev/null || true)
+            FOREIGN=$(git -C "$REPO" log --no-merges --format=%s origin/main..HEAD 2>/dev/null \
+              | grep -cvx 'chore: sync cloud-memory (session-stop auto-commit)' || true)
+            if [ -n "$BASE" ] && [ "$FOREIGN" = "0" ] && git -C "$REPO" reset -q --mixed "$BASE"; then
+              echo "sync-memory-to-repo: push failed — commit rolled back, mirror left uncommitted for the next session-stop" >&2
+            else
+              echo "sync-memory-to-repo: commit created but push failed (offline/race) and other local commits are ahead — left in place" >&2
+            fi
           fi
         fi
         command -v push_mutex_release >/dev/null 2>&1 && push_mutex_release
