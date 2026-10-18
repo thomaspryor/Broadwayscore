@@ -173,11 +173,18 @@ function isTollbitGate(content) {
  * as a ~20KB 200 to Playwright: bigger than the 10KB cap above, so it was
  * stored as a 334-char "review" (BRO-5133). Title + phrase together, so an
  * article quoting the phrase is not rejected.
+ *
+ * Akamai's wording differs ("You don't have permission to access ... on this
+ * server", reference link to errors.edgesuite.net). dailymail.co.uk serves it
+ * to Playwright once an IP is throttled, and the chain logged the 334-char
+ * denial as a success (BRO-716).
  */
 function isRobotBlockPage(content) {
   return !!content && content.length < 60000 &&
     /<title>\s*Access Denied\s*<\/title>/i.test(content) &&
-    content.includes('similar to malicious requests sent by robots');
+    (content.includes('similar to malicious requests sent by robots') ||
+      /You don(?:'|&#39;|’)t have permission to access/i.test(content) ||
+      content.includes('errors.edgesuite.net'));
 }
 
 function _isJsRequiredDomain(url) {
