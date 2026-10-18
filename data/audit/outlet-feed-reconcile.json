@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-18T00:42:00.748Z",
+  "generatedAt": "2026-10-18T04:03:00.422Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -127,10 +127,6 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -145,10 +141,6 @@
     {
       "outletId": "musical-theatre-review",
       "error": "HTTP 401 for https://musicaltheatrereview.com/feed/"
-    },
-    {
-      "outletId": "theatre-vibe",
-      "error": "HTTP 403 for https://theatrevibe.co.uk/feed/"
     },
     {
       "outletId": "theartsdispatch",
@@ -167,7 +159,7 @@
       "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 690,
+  "itemsScanned": 695,
   "matchedGaps": 2,
   "possibleGaps": 7,
   "gaps": [

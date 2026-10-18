@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-18T00:39:13.929Z",
+  "generatedAt": "2026-10-18T04:02:40.408Z",
   "windowDays": 1095,
-  "targets": 664,
-  "auditedThisRun": 10,
-  "carriedForward": 741,
+  "targets": 685,
+  "auditedThisRun": 7,
+  "carriedForward": 744,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 433,
-    "missingCurrentRun": 874,
+    "withGap": 432,
+    "missingCurrentRun": 873,
     "totalCitedNoUrl": 7,
-    "totalFlaggedMisses": 966,
+    "totalFlaggedMisses": 962,
     "totalRecoverable": 10,
     "totalRecovered": 15,
     "humanExcluded": 1,
-    "automatedExcluded": 162,
-    "automatedExcludedListed": 134,
-    "priorProductionCitations": 5100
+    "automatedExcluded": 160,
+    "automatedExcludedListed": 130,
+    "priorProductionCitations": 5101
   },
   "results": [
     {
@@ -11254,15 +11254,22 @@
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://markaspen.com/2026/10/17/angel-bone/",
         "https://www.britishtheatreguide.info/reviews/angel-s-bone-aviva-studios-25587",
-        "https://www.theatrereviewsnorth.com/post/angel-s-bone-a-defining-moment-for-eno-but-you-have-to-stand-to-see-it"
+        "https://www.theatrereviewsnorth.com/post/angel-s-bone"
       ],
       "dirFiles": 2,
       "dirClean": 1,
       "inReviewsJson": 1,
       "missing": [
         {
-          "url": "https://www.theatrereviewsnorth.com/post/angel-s-bone-a-defining-moment-for-eno-but-you-have-to-stand-to-see-it",
+          "url": "https://markaspen.com/2026/10/17/angel-bone/",
+          "host": "markaspen.com",
+          "knownOutletId": "markaspen",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatrereviewsnorth.com/post/angel-s-bone",
           "host": "theatrereviewsnorth.com",
           "knownOutletId": null,
           "serpCensus": true
@@ -11317,7 +11324,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 2
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -11358,7 +11365,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -11404,19 +11411,18 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 2,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
-        "count": 29,
+        "count": 27,
         "byReason": {
-          "non-review-host": 18,
-          "non-review-path": 3,
-          "aggregator-internal-nav": 2,
+          "aggregator-internal-nav": 3,
+          "non-review-host": 17,
+          "bare-host": 1,
           "ticketing-listing": 2,
-          "event-listing": 2,
-          "census-junk-host": 1,
-          "bare-host": 1
+          "non-review-path": 2,
+          "event-listing": 2
         }
       },
       "dedupedVariants": [],
@@ -11424,11 +11430,11 @@
       "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://www.theatrereviewsnorth.com/post/angel-s-bone-a-defining-moment-for-eno-but-you-have-to-stand-to-see-it",
-          "host": "theatrereviewsnorth.com",
-          "outletId": "theatrereviewsnorth",
-          "provisional": true,
-          "ok": false,
+          "url": "https://markaspen.com/2026/10/17/angel-bone/",
+          "host": "markaspen.com",
+          "outletId": "markaspen",
+          "provisional": false,
+          "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
@@ -11436,7 +11442,22 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  provisional outlet \"theatrereviewsnorth\" (not in registry) — onboard to outlet-registry.json aft"
+          "reason": null
+        },
+        {
+          "url": "https://www.theatrereviewsnorth.com/post/angel-s-bone",
+          "host": "theatrereviewsnorth.com",
+          "outletId": "theatrereviewsnorth",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -11444,33 +11465,42 @@
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "markaspen",
+            "outlet": "markaspen",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://markaspen.com/2026/10/17/angel-bone/"
+          },
+          {
             "outletId": "theatrereviewsnorth.com",
             "outlet": "theatrereviewsnorth.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.theatrereviewsnorth.com/post/angel-s-bone-a-defining-moment-for-eno-but-you-have-to-stand-to-see-it"
+            "url": "https://www.theatrereviewsnorth.com/post/angel-s-bone"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.theatrereviewsnorth.com/post/angel-s-bone-a-defining-moment-for-eno-but-you-have-to-stand-to-see-it",
+            "url": "https://markaspen.com/2026/10/17/angel-bone/",
+            "outletId": "markaspen",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-18T04:02:40.408Z"
+          },
+          {
+            "url": "https://www.theatrereviewsnorth.com/post/angel-s-bone",
             "outletId": "theatrereviewsnorth.com",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-17T20:02:37.323Z"
+            "firstSeenAt": "2026-10-18T04:02:40.408Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 1
+        "candidateCount": 2
       },
-      "computedAt": "2026-10-17T20:02:37.323Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-18T00:39:14.023Z",
-        "lastAt": "2026-10-18T00:39:14.023Z"
-      }
+      "computedAt": "2026-10-18T04:02:40.408Z"
     },
     {
       "showId": "animal-wisdom-off-broadway-2022",
@@ -28497,7 +28527,12 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-17T22:59:21.861Z"
+      "computedAt": "2026-10-17T22:59:21.861Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-18T04:02:40.492Z",
+        "lastAt": "2026-10-18T04:02:40.492Z"
+      }
     },
     {
       "showId": "bug-2026",
@@ -31046,7 +31081,12 @@
         "liveCount": 7,
         "candidateCount": 10
       },
-      "computedAt": "2026-10-17T22:59:21.861Z"
+      "computedAt": "2026-10-17T22:59:21.861Z",
+      "quarantine": {
+        "nextState": "complete:1:1",
+        "since": "2026-10-18T04:02:40.492Z",
+        "lastAt": "2026-10-18T04:02:40.492Z"
+      }
     },
     {
       "showId": "call-me-izzy-2025",
@@ -49113,7 +49153,7 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.chloenelkinconsulting.com/news/paul-bradshaws-critically-acclaimed-double-bill-tell-me-straight-aggy-comes-to-the-kings-head-theatre/",
-        "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-3182223",
+        "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-3499342",
         "https://www.uktw.co.uk/London/The-Kings-Head-Theatre/Play/Double-Bill-tell-me-straight-aggy-A-double-billing-of-two-critically-acclaimed-queer-shows/L175728610/",
         "https://shouldgoto.com/theatre/double-bill-tell-me-straight-aggy",
         "https://discountsforcarers.ticketsforgood.co.uk/events/389569-double-bill-tell-me-straight-aggy"
@@ -49123,7 +49163,7 @@
       "inReviewsJson": 0,
       "missing": [
         {
-          "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-3182223",
+          "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-3499342",
           "host": "whatnightout.uk",
           "knownOutletId": null,
           "serpCensus": true
@@ -49198,7 +49238,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 2
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -49289,15 +49329,15 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 19,
+        "count": 24,
         "byReason": {
-          "non-review-host": 12,
-          "ticketing-listing": 2,
+          "non-review-host": 14,
           "ticketing-reseller": 1,
+          "census-junk-host": 2,
           "write-path-blocked": 1,
-          "show-hub": 1,
-          "event-listing": 1,
-          "census-junk-host": 1
+          "ticketing-listing": 3,
+          "non-review-path": 2,
+          "show-hub": 1
         }
       },
       "dedupedVariants": [],
@@ -49320,7 +49360,7 @@
       ],
       "ingestResults": [
         {
-          "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-3182223",
+          "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-3499342",
           "host": "whatnightout.uk",
           "outletId": "whatnightout",
           "provisional": true,
@@ -49332,7 +49372,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  provisional outlet \"whatnightout\" (not in registry) — onboard to outlet-registry.json after revi"
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=whatnightout.uk): Scrapingdog HTTP 400: Oops! Somethin"
         }
       ],
       "ingestSkippedByCap": [],
@@ -49344,7 +49384,7 @@
             "outlet": "whatnightout.uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-3182223"
+            "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-3499342"
           },
           {
             "outletId": "ticketsforgood.co.uk",
@@ -49357,11 +49397,11 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-3182223",
+            "url": "https://whatnightout.uk/london/events/double-bill-tell-me-straight-aggy-3499342",
             "outletId": "whatnightout.uk",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-17T20:02:37.323Z"
+            "firstSeenAt": "2026-10-18T04:02:40.408Z"
           },
           {
             "url": "https://discountsforcarers.ticketsforgood.co.uk/events/389569-double-bill-tell-me-straight-aggy",
@@ -49375,12 +49415,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-10-17T20:02:37.323Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-18T00:39:14.023Z",
-        "lastAt": "2026-10-18T00:39:14.023Z"
-      }
+      "computedAt": "2026-10-18T04:02:40.408Z"
     },
     {
       "showId": "dracula-west-end-2025",
@@ -82918,91 +82953,37 @@
       "status": "open",
       "category": "off-west-end",
       "aggregatorArticles": [
-        "https://playbill.com/article/what-do-critics-think-of-high-school-musical-the-musical-the-series",
         "https://www.broadwayworld.com/article/Review-Roundup-Disneys-HIGH-SCHOOL-MUSICAL-THE-MUSICAL-THE-SERIES-20191111"
       ],
       "aggregatorListedUrls": [
-        "https://tv.avclub.com/the-cast-of-disney-s-high-school-musical-reboot-are-alr-1839459992",
-        "https://collider.com/high-school-musical-the-musical-the-series-review/",
-        "https://comicbook.com/tv-shows/2019/11/04/high-school-musical-the-musical-the-series-review-disney-plus/",
-        "https://decider.com/2019/11/08/high-school-musical-the-musical-the-series-disney-plus-stream-it-or-skip-it/",
-        "https://www.forbes.com/sites/scottmendelson/2019/11/05/the-first-disney-tv-shows-high-school-musical-world-according-to-jeff-goldblum-and-encore-are-disappointly-inessential/",
-        "https://www.hollywoodreporter.com/review/high-school-musical-musical-series-forky-asks-a-question-review-1253996",
-        "https://www.indiewire.com/2019/11/high-school-musical-the-musical-the-series-review-1202188330/",
-        "https://www.insider.com/high-school-musical-the-series-tv-review-disney-plus-2019-11",
-        "https://www.vulture.com/2019/11/high-school-musical-the-musical-the-series-review.html",
-        "https://www.nytimes.com/2019/11/12/arts/television/high-school-musical-review-disney-plus.html",
-        "https://www.usatoday.com/story/entertainment/tv/2019/11/11/high-school-musical-musical-series-review-great-nostalgia-disney-plus/2519110001/",
-        "https://www.vanityfair.com/hollywood/2019/11/high-school-musical-series-disney-plus",
         "https://variety.com/2019/tv/reviews/high-school-musical-the-musical-the-series-review-disney-plus-1203390218/",
+        "https://www.vulture.com/2019/11/high-school-musical-the-musical-the-series-review.html",
+        "https://www.usatoday.com/story/entertainment/tv/2019/11/11/high-school-musical-musical-series-review-great-nostalgia-disney-plus/2519110001/",
+        "https://www.forbes.com/sites/scottmendelson/2019/11/05/the-first-disney-tv-shows-high-school-musical-world-according-to-jeff-goldblum-and-encore-are-disappointly-inessential/",
+        "https://www.indiewire.com/2019/11/high-school-musical-the-musical-the-series-review-1202188330/",
+        "https://tv.avclub.com/the-cast-of-disney-s-high-school-musical-reboot-are-alr-1839459992",
+        "https://www.insider.com/high-school-musical-the-series-tv-review-disney-plus-2019-11",
+        "https://collider.com/high-school-musical-the-musical-the-series-review/",
+        "https://decider.com/2019/11/08/high-school-musical-the-musical-the-series-disney-plus-stream-it-or-skip-it/",
         "https://decider.com/2019/11/05/high-school-musical-the-musical-the-series-review-disney-plus/",
+        "https://comicbook.com/tv-shows/2019/11/04/high-school-musical-the-musical-the-series-review-disney-plus/",
         "https://kiddoadventures.com/2026/10/13/high-school-musical-london-review-does-it-live-up-to-the-original-film/",
         "https://maninlondon.com/high-school-musical-troubadour-wembley-park-theatre-london/",
         "https://www.disneytickets.co.uk/high-school-musical-tickets",
         "https://www.timeout.com/london/theatre/high-school-musical",
         "https://jadar.uk/2026/08/28/review-high-school-musical/",
-        "https://oneshowatatime.co.uk/2026/08/28/high-school-musical-a-fantastically-joyous-production-theatre-review/",
+        "https://www.whatsonstage.com/news/high-school-musical-revival-take-a-sneak-peek-at-the-set-designs-for-salford-and-london_1726697/",
         "https://kidify.co.uk/day-out/high-school-musical",
-        "https://activities.bookpebble.co.uk/activity/fresh-arts-high-school-musical-at-the-troubadour-theatre-wembley-5941d490-c377-417d-8187-20d8b8fc8e92",
-        "https://www.jackstage.co.uk/post/disney-s-high-school-musical-review-theatre-meets-interactive-sports-stadium"
+        "https://oneshowatatime.co.uk/2026/08/28/high-school-musical-a-fantastically-joyous-production-theatre-review/"
       ],
       "dirFiles": 18,
       "dirClean": 2,
       "inReviewsJson": 1,
       "missing": [
         {
-          "url": "https://tv.avclub.com/the-cast-of-disney-s-high-school-musical-reboot-are-alr-1839459992",
-          "host": "avclub.com",
-          "knownOutletId": "av-club",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://collider.com/high-school-musical-the-musical-the-series-review/",
-          "host": "collider.com",
-          "knownOutletId": "collider",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://comicbook.com/tv-shows/2019/11/04/high-school-musical-the-musical-the-series-review-disney-plus/",
-          "host": "comicbook.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://decider.com/2019/11/08/high-school-musical-the-musical-the-series-disney-plus-stream-it-or-skip-it/",
-          "host": "decider.com",
-          "knownOutletId": "decider",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.forbes.com/sites/scottmendelson/2019/11/05/the-first-disney-tv-shows-high-school-musical-world-according-to-jeff-goldblum-and-encore-are-disappointly-inessential/",
-          "host": "forbes.com",
-          "knownOutletId": "forbes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/high-school-musical-musical-series-forky-asks-a-question-review-1253996",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.indiewire.com/2019/11/high-school-musical-the-musical-the-series-review-1202188330/",
-          "host": "indiewire.com",
-          "knownOutletId": "indiewire",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.insider.com/high-school-musical-the-series-tv-review-disney-plus-2019-11",
-          "host": "insider.com",
-          "knownOutletId": null,
+          "url": "https://variety.com/2019/tv/reviews/high-school-musical-the-musical-the-series-review-disney-plus-1203390218/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -83014,13 +82995,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.nytimes.com/2019/11/12/arts/television/high-school-musical-review-disney-plus.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "https://www.usatoday.com/story/entertainment/tv/2019/11/11/high-school-musical-musical-series-review-great-nostalgia-disney-plus/2519110001/",
           "host": "usatoday.com",
           "knownOutletId": "usatoday",
@@ -83028,16 +83002,44 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.vanityfair.com/hollywood/2019/11/high-school-musical-series-disney-plus",
-          "host": "vanityfair.com",
-          "knownOutletId": "vanityfair",
+          "url": "https://www.forbes.com/sites/scottmendelson/2019/11/05/the-first-disney-tv-shows-high-school-musical-world-according-to-jeff-goldblum-and-encore-are-disappointly-inessential/",
+          "host": "forbes.com",
+          "knownOutletId": "forbes",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://variety.com/2019/tv/reviews/high-school-musical-the-musical-the-series-review-disney-plus-1203390218/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
+          "url": "https://www.indiewire.com/2019/11/high-school-musical-the-musical-the-series-review-1202188330/",
+          "host": "indiewire.com",
+          "knownOutletId": "indiewire",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://tv.avclub.com/the-cast-of-disney-s-high-school-musical-reboot-are-alr-1839459992",
+          "host": "avclub.com",
+          "knownOutletId": "av-club",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.insider.com/high-school-musical-the-series-tv-review-disney-plus-2019-11",
+          "host": "insider.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://collider.com/high-school-musical-the-musical-the-series-review/",
+          "host": "collider.com",
+          "knownOutletId": "collider",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://decider.com/2019/11/08/high-school-musical-the-musical-the-series-disney-plus-stream-it-or-skip-it/",
+          "host": "decider.com",
+          "knownOutletId": "decider",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -83049,10 +83051,11 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://activities.bookpebble.co.uk/activity/fresh-arts-high-school-musical-at-the-troubadour-theatre-wembley-5941d490-c377-417d-8187-20d8b8fc8e92",
-          "host": "bookpebble.co.uk",
+          "url": "https://comicbook.com/tv-shows/2019/11/04/high-school-musical-the-musical-the-series-review-disney-plus/",
+          "host": "comicbook.com",
           "knownOutletId": null,
-          "serpCensus": true
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         }
       ],
       "dirOnly": [
@@ -83082,8 +83085,9 @@
           "basis": [
             "rejectionReason"
           ],
+          "confirmedNonReview": true,
           "serpCensus": true,
-          "reverify": true
+          "reverify": false
         },
         {
           "url": "https://www.disneytickets.co.uk/high-school-musical-tickets",
@@ -83105,8 +83109,9 @@
           "basis": [
             "rejectionReason"
           ],
+          "confirmedNonReview": true,
           "serpCensus": true,
-          "reverify": true
+          "reverify": false
         },
         {
           "url": "https://www.timeout.com/london/theatre/high-school-musical",
@@ -83155,9 +83160,9 @@
           "reverify": true
         },
         {
-          "url": "https://oneshowatatime.co.uk/2026/08/28/high-school-musical-a-fantastically-joyous-production-theatre-review/",
-          "host": "oneshowatatime.co.uk",
-          "knownOutletId": null,
+          "url": "https://www.whatsonstage.com/news/high-school-musical-revival-take-a-sneak-peek-at-the-set-designs-for-salford-and-london_1726697/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -83165,17 +83170,19 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "oneshowatatime--leyla-demirel.json",
+              "file": "whatsonstage--tom-millward.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://oneshowatatime.co.uk/2026/08/28/high-school-musical-a-fantastically-joyous-production-theatre-review/"
+              "urlInDir": "https://www.whatsonstage.com/news/high-school-musical-revival-take-a-sneak-peek-at-the-set-designs-for-salford-and-london_1726697/"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
             "wrongProduction"
           ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-07-03",
           "serpCensus": true,
-          "reverify": true
+          "reverify": false
         },
         {
           "url": "https://kidify.co.uk/day-out/high-school-musical",
@@ -83197,13 +83204,14 @@
           "basis": [
             "rejectionReason"
           ],
+          "confirmedNonReview": true,
           "serpCensus": true,
-          "reverify": true
+          "reverify": false
         },
         {
-          "url": "https://www.jackstage.co.uk/post/disney-s-high-school-musical-review-theatre-meets-interactive-sports-stadium",
-          "host": "jackstage.co.uk",
-          "knownOutletId": "jackstage",
+          "url": "https://oneshowatatime.co.uk/2026/08/28/high-school-musical-a-fantastically-joyous-production-theatre-review/",
+          "host": "oneshowatatime.co.uk",
+          "knownOutletId": null,
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -83211,9 +83219,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "jackstage--jack-davey.json",
+              "file": "oneshowatatime--leyla-demirel.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.jackstage.co.uk/post/disney-s-high-school-musical-review-theatre-meets-interactive-sports-stadium"
+              "urlInDir": "https://oneshowatatime.co.uk/2026/08/28/high-school-musical-a-fantastically-joyous-production-theatre-review/"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -83240,7 +83248,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 1
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -83321,90 +83329,43 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 9,
+        "resultCount": 8,
         "error": null
       },
       "candidatesRejected": {
-        "count": 454,
+        "count": 312,
         "byReason": {
-          "not-http-url": 38,
-          "non-review-host": 62,
-          "aggregator-internal-nav": 276,
-          "aggregator-section-root": 8,
-          "roundup-page": 50,
-          "ticketing-listing": 1,
-          "census-junk-host": 3,
-          "write-path-blocked": 2,
+          "aggregator-internal-nav": 224,
+          "not-http-url": 32,
+          "aggregator-section-root": 4,
+          "non-review-host": 42,
           "bare-host": 2,
+          "census-junk-host": 3,
+          "write-path-blocked": 1,
+          "ticketing-listing": 1,
           "ticket-seller-product-page": 2,
-          "production-database-listing": 10
+          "ugc-platform": 1
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
         {
-          "url": "https://playbill.com/article/what-do-critics-think-of-high-school-musical-the-musical-the-series",
-          "publishDate": "2019-11-11"
-        },
-        {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-Disneys-HIGH-SCHOOL-MUSICAL-THE-MUSICAL-THE-SERIES-20191111",
           "publishDate": "2019-11-11"
         }
       ],
-      "automatedExcludedListed": 7,
+      "automatedExcludedListed": 3,
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://tv.avclub.com/the-cast-of-disney-s-high-school-musical-reboot-are-alr-1839459992",
-          "host": "avclub.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://collider.com/high-school-musical-the-musical-the-series-review/",
-          "host": "collider.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://comicbook.com/tv-shows/2019/11/04/high-school-musical-the-musical-the-series-review-disney-plus/",
-          "host": "comicbook.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://decider.com/2019/11/08/high-school-musical-the-musical-the-series-disney-plus-stream-it-or-skip-it/",
-          "host": "decider.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.forbes.com/sites/scottmendelson/2019/11/05/the-first-disney-tv-shows-high-school-musical-world-according-to-jeff-goldblum-and-encore-are-disappointly-inessential/",
-          "host": "forbes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/high-school-musical-musical-series-forky-asks-a-question-review-1253996",
-          "host": "hollywoodreporter.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.indiewire.com/2019/11/high-school-musical-the-musical-the-series-review-1202188330/",
-          "host": "indiewire.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.insider.com/high-school-musical-the-series-tv-review-disney-plus-2019-11",
-          "host": "insider.com",
+          "url": "https://variety.com/2019/tv/reviews/high-school-musical-the-musical-the-series-review-disney-plus-1203390218/",
+          "host": "variety.com",
           "priorRun": true,
           "reason": "prior-run"
         },
@@ -83415,26 +83376,44 @@
           "reason": "prior-run"
         },
         {
-          "url": "https://www.nytimes.com/2019/11/12/arts/television/high-school-musical-review-disney-plus.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
           "url": "https://www.usatoday.com/story/entertainment/tv/2019/11/11/high-school-musical-musical-series-review-great-nostalgia-disney-plus/2519110001/",
           "host": "usatoday.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://www.vanityfair.com/hollywood/2019/11/high-school-musical-series-disney-plus",
-          "host": "vanityfair.com",
+          "url": "https://www.forbes.com/sites/scottmendelson/2019/11/05/the-first-disney-tv-shows-high-school-musical-world-according-to-jeff-goldblum-and-encore-are-disappointly-inessential/",
+          "host": "forbes.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://variety.com/2019/tv/reviews/high-school-musical-the-musical-the-series-review-disney-plus-1203390218/",
-          "host": "variety.com",
+          "url": "https://www.indiewire.com/2019/11/high-school-musical-the-musical-the-series-review-1202188330/",
+          "host": "indiewire.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://tv.avclub.com/the-cast-of-disney-s-high-school-musical-reboot-are-alr-1839459992",
+          "host": "avclub.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.insider.com/high-school-musical-the-series-tv-review-disney-plus-2019-11",
+          "host": "insider.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://collider.com/high-school-musical-the-musical-the-series-review/",
+          "host": "collider.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://decider.com/2019/11/08/high-school-musical-the-musical-the-series-disney-plus-stream-it-or-skip-it/",
+          "host": "decider.com",
           "priorRun": true,
           "reason": "prior-run"
         },
@@ -83443,36 +83422,19 @@
           "host": "decider.com",
           "priorRun": true,
           "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [
+        },
         {
-          "url": "https://activities.bookpebble.co.uk/activity/fresh-arts-high-school-musical-at-the-troubadour-theatre-wembley-5941d490-c377-417d-8187-20d8b8fc8e92",
-          "host": "bookpebble.co.uk",
-          "outletId": "bookpebble",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "Fetch failed: All scraping methods failed"
+          "url": "https://comicbook.com/tv-shows/2019/11/04/high-school-musical-the-musical-the-series-review-disney-plus/",
+          "host": "comicbook.com",
+          "priorRun": true,
+          "reason": "prior-run"
         }
       ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "bookpebble.co.uk",
-            "outlet": "bookpebble.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://activities.bookpebble.co.uk/activity/fresh-arts-high-school-musical-at-the-troubadour-theatre-wembley-5941d490-c377-417d-8187-20d8b8fc8e92"
-          },
           {
             "outletId": "maninlondon.com",
             "outlet": "maninlondon.com",
@@ -83502,13 +83464,6 @@
             "url": "https://jadar.uk/2026/08/28/review-high-school-musical/"
           },
           {
-            "outletId": "oneshowatatime.co.uk",
-            "outlet": "oneshowatatime.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://oneshowatatime.co.uk/2026/08/28/high-school-musical-a-fantastically-joyous-production-theatre-review/"
-          },
-          {
             "outletId": "kidify.co.uk",
             "outlet": "kidify.co.uk",
             "critic": "Unknown",
@@ -83516,11 +83471,11 @@
             "url": "https://kidify.co.uk/day-out/high-school-musical"
           },
           {
-            "outletId": "jackstage",
-            "outlet": "jackstage",
+            "outletId": "oneshowatatime.co.uk",
+            "outlet": "oneshowatatime.co.uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.jackstage.co.uk/post/disney-s-high-school-musical-review-theatre-meets-interactive-sports-stadium"
+            "url": "https://oneshowatatime.co.uk/2026/08/28/high-school-musical-a-fantastically-joyous-production-theatre-review/"
           }
         ],
         "suppressedMissing": [],
@@ -83530,13 +83485,6 @@
             "outletId": "kiddoadventures.com",
             "state": "live",
             "firstSeenAt": "2026-10-13T19:50:25.664Z"
-          },
-          {
-            "url": "https://activities.bookpebble.co.uk/activity/fresh-arts-high-school-musical-at-the-troubadour-theatre-wembley-5941d490-c377-417d-8187-20d8b8fc8e92",
-            "outletId": "bookpebble.co.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-17T04:53:29.079Z"
           },
           {
             "url": "https://maninlondon.com/high-school-musical-troubadour-wembley-park-theatre-london/",
@@ -83567,13 +83515,6 @@
             "firstSeenAt": "2026-10-14T14:20:53.735Z"
           },
           {
-            "url": "https://oneshowatatime.co.uk/2026/08/28/high-school-musical-a-fantastically-joyous-production-theatre-review/",
-            "outletId": "oneshowatatime.co.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-16T20:46:15.120Z"
-          },
-          {
             "url": "https://kidify.co.uk/day-out/high-school-musical",
             "outletId": "kidify.co.uk",
             "state": "IN_FLIGHT",
@@ -83581,23 +83522,18 @@
             "firstSeenAt": "2026-10-13T04:11:59.529Z"
           },
           {
-            "url": "https://www.jackstage.co.uk/post/disney-s-high-school-musical-review-theatre-meets-interactive-sports-stadium",
-            "outletId": "jackstage",
+            "url": "https://oneshowatatime.co.uk/2026/08/28/high-school-musical-a-fantastically-joyous-production-theatre-review/",
+            "outletId": "oneshowatatime.co.uk",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-17T18:15:37.224Z"
+            "firstSeenAt": "2026-10-16T20:46:15.120Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 1,
-        "candidateCount": 9
+        "candidateCount": 7
       },
-      "computedAt": "2026-10-17T18:15:37.224Z",
-      "quarantine": {
-        "nextState": "incomplete:1:7",
-        "since": "2026-10-18T00:39:14.023Z",
-        "lastAt": "2026-10-18T00:39:14.023Z"
-      }
+      "computedAt": "2026-10-18T04:02:40.408Z"
     },
     {
       "showId": "high-society-west-end-2026",
@@ -92477,7 +92413,12 @@
         "liveCount": 6,
         "candidateCount": 13
       },
-      "computedAt": "2026-10-17T22:59:21.861Z"
+      "computedAt": "2026-10-17T22:59:21.861Z",
+      "quarantine": {
+        "nextState": "incomplete:0:1",
+        "since": "2026-10-18T04:02:40.492Z",
+        "lastAt": "2026-10-18T04:02:40.492Z"
+      }
     },
     {
       "showId": "jasmines-demo-show-4-the-end-off-broadway-2026",
@@ -94717,7 +94658,12 @@
         "liveCount": 1,
         "candidateCount": 5
       },
-      "computedAt": "2026-10-17T22:59:21.861Z"
+      "computedAt": "2026-10-17T22:59:21.861Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-18T04:02:40.492Z",
+        "lastAt": "2026-10-18T04:02:40.492Z"
+      }
     },
     {
       "showId": "jesus-christ-superstar-west-end-2026",
@@ -104156,7 +104102,12 @@
         "liveCount": 1,
         "candidateCount": 8
       },
-      "computedAt": "2026-10-17T22:59:21.861Z"
+      "computedAt": "2026-10-17T22:59:21.861Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-18T04:02:40.492Z",
+        "lastAt": "2026-10-18T04:02:40.492Z"
+      }
     },
     {
       "showId": "lean-to-off-broadway-2026",
@@ -113741,7 +113692,12 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-10-17T22:59:21.861Z"
+      "computedAt": "2026-10-17T22:59:21.861Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-18T04:02:40.492Z",
+        "lastAt": "2026-10-18T04:02:40.492Z"
+      }
     },
     {
       "showId": "marcel-on-the-train-off-broadway-2026",
@@ -121045,9 +121001,9 @@
       },
       "computedAt": "2026-10-17T14:50:53.502Z",
       "quarantine": {
-        "nextState": "complete:14:14",
-        "since": "2026-10-18T00:39:14.023Z",
-        "lastAt": "2026-10-18T00:39:14.023Z"
+        "nextState": "complete:13:13",
+        "since": "2026-10-18T04:02:40.492Z",
+        "lastAt": "2026-10-18T04:02:40.492Z"
       }
     },
     {
@@ -130268,9 +130224,9 @@
       },
       "computedAt": "2026-10-17T18:15:37.224Z",
       "quarantine": {
-        "nextState": "incomplete:0:7",
-        "since": "2026-10-18T00:39:14.023Z",
-        "lastAt": "2026-10-18T00:39:14.023Z"
+        "nextState": "incomplete:0:8",
+        "since": "2026-10-18T04:02:40.492Z",
+        "lastAt": "2026-10-18T04:02:40.492Z"
       }
     },
     {
@@ -132652,7 +132608,12 @@
         "liveCount": 11,
         "candidateCount": 12
       },
-      "computedAt": "2026-10-17T22:59:21.861Z"
+      "computedAt": "2026-10-17T22:59:21.861Z",
+      "quarantine": {
+        "nextState": "complete:9:9",
+        "since": "2026-10-18T04:02:40.492Z",
+        "lastAt": "2026-10-18T04:02:40.492Z"
+      }
     },
     {
       "showId": "no-singing-in-the-navy-off-broadway-2026",
@@ -158298,7 +158259,7 @@
       "quarantine": {
         "nextState": "no-census-yet:0:0",
         "since": "2026-10-18T00:39:14.023Z",
-        "lastAt": "2026-10-18T00:39:14.023Z"
+        "lastAt": "2026-10-18T04:02:40.492Z"
       }
     },
     {
@@ -161002,9 +160963,9 @@
       },
       "computedAt": "2026-10-17T18:15:37.224Z",
       "quarantine": {
-        "nextState": "incomplete:0:1",
-        "since": "2026-10-18T00:39:14.023Z",
-        "lastAt": "2026-10-18T00:39:14.023Z"
+        "nextState": "incomplete:0:2",
+        "since": "2026-10-18T04:02:40.492Z",
+        "lastAt": "2026-10-18T04:02:40.492Z"
       }
     },
     {
@@ -172592,7 +172553,12 @@
         "liveCount": 11,
         "candidateCount": 14
       },
-      "computedAt": "2026-10-17T22:59:21.861Z"
+      "computedAt": "2026-10-17T22:59:21.861Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-18T04:02:40.492Z",
+        "lastAt": "2026-10-18T04:02:40.492Z"
+      }
     },
     {
       "showId": "stranger-things-2024",
@@ -173956,9 +173922,7 @@
         "https://redbuslondinium.uk/2026/10/07/interview-ugly-bucket-on-stuffed/",
         "https://www.bristol247.com/culture/theatre/review-back-to-the-future-the-musical-bristol-hippodrome-an-immensely-fun-visually-spectacular-and-nostalgia-stuffed-ride/",
         "https://www.thenerve.news/p/protest-theatre-companies-social-issues-stuffed-these-are-our-neighbours-unfortunately",
-        "https://www.londonpubtheatres.com/review-stuffed-at-new-diorama-theatre-13-24-october-2026",
-        "https://www.uktw.co.uk/London/The-New-Diorama-Theatre/Play/Stuffed/L0727657514/",
-        "https://www.fest-mag.com/edinburgh/theatre/review-stuffed"
+        "https://www.londonpubtheatres.com/review-stuffed-at-new-diorama-theatre-13-24-october-2026"
       ],
       "dirFiles": 11,
       "dirClean": 3,
@@ -173982,14 +173946,6 @@
           "url": "https://www.timeout.com/london/theatre/stuffed",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.fest-mag.com/edinburgh/theatre/review-stuffed",
-          "host": "fest-mag.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2024-08-05",
           "serpCensus": true
         }
       ],
@@ -174117,7 +174073,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 1
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -174188,7 +174144,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -174204,20 +174160,19 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 8,
+        "resultCount": 6,
         "error": null
       },
       "candidatesRejected": {
         "count": 129,
         "byReason": {
-          "non-review-host": 33,
           "aggregator-internal-nav": 69,
-          "write-path-blocked": 4,
           "not-http-url": 5,
-          "aggregator-section-root": 4,
-          "bare-host": 2,
           "production-database-listing": 10,
-          "roundup-page": 1,
+          "aggregator-section-root": 4,
+          "non-review-host": 33,
+          "bare-host": 3,
+          "write-path-blocked": 4,
           "tag-index-page": 1
         }
       },
@@ -174229,15 +174184,7 @@
         }
       ],
       "automatedExcludedListed": 1,
-      "unextractable": [
-        {
-          "url": "https://www.uktw.co.uk/London/The-New-Diorama-Theatre/Play/Stuffed/L0727657514/",
-          "host": "uktw.co.uk",
-          "knownOutletId": "uktw",
-          "serpCensus": true,
-          "zeroCharAttempts": 4
-        }
-      ],
+      "unextractable": [],
       "weIngestBlocked": [
         {
           "url": "http://www.nytimes.com/2016/10/15/theater/review-stuffed-details-fights-women-wage-with-their-weight.html",
@@ -174248,12 +174195,6 @@
         {
           "url": "http://www.timeout.com/newyork/blog/theater-review-in-stuffed-lisa-lampanelli-weighs-in-on-body-image-100716",
           "host": "timeout.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.fest-mag.com/edinburgh/theatre/review-stuffed",
-          "host": "fest-mag.com",
           "priorRun": true,
           "reason": "prior-run"
         }
@@ -174355,12 +174296,7 @@
         "liveCount": 2,
         "candidateCount": 6
       },
-      "computedAt": "2026-10-17T20:02:37.323Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-18T00:39:14.023Z",
-        "lastAt": "2026-10-18T00:39:14.023Z"
-      }
+      "computedAt": "2026-10-18T04:02:40.408Z"
     },
     {
       "showId": "suffs-2024",
@@ -179254,7 +179190,12 @@
         "liveCount": 2,
         "candidateCount": 5
       },
-      "computedAt": "2026-10-17T22:59:21.861Z"
+      "computedAt": "2026-10-17T22:59:21.861Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-18T04:02:40.492Z",
+        "lastAt": "2026-10-18T04:02:40.492Z"
+      }
     },
     {
       "showId": "the-balusters-2026",
@@ -180015,7 +179956,12 @@
         "liveCount": 12,
         "candidateCount": 17
       },
-      "computedAt": "2026-10-17T22:59:21.861Z"
+      "computedAt": "2026-10-17T22:59:21.861Z",
+      "quarantine": {
+        "nextState": "complete:12:12",
+        "since": "2026-10-18T04:02:40.492Z",
+        "lastAt": "2026-10-18T04:02:40.492Z"
+      }
     },
     {
       "showId": "the-bathroom-attendant-off-broadway-2026",
@@ -180484,20 +180430,22 @@
         "http://www.thestage.co.uk/reviews/review.php/37808/the-bodyguard",
         "https://www.broadwayworld.com/article/Review-THE-BODYGUARD-National-Tour-at-The-Stranahan-Theater-20261016",
         "https://motifri.com/theater-preview-touring-movical-the-bodyguard-returns-reenvisioned-to-ppac/",
-        "https://momonthegoinholytoledo.com/2026/10/15/the-bodyguard-opens-tonight-at-stranahan-tickets-on-sale-now/",
+        "https://www.broadwayworld.com/cleveland/article/Review-THE-BODYGUARD-National-Tour-at-The-Stranahan-Theater-20261016",
         "https://www.broadwayworld.com/long-island/article/Review-THE-BODYGUARD-at-John-W-Engeman-Theater-20260329",
         "https://jadar.uk/2026/01/20/review-the-bodyguard/",
         "https://aroundthetownchicago.com/theatre-reviews/the-bodyguard-musical/",
+        "https://www.kaywilsonwriter.com/blog/the-bodyguard-musical-review",
         "https://famousashleygrant.com/bodyguard-musical-review/",
         "https://matineedog.com/the-bodyguard-uk-tour-review/",
+        "https://www.voicemag.uk/review/16653/the-bodyguard-the-musical-review",
         "https://www.stagesideuk.co.uk/the-bodyguard-review/",
-        "https://seenanythinglately.wordpress.com/2026/02/18/the-bodyguard-review-a-spectacular-night-out/",
-        "https://www.britishtheatreguide.info/reviews/the-bodyguard-everyman-theatr-25364",
         "https://minitravellers.co.uk/review-the-bodyguard-the-palace-theatre-manchester/",
+        "https://seenanythinglately.wordpress.com/2026/02/18/the-bodyguard-review-a-spectacular-night-out/",
         "https://www.theenglisheverygirl.com/the-bodyguard-uk-tour-review/",
+        "https://ilovemanchester.com/review-bodyguard-palace-theatre",
+        "https://www.britishtheatreguide.info/reviews/the-bodyguard-everyman-theatr-25364",
         "https://theater.guide/events/the-bodyguard-the-musical/",
-        "https://hotchka.com/the-bodyguard-tour-review",
-        "https://musicaltheatrereview.com/the-bodyguard-milton-keynes-theatre-and-touring/"
+        "https://hotchka.com/the-bodyguard-tour-review"
       ],
       "dirFiles": 21,
       "dirClean": 2,
@@ -180582,14 +180530,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.britishtheatreguide.info/reviews/the-bodyguard-everyman-theatr-25364",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2026-02-24",
-          "serpCensus": true
-        },
-        {
           "url": "https://minitravellers.co.uk/review-the-bodyguard-the-palace-theatre-manchester/",
           "host": "minitravellers.co.uk",
           "knownOutletId": null,
@@ -180604,17 +180544,25 @@
           "serpCensus": true
         },
         {
+          "url": "https://ilovemanchester.com/review-bodyguard-palace-theatre",
+          "host": "ilovemanchester.com",
+          "knownOutletId": "ilovemanchester",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/the-bodyguard-everyman-theatr-25364",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2026-02-24",
+          "serpCensus": true
+        },
+        {
           "url": "https://hotchka.com/the-bodyguard-tour-review",
           "host": "hotchka.com",
           "knownOutletId": "hotchka",
           "priorRun": true,
           "priorRunSource": "pending-file-date:2017-03-01",
-          "serpCensus": true
-        },
-        {
-          "url": "https://musicaltheatrereview.com/the-bodyguard-milton-keynes-theatre-and-touring/",
-          "host": "musicaltheatrereview.com",
-          "knownOutletId": "musical-theatre-review",
           "serpCensus": true
         }
       ],
@@ -180645,8 +180593,8 @@
           "reverify": false
         },
         {
-          "url": "https://momonthegoinholytoledo.com/2026/10/15/the-bodyguard-opens-tonight-at-stranahan-tickets-on-sale-now/",
-          "host": "momonthegoinholytoledo.com",
+          "url": "https://www.kaywilsonwriter.com/blog/the-bodyguard-musical-review",
+          "host": "kaywilsonwriter.com",
           "knownOutletId": null,
           "recoverable": false,
           "recoverableFile": null,
@@ -180655,16 +180603,17 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "momonthegoinholytoledo--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://momonthegoinholytoledo.com/2026/10/15/the-bodyguard-opens-tonight-at-stranahan-tickets-on-sale-now/"
+              "file": "kaywilsonwriter--kay-wilson.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.kaywilsonwriter.com/blog/the-bodyguard-musical-review"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "rejectionReason"
+            "wrongProduction"
           ],
-          "confirmedNonReview": true,
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-04-29",
           "serpCensus": true,
           "reverify": false
         },
@@ -180692,6 +180641,29 @@
           "priorRunSource": "flagged-file-date:2026-07-07",
           "serpCensus": true,
           "reverify": false
+        },
+        {
+          "url": "https://www.voicemag.uk/review/16653/the-bodyguard-the-musical-review",
+          "host": "voicemag.uk",
+          "knownOutletId": "voice-magazine",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "voice-magazine--lauren-slater.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.voicemag.uk/review/16653/the-bodyguard-the-musical-review"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
         },
         {
           "url": "https://seenanythinglately.wordpress.com/2026/02/18/the-bodyguard-review-a-spectacular-night-out/",
@@ -180756,8 +180728,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 3,
+            "results": 9,
+            "accepted": 2,
             "error": null
           },
           {
@@ -180767,7 +180739,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -180777,7 +180749,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -180797,23 +180769,24 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 6,
+            "accepted": 7,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 16,
+        "resultCount": 18,
         "error": null
       },
       "candidatesRejected": {
-        "count": 355,
+        "count": 354,
         "byReason": {
-          "non-review-host": 36,
-          "aggregator-internal-nav": 228,
+          "aggregator-internal-nav": 227,
           "not-http-url": 86,
           "aggregator-section-root": 4,
-          "bare-host": 1
+          "non-review-host": 35,
+          "bare-host": 1,
+          "ticketing-reseller": 1
         }
       },
       "dedupedVariants": [],
@@ -180823,7 +180796,7 @@
           "publishDate": "2012-12-06"
         }
       ],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -180887,14 +180860,14 @@
           "reason": "prior-run"
         },
         {
-          "url": "https://www.britishtheatreguide.info/reviews/the-bodyguard-everyman-theatr-25364",
-          "host": "britishtheatreguide.info",
+          "url": "https://www.theenglisheverygirl.com/the-bodyguard-uk-tour-review/",
+          "host": "theenglisheverygirl.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://www.theenglisheverygirl.com/the-bodyguard-uk-tour-review/",
-          "host": "theenglisheverygirl.com",
+          "url": "https://www.britishtheatreguide.info/reviews/the-bodyguard-everyman-theatr-25364",
+          "host": "britishtheatreguide.info",
           "priorRun": true,
           "reason": "prior-run"
         },
@@ -180937,9 +180910,9 @@
           "reason": "⚠️  provisional outlet \"minitravellers\" (not in registry) — onboard to outlet-registry.json after re"
         },
         {
-          "url": "https://musicaltheatrereview.com/the-bodyguard-milton-keynes-theatre-and-touring/",
-          "host": "musicaltheatrereview.com",
-          "outletId": "musical-theatre-review",
+          "url": "https://ilovemanchester.com/review-bodyguard-palace-theatre",
+          "host": "ilovemanchester.com",
+          "outletId": "ilovemanchester",
           "provisional": false,
           "ok": false,
           "noop": false,
@@ -180948,8 +180921,8 @@
           "expected": false,
           "expectedReason": null,
           "unclassified": false,
-          "zeroChar": true,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=musicaltheatrereview.com): Scrapingdog HTTP 400: Oops!"
+          "zeroChar": false,
+          "reason": "[review-write-guard] date-implausible: the-bodyguard-tour-2026/ilovemanchester--shayan-le.json → qua"
         }
       ],
       "ingestSkippedByCap": [],
@@ -180971,11 +180944,11 @@
             "url": "https://minitravellers.co.uk/review-the-bodyguard-the-palace-theatre-manchester/"
           },
           {
-            "outletId": "musical-theatre-review",
-            "outlet": "musical-theatre-review",
+            "outletId": "ilovemanchester",
+            "outlet": "ilovemanchester",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://musicaltheatrereview.com/the-bodyguard-milton-keynes-theatre-and-touring/"
+            "url": "https://ilovemanchester.com/review-bodyguard-palace-theatre"
           },
           {
             "outletId": "motif",
@@ -180985,11 +180958,11 @@
             "url": "https://motifri.com/theater-preview-touring-movical-the-bodyguard-returns-reenvisioned-to-ppac/"
           },
           {
-            "outletId": "momonthegoinholytoledo.com",
-            "outlet": "momonthegoinholytoledo.com",
+            "outletId": "voice-magazine",
+            "outlet": "voice-magazine",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://momonthegoinholytoledo.com/2026/10/15/the-bodyguard-opens-tonight-at-stranahan-tickets-on-sale-now/"
+            "url": "https://www.voicemag.uk/review/16653/the-bodyguard-the-musical-review"
           },
           {
             "outletId": "theater.guide",
@@ -181006,6 +180979,12 @@
             "outletId": "broadwayworld.com",
             "state": "live",
             "firstSeenAt": "2026-10-17T04:53:29.079Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/cleveland/article/Review-THE-BODYGUARD-National-Tour-at-The-Stranahan-Theater-20261016",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-18T04:02:40.408Z"
           },
           {
             "url": "https://www.broadwayworld.com/long-island/article/Review-THE-BODYGUARD-at-John-W-Engeman-Theater-20260329",
@@ -181034,11 +181013,11 @@
             "firstSeenAt": "2026-10-17T04:53:29.079Z"
           },
           {
-            "url": "https://musicaltheatrereview.com/the-bodyguard-milton-keynes-theatre-and-touring/",
-            "outletId": "musical-theatre-review",
+            "url": "https://ilovemanchester.com/review-bodyguard-palace-theatre",
+            "outletId": "ilovemanchester",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T20:02:37.323Z"
+            "firstSeenAt": "2026-10-18T04:02:40.408Z"
           },
           {
             "url": "https://motifri.com/theater-preview-touring-movical-the-bodyguard-returns-reenvisioned-to-ppac/",
@@ -181048,11 +181027,11 @@
             "firstSeenAt": "2026-10-15T01:10:51.119Z"
           },
           {
-            "url": "https://momonthegoinholytoledo.com/2026/10/15/the-bodyguard-opens-tonight-at-stranahan-tickets-on-sale-now/",
-            "outletId": "momonthegoinholytoledo.com",
+            "url": "https://www.voicemag.uk/review/16653/the-bodyguard-the-musical-review",
+            "outletId": "voice-magazine",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T11:28:25.970Z"
+            "firstSeenAt": "2026-10-18T04:02:40.408Z"
           },
           {
             "url": "https://theater.guide/events/the-bodyguard-the-musical/",
@@ -181066,12 +181045,7 @@
         "liveCount": 2,
         "candidateCount": 8
       },
-      "computedAt": "2026-10-17T20:02:37.323Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-18T00:39:14.023Z",
-        "lastAt": "2026-10-18T00:39:14.023Z"
-      }
+      "computedAt": "2026-10-18T04:02:40.408Z"
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
@@ -199804,7 +199778,6 @@
         "https://www.standard.co.uk/culture/theatre/my-master-builder-wyndham-theatre-review-ewan-mcgregor-b1225100.html",
         "https://theatreweekly.com/greg-hicks-to-star-in-arcola-theatre-production-of-the-master-builder/",
         "https://www.telegraph.co.uk/theatre/what-to-see/the-master-builder-old-vic-review-extraordinary/",
-        "https://www.thestage.co.uk/reviews/the-master-builder-review-at-the-old-vic-theatre-london--a-play-of-layers",
         "https://www.theguardian.com/stage/2025/apr/29/my-master-builder-review-ewan-mcgregor-kate-fleetwood-wyndhams-theatre-london",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/my-master-builder-ewan-mcgregor-b2742066.html",
         "https://www.telegraph.co.uk/theatre/what-to-see/my-master-builder-wyndhams-theatre-review-ewan-mcgregor/",
@@ -199852,12 +199825,6 @@
           "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-master-builder-old-vic-review-extraordinary/",
           "host": "telegraph.co.uk",
           "knownOutletId": "sunday-telegraph",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/the-master-builder-review-at-the-old-vic-theatre-london--a-play-of-layers",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
           "serpCensus": true
         },
         {
@@ -200059,7 +200026,7 @@
             "rows": 9,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 1
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": true,
@@ -200124,8 +200091,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 1,
+            "results": 10,
+            "accepted": 2,
             "error": null
           },
           {
@@ -200135,7 +200102,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -200151,19 +200118,18 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 10,
+        "resultCount": 9,
         "error": null
       },
       "candidatesRejected": {
-        "count": 23,
+        "count": 25,
         "byReason": {
-          "non-review-host": 16,
-          "non-review-path": 1,
-          "ticket-seller-product-page": 1,
           "aggregator-internal-nav": 1,
-          "ticketing-listing": 1,
+          "non-review-host": 19,
           "ticketing-reseller": 1,
-          "write-path-blocked": 2
+          "write-path-blocked": 2,
+          "ticketing-listing": 1,
+          "ticket-seller-product-page": 1
         }
       },
       "dedupedVariants": [],
@@ -200196,8 +200162,8 @@
           "expected": false,
           "expectedReason": null,
           "unclassified": false,
-          "zeroChar": false,
-          "reason": "❌ Refusing to ingest — collision with theatre-weekly--unknown.json\n   reason: stale-flag-on-existing"
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
         },
         {
           "url": "https://www.timeout.com/london/theatre/the-master-builder-3",
@@ -200245,27 +200211,22 @@
           "reason": "[review-write-guard] date-implausible: the-master-builder-off-west-end-2026/sunday-telegraph--jane-s"
         },
         {
-          "url": "https://www.thestage.co.uk/reviews/the-master-builder-review-at-the-old-vic-theatre-london--a-play-of-layers",
-          "host": "thestage.co.uk",
-          "outletId": "thestage",
+          "url": "https://www.theguardian.com/stage/2025/apr/29/my-master-builder-review-ewan-mcgregor-kate-fleetwood-wyndhams-theatre-london",
+          "host": "theguardian.com",
+          "outletId": "guardian",
           "provisional": false,
           "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
           "expected": false,
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "[review-write-guard] date-implausible: the-master-builder-off-west-end-2026/thestage--natasha-tripne"
+          "reason": "the-master-builder-off-west-end-2026: https://www.theguardian.com/stage/2025/apr/29/my-master-builder-review-ewan-mcgregor-kate-fleetwood-wyndhams-theatre-london is already owned by my-master-builder-west-end-2025 — one of the two is contaminated. Inspect data/review-texts/my-master-builder-west-end-2025/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
         }
       ],
       "ingestSkippedByCap": [
-        {
-          "url": "https://www.theguardian.com/stage/2025/apr/29/my-master-builder-review-ewan-mcgregor-kate-fleetwood-wyndhams-theatre-london",
-          "host": "theguardian.com",
-          "outletId": "guardian"
-        },
         {
           "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/my-master-builder-ewan-mcgregor-b2742066.html",
           "host": "independent.co.uk",
@@ -200330,13 +200291,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-master-builder-old-vic-review-extraordinary/"
-          },
-          {
-            "outletId": "thestage",
-            "outlet": "thestage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thestage.co.uk/reviews/the-master-builder-review-at-the-old-vic-theatre-london--a-play-of-layers"
           },
           {
             "outletId": "guardian",
@@ -200433,13 +200387,6 @@
             "firstSeenAt": "2026-10-17T11:28:25.970Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/the-master-builder-review-at-the-old-vic-theatre-london--a-play-of-layers",
-            "outletId": "thestage",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-17T11:28:25.970Z"
-          },
-          {
             "url": "https://www.theguardian.com/stage/2025/apr/29/my-master-builder-review-ewan-mcgregor-kate-fleetwood-wyndhams-theatre-london",
             "outletId": "guardian",
             "state": "IN_FLIGHT",
@@ -200507,12 +200454,7 @@
         "liveCount": 0,
         "candidateCount": 10
       },
-      "computedAt": "2026-10-17T20:02:37.323Z",
-      "quarantine": {
-        "nextState": "incomplete:0:7",
-        "since": "2026-10-18T00:39:14.023Z",
-        "lastAt": "2026-10-18T00:39:14.023Z"
-      }
+      "computedAt": "2026-10-18T04:02:40.408Z"
     },
     {
       "showId": "the-misanthrope-west-end-2026",
@@ -211107,9 +211049,9 @@
       },
       "computedAt": "2026-10-17T18:15:37.224Z",
       "quarantine": {
-        "nextState": "incomplete:1:5",
-        "since": "2026-10-18T00:39:14.023Z",
-        "lastAt": "2026-10-18T00:39:14.023Z"
+        "nextState": "incomplete:0:6",
+        "since": "2026-10-18T04:02:40.492Z",
+        "lastAt": "2026-10-18T04:02:40.492Z"
       }
     },
     {
@@ -223279,9 +223221,9 @@
       },
       "computedAt": "2026-10-17T20:02:37.323Z",
       "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-18T00:39:14.023Z",
-        "lastAt": "2026-10-18T00:39:14.023Z"
+        "nextState": "incomplete:0:1",
+        "since": "2026-10-18T04:02:40.492Z",
+        "lastAt": "2026-10-18T04:02:40.492Z"
       }
     },
     {
@@ -228230,12 +228172,31 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/"
+        "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/",
+        "https://stageraw.com/unconditional-a-musical-memoir/",
+        "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/"
       ],
       "dirFiles": 1,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://stageraw.com/unconditional-a-musical-memoir/",
+          "host": "stageraw.com",
+          "knownOutletId": "stage-raw",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2025-02-18",
+          "serpCensus": true
+        },
+        {
+          "url": "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/",
+          "host": "hollywoodtimes.net",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2025-02-22",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [
         {
@@ -228258,8 +228219,10 @@
           "basis": [
             "wrongProduction"
           ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:venue-verified:Skylight Theatre in Los Feliz",
           "serpCensus": true,
-          "reverify": true
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -228275,7 +228238,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 1,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -228285,7 +228248,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
+            "results": 4,
             "accepted": 0,
             "error": null
           },
@@ -228306,7 +228269,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -228316,59 +228279,56 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 1,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
-        "count": 22,
+        "count": 33,
         "byReason": {
-          "non-review-host": 14,
           "aggregator-internal-nav": 3,
-          "census-junk-host": 2,
+          "non-review-host": 24,
+          "bare-host": 2,
+          "roundup-page": 1,
+          "census-junk-host": 1,
           "write-path-blocked": 1,
-          "merch-store": 2
+          "merch-store": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://stageraw.com/unconditional-a-musical-memoir/",
+          "host": "stageraw.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/",
+          "host": "hollywoodtimes.net",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "theatreinla",
-            "outlet": "theatreinla",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/",
-            "outletId": "theatreinla",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T18:15:37.224Z"
-          }
-        ],
+        "candidates": [],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 1
+        "candidateCount": 0
       },
-      "computedAt": "2026-10-17T18:15:37.224Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-18T00:39:14.023Z",
-        "lastAt": "2026-10-18T00:39:14.023Z"
-      }
+      "computedAt": "2026-10-18T04:02:40.408Z"
     },
     {
       "showId": "under-the-shadow-off-west-end-2026",
