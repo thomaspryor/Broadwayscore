@@ -502,7 +502,10 @@
     "mystic-pizza-regional-2025/wmscradio--kaitlin-swift.json",
     "the-years-west-end-2025/broadwayworld--alexander-cohen.json",
     "the-years-west-end-2025/londontheatredirect--sian-mcbride.json",
-    "english-2025/broadwaynews--brittani-samuel.json"
+    "english-2025/broadwaynews--brittani-samuel.json",
+    "dog-mom-off-west-end-2026/thereviewshub--unknown.json",
+    "dog-mom-off-west-end-2026/notesfromrowh--helena6.json",
+    "some-woman-west-end-2026/times-uk--clive-davis.json"
   ],
   "failed": [
     "the-second-best-school-shooting-off-broadway-2026/cedarnews--cedar-news-editorial-team.json",
@@ -947,7 +950,14 @@
     "redwood-2025/juiceph--wanggo-gallaga.json",
     "the-years-west-end-2025/standard--unknown.json",
     "the-years-west-end-2025/times-uk--clive-davis.json",
-    "the-years-west-end-2025/times-uk--unknown.json"
+    "the-years-west-end-2025/times-uk--unknown.json",
+    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+    "some-woman-west-end-2026/guardian--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json",
+    "some-woman-west-end-2026/sunday-times--clive-davis.json",
+    "stuffed-off-west-end-2026/sunday-times--unknown.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1199,10 +1209,14 @@
       "clueless-west-end-2025/londontheatredirect--hay-brunsdon.json",
       "elektra-west-end-2025/islingtontribune--unknown.json",
       "oedipus-west-end-2025/londontheatredirect--emmanuel-kankam.json",
-      "the-years-west-end-2025/londontheatredirect--sian-mcbride.json"
+      "the-years-west-end-2025/londontheatredirect--sian-mcbride.json",
+      "dog-mom-off-west-end-2026/thereviewshub--unknown.json",
+      "dog-mom-off-west-end-2026/notesfromrowh--helena6.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/stuffed-off-west-end-2026/sunday-times--unknown.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "the-producers-west-end-2025/musical-theatre-review--unknown.json",
@@ -1311,7 +1325,8 @@
       "giant-2026/talkinbroadway--howard-miller.json",
       "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
       "beetlejuice-2025/observer--httpsobservercomauthorrex-reed.json",
-      "inter-alia-west-end-2025/variety--ellise-shafer.json"
+      "inter-alia-west-end-2025/variety--ellise-shafer.json",
+      "some-woman-west-end-2026/times-uk--clive-davis.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1486,7 +1501,7 @@
     ]
   },
   "startTime": "2026-10-18T02:27:07.746Z",
-  "lastProcessed": "english-2025/broadwaynews--brittani-samuel.json",
+  "lastProcessed": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json",
   "log": [
     {
       "t": "2026-10-18T02:41:08.190Z",
@@ -1738,6 +1753,35 @@
       "t": "2026-10-18T10:50:54.403Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-18T11:32:37.436Z",
+      "event": "bb-session",
+      "session": "8c1220d8",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-18T11:32:44.636Z",
+      "event": "bb-session",
+      "session": "4a469811",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-18T11:34:48.901Z",
+      "event": "bb-session",
+      "session": "896c8e16",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-18T11:40:35.306Z",
+      "event": "bb-session",
+      "session": "6bd2c8dc",
+      "url": "https://www.thetimes.com/recipes/entertaining/party-food/article/dates-stuffed-w"
+    },
+    {
+      "t": "2026-10-18T11:40:35.688Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
