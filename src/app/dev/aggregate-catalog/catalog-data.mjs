@@ -63,8 +63,7 @@ export const CATALOG = [
     entries: [
       { path: '/critics', label: 'Critics index', why: '400+ critic grid with avg score + review count', focus: ['Search bar placement', 'Tier badge treatment', 'Card grid density'] },
       { path: '/critics/outlets', label: 'Outlets index', why: 'Publications grouped by tier (T1/T2/T3)', focus: ['Tier section dividers', 'Outlet logo treatment'] },
-      // /video-critics is feature-flag gated (featureFlags.videoReviews) and 404s
-      // when off — excluded from the catalog. Re-add when the flag flips on.
+      { path: '/video-critics', label: 'Video critics index', why: 'YouTube/TikTok creators with VideoScore avg + review count (launched BRO-4775)', focus: ['Platform badge treatment', 'Card grid density', 'Parity with /critics'] },
     ],
   },
   {

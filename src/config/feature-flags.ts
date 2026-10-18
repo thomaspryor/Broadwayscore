@@ -99,7 +99,7 @@ export const featureFlags = {
   get showtimes() { return true; }, // launched — flag retained for cleanup
   get theaterScorecard() { return true; }, // launched — flag retained for cleanup
   get fantasyLeague() { return true; }, // launched 2026-09-29 (BRO-4324, 2026-27 season) — flag retained for cleanup
-  get videoReviews() { return has('videoReviews'); },
+  get videoReviews() { return true; }, // launched 2026-10-06 (BRO-4775), flag retained for cleanup
   get homepageExplainer() { return true; }, // launched — flag retained for cleanup
   get awardScoreV2() { return true; }, // launched 2026-05-17 — flag retained for cleanup
   /** Show-page rank surfaces: hero rank line ("Ranks #3 of 28 open Broadway · ...")

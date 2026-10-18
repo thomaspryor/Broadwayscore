@@ -16,6 +16,7 @@ import {
   isTourIndexableShow,
 } from '@/lib/data-core';
 import { getAllCriticSlugs, getAllOutletSlugs } from '@/lib/data-reviews';
+import { getAllVideoCreatorSlugs } from '@/lib/data-video-critics';
 import { getAllActorProfiles } from '@/lib/data-actors';
 import { isThinActor } from '@/lib/actor-indexability';
 import { isThinCreative } from '@/lib/creative-indexability';
@@ -176,6 +177,22 @@ function buildCriticsShard(ctx: DateContext): MetadataRoute.Sitemap {
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     })),
+    ...(featureFlags.videoReviews
+      ? [
+          {
+            url: `${BASE_URL}/video-critics`,
+            lastModified: ctx.reviewsDate,
+            changeFrequency: 'weekly' as const,
+            priority: 0.8,
+          },
+          ...getAllVideoCreatorSlugs().map((slug) => ({
+            url: `${BASE_URL}/video-critics/${slug}`,
+            lastModified: ctx.reviewsDate,
+            changeFrequency: 'monthly' as const,
+            priority: 0.6,
+          })),
+        ]
+      : []),
   ];
 }
 
