@@ -235,7 +235,12 @@ if [ -n "$DO_COMMIT" ] && [ -z "$DRY_RUN" ]; then
             BASE=$(git -C "$REPO" merge-base HEAD origin/main 2>/dev/null || true)
             FOREIGN=$(git -C "$REPO" log --no-merges --format=%s origin/main..HEAD 2>/dev/null \
               | grep -cvx 'chore: sync cloud-memory (session-stop auto-commit)' || true)
-            if [ -n "$BASE" ] && [ "$FOREIGN" = "0" ] && git -C "$REPO" reset -q --mixed "$BASE"; then
+            # Soft reset + unstage only cloud-memory/, so other sessions'
+            # staged work keeps its staging; never touch a half-done merge.
+            if [ -n "$BASE" ] && [ "$FOREIGN" = "0" ] \
+               && ! git -C "$REPO" rev-parse -q --verify MERGE_HEAD >/dev/null \
+               && git -C "$REPO" reset -q --soft "$BASE" \
+               && git -C "$REPO" reset -q -- cloud-memory/; then
               echo "sync-memory-to-repo: push failed — commit rolled back, mirror left uncommitted for the next session-stop" >&2
             else
               echo "sync-memory-to-repo: commit created but push failed (offline/race) and other local commits are ahead — left in place" >&2
