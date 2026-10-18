@@ -3,17 +3,17 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
 const require = createRequire(import.meta.url);
-const { decideGauntletPlan, skipBase } = require('./lib/land-gauntlet-optimizer.js');
+const { decideGauntletPlan } = require('./lib/land-gauntlet-optimizer.js');
 
 test('data/docs-only diff skips the whole gauntlet', () => {
-  const p = decideGauntletPlan({ changedFiles: ['data/shows.json', 'docs/x.md', 'memory/a.md', 'public/data/shows/a.json'] });
+  const p = decideGauntletPlan({ changedFiles: ['data/audit/x.json', 'data/pending-fixes/a.json', 'docs/x.md', 'memory/a.md'] });
   assert.equal(p.skipGauntlet, true);
   assert.equal(p.inertOnly, true);
 });
 
 test('one code file anywhere forces the full gauntlet', () => {
   for (const f of ['src/app/page.tsx', 'scripts/foo.js', '.github/workflows/land.yml', 'package.json', 'tests/unit/a.test.mjs']) {
-    assert.equal(decideGauntletPlan({ changedFiles: ['data/shows.json', f] }).skipGauntlet, false, f);
+    assert.equal(decideGauntletPlan({ changedFiles: ['data/audit/x.json', f] }).skipGauntlet, false, f);
   }
 });
 
@@ -23,17 +23,15 @@ test('empty/unknown diff never skips', () => {
 });
 
 test('rollback switches force a full run', () => {
-  const changedFiles = ['data/shows.json'];
+  const changedFiles = ['data/audit/x.json'];
   assert.equal(decideGauntletPlan({ changedFiles, strict: true }).skipGauntlet, false);
   assert.equal(decideGauntletPlan({ changedFiles, disabled: true }).skipGauntlet, false);
 });
 
-test('base gauntlet is skipped on cache hit, artifact hit, or when the branch gauntlet is skipped', () => {
-  assert.equal(skipBase({ cacheHit: true }), true);
-  assert.equal(skipBase({ artifactHit: true }), true);
-  assert.equal(skipBase({ skipGauntlet: true }), true);
-  assert.equal(skipBase({}), false);
-  assert.equal(skipBase({ strict: true }), true);
+test('tracked data read by the gauntlet is NOT skippable', () => {
+  for (const f of ['data/outlet-registry.json', 'data/awards.json', 'data/shows.json', '.cron-health-exempt.txt']) {
+    assert.equal(decideGauntletPlan({ changedFiles: [f] }).skipGauntlet, false, f);
+  }
 });
 
 test('land.yml wires the plan into the expensive steps', () => {

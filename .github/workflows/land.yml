@@ -452,6 +452,7 @@ jobs:
           GATE=""
           for pair in \
             "rebase:${{ steps.rebase.outcome }}" \
+            "plan:${{ steps.plan.outcome }}" \
             "npm-ci:${{ steps.deps.outcome }}" \
             "core-data:${{ steps.coredata.outcome }}" \
             "manifests:${{ steps.manifests.outcome }}" \

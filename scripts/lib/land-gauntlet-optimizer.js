@@ -14,7 +14,6 @@
 //
 //   decideGauntletPlan({ changedFiles, strict }) →
 //     { skipGauntlet, reason, inertOnly, changed }
-//   skipBase({ skipGauntlet, strict, cacheHit, artifactHit }) → boolean
 //
 // Safe defaults: an empty/unknown diff runs the gauntlet; LAND_STRICT_GATES=1
 // (the rollback switch) and LAND_GAUNTLET_SKIP_INERT=0 both force a full run.
@@ -24,8 +23,13 @@
 
 const { execFileSync } = require('child_process');
 const fs = require('fs');
-// isCacheKeyRelevant = !inert, plus tests/ and the CLAUDE.md anchors.
+// Narrower than land-branch.js's inert set: the gauntlet READS tracked
+// data/*.json (outlet-registry.json via a unit test; awards.json etc. via tsc
+// resolveJsonModule) and *.txt exemption lists (audit-cron-health-coverage), so
+// only bot-churn/doc paths are safe to skip verification for.
+const SKIP_SAFE_RE = /^(data\/audit\/|data\/pending-fixes\/|docs\/|memory\/|cloud-memory\/|public\/images\/shows\/)|^public\/opening-night-status\.json$|\.(md|jsonl|log)$/;
 const { isCacheKeyRelevant } = require('./land-gate-delta.js');
+const isSkipSafe = (f) => !isCacheKeyRelevant(f) && SKIP_SAFE_RE.test(f);
 
 function decideGauntletPlan({ changedFiles, strict = false, disabled = false } = {}) {
   const files = (changedFiles || []).map(String).filter(Boolean);
@@ -33,17 +37,11 @@ function decideGauntletPlan({ changedFiles, strict = false, disabled = false } =
   if (strict) return { ...base, reason: 'LAND_STRICT_GATES=1 — full gauntlet (rollback switch)' };
   if (disabled) return { ...base, reason: 'LAND_GAUNTLET_SKIP_INERT=0 — full gauntlet' };
   if (!files.length) return { ...base, reason: 'no changed files known — full gauntlet' };
-  const relevant = files.filter(isCacheKeyRelevant);
+  const relevant = files.filter((f) => !isSkipSafe(f));
   if (relevant.length) {
     return { ...base, reason: `${relevant.length} verification-relevant file(s) changed (e.g. ${relevant[0]}) — full gauntlet` };
   }
   return { skipGauntlet: true, inertOnly: true, changed: files.length, reason: `all ${files.length} changed file(s) are inert for verification — gauntlet skipped` };
-}
-
-/** The base run is needed only when the branch gauntlet runs and nothing measured the base. */
-function skipBase({ skipGauntlet = false, strict = false, cacheHit = false, artifactHit = false } = {}) {
-  if (strict) return true; // strict mode never uses a base (land-gate-delta.js --strict)
-  return Boolean(skipGauntlet || cacheHit || artifactHit);
 }
 
 function main(argv = process.argv.slice(2)) {
@@ -70,4 +68,4 @@ function main(argv = process.argv.slice(2)) {
 
 if (require.main === module) process.exit(main());
 
-module.exports = { decideGauntletPlan, skipBase };
+module.exports = { decideGauntletPlan, isSkipSafe };
