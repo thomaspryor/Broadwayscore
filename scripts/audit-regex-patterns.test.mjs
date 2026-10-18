@@ -20,6 +20,8 @@ const {
   TITLE_EXCLUDE_FAMILIES,
   TITLE_EXCLUDE_DEFAULT_MAX_HITS,
   loadTitleExcludeFamilies,
+  loadTitleCorpus,
+  loadIndependentTitleCorpus,
   scanTitleFamilies,
   evaluateTitleFamilies,
   OPERA_TITLE_EXCLUDE_FAMILIES,
@@ -34,6 +36,16 @@ const {
   VENUE_PAGE_EXCLUDE_PATTERNS,
 } = require('./discover-new-shows.js');
 const { NON_OPERA_TITLE_PATTERNS, isNonOpera } = require('./discover-opera-shows.js');
+
+test('BRO-2658: all four families audit external production titles even when none are tracked', () => {
+  for (const family of [...TITLE_EXCLUDE_FAMILIES, ...OPERA_TITLE_EXCLUDE_FAMILIES]) {
+    const opera = OPERA_TITLE_EXCLUDE_FAMILIES.includes(family);
+    const titles = opera ? loadOperaTitleCorpus({ trackedShows: [] }) : loadTitleCorpus({ trackedShows: [] });
+    assert.deepEqual(titles, loadIndependentTitleCorpus(opera ? 'opera' : 'theatre'));
+    const counts = scanTitleFamilies({ families: { [family]: [opera ? 'devereux' : 'hard job'] }, titles });
+    assert.equal(evaluateTitleFamilies({ counts }).length, 1, `${family} must detect an exclusion without tracked survivors`);
+  }
+});
 
 test('discover-new-shows.js exports all three title exclude families', () => {
   assert.deepEqual(TITLE_EXCLUDE_FAMILIES, [
@@ -152,13 +164,13 @@ test('OPERA_TITLE_EXCLUDE_FAMILIES points at NON_OPERA_TITLE_PATTERNS, default a
   assert.ok(Array.isArray(families.NON_OPERA_TITLE_PATTERNS) && families.NON_OPERA_TITLE_PATTERNS.length > 0);
 });
 
-test('loadOperaTitleCorpus returns a real, non-empty opera-only title corpus', () => {
+test('loadOperaTitleCorpus returns external plus tracked opera titles', () => {
   const titles = loadOperaTitleCorpus();
-  assert.ok(Array.isArray(titles) && titles.length > 0, 'expected at least one tracked opera title');
+  assert.ok(Array.isArray(titles) && titles.length > 0, 'expected external plus tracked opera titles');
   assert.ok(titles.every(t => typeof t === 'string' && t.length > 0));
 });
 
-test('NON_OPERA_TITLE_PATTERNS currently produces no hits against the real tracked opera corpus', () => {
+test('NON_OPERA_TITLE_PATTERNS currently produces no hits against external plus tracked opera titles', () => {
   const families = loadOperaTitleExcludeFamilies();
   const titles = loadOperaTitleCorpus();
   const counts = scanTitleFamilies({ families, titles });
@@ -166,7 +178,7 @@ test('NON_OPERA_TITLE_PATTERNS currently produces no hits against the real track
     counts, allowlist: OPERA_TITLE_EXCLUDE_ALLOWLIST, defaultMaxHits: OPERA_TITLE_EXCLUDE_DEFAULT_MAX_HITS,
   });
   assert.equal(violations.length, 0,
-    `expected no violations against tracked opera titles, got: ${JSON.stringify(violations)}`);
+    `expected no violations against external plus tracked opera titles, got: ${JSON.stringify(violations)}`);
 });
 
 test('scanTitleFamilies + evaluateTitleFamilies flag a bare opera-family substring against a synthetic real title', () => {

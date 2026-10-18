@@ -13,8 +13,8 @@
  *
  * Also audits the discovery exclude-substring arrays in
  * scripts/discover-new-shows.js (NON_THEATER_PATTERNS, WE_EXTRA_PATTERNS,
- * VENUE_PAGE_EXCLUDE_PATTERNS) against real tracked show titles
- * (public/data/mobile-shows.json). Those arrays gate which candidate shows
+ * VENUE_PAGE_EXCLUDE_PATTERNS) against external production-title fixtures plus
+ * tracked titles (public/data/mobile-shows.json). Those arrays gate which candidate shows
  * ever reach shows.json — a hit against a real title means a real production
  * would be silently dropped from discovery, so unlike the content-quality
  * families above (which only affect review-scoring, not existence), the
@@ -27,10 +27,13 @@
  * BRO-2315 extends the same audit to scripts/discover-opera-shows.js's
  * NON_OPERA_TITLE_PATTERNS (isNonOpera(), same title.includes(p) gate,
  * scoped to Met Opera season-page titles). Scanned against the corpus of
- * real tracked opera titles (public/data/mobile-shows.json entries with
- * ty === 'opera') rather than the full theatre-wide title list —
+ * external Met repertory titles plus tracked opera titles (mobile-shows.json
+ * entries with ty === 'opera') rather than the full theatre-wide title list —
  * isNonOpera() only ever evaluates titles scraped from Met's own season
  * pages, so the general corpus would be noise for this family.
+ * BRO-2658: the external fixture is required, independent of discovery's
+ * accept/reject decisions. A rejected production can never enter the tracked
+ * corpus, so tracked titles alone cannot expose that false positive.
  *
  * Usage:
  *   node scripts/audit-regex-patterns.js              # sample 400 recent shows, threshold 5
@@ -463,6 +466,30 @@ const OPERA_TITLE_EXCLUDE_FAMILIES = ['NON_OPERA_TITLE_PATTERNS'];
 const OPERA_TITLE_EXCLUDE_DEFAULT_MAX_HITS = 0;
 const OPERA_TITLE_EXCLUDE_ALLOWLIST = {};
 
+// Detect the discovery gates themselves so a new family or discovery script
+// cannot silently escape the corpus audit. Registration still states which
+// corpus is appropriate; guessing an opera/theatre scope would hide errors.
+function checkTitleExcludeCoverage(scriptsDir = __dirname) {
+  const registered = {
+    'discover-new-shows.js': TITLE_EXCLUDE_FAMILIES,
+    'discover-opera-shows.js': OPERA_TITLE_EXCLUDE_FAMILIES,
+  };
+  const found = [];
+  for (const script of fs.readdirSync(scriptsDir).filter(f => /^discover-.*\.js$/.test(f)).sort()) {
+    const source = fs.readFileSync(path.join(scriptsDir, script), 'utf8');
+    // Current gate shape: FAMILY_PATTERNS.some(p => title.includes(p)).
+    const gate = /\b([A-Z][A-Z0-9_]*_PATTERNS)\s*\.\s*some\s*\(\s*(?:\(\s*)?(\w+)\s*(?:\)\s*)?=>\s*\w+\s*\.\s*includes\s*\(\s*\2\s*\)\s*\)/g;
+    const names = new Set([...source.matchAll(gate)].map(m => m[1]));
+    for (const family of names) {
+      if (!registered[script]?.includes(family)) {
+        throw new Error(`${script}: ${family} title exclusion has no registered corpus audit`);
+      }
+      found.push({ script, family });
+    }
+  }
+  return found;
+}
+
 function parseArgs(argv) {
   const args = { full: false, maxHits: DEFAULT_MAX_HITS, json: false };
   for (let i = 2; i < argv.length; i++) {
@@ -528,8 +555,52 @@ function loadMobileShows() {
   return raw.shows;
 }
 
-function loadTitleCorpus() {
-  return loadMobileShows().map(s => s.t).filter(Boolean);
+const INDEPENDENT_TITLE_CORPUS_PATH = path.resolve(__dirname, '..', 'tests', 'fixtures', 'discovery-title-corpus.json');
+const INDEPENDENT_TITLE_CORPUS_MIN_SIZE = { theatre: 20, opera: 15 };
+
+// This fixture is transcribed from external listings, not generated from our
+// own discovery results. Missing or damaged evidence must fail the audit rather
+// than silently falling back to the survivor-only corpus (BRO-2658).
+function loadIndependentTitleCorpus(type, corpusPath = INDEPENDENT_TITLE_CORPUS_PATH) {
+  const raw = JSON.parse(fs.readFileSync(corpusPath, 'utf-8'));
+  if (!Array.isArray(raw.sources) || raw.sources.length === 0) {
+    throw new Error(`${corpusPath}: expected independent title sources`);
+  }
+  const titlesByType = { theatre: new Set(), opera: new Set() };
+  for (const source of raw.sources) {
+    if (!source || !Object.hasOwn(titlesByType, source.type) ||
+        typeof source.url !== 'string' || !source.url.startsWith('https://') ||
+        typeof source.capturedAt !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(source.capturedAt) ||
+        typeof source.selection !== 'string' || !source.selection.trim() ||
+        !Array.isArray(source.titles) || source.titles.length === 0 ||
+        source.titles.some(t => typeof t !== 'string' || !t.trim())) {
+      throw new Error(`${corpusPath}: malformed independent title source`);
+    }
+    for (const title of source.titles) titlesByType[source.type].add(title.trim());
+  }
+  for (const [kind, minimum] of Object.entries(INDEPENDENT_TITLE_CORPUS_MIN_SIZE)) {
+    if (titlesByType[kind].size < minimum) {
+      throw new Error(`${corpusPath}: only ${titlesByType[kind].size} independent ${kind} titles (expected >= ${minimum})`);
+    }
+  }
+  if (!Object.hasOwn(titlesByType, type)) throw new Error(`Unknown title corpus type: ${type}`);
+  return [...titlesByType[type]];
+}
+
+function extendTitleCorpus(trackedTitles, independentTitles) {
+  // Preserve the existing tracked corpus and its hit counts. Only append
+  // external titles that are not already represented, ignoring letter case.
+  const seen = new Set(trackedTitles.map(t => t.toLowerCase()));
+  return [...trackedTitles, ...independentTitles.filter(title => {
+    const key = title.toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  })];
+}
+
+function loadTitleCorpus({ trackedShows = loadMobileShows(), corpusPath } = {}) {
+  return extendTitleCorpus(trackedShows.map(s => s.t).filter(Boolean), loadIndependentTitleCorpus('theatre', corpusPath));
 }
 
 function loadOperaTitleExcludeFamilies() {
@@ -552,25 +623,12 @@ function loadOperaTitleExcludeFamilies() {
   return families;
 }
 
-// Opera-only corpus: real tracked opera productions (mobile-shows.json
-// entries with ty === 'opera'), not the full theatre-wide title list. See
-// the file-header BRO-2315 note for why the narrower corpus is correct here.
-// Floor is well below the 35-title baseline observed at calibration
-// (2026-08-31) — catches a corrupted/partial mobile-shows.json (e.g. most
-// opera entries silently losing their `ty` field) that a bare `> 0` check
-// would miss, without being brittle to normal corpus growth.
-const OPERA_TITLE_CORPUS_MIN_SIZE = 15;
-function loadOperaTitleCorpus() {
-  const titles = loadMobileShows().filter(s => s.ty === 'opera').map(s => s.t).filter(Boolean);
-  if (titles.length < OPERA_TITLE_CORPUS_MIN_SIZE) {
-    console.error(`FATAL: only ${titles.length} ty==="opera" entries found in ` +
-      `public/data/mobile-shows.json (expected >= ${OPERA_TITLE_CORPUS_MIN_SIZE}) — ` +
-      'either the corpus genuinely shrank (update OPERA_TITLE_CORPUS_MIN_SIZE) or ' +
-      'mobile-shows.json is corrupted/partial and the opera title-exclude audit ' +
-      'would be running against too little evidence to be meaningful.');
-    process.exit(2);
-  }
-  return titles;
+// Keep opera controls separate: non-opera gates do not see theatre listings.
+// The evidence floor now applies to independent titles, so losing a rejected
+// title from mobile-shows.json cannot remove it from this audit as well.
+function loadOperaTitleCorpus({ trackedShows = loadMobileShows(), corpusPath } = {}) {
+  const tracked = trackedShows.filter(s => s.ty === 'opera').map(s => s.t).filter(Boolean);
+  return extendTitleCorpus(tracked, loadIndependentTitleCorpus('opera', corpusPath));
 }
 
 // Substring (not regex) scan: real discovery call sites use
@@ -605,7 +663,7 @@ function evaluateTitleFamilies({ counts, allowlist = TITLE_EXCLUDE_ALLOWLIST, de
 
 function reportTitleFamilies({
   titleCount, counts, violations, families,
-  corpusLabel = 'tracked show titles (public/data/mobile-shows.json)',
+  corpusLabel = 'external production titles + tracked show titles (tests/fixtures/discovery-title-corpus.json + public/data/mobile-shows.json)',
   allowlist = TITLE_EXCLUDE_ALLOWLIST, defaultMaxHits = TITLE_EXCLUDE_DEFAULT_MAX_HITS,
 }) {
   const lines = [];
@@ -623,11 +681,11 @@ function reportTitleFamilies({
   lines.push('');
 
   if (violations.length === 0) {
-    lines.push('✅ No discovery exclude pattern matches a tracked show title.');
+    lines.push('✅ No discovery exclude pattern matches a production title.');
     return lines.join('\n');
   }
 
-  lines.push(`❌ ${violations.length} discovery exclude pattern(s) match a real tracked show title:`);
+  lines.push(`❌ ${violations.length} discovery exclude pattern(s) match a real production title:`);
   lines.push('');
   for (const v of violations) {
     const pattern = families[v.family][v.index];
@@ -774,6 +832,7 @@ function main() {
   stamp.scanned = scanned;
   const violations = evaluate({ counts, maxHits: args.maxHits });
 
+  checkTitleExcludeCoverage();
   const titleFamilies = loadTitleExcludeFamilies();
   const titles = loadTitleCorpus();
   const titleCounts = scanTitleFamilies({ families: titleFamilies, titles });
@@ -803,7 +862,7 @@ function main() {
     console.log(reportTitleFamilies({ titleCount: titles.length, counts: titleCounts, violations: titleViolations, families: titleFamilies }));
     console.log(reportTitleFamilies({
       titleCount: operaTitles.length, counts: operaTitleCounts, violations: operaTitleViolations, families: operaTitleFamilies,
-      corpusLabel: 'tracked opera titles (public/data/mobile-shows.json, ty==="opera")',
+      corpusLabel: 'external Met repertory titles + tracked opera titles (tests/fixtures/discovery-title-corpus.json + mobile-shows.json, ty==="opera")',
       allowlist: OPERA_TITLE_EXCLUDE_ALLOWLIST, defaultMaxHits: OPERA_TITLE_EXCLUDE_DEFAULT_MAX_HITS,
     }));
   }
@@ -812,7 +871,12 @@ function main() {
 }
 
 if (require.main === module) {
-  main();
+  try {
+    main();
+  } catch (error) {
+    console.error(`FATAL: ${error.message}`);
+    process.exit(2);
+  }
 }
 
 // Exports for unit tests (scripts/audit-regex-patterns.test.mjs) — guarded
@@ -822,7 +886,9 @@ module.exports = {
   TITLE_EXCLUDE_DEFAULT_MAX_HITS,
   TITLE_EXCLUDE_ALLOWLIST,
   loadTitleExcludeFamilies,
+  checkTitleExcludeCoverage,
   loadTitleCorpus,
+  loadIndependentTitleCorpus,
   scanTitleFamilies,
   evaluateTitleFamilies,
   OPERA_TITLE_EXCLUDE_FAMILIES,

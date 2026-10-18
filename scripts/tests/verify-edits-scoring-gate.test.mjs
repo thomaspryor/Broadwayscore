@@ -286,6 +286,8 @@ test('BRO-5307: audit CLI stamps real exits independently of scoring-delta, and 
   fs.writeFileSync(path.join(root, 'scripts/discover-opera-shows.js'), 'module.exports = {NON_OPERA_TITLE_PATTERNS: []};');
   fs.mkdirSync(path.join(root, 'public/data'), { recursive: true });
   fs.writeFileSync(path.join(root, 'public/data/mobile-shows.json'), JSON.stringify({ shows: Array.from({ length: 15 }, (_, i) => ({ t: `Opera ${i}`, ty: 'opera' })) }));
+  fs.mkdirSync(path.join(root, 'tests/fixtures'), { recursive: true });
+  fs.copyFileSync(path.join(REPO_ROOT, 'tests/fixtures/discovery-title-corpus.json'), path.join(root, 'tests/fixtures/discovery-title-corpus.json'));
   const stampDir = path.join(root, 'stamps');
   const env = { ...process.env, SCORING_DELTA_STAMP_DIR: stampDir, CLAUDE_CODE_SESSION_ID: 'regex-cli' };
   const run = (...args) => spawnSync('node', ['scripts/audit-regex-patterns.js', ...args], { cwd: root, env, encoding: 'utf8' });
@@ -323,5 +325,15 @@ test('BRO-5307: audit CLI stamps real exits independently of scoring-delta, and 
   assert.deepEqual(stamps().at(-1).violationNames, [
     'ERROR_PAGE_PATTERNS::0', 'STRONG_ERROR_PAGE_PATTERNS::0', 'NON_THEATER_PATTERNS::0', 'NON_OPERA_TITLE_PATTERNS::0',
   ]);
+  fs.writeFileSync(path.join(root, 'scripts/discover-new-shows.js'), 'module.exports = {NON_THEATER_PATTERNS: ["hard job"], WE_EXTRA_PATTERNS: [], VENUE_PAGE_EXCLUDE_PATTERNS: []};');
+  fs.writeFileSync(path.join(root, 'scripts/discover-opera-shows.js'), 'module.exports = {NON_OPERA_TITLE_PATTERNS: ["devereux"]};');
+  const external = run('--full', '--json');
+  assert.equal(external.status, 1, 'external controls flag exclusions absent from mobile-shows.json');
+  const report = JSON.parse(external.stdout);
+  assert.equal(report.titleViolations[0].examples[0].match, 'Hard Job Being God');
+  assert.equal(report.operaTitleViolations[0].examples[0].match, 'Roberto Devereux');
+  fs.unlinkSync(path.join(root, 'tests/fixtures/discovery-title-corpus.json'));
+  assert.equal(run('--full', '--json').status, 2, 'missing independent evidence cannot pass');
+  assert.equal(stamps().at(-1).exitCode, 2);
   assert.equal(inStampDir(stampDir, () => watch.readStamps('regex-cli')).length, 0, 'regex stamps never satisfy scoring-delta');
 });
