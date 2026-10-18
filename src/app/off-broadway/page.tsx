@@ -161,7 +161,7 @@ export default function OffBroadwayPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
       />
 
-      {/* Server-rendered hero + Gold List CTA + Top Recent Shows shelf — LCP image
+      {/* Server-rendered hero + Top Recent Shows shelf — LCP image
           appears in the initial HTML. The client below renders skipAboveFold. */}
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-5 sm:pt-12">
         <div className="mb-4 sm:mb-8">

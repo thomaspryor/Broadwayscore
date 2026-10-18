@@ -56,7 +56,7 @@ interface OffBroadwayPageClientProps {
   startingSoonShows?: OffBroadwayShow[];
   /** Recently opened OB shows still awaiting a score (computed server-side). */
   justOpenedShows?: OffBroadwayShow[];
-  /** When true, the hero + Gold List CTA + Top Recent Shows shelf are rendered
+  /** When true, the hero + Top Recent Shows shelf are rendered
    *  server-side by the page (page.tsx) so the LCP image lands in static HTML.
    *  This client then skips them to avoid a duplicate. See #317. */
   skipAboveFold?: boolean;
@@ -495,7 +495,7 @@ function OffBroadwayPageInner({ shows, archiveHash, totalShows, totalReviews, ma
 
   return (
     <div className={`max-w-3xl mx-auto px-4 sm:px-6 ${skipAboveFold ? 'pb-5 sm:pb-12' : 'py-5 sm:py-12'}`}>
-      {/* Hero + Gold List CTA + Top Recent Shows shelf — rendered server-side
+      {/* Hero + Top Recent Shows shelf — rendered server-side
           (page.tsx) when skipAboveFold, so the LCP poster is in static HTML. #317 */}
       {!skipAboveFold && (
         <>
@@ -510,7 +510,6 @@ function OffBroadwayPageInner({ shows, archiveHash, totalShows, totalReviews, ma
               {totalShows} shows. {totalReviews.toLocaleString()} critic reviews. And counting.
             </p>
           </div>
-
 
           {topRecentShows.length > 3 && (
             <section className="mb-4 sm:mb-6">

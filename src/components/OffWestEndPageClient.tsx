@@ -483,8 +483,6 @@ function OffWestEndPageInner({ shows, archiveHash, totalShows, totalReviews, mar
         </p>
       </div>
 
-      {/* Gold List discovery CTA */}
-
       {/* Top Recent Shows - Featured Shelf */}
       {topRecentShows.length > 3 && (
         <section className="mb-4 sm:mb-6">
