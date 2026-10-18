@@ -129,7 +129,33 @@ function isProvisionalPublishDate(review) {
   return !!(review && review.publishDate && PROVISIONAL_DATE_SOURCES.has(review.dateSource));
 }
 
+/**
+ * The text-fetch fallback for a review whose page gave no meta/JSON-LD date
+ * (BRO-5351). A date parsed out of the URL is never stored as publishDate
+ * (CLAUDE.md rule 3: never extract metadata from URLs). The review's own
+ * byline date is stored instead, as dateSource 'text-regex'.
+ *
+ * The URL date may only veto: when the byline date disagrees with it, nothing
+ * is stored. A single byline match can be a run or event date, and a compact
+ * URL number can be an article id (BRO-4252), so neither wins on its own. The
+ * file stays dateless and the rebuild's resolveBackfillPublishDate (which
+ * settles exactly that conflict) decides the derived reviews.json date, the
+ * same outcome the rebuild produced for every dateless file before this change.
+ *
+ * @param {object} args
+ * @param {string|null} args.textDate - byline date from the body (extractDateFromText), YYYY-MM-DD
+ * @param {{date?: string|null}|null} args.urlDate - extractDateFromUrl result (veto only)
+ * @returns {{ publishDate: string, dateSource: 'text-regex' } | { publishDate: null, reason: 'no-body-date'|'body-url-conflict' }}
+ */
+function bodyPublishDateFallback({ textDate, urlDate } = {}) {
+  if (typeof textDate !== 'string' || !YMD.test(textDate)) return { publishDate: null, reason: 'no-body-date' };
+  const fromUrl = urlDate && typeof urlDate.date === 'string' && YMD.test(urlDate.date) ? urlDate.date : null;
+  if (fromUrl && fromUrl !== textDate) return { publishDate: null, reason: 'body-url-conflict' };
+  return { publishDate: textDate, dateSource: 'text-regex' };
+}
+
 module.exports = {
+  bodyPublishDateFallback,
   PROVISIONAL_DATE_SOURCES,
   NEAR_OPENING_DAYS,
   isNearOpening,

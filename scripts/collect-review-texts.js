@@ -170,7 +170,7 @@ const {
 } = require('./lib/wrong-production-autoclear');
 const { shouldRetryGarbageConsentWall, storedTextNeedsConsentRefetch, shouldReleaseConsentLayerNonReview, salvageConsentPrefixedStoredText, salvageSourceHash, applyVerifiedRetryOutcome } = require('./lib/consent-refetch');
 const { shouldRetryDatelessHoldFetch } = require('./lib/review-slot-guards');
-const { isProvisionalPublishDate } = require('./lib/publish-date-provenance');
+const { isProvisionalPublishDate, bodyPublishDateFallback } = require('./lib/publish-date-provenance');
 const { checkBrowserbaseCaps, countBrowserbaseAttempt, resolveMaxSessionsPerDay, resolveRecoveryReserve, resolveUseReserve, isDeniedHost, isTier1RecoveryHost, tier1BoostForCaller, resolveExemptScripts: resolveBbExemptScripts } = require('./lib/browserbase-caps');
 const { isExemptCaller: isBbExemptCaller } = require('./lib/brightdata-caps');
 
@@ -4712,11 +4712,10 @@ function extractPublishDateFromHtml(html, pageUrl) {
   return null;
 }
 
-// URL-path date fallback (for when HTML has no date metadata) now delegates
-// to the canonical scripts/lib/rebuild-helpers.js extractDateFromUrl — same
-// function rebuild-all-reviews.js and backfill-review-dates.js use, so this
-// collect path gains every pattern (Guardian, BWW-compact, blogspot, Talkin'
-// Broadway /ob/) instead of maintaining a second, narrower copy.
+// URL-path dates come from the canonical scripts/lib/rebuild-helpers.js
+// extractDateFromUrl. They are never stored as publishDate here (BRO-5351,
+// CLAUDE.md rule 3): they only veto a disagreeing byline date and feed the
+// in-memory verification date for the temporal override.
 
 // Byline-date extraction lives in scripts/lib/body-date-mismatch.js (BRO-2770)
 // so the date guards, the shared writer and the corpus audit use one parser.
@@ -4954,7 +4953,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   if (sentinelPublishDate) data.publishDate = null;
   // BRO-5081: an LLM-scoring guess or a roundup article's own date
   // (dateSource 'llm-scoring' / 'roundup-article') is a placeholder too. Let
-  // the page, URL or byline replace it; keep it only if none finds a date.
+  // the page or byline replace it; keep it only if neither finds a date.
   const provisionalPublishDate = !sentinelPublishDate && isProvisionalPublishDate(data) ? data.publishDate : null;
   const provisionalDateSource = provisionalPublishDate ? data.dateSource : null;
   if (provisionalPublishDate) data.publishDate = null;
@@ -4969,27 +4968,24 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     }
   }
 
-  // Fallback: extract publishDate from URL path (e.g. /2025/11/16/, Guardian
-  // /2025/jul/14/, or Talkin' Broadway /ob/07_13_26.html).
-  if (!data.publishDate && data.url) {
-    const urlDateResult = extractDateFromUrlCanonical(data.url);
-    if (urlDateResult && urlDateResult.date && /^\d{4}-\d{2}-\d{2}$/.test(urlDateResult.date)) {
-      data.publishDate = urlDateResult.date;
-      data.dateSource = urlDateResult.source;
-      console.log(`    → Extracted publishDate from URL: ${urlDateResult.date} (${urlDateResult.source})`);
-    }
-  }
-
-  // Fallback 2: extract publishDate from first 500 chars of fullText (byline dates)
-  // Only when exactly one date found. Rejects run/closing dates via context words.
+  // Fallback: the byline date in the first 500 chars of fullText. Only when
+  // exactly one date found. Rejects run/closing dates via context words.
   // Not over a provisional date: a roundup date is within days of the real
   // one, a regex hit in body text can be a run or closing date (BRO-5090).
+  // BRO-5351: a URL-path date is never stored here (CLAUDE.md rule 3). It may
+  // only veto a byline date that disagrees with it; the file then stays
+  // dateless and the rebuild's backfill settles the derived date.
   if (!data.publishDate && !provisionalPublishDate && data.fullText && data.fullText.length > 100) {
-    const extractedDate = extractDateFromText(data.fullText);
-    if (extractedDate) {
-      data.publishDate = extractedDate;
-      data.dateSource = 'text-regex';
-      console.log(`    → Extracted publishDate from text: ${extractedDate}`);
+    const fallback = bodyPublishDateFallback({
+      textDate: extractDateFromText(data.fullText),
+      urlDate: data.url ? extractDateFromUrlCanonical(data.url) : null,
+    });
+    if (fallback.publishDate) {
+      data.publishDate = fallback.publishDate;
+      data.dateSource = fallback.dateSource;
+      console.log(`    → Extracted publishDate from text: ${fallback.publishDate}`);
+    } else if (fallback.reason === 'body-url-conflict') {
+      console.log('    → Byline date disagrees with the URL path date: publishDate left empty for the rebuild backfill (BRO-5351)');
     }
   }
   if (sentinelPublishDate && !data.publishDate) data.publishDate = sentinelPublishDate;
