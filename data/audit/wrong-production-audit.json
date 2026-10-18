@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-18T07:31:51.332Z",
+  "timestamp": "2026-10-18T08:32:27.913Z",
   "stats": {
     "totalReviews": 57391,
-    "alreadyFlagged": 21316,
+    "alreadyFlagged": 21319,
     "dateGuardCatches": 195,
     "directorMismatch": 1952,
     "tvFilmSignals": 1609,
-    "londonSignals": 2421,
+    "londonSignals": 2420,
     "offBroadwaySignals": 521,
     "yearMismatch": 157,
-    "noPublishDate": 5246
+    "noPublishDate": 5243
   },
   "findings": [
     {
@@ -76928,19 +76928,6 @@
       "file": "momentsapp--unknown.json",
       "publishDate": null,
       "url": "https://momentsapp.no/serie/some-woman-5dbb94319d2461e366f4078cb82fb81d",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"dorfman\""
-        }
-      ]
-    },
-    {
-      "showId": "some-woman-west-end-2026",
-      "file": "oazis--unknown.json",
-      "publishDate": null,
-      "url": "https://oazis.app/evenements/some-woman-london",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
