@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-18T12:39:28.230Z",
+    "generatedAt": "2026-10-18T13:01:08.684Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 93,
+    "totalFlagged": 94,
     "highConfidence": 4,
-    "mediumConfidence": 89,
+    "mediumConfidence": 90,
     "lowConfidence": 0,
-    "reassignable": 36
+    "reassignable": 37
   },
   "results": [
     {
@@ -569,6 +569,21 @@
         "year 1975 in text matches revival chicago-1975"
       ],
       "textSnippet": "In that dicey district known as Broadway, there are no sure bets, but reviving a cherished old musical comes close. Find a Rodgers and Hammerstein gem that's been away for a while or dust off a fondly"
+    },
+    {
+      "showId": "chicago-1996",
+      "showTitle": "Chicago",
+      "showYear": 1996,
+      "file": "variety--greg-evans.json",
+      "outlet": "Variety",
+      "criticName": "Greg Evans",
+      "publishDate": "1996-11-24",
+      "confidence": "medium",
+      "suggestedShowId": "chicago-1975",
+      "signals": [
+        "year 1975 in text matches revival chicago-1975"
+      ],
+      "textSnippet": "Any gripes about the producers of \"Chicago\" charging full-scale prices for a stripped-down show evaporate like vapors from bathtub gin the second Bebe Neuwirth & Co. open the show with a pulse-quicken"
     },
     {
       "showId": "the-phantom-of-the-opera-1988",

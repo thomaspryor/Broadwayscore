@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-18T12:47:50.013Z",
+  "timestamp": "2026-10-18T13:10:03.558Z",
   "stats": {
-    "totalReviews": 57437,
-    "alreadyFlagged": 21345,
+    "totalReviews": 57439,
+    "alreadyFlagged": 21347,
     "dateGuardCatches": 195,
-    "directorMismatch": 1950,
+    "directorMismatch": 1951,
     "tvFilmSignals": 1607,
-    "londonSignals": 2433,
+    "londonSignals": 2434,
     "offBroadwaySignals": 521,
     "yearMismatch": 156,
-    "noPublishDate": 5235
+    "noPublishDate": 5221
   },
   "findings": [
     {
@@ -7831,6 +7831,19 @@
       "score": null,
       "publishDate": "April 22, 2014",
       "url": "http://www.time.com/time/magazine/article/0,9171,985604,00.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from chicago-1975"
+        }
+      ]
+    },
+    {
+      "showId": "chicago-1996",
+      "file": "variety--greg-evans.json",
+      "publishDate": "1996-11-24",
+      "url": "http://variety.com/1996/legit/reviews/chicago-4-1200447571/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -64441,6 +64454,20 @@
       "score": 83,
       "publishDate": "2018-04-22T21:19:18",
       "url": "https://nystagereview.com/2018/04/22/harry-potter-and-the-cursed-child-broadways-enchanted-kingdom/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-2021",
+      "file": "nytg--tulis-mccall.json",
+      "score": null,
+      "publishDate": "2022-01-25",
+      "url": "https://www.newyorktheatreguide.com/reviews/review-of-harry-potter-and-the-cursed-child-on-broadway",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
