@@ -7,7 +7,6 @@ import type Fuse from 'fuse.js';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from '@/components/show-cards';
 import MarketFilterBar from '@/components/MarketFilterBar';
 import type { ScoreModeParam } from '@/components/show-cards';
-import { GoldListCTA } from '@/components/gold-list/GoldListCTA';
 import type { AwardWinnerSets } from '@/lib/data-awards';
 import { FilterButton } from '@/components/filters/FilterButton';
 import { FilterPanel } from '@/components/filters/FilterPanel';
@@ -485,7 +484,6 @@ function OffWestEndPageInner({ shows, archiveHash, totalShows, totalReviews, mar
       </div>
 
       {/* Gold List discovery CTA */}
-      <GoldListCTA listType="critical-gold-off-west-end" />
 
       {/* Top Recent Shows - Featured Shelf */}
       {topRecentShows.length > 3 && (

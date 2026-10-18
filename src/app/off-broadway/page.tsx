@@ -13,7 +13,6 @@ import { hasEnoughReviews } from '@/config/score-buckets';
 import OffBroadwayPageClient from '@/components/OffBroadwayPageClient';
 import type { OffBroadwayShow } from '@/components/OffBroadwayPageClient';
 import FeaturedRowServer from '@/components/FeaturedRowServer';
-import { GoldListCTA } from '@/components/gold-list/GoldListCTA';
 import { featureFlags } from '@/config/feature-flags';
 import { formatShowDate } from '@/lib/date-utils';
 import { displaysCriticScore } from '@/lib/critic-score-display';
@@ -167,7 +166,7 @@ export default function OffBroadwayPage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-5 sm:pt-12">
         <div className="mb-4 sm:mb-8">
           <h1 className="hidden sm:block text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
-            Off-Broadway<span className="text-gradient">Scorecard</span><span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-brand border border-brand/30 bg-brand/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
+            Off-Broadway<span className="text-gradient">Scorecard</span>
           </h1>
           <p className="text-gray-400 text-lg sm:text-xl">
             Every show. Every review. One score.
@@ -176,7 +175,6 @@ export default function OffBroadwayPage() {
             {activeShows.length} shows. {totalReviews.toLocaleString()} critic reviews. And counting.
           </p>
         </div>
-        <GoldListCTA listType="critical-gold-off-broadway" />
         {showServerShelf && (
           <FeaturedRowServer shows={topRecentShows} title="Top Recent Shows" />
         )}

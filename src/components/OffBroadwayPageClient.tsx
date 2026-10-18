@@ -6,7 +6,6 @@ import Link from 'next/link';
 import type Fuse from 'fuse.js';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from '@/components/show-cards';
 import MarketFilterBar from '@/components/MarketFilterBar';
-import { GoldListCTA } from '@/components/gold-list/GoldListCTA';
 import type { ScoreModeParam } from '@/components/show-cards';
 import type { AwardWinnerSets } from '@/lib/data-awards';
 import { FilterButton } from '@/components/filters/FilterButton';
@@ -502,7 +501,7 @@ function OffBroadwayPageInner({ shows, archiveHash, totalShows, totalReviews, ma
         <>
           <div className="mb-4 sm:mb-8">
             <h1 className="hidden sm:block text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
-              Off-Broadway<span className="text-gradient">Scorecard</span><span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-brand border border-brand/30 bg-brand/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
+              Off-Broadway<span className="text-gradient">Scorecard</span>
             </h1>
             <p className="text-gray-400 text-lg sm:text-xl">
               Every show. Every review. One score.
@@ -512,7 +511,6 @@ function OffBroadwayPageInner({ shows, archiveHash, totalShows, totalReviews, ma
             </p>
           </div>
 
-          <GoldListCTA listType="critical-gold-off-broadway" />
 
           {topRecentShows.length > 3 && (
             <section className="mb-4 sm:mb-6">
@@ -771,7 +769,7 @@ export default function OffBroadwayPageClient(props: OffBroadwayPageClientProps)
         {!props.skipAboveFold && (
           <div className="mb-8 sm:mb-10">
             <div className="text-4xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight" aria-hidden="true">
-              Off-Broadway<span className="text-gradient">Scorecard</span><span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-brand border border-brand/30 bg-brand/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
+              Off-Broadway<span className="text-gradient">Scorecard</span>
             </div>
             <p className="text-gray-400 text-lg sm:text-xl">
               Every show. Every review. One score.
