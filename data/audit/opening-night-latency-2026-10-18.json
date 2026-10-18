@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-18T14:40:13.343Z",
+  "generatedAt": "2026-10-18T17:44:21.292Z",
   "date": "2026-10-18",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 241349,
+  "entryCount": 258715,
   "shows": [
     {
       "showId": "a-ghost-in-your-ear-off-broadway-2026",
@@ -458,13 +458,13 @@
     },
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
-      "reviewCount": 32,
+      "reviewCount": 33,
       "median_e2e_ms": 303223165,
       "p90_e2e_ms": 303223165,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 217319,
+        "scored-to-rebuilt": 83867,
         "rebuilt-to-deployed": 241384758
       },
       "reviews_over_15min": 1,
@@ -2297,13 +2297,13 @@
     },
     {
       "showId": "stuffed-off-west-end-2026",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1098786,
+        "scored-to-rebuilt": 661497,
         "rebuilt-to-deployed": 235865913
       },
       "reviews_over_15min": 0,
@@ -2447,13 +2447,13 @@
     },
     {
       "showId": "blood-of-my-blood-west-end-2026",
-      "reviewCount": 20,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 3412940,
-        "scored-to-rebuilt": 444629,
+        "scored-to-rebuilt": 350285,
         "rebuilt-to-deployed": 155557710
       },
       "reviews_over_15min": 0,
@@ -5908,21 +5908,6 @@
       "slowest_reviews": []
     },
     {
-      "showId": "music-for-18-musicians-staged-variations-off-broadway-2026",
-      "reviewCount": 1,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 918191,
-        "rebuilt-to-deployed": 45948979
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
       "showId": "dreamgirls-1981",
       "reviewCount": 1,
       "median_e2e_ms": null,
@@ -7645,13 +7630,13 @@
     },
     {
       "showId": "dog-mom-off-west-end-2026",
-      "reviewCount": 8,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 840574,
-        "scored-to-rebuilt": 179831,
+        "collected-to-scored": 672135,
+        "scored-to-rebuilt": 142087,
         "rebuilt-to-deployed": 56705968
       },
       "reviews_over_15min": 0,
@@ -7810,13 +7795,13 @@
     },
     {
       "showId": "fish-off-broadway-2026",
-      "reviewCount": 8,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 352749,
+        "scored-to-rebuilt": 69029,
         "rebuilt-to-deployed": 106112952
       },
       "reviews_over_15min": 0,
@@ -8515,13 +8500,13 @@
     },
     {
       "showId": "angels-bone-west-end-2026",
-      "reviewCount": 4,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 326921,
-        "scored-to-rebuilt": 596642,
+        "collected-to-scored": 589516,
+        "scored-to-rebuilt": 465931,
         "rebuilt-to-deployed": 36481165
       },
       "reviews_over_15min": 0,
@@ -8628,6 +8613,21 @@
         "collected-to-scored": 2425405,
         "scored-to-rebuilt": 652340,
         "rebuilt-to-deployed": 52035389
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "music-for-18-musicians-staged-variations-off-broadway-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 918191,
+        "rebuilt-to-deployed": 45948979
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
