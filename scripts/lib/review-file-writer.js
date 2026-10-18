@@ -36,6 +36,7 @@ const {
 // Lazy: scripts/lib is copied flat into fixtures and sparse checkouts that carry no subdirectory, so a top-level require would break them.
 const laneBypasses = (...args) => require('./opening-night-lane/trust-model').laneBypasses(...args);
 const { findSiblingUrlOwner } = require('./review-url-collision');
+const { findSameTitleSiblingUrlHolder, hasRoutingDate } = require('./sibling-same-url');
 const { findMergedDuplicateOwner } = require('./merged-duplicate-urls');
 const { isStaleNonReviewSlot, isAggregatorPageUrl, flaggedSlotSupersededBy } = require('./review-slot-guards');
 const { isSameArticleBodyUpgrade } = require('./stale-merge-check');
@@ -335,6 +336,7 @@ function _lookupExistingWrongProductionData(reviewTextsDir, showId, outletId, cr
  * @param {boolean} [options.dryRun=false] - Don't write files
  * @param {function} [options.onMerge] - (existing, input) => mutate existing; return false to abort write
  * @param {string} [options.reviewTextsDir] - Override default review-texts directory
+ * @param {Map} [options.siblingIndex] - buildSiblingIndex() output to use instead of shows.json's (tests)
  * @returns {{ action: 'new'|'updated'|'skipped', reason?: string, durable?: boolean, filepath?: string }}
  *   `durable` (skips only, BRO-2926): true when the refusal is permanent
  *   (ingest-skip-classify.js DURABLE_REJECTION_REASONS), so a poller can stop
@@ -739,7 +741,7 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
       category: showCategory,
       allowCrossMarket: fields.allowCrossMarket === true,
       visited,
-      siblingIndex: _getSiblingIndex(),
+      siblingIndex: options.siblingIndex || _getSiblingIndex(),
     });
     if (decision.action === 'reject') {
       console.warn(`  ⛔ Cross-market guard: rejecting ${outletId}/${input.criticName || 'Unknown'} for ${showId} — ${decision.reason}`);
@@ -780,6 +782,33 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
       } else {
         console.warn(`  ⚠️  Unknown decision.flag from resolveWriteTarget: "${decision.flag}" (showId=${showId}, outletId=${outletId}) — proceeding without flag`);
       }
+    }
+  }
+
+  // --- Guard A2: same-title sibling already holds this url (BRO-5298) ---
+  // Guard A routes on a date. An undated write (no publishDate, no /YYYY/MM/
+  // url) scores no signal and is accepted wherever it lands, so a Show Score
+  // page listing two runs, or a SERP hit, wrote the 2025 Times review again
+  // under the-comedy-about-spies-west-end-2026 and three 2020 reviews under
+  // leopoldstadt-west-end-2021, counting each on both productions. Guard I
+  // below covers only NEW files; this also covers a merge that would move an
+  // existing file of this show onto the sibling's url. A dated write is left
+  // to Guard A (the date decided where it goes). Skipped when this show's
+  // folder already holds the url (that pair is the audit's to settle), when
+  // the caller set wrongProduction either way, on allowCrossMarket, and for a
+  // lane review. Siblings in this write's reroute chain are exempt, as in Guard I.
+  if (input.url && typeof fields.wrongProduction !== 'boolean' && fields.allowCrossMarket !== true
+      && !laneHolds('tourCrossMarket')
+      && !hasRoutingDate({ url: input.url, publishDate: input.publishDate || fields.publishDate })) {
+    const holder = findSameTitleSiblingUrlHolder({
+      showId, url: input.url, reviewTextsDir,
+      siblingIndex: options.siblingIndex || _getSiblingIndex(),
+      skipShowIds: _rerouteVisited,
+    });
+    if (holder && !findSiblingUrlOwner({ showDir: path.join(reviewTextsDir, showId), url: input.url })) {
+      console.warn(`  ⛔ Same-title sibling url: ${input.url} is held by ${holder.showId}/${holder.file} and this write is undated — refusing under ${showId}`);
+      // Same skip shape as Guard I's cross-show-url-owned (a CONFLICT reason in ingest-skip-classify).
+      return { action: 'skipped', reason: `same-title-sibling-url:${holder.showId}` };
     }
   }
 

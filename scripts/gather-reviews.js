@@ -75,6 +75,7 @@ function fallbackOutletIdFromHost(hostname) {
   return id && !(registry && registry.outlets && registry.outlets[id]) ? id : 'unknown';
 }
 const { findSiblingUrlOwner } = require('./lib/review-url-collision');
+const { findSameTitleSiblingUrlHolder, hasRoutingDate } = require('./lib/sibling-same-url');
 const { findMatchingReviewFile } = require('./lib/review-file-match');
 const { verifyProduction, quickDateCheck, getShowData, verifierCategoryFor } = require('./lib/production-verifier');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
@@ -3413,6 +3414,28 @@ function createReviewFile(showId, reviewData, options = {}) {
     }
   }
 
+  // SAME-TITLE SIBLING URL GUARD (BRO-5298): the router above had no date to
+  // route an undated review on, so it accepted it here even when a same-title
+  // sibling production already holds the url (show-score-playwright wrote three
+  // 2020 Leopoldstadt reviews under leopoldstadt-west-end-2021 off a Show Score
+  // page listing both runs). Same predicate as review-file-writer Guard A2.
+  // Skipped when this show's folder already holds the url (a merge, not a copy),
+  // and when the url carries a slug year: the cross-show URL-index check below
+  // re-homes on that year (shouldTakeUrlOwnership), and refusing here would pre-empt it.
+  if (reviewData.url && typeof reviewData.wrongProduction !== 'boolean' && options.allowCrossMarket !== true
+      && !laneBypasses(reviewData, 'tourCrossMarket') && !getSkipCrossShowDupeIds().has(showId)
+      && !hasRoutingDate({ url: reviewData.url, publishDate: reviewData.publishDate })
+      && !/(?:[\/\-_.])((?:19|20)\d\d)(?:[\/\-_.]|$)/.test(reviewData.url)) {
+    const holder = findSameTitleSiblingUrlHolder({
+      showId, url: reviewData.url, reviewTextsDir: REVIEW_TEXTS_DIR,
+      siblingIndex: getSiblingIndex(), skipShowIds: options._marketVisited,
+    });
+    if (holder && !findSiblingUrlOwner({ showDir: path.join(REVIEW_TEXTS_DIR, showId), url: reviewData.url })) {
+      console.log(`    ✗ Skipping ${filename}: undated, and ${holder.showId}/${holder.file} already holds ${reviewData.url}`);
+      return 'sameTitleSiblingUrl';
+    }
+  }
+
   // PRODUCTION VERIFICATION: Check for wrong production (off-Broadway, West End, etc.)
   // Always run venue verification (cheap text scan). Date-based verification only when dates look suspicious.
   {
@@ -4384,7 +4407,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     serp: { calls: 0, hits: 0, skipped: false },
     siteSearch: { searched: 0, hits: 0, skipped: false },
     wrongUrlRetry: { found: 0, retried: 0, fixed: 0, skipped: false },
-    rejections: { junkOutlet: 0, suspiciousOutlet: 0, nonBroadway: 0, tourReview: 0, crossMarketBroadway: 0, nonReviewPath: 0, roundupUrl: 0, wrongProduction: 0, duplicate: 0, crossShow: 0, crossShowUrl: 0, domainMismatch: 0, aggregatorUrlMismatch: 0, nullUrl: 0 },
+    rejections: { junkOutlet: 0, suspiciousOutlet: 0, nonBroadway: 0, tourReview: 0, crossMarketBroadway: 0, sameTitleSiblingUrl: 0, nonReviewPath: 0, roundupUrl: 0, wrongProduction: 0, duplicate: 0, crossShow: 0, crossShowUrl: 0, domainMismatch: 0, aggregatorUrlMismatch: 0, nullUrl: 0 },
     urlValidation: { checked: 0, nulled: 0 },
   };
 

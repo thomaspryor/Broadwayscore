@@ -72,6 +72,10 @@ const CONFLICT_REASONS = [
   // `cross-show-url-owned:<owningShowId>`). Either that show is contaminated
   // or this citation is wrong — always a real data bug.
   'cross-show-url-owned',
+  // BRO-5298: an UNDATED write whose url a same-title sibling production
+  // already holds (emitted as `same-title-sibling-url:<siblingShowId>`). The
+  // router had no date to decide on; one of the two runs is wrong.
+  'same-title-sibling-url',
   // The resolved outlet's registered domain doesn't match the URL's host
   // (emitted as `domain-mismatch: <prose>`). A misrouted outlet id, or a
   // registry entry missing a domain the outlet actually publishes on — e.g. an
@@ -317,6 +321,10 @@ function describeSkip(showId, url, { reason, detail }) {
     return `${showId}: ${url} is already owned by ${detail || 'another show'} — one of the two is contaminated. `
       + `Inspect data/review-texts/${detail || '<owner>'}/ for this URL; if that copy is the misfiled one, flag it `
       + `wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here.`;
+  }
+  if (reason === 'same-title-sibling-url') {
+    return `${showId}: ${url} is already held by same-title production ${detail || 'a sibling'} and this write carried no date, so it was refused. `
+      + `If the review really belongs to ${showId}, re-ingest it with its publishDate (the router then decides), or flag the sibling's copy wrongProduction first.`;
   }
   if (reason === 'domain-mismatch') {
     return `${showId}: ${url} was rejected because the resolved outlet's registered domain doesn't match the URL host `
