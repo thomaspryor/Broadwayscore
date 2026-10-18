@@ -300,3 +300,6 @@ reverify-cv-promoted-weekly.yml
 # BRO-4290: every-2h capped evidence-review catch-up; a missed run only delays one
 # closed show's single review fetch, nothing user-facing; failures reach the digest.
 evidence-review-catchup.yml
+# BRO-5626: hourly unpark pass; a missed run only delays technical parked cards reaching Todo,
+# failures page via notify-failure and the 'Parked, never picked' digest count shows any pile-up.
+linear-promote-parked.yml
