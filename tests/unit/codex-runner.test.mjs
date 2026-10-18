@@ -559,6 +559,41 @@ test('fixRoundDeadline: a SHIP-WITH-FIXES round is not cut by the 60-min card bu
   assert.equal(r.fixRoundDeadline({ verdict: 'SHIP-WITH-FIXES', swfRoundUsed: false, cardDeadlineMs: card, runEndMs: Infinity }), Infinity);
 });
 
+test('execBudgetMs / cardStartMs: every exec leaves the land checks and the review before the hard stop (BRO-5384)', () => {
+  const t0 = Date.parse('2026-10-18T10:00:00Z');
+  const until = t0 + 104 * 60_000; // 112-min hard stop minus 8-min wrap-up
+  const cap = 45 * 60_000;
+  const min = (ms) => ms / 60_000;
+  // Early in the run the 45-min cap binds.
+  assert.equal(min(r.execBudgetMs({ untilMs: until, nowMs: t0 + 5 * 60_000, capMs: cap })), 45);
+  // Minute 40 (a fix round after a 60-min card budget would have allowed 30 min): 64 left - 15 - 30 = 19.
+  assert.equal(min(r.execBudgetMs({ untilMs: until, nowMs: t0 + 40 * 60_000, capMs: cap })), 19);
+  // Slow, queued land checks (3 slots share the mutex) shrink the exec, never the review.
+  assert.equal(min(r.execBudgetMs({ untilMs: until, nowMs: t0 + 40 * 60_000, capMs: cap, landChecksMs: 25 * 60_000 })), 15, 'floored at the minimum exec');
+  // Exec + land checks + review always fit when the card was allowed to start.
+  for (const land of [15, 25]) {
+    const startLatest = until - r.cardStartMs(land * 60_000);
+    const execStart = startLatest + 5 * 60_000; // after verify
+    const exec = r.execBudgetMs({ untilMs: until, nowMs: execStart, capMs: cap, landChecksMs: land * 60_000 });
+    assert.ok(execStart + exec + land * 60_000 + r.REVIEW_RESERVE_MS <= until, `land ${land} min`);
+  }
+  // A card is no longer started with 60 min left before the hard stop (52 usable): its review would not fit.
+  assert.equal(min(r.cardStartMs()), 65);
+  assert.ok(60 * 60_000 - 8 * 60_000 < r.cardStartMs());
+  assert.equal(r.fixRoundFits({ deadlineMs: until, nowMs: t0 + 50 * 60_000, hardEndMs: t0 + 112 * 60_000, wrapUpMs: 8 * 60_000, landChecksMs: 15 * 60_000 }), false);
+  assert.equal(r.fixRoundFits({ deadlineMs: until, nowMs: t0 + 40 * 60_000, hardEndMs: t0 + 112 * 60_000, wrapUpMs: 8 * 60_000, landChecksMs: 15 * 60_000 }), true);
+  assert.equal(r.fixRoundFits({ deadlineMs: until, nowMs: t0 + 40 * 60_000, hardEndMs: t0 + 112 * 60_000, wrapUpMs: 8 * 60_000, landChecksMs: 25 * 60_000 }), false, 'measured slow land checks close the round');
+});
+
+test('daily-runner: execs, fix rounds and card starts use the measured land-check time (BRO-5384)', () => {
+  const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
+  assert.match(src, /finally \{ landChecksMs = Math\.max\(R\.LAND_CHECKS_MS, Date\.now\(\) - t0\); \}/);
+  assert.match(src, /const runExecMs = \(\) => R\.execBudgetMs\(\{ untilMs: HARD_END_MS - WRAP_UP_MS, nowMs: Date\.now\(\), capMs: CODEX_TIMEOUT_MS, landChecksMs \}\)/);
+  assert.match(src, /const fixExecMs = \(\) => Math\.min\(runExecMs\(\),/);
+  assert.match(src, /fitsBeforeHardStop\(R\.cardStartMs\(landChecksMs\)\)/);
+  assert.doesNotMatch(src, /CARD_START_MIN_MS/);
+});
+
 test('daily-runner: a SHIP-WITH-FIXES with no time left is carried, never bounced; a carry is resumed', () => {
   const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
   assert.match(src, /if \(swfRound\) \{ carryOver = true; break; \}/);

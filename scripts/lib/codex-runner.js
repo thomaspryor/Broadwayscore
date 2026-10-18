@@ -584,9 +584,23 @@ function carryPatch(cwd, base) {
 const FIX_EXEC_MIN_MS = 15 * 60_000;
 const REVIEW_RESERVE_MS = 30 * 60_000;
 const LAND_CHECKS_MS = 15 * 60_000;
-function fixRoundFits({ deadlineMs, nowMs, hardEndMs, wrapUpMs }) {
+function fixRoundFits({ deadlineMs, nowMs, hardEndMs, wrapUpMs, landChecksMs = LAND_CHECKS_MS }) {
   return deadlineMs - nowMs >= FIX_EXEC_MIN_MS + REVIEW_RESERVE_MS
-    && hardEndMs - wrapUpMs - nowMs >= FIX_EXEC_MIN_MS + LAND_CHECKS_MS + REVIEW_RESERVE_MS;
+    && hardEndMs - wrapUpMs - nowMs >= FIX_EXEC_MIN_MS + landChecksMs + REVIEW_RESERVE_MS;
+}
+/**
+ * Codex exec time that still leaves the land checks and the review before `untilMs` (the hard
+ * stop's wrap-up), in [FIX_EXEC_MIN_MS, capMs]. 17 of 18 out-of-time cards on 2026-10-17/18 ran
+ * out right before the review: a fix exec sized to the card budget alone ate that time (BRO-5384).
+ * `landChecksMs` is the last measured land-check run, mutex wait included (3 slots share it).
+ */
+function execBudgetMs({ untilMs, nowMs, capMs, landChecksMs = LAND_CHECKS_MS }) {
+  return Math.min(capMs, Math.max(FIX_EXEC_MIN_MS, untilMs - nowMs - landChecksMs - REVIEW_RESERVE_MS));
+}
+/** Time a card needs before the wrap-up so its review fits: verify, a minimum exec, the land checks, the review. */
+const CARD_VERIFY_MS = 5 * 60_000;
+function cardStartMs(landChecksMs = LAND_CHECKS_MS) {
+  return CARD_VERIFY_MS + FIX_EXEC_MIN_MS + landChecksMs + REVIEW_RESERVE_MS;
 }
 
 /**
@@ -953,6 +967,8 @@ module.exports = {
   REVIEW_RESERVE_MS,
   LAND_CHECKS_MS,
   fixRoundFits,
+  execBudgetMs,
+  cardStartMs,
   launchRunDir,
   CODEX_MIN_SCORE,
   orphanAction,

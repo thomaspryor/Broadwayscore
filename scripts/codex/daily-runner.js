@@ -108,11 +108,11 @@ const RUN_STARTED_MS = Number(arg('run-started', 0)) || Date.now();
 const HARD_END_MS = OPTS.hardStopMinutes > 0 ? RUN_STARTED_MS + OPTS.hardStopMinutes * 60_000 : Infinity;
 // Time kept free before the hard stop for the summary, the login save and the lock release.
 const WRAP_UP_MS = 8 * 60_000;
-// A card is started only with this much time left before the hard stop: verify (up to 10 min),
-// a 15-min exec, land checks and the review (30 min); a review that would not fit is skipped
-// and the card handed back, so this only needs to cover the usual case. 75 left a 112-min run
-// one card (2026-10-14 04:47 firing stopped at minute 50 with 0 cards worked).
-const CARD_START_MIN_MS = 60 * 60_000;
+// A card starts only while R.cardStartMs (verify, a 15-min exec, the land checks, the 30-min
+// review) fits before the wrap-up: the old flat 60 min started cards whose review could not
+// fit, and 18 of them were handed back unjudged on 2026-10-17/18 (BRO-5384).
+// Last measured land-check run, mutex wait included; sizes the exec and card-start reserves (R.execBudgetMs).
+let landChecksMs = R.LAND_CHECKS_MS;
 if (process.argv.includes('--hard-stop-minutes') && !(OPTS.hardStopMinutes >= 30)) {
   console.error(`--hard-stop-minutes needs a number of minutes >= 30 (got ${arg('hard-stop-minutes')})`);
   process.exit(2);
@@ -425,7 +425,8 @@ function prepareBase() {
   provideData(BASE_WT, { reviewTexts: false });
 }
 function newLandFailures() {
-  return withLandMutex(newLandFailuresNow);
+  const t0 = Date.now();
+  try { return withLandMutex(newLandFailuresNow); } finally { landChecksMs = Math.max(R.LAND_CHECKS_MS, Date.now() - t0); }
 }
 function newLandFailuresNow() {
   const D = require(path.join(ROOT, 'scripts/lib/land-gate-delta.js'));
@@ -658,10 +659,12 @@ async function workCard(pick, stats, inFlight) {
     // A fix round's exec gets what is left after the review (down to 15 min), not a fixed 45:
     // reserving a whole 45-min exec + 30-min review never fit the routine's 60-min card budget,
     // so no card ever got a second attempt (BRO-5287).
-    const { REVIEW_RESERVE_MS, FIX_EXEC_MIN_MS: MIN_FIX_EXEC_MS, LAND_CHECKS_MS } = R;
-    const execFits = (deadline = roundDeadline) => R.fixRoundFits({ deadlineMs: deadline, nowMs: Date.now(), hardEndMs: HARD_END_MS, wrapUpMs: WRAP_UP_MS });
-    const firstExecMs = () => Math.min(CODEX_TIMEOUT_MS, Math.max(MIN_FIX_EXEC_MS, HARD_END_MS - WRAP_UP_MS - Date.now() - LAND_CHECKS_MS - REVIEW_RESERVE_MS));
-    const fixExecMs = () => Math.min(CODEX_TIMEOUT_MS, Math.max(MIN_FIX_EXEC_MS, roundDeadline - Date.now() - REVIEW_RESERVE_MS));
+    const { REVIEW_RESERVE_MS, FIX_EXEC_MIN_MS: MIN_FIX_EXEC_MS } = R;
+    const execFits = (deadline = roundDeadline) => R.fixRoundFits({ deadlineMs: deadline, nowMs: Date.now(), hardEndMs: HARD_END_MS, wrapUpMs: WRAP_UP_MS, landChecksMs });
+    const runExecMs = () => R.execBudgetMs({ untilMs: HARD_END_MS - WRAP_UP_MS, nowMs: Date.now(), capMs: CODEX_TIMEOUT_MS, landChecksMs });
+    const firstExecMs = runExecMs;
+    // Every exec is followed by the land checks and the review, so it also leaves those before the hard stop.
+    const fixExecMs = () => Math.min(runExecMs(), Math.max(MIN_FIX_EXEC_MS, roundDeadline - Date.now() - REVIEW_RESERVE_MS));
     let report = '';
     let check = null;
     let attempt = 1;
@@ -719,7 +722,7 @@ async function workCard(pick, stats, inFlight) {
       if (c.blocked) { check = { verdict: 'REJECT', text: `Blocked before review: ${c.blocked}.` }; step = 'bounce'; break; }
       // Land refuses new unit/audit failures half an hour after the push, when the worktree has
       // moved on; catch them here and hand them straight back to Codex in the same attempt.
-      if (c.hasDiff && !fitsBeforeHardStop(LAND_CHECKS_MS + REVIEW_RESERVE_MS)) { outOfTime = 'the land checks and the review'; break; }
+      if (c.hasDiff && !fitsBeforeHardStop(landChecksMs + REVIEW_RESERVE_MS)) { outOfTime = 'the land checks and the review'; break; }
       keepLock();
       let landFails = c.hasDiff ? throwIfDisk(newLandFailures(), 'the land checks') : null;
       if (landFails && execFits()) {
@@ -1238,7 +1241,7 @@ async function runLocked(startedMs) {
     // in a row stop only this slot: they can be this slot's cards.
     if (stop && (stats.aborted || stats.doneRefusals || diskLow)) stopAllSlots(stop);
     if (!stop) { const other = runStop(); if (other) stop = `another slot stopped this launch (${other})`; }
-    if (!stop && HARD_END_MS - Date.now() < CARD_START_MIN_MS) stop = `under ${CARD_START_MIN_MS / 60_000} min left before the ${OPTS.hardStopMinutes}-min hard stop`;
+    if (!stop && !fitsBeforeHardStop(R.cardStartMs(landChecksMs))) stop = `under ${Math.round((R.cardStartMs(landChecksMs) + WRAP_UP_MS) / 60_000)} min left before the ${OPTS.hardStopMinutes}-min hard stop (a card's exec, land checks and review would not fit)`;
     let held = true;
     try { held = refreshLock(MAX_STAMP_GAP_MS); } catch { /* transient git error: the keep-alive retries */ }
     if (!stop && !OPTS.dryRun && !held) stop = 'lost the run lock (see the run log: another run took it, or it could not be re-stamped)';
