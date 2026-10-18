@@ -12,6 +12,8 @@
  *   node scripts/discover-dailymail-urls.js --apply             also write url (+ section stars) to review files
  *   node scripts/discover-dailymail-urls.js --out=path.json     write the report here
  *   node scripts/discover-dailymail-urls.js --all-markets       not just West End / London shows
+ *   node scripts/discover-dailymail-urls.js --from-report=r.json [--apply]   apply a saved report, no fetching
+ *   node scripts/discover-dailymail-urls.js --cache-dir=/tmp/dm  reuse fetched archives/articles across runs
  *
  * Fetching: DM article and archive pages normally serve plainly, so this uses
  * fetch() first. A run is ~1-2K page loads; sending all of them through
@@ -27,10 +29,13 @@ const { safeWriteReview } = require('./lib/review-write-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const L = require('./lib/dailymail-url-discovery');
 
-const USAGE = fs.readFileSync(__filename, 'utf8').split('\n').slice(2, 16).map(l => l.replace(/^ \* ?/, '')).join('\n');
+const USAGE = fs.readFileSync(__filename, 'utf8').split('\n').slice(2, 18).map(l => l.replace(/^ \* ?/, '')).join('\n');
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 const DM = 'https://www.dailymail.co.uk';
 const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36';
+// Mail on Sunday critics (Gore-Langton, Brown) live under their own outlet since BRO-5373.
+const OUTLET_PREFIX = /^(daily-mail|mail-on-sunday)--/;
+const criticKey = file => file.replace(/\/(daily-mail|mail-on-sunday)--/, '/');
 const DAYS_BEFORE = 4; // DM often runs the review the night of press night, before TR's date
 const DAYS_AFTER = 3;
 const CONCURRENCY = 8;
@@ -41,6 +46,10 @@ const APPLY = args.includes('--apply');
 const ALL_MARKETS = args.includes('--all-markets');
 const ONLY_SHOW = arg('show');
 const OUT = arg('out');
+// --cache-dir=D keeps day archives (D/arc/YYYYMMDD.html) and parsed articles
+// (D/pages/article-N.json) between runs, so a re-run after DM throttles the IP
+// only fetches what is new.
+const CACHE = arg('cache-dir');
 
 let blockedDirect = false; // once DM 403s this IP, stop knocking and go straight to fetchPage()
 
@@ -84,7 +93,7 @@ function loadTargets() {
     if (!ONLY_SHOW && !ALL_MARKETS && !/west-end|london/.test(showId)) continue;
     const dir = path.join(REVIEW_TEXTS_DIR, showId);
     for (const f of fs.readdirSync(dir)) {
-      if (!f.startsWith('daily-mail--') || !f.endsWith('.json')) continue;
+      if (!OUTLET_PREFIX.test(f) || !f.endsWith('.json')) continue;
       const filePath = path.join(dir, f);
       let j;
       try { j = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
@@ -103,8 +112,51 @@ function windowDays(isoDate) {
   return days;
 }
 
+/** Write a matched URL (and the section's own star rating, if parsed) to the review file. */
+function applyEntry(t, entry) {
+  const update = {
+    url: entry.url,
+    urlDiscoveredBy: 'dailymail-url-discovery',
+    urlDiscoveredAt: new Date().toISOString(),
+    urlMatchOverlap: entry.textOverlap,
+    dailymailPlacement: entry.placement,
+  };
+  const stars = entry.sectionRating ? Number(entry.sectionRating[0]) : null;
+  if (stars && !t.data.originalScore) {
+    // Written as originalScore so recollect-for-scores leaves it alone: on a
+    // bundled page its page-level extractor would read the lead show's stars.
+    Object.assign(update, {
+      originalScore: `${stars}/5 stars`,
+      originalScoreNormalized: Math.round((stars / 5) * 100),
+      originalScoreSource: 'explicit-rating',
+      scoreExtractedFrom: 'scraped-html',
+      scoreRecoveredAt: new Date().toISOString(),
+    });
+  }
+  safeWriteReview(t.filePath, { ...t.data, ...update });
+}
+
+/** --from-report: apply a reviewed dry-run report without fetching anything again. */
+function applyFromReport(reportPath) {
+  const { matches } = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+  // Keyed by show + critic, not file name: an outlet rename (daily-mail-- →
+  // mail-on-sunday--) between the report and the apply must not lose the match.
+  const byFile = new Map(loadTargets().map(t => [criticKey(t.file), t]));
+  let written = 0;
+  for (const entry of matches) {
+    if (!entry.writeUrl) continue;
+    const t = byFile.get(criticKey(entry.file));
+    if (!t) { console.log(`skip  ${entry.file} (now has a URL, or no longer a target)`); continue; }
+    if (t.data.wrongShow || t.data.wrongProduction || t.data.duplicateOf) { console.log(`skip  ${entry.file} (flagged since the report)`); continue; }
+    if (APPLY) { applyEntry(t, entry); written++; }
+    console.log(`${APPLY ? 'WROTE' : 'would write'} ${t.file} → ${entry.url}${entry.sectionRating ? ` (${entry.sectionRating})` : ''}`);
+  }
+  console.log(`\n${written} written${APPLY ? '' : ' (dry run; --apply to write)'}`);
+}
+
 async function main() {
   if (hasHelpFlag(args)) { console.log(USAGE); return; }
+  if (arg('from-report')) return applyFromReport(arg('from-report'));
   const targets = loadTargets();
   console.log(`${targets.length} URL-less Daily Mail review file(s) with text`);
   if (!targets.length) return;
@@ -112,7 +164,12 @@ async function main() {
   const allDays = [...new Set(targets.flatMap(t => windowDays(t.data.publishDate)))];
   const dayLinks = {};
   await pool(allDays, async d => {
-    const html = await get(`${DM}/home/sitemaparchive/day_${d}.html`);
+    const cached = CACHE && path.join(CACHE, 'arc', `${d}.html`);
+    let html = cached && fs.existsSync(cached) && fs.statSync(cached).size > 20000 ? fs.readFileSync(cached, 'utf8') : null;
+    if (!html) {
+      html = await get(`${DM}/home/sitemaparchive/day_${d}.html`);
+      if (html && cached && L.parseDayArchive(html).length) { fs.mkdirSync(path.dirname(cached), { recursive: true }); fs.writeFileSync(cached, html); }
+    }
     dayLinks[d] = html ? L.parseDayArchive(html).filter(L.isCandidatePath) : [];
   });
   const missingDays = allDays.filter(d => !dayLinks[d].length);
@@ -127,8 +184,19 @@ async function main() {
   const pages = new Map();
   const allPaths = [...new Set([...candidates.values()].flatMap(s => [...s]))];
   await pool(allPaths, async p => {
+    const id = (p.match(/article-\d+/) || [])[0];
+    const cached = CACHE && id && path.join(CACHE, 'pages', `${id}.json`);
+    if (cached && fs.existsSync(cached)) {
+      try {
+        const c = JSON.parse(fs.readFileSync(cached, 'utf8'));
+        if (c.paras && c.paras.length) { pages.set(p, { ...c, author: c.author || c.auth || null }); return; }
+      } catch { /* refetch */ }
+    }
     const html = await get(DM + p);
-    if (html) pages.set(p, L.extractArticle(html));
+    if (!html) return;
+    const page = L.extractArticle(html);
+    pages.set(p, page);
+    if (cached && page.paras.length) { fs.mkdirSync(path.dirname(cached), { recursive: true }); fs.writeFileSync(cached, JSON.stringify(page)); }
   });
   console.log(`${pages.size}/${allPaths.length} candidate article(s) fetched`);
 
@@ -170,26 +238,7 @@ async function main() {
     const tag = entry.writeUrl ? 'WRITE' : 'skip ';
     console.log(`${tag} ${entry.textOverlap.toFixed(2)} ${placement.padEnd(9)} ${(entry.sectionRating || '-').padEnd(9)} ${t.file}\n        ${url}`);
 
-    if (APPLY && entry.writeUrl) {
-      const update = {
-        url,
-        urlDiscoveredBy: 'dailymail-url-discovery',
-        urlDiscoveredAt: new Date().toISOString(),
-        urlMatchOverlap: entry.textOverlap,
-        dailymailPlacement: placement,
-      };
-      if (sectionRating && !t.data.originalScore) {
-        Object.assign(update, {
-          originalScore: `${sectionRating.stars}/5 stars`,
-          originalScoreNormalized: Math.round((sectionRating.stars / 5) * 100),
-          originalScoreSource: 'explicit-rating',
-          scoreExtractedFrom: 'scraped-html',
-          scoreRecoveredAt: new Date().toISOString(),
-        });
-      }
-      safeWriteReview(t.filePath, { ...t.data, ...update });
-      written++;
-    }
+    if (APPLY && entry.writeUrl) { applyEntry(t, entry); written++; }
   }
   console.log(`\n${report.length} matched, ${report.filter(r => r.writeUrl).length} writable${APPLY ? `, ${written} written` : ' (dry run; --apply to write)'}`);
   if (OUT) {
