@@ -1,130 +1,50 @@
 {
-  "updatedAt": "2026-10-18T13:55:58.727Z",
-  "processed": 2,
-  "failed": 18,
-  "successRate": "10.0%",
+  "updatedAt": "2026-10-18T13:57:03.990Z",
+  "processed": 93,
+  "failed": 46,
+  "successRate": "66.9%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 62,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 1,
     "scrapingbee": 0,
-    "brightdata": 1,
+    "brightdata": 0,
     "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 14,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-10-18T13:42:59.190Z",
+      "t": "2026-10-18T13:54:44.354Z",
       "event": "bb-session",
-      "session": "2e4b302f",
-      "url": "https://www.wsj.com/articles/SB106748686155075900"
+      "session": "371e7243",
+      "url": "https://www.theatreinla.com/the-second-best-school-shooting/11328/"
     },
     {
-      "t": "2026-10-18T13:42:59.500Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T13:43:16.436Z",
+      "t": "2026-10-18T13:55:27.232Z",
       "event": "bb-session",
-      "session": "0556360c",
-      "url": "https://www.wsj.com/articles/SB106748686155075900"
+      "session": "0bf6dd4c",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
     },
     {
-      "t": "2026-10-18T13:43:16.729Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T13:44:33.876Z",
+      "t": "2026-10-18T13:55:35.010Z",
       "event": "bb-session",
-      "session": "0c176499",
-      "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89"
+      "session": "653728d7",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
     },
     {
-      "t": "2026-10-18T13:44:34.171Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T13:44:50.598Z",
+      "t": "2026-10-18T13:56:37.477Z",
       "event": "bb-session",
-      "session": "c747907d",
-      "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89"
+      "session": "2efafbde",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
     },
     {
-      "t": "2026-10-18T13:44:50.861Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T13:45:35.096Z",
+      "t": "2026-10-18T13:56:44.918Z",
       "event": "bb-session",
-      "session": "d9681571",
-      "url": "https://www.wsj.com/articles/swept-away-review-the-avett-brothers-set-sail-on-br"
-    },
-    {
-      "t": "2026-10-18T13:45:35.406Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T13:45:51.817Z",
-      "event": "bb-session",
-      "session": "8600455b",
-      "url": "https://www.wsj.com/articles/swept-away-review-the-avett-brothers-set-sail-on-br"
-    },
-    {
-      "t": "2026-10-18T13:45:52.088Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T13:46:35.733Z",
-      "event": "bb-session",
-      "session": "2f1da0c6",
-      "url": "https://www.wsj.com/articles/sunset-blvd-review-nicole-scherzingers-norma-desmon"
-    },
-    {
-      "t": "2026-10-18T13:46:36.016Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T13:46:52.380Z",
-      "event": "bb-session",
-      "session": "b8989aa6",
-      "url": "https://www.wsj.com/articles/sunset-blvd-review-nicole-scherzingers-norma-desmon"
-    },
-    {
-      "t": "2026-10-18T13:46:52.650Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T13:47:52.104Z",
-      "event": "bb-session",
-      "session": "c7e3b09a",
-      "url": "https://www.wsj.com/articles/the-roommate-review-on-broadway-an-odd-couple-in-io"
-    },
-    {
-      "t": "2026-10-18T13:47:52.406Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T13:48:08.877Z",
-      "event": "bb-session",
-      "session": "5f175cf2",
-      "url": "https://www.wsj.com/articles/the-roommate-review-on-broadway-an-odd-couple-in-io"
-    },
-    {
-      "t": "2026-10-18T13:48:09.211Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "session": "277ac2e4",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
     }
   ]
 }
