@@ -47,8 +47,9 @@ const DESIGNATION_CRITERIA = `Designation — pick EXACTLY one, using these crit
 - Windfall: open-ended commercial run that recouped and turned a solid profit, but is not a decade-defining phenomenon.
 - Easy Winner: LIMITED engagement (planned closing date, often a star-driven play) that recouped during its run — even if it recouped very fast or broke house records.
 - Trickle: roughly broke even or made a modest profit.
-- Fizzle: closed without recouping, returned roughly ${FIZZLE_MIN_RETURNED_PCT}% or more of its capitalization.
-- Flop: closed without recouping, returned less than ${FIZZLE_MIN_RETURNED_PCT}% of its capitalization.
+- Fizzle: closed without recouping, and a source says roughly ${FIZZLE_MIN_RETURNED_PCT}% or more of its capitalization came back.
+- Flop: closed without recouping, and a source says less than ${FIZZLE_MIN_RETURNED_PCT}% of its capitalization came back.
+- Did Not Recoup: closed without recouping, but no source says how much of the capitalization came back.
 - Nonprofit: produced by a nonprofit theater (Lincoln Center, Roundabout, MTC, Second Stage) — subscriber-funded, no traditional investor recoupment.
 - TBD: still running and too early to tell, or insufficient data to judge.`;
 

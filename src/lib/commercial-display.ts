@@ -23,7 +23,7 @@ import {
   modelDisplayGuard, displayBasis, playedWeeks, independentEstimate, isRunning,
   analystRange, estimateFitsDesignation, RUNNING_SHOWN_MAX,
 } from '../../scripts/lib/model-display-guard';
-import { hasNoInvestorsToRepay } from '../../scripts/lib/commercial-designations';
+import { hasNoInvestorsToRepay, isLossDesignation } from '../../scripts/lib/commercial-designations';
 import { publicSourceText, isEstimatedCapitalization, saysRecoupmentUnannounced } from '../../scripts/lib/public-source-text';
 import { conversionOf } from '../../scripts/lib/commercial-conversion';
 
@@ -71,8 +71,8 @@ export function isFinalClosedOutcome(signals: Pick<RecoupmentSignals, 'designati
 /**
  * The /biz loss cell (wording: lossOutcomePhrase). recouped:false alone is not evidence: the
  * stub enroller writes it on every new record, and nonprofit productions have
- * no investors to repay. Only a closed Fizzle or Flop (both defined as "closed
- * without recouping") makes the claim.
+ * no investors to repay. Only a closed loss label (Fizzle, Flop, Did Not
+ * Recoup: each defined as "closed without recouping") makes the claim.
  */
 export function isClosedWithoutRecouping(
   signals: Pick<RecoupmentSignals, 'designation' | 'status' | 'recouped'>
@@ -80,7 +80,7 @@ export function isClosedWithoutRecouping(
   return (
     signals.status === 'closed' &&
     signals.recouped === false &&
-    (signals.designation === 'Fizzle' || signals.designation === 'Flop')
+    isLossDesignation(signals.designation)
   );
 }
 
@@ -237,7 +237,7 @@ type CellSignals = RecoupmentSignals &
 /**
  * The % Recouped cell, most authoritative first: a recoupment record, a
  * trade-reported return on a closed show, the analyst's estimate, our model,
- * the loss phrase of a closed Fizzle/Flop, then the reason there is no figure.
+ * the loss phrase of a closed loss label, then the reason there is no figure.
  * Every commercial row says something; none prints a bare dash (owner,
  * 2026-10-16: "so many gaps").
  */
@@ -562,22 +562,22 @@ export const LOSS_ON_SILENCE_CAVEAT = 'Based on no recoupment being announced';
 type LossBasisSignals = Pick<ShowCommercial, 'designation' | 'designationBasis'>;
 
 /**
- * True only for a Fizzle/Flop whose loss a source reported
+ * True only for a loss label whose loss a source reported
  * (designationBasis 'reported-loss'). A label resting on silence, on our own
  * notes ('notes-stated') or on nothing recorded is not a reported fact, so it
  * never reads like one (checker, BRO-5020).
  */
 export function isReportedLoss(c: LossBasisSignals | null | undefined): boolean {
-  return !!c && (c.designation === 'Fizzle' || c.designation === 'Flop') && c.designationBasis === 'reported-loss';
+  return !!c && isLossDesignation(c.designation) && c.designationBasis === 'reported-loss';
 }
 
 /**
- * The caveat a Fizzle/Flop carries unless a source reported the loss. Null
+ * The caveat a loss label carries unless a source reported the loss. Null
  * for a reported loss and for every other designation. Writers store only the
  * basis; this file is the one place the public words live.
  */
 export function lossBasisCaveat(c: LossBasisSignals | null | undefined): string | null {
-  if (!c || (c.designation !== 'Fizzle' && c.designation !== 'Flop')) return null;
+  if (!c || !isLossDesignation(c.designation)) return null;
   return isReportedLoss(c) ? null : LOSS_ON_SILENCE_CAVEAT;
 }
 
@@ -602,7 +602,7 @@ export function publicNotesText(
  *              "closed with no recoupment announced"; "closed" for any other label)
  */
 export function lossOutcomePhrase(c: LossBasisSignals, form: 'cell' | 'closing'): string {
-  const isLoss = c.designation === 'Fizzle' || c.designation === 'Flop';
+  const isLoss = isLossDesignation(c.designation);
   const reported = isReportedLoss(c);
   if (form === 'cell') return reported ? 'Did not recoup' : 'No recoupment announced';
   if (!isLoss) return 'closed';

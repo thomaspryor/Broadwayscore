@@ -49,6 +49,31 @@ test('a Fizzle or Flop that contradicts the record\'s own returned estimate is a
   assert.equal(commercialRecordErrors('k', { designation: 'Fizzle', recouped: false, designationBasis: 'reported-loss', estimatedRecoupmentPct: [0, 10] }, closed).length, 0);
 });
 
+test('a loss label with no estimate is Did Not Recoup, and a Did Not Recoup with one takes its size (BRO-5636)', () => {
+  const closed = { showRecord: { slug: 'k', status: 'closed' } };
+  const w = (rec) => commercialRecordWarnings('k', { recouped: false, designationBasis: 'reported-loss', ...rec }, closed);
+  const noEstimate = (rec) => w(rec).filter((m) => m.includes('has no estimate of how much came back')).length;
+  const sized = (rec) => w(rec).filter((m) => m.includes('% returned (Fizzle is')).length;
+  assert.equal(noEstimate({ designation: 'Fizzle' }), 1);
+  assert.equal(noEstimate({ designation: 'Flop', modelDataQuality: 'low', modelReturnedExCreditPct: [-29, -6.2, 15.2] }), 1); // thin inputs size nothing
+  assert.equal(noEstimate({ designation: 'Did Not Recoup' }), 0);
+  assert.equal(sized({ designation: 'Did Not Recoup' }), 0);
+  assert.equal(sized({ designation: 'Did Not Recoup', estimatedRecoupmentPct: [0, 0] }), 1);
+  assert.equal(sized({ designation: 'Did Not Recoup', modelDataQuality: 'medium', modelReturnedExCreditPct: [-29, -6.2, 15.2] }), 1);
+  assert.deepEqual(w({ designation: 'Did Not Recoup' }), []);
+});
+
+test('Did Not Recoup follows every loss-label rule', () => {
+  const closed = { showRecord: { slug: 'k', status: 'closed' } };
+  const e = (rec) => commercialRecordErrors('k', rec, closed);
+  assert.equal(e({ designation: 'Did Not Recoup', recouped: null }).length, 1, 'needs recouped=false');
+  assert.equal(e({ designation: 'Did Not Recoup', recouped: false, designationBasis: 'no-recoupment-announced' }).length, 0);
+  const w = (rec, ctx) => commercialRecordWarnings('k', { recouped: false, ...rec }, ctx);
+  assert.equal(w({ designation: 'Did Not Recoup' }, closed).filter((m) => /no designationBasis/.test(m)).length, 1);
+  assert.equal(w({ designation: 'Did Not Recoup', designationBasis: 'reported-loss' }, { showRecord: { slug: 'k', status: 'open' } })
+    .filter((m) => /loss designations are for closed runs/.test(m)).length, 1);
+});
+
 test('a field a data plan cleared (null) is absent, not a malformed value (BRO-5602)', () => {
   const rec = { designation: 'Flop', recouped: false, designationBasis: 'reported-loss' };
   const errs = (extra) => commercialRecordErrors('k', { ...rec, ...extra }, { allRecords: { k: rec } });
@@ -59,7 +84,7 @@ test('a field a data plan cleared (null) is absent, not a malformed value (BRO-5
 });
 
 test('loss designation on a show that is not closed is a warning, never an error', () => {
-  const rec = { designation: 'Flop', recouped: false, designationBasis: 'reported-loss' };
+  const rec = { designation: 'Flop', recouped: false, designationBasis: 'reported-loss', estimatedRecoupmentPct: [0, 10] };
   const w = (status) => commercialRecordWarnings('k', rec, { showRecord: { slug: 'k', status } }).length;
   assert.equal(w('open'), 1);
   assert.equal(w('previews'), 1);
@@ -305,11 +330,15 @@ test('sources, costMethodology, productionType and originalProductionId shapes',
 test('a reader tip that sets a loss label gets a designationBasis (BRO-5020 policy B)', () => {
   const commercial = { shows: { k: { designation: 'TBD', recouped: null } } };
   const showList = [{ slug: 'k', status: 'closed', closingDate: '2020-01-05' }];
-  const r = buildTipRecord(commercial, showList, 'k', [{ field: 'designation', newValue: 'Fizzle' }, { field: 'recouped', newValue: false }]);
+  const r = buildTipRecord(commercial, showList, 'k', [{ field: 'designation', newValue: 'Did Not Recoup' }, { field: 'recouped', newValue: false }]);
   assert.equal(r.refusedReason, null);
   assert.equal(r.record.designationBasis, 'no-recoupment-announced');
-  const r2 = buildTipRecord(commercial, showList, 'k', [{ field: 'designation', newValue: 'Flop' }, { field: 'recouped', newValue: false }, { field: 'designationBasis', newValue: 'reported-loss' }]);
+  const r2 = buildTipRecord(commercial, showList, 'k', [{ field: 'designation', newValue: 'Flop' }, { field: 'recouped', newValue: false }, { field: 'estimatedRecoupmentPct', newValue: [0, 10] }, { field: 'designationBasis', newValue: 'reported-loss' }]);
+  assert.equal(r2.refusedReason, null);
   assert.equal(r2.record.designationBasis, 'reported-loss');
+  // A size with nothing behind it is refused (owner 2026-10-18, BRO-5636).
+  const r3 = buildTipRecord(commercial, showList, 'k', [{ field: 'designation', newValue: 'Fizzle' }, { field: 'recouped', newValue: false }]);
+  assert.match(r3.refusedReason, /no estimate of how much came back/);
 });
 
 test('a silence-basis loss label on a show closed under LOSS_LABEL_MIN_DAYS waits as TBD + needsLossEvidence (BRO-5020)', () => {

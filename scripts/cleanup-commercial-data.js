@@ -106,11 +106,12 @@ for (const [key, val] of Object.entries(shows)) {
   }
 }
 
-// 4. Closed TBD shows, owner policy B (BRO-5020): closed ~6+ months with no
-// recoupment ever announced -> Fizzle/Flop stamped designationBasis
+// 4. Closed TBD shows, owner policy B (BRO-5020): researched, closed ~6+
+// months with no recoupment ever announced, and an estimate of how much came
+// back -> Fizzle/Flop stamped designationBasis
 // 'no-recoupment-announced' (the site renders the caveat; no prose here);
-// closed more recently -> stays TBD, flagged needsLossEvidence. Locked or
-// recouped rows are left alone.
+// closed more recently, never researched or no estimate -> stays TBD,
+// flagged needsLossEvidence. Locked or recouped rows are left alone.
 for (const [key, val] of Object.entries(shows)) {
   if (!val || typeof val !== 'object') continue;
   const show = slugToShow[key] || idToShow[key];

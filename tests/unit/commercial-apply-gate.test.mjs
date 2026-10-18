@@ -490,6 +490,21 @@ describe('designationBasis on every loss label (BRO-5020 policy B)', () => {
     const tbd = gate.buildCommercialEntry({ notes: 'x' }, { designation: 'TBD', needsLossEvidence: true }, { isClaimAutoApply: true });
     assert.equal(tbd.needsLossEvidence, true);
   });
+  it('Did Not Recoup is a loss label: it keeps or gets a basis and settles the evidence flag (BRO-5636)', () => {
+    const r = gate.buildCommercialEntry({ designation: 'Did Not Recoup', recouped: false }, { designation: 'TBD', needsLossEvidence: true });
+    assert.equal(r.designationBasis, 'no-recoupment-announced');
+    assert.equal(r.needsLossEvidence, undefined);
+    assert.equal(gate.buildCommercialEntry({ designation: 'Did Not Recoup' }, { designation: 'Did Not Recoup', designationBasis: 'reported-loss' }).designationBasis, 'reported-loss');
+    const row = { designation: 'Did Not Recoup', designationBasis: 'reported-loss' };
+    gate.stampDesignationBasis(row, { designationBasis: row.designationBasis }, null); // the data-plan field edit
+    assert.equal(row.designationBasis, 'reported-loss');
+  });
+  it('recoupment news resets a silence-basis Did Not Recoup and leaves a reported or locked one to a person', () => {
+    const silence = { designation: 'Did Not Recoup', recouped: false, designationBasis: 'no-recoupment-announced' };
+    assert.equal(gate.recoupClaimDesignationAction(silence), 'reset');
+    assert.equal(gate.recoupClaimDesignationAction({ ...silence, designationBasis: 'reported-loss' }), 'block');
+    assert.equal(gate.recoupClaimDesignationAction({ ...silence, humanReviewedDesignation: true }), 'block');
+  });
   it('the public-record sanitizer drops the basis when it un-labels a running show', () => {
     const { entry } = checks.sanitizeForPublicRecord({ designation: 'Fizzle', designationBasis: 'no-recoupment-announced' }, { status: 'open' });
     assert.equal(entry.designation, 'TBD');

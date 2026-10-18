@@ -369,7 +369,7 @@ function post11HTML(height) {
     { rank: 5, name: 'Boop! The Musical', year: '2025', cost: '$29M', designation: 'Flop', posterId: 'boop-2025' },
   ];
 
-  const desColors = { Miracle: '#fbbf24', Windfall: '#22c55e', Trickle: '#22d3ee', TBD: '#9ca3af', Fizzle: '#f97316', Flop: '#ef4444' };
+  const desColors = { Miracle: '#fbbf24', Windfall: '#22c55e', Trickle: '#22d3ee', TBD: '#9ca3af', Fizzle: '#f97316', 'Did Not Recoup': '#fb7185', Flop: '#ef4444' };
   const gap = height === 2700 ? 44 : 32;
 
   return `<!DOCTYPE html><html><head><meta charset="utf-8"><style>

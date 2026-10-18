@@ -1,0 +1,154 @@
+{
+  "issueNumber": "bro-5636-b",
+  "planId": "82ebdfd7-3ea1-4bcc-a82b-989169252f76",
+  "status": "pending",
+  "createdAt": "2026-10-18T17:54:09.631Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5636 (part b): 5 more become \"Did Not Recoup\"; three keep their Flop with the quoted estimate recorded (Dancin' about 10%, Leap of Faith and Ragtime 2009 lost everything).",
+    "steps": [
+      "Each edit reads its oldValue from live commercial.json."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bob-fosses-dancin-2023",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": null,
+        "newValue": [
+          10,
+          10
+        ],
+        "description": "bob-fosses-dancin-2023: the Flop rests on a quoted figure; record it as the estimate (owner 2026-10-18: a loss size needs an estimate)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bob-fosses-dancin-2023",
+        "field": "estimatedRecoupmentSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (May 29, 2025): one investor \"retrieved about 10 percent of his money, due to the tax credit.\" https://broadwayjournal.com/dancin-designers-due-more-than-200000/",
+        "description": "bob-fosses-dancin-2023: the quote behind the estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bob-fosses-dancin-2023",
+        "field": "estimatedRecoupmentDate",
+        "oldValue": null,
+        "newValue": "2025-05-29",
+        "description": "bob-fosses-dancin-2023: when the figure was reported."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "leap-of-faith-2012",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": null,
+        "newValue": [
+          0,
+          0
+        ],
+        "description": "leap-of-faith-2012: the Flop rests on a quoted figure; record it as the estimate (owner 2026-10-18: a loss size needs an estimate)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "leap-of-faith-2012",
+        "field": "estimatedRecoupmentSource",
+        "oldValue": null,
+        "newValue": "Playbill (May 13, 2012): \"The New York Times reported that the producers lost their entire $14 million investment.\" https://playbill.com/article/leap-of-faith-the-musical-pulls-down-its-broadway-tent-may-13-com-193495",
+        "description": "leap-of-faith-2012: the quote behind the estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "leap-of-faith-2012",
+        "field": "estimatedRecoupmentDate",
+        "oldValue": null,
+        "newValue": "2012-05-13",
+        "description": "leap-of-faith-2012: when the figure was reported."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ragtime-2009",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": null,
+        "newValue": [
+          0,
+          0
+        ],
+        "description": "ragtime-2009: the Flop rests on a quoted figure; record it as the estimate (owner 2026-10-18: a loss size needs an estimate)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ragtime-2009",
+        "field": "estimatedRecoupmentSource",
+        "oldValue": null,
+        "newValue": "The New York Times (Mar 29, 2010) reported the revival \"lost its $8 million investment.\" https://www.nytimes.com/2010/03/29/theater/29normal.html",
+        "description": "ragtime-2009: the quote behind the estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ragtime-2009",
+        "field": "estimatedRecoupmentDate",
+        "oldValue": null,
+        "newValue": "2010-03-29",
+        "description": "ragtime-2009: when the figure was reported."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-sign-in-sidney-brusteins-window-2023",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "the-sign-in-sidney-brusteins-window-2023: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-testament-of-mary-2013",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "the-testament-of-mary-2013: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "thoughts-of-a-colored-man-2021",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Did Not Recoup",
+        "description": "thoughts-of-a-colored-man-2021: no estimate of how much came back, so the Fizzle named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "topdog-underdog-2022",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "topdog-underdog-2022: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "torch-song-2018",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "torch-song-2018: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays reported-loss."
+      }
+    ]
+  }
+}

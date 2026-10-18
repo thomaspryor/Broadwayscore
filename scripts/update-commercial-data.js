@@ -52,7 +52,7 @@ const { CLAUDE_SONNET } = require('./lib/models');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
 const { proposeDesignation } = require('./lib/designation-rule');
-const { DESIGNATION_BASES } = require('./lib/commercial-designations');
+const { DESIGNATION_BASES, FIZZLE_MIN_RETURNED_PCT, isLossDesignation } = require('./lib/commercial-designations');
 const { recoupClaimDesignationAction } = require('./lib/commercial-apply-gate');
 
 // Universal scraper with Bright Data → ScrapingBee → Playwright fallback
@@ -1338,7 +1338,7 @@ RULES:
    - "low": Inferred from a single Reddit comment, speculation, or unclear data
 3. NEVER auto-upgrade a designation to "Miracle" -- that requires extraordinary long-term proof.
 4. You MAY upgrade TBD -> Windfall if the show has CONFIRMED recoupment (high or medium confidence).
-5. You MAY upgrade TBD -> Fizzle or Flop if the show has CONFIRMED closing without recouping.
+5. You MAY upgrade TBD -> a loss label if the show has CONFIRMED closing without recouping: Fizzle (${FIZZLE_MIN_RETURNED_PCT}% or more of the capitalization returned) or Flop (under ${FIZZLE_MIN_RETURNED_PCT}%) only when a source states how much came back, and propose that figure as estimatedRecoupmentPct too; otherwise "Did Not Recoup".
 6. Designation changes between non-TBD categories (e.g., Fizzle -> Windfall) should be flagged, not auto-applied.
 7. productionType changes should be flagged, not auto-applied.
 8. For estimatedRecoupmentPct: use [low, high] ranges. Cite source.
@@ -1646,7 +1646,7 @@ function filterByConfidence(proposedChanges, commercialData) {
 
       // A loss label needs a directly stated loss (BRO-5020): "strongly
       // implied" (medium) goes to a person, like the stale-closure classifier.
-      if (oldValue === 'TBD' && (newValue === 'Fizzle' || newValue === 'Flop') && effectiveConfidence !== 'high') {
+      if (oldValue === 'TBD' && isLossDesignation(newValue) && effectiveConfidence !== 'high') {
         flagged.push({ ...change, flagReason: `TBD -> ${newValue} needs a cited loss source (high confidence); got ${effectiveConfidence}` });
         continue;
       }
@@ -1774,7 +1774,7 @@ function applyChanges(applied, newEntries, commercial, showKeyIndex) {
     // so it is a reported loss; any other label drops the loss basis and flag.
     if (field === 'designation') {
       const row = commercial.shows[slug];
-      if (newValue === 'Fizzle' || newValue === 'Flop') {
+      if (isLossDesignation(newValue)) {
         row.designationBasis = DESIGNATION_BASES.REPORTED_LOSS;
         delete row.needsLossEvidence;
       } else {

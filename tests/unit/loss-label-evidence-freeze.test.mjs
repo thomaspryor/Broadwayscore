@@ -15,7 +15,7 @@ const data = { shows: { 'x-show': { designation: 'TBD' } } };
 const change = (newValue, confidence) => ({ slug: 'x-show', field: 'designation', oldValue: 'TBD', newValue, confidence, source: 'test' });
 
 describe('update-commercial-data loss-label freeze', () => {
-  for (const loss of ['Fizzle', 'Flop']) {
+  for (const loss of ['Fizzle', 'Flop', 'Did Not Recoup']) {
     it(`flags TBD -> ${loss} at medium confidence instead of applying it`, () => {
       const r = filterByConfidence([change(loss, 'medium')], data);
       assert.equal(r.applied.length, 0);

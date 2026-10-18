@@ -17,7 +17,7 @@ import { getTourSection, tourSectionRank, isTourScored } from '@/lib/tour-listin
 import { formatShowDate } from '@/lib/date-utils';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
-import { FIZZLE_MIN_RETURNED_PCT } from '../../scripts/lib/commercial-designations';
+import { FIZZLE_MIN_RETURNED_PCT, isLossDesignation } from '../../scripts/lib/commercial-designations';
 import { displaysCriticScore } from '@/lib/critic-score-display';
 
 // Context object passed to dataFilter/customSort — avoids importing heavy data modules here
@@ -953,8 +953,8 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     title: 'Biggest Broadway Flops',
     h1: 'Biggest Broadway Flops',
     metaTitle: 'Biggest Broadway Flops — Commercial Failures Ranked',
-    metaDescription: 'Broadway\'s biggest commercial failures. Shows designated as Flops and Fizzles based on capitalization, run length, and recoupment data.',
-    intro: `Not every Broadway show is a hit. Every production on this list closed without announcing that it recouped its investment. A Fizzle got back an estimated ${FIZZLE_MIN_RETURNED_PCT}% or more of what investors put in; a Flop got back less. Unless a trade report or SEC filing gives the actual return, that split is our estimate, based on capitalization, weekly grosses and run length. Where no source reported a loss, the show is listed because it closed at least six months ago and no recoupment was ever announced. Some of these shows were critical darlings that could not find an audience; others were panned by critics and audiences alike. Together they show how much risk Broadway producers take on, and how often ambitious productions fall short.`,
+    metaDescription: 'Broadway\'s biggest commercial failures: shows that closed without recouping, labelled Flop, Fizzle or Did Not Recoup from capitalization and recoupment data.',
+    intro: `Not every Broadway show is a hit. Every production on this list closed without announcing that it recouped its investment. A Fizzle got back an estimated ${FIZZLE_MIN_RETURNED_PCT}% or more of what investors put in, and a Flop got back less. Unless a trade report or SEC filing gives the actual return, that split rests on an estimate: an analyst's, or our model's when its inputs are good enough. A show marked Did Not Recoup has no estimate yet of how much came back. Where no source reported a loss, the show is listed because it closed at least six months ago and no recoupment was ever announced. Some of these shows were critical darlings that could not find an audience; others were panned by critics and audiences alike. Together they show how much risk Broadway producers take on, and how often ambitious productions fall short.`,
     requiresFeature: 'commercial',
     dataFilter: (show, ctx) => {
       // BRO-4623 P0-2: only closed productions. A running show is never a flop
@@ -962,7 +962,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
       if (show.status !== 'closed') return false;
       const commercial = ctx.getShowCommercial(show.slug);
       if (!commercial) return false;
-      return commercial.designation === 'Flop' || commercial.designation === 'Fizzle';
+      return isLossDesignation(commercial.designation);
     },
     sort: 'opening-date',
     relatedPages: ['best-broadway-shows-all-time', 'broadway-ticket-prices', 'longest-running-broadway-shows'],

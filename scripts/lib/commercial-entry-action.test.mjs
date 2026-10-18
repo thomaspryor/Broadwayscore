@@ -44,9 +44,12 @@ test('win designations need a dated, sourced recoupment; losses need recouped=fa
   assert.equal(applyAddCommercialEntry(fresh(), shows, { slug: 'gutenberg', entry: { ...win(), recoupedSource: undefined } }).ok, false);
   assert.equal(applyAddCommercialEntry(fresh(), shows, { slug: 'gutenberg', entry: { ...win(), recoupedDate: '12/2023' } }).ok, false);
   assert.equal(applyAddCommercialEntry(fresh(), shows, { slug: 'grey-house', entry: { designation: 'Flop', recouped: null, sources: src } }).ok, false);
-  assert.equal(applyAddCommercialEntry(fresh(), shows, { slug: 'grey-house', entry: { designation: 'Flop', recouped: false, designationBasis: 'reported-loss', sources: src } }).ok, true);
+  assert.equal(applyAddCommercialEntry(fresh(), shows, { slug: 'grey-house', entry: { designation: 'Did Not Recoup', recouped: false, designationBasis: 'reported-loss', sources: src } }).ok, true);
+  // A new entry carries no estimate of how much came back, so it cannot be
+  // sized Fizzle or Flop (owner 2026-10-18, BRO-5636).
+  assert.match(applyAddCommercialEntry(fresh(), shows, { slug: 'grey-house', entry: { designation: 'Flop', recouped: false, designationBasis: 'reported-loss', sources: src } }).reason, /no estimate of how much came back/);
   // Owner policy B (BRO-5020): a new loss label must say what it rests on.
-  assert.match(applyAddCommercialEntry(fresh(), shows, { slug: 'grey-house', entry: { designation: 'Flop', recouped: false, sources: src } }).reason, /no designationBasis/);
+  assert.match(applyAddCommercialEntry(fresh(), shows, { slug: 'grey-house', entry: { designation: 'Did Not Recoup', recouped: false, sources: src } }).reason, /no designationBasis/);
 });
 
 test('refuses unsourced entries, bad source types, unknown fields, bad numbers', () => {

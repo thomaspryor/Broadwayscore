@@ -10,6 +10,7 @@
  *              10+ years stay Miracle)
  *   Easy Winner, Nonprofit, Tour Stop: unchanged
  *   Fizzle / Flop: closed without recouping, >= / < 30% returned
+ *   Did Not Recoup: closed without recouping, no returned % (BRO-5636)
  *
  * Only REPORTED figures move a designation (recouped, investorMultiple,
  * estimatedRecoupmentPct). The model tiebreaker is OFF (review session,
@@ -24,6 +25,7 @@
 
 const {
   TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, DESIGNATIONS_OUTSIDE_RULE, ownReturnedEstimatePct,
+  lossDesignationFor,
 } = require('./commercial-designations');
 const UNCHANGED = new Set(DESIGNATIONS_OUTSIDE_RULE);
 /** Off until the model is explained against reported returns (see header). */
@@ -66,11 +68,16 @@ function proposeDesignation({ record, show, model, now = Date.now(), modelTiebre
     // The analyst's range, else an outside estimate, else the model (BRO-5602).
     const own = ownReturnedEstimatePct(record);
     const pct = own !== null ? own : modelOk ? model.central.recoupedPct : null;
-    if (pct === null) return keep('no-evidence', 'closed unrecouped, no returned % to split Fizzle/Flop');
-    if (current === 'Fizzle' || current === 'Flop') return keep('unrecouped', `${current} kept (this rule does not move Fizzle/Flop)`);
+    if (current === 'Fizzle' || current === 'Flop') return keep('unrecouped', `${current} kept (this rule does not move Fizzle/Flop)`); // loss-list-ok: sized labels only
+    // No returned % sizes the loss: Did Not Recoup claims none (BRO-5636).
+    if (pct === null) {
+      return current === 'Did Not Recoup'
+        ? keep('unrecouped', 'Did Not Recoup kept (no returned % to size it)')
+        : to('Did Not Recoup', recoupBasis, 'closed without recouping, no estimate of how much came back');
+    }
     // Near the recoup line, or near the Fizzle/Flop line: low confidence.
     const lowConf = pct >= 80 || Math.abs(pct - FIZZLE_MIN_RETURNED_PCT) < 10;
-    return to(pct >= FIZZLE_MIN_RETURNED_PCT ? 'Fizzle' : 'Flop', recoupBasis, `closed without recouping, about ${Math.round(pct)}% returned`, lowConf ? 'low' : 'normal');
+    return to(lossDesignationFor(pct), recoupBasis, `closed without recouping, about ${Math.round(pct)}% returned`, lowConf ? 'low' : 'normal');
   }
 
   // Recouped, open-ended.

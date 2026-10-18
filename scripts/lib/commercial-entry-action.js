@@ -24,7 +24,7 @@
  *   validate-data.js enforces, so it cannot create a record the build rejects
  */
 
-const { canonicalDesignation } = require('./commercial-designations');
+const { canonicalDesignation, isLossDesignation } = require('./commercial-designations');
 const { VALID_SOURCE_TYPES } = require('./commercial-sources');
 const { isCommercialScope } = require('./commercial-scope');
 const { commercialRecordErrors, commercialRecordWarnings } = require('./commercial-record-checks');
@@ -37,7 +37,6 @@ const ALLOWED = new Set([
   'commercialConversion',
 ]);
 const WIN = new Set(['Miracle', 'Windfall', 'Easy Winner', 'Trickle']);
-const LOSS = new Set(['Fizzle', 'Flop']);
 const RECOUPED_DATE_RE = /^\d{4}(-\d{2})?$/;
 const SOURCE_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -85,7 +84,7 @@ function applyAddCommercialEntry(commercial, shows, action, now = new Date().toI
       return { ok: false, reason: `add-commercial-entry: "${designation}" needs recouped=true, recoupedDate and recoupedSource` };
     }
   }
-  if (LOSS.has(designation) && entry.recouped !== false) {
+  if (isLossDesignation(designation) && entry.recouped !== false) {
     return { ok: false, reason: `add-commercial-entry: "${designation}" needs recouped=false` };
   }
   if (entry.recouped === true && (!entry.recoupedDate || !entry.recoupedSource)) {

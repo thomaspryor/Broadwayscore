@@ -35,7 +35,7 @@ const HISTORY_MAX_ENTRIES = 52;
 // Constants
 // ============================================
 
-const { VALID_DESIGNATIONS, FIZZLE_MIN_RETURNED_PCT } = require('./lib/commercial-designations');
+const { VALID_DESIGNATIONS, FIZZLE_MIN_RETURNED_PCT, isLossDesignation } = require('./lib/commercial-designations');
 
 const VALID_COST_METHODOLOGIES = [
   'reddit-standard', 'trade-reported', 'sec-filing',
@@ -48,7 +48,6 @@ const VALID_SOURCE_TYPES = ['trade', 'reddit', 'sec', 'manual'];
 const RECOUPED_DESIGNATIONS = ['Miracle', 'Windfall', 'Easy Winner', 'Trickle'];
 
 // Designations that should have recouped=false
-const NOT_RECOUPED_DESIGNATIONS = ['Fizzle', 'Flop'];
 
 // Known nonprofit venues (partial matches)
 // LCT = Lincoln Center Theater
@@ -336,13 +335,13 @@ function checkDesignationLogic() {
   for (const [key, data] of commercialEntries) {
     if (!data.designation) continue;
 
-    // Recouped=true but designation is Fizzle/Flop
-    if (data.recouped === true && NOT_RECOUPED_DESIGNATIONS.includes(data.designation)) {
+    // Recouped=true but a loss designation
+    if (data.recouped === true && isLossDesignation(data.designation)) {
       addIssue(
         'designation-logic',
         'high',
         key,
-        `recouped=true but designation is "${data.designation}". Fizzle/Flop designations should have recouped=false.`
+        `recouped=true but designation is "${data.designation}". Loss designations (Fizzle, Flop, Did Not Recoup) should have recouped=false.`
       );
     }
 
@@ -717,7 +716,7 @@ function checkClosedShowTBD() {
         'closed-show-tbd',
         'medium',
         key,
-        `Show is closed${closedAgo} but still designated "TBD". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop).`
+        `Show is closed${closedAgo} but still designated "TBD". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup).`
       );
     }
   }

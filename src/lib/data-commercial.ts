@@ -51,6 +51,7 @@ import {
   hasNoInvestorsToRepay,
 } from './commercial-display';
 import { reportedReturn } from '../../scripts/lib/reported-return';
+import { isLossDesignation } from '../../scripts/lib/commercial-designations';
 import { conversionOf, isConvertedToCommercial, commercialRunWeeks, recoupClockStart } from '../../scripts/lib/commercial-conversion';
 import {
   computeMarketMedianByWeek,
@@ -585,7 +586,7 @@ export function getRecentClosings(months: number = 6): RecentClosing[] {
 
     if (data.recouped === true) continue;
 
-    const wasFlop = data.designation === 'Flop' || data.designation === 'Fizzle';
+    const wasFlop = isLossDesignation(data.designation);
 
     results.push({
       slug: show.slug,

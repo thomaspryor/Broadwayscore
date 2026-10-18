@@ -14,6 +14,7 @@ export type CommercialDesignation =
   | 'Trickle'
   | 'TBD'
   | 'Fizzle'
+  | 'Did Not Recoup'
   | 'Flop'
   | 'Nonprofit'
   | 'Tour Stop';
@@ -102,10 +103,21 @@ export const DESIGNATIONS: DesignationConfig[] = [
     borderClass: 'border-orange-500/25',
   },
   {
+    // A loss with no estimate of its size (owner 2026-10-18, BRO-5636).
+    name: 'Did Not Recoup',
+    color: 'text-rose-400',
+    description: 'Closed without recouping; no estimate of how much came back',
+    sortOrder: 7,
+    showInLegend: true,
+    icon: '🔻',
+    bgClass: 'bg-rose-500/15',
+    borderClass: 'border-rose-500/25',
+  },
+  {
     name: 'Flop',
     color: 'text-red-400',
     description: `Closed without recouping; an estimated under ${FIZZLE_MIN_RETURNED_PCT}% returned`,
-    sortOrder: 7,
+    sortOrder: 8,
     showInLegend: true,
     icon: '💸',
     bgClass: 'bg-red-500/15',
@@ -115,7 +127,7 @@ export const DESIGNATIONS: DesignationConfig[] = [
     name: 'Nonprofit',
     color: 'text-blue-400',
     description: 'Nonprofit production (LCT, Roundabout, etc.)',
-    sortOrder: 8,
+    sortOrder: 9,
     showInLegend: true,
     icon: '🎭',
     bgClass: 'bg-blue-500/15',
@@ -125,7 +137,7 @@ export const DESIGNATIONS: DesignationConfig[] = [
     name: 'Tour Stop',
     color: 'text-gray-400',
     description: 'National tour engagement on Broadway',
-    sortOrder: 9,
+    sortOrder: 10,
     showInLegend: true,
     icon: '🚌',
     bgClass: 'bg-gray-500/15',

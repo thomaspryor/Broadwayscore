@@ -1,14 +1,15 @@
 // Pure decision function: should a closed show that was never reported as
-// recouped be auto-classified as a financial Fizzle? Used by
+// recouped be auto-classified with a loss label? Used by
 // scripts/classify-stale-closures.js + tested in
 // tests/unit/classify-stale-closure.test.mjs.
 //
-// Why "Fizzle" not "Flop": Fizzle (per src/config/commercial.ts) = "modest
-// loss" — softer than Flop ("catastrophic loss"). Auto-classifying as Flop on
-// inferred-absent-evidence risks reputational harm to producers whose shows
-// quietly recouped via tour/film rights without a trade-press announcement.
-// Fizzle is the conservative default; manual review via humanReviewedDesignation
-// can upgrade or downgrade.
+// Which loss label: Fizzle or Flop only when an estimate of how much came
+// back supports one (owner 2026-10-18, BRO-5623). With none the row stays
+// TBD, shown as Undisclosed, and is flagged needsLossEvidence: labelling a
+// silent closure Did Not Recoup instead is the owner's call, not made yet
+// (BRO-5636: two of the nine candidates, The Music Man 2022 and John Proctor
+// Is the Villain, may have recouped quietly). Manual review via
+// humanReviewedDesignation can upgrade or downgrade.
 //
 // Why direct-to-commercial.json (per Code Design reviewer redesign):
 // Inferred-Fizzle is deterministic policy from local state — not a "claim
@@ -24,7 +25,8 @@ const RECENT_SIGNAL_DAYS_DEFAULT = 30;
 // because some shows recoup after they close (The Piano Lesson took about 14
 // months). Before that the row stays TBD and is flagged needsLossEvidence.
 const {
-  FIZZLE_MIN_RETURNED_PCT, DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS: LOSS_LABEL_MIN_DAYS_DEFAULT, returnedEstimatePct,
+  DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS: LOSS_LABEL_MIN_DAYS_DEFAULT, returnedEstimatePct,
+  LOSS_DESIGNATIONS, isLossDesignation, lossDesignationFor,
 } = require('./commercial-designations');
 
 /**
@@ -38,8 +40,7 @@ function lossLabelFor(entry) {
   // The same reading the record check uses, so the label it writes never
   // draws its warning (BRO-5602, BRO-5623).
   const pct = returnedEstimatePct(entry);
-  if (pct === null) return null;
-  return pct >= FIZZLE_MIN_RETURNED_PCT ? 'Fizzle' : 'Flop';
+  return pct === null ? null : lossDesignationFor(pct);
 }
 
 // Production types where auto-Fizzle is unsafe — these shows may have closed
@@ -58,7 +59,7 @@ const SKIP_DESIGNATIONS = new Set([
   'Nonprofit',        // pure nonprofits — recoupment doesn't apply
   'Tour Stop',        // tour stops never measured against original cap
   'Miracle', 'Windfall', 'Easy Winner', 'Trickle',  // already classified as recouped
-  'Fizzle', 'Flop',   // already classified as loss
+  ...LOSS_DESIGNATIONS, // already classified as loss
 ]);
 
 function daysAgo(isoString, now = Date.now()) {
@@ -84,7 +85,7 @@ function daysAgo(isoString, now = Date.now()) {
  *   { action: 'wait',         reason }   — within grace period; do nothing
  *   { action: 'no-change',    reason }   — already classified; do nothing
  *   { action: 'skip-carve-out', reason } — special production type / designation
- *   { action: 'classify-fizzle', reason, designation: 'Fizzle'|'Flop',
+ *   { action: 'classify-fizzle', reason, designation: a LOSS_DESIGNATIONS label,
  *     designationBasis: 'no-recoupment-announced', confidence } — auto-apply
  *   { action: 'flag-needs-loss-evidence', reason } — stays TBD, flagged
  *   { action: 'human-review',   reason } — late recoupment signal, escalate
@@ -105,7 +106,7 @@ function classifyStaleClosure({ show, entry, pending, archive, now, thresholds }
   const maxAgeDays = t.maxAgeDays ?? MAX_AGE_DAYS_DEFAULT;
   const recentSignalDays = t.recentSignalDays ?? RECENT_SIGNAL_DAYS_DEFAULT;
   const nowMs = now ?? Date.now();
-  const ownerDesignation = ['Flop', 'Fizzle'].includes(entry?.ownerDesignationAfterWindow)
+  const ownerDesignation = isLossDesignation(entry?.ownerDesignationAfterWindow)
     ? entry.ownerDesignationAfterWindow : null;
 
   if (!show) return { action: 'no-change', reason: 'no show data' };
@@ -261,7 +262,7 @@ const INFERRED_SOURCE_PREFIX = 'Inferred: closed';
 
 function undoAutoFizzleOnRunningShow(entry, show) {
   if (!entry || !show || !show.status || show.status === 'closed') return null;
-  if (entry.designation !== 'Fizzle' && entry.designation !== 'Flop') return null;
+  if (!isLossDesignation(entry.designation)) return null;
   if (entry.humanReviewedDesignation === true) return null;
   // A silence-based label (policy B, BRO-5020) is inferred whoever wrote it.
   const silence = entry.designationBasis === DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED;
@@ -278,26 +279,29 @@ function undoAutoFizzleOnRunningShow(entry, show) {
 }
 
 /**
- * Policy B for writers that sweep closed TBD rows without the classifier's
- * research checks (cleanup-commercial-data.js). Returns
- *   { action: 'label', designation, designationBasis } closed LOSS_LABEL_MIN_DAYS+,
- *   { action: 'flag' }                                  closed more recently,
+ * Policy B for writers that sweep closed TBD rows outside the daily
+ * classifier (cleanup-commercial-data.js). Returns
+ *   { action: 'label', designation, designationBasis } closed LOSS_LABEL_MIN_DAYS+ and researched,
+ *   { action: 'flag' }                                  closed more recently, or never researched,
  *   null                                                nothing to do.
  * Never touches a locked, recouped, non-TBD or already-flag-ruled row. Writes
- * no prose: the site renders the caveat from designationBasis.
+ * no prose: the site renders the caveat from designationBasis. A label on
+ * silence needs the research that found the silence, as in the classifier
+ * (BRO-5636: a dry run without this check labelled 8 never-researched
+ * 2022-2023 rows).
  */
 function closedTbdLossAction(entry, show, { now = Date.now(), lossLabelMinDays = LOSS_LABEL_MIN_DAYS_DEFAULT, requireLossEvidence = false } = {}) {
   if (!entry || entry.designation !== 'TBD' || !show || show.status !== 'closed') return null;
   if (entry.humanReviewedDesignation === true || entry.recouped === true) return null;
   // The daily classifier applies the saved owner verdict and review stamp.
   // Cleanup must not preempt it with an automatic label.
-  if (['Flop', 'Fizzle'].includes(entry.ownerDesignationAfterWindow)) return null;
+  if (isLossDesignation(entry.ownerDesignationAfterWindow)) return null;
   // Tours and transfers keep earning elsewhere, same carve-out as the classifier.
   if (entry.productionType && SKIP_PRODUCTION_TYPES.has(entry.productionType)) return null;
   const days = daysAgo(show.closingDate, now);
   if (!Number.isFinite(days)) return null;
   const designation = lossLabelFor(entry);
-  if (requireLossEvidence || days < lossLabelMinDays || !designation) {
+  if (requireLossEvidence || days < lossLabelMinDays || !designation || !hasBeenResearched(entry)) {
     return 'needsLossEvidence' in entry ? null : { action: 'flag' };
   }
   return { action: 'label', designation, designationBasis: DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED };
