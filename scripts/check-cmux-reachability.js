@@ -26,6 +26,7 @@ const { execFileSync } = require('child_process');
 
 require('./lib/load-env.js').loadEnv(path.join(__dirname, '..'));
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const { runReachabilityCheck } = require('./lib/cmux-reachability-check.js');
 const { planSocketModeRepair, backupsToPrune } = require('./lib/cmux-socket-mode-repair.js');
 
@@ -78,7 +79,12 @@ function repairSocketMode() {
   }
 }
 
+const USAGE = `Usage: node scripts/check-cmux-reachability.js
+  Restores cmux.json socket mode to "password" if it drifted (kill switch:
+  ${REPAIR_OFF_FILE}), then checks the cmux socket is reachable. Exit 1 on error.`;
+
 async function main() {
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const repairNote = repairSocketMode();
   if (repairNote) console.log(`[cmux-reachability] ${repairNote}`);
   const row = await runReachabilityCheck({});
