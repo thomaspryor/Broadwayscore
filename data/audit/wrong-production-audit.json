@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-18T07:03:45.659Z",
+  "timestamp": "2026-10-18T07:20:49.402Z",
   "stats": {
-    "totalReviews": 57387,
-    "alreadyFlagged": 21309,
+    "totalReviews": 57391,
+    "alreadyFlagged": 21316,
     "dateGuardCatches": 195,
-    "directorMismatch": 1954,
+    "directorMismatch": 1952,
     "tvFilmSignals": 1609,
     "londonSignals": 2421,
     "offBroadwaySignals": 521,
-    "yearMismatch": 158,
-    "noPublishDate": 5251
+    "yearMismatch": 157,
+    "noPublishDate": 5246
   },
   "findings": [
     {
@@ -494,39 +494,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "a-chorus-line-1975",
-      "file": "independent--kate-bassett.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/theatre-review-shrinks-secrets-and-all-that-jazz-in-a-chorus-line-8508128.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bob avian\" from a-chorus-line-2006"
-        }
-      ]
-    },
-    {
-      "showId": "a-chorus-line-1975",
-      "file": "timeout--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.timeout.com/newyork/theater/a-chorus-line-1",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bob avian\" from a-chorus-line-2006"
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2006 (2x) more than 1975 (1x). 2006 matches production: a-chorus-line-2006"
         }
       ]
     },
@@ -26968,7 +26935,7 @@
     },
     {
       "showId": "mrs-doubtfire-tour-2025",
-      "file": "akron-beacon-journal--unknown.json",
+      "file": "akron-beacon-journal--kerry-clawson.json",
       "publishDate": "2026-01-17",
       "url": "https://www.beaconjournal.com/story/entertainment/arts/2026/01/17/ksu-part-of-love-laughter-in-mrs-doubtfire-tour-coming-to-akron/88166134007/",
       "findings": [
@@ -39929,7 +39896,7 @@
     },
     {
       "showId": "the-enormous-crocodile-west-end-2026",
-      "file": "theatre-vibe--unknown.json",
+      "file": "theatre-vibe--lizzie-loveridge.json",
       "score": 90,
       "publishDate": "2024-05-27",
       "url": "https://theatrevibe.co.uk/2024/05/27/review-the-enormous-crocodile-regents-park-open-air-2024/",
@@ -81354,7 +81321,7 @@
     },
     {
       "showId": "the-enormous-crocodile-west-end-2026",
-      "file": "theatreandtonic--unknown.json",
+      "file": "theatreandtonic--emmie-newitt.json",
       "score": 92,
       "publishDate": "2025-08-21",
       "url": "https://theatreandtonic.co.uk/blog/the-enormous-crocodile-at-regents-park-open-air-theatre-review-2025",
