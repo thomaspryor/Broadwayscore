@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-18T05:28:08.206Z",
+  "timestamp": "2026-10-18T05:39:02.419Z",
   "stats": {
-    "totalReviews": 57382,
-    "alreadyFlagged": 21308,
-    "dateGuardCatches": 196,
+    "totalReviews": 57387,
+    "alreadyFlagged": 21309,
+    "dateGuardCatches": 195,
     "directorMismatch": 1954,
-    "tvFilmSignals": 1608,
+    "tvFilmSignals": 1609,
     "londonSignals": 2421,
     "offBroadwaySignals": 521,
     "yearMismatch": 158,
-    "noPublishDate": 5242
+    "noPublishDate": 5252
   },
   "findings": [
     {
@@ -2287,20 +2287,6 @@
       ]
     },
     {
-      "showId": "amelie-west-end-2021",
-      "file": "times-uk--clive-davis.json",
-      "score": 87,
-      "publishDate": "December 4th, 2019",
-      "url": "https://www.thetimes.co.uk/article/amelie-the-musical-review-inventive-direction-and-delicate-choreography-make-for-an-exhilarating-experience-dm7gw9gsq",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 561d before show (December 4th, 2019 vs 2021-06-17)"
-        }
-      ]
-    },
-    {
       "showId": "america-who-hurt-you-off-broadway-2026",
       "file": "nysr--michael-sommers.json",
       "score": 60,
@@ -2688,7 +2674,7 @@
       "file": "ap--jennifer-farrar.json",
       "score": 87,
       "publishDate": null,
-      "url": "http://abcnews.go.com/Entertainment/wireStory/review-graceful-american-paris-pizazz-heart-30268868?singlePage=true",
+      "url": "https://abcnews.go.com/Entertainment/wireStory/review-graceful-american-paris-pizazz-heart-30268868?singlePage=true",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -5652,6 +5638,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"saheem ali\" from buena-vista-social-club-2025"
+        }
+      ]
+    },
+    {
+      "showId": "buffy-revamped-west-end-2026",
+      "file": "ticketswitch--unknown.json",
+      "publishDate": null,
+      "url": "https://theatrelondon.ticketswitch.com/city/2957-london/1J34E-buffy-revamped-2026/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
