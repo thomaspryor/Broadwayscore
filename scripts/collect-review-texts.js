@@ -373,9 +373,9 @@ async function loadDependencies() {
 
   // Try playwright-extra with stealth
   try {
-    const playwrightExtra = require('playwright-extra');
+    const { createCollectorChromium } = require('./lib/collector-chromium');
     const stealth = require('puppeteer-extra-plugin-stealth')();
-    chromium = playwrightExtra.chromium;
+    chromium = createCollectorChromium();
     chromium.use(stealth);
     stealthLoaded = true;
     console.log('✓ Loaded playwright-extra with stealth plugin');
