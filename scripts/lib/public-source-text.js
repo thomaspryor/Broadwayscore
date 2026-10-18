@@ -81,8 +81,9 @@ const NOT_ANNOUNCED_RE = new RegExp([
   String.raw`\bno (?:public |formal |official )?recoupment (?:was |has been |had been |is )?(?:formally |publicly |officially )?announced\b`,
   String.raw`\bwithout (?:an? |any )?(?:public |formal |official )?announc(?:ement|ing)\b`,
   String.raw`\bunannounced\b`,
-  String.raw`\bnever (?:formally |publicly |officially )?(?:announce[sd]?|disclosed)\b`,
-  String.raw`\b(?:not|(?:is|are|was|were|has|have|had)n['’]t) (?:yet )?(?:been )?(?:formally |publicly |officially )?(?:announced|disclosed)\b`,
+  // No "disclosed": "figures were not disclosed" sits beside reported recoupments.
+  String.raw`\bnever (?:formally |publicly |officially )?announce[sd]?\b`,
+  String.raw`\b(?:not|(?:is|are|was|were|has|have|had)n['’]t) (?:yet )?(?:been )?(?:formally |publicly |officially )?announced\b`,
   String.raw`\b(?:does|do|did)(?: not|n['’]t) (?:formally |publicly |officially )?announce(?:s|ments?)?\b`,
   String.raw`(?:\b(?:never|not)|n['’]t) (?:made?|make|issued?) (?:an? |any )?(?:public |formal |official )?announcement\b`,
   String.raw`\beditorial judg(?:e)?ment\b`,
