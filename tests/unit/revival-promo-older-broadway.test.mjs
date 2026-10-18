@@ -26,6 +26,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.
 const TEXTS = path.join(ROOT, 'data/review-texts/');
 const SHOWS = path.join(ROOT, 'data', 'shows.json');
 const PLAN_D = path.join(ROOT, 'data', 'pending-fixes', 'bro-4889-d.json');
+const PLAN_E = path.join(ROOT, 'data', 'pending-fixes', 'bro-4889-e.json');
 
 const { explainExclusion, getWrongProductionReasonFromUrl } = require('../../scripts/lib/review-guards.js');
 const { applyReviewFieldEdit } = require('../../scripts/lib/review-field-edit.js');
@@ -49,9 +50,9 @@ const verdict = (rel, data = read(rel)) =>
   explainExclusion(data, show(rel.split('/')[0]), path.join('data/review-texts', rel));
 
 // Plan -d's edits for one file, applied in memory unless already on disk.
-function withPlanD(rel) {
+function withPlanD(rel, planFile = PLAN_D) {
   let data = read(rel);
-  const plan = JSON.parse(fs.readFileSync(PLAN_D, 'utf8'));
+  const plan = JSON.parse(fs.readFileSync(planFile, 'utf8'));
   for (const action of plan.plan.actions.filter((a) => a.file === rel)) {
     const current = data[action.field] === undefined ? null : data[action.field];
     if (JSON.stringify(current) === JSON.stringify(action.newValue)) continue; // already applied
@@ -125,4 +126,14 @@ test('URL year that matches the production raises no wrong-production verdict; a
   const { url } = read('cat-on-a-hot-tin-roof-2013/nytimes--ben-brantley.json');
   assert.equal(getWrongProductionReasonFromUrl(url, show('cat-on-a-hot-tin-roof-2013')), null);
   assert.ok(getWrongProductionReasonFromUrl(url, show('cat-on-a-hot-tin-roof-2003')));
+});
+
+// Plan -e: other-production reviews the sibling-cast audit and a re-read of the Osage page still found counted.
+test('plan bro-4889-e excludes the 2013 Cumming Macbeth review and the 2008 Osage replacement-cast piece', { skip: SKIP }, () => {
+  for (const rel of [
+    'macbeth-2008/hollywood-reporter--david-rooney.json',
+    'august-osage-county-2007/nytimes--charles-isherwood.json',
+  ]) {
+    assert.ok(verdict(rel, withPlanD(rel, PLAN_E)), `${rel} would still be counted`);
+  }
 });

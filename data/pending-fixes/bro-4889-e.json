@@ -1,0 +1,52 @@
+{
+  "issueNumber": "bro-4889-e",
+  "planId": "b4780db1-b4db-4b3c-a8cb-872cb1311daa",
+  "status": "pending",
+  "createdAt": "2026-10-18T01:23:31.280Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4889: flag two other-production reviews still counted: the 2013 Alan Cumming Macbeth (Hollywood Reporter) on macbeth-2008, and the July 2008 Estelle Parsons replacement-cast piece (NYT Isherwood) on august-osage-county-2007",
+    "steps": [
+      "Set wrongProduction + reason on both files",
+      "Rebuild"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "macbeth-2008/hollywood-reporter--david-rooney.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4889: 2013 Alan Cumming Macbeth review counted on the 2008 page (found by audit-sibling-production-cast.js)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "macbeth-2008/hollywood-reporter--david-rooney.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Reviews the 2013 Lincoln Center Rose Theater Macbeth with Alan Cumming, not the 2008 Broadway production.",
+        "description": "BRO-4889: record why this review is excluded"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "august-osage-county-2007/nytimes--charles-isherwood.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4889: Isherwood 2008-07-16 replacement-cast piece counted as a 91 opening review"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "august-osage-county-2007/nytimes--charles-isherwood.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Replacement-cast piece (Estelle Parsons taking over as Violet, July 2008), not an opening-night review of the 2007 production.",
+        "description": "BRO-4889: record why this review is excluded"
+      }
+    ]
+  }
+}
