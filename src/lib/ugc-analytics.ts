@@ -202,7 +202,13 @@ export function reportPageCrash(error: Error & { digest?: string }, boundary: 'p
   }
   // A tab that outlived a deploy crashes into the boundary too; reload to the new
   // build after the crash is recorded.
-  if (isStaleDeployError(error)) reloadOnStaleDeploy();
+  if (isStaleDeployError(error)) reloadOnStaleDeploy({ onReload: () => reportStaleDeployReload('boundary') });
+}
+
+/** PostHog `stale_deploy_reload`: how often a tab outlives a deploy and recovers (BRO-5565). */
+export function reportStaleDeployReload(source: 'listener' | 'boundary'): void {
+  if (typeof window === 'undefined') return;
+  phCapture('stale_deploy_reload', clean({ source, path: window.location.pathname }));
 }
 
 /** "POST /rest/v1/reviews?x=y" → "insert reviews"; rpc/auth/functions likewise. */

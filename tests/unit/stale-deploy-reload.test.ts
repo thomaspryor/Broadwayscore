@@ -19,6 +19,12 @@ test('Chrome and Safari wording of the webpack missing-module crash are stale-de
   assert.equal(isStaleDeployError(err("undefined is not an object (evaluating 'd[e].call')", WEBPACK_STACK)), true);
 });
 
+test('Firefox wording counts, including $ in minified names', () => {
+  assert.equal(isStaleDeployError(err('e[o] is undefined', WEBPACK_STACK)), true);
+  assert.equal(isStaleDeployError(err("undefined is not an object (evaluating '$[e].call')", WEBPACK_STACK)), true);
+  assert.equal(isStaleDeployError(err('e[o] is undefined', 'at foo (https://broadwayscorecard.com/_next/static/chunks/app-1.js:1:1)')), false);
+});
+
 test('chunk load failures count', () => {
   assert.equal(isStaleDeployError(err('Loading chunk 5357 failed.', '', 'ChunkLoadError')), true);
 });
@@ -53,4 +59,21 @@ test('never reloads without a loop guard or on the OAuth return pages', () => {
   assert.equal(reloadOnStaleDeploy({ storage: throwing, reload, pathname: '/' }), false);
   assert.equal(reloadOnStaleDeploy({ storage: new Mem(), reload, pathname: '/auth/callback' }), false);
   assert.equal(reloads, 0);
+});
+
+test('does not reload while the visitor is typing, and does not spend the loop guard', () => {
+  const storage = new Mem();
+  let reloads = 0;
+  assert.equal(reloadOnStaleDeploy({ storage, reload: () => { reloads++; }, pathname: '/', typing: true }), false);
+  assert.equal(storage.getItem(STALE_RELOAD_KEY), null);
+  assert.equal(reloads, 0);
+});
+
+test('onReload runs before the reload, and a throwing onReload cannot block it', () => {
+  const order: string[] = [];
+  reloadOnStaleDeploy({ storage: new Mem(), pathname: '/', typing: false, onReload: () => order.push('count'), reload: () => order.push('reload') });
+  assert.deepEqual(order, ['count', 'reload']);
+  const order2: string[] = [];
+  reloadOnStaleDeploy({ storage: new Mem(), pathname: '/', typing: false, onReload: () => { throw new Error('x'); }, reload: () => order2.push('reload') });
+  assert.deepEqual(order2, ['reload']);
 });

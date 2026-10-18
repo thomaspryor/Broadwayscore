@@ -59,7 +59,9 @@ async function findExistingGithubIssue(sentryIssueId) {
     `https://api.github.com/search/issues?q=repo:${owner}/${repo}+is:issue+"sentry-${sentryIssueId}"+in:body`,
     { signal: AbortSignal.timeout(60000), headers: { Authorization: `token ${GITHUB_TOKEN}` } }
   );
-  if (!res.ok) return null;
+  // A failed search must not read as "no existing issue": that files a duplicate
+  // (GitHub search is rate limited at ~30/min and eventually consistent).
+  if (!res.ok) throw new Error(`GitHub search ${res.status}`);
   const data = await res.json();
   return data.total_count > 0 ? data.items[0] : null;
 }
@@ -160,7 +162,13 @@ async function main() {
       console.log(`  Events: ${issue.count}, Users: ${issue.userCount}`);
 
       if (GITHUB_TOKEN && !DRY_RUN) {
-        const existing = await findExistingGithubIssue(issue.id);
+        let existing;
+        try {
+          existing = await findExistingGithubIssue(issue.id);
+        } catch (e) {
+          console.error(`  → Could not check for an existing GitHub issue (${e.message}); not filing a possible duplicate\n`);
+          continue;
+        }
         if (existing) {
           stats.existingGithub++;
           console.log(`  → GitHub issue already exists: ${existing.html_url}\n`);

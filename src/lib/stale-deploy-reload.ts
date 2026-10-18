@@ -17,8 +17,10 @@ import { isAuthCallbackPath } from './analytics/redact-url';
 export const STALE_RELOAD_KEY = 'bsc_stale_deploy_reload_at';
 export const STALE_RELOAD_WINDOW_MS = 5 * 60_000;
 
-// The missing-module throw: Chrome/Edge/Firefox and Safari wording.
-const MISSING_MODULE = /reading 'call'|evaluating '\w+\[\w+\]\.call'/;
+// The missing-module throw: Chrome/Edge ("reading 'call'"), Safari
+// ("evaluating 'd[e].call'") and Firefox ("e[o] is undefined"). Minified names
+// may contain $.
+const MISSING_MODULE = /reading 'call'|evaluating '[\w$]+\[[\w$]+\]\.call'|[\w$]+\[[\w$]+\] is undefined/;
 // A chunk the new build no longer serves.
 const CHUNK_GONE = /ChunkLoadError|Loading chunk \S+ failed|Loading CSS chunk \S+ failed/;
 
@@ -29,7 +31,7 @@ export function isStaleDeployError(err: unknown): boolean {
   const text = `${typeof name === 'string' ? name : ''}: ${typeof message === 'string' ? message : ''}`;
   if (CHUNK_GONE.test(text)) return true;
   // The same wording appears for ordinary bugs, so require the webpack runtime
-  // (or a numeric module id) in the stack.
+  // chunk in the stack.
   return MISSING_MODULE.test(text) && typeof stack === 'string' && /_next\/static\/chunks\/webpack/.test(stack);
 }
 
@@ -38,6 +40,18 @@ interface ReloadDeps {
   now?: number;
   reload?: () => void;
   pathname?: string;
+  /** Runs just before the reload, e.g. to count it. */
+  onReload?: () => void;
+  /** Overrides the "is the visitor typing" check (tests). */
+  typing?: boolean;
+}
+
+/** A reload would throw away what the visitor is typing right now. */
+function isTyping(): boolean {
+  const el = typeof document === 'undefined' ? null : (document.activeElement as HTMLElement | null);
+  if (!el) return false;
+  if (el.isContentEditable || el.tagName === 'TEXTAREA') return true;
+  return el.tagName === 'INPUT' && !/^(button|submit|checkbox|radio|reset|image|range|color)$/i.test((el as HTMLInputElement).type);
 }
 
 /** Reload once per window. Returns whether it reloaded. */
@@ -46,6 +60,7 @@ export function reloadOnStaleDeploy(deps: ReloadDeps = {}): boolean {
   const pathname = deps.pathname ?? window.location.pathname;
   // The OAuth return pages carry live tokens in their hash; never reload them.
   if (isAuthCallbackPath(pathname)) return false;
+  if (deps.typing ?? isTyping()) return false;
   const now = deps.now ?? Date.now();
   try {
     const storage = deps.storage === undefined ? window.sessionStorage : deps.storage;
@@ -57,15 +72,16 @@ export function reloadOnStaleDeploy(deps: ReloadDeps = {}): boolean {
     // No storage means no loop guard, so no reload.
     return false;
   }
+  try { deps.onReload?.(); } catch { /* counting must never block the recovery */ }
   (deps.reload ?? (() => window.location.reload()))();
   return true;
 }
 
 /** Listen for the stale-deploy errors that never reach an error boundary. */
-export function installStaleDeployReload(): () => void {
+export function installStaleDeployReload(onReload?: () => void): () => void {
   if (typeof window === 'undefined') return () => {};
-  const onError = (e: ErrorEvent) => { if (isStaleDeployError(e.error)) reloadOnStaleDeploy(); };
-  const onRejection = (e: PromiseRejectionEvent) => { if (isStaleDeployError(e.reason)) reloadOnStaleDeploy(); };
+  const onError = (e: ErrorEvent) => { if (isStaleDeployError(e.error)) reloadOnStaleDeploy({ onReload }); };
+  const onRejection = (e: PromiseRejectionEvent) => { if (isStaleDeployError(e.reason)) reloadOnStaleDeploy({ onReload }); };
   window.addEventListener('error', onError);
   window.addEventListener('unhandledrejection', onRejection);
   return () => {

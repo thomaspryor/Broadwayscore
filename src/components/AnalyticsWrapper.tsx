@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import { isAuthCallbackPath, isPrivateSharePath, posthogBeforeSend, sentryScrub, vercelBeforeSend } from '@/lib/analytics/redact-url';
 import { gaInitScript } from '@/lib/analytics/ga-init-script';
-import { applyAnalyticsUser, flushUgcOutbox } from '@/lib/ugc-analytics';
+import { applyAnalyticsUser, flushUgcOutbox, reportStaleDeployReload } from '@/lib/ugc-analytics';
 import { installStaleDeployReload } from '@/lib/stale-deploy-reload';
 
 interface SentryEvent {
@@ -39,7 +39,7 @@ export default function AnalyticsWrapper() {
   // Back re-enters plans as a document, never through the router.
   const pathname = usePathname();
   // Stale tab after a deploy: reload once instead of dead clicks (BRO-5565).
-  useEffect(() => installStaleDeployReload(), []);
+  useEffect(() => installStaleDeployReload(() => reportStaleDeployReload('listener')), []);
 
   useEffect(() => {
     if (!pathname) return;

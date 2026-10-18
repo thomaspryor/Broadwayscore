@@ -68,6 +68,24 @@ const OUR_DOMAIN_PATTERNS = [
 // (BRO-5565: RangeError "Maximum call stack size exceeded" at /:225).
 const MAX_DOCUMENT_LINE = 20;
 
+// The post-deploy webpack missing-module crash (BRO-5565). The client reloads
+// once on it (src/lib/stale-deploy-reload.ts), but the event still reaches
+// Sentry and the minified names change every deploy, so each deploy would
+// open a new issue and a new GitHub issue. Ignored in Sentry, it stays visible
+// in the weekly digest and in PostHog `stale_deploy_reload`.
+const STALE_DEPLOY_MESSAGE = /reading 'call'|evaluating '[\w$]+\[[\w$]+\]\.call'|[\w$]+\[[\w$]+\] is undefined/;
+
+function isStaleDeployIssue(issue, latestEvent) {
+  const text = `${issue.title || ''} ${(issue.metadata || {}).value || ''}`;
+  if (!STALE_DEPLOY_MESSAGE.test(text)) return false;
+  const frames = latestEvent?.entries?.find(e => e.type === 'exception')?.data?.values?.[0]?.stacktrace?.frames;
+  if (frames?.length) {
+    return frames.some(f => /_next\/static\/chunks\/webpack/.test(f.filename || f.absPath || ''));
+  }
+  // No event to read: the culprit Sentry computed names the runtime chunk.
+  return /chunks\/webpack/.test(issue.culprit || '');
+}
+
 function isInjectedDocumentFrame(f) {
   const filename = f.filename || f.absPath || '';
   if (/\.(m?js|cjs)(\?|$)/i.test(filename)) return false;
@@ -82,6 +100,10 @@ function classifyIssue(issue, latestEvent) {
   const culprit = issue.culprit || '';
   const metadata = issue.metadata || {};
   const message = metadata.value || title;
+
+  if (isStaleDeployIssue(issue, latestEvent)) {
+    return { noise: true, reason: 'Stale tab after a deploy (webpack missing module); handled by stale-deploy-reload, counted in PostHog stale_deploy_reload' };
+  }
 
   // Check message patterns
   for (const pattern of NOISE_MESSAGE_PATTERNS) {
@@ -134,4 +156,4 @@ function classifyIssue(issue, latestEvent) {
   return { noise: false, reason: 'Appears to be a real issue from our code' };
 }
 
-module.exports = { classifyIssue, isInjectedDocumentFrame, NOISE_MESSAGE_PATTERNS, OUR_DOMAIN_PATTERNS };
+module.exports = { classifyIssue, isInjectedDocumentFrame, isStaleDeployIssue, NOISE_MESSAGE_PATTERNS, OUR_DOMAIN_PATTERNS };
