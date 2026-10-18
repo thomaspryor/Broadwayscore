@@ -1225,6 +1225,37 @@
     "queuedAt": "2026-10-18T23:18:38.359Z"
   },
   {
+    "conditionKey": "land:land/bro-5489-reprint-dedupe",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5489-reprint-dedupe",
+    "description": "land.yml did not land land/bro-5489-reprint-dedupe: the unit-tests-node gate went red at cbce22f94f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39175575424",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5489-reprint-dedupe"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "cbce22f94f2b8a055d9c871514bf8318b1ced943"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39175575424"
+      }
+    ],
+    "queuedAt": "2026-10-18T23:51:52.013Z"
+  },
+  {
     "conditionKey": "land:land/bro-5647-dr-verify-2",
     "title": "Landing blocked: unit-tests-node red on land/bro-5647-dr-verify-2",
     "description": "land.yml did not land land/bro-5647-dr-verify-2: the unit-tests-node gate went red at e0bd337be7. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39175378613",
