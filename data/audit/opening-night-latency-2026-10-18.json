@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-18T20:50:48.226Z",
+  "generatedAt": "2026-10-18T23:18:38.912Z",
   "date": "2026-10-18",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 275802,
+  "entryCount": 290982,
   "shows": [
     {
       "showId": "a-ghost-in-your-ear-off-broadway-2026",
@@ -2507,13 +2507,13 @@
     },
     {
       "showId": "what-the-animals-say-off-west-end-2026",
-      "reviewCount": 17,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 445103,
+        "scored-to-rebuilt": 301706,
         "rebuilt-to-deployed": 7198826
       },
       "reviews_over_15min": 0,
@@ -7630,13 +7630,13 @@
     },
     {
       "showId": "dog-mom-off-west-end-2026",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 672135,
-        "scored-to-rebuilt": 142087,
+        "scored-to-rebuilt": 175620,
         "rebuilt-to-deployed": 56705968
       },
       "reviews_over_15min": 0,
@@ -10112,6 +10112,21 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 594433,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "triumph-off-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
