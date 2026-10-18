@@ -20,6 +20,10 @@ const { matchSlugToShow } = require('./show-matching.js');
 
 const SHOWS = [
   { id: 'archduke-west-end-2026', title: 'Archduke', category: 'west-end', market: 'west-end' },
+  // Numeric title (BRO-5631, was PR #391): the single-token gate used to reject
+  // the 4-digit "1536" and silently drop Stuart King's review of it.
+  { id: '1536-west-end-2026', title: '1536', category: 'west-end', market: 'west-end' },
+  { id: 'avenue-q-west-end-2026', title: 'Avenue Q', category: 'west-end', market: 'west-end' },
   { id: 'glengarry-glen-ross-west-end-2026', title: 'Glengarry Glen Ross', category: 'west-end', market: 'west-end' },
   { id: 'sinatra-the-musical-west-end-2026', title: 'Sinatra the Musical', category: 'west-end', market: 'west-end' },
   { id: 'the-truth-a-comedy-by-florian-zeller-west-end-2026', title: 'The Truth: A Comedy by Florian Zeller', category: 'west-end', market: 'west-end' },
@@ -39,6 +43,8 @@ const CASES = [
   { url: 'https://www.londonboxoffice.co.uk/news/post/review-glengarry-glen-ross-old-vic', id: 'glengarry-glen-ross-west-end-2026' },
   { url: 'https://www.londonboxoffice.co.uk/news/post/sinatra-aldwych-theatre-review', id: 'sinatra-the-musical-west-end-2026' },
   { url: 'https://www.londonboxoffice.co.uk/news/post/review-the-truth-apollo-theatre', id: 'the-truth-a-comedy-by-florian-zeller-west-end-2026' },
+  { url: 'https://www.londonboxoffice.co.uk/news/post/1536-ambassadors-review', id: '1536-west-end-2026' },
+  { url: 'https://www.londonboxoffice.co.uk/news/post/avenue-q-shaftesbury-review', id: 'avenue-q-west-end-2026' },
 ];
 
 test('LBO individual review URLs match their show at high confidence, venue-agnostically', () => {
@@ -53,4 +59,46 @@ test('LBO individual review URLs match their show at high confidence, venue-agno
 test('Genuinely off-West-End fringe URLs correctly match nothing (no false positives)', () => {
   const m = matchSlugToShow('some-random-fringe-show-etcetera-theatre', SHOWS, { market: 'west-end' });
   assert.ok(!m || !m.show, 'a non-tracked fringe show must not match');
+});
+
+test('a lone number only matches on a hyphen boundary (1536 never matches 21536)', () => {
+  const m = matchSlugToShow('21536-something-review', SHOWS, { market: 'west-end' });
+  assert.ok(!m || !m.show || m.show.id !== '1536-west-end-2026');
+});
+
+const { pickLboIndividualReviewUrls } = require('./lbo-individual-serp.js');
+const byId = (id) => SHOWS.find((s) => s.id === id);
+
+test('SERP pick: takes the individual review for the targeted show', () => {
+  const urls = [
+    'https://www.londonboxoffice.co.uk/news/post/1536-review-round-up',
+    'https://www.londonboxoffice.co.uk/news/post/1536-ambassadors-review?utm=x',
+  ];
+  assert.deepEqual(pickLboIndividualReviewUrls(urls, byId('1536-west-end-2026'), SHOWS),
+    ['https://www.londonboxoffice.co.uk/news/post/1536-ambassadors-review']);
+});
+
+test('SERP pick: refuses roundups, other domains and slugs that win for another show', () => {
+  const show = byId('avenue-q-west-end-2026');
+  assert.deepEqual(pickLboIndividualReviewUrls([
+    'https://www.londonboxoffice.co.uk/news/post/avenue-q-review-round-up',
+    'https://www.example.com/news/post/avenue-q-review',
+    'https://www.londonboxoffice.co.uk/news/post/review-archduke-royal-court',
+    'https://www.londonboxoffice.co.uk/whats-on/avenue-q-review',
+    null,
+  ], show, SHOWS), []);
+});
+
+test('same-title productions resolve by year: dated 1536 West End beats the announced off-West-End 1536', () => {
+  const pool = [...SHOWS, { id: '1536-off-west-end-2026', title: '1536', category: 'off-west-end', market: 'west-end', status: 'announced' }]
+    .map((s) => (s.id === '1536-west-end-2026' ? { ...s, openingDate: '2026-04-10', status: 'closed' } : s));
+  const m = matchSlugToShow('1536-ambassadors-review', pool, { year: 2026 });
+  assert.equal(m && m.show && m.show.id, '1536-west-end-2026');
+  assert.deepEqual(pickLboIndividualReviewUrls([
+    'https://www.londonboxoffice.co.uk/news/post/1536-almeida-review',
+    'https://www.londonboxoffice.co.uk/news/post/1536-ambassadors-review',
+  ], pool.find((s) => s.id === '1536-west-end-2026'), pool, { year: 2026 }), [
+    'https://www.londonboxoffice.co.uk/news/post/1536-almeida-review',
+    'https://www.londonboxoffice.co.uk/news/post/1536-ambassadors-review',
+  ], 'both go on; the page-date guard keeps the Ambassadors one');
 });

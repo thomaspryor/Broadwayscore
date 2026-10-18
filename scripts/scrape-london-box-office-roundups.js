@@ -27,6 +27,7 @@ const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
 const cheerio = require('cheerio');
 const { matchTitleToShow, matchSlugToShow, loadShows, titleWordsMatch, buildSiblingCategoriesFromShows } = require('./lib/show-matching');
+const { pickLboIndividualReviewUrls } = require('./lib/lbo-individual-serp');
 const { checkArchiveCategory } = require('./lib/archive-cache-guard');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
@@ -120,6 +121,9 @@ async function discoverRoundupUrls() {
 
   const roundups = [];
   const individual = [];
+  // Article year per individual URL, from <lastmod> (BRO-5631): the sitemap
+  // holds years of URLs, and same-title productions only separate by date.
+  const individualYear = new Map();
   $('url > loc').each((_, el) => {
     const loc = $(el).text().trim();
     // Match roundup URLs: "review-round-up-", "review-roundup-", etc.
@@ -130,13 +134,15 @@ async function discoverRoundupUrls() {
     // Excludes roundups (already matched above) and non-review articles
     else if (/\/news\/post\/review-.+/i.test(loc) || /\/news\/post\/.+-review$/i.test(loc)) {
       individual.push(loc);
+      const y = Number(($(el).parent().find('lastmod').first().text() || '').slice(0, 4));
+      if (y >= 1990 && y <= 2100) individualYear.set(loc, y);
     }
   });
 
   console.log(`Found ${roundups.length} roundup URLs + ${individual.length} individual review URLs in sitemap`);
   stats.sitemapUrls = roundups.length;
   stats.individualUrls = individual.length;
-  return { roundups, individual };
+  return { roundups, individual, individualYear };
 }
 
 // ---------------------------------------------------------------------------
@@ -686,10 +692,12 @@ async function scrapeLBORoundups() {
   // Step 2: Discover additional roundup + individual review URLs from sitemap
   let roundupUrls = [];
   let individualUrls = [];
+  let individualYear = new Map();
   try {
     const discovered = await discoverRoundupUrls();
     roundupUrls = discovered.roundups;
     individualUrls = discovered.individual;
+    individualYear = discovered.individualYear;
   } catch (err) {
     console.error(`Failed to fetch sitemap: ${err.message}`);
     console.log('Falling back to targeted shows with Google SERP...');
@@ -737,7 +745,11 @@ async function scrapeLBORoundups() {
     // 1. Venue-agnostic slug match (primary). matchSlugToShow ignores the
     //    market option — cross-market scoping comes from `weShows` already being
     //    pre-filtered to London productions (see weShows construction above).
-    let match = matchSlugToShow(postSlug, weShows);
+    // The sitemap's <lastmod> year dates the article. Without it, same-title
+    // productions (1536 West End vs the announced off-West-End 1536) fall to
+    // the recency tiebreak (BRO-5631); no lastmod keeps the old behavior.
+    const articleYear = individualYear.get(url);
+    let match = matchSlugToShow(postSlug, weShows, articleYear ? { year: articleYear } : {});
     let via = 'slug';
 
     // 2. Legacy title-extraction fallback for odd URL shapes the slug matcher
@@ -837,6 +849,42 @@ async function scrapeLBORoundups() {
         await sleep(2000);
       } catch (err) {
         console.log(`  SERP error: ${err.message}`);
+      }
+    }
+  }
+
+  // SERP fallback for INDIVIDUAL byline reviews (targeted mode only; BRO-5631,
+  // was PR #391). LBO first-party reviews (Stuart King and colleagues) are only
+  // discoverable via news-sitemap.xml, which holds ~48h of URLs, so a byline
+  // review not swept inside that window was lost for good (Avenue Q and 1536,
+  // 2026-06-28). Accept a SERP hit only when its slug matches THIS show as the
+  // winner against the full weShows pool, the same guard the sitemap path uses;
+  // a single-show pool would accept a slug that is really about another show.
+  if (targetShowIds && SCRAPINGBEE_KEY) {
+    const matchedIndivIds = new Set(matchedIndividual.map(r => r.show.id));
+    for (const showId of targetShowIds.filter(id => !matchedIndivIds.has(id))) {
+      const show = weShows.find(s => s.id === showId);
+      if (!show) continue;
+      console.log(`[SERP] Searching for ${show.title} individual LBO review...`);
+      try {
+        const results = await serpQuery(`site:londonboxoffice.co.uk "${show.title}" review`, { nbResults: 8 });
+        // Every qualifying URL goes on: the per-page date guard below drops an
+        // earlier production's review and keeps this run's.
+        const picked = pickLboIndividualReviewUrls((results || []).map(r => r && r.url), show, weShows, {
+          year: show.openingDate ? Number(String(show.openingDate).slice(0, 4)) : null,
+        });
+        if (picked.length) {
+          for (const url of picked) {
+            console.log(`  Found individual via SERP: ${url}`);
+            matchedIndividual.push({ url, show, extractedTitle: show.title, via: 'serp' });
+          }
+          stats.matchedIndividual = (stats.matchedIndividual || 0) + picked.length;
+        } else {
+          console.log(`  No LBO individual review found for ${show.title}`);
+        }
+        await sleep(2000);
+      } catch (err) {
+        console.log(`  SERP (individual) error: ${err.message}`);
       }
     }
   }

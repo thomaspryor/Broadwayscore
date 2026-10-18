@@ -47,8 +47,8 @@ function emptyHits() {
   };
 }
 
-test('STRICT_CLASSES is exactly {A, C, E, F} — B and D are report-only by design', () => {
-  assert.deepEqual([...STRICT_CLASSES].sort(), ['A', 'C', 'E', 'F']);
+test('STRICT_CLASSES is exactly {A, A2, C, E, F} — B and D are report-only by design', () => {
+  assert.deepEqual([...STRICT_CLASSES].sort(), ['A', 'A2', 'C', 'E', 'F']);
   assert.equal(STRICT_CLASSES.has('B'), false, 'B (false-positive wrongProduction) is a coverage-miss signal, not integrity — report-only');
   assert.equal(STRICT_CLASSES.has('D'), false, 'D (pre-opening feature) mixes in legitimate embargoed reviews — report-only');
   assert.equal(STRICT_CLASSES.has('C2'), false, 'C2 (multi-critic URL collision) is ambiguous without byline metadata — report-only');
@@ -61,6 +61,16 @@ test('countStrictHits sums only strict-class buckets, ignoring report-only ones'
   hits.C_domain_mismatch.push({ showId: 'x' });
   hits.D_pre_opening_feature.push({ showId: 'x' }, { showId: 'y' }, { showId: 'z' });
   assert.equal(countStrictHits(hits), 2, 'only A(1) + C(1); the 2 B hits and 3 D hits are report-only');
+});
+
+test('A2 counts only corroborated contamination-level hits; review-level stays report-only (BRO-5631)', () => {
+  const hits = emptyHits();
+  hits.A2_cross_market_relative.push(
+    { showId: 'x', level: 'contamination' },
+    { showId: 'y', level: 'review' },
+    { showId: 'z', level: 'review' },
+  );
+  assert.equal(countStrictHits(hits), 1, 'only the contamination-level A2 hit counts');
 });
 
 test('countStrictHits on an all-clean corpus is 0', () => {

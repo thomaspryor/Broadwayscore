@@ -30,7 +30,18 @@ function shouldBlockContaminationGate({ crossMarketLeaks, strictHits, floor }) {
 // with that script (which requires this module rather than redefining the
 // set) so the CI gate and its regression tests can never drift apart on
 // which classes are "integrity" vs "report-only".
-const STRICT_CLASSES = new Set(['A', 'C', 'E', 'F']);
+// A2 (same-season cross-market, BRO-5631; was PR #399) is strict too, but only
+// its corroborated level='contamination' hits count. level='review' hits are
+// uncorroborated date clusters (e.g. a dual-market outlet on the other
+// market's opening) and stay report-only. Baked report-only since 2026-06-26;
+// 0 A2 hits of either level on the full corpus at promotion (2026-10-18).
+// C2 stays out: 'C2_url_multi_critic'.split('_')[0] is 'C2', not 'C'.
+const STRICT_CLASSES = new Set(['A', 'A2', 'C', 'E', 'F']);
+
+function countsTowardStrict(classLetter, hit) {
+  if (classLetter === 'A2') return Boolean(hit) && hit.level === 'contamination';
+  return true;
+}
 
 /**
  * Sums the `hits` buckets (keyed `<ClassLetter>_description`, e.g.
@@ -41,7 +52,10 @@ const STRICT_CLASSES = new Set(['A', 'C', 'E', 'F']);
 function countStrictHits(hits) {
   return Object.entries(hits)
     .filter(([k]) => STRICT_CLASSES.has(k.split('_')[0]))
-    .reduce((sum, [, arr]) => sum + arr.length, 0);
+    .reduce((sum, [k, arr]) => {
+      const cls = k.split('_')[0];
+      return sum + arr.filter((h) => countsTowardStrict(cls, h)).length;
+    }, 0);
 }
 
 /**

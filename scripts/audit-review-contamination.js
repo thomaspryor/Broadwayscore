@@ -336,9 +336,10 @@ const AGGREGATOR_ROUNDUP_DOMAINS = new Set([
 const hits = {
   A_cross_market: [],
   // A2: same-season cross-market contamination (relative date-cluster + region/url
-  // corroboration). REPORT-ONLY for now (not in STRICT_CLASSES) — promote to strict
-  // after one clean corpus cycle. Added 2026-06-26 after the #382 R&J incident, which
-  // the absolute >180d Category-A threshold missed (siblings only ~72d apart).
+  // corroboration). Strict since BRO-5631 for level='contamination' hits only;
+  // level='review' hits stay report-only (see lib/contamination-gate.js). Added
+  // 2026-06-26 after the #382 R&J incident, which the absolute >180d Category-A
+  // threshold missed (siblings only ~72d apart).
   A2_cross_market_relative: [],
   B_false_positive_wp: [],
   C_domain_mismatch: [],
@@ -448,7 +449,7 @@ for (const showId of showDirs) {
     // with a near-in-time cross-market sibling's opening (e.g. West End R&J 03-31 vs
     // Delacorte R&J 06-11). Requires region OR url-token corroboration so legit
     // dual-market coverage (Guardian/Times-UK on the Broadway opening) is never
-    // flagged. REPORT-ONLY (A2 not in STRICT_CLASSES) until promoted.
+    // flagged. Strict for level='contamination' only (BRO-5631).
     if (shouldRunClass('A') && !alreadyFlagged && !d._auditAllowCrossMarket && xmarketSibs.length) {
       const pubDate = parseDate(d.publishDate);
       if (pubDate && showOpening) {

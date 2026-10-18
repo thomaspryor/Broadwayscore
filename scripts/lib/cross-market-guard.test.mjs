@@ -516,3 +516,29 @@ test('evaluateUrlPathCrossMarketGuard: no URL-path indicator at all is never fla
   assert.equal(r.shouldFlag, false);
   assert.equal(r.exemptedByPriorRun, false);
 });
+
+// ─── A2 strict-promotion boundary (BRO-5631, from PR #399) ───────────────────
+// lib/contamination-gate.js counts only level='contamination' A2 hits as strict;
+// these pin which inputs land on each side of that line.
+
+test('promotion: uncorroborated dual-market date cluster → review (never strict)', () => {
+  const v = classifyCrossMarketContamination({
+    reviewDate: D('2026-04-01'), thisShow: DELACORTE, siblings: SIB_WE,
+    outletRegion: 'london', isDualMarket: true,
+    reviewUrl: 'https://www.theguardian.com/stage/romeo-and-juliet-review',
+  });
+  assert.equal(v.level, 'review');
+  assert.equal(v.sibId, 'romeo-and-juliet-west-end-2026');
+});
+
+test('promotion: region-corroborated contamination carries sibId, reason and diffs', () => {
+  const v = classifyCrossMarketContamination({
+    reviewDate: D('2026-04-01'), thisShow: DELACORTE, siblings: SIB_WE,
+    outletRegion: 'london', isDualMarket: false,
+  });
+  assert.equal(v.level, 'contamination');
+  assert.ok(v.sibId);
+  assert.ok(v.reason);
+  assert.equal(typeof v.thisDiff, 'number');
+  assert.equal(typeof v.sibDiff, 'number');
+});

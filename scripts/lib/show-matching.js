@@ -1679,8 +1679,14 @@ function _matchCleanedSlugAgainstShows(cleanedSlug, shows, options = {}) {
     // Every token must still match below. Titles whose only long word sat
     // after a short one ("Oh, Hello", "Oh, Brother!") had no tokens at all
     // and were unmatchable; they now match when both words are in the slug.
+    // A lone 3+ digit number ("1536", "1776", "1984") is exempt: it is not an
+    // English word, so it doesn't carry the collision risk above, and without
+    // this numeric-titled shows were unmatchable from every aggregator slug
+    // (Stuart King's 1536 LBO review was dropped this way; BRO-5631, was PR
+    // #391). The hyphen-boundary check below keeps 1536 out of "21536".
     const words = tokens.filter(t => t.length > 2);
-    if (words.length <= 1 && (words[0] || '').length < 5) continue;
+    const loneNumber = words.length === 1 && /^\d{3,}$/.test(words[0]);
+    if (words.length <= 1 && (words[0] || '').length < 5 && !loneNumber) continue;
     let matchedTokens = 0;
     let score = 0;       // sum of matched-token-length squared
     let totalLen = 0;
