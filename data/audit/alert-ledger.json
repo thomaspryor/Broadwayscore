@@ -242,7 +242,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-18T19:51:45.721Z",
-      "lastSeen": "2026-10-18T21:10:07.447Z",
+      "lastSeen": "2026-10-18T21:20:40.790Z",
       "lastNotifiedAt": "2026-10-18T19:51:45.721Z",
       "lastSurfacedAt": "2026-10-18T19:51:45.721Z",
       "notifyCount": 143,
@@ -250,7 +250,7 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 142,
       "sweptTracker": "BRO-5554",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -20022,7 +20022,7 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \".claude/CLOUD.md stays under its byte cap\"",
       "firstSeen": "2026-10-18T02:51:46.727Z",
       "incidentOpenedAt": "2026-10-18T20:23:06.128Z",
-      "lastSeen": "2026-10-18T21:10:07.437Z",
+      "lastSeen": "2026-10-18T21:20:40.784Z",
       "lastNotifiedAt": "2026-10-18T20:23:06.128Z",
       "lastSurfacedAt": null,
       "notifyCount": 3,
@@ -20034,7 +20034,7 @@
         "runId": "39105837664",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39105837664"
       },
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/job/linear-BRO-716-mvd2yiv0": {
       "status": "open",
@@ -20502,7 +20502,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:8bb6b245": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"live registry: at most 10 displayNames are the capitalized run-together id\"",
       "firstSeen": "2026-10-18T19:51:45.330Z",
@@ -20515,8 +20515,11 @@
       "linearIdentifier": "BRO-5642",
       "absentRunIds": [
         "39160782249",
-        "39164358141"
-      ]
+        "39163257806",
+        "39166085780"
+      ],
+      "resolvedAt": "2026-10-18T21:20:40.772Z",
+      "resolveReason": "stale-signature"
     }
   }
 }
