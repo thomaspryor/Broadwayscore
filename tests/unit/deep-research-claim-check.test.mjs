@@ -140,3 +140,31 @@ test('the live record is found by slug, as commercial.json is keyed', () => {
   assert.equal(recordFor(commercial, { id: 'x-2020', slug: 'x' }), null);
   assert.equal(recordStatus({ field: 'capitalization', value: 29000000 }, recordFor(commercial, { id: 'stranger-things-2024', slug: 'stranger-things' })), 'same');
 });
+
+test('a next sentence about another show, a separate list item or a far-off phrase does not confirm a loss', () => {
+  const cats = { title: 'CATS: The Jellicle Ball', openingDate: '2026-04-07' };
+  const loss = { show: cats.title, field: 'outcome for investors', value: 'did not recoup', source_url: 'https://variety.com/a', quote: '' };
+  // The next sentence names another show instead of referring back.
+  assert.notEqual(classifyClaim(loss, pad('CATS: The Jellicle Ball, which opened in 2026, closes Aug. 8. Sunset Blvd. never recouped its investment.'), cats).verdict, 'confirmed');
+  // List items without full stops are separate sentences.
+  assert.notEqual(classifyClaim(loss, pad('</p><ul><li>CATS: The Jellicle Ball opened in 2026</li><li>Hell’s Kitchen did not recoup</li></ul><p>'), cats).verdict, 'confirmed');
+  // One long unpunctuated block: the loss phrase is far from the title.
+  assert.notEqual(classifyClaim(loss, pad(`CATS: The Jellicle Ball opened in 2026 ${'and the season went on '.repeat(20)} another show did not recoup`), cats).verdict, 'confirmed');
+  // "It" refers back.
+  assert.equal(classifyClaim(loss, pad('CATS: The Jellicle Ball, which opened in 2026, closes Aug. 8. It did not recoup its investment.'), cats).verdict, 'confirmed');
+});
+
+test('another show in the same sentence, or a hedged recoupment, is not confirmed', () => {
+  const cats = { title: 'CATS: The Jellicle Ball', openingDate: '2026-04-07' };
+  const claim = (value) => ({ show: cats.title, field: 'outcome for investors', value, source_url: 'https://variety.com/a', quote: '' });
+  assert.notEqual(classifyClaim(claim('did not recoup'), pad('CATS: The Jellicle Ball, which opened in 2026, closes Sunday, while Sunset Blvd. failed to recoup.'), cats).verdict, 'confirmed');
+  assert.notEqual(classifyClaim(claim('did not recoup'), pad('CATS: The Jellicle Ball opened in 2026; Sunset Blvd. failed to recoup.'), cats).verdict, 'confirmed');
+  for (const text of [
+    'CATS: The Jellicle Ball, which opened in 2026, has not yet recouped.',
+    'CATS: The Jellicle Ball, which opened in 2026, is expected to recoup by spring.',
+    'CATS: The Jellicle Ball, which opened in 2026, sold well, unlike Hamilton, which recouped in 2016.',
+  ]) assert.notEqual(classifyClaim(claim('recouped'), pad(text), cats).verdict, 'confirmed', text);
+  const ok = classifyClaim(claim('recouped'), pad('CATS: The Jellicle Ball, which opened in 2026, recouped its investment in September.'), cats);
+  assert.equal(ok.verdict, 'confirmed');
+  assert.match(ok.quote, /recouped its investment/);
+});

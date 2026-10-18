@@ -51,22 +51,45 @@ function quoteOnPage(quote, text) {
 /** Whether a report's outcome value claims a loss ("did not recoup", "lost its investment"). */
 const claimsLoss = (value) => /\b(?:not|never|loss|lost|fail(?:ed|s)?|didn'?t)\b/i.test(String(value ?? ''));
 
+// A paragraph, heading, list item or table cell ends a sentence even without a full stop.
+const BLOCK_END_RE = /<\/(?:p|li|h[1-6]|div|td|th|tr|blockquote|section|article|figcaption)>|<br\s*\/?>/gi;
+const BREAK = '\u0001';
+const SENTENCE_RE = new RegExp(`\\s*${BREAK}\\s*|(?<=[.!?][”"’)\\]]*)\\s+(?=[“"‘(]?[A-Z])`);
+// A clause joined by ";" or ", while/whereas/but/unlike/compared with" is often about another show, so it is
+// its own unit ("CATS closes Sunday, while Sunset Blvd. failed to recoup."). ":" is left alone: titles use it.
+const CLAUSE_RE = /\s*;\s*|,\s+(?=(?:while|whereas|but|unlike|compared (?:with|to)|as did|as opposed to)\b)/i;
+// Characters either side of the title, and from the start of the next sentence, searched for outcome language.
+const OUTCOME_SPAN = 150;
+// The next sentence counts only when it refers back to the show ("The show closed without recouping.").
+const POINTS_BACK_RE = /^(?:(?:however|but|and|still|ultimately) )?(?:it|its|the (?:show|production|musical|play|revival|staging|run)|this (?:show|production|musical|play|revival))\b/;
+// A recoupment, stated as done: "recouped", "announced recoupment". "Expected to recoup" is not one.
+const RECOUPED_RE = /\brecouped\b|\b(?:announced|reached|achieved|hit) (?:its )?recoupment\b/;
+const NOT_RECOUPED_RE = /\b(?:not|never|yet to|has yet|without|expected to|on track to|hopes? to|aims? to|could|would|will)\b[^.]{0,30}\brecoup/;
+
+/** The page's sentences and clauses, folded like the title forms (diacritics, apostrophes, "&"), so "The Who's Tommy" matches. */
+const sentencesOf = (page) => pageText(String(page || '').replace(BLOCK_END_RE, m => `${m}${BREAK}`))
+  .split(SENTENCE_RE).flatMap(sentence => sentence.split(CLAUSE_RE)).map(normalizeForMention).filter(Boolean);
+
 /**
- * Recoupment language matching the claim in a sentence that names the show (a title form from
- * buildShowTitleVariants, as whole words) or in the sentence right after it ("The show closed without
- * recouping."). A fixed character window was too loose: Variety's CATS: The Jellicle Ball closing story
- * says "the show failed to recoup" two sentences later about Sunset Blvd.
+ * The text that states the claimed outcome next to a title form (buildShowTitleVariants, as whole words), or
+ * null: the same sentence or clause, or the start of the next one when it refers back to the show. A fixed
+ * character window was too loose: Variety's CATS: The Jellicle Ball closing story says "the show failed to
+ * recoup" two sentences later about Sunset Blvd. "It" can still mean another show, so the caller reports the
+ * matched text for the hand check.
  */
-function outcomeNearTitle(wantsLoss, rawText, titles) {
-  // Same folding as the title forms (diacritics, apostrophes, "&"), so "The Who's Tommy" and "Les Misérables" match.
-  const sentences = String(rawText).split(/(?<=[.!?][”"’)\]]*)\s+(?=[“"‘(]?[A-Z])/).map(normalizeForMention);
+function outcomeNearTitle(wantsLoss, page, titles) {
+  const sentences = sentencesOf(page);
   const res = titles.map(title => new RegExp(`(?<![a-z0-9])${title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![a-z0-9])`));
+  const says = (t) => (wantsLoss ? LOSS_RE.test(t) : (RECOUPED_RE.test(t) && !NOT_RECOUPED_RE.test(t) && !LOSS_RE.test(t)));
   for (let i = 0; i < sentences.length; i++) {
-    if (!res.some(re => re.test(sentences[i]))) continue;
-    const around = `${sentences[i]} ${sentences[i + 1] || ''}`;
-    if (wantsLoss ? LOSS_RE.test(around) : (/recoup/i.test(around) && !LOSS_RE.test(around))) return true;
+    for (const n of res.map(re => sentences[i].search(re)).filter(at => at >= 0)) {
+      const near = sentences[i].slice(Math.max(0, n - OUTCOME_SPAN), n + OUTCOME_SPAN);
+      if (says(near)) return near;
+    }
+    const next = (sentences[i + 1] || '').slice(0, OUTCOME_SPAN);
+    if (res.some(re => re.test(sentences[i])) && POINTS_BACK_RE.test(next) && says(next)) return `${sentences[i].slice(-OUTCOME_SPAN)} | ${next}`;
   }
-  return false;
+  return null;
 }
 
 /** One dollar figure from a report value ("up to 18000000", "$4.75 million"); null for ranges, bounds and prose. */
@@ -135,7 +158,8 @@ function classifyClaim(rawClaim, page, show) {
       const guard = checkRecoupmentProduction({ show, url: claim.source_url, recoupedDate: dateMatch ? dateMatch[1] : undefined, publishedDate: claim.source_date || undefined, headlines: headlines(page) });
       if (!guard.ok) return { verdict: 'wrong-production', reason: guard.reason, ...base };
     }
-    if (outcomeNearTitle(wantsLoss, text, buildShowTitleVariants(show.title))) return { verdict: 'confirmed', reason: `${wantsLoss ? 'loss' : 'recoupment'} language next to the title`, ...base };
+    const matched = outcomeNearTitle(wantsLoss, page, buildShowTitleVariants(show.title));
+    if (matched) return { verdict: 'confirmed', reason: `${wantsLoss ? 'loss' : 'recoupment'} language next to the title; read it: "${matched}"`, quote: matched, ...base };
     return { verdict: quoteFound ? 'wrong-context' : 'not-on-page', reason: `no ${wantsLoss ? 'loss' : 'recoupment'} language next to this show on the page`, ...base };
   }
   return { verdict: 'not-checkable', reason: `field "${claim.field}" has no automatic check`, ...base };
