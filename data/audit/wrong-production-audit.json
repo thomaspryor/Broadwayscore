@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-10-18T01:09:09.622Z",
+  "timestamp": "2026-10-18T02:12:47.522Z",
   "stats": {
-    "totalReviews": 57378,
-    "alreadyFlagged": 21278,
-    "dateGuardCatches": 195,
-    "directorMismatch": 1951,
-    "tvFilmSignals": 1607,
+    "totalReviews": 57380,
+    "alreadyFlagged": 21281,
+    "dateGuardCatches": 196,
+    "directorMismatch": 1952,
+    "tvFilmSignals": 1608,
     "londonSignals": 2420,
     "offBroadwaySignals": 520,
-    "yearMismatch": 159,
+    "yearMismatch": 158,
     "noPublishDate": 5297
   },
   "findings": [
@@ -3086,7 +3086,7 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 63,
       "publishDate": "2021-07-19",
-      "url": null,
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-9800721/Emmas-Di-dazzling-play-inside-PATRICK-MARMIONs-night-review.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -7056,6 +7056,20 @@
     },
     {
       "showId": "cats-the-jellicle-ball-2026",
+      "file": "rollingstone--ct-jones.json",
+      "score": null,
+      "publishDate": "2026-06-23",
+      "url": "https://www.rollingstone.com/culture/culture-features/cats-jellicle-ball-survival-of-the-thickest-michelle-buteau-1235581861/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"streaming series\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
       "file": "slantmagazine--dan-rubins.json",
       "score": 91,
       "publishDate": null,
@@ -9913,7 +9927,7 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 74,
       "publishDate": "2025-03-21",
-      "url": null,
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-14521559/PATRICK-MARMION-Dear-England-National-Theatre.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -12053,7 +12067,7 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 12,
       "publishDate": "2025-02-07",
-      "url": null,
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-14370131/PATRICK-MARMION-reviews-Elektra-Duke-Yorks-theatre-REAL-tragedy-Hollywood-stars-assault-West-End.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -15303,7 +15317,7 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 57,
       "publishDate": "2026-06-19",
-      "url": null,
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15911873/Remake-David-Mamets-testosterone-fuelled-masterpiece-female-cast-read-review.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -24934,7 +24948,7 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 36,
       "publishDate": "2024-04-04",
-      "url": null,
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-13267321/Successions-Brian-Cox-stars-American-stage-epic-three-half-hours-feel-like-cheerless-misery-ultra-marathon-writes-PATRICK-MARMION.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -25229,7 +25243,7 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 78,
       "publishDate": "2022-07-01",
-      "url": null,
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-10970595/US-Steptoes-Stranger-things-happened-PATRICK-MARMION-reviews-Mad-House.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -30004,19 +30018,6 @@
       ]
     },
     {
-      "showId": "other-desert-cities-2026",
-      "file": "nyt-theater--jonathan-mandell.json",
-      "publishDate": "2026-09-10",
-      "url": "https://newyorktheater.me/2026/09/10/other-desert-cities-original-broadway-review/",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2011 (6x) more than 2026 (2x). 2011 matches production: other-desert-cities-2011"
-        }
-      ]
-    },
-    {
       "showId": "our-generation-west-end-2022",
       "file": "london-theatre--lizzie-akita.json",
       "score": 78,
@@ -33680,6 +33681,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"episode 7\""
+        }
+      ]
+    },
+    {
+      "showId": "school-pictures-off-broadway-2026",
+      "file": "theatermania--zachary-stewart.json",
+      "score": null,
+      "publishDate": "2023-11-22",
+      "url": "https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boys-in-harpy-land-at-playwrights-horizons_1722069/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1050d before show (2023-11-22 vs 2026-10-07)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"morgan green\" from school-pictures-off-broadway-2023"
         }
       ]
     },
@@ -48437,7 +48457,7 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 77,
       "publishDate": "2021-06-24",
-      "url": null,
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-9719159/Michael-Sheen-Sian-Phillips-poetry-PATRICK-MARMIONs-night-review-Milk-Wood.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -52642,7 +52662,7 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 63,
       "publishDate": "2019-09-06",
-      "url": null,
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-7433705/PATRICK-MARMION-reviews-Hansard-study-divided-political-couple.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -56098,7 +56118,7 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 63,
       "publishDate": "2022-10-07",
-      "url": null,
+      "url": "https://www.dailymail.co.uk/news/article-11289877/PATRICK-MARMION-reviews-Blues-Alabama-Sky.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -74934,7 +74954,7 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 79,
       "publishDate": "2023-09-22",
-      "url": null,
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-12547473/My-Fair-Lady-George-Bernard-Shaw-play-PATRICK-MARMION-reviews-Pygmalion.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -75348,7 +75368,7 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 88,
       "publishDate": "2023-02-24",
-      "url": null,
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-11787311/Romeo-left-holding-baby-Shakespeare-aint-Romeo-Julie-reviewed-PATRICK-MARMION.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -82081,7 +82101,7 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 72,
       "publishDate": "2023-12-01",
-      "url": null,
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-12812411/The-House-Bernarda-Alba-review.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

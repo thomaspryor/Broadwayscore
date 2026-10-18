@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-18T01:09:22.226Z",
+  "generatedAt": "2026-10-18T02:12:55.075Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -163,6 +163,10 @@
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
+        },
+        {
+          "name": "New York Theater",
+          "isDualMarket": false
         },
         {
           "name": "Theatrely",
@@ -485,10 +489,6 @@
         },
         {
           "name": "New York Post",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheaterMania",
           "isDualMarket": false
         },
         {
@@ -1525,9 +1525,9 @@
       "status": "open",
       "slug": "dog-mom-off-west-end",
       "thumbnail": "/images/shows/dog-mom-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 50.16,
+      "siteScore": 50.28,
       "liveScore": 50,
-      "scoreDrift": -0.1599999999999966,
+      "scoreDrift": -0.28000000000000114,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -1542,10 +1542,9 @@
         "ready": false,
         "reasons": [
           "7/8 total",
-          "T1:0/3",
-          "hi-conf:5/6"
+          "T1:0/3"
         ],
-        "highConfidence": 5,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1730,6 +1729,18 @@
           "t": "2026-10-18T00:55:05.981Z",
           "rc": 7,
           "s": 50.16,
+          "t1": 0,
+          "t2": 3,
+          "t3": 4,
+          "p": 1,
+          "m": 3,
+          "n": 3,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-18T02:12:55.075Z",
+          "rc": 7,
+          "s": 50.28,
           "t1": 0,
           "t2": 3,
           "t3": 4,

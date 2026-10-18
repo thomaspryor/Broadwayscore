@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-18T01:01:08.060Z",
+  "generated": "2026-10-18T02:07:57.076Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 33,
+  "count": 32,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -141,13 +141,6 @@
       "loserFile": "theatre-bee-uk--theatre-bee-uk.json",
       "targetFile": "theatre-bee-uk--theatre-bee.json",
       "reason": "orphaned-duplicate-heal: theatre-bee-uk--theatre-bee.json was flagged invalid after theatre-bee-uk--theatre-bee-uk.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "the-brightening-air-west-end-2025",
-      "loserFile": "london-theatre--unknown.json",
-      "targetFile": "london-theatre--anya-ryan.json",
-      "reason": "orphaned-duplicate-heal: london-theatre--anya-ryan.json was flagged invalid after london-theatre--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
