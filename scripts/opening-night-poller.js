@@ -809,6 +809,7 @@ async function runAggregators(show) {
           const resolved = resolveOutletFromUrl ? (resolveOutletFromUrl(link.url) || null) : null;
           results.push({
             showId: show.id,
+            // audit-only: BRO-3474 keeps Playbill domain-dash fallback pending owner decision; resolver migration changes 194/10452 archived link IDs
             outletId: resolved?.outletId
               || (link.outletDomain ? link.outletDomain.replace(/\./g, '-') : 'unknown'),
             outlet: resolved?.outletName || link.outlet || link.outletDomain || 'Unknown',
@@ -1016,7 +1017,7 @@ async function runAggregators(show) {
         for (const r of sdReviews) {
           results.push({
             showId: show.id,
-            outletId: normalizeOutlet(r.outlet || ''),
+            outletId: resolveArchiveRowOutletId({ outletLabel: r.outlet, sourceOutletId: 'stagedoor' }),
             outlet: r.outlet || 'Unknown',
             criticName: 'Unknown', // Stagedoor doesn't provide critic names
             url: '',
