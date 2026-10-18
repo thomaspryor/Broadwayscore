@@ -30,12 +30,17 @@ const LOW_RELIABILITY_STAR_SOURCES = new Set([
 // "★★★"). Bare numbers ("5", "85") are AMBIGUOUS — "5" could mean 5/100 or 5 stars
 // — so they are NOT unambiguous and must defer to the stored originalScoreNormalized
 // (Pattern Card #7). Used by the stale-normalized guard in the P0 scoring path.
+// Scales critics publish on (corpus 2026-10: /3 /4 /5 /10 /40 /100; /6 /20 kept for safety).
+// A day-of-month denominator outside this set ("10/18") is a date.
+const RATING_DENOMINATORS = new Set([3, 4, 5, 6, 10, 20, 40, 100]);
 function isUnambiguousRatingString(raw) {
   if (raw == null) return false;
   const s = String(raw).trim();
   if (!s) return false;
   if (/^[A-Fa-f][+-]?$/.test(s)) return true;            // letter grade token
-  if (/\d\s*\/\s*\d/.test(s)) return true;               // X/N (3/5, 8/10)
+  // X/N (3/5, 8/10) on a rating scale only: "10/18" is a date, not a rating (BRO-4490).
+  const frac = s.match(/(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)/);
+  if (frac) return RATING_DENOMINATORS.has(Number(frac[2])) && Number(frac[1]) <= Number(frac[2]);
   if (/\bstars?\b/i.test(s)) return true;                // "4 stars", "3.5 stars"
   if (/[★⭑✪☆]/.test(s)) return true;                     // glyph stars
   if (/\bout of\b/i.test(s)) return true;                // "4 out of 5"
@@ -711,15 +716,46 @@ function tier15RecoveredStarForV6(data) {
   if (!isTier15OverrideActive(data)) return null;
   const raw = String(data.previousOriginalScore);
   if (!isUnambiguousRatingString(raw)) return null;
-  if (data.originalScoreSource && LOW_RELIABILITY_STAR_SOURCES.has(data.originalScoreSource)) return null;
-  const flat = parseOriginalScore(raw, data.outletId);
+  // The clear moved the extraction label into the reason ("... was text-pattern"),
+  // so the record's own originalScoreSource is usually gone.
+  const extractedBy = clearedStarExtractionSource(data);
+  if (!extractedBy || LOW_RELIABILITY_STAR_SOURCES.has(extractedBy)) return null;
+  // The star was read off a page the file no longer points at.
+  if (data.urlCorrectedFrom || data.previousUrl) return null;
+  // Judge the value P0.5 will actually ship.
+  const flat = originalScoreFlatValue(raw, data, () => {});
   if (flat === null || !Number.isFinite(flat)) return null;
   const llm = data.llmScore && data.llmScore.score;
-  const llmConf = data.llmScore && data.llmScore.confidence;
   const bucket = (v) => (v >= 70 ? 'positive' : v <= 40 ? 'negative' : 'mixed');
-  const conflict = typeof llm === 'number' && llmConf !== 'low'
-    && Math.abs(flat - llm) > 25 && bucket(flat) !== bucket(llm);
-  return { star: raw, flat, conflict };
+  // Any confidence: the star itself is the doubtful input here, not the LLM.
+  const conflict = typeof llm === 'number' && Math.abs(flat - llm) > 25 && bucket(flat) !== bucket(llm);
+  return { star: raw, flat, conflict, extractedBy };
+}
+
+/** Extraction source of a cleared star: originalScoreSource, else "was <source>" in the clear reason. */
+function clearedStarExtractionSource(data) {
+  if (data.originalScoreSource) return String(data.originalScoreSource);
+  const m = String(data.originalScoreClearedReason || '').match(/\bwas ([a-z][a-z0-9-]*)\)?\s*$/i);
+  return m ? m[1].toLowerCase() : null;
+}
+
+/**
+ * The 0-100 value P0.5 ships for an originalScore string. Pattern Card #7:
+ * prefer originalScoreNormalized (set at extraction time with the right
+ * scale) over re-parsing, unless the raw string is unambiguous and the stored
+ * value disagrees with its re-parse by >6 (stale-normalized guard, 2026-06-29:
+ * the-piano-lesson-2022 EW "A" stored as 20).
+ */
+function originalScoreFlatValue(raw, data, inc) {
+  const normalizedFromExtraction = (typeof data.originalScoreNormalized === 'number' && data.originalScoreNormalized >= 0 && data.originalScoreNormalized <= 100)
+    ? data.originalScoreNormalized : null;
+  const reparsed = parseOriginalScore(raw, data.outletId);
+  if (reparsed !== null && normalizedFromExtraction !== null
+      && isUnambiguousRatingString(raw) && Math.abs(reparsed - normalizedFromExtraction) > 6) {
+    inc('staleNormalizedOverridden');
+    return reparsed;
+  }
+  return normalizedFromExtraction ?? reparsed;
 }
 
 function getBestScoreUnclamped(data, opts = {}) {
@@ -834,6 +870,7 @@ function getBestScoreUnclamped(data, opts = {}) {
   // later star extraction overwrote scoreSource with its extraction label
   // (e.g. 'telegraph-svg-stars'), which used to knock the file out of this
   // early return and ship the flat star conversion via P0.5 (2026-07-11).
+  let tier15V6Fallback = null; // BRO-4490, see the P0.4 tier-1.5 recovery
   const anchoredBand = data.llmScore && data.llmScore.band;
   let hasAnchoredBandMarker = !!(anchoredBand && typeof anchoredBand.floor === 'number');
   // Staleness guard (marker path only — a real 'anchored-v6'/'llm-v6' stamp is
@@ -892,7 +929,7 @@ function getBestScoreUnclamped(data, opts = {}) {
       }
       if (tier15Recovery) inc('tier15RecoveryOverV6');
     }
-    if (!llmV6HasLateStar && !tier15Recovery) {
+    const returnV6 = () => {
       const v6Score = data.llmScore.score;
       // S6-T6 / BRO-4287: the aggregator editors' thumbs contradict the v6
       // verdict → emit the verdict unchanged but queue it for adjudication.
@@ -905,7 +942,12 @@ function getBestScoreUnclamped(data, opts = {}) {
         return { score: v6Score, source: effectiveV6Source, needsAdjudication: true };
       }
       return { score: v6Score, source: effectiveV6Source };
-    }
+    };
+    if (!llmV6HasLateStar && !tier15Recovery) return returnV6();
+    // P0.5 may still refuse the recovered star (low scoreConfidence, an
+    // uncorroborated generic match, no published-rating evidence): then the
+    // v6 verdict stands, never the weaker P0.75+ paths.
+    if (tier15Recovery) tier15V6Fallback = returnV6;
   }
 
   // P0.5: originalScore (aggregator-provided)
@@ -1017,6 +1059,12 @@ function getBestScoreUnclamped(data, opts = {}) {
   const effectiveScoreLabel = effectiveFromAggregatorStars ? 'aggregatorStars (known star outlet)' : 'originalScore';
   const p05Source = effectiveFromAggregatorStars ? 'aggregatorStars-relay' : 'originalScore-priority0';
 
+  // BRO-4490: the recovered star itself was refused (no published-rating
+  // evidence); a relayed aggregatorStars is no reason to drop the v6 verdict.
+  if (tier15V6Fallback && !gatedOriginalScore) {
+    inc('tier15RecoveryRejectedAtP05');
+    return tier15V6Fallback();
+  }
   if (effectiveOriginalScore && !downgradeShowScore) {
     if (data.scoreConfidence === 'low' || data.scoreSource === 'star-icon' || data.scoreSource === 'star-icon-cleared') {
       inc('skippedLowConfidenceOriginal');
@@ -1025,28 +1073,7 @@ function getBestScoreUnclamped(data, opts = {}) {
       // star/letter/numeric scale) over re-parsing the raw string. Re-parsing "5" as a bare
       // integer returns 5/100 (pan) when it was extracted as "5 stars" (100/100 rave).
       // Fall back to parseOriginalScore() when normalizedValue is absent (older records).
-      const normalizedFromExtraction = (typeof data.originalScoreNormalized === 'number' && data.originalScoreNormalized >= 0 && data.originalScoreNormalized <= 100)
-        ? data.originalScoreNormalized : null;
-      const reparsedOriginal = parseOriginalScore(effectiveOriginalScore, data.outletId);
-      // Stale-normalized guard (2026-06-29): originalScoreNormalized is a stored
-      // field that can go stale and silently override a correct grade. 11 corpus-
-      // wide, e.g. the-piano-lesson-2022 EW "A" with stored normalized 20 → the
-      // rebuild emitted assignedScore 20 (Pan) even though originalScore="A" and the
-      // LLM agreed Rave. When the raw originalScore is an UNAMBIGUOUS letter/star
-      // form (the re-parse is reliable — unlike a bare number where "5" could be 5
-      // or 100, which is why Pattern Card #7 prefers the stored value) AND the
-      // stored normalized disagrees with the canonical re-parse by >6, the stored
-      // value is stale: trust the re-parse. Bare-number originalScores still defer
-      // to the stored normalized.
-      let parsed;
-      if (reparsedOriginal !== null && normalizedFromExtraction !== null
-          && isUnambiguousRatingString(effectiveOriginalScore)
-          && Math.abs(reparsedOriginal - normalizedFromExtraction) > 6) {
-        inc('staleNormalizedOverridden');
-        parsed = reparsedOriginal;
-      } else {
-        parsed = normalizedFromExtraction ?? reparsedOriginal;
-      }
+      let parsed = originalScoreFlatValue(effectiveOriginalScore, data, inc);
       // BRO-4499: a generic free-text "X/5" match that the ensemble contradicts
       // across a bucket boundary is not a rating. Ignore it (like the ambiguous
       // originalScore above) and let P1+ score the review from its text.
@@ -1096,6 +1123,11 @@ function getBestScoreUnclamped(data, opts = {}) {
         return { score: parsed, source: p05Source };
       }
     }
+  }
+
+  if (tier15V6Fallback) {
+    inc('tier15RecoveryRejectedAtP05');
+    return tier15V6Fallback();
   }
 
   // P0.75: Inline star recovery at rebuild time
