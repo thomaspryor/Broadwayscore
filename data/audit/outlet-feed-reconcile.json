@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-18T04:03:00.422Z",
+  "generatedAt": "2026-10-18T05:26:04.106Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -127,6 +127,10 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -159,8 +163,8 @@
       "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 695,
-  "matchedGaps": 2,
+  "itemsScanned": 692,
+  "matchedGaps": 1,
   "possibleGaps": 7,
   "gaps": [
     {
@@ -171,15 +175,6 @@
       "url": "https://www.allthatdazzles.co.uk/post/review-some-woman-dorfman-theatre",
       "headline": "Review: Some Woman (Dorfman Theatre)",
       "publishDate": "2026-10-18"
-    },
-    {
-      "showId": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
-      "title": "The Banality of Evil: Hannah Arendt, France 1940",
-      "level": "matched",
-      "outletId": "viewfromthegods",
-      "url": "https://viewfromthegods.co.uk/2026/10/17/the-banality-of-evil-hannah-arendt-france-1940/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-banality-of-evil-hannah-arendt-france-1940",
-      "headline": "&#8220;The Banality of Evil: Hannah Arendt, France, 1940&#8221; Arcola Theatre, Hackney",
-      "publishDate": "2026-10-17"
     },
     {
       "showId": "jane-eyre-rose-kingston-off-west-end-2026",
