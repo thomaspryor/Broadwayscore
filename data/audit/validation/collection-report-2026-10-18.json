@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-18T14:41:26.410Z",
+  "runDate": "2026-10-18T14:55:38.988Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 20,
@@ -11,59 +11,72 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 4,
+    "processed": 2,
+    "failed": 18,
     "skipped": 0,
-    "successRate": "42.9%"
+    "successRate": "10.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 2
   },
   "statistics": {
     "tier1Attempts": 0,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 4,
+    "tier1_5Attempts": 14,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 4,
-    "tier1_9Success": 0,
-    "tier2Attempts": 5,
+    "tier1_9Attempts": 9,
+    "tier1_9Success": 5,
+    "tier2Attempts": 9,
     "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 2,
+    "tier3Attempts": 12,
+    "tier3Success": 5,
+    "tier3_6Attempts": 7,
     "tier3_6Success": 0,
-    "tier4Attempts": 4,
-    "tier4Success": 2,
-    "totalFailed": 4,
-    "scrapingBeePageCredits": 20,
+    "tier4Attempts": 13,
+    "tier4Success": 6,
+    "totalFailed": 13,
+    "scrapingBeePageCredits": 70,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 4,
-    "browserbaseMinutesUsed": 1.3,
-    "urlDiscoveryAttempts": 4,
+    "browserbaseSessionsUsed": 14,
+    "browserbaseMinutesUsed": 8.2,
+    "urlDiscoveryAttempts": 5,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 3,
-    "failed": 4,
+    "processed": 2,
+    "failed": 18,
     "shows": [
-      "august-osage-county-2007",
-      "bloody-bloody-andrew-jackson-2010",
-      "brief-encounter-2010",
-      "fat-ham-2023",
-      "lombardi-2010",
-      "south-pacific-2008",
-      "the-parisian-woman-2017"
+      "aladdin-2014",
+      "an-enemy-of-the-people-2024",
+      "and-juliet-2022",
+      "book-of-mormon-2011",
+      "cosi-fan-tutte-off-broadway-2026",
+      "funny-girl-2002",
+      "gutenberg-2023",
+      "home-2024",
+      "i-need-that-2023",
+      "la-boheme-off-broadway-2025",
+      "little-shop-of-horrors-off-broadway-2019",
+      "new-york-new-york-2023",
+      "sunset-boulevard-2024",
+      "swept-away-2024",
+      "the-price-off-west-end-2026",
+      "the-roommate-2024",
+      "the-whos-tommy-2024",
+      "titanique-2026",
+      "trouble-in-mind-west-end-2021",
+      "wicked-2003"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -72,27 +85,53 @@
     }
   },
   "processed": [
-    "lombardi-2010/newyorker--uncredited.json",
-    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-    "august-osage-county-2007/newyorker--hilton-als.json"
+    "wicked-2003/wsj--terry-teachout.json",
+    "la-boheme-off-broadway-2025/wsj--by-tim-page.json"
   ],
   "failed": [
-    "fat-ham-2023/newyorker--vinson-cunningham.json",
-    "the-parisian-woman-2017/newyorker--hilton-als.json",
-    "brief-encounter-2010/newyorker--uncredited.json",
-    "south-pacific-2008/newyorker--john-lahr.json"
+    "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
+    "trouble-in-mind-west-end-2021/wsj--terry-teachout.json",
+    "funny-girl-2002/wsj--charles-isherwood.json",
+    "the-price-off-west-end-2026/wsj--unknown.json",
+    "and-juliet-2022/wsj--charles-isherwood.json",
+    "little-shop-of-horrors-off-broadway-2019/wsj--charles-isherwood.json",
+    "aladdin-2014/wsj--terry-teachout.json",
+    "book-of-mormon-2011/wsj--terry-teachout.json",
+    "titanique-2026/wsj--charles-isherwood.json",
+    "swept-away-2024/wsj--charles-isherwood.json",
+    "sunset-boulevard-2024/wsj--charles-isherwood.json",
+    "the-roommate-2024/wsj--charles-isherwood.json",
+    "home-2024/wsj--charles-isherwood.json",
+    "the-whos-tommy-2024/wsj--charles-isherwood.json",
+    "an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
+    "i-need-that-2023/wsj--charles-isherwood.json",
+    "gutenberg-2023/wsj--charles-isherwood.json",
+    "new-york-new-york-2023/wsj--charles-isherwood.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "lombardi-2010/newyorker--uncredited.json",
-      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-      "august-osage-county-2007/newyorker--hilton-als.json"
+      "wicked-2003/wsj--terry-teachout.json",
+      "la-boheme-off-broadway-2025/wsj--by-tim-page.json"
     ],
     "failed": [
-      "fat-ham-2023/newyorker--vinson-cunningham.json",
-      "the-parisian-woman-2017/newyorker--hilton-als.json",
-      "brief-encounter-2010/newyorker--uncredited.json",
-      "south-pacific-2008/newyorker--john-lahr.json"
+      "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
+      "trouble-in-mind-west-end-2021/wsj--terry-teachout.json",
+      "funny-girl-2002/wsj--charles-isherwood.json",
+      "the-price-off-west-end-2026/wsj--unknown.json",
+      "and-juliet-2022/wsj--charles-isherwood.json",
+      "little-shop-of-horrors-off-broadway-2019/wsj--charles-isherwood.json",
+      "aladdin-2014/wsj--terry-teachout.json",
+      "book-of-mormon-2011/wsj--terry-teachout.json",
+      "titanique-2026/wsj--charles-isherwood.json",
+      "swept-away-2024/wsj--charles-isherwood.json",
+      "sunset-boulevard-2024/wsj--charles-isherwood.json",
+      "the-roommate-2024/wsj--charles-isherwood.json",
+      "home-2024/wsj--charles-isherwood.json",
+      "the-whos-tommy-2024/wsj--charles-isherwood.json",
+      "an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
+      "i-need-that-2023/wsj--charles-isherwood.json",
+      "gutenberg-2023/wsj--charles-isherwood.json",
+      "new-york-new-york-2023/wsj--charles-isherwood.json"
     ]
   },
   "tierDetails": {
@@ -100,20 +139,21 @@
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "book-of-mormon-2011/wsj--terry-teachout.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "lombardi-2010/newyorker--uncredited.json",
-      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json",
-      "august-osage-county-2007/newyorker--hilton-als.json"
+      "wicked-2003/wsj--terry-teachout.json",
+      "la-boheme-off-broadway-2025/wsj--by-tim-page.json"
     ]
   },
   "failuresByOutlet": {
-    "The New Yorker": {
+    "The Wall Street Journal": {
       "count": 2,
-      "domain": "newyorker.com",
+      "domain": "wsj.com",
       "hasCredentials": true,
       "isPaywalled": true,
       "isKnownBlocked": true
