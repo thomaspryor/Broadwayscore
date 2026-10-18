@@ -166,6 +166,18 @@ async function main() {
       await otpField.press('Enter');
     }
 
+    // Dow Jones SSO now interposes a "Create Passkey / Not now" screen after
+    // the code is accepted (seen 2026-10-18); without dismissing it the page
+    // never leaves dowjones.com and the wait below times out.
+    const notNow = page.getByRole('button', { name: /^not now$/i });
+    try {
+      await notNow.waitFor({ state: 'visible', timeout: 15000 });
+      console.log('Dismissing passkey prompt ("Not now")...');
+      await notNow.click();
+    } catch {
+      // No passkey prompt this time — the redirect wait below covers it.
+    }
+
     await page.waitForFunction(
       () => !window.location.hostname.includes('dowjones.com'),
       { timeout: 20000 }
