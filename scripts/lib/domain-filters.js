@@ -373,13 +373,76 @@ function matchesDomainSet(hostname, domainSet) {
   return false;
 }
 
+// Social platforms that give each user a blog on its own subdomain
+// (name.tumblr.com). The bare platform and every subdomain no outlet declares
+// stay blocked. A subdomain that a data/outlet-registry.json outlet declares as
+// its `domain` or in its `domainAliases` is that outlet's own site: Dan Dwyer's
+// dandwyeroffscript.tumblr.com (off-script-with-dan-dwyer) had 36 review files
+// dropped as blockedReviewUrl because the whole tumblr.com host was blocked
+// (BRO-5273).
+const USER_BLOG_SOCIAL_DOMAINS = new Set(['tumblr.com']);
+
+const OUTLET_REGISTRY_PATH = require('path').join(__dirname, '..', '..', 'data', 'outlet-registry.json');
+let registryDeclaredHostsCache = null;
+
+/** Lower-cased, www-stripped hosts every registry outlet declares (`domain` + `domainAliases`). */
+function declaredHostsFromRegistry(registry) {
+  const hosts = new Set();
+  const outlets = (registry && registry.outlets) || {};
+  for (const o of Object.values(outlets)) {
+    if (!o || typeof o !== 'object') continue;
+    const list = [o.domain, ...(Array.isArray(o.domainAliases) ? o.domainAliases : [])];
+    for (const d of list) {
+      if (typeof d === 'string' && d.trim()) hosts.add(d.trim().toLowerCase().replace(/^www\./, ''));
+    }
+  }
+  return hosts;
+}
+
+/** Cached declared-host set from data/outlet-registry.json; empty (so nothing is exempted) when unreadable. */
+function getRegistryDeclaredHosts() {
+  if (registryDeclaredHostsCache) return registryDeclaredHostsCache;
+  try {
+    registryDeclaredHostsCache = declaredHostsFromRegistry(JSON.parse(require('fs').readFileSync(OUTLET_REGISTRY_PATH, 'utf8')));
+  } catch (err) {
+    console.warn(`[domain-filters] outlet registry unreadable, no blog-host exemptions applied: ${err.message}`);
+    registryDeclaredHostsCache = new Set();
+  }
+  return registryDeclaredHostsCache;
+}
+
+/**
+ * True when `hostname` is a strict subdomain of a USER_BLOG_SOCIAL_DOMAINS
+ * platform (not the platform itself, not www.) and a registry outlet declares
+ * that exact host. `declaredHosts` defaults to the live registry.
+ */
+function isRegistryDeclaredBlogSubdomain(hostname, declaredHosts = getRegistryDeclaredHosts()) {
+  const h = String(hostname || '').replace(/^www\./, '').toLowerCase();
+  if (!declaredHosts.has(h)) return false;
+  for (const d of USER_BLOG_SOCIAL_DOMAINS) {
+    if (h.endsWith('.' + d)) return true;
+  }
+  return false;
+}
+
+/** SOCIAL_DOMAINS match, minus registry-declared per-user blog subdomains. */
+function isBlockedSocialHost(hostname, declaredHosts) {
+  return matchesDomainSet(hostname, SOCIAL_DOMAINS)
+    && !isRegistryDeclaredBlogSubdomain(hostname, declaredHosts);
+}
+
+/** Pulls an injected declared-host Set out of an options bag; ignores anything else (e.g. an Array.filter index). */
+function declaredHostsOpt(opts) {
+  return opts && opts.declaredHosts instanceof Set ? opts.declaredHosts : undefined;
+}
+
 /**
  * Check if a URL points to a social media platform.
  */
-function isSocialMediaUrl(url) {
+function isSocialMediaUrl(url, opts) {
   try {
     const hostname = new URL(url).hostname;
-    return matchesDomainSet(hostname, SOCIAL_DOMAINS);
+    return isBlockedSocialHost(hostname, declaredHostsOpt(opts));
   } catch { return false; }
 }
 
@@ -387,11 +450,11 @@ function isSocialMediaUrl(url) {
  * Check if a URL is a non-review URL (social, ticket, aggregator, or reference site).
  * Use this to filter URLs that should never be treated as review sources.
  */
-function isBlockedReviewUrl(url) {
+function isBlockedReviewUrl(url, opts) {
   try {
     const parsed = new URL(url);
     const hostname = parsed.hostname;
-    if (matchesDomainSet(hostname, SOCIAL_DOMAINS)
+    if (isBlockedSocialHost(hostname, declaredHostsOpt(opts))
       || matchesDomainSet(hostname, TICKET_DOMAINS)
       || matchesDomainSet(hostname, AGGREGATOR_DOMAINS)
       || matchesDomainSet(hostname, REFERENCE_DOMAINS)
@@ -461,6 +524,17 @@ function isBlockedReviewUrl(url) {
 }
 
 /**
+ * The review-file form of isBlockedReviewUrl: true when a review-text record
+ * carries a blocked url. rebuild-all-reviews.js's "skippedBlockedUrl" gate (the
+ * real inclusion decision) and review-guards explainExclusion's
+ * 'blockedReviewUrl' mirror both call this, so an exemption (BRO-5273) lands in
+ * both at once.
+ */
+function isBlockedReviewRecord(data, opts) {
+  return !!(data && data.url && isBlockedReviewUrl(data.url, opts));
+}
+
+/**
  * Check a raw domain string against all blocked sets.
  */
 function isBlockedDomain(domain) {
@@ -500,8 +574,13 @@ module.exports = {
   UGC_PLATFORM_DOMAINS,
   LOOKALIKE_CONTENT_FARM_DOMAINS,
   CENSUS_JUNK_DOMAINS,
+  USER_BLOG_SOCIAL_DOMAINS,
   isSocialMediaUrl,
   isBlockedReviewUrl,
+  isBlockedReviewRecord,
   isBlockedDomain,
   matchesDomainSet,
+  declaredHostsFromRegistry,
+  getRegistryDeclaredHosts,
+  isRegistryDeclaredBlogSubdomain,
 };

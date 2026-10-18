@@ -4974,7 +4974,7 @@ function explainExclusion(data, show, filePath, opts) {
   // forever, and those false suppressions padded the JCS broadcast-block warnings
   // (2026-07-09, Notion 39a637c5-416f-813a). Canonical-guard rule:
   // memory/feedback_includability_predicates_must_be_canonical.md.
-  if (data.url && require('./domain-filters').isBlockedReviewUrl(data.url)) return 'blockedReviewUrl';
+  if (require('./domain-filters').isBlockedReviewRecord(data)) return 'blockedReviewUrl';
   // Listing pages scored as reviews (2026 data audit, S1-T0). Host-scoped URL
   // shapes that are never an article, found live: a review INDEX
   // (talkinbroadway.com/page/world/index.html, scored on 3 shows), an

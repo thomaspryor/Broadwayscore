@@ -26,9 +26,9 @@
  */
 
 // Ticket-seller hosts are owned by the WRITE PATH's list, not duplicated here
-// — see the note in classifyReviewUrl. domain-filters.js is dependency-free
-// (no fs, no network), so this preserves this module's "safe for the S5 probe's
-// pure decision layer" load contract.
+// — see the note in classifyReviewUrl. domain-filters.js has no network deps and
+// reads data/outlet-registry.json lazily (blog-host exemptions, BRO-5273); pass
+// `declaredHosts` to isBlockedReviewUrl for fully deterministic fixtures.
 const { TICKET_DOMAINS, LOOKALIKE_CONTENT_FARM_DOMAINS, CENSUS_JUNK_DOMAINS, matchesDomainSet, isBlockedReviewUrl } = require('./domain-filters');
 const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes } = require('./host-suffix-lists');
 
