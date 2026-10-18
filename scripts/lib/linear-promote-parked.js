@@ -97,4 +97,17 @@ function buildPromoteComment(issue) {
     + 'Park reason(s): ' + (parkReasons(issue.description).join(' | ').slice(0, 300) || 'n/a');
 }
 
-module.exports = { unparkDescription, UNPARKED_PREFIX, promotionDecision, planPromotion, parkReasons, buildPromoteComment, PROMOTE_COMMENT_MARKER, WAIT_PARK_RE, OWNER_TEXT_RE };
+/**
+ * Move one card to Todo. Re-reads it first: the listing query returns no `id` (BRO-5626 live run: every
+ * write failed on that), and an edit made since the listing must not be overwritten.
+ * -> 'moved' | 'changed' (skipped)
+ */
+async function promoteOne({ linear, issue, todoStateId }) {
+  const fresh = await linear.getIssue(issue.identifier);
+  if (!fresh || !fresh.id || fresh.description !== issue.description || (fresh.state && fresh.state.type !== 'backlog')) return 'changed';
+  await linear.updateIssue(fresh.id, { stateId: todoStateId, description: unparkDescription(fresh.description) });
+  await linear.createComment(fresh.id, buildPromoteComment(fresh));
+  return 'moved';
+}
+
+module.exports = { promoteOne, unparkDescription, UNPARKED_PREFIX, promotionDecision, planPromotion, parkReasons, buildPromoteComment, PROMOTE_COMMENT_MARKER, WAIT_PARK_RE, OWNER_TEXT_RE };

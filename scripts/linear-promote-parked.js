@@ -24,7 +24,7 @@ async function main() {
   if (!process.env.LINEAR_API_KEY) throw new Error('LINEAR_API_KEY not set');
   const linear = require('./lib/linear-client.js');
   const { skipReason } = require('./lib/cloud-worker-pick.js');
-  const { planPromotion, buildPromoteComment, unparkDescription } = require('./lib/linear-promote-parked.js');
+  const { planPromotion, promoteOne, unparkDescription } = require('./lib/linear-promote-parked.js');
 
   const issues = (await linear.listOpenIssuesWithDescriptions()).filter((i) => i.state && i.state.type === 'backlog');
   // A VERIFY may live in a comment (BRO-4642): read them for the parked cards only.
@@ -45,11 +45,8 @@ async function main() {
   let moved = 0; let failed = 0;
   for (const i of plan.promote) {
     try {
-      // Re-read right before the write so an edit made since the listing is not overwritten.
-      const fresh = await linear.getIssue(i.identifier);
-      if (!fresh || fresh.description !== i.description || (fresh.state && fresh.state.type !== 'backlog')) { console.log(`${i.identifier}: changed since listing, skipped`); continue; }
-      await linear.updateIssue(i.id, { stateId: todo.id, description: unparkDescription(i.description) });
-      await linear.createComment(i.id, buildPromoteComment(i));
+      const r = await promoteOne({ linear, issue: i, todoStateId: todo.id });
+      if (r === 'changed') { console.log(`${i.identifier}: changed since listing, skipped`); continue; }
       moved += 1;
       console.log(`${i.identifier}: moved to ${todo.name}: ${i.title.slice(0, 80)}`);
     } catch (err) {

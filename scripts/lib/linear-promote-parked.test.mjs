@@ -77,3 +77,22 @@ test('review BRO-5626: awaiting-owner label and reclaim history keep a card park
 test('review BRO-5626: the open-issues query fetches labels so awaiting-owner is visible', () => {
   assert.match(require('./linear-dispatch.js').buildOpenIssuesWithDescriptionsQuery(), /labels \{ nodes \{ name \} \}/);
 });
+
+test('promoteOne writes to the id of the fresh read (the listing has none) and skips an edited card', async () => {
+  const { promoteOne } = require('./linear-promote-parked.js');
+  const listed = card('needs its own session, several files'); // no id, like the open-issues listing
+  const calls = [];
+  const linear = (fresh) => ({
+    getIssue: async () => fresh,
+    updateIssue: async (id, input) => { calls.push(['update', id, input]); },
+    createComment: async (id, body) => { calls.push(['comment', id, body]); },
+  });
+  assert.equal(await promoteOne({ linear: linear({ ...listed, id: 'uuid-1' }), issue: listed, todoStateId: 'todo-1' }), 'moved');
+  assert.equal(calls[0][1], 'uuid-1');
+  assert.equal(calls[0][2].stateId, 'todo-1');
+  assert.doesNotMatch(calls[0][2].description, /^\s*PARKED\s*:/im);
+  assert.equal(calls[1][1], 'uuid-1');
+  calls.length = 0;
+  assert.equal(await promoteOne({ linear: linear({ ...listed, id: 'uuid-1', description: listed.description + '\nedited' }), issue: listed, todoStateId: 'todo-1' }), 'changed');
+  assert.equal(calls.length, 0);
+});
