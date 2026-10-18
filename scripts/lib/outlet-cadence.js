@@ -1,5 +1,7 @@
 'use strict';
 
+const { getSyndicationConfig } = require('./syndication-pairs');
+
 /**
  * S4-T1 — Per-outlet review cadence + heartbeat.
  *
@@ -93,7 +95,9 @@ function classifyOutletCadence({ outletDates, marketPulseIso, nowMs }) {
 }
 
 /**
- * Full report: every (outlet, market) row with >=1 scored review ever, for
+ * Full report: every (outlet, market) row with >=1 scored review ever
+ * (including known syndicated primary reviews credited to secondaries with
+ * at least two of their own dated, scored reviews in that market), for
  * outlets at or below `maxTier` (default T1+T2 — the plan's "outlet
  * heartbeat" explicitly covers Newsday, a T2 outlet, per card #280).
  *
@@ -127,12 +131,40 @@ function buildCadenceReport(reviews, outlets, opts = {}) {
 
   // Group dates by (outletId, market) for outlets within the tier ceiling.
   const groups = new Map(); // key `${outletId}::${market}` -> dates[]
-  for (const r of withMarket) {
-    const o = outlets[r.outletId];
-    if (!o || !o.tier || o.tier > maxTier) continue;
-    const key = `${r.outletId}::${r.market}`;
+  function addDate(r, outletId) {
+    const o = outlets[outletId];
+    if (!o || !o.tier || o.tier > maxTier) return;
+    const key = `${outletId}::${r.market}`;
     if (!groups.has(key)) groups.set(key, []);
     groups.get(key).push(r.publishDate);
+  }
+  for (const r of withMarket) addDate(r, r.outletId);
+  const establishedCadences = new Set(
+    [...groups].filter(([, dates]) => dates.filter(d => toMs(d) != null).length >= 2)
+      .map(([key]) => key),
+  );
+
+  // Rebuild suppresses secondary copies to avoid scoring an article twice.
+  // For heartbeat only, the explicit critic/outlet pairs still supply activity
+  // to each secondary. Keep the primary market pulse and original reviews intact.
+  // Require the secondary's own market history first: a few syndicated critics
+  // stopping does not establish that the secondary outlet itself has gone silent.
+  // If the scored secondary survived rebuild, prefer its own publication date
+  // and do not add another cadence event for the same show and critic.
+  const articleKey = (r, outletId) => JSON.stringify([
+    outletId, r.market, r.showId || r.publishDate, String(r.criticName || '').toLowerCase().trim(),
+  ]);
+  const credited = new Set(withMarket.map(r => articleKey(r, r.outletId)));
+  for (const r of withMarket) {
+    const config = getSyndicationConfig(r.criticName);
+    if (!config || r.outletId !== config.primary) continue;
+    for (const outletId of config.secondary) {
+      if (!establishedCadences.has(`${outletId}::${r.market}`)) continue;
+      const key = articleKey(r, outletId);
+      if (credited.has(key)) continue;
+      addDate(r, outletId);
+      credited.add(key);
+    }
   }
 
   const rows = [];
