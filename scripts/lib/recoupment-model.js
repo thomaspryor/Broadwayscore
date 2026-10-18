@@ -532,16 +532,39 @@ const MUSICAL_LIVE_OPTS = Object.freeze({ previewsFromWeekly: true, datedCosts: 
 // Keyed on classifyShow (the category the variable-cost rates use), so opera
 // counts as a musical and a solo show ('special') keeps the old path.
 // An explicit undefined in opts leaves the default on.
+// Plays (BRO-5607): impliedCost, the weekly cost a reported recoupment date
+// pins (lib/implied-recoup-cost.js). Reported-truth plays: Romeo + Juliet 99 -> 141 (error 1 -> 0),
+// no group worse; timing unchanged (never under asOf).
+const PLAY_LIVE_OPTS = Object.freeze({ impliedCost: true });
 function withMusicalDefaults(show, opts) {
-  if (!/^musical/.test(classifyShow(show))) return opts;
+  const category = classifyShow(show);
+  const live = /^musical/.test(category) ? MUSICAL_LIVE_OPTS : /^play/.test(category) ? PLAY_LIVE_OPTS : null;
+  if (!live) return opts;
   const set = Object.fromEntries(Object.entries(opts).filter(([, v]) => v !== undefined));
-  return { ...MUSICAL_LIVE_OPTS, ...set };
+  return { ...live, ...set };
 }
 
 function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, opts = {}) {
   opts = withMusicalDefaults(show, opts);
   const warnings = [];
   if (isConvertedToCommercial(commercial)) return { error: SPLIT_RUN_ERROR, warnings: [SPLIT_RUN_ERROR] };
+  // opts.impliedCost (BRO-5607): a reported recoupment date pins the weekly
+  // cost (lib/implied-recoup-cost.js). Never under asOf: a replay must not
+  // see a recoupment announced after its date.
+  if (opts.impliedCost && !opts.asOf) {
+    const implied = impliedCostFor(show, commercial, grossesAllTime, grossesWeekly, opts);
+    if (implied.nut) {
+      const res = calculateRecoupment(show, withNut(commercial, implied.nut), grossesAllTime, grossesWeekly, { ...opts, impliedCost: false });
+      if (!res.error) {
+        res.warnings.unshift(`Weekly cost $${Math.round(implied.nut / 1000)}K implied by the reported recoupment (${implied.date}), in place of $${Math.round((commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial)) / 1000)}K`);
+        res.impliedNut = implied.nut;
+        // A fitted cost is not a reported one: keep the record's quality.
+        res.weeklyFixedCostSource = 'implied';
+        res.dataQuality = dataQualityOf(commercial, grossesAllTime, opts);
+        return res;
+      }
+    }
+  }
   if (opts.ownRunOnly) {
     const own = weeksInOwnRun(grossesWeekly, show);
     if (own.dropped.length) warnings.push(`Dropped ${own.dropped.length} weekly rows from outside this production's run (${own.dropped[0]}..${own.dropped[own.dropped.length - 1]})`);
@@ -804,12 +827,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   const grossDataSource = weeklySchedule[0]?._source || 'unknown';
   // 'high' needs a reported weekly cost that names its source: /biz shows an
   // uncited one as an estimate, so its model is not "High confidence" (BRO-4666).
-  let dataQuality = 'low';
-  if (isCitedReportedWeeklyCost(commercial)) {
-    dataQuality = 'high';
-  } else if (!opts.costSourcedOnly && (REPORTED_COST_METHODOLOGIES.has(commercial.costMethodology) || (commercial.weeklyRunningCost && grossesAllTime))) {
-    dataQuality = 'medium';
-  }
+  const dataQuality = dataQualityOf(commercial, grossesAllTime, opts);
 
   return {
     slug: show.slug || show.id,
@@ -857,6 +875,34 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
 // ---------------------------------------------------------------------------
 // Helper: Build Weekly Gross Schedule
 // ---------------------------------------------------------------------------
+
+function dataQualityOf(commercial, grossesAllTime, opts) {
+  if (isCitedReportedWeeklyCost(commercial)) return 'high';
+  if (!opts.costSourcedOnly && (REPORTED_COST_METHODOLOGIES.has(commercial.costMethodology) || (commercial.weeklyRunningCost && grossesAllTime))) return 'medium';
+  return 'low';
+}
+
+/** The record with its weekly cost replaced by a model-derived fixed nut (no basis tag). */
+function withNut(commercial, nut) {
+  const out = { ...commercial, weeklyRunningCost: nut };
+  delete out.weeklyRunningCostBasis;
+  return out;
+}
+
+function impliedCostFor(show, commercial, grossesAllTime, grossesWeekly, opts) {
+  const { impliedRecoupNut, hideRecoupment } = require('./implied-recoup-cost');
+  const hidden = hideRecoupment(commercial);
+  return impliedRecoupNut(show, commercial, {
+    currentNut: commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial),
+    category: classifyShow(show),
+    citedCost: isCitedReportedWeeklyCost(commercial),
+    weeklyDates: Object.keys(grossesWeekly || {}),
+    pctAt: (nut, asOf) => {
+      const r = calculateRecoupment(show, withNut(hidden, nut), grossesAllTime, grossesWeekly, { ...opts, impliedCost: false, asOf, taxCreditPre: true, noReserve: true });
+      return r && !r.error ? r.recoupmentPctCentral : null;
+    },
+  });
+}
 
 /**
  * Per-week running cost for the schedule, from each week's date. Weekly-
@@ -1289,6 +1335,7 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
 
 module.exports = {
   MUSICAL_LIVE_OPTS,
+  PLAY_LIVE_OPTS,
   calculateRecoupment,
   calculateLifetimeRecoupment,
   SPLIT_RUN_ERROR,

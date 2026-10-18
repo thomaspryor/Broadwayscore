@@ -151,7 +151,8 @@ function main() {
     // The cost the break-even was built on (null: the model estimated it).
     // commercial-write-guard rescales the break-even when a writer changes
     // weeklyRunningCost before the next model run (BRO-4985).
-    comm.modelCostBasis = comm.weeklyRunningCost || null;
+    // An implied cost does not follow the record's, so a cost edit waits for the next run.
+    comm.modelCostBasis = result.impliedNut ? null : (comm.weeklyRunningCost || null);
     comm.modelDataQuality = result.dataQuality;
     comm.modelMethod = tier;
     comm.modelCategory = result.category;

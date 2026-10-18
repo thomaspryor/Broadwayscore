@@ -149,6 +149,10 @@ function exportShow(slug) {
   if (/^musical/.test(classifyShow(show))) {
     lines.push('Note,"Simplified rebuild. The headline figures above also count only preview weeks missing from the weekly grosses, cost each week at its own date, and (on a cited running cost) deduct more as gross rises against cost. Totals below can differ from the headline."');
   }
+  // Plays (BRO-5607): the headline may run on the cost a reported recoupment date implies.
+  if (result.impliedNut) {
+    lines.push(`Note,"The headline figures above use a weekly cost of $${result.impliedNut.toLocaleString()} implied by the reported recoupment date; the rebuild below uses the record's cost. Totals below can differ from the headline."`);
+  }
   lines.push([
     'Week', 'Phase', 'Weekly Gross', 'Variable Costs', 'Variable Rate',
     'Theater Overage', 'Fixed Costs (nut)', 'Marketing Surcharge',
