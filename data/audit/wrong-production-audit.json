@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-18T18:29:59.608Z",
+  "timestamp": "2026-10-18T19:32:34.758Z",
   "stats": {
     "totalReviews": 57514,
-    "alreadyFlagged": 21365,
+    "alreadyFlagged": 21366,
     "dateGuardCatches": 196,
     "directorMismatch": 1952,
-    "tvFilmSignals": 1610,
+    "tvFilmSignals": 1609,
     "londonSignals": 2436,
     "offBroadwaySignals": 523,
     "yearMismatch": 156,
-    "noPublishDate": 5227
+    "noPublishDate": 5225
   },
   "findings": [
     {
@@ -29,7 +29,7 @@
     {
       "showId": "1536-off-west-end-2026",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": null,
+      "score": 89,
       "publishDate": "2025-05-18",
       "url": "https://www.whatsonstage.com/news/1536-at-the-almeida-theatre-review_1677762/",
       "findings": [
@@ -7808,20 +7808,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"bob fosse\" from chicago-1975"
-        }
-      ]
-    },
-    {
-      "showId": "chicago-1996",
-      "file": "hollywood-reporter--daniel-fienberg.json",
-      "score": null,
-      "publishDate": "2021-09-16",
-      "url": "https://www.hollywoodreporter.com/tv/tv-reviews/chicago-party-aunt-1235014681/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -51555,7 +51541,7 @@
     {
       "showId": "1536-west-end-2026",
       "file": "broadwayworld--debbie-gilpin.json",
-      "score": 94,
+      "score": 95,
       "publishDate": "2026-05-14",
       "url": "https://www.broadwayworld.com/westend/article/Review-1536-The-Ambassadors-Theatre-20260514",
       "findings": [
@@ -55739,7 +55725,7 @@
     },
     {
       "showId": "blood-of-my-blood-west-end-2026",
-      "file": "fringereview--unknown.json",
+      "file": "fringereview--simon-jenner.json",
       "score": 89,
       "publishDate": "2026-10-16",
       "url": "https://fringereview.co.uk/review/fringereview-uk/2026/blood-of-my-blood/",
@@ -78294,7 +78280,7 @@
     },
     {
       "showId": "stuffed-off-west-end-2026",
-      "file": "british-theatre--unknown.json",
+      "file": "british-theatre--keith-mckenna.json",
       "score": 74,
       "publishDate": "2026-10-18",
       "url": "https://www.britishtheatreguide.info/reviews/stuffed-new-diorama-the-26132",
@@ -83386,7 +83372,7 @@
     },
     {
       "showId": "the-mirror-and-the-light-west-end-2021",
-      "file": "britishtheatrecom--unknown.json",
+      "file": "britishtheatrecom--julian-eaves.json",
       "score": 69,
       "publishDate": null,
       "url": "https://www.britishtheatre.com/es/posts/review-the-mirror-and-the-light-gielgud-theatre",
@@ -83582,7 +83568,7 @@
     },
     {
       "showId": "the-misanthrope-west-end-2026",
-      "file": "south-london--unknown.json",
+      "file": "south-london--michael-holland.json",
       "score": 76,
       "publishDate": "2026-06-25",
       "url": "https://southlondon.co.uk/area/southwark/review-the-misanthrope-at-national-theatre/",
@@ -83945,7 +83931,7 @@
     },
     {
       "showId": "the-old-man-and-the-pool-west-end-2023",
-      "file": "britishtheatrecom--unknown.json",
+      "file": "britishtheatrecom--tim-hochstrasser.json",
       "score": 61,
       "publishDate": null,
       "url": "https://www.britishtheatre.com/posts/review-the-old-man-and-the-pool-wyndhams-theatre",

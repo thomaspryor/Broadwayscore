@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-18T18:21:53.025Z",
+  "generated": "2026-10-18T19:24:02.315Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 32,
+  "count": 33,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -92,6 +92,13 @@
       "loserFile": "timeout--sam-marlowe.json",
       "targetFile": "timeout-london--sam-marlowe.json",
       "reason": "orphaned-duplicate-heal: timeout-london--sam-marlowe.json was flagged invalid after timeout--sam-marlowe.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "maybe-happy-ending-2024",
+      "loserFile": "njcom--unknown.json",
+      "targetFile": "njcom--amy-kuperinsky.json",
+      "reason": "orphaned-duplicate-heal: njcom--amy-kuperinsky.json was flagged invalid after njcom--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
