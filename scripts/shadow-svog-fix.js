@@ -98,7 +98,8 @@ function main() {
     approachingFlips: rows.filter((r) => r.effects.some((e) => e.startsWith('Approaching'))).map((r) => r.slug),
     contradictionFlagFlips: rows.filter((r) => r.effects.some((e) => e.startsWith('designation-contradiction'))).map((r) => r.slug),
     // Loss labels read the returned-so-far figure, then V2 itself
-    // (returnedEstimatePct), so making V2 live moves none (BRO-5643).
+    // (returnedEstimatePct), so making V2 live moves none (BRO-5643), as long
+    // as the switch leaves the returned-so-far run alone.
     designationChanges: 0,
   };
   const top = [...withSvog].sort((a, b) => ratio(b) - ratio(a)).slice(0, 10)

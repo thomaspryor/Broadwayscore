@@ -21,7 +21,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { calculateRecoupment, calculateLifetimeRecoupment } = require('./lib/recoupment-model');
-const { classifyTier, TIERS } = require('./lib/model-return-v2');
+const { classifyTier, TIERS, modelReturnV2 } = require('./lib/model-return-v2');
 const { previewWeeksFromWeekly } = require('./lib/preview-weeks');
 const { makeGrossesLookup } = require('./lib/grosses-lookup');
 const { modelContradictsDesignation: contradiction, modelSizesLossLabel, lossDesignationFor, returnedEstimatePct } = require('./lib/commercial-designations');
@@ -153,9 +153,15 @@ function main() {
     // the model writer re-reads every run (BRO-5643): a fix that carries it
     // across the 30% line moves a public label.
     if (modelSizesLossLabel(comm)) {
+      // The fields the writer stores (model-run-fields.js), read in the same order.
       const label = (opts, main) => {
         const r = run({ ...OFF, ...opts, ...RETURNED_SO_FAR_OPTS });
-        return lossDesignationFor(returnedEstimatePct({ modelDataQuality: main.dataQuality, modelReturnedExCreditPct: pcts(r.error ? main : r) }));
+        return lossDesignationFor(returnedEstimatePct({
+          modelDataQuality: main.dataQuality,
+          modelReturnedExCreditPct: r.error ? undefined : pcts(r),
+          modelRecoupmentPctV2: modelReturnV2(main, show)?.recoupmentPctV2,
+          modelRecoupmentPct: pcts(main),
+        }));
       };
       const before = label({}, live);
       const after = label(FIX.opts, fixed);
