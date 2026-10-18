@@ -77,6 +77,7 @@ const { assessRunnerHealth } = require('./lib/cyrus-runner-health.js');
 const { assessSupervisorStatus } = require('./lib/pr-supervisor-core.js');
 const { fetchInflowCounts, assessInflowRatio } = require('./lib/backlog-inflow-ratio.js');
 const { doneRatePerDay, fetchUnarmedUrgentHighCount, formatDrainThroughputLine, isHeartbeatFresh } = require('./lib/linear-drain-throughput.js');
+const { readBoardGateFailopen } = require('./lib/summarize-board-gate-failopen.js');
 
 // Task #1220/BRO-230 (ship-check adversarial finding): health.errors can
 // NEVER carry the "Autofix: jobs actually succeeding" row in the normal case
@@ -635,6 +636,13 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   const watchdogLeakMsg = localDispatchWatchdogLeakMessage();
   if (watchdogLeakMsg) {
     parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(watchdogLeakMsg)}</p>`);
+  }
+  const boardGate = readBoardGateFailopen({ now });
+  if (boardGate) {
+    parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${esc(boardGate.line)}</p>`);
+    if (boardGate.alert) {
+      parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(boardGate.alert)}</p>`);
+    }
   }
   if (problemsNote) {
     parts.push(`<p style="font-size:13px;color:#b45309;margin:0 0 12px;">⚠️ ${esc(problemsNote)}</p>`);
