@@ -23,6 +23,7 @@
 const path = require('path');
 const { normalizeOutlet, getOutletDisplayName, WIRE_SERVICE_OUTLETS, resolveOutletFromUrlIfPathInformed } = require('./review-normalization');
 const { AGGREGATOR_DOMAINS } = require('./aggregator-domains');
+const { AP_WIRE_URL } = require('./ap-wire-detect');
 const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes, isBareSuffix } = require('./host-suffix-lists');
 
 let _cachedRegistry = null;
@@ -152,6 +153,10 @@ function isRegisteredCanonical(id) {
  * @param {{ outletArg: string, url?: string|null }} opts
  * @returns {{ outletId: string, displayName: string, source: 'url'|'alias'|'slug-fallback', warning: string|null }}
  */
+function apWirePath(url) {
+  try { return AP_WIRE_URL.test(new URL(url).pathname); } catch { return false; }
+}
+
 function resolveCanonicalOutletId({ outletArg, url }) {
   if (!outletArg || typeof outletArg !== 'string') {
     throw new Error('resolveCanonicalOutletId: outletArg is required');
@@ -161,7 +166,9 @@ function resolveCanonicalOutletId({ outletArg, url }) {
   const aliasIsRegistered = isRegisteredCanonical(aliasResolved);
 
   let urlResolved = null;
-  if (url) {
+  // AP wire pages hosted on a partner domain (online.wsj.com/article/AP<hex>) carry
+  // no outlet signal in the host: keep the operator's outlet (BRO-5289).
+  if (url && !apWirePath(url)) {
     // Path-informed edition splits (timeout.com/london vs /newyork) are a
     // STRONGER signal than the bare-domain map below can ever give — that map
     // only sees a hostname and marks a shared host fully "ambiguous" (BRO-4153:

@@ -54,3 +54,11 @@ test('unrelated outlets unaffected', () => {
   assert.equal(resolveOutletFromUrl('https://www.nytimes.com/2024/01/01/theater/review.html')?.outletId, 'nytimes');
   assert.equal(resolveOutletFromUrl(null), null);
 });
+
+import { createRequire as __cr } from 'node:module';
+test('resolveCanonicalOutletId keeps operator outlet for AP wire URL on wsj.com (BRO-5289)', () => {
+  const { resolveCanonicalOutletId } = __cr(import.meta.url)('./outlet-canonicalize.js');
+  const ap = 'https://www.wsj.com/article/AP0f81b3d24e44422db6feb5b187e37a66.html';
+  assert.equal(resolveCanonicalOutletId({ outletArg: 'ap', url: ap }).outletId, 'ap');
+  assert.equal(resolveCanonicalOutletId({ outletArg: 'wsj', url: 'https://www.wsj.com/articles/foo-11111' }).outletId, 'wsj');
+});
