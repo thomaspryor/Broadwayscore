@@ -2,6 +2,7 @@
 
 const { foldAttempts, laneOf, tsOf, CMUX_LANE, OTHER_LANE, PAIR_WINDOW_MS, DAY_MS } = require('./dispatch-attempts.js');
 const { JOB_EVENTS, TERMINAL_JOB_EVENTS } = require('./dispatch-ledger.js');
+const FAILURE_ROW_EVENTS = new Set([JOB_EVENTS.FAILED, 'launch-failed', 'dead']);
 
 /**
  * dispatch-health — the dead-dispatch RATE over a window.
@@ -63,13 +64,37 @@ const HINT = 'Each dead launch = a cmux workspace whose terminal surface never r
  *            byLane:Object<string,{launches:number,dead:number,unverified:number}>,
  *            deadTaskIds:string[], unverifiedTaskIds:string[],
  *            unattributedDeadCount:number,
- *            perDay:Array<{day:string, launches:number, dead:number}>}}
+ *            perDay:Array<{day:string, launches:number, dead:number}>,
+ *            failureRows:{total:number, osKilled:number, noExitSignal:number,
+ *                         byExitSignal:object}}}
  */
 function computeDeadRate(entries, { nowMs, windowDays = DEFAULTS.windowDays, lane = CMUX_LANE } = {}) {
   if (!Number.isFinite(nowMs)) {
     throw new Error('dispatch-health.computeDeadRate: nowMs (epoch ms) is required — this module takes no clock of its own');
   }
   const windowStart = nowMs - windowDays * DAY_MS;
+  // BRO-3058: count failure ROWS independently of the attempt rate. Monitor
+  // launch-failed rows have no workspaceRef or matching launch; job-failed
+  // rows can describe a failed pass followed by a successful retry. These
+  // are all-lane observations dated by the failure itself, never additional
+  // dead launches. Missing exitSignal on old rows is unknown, not proof of
+  // an application failure.
+  const failureRows = { total: 0, osKilled: 0, noExitSignal: 0, byExitSignal: {} };
+  const signals = new Map();
+  for (const e of Array.isArray(entries) ? entries : []) {
+    if (!e || !FAILURE_ROW_EVENTS.has(e.event)) continue;
+    const t = tsOf(e);
+    if (t === null || t < windowStart || t > nowMs) continue;
+    failureRows.total++;
+    const signal = typeof e.exitSignal === 'string' ? e.exitSignal.trim() : '';
+    if (signal) {
+      failureRows.osKilled++;
+      signals.set(signal, (signals.get(signal) || 0) + 1);
+    } else {
+      failureRows.noExitSignal++;
+    }
+  }
+  failureRows.byExitSignal = Object.fromEntries([...signals].sort(([a], [b]) => a.localeCompare(b)));
   const { attempts, unattributedDeadCount, supersededAttempts } = foldAttempts(entries);
   const inWindow = attempts.filter((a) => a.ts >= windowStart && a.ts <= nowMs);
   const supersededByRemapCount = supersededAttempts
@@ -115,6 +140,7 @@ function computeDeadRate(entries, { nowMs, windowDays = DEFAULTS.windowDays, lan
     unattributedDeadCount,
     supersededByRemapCount,
     perDay: [...perDayMap.values()].sort((a, b) => a.day.localeCompare(b.day)),
+    failureRows,
   };
 }
 
@@ -147,6 +173,9 @@ function computeDispatchHealthDigest({
   const unverifiedNote = stats.unverified > 0
     ? ` ${stats.unverified} further launch(es) were left unverified (outcome unknown, not counted either way).`
     : '';
+  const signalDetail = Object.entries(stats.failureRows.byExitSignal)
+    .map(([signal, count]) => `${signal}: ${count}`).join(', ');
+  const failureNote = ` Failure/dead ledger rows (all lanes, ${span}): ${stats.failureRows.osKilled} OS-killed${signalDetail ? ` (${signalDetail})` : ''}, ${stats.failureRows.noExitSignal} without exitSignal.`;
 
   // Zero launches is NOT a pass — there is nothing to measure, and calling an
   // empty denominator "healthy" is the vacuous-gate class (#1063/#1069/#1075).
@@ -154,7 +183,7 @@ function computeDispatchHealthDigest({
     return {
       name: CHECK_NAME,
       status: 'warn',
-      message: `No ${lane} dispatch launches in the ${span} — the dead-launch rate cannot be measured from this ledger.`,
+      message: `No ${lane} dispatch launches in the ${span}: the dead-launch rate cannot be measured from this ledger.${failureNote}`,
       hint: 'data/audit/dispatch-ledger.jsonl is per-machine and gitignored; run this where dispatches actually launch.',
       ...stats,
     };
@@ -164,7 +193,7 @@ function computeDispatchHealthDigest({
     return {
       name: CHECK_NAME,
       status: 'pass',
-      message: `Dead-launch rate ${pct}% — ${detail}, at or under the ${floorPct}% floor.${unverifiedNote}`,
+      message: `Dead-launch rate ${pct}%: ${detail}, at or under the ${floorPct}% floor.${unverifiedNote}${failureNote}`,
       ...stats,
     };
   }
@@ -175,7 +204,7 @@ function computeDispatchHealthDigest({
     return {
       name: CHECK_NAME,
       status: 'warn',
-      message: `Dead-launch rate ${pct}% (${detail}) is over the ${floorPct}% floor, but only ${stats.launches} launches — below the ${minLaunches}-launch minimum to call it.${unverifiedNote}`,
+      message: `Dead-launch rate ${pct}% (${detail}) is over the ${floorPct}% floor, but only ${stats.launches} launches: below the ${minLaunches}-launch minimum to call it.${unverifiedNote}${failureNote}`,
       hint: HINT,
       ...stats,
     };
@@ -188,7 +217,7 @@ function computeDispatchHealthDigest({
   return {
     name: CHECK_NAME,
     status: 'error',
-    message: `Dead-launch rate ${pct}% is over the ${floorPct}% floor — ${detail}. By lane: ${laneSummary}. ${stats.deadTaskIds.length} task(s) affected.${unverifiedNote}`,
+    message: `Dead-launch rate ${pct}% is over the ${floorPct}% floor: ${detail}. By lane: ${laneSummary}. ${stats.deadTaskIds.length} task(s) affected.${unverifiedNote}${failureNote}`,
     hint: HINT,
     ...stats,
   };
