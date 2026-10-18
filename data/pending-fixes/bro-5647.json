@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5647",
   "planId": "29776033-3c07-4301-9237-2ba61683a991",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-18T21:30:12.000Z",
   "submitter": {
     "name": null,
@@ -57,5 +57,18 @@
         "description": "latin-history-for-morons-2017: no commercial record yet; Broadway News reports it recouped after 15 weeks of a limited run. Easy Winner."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-18T21:39:12.346Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added sea-wall-a-life-2019 (Easy Winner)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added latin-history-for-morons-2017 (Easy Winner)"
+    }
+  ]
 }
