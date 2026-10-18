@@ -228,5 +228,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-18T11:48:38.754Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4159-cross-show-sweep",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4159-cross-show-sweep",
+    "description": "land.yml did not land land/bro-4159-cross-show-sweep: the unit-tests-node gate went red at 5df1bc4dea. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39123010611",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4159-cross-show-sweep"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "5df1bc4deaa3799a6d1d92876ae1aa787f8df414"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39123010611"
+      }
+    ],
+    "queuedAt": "2026-10-18T12:03:21.024Z"
   }
 ]
