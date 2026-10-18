@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5396-b",
   "planId": "d785722c-0008-451c-9881-fa3d5d4e9199",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -175,5 +175,108 @@
         "description": "Clear dangling syndication pointer: primary file is gone and no live copy exists"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-18T09:02:46.610Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "butley-2006/nytimes--ben-brantley.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "butley-2006/nytimes--ben-brantley.json syndicatedPrimaryFile: \"butley-2006/about-entertainment--ben-brantley.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hamilton-2015/washington-times--mark-kennedy.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hamilton-2015/washington-times--mark-kennedy.json syndicatedPrimaryFile: \"hamilton-2015/ap--mark-kennedy.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "my-fair-lady-2018/nysr--steven-suskin.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "my-fair-lady-2018/nysr--steven-suskin.json syndicatedPrimaryFile: \"my-fair-lady-2018/vulture--steven-suskin.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oliver-west-end-2024/sunday-times--dominic-maxwell.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oliver-west-end-2024/sunday-times--dominic-maxwell.json syndicatedPrimaryFile: \"oliver-west-end-2024/times-uk--dominic-maxwell.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pirates-the-penzance-musical-2025/culturesauce--thom-geier.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pirates-the-penzance-musical-2025/culturesauce--thom-geier.json syndicatedPrimaryFile: \"pirates-the-penzance-musical-2025/ew--thom-geier.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pretty-woman-the-musical-2018/troy-record--bob-goepfert.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pretty-woman-the-musical-2018/troy-record--bob-goepfert.json syndicatedPrimaryFile: \"pretty-woman-the-musical-2018/the-saratogian--bob-goepfert.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-book-of-mormon-west-end-2024/metro-uk--claire-allfree.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-book-of-mormon-west-end-2024/metro-uk--claire-allfree.json syndicatedPrimaryFile: \"the-book-of-mormon-west-end-2024/metro--claire-allfree.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-cher-show-2018/wamc--bob-goepfert.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-cher-show-2018/wamc--bob-goepfert.json syndicatedPrimaryFile: \"the-cher-show-2018/the-saratogian--bob-goepfert.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lyons-2012/nytimes--ben-brantley.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lyons-2012/nytimes--ben-brantley.json syndicatedPrimaryFile: \"the-lyons-2012/about-entertainment--ben-brantley.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-visit-2015/dc-theater-arts--richard-seff.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-visit-2015/dc-theater-arts--richard-seff.json syndicatedPrimaryFile: \"the-visit-2015/dc-metro-theater-arts--richard-seff.json\" -> null"
+    }
+  ]
 }
