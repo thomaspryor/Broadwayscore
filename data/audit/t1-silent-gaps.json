@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-18T17:43:19.466Z",
+  "generatedAt": "2026-10-18T18:09:48.486Z",
   "windowDays": 45,
   "showsScanned": 185,
   "gaps": [
@@ -18,11 +18,11 @@
         "reason": "cess\":false,\"status\":\"budget_capped\",\"credits\":null,\"fallback_from\":null,\"purpose\":\"budget_capped\",\"category\":null,\"showId\":null} |   → Trying Playwright (last resort)... |   ⏱️  Playwright: network still busy after 15s at https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654721 — reading the DOMContentLoaded page |   ✅ Success (Playwright, html) |  | Done. 0 succeeded, 0 failed, 1 skipped."
       },
       "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
+      "forumLinkRecoveryCount": 1,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=slam-frank-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-18T14:14:33.814Z",
-      "fileAgeHours": 3.478365833333333,
-      "gapSeenAt": "2026-10-18T17:43:19.466Z",
+      "fileAgeHours": 3.9199936111111113,
+      "gapSeenAt": "2026-10-18T18:09:48.486Z",
       "nonTerminalAgeHours": 0
     },
     {
@@ -40,9 +40,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=stuffed-off-west-end-2026",
       "firstSeen": "2026-10-15T15:44:57.921Z",
-      "fileAgeHours": 73.97184777777778,
+      "fileAgeHours": 74.41344638888889,
       "gapSeenAt": "2026-10-16T12:12:23.731Z",
-      "nonTerminalAgeHours": 53.515481944444446
+      "nonTerminalAgeHours": 53.95687638888889
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -58,9 +58,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 625.0460097222223,
+      "fileAgeHours": 625.4875594444444,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 176.06568444444446
+      "nonTerminalAgeHours": 176.50707888888888
     }
   ],
   "contradictions": []
