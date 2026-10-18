@@ -154,6 +154,40 @@ function applyFromReport(reportPath) {
   console.log(`\n${written} written${APPLY ? '' : ' (dry run; --apply to write)'}`);
 }
 
+/**
+ * Two files of the SAME show must not get the same URL: the write guard marks
+ * the second as a url-collision duplicate and it drops out of scoring. When
+ * two critics' sections share a page (or a sibling file already holds the
+ * URL), only the earliest section on the page keeps writeUrl.
+ */
+function resolveSameShowCollisions(report) {
+  const existing = new Map(); // showId -> Set(url) already on disk
+  const urlsFor = showId => {
+    if (!existing.has(showId)) {
+      const set = new Set();
+      const dir = path.join(REVIEW_TEXTS_DIR, showId);
+      for (const f of fs.existsSync(dir) ? fs.readdirSync(dir) : []) {
+        if (!f.endsWith('.json')) continue;
+        try { const u = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')).url; if (u) set.add(u.replace(/[?#].*$/, '')); } catch { /* skip */ }
+      }
+      existing.set(showId, set);
+    }
+    return existing.get(showId);
+  };
+  const groups = new Map();
+  for (const e of report.filter(r => r.writeUrl)) {
+    if (urlsFor(e.showId).has(e.url)) { e.writeUrl = false; e.skipReason = 'another file of this show already has this URL'; continue; }
+    const k = `${e.showId}|${e.url}`;
+    if (!groups.has(k)) groups.set(k, []);
+    groups.get(k).push(e);
+  }
+  for (const g of groups.values()) {
+    if (g.length < 2) continue;
+    g.sort((x, y) => x.firstMatchParagraph - y.firstMatchParagraph);
+    for (const e of g.slice(1)) { e.writeUrl = false; e.skipReason = `shares the page with ${g[0].critic}'s review of the same show (write guard would mark it duplicate)`; }
+  }
+}
+
 async function main() {
   if (hasHelpFlag(args)) { console.log(USAGE); return; }
   if (arg('from-report')) return applyFromReport(arg('from-report'));
@@ -179,37 +213,48 @@ async function main() {
     process.exit(2);
   }
 
-  const candidates = new Map(); // file -> Set(paths)
-  for (const t of targets) candidates.set(t.file, new Set(windowDays(t.data.publishDate).flatMap(d => dayLinks[d])));
-  const pages = new Map();
-  const allPaths = [...new Set([...candidates.values()].flatMap(s => [...s]))];
-  await pool(allPaths, async p => {
+  // Stream: score each article against the reviews whose date window holds it
+  // as soon as it arrives, keep only the best match per review. Holding every
+  // article in memory OOMs on a full West End run (~4K pages).
+  const byPath = new Map(); // path -> targets
+  for (const t of targets) {
+    for (const p of new Set(windowDays(t.data.publishDate).flatMap(d => dayLinks[d]))) {
+      if (!byPath.has(p)) byPath.set(p, []);
+      byPath.get(p).push(t);
+    }
+  }
+  const bestByFile = new Map();
+  let fetched = 0;
+  const score = (p, page) => {
+    if (!page.paras.length) return;
+    for (const t of byPath.get(p)) {
+      const m = L.matchReview(t.data.fullText, page.paras);
+      const cur = bestByFile.get(t.file);
+      if (m.overlap >= L.MIN_OVERLAP && (!cur || m.overlap > cur.overlap)) bestByFile.set(t.file, { ...m, path: p, page });
+    }
+  };
+  await pool([...byPath.keys()], async p => {
     const id = (p.match(/article-\d+/) || [])[0];
     const cached = CACHE && id && path.join(CACHE, 'pages', `${id}.json`);
     if (cached && fs.existsSync(cached)) {
       try {
         const c = JSON.parse(fs.readFileSync(cached, 'utf8'));
-        if (c.paras && c.paras.length) { pages.set(p, { ...c, author: c.author || c.auth || null }); return; }
+        if (c.paras && c.paras.length) { fetched++; score(p, { ...c, author: c.author || c.auth || null }); return; }
       } catch { /* refetch */ }
     }
     const html = await get(DM + p);
     if (!html) return;
     const page = L.extractArticle(html);
-    pages.set(p, page);
+    fetched++;
     if (cached && page.paras.length) { fs.mkdirSync(path.dirname(cached), { recursive: true }); fs.writeFileSync(cached, JSON.stringify(page)); }
+    score(p, page);
   });
-  console.log(`${pages.size}/${allPaths.length} candidate article(s) fetched`);
+  console.log(`${fetched}/${byPath.size} candidate article(s) read`);
 
   const report = [];
   let written = 0;
   for (const t of targets) {
-    let best = null;
-    for (const p of candidates.get(t.file)) {
-      const page = pages.get(p);
-      if (!page || !page.paras.length) continue;
-      const m = L.matchReview(t.data.fullText, page.paras);
-      if (m.overlap >= L.MIN_OVERLAP && (!best || m.overlap > best.overlap)) best = { ...m, path: p, page };
-    }
+    const best = bestByFile.get(t.file);
     if (!best) continue;
     const placement = L.classifyPlacement(best.page.paras, best.firstMatch, best.page.title, t.data.showTitle);
     const sectionRating = L.parseSectionRating(best.page.paras, best.firstMatch);
@@ -227,6 +272,7 @@ async function main() {
       pageByline: best.page.author,
       pagePublished: best.page.datePublished,
       textOverlap: Number(best.overlap.toFixed(2)),
+      firstMatchParagraph: best.firstMatch,
       placement,
       sectionRating: sectionRating ? `${sectionRating.stars}/5 stars` : null,
       sectionRatingLine: sectionRating ? sectionRating.line : null,
@@ -235,9 +281,14 @@ async function main() {
         : (!L.shouldWriteUrl({ overlap: best.overlap, placement, sectionRating }) ? 'bundled secondary review with no parseable section rating; page-level star extraction would read the lead show' : null),
     };
     report.push(entry);
+    entry._t = t;
+  }
+  resolveSameShowCollisions(report);
+  for (const entry of report) {
+    const t = entry._t;
+    delete entry._t;
     const tag = entry.writeUrl ? 'WRITE' : 'skip ';
-    console.log(`${tag} ${entry.textOverlap.toFixed(2)} ${placement.padEnd(9)} ${(entry.sectionRating || '-').padEnd(9)} ${t.file}\n        ${url}`);
-
+    console.log(`${tag} ${entry.textOverlap.toFixed(2)} ${entry.placement.padEnd(9)} ${(entry.sectionRating || '-').padEnd(9)} ${t.file}\n        ${entry.url}`);
     if (APPLY && entry.writeUrl) { applyEntry(t, entry); written++; }
   }
   console.log(`\n${report.length} matched, ${report.filter(r => r.writeUrl).length} writable${APPLY ? `, ${written} written` : ' (dry run; --apply to write)'}`);
