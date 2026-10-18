@@ -242,14 +242,15 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-18T19:51:45.721Z",
-      "lastSeen": "2026-10-18T19:51:45.721Z",
+      "lastSeen": "2026-10-18T20:22:47.527Z",
       "lastNotifiedAt": "2026-10-18T19:51:45.721Z",
       "lastSurfacedAt": "2026-10-18T19:51:45.721Z",
       "notifyCount": 143,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 142,
-      "sweptTracker": "BRO-5554"
+      "sweptTracker": "BRO-5554",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -20017,15 +20018,15 @@
       "silentRefires": 8
     },
     "test-yml:red:Unit Tests:4fb7ef20": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \".claude/CLOUD.md stays under its byte cap\"",
       "firstSeen": "2026-10-18T02:51:46.727Z",
-      "incidentOpenedAt": "2026-10-18T07:14:47.946Z",
-      "lastSeen": "2026-10-18T07:14:47.946Z",
-      "lastNotifiedAt": "2026-10-18T07:14:47.946Z",
+      "incidentOpenedAt": "2026-10-18T20:22:46.771Z",
+      "lastSeen": "2026-10-18T20:22:46.771Z",
+      "lastNotifiedAt": "2026-10-18T20:22:46.771Z",
       "lastSurfacedAt": null,
-      "notifyCount": 2,
+      "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-5609",
       "dispatch": {
@@ -20033,9 +20034,7 @@
         "mode": "dispatch-at-filing",
         "runId": "39105837664",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39105837664"
-      },
-      "resolvedAt": "2026-10-18T08:32:23.176Z",
-      "resolveReason": "job-green"
+      }
     },
     "land:land/job/linear-BRO-716-mvd2yiv0": {
       "status": "open",
@@ -20513,7 +20512,10 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5642"
+      "linearIdentifier": "BRO-5642",
+      "absentRunIds": [
+        "39161070987"
+      ]
     }
   }
 }
