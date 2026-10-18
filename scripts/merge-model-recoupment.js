@@ -184,13 +184,13 @@ function main() {
     }
   }
 
-  // Loss labels our model sizes follow its new figures (BRO-5643), after every
-  // branch above: one that cleared a record's model fields leaves no estimate,
-  // so its Fizzle or Flop becomes Did Not Recoup. Too many moves at once are
+  // Loss labels follow their estimates (BRO-5643), after every branch above:
+  // one that cleared a record's model fields leaves no estimate, so a Fizzle
+  // or Flop the model sized becomes Did Not Recoup. Too many moves at once are
   // held for review instead of written.
   const resize = planModelLossResizes(keys.map((key) => [key, commercial.shows[key]]));
   for (const { key, from, to } of resize.moves) {
-    console.log(`  [SIZE] ${key}.designation: ${from} -> ${to} (by our model)${resize.held ? ', held' : ''}`);
+    console.log(`  [SIZE] ${key}.designation: ${from} -> ${to} (by its recorded estimate)${resize.held ? ', held' : ''}`);
     if (!resize.held) commercial.shows[key].designation = to;
   }
   if (resize.held) {
