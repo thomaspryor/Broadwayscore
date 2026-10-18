@@ -36,9 +36,11 @@ jobs:
 
       - name: Run Waltz cost scraper
         run: |
-          ARGS=""
+          # --record-history stores his dated weekly costs as costHistory
+          # anchors for the live musical model (BRO-5604, was shadow BRO-4989).
+          ARGS="--record-history"
           if [ "${{ inputs.dry_run }}" = "true" ]; then
-            ARGS="--dry-run"
+            ARGS="$ARGS --dry-run"
           fi
           node scripts/scrape-boring-waltz-costs.js $ARGS
 

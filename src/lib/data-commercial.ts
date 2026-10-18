@@ -117,7 +117,10 @@ const commercial: CommercialFile = (() => {
   const showBySlug = new Map(rawShows.map((s) => [s.slug, s]));
   const now = new Date();
   const shows: Record<string, ShowCommercial> = {};
-  for (const [slug, data] of Object.entries(file.shows)) {
+  for (const [slug, full] of Object.entries(file.shows)) {
+    // costHistory (BRO-5604: ~1,400 dated anchors) feeds only the offline
+    // recoupment model; keep it out of page props and the client payload.
+    const { costHistory: _costHistory, ...data } = full as ShowCommercial & { costHistory?: unknown };
     const guarded = applyModelDisplayGuard(data, showBySlug.get(slug), now);
     const rr = reportedReturn(data, showBySlug.get(slug));
     shows[slug] = rr ? { ...guarded, reportedReturn: rr } : guarded;
