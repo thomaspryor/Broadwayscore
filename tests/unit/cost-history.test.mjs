@@ -248,6 +248,22 @@ describe('an uncited "reported" cost is our estimate (BRO-5632)', () => {
     assert.strictEqual(cited.sourceType, 'trade');
   });
 
+  it('vague attribution, an SEC or a producer label without a citation all read as estimates', () => {
+    const show = { openingDate: '2023-03-16' };
+    for (const costMethodology of ['trade-reported', 'sec-filing', 'producer-confirmed']) {
+      const vague = legacyCostAnchor({ weeklyRunningCost: 659_000, costMethodology, weeklyRunningCostSource: 'Industry sources' }, show);
+      assert.strictEqual(vague.sourceType, 'industry-estimate', costMethodology);
+    }
+    const sec = legacyCostAnchor({ weeklyRunningCost: 800_000, costMethodology: 'sec-filing', weeklyRunningCostSource: 'SEC Form D offering memorandum (2019): weekly running costs of $800,000' }, show);
+    assert.strictEqual(sec.sourceType, 'sec');
+  });
+
+  it('a stored copy whose figure was later edited keeps its stored tier', () => {
+    const migrated = { asOf: '2025-06-29', amount: 600_000, kind: 'running-cost', sourceType: 'trade', dateBasis: 'migrated', note: 'migrated from weeklyRunningCost (trade-reported)' };
+    const record = { weeklyRunningCost: 640_000, costMethodology: 'trade-reported', costHistory: [migrated] };
+    assert.strictEqual(hasCostAnchor(record), true);
+  });
+
   it('a stored migrated copy follows the record: uncited means no reported anchor', () => {
     const migrated = { asOf: '2025-06-29', amount: 600_000, kind: 'running-cost', sourceType: 'trade', dateBasis: 'migrated', note: 'migrated from weeklyRunningCost (trade-reported)' };
     const record = { weeklyRunningCost: 600_000, costMethodology: 'trade-reported', costHistory: [migrated] };

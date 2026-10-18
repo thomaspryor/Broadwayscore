@@ -25,7 +25,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { SOURCE_TIERS, REPORTED_SOURCE_TYPES, legacyCostAnchor, legacySourceType, anchorErrors, seedRepeatsLegacy } = require('./cost-history');
+const { SOURCE_TIERS, REPORTED_SOURCE_TYPES, legacyCostAnchor, withCurrentLegacyTier, anchorErrors, seedRepeatsLegacy } = require('./cost-history');
 
 const INDEX_PATH = path.join(__dirname, '..', '..', 'data', 'broadway-cost-index.json');
 const DAY_MS = 86400000;
@@ -118,10 +118,9 @@ const REPORTED_ANCHOR_SOURCES = REPORTED_SOURCE_TYPES;
 function costAnchors(record, show, category) {
   // Malformed anchors are skipped (check-cost-anchors.js reports them).
   let hist = Array.isArray(record?.costHistory) ? record.costHistory.filter((a) => anchorErrors(a).length === 0) : [];
-  // A migrated anchor is a stored copy of the record's weeklyRunningCost, so
-  // the record's label decides its tier today: an uncited "reported" cost is
-  // our estimate (legacySourceType, BRO-5632).
-  hist = hist.map((a) => (a.dateBasis === 'migrated' ? { ...a, sourceType: legacySourceType(record) } : a));
+  // A stored migrated copy of weeklyRunningCost takes the record's tier today:
+  // an uncited "reported" cost is our estimate (BRO-5632).
+  hist = withCurrentLegacyTier(hist, record);
   // A history seeded before BRO-5632 can hold the migrated legacy copy of a
   // seed's figure under another kind; the seed wins, as in historyWithSeeds().
   hist = hist.filter((a) => a.dateBasis !== 'migrated' || !seedRepeatsLegacy(a, hist));

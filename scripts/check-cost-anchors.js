@@ -17,7 +17,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { historyWithSeeds } = require('./lib/cost-history');
+const { historyWithSeeds, withCurrentLegacyTier } = require('./lib/cost-history');
 const { costForWeek } = require('./lib/cost-for-week');
 const { classifyShow } = require('./lib/recoupment-model');
 const { checkCostAnchors, refreshOrder, recentlyResearched } = require('./lib/cost-anchor-checks');
@@ -49,7 +49,7 @@ function main() {
     if (NOT_COMMERCIAL.has(record.designation)) continue;
     const show = by[slug] || by[record.slug] || by[slug.replace(/-\d{4}$/, '')];
     if (!show) continue;
-    const history = historyWithSeeds(record, show, seeds[slug] || []);
+    const history = withCurrentLegacyTier(historyWithSeeds(record, show, seeds[slug] || []), record); // the model's tiers (BRO-5632)
     const category = classifyShow(show);
     const cw = history.length ? costForWeek({ ...record, costHistory: history }, today, { show, category }) : null;
     results.push(checkCostAnchors({ slug, record, show, history, currentCost: cw?.cost, category }));

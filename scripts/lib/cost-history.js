@@ -1,6 +1,6 @@
 'use strict';
 
-const { publicSourceText } = require('./public-source-text');
+const { isCitedReportedWeeklyCost } = require('./waltz-cost-gap-fill');
 
 /**
  * cost-history.js — dated weekly cost anchors per show (BRO-4989).
@@ -181,6 +181,31 @@ function dateFromText(text) {
 }
 
 /**
+ * The source tier of a record's weeklyRunningCost: its costMethodology, except
+ * that a "reported" cost the record does not cite counts as our estimate
+ * (isCitedReportedWeeklyCost, the model's one test for a cited cost; the site
+ * shows such a cost as an estimate too). In October 2026, 24 of 45 "reported"
+ * costs cited nothing; five equal a Boring Waltz figure to the dollar and
+ * several notes read "Estimated ~$650-750K/week" (BRO-5632).
+ */
+function legacySourceType(record) {
+  const type = sourceTypeForMethodology(record?.costMethodology);
+  if (REPORTED_SOURCE_TYPES.has(type) && !isCitedReportedWeeklyCost(record || {})) return 'industry-estimate';
+  return type;
+}
+
+/**
+ * The record's tier for each stored migrated anchor that still copies its
+ * weeklyRunningCost (a later edit to the figure leaves the old copy as stored),
+ * so a source added or found missing later moves the copy with the record.
+ */
+function withCurrentLegacyTier(history, record) {
+  const amount = record?.weeklyRunningCost;
+  return history.map((a) => (a.dateBasis === 'migrated' && Number.isFinite(amount) && Math.round(amount) === a.amount
+    ? { ...a, sourceType: legacySourceType(record) } : a));
+}
+
+/**
  * The anchor today's single weeklyRunningCost stands for, with the best date
  * we can give it:
  *  1. a date written in weeklyRunningCostSource ("Broadway Journal (Dec 16, 2025)")  dateBasis 'source-text'
@@ -195,20 +220,6 @@ function dateFromText(text) {
  *
  * @returns {object|null}
  */
-/**
- * The source tier of a record's weeklyRunningCost: its costMethodology, except
- * that a "reported" cost citing no publishable source counts as our estimate,
- * as the site already shows it (src/lib/commercial-display.ts
- * isEstimatedCostBasis). In October 2026, 24 of 45 "reported" costs cited
- * nothing; five equal a Boring Waltz figure to the dollar and several notes
- * read "Estimated ~$650-750K/week" (BRO-5632).
- */
-function legacySourceType(record) {
-  const type = sourceTypeForMethodology(record?.costMethodology);
-  if (REPORTED_SOURCE_TYPES.has(type) && !publicSourceText(record?.weeklyRunningCostSource)) return 'industry-estimate';
-  return type;
-}
-
 function legacyCostAnchor(record, show) {
   const amount = record?.weeklyRunningCost;
   if (!Number.isFinite(amount) || amount <= 0) return null;
@@ -277,6 +288,7 @@ module.exports = {
   isRealDate,
   REPORTED_SOURCE_TYPES,
   legacySourceType,
+  withCurrentLegacyTier,
   legacyCostAnchor,
   seedRepeatsLegacy,
   historyWithSeeds,

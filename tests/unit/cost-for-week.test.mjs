@@ -170,6 +170,15 @@ describe('a reported cost sets the level (BRO-5632)', () => {
     assert.ok(c.anchors.length && c.anchors.every((a) => a.sourceType === 'trade'), JSON.stringify(c.anchors));
   });
 
+  it('an uncited "reported" copy does not shut his figures out (illinoise)', () => {
+    // illinoise: trade-reported $625K that cites nothing; its note says the figure is Reddit analysis.
+    const migrated = trade('2024-08-10', 625_000, { dateBasis: 'migrated', note: 'migrated from weeklyRunningCost (trade-reported)' });
+    const record = { weeklyRunningCost: 625_000, costMethodology: 'trade-reported', costHistory: [migrated, ...weekly('2024-04-23', 16, 610_000)] };
+    assert.strictEqual(hasCostAnchor(record), false);
+    const c = costForWeek(record, '2024-06-02');
+    assert.ok(c.anchors.some((a) => a.sourceType === 'reddit-standard'), JSON.stringify(c.anchors));
+  });
+
   it('still uses his figures when nothing reported is held', () => {
     const record = { costHistory: weekly('2024-01-07', 10, 700_000) };
     const c = costForWeek(record, '2024-02-04');
