@@ -351,3 +351,163 @@ test('star words in a slug are not review signals unless they are a rating', () 
   assert.equal(d.hasReviewSignal('https://x.com/2026/star-wars-musical-opens', ''), false);
   assert.equal(d.hasReviewSignal('https://x.com/2026/odc-4-stars', ''), true);
 });
+
+// ---- BRO-4820: Show Score, Playbill Verdict, Google News, Talkin' Broadway, SERP, feed dates, memo -------------------
+
+const passWith = (adapters, map, extra = {}) => d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0, adapters, ...pages(map), ...extra });
+
+test('Show Score adapter: "Read more" tiles are aggregator claims, known outlets only, a dead page is an error not an empty result', async () => {
+  const page = 'https://www.show-score.com/broadway-shows/other-desert-cities';
+  const tiles = `<a href="${NYT_RAW}">Read more</a><a href="https://www.show-score.com/member/x">Read more</a><a href="https://some-unknown-blog.example.com/odc-review">Read more</a>`;
+  const r = await passWith([d.showScoreAdapter()], { [page]: tiles }, { show: { ...SHOW, category: 'broadway' } });
+  assert.deepEqual(r.admitted.map((a) => a.key), [NYT]);
+  assert.equal(r.admitted[0].source, 'aggregator');
+  assert.deepEqual(r.unknownHosts, ['some-unknown-blog.example.com']);
+  const dead = await passWith([d.showScoreAdapter()], {}, { show: { ...SHOW, category: 'broadway' } });
+  assert.equal(dead.admitted.length, 0);
+  assert.equal(dead.errors.length, 1, 'an outage is reported');
+  assert.ok(d.NON_REVIEW_HOSTS.includes('show-score.com'), 'the real Show Score host is excluded from cited links');
+});
+
+test('Playbill Verdict adapter: category page to this show\'s roundup to the links it cites', async () => {
+  const cat = `<a href="/article/read-the-reviews-for-other-desert-cities">Read the Reviews for Other Desert Cities</a><a href="/article/read-the-reviews-for-something-else">Something Else</a>`;
+  const art = `<html><body><article><a href="${NYT_RAW}">NYT</a><a href="https://www.playbill.com/shows">shows</a></article></body></html>`;
+  const map = { 'https://playbill.com/category/the-verdict': cat, 'https://playbill.com/article/read-the-reviews-for-other-desert-cities': art };
+  const r = await passWith([d.playbillVerdictAdapter()], map);
+  assert.deepEqual(r.admitted.map((a) => a.key), [NYT]);
+  assert.equal((await passWith([d.playbillVerdictAdapter()], { 'https://playbill.com/category/the-verdict': '<a href="/article/read-the-reviews-for-something-else">Something Else</a>' })).admitted.length, 0);
+});
+
+const GN_LINK = 'https://news.google.com/rss/articles/CBMiTOKEN?oc=5';
+const gnFeed = (link = GN_LINK, title = 'Other Desert Cities review: a family at war', src = 'https://www.nytimes.com') =>
+  `<rss><channel><item><title>${title} - The New York Times</title><link>${link}</link><pubDate>Mon, 19 Oct 2026 03:00:00 GMT</pubDate><source url="${src}">The New York Times</source></item></channel></rss>`;
+const GN_FEED_URL = 'https://news.google.com/rss/search?q=%22Other+Desert+Cities%22+review&hl=en-US&gl=US&ceid=US%3Aen';
+
+test('Google News adapter: the wrapper is unwrapped through the item\'s own source host, never emitted itself', async () => {
+  const wrapper = `<html><head><link rel="canonical" href="${NYT_RAW}"></head><body>redirecting</body></html>`;
+  const r = await passWith([d.googleNewsAdapter()], { [GN_FEED_URL]: gnFeed(), [GN_LINK]: wrapper });
+  assert.deepEqual(r.admitted.map((a) => a.key), [NYT]);
+  assert.ok(!r.admitted.some((a) => /news\.google\.com/.test(a.url)));
+  // A destination on another host, an unparseable page, or several unrelated links all drop the item.
+  for (const html of [`<link rel="canonical" href="https://evil.example.com/odc-review">`, '<p>nothing</p>', `<a href="https://nytimes.com/a-review">a</a><a href="https://nytimes.com/b-review">b</a>`]) {
+    const bad = await passWith([d.googleNewsAdapter()], { [GN_FEED_URL]: gnFeed(), [GN_LINK]: html });
+    assert.equal(bad.admitted.length, 0, html);
+  }
+  // An unknown publisher is skipped before any wrapper fetch.
+  const unknown = pages({ [GN_FEED_URL]: gnFeed(GN_LINK, undefined, 'https://nobody.example.com') });
+  const u = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0, adapters: [d.googleNewsAdapter()], ...unknown });
+  assert.equal(u.admitted.length, 0);
+  assert.ok(!unknown.calls.includes(GN_LINK));
+});
+
+test('Google News adapter: resolutions are cached across passes, failures retried a bounded number of times, unwraps capped per pass', async () => {
+  const wrapper = `<link rel="canonical" href="${NYT_RAW}">`;
+  const adapter = d.googleNewsAdapter();
+  const map = pages({ [GN_FEED_URL]: gnFeed(), [GN_LINK]: wrapper });
+  for (let i = 0; i < 3; i++) await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0, adapters: [adapter], ...map });
+  assert.equal(map.calls.filter((u) => u === GN_LINK).length, 1);
+  const failing = d.googleNewsAdapter();
+  const f = pages({ [GN_FEED_URL]: gnFeed(), [GN_LINK]: '<p>nothing</p>' });
+  for (let i = 0; i < 6; i++) await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0, adapters: [failing], ...f });
+  assert.equal(f.calls.filter((u) => u === GN_LINK).length, 3);
+  const many = `<rss><channel>${Array.from({ length: 5 }, (_, i) => `<item><title>Other Desert Cities review ${i}</title><link>https://news.google.com/rss/articles/T${i}</link><pubDate>Mon, 19 Oct 2026 03:00:00 GMT</pubDate><source url="https://www.nytimes.com">NYT</source></item>`).join('')}</channel></rss>`;
+  const m = pages({ [GN_FEED_URL]: many });
+  await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0, adapters: [d.googleNewsAdapter({ maxUnwrap: 2 })], ...m });
+  assert.equal(m.calls.filter((u) => u.includes('/articles/T')).length, 2);
+});
+
+test('Talkin\' Broadway adapter: dated review pages that name the show, date read from the byline, never the filename', async () => {
+  const idx = 'https://www.talkinbroadway.com/page/ob/index.html';
+  const home = `<html><body><main><a href="/page/ob/10_19_26.html">Other Desert Cities</a><a href="/page/ob/10_09_26.html">Unrelated Show</a><a href="/page/world/OtherDesertCities.html">Other Desert Cities</a></main></body></html>`;
+  const page = (when) => `<html><body><section class='page'><P><B>Theatre Review by <A HREF='mailto:hm@talkinbroadway.com'>Howard Miller</A> - ${when}</B></CENTER><P>text</section></body></html>`;
+  const adapters = [d.talkinBroadwayAdapter({ indexUrls: [idx] })];
+  const map = { [idx]: home, 'https://www.talkinbroadway.com/page/ob/10_19_26.html': page('October 19, 2026') };
+  const r = await passWith(adapters, map);
+  assert.deepEqual(r.admitted.map((a) => a.key), ['https://talkinbroadway.com/page/ob/10_19_26.html']);
+  assert.equal(r.admitted[0].publishDate, '2026-10-19');
+  map['https://www.talkinbroadway.com/page/ob/10_19_26.html'] = page('October 2, 2026');
+  assert.ok((await passWith(adapters, map)).rejected.some((x) => x.reason === 'outside-night-window'), 'a filename that looks right does not beat the page date');
+  assert.equal(d.extractPublishDate(page('June 5, 2026')), '2026-06-05');
+  const down = await passWith(adapters, {});
+  assert.equal(down.errors.length, 1, 'every index failing is reported');
+});
+
+test('SERP adapter: limit caps the searches themselves, results are restricted to the missing outlet\'s host and to this show', async () => {
+  const queries = [];
+  const search = async (q) => { queries.push(q); const dom = /site:(\S+)/.exec(q)[1];
+    return [{ url: `https://${dom}/2026/10/19/odc-review`, title: 'Other Desert Cities review' }, { url: 'https://elsewhere.example.com/odc-review', title: 'Other Desert Cities review' }, { url: `https://${dom}/2026/10/19/x-review`, title: 'Different Show review' }]; };
+  const adapter = d.serpAdapter({ search, domainFor: (id) => `${id}.com` });
+  const out = await adapter.discover({ show: SHOW, missingOutlets: ['nytimes', 'vulture', 'variety', 'newyorker'], limit: 2 });
+  assert.equal(queries.length, 2, 'two searches, not four');
+  assert.deepEqual(out.map((c) => c.url), ['https://nytimes.com/2026/10/19/odc-review', 'https://vulture.com/2026/10/19/odc-review']);
+  assert.ok(queries[0].includes('site:nytimes.com') && queries[0].includes('"Other Desert Cities"'));
+  await assert.rejects(d.serpAdapter({ search: async () => { throw new Error('quota'); }, domainFor: (id) => `${id}.com` }).discover({ show: SHOW, missingOutlets: ['a'], limit: 3 }), /quota/);
+  assert.throws(() => d.serpAdapter({}), /search/);
+  // End to end: only after +3h, the page date is read from the article.
+  const full = (offset) => d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + offset, startedAt: T0, adapters: [d.serpAdapter({ search, domainFor: (id) => `${id}.com` })], missingOutlets: ['nytimes'], serpMax: 3,
+    ...pages({ 'https://nytimes.com/2026/10/19/odc-review': guardianArticle }) });
+  assert.equal((await full(2 * HOUR)).serpRan, false);
+  assert.equal((await full(3 * HOUR)).admitted.length, 1);
+});
+
+test('feed dates: a zoneless RSS date and an Atom <updated> are confirmed against the article page; the server zone never decides', async () => {
+  const zoneless = `<rss><channel><item><title>Review: Other Desert Cities</title><link>${VARIETY_RAW}</link><pubDate>Mon, 19 Oct 2026 03:00:00</pubDate></item></channel></rss>`;
+  const entries = d.parseFeedEntries(zoneless);
+  assert.equal(entries[0].date.publishDate, null);
+  assert.equal(entries[0].date.fallbackDate, '2026-10-19');
+  assert.equal(entries[0].date.needsDate, true);
+  const zoned = d.parseFeedEntries(rss.replace('</channel>', '</channel>'));
+  assert.equal(zoned[0].date.publishDate, '2026-10-19T03:00:00.000Z');
+  assert.equal(zoned[0].date.needsDate, false);
+  const feeds = [{ url: 'https://variety.com/feed', name: 'Variety', outletId: 'variety' }];
+  // The page says the review is from last month: the feed's day is overruled.
+  const stale = `<meta property="article:published_time" content="2026-09-02T10:00:00Z">`;
+  const r = await passWith([d.rssAdapter({ feeds })], { 'https://variety.com/feed': zoneless, [VARIETY_RAW]: stale });
+  assert.equal(r.admitted.length, 0);
+  assert.ok(r.rejected.some((x) => x.reason === 'outside-night-window'));
+  // A page with no date falls back to the day the feed wrote.
+  const ok = await passWith([d.rssAdapter({ feeds })], { 'https://variety.com/feed': zoneless, [VARIETY_RAW]: '<p>no date</p>' });
+  assert.equal(ok.admitted.length, 1);
+  assert.equal(ok.admitted[0].publishDate, '2026-10-19');
+  // Atom: <updated> is the edit time, so it is confirmed too, and the result does not depend on TZ.
+  const atom = `<feed><entry><title>Review: Other Desert Cities</title><link rel="alternate" href="${VARIETY_RAW}"/><updated>2026-10-19T03:00:00Z</updated><published>2026-09-01T00:00:00Z</published></entry></feed>`;
+  const a = d.parseFeedEntries(atom)[0];
+  assert.equal(a.date.needsDate, true);
+  assert.equal(a.date.fallbackDate, '2026-10-19');
+  const onlyPublished = d.parseFeedEntries(atom.replace(/<updated>.*?<\/updated>/, ''))[0];
+  assert.equal(onlyPublished.date.publishDate, '2026-09-01T00:00:00.000Z');
+});
+
+test('memo persistence: saved after a pass, reloaded by a restarted lane, torn file is an empty memo, ledger untouched', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'lane-memo-'));
+  const memo = { rejected: { 'https://a.com/x': { reason: 'outside-night-window', attempts: 1 } } };
+  const file = d.saveMemo(dir, SHOW.id, NIGHT, memo);
+  assert.ok(file.endsWith('.memo.json') && !file.endsWith('.jsonl'));
+  assert.deepEqual(d.loadMemo(dir, SHOW.id, NIGHT), memo);
+  fs.writeFileSync(file, '{"rejected": {');
+  assert.deepEqual(d.loadMemo(dir, SHOW.id, NIGHT), { rejected: {} });
+  assert.deepEqual(d.loadMemo(dir, 'other-show', NIGHT), { rejected: {} });
+  assert.deepEqual(fs.readdirSync(dir).filter((f) => f.endsWith('.tmp')), []);
+});
+
+test('lane runner: persists the memo each pass and calls recordDiscovered (restart does not re-fetch a final rejection)', async () => {
+  const { runLaneNight } = require('../../scripts/lib/opening-night-lane/lane-runner.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'lane-run-'));
+  const map = baseMap();
+  map[GUARDIAN_RAW] = '<meta property="article:published_time" content="2026-10-25T10:00:00Z">';
+  let t = T0;
+  const common = () => ({
+    show: SHOW, night: NIGHT, ledgerDir: dir, adapters: allAdapters(), ...pages(map), now: () => t, wait: async (ms) => { t += ms; },
+    fetchReview: async () => ({ outlet: 'x', criticName: 'Y Z', fullText: 'text '.repeat(200) }), scoreReview: async () => 70,
+    publishPorts: { updateReviews: async () => {}, regenShow: async () => ({ missing: [] }), deploy: async () => ({}), fetchLiveShow: async () => ({ rv: [] }) },
+    windowMs: 3 * 60 * 1000, passIntervalMs: 2 * 60 * 1000, dryRun: true,
+  });
+  const first = common();
+  await runLaneNight(first).catch(() => {}); // publishing is not what this test is about
+  assert.ok(Object.values(d.loadMemo(dir, SHOW.id, NIGHT).rejected).some((m) => m.reason === 'outside-night-window'), 'memo on disk');
+  const second = common();
+  t = T0;
+  await runLaneNight(second).catch(() => {});
+  assert.ok(!second.calls.includes(GUARDIAN_RAW), 'the restarted lane did not re-fetch the final rejection');
+  assert.ok(d.loadSeen(dir, SHOW.id, NIGHT).size > 0, 'recordDiscovered wrote to the ledger');
+});

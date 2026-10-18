@@ -130,7 +130,8 @@ test('the production driver persists scored reviews before publishing and skips 
     return fs.existsSync(root) ? fs.readdirSync(root).map(f => JSON.parse(fs.readFileSync(path.join(root, f), 'utf8'))) : [];
   };
   t.mock.method(discovery, 'bwwRoundupAdapter', () => ({ name: 'archived', discover: async () => [{ url, outletId: 'guardian', source: 'aggregator', aggregatorCited: true }] }));
-  for (const name of ['dtliAdapter', 'rssAdapter', 'sectionIndexAdapter']) {
+  // Every adapter factory except the one mocked above: a new adapter must never reach the real network from this test (BRO-4820: it cost 43s).
+  for (const name of Object.keys(discovery).filter(k => /Adapter$/.test(k) && k !== 'bwwRoundupAdapter')) {
     t.mock.method(discovery, name, () => ({ name, discover: async () => [] }));
   }
   t.mock.method(inline, 'realFetchPorts', () => ({
