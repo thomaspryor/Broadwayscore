@@ -126,10 +126,10 @@ export default function ShowPageBookmark({ showId, size = 'md' }: ShowPageBookma
       type="button"
       onClick={handleToggle}
       disabled={loading}
-      className={`absolute ${s.button} z-10 flex items-center justify-center transition-all ${
+      className={`absolute ${s.button} z-10 flex items-center justify-center rounded-md transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/80 ${
         watched
           ? 'drop-shadow-md'
-          : `${size === 'sm' ? 'sm:opacity-0 sm:group-hover:opacity-100' : ''}`
+          : `${size === 'sm' ? 'sm:opacity-0 sm:group-hover:opacity-100 sm:focus-visible:opacity-100' : ''}`
       } ${loading ? 'opacity-50' : ''}`}
       aria-label={watched ? 'Remove from watchlist' : 'Add to watchlist'}
     >
