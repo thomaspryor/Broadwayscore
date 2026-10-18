@@ -240,3 +240,26 @@ test('an exhausted run budget stops new page reads and marks the entry capped (l
   assert.equal((await ok(entry, show)).capitalization.found, true, 'with budget left it verifies normally');
 });
 
+
+// BRO-5647: a figure followed by a comma ("$2.8 million, per SEC") was never found, so reported figures landed as estimates.
+test('figures followed by a comma are found, without merging a list into one figure', () => {
+  const ctx = { title: 'Example', year: '2025', field: 'capitalization' };
+  assert.equal(verifyFigure(2800000, 'Example had a 2025 capitalization of $2.8 million, per SEC.', ctx).found, true);
+  assert.equal(verifyFigure(12500000, 'Example 2025 capitalization $12,500,000, per filing', ctx).found, true);
+  assert.equal(verifyFigure(1500000, 'Example 2025 capitalization was $1.5m, the filing says', ctx).found, true);
+  assert.equal(verifyFigure(3000000, 'Example 2025 capitalization ranged $2.8 million, $3 million at most', ctx).found, true);
+  assert.equal(verifyFigure(2800000, 'Example 2025 capitalization $2.8 million, $3 million', { ...ctx }).found, true);
+  for (const partial of ['$12,50 capitalization', '$12,5 million capitalization', '$1,250,000,00 capitalization']) {
+    assert.equal(verifyFigure(12500000, `Example 2025 ${partial}`, ctx).found, false, partial);
+    assert.equal(verifyFigure(1250000, `Example 2025 ${partial}`, ctx).found, false, partial);
+  }
+});
+
+test('a short title form from buildShowTitleVariants counts, a generic fragment does not', () => {
+  const { buildShowTitleVariants } = require('../../scripts/lib/show-title-variants');
+  const page = 'Beaches, which opens in 2026, is capitalized at $14 million.';
+  assert.equal(verifyFigure(14000000, page, { title: 'Beaches, A New Musical', year: '2026', field: 'capitalization' }).found, false);
+  assert.equal(verifyFigure(14000000, page, { titles: buildShowTitleVariants('Beaches, A New Musical'), year: '2026', field: 'capitalization' }).found, true);
+  const dolly = 'Hello, everyone: the 2026 capitalization was $14 million.';
+  assert.equal(verifyFigure(14000000, dolly, { titles: buildShowTitleVariants('Hello, Dolly!'), year: '2026', field: 'capitalization' }).found, false);
+});
