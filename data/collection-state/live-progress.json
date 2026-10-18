@@ -1,75 +1,64 @@
 {
-  "updatedAt": "2026-10-18T15:01:03.876Z",
-  "processed": 3,
-  "failed": 7,
-  "successRate": "30.0%",
+  "updatedAt": "2026-10-18T15:15:56.839Z",
+  "processed": 2,
+  "failed": 18,
+  "successRate": "10.0%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 1,
+    "scrapingdog": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-10-18T14:55:01.616Z",
+      "t": "2026-10-18T15:06:48.726Z",
       "event": "bb-session",
-      "session": "aa02dd5f",
-      "url": "https://www.newyorker.com/goings-on-about-town/theatre/harry-potter-and-the-curs"
+      "session": "7eaacff6",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
     },
     {
-      "t": "2026-10-18T14:55:02.599Z",
+      "t": "2026-10-18T15:06:49.660Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-18T14:55:43.966Z",
+      "t": "2026-10-18T15:07:07.371Z",
       "event": "bb-session",
-      "session": "f59fcfaf",
-      "url": "https://www.newyorker.com/magazine/2023/05/22/fat-ham-theatre-review"
+      "session": "ac68aa9a",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
     },
     {
-      "t": "2026-10-18T14:55:44.881Z",
+      "t": "2026-10-18T15:07:08.143Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-18T14:56:25.337Z",
+      "t": "2026-10-18T15:08:19.281Z",
       "event": "bb-session",
-      "session": "462dee1e",
-      "url": "https://www.newyorker.com/magazine/2017/12/11/the-parisian-woman-reviewed"
+      "session": "b674c4b2",
+      "url": "http://online.wsj.com/article/SB10001424052748704050204576218451086713370.html?m"
     },
     {
-      "t": "2026-10-18T14:56:26.225Z",
+      "t": "2026-10-18T15:08:20.232Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-18T14:57:02.267Z",
+      "t": "2026-10-18T15:08:37.708Z",
       "event": "bb-session",
-      "session": "89aa507c",
-      "url": "https://www.newyorker.com/goings-on-about-town/theatre/doctor-zhivago-2"
+      "session": "cc20173a",
+      "url": "http://online.wsj.com/article/SB10001424052748704050204576218451086713370.html?m"
     },
     {
-      "t": "2026-10-18T14:57:03.173Z",
+      "t": "2026-10-18T15:08:38.554Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-10-18T14:57:56.121Z",
-      "event": "bb-session",
-      "session": "66326099",
-      "url": "https://www.newyorker.com/humor/daily-shouts/backstage-at-broadways-the-anarchis"
-    },
-    {
-      "t": "2026-10-18T14:57:57.048Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "wsj.com"
     }
   ]
 }
