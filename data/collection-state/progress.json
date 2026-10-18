@@ -295,7 +295,9 @@
     "birthright-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "birthright-off-broadway-2026/the-recs--unknown.json",
     "relics-west-end-2026/rhombus-rota--unknown.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json"
+    "the-truth-a-comedy-by-florian-zeller-west-end-2026/west-end-wilma--unknown.json",
+    "some-woman-west-end-2026/sunday-times--clive-davis.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/ground--unknown.json"
   ],
   "failed": [
     "the-second-best-school-shooting-off-broadway-2026/theatreinla--unknown.json",
@@ -332,7 +334,6 @@
     "rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026/kidsoutandabout--unknown.json",
     "some-woman-west-end-2026/thestage--sam-marlowe.json",
     "the-cherry-orchard-west-end-2026/timeout-london--unknown.json",
-    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/ground--unknown.json",
     "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--jane-bradley.json",
     "an-oak-tree-off-west-end-2026/thestage--unknown.json",
     "an-oak-tree-off-west-end-2026/times-uk--dominic-maxwell.json",
@@ -487,7 +488,15 @@
     "cyrano-de-bergerac-west-end-2026/newsday--linda-winer.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
     "the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json",
-    "sting-west-end-2026/ew--unknown.json"
+    "sting-west-end-2026/ew--unknown.json",
+    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
+    "some-woman-west-end-2026/guardian--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json",
+    "stuffed-off-west-end-2026/nytg--unknown.json",
+    "stuffed-off-west-end-2026/sunday-times--unknown.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -669,7 +678,11 @@
       "data/review-texts/tender-off-west-end-2026/deadline--zac-ntim.json",
       "tender-off-west-end-2026/deadline--zac-ntim.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/some-woman-west-end-2026/sunday-times--clive-davis.json",
+      "some-woman-west-end-2026/sunday-times--clive-davis.json",
+      "data/review-texts/stuffed-off-west-end-2026/sunday-times--unknown.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "music-for-18-musicians-staged-variations-off-broadway-2026/oazis--unknown.json",
@@ -697,7 +710,8 @@
       "the-bathroom-attendant-off-broadway-2026/stagebuddy--unknown.json",
       "jeeves-takes-charge-west-end-2026/ground--unknown.json",
       "horrible-histories-barmy-britain-the-best-bits-west-end-2026/ticketline--unknown.json",
-      "tao-of-glass-west-end-2026/theupcoming--michael-higgs.json"
+      "tao-of-glass-west-end-2026/theupcoming--michael-higgs.json",
+      "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/ground--unknown.json"
     ],
     "scrapingbee": [
       "some-woman-west-end-2026/times-uk--clive-davis.json",
@@ -812,7 +826,7 @@
     ]
   },
   "startTime": "2026-10-17T20:29:38.578Z",
-  "lastProcessed": "sting-west-end-2026/ew--unknown.json",
+  "lastProcessed": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/ground--unknown.json",
   "log": [
     {
       "t": "2026-10-17T22:12:59.444Z",
@@ -951,10 +965,57 @@
       "t": "2026-10-17T23:03:32.190Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-18T00:29:17.884Z",
+      "event": "bb-session",
+      "session": "dad7af67",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-18T00:29:26.280Z",
+      "event": "bb-session",
+      "session": "7a314270",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-18T00:30:49.611Z",
+      "event": "bb-session",
+      "session": "67870b0a",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-18T00:32:39.358Z",
+      "event": "bb-session",
+      "session": "630e6040",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/some-woman-review-anne-ma"
+    },
+    {
+      "t": "2026-10-18T00:32:40.361Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-18T00:36:12.396Z",
+      "event": "bb-session",
+      "session": "75c6d582",
+      "url": "https://www.thetimes.com/recipes/entertaining/party-food/article/dates-stuffed-w"
+    },
+    {
+      "t": "2026-10-18T00:36:13.334Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-18T00:37:50.290Z",
+      "event": "bb-session",
+      "session": "56c571a5",
+      "url": "https://ground.news/article/the-banality-of-evil-hannah-arendt-france-1940"
     }
   ],
   "recoveredAfterFailure": [
     "a-ghost-in-your-ear-off-broadway-2026/theatermania--zachary-stewart.json",
-    "hadestown-2019/theater-life--isa-goldberg.json"
+    "hadestown-2019/theater-life--isa-goldberg.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/ground--unknown.json"
   ]
 }
