@@ -81,7 +81,7 @@ const { isStaleScoreInput, markRescoreNeeded } = require('./lib/rescore-flagging
 const { isLondonMarket, isUkOutletUrl, isBroadwayCategory } = require('./lib/venue-classification');
 const { isValidBroadwayCopy, shouldClearStaleObTransfer } = require('./lib/ob-transfer-guard');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
-const { isBlockedReviewUrl } = require('./lib/domain-filters');
+const { isBlockedReviewRecord } = require('./lib/domain-filters');
 const { explainOutletDomainMismatch, classifyOutletHostMismatch } = require('./lib/outlet-domain-validation');
 const { cascadeClearDuplicateRefs } = require('./lib/cascade-clear-duplicate-refs');
 const { dedupeByReviewKey } = require('./lib/final-key-dedup');
@@ -3623,8 +3623,10 @@ showDirs.forEach(showId => {
 
       // Auto-reject reviews with blocked URLs (ticket pages, aggregators, social media)
       // This catches URLs that slipped through gather-reviews before the isBlockedReviewUrl guard
-      // was added. Uses the same domain-filters.js shared with gather-reviews.
-      if (data.url && isBlockedReviewUrl(data.url)) {
+      // was added. Uses the same domain-filters.js shared with gather-reviews;
+      // isBlockedReviewRecord is the exact predicate explainExclusion's
+      // 'blockedReviewUrl' mirror calls (BRO-5273).
+      if (isBlockedReviewRecord(data)) {
         logExclusion("skippedBlockedUrl", showId, file, data);
         stats.skippedBlockedUrl = (stats.skippedBlockedUrl || 0) + 1;
         return;
