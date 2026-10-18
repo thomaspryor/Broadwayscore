@@ -170,7 +170,7 @@ const {
 } = require('./lib/wrong-production-autoclear');
 const { shouldRetryGarbageConsentWall, storedTextNeedsConsentRefetch, shouldReleaseConsentLayerNonReview, salvageConsentPrefixedStoredText, salvageSourceHash, applyVerifiedRetryOutcome } = require('./lib/consent-refetch');
 const { shouldRetryDatelessHoldFetch } = require('./lib/review-slot-guards');
-const { isProvisionalPublishDate, bodyPublishDateFallback } = require('./lib/publish-date-provenance');
+const { isProvisionalPublishDate, bodyPublishDateFallback, ingestGateDate } = require('./lib/publish-date-provenance');
 const { checkBrowserbaseCaps, countBrowserbaseAttempt, resolveMaxSessionsPerDay, resolveRecoveryReserve, resolveUseReserve, isDeniedHost, isTier1RecoveryHost, tier1BoostForCaller, resolveExemptScripts: resolveBbExemptScripts } = require('./lib/browserbase-caps');
 const { isExemptCaller: isBbExemptCaller } = require('./lib/brightdata-caps');
 
@@ -4715,7 +4715,7 @@ function extractPublishDateFromHtml(html, pageUrl) {
 // URL-path dates come from the canonical scripts/lib/rebuild-helpers.js
 // extractDateFromUrl. They are never stored as publishDate here (BRO-5351,
 // CLAUDE.md rule 3): they only veto a disagreeing byline date and feed the
-// in-memory verification date for the temporal override.
+// in-memory dates for the temporal override and the anticipatory gate.
 
 // Byline-date extraction lives in scripts/lib/body-date-mismatch.js (BRO-2770)
 // so the date guards, the shared writer and the corpus audit use one parser.
@@ -4975,6 +4975,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // BRO-5351: a URL-path date is never stored here (CLAUDE.md rule 3). It may
   // only veto a byline date that disagrees with it; the file then stays
   // dateless and the rebuild's backfill settles the derived date.
+  let bylineVetoed = false;
   if (!data.publishDate && !provisionalPublishDate && data.fullText && data.fullText.length > 100) {
     const fallback = bodyPublishDateFallback({
       textDate: extractDateFromText(data.fullText),
@@ -4985,6 +4986,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       data.dateSource = fallback.dateSource;
       console.log(`    → Extracted publishDate from text: ${fallback.publishDate}`);
     } else if (fallback.reason === 'body-url-conflict') {
+      bylineVetoed = true;
       console.log('    → Byline date disagrees with the URL path date: publishDate left empty for the rebuild backfill (BRO-5351)');
     }
   }
@@ -5021,11 +5023,14 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       showCategory = showMeta?.category || null;
     } catch (e) { /* shows.json unavailable — skip gate (fail-open) */ }
 
-    const inPriorRun = isWithinPriorRun(data.publishDate, showPriorRuns) || isWithinTourLeg(data.publishDate, showTourLegs);
+    // BRO-5351: a URL date is never stored, but the gate still judges on it in
+    // memory when the page gave no date of its own (as the temporal override does).
+    const gateDate = ingestGateDate(data, { bylineVetoed });
+    const inPriorRun = isWithinPriorRun(gateDate, showPriorRuns) || isWithinTourLeg(gateDate, showTourLegs);
     const anticip = inPriorRun
       ? { rejected: false }
       : isAnticipatoryPreviewPost(
-          data.publishDate,
+          gateDate,
           showOpeningDate,
           data.outletId || review.outletId,
           {

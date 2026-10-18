@@ -154,8 +154,27 @@ function bodyPublishDateFallback({ textDate, urlDate } = {}) {
   return { publishDate: textDate, dateSource: 'text-regex' };
 }
 
+/**
+ * The date the ingest anticipatory gate judges on (BRO-5351). A URL date is
+ * never stored, but with no stored publishDate the gate still uses the same
+ * full YYYY-MM-DD the rebuild recheck resolves (resolveGuardReviewDate), so the
+ * two cannot flip a flag back and forth. A URL date the byline vetoed is not
+ * used: neither date wins on its own.
+ * @param {object} data - review record
+ * @param {{bylineVetoed?: boolean}} [opts]
+ * @returns {string|null}
+ */
+function ingestGateDate(data, { bylineVetoed = false } = {}) {
+  if (data && data.publishDate) return data.publishDate;
+  if (bylineVetoed || !data || !data.url) return null;
+  const { resolveBackfillPublishDate } = require('./backfill-publish-date');
+  const r = resolveBackfillPublishDate(data);
+  return r && /^\d{4}-\d{2}-\d{2}$/.test(r.date || '') ? r.date : null;
+}
+
 module.exports = {
   bodyPublishDateFallback,
+  ingestGateDate,
   PROVISIONAL_DATE_SOURCES,
   NEAR_OPENING_DAYS,
   isNearOpening,

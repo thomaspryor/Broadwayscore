@@ -66,3 +66,18 @@ test('collect-review-texts.js never assigns a URL date to publishDate', () => {
   assert.doesNotMatch(src, /data\.publishDate\s*=\s*urlDate/i);
   assert.doesNotMatch(src, /data\.dateSource\s*=\s*urlDate/i);
 });
+
+test('ingestGateDate: stored date wins, URL date fills in, a vetoed URL date is ignored, compact URL defers to a later byline', () => {
+  const { ingestGateDate } = require(path.join(ROOT, 'scripts', 'lib', 'publish-date-provenance.js'));
+  assert.equal(ingestGateDate({ publishDate: '2024-05-01', url: 'https://x.com/2020/01/02/a' }), '2024-05-01');
+  assert.equal(ingestGateDate({ url: 'https://x.com/2020/01/02/a' }), '2020-01-02');
+  assert.equal(ingestGateDate({ url: 'https://x.com/2020/01/02/a' }, { bylineVetoed: true }), null);
+  assert.equal(ingestGateDate({ url: 'https://x.com/2020/01/a' }), null);
+  assert.equal(ingestGateDate({}), null);
+});
+
+test('collector wires the gate through ingestGateDate', () => {
+  const src = fs.readFileSync(path.join(ROOT, 'scripts', 'collect-review-texts.js'), 'utf8');
+  assert.match(src, /const gateDate = ingestGateDate\(data, \{ bylineVetoed \}\)/);
+  assert.match(src, /isAnticipatoryPreviewPost\(\s*gateDate,/);
+});
