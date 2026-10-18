@@ -61,8 +61,8 @@ function appendWaltzAnchors(commercialShows, items, opts = {}) {
   for (const [slug, anchors] of bySlug) {
     const record = commercialShows?.[slug];
     if (!record) { out.noRecord.push(slug); continue; }
-    // A record with no history yet starts from its reported cost (legacy
-    // weeklyRunningCost + researched seeds). Without this, his first Reddit
+    // A record with no history yet starts from its reported cost (its
+    // legacy cost field + researched seeds). Without this, his first Reddit
     // anchor would replace that figure in costAnchors(), and hasCostAnchor()
     // would turn dated costs off for the shows that have a reported cost
     // (BRO-5604: 11 of 45 lost it).

@@ -11,6 +11,7 @@ const {
 const {
   waltzAnchor, appendWaltzAnchors, waltzJumpFlags, shouldAlertNoAnchors, castEventsFor,
 } = require('../../scripts/lib/waltz-cost-history');
+const { hasCostAnchor } = require('../../scripts/lib/cost-for-week');
 
 const post = (id, date, title = 'Grosses Analysis') => ({
   id, title, created_utc: Date.parse(date + 'T15:00:00Z') / 1000, permalink: `/r/Broadway/comments/${id}/x/`,
@@ -27,7 +28,7 @@ describe('costHistory anchors', () => {
   });
 
   it('dedupes by post id, so a re-run or a backfill never doubles an anchor', () => {
-    const shows = { wicked: { weeklyRunningCost: 1, costHistory: [] } };
+    const shows = { wicked: { costHistory: [] } };
     const items = [
       { slug: 'wicked', anchor: waltzAnchor(post('p1', '2026-01-26'), 850_000) },
       { slug: 'wicked', anchor: waltzAnchor(post('p2', '2026-02-02'), 900_000) },
@@ -38,6 +39,22 @@ describe('costHistory anchors', () => {
     assert.strictEqual(again.added, 0);
     assert.strictEqual(again.duplicates, 2);
     assert.strictEqual(shows.wicked.costHistory.length, 2, 'both dated figures survive');
+  });
+
+  it('BRO-5604: a trade-anchored record keeps hasCostAnchor after its first Waltz anchor', () => {
+    const record = {
+      weeklyRunningCost: 900_000,
+      costMethodology: 'trade-reported',
+      weeklyRunningCostSource: 'Variety, 2025-01-15',
+      sources: [{ type: 'trade', url: 'https://variety.com/x', date: '2025-01-15' }],
+    };
+    const show = { slug: 'x-show', openingDate: '2025-02-01' };
+    assert.strictEqual(hasCostAnchor(record, show), true, 'precondition: reported cost counts');
+    const res = appendWaltzAnchors({ 'x-show': record }, [{ slug: 'x-show', anchor: waltzAnchor(post('p1', '2025-03-03'), 910_000) }],
+      { apply: true, showsBySlug: { 'x-show': show } });
+    assert.strictEqual(res.added, 1);
+    assert.ok(record.costHistory.length >= 2, 'legacy anchor kept alongside the Reddit one');
+    assert.strictEqual(hasCostAnchor(record, show), true, 'dated costs must stay on');
   });
 
   it('does not touch records in dry-run and reports shows with no record', () => {
