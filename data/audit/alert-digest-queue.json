@@ -82,5 +82,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-18T07:58:02.073Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5396-dangling-syndication",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5396-dangling-syndication",
+    "description": "land.yml did not land land/bro-5396-dangling-syndication: the unit-tests-node gate went red at aee58e0524. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39107721118",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5396-dangling-syndication"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "aee58e0524558ff22f94e40a85e1ea9a30bc5d73"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39107721118"
+      }
+    ],
+    "queuedAt": "2026-10-18T08:07:50.064Z"
   }
 ]
