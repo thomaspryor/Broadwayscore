@@ -605,7 +605,7 @@ const OWE_VENUE_CONFIGS = [
  * Pure: no fetch, no IO. Fixture-testable.
  */
 const { foldDiacritics } = require('./title-match');
-const { ROMAN_NUMERALS } = require('./title-display-case');
+const { fixMisCasedRomanNumerals } = require('./title-display-case');
 const {
   parseOvationTixBundle,
   parseTribeEvents,
@@ -785,8 +785,7 @@ function extractByLink(doc, venue) {
  * Plain capitalising stored "Richard Ii" as the show title (BRO-4563).
  */
 function slugToTitle(slug) {
-  return slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
-    .replace(/\b[a-z]+\b/gi, w => (ROMAN_NUMERALS.has(w.toLowerCase()) ? w.toUpperCase() : w));
+  return fixMisCasedRomanNumerals(slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())).title;
 }
 
 /**
