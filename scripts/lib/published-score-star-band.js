@@ -30,6 +30,12 @@ function hasPrimaryRating(data) {
     || (typeof data.originalScore === 'number' && Number.isFinite(data.originalScore));
 }
 
+/** True when `score` is a human override or an adjudication: a verdict reached by reading the text, not a model output. */
+function isDeliberateVerdict(data, score) {
+  return (Number.isFinite(data.humanReviewScore) && data.humanReviewScore === score)
+    || (Number.isFinite(data.adjudicatedScore) && data.adjudicatedScore === score);
+}
+
 /** The bucket every model agreed on, from ensembleData.modelAgreement ("All 3 models agree: Rave"), or null. */
 function unanimousBucket(data) {
   const text = data && data.ensembleData && data.ensembleData.modelAgreement;
@@ -51,7 +57,10 @@ function publishedScoreViolation(data, score, { tol = DEFAULT_TOL, unanimousTol 
   if (band && (score < band.floor - tol || score > band.ceiling + tol)) {
     return { kind: 'star-band', score, floor: band.floor, ceiling: band.ceiling, detail: `star ${band.starsRaw} band ${band.floor}-${band.ceiling}` };
   }
-  const bucket = unanimousBucket(data);
+  // Model consensus is the only evidence when the outlet printed no rating of its own. A printed rating outranks it
+  // (BRO-4840: a 100 from "10/10" or a 40 from "2/5" is the critic's call, not a drift), and so does a verdict that
+  // read the text and chose the score on purpose (a human override or an adjudication).
+  const bucket = hasPrimaryRating(data) || isDeliberateVerdict(data, score) ? null : unanimousBucket(data);
   if (bucket) {
     const [lo, hi] = BUCKET_RANGES[bucket];
     if (score < lo - unanimousTol || score > hi + unanimousTol) {

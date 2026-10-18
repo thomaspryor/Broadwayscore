@@ -666,7 +666,7 @@ const SCORE_SOURCE_LABELS = Object.freeze([
   'llmScore-thumb-boosted',
 ]);
 
-function getBestScore(data, opts = {}) {
+function getBestScoreUnclamped(data, opts = {}) {
   const stats = opts.stats || {};
   const flagForHumanReview = opts.flagForHumanReview || (() => {});
   const inc = (key) => { stats[key] = (stats[key] || 0) + 1; };
@@ -684,10 +684,14 @@ function getBestScore(data, opts = {}) {
   // Default (undefined / false) is LOCKED — humanReviewScore is the final word,
   // which is the Rocky Horror 2026-04-23 Helen Shaw case the brief codifies.
   if (data.humanReviewScore && data.humanReviewScore >= 1 && data.humanReviewScore <= 100) {
-    if (data.humanReviewScoreProvisional !== true) {
+    // BRO-4840: star rule, never override outside the critic's own rating. A hand-set score that sits outside a
+    // high-reliability rating band is a partial-read mistake (14 live: a printed 3/5 shown as 100, a 5/5 as 42), so it
+    // does not win; the next precedence decides, and a genuinely wrong stored rating is corrected in the file instead.
+    const humanOutsideBand = !!publishedScoreViolation(data, data.humanReviewScore, { unanimousTol: Infinity });
+    if (data.humanReviewScoreProvisional !== true && !humanOutsideBand) {
       return { score: data.humanReviewScore, source: 'human-review' };
     }
-    inc('humanReviewScoreProvisionalSkipped');
+    inc(humanOutsideBand ? 'humanReviewScoreOutsideStarBandSkipped' : 'humanReviewScoreProvisionalSkipped');
   }
 
   // P0a: Adjudicated score (LLM re-evaluation of flagged reviews — beats LLM but not human)
@@ -1436,6 +1440,27 @@ function isPlaceholderAssignedScore(data) {
   if (data.ensembleData || data.scoreSource || data.originalScore) return false;
   if (data.llmScore && data.llmScore.score === 50) return false;
   return true;
+}
+
+/**
+ * The published score for a review file. getBestScoreUnclamped picks it by precedence; this wrapper is the last line
+ * of the star rule (BRO-4840): a score that came from a MODEL (anchored/unanchored LLM, a stale-flag fall-through, the
+ * raw assignedScore) and lands outside the critic's own high-reliability rating band is pulled to the nearest edge of
+ * that band. A deliberate verdict (adjudication, human override) is not touched here: those are guarded where they are
+ * chosen, and an adjudication that read the text and disputed the rating stands. The review is also queued for a
+ * band-anchored rescore by the drain (rescoreFixesBandContradiction), which replaces the clamp with a real read.
+ */
+const MODEL_SCORE_SOURCES_NOT_CLAMPED = new Set(['human-review', 'adjudicated']);
+function getBestScore(data, opts = {}) {
+  const result = getBestScoreUnclamped(data, opts);
+  if (!result || MODEL_SCORE_SOURCES_NOT_CLAMPED.has(result.source)) return result;
+  const v = publishedScoreViolation(data, result.score, { unanimousTol: Infinity });
+  if (!v || v.kind !== 'star-band') return result;
+  const clamped = Math.min(v.ceiling, Math.max(v.floor, result.score));
+  if (clamped === result.score) return result;
+  const stats = opts.stats || {};
+  stats.scoreClampedToStarBand = (stats.scoreClampedToStarBand || 0) + 1;
+  return { ...result, score: clamped };
 }
 
 module.exports = {

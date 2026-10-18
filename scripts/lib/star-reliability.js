@@ -227,6 +227,30 @@ const LETTER_GRADE_BANDS = {
   'F':  [0,  28],
 };
 
+// Outlets that print a letter grade on every review (EW's "Grade: B+", Culture Sauce's "Grade: B–"). Any other outlet's
+// letter is believed only when its own text prints it (BRO-4840: Bloomberg, NYTG and HuffPost "D"/"A" came from
+// extractors reading "grade-A spoilsport" or a stray capital, and pinned a band the critic never gave).
+const LETTER_GRADE_OUTLETS = new Set(['ew', 'culturesauce']);
+const normGrade = (g) => String(g).trim().replace(/[\u2013\u2014\u2212]/g, '-').toUpperCase();
+
+/** Grades the article text prints as "Grade: B+" (case-sensitive letter, so "grade-A spoilsport" never matches). */
+function printedLetterGrades(data) {
+  const text = String((data && (data.fullText || data.excerpt)) || '');
+  return [...text.matchAll(/\b[Gg]rade\s*:?\s*\**\s*([A-DF][+\-\u2013\u2212]?)(?![A-Za-z])/g)].map(m => normGrade(m[1]));
+}
+
+/**
+ * Is this letter grade the outlet's own rating? A grade-printing outlet is believed unless its text prints a
+ * different grade (EW multi-grade reviews and stale extractions); any other outlet needs its text to print the grade.
+ */
+function letterGradeCredible(data, grade) {
+  const printed = printedLetterGrades(data);
+  const g = normGrade(grade);
+  if (printed.includes(g)) return true;
+  if (!LETTER_GRADE_OUTLETS.has(data.outletId)) return false;
+  return printed.length === 0;
+}
+
 function detectBandFromReviewFile(data) {
   if (!data) return null;
 
@@ -288,7 +312,7 @@ function detectBandFromReviewFile(data) {
       const grade = Object.keys(LETTER_GRADE_BANDS).find(g => v >= LETTER_GRADE_BANDS[g][0] && v <= LETTER_GRADE_BANDS[g][1]);
       if (grade) {
         const [floor, ceiling] = LETTER_GRADE_BANDS[grade];
-        return { band: { fraction: -1, floor, ceiling }, starsRaw: raw, kind: 'letter-grade', highReliability: isHighReliabilityStar(data) };
+        return { band: { fraction: -1, floor, ceiling }, starsRaw: raw, kind: 'letter-grade', highReliability: isHighReliabilityStar(data) && letterGradeCredible(data, grade) };
       }
       pct = null;
     }
@@ -332,7 +356,7 @@ function detectBandFromReviewFile(data) {
           band: { fraction: -1, floor: range[0], ceiling: range[1] },
           starsRaw: raw,
           kind: 'letter-grade',
-          highReliability: isHighReliabilityStar(data),
+          highReliability: isHighReliabilityStar(data) && letterGradeCredible(data, grade),
         };
       }
     }
@@ -387,6 +411,8 @@ module.exports = {
   ANCHORED_MARKETS,
   GENERIC_PATTERN_STAR_SOURCES,
   isHighReliabilityStar,
+  letterGradeCredible,
+  printedLetterGrades,
   isGenericPatternStar,
   isUncorroboratedGenericStar,
   adjudicationSidedWithStars,
