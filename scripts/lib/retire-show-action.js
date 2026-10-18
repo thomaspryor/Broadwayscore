@@ -138,6 +138,7 @@ function applyRetireShow(shows, action, { retire, now, reviewCount, isRetired } 
   // the row; the registry entry and archive from the first retirement stay as they are.
   if (a.reMinted !== undefined && a.reMinted !== true) return { ok: false, reason: `retire-show ${a.id}: reMinted must be true when present` };
   if (a.reMinted === true) {
+    if (a.blockTitleVenue === true) return { ok: false, reason: `retire-show ${a.id}: reMinted removes only the row; blockTitleVenue needs a fresh retirement` };
     const registry = require('./retired-show-ids');
     const held = typeof isRetired === 'function' ? isRetired(a.id) : registry.isRetiredId(a.id);
     if (!held) return { ok: false, reason: `retire-show ${a.id}: reMinted names an id the retired registry does not hold` };

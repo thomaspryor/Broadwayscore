@@ -23,6 +23,8 @@ const fs = require('fs');
 const path = require('path');
 const { JSDOM } = require('jsdom');
 const { slugify, checkForDuplicate } = require('./lib/deduplication');
+// A retired id must not be re-minted (BRO-5557).
+const { matchesRetired } = require('./lib/retired-show-ids');
 const { validateVenue } = require('./lib/broadway-theaters');
 const { sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { classifyShow } = require('./lib/classify-show');
@@ -591,6 +593,12 @@ async function discoverHistoricalShows() {
   if (!dryRun) {
     // Add new shows to database
     for (const show of newShows) {
+      // venue-write-guard-ok: read-only probe of the retired registry, nothing is written to a venue field
+      const retiredHit = matchesRetired({ id: show.id, title: show.title, venue: show.venue });
+      if (retiredHit) {
+        console.log(`⏭️  Skipping ${show.id}: matches retired ${retiredHit.id} by ${retiredHit.matchedBy} (data/retired-show-ids.json)`);
+        continue;
+      }
       const tags = ['historical'];
       if (show.isRevival) tags.push('revival');
 

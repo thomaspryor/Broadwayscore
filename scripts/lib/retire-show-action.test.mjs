@@ -183,3 +183,11 @@ test('reMinted refuses an id the registry does not hold, a non-provisional row, 
   assert.match(applyRetireShow(shows, { id: 'y-off-west-end-2026', expectTitle: 'Y', reason: 'r', reMinted: 'yes' }, { isRetired: () => true }).reason, /reMinted must be true/);
   assert.equal(shows.length, 2);
 });
+
+test('reMinted with blockTitleVenue is refused: a re-minted row needs no new title+venue block', () => {
+  const shows = [row('q-off-west-end-2026', 'Q')];
+  const r = applyRetireShow(shows, { id: 'q-off-west-end-2026', expectTitle: 'Q', reason: 'r', reMinted: true, blockTitleVenue: true }, { isRetired: () => true });
+  assert.equal(r.ok, false);
+  assert.match(r.reason, /blockTitleVenue/);
+  assert.equal(shows.length, 1);
+});

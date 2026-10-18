@@ -69,7 +69,7 @@ function marketShapeProblem(shows, show) {
   return null;
 }
 
-function applyAddShow(shows, action) {
+function applyAddShow(shows, action, { isRetired } = {}) {
   const show = action && action.show;
   if (!show || typeof show !== 'object') return { ok: false, reason: 'add-show: missing show object' };
   for (const f of REQUIRED) if (!show[f]) return { ok: false, reason: `add-show: missing required field "${f}"` };
@@ -82,6 +82,9 @@ function applyAddShow(shows, action) {
   if (shape) return { ok: false, reason: shape };
   if (sanitizeVenueForWrite(show.venue) === null) return { ok: false, reason: `add-show: venue "${show.venue}" is a placeholder` };
   if (shows.some(s => s.id === show.id)) return { ok: false, reason: `add-show: id "${show.id}" already exists` };
+  // A retired id comes back only after an explicit unretire (BRO-5557: promoters re-minted retired rows).
+  const retired = typeof isRetired === 'function' ? isRetired(show.id) : require('./retired-show-ids').isRetiredId(show.id);
+  if (retired) return { ok: false, reason: `add-show: id "${show.id}" is in the retired-show registry (data/retired-show-ids.json); unretire it first if this is a deliberate re-add` };
   if (shows.some(s => s.slug === show.slug)) return { ok: false, reason: `add-show: slug "${show.slug}" already exists` };
 
   let from = null;

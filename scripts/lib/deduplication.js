@@ -819,18 +819,19 @@ function isSameSubtitleTail(titleA, titleB) {
   const split = (t) => {
     const str = String(t || '');
     const i = str.indexOf(':');
-    return i < 0 ? null : { head: colonSegmentKey(str.slice(0, i)), tail: colonSegmentKey(str.slice(i + 1)) };
+    return i < 0 ? null : { raw: str.slice(0, i).replace(/[\u2018\u2019]/g, "'").trim(), head: colonSegmentKey(str.slice(0, i)), tail: colonSegmentKey(str.slice(i + 1)) };
   };
   const a = split(titleA);
   const b = split(titleB);
   if (!a || !b || a.tail.replace(/ /g, '').length < 12 || a.tail !== b.tail || a.head === b.head) return false;
   const wa = a.head.split(' ').filter(w => w && w !== 'and');
   const wb = b.head.split(' ').filter(w => w && w !== 'and');
-  const [few, many] = wa.length <= wb.length ? [wa, wb] : [wb, wa];
-  // A credit list grows at the END ("A" -> "A & B"); "Grown-Up Nights: Jim
-  // Henson's Fraggle Rock" vs "Jim Henson's Fraggle Rock" is a prefix, a
-  // different engagement, and must stay apart.
-  return few.length >= 2 && few.every((w, i) => many[i] === w);
+  const [few, many, fewRaw, manyRaw] = wa.length <= wb.length ? [wa, wb, a.raw, b.raw] : [wb, wa, b.raw, a.raw];
+  if (!(few.length >= 2 && few.every((w, i) => many[i] === w))) return false;
+  // The extra words must be ADDED credits ("A" -> "A & B", "A, B", "A + B"), not more of
+  // the title: "National Theatre Live" vs "National Theatre Live Encore" is a different engagement.
+  const escaped = fewRaw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp('^' + escaped + '\\s*(?:&|\\+|,|\\band\\b)', 'i').test(manyRaw);
 }
 
 // Double-bill / pairing separators: " / " (spaced or not), " & ", " and ".

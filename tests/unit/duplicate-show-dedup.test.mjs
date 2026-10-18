@@ -81,6 +81,11 @@ test('isSameSubtitleTail: a different credit list before one distinctive subtitl
   assert.equal(isSameSubtitleTail('Jack and the Beanstalk - Theatre on Kew', 'The Wind in the Willows - Theatre on Kew'), false);
   // a prefixed special engagement of the same show is not a credit-list extension (New Victory Fraggle Rock)
   assert.equal(isSameSubtitleTail('Jim Henson\'s Fraggle Rock: Back to the Rock Live', 'Grown-Up Nights: Jim Henson\'s Fraggle Rock: Back to the Rock Live'), false);
+  // an Encore / extra word in the head is a different engagement, not an added credit
+  assert.equal(isSameSubtitleTail('National Theatre Live: Hamlet Prince of Denmark', 'National Theatre Live Encore: Hamlet Prince of Denmark'), false);
+  // ", " and "+" join credits like "&"
+  assert.equal(isSameSubtitleTail('Ana Maria Lopez: A Long Distinct Subtitle', 'Ana Maria Lopez, Joe Smith: A Long Distinct Subtitle'), true);
+  assert.equal(isSameSubtitleTail('Ana Maria Lopez: A Long Distinct Subtitle', 'Ana Maria Lopez + Joe Smith: A Long Distinct Subtitle'), true);
   // two unrelated acts sharing a tagline are not a credit-list extension
   assert.equal(isSameSubtitleTail('Ballet Alpha: A Night of Dance and Music', 'Company Beta: A Night of Dance and Music'), false);
   assert.equal(isSameSubtitleTail('Il Cimento dell\'Armonia', b), false, 'needs a separator on both sides');
