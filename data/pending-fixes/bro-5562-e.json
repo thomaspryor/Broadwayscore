@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5562-e",
   "planId": "27729911-cfb0-4110-a2f8-d7a43a269b7a",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-18T00:42:14.868Z",
   "submitter": {
     "name": null,
@@ -33,5 +33,18 @@
         "description": "proof: drop the attribution that names no source."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-18T01:33:04.994Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for proof"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for proof"
+    }
+  ]
 }
