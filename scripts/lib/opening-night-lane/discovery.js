@@ -229,9 +229,11 @@ function writtenDay(raw) {
   const mo = rfc ? MONTHS.indexOf(rfc[2].toLowerCase()) : -1;
   return mo < 0 ? null : `${rfc[3]}-${String(mo + 1).padStart(2, '0')}-${String(rfc[1]).padStart(2, '0')}`;
 }
-function feedDateInfo(raw, { atom }) {
+function feedDateInfo(raw, { atom, published }) {
   const text = String(raw || '').trim();
   if (!text) return { publishDate: null, fallbackDate: null, needsDate: true };
+  // Atom <updated> is the last edit: the day the entry was PUBLISHED, when it says, is the better fallback.
+  if (atom && published) return { publishDate: null, fallbackDate: writtenDay(published) || writtenDay(text), needsDate: true };
   if (!atom && ZONE_SUFFIX.test(text) && !Number.isNaN(Date.parse(text))) return { publishDate: new Date(text).toISOString(), fallbackDate: null, needsDate: false };
   return { publishDate: null, fallbackDate: writtenDay(text), needsDate: true };
 }
@@ -246,7 +248,7 @@ function parseFeedEntries(xml) {
     const grab = (tag) => (block.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`, 'i')) || [])[1];
     const raw = atom ? (grab('updated') || grab('published')) : (grab('pubDate') || grab('dc:date'));
     const onlyPublished = atom && !grab('updated');
-    if (link) dates.set(link, onlyPublished ? { ...feedDateInfo(raw, { atom: false }) } : feedDateInfo(raw, { atom }));
+    if (link) dates.set(link, onlyPublished ? { ...feedDateInfo(raw, { atom: false }) } : feedDateInfo(raw, { atom, published: atom ? grab('published') : undefined }));
   }
   return parseFeedItems(text).map((it) => ({ ...it, date: dates.get(it.link) || feedDateInfo('', { atom }) }));
 }
@@ -298,6 +300,9 @@ function showScoreAdapter({ urlMap = {}, allShows = [] } = {}) {
     name: 'show-score', kind: 'aggregator', phase: 'cheap',
     async discover({ show, fetchText }) {
       const ss = require('../show-score-discover');
+      // Without the curated map or the full show list the same-title guards are off, and a revival's constructed URL can be
+      // its predecessor's page (these links are admitted with no date check). Refuse rather than guess.
+      if (!(urlMap && urlMap[show.id]) && !(allShows && allShows.length)) return [];
       const page = ss.showScoreUrlForShow(show, urlMap, allShows);
       if (!page) return [];
       // fetchAllShowScoreReviewUrls swallows fetch errors; keep the first one so an outage is reported, not read as "no reviews".
@@ -313,11 +318,16 @@ function showScoreAdapter({ urlMap = {}, allShows = [] } = {}) {
 function playbillVerdictAdapter() {
   return {
     name: 'playbill-verdict', kind: 'aggregator', phase: 'cheap',
-    async discover({ show, fetchText }) {
+    async discover({ show, night, fetchText, timeZone }) {
       const { searchPlaybillVerdict } = require('../playbill-verdict-discover');
       const hit = await searchPlaybillVerdict(show, { fetchHtml: (u) => fetchText(u) });
       if (!hit) return [];
-      return extractCitedLinks(await fetchText(hit.articleUrl), hit.articleUrl).map((l) => ({ url: l.url, fetchUrl: l.rawUrl, title: l.text, source: 'aggregator', aggregatorCited: true, via: hit.articleUrl }));
+      const html = await fetchText(hit.articleUrl);
+      // The title match is loose ("Hamlet"), and a roundup's links are admitted with no per-link date check: the roundup itself
+      // has to be dated inside opening night +/- 1 day.
+      const when = extractPublishDate(html);
+      if (!when || !admitLaneCandidate({ source: 'outlet-index', aggregatorCited: false, publishDate: when, night, ...(timeZone ? { timeZone } : {}) }).admit) return [];
+      return extractCitedLinks(html, hit.articleUrl).map((l) => ({ url: l.url, fetchUrl: l.rawUrl, title: l.text, source: 'aggregator', aggregatorCited: true, via: hit.articleUrl }));
     },
   };
 }
@@ -519,7 +529,7 @@ async function runDiscoveryPass({
 
   for (const a of adapters.filter((x) => x.phase !== 'serp')) {
     if (overDeadline()) { deadlineHit = true; break; }
-    try { collect(await a.discover({ show, night, fetchText }), a.name); } catch (e) {
+    try { collect(await a.discover({ show, night, fetchText, timeZone }), a.name); } catch (e) {
       errors.push({ adapter: a.name, error: String((e && e.message) || e).slice(0, 200) });
     }
   }
@@ -569,6 +579,8 @@ async function runDiscoveryPass({
       dateChecks++;
       try { publishDate = extractPublishDate(await fetchText(c.fetchUrl || c.url)) || c.fallbackDate || null; } catch (e) {
         errors.push({ adapter: c.adapter, error: `date check ${c.url}: ${String((e && e.message) || e).slice(0, 150)}` });
+        // A timeout or the pass deadline says nothing about the article: no strike (three strikes end the candidate for the night).
+        if (/timed out|deadline reached/.test(String(e && e.message))) { deferredDateChecks.push(c.url); continue; }
         const prev = memo.rejected[key] || { attempts: 0 };
         memo.rejected[key] = { reason: 'date-check-failed', attempts: prev.attempts + 1 };
         deferredDateChecks.push(c.url);

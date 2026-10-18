@@ -41,7 +41,7 @@ function loadDone(ledgerDir, show, night, onDiskUrls = []) {
  *   fetchReview(candidate) -> {outletId?, outlet, criticName, fullText, aggregator?, publishDate?}   (throws to retry)
  *   scoreReview(row, fetched) -> number | {score, extra}   (called only for rows without a fallback score; `extra` fields are merged into the row)
  *   publishPorts {updateReviews, regenShow, deploy, fetchLiveShow, pushData?, isLeased?} OR makePublishPorts(clock),
- *   missingOutlets? (T1/T2 outlet ids still missing, or a function returning them; gates the SERP phase),
+ *   missingOutlets? (T1/T2 outlet ids still missing, or a function of {seen} returning them, so captured outlets stop being searched; gates the SERP phase),
  *   reviewTextsDir? (persist scored rows before marking done, also in a dry-run sandbox),
  *   dryRun?, onDiskUrls?, now() -> ms, wait(ms) -> Promise, forkClock?(startMs) -> {now, wait},
  *   latency {fetchMs, scoreMs}, passIntervalMs, maxPasses, windowMs (how long the lane runs), startedAt?, publishTimeoutMs, pollMs
@@ -105,7 +105,7 @@ async function runLaneNight({
   for (; passes < maxPasses && now() - t0 < windowMs; passes++) {
     if (shouldStop()) { stopped = true; break; }
     const pass = await discovery.runDiscoveryPass({ show, night, now: now(), startedAt: t0, adapters, fetchText, seen, memo, timeZone,
-      missingOutlets: typeof missingOutlets === 'function' ? missingOutlets() : missingOutlets });
+      missingOutlets: typeof missingOutlets === 'function' ? missingOutlets({ seen }) : missingOutlets });
     errors.push(...pass.errors);
     const stamp = now();
     discovery.recordDiscovered(ledgerDir, { show: show.id, night, admitted: pass.admitted, now: stamp });

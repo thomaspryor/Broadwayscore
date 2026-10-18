@@ -92,9 +92,19 @@ function onDiskUrlsFor(reviewsFile, showId) {
   try { return JSON.parse(fs.readFileSync(reviewsFile, 'utf8')).reviews.filter((r) => r && r.showId === showId && r.url).map((r) => r.url); } catch { return []; }
 }
 
+/** Show Score's same-title guards need the curated URL map and every show; without them the adapter refuses to run. */
+function showScoreGuards(repoDir) {
+  const ss = require('../show-score-discover');
+  let allShows = [];
+  try { allShows = JSON.parse(fs.readFileSync(path.join(repoDir, 'data', 'shows.json'), 'utf8')); allShows = Array.isArray(allShows) ? allShows : allShows.shows || []; } catch { /* guards stay off: the adapter refuses */ }
+  return { urlMap: ss.loadShowScoreUrlMap(repoDir), allShows };
+}
+
 /** Site-restricted web search through the shared SERP chain (Bright Data, then ScrapingBee). Required lazily: it is only used after +3h. */
 function realSerpSearch(env) {
   return async (query) => {
+    // serpQuery returns nothing when no key is set; that must read as a failure, not as "no results".
+    if (!env.BRIGHTDATA_TOKEN && !env.SCRAPINGBEE_API_KEY) throw new Error('SERP: no BRIGHTDATA_TOKEN or SCRAPINGBEE_API_KEY');
     const { serpQuery } = require('../url-discovery');
     return (await serpQuery(query, { nbResults: 10, brightDataKey: env.BRIGHTDATA_TOKEN, scrapingBeeKey: env.SCRAPINGBEE_API_KEY, log: () => {} })) || [];
   };
@@ -142,12 +152,17 @@ function buildRealLaneDeps({
         ...(Number(process.env.OPENING_NIGHT_LANE_WINDOW_MIN) > 0 ? { windowMs: Number(process.env.OPENING_NIGHT_LANE_WINDOW_MIN) * 60 * 1000 } : {}),
         reviewTextsDir: path.join(repoDir, 'data', 'review-texts'),
         adapters: [
-          discovery.bwwRoundupAdapter(), discovery.dtliAdapter(), discovery.showScoreAdapter(), discovery.playbillVerdictAdapter(),
+          discovery.bwwRoundupAdapter(), discovery.dtliAdapter(), discovery.showScoreAdapter(showScoreGuards(repoDir)), discovery.playbillVerdictAdapter(),
           discovery.talkinBroadwayAdapter(), discovery.googleNewsAdapter(),
           discovery.rssAdapter({ feeds: adaptersConfig.feeds || [] }), discovery.sectionIndexAdapter({ outlets: adaptersConfig.outlets || [] }),
           discovery.serpAdapter({ search: adaptersConfig.search || realSerpSearch(env) }),
         ],
-        missingOutlets: adaptersConfig.missingOutlets || [],
+        // Outlets already captured (any seen URL resolving to them) drop out, so SERP stops searching for them.
+        missingOutlets: ({ seen }) => {
+          const { resolveOutletFromUrl } = require('../review-normalization');
+          const have = new Set([...seen].map((u) => (resolveOutletFromUrl(u) || {}).outletId).filter(Boolean));
+          return (adaptersConfig.missingOutlets || []).filter((id) => !have.has(id));
+        },
         fetchReview: scoring.fetchReview, scoreReview: scoring.scoreReview,
         // One instance for the whole night: its push queue and pending merges must be shared by every batch.
         publishPorts: createRealPublishPorts({ show: show.id, repoDir, coreDir, holder }),

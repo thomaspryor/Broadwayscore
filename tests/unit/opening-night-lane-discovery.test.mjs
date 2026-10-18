@@ -359,11 +359,14 @@ const passWith = (adapters, map, extra = {}) => d.runDiscoveryPass({ show: SHOW,
 test('Show Score adapter: "Read more" tiles are aggregator claims, known outlets only, a dead page is an error not an empty result', async () => {
   const page = 'https://www.show-score.com/broadway-shows/other-desert-cities';
   const tiles = `<a href="${NYT_RAW}">Read more</a><a href="https://www.show-score.com/member/x">Read more</a><a href="https://some-unknown-blog.example.com/odc-review">Read more</a>`;
-  const r = await passWith([d.showScoreAdapter()], { [page]: tiles }, { show: { ...SHOW, category: 'broadway' } });
+  const r = await passWith([d.showScoreAdapter({ allShows: [{ id: 'x' }] })], { [page]: tiles }, { show: { ...SHOW, category: 'broadway' } });
   assert.deepEqual(r.admitted.map((a) => a.key), [NYT]);
   assert.equal(r.admitted[0].source, 'aggregator');
   assert.deepEqual(r.unknownHosts, ['some-unknown-blog.example.com']);
-  const dead = await passWith([d.showScoreAdapter()], {}, { show: { ...SHOW, category: 'broadway' } });
+  const unguarded = pages({ [page]: tiles });
+  assert.equal((await d.runDiscoveryPass({ show: { ...SHOW, category: 'broadway' }, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0, adapters: [d.showScoreAdapter()], ...unguarded })).admitted.length, 0, 'no same-title guards, no run');
+  assert.equal(unguarded.calls.length, 0);
+  const dead = await passWith([d.showScoreAdapter({ allShows: [{ id: 'x' }] })], {}, { show: { ...SHOW, category: 'broadway' } });
   assert.equal(dead.admitted.length, 0);
   assert.equal(dead.errors.length, 1, 'an outage is reported');
   assert.ok(d.NON_REVIEW_HOSTS.includes('show-score.com'), 'the real Show Score host is excluded from cited links');
@@ -371,10 +374,14 @@ test('Show Score adapter: "Read more" tiles are aggregator claims, known outlets
 
 test('Playbill Verdict adapter: category page to this show\'s roundup to the links it cites', async () => {
   const cat = `<a href="/article/read-the-reviews-for-other-desert-cities">Read the Reviews for Other Desert Cities</a><a href="/article/read-the-reviews-for-something-else">Something Else</a>`;
-  const art = `<html><body><article><a href="${NYT_RAW}">NYT</a><a href="https://www.playbill.com/shows">shows</a></article></body></html>`;
+  const art = `<html><head><meta property="article:published_time" content="2026-10-19T10:00:00Z"></head><body><article><a href="${NYT_RAW}">NYT</a><a href="https://www.playbill.com/shows">shows</a></article></body></html>`;
   const map = { 'https://playbill.com/category/the-verdict': cat, 'https://playbill.com/article/read-the-reviews-for-other-desert-cities': art };
   const r = await passWith([d.playbillVerdictAdapter()], map);
   assert.deepEqual(r.admitted.map((a) => a.key), [NYT]);
+  const undated = { ...map, 'https://playbill.com/article/read-the-reviews-for-other-desert-cities': art.replace(/<meta[^>]*>/, '') };
+  assert.equal((await passWith([d.playbillVerdictAdapter()], undated)).admitted.length, 0, 'an undated roundup is not trusted');
+  const old = { ...map, 'https://playbill.com/article/read-the-reviews-for-other-desert-cities': art.replace('2026-10-19', '2019-03-02') };
+  assert.equal((await passWith([d.playbillVerdictAdapter()], old)).admitted.length, 0, 'a roundup from another run is not trusted');
   assert.equal((await passWith([d.playbillVerdictAdapter()], { 'https://playbill.com/category/the-verdict': '<a href="/article/read-the-reviews-for-something-else">Something Else</a>' })).admitted.length, 0);
 });
 
@@ -473,7 +480,7 @@ test('feed dates: a zoneless RSS date and an Atom <updated> are confirmed agains
   const atom = `<feed><entry><title>Review: Other Desert Cities</title><link rel="alternate" href="${VARIETY_RAW}"/><updated>2026-10-19T03:00:00Z</updated><published>2026-09-01T00:00:00Z</published></entry></feed>`;
   const a = d.parseFeedEntries(atom)[0];
   assert.equal(a.date.needsDate, true);
-  assert.equal(a.date.fallbackDate, '2026-10-19');
+  assert.equal(a.date.fallbackDate, '2026-09-01', 'the published day is the fallback, not the edit day');
   const onlyPublished = d.parseFeedEntries(atom.replace(/<updated>.*?<\/updated>/, ''))[0];
   assert.equal(onlyPublished.date.publishDate, '2026-09-01T00:00:00.000Z');
 });
@@ -510,4 +517,16 @@ test('lane runner: persists the memo each pass and calls recordDiscovered (resta
   await runLaneNight(second).catch(() => {});
   assert.ok(!second.calls.includes(GUARDIAN_RAW), 'the restarted lane did not re-fetch the final rejection');
   assert.ok(d.loadSeen(dir, SHOW.id, NIGHT).size > 0, 'recordDiscovered wrote to the ledger');
+});
+
+test('a timed-out date check is deferred without a strike, so a slow outlet is not lost for the night', async () => {
+  const memo = { rejected: {} };
+  const feeds = [{ url: 'https://variety.com/feed', name: 'Variety', outletId: 'variety' }];
+  const zoneless = `<rss><channel><item><title>Review: Other Desert Cities</title><link>${VARIETY_RAW}</link><pubDate>Mon, 19 Oct 2026 03:00:00</pubDate></item></channel></rss>`;
+  for (let i = 0; i < 5; i++) {
+    const r = await passWith([d.rssAdapter({ feeds })], { 'https://variety.com/feed': zoneless, [VARIETY_RAW]: new Error('fetch timed out after 15000ms: x') }, { memo });
+    assert.equal(r.deferredDateChecks.length, 1);
+  }
+  const ok = await passWith([d.rssAdapter({ feeds })], { 'https://variety.com/feed': zoneless, [VARIETY_RAW]: '<p>x</p>' }, { memo });
+  assert.equal(ok.admitted.length, 1, 'still admitted after five timeouts');
 });
