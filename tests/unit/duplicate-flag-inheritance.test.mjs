@@ -135,3 +135,34 @@ describe('duplicateOfInheritedFlag', () => {
     assert.equal(duplicateOfInheritedFlag(aData, refDataClean), null);
   });
 });
+
+describe('duplicateOfInheritedFlag: different-article twins (BRO-5501)', () => {
+  const { textsConfirmedDifferent } = require('../../scripts/lib/review-guards.js');
+  const words = (seed, n) => Array.from({ length: n }, (_, i) => `${seed}${(i * 7919) % 997}`).join(' ');
+  const standard = words('alpha', 300);
+  const other2024 = words('omega', 300);
+
+  test('distinct article under a flagged twin → no inheritance', () => {
+    const a = basePayload({ duplicateOf: 'twin.json', fullText: standard });
+    const ref = basePayload({ wrongProduction: true, fullText: other2024 });
+    assert.equal(duplicateOfInheritedFlag(a, ref), null);
+  });
+
+  test('same article with a scrape prefix still inherits', () => {
+    const a = basePayload({ duplicateOf: 'twin.json', fullText: `${words('widget', 80)} ${other2024}` });
+    const ref = basePayload({ wrongProduction: true, fullText: other2024 });
+    assert.equal(duplicateOfInheritedFlag(a, ref), 'wrongProduction');
+  });
+
+  test('truncated copy of the twin still inherits', () => {
+    const a = basePayload({ duplicateOf: 'twin.json', fullText: other2024.split(' ').slice(0, 120).join(' ') });
+    const ref = basePayload({ wrongProduction: true, fullText: other2024 });
+    assert.equal(duplicateOfInheritedFlag(a, ref), 'wrongProduction');
+  });
+
+  test('missing or short text stays conservative (inherits)', () => {
+    const ref = basePayload({ wrongProduction: true, fullText: other2024 });
+    assert.equal(duplicateOfInheritedFlag(basePayload({ duplicateOf: 'twin.json', fullText: '' }), ref), 'wrongProduction');
+    assert.equal(textsConfirmedDifferent('too short', other2024), false);
+  });
+});

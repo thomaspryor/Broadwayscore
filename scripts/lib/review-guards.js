@@ -5286,16 +5286,49 @@ function isIncludableForRebuild(data, show, filePath, opts) {
  * @returns {string|null} the flag reason inherited from refData
  *   ('wrongShow'|'wrongProduction'|'nonReview'), or null when nothing should
  *   be inherited (no content-wrongness flag on refData, or data carries the
- *   explicit clear breadcrumb)
+ *   explicit clear breadcrumb, or the two texts are confirmed different
+ *   articles per textsConfirmedDifferent)
  */
 function duplicateOfInheritedFlag(data, refData, show, refPath) {
   if (!data || !refData) return null;
   if (data.duplicateOfFlagInheritanceCleared === true) return null;
+  // BRO-5501: a duplicateOf pointer wrongly set on a DIFFERENT review (the 2026
+  // West End Evening Standard review pointed at a flagged 2024 file) must not
+  // inherit the twin's flag. Only a confirmed text mismatch opts out.
+  if (textsConfirmedDifferent(data.fullText, refData.fullText)) return null;
   const refReason = explainExclusion(refData, show, refPath);
   if (refReason === 'wrongShow' || refReason === 'wrongProduction' || refReason === 'nonReview') {
     return refReason;
   }
   return null;
+}
+
+/**
+ * True only when two stored texts are confirmed to be DIFFERENT articles.
+ * Samples evenly spaced 8-word runs from the shorter text and counts how many
+ * appear in the longer; under 20% found means a different article. A scrape
+ * prefix, ads or a truncated copy still leave most runs matching, so those
+ * stay "same". Short or missing text (under 60 words) returns false, which
+ * keeps inheritance as it was.
+ */
+function textsConfirmedDifferent(textA, textB) {
+  const words = (t) => String(t || '').toLowerCase().normalize('NFKD')
+    .replace(/[‘’']/g, '').replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(Boolean);
+  const a = words(textA);
+  const b = words(textB);
+  const N = 8;
+  const SAMPLES = 16;
+  if (a.length < 60 || b.length < 60) return false;
+  const [short, long] = a.length <= b.length ? [a, b] : [b, a];
+  const hay = ` ${long.join(' ')} `;
+  const step = Math.max(1, Math.floor((short.length - N) / (SAMPLES - 1)));
+  let hit = 0;
+  let tot = 0;
+  for (let i = 0; i + N <= short.length && tot < SAMPLES; i += step) {
+    tot++;
+    if (hay.includes(` ${short.slice(i, i + N).join(' ')} `)) hit++;
+  }
+  return tot > 0 && hit / tot < 0.2;
 }
 
 /**
@@ -6072,6 +6105,7 @@ module.exports = {
   bodylessCorroboratedByProduction,
   explainExclusion,
   duplicateOfInheritedFlag,
+  textsConfirmedDifferent,
   hasStructuralStarScore,
   hasIndependentExcerptScore,
   isDefiniteThumb,

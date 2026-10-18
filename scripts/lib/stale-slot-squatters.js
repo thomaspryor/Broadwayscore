@@ -22,8 +22,8 @@
  */
 
 const { toDateMs } = require('./date-utils');
-const { foldDiacritics } = require('./title-match');
 const guards = require('./review-guards');
+const { textsConfirmedDifferent } = guards;
 
 const DAY_MS = 86400000;
 const MIN_REVIEW_CHARS = 400;
@@ -42,10 +42,6 @@ function wrongContentFlag(d) {
   return null;
 }
 
-function textKey(d) {
-  return foldDiacritics(String((d && d.fullText) || '')).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().slice(0, 300);
-}
-
 /** files: [{file, data}] of ONE show folder. */
 function findDroppedByWrongTwin(files) {
   const byName = new Map(files.map((f) => [f.file, f.data]));
@@ -62,9 +58,9 @@ function findDroppedByWrongTwin(files) {
       // Circular pair with different text: the rebuild keeps both (no inheritance).
       if (twin.duplicateOf === file || twin.duplicateTextOf === file) continue;
       if (String(data.fullText || '').length < MIN_REVIEW_CHARS) continue;
-      const a = textKey(data);
-      const b = textKey(twin);
-      if (a && b && a === b) continue; // a true second copy of the bad text
+      // Same test the rebuild uses to decide whether to inherit the twin's flag,
+      // so this audit and the rebuild cannot disagree (BRO-5501).
+      if (!textsConfirmedDifferent(data.fullText, twin.fullText)) continue;
       out.push({ kind: 'dropped-by-wrong-twin', file, field, twin: ptr, twinFlag: flag });
     }
   }
