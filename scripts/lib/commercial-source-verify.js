@@ -35,15 +35,11 @@ function tidyQuote(text, from, to) {
 
 /**
  * True when the figure's year is `year`: the last year earlier in the figure's own sentence ("The 2012
- * production ... was capitalized at $12.5 million, before the 2025 revival" is 2012's), else the year
- * nearest the figure within YEAR_WINDOW.
+ * production ... was capitalized at $12.5 million, before the 2025 revival" is 2012's), else the year nearest
+ * the figure within YEAR_WINDOW. A byline date ("October 3, 2024 | By Staff") is cut off by its bar.
  */
 function nearestYearIs(text, start, end, year) {
   const lo = Math.max(0, start - YEAR_WINDOW);
-  // Sentence start: the last ". " / "! " / "? " before the figure (a decimal point has no space after it).
-  const sentenceStart = Math.max(lo, ...[...text.slice(lo, start).matchAll(/[.!?]\s+/g)].map(m => lo + m.index + m[0].length));
-  const before = [...text.slice(sentenceStart, start).matchAll(/\b(?:19|20)\d{2}\b/g)];
-  if (before.length) return before[before.length - 1][0] === year;
   const slice = text.slice(lo, end + YEAR_WINDOW);
   let best = null;
   for (const m of slice.matchAll(/\b(?:19|20)\d{2}\b/g)) {
@@ -51,7 +47,17 @@ function nearestYearIs(text, start, end, year) {
     const dist = at < start ? start - (at + 4) : at - end;
     if (!best || dist < best.dist) best = { year: m[0], dist };
   }
+  // Sentence start: the last ". " / "! " / "? " / " | " before the figure (a decimal point has no space after it;
+  // bylines and nav are joined by bars).
+  const sentenceStart = Math.max(lo, ...[...text.slice(lo, start).matchAll(/[.!?|]\s+/g)].map(m => lo + m.index + m[0].length));
+  const before = [...text.slice(sentenceStart, start).matchAll(/\b(?:19|20)\d{2}\b/g)];
+  if (before.length) return before[before.length - 1][0] === year;
   return best !== null && best.year === year;
+}
+
+/** Every form a page may name the show by: the full title first, then buildShowTitleVariants' shorter forms. */
+function showTitleForms(title) {
+  return [...new Set([key(title), ...buildShowTitleVariants(title).map(key)].filter(Boolean))];
 }
 
 function verifyFigure(figure, page, context = {}) {
@@ -65,7 +71,8 @@ function verifyFigure(figure, page, context = {}) {
     pattern = month ? new RegExp(`\\b(?:${months[Number(month) - 1]}|${months[Number(month) - 1].slice(0, 3)}\\.?)\\s+(?:\\d{1,2}(?:st|nd|rd|th)?,?\\s+)?${year}\\b`, 'gi') : new RegExp(`\\b${year}\\b`, 'g');
   } else return { found: false, quote: null };
 
-  // context.titles: every form the page may name the show by (buildShowTitleVariants); context.title: one.
+  // context.titles: every form the page may name the show by, full title first (showTitleForms); context.title: one.
+  // Only the full title counts in the page's <title>/<h1>: a short form there ("Beaches") may be another work.
   const titles = (Array.isArray(context.titles) ? context.titles : [context.title]).map(key).filter(Boolean);
   const headKey = ` ${headText(page)} `;
   for (const match of text.matchAll(pattern)) {
@@ -84,7 +91,7 @@ function verifyFigure(figure, page, context = {}) {
     // year is the nearest year to the figure (an earlier production's year closer by fails closed).
     if (titles.length) {
       const around = ` ${key(text.slice(Math.max(0, match.index - TITLE_WINDOW), end + TITLE_WINDOW))} `;
-      if (!titles.some(title => around.includes(` ${title} `) || headKey.includes(` ${title} `))) continue;
+      if (!headKey.includes(` ${titles[0]} `) && !titles.some(title => around.includes(` ${title} `))) continue;
     }
     if (context.year && !nearestYearIs(text, match.index, end, context.year)) continue;
     if (context.field === 'capitalization' && !/capitaliz|budget|investment|cost to (?:mount|produce)|\braised\b|offering|amount sold|totalAmountSold|totalOfferingAmount/i.test(quote)) continue;
@@ -129,7 +136,7 @@ function createSourceVerifier({ fetchPage = (...args) => require('./scraper').fe
           ));
         }
         const page = await cache.get(source.url);
-        const result = verifyFigure(entry[field], page.content, { titles: buildShowTitleVariants(show.title), year, field });
+        const result = verifyFigure(entry[field], page.content, { titles: showTitleForms(show.title), year, field });
         if (result.found) { evidence[field] = { ...result, source }; fieldCapped = false; sawFetchFailure = false; break; }
         if (page.failed) sawFetchFailure = true;
       }
@@ -153,4 +160,4 @@ function nextVerifyAttempt(entry, max = SOURCE_VERIFY_MAX_ATTEMPTS) {
   return { attempts, leavePending: attempts < max };
 }
 
-module.exports = { pageText, verifyFigure, createSourceVerifier, nextVerifyAttempt, SOURCE_VERIFY_MAX_ATTEMPTS };
+module.exports = { pageText, verifyFigure, showTitleForms, createSourceVerifier, nextVerifyAttempt, SOURCE_VERIFY_MAX_ATTEMPTS };

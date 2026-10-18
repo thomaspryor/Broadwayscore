@@ -263,3 +263,15 @@ test('a short title form from buildShowTitleVariants counts, a generic fragment 
   const dolly = 'Hello, everyone: the 2026 capitalization was $14 million.';
   assert.equal(verifyFigure(14000000, dolly, { titles: buildShowTitleVariants('Hello, Dolly!'), year: '2026', field: 'capitalization' }).found, false);
 });
+
+test('"&" titles, byline dates and short forms in headlines (BRO-5647 review)', () => {
+  const { verifyFigure, showTitleForms } = require('../../scripts/lib/commercial-source-verify.js');
+  const forms = showTitleForms('Beauty & the Beast');
+  assert.equal(verifyFigure(12e6, 'Beauty & the Beast, which opened in 1994, was capitalized at $12 million.', { titles: forms, year: '1994', field: 'capitalization' }).found, true);
+  const byline = 'Broadway News | October 3, 2024 | By Staff Hamilton was capitalized at $12.5 million when it opened in 2015.';
+  assert.equal(verifyFigure(12.5e6, byline, { titles: showTitleForms('Hamilton'), year: '2015', field: 'capitalization' }).found, true);
+  assert.equal(verifyFigure(12.5e6, byline, { titles: showTitleForms('Hamilton'), year: '2024', field: 'capitalization' }).found, false);
+  // A short form in the headline is not enough on its own: "Beaches" may be the film.
+  const page = `<html><head><title>Beaches at 35</title></head><body>${'Filler about films. '.repeat(40)} The film cost $14 million to produce in 2026.</body></html>`;
+  assert.equal(verifyFigure(14e6, page, { titles: showTitleForms('Beaches, A New Musical'), year: '2026', field: 'capitalization' }).found, false);
+});

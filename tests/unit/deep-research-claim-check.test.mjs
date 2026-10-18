@@ -83,7 +83,7 @@ test('loose field names and hedged values are normalized before checking', () =>
   assert.equal(parseMoney('nearly $4.75 million'), 4750000);
   assert.equal(parseMoney('12000000-15000000'), null);
   assert.equal(parseMoney('>500000'), null);
-  assert.equal(parseMoney('just under 600000'), 600000);
+  assert.equal(parseMoney('just under 600000'), null);
   const c = normalizeClaim({ show: 'X', field: 'weekly_running_cost', value: 'about 625000', source_url: ['https://a.com/x', 'https://b.com/y'] });
   assert.deepEqual([c.field, c.value, c.source_url], ['weekly running cost', 625000, 'https://a.com/x']);
   assert.equal(normalizeClaim({ field: 'outcome', value: 'did not recoup' }).field, 'outcome for investors');
@@ -100,4 +100,25 @@ test('a Form D figure is held for an issuer match, never confirmed on its own', 
   const r = classifyClaim(claim, form, blueberries);
   assert.equal(r.verdict, 'sec-issuer');
   assert.equal(r.issuer, 'Blueberries Broadway Ltd Liability Co');
+});
+
+test('outcome titles match whole words with the same folding as the title forms', () => {
+  const rent = { title: 'Rent', openingDate: '1996-04-29' };
+  const outcome = (show, value) => ({ show: show.title, field: 'outcome for investors', value, source_url: 'https://variety.com/a', quote: '' });
+  // "Rent" inside "current" is not the show.
+  assert.notEqual(classifyClaim(outcome(rent, 'recouped'), pad('The current production has recouped its investment.'), rent).verdict, 'confirmed');
+  const tommy = { title: "The Who's Tommy", openingDate: '2024-03-28' };
+  assert.equal(classifyClaim(outcome(tommy, 'did not recoup'), pad('The Who’s Tommy, which opened in 2024, closed without recouping.'), tommy).verdict, 'confirmed');
+  const juliet = { title: '& Juliet', openingDate: '2022-11-17' };
+  assert.equal(classifyClaim(outcome(juliet, 'did not recoup'), pad('& Juliet, which opened in 2022, closed without recouping its investment.'), juliet).verdict, 'confirmed');
+});
+
+test('a running show that has not yet recouped is not a loss, and "Recouped (noted ...)" is not a loss claim', () => {
+  const { claimsLoss } = require('../../scripts/lib/deep-research-claim-check');
+  const show = { title: 'Example', openingDate: '2025-04-01' };
+  const loss = { show: 'Example', field: 'outcome for investors', value: 'did not recoup', source_url: 'https://variety.com/a', quote: '' };
+  assert.notEqual(classifyClaim(loss, pad('Example, which opened in 2025, has not yet recouped.'), show).verdict, 'confirmed');
+  assert.equal(claimsLoss('Recouped (noted by Variety)'), false);
+  assert.equal(claimsLoss('did not recoup'), true);
+  assert.equal(claimsLoss("didn't recoup"), true);
 });
