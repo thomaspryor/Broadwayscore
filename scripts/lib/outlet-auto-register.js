@@ -69,8 +69,8 @@ const compactName = (v) => foldDiacritics(String(v || '')).toLowerCase()
 // Decode the handful of HTML entities a <meta content> / <title> carries.
 function decodeHtmlText(v) {
   return String(v || '')
-    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
-    .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
+    .replace(/&#(\d+);/g, (m, n) => { const c = Number(n); return c <= 0x10ffff ? String.fromCodePoint(c) : m; })
+    .replace(/&#x([0-9a-f]+);/gi, (m, n) => { const c = parseInt(n, 16); return c <= 0x10ffff ? String.fromCodePoint(c) : m; })
     .replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&apos;|&#039;/g, "'")
     .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&nbsp;/g, ' ')
     .replace(/&ndash;/g, '\u2013').replace(/&mdash;/g, '\u2014').replace(/&rsaquo;/g, '\u203a').replace(/&raquo;/g, '\u00bb')
