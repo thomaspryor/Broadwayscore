@@ -171,6 +171,9 @@ test('isCitedReportedWeeklyCost needs a reported method, no estimate flag, and a
   assert.equal(isCitedReportedWeeklyCost({ ...cited, weeklyRunningCostSource: 'Estimate by u/Boring_Waltz_9545 on r/Broadway' }), false);
   assert.equal(isCitedReportedWeeklyCost({ ...cited, isEstimate: { weeklyRunningCost: true } }), false);
   assert.equal(isCitedReportedWeeklyCost({ ...cited, costMethodology: 'industry-estimate' }), false);
+  // A source that names nobody is not a citation, whatever the method says (BRO-5562: proof).
+  assert.equal(isCitedReportedWeeklyCost({ ...cited, costMethodology: 'producer-confirmed', weeklyRunningCostSource: 'Industry sources' }), false);
+  assert.equal(isCitedReportedWeeklyCost({ ...cited, weeklyRunningCostSource: 'Broadway Journal (Nov 6, 2023): "weekly expenses well over $1 million" (trade sources)' }), true);
 });
 
 test('the patch flags an estimate, names the post, stamps the record, and keeps other flags', () => {

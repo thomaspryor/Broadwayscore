@@ -16,6 +16,7 @@
  */
 
 const { internalWordingIn } = require('./commercial-record-checks');
+const { publicSourceText } = require('./public-source-text');
 
 // costMethodology values that mean the weekly cost was reported, not estimated.
 const REPORTED_COST_METHODOLOGIES = new Set(['trade-reported', 'sec-filing', 'producer-confirmed']);
@@ -132,7 +133,8 @@ function isPrintableReportedCitation(text) {
 function isCitedReportedWeeklyCost(record) {
   if (!isReportedWeeklyCost(record) || record.isEstimate?.weeklyRunningCost === true) return false;
   const source = typeof record.weeklyRunningCostSource === 'string' ? record.weeklyRunningCostSource.trim() : '';
-  return source !== '' && costSourceBasis(source) !== 'reddit' && !INTERNAL_COST_SOURCE_RE.test(source);
+  return source !== '' && costSourceBasis(source) !== 'reddit' && !INTERNAL_COST_SOURCE_RE.test(source)
+    && publicSourceText(source) !== null;
 }
 
 /**

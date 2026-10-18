@@ -71,6 +71,15 @@ test('a New York Times ArtsBeat link is the newspaper, not a blog (BRO-5562)', (
   }
 });
 
+test('a source line that is only a vague attribution names no source (BRO-5562)', () => {
+  for (const vague of ['Industry sources', 'industry sources.', 'Trade sources', 'Sources', 'Theatre source']) {
+    assert.equal(publicSourceText(vague), null, `should drop: ${vague}`);
+  }
+  // A longer line that mentions one is judged as a whole (the cats-the-jellicle-ball shape).
+  const cats = 'Estimate (industry sources; other reports say up to $18 million). The producers have not published a figure.';
+  assert.equal(publicSourceText(cats), cats);
+});
+
 test('publicSourceText drops hand-edit process notes and field names written as code (BRO-4669)', () => {
   // The live wording these records carried before the BRO-4669 plan.
   const internal = [

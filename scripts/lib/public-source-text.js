@@ -28,6 +28,12 @@ const URL_RE = /\bhttps?:\/\/\S+/gi;
 // a link there is the newspaper, not a blog (BRO-5562).
 const NEWSPAPER_BLOG_HOST_RE = /\b[\w.-]*blogs\.nytimes\.com(?!\.?[\w-])/gi;
 
+// A source line that is only a vague attribution ("Industry sources", "Trade
+// sources") names no source, so it cannot make a figure read as reported
+// (BRO-5562: proof's $500K weekly cost printed as reported on "Industry
+// sources"). A longer line that mentions one is judged as a whole.
+const VAGUE_ATTRIBUTION_RE = /^(?:(?:industry|trade|insider|producer|theat(?:er|re)|market|press)\s+)?sources?\.?$/i;
+
 // Bracketed pipeline annotations appended to otherwise publishable notes:
 // "[Auto-designated Fizzle: ...]" (scripts/cleanup-commercial-data.js) and
 // "[PLAUSIBILITY WARNING: ...]" (the research/backfill scripts). Only the
@@ -45,7 +51,7 @@ function publicSourceText(text) {
   if (typeof text !== 'string') return null;
   const stripped = text.replace(INTERNAL_ANNOTATION_RE, ' ');
   const trimmed = (stripped === text ? text : stripped.replace(/[ \t]{2,}/g, ' ')).trim();
-  if (!trimmed) return null;
+  if (!trimmed || VAGUE_ATTRIBUTION_RE.test(trimmed)) return null;
   if (INTERNAL_SOURCE_RE.test(trimmed.replace(NEWSPAPER_BLOG_HOST_RE, 'nytimes.com')) || INTERNAL_TOKEN_RE.test(trimmed.replace(URL_RE, ' '))) return null;
   return trimmed;
 }
