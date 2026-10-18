@@ -12,8 +12,8 @@
   {
     "notionId": "3c2637c5-416f-8112-b500-ea1b528e3274",
     "name": "P1: londontheatre.co.uk reviews silently lost : missing article-extractor PATTERNS entry",
-    "verdict": "pending",
-    "reason": "Abigail's Party now has a london-theatre review by Julia Rank in real reviews.json. One recovered example does not prove all extraction failures fixed. Need Linear twin search and extraction/backfill verification; no live scrape performed.",
+    "verdict": "obsolete",
+    "reason": "Linear: no twin (BRO-3356/3367 are whatsonstage/radiotimes siblings). Code: article-extractor.js still has no londontheatre PATTERNS entry, but the generic extractor works: of 629 londontheatre.co.uk review-texts files 429 are contentTier complete; all 172 invalid are Wrong production/Wrong show flags, not extraction loss (2026-10-18 corpus count). Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-20 16:39:31Z",
     "status": "Not started",
     "priority": "P1 Next"
@@ -21,8 +21,8 @@
   {
     "notionId": "3c2637c5-416f-81fe-813e-cfd14e8d489b",
     "name": "Advisory-only hook logs (fanout-model-*, handoff-nudge-escalation) have no digest : same blind-spot class as card #1805",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Linear: no twin for handoff-nudge (0 hits); fanout-model hits BRO-1470/1472 are canceled. Code: BRO-383 hooks audit (memory/hooks-audit.md, refreshed 2026-10-07, guarded by tests/unit/hooks-audit-coverage.test.mjs) deleted advisory/nag-only hooks; handoff-nudge-escalation is not in the inventory and fanout-model-gate.sh is KEEP as a blocking gate, so there is no advisory-log stream left to digest. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-20 16:40:47Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -40,8 +40,9 @@
   {
     "notionId": "3c2637c5-416f-81f5-ac1c-ee0143ccfe08",
     "name": "Feedback dedup still keys same-bug matching off a single showId (BRO-130 cousin)",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "imported",
+    "bro": "BRO-5578",
+    "reason": "Imported 2026-10-18 as BRO-5578 (parked, P3; linear-brain.js create made a new issue, no reuse). Linear: no twin (BRO-130/BRO-2362 fixed multi-show auto-fix scoping, not dedup). Code: scripts/lib/feedback-dedup.js findDuplicateOpenBug still compares newDiag.showId vs existing.showId (lines 125-147); no showIds/multi-show handling. Still real.",
     "createdTime": "2026-08-20 16:50:10Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -49,8 +50,9 @@
   {
     "notionId": "3c2637c5-416f-8105-9b24-dc49bec3b2b8",
     "name": "Off-Broadway aggregator promotion gate has the same roundup-exists weak-signal gap BRO-125 fixed for regional",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "imported",
+    "bro": "BRO-5573",
+    "reason": "Imported 2026-10-18 as BRO-5573 (parked, P3; linear-brain.js create made a new issue, no reuse). Linear: no twin (searched bro-125, aggregator promotion, roundup threshold). Code: promote-ob-venue-candidates.js decideRegionalPromotion calls decideReviewThresholdPromotion (BRO-125), but decideOffBroadwayAggregatorPromotion (line ~460-539) confirms on roundup+venue+dates with no reviewCount threshold. Still real.",
     "createdTime": "2026-08-20 16:51:28Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -69,7 +71,7 @@
     "notionId": "3c2637c5-416f-81e6-a344-d6b5127143d7",
     "name": "Audit scripts/lib for pure decision/gate modules with zero production callers",
     "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no exact twin (nearest BRO-2688, open, covers unwired audit-*.js scripts, not scripts/lib modules). Code: of 313 scripts/audit-*.js none scans scripts/lib for exports with zero non-test callers (git grep for unwired/zero-production-caller audit found only audit-workflow-hygiene.js, unrelated). Still real.",
     "createdTime": "2026-08-20 16:53:03Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -78,7 +80,7 @@
     "notionId": "3c2637c5-416f-81d3-ba72-e285920a0a5f",
     "name": "Extract + test the missingReviews diff logic in bww-rr/dtli-count-mismatch checks",
     "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no twin (searched missingReviews, count-mismatch, baseline-diff; BRO-2182/2195 canceled are a different helper). Code: the outletId/criticName diff loop is still inline in scripts/lib/opening-night-checks/bww-rr-count-mismatch.check.js:145-176 and dtli-count-mismatch.check.js:128-150; tests/unit/opening-night-checks-bww-rr.test.mjs has 0 missingReviews assertions (only short-circuit cases). Still real, low impact.",
     "createdTime": "2026-08-20 16:59:26Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -87,7 +89,7 @@
     "notionId": "3c2637c5-416f-81e3-b2f7-dd025e5be6e4",
     "name": "Harden manual-review-direct.js: criticKey-based twin matching + _meta stamping",
     "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no twin (manual-review-direct: only BRO-852/1675, unrelated). Code: scripts/manual-review-direct.js has no criticKey, findExistingReviewFile or _meta references (grep 0 hits), so twin matching and provenance stamping are still absent. Still real.",
     "createdTime": "2026-08-20 17:06:56Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -95,8 +97,9 @@
   {
     "notionId": "3c2637c5-416f-81b6-a514-d92cc1efbced",
     "name": "Typo/edit-distance near-duplicate outlet detector (3rd slice after #1838/#1844)",
-    "verdict": "pending",
-    "reason": "No page-id import-ledger match. Card's seven-title sample had no twin on 2026-10-13; current Linear search and code audit still required before importing.",
+    "verdict": "imported",
+    "bro": "BRO-5577",
+    "reason": "Imported 2026-10-18 as BRO-5577 (parked, P3; linear-brain.js create made a new issue, no reuse). Linear: BRO-2371 (completed) was slice 2 (hyphen/concatenated, task #1844); no edit-distance slice card. Code: scripts/lib/outlet-alias-collision.js expands raw/the-stripped/slug/concatenated forms only; no edit-distance comparison (outlet-lookalike-guard.js BRO-4419 compares URL hosts to an outlet's own domains, not registry outlet pairs). Still real.",
     "createdTime": "2026-08-20 17:17:45Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -104,8 +107,8 @@
   {
     "notionId": "3c2637c5-416f-810d-b422-f3df726ff5d3",
     "name": "P2: data-health-check.yml alert wording + debounce : stop emailing CRITICAL 'crashed' for known push-retry contention",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Linear: root cause fixed under BRO-2370 (push-with-retry deadline, completed) and the email side by BRO-4603 and BRO-5490 (completed: non-actionable CRITICAL emails stopped, 11 technical alerts moved to worker cards). Code: data-health-check.yml:1418-1432 documents the push-contention 'Crashed' email incident and its fixes (isolated digest snapshot step, longer deadline). Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-20 17:18:17Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -114,7 +117,7 @@
     "notionId": "3c2637c5-416f-8181-aa35-e846be5750fa",
     "name": "Same-batch alias-collision skip is order-dependent (no tie-break)",
     "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no twin (searched alias-collision+order, tie-break). Code: rebuild-all-reviews.js AUTO-REGISTER block (~7038-7160) builds newOutlets in allReviews iteration order with no sort, and wouldCauseAliasCollision admits whichever colliding id comes first. Still real, low impact.",
     "createdTime": "2026-08-20 17:29:53Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -152,7 +155,7 @@
     "notionId": "3c2637c5-416f-81c4-905e-c79515fafede",
     "name": "Per-workflow REVIEW_TEXTS_TOKEN API-budget telemetry",
     "verdict": "pending",
-    "reason": "No page-id import-ledger match. Card's seven-title sample had no twin on 2026-10-13; current Linear search and telemetry audit required.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no twin (REVIEW_TEXTS_TOKEN+budget: only BRO-5151, secret wiring). Code: scripts/lib/github-api-budget.js (BRO-4654) guards the GITHUB_TOKEN installation quota only; health-check.js mentions REVIEW_TEXTS_TOKEN once (line 4411, a hint) and no script records per-workflow PAT quota use. Still real.",
     "createdTime": "2026-08-20 18:22:01Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -181,7 +184,7 @@
     "notionId": "3c2637c5-416f-8140-ab13-ee3ad227cb13",
     "name": "discover-historical-shows.js div-grid pseudo-table has zero column-schema guard",
     "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no twin (searched discover-historical-shows, column schema, IBDB grid). Code: scripts/discover-historical-shows.js:282-295 reads IBDB .row.seasons-list cols[1..3] purely by position; only the venue passes sanitizeVenueForWrite, with no header/column-shape check. Still real.",
     "createdTime": "2026-08-20 18:30:51Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -190,7 +193,7 @@
     "notionId": "3c2637c5-416f-81d1-b507-d3f01f402fde",
     "name": "Generalize audit-test-yml-lib-deps.js to catch top-level scripts/*.js missing from test.yml push-paths",
     "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no twin (BRO-2969 completed globbed scripts/*.test.mjs but not their top-level .js deps; BRO-3073 is scripts/config JSON). Code: scripts/audit-test-yml-lib-deps.js:113 still scans only scripts/lib/*.test.mjs (LIB_DIR); test.yml comments (lines 41-48) confirm top-level scripts/<name>.js deps are not globbed. Still real.",
     "createdTime": "2026-08-20 18:31:08Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -218,8 +221,9 @@
   {
     "notionId": "3c2637c5-416f-817e-a4b7-e775c76df11d",
     "name": "syncTrackerToOrigin: --recreate-draft clear path doesn't sync deletions to origin (mergeTrackerEntries never deletes)",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "imported",
+    "bro": "BRO-5583",
+    "reason": "Imported 2026-10-18 as BRO-5583 (parked, P3; linear-brain.js create made a new issue, no reuse). Linear: no twin (BRO-2377/BRO-60/BRO-3493 completed added draft-time sync and TOCTOU fixes, not deletion sync). Code: scripts/lib/opening-night-tracker-sync.js:35 mergeTrackerEntries starts from remote shows and only overlays local keys, so the delete sentData.shows[key] in send-opening-night-broadcast.js --recreate-draft (~line 664) is undone on origin. Still real (local-CLI path only).",
     "createdTime": "2026-08-20 18:36:20Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -237,8 +241,9 @@
   {
     "notionId": "3c2637c5-416f-81ef-b6ce-c2332e1c9e72",
     "name": "Extend BRO-2238 failing-test-name observability to 2 more node --test batches in test.yml",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "imported",
+    "bro": "BRO-5588",
+    "reason": "Imported 2026-10-18 as BRO-5588 (parked, P3; linear-brain.js create made a new issue, no reuse). Linear: no twin (BRO-2238 completed covered the main unit batch only). Code: test.yml:4705-4731 extracts 'not ok' names for the main node batch, but the batches at test.yml:4799 (opening-night skeleton/dmarc) and 4837 ('Run scripts/lib tests') run bare node --test with no failing-name summary. Still real.",
     "createdTime": "2026-08-20 18:46:41Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -247,7 +252,7 @@
     "notionId": "3c2637c5-416f-81f6-984c-fd70c5e4fc5d",
     "name": "LLM fallback needs a per-show cooldown for persistently-partial aggregator pages",
     "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no twin (searched LLM fallback cooldown, partial aggregator). Code: scripts/lib/llm-extractor.js has no cooldown (grep 0 hits); llmFallbackExtractIfNeeded runs on every partial page from opening-night-poller.js:580/738 and the two count-mismatch checks. Still real.",
     "createdTime": "2026-08-20 18:50:05Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -256,7 +261,7 @@
     "notionId": "3c2637c5-416f-8156-8886-c5f2f543e91a",
     "name": "Extend BRO-67 LLM fallback pattern to non-DTLI/BWW aggregator extractors",
     "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no twin (BRO-67 covered DTLI/BWW). Code: llmFallbackExtractIfNeeded callers are only DTLI/BWW paths (opening-night-poller.js:580,738; bww-rr/dtli count-mismatch checks); Show Score, Playbill Verdict and the WE aggregator extractors have none. Still real.",
     "createdTime": "2026-08-20 18:50:20Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -265,7 +270,7 @@
     "notionId": "3c2637c5-416f-8103-8d29-d2e59f2a9dc0",
     "name": "Extract shared rate-limit-retry-decision helper (5 near-duplicate inline node -e blocks)",
     "verdict": "pending",
-    "reason": "Existing github-rate-limit-retry.js helper was already present when this card was filed. The card asks to consolidate the five inline node -e wrappers, which still require per-caller review. No evidence that this additional refactor is complete; current Linear twin search required.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no twin (searched rate-limit retry helper, inline node -e). Code: the shouldRetry/retryDelayMs inline node -e wrapper is still repeated in 6 composite actions (checkout-aggregator-archive:89, checkout-core-data:144, checkout-review-texts:92, push-aggregator-archive:122, push-core-data:264, push-review-texts:622). Still real, refactor only.",
     "createdTime": "2026-08-20 18:53:03Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -283,8 +288,9 @@
   {
     "notionId": "3c2637c5-416f-816b-b141-e142cfff8362",
     "name": "Backfill wrongProductionNote for legacy flags with no audit trail (~12% of sample)",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "imported",
+    "bro": "BRO-5582",
+    "reason": "Imported 2026-10-18 as BRO-5582 (parked, P3; linear-brain.js create made a new issue, no reuse). Linear: no twin (searched wrongProductionNote backfill, legacy flags). Data: 2026-10-18 review-texts scan, 1,691 of 19,229 wrongProduction=true files carry no wrongProduction provenance field at all (e.g. 110-in-the-shade-2007/theatermania--david-finkle.json). Still real; private-repo data backfill.",
     "createdTime": "2026-08-20 19:17:24Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -292,8 +298,9 @@
   {
     "notionId": "3c2637c5-416f-8124-a819-fcc5872f4224",
     "name": "push-via-git-api.sh: teach the fallback protected-field reconciliation so review-texts can rejoin default-on eligibility",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "imported",
+    "bro": "BRO-5589",
+    "reason": "Imported 2026-10-18 as BRO-5589 (parked, P3; linear-brain.js create made a new issue, no reuse). Linear: no twin (BRO-2389/2413/2951 completed fixed other fallback defects). Code: scripts/lib/push-with-retry.sh:1408-1424 still hard-excludes *broadway-review-texts* (_PUSH_API_REPO_EXCLUDED) because push-via-git-api.sh has no restore_protected_fields() step (its header, lines 46-48). Still real.",
     "createdTime": "2026-08-20 19:25:29Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -302,7 +309,7 @@
     "notionId": "3c2637c5-416f-8162-8471-c6926a260c07",
     "name": "health-check.js: surface per-workflow Git Data API fallback usage in the daily digest (not just the snapshot JSON)",
     "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no twin (BRO-1609 canceled, different signal). Code: scripts/health-check.js:4820-4836 still emits 'Push: Git Data API fallback usage (24h)' as status pass, and its own comment says the per-workflow breakdown only reaches data/audit/health-*-snapshot.json, flagged as a follow-up. Still real, telemetry only.",
     "createdTime": "2026-08-20 19:25:44Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -310,8 +317,8 @@
   {
     "notionId": "3c2637c5-416f-81d5-897c-c0dba419fba7",
     "name": "Generalize infra-review-scope.js content-scan pattern to 'gates'/'spend'/'hooks' rule families",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Linear: no twin (searched infra-review-scope content-scan). Code: scripts/lib/infra-review-scope.js SHARED_INFRA_RULES (dispatch, spend, concurrency, gates, hooks, ci-gate, branch-protection, ci, shared-lib) are all path regexes; grep for content-scan/scan helpers in the file finds none, so the content-scan pattern the card wanted to generalize no longer exists. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-20 19:27:38Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -349,8 +356,9 @@
   {
     "notionId": "3c2637c5-416f-81d4-8ea0-f518e03e61ae",
     "name": "BRO-109: Extend audit-run-budget-coverage.js for script→lib-helper budget-threading gaps",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "twin",
+    "bro": "BRO-109",
+    "reason": "Linear: BRO-109 'Extend audit-run-budget-coverage.js to catch script->lib-helper budget-threading gaps' (completed) is the same card; follow-on sweep BRO-2473 is open. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-20 20:02:08Z",
     "status": "Not started",
     "priority": "P1 Next"
@@ -368,8 +376,9 @@
   {
     "notionId": "3c2637c5-416f-8185-a51a-e262becfcca6",
     "name": "Backfill 207 phantom theater-life Barry Gordin bylines + collapse 8 live double-counted reviews",
-    "verdict": "pending",
-    "reason": "Old 207-file backlog mostly gone: 1 theater-life--barry-gordin.json remains and is suppressed under gypsy-2024. reviews.json still has 1 live Barry Gordin attribution under company-2006 in theater-life--eric-march.json. Need byline verification and any residual private-repo repair; no review texts changed.",
+    "verdict": "twin",
+    "bro": "BRO-112",
+    "reason": "Linear: BRO-112 'Phantom Barry Gordin bylines from scrape-wp-theater-blogs.js: 207 files, chimera merges, 8 live double-counted' (completed). Prior read: 1 suppressed theater-life--barry-gordin.json remains (gypsy-2024) and 1 live Barry Gordin attribution under company-2006; orphan phantom-byline residue is tracked by BRO-3414 (completed). Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-20 20:14:44Z",
     "status": "Not started",
     "priority": "P1 Next"
@@ -396,8 +405,8 @@
   {
     "notionId": "3c2637c5-416f-81e8-925e-e6425f23ac0d",
     "name": "Triage + fix batch 1 of 163 fetch/https.get timeout gaps found by audit-fetch-timeouts.js",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Linear: batch work landed as BRO-3603/BRO-3838/BRO-3840 (completed). Code: node scripts/audit-fetch-timeouts.js on 2026-10-18 reports 27 unprotected call sites across 16 files (down from the card's 163), so batch 1 is done; the residue is a smaller follow-on, not this card. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-20 20:33:35Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -405,8 +414,8 @@
   {
     "notionId": "3c2637c5-416f-8157-b2a4-d5a34aa4d4b4",
     "name": "Harmonize audit-opening-dates.js with run-budget.js pattern (currently bounded by fixed caps, not budget)",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Linear: no twin needed. Code: scripts/audit-opening-dates.js now uses run-budget.js (line 43 require createRunBudget, line 53 timeBudget, line 204 timeBudget.canStartItem deferral), so it is budget-bounded; MAX_DISCOVERY_ATTEMPTS=8 remains only as a per-run cap. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-20 20:37:51Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -414,8 +423,9 @@
   {
     "notionId": "3c2637c5-416f-81be-9ba7-cbc830e90bb4",
     "name": "backfill-playwright-credits.yml missing shows-json-writer concurrency group",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "imported",
+    "bro": "BRO-5574",
+    "reason": "Imported 2026-10-18 as BRO-5574 (parked, P3; linear-brain.js create made a new issue, no reuse). Linear: no twin (BRO-1804 canceled covered dropped queued runs generally). Code: scripts/backfill-playwright-credits.js:40-60 writes data/shows.json via saveShows, and the workflow pushes via push-core-data, but .github/workflows/backfill-playwright-credits.yml:30-32 uses group backfill-playwright-credits instead of shows-json-writer (used by backfill-historical-metadata, enrich-ibdb-dates, update-show-status). Still real.",
     "createdTime": "2026-08-20 20:41:29Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -423,8 +433,8 @@
   {
     "notionId": "3c2637c5-416f-8129-8b8a-c25ad088bcac",
     "name": "General (non-infra) self-discovered follow-on work still ungated pre-implementation",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Linear: no twin (0 hits for self-discovered follow-on). Code/policy: CLAUDE.md §18 scopes the pre-edit review gate to shared infrastructure by owner decision (2026-08-05, #1079), enforced via scripts/lib/infra-review-scope.js; the BRO-383 hooks audit (memory/hooks-audit.md) then deleted gates that only nag. Extending a pre-implementation gate to all non-infra work contradicts both, so the premise is retired. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-20 21:24:51Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -433,7 +443,7 @@
     "notionId": "3c2637c5-416f-8142-9a93-f5b41500819c",
     "name": "Migrate remaining hand-rolled GitHub API helpers to gh-api-client.js",
     "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no twin (0 hits for gh-api-client). Code: scripts/lib/gh-api-client.js exists and 10 scripts files reference it, but 35 non-test files under scripts/ still call api.github.com directly (git grep, 2026-10-18). Still real, refactor only.",
     "createdTime": "2026-08-20 22:19:57Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -441,8 +451,9 @@
   {
     "notionId": "3c2637c5-416f-817f-a4c2-f27393c2aca7",
     "name": "recover-serp-text.js existing-url --domain mode doesn't match registered domain aliases",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "imported",
+    "bro": "BRO-5576",
+    "reason": "Imported 2026-10-18 as BRO-5576 (parked, P3; linear-brain.js create made a new issue, no reuse). Linear: no twin (BRO-141/147 completed made the urlless path alias-inclusive). Code: scripts/lib/serp-text-recovery-candidates.js:62-65, the existing-url branch still rejects when new URL(data.url).hostname !== target.domain, with no domainAliases lookup (only the urlless branch uses buildDomainOutletIds with aliases). Still real.",
     "createdTime": "2026-08-20 23:19:23Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -450,8 +461,8 @@
   {
     "notionId": "3c3637c5-416f-8167-b3ee-f05a5fdcdd54",
     "name": "unabandon-fetch-cycles.js --show override trusts operator claim, doesn't verify domain health",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Linear: BRO-2267 (completed) built the tool. Code: scripts/unabandon-fetch-cycles.js:35-45 documents --show as a deliberate human-judgment override ('Naming a specific show IS the human judgment call... the only path that can recover the domain came back online case'), so a domain-health check would defeat its purpose; working as designed. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-21 08:17:51Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -459,8 +470,8 @@
   {
     "notionId": "3c3637c5-416f-81af-aeaf-d9415ebb1b3d",
     "name": "shouldRetryFetch doesn't bypass stale ledger entries after a URL correction (fetch retry gate)",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Linear: fixed under BRO-3319 (cited in code). Code: scripts/collect-review-texts.js:6688-6703 now skips the shouldRetryFetch gate when urlCorrectedRefetch is set or isFetchLedgerEntryForOtherUrl(fetchFailureEntry, data) is true ('The ledger entry may describe a URL the review no longer carries (BRO-3319)'). Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-21 08:18:08Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -487,8 +498,8 @@
   {
     "notionId": "3c5637c5-416f-81c8-94b0-ecd1fe34b597",
     "name": "Widen regional Playbill-venue-check exemption beyond aggregator-roundup discovery",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Linear: widening landed as BRO-4923 (guardian-review), BRO-4211 (tour roundups) and BRO-4325 (tourstoyou), all cited in code. Code: scripts/validate-show-venue.js:195-229 isExemptFromPlaybillCheck now also exempts regional guardian-review, tour aggregator-roundup, tour-schedule:tourstoyou+wikipedia, and noPlaybillProductionPage with a substantive statusBackfillSource. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-23 04:01:18Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -496,8 +507,9 @@
   {
     "notionId": "3c5637c5-416f-81c6-b5cb-c2bfaa3e936a",
     "name": "BRO: Show detail page hand-rolls its own score box instead of shared ScoreBadge component",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "imported",
+    "bro": "BRO-5581",
+    "reason": "Imported 2026-10-18 as BRO-5581 (parked, P3; linear-brain.js create made a new issue, no reuse). Linear: no twin (searched ScoreBadge, score box, hand-rolls). Code: src/app/show/[slug]/page.tsx:612-635 still builds its own scoreBox div (w-16 h-16 sm:w-20 sm:h-20, getScoreColorClass) instead of the shared ScoreBadge from src/components/show-cards. Still real; visible UI change needs visual QA.",
     "createdTime": "2026-08-23 04:03:49Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -506,7 +518,7 @@
     "notionId": "3c5637c5-416f-8163-86f9-d7aefb87208a",
     "name": "CI guard: detect workflow steps calling hang-prone external CLIs with no timeout bound",
     "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no twin (BRO-1314 canceled was timeout-minutes hygiene; BRO-3308 a different guard). Code: scripts/audit-workflow-hygiene.js rules cover push timeouts (i) and short core-data job timeouts (r) but nothing flags run steps calling hang-prone CLIs (claude, gh, npx, curl) without a timeout wrapper (grep hang-prone/external-cli: 0 hits). Still real.",
     "createdTime": "2026-08-23 04:06:46Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -514,8 +526,9 @@
   {
     "notionId": "3c5637c5-416f-8177-a570-c6a83a8f149e",
     "name": "Investigate why no newer GH Actions cron run started during the 2026-08-14 deploy burst",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "twin",
+    "bro": "BRO-2067",
+    "reason": "Linear: BRO-2067 'Vercel deploy stuck 15+min: cancel-cascade under concurrent push load blocks all deploys' (completed) was filed from the same 2026-08-14 deploy burst (Notion 3bc637c5-416f-8152, created 2026-08-14). Deploys now run on the 5-min cron with scripts/lib/should-deploy-gate.js. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-23 04:06:59Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -542,8 +555,9 @@
   {
     "notionId": "3c5637c5-416f-81ac-9f88-d9c28a97a34d",
     "name": "650 reviews have Unknown/missing criticName across dozens of WE/OB shows : verify live-page byline impact and fix source parser",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "imported",
+    "bro": "BRO-5572",
+    "reason": "Imported 2026-10-18 as BRO-5572 (parked, P3; linear-brain.js create made a new issue, no reuse). Linear: no open twin (BRO-171/BRO-3919 completed recovered subsets; BRO-3384/3385 poison-queue backfill canceled/duplicate; BRO-2012 canceled). Data: 2026-10-18 data/reviews.json has 1,514 of 29,591 reviews with missing or 'Unknown' criticName across 773 shows, more than the card's 650. Still real; needs live-page impact check and source-parser fixes.",
     "createdTime": "2026-08-23 04:10:19Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -551,8 +565,8 @@
   {
     "notionId": "3c5637c5-416f-81cb-8f9f-f38a59ba1929",
     "name": "Verify private-core-data single-writer files (grosses.json, critic-consensus.json, etc.) have equivalent push-race protection to the apiFallbackSafe public-repo mechanism",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Linear: hardening landed via the 2026-08-22 push-race work, BRO-2446 and BRO-3071 (completed). Code: scripts/lib/core-data-merge-registry.js:2010-2137 now registers each private-core-data file with a merge function or a single-writer note naming its concurrency group (e.g. grosses.json: both writers share one group; feedback-submitters.json: single writer process-feedback.yml), and scripts/lib/api-fallback-writer-drift.js flags writer drift. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-23 04:13:02Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -580,8 +594,8 @@
   {
     "notionId": "3c5637c5-416f-811d-b311-d8343ab12db3",
     "name": "bww-roundup-unmatched.json / playbill-verdict-unmatched.json still exposed to push-retry disqualifier livelock (multi-writer, can't use apiFallbackSafe)",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Linear: resolved by BRO-3071 (completed, 2026-09-14 what-else sweep). Code: scripts/lib/core-data-merge-registry.js:1131 registers audit/bww-roundup-unmatched.json and :1155 audit/playbill-verdict-unmatched.json as single-writer apiFallbackSafe (scrape-new-aggregators group), so the disqualifier no longer applies. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-23 10:43:45Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -589,8 +603,9 @@
   {
     "notionId": "3c5637c5-416f-815b-9c20-edbf70eb6e2c",
     "name": "Systematic sweep: which other data/audit/*.json files are genuinely single-writer and could join apiFallbackSafe",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "twin",
+    "bro": "BRO-3071",
+    "reason": "Linear: BRO-3071 'Register remaining single-writer data/audit/ files as apiFallbackSafe (BRO-345 what-else sweep)' (completed) is this sweep; its verifiedBy stamps (2026-09-14) appear on the registry entries in scripts/lib/core-data-merge-registry.js. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-23 10:45:50Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -598,8 +613,9 @@
   {
     "notionId": "3c5637c5-416f-8146-a81b-dff9556795f3",
     "name": "74-show imageless backlog may not progress reliably: MAX_DISPATCHES_PER_RUN=5 depends on a cooldown ledger that itself can silently fail to persist",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "twin",
+    "bro": "BRO-2460",
+    "reason": "Linear: BRO-2460 'Fix: audit-imageless-scored-shows.yml never persisted alert-router ledger' (completed) and BRO-2461 (completed, bundling fix) fixed the cooldown-ledger persistence this card doubted; audit/imageless-scored-shows.json is now a registered entry in scripts/lib/core-data-merge-registry.js:326. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-23 10:46:07Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -617,8 +633,8 @@
   {
     "notionId": "3c5637c5-416f-8171-abf3-fd50b9a25eae",
     "name": "Alert escalation never actually escalates : test-yml:main-streak stuck 'digest' since Jul 26",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Linear: alert redesigned under BRO-3865 (completed). Code: scripts/health-check.js:2740-2760, test-yml:main-streak is now disposition human with per-signature auto cards (route-main-streak-signatures.js), and the key was deliberately removed from page-worthy-alerts.js on 2026-09-23 (owner email-noise complaint), so staying in the digest is intended. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-23 10:46:40Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -626,8 +642,8 @@
   {
     "notionId": "3c5637c5-416f-8104-9b9c-c83cef8b47b8",
     "name": "push-retry-failures.jsonl telemetry never reaches main (dies with the runner)",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Linear: no separate twin. Code: the ledger now persists on a durable origin branch, push-retry-failures (rebuild-fast.yml:441-442 cites BRO-334 tracing failures via origin/push-retry-failures; check-push-ledger.yml prunes it; push-core-data/action.yml:856 writes the same branch), so telemetry no longer dies with the runner. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-23 10:47:02Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -635,8 +651,9 @@
   {
     "notionId": "3c5637c5-416f-81e6-a74e-c79e94672962",
     "name": "Guardian/Observer outlet-domain disambiguation gap",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "twin",
+    "bro": "BRO-4976",
+    "reason": "Linear: BRO-4976 'Outlet ids stage 2: observer (NY vs UK) split...' (completed 2026-10) handled observer disambiguation. Code: scripts/lib/aggregator-domains.js:264-270 models the directional theguardian.com-hosts-Observer exemption, and scripts/lib/outlet-id-migrations.js (BRO-4976) re-homes fordhamobserver.com/theaternewsonline.com rows filed as observer. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-23 10:47:03Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -644,8 +661,9 @@
   {
     "notionId": "3c5637c5-416f-818f-b383-cfb9837f24be",
     "name": "UX audit: Inconsistent action icons for the same action. 'Add date' uses a calendar icon in 'desktop__watchlist_list' bu",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "twin",
+    "bro": "BRO-3362",
+    "reason": "Linear: BRO-3362 'UX audit: Inconsistent action icons for the same action. Add date uses a calendar icon in mobile__watchlist...' (canceled) is the same nightly UX-walkthrough finding for the mobile view; siblings BRO-3192/BRO-3117 also canceled, so this was triaged as won't-fix there. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-23 14:04:44Z",
     "status": "Not started",
     "priority": "P1 Next"
@@ -663,8 +681,9 @@
   {
     "notionId": "3c5637c5-416f-814f-b2e2-df871d6d5d72",
     "name": "BWW /reviews/ fetcher can cache Broadway-transfer page under a regional showId",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "twin",
+    "bro": "BRO-2547",
+    "reason": "Linear: BRO-2547 'P1: bww-reviews scraper re-caches a Broadway transfer page under its regional showId (weekly CI red loop)' (completed); wider category-guard follow-up is open as BRO-2550. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-23 16:35:42Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -703,7 +722,7 @@
     "notionId": "3c5637c5-416f-8132-bc80-fc00cd3ee70d",
     "name": "Add regression guard against raw new Date(data.publishDate) recurring in rebuild-all-reviews.js",
     "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no twin (BRO-2276/2277 were a different regression-guard warning). Code: grep of scripts/rebuild-all-reviews.js finds 0 raw new Date(...publishDate) calls today, but no test or lint scans the file to keep it that way (git grep across tests/ and scripts/*.test.mjs finds none). Still real, prevention only.",
     "createdTime": "2026-08-23 21:31:28Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -712,7 +731,7 @@
     "notionId": "3c5637c5-416f-81f2-a462-c7d1018e03cc",
     "name": "verify-edits.sh event parser doesn't filter subagent/sidechain tool calls : can mis-attribute work to the main session",
     "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no twin (searched verify-edits, sidechain). Code: .claude/hooks/verify-edits.sh has no isSidechain/subagent event filter (grep: only a comment at line 954), so subagent tool calls in the transcript can still count toward the main session. Still real, needs a check of current transcript format first.",
     "createdTime": "2026-08-23 21:41:21Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -750,8 +769,8 @@
   {
     "notionId": "3c6637c5-416f-8132-b917-fe8bbf57716c",
     "name": "Schmigadoon! ticket clicks suggest catalogue/routing confusion",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Point-in-time weekly PostHog reading (2026-08-24, before opening). schmigadoon-2026 is now an open show in shows.json, and scripts/posthog-friction-analyzer.js (posthog-monday.yml) files any recurring ticket-click anomaly straight to Linear with fhash dedupe; the later concentration signal is BRO-3676/BRO-4227. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-24 09:01:42Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -759,8 +778,9 @@
   {
     "notionId": "3c6637c5-416f-81cf-8247-f8194e78b40f",
     "name": "High search-to-user ratio suggests search is primary nav : no search UX improvements shipped",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "imported",
+    "bro": "BRO-5585",
+    "reason": "Imported 2026-10-18 as BRO-5585 (parked, P3; linear-brain.js create made a new issue, no reuse). Linear: no twin (searched search ratio, search navigation, primary nav; nearest BRO-5188 is rage clicks on the search input, BRO-4600 completed was the browse grid HTML). Three weekly PostHog readings (2026-08-24, 09-07, 09-14: 675 searches by 75 users) say the same thing. Current analytics were not re-queried here; whether to change navigation is a product call.",
     "createdTime": "2026-08-24 09:01:44Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -768,8 +788,8 @@
   {
     "notionId": "3c7637c5-416f-81ca-8175-d7cf1df965ae",
     "name": "Tryout->transfer image reuse is a static snapshot, will silently drift",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Linear: superseded by BRO-4380 (cross-show image paths). Code: scripts/lib/cross-show-images.js:3-19 lets a tryout and its transfer (transferredTo/transferOf lineage) reference the owner's /images/shows/<id>/ path directly, so the transfer shows the live owner art rather than a copied snapshot that could drift. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-25 12:52:59Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -777,8 +797,8 @@
   {
     "notionId": "3c7637c5-416f-81d5-90b0-d3cc64bfca57",
     "name": "Score reviews inline step: timeout misreported as all-failed (cousin of collect-timeout bug, PR #695)",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Linear: no twin needed. Code: .github/workflows/opening-night-poller.yml:1231-1241 now explicitly handles a score step that times out before writing counters (empty score_total plus outcome failure/cancelled reads as 'the stage crashed', 1/1), and the loop (lines 714-758) counts per-show failures separately, so timeouts are no longer conflated with per-show all-failed. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-25 13:25:07Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -787,7 +807,7 @@
     "notionId": "3c7637c5-416f-8183-8054-c07096eeaacb",
     "name": "CI audit: flag continue-on-error steps with tight timeout-minutes wrapping unbounded per-item loops",
     "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no twin (BRO-2143/BRO-2817 cover other audit classes). Code: scripts/audit-run-budget-coverage.js (header lines 1-30) only checks jobs <=35 min that reference BRIGHTDATA_TOKEN/SCRAPINGBEE_API_KEY; no audit flags continue-on-error steps whose tight step timeout-minutes wraps an unbounded loop without those credentials. Still real, partial coverage.",
     "createdTime": "2026-08-25 13:25:22Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -805,8 +825,9 @@
   {
     "notionId": "3c7637c5-416f-81f0-8faf-e1e03da3a75a",
     "name": "Fix: push-core-data retry exhaustion under private-repo push contention (run #7933)",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "twin",
+    "bro": "BRO-3140",
+    "reason": "Linear: BRO-3140 'Fix: push-core-data retry exhaustion under private-repo push contention (run #7933)' (completed) is the exact-title twin. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-25 13:38:38Z",
     "status": "Paused",
     "priority": "P1 Next"
@@ -833,8 +854,8 @@
   {
     "notionId": "3c8637c5-416f-818b-9e74-ed8037cd6b57",
     "name": "Investigate nav-chrome bleed on talkinbroadway.com OB roundup pages (ob/*.html)",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Linear: no twin. Code: talkinbroadway pages go through the byline-anchored extractTalkinBroadwayBody (article-extractor.js:445-482). Data: both talkinbroadway.com/ob/ review-texts with fullText (2026-10-18 scan) start and end in review prose with no nav chrome. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-26 04:58:15Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -842,8 +863,8 @@
   {
     "notionId": "3c8637c5-416f-819b-9ac3-c6a969ad1534",
     "name": "Audience-buzz pollers (Show Score/Reddit/Mezzanine) share Express's old fire-once-no-retry shape",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Linear: no twin. Code: none of the three are fire-once now: opening-night-reviews.yml heavy crons (05:00, 17:00 UTC) re-dispatch update-reddit-sentiment.yml for every show in the 14-day lookback (lines 291-314); refresh-show-score-opening-night.yml runs daily (cron 45 3) over a +/-2-day window; update-mezzanine.yml runs daily (cron 30 8). Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-26 05:01:29Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -871,7 +892,7 @@
     "notionId": "3c8637c5-416f-8150-9da8-d613c17b88e8",
     "name": "Self-heal pass for pull-quote-compilation isRoundupArticle detection on existing corpus",
     "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no twin (searched pull-quote compilation self-heal). Code: detectPullQuoteCompilation (scripts/lib/roundup-digest.js:217) runs only at write time (review-file-writer.js:862) and in a flag-clear check (review-guards.js:1740). Data: a 2026-10-18 scan found 4 of 56,629 unflagged review-texts files it would flag (e.g. a-delicate-balance-2014/nyt-theater--jonathan-mandell.json). Still real, small.",
     "createdTime": "2026-08-26 05:18:53Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -879,8 +900,8 @@
   {
     "notionId": "3c8637c5-416f-8147-a4cc-d31efaeeef72",
     "name": "talkinbroadway.com extractor: bound against stealth-mode consent-banner bleed",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Linear: no twin. Code: scripts/lib/article-extractor.js:445-482 extractTalkinBroadwayBody anchors on the validated 'Theatre Review by {Critic} - {date}' byline (task #1887), which structurally excludes pre-marker chrome. Data: 0 of 588 talkinbroadway.com review-texts with fullText contain consent/cookie-banner phrases (2026-10-18 scan). Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-26 05:28:39Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -908,8 +929,8 @@
   {
     "notionId": "3c8637c5-416f-81ec-8062-edc0759a3267",
     "name": "P1: audit-aggregator-gap auto-ingest writes UNFLAGGED phantom reviews (no roundup detection, no same-URL dedupe)",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Linear: related fixes BRO-2520 (roundup detector) and BRO-4406 (same-outlet phantoms), completed. Code: the aggregator-gap audit's ingest path (audit-show-review-gap.js --ingest-missing) shells to scripts/ingest-review-from-url.js, which writes through detectIngestCollision() + createOrMergeReviewFile() (lines 21, 62, 330); that writer runs roundup and detectPullQuoteCompilation guards (review-file-writer.js:54, 862). Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-26 07:36:04Z",
     "status": "In progress",
     "priority": "P1 Next"
@@ -917,8 +938,8 @@
   {
     "notionId": "3c8637c5-416f-8116-a9b8-f049243a5cf6",
     "name": "Audit local (non-CI) pull --rebase call sites for the same shared-checkout wedge class as #1893",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Linear: BRO-2404 'P1: sync-memory-to-repo.sh pull --rebase wedges shared main checkout (#1893)' (completed) fixed the main-checkout caller (scripts/lib/memory-sync-pull.js now merges, never rebases). Code: remaining local pull --rebase sites (batch-correct-reviews.js:180, lib/land-ingested-reviews.js:41) run in the private review-texts clone, not the shared main checkout, and the Mac cmux fleet that shared one checkout is retired (48-row carry-forward). Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-26 08:57:59Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -926,8 +947,8 @@
   {
     "notionId": "3c8637c5-416f-81a0-9a75-db299a829ddb",
     "name": "P1: exact-title duplicate-dispatch guard still let card #1893 dispatch to 3 sessions tonight : mirror-staleness race",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Linear: original fix BRO-278 (completed). The race was between the Notion mirror and bsc-next dispatch; Notion is retired (mirror frozen 2026-08-20, CLAUDE.md §6) and dispatch now reads Linear directly (scripts/linear-next.js), so the mirror-staleness race no longer exists. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-26 09:01:20Z",
     "status": "Not started",
     "priority": "P1 Next"
@@ -936,7 +957,7 @@
     "notionId": "3c8637c5-416f-8122-9908-d809025aed18",
     "name": "memory-sync-pull.js reconcile merge has no autostash equivalent for unrelated dirty files",
     "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no twin (BRO-2404 completed replaced rebase with merge). Code: scripts/lib/memory-sync-pull.js syncMainSafely() does fetch + merge --no-edit and aborts on failure, with no stash step (grep autostash/stash: only the historical comment at line 7), so a merge blocked by unrelated dirty files fails instead of carrying them. Still real, Mac-only edge.",
     "createdTime": "2026-08-26 09:11:23Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -953,8 +974,9 @@
   {
     "notionId": "3c8637c5-416f-81e9-8ec8-c9f0e7294733",
     "name": "Hardening: dispatch/succession/job-lease claim families share the release-by-key-only gap (no ownership token)",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "imported",
+    "bro": "BRO-5584",
+    "reason": "Imported 2026-10-18 as BRO-5584 (parked, P3; linear-brain.js create made a new issue, no reuse). Linear: no twin (BRO-1742 canceled was mkdir-lock ownership generally). Code: scripts/lib/atomic-claim.js:78-86 still documents the KNOWN GAP 'release is keyed on key alone, not an ownership token' (inherited from BRO-2251), and releaseClaim rmSyncs by key; callers bsc-next.js, linear-next.js, dispatch-guards.js. Still real.",
     "createdTime": "2026-08-26 11:35:30Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -982,8 +1004,8 @@
   {
     "notionId": "3c8637c5-416f-8130-acb6-e78646dd0b3c",
     "name": "P2: node --test silently no-ops on a nonexistent file path instead of erroring",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Code/test: node --test ./does-not-exist.test.mjs exits 1 on this machine (Node v22.22.0, run 2026-10-18), and test.yml's manifest gate scripts/audit-test-yml-manifest-paths.js (BRO-2647) fails when a manifest entry is missing on disk, so the silent no-op cannot recur through the manifests. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-26 13:57:29Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -991,8 +1013,8 @@
   {
     "notionId": "3c8637c5-416f-819a-8649-ce2debc9ed96",
     "name": "push-core-data composite action's own 5-attempt retry loop is unhardened against the same CI-contention class as card #1891",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Linear: hardened by BRO-2883 and BRO-4966 (completed). Code: .github/actions/push-core-data/action.yml:217-225 bounds every network op with git-net-timeout.sh (PUSH_CORE_DATA_NET_TIMEOUT_SEC=60), :267 routes retries through shouldRetry({maxAttempts:5}), and :445-447 rebases onto the time-bounded FETCH_HEAD so a timeout cannot leave a half-done rebase. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-26 14:01:46Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -1001,7 +1023,7 @@
     "notionId": "3c8637c5-416f-81b8-9e96-e2be31b1e41e",
     "name": "Extend component-level test coverage to SinglePasteForm (IngestForm.tsx)",
     "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no twin (searched SinglePasteForm, IngestForm). Code: SinglePasteForm exists only in src/app/admin/ingest/IngestForm.tsx; git grep finds no test in tests/ referencing it. Still real, admin-only.",
     "createdTime": "2026-08-26 14:03:36Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -1010,7 +1032,7 @@
     "notionId": "3c8637c5-416f-81ee-8d3b-c8eefbcba15d",
     "name": "Consolidate 4 duplicate CI-detection (GITHUB_ACTIONS||CI) implementations",
     "verdict": "pending",
-    "reason": "CI checks remain inline at health-check.js:5690, rediscover-review-urls.js:53 and e2e-canary-alert-chain.js:35; owner-alert-router.js:119 exports the broad helper. Current Linear twin search required before filing cleanup.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no twin (searched CI-detection, GITHUB_ACTIONS||CI). Code (prior read, re-confirmed by the previous worker on 4040e4b8): inline CI checks remain at health-check.js:5690, rediscover-review-urls.js:53 and e2e-canary-alert-chain.js:35 while owner-alert-router.js:119 exports a helper. Still real, refactor only.",
     "createdTime": "2026-08-26 14:25:50Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -1018,8 +1040,8 @@
   {
     "notionId": "3c8637c5-416f-814f-826f-c9bbd5c6ee8e",
     "name": "validate-data.js failing on main: 8 garbage-outlet + 1 duplicate-URL error",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Code/data: node scripts/validate-data.js on 2026-10-18 exited 0, reporting '0 garbage outlets' and 'No new duplicate URLs within same show+outlet in reviews.json'; the 8+1 errors are gone. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-26 14:26:53Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -1028,7 +1050,7 @@
     "notionId": "3c8637c5-416f-81b6-9601-e943dbc5c598",
     "name": "merge-post-merge-test-gate: retry baseline checkout once before failing safe on network blips",
     "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no twin (searched post-merge test gate retry). Code: scripts/lib/merge-post-merge-test-gate.js:115-120 fails SAFE when the baseline checkout cannot be built (network, worktree lock) with no retry before blocking. Still real, low impact.",
     "createdTime": "2026-08-26 14:27:08Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -1036,8 +1058,9 @@
   {
     "notionId": "3c8637c5-416f-8185-abf2-c44b2c160384",
     "name": "Consolidate 16 ungated needsRescore=true call sites onto isStaleScoreInput()/markRescoreNeeded()",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "imported",
+    "bro": "BRO-5587",
+    "reason": "Imported 2026-10-18 as BRO-5587 (parked, P3; linear-brain.js create made a new issue, no reuse). Linear: no twin (searched needsRescore consolidation, markRescoreNeeded). Code: scripts/lib/rescore-flagging.js exports isStaleScoreInput (:145) and markRescoreNeeded (:204), but git grep still finds 55 raw needsRescore = true / needsRescore: true writes across 39 non-test scripts files (2026-10-18). Still real.",
     "createdTime": "2026-08-26 14:29:57Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -1084,7 +1107,7 @@
     "notionId": "3c8637c5-416f-81d7-89e9-cc124f269e73",
     "name": "CI guard: flag any scripts/clear-*.js predicate sweep with no scheduled workflow",
     "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no twin (BRO-2411 canceled was one script). Code: 4 sweep scripts have no workflow reference (git grep .github/workflows: clear-contradicted-flag-basis.js, clear-contradicted-flag-basis-bro2772.js, clear-we-longrunner-fps-2026-04-24.js, clear-wrong-show-roundup-excerpts.js), and no audit-*.js checks clear-*.js scheduling. Still real (some are dated one-offs that need an exemption list).",
     "createdTime": "2026-08-26 14:47:27Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -1092,8 +1115,9 @@
   {
     "notionId": "3c8637c5-416f-8113-b5b5-e0dda903aac6",
     "name": "Regional show breadcrumb links to Broadway browse pages",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "imported",
+    "bro": "BRO-5571",
+    "reason": "Imported 2026-10-18 as BRO-5571 (parked, P3; linear-brain.js create made a new issue, no reuse). Linear: no twin (BRO-183 completed fixed concerts/operas only). Code: src/lib/browse-slugs.ts:27-37 getBrowseSlug falls to the default branch for category 'regional' and returns best-broadway-musicals/best-broadway-dramas; src/app/show/[slug]/page.tsx:283-287 nulls it only for UK regional (isUkRegionalShow), so US regional shows still breadcrumb to Broadway browse pages. Still real, visitor-visible.",
     "createdTime": "2026-08-26 14:49:48Z",
     "status": "Not started",
     "priority": "P3"
@@ -1110,8 +1134,9 @@
   {
     "notionId": "3c8637c5-416f-81f1-bc6d-eae68941c8a6",
     "name": "clear-stale-roundup-flags.js has no schedule : 6-review backlog silently dropped from scoring",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "twin",
+    "bro": "BRO-2323",
+    "reason": "Linear: BRO-2323 'clear-stale-roundup-flags.js has no schedule: 6-review backlog silently dropped from scoring' (completed) is the exact-title twin. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-26 15:09:59Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -1129,7 +1154,7 @@
     "notionId": "3c8637c5-416f-8112-944a-fcbada05d3d0",
     "name": "Two of Tom's blog reviews reference shows not in shows.json (Edward, High Spirits)",
     "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "reason": "Real, needs owner judgment, not imported. Linear: no twin (searched Edward, High Spirits, blog reviews). Data: content/reviews/edward.md (Book Club Bar, East Village) and content/reviews/high-spirits-encores.md still exist while shows.json has no Edward or High Spirits entry (2026-10-18). Still real, but whether an off-off-Broadway bar show and an Encores! concert belong in the catalog is an owner call.",
     "createdTime": "2026-08-26 16:06:47Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -1137,8 +1162,8 @@
   {
     "notionId": "3c8637c5-416f-818d-8f04-d204cdf9a631",
     "name": "Flaky test: dispatch-ledger.test.mjs countRecentLaunches fails in full suite run but passes standalone",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Code/test: scripts/lib/dispatch-ledger.test.mjs:1574-1586 now injects a fixed now (Date.parse 2026-08-26T12:00Z) and countRecentLaunches throws without one, so wall-clock order dependence is gone; node --test --test-name-pattern=countRecentLaunches scripts/lib/dispatch-ledger.test.mjs passed 2/2 on 2026-10-18. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-26 16:09:23Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -1147,7 +1172,7 @@
     "notionId": "3c8637c5-416f-81af-8135-d15bbb6347a5",
     "name": "Extract shared runAdvisoryAudit() helper for CI advisory scripts (crash-safety boilerplate)",
     "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no twin (0 hits for runAdvisoryAudit). Code: git grep finds no runAdvisoryAudit helper; advisory audit-*.js scripts still carry their own crash-safety wrappers. Still real, refactor only.",
     "createdTime": "2026-08-26 16:13:17Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -1155,8 +1180,8 @@
   {
     "notionId": "3c8637c5-416f-811e-ab2f-d05c07953836",
     "name": "Consolidate duplicate live-sitemap-fetch logic between submit-indexnow.js and scripts/lib/live-show-slugs.js",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Code: consolidated. scripts/submit-indexnow.js:16 and scripts/lib/live-show-slugs.js:11 both require fetchSitemapIndexUrls from scripts/lib/sitemap-urls.js. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-26 16:17:23Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -1164,8 +1189,9 @@
   {
     "notionId": "3c8637c5-416f-8161-a152-ce0ed9b2606f",
     "name": "P2: promote-ob-venue-candidates.js has no cap on PROMOTIONS per run (only staging caps candidates)",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "imported",
+    "bro": "BRO-5575",
+    "reason": "Imported 2026-10-18 as BRO-5575 (parked, P3; linear-brain.js create made a new issue, no reuse). Linear: no twin (BRO-2026/2477/182 completed fixed id-minting and staging). Code: scripts/promote-ob-venue-candidates.js has no per-run cap on promotions (grep cap/MAX_/surge: only OB_AGGREGATOR_MAX_STALENESS_DAYS); line 1009 promotes every confirmed staged candidate in one run. Still real: a bad batch writes unbounded shows.json entries.",
     "createdTime": "2026-08-26 16:18:53Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -1174,7 +1200,7 @@
     "notionId": "3c8637c5-416f-81ce-8306-e00f4c6c44a0",
     "name": "P2: centralize outlet-registry.json loading behind one worktree-safe helper",
     "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no twin (BRO-681 canceled is unrelated). Code: scripts/lib/review-normalization.js:53 has loadOutletRegistry(), but git grep finds 54 non-test scripts lines that readFileSync/require outlet-registry.json directly. Still real, refactor only.",
     "createdTime": "2026-08-26 16:39:47Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -1182,8 +1208,9 @@
   {
     "notionId": "3c8637c5-416f-81f9-9046-c2724c71b8da",
     "name": "P2: isPlaceholderVenue is exact-match only, not contamination-safe",
-    "verdict": "pending",
-    "reason": "Still unaddressed theoretical contamination: placeholder-venue.js:93 checks neighbourhood blobs by exact equality. A glued string such as 'Midtown E at Goodman Theatre' passes. Existing junk-substring rejection does not resolve the requested prefix/suffix handling. Requires corpus false-positive audit and twin search before import.",
+    "verdict": "imported",
+    "bro": "BRO-5580",
+    "reason": "Imported 2026-10-18 as BRO-5580 (parked, P3; linear-brain.js create made a new issue, no reuse). Linear: no twin (searched isPlaceholderVenue, contamination). Code/run: scripts/lib/placeholder-venue.js:91 checks NEIGHBOURHOOD_BLOBS by exact equality; running isPlaceholderVenue('Midtown E at Goodman Theatre') on 2026-10-18 returned {placeholder:false} while 'Midtown E' returns neighbourhood_blob. Still real; prefix/suffix matching needs a corpus false-positive audit.",
     "createdTime": "2026-08-26 16:40:04Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -1191,8 +1218,9 @@
   {
     "notionId": "3c8637c5-416f-8110-a776-f5cba1657e16",
     "name": "Move venue write-time validation into the shows.json write choke point (saveShows)",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "imported",
+    "bro": "BRO-5579",
+    "reason": "Imported 2026-10-18 as BRO-5579 (parked, P3; linear-brain.js create made a new issue, no reuse). Linear: no twin (BRO-3410 completed did the same move for review files). Code: scripts/lib/shows-write-guard.js saveShows syncs theaterAddress (lines 56-91) but runs no isPlaceholderVenue/sanitizeVenueForWrite check, so venue validation still lives in individual writers (e.g. discover-historical-shows.js:310). Still real.",
     "createdTime": "2026-08-26 16:50:50Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -1210,7 +1238,7 @@
     "notionId": "3c8637c5-416f-81fd-94a7-c65dd64ee781",
     "name": "Consolidate inline surge guards across stale-flag sweep scripts onto the shared shouldRefuseSurge() helper",
     "verdict": "pending",
-    "reason": "Partially consolidated: wrongShow and roundup scripts use shouldRefuseSurge, but clear-stale-wrong-production-flags.js:271 and :350 still contain inline threshold/forceBulk comparisons. The card's requested refactor is incomplete; current Linear twin search required.",
+    "reason": "Real, over the import cap (20 imported in this pass). Linear: no twin (searched shouldRefuseSurge consolidation). Code: scripts/clear-stale-wrong-production-flags.js:271 and :350 still compare candidates.length/toClear.length against PREDICATE_SURGE_THRESHOLD/FIX_SURGE_THRESHOLD inline with FORCE_BULK instead of shouldRefuseSurge(). Still real, refactor only.",
     "createdTime": "2026-08-26 16:56:57Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -1218,8 +1246,8 @@
   {
     "notionId": "3c8637c5-416f-811e-a3d1-efeffec1a5b4",
     "name": "Extract a shared LLM-verified stale-flag sweep harness if a 4th sibling script appears",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Code: the card is conditional ('if a 4th sibling script appears'). Only 2 clear-stale-*.js sweeps are LLM-verified today (clear-stale-wrong-production-flags.js, clear-stale-wrong-show-flags.js); clear-stale-roundup-flags.js:33 is explicitly 'no LLM second-opinion' and clear-stale-automated-text-verdicts.js only requeues for the scorer. Trigger not met. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-26 16:57:09Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -1227,8 +1255,8 @@
   {
     "notionId": "3c8637c5-416f-814b-b947-e65b03f7ee49",
     "name": "bsc-next.js parseArgs silently no-ops on --flag=value equals-syntax (any flag, not just --id)",
-    "verdict": "pending",
-    "reason": "Reproduced against real exported parseArgs: --id=12 yields {'_':[],'id=12':true}; --pick=3 has same bug; --id 12 works. Mac CLI scope; current Linear twin search and prioritization required, no bsc-next code changed.",
+    "verdict": "obsolete",
+    "reason": "Linear: the live dispatcher's copy of this bug was fixed as BRO-2576 (linear-next.js parseArgs --flag=value, completed) and BRO-2628/BRO-2630. scripts/bsc-next.js is the Notion-backed Mac dispatcher (header lines 4-8: 'seeded with its full Notion context', notion-tasks-sync queue); Notion is retired and dispatch runs through linear-next.js (CLAUDE.md §6). The bug still reproduces in bsc-next.js:110-122 but that tool is retired. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-26 17:47:13Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -1245,8 +1273,9 @@
   {
     "notionId": "3c8637c5-416f-814e-92db-efe7daf63615",
     "name": "audit-time-bomb-tests.js exemptions are whole-file, not per-test : could mask a future real bomb",
-    "verdict": "pending",
-    "reason": "Still real but deliberately not filed in the BRO-5297 04:05 comment: whole-file time-bomb exemptions, dev-only with no visitor impact. Preserve as deferred work rather than calling it obsolete.",
+    "verdict": "imported",
+    "bro": "BRO-5590",
+    "reason": "Imported 2026-10-18 as BRO-5590 (parked, P3; linear-brain.js create made a new issue, no reuse). Linear: no twin (BRO-2192 canceled covered manifest scope, not per-test exemptions). Still real per the accepted BRO-5297 04:05 triage, which deferred it as dev-only with no visitor impact; imported parked so the deferral is tracked instead of left in retired Notion.",
     "createdTime": "2026-08-26 18:01:13Z",
     "status": "Paused",
     "priority": "P2 Later"
@@ -1264,8 +1293,9 @@
   {
     "notionId": "3cd637c5-416f-8152-9b14-c73399d9f286",
     "name": "Homepage rage clicks surge to 21x : critical UX breakdown",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "twin",
+    "bro": "BRO-5188",
+    "reason": "Linear: same homepage rage-click signal is filed by the weekly PostHog analyzer as BRO-5188 'Rage clicks on homepage search input suggest broken search UX' (backlog, 2026-10-12); earlier weeks BRO-3627 (canceled) and BRO-4224 (duplicate). scripts/posthog-friction-analyzer.js now files these straight to Linear with fhash dedupe. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-31 16:10:02Z",
     "status": "Not started",
     "priority": "P0 Now"
@@ -1273,8 +1303,8 @@
   {
     "notionId": "3cd637c5-416f-812f-9826-c3e6fe6ba1ce",
     "name": "Ride the Cyclone : missing production returning zero results",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Data: shows.json now has ride-the-cyclone-off-west-end-2026 and ride-the-cyclone-off-broadway-2016 (2026-10-18), so the zero-result search is resolved. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-31 16:10:03Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -1282,8 +1312,8 @@
   {
     "notionId": "3cd637c5-416f-81a1-a575-ef9ffea90d0d",
     "name": "Danny and the Deep Blue Sea : missing Off-Broadway production",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Data: shows.json now has danny-and-the-deep-blue-sea-off-broadway-2023 (2026-10-18). Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-08-31 16:10:03Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -1300,8 +1330,8 @@
   {
     "notionId": "3d4637c5-416f-8167-87b4-d835b8e668c2",
     "name": "Search zero-results rate at 5% : 'Standing at the Sky's Edge' & 'Everybody's Talking About Jamie' missing",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Data: shows.json now has standing-at-the-skys-edge-west-end-2023 and -2024 and everybodys-talking-about-jamie-west-end-2024 (2026-10-18); the zero-results class is tracked by later analyzer cards (BRO-3628 completed, BRO-4742 completed). Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-09-07 14:15:11Z",
     "status": "Not started",
     "priority": "P1 Next"
@@ -1309,8 +1339,9 @@
   {
     "notionId": "3d4637c5-416f-8105-84c8-f4f7621d1168",
     "name": "Ticket clicks heavily concentrated on 2 shows : catalogue depth not converting",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "twin",
+    "bro": "BRO-3676",
+    "reason": "Linear: same signal as BRO-3676 'Ticket affiliate clicks concentrated in 8 shows: gap for long-tail shows' (canceled) and BRO-4227 (duplicate); the weekly PostHog analyzer re-files it to Linear if it recurs. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-09-07 14:15:14Z",
     "status": "Not started",
     "priority": "P1 Next"
@@ -1318,8 +1349,8 @@
   {
     "notionId": "3d4637c5-416f-8108-8eab-edf6251a4fa8",
     "name": "Traffic down to 3,473 users : 13% below ~4k weekly baseline",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "obsolete",
+    "reason": "Linear: no open twin (BRO-1377 canceled). Point-in-time weekly reading (2026-09-07); weekly traffic now has its own report (BRO-4136 completed: traffic dashboard + weekly email), and posthog-weekly-insights.yml / scripts/posthog-friction-analyzer.js re-file live anomalies to Linear. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-09-07 14:15:15Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -1327,8 +1358,9 @@
   {
     "notionId": "3d4637c5-416f-8147-8002-ccb7e1f2c6b4",
     "name": "Search ratio remains extremely high : 675 searches by only 75 users (9:1)",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "twin",
+    "bro": "BRO-5585",
+    "reason": "Same search-as-navigation reading (675 searches by 75 users) consolidated into BRO-5585, filed in this triage from sibling row 3c6637c5 (High search-to-user ratio). No earlier Linear card for search ratio or search navigation. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-09-07 14:15:15Z",
     "status": "Not started",
     "priority": "P1 Next"
@@ -1345,8 +1377,9 @@
   {
     "notionId": "3db637c5-416f-81cb-a123-e93f7943a305",
     "name": "Rage clicks on /west-end '69' element : broken UI",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "twin",
+    "bro": "BRO-3625",
+    "reason": "Linear: BRO-3625 'Rage clicks on West End page around 69 element' (duplicate status) is the same finding. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-09-14 15:01:45Z",
     "status": "Not started",
     "priority": "P0 Now"
@@ -1354,8 +1387,9 @@
   {
     "notionId": "3db637c5-416f-817b-82bd-e7145d956838",
     "name": "Traffic spike to 4,434 users : validate source before optimising",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "twin",
+    "bro": "BRO-3419",
+    "reason": "Linear: BRO-3419 'Traffic source spike analysis: GA4 + PostHog channel comparison' (completed) did the source validation this card asked for. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-09-14 15:01:46Z",
     "status": "Not started",
     "priority": "P3 Backlog"
@@ -1363,8 +1397,9 @@
   {
     "notionId": "3db637c5-416f-8196-a623-d50a2a05959c",
     "name": "Search used as site navigation : no browse/nav alternative surfaced",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "twin",
+    "bro": "BRO-5585",
+    "reason": "Same search-as-site-navigation observation, consolidated into BRO-5585 in this triage. No earlier Linear card for search ratio or search navigation. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-09-14 15:01:46Z",
     "status": "Not started",
     "priority": "P2 Later"
@@ -1372,8 +1407,9 @@
   {
     "notionId": "3db637c5-416f-816a-b307-cd8bd007d196",
     "name": "Missing show: The Foreigner",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "twin",
+    "bro": "BRO-3631",
+    "reason": "Linear: BRO-3631 'Missing show: The Foreigner' (canceled) is the exact-title twin; shows.json still has no The Foreigner entry, consistent with that cancel. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-09-14 15:01:47Z",
     "status": "Not started",
     "priority": "P1 Next"
@@ -1381,8 +1417,9 @@
   {
     "notionId": "3db637c5-416f-81e0-8d73-f8b52fa1d2cc",
     "name": "Missing show: A Masked Ball",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "imported",
+    "bro": "BRO-5586",
+    "reason": "Imported 2026-10-18 as BRO-5586 (parked, P3; linear-brain.js create made a new issue, no reuse). Linear: no twin (searched masked ball, ballo; sibling missing-show cards BRO-3631 canceled, BRO-3629 completed). Data: shows.json (2026-10-18) has no A Masked Ball / Un ballo in maschera entry among its 35 operas. Still real; production and market must be identified before adding (validate-show-venue.js).",
     "createdTime": "2026-09-14 15:01:47Z",
     "status": "Not started",
     "priority": "P1 Next"
@@ -1390,8 +1427,9 @@
   {
     "notionId": "3db637c5-416f-81f2-b2ff-c7707326b31f",
     "name": "Missing show: Fleabag",
-    "verdict": "pending",
-    "reason": "No page-id match in the checked-in import ledger. Live Linear search is prohibited for this worker; current code/data verification and twin check remain before any P2 import.",
+    "verdict": "twin",
+    "bro": "BRO-3629",
+    "reason": "Linear: BRO-3629 'Missing show: Fleabag' (completed); shows.json has fleabag-west-end-2019. Fresh Linear search covered all 5,567 issues incl. closed and archived (2026-10-18).",
     "createdTime": "2026-09-14 15:01:47Z",
     "status": "Not started",
     "priority": "P1 Next"
