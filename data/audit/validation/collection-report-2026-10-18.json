@@ -1,82 +1,63 @@
 {
-  "runDate": "2026-10-18T14:55:38.988Z",
+  "runDate": "2026-10-18T15:01:23.111Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 20,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "",
-    "aggressive": true,
+    "showFilter": "angels-bone-west-end-2026",
+    "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 18,
+    "processed": 3,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "10.0%"
+    "successRate": "75.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 0,
+    "scrapingdog": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 3,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 14,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 9,
-    "tier1_9Success": 5,
-    "tier2Attempts": 9,
-    "tier2Success": 0,
-    "tier3Attempts": 12,
-    "tier3Success": 5,
-    "tier3_6Attempts": 7,
+    "tier1_9Attempts": 1,
+    "tier1_9Success": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 1,
+    "tier3Attempts": 1,
+    "tier3Success": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 13,
-    "tier4Success": 6,
-    "totalFailed": 13,
-    "scrapingBeePageCredits": 70,
+    "tier4Attempts": 1,
+    "tier4Success": 0,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 2,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 14,
-    "browserbaseMinutesUsed": 8.2,
-    "urlDiscoveryAttempts": 5,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 2,
-    "failed": 18,
+    "processed": 3,
+    "failed": 1,
     "shows": [
-      "aladdin-2014",
-      "an-enemy-of-the-people-2024",
-      "and-juliet-2022",
-      "book-of-mormon-2011",
-      "cosi-fan-tutte-off-broadway-2026",
-      "funny-girl-2002",
-      "gutenberg-2023",
-      "home-2024",
-      "i-need-that-2023",
-      "la-boheme-off-broadway-2025",
-      "little-shop-of-horrors-off-broadway-2019",
-      "new-york-new-york-2023",
-      "sunset-boulevard-2024",
-      "swept-away-2024",
-      "the-price-off-west-end-2026",
-      "the-roommate-2024",
-      "the-whos-tommy-2024",
-      "titanique-2026",
-      "trouble-in-mind-west-end-2021",
-      "wicked-2003"
+      "angels-bone-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -85,78 +66,46 @@
     }
   },
   "processed": [
-    "wicked-2003/wsj--terry-teachout.json",
-    "la-boheme-off-broadway-2025/wsj--by-tim-page.json"
+    "angels-bone-west-end-2026/british-theatre--unknown.json",
+    "angels-bone-west-end-2026/broadwayworld--unknown.json",
+    "angels-bone-west-end-2026/jackstage--unknown.json"
   ],
   "failed": [
-    "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
-    "trouble-in-mind-west-end-2021/wsj--terry-teachout.json",
-    "funny-girl-2002/wsj--charles-isherwood.json",
-    "the-price-off-west-end-2026/wsj--unknown.json",
-    "and-juliet-2022/wsj--charles-isherwood.json",
-    "little-shop-of-horrors-off-broadway-2019/wsj--charles-isherwood.json",
-    "aladdin-2014/wsj--terry-teachout.json",
-    "book-of-mormon-2011/wsj--terry-teachout.json",
-    "titanique-2026/wsj--charles-isherwood.json",
-    "swept-away-2024/wsj--charles-isherwood.json",
-    "sunset-boulevard-2024/wsj--charles-isherwood.json",
-    "the-roommate-2024/wsj--charles-isherwood.json",
-    "home-2024/wsj--charles-isherwood.json",
-    "the-whos-tommy-2024/wsj--charles-isherwood.json",
-    "an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
-    "i-need-that-2023/wsj--charles-isherwood.json",
-    "gutenberg-2023/wsj--charles-isherwood.json",
-    "new-york-new-york-2023/wsj--charles-isherwood.json"
+    "angels-bone-west-end-2026/bachtrack--unknown.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "wicked-2003/wsj--terry-teachout.json",
-      "la-boheme-off-broadway-2025/wsj--by-tim-page.json"
+      "angels-bone-west-end-2026/british-theatre--unknown.json",
+      "angels-bone-west-end-2026/broadwayworld--unknown.json",
+      "angels-bone-west-end-2026/jackstage--unknown.json"
     ],
     "failed": [
-      "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
-      "trouble-in-mind-west-end-2021/wsj--terry-teachout.json",
-      "funny-girl-2002/wsj--charles-isherwood.json",
-      "the-price-off-west-end-2026/wsj--unknown.json",
-      "and-juliet-2022/wsj--charles-isherwood.json",
-      "little-shop-of-horrors-off-broadway-2019/wsj--charles-isherwood.json",
-      "aladdin-2014/wsj--terry-teachout.json",
-      "book-of-mormon-2011/wsj--terry-teachout.json",
-      "titanique-2026/wsj--charles-isherwood.json",
-      "swept-away-2024/wsj--charles-isherwood.json",
-      "sunset-boulevard-2024/wsj--charles-isherwood.json",
-      "the-roommate-2024/wsj--charles-isherwood.json",
-      "home-2024/wsj--charles-isherwood.json",
-      "the-whos-tommy-2024/wsj--charles-isherwood.json",
-      "an-enemy-of-the-people-2024/wsj--charles-isherwood.json",
-      "i-need-that-2023/wsj--charles-isherwood.json",
-      "gutenberg-2023/wsj--charles-isherwood.json",
-      "new-york-new-york-2023/wsj--charles-isherwood.json"
+      "angels-bone-west-end-2026/bachtrack--unknown.json"
     ]
   },
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "angels-bone-west-end-2026/british-theatre--unknown.json",
+      "angels-bone-west-end-2026/jackstage--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
-      "book-of-mormon-2011/wsj--terry-teachout.json"
+    "scrapingdog": [],
+    "scrapingbee": [
+      "angels-bone-west-end-2026/broadwayworld--unknown.json"
     ],
-    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "wicked-2003/wsj--terry-teachout.json",
-      "la-boheme-off-broadway-2025/wsj--by-tim-page.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {
-    "The Wall Street Journal": {
-      "count": 2,
-      "domain": "wsj.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
+    "Bachtrack": {
+      "count": 1,
+      "domain": "bachtrack.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": []
