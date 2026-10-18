@@ -1,45 +1,23 @@
 {
-  "updatedAt": "2026-10-18T12:14:34.879Z",
-  "processed": 614,
-  "failed": 530,
-  "successRate": "53.7%",
+  "updatedAt": "2026-10-18T12:32:35.105Z",
+  "processed": 231,
+  "failed": 231,
+  "successRate": "50.0%",
   "tierBreakdown": {
-    "playwright": 280,
-    "amp": 0,
+    "playwright": 122,
+    "amp": 1,
     "browserbase": 0,
-    "directCookies": 1,
-    "scrapingdog": 49,
-    "scrapingbee": 41,
-    "brightdata": 34,
+    "directCookies": 0,
+    "scrapingdog": 22,
+    "scrapingbee": 14,
+    "brightdata": 19,
     "archiveToday": 0,
-    "archive": 233
+    "archive": 58
   },
-  "browserbaseSessions": 22,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-18T10:42:47.474Z",
-      "event": "bb-session",
-      "session": "1f843a4f",
-      "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89"
-    },
-    {
-      "t": "2026-10-18T10:42:47.894Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-18T10:50:37.000Z",
-      "event": "bb-session",
-      "session": "e55cc33a",
-      "url": "https://www.nytimes.com/2025/08/21/books/review/david-adjmi-stereophonic.html"
-    },
-    {
-      "t": "2026-10-18T10:50:37.500Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-18T10:50:54.006Z",
+      "t": "2026-10-18T02:46:51.944Z",
       "event": "bb-session",
       "session": "5f47185c",
       "url": "https://www.nytimes.com/2025/08/21/books/review/david-adjmi-stereophonic.html"
@@ -123,6 +101,28 @@
     },
     {
       "t": "2026-10-18T11:39:41.309Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-18T12:24:25.705Z",
+      "event": "bb-session",
+      "session": "fa04f63a",
+      "url": "http://theater.nytimes.com/2011/03/25/theater/reviews/the-book-of-mormon-at-euge"
+    },
+    {
+      "t": "2026-10-18T12:24:26.637Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-18T12:24:44.273Z",
+      "event": "bb-session",
+      "session": "a1cdaf85",
+      "url": "http://theater.nytimes.com/2011/03/25/theater/reviews/the-book-of-mormon-at-euge"
+    },
+    {
+      "t": "2026-10-18T12:24:45.127Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
