@@ -22,7 +22,7 @@ test('owner-only, date-wait, owner-text, machine-filed and unverifiable parks st
   assert.equal(promotionDecision(card('needs the owner Mac')).reason, 'owner-only-park');
   assert.equal(promotionDecision(card('spends money on credits')).reason, 'owner-only-park');
   assert.equal(promotionDecision(card('wait until 2026-11-01 for the window')).reason, 'wait-park');
-  assert.equal(promotionDecision(card('waiting on the owner')).reason, 'owner-text');
+  assert.equal(promotionDecision(card('waiting on the owner')).reason, 'owner-hold-park');
   assert.equal(promotionDecision(card('Auto-filed by owner-alert-router: x')).reason, 'machine-filed');
   assert.equal(promotionDecision(card('own session', { description: 'PARKED: own session\n\nno verify here' })).reason, 'no-safe-verify');
   assert.equal(promotionDecision(card('own session', { description: `PARKED: own session\n\nVERIFY: owner-judgment` })).reason, 'owner-judgment');
@@ -59,4 +59,21 @@ test('unparkDescription drops every PARKED sentinel and keeps the reason', () =>
   assert.match(out, /a/);
   assert.match(out, /b/);
   assert.ok(buildPromoteComment(card('a b c')).startsWith(PROMOTE_COMMENT_MARKER));
+});
+
+test('review BRO-5626: owner/blocked/ordering/later park reasons stay parked, picker or not', () => {
+  for (const r of ['superseded by BRO-5000', 'do not dispatch, deliberately held', 'blocked by BRO-4100', 'needs human judgment on wording',
+    'needs the owner to pick between two designs', 'depends on BRO-12 landing first', 'Thomas must approve', 'held for owner']) {
+    assert.equal(promotionDecision(card(r)).promote, false, r);
+  }
+  assert.equal(promotionDecision(card('low impact follow-up', { priority: 4 })).reason, 'later-park');
+});
+
+test('review BRO-5626: awaiting-owner label and reclaim history keep a card parked', () => {
+  assert.equal(promotionDecision(card('own session', { comments: { nodes: [{ body: 'RECLAIMED-ABANDONED: x', createdAt: '2026-10-01T00:00:00Z' }] } })).reason, 'reclaimed');
+  assert.match(promotionDecision(card('own session', { description: 'PARKED: own session\n\nDECISION NEEDED: x\n' + VERIFY })).reason, /owner-text/);
+});
+
+test('review BRO-5626: the open-issues query fetches labels so awaiting-owner is visible', () => {
+  assert.match(require('./linear-dispatch.js').buildOpenIssuesWithDescriptionsQuery(), /labels \{ nodes \{ name \} \}/);
 });

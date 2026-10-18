@@ -1117,6 +1117,7 @@ function buildOpenIssuesWithDescriptionsQuery() {
         createdAt
         updatedAt
         state { name type }
+        labels { nodes { name } }
       }
       pageInfo { hasNextPage endCursor }
     }

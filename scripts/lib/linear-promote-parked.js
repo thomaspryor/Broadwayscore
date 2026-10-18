@@ -23,7 +23,8 @@
 
 const PARK_LINE_RE = /^\s*PARKED\s*:(.*)$/gim;
 // A park that waits on a calendar date or another event, not on a person.
-const WAIT_PARK_RE = /\b(?:until|waiting (?:on|for)|wait (?:for|until)|once\b|after (?:the |a |\d)|in \d+ (?:days?|weeks?)|\d{4}-\d{2}-\d{2}|reset)\b/i;
+const WAIT_PARK_RE = /\b(?:depends? on|dependent on|landing first|until|waiting (?:on|for)|wait (?:for|until)|once\b|after (?:the |a |\d)|in \d+ (?:days?|weeks?)|\d{4}-\d{2}-\d{2}|reset)\b/i;
+// Kept as a fallback; the picker's own AWAITING_OWNER_RE and OWNER_HOLD_PARK_RE are applied too.
 const OWNER_TEXT_RE = /\bDECISION NEEDED\b|\bowner(?:'s)?\s+(?:decision|approval|sign[- ]?off|go[- ]ahead|call)\b|\b(?:waiting|wait|pending|blocked)\s+(?:on|for)\s+(?:the\s+|an?\s+)?(?:owner|thomas)\b/i;
 
 function parkReasons(description) {
@@ -37,7 +38,8 @@ function parkReasons(description) {
  */
 function promotionDecision(issue) {
   const hd = require('./headless-dispatchability.js');
-  const { headlessUnfitReason } = require('./cloud-worker-pick.js');
+  const pk = require('./cloud-worker-pick.js');
+  const { headlessUnfitReason } = pk;
   const { isAwaitingOwner } = require('./owner-approval-channel.js');
   if (!issue || !issue.state || issue.state.type !== 'backlog') return { promote: false, reason: 'not-backlog' };
   if (![1, 2, 3, 4].includes(Number(issue.priority))) return { promote: false, reason: 'no-priority' };
@@ -46,9 +48,22 @@ function promotionDecision(issue) {
   if (!reasons.length) return { promote: false, reason: 'no-park-line' };
   if (hd.isAutomationParked(description)) return { promote: false, reason: 'machine-filed' };
   if (reasons.some((r) => hd.OWNER_ONLY_PARK_RE.test(r))) return { promote: false, reason: 'owner-only-park' };
+  // Review BRO-5626: the picker's wider owner/blocked/superseded/ordering deny list applies too. Once the
+  // PARKED line is rewritten no later guard sees the hold, so this check is the only one.
+  if (reasons.some((r) => hd.OWNER_HOLD_PARK_RE.test(r))) return { promote: false, reason: 'owner-hold-park' };
+  // P2/P3 "do it later" wording stays parked, exactly as the picker's fallback tiers keep it.
+  if ([3, 4].includes(Number(issue.priority)) && reasons.some((r) => pk.FALLBACK_PARK_DENY_RE.test(r))) return { promote: false, reason: 'later-park' };
+  if (new RegExp(pk.AWAITING_OWNER_RE.source, 'i').test(description)) return { promote: false, reason: 'owner-text' };
   if (OWNER_TEXT_RE.test(reasons.join('\n'))) return { promote: false, reason: 'owner-text' };
   if (reasons.some((r) => WAIT_PARK_RE.test(r))) return { promote: false, reason: 'wait-park' };
   if (isAwaitingOwner(issue)) return { promote: false, reason: 'awaiting-owner' };
+  // A card the reclaim sweep sent to Backlog, or workers paused repeatedly, waits for a person.
+  const nodes = (issue.comments && issue.comments.nodes) || [];
+  if (nodes.some((c) => /^\s*RECLAIMED-ABANDONED:/.test(String(c.body || '')))) return { promote: false, reason: 'reclaimed' };
+  try {
+    const h = pk.pausedHistorySkipReason(nodes, Date.now(), { priority: issue.priority, pausedBacklog: false });
+    if (h) return { promote: false, reason: `history-${h}` };
+  } catch { /* fail open to the picker's own history guard */ }
   const unfit = headlessUnfitReason(issue, { allowParkedSentinel: true });
   if (unfit) return { promote: false, reason: unfit };
   return { promote: true, reason: 'ok' };

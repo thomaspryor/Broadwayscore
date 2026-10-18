@@ -26,6 +26,7 @@ const { landedPerLane } = require('./codex-runner.js');
 const { isAutofixFiledIssue } = require('./autofix-filed-marker.js');
 const { isAwaitingOwner } = require('./owner-approval-channel.js');
 const cardDedupe = require('./card-dedupe.js');
+const { isAutomationParked } = require('./headless-dispatchability.js');
 
 const TEAM_KEY = 'BRO';
 const PRIORITY_LABELS = [[1, 'Urgent'], [2, 'High'], [3, 'Medium'], [4, 'Low'], [0, 'No priority']];
@@ -113,7 +114,8 @@ async function fetchParkedBacklog({ graphql, teamKey = TEAM_KEY, graphqlOpts = G
     const data = await graphql(PARKED_QUERY, { filter, after }, graphqlOpts);
     const conn = data && data.issues;
     if (!conn || !Array.isArray(conn.nodes)) throw new Error('Linear returned no issues connection for the parked-backlog count');
-    count += conn.nodes.filter((n) => PARKED_LINE_RE.test(n.description || '')).length;
+    // Machine-filed parks are excluded: the picker takes those on its own after 3 days.
+    count += conn.nodes.filter((n) => PARKED_LINE_RE.test(n.description || '') && !isAutomationParked(n.description)).length;
     if (!conn.pageInfo || !conn.pageInfo.hasNextPage) return { count, truncated: false };
     after = conn.pageInfo.endCursor;
   }

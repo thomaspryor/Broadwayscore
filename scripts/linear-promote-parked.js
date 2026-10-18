@@ -45,6 +45,9 @@ async function main() {
   let moved = 0; let failed = 0;
   for (const i of plan.promote) {
     try {
+      // Re-read right before the write so an edit made since the listing is not overwritten.
+      const fresh = await linear.getIssue(i.identifier);
+      if (!fresh || fresh.description !== i.description || (fresh.state && fresh.state.type !== 'backlog')) { console.log(`${i.identifier}: changed since listing, skipped`); continue; }
       await linear.updateIssue(i.id, { stateId: todo.id, description: unparkDescription(i.description) });
       await linear.createComment(i.id, buildPromoteComment(i));
       moved += 1;
