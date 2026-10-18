@@ -25,7 +25,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { SOURCE_TIERS, legacyCostAnchor, anchorErrors, seedRepeatsLegacy } = require('./cost-history');
+const { SOURCE_TIERS, REPORTED_SOURCE_TYPES, legacyCostAnchor, legacySourceType, anchorErrors, seedRepeatsLegacy } = require('./cost-history');
 
 const INDEX_PATH = path.join(__dirname, '..', '..', 'data', 'broadway-cost-index.json');
 const DAY_MS = 86400000;
@@ -108,11 +108,8 @@ function qualityFor(halfWidth, hasAnchor) {
   return 'low';
 }
 
-// Sources that report a show's own cost. Reddit "standard" figures and our
-// industry estimates are category guesses (often dated to when we wrote them),
-// so they never count as an anchor (BRO-4989 checker: anchors are trade or
-// producer sourced).
-const REPORTED_ANCHOR_SOURCES = new Set(['producer-confirmed', 'sec', 'trade']);
+// Sources that report a show's own cost (one list, cost-history.js).
+const REPORTED_ANCHOR_SOURCES = REPORTED_SOURCE_TYPES;
 
 /**
  * Cost-equivalent anchors: break-even anchors are converted to a running
@@ -121,6 +118,10 @@ const REPORTED_ANCHOR_SOURCES = new Set(['producer-confirmed', 'sec', 'trade']);
 function costAnchors(record, show, category) {
   // Malformed anchors are skipped (check-cost-anchors.js reports them).
   let hist = Array.isArray(record?.costHistory) ? record.costHistory.filter((a) => anchorErrors(a).length === 0) : [];
+  // A migrated anchor is a stored copy of the record's weeklyRunningCost, so
+  // the record's label decides its tier today: an uncited "reported" cost is
+  // our estimate (legacySourceType, BRO-5632).
+  hist = hist.map((a) => (a.dateBasis === 'migrated' ? { ...a, sourceType: legacySourceType(record) } : a));
   // A history seeded before BRO-5632 can hold the migrated legacy copy of a
   // seed's figure under another kind; the seed wins, as in historyWithSeeds().
   hist = hist.filter((a) => a.dateBasis !== 'migrated' || !seedRepeatsLegacy(a, hist));

@@ -105,11 +105,12 @@ describe('migrating today\'s single weeklyRunningCost', () => {
   });
 
   it('dates an undated figure by firstAdded before lastUpdated, which moves on every edit (BRO-5005)', () => {
-    const r = { weeklyRunningCost: 700_000, costMethodology: 'trade-reported', firstAdded: '2025-03-02T10:00:00Z', lastUpdated: '2026-10-10T12:00:00Z' };
+    const src = 'Variety: weekly running costs of about $700,000'; // cited, but no date in it
+    const r = { weeklyRunningCost: 700_000, costMethodology: 'trade-reported', weeklyRunningCostSource: src, firstAdded: '2025-03-02T10:00:00Z', lastUpdated: '2026-10-10T12:00:00Z' };
     const a = legacyCostAnchor(r, { openingDate: '2024-01-01' });
     assert.strictEqual(a.asOf, '2025-03-02');
     assert.strictEqual(a.dateFrom, 'record-added');
-    const b = legacyCostAnchor({ weeklyRunningCost: 700_000, costMethodology: 'trade-reported', lastUpdated: '2026-01-05' }, { openingDate: '2024-01-01' });
+    const b = legacyCostAnchor({ weeklyRunningCost: 700_000, costMethodology: 'trade-reported', weeklyRunningCostSource: src, lastUpdated: '2026-01-05' }, { openingDate: '2024-01-01' });
     assert.strictEqual(b.asOf, '2026-01-05');
     assert.strictEqual(b.dateFrom, 'record-updated');
   });
@@ -236,5 +237,21 @@ describe('one report counts once (BRO-5632)', () => {
     const his = { asOf: '2024-04-02', amount: 960000, kind: 'running-cost', sourceType: 'reddit-standard', sourceUrl: 'https://www.reddit.com/comments/x', postId: 'x' };
     const h = historyWithSeeds(record, show, [his]);
     assert.ok(h.some((a) => a.dateBasis === 'migrated'), JSON.stringify(h));
+  });
+});
+
+describe('an uncited "reported" cost is our estimate (BRO-5632)', () => {
+  it('reads as industry-estimate without a publishable source, as reported with one', () => {
+    const uncited = legacyCostAnchor({ weeklyRunningCost: 600_000, costMethodology: 'trade-reported' }, { openingDate: '2025-04-27' });
+    assert.strictEqual(uncited.sourceType, 'industry-estimate');
+    const cited = legacyCostAnchor({ weeklyRunningCost: 480_577, costMethodology: 'trade-reported', weeklyRunningCostSource: 'Forbes (Nov 17, 2025): fixed weekly operating costs of $480,577' }, { openingDate: '2025-11-20' });
+    assert.strictEqual(cited.sourceType, 'trade');
+  });
+
+  it('a stored migrated copy follows the record: uncited means no reported anchor', () => {
+    const migrated = { asOf: '2025-06-29', amount: 600_000, kind: 'running-cost', sourceType: 'trade', dateBasis: 'migrated', note: 'migrated from weeklyRunningCost (trade-reported)' };
+    const record = { weeklyRunningCost: 600_000, costMethodology: 'trade-reported', costHistory: [migrated] };
+    assert.strictEqual(hasCostAnchor(record), false);
+    assert.strictEqual(hasCostAnchor({ ...record, weeklyRunningCostSource: 'The New York Times (June 2025): about $600,000 a week' }), true);
   });
 });

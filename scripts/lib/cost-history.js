@@ -1,5 +1,7 @@
 'use strict';
 
+const { publicSourceText } = require('./public-source-text');
+
 /**
  * cost-history.js — dated weekly cost anchors per show (BRO-4989).
  *
@@ -74,6 +76,9 @@ function anchorErrors(anchor) {
   return errs;
 }
 
+// Sources that report a show's own cost (BRO-4989 checker: anchors are trade
+// or producer sourced). Reddit "standard" figures and our industry estimates
+// are not.
 const REPORTED_SOURCE_TYPES = new Set(['producer-confirmed', 'sec', 'trade']);
 
 /**
@@ -190,10 +195,24 @@ function dateFromText(text) {
  *
  * @returns {object|null}
  */
+/**
+ * The source tier of a record's weeklyRunningCost: its costMethodology, except
+ * that a "reported" cost citing no publishable source counts as our estimate,
+ * as the site already shows it (src/lib/commercial-display.ts
+ * isEstimatedCostBasis). In October 2026, 24 of 45 "reported" costs cited
+ * nothing; five equal a Boring Waltz figure to the dollar and several notes
+ * read "Estimated ~$650-750K/week" (BRO-5632).
+ */
+function legacySourceType(record) {
+  const type = sourceTypeForMethodology(record?.costMethodology);
+  if (REPORTED_SOURCE_TYPES.has(type) && !publicSourceText(record?.weeklyRunningCostSource)) return 'industry-estimate';
+  return type;
+}
+
 function legacyCostAnchor(record, show) {
   const amount = record?.weeklyRunningCost;
   if (!Number.isFinite(amount) || amount <= 0) return null;
-  const sourceType = sourceTypeForMethodology(record.costMethodology);
+  const sourceType = legacySourceType(record);
 
   let asOf = dateFromText(record.weeklyRunningCostSource);
   let dateBasis = asOf ? 'source-text' : null;
@@ -256,6 +275,8 @@ module.exports = {
   addAnchors,
   dateFromText,
   isRealDate,
+  REPORTED_SOURCE_TYPES,
+  legacySourceType,
   legacyCostAnchor,
   seedRepeatsLegacy,
   historyWithSeeds,
