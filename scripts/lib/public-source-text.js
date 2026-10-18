@@ -69,19 +69,18 @@ function publicSourceText(text) {
 // missed phrase refuses a correctly flagged write, so the data's own wording
 // ("No recoupment was announced.", "Recouped without an announcement.",
 // contractions) is covered. "Editorial" counts only as our editorial judgment,
-// never a newspaper's editorial. It errs toward "unannounced" on purpose: a
-// false match only downgrades the label, while a miss prints an unannounced
-// recoupment as announced and refuses a correctly flagged write. So there is
-// no "confirmed later" exception: a lookahead for one (BRO-5562 review) also
-// cancelled plain wordings ("estimated at the time of closing", "confirmed by
-// grosses analysis"), and "previously unannounced, confirmed by Deadline"
-// reads as unannounced. Write a later report as the source itself instead.
+// never a newspaper's editorial. Each wording can only mean the recoupment
+// went unannounced; words that also sit beside a reported recoupment are left
+// out ("previously unannounced, confirmed by Deadline", "figures were not
+// disclosed"), because an over-match silently labels a reported recoupment
+// "Not publicly announced". A miss is loud instead: the record checks refuse
+// the flagged write and name the sentence to write. No "confirmed later"
+// lookahead either (BRO-5562 review): it cancelled plain wordings ("estimated
+// at the time of closing", "confirmed by grosses analysis").
 const NOT_ANNOUNCED_RE = new RegExp([
   String.raw`\bno (?:public |producer |formal |official )?(?:recoupment )?announcement\b`,
   String.raw`\bno (?:public |formal |official )?recoupment (?:was |has been |had been |is )?(?:formally |publicly |officially )?announced\b`,
   String.raw`\bwithout (?:an? |any )?(?:public |formal |official )?announc(?:ement|ing)\b`,
-  String.raw`\bunannounced\b`,
-  // No "disclosed": "figures were not disclosed" sits beside reported recoupments.
   String.raw`\bnever (?:formally |publicly |officially )?announce[sd]?\b`,
   String.raw`\b(?:not|(?:is|are|was|were|has|have|had)n['’]t) (?:yet )?(?:been )?(?:formally |publicly |officially )?announced\b`,
   String.raw`\b(?:does|do|did)(?: not|n['’]t) (?:formally |publicly |officially )?announce(?:s|ments?)?\b`,
