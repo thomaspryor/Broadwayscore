@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5602",
   "planId": "24dfa3ba-ac0d-4092-8185-3d231d7326c0",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-18T05:32:44.030Z",
   "submitter": {
     "name": null,
@@ -82,5 +82,43 @@
         "description": "call-me-izzy: its own estimate is 20-30% returned (middle 25%) and the model is below zero, under the 30% Fizzle line, so Flop."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-18T06:05:16.413Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for suffs"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for suffs"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentPct updated for suffs"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentSource updated for suffs"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentDate updated for suffs"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for suffs"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for call-me-izzy"
+    }
+  ]
 }
