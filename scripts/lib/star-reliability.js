@@ -239,6 +239,33 @@ function printedLetterGrades(data) {
   return [...text.matchAll(/\b[Gg]rade\s*:?\s*\**\s*([A-DF][+\-\u2013\u2212]?)(?![A-Za-z])/g)].map(m => normGrade(m[1]));
 }
 
+/** The text prints the star fraction ("2.5 out of 5 stars", "4/5") or ends on the letter grade ("C+ (Tickets:") that the record stores. */
+function ratingPrintedInText(data) {
+  const text = String((data && (data.fullText || data.excerpt)) || '');
+  if (!text) return false;
+  const det = detectBandFromReviewFile(data);
+  if (!det) return false;
+  if (det.kind === 'letter-grade') {
+    const g = normGrade(det.starsRaw);
+    return printedLetterGrades(data).includes(g)
+      || new RegExp('(?:^|\\s)' + g.replace('+', '\\+').replace('-', '[-\\u2013\\u2212]') + '\\s*\\((?:Tickets|Running)').test(text);
+  }
+  const m = String(det.starsRaw).match(/(\d+(?:\.\d+)?)\s*(?:\/|out of)\s*(\d+)/i);
+  if (!m) return false;
+  return new RegExp('\\b' + m[1].replace('.', '\\.') + '\\s*(?:/|out of)\\s*' + m[2] + '\\b', 'i').test(text);
+}
+
+/**
+ * An adjudication may overrule a printed rating only by showing the rating is wrong (a mis-extracted star, another
+ * show's page), and never when the article prints that very rating itself. A verdict that merely prefers the review's
+ * tone over its rating ("sided with llm", "sided with thumbs") does not stand (BRO-4840: a printed C+ shown as 48).
+ */
+const RATING_ERROR_CLAIM_RE = /data error|misattribut|mis-?extract|extraction error|\b(?:star|rating|grade)\b[^.]{0,40}\b(?:error|mistake|wrong|incorrect|stale|spurious)|\b(?:error|mistake|wrong|incorrect)\b[^.]{0,30}\b(?:star|rating|grade)\b/i;
+function adjudicationDisputesRatingValidly(data) {
+  const note = (data && data.adjudicationNote) || '';
+  return RATING_ERROR_CLAIM_RE.test(note) && !ratingPrintedInText(data);
+}
+
 /**
  * Is this letter grade the outlet's own rating? A grade-printing outlet is believed unless its text prints a
  * different grade (EW multi-grade reviews and stale extractions); any other outlet needs its text to print the grade.
@@ -412,6 +439,8 @@ module.exports = {
   GENERIC_PATTERN_STAR_SOURCES,
   isHighReliabilityStar,
   letterGradeCredible,
+  ratingPrintedInText,
+  adjudicationDisputesRatingValidly,
   printedLetterGrades,
   isGenericPatternStar,
   isUncorroboratedGenericStar,
