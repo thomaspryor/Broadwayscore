@@ -197,6 +197,7 @@ const EXCLUDED_FILES = new Set([
   'scripts/lib/content-quality.js',
   'scripts/lib/show-title-variants.js',
   'scripts/lib/prior-run-sibling.js',
+  'scripts/lib/prior-runs-note.js',
   'scripts/lib/stale-flag-after-url-correction.js',
   'scripts/lib/date-plausibility.js',
   'scripts/lib/review-write-guard.js',

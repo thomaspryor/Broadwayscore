@@ -33,7 +33,7 @@ function buildPriorRunsNote(priorRuns) {
     })
     .join('; ');
   return `NOTE: This same production also played declared earlier runs/tour legs: ${legs}. A review qualifies as THIS production only if it matches a listed venue AND falls within that leg's date range (or reviews the current venue during the current engagement). Any other staging — including earlier stagings by the same company, even at the same venue in a different year — is wrong_production. `
-    + 'RETURN ENGAGEMENT: the current engagement may be a return of the declared earlier run (same cast and creative team, new venue or new dates). A review of the current venue that calls the show a return, transfer or revival of the earlier run, or that is published after the current engagement\'s previews began and describes the current cast and staging, reviews the CURRENT engagement. Do NOT flag it wrong_production merely because the show also played the earlier run; for the declared earlier run only, flag it when the review itself describes seeing the earlier run\'s venue or dates. This clause never relaxes the rule above for undeclared stagings.';
+    + 'RETURN ENGAGEMENT: the current engagement may be a return of the declared earlier run (same cast and creative team, new venue or new dates). A review of the current venue that calls the show a return, transfer or revival of the earlier run, or that is published after the current engagement\'s previews began and describes the current cast and staging, reviews the CURRENT engagement. Do NOT flag it wrong_production merely because the show also played the earlier run; the rule above still decides every other review. This clause never relaxes the rule above for undeclared stagings.';
 }
 
 module.exports = { buildPriorRunsNote };
