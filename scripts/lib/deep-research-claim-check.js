@@ -8,7 +8,7 @@
 // paragraph or another show's article fails here. The same rules the apply
 // path uses decide it: verifyFigure for money, the recoupment production guard
 // for outcomes, and the trusted-host list for whether it can land as reported.
-const { verifyFigure, pageText } = require('./commercial-source-verify');
+const { verifyFigure, pageText, showTitleForms } = require('./commercial-source-verify');
 const { buildShowTitleVariants, normalizeForMention } = require('./show-title-variants');
 const { checkRecoupmentProduction } = require('./recoupment-production-guard');
 const { TRUSTED_RECOUPMENT_HOSTS } = require('./trusted-recoupment-domains');
@@ -21,11 +21,11 @@ const FIELD_ALIASES = {
   'weekly running cost': 'weekly running cost', weekly_running_cost: 'weekly running cost', weeklyrunningcost: 'weekly running cost',
   outcome: OUTCOME_FIELD, 'outcome for investors': OUTCOME_FIELD, outcome_for_investors: OUTCOME_FIELD,
 };
-const HEDGE_RE = /^(?:up to|nearly|about|roughly|approximately|around|almost|just under|just over|a little over|a little under|~)\s*/i;
+const HEDGE_RE = /^(?:up to|nearly|about|roughly|approximately|around|almost|~)\s*/i; // "just under X" and "a little over X" are not X: left unparsed
 // A page this short is a paywall, consent wall or error page, never the article. SEC filings are exempt.
 const MIN_ARTICLE_CHARS = 600;
 const OUTCOME_WINDOW = 400;
-const LOSS_RE = /\b(?:not|never|didn'?t|did not|failed to|without)\b[^.]{0,40}\brecoup|\blos(?:t|ing|es)\b[^.]{0,30}\b(?:investment|capitali[sz]ation|money|capital)\b|\b(?:closed|shuttered) at a (?:total )?loss\b/i;
+const LOSS_RE = /\b(?:not|never|didn'?t|did not|failed to|without)\b(?!\s+(?:yet|the first)\b)[^.]{0,40}\brecoup|\blos(?:t|ing|es)\b[^.]{0,30}\b(?:investment|capitali[sz]ation|money|capital)\b|\b(?:closed|shuttered) at a (?:total )?loss\b/i;
 
 function hostOf(url) {
   try { const u = new URL(url); return u.protocol === 'https:' ? u.hostname.replace(/^www\./, '') : null; } catch { return null; }
@@ -49,11 +49,15 @@ function quoteOnPage(quote, text) {
   return false;
 }
 
-/** Recoupment language matching the claim within OUTCOME_WINDOW of a title form. */
-function outcomeNearTitle(wantsLoss, text, titles) {
-  // Title variants are punctuation-free, so match them across any punctuation in the raw text.
+/** Whether a report's outcome value claims a loss ("did not recoup", "lost its investment"). */
+const claimsLoss = (value) => /\b(?:not|never|loss|lost|fail(?:ed|s)?|didn'?t)\b/i.test(String(value ?? ''));
+
+/** Recoupment language matching the claim within OUTCOME_WINDOW of a title form (buildShowTitleVariants), as whole words. */
+function outcomeNearTitle(wantsLoss, rawText, titles) {
+  // Same folding as the title forms (diacritics, apostrophes, "&"), so "The Who's Tommy" and "Les Misérables" match.
+  const text = normalizeForMention(rawText);
   for (const title of titles) {
-    const re = new RegExp(title.split(' ').map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('[^a-z0-9]+'), 'gi');
+    const re = new RegExp(`(?<![a-z0-9])${title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![a-z0-9])`, 'g');
     for (const m of text.matchAll(re)) {
       const around = text.slice(Math.max(0, m.index - OUTCOME_WINDOW), m.index + m[0].length + OUTCOME_WINDOW);
       if (wantsLoss ? LOSS_RE.test(around) : (/recoup/i.test(around) && !LOSS_RE.test(around))) return true;
@@ -78,7 +82,7 @@ function normalizeClaim(claim) {
   const field = FIELD_ALIASES[String(claim.field || '').trim().toLowerCase()] || claim.field;
   const url = Array.isArray(claim.source_url) ? claim.source_url.find(Boolean) : claim.source_url;
   const value = FIELD_KEYS[field] ? parseMoney(claim.value) : claim.value;
-  return { ...claim, field, value, source_url: url || null, reportedValue: claim.value };
+  return { ...claim, field, value, source_url: url || null, reportedValue: 'reportedValue' in claim ? claim.reportedValue : claim.value };
 }
 
 // A Form D names the issuing company, not the show, so a figure there is matched to the show by hand.
@@ -102,7 +106,7 @@ function classifyClaim(rawClaim, page, show) {
   if (page == null || (text.length < MIN_ARTICLE_CHARS && !isSec(hostOf(claim.source_url)))) {
     return { verdict: 'unreadable', reason: page == null ? 'the page could not be fetched' : `the page returned only ${text.length} characters (paywall or block)`, trustedHost };
   }
-  const titles = buildShowTitleVariants(show.title);
+  const titles = showTitleForms(show.title);
   const quoteFound = quoteOnPage(claim.quote, text);
   const base = { trustedHost, quoteFound };
   const field = FIELD_KEYS[claim.field];
@@ -121,17 +125,17 @@ function classifyClaim(rawClaim, page, show) {
   }
   if (claim.field === OUTCOME_FIELD) {
     const value = String(claim.value || '');
-    const wantsLoss = /not|never|loss|lost|fail/i.test(value);
+    const wantsLoss = claimsLoss(value);
     if (!wantsLoss && !/recoup/i.test(value)) return { verdict: 'not-checkable', reason: `outcome "${value}" is neither recouped nor a loss`, ...base };
     if (!wantsLoss) {
       const dateMatch = value.match(/\b(\d{4}(?:-\d{2})?)\b/);
       const guard = checkRecoupmentProduction({ show, url: claim.source_url, recoupedDate: dateMatch ? dateMatch[1] : undefined, publishedDate: claim.source_date || undefined, headlines: headlines(page) });
       if (!guard.ok) return { verdict: 'wrong-production', reason: guard.reason, ...base };
     }
-    if (outcomeNearTitle(wantsLoss, text, titles)) return { verdict: 'confirmed', reason: `${wantsLoss ? 'loss' : 'recoupment'} language next to the title`, ...base };
+    if (outcomeNearTitle(wantsLoss, text, buildShowTitleVariants(show.title))) return { verdict: 'confirmed', reason: `${wantsLoss ? 'loss' : 'recoupment'} language next to the title`, ...base };
     return { verdict: quoteFound ? 'wrong-context' : 'not-on-page', reason: `no ${wantsLoss ? 'loss' : 'recoupment'} language next to this show on the page`, ...base };
   }
   return { verdict: 'not-checkable', reason: `field "${claim.field}" has no automatic check`, ...base };
 }
 
-module.exports = { classifyClaim, normalizeClaim, parseMoney, quoteOnPage, isTrustedHost, MIN_ARTICLE_CHARS };
+module.exports = { classifyClaim, claimsLoss, normalizeClaim, parseMoney, quoteOnPage, isTrustedHost, MIN_ARTICLE_CHARS };

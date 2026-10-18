@@ -14,7 +14,7 @@ const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { classifyClaim, normalizeClaim } = require('./lib/deep-research-claim-check');
+const { classifyClaim, claimsLoss, normalizeClaim } = require('./lib/deep-research-claim-check');
 const { resolveShow } = require('./lib/resolve-show');
 
 const FIELD_ON_RECORD = { capitalization: 'capitalization', 'weekly running cost': 'weeklyRunningCost' };
@@ -29,7 +29,7 @@ function recordStatus(claim, record) {
     return Math.abs(record[field] - claim.value) < 1 ? 'same' : `differs (record ${record[field]})`;
   }
   if (claim.field === 'outcome for investors') {
-    const says = /not|never|loss|lost|fail/i.test(String(claim.value)) ? false : /recoup/i.test(String(claim.value)) ? true : null;
+    const says = claimsLoss(claim.value) ? false : /recoup/i.test(String(claim.value)) ? true : null;
     if (says === null) return 'n/a';
     if (record.recouped == null) return 'new';
     return record.recouped === says ? 'same' : `differs (record recouped=${record.recouped})`;
@@ -41,10 +41,11 @@ async function main() {
   const argv = process.argv.slice(2);
   if (hasHelpFlag(argv)) { console.log('verify-deep-research-claims.js --claims=FILE [--out=FILE] [--max-fetches=N]\nRead-only: checks Deep Research claims against the pages they cite.'); return; }
   const flags = Object.fromEntries(argv.map(arg => { const i = arg.indexOf('='); return [arg.slice(2, i < 0 ? undefined : i), i < 0 ? true : arg.slice(i + 1)]; }));
-  if (!flags.claims && !flags['claims-b64']) throw Error('--claims=FILE or --claims-b64=STRING is required');
+  if (typeof flags.claims !== 'string' && typeof flags['claims-b64'] !== 'string') throw Error('--claims=FILE or --claims-b64=STRING is required');
   const maxFetches = Number(flags['max-fetches'] ?? 80);
   if (!Number.isInteger(maxFetches) || maxFetches < 1) throw Error('--max-fetches must be a positive whole number');
-  const json = flags['claims-b64'] ? zlib.gunzipSync(Buffer.from(String(flags['claims-b64']), 'base64')).toString('utf8') : fs.readFileSync(flags.claims, 'utf8');
+  let json;
+  try { json = flags['claims-b64'] ? zlib.gunzipSync(Buffer.from(flags['claims-b64'], 'base64')).toString('utf8') : fs.readFileSync(flags.claims, 'utf8'); } catch (error) { throw Error(`could not read the claims: ${error.message}`); }
   const claims = JSON.parse(json).filter(c => c && c.value != null);
   const shows = JSON.parse(fs.readFileSync(flags['shows-file'] || path.join(__dirname, '../data/shows.json'), 'utf8')).shows;
   const commercial = JSON.parse(fs.readFileSync(flags['commercial-file'] || path.join(__dirname, '../data/commercial.json'), 'utf8')).shows || {};
@@ -53,7 +54,7 @@ async function main() {
   const results = [];
   for (const raw of claims) {
     const claim = normalizeClaim(raw);
-    const show = resolveShow(claim.show, shows);
+    const show = typeof claim.show === 'string' ? resolveShow(claim.show, shows) : null;
     let page = null;
     if (claim.source_url && show) {
       if (!pages.has(claim.source_url)) {
