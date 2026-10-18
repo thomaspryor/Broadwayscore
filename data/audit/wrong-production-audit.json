@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-18T13:23:57.638Z",
+  "timestamp": "2026-10-18T13:43:32.774Z",
   "stats": {
-    "totalReviews": 57443,
+    "totalReviews": 57446,
     "alreadyFlagged": 21349,
-    "dateGuardCatches": 195,
+    "dateGuardCatches": 196,
     "directorMismatch": 1951,
     "tvFilmSignals": 1607,
-    "londonSignals": 2434,
+    "londonSignals": 2435,
     "offBroadwaySignals": 521,
     "yearMismatch": 156,
-    "noPublishDate": 5223
+    "noPublishDate": 5215
   },
   "findings": [
     {
@@ -7842,6 +7842,7 @@
     {
       "showId": "chicago-1996",
       "file": "variety--greg-evans.json",
+      "score": null,
       "publishDate": "1996-11-24",
       "url": "http://variety.com/1996/legit/reviews/chicago-4-1200447571/",
       "findings": [
@@ -19372,7 +19373,7 @@
       "file": "thestage--jn-benjamin.json",
       "score": 89,
       "publishDate": "2019-03-05",
-      "url": null,
+      "url": "https://www.thestage.co.uk/reviews/inside-bitch-review-at-jerwood-theatre-upstairs-royal-court-london--gloriously-disruptive",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -29623,6 +29624,7 @@
     {
       "showId": "operation-mincemeat-2025",
       "file": "ew--shania-russell.json",
+      "score": null,
       "publishDate": "2025-03-20",
       "url": "https://ew.com/operation-mincemeat-review-british-hit-delivers-broadway-11697974",
       "findings": [
@@ -66776,7 +66778,7 @@
       "file": "timeout-london--alice-saville.json",
       "score": 87,
       "publishDate": "2019-03-06",
-      "url": null,
+      "url": "https://www.timeout.com/london/theatre/inside-bitch-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -66903,6 +66905,20 @@
       "score": 85,
       "publishDate": "2026-10-06",
       "url": "https://seatplan.com/london/news/into-the-woods-review-noel-coward-theatre-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "theatrecat--libby-purves.json",
+      "score": 95,
+      "publishDate": "2026-10-15",
+      "url": "https://theatrecat.com/2026/10/15/into-the-woods-noel-coward-theatre-wc1/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -76178,6 +76194,20 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 313d before show (May 8th, 2025 vs 2026-03-17)"
+        }
+      ]
+    },
+    {
+      "showId": "sexual-misconduct-of-the-middle-classes-off-broadway-2026",
+      "file": "newyorker--helen-shaw.json",
+      "score": null,
+      "publishDate": "2025-05-22",
+      "url": "https://www.newyorker.com/magazine/2025/06/02/sexual-misconduct-of-the-middle-classes-theatre-review-creditors",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 299d before show (2025-05-22 vs 2026-03-17)"
         }
       ]
     },
