@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5625",
   "planId": "eba523a2-60cf-45ba-ae18-a052f42226de",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -31,5 +31,18 @@
         "description": "WSJ careers column 'how to ask colleagues agree requests', not a theatre review."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-18T13:16:07.639Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-ask-off-broadway-2026/newyorker--helen-shaw.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-ask-off-broadway-2026/wsj--vanessa-bohns.json wrongShow: null -> true"
+    }
+  ]
 }
