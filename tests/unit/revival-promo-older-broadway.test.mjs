@@ -103,7 +103,7 @@ const PLAN_D_INCLUDE = [
 
 test('other productions\' reviews and junk rows stay out of older pages', { skip: SKIP }, () => {
   for (const rel of MUST_EXCLUDE) {
-    if (!fs.existsSync(path.join(TEXTS, rel))) continue; // junk row deleted outright
+    if (rel === 'evita-2012/ricky-martin--unknown.json' && !fs.existsSync(path.join(TEXTS, rel))) continue; // junk row deleted outright
     assert.ok(verdict(rel), `${rel} would be counted`);
   }
 });
@@ -132,7 +132,7 @@ test('URL year that matches the production raises no wrong-production verdict; a
 });
 
 // Plan -e: other-production reviews the sibling-cast audit and a re-read of the Osage page still found counted.
-test('plan bro-4889-e excludes the 2013 Cumming Macbeth review and the 2008 Osage replacement-cast piece', { skip: SKIP }, () => {
+test('plan bro-4889-e excludes the 2012 Cumming Macbeth review and the 2008 Osage replacement-cast piece', { skip: SKIP }, () => {
   for (const rel of [
     'macbeth-2008/hollywood-reporter--david-rooney.json',
     'august-osage-county-2007/nytimes--charles-isherwood.json',

@@ -8,7 +8,7 @@
     "email": null
   },
   "plan": {
-    "summary": "BRO-4889: flag two other-production reviews still counted: the 2013 Alan Cumming Macbeth (Hollywood Reporter) on macbeth-2008, and the July 2008 Estelle Parsons replacement-cast piece (NYT Isherwood) on august-osage-county-2007",
+    "summary": "BRO-4889: flag two other-production reviews still counted: the 2012 Alan Cumming Macbeth (Hollywood Reporter) on macbeth-2008, and the July 2008 Estelle Parsons replacement-cast piece (NYT Isherwood) on august-osage-county-2007",
     "steps": [
       "Set wrongProduction + reason on both files",
       "Rebuild"
@@ -21,14 +21,14 @@
         "field": "wrongProduction",
         "oldValue": null,
         "newValue": true,
-        "description": "BRO-4889: 2013 Alan Cumming Macbeth review counted on the 2008 page (found by audit-sibling-production-cast.js)"
+        "description": "BRO-4889: 2012 Alan Cumming Macbeth review counted on the 2008 page (found by audit-sibling-production-cast.js)"
       },
       {
         "type": "review-field-edit",
         "file": "macbeth-2008/hollywood-reporter--david-rooney.json",
         "field": "wrongProductionReason",
         "oldValue": null,
-        "newValue": "Reviews the 2013 Lincoln Center Rose Theater Macbeth with Alan Cumming, not the 2008 Broadway production.",
+        "newValue": "Reviews the 2012 Lincoln Center Rose Theater Macbeth with Alan Cumming, not the 2008 Broadway production.",
         "description": "BRO-4889: record why this review is excluded"
       },
       {
