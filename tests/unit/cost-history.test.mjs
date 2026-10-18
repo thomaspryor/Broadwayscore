@@ -258,6 +258,12 @@ describe('an uncited "reported" cost is our estimate (BRO-5632)', () => {
     assert.strictEqual(sec.sourceType, 'sec');
   });
 
+  it("a cited floor flagged as approximate keeps its reporter's tier (the-great-gatsby)", () => {
+    const r = { weeklyRunningCost: 900_000, costMethodology: 'producer-confirmed', isEstimate: { weeklyRunningCost: true },
+      weeklyRunningCostSource: "Gordon Cox interview with producer Chunsoo Shin (June 4, 2024): 'weekly running costs ringing in at more than $900,000 per week'" };
+    assert.strictEqual(legacyCostAnchor(r, { openingDate: '2024-04-25' }).sourceType, 'producer-confirmed');
+  });
+
   it('a stored copy whose figure was later edited keeps its stored tier', () => {
     const migrated = { asOf: '2025-06-29', amount: 600_000, kind: 'running-cost', sourceType: 'trade', dateBasis: 'migrated', note: 'migrated from weeklyRunningCost (trade-reported)' };
     const record = { weeklyRunningCost: 640_000, costMethodology: 'trade-reported', costHistory: [migrated] };
