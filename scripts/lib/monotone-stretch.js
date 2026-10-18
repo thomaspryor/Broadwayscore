@@ -3,7 +3,8 @@
 /**
  * monotone-stretch.js — pure, monotone, piecewise-linear score stretch (BRO-4335).
  *
- * NOT wired into live scoring. Default-OFF: stretchScore() is the identity
+ * Wired (BRO-4335) via applyTailStretch() in scripts/llm-scoring/ensemble.ts,
+ * llm-v6 reviews only. Default-OFF: stretchScore() is the identity
  * unless the caller passes { enabled: true } or ENSEMBLE_TAIL_STRETCH=1.
  * The owner-approved candidate is tail-only (identity to 88, 95 -> 99): CV MAE
  * 6.5, 0% bucket change. A full-range stretch fails CLAUDE.md section 13.
@@ -48,4 +49,4 @@ function stretchScore(score, opts) {
   return Math.round(knots[knots.length - 1][1]);
 }
 
-module.exports = { stretchScore, validateKnots, TAIL_ONLY_KNOTS };
+module.exports = { stretchScore, validateKnots, isEnabled, TAIL_ONLY_KNOTS };

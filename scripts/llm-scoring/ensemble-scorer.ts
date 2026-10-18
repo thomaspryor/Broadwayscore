@@ -15,7 +15,7 @@ import { buildScoringInput, ReviewInputData, ScoringInput } from './input-builde
 const { EXCERPT_FIELDS } = require('../lib/excerpt-fields');
 const { GPT4O, GPT54_MINI } = require('../lib/models');
 const { detectBandFromReviewFile, shouldUseAnchoredMode } = require('../lib/star-reliability');
-import { ensembleScore, toModelScore } from './ensemble';
+import { ensembleScore, toModelScore, applyTailStretch } from './ensemble';
 
 // ========================================
 // TYPES
@@ -761,6 +761,14 @@ export class EnsembleReviewScorer {
       };
     }
 
+    // BRO-4335: monotone tail stretch, llm-v6 only, default OFF
+    // (ENSEMBLE_TAIL_STRETCH=1). Flag off returns the same object, so the score is
+    // unchanged (the llmScore.range clamp to 0..100 below is the one intentional
+    // flag-off change). Applied here, the one point both the sync and --batch paths
+    // share, so the stored per-model scores stay raw and re-ensemble-scores.ts
+    // can reapply it idempotently.
+    ensembleResult = applyTailStretch(ensembleResult, anchoredBandScoreSource);
+
     // Post-scoring hallucination guard: if the LLM admitted it had no real review
     // content and invented a score, refuse to write the result.
     // The Proof incident: LLM reasoned "no actual review content... assuming
@@ -812,7 +820,7 @@ export class EnsembleReviewScorer {
       llmScore: {
         score: ensembleResult.score,
         confidence: cappedConfidence,
-        range: { low: ensembleResult.score - 5, high: ensembleResult.score + 5 },
+        range: { low: Math.max(0, ensembleResult.score - 5), high: Math.min(100, ensembleResult.score + 5) },
         bucket: ensembleResult.bucket,
         thumb: ensembleResult.bucket === 'Rave' || ensembleResult.bucket === 'Positive' ? 'Up' :
                ensembleResult.bucket === 'Mixed' ? 'Flat' : 'Down',
@@ -873,6 +881,8 @@ export class EnsembleReviewScorer {
         // ENSEMBLE_V2 is ever flipped on — without this, rollback/debugging after
         // a live flag flip would have no record of which reviews used which weights.
         ...(ensembleResult.ensembleVersion ? { ensembleVersion: ensembleResult.ensembleVersion } : {}),
+        // BRO-4335: pre-stretch score + knot id, only when the tail stretch ran.
+        ...(ensembleResult.tailStretch ? { tailStretch: ensembleResult.tailStretch } : {}),
       }
     };
 
