@@ -758,6 +758,10 @@ on:
       # this top-level script needs its own entry (no scripts/** broad glob)
       # so a solo edit triggers CI.
       - 'scripts/audit-corpus-contamination.js'
+      # BRO-4159: corpus-wide cross-show excerpt sweep CLI. Test lives in
+      # tests/unit/ (globbed already); this top-level script needs its own
+      # entry so a solo edit triggers CI.
+      - 'scripts/audit-cross-show-excerpt-contamination.js'
       # Affiliate revenue hardening (2026-08-03): link contract + anomaly
       # decision layer for the site's only revenue stream. Colocated *.test.mjs
       # run in the lib-test glob (incl. the real June–July incident replay);
