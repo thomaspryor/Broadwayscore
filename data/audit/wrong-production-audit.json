@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-19T22:19:21.627Z",
+  "timestamp": "2026-10-19T23:36:58.049Z",
   "stats": {
-    "totalReviews": 57803,
-    "alreadyFlagged": 21084,
+    "totalReviews": 57811,
+    "alreadyFlagged": 21092,
     "dateGuardCatches": 199,
-    "directorMismatch": 2014,
-    "tvFilmSignals": 1645,
-    "londonSignals": 2538,
+    "directorMismatch": 2017,
+    "tvFilmSignals": 1646,
+    "londonSignals": 2542,
     "offBroadwaySignals": 530,
     "yearMismatch": 161,
-    "noPublishDate": 5215
+    "noPublishDate": 5205
   },
   "findings": [
     {
@@ -94,6 +94,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "1536-off-west-end-2026",
+      "file": "telegraph--claire-allfree.json",
+      "score": 65,
+      "publishDate": "2025-05-14",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/1536-almeida-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lyndsey turner\" from 1536-west-end-2026"
         }
       ]
     },
@@ -830,6 +844,20 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1813d before show (2021-11-25 vs 2026-11-12)"
+        }
+      ]
+    },
+    {
+      "showId": "a-delicate-balance-2014",
+      "file": "nytimes--ben-brantley.json",
+      "score": 59,
+      "publishDate": "2014-11-20",
+      "url": "https://www.nytimes.com/2014/11/21/theater/a-delicate-balance-revival-stars-john-lithgow-and-glenn-close.html?src=twr",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"gerald gutierrez\" from a-delicate-balance-1996"
         }
       ]
     },
@@ -16652,7 +16680,7 @@
       "showId": "gypsy-2024",
       "file": "broadwaynews--brittani-samuel.json",
       "score": 88,
-      "publishDate": "December 20, 2024",
+      "publishDate": "2024-12-20",
       "url": "https://www.broadwaynews.com/the-broadway-review-a-gypsy-completely-beholden-to-its-beaming-star/",
       "findings": [
         {
@@ -28043,7 +28071,7 @@
       "showId": "much-ado-about-nothing-west-end-2025",
       "file": "times-uk--dominic-maxwell.json",
       "score": 75,
-      "publishDate": "2025-02-23",
+      "publishDate": "2025-02-20",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/much-ado-about-nothing-review-tom-hiddleston-3mfwhtv89",
       "findings": [
         {
@@ -34730,6 +34758,20 @@
       ]
     },
     {
+      "showId": "shadowlands-west-end-2026",
+      "file": "plays-international--maryam-philpott.json",
+      "score": null,
+      "publishDate": "2026-02-15",
+      "url": "https://playsinternational.org.uk/shadowlands-at-aldwych-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "she-loves-me-2016",
       "file": "nypost--johnny-oleksinski.json",
       "score": 89,
@@ -37246,7 +37288,7 @@
     {
       "showId": "stories-the-tap-dance-sensation-west-end-2026",
       "file": "times-uk--donald-hutera-contributor.json",
-      "score": 72,
+      "score": 60,
       "publishDate": "2024-10-24",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/stories-review-rb-dance-company-peacock-theatre-5c6q83q2d",
       "findings": [
@@ -40089,6 +40131,24 @@
     },
     {
       "showId": "the-comedy-about-spies-west-end-2025",
+      "file": "broadwayworld--franco-milazzo.json",
+      "publishDate": "2025-05-13",
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-COMEDY-ABOUT-SPIES-Noel-Coward-Theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matt dicarlo\" from the-comedy-about-spies-west-end-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2025",
       "file": "broadwayworld--senior-franco-milazzo.json",
       "score": 85,
       "publishDate": null,
@@ -40166,7 +40226,7 @@
       "showId": "the-comedy-about-spies-west-end-2025",
       "file": "jonathan-baz--unknown.json",
       "score": 90,
-      "publishDate": null,
+      "publishDate": "2025-05-14",
       "url": "https://www.jonathanbaz.com/2025/05/the-comedy-about-spies-review.html",
       "findings": [
         {
@@ -65346,6 +65406,20 @@
     },
     {
       "showId": "guess-how-much-i-love-you-west-end-2026",
+      "file": "broadwayworld--debbie-gilpin.json",
+      "score": 82,
+      "publishDate": "2026-01-24",
+      "url": "https://www.broadwayworld.com/westend/article/Review-GUESS-HOW-MUCH-I-LOVE-YOU-Royal-Court-Theatre-20260124",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "guess-how-much-i-love-you-west-end-2026",
       "file": "i-paper--fiona-mountford.json",
       "score": 98,
       "publishDate": "2026-01-23",
@@ -79289,6 +79363,19 @@
     },
     {
       "showId": "some-woman-west-end-2026",
+      "file": "guardian--unknown.json",
+      "publishDate": "2026-10-16",
+      "url": "https://www.theguardian.com/stage/2026/oct/16/some-woman-review-anne-marie-duff-dorfman-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
       "file": "independent--alice-saville.json",
       "score": 39,
       "publishDate": "2026-10-16",
@@ -79375,6 +79462,20 @@
       "score": 60,
       "publishDate": "2026-10-18",
       "url": "https://playsinternational.org.uk/some-woman-dorfman-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
+      "file": "south-london--unknown.json",
+      "score": 61,
+      "publishDate": "2026-10-19",
+      "url": "https://southlondon.co.uk/area/southwark/review-some-woman-at-the-dorfman/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -86165,7 +86266,7 @@
       "showId": "the-monsters-off-broadway-2026",
       "file": "theatre-reviews-limited--joseph-verlezza.json",
       "score": null,
-      "publishDate": "February 17th, 2026",
+      "publishDate": "2026-02-17",
       "url": "https://www.theatrereviews.com/off-broadway-review-the-monsters-at-new-york-city-center-stage-ii-through-sunday-march-22-2026/",
       "findings": [
         {
@@ -88939,7 +89040,7 @@
       "showId": "the-years-west-end-2025",
       "file": "broadwayworld--alexander-cohen.json",
       "score": 74,
-      "publishDate": "February 10th, 2025",
+      "publishDate": "2025-02-10",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-YEARS-Harold-Pinter-Theatre-20250210",
       "findings": [
         {
