@@ -1904,6 +1904,21 @@ resolve_conflicts() {
           git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
         fi
         ;;
+      _pending/*.json)
+        # BRO-5716: broadway-review-texts pending stub written by two concurrent
+        # poller runs that found the same review. Usually reported as
+        # rename/delete (both runs drained the same older stub), which no -X
+        # option settles, and the generic arm below refuses our differing blob,
+        # so every attempt failed and the run lost all its new review files.
+        # mergePendingStubs field-merges stubs for the SAME review; anything
+        # else (different url, bad JSON) stays unresolved, as the arm below.
+        if node "$SCRIPT_DIR/merge-pending-stub.js" "$file" "$keep_local" "$keep_remote" 2>&1; then
+          echo "  Auto-resolving (pending-stub merge): $file"
+          git add -- "$file" 2>/dev/null && resolved=true
+        else
+          echo "  ::warning::pending-stub merge refused for $file; leaving unresolved"
+        fi
+        ;;
       *)
         # Other data files: accept remote (other workflows' changes) — but
         # ONLY when doing so doesn't discard real content our own commit
