@@ -68,6 +68,11 @@ const args = process.argv.slice(2);
 const APPLY = args.includes('--apply');
 const USE_LLM = args.includes('--llm');
 const FORCE_BULK = args.includes('--force-bulk');
+// BRO-5672: wall-clock budget for the LLM pass. The workflow step is killed at 30 min
+// (setup eats ~4), and this script writes only after verification, so a backlog run
+// that hit the limit (2026-10-19: 329 candidates x ~5s) saved nothing. Past the
+// budget it stops asking, applies what was confirmed, and leaves the rest for the next run.
+const LLM_BUDGET_MS = (Number((args.find(a => a.startsWith('--llm-budget-min=')) || '').split('=')[1]) || 20) * 60 * 1000;
 const SHOW_FILTER = (args.find(a => a.startsWith('--show=')) || '').split('=')[1] || '';
 const DIR_OVERRIDE = (args.find(a => a.startsWith('--dir=')) || '').split('=')[1] || '';
 const SHOWS_OVERRIDE = (args.find(a => a.startsWith('--shows=')) || '').split('=')[1] || '';
@@ -112,6 +117,7 @@ let collectorMatches = 0;
 let llmConfirmed = 0;
 let llmRejected = 0;
 let llmErrors = 0;
+let llmSkipped = 0;
 let cleared = 0;
 const candidates = [];
 // wrongProduction files dated inside a declared priorRuns/tourLegs window,
@@ -283,7 +289,13 @@ Reply with JSON only: {"isThisProduction": true|false, "isReview": true|false, "
   const decisions = [];
   if (USE_LLM) {
     console.log(`Running LLM second-opinion on ${candidates.length} candidates (rate-limited 1/sec)...`);
+    const llmStart = Date.now();
     for (let i = 0; i < candidates.length; i++) {
+      if (Date.now() - llmStart > LLM_BUDGET_MS) {
+        llmSkipped = candidates.length - i;
+        console.warn(`::warning::LLM time budget (${Math.round(LLM_BUDGET_MS / 60000)} min) reached after ${i} of ${candidates.length} candidates: applying the confirmed ones, ${llmSkipped} left for the next run.`);
+        break;
+      }
       const c = candidates[i];
       try {
         const v = await llmVerify(c);
@@ -318,7 +330,7 @@ Reply with JSON only: {"isThisProduction": true|false, "isReview": true|false, "
   // production-flags.yml, weekly) it would silently look like a clean no-op
   // week after week during an outage instead of tripping the workflow's
   // existing failure/notify path.
-  if (USE_LLM && candidates.length > 0 && llmErrors === candidates.length) {
+  if (USE_LLM && decisions.length > 0 && llmErrors === decisions.length) {
     console.error(`::error::All ${llmErrors} LLM verification call(s) errored (see ERROR lines above) — this looks like a total API outage or bad credential, not routine rejections. Refusing to report a false "nothing to clear" result. Investigate ANTHROPIC_API_KEY / API status, then re-run.`);
     process.exit(1);
   }
