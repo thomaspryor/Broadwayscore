@@ -60,6 +60,11 @@
  * genuine policy pause (kill switch, day/hour budget, concurrency cap) since
  * budget is 0 there. Gating on it would only silence the check in the one
  * case it must fire.
+ *
+ * BRO-5596 — the opposite error: the legacy tab-count term paged "DEAD" on a
+ * DRAINED queue (13 claims in 6h, eligible and dispatchable depth both 0, 1 tab,
+ * 0 launches). Recent claims + two proven-empty depths now mean "nothing to
+ * dispatch", not a stall; any unknown (-1) depth or zero claims still pages.
  */
 'use strict';
 
@@ -131,6 +136,12 @@ function isDispatchFlowDead({ liveAutoWorkspaces, launchesLast45m, eligibleQueue
   if (launchesLast45m === -1) return false;
   if (launchesLast45m !== 0) return false;
   if (dispatchPaused) return false;
+  // BRO-5596: a drained queue is not a stall. The sweep claimed new work inside
+  // the claims window AND both depths are real zeros (-1 = unknown never
+  // matches; eligibleQueueDepth is also -1 under any hold), so few tabs + zero
+  // launches just means there is nothing left to dispatch. Without this the
+  // tab-count term paged "DEAD" with 13 claims in 6h and an empty queue.
+  if (claimsLastWindow > 0 && dispatchableDepth === 0 && eligibleQueueDepth === 0) return false;
   if (liveAutoWorkspaces < MIN_LIVE_AUTO_WORKSPACES) return true;
   return eligibleQueueDepth !== -1 && eligibleQueueDepth > STALL_QUEUE_DEPTH_THRESHOLD;
 }

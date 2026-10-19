@@ -77,3 +77,20 @@ test('cmux unobservable (liveAutoWorkspaces null): claims path still fires; tab/
   assert.equal(isDispatchFlowDead({ liveAutoWorkspaces: null, launchesLast45m: 0, eligibleQueueDepth: 500 }), false);
   assert.equal(isDispatchFlowDead({ liveAutoWorkspaces: null, launchesLast45m: 3, claimsLastWindow: 0, dispatchableDepth: 4 }), true);
 });
+
+test('BRO-5596: drained queue + recent claims is NOT dead even with few tabs and zero launches', () => {
+  const base = { liveAutoWorkspaces: 1, launchesLast45m: 0, eligibleQueueDepth: 0, dispatchableDepth: 0 };
+  assert.equal(isDispatchFlowDead({ ...base, claimsLastWindow: 13 }), false);
+  // still dead when we cannot prove the queue is empty, or no claims happened
+  assert.equal(isDispatchFlowDead({ ...base, claimsLastWindow: 0 }), true);
+  assert.equal(isDispatchFlowDead({ ...base, claimsLastWindow: 13, eligibleQueueDepth: -1 }), true);
+  assert.equal(isDispatchFlowDead({ ...base, claimsLastWindow: 13, dispatchableDepth: -1 }), true);
+  // work waiting + zero claims still fires via the claims path
+  assert.equal(isDispatchFlowDead({ ...base, claimsLastWindow: 0, dispatchableDepth: 3 }), true);
+});
+
+test('BRO-5596: drained-queue guard stays false for null tabs and policy pause', () => {
+  const base = { launchesLast45m: 0, eligibleQueueDepth: 0, dispatchableDepth: 0, claimsLastWindow: 13 };
+  assert.equal(isDispatchFlowDead({ ...base, liveAutoWorkspaces: null }), false);
+  assert.equal(isDispatchFlowDead({ ...base, liveAutoWorkspaces: 1, dispatchPaused: true }), false);
+});
