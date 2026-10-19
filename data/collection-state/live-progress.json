@@ -1,19 +1,88 @@
 {
-  "updatedAt": "2026-10-19T16:40:25.391Z",
-  "processed": 11,
-  "failed": 7,
-  "successRate": "61.1%",
+  "updatedAt": "2026-10-19T16:47:47.377Z",
+  "processed": 111,
+  "failed": 58,
+  "successRate": "65.7%",
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 58,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 2,
+    "directCookies": 1,
+    "scrapingdog": 5,
+    "scrapingbee": 7,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 40
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-10-19T16:09:17.163Z",
+      "event": "bb-session",
+      "session": "1ad654c6",
+      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
+    },
+    {
+      "t": "2026-10-19T16:09:17.501Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-19T16:09:33.800Z",
+      "event": "bb-session",
+      "session": "f5a9865c",
+      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
+    },
+    {
+      "t": "2026-10-19T16:09:34.051Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-19T16:27:31.452Z",
+      "event": "bb-session",
+      "session": "fbc58ff6",
+      "url": "https://www.nytimes.com/2026/04/03/theater/burnout-paradise-treadmills-theater-o"
+    },
+    {
+      "t": "2026-10-19T16:27:31.745Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-19T16:27:48.110Z",
+      "event": "bb-session",
+      "session": "0feb8b71",
+      "url": "https://www.nytimes.com/2026/04/03/theater/burnout-paradise-treadmills-theater-o"
+    },
+    {
+      "t": "2026-10-19T16:27:48.369Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-19T16:41:08.283Z",
+      "event": "bb-session",
+      "session": "e257a1c8",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-19T16:41:16.750Z",
+      "event": "bb-session",
+      "session": "c235d4c8",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-19T16:45:00.230Z",
+      "event": "bb-session",
+      "session": "22f4caf6",
+      "url": "https://bachtrack.com/review-angels-bone-du-yun-vavrek-english-national-opera-lo"
+    },
+    {
+      "t": "2026-10-19T16:47:00.155Z",
+      "event": "bb-session",
+      "session": "da0fc227",
+      "url": "https://www.theatreinla.com/the-second-best-school-shooting/11328/"
+    }
+  ]
 }
