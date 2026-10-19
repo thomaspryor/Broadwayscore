@@ -170,12 +170,7 @@ jobs:
     # truly hung run is detected later; still under GitHub's 360-min cap, and
     # the concurrency group queues (not cancels) overlapping runs. Now gated
     # by `audit-push-retry-budgets.js --fail-on-job-timeout` in test.yml.
-    #
-    # Raised 330->345 (BRO-5510): two advisory corpus-audit steps
-    # ("Audit: duplicate-flag inheritance", "Audit: stale-slot squatters"),
-    # timeout-minutes: 5 each, +10min on the capped-step sum. 330 left 30s of
-    # headroom over the 15% margin gate, so any added step failed test.yml.
-    timeout-minutes: 345
+    timeout-minutes: 330
     permissions:
       contents: write
       issues: write
@@ -206,23 +201,6 @@ jobs:
       # The Notion SDK reason this step was first added for is gone (BRO-3018).
       - name: Install dependencies
         run: npm ci --prefer-offline --no-audit --no-fund
-
-      # BRO-5510: corpus audits for the BRO-5501 failure class (a wrong twin's
-      # content flag dropping a good review; a wrong-production file holding
-      # another production's text under a current URL). Advisory: a red step
-      # here is the signal, nothing blocks and nothing is committed (both
-      # scripts only read; no data/audit writes). The duplicate audit exits 1
-      # above the floor in scripts/.duplicate-flag-inheritance-floor.json (8);
-      # the squatter audit exits 0 unless --strict, so it is read in the log.
-      - name: "Audit: duplicate-flag inheritance"
-        continue-on-error: true
-        timeout-minutes: 5
-        run: node scripts/audit-duplicate-flag-inheritance.js
-
-      - name: "Audit: stale-slot squatters"
-        continue-on-error: true
-        timeout-minutes: 5
-        run: node scripts/audit-stale-slot-squatters.js --min-year=2026
 
       # Affiliate revenue-stream monitor (affiliate hardening 2026-08-03).
       # Runs BEFORE the health check so its snapshot is fresh when the

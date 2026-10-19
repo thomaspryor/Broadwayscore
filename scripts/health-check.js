@@ -4856,6 +4856,58 @@ function checkCoverageHoles() {
   const report = readAuditJsonOrNull('coverage-holes.json');
   return report ? coverageHolesResults(report) : [];
 }
+// BRO-5510: corpus audits for the BRO-5501 class (a wrong twin's content flag
+// dropping a good review). `runs` are the audit scripts' exit status and
+// stdout; a red audit becomes a digest row because a continue-on-error step
+// reaches nobody. Pure so tests can feed it.
+function corpusAuditResults(runs) {
+  const out = [];
+  const dup = runs && runs.duplicateFlag;
+  const NAME = 'Data: duplicate-flag leaks (a wrong twin dropping a good review)';
+  if (dup) {
+    if (dup.status === 0) {
+      out.push({ name: NAME, status: 'pass', message: 'duplicate-flag inheritance audit is within its committed floor' });
+    } else {
+      const line = String(dup.output || '').split('\n').find((l) => /Found \d+ live|regressed|corpus/i.test(l)) || 'audit exited non-zero';
+      out.push({
+        name: NAME,
+        status: 'warn',
+        message: `scripts/audit-duplicate-flag-inheritance.js failed: ${line.trim().slice(0, 200)}`,
+        hint: 'node scripts/cloud-run-script.js --review-texts scripts/audit-duplicate-flag-inheritance.js lists the files; see BRO-5501 for the cause and fix.',
+      });
+    }
+  }
+  const sq = runs && runs.squatters;
+  const SQ = 'Data: stale-slot squatters (current-year review slots held by another production)';
+  if (sq) {
+    let count = null;
+    try { count = JSON.parse(sq.output).count; } catch { /* unreadable: fall through */ }
+    if (sq.status === 0 && Number.isInteger(count) && count === 0) {
+      out.push({ name: SQ, status: 'pass', message: 'no current-year review slot is held by a wrong-production or wrong-twin file' });
+    } else if (sq.status === 0 && Number.isInteger(count)) {
+      out.push({
+        name: SQ,
+        status: 'warn',
+        message: `${count} review slot(s) in current-year shows are empty while a flagged file holds the same outlet`,
+        hint: 'node scripts/audit-stale-slot-squatters.js lists them; a 2026 article must exist for each to be a real miss (BRO-5501).',
+      });
+    } else {
+      out.push({ name: SQ, status: 'warn', message: 'scripts/audit-stale-slot-squatters.js did not produce a readable result', hint: 'check the corpus checkout in data-health-check.yml.' });
+    }
+  }
+  return out;
+}
+function runCorpusAudit(script, args) {
+  const r = require('child_process').spawnSync(process.execPath, [path.join(__dirname, script), ...args], { encoding: 'utf8', timeout: 240000, maxBuffer: 64 * 1024 * 1024 });
+  return { status: r.status === null ? 1 : r.status, output: `${r.stdout || ''}${r.stderr || ''}` };
+}
+function checkCorpusAudits() {
+  if (!fs.existsSync(path.join(__dirname, '..', 'data', 'review-texts'))) return [];
+  return corpusAuditResults({
+    duplicateFlag: runCorpusAudit('audit-duplicate-flag-inheritance.js', []),
+    squatters: runCorpusAudit('audit-stale-slot-squatters.js', ['--json']),
+  });
+}
 function checkStarBandDrift() {
   const report = readAuditJsonOrNull('star-band-drift.json');
   return report ? starBandDriftResults(report) : [];
@@ -5921,6 +5973,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkCardVerifiabilityBacklog(),
     ...checkCoverageHoles(),
     ...checkStarBandDrift(),
+    ...checkCorpusAudits(),
   ];
 }
 
@@ -6154,4 +6207,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness, checkUncollectedStrands };
+module.exports = { corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness, checkUncollectedStrands };
