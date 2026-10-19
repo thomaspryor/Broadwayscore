@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-19T18:34:23.601Z",
+  "generatedAt": "2026-10-19T18:48:09.897Z",
   "shows": {
     "860": {
       "capitalization": null,
@@ -4113,6 +4113,132 @@
       ],
       "confidence": "low",
       "researchedAt": "2026-10-19T18:31:59.197Z"
+    },
+    "the-music-man-2022": {
+      "capitalization": 24000000,
+      "capitalizationSource": "Trade coverage in Sept. 2022 described the revival as capitalized at $24 million (Queerty / NYT-reported closing coverage).",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": "ArtsJournal quoting NYT (2022-10-13) said the show had not yet recouped its $24 million capitalization at that time and expected to before closing; I could not verify a final public recoupment announcement.",
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "The NYC tax-credit list shows Iowa Stubborn LLC received a $3,000,000 credit, but that subsidy does not appear to be the full capitalization. I could verify a $24 million capitalization from trade reporting, but not a weekly running cost or a final public recoupment announcement.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.queerty.com/even-hugh-jackman-cant-save-broadways-revival-music-man-20220913/",
+          "date": "2022-09-13"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.artsjournal.com/calltime/2022/10/13/on-music-mans-closing-and-the-business-of-theatre/",
+          "date": "2022-10-13"
+        }
+      ],
+      "title": "The Music Man",
+      "slug": "the-music-man-2022",
+      "openingDate": "2022-02-10",
+      "status": "closed",
+      "researchedAt": "2026-10-19T18:42:57.250Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "hangmen-2022": {
+      "capitalization": 5700220,
+      "capitalizationSource": "Investment Broadway tax-credit list shows Hangmen Broadway, LP received $1,425,055 on 2023-09-05; New York State says the credit equals 25% of qualified production expenditures, so 1,425,055 / 0.25 = 5,700,220.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "No verified public recoupment announcement found; BroadwayWorld's cumulative grosses page shows $3,385,894 lifetime grosses across 13 weeks.",
+      "estimatedRecoupmentPct": null,
+      "designation": "Did Not Recoup",
+      "notes": "Public data is mixed: a 2020 trade report put the capitalization at up to $4.75 million, but the later NYC tax-credit payout implies roughly $5.7 million in qualified production expenditures. I could not verify a weekly running cost.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-10"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.tax.ny.gov/pit/credits/new-york-city-musical-and-theatrical-production-tax-credit.htm",
+          "date": "2024-12-10"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwaynews.com/hangmen-will-not-open-on-broadway/",
+          "date": "2020-03-20"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grosses/HANGMEN",
+          "date": null
+        }
+      ],
+      "title": "Hangmen",
+      "slug": "hangmen-2022",
+      "openingDate": "2022-04-21",
+      "status": "closed",
+      "researchedAt": "2026-10-19T18:45:42.209Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "the-great-gatsby": {
+      "capitalization": 25000000,
+      "capitalizationSource": "The Asia Business Daily interview with OD Company CEO Shin Chun-soo (2026-06-08) reported a $25 million advance production cost; The Korea Times had earlier reported an approximately $25 million budget.",
+      "weeklyRunningCost": 900000,
+      "costMethodology": "trade-reported",
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "BroadwayWorld's 2026-01-06 article said none of the remaining 2023-24 new musicals, including The Great Gatsby, had recouped yet; Shin later said in June 2026 he expected to recoup by 2028.",
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Gatsby Broadway LLC received a $3 million NYC tax credit award, but I used the producer-reported $25 million advance production cost as the capitalization figure. Weekly operating costs were reported around $900,000, and the latest coverage I found still treated recoupment as future-facing.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/equity-audition/THE-GREAT-GATSBY--Broadway-Gatsby-Broadway-LLC-2024-41539",
+          "date": "2023-12-26"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.koreatimes.co.kr/lifestyle/arts-theater/20240430/shin-chun-soo-brings-fresh-vision-of-the-great-gatsby-to-broadway",
+          "date": "2024-04-30"
+        },
+        {
+          "type": "trade",
+          "url": "https://view.asiae.co.kr/en/article/2026060818131758788",
+          "date": "2026-06-08"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/The-30-Million-Musical-Trend-20260106",
+          "date": "2026-01-06"
+        }
+      ],
+      "title": "The Great Gatsby",
+      "slug": "the-great-gatsby",
+      "openingDate": "2024-04-25",
+      "status": "open",
+      "researchedAt": "2026-10-19T18:48:09.897Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
     },
     "school-girls-or-the-african-mean-girls-play-2026": {
       "title": "School Girls; Or, The African Mean Girls Play",
