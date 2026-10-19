@@ -686,6 +686,7 @@ test('checksEnv drops a proxy URL that carries credentials (BRO-5661)', () => {
   const home = fs.mkdtempSync(path.join(os.tmpdir(), 'ce-'));
   const e = checksEnv({ env: { PATH: '/bin', HTTPS_PROXY: 'http://u:p@h:1', https_proxy: 'http://h:1', NO_PROXY: 'localhost,.local' }, home });
   assert.equal(e.HTTPS_PROXY, undefined);
+  assert.equal(checksEnv({ env: { HTTPS_PROXY: 'user:secret@h:1' }, home }).HTTPS_PROXY, undefined, 'scheme-less too');
   assert.equal(e.https_proxy, 'http://h:1');
   assert.equal(e.NO_PROXY, 'localhost,.local');
 });

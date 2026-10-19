@@ -116,9 +116,7 @@ function checksEnv({ env = process.env, build = false, home = null } = {}) {
   for (const k of NETWORK_ENV) {
     if (env[k] === undefined) continue;
     // A proxy URL carrying user:pass is a credential; never forward it.
-    if (/proxy$/i.test(k)) {
-      try { const u = new URL(env[k]); if (u.username || u.password) continue; } catch { /* host list, keep */ }
-    }
+    if (/^https_proxy$/i.test(k) && env[k].includes('@')) continue;
     out[k] = env[k];
   }
   out.HOME = home || fs.mkdtempSync(path.join(os.tmpdir(), 'auto-checks-home-'));
