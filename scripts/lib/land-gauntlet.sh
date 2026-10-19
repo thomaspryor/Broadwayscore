@@ -64,6 +64,13 @@
 #   gold-lists prep unless a unit gate is listed. Unset = every gate. land.yml
 #   sets it on the base run and the confirm run to the branch's red gates
 #   (lazy base, BRO-5670); the Codex runner's pre-review check sets it too.
+# Env: GAUNTLET_PARALLEL=1 (BRO-5688; land.yml sets it) runs bash-integration
+#   and lint-workflows in a background copy of this script (GAUNTLET_CHILD=1,
+#   same out-dir, same tree) while the TAP batches run: both mostly wait on
+#   git, process spawns and timeouts, and together they were ~6-7 min of a
+#   ~15-20 min serial gauntlet. The parent waits for the child before writing
+#   meta.json or returning to --return-to. Neither leaves residue in the tree
+#   (checked 2026-10-19: only the gold-lists prep file, written before any gate).
 # Env: LAND_BASE — the origin/main sha the tree was rebased onto (tony-loso
 #   gate diffs against it; unset/empty → that gate is skipped with a note).
 #   GH_TOKEN — for the audits that read the API. BSC_STAGE_LATENCY_MUTE=1 set
@@ -73,6 +80,7 @@ set -uo pipefail
 OUT="${1:?usage: land-gauntlet.sh <out-dir> [--checkout <sha> --return-to <sha>] [--deps-changed]}"
 shift
 CHECKOUT="" RETURN_TO="" DEPS_CHANGED=0
+SELF="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"  # before any --checkout
 while [ $# -gt 0 ]; do
   case "$1" in
     --checkout) CHECKOUT="${2:?--checkout needs a sha}"; shift 2 ;;
@@ -84,13 +92,27 @@ done
 if [ -n "$CHECKOUT" ] && [ -z "$RETURN_TO" ]; then echo "land-gauntlet.sh: --checkout needs --return-to" >&2; exit 2; fi
 
 npm_ci() { npm ci --prefer-offline --no-audit --no-fund > "$OUT/prep-npm-ci-$1.log" 2>&1 || echo "::warning::npm ci ($1) failed — see $OUT/prep-npm-ci-$1.log"; }
+BG_PID=""
+# The background lane runs in this same tree: stop it (and the test processes
+# under it) before any checkout. Only reached with BG_PID set on an early exit
+# (signal, job timeout). SIGSTOP top-down first so no level can start a new
+# process between the kills, then print its log so the job log keeps it.
+stop_tree() { kill -STOP "$1" 2>/dev/null; echo "$1"; local c; for c in $(pgrep -P "$1" 2>/dev/null); do stop_tree "$c"; done; }
+kill_tree() { local pids; pids=$(stop_tree "$1"); kill $pids 2>/dev/null; kill -CONT $pids 2>/dev/null; }
+on_exit() {
+  if [ -n "$BG_PID" ]; then
+    kill_tree "$BG_PID"; wait "$BG_PID" 2>/dev/null
+    echo "background lane stopped early; its log so far:"; cat "$OUT/background-lane.log" 2>/dev/null
+  fi
+  if [ -n "$CHECKOUT" ]; then return_to; fi
+}
+trap on_exit EXIT
 if [ -n "$CHECKOUT" ]; then
   return_to() {
     git checkout -q -f --detach "$RETURN_TO" || { echo "::error::could not return to ${RETURN_TO:0:10}"; exit 1; }
     [ "$DEPS_CHANGED" = 1 ] && npm_ci return
     echo "back on ${RETURN_TO:0:10}"
   }
-  trap return_to EXIT
   git checkout -q -f --detach "$CHECKOUT" || { echo "::error::could not check out ${CHECKOUT:0:10}"; exit 1; }
   [ "$DEPS_CHANGED" = 1 ] && npm_ci checkout
   echo "judging ${CHECKOUT:0:10} (will return to ${RETURN_TO:0:10})"
@@ -108,6 +130,7 @@ want_gate() { [ -z "${GAUNTLET_GATES:-}" ] || [[ ",${GAUNTLET_GATES}," == *",$1,
 gate() {
   local name="$1"; shift
   if ! want_gate "$name"; then echo "gate $name: skipped (GAUNTLET_GATES=${GAUNTLET_GATES})"; return 0; fi
+  if [[ ",${BG_GATES:-}," == *",$name,"* ]]; then echo "gate $name: running in the background lane"; return 0; fi
   echo "::group::gate $name — $*"
   "$@" 2>&1 | tee "$OUT/$name.log"
   local rc=${PIPESTATUS[0]}
@@ -117,8 +140,20 @@ gate() {
 }
 
 # ── prep (not gates): gold lists + gitignored manifests ────────────────────
-if want_gate unit-tests-node || want_gate unit-tests-tsx || want_gate unit-tests-e2e || want_gate scripts-lib-tests || want_gate bash-integration || want_gate toplevel-regression; then
+if [ -z "${GAUNTLET_CHILD:-}" ] && { want_gate unit-tests-node || want_gate unit-tests-tsx || want_gate unit-tests-e2e || want_gate scripts-lib-tests || want_gate bash-integration || want_gate toplevel-regression; }; then
   node scripts/compute-gold-lists.js > "$OUT/prep-gold-lists.log" 2>&1 || echo "::warning::compute-gold-lists.js failed (see $OUT/prep-gold-lists.log) — data-dependent tests may fail"
+fi
+
+# ── Background lane (GAUNTLET_PARALLEL=1, see the header) ───────────────────
+BG_GATES=""
+if [ "${GAUNTLET_PARALLEL:-0}" = "1" ] && [ -z "${GAUNTLET_CHILD:-}" ]; then
+  # A stale .exit in a reused out-dir must not stand in for a lane that died.
+  for g in bash-integration lint-workflows; do want_gate "$g" && { BG_GATES="${BG_GATES:+$BG_GATES,}$g"; rm -f "$OUT/$g.exit"; }; done
+  if [ -n "$BG_GATES" ]; then
+    GAUNTLET_CHILD=1 GAUNTLET_PARALLEL=0 GAUNTLET_GATES="$BG_GATES" bash "$SELF" "$OUT" > "$OUT/background-lane.log" 2>&1 &
+    BG_PID=$!
+    echo "background lane: $BG_GATES (pid $BG_PID, log $OUT/background-lane.log)"
+  fi
 fi
 
 # ── TypeScript Check ───────────────────────────────────────────────────────
@@ -211,7 +246,9 @@ gate scripts-lib-tests scripts_lib_tests
 # job-wide deadline and cap each invocation by remaining time"): it deducts
 # T0's elapsed-so-far (every earlier gate in THIS invocation: tsc, lint,
 # both unit-test batches) and reserves headroom for lint-workflows, the one
-# gate that still has to run after this one. GAUNTLET_DEADLINE_SEC (default
+# gate that still has to run after this one. In the background lane
+# (GAUNTLET_PARALLEL, BRO-5688) T0 is the lane's own start, so elapsed is ~0
+# and the budget is ~deadline - reserve: the lane starts with the job. GAUNTLET_DEADLINE_SEC (default
 # 1800s/30min) is deliberately under the job's 40-minute ceiling, leaving
 # ~10min for checkout/npm-ci/setup steps that happen OUTSIDE this script.
 #
@@ -254,6 +291,14 @@ bash_integration() {
     echo "── $f"
     timeout 180 bash "$f"
     rc=$?
+    # In the background lane these timing-sensitive files share the CPU with
+    # the unit batches (BRO-5688), so a red file gets one retry there, as
+    # toplevel-regression does. Serial mode is unchanged.
+    if [ "$rc" -ne 0 ] && [ -n "${GAUNTLET_CHILD:-}" ] && [ $(( $(date +%s) - start )) -lt "$budget" ]; then
+      echo "── $f exited $rc in the background lane; retrying once to rule out CPU contention"
+      timeout 180 bash "$f"
+      rc=$?
+    fi
     if [ "$rc" -ne 0 ]; then
       echo "::error::bash-integration gate failed: $f (exit $rc)"
       FAILED="$FAILED\n  - $f"
@@ -451,6 +496,17 @@ lint_workflows() {
   echo "lint-workflows: all gates green"
 }
 gate lint-workflows lint_workflows
+
+# The child records only its gates' .exit/.log files; the parent writes meta.json.
+[ -n "${GAUNTLET_CHILD:-}" ] && exit 0
+if [ -n "$BG_PID" ]; then
+  wait "$BG_PID"; echo "background lane finished (exit $?)"; BG_PID=""
+  # Not wrapped in ::group:: (the lane's own gate groups would close it early).
+  echo "── background lane log ($BG_GATES) ──"; cat "$OUT/background-lane.log"
+  for g in ${BG_GATES//,/ }; do
+    [ -f "$OUT/$g.exit" ] || { echo "::error::background lane wrote no result for $g"; echo 1 > "$OUT/$g.exit"; echo "background lane wrote no result" > "$OUT/$g.log"; }
+  done
+fi
 
 T1=$(node -p 'Date.now()')
 node -e '

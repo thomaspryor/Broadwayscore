@@ -273,6 +273,9 @@ jobs:
         id: branch_run
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-5688: bash-integration + lint-workflows in a background lane.
+          # Rollback: repo variable LAND_GAUNTLET_PARALLEL_DISABLED=true.
+          GAUNTLET_PARALLEL: ${{ vars.LAND_GAUNTLET_PARALLEL_DISABLED != 'true' && '1' || '0' }}
           LAND_BASE: ${{ steps.rebase.outputs.base }}
           REBASED: ${{ steps.rebase.outputs.rebased }}
         run: |
@@ -373,6 +376,7 @@ jobs:
         if: steps.plan.outputs.skip_gauntlet != 'true' && vars.LAND_STRICT_GATES != '1' && steps.need.outputs.needed == 'true' && steps.base_cache.outputs.cache-hit != 'true' && steps.base_artifact.outputs.hit != 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GAUNTLET_PARALLEL: ${{ vars.LAND_GAUNTLET_PARALLEL_DISABLED != 'true' && '1' || '0' }}
           # Empty = every gate (LAND_LAZY_BASE_DISABLED=true); else the branch's red gates.
           GAUNTLET_GATES: ${{ steps.need.outputs.gates }}
           BASE: ${{ steps.rebase.outputs.base }}
@@ -441,6 +445,7 @@ jobs:
         if: steps.delta.outcome == 'failure' && (steps.base_cache.outputs.cache-hit == 'true' || steps.base_artifact.outputs.hit == 'true')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GAUNTLET_PARALLEL: ${{ vars.LAND_GAUNTLET_PARALLEL_DISABLED != 'true' && '1' || '0' }}
           BASE: ${{ steps.rebase.outputs.base }}
           LAND_BASE: ${{ steps.rebase.outputs.base }}
           REBASED: ${{ steps.rebase.outputs.rebased }}
