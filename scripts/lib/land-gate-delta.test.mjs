@@ -16,7 +16,7 @@ const require = createRequire(import.meta.url);
 const {
   GATES, decideGateDelta, decideAllGates, firstFailingGate, parseGateFailures, parseTscFailures,
   parseNextLintFailures, parseLintWorkflowsFailures, parseBashIntegrationFailures, computeCodeTreeHash, formatSummary, main, addWithMultiplicity, isCacheKeyRelevant,
-  redGates,
+  redGates, computeRerunScope,
 } = require('./land-gate-delta.js');
 
 const CLI = path.join(path.dirname(new URL(import.meta.url).pathname), 'land-gate-delta.js');
@@ -561,5 +561,78 @@ test('CLI --red-gates prints the comma list land.yml feeds to GAUNTLET_GATES (em
     assert.equal(r.stdout.trim(), GATES.filter((g) => g === 'unit-tests-node' || g === 'scripts-lib-tests').join(','));
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 3 });
+  }
+});
+
+// ── Base re-check scope (BRO-5728) ──────────────────────────────────────────
+
+const RAN = ['tests/unit/a.test.mjs', 'tests/unit/b.test.mjs', './tests/unit/c.test.mjs'];
+const red = (failures, opts) => ({ exit: 1, text: tap(ROOT, failures, opts), root: ROOT });
+
+test('rerun scope: every failure in a file the gate ran → scoped to just those files', () => {
+  const d = computeRerunScope({
+    gate: 'unit-tests-node',
+    branch: red([['tests/unit/b.test.mjs', 'cap'], ['tests/unit/c.test.mjs', 'one'], ['tests/unit/c.test.mjs', 'two']]),
+    branchFiles: RAN,
+  });
+  assert.equal(d.scoped, true);
+  assert.deepEqual(d.files, ['./tests/unit/c.test.mjs', 'tests/unit/b.test.mjs']); // spelled as the gate listed them
+  assert.match(d.reason, /2 file\(s\) hold all 3 failure/);
+});
+
+test('rerun scope: full re-check whenever a failure cannot be pinned to a test file of the gate', () => {
+  const cases = [
+    ['an unlocated failure', { branch: red([['tests/unit/a.test.mjs', 'x']], { unlocated: ['crashed at load'] }), branchFiles: RAN }, /unlocated/],
+    ['a location in a helper module', { branch: red([['tests/helpers/fixture.mjs', 'shared factory test']]), branchFiles: RAN }, /not a test file of this gate/],
+    ['a crash with nothing parsed', { branch: { exit: 1, text: 'Error: boom', root: ROOT }, branchFiles: RAN }, /no failure could be parsed/],
+    ['no file list from the branch run', { branch: red([['tests/unit/a.test.mjs', 'x']]), branchFiles: null }, /no file list/],
+    ['a gate not keyed by test file', { gate: 'tsc', branch: { exit: 2, text: "src/a.ts(1,1): error TS2307: x", root: ROOT }, branchFiles: RAN }, /not keyed by test file/],
+    ['a gate green on the branch', { branch: { exit: 0, text: '', root: ROOT }, branchFiles: RAN }, /green/],
+    ['a timeout (load-dependent)', { branch: red([['tests/unit/a.test.mjs', 'slow', 'testTimeoutFailure']]), branchFiles: RAN }, /timing failure/],
+  ];
+  for (const [label, o, re] of cases) {
+    const d = computeRerunScope({ gate: 'unit-tests-node', ...o });
+    assert.equal(d.scoped, false, label);
+    assert.deepEqual(d.files, [], label);
+    assert.match(d.reason, re, label);
+  }
+});
+
+test('rerun scope: a scoped base gives the same verdict as the full base for the failing keys', () => {
+  // Full base: red on b (pre-existing) plus unrelated d. Scoped base: only b and c re-run.
+  const branch = red([['tests/unit/b.test.mjs', 'cap'], ['tests/unit/c.test.mjs', 'new break']]);
+  const fullBase = red([['tests/unit/b.test.mjs', 'cap'], ['tests/unit/d.test.mjs', 'unrelated']]);
+  const scopedBase = red([['tests/unit/b.test.mjs', 'cap']]);
+  const full = decideGateDelta({ gate: 'unit-tests-node', base: fullBase, branch });
+  const scoped = decideGateDelta({ gate: 'unit-tests-node', base: scopedBase, branch });
+  assert.equal(scoped.verdict, full.verdict);
+  assert.deepEqual(keys(scoped.newFailures), keys(full.newFailures));
+  assert.deepEqual(keys(scoped.preExisting), keys(full.preExisting));
+  // A branch-only test file is absent from the base tree: the base gate records
+  // green without running, and the branch's failure there is new (strict).
+  const onlyNew = decideGateDelta({ gate: 'unit-tests-node', base: { exit: 0, text: '', root: ROOT }, branch: red([['tests/unit/new.test.mjs', 'x']]) });
+  assert.equal(onlyNew.verdict, 'fail');
+});
+
+test('--rerun-scope CLI writes <gate>.files for scoped gates only and names every decision', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rerun-scope-'));
+  const out = path.join(dir, 'scope');
+  try {
+    fs.writeFileSync(path.join(dir, 'meta.json'), JSON.stringify({ root: ROOT }));
+    fs.writeFileSync(path.join(dir, 'unit-tests-node.exit'), '1');
+    fs.writeFileSync(path.join(dir, 'unit-tests-node.log'), tap(ROOT, [['tests/unit/b.test.mjs', 'cap']]));
+    fs.writeFileSync(path.join(dir, 'unit-tests-node.files'), `${RAN.join('\n')}\n`);
+    fs.writeFileSync(path.join(dir, 'unit-tests-tsx.exit'), '1');
+    fs.writeFileSync(path.join(dir, 'unit-tests-tsx.log'), tap(ROOT, [], { unlocated: ['boom'] }));
+    fs.writeFileSync(path.join(dir, 'unit-tests-tsx.files'), 'tests/unit/x.test.ts\n');
+    const r = spawnSync(process.execPath, [CLI, '--rerun-scope', dir, '--gates', 'unit-tests-node,unit-tests-tsx,tsc', '--out', out], { encoding: 'utf8' });
+    assert.equal(r.status, 0, r.stderr);
+    assert.match(r.stdout, /unit-tests-node: base re-check scoped/);
+    assert.match(r.stdout, /unit-tests-tsx: full base re-check — unlocated/);
+    assert.match(r.stdout, /tsc: full base re-check/);
+    assert.equal(fs.readFileSync(path.join(out, 'unit-tests-node.files'), 'utf8'), 'tests/unit/b.test.mjs\n');
+    assert.equal(fs.existsSync(path.join(out, 'unit-tests-tsx.files')), false);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 3 });
   }
 });

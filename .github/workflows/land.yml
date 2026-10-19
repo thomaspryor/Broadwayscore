@@ -296,6 +296,7 @@ jobs:
         id: need
         env:
           LAND_LAZY_BASE_DISABLED: ${{ vars.LAND_LAZY_BASE_DISABLED }}
+          LAND_SCOPED_BASE_DISABLED: ${{ vars.LAND_SCOPED_BASE_DISABLED }}
         run: |
           RED=$(node scripts/lib/land-gate-delta.js --red-gates "$RUNNER_TEMP/land-gauntlet/branch")
           echo "red=$RED" >> "$GITHUB_OUTPUT"
@@ -310,6 +311,16 @@ jobs:
             echo "needed=true" >> "$GITHUB_OUTPUT"
             echo "gates=$RED" >> "$GITHUB_OUTPUT"
             echo "red on the branch: $RED — base result needed for these only"
+            # BRO-5728: a red TAP gate is re-checked on base for the failing
+            # files only (same verdict: every failure key's file is re-run).
+            # Rollback: repo variable LAND_SCOPED_BASE_DISABLED=true.
+            if [ "$LAND_SCOPED_BASE_DISABLED" != "true" ]; then
+              SCOPE="$RUNNER_TEMP/land-gauntlet/scope"
+              rm -rf "$SCOPE"
+              node scripts/lib/land-gate-delta.js --rerun-scope "$RUNNER_TEMP/land-gauntlet/branch" --gates "$RED" --out "$SCOPE" \
+                && echo "scope_dir=$SCOPE" >> "$GITHUB_OUTPUT" \
+                || echo "::warning::could not compute the base re-check scope — full base re-check"
+            fi
           fi
 
       # ── Base gauntlet: origin/main @ base, reused when already measured ─────
@@ -379,6 +390,8 @@ jobs:
           GAUNTLET_PARALLEL: ${{ vars.LAND_GAUNTLET_PARALLEL_DISABLED != 'true' && '1' || '0' }}
           # Empty = every gate (LAND_LAZY_BASE_DISABLED=true); else the branch's red gates.
           GAUNTLET_GATES: ${{ steps.need.outputs.gates }}
+          # Set only with gates (lazy base on): the failing files per TAP gate.
+          GAUNTLET_SCOPE_DIR: ${{ steps.need.outputs.scope_dir }}
           BASE: ${{ steps.rebase.outputs.base }}
           LAND_BASE: ${{ steps.rebase.outputs.base }}
           REBASED: ${{ steps.rebase.outputs.rebased }}
@@ -392,19 +405,21 @@ jobs:
           rm -rf "$RUNNER_TEMP/land-gauntlet/base"
           bash "$RUNNER_TEMP/land-gauntlet.sh" "$RUNNER_TEMP/land-gauntlet/base" \
             --checkout "$BASE" --return-to "$REBASED" $([ "$DEPS_CHANGED" = "true" ] && echo --deps-changed)
+          # A scoped result (BRO-5728) is never saved or published as a base.
+          [ -f "$RUNNER_TEMP/land-gauntlet/base/SCOPED" ] && echo "scoped=true" >> "$GITHUB_OUTPUT" || true
 
       # Only a FULL base run is published under the shared key: a lazy run
       # measured the red gates only, and a later run reading that dir would
       # find no result for its own red gates (a fail-safe refusal).
       - name: Save the base gauntlet result (actions/cache)
-        if: steps.base_run.outcome == 'success' && steps.need.outputs.gates == ''
+        if: steps.base_run.outcome == 'success' && steps.need.outputs.gates == '' && steps.base_run.outputs.scoped != 'true'
         uses: actions/cache/save@v5
         with:
           path: ${{ runner.temp }}/land-gauntlet/base
           key: ${{ steps.basekey.outputs.key }}
 
       - name: Save the base gauntlet result (artifact, visible to every land/** run)
-        if: steps.base_run.outcome == 'success' && steps.need.outputs.gates == ''
+        if: steps.base_run.outcome == 'success' && steps.need.outputs.gates == '' && steps.base_run.outputs.scoped != 'true'
         uses: actions/upload-artifact@v5
         with:
           name: ${{ steps.basekey.outputs.key }}
@@ -430,6 +445,7 @@ jobs:
         run: |
           SRC="ran now (nothing cached)"
           [ -n "${{ steps.need.outputs.gates }}" ] && SRC="ran now for the branch's red gates only (${{ steps.need.outputs.gates }})"
+          [ "${{ steps.base_run.outputs.scoped }}" = "true" ] && SRC="$SRC, the failing test files only (BRO-5728)"
           [ "${{ steps.need.outputs.needed }}" = "false" ] && SRC="not needed — every gate green on the branch"
           [ "${{ steps.base_cache.outputs.cache-hit }}" = "true" ] && SRC="actions/cache hit"
           [ "${{ steps.base_artifact.outputs.hit }}" = "true" ] && SRC="artifact hit (saved by another land/** run)"
@@ -455,6 +471,7 @@ jobs:
           # Only the branch's red gates can be refused, so only they are
           # re-measured (every gate when LAND_LAZY_BASE_DISABLED=true, as before).
           GAUNTLET_GATES: ${{ vars.LAND_LAZY_BASE_DISABLED != 'true' && steps.need.outputs.red || '' }}
+          GAUNTLET_SCOPE_DIR: ${{ vars.LAND_LAZY_BASE_DISABLED != 'true' && steps.need.outputs.scope_dir || '' }}
         # A cached base was measured against an older private-data clone (the
         # unit batches read data/*.json, which is in no tree hash — it changes
         # every ~30 min and keying on it would never hit). If the data has
@@ -469,6 +486,7 @@ jobs:
           bash "$RUNNER_TEMP/land-gauntlet.sh" "$RUNNER_TEMP/land-gauntlet/base-fresh" \
             --checkout "$BASE" --return-to "$REBASED" $([ "$DEPS_CHANGED" = "true" ] && echo --deps-changed)
           echo "fresh=true" >> "$GITHUB_OUTPUT"
+          [ -f "$RUNNER_TEMP/land-gauntlet/base-fresh/SCOPED" ] && echo "scoped=true" >> "$GITHUB_OUTPUT" || true
           node scripts/lib/land-gate-delta.js \
             --base-dir "$RUNNER_TEMP/land-gauntlet/base-fresh" \
             --branch-dir "$RUNNER_TEMP/land-gauntlet/branch" \
@@ -479,7 +497,7 @@ jobs:
       # Not published: the confirm run measured the red gates only (see the
       # full-base-only rule on the save steps above).
       - name: Publish the fresh base result (artifact)
-        if: always() && steps.confirm.outputs.fresh == 'true' && vars.LAND_LAZY_BASE_DISABLED == 'true'
+        if: always() && steps.confirm.outputs.fresh == 'true' && vars.LAND_LAZY_BASE_DISABLED == 'true' && steps.confirm.outputs.scoped != 'true'
         uses: actions/upload-artifact@v5
         with:
           name: ${{ steps.basekey.outputs.key }}
@@ -564,7 +582,7 @@ jobs:
           # This run uploaded a full base result under BASE_KEY (a second
           # upload under that name in one run would clash). With the lazy base
           # (BRO-5670) it usually did not, so the branch result fills the key.
-          BASE_PUBLISHED: ${{ steps.base_run.outcome == 'success' && steps.need.outputs.gates == '' }}
+          BASE_PUBLISHED: ${{ steps.base_run.outcome == 'success' && steps.need.outputs.gates == '' && steps.base_run.outputs.scoped != 'true' }}
         run: |
           HASH=$(node scripts/lib/land-gate-delta.js --code-hash "$REBASED")
           KEY="land-base-gauntlet-v2-${HASH:0:32}-$(date -u +%Y%m%d)"

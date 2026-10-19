@@ -64,6 +64,13 @@
 #   gold-lists prep unless a unit gate is listed. Unset = every gate. land.yml
 #   sets it on the base run and the confirm run to the branch's red gates
 #   (lazy base, BRO-5670); the Codex runner's pre-review check sets it too.
+# Env: GAUNTLET_SCOPE_DIR (BRO-5728; land.yml sets it on the base re-checks)
+#   holds <gate>.files written by land-gate-delta.js --rerun-scope: that TAP
+#   gate runs only the listed files that exist on this tree (none: its keys
+#   are new by construction, so the gate records green without running), and
+#   the gate is named in $OUT/SCOPED so the result is never cached or
+#   published as a full base. Every TAP gate also writes $OUT/<gate>.files,
+#   the files it ran, which --rerun-scope reads from the branch result.
 # Env: GAUNTLET_PARALLEL=1 (BRO-5688; land.yml sets it) runs bash-integration
 #   and lint-workflows in a background copy of this script (GAUNTLET_CHILD=1,
 #   same out-dir, same tree) while the TAP batches run: both mostly wait on
@@ -119,6 +126,7 @@ if [ -n "$CHECKOUT" ]; then
 fi
 
 mkdir -p "$OUT"
+[ -z "${GAUNTLET_CHILD:-}" ] && rm -f "$OUT/SCOPED"  # a reused out-dir must not claim a scope
 ROOT=$(git rev-parse --show-toplevel)
 SHA=$(git rev-parse HEAD)
 T0=$(node -p 'Date.now()')
@@ -127,6 +135,22 @@ export BSC_STAGE_LATENCY_MUTE=1
 # gate <name> <cmd…>: capture the command's stdout+stderr to <name>.log (and
 # echo it into a collapsed log group), record the exit code, never abort.
 want_gate() { [ -z "${GAUNTLET_GATES:-}" ] || [[ ",${GAUNTLET_GATES}," == *",$1,"* ]]; }
+# Read once and drop from the env so test processes (some run this script)
+# never inherit a scope.
+SCOPE_DIR="${GAUNTLET_SCOPE_DIR:-}"; unset GAUNTLET_SCOPE_DIR
+# scope_list <gate> <array-name>: record the list, then narrow it to the scope.
+scope_list() {
+  local gate="$1"; local -n _list="$2"
+  printf '%s\n' ${_list[@]+"${_list[@]}"} > "$OUT/$gate.files"
+  [ -n "$SCOPE_DIR" ] && [ -f "$SCOPE_DIR/$gate.files" ] || return 0
+  local -A want=(); local f
+  while IFS= read -r f; do [ -n "$f" ] && want["${f#./}"]=1; done < "$SCOPE_DIR/$gate.files"
+  local -a kept=()
+  for f in ${_list[@]+"${_list[@]}"}; do [ -n "${want[${f#./}]:-}" ] && kept+=("$f"); done
+  echo "# $gate: base re-check scoped to ${#kept[@]} of ${#_list[@]} file(s) (BRO-5728)"
+  echo "$gate" >> "$OUT/SCOPED"
+  _list=(${kept[@]+"${kept[@]}"})
+}
 gate() {
   local name="$1"; shift
   if ! want_gate "$name"; then echo "gate $name: skipped (GAUNTLET_GATES=${GAUNTLET_GATES})"; return 0; fi
@@ -190,6 +214,8 @@ unit_tests_node() {
   list=$(unit_tests_node_list) || { echo "::error::node unit batch ($src) could not be listed (collector --min failed: empty, under MIN_NODE_BATCH, or crashed)"; return 1; }
   mapfile -t tests <<< "$list"
   if [ -z "$list" ] || [ ${#tests[@]} -eq 0 ]; then echo "::error::node unit batch ($src) is empty or missing"; return 1; fi
+  scope_list unit-tests-node tests
+  [ ${#tests[@]} -eq 0 ] && { echo "# none of the branch's failing files exist on this tree: their failures are new"; return 0; }
   echo "# node batch ($src): ${#tests[@]} files"
   node --test --test-reporter=tap --test-timeout 300000 ${tests[@]+"${tests[@]}"}
 }
@@ -199,6 +225,8 @@ unit_tests_tsx() {
   local -a tests
   mapfile -t tests < tests/unit-test-manifest-tsx.txt 2>/dev/null
   if [ ${#tests[@]} -eq 0 ]; then echo "::error::tests/unit-test-manifest-tsx.txt is empty or missing"; return 1; fi
+  scope_list unit-tests-tsx tests
+  [ ${#tests[@]} -eq 0 ] && { echo "# none of the branch's failing files exist on this tree: their failures are new"; return 0; }
   echo "# tsx batch: ${#tests[@]} files"
   npx tsx --test --test-reporter=tap --test-timeout 300000 ${tests[@]+"${tests[@]}"}
 }
@@ -209,6 +237,8 @@ unit_tests_e2e() {
   local -a tests
   mapfile -t tests < tests/e2e-unit-test-manifest.txt 2>/dev/null
   if [ ${#tests[@]} -eq 0 ]; then echo "::error::tests/e2e-unit-test-manifest.txt is empty or missing"; return 1; fi
+  scope_list unit-tests-e2e tests
+  [ ${#tests[@]} -eq 0 ] && { echo "# none of the branch's failing files exist on this tree: their failures are new"; return 0; }
   echo "# e2e unit batch: ${#tests[@]} files"
   npx tsx --test --test-reporter=tap --test-timeout 300000 ${tests[@]+"${tests[@]}"}
 }
@@ -218,6 +248,8 @@ scripts_lib_tests() {
   shopt -s nullglob
   local -a tests=(scripts/lib/*.test.mjs)
   if [ ${#tests[@]} -eq 0 ]; then echo "no scripts/lib tests"; return 0; fi
+  scope_list scripts-lib-tests tests
+  [ ${#tests[@]} -eq 0 ] && { echo "# none of the branch's failing files exist on this tree: their failures are new"; return 0; }
   node --test --test-reporter=tap --test-timeout 300000 ${tests[@]+"${tests[@]}"}
 }
 gate scripts-lib-tests scripts_lib_tests

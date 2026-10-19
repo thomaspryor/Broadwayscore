@@ -86,6 +86,14 @@
 //     (non-zero exit, or no result). land.yml runs the base gauntlet for
 //     exactly these: a gate green on the branch passes whatever the base says
 //     (decideGateDelta), so its base result is never needed (BRO-5670).
+//   node scripts/lib/land-gate-delta.js --rerun-scope D --gates a,b,… --out S
+//     for each red TAP gate in branch result dir D whose every failure is
+//     located in one of the gate's own test files (D/<gate>.files, written
+//     by the gauntlet), writes S/<gate>.files: the base re-check runs only
+//     those files (land-gauntlet.sh GAUNTLET_SCOPE_DIR, BRO-5728). Each red
+//     gate's decision is printed; a gate with no S/<gate>.files runs in full.
+//     A per-file subset is enough because the verdict only asks whether each
+//     branch failure key also fails on base, and every key's file is in it.
 //   node scripts/lib/land-gate-delta.js --code-hash <sha> [--cwd DIR]
 //     prints the base cache key material: a sha256 over the tree's
 //     verification-relevant paths (INERT_FOR_VERIFICATION_RE from
@@ -289,6 +297,50 @@ function redGates({ gates = GATES, dir, read = readGateResult }) {
   });
 }
 
+/**
+ * Pure (BRO-5728). Which files a base re-check of `gate` must run to judge
+ * the branch's failures: only when every failure is located (`file::name`)
+ * in a file the branch run actually ran for this gate. Anything else (a
+ * non-TAP gate, a crash with nothing parsed, an unlocated `?::` key, a
+ * location in a helper module) runs the gate in full.
+ * @param {{gate:string, branch:{exit:number|null,text:string,root?:string}|null, branchFiles:string[]|null}} o
+ * @returns {{gate:string, scoped:boolean, files:string[], reason:string}}
+ */
+function computeRerunScope({ gate, branch, branchFiles }) {
+  const full = (reason) => ({ gate, scoped: false, files: [], reason });
+  if (!TAP_GATES.has(gate)) return full('not keyed by test file');
+  if (!branch || typeof branch.exit !== 'number') return full('no branch result');
+  if (branch.exit === 0) return full('green on the branch');
+  if (!Array.isArray(branchFiles) || branchFiles.length === 0) return full('the branch run recorded no file list');
+  const failures = parseGateFailures(gate, branch.text, branch.root);
+  if (failures.size === 0) return full('no failure could be parsed (crash/timeout?)');
+  // Normalized path -> the entry exactly as the gate listed it, so the
+  // gauntlet matches its own spelling.
+  const ran = new Map(branchFiles.map((p) => [normalizeTestPath(p), p]));
+  const files = new Set();
+  for (const f of failures.values()) {
+    if (!f.file || f.file === '?') return full(`unlocated failure "${f.name}"`);
+    // A timeout or cancellation can come from full-batch load; alone on base it
+    // may pass and turn a pre-existing failure into a refusal.
+    if (/ \[(testTimeoutFailure|cancelledByParent)\]$/.test(f.name)) return full(`timing failure "${f.name}"`);
+    const file = normalizeTestPath(f.file);
+    if (!ran.has(file)) return full(`failure located in ${file}, not a test file of this gate`);
+    files.add(ran.get(file));
+  }
+  const list = [...files].sort();
+  return { gate, scoped: true, files: list, reason: `${list.length} file(s) hold all ${failures.size} failure(s)` };
+}
+
+function normalizeTestPath(p) {
+  return path.posix.normalize(String(p).trim().replace(/\\/g, '/')).replace(/^\.\//, '');
+}
+
+function readGateFiles(dir, gate) {
+  try {
+    return fs.readFileSync(path.join(dir, `${gate}.files`), 'utf8').split('\n').map((l) => l.trim()).filter(Boolean);
+  } catch { return null; }
+}
+
 /** Decide every gate. `read(dir, gate)` → {exit,text,root} | null. */
 function decideAllGates({ gates = GATES, base, branch, read = readGateResult }) {
   return gates.map((gate) => {
@@ -414,12 +466,25 @@ function parseArgs(argv) {
 function main(argv = process.argv.slice(2)) {
   const args = parseArgs(argv);
   if (args.help || args.h) {
-    console.log('usage: land-gate-delta.js --base-dir D --branch-dir D [--gates a,b] [--summary-file F] [--github-output F] [--base-source S] [--strict]\n       land-gate-delta.js --red-gates D [--gates a,b]\n       land-gate-delta.js --code-hash <sha> [--cwd DIR]');
+    console.log('usage: land-gate-delta.js --base-dir D --branch-dir D [--gates a,b] [--summary-file F] [--github-output F] [--base-source S] [--strict]\n       land-gate-delta.js --red-gates D [--gates a,b]\n       land-gate-delta.js --rerun-scope D --gates a,b --out S\n       land-gate-delta.js --code-hash <sha> [--cwd DIR]');
     return 0;
   }
   if (args['red-gates'] && args['red-gates'] !== true) {
     const gates = args.gates && args.gates !== true ? String(args.gates).split(',').map((g) => g.trim()).filter(Boolean) : GATES;
     console.log(redGates({ gates, dir: String(args['red-gates']) }).join(','));
+    return 0;
+  }
+  if (args['rerun-scope'] && args['rerun-scope'] !== true) {
+    const dir = String(args['rerun-scope']);
+    const out = args.out && args.out !== true ? String(args.out) : null;
+    if (!out) { console.error('usage: land-gate-delta.js --rerun-scope D --gates a,b --out S'); return 2; }
+    const gates = args.gates && args.gates !== true ? String(args.gates).split(',').map((g) => g.trim()).filter(Boolean) : GATES;
+    fs.mkdirSync(out, { recursive: true });
+    for (const gate of gates) {
+      const d = computeRerunScope({ gate, branch: readGateResult(dir, gate), branchFiles: readGateFiles(dir, gate) });
+      if (d.scoped) fs.writeFileSync(path.join(out, `${gate}.files`), `${d.files.join('\n')}\n`);
+      console.log(`${gate}: ${d.scoped ? 'base re-check scoped' : 'full base re-check'} — ${d.reason}`);
+    }
     return 0;
   }
   if (args['code-hash']) {
@@ -471,6 +536,7 @@ module.exports = {
   addWithMultiplicity,
   isCacheKeyRelevant,
   decideGateDelta,
+  computeRerunScope,
   decideAllGates,
   redGates,
   firstFailingGate,
