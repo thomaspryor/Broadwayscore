@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5647-g",
   "planId": "271759ab-5415-4f4f-aa1b-0d0e4137e3fe",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-19T02:53:58.754140Z",
   "submitter": {
     "name": null,
@@ -118,5 +118,58 @@
         "description": "Correct the minimum to the filing's $5.5M."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-19T03:04:28.642Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-cottage"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-cottage"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for mrs-doubtfire-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for john-proctor-is-the-villain-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedSource: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for john-proctor-is-the-villain-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:designationBasis: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for john-proctor-is-the-villain-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for proof"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for proof"
+    }
+  ]
 }
