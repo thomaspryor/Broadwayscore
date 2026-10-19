@@ -250,6 +250,11 @@ test('cardVerifiabilityBacklogResults: fresh clean Linear report passes all thre
   const legacy = hc.cardVerifiabilityBacklogResults(null, { total: 9, refused: [], generatedAt: clean.generatedAt }, now);
   assert.equal(probeVerdict(legacy, CV_NAMES[0]), 'unknown');
   assert.equal(probeVerdict(legacy, CV_NAMES[1]), 'absent');
+  // An empty or uncounted sweep cannot pass the bucket rows (freshness row may still pass).
+  for (const total of [0, undefined, 'x']) {
+    const empty = hc.cardVerifiabilityBacklogResults(null, { ...clean, total }, now);
+    assertNoneAbsent(empty, CV_NAMES.slice(0, 2));
+  }
 });
 
 test('coverageHolesResults / starBandDriftResults: fresh clean report passes; stale report does not', () => {
@@ -261,11 +266,21 @@ test('coverageHolesResults / starBandDriftResults: fresh clean report passes; st
   // Empty or partial counts are not a clean audit.
   assert.equal(probeVerdict(hc.coverageHolesResults({ generatedAt: '2026-10-15T20:00:00Z', counts: {} }, now), 'Data: review coverage holes'), 'unknown');
   assert.equal(probeVerdict(hc.coverageHolesResults({ generatedAt: '2026-10-15T20:00:00Z', counts: { A: c, B: c, C: c } }, now), 'Data: review coverage holes'), 'unknown');
+  // A non-numeric counted field coerces to 0 via ||0; that must not pass.
+  for (const D of [{ ...c, published: 'n/a' }, { total: 0, recent: 0, explained: 0 }]) {
+    const r = { generatedAt: '2026-10-15T20:00:00Z', counts: { A: c, B: c, C: c, D } };
+    assert.equal(probeVerdict(hc.coverageHolesResults(r, now), 'Data: review coverage holes'), 'unknown');
+  }
+  const badA = { generatedAt: '2026-10-15T20:00:00Z', counts: { A: { total: 0 }, B: c, C: c, D: { ...c, published: 0 } } };
+  assert.equal(probeVerdict(hc.coverageHolesResults(badA, now), 'Data: review coverage holes'), 'unknown');
   const SB = "Data: published scores outside the critic's rating";
   const sb = (generatedAt) => ({ generatedAt, publishedJoined: 10, publishedOutOfBand: 0, queuedForRescore: 0 });
   assert.equal(probeVerdict(hc.starBandDriftResults(sb('2026-10-15T20:00:00Z'), now), SB), 'absent');
   assert.equal(probeVerdict(hc.starBandDriftResults(sb('2026-10-01T00:00:00Z'), now), SB), 'present');
   assert.equal(probeVerdict(hc.starBandDriftResults({ generatedAt: '2026-10-15T20:00:00Z' }, now), SB), 'unknown');
+  for (const bad of ['n/a', [], {}]) {
+    assert.equal(probeVerdict(hc.starBandDriftResults({ ...sb('2026-10-15T20:00:00Z'), publishedOutOfBand: bad }, now), SB), 'unknown', JSON.stringify(bad));
+  }
 });
 
 // Static guard: every literal row name health-check.js can flag (warn/error,

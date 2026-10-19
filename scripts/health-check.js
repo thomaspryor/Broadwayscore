@@ -4716,6 +4716,12 @@ function silentGapBacklogResults(report, now = new Date()) {
 // only the Linear report is read now.
 const LINEAR_VERIFIABILITY_STALE_MS = 3 * 24 * 60 * 60 * 1000; // the audit runs daily; 3 days means it stopped
 
+// BRO-5164: a report count that can back a pass row: a real number (or a
+// numeric string), never null/''/[]/{} that the ||0 coercions turn into 0.
+function isCountValue(v) {
+  return (typeof v === 'number' || (typeof v === 'string' && v.trim() !== '')) && Number.isFinite(Number(v));
+}
+
 const COVERAGE_HOLES_STALE_MS = 3 * 24 * 60 * 60 * 1000; // audit-coverage-holes.js runs daily in data-health-check.yml
 
 /**
@@ -4740,7 +4746,10 @@ function coverageHolesResults(report, now = Date.now()) {
   }
   const fresh = Number.isFinite(at) && now - at <= COVERAGE_HOLES_STALE_MS;
   // BRO-5164: a fresh clean report is the pass row a fixed card verifies against.
-  const allClasses = ['A', 'B', 'C', 'D'].every((k) => c[k] && Number.isFinite(Number(c[k].total)));
+  // Every field coerced with ||0 above must be a real number, or a 0 is a guess.
+  const num = isCountValue;
+  const allClasses = ['A', 'B', 'C'].every((k) => c[k] && num(c[k].total) && num(c[k].explained))
+    && !!c.D && num(c.D.total) && num(c.D.published);
   if (total === 0 && fresh && allClasses) {
     out.push({ name: 'Data: review coverage holes', status: 'pass', message: `No unexplained coverage holes across ${report.shows != null ? report.shows : '?'} current shows` });
   }
@@ -4776,7 +4785,7 @@ function starBandDriftResults(report, now = Date.now()) {
   const at = Date.parse(report.generatedAt);
   const fresh = Number.isFinite(at) && now - at <= STAR_BAND_DRIFT_STALE_MS;
   // BRO-5164: same-name pass row from a fresh clean report only.
-  if (n === 0 && fresh && report.publishedOutOfBand != null) {
+  if (n === 0 && fresh && isCountValue(report.publishedOutOfBand)) {
     out.push({ name: 'Data: published scores outside the critic\'s rating', status: 'pass', message: `No published review score contradicts the critic's rating (${report.publishedJoined != null ? report.publishedJoined : '?'} checked)` });
   }
   if (!fresh) {
@@ -4796,9 +4805,11 @@ function cardVerifiabilityBacklogResults(drainMetric, linearReport, now = Date.n
   // actually written; a missing, stale or older-shape report never verifies.
   const linearAt = linearReport && typeof linearReport === 'object' ? Date.parse(linearReport.generatedAt) : NaN;
   const linearFresh = Number.isFinite(linearAt) && now - linearAt <= LINEAR_VERIFIABILITY_STALE_MS;
+  // An empty sweep (no cards read) cannot vouch that the buckets are clean.
+  const linearSwept = linearFresh && isCountValue(linearReport.total) && Number(linearReport.total) > 0;
   // BRO-3619: the armed-but-vacuous bucket (a `test -f` on a file already on main passes before any work is done).
   const vacuous = linearReport && Array.isArray(linearReport.vacuousChecks) ? linearReport.vacuousChecks : [];
-  if (vacuous.length === 0 && linearFresh && Array.isArray(linearReport.vacuousChecks)) {
+  if (vacuous.length === 0 && linearSwept && Array.isArray(linearReport.vacuousChecks)) {
     results.push({ name: 'Data: armed-but-vacuous backlog cards', status: 'pass', message: 'No Linear card carries an acceptance check that cannot tell done from not done' });
   }
   if (vacuous.length > 0) {
@@ -4814,7 +4825,7 @@ function cardVerifiabilityBacklogResults(drainMetric, linearReport, now = Date.n
   }
   if (linearReport && typeof linearReport === 'object') {
     const refusedL = Array.isArray(linearReport.refused) ? linearReport.refused : [];
-    if (refusedL.length === 0 && linearFresh && Array.isArray(linearReport.refused)) {
+    if (refusedL.length === 0 && linearSwept && Array.isArray(linearReport.refused)) {
       results.push({ name: 'Data: undispatchable Linear backlog cards', status: 'pass', message: `All ${linearReport.total != null ? linearReport.total : '?'} open Linear card(s) have a runnable acceptance-criteria command` });
     }
     if (refusedL.length > 0) {
