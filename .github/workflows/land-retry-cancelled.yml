@@ -29,8 +29,9 @@ on:
     types: [completed]
   schedule:
     # Backstop for a missed or dropped completion event (cron is throttled
-    # under load; the completion trigger does the real work).
-    - cron: '*/10 * * * *'
+    # under load; the completion trigger does the real work). BRO-5673: every
+    # 20 min, was 10; tests/unit/land-retry-cancelled-schedule.test.mjs pins both.
+    - cron: '*/20 * * * *'
     # BRO-4802: hourly stranded-ref pass (the `stranded` job keys on this string).
     - cron: '23 * * * *'
   workflow_dispatch:
