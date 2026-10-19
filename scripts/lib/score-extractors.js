@@ -874,7 +874,12 @@ function extractUKStarRating(html, text) {
 
   // 2d2. Daily Mail: CSS star classes (new format) — mol-ratings-solid with rating-star selected
   if (html.includes('mol-ratings') || html.includes('rating-star')) {
-    const ratingBlock = html.match(/mol-ratings[^"]*"[^>]*>[\s\S]*?<\/p>/i);
+    // BRO-305: a combined multi-show column carries one block per show; taking the
+    // first handed another show's stars to this one (elektra-west-end-2025 3/5 vs
+    // its 1/5 rave-less pan). Blocks that disagree = ambiguous, so extract nothing.
+    const ratingBlocks = html.match(/mol-ratings[^"]*"[^>]*>[\s\S]*?<\/p>/gi) || [];
+    const selectedCounts = new Set(ratingBlocks.map(b => (b.match(/rating-star selected/g) || []).length));
+    const ratingBlock = selectedCounts.size === 1 ? [ratingBlocks[0]] : null;
     if (ratingBlock) {
       const selected = (ratingBlock[0].match(/rating-star selected/g) || []).length;
       // Count individual star spans: "rating-star " (with space/quote, not "rating-stars")
