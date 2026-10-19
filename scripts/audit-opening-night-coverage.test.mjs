@@ -307,7 +307,7 @@ test('writeLedger excludes tour shows and purges stale tour ledger rows', () => 
       ])],
     };
     writeLedger({
-      ledgerPath, ledgerDays: 90, censusOpts,
+      ledgerPath, ledgerDays: 90, censusOpts, signalsPath: path.join(dir, 'sig.json'),
       marketStatsPath: path.join(dir, 'ms.json'), breakerPath: path.join(dir, 'br.json'),
     }, [s], [], OUTLETS, '2026-10-19T12:00:00.000Z', Date.parse('2026-10-19T12:00:00.000Z'));
     return JSON.parse(fs.readFileSync(ledgerPath, 'utf8'));
@@ -316,5 +316,5 @@ test('writeLedger excludes tour shows and purges stale tour ledger rows', () => 
     assert.ok(Object.keys(run(mk('broadway')).shows).length > 0, 'control: broadway show mints ledger cells');
     assert.deepEqual(Object.keys(run(mk('tour')).shows), [], 'tour must mint no cells and purge its stale row');
     assert.equal(isTourShow(mk('tour')), true);
-  } finally { fixture.cleanup(); }
+  } finally { fixture.cleanup(); fs.rmSync(dir, { recursive: true, force: true }); }
 });

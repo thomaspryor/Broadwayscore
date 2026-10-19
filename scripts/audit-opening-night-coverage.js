@@ -580,13 +580,14 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
   // existed in a transient GitHub Actions run log that nobody reads on a
   // healthy hourly cron (ship-check finding, 2026-07-23).
   try {
-    fs.mkdirSync(path.dirname(SIGNALS_PATH), { recursive: true });
+    const signalsPath = opts.signalsPath || SIGNALS_PATH;
+    fs.mkdirSync(path.dirname(signalsPath), { recursive: true });
     // noPressNightShows is a SUPPRESSION, so it belongs in the machine-readable
     // trail, not only in stdout: the failure mode it can't distinguish is "this
     // engagement had no press night" from "our ingest collected almost nothing
     // for a real opening", and only an operator (or a downstream digest) reading
     // the list can tell those apart. A skip nobody can enumerate is a silent one.
-    fs.writeFileSync(SIGNALS_PATH, JSON.stringify({
+    fs.writeFileSync(signalsPath, JSON.stringify({
       generatedAt: nowIso, reactivations, lateAdds,
       standingSuppressedNoPressNight: standingCtx.noPressNightShows,
     }, null, 2));
