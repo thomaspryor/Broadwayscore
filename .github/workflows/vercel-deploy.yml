@@ -24,6 +24,11 @@ on:
     workflows: ["Rebuild Reviews Data", "Rebuild Reviews (Fast)"]
     types: [completed]
   workflow_dispatch: # Manual trigger — "ship NOW" path (opening night, broken page)
+    inputs:
+      source:
+        description: 'Who asked. "land" = land.yml after a landing (BRO-5670): judged like a scheduled tick, so it builds only when site files or core data changed vs live. Empty = ship now.'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -76,7 +81,9 @@ jobs:
           # current blob SHA of reviews.json in the private core-data repo —
           # see should-deploy-gate.js header comment.
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-          GATE_EVENT_NAME: ${{ github.event_name }}
+          # A land.yml dispatch (source=land) is judged like a cron tick, not
+          # as explicit ship intent, so content-free landings never build.
+          GATE_EVENT_NAME: ${{ inputs.source == 'land' && 'schedule' || github.event_name }}
           GATE_DISABLED: ${{ vars.DEPLOY_GATE_DISABLED }}
         run: |
           # The gate script fails OPEN internally (API/fetch/diff errors →

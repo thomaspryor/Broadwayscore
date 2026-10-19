@@ -41,8 +41,9 @@ name: Land
 # push is the only way the landed sha gets its own Test Suite run.
 #
 # What runs in `checks` (parity with test.yml's blocking gates on main), via
-# scripts/lib/land-gauntlet.sh, run TWICE — on origin/main @ base and on the
-# rebased branch — and judged by scripts/lib/land-gate-delta.js:
+# scripts/lib/land-gauntlet.sh, run on the rebased branch first and then on
+# origin/main @ base for the branch's RED gates only (a gate green on the
+# branch needs no base, BRO-5670) — and judged by scripts/lib/land-gate-delta.js:
 #   - TypeScript Check: tsc root + tsc scripts/llm-scoring + next lint
 #   - Unit Tests: the no-data-dependency batch and the scripts/lib batch,
 #     the same manifests/timeouts as test.yml (the bash integration tests and
@@ -266,6 +267,47 @@ jobs:
         # changes between the two runs, never the harness.
         run: cp scripts/lib/land-gauntlet.sh "$RUNNER_TEMP/land-gauntlet.sh"
 
+      # ── Branch gauntlet: the rebased tip ─────────────────────────────────────
+      - name: Run the gauntlet on the rebased branch
+        if: steps.plan.outputs.skip_gauntlet != 'true'
+        id: branch_run
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LAND_BASE: ${{ steps.rebase.outputs.base }}
+          REBASED: ${{ steps.rebase.outputs.rebased }}
+        run: |
+          if [ "$(git rev-parse HEAD)" != "$REBASED" ]; then
+            echo "::error::HEAD $(git rev-parse --short HEAD) is not the rebased tip ${REBASED:0:10} — refusing to judge the wrong tree"
+            exit 1
+          fi
+          bash scripts/lib/land-gauntlet.sh "$RUNNER_TEMP/land-gauntlet/branch"
+
+      # ── Lazy base (BRO-5670): a gate green on the branch passes whatever the
+      # base says (land-gate-delta.js decideGateDelta), so the base is looked
+      # up, restored or run only for the gates the branch has red. A green
+      # branch skips the base entirely (~16 min saved on a cache miss).
+      # Rollback: repo variable LAND_LAZY_BASE=0 restores the full base run.
+      - name: Which gates need a base result
+        if: steps.plan.outputs.skip_gauntlet != 'true' && vars.LAND_STRICT_GATES != '1'
+        id: need
+        env:
+          LAND_LAZY_BASE: ${{ vars.LAND_LAZY_BASE }}
+        run: |
+          RED=$(node scripts/lib/land-gate-delta.js --red-gates "$RUNNER_TEMP/land-gauntlet/branch")
+          echo "red=$RED" >> "$GITHUB_OUTPUT"
+          if [ "$LAND_LAZY_BASE" = "0" ]; then
+            echo "needed=true" >> "$GITHUB_OUTPUT"
+            echo "gates=" >> "$GITHUB_OUTPUT"
+            echo "LAND_LAZY_BASE=0 — full base gauntlet (red on the branch: ${RED:-none})"
+          elif [ -z "$RED" ]; then
+            echo "needed=false" >> "$GITHUB_OUTPUT"
+            echo "every gate green on the branch — no base result needed"
+          else
+            echo "needed=true" >> "$GITHUB_OUTPUT"
+            echo "gates=$RED" >> "$GITHUB_OUTPUT"
+            echo "red on the branch: $RED — base result needed for these only"
+          fi
+
       # ── Base gauntlet: origin/main @ base, reused when already measured ─────
       # Key = sha256 over the base tree's VERIFICATION-RELEVANT paths
       # (scripts/lib/land-gate-delta.js --code-hash: INERT_FOR_VERIFICATION_RE
@@ -290,7 +332,7 @@ jobs:
 
       - name: Restore the base gauntlet result (actions/cache)
         id: base_cache
-        if: vars.LAND_STRICT_GATES != '1' && steps.plan.outputs.skip_gauntlet != 'true'
+        if: vars.LAND_STRICT_GATES != '1' && steps.plan.outputs.skip_gauntlet != 'true' && steps.need.outputs.needed == 'true'
         uses: actions/cache/restore@v5
         with:
           path: ${{ runner.temp }}/land-gauntlet/base
@@ -298,7 +340,7 @@ jobs:
 
       - name: Restore the base gauntlet result (artifact saved by another land/** run)
         id: base_artifact
-        if: steps.plan.outputs.skip_gauntlet != 'true' && vars.LAND_STRICT_GATES != '1' && steps.base_cache.outputs.cache-hit != 'true'
+        if: steps.plan.outputs.skip_gauntlet != 'true' && vars.LAND_STRICT_GATES != '1' && steps.need.outputs.needed == 'true' && steps.base_cache.outputs.cache-hit != 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NAME: ${{ steps.basekey.outputs.key }}
@@ -327,9 +369,11 @@ jobs:
 
       - name: Run the base gauntlet (origin/main @ base) — nothing cached
         id: base_run
-        if: steps.plan.outputs.skip_gauntlet != 'true' && vars.LAND_STRICT_GATES != '1' && steps.base_cache.outputs.cache-hit != 'true' && steps.base_artifact.outputs.hit != 'true'
+        if: steps.plan.outputs.skip_gauntlet != 'true' && vars.LAND_STRICT_GATES != '1' && steps.need.outputs.needed == 'true' && steps.base_cache.outputs.cache-hit != 'true' && steps.base_artifact.outputs.hit != 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Empty = every gate (LAND_LAZY_BASE=0); else the branch's red gates.
+          GAUNTLET_GATES: ${{ steps.need.outputs.gates }}
           BASE: ${{ steps.rebase.outputs.base }}
           LAND_BASE: ${{ steps.rebase.outputs.base }}
           REBASED: ${{ steps.rebase.outputs.rebased }}
@@ -344,36 +388,24 @@ jobs:
           bash "$RUNNER_TEMP/land-gauntlet.sh" "$RUNNER_TEMP/land-gauntlet/base" \
             --checkout "$BASE" --return-to "$REBASED" $([ "$DEPS_CHANGED" = "true" ] && echo --deps-changed)
 
+      # Only a FULL base run is published under the shared key: a lazy run
+      # measured the red gates only, and a later run reading that dir would
+      # find no result for its own red gates (a fail-safe refusal).
       - name: Save the base gauntlet result (actions/cache)
-        if: steps.base_run.outcome == 'success'
+        if: steps.base_run.outcome == 'success' && steps.need.outputs.gates == ''
         uses: actions/cache/save@v5
         with:
           path: ${{ runner.temp }}/land-gauntlet/base
           key: ${{ steps.basekey.outputs.key }}
 
       - name: Save the base gauntlet result (artifact, visible to every land/** run)
-        if: steps.base_run.outcome == 'success'
+        if: steps.base_run.outcome == 'success' && steps.need.outputs.gates == ''
         uses: actions/upload-artifact@v5
         with:
           name: ${{ steps.basekey.outputs.key }}
           path: ${{ runner.temp }}/land-gauntlet/base
           retention-days: 7
           if-no-files-found: error
-
-      # ── Branch gauntlet: the rebased tip ─────────────────────────────────────
-      - name: Run the gauntlet on the rebased branch
-        if: steps.plan.outputs.skip_gauntlet != 'true'
-        id: branch_run
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          LAND_BASE: ${{ steps.rebase.outputs.base }}
-          REBASED: ${{ steps.rebase.outputs.rebased }}
-        run: |
-          if [ "$(git rev-parse HEAD)" != "$REBASED" ]; then
-            echo "::error::HEAD $(git rev-parse --short HEAD) is not the rebased tip ${REBASED:0:10} — refusing to judge the wrong tree"
-            exit 1
-          fi
-          bash scripts/lib/land-gauntlet.sh "$RUNNER_TEMP/land-gauntlet/branch"
 
       - name: Gate verdict — new failures vs base
         if: steps.plan.outputs.skip_gauntlet != 'true'
@@ -392,6 +424,8 @@ jobs:
           LAND_E2E_UNIT_BLOCKING: ${{ vars.LAND_E2E_UNIT_BLOCKING }}
         run: |
           SRC="ran now (nothing cached)"
+          [ -n "${{ steps.need.outputs.gates }}" ] && SRC="ran now for the branch's red gates only (${{ steps.need.outputs.gates }})"
+          [ "${{ steps.need.outputs.needed }}" = "false" ] && SRC="not needed — every gate green on the branch"
           [ "${{ steps.base_cache.outputs.cache-hit }}" = "true" ] && SRC="actions/cache hit"
           [ "${{ steps.base_artifact.outputs.hit }}" = "true" ] && SRC="artifact hit (saved by another land/** run)"
           node scripts/lib/land-gate-delta.js \
@@ -412,6 +446,9 @@ jobs:
           DEPS_CHANGED: ${{ steps.rebase.outputs.deps_changed }}
           LAND_TOPLEVEL_ADVISORY: ${{ vars.LAND_TOPLEVEL_ADVISORY }}
           LAND_E2E_UNIT_BLOCKING: ${{ vars.LAND_E2E_UNIT_BLOCKING }}
+          # Only the branch's red gates can be refused, so only they are
+          # re-measured (every gate when LAND_LAZY_BASE=0, as before).
+          GAUNTLET_GATES: ${{ vars.LAND_LAZY_BASE != '0' && steps.need.outputs.red || '' }}
         # A cached base was measured against an older private-data clone (the
         # unit batches read data/*.json, which is in no tree hash — it changes
         # every ~30 min and keying on it would never hit). If the data has
@@ -433,8 +470,10 @@ jobs:
             --github-output "$GITHUB_OUTPUT" \
             --base-source "fresh re-run to confirm a refusal made on a cached base"
 
+      # Not published: the confirm run measured the red gates only (see the
+      # full-base-only rule on the save steps above).
       - name: Publish the fresh base result (artifact)
-        if: always() && steps.confirm.outputs.fresh == 'true'
+        if: always() && steps.confirm.outputs.fresh == 'true' && vars.LAND_LAZY_BASE == '0'
         uses: actions/upload-artifact@v5
         with:
           name: ${{ steps.basekey.outputs.key }}
@@ -459,11 +498,12 @@ jobs:
             "manifests:${{ steps.manifests.outcome }}" \
             "actionlint-install:${{ steps.actionlint.outcome }}" \
             "harness:${{ steps.harness.outcome }}" \
+            "branch-gauntlet:${{ steps.branch_run.outcome }}" \
+            "need:${{ steps.need.outcome }}" \
             "base-key:${{ steps.basekey.outcome }}" \
             "base-restore:${{ steps.base_cache.outcome }}" \
             "base-artifact:${{ steps.base_artifact.outcome }}" \
             "base-gauntlet:${{ steps.base_run.outcome }}" \
-            "branch-gauntlet:${{ steps.branch_run.outcome }}" \
             "delta:${{ steps.delta.outcome }}" \
             "confirm:${{ steps.confirm.outcome }}"; do
             name="${pair%%:*}"; outcome="${pair#*:}"
@@ -877,6 +917,23 @@ jobs:
           LAND_BRANCH: ${{ env.BRANCH }}
         run: |
           if [ -f scripts/land-mutex.js ]; then node scripts/land-mutex.js release; fi
+
+      - name: Request a production deploy
+        # Nothing started a deploy when a landing reached main: the */5 cron in
+        # vercel-deploy.yml fired ~20 times in 60h, so deploys came from
+        # pipeline dispatches and the owner's Mac heartbeat — ~6 min after a
+        # landing on average, hours when neither ran (BRO-5670). source=land
+        # makes vercel-deploy.yml's content gate judge it like a scheduled
+        # tick: it builds only when site files or core data differ from what
+        # is live, so a docs or bookkeeping landing costs one ~30s gate job.
+        # Rollback: repo variable LAND_DEPLOY_DISPATCH=0.
+        if: steps.land.outputs.landed == 'true' && vars.LAND_DEPLOY_DISPATCH != '0'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run vercel-deploy.yml --ref main -f source=land \
+            || echo "::warning::deploy dispatch failed — the next pipeline or heartbeat dispatch ships this landing"
 
       - name: Fail the job on a refused landing
         id: refused

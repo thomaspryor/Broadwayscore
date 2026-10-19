@@ -16,6 +16,7 @@ const require = createRequire(import.meta.url);
 const {
   GATES, decideGateDelta, decideAllGates, firstFailingGate, parseGateFailures, parseTscFailures,
   parseNextLintFailures, parseLintWorkflowsFailures, parseBashIntegrationFailures, computeCodeTreeHash, formatSummary, main, addWithMultiplicity, isCacheKeyRelevant,
+  redGates,
 } = require('./land-gate-delta.js');
 
 const CLI = path.join(path.dirname(new URL(import.meta.url).pathname), 'land-gate-delta.js');
@@ -518,4 +519,47 @@ test('the two switches are independent: arming unit-tests-e2e leaves toplevel-re
   const [e2e2, top2] = withToplevelAdvisory('1', () => withE2eUnitBlocking('1', () => decideAllGates({ gates, base: 'base', branch: 'branch', read })));
   assert.equal(e2e2.verdict, 'fail');
   assert.equal(top2.mode, 'advisory');
+});
+
+// ── Lazy base (BRO-5670): land.yml runs the base only for the branch's red gates ──
+
+test('redGates: names non-zero and missing gates in GATES order, never a green one', () => {
+  const results = { tsc: { exit: 0 }, 'unit-tests-node': { exit: 1 }, 'lint-workflows': { exit: 2 } };
+  const read = (_dir, gate) => (gate in results ? { exit: results[gate].exit, text: '' } : null);
+  const red = redGates({ dir: 'branch', read });
+  assert.deepEqual(red, GATES.filter((g) => g !== 'tsc'));
+  assert.deepEqual(redGates({ gates: ['tsc', 'unit-tests-node', 'lint-workflows'], dir: 'branch', read }), ['unit-tests-node', 'lint-workflows']);
+  assert.deepEqual(redGates({ gates: ['tsc'], dir: 'branch', read }), []);
+});
+
+test('lazy base is safe: a gate green on the branch passes with NO base result, and a red one without a base still refuses', () => {
+  const read = (dir, gate) => {
+    if (dir !== 'branch') return null;
+    if (gate === 'unit-tests-node') return { exit: 1, text: tap(ROOT, [['tests/unit/a.test.mjs', 'breaks']]) };
+    return { exit: 0, text: '' };
+  };
+  const decisions = decideAllGates({ base: null, branch: 'branch', read });
+  for (const d of decisions) {
+    if (d.gate === 'unit-tests-node') assert.equal(d.verdict, 'fail', 'a red gate with no base result must never pass');
+    else assert.equal(d.verdict, 'pass', `${d.gate} is green on the branch and needs no base`);
+  }
+  // The same branch judged against a full green base gives the same verdict for every green gate.
+  const withBase = decideAllGates({ base: 'base', branch: 'branch', read: (dir, gate) => (dir === 'base' ? { exit: 0, text: '' } : read(dir, gate)) });
+  for (const d of withBase) if (d.gate !== 'unit-tests-node') assert.equal(d.verdict, 'pass');
+});
+
+test('CLI --red-gates prints the comma list land.yml feeds to GAUNTLET_GATES (empty when all green)', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'land-gate-delta-red-'));
+  try {
+    const green = Object.fromEntries(GATES.map((g) => [g, { exit: 0, text: '' }]));
+    const allGreen = resultDir(tmp, 'green', green);
+    let r = runCli(['--red-gates', allGreen]);
+    assert.equal(r.status, 0, r.stderr);
+    assert.equal(r.stdout.trim(), '');
+    const someRed = resultDir(tmp, 'red', { ...green, 'scripts-lib-tests': { exit: 1, text: '' }, 'unit-tests-node': { exit: 1, text: '' } });
+    r = runCli(['--red-gates', someRed]);
+    assert.equal(r.stdout.trim(), GATES.filter((g) => g === 'unit-tests-node' || g === 'scripts-lib-tests').join(','));
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
 });
