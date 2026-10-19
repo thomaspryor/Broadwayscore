@@ -1,0 +1,122 @@
+{
+  "runDate": "2026-10-19T00:21:31.036Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 20,
+    "priority": "all",
+    "showFilter": "",
+    "aggressive": true,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 2,
+    "failed": 5,
+    "skipped": 0,
+    "successRate": "28.6%"
+  },
+  "tierBreakdown": {
+    "playwright": 0,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingdog": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 2
+  },
+  "statistics": {
+    "tier1Attempts": 0,
+    "tier1Success": 0,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 5,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 5,
+    "tier1_9Success": 1,
+    "tier2Attempts": 5,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 3,
+    "tier3_6Success": 0,
+    "tier4Attempts": 5,
+    "tier4Success": 3,
+    "totalFailed": 4,
+    "scrapingBeePageCredits": 10,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 5,
+    "browserbaseMinutesUsed": 1.6,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "thisRun": {
+    "processed": 2,
+    "failed": 5,
+    "shows": [
+      "bloody-bloody-andrew-jackson-2010",
+      "brief-encounter-2010",
+      "fat-ham-2023",
+      "lombardi-2010",
+      "six-2021",
+      "south-pacific-2008",
+      "the-parisian-woman-2017"
+    ],
+    "outOfScopeShows": [],
+    "inheritedFromResume": {
+      "processed": 0,
+      "failed": 0
+    }
+  },
+  "processed": [
+    "lombardi-2010/newyorker--uncredited.json",
+    "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json"
+  ],
+  "failed": [
+    "six-2021/newyorker--conde-nast.json",
+    "fat-ham-2023/newyorker--vinson-cunningham.json",
+    "the-parisian-woman-2017/newyorker--hilton-als.json",
+    "brief-encounter-2010/newyorker--uncredited.json",
+    "south-pacific-2008/newyorker--john-lahr.json"
+  ],
+  "cumulativeResumedState": {
+    "processed": [
+      "lombardi-2010/newyorker--uncredited.json",
+      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json"
+    ],
+    "failed": [
+      "six-2021/newyorker--conde-nast.json",
+      "fat-ham-2023/newyorker--vinson-cunningham.json",
+      "the-parisian-woman-2017/newyorker--hilton-als.json",
+      "brief-encounter-2010/newyorker--uncredited.json",
+      "south-pacific-2008/newyorker--john-lahr.json"
+    ]
+  },
+  "tierDetails": {
+    "playwright": [],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingdog": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": [
+      "lombardi-2010/newyorker--uncredited.json",
+      "bloody-bloody-andrew-jackson-2010/newyorker--uncredited.json"
+    ]
+  },
+  "failuresByOutlet": {
+    "The New Yorker": {
+      "count": 2,
+      "domain": "newyorker.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    }
+  },
+  "urlDiscoveries": []
+}
