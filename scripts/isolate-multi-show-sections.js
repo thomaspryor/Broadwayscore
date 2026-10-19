@@ -20,6 +20,7 @@
  *     (default dry run; --dir or REVIEW_TEXTS_DIR selects the corpus)
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -44,7 +45,7 @@ function main() {
     if (showId[0] === '_' || showId[0] === '.' || (onlyShow && showId !== onlyShow)) continue;
     const showDir = path.join(dir, showId);
     for (const file of fs.readdirSync(showDir)) {
-      if (!file.endsWith('.json') || file === 'failed-fetches.json') continue;
+      if (!isReviewTextFile(file)) continue;
       const filePath = path.join(showDir, file);
       let data;
       try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }

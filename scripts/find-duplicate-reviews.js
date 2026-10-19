@@ -9,6 +9,7 @@
  * Output: data/audit/duplicates-found.json
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const {
@@ -36,7 +37,7 @@ function getShowDirectories() {
 function getReviewFiles(showDir) {
   const showPath = path.join(REVIEW_TEXTS_DIR, showDir);
   return fs.readdirSync(showPath)
-    .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json')
+    .filter(f => isReviewTextFile(f))
     .sort();
 }
 

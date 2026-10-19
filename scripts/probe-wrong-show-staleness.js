@@ -15,6 +15,7 @@
  * Usage:
  *   node scripts/probe-wrong-show-staleness.js [--out=path] [--review-texts=path]
  */
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
@@ -83,7 +84,7 @@ for (const d of showDirs) {
     // count flagged files but skip — show context unavailable
   }
   const showDir = path.join(RT_DIR, showId);
-  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
 
   // First pass — build critic→hasScoredHere set from non-flagged files in this show
   const criticsWithGoodReview = new Set();

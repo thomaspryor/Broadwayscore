@@ -28,6 +28,7 @@
  * Exit codes: 0 = pass/warn or first-day errors, 1 = persistent errors (2+ days)
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -748,7 +749,7 @@ function checkSync() {
       const showDirs = listShowDirs(reviewTextsDir);
       for (const dir of showDirs) {
         const files = fs.readdirSync(path.join(reviewTextsDir, dir))
-          .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+          .filter(f => isReviewTextFile(f));
         fileCount += files.length;
       }
     }

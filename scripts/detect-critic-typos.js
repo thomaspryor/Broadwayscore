@@ -19,6 +19,7 @@
  * Usage: node scripts/detect-critic-typos.js [--dry-run]
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -50,7 +51,7 @@ const dirs = listShowDirs(REVIEW_DIR);
 
 for (const showId of dirs) {
   const files = fs.readdirSync(path.join(REVIEW_DIR, showId))
-    .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    .filter(f => isReviewTextFile(f));
   for (const file of files) {
     const base = file.replace('.json', '');
     const idx = base.indexOf('--');

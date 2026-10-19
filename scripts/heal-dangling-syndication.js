@@ -11,6 +11,7 @@
  *   node scripts/heal-dangling-syndication.js [--dir=<review-texts dir>] [--plan=data/pending-fixes/bro-N.json --issue=bro-N]
  */
 require('./lib/cli-help').exitOnHelp(module);
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -27,7 +28,7 @@ for (const sid of fs.readdirSync(ROOT)) {
   const siblings = fs.readdirSync(dir);
   const read = (f) => JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
   for (const f of siblings) {
-    if (!f.endsWith('.json') || f.startsWith('_') || f === 'failed-fetches.json') continue;
+    if (!isReviewTextFile(f)) continue;
     let data;
     try { data = read(f); } catch { continue; }
     const ptr = data.syndicatedPrimaryFile;

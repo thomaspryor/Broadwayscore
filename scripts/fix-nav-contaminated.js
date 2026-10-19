@@ -10,6 +10,7 @@
  *   node scripts/fix-nav-contaminated.js          # Dry run (default)
  *   node scripts/fix-nav-contaminated.js --apply   # Apply changes
  */
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { cleanText } = require('./lib/text-cleaning');
@@ -26,7 +27,7 @@ const results = [];
 const dirs = listShowDirs(base);
 
 for (const d of dirs) {
-  const files = fs.readdirSync(path.join(base, d)).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const files = fs.readdirSync(path.join(base, d)).filter(f => isReviewTextFile(f));
   for (const f of files) {
     const filePath = path.join(base, d, f);
     try {

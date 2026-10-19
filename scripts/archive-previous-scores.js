@@ -12,6 +12,7 @@
  *   node scripts/archive-previous-scores.js [--dry-run]
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
@@ -44,7 +45,7 @@ let cleanedOrphanedReason = 0;
 for (const show of shows) {
   const showDir = path.join(reviewDir, show);
   const files = fs.readdirSync(showDir).filter(f =>
-    f.endsWith('.json') && f !== 'failed-fetches.json'
+    isReviewTextFile(f)
   );
 
   for (const file of files) {

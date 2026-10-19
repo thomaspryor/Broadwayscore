@@ -18,6 +18,7 @@
  * Read-only: never modifies data. Safe to run alongside active opening night.
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
@@ -87,7 +88,7 @@ function countLocalFiles(showId) {
   if (!fs.existsSync(dir)) return { total: 0, stubs: 0, withText: 0, withScore: 0 };
   let total = 0, stubs = 0, withText = 0, withScore = 0;
   for (const f of fs.readdirSync(dir)) {
-    if (!f.endsWith('.json') || f === 'failed-fetches.json') continue;
+    if (!isReviewTextFile(f)) continue;
     total++;
     try {
       const d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));

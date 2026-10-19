@@ -14,6 +14,7 @@
  *   data/audit/levenshtein-matches.json
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const {
@@ -33,7 +34,7 @@ const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'audit', 'levenshtein-mat
  */
 function extractCriticFromFilename(filename) {
   if (!filename.endsWith('.json')) return null;
-  if (filename === 'failed-fetches.json') return null;
+  if (!isReviewTextFile(filename)) return null;
 
   const match = filename.match(/^.+?--(.+)\.json$/);
   if (!match) return null;

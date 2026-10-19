@@ -55,6 +55,7 @@
  *   2 — breach AND --strict
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 
@@ -269,7 +270,7 @@ function findSuppressedForShow(showDir, show, showReviews) {
   const dirPath = path.join(REVIEW_TEXTS_DIR, showDir);
   let files;
   try {
-    files = fs.readdirSync(dirPath).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json');
+    files = fs.readdirSync(dirPath).filter((f) => isReviewTextFile(f));
   } catch {
     return { suppressed: [], scanned: 0 };
   }

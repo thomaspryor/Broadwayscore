@@ -12,6 +12,7 @@
  *   node scripts/audit-data-quality.js --help       # Show help
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -123,7 +124,7 @@ function collectMetrics() {
     for (const showDir of showDirs) {
       const showPath = path.join(reviewTextsDir, showDir);
       const reviewFiles = fs.readdirSync(showPath)
-        .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+        .filter(f => isReviewTextFile(f));
 
       for (const reviewFile of reviewFiles) {
         const filePath = path.join(showPath, reviewFile);

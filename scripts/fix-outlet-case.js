@@ -9,6 +9,7 @@
  * 4. Merges duplicates if a lowercase version already exists
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet, getOutletDisplayName, mergeReviews, slugify } = require('./lib/review-normalization');
@@ -121,7 +122,7 @@ function main() {
   for (const showDir of showDirs) {
     const showPath = path.join(REVIEW_TEXTS_DIR, showDir);
     const files = fs.readdirSync(showPath)
-      .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+      .filter(f => isReviewTextFile(f));
 
     for (const file of files) {
       const filepath = path.join(showPath, file);

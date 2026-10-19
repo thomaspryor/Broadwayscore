@@ -15,6 +15,7 @@
  *   node scripts/audit-aggregator-coverage.js --verbose        # Print every show
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
@@ -79,7 +80,7 @@ function countLocalReviewsBySources(showId) {
   if (!fs.existsSync(showDir)) return { total: 0, byAggregator: {} };
 
   const files = fs.readdirSync(showDir)
-    .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    .filter(f => isReviewTextFile(f));
 
   let total = 0;
   const byAggregator = {};

@@ -9,6 +9,7 @@
  *   node scripts/cleanup-unfetchable-urls.js              # apply changes
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 
@@ -27,7 +28,7 @@ const showDirs = fs.readdirSync(reviewTextsDir, { withFileTypes: true })
 
 for (const showDir of showDirs) {
   const showPath = path.join(reviewTextsDir, showDir);
-  const files = fs.readdirSync(showPath).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const files = fs.readdirSync(showPath).filter(f => isReviewTextFile(f));
 
   for (const file of files) {
     const filePath = path.join(showPath, file);

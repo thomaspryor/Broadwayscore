@@ -39,6 +39,7 @@
  * — a spike this large usually means the predicate or LLM regressed, not
  * routine drift, and this writes unattended to the private review-texts corpus.
  */
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { isLikelyStaleWrongShow } = require('./lib/review-guards');
@@ -86,7 +87,7 @@ for (const showId of showDirs) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   let files;
   try {
-    files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
   } catch { continue; }
   for (const f of files) {
     scanned++;

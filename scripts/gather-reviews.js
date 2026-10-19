@@ -37,6 +37,7 @@
  *   - playwright (optional but recommended for full Show Score extraction)
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
@@ -376,7 +377,7 @@ function getGlobalUrlIndex() {
     for (const d of dirs) {
       if (skipIds.has(d)) continue; // _skipCrossShowDupe: excluded from global URL index
       const showDir = path.join(REVIEW_TEXTS_DIR, d);
-      const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+      const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
       for (const f of files) {
         try {
           const r = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
@@ -3713,7 +3714,7 @@ function createReviewFile(showId, reviewData, options = {}) {
 
   // Check for existing review with same normalized key
   if (fs.existsSync(showDir)) {
-    const existingFiles = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    const existingFiles = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
     for (const existingFile of existingFiles) {
       try {
         const existingReview = JSON.parse(fs.readFileSync(path.join(showDir, existingFile), 'utf8'));
@@ -5230,7 +5231,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     if (aggregatorsOnly || (!scrapingBeeKey && !brightDataKey)) {
       health.wrongUrlRetry.skipped = true;
     } else if (fs.existsSync(showDir)) {
-      const reviewFiles = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+      const reviewFiles = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
       const wrongUrlFiles = [];
 
       for (const file of reviewFiles) {

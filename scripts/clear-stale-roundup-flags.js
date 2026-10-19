@@ -20,6 +20,7 @@
  * Default mode is dry-run — prints the list and exits without writing.
  * --force-bulk: override the surge guard (see SURGE_THRESHOLD below).
  */
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { isLikelyStaleRoundupFlag } = require('./lib/review-guards');
@@ -72,7 +73,7 @@ const toClear = [];
 for (const name of showDirs) {
   if (SHOW_FILTER && name !== SHOW_FILTER) continue;
   const showDir = path.join(REVIEW_TEXTS_DIR, name);
-  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
   for (const f of files) {
     scanned++;
     const filePath = path.join(showDir, f);

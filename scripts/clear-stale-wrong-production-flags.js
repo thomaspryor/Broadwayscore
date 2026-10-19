@@ -38,6 +38,7 @@
  * a spike this size usually means the predicate or the LLM verification
  * regressed, not routine catch-up drift.
  */
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { isLikelyStaleWrongProduction, isReviewWithinOwnProductionWindow } = require('./lib/review-guards');
@@ -133,7 +134,7 @@ for (const showId of showDirs) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   let files;
   try {
-    files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
   } catch { continue; }
   for (const f of files) {
     scanned++;

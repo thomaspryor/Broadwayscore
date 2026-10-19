@@ -11,6 +11,7 @@
  * Usage: node scripts/audit-coverage-slot-drops.js [--dir=data/review-texts] [--json]
  * Exit 0 always; candidates are printed. Needs the full review-texts checkout.
  */
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const guards = require('./lib/review-slot-guards');
@@ -52,7 +53,7 @@ function auditCorpus(dir) {
   for (const show of shows.sort()) {
     const showDir = path.join(dir, show);
     const loaded = [];
-    for (const filename of fs.readdirSync(showDir).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json').sort()) {
+    for (const filename of fs.readdirSync(showDir).filter((f) => isReviewTextFile(f)).sort()) {
       try { loaded.push({ filename, d: JSON.parse(fs.readFileSync(path.join(showDir, filename), 'utf8')) }); } catch { /* unreadable */ }
     }
     const counts = new Map();

@@ -56,6 +56,7 @@
  *             (bypasses re-derivation and provenance scoping — see above)
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { shouldRetryFetch } = require('./lib/review-guards');
@@ -161,7 +162,7 @@ for (const showId of showDirs) {
   if (!stat.isDirectory()) continue;
 
   for (const f of fs.readdirSync(showDir)) {
-    if (!f.endsWith('.json') || f === 'failed-fetches.json') continue;
+    if (!isReviewTextFile(f)) continue;
     scanned++;
     const reviewId = `${showId}/${f}`;
     const filePath = path.join(showDir, f);

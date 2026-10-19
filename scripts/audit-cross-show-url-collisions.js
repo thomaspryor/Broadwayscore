@@ -12,6 +12,7 @@
  *   node scripts/audit-cross-show-url-collisions.js --verbose        # Show details
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
@@ -156,7 +157,7 @@ function isIdMigration(dirId, fileId) {
 
 for (const showId of showDirs) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
-  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
 
   for (const file of files) {
     const filePath = path.join(showDir, file);
@@ -200,7 +201,7 @@ for (const dirId of showDirs) {
   if (!hasYearSibling) continue;
 
   const showDir = path.join(REVIEW_TEXTS_DIR, dirId);
-  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
 
   for (const file of files) {
     const filePath = path.join(showDir, file);
@@ -231,7 +232,7 @@ let skippedFlagged = 0;
 
 for (const showId of showDirs) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
-  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
 
   for (const file of files) {
     totalFiles++;

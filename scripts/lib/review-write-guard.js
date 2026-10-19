@@ -35,6 +35,7 @@
  *   narrow patches that don't touch PROTECTED_FIELDS; see Notion P1 card).
  */
 
+const { isReviewTextFile } = require('./review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { parseRating } = require('./score-conversion-rules');
@@ -2443,7 +2444,7 @@ function safeWriteReview(filePath, newData, options = {}) {
         try { existingData = JSON.parse(fs.readFileSync(filePath, 'utf-8')); } catch { /* new file */ }
         const siblings = [];
         for (const f of fs.readdirSync(dir)) {
-          if (!f.endsWith('.json') || f === thisFile || f === 'failed-fetches.json') continue;
+          if (!isReviewTextFile(f) || f === thisFile) continue;
           try { siblings.push({ file: f, data: JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8')) }); } catch { /* skip unreadable */ }
         }
         const twin = findIdenticalTextSibling({ thisFile, newData, existingData, siblings });
@@ -2502,7 +2503,7 @@ function safeWriteReview(filePath, newData, options = {}) {
         const self = path.basename(filePath);
         const siblings = [];
         for (const f of fs.readdirSync(dir)) {
-          if (!f.endsWith('.json') || f === 'failed-fetches.json' || f === self) continue;
+          if (!isReviewTextFile(f) || f === self) continue;
           try { siblings.push({ file: f, data: JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8')) }); } catch { /* unreadable sibling */ }
         }
         const strip = guard.excerptFieldsToStrip(self, newData, siblings);
@@ -2530,7 +2531,7 @@ function safeWriteReview(filePath, newData, options = {}) {
       if (newData.source === 'web-search' && !fs.existsSync(filePath)) {
         const siblings = [];
         for (const f of fs.readdirSync(dir)) {
-          if (!f.endsWith('.json') || f === 'failed-fetches.json' || f === self) continue;
+          if (!isReviewTextFile(f) || f === self) continue;
           try { siblings.push({ file: f, data: JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8')) }); } catch { /* unreadable sibling */ }
         }
         const twin = guard.phantomOfSibling(self, newData, siblings);
@@ -2915,7 +2916,7 @@ function _findOrphanedProtectedVerdict(filePath, newData) {
   const dir = path.dirname(filePath);
   let files;
   try {
-    files = fs.readdirSync(dir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    files = fs.readdirSync(dir).filter(f => isReviewTextFile(f));
   } catch {
     return null;
   }
@@ -3003,7 +3004,7 @@ function _findClearedVerdictOrphan(filePath, newData) {
   const dir = path.dirname(filePath);
   let files;
   try {
-    files = fs.readdirSync(dir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    files = fs.readdirSync(dir).filter(f => isReviewTextFile(f));
   } catch {
     return null;
   }
@@ -3044,7 +3045,7 @@ function checkUrlCollision(filePath, newData) {
   const thisFile = path.basename(filePath);
   let files;
   try {
-    files = fs.readdirSync(dir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json' && f !== thisFile);
+    files = fs.readdirSync(dir).filter(f => isReviewTextFile(f) && f !== thisFile);
   } catch {
     return null;
   }
@@ -3599,7 +3600,7 @@ function _updateSisterStoresOnRename(srcPath, dstPath) {
   if (fs.existsSync(srcDir)) {
     let files;
     try {
-      files = fs.readdirSync(srcDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+      files = fs.readdirSync(srcDir).filter(f => isReviewTextFile(f));
     } catch { files = []; }
     for (const f of files) {
       if (f === dstFile && srcDir === dstDir) continue;

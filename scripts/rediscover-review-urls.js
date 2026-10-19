@@ -17,6 +17,7 @@
  *     --domain=X       Only process specific domain
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
@@ -94,7 +95,7 @@ function loadCandidates() {
     if (CONFIG.showFilter && dir !== CONFIG.showFilter) continue;
 
     const showDir = path.join(CONFIG.reviewTextsDir, dir);
-    const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
 
     for (const file of files) {
       try {

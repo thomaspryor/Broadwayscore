@@ -25,6 +25,7 @@
  *   node scripts/backfill-html-override-rename.js --apply     # mutate
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const {
@@ -85,7 +86,7 @@ function findCandidates() {
     try { files = fs.readdirSync(dir).filter(f => f.endsWith('.json')); }
     catch { continue; }
     for (const f of files) {
-      if (f === 'failed-fetches.json') continue;
+      if (!isReviewTextFile(f)) continue;
       const m = f.match(/^(.+)--(.+)\.json$/);
       if (!m) continue;
       const [, , filenameCriticSlug] = m;

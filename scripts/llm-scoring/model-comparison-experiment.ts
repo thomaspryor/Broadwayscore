@@ -10,6 +10,7 @@
  * Uses all 276 reviews with explicit numeric scores.
  */
 
+import { isReviewTextFile } from '../lib/review-text-sidecars';
 import Anthropic from '@anthropic-ai/sdk';
 import OpenAI from 'openai';
 import * as fs from 'fs';
@@ -146,7 +147,7 @@ async function loadReviewsWithExplicitScores(): Promise<ReviewData[]> {
   for (const show of shows) {
     const showDir = path.join(reviewTextsDir, show);
     const files = fs.readdirSync(showDir).filter(f =>
-      f.endsWith('.json') && f !== 'failed-fetches.json'
+      isReviewTextFile(f)
     );
 
     for (const file of files) {

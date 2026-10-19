@@ -12,6 +12,7 @@
  * No review text is printed. Write the actions into data/pending-fixes/bro-N.json.
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -36,7 +37,7 @@ function scan() {
     let names;
     try { names = fs.readdirSync(dir); } catch { continue; }
     for (const file of names) {
-      if (!file.endsWith('.json') || file === 'failed-fetches.json' || file.startsWith('_')) continue;
+      if (!isReviewTextFile(file)) continue;
       let d;
       try { d = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')); } catch { continue; }
       if (d.duplicateOf || d.wrongProduction || d.wrongShow || d.wrongUrl || isRejectedNonReview(d)) continue;

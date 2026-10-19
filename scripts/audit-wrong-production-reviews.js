@@ -18,6 +18,7 @@
  * Output: data/audit/wrong-production-reviews.json
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -552,7 +553,7 @@ function runWrongProductionAudit() {
   for (const showId of showDirs) {
     const showPath = path.join(REVIEW_TEXTS_DIR, showId);
     const files = fs.readdirSync(showPath)
-      .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+      .filter(f => isReviewTextFile(f));
 
     const reviewCount = files.length;
 

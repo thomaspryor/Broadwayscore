@@ -34,6 +34,7 @@
  *   node scripts/record-arm-yield.js --dry-run            # print, write nothing
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
@@ -144,7 +145,7 @@ function collectOutletYield(reviewTextsDir, days) {
     const showPath = path.join(reviewTextsDir, showDir);
     let files;
     try {
-      files = fs.readdirSync(showPath).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json');
+      files = fs.readdirSync(showPath).filter((f) => isReviewTextFile(f));
     } catch {
       continue;
     }

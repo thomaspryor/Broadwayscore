@@ -25,6 +25,7 @@
  *
  * Integrated into rebuild via: .github/workflows/rebuild-reviews.yml
  */
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
@@ -237,7 +238,7 @@ function findCandidates() {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
     let files;
     try {
-      files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+      files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
     } catch { continue; }
 
     for (const file of files) {

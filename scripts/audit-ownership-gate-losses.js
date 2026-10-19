@@ -18,6 +18,7 @@
  *   node scripts/audit-ownership-gate-losses.js [--days=60] [--json]
  * Cloud: node scripts/cloud-run-script.js --review-texts scripts/audit-ownership-gate-losses.js
  */
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
@@ -52,7 +53,7 @@ function currentIndex() {
   for (const show of fs.readdirSync(DIR, { withFileTypes: true })) {
     if (!show.isDirectory() || show.name.startsWith('.') || show.name.startsWith('_')) continue;
     for (const f of fs.readdirSync(path.join(DIR, show.name))) {
-      if (!f.endsWith('.json') || f.startsWith('_') || f === 'failed-fetches.json') continue;
+      if (!isReviewTextFile(f)) continue;
       let d;
       try { d = JSON.parse(fs.readFileSync(path.join(DIR, show.name, f), 'utf8')); } catch { continue; }
       if (d.url) {

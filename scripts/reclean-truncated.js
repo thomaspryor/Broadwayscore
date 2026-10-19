@@ -10,6 +10,7 @@
  *   node scripts/reclean-truncated.js --apply       # Actually write changes
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { cleanText } = require('./lib/text-cleaning');
@@ -37,7 +38,7 @@ const dirs = listShowDirs(base);
 
 for (const showDir of dirs) {
   const showPath = path.join(base, showDir);
-  const files = fs.readdirSync(showPath).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const files = fs.readdirSync(showPath).filter(f => isReviewTextFile(f));
 
   for (const file of files) {
     const filePath = path.join(showPath, file);

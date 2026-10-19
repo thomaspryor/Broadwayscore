@@ -27,6 +27,7 @@
  *   node scripts/backfill-extractor-rescore.js --limit=50             # cap file count
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { extractScore, OUTLET_EXTRACTORS, OUTLET_VERIFIED_SOURCES } = require('./lib/score-extractors');
@@ -192,7 +193,7 @@ const showDirs = listShowDirs(REVIEW_TEXTS_DIR).filter(entry => {
 outer: for (const showId of showDirs) {
   if (SHOW_FILTER && showId !== SHOW_FILTER) continue;
   const dir = path.join(REVIEW_TEXTS_DIR, showId);
-  const files = fs.readdirSync(dir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const files = fs.readdirSync(dir).filter(f => isReviewTextFile(f));
 
   for (const file of files) {
     const filePath = path.join(dir, file);

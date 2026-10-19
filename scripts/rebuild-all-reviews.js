@@ -26,6 +26,7 @@
  * P7.  SKIP - do not include in reviews.json
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -1500,7 +1501,7 @@ const crossShowFingerprints = new Map();
       const bwDir = path.join(reviewTextsDir, bw.id);
       const urls = new Set();
       if (fs.existsSync(bwDir)) {
-        for (const f of fs.readdirSync(bwDir).filter(x => x.endsWith('.json') && x !== 'failed-fetches.json')) {
+        for (const f of fs.readdirSync(bwDir).filter(x => isReviewTextFile(x))) {
           try {
             const d = JSON.parse(fs.readFileSync(path.join(bwDir, f), 'utf8'));
             if (isValidBroadwayCopy(d, bw)) {
@@ -1515,7 +1516,7 @@ const crossShowFingerprints = new Map();
     for (const ob of obShows) {
       const obDir = path.join(reviewTextsDir, ob.id);
       if (!fs.existsSync(obDir)) continue;
-      for (const f of fs.readdirSync(obDir).filter(x => x.endsWith('.json') && x !== 'failed-fetches.json')) {
+      for (const f of fs.readdirSync(obDir).filter(x => isReviewTextFile(x))) {
         try {
           const fp = path.join(obDir, f);
           const d = JSON.parse(fs.readFileSync(fp, 'utf8'));
@@ -1548,7 +1549,7 @@ const crossShowFingerprints = new Map();
       for (const ob of obShows) {
         const obDir = path.join(reviewTextsDir, ob.id);
         if (!fs.existsSync(obDir)) continue;
-        for (const f of fs.readdirSync(obDir).filter(x => x.endsWith('.json') && x !== 'failed-fetches.json')) {
+        for (const f of fs.readdirSync(obDir).filter(x => isReviewTextFile(x))) {
           try {
             const fp = path.join(obDir, f);
             const d = JSON.parse(fs.readFileSync(fp, 'utf8'));
@@ -2215,7 +2216,7 @@ const crossShowFingerprints = new Map();
   let domainMismatchDetected = 0;
   for (const sid of showDirs) {
     const sDir = path.join(reviewTextsDir, sid);
-    for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json') && x !== 'failed-fetches.json')) {
+    for (const f of fs.readdirSync(sDir).filter(x => isReviewTextFile(x))) {
       try {
         const d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8'));
         if (d.wrongUrl || d.wrongShow || d.wrongProduction || d.duplicateOf) continue;
@@ -2252,7 +2253,7 @@ const crossShowFingerprints = new Map();
     const sDir = path.join(reviewTextsDir, sid);
     const sCat = showCategoryMap[sid] || 'broadway';
     let files;
-    try { files = fs.readdirSync(sDir).filter(x => x.endsWith('.json') && x !== 'failed-fetches.json'); } catch { continue; }
+    try { files = fs.readdirSync(sDir).filter(x => isReviewTextFile(x)); } catch { continue; }
     for (const f of files) {
       try {
         const d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8'));
@@ -5818,7 +5819,7 @@ if (fs.existsSync(reviewsJsonPath)) {
         const sCat = showCategoryMap[showId] || 'broadway';
         const sEarliest = showDateMap[showId];
         if (fs.existsSync(showDir)) {
-          for (const f of fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json')) {
+          for (const f of fs.readdirSync(showDir).filter(f => isReviewTextFile(f))) {
             try {
               const d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
               if (d.assignedScore == null) continue;

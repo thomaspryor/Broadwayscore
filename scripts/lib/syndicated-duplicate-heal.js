@@ -31,6 +31,7 @@
  * Pure: the caller supplies `io.exists(file)`/`io.read(file)` for same-show
  * siblings and `explain(data, file)` (explainExclusion bound to the show).
  */
+const { isReviewTextFile } = require('./review-text-sidecars');
 const path = require('path');
 const { carriesOperatorAssertion, sameArticlePath } = require('./outlet-mismatch-heal');
 const { isGarbageTierReason } = require('./review-guards');
@@ -148,7 +149,7 @@ function findLiveSyndicationPrimary({ data, file, siblings, read }) {
   const ownWin = windows(own, 12);
   let undecidable = false;
   for (const f of siblings) {
-    if (f === file || !f.endsWith('.json') || f.startsWith('_') || f === 'failed-fetches.json') continue;
+    if (f === file || !isReviewTextFile(f)) continue;
     let k;
     try { k = read(f); } catch { undecidable = true; continue; }
     if (!k || k.isSyndicatedDuplicate === true || !k.fullText) continue;

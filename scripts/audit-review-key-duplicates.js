@@ -28,6 +28,7 @@
  *   2 — corpus missing / unreadable (could not run)
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -52,7 +53,7 @@ function countKeyDuplicates(reviewTextsDir) {
     const showPath = path.join(reviewTextsDir, showDir);
     const files = fs
       .readdirSync(showPath)
-      .filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json');
+      .filter((f) => isReviewTextFile(f));
 
     for (const file of files) {
       totalReviews++;

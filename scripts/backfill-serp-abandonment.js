@@ -34,6 +34,7 @@
  * See: sprint-plan-serp-cost-reduction.md S4-T1/T2
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { classifyLifecycle, SERP_DISCOVERY_METHODS } = require('./lib/review-guards');
@@ -78,7 +79,7 @@ for (const showId of listShowDirs(REVIEW_TEXTS_DIR)) {
   const lifecycle = classifyLifecycle(show);
 
   for (const f of fs.readdirSync(showDir)) {
-    if (!f.endsWith('.json') || f === 'failed-fetches.json') continue;
+    if (!isReviewTextFile(f)) continue;
     scanned++;
 
     const filePath = path.join(showDir, f);

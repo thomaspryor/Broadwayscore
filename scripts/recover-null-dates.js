@@ -16,6 +16,7 @@
  *   node scripts/recover-null-dates.js [--dry-run] [--write]
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { extractDateFromUrl } = require('./lib/rebuild-helpers');
@@ -35,7 +36,7 @@ let stats = {
 for (const sid of listShowDirs(REVIEW_TEXTS_DIR)) {
   const sdir = path.join(REVIEW_TEXTS_DIR, sid);
   if (!fs.statSync(sdir).isDirectory()) continue;
-  for (const f of fs.readdirSync(sdir).filter(x => x.endsWith('.json') && x !== 'failed-fetches.json')) {
+  for (const f of fs.readdirSync(sdir).filter(x => isReviewTextFile(x))) {
     try {
       const filePath = path.join(sdir, f);
       const d = JSON.parse(fs.readFileSync(filePath, 'utf8'));

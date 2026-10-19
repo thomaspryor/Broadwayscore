@@ -26,6 +26,7 @@
  * file up on its next run, else the reason it never will (terminal_text_gate_block, no_scorable_text...): those need
  * new text, not a score.
  */
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 if (hasHelpFlag(process.argv.slice(2))) {
   console.log('Usage:\n  node scripts/audit-coverage-holes.js [--json=PATH] [--days=120] [--show=ID] [--strict] [--list=A|B|C|D|E|F] [--recent-days=14] [--alert] [--counts=PATH]\n  --counts       write counts-only JSON (classes A-D, no file names) for the health digest row\n  --strict       exit 1 on any A, B or C row, a published D row, or an unreadable file (advisory by default)\n  --list=X       print every row of one class\n  --recent-days  window for the --alert rows (default 14)\n  --alert        route B and unqueued F rows of recently opened shows to the owner digest, per show');
@@ -85,7 +86,7 @@ function sweep({ root = ROOT, days = 120, only = null, now = Date.now(), recentD
     const dir = path.join(root, 'data', 'review-texts', show.id);
     if (!fs.existsSync(dir)) continue;
     for (const f of fs.readdirSync(dir)) {
-      if (!f.endsWith('.json') || f === 'failed-fetches.json' || f.startsWith('_')) continue; // sidecars (_blocklist.json), not reviews
+      if (!isReviewTextFile(f)) continue; // sidecars (_blocklist.json), not reviews
       const filePath = path.join(dir, f);
       let d;
       try { d = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { out.unreadable++; continue; } // counted: corruption must not hide

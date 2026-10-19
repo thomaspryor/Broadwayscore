@@ -13,6 +13,7 @@
  *   node scripts/fix-critic-typos.js --apply       # Apply fixes
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -84,7 +85,7 @@ function buildCriticFrequency() {
   const showDirs = listShowDirs(DIR);
   for (const showId of showDirs) {
     const showDir = path.join(DIR, showId);
-    const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
     for (const file of files) {
       const m = file.replace('.json', '').match(/^(.+?)--(.+)$/);
       if (!m) continue;
@@ -133,7 +134,7 @@ function main() {
 
   for (const showId of showDirs) {
     const showDir = path.join(DIR, showId);
-    const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
 
     const parsed = files.map(f => {
       const m = f.replace('.json', '').match(/^(.+?)--(.+)$/);

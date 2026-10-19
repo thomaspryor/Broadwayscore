@@ -64,6 +64,7 @@
  *             or spike past floor (--gate).
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
@@ -300,7 +301,7 @@ function audit() {
   for (const showDir of walkShowDirs(REVIEW_TEXTS_DIR)) {
     const showId = path.basename(showDir);
     let files;
-    try { files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json'); }
+    try { files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f)); }
     catch { continue; }
     const cache = {};
     const load = (n) => {

@@ -36,6 +36,7 @@
  *   --force-bulk   override the surge guard (> SURGE_THRESHOLD files)
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -88,7 +89,7 @@ function scan(dir, shows, showFilter) {
     let files;
     try { files = fs.readdirSync(showPath); } catch { continue; }
     for (const file of files) {
-      if (!file.endsWith('.json') || file === 'failed-fetches.json') continue;
+      if (!isReviewTextFile(file)) continue;
       const fp = path.join(showPath, file);
       let data;
       try { data = JSON.parse(fs.readFileSync(fp, 'utf8')); } catch { continue; }

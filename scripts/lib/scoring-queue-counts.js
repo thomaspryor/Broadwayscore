@@ -30,6 +30,7 @@
  * producer recovers the body.
  */
 
+const { isReviewTextFile } = require('./review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 
@@ -214,7 +215,7 @@ function countScoringQueues(baseDir, options) {
     let files = [];
     try {
       files = fs.readdirSync(path.join(baseDir, dir))
-        .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+        .filter(f => isReviewTextFile(f));
     } catch {
       counts.unreadableDirs++;
       continue;

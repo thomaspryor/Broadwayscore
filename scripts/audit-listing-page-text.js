@@ -16,6 +16,7 @@
  *
  *   node scripts/audit-listing-page-text.js [--show=a,b] [--json]
  */
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { exitOnHelp } = require('./lib/cli-help.js');
@@ -73,7 +74,7 @@ function main() {
     const dir = path.join(ROOT, show);
     if (!fs.existsSync(dir)) continue;
     for (const f of fs.readdirSync(dir)) {
-      if (!f.endsWith('.json') || f.startsWith('_') || f === 'failed-fetches.json') continue;
+      if (!isReviewTextFile(f)) continue;
       let r;
       try { r = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { continue; }
       if (!r.fullText || excluded(r, show, path.join(dir, f))) continue;

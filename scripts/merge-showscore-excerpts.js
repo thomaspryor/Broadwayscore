@@ -5,6 +5,7 @@
  * Uses data/show-score.json as the source
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet } = require('./lib/review-normalization');
@@ -23,7 +24,7 @@ for (const [showId, showData] of Object.entries(showScoreData.shows || {})) {
   if (!fs.existsSync(showDir)) continue;
   if (!showData.criticReviews || showData.criticReviews.length === 0) continue;
 
-  const reviewFiles = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const reviewFiles = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
   let added = 0;
 
   for (const ssReview of showData.criticReviews) {

@@ -19,6 +19,7 @@
  * --threshold=N: Only target sources with N%+ fake rate (default: 65)
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { extractDateFromUrl } = require('./lib/rebuild-helpers');
@@ -88,7 +89,7 @@ for (const sid of listShowDirs(REVIEW_TEXTS_DIR)) {
   const showOpening = showDateMap[sid];
   if (!showOpening) continue;
 
-  for (const f of fs.readdirSync(sdir).filter(x => x.endsWith('.json') && x !== 'failed-fetches.json')) {
+  for (const f of fs.readdirSync(sdir).filter(x => isReviewTextFile(x))) {
     try {
       const filePath = path.join(sdir, f);
       const d = JSON.parse(fs.readFileSync(filePath, 'utf8'));

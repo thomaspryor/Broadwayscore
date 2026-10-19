@@ -41,6 +41,7 @@
  * Wired into .github/workflows/test.yml with --strict, no continue-on-error.
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
@@ -211,7 +212,7 @@ function getAllReviewFiles() {
   for (const showDir of showDirs) {
     const showPath = path.join(REVIEW_TEXTS_DIR, showDir);
     const files = fs.readdirSync(showPath).filter(f =>
-      f.endsWith('.json') && f !== 'failed-fetches.json'
+      isReviewTextFile(f)
     );
 
     for (const file of files) {

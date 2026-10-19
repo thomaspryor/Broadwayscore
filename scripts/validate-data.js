@@ -17,6 +17,7 @@
  * Exit codes: 0 = OK, 1 = Errors found
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { tourImageProblems, tourLinkProblems } = require('./lib/tour-family');
@@ -3481,7 +3482,7 @@ function validateReviewTextDuplicates(shows) {
     const showDir = path.join(reviewTextsDir, dir.name);
     let files;
     try {
-      files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+      files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
     } catch { continue; }
 
     // Per-show: group by normalized outlet+critic from filename
@@ -4027,7 +4028,7 @@ function validateStrandedScoredReviews(shows) {
     if (!fs.existsSync(dirPath)) continue;
     let files;
     try {
-      files = fs.readdirSync(dirPath).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json');
+      files = fs.readdirSync(dirPath).filter((f) => isReviewTextFile(f));
     } catch { continue; }
     const live = liveOutletsByShow[show.id] || new Set();
     for (const file of files) {

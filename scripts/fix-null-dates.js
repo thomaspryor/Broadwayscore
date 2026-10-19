@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const { maxPlausibleYear } = require('./lib/date-utils');
 
 /**
@@ -98,7 +99,7 @@ console.log(`Processing ${shows.length} show directories\n`);
 
 for (const show of shows) {
   const showPath = path.join(reviewsDir, show);
-  const files = fs.readdirSync(showPath).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const files = fs.readdirSync(showPath).filter(f => isReviewTextFile(f));
   const showYear = getShowYear(show);
 
   for (const file of files) {

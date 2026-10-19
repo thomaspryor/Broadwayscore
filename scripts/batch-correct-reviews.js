@@ -24,6 +24,7 @@
  * Note: For scores, use humanReviewScore (P0b in rebuild priority chain).
  * Do NOT use assignedScore — the rebuild recalculates it from llmScore.
  */
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 
@@ -72,7 +73,7 @@ if (corrections.length) console.log(`Score corrections: ${corrections.length}`);
 if (criticNames.length) console.log(`Critic name fixes: ${criticNames.length}`);
 if (DRY_RUN) console.log('(DRY RUN — no files will be modified)\n');
 
-const files = fs.readdirSync(REVIEW_TEXTS_DIR).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+const files = fs.readdirSync(REVIEW_TEXTS_DIR).filter(f => isReviewTextFile(f));
 let modified = 0;
 let refusedByStarBand = 0;
 

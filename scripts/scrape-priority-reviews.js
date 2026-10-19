@@ -19,6 +19,7 @@
  *   node scripts/scrape-priority-reviews.js --limit=100       # Limit output
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet } = require('./lib/review-normalization');
@@ -327,7 +328,7 @@ async function main() {
   for (const showId of shows) {
     const showDir = path.join(CONFIG.reviewTextsDir, showId);
     const files = fs.readdirSync(showDir)
-      .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+      .filter(f => isReviewTextFile(f));
 
     for (const file of files) {
       totalReviews++;

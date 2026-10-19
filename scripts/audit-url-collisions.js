@@ -23,6 +23,7 @@
  *   node scripts/audit-url-collisions.js --verbose
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
@@ -77,7 +78,7 @@ for (const showId of showDirs) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   let files;
   try {
-    files = fs.readdirSync(showDir).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json');
+    files = fs.readdirSync(showDir).filter((f) => isReviewTextFile(f));
   } catch {
     continue;
   }

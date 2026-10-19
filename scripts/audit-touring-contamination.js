@@ -61,6 +61,7 @@
  *   data/audit/.touring-contamination-checkpoint.{market}.json (cleaned on completion)
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const { quarantineBody } = require('./lib/quarantine-body');
 const fs = require('fs');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
@@ -742,7 +743,7 @@ function generateCandidates() {
     let files;
     try { files = fs.readdirSync(dir); } catch { continue; }
     for (const f of files) {
-      if (!f.endsWith('.json') || f === 'failed-fetches.json') continue;
+      if (!isReviewTextFile(f)) continue;
       stats.candidatesScanned++;
       let r;
       try { r = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { continue; }
@@ -794,7 +795,7 @@ function getScoreableCount(showId) {
   let files;
   try { files = fs.readdirSync(dir); } catch { return 0; }
   for (const f of files) {
-    if (!f.endsWith('.json') || f === 'failed-fetches.json') continue;
+    if (!isReviewTextFile(f)) continue;
     try {
       const r = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
       // Mirror isScoreable() filter — these flags exclude reviews from scoring

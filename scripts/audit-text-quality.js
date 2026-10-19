@@ -23,6 +23,7 @@
  *   1 = Fail (active band's thresholds not met)
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
@@ -96,7 +97,7 @@ function auditTextQuality() {
   for (const show of shows) {
     const showDir = path.join(REVIEW_TEXTS_DIR, show);
     const files = fs.readdirSync(showDir)
-      .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+      .filter(f => isReviewTextFile(f));
 
     for (const file of files) {
       try {

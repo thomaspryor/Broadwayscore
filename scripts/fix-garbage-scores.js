@@ -16,6 +16,7 @@
  * - Otherwise, flag for manual review or excerpt-based rescoring
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -109,7 +110,7 @@ function scanReviewFiles() {
 
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
     const reviewFiles = fs.readdirSync(showDir).filter(f =>
-      f.endsWith('.json') && f !== 'failed-fetches.json'
+      isReviewTextFile(f)
     );
 
     for (const filename of reviewFiles) {

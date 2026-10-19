@@ -10,6 +10,7 @@
  * Output: data/audit/file-integrity.json
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -130,7 +131,7 @@ function auditFileIntegrity() {
 
   // Also check for failed-fetches.json at root level (skip it from validation)
   const rootFiles = fs.readdirSync(REVIEW_TEXTS_DIR)
-    .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    .filter(f => isReviewTextFile(f));
 
   for (const file of rootFiles) {
     const filePath = path.join(REVIEW_TEXTS_DIR, file);

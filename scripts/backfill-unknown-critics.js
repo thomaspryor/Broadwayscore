@@ -21,6 +21,7 @@
  *                     fetch loop (0/omitted = unlimited)
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 
@@ -107,7 +108,7 @@ function scanReviewFiles() {
 
   for (const d of dirs) {
     const files = fs.readdirSync(path.join(reviewsDir, d)).filter(f =>
-      f.endsWith('.json') && f !== 'failed-fetches.json'
+      isReviewTextFile(f)
     );
     for (const f of files) {
       try {

@@ -5,6 +5,7 @@
  * Usage: node scripts/helpers/check-coverage.js
  */
 
+const { isReviewTextFile } = require('../lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('../lib/list-show-dirs');
@@ -18,7 +19,7 @@ listShowDirs(dir).forEach(showDir => {
   if (!fs.statSync(showPath).isDirectory()) return;
 
   fs.readdirSync(showPath)
-    .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json')
+    .filter(f => isReviewTextFile(f))
     .forEach(f => {
       const d = JSON.parse(fs.readFileSync(path.join(showPath, f)));
       total++;

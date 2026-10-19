@@ -22,6 +22,7 @@
  *   GEMINI_API_KEY     Required for gemini provider
  *   OPENAI_API_KEY     Required for openai provider
  */
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
@@ -334,7 +335,7 @@ function scanReviewFiles() {
     const showDir = path.join(REVIEW_TEXTS_DIR, show);
     if (!fs.statSync(showDir).isDirectory()) continue;
 
-    for (const file of fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json')) {
+    for (const file of fs.readdirSync(showDir).filter(f => isReviewTextFile(f))) {
       const filePath = path.join(showDir, file);
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));

@@ -14,6 +14,7 @@
  * Usage: node scripts/audit-score-conversions.js [--tolerance=10] [--verbose]
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { validateScore, parseRating } = require('./lib/score-conversion-rules');
@@ -45,7 +46,7 @@ function hasFullText(showId, outletId, criticName) {
   if (!fs.existsSync(showDir)) return false;
 
   // Try to find the review file
-  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
 
   for (const file of files) {
     try {
@@ -74,7 +75,7 @@ function getScoreSource(showId, outletId, criticName) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   if (!fs.existsSync(showDir)) return null;
 
-  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
 
   for (const file of files) {
     try {

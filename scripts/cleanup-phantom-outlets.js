@@ -17,6 +17,7 @@
  *   node scripts/cleanup-phantom-outlets.js --audit-phantoms  # Audit all non-registry outlets
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const {
@@ -66,7 +67,7 @@ function run() {
 
   for (const showId of showDirs) {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
-    const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
 
     // Group files by normalized URL
     const urlGroups = new Map();
@@ -184,7 +185,7 @@ function run() {
   let realiasedCount = 0;
   for (const showId of showDirs) {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
-    const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
 
     for (const file of files) {
       try {
@@ -259,7 +260,7 @@ function auditPhantomOutlets() {
   const outletMap = new Map(); // outletId → { count, showIds, hasFullText }
   for (const showId of showDirs) {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
-    const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
     for (const file of files) {
       try {
         const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));

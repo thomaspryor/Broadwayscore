@@ -16,6 +16,7 @@
  *   node scripts/fix-critic-name-duplicates.js
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 
@@ -131,7 +132,7 @@ function mergeReviewData(canonicalData, variantData) {
 }
 
 function findDuplicatePairs(showDir) {
-  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
   const pairs = [];
 
   // Group files by outlet

@@ -29,6 +29,7 @@
  *   1 — mismatches found (report/CI gate) / spike past floor (--gate)
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { stripTrivial, normalizeOutlet, canonicalizeHost, canonicalArticleKey } = require('./lib/review-normalization');
@@ -140,7 +141,7 @@ function findCrossOutletTwins(data, showDir, file, targetShow, load) {
   for (const dir of dirs) {
     if (!fs.existsSync(dir)) continue;
     for (const f of fs.readdirSync(dir)) {
-      if (!f.endsWith('.json') || f === 'failed-fetches.json' || (dir === showDir && f === file)) continue;
+      if (!isReviewTextFile(f) || (dir === showDir && f === file)) continue;
       let o;
       try { o = dir === showDir ? load(f) : JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8')); } catch { o = null; }
       if (o && ((o.url && mine && canonUrl(o.url) === mine) || isCrossOutletSyndicationPair(data, o, normalizeOutlet) || sameCriticSlug(file, f))) {
@@ -210,7 +211,7 @@ function audit() {
   let scanned = 0;
 
   for (const showDir of showDirs) {
-    const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
     const cache = {};
     const load = (name) => {
       if (cache[name] !== undefined) return cache[name];

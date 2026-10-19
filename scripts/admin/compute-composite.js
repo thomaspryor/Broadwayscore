@@ -17,6 +17,7 @@
 
 'use strict';
 
+const { isReviewTextFile } = require('../lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 
@@ -91,7 +92,7 @@ try {
 
 // ─── Read and filter review files ────────────────────────────────────────────
 
-const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
 
 const included = [];
 const excluded = [];

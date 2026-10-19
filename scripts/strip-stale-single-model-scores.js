@@ -22,6 +22,7 @@
  *   node scripts/strip-stale-single-model-scores.js --before-opening=2026-04-07 --show=cats-the-jellicle-ball-2026 --apply
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
@@ -74,7 +75,7 @@ function runQualityFlaggedMode() {
 
   for (const dir of dirs) {
     const showDir = path.join(REVIEW_TEXTS_DIR, dir);
-    const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
 
     for (const file of files) {
       const fp = path.join(showDir, file);
@@ -127,7 +128,7 @@ function runBeforeOpeningMode(openingDateStr, showId) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   if (!fs.existsSync(showDir)) { console.error(`Show directory not found: ${showDir}`); process.exit(1); }
 
-  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
   let cleared = 0;
   let skipped = 0;
 

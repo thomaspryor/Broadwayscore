@@ -17,6 +17,7 @@
  */
 'use strict';
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -43,7 +44,7 @@ function audit({ showFilter = null } = {}) {
   for (const show of shows) {
     const dir = path.join(REVIEW_TEXTS_DIR, show.id);
     let files;
-    try { files = fs.readdirSync(dir).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json' && !f.startsWith('_')); } catch { continue; }
+    try { files = fs.readdirSync(dir).filter((f) => isReviewTextFile(f)); } catch { continue; }
     for (const file of files) {
       let d;
       try { d = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')); } catch { continue; }

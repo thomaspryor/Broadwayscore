@@ -15,6 +15,7 @@
  *   node scripts/fix-url-duplicates-same-show.js
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 
@@ -184,7 +185,7 @@ function main() {
     const showDir = path.join(REVIEW_TEXTS_DIR, show);
     stats.showsChecked++;
 
-    const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
 
     // Group by normalized URL
     const byUrl = {};

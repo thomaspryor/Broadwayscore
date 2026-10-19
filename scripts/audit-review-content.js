@@ -15,6 +15,7 @@
  * Output: data/audit/review-content-audit.json
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -401,7 +402,7 @@ async function runAudit() {
 
   for (const showDir of showDirs) {
     const showPath = path.join(REVIEW_TEXTS_DIR, showDir);
-    const files = fs.readdirSync(showPath).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    const files = fs.readdirSync(showPath).filter(f => isReviewTextFile(f));
 
     for (const file of files) {
       try {

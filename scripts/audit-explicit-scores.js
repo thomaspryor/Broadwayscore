@@ -14,6 +14,7 @@
  *   node scripts/audit-explicit-scores.js [--sample=50] [--verbose]
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -210,7 +211,7 @@ async function main() {
   for (const show of shows) {
     const showDir = path.join(REVIEW_DIR, show);
     const files = fs.readdirSync(showDir).filter(f =>
-      f.endsWith('.json') && f !== 'failed-fetches.json'
+      isReviewTextFile(f)
     );
 
     for (const file of files) {

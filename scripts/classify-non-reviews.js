@@ -41,6 +41,7 @@
  *   OPENAI_API_KEY     Required for openai provider
  *   ANTHROPIC_API_KEY  Required for claude provider
  */
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
@@ -895,7 +896,7 @@ async function main() {
     if (SHOW_FILTER && dir.name !== SHOW_FILTER) continue;
 
     const files = fs.readdirSync(path.join(REVIEW_TEXTS_DIR, dir.name))
-      .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+      .filter(f => isReviewTextFile(f));
 
     for (const file of files) {
       const relPath = `${dir.name}/${file}`;

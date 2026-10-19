@@ -14,6 +14,7 @@
  *   node scripts/consolidate-duplicate-reviews.js             # execute
  *   node scripts/consolidate-duplicate-reviews.js --limit 20  # first 20 groups
  */
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename } = require('./lib/review-normalization');
@@ -174,7 +175,7 @@ function main() {
     const showDir = path.join(REVIEW_TEXTS_DIR, dir.name);
     let files;
     try {
-      files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+      files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
     } catch { continue; }
 
     // Group by canonical outlet|critic

@@ -7,6 +7,7 @@
  *   node scripts/flag-combined-reviews.js --dry-run
  *   node scripts/flag-combined-reviews.js
  */
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
@@ -47,7 +48,7 @@ function main() {
 
   for (const dir of showDirs) {
     const showDir = path.join(REVIEW_TEXTS_DIR, dir.name);
-    const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
     for (const file of files) {
       const filePath = path.join(showDir, file);
       try {

@@ -15,6 +15,7 @@
  *   --tier=N,M  Only flag outlets in specified tiers (e.g., --tier=1,2)
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { isScoreable } = require('./lib/is-scoreable');
@@ -75,7 +76,7 @@ if (cleanupMode) {
   const cleanedFiles = [];
   for (const show of shows) {
     const showDir = path.join(reviewDir, show);
-    const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
     for (const file of files) {
       const filePath = path.join(showDir, file);
       try {
@@ -130,7 +131,7 @@ console.log('\nLooking for reviews scored on excerpts that now have fullText...\
 for (const show of shows) {
   const showDir = path.join(reviewDir, show);
   const files = fs.readdirSync(showDir).filter(f =>
-    f.endsWith('.json') && f !== 'failed-fetches.json'
+    isReviewTextFile(f)
   );
 
   for (const file of files) {

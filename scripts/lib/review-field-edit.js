@@ -24,6 +24,7 @@
 // Clears of a protected flag go through its human-clear marker, not a raw
 // null: the protected-field restore would otherwise put the flag back (see
 // PROTECTED_FIELDS / CLEAR_BREADCRUMBS in review-write-guard.js).
+const { isReviewTextFile } = require('./review-text-sidecars');
 const { EXCERPT_FIELDS } = require('./excerpt-fields');
 
 const REVIEW_TEXT_EDITABLE_FIELDS = [
@@ -475,7 +476,7 @@ function predictedExcerptStrips(abs, record) {
   const self = path.basename(abs);
   const siblings = [];
   for (const f of fs.readdirSync(dir)) {
-    if (!f.endsWith('.json') || f === 'failed-fetches.json' || f.startsWith('_') || f === self) continue;
+    if (!isReviewTextFile(f) || f === self) continue;
     try { siblings.push({ file: f, data: JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')) }); } catch { /* unreadable sibling */ }
   }
   return guard.excerptFieldsToStrip(self, record, siblings).fields;

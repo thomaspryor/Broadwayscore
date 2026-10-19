@@ -14,6 +14,7 @@
  *   node scripts/backfill-preview-placeholders.js             # write files
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 
@@ -44,7 +45,7 @@ function main() {
     if (!fs.existsSync(showDir)) continue;
 
     const files = fs.readdirSync(showDir).filter(f =>
-      f.endsWith('.json') && f !== 'failed-fetches.json'
+      isReviewTextFile(f)
     );
 
     for (const file of files) {

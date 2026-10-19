@@ -24,6 +24,7 @@
 // The identity function is the validator's own, exported here so the guard and
 // the gate can never drift apart (CLAUDE.md §15).
 
+const { isReviewTextFile } = require('./review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 
@@ -82,7 +83,7 @@ function findSiblingUrlOwner({ showDir, url, selfOutletId, selfCriticName, selfF
 
   let files;
   try {
-    files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
   } catch {
     return null; // no dir yet — nothing to collide with
   }

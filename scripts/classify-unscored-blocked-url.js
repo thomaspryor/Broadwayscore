@@ -23,6 +23,7 @@
  *   node scripts/classify-unscored-blocked-url.js [--show=SLUG] [--dry-run]
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 
@@ -79,7 +80,7 @@ function main() {
   for (const showId of shows) {
     const showDir = path.join(RT, showId);
     let files;
-    try { files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json'); }
+    try { files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f)); }
     catch { continue; }
 
     for (const file of files) {

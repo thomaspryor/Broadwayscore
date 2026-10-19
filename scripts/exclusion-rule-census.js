@@ -40,6 +40,7 @@
  * excluded", see scripts/lib/corpus-scan-guard.js).
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 
@@ -160,7 +161,7 @@ function scanCorpus({ reviewTextsDir, showById, showFilter }) {
     const dirPath = path.join(reviewTextsDir, showId);
     let files;
     try {
-      files = fs.readdirSync(dirPath).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json');
+      files = fs.readdirSync(dirPath).filter((f) => isReviewTextFile(f));
     } catch {
       continue;
     }

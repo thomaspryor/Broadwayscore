@@ -28,6 +28,7 @@
  *                          held forever after its SERP rediscovery abandoned).
  */
 
+const { isReviewTextFile } = require('./review-text-sidecars');
 const { isCollectedBeforePreviewsHold } = require('./collected-before-previews');
 
 const DAY_MS = 86400000;
@@ -124,7 +125,7 @@ function urlOwnedByOtherCritic({ showDir, url, selfFilename, selfCriticName, fs:
   const fs = fsImpl || require('fs');
   const path = require('path');
   let files;
-  try { files = fs.readdirSync(showDir).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json'); }
+  try { files = fs.readdirSync(showDir).filter((f) => isReviewTextFile(f)); }
   catch { return null; }
   for (const file of files) {
     if (file === selfFilename) continue;
@@ -165,7 +166,7 @@ function urlOwnedByOtherShow({ reviewTextsDir, folder, url, publishDate, detect,
   const path = require('path');
   const dir = path.join(reviewTextsDir, m.matchedShowId);
   let files;
-  try { files = fs.readdirSync(dir).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json'); }
+  try { files = fs.readdirSync(dir).filter((f) => isReviewTextFile(f)); }
   catch { return null; }
   for (const file of files) {
     let data;

@@ -18,6 +18,7 @@
  *   node scripts/audit-registry-nonreview-outlets.js          # table
  *   node scripts/audit-registry-nonreview-outlets.js --json   # machine-readable
  */
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
@@ -89,7 +90,7 @@ function collectUrlsByOutlet(reviewTextsDir) {
     const dir = path.join(reviewTextsDir, show);
     if (show.startsWith('.') || show.startsWith('_') || !fs.statSync(dir).isDirectory()) continue;
     for (const f of fs.readdirSync(dir)) {
-      if (!f.endsWith('.json') || f === 'failed-fetches.json') continue;
+      if (!isReviewTextFile(f)) continue;
       let r;
       try { r = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { continue; }
       const id = r.outletId || (f.match(/^(.+?)--/) || [])[1];

@@ -22,6 +22,7 @@
  *   COMMIT_EVERY — checkpoint interval (default 25)
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const { quarantineBody } = require('./lib/quarantine-body');
 const { OTHER_PRODUCTION_URL_REASON } = require('./lib/other-production-signal');
 const { verifierExcerpt } = require('./lib/excerpt-fields');
@@ -111,7 +112,7 @@ function getAllReviewFiles() {
   const reviews = [];
   for (const d of dirs) {
     const files = fs.readdirSync(path.join(BASE, d)).filter(
-      f => f.endsWith('.json') && f !== 'failed-fetches.json'
+      f => isReviewTextFile(f)
     );
     for (const f of files) {
       reviews.push({ showId: d, file: f, filePath: path.join(BASE, d, f) });

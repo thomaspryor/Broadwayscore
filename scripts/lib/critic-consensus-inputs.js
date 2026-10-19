@@ -14,6 +14,7 @@
  * from this module, so the audit compares like with like.
  */
 
+const { isReviewTextFile } = require('./review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 
@@ -71,7 +72,7 @@ function loadReviewTexts(showId, liveOutlets = null, opts = {}) {
   const dir = path.join(opts.reviewTextsDir || DEFAULT_REVIEW_TEXTS_DIR, showId);
   if (!fs.existsSync(dir)) return [];
   const reviews = [];
-  for (const file of fs.readdirSync(dir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json')) {
+  for (const file of fs.readdirSync(dir).filter(f => isReviewTextFile(f))) {
     try {
       const row = reviewTextInput(JSON.parse(fs.readFileSync(path.join(dir, file), 'utf-8')), showId, liveOutlets, opts.normalizeOutlet || null);
       if (row) reviews.push(row);

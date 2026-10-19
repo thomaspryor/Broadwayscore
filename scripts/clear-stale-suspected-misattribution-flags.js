@@ -22,6 +22,7 @@
  * writes unattended to the private review-texts corpus — a spike this size
  * usually means the critic-registry regressed, not routine catch-up drift.
  */
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { isLikelyStaleSuspectedMisattribution, getCriticRegistry } = require('./lib/review-guards');
@@ -53,7 +54,7 @@ const cleared = [];
 for (const d of showDirs) {
   if (SHOW_FILTER && d.name !== SHOW_FILTER) continue;
   const showDir = path.join(REVIEW_TEXTS_DIR, d.name);
-  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
   for (const f of files) {
     scanned++;
     const filePath = path.join(showDir, f);

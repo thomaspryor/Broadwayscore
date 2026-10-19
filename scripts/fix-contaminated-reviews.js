@@ -6,6 +6,7 @@
  * Usage: node scripts/fix-contaminated-reviews.js [--dry-run] [--market=west-end]
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 
@@ -35,7 +36,7 @@ const showDirs = listShowDirs(REVIEW_DIR).filter(d => {
 
 for (const showDir of showDirs) {
   const showPath = path.join(REVIEW_DIR, showDir);
-  const files = fs.readdirSync(showPath).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const files = fs.readdirSync(showPath).filter(f => isReviewTextFile(f));
   
   for (const f of files) {
     const filePath = path.join(showPath, f);

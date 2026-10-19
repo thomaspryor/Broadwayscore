@@ -11,6 +11,7 @@
  *   node scripts/reaudit-garbage-content.js --apply       # Apply changes to source files
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { isGarbageContent, validateShowMentioned, classifyContentTier } = require('./lib/content-quality');
@@ -35,7 +36,7 @@ function walkDir(dir) {
   for (const e of entries) {
     const full = path.join(dir, e.name);
     if (e.isDirectory()) results.push(...walkDir(full));
-    else if (e.name.endsWith('.json') && e.name !== 'failed-fetches.json') results.push(full);
+    else if (isReviewTextFile(e.name)) results.push(full);
   }
   return results;
 }

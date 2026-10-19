@@ -10,6 +10,7 @@
  * publish date against each candidate production's run window (never by URL,
  * CLAUDE.md §3).
  */
+const { isReviewTextFile } = require('./review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { stripIdSuffix } = require('./market-slug');
@@ -37,7 +38,7 @@ function findOrphanReviewFolders(reviewTextsDir, showIds) {
   for (const ent of fs.readdirSync(reviewTextsDir, { withFileTypes: true })) {
     if (!ent.isDirectory() || !isShowFolderName(ent.name) || known.has(ent.name)) continue;
     const files = fs.readdirSync(path.join(reviewTextsDir, ent.name))
-      .filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json')
+      .filter((f) => isReviewTextFile(f))
       .sort();
     // A folder left holding only failed-fetches.json (or nothing) has no review to lose.
     if (files.length) out.push({ folder: ent.name, files });

@@ -35,6 +35,7 @@
  *   node scripts/audit-stale-cv-hash.js --limit=50   # more rows
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -95,7 +96,7 @@ function audit() {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
     let files;
     try {
-      files = fs.readdirSync(showDir).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json');
+      files = fs.readdirSync(showDir).filter((f) => isReviewTextFile(f));
     } catch {
       continue;
     }

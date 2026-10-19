@@ -6,6 +6,7 @@
  *   --requeue-out=F  write show:file list of non-complete, non-flagged swept files
  *   REVIEW_TEXTS_DIR overrides the corpus root (default data/review-texts)
  */
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const path = require('path');
@@ -22,7 +23,7 @@ function* walk(dir) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     const p = path.join(dir, e.name);
     if (e.isDirectory()) yield* walk(p);
-    else if (e.name.endsWith('.json') && e.name !== 'failed-fetches.json') yield p;
+    else if (isReviewTextFile(e.name)) yield p;
   }
 }
 

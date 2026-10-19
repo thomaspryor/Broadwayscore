@@ -14,6 +14,7 @@
  *              (index pairing misattributed some, BRO-5681)
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet, normalizeCritic } = require('./lib/review-normalization');
@@ -94,7 +95,7 @@ function findMatchingFile(showId, outletId, criticNorm) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   if (!fs.existsSync(showDir)) return null;
 
-  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
 
   // Exact match: outlet--critic
   if (criticNorm && criticNorm !== 'unknown') {

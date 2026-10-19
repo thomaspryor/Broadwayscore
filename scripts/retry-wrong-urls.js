@@ -16,6 +16,7 @@
  * Env: SCRAPINGBEE_API_KEY, BRIGHTDATA_TOKEN (at least one required)
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
@@ -72,7 +73,7 @@ async function main() {
 
   for (const showId of showDirs) {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
-    const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
     for (const file of files) {
       try {
         const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));

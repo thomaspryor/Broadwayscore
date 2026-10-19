@@ -26,6 +26,7 @@
  *   BRIGHTDATA_TOKEN    - SERP fallback
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 
@@ -441,7 +442,7 @@ function preWipePreOpeningFiles(showId, openingDate) {
 
   let marked = 0;
   for (const file of fs.readdirSync(showDir)) {
-    if (!file.endsWith('.json') || file === 'failed-fetches.json' || file.startsWith('_')) continue; // _blocklist.json is a sidecar
+    if (!isReviewTextFile(file)) continue; // _blocklist.json is a sidecar
     try {
       const filePath = path.join(showDir, file);
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
@@ -492,7 +493,7 @@ function getKnownUrls(showId, ctx) {
   }
 
   for (const file of fs.readdirSync(showDir)) {
-    if (!file.endsWith('.json') || file === 'failed-fetches.json' || file.startsWith('_')) continue; // _blocklist.json is a sidecar
+    if (!isReviewTextFile(file)) continue; // _blocklist.json is a sidecar
     try {
       const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
       // Skip wrongProduction/wrongShow files — their URLs shouldn't block fresh discovery

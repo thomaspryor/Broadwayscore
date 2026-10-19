@@ -31,6 +31,7 @@
  *   node scripts/audit-cross-show-excerpt-contamination.js --review-texts-dir=/path
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -114,7 +115,7 @@ function walkCorpus(reviewTextsDir) {
     const showPath = path.join(reviewTextsDir, showId);
     let files;
     try {
-      files = fs.readdirSync(showPath).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json');
+      files = fs.readdirSync(showPath).filter((f) => isReviewTextFile(f));
     } catch (e) {
       unreadableDirs++;
       console.warn(`::warning::walkCorpus: skipping unreadable show dir '${showId}' (${e.code || e.message})`);

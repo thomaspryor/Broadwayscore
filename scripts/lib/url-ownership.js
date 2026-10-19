@@ -30,6 +30,7 @@
  * so a multi-show run can't race itself.
  */
 
+const { isReviewTextFile } = require('./review-text-sidecars');
 const fs = require('fs');
 const { multiShowSplitGroup, isMultiShowSplitSibling } = require('./multi-show-split-group');
 const path = require('path');
@@ -130,7 +131,7 @@ function buildUrlOwnershipIndex(reviewTextsDir, { force = false } = {}) {
     if (!stat.isDirectory()) continue;
     let files;
     try {
-      files = fs.readdirSync(dir).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json' && !f.startsWith('_'));
+      files = fs.readdirSync(dir).filter((f) => isReviewTextFile(f));
     } catch { continue; }
     for (const f of files) {
       let data;
@@ -209,7 +210,7 @@ function showDirHoldsUrl(showDir, url) {
   if (!key) return false;
   let files;
   try {
-    files = fs.readdirSync(showDir).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json' && !f.startsWith('_'));
+    files = fs.readdirSync(showDir).filter((f) => isReviewTextFile(f));
   } catch { return false; }
   for (const f of files) {
     try {

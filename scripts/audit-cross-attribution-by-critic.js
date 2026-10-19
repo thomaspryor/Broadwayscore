@@ -25,6 +25,7 @@
  * scripts/lib/review-texts-dir.js resolves (see memory/feedback_review_texts_not_symlink.md).
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
@@ -319,7 +320,7 @@ const flags = []; // cross-attribution candidates
 for (const dirId of showDirs) {
   const showDir = path.join(REVIEW_TEXTS_DIR, dirId);
   const files = fs.readdirSync(showDir)
-    .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json' && !f.startsWith('.'));
+    .filter(f => isReviewTextFile(f) && !f.startsWith('.'));
 
   for (const file of files) {
     totalFiles++;

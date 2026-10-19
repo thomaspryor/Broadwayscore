@@ -6,6 +6,7 @@
  * Usage: node scripts/helpers/find-ss-gaps.js
  */
 
+const { isReviewTextFile } = require('../lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 
@@ -31,7 +32,7 @@ fs.readdirSync(archiveDir)
     let weHave = 0;
     if (fs.existsSync(dir)) {
       fs.readdirSync(dir)
-        .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json')
+        .filter(f => isReviewTextFile(f))
         .forEach(f => {
           const d = JSON.parse(fs.readFileSync(path.join(dir, f)));
           if (d.source && d.source.includes('show-score')) weHave++;

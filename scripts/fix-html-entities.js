@@ -9,6 +9,7 @@
  * Usage: node scripts/fix-html-entities.js [--dry-run]
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 
@@ -324,7 +325,7 @@ function findJsonFiles(dir) {
     const fullPath = path.join(dir, entry.name);
     if (entry.isDirectory()) {
       results.push(...findJsonFiles(fullPath));
-    } else if (entry.isFile() && entry.name.endsWith('.json') && entry.name !== 'failed-fetches.json') {
+    } else if (entry.isFile() && isReviewTextFile(entry.name)) {
       results.push(fullPath);
     }
   }

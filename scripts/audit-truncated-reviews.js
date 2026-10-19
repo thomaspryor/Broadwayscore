@@ -4,6 +4,7 @@
  * Flags reviews that may have been incorrectly marked as "full" but are actually truncated
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -78,7 +79,7 @@ const signalCounts = {};
 
 for (const show of shows) {
   const showDir = path.join(reviewTextsDir, show);
-  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
 
   for (const file of files) {
     const filePath = path.join(showDir, file);

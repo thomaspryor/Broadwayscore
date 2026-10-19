@@ -12,6 +12,7 @@
  *   node scripts/merge-slug-directories.js             # execute
  *   node scripts/merge-slug-directories.js --limit 5   # first 5 dirs
  */
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { writeReviewOrThrow } = require('./lib/review-write-guard');
@@ -155,8 +156,8 @@ function main() {
     const sourcePath = path.join(REVIEW_TEXTS_DIR, sourceDir);
     const canonicalPath = path.join(REVIEW_TEXTS_DIR, canonicalId);
     if (!fs.existsSync(canonicalPath)) { if (!DRY_RUN) fs.mkdirSync(canonicalPath, { recursive: true }); }
-    const sourceFiles = fs.readdirSync(sourcePath).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
-    const beforeCount = fs.existsSync(canonicalPath) ? fs.readdirSync(canonicalPath).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json').length : 0;
+    const sourceFiles = fs.readdirSync(sourcePath).filter(f => isReviewTextFile(f));
+    const beforeCount = fs.existsSync(canonicalPath) ? fs.readdirSync(canonicalPath).filter(f => isReviewTextFile(f)).length : 0;
 
     for (const file of sourceFiles) {
       const sourceFilePath = path.join(sourcePath, file);
@@ -240,7 +241,7 @@ function main() {
       if (fs.existsSync(sLlmDir) && fs.readdirSync(sLlmDir).length === 0) fs.rmdirSync(sLlmDir);
     }
 
-    const afterCount = !DRY_RUN && fs.existsSync(canonicalPath) ? fs.readdirSync(canonicalPath).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json').length : beforeCount;
+    const afterCount = !DRY_RUN && fs.existsSync(canonicalPath) ? fs.readdirSync(canonicalPath).filter(f => isReviewTextFile(f)).length : beforeCount;
     console.log(`  ${sourceDir} → ${canonicalId}: ${beforeCount} → ${afterCount} files`);
   }
 

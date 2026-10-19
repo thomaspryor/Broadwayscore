@@ -12,6 +12,7 @@
  *   --class=bwwhub    files whose url is a broadwayworld.com/shows/<Title>-<id>.html hub
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -28,7 +29,7 @@ function* eachReview() {
     try { st = fs.statSync(dir); } catch { continue; }
     if (!st.isDirectory()) continue;
     for (const file of fs.readdirSync(dir)) {
-      if (!file.endsWith('.json') || file === 'failed-fetches.json' || file.startsWith('_')) continue;
+      if (!isReviewTextFile(file)) continue;
       try {
         yield { showDir, file, data: JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')) };
       } catch { /* unreadable: the audits skip it too */ }

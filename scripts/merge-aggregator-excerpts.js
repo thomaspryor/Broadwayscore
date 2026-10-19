@@ -8,6 +8,7 @@
  * but excerpts weren't extracted during initial gathering.
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { makeArchiveShowChecker } = require('./lib/archive-cache-guard');
@@ -155,7 +156,7 @@ function extractShowScoreReviews(html, showId) {
  * tell which review the excerpt belongs to, so nothing is written.
  */
 function findMatchingReviewFile(showDir, extractedReview) {
-  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
   const byCritic = [];
   const outletOnly = [];
 

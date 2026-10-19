@@ -5,6 +5,7 @@
  */
 'use strict';
 
+const { isReviewTextFile } = require('./review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet } = require('./review-normalization');
@@ -42,7 +43,7 @@ function scanReviewTexts(REVIEW_TEXTS_DIR = DEFAULT_REVIEW_TEXTS_DIR) {
   for (const showId of showDirs) {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
     const files = fs.readdirSync(showDir).filter(f =>
-      f.endsWith('.json') && f !== 'failed-fetches.json'
+      isReviewTextFile(f)
     );
 
     for (const file of files) {

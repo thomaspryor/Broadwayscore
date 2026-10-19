@@ -12,6 +12,7 @@
  * Exit code: 0 if no undeclared duplicates found, 1 if duplicates exist.
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -62,7 +63,7 @@ try {
 for (const showId of showDirs) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   const files = fs.readdirSync(showDir).filter(f =>
-    f.endsWith('.json') && f !== 'failed-fetches.json'
+    isReviewTextFile(f)
   );
 
   showsScanned++;

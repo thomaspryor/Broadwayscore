@@ -25,6 +25,7 @@
  * (memory/feedback_includability_predicates_must_be_canonical).
  */
 
+const { isReviewTextFile } = require('./review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./list-show-dirs');
@@ -52,7 +53,7 @@ function computeRescoreQueueDepth(reviewTextsDir, titleById) {
     const showPath = path.join(reviewTextsDir, showDir);
     const files = fs
       .readdirSync(showPath)
-      .filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json');
+      .filter((f) => isReviewTextFile(f));
     for (const file of files) {
       const fp = path.join(showPath, file);
       let data;

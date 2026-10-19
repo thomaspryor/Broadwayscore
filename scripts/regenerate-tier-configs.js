@@ -12,6 +12,7 @@
  * Run locally after pulling review-texts, or in CI via regenerate-tier-configs.yml.
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { buildSkipConfig } = require('./lib/domain-tier-skip');
@@ -69,7 +70,7 @@ const showDirs = listShowDirs(BASE);
 for (const showDir of showDirs) {
   const showPath = path.join(BASE, showDir);
   let files;
-  try { files = fs.readdirSync(showPath).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json'); }
+  try { files = fs.readdirSync(showPath).filter(f => isReviewTextFile(f)); }
   catch { continue; }
 
   for (const file of files) {

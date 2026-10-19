@@ -23,6 +23,7 @@
  * Exit codes: 0 = clean (or --fix applied), 1 = matches found in report mode.
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { sanitizeCriticName, looksLikeUrlCriticName } = require('./lib/byline-normalization');
@@ -46,7 +47,7 @@ function main() {
 
   for (const showId of walkShowDirs(REVIEW_TEXTS_DIR)) {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
-    const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
     for (const file of files) {
       const filePath = path.join(showDir, file);
       let data;

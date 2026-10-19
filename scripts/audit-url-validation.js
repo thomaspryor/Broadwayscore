@@ -22,6 +22,7 @@
  * Output: data/audit/url-validation-audit.json
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 
@@ -172,7 +173,7 @@ async function main() {
 
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
     const files = fs.readdirSync(showDir)
-      .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+      .filter(f => isReviewTextFile(f));
 
     for (const file of files) {
       try {

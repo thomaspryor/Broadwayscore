@@ -28,6 +28,7 @@
  *   --skip-llm        Skip LLM confirmation
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
@@ -203,7 +204,7 @@ async function main() {
   for (const showId of shows) {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
     const files = fs.readdirSync(showDir)
-      .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+      .filter(f => isReviewTextFile(f));
 
     if (files.length < 2) continue;
     stats.showsScanned++;

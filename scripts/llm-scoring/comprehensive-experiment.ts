@@ -8,6 +8,7 @@
  * 4. Generate detailed analysis report
  */
 
+import { isReviewTextFile } from '../lib/review-text-sidecars';
 import * as fs from 'fs';
 import * as path from 'path';
 import { ReviewScorer } from './scorer';
@@ -148,7 +149,7 @@ function findReviews(options: { withOriginalScore?: boolean; withFullText?: bool
     if (reviews.length >= options.limit) break;
 
     const files = fs.readdirSync(path.join(reviewsDir, show))
-      .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+      .filter(f => isReviewTextFile(f));
 
     for (const file of files) {
       if (reviews.length >= options.limit) break;

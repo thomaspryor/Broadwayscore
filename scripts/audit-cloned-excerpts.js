@@ -28,6 +28,7 @@
  *                   a rescore from its own text.
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -70,7 +71,7 @@ function buildLiveIndex(reviews) {
 function loadRecords(showDir) {
   const out = [];
   for (const f of fs.readdirSync(showDir)) {
-    if (!f.endsWith('.json') || f === 'failed-fetches.json') continue;
+    if (!isReviewTextFile(f)) continue;
     try {
       out.push({ file: f, data: JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8')) });
     } catch { /* unreadable: not ours to judge */ }

@@ -22,6 +22,7 @@
  *   --verbose   Show detailed output
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const {
@@ -152,7 +153,7 @@ function processShow(showId) {
   }
 
   const files = fs.readdirSync(showDir)
-    .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    .filter(f => isReviewTextFile(f));
 
   if (files.length === 0) {
     return;

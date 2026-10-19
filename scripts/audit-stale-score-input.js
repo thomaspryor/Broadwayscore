@@ -33,6 +33,7 @@
  *   (only with --strict/--gate and not --fix), 2 = could not run.
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -95,7 +96,7 @@ function scan(reviewTextsDir, titleById, showFilter) {
     const showPath = path.join(reviewTextsDir, showDir);
     const files = fs
       .readdirSync(showPath)
-      .filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json');
+      .filter((f) => isReviewTextFile(f));
     const show = titleById.get(showDir);
     for (const file of files) {
       const fp = path.join(showPath, file);

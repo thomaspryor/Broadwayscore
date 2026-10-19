@@ -25,6 +25,7 @@
 
 'use strict';
 
+const { isReviewTextFile } = require('./review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { levenshteinDistance } = require('./deduplication');
@@ -139,7 +140,7 @@ function scanReviewTextsForCriticDuplicates(reviewTextsDir, opts = {}) {
       continue;
     }
     for (const file of files) {
-      if (!file.endsWith('.json') || file === 'failed-fetches.json') continue;
+      if (!isReviewTextFile(file)) continue;
       let data;
       try {
         data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));

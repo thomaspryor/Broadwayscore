@@ -9,6 +9,7 @@
  *   node scripts/fix-excerpt-as-fulltext.js          # Dry run (default)
  *   node scripts/fix-excerpt-as-fulltext.js --apply   # Apply changes
  */
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -22,7 +23,7 @@ let fixed = 0, skipped = 0, errors = 0;
 const dirs = listShowDirs(base);
 
 for (const d of dirs) {
-  const files = fs.readdirSync(path.join(base, d)).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const files = fs.readdirSync(path.join(base, d)).filter(f => isReviewTextFile(f));
   for (const f of files) {
     const filePath = path.join(base, d, f);
     try {

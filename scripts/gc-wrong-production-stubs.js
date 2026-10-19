@@ -38,6 +38,7 @@
  *
  * Default mode is dry-run. Pass --apply to delete files.
  */
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { hasExcerpt } = require('./lib/excerpt-fields');
@@ -85,7 +86,7 @@ const deletables = [];
 for (const d of showDirs) {
   if (SHOW_FILTER && d.name !== SHOW_FILTER) continue;
   const showDir = path.join(REVIEW_TEXTS_DIR, d.name);
-  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
   for (const f of files) {
     scanned++;
     const fp = path.join(showDir, f);

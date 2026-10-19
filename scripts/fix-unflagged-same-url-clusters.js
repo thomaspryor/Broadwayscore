@@ -37,6 +37,7 @@
  *             1 = groups found (report) / spike past floor (--gate).
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
@@ -89,7 +90,7 @@ function walkShowDirs(root) {
 
 function loadShowRecords(showDir) {
   let files;
-  try { files = fs.readdirSync(showDir).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json'); }
+  try { files = fs.readdirSync(showDir).filter((f) => isReviewTextFile(f)); }
   catch { return []; }
   const records = [];
   for (const file of files) {

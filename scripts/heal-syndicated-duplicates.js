@@ -9,6 +9,7 @@
  *   node scripts/heal-syndicated-duplicates.js [--show=ID] [--plan=data/pending-fixes/bro-N.json --issue=bro-N]
  */
 require('./lib/cli-help').exitOnHelp(module);
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -33,7 +34,7 @@ for (const sid of fs.readdirSync(REVIEW_DIR)) {
   };
   const explain = (d, f) => explainExclusion(d, showById[sid], path.join(dir, f));
   for (const f of fs.readdirSync(dir)) {
-    if (!f.endsWith('.json') || f.startsWith('_') || f === 'failed-fetches.json') continue;
+    if (!isReviewTextFile(f)) continue;
     let data;
     try { data = io.read(f); } catch { continue; }
     const plan = syndicatedDuplicateHealPlan({ data, file: f, folder: sid, io, explain });

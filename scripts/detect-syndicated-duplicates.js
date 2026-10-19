@@ -19,6 +19,7 @@
  *   --verbose       Extra logging
  *   --report        Generate audit report only (implies --dry-run)
  */
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview, shouldSkipLockedEnrichment } = require('./lib/review-write-guard');
@@ -125,7 +126,7 @@ function findSourceFile(showId, outletId, criticName) {
   if (!fs.existsSync(showDir)) return null;
 
   try {
-    const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
     for (const file of files) {
       if (!file.startsWith(outletId + '--')) continue;
       const filePath = path.join(showDir, file);
@@ -349,7 +350,7 @@ const showDirs = listShowDirs(REVIEW_TEXTS_DIR).filter(d => {
 
 for (const showId of showDirs) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
-  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
 
   for (const file of files) {
     // Skip AP's own files — we only want to catch non-AP outlets with AP content
@@ -465,7 +466,7 @@ const mismatches = [];
 
 for (const showId of showDirs) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
-  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
 
   for (const file of files) {
     const filePath = path.join(showDir, file);

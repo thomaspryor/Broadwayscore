@@ -23,6 +23,7 @@
  *   node scripts/unabandon-non-serp-cycles.js [--dry-run]
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { SERP_DISCOVERY_METHODS } = require('./lib/review-guards');
@@ -43,7 +44,7 @@ for (const showId of listShowDirs(REVIEW_TEXTS_DIR)) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
 
   for (const f of fs.readdirSync(showDir)) {
-    if (!f.endsWith('.json') || f === 'failed-fetches.json') continue;
+    if (!isReviewTextFile(f)) continue;
     scanned++;
     const filePath = path.join(showDir, f);
     let review;

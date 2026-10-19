@@ -15,6 +15,7 @@
  * Output: data/audit/duplicate-review-files.json
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const {
@@ -148,7 +149,7 @@ function auditReviewDuplicates() {
   for (const showDir of showDirs) {
     const showPath = path.join(REVIEW_TEXTS_DIR, showDir);
     const files = fs.readdirSync(showPath)
-      .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+      .filter(f => isReviewTextFile(f));
 
     for (const file of files) {
       const filePath = path.join(showPath, file);

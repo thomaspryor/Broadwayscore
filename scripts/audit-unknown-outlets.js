@@ -28,6 +28,7 @@
  *   2 — corpus or registry missing / unreadable (could not run)
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { isRejectedNonReview } = require('./lib/review-guards');
@@ -68,7 +69,7 @@ function countResolvableUnknowns(reviewTextsDir, validOutlets) {
   for (const showDir of showDirs) {
     const files = fs
       .readdirSync(path.join(reviewTextsDir, showDir))
-      .filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json');
+      .filter((f) => isReviewTextFile(f));
 
     for (const file of files) {
       totalFiles++;

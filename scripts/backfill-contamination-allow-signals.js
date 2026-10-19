@@ -21,6 +21,7 @@
  *   node scripts/backfill-contamination-allow-signals.js --dir=PATH  # or REVIEW_TEXTS_DIR
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -57,7 +58,7 @@ function main() {
     try { files = fs.readdirSync(showPath); } catch { continue; }
     const show = shows.get(showDir);
     for (const file of files) {
-      if (!file.endsWith('.json') || file === 'failed-fetches.json') continue;
+      if (!isReviewTextFile(file)) continue;
       const fp = path.join(showPath, file);
       let d;
       try { d = JSON.parse(fs.readFileSync(fp, 'utf8')); } catch { continue; }

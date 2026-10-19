@@ -40,6 +40,7 @@
 
 'use strict';
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview, isExcludedIgnoringDuplicate } = require('./lib/review-write-guard');
@@ -132,7 +133,7 @@ function walkShowDirs(root) {
 /** Read one show directory into the {file, data} record list the pure lib takes. */
 function readShowRecords(showDir) {
   let files;
-  try { files = fs.readdirSync(showDir).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json'); }
+  try { files = fs.readdirSync(showDir).filter((f) => isReviewTextFile(f)); }
   catch { return null; }
   const records = [];
   for (const file of files) {
@@ -315,7 +316,7 @@ function fix(orphans) {
         if (!isExcludedIgnoringDuplicate(targetData)) { keptIncludedTarget++; continue; }
       }
       const siblings = fs.readdirSync(dir)
-        .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json')
+        .filter(f => isReviewTextFile(f))
         .map(f => {
           try {
             const d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8'));

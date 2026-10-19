@@ -42,6 +42,7 @@
  *   node ../../scripts/validate-added-review-ownership.js --base=origin/main [--dry-run]
  *   node ../../scripts/validate-added-review-ownership.js [--dry-run]
  */
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
@@ -325,7 +326,7 @@ function sameShowUrlSiblings(reviewTextsDir, showId, url, selfFile, cache) {
     const showDir = path.join(reviewTextsDir, showId);
     let files = [];
     try {
-      files = fs.readdirSync(showDir).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json');
+      files = fs.readdirSync(showDir).filter((f) => isReviewTextFile(f));
     } catch { /* no dir — nothing to collide with */ }
     for (const f of files) {
       let d;

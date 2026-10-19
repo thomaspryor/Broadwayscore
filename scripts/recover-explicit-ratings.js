@@ -27,6 +27,7 @@
  *   SCRAPINGBEE_API_KEY - Fallback scraper (Phase 3)
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
@@ -939,7 +940,7 @@ function findMissingRatings() {
 
   for (const showId of shows) {
     const showDir = path.join(REVIEW_DIR, showId);
-    const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
 
     for (const file of files) {
       const filePath = path.join(showDir, file);

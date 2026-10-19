@@ -20,6 +20,7 @@
  *   node scripts/audit-data-integrity.js --fix  (apply auto-fixes for confident mismatches)
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const { quarantineBody } = require('./lib/quarantine-body');
 const fs = require('fs');
 const path = require('path');
@@ -118,7 +119,7 @@ for (const showDir of showDirs) {
   const dirPath = path.join(REVIEW_TEXTS_DIR, showDir);
   const show = showById[showDir];
   const files = fs.readdirSync(dirPath)
-    .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    .filter(f => isReviewTextFile(f));
 
   for (const file of files) {
     totalFilesScanned++;

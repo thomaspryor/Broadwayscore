@@ -7,6 +7,7 @@
 // second/third sweep (backfill, gap-closure, scheduled re-run) doesn't
 // re-query site-search/SERP for outlets it already has real files for (#785).
 
+const { isReviewTextFile } = require('./review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { isLondonMarket } = require('./venue-classification');
@@ -62,7 +63,7 @@ function getFoundOutletIds(showId, ctx) {
   }
 
   for (const file of fs.readdirSync(showDir)) {
-    if (!file.endsWith('.json') || file === 'failed-fetches.json') continue;
+    if (!isReviewTextFile(file)) continue;
     try {
       const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
       // Skip wrongProduction/wrongShow files — they shouldn't block re-discovery

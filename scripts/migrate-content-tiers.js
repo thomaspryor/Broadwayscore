@@ -17,6 +17,7 @@
  *   node scripts/migrate-content-tiers.js [--dry-run] [--show=show-id]
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { classifyContentTier, countWords } = require('./lib/content-quality');
@@ -37,7 +38,7 @@ function loadAllReviews() {
     if (showFilter && showId !== showFilter) continue;
 
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
-    const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
 
     for (const file of files) {
       const filepath = path.join(showDir, file);

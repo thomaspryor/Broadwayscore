@@ -5,6 +5,7 @@
  * Extracts excerpts from DTLI HTML archives and adds them as dtliExcerpt
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { makeArchiveShowChecker } = require('./lib/archive-cache-guard');
@@ -107,7 +108,7 @@ for (const file of dtliFiles) {
   let added = 0;
   for (const dtliReview of dtliReviews) {
     // Find matching review file
-    const reviewFiles = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    const reviewFiles = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
 
     for (const reviewFile of reviewFiles) {
       const filePath = path.join(showDir, reviewFile);

@@ -74,6 +74,7 @@
  *   node scripts/wp-classifier-parity.js --cohort=p3 [--limit=N]
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -112,7 +113,7 @@ function buildP3Cohort() {
     const dir = path.join(REVIEW_TEXTS_DIR, showId);
     let files;
     try {
-      files = fs.readdirSync(dir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+      files = fs.readdirSync(dir).filter(f => isReviewTextFile(f));
     } catch (e) { continue; }
     for (const file of files) {
       let data;

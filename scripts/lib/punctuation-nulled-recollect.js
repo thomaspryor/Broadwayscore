@@ -18,6 +18,7 @@
  * must not be swept into a blind re-collection.
  */
 
+const { isReviewTextFile } = require('./review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { normalizeForMention, textMentionsTitle } = require('./show-title-variants');
@@ -161,7 +162,7 @@ function findPunctuationNulledFiles(reviewTextsDir, showTitleById) {
       continue;
     }
     for (const file of files) {
-      if (!file.endsWith('.json') || file === 'failed-fetches.json') continue;
+      if (!isReviewTextFile(file)) continue;
       const filePath = path.join(dir, file);
       let data;
       try {

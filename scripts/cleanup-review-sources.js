@@ -12,6 +12,7 @@
  *   node scripts/cleanup-review-sources.js [--dry-run] [--verbose] [--no-backup] [--shows=id1,id2]
  */
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet, normalizeCritic, mergeReviews } = require('./lib/review-normalization');
@@ -152,7 +153,7 @@ function loadAllReviews() {
     if (SHOW_FILTER && !SHOW_FILTER.includes(showId)) continue;
 
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
-    const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
 
     for (const file of files) {
       const filePath = path.join(showDir, file);
