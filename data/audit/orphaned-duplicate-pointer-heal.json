@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-19T21:32:06.944Z",
+  "generated": "2026-10-19T21:52:33.475Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 35,
+  "count": 34,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -211,13 +211,6 @@
       "loserFile": "whatsonstage--tanyel-gumushan.json",
       "targetFile": "whatsonstage--alun-hood.json",
       "reason": "orphaned-duplicate-heal: whatsonstage--alun-hood.json was flagged invalid after whatsonstage--tanyel-gumushan.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "titanique-2026",
-      "loserFile": "theatermania--unknown.json",
-      "targetFile": "theatermania--zachary-stewart.json",
-      "reason": "orphaned-duplicate-heal: theatermania--zachary-stewart.json was flagged invalid after theatermania--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {

@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-19T21:37:44.384Z",
+  "timestamp": "2026-10-19T21:58:00.906Z",
   "stats": {
-    "totalReviews": 57801,
-    "alreadyFlagged": 21079,
+    "totalReviews": 57803,
+    "alreadyFlagged": 21080,
     "dateGuardCatches": 203,
     "directorMismatch": 2017,
     "tvFilmSignals": 1645,
-    "londonSignals": 2538,
+    "londonSignals": 2539,
     "offBroadwaySignals": 530,
     "yearMismatch": 161,
     "noPublishDate": 5215
@@ -11214,7 +11214,7 @@
       "showId": "death-of-a-salesman-2026",
       "file": "playbill--unknown.json",
       "score": null,
-      "publishDate": "2026-04-02",
+      "publishDate": "2026-04-09",
       "url": "https://playbill.com/article/reviews-what-do-the-critics-think-of-broadways-death-of-a-salesman-starring-nathan-lane-laurie-metcalf-and-christopher-abbott",
       "findings": [
         {
@@ -90397,6 +90397,19 @@
       "file": "sunday-times--clive-davis.json",
       "publishDate": "2026-10-18",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/triumph-review-is-this-theatre-for-the-tiktok-generation-srgrf0zz7",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "triumph-off-west-end-2026",
+      "file": "theartsdispatch--the-arts-dispatch.json",
+      "publishDate": "2026-10-19",
+      "url": "https://theartsdispatch.substack.com/p/triumph-review-almeida-theatre-london",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
