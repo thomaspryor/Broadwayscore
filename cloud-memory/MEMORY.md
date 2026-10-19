@@ -133,7 +133,6 @@
 - [UGC Supabase auth](feedback_supabase_freetier_pause.md) — free-tier pauses 7d idle → NXDOMAIN; Restore workflow + keep-alive. Tests [[feedback_ugc_test_patterns.md]] [[feedback_playwright_evaluate_click_hydration.md]]
 
 ## 💼 Commercial / features
-- [Investment Tracker purpose](project_investment_tracker_purpose.md) — /biz gives an indication of how a show did that nobody else can, esp. with no public record; show marked guesses
 - [Commercial slug keys](feedback_commercial_slug_keys.md) — commercial.json keyed by slug not ID
 - [Feature launch sequence](project_feature_launch_sequence.md) — Lottery/Rush → Awards/Tony → Commercial; VideoScore via transcript sentiment ([[project_videoscore_feature.md]])
 - [Recoupment RSS poller](feedback_recoupment_rss_poller_architecture.md) — hourly Variety+Deadline; shared classify lib; trackRecoupment flag
