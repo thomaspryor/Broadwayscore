@@ -910,10 +910,11 @@ test('codexCloudPr: only Codex cloud PRs by the owner or the Codex app, never ca
 test('prLanderComment: marker, head sha, plain lines, remaining list, fenced details (BRO-5646)', () => {
   const landed = r.prLanderComment({ outcome: 'landed', sha: 'abcdef1234567', mainSha: '1234567890ab' });
   assert.ok(landed.startsWith(r.PR_LANDER_MARKER));
-  assert.match(landed, /\*\*Codex lander \(abcdef1\):\*\* This change is on main now \(commit 1234567\)/);
+  assert.match(landed, /\*\*Codex lander \(abcdef1\):\*\* Landed: this change is on main \(commit 1234567\) and goes live on broadwayscorecard\.com/);
+  assert.match(r.prLanderComment({ outcome: 'landed', sha: 'abc1234', mainSha: '1234567890ab', site: false }), /Landed: .*does not change the website, so it is in effect now/);
   assert.doesNotMatch(landed, /<details>/);
   const rej = r.prLanderComment({ outcome: 'rejected', sha: 'ffff000', remaining: ['add a test'], details: 'VERDICT: REJECT\n```js\nx\n```' });
-  assert.match(rej, /Not put live/);
+  assert.match(rej, /Not live: the independent Claude check/);
   assert.match(rej, /- add a test/);
   assert.equal((rej.match(/```/g) || []).length, 2, 'only the outer fence survives');
   assert.match(r.prLanderComment({ outcome: 'weird', sha: '' }), /\*\*Codex lander:\*\* Outcome: weird/);
@@ -925,7 +926,7 @@ test('Codex PR lander: unknown authors are told, errors do not count as a verdic
   const repo = 'thomaspryor/Broadwayscore';
   const fit = r.codexCloudPr({ state: 'open', head: { ref: 'codex/x', repo: { full_name: repo } }, base: { ref: 'main' }, user: { login: 'someone-new', type: 'User' } }, repo);
   assert.equal(fit.unknownAuthor, true);
-  assert.match(r.prLanderComment({ outcome: 'unknownAuthor', sha: 'abc1234', details: fit.why }), /Not checked/);
+  assert.match(r.prLanderComment({ outcome: 'unknownAuthor', sha: 'abc1234', details: fit.why }), /Not checked: /);
   assert.ok(r.prLanderComment({ outcome: 'error', sha: 'abc1234' }).includes(r.PR_LANDER_ERROR_TEXT));
   assert.ok(!r.prLanderComment({ outcome: 'rejected', sha: 'abc1234' }).includes(r.PR_LANDER_ERROR_TEXT));
   const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
@@ -939,4 +940,36 @@ test('AGENTS.md tells Codex cloud tasks to edit in place, not in a side worktree
   assert.match(agents, /do not create a git worktree/);
   // PR #1119: a task that opened its own PR named the branch fix/..., which the lander never sees.
   assert.match(agents, /name the branch `codex\/<short-slug>`/);
+});
+
+test('Codex PR lander: started comment, verdict detection, typical time, title, site paths (BRO-5646)', async () => {
+  const started = r.prLanderComment({ outcome: 'started', sha: 'abcdef1234567', minutes: 35 });
+  assert.match(started, /Claude is checking this now\. It usually takes about 35 minutes to a result/);
+  assert.match(r.prLanderComment({ outcome: 'started', sha: 'abcdef1', minutes: null }), /usually takes 30 to 60 minutes/);
+  // Every outcome but landed says plainly that it is not live.
+  for (const o of ['rejected', 'conflict', 'blocked', 'refused', 'error']) assert.match(r.prLanderComment({ outcome: o, sha: 'abc1234' }), /\*\* Not live: /, o);
+  // A started or errored comment is not a verdict; a real one is, for its own head only.
+  const c = (o) => r.prLanderComment({ outcome: o, sha: 'abcdef1234567' });
+  assert.equal(r.prLanderJudged(c('started'), 'abcdef1'), false);
+  assert.equal(r.prLanderJudged(c('started') + c('error'), 'abcdef1'), false);
+  assert.equal(r.prLanderJudged(c('started') + c('rejected'), 'abcdef1'), true);
+  assert.equal(r.prLanderJudged(c('landed'), '1111111'), false);
+  assert.equal(r.prLanderJudged('', 'abcdef1'), false);
+  const run = (min, conclusion = 'success') => ({ status: 'completed', conclusion, run_started_at: '2026-10-19T02:00:00Z', updated_at: new Date(Date.parse('2026-10-19T02:00:00Z') + min * 60000).toISOString() });
+  assert.equal(r.typicalLanderMinutes([run(31), run(42), run(0), run(1), run(29, 'failure'), run(44)]), 45);
+  assert.equal(r.typicalLanderMinutes([run(20), run(30), run(40), run(50)]), 35);
+  assert.equal(r.typicalLanderMinutes([run(31), run(0), run(1)]), null);
+  assert.equal(r.typicalLanderMinutes(null), null);
+  assert.equal(r.prLanderTitle('Share Playbill detection', 'Landed'), 'Landed: Share Playbill detection');
+  assert.equal(r.prLanderTitle('Landed: Share Playbill detection', 'Landed'), 'Landed: Share Playbill detection');
+  const { SITE_PATHS } = await import('../../scripts/lib/should-deploy-gate.js');
+  assert.equal(r.touchesSite(['tests/unit/a.test.mjs', 'AGENTS.md', '.github/workflows/x.yml'], SITE_PATHS), false);
+  assert.equal(r.touchesSite(['scripts/lib/playbill-url-market.js'], SITE_PATHS), true);
+  assert.equal(r.touchesSite(['package.json'], SITE_PATHS), true);
+  assert.equal(r.touchesSite([], SITE_PATHS), false);
+  // The runner posts the started comment once and edits it into the verdict, then titles a landing.
+  const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
+  assert.match(src, /say\('started', \{ minutes \}\)/);
+  assert.match(src, /statusId \? 'PATCH' : 'POST'/);
+  assert.match(src, /R\.prLanderTitle\(pr\.title, 'Landed'\)/);
 });

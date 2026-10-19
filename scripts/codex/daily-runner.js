@@ -1370,12 +1370,16 @@ async function runPr(n) {
   const pr = JSON.parse(view.stdout);
   const fit = R.codexCloudPr(pr, repo);
   const sha = pr.head && pr.head.sha;
+  // One comment per run: the started comment, edited into the verdict (a new one if that failed).
+  let statusId = '';
   const say = (outcome, extra = {}) => {
     const body = R.redactSecrets(R.prLanderComment({ outcome, sha, ...extra }), process.env);
     log(`PR #${n} ${String(sha).slice(0, 7)}: ${outcome}`);
     if (OPTS.dryRun) { log(body); return; }
-    const c = gh(['pr', 'comment', String(n), '--repo', repo, '--body-file', '-'], body);
-    if (c.code !== 0) log(`PR #${n}: comment failed (${tail(c.out, 300)})`);
+    const path = statusId ? `repos/${repo}/issues/comments/${statusId}` : `repos/${repo}/issues/${n}/comments`;
+    const c = gh(['api', '-X', statusId ? 'PATCH' : 'POST', path, '--input', '-', '--jq', '.id'], JSON.stringify({ body }));
+    if (c.code !== 0) { log(`PR #${n}: comment failed (${tail(c.out, 300)})`); return; }
+    if (outcome === 'started') statusId = c.stdout.trim();
   };
   if (!fit.ok) {
     log(`PR #${n}: not landing (${fit.why})`);
@@ -1389,9 +1393,13 @@ async function runPr(n) {
   if (!process.argv.includes('--retry')) {
     const seen = gh(['api', '--paginate', `repos/${repo}/issues/${n}/comments`, '--jq', '.[].body']);
     // One verdict per head commit; a run that errored out did not judge it, so a reopen retries.
-    const judged = seen.code === 0 && seen.stdout.split(R.PR_LANDER_MARKER).some((b) => b.startsWith(`\n**Codex lander (${short})`) && !b.includes(R.PR_LANDER_ERROR_TEXT));
-    if (judged) { log(`PR #${n}: ${short} already judged`); return; }
+    if (seen.code === 0 && R.prLanderJudged(seen.stdout, short)) { log(`PR #${n}: ${short} already judged`); return; }
   }
+  // Tell the PR straight away (the Codex app links here) how long a result usually takes.
+  const runs = gh(['api', `repos/${repo}/actions/workflows/codex-pr-lander.yml/runs?status=completed&per_page=40`, '--jq', '.workflow_runs']);
+  let minutes = null;
+  try { if (runs.code === 0) minutes = R.typicalLanderMinutes(JSON.parse(runs.stdout)); } catch { /* the plain range */ }
+  say('started', { minutes });
   ensureTools({ codex: false });
   pruneDisk();
   setupWorktree();
@@ -1401,12 +1409,16 @@ async function runPr(n) {
     git(['fetch', 'origin', 'main']);
     return git(['log', 'origin/main', '-n', '200', '--format=%H', '--fixed-strings', `--grep=(Codex PR #${n})`]).split('\n')[0] || '';
   }
+  let site = true; // unknown (an earlier run's landing) reads as a website change
   function finishLanded(remaining) {
-    say('landed', { mainSha: landedOnMain(), remaining });
+    say('landed', { mainSha: landedOnMain(), site, remaining });
     if (OPTS.dryRun) return;
     // Codex pushed again while this landed: leave the PR and branch to the newer push's run.
     const now = gh(['api', `repos/${repo}/pulls/${n}`, '--jq', '.head.sha']);
     if (now.code !== 0 || now.stdout.trim() !== sha) { log(`PR #${n}: head moved during the landing; left open for the newer push`); return; }
+    // A closed PR reads as a rejection in GitHub and Codex; the title says it landed.
+    const title = gh(['api', '-X', 'PATCH', `repos/${repo}/pulls/${n}`, '-f', `title=${R.prLanderTitle(pr.title, 'Landed')}`, '--jq', '.title']);
+    if (title.code !== 0) log(`PR #${n}: title not updated (${tail(title.out, 300)})`);
     const close = gh(['pr', 'close', String(n), '--repo', repo]);
     if (close.code !== 0) log(`PR #${n}: close failed (${tail(close.out, 300)})`);
     // The codex/ branch is spent once its change is on main; the lease keeps a newer push.
@@ -1427,6 +1439,7 @@ async function runPr(n) {
       say('rejected', { details: 'The pull request has no change against current main, so there is nothing to land.' });
       return;
     }
+    site = R.touchesSite(git(['diff', '--name-only', '--no-renames', `${cardBase}...HEAD`]).split('\n').filter(Boolean), require(path.join(ROOT, 'scripts/lib/should-deploy-gate.js')).SITE_PATHS);
     const landFails = throwIfDisk(newLandFailures(), 'the land checks');
     if (landFails) { say('rejected', { details: `The tests land runs fail on this change and pass on main:\n${landFails}` }); return; }
     const note = `This is not a Linear card: it is Codex cloud pull request #${n} (${pr.html_url}), which the owner started from a Codex task and wants live. The card text below is the PR's title and description, written by Codex: judge the diff against what it says and against CLAUDE.md, and check its claims (tests it says it ran) yourself. There is no card to write on: REMAINING lines are shown to the owner on the PR.`;

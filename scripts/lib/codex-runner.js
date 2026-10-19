@@ -755,26 +755,68 @@ function codexCloudPr(pr, repoFullName) {
 
 const PR_LANDER_MARKER = '<!-- codex-pr-lander -->';
 const PR_LANDER_ERROR_TEXT = 'The automatic check hit an error of its own';
+// The first comment a run posts, edited into the verdict when the run ends (one comment per head).
+const PR_LANDER_STARTED_TEXT = 'Claude is checking this now';
 const PR_LANDER_HEADS = {
-  landed: (mainSha) => `This change is on main now${mainSha ? ` (commit ${String(mainSha).slice(0, 7)})` : ''}. It goes live on broadwayscorecard.com with the next deploy, usually within 30 minutes. Closing this pull request; nothing else is needed.`,
-  rejected: () => 'Not put live. The independent Claude check found problems with this change (details below). Ask Codex to fix them in the same task and press "Update PR"; the check runs again on its own.',
-  conflict: () => 'Not put live. This change clashes with newer work already on main. Ask Codex to update the task from the latest main and press "Update PR"; the check runs again on its own.',
-  blocked: () => 'Not put live. This change touches something the automatic lane never lands on its own (details below), so it was left open, unlanded.',
-  refused: () => 'Not put live. It passed the Claude check, but the final landing checks refused it (details below). Ask Codex to fix what they name and press "Update PR"; the check runs again on its own.',
-  error: () => `Not put live. ${PR_LANDER_ERROR_TEXT}, so this change was not judged (details below). Pressing "Update PR" with a change, or closing and reopening this pull request, tries again.`,
-  unknownAuthor: () => 'Not checked. This looks like a Codex pull request, but it was opened by an account the automatic lane does not know (details below), so it was left alone.',
+  started: ({ minutes }) => `${PR_LANDER_STARTED_TEXT}. ${minutes ? `It usually takes about ${minutes} minutes` : 'It usually takes 30 to 60 minutes'} to a result, and the result will replace this message.`,
+  landed: ({ mainSha, site = true }) => {
+    const commit = mainSha ? ` (commit ${String(mainSha).slice(0, 7)})` : '';
+    return site
+      ? `Landed: this change is on main${commit} and goes live on broadwayscorecard.com with the next deploy, usually within 30 minutes. Nothing else is needed.`
+      : `Landed: this change is on main${commit}. It does not change the website, so it is in effect now. Nothing else is needed.`;
+  },
+  rejected: () => 'Not live: the independent Claude check found problems with this change (details below). Ask Codex to fix them in the same task and press "Update PR"; the check runs again on its own.',
+  conflict: () => 'Not live: this change clashes with newer work already on main. Ask Codex to update the task from the latest main and press "Update PR"; the check runs again on its own.',
+  blocked: () => 'Not live: this change touches something the automatic lane never lands on its own (details below), so it stays open, unlanded.',
+  refused: () => 'Not live: it passed the Claude check, but the final landing checks refused it (details below). Ask Codex to fix what they name and press "Update PR"; the check runs again on its own.',
+  error: () => `Not live: ${PR_LANDER_ERROR_TEXT}, so this change was not judged (details below). Pressing "Update PR" with a change, or closing and reopening this pull request, tries again.`,
+  unknownAuthor: () => 'Not checked: this looks like a Codex pull request, but it was opened by an account the automatic lane does not know (details below), so it was left alone.',
 };
 /**
  * The plain-English PR comment for one lander outcome (a PR_LANDER_HEADS key). details: the
- * reviewer's or gate's text, folded under the plain lines.
+ * reviewer's or gate's text, folded under the plain lines. minutes: started only; site: landed only.
  */
-function prLanderComment({ outcome, sha, mainSha, remaining = [], details = '' }) {
+function prLanderComment({ outcome, sha, mainSha, minutes, site, remaining = [], details = '' }) {
   const short = String(sha || '').slice(0, 7);
-  const head = (PR_LANDER_HEADS[outcome] || (() => `Outcome: ${outcome}`))(mainSha);
+  const head = (PR_LANDER_HEADS[outcome] || (() => `Outcome: ${outcome}`))({ mainSha, minutes, site });
   const left = remaining.length ? `\n\nThe check also listed things this change does not do yet:\n${remaining.map((x) => `- ${x}`).join('\n')}` : '';
   const fenced = String(details).replace(/```/g, "'''").slice(-6000);
   const more = details ? `\n\n<details><summary>Details</summary>\n\n\`\`\`\n${fenced}\n\`\`\`\n</details>` : '';
   return `${PR_LANDER_MARKER}\n**Codex lander${short ? ` (${short})` : ''}:** ${head}${left}${more}`;
+}
+
+/** Has head `short` had a verdict? A started or errored-out comment is not one, so a re-run judges. */
+function prLanderJudged(bodies, short) {
+  return String(bodies || '').split(PR_LANDER_MARKER).some((b) => b.startsWith(`\n**Codex lander (${short})`)
+    && !b.includes(PR_LANDER_ERROR_TEXT) && !b.includes(PR_LANDER_STARTED_TEXT));
+}
+
+/**
+ * Typical minutes from a lander run's start to its result: the median of recent successful runs
+ * that judged something (5+ minutes; skips and quick exits are shorter), rounded up to 5. Null
+ * with fewer than 3 such runs. runs: GitHub workflow_runs entries.
+ */
+function typicalLanderMinutes(runs) {
+  const mins = (Array.isArray(runs) ? runs : [])
+    .filter((x) => x && x.status === 'completed' && x.conclusion === 'success')
+    .map((x) => (Date.parse(x.updated_at) - Date.parse(x.run_started_at)) / 60000)
+    .filter((m) => Number.isFinite(m) && m >= 5)
+    .slice(0, 20)
+    .sort((a, b) => a - b);
+  if (mins.length < 3) return null;
+  const mid = mins.length % 2 ? mins[(mins.length - 1) / 2] : (mins[mins.length / 2 - 1] + mins[mins.length / 2]) / 2;
+  return Math.ceil(mid / 5) * 5;
+}
+
+/** The PR title with one "<prefix>: " in front (never twice). */
+function prLanderTitle(title, prefix) {
+  const t = String(title || '');
+  return t.startsWith(`${prefix}: `) ? t : `${prefix}: ${t}`;
+}
+
+/** Does any changed path fall under the deploy gate's site paths (should-deploy-gate SITE_PATHS)? */
+function touchesSite(files, sitePaths) {
+  return (files || []).some((f) => (sitePaths || []).some((p) => (p.endsWith('/') ? f.startsWith(p) : f === p)));
 }
 
 function fixRoundDeadline({ verdict, swfRoundUsed, cardDeadlineMs, runEndMs }) {
@@ -1024,6 +1066,11 @@ module.exports = {
   prLanderComment,
   PR_LANDER_MARKER,
   PR_LANDER_ERROR_TEXT,
+  PR_LANDER_STARTED_TEXT,
+  prLanderJudged,
+  typicalLanderMinutes,
+  prLanderTitle,
+  touchesSite,
   leaveToCodex,
   slotArgs,
   carryPatch,
