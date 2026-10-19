@@ -75,7 +75,7 @@ function fallbackOutletIdFromHost(hostname) {
   return id && !(registry && registry.outlets && registry.outlets[id]) ? id : 'unknown';
 }
 const { findSiblingUrlOwner } = require('./lib/review-url-collision');
-const { extractBwwThumbIcons, shouldPairBwwThumbs } = require('./lib/bww-thumb-pairing');
+const { extractBwwThumbIcons, pairBwwThumbsByCritic } = require('./lib/bww-thumb-pairing');
 const { findMatchingReviewFile } = require('./lib/review-file-match');
 const { verifyProduction, quickDateCheck, getShowData, verifierCategoryFor } = require('./lib/production-verifier');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
@@ -2623,23 +2623,7 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
     // New format: uptrans(N)?.png / middletrans(N)?.png / downtrans(N)?.png (optional numeric suffix, e.g. uptrans2.png)
     // Legacy format: BigThumbs_UP.gif / BigThumbs_MEH.gif / BigThumbs_DOWN.gif
     // Fallen Angels 2026-04-19: roundup used uptrans2.png/middletrans2.png — suffixed variant broke the pre-2 regex.
-    // BRO-5674: one entry per review-icon <img> (srcset repeats collapse) —
-    // see scripts/lib/bww-thumb-pairing.js.
-    const thumbMatches = extractBwwThumbIcons(html);
-    // BRO-5674: pairing is purely positional, so it is only safe when every
-    // review has exactly one icon. Other Desert Cities 2026 had 20 icons for
-    // 19 reviews and 13 critics got a neighbour's thumb (Variety's rave as
-    // Meh, Time Out's pan as Up). No thumb beats a wrong one.
-    if (!shouldPairBwwThumbs(thumbMatches.length, reviews.length)) {
-      console.log(`    ⚠ BWW thumbs NOT paired: ${thumbMatches.length} icons for ${reviews.length} reviews (positional pairing would misattribute)`);
-    } else if (thumbMatches.length > 0) {
-      // Pair thumbs with reviews — they appear in the same order
-      const thumbCount = Math.min(thumbMatches.length, reviews.length);
-      for (let i = 0; i < thumbCount; i++) {
-        reviews[i].bwwThumb = thumbMatches[i];
-      }
-      console.log(`    Paired ${thumbCount} BWW thumbs (${thumbMatches.filter(t=>t==='Up').length} Up, ${thumbMatches.filter(t=>t==='Meh').length} Meh, ${thumbMatches.filter(t=>t==='Down').length} Down)`);
-    }
+    // Thumbs are paired at the end of this function, once critic names are final (BRO-5674).
 
     // Extract source URLs from HTML anchor tags
     // Pattern: <p>Critic, <a href="SOURCE_URL">Outlet:</a> excerpt</p>
@@ -2868,6 +2852,20 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
     }
   } catch (e) {
     console.log(`    [Method 3] domain supplement error (non-fatal): ${(e.message || '').substring(0, 100)}`);
+  }
+
+  // BRO-5674: each review takes the icon whose following text names its
+  // critic. Never by index: JSON-LD order can differ from page order, srcset
+  // repeats each icon, and the page ends with an extra Average Rating icon.
+  // Runs here, after Methods 2/3, so names filled from the article body count.
+  // See scripts/lib/bww-thumb-pairing.js.
+  const thumbIcons = extractBwwThumbIcons(html);
+  if (thumbIcons.length > 0 && reviews.length > 0) {
+    const thumbs = pairBwwThumbsByCritic(thumbIcons, reviews);
+    let paired = 0;
+    thumbs.forEach((t, i) => { if (t) { reviews[i].bwwThumb = t; paired++; } });
+    const n = (v) => thumbs.filter(t => t === v).length;
+    console.log(`    Paired ${paired}/${reviews.length} BWW thumbs by critic name (${n('Up')} Up, ${n('Meh')} Meh, ${n('Down')} Down; ${thumbIcons.length} icons)`);
   }
 
   // Bare-critic-name phantoms whose headline outlet wasn't registered yet
