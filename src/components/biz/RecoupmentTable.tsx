@@ -18,6 +18,7 @@ interface RecoupmentShow {
   capitalization: number | null;
   /** Prints the "~" estimate mark only when true (isEstimatedCapitalization). */
   capitalizationIsEstimate: boolean;
+  capitalizationIsMaximum: boolean;
   recoupDate: string;
 }
 
@@ -167,7 +168,7 @@ export default function RecoupmentTable({ shows }: RecoupmentTableProps) {
                     <span className="text-emerald-400 font-semibold">~{show.weeksToRecoup}</span>
                   )}
                 </td>
-                <td className="py-3 px-4">{formatCapitalization(show.capitalization, show.capitalizationIsEstimate)}</td>
+                <td className="py-3 px-4">{formatCapitalization(show.capitalization, show.capitalizationIsEstimate, show.capitalizationIsMaximum)}</td>
                 <td className="py-3 px-4 text-gray-500 hidden sm:table-cell">
                   {formatDate(show.recoupDate)}
                 </td>

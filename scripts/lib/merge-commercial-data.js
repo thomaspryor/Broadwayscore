@@ -153,7 +153,7 @@ const MODEL_RUN_FIELDS = [
 const LINKED_FIELD_GROUPS = [
   // commercialConversion: a converted run must carry a commercial designation (BRO-5508).
   ['designation', 'designationBasis', 'productionType', 'recouped', 'recoupedDate', 'recoupedSource', 'classifiedBy', 'classifiedAt', 'classifiedReason', 'commercialConversion'],
-  ['capitalization', 'capitalizationSource'],
+  ['capitalization', 'capitalizationSource', 'capitalizationBasis'],
   ['weeklyRunningCost', 'costMethodology', 'weeklyRunningCostSource', 'weeklyRunningCostNote', 'weeklyRunningCostRange', 'weeklyRunningCostBasis'],
   MODEL_RUN_FIELDS,
 ];

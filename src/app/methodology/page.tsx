@@ -467,7 +467,7 @@ export default function MethodologyPage() {
               <strong className="text-white">Recouped.</strong> We only mark a show as recouped when a trade paper or an SEC filing reports it, and we link the source. A few long-running hits never announced a date. Those say &quot;Not publicly announced&quot;, and calling them recouped is our judgment, not a reported fact.
             </Bullet>
             <Bullet>
-              <strong className="text-white">Capitalization</strong> (what it cost to put the show up) comes from SEC filings and trade press. When no figure has been published we say &quot;Undisclosed&quot;, and totals say how many shows are missing, for example &quot;~$40M+&quot; with &quot;3 of 9 undisclosed&quot;. We never count an unknown figure as zero.
+              <strong className="text-white">Capitalization</strong> (what it cost to put the show up) comes from SEC filings and trade press. An SEC Form D filing states the most a production may raise, so when that maximum is all we have, or a report says &quot;up to&quot;, we print it as &quot;up to $18.0M&quot;, never as the exact cost; when the filing says how much was actually sold, we use that. When no figure has been published we say &quot;Undisclosed&quot;, and totals say how many shows are missing, for example &quot;~$40M+&quot; with &quot;3 of 9 undisclosed&quot;. We never count an unknown figure as zero.
             </Bullet>
             <Bullet>
               <strong className="text-white">Return to investors</strong>, as a multiple of what they put in, only appears when a source reports it. Our estimates stop at recoupment.

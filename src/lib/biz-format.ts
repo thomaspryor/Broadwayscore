@@ -19,9 +19,15 @@ export { formatCurrency };
  * cannot fall back to marking everything. A missing value renders bare "—",
  * never "~—". Modeled figures (break-even, % recouped) and capital totals
  * (formatCapitalSummary) keep their "~".
+ *
+ * A ceiling (an SEC Form D offering maximum or an "up to" source,
+ * isMaximumCapitalization in commercial-display.ts) prints "up to $18.0M" and
+ * never as an exact amount (BRO-5660). "up to" already says the figure is not
+ * exact, so it replaces the "~". Both flags are required for the same reason.
  */
-export function formatCapitalization(amount: number | null | undefined, isEstimate: boolean): string {
+export function formatCapitalization(amount: number | null | undefined, isEstimate: boolean, isMaximum: boolean): string {
   if (amount === null || amount === undefined) return '—';
+  if (isMaximum) return `up to ${formatCurrency(amount)}`;
   return isEstimate ? `~${formatCurrency(amount)}` : formatCurrency(amount);
 }
 

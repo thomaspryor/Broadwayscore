@@ -113,4 +113,41 @@ describe('applyCommercialFieldEdit', () => {
     const { merged } = mergeCommercialJson(stale, remote);
     assert.equal(merged.shows['lucky-guy-2013'].designation, 'Easy Winner');
   });
+
+  // BRO-5660: the basis belongs to the figure it was set for.
+  describe('capitalizationBasis follows a capitalization edit', () => {
+    const rec = () => ({ shows: { x: {
+      capitalization: 18000000, capitalizationBasis: 'maximum',
+      capitalizationSource: 'SEC Form D (X LLC, 2026): an offering of up to $18M', lastUpdated: '2026-09-01T00:00:00.000Z',
+    } } });
+
+    it('a source edit to a fully sold filing retags it sold', () => {
+      const c = rec();
+      applyCommercialFieldEdit(c, 'x', 'capitalizationSource', c.shows.x.capitalizationSource, 'SEC Form D/A (X LLC, 2026): $15M, fully sold', NOW);
+      assert.equal(c.shows.x.capitalizationBasis, 'sold');
+    });
+
+    it('a figure edit under wording that says neither drops the stale basis', () => {
+      const c = rec();
+      c.shows.x.capitalizationSource = 'Variety';
+      applyCommercialFieldEdit(c, 'x', 'capitalization', 18000000, 15000000, NOW);
+      assert.equal(c.shows.x.capitalizationBasis, undefined);
+    });
+
+    it('a basis edit listed after counts the re-derived value as its oldValue', () => {
+      const c = rec();
+      applyCommercialFieldEdit(c, 'x', 'capitalizationSource', c.shows.x.capitalizationSource, 'THR', NOW);
+      const r = applyCommercialFieldEdit(c, 'x', 'capitalizationBasis', 'maximum', 'reported', NOW);
+      assert.equal(r.ok, true);
+      assert.equal(c.shows.x.capitalizationBasis, 'reported');
+    });
+
+    it('a basis edit still refuses a value someone else set since the plan', () => {
+      const c = rec();
+      c.shows.x.capitalizationBasis = 'reported';
+      const r = applyCommercialFieldEdit(c, 'x', 'capitalizationBasis', null, 'sold', NOW);
+      assert.equal(r.ok, false);
+    });
+  });
 });
+

@@ -18,8 +18,17 @@
 // whole plan (BRO-5092, torch-song-2018). A plan that also edits
 // designationBasis should list that edit first; listed after, a planned drop
 // that already happened counts as done.
+//
+// A capitalization or capitalizationSource edit re-derives
+// capitalizationBasis from the source wording, as the apply gate does
+// (retagCapitalizationBasis, BRO-5660): a basis set for the old figure
+// would otherwise keep printing "up to" on a sold amount, or drop it from a
+// new Form D maximum. A plan that also sets capitalizationBasis lists it
+// after; when the re-derived value is already there it counts as the
+// planned oldValue.
 const { canonicalDesignation } = require('./commercial-designations');
 const { stampDesignationBasis } = require('./commercial-apply-gate');
+const { capitalizationBasisFromText, retagCapitalizationBasis } = require('./public-source-text');
 
 function applyCommercialFieldEdit(commercial, slug, field, oldValue, newValue, now = new Date().toISOString()) {
   const record = commercial && commercial.shows && commercial.shows[slug];
@@ -27,7 +36,8 @@ function applyCommercialFieldEdit(commercial, slug, field, oldValue, newValue, n
 
   const currentVal = record[field] ?? null;
   const impliedDrop = field === 'designationBasis' && newValue == null && currentVal === null;
-  if (!impliedDrop && JSON.stringify(currentVal) !== JSON.stringify(oldValue)) {
+  const impliedRetag = field === 'capitalizationBasis' && currentVal === capitalizationBasisFromText(record.capitalizationSource);
+  if (!impliedDrop && !impliedRetag && JSON.stringify(currentVal) !== JSON.stringify(oldValue)) {
     return { ok: false, reason: `commercial.json:${field}: value changed since plan` };
   }
 
@@ -36,6 +46,7 @@ function applyCommercialFieldEdit(commercial, slug, field, oldValue, newValue, n
     stampDesignationBasis(record, { designationBasis: record.designationBasis }, null);
   } else {
     record[field] = newValue;
+    if (field === 'capitalization' || field === 'capitalizationSource') retagCapitalizationBasis(record);
   }
   if (field !== 'lastUpdated') record.lastUpdated = now;
   return { ok: true, msg: `commercial.json: ${field} updated for ${slug}` };

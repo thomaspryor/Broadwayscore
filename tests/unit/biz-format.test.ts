@@ -21,7 +21,7 @@ import {
   formatDevelopmentDate,
   sortNewestFirst,
 } from '../../src/lib/biz-format';
-import { isEstimatedCapitalization, toPublicShowCommercial, sourceTextSegments, sourceTextLink } from '../../src/lib/commercial-display';
+import { isEstimatedCapitalization, isMaximumCapitalization, toPublicShowCommercial, sourceTextSegments, sourceTextLink } from '../../src/lib/commercial-display';
 import type { ShowCommercial } from '../../src/lib/data-types';
 
 test('formatCurrency: null/undefined render em-dash, never $0', () => {
@@ -40,19 +40,19 @@ test('formatCurrency: scales K/M/B', () => {
 });
 
 test('formatCapitalization: null renders bare em-dash, never "~—", flagged or not', () => {
-  assert.equal(formatCapitalization(null, false), '—');
-  assert.equal(formatCapitalization(undefined, false), '—');
-  assert.equal(formatCapitalization(null, true), '—');
-  assert.equal(formatCapitalization(undefined, true), '—');
+  assert.equal(formatCapitalization(null, false, false), '—');
+  assert.equal(formatCapitalization(undefined, false, false), '—');
+  assert.equal(formatCapitalization(null, true, false), '—');
+  assert.equal(formatCapitalization(undefined, true, false), '—');
 });
 
 test('formatCapitalization: a reported figure prints plain, no "~"', () => {
-  assert.equal(formatCapitalization(12_500_000, false), '$12.5M');
-  assert.equal(formatCapitalization(850_000, false), '$850K');
+  assert.equal(formatCapitalization(12_500_000, false, false), '$12.5M');
+  assert.equal(formatCapitalization(850_000, false, false), '$850K');
 });
 
 test('formatCapitalization: only an estimate-flagged figure gets the "~" mark', () => {
-  assert.equal(formatCapitalization(24_000_000, true), '~$24.0M');
+  assert.equal(formatCapitalization(24_000_000, true, false), '~$24.0M');
 });
 
 const CITED = 'The New York Times, 2024-03-12';
@@ -105,9 +105,9 @@ test('cited vs flagged vs uncited records end to end', () => {
   const cited = { capitalizationSource: CITED, isEstimate: { weeklyRunningCost: true } };
   const flagged = { capitalizationSource: CITED, isEstimate: { capitalization: true } };
   const uncited = { capitalizationSource: null };
-  assert.equal(formatCapitalization(24_000_000, isEstimatedCapitalization(cited)), '$24.0M');
-  assert.equal(formatCapitalization(24_000_000, isEstimatedCapitalization(flagged)), '~$24.0M');
-  assert.equal(formatCapitalization(24_000_000, isEstimatedCapitalization(uncited)), '~$24.0M');
+  assert.equal(formatCapitalization(24_000_000, isEstimatedCapitalization(cited), false), '$24.0M');
+  assert.equal(formatCapitalization(24_000_000, isEstimatedCapitalization(flagged), false), '~$24.0M');
+  assert.equal(formatCapitalization(24_000_000, isEstimatedCapitalization(uncited), false), '~$24.0M');
 });
 
 // ── BRO-4623 P0-6 ──────────────────────────────────────────────────────────
@@ -236,4 +236,39 @@ test('sourceTextLink: one link, no raw URL text, the quoted URL wins over the fa
   });
   // A URL in parentheses leaves no empty "()".
   assert.deepEqual(sourceTextLink('Variety (https://variety.com/a)', null), { label: 'Variety', href: 'https://variety.com/a' });
+});
+
+// ── BRO-5660 ───────────────────────────────────────────────────────────────
+// A Form D offering maximum or an "up to" source printed as an exact
+// capitalization (Cats: The Jellicle Ball "$18.0M" from "capitalized for up to
+// $18 million"). A ceiling now prints "up to $X", in place of any "~".
+
+test('formatCapitalization: a maximum prints "up to", never bare or with "~"', () => {
+  assert.equal(formatCapitalization(18_000_000, false, true), 'up to $18.0M');
+  assert.equal(formatCapitalization(18_000_000, true, true), 'up to $18.0M');
+  assert.equal(formatCapitalization(null, true, true), '—');
+});
+
+test('isMaximumCapitalization: explicit basis wins, else the source wording', () => {
+  const THR = 'The Hollywood Reporter (Jul 13, 2026): "The musical was capitalized for up to $18 million"';
+  const FORM_D = 'SEC Form D filing (X LLC, filed May 30, 2024): total offering amount $5,500,000 ($400,000 sold by then).';
+  const SOLD = 'SEC Form D/A filing (X LLC): total offering amount $10,000,000, fully sold.';
+  const SOLD_OF = 'SEC Form D/A (X LLC): $20,000,000 sold of a $23,000,000 offering';
+  const RANGE = 'SEC Form D/A filing (X LLC). $19M capitalized. Range: $17.5M min, $19.5M max.';
+  const cap = 18_000_000;
+  assert.equal(isMaximumCapitalization({ capitalization: cap, capitalizationSource: THR }), true);
+  assert.equal(isMaximumCapitalization({ capitalization: cap, capitalizationSource: FORM_D }), true);
+  assert.equal(isMaximumCapitalization({ capitalization: cap, capitalizationSource: SOLD }), false);
+  assert.equal(isMaximumCapitalization({ capitalization: cap, capitalizationSource: SOLD_OF }), false);
+  assert.equal(isMaximumCapitalization({ capitalization: cap, capitalizationSource: RANGE }), false);
+  assert.equal(isMaximumCapitalization({ capitalization: cap, capitalizationSource: CITED }), false);
+  // A person's ruling beats the wording either way.
+  assert.equal(isMaximumCapitalization({ capitalization: cap, capitalizationSource: THR, capitalizationBasis: 'reported' }), false);
+  assert.equal(isMaximumCapitalization({ capitalization: cap, capitalizationSource: RANGE, capitalizationBasis: 'maximum' }), true);
+  assert.equal(isMaximumCapitalization({ capitalization: null, capitalizationSource: THR }), false);
+});
+
+test('toPublicShowCommercial keeps capitalizationBasis, so the card prints "up to"', () => {
+  const raw = { capitalization: 7_000_000, capitalizationSource: CITED, capitalizationBasis: 'maximum' } as ShowCommercial;
+  assert.equal(isMaximumCapitalization(toPublicShowCommercial(raw)), true);
 });

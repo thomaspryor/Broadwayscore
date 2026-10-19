@@ -91,6 +91,10 @@ const FEEDBACK_EDITABLE_FIELDS = {
     'needsLossEvidence', 'designationBasis',
     'estimatedRecoupmentPct', 'estimatedRecoupmentSource', 'estimatedRecoupmentDate',
     'weeklyRunningCostBasis', 'commercialConversion',
+    // capitalizationBasis: 'maximum' (a Form D offering maximum or an "up to"
+    // figure, printed "up to $X"), 'sold' or 'reported' (BRO-5660; values in
+    // public-source-text.js, checked by commercial-record-checks.js).
+    'capitalizationBasis',
     // A cited cost supersedes the free-text estimate beside it (same linked
     // group in merge-commercial-data.js, BRO-5515).
     'weeklyRunningCostNote',

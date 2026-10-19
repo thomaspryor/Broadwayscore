@@ -126,4 +126,59 @@ function sourceOpensAsEstimate(text) {
   return ESTIMATE_SOURCE_RE.test(publicSourceText(text) || text || '');
 }
 
-module.exports = { publicSourceText, isEstimatedCapitalization, saysRecoupmentUnannounced, sourceOpensAsEstimate };
+// What a capitalization figure is (BRO-5660). 'maximum': an SEC Form D total
+// offering amount or a source's "up to" ceiling, printed "up to $X". 'sold': the
+// amount a filing says was raised. 'reported': a stated capitalization.
+const CAPITALIZATION_BASES = ['maximum', 'sold', 'reported'];
+
+// A filing that says the money came in: "fully sold", "all of it sold",
+// "$4,725,000 sold to 67 investors", "$20,000,000 sold of a $23,000,000
+// offering". A partial snapshot ("$400,000 sold by then") is not a raise.
+const SOLD_SOURCE_RE = /(?<!\bnot )\bfully sold\b|\ball of it sold\b|\$[\d,.]+(?:\s?(?:M|million))? sold (?:to|of)\b/i;
+// A ceiling: "capitalized for up to $18 million", "an offering of up to $20M",
+// "total offering amount $5,500,000", "(max cap)", "maximum capitalization".
+const MAXIMUM_SOURCE_RE = /\bup to \$|\btotal offering(?: amount)? (?:of )?\$|\(max(?:imum)? cap\)|\bmaximum (?:capitali[sz]ation|offering)\b|\bForm D maximum\b/i;
+
+/**
+ * The basis a capitalization source's wording states, else null. Writers use
+ * it to tag a new figure; isMaximumCapitalization falls back to it for a
+ * record with no capitalizationBasis.
+ * @param {string | null | undefined} text
+ * @returns {'maximum' | 'sold' | null}
+ */
+function capitalizationBasisFromText(text) {
+  if (!text) return null;
+  if (SOLD_SOURCE_RE.test(text)) return 'sold';
+  if (MAXIMUM_SOURCE_RE.test(text)) return 'maximum';
+  return null;
+}
+
+/**
+ * True when the capitalization is a ceiling (a Form D offering maximum or an
+ * "up to" figure) and must print "up to $X", never as an exact amount. An
+ * explicit capitalizationBasis wins; otherwise the source's wording decides.
+ * @param {{ capitalization?: number | null, capitalizationBasis?: string | null, capitalizationSource?: string | null }} commercial
+ * @returns {boolean}
+ */
+function isMaximumCapitalization(commercial) {
+  if (!commercial || commercial.capitalization == null) return false;
+  if (commercial.capitalizationBasis) return commercial.capitalizationBasis === 'maximum';
+  return capitalizationBasisFromText(commercial.capitalizationSource) === 'maximum';
+}
+
+/**
+ * Re-tag a record whose capitalization or its source a writer just replaced:
+ * the old basis described the old figure. Sets the basis the new source states,
+ * else drops it (isMaximumCapitalization then reads the wording). Mutates rec.
+ * @param {{ capitalizationSource?: string | null, capitalizationBasis?: string }} rec
+ */
+function retagCapitalizationBasis(rec) {
+  const basis = capitalizationBasisFromText(rec.capitalizationSource);
+  if (basis) rec.capitalizationBasis = basis;
+  else delete rec.capitalizationBasis;
+}
+
+module.exports = {
+  publicSourceText, isEstimatedCapitalization, saysRecoupmentUnannounced, sourceOpensAsEstimate,
+  CAPITALIZATION_BASES, capitalizationBasisFromText, isMaximumCapitalization, retagCapitalizationBasis,
+};

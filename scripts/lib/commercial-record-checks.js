@@ -75,6 +75,7 @@ const CITATION_FIELDS = ['capitalizationSource', 'recoupedSource'];
 const { VALID_DESIGNATION_BASES, DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, returnedEstimatePct, isLossDesignation, lossDesignationFor } = require('./commercial-designations');
 const { conversionOf, conversionShapeProblems } = require('./commercial-conversion');
 const { COST_BASES, BASIS_CUE_TEXT } = require('./cost-split');
+const { CAPITALIZATION_BASES } = require('./public-source-text');
 
 /** The research wording in `text` outside any URL, or null. */
 function internalWordingIn(text) {
@@ -209,6 +210,14 @@ function commercialRecordErrors(showId, show, ctx = {}) {
   }
   if (isLossDesignation(show.designation) && show.recouped !== false) {
     out.push(`commercial.json: "${showId}" has designation "${show.designation}" but recouped=${JSON.stringify(show.recouped)} (policy: loss-designations require recouped=false with hard citation; demote to "Nonprofit" or "TBD" if outcome unknown)`);
+  }
+  // capitalizationBasis (BRO-5660): what the figure is, on a capitalization.
+  if (show.capitalizationBasis != null) {
+    if (!CAPITALIZATION_BASES.includes(show.capitalizationBasis)) {
+      out.push(`commercial.json: "${showId}" has invalid capitalizationBasis "${show.capitalizationBasis}". Valid values: ${CAPITALIZATION_BASES.join(', ')}`);
+    } else if (show.capitalization == null) {
+      out.push(`commercial.json: "${showId}" has capitalizationBasis but no capitalization`);
+    }
   }
   // designationBasis (owner policy B, BRO-5020): what a loss label rests on.
   if (show.designationBasis != null && !VALID_DESIGNATION_BASES.includes(show.designationBasis)) {

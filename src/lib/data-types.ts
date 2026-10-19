@@ -454,6 +454,8 @@ export interface ShowCommercial {
   designation: import('@/config/commercial').CommercialDesignation;
   capitalization: number | null;
   capitalizationSource: string | null;
+  /** What the figure is: a Form D/"up to" ceiling, the amount sold, or a stated capitalization (BRO-5660). Absent: read from the source wording. */
+  capitalizationBasis?: 'maximum' | 'sold' | 'reported';
   capitalActual?: number;
   capitalActualSource?: string;
   weeklyRunningCost: number | null;
@@ -549,6 +551,8 @@ export interface ApproachingRecoupmentShow {
   capitalization: number | null;
   /** isEstimatedCapitalization(): true when the record flags its capitalization as an estimate or cites no publishable source (prints "~"). */
   capitalizationIsEstimate: boolean;
+  /** A Form D maximum or "up to" figure: prints "up to $X" (BRO-5660). */
+  capitalizationIsMaximum: boolean;
   /** Model [pessimistic, central, optimistic] that cleared the display quality floor; pessimistic >= 50. */
   modelRecoupmentPct: [number, number, number];
   modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
@@ -563,6 +567,8 @@ export interface AtRiskShow {
   capitalization: number | null;
   /** isEstimatedCapitalization(): true when the record flags its capitalization as an estimate or cites no publishable source (prints "~"). */
   capitalizationIsEstimate: boolean;
+  /** A Form D maximum or "up to" figure: prints "up to $X" (BRO-5660). */
+  capitalizationIsMaximum: boolean;
   /** Trailing 4-week average gross. */
   avgWeeklyGross: number;
   /** getBreakEven(): model break-even above the quality floor, else weekly running cost. */
@@ -585,6 +591,8 @@ export interface RecentRecoupmentShow {
   capitalization: number | null;
   /** isEstimatedCapitalization(): true when the record flags its capitalization as an estimate or cites no publishable source (prints "~"). */
   capitalizationIsEstimate: boolean;
+  /** A Form D maximum or "up to" figure: prints "up to $X" (BRO-5660). */
+  capitalizationIsMaximum: boolean;
   recoupDate: string;
 }
 
@@ -598,6 +606,8 @@ export interface CommercialShowRow {
   capitalization: number | null;
   /** isEstimatedCapitalization(): true when the record flags its capitalization as an estimate or cites no publishable source (prints "~"). */
   capitalizationIsEstimate: boolean;
+  /** A Form D maximum or "up to" figure: prints "up to $X" (BRO-5660). */
+  capitalizationIsMaximum: boolean;
   /** Latest week's gross; null for closed shows. */
   weeklyGross: number | null;
   /** Latest week's capacity (%) and average ticket price; null for closed shows. */

@@ -37,7 +37,7 @@ const { classifyEntry } = await import('./section-credential-guard.mjs');
 const { pluralize, pluralNoun } = cjsRequire(path.join(repo, 'scripts/lib/pluralize'));
 const { isFreshRecoupmentNews } = cjsRequire(path.join(repo, 'scripts/lib/recoupment-news'));
 const { recoupClockStart, isConvertedToCommercial } = cjsRequire(path.join(repo, 'scripts/lib/commercial-conversion'));
-const { isEstimatedCapitalization } = cjsRequire(path.join(repo, 'scripts/lib/public-source-text'));
+const { isEstimatedCapitalization, isMaximumCapitalization } = cjsRequire(path.join(repo, 'scripts/lib/public-source-text'));
 const { isUkRegionalVenue } = cjsRequire(path.join(repo, 'scripts/lib/market-label'));
 const { getSeasonForDate, getSeasonDates, isEligibleForSeasonStanding } = cjsRequire(path.join(repo, 'scripts/lib/broadway-seasons'));
 // NEWSLETTER_TEST_REVIEWS_PATH / NEWSLETTER_TEST_SHOWS_PATH: TEST-ONLY override
@@ -1722,8 +1722,9 @@ function commercialSection() {
   }
   const rows = fresh.map((f, i, arr) => {
     const isLast = i === arr.length - 1;
-    // "~" marks our estimate, the same rule as the site (BRO-5517).
-    const cap = f.c.capitalization ? (isEstimatedCapitalization(f.c) ? '~' : '') + '$' + (f.c.capitalization / 1e6).toFixed(1) + 'M' : '—';
+    // "~" marks our estimate, "up to" a Form D maximum: the same rules as the site (BRO-5517, BRO-5660).
+    const capMark = isMaximumCapitalization(f.c) ? 'up to ' : isEstimatedCapitalization(f.c) ? '~' : '';
+    const cap = f.c.capitalization ? capMark + '$' + (f.c.capitalization / 1e6).toFixed(1) + 'M' : '—';
     const weeksTail = weeksToRecoupLabel(f.show, f.c);
     return `<tr>
       <td valign="middle" width="68" style="padding:12px 10px 12px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">${thumb(f.show, 56)}</td>

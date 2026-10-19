@@ -5,6 +5,7 @@ const { TRUSTED_RECOUPMENT_HOSTS } = require('./trusted-recoupment-domains');
 const { VALID_DESIGNATIONS, canonicalDesignation, DESIGNATION_BASES, VALID_DESIGNATION_BASES, isLossDesignation, lossDesignationFor, returnedEstimatePct } = require('./commercial-designations');
 const { checkRecoupmentProduction } = require('./recoupment-production-guard');
 const { addedPlaceholderSources } = require('./commercial-sources');
+const { capitalizationBasisFromText, retagCapitalizationBasis } = require('./public-source-text');
 
 const CONFIDENCE_ORDER = { high: 3, medium: 2, low: 1 };
 
@@ -197,7 +198,7 @@ function recoupClaimDesignationAction(existing) {
  * Shared by apply-commercial-pending (verified evidence) and batch-commercial-research --apply (no verifier,
  * so every figure lands as an estimate): there is exactly one place that decides what may print as fact.
  */
-function applyFigureEvidence(result, entry, figureEvidence = {}) {
+function applyFigureEvidence(result, entry, figureEvidence = {}, existing = null) {
   for (const field of ['capitalization', 'weeklyRunningCost']) {
     if (entry[field] == null) continue;
     const evidence = figureEvidence[field];
@@ -212,6 +213,15 @@ function applyFigureEvidence(result, entry, figureEvidence = {}) {
     } else {
       delete result[sourceField];
       if (field === 'weeklyRunningCost') result.costMethodology = 'deep-research';
+    }
+    // A Form D maximum or "up to" quote prints "up to $X" (BRO-5660). A
+    // restated, unchanged figure whose new wording says neither keeps the
+    // basis set for it (othello-2025's maximum has no "up to" in its source).
+    if (field === 'capitalization') {
+      const keep = existing && existing.capitalizationBasis && existing.capitalization === entry.capitalization
+        && !capitalizationBasisFromText(result.capitalizationSource);
+      if (keep) result.capitalizationBasis = existing.capitalizationBasis;
+      else retagCapitalizationBasis(result);
     }
   }
   return result;
@@ -321,7 +331,7 @@ function buildCommercialEntry(entry, existing, opts = {}) {
       result.needsLossEvidence = true;
     }
   }
-  applyFigureEvidence(result, entry, figureEvidence);
+  applyFigureEvidence(result, entry, figureEvidence, existing);
   return result;
 }
 

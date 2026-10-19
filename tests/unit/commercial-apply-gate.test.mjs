@@ -698,3 +698,43 @@ describe('buildCommercialEntry placeholder sources (ship-check)', () => {
     assert.equal(out.sources.length, 1);
   });
 });
+
+// BRO-5660: capitalizationBasis tracks the figure the apply gate writes.
+describe('capitalizationBasis on apply', () => {
+  const { retagCapitalizationBasis } = require('../../scripts/lib/public-source-text');
+  const ev = (quote) => ({ capitalization: { found: true, quote, source: { url: 'https://www.sec.gov/x' } } });
+
+  it('a verified "up to" quote tags a maximum, a fully sold one tags sold', () => {
+    const max = gate.buildCommercialEntry({ designation: 'TBD', capitalization: 18000000 }, null, { figureEvidence: ev('an offering of up to $18,000,000') });
+    assert.equal(max.capitalizationBasis, 'maximum');
+    const sold = gate.buildCommercialEntry({ designation: 'TBD', capitalization: 15000000 }, null, { figureEvidence: ev('$15M, fully sold') });
+    assert.equal(sold.capitalizationBasis, 'sold');
+  });
+
+  it('a restated unchanged figure keeps the explicit basis its wording does not show', () => {
+    const existing = { designation: 'TBD', capitalization: 9000000, capitalizationBasis: 'maximum', capitalizationSource: 'SEC Form D (Othello LLC)' };
+    const r = gate.buildCommercialEntry({ designation: 'TBD', capitalization: 9000000 }, existing, { isClaimAutoApply: true });
+    assert.equal(r.capitalizationBasis, 'maximum');
+  });
+
+  it('a changed figure under wording that says neither drops the old basis', () => {
+    const existing = { designation: 'TBD', capitalization: 9000000, capitalizationBasis: 'maximum', capitalizationSource: 'SEC Form D (Othello LLC)' };
+    const r = gate.buildCommercialEntry({ designation: 'TBD', capitalization: 7000000 }, existing, { isClaimAutoApply: true });
+    assert.equal(r.capitalizationBasis, undefined);
+  });
+
+  it('retagCapitalizationBasis sets from wording and clears when wording says neither', () => {
+    const a = { capitalization: 1, capitalizationSource: 'Variety: up to $5M', capitalizationBasis: 'sold' };
+    retagCapitalizationBasis(a);
+    assert.equal(a.capitalizationBasis, 'maximum');
+    const b = { capitalization: 1, capitalizationSource: 'Variety', capitalizationBasis: 'sold' };
+    retagCapitalizationBasis(b);
+    assert.equal('capitalizationBasis' in b, false);
+  });
+});
+
+it('"not fully sold" is not a sold basis (BRO-5660)', () => {
+  const { capitalizationBasisFromText } = require('../../scripts/lib/public-source-text');
+  assert.equal(capitalizationBasisFromText('SEC Form D: up to $10M, not fully sold'), 'maximum');
+  assert.equal(capitalizationBasisFromText('SEC Form D/A: $10M, fully sold'), 'sold');
+});

@@ -14,6 +14,7 @@
 require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
+const { isMaximumCapitalization } = require('./lib/public-source-text');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data');
@@ -48,7 +49,7 @@ const exportData = {
     generatedAt: new Date().toISOString(),
     source: 'Broadway Scorecard (broadwayscorecard.com)',
     dataLastUpdated: commercial._meta.lastUpdated,
-    notes: 'Capitalization and running costs marked with isEstimate may be approximations from trade press',
+    notes: 'Capitalization and running costs marked with isEstimate may be approximations from trade press; isCapitalizationMaximum marks an SEC Form D offering maximum or "up to" figure, not the amount raised',
   },
   shows: [],
 };
@@ -84,6 +85,8 @@ for (const [slug, data] of Object.entries(commercial.shows)) {
     capitalization: data.capitalization,
     capitalizationSource: data.capitalizationSource || null,
     isCapitalizationEstimate: data.isEstimate?.capitalization || false,
+    // A Form D maximum or "up to" figure, not an exact capitalization (BRO-5660).
+    isCapitalizationMaximum: isMaximumCapitalization(data),
     weeklyRunningCost: data.weeklyRunningCost,
     isRunningCostEstimate: data.isEstimate?.weeklyRunningCost || false,
     recouped: data.recouped,
@@ -131,6 +134,7 @@ const csvHeaders = [
   'Designation',
   'Capitalization',
   'Cap. Estimated',
+  'Cap. Is Maximum',
   'Weekly Running Cost',
   'Running Cost Est.',
   'Recouped',
@@ -153,6 +157,7 @@ for (const show of exportData.shows) {
     show.designation,
     show.capitalization || '',
     show.isCapitalizationEstimate ? 'Yes' : '',
+    show.isCapitalizationMaximum ? 'Yes' : '',
     show.weeklyRunningCost || '',
     show.isRunningCostEstimate ? 'Yes' : '',
     show.recouped === true ? 'Yes' : show.recouped === false ? 'No' : '',

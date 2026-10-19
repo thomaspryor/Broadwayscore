@@ -54,6 +54,7 @@ const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-s
 const { proposeDesignation } = require('./lib/designation-rule');
 const { DESIGNATION_BASES, FIZZLE_MIN_RETURNED_PCT, isLossDesignation, lossDesignationFor, returnedEstimatePct } = require('./lib/commercial-designations');
 const { recoupClaimDesignationAction } = require('./lib/commercial-apply-gate');
+const { retagCapitalizationBasis } = require('./lib/public-source-text');
 
 // Universal scraper with Bright Data → ScrapingBee → Playwright fallback
 let universalScraper;
@@ -1143,6 +1144,8 @@ async function gatherSECFilings(shows, commercial) {
           results.push({
             showSlug: slug,
             capitalization: parsed.totalOfferingAmount,
+            // The offering amount is a ceiling; the amount sold is what came in (BRO-5660).
+            amountSold: parsed.amountSold ?? null,
             source: `SEC Form D: ${parsed.companyName || title}`,
             filingUrl: latestFiling.url || latestFiling.filingUrl,
             filingDate: parsed.filingDate,
@@ -1296,7 +1299,8 @@ function buildAnalysisContext(data) {
     sections.push('');
     for (const filing of data.secFilings) {
       sections.push(`${filing.showSlug}:`);
-      sections.push(`  Capitalization: $${(filing.capitalization / 1e6).toFixed(2)}M`);
+      sections.push(`  Total offering amount (a maximum, not the amount raised): $${(filing.capitalization / 1e6).toFixed(2)}M`);
+      if (filing.amountSold != null) sections.push(`  Amount sold: $${(filing.amountSold / 1e6).toFixed(2)}M`);
       sections.push(`  Source: ${filing.source}`);
       sections.push(`  Filing URL: ${filing.filingUrl}`);
       if (filing.filingDate) {
@@ -1353,7 +1357,7 @@ SPRINT 4 SEC PRIORITY RULES:
     - Reddit Grosses Analysis estimates - use with caution
     - Single Reddit comments - low confidence only
 13. If SEC data contradicts other sources, PREFER the SEC data and note the discrepancy.
-14. When SEC Form D shows totalOfferingAmount, use it as capitalization with high confidence.
+14. A Form D total offering amount is the most the production may raise, not what it raised. When the amount sold equals the offering, propose it and say "fully sold" in capitalizationSource. Otherwise propose the offering amount and write capitalizationSource as "SEC Form D (<entity>, <date>): an offering of up to $X" so the site prints it as "up to $X".
 
 INVESTOR RETURN FIELDS:
 15. profitMargin: Actual investor return % (e.g., 6 means investors got 6% total return). Only propose when a source states a specific investor return figure.
@@ -1526,6 +1530,8 @@ function labelFigure(rec, field, source, citation) {
   const reported = Boolean(citation) && isReportedSource(source);
   rec[CITATION_FIELD[field]] = reported ? citation : null;
   rec.isEstimate = { ...(rec.isEstimate || {}), [field]: !reported };
+  // A Form D maximum or "up to" citation prints "up to $X" (BRO-5660).
+  if (field === 'capitalization') retagCapitalizationBasis(rec);
   if (field === 'weeklyRunningCost') {
     if (reported) rec.costMethodology = methodologyForCostSource(citation);
     else rec.costMethodology = costSourceBasis(source) === 'reddit' ? methodologyForCostSource(source) : 'industry-estimate';

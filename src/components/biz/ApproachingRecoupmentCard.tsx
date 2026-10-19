@@ -17,6 +17,7 @@ interface ApproachingRecoupmentCardProps {
   capitalization: number | null;
   /** Prints the "~" estimate mark only when true (isEstimatedCapitalization). */
   capitalizationIsEstimate: boolean;
+  capitalizationIsMaximum: boolean;
   /** Model [pessimistic, central, optimistic], already past the display quality floor. */
   modelRecoupmentPct: [number, number, number];
   modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
@@ -37,6 +38,7 @@ export default function ApproachingRecoupmentCard({
   season,
   capitalization,
   capitalizationIsEstimate,
+  capitalizationIsMaximum,
   modelRecoupmentPct,
   trend,
 }: ApproachingRecoupmentCardProps) {
@@ -57,10 +59,10 @@ export default function ApproachingRecoupmentCard({
       <div className="text-sm text-gray-400 mb-3">{season} Season</div>
       <div className="flex justify-between text-sm">
         <span className="text-gray-500">Capitalization</span>
-        <span className="text-white">{formatCapitalization(capitalization, capitalizationIsEstimate)}</span>
+        <span className="text-white">{formatCapitalization(capitalization, capitalizationIsEstimate, capitalizationIsMaximum)}</span>
       </div>
       <div className="flex justify-between text-sm mt-1">
-        <span className="text-gray-500">Est. recouped</span>
+        <span className="text-gray-500">{capitalizationIsMaximum ? 'Est. recouped of max' : 'Est. recouped'}</span>
         <span className="text-amber-400 font-semibold" aria-label={labels.ariaLabel}>
           ~{labels.valueText}
         </span>

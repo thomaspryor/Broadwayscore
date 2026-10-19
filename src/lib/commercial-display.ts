@@ -24,7 +24,7 @@ import {
   analystRange, estimateFitsDesignation, RUNNING_SHOWN_MAX,
 } from '../../scripts/lib/model-display-guard';
 import { hasNoInvestorsToRepay, isLossDesignation, likelyOutcomeDesignation, ownReturnedEstimatePct } from '../../scripts/lib/commercial-designations';
-import { publicSourceText, isEstimatedCapitalization, saysRecoupmentUnannounced } from '../../scripts/lib/public-source-text';
+import { publicSourceText, isEstimatedCapitalization, isMaximumCapitalization, saysRecoupmentUnannounced } from '../../scripts/lib/public-source-text';
 import { conversionOf } from '../../scripts/lib/commercial-conversion';
 
 export type RecoupmentDisplayMode = 'announced' | 'analyst' | 'model' | 'none';
@@ -334,6 +334,7 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     designation: commercial.designation,
     capitalization: commercial.capitalization,
     capitalizationSource: publicSourceText(commercial.capitalizationSource),
+    ...(commercial.capitalizationBasis ? { capitalizationBasis: commercial.capitalizationBasis } : {}),
     weeklyRunningCost: commercial.weeklyRunningCost,
     weeklyRunningCostSource: publicSourceText(commercial.weeklyRunningCostSource),
     costMethodology: commercial.costMethodology,
@@ -423,6 +424,8 @@ export { hasNoInvestorsToRepay };
 
 /** Which source text may be printed, and which capitalization is our estimate: shared with the newsletter (BRO-5517). */
 export { publicSourceText, isEstimatedCapitalization };
+/** Which capitalization is a ceiling that prints "up to $X" (BRO-5660). */
+export { isMaximumCapitalization };
 
 /** costMethodology values whose weekly running cost is our estimate, not a reported figure. */
 export const ESTIMATED_COST_METHODS: ReadonlySet<string> = new Set(['industry-estimate', 'deep-research', 'reddit-standard']);

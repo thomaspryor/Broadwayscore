@@ -355,7 +355,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                     {show.capitalization == null ? (
                       <span className="text-gray-500">Undisclosed</span>
                     ) : (
-                      formatCapitalization(show.capitalization, show.capitalizationIsEstimate)
+                      formatCapitalization(show.capitalization, show.capitalizationIsEstimate, show.capitalizationIsMaximum)
                     )}
                   </td>
                   <td className="py-3 px-4 hidden md:table-cell">

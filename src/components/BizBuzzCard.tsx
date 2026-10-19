@@ -17,6 +17,7 @@ import {
   sourceTextLink,
   isEstimatedRunningCost,
   isEstimatedCapitalization,
+  isMaximumCapitalization,
   getWeeklyCostSourceLabel,
   getNonprofitProducerLine,
   getConversionSourceLabel,
@@ -333,10 +334,11 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
         <div className="flex flex-wrap gap-2 sm:gap-3">
           {/* Capitalization */}
           <div className="flex-1 min-w-[calc(50%-0.25rem)] sm:min-w-0 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
-            <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
+            {/* "up to $18.0M" runs one step smaller so it stays on one line beside the other tiles (BRO-5660). */}
+            <div className={`${isMaximumCapitalization(commercial) ? 'text-base sm:text-xl lg:text-2xl' : 'text-lg sm:text-2xl lg:text-3xl'} font-extrabold text-white tracking-tight`}>
               {commercial.capitalization == null
                 ? 'Undisclosed'
-                : formatCapitalization(commercial.capitalization, isEstimatedCapitalization(commercial))}
+                : formatCapitalization(commercial.capitalization, isEstimatedCapitalization(commercial), isMaximumCapitalization(commercial))}
             </div>
             <div className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
               Capitalization
@@ -455,6 +457,13 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
             final={showStatus === 'closed'}
             variant="headline"
           />
+        )}
+        {showModelBar && commercial.modelRecoupmentPct && isMaximumCapitalization(commercial) && (
+          // The model's % is of the capitalization; a ceiling overstates the
+          // denominator when the raise came in lower (BRO-5660).
+          <p className="text-xs text-gray-400" data-testid="model-against-maximum">
+            Measured against the {formatCurrency(commercial.capitalization)} maximum offering; the amount raised may be lower.
+          </p>
         )}
         {holdLabel && (
           <p className="text-xs text-gray-400" data-testid="model-hold">

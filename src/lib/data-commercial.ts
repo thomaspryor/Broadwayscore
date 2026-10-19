@@ -45,6 +45,7 @@ import {
   likelyOutcomeLine,
   likelyOutcomeBasis,
   isEstimatedCapitalization,
+  isMaximumCapitalization,
   isUnannouncedRecoupment,
   isEstimatedRunningCost,
   getNonprofitProducer,
@@ -481,6 +482,7 @@ export function getShowsApproachingRecoupment(): ApproachingRecoupmentShow[] {
       season: getSeason(show.openingDate) || 'Unknown',
       capitalization: data.capitalization ?? null,
       capitalizationIsEstimate: isEstimatedCapitalization(data),
+      capitalizationIsMaximum: isMaximumCapitalization(data),
       modelRecoupmentPct: range,
       modelMethod: data.modelMethod || null,
       trend: getRecoupmentTrend(slug),
@@ -521,6 +523,7 @@ export function getShowsAtRisk(): AtRiskShow[] {
       season: getSeason(show.openingDate) || 'Unknown',
       capitalization: data.capitalization ?? null,
       capitalizationIsEstimate: isEstimatedCapitalization(data),
+      capitalizationIsMaximum: isMaximumCapitalization(data),
       avgWeeklyGross: avgGross as number,
       breakEven: breakEven as number,
       modelRecoupmentPct: range as [number, number, number],
@@ -566,6 +569,7 @@ export function getRecentRecoupments(months: number = 24): RecentRecoupmentShow[
       fromCommercialRun: isConvertedToCommercial(data),
       capitalization: data.capitalization ?? null,
       capitalizationIsEstimate: isEstimatedCapitalization(data),
+      capitalizationIsMaximum: isMaximumCapitalization(data),
       recoupDate: data.recoupedDate,
     });
   }
@@ -663,6 +667,7 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
     designation: data.designation,
     capitalization: data.capitalization,
     capitalizationIsEstimate: isEstimatedCapitalization(data),
+    capitalizationIsMaximum: isMaximumCapitalization(data),
     weeklyGross: running ? grossData?.thisWeek?.gross || null : null,
     // A zero or non-numeric figure is a scrape gap (dark week, partial row), not a real 0% / $0.
     weeklyCapacity: running ? positiveOrNull(grossData?.thisWeek?.capacity) : null,
