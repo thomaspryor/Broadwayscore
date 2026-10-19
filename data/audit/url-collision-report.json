@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-19T08:09:35.660Z",
+  "generatedAt": "2026-10-19T08:51:19.359Z",
   "summary": {
-    "total": 10,
-    "high": 6,
-    "medium": 3,
+    "total": 12,
+    "high": 7,
+    "medium": 4,
     "low": 1
   },
   "collisions": [
@@ -151,7 +151,7 @@
           "file": "i-paper--fiona-mountford.json",
           "publishDate": "2025-12-12",
           "openingDate": "2026-10-07",
-          "hasScore": false,
+          "hasScore": true,
           "hasFullText": true,
           "outletId": "i-paper"
         },
@@ -178,7 +178,7 @@
           "file": "independent--louis-chilton.json",
           "publishDate": "2025-12-12",
           "openingDate": "2026-10-07",
-          "hasScore": false,
+          "hasScore": true,
           "hasFullText": true,
           "outletId": "independent"
         },
@@ -224,6 +224,33 @@
       "confidence": "high"
     },
     {
+      "url": "https://www.theatrely.com/post/punch-redemption-and-runarounds-review",
+      "normalizedUrl": "https://theatrely.com/post/punch-redemption-and-runarounds-review",
+      "candidates": [
+        {
+          "showId": "punch-2025",
+          "file": "theatrely--juan-a-ramirez.json",
+          "publishDate": "September 29, 2025",
+          "openingDate": "2025-09-29",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "theatrely"
+        },
+        {
+          "showId": "punch-west-end-2025",
+          "file": "theatrely--juan-a-ramirez.json",
+          "publishDate": "September 29, 2025",
+          "openingDate": "2025-09-26",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "theatrely"
+        }
+      ],
+      "suggestedWinner": "punch-2025",
+      "reason": "publishDate September 29, 2025 is 0 days from punch-2025 but also 3 days from punch-west-end-2025",
+      "confidence": "medium"
+    },
+    {
       "url": "https://www.thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed/",
       "normalizedUrl": "https://thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed",
       "candidates": [
@@ -249,6 +276,33 @@
       "suggestedWinner": "stereophonic-2024",
       "reason": "publishDate 2024-04-19 is 0 days from stereophonic-2024 but also 13 days from stereophonic-off-broadway-2023",
       "confidence": "medium"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-comedy-about-spies",
+      "normalizedUrl": "https://londonboxoffice.co.uk/news/post/review-comedy-about-spies",
+      "candidates": [
+        {
+          "showId": "the-comedy-about-spies-west-end-2025",
+          "file": "london-box-office--stuart-king.json",
+          "publishDate": "2025-05-13",
+          "openingDate": "2025-05-06",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "london-box-office"
+        },
+        {
+          "showId": "the-comedy-about-spies-west-end-2026",
+          "file": "london-box-office--stuart-king.json",
+          "publishDate": "2025-05-13",
+          "openingDate": "2026-08-06",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "london-box-office"
+        }
+      ],
+      "suggestedWinner": "the-comedy-about-spies-west-end-2025",
+      "reason": "publishDate 2025-05-13 is 7 days from the-comedy-about-spies-west-end-2025 opening (2025-05-06); next closest is 450 days from the-comedy-about-spies-west-end-2026",
+      "confidence": "high"
     },
     {
       "url": "https://www.thewrap.com/titanique-off-broadway-review-celine-dion-titanic/",
