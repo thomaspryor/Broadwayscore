@@ -177,10 +177,10 @@ function boxOfficeWeeks(show, { scoringStart, scoringEnd, runWeeks, tier }) {
 }
 
 /** Weekly gross ceiling for a house, or null when capacity is unknown. */
-function weeklyGrossCeiling(capacity, type, maxAtp) {
+function weeklyGrossCeiling(capacity, type, ceilingAtp) {
   if (!Number.isFinite(capacity) || capacity <= 0) return null;
   const family = type === 'musical' ? 'musical' : 'play';
-  const atp = maxAtp?.[family] || AVG_TICKET_FOR_CAP[family];
+  const atp = ceilingAtp?.[family] || AVG_TICKET_FOR_CAP[family];
   return Math.round(capacity * PERFORMANCES_PER_WEEK * atp * CAP_OCCUPANCY);
 }
 
@@ -189,19 +189,21 @@ function weeklyGrossCeiling(capacity, type, maxAtp) {
 // sorted and split into fifths; tier N gets the mean of the Nth fifth (tier 5
 // = the top fifth). This replaces a hand-set median x GROSS_MULTIPLIER, which
 // capped a tier-5 new play at $683K a week when the top fifth of new plays
-// averaged about $1.8M. maxAtp (highest per-show average ticket per family)
-// replaces the flat $150 in the house ceiling: star plays sell at $200-$380.
+// averaged about $1.4M. ceilingAtp (90th percentile of past shows' average
+// ticket, per family) replaces the flat $150 in the house ceiling: star plays
+// sell at $200+. Not the single highest ticket ($379, Othello alone), which
+// made the ceiling bind for no house.
 const GROSS_TIER_MIN_N = 10;
 
-/** rows: [{ typeKey: 'play-new'|..., gross, atp }] → { byType: { [typeKey]: {1..5} | null }, maxAtp: { play, musical } } */
+/** rows: [{ typeKey: 'play-new'|..., gross, atp }] → { byType: { [typeKey]: {1..5} | null }, ceilingAtp: { play, musical } } */
 function measureGrossByTier(rows) {
   const byTypeRows = {};
-  const maxAtp = {};
+  const atps = {};
   for (const r of rows) {
     if (!Number.isFinite(r.gross) || r.gross <= 0) continue;
     (byTypeRows[r.typeKey] = byTypeRows[r.typeKey] || []).push(r.gross);
     const family = r.typeKey.startsWith('musical') ? 'musical' : 'play';
-    if (Number.isFinite(r.atp) && r.atp > (maxAtp[family] || 0)) maxAtp[family] = Math.round(r.atp);
+    if (Number.isFinite(r.atp)) (atps[family] = atps[family] || []).push(r.atp);
   }
   const byType = {};
   for (const [typeKey, grosses] of Object.entries(byTypeRows)) {
@@ -215,7 +217,13 @@ function measureGrossByTier(rows) {
     }
     byType[typeKey] = tiers;
   }
-  return { byType, maxAtp };
+  const ceilingAtp = {};
+  for (const [family, list] of Object.entries(atps)) {
+    if (list.length < GROSS_TIER_MIN_N) continue;
+    const sorted = [...list].sort((a, b) => a - b);
+    ceilingAtp[family] = Math.round(sorted[Math.min(sorted.length - 1, Math.floor(0.9 * sorted.length))]);
+  }
+  return { byType, ceilingAtp };
 }
 
 /**
@@ -393,7 +401,7 @@ function projectShowPoints(show, ctx) {
         const base = ctx.weeklyGrossPriors?.[key] || 500_000;
         weekly = base * GROSS_MULTIPLIER[grossTier];
       }
-      const ceiling = weeklyGrossCeiling(ctx.venueCapacity, show.type, ctx.grossByTier?.maxAtp);
+      const ceiling = weeklyGrossCeiling(ctx.venueCapacity, show.type, ctx.grossByTier?.ceilingAtp);
       if (ceiling != null && weekly > ceiling) weekly = ceiling;
       notes.push(`projected about ${fmtGross(weekly)} a week`);
     }

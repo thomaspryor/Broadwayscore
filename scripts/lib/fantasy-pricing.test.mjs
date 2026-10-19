@@ -210,13 +210,13 @@ describe('already-open Off-Broadway award EV is measured (BRO-5666)', () => {
 });
 
 describe('constants measured from past seasons (BRO-5667)', () => {
-  test('measureGrossByTier: tier N is the mean of the Nth fifth; ceiling uses the highest real ticket', () => {
-    const rows = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000].map(g => ({ typeKey: 'play-new', gross: g * 1000, atp: g === 1000 ? 380 : 100 }));
+  test('measureGrossByTier: tier N is the mean of the Nth fifth; ceiling uses the 90th-percentile ticket', () => {
+    const rows = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000].map(g => ({ typeKey: 'play-new', gross: g * 1000, atp: g / 5 }));
     const m = pricing.measureGrossByTier(rows);
     assert.deepEqual(m.byType['play-new'], { 1: 150000, 2: 350000, 3: 550000, 4: 750000, 5: 950000 });
-    assert.equal(m.maxAtp.play, 380);
+    assert.equal(m.ceilingAtp.play, 200, 'p90 of 20..200, not one outlier');
     assert.equal(pricing.measureGrossByTier(rows.slice(0, 9)).byType['play-new'], null, 'under 10 shows: not measured');
-    assert.equal(pricing.weeklyGrossCeiling(1000, 'play', m.maxAtp), Math.round(1000 * 8 * 380 * 0.95));
+    assert.equal(pricing.weeklyGrossCeiling(1000, 'play', m.ceilingAtp), Math.round(1000 * 8 * 200 * 0.95));
   });
 
   test('measureAwardConstants: precursor ratio and extra noms by kind', () => {

@@ -99,6 +99,10 @@ try {
 
 // DRAFT_OPENS is a New York calendar date (same rule as src/config/fantasy.ts isDraftOpen).
 const { nyDate, computeAwardsPoints, isScoreLockedForEntry } = require('./lib/fantasy-helpers');
+// Real Tony windows (src/lib/tony-cutoffs.ts), not the current one shifted by
+// whole years: those skipped a day per season and dropped big nominees that
+// opened on cutoff day (BRO-5667 ship-check).
+const { seasonsBefore } = require('./lib/tony-cutoffs-reader');
 // Noon in New York on draft day: the earliest moment anyone can draft.
 const DRAFT_OPENS_ISO = `${DRAFT_OPENS}T16:00:00Z`;
 // A show the scorer locks (no critic/audience points) for an entry made the
@@ -328,11 +332,7 @@ for (const show of catalog) {
 // ── Pricing ─────────────────────────────────────────────────────────
 // The four Tony seasons before this one, for measuring award constants and
 // typical category field sizes (BRO-5667).
-const pastSeasons = [1, 2, 3, 4].map(n => {
-  const shift = d => `${Number(d.slice(0, 4)) - n}${d.slice(4)}`;
-  const [y1, y2] = TONY_WINDOW.label.split('-').map(Number);
-  return { label: `${y1 - n}-${String(y2 - n).padStart(2, '0')}`, start: shift(TONY_WINDOW.start), end: shift(TONY_WINDOW.end) };
-});
+const pastSeasons = seasonsBefore(TONY_WINDOW.label, 4);
 const { awardConstants, expectedFieldSize } = (() => {
   let awardsData;
   try { awardsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'awards.json'), 'utf8')); } catch { return { awardConstants: {}, expectedFieldSize: {} }; }
@@ -387,8 +387,7 @@ const categoryField = pricing.buildCategoryField(catalog.filter(s => isBroadwayC
 // Weekly gross by tier from the four seasons before this one: each Broadway
 // show's median gross over its first 20 full weeks (7+ performances).
 const grossByTier = (() => {
-  const shift = (d, years) => `${Number(d.slice(0, 4)) - years}${d.slice(4)}`;
-  const from = shift(TONY_WINDOW.start, 4), to = shift(TONY_WINDOW.end, 1);
+  const from = pastSeasons[pastSeasons.length - 1].start, to = pastSeasons[0].end;
   const weekKeys = Object.keys(grossWeeks).sort();
   const median = a => { const x = [...a].sort((p, q) => p - q); return x[x.length >> 1]; };
   const rows = [];
@@ -412,10 +411,7 @@ const grossByTier = (() => {
 // Last season's realized Off-Broadway award points by CriticScore band, for
 // pricing already-open Off-Broadway shows (awards are all they can earn).
 const obAwardsByBand = (() => {
-  const shift = d => `${Number(d.slice(0, 4)) - 1}${d.slice(4)}`;
-  const start = shift(TONY_WINDOW.start), end = shift(TONY_WINDOW.end);
-  const [y1, y2] = TONY_WINDOW.label.split('-').map(Number);
-  const season = `${y1 - 1}-${String(y2 - 1).padStart(2, '0')}`;
+  const { start, end, label: season } = pastSeasons[0];
   let awardsData;
   try { awardsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'awards.json'), 'utf8')); } catch { return {}; }
   const rows = [];
