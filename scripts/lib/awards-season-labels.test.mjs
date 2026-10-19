@@ -12,6 +12,7 @@ test('ceremony numbers map to seasons across the COVID gap', () => {
   assert.equal(L.seasonToCeremony('2024-25'), '78th');
   assert.equal(L.seasonToCeremony('2021-22'), '75th');
   assert.equal(L.seasonToCeremony('2019-20'), '74th');
+  assert.equal(L.seasonToCeremony('2020-21'), null, 'no ceremony for 2020-21');
 });
 
 test('two agreeing signals beat the third', () => {
@@ -31,6 +32,6 @@ test('siblings that shared the wrong label move with it; UK awards do not', () =
   assert.equal(changes.length, 1);
   assert.equal(shows.x.tony.season, '2024-25');
   assert.equal(shows.x.dramadesk.season, '2024-25');
-  assert.equal(shows.x.lortel.season, '2022-23', 'different season: an earlier run');
+  assert.equal(shows.x.lortel.season, '2022-23', 'Off-Broadway award: never moved');
   assert.equal(shows.x.olivier.season, '2023-24');
 });

@@ -18,6 +18,7 @@ function ceremonyToSeason(ceremony) {
 
 function seasonToCeremony(season) {
   const year = Number(season.slice(0, 4)) + 1;
+  if (year === 2021) return null; // 2020-21: no ceremony (the 74th, held 2021, was for 2019-20)
   const n = year <= 2020 ? year - 1946 : year - 1947;
   const sfx = n % 100 >= 11 && n % 100 <= 13 ? 'th' : ({ 1: 'st', 2: 'nd', 3: 'rd' }[n % 10] || 'th');
   return `${n}${sfx}`;
@@ -29,15 +30,16 @@ function resolveTonySeason({ label, ceremony, windowLabel }) {
   const votes = [label, fromCeremony, windowLabel].filter(Boolean);
   const winner = votes.find(v => votes.filter(x => x === v).length >= 2);
   if (!winner) return null;
-  const wantCeremony = ceremony ? seasonToCeremony(winner) : undefined;
+  const wantCeremony = ceremony ? (seasonToCeremony(winner) || ceremony) : undefined;
   if (label === winner && (!ceremony || ceremony === wantCeremony)) return null;
   return { season: winner, ceremony: wantCeremony };
 }
 
-// Broadway-season award records that share the Tony season label. UK awards
-// (olivier, whatsOnStage, eveningStandard, criticsCircle) run on their own
-// calendars and are never relabelled.
-const US_SEASON_KEYS = ['dramadesk', 'outerCriticsCircle', 'dramaLeague', 'nyDramaCritics', 'lortel', 'obie', 'oba', 'pulitzer', 'pulitzerFinalist'];
+// Broadway-season award records that share the Tony season label. Off-Broadway
+// awards (lortel, obie, oba) are left alone: a show id can carry them from an
+// earlier Off-Broadway run that really was a different season. UK awards run
+// on their own calendars.
+const US_SEASON_KEYS = ['dramadesk', 'outerCriticsCircle', 'dramaLeague', 'nyDramaCritics', 'pulitzer', 'pulitzerFinalist'];
 
 /**
  * Apply resolveTonySeason across awards.json shows. Sibling US records that

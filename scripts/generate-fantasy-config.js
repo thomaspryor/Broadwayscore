@@ -386,6 +386,8 @@ const categoryField = pricing.buildCategoryField(catalog.filter(s => isBroadwayC
 
 // Weekly gross by tier from the four seasons before this one: each Broadway
 // show's median gross over its first 20 full weeks (7+ performances).
+// Per-seat rates divide by the same house size (theater-metadata) that
+// projections multiply by, so reduced layouts don't inflate the rate.
 const grossByTier = (() => {
   const from = pastSeasons[pastSeasons.length - 1].start, to = pastSeasons[0].end;
   const weekKeys = Object.keys(grossWeeks).sort();
@@ -401,7 +403,7 @@ const grossByTier = (() => {
       if (weeks.length === 20) break;
     }
     if (weeks.length < 4) continue;
-    rows.push({ typeKey: `${s.type}-${s.isRevival ? 'revival' : 'new'}`, gross: median(weeks.map(r => r.gross)), seats: median(weeks.map(r => r.seatsOffered / r.performances).filter(Number.isFinite)) });
+    rows.push({ typeKey: `${s.type}-${s.isRevival ? 'revival' : 'new'}`, gross: median(weeks.map(r => r.gross)), seats: venueCapacity(s.venue) || median(weeks.map(r => r.seatsOffered / r.performances).filter(Number.isFinite)) });
   }
   const measured = pricing.measureGrossByTier(rows);
   console.error(`Weekly gross by tier (${from}..${to}, ${rows.length} shows): ${JSON.stringify(measured)}`);
