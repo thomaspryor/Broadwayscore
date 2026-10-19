@@ -719,6 +719,20 @@
     "queuedAt": "2026-10-19T16:44:51.116Z"
   },
   {
+    "conditionKey": "pending-unrecoverable:triumph-off-west-end-2026",
+    "title": "1 review(s) for triumph-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--795cde64.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/triumph-review-almeida-theatre-london-caryl-churchill",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-19T17:03:40.562Z"
+  },
+  {
     "conditionKey": "opening-night-cv-wrongproduction-unhandled-angels-bone-west-end-2026",
     "title": "Unhandled CV.wrongProduction on Angel's Bone",
     "description": "artsdesk/Unknown (artsdesk--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 2d of opening, likely correct production] The review is focused on a performance at Aviva Studi — https://theartsdesk.com/opera/angels-bone-english-national-opera-manchester-review-bold-experiment-elaborate-project",
