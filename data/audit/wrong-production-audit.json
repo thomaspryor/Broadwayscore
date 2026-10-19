@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-19T16:48:53.004Z",
+  "timestamp": "2026-10-19T17:05:18.963Z",
   "stats": {
-    "totalReviews": 57720,
-    "alreadyFlagged": 21060,
-    "dateGuardCatches": 205,
+    "totalReviews": 57727,
+    "alreadyFlagged": 21064,
+    "dateGuardCatches": 208,
     "directorMismatch": 2007,
     "tvFilmSignals": 1639,
-    "londonSignals": 2524,
+    "londonSignals": 2526,
     "offBroadwaySignals": 530,
     "yearMismatch": 159,
-    "noPublishDate": 5257
+    "noPublishDate": 5247
   },
   "findings": [
     {
@@ -2369,6 +2369,19 @@
       "score": 80,
       "publishDate": "December 4th, 2019",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/amelie-palace-review-wonderfully-wistful-evening/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 561d before show (December 4th, 2019 vs 2021-06-17)"
+        }
+      ]
+    },
+    {
+      "showId": "amelie-west-end-2021",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "December 4th, 2019",
+      "url": "https://www.thetimes.com/article/amelie-the-musical-review-inventive-direction-and-delicate-choreography-make-for-an-exhilarating-experience-dm7gw9gsq",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -12301,7 +12314,8 @@
     {
       "showId": "elf-2024",
       "file": "amny--matt-windman.json",
-      "publishDate": null,
+      "score": null,
+      "publishDate": "November 17, 2024",
       "url": "https://www.amny.com/entertainment/arts-entertainment/review-elf-revival-holidays-broadway-2024/",
       "findings": [
         {
@@ -30603,7 +30617,7 @@
     {
       "showId": "other-desert-cities-2026",
       "file": "nysr--melissa-rose-bernardo.json",
-      "score": 80,
+      "score": 78,
       "publishDate": "2026-10-19",
       "url": "https://nystagereview.com/2026/10/19/other-desert-cities-a-piercing-revival-of-jon-robin-baitzs-best-play/",
       "findings": [
@@ -55344,10 +55358,38 @@
     },
     {
       "showId": "angels-bone-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "score": 61,
+      "publishDate": "2026-05-13",
+      "url": "https://theartsdesk.com/opera/angels-bone-english-national-opera-manchester-review-bold-experiment-elaborate-project",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 156d before show (2026-05-13 vs 2026-10-16)"
+        }
+      ]
+    },
+    {
+      "showId": "angels-bone-west-end-2026",
       "file": "british-theatre--david-chadderton.json",
       "score": 78,
       "publishDate": "2026-05-13",
       "url": "https://www.britishtheatreguide.info/reviews/angel-s-bone-aviva-studios-25587",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 156d before show (2026-05-13 vs 2026-10-16)"
+        }
+      ]
+    },
+    {
+      "showId": "angels-bone-west-end-2026",
+      "file": "guardian--clive-paget.json",
+      "score": 57,
+      "publishDate": "2026-05-13",
+      "url": "https://www.theguardian.com/music/2026/may/13/angels-bone-review-du-yun-kip-williams-english-national-opera-aviva-studios-manchster",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -90005,9 +90047,24 @@
     },
     {
       "showId": "triumph-off-west-end-2026",
-      "file": "bestoftheatre--erica-bond.json",
-      "publishDate": "2026-10-01",
-      "url": "https://www.bestoftheatre.co.uk/blog/post/caryl-churchill-triumph-public-theater-new-york-almeida",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": 79,
+      "publishDate": "2026-10-19",
+      "url": "https://www.allthatdazzles.co.uk/post/review-triumph-almeida-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "triumph-off-west-end-2026",
+      "file": "everything-theatre--rebecca-clifton.json",
+      "score": 96,
+      "publishDate": "2026-10-19",
+      "url": "https://everything-theatre.co.uk/2026/10/review-triumph-almeida-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -90022,6 +90079,20 @@
       "score": 63,
       "publishDate": "2026-10-18",
       "url": "https://liamodell.com/2026/10/18/triumph-review-almeida-theatre-public-theater-new-york-caryl-churchill/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "triumph-off-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 60,
+      "publishDate": "2026-10-19",
+      "url": "https://www.standard.co.uk/culture/theatre/triumph-review-b1301404.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
