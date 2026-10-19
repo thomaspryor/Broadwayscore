@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5676",
   "planId": "705aea25-1f3d-4c63-a69f-3a603267d766",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-19T04:54:40.048Z",
   "submitter": {
     "name": null,
@@ -39,23 +39,65 @@
           "theaterAddress": null,
           "ticketLinks": [],
           "cast": [
-            { "name": "Zoe Kazan", "role": null },
-            { "name": "Amy Ryan", "role": null },
-            { "name": "Richard Armitage", "role": null },
-            { "name": "Ben Rosenfield", "role": null },
-            { "name": "Alex Hurt", "role": null }
+            {
+              "name": "Zoe Kazan",
+              "role": null
+            },
+            {
+              "name": "Amy Ryan",
+              "role": null
+            },
+            {
+              "name": "Richard Armitage",
+              "role": null
+            },
+            {
+              "name": "Ben Rosenfield",
+              "role": null
+            },
+            {
+              "name": "Alex Hurt",
+              "role": null
+            }
           ],
           "creativeTeam": [
-            { "name": "Mike Bartlett", "role": "Playwright" },
-            { "name": "Michael Mayer", "role": "Director" },
-            { "name": "Derek McLane", "role": "Scenic Designer" },
-            { "name": "Susan Hilferty", "role": "Costume Designer" },
-            { "name": "David Lander", "role": "Lighting Designer" },
-            { "name": "Kai Harada", "role": "Sound Designer" }
+            {
+              "name": "Mike Bartlett",
+              "role": "Playwright"
+            },
+            {
+              "name": "Michael Mayer",
+              "role": "Director"
+            },
+            {
+              "name": "Derek McLane",
+              "role": "Scenic Designer"
+            },
+            {
+              "name": "Susan Hilferty",
+              "role": "Costume Designer"
+            },
+            {
+              "name": "David Lander",
+              "role": "Lighting Designer"
+            },
+            {
+              "name": "Kai Harada",
+              "role": "Sound Designer"
+            }
           ]
         },
         "description": "Add the 2016 Roundabout Off-Broadway run of Love, Love, Love (previews 2016-09-22, opened 2016-10-19, closed 2016-12-18) per Playbill"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-19T05:18:09.461Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added love-love-love-off-broadway-2016"
+    }
+  ],
+  "executedIn": "ci"
 }
