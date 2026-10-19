@@ -27,7 +27,7 @@ import { getShowCommercial } from './data-commercial';
 import { getShowAwards } from './data-awards';
 import { BROWSE_PAGES, BrowsePageConfig, BrowseFilterContext, getAllBrowseSlugs as getBrowseSlugsFromConfig, getBrowsePageConfig } from '@/config/browse-pages';
 import { slugify as urlSlugify } from '../../scripts/lib/url-slug';
-import { stubTheaterName, HIDDEN_LONDON_IDS } from '../../scripts/lib/page-name-sources';
+import { broadwayTheaterNames, stubTheaterName, HIDDEN_LONDON_IDS } from '../../scripts/lib/page-name-sources';
 import { resolveNameRedirect, type SlugRedirectMap } from './slug-redirects';
 // Import raw data (loaded at build time for static generation)
 import showsData from '../../data/shows.json';
@@ -781,9 +781,13 @@ export function getAllTheaters(): Theater[] {
   if (_theatersCache) return _theatersCache;
 
   const allShows = getBroadwayShows();
+  // Unknown venues are deliberately stored as null. Use the same page-name
+  // source as the redirect builder before grouping them into theater records.
+  const theaterNames = new Set(broadwayTheaterNames(allShows));
   const theaterMap = new Map<string, { shows: ComputedShow[]; address?: string }>();
 
   for (const show of allShows) {
+    if (!theaterNames.has(show.venue)) continue;
     const existing = theaterMap.get(show.venue) || { shows: [], address: show.theaterAddress };
     existing.shows.push(show);
     if (show.theaterAddress) existing.address = show.theaterAddress;
@@ -793,7 +797,6 @@ export function getAllTheaters(): Theater[] {
   const meta = theaterMetaData as unknown as Record<string, { capacity?: number; tips?: string; yearBuilt?: number; operator?: string; formerNames?: string[]; structuredTips?: TheaterStructuredTips; images?: { exterior?: string; interior?: string; attribution?: string }; venueScores?: Omit<TheaterVenueScores, 'overall'>; accessibility?: TheaterAccessibility; externalLinks?: TheaterExternalLinks }>;
 
   _theatersCache = Array.from(theaterMap.entries())
-    .filter(([name]) => !name.startsWith('_'))
     .map(([name, data]) => {
       const currentShow = data.shows.find(s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming');
       const theaterMeta = meta[name];

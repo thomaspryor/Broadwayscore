@@ -673,6 +673,21 @@ describe('getAllDirectorSlugs', () => {
 // ===========================================
 
 describe('getAllTheaters', () => {
+  test('indexes public venues without dropping shows whose venue is unknown', () => {
+    const { broadwayTheaterNames } = require('../../scripts/lib/page-name-sources.js');
+    const shows = getBroadwayShows();
+    const expectedNames = new Set(broadwayTheaterNames(shows));
+    const theaters = getAllTheaters();
+    assert.deepStrictEqual(new Set(theaters.map(t => t.name)), expectedNames);
+    assert.deepStrictEqual(
+      theaters.flatMap(t => t.allShows.map(s => s.id)).sort(),
+      shows.filter(s => expectedNames.has(s.venue)).map(s => s.id).sort(),
+    );
+    for (const show of shows.filter(s => !s.venue)) {
+      assert.strictEqual(getShowById(show.id), show, 'Unknown venue must not remove a show');
+    }
+  });
+
   test('returns non-empty array of theaters', () => {
     const theaters = getAllTheaters();
     assert.ok(theaters.length > 0);
