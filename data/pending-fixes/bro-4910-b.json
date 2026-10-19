@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4910-b",
   "planId": "284c072d-11bc-43c6-9306-7b6b2a3ffe8e",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-19T23:00:00.000Z",
   "submitter": {
     "name": null,
@@ -63,5 +63,42 @@
         "description": "Rename to match the corrected byline. The file stays a stub (no text) until ingest-urls.yml refetches the url, which merges into this file by url match and gets it scored."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-19T23:28:21.113Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved into-the-woods-2022/observer--jesse-green.json → into-the-woods-2022/observer--david-cote.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-2022/nytimes--alexis-soloski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved into-the-woods-2022/nytimes--jesse-green.json → into-the-woods-2022/nytimes--alexis-soloski.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-2022/frontmezzjunkies--shannon-shyne.json criticName: \"Shannon Shyne\" -> \"Steven Ross\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-2022/frontmezzjunkies--shannon-shyne.json publishDate: null -> \"2022-07-28\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved into-the-woods-2022/frontmezzjunkies--shannon-shyne.json → into-the-woods-2022/frontmezzjunkies--steven-ross.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
 }
