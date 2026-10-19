@@ -26,6 +26,8 @@ const {
   isReplaceableByPageDate,
   isPageDateSource,
   needsOpeningWindowDateRecheck,
+  resolvePageDateReplacement,
+  htmlDateSourceFor,
 } = require('../../scripts/lib/publish-date-provenance.js');
 
 const PAD = `<p>${'Lorem ipsum dolor sit amet. '.repeat(10)}</p>`;
@@ -134,7 +136,7 @@ describe('isReplaceableByPageDate (BRO-5674)', () => {
     }
   });
   test('a page or human date is never downgraded', () => {
-    for (const s of ['html-page', 'html-cookies', 'html-archive-org', 'html-paid', 'html-backfill', 'extracted-from-html-json-ld', 'page-date', 'human-page-verified', 'manual-correction']) {
+    for (const s of ['html-page', 'html-cookies', 'html-paid', 'html-backfill', 'extracted-from-html-json-ld', 'page-date', 'human-page-verified', 'manual-correction']) {
       assert.equal(isPageDateSource(s), true, s);
       assert.equal(isReplaceableByPageDate({ ...base, dateSource: s }), false, s);
     }
@@ -182,7 +184,6 @@ describe('wiring', () => {
     assert.doesNotMatch(s, /function extractPublishDateFromHtml\(/, 'no private copy');
     assert.match(s, /isReplaceableByPageDate\(data\)/);
     assert.match(s, /needsOpeningWindowDateRecheck\(data, showMeta\)/);
-    assert.match(s, /data\.dateSource = 'html-page';/);
   });
   test('both backfill scripts use the shared extractor', () => {
     for (const f of ['scripts/backfill-review-dates.js', 'scripts/backfill-network-tier-dates.js']) {
@@ -191,5 +192,130 @@ describe('wiring', () => {
       assert.doesNotMatch(s, /function extractPublishDateFromHtml\(/, f);
     }
     assert.match(src('scripts/backfill-review-dates.js'), /needsOpeningWindowDateRecheck\(data, showById\.get\(show\)\)/);
+  });
+});
+
+const PAD2 = `<p>${'The cast is strong and the staging is sharp. '.repeat(10)}</p>`;
+
+describe('extractPublishDateFromHtml: wrong-date traps (BRO-5674 ship-check)', () => {
+  const url = 'https://example.com/review';
+
+  test('site header "today" date is the fetch date, not the publish date', () => {
+    const html = `<html><body><header class="site-header"><span class="current-date">October 22, 2026</span></header>
+<article><h1>Review</h1><div class="entry-meta"><span class="posted-on">October 19, 2026</span></div>${PAD2}</article></body></html>`;
+    assert.equal(extractPublishDateFromHtml(html, url), '2026-10-19');
+  });
+
+  test('a bare top-level <header> with a today date and no <article>', () => {
+    const html = `<html><body><header><span class="today-date">October 22, 2026</span></header><div class="post">${PAD2}</div></body></html>`;
+    assert.equal(extractPublishDateFromHtml(html, url), null);
+  });
+
+  test('a show-info opening-date box does not win', () => {
+    const html = `<html><body><article><div class="show-info"><span class="opening-date">October 18, 2026</span><span class="closing-date">January 25, 2027</span></div>
+<div class="byline">By Jordan Ruben, October 20, 2026</div>${PAD2}</article></body></html>`;
+    assert.equal(extractPublishDateFromHtml(html, url), '2026-10-20');
+  });
+
+  test('WordPress comment stamps are not the publish stamp', () => {
+    const html = `<html><body><article>${PAD2}<p>Posted October 19, 2026</p></article>
+<div id="comments" class="comments-area"><div class="comment-meta">October 30, 2026 at 3:14 pm</div><p>Great review!</p></div></body></html>`;
+    assert.equal(extractPublishDateFromHtml(html, url), '2026-10-19');
+  });
+
+  test('"Updated: October 21, 2026 4:05 PM" is not the publish stamp', () => {
+    const html = `<html><body><article><p>Updated: October 21, 2026 4:05 PM</p><p>October 19, 2026 9:00 PM</p>${PAD2}</article></body></html>`;
+    assert.equal(extractPublishDateFromHtml(html, url), '2026-10-19');
+  });
+
+  test('a teaser byline placed before the article does not win', () => {
+    const html = `<html><body><div class="related-posts"><p>By Kobi Kassal on October 16, 2026</p></div>
+<article><p>By Critic Name on October 19, 2026</p>${PAD2}</article></body></html>`;
+    assert.equal(extractPublishDateFromHtml(html, url), '2026-10-19');
+  });
+
+  test('a teaser before the <article> element without a teaser class does not win', () => {
+    const html = `<html><body><div class="cards"><p>By Kobi Kassal on October 16, 2026</p></div>
+<article><p>By Critic Name on October 19, 2026</p>${PAD2}</article></body></html>`;
+    assert.equal(extractPublishDateFromHtml(html, url), '2026-10-19');
+  });
+
+  test('"appears in print on" in article-meta gives the publish date, not the print date', () => {
+    const html = `<html><body><article><div class="article-meta">A version of this article appears in print on October 26, 2026</div>
+<div class="article-meta">Published October 19, 2026</div>${PAD2}</article></body></html>`;
+    assert.equal(extractPublishDateFromHtml(html, url), '2026-10-19');
+    const printOnly = `<html><body><article><div class="article-meta">A version of this article appears in print on October 26, 2026</div>${PAD2}</article></body></html>`;
+    assert.equal(extractPublishDateFromHtml(printOnly, url), null);
+  });
+
+  test('two related NewsArticles in JSON-LD, no canonical match: no date (unscoped readers do not run)', () => {
+    const ld = JSON.stringify([
+      { '@type': 'NewsArticle', url: 'https://example.com/other-1', datePublished: '2026-10-12T10:00:00-04:00' },
+      { '@type': 'NewsArticle', url: 'https://example.com/other-2', datePublished: '2026-10-14T10:00:00-04:00' },
+    ]);
+    const html = `<html><head><script type="application/ld+json">${ld}</script></head><body><time datetime="2026-10-12">Oct 12</time>${PAD2}</body></html>`;
+    assert.equal(extractPublishDateFromHtml(html, 'https://example.com/this-review'), null);
+  });
+
+  test("the page's own entity among related ones still wins", () => {
+    const ld = JSON.stringify([
+      { '@type': 'NewsArticle', url: 'https://example.com/other-1', datePublished: '2026-10-12T10:00:00-04:00' },
+      { '@type': 'NewsArticle', url: 'https://example.com/this-review', datePublished: '2026-10-19T10:00:00-04:00' },
+    ]);
+    const html = `<html><head><script type="application/ld+json">${ld}</script></head><body>${PAD2}</body></html>`;
+    assert.equal(extractPublishDateFromHtml(html, 'https://example.com/this-review'), '2026-10-19');
+  });
+});
+
+describe('resolvePageDateReplacement: divergence guard (BRO-5674 ship-check)', () => {
+  test('no stored date: replace', () => {
+    assert.equal(resolvePageDateReplacement({ storedDate: null, pageDate: '2026-10-19' }).replace, true);
+  });
+  test('within 7 days: replace (Theatrely 10-16 -> 10-19)', () => {
+    assert.equal(resolvePageDateReplacement({ storedDate: '2026-10-16', pageDate: '2026-10-19' }).replace, true);
+    assert.equal(resolvePageDateReplacement({ storedDate: '2026-10-12', pageDate: '2026-10-19' }).replace, true);
+  });
+  test('more than 7 days: keep the stored date', () => {
+    const r = resolvePageDateReplacement({ storedDate: '2026-10-19', pageDate: '2026-10-30' });
+    assert.equal(r.replace, false);
+    assert.equal(r.divergentDays, 11);
+  });
+  test('the recheck sweep may replace a stored date already in doubt', () => {
+    assert.equal(resolvePageDateReplacement({ storedDate: '2026-09-01', pageDate: '2026-10-19', allowDivergent: true }).replace, true);
+  });
+  test('no page date: nothing to replace with', () => {
+    assert.equal(resolvePageDateReplacement({ storedDate: '2026-10-19', pageDate: null }).replace, false);
+  });
+});
+
+describe('archived-copy dates (BRO-5674 ship-check)', () => {
+  test('HTML from an archive is stored as html-archive', () => {
+    assert.equal(htmlDateSourceFor('archive.org'), 'html-archive');
+    assert.equal(htmlDateSourceFor('archive-today'), 'html-archive');
+    assert.equal(htmlDateSourceFor('brightdata'), 'html-page');
+    assert.equal(htmlDateSourceFor(undefined), 'html-page');
+  });
+  test('an archive date is not permanent: a live page may replace it, and the recheck still marks it', () => {
+    for (const s of ['html-archive', 'html-archive-org']) {
+      assert.equal(isPageDateSource(s), false, s);
+      assert.equal(isReplaceableByPageDate({ publishDate: '2026-10-19', dateSource: s }), true, s);
+      assert.equal(needsOpeningWindowDateRecheck({ publishDate: '2026-09-30', dateSource: s }, { openingDate: '2026-10-18' }), true, s);
+    }
+  });
+});
+
+describe('wiring (ship-check)', () => {
+  const src = (f) => readFileSync(join(ROOT, f), 'utf8');
+  test('collector guards divergence and stamps the archive source', () => {
+    const s = src('scripts/collect-review-texts.js');
+    assert.match(s, /resolvePageDateReplacement\(\{ storedDate: carriedPublishDate, pageDate: extractedDate \}\)/);
+    assert.match(s, /data\.dateSource = htmlDateSourceFor\(method\);/);
+    assert.match(s, /data\.pageDateCandidate = extractedDate;/);
+    assert.doesNotMatch(s, /data\.dateSource = 'html-page';/);
+  });
+  test('backfill --recheck-dates guards divergence and tries the live page before archive.org', () => {
+    const s = src('scripts/backfill-review-dates.js');
+    assert.match(s, /allowDivergent: recheckDates && needsOpeningWindowDateRecheck\(current, showById\.get\(show\)\)/);
+    assert.match(s, /recheckDates \? \[tryCookies, tryPaid, tryArchive\] : \[tryCookies, tryArchive, tryPaid\]/);
   });
 });
