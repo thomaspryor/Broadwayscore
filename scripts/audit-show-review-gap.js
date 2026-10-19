@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// venue-write-guard-ok: reads show.venue only to pass it to the reprint matcher, never writes a venue (BRO-5489)
 /**
  * audit-show-review-gap.js
  *
