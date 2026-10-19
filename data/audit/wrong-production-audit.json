@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-19T09:03:01.850Z",
+  "timestamp": "2026-10-19T09:12:33.945Z",
   "stats": {
-    "totalReviews": 57638,
+    "totalReviews": 57644,
     "alreadyFlagged": 21050,
     "dateGuardCatches": 203,
     "directorMismatch": 2006,
     "tvFilmSignals": 1639,
-    "londonSignals": 2516,
+    "londonSignals": 2519,
     "offBroadwaySignals": 529,
     "yearMismatch": 159,
-    "noPublishDate": 5243
+    "noPublishDate": 5244
   },
   "findings": [
     {
@@ -89832,6 +89832,32 @@
     },
     {
       "showId": "triumph-off-west-end-2026",
+      "file": "liamodell--liam-odell.json",
+      "publishDate": "2026-10-18",
+      "url": "https://liamodell.com/2026/10/18/triumph-review-almeida-theatre-public-theater-new-york-caryl-churchill/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "triumph-off-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2026-10-18",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/triumph-review-is-this-theatre-for-the-tiktok-generation-srgrf0zz7",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "triumph-off-west-end-2026",
       "file": "travelbeginsat40--mark-bibby-jackson.json",
       "score": 87,
       "publishDate": "2026-10-18",
@@ -89841,6 +89867,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "triumph-off-west-end-2026",
+      "file": "west-end-best-friend--sophie-luck.json",
+      "publishDate": "2026-10-18",
+      "url": "https://www.westendbestfriend.co.uk/news/review-triumph-almeida-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
