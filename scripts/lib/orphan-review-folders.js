@@ -40,7 +40,7 @@ function findOrphanReviewFolders(reviewTextsDir, showIds) {
     const files = fs.readdirSync(path.join(reviewTextsDir, ent.name))
       .filter((f) => isReviewTextFile(f))
       .sort();
-    // A folder left holding only failed-fetches.json (or nothing) has no review to lose.
+    // A folder left holding only sidecars (failed-fetches.json, _blocklist.json) (or nothing) has no review to lose.
     if (files.length) out.push({ folder: ent.name, files });
   }
   return out.sort((a, b) => a.folder.localeCompare(b.folder));
