@@ -1382,11 +1382,12 @@ async function runPr(n) {
     log(`PR #${n} ${String(sha).slice(0, 7)}: ${outcome}`);
     const mail = R.prLanderEmail({ outcome, title: pr.title, minutes: (Date.now() - Date.parse(pr.created_at)) / 60000, site: extra.site, why: extra.why, prUrl: pr.html_url });
     if (OPTS.dryRun) { log(body); if (mail) log(`email: ${mail.subject}\n${mail.lines.join('\n')}`); return; }
-    // One per head commit: the key makes a re-run's repeat a no-op at Resend for 24h.
+    // One per head commit and outcome: a re-run's repeat is a no-op at Resend for 24h, while a
+    // different answer (e.g. a timed-out landing that a retry finds on main) still goes out.
     if (mail) {
       prMail.push(require(path.join(ROOT, 'scripts/lib/discord-notify.js')).sendEmailAlert({
         title: mail.subject, description: mail.lines.join('\n'), url: 'https://broadwayscorecard.com',
-        subjectLabel: '', idempotencyKey: `codex-pr-lander:${n}:${sha}`,
+        subjectLabel: '', idempotencyKey: `codex-pr-lander:${n}:${sha}:${outcome}`,
       }).catch((e) => log(`PR #${n}: owner email failed (${e.message})`)));
     }
     const post = (id) => gh(['api', '-X', id ? 'PATCH' : 'POST', id ? `repos/${repo}/issues/comments/${id}` : `repos/${repo}/issues/${n}/comments`, '--input', '-', '--jq', '.id'], JSON.stringify({ body }));
@@ -1480,7 +1481,7 @@ async function runPr(n) {
     log(`PR #${n}: pushed ${ref}`);
     const w = await waitForLand(ref);
     if (w.code === 1) { say('refused', { details: tail(w.out, 2000) }); return; }
-    if (w.code !== 0) { say('error', { details: `The landing did not finish in time (it may still land; this pull request stays open):\n${tail(w.out, 1500)}` }); return; }
+    if (w.code !== 0) { say('error', { why: 'the landing was still running when the check stopped', details: `The landing did not finish in time (it may still land; this pull request stays open):\n${tail(w.out, 1500)}` }); return; }
     finishLanded(remaining);
   } catch (e) {
     say('error', { details: e && e.message ? e.message : String(e) });

@@ -1009,7 +1009,7 @@ test('prLanderEmail: one end-of-run email whose subject answers "is it live?" (B
   const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
   // Never in a dry run, one per head commit, and awaited before the process exits.
   assert.match(src, /if \(OPTS\.dryRun\) \{ log\(body\); if \(mail\)/);
-  assert.match(src, /idempotencyKey: `codex-pr-lander:\$\{n\}:\$\{sha\}`/);
+  assert.match(src, /idempotencyKey: `codex-pr-lander:\$\{n\}:\$\{sha\}:\$\{outcome\}`/);
   assert.match(src, /await runPr\(PR_NUM\); await Promise\.allSettled\(prMail\)/);
   const wf = readFileSync(join(ROOT, '.github/workflows/codex-pr-lander.yml'), 'utf8');
   assert.match(wf, /RESEND_API_KEY: \$\{\{ secrets\.RESEND_API_KEY \}\}/);
