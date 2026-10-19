@@ -19,7 +19,7 @@ const COMMENT = /^\s*(?:\/\/|\*|\/\*|#)/;
 // health-check.js humanAction paste-prompts are filed as cards by the router;
 // owner-decision-notify.js is a reply to a decision the owner must make.
 const BASELINE = {
-  'scripts/health-check.js': 29,
+  'scripts/health-check.js': 28,
   'scripts/lib/owner-decision-notify.js': 1,
 };
 

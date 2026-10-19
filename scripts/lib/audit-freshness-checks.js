@@ -136,7 +136,7 @@ const AUDIT_FRESHNESS_CHECKS = [
   { file: 'open-backlog-acceptance-sweep.json', field: 'generatedAt', ...DAILY,
     missingStatus: 'warn', missingMessage: 'No open-backlog acceptance sweep report yet (sweep not yet run)', fetchErrorWarn: true,
     workflow: null, urgency: 'this-week',
-    humanAction: 'The daily sweep that checks which open backlog cards already pass their acceptance check has stopped updating its report, so the watchdog is reading an old snapshot. Open Claude Code and say: "The open-backlog acceptance sweep report is stale (BRO-4382 row) — check the sweep and commit steps in data-health-check.yml and get it landing again."',
+    humanAction: 'The daily sweep that checks which open backlog cards already pass their acceptance check has stopped updating its report, so the watchdog is reading an old snapshot. Nothing is needed from you; the sweep and commit steps in data-health-check.yml (BRO-4382) are what need a look, and the next board worker will pick that up.',
     hint: 'Check the "Open backlog acceptance sweep (shadow mode)" and "Commit open backlog acceptance sweep" steps in data-health-check.yml (both continue-on-error, so a failure there does not turn the run red); node scripts/sweep-open-backlog-acceptance.js --dry-run confirms it can still plan a sweep.' },
 ];
 
