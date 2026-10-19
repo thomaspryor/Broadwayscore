@@ -1386,13 +1386,13 @@ async function processRecoveredText(candidate, text, html, archiveData) {
 // Entry point
 // ============================================================================
 
-// --help/-h checked BEFORE any candidate loading or network/fs work (cousin
-// of #260/#263/#264/#266 — see scripts/lib/cli-help.js). This script has no
-// other process.argv handling at all (config is env-var only), so a bare
-// `--help` invocation used to fall straight through to main().
 module.exports = { extractTextFromHtml };
 
 if (require.main === module) {
+  // --help/-h checked BEFORE any candidate loading or network/fs work (cousin
+  // of #260/#263/#264/#266 — see scripts/lib/cli-help.js). This script has no
+  // other process.argv handling at all (config is env-var only), so a bare
+  // `--help` invocation used to fall straight through to main().
   if (hasHelpFlag(process.argv.slice(2))) {
     console.log(USAGE);
     process.exit(0);

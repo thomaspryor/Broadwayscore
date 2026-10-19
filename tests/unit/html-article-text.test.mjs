@@ -6,6 +6,7 @@ const require = createRequire(import.meta.url);
 const { extractFromJsonLd, extractParagraphText } = require('../../scripts/lib/html-article-text.js');
 const { extractTextFromHtml: wayback } = require('../../scripts/recover-wayback-reviews.js');
 const { extractTextFromHtml: collector } = require('../../scripts/collect-review-texts.js');
+const { extractTextFromHtml: loginPage } = require('../../scripts/recover-login-page-reviews.js');
 
 const paragraph = label => `<p>${label}: ${'The cast brings this scene to life. '.repeat(12)}</p>`;
 const ld = data => `<script type="application/ld+json">${JSON.stringify(data)}</script>`;
@@ -20,6 +21,7 @@ describe('shared paragraph extraction (BRO-5244)', () => {
       assert.match(shared, /Ending:/);
       assert.equal(wayback(html, 'https://example.com/review'), shared);
       assert.equal(collector(html, 'https://example.com/review'), shared);
+      assert.equal(loginPage(html, 'https://example.com/review'), shared);
     });
   }
 
@@ -105,5 +107,28 @@ describe('Wayback preprocessing and legacy fallback', () => {
   it('returns empty text for missing HTML', () => {
     assert.equal(wayback(null), '');
     assert.equal(wayback(''), '');
+  });
+});
+
+describe('all three pipelines agree on Variety pages (BRO-5244 acceptance)', () => {
+  const url = 'https://variety.com/2009/film/awards/god-of-carnage-1200474074/';
+  // Variety shape: a-content body with nested wrappers, an injected related
+  // story mid-article and a teaser-length JSON-LD body.
+  const html = `${ld({ articleBody: 'Teaser sentence about the production.' })}<article><div class="a-content">${paragraph('Opening')}<div><div>${paragraph('Nested')}</div></div><div class="injected-related-story">${paragraph('Promo')}</div>${paragraph('Ending')}</div></article><p>More from Variety</p>`;
+
+  it('wayback and login recovery return at least 90% of the collector text', () => {
+    const full = collector(html, url);
+    assert.match(full, /Ending:/);
+    assert.doesNotMatch(full, /Promo/);
+    for (const extract of [wayback, loginPage]) {
+      const text = extract(html, url);
+      assert.ok(text.length >= 0.9 * full.length, `${text.length} < 90% of ${full.length}`);
+      assert.equal(text, full);
+    }
+  });
+
+  it('wayback strips the toolbar before the Variety extractor runs', () => {
+    const snap = `<!-- BEGIN WAYBACK TOOLBAR INSERT -->${paragraph('Toolbar')}<!-- END WAYBACK TOOLBAR INSERT -->${html}`;
+    assert.equal(wayback(snap, url), collector(html, url));
   });
 });

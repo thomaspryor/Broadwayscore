@@ -321,4 +321,8 @@ async function main() {
   }
 }
 
-main().catch(console.error);
+module.exports = { extractTextFromHtml, isLoginPage };
+
+if (require.main === module) {
+  main().catch(console.error);
+}
