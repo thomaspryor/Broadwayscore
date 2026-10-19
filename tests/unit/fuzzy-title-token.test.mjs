@@ -30,6 +30,16 @@ test('override page title with a one-letter typo matches; a different show does 
 
 test('gather-reviews waives only title-word checks, and only for override URLs', () => {
   const src = fs.readFileSync(new URL('../../scripts/gather-reviews.js', import.meta.url), 'utf8');
-  assert.match(src, /if \(bwwResult\.fromOverride && titleOnlyMiss\)/);
+  assert.match(src, /if \(bwwResult\.fromOverride && !validation\.valid/);
   assert.equal((src.match(/fromOverride: true/g) || []).length, 3);
+});
+
+test('checkArchiveCategory rescues a one-typo BWW roundup title only for an override show', () => {
+  const { checkArchiveCategory } = require('../../scripts/lib/archive-cache-guard.js');
+  const html = '<html><head><title>Review Roundup: CELEBRITY AUTOPBIOGRAPHY On Broadway | BroadwayWorld</title></head><body></body></html>';
+  const listed = { id: 'celebrity-autobiography-2026', title: 'Celebrity Autobiography', category: 'broadway', openingDate: '2026-05-18' };
+  const r = checkArchiveCategory(html, listed, []);
+  assert.equal(r.rescued, true, JSON.stringify(r));
+  const unlisted = { ...listed, id: '__not-in-override-map__' };
+  assert.equal(checkArchiveCategory(html, unlisted, []).ok, false);
 });

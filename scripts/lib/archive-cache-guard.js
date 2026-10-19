@@ -8,6 +8,23 @@ const {
   checkTitleMatchSiblingGuards,
   buildSiblingCategoriesFromShows,
 } = require('./show-matching');
+const path = require('path');
+const { pageTitleTypoMatch } = require('./fuzzy-title-token');
+
+// Shows whose BWW roundup URL a human listed in data/bww-roundup-urls.json.
+// Only those get the one-typo title rescue below (BWW titled one roundup
+// "CELEBRITY AUTOPBIOGRAPHY"); a discovered page never does.
+let _overrideShowIds = null;
+function hasBwwRoundupOverride(showId) {
+  if (!showId) return false;
+  if (!_overrideShowIds) {
+    try {
+      _overrideShowIds = new Set(Object.keys(JSON.parse(fs.readFileSync(
+        path.join(__dirname, '..', '..', 'data', 'bww-roundup-urls.json'), 'utf8'))));
+    } catch { _overrideShowIds = new Set(); }
+  }
+  return _overrideShowIds.has(showId);
+}
 
 /**
  * The one place "is this archive's category/title acceptable" gets decided —
@@ -50,7 +67,10 @@ const {
  */
 function checkArchiveCategory(html, show, siblingCategories) {
   let check = validateRoundupPageTitle(html, show.title, show.category, siblingCategories);
-  if (check.reason === 'page-title-mismatch' && isPunctuationFalsePositive(check.pageTitle, show.title)) {
+  const typoRescue = () => /Review Roundup/i.test(check.pageTitle || '')
+    && hasBwwRoundupOverride(show.id) && !!pageTitleTypoMatch(show.title, html);
+  if (check.reason === 'page-title-mismatch'
+      && (isPunctuationFalsePositive(check.pageTitle, show.title) || typoRescue())) {
     // A rescue only proves the page names this title. The sibling guards a
     // word-matched page gets (containing-title-sibling, cross-market-sibling)
     // must still run, or a regional show's cache holding its Broadway

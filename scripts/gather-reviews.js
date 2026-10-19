@@ -4646,27 +4646,27 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
   let bwwResult = await searchBWWRoundup(show, year, { openingNight: options.openingNight });
   // Validate page matches target show (prevents cross-show contamination)
   if (bwwResult && bwwResult.html) {
-    let validation = await validatePageMatchesShow(bwwResult.html, show.title, {
+    const validation = await validatePageMatchesShow(bwwResult.html, show.title, {
       openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null,
       pageUrl: bwwResult.url,
     });
-    // checkArchiveCategory (BRO-3610), run ALONGSIDE validatePageMatchesShow —
-    // see the DTLI site above for why both must pass (BRO-2565 review caught
-    // "replace instead of add" as a regression).
-    let bwwCatCheck = checkArchiveCategory(bwwResult.html, show, siblingCategoriesByShowId()[showId]);
-    // A human-supplied override whose page title has a one-letter typo of the
-    // show title is the right page (BWW "CELEBRITY AUTOPBIOGRAPHY"). Only the
-    // title-word checks are waived; a category/sibling refusal still stands.
-    const titleOnlyMiss = (!validation.valid && /^(short-title partial match|headings .* don't match)/.test(validation.reason || ''))
-      || (!bwwCatCheck.ok && bwwCatCheck.reason === 'page-title-mismatch');
-    if (bwwResult.fromOverride && titleOnlyMiss) {
+    // Hand-listed override, page title one letter off (BWW "CELEBRITY
+    // AUTOPBIOGRAPHY"): waive only the word-match miss. Year, category and
+    // containing-title layers run first in validatePageMatchesShow, and
+    // checkArchiveCategory does its own override rescue with sibling and
+    // run-window checks.
+    if (bwwResult.fromOverride && !validation.valid
+        && /^(short-title partial match|headings .* don't match)/.test(validation.reason || '')) {
       const typo = pageTitleTypoMatch(show.title, bwwResult.html);
       if (typo) {
         console.log(`    ✓ Override roundup accepted despite title typo ("${typo.slugWord}" for "${typo.token}")`);
-        if (!validation.valid) validation = { valid: true, reason: 'override + one-typo title' };
-        if (!bwwCatCheck.ok && bwwCatCheck.reason === 'page-title-mismatch') bwwCatCheck = { ok: true, reason: 'override + one-typo title' };
+        Object.assign(validation, { valid: true, reason: 'override + one-typo title' });
       }
     }
+    // checkArchiveCategory (BRO-3610), run ALONGSIDE validatePageMatchesShow —
+    // see the DTLI site above for why both must pass (BRO-2565 review caught
+    // "replace instead of add" as a regression).
+    const bwwCatCheck = checkArchiveCategory(bwwResult.html, show, siblingCategoriesByShowId()[showId]);
     if (!validation.valid || !bwwCatCheck.ok) {
       console.log(`    ✗ BWW roundup page doesn't match "${show.title}": ${!validation.valid ? validation.reason : bwwCatCheck.reason}`);
       bwwResult = null;
