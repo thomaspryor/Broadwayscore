@@ -1146,13 +1146,15 @@ async function gatherSECFilings(shows, commercial) {
             capitalization: parsed.totalOfferingAmount,
             // The offering amount is a ceiling; the amount sold is what came in (BRO-5660).
             amountSold: parsed.amountSold ?? null,
+            // The filing's own "capitalized at" figure, when it states one (BRO-5647).
+            capitalizedAmount: parsed.capitalizedAmount ?? null,
             source: `SEC Form D: ${parsed.companyName || title}`,
             filingUrl: latestFiling.url || latestFiling.filingUrl,
             filingDate: parsed.filingDate,
             confidence: 'high' // SEC data is always high confidence
           });
 
-          console.log(`    Found: ${title} - $${(parsed.totalOfferingAmount / 1e6).toFixed(1)}M`);
+          console.log(`    Found: ${title} - $${((parsed.capitalizedAmount || parsed.totalOfferingAmount) / 1e6).toFixed(1)}M`);
         }
       }
 
@@ -1301,6 +1303,7 @@ function buildAnalysisContext(data) {
       sections.push(`${filing.showSlug}:`);
       sections.push(`  Total offering amount (a maximum, not the amount raised): $${(filing.capitalization / 1e6).toFixed(2)}M`);
       if (filing.amountSold != null) sections.push(`  Amount sold: $${(filing.amountSold / 1e6).toFixed(2)}M`);
+      if (filing.capitalizedAmount != null) sections.push(`  The filing states the offering capitalized at: $${(filing.capitalizedAmount / 1e6).toFixed(2)}M`);
       sections.push(`  Source: ${filing.source}`);
       sections.push(`  Filing URL: ${filing.filingUrl}`);
       if (filing.filingDate) {
@@ -1352,12 +1355,12 @@ RULES:
 SPRINT 4 SEC PRIORITY RULES:
 11. SEC Form D data is ALWAYS high confidence - it is an official government filing.
 12. For capitalization amounts, source hierarchy (highest to lowest):
-    - SEC Form D filings (totalOfferingAmount) - MOST authoritative
+    - SEC Form D filings (the stated "capitalized at" amount, else totalOfferingAmount) - MOST authoritative
     - Trade press articles (Deadline, Variety, NYT) - reliable
     - Reddit Grosses Analysis estimates - use with caution
     - Single Reddit comments - low confidence only
 13. If SEC data contradicts other sources, PREFER the SEC data and note the discrepancy.
-14. A Form D total offering amount is the most the production may raise, not what it raised. When the amount sold equals the offering, propose it and say "fully sold" in capitalizationSource. Otherwise propose the offering amount and write capitalizationSource as "SEC Form D (<entity>, <date>): an offering of up to $X" so the site prints it as "up to $X".
+14. When a Form D states the offering "capitalized at" an amount, that is what it raised: propose it and write capitalizationSource as "SEC Form D (<entity>, <date>): offering capitalized at $X". Otherwise a Form D total offering amount is the most the production may raise, not what it raised. When the amount sold equals the offering, propose it and say "fully sold" in capitalizationSource. Otherwise propose the offering amount and write capitalizationSource as "SEC Form D (<entity>, <date>): an offering of up to $X" so the site prints it as "up to $X".
 
 INVESTOR RETURN FIELDS:
 15. profitMargin: Actual investor return % (e.g., 6 means investors got 6% total return). Only propose when a source states a specific investor return figure.

@@ -492,6 +492,7 @@ async function parseFormDFiling(filingUrl) {
   return {
     totalOfferingAmount: totalOfferingAmount ? parseInt(totalOfferingAmount, 10) : null,
     amountSold: totalAmountSold ? parseInt(totalAmountSold, 10) : null,
+    capitalizedAmount: capitalizedAmountFromXml(xml),
     amountRemaining: totalRemaining ? parseInt(totalRemaining, 10) : null,
     minimumInvestment: minimumInvestment ? parseInt(minimumInvestment, 10) : null,
     filingDate,
@@ -501,6 +502,22 @@ async function parseFormDFiling(filingUrl) {
     description,
     relatedPersons
   };
+}
+
+/**
+ * The amount a filing says the offering was capitalized at, or null.
+ * totalOfferingAmount is the most the LLC may raise; an amendment filed after
+ * the raise often states the real figure only in a clarification, e.g.
+ * "Maximum capitalization was $6,000,000/Minimum capitalization was
+ * $4,000,000 - Offering capitalized at $4,108,500" (The Cottage, BRO-5647).
+ */
+function capitalizedAmountFromXml(xml) {
+  const re = /<clarificationOfResponse>([^<]*)<\/clarificationOfResponse>/gi;
+  for (const [, text] of String(xml || '').matchAll(re)) {
+    const m = /\b(?:offering|entity|company|partnership) (?:was |is )?capitalized at \$([\d,]+(?:\.\d+)?)/i.exec(text);
+    if (m) return Math.round(parseFloat(m[1].replace(/,/g, '')));
+  }
+  return null;
 }
 
 /**
@@ -566,6 +583,7 @@ module.exports = {
   // For testing
   extractXmlValue,
   extractXmlPath,
+  capitalizedAmountFromXml,
   parseCompanySearchAtom,
   isOtherMarketCompanyName,
   waitForRateLimit,
