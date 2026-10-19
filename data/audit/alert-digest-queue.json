@@ -568,5 +568,36 @@
       }
     ],
     "queuedAt": "2026-10-19T15:28:14.233Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5352-tech-debt",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-5352-tech-debt",
+    "description": "land.yml did not land land/bro-5352-tech-debt: the scripts-lib-tests gate went red at 2e9a832eb6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39274315019",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5352-tech-debt"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "2e9a832eb61f44543c7126c80e47407c13c372be"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39274315019"
+      }
+    ],
+    "queuedAt": "2026-10-19T15:39:12.778Z"
   }
 ]
