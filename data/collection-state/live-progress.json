@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-19T17:36:44.910Z",
-  "processed": 96,
-  "failed": 113,
-  "successRate": "45.9%",
+  "updatedAt": "2026-10-19T17:40:10.956Z",
+  "processed": 112,
+  "failed": 59,
+  "successRate": "65.5%",
   "tierBreakdown": {
-    "playwright": 58,
+    "playwright": 61,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 1,
-    "scrapingdog": 12,
-    "scrapingbee": 6,
+    "directCookies": 0,
+    "scrapingdog": 5,
+    "scrapingbee": 7,
     "brightdata": 1,
     "archiveToday": 0,
     "archive": 58
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-10-19T16:49:25.640Z",
@@ -59,6 +59,18 @@
       "t": "2026-10-19T17:14:15.794Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-19T17:37:06.168Z",
+      "event": "bb-session",
+      "session": "bf4f1569",
+      "url": "https://bachtrack.com/review-angels-bone-du-yun-vavrek-english-national-opera-lo"
+    },
+    {
+      "t": "2026-10-19T17:39:15.446Z",
+      "event": "bb-session",
+      "session": "f47eb720",
+      "url": "https://www.theatreinla.com/the-second-best-school-shooting/11328/"
     }
   ]
 }
