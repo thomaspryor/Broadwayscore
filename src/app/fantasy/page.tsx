@@ -6,6 +6,7 @@ import {
   AUDIENCE_GRADE_POINTS,
   BOX_OFFICE_POINTS_PER_100K,
   AWARDS_POINTS,
+  AWARD_CEREMONY_COUNT,
   PRIZE_DESCRIPTION,
   DRAFT_OPENS,
   FANTASY_TONY_CEREMONY_YEAR,
@@ -255,7 +256,7 @@ export default function FantasyLandingPage() {
             <h3 className="font-semibold mb-3 flex items-center gap-2">
               <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-brand/15 text-brand text-sm">🏆</span> Awards
             </h3>
-            <p className="text-xs text-gray-500 mb-2">6 ceremonies: Tonys, Drama Desk, Outer Critics, Drama League, NYDCC, Lortel</p>
+            <p className="text-xs text-gray-500 mb-2">{AWARD_CEREMONY_COUNT} ceremonies: Tonys, Drama Desk, Outer Critics, Drama League, NYDCC, Lortel</p>
             <div className="space-y-1.5 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-400">Tony Best Musical / Play</span>
@@ -464,7 +465,7 @@ export default function FantasyLandingPage() {
             },
             {
               q: 'Where do the scores come from?',
-              a: 'CriticScore is Broadway Scorecard\'s composite of professional critic reviews. AudienceGrade comes from audience review platforms. Box office is the weekly Broadway grosses report. Awards are official nominations and wins from seven ceremonies.',
+              a: `CriticScore is Broadway Scorecard's composite of professional critic reviews. AudienceGrade comes from audience review platforms. Box office is the weekly Broadway grosses report. Awards are official nominations and wins from ${AWARD_CEREMONY_COUNT} ceremonies.`,
             },
           ].map(({ q, a }) => (
             <div key={q} className="bg-surface-raised/30 rounded-xl p-4">

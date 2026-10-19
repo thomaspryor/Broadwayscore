@@ -84,6 +84,12 @@ export const BOX_OFFICE_POINTS_PER_100K: number = seasonConfig.scoring.boxOffice
  */
 export const AWARDS_POINTS = seasonConfig.scoring.awards;
 
+/** Award ceremonies that score, counted from the scoring keys (tonyNom, tonyWin, tonyBestMusical → tony),
+ *  so page copy can't drift from the rules (the FAQ said "seven" after Obie was dropped, BRO-5667). */
+export const AWARD_CEREMONY_COUNT = new Set(
+  Object.keys(AWARDS_POINTS).map(k => k.replace(/(Nom|Win|Award|BestMusical|BestPlay)$/, '')),
+).size;
+
 // ===========================================
 // TIEBREAKERS
 // ===========================================
