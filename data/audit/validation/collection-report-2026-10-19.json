@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-10-19T01:56:53.026Z",
+  "runDate": "2026-10-19T02:14:24.796Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 1,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "pride-west-end-2026",
+    "showFilter": "dirty-dancing-the-classic-story-on-stage-west-end-2026,stories-the-tap-dance-sensation-west-end-2026,other-desert-cities-2026,dog-mom-off-west-end-2026,school-pictures-off-broadway-2026,sea-wall-off-broadway-2026,music-for-18-musicians-staged-variations-off-broadway-2026,angels-bone-west-end-2026,cadel-lungs-on-legs-west-end-2026,the-second-best-school-shooting-off-broadway-2026,two-girls-off-broadway-2026,the-dog-show-come-sit-stay-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 0,
+    "processed": 7,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "58.3%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 4,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -25,39 +25,44 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 10,
+    "tier1Success": 5,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 2,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
+    "tier1_9Attempts": 4,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 5,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 4,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 4,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 0,
-    "scrapingBeePageCredits": 0,
+    "tier4Attempts": 11,
+    "tier4Success": 3,
+    "totalFailed": 5,
+    "scrapingBeePageCredits": 4,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 1.2,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 1,
-    "failed": 0,
+    "processed": 7,
+    "failed": 5,
     "shows": [
-      "pride-west-end-2026"
+      "angels-bone-west-end-2026",
+      "cadel-lungs-on-legs-west-end-2026",
+      "dog-mom-off-west-end-2026",
+      "school-pictures-off-broadway-2026",
+      "stories-the-tap-dance-sensation-west-end-2026",
+      "the-second-best-school-shooting-off-broadway-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,17 +71,46 @@
     }
   },
   "processed": [
-    "pride-west-end-2026/independent--louis-chilton.json"
+    "dog-mom-off-west-end-2026/thereviewshub--unknown.json",
+    "dog-mom-off-west-end-2026/notesfromrowh--helena6.json",
+    "the-second-best-school-shooting-off-broadway-2026/broadway-baby--unknown.json",
+    "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json",
+    "stories-the-tap-dance-sensation-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "stories-the-tap-dance-sensation-west-end-2026/theupcoming--scarlett-bruin.json",
+    "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json"
   ],
-  "failed": [],
+  "failed": [
+    "school-pictures-off-broadway-2026/airmail--air-mail.json",
+    "angels-bone-west-end-2026/bachtrack--unknown.json",
+    "the-second-best-school-shooting-off-broadway-2026/theatreinla--unknown.json",
+    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json"
+  ],
   "cumulativeResumedState": {
     "processed": [
-      "pride-west-end-2026/independent--louis-chilton.json"
+      "dog-mom-off-west-end-2026/thereviewshub--unknown.json",
+      "dog-mom-off-west-end-2026/notesfromrowh--helena6.json",
+      "the-second-best-school-shooting-off-broadway-2026/broadway-baby--unknown.json",
+      "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json",
+      "stories-the-tap-dance-sensation-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+      "stories-the-tap-dance-sensation-west-end-2026/theupcoming--scarlett-bruin.json",
+      "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json"
     ],
-    "failed": []
+    "failed": [
+      "school-pictures-off-broadway-2026/airmail--air-mail.json",
+      "angels-bone-west-end-2026/bachtrack--unknown.json",
+      "the-second-best-school-shooting-off-broadway-2026/theatreinla--unknown.json",
+      "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+      "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json"
+    ]
   },
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "dog-mom-off-west-end-2026/thereviewshub--unknown.json",
+      "dog-mom-off-west-end-2026/notesfromrowh--helena6.json",
+      "the-second-best-school-shooting-off-broadway-2026/broadway-baby--unknown.json",
+      "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -85,9 +119,40 @@
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "pride-west-end-2026/independent--louis-chilton.json"
+      "stories-the-tap-dance-sensation-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+      "stories-the-tap-dance-sensation-west-end-2026/theupcoming--scarlett-bruin.json",
+      "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Bachtrack": {
+      "count": 1,
+      "domain": "bachtrack.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Theatre in LA": {
+      "count": 1,
+      "domain": "theatreinla.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "cityking": {
+      "count": 1,
+      "domain": "cityking.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Londonlivinglarge": {
+      "count": 1,
+      "domain": "londonlivinglarge.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
