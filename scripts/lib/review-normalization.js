@@ -2340,9 +2340,18 @@ function stripInvisibleUnicode(url) {
  * - gather-reviews.js (write-time URL dedup)
  * - cleanup-dedup-comprehensive.js (batch cleanup)
  */
-// [old host, current host] for outlets that moved domains with identical paths.
+// [old host, current host] for outlets that serve the same article at the
+// same path on both hosts. Every pair here was seen in review-texts as a
+// host-only url swap recorded in _urlChangedClear (each one wiped fullText and
+// score from a review); 25 of those files were still damaged on 2026-10-19.
 const URL_HOST_ALIASES = [
   ['independent.co.uk', 'the-independent.com'],
+  ['thetimes.co.uk', 'thetimes.com'],
+  ['dailymail.com', 'dailymail.co.uk'],
+  ['huffingtonpost.com', 'huffpost.com'],
+  ['amp.theguardian.com', 'theguardian.com'],
+  ['guardian.co.uk', 'theguardian.com'],
+  ['online.wsj.com', 'wsj.com'],
 ];
 
 function normalizeUrl(url) {
