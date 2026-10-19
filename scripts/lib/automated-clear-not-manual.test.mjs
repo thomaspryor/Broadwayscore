@@ -1,6 +1,6 @@
 // BRO-4385 — automated wrongProduction clears must not be stored as human clears.
-// Unit part runs everywhere; the corpus part skips without data/review-texts
-// unless REQUIRE_REVIEW_CORPUS=1 (test.yml Data Validation job sets it).
+// Unit part runs everywhere. The corpus part moved to
+// tests/unit/automated-clear-not-manual-live-data.test.mjs (BRO-5729, check-corpus-drift.yml).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';

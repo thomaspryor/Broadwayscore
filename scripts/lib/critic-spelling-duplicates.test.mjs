@@ -14,15 +14,9 @@
  * + same outlet, near-duplicate criticName spelling) without needing the
  * corpus checked out.
  *
- * PART 2 (dynamic, skips if data/review-texts isn't checked out — see
- * aggregator-domain-tld-parity.test.mjs for the same pattern and why): scans
- * the REAL corpus and asserts no same-show/same-outlet near-duplicate pair
- * exists OUTSIDE the pinned KNOWN_BACKLOG below. KNOWN_BACKLOG is the
- * pre-existing sweep result (82 pairs, measured 2026-09-25 while working
- * BRO-4156) — a corpus-wide backlog tracked separately, NOT yet cleaned up
- * (each pair needs per-file verification before merging, same as the
- * Markoski/Markosky case did). This guard's job is to stop the count from
- * growing, and to prove the Markoski/Markosky pair specifically is gone.
+ * PART 2 (the live corpus scan + KNOWN_BACKLOG) moved to
+ * tests/unit/critic-spelling-duplicates-live-data.test.mjs (BRO-5729) and runs in
+ * check-corpus-drift.yml.
  *
  * Run: node --test scripts/lib/critic-spelling-duplicates.test.mjs
  */
