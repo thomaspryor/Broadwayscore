@@ -67,7 +67,7 @@ const { isIncludableForRebuild, explainExclusion } = require('./lib/review-guard
 // BRO-4971: human vs automated exclusion split + re-verify marking for flaggedMisses.
 const { classifyFlaggedMiss, shouldReverify, countAutomatedExcludedListed } = require('./lib/flagged-miss-basis');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
-const { execErrorDetail } = require('./lib/exec-error-detail');
+const { ingestFailureReason } = require('./lib/ingest-failure-reason');
 const { partitionUnextractable, updateZeroCharCounts } = require('./lib/gap-unextractable'); // BRO-4765
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -1591,10 +1591,10 @@ function ingestMissingUrl(showId, url, knownOutletId) {
     // + `process.kill(-pid)` on timeout instead (ship-check finding, task #361).
     ingestOut = String(execFileSync('node', args, { stdio: 'pipe', timeout: 120000, killSignal: 'SIGKILL' }) || '');
   } catch (e) {
-    // BRO-4765: execErrorDetail keeps only the first 100 chars, and warnings can print before the line
+    // BRO-4765: ingestFailureReason (execErrorDetail, 600 chars) keeps a bounded prefix, and warnings can print before the line
     // that says extraction returned 0 chars. Look at the child's whole output for it.
     const zeroChar = /Article extraction returned 0 chars/i.test(`${e && e.stderr || ''}${e && e.stdout || ''}${e && e.message || ''}`);
-    return { ok: false, reason: execErrorDetail(e, 100), provisional, zeroChar };
+    return { ok: false, reason: ingestFailureReason(e), provisional, zeroChar };
   }
   // Exit 0 is NOT proof the review landed: ingest-review-from-url.js exits 0
   // on no-op skips ("already exists", cross-show dedup) too. The recovery path
@@ -1971,7 +1971,7 @@ function recoverEmptyBodyFlaggedMiss(showId, m, openingDate = null, show = null)
     execFileSync('node', iargs, { stdio: 'pipe', timeout: 120000 });
     ingestExit = true;
   } catch (e) {
-    reason = execErrorDetail(e, 100);
+    reason = ingestFailureReason(e);
   }
   // "recovered" = the empty file is now ACTUALLY filled — NOT merely that the child
   // exited 0. ingest-review-from-url.js exits 0 on a no-op skip ("already exists",
