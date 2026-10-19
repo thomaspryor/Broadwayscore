@@ -517,7 +517,7 @@ async function parseFormDFiling(filingUrl) {
  */
 function capitalizedAmountFromXml(xml, offeringAmount = null) {
   const field = /<(?:\w+:)?clarificationOfResponse\b[^>]*>([^<]*)<\/(?:\w+:)?clarificationOfResponse>/gi;
-  const stated = /(?<!\b(?:maximum|minimum|max|min)\s+)\b(?:offering|entity|company|partnership) (?:was |is )?capitalized at \$(\d[\d,]*(?:\.\d+)?)(\s*million\b)?/gi;
+  const stated = /(?<!\b(?:maximum|minimum|max|min)\s+)\b(?:offering|entity|company|partnership) (?:was |is )?capitalized at \$(?![\d,.]+(?:\s*million\b)?\s*(?:\(max(?:imum)? cap\)|max(?:imum)?\b))(\d[\d,]*(?:\.\d+)?)(\s*million\b)?/gi;
   for (const [, text] of String(xml || '').matchAll(field)) {
     for (const m of text.matchAll(stated)) {
       const amount = Math.round(parseFloat(m[1].replace(/,/g, '')) * (m[2] ? 1e6 : 1));
