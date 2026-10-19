@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-19T01:42:24.339Z",
+  "timestamp": "2026-10-19T02:11:56.804Z",
   "stats": {
     "totalReviews": 57572,
-    "alreadyFlagged": 21374,
+    "alreadyFlagged": 21375,
     "dateGuardCatches": 195,
     "directorMismatch": 1974,
-    "tvFilmSignals": 1617,
-    "londonSignals": 2444,
+    "tvFilmSignals": 1616,
+    "londonSignals": 2445,
     "offBroadwaySignals": 523,
     "yearMismatch": 157,
     "noPublishDate": 5230
@@ -30227,19 +30227,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "other-desert-cities-2026",
-      "file": "hollywood-reporter--caitlin-huston.json",
-      "publishDate": "2026-10-13",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-star-other-desert-cities-a-few-good-men-860-1236729226/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -75181,6 +75168,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "pride-west-end-2026",
+      "file": "independent--louis-chilton.json",
+      "score": 77,
+      "publishDate": "2026-06-25",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/pride-musical-review-national-theatre-b3003069.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
