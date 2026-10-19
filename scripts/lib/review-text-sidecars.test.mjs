@@ -42,7 +42,6 @@ const FAILED_FETCHES_BY_NAME_OK = new Set([
   'scripts/test-consistency.js',
   'scripts/test-content-verifier.js',
   'scripts/test-review-submission.js',
-  'scripts/test-temporal-override-regression.js',
 ]);
 
 test('no show-dir reader skips only failed-fetches.json by name', async () => {

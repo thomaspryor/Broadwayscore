@@ -26,6 +26,7 @@
 
 'use strict';
 
+const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const {
@@ -144,7 +145,7 @@ function collectFlagshipReviews(showsById, flagshipShows) {
     const dir = path.join(REVIEW_TEXTS_DIR, showId);
     if (!fs.existsSync(dir)) continue;
     for (const f of fs.readdirSync(dir)) {
-      if (!f.endsWith('.json') || f === 'failed-fetches.json') continue;
+      if (!isReviewTextFile(f)) continue;
       try {
         const d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
         d.__file = f;
