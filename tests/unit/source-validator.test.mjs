@@ -551,3 +551,25 @@ describe('Source Validator', () => {
     });
   });
 });
+
+// BRO-5647: a Form D's "Offering capitalized at $X" is what the show raised.
+// The SEC source the validator checks a proposal against must carry that
+// figure, else a correct proposal reads as contradicted by the ceiling.
+describe('SEC Form D validation source (BRO-5647)', () => {
+  const { buildValidationSources } = require('../../scripts/update-commercial-data');
+  const filing = { showSlug: 'the-cottage', capitalization: 6000000, capitalizedAmount: 4108500, filingUrl: 'https://www.sec.gov/x' };
+  const change = { showSlug: 'the-cottage', field: 'capitalization', newValue: 4108500, confidence: 'high' };
+
+  it('uses the stated capitalized amount, so the raise is supported', () => {
+    const sources = buildValidationSources({ secFilings: [filing] });
+    assert.strictEqual(sources[0].value, 4108500);
+    const result = validateChange(change, sources);
+    assert.strictEqual(result.contradictingSources.length, 0);
+    assert.strictEqual(result.supportingSources.length, 1);
+  });
+
+  it('falls back to the offering amount when the filing states none', () => {
+    const sources = buildValidationSources({ secFilings: [{ ...filing, capitalizedAmount: null }] });
+    assert.strictEqual(sources[0].value, 6000000);
+  });
+});

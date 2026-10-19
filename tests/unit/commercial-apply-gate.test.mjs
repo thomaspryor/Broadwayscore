@@ -744,4 +744,10 @@ it('a filing\'s "Offering capitalized at" is a sold basis, its limits are not (B
   assert.equal(capitalizationBasisFromText('SEC Form D/A (Cottage Play Ltd Liability Co): "Maximum capitalization was $6,000,000/Minimum capitalization was $4,000,000 - Offering capitalized at $4,108,500"'), 'sold');
   assert.equal(capitalizationBasisFromText('SEC Form D: "Entity capitalized at $10,000,000"'), 'sold');
   assert.equal(capitalizationBasisFromText('SEC Form D: "Maximum offering capitalized at $8,000,000"'), 'maximum');
+  assert.notEqual(capitalizationBasisFromText('Max offering capitalized at $6M'), 'sold');
+  assert.notEqual(capitalizationBasisFromText('Maximum total offering capitalized at $6,000,000'), 'sold');
+  assert.notEqual(capitalizationBasisFromText('Max-offering capitalized at $6,000,000'), 'sold');
+  assert.equal(capitalizationBasisFromText('offering was capitalized at $6M (max cap)'), 'maximum');
+  assert.notEqual(capitalizationBasisFromText('offering capitalized at $6,000,000 maximum'), 'sold');
+  assert.equal(capitalizationBasisFromText('offering capitalized at $6 million, fully subscribed'), 'sold');
 });

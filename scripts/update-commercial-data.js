@@ -2338,7 +2338,7 @@ function buildValidationSources(gathered) {
       sources.push({
         showSlug: filing.showSlug,
         field: 'capitalization',
-        value: filing.capitalization,
+        value: filing.capitalizedAmount ?? filing.capitalization,
         sourceType: 'SEC Form D',
         url: filing.filingUrl
       });

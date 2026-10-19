@@ -136,7 +136,7 @@ const CAPITALIZATION_BASES = ['maximum', 'sold', 'reported'];
 // offering", and a filing's own "Offering capitalized at $4,108,500" (BRO-5647),
 // which wins over a "Maximum capitalization was" preamble beside it. A partial
 // snapshot ("$400,000 sold by then") is not a raise.
-const SOLD_SOURCE_RE = /(?<!\bnot )\bfully sold\b|\ball of it sold\b|\$[\d,.]+(?:\s?(?:M|million))? sold (?:to|of)\b|(?<!\b(?:maximum|minimum)\s+)\b(?:offering|entity) (?:was |is )?capitalized at \$/i;
+const SOLD_SOURCE_RE = /(?<!\bnot )\bfully sold\b|\ball of it sold\b|\$[\d,.]+(?:\s?(?:M|million))? sold (?:to|of)\b|(?<!\b(?:max(?:imum)?|min(?:imum)?)(?:[\s-]+total)?[\s-]+)\b(?:offering|entity) (?:was |is )?capitalized at \$(?![\d,.]+(?:\s?(?:M|million))?\s*(?:\(max(?:imum)? cap\)|max(?:imum)?\b))/i;
 // A ceiling: "capitalized for up to $18 million", "an offering of up to $20M",
 // "total offering amount $5,500,000", "(max cap)", "maximum capitalization".
 const MAXIMUM_SOURCE_RE = /\bup to \$|\btotal offering(?: amount)? (?:of )?\$|\(max(?:imum)? cap\)|\bmaximum (?:capitali[sz]ation|offering)\b|\bForm D maximum\b/i;
