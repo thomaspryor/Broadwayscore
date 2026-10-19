@@ -6,14 +6,32 @@
     "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json",
     "stories-the-tap-dance-sensation-west-end-2026/thereviewshub--the-reviews-hub-london.json",
     "stories-the-tap-dance-sensation-west-end-2026/theupcoming--scarlett-bruin.json",
-    "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json"
+    "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json",
+    "memoirs-of-amorous-gentlemen-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "fish-off-broadway-2026/the-100-word-review--unknown.json",
+    "fish-off-broadway-2026/broadwayworld--nicole-serratore.json",
+    "a-ghost-in-your-ear-off-broadway-2026/wsj--charles-isherwood.json"
   ],
   "failed": [
     "school-pictures-off-broadway-2026/airmail--air-mail.json",
     "angels-bone-west-end-2026/bachtrack--unknown.json",
     "the-second-best-school-shooting-off-broadway-2026/theatreinla--unknown.json",
     "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
-    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json"
+    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
+    "midnight-off-broadway-2026/timeout--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "midnight-off-broadway-2026/openingnight--edward-a-kliszus.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/theatermania--zachary-stewart.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/timeout--unknown.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/culturesauce--thom-geier.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/nysr--roma-torre.json",
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026/talkinbroadway--kimberly-ramirez.json",
+    "the-ask-off-broadway-2026/front-row-center--sarah-downs.json",
+    "fish-off-broadway-2026/timeout--unknown.json",
+    "fish-off-broadway-2026/exeunt-magazine--unknown.json",
+    "a-ghost-in-your-ear-off-broadway-2026/timeout--unknown.json",
+    "a-ghost-in-your-ear-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -21,13 +39,20 @@
       "dog-mom-off-west-end-2026/thereviewshub--unknown.json",
       "dog-mom-off-west-end-2026/notesfromrowh--helena6.json",
       "the-second-best-school-shooting-off-broadway-2026/broadway-baby--unknown.json",
-      "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json"
+      "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json",
+      "memoirs-of-amorous-gentlemen-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "fish-off-broadway-2026/the-100-word-review--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/a-ghost-in-your-ear-off-broadway-2026/wsj--charles-isherwood.json",
+      "a-ghost-in-your-ear-off-broadway-2026/wsj--charles-isherwood.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "fish-off-broadway-2026/broadwayworld--nicole-serratore.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
@@ -37,7 +62,7 @@
     ]
   },
   "startTime": "2026-10-19T02:06:48.972Z",
-  "lastProcessed": "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json",
+  "lastProcessed": "a-ghost-in-your-ear-off-broadway-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-10-19T02:07:54.039Z",
@@ -50,6 +75,63 @@
       "event": "bb-session",
       "session": "7ae5cfdd",
       "url": "https://www.theatreinla.com/the-second-best-school-shooting/11328/"
+    },
+    {
+      "t": "2026-10-19T02:51:37.007Z",
+      "event": "bb-session",
+      "session": "4575bc11",
+      "url": "https://www.theatreinla.com/the-second-best-school-shooting/11328/"
+    },
+    {
+      "t": "2026-10-19T02:53:35.284Z",
+      "event": "bb-session",
+      "session": "24bdd3b4",
+      "url": "https://openingnight.online/midnight-off-broadway-review-todrick-halls-new-music"
+    },
+    {
+      "t": "2026-10-19T02:56:16.712Z",
+      "event": "bb-session",
+      "session": "a9add7f3",
+      "url": "https://www.talkinbroadway.com/page/ob/10_14_26b.html"
+    },
+    {
+      "t": "2026-10-19T02:56:16.982Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-19T02:57:43.637Z",
+      "event": "bb-session",
+      "session": "97e7f0d9",
+      "url": "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/attachment/alyssa-may-go"
+    },
+    {
+      "t": "2026-10-19T02:57:51.190Z",
+      "event": "bb-session",
+      "session": "31dc7eae",
+      "url": "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/attachment/alyssa-may-go"
+    },
+    {
+      "t": "2026-10-19T02:58:26.386Z",
+      "event": "bb-session",
+      "session": "65f3ce7e",
+      "url": "https://www.wsj.com/articles/anon-and-a-ghost-in-your-ear-review-minds-unravelin"
+    },
+    {
+      "t": "2026-10-19T02:58:26.671Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-19T02:58:43.013Z",
+      "event": "bb-session",
+      "session": "e8dd7b7f",
+      "url": "https://www.wsj.com/articles/anon-and-a-ghost-in-your-ear-review-minds-unravelin"
+    },
+    {
+      "t": "2026-10-19T02:58:43.370Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
