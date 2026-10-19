@@ -64,12 +64,12 @@ export default function FantasyLeaderboardPage() {
 
         {/* Footer */}
         <div className="mt-8 text-center space-y-2">
-          <p className="text-xs text-gray-500">
+          <p className="text-sm text-gray-400">
             Points: CriticScore + AudienceGrade + Box Office + Awards. {hasLateEntry()
               ? 'Each team scores box office from the week it drafted.'
               : `Box office counts for every team from ${longDate(seasonInfo.scoringStart)}.`}
           </p>
-          <p className="text-xs text-gray-500">
+          <p className="text-sm text-gray-400">
             Last scored: {seasonInfo.lastScored ? new Date(seasonInfo.lastScored).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'N/A'}
           </p>
           <div className="flex gap-4 justify-center mt-4">

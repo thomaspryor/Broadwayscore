@@ -17,6 +17,8 @@ export default function FantasyLeaderboardTable() {
   const [emailFilter, setEmailFilter] = useState('');
   const [debouncedEmail, setDebouncedEmail] = useState('');
   const [emailNotFound, setEmailNotFound] = useState(false);
+  // While the draft is open the API sends team names only (see fantasy-roster-privacy).
+  const [hidden, setHidden] = useState<{ total: number; revealsOn: string; found: boolean } | null>(null);
 
   // Debounce league filter (500ms)
   useEffect(() => {
@@ -47,7 +49,11 @@ export default function FantasyLeaderboardTable() {
         const res = await fetch(url);
         const data = await res.json();
         setEntries(data.entries || []);
-        if (debouncedEmail && data.entries?.length === 0 && !data.error) setEmailNotFound(true);
+        setHidden(data.meta?.picksHidden
+          ? { total: data.meta.totalEntries ?? 0, revealsOn: data.meta.revealsOn, found: !data.meta.notFound }
+          : null);
+        if (debouncedEmail && data.entries?.length === 0 && !data.error && !data.meta?.picksHidden) setEmailNotFound(true);
+        if (debouncedEmail && data.meta?.picksHidden && data.meta.notFound) setEmailNotFound(true);
         if (data.error) setError(data.error);
       } catch {
         setError('Failed to load leaderboard');
@@ -106,6 +112,23 @@ export default function FantasyLeaderboardTable() {
       </div>
     </div>
   );
+
+  if (hidden && !emailNotFound && !error) {
+    const reveal = new Date(`${hidden.revealsOn}T12:00:00Z`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', timeZone: 'UTC' });
+    return (
+      <div className="space-y-2">
+        {filterBar}
+        <div className="text-center py-12 px-4 bg-surface-raised/30 rounded-xl border border-white/5">
+          <p className="text-gray-200 text-lg mb-2">
+            {debouncedEmail ? 'We found your team.' : `${hidden.total} ${hidden.total === 1 ? 'team has' : 'teams have'} drafted so far.`}
+          </p>
+          <p className="text-gray-400 text-base">
+            Picks and standings stay hidden until the draft closes on {reveal}, so nobody can copy a rival. {debouncedEmail ? 'Your picks are in your confirmation email.' : ''}
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   if (entries.length === 0) {
     return (

@@ -166,38 +166,6 @@ export default function FantasyLandingPage() {
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="max-w-3xl mx-auto px-4 py-12">
-        <h2 className="text-2xl font-bold mb-8 text-center">How It Works</h2>
-        <div className="grid sm:grid-cols-3 gap-6">
-          <div className="bg-surface-raised/50 rounded-xl p-6 text-center border border-white/5 hover:border-brand/20 transition-colors">
-            <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-brand/15 text-brand font-bold text-lg mb-3">1</div>
-            <h3 className="font-semibold mb-2 text-white">Draft</h3>
-            <p className="text-sm text-gray-400">
-              Pick up to {info.teamSize} of the {info.totalShows} draftable shows from this Tony season.
-              Stay within your ${info.budget} budget.
-              No account needed.
-            </p>
-          </div>
-          <div className="bg-surface-raised/50 rounded-xl p-6 text-center border border-white/5 hover:border-brand/20 transition-colors">
-            <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-brand/15 text-brand font-bold text-lg mb-3">2</div>
-            <h3 className="font-semibold mb-2 text-white">Score</h3>
-            <p className="text-sm text-gray-400">
-              Points accumulate from four pillars:
-              critics, audiences, box office, and awards. Standings update daily.
-            </p>
-          </div>
-          <div className="bg-surface-raised/50 rounded-xl p-6 text-center border border-white/5 hover:border-brand/20 transition-colors">
-            <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-brand/15 text-brand font-bold text-lg mb-3">3</div>
-            <h3 className="font-semibold mb-2 text-white">Win</h3>
-            <p className="text-sm text-gray-400">
-              The season runs through Tony Awards night in June.
-              Most points wins.
-            </p>
-          </div>
-        </div>
-      </section>
-
       {/* Season calendar: right after How It Works (owner 2026-10-17) */}
       <section className="max-w-3xl mx-auto px-4 py-12">
         <h2 className="text-2xl font-bold mb-6 text-center">Season Calendar</h2>
@@ -210,20 +178,6 @@ export default function FantasyLandingPage() {
               </li>
             ))}
           </ol>
-          <div className="grid sm:grid-cols-3 gap-4 text-sm mt-6 pt-6 border-t border-white/5">
-            <div>
-              <span className="text-gray-500">Budget</span>
-              <p className="text-white font-medium">${info.budget} for up to {info.teamSize} shows</p>
-            </div>
-            <div>
-              <span className="text-gray-500">Draftable Shows</span>
-              <p className="text-white font-medium">{info.broadwayShows} Broadway + {info.offBroadwayShows} Off-Broadway</p>
-            </div>
-            <div>
-              <span className="text-gray-500">Season</span>
-              <p className="text-white font-medium">{shortDate(DRAFT_OPENS)} to {longDate(info.scoringEnd)}</p>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -241,7 +195,7 @@ export default function FantasyLandingPage() {
             <li className="flex justify-between gap-4"><span>{example.noms} Tony nominations, wins Best Musical</span><span className="font-mono text-gray-300 shrink-0">{example.awards} pts</span></li>
             <li className="flex justify-between gap-4 border-t border-white/10 pt-1.5 font-semibold text-white"><span>Season total from one pick</span><span className="font-mono shrink-0">{example.total} pts</span></li>
           </ul>
-          <p className="text-xs text-gray-500 mt-3">
+          <p className="text-sm text-gray-400 mt-3">
             A flop earns a few box office points and nothing else. That gap is the whole game.
           </p>
         </div>
@@ -256,7 +210,7 @@ export default function FantasyLandingPage() {
             <h3 className="font-semibold mb-3 flex items-center gap-2">
               <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-brand/15 text-brand text-sm">🏆</span> Awards
             </h3>
-            <p className="text-xs text-gray-500 mb-2">{AWARD_CEREMONY_COUNT} ceremonies: Tonys, Drama Desk, Outer Critics, Drama League, NYDCC, Lortel</p>
+            <p className="text-sm text-gray-400 mb-2">{AWARD_CEREMONY_COUNT} ceremonies: Tonys, Drama Desk, Outer Critics, Drama League, NYDCC, Lortel</p>
             <div className="space-y-1.5 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-400">Tony Best Musical / Play</span>
@@ -287,7 +241,7 @@ export default function FantasyLandingPage() {
                 <span className="font-mono text-gray-300">{AWARDS_POINTS.lortelWin} / {AWARDS_POINTS.lortelNom} pts</span>
               </div>
             </div>
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-sm text-gray-400 mt-2">
               Scoring events across six weeks from early May through Tony night in June. Awards count for every player, whenever you drafted.
             </p>
           </div>
@@ -308,7 +262,7 @@ export default function FantasyLandingPage() {
                 <> Every team&apos;s box office counts from {shortDate(info.scoringStart)} through Tony Awards night.</>
               )}
             </p>
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-sm text-gray-400 mt-2">
               Broadway shows only. Off-Broadway shows don&apos;t report grosses.
             </p>
           </div>
@@ -324,14 +278,14 @@ export default function FantasyLandingPage() {
                   <span className="text-gray-400">
                     {tier}
                     {CRITIC_TIER_RANGES[tier] && (
-                      <span className="text-gray-500 font-mono text-xs ml-1.5">{CRITIC_TIER_RANGES[tier]}</span>
+                      <span className="text-gray-400 font-mono text-sm ml-1.5">{CRITIC_TIER_RANGES[tier]}</span>
                     )}
                   </span>
                   <span className="font-mono text-gray-300 whitespace-nowrap">{pts} pts</span>
                 </div>
               ))}
             </div>
-            <p className="text-xs text-gray-500 mt-3">
+            <p className="text-sm text-gray-400 mt-3">
               Based on Broadway Scorecard&apos;s critic composite score.
               Counts only for shows that had not opened yet when you drafted them.
             </p>
@@ -352,7 +306,7 @@ export default function FantasyLandingPage() {
                   </div>
                 ))}
             </div>
-            <p className="text-xs text-gray-500 mt-3">
+            <p className="text-sm text-gray-400 mt-3">
               Counts only if the show&apos;s audience grade was not out yet when you drafted it. Audience reviews start in previews, so a grade can appear before opening night.
             </p>
           </div>
@@ -377,7 +331,7 @@ export default function FantasyLandingPage() {
                 <li key={s.id} className="flex items-start justify-between gap-4">
                   <span className="min-w-0">
                     <span className="block">{s.title}</span>
-                    <span className="block text-xs text-gray-500">
+                    <span className="block text-sm text-gray-400">
                       {s.criticScore != null && <>CriticScore {Math.round(s.criticScore)}</>}
                       {s.criticScore != null && s.openingDate && ' · '}
                       {s.openingDate && <>{s.openingDate > todayNy ? 'opens' : 'opened'} {shortDate(s.openingDate)}</>}
@@ -388,7 +342,7 @@ export default function FantasyLandingPage() {
               ))}
             </ul>
             {alreadyOpenOffBroadway > 0 && (
-              <p className="text-xs text-gray-500 mt-3">
+              <p className="text-sm text-gray-400 mt-3">
                 {alreadyOpenOffBroadway === 1 ? 'Plus one Off-Broadway show' : `Plus ${alreadyOpenOffBroadway} Off-Broadway shows`} (no box office, so awards points only). All are in the <a href="/fantasy/guide" className="text-brand/80 hover:text-brand">Draft Guide</a>.
               </p>
             )}
@@ -399,7 +353,7 @@ export default function FantasyLandingPage() {
       {/* FAQ */}
       <section className="max-w-3xl mx-auto px-4 py-12">
         <h2 className="text-2xl font-bold mb-6 text-center">FAQ</h2>
-        <div className="space-y-4">
+        <div className="space-y-2">
           {[
             {
               q: 'What does the winner get?',
@@ -426,10 +380,6 @@ export default function FantasyLandingPage() {
             {
               q: 'How do show prices work?',
               a: `Each show has a price from $${priceRange.min} to $${priceRange.max} based on how many points it is projected to earn: its Tony prospects, its box office outlook, how many weeks it runs, and, for shows that already opened, the score it has. Prices are set when the draft opens and do not change during the season. You have $${info.budget} for up to ${info.teamSize} slots, so you need a mix of big bets and value picks.`,
-            },
-            {
-              q: 'What is the best strategy?',
-              a: `Awards are worth the most points, so pick shows likely to earn Tony nominations. Do not ignore box office: a hit musical earning $1M a week adds points every week.${lateEntry ? ' And do not wait: those weeks only count once you have drafted.' : ''} A few premium contenders plus some value sleepers usually beats going all-in on favorites.`,
             },
             {
               q: 'What about shows that close early?',
@@ -468,10 +418,13 @@ export default function FantasyLandingPage() {
               a: `CriticScore is Broadway Scorecard's composite of professional critic reviews. AudienceGrade comes from audience review platforms. Box office is the weekly Broadway grosses report. Awards are official nominations and wins from ${AWARD_CEREMONY_COUNT} ceremonies.`,
             },
           ].map(({ q, a }) => (
-            <div key={q} className="bg-surface-raised/30 rounded-xl p-4">
-              <h3 className="font-medium text-white mb-1">{q}</h3>
-              <p className="text-sm text-gray-400">{a}</p>
-            </div>
+            <details key={q} className="group bg-surface-raised/30 rounded-xl">
+              <summary className="cursor-pointer list-none flex items-center justify-between gap-3 p-4 font-medium text-white">
+                <h3 className="text-base font-medium">{q}</h3>
+                <span aria-hidden className="text-gray-400 transition-transform group-open:rotate-45 text-xl leading-none">+</span>
+              </summary>
+              <p className="px-4 pb-4 text-base text-gray-300">{a}</p>
+            </details>
           ))}
         </div>
       </section>

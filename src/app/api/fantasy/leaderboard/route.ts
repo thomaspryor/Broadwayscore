@@ -3,6 +3,7 @@ import { getServerSupabaseClient } from '@/lib/supabase-server';
 import { computeLeaderboard } from '@/lib/data-fantasy';
 import { FANTASY_SEASON, canonicalFantasyEmail } from '@/config/fantasy';
 import type { FantasyEntry } from '@/config/fantasy';
+import { rostersPublic, hiddenStandings } from '@/lib/fantasy-roster-privacy';
 
 // Email search confirms "does this exact email have an entry" — an
 // existence oracle an attacker could otherwise run at unlimited scale
@@ -151,6 +152,15 @@ export async function GET(request: NextRequest) {
       const fullLeaderboard = computeLeaderboard(toFantasyEntries(allEntries || []));
       const matchedEntry = fullLeaderboard.find(e => e.id === match.id);
 
+      if (!rostersPublic()) {
+        return NextResponse.json(hiddenStandings({
+          teams: [],
+          totalEntries: matchedEntry ? 1 : 0,
+          season: FANTASY_SEASON,
+          notFound: !matchedEntry,
+        }));
+      }
+
       return NextResponse.json({
         entries: matchedEntry ? [matchedEntry] : [],
         meta: { totalEntries: matchedEntry ? 1 : 0, season: FANTASY_SEASON },
@@ -168,6 +178,14 @@ export async function GET(request: NextRequest) {
     }
 
     const leaderboard = computeLeaderboard(toFantasyEntries(entries || []));
+
+    if (!rostersPublic()) {
+      return NextResponse.json(hiddenStandings({
+        teams: leaderboard.map(e => e.displayName),
+        totalEntries: leaderboard.length,
+        season: FANTASY_SEASON,
+      }));
+    }
 
     return NextResponse.json({
       entries: leaderboard,

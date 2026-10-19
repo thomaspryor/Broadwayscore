@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getServerSupabaseClient } from '@/lib/supabase-server';
 import { FANTASY_SEASON } from '@/config/fantasy';
 import { isValidLeaderboardEntry } from '@/lib/data-fantasy';
+import { rostersPublic } from '@/lib/fantasy-roster-privacy';
 import { noStoreFetch } from '@/lib/share-links/load';
 import { computePickOwnership } from '../../../../../scripts/lib/fantasy-ownership';
 
@@ -20,6 +21,8 @@ const PAGE = 1000;
 
 export async function GET() {
   const empty = { season: FANTASY_SEASON, totalEntries: 0, published: false, shows: {} };
+  // "% picked" tells late drafters what the crowd chose; it waits for the draft to close.
+  if (!rostersPublic()) return NextResponse.json(empty);
   try {
     const supabase = getServerSupabaseClient({ fetch: noStoreFetch });
     if (!supabase) return NextResponse.json(empty);

@@ -40,6 +40,8 @@ export default function LeaguePage(props: { params: Promise<{ code: string }> })
   const code = safeDecode(params.code);
   const [meta, setMeta] = useState<LeagueMeta | null>(null);
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
+  // Draft still open: the API sends team names only, no picks or points.
+  const [hidden, setHidden] = useState<{ teams: string[]; revealsOn: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -64,6 +66,7 @@ export default function LeaguePage(props: { params: Promise<{ code: string }> })
       }
       setMeta(metaData);
       setEntries(lbData.entries || []);
+      setHidden(lbData.meta?.picksHidden ? { teams: lbData.teams || [], revealsOn: lbData.meta.revealsOn } : null);
     } catch {
       setError('Network error. Please try again.');
     } finally {
@@ -115,7 +118,17 @@ export default function LeaguePage(props: { params: Promise<{ code: string }> })
           </Link>
         </div>
 
-        {entries.length === 0 ? (
+        {hidden && hidden.teams.length > 0 ? (
+          <div className="space-y-2">
+            <h2 className="text-sm text-gray-400 uppercase tracking-wider mb-1">Teams drafted</h2>
+            <p className="text-gray-400 text-base mb-3">
+              Picks and standings stay hidden until the draft closes on {new Date(`${hidden.revealsOn}T12:00:00Z`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', timeZone: 'UTC' })}.
+            </p>
+            {hidden.teams.map((name, i) => (
+              <div key={`${name}-${i}`} className="card p-4 font-semibold text-white truncate">{name}</div>
+            ))}
+          </div>
+        ) : entries.length === 0 ? (
           <div className="card p-8 text-center">
             <p className="text-gray-400 mb-2">No entries yet.</p>
             <p className="text-gray-600 text-sm">Share the invite link so friends can draft their teams.</p>
@@ -130,7 +143,7 @@ export default function LeaguePage(props: { params: Promise<{ code: string }> })
                   <div className="font-semibold text-white truncate">
                     {entry.displayName}
                   </div>
-                  <div className="text-xs text-gray-500">
+                  <div className="text-sm text-gray-400">
                     {entry.picks.length} {entry.picks.length === 1 ? 'show' : 'shows'} &middot; ${entry.picks.reduce((sum, p) => sum + p.price, 0)} spent
                   </div>
                 </div>

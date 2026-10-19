@@ -78,10 +78,10 @@ export default function FantasyShowPicker({
           <div className="flex items-center gap-2">
             <span className="font-medium text-white truncate">{selectedShow.title}</span>
             {selectedShow.category === 'off-broadway' && (
-              <span className="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded">OB</span>
+              <span className="text-xs bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded">OB</span>
             )}
             {selectedShow.status === 'closed' && (
-              <span className="text-[10px] bg-gray-500/20 text-gray-400 px-1.5 py-0.5 rounded">Closed</span>
+              <span className="text-xs bg-gray-500/20 text-gray-400 px-1.5 py-0.5 rounded">Closed</span>
             )}
           </div>
           <div className="flex items-center gap-x-2 gap-y-0.5 flex-wrap text-xs text-gray-400 mt-0.5">
@@ -195,10 +195,10 @@ export default function FantasyShowPicker({
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-medium truncate">{show.title}</span>
                       {show.category === 'off-broadway' && (
-                        <span className="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded shrink-0">OB</span>
+                        <span className="text-xs bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded shrink-0">OB</span>
                       )}
                       {show.status === 'closed' && (
-                        <span className="text-[10px] bg-gray-500/20 text-gray-400 px-1.5 py-0.5 rounded shrink-0">Closed</span>
+                        <span className="text-xs bg-gray-500/20 text-gray-400 px-1.5 py-0.5 rounded shrink-0">Closed</span>
                       )}
                     </div>
                     <div className="flex items-center gap-x-2 gap-y-0.5 flex-wrap text-xs text-gray-400 mt-0.5">
