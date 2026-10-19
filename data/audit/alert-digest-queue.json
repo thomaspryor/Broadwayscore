@@ -686,5 +686,36 @@
       }
     ],
     "queuedAt": "2026-10-19T16:41:29.700Z"
+  },
+  {
+    "conditionKey": "land:land/dtli-enrich-wrong-production-v4",
+    "title": "Landing blocked: rebase red on land/dtli-enrich-wrong-production-v4",
+    "description": "land.yml did not land land/dtli-enrich-wrong-production-v4: the rebase gate went red at c45ab072e2. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/dtli-enrich-wrong-production-v4 @ c45ab072e2 (origin/land/dtli-enrich-wrong-production-v4) → origin/main @ ccc2e71d3d REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 04bcc9cd22: Rebasing (1/3) Rebasing (2/3) Rebasing (3/3) error: could not apply c45ab072e2f... ci(test.yml): push path for scripts/enrich-dtli-thumbs.js (named by its new unit test) hint: Resolve all co Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39284714298",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/dtli-enrich-wrong-production-v4"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "c45ab072e2f61ca3e20c230ac8e7672332961c4e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39284714298"
+      }
+    ],
+    "queuedAt": "2026-10-19T16:44:51.116Z"
   }
 ]
