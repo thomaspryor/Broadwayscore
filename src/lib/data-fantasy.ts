@@ -19,11 +19,13 @@ import {
   SCORING_START,
   DRAFT_DEADLINE,
   DRAFT_OPENS,
+  FANTASY_TEAM_SIZE,
   DEADLINE_GRACE_MS,
   nyDate,
 } from '@/config/fantasy';
 
 // Import JSON data (loaded at build time)
+import { isHiddenRoster } from '@/lib/fantasy-roster-privacy';
 import fantasyLeagueData from '../../data/fantasy-league.json';
 import fantasyScoresData from '../../data/fantasy-scores.json';
 
@@ -138,7 +140,12 @@ export function entryPickPoints(
  */
 export function isValidLeaderboardEntry(entry: Pick<FantasyEntry, 'picks' | 'created_at'>): boolean {
   if (!Array.isArray(entry.picks)) return false;
-  if (!validatePicks(entry.picks, config.shows).valid) return false;
+  if (isHiddenRoster(entry.picks)) {
+    // While the draft is open the database sends N copies of 'hidden' instead of show ids
+    // (20261019_fantasy_hide_rosters_until_draft_closes.sql). The team still counts; its shows
+    // cannot be checked until the reveal.
+    if (entry.picks.length > FANTASY_TEAM_SIZE) return false;
+  } else if (!validatePicks(entry.picks, config.shows).valid) return false;
   if (entry.created_at && Date.parse(entry.created_at) > Date.parse(DRAFT_DEADLINE) + DEADLINE_GRACE_MS) return false;
   // Nothing real is drafted before the draft opens: the route refuses it, so a
   // real-season row stamped earlier came straight through the anon key

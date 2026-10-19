@@ -18,7 +18,7 @@ export default function FantasyLeaderboardTable() {
   const [debouncedEmail, setDebouncedEmail] = useState('');
   const [emailNotFound, setEmailNotFound] = useState(false);
   // While the draft is open the API sends team names only (see fantasy-roster-privacy).
-  const [hidden, setHidden] = useState<{ total: number; revealsOn: string; found: boolean } | null>(null);
+  const [hidden, setHidden] = useState<{ total: number; revealsOn: string } | null>(null);
 
   // Debounce league filter (500ms)
   useEffect(() => {
@@ -50,7 +50,7 @@ export default function FantasyLeaderboardTable() {
         const data = await res.json();
         setEntries(data.entries || []);
         setHidden(data.meta?.picksHidden
-          ? { total: data.meta.totalEntries ?? 0, revealsOn: data.meta.revealsOn, found: !data.meta.notFound }
+          ? { total: data.meta.totalEntries ?? 0, revealsOn: data.meta.revealsOn }
           : null);
         if (debouncedEmail && data.entries?.length === 0 && !data.error && !data.meta?.picksHidden) setEmailNotFound(true);
         if (debouncedEmail && data.meta?.picksHidden && data.meta.notFound) setEmailNotFound(true);

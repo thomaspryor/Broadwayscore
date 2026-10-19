@@ -210,6 +210,12 @@ function escapeHtml(str) {
 
 // ── Main ────────────────────────────────────────────────────────────
 async function main() {
+  // The site hides picks and standings until the draft closes (the game is guessing),
+  // so no standings email goes out before then. Dry runs and --preview still work.
+  if (isDraft && Date.now() <= Date.parse(leagueData._meta.draftDeadline)) {
+    console.error('Draft still open: standings stay hidden until it closes, so no weekly standings email.');
+    return;
+  }
   // Fetch leaderboard entries (for all modes — dry-run shows what email would look like)
   let leaderboard = [];
   let entriesFetched = false;

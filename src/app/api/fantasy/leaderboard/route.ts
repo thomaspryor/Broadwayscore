@@ -181,7 +181,8 @@ export async function GET(request: NextRequest) {
 
     if (!rostersPublic()) {
       return NextResponse.json(hiddenStandings({
-        teams: leaderboard.map(e => e.displayName),
+        // Names only for a league's own page; the all-teams view needs just the count.
+        teams: leagueName ? leaderboard.map(e => e.displayName) : [],
         totalEntries: leaderboard.length,
         season: FANTASY_SEASON,
       }));

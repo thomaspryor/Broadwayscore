@@ -7,6 +7,14 @@ import { isDraftClosed, draftDeadlineDate } from '@/config/fantasy';
  * this is the API-side half, so the response is correct even before that
  * migration runs and after the deadline moves.
  */
+/** What the database puts in `picks`, once per pick, while the draft is open. Not a show id. */
+export const HIDDEN_PICK = 'hidden';
+
+/** True for a roster the database hid: at least one pick, every one the placeholder. */
+export function isHiddenRoster(picks: unknown): boolean {
+  return Array.isArray(picks) && picks.length > 0 && picks.every(p => p === HIDDEN_PICK);
+}
+
 export function rostersPublic(now: Date = new Date()): boolean {
   return isDraftClosed(now);
 }

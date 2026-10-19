@@ -166,7 +166,7 @@ export default function FantasyLandingPage() {
         </div>
       </section>
 
-      {/* Season calendar: right after How It Works (owner 2026-10-17) */}
+      {/* Season calendar, right under the hero (owner 2026-10-17) */}
       <section className="max-w-3xl mx-auto px-4 py-12">
         <h2 className="text-2xl font-bold mb-6 text-center">Season Calendar</h2>
         <div className="bg-surface-raised/50 rounded-xl p-6">
@@ -419,8 +419,8 @@ export default function FantasyLandingPage() {
             },
           ].map(({ q, a }) => (
             <details key={q} className="group bg-surface-raised/30 rounded-xl">
-              <summary className="cursor-pointer list-none flex items-center justify-between gap-3 p-4 font-medium text-white">
-                <h3 className="text-base font-medium">{q}</h3>
+              <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden flex items-center justify-between gap-3 p-4 text-base font-medium text-white">
+                <span>{q}</span>
                 <span aria-hidden className="text-gray-400 transition-transform group-open:rotate-45 text-xl leading-none">+</span>
               </summary>
               <p className="px-4 pb-4 text-base text-gray-300">{a}</p>

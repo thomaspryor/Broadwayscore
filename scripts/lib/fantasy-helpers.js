@@ -375,12 +375,16 @@ function isValidLeaderboardEntry(entry, showConfig, cfgOverrides = seasonConfig)
   const cfg = { ...seasonConfig, ...cfgOverrides };
   const picks = entry && entry.picks;
   if (!Array.isArray(picks) || picks.length < 1 || picks.length > cfg.teamSize) return false;
-  for (const id of picks) {
-    if (typeof id !== 'string' || !Object.prototype.hasOwnProperty.call(showConfig, id)) return false;
+  // While the draft is open the database sends N copies of 'hidden' instead of show ids
+  // (20261019_fantasy_hide_rosters_until_draft_closes.sql): the team counts, its shows can't be checked.
+  if (!picks.every(id => id === HIDDEN_PICK)) {
+    for (const id of picks) {
+      if (typeof id !== 'string' || !Object.prototype.hasOwnProperty.call(showConfig, id)) return false;
+    }
+    if (new Set(picks).size !== picks.length) return false;
+    const cost = picks.reduce((sum, id) => sum + (showConfig[id].price || 0), 0);
+    if (cost > cfg.budget) return false;
   }
-  if (new Set(picks).size !== picks.length) return false;
-  const cost = picks.reduce((sum, id) => sum + (showConfig[id].price || 0), 0);
-  if (cost > cfg.budget) return false;
   // Same 5-minute grace as src/config/fantasy.ts DEADLINE_GRACE_MS: the
   // database stamps created_at just after the route's deadline check.
   if (entry.created_at && Date.parse(entry.created_at) > Date.parse(cfg.draftDeadline) + DEADLINE_GRACE_MS) return false;
@@ -390,6 +394,9 @@ function isValidLeaderboardEntry(entry, showConfig, cfgOverrides = seasonConfig)
 }
 
 const DEADLINE_GRACE_MS = 5 * 60 * 1000;
+
+/** Mirrors HIDDEN_PICK in src/lib/fantasy-roster-privacy.ts. */
+const HIDDEN_PICK = 'hidden';
 
 /**
  * Whether the weekly fantasy job should run on this New York date: from two
