@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-10-18T07:31:47.564Z",
-  "scanned": 2636,
-  "showsWithViolations": 119,
-  "totalViolations": 151,
+  "updatedAt": "2026-10-19T08:04:45.879Z",
+  "scanned": 2643,
+  "showsWithViolations": 118,
+  "totalViolations": 150,
   "newSinceLastRun": 1,
   "handled": {
-    "temporal-override-low-confidence": 787,
+    "temporal-override-low-confidence": 774,
     "not-shipped": 63,
     "duplicate-not-shipped": 52,
     "rebuild-skip-audit": 32,
     "manual-clear-reason": 15,
-    "prior-run-or-tour-leg": 39
+    "prior-run-or-tour-leg": 41
   },
   "newViolationKeys": [
-    "school-pictures-off-broadway-2026::lighting-and-sound-america--david-barbour.json"
+    "the-brightening-air-west-end-2025::london-theatre--anya-ryan.json"
   ],
   "violationKeys": [
     "the-fear-of-13-2026::theatre-reviews-limited--david-roberts.json",
@@ -75,7 +75,6 @@
     "archduke-west-end-2026::artsdesk--unknown.json",
     "the-enormous-crocodile-west-end-2026::musical-theatre-review--unknown.json",
     "titanique-west-end-2024::telegraph--dominic-cavendish.json",
-    "cats-the-jellicle-ball-off-broadway-2024::thewrap--robert-hofler.json",
     "burlesque-west-end-2026::telegraph--claire-allfree.json",
     "mass-west-end-2026::artsdesk--demetrios-matheou.json",
     "cats-west-end-2026::jonathan-baz--jonathan-baz.json",
@@ -119,6 +118,7 @@
     "clueless-west-end-2025::timeout-london--andrzej-lukowski.json",
     "manhunt-west-end-2025::london-theatre--olivia-rook.json",
     "manhunt-west-end-2025::standard--nick-curtis.json",
+    "the-brightening-air-west-end-2025::london-theatre--anya-ryan.json",
     "the-deep-blue-sea-west-end-2025::telegraph--dominic-cavendish.json",
     "the-fifth-step-west-end-2025::everything-theatre--mary-pollard.json",
     "the-fifth-step-west-end-2025::london-theatre--holly-omahony.json",
@@ -136,7 +136,6 @@
     "old-friends-west-end-2023::whatsonstage--sarah-crompton.json",
     "plaza-suite-west-end-2024::whatsonstage--sarah-crompton.json",
     "a-mirror-west-end-2024::thestage--anya-ryan.json",
-    "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024::west-end-best-friend--eliza-harris.json",
     "nye-west-end-2024::broadwayworld--persson-gary-naylor.json",
     "nye-west-end-2024::i-paper--unknown.json",
     "harry-clarke-west-end-2024::whatsonstage--sarah-crompton.json",
@@ -1294,27 +1293,6 @@
       ]
     },
     {
-      "showId": "cats-the-jellicle-ball-off-broadway-2024",
-      "title": "CATS: The Jellicle Ball",
-      "openingDate": "2024-06-10",
-      "message": "thewrap/Robert Hofler (thewrap--robert-hofler.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The review is for \"Cats: The Jellicle Ball\" but it is playing at the Perelman Performing Arts Center, which is not a Bro — https://www.thewrap.com/cats-jellicle-ball-off-broadway-review-andrew-lloyd-webber/",
-      "violations": [
-        {
-          "filename": "thewrap--robert-hofler.json",
-          "url": "https://www.thewrap.com/cats-jellicle-ball-off-broadway-review-andrew-lloyd-webber/",
-          "outletId": "thewrap",
-          "criticName": "Robert Hofler",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "The review is for \"Cats: The Jellicle Ball\" but it is playing at the Perelman Performing Arts Center, which is not a Bro",
-          "cvIssues": [
-            "Wrong Production",
-            "Truncated"
-          ]
-        }
-      ]
-    },
-    {
       "showId": "burlesque-west-end-2026",
       "title": "Burlesque",
       "openingDate": "2025-07-22",
@@ -2134,6 +2112,27 @@
       ]
     },
     {
+      "showId": "the-brightening-air-west-end-2025",
+      "title": "The Brightening Air",
+      "openingDate": "2025-04-24",
+      "message": "london-theatre/Anya Ryan (london-theatre--anya-ryan.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate theater review of 'The Brightening Air' at the Old Vic with the expected critic assessment and know — https://www.londontheatre.co.uk/reviews/the-brightening-air-review-old-vic",
+      "violations": [
+        {
+          "filename": "london-theatre--anya-ryan.json",
+          "url": "https://www.londontheatre.co.uk/reviews/the-brightening-air-review-old-vic",
+          "outletId": "london-theatre",
+          "criticName": "Anya Ryan",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "This is a legitimate theater review of 'The Brightening Air' at the Old Vic with the expected critic assessment and know",
+          "cvIssues": [
+            "Review publish date (April 25, 2025) does not match expected review publish date (2026-10-08) — a difference of over 1.5 years",
+            "West End opening date mismatch: scraped content states 'now in performances at the Old Vic to 14 June' (June 2025) and 'Originally published on Apr 25, 2025', but expected opening date is 2025-04-24 with review publish expected in October 2026"
+          ]
+        }
+      ]
+    },
+    {
       "showId": "the-deep-blue-sea-west-end-2025",
       "title": "The Deep Blue Sea",
       "openingDate": null,
@@ -2430,27 +2429,6 @@
           "cvIssues": [
             "Review does not name any theater venue where the performance was seen",
             "Playwright is identified as Sam Holcroft, but 'A Mirror' is by Sam Holcroft and reviews of this play do not match the expected critic (Anya Ryan) or expected outlet (The Stage) in available records"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024",
-      "title": "For Black Boys Who Have Considered Suicide When the Hue Gets Too Heavy",
-      "openingDate": null,
-      "message": "west-end-best-friend/Eliza Harris (west-end-best-friend--eliza-harris.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: While the scraped content is a legitimate critical review of 'For Black Boys Who Have Considered Suicide When the Hue Ge — https://www.westendbestfriend.co.uk/news/review-for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-the-garrick-theatre",
-      "violations": [
-        {
-          "filename": "west-end-best-friend--eliza-harris.json",
-          "url": "https://www.westendbestfriend.co.uk/news/review-for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-the-garrick-theatre",
-          "outletId": "west-end-best-friend",
-          "criticName": "Eliza Harris",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "While the scraped content is a legitimate critical review of 'For Black Boys Who Have Considered Suicide When the Hue Ge",
-          "cvIssues": [
-            "No West End venue is named in the review text",
-            "The scraped content contains no venue attribution, critic byline, outlet name, or publication date"
           ]
         }
       ]
