@@ -48,6 +48,7 @@ const {
   restoreQuarantinedText,
   resetWrongContentTier,
   stampCollectorWpRejection,
+  collectorCandidateText,
   priorRunVerdictHash,
 } = require('./lib/collector-wp-release');
 const { buildPriorRunHint } = require('./lib/content-verifier');
@@ -141,12 +142,15 @@ for (const showId of showDirs) {
     // BRO-4185 C: the collector's own LLM flag, text quarantined in
     // wrongFullText, dated inside this show's run. Same Sonnet check below,
     // on the quarantined text.
+    // BRO-5700: also a flag whose text is LIVE (never quarantined, or put back
+    // by a later re-fetch), which neither this nor the stale predicate saw.
     if (isCollectorWrongProductionCandidate(data, show, {
       inOwnWindow: isReviewWithinOwnProductionWindow,
       isGarbage: (t) => isGarbageContent(t).isGarbage,
     })) {
       collectorMatches++;
-      candidates.push({ showId, file: f, filePath, data, show, kind: 'collector-quarantined' });
+      const pick = collectorCandidateText(data);
+      candidates.push({ showId, file: f, filePath, data, show, kind: 'collector-quarantined', textField: pick.field, text: pick.text });
       continue;
     }
     // Collector flags on reviews dated inside a DECLARED earlier run / tour
@@ -170,7 +174,9 @@ for (const showId of showDirs) {
 // prior-run) per run, newest first. Keeps a backlog drain inside
 // FIX_SURGE_THRESHOLD and the daily/weekly Sonnet budget; the rest wait for
 // the next run.
-const COLLECTOR_PER_RUN_CAP = 25;
+// --force-bulk lifts it for a deliberate backlog drain (BRO-5700: 300+ West End
+// candidates would otherwise take 12 daily runs).
+const COLLECTOR_PER_RUN_CAP = FORCE_BULK ? 500 : 25;
 const isCollectorKind = (c) => c.kind === 'collector-quarantined' || c.kind === 'collector-prior-run';
 {
   const collector = candidates.filter(isCollectorKind);
@@ -192,7 +198,7 @@ const isCollectorKind = (c) => c.kind === 'collector-quarantined' || c.kind === 
 // The text the LLM judges: the quarantined copy for collector-quarantined,
 // the classifier's pick for collector-prior-run, the live text otherwise.
 function candidateText(c) {
-  if (c.kind === 'collector-quarantined') return c.data.wrongFullText;
+  if (c.kind === 'collector-quarantined') return c.text;
   if (c.kind === 'collector-prior-run') return c.text;
   return c.data.fullText;
 }
@@ -365,7 +371,7 @@ Reply with JSON only: {"isThisProduction": true|false, "isReview": true|false, "
     if (d.c.kind === 'collector-prior-run') {
       stampCollectorWpRejection(fresh, nowIso, d.c.text, priorRunVerdictHash(d.c.text, d.c.show));
     } else {
-      stampCollectorWpRejection(fresh, nowIso);
+      stampCollectorWpRejection(fresh, nowIso, d.c.text);
     }
     fs.writeFileSync(d.c.filePath, JSON.stringify(fresh, null, 2) + (orig.endsWith('\n') ? '\n' : ''));
   }
@@ -375,7 +381,7 @@ Reply with JSON only: {"isThisProduction": true|false, "isReview": true|false, "
     const hadTrailingNewline = orig.endsWith('\n');
     // A prior-run candidate judged on its quarantined text restores it, like
     // collector-quarantined; one judged on its live fullText keeps it.
-    const restores = d.c.kind === 'collector-quarantined'
+    const restores = (d.c.kind === 'collector-quarantined' && d.c.textField === 'wrongFullText')
       || (d.c.kind === 'collector-prior-run' && d.c.textField === 'wrongFullText');
     const clearNote = d.c.kind === 'collector-prior-run'
       ? `[${nowIso.slice(0, 10)} cleared collector wrongProduction — review dated inside a declared earlier run/tour leg; Sonnet (high-conf, given the declared runs) confirmed it is a review of ${d.c.show.title}${restores ? '; text restored' : ''}]`
@@ -392,6 +398,10 @@ Reply with JSON only: {"isThisProduction": true|false, "isReview": true|false, "
     // for the next run rather than clear on a verdict about other text.
     // Re-classify the fresh record too: an operator reason, ensemble rejection
     // or override added during the LLM calls must win over this verdict.
+    if (d.c.kind === 'collector-quarantined') {
+      const re = collectorCandidateText(data);
+      if (!re || re.field !== d.c.textField || re.text !== d.c.text) continue;
+    }
     if (d.c.kind === 'collector-prior-run') {
       const re = classifyPriorRunWrongProduction(data, d.c.show, { isGarbage: (t) => isGarbageContent(t).isGarbage });
       if (!re || re.bucket !== 'candidate' || re.textField !== d.c.textField || re.text !== d.c.text) continue;
@@ -403,7 +413,7 @@ Reply with JSON only: {"isThisProduction": true|false, "isReview": true|false, "
     // computed while wrongProduction was still true came back
     // invalid/"Wrong production" and left that stale tierReason behind.
     if (restores) restoreQuarantinedText(data, classifyContentTier);
-    else if (d.c.kind === 'collector-prior-run') resetWrongContentTier(data, classifyContentTier);
+    else if (d.c.kind === 'collector-prior-run' || d.c.kind === 'collector-quarantined') resetWrongContentTier(data, classifyContentTier);
     fs.writeFileSync(d.c.filePath, JSON.stringify(data, null, 2) + (hadTrailingNewline ? '\n' : ''));
     cleared++;
   }

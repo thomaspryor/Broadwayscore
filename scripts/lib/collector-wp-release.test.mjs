@@ -8,6 +8,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const {
+  collectorCandidateText,
   isCollectorWrongProductionCandidate,
   restoreQuarantinedText,
   stampCollectorWpRejection,
@@ -41,9 +42,25 @@ describe('isCollectorWrongProductionCandidate', () => {
   test('skips garbage captures (the consent drain handles those)', () => {
     assert.equal(isCollectorWrongProductionCandidate(base, show, { ...ctx, isGarbage: () => true }), false);
   });
-  test('skips short quarantined text and unquarantined files', () => {
+  test('skips short quarantined text', () => {
     assert.equal(isCollectorWrongProductionCandidate({ ...base, wrongFullText: 'short' }, show, ctx), false);
-    assert.equal(isCollectorWrongProductionCandidate({ ...base, fullText: text }, show, ctx), false);
+  });
+  // BRO-5700: Some Woman's Reviews Hub review held fullText AND wrongFullText with the
+  // flag still set; the quarantined-only shape never matched, so it stayed hidden.
+  test('matches a flag whose text is live (never quarantined, or put back by a re-fetch)', () => {
+    assert.equal(isCollectorWrongProductionCandidate({ ...base, fullText: text, wrongFullText: undefined }, show, ctx), true);
+    assert.equal(isCollectorWrongProductionCandidate({ ...base, fullText: text, wrongFullText: text }, show, ctx), true);
+  });
+  test('a stub live fullText does not hide the quarantined review text', () => {
+    assert.deepEqual(collectorCandidateText({ fullText: 'x'.repeat(300), wrongFullText: text }), null);
+    assert.equal(collectorCandidateText({ fullText: '', wrongFullText: text }).field, 'wrongFullText');
+    assert.equal(collectorCandidateText({ fullText: text, wrongFullText: text }).field, 'fullText');
+    assert.equal(collectorCandidateText({ fullText: null, wrongFullText: 'short' }), null);
+  });
+  test('a live-text candidate is asked once per distinct live text', () => {
+    const d = { ...base, fullText: text, wrongFullText: undefined };
+    stampCollectorWpRejection(d, '2026-10-19T00:00:00Z', text);
+    assert.equal(isCollectorWrongProductionCandidate(d, show, ctx), false);
   });
   test('skips operator-protected and wrongShow files', () => {
     assert.equal(isCollectorWrongProductionCandidate({ ...base, wrongProductionOverride: true }, show, ctx), false);
