@@ -94,7 +94,7 @@ const { isAggregatorUrlMismatch, isAggregatorReviewSource, shouldSkipAggregatorU
 const { resolveWriteTarget, buildSiblingIndex, tourDecision } = require('./lib/market-routing');
 const { recordMarketMisroute: _recordMarketMisroute } = require('./lib/market-misroute-ledger');
 const { isNationalTourRoundupSlug } = require('./lib/tour-roundup-candidate');
-const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow, isCloudflareChallenge } = require('./lib/bww-roundup-validator');
+const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow, matchBWWRoundupUrlToShow, isCloudflareChallenge } = require('./lib/bww-roundup-validator');
 const { parseArticleBodyReviews, scanRoundupOutletAnchors, orderAnchorCandidates, buildOutletRoster, shouldDeferRoundupUrl } = require('./lib/bww-roundup-parser');
 const { roundupEntryDateFields } = require('./lib/publish-date-provenance');
 const { parseBwwPostingAuthor, isMultiPersonOutlet, isMentionedPersonOutlet } = require('./lib/bww-jsonld-author');
@@ -2211,7 +2211,7 @@ async function searchBWWRoundup(show, year, options = {}) {
       if (homepageResult.found && homepageResult.html) {
         // bww-homepage-scan.findBWWRoundupLinkOnHomepage already runs the slug validator
         // internally via validateBWWRoundupUrlMatchesShow, so no need to re-check here.
-        const roundupUrl = findBWWRoundupLinkOnHomepage(homepageResult.html, show.title, { logger: console });
+        const roundupUrl = findBWWRoundupLinkOnHomepage(homepageResult.html, show.title, { logger: console, openingDate: show.openingDate, showId: show.id });
         if (roundupUrl) {
           console.log(`    ✓ Found roundup link on BWW homepage: ${roundupUrl}`);
           const result = await searchAggregator('BWW', roundupUrl);
@@ -2243,8 +2243,12 @@ async function searchBWWRoundup(show, year, options = {}) {
       ? serpResults.map(r => r.url).filter(url => url && url.includes('broadwayworld.com/article/Review-Roundup'))
       : [];
     let bwwCloudflareGated = false;
+    // Exact slug matches are tried before one-typo ('fuzzy') matches.
+    const bwwMatchOpts = { openingDate: show.openingDate, showId: show.id };
+    const bwwMatchRank = (u) => ({ exact: 0, fuzzy: 1 })[matchBWWRoundupUrlToShow(u, show.title, show.category, bwwMatchOpts)] ?? 2;
+    serpCandidates.sort((a, b) => bwwMatchRank(a) - bwwMatchRank(b));
     for (const searchResult of serpCandidates) {
-      if (!validateBWWRoundupUrlMatchesShow(searchResult, show.title, show.category)) {
+      if (!validateBWWRoundupUrlMatchesShow(searchResult, show.title, show.category, bwwMatchOpts)) {
         console.log(`    ✗ SERP result doesn't match title "${show.title}" — skipping: ${searchResult.substring(0, 80)}`);
         continue;
       }

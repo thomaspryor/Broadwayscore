@@ -12,7 +12,7 @@
  * present — this module replaces the inline ad-hoc matcher that caused the miss.
  */
 
-const { validateBWWRoundupUrlMatchesShow } = require('./bww-roundup-validator');
+const { matchBWWRoundupUrlToShow } = require('./bww-roundup-validator');
 
 // Silent logger for callers that don't want diagnostic output in stdout. Default for
 // findBWWRoundupLinkOnHomepage — gather-reviews.js passes `console` when it wants the
@@ -65,17 +65,26 @@ function extractRoundupAnchors(html) {
  * a future bww-roundup-validator edit shouldn't be able to abort a whole
  * gather-reviews run for every show on the homepage.
  */
-function findBWWRoundupLinkOnHomepage(html, showTitle, { logger = NOOP_LOGGER } = {}) {
+function findBWWRoundupLinkOnHomepage(html, showTitle, { logger = NOOP_LOGGER, openingDate, showId, category, activeShows } = {}) {
   const urls = extractRoundupAnchors(html);
   if (urls.length === 0) return null;
   if (!showTitle) return null;
 
+  // Exact matches win over one-typo matches anywhere on the page; the fuzzy
+  // tier only runs when the caller supplies the show's openingDate.
+  let fuzzyUrl = null;
   for (const url of urls) {
     try {
-      if (validateBWWRoundupUrlMatchesShow(url, showTitle)) return url;
+      const kind = matchBWWRoundupUrlToShow(url, showTitle, category, { openingDate, showId, activeShows });
+      if (kind === 'exact') return url;
+      if (kind === 'fuzzy' && !fuzzyUrl) fuzzyUrl = url;
     } catch (e) {
       logger.log(`    BWW homepage scan: validator threw on "${url}" — ${e && e.message ? e.message : e}. Continuing.`);
     }
+  }
+  if (fuzzyUrl) {
+    logger.log(`    BWW homepage scan: one-typo slug match for "${showTitle}" (no exact match on the page): ${fuzzyUrl}`);
+    return fuzzyUrl;
   }
 
   const sample = urls.slice(0, 3).map(u => {

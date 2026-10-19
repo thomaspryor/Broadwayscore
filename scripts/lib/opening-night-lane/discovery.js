@@ -198,7 +198,7 @@ function bwwRoundupAdapter({ homeUrl = 'https://www.broadwayworld.com/' } = {}) 
   return {
     name: 'bww-roundup', kind: 'aggregator', phase: 'cheap',
     async discover({ show, fetchText }) {
-      const roundup = findBWWRoundupLinkOnHomepage(await fetchText(homeUrl), show.title);
+      const roundup = findBWWRoundupLinkOnHomepage(await fetchText(homeUrl), show.title, { openingDate: show.openingDate, showId: show.id });
       if (!roundup) return [];
       return extractCitedLinks(await fetchText(roundup), roundup).map((l) => ({ url: l.url, fetchUrl: l.rawUrl, title: l.text, source: 'aggregator', aggregatorCited: true, via: roundup }));
     },

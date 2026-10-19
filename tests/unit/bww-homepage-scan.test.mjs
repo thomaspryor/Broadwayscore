@@ -439,3 +439,70 @@ describe('isCloudflareChallenge', () => {
     assert.strictEqual(isCloudflareChallenge(html), false);
   });
 });
+
+// One-typo slug tolerance (fuzzy-title-token.js). BWW slugged the 2026 Other
+// Desert Cities roundup "OTHER-DESERT-CITES"; both matchers rejected it and the
+// poller never read the roundup until a manual override (2026-10-19).
+describe('one-typo slug fallback (Other Desert Cities "CITES")', () => {
+  const { matchBWWRoundupUrlToShow, validateBWWRoundupUrlMatchesShow } = require('../../scripts/lib/bww-roundup-validator.js');
+  const { tokenFuzzyMatch, slugDateNearOpening } = require('../../scripts/lib/fuzzy-title-token.js');
+  const CITES = 'https://www.broadwayworld.com/article/Review-Roundup-OTHER-DESERT-CITES-Returns-to-Broadway-Updating-Live-20261019';
+  const ODC = { id: 'other-desert-cities-2026', title: 'Other Desert Cities', openingDate: '2026-10-18' };
+  const noOthers = [];
+  const page = (...urls) => `<html><body>${urls.map(u => `<a href="${u}">x</a>`).join('')}</body></html>`;
+
+  test('fuzzy-matches the CITES slug when dated within 14 days of opening', () => {
+    assert.strictEqual(matchBWWRoundupUrlToShow(CITES, ODC.title, 'broadway', { openingDate: ODC.openingDate, showId: ODC.id, activeShows: noOthers }), 'fuzzy');
+    assert.strictEqual(findBWWRoundupLinkOnHomepage(page(CITES), ODC.title, { logger: silentLogger, openingDate: ODC.openingDate, showId: ODC.id, activeShows: noOthers }), CITES);
+  });
+
+  test('rejects the same slug for the 2011 production (date gate)', () => {
+    assert.strictEqual(matchBWWRoundupUrlToShow(CITES, ODC.title, 'broadway', { openingDate: '2011-11-03', activeShows: noOthers }), null);
+    assert.strictEqual(findBWWRoundupLinkOnHomepage(page(CITES), ODC.title, { logger: silentLogger, openingDate: '2011-11-03', activeShows: noOthers }), null);
+  });
+
+  test('no openingDate supplied: exact-only behaviour is unchanged', () => {
+    assert.strictEqual(validateBWWRoundupUrlMatchesShow(CITES, ODC.title), false);
+    assert.strictEqual(findBWWRoundupLinkOnHomepage(page(CITES), ODC.title, { logger: silentLogger }), null);
+  });
+
+  test('a slug with no trailing date never fuzzy-matches', () => {
+    const undated = 'https://www.broadwayworld.com/article/Review-Roundup-OTHER-DESERT-CITES-Returns-to-Broadway';
+    assert.strictEqual(matchBWWRoundupUrlToShow(undated, ODC.title, 'broadway', { openingDate: ODC.openingDate, activeShows: noOthers }), null);
+  });
+
+  test('short title tokens never fuzzy-match ("Cats" vs a "CAST" slug)', () => {
+    const cast = 'https://www.broadwayworld.com/article/Review-Roundup-CAST-PARTY-Opens-on-Broadway-20261019';
+    assert.strictEqual(matchBWWRoundupUrlToShow(cast, 'Cats Party', 'broadway', { openingDate: '2026-10-18', activeShows: noOthers }), null);
+    assert.strictEqual(tokenFuzzyMatch(['cats', 'party'], ['cast', 'party']), null);
+  });
+
+  test('single-token titles never fuzzy-match', () => {
+    assert.strictEqual(tokenFuzzyMatch(['hamilton'], ['hamiltn']), null);
+  });
+
+  test('two typo\'d tokens never fuzzy-match', () => {
+    assert.strictEqual(tokenFuzzyMatch(['other', 'desert', 'cities'], ['othr', 'desert', 'cites']), null);
+  });
+
+  test('rejected when another active show matches the slug exactly', () => {
+    const owner = { id: 'other-desert-cites-2026', title: 'Other Desert Cites', status: 'open' };
+    assert.strictEqual(matchBWWRoundupUrlToShow(CITES, ODC.title, 'broadway', { openingDate: ODC.openingDate, showId: ODC.id, activeShows: [owner] }), null);
+  });
+
+  test('an exact match elsewhere on the page outranks the fuzzy one', () => {
+    const exact = 'https://www.broadwayworld.com/article/Review-Roundup-OTHER-DESERT-CITIES-Opens-on-Broadway-20261018';
+    assert.strictEqual(findBWWRoundupLinkOnHomepage(page(CITES, exact), ODC.title, { logger: silentLogger, openingDate: ODC.openingDate, showId: ODC.id, activeShows: noOthers }), exact);
+  });
+
+  test('tryout markers still reject a fuzzy candidate', () => {
+    const tryout = 'https://www.broadwayworld.com/article/Review-Roundup-OTHER-DESERT-CITES-World-Premiere-at-La-Jolla-Playhouse-20261019';
+    assert.strictEqual(matchBWWRoundupUrlToShow(tryout, ODC.title, 'broadway', { openingDate: ODC.openingDate, activeShows: noOthers }), null);
+  });
+
+  test('slugDateNearOpening window is +-14 days', () => {
+    assert.strictEqual(slugDateNearOpening('x-20261101', '2026-10-18'), true);
+    assert.strictEqual(slugDateNearOpening('x-20261102', '2026-10-18'), false);
+    assert.strictEqual(slugDateNearOpening('x-20261019', null), false);
+  });
+});

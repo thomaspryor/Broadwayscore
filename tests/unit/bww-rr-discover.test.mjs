@@ -411,3 +411,44 @@ describe('ship-check hardening (2026-07-31)', () => {
     assert.strictEqual(result.via, 'reviews.php');
   });
 });
+
+// One-typo slug fallback (fuzzy-title-token.js), Other Desert Cities 2026-10-19.
+describe('slugMatchKind / one-typo fallback', () => {
+  const { slugMatchKind } = require('../../scripts/lib/bww-rr-discover.js');
+  const CITES = 'https://www.broadwayworld.com/article/Review-Roundup-OTHER-DESERT-CITES-Returns-to-Broadway-Updating-Live-20261019';
+  const ODC = { id: 'other-desert-cities-2026', title: 'Other Desert Cities', openingDate: '2026-10-18', category: 'broadway' };
+  const noOthers = { activeShows: [] };
+
+  it('fuzzy-matches the CITES slug for the 2026 production', () => {
+    assert.strictEqual(slugMatchesShow(CITES, ODC), false, 'exact matcher unchanged');
+    assert.strictEqual(slugMatchKind(CITES, ODC, noOthers), 'fuzzy');
+    assert.strictEqual(scoreCandidate(CITES, ODC, noOthers), 10);
+  });
+
+  it('rejects it for the 2011 production (opening date far from slug date)', () => {
+    assert.strictEqual(slugMatchKind(CITES, { ...ODC, id: 'other-desert-cities-2011', openingDate: '2011-11-03' }, noOthers), null);
+  });
+
+  it('short tokens stay exact ("Cats Party" vs CAST-PARTY)', () => {
+    const cast = 'https://www.broadwayworld.com/article/Review-Roundup-CAST-PARTY-Opens-on-Broadway-20261019';
+    assert.strictEqual(slugMatchKind(cast, { id: 'cats-party', title: 'Cats Party', openingDate: '2026-10-18' }, noOthers), null);
+  });
+
+  it('rejects when another active show matches the slug exactly', () => {
+    const owner = { id: 'other-desert-cites-2026', title: 'Other Desert Cites', status: 'open' };
+    assert.strictEqual(slugMatchKind(CITES, ODC, { activeShows: [owner] }), null);
+  });
+
+  it('discoverBwwRoundupUrl ranks an exact match above the fuzzy one', async () => {
+    const exact = 'https://www.broadwayworld.com/article/Review-Roundup-OTHER-DESERT-CITIES-Opens-on-Broadway-20261025';
+    const res = await discoverBwwRoundupUrl(ODC, { ...noOthers, fetchSectionAnchors: async () => [CITES, exact] });
+    assert.strictEqual(res.url, exact);
+    assert.strictEqual(res.candidates[1].url, CITES);
+  });
+
+  it('discoverBwwRoundupUrl returns the fuzzy match when it is the only one', async () => {
+    const res = await discoverBwwRoundupUrl(ODC, { ...noOthers, fetchSectionAnchors: async () => [CITES] });
+    assert.strictEqual(res.url, CITES);
+    assert.strictEqual(res.via, 'section');
+  });
+});

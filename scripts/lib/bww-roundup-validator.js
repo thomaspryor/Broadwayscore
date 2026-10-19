@@ -9,6 +9,7 @@
 const { TRYOUT_URL_MARKERS } = require('./content-filters');
 const { shortTitleCandidate, hasSubtitleTail } = require('./title-normalization');
 const { foldDiacritics } = require('./title-match');
+const { tokenFuzzyMatch, slugDateNearOpening, otherActiveShowMatchesExactly } = require('./fuzzy-title-token');
 
 /**
  * Check if "Review Roundup" appears in the <title> tag (not just anywhere on the page).
@@ -199,11 +200,25 @@ function titleWordsPassSlugCheck(title, slugSegments, slugSegmentsArray) {
   return matchedCount / titleWords.length >= threshold;
 }
 
-function validateBWWRoundupUrlMatchesShow(url, showTitle, showCategory) {
-  if (!url || !showTitle) return true; // can't validate, don't block
+/**
+ * Classify how a BWW Review-Roundup URL matches a show.
+ *   'exact'  - the title matches the slug under the exact rules (or the URL
+ *              can't be validated at all, which has always meant "don't block")
+ *   'fuzzy'  - one title word is one typo off a slug word ("CITES" for
+ *              "Cities"); only offered when opts.openingDate is supplied, the
+ *              slug's trailing YYYYMMDD is within 14 days of it, and no other
+ *              active show matches the slug exactly (fuzzy-title-token.js)
+ *   null     - no match
+ * Callers that iterate candidates should prefer any 'exact' over any 'fuzzy'.
+ *
+ * @param {object} [opts] { openingDate?: 'YYYY-MM-DD', showId?: string,
+ *   activeShows?: object[] (tests; defaults to open/previews shows.json) }
+ */
+function matchBWWRoundupUrlToShow(url, showTitle, showCategory, opts = {}) {
+  if (!url || !showTitle) return 'exact'; // can't validate, don't block
 
   const slugMatch = url.match(/Review-Roundup-(.+)/i);
-  if (!slugMatch) return true; // unexpected URL format — don't block
+  if (!slugMatch) return 'exact'; // unexpected URL format — don't block
 
   const slug = slugMatch[1].toLowerCase();
 
@@ -227,32 +242,58 @@ function validateBWWRoundupUrlMatchesShow(url, showTitle, showCategory) {
   const showIsTryout = String(showCategory || '').toLowerCase() === 'regional';
   if (!showIsTryout) {
     for (const marker of TRYOUT_URL_MARKERS) {
-      if (slug.includes(marker)) return false;
+      if (slug.includes(marker)) return null;
     }
   }
 
   const slugSegmentsArray = slug.split(/[-_]/);
   const slugSegments = new Set(slugSegmentsArray);
 
-  if (titleWordsPassSlugCheck(showTitle, slugSegments, slugSegmentsArray)) return true;
+  if (exactSlugMatch(showTitle, slugSegments, slugSegmentsArray)) return 'exact';
 
-  // Short-title fallback for comma-subtitled shows ("Beaches, A New Musical" → "Beaches").
-  // BWW slug often carries only the short title ("Review-Roundup-BEACHES-Opens-on-Broadway").
-  // Beaches 2026-04-22: 0 of 22 opening-night reviews passed before this fallback.
+  // Typo fallback (fuzzy-title-token.js). Gated on the opening date so an old
+  // roundup with a near-identical title can never be claimed by a new show.
+  if (!opts.openingDate || !slugDateNearOpening(slug, opts.openingDate)) return null;
+  const fuzzy = titleForms(showTitle).some(form => tokenFuzzyMatch(normalizeTitleWords(form), slugSegmentsArray));
+  if (!fuzzy) return null;
+  const slugOwnedElsewhere = otherActiveShowMatchesExactly(
+    { id: opts.showId, title: showTitle },
+    other => exactSlugMatch(other.title, slugSegments, slugSegmentsArray),
+    opts.activeShows,
+  );
+  return slugOwnedElsewhere ? null : 'fuzzy';
+}
+
+// The title forms the exact and fuzzy paths try: full title, comma-subtitle
+// short title, and a colon head of >= 2 content words.
+function titleForms(showTitle) {
+  const forms = [showTitle];
   const shortTitle = hasSubtitleTail(showTitle) ? shortTitleCandidate(showTitle) : null; // BRO-3711
-  if (shortTitle && titleWordsPassSlugCheck(shortTitle, slugSegments, slugSegmentsArray)) return true;
-
-  // Colon-subtitled shows ("Our Sinatra: A Musical Celebration" → "Our
-  // Sinatra"): BWW slugs drop the subtitle the same way. The whole roundup
-  // was rejected on 2026-09-27 for exactly this. Head must be >=2 content
-  // words so a bare "Hamlet: ..." can't match any Hamlet roundup.
+  if (shortTitle) forms.push(shortTitle);
   const colonIdx = showTitle.indexOf(':');
   if (colonIdx > 0) {
     const head = showTitle.slice(0, colonIdx).trim();
-    if (normalizeTitleWords(head).length >= 2 && titleWordsPassSlugCheck(head, slugSegments, slugSegmentsArray)) return true;
+    if (normalizeTitleWords(head).length >= 2) forms.push(head);
   }
+  return forms;
+}
 
-  return false;
+function exactSlugMatch(showTitle, slugSegments, slugSegmentsArray) {
+  if (titleWordsPassSlugCheck(showTitle, slugSegments, slugSegmentsArray)) return true;
+
+  // Short-title fallback for comma-subtitled shows ("Beaches, A New Musical" -> "Beaches").
+  // BWW slug often carries only the short title ("Review-Roundup-BEACHES-Opens-on-Broadway").
+  // Beaches 2026-04-22: 0 of 22 opening-night reviews passed before this fallback.
+  // Colon-subtitled shows ("Our Sinatra: A Musical Celebration" -> "Our
+  // Sinatra"): BWW slugs drop the subtitle the same way. The whole roundup
+  // was rejected on 2026-09-27 for exactly this. Head must be >=2 content
+  // words so a bare "Hamlet: ..." can't match any Hamlet roundup.
+  return titleForms(showTitle).slice(1).some(form => titleWordsPassSlugCheck(form, slugSegments, slugSegmentsArray));
+}
+
+/** Boolean form of matchBWWRoundupUrlToShow (exact, or an eligible fuzzy match). */
+function validateBWWRoundupUrlMatchesShow(url, showTitle, showCategory, opts = {}) {
+  return matchBWWRoundupUrlToShow(url, showTitle, showCategory, opts) !== null;
 }
 
 /**
@@ -333,4 +374,4 @@ function isBWWOperaArticleContent(html) {
   return false;
 }
 
-module.exports = { isBWWRoundupContent, isBWWOperaArticleContent, validateBWWRoundupUrlMatchesShow, isCloudflareChallenge };
+module.exports = { isBWWRoundupContent, isBWWOperaArticleContent, validateBWWRoundupUrlMatchesShow, matchBWWRoundupUrlToShow, isCloudflareChallenge };

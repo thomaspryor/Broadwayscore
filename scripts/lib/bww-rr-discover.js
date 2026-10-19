@@ -19,6 +19,7 @@
  */
 
 const { createTtlCache } = require('./ttl-cache');
+const { tokenFuzzyMatch, slugDateNearOpening, otherActiveShowMatchesExactly } = require('./fuzzy-title-token');
 
 // Per-run anchor memo (Scraping v2 Sprint 1 T5): the SAME reviews.php / market
 // section-page anchor listing was being fetched ~9-11x/run (one node process
@@ -155,6 +156,27 @@ function slugMatchesShow(slug, show) {
   return false;
 }
 
+/**
+ * 'exact' | 'fuzzy' | null. The fuzzy tier (one typo'd title word, e.g. BWW's
+ * "OTHER-DESERT-CITES" for Other Desert Cities, 2026-10-19) runs only when the
+ * exact match fails, only when the slug's trailing YYYYMMDD is within 14 days
+ * of show.openingDate, and never when another active show (shows.json
+ * open/previews) matches the slug exactly. See fuzzy-title-token.js.
+ * @param {object} [opts] { activeShows?: object[] } (tests)
+ */
+function slugMatchKind(slug, show, opts = {}) {
+  if (slugMatchesShow(slug, show)) return 'exact';
+  if (!show || !slugDateNearOpening(slug, show.openingDate)) return null;
+  const words = slugWords(slug);
+  const fuzzy = candidateTitles(show).some((form) => {
+    const titleTokens = tokensFromTitle(foldTitleForSlug(form));
+    return tokenFuzzyMatch(titleTokens, words, { isExact: (t) => tokenInSlug(t.toUpperCase(), words) });
+  });
+  if (!fuzzy) return null;
+  const owned = otherActiveShowMatchesExactly(show, (other) => slugMatchesShow(slug, other), opts.activeShows);
+  return owned ? null : 'fuzzy';
+}
+
 function parseOpeningDateYmd(dateStr) {
   if (!dateStr) return null;
   const m = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})$/);
@@ -174,9 +196,13 @@ function extractUrlDate(url) {
  * Score a candidate: higher is better. Used to rank when multiple URLs match.
  * Perfect = title tokens all present + date within ±3 days of openingDate.
  */
-function scoreCandidate(url, show) {
+function scoreCandidate(url, show, opts = {}) {
   let score = 0;
-  if (slugMatchesShow(url, show)) score += 10;
+  const kind = slugMatchKind(url, show, opts);
+  // A fuzzy match already passed its own +-14-day date gate; it scores the bare
+  // title threshold and discoverBwwRoundupUrl sorts it below every exact match.
+  if (kind === 'fuzzy') return 10;
+  if (kind === 'exact') score += 10;
   const urlDate = extractUrlDate(url);
   const openYmd = parseOpeningDateYmd(show.openingDate);
   if (urlDate && openYmd) {
@@ -445,10 +471,11 @@ async function _fetchSectionPageAnchorsUncached(url) {
  *      | 'cap-exhausted' | 'provider-error' | 'not-found'
  */
 async function discoverBwwRoundupUrl(show, opts = {}) {
+  // Exact title matches always outrank one-typo ('fuzzy') matches.
   const score = (anchors) => anchors
-    .map(url => ({ url, score: scoreCandidate(url, show) }))
+    .map(url => ({ url, score: scoreCandidate(url, show, opts), fuzzy: slugMatchKind(url, show, opts) === 'fuzzy' }))
     .filter(c => c.score >= 10)              // must at least match title tokens
-    .sort((a, b) => b.score - a.score);
+    .sort((a, b) => (a.fuzzy - b.fuzzy) || (b.score - a.score));
 
   // 1. Cheap section-page scan first.
   let anchors = [];
@@ -528,6 +555,7 @@ module.exports = {
   sectionUrlForShow,
   scoreCandidate,
   slugMatchesShow,
+  slugMatchKind,
   tokensFromTitle,
   shouldSkipReviewsPhp,
 };
