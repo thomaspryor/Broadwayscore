@@ -2340,6 +2340,11 @@ function stripInvisibleUnicode(url) {
  * - gather-reviews.js (write-time URL dedup)
  * - cleanup-dedup-comprehensive.js (batch cleanup)
  */
+// [old host, current host] for outlets that moved domains with identical paths.
+const URL_HOST_ALIASES = [
+  ['independent.co.uk', 'the-independent.com'],
+];
+
 function normalizeUrl(url) {
   if (!url) return '';
   try {
@@ -2422,6 +2427,14 @@ function normalizeUrl(url) {
     // serves the SAME article body as `/article`. Path-final only, so a real
     // slug that merely contains the words is untouched.
     u = u.replace(/\/comment-page-\d+$/, '');
+    // Same-article host aliases (BRO-5674): an outlet that moved domains
+    // keeps the path, and aggregators cite whichever host they saw. Without
+    // this the url-change invariant reads a host swap as a different article
+    // and wipes fullText + score (other-desert-cities-2026 Independent, via a
+    // BWW roundup still citing independent.co.uk).
+    for (const [from, to] of URL_HOST_ALIASES) {
+      if (u.startsWith(from + '/')) { u = to + u.slice(from.length); break; }
+    }
     return u;
   } catch (e) {
     return url.toLowerCase().trim();
