@@ -29,12 +29,13 @@
  *                            or their own dated listing (BRO-4396; one free
  *                            TheaterMania API read, no Playbill/Lortel).
  *                            Leaves every other staged candidate untouched.
- *   --admin-promote-all    — bypass cross-validation, promote ALL staged
- *                            candidates. ONE-TIME launch use only.
+ *   --admin-promote-all    : bypass cross-validation; per-run cap still applies.
+ *                            ONE-TIME launch use only.
  *   --admin-force=<title>  — promote a specific title without confirmation
  *   --dry-run              — show what would be promoted; don't write
  *
  * Safety:
+ *   - Abort above 20 confirmed promotions per run, including admin modes
  *   - Atomic write with 5% shrink gate prevents truncation
  *   - status:'announced' + openingDate:null ensures orchestrator skips
  *     these until they're enriched by a real opening date (V-T9 audit)
@@ -74,12 +75,16 @@ const { findExistingMatch } = require('./lib/candidate-dedup');
 // a retired id; this promoter did not, so the NYU Skirball Il Cimento duplicate retired on
 // 2026-10-13 was re-minted under the same id three days later (BRO-5557).
 const { matchesRetired, loadRetiredIds } = require('./lib/retired-show-ids');
+const { MAX_PROMOTE_PER_RUN, assertPromotionCap } = require('./lib/ob-promotion-cap');
 
 const USAGE = `promote-ob-venue-candidates.js — Promote venue-discovered OB candidates from staging → shows.json.
 
 Usage:
   node scripts/promote-ob-venue-candidates.js [options]
   node scripts/promote-ob-venue-candidates.js --help, -h    print this usage and exit
+
+Safety: at most ${MAX_PROMOTE_PER_RUN} promotions per run. Larger batches abort and stay
+staged for review. Applies to all modes, including admin flags and --dry-run.
 `;
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const PROMOTION_LOG = path.join(__dirname, '..', 'data', 'audit', 'ob-promotion-log.jsonl');
@@ -999,10 +1004,6 @@ async function main() {
     if (!venuesMatch(entry.venue, c.venue)) {
       existingCandidates.push({ id: entry.id, title: entry.title, venue: entry.venue, category: entry.category, date: entry.previewsStartDate || entry.openingDate || null });
     }
-    // reviewCount recorded for regional promotions only — it's the actual
-    // number decideReviewThresholdPromotion gated on (BRO-125); other
-    // sources don't compute it, so a bare `undefined` there just means N/A.
-    logEntry({ kind: 'promote', title: c.title, venue: c.venue, id: entry.id, confirmationSource: source, reviewCount: c.category === 'regional' ? c.reviewCount : undefined });
   }
 
   console.log('');
@@ -1019,6 +1020,16 @@ async function main() {
     console.log('Skipping:');
     for (const s of (dryRun ? skipped : skipped.slice(0, 20))) console.log(`  - [${s.candidate.source || 'unknown'}] ${s.candidate.title} (${s.candidate.venue}): ${s.reason}`);
     if (!dryRun && skipped.length > 20) console.log(`  ... +${skipped.length - 20} more`);
+  }
+
+  // Check only qualified, deduped entries. Abort the whole batch so a bad
+  // scrape cannot drain into shows.json over successive unattended runs.
+  // Admin flags bypass confirmation, never this write-side safety guard.
+  try {
+    assertPromotionCap(promoted.length);
+  } catch (e) {
+    logEntry({ kind: 'abort-over-cap', count: promoted.length, cap: MAX_PROMOTE_PER_RUN, ids: promoted.map(p => p.entry.id) });
+    throw e;
   }
 
   if (dryRun) {
@@ -1073,6 +1084,12 @@ async function main() {
   // a shrink-gate abort would leave a file claiming promotions that never
   // happened, and the workflow would targeted-scrape ghosts (QA 2026-07-08).
   writeLastPromotionFile(promoted);
+
+  // An over-cap abort or failed save must never claim successful promotions.
+  // Regional reviewCount is the actual threshold count; other sources omit it.
+  for (const p of promoted) {
+    logEntry({ kind: 'promote', title: p.candidate.title, venue: p.candidate.venue, id: p.entry.id, confirmationSource: p.confirmationSource, reviewCount: p.candidate.category === 'regional' ? p.candidate.reviewCount : undefined });
+  }
 
   // Rewrite staging file with only the unpromoted candidates.
   rewriteStaging();
