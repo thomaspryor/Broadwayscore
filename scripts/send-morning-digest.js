@@ -1166,6 +1166,18 @@ async function main() {
     console.error(`[digest] WARN board-targeting check failed: ${String(err.message).slice(0, 120)}`);
   }
 
+  // BRO-5669: owner-login-dependent sources (Mezzanine token, Theatr token,
+  // outlet cookies) that stopped updating. Visitors-affected, never "handled".
+  try {
+    const { findFrozenLoginSources, ghFetchRuns, injectLoginRows } = require('./lib/login-sources.js');
+    const { rows, errors } = findFrozenLoginSources({ fetchRuns: ghFetchRuns, now: new Date() });
+    injectLoginRows(sections, rows);
+    for (const e of errors) console.error(`[digest] WARN login-source check: ${e}`);
+    console.log(`[digest] login-sources: ${rows.length ? rows.map((r) => r.name).join('; ') : 'none frozen'}`);
+  } catch (err) {
+    console.error(`[digest] WARN login-sources check failed: ${String(err.message).slice(0, 120)}`);
+  }
+
   // Backlog inflow ratio (BRO-3017, owner decision 2026-09-08 "B then A").
   // Live fetch, fail-soft, raced against a 20s timeout — the same shape as the
   // awaiting-owner section above and for the same reason: a degraded Linear

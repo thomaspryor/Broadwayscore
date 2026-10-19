@@ -274,6 +274,10 @@ const PLAIN_HEALTH = [
   [/^Feedback: needs-manual-review backlog/, () => 'Visitor feedback waiting for a manual look'],
 ];
 function plainHealthLine(name) {
+  // BRO-5669: owner-login-dependent sources (lib/login-sources.js). The row
+  // name after the prefix is already the plain sentence.
+  const login = String(name).match(/^Login expired:\s*(.+)$/);
+  if (login) return login[1];
   for (const [re2, fn] of PLAIN_HEALTH) { const m = String(name).match(re2); if (m) return fn(m); }
   return String(name);
 }
@@ -674,10 +678,14 @@ function buildOwnerView({
   for (const [severity, list] of [['error', split.visitors.errors], ['warn', split.visitors.warns]]) {
     for (const r of list) {
       const plain = plainHealthLine(r.name);
-      const fix = loopDead ? null : findAutofixRow(r, autofixRows);
+      // BRO-5669: an expired login can only be fixed by the owner, so no
+      // autofix row may ever demote it to "handled" ("all with automation").
+      const loginRow = r.loginSource === true || /^Login expired:/.test(String(r.name));
+      const fix = loopDead || loginRow ? null : findAutofixRow(r, autofixRows);
       const handled = !!fix && OWNER_HANDLED_STATES.has(fix.state) && !(fix.state === 'watching' && severity === 'error');
       const item = {
-        name: r.name, plain, severity, handled, status: ownerFixStatus(r, autofixRows, loopDead),
+        name: r.name, plain, severity, handled, status: loginRow ? 'needs your login: only you can fix this' : ownerFixStatus(r, autofixRows, loopDead),
+        ...(loginRow ? { loginSource: true, fixUrl: r.fixUrl || null } : {}),
         kind: !handled ? null : fix.state === 'watching' ? 'watching' : fix.state === 'acknowledged' ? 'acknowledged' : 'ticket',
       };
       const prev = byPlain.get(plain);
@@ -753,7 +761,7 @@ function renderVisitorItems(view) {
   // A dead loop gives every row the same status; say it once, not per row.
   return shown.map((i) => `<div style="margin:0 0 5px;">
         <div style="font-size:13px;color:#333;">• ${esc(i.plain)}</div>
-        ${view.loopDead ? '' : `<div style="font-size:11px;color:#777;margin:1px 0 0 12px;">${esc(i.status)}</div>`}
+        ${i.loginSource ? `<div style="font-size:11px;color:#92400e;margin:1px 0 0 12px;">${esc(i.status)}${i.fixUrl ? ` · <a href="${esc(i.fixUrl)}" style="color:#1d4ed8;">fix it here</a>` : ''}</div>` : view.loopDead ? '' : `<div style="font-size:11px;color:#777;margin:1px 0 0 12px;">${esc(i.status)}</div>`}
       </div>`).join('')
     + (rest > 0 ? `<div style="font-size:11px;color:#777;margin-top:4px;">+${rest} more (listed under Technical details)</div>` : '')
     + (view.visitorHandled ? `<div style="font-size:11px;color:#777;margin-top:4px;">${esc(visitorHandledLine(view, { more: true }))}</div>` : '')
