@@ -2554,13 +2554,13 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
         const quote = posting.articleBody || posting.description || '';
         // BWW occasionally lists a review of ANOTHER show whose title contains
         // this one ("The Stage - How Soon is Now? review" in the Soon roundup,
-        // BRO-4977). Kept in the array until the end so the positional thumb
-        // pairing below stays aligned and Method 2/3 see the outlet as taken,
-        // then dropped before return.
+        // BRO-4977). Kept in the array until the end so Method 2/3 see the
+        // outlet as taken (and thumb pairing can claim its icon), then dropped
+        // before return.
         const foreignTitle = detectForeignTitlePosting(posting, showTitle);
         // Not a real outlet: a radio-segment name list (BRO-4357) or a person
         // the excerpt only mentions (BRO-3936). Same keep-then-drop treatment
-        // as foreignTitle so thumb pairing stays aligned.
+        // as foreignTitle.
         // "Registered" here means a registry entry WITH a domain: a rebuild
         // auto-registers critic names as domainless outlets, so a bare
         // isRegisteredOutlet() would shield the very phantoms being dropped.

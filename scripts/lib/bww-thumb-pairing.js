@@ -22,6 +22,14 @@ function thumbFromFile(m) {
   return null;
 }
 
+const NAMED_ENTITIES = { amp: '&', apos: "'", quot: '"', nbsp: ' ', lt: '<', gt: '>', rsquo: '’', lsquo: '‘', ldquo: '“', rdquo: '”', ndash: '–', mdash: '—' };
+const decodeEntities = (s) => String(s || '')
+  .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+  .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+  // accented letters (&eacute; -> e) fold the same as the letter itself
+  .replace(/&([a-z])(?:acute|grave|circ|uml|tilde|cedil|ring|slash);/gi, '$1')
+  .replace(/&([a-z]+);/gi, (m, k) => (k.toLowerCase() in NAMED_ENTITIES ? NAMED_ENTITIES[k.toLowerCase()] : m));
+
 const fold = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '')
   .toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 
@@ -41,7 +49,7 @@ function extractBwwThumbIcons(html, { leadChars = 160 } = {}) {
     let stop = end + leadChars * 4;
     const nextLt = src.indexOf('<', stop);
     if (nextLt !== -1 && nextLt - stop < 2000) stop = nextLt;
-    const after = src.slice(end, stop).replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ');
+    const after = decodeEntities(src.slice(end, stop).replace(/<[^>]*>/g, ' '));
     out.push({ thumb, lead: fold(after).slice(0, leadChars) });
   }
   return out;
@@ -56,20 +64,26 @@ function pairBwwThumbsByCritic(icons, reviews) {
   const list = reviews || [];
   const used = new Set();
   const byName = list.map((r) => {
-    const name = fold(r && r.criticName);
+    const name = fold(decodeEntities(r && r.criticName));
     if (!name || name === 'unknown' || !name.includes(' ')) return null;
     const hits = [];
-    icons.forEach((ic, i) => { if (!used.has(i) && ic.lead.startsWith(name)) hits.push(i); });
-    if (hits.length !== 1) return null;
+    icons.forEach((ic, i) => {
+      if (!used.has(i) && (ic.lead === name || ic.lead.startsWith(name + ' '))) hits.push(i);
+    });
+    // Same critic twice on the page (two outlets, or a repeated entry): fine
+    // when every icon agrees, otherwise we cannot tell which is this review.
+    if (hits.length === 0 || hits.some(i => icons[i].thumb !== icons[hits[0]].thumb)) return null;
     used.add(hits[0]);
     return icons[hits[0]].thumb;
   });
   if (byName.some(Boolean)) return byName;
   // No icon on the page is followed by a critic name (older/minimal markup):
-  // fall back to order, but only on an exact count once the trailing
-  // "Average Rating" icon is set aside.
+  // fall back to order, but only when every entry came from the page's own
+  // JSON-LD list (Method 2/3 additions are appended out of page order) and the
+  // count is exact once the trailing "Average Rating" icon is set aside.
   const reviewIcons = icons.filter(ic => !ic.lead.startsWith('average rating'));
-  if (reviewIcons.length > 0 && reviewIcons.length === list.length) return reviewIcons.map(ic => ic.thumb);
+  const allPageOrder = list.every(r => !r || !r.source || r.source === 'bww-roundup');
+  if (allPageOrder && reviewIcons.length > 0 && reviewIcons.length === list.length) return reviewIcons.map(ic => ic.thumb);
   return byName;
 }
 

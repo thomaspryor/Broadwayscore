@@ -56,3 +56,21 @@ test('no names after any icon: order fallback only on exact count (Average Ratin
   assert.deepEqual(pairBwwThumbsByCritic(icons, [{ criticName: 'A B' }, { criticName: 'C D' }]), ['Up', 'Meh']);
   assert.deepEqual(pairBwwThumbsByCritic(icons, [{ criticName: 'A B' }, { criticName: 'C D' }, { criticName: 'E F' }]), [null, null, null]);
 });
+
+test('HTML entities decode before matching; whole-word names; agreeing duplicates accepted', () => {
+  const html = entry('uptrans2.png', 'Aidan O&#039;Connor', 'BroadwayWorld')
+    + entry('middletrans2.png', 'Ren&eacute;e Smith', 'Outlet')
+    + entry('downtrans2.png', 'Bob Smithson', 'X')
+    + entry('uptrans2.png', 'Thom Geier', 'NYTG') + entry('uptrans2.png', 'Thom Geier', 'Culture Sauce');
+  const icons = extractBwwThumbIcons(html);
+  assert.deepEqual(pairBwwThumbsByCritic(icons, [
+    { criticName: "Aidan O'Connor" }, { criticName: 'Renée Smith' }, { criticName: 'Bob Smith' },
+    { criticName: 'Thom Geier' }, { criticName: 'Thom Geier' },
+  ]), ['Up', 'Meh', null, 'Up', 'Up']);
+});
+
+test('order fallback refuses lists with Method 2/3 entries', () => {
+  const bare = (f) => `<img src="https://c/${f}"><p><a href="u">Outlet review</a></p>`;
+  const icons = extractBwwThumbIcons(bare('uptrans2.png') + bare('middletrans2.png'));
+  assert.deepEqual(pairBwwThumbsByCritic(icons, [{ criticName: 'A B', source: 'bww-roundup' }, { criticName: 'C D', source: 'bww-roundup-domain-supplement' }]), [null, null]);
+});
