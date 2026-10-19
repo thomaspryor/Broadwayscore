@@ -123,6 +123,21 @@ const AUDIT_FRESHNESS_CHECKS = [
     workflow: 'audit-cross-production-weekly.yml', urgency: 'this-week',
     humanFallback: 'The weekly check for reviews routed to the wrong show page has stopped updating.',
     hint: 'Check audit-cross-production-weekly.yml (weekly, Sundays 14:00 UTC) slug-misroute step in Actions tab (no kill-switch var)' },
+  // Writer: scripts/sweep-open-backlog-acceptance.js (writeReport), one
+  // continue-on-error step of data-health-check.yml (BRO-4382), so a stopped
+  // sweep never turns that run red and linear-watchdog-source.js keeps reading
+  // the last committed report. Daily cron; the health check runs before the
+  // sweep step in the same job, so it reads the previous day's report.
+  // missingStatus 'warn': data/ files in cloud sessions are disposable copies
+  // and may be absent. fetchErrorWarn: a fresh report carrying fetchError means
+  // the watchdog reads an empty result set. No `workflow`: redispatching the
+  // whole health job to refresh one shadow report is not worth it, so the
+  // playbook entry asks a human (humanAction).
+  { file: 'open-backlog-acceptance-sweep.json', field: 'generatedAt', ...DAILY,
+    missingStatus: 'warn', missingMessage: 'No open-backlog acceptance sweep report yet (sweep not yet run)', fetchErrorWarn: true,
+    workflow: null, urgency: 'this-week',
+    humanAction: 'The daily sweep that checks which open backlog cards already pass their acceptance check has stopped updating its report, so the watchdog is reading an old snapshot. Open Claude Code and say: "The open-backlog acceptance sweep report is stale (BRO-4382 row) — check the sweep and commit steps in data-health-check.yml and get it landing again."',
+    hint: 'Check the "Open backlog acceptance sweep (shadow mode)" and "Commit open backlog acceptance sweep" steps in data-health-check.yml (both continue-on-error, so a failure there does not turn the run red); node scripts/sweep-open-backlog-acceptance.js --dry-run confirms it can still plan a sweep.' },
 ];
 
 /** Exact digest row name for a table row (also the AUTO_FIX_PLAYBOOK key). */
@@ -135,9 +150,8 @@ function auditFreshnessPlaybookEntries() {
   return AUDIT_FRESHNESS_CHECKS.map((row) => ({
     match: new RegExp(`^${auditFreshnessRowName(row).replace(/[.*+?^${}()|[\]\\/]/g, '\\$&')}$`),
     urgency: row.urgency,
-    workflow: row.workflow,
+    ...(row.workflow ? { workflow: row.workflow, humanFallback: row.humanFallback } : { humanAction: row.humanAction }),
     ...(row.dispatchInputs ? { dispatchInputs: row.dispatchInputs } : {}),
-    humanFallback: row.humanFallback,
   }));
 }
 
@@ -161,7 +175,7 @@ function evaluateAuditFreshness(row, data, nowMs) {
   // field and unparseable date are all errors (a detector that cannot prove it
   // ran is treated like one that did not).
   if (data === null || data === undefined) {
-    return { status: 'error', ageH: null, message: 'File missing' };
+    return { status: row.missingStatus || 'error', ageH: null, message: row.missingMessage || 'File missing' };
   }
   const value = auditFieldValue(data, row.field);
   if (!value) {
@@ -176,6 +190,9 @@ function evaluateAuditFreshness(row, data, nowMs) {
   }
   if (age > row.warnH) {
     return { status: 'warn', ageH: age, message: `${formatAge(age)} old (warn threshold: ${formatAge(row.warnH)})` };
+  }
+  if (row.fetchErrorWarn && data.fetchError) {
+    return { status: 'warn', ageH: age, message: `Latest run wrote a failure report (fetchError: ${String(data.fetchError).slice(0, 80)}); consumers read an empty result set` };
   }
   return { status: 'ok', ageH: age, message: `${formatAge(age)} old` };
 }

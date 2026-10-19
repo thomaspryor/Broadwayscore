@@ -35,20 +35,13 @@ const SIBLING_SHIELDED_REASONS = new Set(['knownSyndicationSecondary']);
 // AND that carries a valid score (ship-check BRO-4457: an isRoundupArticle /
 // fabricatedEntry / unscored primary must leave the card OPEN).
 function siblingPrimaryReachesScore(file, filePath, show) {
-  const fs = require('fs');
   const path = require('path');
   const synd = require('./syndication-pairs');
   const { normalizeOutlet } = require('./review-normalization');
   try {
     const primaries = synd.getSyndicationPrimaries(file.criticName, normalizeOutlet(file.outletId || file.outlet || ''));
-    const dir = path.dirname(filePath);
-    return fs.readdirSync(dir).some((f) => {
-      if (!synd.isPrimaryFileFor(f, primaries, file.criticName)) return false;
-      try {
-        const pPath = path.join(dir, f);
-        const p = JSON.parse(fs.readFileSync(pPath, 'utf8'));
-        return synd.isLiveSyndicationPrimary(p) && isIncludableForRebuild(p, show, pPath) && hasValidScore(p);
-      } catch { return false; }
+    return synd.hasLiveSyndicationPrimary(path.dirname(filePath), primaries, file.criticName, {
+      extraCheck: (p, pPath) => isIncludableForRebuild(p, show, pPath) && hasValidScore(p),
     });
   } catch { return false; }
 }

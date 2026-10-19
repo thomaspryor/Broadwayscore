@@ -122,7 +122,7 @@ const { guardPublishDate, evaluateDatelessRevivalGuard, earliestShowDate, evalua
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
 const { safeWriteReview, writeReviewOrThrow, invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear, retractScriptWrongProductionClear } = require('./lib/review-write-guard');
-const { KNOWN_SYNDICATION_PAIRS, getSyndicationPrimaries, isPrimaryFileFor, isLiveSyndicationPrimary } = require('./lib/syndication-pairs');
+const { KNOWN_SYNDICATION_PAIRS, getSyndicationPrimaries, hasLiveSyndicationPrimary } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
 const { writeShowExclusionsFile, writeDailyExclusionTotals } = require('./lib/rebuild-exclusion-audit');
 const { isRebuildPaused, readRebuildPause, REBUILD_PAUSE_PATH } = require('./lib/rebuild-pause');
@@ -4334,13 +4334,7 @@ showDirs.forEach(showId => {
           // Only skip secondary if the primary file is unflagged (not wrongProduction/wrongShow).
           // A flagged primary shouldn't block a valid secondary — e.g., OB theatermania flagged
           // but Broadway whatsonstage is the real review for this production.
-          const hasPrimary = allJsonFiles.some(f => {
-            if (!isPrimaryFileFor(f, syndPrimaries, criticSynd)) return false;
-            try {
-              const pData = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
-              return isLiveSyndicationPrimary(pData);
-            } catch { return false; }
-          });
+          const hasPrimary = hasLiveSyndicationPrimary(showDir, syndPrimaries, criticSynd, { fileNames: allJsonFiles });
           if (hasPrimary) {
             logExclusion("skippedSyndicated", showId, file, data);
             stats.skippedSyndicated = (stats.skippedSyndicated || 0) + 1;
@@ -5948,10 +5942,7 @@ if (fs.existsSync(reviewsJsonPath)) {
                   const criticLc = (d.criticName || '').toLowerCase().trim();
                   const outletLc = normalizeOutletCanonical(d.outletId || d.outlet || '');
                   const prims = getSyndicationPrimaries(criticLc, outletLc);
-                  if (prims.length && fs.readdirSync(showDir).some(g => {
-                    if (!isPrimaryFileFor(g, prims, criticLc)) return false;
-                    try { return isLiveSyndicationPrimary(JSON.parse(fs.readFileSync(path.join(showDir, g), 'utf8'))); } catch { return false; }
-                  })) wouldBeExcluded = true;
+                  if (prims.length && hasLiveSyndicationPrimary(showDir, prims, criticLc)) wouldBeExcluded = true;
                 }
                 if (wouldBeExcluded) {
                   inlineGuardWouldExclude++;

@@ -5074,18 +5074,9 @@ function explainExclusion(data, show, filePath, opts) {
       const synd = require('./syndication-pairs');
       const syndPrimaries = synd.getSyndicationPrimaries(data.criticName, outletSynd);
       if (syndPrimaries.length) {
-        const pathMod = require('path');
-        const fsMod = require('fs');
-        const showDir = pathMod.dirname(filePath);
         let hasPrimary = false;
         try {
-          hasPrimary = fsMod.readdirSync(showDir).some(f => {
-            if (!synd.isPrimaryFileFor(f, syndPrimaries, data.criticName)) return false;
-            try {
-              const pData = JSON.parse(fsMod.readFileSync(pathMod.join(showDir, f), 'utf8'));
-              return synd.isLiveSyndicationPrimary(pData);
-            } catch { return false; }
-          });
+          hasPrimary = synd.hasLiveSyndicationPrimary(require('path').dirname(filePath), syndPrimaries, data.criticName);
         } catch { /* show dir unreadable — fall through, don't exclude */ }
         if (hasPrimary) return 'knownSyndicationSecondary';
       }

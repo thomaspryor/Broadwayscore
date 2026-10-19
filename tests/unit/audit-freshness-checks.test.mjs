@@ -44,11 +44,17 @@ test('every AUDIT_FRESHNESS_CHECKS row has an AUTO_FIX_PLAYBOOK entry that dispa
   for (const row of AUDIT_FRESHNESS_CHECKS) {
     const entry = hc.getPlaybookEntry(auditFreshnessRowName(row));
     assert.ok(entry, `no playbook entry for ${row.file}`);
-    assert.equal(entry.workflow, row.workflow, row.file);
-    assert.ok(fs.existsSync(path.join(REPO, '.github/workflows', row.workflow)), `${row.workflow} missing`);
-    assert.match(fs.readFileSync(path.join(REPO, '.github/workflows', row.workflow), 'utf8'), /workflow_dispatch:/, `${row.workflow} must be dispatchable`);
     assert.ok(['fix-now', 'this-week'].includes(entry.urgency), `${row.file}: urgency must keep it out of "+N low-priority"`);
-    assert.ok(entry.humanFallback, row.file);
+    if (!row.workflow) {
+      // No automated writer dispatch: the playbook must tell a human what to do.
+      assert.equal(entry.workflow, undefined, row.file);
+      assert.ok(entry.humanAction, `${row.file}: a row without a workflow needs humanAction`);
+    } else {
+      assert.equal(entry.workflow, row.workflow, row.file);
+      assert.ok(fs.existsSync(path.join(REPO, '.github/workflows', row.workflow)), `${row.workflow} missing`);
+      assert.match(fs.readFileSync(path.join(REPO, '.github/workflows', row.workflow), 'utf8'), /workflow_dispatch:/, `${row.workflow} must be dispatchable`);
+      assert.ok(entry.humanFallback, row.file);
+    }
     // Exact-name match only: a sibling file must not borrow this entry.
     assert.equal(hc.getPlaybookEntry(`${auditFreshnessRowName(row)}x`), null);
     // A stale row is actionable (named in the digest body).
@@ -57,7 +63,7 @@ test('every AUDIT_FRESHNESS_CHECKS row has an AUTO_FIX_PLAYBOOK entry that dispa
 });
 
 test('hints name the workflow kill switches that would freeze the file', () => {
-  for (const row of AUDIT_FRESHNESS_CHECKS) {
+  for (const row of AUDIT_FRESHNESS_CHECKS.filter((r) => r.workflow)) {
     const yml = fs.readFileSync(path.join(REPO, '.github/workflows', row.workflow), 'utf8');
     const jobSwitches = [...yml.matchAll(/^    if: \$\{\{\s*vars\.([A-Z0-9_]+) != 'true'/gm)].map((m) => m[1]);
     for (const v of jobSwitches) assert.ok(row.hint.includes(v), `${row.file}: hint must name job kill switch ${v}`);
@@ -90,8 +96,8 @@ for (const row of AUDIT_FRESHNESS_CHECKS) {
   });
 
   test(`${row.file}: missing file / missing field / unparseable date -> error (FRESHNESS_CHECKS convention)`, () => {
-    assert.deepEqual(evaluateAuditFreshness(row, null, NOW), { status: 'error', ageH: null, message: 'File missing' });
-    assert.equal(evaluateAuditFreshness(row, undefined, NOW).status, 'error');
+    assert.deepEqual(evaluateAuditFreshness(row, null, NOW), { status: row.missingStatus || 'error', ageH: null, message: row.missingMessage || 'File missing' });
+    assert.equal(evaluateAuditFreshness(row, undefined, NOW).status, row.missingStatus || 'error');
     const noField = evaluateAuditFreshness(row, { somethingElse: 1 }, NOW);
     assert.equal(noField.status, 'error');
     assert.equal(noField.message, `No ${row.field} field`);
@@ -161,8 +167,9 @@ test('checkAuditFreshness: one Freshness row per table entry, mapped to digest s
     assert.match(d.message, /^Check crashed: .*EISDIR/);
     for (const row of rest) {
       const r = byName[`Freshness: audit/${row.file}`];
-      assert.equal(r.status, 'error');
-      assert.equal(r.message, 'File missing');
+      const src = AUDIT_FRESHNESS_CHECKS.find((x) => `Freshness: audit/${x.file}` === r.name);
+      assert.equal(r.status, src.missingStatus || 'error');
+      assert.equal(r.message, src.missingMessage || 'File missing');
     }
     // Same category as checkFreshness() rows, so they share its triage file.
     for (const r of rows) assert.equal(r.name.split(':')[0].trim().toLowerCase(), 'freshness');

@@ -157,8 +157,30 @@ function isLiveSyndicationPrimary(d) {
     || d.contentTier === 'invalid');
 }
 
+/**
+ * True when showDir holds a live primary file for this critic (the sibling
+ * scan every syndication-dedup site repeats, BRO-5352). Callers compute
+ * `primaries` themselves (getSyndicationPrimaries) so each keeps its own outlet
+ * normalisation. `fileNames` reuses a listing the caller already has;
+ * otherwise showDir is read, and an unreadable dir throws (callers decide).
+ * `extraCheck(parsedPrimary, fullPath)` adds a caller-specific condition.
+ */
+function hasLiveSyndicationPrimary(showDir, primaries, criticName, { fileNames, extraCheck } = {}) {
+  const fs = require('fs');
+  const path = require('path');
+  const names = fileNames || fs.readdirSync(showDir);
+  return names.some((f) => {
+    if (!isPrimaryFileFor(f, primaries, criticName)) return false;
+    try {
+      const pPath = path.join(showDir, f);
+      const p = JSON.parse(fs.readFileSync(pPath, 'utf8'));
+      return isLiveSyndicationPrimary(p) && (!extraCheck || !!extraCheck(p, pPath));
+    } catch { return false; }
+  });
+}
+
 module.exports = {
-  criticFileSlug, isPrimaryFileFor, isLiveSyndicationPrimary,
+  criticFileSlug, isPrimaryFileFor, isLiveSyndicationPrimary, hasLiveSyndicationPrimary,
   KNOWN_SYNDICATION_PAIRS, PUBLISHING_GROUPS, getSyndicationConfig, isSecondaryOutlet,
   getSyndicationPrimaries, isCrossOutletSyndicationPair, isRenameCollisionPair,
 };
