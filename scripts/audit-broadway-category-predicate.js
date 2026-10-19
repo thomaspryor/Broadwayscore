@@ -57,7 +57,8 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { baselineKeySet, computeNewViolators } = require('./lib/broadway-category-predicate-baseline.js');
+const { hitKey, baselineKeySet, computeNewViolators } = require('./lib/broadway-category-predicate-baseline.js');
+const { computeStaleBaselineKeys, reportStaleBaseline, pruneStaleEntries, runStaleModes, STALE_FLAGS_HELP } = require('./lib/stale-baseline.js');
 
 const USAGE = `audit-broadway-category-predicate.js — flag scripts reimplementing category === 'broadway' instead of calling isBroadwayCategory().
 
@@ -65,6 +66,8 @@ Usage:
   node scripts/audit-broadway-category-predicate.js [--json]
   node scripts/audit-broadway-category-predicate.js --strict
   node scripts/audit-broadway-category-predicate.js --update-baseline
+  node scripts/audit-broadway-category-predicate.js --check-stale | --prune-stale
+      ${STALE_FLAGS_HELP} (BRO-5315; multiset: compares counts per file::snippet)
   node scripts/audit-broadway-category-predicate.js --help, -h    print this usage and exit
 `;
 if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
@@ -182,12 +185,24 @@ function main() {
     return;
   }
 
-  const baselineKeys = baselineKeySet(loadBaseline().hits);
+  const baselineDoc = loadBaseline();
+  const baselineKeys = baselineKeySet(baselineDoc.hits);
+  // BRO-5315: multiset stale check — a (file, snippet) key baselined N times
+  // but live M<N times has N-M stale copies.
+  const staleKeys = computeStaleBaselineKeys(baselineKeys, violators.flatMap(v => v.hits.map(h => hitKey(v.file, h.snippet))));
+  const STALE_CMD = 'node scripts/audit-broadway-category-predicate.js --prune-stale';
+  runStaleModes(args, {
+    stale: staleKeys, label: 'broadway-category-predicate', updateCmd: STALE_CMD,
+    prune: (stale) => {
+      baselineDoc.hits = pruneStaleEntries(baselineDoc.hits || [], h => hitKey(h.file, h.snippet), stale);
+      fs.writeFileSync(BASELINE_PATH, JSON.stringify(baselineDoc, null, 2) + '\n');
+    },
+  });
   const newViolators = computeNewViolators(violators, baselineKeys);
   const newHits = newViolators.reduce((sum, v) => sum + v.hits.length, 0);
 
   if (JSON_OUT) {
-    console.log(JSON.stringify({ violatorCount: violators.length, totalHits, violators, newViolators, newHits }, null, 2));
+    console.log(JSON.stringify({ violatorCount: violators.length, totalHits, violators, newViolators, newHits, staleBaselineKeys: staleKeys }, null, 2));
   } else if (violators.length === 0) {
     console.log('✅ audit-broadway-category-predicate: no un-allowlisted raw `category === \'broadway\'` literals in scripts/');
   } else {
@@ -209,6 +224,8 @@ function main() {
       console.log(`  node scripts/audit-broadway-category-predicate.js --update-baseline`);
     }
   }
+
+  if (!JSON_OUT && staleKeys.length) reportStaleBaseline(staleKeys, { label: 'broadway-category-predicate', updateCmd: STALE_CMD });
 
   if (STRICT && newViolators.length > 0) {
     process.exit(1);

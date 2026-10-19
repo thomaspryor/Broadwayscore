@@ -13,6 +13,8 @@ const { maxPlausibleYear } = require('./lib/date-utils');
  *   node scripts/audit-show-score-urls.js [--verbose]        report only
  *   node scripts/audit-show-score-urls.js --strict           exit 1 on a NEW duplicate URL
  *   node scripts/audit-show-score-urls.js --update-baseline  regenerate baseline from current scan
+ *   node scripts/audit-show-score-urls.js --check-stale      exit 1 on baseline entries no longer duplicated (BRO-5315)
+ *   node scripts/audit-show-score-urls.js --prune-stale      drop only those entries from the baseline
  *
  * Baseline-diff (BRO-3471), same posture as audit-duplicate-shows.js: which
  * side of a duplicate-URL pair is the page's real subject is a per-pair data
@@ -37,7 +39,8 @@ const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
 const { venuesMatch } = require('./lib/deduplication');
-const { normalizeUrl, baselineKeySet, computeNewViolators } = require('./lib/show-score-urls-baseline');
+const { normalizeUrl, identityKey, baselineKeySet, computeNewViolators } = require('./lib/show-score-urls-baseline');
+const { computeStaleBaselineKeys, reportStaleBaseline, pruneStaleEntries, runStaleModes } = require('./lib/stale-baseline');
 const { findDuplicateUrls } = require('./lib/show-score-url-map');
 
 const DATA_DIR = path.join(__dirname, '../data');
@@ -50,6 +53,7 @@ const args = process.argv.slice(2);
 const verbose = args.includes('--verbose');
 const STRICT = args.includes('--strict');
 const UPDATE_BASELINE = args.includes('--update-baseline');
+const STALE_MODE = args.includes('--check-stale') || args.includes('--prune-stale'); // BRO-5315
 
 function loadBaseline() {
   try {
@@ -68,7 +72,7 @@ const shows = showsData.shows || showsData;
 // class): with zero entries, urlToIds is empty, duplicate_url is [], and
 // --strict would exit 0 vacuously — passing not because nothing is wrong but
 // because nothing was checked (e.g. a bad merge emptied the file).
-if ((STRICT || UPDATE_BASELINE) && Object.keys(urlData.shows || {}).length === 0) {
+if ((STRICT || UPDATE_BASELINE || STALE_MODE) && Object.keys(urlData.shows || {}).length === 0) {
   console.error(`\n❌ data/show-score-urls.json has 0 entries — cannot scan for duplicates. Refusing to pass vacuously.`);
   process.exit(1);
 }
@@ -151,7 +155,20 @@ if (UPDATE_BASELINE) {
   process.exit(0);
 }
 
-const baselineSet = baselineKeySet(loadBaseline().urls);
+// BRO-5315: identity is url + exact showId set (identityKey), the same grain
+// the baseline diff uses — a URL now shared by a different id set is stale.
+const baselineDoc = loadBaseline();
+const staleKeys = computeStaleBaselineKeys((baselineDoc.urls || []).map(identityKey), results.duplicate_url.map(identityKey));
+const STALE_CMD = 'node scripts/audit-show-score-urls.js --prune-stale';
+runStaleModes(args, {
+  stale: staleKeys, label: 'show-score-urls', updateCmd: STALE_CMD,
+  prune: (stale) => {
+    baselineDoc.urls = pruneStaleEntries(baselineDoc.urls || [], identityKey, stale);
+    fs.writeFileSync(BASELINE_PATH, JSON.stringify(baselineDoc, null, 2) + '\n');
+  },
+});
+
+const baselineSet = baselineKeySet(baselineDoc.urls);
 const newDuplicates = computeNewViolators(results.duplicate_url, baselineSet);
 
 // Check 2: Per-show audit
@@ -283,6 +300,8 @@ console.log(`  Suspicious (no arch): ${results.suspicious.length}`);
 console.log(`  OK:                   ${results.ok.length}`);
 console.log(`  No archive:           ${results.no_archive.length}`);
 console.log(`  Total checked:        ${Object.keys(urlData.shows).length}`);
+
+if (staleKeys.length) reportStaleBaseline(staleKeys, { label: 'show-score-urls', updateCmd: STALE_CMD });
 
 if (STRICT && newDuplicates.length > 0) process.exit(1);
 process.exit(0);

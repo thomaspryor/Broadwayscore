@@ -23,6 +23,8 @@
  *   node scripts/audit-aggregator-archive-integrity.js              # report
  *   node scripts/audit-aggregator-archive-integrity.js --strict     # CI gate
  *   node scripts/audit-aggregator-archive-integrity.js --update-baseline
+ *   node scripts/audit-aggregator-archive-integrity.js --check-stale  # exit 1 on stale baseline entries (BRO-5315)
+ *   node scripts/audit-aggregator-archive-integrity.js --prune-stale  # drop only stale baseline entries
  *
  * Notion: 34e637c5-416f-812c (CI gate for cached archive validation, P2).
  */
@@ -31,9 +33,13 @@ const fs = require('fs');
 const path = require('path');
 const { buildSiblingCategoriesByTitle } = require('./lib/show-matching');
 const { checkArchiveCategory } = require('./lib/archive-cache-guard');
+const { computeStaleBaselineKeys, reportStaleBaseline, pruneStaleEntries, runStaleModes } = require('./lib/stale-baseline');
 
 const STRICT = process.argv.includes('--strict');
 const UPDATE_BASELINE = process.argv.includes('--update-baseline');
+// --check-stale / --prune-stale (BRO-5315, scripts/lib/stale-baseline.js):
+// a known-bad archive the live scan no longer flags. Both exit before the
+// report write.
 
 const ROOT = path.join(__dirname, '..');
 const ARCHIVE_ROOT = path.join(ROOT, 'data', 'aggregator-archive');
@@ -126,6 +132,22 @@ const report = {
   bad: result.bad.sort((a, b) => (a.source + a.showId).localeCompare(b.source + b.showId)),
 };
 
+const STALE_LABEL = 'aggregator-archive-integrity';
+const STALE_CMD = 'node scripts/audit-aggregator-archive-integrity.js --prune-stale (or --update-baseline when the scan has no new bad archives)';
+{
+  const baselineDoc = loadBaseline() || {};
+  runStaleModes(process.argv, {
+    stale: computeStaleBaselineKeys(baselineDoc.knownBad || [], result.bad.map(b => `${b.source}/${b.showId}`)),
+    label: STALE_LABEL,
+    updateCmd: STALE_CMD,
+    prune: (stale) => {
+      baselineDoc.knownBad = pruneStaleEntries(baselineDoc.knownBad || [], k => k, stale);
+      baselineDoc.updatedAt = new Date().toISOString();
+      fs.writeFileSync(BASELINE_PATH, JSON.stringify(baselineDoc, null, 2) + '\n');
+    },
+  });
+}
+
 fs.mkdirSync(path.dirname(REPORT_PATH), { recursive: true });
 fs.writeFileSync(REPORT_PATH, JSON.stringify(report, null, 2) + '\n');
 
@@ -151,7 +173,7 @@ if (STRICT) {
   const knownBad = new Set((baseline && baseline.knownBad) || []);
   const currentBad = new Set(result.bad.map(b => `${b.source}/${b.showId}`));
   const additions = [...currentBad].filter(k => !knownBad.has(k));
-  const removals = [...knownBad].filter(k => !currentBad.has(k));
+  const removals = computeStaleBaselineKeys(knownBad, currentBad);
 
   if (additions.length > 0) {
     console.log(`❌ NEW bad archives (${additions.length}):`);
@@ -165,11 +187,8 @@ if (STRICT) {
     process.exit(1);
   }
 
-  if (removals.length > 0) {
-    console.log(`✓ Cleared ${removals.length} previously-bad archives — run --update-baseline to shrink baseline.`);
-  } else {
-    console.log(`✓ No additions vs baseline (${knownBad.size} known-bad).`);
-  }
+  console.log(`✓ No additions vs baseline (${knownBad.size} known-bad).`);
+  reportStaleBaseline(removals, { label: STALE_LABEL, updateCmd: STALE_CMD });
 }
 
 console.log(`Report: ${REPORT_PATH}`);

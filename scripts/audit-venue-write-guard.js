@@ -21,6 +21,7 @@
  *   node scripts/audit-venue-write-guard.js                 report all findings (exit 0)
  *   node scripts/audit-venue-write-guard.js --strict         exit 1 on any NEW (non-baselined) unguarded site
  *   node scripts/audit-venue-write-guard.js --update-baseline   regenerate the baseline from the current scan
+  node scripts/audit-venue-write-guard.js --check-stale | --prune-stale   baselined sites no longer found (BRO-5315)
  *   node scripts/audit-venue-write-guard.js --json           machine-readable findings
  *   node scripts/audit-venue-write-guard.js --help, -h        print this usage and exit
  *
@@ -45,6 +46,7 @@ Usage:
 if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 
 const { scanVenueWrites } = require('./lib/venue-write-guard-detector.js');
+const { computeStaleBaselineKeys, reportStaleBaseline, runStaleModes } = require('./lib/stale-baseline.js');
 
 const REPO_ROOT = path.join(__dirname, '..');
 const SCRIPTS_DIR = path.join(REPO_ROOT, 'scripts');
@@ -124,6 +126,11 @@ function writeBaseline(findings) {
   return baseline;
 }
 
+/** BRO-5315: baselined site keys with no live finding behind them. */
+function computeStaleSites(findings, baseline) {
+  return computeStaleBaselineKeys(Object.keys(baseline.sites || {}), new Set(findings.map(siteKey)));
+}
+
 function main() {
   const args = process.argv.slice(2);
   const jsonOut = args.includes('--json');
@@ -139,10 +146,19 @@ function main() {
   }
 
   const baseline = loadBaseline();
+  const staleKeys = computeStaleSites(findings, baseline);
+  const STALE_CMD = 'node scripts/audit-venue-write-guard.js --prune-stale';
+  runStaleModes(args, {
+    stale: staleKeys, label: 'venue-write-guard', updateCmd: STALE_CMD,
+    prune: (stale) => {
+      for (const k of stale) delete baseline.sites[k];
+      fs.writeFileSync(BASELINE_PATH, JSON.stringify(baseline, null, 2) + '\n');
+    },
+  });
   const newFindings = computeNewFindings(findings, baseline);
 
   if (jsonOut) {
-    console.log(JSON.stringify({ total: findings.length, new: newFindings.length, findings, newFindings }, null, 2));
+    console.log(JSON.stringify({ total: findings.length, new: newFindings.length, findings, newFindings, staleBaselineKeys: staleKeys }, null, 2));
     process.exitCode = strict && newFindings.length > 0 ? 1 : 0;
     return;
   }
@@ -157,9 +173,11 @@ function main() {
     console.log('No new unguarded sites beyond the baseline.');
   }
 
+  if (staleKeys.length) reportStaleBaseline(staleKeys, { label: 'venue-write-guard', updateCmd: STALE_CMD });
+
   if (strict && newFindings.length > 0) process.exitCode = 1;
 }
 
 if (require.main === module) main();
 
-module.exports = { scanRepo, listScannableFiles, loadBaseline, computeNewFindings, writeBaseline, siteKey, BASELINE_PATH };
+module.exports = { scanRepo, listScannableFiles, loadBaseline, computeNewFindings, computeStaleSites, writeBaseline, siteKey, BASELINE_PATH };

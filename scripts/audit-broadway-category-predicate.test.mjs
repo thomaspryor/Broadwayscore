@@ -16,7 +16,7 @@ function makeTree(files, baselineHits = []) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bcp-'));
   fs.mkdirSync(path.join(root, 'scripts', 'lib'), { recursive: true });
   fs.mkdirSync(path.join(root, 'data', 'audit'), { recursive: true });
-  for (const f of [SCRIPT, 'lib/cli-help.js', 'lib/broadway-category-predicate-baseline.js']) {
+  for (const f of [SCRIPT, 'lib/cli-help.js', 'lib/broadway-category-predicate-baseline.js', 'lib/stale-baseline.js']) {
     fs.copyFileSync(path.join(HERE, f), path.join(root, 'scripts', f));
   }
   fs.writeFileSync(

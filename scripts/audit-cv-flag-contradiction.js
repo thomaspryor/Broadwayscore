@@ -53,7 +53,8 @@ const {
   summarizeWindowCoverage,
   shouldRefuseRedirectedGate,
 } = require('./lib/corpus-scan-guard');
-const { baselineKeySet, computeNewViolators } = require('./lib/cv-flag-contradiction-baseline');
+const { hitKey, baselineKeySet, computeNewViolators } = require('./lib/cv-flag-contradiction-baseline');
+const { computeStaleBaselineKeys, reportStaleBaseline, pruneStaleEntries, runStaleModes, STALE_FLAGS_HELP } = require('./lib/stale-baseline');
 
 const USAGE = `audit-cv-flag-contradiction.js — flag-vs-CV contradiction detector (#651)
 
@@ -63,6 +64,9 @@ Usage:
   --strict           exit 1 when a NEW (non-baselined) contradiction is found (task #1673)
   --update-baseline  regenerate data/audit/cv-flag-contradiction-baseline.json from the current scan
   --window=N         only consider shows opened in the last N days (default 30)
+  ${STALE_FLAGS_HELP}
+                     (BRO-5315; a baselined file is re-checked directly, so a hit that merely
+                     aged out of --window but still contradicts is NOT stale)
 `;
 
 // BSC_AUDIT_ROOT exists so the coverage counting below can be proven against
@@ -93,10 +97,11 @@ const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
 const BASELINE_PATH = path.join(ROOT, 'data', 'audit', 'cv-flag-contradiction-baseline.json');
 
 function parseArgs(argv) {
-  const args = { window: 30, strict: false, updateBaseline: false };
+  const args = { window: 30, strict: false, updateBaseline: false, stale: false };
   for (const a of argv) {
     if (a === '--strict') args.strict = true;
     else if (a === '--update-baseline') args.updateBaseline = true;
+    else if (a === '--check-stale' || a === '--prune-stale') args.stale = true;
     else if (a.startsWith('--window')) {
       // Keep the RAW token: parseInt truncates, so '1e9' becomes 1 and '30d'
       // becomes 30 — nonsense silently turned into a plausible window
@@ -173,7 +178,7 @@ function main() {
     rootOverride: ROOT_OVERRIDE,
     corpusEntries,
     strict: args.strict,
-    updateBaseline: args.updateBaseline,
+    updateBaseline: args.updateBaseline || args.stale,
   })) {
     console.error(
       'FAIL: BSC_AUDIT_ROOT is set with a non-empty corpus, so --strict and ' +
@@ -184,7 +189,7 @@ function main() {
   }
 
   try {
-    assertCorpusScanned(corpusEntries, { gate: args.strict || args.updateBaseline });
+    assertCorpusScanned(corpusEntries, { gate: args.strict || args.updateBaseline || args.stale });
   } catch (e) {
     if (!(e instanceof CorpusNotScannedError)) throw e;
     console.error(`\nFAIL: ${e.message}`);
@@ -305,7 +310,32 @@ function main() {
     process.exit(0);
   }
 
-  const baselineSet = baselineKeySet(loadBaseline().hits);
+  // BRO-5315 stale check. The live set is the window scan PLUS a direct
+  // re-check of every baselined file: a hit whose show merely aged out of
+  // --window still exists (not stale); a file that no longer contradicts, or
+  // is gone, is stale and would re-excuse the same regression later.
+  const baselineDoc = loadBaseline();
+  const liveKeys = new Set(hits.map(h => hitKey(h.showId, h.file)));
+  for (const e of baselineDoc.hits || []) {
+    const key = hitKey(e.showId, e.file);
+    if (liveKeys.has(key)) continue;
+    try {
+      const data = JSON.parse(fs.readFileSync(path.join(REVIEW_TEXTS_DIR, e.showId, e.file), 'utf8'));
+      if (detectCvFlagContradiction(data)) liveKeys.add(key);
+    } catch { /* missing/unreadable file: no live violation */ }
+  }
+  const staleKeys = computeStaleBaselineKeys((baselineDoc.hits || []).map(e => hitKey(e.showId, e.file)), liveKeys);
+  const STALE_CMD = 'node scripts/audit-cv-flag-contradiction.js --prune-stale';
+  runStaleModes(process.argv.slice(2), {
+    stale: staleKeys, label: 'cv-flag-contradiction', updateCmd: STALE_CMD,
+    prune: (stale) => {
+      baselineDoc.hits = pruneStaleEntries(baselineDoc.hits || [], e => hitKey(e.showId, e.file), stale);
+      fs.writeFileSync(BASELINE_PATH, JSON.stringify(baselineDoc, null, 2) + '\n');
+    },
+  });
+  if (staleKeys.length) reportStaleBaseline(staleKeys, { label: 'cv-flag-contradiction', updateCmd: STALE_CMD });
+
+  const baselineSet = baselineKeySet(baselineDoc.hits);
   const newViolators = computeNewViolators(hits, baselineSet);
 
   if (hits.length > 0) {

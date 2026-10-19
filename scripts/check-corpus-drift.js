@@ -412,7 +412,11 @@ const AUDITS = [
     name: 'orphaned-wrongprod-provenance',
     healPathRequired: true, // BRO-2740
     label: 'review files with wrongProduction provenance but the flag dropped (would score silently; baseline-diff)',
-    healExempt: 'each file is either a real wrong-production (restore the flag) or a false detection (delete provenance); restoring flags changes scoring, so no mechanical --fix (CLAUDE.md 12.7).',
+    // Heal path is its baseline-diff (--update-baseline). No --fix: each file
+    // is either a real wrong-production (restore the flag) or a false
+    // detection (delete provenance), and restoring flags changes scoring
+    // (CLAUDE.md 12.7). healExempt removed (BRO-5315): redundant with the
+    // baseline-diff path, so it could only ever re-excuse a lost heal path.
     script: 'audit-orphaned-wrongprod-provenance.js',
     args: ['--gate'],
     crashCodes: [2],           // 0 under baseline / 1 = new un-baselined orphan / 2 = corpus missing or partial

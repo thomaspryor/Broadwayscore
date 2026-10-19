@@ -46,6 +46,7 @@ const USAGE = `audit-direct-provider-calls.js — flag scripts bypassing fetchPa
 
 Usage:
   node scripts/audit-direct-provider-calls.js [--strict] [--update-baseline]
+  node scripts/audit-direct-provider-calls.js --check-stale | --prune-stale   stale (file, provider) baseline entries (BRO-5315)
   node scripts/audit-direct-provider-calls.js --help, -h    print this usage and exit
 `;
 if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
@@ -60,6 +61,10 @@ const SELF_PATH = 'scripts/lib/direct-provider-detector.js'; // pattern definiti
 const args = process.argv.slice(2);
 const STRICT = args.includes('--strict');
 const UPDATE_BASELINE = args.includes('--update-baseline');
+const { computeStaleBaselineKeys, reportStaleBaseline, runStaleModes } = require('./lib/stale-baseline.js');
+// BRO-5315: identity is (file, provider) — the same grain computeNewViolators()
+// diffs at — so a file that dropped one of its two baselined providers is stale.
+const providerKeys = (file, providers) => (providers || []).map(p => `${file}::${p}`);
 
 // Matches both .js and .ts callers — task #684 ship-check found the original
 // .js-only walk silently missed two known direct-ScrapingBee cron scripts
@@ -159,6 +164,22 @@ function main() {
   }
 
   const baseline = loadJson(BASELINE_PATH, { files: {} });
+  const staleKeys = computeStaleBaselineKeys(
+    Object.entries(baseline.files || {}).flatMap(([f, e]) => providerKeys(f, e && e.providers)),
+    violators.flatMap(v => providerKeys(v.file, v.providers))
+  );
+  const STALE_CMD = 'node scripts/audit-direct-provider-calls.js --prune-stale';
+  runStaleModes(args, {
+    stale: staleKeys, label: 'direct-provider-calls', updateCmd: STALE_CMD,
+    prune: (stale) => {
+      const drop = new Set(stale);
+      for (const [f, e] of Object.entries(baseline.files || {})) {
+        e.providers = (e.providers || []).filter(p => !drop.has(`${f}::${p}`));
+        if (!e.providers.length) delete baseline.files[f];
+      }
+      fs.writeFileSync(BASELINE_PATH, JSON.stringify(baseline, null, 2) + '\n');
+    },
+  });
   // Provider-aware, not just file-aware (task #1005) — see computeNewViolators()
   // doc comment for why (fetch-square-images.js's existing content-fetch
   // baseline entry must not blanket-forgive a future scrapingbee-serp hit).
@@ -179,6 +200,8 @@ function main() {
     console.log(`\nIf this migration is deliberate progress, refresh the baseline:`);
     console.log(`  node scripts/audit-direct-provider-calls.js --update-baseline`);
   }
+
+  if (staleKeys.length) reportStaleBaseline(staleKeys, { label: 'direct-provider-calls', updateCmd: STALE_CMD });
 
   if (STRICT && newViolators.length > 0) {
     process.exit(1);

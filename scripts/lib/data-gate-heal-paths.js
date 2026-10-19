@@ -207,7 +207,24 @@ function auditCorpusDriftGates(audits, readScriptSource, workflowFiles) {
   };
 }
 
+/**
+ * BRO-5315: a heal-exempt annotation (test.yml `# heal-exempt:` or an AUDITS
+ * `healExempt:` field) is this audit's baseline. One on a gate that already
+ * has a real heal path (baseline-diff / scheduled --fix workflow) is stale:
+ * evaluateGate() never consults it, so it would silently re-excuse the gate
+ * the day that heal path is removed. Keyed `<source>:<script>`.
+ * @param {Array<{script: string, healExemptReason: string|null, healPath: string|null}>} gates
+ * @param {string} source 'test.yml' | 'check-corpus-drift.js'
+ * @returns {string[]}
+ */
+function findStaleHealExemptions(gates, source) {
+  return (gates || [])
+    .filter((g) => g.healExemptReason && !String(g.healPath || '').startsWith('heal-exempt:'))
+    .map((g) => `${source}:${g.script}`);
+}
+
 module.exports = {
+  findStaleHealExemptions,
   extractJobLines,
   findStrictGateSteps,
   hasBaselineDiffPath,

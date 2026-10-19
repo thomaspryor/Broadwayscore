@@ -9,6 +9,8 @@
  *   node scripts/check-bundle-size.js                    # Check against baseline
  *   node scripts/check-bundle-size.js --update-baseline  # Record new baseline
  *   node scripts/check-bundle-size.js --ci               # Strict mode (exit 1 on regression)
+ *   node scripts/check-bundle-size.js --check-stale      # exit 1 on baseline pages with no src/app route (BRO-5315, no build)
+ *   node scripts/check-bundle-size.js --prune-stale      # drop only those pages from the baseline (no build)
  *
  * Thresholds:
  *   - Shared JS: warn if grows >5kB from baseline
@@ -24,6 +26,48 @@ const BASELINE_PATH = path.join(__dirname, '../data/audit/bundle-size-baseline.j
 const HISTORY_PATH = path.join(__dirname, '../data/audit/bundle-size-history.json');
 const { foldHistoryByDay } = require('./lib/history-fold-by-day');
 const { bundleBuildEnv } = require('./lib/bundle-build-env');
+const { computeStaleBaselineKeys, reportStaleBaseline, runStaleModes } = require('./lib/stale-baseline');
+
+const APP_DIR = path.join(__dirname, '..', 'src', 'app');
+const PAGE_FILE_RE = /^(page|route)\.(tsx|ts|jsx|js)$/;
+
+/**
+ * BRO-5315: the App Router page routes under src/app, in the form `next build`
+ * prints them ('/', '/show/[slug]'). Route groups `(x)` drop out of the URL;
+ * private `_x` folders and parallel `@slot` folders are not routes. Lets
+ * --check-stale find baseline pages whose route was deleted WITHOUT a 10-min
+ * build (a pruned page could otherwise come back under the old size and ride
+ * a stale entry's budget).
+ */
+function listAppPageRoutes(appDir = APP_DIR) {
+  const routes = new Set();
+  const walk = (dir, segs) => {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (e.isDirectory()) {
+        if (e.name.startsWith('_') || e.name.startsWith('@') || e.name === 'node_modules') continue;
+        const group = /^\(.*\)$/.test(e.name);
+        walk(path.join(dir, e.name), group ? segs : [...segs, e.name]);
+      } else if (PAGE_FILE_RE.test(e.name)) {
+        routes.add('/' + segs.join('/'));
+      }
+    }
+  };
+  walk(appDir, []);
+  return routes;
+}
+
+// `next build` also prints framework routes (/_not-found, /_app) and metadata
+// routes generated from robots.ts / sitemap.ts / icon files (/robots.txt,
+// /sitemap.xml, /icon.png). They have no page.tsx, so the static route list
+// can't vouch for them: never call them stale (a build-time compare still can).
+const NON_PAGE_ROUTE_RE = /^\/_|\.[a-z0-9]+$/i;
+
+/** Baseline pages with no live route (from a build's pages, or listAppPageRoutes()). */
+function computeStalePages(baseline, liveRoutes, { staticRoutes = false } = {}) {
+  let keys = Object.keys((baseline && baseline.pages) || {});
+  if (staticRoutes) keys = keys.filter((k) => !NON_PAGE_ROUTE_RE.test(k));
+  return computeStaleBaselineKeys(keys, new Set(liveRoutes));
+}
 
 const SHARED_JS_WARN_DELTA = 5; // kB
 const PAGE_JS_WARN_DELTA = 10;  // kB
@@ -150,7 +194,7 @@ function compare(current, baseline) {
     const cur = current.pages[page];
     const base = baseline.pages[page];
 
-    if (!cur) continue; // Page removed — that's fine
+    if (!cur) continue; // Page removed — reported as stale baseline in main()
 
     // Absolute cap
     if (cur > PAGE_JS_ABSOLUTE_CAP) {
@@ -220,6 +264,8 @@ async function main() {
 
   console.log(`\nComparing against baseline from ${baseline.timestamp}:`);
   const { warnings, failures } = compare(current, baseline);
+  const stalePages = computeStalePages(baseline, Object.keys(current.pages));
+  if (stalePages.length) reportStaleBaseline(stalePages, { label: 'bundle-size', updateCmd: 'node scripts/check-bundle-size.js --prune-stale' });
 
   if (failures.length > 0) {
     console.log('\n❌ FAILURES (must fix):');
@@ -250,4 +296,23 @@ async function main() {
   }
 }
 
-main().catch(e => { console.error(e); process.exit(1); });
+function runStaticStaleModes(argv) {
+  const baseline = loadBaseline();
+  return runStaleModes(argv, {
+    stale: computeStalePages(baseline, listAppPageRoutes(), { staticRoutes: true }),
+    label: 'bundle-size (baseline pages vs src/app routes)',
+    updateCmd: 'node scripts/check-bundle-size.js --prune-stale',
+    prune: (stale) => {
+      for (const p of stale) delete baseline.pages[p];
+      fs.writeFileSync(BASELINE_PATH, JSON.stringify(baseline, null, 2) + '\n');
+    },
+  });
+}
+
+if (require.main === module) {
+  if (!runStaticStaleModes(process.argv.slice(2))) {
+    main().catch(e => { console.error(e); process.exit(1); });
+  }
+}
+
+module.exports = { listAppPageRoutes, computeStalePages, loadBaseline, BASELINE_PATH };

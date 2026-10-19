@@ -22,13 +22,17 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { auditDataValidationGates, auditCorpusDriftGates } = require('./lib/data-gate-heal-paths.js');
+const { auditDataValidationGates, auditCorpusDriftGates, findStaleHealExemptions } = require('./lib/data-gate-heal-paths.js');
+const { reportStaleBaseline } = require('./lib/stale-baseline.js');
 const { AUDITS: CORPUS_DRIFT_AUDITS } = require('./check-corpus-drift.js');
 
 const USAGE = `audit-data-gate-heal-paths.js — every strict/gated Data Validation audit needs a heal path.
 
 Usage:
   node scripts/audit-data-gate-heal-paths.js [options]
+  node scripts/audit-data-gate-heal-paths.js --check-stale  exit 1 on a heal-exempt annotation whose gate
+                                                       already has a real heal path (BRO-5315; prune by hand:
+                                                       the annotations live in test.yml / check-corpus-drift.js)
   node scripts/audit-data-gate-heal-paths.js --help, -h    print this usage and exit
 `;
 
@@ -69,6 +73,18 @@ function main() {
   const corpusDriftResult = auditCorpusDriftGates(CORPUS_DRIFT_AUDITS, readScriptSource, workflowFiles);
 
   const gates = [...testYmlResult.gates, ...corpusDriftResult.gates];
+
+  // BRO-5315: the heal-exempt annotations are this audit's baseline.
+  const staleExemptions = [
+    ...findStaleHealExemptions(testYmlResult.gates, 'test.yml'),
+    ...findStaleHealExemptions(corpusDriftResult.gates, 'check-corpus-drift.js'),
+  ].sort();
+  if (args.includes('--check-stale')) {
+    process.exit(reportStaleBaseline(staleExemptions, {
+      label: 'data-gate-heal-paths (heal-exempt annotations)',
+      updateCmd: 'delete the `# heal-exempt:` comment (test.yml) or `healExempt:` field (check-corpus-drift.js AUDITS) by hand',
+    }) ? 1 : 0);
+  }
   const violations = [...testYmlResult.violations, ...corpusDriftResult.violations];
 
   if (JSON_OUT) {

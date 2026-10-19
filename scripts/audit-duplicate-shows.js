@@ -25,6 +25,8 @@
  *   node scripts/audit-duplicate-shows.js [--json=PATH]       report only
  *   node scripts/audit-duplicate-shows.js --strict            exit 1 on new (non-baselined) pair
  *   node scripts/audit-duplicate-shows.js --update-baseline   regenerate baseline from current scan
+ *   node scripts/audit-duplicate-shows.js --check-stale       exit 1 on baseline pairs no longer detected (BRO-5315)
+ *   node scripts/audit-duplicate-shows.js --prune-stale       drop only those pairs from the baseline
  *
  * Baseline-diff (task #1675), same posture as audit-broadway-category-predicate.js
  * (#1665) / audit-outlet-registry.js (#1666) / audit-critic-outlets.js (#1668):
@@ -44,7 +46,8 @@ const fs = require('fs');
 const path = require('path');
 const { normalizeTitle } = require('./lib/deduplication');
 const { findTitleFragmentDupes, findSharedTicketIdentityDupes, sameMarketPair, stubIsUnplacedDupe } = require('./lib/show-duplicate-detection');
-const { baselineKeySet, computeNewViolators, dedupeClustersByPair } = require('./lib/duplicate-shows-baseline');
+const { pairKey, baselineKeySet, computeNewViolators, dedupeClustersByPair } = require('./lib/duplicate-shows-baseline');
+const { computeStaleBaselineKeys, reportStaleBaseline, pruneStaleEntries, runStaleModes } = require('./lib/stale-baseline');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 
 const ROOT = path.join(__dirname, '..');
@@ -55,6 +58,9 @@ const BASELINE_PATH = path.join(ROOT, 'data', 'audit', 'duplicate-shows-baseline
 const args = process.argv.slice(2);
 const STRICT = args.includes('--strict');
 const UPDATE_BASELINE = args.includes('--update-baseline');
+// BRO-5315 --check-stale / --prune-stale: gate on corpus presence like
+// --update-baseline (an empty corpus would make every baselined pair look fixed).
+const STALE_MODE = args.includes('--check-stale') || args.includes('--prune-stale');
 const jsonArg = args.find((a) => a.startsWith('--json='));
 const JSON_OUT = jsonArg ? jsonArg.split('=')[1] : path.join(ROOT, 'data', 'audit', 'duplicate-shows.json');
 
@@ -246,9 +252,9 @@ function main() {
   // empty data/review-texts checkout would otherwise let --update-baseline
   // freeze a baseline computed with every isStub() check reading reviews=0,
   // and would let --strict report a vacuous "0 new" pass.
-  if (STRICT || UPDATE_BASELINE) {
+  if (STRICT || UPDATE_BASELINE || STALE_MODE) {
     try {
-      assertCorpusScanned(corpusHealthCount(), { gate: STRICT || UPDATE_BASELINE });
+      assertCorpusScanned(corpusHealthCount(), { gate: STRICT || UPDATE_BASELINE || STALE_MODE });
     } catch (e) {
       if (!(e instanceof CorpusNotScannedError)) throw e;
       console.error(`\n❌ ${e.message}`);
@@ -265,10 +271,26 @@ function main() {
     return 0;
   }
 
+  const baselineDoc = loadBaseline();
+  const staleKeys = computeStaleBaselineKeys(
+    (baselineDoc.pairs || []).map((p) => pairKey(p.a, p.b)),
+    clusters.flatMap((c) => c.pairs.map((p) => pairKey(p.a.id, p.b.id)))
+  );
+  const STALE_CMD = 'node scripts/audit-duplicate-shows.js --prune-stale';
+  let staleExit = null;
+  if (runStaleModes(args, {
+    stale: staleKeys, label: 'duplicate-shows', updateCmd: STALE_CMD,
+    prune: (stale) => {
+      baselineDoc.pairs = pruneStaleEntries(baselineDoc.pairs || [], (p) => pairKey(p.a, p.b), stale);
+      fs.writeFileSync(BASELINE_PATH, JSON.stringify(baselineDoc, null, 2) + '\n');
+    },
+    exit: (code) => { staleExit = code; },
+  })) return staleExit;
+
   fs.mkdirSync(path.dirname(JSON_OUT), { recursive: true });
   fs.writeFileSync(JSON_OUT, JSON.stringify({ generatedFor: 'duplicate-shows', clusters }, null, 2) + '\n');
 
-  const baselineSet = baselineKeySet(loadBaseline().pairs);
+  const baselineSet = baselineKeySet(baselineDoc.pairs);
   const newClusters = computeNewViolators(clusters, baselineSet);
   const totalPairs = clusters.reduce((sum, c) => sum + c.pairs.length, 0);
   const newPairs = newClusters.reduce((sum, c) => sum + c.pairs.length, 0);
@@ -294,6 +316,8 @@ function main() {
       console.log(`production), refresh the baseline: node scripts/audit-duplicate-shows.js --update-baseline`);
     }
   }
+
+  if (staleKeys.length) reportStaleBaseline(staleKeys, { label: 'duplicate-shows', updateCmd: STALE_CMD });
 
   if (STRICT && newClusters.length > 0) return 1;
   return 0;

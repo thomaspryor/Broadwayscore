@@ -71,6 +71,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { findSiblingSameUrlPairs } = require('./lib/sibling-same-url');
+const { computeStaleBaselineKeys, reportStaleBaseline, pruneStaleEntries, runStaleModes } = require('./lib/stale-baseline');
 
 const USAGE = `audit-sibling-title-misroute.js — backfill audit for the same-title sibling class of cross-show contamination.
 
@@ -81,6 +82,8 @@ Usage:
   node scripts/audit-sibling-title-misroute.js --json
   node scripts/audit-sibling-title-misroute.js --strict          # CI gate
   node scripts/audit-sibling-title-misroute.js --update-baseline # freeze current hits
+  node scripts/audit-sibling-title-misroute.js --check-stale     # exit 1 on baseline hits no longer found (BRO-5315)
+  node scripts/audit-sibling-title-misroute.js --prune-stale     # drop only those hits from the baseline
   node scripts/audit-sibling-title-misroute.js --help, -h        print this usage and exit
 `;
 if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
@@ -94,6 +97,7 @@ const FIX = ARGV.includes('--fix');
 const JSON_OUT = ARGV.includes('--json');
 const STRICT = ARGV.includes('--strict');
 const UPDATE_BASELINE = ARGV.includes('--update-baseline');
+const STALE_MODE = ARGV.includes('--check-stale') || ARGV.includes('--prune-stale'); // BRO-5315
 const showArg = ARGV.find(a => a.startsWith('--show='));
 const ONLY_SHOW = showArg ? showArg.replace('--show=', '').trim() : null;
 
@@ -106,6 +110,15 @@ const ONLY_SHOW = showArg ? showArg.replace('--show=', '').trim() : null;
 // of the baseline like that precedent too; accepted tradeoff, documented there.
 function hitKey(h) {
   return `${h.type}:${h.showId}:${h.file}:${h.targetShowId || ''}`;
+}
+
+function loadBaselineDoc() {
+  try {
+    const raw = JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf8'));
+    return { ...raw, hits: Array.isArray(raw.hits) ? raw.hits : [] };
+  } catch {
+    return { hits: [] };
+  }
 }
 
 function loadBaselineKeys() {
@@ -245,7 +258,7 @@ function main() {
   // missing/empty review-texts checkout scans 0 files and would otherwise
   // report a false-clean pass (task #1069 vacuous-gate class). Gated on
   // STRICT/UPDATE_BASELINE only: a plain report run has nothing to gate.
-  assertCorpusScanned(scanned, { gate: STRICT || UPDATE_BASELINE });
+  assertCorpusScanned(scanned, { gate: STRICT || UPDATE_BASELINE || STALE_MODE });
 
   // BRO-4674: one url counted on two same-title productions. Undated files
   // score no routing signal, so the per-file pass above accepts both copies.
@@ -289,6 +302,25 @@ function main() {
     fs.writeFileSync(BASELINE_PATH, JSON.stringify(baseline, null, 2) + '\n');
     console.log(`✅ Baseline updated: ${baseline.hits.length} known sibling-title misroute hit(s) (${BASELINE_PATH})`);
     return;
+  }
+
+  if (STALE_MODE) {
+    // --show= narrows the scan, which would make every other baselined hit
+    // look fixed; --fix mutates the corpus mid-run.
+    if (ONLY_SHOW || FIX) {
+      console.error('--check-stale/--prune-stale need a full, read-only scan: drop --show= and --fix.');
+      process.exit(2);
+    }
+    const baselineDoc = loadBaselineDoc();
+    runStaleModes(ARGV, {
+      stale: computeStaleBaselineKeys(baselineDoc.hits.map(hitKey), [...rerouteHits, ...ambiguousHits, ...sameUrlHits].map(hitKey)),
+      label: 'sibling-title-misroute',
+      updateCmd: 'node scripts/audit-sibling-title-misroute.js --prune-stale',
+      prune: (stale) => {
+        baselineDoc.hits = pruneStaleEntries(baselineDoc.hits, hitKey, stale);
+        fs.writeFileSync(BASELINE_PATH, JSON.stringify(baselineDoc, null, 2) + '\n');
+      },
+    });
   }
 
   if (FIX) {
@@ -372,6 +404,10 @@ function main() {
   if (STRICT && !FIX) {
     const baselineKeys = loadBaselineKeys();
     const newHits = [...rerouteHits, ...ambiguousHits, ...sameUrlHits].filter(h => !baselineKeys.has(hitKey(h)));
+    if (!ONLY_SHOW) {
+      const stale = computeStaleBaselineKeys(loadBaselineDoc().hits.map(hitKey), [...rerouteHits, ...ambiguousHits, ...sameUrlHits].map(hitKey));
+      if (stale.length) reportStaleBaseline(stale, { label: 'sibling-title-misroute', updateCmd: 'node scripts/audit-sibling-title-misroute.js --prune-stale' });
+    }
     if (newHits.length > 0) {
       console.error(`\n✗ STRICT: ${newHits.length} sibling-title misroute(s) NOT in baseline (${BASELINE_PATH}):`);
       for (const h of newHits) {
