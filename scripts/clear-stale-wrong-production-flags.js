@@ -142,7 +142,7 @@ for (const showId of showDirs) {
     // BRO-4185 C: the collector's own LLM flag, text quarantined in
     // wrongFullText, dated inside this show's run. Same Sonnet check below,
     // on the quarantined text.
-    // BRO-5700: also a flag whose text is LIVE (never quarantined, or put back
+    // BRO-5672: also a flag whose text is LIVE (never quarantined, or put back
     // by a later re-fetch), which neither this nor the stale predicate saw.
     if (isCollectorWrongProductionCandidate(data, show, {
       inOwnWindow: isReviewWithinOwnProductionWindow,
@@ -174,7 +174,7 @@ for (const showId of showDirs) {
 // prior-run) per run, newest first. Keeps a backlog drain inside
 // FIX_SURGE_THRESHOLD and the daily/weekly Sonnet budget; the rest wait for
 // the next run.
-// --force-bulk lifts it for a deliberate backlog drain (BRO-5700: 300+ West End
+// --force-bulk lifts it for a deliberate backlog drain (BRO-5672: 300+ West End
 // candidates would otherwise take 12 daily runs).
 const COLLECTOR_PER_RUN_CAP = FORCE_BULK ? 500 : 25;
 const isCollectorKind = (c) => c.kind === 'collector-quarantined' || c.kind === 'collector-prior-run';

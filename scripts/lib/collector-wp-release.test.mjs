@@ -45,7 +45,7 @@ describe('isCollectorWrongProductionCandidate', () => {
   test('skips short quarantined text', () => {
     assert.equal(isCollectorWrongProductionCandidate({ ...base, wrongFullText: 'short' }, show, ctx), false);
   });
-  // BRO-5700: Some Woman's Reviews Hub review held fullText AND wrongFullText with the
+  // BRO-5672: Some Woman's Reviews Hub review held fullText AND wrongFullText with the
   // flag still set; the quarantined-only shape never matched, so it stayed hidden.
   test('matches a flag whose text is live (never quarantined, or put back by a re-fetch)', () => {
     assert.equal(isCollectorWrongProductionCandidate({ ...base, fullText: text, wrongFullText: undefined }, show, ctx), true);

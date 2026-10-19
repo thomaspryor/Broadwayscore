@@ -48,7 +48,7 @@ function isCollectorWrongProductionCandidate(data, show, ctx = {}) {
   // Either human verdict settles it: false = cleared, true = confirmed.
   if (data.humanReviewedWrongProduction === false || data.humanReviewedWrongProduction === true) return false;
   if (data.wrongShow === true || data.duplicateOf) return false;
-  // The text the verdict is re-judged on: the quarantined copy, or (BRO-5700)
+  // The text the verdict is re-judged on: the quarantined copy, or (BRO-5672)
   // the live fullText when the file never got quarantined or a later re-fetch
   // put the text back (Some Woman's Reviews Hub: fullText AND wrongFullText,
   // flag still set, so neither shape-specific predicate ever picked it up).
@@ -65,7 +65,7 @@ function isCollectorWrongProductionCandidate(data, show, ctx = {}) {
 }
 
 /**
- * Which text a collector wrongProduction flag is re-judged on (BRO-5700).
+ * Which text a collector wrongProduction flag is re-judged on (BRO-5672).
  * A live fullText of review length wins (it is what the rebuild would score
  * and what a clear must keep); otherwise the quarantined copy. Null when
  * neither is long enough to judge. `field` tells the caller whether a clear
