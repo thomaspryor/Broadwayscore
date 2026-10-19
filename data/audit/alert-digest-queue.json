@@ -360,5 +360,36 @@
       }
     ],
     "queuedAt": "2026-10-19T14:08:19.008Z"
+  },
+  {
+    "conditionKey": "land:land/dtli-enrich-wrong-production-v2",
+    "title": "Landing blocked: unit-tests-node red on land/dtli-enrich-wrong-production-v2",
+    "description": "land.yml did not land land/dtli-enrich-wrong-production-v2: the unit-tests-node gate went red at fdb4700a22. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39262854811",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/dtli-enrich-wrong-production-v2"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "fdb4700a22cf3fb7595f9105a37da55ddbc571ba"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39262854811"
+      }
+    ],
+    "queuedAt": "2026-10-19T14:17:26.215Z"
   }
 ]
