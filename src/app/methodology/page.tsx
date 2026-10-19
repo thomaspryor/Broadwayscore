@@ -291,6 +291,9 @@ export default function MethodologyPage() {
           <p className="text-gray-300 text-sm">
             A handful of critics count in full wherever they publish, because readers follow them from outlet to outlet: Jesse Green, Ben Brantley, Charles Isherwood, David Rooney, Hilton Als, Helen Shaw, Peter Marks, Elisabeth Vincentelli, Adam Feldman, Linda Winer, Alexis Soloski, Sara Holdren, Johnny Oleksinski and Chris Jones.
           </p>
+          <p className="text-gray-300 text-sm mt-3">
+            This is why a review can show T1 on a show page while its outlet is listed above as Tier 2. The New York Post and the Daily News are Tier 2, but Elisabeth Vincentelli and Johnny Oleksinski (Post) and Chris Jones (Daily News) are top critics, so their reviews count in full. A Post or Daily News review by anyone else counts at Tier 2.
+          </p>
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">New York and London are rated separately</h3>
           <p className="text-gray-300 text-sm">
