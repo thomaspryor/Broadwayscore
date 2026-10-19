@@ -1481,10 +1481,10 @@
     "queuedAt": "2026-10-19T05:06:08.386Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:king-lear-royal-exchange-regional-2026",
-    "title": "Review gap — \"King Lear\" missing 2 cited review(s)",
-    "description": "King Lear (king-lear-royal-exchange-regional-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=king-lear-royal-exchange-regional-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
+    "conditionKey": "express-retry-still-thin:school-pictures-off-broadway-2026",
+    "title": "Opening Night Express retry still found thin review coverage for school-pictures-off-broadway-2026",
+    "description": "The early auto-fire found next to nothing, and the same-night retry (still thin after retry — zero scoreable review records found) still hasn't closed the gap. Full-text upgrade will otherwise wait on the weekly recollect-for-scores.yml cron.",
+    "severity": "warn",
     "url": null,
     "decision": false,
     "info": false,
@@ -1492,20 +1492,6 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-10-19T05:36:08.365Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
-    "title": "Review gap — \"The Prime of Miss Jean Brodie\" missing 1 cited review(s)",
-    "description": "The Prime of Miss Jean Brodie (the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-19T05:36:08.507Z"
+    "queuedAt": "2026-10-19T05:37:06.373Z"
   }
 ]
