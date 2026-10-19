@@ -68,5 +68,36 @@
     "tracked": "BRO-5526",
     "fields": [],
     "queuedAt": "2026-10-19T07:52:17.723Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5670-docs-deploy-timing",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5670-docs-deploy-timing",
+    "description": "land.yml did not land land/bro-5670-docs-deploy-timing: the unit-tests-node gate went red at 11304f1b25. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39225044554",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5670-docs-deploy-timing"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "11304f1b25a1868e652c0cac67156f764c31096d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39225044554"
+      }
+    ],
+    "queuedAt": "2026-10-19T09:12:36.703Z"
   }
 ]
