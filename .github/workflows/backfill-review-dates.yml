@@ -33,6 +33,11 @@ on:
         required: false
         default: false
         type: boolean
+      recheck_dates:
+        description: 'Re-read the page date of early/carried dates (BRO-5674) instead of undated reviews. The domains filter still applies (clear it for all outlets); with free_only=false paid scrapers run first, so this spends credits. Use offset=0 on repeat runs.'
+        required: false
+        default: false
+        type: boolean
 
 concurrency:
   group: backfill-review-dates
@@ -94,6 +99,7 @@ jobs:
           INPUT_OFFSET: ${{ inputs.offset }}
           INPUT_SHOW: ${{ inputs.show }}
           INPUT_DOMAINS: ${{ inputs.domains }}
+          INPUT_RECHECK_DATES: ${{ inputs.recheck_dates }}
         run: |
           ARGS="--limit=${INPUT_LIMIT} --offset=${INPUT_OFFSET}"
           if [ -n "${INPUT_SHOW}" ]; then
@@ -107,6 +113,9 @@ jobs:
           fi
           if [ "${{ inputs.free_only }}" = "true" ]; then
             ARGS="$ARGS --free-only"
+          fi
+          if [ "${INPUT_RECHECK_DATES}" = "true" ]; then
+            ARGS="$ARGS --recheck-dates"
           fi
           echo "Running: node scripts/backfill-review-dates.js $ARGS"
           node scripts/backfill-review-dates.js $ARGS
