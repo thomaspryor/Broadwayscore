@@ -28,11 +28,15 @@ const SUBREDDIT_BY_MARKET = {
   // in Performing Arts (owner screenshot 2026-09-30). r/Broadway is the
   // crosspost for these.
   'off-broadway': 'offbroadwayNYC',
+  // Broadway openings post straight to r/Broadway (282k). Owner ask 2026-10-19
+  // (BRO-5702): Other Desert Cities opened with 26 reviews and got no draft.
+  'broadway': 'Broadway',
 };
 
 // Minimum critic reviews before a roundup is worth posting. Lower than the
 // broadcast gate: a Reddit post is conversational and names its review count.
-const MIN_REVIEWS = { 'west-end': 8, 'off-west-end': 8, 'off-broadway': 5 };
+// Broadway critics are few ("a show is lucky to hit 20"), so the bar is 12.
+const MIN_REVIEWS = { 'west-end': 8, 'off-west-end': 8, 'off-broadway': 5, 'broadway': 12 };
 
 // Opened 1..MAX_AGE_DAYS days ago. The owner's best roundups went up the
 // morning after opening; past ~5 days the moment has gone.
@@ -188,11 +192,13 @@ function buildFacts(show, slim, peers, { seen = null, crosspost = null } = {}) {
     : [];
 
   let rankNote = null;
-  const label = { 'west-end': 'West End', 'off-west-end': 'Off-West End', 'off-broadway': 'Off-Broadway' }[market];
+  const label = { 'west-end': 'West End', 'off-west-end': 'Off-West End', 'off-broadway': 'Off-Broadway', 'broadway': 'Broadway' }[market];
   const inLabel = market === 'west-end' ? 'the West End' : label;
+  // "running in the West End / Off-Broadway", but "running on Broadway".
+  const where = market === 'broadway' ? 'on Broadway' : `in ${inLabel}`;
   if (rank.of >= 5 && !rank.tied) {
-    if (rank.position === 1) rankNote = `highest critic score of any show currently running in ${inLabel}`;
-    else if (rank.position === rank.of) rankNote = `lowest critic score of any show currently running in ${inLabel}`;
+    if (rank.position === 1) rankNote = `highest critic score of any show currently running ${where}`;
+    else if (rank.position === rank.of) rankNote = `lowest critic score of any show currently running ${where}`;
     else if (rank.position <= 3) rankNote = `#${rank.position} of ${rank.of} ${label} shows currently running`;
     else if (rank.position >= rank.of - 2) rankNote = `#${rank.position} of ${rank.of} ${label} shows currently running (near the bottom)`;
   }
@@ -234,7 +240,7 @@ function buildFacts(show, slim, peers, { seen = null, crosspost = null } = {}) {
  */
 function notability(facts) {
   let n = 0;
-  if (facts.market === 'west-end') n += 30;
+  if (facts.market === 'west-end' || facts.market === 'broadway') n += 30;
   if (facts.score >= 85 || facts.score <= 45) n += 25;
   else if (facts.score >= 80 || facts.score <= 55) n += 12;
   if (facts.rankNote) n += 15;

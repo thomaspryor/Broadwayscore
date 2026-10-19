@@ -31,13 +31,13 @@ test('buildFacts uses the slim-file score and rank', () => {
 
 test('selectCandidates respects age window, review minimum and OB cap', () => {
   const ob = n => ({ id: `ob${n}`, title: `OB ${n}`, category: 'off-broadway', openingDate: '2026-09-27' });
-  const shows = [show, ob(1), ob(2), { ...show, id: 'old', openingDate: '2026-09-01' }, { ...show, id: 'bway', category: 'broadway' }];
-  const slims = new Map([[show.id, slim()], ['ob1', slim({ n: 6 })], ['ob2', slim({ n: 6 })], ['old', slim()], ['bway', slim()]]);
+  const shows = [show, ob(1), ob(2), { ...show, id: 'old', openingDate: '2026-09-01' }];
+  const slims = new Map([[show.id, slim()], ['ob1', slim({ n: 6 })], ['ob2', slim({ n: 6 })], ['old', slim()]]);
   const picked = lib.selectCandidates({ shows, slims, drafts: { drafts: {} }, peersByMarket: {}, today: '2026-09-29' });
   const ids = picked.map(c => c.show.id);
   assert.ok(ids.includes(show.id));
   assert.equal(ids.filter(i => i.startsWith('ob')).length, 1, 'one Off-Broadway draft per run');
-  assert.ok(!ids.includes('old') && !ids.includes('bway'));
+  assert.ok(!ids.includes('old'));
   // Already drafted → skipped.
   const again = lib.selectCandidates({ shows, slims, drafts: { drafts: { [show.id]: {} } }, peersByMarket: {}, today: '2026-09-29' });
   assert.ok(!again.some(c => c.show.id === show.id));
@@ -440,4 +440,20 @@ test('reddit email: screenshots section and refreshed-numbers note', () => {
   assert.ok(!/updated them/.test(same), 'no update note when nothing moved');
   const unknown = mail.buildHtml({ ...d, previousReviewCount: undefined }, 'reminder');
   assert.ok(!/undefined/.test(unknown) && !/updated them/.test(unknown), 'no note without the old numbers');
+});
+
+test('Broadway openings draft for r/Broadway with a Broadway rank note (BRO-5702)', () => {
+  const bway = { id: 'odc-2026', slug: 'odc', title: 'Other Desert Cities', category: 'broadway', openingDate: '2026-10-18', status: 'open', venue: 'Hudson Theatre' };
+  const peers = [50, 60, 70, 80].map((cs, i) => ({ id: `p${i}`, cs }));
+  const f = lib.buildFacts(bway, slim({ n: 26 }), peers);
+  assert.equal(f.subreddit, 'Broadway');
+  assert.equal(f.crosspostSubreddit, null);
+  assert.equal(f.url, 'https://broadwayscorecard.com/show/odc');
+  assert.match(f.rankNote || '', /on Broadway$|Broadway shows currently running/);
+  // 11 reviews is under the Broadway bar, 12 is enough.
+  const pick = n => lib.selectCandidates({ shows: [bway], slims: new Map([[bway.id, slim({ n })]]), drafts: { drafts: {} }, peersByMarket: {}, today: '2026-10-19' });
+  assert.equal(pick(11).length, 0);
+  assert.equal(pick(12).length, 1);
+  const p = lib.buildPeers([{ id: 'b1', category: 'broadway', status: 'open' }], new Map([['b1', slim({ n: 12 })]]));
+  assert.deepEqual((p.broadway || []).map(x => x.id), ['b1']);
 });

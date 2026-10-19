@@ -182,7 +182,7 @@ async function fetchRecentOwnerPosts() {
 
 // ── Main ────────────────────────────────────────────────────────────────────
 
-const USAGE = `draft-reddit-opening-posts.js: draft Reddit "reviews are in" posts for WE/OWE/OB openings (BRO-4333).
+const USAGE = `draft-reddit-opening-posts.js: draft Reddit "reviews are in" posts for Broadway, WE/OWE/OB openings (BRO-4333).
   --dry-run        print drafts, save nothing
   --show=ID        force one show (any age)
   --no-llm         template drafts only
@@ -284,7 +284,7 @@ async function main() {
   }
 
   drafts._meta = {
-    description: 'Reddit "reviews are in" post drafts for WE/OWE/OB openings (BRO-4333). Written by scripts/draft-reddit-opening-posts.js, shown in the opening digest email.',
+    description: 'Reddit "reviews are in" post drafts for Broadway, WE/OWE/OB openings (BRO-4333). Written by scripts/draft-reddit-opening-posts.js, shown in the opening digest email.',
     lastRun: new Date().toISOString(),
   };
   // Keep the file small: drop entries older than 60 days.
