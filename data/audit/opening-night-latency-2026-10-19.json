@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-19T19:14:37.035Z",
+  "generatedAt": "2026-10-19T21:08:52.464Z",
   "date": "2026-10-19",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 222346,
+  "entryCount": 227735,
   "shows": [
     {
       "showId": "some-woman-west-end-2026",
@@ -56,8 +56,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 357202,
+        "collected-to-scored": 2042057,
+        "scored-to-rebuilt": 231700,
         "rebuilt-to-deployed": 22248559
       },
       "reviews_over_15min": 0,
@@ -96,13 +96,13 @@
     },
     {
       "showId": "fences-off-west-end-2026",
-      "reviewCount": 15,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 4364101,
-        "scored-to-rebuilt": 154408,
+        "collected-to-scored": 3189845,
+        "scored-to-rebuilt": 101382,
         "rebuilt-to-deployed": 80042945
       },
       "reviews_over_15min": 0,
@@ -231,13 +231,13 @@
     },
     {
       "showId": "degenerates-off-broadway-2026",
-      "reviewCount": 17,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 707826,
+        "scored-to-rebuilt": 400383,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -434,13 +434,13 @@
     },
     {
       "showId": "school-girls-or-the-african-mean-girls-play-2026",
-      "reviewCount": 31,
+      "reviewCount": 32,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 1832454,
+        "scored-to-rebuilt": 122586,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -1319,7 +1319,7 @@
     },
     {
       "showId": "the-cherry-orchard-west-end-2026",
-      "reviewCount": 41,
+      "reviewCount": 42,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3575,13 +3575,13 @@
     },
     {
       "showId": "angels-bone-west-end-2026",
-      "reviewCount": 15,
+      "reviewCount": 16,
       "median_e2e_ms": 63559039,
       "p90_e2e_ms": 63559271,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 589516,
-        "scored-to-rebuilt": 418228,
+        "scored-to-rebuilt": 370525,
         "rebuilt-to-deployed": 61996211
       },
       "reviews_over_15min": 2,
@@ -4231,13 +4231,13 @@
     },
     {
       "showId": "triumph-off-broadway-2026",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 2425405,
-        "scored-to-rebuilt": 652340,
+        "scored-to-rebuilt": 904278,
         "rebuilt-to-deployed": 119993389
       },
       "reviews_over_15min": 0,
@@ -7161,7 +7161,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 553573,
+        "collected-to-scored": 560149,
         "scored-to-rebuilt": 511617,
         "rebuilt-to-deployed": 28774512
       },
@@ -7411,7 +7411,7 @@
     },
     {
       "showId": "other-desert-cities-2026",
-      "reviewCount": 29,
+      "reviewCount": 30,
       "median_e2e_ms": 8976420,
       "p90_e2e_ms": 8985004,
       "per_stage_median_ms": {
@@ -8230,21 +8230,6 @@
       "slowest_reviews": []
     },
     {
-      "showId": "double-bill-tell-me-straight-and-aggy-off-west-end-2026",
-      "reviewCount": 1,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
       "showId": "music-city-off-broadway-2026",
       "reviewCount": 11,
       "median_e2e_ms": null,
@@ -8382,6 +8367,21 @@
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
       "reviewCount": 26,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "pre-existing-condition-off-broadway-2026",
+      "reviewCount": 24,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
