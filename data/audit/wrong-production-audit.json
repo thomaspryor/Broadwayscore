@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-19T18:43:20.617Z",
+  "timestamp": "2026-10-19T18:56:42.973Z",
   "stats": {
-    "totalReviews": 57772,
+    "totalReviews": 57776,
     "alreadyFlagged": 21074,
     "dateGuardCatches": 208,
     "directorMismatch": 2011,
-    "tvFilmSignals": 1644,
-    "londonSignals": 2533,
+    "tvFilmSignals": 1646,
+    "londonSignals": 2534,
     "offBroadwaySignals": 530,
     "yearMismatch": 160,
-    "noPublishDate": 5233
+    "noPublishDate": 5231
   },
   "findings": [
     {
@@ -30672,6 +30672,20 @@
     },
     {
       "showId": "other-desert-cities-2026",
+      "file": "talkinbroadway--unknown.json",
+      "score": null,
+      "publishDate": "2026-10-18",
+      "url": "https://www.talkinbroadway.com/page/world/OtherDesertCities26.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
       "file": "theatrely--joey-sims.json",
       "score": 63,
       "publishDate": "2026-10-19",
@@ -47616,6 +47630,19 @@
       "score": 74,
       "publishDate": "2025-08-02",
       "url": "https://www.theguardian.com/tv-and-radio/2025/aug/02/you-killed-her-my-100-faithful-attempt-at-traitors-live-experience",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-traitors-live-experience-off-west-end-2026",
+      "file": "londontheatredirect--unknown.json",
+      "publishDate": "2026-10-14",
+      "url": "https://www.londontheatredirect.com/news/the-traitors-live-experience-review-is-it-worth-it?srsltid=AU7gw4V6zneY0KfVB9f-kNXduTPFj33Tn_kcmHDucTZyZuxPjSb_hFQ9",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -90245,6 +90272,20 @@
       "score": 63,
       "publishDate": "2026-10-18",
       "url": "https://liamodell.com/2026/10/18/triumph-review-almeida-theatre-public-theater-new-york-caryl-churchill/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "triumph-off-west-end-2026",
+      "file": "londonlivinglarge--london-living-large.json",
+      "score": null,
+      "publishDate": "2026-10-17",
+      "url": "https://www.londonlivinglarge.com/2026/10/triumph-almeida-theatre-october-16-23.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
