@@ -15,9 +15,6 @@ const {
 } = require('./duplicate-images.js');
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
-const SHOWS_JSON = path.join(ROOT, 'data', 'shows.json');
-const PUBLIC_DIR = path.join(ROOT, 'public');
-const realShows = fs.existsSync(SHOWS_JSON) ? JSON.parse(fs.readFileSync(SHOWS_JSON, 'utf8')).shows : null;
 
 const f = (showId, hash, key = 'thumbnail') => ({ showId, key, path: `/images/shows/${showId}/${key}.jpg`, hash });
 

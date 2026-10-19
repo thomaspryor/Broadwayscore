@@ -58,7 +58,7 @@ jobs:
     # confirm against the first few real runs' logged durations and adjust
     # (see BRO-2706 for the measured-cost-model precedent this should follow
     # if 20 turns out to be wrong in either direction).
-    timeout-minutes: 20
+    timeout-minutes: 30 # BRO-5729: +verify-contamination-gate (2 audit runs, up to 600s each) in the live-data step
 
     steps:
       - name: Checkout repository
@@ -415,4 +415,5 @@ jobs:
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
+          REQUIRE_REVIEW_CORPUS: '1' # a failed review-texts checkout must fail here, not skip green (BRO-5729)
         run: node --test tests/unit/cast-changes-real-data.test.mjs tests/unit/bro3887-cache-fix-acceptance.test.mjs tests/unit/image-presence.test.mjs tests/unit/outlet-registry-live-data.test.mjs tests/unit/venue-complex-live-data.test.mjs tests/unit/tour-runtime-coverage.test.mjs tests/unit/merge-reviews-json-live-data.test.mjs tests/unit/cast-changes-data-quality-live-data.test.mjs tests/unit/duplicate-images-live-data.test.mjs tests/unit/drain-unknown-outlets-live-data.test.mjs tests/unit/discover-playbill-urls-target-live-data.test.mjs tests/unit/audit-bad-stub-visibility-live-data.test.mjs tests/unit/doubled-market-ids-live-data.test.mjs tests/unit/outlet-domain-validation-live-data.test.mjs tests/unit/automated-clear-not-manual-live-data.test.mjs tests/unit/critic-spelling-duplicates-live-data.test.mjs scripts/verify-contamination-gate.test.mjs
