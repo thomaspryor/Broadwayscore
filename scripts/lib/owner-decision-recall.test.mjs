@@ -384,3 +384,10 @@ test('warmer: a spawn error event releases the lock and does not throw', async (
   assert.equal(startCacheWarmer({ cacheFile, spawnFn: () => { throw new Error('EMFILE'); }, env: {} }), null);
   assert.equal(fs.existsSync(`${cacheFile}.warming`), false);
 });
+
+test('a follow-up comment with only two generic shared words does not match a longer topic (BRO-5390 review)', () => {
+  const card = { identifier: 'BRO-2393', title: 'All ticket clicks routing through TodayTix only', state: { type: 'canceled' }, description: '', comments: { nodes: [
+    { createdAt: '2026-09-01T00:00:00Z', body: 'Owner picked Option B.' },
+    { createdAt: '2026-09-01T01:00:00Z', body: '## Outcome\nRouted every ticket link to the closed shows page.' } ] } };
+  assert.deepEqual(findPriorAnswers('Ticket link broken on closed shows', [card]), []);
+});

@@ -107,9 +107,9 @@ function answerEvidence(card) {
   const out = [];
   comments.forEach((comment, i) => {
     if (!isAnswerComment(comment)) return;
-    const pieces = [comment.body];
+    const pieces = [{ text: comment.body, followUp: false }];
     const next = comments[i + 1];
-    if (next && !isAnswerComment(next) && !QUESTION_RE.test(next.body)) pieces.push(next.body.slice(0, FOLLOW_UP_CHARS));
+    if (next && !isAnswerComment(next) && !QUESTION_RE.test(next.body)) pieces.push({ text: next.body.slice(0, FOLLOW_UP_CHARS), followUp: true });
     out.push({ comment, pieces });
   });
   return out;
@@ -127,7 +127,12 @@ function findPriorAnswers(topic, cards, { minShared = MIN_SHARED } = {}) {
     if (!answer || isSelfReference(card)) continue;
     let shared = [...want].filter((t) => cardTokens(card).has(t)).length;
     for (const { comment, pieces } of answerEvidence(card)) {
-      const pieceShared = Math.max(...pieces.map(sharedWith));
+      // A follow-up is weaker evidence (an Outcome comment shares generic words
+      // with many topics): it needs 3 shared tokens (or all of a shorter topic).
+      const pieceShared = Math.max(...pieces.map((pc) => {
+        const n = sharedWith(pc.text);
+        return pc.followUp && n < Math.max(need, Math.min(want.size, 3)) ? 0 : n;
+      }));
       if (pieceShared > shared) {
         shared = pieceShared;
         answer = summarizeAnswer(card, comment);
