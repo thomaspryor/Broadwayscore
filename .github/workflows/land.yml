@@ -737,13 +737,18 @@ jobs:
           TIP: ${{ needs.checks.outputs.tip }}
           BASE: ${{ needs.checks.outputs.base }}
           TRAIN_LANDED: ${{ steps.mutex.outputs.train_landed }}
+          # BRO-5700: a substantive move re-checks small (listed tests only,
+          # build only when both sides changed build code) unless a file
+          # changed on both sides; true restores the full re-check.
+          LAND_SMALL_RECHECK_DISABLED: ${{ vars.LAND_SMALL_RECHECK_DISABLED }}
         # --expect-tip: land ONLY the tip `checks` verified — a newer push to
         #   the branch has its own run; this one refuses rather than landing
         #   an unverified tip.
         # --verified-base: the origin/main sha `checks` rebased onto. land.js
         #   skips its gauntlet while main is still that sha or has moved past
         #   it across inert paths only (bot data churn); any substantive move
-        #   re-runs the full gauntlet, bounded by --max-attempts (3), and the
+        #   re-runs a merged-tree re-check (land-branch.js selectRecheckScope),
+        #   bounded by --max-attempts (3), and the
         #   attempt count lands in the summary below.
         # --riders-file / --train-landed-only: BRO-5282 merge train (see the
         #   step above). A run whose mutex wait ended on a train marker only

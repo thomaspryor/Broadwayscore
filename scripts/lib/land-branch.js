@@ -79,6 +79,7 @@ const { runSafeChecks, checksEnv, prepareCheckWorkdir, CHECK_TIMEOUT_MS } = requ
 const { checkLanded } = require('./landing-verify.js');
 const { isRunnableTestFile } = require('./merge-post-merge-test-gate.js');
 const { segmentHeads } = require('./land-train.js');
+const { SITE_PATHS, SITE_DATA_FILES } = require('./should-deploy-gate.js');
 
 const MAX_ATTEMPTS = 3;
 // Inert-churn re-rebases allowed per attempt before a full re-check is forced.
@@ -268,6 +269,44 @@ function decideVerifiedBaseSkip({ verifiedBase, baseSha, ancestor, intervening }
 }
 
 /**
+ * Site CODE a production build compiles: should-deploy-gate.js's SITE_PATHS
+ * (src/ imports scripts/lib, prebuild runs scripts/) minus the data files
+ * bots rewrite every few minutes, which would otherwise make every src/
+ * landing rebuild.
+ */
+function isBuildCodePath(file) {
+  const f = String(file);
+  if (f.startsWith('public/data/') || SITE_DATA_FILES.includes(f)) return false;
+  return SITE_PATHS.some((p) => (p.endsWith('/') ? f.startsWith(p) : f === p));
+}
+
+/**
+ * How much of the in-mutex re-check to run once decideVerifiedBaseSkip has
+ * said "re-check" (BRO-5700; the owner accepted that a clash between two
+ * changes may then be caught by the deploy build or test.yml on main).
+ * 'small' only when main's intervening files are positively known, share no
+ * file with the branch, and the switch is not set: the merged-tree floor then
+ * runs only the listed tests (the branch's, and those main changed since the
+ * verified base, BRO-5180) instead of the whole scripts/lib suite, and the
+ * production build runs only when the branch changed src/ and main changed
+ * build code (isBuildCodePath). Unknown
+ * ancestry, a failed diff, an overlap or the switch → 'full', today's
+ * re-check. Fails closed.
+ * @param {{ancestor:boolean, intervening:(string[]|null), changedFiles:string[], disabled?:boolean}} o
+ * @returns {{mode:'full'|'small', build:boolean, reason:string}}
+ */
+function selectRecheckScope({ ancestor, intervening, changedFiles, disabled = false }) {
+  if (disabled) return { mode: 'full', build: true, reason: 'small re-check disabled (LAND_SMALL_RECHECK_DISABLED=true)' };
+  if (ancestor !== true || !Array.isArray(intervening)) return { mode: 'full', build: true, reason: 'files main changed since the verified base are unknown' };
+  const mine = new Set((changedFiles || []).map(String));
+  const shared = intervening.map(String).filter((f) => mine.has(f));
+  if (shared.length) return { mode: 'full', build: true, reason: `branch and main both changed ${shared.length} file(s) (${shared.slice(0, 3).join(', ')})` };
+  // runSafeChecks builds only for a src/ change on the branch (hasSrcChange).
+  const build = [...mine].some((f) => f.startsWith('src/')) && intervening.some(isBuildCodePath);
+  return { mode: 'small', build, reason: `no file changed on both sides; build ${build ? 'runs (both sides changed build code)' : 'skipped (deploy builds it)'}` };
+}
+
+/**
  * A checks seam that reuses an upstream verdict when decideVerifiedBaseSkip
  * allows it and otherwise runs `checks` (the full default gauntlet). On the
  * skip path the throwaway worktree is still prepared (node_modules link,
@@ -284,8 +323,10 @@ function makeVerifiedBaseChecks({ verifiedBase, checks = defaultChecks, git = nu
   return function verifiedBaseChecks(o) {
     const { cwd, baseSha, repoDir, log = () => {} } = o || {};
     const ancestor = run(['merge-base', '--is-ancestor', verifiedBase, baseSha], cwd) !== null;
-    const intervening = ancestor ? (run(['diff', '--name-only', `${verifiedBase}..${baseSha}`], cwd) || '').split('\n').filter(Boolean) : [];
-    const decision = decideVerifiedBaseSkip({ verifiedBase, baseSha, ancestor, intervening });
+    // --no-renames: a rename on main must show both names to the overlap test.
+    const diffOut = ancestor ? run(['diff', '--name-only', '--no-renames', `${verifiedBase}..${baseSha}`], cwd) : null;
+    const intervening = diffOut === null ? [] : diffOut.split('\n').filter(Boolean);
+    const decision = decideVerifiedBaseSkip({ verifiedBase, baseSha, ancestor: ancestor && diffOut !== null, intervening });
     if (!decision.skip) {
       // BRO-5180: the re-check selects tests from the BRANCH diff, so a test
       // tightened on main after the upstream gauntlet ran (land run
@@ -298,8 +339,12 @@ function makeVerifiedBaseChecks({ verifiedBase, checks = defaultChecks, git = nu
       // test still does arm it (~4 min, within MERGED_TREE_TIMEOUT_MS).
       const interveningTests = intervening.filter(f => isRunnableTestFile(f) && (!cwd || fs.existsSync(path.join(cwd, f))));
       const extra = ancestor ? `+${interveningTests.length} test file(s) changed on main since the verified base` : 'tests changed on main unknown: verified base is not an ancestor';
-      log(`[land] verified-base: ${decision.reason} — re-checking on the merged tree (${extra})`);
-      return checks({ ...o, interveningTests });
+      const recheckScope = selectRecheckScope({
+        ancestor, intervening: diffOut === null ? null : intervening, changedFiles: o.changedFiles,
+        disabled: process.env.LAND_SMALL_RECHECK_DISABLED === 'true',
+      });
+      log(`[land] verified-base: ${decision.reason} — re-checking on the merged tree (${extra}); ${recheckScope.mode} re-check: ${recheckScope.reason}`);
+      return checks({ ...o, interveningTests, recheckScope });
     }
     if (prepare && repoDir) {
       // repoDir may be a node_modules-less git worktree (BRO-3907) — prepare
@@ -328,7 +373,11 @@ function mergedTreeGateInput(changedFiles, interveningTests) {
   return [...new Set([...(changedFiles || []), ...(interveningTests || [])].map(String))];
 }
 
-function defaultChecks({ cwd, changedFiles, interveningTests = [], baseSha, repoDir, log = () => {} }) {
+// recheckScope (selectRecheckScope) comes only from makeVerifiedBaseChecks;
+// every other caller (plain land, the merge train, the holder-alone retry)
+// passes none and gets the full re-check.
+function defaultChecks({ cwd, changedFiles, interveningTests = [], recheckScope = null, baseSha, repoDir, log = () => {} }) {
+  const small = Boolean(recheckScope && recheckScope.mode === 'small');
   const files = (changedFiles || []).map(String);
   // Fill the worktree's gitignored gaps (node_modules link, core-data copies)
   // up front, unconditionally: runSafeChecks only prepares when its own plan
@@ -351,7 +400,7 @@ function defaultChecks({ cwd, changedFiles, interveningTests = [], baseSha, repo
     // sibling libs only — no executor world pulled into a hand landing).
     isSafeCheckCommand: () => false,
     tier: 3,
-    buildCheck: process.env.LAND_SKIP_BUILD !== '1',
+    buildCheck: process.env.LAND_SKIP_BUILD !== '1' && (!small || recheckScope.build),
     prepareFrom: repoDir,
   });
 
@@ -408,7 +457,7 @@ function defaultChecks({ cwd, changedFiles, interveningTests = [], baseSha, repo
       run('merged-tree-tests', ['node', 'scripts/lib/merge-post-merge-test-gate.js'], {
         input: `${mergedTreeGateInput(files, interveningTests).join('\n')}\n`,
         timeoutMs: MERGED_TREE_TIMEOUT_MS,
-        env: { ...env, MERGE_TEST_GATE_BASELINE_SHA: baseSha || '' },
+        env: { ...env, MERGE_TEST_GATE_BASELINE_SHA: baseSha || '', ...(small ? { MERGE_TEST_GATE_ONLY_LISTED: '1' } : {}) },
         detail: tapDetail,
       });
     }
@@ -893,6 +942,8 @@ module.exports = {
   MAX_CHURN_SKIPS,
   INERT_FOR_VERIFICATION_RE,
   isInertForVerification,
+  isBuildCodePath,
+  selectRecheckScope,
   classifyIntervening,
   landBranch,
   defaultChecks,

@@ -447,9 +447,14 @@ function correspondingTestPaths(scriptRelPath) {
 // runs executed DIFFERENT file sets, a pre-existing failure that simply
 // wasn't run in the baseline would be reported as NEW and block the merge.
 // Passing the same changedFiles to both calls keeps the two sets aligned.
-function selectTestFiles(cwd, changedFiles) {
+// onlyListed (BRO-5700): land.js's in-mutex re-check when the branch and
+// main's intervening changes share no file. Skips the whole scripts/lib
+// suite expansion (the ~4 min part); keeps workflow guards, the per-file
+// corresponding tests and every runnable test file named in the input (the
+// branch's tests and the tests main changed since the verified base).
+function selectTestFiles(cwd, changedFiles, { onlyListed = false } = {}) {
   const files = [];
-  if (touchesLib(changedFiles)) files.push(...listColocatedTestFiles(cwd));
+  if (!onlyListed && touchesLib(changedFiles)) files.push(...listColocatedTestFiles(cwd));
   if (touchesWorkflows(changedFiles)) files.push(...listWorkflowGuardTestFiles(cwd));
   files.push(...listCorrespondingUnitTestFiles(cwd, changedFiles));
   // Changed test files themselves (present in this tree, not EXCLUDED). A
@@ -603,13 +608,13 @@ function describeExit(result) {
 // merged-tree failure) — every existing caller/test that doesn't pass them
 // is unaffected. Only invoked when the merged-tree run FAILS; a clean merge
 // never builds a baseline checkout.
-function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineCheckout = null, removeBaselineCheckout = null, retryUnparseable = true } = {}) {
+function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineCheckout = null, removeBaselineCheckout = null, retryUnparseable = true, onlyListed = false } = {}) {
   if (!shouldRunTestGate(changedFiles)) {
     return { ran: false, passed: true, output: '', reason: 'no scripts/lib/, scripts/, or .github/workflows/ files changed' };
   }
   let testFiles;
   try {
-    testFiles = selectTestFiles(cwd, changedFiles);
+    testFiles = selectTestFiles(cwd, changedFiles, { onlyListed });
   } catch (e) {
     if (!(e instanceof NodeBatchUnavailableError)) throw e;
     // BRO-2483: fail closed — the node batch CI runs could not be listed, so
@@ -734,7 +739,7 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
     if (!checkout || checkout.prepared === false) {
       throw new Error('baseline checkout is missing node_modules (unprepared) — cannot trust its test results');
     }
-    const baselineTestFiles = selectTestFiles(baselineRoot, changedFiles);
+    const baselineTestFiles = selectTestFiles(baselineRoot, changedFiles, { onlyListed });
     let baselineFailures = new Map();
     if (baselineTestFiles.length > 0) {
       const baselineResult = execFn(baselineRoot, baselineTestFiles);
@@ -888,6 +893,7 @@ if (require.main === module) {
     changedFiles,
     makeBaselineCheckout,
     removeBaselineCheckout,
+    onlyListed: process.env.MERGE_TEST_GATE_ONLY_LISTED === '1',
   });
   if (ran) {
     process.stdout.write(output);

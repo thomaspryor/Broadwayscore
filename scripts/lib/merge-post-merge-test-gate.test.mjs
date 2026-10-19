@@ -1254,3 +1254,26 @@ test('runTestGate: a parseable failure is NOT re-run (BRO-2874)', () => {
   });
   assert.equal(calls, 1);
 });
+
+// BRO-5700: land.js's small in-mutex re-check asks for the listed tests only.
+test('selectTestFiles onlyListed: no whole scripts/lib suite, but listed tests, corresponding tests and workflow guards stay', () => {
+  const input = ['scripts/lib/land-branch.js', 'scripts/lib/land-gate-delta.test.mjs'];
+  const full = selectTestFiles(REPO_ROOT, input);
+  const small = selectTestFiles(REPO_ROOT, input, { onlyListed: true });
+  assert.ok(full.includes('scripts/lib/merge-post-merge-test-gate.test.mjs'), 'precondition: the full mode expands to the whole scripts/lib suite');
+  assert.ok(!small.includes('scripts/lib/merge-post-merge-test-gate.test.mjs'), 'onlyListed skips the suite expansion');
+  assert.ok(small.includes('scripts/lib/land-gate-delta.test.mjs'), 'a listed test still runs');
+  assert.ok(small.includes('scripts/lib/land-branch.test.mjs'), 'the changed file\'s own test (correspondingTestPaths) still runs');
+  assert.ok(small.length < full.length / 4, `onlyListed is a small subset (${small.length} of ${full.length})`);
+  const wf = selectTestFiles(REPO_ROOT, ['.github/workflows/land.yml'], { onlyListed: true });
+  assert.ok(REQUIRED_WORKFLOW_GUARDS.some((g) => wf.includes(g)), 'workflow guards stay, or a workflow-only branch would refuse on zero guards');
+});
+
+test('runTestGate threads onlyListed into the test selection', () => {
+  let ran = null;
+  const execFn = (_cwd, files) => { ran = files; return { status: 0, stdout: '', stderr: '' }; };
+  runTestGate({ cwd: REPO_ROOT, changedFiles: ['scripts/lib/land-branch.js'], execFn, onlyListed: true });
+  assert.ok(ran && !ran.includes('scripts/lib/merge-post-merge-test-gate.test.mjs'));
+  runTestGate({ cwd: REPO_ROOT, changedFiles: ['scripts/lib/land-branch.js'], execFn });
+  assert.ok(ran.includes('scripts/lib/merge-post-merge-test-gate.test.mjs'));
+});

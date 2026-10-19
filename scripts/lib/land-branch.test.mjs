@@ -20,6 +20,7 @@ const require = createRequire(import.meta.url);
 const {
   landBranch, defaultPushMain, firstFailedCheck, classifyPushFailure, shouldRetry, decideCancelledLandRetry, decideCancelledWait, MAX_CANCEL_RETRIES, isPlausibleBranchName, formatLandLine, MAX_ATTEMPTS,
   isInertForVerification, classifyIntervening, decideVerifiedBaseSkip, makeVerifiedBaseChecks, mergedTreeGateInput,
+  selectRecheckScope, isBuildCodePath,
   isPromisorFetchFailure,
 } = require('./land-branch.js');
 const { selectTestFiles } = require('./merge-post-merge-test-gate.js');
@@ -895,4 +896,53 @@ test('BRO-4379 wiring: the session landing script consults decideCancelledLandRe
   assert.match(sh, /TIMEOUT: \$BRANCH — land run cancelled while pending and no server re-trigger seen/);
   // a run that went live again between the waiter's verdict and the re-read keeps waiting
   assert.match(sh, /run_status" != "completed"/);
+});
+
+// ── BRO-5700: the smaller in-mutex re-check ────────────────────────────────
+
+test('selectRecheckScope: small only when main\'s files are known and share none with the branch; fails closed', () => {
+  const branch = ['scripts/lib/foo.js', 'scripts/lib/foo.test.mjs'];
+  let r = selectRecheckScope({ ancestor: true, intervening: ['scripts/lib/bar.js', 'tests/unit/guard.test.mjs'], changedFiles: branch });
+  assert.equal(r.mode, 'small');
+  assert.equal(r.build, false, 'no src/ change on the branch');
+  // A file changed on both sides → the full re-check.
+  r = selectRecheckScope({ ancestor: true, intervening: ['scripts/lib/foo.js'], changedFiles: branch });
+  assert.equal(r.mode, 'full');
+  assert.match(r.reason, /both changed 1 file/);
+  // Unknown window: not an ancestor, or the diff failed (null) → full, never small.
+  assert.equal(selectRecheckScope({ ancestor: false, intervening: [], changedFiles: branch }).mode, 'full');
+  assert.equal(selectRecheckScope({ ancestor: true, intervening: null, changedFiles: branch }).mode, 'full');
+  assert.equal(selectRecheckScope({ ancestor: undefined, intervening: [], changedFiles: branch }).mode, 'full');
+  // The switch restores today's re-check.
+  assert.equal(selectRecheckScope({ ancestor: true, intervening: ['x.md'], changedFiles: branch, disabled: true }).mode, 'full');
+});
+
+test('selectRecheckScope: the build runs only when the branch changed src/ and main changed build code (bot data churn does not count)', () => {
+  const src = ['src/components/X.tsx'];
+  assert.equal(selectRecheckScope({ ancestor: true, intervening: ['scripts/lib/review-list-key.js'], changedFiles: src }).build, true, 'src/ imports scripts/lib');
+  assert.equal(selectRecheckScope({ ancestor: true, intervening: ['next.config.js'], changedFiles: src }).build, true);
+  assert.equal(selectRecheckScope({ ancestor: true, intervening: ['public/data/shows/x.json', 'data/audit/ledger.jsonl', 'memory/a.md'], changedFiles: src }).build, false);
+  assert.equal(selectRecheckScope({ ancestor: true, intervening: ['src/app/page.tsx'], changedFiles: ['scripts/lib/a.test.mjs'] }).build, false, 'runSafeChecks builds only for a src/ change on the branch');
+  assert.equal(isBuildCodePath('scripts/prebuild.sh'), true, 'scripts/ is build code on main\'s side (prebuild, src/ imports scripts/lib)');
+  assert.equal(isBuildCodePath('public/data/mobile-shows.json'), false);
+  assert.equal(isBuildCodePath('public/images/x.webp'), true);
+  assert.equal(isBuildCodePath('package-lock.json'), true);
+  assert.equal(isBuildCodePath('.github/workflows/land.yml'), false);
+});
+
+test('makeVerifiedBaseChecks hands the scope to the checks seam; a failed diff makes it full', () => {
+  const v = 'a'.repeat(40);
+  const b = 'b'.repeat(40);
+  let seen = null;
+  const run = (git) => {
+    const checks = makeVerifiedBaseChecks({ verifiedBase: v, checks: (o) => { seen = o; return []; }, git, prepare: () => [] });
+    checks({ cwd: '/wt', baseSha: b, repoDir: '/repo', changedFiles: ['scripts/lib/foo.js'] });
+    return seen.recheckScope;
+  };
+  assert.equal(run((args) => (args[0] === 'merge-base' ? '' : args[0] === 'diff' ? 'scripts/lib/bar.js' : '')).mode, 'small');
+  assert.equal(run((args) => (args[0] === 'merge-base' ? '' : args[0] === 'diff' ? 'scripts/lib/foo.js' : '')).mode, 'full');
+  assert.equal(run((args) => (args[0] === 'merge-base' ? '' : null)).mode, 'full', 'git diff failed → unknown → full');
+  const diffArgs = [];
+  run((args) => { if (args[0] === 'diff') diffArgs.push(...args); return args[0] === 'merge-base' ? '' : 'x.md'; });
+  assert.ok(diffArgs.includes('--no-renames'), 'a rename on main shows both names to the overlap test');
 });
