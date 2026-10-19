@@ -7,7 +7,7 @@
  * raise-to-ceiling ratio over records that state both numbers.
  *
  * Fit (2026-10-19, commercial.json): 20 pairs, median 0.95 (range 0.69-1.0;
- * 8 offerings fully sold). Several pairs are interim Form D/A amendments
+ * 7 offerings fully sold and one at 0.999). Several pairs are interim Form D/A amendments
  * ("$X sold by then"), so the true ratio is, if anything, nearer 1.
  * Shadow only: the timing backtest did not improve with it (see BRO-5677).
  */
