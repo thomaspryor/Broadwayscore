@@ -78,6 +78,8 @@ const { foldDiacritics } = require('./title-match');
 const { isOutletishName, isPersonShapedName, CORPORATE_RE } = require('./outlet-name-shape');
 
 const CRITIC_NAME_FIXES = require('./critic-name-fixes.json').fixes;
+// The site's critic-page slug rule (apostrophe -> hyphen), not review-normalization's.
+const { slugify: pageSlug } = require('./url-slug');
 
 // Placeholders the 2026 audit found emitted as critics, plus the obvious
 // neighbours of each. Lowercase; normalized through normalizeForCompare below
@@ -324,7 +326,10 @@ function registrySpelling(name, outletId) {
   const targetTokens = new Set(target.split(/\s+/));
   if (name.split(/\s+/).some((t) => /^\p{Lu}{2,3}$/u.test(t) && !targetTokens.has(t))) return name;
   // A known-bad spelling the curated fixes table corrects never wins.
-  return keepDiacritics(CRITIC_NAME_FIXES[target] || target, name);
+  const out = keepDiacritics(CRITIC_NAME_FIXES[target] || target, name);
+  // Re-spelling must never move a critic page: the fold key deletes
+  // apostrophes but slugify hyphenates them ("O'Dell" -> o-dell vs "ODell" -> odell).
+  return pageSlug(out) === pageSlug(name) ? out : name;
 }
 
 /**

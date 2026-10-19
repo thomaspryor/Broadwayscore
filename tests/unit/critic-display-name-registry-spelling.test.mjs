@@ -43,6 +43,8 @@ const REGISTRY = {
     // two genuinely different registry people whose names fold together
     'chris-smith': { displayName: 'Chris Smith', knownOutlets: ['outlet-a'] },
     'chris-smith-2': { displayName: 'Chris-Smith', knownOutlets: ['outlet-b'] },
+    // apostrophe-less registry spelling: adopting it would move /critics/kate-o-donnell
+    'kate-odonnell': { displayName: 'Kate ODonnell', knownOutlets: ['outlet-c'] },
   },
 };
 
@@ -112,4 +114,8 @@ test('edge punctuation from capture is trimmed, initials keep their period', () 
   assert.equal(displayCriticName('. Charles Spencer', 'The Telegraph'), 'Charles Spencer');
   assert.equal(displayCriticName('Tara Whenray.', 'Theatre South East'), 'Tara Whenray');
   assert.equal(displayCriticName('Dave B.', 'Everything Theatre'), 'Dave B.');
+});
+
+test('a registry spelling that would change the critic page slug is never adopted', () => {
+  assert.equal(displayCriticName("Kate O'Donnell", 'outlet-c'), "Kate O'Donnell");
 });
