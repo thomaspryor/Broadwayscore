@@ -16,6 +16,7 @@ const path = require('path');
 const { normalizeOutlet, normalizeCritic } = require('./lib/review-normalization');
 const { parseBwwPostingAuthor } = require('./lib/bww-jsonld-author');
 const { findMatchingReviewFile } = require('./lib/review-file-match');
+const { extractBwwThumbIcons, shouldPairBwwThumbs } = require('./lib/bww-thumb-pairing');
 
 const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'aggregator-archive', 'bww-roundups');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -33,16 +34,9 @@ function log(msg) { if (VERBOSE) console.log(msg); }
 function extractReviewsWithThumbs(html) {
   const reviews = [];
 
-  // Extract thumbs from HTML img tags (in order)
-  const thumbPattern = /(?:uptrans|middletrans|downtrans)\.png/g;
-  const thumbs = [];
-  let match;
-  while ((match = thumbPattern.exec(html)) !== null) {
-    const img = match[0];
-    if (img.includes('uptrans')) thumbs.push('Up');
-    else if (img.includes('middletrans')) thumbs.push('Meh');
-    else if (img.includes('downtrans')) thumbs.push('Down');
-  }
+  // Extract thumbs, one per icon <img> (BRO-5674: the old flat filename scan
+  // counted srcset repeats and missed the uptrans2.png suffix).
+  const thumbs = extractBwwThumbIcons(html);
 
   if (thumbs.length === 0) return null;
 
@@ -80,9 +74,14 @@ function extractReviewsWithThumbs(html) {
     } catch (e) {}
   }
 
-  // Pair thumbs with reviews by position
+  // Pair thumbs with reviews by position, only when every review has one icon
+  // (BRO-5674: a count slip misattributes every later critic).
+  if (!shouldPairBwwThumbs(thumbs.length, reviews.length)) {
+    log(`  skip: ${thumbs.length} icons for ${reviews.length} reviews`);
+    return null;
+  }
   const paired = [];
-  const count = Math.min(thumbs.length, reviews.length);
+  const count = thumbs.length;
   for (let i = 0; i < count; i++) {
     paired.push({ ...reviews[i], bwwThumb: thumbs[i] });
   }
