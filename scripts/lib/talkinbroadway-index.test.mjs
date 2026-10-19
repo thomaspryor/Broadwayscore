@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  titleFromLinkText, normalizeTbUrl, isReviewHref, normalizeTitle, extractReviewLinks, titleFromPageTitle,
+  titleFromLinkText, dateFromLinkText, reviewDateFitsShow, normalizeTbUrl, isReviewHref, normalizeTitle, extractReviewLinks, titleFromPageTitle,
   matchShowByTitle, heldKey, planCollection, pickCriticForShow, pageTitleMatchesShow,
 } = require('./talkinbroadway-index.js');
 
@@ -48,7 +48,7 @@ test('extractReviewLinks keeps review anchors once and drops nav', () => {
     { href: '/page/ob/10_09_26.html', text: 'Good Time Charlie' },
     { href: '/page/regional/boston/index.html', text: '» Boston' },
   ];
-  assert.deepEqual(extractReviewLinks(anchors), [{ url: 'https://www.talkinbroadway.com/page/ob/10_09_26.html', text: 'Good Time Charlie' }]);
+  assert.deepEqual(extractReviewLinks(anchors), [{ url: 'https://www.talkinbroadway.com/page/ob/10_09_26.html', text: 'Good Time Charlie', date: null }]);
 });
 
 test('titleFromPageTitle reads the quoted show title', () => {
@@ -64,26 +64,49 @@ test('matchShowByTitle: window, ambiguity and unknown titles', () => {
   assert.equal(matchShowByTitle('', shows, { now: NOW }).reason, 'none');
 });
 
-test('planCollection fetches only unheld (show, url) pairs and says why it skipped the rest', () => {
-  const url = 'https://www.talkinbroadway.com/page/ob/10_09_26.html';
+test('planCollection fetches only unheld shows and says why it skipped the rest', () => {
   const entries = [
-    { url, title: 'Good Time Charlie' },
-    { url: 'https://www.talkinbroadway.com/page/ob/10_16_26.html', title: 'The Ask' },
-    { url: 'https://www.talkinbroadway.com/page/ob/09_01_26.html', title: 'Untracked Show' },
-    { url: 'https://www.talkinbroadway.com/page/ob/10_16_26.html', title: 'The Ask' },
+    { url: 'https://www.talkinbroadway.com/page/ob/10_09_26.html', title: 'Good Time Charlie', date: '2026-10-09' },
+    { url: 'https://www.talkinbroadway.com/page/ob/10_16_26.html', title: 'The Ask', date: '2026-10-16' },
+    { url: 'https://www.talkinbroadway.com/page/ob/09_01_26.html', title: 'Untracked Show', date: '2026-09-01' },
+    { url: 'https://www.talkinbroadway.com/page/ob/10_16_26.html', title: 'The Ask', date: '2026-10-16' },
   ];
-  const held = new Set([heldKey('good-time-charlie-off-broadway-2026', url)]);
+  const held = new Set([heldKey('good-time-charlie-off-broadway-2026')]);
   const { toFetch, skipped } = planCollection(entries, shows, held, { now: NOW });
   assert.deepEqual(toFetch.map((t) => t.showId), ['the-ask-off-broadway-2026']);
-  assert.deepEqual(skipped.map((s) => s.why), ['held', 'no-tracked-show']);
+  assert.deepEqual(skipped.map((s) => s.why), ['held', 'no-tracked-show', 'second-review-same-show']);
 });
 
-test('the same page held for one show is still fetched for a second show on a combined day page', () => {
-  const url = 'https://www.talkinbroadway.com/page/ob/10_09_26.html';
-  const held = new Set([heldKey('good-time-charlie-off-broadway-2026', url)]);
-  const entries = [{ url, title: 'Good Time Charlie' }, { url, title: 'The Ask' }];
-  const { toFetch } = planCollection(entries, shows, held, { now: NOW });
-  assert.deepEqual(toFetch.map((t) => t.showId), ['the-ask-off-broadway-2026']);
+test('a hand-added review under a different URL still counts as held (Very Blue Light, 09_25_26b)', () => {
+  const entries = [{ url: 'https://www.talkinbroadway.com/page/ob/10_09_26b.html', title: 'Good Time Charlie', date: '2026-10-09' }];
+  const held = new Set([heldKey('good-time-charlie-off-broadway-2026')]);
+  assert.deepEqual(planCollection(entries, shows, held, { now: NOW }).toFetch, []);
+});
+
+test('an earlier same-title run or a review far from the opening is not attached (Ectoplasm 2022, Going Bacharach January)', () => {
+  const entries = [
+    { url: 'https://www.talkinbroadway.com/page/ob/01_16_22.html', title: 'Good Time Charlie', date: '2022-01-16' },
+    { url: 'https://www.talkinbroadway.com/page/ob/01_12_26.html', title: 'Good Time Charlie', date: '2026-01-12' },
+    { url: 'https://www.talkinbroadway.com/page/ob/10_09_26.html', title: 'Good Time Charlie', date: null },
+  ];
+  const { toFetch, skipped } = planCollection(entries, shows, new Set(), { now: NOW });
+  assert.deepEqual(toFetch, []);
+  assert.deepEqual(skipped.map((s) => s.why), ['date-outside-run', 'date-outside-run', 'no-date']);
+});
+
+test('reviewDateFitsShow: ten days before to sixty days after the opening', () => {
+  const show = { openingDate: '2026-10-09' };
+  assert.equal(reviewDateFitsShow('2026-09-29', show), true);
+  assert.equal(reviewDateFitsShow('2026-09-28', show), false);
+  assert.equal(reviewDateFitsShow('2026-12-08', show), true);
+  assert.equal(reviewDateFitsShow('2026-12-09', show), false);
+  assert.equal(reviewDateFitsShow(null, show), false);
+});
+
+test('dateFromLinkText reads M/D/YY and rejects a cut-off or impossible date', () => {
+  assert.equal(dateFromLinkText('Isla - 8/18/26'), '2026-08-18');
+  assert.equal(dateFromLinkText("Thornton Wilder's The Emporium -"), null);
+  assert.equal(dateFromLinkText('Thing - 13/40/26'), null);
 });
 
 test('matchShowByTitle never attaches a New York review to a West End run of the same title', () => {
@@ -119,6 +142,7 @@ test('titleFromLinkText drops the trailing review date and tolerates a cut-off o
 test('extractReviewLinks strips the date so the title can match a tracked show', () => {
   const links = extractReviewLinks([{ href: '/page/ob/10_09_26.html', text: 'Good Time Charlie - 10/9/26' }]);
   assert.equal(links[0].text, 'Good Time Charlie');
-  const { toFetch } = planCollection(links.map((l) => ({ url: l.url, title: l.text })), shows, new Set(), { now: NOW });
+  assert.equal(links[0].date, '2026-10-09');
+  const { toFetch } = planCollection(links.map((l) => ({ url: l.url, title: l.text, date: l.date })), shows, new Set(), { now: NOW });
   assert.deepEqual(toFetch.map((t) => t.showId), ['good-time-charlie-off-broadway-2026']);
 });

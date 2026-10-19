@@ -61,10 +61,21 @@ function titleFromLinkText(text) {
     .trim();
 }
 
+/** "<title> - 9/9/26" -> "2026-09-09"; null when the text carries no complete date. */
+function dateFromLinkText(text) {
+  const m = String(text || '').match(/(\d{1,2})\/(\d{1,2})\/(\d{2,4})\s*$/);
+  if (!m) return null;
+  const y = m[3].length === 2 ? 2000 + Number(m[3]) : Number(m[3]);
+  const mo = Number(m[1]);
+  const d = Number(m[2]);
+  if (mo < 1 || mo > 12 || d < 1 || d > 31) return null;
+  return `${y}-${String(mo).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+}
+
 /**
  * Review links from an index page's anchors.
  * @param {{href:string,text:string}[]} anchors
- * @returns {{url:string,text:string}[]} one row per distinct (url, text), nav links dropped
+ * @returns {{url:string,text:string,date:string|null}[]} one row per distinct (url, text, date), nav links dropped
  */
 function extractReviewLinks(anchors) {
   const seen = new Set();
@@ -73,10 +84,11 @@ function extractReviewLinks(anchors) {
     if (!a || !isReviewHref(a.href)) continue;
     const url = normalizeTbUrl(a.href);
     const text = titleFromLinkText(a.text);
-    const key = `${url}|${text}`;
+    const date = dateFromLinkText(a.text);
+    const key = `${url}|${text}|${date}`;
     if (seen.has(key)) continue;
     seen.add(key);
-    out.push({ url, text });
+    out.push({ url, text, date });
   }
   return out;
 }
@@ -146,15 +158,29 @@ function pageTitleMatchesShow(pageTitle, showTitle) {
   return !!t && normalizeTitle(t) === normalizeTitle(showTitle);
 }
 
-/** Key for "we hold this review for this show". */
-function heldKey(showId, url) {
-  return `${showId}|${normalizeTbUrl(url)}`;
+/** Key for "we already hold a Talkin' Broadway review of this show". TB posts one review per production. */
+function heldKey(showId) {
+  return String(showId);
+}
+
+// A review is for this production only if it was posted around its press night. A same-title
+// earlier run (Ectoplasm 2022, The Imaginary Invalid 2025) or a January review of a show that
+// returns in October falls outside this window and is left alone.
+const REVIEW_DATE_WINDOW = Object.freeze({ daysBeforeOpening: 10, daysAfterOpening: 60 });
+
+function reviewDateFitsShow(reviewDate, show) {
+  if (!reviewDate || !show || !show.openingDate) return false;
+  const r = Date.parse(`${reviewDate}T12:00:00Z`);
+  const o = Date.parse(`${show.openingDate}T12:00:00Z`);
+  if (!Number.isFinite(r) || !Number.isFinite(o)) return false;
+  const days = (r - o) / 86400000;
+  return days >= -REVIEW_DATE_WINDOW.daysBeforeOpening && days <= REVIEW_DATE_WINDOW.daysAfterOpening;
 }
 
 /**
- * Decide what to fetch. A link needs a title that matches one tracked show and a
- * (show, url) pair not already held.
- * @param {{url:string,title:string}[]} entries  title = link text or page title
+ * Decide what to fetch. A link needs a title that matches one tracked New York show, a review
+ * date near that show's opening, and no Talkin' Broadway review of the show already held.
+ * @param {{url:string,title:string,date:string|null}[]} entries  title = link text or page title
  * @param {object[]} shows
  * @param {Set<string>} held  heldKey() values
  * @returns {{toFetch:{showId:string,url:string,title:string}[], skipped:{url:string,title:string,why:string}[]}}
@@ -169,12 +195,19 @@ function planCollection(entries, shows, held, opts = {}) {
       skipped.push({ url: e.url, title: e.title, why: reason === 'ambiguous' ? 'ambiguous-title' : 'no-tracked-show' });
       continue;
     }
-    const key = heldKey(show.id, e.url);
+    if (!reviewDateFitsShow(e.date, show)) {
+      skipped.push({ url: e.url, title: e.title, why: e.date ? 'date-outside-run' : 'no-date' });
+      continue;
+    }
+    const key = heldKey(show.id);
     if (held.has(key)) {
       skipped.push({ url: e.url, title: e.title, why: 'held' });
       continue;
     }
-    if (queued.has(key)) continue;
+    if (queued.has(key)) {
+      skipped.push({ url: e.url, title: e.title, why: 'second-review-same-show' });
+      continue;
+    }
     queued.add(key);
     toFetch.push({ showId: show.id, url: normalizeTbUrl(e.url), title: e.title });
   }
@@ -188,6 +221,8 @@ module.exports = {
   normalizeTitle,
   extractReviewLinks,
   titleFromLinkText,
+  dateFromLinkText,
+  reviewDateFitsShow,
   titleFromPageTitle,
   matchShowByTitle,
   bylineSections,

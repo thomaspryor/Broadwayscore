@@ -34,6 +34,7 @@ const {
   BASE, extractReviewLinks, isReviewHref, normalizeTbUrl, titleFromPageTitle, planCollection, heldKey,
   pickCriticForShow, pageTitleMatchesShow,
 } = require('./lib/talkinbroadway-index');
+const { isForumThreadUrl } = require('./lib/talkinbroadway-forum-link');
 
 const USAGE = 'Usage: node scripts/collect-talkinbroadway-index.js [--dry-run] [--window-days=N] [--max-pages=N] [--data-dir=PATH]';
 const args = process.argv.slice(2);
@@ -52,7 +53,7 @@ const showsPath = path.join(__dirname, '..', 'data', 'shows.json');
 const LIST_PAGES = [`${BASE}/page/world/past.html`, `${BASE}/page/ob/past.html`];
 const CHALLENGE = /just a moment|checking your browser|cf-chl|attention required|enable javascript and cookies/i;
 
-/** (showId|url) for every talkinbroadway file already in the corpus. */
+/** showIds that already hold a usable talkinbroadway review. */
 function loadHeldKeys() {
   const held = new Set();
   if (!fs.existsSync(reviewTextsDir)) return held;
@@ -64,7 +65,7 @@ function loadHeldKeys() {
       if (!f.startsWith('talkinbroadway--') || !f.endsWith('.json')) continue;
       try {
         const d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
-        if (d.url && normalizeTbUrl(d.url) && d.contentTier !== 'stub' && d.contentTier !== 'invalid') held.add(heldKey(showId, d.url));
+        if (d.url && !isForumThreadUrl(d.url) && d.contentTier !== 'stub' && d.contentTier !== 'invalid') held.add(heldKey(showId));
       } catch { /* unreadable file: not held */ }
     }
   }
@@ -142,7 +143,7 @@ async function main() {
         // review URL; never under index.html, which shows a different review tomorrow.
         const own = titleFromPageTitle(r.title);
         if (own && isReviewHref(r.canonical)) entries.push({ url: normalizeTbUrl(r.canonical), title: own });
-        for (const l of links) entries.push({ url: l.url, title: l.text });
+        for (const l of links) entries.push({ url: l.url, title: l.text, date: l.date });
         console.log(`index ${url}: ${links.length} review links${own ? `, page is "${own}" (canonical ${r.canonical || 'none'})` : ''}`);
         if (dryRun) for (const l of links.slice(0, 80)) console.log(`   ${l.url} | ${l.text}`);
       } catch (e) {
