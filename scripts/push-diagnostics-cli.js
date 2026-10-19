@@ -36,6 +36,7 @@ function readTraceFile(f) {
 
 if (cmd === 'classify-push-stderr') {
   // BRO-2879: hook-rejected | race-or-other, for push-with-retry.sh.
+  // BRO-5306: | permission-denied (token lacks contents: write).
   process.stdout.write(classifyPushStderr(readTraceFile(file)));
 } else if (cmd === 'hook-text') {
   process.stdout.write(extractHookText(readTraceFile(file)));

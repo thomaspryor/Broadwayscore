@@ -708,8 +708,22 @@ const NOT_HOOK_MARKERS = [
   /^fatal: /m,
   /(Enumerating|Counting|Compressing|Writing) objects/,
 ];
+// BRO-5306: the job token lacks write permission (a workflow without
+// `permissions: contents: write`, or a fine-grained token without write
+// access). GitHub refuses the push with HTTP 403 and a "Permission to <repo>
+// denied to <actor>" (or "Write access to repository not granted") line. That
+// is deterministic: every retry and the Git Data API fallback 403 the same way.
+// BOTH the refusal line AND the 403 are required, and any rate-limit wording
+// keeps it retryable, so a plain rate-limit 403 never lands here.
+const PERMISSION_REFUSAL = /Permission to \S+ denied to |Write access to repository not granted/;
+const HTTP_403 = /The requested URL returned error: 403/;
+function isPermissionDenied(t) {
+  return PERMISSION_REFUSAL.test(t) && HTTP_403.test(t) && !/rate limit/i.test(t);
+}
+
 function classifyPushStderr(text) {
   const t = String(text || '');
+  if (isPermissionDenied(t)) return 'permission-denied';
   if (!/error: failed to push some refs/.test(t)) return 'race-or-other';
   if (NOT_HOOK_MARKERS.some((re) => re.test(t))) return 'race-or-other';
   return 'hook-rejected';

@@ -67,4 +67,36 @@ rm -f "$WORK/repo/.git/hooks/pre-push"
 rc=$?
 [ "$rc" = "0" ] && pass 9 "clean push still exits 0" || { fail 9 "expected 0, got $rc"; cat "$WORK/run3.log"; }
 
+# 4. BRO-5306: GitHub 403 "Permission to ... denied" (token lacks contents:
+# write). No pre-push hook (as in CI). A stub git on PATH fails every `push`
+# with the real 2026-10-13 stderr and delegates everything else to real git.
+REAL_GIT="$(command -v git)"
+mkdir -p "$WORK/stub"
+cat > "$WORK/stub/git" <<STUB
+#!/bin/sh
+for a in "\$@"; do
+  if [ "\$a" = "push" ]; then
+    echo x >> "$WORK/count"
+    echo "remote: Permission to thomaspryor/Broadwayscore.git denied to github-actions[bot]." >&2
+    echo "fatal: unable to access 'https://github.com/thomaspryor/Broadwayscore/': The requested URL returned error: 403" >&2
+    exit 128
+  fi
+done
+exec "$REAL_GIT" "\$@"
+STUB
+chmod +x "$WORK/stub/git"
+rm -f "$WORK/count" "$WORK/fail4.jsonl"
+( cd "$WORK/repo" && echo more > p.txt && git add p.txt && git commit -qm perm \
+  && PATH="$WORK/stub:$PATH" MAX_RETRIES=5 PUSH_FAILURE_LOG="$WORK/fail4.jsonl" PUSH_SKIP_FAILURE_LEDGER=1 PUSH_SKIP_LEDGER=1 \
+     bash "$TARGET" 5 main ) > "$WORK/run4.log" 2>&1
+rc=$?
+[ "$rc" = "4" ] && pass 10 "exit 4 on a permission-denied 403" || { fail 10 "expected exit 4, got $rc"; cat "$WORK/run4.log"; }
+[ "$(attempts)" = "1" ] && pass 11 "pushed exactly once (no futile retries)" || fail 11 "push ran $(attempts) times"
+grep -q "::error::.*contents: write" "$WORK/run4.log" && pass 12 "::error:: names contents: write" || fail 12 "contents: write not named"
+grep -q "fetching remote and rebasing" "$WORK/run4.log" && fail 13 "fetch+rebase ran after a 403" || pass 13 "no fetch+rebase cycle"
+grep -q "trying the Git Data API fallback\|breaking out of the local fetch+rebase+push loop early" "$WORK/run4.log" \
+  && fail 15 "API fallback was attempted after a 403" || pass 15 "Git Data API fallback skipped"
+grep -q '"reason":"permission-denied"' "$WORK/fail4.jsonl" 2>/dev/null \
+  && pass 14 "failure ledger reason is permission-denied" || { fail 14 "ledger row missing"; cat "$WORK/fail4.jsonl" 2>/dev/null; }
+
 [ "$fails" = "0" ] && echo "ALL PASS" || { echo "$fails FAILED"; exit 1; }

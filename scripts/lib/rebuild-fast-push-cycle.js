@@ -30,7 +30,12 @@
 const DEFAULT_MAX_CYCLES = 2; // one redo; fits rebuild-fast.yml's 45-min budget
 /** Hard ceiling regardless of env, so a typo can never make the loop unbounded. */
 const HARD_MAX_CYCLES = 5;
-/** push-with-retry.sh exit code for a LOCAL pre-push hook rejection (BRO-2879). */
+/**
+ * push-with-retry.sh exit code for a DETERMINISTIC rejection: a LOCAL pre-push
+ * hook (BRO-2879) or a GitHub 403 because the token lacks contents: write
+ * (BRO-5306, ledger reason permission-denied). Either way a redo would hit it
+ * again, so both fail. The run log / ledger reason says which one.
+ */
 const EXIT_HOOK_REJECTED = 4;
 /** Redo script exit code meaning "fresh main already has everything; nothing to commit". */
 const EXIT_REDO_NOTHING_TO_COMMIT = 3;
@@ -55,7 +60,7 @@ function resolveMaxCycles(raw) {
 /**
  * What to do after a push attempt.
  *   exit 0                 -> done
- *   exit 4 (hook rejected) -> fail (deterministic; a redo would hit it again)
+ *   exit 4 (hook rejected or permission-denied 403) -> fail (deterministic; a redo would hit it again)
  *   any other non-zero     -> redo while cycles remain, else fail
  * Non-integer exit / cycle values fail closed (never an extra cycle).
  */

@@ -7,7 +7,9 @@
 # Defaults: 7 retries, main branch.
 # Exits 0 on success, 4 when a LOCAL pre-push hook rejected the push (BRO-2879:
 # deterministic, so it stops after the first such attempt and prints the hook's
-# own text; ledger reason "hook-rejected"), 1 on any other failure. Failure covers all THREE loop exits, not
+# own text; ledger reason "hook-rejected") or when GitHub refused the push with
+# HTTP 403 because the token lacks contents: write (BRO-5306; ledger reason
+# "permission-denied"), 1 on any other failure. Failure covers all THREE loop exits, not
 # just exhaustion: the overall-deadline abort and the early break to the Git
 # Data API fallback exit 1 too. The durable ledger row says which one fired
 # (retries-exhausted / retries-exhausted(deadline) / retries-exhausted(early-fallback)).
@@ -303,14 +305,24 @@ git_push() {
   case "$_prc" in
     0|124|137|143) ;;  # success, or a timeout kill whose silence is not a hook verdict
     *)
-      # Only when a pre-push hook is actually installed (honours core.hooksPath):
-      # with none (CI), a "failed to push" can never be a local hook's verdict.
-      _hook_path=$(git rev-parse --git-path hooks/pre-push 2>/dev/null || true)
-      if [ -n "$_hook_path" ] && [ -x "$_hook_path" ] \
-         && command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/../push-diagnostics-cli.js" ]; then
+      # BRO-5306: classify on every non-timeout failure, not only when a hook
+      # is installed: a token without contents: write (permission-denied) is
+      # a CI-side failure, where no pre-push hook exists.
+      if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/../push-diagnostics-cli.js" ]; then
         _PUSH_LAST_CLASS=$(node "$SCRIPT_DIR/../push-diagnostics-cli.js" classify-push-stderr "$_perr" 2>/dev/null || echo "race-or-other")
-        if [ "$_PUSH_LAST_CLASS" = "hook-rejected" ]; then
+        case "$_PUSH_LAST_CLASS" in
+          hook-rejected|permission-denied|race-or-other) ;;
+          *) _PUSH_LAST_CLASS="race-or-other" ;;
+        esac
+      fi
+      if [ "$_PUSH_LAST_CLASS" = "hook-rejected" ]; then
+        # Only when a pre-push hook is actually installed (honours core.hooksPath):
+        # with none (CI), a "failed to push" can never be a local hook's verdict.
+        _hook_path=$(git rev-parse --git-path hooks/pre-push 2>/dev/null || true)
+        if [ -n "$_hook_path" ] && [ -x "$_hook_path" ]; then
           _PUSH_LAST_HOOK_TEXT=$(node "$SCRIPT_DIR/../push-diagnostics-cli.js" hook-text "$_perr" 2>/dev/null || true)
+        else
+          _PUSH_LAST_CLASS="race-or-other"
         fi
       fi
       ;;
@@ -326,11 +338,27 @@ git_push() {
 # "exhausted"; 4 = "a local hook said no, retrying is futile"). The first-write-
 # wins ledger row records "hook-rejected" instead of retries-exhausted.
 abort_if_hook_rejected() {
+  abort_if_permission_denied "$1"
   [ "${_PUSH_LAST_CLASS:-}" = "hook-rejected" ] || return 0
   echo "::error::push-with-retry: push attempt $1 was REJECTED BY A LOCAL PRE-PUSH HOOK — a deterministic rejection of the tree being pushed, not a race or a timeout. Not retrying (the identical rejection would repeat on every attempt) and skipping the Git Data API fallback. Fix what the hook names and push again. Hook output:"
   printf '%s\n' "${_PUSH_LAST_HOOK_TEXT:-"(the hook printed nothing)"}" | sed 's/^/    hook: /'
   record_push_failure "hook-rejected" "$1"
   restore_head_if_moved "hook-rejected"
+  exit 4
+}
+
+# BRO-5306: GitHub refused the push with HTTP 403 because the token cannot
+# write (2026-10-13: 6 local attempts + the Git Data API fallback burned on
+# "Permission to ... denied to github-actions[bot]", and the log never said
+# why). Deterministic like a hook rejection, and the API fallback uses the same
+# token so it 403s too. Same exit 4 (= deterministic, retrying is futile), so
+# rebuild-fast-push-cycle.js fails instead of redoing. Called from
+# abort_if_hook_rejected so every abort site covers both classes.
+abort_if_permission_denied() {
+  [ "${_PUSH_LAST_CLASS:-}" = "permission-denied" ] || return 0
+  echo "::error::push-with-retry: push attempt $1 was REFUSED BY GITHUB WITH HTTP 403 (permission denied) — the token cannot write to this repository. Add 'permissions: contents: write' to the workflow job (or give the token write access). Not retrying and skipping the Git Data API fallback: both use the same token and would 403 identically."
+  record_push_failure "permission-denied" "$1"
+  restore_head_if_moved "permission-denied"
   exit 4
 }
 
