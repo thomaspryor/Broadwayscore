@@ -8,6 +8,7 @@ import path from 'node:path';
 const require = createRequire(import.meta.url);
 const { routeVenueValidation, londonSources, parseLondonEvidence, validateLondonShow } = require('./lib/london-venue-validation');
 const { classifyNamedShowRun } = require('./lib/named-show-verdict');
+const { provisionalPriorityTier, blocksOnDeferral, resolveLastDefinitive, buildAuditResults } = require('./lib/venue-date-compare');
 const ROOT = path.resolve(import.meta.dirname, '..');
 
 // Minimal public facts from the venue pages, not copyrighted page bodies.
@@ -42,6 +43,42 @@ function eventHtml(show, overrides = {}) {
 function exitCode(show, row) {
   return classifyNamedShowRun({ showFilter: show.id, results: [row], targetCount: 1 }).exitCode;
 }
+
+test('a no-london-url result sorts at tier 4, including migrated Playbill misses', () => {
+  for (const row of [
+    'no-london-url',
+    { result: 'no-london-url' },
+    { result: 'no-london-url', lastDefinitiveResult: 'no-london-url' },
+    { result: 'no-london-url', lastDefinitiveResult: 'no-playbill-url' },
+  ]) assert.equal(provisionalPriorityTier(wonderland.id, { [wonderland.id]: row }), 4);
+});
+
+test('a settled no-london-url result does not block deferral but a named check stays unresolved', () => {
+  const fresh = { id: wonderland.id, result: 'no-london-url' };
+  for (const previousResultsById of [{}, { [wonderland.id]: { result: 'no-playbill-url' } }]) {
+    const [row] = buildAuditResults({
+      freshResults: [fresh], previousResultsById,
+      currentProvisionalIds: new Set([wonderland.id]), showsById: { [wonderland.id]: wonderland },
+    });
+    assert.equal(row.lastDefinitiveResult, 'no-london-url');
+    assert.equal(blocksOnDeferral(wonderland.id, { [wonderland.id]: row }), false);
+    assert.equal(resolveLastDefinitive('fetch-error', row), 'no-london-url');
+    assert.equal(exitCode(wonderland, row), 3);
+  }
+  assert.equal(blocksOnDeferral(wonderland.id, { [wonderland.id]: fresh }), false);
+});
+
+test('no-london-url preserves a prior mismatch and keeps it ahead of settled shows', () => {
+  assert.equal(resolveLastDefinitive('no-london-url', { lastDefinitiveResult: 'mismatch' }), 'mismatch');
+  const [row] = buildAuditResults({
+    freshResults: [{ id: wonderland.id, result: 'no-london-url' }],
+    previousResultsById: { [wonderland.id]: { result: 'mismatch' } },
+    currentProvisionalIds: new Set([wonderland.id]), showsById: { [wonderland.id]: wonderland },
+  });
+  assert.equal(row.lastDefinitiveResult, 'mismatch');
+  assert.equal(blocksOnDeferral(wonderland.id, { [wonderland.id]: row }), true);
+  assert.equal(provisionalPriorityTier(wonderland.id, { [wonderland.id]: row }), 1);
+});
 
 test('routes both London categories and market-only rows; NYC, regional and tours retain Playbill', () => {
   const calls = [];
@@ -190,6 +227,8 @@ test('CLI resolves the named Off-West End show and keeps three Broadway exit cod
         };
         if (/(?:^|\\/)url-discovery$/.test(id)) return { serpQuery: async query => {
           if (query.includes('playbill.com')) return [];
+          if (process.env.BRO_5178_SEARCH_MODE === 'empty') return [];
+          if (process.env.BRO_5178_SEARCH_MODE === 'outage') return null;
           if (query.includes('De Profundis')) return [{ url: ${JSON.stringify(coronetUrl)} }];
           if (query.includes('Hamilton')) return [{ url: ${JSON.stringify(hamiltonUrl)} }];
           return [{ url: ${JSON.stringify(barbicanUrl)} }];
@@ -202,6 +241,17 @@ test('CLI resolves the named Off-West End show and keeps three Broadway exit cod
       assert.equal(run.status, 0, `${show.id}\n${run.stdout}\n${run.stderr}`);
       assert.match(run.stdout, /Summary: [01] match \/ [01] venue-unverified \/ 0 mismatch \/ 0 unresolved/);
       if (show.market === 'west-end') assert.doesNotMatch(run.stdout, /url \(cache\): https:\/\/playbill/);
+    }
+    for (const mode of ['empty', 'outage']) {
+      const run = spawnSync(process.execPath, ['--require', preload, 'scripts/validate-show-venue.js', `--show=${wonderland.id}`, `--data-dir=${dir}`, '--dry-run'], {
+        cwd: ROOT, encoding: 'utf8', timeout: 30000,
+        env: { ...process.env, BRO_5178_SEARCH_MODE: mode },
+      });
+      assert.equal(run.status, 3, `${mode}\n${run.stdout}\n${run.stderr}`);
+      if (mode === 'empty') {
+        assert.match(run.stdout, /no-london-url/);
+        assert.doesNotMatch(run.stdout, /ZERO real validation coverage|DEGRADED coverage/);
+      } else assert.match(run.stdout, /ZERO real validation coverage/);
     }
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });

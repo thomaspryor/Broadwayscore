@@ -1033,9 +1033,9 @@ async function main() {
   // venue-unverified rows DID produce a verdict on the dates/year/revival
   // fields, so they count as coverage here (BRO-3903).
   const definitive = matches.length + mismatches.length + venueUnverified.length;
-  // 'no-playbill-url' shows are genuinely unanswerable, so they are the only
-  // ones excluded from the denominator.
-  const noPage = results.filter(r => r.result === 'no-playbill-url').length;
+  // A completed lookup without a usable production page is unanswerable for
+  // either market, so exclude both missing-page results from the denominator.
+  const noPage = results.filter(r => ['no-playbill-url', 'no-london-url'].includes(r.result)).length;
   const answerable = results.length - noPage;
   if (answerable > 0 && definitive === 0) {
     console.log(`::warning::validate-show-venue: NONE of the ${answerable} answerable target(s) produced a venue/date verdict this run — ZERO real validation coverage, not a clean pass`);

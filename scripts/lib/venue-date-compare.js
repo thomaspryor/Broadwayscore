@@ -277,7 +277,7 @@ function classifyComparison({ mismatches, venueCheck }) {
  *   3  previously 'match' — clean; a re-sweep can still catch a regression,
  *      and these are the CHEAPEST targets (a findable Playbill URL
  *      resolves in ~11s, vs ~24s for a show with no Playbill page at all).
- *   4  previously 'no-playbill-url' — the show has no Playbill production
+ *   4  previously 'no-playbill-url' or 'no-london-url': no source production
  *      page, so a recheck yields no evidence in either direction, and each
  *      one burns the full SERP fallback chain (BD SERP API 20s timeout ->
  *      BD Web Unlocker 30s timeout -> ScrapingBee) looking for a page that
@@ -310,15 +310,15 @@ const TRANSIENT_PRIOR_RESULTS = new Set(['fetch-error', 'short-response', 'infra
  * timeout, a SERP outage, a missing browser — is the environment failing to
  * deliver an answer, not an answer.
  *
- * 'no-playbill-url' IS definitive: we reached the providers, they answered, and
- * the show has no Playbill production page. That is a real, stable fact about
+ * 'no-playbill-url' and 'no-london-url' ARE definitive: the providers answered,
+ * but supplied no usable production page. That is a stable lookup outcome for
  * the show, and it is why such a show can never be validated and must not hold
  * the gate red forever.
  */
 // 'venue-unverified' (BRO-3903) is definitive for the fields it DID compare
 // (year, dates, revival, type), so it never holds the gate red on deferral —
 // but resolveLastDefinitive() refuses to let it clear a recorded mismatch.
-const DEFINITIVE_RESULTS = new Set(['match', 'mismatch', 'no-playbill-url', 'venue-unverified']);
+const DEFINITIVE_RESULTS = new Set(['match', 'mismatch', 'no-playbill-url', 'no-london-url', 'venue-unverified']);
 
 /**
  * What this run leaves as the last thing we actually KNOW about a show.
@@ -335,15 +335,15 @@ const DEFINITIVE_RESULTS = new Set(['match', 'mismatch', 'no-playbill-url', 'ven
  * Two rules:
  *  - A transient outcome never displaces what we knew. It cannot manufacture
  *    certainty, and it cannot destroy it.
- *  - 'no-playbill-url' cannot clear a recorded 'mismatch'. Losing track of the
- *    Playbill page is not evidence the venue/date defect was fixed; it just
+ *  - Neither missing-page result can clear a recorded 'mismatch'. Losing track
+ *    of the source page is not evidence the venue/date defect was fixed; it just
  *    means we can no longer see it. Only a fresh 'match' or 'mismatch' — an
  *    actual look at an actual page — may supersede a mismatch.
  */
 function resolveLastDefinitive(freshResult, priorRow) {
   const prior = priorRow ? priorRow.lastDefinitiveResult : undefined;
   if (!DEFINITIVE_RESULTS.has(freshResult)) return prior;
-  if (freshResult === 'no-playbill-url' && prior === 'mismatch') return 'mismatch';
+  if (['no-playbill-url', 'no-london-url'].includes(freshResult) && prior === 'mismatch') return 'mismatch';
   // Same rule for a page whose venue could not be read (BRO-3903): the venue
   // half of a recorded mismatch was not re-examined, so it is not cleared.
   if (freshResult === 'venue-unverified' && prior === 'mismatch') return 'mismatch';
@@ -436,7 +436,7 @@ function provisionalPriorityTier(showId, previousResultById) {
   // permanent-red failure mode, rebuilt out of the fix for it.
   // Asserted exhaustively by 'INVARIANT: anything that blocks is checked first'.
   if (blocksOnDeferral(showId, previousResultById)) return 1;
-  if (row.result === 'no-playbill-url') return 4;
+  if (row.result === 'no-playbill-url' || row.result === 'no-london-url') return 4;
   // A venue-unverified row was looked at and agreed on every field it could
   // compare: re-sweep like a clean match (BRO-3903), not ahead of new shows.
   if (row.result === 'match' || row.result === 'venue-unverified') return 3;
