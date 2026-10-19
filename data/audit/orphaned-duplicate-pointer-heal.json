@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-19T18:48:11.749Z",
+  "generated": "2026-10-19T19:08:13.855Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 34,
+  "count": 36,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -214,6 +214,13 @@
       "field": "duplicateOf"
     },
     {
+      "showId": "the-traitors-live-experience-off-west-end-2026",
+      "loserFile": "londontheatredirect--unknown.json",
+      "targetFile": "londontheatredirect--london-theatre-direct-limited.json",
+      "reason": "orphaned-duplicate-heal: londontheatredirect--london-theatre-direct-limited.json was flagged invalid after londontheatredirect--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
       "showId": "torch-song-2018",
       "loserFile": "variety--matt-windman.json",
       "targetFile": "variety--marilyn-stasio.json",
@@ -240,6 +247,13 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "the-traitors-live-experience-off-west-end-2026",
+      "loserFile": "londontheatredirect--unknown.json",
+      "targetFile": "londontheatredirect--london-theatre-direct-limited.json",
+      "reason": "orphaned-duplicate-heal: londontheatredirect--london-theatre-direct-limited.json was flagged invalid after londontheatredirect--unknown.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }

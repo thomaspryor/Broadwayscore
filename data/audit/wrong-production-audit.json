@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-19T18:56:42.973Z",
+  "timestamp": "2026-10-19T19:14:23.636Z",
   "stats": {
-    "totalReviews": 57776,
-    "alreadyFlagged": 21074,
+    "totalReviews": 57773,
+    "alreadyFlagged": 21075,
     "dateGuardCatches": 208,
-    "directorMismatch": 2011,
-    "tvFilmSignals": 1646,
+    "directorMismatch": 2012,
+    "tvFilmSignals": 1645,
     "londonSignals": 2534,
     "offBroadwaySignals": 530,
     "yearMismatch": 160,
-    "noPublishDate": 5231
+    "noPublishDate": 5226
   },
   "findings": [
     {
@@ -30588,6 +30588,20 @@
     },
     {
       "showId": "other-desert-cities-2026",
+      "file": "latimes--charles-mcnulty.json",
+      "score": 50,
+      "publishDate": "2026-10-19",
+      "url": "https://www.latimes.com/entertainment-arts/story/2026-10-19/other-desert-cities-review-julia-louis-dreyfus-debuts-broadway",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from other-desert-cities-2011"
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
       "file": "new-york-sun--elysa-gardner.json",
       "score": 91,
       "publishDate": "2026-10-19",
@@ -47630,19 +47644,6 @@
       "score": 74,
       "publishDate": "2025-08-02",
       "url": "https://www.theguardian.com/tv-and-radio/2025/aug/02/you-killed-her-my-100-faithful-attempt-at-traitors-live-experience",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "the-traitors-live-experience-off-west-end-2026",
-      "file": "londontheatredirect--unknown.json",
-      "publishDate": "2026-10-14",
-      "url": "https://www.londontheatredirect.com/news/the-traitors-live-experience-review-is-it-worth-it?srsltid=AU7gw4V6zneY0KfVB9f-kNXduTPFj33Tn_kcmHDucTZyZuxPjSb_hFQ9",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -90241,7 +90242,7 @@
     {
       "showId": "triumph-off-west-end-2026",
       "file": "financialtimes--unknown.json",
-      "score": 80,
+      "score": 78,
       "publishDate": "2026-10-19",
       "url": "https://www.ft.com/content/cbd99692-7670-4d29-8483-9db10436aadd?syn-25a6b1a6=1",
       "findings": [
@@ -90283,7 +90284,7 @@
     {
       "showId": "triumph-off-west-end-2026",
       "file": "londonlivinglarge--london-living-large.json",
-      "score": null,
+      "score": 57,
       "publishDate": "2026-10-17",
       "url": "https://www.londonlivinglarge.com/2026/10/triumph-almeida-theatre-october-16-23.html",
       "findings": [
@@ -90297,7 +90298,7 @@
     {
       "showId": "triumph-off-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 63,
+      "score": 65,
       "publishDate": "2026-10-19",
       "url": "https://www.standard.co.uk/culture/theatre/triumph-review-b1301404.html",
       "findings": [
