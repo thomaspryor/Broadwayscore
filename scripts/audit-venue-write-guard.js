@@ -21,7 +21,7 @@
  *   node scripts/audit-venue-write-guard.js                 report all findings (exit 0)
  *   node scripts/audit-venue-write-guard.js --strict         exit 1 on any NEW (non-baselined) unguarded site
  *   node scripts/audit-venue-write-guard.js --update-baseline   regenerate the baseline from the current scan
-  node scripts/audit-venue-write-guard.js --check-stale | --prune-stale   baselined sites no longer found (BRO-5315)
+ *   node scripts/audit-venue-write-guard.js --check-stale | --prune-stale   baselined sites no longer found (BRO-5315)
  *   node scripts/audit-venue-write-guard.js --json           machine-readable findings
  *   node scripts/audit-venue-write-guard.js --help, -h        print this usage and exit
  *

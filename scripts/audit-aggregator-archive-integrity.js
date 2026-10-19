@@ -141,6 +141,7 @@ const STALE_CMD = 'node scripts/audit-aggregator-archive-integrity.js --prune-st
     label: STALE_LABEL,
     updateCmd: STALE_CMD,
     prune: (stale) => {
+      if (!result.totalScanned) { console.error('refusing --prune-stale: scan found no archives (missing data/aggregator-archive?)'); process.exit(2); }
       baselineDoc.knownBad = pruneStaleEntries(baselineDoc.knownBad || [], k => k, stale);
       baselineDoc.updatedAt = new Date().toISOString();
       fs.writeFileSync(BASELINE_PATH, JSON.stringify(baselineDoc, null, 2) + '\n');
