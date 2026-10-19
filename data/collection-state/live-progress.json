@@ -1,54 +1,64 @@
 {
-  "updatedAt": "2026-10-19T15:58:56.801Z",
-  "processed": 1,
-  "failed": 2,
-  "successRate": "33.3%",
+  "updatedAt": "2026-10-19T16:30:00.266Z",
+  "processed": 98,
+  "failed": 52,
+  "successRate": "65.3%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 48,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingdog": 5,
+    "scrapingbee": 6,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 39
   },
   "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-10-19T15:56:38.064Z",
+      "t": "2026-10-19T16:09:17.163Z",
       "event": "bb-session",
-      "session": "b06c142f",
-      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+      "session": "1ad654c6",
+      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
     },
     {
-      "t": "2026-10-19T15:56:38.816Z",
+      "t": "2026-10-19T16:09:17.501Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-19T15:56:55.794Z",
+      "t": "2026-10-19T16:09:33.800Z",
       "event": "bb-session",
-      "session": "3a592c32",
-      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+      "session": "f5a9865c",
+      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
     },
     {
-      "t": "2026-10-19T15:56:56.427Z",
+      "t": "2026-10-19T16:09:34.051Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-19T15:58:12.964Z",
+      "t": "2026-10-19T16:27:31.452Z",
       "event": "bb-session",
-      "session": "31256e56",
-      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+      "session": "fbc58ff6",
+      "url": "https://www.nytimes.com/2026/04/03/theater/burnout-paradise-treadmills-theater-o"
     },
     {
-      "t": "2026-10-19T15:58:20.832Z",
+      "t": "2026-10-19T16:27:31.745Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-19T16:27:48.110Z",
       "event": "bb-session",
-      "session": "93d4f579",
-      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+      "session": "0feb8b71",
+      "url": "https://www.nytimes.com/2026/04/03/theater/burnout-paradise-treadmills-theater-o"
+    },
+    {
+      "t": "2026-10-19T16:27:48.369Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
