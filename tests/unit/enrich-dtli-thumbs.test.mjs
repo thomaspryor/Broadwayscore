@@ -35,6 +35,10 @@ test('rows dated before the production are never applied', async () => {
     const old = await run(block('December 15, 2011', 'UP'));
     assert.equal(old.extracted, 0);
     assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).dtliThumb, 'Down');
+    // An undated row on an old production's page is not trusted either.
+    const undated = block('December 15, 2011', 'UP').replace('<h3 class="review-item-date">December 15, 2011</h3>', '');
+    assert.equal((await run(block('December 15, 2011', 'DOWN') + undated)).extracted, 0);
+    assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).dtliThumb, 'Down');
     const cur = await run(block('October 19, 2026', 'MEH'));
     assert.equal(cur.extracted, 1);
     assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).dtliThumb, 'Meh');
