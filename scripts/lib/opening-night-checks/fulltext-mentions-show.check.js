@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { buildMentionRegex } = require('./slug-mismatch.check.js');
+const { classifyUnmatchedReview } = require('./fulltext-mention-triage.js');
 
 const name = 'fulltext-mentions-show';
 const description = 'Source review-text files that shipped to reviews.json contain at least one show-title mention in fullText (catches EBT-content-as-Schmig class)';
@@ -66,6 +67,7 @@ function run(show, context) {
         outletId: data.outletId,
         criticName: data.criticName,
         haystackLength: haystack ? haystack.length : 0,
+        triage: classifyUnmatchedReview(data, haystack.length),
       });
       continue;
     }
@@ -83,6 +85,7 @@ function run(show, context) {
       criticName: data.criticName,
       haystackLength: haystack.length,
       textIssuesFlag: hasTitleMissingFlag,
+      triage: classifyUnmatchedReview(data, haystack.length),
     });
   }
 

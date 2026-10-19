@@ -67,6 +67,7 @@ function defaultViolationKey(showId, violation) {
  * @param {boolean} [config.needsShows]     - pass context.shows (full shows.json array) — required by revival-unverified
  * @param {string[]} config.argv            - process.argv.slice(2)
  * @param {string} [config.extraUsage]      - extra usage text specific to this check
+ * @param {function(Array): Object} [config.summarizeHits] - additional report fields (no change to verdicts)
  * @returns {number} exit code
  */
 function runLifetimeSweep(config) {
@@ -81,6 +82,7 @@ function runLifetimeSweep(config) {
     needsShows = false,
     argv,
     extraUsage = '',
+    summarizeHits = () => ({}),
   } = config;
 
   const SNAPSHOT_PATH = path.join(AUDIT_DIR, snapshotBasename);
@@ -180,6 +182,7 @@ run's snapshot shows up.
   }
 
   const totalViolations = hits.reduce((n, h) => n + h.violations.length, 0);
+  const summary = summarizeHits(hits);
   const currentKeys = new Set();
   for (const h of hits) {
     for (const v of h.violations) currentKeys.add(violationKey(h.showId, v));
@@ -209,6 +212,7 @@ run's snapshot shows up.
         newViolationKeys: newViolationKeys.slice(0, 50),
         violationKeys: [...currentKeys],
         hits,
+        ...summary,
       }, null, 2) + '\n');
     } catch (e) {
       console.error(`::warning::could not write snapshot to ${SNAPSHOT_PATH}: ${e.message}`);
@@ -222,6 +226,7 @@ run's snapshot shows up.
       totalViolations,
       newSinceLastRun,
       hits,
+      ...summary,
     }, null, 2));
   } else {
     console.log(`${checkModule.name} lifetime sweep (${taskRef}): ${scanned} show(s) with review-texts scanned, ${hits.length} show(s) with unhandled violations (${totalViolations} review(s), ${newSinceLastRun} new since last run).`);
