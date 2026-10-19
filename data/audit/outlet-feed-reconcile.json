@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-19T14:57:27.353Z",
+  "generatedAt": "2026-10-19T18:10:09.683Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -27,6 +27,11 @@
       "id": "some-woman-west-end-2026",
       "title": "Some Woman",
       "openingDate": "2026-10-15"
+    },
+    {
+      "id": "lincoln-in-the-bardo-off-broadway-2026",
+      "title": "Lincoln in the Bardo",
+      "openingDate": "2026-10-19"
     },
     {
       "id": "king-of-the-yees-off-broadway-2026",
@@ -94,6 +99,11 @@
       "openingDate": "2026-10-15"
     },
     {
+      "id": "triumph-off-west-end-2026",
+      "title": "Triumph",
+      "openingDate": "2026-10-18"
+    },
+    {
       "id": "angels-bone-west-end-2026",
       "title": "Angel's Bone",
       "openingDate": "2026-10-17"
@@ -157,10 +167,6 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -190,44 +196,17 @@
     }
   ],
   "itemsScanned": 722,
-  "matchedGaps": 4,
+  "matchedGaps": 1,
   "possibleGaps": 8,
   "gaps": [
     {
-      "showId": "cadel-lungs-on-legs-west-end-2026",
-      "title": "Cadel: Lungs On Legs",
-      "level": "matched",
-      "outletId": "london-unattached",
-      "url": "https://www.london-unattached.com/cadel-lungs-on-legs-riverside-studios/",
-      "headline": "CADEL: Lungs on Legs &#8211; Riverside Studios",
-      "publishDate": "2026-10-18"
-    },
-    {
-      "showId": "dog-mom-off-west-end-2026",
-      "title": "Dog Mom",
-      "level": "matched",
-      "outletId": "north-west-end",
-      "url": "https://northwestend.com/dog-mom-southwark-playhouse-borough/",
-      "headline": "Dog Mom &#8211; Southwark Playhouse Borough",
-      "publishDate": "2026-10-19"
-    },
-    {
-      "showId": "other-desert-cities-2026",
-      "title": "Other Desert Cities",
+      "showId": "triumph-off-west-end-2026",
+      "title": "Triumph",
       "level": "matched",
       "outletId": "culturesauce",
-      "url": "https://culturesauce.com/other-desert-cities-julia-louis-dreyfus-broadway-review/",
-      "headline": "Julia Louis-Dreyfus crackles as a brittle Hollywood matriarch in &#8216;Other Desert Cities&#8217; (Broadway review)",
-      "publishDate": "2026-10-19"
-    },
-    {
-      "showId": "some-woman-west-end-2026",
-      "title": "Some Woman",
-      "level": "matched",
-      "outletId": "south-london",
-      "url": "https://southlondon.co.uk/area/southwark/review-some-woman-at-the-dorfman/",
-      "headline": "Review: Some Woman at the Dorfman",
-      "publishDate": "2026-10-19"
+      "url": "https://culturesauce.com/caryl-churchill-triumph-off-broadway-review/",
+      "headline": "Caryl Churchill&#8217;s &#8216;Triumph&#8217; views imperial Rome through a Foxy blond flack (Off Broadway review)",
+      "publishDate": "2026-10-18"
     },
     {
       "showId": "baby-off-west-end-2026",
@@ -293,13 +272,13 @@
       "publishDate": "2026-10-16"
     },
     {
-      "showId": "two-girls-off-broadway-2026",
-      "title": "Two Girls",
+      "showId": "triumph-off-west-end-2026",
+      "title": "Triumph",
       "level": "possible",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-two-girls-an-interrogation-of-a-memory-of-a-brazilian-porno_1857490/",
-      "headline": "Review: Two Girls, an Interrogation of a Memory of a Brazilian Porno",
-      "publishDate": null
+      "outletId": "all-that-dazzles-uk",
+      "url": "https://www.allthatdazzles.co.uk/post/review-cadel-lungs-on-legs-riverside-studios",
+      "headline": "Review: CADEL: Lungs on Legs (Riverside Studios)",
+      "publishDate": "2026-10-16"
     }
   ]
 }

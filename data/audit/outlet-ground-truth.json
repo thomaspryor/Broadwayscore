@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-19T09:01:59.130Z",
+  "generatedAt": "2026-10-19T18:09:57.911Z",
   "phase": "done",
   "days": 21,
-  "shows": 71,
+  "shows": 74,
   "sources": {
     "theatermania": {
       "queries": 35,
-      "listed": 13,
+      "listed": 14,
       "errors": 0
     },
     "whatsonstage": {
-      "queries": 36,
+      "queries": 39,
       "listed": 10,
       "errors": 0
     },
     "nysr": {
       "queries": 35,
-      "listed": 12,
+      "listed": 13,
       "errors": 0
     },
     "newyorktheater": {
@@ -26,17 +26,23 @@
     },
     "nytimes": {
       "queries": 4,
-      "listed": 1,
+      "listed": 2,
       "errors": 0
     },
     "theatre-reviews": {
-      "queries": 36,
-      "listed": 61,
+      "queries": 39,
+      "listed": 71,
       "errors": 0
     }
   },
   "listingTruncated": false,
-  "listed": 102,
-  "ingested": [],
+  "listed": 115,
+  "ingested": [
+    {
+      "showId": "triumph-off-broadway-2026",
+      "url": "https://nystagereview.com/2026/10/19/triumph-history-repeating-itself/",
+      "ok": true
+    }
+  ],
   "missing": []
 }

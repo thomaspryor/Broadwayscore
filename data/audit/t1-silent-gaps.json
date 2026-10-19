@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-19T14:57:13.388Z",
+  "generatedAt": "2026-10-19T18:06:42.214Z",
   "windowDays": 45,
-  "showsScanned": 188,
+  "showsScanned": 187,
   "gaps": [
     {
       "showId": "slam-frank-off-broadway-2026",
@@ -17,9 +17,9 @@
       "forumLinkRecoveryCount": 3,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=slam-frank-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-18T14:14:33.814Z",
-      "fileAgeHours": 24.710298055555555,
+      "fileAgeHours": 27.85030611111111,
       "gapSeenAt": "2026-10-18T18:09:48.486Z",
-      "nonTerminalAgeHours": 20.790250555555556
+      "nonTerminalAgeHours": 23.948257777777776
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -28,17 +28,16 @@
       "file": "daily-mail--patrick-marmion.json",
       "outletId": "daily-mail",
       "tier": 1,
-      "type": "unscored",
-      "dispatchable": true,
+      "type": "rejected-unscoreable",
       "url": "https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing",
       "recovery": null,
       "recoveryCount": 0,
       "forumLinkRecoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=golden-boy-off-west-end-2026",
+      "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 646.27782,
+      "fileAgeHours": 649.4178275,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 197.29732944444444
+      "nonTerminalAgeHours": 200.45533666666665
     },
     {
       "showId": "maybe-happy-ending-tour-2026",
@@ -54,9 +53,31 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=maybe-happy-ending-tour-2026 --url=https://www.theatermania.com/news/jazz-vocalist-stella-cole-to-join-cast-of-maybe-happy-ending-on-broadway_1855818/ --outlet=theatermania --critic=\"Zachary Stewart\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-06T02:28:41.564Z",
-      "fileAgeHours": 324.47527333333335,
+      "fileAgeHours": 327.6153186111111,
       "gapSeenAt": "2026-10-19T11:33:43.077Z",
-      "nonTerminalAgeHours": 3.3917530555555557
+      "nonTerminalAgeHours": 6.549760277777778
+    },
+    {
+      "showId": "all-male-as-you-like-it-regional-2026",
+      "title": "As You Like It",
+      "openingDate": "2026-10-06",
+      "file": "talkinbroadway--unknown.json",
+      "outletId": "talkinbroadway",
+      "tier": 2,
+      "type": "empty-body",
+      "url": "https://www.talkinbroadway.com/page/regional/minn/minn1539.html",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "⚠️  Bright Data failed: Bright Data request timeout\nArticle extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=all-male-as-you-like-it-regional-2026 --url=https://www.talkinbroadway.com/page/regional/minn/minn1539.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-10-19T17:17:56.172Z",
+      "fileAgeHours": 0.8126955555555555,
+      "gapSeenAt": "2026-10-19T18:06:42.214Z",
+      "nonTerminalAgeHours": 0
     }
   ],
   "contradictions": []

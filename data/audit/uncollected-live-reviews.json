@@ -1,8 +1,25 @@
 {
-  "generatedAt": "2026-10-19T14:57:15.581Z",
+  "generatedAt": "2026-10-19T18:09:58.036Z",
   "maxAgeHours": 12,
-  "showsAffected": 0,
-  "strandedFiles": 0,
+  "showsAffected": 1,
+  "strandedFiles": 1,
   "blackoutShows": [],
-  "findings": []
+  "findings": [
+    {
+      "showId": "just-in-time-2025",
+      "title": "Just in Time",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "culturesauce--thom-geier.json",
+          "url": "https://culturesauce.com/2025/04/26/just-in-time-jonathan-groff-broadway-review/",
+          "outlet": "Culture Sauce",
+          "ageHours": null
+        }
+      ],
+      "usable": 44,
+      "discovered": 46,
+      "totalBlackout": false
+    }
+  ]
 }
