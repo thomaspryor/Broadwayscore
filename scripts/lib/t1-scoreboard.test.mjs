@@ -139,3 +139,14 @@ test('acking a circuit-open cell suppresses it from the callout too', () => {
   assert.equal(r.omittedByAck, 1);
   assert.deepEqual(r.circuitOpenLines, []);
 });
+
+// BRO-5546: the scoreboard is a status report; routing it through routeAlert made
+// it fire daily and escalate into an unfixable Linear card.
+test('runScoreboard never routes the scoreboard through routeAlert (BRO-5546)', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../audit-opening-night-coverage.js', import.meta.url), 'utf8');
+  const body = src.slice(src.indexOf('async function runScoreboard'), src.indexOf('async function main'));
+  assert.ok(body.length > 100, 'runScoreboard body found');
+  assert.ok(!/routeAlert\(/.test(body), 'runScoreboard must not call routeAlert');
+  assert.ok(/resolveCondition\(SCOREBOARD_CONDITION_KEY/.test(body), 'runScoreboard resolves the legacy condition');
+});

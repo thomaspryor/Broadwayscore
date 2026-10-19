@@ -351,20 +351,14 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/audit-opening-night-coverage.js --write-ledger
 
-      # B3 scoreboard (coverage % per market + oldest gap). Shipped as a --scoreboard
-      # mode but was never invoked by any workflow, so the whole feature was dead
-      # code on main (found wiring this sprint). Reads t1-coverage-stats.json which
-      # the --write-ledger step above just wrote, and routes ONE line into the daily
-      # digest via routeAlert(disposition:'digest') — no new send path.
-      - name: T1 coverage scoreboard (daily digest line)
+      # B3 scoreboard (coverage % per market + oldest gap): printed to this job's
+      # log from t1-coverage-stats.json (written by the step above). BRO-5546: it is
+      # a status report, NOT an alert condition (it used to route through routeAlert,
+      # fired daily and escalated into an unfixable card); --alert only resolves the
+      # old 't1-coverage:scoreboard' ledger condition, persisted by the alert-ledger
+      # commit step below.
+      - name: T1 coverage scoreboard
         if: always()
-        env:
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
-          # BRO-3717: routeAlert(conditionKey:'t1-coverage:scoreboard', disposition:
-          # 'digest') can be promoted to 'auto' by decideDigestEscalation() -> needs
-          # LINEAR_API_KEY to file the Linear issue.
-          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/audit-opening-night-coverage.js --scoreboard --alert
 
       # B4 deployed-JSON coverage diff. Every other audit in this job compares
@@ -402,21 +396,6 @@ jobs:
           # LINEAR_API_KEY to file the Linear issue.
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/audit-opening-night-coverage.js --digest --alert
-
-      # T1 coverage scoreboard (B3, v2 reconciler Sprint B): coverage % per market +
-      # oldest-gap callout, queued via routeAlert(disposition:'digest') into the
-      # existing daily digest (health-check.js "Automation (queued)" section) —
-      # NOT its own email. Reads data/audit/t1-coverage-stats.json written by the
-      # "Rebuild T1 coverage ledger" step above, so it must run after that step.
-      - name: T1 coverage scoreboard
-        if: always()
-        # BRO-3717: same routeAlert() escalation path as the "T1 coverage scoreboard
-        # (daily digest line)" step above (this step is a near-duplicate of that one
-        # -- see task tracker for a separate follow-up to consolidate them; not
-        # touched here to keep this fix a minimal, additive secret-wiring change).
-        env:
-          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
-        run: node scripts/audit-opening-night-coverage.js --scoreboard --alert
 
       # Auto-clear shadow report (S3-T4): refresh the evidence verdict from the
       # shadow log the sweep just appended to. Auto-clear stays OFF until this

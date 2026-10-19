@@ -24,9 +24,9 @@ const { classifyCell, mergeLedger, serializeLedger, isDispatchTierOutlet, comput
 const { buildDigest } = require('./lib/t1-digest');
 const { isNoReviewExpectedActive, detectReactivation } = require('./lib/coverage-expectation');
 const { detectLateAdd, GRACE_DAYS: LATE_ADD_GRACE_DAYS } = require('./lib/late-add-detector');
-const { routeAlert } = require('./lib/owner-alert-router');
+const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
 const { capNewStandingCells, DEFAULT_MAX_NEW_PER_RUN, isNoPressNightShow } = require('./lib/standing-outlets');
-const { loadAcks, addAck, saveAcks, buildScoreboardText } = require('./lib/t1-scoreboard');
+const { loadAcks, addAck, saveAcks, buildScoreboardText, SCOREBOARD_CONDITION_KEY } = require('./lib/t1-scoreboard');
 const {
   isOutletTripped, outletBreakerInfo, updateBreaker, buildEvidence,
   loadBreaker, saveBreaker, BREAKER_PATH,
@@ -104,8 +104,7 @@ function parseArgs() {
     // >24h gaps. Without --alert it is a pure dry-run (prints, emails nothing).
     if (arg === '--digest') opts.digest = true;
     if (arg.startsWith('--digest-state=')) opts.digestStatePath = arg.split('=')[1];
-    // B3 scoreboard mode: build coverage%/oldest-gap text, route through
-    // routeAlert(disposition:'digest'). Dry-run without --alert.
+    // B3 scoreboard mode: print coverage%/oldest-gap text (never an alert, BRO-5546).
     if (arg === '--scoreboard') opts.scoreboard = true;
     if (arg.startsWith('--market-stats-path=')) opts.marketStatsPath = arg.split('=')[1];
     // Ack a known-permanent gap (e.g. "hamilton-2015::nytimes") so the scoreboard's
@@ -686,12 +685,7 @@ async function runDigest(opts) {
   }
 }
 
-// B3 scoreboard: coverage % per market + oldest gaps, routed through
-// routeAlert(disposition:'digest') — a single conditionKey so it rides the
-// existing daily-digest "Automation (queued)" section (health-check.js) as
-// ONE line, not a new send path. cooldownHours < 24 so a roughly-daily
-// digest-consumption cadence always sees fresh content (routeAlert's default
-// 7-day cooldown would otherwise let a stale scoreboard sit for a week).
+// B3 scoreboard: coverage % per market + oldest gaps, printed to the job log. NOT routed through routeAlert — see BRO-5546 below.
 async function runScoreboard(opts) {
   const marketStatsPath = opts.marketStatsPath || MARKET_STATS_PATH;
   let marketStats = {};
@@ -700,27 +694,21 @@ async function runScoreboard(opts) {
   let ledger = { shows: {} };
   try { ledger = JSON.parse(fs.readFileSync(opts.ledgerPath, 'utf8')); } catch (_) { /* no ledger yet */ }
   const acks = loadAcks();
-  const { text, marketLines, oldestGapLines, omittedByAck, totalOpenGaps } =
+  const { text, marketLines, omittedByAck } =
     buildScoreboardText(marketStats, ledger, acks, Date.now());
 
   console.log('\n=== T1 Coverage Scoreboard ===');
   console.log(text || '(no market data yet)');
   if (omittedByAck > 0) console.log(`(${omittedByAck} acked gap(s) omitted from the callout)`);
 
+  // BRO-5546: the scoreboard is a STATUS report (job log only), not a condition.
+  // Routed via routeAlert it re-fired daily while any gap existed
+  // (QUEUED_TELEMETRY_BLOCKLIST already hides it from the email), hit the
+  // 14-notify escalation and filed a Linear card nobody can fix short of closing
+  // every gap. Gaps alert through t1-coverage:new-gaps-24h / the per-cell ledger.
+  // --alert now just closes any condition the old behaviour left open.
   if (opts.alert && marketLines.length) {
-    try {
-      const routed = await routeAlert({
-        conditionKey: 't1-coverage:scoreboard',
-        title: 'T1 Coverage Scoreboard',
-        description: text,
-        severity: 'warning',
-        disposition: 'digest',
-        cooldownHours: 20,
-      });
-      console.log(routed.action === 'silent'
-        ? '\nScoreboard queue refresh suppressed (cooldown still open — a fresher line already queued within 20h).'
-        : `\nScoreboard queued for the daily digest (${oldestGapLines.length} oldest-gap line(s), ${totalOpenGaps} total open GAP(s)).`);
-    } catch (e) { console.error('Scoreboard queue failed:', e.message); }
+    resolveCondition(SCOREBOARD_CONDITION_KEY, { reason: 'BRO-5546: scoreboard is a status report, not an alert condition' });
   }
 }
 

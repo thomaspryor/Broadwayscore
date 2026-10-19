@@ -6,12 +6,11 @@
  * "coverage % per market, oldest gap, hard cap on lines/day + dedup/ack so a
  * permanent false positive can't recreate alert fatigue inside the one email."
  *
- * Rides the EXISTING daily-digest queue (owner-alert-router.js
- * disposition:'digest' → data/audit/alert-digest-queue.json → health-check.js's
- * "Automation (queued)" section) rather than inventing a new delivery path.
- * ONE conditionKey ('t1-coverage:scoreboard'); routeAlert's own per-condition
- * queueDigestLine() already replaces-not-stacks on re-queue, so the scoreboard
- * naturally refreshes to one current line instead of accumulating duplicates.
+ * BRO-5546: this is a STATUS report printed to the job log,
+ * NOT an alert condition. It used to ride routeAlert('t1-coverage:scoreboard',
+ * 'digest'); that fired daily while any gap existed, was hidden from the email
+ * by QUEUED_TELEMETRY_BLOCKLIST, and escalated into an unfixable Linear card.
+ * Never route it through routeAlert again (test pins this).
  *
  * ACK (dedup so a known-permanent gap can't recreate fatigue): a cell can be
  * acknowledged via data/audit/t1-coverage-ack.json (see loadAcks/isAcked). An
@@ -26,6 +25,7 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..', '..');
 const ACK_PATH = path.join(ROOT, 'data', 'audit', 't1-coverage-ack.json');
+const SCOREBOARD_CONDITION_KEY = 't1-coverage:scoreboard';
 const MAX_OLDEST_GAPS_DEFAULT = 5;
 
 function cellKey(showId, outletId) {
@@ -130,5 +130,5 @@ function buildScoreboardText(marketStats, ledger, acks, nowMs, opts = {}) {
 
 module.exports = {
   loadAcks, isAcked, addAck, saveAcks, buildScoreboardText, cellKey,
-  ACK_PATH, MAX_OLDEST_GAPS_DEFAULT,
+  ACK_PATH, SCOREBOARD_CONDITION_KEY, MAX_OLDEST_GAPS_DEFAULT,
 };
