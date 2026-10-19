@@ -24,7 +24,7 @@ on:
         default: false
         type: boolean
       domains:
-        description: 'Domain filter: high-yield (recommended), or comma-separated list'
+        description: 'Domain filter: high-yield (recommended), all (no filter), or comma-separated list'
         required: false
         default: 'high-yield'
         type: string
@@ -34,7 +34,7 @@ on:
         default: false
         type: boolean
       recheck_dates:
-        description: 'Re-read the page date of early/carried dates (BRO-5674) instead of undated reviews. The domains filter still applies (clear it for all outlets); with free_only=false paid scrapers run first, so this spends credits. Use offset=0 on repeat runs.'
+        description: 'Re-read the page date of early/carried dates (BRO-5674) instead of undated reviews. The domains filter still applies (set domains to all for every outlet); with free_only=false paid scrapers run first, so this spends credits. Use offset=0 on repeat runs.'
         required: false
         default: false
         type: boolean
@@ -105,7 +105,7 @@ jobs:
           if [ -n "${INPUT_SHOW}" ]; then
             ARGS="$ARGS --show=${INPUT_SHOW}"
           fi
-          if [ -n "${INPUT_DOMAINS}" ]; then
+          if [ -n "${INPUT_DOMAINS}" ] && [ "${INPUT_DOMAINS}" != "all" ]; then
             ARGS="$ARGS --domains=${INPUT_DOMAINS}"
           fi
           if [ "${{ inputs.dry_run }}" = "true" ]; then
