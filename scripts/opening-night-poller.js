@@ -44,6 +44,8 @@ const {
 } = require('./gather-reviews');
 
 const { checkRSSFeeds } = require('./lib/rss-discovery');
+const { serpDeadlineSec, serpTimeLeft } = require('./lib/poller-serp-deadline');
+const POLLER_START_MS = Date.now();
 const { discoverGoogleNewsReviews } = require('./lib/google-news-rss');
 const { searchOutletSites, selectApplicableSiteSearchOutlets, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
 const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
@@ -1429,10 +1431,17 @@ async function runSERPBackup(show, missingOutlets, knownUrls) {
   const results = [];
   let calls = 0;
   const bdAllowedForShow = isBrightDataAllowedForShow(show);
+  const deadlineSec = serpDeadlineSec();
 
   for (const outlet of missingOutlets) {
     if (calls >= SERP_BUDGET) {
       console.log(`  SERP budget exhausted (${SERP_BUDGET} calls)`);
+      break;
+    }
+    // BRO-5674: the workflow kills this process at 600s, and discovered
+    // reviews are only written after SERP returns. Stop in time to save them.
+    if (!serpTimeLeft(POLLER_START_MS, Date.now(), deadlineSec)) {
+      console.log(`  SERP stopped: ${deadlineSec}s wall-clock deadline reached (${calls} calls) — saving discovered reviews first`);
       break;
     }
     if (!outlet.domain) continue;
