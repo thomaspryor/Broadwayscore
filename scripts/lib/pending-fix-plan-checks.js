@@ -9,7 +9,7 @@
 const path = require('path');
 const { MAX_PLAN_ACTIONS } = require('./pending-fix-limits.js');
 const { internalWordingIn, PUBLIC_TEXT_FIELDS } = require('./commercial-record-checks.js');
-const { planStatusAction } = require('./plan-status.js');
+const { planStatusAction, DONE_STATUSES } = require('./plan-status.js');
 
 const isPending = (plan) => Boolean(plan) && plan.status === 'pending';
 
@@ -56,4 +56,24 @@ function planStatusWarning(name, plan) {
   return `${name}: status ${JSON.stringify(plan && plan.status)} will not run; execute-approved-fix.js runs only a "pending" plan`;
 }
 
-module.exports = { pendingPlanProblems, planShapeProblems, planWordingProblems, planStatusWarning };
+/**
+ * BRO-5647: only execute-approved-fix.yml finishes a session plan, and it
+ * commits that status straight to main. So a land branch that adds a plan
+ * already finished, or moves one off "pending", carries a local executor run
+ * (or a hand edit), and the CI apply would skip it as done while changing
+ * nothing. basePlan is the plan on main, null when the branch adds the file.
+ */
+function finishedOnBranchProblems(name, basePlan, plan) {
+  if (!plan || !DONE_STATUSES.has(plan.status)) return [];
+  if (basePlan && !isPending(basePlan)) return [];
+  const how = basePlan ? 'moves it from "pending" to' : 'adds it as';
+  return [`${name}: this branch ${how} "${plan.status}", which only a CI run of execute-approved-fix.yml writes (a local executor run does it too), so the CI apply would skip it as done and change nothing; set status back to "pending" and drop executedAt, results, rejectedAt and executedIn, or delete the file to withdraw the plan`];
+}
+
+/** A plan whose status a local executor run wrote (it tags executedIn since BRO-5647). [] otherwise. */
+function localRunProblems(name, plan) {
+  if (!plan || plan.executedIn !== 'local') return [];
+  return [`${name}: status "${plan.status}" was written by a local execute-approved-fix run (executedIn: local), so the CI apply would skip it as done; set status back to "pending" and drop executedAt, results, rejectedAt and executedIn`];
+}
+
+module.exports = { pendingPlanProblems, planShapeProblems, planWordingProblems, planStatusWarning, finishedOnBranchProblems, localRunProblems };

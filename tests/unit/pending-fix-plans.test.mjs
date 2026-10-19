@@ -18,7 +18,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { MAX_PLAN_ACTIONS } = require('../../scripts/lib/pending-fix-limits.js');
-const { planShapeProblems, planWordingProblems, pendingPlanProblems, planStatusWarning } = require('../../scripts/lib/pending-fix-plan-checks.js');
+const { planShapeProblems, planWordingProblems, pendingPlanProblems, planStatusWarning, finishedOnBranchProblems, localRunProblems } = require('../../scripts/lib/pending-fix-plan-checks.js');
 const dir = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../../data/pending-fixes');
 const plans = () => fs.readdirSync(dir).filter(f => /^bro-.*\.json$/.test(f))
   .map(f => [f, JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'))]);
@@ -31,6 +31,12 @@ test('pending bro-* plans are applicable by execute-approved-fix', () => {
 
 test('pending bro-* plans write no internal wording into public commercial fields', () => {
   assert.deepEqual(plans().flatMap(([f, plan]) => planWordingProblems(f, plan)), []);
+});
+
+// BRO-5647: the executor tags each status it writes with where it ran; a
+// local run's status on main means CI skipped the plan as done.
+test('no bro-* plan carries a status a local execute-approved-fix run wrote', () => {
+  assert.deepEqual(plans().flatMap(([f, plan]) => localRunProblems(f, plan)), []);
 });
 
 const edit = (field, newValue) => ({ type: 'data-edit', file: 'commercial.json', showSlug: 'six', field, oldValue: null, newValue });
@@ -62,4 +68,17 @@ test('pendingPlanProblems is both kinds; planStatusWarning names a status the ex
   assert.equal(planStatusWarning('bro-1.json', plan([])), null);
   assert.equal(planStatusWarning('bro-1.json', plan([], { status: 'applied' })), null);
   assert.match(planStatusWarning('bro-1.json', plan([], { status: 'approved' })), /bro-1\.json: status "approved" will not run/);
+});
+
+test('finishedOnBranchProblems and localRunProblems (fixtures, BRO-5647)', () => {
+  const p = (status, extra = {}) => plan([], { status, ...extra });
+  assert.match(finishedOnBranchProblems('bro-1.json', null, p('applied')).join(''), /bro-1\.json: this branch adds it as "applied"/);
+  assert.match(finishedOnBranchProblems('bro-1.json', p('pending'), p('rejected')).join(''), /moves it from "pending" to "rejected".*rejectedAt/);
+  assert.deepEqual(finishedOnBranchProblems('bro-1.json', p('applied'), p('applied')), []);
+  assert.deepEqual(finishedOnBranchProblems('bro-1.json', null, p('pending')), []);
+  // A status the executor does not know is planStatusWarning's, not this check's.
+  assert.deepEqual(finishedOnBranchProblems('bro-1.json', null, p('approved')), []);
+  assert.match(localRunProblems('bro-1.json', p('applied', { executedIn: 'local' })).join(''), /written by a local execute-approved-fix run/);
+  assert.deepEqual(localRunProblems('bro-1.json', p('applied', { executedIn: 'ci' })), []);
+  assert.deepEqual(localRunProblems('bro-1.json', p('applied')), []);
 });

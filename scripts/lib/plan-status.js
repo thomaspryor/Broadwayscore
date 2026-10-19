@@ -11,4 +11,17 @@ function planStatusAction(status) {
   return 'error';
 }
 
-module.exports = { planStatusAction, DONE_STATUSES };
+// BRO-5647: a session ran the executor locally to preview a plan, which wrote
+// "applied" into the plan file; the file then landed and the CI apply skipped
+// it as done while the run went green. The executor now tags every status it
+// writes with where it ran, and a session plan (a non-numeric id) that comes
+// back finished without the CI tag is reported as applied-elsewhere, which the
+// workflow fails. Numbered reader plans keep their "Already Applied" comment.
+const planRunOrigin = (env = process.env) => (env.GITHUB_ACTIONS === 'true' ? 'ci' : 'local');
+
+function alreadyAppliedResult(planId, plan) {
+  if (/^\d/.test(String(planId)) || (plan && plan.executedIn === 'ci')) return 'already-applied';
+  return 'applied-elsewhere';
+}
+
+module.exports = { planStatusAction, DONE_STATUSES, planRunOrigin, alreadyAppliedResult };

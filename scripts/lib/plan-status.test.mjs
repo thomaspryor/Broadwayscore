@@ -9,7 +9,7 @@ import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { planStatusAction } = require('./plan-status.js');
+const { planStatusAction, planRunOrigin, alreadyAppliedResult } = require('./plan-status.js');
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 test('pending runs, finished statuses skip, anything else refuses', () => {
@@ -32,6 +32,36 @@ test('execute-approved-fix.js reports error for an "approved" plan', () => {
     });
     assert.match(fs.readFileSync(out, 'utf8'), /result=error/, r.stderr);
     assert.match(r.stderr, /not one the executor knows/);
+  } finally {
+    fs.rmSync(plan, { force: true });
+    fs.rmSync(out, { force: true });
+  }
+});
+
+// BRO-5647: a session plan finished outside CI must not read as done.
+test('alreadyAppliedResult: a session plan finished outside CI is applied-elsewhere; reader plans and CI runs are already-applied', () => {
+  assert.equal(alreadyAppliedResult('bro-1', { status: 'applied' }), 'applied-elsewhere');
+  assert.equal(alreadyAppliedResult('bro-1', { status: 'applied', executedIn: 'local' }), 'applied-elsewhere');
+  assert.equal(alreadyAppliedResult('bro-1', { status: 'applied', executedIn: 'ci' }), 'already-applied');
+  assert.equal(alreadyAppliedResult('925', { status: 'applied' }), 'already-applied');
+  assert.equal(alreadyAppliedResult('925-systematic', { status: 'applied' }), 'already-applied');
+  assert.equal(planRunOrigin({ GITHUB_ACTIONS: 'true' }), 'ci');
+  assert.equal(planRunOrigin({}), 'local');
+});
+
+test('execute-approved-fix.js reports applied-elsewhere for a session plan marked applied without the CI tag', () => {
+  const id = `bro-plan-status-test-${process.pid}`;
+  const plan = path.join(ROOT, 'data/pending-fixes', `${id}.json`);
+  const out = path.join(os.tmpdir(), `${id}.out`);
+  fs.writeFileSync(plan, JSON.stringify({ planId: 'p1', status: 'applied', plan: { actions: [] } }));
+  fs.writeFileSync(out, '');
+  try {
+    const r = spawnSync(process.execPath, ['scripts/execute-approved-fix.js'], {
+      cwd: ROOT, encoding: 'utf8',
+      env: { PATH: process.env.PATH, ISSUE_NUMBER: id, PLAN_ID: 'p1', GITHUB_OUTPUT: out },
+    });
+    assert.match(fs.readFileSync(out, 'utf8'), /result=applied-elsewhere/, r.stderr);
+    assert.match(r.stderr, /not by a CI run of this workflow/);
   } finally {
     fs.rmSync(plan, { force: true });
     fs.rmSync(out, { force: true });

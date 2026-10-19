@@ -586,6 +586,11 @@ export function checkPendingPlans({ base, tip, cwd, landedTip = null, load = loa
         continue;
       }
       problems.push(...checks.pendingPlanProblems(f, plan));
+      // BRO-5647: judged against the plan on base (null when the branch adds it).
+      const onBase = git(cwd, ['show', `${base}:${f}`]);
+      let basePlan = null;
+      try { basePlan = ok(onBase) ? JSON.parse(onBase.stdout) : null; } catch { basePlan = null; }
+      problems.push(...checks.finishedOnBranchProblems(f, basePlan, plan));
       const statusWarning = checks.planStatusWarning(f, plan);
       if (statusWarning) warnings.push(statusWarning);
     }

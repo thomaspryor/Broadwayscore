@@ -43,7 +43,7 @@ const require = createRequire(import.meta.url);
 const { buildFeedbackThankYouEmail } = require('./lib/email-templates.js');
 const showsWriteGuard = require('./lib/shows-write-guard.js');
 const commercialWriteGuard = require('./lib/commercial-write-guard.js');
-const { planStatusAction } = require('./lib/plan-status.js');
+const { planStatusAction, planRunOrigin, alreadyAppliedResult } = require('./lib/plan-status.js');
 const audienceBuzzWriteGuard = require('./lib/audience-buzz-write-guard.js');
 const { MAX_PLAN_ACTIONS } = require('./lib/pending-fix-limits.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -702,8 +702,13 @@ async function main() {
     return;
   }
   if (statusAction === 'already-applied') {
-    console.log(`Plan already ${planData.status} — skipping`);
-    output('result', 'already-applied');
+    const result = alreadyAppliedResult(issueNumber, planData);
+    if (result === 'applied-elsewhere') {
+      console.error(`Plan is already ${planData.status}, but not by a CI run of this workflow (executedIn: ${planData.executedIn || 'none'}), so nothing was applied. A local execute-approved-fix run writes this status; reset it to "pending", drop executedAt/results/rejectedAt/executedIn, land it, then dispatch again.`);
+    } else {
+      console.log(`Plan already ${planData.status} — skipping`);
+    }
+    output('result', result);
     return;
   }
 
@@ -712,6 +717,7 @@ async function main() {
   if (process.env.EXEC_MODE === 'reject') {
     planData.status = 'rejected';
     planData.rejectedAt = new Date().toISOString();
+    planData.executedIn = planRunOrigin();
     fs.writeFileSync(planFile, JSON.stringify(planData, null, 2) + '\n');
     console.log(`Plan for #${issueNumber} marked rejected — nothing executed`);
     output('result', 'rejected');
@@ -811,6 +817,7 @@ async function main() {
       planData.status = 'validation-failed';
       planData.executedAt = new Date().toISOString();
       planData.results = results;
+      planData.executedIn = planRunOrigin();
       fs.writeFileSync(planFile, JSON.stringify(planData, null, 2) + '\n');
 
       output('result', 'validation-failed');
@@ -826,6 +833,7 @@ async function main() {
   planData.status = failed.length > 0 ? 'partial' : 'applied';
   planData.executedAt = new Date().toISOString();
   planData.results = results;
+  planData.executedIn = planRunOrigin();
   fs.writeFileSync(planFile, JSON.stringify(planData, null, 2) + '\n');
 
   console.log(`\nPlan executed: ${applied.length} applied, ${failed.length} failed`);

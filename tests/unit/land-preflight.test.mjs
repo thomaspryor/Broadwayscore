@@ -634,9 +634,15 @@ test('pending plans: a branch adding a pending bro-* plan over the cap blocks; w
   assert.match(v.message, /split it into bro-1-b\.json/);
   // The plan is read from the tree land would apply when there is one.
   assert.equal(check({ landedTip: fits }).status, 'pass');
-  // An applied plan is history, not a pending apply.
+  // Only a CI run finishes a plan, and it commits to main: a branch adding one
+  // already applied carries a local executor run, which CI would skip (BRO-5647).
   write(d, 'data/pending-fixes/bro-1.json', planJson(MAX_PLAN_ACTIONS + 1, 'applied'));
   sh(d, 'git commit -qam applied');
+  const finished = check();
+  assert.equal(finished.status, 'fail');
+  assert.match(finished.problems.join('\n'), /bro-1\.json: this branch adds it as "applied"/);
+  write(d, 'data/pending-fixes/bro-1.json', planJson(MAX_PLAN_ACTIONS));
+  sh(d, 'git commit -qam pending-again');
   assert.equal(check().status, 'pass');
   // A status the executor does not know warns and never blocks (BRO-5015).
   write(d, 'data/pending-fixes/bro-1-b.json', planJson(1, 'approved'));
@@ -661,4 +667,30 @@ test('pending plans: a branch adding a pending bro-* plan over the cap blocks; w
   assert.match(check().problems.join('\n'), /bro-2\.json: not valid JSON/);
   // The other checks never depend on the plan checks loading.
   assert.equal(check({ load: () => { throw new Error('boom'); } }).status, 'skip');
+});
+
+// BRO-5647: a local preview run of the executor wrote "applied" into a plan that
+// then landed, and the CI apply skipped it as done while going green.
+test('pending plans: a branch moving a bro-* plan off pending blocks; editing one main already finished does not (BRO-5647)', async () => {
+  const { checkPendingPlans } = await import('../../scripts/lib/land-preflight.mjs');
+  const planJson = (status, summary = 's') => JSON.stringify({
+    issueNumber: 'bro-7', planId: 'p-7', status,
+    plan: { summary, actions: [{ type: 'data-edit', file: 'shows.json', showSlug: 's', field: 'title', oldValue: null, newValue: 'x' }] },
+  }, null, 2) + '\n';
+  const check = () => checkPendingPlans({ base: 'main', tip: 'HEAD', cwd: d });
+  const d = baseRepo();
+  write(d, 'data/pending-fixes/bro-7.json', planJson('applied'));
+  write(d, 'data/pending-fixes/bro-8.json', planJson('pending'));
+  sh(d, 'git add -A && git commit -qm "plans on main" && git checkout -qb feat');
+  // Main already applied bro-7 in CI: a later wording edit is history.
+  write(d, 'data/pending-fixes/bro-7.json', planJson('applied', 'reworded'));
+  sh(d, 'git commit -qam reword');
+  assert.equal(check().status, 'pass');
+  for (const status of ['applied', 'partial', 'rejected', 'validation-failed']) {
+    write(d, 'data/pending-fixes/bro-8.json', planJson(status));
+    sh(d, `git commit -qam ${status}`);
+    const v = check();
+    assert.equal(v.status, 'fail', status);
+    assert.deepEqual(v.problems.map((p) => p.slice(0, 80)), [`data/pending-fixes/bro-8.json: this branch moves it from "pending" to "${status}", which only`.slice(0, 80)]);
+  }
 });
