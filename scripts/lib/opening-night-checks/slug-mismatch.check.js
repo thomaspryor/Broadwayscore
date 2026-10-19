@@ -165,6 +165,8 @@ const STRUCTURAL_PATH_WORDS = new Set([
   'p', 'id', 'view', 'node', 'index', 'amp', 'www', 'html', 'htm', 'php',
   // londontheatrereviews.co.uk/post.cfm?p=<id>: an id-only query URL (BRO-5438)
   'post', 'cfm',
+  // thestage.co.uk/reviews/<id>: the Show Score redirect form (BRO-5693)
+  'review', 'reviews',
 ]);
 
 /**

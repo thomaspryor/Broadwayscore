@@ -105,3 +105,12 @@ describe('id-only CMS URLs (BRO-5438)', () => {
     assert.strictEqual(isIdOnlyCmsUrl(urlSearchSlug('https://theaternewsonline.com/NYTheaterReviews/TAP-HAPPY.cfm')), false);
   });
 });
+
+describe('outlet /reviews/<id> redirect URLs (BRO-5693)', () => {
+  it('thestage.co.uk/reviews/<id> carries no title words', () => {
+    assert.strictEqual(opaque('https://www.thestage.co.uk/reviews/64277'), true);
+  });
+  it('a /reviews/ URL with a real headline slug is still checked', () => {
+    assert.strictEqual(opaque('https://www.thestage.co.uk/reviews/2019/other-show-review'), false);
+  });
+});
