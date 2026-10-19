@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-19T00:48:15.547Z",
+  "generatedAt": "2026-10-19T04:06:17.625Z",
   "windowDays": 1095,
-  "targets": 683,
-  "auditedThisRun": 20,
-  "carriedForward": 734,
+  "targets": 698,
+  "auditedThisRun": 10,
+  "carriedForward": 744,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 424,
-    "missingCurrentRun": 830,
+    "withGap": 426,
+    "missingCurrentRun": 843,
     "totalCitedNoUrl": 7,
-    "totalFlaggedMisses": 950,
+    "totalFlaggedMisses": 951,
     "totalRecoverable": 10,
     "totalRecovered": 15,
     "humanExcluded": 1,
-    "automatedExcluded": 162,
-    "automatedExcludedListed": 123,
-    "priorProductionCitations": 5119
+    "automatedExcluded": 163,
+    "automatedExcludedListed": 124,
+    "priorProductionCitations": 5116
   },
   "results": [
     {
@@ -11904,7 +11904,12 @@
         "liveCount": 1,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-18T22:55:46.864Z"
+      "computedAt": "2026-10-18T22:55:46.864Z",
+      "quarantine": {
+        "nextState": "incomplete:1:2",
+        "since": "2026-10-19T04:06:17.720Z",
+        "lastAt": "2026-10-19T04:06:17.720Z"
+      }
     },
     {
       "showId": "anonymous-off-broadway-2026",
@@ -23999,7 +24004,12 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-18T22:55:46.864Z"
+      "computedAt": "2026-10-18T22:55:46.864Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-19T04:06:17.720Z",
+        "lastAt": "2026-10-19T04:06:17.720Z"
+      }
     },
     {
       "showId": "bone-wars-a-new-musical-off-broadway-2026",
@@ -38789,35 +38799,147 @@
       "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://dickensblog.com/2026/08/02/copperfield-off-broadway/"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://dickensblog.com/2026/08/02/copperfield-off-broadway/",
+          "host": "dickensblog.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Copperfield! The New Musical\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Copperfield! The New Musical\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Copperfield! The New Musical\" review duke",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Copperfield! The New Musical The Duke on 42nd Street review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Copperfield! The New Musical The Duke on 42nd Street review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Copperfield! The New Musical The Duke on 42nd Street review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 41,
+        "byReason": {
+          "aggregator-internal-nav": 4,
+          "venue-production-page": 1,
+          "non-review-host": 27,
+          "census-junk-host": 1,
+          "ticketing-listing": 1,
+          "non-review-path": 1,
+          "bare-host": 1,
+          "show-listing-page": 2,
+          "production-database-listing": 1,
+          "review-hub-page": 2
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://dickensblog.com/2026/08/02/copperfield-off-broadway/",
+          "host": "dickensblog.com",
+          "outletId": "dickensblog",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "dickensblog.com",
+            "outlet": "dickensblog.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://dickensblog.com/2026/08/02/copperfield-off-broadway/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://dickensblog.com/2026/08/02/copperfield-off-broadway/",
+            "outletId": "dickensblog.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-19T04:06:17.625Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 1
       },
-      "computedAt": "2026-10-18T22:55:46.864Z"
+      "computedAt": "2026-10-19T04:06:17.625Z"
     },
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
@@ -47111,7 +47233,12 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-18T22:55:46.864Z"
+      "computedAt": "2026-10-18T22:55:46.864Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-19T04:06:17.720Z",
+        "lastAt": "2026-10-19T04:06:17.720Z"
+      }
     },
     {
       "showId": "dirty-dancing-tour-2026",
@@ -48590,76 +48717,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Doll Day Afternoon\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Doll Day Afternoon\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Doll Day Afternoon\" review mama",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Doll Day Afternoon La MaMa / The Downstairs review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Doll Day Afternoon La MaMa / The Downstairs review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Doll Day Afternoon La MaMa / The Downstairs review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 35,
-        "byReason": {
-          "non-review-host": 25,
-          "aggregator-internal-nav": 6,
-          "write-path-blocked": 1,
-          "ticketing-reseller": 1,
-          "review-hub-page": 1,
-          "show-hub": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -48672,7 +48735,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-18T22:55:46.864Z"
+      "computedAt": "2026-10-19T04:06:17.625Z"
     },
     {
       "showId": "don-giovanni-off-broadway-2025",
@@ -86699,7 +86762,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-19T00:48:15.547Z"
+      "computedAt": "2026-10-19T04:06:17.625Z"
     },
     {
       "showId": "illinoise-2024",
@@ -92274,7 +92337,12 @@
         "liveCount": 5,
         "candidateCount": 16
       },
-      "computedAt": "2026-10-18T22:55:46.864Z"
+      "computedAt": "2026-10-18T22:55:46.864Z",
+      "quarantine": {
+        "nextState": "incomplete:0:1",
+        "since": "2026-10-19T04:06:17.720Z",
+        "lastAt": "2026-10-19T04:06:17.720Z"
+      }
     },
     {
       "showId": "jasmines-demo-show-4-the-end-off-broadway-2026",
@@ -94635,7 +94703,12 @@
         "liveCount": 0,
         "candidateCount": 12
       },
-      "computedAt": "2026-10-19T00:48:15.547Z"
+      "computedAt": "2026-10-19T00:48:15.547Z",
+      "quarantine": {
+        "nextState": "incomplete:0:7",
+        "since": "2026-10-19T04:06:17.720Z",
+        "lastAt": "2026-10-19T04:06:17.720Z"
+      }
     },
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
@@ -94649,6 +94722,7 @@
         "https://www.britishtheatre.com/posts/jesus-christ-superstar-theatre-royal-drury-lane-now-live",
         "https://www.whatsonstage.com/news/full-cast-for-jesus-christ-superstar-at-theatre-royal-drury-lane-confirmed-with-on-stage-ticket-plans-revealed_1731065/",
         "https://entertheatre.com/shows/jesus-christ-superstar/theatre-royal-drury-lane",
+        "https://www.westendbestfriend.co.uk/news/jesus-christ-superstar-release-on-stage-tickets-tyrone-huntley-return-drury-lane-season",
         "https://www.eventim.co.uk/event/jesus-christ-superstar-theatre-royal-drury-lane-22139739/"
       ],
       "dirFiles": 28,
@@ -94663,10 +94737,6 @@
         }
       ],
       "dirOnly": [
-        {
-          "host": "westendbestfriend.co.uk",
-          "count": 1
-        },
         {
           "host": "afridiziak.com",
           "count": 1
@@ -94793,6 +94863,29 @@
           "reverify": false
         },
         {
+          "url": "https://www.westendbestfriend.co.uk/news/jesus-christ-superstar-release-on-stage-tickets-tyrone-huntley-return-drury-lane-season",
+          "host": "westendbestfriend.co.uk",
+          "knownOutletId": "west-end-best-friend",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "west-end-best-friend--unknown.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.westendbestfriend.co.uk/news/jesus-christ-superstar-release-on-stage-tickets-tyrone-huntley-return-drury-lane-season"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongShow"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
           "url": "https://www.eventim.co.uk/event/jesus-christ-superstar-theatre-royal-drury-lane-22139739/",
           "host": "eventim.co.uk",
           "knownOutletId": null,
@@ -94832,7 +94925,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 1
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -94873,7 +94966,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           },
           {
@@ -94919,24 +95012,24 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 5,
+        "resultCount": 6,
         "error": null
       },
       "candidatesRejected": {
-        "count": 31,
+        "count": 29,
         "byReason": {
-          "non-review-host": 19,
-          "event-listing": 2,
-          "ticketing-listing": 1,
-          "write-path-blocked": 3,
+          "non-review-host": 17,
+          "write-path-blocked": 5,
           "census-junk-host": 1,
-          "non-review-path": 3,
-          "roundup-page": 1,
-          "ugc-platform": 1
+          "ticketing-listing": 1,
+          "event-listing": 2,
+          "non-review-path": 1,
+          "bare-host": 1,
+          "ticket-seller-product-page": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 2,
+      "automatedExcludedListed": 3,
       "unextractable": [],
       "ingestResults": [
         {
@@ -94981,6 +95074,13 @@
             "url": "https://www.whatsonstage.com/news/full-cast-for-jesus-christ-superstar-at-theatre-royal-drury-lane-confirmed-with-on-stage-ticket-plans-revealed_1731065/"
           },
           {
+            "outletId": "west-end-best-friend",
+            "outlet": "west-end-best-friend",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westendbestfriend.co.uk/news/jesus-christ-superstar-release-on-stage-tickets-tyrone-huntley-return-drury-lane-season"
+          },
+          {
             "outletId": "eventim.co.uk",
             "outlet": "eventim.co.uk",
             "critic": "Unknown",
@@ -95018,6 +95118,13 @@
             "firstSeenAt": "2026-10-17T22:59:21.861Z"
           },
           {
+            "url": "https://www.westendbestfriend.co.uk/news/jesus-christ-superstar-release-on-stage-tickets-tyrone-huntley-return-drury-lane-season",
+            "outletId": "west-end-best-friend",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-19T04:06:17.625Z"
+          },
+          {
             "url": "https://www.eventim.co.uk/event/jesus-christ-superstar-theatre-royal-drury-lane-22139739/",
             "outletId": "eventim.co.uk",
             "state": "IN_FLIGHT",
@@ -95027,9 +95134,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 1,
-        "candidateCount": 5
+        "candidateCount": 6
       },
-      "computedAt": "2026-10-18T19:59:01.031Z"
+      "computedAt": "2026-10-19T04:06:17.625Z"
     },
     {
       "showId": "jesus-christ-superstar-west-end-2026",
@@ -101533,7 +101640,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-19T00:48:15.547Z"
+      "computedAt": "2026-10-19T04:06:17.625Z"
     },
     {
       "showId": "kinky-boots-the-musical-west-end-2026",
@@ -104529,7 +104636,12 @@
         "liveCount": 3,
         "candidateCount": 11
       },
-      "computedAt": "2026-10-18T19:59:01.031Z"
+      "computedAt": "2026-10-18T19:59:01.031Z",
+      "quarantine": {
+        "nextState": "incomplete:3:9",
+        "since": "2026-10-19T04:06:17.720Z",
+        "lastAt": "2026-10-19T04:06:17.720Z"
+      }
     },
     {
       "showId": "lean-to-off-broadway-2026",
@@ -107106,35 +107218,470 @@
       "status": "upcoming",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://www.vogue.com/article/lincoln-in-the-bardo-met-opera",
+        "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661",
+        "https://www.nytimes.com/2026/10/09/t-magazine/lincoln-bardo-george-saunders-met-opera.html",
+        "https://theviolinchannel.com/the-metropolitan-opera-to-premiere-miss-mazzolis-newest-work-lincoln-in-the-bardo/",
+        "https://www.nytimes.com/2026/09/18/arts/music/missy-mazzoli-lincoln-in-the-bardo-met-opera.html",
+        "https://www.wisemusicclassical.com/work/63662/Lincoln-in-the-Bardo--Missy-Mazzoli/",
+        "https://www.theatermania.com/news/world-premiere-of-lincoln-in-the-bardo-joins-met-operas-2026-27-season_1824845/",
+        "https://missymazzoli.com/works/lincoln-in-the-bardo/",
+        "https://operawire.com/q-a-composer-missy-mazzoli-author-george-saunders-on-lincoln-in-the-bardo/",
+        "https://www.newyorker.com/culture/goings-on/lincoln-in-the-bardo-gets-an-opera-at-the-met",
+        "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floor-lincoln-in-the-bardo.html",
+        "https://apnews.com/article/mazzoli-lincoln-bardo-la-opera-27157b1bd03723de019445ef07c7bd4a"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.vogue.com/article/lincoln-in-the-bardo-met-opera",
+          "host": "vogue.com",
+          "knownOutletId": "vogue",
+          "serpCensus": true
+        },
+        {
+          "url": "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661",
+          "host": "apnews.com",
+          "knownOutletId": "ap",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.nytimes.com/2026/10/09/t-magazine/lincoln-bardo-george-saunders-met-opera.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "serpCensus": true
+        },
+        {
+          "url": "https://theviolinchannel.com/the-metropolitan-opera-to-premiere-miss-mazzolis-newest-work-lincoln-in-the-bardo/",
+          "host": "theviolinchannel.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.nytimes.com/2026/09/18/arts/music/missy-mazzoli-lincoln-in-the-bardo-met-opera.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.wisemusicclassical.com/work/63662/Lincoln-in-the-Bardo--Missy-Mazzoli/",
+          "host": "wisemusicclassical.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatermania.com/news/world-premiere-of-lincoln-in-the-bardo-joins-met-operas-2026-27-season_1824845/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "serpCensus": true
+        },
+        {
+          "url": "https://missymazzoli.com/works/lincoln-in-the-bardo/",
+          "host": "missymazzoli.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://operawire.com/q-a-composer-missy-mazzoli-author-george-saunders-on-lincoln-in-the-bardo/",
+          "host": "operawire.com",
+          "knownOutletId": "operawire",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.newyorker.com/culture/goings-on/lincoln-in-the-bardo-gets-an-opera-at-the-met",
+          "host": "newyorker.com",
+          "knownOutletId": "newyorker",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floor-lincoln-in-the-bardo.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "serpCensus": true
+        },
+        {
+          "url": "https://apnews.com/article/mazzoli-lincoln-bardo-la-opera-27157b1bd03723de019445ef07c7bd4a",
+          "host": "apnews.com",
+          "knownOutletId": "ap",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Lincoln in the Bardo\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Lincoln in the Bardo\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Lincoln in the Bardo\" review metropolitan",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Lincoln in the Bardo Metropolitan Opera House review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Lincoln in the Bardo Metropolitan Opera House review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Lincoln in the Bardo Metropolitan Opera House review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 12,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 25,
+        "byReason": {
+          "aggregator-internal-nav": 1,
+          "non-review-host": 19,
+          "census-junk-host": 2,
+          "ticketing-reseller": 2,
+          "event-listing": 1
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.vogue.com/article/lincoln-in-the-bardo-met-opera",
+          "host": "vogue.com",
+          "outletId": "vogue",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661",
+          "host": "apnews.com",
+          "outletId": "ap",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.nytimes.com/2026/10/09/t-magazine/lincoln-bardo-george-saunders-met-opera.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://theviolinchannel.com/the-metropolitan-opera-to-premiere-miss-mazzolis-newest-work-lincoln-in-the-bardo/",
+          "host": "theviolinchannel.com",
+          "outletId": "theviolinchannel",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  provisional outlet \"theviolinchannel\" (not in registry) — onboard to outlet-registry.json after "
+        },
+        {
+          "url": "https://www.nytimes.com/2026/09/18/arts/music/missy-mazzoli-lincoln-in-the-bardo-met-opera.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.wisemusicclassical.com/work/63662/Lincoln-in-the-Bardo--Missy-Mazzoli/",
+          "host": "wisemusicclassical.com",
+          "outletId": "wisemusicclassical"
+        },
+        {
+          "url": "https://www.theatermania.com/news/world-premiere-of-lincoln-in-the-bardo-joins-met-operas-2026-27-season_1824845/",
+          "host": "theatermania.com",
+          "outletId": "theatermania"
+        },
+        {
+          "url": "https://missymazzoli.com/works/lincoln-in-the-bardo/",
+          "host": "missymazzoli.com",
+          "outletId": "missymazzoli"
+        },
+        {
+          "url": "https://operawire.com/q-a-composer-missy-mazzoli-author-george-saunders-on-lincoln-in-the-bardo/",
+          "host": "operawire.com",
+          "outletId": "operawire"
+        },
+        {
+          "url": "https://www.newyorker.com/culture/goings-on/lincoln-in-the-bardo-gets-an-opera-at-the-met",
+          "host": "newyorker.com",
+          "outletId": "newyorker"
+        },
+        {
+          "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floor-lincoln-in-the-bardo.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes"
+        },
+        {
+          "url": "https://apnews.com/article/mazzoli-lincoln-bardo-la-opera-27157b1bd03723de019445ef07c7bd4a",
+          "host": "apnews.com",
+          "outletId": "ap"
+        }
+      ],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
-        "suppressedMissing": [],
-        "candidates": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "vogue",
+            "outlet": "vogue",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.vogue.com/article/lincoln-in-the-bardo-met-opera"
+          },
+          {
+            "outletId": "ap",
+            "outlet": "ap",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2026/10/09/t-magazine/lincoln-bardo-george-saunders-met-opera.html"
+          },
+          {
+            "outletId": "theviolinchannel.com",
+            "outlet": "theviolinchannel.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theviolinchannel.com/the-metropolitan-opera-to-premiere-miss-mazzolis-newest-work-lincoln-in-the-bardo/"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2026/09/18/arts/music/missy-mazzoli-lincoln-in-the-bardo-met-opera.html"
+          },
+          {
+            "outletId": "wisemusicclassical.com",
+            "outlet": "wisemusicclassical.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.wisemusicclassical.com/work/63662/Lincoln-in-the-Bardo--Missy-Mazzoli/"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/world-premiere-of-lincoln-in-the-bardo-joins-met-operas-2026-27-season_1824845/"
+          },
+          {
+            "outletId": "missymazzoli.com",
+            "outlet": "missymazzoli.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://missymazzoli.com/works/lincoln-in-the-bardo/"
+          },
+          {
+            "outletId": "operawire",
+            "outlet": "operawire",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://operawire.com/q-a-composer-missy-mazzoli-author-george-saunders-on-lincoln-in-the-bardo/"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floor-lincoln-in-the-bardo.html"
+          },
+          {
+            "outletId": "ap",
+            "outlet": "ap",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://apnews.com/article/mazzoli-lincoln-bardo-la-opera-27157b1bd03723de019445ef07c7bd4a"
+          }
+        ],
+        "suppressedMissing": [
+          {
+            "outletId": "newyorker",
+            "outlet": "newyorker",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorker.com/culture/goings-on/lincoln-in-the-bardo-gets-an-opera-at-the-met"
+          }
+        ],
+        "candidates": [
+          {
+            "url": "https://www.vogue.com/article/lincoln-in-the-bardo-met-opera",
+            "outletId": "vogue",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-19T04:06:17.625Z"
+          },
+          {
+            "url": "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661",
+            "outletId": "ap",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-19T04:06:17.625Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/10/09/t-magazine/lincoln-bardo-george-saunders-met-opera.html",
+            "outletId": "nytimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-19T04:06:17.625Z"
+          },
+          {
+            "url": "https://theviolinchannel.com/the-metropolitan-opera-to-premiere-miss-mazzolis-newest-work-lincoln-in-the-bardo/",
+            "outletId": "theviolinchannel.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-19T04:06:17.625Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/09/18/arts/music/missy-mazzoli-lincoln-in-the-bardo-met-opera.html",
+            "outletId": "nytimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-19T04:06:17.625Z"
+          },
+          {
+            "url": "https://www.wisemusicclassical.com/work/63662/Lincoln-in-the-Bardo--Missy-Mazzoli/",
+            "outletId": "wisemusicclassical.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-19T04:06:17.625Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/world-premiere-of-lincoln-in-the-bardo-joins-met-operas-2026-27-season_1824845/",
+            "outletId": "theatermania",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-19T04:06:17.625Z"
+          },
+          {
+            "url": "https://missymazzoli.com/works/lincoln-in-the-bardo/",
+            "outletId": "missymazzoli.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-19T04:06:17.625Z"
+          },
+          {
+            "url": "https://operawire.com/q-a-composer-missy-mazzoli-author-george-saunders-on-lincoln-in-the-bardo/",
+            "outletId": "operawire",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-19T04:06:17.625Z"
+          },
+          {
+            "url": "https://www.newyorker.com/culture/goings-on/lincoln-in-the-bardo-gets-an-opera-at-the-met",
+            "outletId": "newyorker",
+            "state": "SUPPRESSED",
+            "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-10-19T04:06:17.625Z"
+          },
+          {
+            "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floor-lincoln-in-the-bardo.html",
+            "outletId": "nytimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-19T04:06:17.625Z"
+          },
+          {
+            "url": "https://apnews.com/article/mazzoli-lincoln-bardo-la-opera-27157b1bd03723de019445ef07c7bd4a",
+            "outletId": "ap",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-19T04:06:17.625Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 9
       },
-      "computedAt": "2026-10-18T19:59:01.031Z"
+      "computedAt": "2026-10-19T04:06:17.625Z"
     },
     {
       "showId": "little-bear-ridge-road-2025",
@@ -110182,7 +110729,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-19T00:48:15.547Z"
+      "computedAt": "2026-10-19T04:06:17.625Z"
     },
     {
       "showId": "madama-butterfly-off-broadway-2024",
@@ -114044,7 +114591,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -114095,14 +114642,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 28,
+        "count": 25,
         "byReason": {
-          "non-review-host": 20,
-          "ticketing-listing": 2,
-          "aggregator-internal-nav": 1,
+          "aggregator-internal-nav": 2,
+          "non-review-host": 17,
           "ticketing-reseller": 2,
-          "census-junk-host": 1,
-          "institutional-press-release": 2
+          "institutional-press-release": 3,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -114113,19 +114659,22 @@
           "url": "https://artsfuse.org/319411/theater-review-manual-cinemas-the-4th-witch-a-hallucinatory-vision-of-war-and-witchcraft/",
           "host": "artsfuse.org",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.sfchronicle.com/entertainment/theater/article/manual-cinema-4th-witch-review-21192477.php",
           "host": "sfchronicle.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://hop.dartmouth.edu/events/manual-cinema-4th-witch",
           "host": "dartmouth.edu",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         }
       ],
       "ingestResults": [],
@@ -114169,7 +114718,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-10-18T19:59:01.031Z"
+      "computedAt": "2026-10-19T04:06:17.625Z"
     },
     {
       "showId": "marcel-on-the-train-off-broadway-2026",
@@ -115426,7 +115975,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-19T00:48:15.547Z"
+      "computedAt": "2026-10-19T04:06:17.625Z"
     },
     {
       "showId": "mary-jane-2024",
@@ -119733,7 +120282,12 @@
         "liveCount": 12,
         "candidateCount": 14
       },
-      "computedAt": "2026-10-19T00:48:15.547Z"
+      "computedAt": "2026-10-19T00:48:15.547Z",
+      "quarantine": {
+        "nextState": "complete:10:10",
+        "since": "2026-10-19T04:06:17.720Z",
+        "lastAt": "2026-10-19T04:06:17.720Z"
+      }
     },
     {
       "showId": "meow-meow-off-broadway-2026",
@@ -130623,7 +131177,12 @@
         "liveCount": 1,
         "candidateCount": 3
       },
-      "computedAt": "2026-10-18T22:55:46.864Z"
+      "computedAt": "2026-10-18T22:55:46.864Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-19T04:06:17.720Z",
+        "lastAt": "2026-10-19T04:06:17.720Z"
+      }
     },
     {
       "showId": "my-joy-is-heavy-off-broadway-2025",
@@ -144335,7 +144894,12 @@
         "liveCount": 0,
         "candidateCount": 8
       },
-      "computedAt": "2026-10-18T22:55:46.864Z"
+      "computedAt": "2026-10-18T22:55:46.864Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-19T04:06:17.720Z",
+        "lastAt": "2026-10-19T04:06:17.720Z"
+      }
     },
     {
       "showId": "our-sinatra-a-musical-celebration-off-broadway-2026",
@@ -158283,7 +158847,12 @@
         "liveCount": 1,
         "candidateCount": 6
       },
-      "computedAt": "2026-10-18T19:59:01.031Z"
+      "computedAt": "2026-10-18T19:59:01.031Z",
+      "quarantine": {
+        "nextState": "incomplete:1:5",
+        "since": "2026-10-19T04:06:17.720Z",
+        "lastAt": "2026-10-19T04:06:17.720Z"
+      }
     },
     {
       "showId": "sabrage-off-west-end-2026",
@@ -160117,7 +160686,12 @@
         "liveCount": 6,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-18T22:55:46.864Z"
+      "computedAt": "2026-10-18T22:55:46.864Z",
+      "quarantine": {
+        "nextState": "incomplete:6:7",
+        "since": "2026-10-19T04:06:17.720Z",
+        "lastAt": "2026-10-19T04:06:17.720Z"
+      }
     },
     {
       "showId": "schtick-a-pole-in-it-off-broadway-2026",
@@ -166420,7 +166994,12 @@
         "liveCount": 16,
         "candidateCount": 18
       },
-      "computedAt": "2026-10-18T22:55:46.864Z"
+      "computedAt": "2026-10-18T22:55:46.864Z",
+      "quarantine": {
+        "nextState": "incomplete:15:16",
+        "since": "2026-10-19T04:06:17.720Z",
+        "lastAt": "2026-10-19T04:06:17.720Z"
+      }
     },
     {
       "showId": "soon-off-broadway-2026",
@@ -178168,7 +178747,12 @@
         "liveCount": 3,
         "candidateCount": 3
       },
-      "computedAt": "2026-10-18T22:55:46.864Z"
+      "computedAt": "2026-10-18T22:55:46.864Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-19T04:06:17.720Z",
+        "lastAt": "2026-10-19T04:06:17.720Z"
+      }
     },
     {
       "showId": "the-balusters-2026",
@@ -178979,7 +179563,12 @@
         "liveCount": 13,
         "candidateCount": 19
       },
-      "computedAt": "2026-10-19T00:48:15.547Z"
+      "computedAt": "2026-10-19T00:48:15.547Z",
+      "quarantine": {
+        "nextState": "incomplete:12:13",
+        "since": "2026-10-19T04:06:17.720Z",
+        "lastAt": "2026-10-19T04:06:17.720Z"
+      }
     },
     {
       "showId": "the-bathroom-attendant-off-broadway-2026",
@@ -180077,7 +180666,12 @@
         "liveCount": 2,
         "candidateCount": 8
       },
-      "computedAt": "2026-10-19T00:48:15.547Z"
+      "computedAt": "2026-10-19T00:48:15.547Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-19T04:06:17.720Z",
+        "lastAt": "2026-10-19T04:06:17.720Z"
+      }
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
@@ -182173,7 +182767,12 @@
         "liveCount": 31,
         "candidateCount": 35
       },
-      "computedAt": "2026-10-18T22:55:46.864Z"
+      "computedAt": "2026-10-18T22:55:46.864Z",
+      "quarantine": {
+        "nextState": "incomplete:29:31",
+        "since": "2026-10-19T04:06:17.720Z",
+        "lastAt": "2026-10-19T04:06:17.720Z"
+      }
     },
     {
       "showId": "the-children-off-west-end-2026",
@@ -183974,7 +184573,12 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-10-18T22:55:46.864Z"
+      "computedAt": "2026-10-18T22:55:46.864Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-19T04:06:17.720Z",
+        "lastAt": "2026-10-19T04:06:17.720Z"
+      }
     },
     {
       "showId": "the-enormous-crocodile-west-end-2026",
@@ -224679,7 +225283,12 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-10-18T22:55:46.864Z"
+      "computedAt": "2026-10-18T22:55:46.864Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-19T04:06:17.720Z",
+        "lastAt": "2026-10-19T04:06:17.720Z"
+      }
     },
     {
       "showId": "two-strangers-bway-2025",
@@ -226723,152 +227332,25 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/",
-        "https://stageraw.com/unconditional-a-musical-memoir/",
-        "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/"
-      ],
-      "dirFiles": 1,
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://stageraw.com/unconditional-a-musical-memoir/",
-          "host": "stageraw.com",
-          "knownOutletId": "stage-raw",
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2025-02-18",
-          "serpCensus": true
-        },
-        {
-          "url": "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/",
-          "host": "hollywoodtimes.net",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2025-02-22",
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/",
-          "host": "theatreinla.com",
-          "knownOutletId": "theatreinla",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatreinla--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:venue-verified:Skylight Theatre in Los Feliz",
-          "serpCensus": true,
-          "reverify": false
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"UNCONDITIONAL, a new musical memoir\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"UNCONDITIONAL, a new musical memoir\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"UNCONDITIONAL, a new musical memoir\" review mama",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "UNCONDITIONAL, a new musical memoir La MaMa / The Club review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "UNCONDITIONAL, a new musical memoir La MaMa / The Club review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "UNCONDITIONAL, a new musical memoir La MaMa / The Club review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 3,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 23,
-        "byReason": {
-          "non-review-host": 18,
-          "census-junk-host": 1,
-          "aggregator-internal-nav": 2,
-          "bare-host": 1,
-          "merch-store": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
       "unextractable": [],
-      "weIngestBlocked": [
-        {
-          "url": "https://stageraw.com/unconditional-a-musical-memoir/",
-          "host": "stageraw.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/",
-          "host": "hollywoodtimes.net",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -226878,7 +227360,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-18T22:55:46.864Z"
+      "computedAt": "2026-10-19T04:06:17.625Z"
     },
     {
       "showId": "under-the-shadow-off-west-end-2026",

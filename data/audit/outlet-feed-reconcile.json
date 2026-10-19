@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-19T00:50:59.803Z",
+  "generatedAt": "2026-10-19T04:06:39.109Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -57,6 +57,11 @@
       "id": "martin-guerre-west-end-2026",
       "title": "Martin Guerre",
       "openingDate": "2026-10-20"
+    },
+    {
+      "id": "copperfield-the-new-musical-off-broadway-2026",
+      "title": "Copperfield! The New Musical",
+      "openingDate": "2026-10-19"
     },
     {
       "id": "dog-mom-off-west-end-2026",
@@ -141,10 +146,6 @@
   ],
   "skipped": [
     {
-      "showId": "copperfield-the-new-musical-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
       "showId": "machine-learning-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     },
@@ -176,6 +177,10 @@
       "error": "HTTP 401 for https://musicaltheatrereview.com/feed/"
     },
     {
+      "outletId": "viewfromthegods",
+      "error": "AggregateError"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -186,12 +191,97 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 713,
-  "matchedGaps": 1,
-  "possibleGaps": 5,
+  "itemsScanned": 689,
+  "matchedGaps": 10,
+  "possibleGaps": 6,
   "gaps": [
+    {
+      "showId": "other-desert-cities-2026",
+      "title": "Other Desert Cities",
+      "level": "matched",
+      "outletId": "culturesauce",
+      "url": "https://culturesauce.com/ther-desert-cities-julia-louis-dreyfus-broadway-review/",
+      "headline": "Julia Louis-Dreyfus crackles as a brittle Hollywood matriarch in &#8216;Other Desert Cities&#8217; (Broadway review)",
+      "publishDate": "2026-10-19"
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "title": "Other Desert Cities",
+      "level": "matched",
+      "outletId": "nyt-theater",
+      "url": "https://newyorktheater.me/2026/10/18/other-desert-cities-broadway-review-julia-louis-dreyfus-spars/",
+      "headline": "Other Desert Cities Broadway Review. Julia Louis-Dreyfus spars.",
+      "publishDate": "2026-10-18"
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "title": "Other Desert Cities",
+      "level": "matched",
+      "outletId": "nypost",
+      "url": "https://nypost.com/2026/10/19/entertainment/other-desert-cities-review-julia-louis-dreyfus-and-allison-janneys-play-has-laughs-no-bite/",
+      "headline": "&#8216;Other Desert Cities&#8217; review: Julia Louis-Dreyfus and Allison Janney&#8217;s play has laughs, but no bite",
+      "publishDate": "2026-10-19"
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "title": "Other Desert Cities",
+      "level": "matched",
+      "outletId": "nysr",
+      "url": "https://nystagereview.com/2026/10/19/other-desert-cities-a-piercing-revival-of-jon-robin-baitzs-best-play/",
+      "headline": "Other Desert Cities: A Piercing Revival of Jon Robin Baitz’s Best Play",
+      "publishDate": "2026-10-19"
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "title": "Other Desert Cities",
+      "level": "matched",
+      "outletId": "nysr",
+      "url": "https://nystagereview.com/2026/10/19/other-desert-cities-star-power-in-action/",
+      "headline": "Other Desert Cities: Star Power in Action",
+      "publishDate": "2026-10-19"
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "title": "Other Desert Cities",
+      "level": "matched",
+      "outletId": "variety",
+      "url": "https://variety.com/2026/legit/reviews/other-desert-cities-broadway-review-1236915150/",
+      "headline": "&#8216;Other Desert Cities&#8217; Broadway Review: Julia Louis-Dreyfus, Ed Harris and Allison Janney Lead a Resounding Family Drama",
+      "publishDate": "2026-10-19"
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "title": "Other Desert Cities",
+      "level": "matched",
+      "outletId": "amny",
+      "url": "https://www.amny.com/entertainment/broadway/review-other-desert-cities-2026/",
+      "headline": "Review | ‘Other Desert Cities’ has more stars than sparks",
+      "publishDate": "2026-10-19"
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "title": "Other Desert Cities",
+      "level": "matched",
+      "outletId": "chicagotribune",
+      "url": "https://www.chicagotribune.com/2026/10/18/review-other-desert-cities-broadway/",
+      "headline": "Review: In &#8216;Other Desert Cities&#8217; on Broadway, Julia Louis-Dreyfus in an intense portrait of a family",
+      "publishDate": "2026-10-18"
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "title": "Other Desert Cities",
+      "level": "matched",
+      "outletId": "nytimes",
+      "url": "https://www.nytimes.com/2026/10/18/theater/other-desert-cities-review-julia-louis-dreyfus.html",
+      "headline": "‘Other Desert Cities’ Review: Julia Louis-Dreyfus’s Smashing Debut",
+      "publishDate": "2026-10-18"
+    },
     {
       "showId": "some-woman-west-end-2026",
       "title": "Some Woman",
@@ -217,6 +307,15 @@
       "outletId": "standard",
       "url": "https://standard.co.uk/culture/theatre/midnight-at-the-never-get-review-b1290727.html",
       "headline": "Midnight at the Never Get: Polished if schmaltzy musical",
+      "publishDate": null
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "title": "Other Desert Cities",
+      "level": "possible",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/review-other-desert-cities-revival-a-triumphant-broadway-debut-for-julia-louis-dreyfus_1857335/",
+      "headline": "Review: Other Desert Cities Revival, a Triumphant Broadway Debut for Julia Louis-Dreyfus",
       "publishDate": null
     },
     {

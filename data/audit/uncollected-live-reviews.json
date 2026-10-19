@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-19T00:50:45.877Z",
+  "generatedAt": "2026-10-19T04:06:25.269Z",
   "maxAgeHours": 12,
-  "showsAffected": 3,
-  "strandedFiles": 3,
+  "showsAffected": 4,
+  "strandedFiles": 4,
   "blackoutShows": [],
   "findings": [
     {
@@ -14,11 +14,27 @@
           "file": "thestage--nicole-serratore.json",
           "url": "https://www.thestage.co.uk/reviews/maybe-happy-ending-review-belasco-theatre-new-york-darren-criss-helen-j-shen-will-aronson-hue-park-michael-arden",
           "outlet": "The Stage",
-          "ageHours": 13.131968333333333
+          "ageHours": 16.392910555555556
         }
       ],
       "usable": 51,
       "discovered": 55,
+      "totalBlackout": false
+    },
+    {
+      "showId": "sinatra-the-musical-west-end-2026",
+      "title": "Sinatra The Musical",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "daily-mail--unknown.json",
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-16212883/Sir-Rod-Stewart-81-wife-Penny-Lancaster-55-enjoy-Sinatra-Musical-gala-night-announced-retirement-stage.html",
+          "outlet": "Daily Mail",
+          "ageHours": 13.869507222222222
+        }
+      ],
+      "usable": 55,
+      "discovered": 65,
       "totalBlackout": false
     },
     {
@@ -38,19 +54,19 @@
       "totalBlackout": false
     },
     {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "title": "Cabaret at the Kit Kat Club",
+      "showId": "slam-frank-off-broadway-2026",
+      "title": "Slam Frank",
       "status": "open",
       "stranded": [
         {
-          "file": "artsdesk--unknown.json",
-          "url": "https://theartsdesk.com/theatre/cabaret-kit-kat-club-playhouse-theatre-review-polymorphous-prodigious",
-          "outlet": "The Arts Desk",
-          "ageHours": null
+          "file": "talkinbroadway--unknown.json",
+          "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654721",
+          "outlet": "Talkin' Broadway",
+          "ageHours": 13.864293055555555
         }
       ],
-      "usable": 43,
-      "discovered": 57,
+      "usable": 36,
+      "discovered": 37,
       "totalBlackout": false
     }
   ]
