@@ -286,19 +286,20 @@ jobs:
       # base says (land-gate-delta.js decideGateDelta), so the base is looked
       # up, restored or run only for the gates the branch has red. A green
       # branch skips the base entirely (~16 min saved on a cache miss).
-      # Rollback: repo variable LAND_LAZY_BASE=0 restores the full base run.
+      # Rollback: repo variable LAND_LAZY_BASE_DISABLED=true restores the full
+      # base run.
       - name: Which gates need a base result
         if: steps.plan.outputs.skip_gauntlet != 'true' && vars.LAND_STRICT_GATES != '1'
         id: need
         env:
-          LAND_LAZY_BASE: ${{ vars.LAND_LAZY_BASE }}
+          LAND_LAZY_BASE_DISABLED: ${{ vars.LAND_LAZY_BASE_DISABLED }}
         run: |
           RED=$(node scripts/lib/land-gate-delta.js --red-gates "$RUNNER_TEMP/land-gauntlet/branch")
           echo "red=$RED" >> "$GITHUB_OUTPUT"
-          if [ "$LAND_LAZY_BASE" = "0" ]; then
+          if [ "$LAND_LAZY_BASE_DISABLED" = "true" ]; then
             echo "needed=true" >> "$GITHUB_OUTPUT"
             echo "gates=" >> "$GITHUB_OUTPUT"
-            echo "LAND_LAZY_BASE=0 — full base gauntlet (red on the branch: ${RED:-none})"
+            echo "LAND_LAZY_BASE_DISABLED=true — full base gauntlet (red on the branch: ${RED:-none})"
           elif [ -z "$RED" ]; then
             echo "needed=false" >> "$GITHUB_OUTPUT"
             echo "every gate green on the branch — no base result needed"
@@ -372,7 +373,7 @@ jobs:
         if: steps.plan.outputs.skip_gauntlet != 'true' && vars.LAND_STRICT_GATES != '1' && steps.need.outputs.needed == 'true' && steps.base_cache.outputs.cache-hit != 'true' && steps.base_artifact.outputs.hit != 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Empty = every gate (LAND_LAZY_BASE=0); else the branch's red gates.
+          # Empty = every gate (LAND_LAZY_BASE_DISABLED=true); else the branch's red gates.
           GAUNTLET_GATES: ${{ steps.need.outputs.gates }}
           BASE: ${{ steps.rebase.outputs.base }}
           LAND_BASE: ${{ steps.rebase.outputs.base }}
@@ -447,8 +448,8 @@ jobs:
           LAND_TOPLEVEL_ADVISORY: ${{ vars.LAND_TOPLEVEL_ADVISORY }}
           LAND_E2E_UNIT_BLOCKING: ${{ vars.LAND_E2E_UNIT_BLOCKING }}
           # Only the branch's red gates can be refused, so only they are
-          # re-measured (every gate when LAND_LAZY_BASE=0, as before).
-          GAUNTLET_GATES: ${{ vars.LAND_LAZY_BASE != '0' && steps.need.outputs.red || '' }}
+          # re-measured (every gate when LAND_LAZY_BASE_DISABLED=true, as before).
+          GAUNTLET_GATES: ${{ vars.LAND_LAZY_BASE_DISABLED != 'true' && steps.need.outputs.red || '' }}
         # A cached base was measured against an older private-data clone (the
         # unit batches read data/*.json, which is in no tree hash — it changes
         # every ~30 min and keying on it would never hit). If the data has
@@ -473,7 +474,7 @@ jobs:
       # Not published: the confirm run measured the red gates only (see the
       # full-base-only rule on the save steps above).
       - name: Publish the fresh base result (artifact)
-        if: always() && steps.confirm.outputs.fresh == 'true' && vars.LAND_LAZY_BASE == '0'
+        if: always() && steps.confirm.outputs.fresh == 'true' && vars.LAND_LAZY_BASE_DISABLED == 'true'
         uses: actions/upload-artifact@v5
         with:
           name: ${{ steps.basekey.outputs.key }}
@@ -930,11 +931,11 @@ jobs:
         # makes vercel-deploy.yml's content gate judge it like a scheduled
         # tick: it builds only when site files or core data differ from what
         # is live, so a docs or bookkeeping landing costs one ~30s gate job.
-        # Rollback: repo variable LAND_DEPLOY_DISPATCH=0.
+        # Rollback: repo variable LAND_DEPLOY_DISPATCH_DISABLED=true.
         # !cancelled(): a failed cleanup step after the push (ref delete, train
         # unmark, alert resolve) must not strand a change that is on main; a
         # parked (self-cancelled) run never landed anything.
-        if: ${{ !cancelled() && steps.land.outputs.landed == 'true' && steps.admit.outcome == 'success' && vars.LAND_DEPLOY_DISPATCH != '0' }}
+        if: ${{ !cancelled() && steps.land.outputs.landed == 'true' && steps.admit.outcome == 'success' && vars.LAND_DEPLOY_DISPATCH_DISABLED != 'true' }}
         continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
