@@ -17,11 +17,6 @@ on:
         required: false
         type: boolean
         default: false
-      include_past:
-        description: 'Also read the Off Broadway past-reviews archive'
-        required: false
-        type: boolean
-        default: false
 
 concurrency:
   group: collect-talkinbroadway-index
@@ -79,11 +74,9 @@ jobs:
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           INPUT_DRY_RUN: ${{ inputs.dry_run }}
-          INPUT_INCLUDE_PAST: ${{ inputs.include_past }}
         run: |
           ARGS=""
           if [ "${INPUT_DRY_RUN}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
-          if [ "${INPUT_INCLUDE_PAST}" = "true" ]; then ARGS="$ARGS --include-past"; fi
           # shellcheck disable=SC2086
           node scripts/collect-talkinbroadway-index.js $ARGS
 

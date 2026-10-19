@@ -19,10 +19,9 @@
  * scripts/lib/browserbase-caps.js (6/day, expires 2026-11-19).
  *
  * Usage:
- *   node scripts/collect-talkinbroadway-index.js [--dry-run] [--include-past]
+ *   node scripts/collect-talkinbroadway-index.js [--dry-run]
  *     [--window-days=75] [--max-pages=12] [--data-dir=PATH]
  *   --dry-run      list what is missing, fetch nothing but the index pages, write nothing
- *   --include-past also read the Off Broadway "past reviews" archive
  */
 'use strict';
 
@@ -36,20 +35,21 @@ const {
   pickCriticForShow, pageTitleMatchesShow,
 } = require('./lib/talkinbroadway-index');
 
-const USAGE = 'Usage: node scripts/collect-talkinbroadway-index.js [--dry-run] [--include-past] [--window-days=N] [--max-pages=N] [--data-dir=PATH]';
+const USAGE = 'Usage: node scripts/collect-talkinbroadway-index.js [--dry-run] [--window-days=N] [--max-pages=N] [--data-dir=PATH]';
 const args = process.argv.slice(2);
 if (hasHelpFlag(args)) { console.log(USAGE); process.exit(0); }
 
 const getArg = (name) => { const a = args.find((x) => x.startsWith(`--${name}=`)); return a ? a.split('=').slice(1).join('=') : null; };
 const dryRun = args.includes('--dry-run');
-const includePast = args.includes('--include-past');
 const windowDays = parseInt(getArg('window-days'), 10) || 75;
 const maxPages = parseInt(getArg('max-pages'), 10) || 12;
 const reviewTextsDir = getArg('data-dir') || path.join(__dirname, '..', 'data', 'review-texts');
 const showsPath = path.join(__dirname, '..', 'data', 'shows.json');
 
-const INDEX_PAGES = [`${BASE}/page/world/index.html`, `${BASE}/page/ob/index.html`];
-const PAST_PAGES = [`${BASE}/page/ob/past.html`];
+// The index pages (world/index, ob/index) show only the newest review and link to no others;
+// the "past reviews" pages list every review as "<title> - M/D/YY". A review shows on the
+// past page once it is no longer the newest.
+const LIST_PAGES = [`${BASE}/page/world/past.html`, `${BASE}/page/ob/past.html`];
 const CHALLENGE = /just a moment|checking your browser|cf-chl|attention required|enable javascript and cookies/i;
 
 /** (showId|url) for every talkinbroadway file already in the corpus. */
@@ -134,7 +134,7 @@ async function main() {
   try {
     // 1. Index pages -> review links. The index page itself is the newest review.
     const entries = [];
-    for (const url of [...INDEX_PAGES, ...(includePast ? PAST_PAGES : [])]) {
+    for (const url of LIST_PAGES) {
       try {
         const r = await readPage(page, url);
         const links = extractReviewLinks(r.anchors);
