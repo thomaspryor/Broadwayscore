@@ -67,6 +67,38 @@ const PRECURSOR_MULTIPLIER = 1.35;
 // Off-Broadway awards (Lortel, Drama Desk, OCC, Obie): expected points by tier.
 const OB_AWARDS_EV_BY_TIER = { 1: 1.0, 2: 2.0, 3: 3.5, 4: 6.0, 5: 9.0 };
 
+// An Off-Broadway show already open at draft time can only earn award points,
+// and its CriticScore is known. Its award EV is then measured, not guessed:
+// the average fantasy award points last season's catalog-venue Off-Broadway
+// shows earned, grouped by CriticScore band (generate-fantasy-config.js
+// builds the rows from awards.json). Bands are pooled because a single label
+// holds a handful of shows. BRO-5666.
+const OB_AWARD_BANDS = {
+  'Critical Gold': 'high', 'Recommended': 'high',
+  'Worth Seeing': 'mid',
+  'Skippable': 'low', 'Critical Miss': 'low',
+};
+const OB_AWARD_BAND_MIN_N = 5;
+const OB_AWARD_BAND_LABEL = { high: 'Recommended or better', mid: 'Worth Seeing', low: 'Skippable or lower' };
+
+/** rows: [{ criticLabel, points }] → { high, mid, low } mean points (null when < 5 shows). */
+function measureObAwardsByBand(rows) {
+  const sums = {};
+  for (const r of rows) {
+    const band = OB_AWARD_BANDS[r.criticLabel];
+    if (!band || !Number.isFinite(r.points)) continue;
+    const b = sums[band] || (sums[band] = { n: 0, total: 0 });
+    b.n++;
+    b.total += r.points;
+  }
+  const out = {};
+  for (const band of ['high', 'mid', 'low']) {
+    const b = sums[band];
+    out[band] = b && b.n >= OB_AWARD_BAND_MIN_N ? { mean: round2(b.total / b.n), n: b.n } : null;
+  }
+  return out;
+}
+
 const DEFAULT_TIER = 3;
 const MAX_NOM_PROB = 0.92;
 
@@ -283,15 +315,26 @@ function projectShowPoints(show, ctx) {
   // Awards
   let awardsEV = 0;
   let awardsDetail = null;
+  let awardsMeasuredNote = null;
   if (isOB) {
-    awardsEV = OB_AWARDS_EV_BY_TIER[tier];
+    const band = ctx.criticLocked && ctx.criticScore != null && ctx.getCriticLabel
+      ? OB_AWARD_BANDS[ctx.getCriticLabel(ctx.criticScore)] : null;
+    const measured = band ? ctx.obAwardsByBand?.[band] : null;
+    if (measured) {
+      awardsEV = measured.mean;
+      awardsMeasuredNote = `Already open, awards only: last season's Off-Broadway shows rated ${OB_AWARD_BAND_LABEL[band]} averaged ${measured.mean} award points`;
+    } else {
+      awardsEV = OB_AWARDS_EV_BY_TIER[tier];
+    }
   } else {
     awardsDetail = expectedAwardsPoints(show, priors, ctx.categoryField, S.awards);
     awardsEV = awardsDetail.points;
     notes.push(awardsDetail.note);
   }
 
-  if (priors.note) notes.unshift(`Tier ${tier}: ${priors.note}`);
+  // The tier prior plays no part in a measured price, so it is not the reason shown.
+  if (awardsMeasuredNote) notes.unshift(awardsMeasuredNote);
+  else if (priors.note) notes.unshift(`Tier ${tier}: ${priors.note}`);
   else notes.unshift(`Tier ${tier}: priced as a typical ${show.category === 'off-broadway' ? 'Off-Broadway' : 'Broadway'} ${show.isRevival ? 'revival' : 'new'} ${show.type === 'musical' ? 'musical' : 'play'}`);
 
   const totalPoints = round2(criticEV + audienceEV + boxOfficeEV + awardsEV);
@@ -310,8 +353,13 @@ function projectShowPoints(show, ctx) {
   };
 }
 
-/** price = clamp(round(ev × k), min, max) — same shape as price-fantasy-league.js */
-function priceFromEV(evPoints, k, { minPrice = 5, maxPrice = 35 } = {}) {
+/**
+ * price = clamp(round(ev × k), min, max) — same shape as price-fantasy-league.js.
+ * The floor is $1, not $5 (owner 2026-10-19, BRO-5666): a $5 floor left no
+ * cheap picks to fill the last slots with, and overpriced shows that can only
+ * earn a few points. $1 keeps every pick from being free.
+ */
+function priceFromEV(evPoints, k, { minPrice = 1, maxPrice = 35 } = {}) {
   if (!Number.isFinite(evPoints) || evPoints <= 0) return minPrice;
   return Math.max(minPrice, Math.min(maxPrice, Math.round(evPoints * k)));
 }
@@ -343,6 +391,7 @@ module.exports = {
   weeklyGrossCeiling,
   buildCategoryField,
   expectedAwardsPoints,
+  measureObAwardsByBand,
   projectShowPoints,
   priceFromEV,
   calibrateK,

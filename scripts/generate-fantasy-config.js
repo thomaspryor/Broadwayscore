@@ -98,7 +98,7 @@ try {
 } catch { /* no snapshot yet */ }
 
 // DRAFT_OPENS is a New York calendar date (same rule as src/config/fantasy.ts isDraftOpen).
-const { nyDate } = require('./lib/fantasy-helpers');
+const { nyDate, computeAwardsPoints } = require('./lib/fantasy-helpers');
 const draftHasOpened = nyDate(new Date().toISOString()) >= DRAFT_OPENS;
 // Nobody can hold a pick before the draft opens, so prices are provisional
 // until then: every pre-open run reprices from the latest data. Repricing
@@ -248,19 +248,23 @@ function isEligibleOffBroadway(show) {
 }
 
 function selectOffBroadway(candidates) {
-  // Shows still to open earn on every pillar; already-open ones are
-  // CriticScore-locked (see below) so only award-caliber ones make the cut.
+  // Shows still to open earn on every pillar; OB_MAX bounds how many of
+  // those the picker lists. Already-open ones are CriticScore-locked (see
+  // below) and earn awards only, so they price at $1-$2: the game's honest
+  // cheap picks. Every one at a catalog venue is listed and none counts
+  // against OB_MAX, so they never crowd out a show still to open. They used
+  // to need a CriticScore of 80+, which left one $1 show (BRO-5666).
   const tierOf = s => pricing.clampTier(priorsById[s.id]?.tier);
   const notYetOpen = candidates
-    .filter(s => s.openingDate >= DRAFT_OPENS)
-    .sort((a, b) => (tierOf(b) - tierOf(a)) || a.openingDate.localeCompare(b.openingDate));
-  const alreadyOpen = candidates
-    .filter(s => s.openingDate < DRAFT_OPENS)
-    .map(s => ({ show: s, cs: computeCriticScore(s.id) }))
-    .filter(x => x.cs != null && x.cs >= 80)
-    .sort((a, b) => b.cs - a.cs)
-    .map(x => x.show);
-  return [...notYetOpen, ...alreadyOpen].slice(0, OB_MAX);
+    .filter(s => !isAlreadyOpenOB(s))
+    .sort((a, b) => (tierOf(b) - tierOf(a)) || a.openingDate.localeCompare(b.openingDate))
+    .slice(0, OB_MAX);
+  const alreadyOpen = candidates.filter(isAlreadyOpenOB);
+  return [...notYetOpen, ...alreadyOpen];
+}
+
+function isAlreadyOpenOB(show) {
+  return show.category === 'off-broadway' && !!show.openingDate && show.openingDate < DRAFT_OPENS;
 }
 
 // ── Build the catalog ───────────────────────────────────────────────
@@ -279,11 +283,15 @@ if (frozen && !refreeze) {
     }
     catalogIds.add(s.id);
   }
-  // Off-Broadway additions only when the catalog still has room.
+  // Off-Broadway additions only when the catalog still has room for a show
+  // still to open (already-open, awards-only shows don't take that room).
   for (const s of obEligible) {
     if (catalogIds.has(s.id)) continue;
-    const obCount = [...catalogIds].filter(id => (showById.get(id) || existingLeague?.shows?.[id])?.category === 'off-broadway').length;
-    if (obCount >= OB_MAX) break;
+    const obCount = [...catalogIds].filter(id => {
+      const row = showById.get(id) || existingLeague?.shows?.[id];
+      return row?.category === 'off-broadway' && !isAlreadyOpenOB(row);
+    }).length;
+    if (!isAlreadyOpenOB(s) && obCount >= OB_MAX) continue;
     console.error(`  NEW Off-Broadway show since freeze: ${s.id} — pricing it now`);
     catalogIds.add(s.id);
   }
@@ -327,6 +335,29 @@ for (const show of catalog) {
 // ── Pricing ─────────────────────────────────────────────────────────
 const categoryField = pricing.buildCategoryField(catalog.filter(s => isBroadwayCategory(s)), priorsById, categorySlots);
 
+// Last season's realized Off-Broadway award points by CriticScore band, for
+// pricing already-open Off-Broadway shows (awards are all they can earn).
+const obAwardsByBand = (() => {
+  const shift = d => `${Number(d.slice(0, 4)) - 1}${d.slice(4)}`;
+  const start = shift(TONY_WINDOW.start), end = shift(TONY_WINDOW.end);
+  const [y1, y2] = TONY_WINDOW.label.split('-').map(Number);
+  const season = `${y1 - 1}-${String(y2 - 1).padStart(2, '0')}`;
+  let awardsData;
+  try { awardsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'awards.json'), 'utf8')); } catch { return {}; }
+  const rows = [];
+  for (const s of allShows) {
+    if (s.category !== 'off-broadway' || !['play', 'musical'].includes(s.type)) continue;
+    if (!s.openingDate || s.openingDate < start || s.openingDate > end) continue;
+    if (!OB_VENUE_RE.test(s.venue || '')) continue;
+    const cs = computeCriticScore(s.id);
+    if (cs == null) continue;
+    rows.push({ criticLabel: getCriticLabel(cs), points: computeAwardsPoints(s.id, awardsData, SCORING.awards, { season }).points });
+  }
+  const bands = pricing.measureObAwardsByBand(rows);
+  console.error(`Off-Broadway award EV by band (${season}, ${rows.length} shows): ${JSON.stringify(bands)}`);
+  return bands;
+})();
+
 function projectFor(show) {
   const f = facts.get(show.id);
   return pricing.projectShowPoints(show, {
@@ -342,6 +373,7 @@ function projectFor(show) {
     weeklyGrossPriors,
     venueCapacity: f.isBW ? venueCapacity(show.venue) : null,
     getCriticLabel,
+    obAwardsByBand,
   });
 }
 
