@@ -1343,6 +1343,37 @@
     "queuedAt": "2026-10-19T02:20:52.235Z"
   },
   {
+    "conditionKey": "land:land/bro-5647-formd",
+    "title": "Landing blocked: rebase red on land/bro-5647-formd",
+    "description": "land.yml did not land land/bro-5647-formd: the rebase gate went red at 20b6811648. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5647-formd @ 20b6811648 (origin/land/bro-5647-formd) → origin/main @ 183e1f21c6 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 183e1f21c6: Rebasing (1/2) error: could not apply e300519a046... fix(sec): read a Form D's stated capitalized amount, not only the offering ceiling hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm <conf Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39193771363",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5647-formd"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "20b6811648d527ffd85ff67403f10acdf767466c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39193771363"
+      }
+    ],
+    "queuedAt": "2026-10-19T04:10:07.064Z"
+  },
+  {
     "conditionKey": "review-gap:opening-window:cadel-lungs-on-legs-west-end-2026",
     "title": "Review gap — \"Cadel: Lungs On Legs\" missing 1 cited review(s)",
     "description": "Cadel: Lungs On Legs (cadel-lungs-on-legs-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=cadel-lungs-on-legs-west-end-2026 --checkpoint --ingest-missing",
