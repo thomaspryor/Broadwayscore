@@ -599,5 +599,61 @@
       }
     ],
     "queuedAt": "2026-10-19T15:39:12.778Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:other-desert-cities-2026:nypost",
+    "title": "Auto-remediation gave up on other-desert-cities-2026",
+    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"other-desert-cities-2026\",\"outlet\":\"nypost\",\"phases\":\"0,1,2,3\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-19T15:43:04.896Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:other-desert-cities-2026:guardian",
+    "title": "Auto-remediation gave up on other-desert-cities-2026",
+    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"other-desert-cities-2026\",\"outlet\":\"guardian\",\"phases\":\"0,1,2,3\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-19T15:43:04.906Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:other-desert-cities-2026:timeout",
+    "title": "Auto-remediation gave up on other-desert-cities-2026",
+    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"other-desert-cities-2026\",\"outlet\":\"timeout\",\"phases\":\"0,1,2,3\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-19T15:43:04.919Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-triumph-off-west-end-2026",
+    "title": "Placeholder synopsis on Triumph",
+    "description": "synopsis for triumph-off-west-end-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-19T15:43:07.538Z"
   }
 ]

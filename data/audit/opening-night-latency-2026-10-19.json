@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-10-19T14:37:24.031Z",
+  "generatedAt": "2026-10-19T15:43:12.344Z",
   "date": "2026-10-19",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 193965,
+  "entryCount": 202785,
   "shows": [
     {
       "showId": "some-woman-west-end-2026",
-      "reviewCount": 19,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 11195698,
-        "scored-to-rebuilt": 443081,
+        "scored-to-rebuilt": 262927,
         "rebuilt-to-deployed": 150443301
       },
       "reviews_over_15min": 0,
@@ -323,13 +323,13 @@
     },
     {
       "showId": "dog-mom-off-west-end-2026",
-      "reviewCount": 12,
+      "reviewCount": 13,
       "median_e2e_ms": 37537170,
       "p90_e2e_ms": 37537170,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 672135,
-        "scored-to-rebuilt": 146755,
+        "collected-to-scored": 840574,
+        "scored-to-rebuilt": 175620,
         "rebuilt-to-deployed": 112274825
       },
       "reviews_over_15min": 1,
@@ -554,7 +554,7 @@
     },
     {
       "showId": "macbeth-off-broadway-2026",
-      "reviewCount": 13,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1304,13 +1304,13 @@
     },
     {
       "showId": "the-cherry-orchard-west-end-2026",
-      "reviewCount": 39,
+      "reviewCount": 41,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 71609,
-        "scored-to-rebuilt": 257107,
+        "scored-to-rebuilt": 252260,
         "rebuilt-to-deployed": 145781399
       },
       "reviews_over_15min": 0,
@@ -3515,13 +3515,13 @@
     },
     {
       "showId": "baby-off-west-end-2026",
-      "reviewCount": 9,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1579333,
+        "scored-to-rebuilt": 993619,
         "rebuilt-to-deployed": 142647428
       },
       "reviews_over_15min": 0,
@@ -3560,13 +3560,13 @@
     },
     {
       "showId": "angels-bone-west-end-2026",
-      "reviewCount": 8,
+      "reviewCount": 10,
       "median_e2e_ms": 63559039,
       "p90_e2e_ms": 63559271,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 589516,
-        "scored-to-rebuilt": 293890,
+        "scored-to-rebuilt": 370525,
         "rebuilt-to-deployed": 61996211
       },
       "reviews_over_15min": 2,
@@ -3976,7 +3976,7 @@
     },
     {
       "showId": "shadowlands-west-end-2026",
-      "reviewCount": 20,
+      "reviewCount": 19,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4246,7 +4246,7 @@
     },
     {
       "showId": "venus-in-fur-2011",
-      "reviewCount": 19,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4651,7 +4651,7 @@
     },
     {
       "showId": "catch-me-if-you-can-2011",
-      "reviewCount": 19,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5926,7 +5926,7 @@
     },
     {
       "showId": "elf-2024",
-      "reviewCount": 14,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7096,7 +7096,7 @@
     },
     {
       "showId": "1536-west-end-2026",
-      "reviewCount": 17,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7396,13 +7396,13 @@
     },
     {
       "showId": "other-desert-cities-2026",
-      "reviewCount": 26,
+      "reviewCount": 27,
       "median_e2e_ms": 8976420,
       "p90_e2e_ms": 8985004,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 164830,
-        "scored-to-rebuilt": 423004,
+        "scored-to-rebuilt": 421255,
         "rebuilt-to-deployed": 8230769
       },
       "reviews_over_15min": 18,
@@ -8187,6 +8187,21 @@
     {
       "showId": "hungry-women-off-broadway-2026",
       "reviewCount": 9,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "mother-courage-and-her-children-globe-west-end-2026",
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
