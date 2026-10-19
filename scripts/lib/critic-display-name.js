@@ -39,6 +39,10 @@
  *   5. suffix stripping LAST — job titles, pronouns, HTML residue — via the
  *      same stripBylineSuffixes() S7-T4 runs at capture time (plus the
  *      ALL-CAPS → title-case rule normalizeBylineCapture applies at capture).
+ *   6. one spelling per person — the critic-registry.json displayName that
+ *      foldPersonName() (accents, case, apostrophes, periods/hyphens) equates
+ *      with the name, when that fold key is unambiguous (or unambiguous at
+ *      this outlet); then curly apostrophes → ASCII ' (registry majority).
  *      The alias and placeholder lookups key on the stripped form too, so a
  *      trailing ", Chief Theatre Critic" can neither hide a typo nor smuggle
  *      a placeholder through.
@@ -132,6 +136,7 @@ let _outletNameSet = null;
 let _fixesByKey = null;
 let _fixesBySlug = null;
 let _criticRegistryNames = null;
+let _registryFoldIndex = null;
 
 function stripLeadingThe(s) {
   return s.replace(/^the\s+/, '');
@@ -207,6 +212,151 @@ function criticRegistryNames() {
     if (key && !_criticRegistryNames.has(key)) _criticRegistryNames.set(key, clean);
   }
   return _criticRegistryNames;
+}
+
+/**
+ * Spelling-insensitive key for one person's name: accents folded, case
+ * dropped, apostrophes (' and ’) removed so "O'Dell" = "O’Dell" = "ODell",
+ * every other punctuation run (periods, hyphens, commas) → one space, spaces
+ * collapsed. "Juan A. Ramírez" / "Juan A Ramirez" → "juan a ramirez";
+ * "D.L. Groover" / "D. L. Groover" → "d l groover".
+ */
+function foldPersonName(s) {
+  return foldDiacritics(String(s || ''))
+    .toLowerCase()
+    .replace(/['’‘`ʼ]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+/** Trim stray capture punctuation off the edges of a name; a trailing period after an initial ("Dave B.") stays. */
+function trimEdgePunctuation(s) {
+  return String(s || '').replace(/^[\s.,;:]+/, '').replace(/([a-z\u00df-\u00ff]{2})\s*[.,;:]+$/, '$1').trim();
+}
+
+/**
+ * The registry's displayName is the longest byline form seen, so it carries
+ * the same capture artifacts the display path cleans: "Marilyn Stasio.",
+ * "Rob Weinert- Kendt", "SHERI GROSS", "Bedatri D.Choudhury". Tidy those
+ * before the spelling can be adopted.
+ */
+function tidyRegistrySpelling(s) {
+  let out = stripBylineSuffixes(String(s || '')).trim();
+  // "Weinert- Kendt" -> "Weinert-Kendt" (space on ONE side only; "Sam - Admin" is a separator, left alone)
+  out = out.replace(/(\S)-\s+(?=\S)/g, '$1-').replace(/(\S)\s+-(?=\S)/g, '$1-');
+  out = out.replace(/(\b\p{Lu}\.)(?=\p{Lu}\p{Ll})/gu, '$1 ');  // "D.Choudhury" -> "D. Choudhury"
+  out = trimEdgePunctuation(out);
+  if (out && /^[A-Z][A-Z\s.'’-]+$/.test(out) && /[A-Z]{2}/.test(out.replace(/[^A-Z]/g, ''))) out = titleCaseName(out);
+  return out;
+}
+
+/**
+ * critic-registry.json-shaped { critics } display names indexed by foldPersonName():
+ * fold key → [{ name, outlets:Set }] (one row per distinct spelling). A
+ * registry spelling that does not open with a capital ("andrew") is never a
+ * target — it would downgrade a correctly cased byline.
+ */
+function buildRegistryFoldIndex(registry) {
+  const index = new Map();
+  const critics = (registry && registry.critics) || {};
+  for (const c of Object.values(critics)) {
+    if (!c || typeof c.displayName !== 'string') continue;
+    const clean = tidyRegistrySpelling(c.displayName);
+    if (!clean || !/^\p{Lu}/u.test(clean)) continue;
+    const key = foldPersonName(clean);
+    if (!key || key.length < 3) continue;
+    const rows = index.get(key) || [];
+    let row = rows.find((r) => r.name === clean);
+    if (!row) { row = { name: clean, outlets: new Set() }; rows.push(row); }
+    for (const o of Array.isArray(c.knownOutlets) ? c.knownOutlets : []) row.outlets.add(o);
+    if (typeof c.primaryOutlet === 'string') row.outlets.add(c.primaryOutlet);
+    index.set(key, rows);
+  }
+  return index;
+}
+
+let _curatedDisplayValues = null;
+/** The display spellings critic-name-fixes.json maps TO (curated, hand-checked). */
+function curatedDisplayValues() {
+  if (!_curatedDisplayValues) _curatedDisplayValues = new Set(Object.values(CRITIC_NAME_FIXES));
+  return _curatedDisplayValues;
+}
+
+/** The fold index over data/critic-registry.json (optional file: absent → empty, no rewrites). */
+function registryFoldIndex() {
+  if (_registryFoldIndex) return _registryFoldIndex;
+  let registry = null;
+  try { registry = loadCriticRegistry(); } catch (e) { registry = null; }
+  _registryFoldIndex = buildRegistryFoldIndex(registry);
+  return _registryFoldIndex;
+}
+
+/** Test hook: use this { critics } object instead of data/critic-registry.json (null → reload from disk). */
+function _useCriticRegistry(registry) {
+  _registryFoldIndex = registry ? buildRegistryFoldIndex(registry) : null;
+}
+
+/**
+ * The critic registry's spelling of this person when the displayed name is
+ * the same name modulo accents / case / punctuation (BRO: one critic shown as
+ * "Juan A Ramírez", "Juan A Ramirez", "Juan A. Ramirez" across shows). One
+ * registry spelling for the fold key → that spelling. Several distinct
+ * spellings (two people whose names fold together) → the one registered at
+ * this review's outlet if exactly one is; otherwise the name is left alone.
+ */
+function registrySpelling(name, outletId) {
+  // The curated fixes table outranks the (data-derived) registry spelling.
+  if (curatedDisplayValues().has(name)) return name;
+  const rows = registryFoldIndex().get(foldPersonName(name));
+  if (!rows || rows.length === 0) return name;
+  let target = null;
+  if (rows.length === 1) target = rows[0].name;
+  else if (outletId) {
+    const atOutlet = rows.filter((r) => r.outlets.has(outletId));
+    if (atOutlet.length === 1) target = atOutlet[0].name;
+  }
+  if (!target) return name;
+  // A hyphen is never a capture artifact, its loss is ("Laura Collins
+  // Hughes" in the registry vs the byline "Laura Collins-Hughes"): never
+  // adopt a spelling that drops one.
+  if ((name.match(/-/g) || []).length > (target.match(/-/g) || []).length) return name;
+  // Same for an initialism the registry title-cased ("KA Bradley" vs "Ka Bradley").
+  const targetTokens = new Set(target.split(/\s+/));
+  if (name.split(/\s+/).some((t) => /^\p{Lu}{2,3}$/u.test(t) && !targetTokens.has(t))) return name;
+  // A known-bad spelling the curated fixes table corrects never wins.
+  return keepDiacritics(CRITIC_NAME_FIXES[target] || target, name);
+}
+
+/**
+ * Accents are never a capture artifact either ("José Solís" stays José
+ * Solís, the S7-T1 rule): carry the name's accented letters onto the
+ * registry spelling, so "Juan A Ramírez" → "Juan A. Ramírez" while
+ * "Juan A Ramirez" → "Juan A. Ramirez". The two strings fold equal, so their
+ * letter sequences align one to one; any misalignment returns the target.
+ */
+function keepDiacritics(target, name) {
+  const base = (ch) => foldDiacritics(ch).toLowerCase();
+  const letters = [...String(name).normalize('NFC')].filter((ch) => /^[a-z0-9]$/.test(base(ch)));
+  const chars = [...String(target).normalize('NFC')];
+  let i = 0;
+  let changed = false;
+  const out = chars.map((ch) => {
+    if (!/^[a-z0-9]$/.test(base(ch))) return ch;
+    const src = letters[i++];
+    if (!src || base(src) !== base(ch)) { i = Infinity; return ch; }
+    if (src.toLowerCase() !== base(src) && ch.toLowerCase() === base(ch)) {
+      changed = true;
+      return ch === ch.toUpperCase() ? src.toUpperCase() : src.toLowerCase();
+    }
+    return ch;
+  });
+  if (!changed || i === Infinity || i !== letters.length) return target;
+  return out.join('');
+}
+
+/** One apostrophe style in displayed names: ASCII ' (the critic registry's majority form, 6 of 7). */
+function straightenApostrophes(s) {
+  return String(s).replace(/[’‘ʼ]/g, "'");
 }
 
 /** Every registered outlet's own names that read as an outlet, minus curated critics and registry bylines. */
@@ -514,6 +664,14 @@ function displayCriticName(raw, outlet, registryEntry) {
   //    Gardner" are one critic.
   let out = stripBylineSuffixes(name).trim();
   if (out && /^[A-Z][A-Z\s.'’-]+$/.test(out) && /[A-Z]{2}/.test(out.replace(/[^A-Z]/g, ''))) out = titleCaseName(out);
+  // Stray capture punctuation at the edges (". Charles Spencer", "Tara
+  // Whenray.", "Malcolm Rutherford ."). A trailing period after an initial
+  // or abbreviation ("Dave B.", "Jr.") is kept: only one after 2+ lowercase.
+  out = trimEdgePunctuation(out);
+  if (!out) return null;
+  // 6. one spelling per person: the critic registry's form when the name is
+  //    the same modulo accents/case/punctuation, then one apostrophe style.
+  out = straightenApostrophes(registrySpelling(out, ctx.id));
   return out || null;
 }
 
@@ -528,6 +686,7 @@ function _resetCaches() {
   _fixesByKey = null;
   _fixesBySlug = null;
   _criticRegistryNames = null;
+  _registryFoldIndex = null;
 }
 
 module.exports = {
@@ -541,5 +700,8 @@ module.exports = {
   edgeVariants,
   isCuratedCritic,
   outletNameSet,
+  foldPersonName,
+  registrySpelling,
+  _useCriticRegistry,
   _resetCaches,
 };
