@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-19T04:19:48.238Z",
+  "timestamp": "2026-10-19T05:50:49.326Z",
   "stats": {
-    "totalReviews": 57577,
-    "alreadyFlagged": 21377,
+    "totalReviews": 57609,
+    "alreadyFlagged": 21376,
     "dateGuardCatches": 195,
-    "directorMismatch": 1974,
-    "tvFilmSignals": 1616,
+    "directorMismatch": 1975,
+    "tvFilmSignals": 1622,
     "londonSignals": 2445,
     "offBroadwaySignals": 523,
-    "yearMismatch": 157,
-    "noPublishDate": 5230
+    "yearMismatch": 159,
+    "noPublishDate": 5234
   },
   "findings": [
     {
@@ -30227,6 +30227,132 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "file": "amny--matt-windman.json",
+      "score": 50,
+      "publishDate": "2026-10-19",
+      "url": "https://www.amny.com/entertainment/broadway/review-other-desert-cities-2026/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from other-desert-cities-2011"
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "file": "ew--shelby-stivale.json",
+      "score": 79,
+      "publishDate": "2026-10-19",
+      "url": "https://ew.com/other-desert-cities-review-family-dysfunction-on-broadway-12178243",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "file": "hollywood-reporter--richard-lawson.json",
+      "score": 42,
+      "publishDate": "2026-10-19",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/other-desert-cities-theater-review-julia-louis-dreyfus-1236734079/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2011 (2x) more than 2026 (0x). 2011 matches production: other-desert-cities-2011"
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "file": "nypost--johnny-oleksinski.json",
+      "score": 57,
+      "publishDate": "2026-10-19",
+      "url": "https://nypost.com/2026/10/19/entertainment/other-desert-cities-review-julia-louis-dreyfus-and-allison-janneys-play-has-laughs-no-bite/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "file": "nysr--frank-scheck.json",
+      "score": 77,
+      "publishDate": "2026-10-19",
+      "url": "https://nystagereview.com/2026/10/19/other-desert-cities-star-power-in-action/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "file": "nysr--melissa-rose-bernardo.json",
+      "score": 80,
+      "publishDate": "2026-10-19",
+      "url": "https://nystagereview.com/2026/10/19/other-desert-cities-a-piercing-revival-of-jon-robin-baitzs-best-play/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": 61,
+      "publishDate": "2026-10-18",
+      "url": "https://newyorktheater.me/2026/10/18/other-desert-cities-broadway-review-julia-louis-dreyfus-spars/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "file": "theatrely--joey-sims.json",
+      "score": 63,
+      "publishDate": "2026-10-16",
+      "url": "https://www.theatrely.com/post/a-starry-thrilling-other-desert-cities-returns-to-broadway-review",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2011 (3x) more than 2026 (0x). 2011 matches production: other-desert-cities-2011"
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "file": "wsj--charles-isherwood.json",
+      "score": 87,
+      "publishDate": "2026-10-19",
+      "url": "https://www.wsj.com/articles/other-desert-cities-review-julia-louis-dreyfuss-slashing-wit-on-broadway-d27e51fe",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
