@@ -1,16 +1,100 @@
 {
-  "generatedAt": "2026-10-19T11:34:03.586Z",
+  "generatedAt": "2026-10-19T14:57:27.007Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 249,
-  "clean": 227,
-  "defective": 22,
+  "checked": 240,
+  "clean": 208,
+  "defective": 32,
   "byType": {
-    "score-drift": 21,
-    "missing-from-prod": 12
+    "score-drift": 30,
+    "missing-from-prod": 16
   },
   "shows": [
+    {
+      "showId": "dog-mom-off-west-end-2026",
+      "title": "Dog Mom",
+      "openingDate": "2026-10-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: british-theatre"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 53.65 vs local 55.14 (Δ1.49)"
+        }
+      ],
+      "missingFromProd": [
+        "british-theatre"
+      ],
+      "localCount": 13,
+      "deployedCount": 12,
+      "firstDefectAt": "2026-10-19T14:57:22.606Z"
+    },
+    {
+      "showId": "angels-bone-west-end-2026",
+      "title": "Angel's Bone",
+      "openingDate": "2026-10-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: financialtimes"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 65.23 vs local 68.78 (Δ3.55)"
+        }
+      ],
+      "missingFromProd": [
+        "financialtimes"
+      ],
+      "localCount": 9,
+      "deployedCount": 8,
+      "firstDefectAt": "2026-10-19T14:57:22.606Z"
+    },
+    {
+      "showId": "some-woman-west-end-2026",
+      "title": "Some Woman",
+      "openingDate": "2026-10-15",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: standard"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 66.71 vs local 65.87 (Δ0.84)"
+        }
+      ],
+      "missingFromProd": [
+        "standard"
+      ],
+      "localCount": 19,
+      "deployedCount": 18,
+      "firstDefectAt": "2026-10-19T14:57:22.606Z"
+    },
+    {
+      "showId": "boop-tour-2026",
+      "title": "Boop! The Musical",
+      "openingDate": "2026-10-03",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: the-daily-gazette"
+        }
+      ],
+      "missingFromProd": [
+        "the-daily-gazette"
+      ],
+      "localCount": 2,
+      "deployedCount": 1,
+      "firstDefectAt": "2026-10-19T14:57:22.606Z"
+    },
     {
       "showId": "operation-mincemeat-tour-2026",
       "title": "Operation Mincemeat",
@@ -224,7 +308,7 @@
         },
         {
           "type": "score-drift",
-          "detail": "deployed cs 85.76 vs local 84.42 (Δ1.34)"
+          "detail": "deployed cs 85.76 vs local 84.3 (Δ1.46)"
         }
       ],
       "missingFromProd": [
@@ -247,7 +331,7 @@
         },
         {
           "type": "score-drift",
-          "detail": "deployed cs 83.53 vs local 84.12 (Δ0.59)"
+          "detail": "deployed cs 83.53 vs local 84.21 (Δ0.68)"
         }
       ],
       "missingFromProd": [
@@ -296,6 +380,38 @@
       "firstDefectAt": "2026-10-19T11:33:57.694Z"
     },
     {
+      "showId": "baby-off-west-end-2026",
+      "title": "Baby",
+      "openingDate": "2026-10-14",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 69.81 vs local 69.66 (Δ0.15)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 9,
+      "deployedCount": 9,
+      "firstDefectAt": "2026-10-19T11:33:57.694Z"
+    },
+    {
+      "showId": "the-cherry-orchard-west-end-2026",
+      "title": "The Cherry Orchard",
+      "openingDate": "2026-10-13",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 72.77 vs local 72.66 (Δ0.11)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 38,
+      "deployedCount": 39,
+      "firstDefectAt": "2026-10-19T14:57:22.606Z"
+    },
+    {
       "showId": "fences-off-west-end-2026",
       "title": "Fences",
       "openingDate": "2026-10-09",
@@ -312,20 +428,20 @@
       "firstDefectAt": "2026-10-19T11:33:57.694Z"
     },
     {
-      "showId": "baby-off-west-end-2026",
-      "title": "Baby",
-      "openingDate": "2026-10-08",
+      "showId": "mamma-mia-tour-2026",
+      "title": "Mamma Mia!",
+      "openingDate": "2026-03-05",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 69.81 vs local 69.66 (Δ0.15)"
+          "detail": "deployed cs 79.94 vs local 80.05 (Δ0.11)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 9,
-      "deployedCount": 9,
-      "firstDefectAt": "2026-10-19T11:33:57.694Z"
+      "localCount": 22,
+      "deployedCount": 23,
+      "firstDefectAt": "2026-10-19T14:57:22.606Z"
     },
     {
       "showId": "the-great-gatsby-tour-2026",
@@ -344,6 +460,22 @@
       "firstDefectAt": "2026-10-19T11:33:57.694Z"
     },
     {
+      "showId": "paddington-the-musical-west-end-2025",
+      "title": "Paddington The Musical",
+      "openingDate": "2025-11-30",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 89 vs local 88.82 (Δ0.18)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 34,
+      "deployedCount": 34,
+      "firstDefectAt": "2026-10-19T14:57:22.606Z"
+    },
+    {
       "showId": "the-phantom-of-the-opera-tour-2025",
       "title": "The Phantom of the Opera",
       "openingDate": "2025-11-07",
@@ -360,6 +492,22 @@
       "firstDefectAt": "2026-10-19T11:33:57.694Z"
     },
     {
+      "showId": "operation-mincemeat-2025",
+      "title": "Operation Mincemeat",
+      "openingDate": "2025-03-20",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 77.92 vs local 77.54 (Δ0.38)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 28,
+      "deployedCount": 29,
+      "firstDefectAt": "2026-10-19T14:57:22.606Z"
+    },
+    {
       "showId": "oliver-west-end-2024",
       "title": "Oliver!",
       "openingDate": "2024-12-14",
@@ -374,6 +522,22 @@
       "localCount": 21,
       "deployedCount": 21,
       "firstDefectAt": "2026-10-19T11:33:57.694Z"
+    },
+    {
+      "showId": "the-outsiders-2024",
+      "title": "The Outsiders",
+      "openingDate": "2024-04-11",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 69.59 vs local 69.22 (Δ0.37)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 27,
+      "deployedCount": 28,
+      "firstDefectAt": "2026-10-19T14:57:22.606Z"
     },
     {
       "showId": "hadestown-west-end-2024",
@@ -408,6 +572,22 @@
       "firstDefectAt": "2026-10-19T11:33:57.694Z"
     },
     {
+      "showId": "witness-for-the-prosecution-west-end-2022",
+      "title": "Witness for the Prosecution",
+      "openingDate": "2017-10-23",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 76.95 vs local 77.82 (Δ0.87)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 13,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-10-19T14:57:22.606Z"
+    },
+    {
       "showId": "the-book-of-mormon-west-end-2024",
       "title": "The Book of Mormon",
       "openingDate": "2013-03-21",
@@ -415,7 +595,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 77.19 vs local 76.96 (Δ0.23)"
+          "detail": "deployed cs 77.19 vs local 77.08 (Δ0.11)"
         }
       ],
       "missingFromProd": [],

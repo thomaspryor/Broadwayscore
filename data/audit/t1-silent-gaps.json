@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-19T11:33:43.077Z",
+  "generatedAt": "2026-10-19T14:57:13.388Z",
   "windowDays": 45,
   "showsScanned": 188,
   "gaps": [
@@ -17,28 +17,9 @@
       "forumLinkRecoveryCount": 3,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=slam-frank-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-18T14:14:33.814Z",
-      "fileAgeHours": 21.318175833333335,
+      "fileAgeHours": 24.710298055555555,
       "gapSeenAt": "2026-10-18T18:09:48.486Z",
-      "nonTerminalAgeHours": 17.3984975
-    },
-    {
-      "showId": "stuffed-off-west-end-2026",
-      "title": "Stuffed",
-      "openingDate": "2026-10-14",
-      "file": "nytg--unknown.json",
-      "outletId": "nytg",
-      "tier": 2,
-      "type": "unscored",
-      "dispatchable": false,
-      "url": "https://www.newyorktheatreguide.com/reviews/stuffed16.htm",
-      "recovery": null,
-      "recoveryCount": 1,
-      "forumLinkRecoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=stuffed-off-west-end-2026",
-      "firstSeen": "2026-10-15T15:44:57.921Z",
-      "fileAgeHours": 91.81164166666667,
-      "gapSeenAt": "2026-10-16T12:12:23.731Z",
-      "nonTerminalAgeHours": 71.35537388888889
+      "nonTerminalAgeHours": 20.790250555555556
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -47,16 +28,17 @@
       "file": "daily-mail--patrick-marmion.json",
       "outletId": "daily-mail",
       "tier": 1,
-      "type": "rejected-unscoreable",
+      "type": "unscored",
+      "dispatchable": true,
       "url": "https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing",
       "recovery": null,
       "recoveryCount": 0,
       "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=golden-boy-off-west-end-2026",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 642.8858088888888,
+      "fileAgeHours": 646.27782,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 193.90557638888887
+      "nonTerminalAgeHours": 197.29732944444444
     },
     {
       "showId": "maybe-happy-ending-tour-2026",
@@ -65,17 +47,16 @@
       "file": "theatermania--zachary-stewart.json",
       "outletId": "theatermania",
       "tier": 2,
-      "type": "unscored",
-      "dispatchable": true,
+      "type": "rejected-unscoreable",
       "url": "https://www.theatermania.com/news/jazz-vocalist-stella-cole-to-join-cast-of-maybe-happy-ending-on-broadway_1855818/",
       "recovery": null,
       "recoveryCount": 0,
       "forumLinkRecoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=maybe-happy-ending-tour-2026",
+      "fix": "node scripts/ingest-review-from-url.js --show=maybe-happy-ending-tour-2026 --url=https://www.theatermania.com/news/jazz-vocalist-stella-cole-to-join-cast-of-maybe-happy-ending-on-broadway_1855818/ --outlet=theatermania --critic=\"Zachary Stewart\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-06T02:28:41.564Z",
-      "fileAgeHours": 321.08339277777776,
+      "fileAgeHours": 324.47527333333335,
       "gapSeenAt": "2026-10-19T11:33:43.077Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 3.3917530555555557
     }
   ],
   "contradictions": []

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-19T11:34:04.404Z",
+  "generatedAt": "2026-10-19T14:57:27.353Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -89,11 +89,6 @@
       "openingDate": "2026-10-16"
     },
     {
-      "id": "music-for-18-musicians-staged-variations-off-broadway-2026",
-      "title": "Music for 18 Musicians: Staged Variations",
-      "openingDate": "2026-10-17"
-    },
-    {
       "id": "jane-eyre-rose-kingston-off-west-end-2026",
       "title": "Jane Eyre",
       "openingDate": "2026-10-15"
@@ -122,6 +117,11 @@
       "id": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
       "title": "The Banality of Evil: Hannah Arendt, France 1940",
       "openingDate": "2026-10-13"
+    },
+    {
+      "id": "baby-off-west-end-2026",
+      "title": "Baby",
+      "openingDate": "2026-10-14"
     },
     {
       "id": "the-dog-show-come-sit-stay-off-broadway-2026",
@@ -157,6 +157,10 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -185,9 +189,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 726,
-  "matchedGaps": 5,
-  "possibleGaps": 7,
+  "itemsScanned": 722,
+  "matchedGaps": 4,
+  "possibleGaps": 8,
   "gaps": [
     {
       "showId": "cadel-lungs-on-legs-west-end-2026",
@@ -208,22 +212,13 @@
       "publishDate": "2026-10-19"
     },
     {
-      "showId": "dog-mom-off-west-end-2026",
-      "title": "Dog Mom",
+      "showId": "other-desert-cities-2026",
+      "title": "Other Desert Cities",
       "level": "matched",
-      "outletId": "british-theatre",
-      "url": "https://www.britishtheatreguide.info/reviews/dog-mom-southwark-playh-26135",
-      "headline": "Dog Mom",
+      "outletId": "culturesauce",
+      "url": "https://culturesauce.com/other-desert-cities-julia-louis-dreyfus-broadway-review/",
+      "headline": "Julia Louis-Dreyfus crackles as a brittle Hollywood matriarch in &#8216;Other Desert Cities&#8217; (Broadway review)",
       "publishDate": "2026-10-19"
-    },
-    {
-      "showId": "some-woman-west-end-2026",
-      "title": "Some Woman",
-      "level": "matched",
-      "outletId": "plays-international",
-      "url": "https://playsinternational.org.uk/some-woman-dorfman-national-theatre/",
-      "headline": "“Some Woman” at the Dorfman, National Theatre",
-      "publishDate": "2026-10-18"
     },
     {
       "showId": "some-woman-west-end-2026",
@@ -233,6 +228,15 @@
       "url": "https://southlondon.co.uk/area/southwark/review-some-woman-at-the-dorfman/",
       "headline": "Review: Some Woman at the Dorfman",
       "publishDate": "2026-10-19"
+    },
+    {
+      "showId": "baby-off-west-end-2026",
+      "title": "Baby",
+      "level": "possible",
+      "outletId": "this-week-in-new-york",
+      "url": "https://twi-ny.com/2026/10/11/ectoplasm-sara-fellini-spit-and-vigor/",
+      "headline": "HAUNTED THEATER ON MacDOUGAL: spit&#038;vigor’s ECTOPLASM",
+      "publishDate": "2026-10-11"
     },
     {
       "showId": "cadel-lungs-on-legs-west-end-2026",
@@ -262,15 +266,6 @@
       "publishDate": null
     },
     {
-      "showId": "some-woman-west-end-2026",
-      "title": "Some Woman",
-      "level": "possible",
-      "outletId": "standard",
-      "url": "https://standard.co.uk/culture/theatre/some-woman-national-theatre-review-b1301402.html",
-      "headline": "Some Woman: Anne-Marie Duff returns in misogyny drama",
-      "publishDate": null
-    },
-    {
       "showId": "the-ask-off-broadway-2026",
       "title": "The Ask",
       "level": "possible",
@@ -296,6 +291,15 @@
       "url": "https://westendwilma.com/review-conor-mcphersons-the-seafarer-greenwich-theatre/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=review-conor-mcphersons-the-seafarer-greenwich-theatre",
       "headline": "REVIEW: 20th anniversary revival of Conor McPherson&#8217;s THE SEAFARER",
       "publishDate": "2026-10-16"
+    },
+    {
+      "showId": "two-girls-off-broadway-2026",
+      "title": "Two Girls",
+      "level": "possible",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/review-two-girls-an-interrogation-of-a-memory-of-a-brazilian-porno_1857490/",
+      "headline": "Review: Two Girls, an Interrogation of a Memory of a Brazilian Porno",
+      "publishDate": null
     }
   ]
 }
