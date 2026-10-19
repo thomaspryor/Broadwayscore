@@ -7,7 +7,13 @@
     "shucked-2023/wsj--charles-isherwood.json",
     "a-dolls-house-2023/wsj--charles-isherwood.json",
     "pictures-from-home-2023/wsj--charles-isherwood.json",
-    "kimberly-akimbo-2022/wsj--charles-isherwood.json"
+    "kimberly-akimbo-2022/wsj--charles-isherwood.json",
+    "dog-mom-off-west-end-2026/thereviewshub--unknown.json",
+    "dog-mom-off-west-end-2026/notesfromrowh--helena6.json",
+    "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json",
+    "stories-the-tap-dance-sensation-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "stories-the-tap-dance-sensation-west-end-2026/theupcoming--scarlett-bruin.json",
+    "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json"
   ],
   "failed": [
     "the-price-off-west-end-2026/wsj--unknown.json",
@@ -21,11 +27,26 @@
     "gutenberg-2023/wsj--charles-isherwood.json",
     "into-the-woods-2022/wsj--charles-isherwood.json",
     "macbeth-2022/wsj--charles-isherwood.json",
-    "the-skin-of-our-teeth-2022/wsj--charles-isherwood.json"
+    "the-skin-of-our-teeth-2022/wsj--charles-isherwood.json",
+    "an-oak-tree-off-west-end-2026/times-uk--dominic-maxwell.json",
+    "angels-bone-west-end-2026/bachtrack--unknown.json",
+    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
+    "some-woman-west-end-2026/guardian--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json",
+    "some-woman-west-end-2026/financialtimes--unknown.json",
+    "some-woman-west-end-2026/sunday-times--clive-davis.json",
+    "some-woman-west-end-2026/thestage--sam-marlowe.json",
+    "some-woman-west-end-2026/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "dog-mom-off-west-end-2026/thereviewshub--unknown.json",
+      "dog-mom-off-west-end-2026/notesfromrowh--helena6.json",
+      "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json"
+    ],
     "amp": [],
     "browserbase": [
       "data/review-texts/la-boheme-off-broadway-2025/wsj--by-tim-page.json",
@@ -44,17 +65,22 @@
       "data/review-texts/pictures-from-home-2023/wsj--charles-isherwood.json",
       "pictures-from-home-2023/wsj--charles-isherwood.json",
       "data/review-texts/kimberly-akimbo-2022/wsj--charles-isherwood.json",
-      "kimberly-akimbo-2022/wsj--charles-isherwood.json"
+      "kimberly-akimbo-2022/wsj--charles-isherwood.json",
+      "data/review-texts/some-woman-west-end-2026/times-uk--clive-davis.json"
     ],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "stories-the-tap-dance-sensation-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+      "stories-the-tap-dance-sensation-west-end-2026/theupcoming--scarlett-bruin.json",
+      "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json"
+    ]
   },
   "startTime": "2026-10-19T00:37:22.642Z",
-  "lastProcessed": "the-skin-of-our-teeth-2022/wsj--charles-isherwood.json",
+  "lastProcessed": "some-woman-west-end-2026/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-10-19T00:38:24.791Z",
@@ -187,6 +213,41 @@
       "t": "2026-10-19T00:43:12.879Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-19T00:51:20.555Z",
+      "event": "bb-session",
+      "session": "5f9c8ac2",
+      "url": "https://bachtrack.com/review-angels-bone-du-yun-vavrek-english-national-opera-lo"
+    },
+    {
+      "t": "2026-10-19T00:52:43.908Z",
+      "event": "bb-session",
+      "session": "7716a495",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-19T00:52:50.807Z",
+      "event": "bb-session",
+      "session": "d97034b1",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-19T00:54:06.522Z",
+      "event": "bb-session",
+      "session": "f22018cb",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-19T00:59:36.053Z",
+      "event": "bb-session",
+      "session": "654333f7",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/some-woman-review-anne-ma"
+    },
+    {
+      "t": "2026-10-19T00:59:36.430Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
