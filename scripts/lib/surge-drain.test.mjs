@@ -7,6 +7,17 @@ const { splitSurge } = require('./surge-drain');
 const mk = (n) => Array.from({ length: n }, (_, i) => ({ c: { data: { publishDate: `2026-01-${String(i % 28 + 1).padStart(2, '0')}` }, id: i } }));
 
 describe('splitSurge', () => {
+  test('apply is a copy: emptying the input must not empty the apply list (BRO-5672)', () => {
+    const input = mk(5);
+    for (const [threshold, force] of [[50, false], [50, true], [3, false]]) {
+      const r = splitSurge(input.slice(), threshold, force);
+      assert.notEqual(r.apply, input);
+      const inp = input.slice();
+      const r2 = splitSurge(inp, threshold, force);
+      inp.length = 0;
+      assert.ok(r2.apply.length > 0);
+    }
+  });
   test('at or under the threshold everything applies', () => {
     const r = splitSurge(mk(50), 50, false);
     assert.equal(r.apply.length, 50);

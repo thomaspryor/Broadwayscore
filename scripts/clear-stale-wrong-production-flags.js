@@ -375,8 +375,6 @@ Reply with JSON only: {"isThisProduction": true|false, "isReview": true|false, "
     console.warn(`::warning::${toClear.length} confirmed clears exceed the per-run limit of ${FIX_SURGE_THRESHOLD}: clearing the newest ${surge.apply.length}, deferring ${surge.deferred.length} to the next run (re-run with --force-bulk to drain at once). If this count is a sudden jump rather than backlog, the predicate or verifier may have regressed.`);
     for (const d of surge.deferred) console.log(`  deferred: ${d.c.showId}/${d.c.file}`);
   }
-  toClear.length = 0;
-  toClear.push(...surge.apply);
 
   // Collector-quarantined candidates the LLM did not confirm: stamp the text
   // hash so the next sweep does not re-ask about the same text. Errors are
@@ -396,7 +394,7 @@ Reply with JSON only: {"isThisProduction": true|false, "isReview": true|false, "
     fs.writeFileSync(d.c.filePath, JSON.stringify(fresh, null, 2) + (orig.endsWith('\n') ? '\n' : ''));
   }
 
-  for (const d of toClear) {
+  for (const d of surge.apply) {
     const orig = fs.readFileSync(d.c.filePath, 'utf8');
     const hadTrailingNewline = orig.endsWith('\n');
     // A prior-run candidate judged on its quarantined text restores it, like

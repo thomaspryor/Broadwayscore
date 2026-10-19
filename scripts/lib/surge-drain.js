@@ -21,7 +21,8 @@
  * @returns {{apply: Array, deferred: Array}}
  */
 function splitSurge(decisions, threshold, forceBulk, priority) {
-  if (forceBulk || decisions.length <= threshold) return { apply: decisions, deferred: [] };
+  // A copy, never the caller's array: mutating the input once emptied the apply list.
+  if (forceBulk || decisions.length <= threshold) return { apply: decisions.slice(), deferred: [] };
   const ts = (d) => Date.parse(d && d.c && d.c.data && d.c.data.publishDate) || 0;
   // `priority` (lower first) keeps a class the caller must not starve ahead of
   // newest-first, e.g. prior-run candidates, which are old by definition.
