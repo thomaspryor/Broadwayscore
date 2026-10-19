@@ -25,7 +25,8 @@
  *   node scripts/recover-serp-text.js --outlet=ap [options]
  *
  * Options:
- *   --domain=X       Outlet domain to target (newyorker.com). Matches data.url's hostname.
+ *   --domain=X       Outlet domain to target (newyorker.com). Matches data.url's hostname
+ *                    or a registered domain alias.
  *   --outlet=X       Outlet ID to target (ap). Matches data.outletId directly — use for wire
  *                    services syndicated across many domains, where no single --domain covers
  *                    them (AP reviews live on apnews.com, hosted.ap.org, huffpost.com, local
@@ -217,7 +218,7 @@ function loadCandidates() {
       const hasSerpKeys = !!(CONFIG.scrapingBeeKey || CONFIG.brightDataKey);
       const { qualifies, skipReason } = evaluateCandidate(
         data,
-        { domain: CONFIG.domain, outlet: CONFIG.outlet, hasSerpKeys, domainOutletIds },
+        { domain: CONFIG.domain, outlet: CONFIG.outlet, hasSerpKeys, domainOutletIds, domainAliases: REGISTRY_DOMAIN_ALIASES },
         exhausted
       );
       if (!qualifies) {

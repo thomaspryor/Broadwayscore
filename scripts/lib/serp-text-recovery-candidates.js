@@ -43,8 +43,10 @@ function buildDomainOutletIds(domain, outletDomains, domainAliases) {
  * @param {string|null} target.outlet - --outlet value
  * @param {boolean} target.hasSerpKeys - whether a SERP provider key is configured
  * @param {Set<string>} [target.domainOutletIds] - outletIds (lowercased) whose
- *   OUTLET_DOMAINS entry equals target.domain; required when target.domain is
+ *   OUTLET_DOMAINS entry equals target.domain or a registered alias; required when target.domain is
  *   set and target.outlet is not (used to vet urlless candidates).
+ * @param {object} [target.domainAliases] - REGISTRY_DOMAIN_ALIASES (domain -> Set<domain>),
+ *   used to match existing URLs on registered aliases of target.domain.
  * @param {object} [exhausted] - map of url -> exhausted entry
  * @returns {{ qualifies: boolean, skipReason: string|null }} skipReason is one of
  *   'no_url' | 'bad_url' | 'wrong_domain' | 'complete' | 'not_thin' | 'flagged' | 'exhausted' | null
@@ -62,7 +64,10 @@ function evaluateCandidate(data, target, exhausted) {
     let domain;
     try { domain = new URL(data.url).hostname.replace(/^www\./, ''); }
     catch { return { qualifies: false, skipReason: 'bad_url' }; }
-    if (domain !== target.domain) return { qualifies: false, skipReason: 'wrong_domain' };
+    const aliases = target.domainAliases && target.domainAliases[target.domain];
+    if (domain !== target.domain && !(aliases && aliases.has(domain))) {
+      return { qualifies: false, skipReason: 'wrong_domain' };
+    }
   } else {
     // No url to check a domain against — fall back to the outletId ->
     // domain reverse lookup (OUTLET_DOMAINS), the same signal
