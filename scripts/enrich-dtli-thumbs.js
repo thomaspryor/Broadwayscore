@@ -175,7 +175,12 @@ async function enrichDtliThumbsForShow(showId, opts = {}) {
       anyFetchSucceeded = true;
       const all = extractReviewsFromDTLI(r.content, showId) || [];
       const rows = all.filter(row => !newRowPredatesProduction({ publishDate: row.publishDate, show }).skip);
-      if (all.length > rows.length) console.log(`  [candidate] ${candidate}: dropped ${all.length - rows.length} row(s) dated before this production`);
+      const dropped = all.length - rows.length;
+      if (dropped) console.log(`  [candidate] ${candidate}: dropped ${dropped} row(s) dated before this production`);
+      // Mostly-old dated rows = another production's page; its undated rows
+      // (no date to filter on) are not trusted either.
+      const dated = all.filter(row => row.publishDate).length;
+      if (dropped && dropped * 2 >= dated) continue;
       if (rows.length > 0) {
         dtliUrl = candidate;
         extracted = rows;
