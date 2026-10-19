@@ -1,3 +1,4 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural check that each audit reports no stale baseline entries on live data; pins no specific facts
 // BRO-5315: every baseline-diff audit must detect STALE baseline entries
 // (keys with no live violation behind them). A fixed violation left in the
 // baseline silently re-excuses the same regression later (BRO-2257). Pattern
