@@ -1818,6 +1818,15 @@ function planRoundupGapAlerts(results, ingestMissing, now = Date.now()) {
 const { buildRollupAlert, syncRollup, snapshotRollupMembers } = require('./lib/rollup-alert');
 const ROUNDUP_GAP_ROLLUP_KEY = 'roundup-gap:all';
 function roundupGapLegacyKey(showId) { return `roundup-gap:${showId}`; }
+// BRO-5132: since the fold-in nothing fires a per-show key, and the resolve below
+// only reaches shows inside their 3-day window, so a per-show key still open when
+// its show aged out (or whose tracker was cancelled, which the router's absence
+// sweep never resolves) stayed open forever: 21 on 2026-10-19, Elf Lyons since
+// 2026-09-29. Every open per-show key goes to the quiet resolve on each CI run.
+function openLegacyRoundupGapKeys(conditions) {
+  return Object.keys(conditions || {}).filter((k) => k.startsWith('roundup-gap:') && k !== ROUNDUP_GAP_ROLLUP_KEY
+    && conditions[k] && conditions[k].status === 'open');
+}
 function roundupGapShowBlock(g) {
   const lines = g.missing.slice(0, 15).map((m) => `  - ${m.knownOutletId || m.host}: ${m.url}`);
   return `- ${g.title || g.showId} (${g.showId}): ${g.counts.residual} not captured `
@@ -3065,6 +3074,11 @@ async function main(argv = process.argv.slice(2)) {
   if (!dryRun && useCheckpoint && process.env.GITHUB_ACTIONS === 'true') {
     const plan = planRoundupGapAlerts(liveReportedResults, ingestMissing);
     const alertOpts = buildRoundupGapAlert(plan);
+    try {
+      const { loadLedger, resolveQuietConditions } = require('./lib/owner-alert-router');
+      const legacy = resolveQuietConditions(openLegacyRoundupGapKeys(loadLedger().conditions), { reason: 'per-show roundup-gap key retired by the rollup (BRO-5493); quiet past the incident gap' });
+      if (legacy.length) console.log(`[Alert Router] resolved ${legacy.length} retired per-show roundup-gap condition(s): ${legacy.join(', ')}`);
+    } catch (e) { console.error(`::warning::legacy roundup-gap resolve failed: ${(e.message || '').slice(0, 120)}`); }
     if (alertOpts || plan.resolve.length) {
       const { routeAlert, resolveQuietConditions } = require('./lib/owner-alert-router');
       // Fold-in (BRO-5493): one rollup condition per run instead of one card per
@@ -3172,4 +3186,4 @@ if (require.main === module) {
 // REVIEW_TEXTS_DIR before requiring this module.
 // main + USAGE are exported so scripts/audit-show-review-gap.test.mjs can
 // prove --help never falls through to a real gh call (task #266).
-module.exports = { planRoundupGapAlerts, buildRoundupGapAlert, syncRollupCard, ROUNDUP_GAP_ROLLUP_KEY, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, gapUrlIdentity, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, openingWindowClearedKeys, main, USAGE };
+module.exports = { planRoundupGapAlerts, openLegacyRoundupGapKeys, buildRoundupGapAlert, syncRollupCard, ROUNDUP_GAP_ROLLUP_KEY, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, gapUrlIdentity, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, openingWindowClearedKeys, main, USAGE };

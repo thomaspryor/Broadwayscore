@@ -68,3 +68,15 @@ test('a freshly filed card records its shows without commenting', async () => {
   assert.equal(r.commented, 0);
   assert.deepEqual(ledger.conditions[ROUNDUP_GAP_ROLLUP_KEY].rollupMembers, ['a', 'b']);
 });
+
+test('every open per-show roundup-gap key is offered to the quiet resolve; the rollup and closed keys are not (BRO-5132)', () => {
+  const { openLegacyRoundupGapKeys } = require('./audit-show-review-gap.js');
+  const conditions = {
+    [ROUNDUP_GAP_ROLLUP_KEY]: { status: 'open' },
+    'roundup-gap:elf-lyons-the-woman-on-the-edge-off-broadway-2026': { status: 'open', linearIdentifier: 'BRO-4344' },
+    'roundup-gap:old-show-2026': { status: 'resolved' },
+    'review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026': { status: 'open' },
+  };
+  assert.deepEqual(openLegacyRoundupGapKeys(conditions), ['roundup-gap:elf-lyons-the-woman-on-the-edge-off-broadway-2026']);
+  assert.deepEqual(openLegacyRoundupGapKeys(undefined), []);
+});
