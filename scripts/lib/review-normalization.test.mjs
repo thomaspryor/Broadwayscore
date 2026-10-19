@@ -65,3 +65,12 @@ test('writer leaves aggregator-sourced writes, existing-file merges and bare hos
     assert.doesNotMatch(String(w('newblogy', 'https://newblogy.example/', 'gather-reviews').reason || ''), /unregistered-outlet-non-review-url/);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
+
+test('normalizeUrl treats independent.co.uk and the-independent.com as one article (BRO-5674)', () => {
+  const path = '/arts-entertainment/theatre-dance/reviews/other-desert-cities-broadway-review-julia-louis-dreyfus-allison-janney-b3068662.html';
+  const { normalizeUrl: n } = require('./review-normalization.js');
+  assert.equal(n('https://www.independent.co.uk' + path), n('https://www.the-independent.com' + path));
+  // host match is exact, not a suffix/prefix
+  assert.notEqual(n('https://notindependent.co.uk' + path), n('https://www.the-independent.com' + path));
+  assert.notEqual(n('https://independent.co.uk.example.com' + path), n('https://www.the-independent.com' + path));
+});
