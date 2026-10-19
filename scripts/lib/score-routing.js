@@ -127,7 +127,7 @@ function isScoreClearSupersededBy(data, source) {
  * @param {string} extracted.source
  *     The source identifier the extractor reports (e.g. 'lbo-css-stars',
  *     'guardian-api', 'json-ld', 'letter-grade').
- * @returns {{ field: 'originalScore' | 'aggregatorStars', wasAggregator: boolean }}
+ * @returns {{ field: 'originalScore' | 'aggregatorStars' | 'blocked', wasAggregator: boolean, blocked?: boolean }}
  */
 function setExtractedScore(data, { value, normalizedValue, source }) {
   if (value == null || source == null) {
@@ -146,6 +146,14 @@ function setExtractedScore(data, { value, normalizedValue, source }) {
     // outlet/critic source, not the metadata extractor.
     data.aggregatorStarsSource = source;
     return { field: 'aggregatorStars', wasAggregator: true };
+  }
+
+  // A deliberate clear survives later extraction attempts. Only a structural
+  // star that disproves the clear may retire it (BRO-3171). Keep aggregator
+  // metadata above independent of the outlet rating's clear (BRO-5296).
+  if (data.originalScoreCleared === true && !isScoreClearSupersededBy(data, source)) {
+    // Existing callers use wasAggregator to skip their scoreSource overwrite.
+    return { field: 'blocked', wasAggregator: true, blocked: true };
   }
 
   data.originalScore = value;

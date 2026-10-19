@@ -77,9 +77,10 @@ test('a clear picked up by an earlier write in the run still blocks a later scor
   data.urlSource = 'serp-recovery'; // phase 0 write: picks the clear up into the baseline
   persistReviewSnapshot(review, () => {});
   assert.equal(review.snapshot.originalScoreCleared, true);
-  setExtractedScore(data, { value: '4/5', normalizedValue: 80, source: 'text-stars' });
+  const routed = setExtractedScore(data, { value: '4/5', normalizedValue: 80, source: 'text-stars' });
+  assert.equal(routed.blocked, true, 'the shared writer already knows this clear');
   const r = persistReviewSnapshot(review, () => {});
-  assert.equal(r.droppedScore, true);
+  assert.equal(r.droppedScore, false, 'no score edit reaches persistence');
   const onDisk = JSON.parse(fs.readFileSync(filePath, 'utf8'));
   assert.equal(onDisk.originalScore, null);
   assert.equal(onDisk.originalScoreCleared, true);
