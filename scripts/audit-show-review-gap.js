@@ -239,7 +239,7 @@ function writeJsonAtomic(filePath, obj) {
 // Whoopi Monologues' missing NYT review sat 3 days behind the backlog).
 const { freshnessMsFor, compareAuditPriority, checkpointTs, gapRowTimestamps, reserveStalestSlots, oldestGapRow, STALE_RESERVE_EVERY } = require('./lib/gap-audit-freshness');
 // Per-show merge for the audit file (#893) + the S0 blast-radius guard.
-const { mergeGapAudit, countsFor, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults, withFileLock } = require('./lib/gap-audit-merge');
+const { mergeGapAudit, countsFor, priorCensusUrls, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults, withFileLock } = require('./lib/gap-audit-merge');
 // Merge-aware checkpoint read-modify-write (#923 — the #893 race class, one
 // file over). saveCheckpoint(wholeObject) used to write the ENTIRE in-memory
 // checkpoint from inside the per-show loop, unlocked on two of its three call
@@ -1083,6 +1083,8 @@ async function auditShow(show, opts = {}) {
       }
     } else {
       result.serpCensus = { ran: false, reason: inWindowNow ? 'cooldown' : 'out-of-window' };
+      // BRO-5516: census skipped -> keep the prior census's URLs in play (see priorCensusUrls).
+      for (const u of (opts.priorCensusUrls || [])) serpCensusUrls.add(u);
     }
   }
   // BRO-5252: census provenance is census-ONLY. A URL an aggregator also cites is
@@ -2164,6 +2166,11 @@ async function main(argv = process.argv.slice(2)) {
   if (lowTrust.size > 0) {
     console.log(`⚠️  low-trust WE reference source(s) — rows report-only: ${[...lowTrust].join(', ')}`);
   }
+  const priorRowById = new Map();
+  try {
+    const pa = JSON.parse(fs.readFileSync(AUDIT_PATH, 'utf8'));
+    for (const row of (pa.results || [])) if (row && row.showId) priorRowById.set(row.showId, row);
+  } catch { /* no/unreadable prior audit: nothing to carry; the write path reports unreadable files */ }
   for (const s of targets) {
     // Soft time budget: stop taking on new shows before the CI hard timeout so
     // the checkpoint + ingested review-texts commit cleanly (the 25-min cancel
@@ -2174,7 +2181,7 @@ async function main(argv = process.argv.slice(2)) {
       break;
     }
     if (verbose) console.log(`\n${s.id} "${s.title}" (${s.openingDate} ${s.status})`);
-    const r = await auditShow(s, { lastCensusAt: checkpoint[s.id] && checkpoint[s.id].serpCensusAt, allShows });
+    const r = await auditShow(s, { priorCensusUrls: priorCensusUrls(priorRowById.get(s.id)), lastCensusAt: checkpoint[s.id] && checkpoint[s.id].serpCensusAt, allShows });
     // BRO-4765: URLs whose extraction returned 0 chars on several consecutive runs are terminal. They
     // leave missing[] (so no re-ingest and no hold on the Coverage Verdict) but stay in the report.
     const zeroCharStored = checkpoint[s.id] && checkpoint[s.id].zeroChar;

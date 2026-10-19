@@ -268,6 +268,29 @@ function riskStateMap(results) {
 }
 
 /**
+ * URLs the previous audit row's census held, for carry-forward when this run's
+ * SERP census is SKIPPED for the show (BRO-5516).
+ *
+ * The SERP census only runs while a show is inside its opening window and past
+ * its cooldown. A re-audit after the window closed therefore rebuilt the
+ * census from the aggregators alone, so every census-only candidate vanished:
+ * sting-west-end-2026 went complete:3:3 -> no-census-yet:0:0, and eight such
+ * shows in one batch tripped the blast-radius guard (38-62%) on every hourly
+ * run, quarantining the batch and re-selecting the same stale rows forever.
+ * That is a coverage-method change, not coverage lost. Seeding the skipped
+ * census with the prior row's candidate URLs lets auditShow re-classify each
+ * against the CURRENT reviews, so a real live-review loss still shows.
+ *
+ * @param {Object|null} prevRow previous audit result row for the show
+ * @returns {string[]}
+ */
+function priorCensusUrls(prevRow) {
+  const cands = prevRow && prevRow.censusVerdict && prevRow.censusVerdict.candidates;
+  if (!Array.isArray(cands)) return [];
+  return [...new Set(cands.map(c => c && c.url).filter(u => typeof u === 'string' && /^https?:\/\//.test(u)))];
+}
+
+/**
  * isRiskyChange predicate for blastRadiusCheck({ ... }) over riskStateMap()
  * output: risky iff EITHER count went DOWN. A verdict word changing while
  * both counts hold or grow (new gap discovered, or a gap got filled) is the
@@ -555,4 +578,5 @@ function countsFor(results) {
 // working.
 const { withFileLock } = require('./file-lock');
 
-module.exports = { mergeGapAudit, countsFor, gapStateFor, censusVerdictFor, stateMap, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults, withFileLock, DEFAULT_RETENTION_DAYS, CENSUS_SCHEMA, needsCensusMigration };
+module.exports = {
+  priorCensusUrls, mergeGapAudit, countsFor, gapStateFor, censusVerdictFor, stateMap, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults, withFileLock, DEFAULT_RETENTION_DAYS, CENSUS_SCHEMA, needsCensusMigration };
