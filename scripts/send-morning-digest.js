@@ -78,6 +78,7 @@ const { assessSupervisorStatus } = require('./lib/pr-supervisor-core.js');
 const { fetchInflowCounts, assessInflowRatio } = require('./lib/backlog-inflow-ratio.js');
 const { doneRatePerDay, fetchUnarmedUrgentHighCount, formatDrainThroughputLine, isHeartbeatFresh } = require('./lib/linear-drain-throughput.js');
 const { readBoardGateFailopen } = require('./lib/summarize-board-gate-failopen.js');
+const { collectCmuxTriage, renderCmuxTriageLine } = require('./lib/cmux-triage-digest.js');
 
 // Task #1220/BRO-230 (ship-check adversarial finding): health.errors can
 // NEVER carry the "Autofix: jobs actually succeeding" row in the normal case
@@ -644,6 +645,14 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
       parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(boardGate.alert)}</p>`);
     }
   }
+  // Dead cmux tab triage (BRO-3050): rendered only when main() collected it.
+  // The line itself (incl. "no verdict" for degraded/unavailable runs) is
+  // decided in lib/cmux-triage-digest.js, never here.
+  if (sections.cmuxTriage) {
+    const ct = renderCmuxTriageLine(sections.cmuxTriage);
+    const colour = ct.level === 'watch' ? '#b45309' : ct.level === 'ok' ? '#15803d' : '#666';
+    parts.push(`<p style="font-size:12px;color:${colour};margin:0 0 12px;">${esc(ct.text)}</p>`);
+  }
   if (problemsNote) {
     parts.push(`<p style="font-size:13px;color:#b45309;margin:0 0 12px;">⚠️ ${esc(problemsNote)}</p>`);
   }
@@ -950,6 +959,16 @@ async function main() {
     }
   } catch (err) {
     console.error(`[digest] WARN could not evaluate shared-checkout depth: ${String(err.message).slice(0, 120)}`);
+  }
+
+  // BRO-3050: cmux-triage.js (is the work behind each dead cmux tab done?)
+  // had no caller. Shell its real CLI; collectCmuxTriage never throws and
+  // reports cmux-absent / degraded runs as "no verdict", never as zeros.
+  try {
+    sections.cmuxTriage = collectCmuxTriage({ cwd: REPO });
+    console.log(`[digest] ${renderCmuxTriageLine(sections.cmuxTriage).text}`);
+  } catch (err) {
+    console.error(`[digest] WARN cmux triage failed: ${String(err.message).slice(0, 120)}`);
   }
 
   // Data freshness (task #689) — separate file/dir from the SNAPSHOTS fold

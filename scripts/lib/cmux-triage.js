@@ -641,7 +641,9 @@ async function main(argv = process.argv.slice(2)) {
     dead.push(w);
   }
 
-  if (foreignAgentAlive.length) {
+  // Human banner only. In --json mode stdout must be exactly one JSON object
+  // (the morning digest parses it, BRO-3050); the same list is in the payload.
+  if (foreignAgentAlive.length && !asJson) {
     console.log(`[cmux-triage] ${foreignAgentAlive.length} tab(s) look DEAD to bsc-prune but have a live agent process — NOT corpses:`);
     for (const w of foreignAgentAlive) console.log(`  ${w.ref}  ${JSON.stringify(w.title)}  — live ${w.agent} session`);
     console.log('');
@@ -694,8 +696,16 @@ async function main(argv = process.argv.slice(2)) {
     linearStateByKey: (key) => (linearStates.has(key) ? linearStates.get(key) : null),
   });
 
+  // Why the run is degraded, in words, so a consumer (the morning digest,
+  // BRO-3050) can say WHY it is withholding a verdict.
+  const degradedReasons = [
+    ledgerError ? `dispatch ledger unreadable (${ledgerError})` : null,
+    livenessUnverifiable.length ? `${livenessUnverifiable.length} tab(s) could not be probed for a live agent` : null,
+    !useLinear ? 'Linear lookups skipped (--no-linear)' : null,
+  ].filter(Boolean);
+
   if (asJson) {
-    console.log(JSON.stringify({ deadCount: dead.length, liveCount: alive.length, foreignAgentAlive, livenessUnverifiable, degraded: Boolean(ledgerError || livenessUnverifiable.length || !useLinear), ...buckets }, null, 2));
+    console.log(JSON.stringify({ deadCount: dead.length, liveCount: alive.length, foreignAgentAlive, livenessUnverifiable, degraded: degradedReasons.length > 0, degradedReasons, ...buckets }, null, 2));
   } else {
     console.log(formatTriageReport(buckets).join('\n'));
   }
@@ -705,7 +715,7 @@ async function main(argv = process.argv.slice(2)) {
   // unreadable ledger, an unprobeable tab, or Linear deliberately skipped is
   // NOT a clean run, and returning 0 for it let a degraded report look
   // authoritative to any caller that checks only the status (ship-check).
-  return (ledgerError || livenessUnverifiable.length || !useLinear) ? 2 : 0;
+  return degradedReasons.length ? 2 : 0;
 }
 
 if (require.main === module) {

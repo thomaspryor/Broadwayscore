@@ -588,3 +588,98 @@ test('the watchdog predicate stays byte-identical to dispatch-watchdog.js isWatc
   }
   assert.ok(theirs.includes('startsWith'), 'their predicate is still an exact-prefix test');
 });
+
+// ── the real CLI main(), with only cmux + the ledger stubbed (BRO-3050) ─────
+// The morning digest consumes `--json`; these pin the verdicts it renders by
+// driving the REAL main() end to end. Only the two I/O modules are patched,
+// on their real export objects, and restored after each run.
+
+async function runMain(argv, { workspaces, tsvByRef = {}, probeThrows = [], ledgerThrows = false }) {
+  const cmuxws = require('./cmux-workspaces.js');
+  const ledger = require('./dispatch-ledger.js');
+  const saved = {
+    cmuxAvailable: cmuxws.cmuxAvailable, listWorkspacesWithCwd: cmuxws.listWorkspacesWithCwd,
+    claudeAliveIn: cmuxws.claudeAliveIn, terminalSurfaceAliveIn: cmuxws.terminalSurfaceAliveIn, run: cmuxws.run,
+  };
+  const savedReadEntries = ledger.readEntries;
+  const out = [];
+  const err = [];
+  const origLog = console.log;
+  const origErr = console.error;
+  Object.assign(cmuxws, {
+    cmuxAvailable: () => true,
+    listWorkspacesWithCwd: () => workspaces,
+    claudeAliveIn: () => false,
+    terminalSurfaceAliveIn: () => false,
+    run: (args) => {
+      const ref = args[args.indexOf('--workspace') + 1];
+      if (probeThrows.includes(ref)) throw new Error('cmux socket EPIPE');
+      return tsvByRef[ref] || '';
+    },
+  });
+  ledger.readEntries = () => { if (ledgerThrows) throw new Error('EACCES'); return []; };
+  console.log = (...a) => out.push(a.join(' '));
+  console.error = (...a) => err.push(a.join(' '));
+  try {
+    const code = await triage.main(argv);
+    return { code, stdout: out.join('\n'), stderr: err.join('\n') };
+  } finally {
+    console.log = origLog;
+    console.error = origErr;
+    Object.assign(cmuxws, saved);
+    ledger.readEntries = savedReadEntries;
+  }
+}
+
+const CODEX_TAB = { ref: 'workspace:100', title: '🧭 👑 OWNER — land card #1889' };
+const DASHBOARD_TAB = { ref: 'workspace:140', title: '👑 OWNER watchdog — 5 in flight · upd 23:52' };
+
+test('CLI: a live Codex session is reported as "live codex session", never as dead', async () => {
+  const human = await runMain([], { workspaces: [CODEX_TAB], tsvByRef: { 'workspace:100': CODEX_TSV } });
+  assert.equal(human.code, 0);
+  assert.match(human.stdout, /live codex session/);
+  assert.match(human.stdout, /0 dead workspace/);
+
+  const json = await runMain(['--json'], { workspaces: [CODEX_TAB], tsvByRef: { 'workspace:100': CODEX_TSV } });
+  const p = JSON.parse(json.stdout); // stdout must be ONLY the JSON object (the digest parses it)
+  assert.equal(p.deadCount, 0);
+  assert.deepEqual(p.foreignAgentAlive.map(w => [w.ref, w.agent]), [['workspace:100', 'codex']]);
+  assert.equal(p.degraded, false);
+  for (const b of ['safeToClose', 'needsResuming', 'needsOwnerCall']) assert.equal(p[b].length, 0, b);
+});
+
+test('CLI: the watchdog dashboard tab comes back as watchdog-dashboard', async () => {
+  const r = await runMain(['--json'], { workspaces: [DASHBOARD_TAB], tsvByRef: { 'workspace:140': DASHBOARD_TSV } });
+  assert.equal(r.code, 0);
+  const p = JSON.parse(r.stdout);
+  assert.equal(p.deadCount, 1);
+  assert.equal(p.needsOwnerCall.length, 1);
+  assert.equal(p.needsOwnerCall[0].reason, 'watchdog-dashboard');
+  assert.equal(p.needsResuming.length + p.safeToClose.length, 0);
+});
+
+test('CLI: every degraded cause sets degraded:true, names itself, and exits 2', async () => {
+  const cases = [
+    [['--json', '--no-linear'], {}, /Linear lookups skipped/],
+    [['--json'], { ledgerThrows: true }, /dispatch ledger unreadable/],
+    [['--json'], { probeThrows: ['workspace:140'] }, /could not be probed/],
+  ];
+  for (const [argv, over, reasonRe] of cases) {
+    const r = await runMain(argv, { workspaces: [DASHBOARD_TAB], tsvByRef: { 'workspace:140': DASHBOARD_TSV }, ...over });
+    assert.equal(r.code, 2, JSON.stringify(argv));
+    const p = JSON.parse(r.stdout);
+    assert.equal(p.degraded, true);
+    assert.ok(p.degradedReasons.some(s => reasonRe.test(s)), `${reasonRe} in ${JSON.stringify(p.degradedReasons)}`);
+  }
+  // ...and a clean run carries an empty reasons list, not a missing field.
+  const clean = JSON.parse((await runMain(['--json'], { workspaces: [] })).stdout);
+  assert.deepEqual([clean.degraded, clean.degradedReasons], [false, []]);
+});
+
+test('CLI: degraded output fed to the digest renderer yields no verdict', async () => {
+  const { interpretTriageRun, renderCmuxTriageLine } = require('./cmux-triage-digest.js');
+  const r = await runMain(['--json', '--no-linear'], { workspaces: [DASHBOARD_TAB], tsvByRef: { 'workspace:140': DASHBOARD_TSV } });
+  const line = renderCmuxTriageLine(interpretTriageRun({ status: r.code, stdout: r.stdout, stderr: r.stderr }));
+  assert.match(line.text, /DEGRADED.*Linear lookups skipped.*No verdict/);
+  assert.doesNotMatch(line.text, /owner call/);
+});
