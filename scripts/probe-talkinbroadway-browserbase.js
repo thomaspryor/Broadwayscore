@@ -34,6 +34,9 @@ const DEFAULT_URLS = [
   `${BASE}/page/regional/minn/minn1534.html`, // a known Regional page (Mystic Pizza)
 ];
 const urls = process.argv.slice(2).filter(a => a.startsWith('--url=')).map(a => a.slice(6));
+// --sample-links=N: also print N anchors spread evenly across the whole page (href | text), to see a list's real shape.
+const sampleArg = process.argv.slice(2).find(a => a.startsWith('--sample-links='));
+const sampleLinks = sampleArg ? parseInt(sampleArg.slice(15), 10) || 0 : 0;
 
 const CHALLENGE = /just a moment|checking your browser|cf-chl|attention required|enable javascript and cookies/i;
 const REVIEW_LINK = /\/page\/(ob|world|bwaybway|westend|regional)\//i;
@@ -85,6 +88,7 @@ async function main() {
           links: links.length,
           reviewLinks: reviewLinks.length,
           sampleReviewLinks: reviewLinks.slice(0, 8).map(l => `${l.href} | ${l.text}`),
+          sampleLinks: sampleLinks ? Array.from({ length: Math.min(sampleLinks, links.length) }, (_, i) => links[Math.floor(i * links.length / Math.min(sampleLinks, links.length))]).map(l => `${l.href} | ${l.text}`) : undefined,
           bylines: bylines.length,
           firstBylines: bylines.slice(0, 4),
           seconds: Math.round((Date.now() - t0) / 100) / 10,
