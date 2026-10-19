@@ -119,3 +119,27 @@ test('no full secret value is ever returned', () => {
     }
   }
 });
+
+// --- cloud-withheld keys (BRO-5731) -----------------------------------------
+
+const { CLOUD_WITHHELD, isWithheldInCloud } = require('../../scripts/check-cloud-secrets.js');
+
+test('every cloud-withheld key is a Tier 1 key (so it still fails outside cloud)', () => {
+  for (const k of CLOUD_WITHHELD) {
+    assert.ok(TIER_1.includes(k), `${k} is withheld in cloud but not in TIER_1, so it would never be checked anywhere`);
+  }
+});
+
+test('the board and read keys are never withheld, so a real gap still fails in cloud', () => {
+  for (const k of ['LINEAR_API_KEY', 'GH_TOKEN', 'OPENAI_API_KEY', 'GEMINI_API_KEY']) {
+    assert.equal(isWithheldInCloud(k, { CLAUDE_CODE_REMOTE: 'true' }), false, `${k} must still count as missing in cloud`);
+  }
+});
+
+test('withheld keys are expected-absent in cloud only', () => {
+  for (const k of CLOUD_WITHHELD) {
+    assert.equal(isWithheldInCloud(k, { CLAUDE_CODE_REMOTE: 'true' }), true, `${k} should be expected-absent in cloud`);
+    assert.equal(isWithheldInCloud(k, {}), false, `${k} must still be required outside cloud`);
+    assert.equal(isWithheldInCloud(k, { CLAUDE_CODE_REMOTE: 'false' }), false);
+  }
+});

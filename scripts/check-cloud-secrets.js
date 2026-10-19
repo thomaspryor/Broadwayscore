@@ -6,7 +6,8 @@
  * secrets configured in claude.ai/settings actually reached the sandbox.
  *
  * Exit codes:
- *   0 = all Tier 1 secrets present
+ *   0 = all Tier 1 secrets present (in a cloud session, CLOUD_WITHHELD keys
+ *       are expected-absent and do not count)
  *   1 = one or more Tier 1 secrets missing
  *
  * RESOLUTION ORDER (changed 2026-09-05): process.env first, then .env on disk
@@ -55,6 +56,24 @@ const TIER_1 = [
   'BROWSERBASE_PROJECT_ID',
   'OPENAI_API_KEY',
   'GEMINI_API_KEY',
+  'RESEND_API_KEY',
+];
+
+// Keys cloud sessions are deliberately NOT given: they bill per call or can
+// reach real people (Resend), so the owner keeps them out of the sandbox
+// (BRO-4622, BRO-5008, .claude/CLOUD.md). A session that needs one runs the
+// script through scripts/cloud-run-script.js instead. In cloud (and only
+// there) the check treats these as expected-absent, not as a failure, so a
+// red "8 missing" every session does not bury a real gap such as LINEAR_API_KEY.
+// Still Tier 1 everywhere else: a Mac or CI run that lacks them still fails.
+const CLOUD_WITHHELD = [
+  'ANTHROPIC_API_KEY',
+  'BRIGHTDATA_TOKEN',
+  'BRIGHTDATA_ZONE',
+  'BRIGHTDATA_CUSTOMER',
+  'SCRAPINGBEE_API_KEY',
+  'BROWSERBASE_API_KEY',
+  'BROWSERBASE_PROJECT_ID',
   'RESEND_API_KEY',
 ];
 
@@ -125,6 +144,17 @@ function statusFor(name, fromDisk = {}) {
   };
 }
 
+/**
+ * Pure: is this missing Tier 1 key expected to be absent? True only in a cloud
+ * session (CLAUDE_CODE_REMOTE=true) and only for CLOUD_WITHHELD keys.
+ *
+ * @param {string} name
+ * @param {Record<string,string|undefined>} env
+ */
+function isWithheldInCloud(name, env = process.env) {
+  return env.CLAUDE_CODE_REMOTE === 'true' && CLOUD_WITHHELD.includes(name);
+}
+
 const describe = (s) =>
   s.prefix ? `${s.len} chars, "${s.prefix}…"` : `${s.len} chars`;
 
@@ -138,6 +168,7 @@ function main() {
   const envPath = Object.keys(fromDisk).length ? readEnvFile().path : null;
 
   let tier1Missing = 0;
+  let tier1Withheld = 0;
   const tier1FromDisk = [];
 
   console.log('=== Tier 1 (REQUIRED) ===');
@@ -147,10 +178,17 @@ function main() {
       const via = s.source === '.env' ? ' via .env' : '';
       if (s.source === '.env') tier1FromDisk.push(name);
       console.log(`  ✓ ${name.padEnd(28)} SET (${describe(s)}${via})`);
+    } else if (isWithheldInCloud(name)) {
+      console.log(`  · ${name.padEnd(28)} withheld by design in cloud`);
+      tier1Withheld++;
     } else {
       console.log(`  ✗ ${name.padEnd(28)} MISSING`);
       tier1Missing++;
     }
+  }
+  if (tier1Withheld > 0) {
+    console.log(`  (${tier1Withheld} withheld on purpose; run a landed script with them via` +
+      ' `node scripts/cloud-run-script.js scripts/<x>.js`)');
   }
 
   console.log('');
@@ -197,6 +235,6 @@ function main() {
   return 0;
 }
 
-module.exports = { TIER_1, TIER_2, statusFor, PREFIX_MIN_LEN };
+module.exports = { TIER_1, TIER_2, CLOUD_WITHHELD, statusFor, isWithheldInCloud, PREFIX_MIN_LEN };
 
 if (require.main === module) process.exit(main());
