@@ -359,6 +359,9 @@ jobs:
       # commit step below.
       - name: T1 coverage scoreboard
         if: always()
+        # The script's routeAlert import still needs the key (alert-ledger-commit-check).
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/audit-opening-night-coverage.js --scoreboard --alert
 
       # B4 deployed-JSON coverage diff. Every other audit in this job compares
