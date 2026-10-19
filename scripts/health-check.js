@@ -4074,9 +4074,12 @@ function feedbackBacklogResults(feedbackSummary, now = new Date()) {
 }
 
 // Core check (BRO-5164): was gated behind `if (isCI)` in main(), so the live
-// probe (computeCoreHealthResults only) could never see this row. Token-gated
-// and cached like checkMainRedStreak; no token or an API error returns [].
+// probe (computeCoreHealthResults only) could never see this row. Token-gated,
+// cached and headroom-gated like checkMainRedStreak; no token, low headroom or
+// an API error returns [].
 async function checkFeedbackBacklog() {
+  // Low headroom: do not spend API budget; [] reads as 'unknown', never a pass.
+  if (hasLowHeadroom()) return [];
   const feedbackSummary = await getOpenFeedbackReviewIssues();
   if (!feedbackSummary.skipped) {
     console.log(`[Feedback issues] ${feedbackSummary.issues.length} open needs-manual-review issue(s)`);
@@ -4164,10 +4167,13 @@ function readDiskSpace(dfOutput) {
 }
 
 // Called only with a report computed moments ago in main(), so an empty
-// offender list is a clean run, never a stale one (BRO-5164 pass row).
+// offender list is a clean run, never a stale one (BRO-5164 pass row). A
+// workflow whose run count could not be read (unknownCount) is excluded from
+// offenders, so a pass needs every count known and at least one checked.
 function neverRunWorkflowResults(report) {
   if (!report || !Array.isArray(report.offenders)) return [];
   if (report.offenders.length === 0) {
+    if (report.unknownCount !== 0 || !(report.totalChecked > 0)) return [];
     return [{ name: 'Workflow coverage: never-run', status: 'pass', message: `No never-run workflows among ${report.totalChecked != null ? report.totalChecked : '?'} checked` }];
   }
   const list = report.offenders.join(', ');
@@ -4734,7 +4740,8 @@ function coverageHolesResults(report, now = Date.now()) {
   }
   const fresh = Number.isFinite(at) && now - at <= COVERAGE_HOLES_STALE_MS;
   // BRO-5164: a fresh clean report is the pass row a fixed card verifies against.
-  if (total === 0 && fresh) {
+  const allClasses = ['A', 'B', 'C', 'D'].every((k) => c[k] && Number.isFinite(Number(c[k].total)));
+  if (total === 0 && fresh && allClasses) {
     out.push({ name: 'Data: review coverage holes', status: 'pass', message: `No unexplained coverage holes across ${report.shows != null ? report.shows : '?'} current shows` });
   }
   if (!fresh) {
@@ -5953,8 +5960,9 @@ async function main() {
   // so repeat failures can be promoted into allResults and escalate like any
   // other check (subject line, consecutive-error days, auto-triage). CI-only:
   // the summary is only ever consumed by the alerting/digest path (which the
-  // !isCI early return below skips), and gating the fetch keeps local runs from
-  // making live GitHub API calls / burning rate limit on every invocation.
+  // !isCI early return below skips), and gating the fetch keeps this summary's
+  // calls off local runs. Core checks above still make token-gated, cached,
+  // headroom-gated GitHub calls locally (checkMainRedStreak, checkFeedbackBacklog).
   let workflowSummary = null;
   if (isCI) {
     workflowSummary = await getWorkflowRunSummary();
@@ -5993,6 +6001,7 @@ async function main() {
           generatedAt: new Date().toISOString(),
           minAgeDays: NEVER_RUN_MIN_AGE_DAYS,
           totalChecked: neverRun.totalChecked,
+          unknownCount: neverRun.unknownCount,
           offenders: neverRun.offenders,
         };
         fs.mkdirSync(path.dirname(NEVER_RUN_SNAPSHOT_PATH), { recursive: true });
@@ -6164,4 +6173,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { generateApproveUrl, checkAuditFreshness, checkSweepReportStaleness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness };
+module.exports = { generateApproveUrl, checkAuditFreshness, checkSweepReportStaleness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness, checkUncollectedStrands };

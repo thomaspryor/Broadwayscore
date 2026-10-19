@@ -190,10 +190,14 @@ test('feedbackBacklogResults: a read that found nothing passes; a skipped or fai
 
 test('neverRunWorkflowResults: a computed report with no offenders passes; no report passes nothing', () => {
   const name = 'Workflow coverage: never-run';
-  assert.equal(probeVerdict(hc.neverRunWorkflowResults({ offenders: [], totalChecked: 9, minAgeDays: 30 }), name), 'absent');
+  assert.equal(probeVerdict(hc.neverRunWorkflowResults({ offenders: [], totalChecked: 9, unknownCount: 0, minAgeDays: 30 }), name), 'absent');
   assert.equal(probeVerdict(hc.neverRunWorkflowResults(null), name), 'unknown');
   assert.equal(probeVerdict(hc.neverRunWorkflowResults({}), name), 'unknown');
   assert.equal(probeVerdict(hc.neverRunWorkflowResults({ offenders: ['a.yml'], minAgeDays: 30 }), name), 'present');
+  // Unreadable run counts are dropped from offenders, so they cannot vouch for a clean run.
+  assert.equal(probeVerdict(hc.neverRunWorkflowResults({ offenders: [], totalChecked: 9, unknownCount: 2 }), name), 'unknown');
+  assert.equal(probeVerdict(hc.neverRunWorkflowResults({ offenders: [], totalChecked: 0, unknownCount: 0 }), name), 'unknown');
+  assert.equal(probeVerdict(hc.neverRunWorkflowResults({ offenders: [], totalChecked: 9 }), name), 'unknown', 'older report without unknownCount');
 });
 
 const ZERO = 'Data: live show with zero critic reviews on site';
@@ -221,6 +225,19 @@ test('uncollectedStrandResults: strands without a blackout pass the zero-review 
   assert.notEqual(probeVerdict(blackout, STRANDS), 'absent');
 });
 
+test('checkUncollectedStrands: a missing report emits no row (never a pass)', () => {
+  const realRead = fs.readFileSync;
+  fs.readFileSync = (p, ...rest) => {
+    if (String(p).endsWith('uncollected-live-reviews.json')) { const e = new Error('ENOENT'); e.code = 'ENOENT'; throw e; }
+    return realRead(p, ...rest);
+  };
+  try {
+    assert.deepEqual(hc.checkUncollectedStrands(), []);
+  } finally {
+    fs.readFileSync = realRead;
+  }
+});
+
 const CV_NAMES = ['Data: armed-but-vacuous backlog cards', 'Data: undispatchable Linear backlog cards', 'Data: Linear card-verifiability report stale'];
 test('cardVerifiabilityBacklogResults: fresh clean Linear report passes all three; stale or missing passes none', () => {
   const now = Date.parse('2026-10-07T02:15:00Z');
@@ -241,6 +258,9 @@ test('coverageHolesResults / starBandDriftResults: fresh clean report passes; st
   const holes = (generatedAt) => ({ generatedAt, shows: 40, counts: { A: c, B: c, C: c, D: { ...c, published: 0 } } });
   assert.equal(probeVerdict(hc.coverageHolesResults(holes('2026-10-15T20:00:00Z'), now), 'Data: review coverage holes'), 'absent');
   assert.equal(probeVerdict(hc.coverageHolesResults(holes('2026-10-01T00:00:00Z'), now), 'Data: review coverage holes'), 'present');
+  // Empty or partial counts are not a clean audit.
+  assert.equal(probeVerdict(hc.coverageHolesResults({ generatedAt: '2026-10-15T20:00:00Z', counts: {} }, now), 'Data: review coverage holes'), 'unknown');
+  assert.equal(probeVerdict(hc.coverageHolesResults({ generatedAt: '2026-10-15T20:00:00Z', counts: { A: c, B: c, C: c } }, now), 'Data: review coverage holes'), 'unknown');
   const SB = "Data: published scores outside the critic's rating";
   const sb = (generatedAt) => ({ generatedAt, publishedJoined: 10, publishedOutOfBand: 0, queuedForRescore: 0 });
   assert.equal(probeVerdict(hc.starBandDriftResults(sb('2026-10-15T20:00:00Z'), now), SB), 'absent');
@@ -269,6 +289,12 @@ function scanFlaggedWithoutTwin(src) {
     const n = unq(m[1]);
     if (m[2] === 'warn' || m[2] === 'error') { if (!m[3]) flagged.add(n); } else twins.add(n);
   }
+  // Same object written status-first: { status: 'warn', name: '...' }.
+  const rev = /status:\s*'([a-z]+)'\s*,\s*name:\s*'((?:[^'\\]|\\.)*)'\s*,?\s*(message:\s*['`]Skipped)?/g;
+  for (const m of src.matchAll(rev)) {
+    const n = unq(m[2]);
+    if (m[1] === 'warn' || m[1] === 'error') { if (!m[3]) flagged.add(n); } else twins.add(n);
+  }
   for (const m of src.matchAll(/\bpass\(\s*'((?:[^'\\]|\\.)*)'/g)) twins.add(unq(m[1]));
   return [...flagged].filter((n) => !twins.has(n));
 }
@@ -287,6 +313,7 @@ test('static guard scanner: catches a flagged-only row, accepts pass twins and S
     a = { name: 'Only warns', status: 'warn', message: 'x' };
     b = { name: 'Has twin', status: 'error', message: 'x' }; c = { name: 'Has twin', status: 'pass', message: 'y' };
     d = { name: 'Skip only', status: 'warn', message: 'Skipped — no token' };
-    e = { name: 'Helper', status: 'warn' }; out.push(pass('Helper', 'ok'));`;
-  assert.deepEqual(scanFlaggedWithoutTwin(src), ['Only warns']);
+    e = { name: 'Helper', status: 'warn' }; out.push(pass('Helper', 'ok'));
+    f = { status: 'error', name: 'Status first', message: 'x' };`;
+  assert.deepEqual(scanFlaggedWithoutTwin(src), ['Only warns', 'Status first']);
 });

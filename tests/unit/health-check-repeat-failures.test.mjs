@@ -288,7 +288,7 @@ test('obClosingBacklogResults: a show in both signals counts once; open shows st
 
 test('neverRunWorkflowResults: absent report yields nothing; empty offenders is a pass row', () => {
   assert.deepEqual(neverRunWorkflowResults(null), []);
-  assert.deepEqual(neverRunWorkflowResults({ offenders: [] }).map((r) => [r.name, r.status]), [['Workflow coverage: never-run', 'pass']]);
+  assert.deepEqual(neverRunWorkflowResults({ offenders: [], totalChecked: 5, unknownCount: 0 }).map((r) => [r.name, r.status]), [['Workflow coverage: never-run', 'pass']]);
 });
 
 test('neverRunWorkflowResults: offenders warn with count and file list', () => {

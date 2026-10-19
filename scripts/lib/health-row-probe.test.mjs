@@ -68,11 +68,14 @@ async function withOfflineGh(fn) {
   const shellCalls = [];
   const shell = mock.method(ghApiCache, 'cachedShell', (key) => { shellCalls.push(key); return '[]'; });
   const headroom = mock.method(ghApiCache, 'hasLowHeadroom', () => true);
+  const fetchCalls = [];
+  const fetch = mock.method(ghApiCache, 'cachedFetch', async (key) => { fetchCalls.push(key); return []; });
   // health-check.js destructures these at load, so load it fresh under the mocks.
   delete require.cache[HEALTH_CHECK_PATH];
   try {
-    return { result: await fn(), shellCalls };
+    return { result: await fn(), shellCalls, fetchCalls };
   } finally {
+    fetch.mock.restore();
     shell.mock.restore();
     headroom.mock.restore();
     delete require.cache[HEALTH_CHECK_PATH];
@@ -208,7 +211,9 @@ test('a probe run performs zero real fs writes (spy on the REAL, unpatched fs)',
     // Real (unstubbed) computeCoreHealthResults — exercises the actual
     // checkDispatchOutcomes dryRun path and the fs monkey-patch backstop
     // together, against this machine's real local data.
-    await withOfflineGh(() => probeHealthRowLive('__health-row-probe-test-zero-writes__'));
+    const { fetchCalls } = await withOfflineGh(() => probeHealthRowLive('__health-row-probe-test-zero-writes__'));
+    // BRO-5164: checkFeedbackBacklog runs in core now; offline means zero live fetches.
+    assert.deepEqual(fetchCalls, []);
   } finally {
     realFs.writeFileSync = originalWrite;
     realFs.appendFileSync = originalAppend;
