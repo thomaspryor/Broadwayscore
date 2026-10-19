@@ -2623,8 +2623,8 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
     // New format: uptrans(N)?.png / middletrans(N)?.png / downtrans(N)?.png (optional numeric suffix, e.g. uptrans2.png)
     // Legacy format: BigThumbs_UP.gif / BigThumbs_MEH.gif / BigThumbs_DOWN.gif
     // Fallen Angels 2026-04-19: roundup used uptrans2.png/middletrans2.png — suffixed variant broke the pre-2 regex.
-    // BRO-5674: one entry per review-icon <img> (srcset repeats and float:right
-    // verdict icons excluded) — see scripts/lib/bww-thumb-pairing.js.
+    // BRO-5674: one entry per review-icon <img> (srcset repeats collapse) —
+    // see scripts/lib/bww-thumb-pairing.js.
     const thumbMatches = extractBwwThumbIcons(html);
     // BRO-5674: pairing is purely positional, so it is only safe when every
     // review has exactly one icon. Other Desert Cities 2026 had 20 icons for
