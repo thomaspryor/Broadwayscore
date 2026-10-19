@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-const { maxPlausibleYear } = require('./lib/date-utils');
-const { localizeIsoStamp } = require('./lib/local-date');
 /**
  * backfill-review-dates.js — Fetch pages for undated reviews to extract publishDate.
  *
@@ -20,6 +18,9 @@ const { localizeIsoStamp } = require('./lib/local-date');
  *   --prioritize         Sort high-yield domains first (even without --domains filter)
  *   --free-only          Only use free sources (cookies + Archive.org), no paid scrapers
  *   --retry-failed       Re-try reviews that previously failed (ignores dateBackfillAttempted marker)
+ *   --recheck-dates      Instead of undated reviews, re-read the page date of reviews dated more than
+ *                        2 days before opening night by a non-page source (needsOpeningWindowDateRecheck,
+ *                        BRO-5674). Skips the URL and text pre-checks: only a page date replaces them.
  *
  * Source priority:
  *   1. URL pattern extraction (free, no fetch)
@@ -58,6 +59,8 @@ const domainMode = args.find(a => a.startsWith('--domains='))?.split('=')[1]; //
 const prioritize = args.includes('--prioritize'); // sort by high-yield domains first
 const freeOnly = args.includes('--free-only'); // skip paid scrapers (Archive.org + direct fetch only)
 const retryFailed = args.includes('--retry-failed'); // re-try reviews that previously failed backfill
+const recheckDates = args.includes('--recheck-dates'); // BRO-5674: re-read early non-page dates
+const { needsOpeningWindowDateRecheck } = require('./lib/publish-date-provenance');
 
 // Rate limit Archive.org to ~6 req/min (CDX limit is ~15/min)
 let lastArchiveRequest = 0;
@@ -82,99 +85,8 @@ const SKIP_DOMAINS = new Set([
   'lightingandsoundamerica.com', // print magazine, 1 undated with URL, HTTPS redirect loop
 ]);
 
-// --- Date extraction from HTML (copied from collect-review-texts.js) ---
-
-function normalizeExtractedDate(dateStr, pageUrl) {
-  if (!dateStr || typeof dateStr !== 'string') return null;
-  // BRO-5499: a UTC stamp (Z / +00:00) is the next calendar day for an evening ET post; use the publisher-local date.
-  dateStr = localizeIsoStamp(dateStr, pageUrl);
-  try {
-    const dateMatch = dateStr.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
-    if (dateMatch) {
-      const year = parseInt(dateMatch[1]);
-      const month = parseInt(dateMatch[2]);
-      const day = parseInt(dateMatch[3]);
-      if (year < 1970 || year > maxPlausibleYear({ atLeast: 2030 })) return null;
-      if (month < 1 || month > 12 || day < 1 || day > 31) return null;
-      return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-    }
-    const d = new Date(dateStr);
-    if (isNaN(d.getTime())) return null;
-    const year = d.getFullYear();
-    if (year < 1970 || year > maxPlausibleYear({ atLeast: 2030 })) return null;
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  } catch (e) {
-    return null;
-  }
-}
-
-function extractPublishDateFromHtml(html, pageUrl) {
-  if (!html || html.length < 100) return null;
-
-  // 1. JSON-LD datePublished (most reliable)
-  const jsonLdRegex = /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
-  let match;
-  while ((match = jsonLdRegex.exec(html)) !== null) {
-    try {
-      const jsonStr = match[1].trim();
-      const data = JSON.parse(jsonStr);
-      const items = Array.isArray(data) ? data : (data['@graph'] || [data]);
-      for (const item of items) {
-        const date = item.datePublished || item.dateCreated;
-        if (date) {
-          const normalized = normalizeExtractedDate(date, pageUrl);
-          if (normalized) return normalized;
-        }
-      }
-    } catch (e) { /* invalid JSON-LD, skip */ }
-  }
-
-  // 2. HTML meta tags
-  const metaSelectors = [
-    /meta[^>]*property=["']article:published_time["'][^>]*content=["']([^"']+)["']/i,
-    /meta[^>]*content=["']([^"']+)["'][^>]*property=["']article:published_time["']/i,
-    /meta[^>]*property=["']og:article:published_time["'][^>]*content=["']([^"']+)["']/i,
-    /meta[^>]*name=["']date["'][^>]*content=["']([^"']+)["']/i,
-    /meta[^>]*name=["']DC\.date\.issued["'][^>]*content=["']([^"']+)["']/i,
-  ];
-  for (const regex of metaSelectors) {
-    const m = html.match(regex);
-    if (m && m[1]) {
-      const normalized = normalizeExtractedDate(m[1], pageUrl);
-      if (normalized) return normalized;
-    }
-  }
-
-  // 3. <time datetime="..."> in article context
-  const timeMatch = html.match(/<time[^>]*datetime=["']([^"']+)["'][^>]*>/i);
-  if (timeMatch && timeMatch[1]) {
-    const normalized = normalizeExtractedDate(timeMatch[1], pageUrl);
-    if (normalized) return normalized;
-  }
-
-  // 4. Outlet-specific extractors
-  const outletDate = extractDateFromOutletHtml(html);
-  if (outletDate) return outletDate;
-
-  return null;
-}
-
-/**
- * Outlet-specific date extractors for sites without standard metadata.
- * Each extractor targets a known HTML pattern for a specific domain.
- */
-function extractDateFromOutletHtml(html) {
-  // The Stage (thestage.co.uk) — date in: <span class="aos-ArticleDate...">Dec 1, 2025</span>
-  const stageMatch = html.match(/aos-ArticleDate[^>]*>((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2},\s*\d{4})/i);
-  if (stageMatch && stageMatch[1]) {
-    const normalized = normalizeExtractedDate(stageMatch[1]);
-    if (normalized) return normalized;
-  }
-
-  return null;
-}
+// --- Date extraction from HTML: shared with collect-review-texts.js (BRO-5674) ---
+const { extractPublishDateFromHtml, normalizeExtractedDate } = require('./lib/html-publish-date');
 
 function extractDateFromText(text) {
   if (!text || text.length < 50) return null;
@@ -211,6 +123,14 @@ function extractDateFromText(text) {
 function markAttempted(filePath, reason) {
   try {
     const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    if (recheckDates) {
+      // A dated file keeps its date; record the recheck separately so the
+      // undated sweep's marker means what it always meant.
+      data.dateRecheckAttempted = new Date().toISOString();
+      data.dateRecheckAttemptReason = reason;
+      safeWriteReview(filePath, data);
+      return;
+    }
     data.dateBackfillAttempted = new Date().toISOString();
     data.dateBackfillAttemptReason = reason;
     safeWriteReview(filePath, data);
@@ -290,6 +210,17 @@ async function main() {
   // Find all undated reviews with URLs
   const shows = listShowDirs(baseDir);
 
+  let showById = new Map();
+  if (recheckDates) {
+    try {
+      const sj = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
+      showById = new Map((sj.shows || sj).map(s => [s.id, s]));
+    } catch (e) {
+      console.error('ERROR: --recheck-dates needs data/shows.json');
+      process.exit(1);
+    }
+  }
+
   const candidates = [];
   let skippedDomain = 0;
   let skippedAttempted = 0;
@@ -300,9 +231,13 @@ async function main() {
     for (const file of files) {
       try {
         const data = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
-        if (!data.publishDate && data.url && !data.wrongProduction && !data.wrongShow) {
+        const wanted = recheckDates
+          ? (data.needsDateRecheck === true || needsOpeningWindowDateRecheck(data, showById.get(show)))
+          : !data.publishDate;
+        if (wanted && data.url && !data.wrongProduction && !data.wrongShow) {
           // Skip previously-attempted files unless --retry-failed is set
-          if (data.dateBackfillAttempted && !retryFailed) { skippedAttempted++; continue; }
+          const attempted = recheckDates ? data.dateRecheckAttempted : data.dateBackfillAttempted;
+          if (attempted && !retryFailed) { skippedAttempted++; continue; }
 
           let domain;
           try { domain = new URL(data.url).hostname.replace(/^www\./, ''); } catch { continue; }
@@ -334,7 +269,7 @@ async function main() {
     });
   }
 
-  console.log(`Found ${candidates.length} undated reviews with URLs`);
+  console.log(`Found ${candidates.length} ${recheckDates ? 'early-dated reviews to recheck' : 'undated reviews'} with URLs`);
   if (skippedDomain > 0) console.log(`Skipped ${skippedDomain} reviews from zero-yield domains`);
   if (skippedAttempted > 0) console.log(`Skipped ${skippedAttempted} reviews already attempted (use --retry-failed to retry)`);
   if (domainMode) console.log(`Domain filter: ${domainMode}`);
@@ -353,7 +288,9 @@ async function main() {
 
     try {
       // Pre-check: try URL-based extraction first (free, no API credits)
-      const urlDateResult = extractDateFromUrl(url);
+      // Not in --recheck-dates: the stored date is what is in doubt, and only
+      // the page's own date replaces it.
+      const urlDateResult = recheckDates ? null : extractDateFromUrl(url);
       if (urlDateResult && urlDateResult.date) {
         console.log(`  ✓ Date from URL (no fetch needed): ${urlDateResult.date}`);
         if (!dryRun) {
@@ -369,7 +306,7 @@ async function main() {
       // Pre-check: try text-based extraction from existing fullText (free)
       {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        if (data.fullText) {
+        if (data.fullText && !recheckDates) {
           const textDate = extractDateFromText(data.fullText);
           if (textDate) {
             console.log(`  ✓ Date from text regex (no fetch needed): ${textDate}`);
@@ -437,9 +374,12 @@ async function main() {
         extracted++;
         if (!dryRun) {
           const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+          if (recheckDates && data.publishDate !== date) console.log(`  → replaces ${data.publishDate} (${data.dateSource || 'no dateSource'})`);
           data.publishDate = date;
           data.dateSource = dateSource;
           delete data.dateBackfillAttempted; // clear failed marker on success
+          delete data.dateRecheckAttempted;
+          delete data.needsDateRecheck; // a page date is trusted (BRO-5674)
           safeWriteReview(filePath, data, { force: true });
         }
       } else {

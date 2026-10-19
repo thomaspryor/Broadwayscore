@@ -53,7 +53,6 @@
  */
 
 const { pointsAtFile, planCanonicalPointerClear, applyCanonicalPointerClear } = require('./lib/canonical-duplicate-pointers');
-const { localizeIsoStamp } = require('./lib/local-date');
 const { quarantineBody } = require('./lib/quarantine-body');
 const fs = require('fs');
 const path = require('path');
@@ -171,7 +170,7 @@ const {
 } = require('./lib/wrong-production-autoclear');
 const { shouldRetryGarbageConsentWall, storedTextNeedsConsentRefetch, shouldReleaseConsentLayerNonReview, salvageConsentPrefixedStoredText, salvageSourceHash, applyVerifiedRetryOutcome } = require('./lib/consent-refetch');
 const { shouldRetryDatelessHoldFetch } = require('./lib/review-slot-guards');
-const { isProvisionalPublishDate, bodyPublishDateFallback, ingestGateDate } = require('./lib/publish-date-provenance');
+const { isProvisionalPublishDate, isReplaceableByPageDate, needsOpeningWindowDateRecheck, bodyPublishDateFallback, ingestGateDate } = require('./lib/publish-date-provenance');
 const { checkBrowserbaseCaps, countBrowserbaseAttempt, resolveMaxSessionsPerDay, resolveRecoveryReserve, resolveUseReserve, isDeniedHost, isTier1RecoveryHost, tier1BoostForCaller, resolveExemptScripts: resolveBbExemptScripts } = require('./lib/browserbase-caps');
 const { isExemptCaller: isBbExemptCaller } = require('./lib/brightdata-caps');
 
@@ -190,7 +189,7 @@ const { verificationPublishDate } = require('./lib/verification-publish-date');
 const { verifierExcerpt } = require('./lib/excerpt-fields');
 const { discoveredPageVerdict } = require('./lib/discovered-page-verdict');
 const { isLegacyWebSearchOnly } = require('./lib/legacy-web-search');
-const { parseDate, maxPlausibleYear } = require('./lib/date-utils');
+const { parseDate } = require('./lib/date-utils');
 const { evaluateShowScorePreviousProduction } = require('./lib/date-guard');
 const { findExistingFileForUrl, decideSameUrlDifferentFileGuard } = require('./lib/review-url-clusters');
 const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
@@ -4527,53 +4526,10 @@ function classifyTextQuality(text, showId, wordCount, excerptLength = 0) {
   return { quality: 'partial', truncationSignals: signals, cleanedText };
 }
 
-// Extract publishDate from raw HTML using JSON-LD, meta tags, and time elements
-function extractPublishDateFromHtml(html, pageUrl) {
-  if (!html || html.length < 100) return null;
-
-  // 1. JSON-LD datePublished (most reliable)
-  const jsonLdRegex = /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
-  let match;
-  while ((match = jsonLdRegex.exec(html)) !== null) {
-    try {
-      const jsonStr = match[1].trim();
-      const data = JSON.parse(jsonStr);
-      const items = Array.isArray(data) ? data : (data['@graph'] || [data]);
-      for (const item of items) {
-        const date = item.datePublished || item.dateCreated;
-        if (date) {
-          const normalized = normalizeExtractedDate(date, pageUrl);
-          if (normalized) return normalized;
-        }
-      }
-    } catch (e) { /* invalid JSON-LD, skip */ }
-  }
-
-  // 2. HTML meta tags
-  const metaSelectors = [
-    /meta[^>]*property=["']article:published_time["'][^>]*content=["']([^"']+)["']/i,
-    /meta[^>]*content=["']([^"']+)["'][^>]*property=["']article:published_time["']/i,
-    /meta[^>]*property=["']og:article:published_time["'][^>]*content=["']([^"']+)["']/i,
-    /meta[^>]*name=["']date["'][^>]*content=["']([^"']+)["']/i,
-    /meta[^>]*name=["']DC\.date\.issued["'][^>]*content=["']([^"']+)["']/i,
-  ];
-  for (const regex of metaSelectors) {
-    const m = html.match(regex);
-    if (m && m[1]) {
-      const normalized = normalizeExtractedDate(m[1], pageUrl);
-      if (normalized) return normalized;
-    }
-  }
-
-  // 3. <time datetime="..."> in article context
-  const timeMatch = html.match(/<time[^>]*datetime=["']([^"']+)["'][^>]*>/i);
-  if (timeMatch && timeMatch[1]) {
-    const normalized = normalizeExtractedDate(timeMatch[1], pageUrl);
-    if (normalized) return normalized;
-  }
-
-  return null;
-}
+// Page-date extraction (JSON-LD, meta, <time>, visible dateline) lives in
+// scripts/lib/html-publish-date.js (BRO-5674): one copy for the collector and
+// both backfill scripts.
+const { extractPublishDateFromHtml } = require('./lib/html-publish-date');
 
 // URL-path dates come from the canonical scripts/lib/rebuild-helpers.js
 // extractDateFromUrl. They are never stored as publishDate here (BRO-5351,
@@ -4583,37 +4539,6 @@ function extractPublishDateFromHtml(html, pageUrl) {
 // Byline-date extraction lives in scripts/lib/body-date-mismatch.js (BRO-2770)
 // so the date guards, the shared writer and the corpus audit use one parser.
 const { extractDateFromText, detectBodyDateMismatch } = require('./lib/body-date-mismatch');
-
-// Normalize extracted date string to YYYY-MM-DD format
-// Extracts date components directly from string to avoid timezone shift issues
-// (e.g., "2024-03-15T23:30:00-05:00" → "2024-03-15", not "2024-03-16")
-function normalizeExtractedDate(dateStr, pageUrl) {
-  if (!dateStr || typeof dateStr !== 'string') return null;
-  // BRO-5499: a UTC stamp (Z / +00:00) is the next calendar day for an evening ET post; use the publisher-local date.
-  dateStr = localizeIsoStamp(dateStr, pageUrl);
-  try {
-    // Extract YYYY-MM-DD directly from the string before any timezone conversion
-    const dateMatch = dateStr.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
-    if (dateMatch) {
-      const year = parseInt(dateMatch[1]);
-      const month = parseInt(dateMatch[2]);
-      const day = parseInt(dateMatch[3]);
-      if (year < 1970 || year > maxPlausibleYear({ atLeast: 2030 })) return null;
-      if (month < 1 || month > 12 || day < 1 || day > 31) return null;
-      return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-    }
-    // Fallback: try Date parsing for non-ISO formats (e.g., "March 15, 2024")
-    const d = new Date(dateStr);
-    if (isNaN(d.getTime())) return null;
-    const year = d.getFullYear();
-    if (year < 1970 || year > maxPlausibleYear({ atLeast: 2030 })) return null;
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  } catch (e) {
-    return null;
-  }
-}
 
 // Map fetch method to standardized sourceMethod
 function mapSourceMethod(method) {
@@ -4819,18 +4744,31 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // BRO-5081: an LLM-scoring guess or a roundup article's own date
   // (dateSource 'llm-scoring' / 'roundup-article') is a placeholder too. Let
   // the page or byline replace it; keep it only if neither finds a date.
+  // BRO-5674: so is a date carried in from an aggregator, roundup, RSS feed or
+  // SERP (most were written with no dateSource). The page's own dateline
+  // replaces it; a page date ('html-page') is never replaced.
   const provisionalPublishDate = !sentinelPublishDate && isProvisionalPublishDate(data) ? data.publishDate : null;
+  const carriedPublishDate = !sentinelPublishDate && !provisionalPublishDate && isReplaceableByPageDate(data) ? data.publishDate : null;
   const provisionalDateSource = provisionalPublishDate ? data.dateSource : null;
-  if (provisionalPublishDate) data.publishDate = null;
+  const carriedDateSource = carriedPublishDate ? (data.dateSource || null) : null;
+  if (provisionalPublishDate || carriedPublishDate) data.publishDate = null;
 
   // Extract publishDate from HTML if not already set
   if (!data.publishDate && html) {
     const extractedDate = extractPublishDateFromHtml(html, data.url);
     if (extractedDate) {
       data.publishDate = extractedDate;
-      if (provisionalPublishDate) data.dateSource = 'html-page';
+      data.dateSource = 'html-page';
       console.log(`    → Extracted publishDate from HTML: ${extractedDate}`);
     }
+  }
+  // A carried date the page could not confirm stays as it was. Not replaced by
+  // the body-text regex below (that can be a run or closing date, BRO-5090).
+  if (carriedPublishDate && !data.publishDate) {
+    data.publishDate = carriedPublishDate;
+    if (carriedDateSource) data.dateSource = carriedDateSource; else delete data.dateSource;
+  } else if (carriedPublishDate && data.publishDate !== carriedPublishDate) {
+    console.log(`    → Replaced carried publishDate ${carriedPublishDate} (${carriedDateSource || 'no dateSource'}) with page date ${data.publishDate}`);
   }
 
   // Fallback: the byline date in the first 500 chars of fullText. Only when
@@ -4861,6 +4799,25 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     data.dateSource = provisionalDateSource;
   } else if (provisionalPublishDate && data.publishDate !== provisionalPublishDate) {
     console.log(`    → Replaced provisional publishDate ${provisionalPublishDate} (${provisionalDateSource}) with ${data.publishDate}`);
+  }
+  // BRO-5674: a date more than 2 days before opening night that the page did
+  // not confirm is marked for re-extraction (backfill-review-dates.js
+  // --recheck-dates), not trusted. Cleared once a page date is stored.
+  {
+    let showMeta = null;
+    try {
+      if (!_showsJsonCache) _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+      const sid = review.showId || data.showId;
+      showMeta = _showsJsonCache.shows.find(s => s.id === sid) || null;
+    } catch (e) { /* shows.json unavailable */ }
+    if (showMeta) {
+      if (needsOpeningWindowDateRecheck(data, showMeta)) {
+        if (!data.needsDateRecheck) console.log(`    → publishDate ${data.publishDate} is >2 days before opening ${showMeta.openingDate} and not from the page: needsDateRecheck`);
+        data.needsDateRecheck = true;
+      } else if (data.needsDateRecheck) {
+        delete data.needsDateRecheck;
+      }
+    }
   }
 
   // Schmigadoon 2026 postmortem Bug #5: anticipatory pre-opening-night posts.
@@ -8397,7 +8354,7 @@ function exitIfStuckAfterMain(graceMs = 20000) {
 }
 
 module.exports = {
-  reviewTimeoutMs, pushReviewTextsCheckpoint, commitChanges, extractTextFromHtml, findReviewsToProcess };
+  reviewTimeoutMs, pushReviewTextsCheckpoint, commitChanges, extractTextFromHtml, findReviewsToProcess, updateReviewJson };
 
 // Run (guarded so scripts/collect-review-texts.test.mjs can require() this
 // file for pushReviewTextsCheckpoint() without kicking off a real collection
