@@ -53,13 +53,16 @@ function write(input, fields) {
   return { r, dir, data: r.filepath ? read(r) : null };
 }
 
-test('roundup flaggers (Guard E, roundupUrlSwap): lane review not flagged, ordinary review flagged', () => {
+test('roundup guards (Guard E0/E, roundupUrlSwap): lane review written unflagged, ordinary review refused', () => {
   const input = (n) => ({ outlet: 'BroadwayWorld', outletId: 'broadwayworld', criticName: `Critic ${n}`, url: `https://www.broadwayworld.com/article/Review-Roundup-${n}-Is-Here-20261018` });
   const lane = write(input('lane'), { fullText: body, ...stamp() });
   const ord = write(input('ord'), { fullText: body });
   assert.equal(lane.r.action, 'new');
   assert.equal(lane.data.isRoundupArticle, undefined);
-  assert.equal(ord.data.isRoundupArticle, true);
+  // Guard E0: an ordinary BWW Review-Roundup page under broadwayworld is
+  // page-as-review and refused outright (was: written + stamped).
+  assert.equal(ord.r.action, 'skipped');
+  assert.match(ord.r.reason, /^roundup-page-as-review:/);
 });
 
 test('unknown-critic URL-date flagger (Guard J, wrongProduction): lane review not flagged, ordinary review flagged', () => {

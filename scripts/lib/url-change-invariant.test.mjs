@@ -598,7 +598,7 @@ test('BRO-4128: maybeUpgradeUrl refuses to swap a scored paywall stub for a roun
     originalScoreSource: 'stage-star-svg',
     originalScoreNormalized: 60,
   };
-  makeFixture(reviewTextsDir, showId, 'thestage--unknown.json', fixture);
+  const fixturePath = makeFixture(reviewTextsDir, showId, 'thestage--unknown.json', fixture);
 
   const result = quiet(() => createOrMergeReviewFile(showId, {
     outlet: 'The Stage',
@@ -608,7 +608,10 @@ test('BRO-4128: maybeUpgradeUrl refuses to swap a scored paywall stub for a roun
     fields: {},
   }, { reviewTextsDir }));
 
-  const after = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
+  // Guard E0 now refuses this write outright (a Stage round-up under 'thestage'
+  // is page-as-review) before the merge path; either way the file is untouched.
+  assert.ok(!result.filepath || result.filepath === fixturePath);
+  const after = JSON.parse(fs.readFileSync(fixturePath, 'utf8'));
   assert.equal(after.url, fixture.url, 'roundup-page candidate must be refused; original review url must survive');
   assert.equal(after.originalScore, '3', 'the real star score must survive — this is the BRO-4128 regression');
   assert.equal(after.originalScoreSource, 'stage-star-svg');
@@ -976,7 +979,7 @@ test('BRO-5169 roundup flag from a refused url does not land on the kept review'
   const reviewTextsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'url-invariant-roundup-'));
   const showId = 'hamilton-test-fixture';
   const reviewUrl = 'https://www.broadwayworld.com/article/Review-HAMILTON-Starring-Someone-20260930';
-  makeFixture(reviewTextsDir, showId, 'broadwayworld--aliya-al-hassan.json', {
+  const fixturePath = makeFixture(reviewTextsDir, showId, 'broadwayworld--aliya-al-hassan.json', {
     showId, outletId: 'broadwayworld', outlet: 'BroadwayWorld', criticName: 'Aliya Al-Hassan',
     url: reviewUrl, source: 'serp-discovery', sources: ['serp-discovery'],
     fullText: 'Hamilton review body with a real verdict from one critic. '.repeat(30),
@@ -988,7 +991,10 @@ test('BRO-5169 roundup flag from a refused url does not land on the kept review'
     source: 'opening-night-discovery',
     fields: {},
   }, { reviewTextsDir }));
-  const after = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
+  // Guard E0 refuses the BWW Review-Roundup page as a broadwayworld review
+  // before the merge path; the kept review must be untouched either way.
+  assert.ok(!result.filepath || result.filepath === fixturePath);
+  const after = JSON.parse(fs.readFileSync(fixturePath, 'utf8'));
   assert.equal(after.url, reviewUrl);
   assert.equal(after.isRoundupArticle, undefined, 'roundup verdict belongs to the refused url, not this review');
   assert.equal(after.roundupArticleReason, undefined);
