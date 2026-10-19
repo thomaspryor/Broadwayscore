@@ -245,7 +245,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-19T16:41:29.699Z",
-      "lastSeen": "2026-10-19T18:02:14.740Z",
+      "lastSeen": "2026-10-19T18:11:34.299Z",
       "lastNotifiedAt": "2026-10-19T16:41:29.699Z",
       "lastSurfacedAt": "2026-10-19T16:41:29.699Z",
       "notifyCount": 148,
@@ -253,7 +253,7 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 142,
       "sweptTracker": "BRO-5554",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -6745,7 +6745,7 @@
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
       "incidentOpenedAt": "2026-10-19T17:19:39.195Z",
-      "lastSeen": "2026-10-19T18:02:14.729Z",
+      "lastSeen": "2026-10-19T18:11:34.290Z",
       "lastNotifiedAt": "2026-10-19T17:19:39.195Z",
       "lastSurfacedAt": null,
       "notifyCount": 10,
@@ -6758,7 +6758,7 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38827743361"
       },
       "absentRunIds": [],
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "resolved",
@@ -20556,14 +20556,14 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"live registry: at most 10 displayNames are the capitalized run-together id\"",
       "firstSeen": "2026-10-18T19:51:45.330Z",
       "incidentOpenedAt": "2026-10-19T12:16:07.400Z",
-      "lastSeen": "2026-10-19T18:02:14.713Z",
+      "lastSeen": "2026-10-19T18:11:34.277Z",
       "lastNotifiedAt": "2026-10-19T12:16:07.400Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-5642",
       "absentRunIds": [],
-      "silentRefires": 8
+      "silentRefires": 9
     },
     "land:land/bro-5646-codex-pr-lander": {
       "status": "resolved",
@@ -21026,7 +21026,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:E2E Tests:b4c87b35": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run unit tests — \"returns non-empty array of theaters\"",
       "firstSeen": "2026-10-19T12:35:30.578Z",
@@ -21046,8 +21046,11 @@
       "silentRefires": 7,
       "absentRunIds": [
         "39290417226",
-        "39296392950"
-      ]
+        "39294688825",
+        "39298314932"
+      ],
+      "resolvedAt": "2026-10-19T18:11:34.262Z",
+      "resolveReason": "stale-signature"
     },
     "land:land/bro-5342-sidecars": {
       "status": "resolved",
