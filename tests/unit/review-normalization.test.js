@@ -948,7 +948,7 @@ describe('normalizeUrl', () => {
   test('strips loginSuccessful composed with other tracking params', () => {
     assert.strictEqual(
       normalizeUrl('https://www.independent.co.uk/review-b123.html?loginSuccessful=true&utm_source=lbo'),
-      'independent.co.uk/review-b123.html'
+      'the-independent.com/review-b123.html' // BRO-5674 host alias
     );
   });
 
