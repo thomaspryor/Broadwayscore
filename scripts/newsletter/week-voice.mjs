@@ -101,11 +101,15 @@ export function composeWeekVoice({ bw = [], ob = [], counts = {} } = {}) {
   if (total === 1) sentences.push('A slow week in New York, with just one opening.');
   else if (total === 2) sentences.push('A slow week in New York, with just two openings.');
   else if (n >= 5) {
-    // The count is the calendar's; some openings have no reviews yet and get no
-    // card, so say how many do (owner, 2026-10-18: "12 openings, 7 in the email").
+    // The count is the calendar's; openings without enough reviews for a Critic
+    // Score get no card, so say how many did and who scored highest (owner's own
+    // Resend wording, 2026-10-18).
     const reviewed = list.length;
-    const tail = reviewed < n ? `, ${word(reviewed)} reviewed so far` : '';
-    sentences.push(`A packed week ${M.the}, with ${word(n)} openings${tail}.`);
+    const top = [...list].sort((x, y) => scoreOf(y) - scoreOf(x))[0];
+    const tail = reviewed < n
+      ? ` ${reviewed} got enough reviews for a Critic Score, and ${top.show.title} scored the highest with a ${scoreOf(top)}.`
+      : '';
+    sentences.push(`A packed week ${M.the}, with ${word(n)} openings.${tail}`);
   }
   else if (total >= 5) sentences.push(`A busy week in New York, with ${word(total)} openings.`);
   else if (!otherN) sentences.push(`A steady week for ${M.name}.`);

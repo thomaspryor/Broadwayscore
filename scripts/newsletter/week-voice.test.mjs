@@ -119,12 +119,12 @@ test('a gold second opening still lifts the week above a score mover (the lead i
   assert.deepEqual(c.slice(0, 3).map(x => x.show.id), ['l', 'g', 'mv']);
 });
 
-test('packed week: calendar count stays, and the lede says how many have reviews yet', () => {
+test('packed week: calendar count stays, and the lede says how many got a Critic Score and who scored highest', () => {
   const ob = (t, s, c) => o(t, s, c, { category: 'off-broadway' });
   const list = ['A', 'B', 'C', 'D', 'E', 'F', 'G'].map((t, i) => ob(`Show ${t}`, 60 + i, 20 - i));
   const v = composeWeekVoice({ ob: list, counts: { ob: 12 } });
   assert.equal(v.subject, 'Show A and 11 other shows open off-Broadway this week');
   const text = plain(v.sentences.join(' '));
-  assert.match(text, /^A packed week Off Broadway, with 12 openings, seven reviewed so far\./);
+  assert.match(text, /^A packed week Off Broadway, with 12 openings\. 7 got enough reviews for a Critic Score, and Show G scored the highest with a 66\./);
   assert.doesNotMatch(text, /most reviews/);
 });
