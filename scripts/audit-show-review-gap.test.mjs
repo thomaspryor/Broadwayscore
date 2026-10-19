@@ -887,3 +887,10 @@ test('BRO-5655: oldest gap row age is reported for the given ids', () => {
   assert.equal(oldestGapRow(ts, ['fresh'], NOW).ageHours, 1);
   assert.equal(oldestGapRow(ts, [], NOW), null);
 });
+
+test('BRO-5655: reserveStalestSlots survives duplicate ids without throwing', async () => {
+  const { reserveStalestSlots } = await import('./lib/gap-audit-freshness.js');
+  const list = [{ id: 'a' }, { id: 'a' }, { id: 'b' }];
+  const out = reserveStalestSlots(list, new Map([['b', 1]]));
+  assert.ok(out.targets.length >= 2);
+});

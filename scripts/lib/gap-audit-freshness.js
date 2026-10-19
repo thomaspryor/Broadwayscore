@@ -162,6 +162,7 @@ function reserveStalestSlots(ordered, rowTsById, { every = STALE_RESERVE_EVERY }
       }
     }
     while (p < list.length && taken.has(list[p].id)) p++;
+    if (p >= list.length) break; // duplicate ids in input
     taken.add(list[p].id);
     targets.push(list[p]);
   }

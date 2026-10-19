@@ -2115,6 +2115,7 @@ async function main(argv = process.argv.slice(2)) {
   const checkpointAtStart = useCheckpoint ? JSON.parse(JSON.stringify(checkpoint)) : null;
   let gapRowTsAtStart = new Map();
   let staleReservedIds = [];
+  let oldestDueAtStart = null;
   if (useCheckpoint && !showFilter) {
     const now = Date.now();
     const before = targets.length;
@@ -2145,7 +2146,7 @@ async function main(argv = process.argv.slice(2)) {
     const reserved = reserveStalestSlots(targets, gapRowTsAtStart);
     targets = reserved.targets;
     staleReservedIds = reserved.reservedIds;
-    const oldest = oldestGapRow(gapRowTsAtStart, targets.map(s => s.id), now);
+    const oldest = oldestDueAtStart = oldestGapRow(gapRowTsAtStart, targets.map(s => s.id), now);
     if (oldest) console.log(`audit-show-review-gap: oldest due gap row ${oldest.showId} (${oldest.ageHours}h, computedAt ${oldest.computedAt}); 1 in ${STALE_RESERVE_EVERY} slots reserved for stalest rows`);
   }
 
@@ -2667,17 +2668,18 @@ async function main(argv = process.argv.slice(2)) {
   }
 
   // BRO-5655: row staleness, visible in the gap file. "afterRun" is the oldest
-  // due row this run did not get to, i.e. what will still be stale next hour.
+  // due row this run did not audit, i.e. what will still be stale next hour.
+  // Attempted = audited this run; a blast-guard quarantine can still keep a row's old computedAt.
   const auditedThisRunIds = new Set(results.map(r => r && r.showId).filter(Boolean));
   const staleness = (useCheckpoint && !showFilter) ? {
     // Own stamp: a later --show run carries this block forward unchanged.
     at: new Date().toISOString(),
     reserveEvery: STALE_RESERVE_EVERY,
-    reservedAudited: staleReservedIds.filter(id => auditedThisRunIds.has(id)),
-    oldestDueRowAtStart: oldestGapRow(gapRowTsAtStart, targets.map(s => s.id)),
+    reservedAttempted: staleReservedIds.filter(id => auditedThisRunIds.has(id)),
+    oldestDueRowAtStart: oldestDueAtStart,
     oldestDueRowAfterRun: oldestGapRow(gapRowTsAtStart, targets.map(s => s.id).filter(id => !auditedThisRunIds.has(id))),
   } : null;
-  if (staleness) console.log(`Staleness: ${staleness.reservedAudited.length} stalest row(s) refreshed in reserved slots; oldest due row left: ${staleness.oldestDueRowAfterRun ? `${staleness.oldestDueRowAfterRun.showId} (${staleness.oldestDueRowAfterRun.ageHours}h)` : 'none'}`);
+  if (staleness) console.log(`Staleness: ${staleness.reservedAttempted.length} stalest row(s) audited in reserved slots; oldest due row left: ${staleness.oldestDueRowAfterRun ? `${staleness.oldestDueRowAfterRun.showId} (${staleness.oldestDueRowAfterRun.ageHours}h)` : 'none'}`);
 
   const runAudit = {
     generatedAt: new Date().toISOString(),
