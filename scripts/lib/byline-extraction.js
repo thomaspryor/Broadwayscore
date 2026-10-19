@@ -165,7 +165,12 @@ function extractByline(html) {
       if (PUBLISHER_RE.test(name)) continue;
       // A bare "By" preamble span read as the name (BRO-3414).
       if (/^by:?$/i.test(name)) continue;
-      if (re === INLINE_BY_RE) name = name.split(/\s+and\s+/)[0].trim();
+      if (re === INLINE_BY_RE) {
+        name = name.split(/\s+and\s+/)[0].trim();
+        // A one-word capture that stopped at ',' / '&' is a sort or filter
+        // widget ("By Relevance, Date", "By Newest, Oldest"), not a co-author list.
+        if (!/\s/.test(name) && /^\s*[,&]/.test(html.slice(m.index + m[0].length))) continue;
+      }
       if ((re === INLINE_BY_RE || re === SIGN_OFF_RE) && !looksLikeProseName(name)) continue;
       // Capitalize lowercase author slugs from class="author-name" (e.g. "ross" → "Ross").
       if (/^[a-z][a-z\s.'’-]*$/.test(name)) {

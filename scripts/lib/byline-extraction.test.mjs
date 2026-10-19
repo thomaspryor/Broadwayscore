@@ -187,3 +187,9 @@ test('publisher names are skipped in JSON-LD and with &eacute; entities', () => 
   assert.equal(extractJsonLdAuthor(ld), null);
   assert.equal(extractByline('<meta name="author" content="Cond&eacute; Nast"><p class="byline">By <a class="byline__name-link" href="/x">Helen Shaw</a></p>'), 'Helen Shaw');
 });
+
+test('one-word capture before a comma is a sort widget, not a byline', () => {
+  assert.equal(extractByline('<p>By Relevance, Date</p>'), null);
+  assert.equal(extractByline('<p>By Newest, Oldest</p>'), null);
+  assert.equal(extractByline('<p>By Meg Masseron, Logan Culwell-Block</p>'), 'Meg Masseron');
+});
