@@ -89,6 +89,7 @@ function extractReviewsWithThumbs(html) {
 }
 
 // Find matching source file for a review
+// Returns { file, how }: how is 'exact' | 'prefix' | 'family' | 'outlet-only'.
 function findMatchingFile(showId, outletId, criticNorm) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   if (!fs.existsSync(showDir)) return null;
@@ -99,20 +100,19 @@ function findMatchingFile(showId, outletId, criticNorm) {
   if (criticNorm && criticNorm !== 'unknown') {
     const expectedPattern = `${outletId}--${criticNorm}`;
     for (const file of files) {
-      if (file.startsWith(expectedPattern + '.json') || file.startsWith(expectedPattern + '-')) {
-        return path.join(showDir, file);
-      }
+      if (file === expectedPattern + '.json') return { file: path.join(showDir, file), how: 'exact' };
+      if (file.startsWith(expectedPattern + '-')) return { file: path.join(showDir, file), how: 'prefix' };
     }
     // Same outlet family (edition variants like timeout / timeout-london), never
     // a critic-name-only match across outlets (BRO-3943).
     const familyMatch = findMatchingReviewFile(files, outletId, criticNorm, normalizeOutlet);
-    if (familyMatch) return path.join(showDir, familyMatch);
+    if (familyMatch) return { file: path.join(showDir, familyMatch), how: 'family' };
   }
 
   // When critic is unknown, match by outlet — but only if there's exactly one file for that outlet
   const outletMatches = files.filter(f => f.startsWith(outletId + '--'));
   if (outletMatches.length === 1) {
-    return path.join(showDir, outletMatches[0]);
+    return { file: path.join(showDir, outletMatches[0]), how: 'outlet-only' };
   }
 
   return null;
@@ -137,7 +137,8 @@ for (const file of archiveFiles) {
 
   for (const review of reviews) {
     reviewsParsed++;
-    const filePath = findMatchingFile(showId, review.outletId, review.criticNorm);
+    const match = findMatchingFile(showId, review.outletId, review.criticNorm);
+    const filePath = match && match.file;
     if (!filePath) {
       log(`  ✗ No match: ${review.outletId}--${review.criticNorm} (${review.bwwThumb})`);
       continue;
@@ -151,7 +152,10 @@ for (const file of archiveFiles) {
         alreadyHadThumb++;
         continue;
       }
-      if (data.bwwThumb && !CORRECT) {
+      // --correct overwrites only a file that is provably this critic's: an
+      // exact or same-outlet-family name match, never a name prefix or the
+      // lone file at the outlet (BRO-5681 review: those can be another critic).
+      if (data.bwwThumb && (!CORRECT || !['exact', 'family'].includes(match.how))) {
         alreadyHadThumb++;
         log(`  ○ Already has thumb: ${path.basename(filePath)} (${data.bwwThumb})`);
         continue;
