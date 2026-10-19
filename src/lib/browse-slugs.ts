@@ -17,14 +17,13 @@ import type { ComputedShow } from '@/lib/data-types';
 import { getSeasonForDate } from '../../scripts/lib/broadway-seasons';
 
 /**
- * Returns null for `opera` and `special` (concerts, galas, immersive
- * experiences, cabaret, dance) — no browse page lists those pools yet, and
- * the binary `isMusical` check used to silently fall through to the
- * plays/dramas page, which is wrong for a concert or opera. Callers must
- * treat null as "no browse page exists" and render the breadcrumb/link
- * unlinked rather than guessing a mismatched destination.
+ * Returns null for regional shows and for `opera` and `special` formats
+ * (concerts, galas, immersive experiences, cabaret, dance), since no browse
+ * page lists those pools yet. Callers must omit that breadcrumb level or
+ * render the link unlinked rather than guess a mismatched destination.
  */
 export function getBrowseSlug(category: ComputedShow['category'] | undefined, type: ComputedShow['type']): string | null {
+  if (category === 'regional') return null;
   if (type === 'opera' || type === 'special') return null;
   // One list for every national tour, musical or play (BRO-4211).
   if (category === 'tour') return 'broadway-national-tours';
