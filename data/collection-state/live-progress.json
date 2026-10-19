@@ -1,128 +1,62 @@
 {
-  "updatedAt": "2026-10-19T14:56:27.862Z",
-  "processed": 415,
-  "failed": 249,
-  "successRate": "62.5%",
+  "updatedAt": "2026-10-19T15:40:11.804Z",
+  "processed": 77,
+  "failed": 43,
+  "successRate": "64.2%",
   "tierBreakdown": {
-    "playwright": 200,
-    "amp": 1,
+    "playwright": 44,
+    "amp": 0,
     "browserbase": 0,
-    "directCookies": 1,
-    "scrapingdog": 36,
-    "scrapingbee": 32,
-    "brightdata": 6,
+    "directCookies": 0,
+    "scrapingdog": 6,
+    "scrapingbee": 6,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 149
+    "archive": 22
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-10-19T12:00:04.772Z",
+      "t": "2026-10-19T15:12:46.817Z",
       "event": "bb-session",
-      "session": "79b58a6e",
-      "url": "https://www.newyorker.com/goings-on-about-town/just-in-time"
+      "session": "2b083891",
+      "url": "https://www.nytimes.com/2026/03/02/theater/bigfoot-review-amber-ruffin.html"
     },
     {
-      "t": "2026-10-19T12:00:05.290Z",
+      "t": "2026-10-19T15:12:47.697Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-19T12:04:50.003Z",
+      "t": "2026-10-19T15:13:05.212Z",
       "event": "bb-session",
-      "session": "126946a3",
-      "url": "https://www.newyorker.com/goings-on-about-town/theatre/and-juliet-11-28-22"
+      "session": "00bf8bd7",
+      "url": "https://www.nytimes.com/2026/03/02/theater/bigfoot-review-amber-ruffin.html"
     },
     {
-      "t": "2026-10-19T12:04:50.453Z",
+      "t": "2026-10-19T15:13:06.061Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-19T12:11:32.600Z",
+      "t": "2026-10-19T15:23:03.595Z",
       "event": "bb-session",
-      "session": "e468f60c",
+      "session": "ce7b2d17",
       "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
     },
     {
-      "t": "2026-10-19T12:11:33.082Z",
+      "t": "2026-10-19T15:23:04.536Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-19T12:11:49.758Z",
+      "t": "2026-10-19T15:23:21.998Z",
       "event": "bb-session",
-      "session": "fd2e5ea9",
+      "session": "ae5add42",
       "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
     },
     {
-      "t": "2026-10-19T12:11:50.203Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-19T12:20:38.010Z",
-      "event": "bb-session",
-      "session": "28093d12",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
-    {
-      "t": "2026-10-19T12:20:38.502Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-19T12:20:56.129Z",
-      "event": "bb-session",
-      "session": "851615f5",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
-    {
-      "t": "2026-10-19T12:20:56.599Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-19T12:22:56.054Z",
-      "event": "bb-session",
-      "session": "190ac278",
-      "url": "http://theater.nytimes.com/2011/03/25/theater/reviews/the-book-of-mormon-at-euge"
-    },
-    {
-      "t": "2026-10-19T12:22:56.521Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-19T12:23:13.390Z",
-      "event": "bb-session",
-      "session": "1f859b5c",
-      "url": "http://theater.nytimes.com/2011/03/25/theater/reviews/the-book-of-mormon-at-euge"
-    },
-    {
-      "t": "2026-10-19T12:23:13.849Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-19T12:35:42.073Z",
-      "event": "bb-session",
-      "session": "6d05ab64",
-      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
-    },
-    {
-      "t": "2026-10-19T12:35:42.609Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-19T12:35:59.396Z",
-      "event": "bb-session",
-      "session": "fd8ab29b",
-      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
-    },
-    {
-      "t": "2026-10-19T12:35:59.810Z",
+      "t": "2026-10-19T15:23:22.910Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
