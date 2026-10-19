@@ -108,7 +108,88 @@ function compareAuditPriority(a, b, checkpoint, now = Date.now()) {
   return showRecencyKey(b).localeCompare(showRecencyKey(a));
 }
 
+// BRO-5655: reserved slots for the stalest gap rows. compareAuditPriority puts
+// opening-week shows first, and a busy opening week (39 tier-0 shows due on
+// 2026-10-19) uses the whole time budget, so a show 8-21 days after opening
+// waited days for re-audit. Its show-review-gap.json row kept the old
+// computedAt and the opening-window alert kept firing on gaps that were
+// already fixed (Antigone Exits, row stuck at 2026-10-14, BRO-5489).
+// Every STALE_RESERVE_EVERY-th slot (indices 1, 5, 9, ...) goes to the due
+// show whose gap row is oldest, so about 25% of each run refreshes the stalest
+// rows regardless of how many opening shows are queued. Slot 1, not slot 3,
+// so a run that only gets through a couple of shows still refreshes one.
+const STALE_RESERVE_EVERY = 4;
+
+// showId -> computedAt ms, from a parsed show-review-gap.json. Rows that
+// cannot be stale in a way a re-audit fixes are left out: no/unparseable
+// computedAt, and quarantined rows (BRO-3002), whose computedAt stays frozen
+// while the show is quarantined and would otherwise take a slot every run.
+function gapRowTimestamps(gapAudit) {
+  const out = new Map();
+  const rows = gapAudit && Array.isArray(gapAudit.results) ? gapAudit.results : [];
+  for (const r of rows) {
+    if (!r || !r.showId || r.quarantine) continue;
+    const t = Date.parse(r.computedAt);
+    if (Number.isFinite(t)) out.set(r.showId, t);
+  }
+  return out;
+}
+
+// Reorders an already priority-sorted target list. Pure: same shows in, same
+// shows out, no duplicates. Shows without a gap row are not stale-slot
+// candidates (no row means no stale alert, and compareAuditPriority already
+// puts never-audited shows first in their tier).
+function reserveStalestSlots(ordered, rowTsById, { every = STALE_RESERVE_EVERY } = {}) {
+  const list = Array.isArray(ordered) ? ordered : [];
+  if (!(every >= 2) || !rowTsById || rowTsById.size === 0) return { targets: list.slice(), reservedIds: [] };
+  const pos = new Map(list.map((s, i) => [s.id, i]));
+  const stale = list
+    .filter((s) => rowTsById.has(s.id))
+    .sort((a, b) => (rowTsById.get(a.id) - rowTsById.get(b.id)) || (pos.get(a.id) - pos.get(b.id)));
+  const taken = new Set();
+  const targets = [];
+  const reservedIds = [];
+  let p = 0;
+  let q = 0;
+  while (targets.length < list.length) {
+    if (targets.length % every === 1) {
+      while (q < stale.length && taken.has(stale[q].id)) q++;
+      if (q < stale.length) {
+        taken.add(stale[q].id);
+        targets.push(stale[q]);
+        reservedIds.push(stale[q].id);
+        continue;
+      }
+    }
+    while (p < list.length && taken.has(list[p].id)) p++;
+    taken.add(list[p].id);
+    targets.push(list[p]);
+  }
+  return { targets, reservedIds };
+}
+
+// Oldest gap row among `showIds` (ids missing from rowTsById are skipped).
+// Written into show-review-gap.json so row staleness is visible in the file.
+function oldestGapRow(rowTsById, showIds, now = Date.now()) {
+  let best = null;
+  for (const id of showIds || []) {
+    const t = rowTsById && rowTsById.get(id);
+    if (!Number.isFinite(t)) continue;
+    if (!best || t < best.t) best = { id, t };
+  }
+  if (!best) return null;
+  return {
+    showId: best.id,
+    computedAt: new Date(best.t).toISOString(),
+    ageHours: Math.round(((now - best.t) / 3600000) * 10) / 10,
+  };
+}
+
 module.exports = {
+  STALE_RESERVE_EVERY,
+  gapRowTimestamps,
+  reserveStalestSlots,
+  oldestGapRow,
   freshnessMsFor,
   inOpeningPriorityWindow,
   compareAuditPriority,

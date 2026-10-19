@@ -823,3 +823,67 @@ test('plausibleLiveShowIds: a stub shows.json yields null so retired-id clearing
   const full = new Set(Array.from({ length: MIN_PLAUSIBLE_SHOWS }, (_, i) => `s${i}`));
   assert.equal(plausibleLiveShowIds(full), full);
 });
+
+// BRO-5655: reserved slots for the stalest gap rows. Real functions only.
+const {
+  reserveStalestSlots, gapRowTimestamps, oldestGapRow, STALE_RESERVE_EVERY,
+} = require('./lib/gap-audit-freshness.js');
+
+test('BRO-5655: stalest rows get reserved slots even when many fresh opening shows are due', () => {
+  const NOW = Date.parse('2026-10-19T09:00:00Z');
+  const opening = Array.from({ length: 40 }, (_, i) => ({ id: `opening-${i}` }));
+  const stale = [{ id: 'antigone-exits' }, { id: 'stale-b' }, { id: 'stale-c' }];
+  // Priority order puts every opening show ahead of the stale ones.
+  const ordered = [...opening, ...stale];
+  const gapFile = {
+    results: [
+      ...opening.map(s => ({ showId: s.id, computedAt: new Date(NOW - 2 * 3600e3).toISOString() })),
+      { showId: 'stale-c', computedAt: new Date(NOW - 50 * 3600e3).toISOString() },
+      { showId: 'antigone-exits', computedAt: '2026-10-14T22:55:22.804Z' },
+      { showId: 'stale-b', computedAt: new Date(NOW - 80 * 3600e3).toISOString() },
+    ],
+  };
+  const ts = gapRowTimestamps(gapFile);
+  const { targets, reservedIds } = reserveStalestSlots(ordered, ts);
+  // A run that only gets through 12 shows (budget hit) still refreshes all three, oldest first.
+  const firstTwelve = targets.slice(0, 12).map(s => s.id);
+  assert.equal(firstTwelve[1], 'antigone-exits');
+  assert.equal(firstTwelve[1 + STALE_RESERVE_EVERY], 'stale-b');
+  assert.equal(firstTwelve[1 + 2 * STALE_RESERVE_EVERY], 'stale-c');
+  assert.deepEqual(reservedIds.slice(0, 3), ['antigone-exits', 'stale-b', 'stale-c']);
+  // Non-reserved slots keep priority order.
+  assert.deepEqual(firstTwelve.filter(id => id.startsWith('opening-')), opening.slice(0, 9).map(s => s.id));
+  // Same shows out, no duplicates.
+  assert.equal(targets.length, ordered.length);
+  assert.equal(new Set(targets.map(s => s.id)).size, ordered.length);
+  // About a quarter of slots are reserved.
+  assert.ok(reservedIds.length >= Math.floor(ordered.length / STALE_RESERVE_EVERY));
+});
+
+test('BRO-5655: no-row, quarantined and unparseable rows are not reserved-slot candidates', () => {
+  const ts = gapRowTimestamps({ results: [
+    { showId: 'q', computedAt: '2026-09-01T00:00:00Z', quarantine: { nextState: 'x' } },
+    { showId: 'bad', computedAt: 'not-a-date' },
+    { showId: 'ok', computedAt: '2026-10-18T00:00:00Z' },
+  ] });
+  assert.deepEqual([...ts.keys()], ['ok']);
+  const ordered = ['a', 'b', 'q', 'bad', 'norow', 'ok'].map(id => ({ id }));
+  const { targets, reservedIds } = reserveStalestSlots(ordered, ts);
+  assert.deepEqual(reservedIds, ['ok']);
+  assert.deepEqual(targets.map(s => s.id), ['a', 'ok', 'b', 'q', 'bad', 'norow']);
+  // Empty map → order unchanged.
+  assert.deepEqual(reserveStalestSlots(ordered, new Map()).targets.map(s => s.id), ordered.map(s => s.id));
+});
+
+test('BRO-5655: oldest gap row age is reported for the given ids', () => {
+  const NOW = Date.parse('2026-10-19T09:00:00Z');
+  const ts = new Map([
+    ['antigone-exits', Date.parse('2026-10-14T22:55:22.804Z')],
+    ['fresh', NOW - 3600e3],
+  ]);
+  assert.deepEqual(oldestGapRow(ts, ['fresh', 'antigone-exits', 'missing'], NOW), {
+    showId: 'antigone-exits', computedAt: '2026-10-14T22:55:22.804Z', ageHours: 106.1,
+  });
+  assert.equal(oldestGapRow(ts, ['fresh'], NOW).ageHours, 1);
+  assert.equal(oldestGapRow(ts, [], NOW), null);
+});
