@@ -303,7 +303,7 @@ function FantasyDraftInner() {
           <h1 className="text-3xl font-bold mb-4">The draft opens {longDate(DRAFT_OPENS)}</h1>
           <p className="text-gray-400 mb-8">
             {leagueFromUrl && <>You&apos;re invited to league <span className="text-brand font-semibold">{leagueFromUrl}</span>. Keep this link: it will drop you straight into the league when the draft opens. </>}
-            Study the field in the meantime. Every show&apos;s price and rationale is in the Draft Guide.
+            Study the field in the meantime. Every show&apos;s price is in the Draft Guide.
           </p>
           <a
             href="/fantasy/guide"

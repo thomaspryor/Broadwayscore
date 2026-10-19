@@ -164,9 +164,12 @@ describe('catalog integrity', () => {
     assert.equal(validatePicks(sorted.slice(-9).map(([id]) => id), shows).valid, false, 'nine picks is over the roster limit');
   });
 
-  test('every priced show carries a plain-language price note', () => {
-    for (const [id, s] of Object.entries(shows)) {
-      assert.ok(s.priceNote && s.priceNote.length > 10, `${id} has no priceNote`);
+  test('every priced show carries an internal price note, and none reaches the public config', () => {
+    const frozen = JSON.parse(fs.readFileSync(path.join(__dirname, '../../data/fantasy-league-frozen.json'), 'utf-8'));
+    for (const id of Object.keys(shows)) {
+      assert.ok(frozen.notes?.[id] && frozen.notes[id].length > 10, `${id} has no frozen price note`);
+      // fantasy-league.json is bundled into the client (draft page): the rationale must not be in it.
+      assert.equal((shows[id] as unknown as Record<string, unknown>).priceNote, undefined, `${id} leaks priceNote into the public config`);
     }
   });
 });
