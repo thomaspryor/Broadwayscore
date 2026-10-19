@@ -112,10 +112,10 @@ const { CLAUDE_HAIKU, KIMI, GEMINI_FLASH } = require('./lib/models.js');
 // actual graphql() call, so a Notion-only run never needs LINEAR_API_KEY set.
 const linear = require('./lib/linear-client.js');
 const { priorityOf } = require('./lib/linear-watchdog-source.js');
-// BRO-3395: the re-arm path's pure selection/refusal logic — see that
+// BRO-3395: the re-arm path's selection/refusal logic. See that
 // module's header for why armed-but-vacuous cards need a SEPARATE selector
 // from selectRefusedLinearIdentifiers (which explicitly excludes armed cards)
-// and why a rewrite is refused without the enricher's own label.
+// and why a rewrite needs the enricher's label or matching logged draft.
 const { selectRearmCandidates, refuseRearmWrite } = require('./lib/card-rearm.js');
 const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
 const { MAIN_REPO_ROOT } = require('./lib/repo-root');
@@ -168,8 +168,9 @@ Usage:
                   origin/main>\`) instead of the normal !armed selection.
                   Linear-only (--source must include linear). The correction
                   is posted as a COMMENT, never a description rewrite (per
-                  BRO-2796). Refuses any card lacking the enricher's own
-                  'auto-enriched' label unless --allow-human-written is given.
+                  BRO-2796). Requires the enricher's 'auto-enriched' label
+                  or a matching latest logged draft, unless
+                  --allow-human-written is given.
   --identifiers   comma-separated BRO-N identifiers to restrict the Linear
                   leg to, processed in the order given (case-insensitive).
                   Without it the sweep is P0 → P1 → rest, BRO-N ascending
@@ -181,7 +182,7 @@ Usage:
                   selector keeps ascending BRO-N order, not the list order.
                   Both "--identifiers A,B" and "--identifiers=A,B" work.
   --allow-human-written  with --rearm, also rewrite cards whose acceptance
-                  section has no 'auto-enriched' marker (looks human-written)
+                  section has no label or matching logged draft
   --recheck-markers  BRO-2170: re-evaluate every open Linear issue carrying an
                   ENRICHER-STAMPED \`VERIFY: owner-judgment\` marker (bare marker
                   line + the 'auto-enriched' label) against the CURRENT
@@ -1166,8 +1167,8 @@ async function enrichOneCard(card, opts = {}) {
   // every non-rearm caller, unchanged.
   if (gate.armed && !opts.rearm) return { id: card.id, name: card.name, action: 'skipped', detail: 'already armed' };
 
-  // BRO-3395: refuse before any LLM call — a card selected for rearm that
-  // lacks the enricher's own 'auto-enriched' label looks human-written, and
+  // Refuse before any LLM call unless the label or latest logged draft
+  // establishes provenance (BRO-5456), or the caller explicitly overrides it.
   // spliceNotes() replaces the WHOLE acceptance section, not just the command.
   if (opts.rearm) {
     const refusal = refuseRearmWrite(card, opts);
