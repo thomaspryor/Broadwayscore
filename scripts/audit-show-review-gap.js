@@ -1084,7 +1084,14 @@ async function auditShow(show, opts = {}) {
     } else {
       result.serpCensus = { ran: false, reason: inWindowNow ? 'cooldown' : 'out-of-window' };
       // BRO-5516: census skipped -> keep the prior census's URLs in play (see priorCensusUrls).
-      for (const u of (opts.priorCensusUrls || [])) serpCensusUrls.add(u);
+      // Re-vet each with the CURRENT show-relevance rules so a tightened rule retires
+      // stale URLs; seeded URLs stay census-tagged = report-only unless SERP_CENSUS_INGEST.
+      // showInfo omitted on purpose: the generic-title disambiguation gate needs the SERP
+      // title/snippet we no longer have, and would reject every URL of a one-word title.
+      for (const u of (opts.priorCensusUrls || [])) {
+        const ok = acceptSerpCensusResult({ url: u }, { show, showInfo: {} });
+        if (ok) serpCensusUrls.add(ok);
+      }
     }
   }
   // BRO-5252: census provenance is census-ONLY. A URL an aggregator also cites is
