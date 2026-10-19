@@ -392,6 +392,16 @@ test('landWaitMinutes: landing waits never run past the hard stop', () => {
   assert.ok(r.landWaitMinutes({ hardEndMs: hard, wrapUpMs: 480_000, nowMs: hard - 60_000 }) < 1, 'inside the wrap-up time: do not wait');
 });
 
+test('orphan recovery leaves a card named when main or its land ref cannot be read (BRO-5668)', () => {
+  const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../../scripts/codex/daily-runner.js'), 'utf8');
+  const start = src.indexOf('async function recoverOrphans');
+  const body = src.slice(start, src.indexOf('\n}\n', start));
+  // An unreadable land ref or main must not fall through to orphanAction as "no landing" (-> Todo).
+  assert.match(body, /could not read \$\{ref\}; left named for the next run`\); continue;/);
+  assert.match(body, /landedOnMain\(id, Date\.parse\(issue\.startedAt\), \{ onError: null \}\)/);
+  assert.match(body, /if \(onMain === null\) \{ log\(.*\); continue; \}/);
+});
+
 test('recovery git calls run in ROOT: they run before the runner worktree exists (BRO-5287)', () => {
   const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../../scripts/codex/daily-runner.js'), 'utf8');
   for (const fn of ['function landedOnMain', 'async function recoverOrphans', 'async function reconcileLanded']) {

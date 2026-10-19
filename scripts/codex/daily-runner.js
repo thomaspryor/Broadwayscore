@@ -583,12 +583,13 @@ async function moveCard(id, state, comment) {
 // ROOT, not WT: recoverOrphans runs before setupWorktree, and in a fresh container the runner
 // worktree does not exist yet, so a WT git call threw and read as "not on main" (BRO-5287:
 // BRO-4233's landed fix was handed back as "nothing reached main" on 2026-10-14).
-function landedOnMain(id, sinceMs) {
+// onError: what an unreadable main reads as (recoverOrphans passes null: unknown is not "not landed").
+function landedOnMain(id, sinceMs, { onError = false } = {}) {
   try {
     git(['fetch', 'origin', 'main'], ROOT);
     const since = Number.isFinite(sinceMs) ? new Date(sinceMs).toISOString() : '4.days';
     return git(['log', 'origin/main', `--since=${since}`, '--author=Codex runner', '--format=%H', '-F', `--grep=fix(${id}):`], ROOT) !== '';
-  } catch { return false; }
+  } catch { return onError; }
 }
 
 /**
@@ -1256,11 +1257,13 @@ async function recoverOrphans(stats) {
         git(['fetch', '-q', 'origin', `refs/heads/${ref}`], ROOT); // unbounded-fetch-ok: one land ref
         landRefMs = Number(git(['log', '-1', '--format=%ct', refSha], ROOT)) * 1000; // by sha: slots share FETCH_HEAD
       }
-    } catch { /* treat as no landing */ }
+    } catch { log(`${id}: could not read ${ref}; left named for the next run`); continue; } // a failed read is not "no landing": handing back could re-work a card already on Land
+    const onMain = issue && issue.startedAt ? landedOnMain(id, Date.parse(issue.startedAt), { onError: null }) : false;
+    if (onMain === null) { log(`${id}: could not read main; left named for the next run`); continue; }
     const action = R.orphanAction({
       stateName: issue && issue.state && issue.state.name,
       startedAtMs: issue && issue.startedAt ? Date.parse(issue.startedAt) : NaN,
-      lockMs: orphanLockMs, onMain: issue && issue.startedAt ? landedOnMain(id, Date.parse(issue.startedAt)) : false, landRefMs,
+      lockMs: orphanLockMs, onMain, landRefMs,
     });
     log(`${id}: named in a stopped run's lock -> ${action}`);
     let handled = true;

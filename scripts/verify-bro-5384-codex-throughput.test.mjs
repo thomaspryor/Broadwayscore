@@ -22,7 +22,7 @@ const SINCE = process.env.CODEX_THROUGHPUT_SINCE || '2026-10-18T15:00:00Z';
 const CHECKABLE_FROM = Date.parse('2026-10-19T15:00:00Z');
 
 test('Codex runner: >= 4 cards per firing and >= 40% landed since the parallel slots (BRO-5384)', {
-  skip: Date.now() < CHECKABLE_FROM && !process.env.CODEX_THROUGHPUT_SINCE ? 'not checkable before 2026-10-18 14:00 UTC (48h of firings after the disk fix)' : false,
+  skip: Date.now() < CHECKABLE_FROM && !process.env.CODEX_THROUGHPUT_SINCE ? 'not checkable before 2026-10-19 15:00 UTC (a day of firings after the 2026-10-18 fixes)' : false,
 }, async () => {
   const comments = ((await linear.listIssueComments(['BRO-4745'])).get('BRO-4745') || []).filter((c) => c.createdAt >= SINCE);
   const t = firingThroughput(comments);
