@@ -110,6 +110,8 @@ on:
       # earlierClosings from these two CLIs (BRO-4724).
       - 'scripts/create-tour-entries.js'
       - 'scripts/enrich-tour-dates.js'
+      # tests/unit/html-publish-date.test.mjs names this CLI (audit-toplevel-script-test-yml-coverage).
+      - 'scripts/backfill-network-tier-dates.js'
       # BRO-2410: blog-reviews generator + its manifest-registered test (resolver is under scripts/lib/**).
       - 'scripts/generate-blog-reviews-for-scoring.js'
       # scripts/cmux-auth-stall-watchdog.js (BRO-4056) is the I/O wrapper for
