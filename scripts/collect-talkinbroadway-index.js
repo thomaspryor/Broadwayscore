@@ -11,6 +11,10 @@
  * review page we are missing; the HTML goes to ingest-review-from-url.js
  * (--html-file) so the write path is the same one every other URL ingest uses.
  *
+ * Writes: this script never writes a review file. ingest-review-from-url.js does, through
+ * review-file-writer (createOrMergeReviewFile, Guard A); the only files written here are
+ * temp HTML handed to it.
+ *
  * Spend: one Browserbase session per run, held to the caller allowance in
  * scripts/lib/browserbase-caps.js (6/day, expires 2026-11-19).
  *
