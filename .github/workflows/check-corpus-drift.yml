@@ -402,6 +402,12 @@ jobs:
       # BRO-4750: + tour-runtime-coverage (every national tour carries a runtime and
       # synopsis unless a documented gap) — shows.json changes daily and new tours
       # appear, so it would redden main with no code change.
+      # BRO-5729: + the live-data halves of merge-reviews-json, cast-changes-data-quality,
+      # duplicate-images, drain-unknown-outlets, discover-playbill-urls-target,
+      # audit-bad-stub-visibility, doubled-market-ids, outlet-domain-validation,
+      # automated-clear-not-manual and critic-spelling-duplicates (split into
+      # tests/unit/*-live-data.test.mjs), plus scripts/verify-contamination-gate.test.mjs
+      # (whole file is a live-corpus probe; dropped from OPT_IN).
       # BRO-447: the bro3887 probe now asserts repo Actions cache usage (< 8 GiB,
       # the cause of SERP-cache eviction) via the GitHub API instead of a fixed
       # credits/day ceiling, hence GH_TOKEN here and actions: read above.
@@ -409,4 +415,4 @@ jobs:
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
-        run: node --test tests/unit/cast-changes-real-data.test.mjs tests/unit/bro3887-cache-fix-acceptance.test.mjs tests/unit/image-presence.test.mjs tests/unit/outlet-registry-live-data.test.mjs tests/unit/venue-complex-live-data.test.mjs tests/unit/tour-runtime-coverage.test.mjs
+        run: node --test tests/unit/cast-changes-real-data.test.mjs tests/unit/bro3887-cache-fix-acceptance.test.mjs tests/unit/image-presence.test.mjs tests/unit/outlet-registry-live-data.test.mjs tests/unit/venue-complex-live-data.test.mjs tests/unit/tour-runtime-coverage.test.mjs tests/unit/merge-reviews-json-live-data.test.mjs tests/unit/cast-changes-data-quality-live-data.test.mjs tests/unit/duplicate-images-live-data.test.mjs tests/unit/drain-unknown-outlets-live-data.test.mjs tests/unit/discover-playbill-urls-target-live-data.test.mjs tests/unit/audit-bad-stub-visibility-live-data.test.mjs tests/unit/doubled-market-ids-live-data.test.mjs tests/unit/outlet-domain-validation-live-data.test.mjs tests/unit/automated-clear-not-manual-live-data.test.mjs tests/unit/critic-spelling-duplicates-live-data.test.mjs scripts/verify-contamination-gate.test.mjs

@@ -12,8 +12,9 @@
  *      "Recently Announced Closings" newsletter section.
  *   4. Duplicate closure events for the same closing date.
  *
- * Live-data assertions (2, 3, 4) read the real data/cast-changes.json, same
- * pattern as cast-changes-real-data.test.mjs. Fixture-based regressions (1,
+ * Live-data assertions (2, 3, 4) moved to
+ * tests/unit/cast-changes-data-quality-live-data.test.mjs (BRO-5729, runs in
+ * check-corpus-drift.yml). Fixture-based regressions (1,
  * write-once semantics) pin the underlying mechanism unconditionally so they
  * can't self-delete as live data drifts.
  */
@@ -26,18 +27,8 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DATA_PATH = path.join(__dirname, '..', '..', 'data', 'cast-changes.json');
-const data = JSON.parse(fs.readFileSync(DATA_PATH, 'utf8'));
 
 const { validateEvent, mergeEvents } = require('../scrape-cast-changes.js');
-
-function eachUpcoming(fn) {
-  for (const [showId, show] of Object.entries(data.shows || {})) {
-    for (const event of show.upcoming || []) {
-      fn(showId, event, show);
-    }
-  }
-}
 
 // ---------------------------------------------------------------------------
 // AC2: no placeholder names in arrival/departure events
@@ -62,16 +53,6 @@ test('validateEvent rejects placeholder phrases in arrival/departure name field'
   );
 });
 
-test('live data: no arrival/departure event has a placeholder name (replacement/TBA/TBD)', () => {
-  const offenders = [];
-  eachUpcoming((showId, e) => {
-    if (e.type !== 'arrival' && e.type !== 'departure') return;
-    if (/replacement|TBA|TBD/i.test(e.name || '')) {
-      offenders.push(`${showId}: ${e.type} name="${e.name}" role="${e.role}"`);
-    }
-  });
-  assert.deepEqual(offenders, [], `placeholder names found:\n${offenders.join('\n')}`);
-});
 
 test('validateEvent flags ANY dateless arrival/departure incomplete:true, not just AUTO-FLAGGED diffs', () => {
   // Regression for a gap an adversarial review caught: the AUTO-FLAGGED
@@ -100,21 +81,6 @@ test('validateEvent flags ANY dateless arrival/departure incomplete:true, not ju
   assert.equal(noteEvent.incomplete, undefined);
 });
 
-// ---------------------------------------------------------------------------
-// AC3: no dateless arrival/departure without an explicit incomplete flag
-// ---------------------------------------------------------------------------
-
-test('live data: every dateless arrival/departure event is flagged incomplete:true', () => {
-  const offenders = [];
-  eachUpcoming((showId, e) => {
-    if (e.type !== 'arrival' && e.type !== 'departure') return;
-    if (e.date || e.endDate) return;
-    if (e.incomplete !== true) {
-      offenders.push(`${showId}: ${e.type} ${e.name} (${e.role || 'Unknown'})`);
-    }
-  });
-  assert.deepEqual(offenders, [], `dateless events missing incomplete:true:\n${offenders.join('\n')}`);
-});
 
 // ---------------------------------------------------------------------------
 // AC4: write-once addedDate semantics — re-running the writer never advances
@@ -226,47 +192,4 @@ test('regression: bulk re-scrape of old closure articles never re-stamps addedDa
   }
 });
 
-// ---------------------------------------------------------------------------
-// AC5: no show has more than one closure event for the same closing date
-// ---------------------------------------------------------------------------
 
-test('live data: no show has more than one closure event for the same closingDate', () => {
-  const offenders = [];
-  for (const [showId, show] of Object.entries(data.shows || {})) {
-    const byDate = {};
-    for (const e of show.upcoming || []) {
-      if (e.type !== 'closure' || !e.date) continue;
-      byDate[e.date] = (byDate[e.date] || 0) + 1;
-    }
-    for (const [date, count] of Object.entries(byDate)) {
-      if (count > 1) offenders.push(`${showId}: ${count} closure events for ${date}`);
-    }
-  }
-  assert.deepEqual(offenders, [], `duplicate closures:\n${offenders.join('\n')}`);
-});
-
-// ---------------------------------------------------------------------------
-// AC6: Moulin Rouge / Titanique closure addedDate reflects real announcement
-// weeks, not the 2026-05-27 bulk re-stamp — so they don't wrongly appear in
-// "Recently Announced Closings" for the week of 2026-05-25.
-// ---------------------------------------------------------------------------
-
-test('Moulin Rouge and Titanique closures do not fall inside the buggy 2026-05-25 announcement week', () => {
-  const WEEK_START = '2026-05-25';
-  const WEEK_END = '2026-05-31';
-  for (const showId of ['moulin-rouge-2019', 'titanique-2026']) {
-    const show = data.shows && data.shows[showId];
-    // A closed show is pruned from cast-changes.json entirely (cleanClosedShows)
-    // — absent is fine, it can't misrender in any newsletter.
-    if (!show) continue;
-    const closures = (show.upcoming || []).filter(e => e.type === 'closure' && e.addedDate);
-    for (const c of closures) {
-      const inBuggyWeek = c.addedDate >= WEEK_START && c.addedDate <= WEEK_END;
-      assert.equal(
-        inBuggyWeek,
-        false,
-        `${showId}: closure addedDate ${c.addedDate} falls inside the 2026-05-25 bulk-restamp bug window`,
-      );
-    }
-  }
-});

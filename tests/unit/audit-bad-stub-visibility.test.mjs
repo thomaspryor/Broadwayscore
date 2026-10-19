@@ -37,13 +37,3 @@ test('a normal sourced entry is still NOT pulled into the sweep', () => {
   assert.equal(isProvisional({ id: 'hamilton-2015', title: 'Hamilton', venue: 'Richard Rodgers Theatre', discoverySource: 'ibdb' }), false);
 });
 
-test('live corpus: every venue===title entry is reachable by the sweep', () => {
-  const raw = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'data/shows.json'), 'utf8'));
-  const shows = Array.isArray(raw) ? raw : raw.shows;
-  const hits = shows.filter(hasVenueEqualsTitleSignature);
-  // An exempt entry (isExemptFromPlaybillCheck) is the only allowed exception.
-  const unreachable = hits.filter((s) => !isProvisional(s) && !isExemptFromPlaybillCheck(s)).map((s) => s.id);
-  assert.deepEqual(unreachable, []);
-  // The signature must stay a narrow selector: it runs live SERP calls in CI.
-  assert.ok(hits.length <= 10, `venue===title matched ${hits.length} entries; widen deliberately, not by accident`);
-});

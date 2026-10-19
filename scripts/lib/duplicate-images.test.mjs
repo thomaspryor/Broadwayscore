@@ -85,9 +85,3 @@ test('every allowlist entry names 2+ ids and a reason', () => {
   }
 });
 
-const noData = !realShows && 'data/shows.json missing (run scripts/setup-local-data.sh)';
-
-test('real data: no byte-identical art across unrelated, unlinked shows', { skip: noData }, () => {
-  const { groups } = auditDuplicateImages(realShows, PUBLIC_DIR);
-  assert.deepEqual(groups.map((g) => `${g.ids.join(' | ')} (${g.files.map((x) => x.path).join(', ')})`), []);
-});

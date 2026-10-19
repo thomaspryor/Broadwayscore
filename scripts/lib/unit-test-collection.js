@@ -65,7 +65,6 @@ const DEFAULT_EXCLUDE_RE = /^scripts\/(verify-|_skip-)[^/]*\.test\.(mjs|js|cjs)$
 // Every entry must exist and match DEFAULT_EXCLUDE_RE (glob-based-manifest.test.mjs).
 const OPT_IN = new Set([
   'scripts/verify-addams-wsj-dedup-held.test.mjs',
-  'scripts/verify-contamination-gate.test.mjs',
   'scripts/verify-feedback-requests-live.test.mjs',
   'scripts/verify-frankie-2002-cleanup.test.mjs',
   'scripts/verify-prior-run-former-cast-sweep.test.mjs',
@@ -121,6 +120,46 @@ const TESTS_UNIT_QUARANTINE = new Map([
   [
     'tests/unit/outlet-registry-live-data.test.mjs',
     'BRO-3425 — runs in check-corpus-drift.yml (data-health), not test.yml: null-domain ceiling + domain collisions over data/outlet-registry.json, which the rebuild auto-registers into and commits to main many times a day. In the unit batch it turned main red on 2026-09-29 (51 > 50) with no code change.',
+  ],
+  [
+    'tests/unit/merge-reviews-json-live-data.test.mjs',
+    'BRO-5729 (BRO-3425 pattern) — runs in check-corpus-drift.yml (data-health), not test.yml: ceiling / zero-count assertions split out of merge-reviews-json.test.mjs over bot-rewritten data/reviews.json. In the unit batch they turn main red with no code change.',
+  ],
+  [
+    'tests/unit/cast-changes-data-quality-live-data.test.mjs',
+    'BRO-5729 (BRO-3425 pattern) — runs in check-corpus-drift.yml (data-health), not test.yml: ceiling / zero-count assertions split out of cast-changes-data-quality.test.mjs over bot-rewritten data/cast-changes.json. In the unit batch they turn main red with no code change.',
+  ],
+  [
+    'tests/unit/duplicate-images-live-data.test.mjs',
+    'BRO-5729 (BRO-3425 pattern) — runs in check-corpus-drift.yml (data-health), not test.yml: ceiling / zero-count assertions split out of duplicate-images.test.mjs over bot-rewritten data/shows.json + public/. In the unit batch they turn main red with no code change.',
+  ],
+  [
+    'tests/unit/drain-unknown-outlets-live-data.test.mjs',
+    'BRO-5729 (BRO-3425 pattern) — runs in check-corpus-drift.yml (data-health), not test.yml: ceiling / zero-count assertions split out of drain-unknown-outlets.test.mjs over bot-rewritten data/audit/unknown-aggregator-outlets.json + data/shows.json. In the unit batch they turn main red with no code change.',
+  ],
+  [
+    'tests/unit/discover-playbill-urls-target-live-data.test.mjs',
+    'BRO-5729 (BRO-3425 pattern) — runs in check-corpus-drift.yml (data-health), not test.yml: ceiling / zero-count assertions split out of discover-playbill-urls-target.test.mjs over bot-rewritten data/shows.json. In the unit batch they turn main red with no code change.',
+  ],
+  [
+    'tests/unit/audit-bad-stub-visibility-live-data.test.mjs',
+    'BRO-5729 (BRO-3425 pattern) — runs in check-corpus-drift.yml (data-health), not test.yml: ceiling / zero-count assertions split out of audit-bad-stub-visibility.test.mjs over bot-rewritten data/shows.json. In the unit batch they turn main red with no code change.',
+  ],
+  [
+    'tests/unit/doubled-market-ids-live-data.test.mjs',
+    'BRO-5729 (BRO-3425 pattern) — runs in check-corpus-drift.yml (data-health), not test.yml: ceiling / zero-count assertions split out of doubled-market-ids.test.mjs over bot-rewritten data/shows.json. In the unit batch they turn main red with no code change.',
+  ],
+  [
+    'tests/unit/outlet-domain-validation-live-data.test.mjs',
+    'BRO-5729 (BRO-3425 pattern) — runs in check-corpus-drift.yml (data-health), not test.yml: ceiling / zero-count assertions split out of outlet-domain-validation.test.mjs over bot-rewritten data/review-texts + data/outlet-registry.json. In the unit batch they turn main red with no code change.',
+  ],
+  [
+    'tests/unit/automated-clear-not-manual-live-data.test.mjs',
+    'BRO-5729 (BRO-3425 pattern) — runs in check-corpus-drift.yml (data-health), not test.yml: ceiling / zero-count assertions split out of automated-clear-not-manual.test.mjs over bot-rewritten data/review-texts. In the unit batch they turn main red with no code change.',
+  ],
+  [
+    'tests/unit/critic-spelling-duplicates-live-data.test.mjs',
+    'BRO-5729 (BRO-3425 pattern) — runs in check-corpus-drift.yml (data-health), not test.yml: ceiling / zero-count assertions split out of critic-spelling-duplicates.test.mjs over bot-rewritten data/review-texts. In the unit batch they turn main red with no code change.',
   ],
 ]);
 

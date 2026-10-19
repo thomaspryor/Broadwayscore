@@ -23,7 +23,3 @@ test('other markets and closed shows are not', () => {
   assert.equal(isDiscoverTarget({ status: 'closed', category: 'broadway' }), false);
 });
 
-test('the live corpus has at least one target', { skip: !fs.existsSync('data/shows.json') }, () => {
-  const { shows } = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
-  assert.ok(shows.filter(isDiscoverTarget).length > 0);
-});

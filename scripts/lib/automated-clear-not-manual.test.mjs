@@ -48,21 +48,3 @@ test('demote leaves human clears untouched', () => {
   assert.deepEqual(d, HUMAN[0]);
 });
 
-test('corpus: no review file stores an automated clear as ManualClear', (t) => {
-  let shows;
-  try { shows = readdirSync(DIR, { withFileTypes: true }).filter((e) => e.isDirectory() && !e.name.startsWith('_')); }
-  catch { shows = null; }
-  if (!shows || !shows.length) {
-    if (process.env.REQUIRE_REVIEW_CORPUS === '1') assert.fail(`REQUIRE_REVIEW_CORPUS=1 but ${DIR} is missing/empty`);
-    return t.skip('data/review-texts not present');
-  }
-  const bad = [];
-  for (const s of shows) {
-    for (const f of readdirSync(path.join(DIR, s.name))) {
-      if (!f.endsWith('.json')) continue;
-      let j; try { j = JSON.parse(readFileSync(path.join(DIR, s.name, f), 'utf8')); } catch { continue; }
-      if (isAutomatedClearStoredAsManual(j)) bad.push(`${s.name}/${f}`);
-    }
-  }
-  assert.deepEqual(bad, [], `${bad.length} file(s) store an automated clear as wrongProductionManualClear (use wrongProductionAutoCleared)`);
-});
