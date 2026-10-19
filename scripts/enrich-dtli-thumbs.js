@@ -31,6 +31,7 @@ const path = require('path');
 
 const { extractReviewsFromDTLI } = require('./extract-dtli-reviews');
 const { findExistingReviewFile } = require('./lib/review-normalization');
+const { newRowPredatesProduction } = require('./lib/dtli-ingest-guards');
 
 const ROOT = path.join(__dirname, '..');
 const SLUG_MAP_PATH = path.join(ROOT, 'data', 'dtli-slug-map.json');
@@ -45,6 +46,15 @@ function slugifyTitle(title) {
     .replace(/&/g, 'and')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
+}
+
+function getShow(showId) {
+  try {
+    const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf-8'));
+    return (Array.isArray(shows) ? shows : (shows.shows || [])).find(s => s.id === showId) || null;
+  } catch {
+    return null;
+  }
 }
 
 function resolveShowTitle(showId) {
@@ -72,11 +82,17 @@ function resolveShowTitle(showId) {
 function buildDtliUrlCandidates(showId, overrideUrl) {
   if (overrideUrl) return [overrideUrl];
   const candidates = [];
+  // Slugs the map already assigns to a DIFFERENT show (an earlier production).
+  // Other Desert Cities 2026: the title slug `other-desert-cities` is the 2011
+  // page, where amNY's Matt Windman (who reviewed both) gave a thumbs up; that
+  // Up landed on his 2026 pan. DTLI gives revivals `-2`, `-3` suffixes.
+  const ownedElsewhere = new Set();
   try {
     if (fs.existsSync(SLUG_MAP_PATH)) {
       const map = JSON.parse(fs.readFileSync(SLUG_MAP_PATH, 'utf-8'));
       const slug = map.shows && map.shows[showId];
       if (slug) candidates.push(`https://didtheylikeit.com/shows/${slug}/`);
+      for (const [id, sl] of Object.entries(map.shows || {})) if (id !== showId && sl) ownedElsewhere.add(sl);
     }
   } catch { /* fall through */ }
 
@@ -108,7 +124,16 @@ function buildDtliUrlCandidates(showId, overrideUrl) {
     candidates.push(`https://didtheylikeit.com/shows/${idSlug}/`);
   }
 
-  return candidates;
+  // A slug owned by another show is swapped for its unowned revival suffixes.
+  const out = [];
+  for (const u of candidates) {
+    const m = /\/shows\/([^/]+)\/$/.exec(u);
+    if (!m || !ownedElsewhere.has(m[1])) { out.push(u); continue; }
+    for (let n = 2; n <= 4; n++) {
+      if (!ownedElsewhere.has(`${m[1]}-${n}`)) out.push(`https://didtheylikeit.com/shows/${m[1]}-${n}/`);
+    }
+  }
+  return [...new Set(out)];
 }
 
 /**
@@ -121,6 +146,7 @@ function buildDtliUrlCandidates(showId, overrideUrl) {
  * @param {string} [opts.url] - Override DTLI page URL (if not in slug map)
  * @param {boolean} [opts.dryRun]
  * @param {boolean} [opts.verbose]
+ * @param {object} [opts.show] - shows.json record; injected for testing, defaults to the shows.json lookup
  * @param {Function} [opts.fetchPage] - Injected for testing; defaults to scripts/lib/scraper.fetchPage
  * @returns {Promise<{extracted, enrichedThumb, enrichedUrl, skippedMissing}>}
  */
@@ -140,14 +166,17 @@ async function enrichDtliThumbsForShow(showId, opts = {}) {
   let dtliUrl = null;
   let extracted = [];
   let anyFetchSucceeded = false;
+  const show = opts.show || getShow(showId);
   for (const candidate of candidates) {
     console.log(`Fetching DTLI page: ${candidate}`);
     try {
       const r = await fetchPage(candidate, { renderJs: false });
       if (!r || !r.content) continue;
       anyFetchSucceeded = true;
-      const rows = extractReviewsFromDTLI(r.content, showId);
-      if (rows && rows.length > 0) {
+      const all = extractReviewsFromDTLI(r.content, showId) || [];
+      const rows = all.filter(row => !newRowPredatesProduction({ publishDate: row.publishDate, show }).skip);
+      if (all.length > rows.length) console.log(`  [candidate] ${candidate}: dropped ${all.length - rows.length} row(s) dated before this production`);
+      if (rows.length > 0) {
         dtliUrl = candidate;
         extracted = rows;
         break;
