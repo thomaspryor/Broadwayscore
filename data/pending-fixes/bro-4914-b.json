@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4914-b",
   "planId": "6423f9d6-0d42-4cb7-ab03-f14ccc8f30b5",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -187,5 +187,124 @@
         "description": "BRO-4914 item 7: stale roundup flag; stored text is a single-show review of this show (read in full) (wrongProduction is a separate flag and is left as is)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-19T23:29:38.043Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-west-end-2025/mail-on-sunday--robert-gore-langton.json url: \"https://www.dailymail.co.uk/tvshowbiz/article-14866497/review-Evita-Rachel-Zegler-knockout.html\" -> \"\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-west-end-2025/mail-on-sunday--robert-gore-langton.json duplicateClearReason: null -> \"BRO-4914: separate Mail on Sunday review (Gore-Langton, Theatre Record text) that only shared Marmion's Daily Mail url; url cleared, not a duplicate\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-west-end-2025/mail-on-sunday--robert-gore-langton.json duplicateOf: \"daily-mail--patrick-marmion.json\" -> null"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-noel-coward-west-end-2026/timeout-london--time-out-london.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-noel-coward-west-end-2026/timeout-london--andrzej-lukowski.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "on-a-clear-day-you-can-see-forever-2011/variety--steven-suskin.json isRoundupArticle: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "china-doll-2015/the-clyde-fitch-report--david-finkle.json isRoundupArticle: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dear-evan-hansen-2016/the-clyde-fitch-report--david-finkle.json isRoundupArticle: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fiddler-on-the-roof-2015/the-clyde-fitch-report--david-finkle.json isRoundupArticle: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "indecent-2017/the-clyde-fitch-report--david-finkle.json isRoundupArticle: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "junk-2017/the-clyde-fitch-report--david-finkle.json isRoundupArticle: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-kong-2018/the-clyde-fitch-report--david-finkle.json isRoundupArticle: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "meteor-shower-2017/the-clyde-fitch-report--david-finkle.json isRoundupArticle: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "network-2018/the-clyde-fitch-report--martha-wade-steketee.json isRoundupArticle: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oslo-2017/the-clyde-fitch-report--david-finkle.json isRoundupArticle: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-color-purple-2015/the-clyde-fitch-report--david-finkle.json isRoundupArticle: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-parisian-woman-2017/the-clyde-fitch-report--david-finkle.json isRoundupArticle: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "m-butterfly-2017/the-clyde-fitch-report--martha-wade-steketee.json isRoundupArticle: true -> false"
+    }
+  ],
+  "executedIn": "ci"
 }
