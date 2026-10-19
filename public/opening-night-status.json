@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-19T15:20:01.589Z",
+  "generatedAt": "2026-10-19T15:50:25.021Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "off-broadway",
       "type": "opera",
       "openingDate": "2026-10-19",
-      "status": "upcoming",
+      "status": "open",
       "slug": "lincoln-in-the-bardo-off-broadway",
       "thumbnail": "/images/shows/lincoln-in-the-bardo-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
@@ -385,7 +385,7 @@
       "category": "off-broadway",
       "type": "musical",
       "openingDate": "2026-10-19",
-      "status": "previews",
+      "status": "open",
       "slug": "copperfield-the-new-musical-off-broadway",
       "thumbnail": "/images/shows/copperfield-the-new-musical-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
@@ -764,23 +764,23 @@
       "status": "open",
       "slug": "other-desert-cities",
       "thumbnail": "/images/shows/other-desert-cities-2026/thumbnail.webp",
-      "siteScore": 67.85,
-      "liveScore": 68,
-      "scoreDrift": 0.15000000000000568,
+      "siteScore": 68.67,
+      "liveScore": 69,
+      "scoreDrift": 0.3299999999999983,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 26,
+      "total": 27,
       "t1": 9,
-      "t2": 15,
+      "t2": 16,
       "t3": 2,
-      "positive": 14,
+      "positive": 15,
       "mixed": 6,
       "negative": 6,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 26,
+        "highConfidence": 27,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1056,6 +1056,18 @@
           "m": 6,
           "n": 6,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-19T15:50:25.021Z",
+          "rc": 27,
+          "s": 68.67,
+          "t1": 9,
+          "t2": 16,
+          "t3": 2,
+          "p": 15,
+          "m": 6,
+          "n": 6,
+          "bc": "preview-sent"
         }
       ]
     },
@@ -1452,6 +1464,159 @@
           "p": 4,
           "m": 2,
           "n": 0,
+          "bc": "waiting"
+        }
+      ]
+    },
+    {
+      "id": "triumph-off-west-end-2026",
+      "title": "Triumph",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-10-18",
+      "status": "open",
+      "slug": "triumph-off-west-end",
+      "thumbnail": "/images/shows/triumph-off-west-end-2026/thumbnail.jpg",
+      "siteScore": 74.01,
+      "liveScore": 74,
+      "scoreDrift": -0.010000000000005116,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
+      "siteFileExists": true,
+      "total": 6,
+      "t1": 2,
+      "t2": 1,
+      "t3": 3,
+      "positive": 4,
+      "mixed": 1,
+      "negative": 1,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "6/8 total",
+          "T1:2/3",
+          "T2:1/2"
+        ],
+        "highConfidence": 6,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Sunday Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Mail on Sunday",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Arts Desk",
+          "isDualMarket": false
+        },
+        {
+          "name": "British Theatre Guide",
+          "isDualMarket": false
+        },
+        {
+          "name": "BritishTheatre.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Spectator (UK)",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Reviews Hub",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "LondonTheatre1",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Box Office",
+          "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-19T15:50:25.021Z",
+          "rc": 6,
+          "s": 74.01,
+          "t1": 2,
+          "t2": 1,
+          "t3": 3,
+          "p": 4,
+          "m": 1,
+          "n": 1,
           "bc": "waiting"
         }
       ]
