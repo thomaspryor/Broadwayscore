@@ -236,7 +236,7 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -250,7 +250,8 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 142,
       "sweptTracker": "BRO-5554",
-      "silentRefires": 8
+      "silentRefires": 8,
+      "resolvedAt": "2026-10-19T06:01:05.654Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -20664,7 +20665,7 @@
       "silentRefires": 2
     },
     "test-yml:red:Unit Tests:592023ab": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"timing backtest: musicals hold MAE <= 15.5 and >= 35 inside; plays no worse than before\"",
       "firstSeen": "2026-10-19T01:22:47.972Z",
@@ -20681,7 +20682,9 @@
         "runId": "39183601680",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39183601680"
       },
-      "silentRefires": 10
+      "silentRefires": 10,
+      "resolvedAt": "2026-10-19T06:01:05.467Z",
+      "resolveReason": "job-green"
     },
     "opening-night-placeholder-synopsis-billy-crystal-860-2026": {
       "status": "open",
