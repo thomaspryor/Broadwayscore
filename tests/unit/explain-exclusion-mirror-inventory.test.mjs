@@ -40,6 +40,8 @@ const INVENTORY = {
   isRejectedByReasonExclusion: 'live',
   isRoundupPageAsReview: 'live',
   isUnverifiableWebSearchRow: 'live',
+  // BRO-5501: the rebuild decides duplicateOf inheritance through duplicateOfInheritedFlag, which runs this text test.
+  textsConfirmedDifferent: 'live-via:duplicateOfInheritedFlag',
   wrongShowCleared: 'live',
   wrongShowExplicitlyCleared: 'live',
   // The rebuild has no cvWrongArticle exclusion of its own: it promotes a
