@@ -27,10 +27,18 @@ test('entry older than the TTL expires', () => {
   assert.equal(cache.guessedRecently('old-show-2026'), false);
 });
 
+test('outage runs are not definitive misses', () => {
+  assert.equal(cache.isDefinitiveMiss(0, 10), false);
+  assert.equal(cache.isDefinitiveMiss(4, 10), false);
+  assert.equal(cache.isDefinitiveMiss(10, 10), true);
+  assert.equal(cache.isDefinitiveMiss(0, 0), false);
+});
+
 test('searchDTLI wires the guard around the guess loop', () => {
   const src = fs.readFileSync(new URL('../gather-reviews.js', import.meta.url), 'utf8');
   const fn = src.slice(src.indexOf('async function searchDTLI'), src.indexOf('async function searchShowScore'));
   assert.ok(fn.indexOf('guessedRecently(show.id)') > fn.indexOf('discoverDtliSlug'), 'guard must come after sitemap discovery');
   assert.ok(fn.indexOf('guessedRecently(show.id)') < fn.indexOf('for (const slug of uniqueVariations)'));
+  assert.ok(fn.includes('isDefinitiveMiss(answeredProbes'));
   assert.ok(fn.indexOf('recordGuessMiss(show.id)') > fn.indexOf('for (const slug of uniqueVariations)'));
 });

@@ -749,9 +749,11 @@ async function searchAggregator(aggregatorName, searchUrl, maxRedirects = 3) {
   }
 
   // Fallback 2: use fetchPage (Bright Data → ScrapingBee → Playwright) for CI environments
+  let fetchAnswered = false; // fetchPage returned without throwing: the paid tier actually responded (BRO-5526)
   if (typeof fetchPage === 'function') {
     try {
       const fpResult = await fetchPage(searchUrl);
+      fetchAnswered = !!fpResult;
       const fpHtml = fpResult?.content || fpResult?.html || '';
       if (fpHtml.length > 2000) {
         console.log(`    → ${aggregatorName}: fetchPage fallback succeeded (${(fpHtml.length / 1024).toFixed(0)}KB)`);
@@ -769,7 +771,7 @@ async function searchAggregator(aggregatorName, searchUrl, maxRedirects = 3) {
     return { found: false, wrongPage: true, reason: 'all_tiers_returned_wrong_page' };
   }
 
-  return directResult;
+  return { ...directResult, fetchAnswered };
 }
 
 /**
@@ -1094,7 +1096,7 @@ async function searchDTLI(show) {
 
   const dtliGuessMiss = require('./lib/dtli-guess-miss-cache');
   if (dtliGuessMiss.guessedRecently(show.id)) {
-    console.log('    ✗ Not found on DTLI (URL-guess ladder skipped: full miss <3h ago, BRO-5526)');
+    console.log('    ✗ Not found on DTLI (URL-guess ladder skipped: full miss <1h ago, BRO-5526)');
     return null;
   }
 
@@ -1103,9 +1105,11 @@ async function searchDTLI(show) {
   // Remove duplicates and empty strings
   const uniqueVariations = [...new Set(allVariations)].filter(v => v && v.length > 0);
 
+  let answeredProbes = 0;
   for (const slug of uniqueVariations) {
     const url = `https://didtheylikeit.com/shows/${slug}/`;
     const result = await searchAggregator('DTLI', url);
+    if (result.fetchAnswered || result.found) answeredProbes++;
     if (result.found && result.html && result.html.includes('review-item') &&
         quickTitleCheck(result.html, show.title)) {
       console.log(`    ✓ Found at: ${url}`);
@@ -1114,7 +1118,8 @@ async function searchDTLI(show) {
     await sleep(300);
   }
 
-  dtliGuessMiss.recordGuessMiss(show.id);
+  // Only a ladder where most probes got a real answer is a miss; an outage/cap/timeout run is not.
+  if (dtliGuessMiss.isDefinitiveMiss(answeredProbes, uniqueVariations.length)) dtliGuessMiss.recordGuessMiss(show.id);
   console.log('    ✗ Not found on DTLI');
   return null;
 }
