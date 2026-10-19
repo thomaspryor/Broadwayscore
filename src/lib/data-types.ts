@@ -465,8 +465,10 @@ export interface ShowCommercial {
   humanReviewedDesignation?: boolean;
   /** What a loss label rests on (owner policy B, BRO-5020). Anything but 'reported-loss' prints a caveat (lossBasisCaveat). */
   designationBasis?: 'reported-loss' | 'no-recoupment-announced' | 'notes-stated';
-  /** likelyLossLine() of the full record, set at load ("Likely: Flop"); never stored in commercial.json. */
-  likelyLoss?: string | null;
+  /** likelyOutcomeLine() of the full record, set at load ("Likely: Flop"); never stored in commercial.json. */
+  likelyOutcome?: string | null;
+  /** What likelyOutcome rests on (likelyOutcomeBasis()): an outside estimate or our model. */
+  likelyOutcomeBasis?: 'estimate' | 'model' | null;
   nonprofitOrg?: string;
   /** A nonprofit run's switch to a commercial run; date null when not reported (BRO-5508, scripts/lib/commercial-conversion.js). */
   commercialConversion?: { date: string | null; sourceUrl: string | null } | null;
@@ -637,8 +639,9 @@ export interface CommercialShowRow {
   recoupedWeeks: number | null;
   /** lossBasisCaveat(): "Based on no recoupment being announced" for a loss label no source reported, else null. */
   lossCaveat: string | null;
-  /** likelyLossLine(): "Likely: Flop" / "Likely: Fizzle" on a Did Not Recoup show the model has a reading for, else null. */
-  likelyLoss: string | null;
+  /** likelyOutcomeLine(): "Likely: Flop" / "Likely: Fizzle" (or "Likely: Recouped" when Undisclosed) where no source says and we have a reading, else null. */
+  likelyOutcome: string | null;
+  likelyOutcomeBasis: 'estimate' | 'model' | null;
   /** What a loss label rests on (lossOutcomePhrase reads it). */
   designationBasis: ShowCommercial['designationBasis'] | null;
 }

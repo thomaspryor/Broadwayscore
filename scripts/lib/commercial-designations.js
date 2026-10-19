@@ -92,19 +92,27 @@ function lossDesignationFor(returnedPct) {
   return returnedPct >= FIZZLE_MIN_RETURNED_PCT ? 'Fizzle' : 'Flop';
 }
 /**
- * Our best guess at the size of a Did Not Recoup loss (owner 2026-10-18,
- * BRO-5647: "People want to know what we think"): Fizzle or Flop by the
- * record's own estimate, else the model's middle figure at any data quality.
- * The musical model's display hold covers the % bar, not this sort: the
- * Fizzle/Flop split already reads it for closed musicals. Shown beside the
- * label as a marked estimate, never as the label. null for any other label,
- * or with no estimate at all.
+ * Our best guess at how a show did where no source says (owner 2026-10-18 and
+ * 2026-10-19, BRO-5647: "give people some indication of how it did which they
+ * can't get anywhere else"), shown beside the label as a marked estimate,
+ * never as the label. By the record's own estimate, else the model's middle
+ * figure at any data quality. The musical model's display hold covers the %
+ * bar, not this line.
+ *  - Did Not Recoup: Fizzle or Flop.
+ *  - Undisclosed (a closed TBD, so entry.status must be passed): Recouped at
+ *    100% or more returned (none when the record says recouped:false), else
+ *    Fizzle or Flop. A recouped:true record is announced, never guessed.
+ * null for any other label, or with no estimate at all.
  */
-function likelyLossDesignation(entry) {
-  if (entry?.designation !== 'Did Not Recoup') return null;
+function likelyOutcomeDesignation(entry) {
+  const undisclosed = entry?.designation === 'TBD' && entry.status === 'closed' && entry.recouped !== true;
+  if (entry?.designation !== 'Did Not Recoup' && !undisclosed) return null;
   const own = ownReturnedEstimatePct(entry);
   const pct = own !== null ? own : modelMiddleReturnedPct(entry);
-  return pct === null ? null : lossDesignationFor(pct);
+  if (pct === null) return null;
+  // recouped:false prints "Not Recouped", so never guess Recouped beside it.
+  if (undisclosed && pct >= 100) return entry.recouped === false ? null : 'Recouped';
+  return lossDesignationFor(pct);
 }
 /**
  * Whether our model is what sizes this record's loss label: a loss label, no
@@ -215,7 +223,7 @@ module.exports = {
   DESIGNATION_BASES, VALID_DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel,
   VALID_DESIGNATIONS, canonicalDesignation,
   TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, returnedEstimatePct, DESIGNATIONS_OUTSIDE_RULE,
-  LOSS_DESIGNATIONS, isLossDesignation, lossDesignationFor, modelMiddleReturnedPct, likelyLossDesignation,
+  LOSS_DESIGNATIONS, isLossDesignation, lossDesignationFor, modelMiddleReturnedPct, likelyOutcomeDesignation,
   modelSizesLossLabel, resizedLossLabel, MODEL_LOSS_RESIZE_LIMIT, planModelLossResizes,
   MODEL_CONTRADICTION, modelContradictsDesignation,
 };

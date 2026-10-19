@@ -529,7 +529,7 @@ export default function MethodologyPage() {
             </ul>
           </div>
           <p className="text-gray-400 text-xs mt-3">
-            {`Unless a source reports what investors got back, the line between Fizzle and Flop (about ${FIZZLE_MIN_RETURNED_PCT}% returned) rests on an estimate: an analyst's, or our model's when its inputs are good enough. With no estimate, neither label is used. When our model has any reading at all, even a rough one, the show still gets a marked best guess such as "Likely: Flop", from weekly grosses and costs. A closed show can still recoup later, from tours, licensing and other income after its Broadway run, so these labels can change.`}
+            {`Unless a source reports what investors got back, the line between Fizzle and Flop (about ${FIZZLE_MIN_RETURNED_PCT}% returned) rests on an estimate: an analyst's, or our model's when its inputs are good enough. With no estimate, neither label is used. When our model has any reading at all, even a rough one, the show still gets a marked best guess such as "Likely: Flop", from weekly grosses and costs, or from an outside estimate when one exists. A closed show whose outcome was never disclosed gets one too, which can also read "Likely: Recouped". A closed show can still recoup later, from tours, licensing and other income after its Broadway run, so these labels can change.`}
           </p>
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">How often it updates</h3>

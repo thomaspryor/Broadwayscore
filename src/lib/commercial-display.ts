@@ -23,7 +23,7 @@ import {
   modelDisplayGuard, displayBasis, playedWeeks, independentEstimate, isRunning,
   analystRange, estimateFitsDesignation, RUNNING_SHOWN_MAX,
 } from '../../scripts/lib/model-display-guard';
-import { hasNoInvestorsToRepay, isLossDesignation, likelyLossDesignation } from '../../scripts/lib/commercial-designations';
+import { hasNoInvestorsToRepay, isLossDesignation, likelyOutcomeDesignation, ownReturnedEstimatePct } from '../../scripts/lib/commercial-designations';
 import { publicSourceText, isEstimatedCapitalization, saysRecoupmentUnannounced } from '../../scripts/lib/public-source-text';
 import { conversionOf } from '../../scripts/lib/commercial-conversion';
 
@@ -344,7 +344,7 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     recoupedSource,
     humanReviewedDesignation: commercial.humanReviewedDesignation,
     ...(commercial.designationBasis ? { designationBasis: commercial.designationBasis } : {}),
-    ...(commercial.likelyLoss ? { likelyLoss: commercial.likelyLoss } : {}),
+    ...(commercial.likelyOutcome ? { likelyOutcome: commercial.likelyOutcome, likelyOutcomeBasis: commercial.likelyOutcomeBasis ?? 'model' } : {}),
     notes: publicNotesText(commercial) ?? undefined,
     sources: commercial.sources?.map(({ type, url, date }) => ({ type, url, date })),
     investorMultiple: commercial.investorMultiple,
@@ -590,19 +590,35 @@ export function lossBasisCaveat(c: LossBasisSignals | null | undefined): string 
 export const LOSS_CAN_CHANGE_NOTE = 'This can change if the show recoups later, from tours or licensing.';
 
 /**
- * Our best guess at how a Did Not Recoup show did (owner 2026-10-18, BRO-5647:
- * "People want to know what we think"): "Likely: Flop" or "Likely: Fizzle"
- * from the model's middle figure, shown beside the label and marked as ours.
- * null for every other label and when the model has no reading.
+ * Our best guess at how a show did where no source says (BRO-5647):
+ * "Likely: Flop", "Likely: Fizzle" or, on an Undisclosed show,
+ * "Likely: Recouped", from likelyOutcomeDesignation, shown beside the label
+ * and marked as ours. Pass the show's status: Undisclosed is a closed TBD.
  */
-export function likelyLossLine(c: Parameters<typeof likelyLossDesignation>[0]): string | null {
-  const d = likelyLossDesignation(c);
+export function likelyOutcomeLine(c: Parameters<typeof likelyOutcomeDesignation>[0]): string | null {
+  const d = likelyOutcomeDesignation(c);
   return d ? `Likely: ${d}` : null;
 }
 
-/** What the Likely line rests on: the card prints it, the /biz cell's tooltip says it in full. */
-export const LIKELY_LOSS_BASIS = 'our estimate from weekly grosses and costs';
-export const LIKELY_LOSS_NOTE = 'Our estimate from weekly grosses and costs. No source has reported what investors got back.';
+/**
+ * What a Likely line rests on: an estimate the record carries from outside
+ * (an analyst's range or an outside estimate), else our model. null with no line.
+ */
+export type LikelyOutcomeBasis = 'estimate' | 'model';
+export function likelyOutcomeBasis(c: Parameters<typeof likelyOutcomeDesignation>[0]): LikelyOutcomeBasis | null {
+  if (!likelyOutcomeDesignation(c)) return null;
+  return ownReturnedEstimatePct(c) !== null ? 'estimate' : 'model';
+}
+
+/** The basis in words: the card prints LIKELY_OUTCOME_BASIS, the /biz cell's tooltip says LIKELY_OUTCOME_NOTE in full. */
+export const LIKELY_OUTCOME_BASIS: Record<LikelyOutcomeBasis, string> = {
+  model: 'our estimate from weekly grosses and costs',
+  estimate: 'from an outside estimate of what investors got back',
+};
+export const LIKELY_OUTCOME_NOTE: Record<LikelyOutcomeBasis, string> = {
+  model: 'Our estimate from weekly grosses and costs. No source has reported what investors got back.',
+  estimate: 'From an outside estimate of what investors got back. No source has reported the actual figure.',
+};
 
 /** The can-change note for a loss label; null for every other designation. */
 export function lossCanChangeNote(c: Pick<ShowCommercial, 'designation'> | null | undefined): string | null {

@@ -11,29 +11,53 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-const { lossBasisCaveat, LOSS_ON_SILENCE_CAVEAT, toPublicShowCommercial, publicSourceText, lossOutcomePhrase, isReportedLoss, publicNotesText, lossCanChangeNote, LOSS_CAN_CHANGE_NOTE, likelyLossLine } =
+const { lossBasisCaveat, LOSS_ON_SILENCE_CAVEAT, toPublicShowCommercial, publicSourceText, lossOutcomePhrase, isReportedLoss, publicNotesText, lossCanChangeNote, LOSS_CAN_CHANGE_NOTE, likelyOutcomeLine, likelyOutcomeBasis, LIKELY_OUTCOME_BASIS, LIKELY_OUTCOME_NOTE } =
   await import('../../src/lib/commercial-display.ts');
 
 test('a Did Not Recoup show carries our best guess as a marked Likely line (owner 2026-10-18, BRO-5647)', () => {
   const dnr = { designation: 'Did Not Recoup' };
   // Any data quality: low still gives a guess, the label stays Did Not Recoup.
-  assert.equal(likelyLossLine({ ...dnr, modelDataQuality: 'low', modelReturnedExCreditPct: [0, 12, 30] }), 'Likely: Flop');
-  assert.equal(likelyLossLine({ ...dnr, modelReturnedExCreditPct: [20, 45, 70] }), 'Likely: Fizzle');
+  assert.equal(likelyOutcomeLine({ ...dnr, modelDataQuality: 'low', modelReturnedExCreditPct: [0, 12, 30] }), 'Likely: Flop');
+  assert.equal(likelyOutcomeLine({ ...dnr, modelReturnedExCreditPct: [20, 45, 70] }), 'Likely: Fizzle');
   // Order: ex-credit, then V2, then the original figure; a malformed tuple is skipped.
-  assert.equal(likelyLossLine({ ...dnr, modelReturnedExCreditPct: [1, 2], modelRecoupmentPctV2: [20, 45, 70], modelRecoupmentPct: [0, 5, 10] }), 'Likely: Fizzle');
-  assert.equal(likelyLossLine({ ...dnr, modelRecoupmentPct: [0, 5, 10] }), 'Likely: Flop');
+  assert.equal(likelyOutcomeLine({ ...dnr, modelReturnedExCreditPct: [1, 2], modelRecoupmentPctV2: [20, 45, 70], modelRecoupmentPct: [0, 5, 10] }), 'Likely: Fizzle');
+  assert.equal(likelyOutcomeLine({ ...dnr, modelRecoupmentPct: [0, 5, 10] }), 'Likely: Flop');
   // The record's own estimate comes first, as for the Fizzle/Flop split.
-  assert.equal(likelyLossLine({ ...dnr, analystRecoupPct: [40, 50], modelReturnedExCreditPct: [0, 12, 30] }), 'Likely: Fizzle');
-  assert.equal(likelyLossLine({ ...dnr, estimatedRecoupmentPct: 5 }), 'Likely: Flop');
+  assert.equal(likelyOutcomeLine({ ...dnr, analystRecoupPct: [40, 50], modelReturnedExCreditPct: [0, 12, 30] }), 'Likely: Fizzle');
+  assert.equal(likelyOutcomeLine({ ...dnr, estimatedRecoupmentPct: 5 }), 'Likely: Flop');
   // No reading, no guess.
-  assert.equal(likelyLossLine(dnr), null);
-  assert.equal(likelyLossLine(null), null);
-  // Only Did Not Recoup: a sized loss label or any other label gets no line.
+  assert.equal(likelyOutcomeLine(dnr), null);
+  assert.equal(likelyOutcomeLine(null), null);
+  // Undisclosed (a closed TBD, BRO-5647 owner 2026-10-19): the line gives an indication where no source does.
+  const undisclosed = { designation: 'TBD', status: 'closed' };
+  assert.equal(likelyOutcomeLine({ ...undisclosed, modelDataQuality: 'low', modelRecoupmentPct: [0, 12, 30] }), 'Likely: Flop');
+  assert.equal(likelyOutcomeLine({ ...undisclosed, modelRecoupmentPct: [20, 60, 90] }), 'Likely: Fizzle');
+  assert.equal(likelyOutcomeLine({ ...undisclosed, modelRecoupmentPct: [70, 104, 140] }), 'Likely: Recouped');
+  assert.equal(likelyOutcomeLine({ ...undisclosed, modelRecoupmentPct: [-200, -50, 10] }), 'Likely: Flop');
+  assert.equal(likelyOutcomeLine({ ...undisclosed, estimatedRecoupmentPct: 0 }), 'Likely: Flop');
+  assert.equal(likelyOutcomeLine(undisclosed), null);
+  // Still running, or announced: no guess.
+  assert.equal(likelyOutcomeLine({ designation: 'TBD', status: 'open', modelRecoupmentPct: [0, 12, 30] }), null);
+  assert.equal(likelyOutcomeLine({ designation: 'TBD', modelRecoupmentPct: [0, 12, 30] }), null);
+  assert.equal(likelyOutcomeLine({ ...undisclosed, recouped: true, modelRecoupmentPct: [0, 12, 30] }), null);
+  // recouped:false prints "Not Recouped": no Recouped guess beside it, a loss guess still stands.
+  assert.equal(likelyOutcomeLine({ ...undisclosed, recouped: false, modelRecoupmentPct: [70, 104, 140] }), null);
+  assert.equal(likelyOutcomeLine({ ...undisclosed, recouped: false, modelRecoupmentPct: [0, 12, 30] }), 'Likely: Flop');
+  assert.equal(likelyOutcomeLine({ designation: 'TBD', status: 'previews', modelRecoupmentPct: [0, 12, 30] }), null);
+  // A Did Not Recoup show never reads Recouped, whatever the model says.
+  assert.equal(likelyOutcomeLine({ ...dnr, modelRecoupmentPct: [70, 104, 140] }), 'Likely: Fizzle');
+  // Only Did Not Recoup and a closed Undisclosed: a sized loss label, an open TBD or any other label gets no line.
   for (const designation of ['Fizzle', 'Flop', 'TBD', 'Windfall', 'Nonprofit']) {
-    assert.equal(likelyLossLine({ designation, modelReturnedExCreditPct: [0, 12, 30] }), null, designation);
+    assert.equal(likelyOutcomeLine({ designation, modelReturnedExCreditPct: [0, 12, 30] }), null, designation);
   }
-  assert.equal(toPublicShowCommercial({ designation: 'Did Not Recoup', likelyLoss: 'Likely: Flop' }).likelyLoss, 'Likely: Flop');
-  assert.equal('likelyLoss' in toPublicShowCommercial({ designation: 'Did Not Recoup' }), false);
+  assert.equal(toPublicShowCommercial({ designation: 'Did Not Recoup', likelyOutcome: 'Likely: Flop' }).likelyOutcome, 'Likely: Flop');
+  // What the line rests on: a outside estimate the record carries, else our model (BRO-5647).
+  assert.equal(likelyOutcomeBasis({ ...undisclosed, analystRecoupPct: [0, 0], modelRecoupmentPct: [0, 12, 30] }), 'estimate');
+  assert.equal(likelyOutcomeBasis({ ...undisclosed, modelRecoupmentPct: [0, 12, 30] }), 'model');
+  assert.equal(likelyOutcomeBasis(undisclosed), null);
+  assert.ok(LIKELY_OUTCOME_BASIS.estimate && LIKELY_OUTCOME_NOTE.estimate && LIKELY_OUTCOME_BASIS.model && LIKELY_OUTCOME_NOTE.model);
+  assert.equal(toPublicShowCommercial({ designation: 'TBD', likelyOutcome: 'Likely: Flop', likelyOutcomeBasis: 'estimate' }).likelyOutcomeBasis, 'estimate');
+  assert.equal('likelyOutcome' in toPublicShowCommercial({ designation: 'Did Not Recoup' }), false);
 });
 
 test('every loss label says it can change if the show recoups later (owner 2026-10-18, BRO-5645)', () => {

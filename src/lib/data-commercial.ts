@@ -42,7 +42,8 @@ import {
   getReportedInvestorMultiple,
   publicSourceText,
   lossBasisCaveat,
-  likelyLossLine,
+  likelyOutcomeLine,
+  likelyOutcomeBasis,
   isEstimatedCapitalization,
   isUnannouncedRecoupment,
   isEstimatedRunningCost,
@@ -127,8 +128,10 @@ const commercial: CommercialFile = (() => {
     const rr = reportedReturn(data, showBySlug.get(slug));
     // From the unguarded record: the guard can hide the bar, and the best guess still stands (BRO-5647).
     // A reported return says what came back, so no guess beside it.
-    const likelyLoss = rr ? null : likelyLossLine(data);
-    shows[slug] = { ...guarded, ...(rr ? { reportedReturn: rr } : {}), ...(likelyLoss ? { likelyLoss } : {}) };
+    const withStatus = { ...data, status: showBySlug.get(slug)?.status };
+    const likelyOutcome = rr ? null : likelyOutcomeLine(withStatus);
+    const likely = likelyOutcome ? { likelyOutcome, likelyOutcomeBasis: likelyOutcomeBasis(withStatus) ?? 'model' as const } : {};
+    shows[slug] = { ...guarded, ...(rr ? { reportedReturn: rr } : {}), ...likely };
   }
   return { ...file, shows };
 })();
@@ -689,7 +692,8 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
     recoupmentNotAnnounced: isUnannouncedRecoupment(data),
     recoupedWeeks: calculateWeeksToRecoup(recoupClockStart(data, show.openingDate), data.recoupedDate, show.closingDate),
     lossCaveat: lossBasisCaveat(data),
-    likelyLoss: data.likelyLoss ?? null,
+    likelyOutcome: data.likelyOutcome ?? null,
+    likelyOutcomeBasis: data.likelyOutcome ? (data.likelyOutcomeBasis ?? 'model') : null,
     designationBasis: data.designationBasis ?? null,
   };
 }
