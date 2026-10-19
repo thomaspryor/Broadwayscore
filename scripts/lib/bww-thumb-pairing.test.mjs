@@ -6,27 +6,53 @@ import fs from 'node:fs';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { shouldPairBwwThumbs } = require('./bww-thumb-pairing.js');
+const { extractBwwThumbIcons, pairBwwThumbsByCritic } = require('./bww-thumb-pairing.js');
 
-test('pairs only when every review has exactly one icon', () => {
-  assert.equal(shouldPairBwwThumbs(19, 19), true);
-  assert.equal(shouldPairBwwThumbs(20, 19), false); // ODC 2026: one stray icon
-  assert.equal(shouldPairBwwThumbs(5, 19), false);
-  assert.equal(shouldPairBwwThumbs(0, 0), false);
-  assert.equal(shouldPairBwwThumbs(0, 7), false);
-});
+const icon = (f) => `<p><img alt="x" src="https://cloudimages.broadwayworld.com/${f}?width=800" srcset="https://c/${f}?w=400 400w, https://c/${f}?w=800 800w, https://c/${f}?w=1200 1200w" style="float:left">`;
+const entry = (f, critic, outlet) => `${icon(f)}${critic}, <a href="https://x">${outlet}</a>: excerpt text.</p>`;
 
-test('gather-reviews gates its positional pairing on the guard', () => {
-  const src = fs.readFileSync(new URL('../gather-reviews.js', import.meta.url), 'utf8');
-  const guard = src.indexOf('shouldPairBwwThumbs(thumbMatches.length, reviews.length)');
-  const pairing = src.indexOf('reviews[i].bwwThumb = thumbMatches[i]');
-  assert.ok(guard > 0 && pairing > guard, 'guard must precede the positional assignment');
-});
-
-test('one thumb per <img>, srcset repeats collapse', async () => {
-  const { extractBwwThumbIcons } = require('./bww-thumb-pairing.js');
-  const img = (f) => `<p><img alt="x" src="https://cloudimages.broadwayworld.com/${f}?width=800" srcset="https://c/${f}?w=400 400w, https://c/${f}?w=800 800w, https://c/${f}?w=1200 1200w" style="float:left"></p>`;
-  const html = img('uptrans2.png') + '<p>text</p>' + img('middletrans2.png') + img('downtrans.png') + '<img src="/BigThumbs_MEH.gif">' + '<img src="/logo.png">';
-  assert.deepEqual(extractBwwThumbIcons(html), ['Up', 'Meh', 'Down', 'Meh']);
+test('one icon per <img> (srcset repeats collapse), lead text captured', () => {
+  const html = entry('uptrans2.png', 'Aramide Tinubu', 'Variety') + '<img src="/logo.png">' + entry('middletrans2.png', 'Adam Feldman', 'Time Out');
+  const icons = extractBwwThumbIcons(html);
+  assert.deepEqual(icons.map(i => i.thumb), ['Up', 'Meh']);
+  assert.ok(icons[0].lead.startsWith('aramide tinubu variety'));
   assert.deepEqual(extractBwwThumbIcons(''), []);
+});
+
+test('pairs by critic name, not by order (ODC 2026: JSON-LD order != page order, trailing Average Rating icon)', () => {
+  const html = entry('middletrans2.png', 'Helen Shaw', 'New York Times')
+    + entry('uptrans2.png', 'Aramide Tinubu', 'Variety')
+    + entry('middletrans2.png', 'Adam Feldman', 'TimeOut New York')
+    + entry('uptrans2.png', 'Juan A. Ramírez', 'The Guardian')
+    + `${icon('middletrans2.png')}Average Rating: 70.0%</p>`;
+  const reviews = [
+    { criticName: 'Adam Feldman' }, { criticName: 'Aramide Tinubu' },
+    { criticName: 'Juan A. Ramirez' }, { criticName: 'Helen Shaw' },
+    { criticName: 'Unknown' }, { criticName: null }, { criticName: 'Madonna' },
+  ];
+  assert.deepEqual(pairBwwThumbsByCritic(extractBwwThumbIcons(html), reviews), ['Meh', 'Up', 'Up', 'Meh', null, null, null]);
+});
+
+test('ambiguous name (two icons) gets no thumb', () => {
+  const html = entry('uptrans2.png', 'Frank Scheck', 'NYSR') + entry('downtrans2.png', 'Frank Scheck', 'THR');
+  assert.deepEqual(pairBwwThumbsByCritic(extractBwwThumbIcons(html), [{ criticName: 'Frank Scheck' }]), [null]);
+});
+
+test('legacy BigThumbs filenames', () => {
+  const html = '<img src="/BigThumbs_MEH.gif"> Jane Doe, Outlet: x <img src="/BigThumbs_DOWN.png"> John Roe, Other: y';
+  assert.deepEqual(pairBwwThumbsByCritic(extractBwwThumbIcons(html), [{ criticName: 'John Roe' }, { criticName: 'Jane Doe' }]), ['Down', 'Meh']);
+});
+
+test('gather-reviews never assigns bwwThumb by index', () => {
+  const src = fs.readFileSync(new URL('../gather-reviews.js', import.meta.url), 'utf8');
+  assert.ok(!src.includes('reviews[i].bwwThumb = thumbMatches[i]'));
+  assert.ok(src.includes('pairBwwThumbsByCritic(thumbIcons, reviews)'));
+});
+
+test('no names after any icon: order fallback only on exact count (Average Rating set aside)', () => {
+  const bare = (f) => `<img src="https://c/${f}"><p><a href="u">Outlet review</a></p>`;
+  const html = bare('uptrans2.png') + bare('middletrans2.png') + `<img src="https://c/downtrans2.png"><p>Average Rating: 60%</p>`;
+  const icons = extractBwwThumbIcons(html);
+  assert.deepEqual(pairBwwThumbsByCritic(icons, [{ criticName: 'A B' }, { criticName: 'C D' }]), ['Up', 'Meh']);
+  assert.deepEqual(pairBwwThumbsByCritic(icons, [{ criticName: 'A B' }, { criticName: 'C D' }, { criticName: 'E F' }]), [null, null, null]);
 });
