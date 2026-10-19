@@ -1,6 +1,7 @@
 /**
  * Near-duplicate outlet-registry detector (the-la-times class, task #1838 / BRO-90;
- * extended to the slugify()/concatenated class by task #1844).
+ * extended to the slugify()/concatenated class by task #1844 and the
+ * single-edit/transposition typo class by BRO-5577).
  *
  * buildRegistryAliasMap() (scripts/lib/review-normalization.js) resolves free
  * text to a canonical outlet ID via a WIDER surface than either existing
@@ -131,11 +132,114 @@ function isDeclaredException(key, outletIds) {
   );
 }
 
+// Distinct registry mastheads/editions whose existing IDs or aliases happen
+// to be one edit apart. These exceptions apply ONLY to fuzzy findings, never
+// to an exact alias collision, and never to a third outlet with a typo ID.
+// Evidence: displayName/domain/aliases in data/outlet-registry.json.
+const DECLARED_TYPO_PAIRS = [
+  // Separate broadcast networks and their New York affiliates.
+  ['abc-news', 'bbc-news'], ['abc-news', 'cbc'], ['abc-news', 'nbcnews'],
+  ['bbc-news', 'cbc'], ['bbc-news', 'nbcnews'], ['cbc', 'cbsnews'], ['cbc', 'nbcnews'],
+  ['abc-new-york', 'nbcny'],
+  // Separate publications, with different registry domains.
+  ['backstage', 'jackstage'], // backstage.com / jackstage.co.uk
+  ['gay-city-news', 'localnewsmatters'], // Bay City News is an alias of the latter
+  ['curtainsup', 'curtainup'], // curtainsup.online / curtainup.com
+  ['independent', 'indiependent'], // independent.co.uk / indiependent.co.uk
+  ['london-theatre', 'londontheatre1'], // londontheatre.co.uk / londontheatre1.com
+  ['ny1', 'vulture'], // New York 1 / New York magazine
+  ['nwtheatre', 'nytheatre'], // nwtheatre.org / nytheatre-wire.com
+  ['new-york-city-theatre', 'nytheatre'], // nyc theatre / NYTheatre Wire
+  ['nyt-theater', 'nytg'], // newyorktheater.me / newyorktheatreguide.com
+  ['nyt-theater', 'nytheatre'], // newyorktheater.me / nytheatre-wire.com
+  ['preview', 'reviewing-the-drama'], // "review" is an alias of the latter
+  ['telegram', 'telegraph'], // "telegrap" is an existing Telegraph typo alias
+  ['tribune', 'tribute'], // tribunemag.co.uk / tribute.ca
+  // Deliberate city editions; "time-outs" belongs to the London edition.
+  ['timeout', 'timeout-london'],
+  // Same critic-name routing split documented in DECLARED_THE_EXCEPTIONS;
+  // observer also owns the legacy "david-cote-1" index entry.
+  ['cote-notices', 'observer'],
+];
+
+function outletPairKey(a, b) {
+  return JSON.stringify([a, b].sort());
+}
+
+const declaredTypoPairs = new Set(DECLARED_TYPO_PAIRS.map(([a, b]) => outletPairKey(a, b)));
+
+/** One insertion, deletion, substitution, or adjacent transposition. */
+function isSingleTypo(a, b) {
+  if (a === b || Math.abs(a.length - b.length) > 1) return false;
+  let i = 0;
+  while (i < Math.min(a.length, b.length) && a[i] === b[i]) i++;
+  if (a.length !== b.length) {
+    return a.length > b.length ? a.slice(i + 1) === b.slice(i) : b.slice(i + 1) === a.slice(i);
+  }
+  return a.slice(i + 1) === b.slice(i + 1)
+    || (a[i] === b[i + 1] && a[i + 1] === b[i] && a.slice(i + 2) === b.slice(i + 2));
+}
+
+/**
+ * Extend the exact findings with one finding per typo outlet pair. Reuse
+ * the complete resolution surface, including _aliasIndex, but compare only
+ * folded keys of 6+ characters so abbreviations (BBC/NBC) cannot collide.
+ * Shared single-deletion signatures find candidate pairs without comparing
+ * every registry key to every other key on each auto-registration attempt.
+ */
+function appendTypoCollisions(byKey, collisions) {
+  const byText = new Map();
+  for (const [key, ids] of byKey) {
+    const text = stripLeadingThe(slugify(key)).replace(/-/g, '');
+    if (text.length < 6) continue;
+    if (!byText.has(text)) byText.set(text, new Set());
+    for (const id of ids) {
+      if (!isSentinelOutletId(id)) byText.get(text).add(id);
+    }
+  }
+
+  const reportedPairs = new Set();
+  for (const { outletIds } of collisions) {
+    for (let i = 0; i < outletIds.length; i++) {
+      for (let j = i + 1; j < outletIds.length; j++) {
+        reportedPairs.add(outletPairKey(outletIds[i], outletIds[j]));
+      }
+    }
+  }
+
+  const bySignature = new Map();
+  for (const text of [...byText.keys()].sort()) {
+    const signatures = new Set([text]);
+    for (let i = 0; i < text.length; i++) signatures.add(text.slice(0, i) + text.slice(i + 1));
+    const candidates = new Set();
+    for (const signature of signatures) {
+      for (const candidate of bySignature.get(signature) || []) candidates.add(candidate);
+    }
+    for (const candidate of [...candidates].sort()) {
+      if (!isSingleTypo(candidate, text)) continue;
+      for (const a of byText.get(candidate)) {
+        for (const b of byText.get(text)) {
+          if (a === b) continue;
+          const pairKey = outletPairKey(a, b);
+          if (declaredTypoPairs.has(pairKey) || reportedPairs.has(pairKey)) continue;
+          reportedPairs.add(pairKey);
+          collisions.push({ key: `${candidate} ~ ${text}`, outletIds: [a, b].sort() });
+        }
+      }
+    }
+    for (const signature of signatures) {
+      if (!bySignature.has(signature)) bySignature.set(signature, new Set());
+      bySignature.get(signature).add(text);
+    }
+  }
+}
+
 /**
  * Find text keys claimed by 2+ distinct outlet IDs — i.e. outlets whose
  * identity (id/displayName/alias, raw or the-stripped) collides with
  * another outlet's identity, OR with a DIFFERENT outlet's `_aliasIndex`
- * entry, in buildRegistryAliasMap()'s resolution surface. `_aliasIndex` is
+ * entry, in buildRegistryAliasMap()'s resolution surface. Also finds
+ * single-edit typo pairs across that surface (BRO-5577). `_aliasIndex` is
  * a second, independent source of raw resolvable text
  * (review-normalization.js:104-111) — a new outlet whose own identity lands
  * on an existing `_aliasIndex` alias is exactly as silent a duplicate as one
@@ -175,7 +279,9 @@ function findOutletAliasCollisions(outlets, aliasIndex) {
       collisions.push({ key, outletIds });
     }
   }
-  return collisions.sort((a, b) => a.key.localeCompare(b.key));
+  appendTypoCollisions(byKey, collisions);
+  return collisions.sort((a, b) => a.key.localeCompare(b.key)
+    || JSON.stringify(a.outletIds).localeCompare(JSON.stringify(b.outletIds)));
 }
 
 /**

@@ -217,6 +217,78 @@ describe('findOutletAliasCollisions — hyphen/concatenated class (task #1844)',
   });
 });
 
+describe('findOutletAliasCollisions typo class (BRO-5577)', () => {
+  for (const [canonical, typo] of [
+    ['variety', 'varitey'], // adjacent transposition
+    ['theatermania', 'theatermannia'], // insertion
+    ['broadwayworld', 'broadwayworl'], // deletion at the end
+    ['playbill', 'playblll'], // substitution
+    ['playbill', 'xplaybill'], // insertion at the start
+  ]) {
+    test(`blocks ${typo} before it can be registered alongside ${canonical}`, () => {
+      const outlets = { [canonical]: { displayName: canonical } };
+      const entry = { displayName: typo, aliases: [typo] };
+      assert.strictEqual(wouldCauseAliasCollision(outlets, {}, typo, entry), true);
+      const hits = findOutletAliasCollisions({ ...outlets, [typo]: entry });
+      assert.strictEqual(hits.length, 1, 'one finding per outlet pair');
+      assert.deepStrictEqual(hits[0].outletIds, [canonical, typo].sort());
+      assert.ok(hits[0].key.includes(canonical));
+      assert.ok(hits[0].key.includes(typo));
+    });
+  }
+
+  test('compares display names and aliases after stripping the and separators', () => {
+    const outlets = {
+      canonical: { displayName: 'The Broadway World', aliases: ['Stage Gazette'] },
+      typo: { displayName: 'Broadway Wrold', aliases: ['Stage Gazete'] },
+    };
+    assert.deepStrictEqual(findOutletAliasCollisions(outlets)[0].outletIds, ['canonical', 'typo']);
+    assert.strictEqual(findOutletAliasCollisions(outlets).length, 1);
+  });
+
+  test('also compares the independent alias index surface', () => {
+    const outlets = { candidate: { displayName: 'Stage Gazete' } };
+    assert.deepStrictEqual(
+      findOutletAliasCollisions(outlets, { 'the-stage-gazette': 'existing' })[0].outletIds,
+      ['candidate', 'existing']
+    );
+  });
+
+  test('ignores same-outlet typo aliases, short abbreviations and multiple edits', () => {
+    assert.deepStrictEqual(findOutletAliasCollisions({
+      variety: { aliases: ['varitey', 'varietty'] },
+      bbc: {}, nbc: {},
+      playhouse: {}, playmousex: {},
+      abcdefgh: {}, bcdefgha: {}, // a rotation is not an adjacent transposition
+    }), []);
+  });
+
+  test('ignores sentinel identities in outlet entries and alias-index targets', () => {
+    assert.deepStrictEqual(findOutletAliasCollisions({
+      unknown: { displayName: 'Broadway Wrold' },
+      broadwayworld: {},
+      _meta: { displayName: 'Broadway Worl' },
+    }, { 'broadway-worrld': 'unknown', _note: 'broadwayworld' }), []);
+  });
+
+  test('reports pairs deterministically, without duplicating existing exact collisions', () => {
+    const outlets = { playbill: {}, playblll: {}, playbille: {}, duplicate: { aliases: ['playbill'] } };
+    const forward = findOutletAliasCollisions(outlets);
+    const reverse = findOutletAliasCollisions(Object.fromEntries(Object.entries(outlets).reverse()));
+    assert.deepStrictEqual(forward, reverse);
+    assert.strictEqual(forward.filter(c => c.outletIds.includes('duplicate') && c.outletIds.includes('playbill')).length, 1);
+    assert.ok(forward.some(c => c.outletIds.includes('playbille') && c.outletIds.includes('playbill')));
+  });
+
+  test('declared distinct mastheads still allow an unrelated typo to be caught', () => {
+    assert.deepStrictEqual(findOutletAliasCollisions({ independent: {}, indiependent: {} }), []);
+    const hits = findOutletAliasCollisions({ independent: {}, indiependent: {}, independet: {} });
+    assert.ok(hits.some(c => c.outletIds.includes('independet')));
+    // A fuzzy exception must not suppress a real alias collision.
+    assert.ok(findOutletAliasCollisions({ independent: {}, indiependent: { aliases: ['independent'] } }).length);
+  });
+});
+
 describe('wouldCauseAliasCollision', () => {
   test('a candidate whose auto-generated displayName collides with an existing alias returns true (task #1843)', () => {
     // Same shape rebuild-all-reviews.js's AUTO-REGISTER block would build:
@@ -287,6 +359,23 @@ describe('buildOutletTextKeys', () => {
 });
 
 describe('live registry', () => {
+  test('rejects three typo candidates against real registry identities without changing the registry', () => {
+    const { readFileSync } = require('fs');
+    const registry = JSON.parse(readFileSync(resolve(ROOT, 'data', 'outlet-registry.json'), 'utf8'));
+    const before = JSON.stringify(registry);
+    for (const [canonical, typo] of [
+      ['variety', 'varitey'],
+      ['theatermania', 'theatermannia'],
+      ['broadwayworld', 'broadwayworl'],
+    ]) {
+      assert.ok(registry.outlets[canonical], `${canonical} must be a real registry entry`);
+      assert.strictEqual(wouldCauseAliasCollision(registry.outlets, registry._aliasIndex, typo, {
+        displayName: typo, aliases: [typo],
+      }), true, typo);
+    }
+    assert.strictEqual(JSON.stringify(registry), before);
+  });
+
   test('current outlet-registry.json has no unresolved near-duplicates', () => {
     const { readFileSync, existsSync } = require('fs');
     const registryPath = resolve(ROOT, 'data', 'outlet-registry.json');
