@@ -1301,7 +1301,9 @@ function buildAnalysisContext(data) {
     sections.push('');
     for (const filing of data.secFilings) {
       sections.push(`${filing.showSlug}:`);
-      sections.push(`  Total offering amount (a maximum, not the amount raised): $${(filing.capitalization / 1e6).toFixed(2)}M`);
+      sections.push(filing.capitalization
+        ? `  Total offering amount (a maximum, not the amount raised): $${(filing.capitalization / 1e6).toFixed(2)}M`
+        : '  Total offering amount: indefinite');
       if (filing.amountSold != null) sections.push(`  Amount sold: $${(filing.amountSold / 1e6).toFixed(2)}M`);
       if (filing.capitalizedAmount != null) sections.push(`  The filing states the offering capitalized at: $${(filing.capitalizedAmount / 1e6).toFixed(2)}M`);
       sections.push(`  Source: ${filing.source}`);

@@ -133,8 +133,10 @@ const CAPITALIZATION_BASES = ['maximum', 'sold', 'reported'];
 
 // A filing that says the money came in: "fully sold", "all of it sold",
 // "$4,725,000 sold to 67 investors", "$20,000,000 sold of a $23,000,000
-// offering". A partial snapshot ("$400,000 sold by then") is not a raise.
-const SOLD_SOURCE_RE = /(?<!\bnot )\bfully sold\b|\ball of it sold\b|\$[\d,.]+(?:\s?(?:M|million))? sold (?:to|of)\b/i;
+// offering", and a filing's own "Offering capitalized at $4,108,500" (BRO-5647),
+// which wins over a "Maximum capitalization was" preamble beside it. A partial
+// snapshot ("$400,000 sold by then") is not a raise.
+const SOLD_SOURCE_RE = /(?<!\bnot )\bfully sold\b|\ball of it sold\b|\$[\d,.]+(?:\s?(?:M|million))? sold (?:to|of)\b|(?<!\b(?:maximum|minimum)\s+)\b(?:offering|entity) (?:was |is )?capitalized at \$/i;
 // A ceiling: "capitalized for up to $18 million", "an offering of up to $20M",
 // "total offering amount $5,500,000", "(max cap)", "maximum capitalization".
 const MAXIMUM_SOURCE_RE = /\bup to \$|\btotal offering(?: amount)? (?:of )?\$|\(max(?:imum)? cap\)|\bmaximum (?:capitali[sz]ation|offering)\b|\bForm D maximum\b/i;
