@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  normalizeTbUrl, isReviewHref, normalizeTitle, extractReviewLinks, titleFromPageTitle,
+  titleFromLinkText, normalizeTbUrl, isReviewHref, normalizeTitle, extractReviewLinks, titleFromPageTitle,
   matchShowByTitle, heldKey, planCollection, pickCriticForShow, pageTitleMatchesShow,
 } = require('./talkinbroadway-index.js');
 
@@ -106,4 +106,19 @@ test('pageTitleMatchesShow compares the quoted show title in the page title', ()
   assert.equal(pageTitleMatchesShow('Talkin\' Broadway Off-Broadway - "Good Time Charlie" - 10/9/26', 'Good Time Charlie'), true);
   assert.equal(pageTitleMatchesShow('Talkin\' Broadway Off-Broadway - "The Ask" - 10/16/26', 'Good Time Charlie'), false);
   assert.equal(pageTitleMatchesShow('Talkin\' Broadway - Off Broadway Past Reviews', 'Good Time Charlie'), false);
+});
+
+test('titleFromLinkText drops the trailing review date and tolerates a cut-off one', () => {
+  assert.equal(titleFromLinkText('Garry Starr: Classic Penguins - 9/9/26'), 'Garry Starr: Classic Penguins');
+  assert.equal(titleFromLinkText("Thornton Wilder's The Emporium -"), "Thornton Wilder's The Emporium");
+  assert.equal(titleFromLinkText('||: Girls :||: Chance :||: Music :|| - 5/28/26'), '||: Girls :||: Chance :||: Music :||');
+  assert.equal(titleFromLinkText('Good Time Charlie'), 'Good Time Charlie');
+  assert.equal(titleFromLinkText('Spider-Man - Turn Off the Dark - 2/8/26'), 'Spider-Man - Turn Off the Dark');
+});
+
+test('extractReviewLinks strips the date so the title can match a tracked show', () => {
+  const links = extractReviewLinks([{ href: '/page/ob/10_09_26.html', text: 'Good Time Charlie - 10/9/26' }]);
+  assert.equal(links[0].text, 'Good Time Charlie');
+  const { toFetch } = planCollection(links.map((l) => ({ url: l.url, title: l.text })), shows, new Set(), { now: NOW });
+  assert.deepEqual(toFetch.map((t) => t.showId), ['good-time-charlie-off-broadway-2026']);
 });

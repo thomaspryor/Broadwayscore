@@ -51,6 +51,17 @@ function normalizeTitle(title) {
 }
 
 /**
+ * Index link text is "<Show title> - M/D/YY" (sometimes cut to "<Show title> -"). Return the title only.
+ */
+function titleFromLinkText(text) {
+  return String(text || '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/\s*-\s*(\d{1,2}\/\d{1,2}\/\d{2,4})?\s*$/, '')
+    .trim();
+}
+
+/**
  * Review links from an index page's anchors.
  * @param {{href:string,text:string}[]} anchors
  * @returns {{url:string,text:string}[]} one row per distinct (url, text), nav links dropped
@@ -61,7 +72,7 @@ function extractReviewLinks(anchors) {
   for (const a of anchors || []) {
     if (!a || !isReviewHref(a.href)) continue;
     const url = normalizeTbUrl(a.href);
-    const text = String(a.text || '').replace(/\s+/g, ' ').trim();
+    const text = titleFromLinkText(a.text);
     const key = `${url}|${text}`;
     if (seen.has(key)) continue;
     seen.add(key);
@@ -176,6 +187,7 @@ module.exports = {
   isReviewHref,
   normalizeTitle,
   extractReviewLinks,
+  titleFromLinkText,
   titleFromPageTitle,
   matchShowByTitle,
   bylineSections,
