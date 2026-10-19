@@ -170,8 +170,8 @@ test('getDigestSubject: clean window stays green', () => {
 
 // --- feedbackBacklogResults (needs-manual-review backlog digest check) ---
 
-test('feedbackBacklogResults: empty backlog and skipped summary yield no results', () => {
-  assert.deepEqual(feedbackBacklogResults({ skipped: false, issues: [] }), []);
+test('feedbackBacklogResults: empty backlog is a pass row; skipped summary yields no results', () => {
+  assert.deepEqual(feedbackBacklogResults({ skipped: false, issues: [] }).map((r) => [r.name, r.status]), [['Feedback: needs-manual-review backlog', 'pass']]);
   assert.deepEqual(feedbackBacklogResults({ skipped: true, issues: [] }), []);
   assert.deepEqual(feedbackBacklogResults(null), []);
 });
@@ -286,9 +286,9 @@ test('obClosingBacklogResults: a show in both signals counts once; open shows st
 
 // --- neverRunWorkflowResults (task #737: workflows with zero lifetime runs) ---
 
-test('neverRunWorkflowResults: empty or absent report yields nothing', () => {
+test('neverRunWorkflowResults: absent report yields nothing; empty offenders is a pass row', () => {
   assert.deepEqual(neverRunWorkflowResults(null), []);
-  assert.deepEqual(neverRunWorkflowResults({ offenders: [] }), []);
+  assert.deepEqual(neverRunWorkflowResults({ offenders: [] }).map((r) => [r.name, r.status]), [['Workflow coverage: never-run', 'pass']]);
 });
 
 test('neverRunWorkflowResults: offenders warn with count and file list', () => {
@@ -449,7 +449,7 @@ test('cardVerifiabilityBacklogResults combines the gated row with Linear rows', 
     { humanGatedSkips: [{ id: '61', codes: ['VISUAL_QA_GATE'] }] },
     { total: 3, refused: [{ id: 'BRO-1', name: 'X' }], vacuousChecks: [], generatedAt: new Date().toISOString() },
   );
-  assert.deepEqual(rows.map(r => r.name).sort(), ['Data: cards the drain cannot finish unattended', 'Data: undispatchable Linear backlog cards']);
+  assert.deepEqual(rows.filter(r => r.status !== 'pass').map(r => r.name).sort(), ['Data: cards the drain cannot finish unattended', 'Data: undispatchable Linear backlog cards']);
 });
 
 test('cardVerifiabilityBacklogResults is silent when both buckets are empty', () => {

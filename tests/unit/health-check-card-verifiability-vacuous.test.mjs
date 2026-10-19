@@ -12,11 +12,13 @@ const { classifyHealthCheck } = require('../../scripts/lib/digest-audience.js');
 const NOW = Date.parse('2026-10-07T02:15:00Z');
 const FRESH = '2026-10-06T05:40:00Z';
 const vac = (id, polarity) => ({ id, name: `Card ${id}`, cmd: 'test -f scripts/x.js', polarity });
-const names = (r) => r.map((x) => x.name);
+// BRO-5164: fresh clean buckets add same-name pass rows; these tests pin the flagged rows.
+const flagged = (r) => r.filter((x) => x.status !== 'pass');
+const names = (r) => r.filter((x) => x.status !== 'pass').map((x) => x.name);
 
-test('no reports, or empty buckets on a fresh report, yield nothing', () => {
+test('no reports yield nothing; empty buckets on a fresh report flag nothing', () => {
   assert.deepEqual(cardVerifiabilityBacklogResults(null, null, NOW), []);
-  assert.deepEqual(cardVerifiabilityBacklogResults(null, { total: 9, refused: [], vacuousChecks: [], generatedAt: FRESH }, NOW), []);
+  assert.deepEqual(names(cardVerifiabilityBacklogResults(null, { total: 9, refused: [], vacuousChecks: [], generatedAt: FRESH }, NOW)), []);
 });
 
 test('Linear vacuousChecks surface as one row with polarity counts', () => {
@@ -29,7 +31,7 @@ test('Linear vacuousChecks surface as one row with polarity counts', () => {
 });
 
 test('Linear refused cards get their own row naming the first card', () => {
-  const r = cardVerifiabilityBacklogResults(null, { total: 100, refused: [{ id: 'BRO-9', name: 'Fix the thing', priority: 1 }, { id: 'BRO-10', name: 'Other' }], vacuousChecks: [], generatedAt: FRESH }, NOW);
+  const r = flagged(cardVerifiabilityBacklogResults(null, { total: 100, refused: [{ id: 'BRO-9', name: 'Fix the thing', priority: 1 }, { id: 'BRO-10', name: 'Other' }], vacuousChecks: [], generatedAt: FRESH }, NOW));
   assert.deepEqual(names(r), ['Data: undispatchable Linear backlog cards']);
   assert.match(r[0].message, /2 of 100 open Linear card/);
   assert.match(r[0].message, /BRO-9 Fix the thing/);
@@ -42,7 +44,7 @@ test('a Linear report older than 3 days, or with no readable date, warns that th
   const undated = cardVerifiabilityBacklogResults(null, { total: 1, refused: [], vacuousChecks: [] }, NOW);
   assert.deepEqual(names(undated), ['Data: Linear card-verifiability report stale']);
   const edge = cardVerifiabilityBacklogResults(null, { total: 1, refused: [], vacuousChecks: [], generatedAt: '2026-10-04T02:16:00Z' }, NOW);
-  assert.deepEqual(edge, [], 'just under 3 days is fresh');
+  assert.deepEqual(names(edge), [], 'just under 3 days is fresh');
 });
 
 test('an absent Linear report never raises the stale row (nothing to be stale)', () => {

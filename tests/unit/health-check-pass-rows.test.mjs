@@ -168,3 +168,125 @@ test('localRollupIssues: nothing when both counts are zero or health is missing'
   assert.deepEqual(localRollupIssues(), []);
   assert.equal(localRollupIssues({ health: undefined, stuckCount: 1 }).length, 1);
 });
+
+// --- BRO-5164: the remaining zero-row checks ---
+
+test('BRO-5164 rows are core checks (reachable by the --live probe)', () => {
+  const core = String(hc.computeCoreHealthResults);
+  for (const fn of ['checkFeedbackBacklog', 'checkUncollectedStrands', 'checkCardVerifiabilityBacklog', 'checkCoverageHoles', 'checkStarBandDrift']) {
+    assert.match(core, new RegExp(`${fn}\\(\\)`), `${fn} must run inside computeCoreHealthResults`);
+  }
+});
+
+const FEEDBACK = 'Feedback: needs-manual-review backlog';
+test('feedbackBacklogResults: a read that found nothing passes; a skipped or failed read never does', () => {
+  assert.equal(probeVerdict(hc.feedbackBacklogResults({ skipped: false, issues: [] }), FEEDBACK), 'absent');
+  assert.equal(probeVerdict(hc.feedbackBacklogResults({ skipped: true, issues: [] }), FEEDBACK), 'unknown');
+  assert.equal(probeVerdict(hc.feedbackBacklogResults({ skipped: false }), FEEDBACK), 'unknown');
+  assert.equal(probeVerdict(hc.feedbackBacklogResults(null), FEEDBACK), 'unknown');
+  const open = hc.feedbackBacklogResults({ skipped: false, issues: [{ number: 1, title: 't', createdAt: '2026-10-01T00:00:00Z' }] });
+  assert.equal(probeVerdict(open, FEEDBACK), 'present');
+});
+
+test('neverRunWorkflowResults: a computed report with no offenders passes; no report passes nothing', () => {
+  const name = 'Workflow coverage: never-run';
+  assert.equal(probeVerdict(hc.neverRunWorkflowResults({ offenders: [], totalChecked: 9, minAgeDays: 30 }), name), 'absent');
+  assert.equal(probeVerdict(hc.neverRunWorkflowResults(null), name), 'unknown');
+  assert.equal(probeVerdict(hc.neverRunWorkflowResults({}), name), 'unknown');
+  assert.equal(probeVerdict(hc.neverRunWorkflowResults({ offenders: ['a.yml'], minAgeDays: 30 }), name), 'present');
+});
+
+const ZERO = 'Data: live show with zero critic reviews on site';
+const STRANDS = 'Data: uncollected live review strands';
+test('uncollectedStrandResults: fresh clean report passes both names; stale, undated or missing passes none', () => {
+  const now = Date.parse('2026-10-19T12:00:00Z');
+  const fresh = '2026-10-19T11:00:00Z';
+  assertAllAbsent(hc.uncollectedStrandResults({ generatedAt: fresh, findings: [], blackoutShows: [] }, now), [ZERO, STRANDS]);
+  assertNoneAbsent(hc.uncollectedStrandResults({ generatedAt: '2026-10-17T00:00:00Z', findings: [], blackoutShows: [] }, now), [ZERO, STRANDS]);
+  assertNoneAbsent(hc.uncollectedStrandResults({ findings: [], blackoutShows: [] }, now), [ZERO, STRANDS]);
+  assertNoneAbsent(hc.uncollectedStrandResults(null, now), [ZERO, STRANDS]);
+  assertNoneAbsent(hc.uncollectedStrandResults({ generatedAt: fresh }, now), [ZERO, STRANDS]);
+  // Older report shape with no blackoutShows: the zero-review row was never computed.
+  assert.equal(probeVerdict(hc.uncollectedStrandResults({ generatedAt: fresh, findings: [] }, now), ZERO), 'unknown');
+});
+
+test('uncollectedStrandResults: strands without a blackout pass the zero-review row only; a blackout keeps it present', () => {
+  const now = Date.parse('2026-10-19T12:00:00Z');
+  const finding = { showId: 'x', stranded: [{}] };
+  const strands = hc.uncollectedStrandResults({ generatedAt: '2026-10-19T11:00:00Z', findings: [finding], strandedFiles: 1, blackoutShows: [] }, now);
+  assert.equal(probeVerdict(strands, ZERO), 'absent');
+  assert.equal(probeVerdict(strands, STRANDS), 'present');
+  const blackout = hc.uncollectedStrandResults({ generatedAt: '2026-10-19T11:00:00Z', findings: [finding], strandedFiles: 1, blackoutShows: ['x'] }, now);
+  assert.equal(probeVerdict(blackout, ZERO), 'present');
+  assert.notEqual(probeVerdict(blackout, STRANDS), 'absent');
+});
+
+const CV_NAMES = ['Data: armed-but-vacuous backlog cards', 'Data: undispatchable Linear backlog cards', 'Data: Linear card-verifiability report stale'];
+test('cardVerifiabilityBacklogResults: fresh clean Linear report passes all three; stale or missing passes none', () => {
+  const now = Date.parse('2026-10-07T02:15:00Z');
+  const clean = { total: 9, refused: [], vacuousChecks: [], generatedAt: '2026-10-06T05:40:00Z' };
+  assertAllAbsent(hc.cardVerifiabilityBacklogResults(null, clean, now), CV_NAMES);
+  assertNoneAbsent(hc.cardVerifiabilityBacklogResults(null, { ...clean, generatedAt: '2026-09-15T00:00:00Z' }, now), CV_NAMES);
+  assertNoneAbsent(hc.cardVerifiabilityBacklogResults(null, { total: 9, refused: [], vacuousChecks: [] }, now), CV_NAMES);
+  assertNoneAbsent(hc.cardVerifiabilityBacklogResults({ humanGatedSkips: [] }, null, now), CV_NAMES);
+  // A report written before a bucket existed cannot vouch for that bucket.
+  const legacy = hc.cardVerifiabilityBacklogResults(null, { total: 9, refused: [], generatedAt: clean.generatedAt }, now);
+  assert.equal(probeVerdict(legacy, CV_NAMES[0]), 'unknown');
+  assert.equal(probeVerdict(legacy, CV_NAMES[1]), 'absent');
+});
+
+test('coverageHolesResults / starBandDriftResults: fresh clean report passes; stale report does not', () => {
+  const now = Date.parse('2026-10-16T05:00:00Z');
+  const c = { total: 0, recent: 0, explained: 0 };
+  const holes = (generatedAt) => ({ generatedAt, shows: 40, counts: { A: c, B: c, C: c, D: { ...c, published: 0 } } });
+  assert.equal(probeVerdict(hc.coverageHolesResults(holes('2026-10-15T20:00:00Z'), now), 'Data: review coverage holes'), 'absent');
+  assert.equal(probeVerdict(hc.coverageHolesResults(holes('2026-10-01T00:00:00Z'), now), 'Data: review coverage holes'), 'present');
+  const SB = "Data: published scores outside the critic's rating";
+  const sb = (generatedAt) => ({ generatedAt, publishedJoined: 10, publishedOutOfBand: 0, queuedForRescore: 0 });
+  assert.equal(probeVerdict(hc.starBandDriftResults(sb('2026-10-15T20:00:00Z'), now), SB), 'absent');
+  assert.equal(probeVerdict(hc.starBandDriftResults(sb('2026-10-01T00:00:00Z'), now), SB), 'present');
+  assert.equal(probeVerdict(hc.starBandDriftResults({ generatedAt: '2026-10-15T20:00:00Z' }, now), SB), 'unknown');
+});
+
+// Static guard: every literal row name health-check.js can flag (warn/error,
+// not a "Skipped" placeholder) must also be emitted as a pass under the same
+// literal name, or be listed here with the reason it cannot or does not.
+// A pass twin is `name: '<n>', status: 'pass'|'ok'` or the tour helper `pass('<n>'`.
+const NO_LITERAL_PASS_TWIN = {
+  'Scoring: batch state': 'pass row built in batchStateResult() from `const name` (health-check-batch-state.test.mjs)',
+  'Commercial model drift': 'pass comes from computeCommercialModelDriftStatus() via `status: result.status`',
+  'Infra-review: gate telemetry': 'pass returned by computeInfraReviewDigest() in scripts/lib/infra-review-digest.js',
+  'Credits: ScrapingDog': 'pass comes from evaluateScrapingdogCredits() via computed `status`',
+  'Data: cards the drain cannot finish unattended': 'reads the untracked, Mac-local backlog-drain-metric.json; whether an empty humanGatedSkips means a fresh clean drain or a stale metric is not decidable here',
+};
+
+function scanFlaggedWithoutTwin(src) {
+  const unq = (s) => s.replace(/\\(.)/g, '$1');
+  const flagged = new Set();
+  const twins = new Set();
+  const obj = /name:\s*'((?:[^'\\]|\\.)*)'\s*,\s*status:\s*'([a-z]+)'\s*,?\s*(message:\s*['`]Skipped)?/g;
+  for (const m of src.matchAll(obj)) {
+    const n = unq(m[1]);
+    if (m[2] === 'warn' || m[2] === 'error') { if (!m[3]) flagged.add(n); } else twins.add(n);
+  }
+  for (const m of src.matchAll(/\bpass\(\s*'((?:[^'\\]|\\.)*)'/g)) twins.add(unq(m[1]));
+  return [...flagged].filter((n) => !twins.has(n));
+}
+
+test('static guard: every literal flagged row has a pass twin or an allowlist reason', () => {
+  const src = fs.readFileSync(new URL('../../scripts/health-check.js', import.meta.url), 'utf8');
+  const missing = scanFlaggedWithoutTwin(src);
+  const unlisted = missing.filter((n) => !(n in NO_LITERAL_PASS_TWIN));
+  assert.deepEqual(unlisted, [], 'emit a same-name pass row when the check ran clean (never on a could-not-run input), or allowlist with a reason');
+  const stale = Object.keys(NO_LITERAL_PASS_TWIN).filter((n) => !missing.includes(n));
+  assert.deepEqual(stale, [], 'allowlist entry no longer needed (row gained a literal pass twin or was removed)');
+});
+
+test('static guard scanner: catches a flagged-only row, accepts pass twins and Skipped placeholders', () => {
+  const src = `
+    a = { name: 'Only warns', status: 'warn', message: 'x' };
+    b = { name: 'Has twin', status: 'error', message: 'x' }; c = { name: 'Has twin', status: 'pass', message: 'y' };
+    d = { name: 'Skip only', status: 'warn', message: 'Skipped — no token' };
+    e = { name: 'Helper', status: 'warn' }; out.push(pass('Helper', 'ok'));`;
+  assert.deepEqual(scanFlaggedWithoutTwin(src), ['Only warns']);
+});

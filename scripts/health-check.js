@@ -4053,10 +4053,15 @@ async function getOpenFeedbackReviewIssues() {
 // Promote the needs-manual-review backlog into a first-class check result so it
 // drives the digest subject line like every other warning. Pure (no IO) —
 // unit-tested in tests/unit/health-check-repeat-failures.test.mjs.
+// BRO-5164: a read that found nothing returns a same-name pass row (the only
+// way health-row-probe.js can read a fixed row as 'absent'); a skipped or
+// failed read returns [] so it can never verify a fix.
 function feedbackBacklogResults(feedbackSummary, now = new Date()) {
-  if (!feedbackSummary || feedbackSummary.skipped) return [];
-  const issues = feedbackSummary.issues || [];
-  if (issues.length === 0) return [];
+  if (!feedbackSummary || feedbackSummary.skipped || !Array.isArray(feedbackSummary.issues)) return [];
+  const issues = feedbackSummary.issues;
+  if (issues.length === 0) {
+    return [{ name: 'Feedback: needs-manual-review backlog', status: 'pass', message: 'No open user-feedback issues awaiting manual review' }];
+  }
   const newest = [...issues].sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)))[0];
   const oldest = [...issues].sort((a, b) => String(a.createdAt).localeCompare(String(b.createdAt)))[0];
   const oldestDays = Math.floor((now - new Date(oldest.createdAt)) / 86400000);
@@ -4066,6 +4071,17 @@ function feedbackBacklogResults(feedbackSummary, now = new Date()) {
     message: `${issues.length} open user-feedback issue(s) awaiting manual review (oldest ${oldestDays}d). Newest: #${newest.number} ${String(newest.title).substring(0, 70)}`,
     hint: 'gh issue list --label needs-manual-review — these have NO other notification channel (repo is unwatched by design).',
   }];
+}
+
+// Core check (BRO-5164): was gated behind `if (isCI)` in main(), so the live
+// probe (computeCoreHealthResults only) could never see this row. Token-gated
+// and cached like checkMainRedStreak; no token or an API error returns [].
+async function checkFeedbackBacklog() {
+  const feedbackSummary = await getOpenFeedbackReviewIssues();
+  if (!feedbackSummary.skipped) {
+    console.log(`[Feedback issues] ${feedbackSummary.issues.length} open needs-manual-review issue(s)`);
+  }
+  return feedbackBacklogResults(feedbackSummary);
 }
 
 // Never-run workflow coverage (data/audit/workflow-run-coverage.json, written
@@ -4147,8 +4163,13 @@ function readDiskSpace(dfOutput) {
   return { total: toGB(cols[1]), free: toGB(cols[3]) };
 }
 
+// Called only with a report computed moments ago in main(), so an empty
+// offender list is a clean run, never a stale one (BRO-5164 pass row).
 function neverRunWorkflowResults(report) {
-  if (!report || !Array.isArray(report.offenders) || report.offenders.length === 0) return [];
+  if (!report || !Array.isArray(report.offenders)) return [];
+  if (report.offenders.length === 0) {
+    return [{ name: 'Workflow coverage: never-run', status: 'pass', message: `No never-run workflows among ${report.totalChecked != null ? report.totalChecked : '?'} checked` }];
+  }
   const list = report.offenders.join(', ');
   return [{
     name: 'Workflow coverage: never-run',
@@ -4604,11 +4625,26 @@ function notionScheduleCouplingResults(snap) {
 // live show with zero usable critic reviews on site at all, the exact shape
 // that let The Winter's Tale and An American Daughter reach opening night
 // uncollected on 2026-08-12 — else 'warn' for ordinary strands.
-function uncollectedStrandResults(report) {
-  if (!report || !Array.isArray(report.findings) || report.findings.length === 0) return [];
-  const blackouts = Array.isArray(report.blackoutShows) ? report.blackoutShows : [];
+//
+// BRO-5164: each name gets a pass row only while the report is fresh (the
+// audit runs hourly; past UNCOLLECTED_STRAND_STALE_HOURS its last clean result
+// proves nothing), so a fixed row reads 'absent' and a stale one 'unknown'.
+const UNCOLLECTED_STRAND_STALE_HOURS = 26;
+function uncollectedStrandResults(report, now = Date.now()) {
+  if (!report || !Array.isArray(report.findings)) return [];
+  const at = Date.parse(report.generatedAt);
+  const fresh = Number.isFinite(at) && now - at <= UNCOLLECTED_STRAND_STALE_HOURS * 3600000;
+  const blackouts = Array.isArray(report.blackoutShows) ? report.blackoutShows : null;
+  const out = [];
+  if (fresh && blackouts && blackouts.length === 0) {
+    out.push({ name: 'Data: live show with zero critic reviews on site', status: 'pass', message: 'No live show is missing every discovered critic review' });
+  }
+  if (report.findings.length === 0) {
+    if (fresh) out.push({ name: 'Data: uncollected live review strands', status: 'pass', message: 'Every discovered review URL for live shows was fetched' });
+    return out;
+  }
   const first = report.findings[0];
-  if (blackouts.length > 0) {
+  if (blackouts && blackouts.length > 0) {
     return [{
       name: 'Data: live show with zero critic reviews on site',
       status: 'error',
@@ -4616,12 +4652,19 @@ function uncollectedStrandResults(report) {
       hint: 'data/audit/uncollected-live-reviews.json has the per-outlet list. Recover: gh workflow run opening-night-express.yml -f show_id=<id> -f market=<market>.',
     }];
   }
-  return [{
+  return [...out, {
     name: 'Data: uncollected live review strands',
     status: 'warn',
     message: `${report.strandedFiles} discovered review URL(s) across ${report.findings.length} live show(s) were never fetched. First: ${first.showId} (${first.stranded.length} stranded)`,
     hint: 'data/audit/uncollected-live-reviews.json has the per-outlet list. Recover: gh workflow run opening-night-express.yml -f show_id=<id> -f market=<market>.',
   }];
+}
+
+// BRO-5164: a tracked local-file read, so it is a core check the live probe can see.
+function checkUncollectedStrands() {
+  let report;
+  try { report = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/uncollected-live-reviews.json'), 'utf8')); } catch { return []; /* audit not yet run */ }
+  return uncollectedStrandResults(report);
 }
 
 // Daily-digest surfacing for T1/T2 silent review gaps (data/audit/
@@ -4689,7 +4732,12 @@ function coverageHolesResults(report, now = Date.now()) {
       hint: 'node scripts/audit-coverage-holes.js --list=B (or A, C, D) prints the rows; fix them via data/pending-fixes (BRO-4838, BRO-4849).',
     });
   }
-  if (!Number.isFinite(at) || now - at > COVERAGE_HOLES_STALE_MS) {
+  const fresh = Number.isFinite(at) && now - at <= COVERAGE_HOLES_STALE_MS;
+  // BRO-5164: a fresh clean report is the pass row a fixed card verifies against.
+  if (total === 0 && fresh) {
+    out.push({ name: 'Data: review coverage holes', status: 'pass', message: `No unexplained coverage holes across ${report.shows != null ? report.shows : '?'} current shows` });
+  }
+  if (!fresh) {
     out.push({
       name: 'Data: review coverage holes',
       status: 'warn',
@@ -4719,7 +4767,12 @@ function starBandDriftResults(report, now = Date.now()) {
     });
   }
   const at = Date.parse(report.generatedAt);
-  if (!Number.isFinite(at) || now - at > STAR_BAND_DRIFT_STALE_MS) {
+  const fresh = Number.isFinite(at) && now - at <= STAR_BAND_DRIFT_STALE_MS;
+  // BRO-5164: same-name pass row from a fresh clean report only.
+  if (n === 0 && fresh && report.publishedOutOfBand != null) {
+    out.push({ name: 'Data: published scores outside the critic\'s rating', status: 'pass', message: `No published review score contradicts the critic's rating (${report.publishedJoined != null ? report.publishedJoined : '?'} checked)` });
+  }
+  if (!fresh) {
     out.push({
       name: 'Data: published scores outside the critic\'s rating',
       status: 'warn',
@@ -4732,8 +4785,15 @@ function starBandDriftResults(report, now = Date.now()) {
 
 function cardVerifiabilityBacklogResults(drainMetric, linearReport, now = Date.now()) {
   const results = [];
+  // BRO-5164: pass rows only from a fresh Linear report whose bucket was
+  // actually written; a missing, stale or older-shape report never verifies.
+  const linearAt = linearReport && typeof linearReport === 'object' ? Date.parse(linearReport.generatedAt) : NaN;
+  const linearFresh = Number.isFinite(linearAt) && now - linearAt <= LINEAR_VERIFIABILITY_STALE_MS;
   // BRO-3619: the armed-but-vacuous bucket (a `test -f` on a file already on main passes before any work is done).
   const vacuous = linearReport && Array.isArray(linearReport.vacuousChecks) ? linearReport.vacuousChecks : [];
+  if (vacuous.length === 0 && linearFresh && Array.isArray(linearReport.vacuousChecks)) {
+    results.push({ name: 'Data: armed-but-vacuous backlog cards', status: 'pass', message: 'No Linear card carries an acceptance check that cannot tell done from not done' });
+  }
   if (vacuous.length > 0) {
     const neverFails = vacuous.filter((c) => c.polarity === 'never-fails').length;
     const neverPasses = vacuous.filter((c) => c.polarity === 'never-passes').length;
@@ -4747,6 +4807,9 @@ function cardVerifiabilityBacklogResults(drainMetric, linearReport, now = Date.n
   }
   if (linearReport && typeof linearReport === 'object') {
     const refusedL = Array.isArray(linearReport.refused) ? linearReport.refused : [];
+    if (refusedL.length === 0 && linearFresh && Array.isArray(linearReport.refused)) {
+      results.push({ name: 'Data: undispatchable Linear backlog cards', status: 'pass', message: `All ${linearReport.total != null ? linearReport.total : '?'} open Linear card(s) have a runnable acceptance-criteria command` });
+    }
     if (refusedL.length > 0) {
       const f = refusedL[0];
       results.push({
@@ -4756,8 +4819,10 @@ function cardVerifiabilityBacklogResults(drainMetric, linearReport, now = Date.n
         hint: 'node scripts/enrich-card-acceptance.js --source linear drafts missing criteria; re-run node scripts/audit-card-verifiability.js --source linear after to confirm.',
       });
     }
-    const at = Date.parse(linearReport.generatedAt);
-    if (!Number.isFinite(at) || now - at > LINEAR_VERIFIABILITY_STALE_MS) {
+    const at = linearAt;
+    if (linearFresh) {
+      results.push({ name: 'Data: Linear card-verifiability report stale', status: 'pass', message: `data/audit/card-verifiability-linear.json generated ${new Date(at).toISOString().slice(0, 10)}` });
+    } else {
       results.push({
         name: 'Data: Linear card-verifiability report stale',
         status: 'warn',
@@ -4784,6 +4849,26 @@ function cardVerifiabilityBacklogResults(drainMetric, linearReport, now = Date.n
     });
   }
   return results;
+}
+
+// BRO-5164: the daily audit reports below are tracked local files (the drain
+// metric is a Mac-local extra), so they are core checks the live probe can see
+// rather than rows gated behind `if (isCI)` in main().
+function readAuditJsonOrNull(file) {
+  try { return JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit', file), 'utf8')); } catch { return null; }
+}
+function checkCardVerifiabilityBacklog() {
+  const cvLinear = readAuditJsonOrNull('card-verifiability-linear.json');
+  const drainMetric = readAuditJsonOrNull('backlog-drain-metric.json');
+  return cvLinear || drainMetric ? cardVerifiabilityBacklogResults(drainMetric, cvLinear) : [];
+}
+function checkCoverageHoles() {
+  const report = readAuditJsonOrNull('coverage-holes.json');
+  return report ? coverageHolesResults(report) : [];
+}
+function checkStarBandDrift() {
+  const report = readAuditJsonOrNull('star-band-drift.json');
+  return report ? starBandDriftResults(report) : [];
 }
 
 // Daily-digest surfacing for stalled pipeline surfaces (data/audit/
@@ -5842,6 +5927,12 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkDigestInvariantFail(isCI),
     ...checkStuckPipelineItems(),
     ...checkDataFreshnessGaps(),
+    // BRO-5164: moved out of main()'s CI-only block so the live probe sees them.
+    ...(await checkFeedbackBacklog()),
+    ...checkUncollectedStrands(),
+    ...checkCardVerifiabilityBacklog(),
+    ...checkCoverageHoles(),
+    ...checkStarBandDrift(),
   ];
 }
 
@@ -5873,12 +5964,8 @@ async function main() {
       console.log(`[Workflows] ${workflowSummary.succeeded} succeeded, ${workflowSummary.failed} failed (${workflowSummary.total} total in last 24h)`);
     }
     allResults.push(...repeatFailureResults(workflowSummary));
-
-    const feedbackSummary = await getOpenFeedbackReviewIssues();
-    if (!feedbackSummary.skipped) {
-      console.log(`[Feedback issues] ${feedbackSummary.issues.length} open needs-manual-review issue(s)`);
-    }
-    allResults.push(...feedbackBacklogResults(feedbackSummary));
+    // Feedback backlog, uncollected strands, card verifiability, coverage holes
+    // and star-band drift are core checks now (BRO-5164): computeCoreHealthResults.
 
     // Never-run workflow coverage (task #737): computed HERE, not read from a
     // file lint-workflows wrote — that CI job checks out code but has no
@@ -5931,11 +6018,6 @@ async function main() {
       allResults.push(...silentGapBacklogResults(gapReport));
     } catch { /* report absent (audit not yet run) — nothing to surface */ }
 
-    try {
-      const strandReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/uncollected-live-reviews.json'), 'utf8'));
-      allResults.push(...uncollectedStrandResults(strandReport));
-    } catch { /* report absent (audit not yet run) — nothing to surface */ }
-
     // worktree-gc.log freshness moved to the Mac-local scripts/check-worktree-gc-freshness.js
     // (BRO-2719): the log is gitignored now, so this CI runner can never see it.
 
@@ -5957,22 +6039,6 @@ async function main() {
       allResults.push(...reverseDiscoveryBacklogResults(rdReport, rdState));
       allResults.push(...reverseDiscoveryFreshnessResults(rdReport, Date.now()));
     } catch { /* report absent (detector not yet run) — nothing to surface */ }
-
-    // BRO-4717: only the Linear report is read; the Notion card-verifiability.json
-    // was regenerated from the frozen mirror and its row is retired.
-    let cvLinear = null;
-    try { cvLinear = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/card-verifiability-linear.json'), 'utf8')); } catch { /* audit not yet run */ }
-    let coverageHoles = null;
-    try { coverageHoles = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/coverage-holes.json'), 'utf8')); } catch { /* audit not yet run */ }
-    if (coverageHoles) allResults.push(...coverageHolesResults(coverageHoles));
-    let starBandDrift = null;
-    try { starBandDrift = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/star-band-drift.json'), 'utf8')); } catch { /* audit not yet run */ }
-    if (starBandDrift) allResults.push(...starBandDriftResults(starBandDrift));
-    let drainMetric = null;
-    try { drainMetric = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/backlog-drain-metric.json'), 'utf8')); } catch { /* drain not yet run */ }
-    if (cvLinear || drainMetric) {
-      allResults.push(...cardVerifiabilityBacklogResults(drainMetric, cvLinear));
-    }
 
     try {
       const progressReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/progress-watch-state.json'), 'utf8'));

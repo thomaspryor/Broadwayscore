@@ -13,9 +13,12 @@ const FRESH = '2026-10-15T20:00:00Z';
 const c = (total, explained = 0) => ({ total, recent: 0, explained });
 const report = (A, B, C, D, generatedAt = FRESH) => ({ generatedAt, shows: 40, counts: { A: c(A), B: c(B), C: c(C), D: { ...c(D), published: D } } });
 
-test('no report or a clean fresh report yields nothing', () => {
+// BRO-5164: a clean fresh report is a same-name pass row (verifies a fixed card).
+const flagged = (rows) => rows.filter((r) => r.status !== 'pass');
+
+test('no report yields nothing; a clean fresh report yields only the pass row', () => {
   assert.deepEqual(coverageHolesResults(null, NOW), []);
-  assert.deepEqual(coverageHolesResults(report(0, 0, 0, 0), NOW), []);
+  assert.deepEqual(coverageHolesResults(report(0, 0, 0, 0), NOW).map((r) => [r.name, r.status]), [['Data: review coverage holes', 'pass']]);
 });
 
 test('holes in A-D surface as one advisory warn row', () => {
@@ -29,7 +32,7 @@ test('holes in A-D surface as one advisory warn row', () => {
 test('fully explained A-C does not warn', () => {
   const rep = report(2, 1, 1, 0);
   for (const k of ['A', 'B', 'C']) rep.counts[k].explained = rep.counts[k].total;
-  assert.deepEqual(coverageHolesResults(rep, NOW), []);
+  assert.deepEqual(flagged(coverageHolesResults(rep, NOW)), []);
 });
 
 test('a stale report warns that the daily audit stopped', () => {
@@ -55,7 +58,7 @@ test('countsReport carries counts only, no file names or text', () => {
 test('unpublished D rows alone do not warn', () => {
   const rep = report(0, 0, 0, 3);
   rep.counts.D.published = 0;
-  assert.deepEqual(coverageHolesResults(rep, NOW), []);
+  assert.deepEqual(flagged(coverageHolesResults(rep, NOW)), []);
 });
 
 test('explained above total never goes negative and masks a real hole', () => {

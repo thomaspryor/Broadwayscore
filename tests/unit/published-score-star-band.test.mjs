@@ -250,7 +250,8 @@ test('BRO-4840 health digest row: warns on published drift and on a stale/missin
   const { starBandDriftResults } = require('../../scripts/health-check.js');
   const now = Date.parse('2026-10-18T12:00:00Z');
   const fresh = { generatedAt: '2026-10-18T00:00:00Z', publishedJoined: 28977, publishedOutOfBand: 0, queuedForRescore: 0 };
-  assert.deepEqual(starBandDriftResults(fresh, now), []);
+  // BRO-5164: clean fresh report is a same-name pass row, never a warn.
+  assert.deepEqual(starBandDriftResults(fresh, now).map((r) => r.status), ['pass']);
   assert.deepEqual(starBandDriftResults(null, now), []);
   const drift = starBandDriftResults({ ...fresh, publishedOutOfBand: 7, queuedForRescore: 2 }, now);
   assert.equal(drift.length, 1);
