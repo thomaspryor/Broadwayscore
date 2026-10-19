@@ -88,7 +88,35 @@ function formatReviewExcerpts(reviews, opts = {}) {
   }).join('\n\n');
 }
 
+/**
+ * The request loop generate-critic-consensus.js runs, with the model call
+ * injected so it can be exercised against a mock (no API key in tests).
+ * @param {object} args
+ * @param {(params: object) => Promise<object>} args.create anthropic.messages.create
+ * @param {object[]} args.reviews generator inputs
+ * @param {(excerpts: string) => string} args.buildPrompt
+ * @param {object} args.params model, max_tokens, temperature
+ * @param {number} [args.startAttempt] 1 = start lyric-free (a corrective retry after a refused first take)
+ * @param {(message: object) => void} [args.onRetry] logged before the retry
+ * @param {() => Promise<void>} [args.pause] wait before the retry
+ * @returns {Promise<{outcome: 'accept'|'keep-old', message: object, excerptOpts: object, attempt: number}>}
+ */
+async function requestWithRefusalRetry({ create, reviews, buildPrompt, params, startAttempt = 0, onRetry = null, pause = null }) {
+  for (let attempt = startAttempt; ; attempt++) {
+    const excerptOpts = excerptOptionsForAttempt(attempt);
+    const message = await create({
+      ...params,
+      messages: [{ role: 'user', content: buildPrompt(formatReviewExcerpts(reviews, excerptOpts)) }],
+    });
+    const decision = refusalRetryDecision(message, attempt);
+    if (decision !== 'retry') return { outcome: decision, message, excerptOpts, attempt };
+    if (onRetry) onRetry(message);
+    if (pause) await pause();
+  }
+}
+
 module.exports = {
+  requestWithRefusalRetry,
   DEFAULT_EXCERPT_CHARS,
   REFUSAL_RETRY_EXCERPT_CHARS,
   MAX_REFUSAL_RETRIES,

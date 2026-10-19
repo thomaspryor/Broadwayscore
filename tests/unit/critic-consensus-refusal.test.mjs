@@ -78,6 +78,62 @@ describe('stripQuotedLyrics', () => {
   });
 });
 
+// The generator's request loop against a mocked messages.create.
+describe('requestWithRefusalRetry (mocked model call)', () => {
+  const { requestWithRefusalRetry } = require('../../scripts/lib/critic-consensus-refusal.js');
+  const lyric = '"something has changed within me, something is not the same"';
+  const reviews = [{ outlet: 'Guardian', critic: 'A', score: 80, text: `Erivo sings ${lyric}. ${'z'.repeat(600)}` }];
+  const buildPrompt = (excerpts) => `Reviews:\n${excerpts}`;
+  const mock = (...replies) => {
+    const calls = [];
+    return { calls, create: async (params) => { calls.push(params); return replies[calls.length - 1]; } };
+  };
+
+  it('refused then answered: one retry, ~250-char lyric-free excerpts, reply accepted', async () => {
+    const m = mock(refused, answered);
+    let retried = 0;
+    const r = await requestWithRefusalRetry({ create: m.create, reviews, buildPrompt, params: { temperature: 0.7 }, onRetry: () => retried++ });
+    assert.equal(r.outcome, 'accept');
+    assert.equal(r.attempt, 1);
+    assert.equal(m.calls.length, 2);
+    assert.equal(retried, 1);
+    assert.equal(m.calls[1].temperature, 0.7);
+    assert.match(m.calls[0].messages[0].content, /something has changed/);
+    assert.doesNotMatch(m.calls[1].messages[0].content, /something has changed/);
+    assert.ok(m.calls[1].messages[0].content.length < m.calls[0].messages[0].content.length);
+  });
+
+  it('refused twice: keep-old after exactly two calls (the stored take is not replaced)', async () => {
+    const m = mock(refused, refused, answered);
+    const r = await requestWithRefusalRetry({ create: m.create, reviews, buildPrompt, params: {} });
+    assert.equal(r.outcome, 'keep-old');
+    assert.equal(m.calls.length, 2);
+  });
+
+  it('answered first time: one call, full excerpts', async () => {
+    const m = mock(answered);
+    const r = await requestWithRefusalRetry({ create: m.create, reviews, buildPrompt, params: {} });
+    assert.deepEqual([r.outcome, r.attempt, m.calls.length], ['accept', 0, 1]);
+    assert.deepEqual(r.excerptOpts, excerptOptionsForAttempt(0));
+  });
+
+  it('startAttempt=1 (corrective retry after a refused first take) gets no further retry', async () => {
+    const m = mock(refused, answered);
+    const r = await requestWithRefusalRetry({ create: m.create, reviews, buildPrompt, params: {}, startAttempt: 1 });
+    assert.equal(r.outcome, 'keep-old');
+    assert.equal(m.calls.length, 1);
+    assert.doesNotMatch(m.calls[0].messages[0].content, /something has changed/);
+  });
+
+  it('the generator runs this loop and keeps the old take on keep-old', async () => {
+    const fs = await import('node:fs');
+    const src = fs.readFileSync(new URL('../../scripts/generate-critic-consensus.js', import.meta.url), 'utf8');
+    assert.match(src, /requestWithRefusalRetry\(/);
+    assert.match(src, /outcome === 'keep-old'[\s\S]*?ConsensusRefusedError/);
+    assert.match(src, /err instanceof ConsensusRefusedError[\s\S]*?keeping the existing take/);
+  });
+});
+
 describe('formatReviewExcerpts', () => {
   const reviews = [{ outlet: 'Guardian', critic: 'A', score: 80, text: `${'x'.repeat(400)} "a quoted lyric line long enough to strip" ${'y'.repeat(400)}` }];
 

@@ -15,7 +15,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { MIN_SCORED_REVIEWS, MAX_STALE_PRUNE, isConsensusEligible, liveScoredCounts, staleConsensusIds, pruneConsensusEntries, liveOutletKeys } from './lib/critic-consensus-eligibility.js';
 import { finalResponseText, describeResponse } from './lib/anthropic-response-text.js';
 import { loadReviewTexts as loadConsensusInputs, consensusFingerprint } from './lib/critic-consensus-inputs.js';
-import { refusalRetryDecision, excerptOptionsForAttempt, formatReviewExcerpts, REFUSAL_RETRY_EXCERPT_CHARS } from './lib/critic-consensus-refusal.js';
+import { requestWithRefusalRetry, REFUSAL_RETRY_EXCERPT_CHARS } from './lib/critic-consensus-refusal.js';
 // --shows=a,b / --show=a filter (BRO-4595). List form lets the opening-night
 // poller dispatch update-critic-consensus.yml ONCE for every polled show; its
 // concurrency group keeps a single pending run, so per-show dispatches were
@@ -76,22 +76,19 @@ class ConsensusRefusedError extends Error {}
  * @returns {Promise<{text: string, excerptOpts: object, attempt: number}>}
  */
 async function requestConsensus(reviews, buildPrompt, temperature, startAttempt = 0) {
-  for (let attempt = startAttempt; ; attempt++) {
-    const excerptOpts = excerptOptionsForAttempt(attempt);
-    const message = await anthropic.messages.create({
-      model: 'claude-sonnet-4-5-20250929',
-      max_tokens: 150,
-      temperature,
-      messages: [{ role: 'user', content: buildPrompt(formatReviewExcerpts(reviews, excerptOpts)) }],
-    });
-    const decision = refusalRetryDecision(message, attempt);
-    if (decision === 'accept') return { text: responseText(message), excerptOpts, attempt };
-    if (decision === 'keep-old') {
-      throw new ConsensusRefusedError(`Claude refused again with ${REFUSAL_RETRY_EXCERPT_CHARS}-char lyric-free excerpts (${describeResponse(message)})`);
-    }
-    console.warn(`  ⚠️  Claude refused (${describeResponse(message)}) — retrying once with ${REFUSAL_RETRY_EXCERPT_CHARS}-char excerpts, quoted lyrics removed`);
-    await new Promise(resolve => setTimeout(resolve, 1000));
+  const { outcome, message, excerptOpts, attempt } = await requestWithRefusalRetry({
+    create: (params) => anthropic.messages.create(params),
+    reviews,
+    buildPrompt,
+    params: { model: 'claude-sonnet-4-5-20250929', max_tokens: 150, temperature },
+    startAttempt,
+    onRetry: (msg) => console.warn(`  ⚠️  Claude refused (${describeResponse(msg)}) — retrying once with ${REFUSAL_RETRY_EXCERPT_CHARS}-char excerpts, quoted lyrics removed`),
+    pause: () => new Promise(resolve => setTimeout(resolve, 1000)),
+  });
+  if (outcome === 'keep-old') {
+    throw new ConsensusRefusedError(`Claude refused again with ${REFUSAL_RETRY_EXCERPT_CHARS}-char lyric-free excerpts (${describeResponse(message)})`);
   }
+  return { text: responseText(message), excerptOpts, attempt };
 }
 
 /**
