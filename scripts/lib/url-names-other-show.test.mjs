@@ -26,3 +26,10 @@ test('bad url / empty candidates are safe', () => {
   assert.equal(urlNamesOtherShow('not a url', own, [care]), null);
   assert.equal(urlNamesOtherShow('https://x.com/care-home-stories', own, []), null);
 });
+
+test('BRO-5724: "4.48 Psychosis" reviews with a 448-psychosis URL are not another show', () => {
+  const psy = { id: '4-48-psychosis-west-end-2025', title: '4.48 Psychosis' };
+  const stub = { id: '448-psychosis-off-west-end-2026', title: '448 Psychosis' };
+  const url = 'https://www.theguardian.com/stage/2025/jun/19/448-psychosis-review-royal-court-theatre-london-sarah-kane-play';
+  assert.equal(urlNamesOtherShow(url, psy, [stub]), null);
+});

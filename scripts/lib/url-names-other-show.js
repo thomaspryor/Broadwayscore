@@ -13,6 +13,14 @@ function slugify(s) {
   return String(s || '').toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
+// "4.48 Psychosis" is written "448-psychosis" in outlet URLs: also try the title with
+// dots between digits removed so the own-title check recognizes it.
+function slugVariants(title) {
+  const a = slugify(title);
+  const b = slugify(String(title || '').replace(/(\d)\.(?=\d)/g, '$1'));
+  return b && b !== a ? [a, b] : [a];
+}
+
 function pathSlug(url) {
   try { return `-${slugify(decodeURIComponent(new URL(url).pathname))}-`; } catch { return ''; }
 }
@@ -28,7 +36,7 @@ const hasRun = (hay, slug) => !!slug && hay.includes(`-${slug}-`);
 function urlNamesOtherShow(url, own, candidates) {
   const hay = pathSlug(url);
   if (!hay) return null;
-  if (hasRun(hay, slugify(own.title))) return null;
+  if (slugVariants(own.title).some(v => hasRun(hay, v))) return null;
   for (const c of candidates) {
     if (!c || c.id === own.id) continue;
     const slug = slugify(c.title);
