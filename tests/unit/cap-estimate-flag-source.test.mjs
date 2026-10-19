@@ -10,7 +10,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 
 const { commercialRecordWarnings } = require('../../scripts/lib/commercial-record-checks.js');
-const { sourceOpensAsEstimate } = require('../../scripts/lib/public-source-text.js');
+const { sourceOpensAsEstimate, isEstimatedCapitalization } = require('../../scripts/lib/public-source-text.js');
 
 const REPORTED = 'The Hollywood Reporter (Jul 13, 2026): the production is capitalized at up to $18 million, per its SEC Form D filing.';
 const ESTIMATE = 'Estimate (industry sources; other reports say up to $18 million). The producers have not disclosed it.';
@@ -37,6 +37,11 @@ describe('isEstimate.capitalization needs an estimate source', () => {
   });
   it('does not block an unrelated edit to a record that already had the mismatch', () => {
     assert.strictEqual(flagWarnings(flagged(REPORTED), { priorRecord: flagged(REPORTED) }).length, 0);
+  });
+  it('reads the marker after a leading annotation, for the card and the warning alike', () => {
+    const annotated = '[Auto-designated Fizzle: x] Estimate: about 2.6 times its $2,000,887 NY tax credit';
+    assert.strictEqual(isEstimatedCapitalization({ capitalizationSource: annotated }), true);
+    assert.strictEqual(flagWarnings(flagged(annotated)).length, 0);
   });
   it('sourceOpensAsEstimate reads only an opening marker', () => {
     assert.strictEqual(sourceOpensAsEstimate('Estimated from the tax credit'), true);
