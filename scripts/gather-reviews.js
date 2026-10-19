@@ -75,6 +75,7 @@ function fallbackOutletIdFromHost(hostname) {
   return id && !(registry && registry.outlets && registry.outlets[id]) ? id : 'unknown';
 }
 const { findSiblingUrlOwner } = require('./lib/review-url-collision');
+const { extractBwwThumbIcons, shouldPairBwwThumbs } = require('./lib/bww-thumb-pairing');
 const { findMatchingReviewFile } = require('./lib/review-file-match');
 const { verifyProduction, quickDateCheck, getShowData, verifierCategoryFor } = require('./lib/production-verifier');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
@@ -2622,16 +2623,16 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
     // New format: uptrans(N)?.png / middletrans(N)?.png / downtrans(N)?.png (optional numeric suffix, e.g. uptrans2.png)
     // Legacy format: BigThumbs_UP.gif / BigThumbs_MEH.gif / BigThumbs_DOWN.gif
     // Fallen Angels 2026-04-19: roundup used uptrans2.png/middletrans2.png — suffixed variant broke the pre-2 regex.
-    const thumbPattern = /(?:(?:uptrans|middletrans|downtrans)\d*\.png|BigThumbs_(?:UP|MEH|DOWN)\.(?:gif|png))/gi;
-    const thumbMatches = [];
-    let thumbMatch;
-    while ((thumbMatch = thumbPattern.exec(html)) !== null) {
-      const img = thumbMatch[0];
-      if (/uptrans|BigThumbs_UP/i.test(img)) thumbMatches.push('Up');
-      else if (/middletrans|BigThumbs_MEH/i.test(img)) thumbMatches.push('Meh');
-      else if (/downtrans|BigThumbs_DOWN/i.test(img)) thumbMatches.push('Down');
-    }
-    if (thumbMatches.length > 0) {
+    // BRO-5674: one entry per review-icon <img> (srcset repeats and float:right
+    // verdict icons excluded) — see scripts/lib/bww-thumb-pairing.js.
+    const thumbMatches = extractBwwThumbIcons(html);
+    // BRO-5674: pairing is purely positional, so it is only safe when every
+    // review has exactly one icon. Other Desert Cities 2026 had 20 icons for
+    // 19 reviews and 13 critics got a neighbour's thumb (Variety's rave as
+    // Meh, Time Out's pan as Up). No thumb beats a wrong one.
+    if (!shouldPairBwwThumbs(thumbMatches.length, reviews.length)) {
+      console.log(`    ⚠ BWW thumbs NOT paired: ${thumbMatches.length} icons for ${reviews.length} reviews (positional pairing would misattribute)`);
+    } else if (thumbMatches.length > 0) {
       // Pair thumbs with reviews — they appear in the same order
       const thumbCount = Math.min(thumbMatches.length, reviews.length);
       for (let i = 0; i < thumbCount; i++) {
