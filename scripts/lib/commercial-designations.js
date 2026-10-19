@@ -59,7 +59,14 @@ function returnedEstimatePct(entry) {
   const own = ownReturnedEstimatePct(entry);
   if (own !== null) return own;
   if (!SPLIT_MODEL_QUALITIES.has(entry?.modelDataQuality)) return null;
-  for (const v of [entry.modelReturnedExCreditPct, entry.modelRecoupmentPctV2, entry.modelRecoupmentPct]) {
+  return modelMiddleReturnedPct(entry);
+}
+/**
+ * The middle of our model's returned-so-far figure, at any data quality: the
+ * ex-credit figure first, then V2, then the original. null with no reading.
+ */
+function modelMiddleReturnedPct(entry) {
+  for (const v of [entry?.modelReturnedExCreditPct, entry?.modelRecoupmentPctV2, entry?.modelRecoupmentPct]) {
     if (Array.isArray(v) && v.length === 3 && v.every(Number.isFinite)) return v[1];
   }
   return null;
@@ -83,6 +90,21 @@ function isLossDesignation(designation) {
 function lossDesignationFor(returnedPct) {
   if (returnedPct == null) return 'Did Not Recoup';
   return returnedPct >= FIZZLE_MIN_RETURNED_PCT ? 'Fizzle' : 'Flop';
+}
+/**
+ * Our best guess at the size of a Did Not Recoup loss (owner 2026-10-18,
+ * BRO-5647: "People want to know what we think"): Fizzle or Flop by the
+ * record's own estimate, else the model's middle figure at any data quality.
+ * The musical model's display hold covers the % bar, not this sort: the
+ * Fizzle/Flop split already reads it for closed musicals. Shown beside the
+ * label as a marked estimate, never as the label. null for any other label,
+ * or with no estimate at all.
+ */
+function likelyLossDesignation(entry) {
+  if (entry?.designation !== 'Did Not Recoup') return null;
+  const own = ownReturnedEstimatePct(entry);
+  const pct = own !== null ? own : modelMiddleReturnedPct(entry);
+  return pct === null ? null : lossDesignationFor(pct);
 }
 /**
  * Whether our model is what sizes this record's loss label: a loss label, no
@@ -193,7 +215,7 @@ module.exports = {
   DESIGNATION_BASES, VALID_DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel,
   VALID_DESIGNATIONS, canonicalDesignation,
   TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, returnedEstimatePct, DESIGNATIONS_OUTSIDE_RULE,
-  LOSS_DESIGNATIONS, isLossDesignation, lossDesignationFor,
+  LOSS_DESIGNATIONS, isLossDesignation, lossDesignationFor, modelMiddleReturnedPct, likelyLossDesignation,
   modelSizesLossLabel, resizedLossLabel, MODEL_LOSS_RESIZE_LIMIT, planModelLossResizes,
   MODEL_CONTRADICTION, modelContradictsDesignation,
 };
