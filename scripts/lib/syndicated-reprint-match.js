@@ -100,7 +100,21 @@ function syndicatedReprintOf({ candidateUrl, heldFiles, showTitle, venue }) {
   // one-file corpus), so a small show never dedupes: it keeps alerting.
   if (held.length < MIN_HELD_FOR_RARITY) return { dup: false };
   const rareMax = Math.floor(held.length / 3);
-  if (slug.filter((t) => !known.has(t) && df(t) <= rareMax).length < MIN_DISTINCTIVE) return { dup: false };
+  const distinctive = slug.filter((t) => !known.has(t) && df(t) <= rareMax);
+  if (distinctive.length < MIN_DISTINCTIVE) {
+    // BRO-5633: AOL moves the editorial "Review" label within the headline
+    // (De Profundis). When only one rare word survives, require a contiguous
+    // phrase of at least four words in exactly one held headline. Never drop
+    // a portal URL solely because of its host or production title.
+    const phrase = slug.filter(t => t !== 'review' && t !== 'reviews');
+    if (distinctive.length !== 1 || phrase.length < MIN_SLUG_TOKENS) return { dup: false };
+    const matches = held.filter(h => orderedWithinSpan(
+      h.head.filter(t => t !== 'review' && t !== 'reviews'), phrase, phrase.length,
+    ));
+    return matches.length === 1
+      ? { dup: true, matchedUrl: matches[0].url, reason: 'syndicated-reprint' }
+      : { dup: false };
+  }
   const maxSpan = slug.length * MAX_SPAN_FACTOR;
   for (const h of held) {
     if (orderedWithinSpan(h.head, slug, maxSpan)) {

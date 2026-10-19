@@ -1778,30 +1778,14 @@ function openingWindowClearedKeys(results, now = Date.now(), { liveShowIds } = {
     .map(r => openingWindowConditionKey(r.showId));
 }
 
+const { currentRunUncollected: countUncollected } = require('./lib/audit-show-review-gap');
+
 function currentRunUncollected(r, { blocklist, ignoreCensusTagged = false } = {}) {
-  const ingestedOk = new Set((r.ingestResults || []).filter(x => x.ok).map(x => x.url));
   const bl = blocklist !== undefined ? blocklist : loadBlocklist(path.join(REVIEW_TEXTS_DIR, r.showId || ''));
-  // BRO-5134: an ingest the writer correctly and permanently refused (expected
-  // rejection: e.g. a Time Out listing capsule) can never be collected, so it
-  // must not re-fire the alert hourly. Conflicts and unclassified skips still count.
-  const refusedForGood = new Set((r.ingestResults || []).filter(x => x.expected).map(x => x.url));
-  // BRO-5252: SERP-census rows are report-only until SERP_CENSUS_INGEST=1, so
-  // this audit can never collect them. Counting them made the opening-window
-  // alert unresolvable (Alice in Wonderland: 7 un-ingestable census hits, wrong
-  // productions, re-fired hourly). They stay in r.missing / the audit JSON.
-  // BRO-5513: ingestBlockReason returns the FIRST matching reason, so on a WE
-  // show a census-only URL is blocked as 'we-gate-off' and never carries
-  // 'serp-census-gate-off' (Measure for Measure, Riverside: Folger DC, Austin,
-  // RSC Stratford hits re-fired the alert hourly). Judge by provenance: a
-  // census-tagged row blocked while the census gate is OFF is report-only (with
-  // the gate ON, a we-gate-off hold is a real pending gap and still counts).
-  const censusUrls = new Set((r.missing || []).filter(m => m && m.serpCensus).map(m => m.url));
-  const reportOnly = new Set((r.weIngestBlocked || [])
-    .filter(x => x.reason === 'serp-census-gate-off' || (censusUrls.has(x.url) && !x.censusGateOn)).map(x => x.url));
-  const missing = currentRunOnly(r.missing)
-    .filter(m => !ingestedOk.has(m.url) && !refusedForGood.has(m.url) && !reportOnly.has(m.url) && !(ignoreCensusTagged && m.serpCensus) && stillCollectable(m, bl, r)).length;
-  const citedNoUrl = currentRunCount(r.citedNoUrl);
-  return missing + citedNoUrl;
+  return countUncollected(r, {
+    ignoreCensusTagged,
+    isCollectable: m => stillCollectable(m, bl, r),
+  });
 }
 
 // End-of-night coverage alert (BRO-4272). The expected-vs-captured tally below only
@@ -2222,7 +2206,7 @@ async function main(argv = process.argv.slice(2)) {
         // or priorRun rows (prior-production URLs kept report-only in the
         // audit — the TKAM class, where a WE revival "missed" 77 URLs from the
         // 2018 Broadway run; same filter the WE completeness alert applies).
-        uncollected: currentRunCount(r.missing) + currentRunCount(r.citedNoUrl),
+        uncollected: currentRunUncollected(r),
         ...(isWeShow(s) ? { refVersion: WE_REF_VERSION } : {}),
         ...(checkpoint[s.id] && checkpoint[s.id].weAlert ? { weAlert: checkpoint[s.id].weAlert } : {}),
         ...(zeroCharStored && Object.keys(zeroCharStored).length ? { zeroChar: zeroCharStored } : {}),

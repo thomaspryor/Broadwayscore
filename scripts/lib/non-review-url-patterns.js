@@ -428,6 +428,10 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // wrongly ingested for.
   { host: /(^|\.)schwarzmancentre\.ox\.ac\.uk$/, reason: 'venue-production-page' },
   { host: /(^|\.)culturecity\.london$/, reason: 'event-listings-page' },
+  // BRO-5633: newsletter gaps included an event listing and the producing
+  // company's own production page as if they were independent reviews.
+  { host: /(^|\.)shouldgoto\.com$/, reason: 'event-listings-page' },
+  { host: /(^|\.)berliner-ensemble\.de$/, reason: 'venue-production-page' },
   // BRO-3374 sweep added these three to domain-filters.js's VENUE_DOMAINS
   // without mirroring them here — the parity test in
   // non-review-url-patterns.test.mjs caught the drift (found live during a
