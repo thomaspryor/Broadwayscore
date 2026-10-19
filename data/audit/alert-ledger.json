@@ -1,7 +1,7 @@
 {
   "conditions": {
     "cron-health-failed:Collect WE/OB Reviews": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Cron's latest run failed (not yet stale): Collect WE/OB Reviews",
       "firstSeen": "2026-10-12T20:42:23.472Z",
@@ -11,22 +11,22 @@
       "lastSurfacedAt": "2026-10-15T16:06:04.598Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-19T18:07:12.442Z",
+      "resolveReason": "latest run no longer failing"
     },
     "cron-health-failed:Test Suite": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Cron's latest run failed (not yet stale): Test Suite",
       "firstSeen": "2026-10-12T20:42:23.460Z",
-      "incidentOpenedAt": "2026-10-12T20:42:23.460Z",
-      "lastSeen": "2026-10-12T20:42:23.460Z",
-      "lastNotifiedAt": "2026-10-12T20:42:23.460Z",
-      "lastSurfacedAt": "2026-10-12T20:42:23.460Z",
-      "notifyCount": 1,
+      "incidentOpenedAt": "2026-10-19T18:07:12.414Z",
+      "lastSeen": "2026-10-19T18:07:12.414Z",
+      "lastNotifiedAt": "2026-10-19T18:07:12.414Z",
+      "lastSurfacedAt": "2026-10-19T18:07:12.414Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-10-17T06:59:37.594Z",
-      "resolveReason": "absent"
+      "linearIdentifier": null
     },
     "land:land/bro-5184-scroll-arrows": {
       "status": "open",
@@ -2115,7 +2115,7 @@
       "resolvedAt": "2026-08-29T16:01:13.864Z"
     },
     "cron-health:Weekly Video Reviews": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Weekly Video Reviews",
@@ -2126,7 +2126,8 @@
       "lastSurfacedAt": "2026-10-15T16:06:04.732Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-19T18:07:12.553Z"
     },
     "cron-health-chronic:Daily Data Health Check (digest snapshot carrier)": {
       "status": "resolved",
@@ -2188,7 +2189,7 @@
       "resolvedAt": "2026-09-23T15:54:24.162Z"
     },
     "cron-health-chronic:Weekly Video Reviews": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Weekly Video Reviews",
       "firstSeen": "2026-08-29T16:01:08.858Z",
@@ -2199,7 +2200,8 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-5495",
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-10-19T18:07:12.565Z"
     },
     "opening-night-publish-date-pre-opening:electra-persona-west-end-2026": {
       "status": "resolved",
@@ -21275,6 +21277,19 @@
       "cardId": null,
       "linearIdentifier": null,
       "silentRefires": 1
+    },
+    "cron-health-failed:Fetch All Image Formats": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Cron's latest run failed (not yet stale): Fetch All Image Formats",
+      "firstSeen": "2026-10-19T18:07:12.430Z",
+      "incidentOpenedAt": "2026-10-19T18:07:12.430Z",
+      "lastSeen": "2026-10-19T18:07:12.430Z",
+      "lastNotifiedAt": "2026-10-19T18:07:12.430Z",
+      "lastSurfacedAt": "2026-10-19T18:07:12.430Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
