@@ -1476,5 +1476,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-19T04:06:18.504Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5667-fantasy-measured-pricing",
+    "title": "Landing blocked: rebase red on land/bro-5667-fantasy-measured-pricing",
+    "description": "land.yml did not land land/bro-5667-fantasy-measured-pricing: the rebase gate went red at fa4df10608. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5667-fantasy-measured-pricing @ fa4df10608 (origin/land/bro-5667-fantasy-measured-pricing) → origin/main @ fa72a50dd1 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ fa72a50dd1: Rebasing (1/1) error: could not apply fa4df106083... VISUAL-OK-1440: fix(fantasy): price from measured data, not hand-set constants; repair Tony season labels (BRO-5667) hint: Resolve al Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39198261258",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5667-fantasy-measured-pricing"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "fa4df1060838e306e99bbd32bc3985c575e7f0ea"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39198261258"
+      }
+    ],
+    "queuedAt": "2026-10-19T05:06:08.386Z"
   }
 ]
