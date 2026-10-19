@@ -349,7 +349,7 @@ test('createBbSession (BRO-3097) leaves host null when a caller passes category 
 // Ambient settings that would shift the expected limits if set in the shell.
 const AMBIENT_ENV = ['BROWSERBASE_DENY_HOSTS', 'BROWSERBASE_OPENING_WINDOW_RESERVE_MAX', 'BROWSERBASE_OPENING_WINDOW_RESERVE_PER_SHOW', 'BROWSERBASE_EXEMPT_SCRIPTS', 'BD_OPENING_NIGHT', 'GITHUB_WORKFLOW', 'BROWSERBASE_TIER1_BOOST_DISABLED'];
 // now defaults to after the Tier-1 boost expired, so these tests pin the unboosted limits.
-async function withBb({ max = '250', reserve = '30', useReserve, windowShows = 0, live, host, expectFetch = true, now = AFTER_BOOST, exemptWorkflow }, fn) {
+async function withBb({ max = '250', reserve = '30', useReserve, windowShows = 0, live, host, expectFetch = true, now = AFTER_BOOST, exemptWorkflow, caller = 'test-caller', callerUsed = 0 }, fn) {
   _resetDayCapCacheForTests();
   _setNowForTests(now);
   const prev = {
@@ -365,13 +365,14 @@ async function withBb({ max = '250', reserve = '30', useReserve, windowShows = 0
   if (exemptWorkflow) process.env.BD_OPENING_NIGHT = 'true';
   const windowMock = mock.method(openingNightSelection, 'countShowsInOpeningWindow', () => windowShows);
   const liveMock = mock.method(browserbaseLiveUsage, 'fetchLiveBrowserbaseSessionsToday', async () => live);
+  const callerMock = mock.method(browserbaseLiveUsage, 'fetchLiveBrowserbaseCallerSessionsToday', async () => callerUsed);
   const fetchMock = mock.method(globalThis, 'fetch', async () => ({
     ok: true, status: 200, json: async () => ({ id: 'sess_ok', connectUrl: 'wss://example.test' }),
   }));
   try {
-    await fn(() => createBbSession({ apiKey: 'k', projectId: 'p', caller: 'test-caller', category: 'review-text', host }), { liveMock, fetchMock });
+    await fn(() => createBbSession({ apiKey: 'k', projectId: 'p', caller, category: 'review-text', host }), { liveMock, fetchMock, callerMock });
   } finally {
-    fetchMock.mock.restore(); windowMock.mock.restore(); liveMock.mock.restore();
+    fetchMock.mock.restore(); windowMock.mock.restore(); liveMock.mock.restore(); callerMock.mock.restore();
     _setNowForTests(AFTER_BOOST);
     for (const [k, v] of [['BROWSERBASE_MAX_SESSIONS_PER_DAY', prev.max], ['BROWSERBASE_RECOVERY_RESERVE', prev.reserve], ['BROWSERBASE_USE_RESERVE', prev.use], ...AMBIENT_ENV.map(k => [k, prev.ambient[k]])]) {
       if (v === undefined) delete process.env[k]; else process.env[k] = v;
@@ -478,4 +479,51 @@ test('BRO-5243 boost: BROWSERBASE_TIER1_BOOST_DISABLED=true turns it off', async
   assert.equal(caps.tier1RecoveryBoost('wsj.com', { now: new Date(BOOSTED), env: { BROWSERBASE_TIER1_BOOST_DISABLED: 'true' } }), 0);
   assert.equal(caps.tier1RecoveryBoost('wsj.com', { now: new Date(BOOSTED), env: {} }), 100);
   assert.equal(caps.tier1RecoveryBoost('deadline.com', { now: new Date(BOOSTED), env: {} }), 0);
+});
+
+// ---------- Owner-approved caller allowance (Talkin' Broadway probe, 2026-10-19) ----------
+const TB_PROBE = 'probe-talkinbroadway-browserbase.js';
+
+test('caller allowance: the probe runs past both reserves while the account is under the raw ceiling', async () => {
+  // Bulk limit here is 175 (23 shows) and a non-lane caller is refused at 267.
+  await withBb({ windowShows: 23, live: 249, host: 'talkinbroadway.com', caller: TB_PROBE, callerUsed: 2 }, async (call) => {
+    assert.equal((await call()).id, 'sess_ok');
+  });
+  await withBb({ windowShows: 23, live: 249, host: 'talkinbroadway.com' }, async (call) => {
+    await assert.rejects(call, /Browserbase (recovery reserve held|daily cap reached)/);
+  });
+});
+
+test('caller allowance: never above the raw daily ceiling (boost included only while active)', async () => {
+  await withBb({ windowShows: 23, live: 250, host: 'talkinbroadway.com', caller: TB_PROBE }, async (call) => {
+    await assert.rejects(call, /Browserbase daily cap reached \(250\/250/);
+  });
+  await withBb({ windowShows: 23, live: 267, host: 'talkinbroadway.com', caller: TB_PROBE, now: BOOSTED }, async (call) => {
+    assert.equal((await call()).id, 'sess_ok');
+  });
+});
+
+test('caller allowance: the caller is capped at its own sessions per day', async () => {
+  await withBb({ live: 10, host: 'talkinbroadway.com', caller: TB_PROBE, callerUsed: 3 }, async (call, { fetchMock }) => {
+    await assert.rejects(call, /Browserbase caller allowance used \(3\/3\)/);
+    assert.equal(fetchMock.mock.callCount(), 0);
+  });
+});
+
+test('caller allowance: an unknown own count or unknown account count refuses', async () => {
+  await withBb({ live: 10, host: 'talkinbroadway.com', caller: TB_PROBE, callerUsed: null }, async (call) => {
+    await assert.rejects(call, /caller allowance used \(count unknown\)/);
+  });
+  await withBb({ live: null, host: 'talkinbroadway.com', caller: TB_PROBE, callerUsed: 0 }, async (call) => {
+    await assert.rejects(call, /caller allowance used \(count unknown\)/);
+  });
+});
+
+test('caller allowance: expires, and the kill switch turns it off', async () => {
+  const caps = require('./browserbase-caps.js');
+  assert.equal(caps.callerAllowance(TB_PROBE, { now: new Date('2026-11-18T23:59:00Z'), env: {} }), 3);
+  assert.equal(caps.callerAllowance(TB_PROBE, { now: new Date('2026-11-19T00:00:00Z'), env: {} }), 0);
+  assert.equal(caps.callerAllowance(TB_PROBE, { now: new Date('2026-10-20T00:00:00Z'), env: { BROWSERBASE_CALLER_ALLOWANCES_DISABLED: 'true' } }), 0);
+  assert.equal(caps.callerAllowance('some-other-script.js', { now: new Date('2026-10-20T00:00:00Z'), env: {} }), 0);
+  assert.equal(caps.callerAllowance('constructor', { now: new Date('2026-10-20T00:00:00Z'), env: {} }), 0);
 });

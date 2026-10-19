@@ -227,6 +227,29 @@ function tier1BoostForCaller(host, { exempt = false, ...opts } = {}) {
 }
 
 /**
+ * Owner-approved (2026-10-19) daily session allowance for named callers that
+ * have no other route: Talkin' Broadway sits behind a Cloudflare challenge, so
+ * its pages are only readable through Browserbase. A caller listed here may
+ * ignore the opening-window and recovery reserves, but never the raw daily
+ * ceiling (maxPerDay + the Tier-1 boost), and never more than `sessionsPerDay`
+ * sessions of its own in the trailing 24h (counted from the live sessions list
+ * by userMetadata.caller; see browserbase-live-usage.js). Each entry expires at
+ * `until`; extend it with evidence, or delete it. A second lane is one new line.
+ * Kill switch: BROWSERBASE_CALLER_ALLOWANCES_DISABLED=true.
+ */
+const CALLER_ALLOWANCES = Object.freeze({
+  'probe-talkinbroadway-browserbase.js': Object.freeze({ sessionsPerDay: 3, until: '2026-11-19T00:00:00Z' }),
+});
+
+/** Sessions/day this caller may spend from its allowance (0 if unlisted, expired or disabled). */
+function callerAllowance(caller, { now = new Date(), env = process.env } = {}) {
+  if (env.BROWSERBASE_CALLER_ALLOWANCES_DISABLED === 'true') return 0;
+  const entry = Object.prototype.hasOwnProperty.call(CALLER_ALLOWANCES, caller) ? CALLER_ALLOWANCES[caller] : null;
+  if (!entry) return 0;
+  return now.getTime() < Date.parse(entry.until) ? entry.sessionsPerDay : 0;
+}
+
+/**
  * @param {object} params
  * @param {number} params.sessionsToday - Sessions consumed across all runs today
  * @param {number} params.sessionsThisRun - Sessions consumed in the current run
@@ -300,6 +323,8 @@ module.exports = {
   activeTier1Boost,
   tier1RecoveryBoost,
   tier1BoostForCaller,
+  CALLER_ALLOWANCES,
+  callerAllowance,
   DEFAULT_DENY_HOSTS,
   resolveDenyHosts,
   hostMatchesAny,

@@ -12,7 +12,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { countRecentSessions } = require('../../scripts/lib/browserbase-live-usage.js');
+const { countRecentSessions, countRecentSessionsForCaller } = require('../../scripts/lib/browserbase-live-usage.js');
 
 const NOW = new Date('2026-07-27T12:00:00Z').getTime();
 const hoursAgo = (h) => new Date(NOW - h * 60 * 60 * 1000).toISOString();
@@ -44,4 +44,24 @@ test('ignores malformed entries (missing createdAt, null)', () => {
 test('respects a custom hours window', () => {
   const data = [{ id: '1', createdAt: hoursAgo(0.5) }, { id: '2', createdAt: hoursAgo(2) }];
   assert.equal(countRecentSessions(data, 1, NOW), 1);
+});
+
+test('countRecentSessionsForCaller counts only this caller within the window', () => {
+  const data = [
+    { id: '1', createdAt: hoursAgo(1), userMetadata: { caller: 'probe-a.js' } },
+    { id: '2', createdAt: hoursAgo(2), userMetadata: { caller: 'probe-a.js' } },
+    { id: '3', createdAt: hoursAgo(3), userMetadata: { caller: 'other.js' } },
+    { id: '4', createdAt: hoursAgo(30), userMetadata: { caller: 'probe-a.js' } }, // outside window
+  ];
+  assert.equal(countRecentSessionsForCaller(data, 'probe-a.js', 24, NOW), 2);
+  assert.equal(countRecentSessionsForCaller({ data }, 'none.js', 24, NOW), 0);
+});
+
+test('countRecentSessionsForCaller returns null (unknown) when the list carries no userMetadata', () => {
+  const data = [{ id: '1', createdAt: hoursAgo(1) }, { id: '2', createdAt: hoursAgo(2) }];
+  assert.equal(countRecentSessionsForCaller(data, 'probe-a.js', 24, NOW), null);
+});
+
+test('countRecentSessionsForCaller is 0 for an empty list', () => {
+  assert.equal(countRecentSessionsForCaller([], 'probe-a.js', 24, NOW), 0);
 });

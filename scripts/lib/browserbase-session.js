@@ -84,6 +84,7 @@ const {
   resolveMaxSessionsPerDay,
   activeTier1Boost,
   tier1BoostForCaller,
+  callerAllowance,
   resolveOpeningWindowReservePerShow,
   resolveOpeningWindowReserveMax,
   OPENING_WINDOW_RESERVE_OPTS,
@@ -251,9 +252,16 @@ async function createBbSession(opts) {
   // (which only one caller ran). Bulk hosts stop this many sessions short of
   // the bulk ceiling; Tier-1 paywalled hosts (WSJ, NYT, New Yorker) and
   // explicit recovery runs (BROWSERBASE_USE_RESERVE=true) may spend it.
-  const mayUseRecoveryReserve = exempt || resolveUseReserve() || isTier1RecoveryHost(opts.host);
+  // A caller with an owner-approved allowance (browserbase-caps.js CALLER_ALLOWANCES)
+  // skips both reserves but is held to the raw ceiling and its own daily count below.
+  const laneAllowance = callerAllowance(opts.caller, boostNow);
+  const mayUseRecoveryReserve = exempt || resolveUseReserve() || isTier1RecoveryHost(opts.host) || laneAllowance > 0;
   // Tier-1 hosts get the boost on top of their ceiling (0 once it expires).
-  const hostCeiling = exempt ? effectiveMaxPerDay : effectiveMaxPerDay + tier1BoostForCaller(opts.host, boostNow);
+  const hostCeiling = exempt
+    ? effectiveMaxPerDay
+    : laneAllowance > 0
+      ? Math.max(effectiveMaxPerDay, maxPerDay + activeTier1Boost(boostNow))
+      : effectiveMaxPerDay + tier1BoostForCaller(opts.host, boostNow);
   const hostLimit = mayUseRecoveryReserve
     ? hostCeiling
     : Math.max(0, effectiveMaxPerDay - resolveRecoveryReserve());
@@ -276,6 +284,17 @@ async function createBbSession(opts) {
   if (liveSessionsToday !== null && liveSessionsToday >= hostLimit) {
     recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status: 'recovery-reserve-held' });
     throw refusal(`Browserbase recovery reserve held (${liveSessionsToday}/${hostLimit}, last ${hostCeiling - hostLimit} kept for Tier-1 recovery) — session create blocked for ${opts.caller} (${opts.host || 'no host'})`);
+  }
+  // Allowance callers: an unknown account count or an unknown own count refuses
+  // (unknown is not zero), and the caller's own trailing-24h sessions are capped.
+  if (laneAllowance > 0) {
+    const callerUsed = liveSessionsToday === null
+      ? null
+      : await browserbaseLiveUsage.fetchLiveBrowserbaseCallerSessionsToday(apiKey, projectId, sanitizeMetadataValue(opts.caller));
+    if (callerUsed === null || callerUsed >= laneAllowance) {
+      recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status: 'caller-allowance-used' });
+      throw refusal(`Browserbase caller allowance used (${callerUsed === null ? 'count unknown' : `${callerUsed}/${laneAllowance}`}) — session create blocked for ${opts.caller} (${opts.host || 'no host'})`);
+    }
   }
 
   const rawUserMetadata = { ...(opts.body && opts.body.userMetadata) };
