@@ -11,8 +11,8 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const BARE = /[!=]==\s*'failed-fetches\.json'/;
-const GUARDED = /startsWith\('_'\)|BLOCKLIST_FILENAME|_blocklist/;
-const BASELINE = 126; // 2026-10-12, after fixing the three below. Lower it as files get the guard.
+const GUARDED = /startsWith\('_'\)|BLOCKLIST_FILENAME|_blocklist|isReviewTextFile/; // isReviewTextFile: scripts/lib/review-text-sidecars.js (BRO-5342)
+const BASELINE = 5; // 2026-10-19 (BRO-5342 swapped ~160 scripts to isReviewTextFile); was 126. Lower it as files get the guard.
 const FIXED = ['scripts/audit-coverage-holes.js', 'scripts/build-aggregator-truth.js', 'scripts/opening-night-poller.js'];
 
 function bareFilterFiles() {
@@ -39,6 +39,6 @@ test('the sweeps fixed for BRO-4849 keep the sidecar guard', () => {
   const files = new Set(bareFilterFiles());
   for (const f of FIXED) {
     assert.ok(!files.has(f), `${f} lost its _-prefix guard`);
-    assert.match(fs.readFileSync(path.join(ROOT, f), 'utf8'), /startsWith\('_'\)/, `${f} must skip _-prefixed files`);
+    assert.match(fs.readFileSync(path.join(ROOT, f), 'utf8'), /startsWith\('_'\)|isReviewTextFile/, `${f} must skip _-prefixed files`);
   }
 });
