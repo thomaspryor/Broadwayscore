@@ -1,66 +1,20 @@
 {
-  "generatedAt": "2026-10-19T16:17:32.853Z",
+  "generatedAt": "2026-10-19T16:48:29.037Z",
   "current": {
-    "totalCritics": 141,
-    "totalGaps": 105,
+    "totalCritics": 143,
+    "totalGaps": 104,
     "gapsByBucket": {
-      "A": 3,
-      "B": 5,
-      "C": 96,
+      "A": 4,
+      "B": 4,
+      "C": 95,
       "D": 1,
       "E": 0
     },
     "gapsBySource": {
-      "muckrack": 105
+      "muckrack": 104
     }
   },
   "history": [
-    {
-      "date": "2026-07-06",
-      "timestamp": "2026-07-06T11:11:54.171Z",
-      "totalCritics": 79,
-      "totalGaps": 807,
-      "gapsByBucket": {
-        "A": 29,
-        "B": 9,
-        "C": 765,
-        "D": 4,
-        "E": 0
-      },
-      "gapsBySource": {
-        "muckrack": 807
-      },
-      "perCritic": {
-        "Chris Jones": 123,
-        "Elysa Gardner": 109,
-        "Jesse Green": 80,
-        "Dan Rubins": 52,
-        "Juan A. Ramirez": 50,
-        "Laura Collins-Hughes": 41,
-        "David Rooney": 32,
-        "Joey Sims": 32,
-        "Austin Fimmano": 30,
-        "Roma Torre": 29,
-        "Frank Scheck": 28,
-        "Tim Bano": 28,
-        "Sarah Hemming": 27,
-        "Andrzej Lukowski": 23,
-        "Patrick Marmion": 17,
-        "Hayley Levitt": 16,
-        "Pete Hempstead": 14,
-        "Helen Shaw": 13,
-        "Matt Wolf": 12,
-        "Johnny Oleksinski": 11,
-        "Tim Teeman": 9,
-        "Sam Marlowe": 8,
-        "Charles Isherwood": 7,
-        "Sara Holdren": 6,
-        "Mark Kennedy": 4,
-        "Arifa Akbar": 4,
-        "Michael Musto": 1,
-        "Marianka Swain": 1
-      }
-    },
     {
       "date": "2026-07-13",
       "timestamp": "2026-07-13T10:43:53.027Z",
@@ -596,6 +550,29 @@
         "Jackson McHenry": 4,
         "Laura Collins Hughes": 3
       }
+    },
+    {
+      "date": "2026-10-19",
+      "timestamp": "2026-10-19T16:34:56.472Z",
+      "totalCritics": 143,
+      "totalGaps": 104,
+      "gapsByBucket": {
+        "A": 4,
+        "B": 4,
+        "C": 95,
+        "D": 1,
+        "E": 0
+      },
+      "gapsBySource": {
+        "muckrack": 104
+      },
+      "perCritic": {
+        "Elysa Gardner": 84,
+        "Sara Holdren": 7,
+        "Helen Shaw": 5,
+        "Jackson McHenry": 4,
+        "Laura Collins Hughes": 4
+      }
     }
   ],
   "topCriticsByGap": [
@@ -603,43 +580,50 @@
       "name": "Elysa Gardner",
       "outlet": "usatoday",
       "tier": 2,
-      "missingCount": 85,
-      "lastDate": "2026-10-05"
+      "missingCount": 84,
+      "lastDate": "2026-10-19"
     },
     {
       "name": "Sara Holdren",
       "outlet": "vulture",
       "tier": 1,
-      "missingCount": 8,
-      "lastDate": "2026-10-05"
+      "missingCount": 7,
+      "lastDate": "2026-10-19"
     },
     {
       "name": "Helen Shaw",
-      "outlet": "vulture",
+      "outlet": "newyorker",
       "tier": 1,
       "missingCount": 5,
-      "lastDate": "2026-10-07"
+      "lastDate": "2026-10-18"
     },
     {
       "name": "Jackson McHenry",
       "outlet": "vulture",
       "tier": 1,
       "missingCount": 4,
-      "lastDate": "2026-10-09"
+      "lastDate": "2026-10-15"
     },
     {
       "name": "Laura Collins Hughes",
       "outlet": "nytimes",
       "tier": 1,
-      "missingCount": 3,
+      "missingCount": 4,
       "lastDate": "2026-09-21"
     },
     {
-      "name": "Charles Isherwood",
-      "outlet": "wsj",
-      "tier": 1,
+      "name": "Jonathan Mandell",
+      "outlet": "nyt-theater",
+      "tier": 2,
       "missingCount": 0,
-      "lastDate": "2026-10-08"
+      "lastDate": "2026-10-18"
+    },
+    {
+      "name": "Chris Jones",
+      "outlet": "chicagotribune",
+      "tier": 2,
+      "missingCount": 0,
+      "lastDate": "2026-10-19"
     },
     {
       "name": "David Rooney",
@@ -649,25 +633,18 @@
       "lastDate": "2026-04-15"
     },
     {
-      "name": "Chris Jones",
-      "outlet": "chicagotribune",
-      "tier": 2,
-      "missingCount": 0,
-      "lastDate": "2026-10-01"
-    },
-    {
-      "name": "Jonathan Mandell",
-      "outlet": "nyt-theater",
-      "tier": 2,
-      "missingCount": 0,
-      "lastDate": "2026-10-11"
-    },
-    {
-      "name": "Jesse Green",
-      "outlet": "vulture",
+      "name": "Charles Isherwood",
+      "outlet": "wsj",
       "tier": 1,
       "missingCount": 0,
-      "lastDate": "2026-04-08"
+      "lastDate": "2026-10-19"
+    },
+    {
+      "name": "Matt Windman",
+      "outlet": "amny",
+      "tier": 2,
+      "missingCount": 0,
+      "lastDate": "2026-10-19"
     }
   ]
 }
