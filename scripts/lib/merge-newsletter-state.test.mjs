@@ -143,7 +143,7 @@ test('end to end: merge-commercial-conflict.js resolves a real two-edition git c
     const out = JSON.parse(readFileSync(join(dir, 'data/newsletter-state.json'), 'utf8'));
     assert.deepEqual(keys(out), ['2026-10-05|broadway', '2026-10-12|broadway', '2026-10-12|west-end']);
   } finally {
-    rmSync(dir, { recursive: true, force: true });
+    rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -162,7 +162,7 @@ test('end to end: push-with-retry.sh with PUSH_RECONCILE_MERGED_JSON=1 keeps bot
   };
   const git = (cwd, ...a) => execFileSync('git', a, { cwd, env, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
   const file = 'data/newsletter-state.json';
-  const write = (cwd, doc) => writeFileSync(join(cwd, file), JSON.stringify(doc, null, 2) + '\n');
+  const write = (cwd, doc) => writeFileSync(join(cwd, file), JSON.stringify(doc, null, 2) + '\n'); // test-data-write-guard-allow: temp git repo fixture, not the real data dir
   const base = { issues: [issue('2026-10-05', 'broadway', ['a']), issue('2026-10-05', 'west-end', ['b'])] };
   const bw = issue('2026-10-12', 'broadway', ['bw-new']);
   const we = issue('2026-10-12', 'west-end', ['we-new']);
@@ -203,6 +203,6 @@ test('end to end: push-with-retry.sh with PUSH_RECONCILE_MERGED_JSON=1 keeps bot
     assert.deepEqual(landed.issues.find((i) => keyOf(i) === '2026-10-12|west-end').featuredShowIds, ['we-new']);
     assert.deepEqual(landed.issues.find((i) => keyOf(i) === '2026-10-12|broadway').featuredShowIds, ['bw-new']);
   } finally {
-    rmSync(dir, { recursive: true, force: true });
+    rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
