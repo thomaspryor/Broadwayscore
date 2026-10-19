@@ -6,8 +6,9 @@ name: Codex card runner
 # run) must pass before the runner lands the fix via land/codex-bro-N.
 # 5 runs x --limit 6 = up to 30 cards a day (BRO-5673: was 4; 57% landed after the
 # 2026-10-18 fixes and most runs stopped on the time guard, not the card limit).
-# --hard-stop-minutes 290 ends a run gracefully (cards hand back) inside the 5h
-# cron spacing and the 355-min job timeout; without it a card started near
+# --hard-stop-minutes 290 ends a run gracefully (cards hand back) inside the
+# 355-min job timeout (the 21:13->01:13 gap is 4h, so a long run there queues the
+# next firing via concurrency, it never overlaps); without it a card started near
 # --max-minutes could run 120 more minutes. The runner's own branch lock
 # (refs/heads/codex-runner-lock) keeps a hand-started cloud run from overlapping.
 #
