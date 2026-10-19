@@ -7,10 +7,9 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { DEFAULT_SERP_DEADLINE_SEC, serpDeadlineSec, serpTimeLeft } = require('./poller-serp-deadline.js');
 
-test('default deadline leaves room inside the 600s per-show timeout', () => {
+test('default deadline sits well inside the 600s per-show timeout', () => {
   assert.equal(serpDeadlineSec({}), DEFAULT_SERP_DEADLINE_SEC);
-  // worst single SERP call (~70s) started just before the cutoff still ends well before 600s
-  assert.ok(DEFAULT_SERP_DEADLINE_SEC + 70 < 600 - 60);
+  assert.ok(DEFAULT_SERP_DEADLINE_SEC <= 600 - 180);
 });
 
 test('env override accepted only when a positive number', () => {
@@ -27,4 +26,13 @@ test('serpTimeLeft stops at the deadline', () => {
   assert.equal(serpTimeLeft(start, start + 360_000, 360), false);
   // ODC run 39198573930: SERP was still going ~600s in
   assert.equal(serpTimeLeft(start, start + 590_000, 360), false);
+});
+
+test('poller writes layer 1-3 results before SERP can start (BRO-5674)', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../opening-night-poller.js', import.meta.url), 'utf8');
+  const pre = src.indexOf('processDiscoveredReviews(SHOW_ID, preSerpDiscovered');
+  const serp = src.indexOf('await runSERPBackup(');
+  assert.ok(pre > 0 && serp > 0, 'both call sites present');
+  assert.ok(pre < serp, 'pre-SERP processing must come before runSERPBackup');
 });
