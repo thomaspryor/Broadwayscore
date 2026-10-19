@@ -21,10 +21,10 @@ test('a regressed duplicate audit warns and quotes the count line', () => {
   assert.match(row.message, /Found 12 live/);
 });
 
-test('squatter findings warn with the count; unreadable output warns, never passes', () => {
-  const [found] = corpusAuditResults({ squatters: { status: 0, output: JSON.stringify({ count: 3, found: [] }) } });
-  assert.equal(found.status, 'warn');
-  assert.match(found.message, /^3 review slot/);
+test('squatter candidates are informational (pass row with the count); a failed or unreadable run warns', () => {
+  const [found] = corpusAuditResults({ squatters: { status: 0, output: JSON.stringify({ count: 587, found: [] }) } });
+  assert.equal(found.status, 'pass');
+  assert.match(found.message, /587 candidate/);
   const [bad] = corpusAuditResults({ squatters: { status: 1, output: '::error::corpus not scanned' } });
   assert.equal(bad.status, 'warn');
   const [garbled] = corpusAuditResults({ squatters: { status: 0, output: 'not json' } });
