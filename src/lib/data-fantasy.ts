@@ -20,6 +20,7 @@ import {
   DRAFT_DEADLINE,
   DRAFT_OPENS,
   FANTASY_TEAM_SIZE,
+  isDraftClosed,
   DEADLINE_GRACE_MS,
   nyDate,
 } from '@/config/fantasy';
@@ -138,12 +139,13 @@ export function entryPickPoints(
  * created_at itself since 20261016_fantasy_entries_insert_hardening.sql) is
  * left out instead of ranked. Same rule as scripts/lib/fantasy-helpers.js.
  */
-export function isValidLeaderboardEntry(entry: Pick<FantasyEntry, 'picks' | 'created_at'>): boolean {
+export function isValidLeaderboardEntry(entry: Pick<FantasyEntry, 'picks' | 'created_at'>, now: Date = new Date()): boolean {
   if (!Array.isArray(entry.picks)) return false;
-  if (isHiddenRoster(entry.picks)) {
+  if (isHiddenRoster(entry.picks) && !isDraftClosed(now)) {
     // While the draft is open the database sends N copies of 'hidden' instead of show ids
     // (20261019_fantasy_hide_rosters_until_draft_closes.sql). The team still counts; its shows
-    // cannot be checked until the reveal.
+    // cannot be checked until the reveal. After the reveal a placeholder roster is not a real
+    // team (anyone with the public key could insert one), so it falls through to validatePicks.
     if (entry.picks.length > FANTASY_TEAM_SIZE) return false;
   } else if (!validatePicks(entry.picks, config.shows).valid) return false;
   if (entry.created_at && Date.parse(entry.created_at) > Date.parse(DRAFT_DEADLINE) + DEADLINE_GRACE_MS) return false;
@@ -155,7 +157,7 @@ export function isValidLeaderboardEntry(entry: Pick<FantasyEntry, 'picks' | 'cre
 }
 
 export function computeLeaderboard(entries: FantasyEntry[]): LeaderboardEntry[] {
-  const leaderboard: LeaderboardEntry[] = entries.filter(isValidLeaderboardEntry).map(entry => {
+  const leaderboard: LeaderboardEntry[] = entries.filter(e => isValidLeaderboardEntry(e)).map(entry => {
     let totalCritic = 0;
     let totalAudience = 0;
     let totalBoxOffice = 0;

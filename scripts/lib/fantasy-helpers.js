@@ -369,7 +369,7 @@ function isAudienceLockedForEntry(audienceGradeSince, createdAtIso) {
  * Mirrors src/lib/data-fantasy.ts isValidLeaderboardEntry (the anon key can
  * insert rows straight into Supabase, skipping the draft route's checks).
  */
-function isValidLeaderboardEntry(entry, showConfig, cfgOverrides = seasonConfig) {
+function isValidLeaderboardEntry(entry, showConfig, cfgOverrides = seasonConfig, now = Date.now()) {
   // A partial cfg (tests pass just the dates) must not switch off the budget,
   // roster or deadline checks.
   const cfg = { ...seasonConfig, ...cfgOverrides };
@@ -377,7 +377,9 @@ function isValidLeaderboardEntry(entry, showConfig, cfgOverrides = seasonConfig)
   if (!Array.isArray(picks) || picks.length < 1 || picks.length > cfg.teamSize) return false;
   // While the draft is open the database sends N copies of 'hidden' instead of show ids
   // (20261019_fantasy_hide_rosters_until_draft_closes.sql): the team counts, its shows can't be checked.
-  if (!picks.every(id => id === HIDDEN_PICK)) {
+  // Only while the draft is open: after the reveal a placeholder roster is not a real team.
+  const hiddenRoster = now <= Date.parse(cfg.draftDeadline) && picks.every(id => id === HIDDEN_PICK);
+  if (!hiddenRoster) {
     for (const id of picks) {
       if (typeof id !== 'string' || !Object.prototype.hasOwnProperty.call(showConfig, id)) return false;
     }

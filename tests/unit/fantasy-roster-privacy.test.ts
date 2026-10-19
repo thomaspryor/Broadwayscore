@@ -55,12 +55,13 @@ describe('roster privacy', () => {
 
   describe('teams the database hid still count', () => {
     const when = '2026-11-10T15:00:00Z';
+    const during = new Date('2026-11-12T00:00:00Z'); // draft open
     const hidden = (n: number) => ({ picks: Array(n).fill(HIDDEN_PICK) as string[], created_at: when });
 
     test('an all-placeholder roster is valid in the site and the weekly pipeline, and stays in step', () => {
       for (const n of [1, 4, 8]) {
-        assert.equal(isValidLeaderboardEntry(hidden(n)), true, `site, ${n} picks`);
-        assert.equal(js.isValidLeaderboardEntry(hidden(n), leagueShows), true, `pipeline, ${n} picks`);
+        assert.equal(isValidLeaderboardEntry(hidden(n), during), true, `site, ${n} picks`);
+        assert.equal(js.isValidLeaderboardEntry(hidden(n), leagueShows, undefined, during.getTime()), true, `pipeline, ${n} picks`);
       }
     });
 
@@ -68,9 +69,15 @@ describe('roster privacy', () => {
       assert.equal(isHiddenRoster([]), false, 'no picks is not a roster');
       assert.equal(isHiddenRoster([HIDDEN_PICK, 'some-show']), false, 'mixed is not hidden');
       for (const bad of [hidden(0), hidden(9), { picks: [HIDDEN_PICK, 'not-a-show'], created_at: when }, { ...hidden(3), created_at: '2026-12-15T00:00:00Z' }, { ...hidden(3), created_at: '2026-09-01T00:00:00Z' }]) {
-        assert.equal(isValidLeaderboardEntry(bad), false, `site rejects ${JSON.stringify(bad).slice(0, 60)}`);
-        assert.equal(js.isValidLeaderboardEntry(bad, leagueShows), false, `pipeline rejects ${JSON.stringify(bad).slice(0, 60)}`);
+        assert.equal(isValidLeaderboardEntry(bad, during), false, `site rejects ${JSON.stringify(bad).slice(0, 60)}`);
+        assert.equal(js.isValidLeaderboardEntry(bad, leagueShows, undefined, during.getTime()), false, `pipeline rejects ${JSON.stringify(bad).slice(0, 60)}`);
       }
+    });
+
+    test('after the reveal a placeholder roster is not a team (it cannot be inserted to fake one)', () => {
+      const after = new Date(deadline.getTime() + 60_000);
+      assert.equal(isValidLeaderboardEntry({ picks: [HIDDEN_PICK], created_at: '2026-11-10T15:00:00Z' }, after), false, 'site');
+      assert.equal(js.isValidLeaderboardEntry({ picks: [HIDDEN_PICK], created_at: '2026-11-10T15:00:00Z' }, leagueShows, undefined, after.getTime()), false, 'pipeline');
     });
 
     test('the standings code keeps team names and counts for hidden rosters', () => {
