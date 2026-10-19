@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-19T01:06:24.108Z",
+  "timestamp": "2026-10-19T01:19:03.410Z",
   "stats": {
-    "totalReviews": 57584,
-    "alreadyFlagged": 21373,
-    "dateGuardCatches": 196,
-    "directorMismatch": 1969,
-    "tvFilmSignals": 1616,
-    "londonSignals": 2439,
+    "totalReviews": 57572,
+    "alreadyFlagged": 21374,
+    "dateGuardCatches": 195,
+    "directorMismatch": 1974,
+    "tvFilmSignals": 1617,
+    "londonSignals": 2444,
     "offBroadwaySignals": 523,
     "yearMismatch": 157,
-    "noPublishDate": 5237
+    "noPublishDate": 5230
   },
   "findings": [
     {
@@ -28,6 +28,95 @@
     },
     {
       "showId": "1536-off-west-end-2026",
+      "file": "artsdesk--rachel-halliburton.json",
+      "score": 82,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/1536-almeida-theatre-review-fast-and-furious-portrayal-women-henry-viiis-england",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lyndsey turner\" from 1536-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "1536-off-west-end-2026",
+      "file": "independent--ella-duggan.json",
+      "score": 82,
+      "publishDate": "2025-05-18",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/1536-almeida-anne-boleyn-review-b2750887.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lyndsey turner\" from 1536-west-end-2026"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "1536-off-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2025-05-14",
+      "url": "https://www.londonboxoffice.co.uk/news/post/1536-almeida-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lyndsey turner\" from 1536-west-end-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "1536-off-west-end-2026",
+      "file": "london-theatre--julia-rank.json",
+      "score": 71,
+      "publishDate": null,
+      "url": "https://www.londontheatre.co.uk/reviews/1536-review-almeida-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lyndsey turner\" from 1536-west-end-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "1536-off-west-end-2026",
+      "file": "timeout-london--andrjez-lukowski.json",
+      "score": 87,
+      "publishDate": "2025-05-18",
+      "url": "https://www.timeout.com/london/theatre/1536-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lyndsey turner\" from 1536-west-end-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "1536-off-west-end-2026",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 89,
       "publishDate": "2025-05-18",
@@ -37,6 +126,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"lyndsey turner\" from 1536-west-end-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -27681,6 +27775,20 @@
     },
     {
       "showId": "much-ado-about-nothing-west-end-2025",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 91,
+      "publishDate": null,
+      "url": "https://www.timeout.com/london/theatre/much-ado-about-nothing-49-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-west-end-2025",
       "file": "times-uk--clive-davis.json",
       "score": 82,
       "publishDate": "February 20th, 2025",
@@ -28019,25 +28127,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
-      "showId": "my-neighbour-totoro-west-end-2025",
-      "file": "independent--annabel-nugent.json",
-      "score": 82,
-      "publishDate": "October 26th, 2022",
-      "url": "https://www.independent.co.uk/independentpremium/culture/review-my-neighbour-totoro-rsc-marvellous-sohoplace-b2206988.html?r=72786",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 569d before show (October 26th, 2022 vs 2024-05-17)"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -44326,20 +44415,6 @@
       ]
     },
     {
-      "showId": "the-pajama-game-2006",
-      "file": "variety--unknown.json",
-      "score": 85,
-      "publishDate": null,
-      "url": "https://variety.com/2006/legit/reviews/the-pajama-game-5-1200518102/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"george abbott\" from the-pajama-game-1973"
-        }
-      ]
-    },
-    {
       "showId": "the-parisian-woman-2017",
       "file": "amny--matt-windman.json",
       "score": 39,
@@ -51063,6 +51138,19 @@
     },
     {
       "showId": "what-we-did-before-our-moth-days-off-broadway-2026",
+      "file": "hollywood-reporter--unknown.json",
+      "publishDate": null,
+      "url": "https://www.hollywoodreporter.com/features/everyone-just-knows-hes-an-absolute-monster-scott-rudins-ex-staffers-speak-out-on-abusive-behavior",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "what-we-did-before-our-moth-days-off-broadway-2026",
       "file": "newyorker--emily-nussbaum.json",
       "score": 86,
       "publishDate": "2026-03-12",
@@ -51873,6 +51961,20 @@
       "score": 82,
       "publishDate": "2026-05-13",
       "url": "https://www.thestage.co.uk/reviews/1536-review-ambassadors-theatre-london-ava-pickett",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "1536-west-end-2026",
+      "file": "timeout-london--andrjez-lukowski.json",
+      "score": 92,
+      "publishDate": null,
+      "url": "https://www.timeout.com/london/theatre/1536-review-1",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -65150,20 +65252,6 @@
     },
     {
       "showId": "hay-fever-west-end-2026",
-      "file": "readaboutstuff--unknown.json",
-      "score": 80,
-      "publishDate": "2026-10-04",
-      "url": "https://readaboutstuff.com/2026/10/04/review-hay-fever-wyndhams-theatre-london/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "hay-fever-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
       "score": 66,
       "publishDate": "2026-10-01",
@@ -69711,6 +69799,19 @@
       "score": null,
       "publishDate": null,
       "url": "https://www.curtainsup.online/blog/tags/magic-goes-wrong-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "magic-goes-wrong-west-end-2019",
+      "file": "london-box-office--josephine-balfour-oatts.json",
+      "publishDate": "2020-01-22",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-magic-goes-wrong-2020",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
