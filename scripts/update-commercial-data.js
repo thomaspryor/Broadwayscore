@@ -2339,6 +2339,9 @@ function buildValidationSources(gathered) {
         showSlug: filing.showSlug,
         field: 'capitalization',
         value: filing.capitalizedAmount ?? filing.capitalization,
+        // Without a stated raise the figure is the offering ceiling: it backs
+        // a proposal at that amount, and only one above it contradicts.
+        ceiling: !filing.capitalizedAmount,
         sourceType: 'SEC Form D',
         url: filing.filingUrl
       });

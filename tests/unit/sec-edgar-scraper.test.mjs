@@ -569,6 +569,8 @@ describe('capitalizedAmountFromXml', () => {
     assert.strictEqual(capitalizedAmountFromXml(clar('Offering capitalized at $6,000,000 maximum'), 6000000), null);
     assert.strictEqual(capitalizedAmountFromXml(clar('Offering capitalized at $6 million (max cap)'), 6000000), null);
     assert.strictEqual(capitalizedAmountFromXml(clar('Offering capitalized at $6,000,000 maximum; offering capitalized at $5,200,000'), 6000000), 5200000);
+    assert.strictEqual(capitalizedAmountFromXml(clar('Offering capitalized at $4,108,500. Maximum capitalization was $6,000,000'), 6000000), 4108500);
+    assert.strictEqual(capitalizedAmountFromXml(clar('Offering capitalized at $4,108,500 Maximum capitalization was $6,000,000'), 6000000), 4108500);
   });
 
   it('skips founding contributions and figures above the offering amount', () => {

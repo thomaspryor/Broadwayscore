@@ -571,5 +571,16 @@ describe('SEC Form D validation source (BRO-5647)', () => {
   it('falls back to the offering amount when the filing states none', () => {
     const sources = buildValidationSources({ secFilings: [{ ...filing, capitalizedAmount: null }] });
     assert.strictEqual(sources[0].value, 6000000);
+    assert.strictEqual(sources[0].ceiling, true);
+  });
+
+  it('a ceiling-only source neither backs nor contradicts a figure under it', () => {
+    const sources = buildValidationSources({ secFilings: [{ ...filing, capitalizedAmount: null }] });
+    const under = validateChange(change, sources);
+    assert.strictEqual(under.contradictingSources.length, 0);
+    assert.strictEqual(under.supportingSources.length, 0);
+    const over = validateChange({ ...change, newValue: 9000000 }, sources);
+    assert.strictEqual(over.contradictingSources.length, 1);
+    assert.strictEqual(validateChange({ ...change, newValue: 6000000 }, sources).supportingSources.length, 1);
   });
 });

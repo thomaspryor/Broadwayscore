@@ -128,7 +128,9 @@ function findCorroboration(change, sources, changeMethodology = null) {
     if (isSupporting) {
       supporting.push(source);
     } else if (source.value !== null && source.value !== undefined) {
-      // Only count as contradicting if source has a concrete value
+      // Only count as contradicting if source has a concrete value. A ceiling
+      // (a Form D offering amount) contradicts only a figure above it.
+      if (source.ceiling && Number(change.newValue) <= Number(source.value)) continue;
       contradicting.push(source);
     }
   }
