@@ -188,6 +188,29 @@
         "route": "missing-show",
         "note": "Handled by the missing-show route — future identical requests dispatch themselves."
       }
+    },
+    {
+      "key": "missing-show:the way we get by:2026-10-19T05:04:34.150097+00:00",
+      "kind": "missing-show",
+      "title": "The Way We Get By",
+      "market": null,
+      "showId": null,
+      "reviewCountAtRequest": null,
+      "workflow": "add-requested-show.yml",
+      "issueNumber": 1123,
+      "submissionId": "2026-10-19T05:04:34.150097+00:00",
+      "requestedShowField": "The Way We Get By",
+      "contentErrorType": null,
+      "expected": null,
+      "requestedMessage": null,
+      "requestedAt": "2026-10-19T06:46:25.569Z",
+      "status": "open",
+      "satisfiedAt": null,
+      "systematicFix": {
+        "routed": true,
+        "route": "missing-show",
+        "note": "Handled by the missing-show route — future identical requests dispatch themselves."
+      }
     }
   ]
 }
