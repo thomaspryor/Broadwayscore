@@ -96,6 +96,10 @@ jobs:
           PR: ${{ github.event.pull_request.number || inputs.pr }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           EXTRA: ${{ inputs.extra }}
+          # The owner's one end-of-run email (discord-notify.js sendEmailAlert). Codex-written
+          # code never sees these: codex-sandbox.js runs it under env -i as a keyless user.
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: |
           args=(--pr "$PR")
           if [ -n "$HEAD_SHA" ]; then args+=(--head-sha "$HEAD_SHA"); else args+=(--retry); fi

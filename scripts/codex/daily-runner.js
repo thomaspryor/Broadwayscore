@@ -1207,7 +1207,7 @@ async function main() {
     locks.forEach((l, k) => { if (k === 0 || l.error || l.sha) console.log(`codex runner lock${k ? ` (slot ${k})` : ''}: ${describeLock(l)}`); });
     process.exit(locks.some(lockHeld) ? 3 : locks.some((l) => l.error) ? 4 : 0);
   }
-  if (PR_NUM) { await runPr(PR_NUM); return; }
+  if (PR_NUM) { await runPr(PR_NUM); await Promise.allSettled(prMail); return; }
   if (OPTS.slots > 1 && !process.argv.includes('--slot')) { await launchSlots(); return; }
   ensureTools();
   if (!OPTS.dryRun) {
@@ -1365,6 +1365,8 @@ async function runLocked(startedMs) {
  * wait for land. Every outcome is one plain-English PR comment (R.prLanderComment); a landing
  * also closes the PR and deletes its branch. One attempt per head sha unless --retry.
  */
+// The owner's end-of-run email(s) for --pr, awaited before the process ends.
+const prMail = [];
 async function runPr(n) {
   const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
   const gh = (args, input) => sh('gh', args, { timeoutMs: 120_000, input });
@@ -1378,7 +1380,15 @@ async function runPr(n) {
   const say = (outcome, extra = {}) => {
     const body = R.redactSecrets(R.prLanderComment({ outcome, sha, ...extra }), process.env);
     log(`PR #${n} ${String(sha).slice(0, 7)}: ${outcome}`);
-    if (OPTS.dryRun) { log(body); return; }
+    const mail = R.prLanderEmail({ outcome, title: pr.title, minutes: (Date.now() - Date.parse(pr.created_at)) / 60000, site: extra.site, why: extra.why, prUrl: pr.html_url });
+    if (OPTS.dryRun) { log(body); if (mail) log(`email: ${mail.subject}\n${mail.lines.join('\n')}`); return; }
+    // One per head commit: the key makes a re-run's repeat a no-op at Resend for 24h.
+    if (mail) {
+      prMail.push(require(path.join(ROOT, 'scripts/lib/discord-notify.js')).sendEmailAlert({
+        title: mail.subject, description: mail.lines.join('\n'), url: 'https://broadwayscorecard.com',
+        subjectLabel: '', idempotencyKey: `codex-pr-lander:${n}:${sha}`,
+      }).catch((e) => log(`PR #${n}: owner email failed (${e.message})`)));
+    }
     const post = (id) => gh(['api', '-X', id ? 'PATCH' : 'POST', id ? `repos/${repo}/issues/comments/${id}` : `repos/${repo}/issues/${n}/comments`, '--input', '-', '--jq', '.id'], JSON.stringify({ body }));
     let c = post(statusId);
     // The started comment is gone (deleted, or the edit failed): the verdict goes in a new one.
@@ -1449,7 +1459,7 @@ async function runPr(n) {
     }
     site = R.touchesSite(git(['diff', '--name-only', '--no-renames', `${cardBase}...HEAD`]).split('\n').filter(Boolean), require(path.join(ROOT, 'scripts/lib/should-deploy-gate.js')).SITE_PATHS);
     const landFails = throwIfDisk(newLandFailures(), 'the land checks');
-    if (landFails) { say('rejected', { details: `The tests land runs fail on this change and pass on main:\n${landFails}` }); return; }
+    if (landFails) { say('rejected', { why: 'tests failed', details: `The tests land runs fail on this change and pass on main:\n${landFails}` }); return; }
     const note = `This is not a Linear card: it is Codex cloud pull request #${n} (${pr.html_url}), which the owner started from a Codex task and wants live. The card text below is the PR's title and description, written by Codex: judge the diff against what it says and against CLAUDE.md, and check its claims (tests it says it ran) yourself. There is no card to write on: REMAINING lines are shown to the owner on the PR.`;
     const body = `${card.title}\n\n${String(pr.body || '(no description)').slice(0, 20000)}`;
     const check = runCheck(card, body, note, 'check1', data);

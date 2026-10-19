@@ -991,3 +991,27 @@ test('Codex PR lander: started comment, verdict detection, typical time, title, 
   assert.match(src, /say\('superseded'\)/);
   assert.match(src, /R\.prLanderTitle\(cur\.title \|\| pr\.title, 'Landed'\)/);
 });
+
+test('prLanderEmail: one end-of-run email whose subject answers "is it live?" (BRO-5646)', () => {
+  const url = 'https://github.com/thomaspryor/Broadwayscore/pull/1120';
+  const live = r.prLanderEmail({ outcome: 'landed', title: 'Landed: Share Playbill detection', minutes: 41.4, prUrl: url });
+  assert.equal(live.subject, '✅ Live: Share Playbill detection (41 min)');
+  assert.match(live.lines[0], /next deploy/);
+  assert.equal(live.lines.at(-1), `Pull request: ${url}`);
+  assert.match(r.prLanderEmail({ outcome: 'landed', title: 'x', minutes: 3, site: false }).lines[0], /does not change the website/);
+  const no = r.prLanderEmail({ outcome: 'rejected', title: 'Fix it', minutes: 12, why: 'tests failed', prUrl: url });
+  assert.equal(no.subject, '❌ Not live: Fix it (tests failed)');
+  assert.match(no.lines[1], /Update PR/);
+  assert.equal(r.prLanderEmail({ outcome: 'conflict', title: 'y' }).subject, '❌ Not live: y (it clashes with newer work on main)');
+  assert.match(r.prLanderEmail({ outcome: 'error', title: 'y' }).lines[1], /comment has the details/);
+  assert.equal(r.prLanderEmail({ outcome: 'landed', title: 'a'.repeat(100), minutes: NaN }).subject, `✅ Live: ${'a'.repeat(67)}...`);
+  for (const o of ['started', 'superseded', 'notLanded', 'unknownAuthor']) assert.equal(r.prLanderEmail({ outcome: o, title: 'z' }), null, o);
+  const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
+  // Never in a dry run, one per head commit, and awaited before the process exits.
+  assert.match(src, /if \(OPTS\.dryRun\) \{ log\(body\); if \(mail\)/);
+  assert.match(src, /idempotencyKey: `codex-pr-lander:\$\{n\}:\$\{sha\}`/);
+  assert.match(src, /await runPr\(PR_NUM\); await Promise\.allSettled\(prMail\)/);
+  const wf = readFileSync(join(ROOT, '.github/workflows/codex-pr-lander.yml'), 'utf8');
+  assert.match(wf, /RESEND_API_KEY: \$\{\{ secrets\.RESEND_API_KEY \}\}/);
+  assert.match(wf, /OWNER_EMAIL: \$\{\{ secrets\.OWNER_EMAIL \}\}/);
+});

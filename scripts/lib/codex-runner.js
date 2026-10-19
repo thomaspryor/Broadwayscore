@@ -818,6 +818,47 @@ function prLanderTitle(title, prefix) {
   return t.startsWith(`${prefix}: `) ? t : `${prefix}: ${t}`;
 }
 
+// The owner's one email per finished PR: the subject alone answers "is it live?" on a phone.
+const PR_LANDER_EMAIL_WHY = {
+  rejected: 'the Claude check found problems',
+  conflict: 'it clashes with newer work on main',
+  blocked: 'it touches something never landed automatically',
+  refused: 'the final landing checks refused it',
+  error: 'the checker hit an error of its own',
+};
+/**
+ * Subject and plain lines for the end-of-run owner email, or null for an outcome that sends none
+ * (started, superseded, notLanded, unknownAuthor). title: the PR title as Codex wrote it; minutes:
+ * from the PR's creation to now; why: a shorter reason than the outcome's default (e.g. tests failed).
+ */
+function prLanderEmail({ outcome, title, minutes, site = true, why, prUrl }) {
+  const t = String(title || 'Codex change').replace(/^Landed: /, '').replace(/\s+/g, ' ').trim();
+  const name = t.length > 70 ? `${t.slice(0, 67)}...` : t;
+  const took = Number.isFinite(minutes) && minutes >= 0 ? `${Math.max(1, Math.round(minutes))} min` : '';
+  if (outcome === 'landed') {
+    return {
+      subject: `✅ Live: ${name}${took ? ` (${took})` : ''}`,
+      lines: [
+        site ? 'This change passed the Claude check and is on main. It shows on broadwayscorecard.com with the next deploy, usually within 30 minutes.'
+          : 'This change passed the Claude check and is on main. It does not change the website, so it is in effect now.',
+        'Nothing else is needed.',
+        prUrl ? `Pull request: ${prUrl}` : '',
+      ].filter(Boolean),
+    };
+  }
+  if (!PR_LANDER_EMAIL_WHY[outcome]) return null;
+  const reason = why || PR_LANDER_EMAIL_WHY[outcome];
+  return {
+    subject: `❌ Not live: ${name} (${reason})`,
+    lines: [
+      `This change was not put on the site: ${reason}.`,
+      outcome === 'error' || outcome === 'blocked' ? 'The pull request comment has the details.'
+        : 'The pull request comment says what to fix. Ask Codex to fix it in the same task and press "Update PR"; it is checked again on its own.',
+      prUrl ? `Pull request: ${prUrl}` : '',
+    ].filter(Boolean),
+  };
+}
+
 /** Does any changed path fall under the deploy gate's site paths (should-deploy-gate SITE_PATHS)? */
 function touchesSite(files, sitePaths) {
   return (files || []).some((f) => (sitePaths || []).some((p) => (p.endsWith('/') ? f.startsWith(p) : f === p)));
@@ -1074,6 +1115,7 @@ module.exports = {
   prLanderJudged,
   typicalLanderMinutes,
   prLanderTitle,
+  prLanderEmail,
   touchesSite,
   leaveToCodex,
   slotArgs,
