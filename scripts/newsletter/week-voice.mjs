@@ -85,6 +85,14 @@ export function composeWeekVoice({ bw = [], ob = [], counts = {} } = {}) {
 
   // ── Subject ──────────────────────────────────────────────────────────────
   const subjectOptions = [];
+  const topScorer = [...list].sort((x, y) => scoreOf(y) - scoreOf(x))[0];
+  if (n >= 5 && list.length < n) {
+    // A packed week where some openings have no Critic Score yet: lead with how
+    // many got reviewed and who scored highest (owner's wording, 2026-10-18).
+    const T = topScorer.show.title;
+    subjectOptions.push(`${list.length} ${M.on === 'on Broadway' ? 'Broadway' : 'off-Broadway'} shows get reviews this week, with ${T} scoring the highest with critics`);
+    subjectOptions.push(`${list.length} ${M.on === 'on Broadway' ? 'Broadway' : 'off-Broadway'} shows get reviews, ${T} scores highest with critics`);
+  }
   if (n >= 2) {
     subjectOptions.push(`${L} and ${n - 1} other show${n - 1 === 1 ? '' : 's'} open ${M.on} this week`);
   } else if (total <= 2) {

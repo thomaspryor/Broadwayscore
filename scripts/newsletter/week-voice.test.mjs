@@ -123,7 +123,7 @@ test('packed week: calendar count stays, and the lede says how many got a Critic
   const ob = (t, s, c) => o(t, s, c, { category: 'off-broadway' });
   const list = ['A', 'B', 'C', 'D', 'E', 'F', 'G'].map((t, i) => ob(`Show ${t}`, 60 + i, 20 - i));
   const v = composeWeekVoice({ ob: list, counts: { ob: 12 } });
-  assert.equal(v.subject, 'Show A and 11 other shows open off-Broadway this week');
+  assert.equal(v.subject, '7 off-Broadway shows get reviews, Show G scores highest with critics');
   const text = plain(v.sentences.join(' '));
   assert.match(text, /^A packed week Off Broadway, with 12 openings\. 7 got enough reviews for a Critic Score, and Show G scored the highest with a 66\./);
   assert.doesNotMatch(text, /most reviews/);
