@@ -2,7 +2,7 @@
  * reddit-opening-post.js
  *
  * Pure helpers for scripts/draft-reddit-opening-posts.js (BRO-4333): pick
- * West End / Off-West-End / Off-Broadway openings worth a "reviews are in"
+ * Broadway / West End / Off-West-End / Off-Broadway openings worth a "reviews are in"
  * Reddit post, build the verified fact sheet the draft is written from, lint
  * the LLM draft, and detect when the owner has actually posted.
  *
@@ -49,6 +49,10 @@ const DRAFT_TTL_DAYS = 4;
 // Per run caps: the email should hand over one or two posts, not a chore list.
 const MAX_DRAFTS_PER_RUN = 2;
 const MAX_OB_DRAFTS_PER_RUN = 1;
+// Broadway openings are the biggest audience and cluster in a few weeks of
+// the year, so they sit outside the shared cap and can't be starved by West End
+// ones (BRO-5702 review).
+const MAX_BWAY_DRAFTS_PER_RUN = 2;
 const MAX_REFRESHES_PER_RUN = 5; // pre-reminder redrafts, outside the caps above (BRO-5083)
 
 const MIN_AUDIENCE_REVIEWS = 15; // parity with src/lib/audience-grade-utils.ts
@@ -353,8 +357,15 @@ function selectCandidates({ shows, slims, drafts, peersByMarket, today, seenLook
   const picked = [];
   let fresh = 0;
   let ob = 0;
+  let bway = 0;
   for (const c of out) {
     if (c.refresh) continue;
+    if (c.facts.market === 'broadway') {
+      if (bway >= MAX_BWAY_DRAFTS_PER_RUN) continue;
+      bway++;
+      picked.push(c);
+      continue;
+    }
     if (fresh >= MAX_DRAFTS_PER_RUN) break;
     if (c.facts.market === 'off-broadway') {
       if (ob >= MAX_OB_DRAFTS_PER_RUN) continue;
@@ -931,9 +942,14 @@ function applyPostedDetection(drafts, posts) {
       }
       // Title fallback: whole-word match, and only in the draft's own
       // subreddit, so a r/Broadway post about the Broadway Kimberly Akimbo
-      // doesn't clear the Off-West End transfer's draft.
+      // doesn't clear the Off-West End transfer's draft. A West End draft's
+      // r/Broadway crosspost exists only because a same-title Broadway show
+      // does, and now that Broadway roundups go to r/Broadway too (BRO-5702)
+      // that show's post would clear it, so those match on the page link
+      // (slug check above) only.
       if (!key || key.length < 3) return false;
-      const subs = [d.subreddit, d.crosspostSubreddit].filter(Boolean).map(x => String(x).toLowerCase());
+      const weDraft = d.market === 'west-end' || d.market === 'off-west-end';
+      const subs = [d.subreddit, weDraft ? null : d.crosspostSubreddit].filter(Boolean).map(x => String(x).toLowerCase());
       if (!subs.includes(String(p.subreddit || '').toLowerCase())) return false;
       return ` ${normTitle(p.title)} `.includes(` ${key} `);
     });

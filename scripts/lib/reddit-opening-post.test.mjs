@@ -457,3 +457,25 @@ test('Broadway openings draft for r/Broadway with a Broadway rank note (BRO-5702
   const p = lib.buildPeers([{ id: 'b1', category: 'broadway', status: 'open' }], new Map([['b1', slim({ n: 12 })]]));
   assert.deepEqual((p.broadway || []).map(x => x.id), ['b1']);
 });
+
+test('Broadway roundups: a same-title post in r/Broadway never clears a West End draft; bway cap sits outside the shared one (BRO-5702)', () => {
+  const we = { showTitle: 'Kimberly Akimbo', market: 'west-end', subreddit: 'TheWestEnd', crosspostSubreddit: 'Broadway', url: 'https://westendscorecard.com/show/kimberly-akimbo-west-end', status: 'ready', createdAt: '2026-10-18T06:00:00Z' };
+  const post = { title: 'Reviews are in for Kimberly Akimbo. 80/100', subreddit: 'Broadway', created_utc: Date.parse('2026-10-18T12:00:00Z') / 1000 };
+  assert.equal(lib.applyPostedDetection({ drafts: { we } }, [post]).drafts.we.status, 'ready');
+  const withLink = { ...post, selftext: 'https://westendscorecard.com/show/kimberly-akimbo-west-end' };
+  assert.equal(lib.applyPostedDetection({ drafts: { we } }, [withLink]).drafts.we.status, 'posted');
+  const mk = n => ({ id: `b${n}`, title: `B ${n}`, category: 'broadway', openingDate: '2026-10-18', status: 'open' });
+  const shows = [mk(1), mk(2), mk(3), { ...mk(4), id: 'we1', category: 'west-end' }, { ...mk(5), id: 'we2', category: 'west-end' }];
+  const slims = new Map(shows.map(x => [x.id, slim({ n: 20 })]));
+  const ids = lib.selectCandidates({ shows, slims, drafts: { drafts: {} }, peersByMarket: {}, today: '2026-10-19' }).map(c => c.show.id);
+  assert.equal(ids.filter(i => i.startsWith('b')).length, 2, 'at most 2 Broadway per run');
+  assert.equal(ids.filter(i => i.startsWith('we')).length, 2, 'West End keeps the shared cap');
+});
+
+test('buildPeers leaves out Broadway previews and thin shows; Broadway draft email has no crosspost block (BRO-5702)', () => {
+  const p = lib.buildPeers([{ id: 'a', category: 'broadway', status: 'previews' }, { id: 'b', category: 'broadway', status: 'open' }], new Map([['a', slim({ n: 20 })], ['b', slim({ n: 11 })]]));
+  assert.deepEqual(p.broadway || [], []);
+  const html = mail.buildHtml({ market: 'broadway', subreddit: 'Broadway', score: 68, reviewCount: 26, title: 't', body: 'b', submitUrl: 'https://a', oldRedditSubmitUrl: 'https://b', showTitle: 'X' }, 'new');
+  assert.match(html, /r\/Broadway/);
+  assert.doesNotMatch(html, /Also post to/);
+});
