@@ -363,7 +363,7 @@ async function researchShow(show, grossesData) {
           try {
             const parsed = await secEdgarScraper.parseFormDFiling(filing.filingUrl);
             if (parsed && parsed.totalOfferingAmount) {
-              evidence.push(`[SEC EDGAR Form D] ${filing.entityName}: Total offering amount $${parsed.totalOfferingAmount.toLocaleString()}. Filed ${filing.dateFiled || 'unknown date'}. CIK: ${filing.cik || 'unknown'}.`);
+              evidence.push(`[SEC EDGAR Form D] ${filing.entityName}: Total offering amount $${parsed.totalOfferingAmount.toLocaleString()} (the most it may raise).${parsed.capitalizedAmount ? ` The filing states the offering capitalized at $${parsed.capitalizedAmount.toLocaleString()}.` : ''} Filed ${filing.dateFiled || 'unknown date'}. CIK: ${filing.cik || 'unknown'}.`);
               console.log(`    ✅ SEC: Found Form D - $${(parsed.totalOfferingAmount / 1e6).toFixed(1)}M`);
             }
           } catch (err) {

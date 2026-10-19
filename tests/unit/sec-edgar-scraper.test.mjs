@@ -24,7 +24,8 @@ const {
   extractXmlPath,
   getBackoffDelay,
   parseCompanySearchAtom,
-  isOtherMarketCompanyName
+  isOtherMarketCompanyName,
+  capitalizedAmountFromXml
 } = require('../../scripts/lib/sec-edgar-scraper.js');
 
 // Get directory path for fixtures
@@ -528,5 +529,36 @@ describe('Module Integration', () => {
   it('SEC_EDGAR_ENABLED is accessible as getter', () => {
     const exports = require('../../scripts/lib/sec-edgar-scraper.js');
     assert.strictEqual(typeof exports.SEC_EDGAR_ENABLED, 'boolean');
+  });
+});
+
+// ============================================================================
+// capitalizedAmountFromXml Tests (BRO-5647: The Cottage was shown at its
+// $6M offering ceiling while the filing said it capitalized at $4,108,500)
+// ============================================================================
+
+describe('capitalizedAmountFromXml', () => {
+  const clar = (text) => `<offeringData><clarificationOfResponse>${text}</clarificationOfResponse></offeringData>`;
+
+  it('reads the amount after a max/min preamble', () => {
+    assert.strictEqual(capitalizedAmountFromXml(clar('Maximum capitalization was $6,000,000/Minimum capitalization was $4,000,000 - Offering capitalized at $4,108,500')), 4108500);
+  });
+
+  it('rounds cents', () => {
+    assert.strictEqual(capitalizedAmountFromXml(clar('Offering capitalized at $13,432,667.86')), 13432668);
+  });
+
+  it('accepts entity wording', () => {
+    assert.strictEqual(capitalizedAmountFromXml(clar('Entity capitalized at $10,000,000')), 10000000);
+  });
+
+  it('returns null when only max/min capitalization is stated', () => {
+    assert.strictEqual(capitalizedAmountFromXml(clar('Minimum Capitalization is $5,000,000; Maximum Capitalization is $8,000,000')), null);
+  });
+
+  it('returns null for unrelated capitalization wording or no xml', () => {
+    assert.strictEqual(capitalizedAmountFromXml(clar('Certain fees are paid to the general partner out of the capitalization.')), null);
+    assert.strictEqual(capitalizedAmountFromXml(''), null);
+    assert.strictEqual(capitalizedAmountFromXml(null), null);
   });
 });

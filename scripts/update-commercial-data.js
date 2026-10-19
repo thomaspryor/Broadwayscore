@@ -1142,14 +1142,15 @@ async function gatherSECFilings(shows, commercial) {
         if (parsed?.totalOfferingAmount) {
           results.push({
             showSlug: slug,
-            capitalization: parsed.totalOfferingAmount,
+            // The filing's own "capitalized at" figure beats the offering maximum.
+            capitalization: parsed.capitalizedAmount || parsed.totalOfferingAmount,
             source: `SEC Form D: ${parsed.companyName || title}`,
             filingUrl: latestFiling.url || latestFiling.filingUrl,
             filingDate: parsed.filingDate,
             confidence: 'high' // SEC data is always high confidence
           });
 
-          console.log(`    Found: ${title} - $${(parsed.totalOfferingAmount / 1e6).toFixed(1)}M`);
+          console.log(`    Found: ${title} - $${((parsed.capitalizedAmount || parsed.totalOfferingAmount) / 1e6).toFixed(1)}M`);
         }
       }
 
@@ -1348,12 +1349,12 @@ RULES:
 SPRINT 4 SEC PRIORITY RULES:
 11. SEC Form D data is ALWAYS high confidence - it is an official government filing.
 12. For capitalization amounts, source hierarchy (highest to lowest):
-    - SEC Form D filings (totalOfferingAmount) - MOST authoritative
+    - SEC Form D filings (the stated "capitalized at" amount, else totalOfferingAmount) - MOST authoritative
     - Trade press articles (Deadline, Variety, NYT) - reliable
     - Reddit Grosses Analysis estimates - use with caution
     - Single Reddit comments - low confidence only
 13. If SEC data contradicts other sources, PREFER the SEC data and note the discrepancy.
-14. When SEC Form D shows totalOfferingAmount, use it as capitalization with high confidence.
+14. When an SEC Form D states the offering "capitalized at" an amount, use that as capitalization with high confidence. totalOfferingAmount alone is the most the show may raise: use it only when no capitalized amount is given.
 
 INVESTOR RETURN FIELDS:
 15. profitMargin: Actual investor return % (e.g., 6 means investors got 6% total return). Only propose when a source states a specific investor return figure.
