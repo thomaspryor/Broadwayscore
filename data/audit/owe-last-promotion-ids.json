@@ -1,6 +1,17 @@
 {
-  "generatedAt": "2026-10-18T18:14:09.815Z",
-  "promoted": [],
+  "generatedAt": "2026-10-19T20:39:31.207Z",
+  "promoted": [
+    {
+      "id": "the-inequalities-off-west-end-2027",
+      "source": "venue-page:almeida-theatre",
+      "sourceUrl": "https://almeida.co.uk/whats-on/the-inequalities-trilogy/"
+    },
+    {
+      "id": "dance-is-not-for-us-off-west-end-2026",
+      "source": "guardian-review",
+      "sourceUrl": "https://www.theguardian.com/stage/2026/oct/18/dance-is-not-for-us-review-barbican-london-omar-rajeh"
+    }
+  ],
   "rejected": [
     {
       "title": "Triumph",
@@ -41,14 +52,6 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as three-and-a-bit-off-west-end-2027 (normalized-equal)"
-    },
-    {
-      "title": "The Inequalities Trilogy",
-      "venue": "Almeida Theatre",
-      "source": "venue-page:almeida-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as the-inequalities-trilogy-off-west-end-2027 (normalized-equal)"
     },
     {
       "title": "Boy Blue: 25 Stories",
@@ -339,28 +342,20 @@
       "reason": "already in shows.json as the-radium-girls-off-west-end-2026 (normalized-equal)"
     },
     {
-      "title": "An Oak Tree",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as an-oak-tree-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Main Theatre\"))"
-    },
-    {
-      "title": "Its Unlikely",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as its-unlikely-off-west-end-2026 (normalized-equal)"
-    },
-    {
       "title": "The Graddys London Semi Finals",
       "venue": "The Other Palace",
       "source": "venue-page:the-other-palace",
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as the-graddys-london-semi-finals-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "An Oak Tree",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as an-oak-tree-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Main Theatre\"))"
     },
     {
       "title": "Garry Starr Classic Penguins",
@@ -947,14 +942,6 @@
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-22))"
     },
     {
-      "title": "Cultivate: Leave to Remain",
-      "venue": "Riverside Studios",
-      "source": "venue-page:riverside-studios",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-18))"
-    },
-    {
       "title": "Cultivate: Put it on My Head",
       "venue": "Riverside Studios",
       "source": "venue-page:riverside-studios",
@@ -1225,14 +1212,6 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as a-train-to-woking-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "Jerker",
-      "venue": "Waterloo East Theatre",
-      "source": "venue-page:waterloo-east-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as jerker-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Suicidal",
