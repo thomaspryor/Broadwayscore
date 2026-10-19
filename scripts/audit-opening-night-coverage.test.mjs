@@ -289,3 +289,32 @@ test('ledger path: a phantom (unregistered) census outletId does not crash compu
   assert.deepEqual(cells.map((c) => c.outletId).sort(), ['nytimes'], 'phantom outletId must never mint a ledger cell');
   assert.equal(coverage.totalTier, 1, 'phantom outletId must not inflate the T1/T2 denominator');
 });
+
+// BRO-5532: writeLedger lacked the tour filter the audit selector got in
+// BRO-4724. With roundup archives present (CI) a tour minted census GAP cells
+// feeding t1-coverage:new-gaps-24h; stale tour rows must also be purged.
+test('writeLedger excludes tour shows and purges stale tour ledger rows', () => {
+  const { writeLedger, isTourShow } = require('./audit-opening-night-coverage.js');
+  const fixture = makeArchiveFixture();
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5532-'));
+  const ledgerPath = path.join(dir, 'ledger.json');
+  const mk = (category) => ({ id: SHOW_ID, slug: SHOW_ID, title: 'T', category, status: 'open', openingDate: '2026-07-20' });
+  const run = (s) => {
+    const censusOpts = {
+      archiveDir: fixture.archiveDir,
+      sources: [fixture.realSource('bww-roundup', [
+        { outlet: 'Variety', outletId: 'variety', critic: 'Unknown', stars: null, url: 'https://variety.com/x' },
+      ])],
+    };
+    writeLedger({
+      ledgerPath, ledgerDays: 90, censusOpts,
+      marketStatsPath: path.join(dir, 'ms.json'), breakerPath: path.join(dir, 'br.json'),
+    }, [s], [], OUTLETS, '2026-10-19T12:00:00.000Z', Date.parse('2026-10-19T12:00:00.000Z'));
+    return JSON.parse(fs.readFileSync(ledgerPath, 'utf8'));
+  };
+  try {
+    assert.ok(Object.keys(run(mk('broadway')).shows).length > 0, 'control: broadway show mints ledger cells');
+    assert.deepEqual(Object.keys(run(mk('tour')).shows), [], 'tour must mint no cells and purge its stale row');
+    assert.equal(isTourShow(mk('tour')), true);
+  } finally { fixture.cleanup(); }
+});

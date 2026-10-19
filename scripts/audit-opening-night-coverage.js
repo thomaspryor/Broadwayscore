@@ -358,6 +358,14 @@ function computeShowCells(show, reviews, outlets, nowMs, standingCtx, censusOpts
   return { cells, reactivations, coverage };
 }
 
+// A national tour has no Broadway roundup census or T1 floor to miss (BRO-4724).
+// Shared by the audit selector AND writeLedger: the ledger path lacked this
+// filter, so in CI (where roundup archives exist and censusMarket maps a tour
+// to 'broadway') tour launches minted permanent census GAP cells that fed the
+// t1-coverage:new-gaps-24h alert (BRO-5532). mergeLedger drops any show not
+// freshly computed, so excluding tours here also purges stale tour rows.
+function isTourShow(s) { return s.category === 'tour'; }
+
 // Build + write the T1 coverage ledger. Scans shows that are open OR opened within
 // the window; merges with the prior ledger (preserving each gap's firstSeenAt) and
 // writes deterministic bytes so an unchanged corpus produces NO file diff.
@@ -374,7 +382,7 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
   // missed). Same canonical predicate the selector uses.
   const { loadReviewEvidence, hasFreshEvidence } = require('./lib/review-evidence.js');
   const evidence = loadReviewEvidence();
-  const target = shows.filter(s => s.status === 'open'
+  const target = shows.filter(s => !isTourShow(s)).filter(s => s.status === 'open'
     || (s.openingDate && s.openingDate >= cutoff)
     || (s.status !== 'closed' && hasFreshEvidence(evidence, s.id || s.slug, { now: new Date(nowMs), lookbackDays: opts.ledgerDays })));
   const freshShows = [];
@@ -435,7 +443,7 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
       && show.openingDate >= standingCutoff
       && show.openingDate <= todayStr;
     const showStandingCtx = isRecentOpening ? standingCtx : null;
-    const { cells, reactivations: showReactivations, coverage } = computeShowCells(show, reviews, outlets, nowMs, showStandingCtx, undefined, breakerCtx);
+    const { cells, reactivations: showReactivations, coverage } = computeShowCells(show, reviews, outlets, nowMs, showStandingCtx, opts.censusOpts, breakerCtx);
     for (const outletId of showReactivations) {
       reactivations.push({ showId, title: show.title, outletId });
     }
@@ -786,7 +794,7 @@ async function main() {
       // A national tour has no Broadway roundup census or T1 floor to miss
       // (censusMarket would read it as 'broadway'): its launch would only
       // raise false gap alerts (BRO-4724).
-      if (s.category === 'tour') return false;
+      if (isTourShow(s)) return false;
       const recencyDate = showRecencyKey(s);
       if (recencyDate === NO_DATE_SENTINEL) return false;
       return recencyDate >= cutoffStr;
@@ -1144,4 +1152,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { computeShowCells, censusMarket };
+module.exports = { computeShowCells, censusMarket, isTourShow, writeLedger };
