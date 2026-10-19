@@ -1,66 +1,21 @@
 {
-  "updatedAt": "2026-10-19T11:37:51.652Z",
-  "processed": 201,
-  "failed": 101,
-  "successRate": "66.6%",
+  "updatedAt": "2026-10-19T12:15:22.947Z",
+  "processed": 214,
+  "failed": 113,
+  "successRate": "65.4%",
   "tierBreakdown": {
-    "playwright": 98,
+    "playwright": 102,
     "amp": 0,
     "browserbase": 0,
-    "directCookies": 0,
+    "directCookies": 1,
     "scrapingdog": 14,
-    "scrapingbee": 15,
+    "scrapingbee": 21,
     "brightdata": 4,
     "archiveToday": 0,
-    "archive": 71
+    "archive": 75
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-10-19T09:36:33.117Z",
-      "event": "bb-session",
-      "session": "a29f6fbf",
-      "url": "https://www.theatreinla.com/the-second-best-school-shooting/11328/"
-    },
-    {
-      "t": "2026-10-19T10:09:31.012Z",
-      "event": "bb-session",
-      "session": "1939958f",
-      "url": "https://www.nytimes.com/2021/12/07/theater/harry-potter-cursed-child-broadway-re"
-    },
-    {
-      "t": "2026-10-19T10:09:31.729Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-19T10:09:48.738Z",
-      "event": "bb-session",
-      "session": "ed76a6ea",
-      "url": "https://www.nytimes.com/2021/12/07/theater/harry-potter-cursed-child-broadway-re"
-    },
-    {
-      "t": "2026-10-19T10:09:49.363Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-19T11:03:18.237Z",
-      "event": "bb-session",
-      "session": "3a2d0662",
-      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
-    },
-    {
-      "t": "2026-10-19T11:03:18.876Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-19T11:03:35.807Z",
-      "event": "bb-session",
-      "session": "90ace348",
-      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
-    },
     {
       "t": "2026-10-19T11:03:36.444Z",
       "event": "bb-cookie-inject",
@@ -129,6 +84,50 @@
       "event": "bb-session",
       "session": "ebf352a7",
       "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
+    },
+    {
+      "t": "2026-10-19T12:00:04.772Z",
+      "event": "bb-session",
+      "session": "79b58a6e",
+      "url": "https://www.newyorker.com/goings-on-about-town/just-in-time"
+    },
+    {
+      "t": "2026-10-19T12:00:05.290Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-19T12:04:50.003Z",
+      "event": "bb-session",
+      "session": "126946a3",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/and-juliet-11-28-22"
+    },
+    {
+      "t": "2026-10-19T12:04:50.453Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-19T12:11:32.600Z",
+      "event": "bb-session",
+      "session": "e468f60c",
+      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
+    },
+    {
+      "t": "2026-10-19T12:11:33.082Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-19T12:11:49.758Z",
+      "event": "bb-session",
+      "session": "fd2e5ea9",
+      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
+    },
+    {
+      "t": "2026-10-19T12:11:50.203Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
