@@ -106,11 +106,6 @@ jobs:
           echo "Running: node scripts/extract-pull-quotes.js $ARGS --verbose"
           node scripts/extract-pull-quotes.js $ARGS --verbose
 
-      - name: Check for large files
-        if: always()
-        uses: ./.github/actions/check-file-sizes
-        continue-on-error: true
-
       - name: Push review-texts to private repo
         if: always()
         uses: ./.github/actions/push-review-texts
@@ -134,6 +129,7 @@ jobs:
           fi
 
           CHANGED=$(git diff --staged --stat | tail -1)
+          bash scripts/lib/check-file-sizes.sh --advisory  # BRO-5335: post-stage large-file check (advisory until armed)
           git commit -m "data: Extract LLM pull quotes
 
           $CHANGED

@@ -395,12 +395,6 @@ jobs:
             echo "No changes to reviews.json or public show JSONs"
           fi
 
-      - name: Check for large files
-        # BRO-3224: always() so an earlier failure cannot skip this guard while
-        # the always()-gated commit below still runs.
-        if: always() && steps.changes.outputs.has_changes == 'true'
-        uses: ./.github/actions/check-file-sizes
-
       - name: Push review-texts to private repo
         if: always()
         uses: ./.github/actions/push-review-texts
@@ -518,6 +512,7 @@ jobs:
           # (re-stages the same paths, a no-op here). Exit 3 = nothing staged;
           # has_changes said otherwise, so a no-op is benign and the push is
           # skipped.
+          bash scripts/lib/check-file-sizes.sh --advisory  # BRO-5335: post-stage large-file check (advisory until armed)
           set +e
           bash scripts/rebuild-fast-stage-commit.sh
           COMMIT_RC=$?

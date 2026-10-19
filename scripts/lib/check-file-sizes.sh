@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
-# Large-file detector for data/ (BRO-5335). Called by
-# .github/actions/check-file-sizes; runnable locally from the repo root.
+# Large-file detector for data/ (BRO-5335). Workflows call it inside their
+# commit step, after `git add` and before `git commit`, so the staged set is
+# what will really be committed; runnable locally from the repo root.
+#
+#   bash scripts/lib/check-file-sizes.sh [--advisory]
+#
+# --advisory (how every workflow calls it while the post-stage placement
+# proves itself, CLAUDE.md section 19): findings are ::warning:: lines and the
+# script ALWAYS exits 0, even if it crashes, so a commit step can never fail
+# or stop before committing (rebuild-reviews.yml stages alert-cooldown state
+# in the same step). Arming = drop the flag from the call sites.
 #
 # What it looks at: everything under data/ a commit step could pick up, i.e.
 # every path that differs from HEAD (staged or not) plus untracked files that
@@ -20,10 +29,32 @@
 # Severity: a finding in a STAGED file exits 1, as before. A finding only in
 # an unstaged or untracked file is a ::warning:: plus a step-summary line and
 # exits 0, while the wider scan proves itself (CHECK_FILE_SIZES_ENFORCE_ALL=1
-# makes those exit 1 too). This is detection, not a gate: almost every
-# caller's commit step runs under always() whatever this reports (one
-# exception, detect-ob-closings.yml, gates its commit on its own outputs).
+# makes those exit 1 too).
+#
+# ALLOW_LARGE decision for the tracked files already over 5MB (BRO-5335):
+# data/audit/scraper-spend-ledger.jsonl, show-review-gap.json,
+# aggregator-coverage.json, data/archive/notion-card-history.jsonl and the two
+# data/audit/shows-pre-*backfill*.json snapshots are NOT allowlisted. They are
+# in HEAD, so only the crossing / >5MB-jump rules apply to them: routine
+# growth passes, a sudden 5MB jump is the bloat this exists to catch.
 set -uo pipefail
+
+ADVISORY=""
+BAD_ARGS=""
+for arg in "$@"; do
+  case "$arg" in
+    --advisory) ADVISORY=1 ;;
+    *) BAD_ARGS="$BAD_ARGS $arg" ;;
+  esac
+done
+if [ -n "$ADVISORY" ]; then
+  # Never fail the caller, whatever happens below (including a crash).
+  trap 'rc=$?; [ "$rc" -ne 0 ] && echo "::warning::check-file-sizes exited $rc (advisory mode, not failing the step)"; exit 0' EXIT
+fi
+if [ -n "$BAD_ARGS" ]; then
+  echo "::warning::check-file-sizes: unknown argument(s):$BAD_ARGS"
+  exit 2
+fi
 
 LIMIT=5242880       # 5 MiB
 HARD_CAP=94371840   # 90 MiB
@@ -80,6 +111,14 @@ if [ -n "$warnings" ]; then
     [ -n "$line" ] && echo "::warning::Large data file a commit step may pick up: $line"
   done <<< "$warnings"
   { echo "### Large data files (not staged yet)"; echo '```'; printf '%s' "$warnings"; echo '```'; } >> "$SUMMARY"
+fi
+if [ -n "$errors" ] && [ -n "$ADVISORY" ]; then
+  while IFS= read -r line; do
+    [ -n "$line" ] && echo "::warning::Large staged data file (advisory, would fail once armed): $line"
+  done <<< "$errors"
+  { echo "### Large staged data files (advisory)"; echo '```'; printf '%s' "$errors"; echo '```'; } >> "$SUMMARY"
+  echo "If this is a legitimate data file, add it to the private core-data repo instead (or to ALLOW_LARGE in scripts/lib/check-file-sizes.sh)."
+  exit 0
 fi
 if [ -n "$errors" ]; then
   echo "::error::Large files detected that should not be committed:"

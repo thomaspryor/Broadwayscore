@@ -343,10 +343,6 @@ jobs:
           fi
           node scripts/collect-review-texts.js $ARGS
 
-      - name: Check for large files
-        if: always()
-        uses: ./.github/actions/check-file-sizes
-
 
       - name: Push review-texts to private repo
         if: always()
@@ -365,6 +361,7 @@ jobs:
             exit 0
           fi
 
+          bash scripts/lib/check-file-sizes.sh --advisory  # BRO-5335: post-stage large-file check (advisory until armed)
           git commit -m "feat: Bulk collect review texts (round ${INPUT_CURRENT_ROUND}, batch ${{ matrix.batch_id }}/${{ strategy.job-total }})
 
           Co-Authored-By: GitHub Action <action@github.com>"

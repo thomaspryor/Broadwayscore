@@ -198,11 +198,9 @@ jobs:
           echo "Batch ${{ matrix.batch_id }}: NYC Theatre for ${{ matrix.size }} shows (2023+ only)"
           node scripts/scrape-nyc-theatre-roundups.js --shows=${{ matrix.shows }}
 
-      - name: Check for large files
-        if: always()
-        uses: ./.github/actions/check-file-sizes
-
-
+      # No large-file check here (BRO-5335): this job's only main-repo commit is
+      # commit-scraper-spend-ledger (two tracked ledgers); everything else it
+      # writes goes to the private repos and is gitignored in this checkout.
       - name: Push review-texts to private repo
         if: always()
         uses: ./.github/actions/push-review-texts

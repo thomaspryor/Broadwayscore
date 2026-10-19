@@ -235,10 +235,6 @@ jobs:
             exit 1
           fi
 
-      - name: Check for large files
-        if: always()
-        uses: ./.github/actions/check-file-sizes
-
       - name: Push review-texts to private repo
         if: always()
         uses: ./.github/actions/push-review-texts
@@ -253,6 +249,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "No audit changes to commit"
           else
+            bash scripts/lib/check-file-sizes.sh --advisory  # BRO-5335: post-stage large-file check (advisory until armed)
             git commit -m "data: Recollect for scores audit data
 
           Co-Authored-By: GitHub Action <action@github.com>"

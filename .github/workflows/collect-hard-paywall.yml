@@ -257,10 +257,6 @@ jobs:
         run: node scripts/validate-data.js
         continue-on-error: true
 
-      - name: Check for large files
-        if: always()
-        uses: ./.github/actions/check-file-sizes
-
 
       - name: Push review-texts to private repo
         if: always()
@@ -277,6 +273,7 @@ jobs:
             echo "No changes to commit"
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
+            bash scripts/lib/check-file-sizes.sh --advisory  # BRO-5335: post-stage large-file check (advisory until armed)
             git commit -m "feat: Collect hard-paywall review texts via Archive.org (${{ inputs.domain }})
 
           Co-Authored-By: GitHub Action <action@github.com>"
@@ -655,10 +652,6 @@ jobs:
         run: node scripts/validate-data.js
         continue-on-error: true
 
-      - name: Check for large files
-        if: always()
-        uses: ./.github/actions/check-file-sizes
-
 
       - name: Push review-texts to private repo
         if: always()
@@ -673,6 +666,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit for ${{ matrix.domain }}"
           else
+            bash scripts/lib/check-file-sizes.sh --advisory  # BRO-5335: post-stage large-file check (advisory until armed)
             git commit -m "feat: Collect hard-paywall review texts via Archive.org (${{ matrix.domain }})
 
           Co-Authored-By: GitHub Action <action@github.com>"

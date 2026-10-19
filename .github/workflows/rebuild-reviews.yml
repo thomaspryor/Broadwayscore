@@ -714,12 +714,6 @@ jobs:
             echo "No changes to reviews.json, public show JSONs, or alert state"
           fi
 
-      - name: Check for large files
-        # BRO-3224: always() so an earlier failure cannot skip this guard while
-        # the always()-gated commit below still runs.
-        if: always() && steps.changes.outputs.has_changes == 'true'
-        uses: ./.github/actions/check-file-sizes
-
 
       - name: Push review-texts to private repo
         if: always()
@@ -824,6 +818,7 @@ jobs:
             fi
           fi
 
+          bash scripts/lib/check-file-sizes.sh --advisory  # BRO-5335: post-stage large-file check (advisory until armed)
           git commit -m "$MSG
 
           $COUNTS

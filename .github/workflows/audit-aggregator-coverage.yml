@@ -95,10 +95,6 @@ jobs:
             echo "Changes detected in audit output"
           fi
 
-      - name: Check for large files
-        if: steps.changes.outputs.has_changes == 'true'
-        uses: ./.github/actions/check-file-sizes
-
       # BRO-3071: split out of the combined "Commit and push" step so this
       # file's push-with-retry.sh call isn't bundled with (and defeated by)
       # aggregator-coverage.json, which stays multi-writer/unregistered — see
@@ -118,6 +114,7 @@ jobs:
             exit 0
           fi
 
+          bash scripts/lib/check-file-sizes.sh --advisory  # BRO-5335: post-stage large-file check (advisory until armed)
           git commit -m "audit: possible venue transfers
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
@@ -142,6 +139,7 @@ jobs:
 
           git add data/audit/aggregator-coverage.json
 
+          bash scripts/lib/check-file-sizes.sh --advisory  # BRO-5335: post-stage large-file check (advisory until armed)
           if [ -n "${INPUT_SHOW}" ]; then
             MSG="audit: Aggregator coverage for ${INPUT_SHOW}"
           elif [ -n "${INPUT_STATUS}" ]; then

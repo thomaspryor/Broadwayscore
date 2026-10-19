@@ -379,10 +379,6 @@ jobs:
           fi
         continue-on-error: true
 
-      - name: Check for large files
-        if: always()
-        uses: ./.github/actions/check-file-sizes
-
 
       - name: Push review-texts to private repo
         if: always()
@@ -412,6 +408,7 @@ jobs:
           else
             TIER_LABEL="${INPUT_CONTENT_TIER}"
             JOB_LABEL="single job${TIER_LABEL:+ — $TIER_LABEL}"
+            bash scripts/lib/check-file-sizes.sh --advisory  # BRO-5335: post-stage large-file check (advisory until armed)
             git commit -m "feat: Collect review texts ($JOB_LABEL)
 
           Co-Authored-By: GitHub Action <action@github.com>"

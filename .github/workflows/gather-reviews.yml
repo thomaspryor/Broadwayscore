@@ -461,10 +461,6 @@ jobs:
             echo "changes=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Check for large files
-        if: steps.git-check.outputs.changes == 'true'
-        uses: ./.github/actions/check-file-sizes
-
 
       - name: Push review-texts to private repo
         if: always()
@@ -491,6 +487,7 @@ jobs:
             exit 0
           fi
 
+          bash scripts/lib/check-file-sizes.sh --advisory  # BRO-5335: post-stage large-file check (advisory until armed)
           git commit -m "feat: Add review data for ${{ matrix.shows }}"
 
           # Stagger push by batch_id to avoid parallel matrix jobs colliding

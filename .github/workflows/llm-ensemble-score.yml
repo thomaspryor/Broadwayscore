@@ -703,6 +703,8 @@ jobs:
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
             git diff --staged --stat
+            # Staged just above, so this sees what the commit step below commits.
+            bash scripts/lib/check-file-sizes.sh --advisory  # BRO-5335: post-stage large-file check (advisory until armed)
           fi
           # Check if actual review files changed via scoring-progress.json
           # (review-texts is a nested git repo, so git diff --staged can't detect changes there).
@@ -723,10 +725,6 @@ jobs:
             echo "has_scored_reviews=false" >> $GITHUB_OUTPUT
             echo "No review files changed this run"
           fi
-
-      - name: Check for large files
-        if: always() && steps.check-changes.outputs.has_changes == 'true'
-        uses: ./.github/actions/check-file-sizes
 
       # Never on a dry_run dispatch (BRO-4467): one writer forgetting to honor
       # dry_run would otherwise reach the private repo.

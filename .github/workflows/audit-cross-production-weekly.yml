@@ -116,10 +116,6 @@ jobs:
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Check for large files
-        if: steps.changes.outputs.has_changes == 'true'
-        uses: ./.github/actions/check-file-sizes
-
       - name: Commit and push
         if: always() && steps.changes.outputs.has_changes == 'true'
         env:
@@ -145,6 +141,7 @@ jobs:
           CP=$(node -e "const d=require('./data/audit/same-title-confusion.json'); console.log(d.findings ? d.findings.length : 0)" 2>/dev/null || echo "?")
           SM=$(node -e "const d=require('./data/audit/slug-misroute-audit.json'); console.log(d.findings ? d.findings.length : 0)" 2>/dev/null || echo "?")
           AGG=$(node -e "const d=require('./data/audit/ob-aggregator-rejections.json'); console.log((d.counts&&d.counts.accepted||0)+' new, '+(d.counts&&d.counts.rejected||0)+' rejected')" 2>/dev/null || echo "0 new")
+          bash scripts/lib/check-file-sizes.sh --advisory  # BRO-5335: post-stage large-file check (advisory until armed)
           git commit -m "audit: Weekly cross-production ($CP) + slug-routing ($SM) + aggregator ($AGG) [skip ci]
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"

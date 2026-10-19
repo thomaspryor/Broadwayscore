@@ -308,10 +308,6 @@ jobs:
         run: node scripts/validate-data.js
         continue-on-error: true
 
-      - name: Check for large files
-        if: always()
-        uses: ./.github/actions/check-file-sizes
-
 
       - name: Push review-texts to private repo
         if: always()
@@ -326,6 +322,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit for partition ${{ matrix.partition }}"
           else
+            bash scripts/lib/check-file-sizes.sh --advisory  # BRO-5335: post-stage large-file check (advisory until armed)
             git commit -m "feat: Collect free-outlet review texts (partition ${{ matrix.partition }}/${{ inputs.parallel_jobs }})
 
           Co-Authored-By: GitHub Action <action@github.com>"
