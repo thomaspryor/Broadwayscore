@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-19T22:09:59.350Z",
+  "timestamp": "2026-10-19T22:19:21.627Z",
   "stats": {
     "totalReviews": 57803,
-    "alreadyFlagged": 21080,
-    "dateGuardCatches": 203,
-    "directorMismatch": 2017,
+    "alreadyFlagged": 21084,
+    "dateGuardCatches": 199,
+    "directorMismatch": 2014,
     "tvFilmSignals": 1645,
-    "londonSignals": 2539,
+    "londonSignals": 2538,
     "offBroadwaySignals": 530,
     "yearMismatch": 161,
     "noPublishDate": 5215
@@ -20972,44 +20972,6 @@
     },
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
-      "file": "i-paper--fiona-mountford.json",
-      "score": 78,
-      "publishDate": "2025-12-12",
-      "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 284d before show (2025-12-12 vs 2026-09-22)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-noel-coward-west-end-2026",
-      "file": "independent--louis-chilton.json",
-      "score": 82,
-      "publishDate": "2025-12-12",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/into-the-woods-bridge-theatre-sondheim-review-b2883199.html",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 284d before show (2025-12-12 vs 2026-09-22)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "jolienstheatrediary--jolien.json",
       "score": 81,
       "publishDate": "2026-10-08",
@@ -21198,30 +21160,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-noel-coward-west-end-2026",
-      "file": "the-jewish-chronicle--john-nathan.json",
-      "score": 92,
-      "publishDate": "2026-01-06",
-      "url": "https://www.thejc.com/life/theatre/into-the-woods-review-goyishe-brothers-grimm-gloriously-reinvented-by-a-jewish-creative-team-lq75z9fy",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 259d before show (2026-01-06 vs 2026-09-22)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -40557,20 +40495,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 444d before show (2025-05-14 vs 2026-08-01)"
-        }
-      ]
-    },
-    {
-      "showId": "the-comedy-about-spies-west-end-2026",
-      "file": "london-box-office--stuart-king.json",
-      "score": 91,
-      "publishDate": "2025-05-13",
-      "url": "https://www.londonboxoffice.co.uk/news/post/review-comedy-about-spies",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 445d before show (2025-05-13 vs 2026-08-01)"
         }
       ]
     },
@@ -90408,6 +90332,7 @@
     {
       "showId": "triumph-off-west-end-2026",
       "file": "theartsdispatch--the-arts-dispatch.json",
+      "score": 68,
       "publishDate": "2026-10-19",
       "url": "https://theartsdispatch.substack.com/p/triumph-review-almeida-theatre-london",
       "findings": [
