@@ -1582,5 +1582,36 @@
       }
     ],
     "queuedAt": "2026-10-19T07:09:57.521Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5670-lazy-base-deploy-on-land",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5670-lazy-base-deploy-on-land",
+    "description": "land.yml did not land land/bro-5670-lazy-base-deploy-on-land: the unit-tests-node gate went red at fa841c635a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39210874822",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5670-lazy-base-deploy-on-land"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "fa841c635a60b78fd90894f839fa0b5d49464c30"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39210874822"
+      }
+    ],
+    "queuedAt": "2026-10-19T07:13:53.853Z"
   }
 ]
