@@ -167,13 +167,44 @@ describe('priceFromEV / calibrateK', () => {
     const top3 = evs.slice(0, 3).map(ev => ev * k);
     const avg = top3.reduce((a, b) => a + b, 0) / 3;
     assert.ok(Math.abs(avg - 33) < 1e-9);
-    assert.equal(pricing.priceFromEV(evs[5], k), 5, 'floor at $5');
+    assert.equal(pricing.priceFromEV(evs[5], k), 2, 'cheap shows go below $5 (BRO-5666)');
+    assert.equal(pricing.priceFromEV(1, k), 1, 'floor at $1, never free');
     assert.equal(pricing.priceFromEV(1000, k), 35, 'ceiling at $35');
-    assert.equal(pricing.priceFromEV(NaN, k), 5);
+    assert.equal(pricing.priceFromEV(NaN, k), 1);
   });
 
   test('calibrateK returns null without usable EVs', () => {
     assert.equal(pricing.calibrateK([]), null);
     assert.equal(pricing.calibrateK([0, 0]), null);
+  });
+});
+
+describe('already-open Off-Broadway award EV is measured (BRO-5666)', () => {
+  const rows = [
+    ...[10, 0, 20, 2, 7].map(points => ({ criticLabel: 'Recommended', points })),
+    ...[0, 4, 0, 0, 6].map(points => ({ criticLabel: 'Worth Seeing', points })),
+    { criticLabel: 'Skippable', points: 0 },
+  ];
+  const bands = pricing.measureObAwardsByBand(rows);
+
+  test('bands average last season and need 5 shows', () => {
+    assert.deepEqual(bands.high, { mean: 7.8, n: 5 });
+    assert.deepEqual(bands.mid, { mean: 2, n: 5 });
+    assert.equal(bands.low, null, 'one Skippable show is too few to measure');
+  });
+
+  test('an already-open show is priced from its band, with that as the reason', () => {
+    const p = pricing.projectShowPoints(obPlay, { ...base, criticLocked: true, criticScore: 78, obAwardsByBand: bands });
+    assert.equal(p.totalPoints, 7.8, 'awards only');
+    assert.match(p.breakdown.notes[0], /rated Recommended or better averaged 7.8/);
+    assert.equal(pricing.priceFromEV(p.totalPoints, 33 / 180), 1);
+  });
+
+  test('falls back to the tier prior when the band is unmeasured or the show is not open', () => {
+    const tierEV = pricing.projectShowPoints(obPlay, { ...base, priors: { tier: 3 }, criticLocked: true, criticScore: 60 }).awardsPoints;
+    const p = pricing.projectShowPoints(obPlay, { ...base, priors: { tier: 3 }, criticLocked: true, criticScore: 60, obAwardsByBand: bands });
+    assert.equal(p.awardsPoints, tierEV);
+    const upcoming = pricing.projectShowPoints(obPlay, { ...base, priors: { tier: 3 }, obAwardsByBand: bands });
+    assert.equal(upcoming.awardsPoints, tierEV);
   });
 });

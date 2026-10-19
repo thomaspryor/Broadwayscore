@@ -35,7 +35,7 @@ const leaguePath = path.join(dataDir, 'fantasy-league.json');
 const evPath = path.join(dataDir, 'fantasy-ev.json');
 
 // Price bounds (consistent with current heuristic).
-const MIN_PRICE = 5;
+const MIN_PRICE = 1;
 const MAX_PRICE = 35;
 // Target: top ~3 shows in the $30-35 range, median BW ~$18-22.
 const TARGET_TOP_PRICE = 33;
