@@ -161,10 +161,22 @@ test('livenessVerdict: red runs count as started; cancelled/startup_failure do n
     { conclusion: 'startup_failure', created_at: at(300) }, { conclusion: 'success', created_at: at(500) }] });
   assert.equal(v.status, 'stale');
   assert.equal(v.ageHours, 500);
-  assert.equal(livenessVerdict({ crons: weekly, runs: [], now }).status, 'stale');
+  assert.equal(livenessVerdict({ crons: weekly, runs: [{ conclusion: 'cancelled', created_at: at(17) }], now }).status, 'stale');
   assert.equal(livenessVerdict({ crons: ['0 9 * 4-6 *'], runs: [], now }).status, 'unknown');
   // in-flight run (no conclusion yet) counts as started
   assert.equal(livenessVerdict({ crons: weekly, runs: [{ conclusion: null, created_at: at(1) }], now }).status, 'alive');
+});
+
+test('livenessVerdict: zero scheduled runs is unknown until the workflow outlives its limit (BRO-5675)', () => {
+  const now = Date.parse('2026-10-18T12:00:00Z');
+  const weekly = ['0 6 * * 0']; // limit 192h
+  // Real case 2026-10-18: reverify-cv-promoted-weekly.yml flagged before its first scheduled fire.
+  assert.equal(livenessVerdict({ crons: weekly, runs: [], now }).status, 'unknown');
+  assert.equal(livenessVerdict({ crons: weekly, runs: [], now, createdAt: '2026-10-15T00:00:00Z' }).status, 'unknown');
+  // Registered 30 days ago and never fired on schedule: a dead cron, still stale.
+  assert.deepEqual(livenessVerdict({ crons: weekly, runs: [], now, createdAt: '2026-09-18T12:00:00Z' }),
+    { status: 'stale', limitHours: 192, ageHours: null });
+  assert.equal(livenessVerdict({ crons: weekly, runs: [], now, createdAt: 'not a date' }).status, 'unknown');
 });
 
 test('real repo: every exempt-path cron is on a watched path; opt-outs give a reason', () => {

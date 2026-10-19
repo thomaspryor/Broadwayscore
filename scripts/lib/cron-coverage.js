@@ -257,10 +257,13 @@ const MONTH_LENGTH_SLACK_HOURS = 72;
  * Did a scheduled workflow actually start recently? Alive = the newest scheduled run that
  * got past startup (any conclusion but cancelled/startup_failure/skipped, so a red run
  * still counts: failures have their own alert path) is within worstGap + 24h of `now`.
- * @param {{crons:string[], runs:{conclusion?:string, created_at:string}[], now?:number}} p
+ * No scheduled run at all is 'unknown' (BRO-5675: a brand-new cron was flagged before its
+ * first fire; never-ran workflows have neverRunWorkflowResults). Pass the workflow's
+ * `createdAt` to still call it stale once it has existed longer than the limit.
+ * @param {{crons:string[], runs:{conclusion?:string, created_at:string}[], now?:number, createdAt?:string}} p
  * @returns {{status:'alive'|'stale'|'unknown', limitHours:number|null, ageHours:number|null}}
  */
-function livenessVerdict({ crons, runs, now = Date.now() }) {
+function livenessVerdict({ crons, runs, now = Date.now(), createdAt }) {
   const gap = crons && crons.length ? worstGapHours(crons) : null;
   if (gap == null) return { status: 'unknown', limitHours: null, ageHours: null };
   const domRestricted = crons.some(c => { const f = String(c).trim().split(/\s+/); return f[2] && f[2] !== '*'; });
@@ -270,6 +273,11 @@ function livenessVerdict({ crons, runs, now = Date.now() }) {
     .map(r => Date.parse(r.created_at))
     .filter(Number.isFinite)
     .sort((a, b) => b - a);
+  if (!(runs || []).length) {
+    const createdMs = Date.parse(createdAt);
+    const old = Number.isFinite(createdMs) && (now - createdMs) / 3_600_000 > limitHours;
+    return { status: old ? 'stale' : 'unknown', limitHours, ageHours: null };
+  }
   if (!started.length) return { status: 'stale', limitHours, ageHours: null };
   const ageHours = Math.round((now - started[0]) / 3_600_000);
   return { status: ageHours > limitHours ? 'stale' : 'alive', limitHours, ageHours };
