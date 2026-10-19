@@ -120,6 +120,9 @@ const stubOnFailure = hasFlag('stub-on-failure');
 // per-show scoring. Without it the file is only on local disk: CI scores from a
 // fresh clone, so the review sits unscored until a later rebuild self-heals.
 const land = hasFlag('land');
+// --html-file=PATH: use HTML a caller already fetched (a browser session for a site the
+// scraper chain cannot reach, e.g. talkinbroadway.com) instead of calling fetchPage.
+const htmlFileArg = getArg('html-file');
 // Exit code for "the page could not be read" (fetch error, no HTML, empty
 // extraction). Refusals (blocked/non-review URL, blocklist, wrong show,
 // write-guard) keep exit 1, so the workflow retries only what a retry can fix.
@@ -129,12 +132,12 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 
 // --help must print usage and exit BEFORE any side effect (BRO-1711).
 if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
-  console.log('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--section-title=HEADING] [--land]');
+  console.log('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--section-title=HEADING] [--html-file=PATH] [--land]');
   process.exit(0);
 }
 
 if (!showId || !url) {
-  console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--section-title=HEADING] [--land]');
+  console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--section-title=HEADING] [--html-file=PATH] [--land]');
   process.exit(1);
 }
 
@@ -208,8 +211,12 @@ if (!show) {
   let html;
   let fetchFailure = null;
   try {
-    const r = await fetchPage(url, { source: 'process-review-submission' });
-    html = (r && (r.content || r.html || r.body)) || (typeof r === 'string' ? r : null);
+    if (htmlFileArg) {
+      html = fs.readFileSync(htmlFileArg, 'utf8');
+    } else {
+      const r = await fetchPage(url, { source: 'process-review-submission' });
+      html = (r && (r.content || r.html || r.body)) || (typeof r === 'string' ? r : null);
+    }
   } catch (e) {
     console.error(`Fetch failed: ${e.message}`);
     if (!stubOnFailure) process.exit(EXIT_FETCH_FAILED);

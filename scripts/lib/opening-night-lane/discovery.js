@@ -171,7 +171,7 @@ function extractPublishDate(html) {
     [/<time\b[^>]*\bdatetime=["']([^"']+)["']/i, bodyScope(s)],
   ];
   // Talkin' Broadway pages carry no structured data: the date is in the "Theatre Review by {Critic} - {Month D, YYYY}" byline.
-  const tb = s.match(/Theatre Review by\s*(?:<[^>]*>\s*)*[A-Za-z][\w.'-]*(?:\s+[A-Za-z][\w.'-]*){0,3}\s*(?:<[^>]*>\s*)*-\s*(?:<[^>]*>\s*)*([A-Z][a-z]+\.?\s+\d{1,2},\s+\d{4})/);
+  const tb = s.match(/Theatre Review by\s*(?:<[^>]*>\s*)*\p{L}[\p{L}\w.'\u2019-]*(?:\s+\p{L}[\p{L}\w.'\u2019-]*){0,3}\s*(?:<[^>]*>\s*)*-\s*(?:<[^>]*>\s*)*([A-Z][a-z]+\.?\s+\d{1,2},\s+\d{4})/u);
   if (tb) tries.push([/^(.*)$/, tb[1]]);
   for (const [re, scope] of tries) {
     const m = scope.match(re);

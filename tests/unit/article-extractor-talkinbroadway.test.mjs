@@ -140,4 +140,17 @@ describe('article-extractor: talkinbroadway.com', () => {
     assert.ok(text, 'should extract text');
     assert.ok(text.includes('two thousand twenty three run'), 'punctuation-only hint should behave like no hint');
   });
+  test('accented critic name (Kimberly Ramírez, Good Time Charlie 2026-10-09) still extracts the review', () => {
+    const reviewBody = 'Haddad stages a sprawling family drama in a backyard. '.repeat(15);
+    const html =
+      '<html><body>' + NEWSLETTER_CHROME +
+      "<section class='page'>" +
+      "<P><B>Theatre Review by <A HREF='mailto:k@talkinbroadway.com'>Kimberly Ramírez</A> - October 9, 2026</B></CENTER>" +
+      `<P>${reviewBody}` +
+      '</section></body></html>';
+    const text = extractArticleText(html, 'www.talkinbroadway.com');
+    assert.ok(text, 'an accent in the byline must not make extraction return nothing');
+    assert.ok(text.includes('sprawling family drama'));
+    assert.ok(!text.includes('Sound Advice Weekly'));
+  });
 });

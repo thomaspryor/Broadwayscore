@@ -477,7 +477,9 @@ function extractLsaByline(text) {
 // followed by "{Critic Name} - {Month Day, Year}" (verified across 2009-2026
 // archived pages), so require that shape within a short window right after
 // the marker before treating a position as a real byline.
-const TB_BYLINE_SHAPE = /^\s*[A-Za-z][\w.'-]*(?:\s+[A-Za-z][\w.'-]*){0,3}\s*-\s*.{0,30}\b\d{4}\b/;
+// Letters are Unicode (\p{L}): "Kimberly Ramírez" failed the ASCII-only shape, so the
+// whole review body came back empty and the byline was cut to "Kimberly Ram" (2026-10-09).
+const TB_BYLINE_SHAPE = /^\s*\p{L}[\p{L}\w.'\u2019-]*(?:\s+\p{L}[\p{L}\w.'\u2019-]*){0,3}\s*-\s*.{0,30}\b\d{4}\b/u;
 
 function extractTalkinBroadwayBody(html, criticHint) {
   const MARKER_LEN = 'Theatre Review by'.length;

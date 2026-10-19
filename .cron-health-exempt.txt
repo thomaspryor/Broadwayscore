@@ -306,3 +306,6 @@ linear-unpark-drain.yml
 # BRO-5631: daily Dependabot PR -> Linear card filer; a missed run only delays one
 # card by a day (the next run files it), nothing user-facing; failures reach the digest.
 dependabot-auto-merge.yml
+# BRO-5679: daily Talkin Broadway index read; a missed run delays missing-review pickup by a day, nothing
+# user-facing. Failures go to the digest through notify-failure; the opening-night poller still runs.
+collect-talkinbroadway-index.yml
