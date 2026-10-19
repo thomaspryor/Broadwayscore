@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-19T17:32:11.424Z",
+  "timestamp": "2026-10-19T17:42:48.082Z",
   "stats": {
-    "totalReviews": 57759,
-    "alreadyFlagged": 21070,
+    "totalReviews": 57760,
+    "alreadyFlagged": 21072,
     "dateGuardCatches": 207,
     "directorMismatch": 2007,
-    "tvFilmSignals": 1639,
+    "tvFilmSignals": 1640,
     "londonSignals": 2527,
     "offBroadwaySignals": 530,
     "yearMismatch": 159,
-    "noPublishDate": 5255
+    "noPublishDate": 5251
   },
   "findings": [
     {
@@ -30555,6 +30555,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "file": "goldderby--ethan-alter.json",
+      "score": null,
+      "publishDate": "2026-10-19",
+      "url": "https://www.goldderby.com/theater/2026/other-desert-cities-reviews-critics-julia-louis-dreyfus-broadway-debut/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 4\""
         }
       ]
     },
