@@ -23,6 +23,7 @@ import { ownerDiaryPayload, selectSharedDiary } from '@/lib/shared-diary/select'
 import { getShowStubsByIds } from '@/lib/show-stubs';
 import { Poster, PosterGridCard, SectionBand, UpcomingListRow, ViewModeToggle, bookabilityLabel, formatPillDate, type ViewMode } from '@/components/user/upcoming-cards';
 import { localToday, formatShowDate } from '@/lib/date-utils';
+import { isWatchlistEntryRated, selectToBeRatedWatchlistEntries, selectUpcomingWatchlistEntries } from '@/lib/diary-upcoming';
 
 import { useToastSafe } from '@/components/ui/Toast';
 import { useLocalWatchlist } from '@/hooks/useLocalWatchlist';
@@ -484,22 +485,17 @@ export default function MyShowsClient() {
   });
 
   // Watchlist entries with future planned_date (for diary "Upcoming" section)
-  const upcomingWatchlistEntries = useMemo(() => {
-    const today = localToday();
-    const reviewedShowIds = new Set(reviews.map(r => r.show_id));
-    return watchlist
-      .filter(w => w.planned_date && w.planned_date > today && !reviewedShowIds.has(w.show_id))
-      .sort((a, b) => (a.planned_date || '').localeCompare(b.planned_date || ''));
-  }, [watchlist, reviews]);
+  const upcomingWatchlistEntries = useMemo(
+    () => selectUpcomingWatchlistEntries(watchlist, reviews, localToday()),
+    [watchlist, reviews],
+  );
 
   // Watchlist entries where planned_date <= today AND no review exists ("To be rated")
   // plus welcome "seen it" picks with no date, after the dated ones.
   const toBeRatedEntries = useMemo((): ToBeRatedEntry[] => {
     const today = localToday();
     const reviewedShowIds = new Set(reviews.map(r => r.show_id));
-    const dated: ToBeRatedEntry[] = watchlist
-      .filter(w => w.planned_date && w.planned_date <= today && !reviewedShowIds.has(w.show_id))
-      .sort((a, b) => (b.planned_date || '').localeCompare(a.planned_date || ''));
+    const dated: ToBeRatedEntry[] = selectToBeRatedWatchlistEntries(watchlist, reviews, today);
     const listed = new Set(dated.map(e => e.show_id));
     const undated: ToBeRatedEntry[] = seenUnrated
       .filter(u => !reviewedShowIds.has(u.show_id) && !listed.has(u.show_id))
@@ -557,7 +553,7 @@ export default function MyShowsClient() {
   );
   const unbookedWatchlist = useMemo(() => sortedWatchlist.filter(e => !e.planned_date), [sortedWatchlist]);
   const seenToRateWatchlist = useMemo(
-    () => sortedWatchlist.filter(e => !!e.planned_date && e.planned_date < wlToday && !reviews.some(r => r.show_id === e.show_id)),
+    () => sortedWatchlist.filter(e => !!e.planned_date && e.planned_date < wlToday && !isWatchlistEntryRated(e, reviews)),
     [sortedWatchlist, wlToday, reviews],
   );
   // Rendered watchlist size — excludes stale rows (past-dated + already
