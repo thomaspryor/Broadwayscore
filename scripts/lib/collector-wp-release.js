@@ -48,10 +48,13 @@ function isCollectorWrongProductionCandidate(data, show, ctx = {}) {
   // Either human verdict settles it: false = cleared, true = confirmed.
   if (data.humanReviewedWrongProduction === false || data.humanReviewedWrongProduction === true) return false;
   if (data.wrongShow === true || data.duplicateOf) return false;
-  // Quarantined shape only: the text lives in wrongFullText.
-  if (data.fullText && String(data.fullText).length >= 200) return false;
-  const text = String(data.wrongFullText || '');
-  if (text.length < MIN_TEXT_CHARS) return false;
+  // The text the verdict is re-judged on: the quarantined copy, or (BRO-5700)
+  // the live fullText when the file never got quarantined or a later re-fetch
+  // put the text back (Some Woman's Reviews Hub: fullText AND wrongFullText,
+  // flag still set, so neither shape-specific predicate ever picked it up).
+  const picked = collectorCandidateText(data);
+  if (!picked) return false;
+  const text = picked.text;
   // Garbage/consent captures go to the collector's refetch drain instead.
   if (typeof ctx.isGarbage === 'function' && ctx.isGarbage(text)) return false;
   if (!data.publishDate || typeof ctx.inOwnWindow !== 'function') return false;
@@ -59,6 +62,24 @@ function isCollectorWrongProductionCandidate(data, show, ctx = {}) {
   // Already asked about this exact text.
   if (data.collectorWpReverifiedHash && data.collectorWpReverifiedHash === quarantinedTextHash(text)) return false;
   return true;
+}
+
+/**
+ * Which text a collector wrongProduction flag is re-judged on (BRO-5700).
+ * A live fullText of review length wins (it is what the rebuild would score
+ * and what a clear must keep); otherwise the quarantined copy. Null when
+ * neither is long enough to judge. `field` tells the caller whether a clear
+ * must restore the quarantined text ('wrongFullText') or only reset the tier.
+ */
+function collectorCandidateText(data) {
+  if (!data) return null;
+  const live = String(data.fullText || '');
+  if (live.length >= MIN_TEXT_CHARS) return { field: 'fullText', text: live };
+  // A short live fullText (< 200 chars) is a stub; the quarantined copy is the review.
+  if (live.length >= 200 && live.length < MIN_TEXT_CHARS) return null;
+  const quarantined = String(data.wrongFullText || '');
+  if (quarantined.length >= MIN_TEXT_CHARS) return { field: 'wrongFullText', text: quarantined };
+  return null;
 }
 
 /**
@@ -190,6 +211,7 @@ function classifyPriorRunWrongProduction(data, show, ctx = {}) {
 }
 
 module.exports = {
+  collectorCandidateText,
   COLLECTOR_WP_PREFIX,
   ENSEMBLE_REJECTOR,
   isCollectorWrongProductionCandidate,
