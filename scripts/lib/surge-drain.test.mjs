@@ -21,6 +21,11 @@ describe('splitSurge', () => {
     const newestDeferred = Math.max(...r.deferred.map((x) => Date.parse(x.c.data.publishDate)));
     assert.ok(oldestApplied >= newestDeferred);
   });
+  test('a priority key keeps old prior-run clears ahead of newer ones', () => {
+    const d = mk(60).map((x, i) => ({ ...x, kind: i < 5 ? 'prior' : 'other', c: { ...x.c, data: { publishDate: i < 5 ? '2010-01-01' : x.c.data.publishDate } } }));
+    const r = splitSurge(d, 50, false, (x) => (x.kind === 'prior' ? 0 : 1));
+    assert.equal(r.apply.filter((x) => x.kind === 'prior').length, 5);
+  });
   test('--force-bulk applies everything', () => {
     const r = splitSurge(mk(300), 50, true);
     assert.equal(r.apply.length, 300);

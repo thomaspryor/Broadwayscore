@@ -17,12 +17,16 @@
  * @param {Array<{c: {data: {publishDate?: string}}}>} decisions confirmed clears
  * @param {number} threshold max clears per run
  * @param {boolean} forceBulk
+ * @param {(d: object) => number} [priority] lower sorts (and is applied) first
  * @returns {{apply: Array, deferred: Array}}
  */
-function splitSurge(decisions, threshold, forceBulk) {
+function splitSurge(decisions, threshold, forceBulk, priority) {
   if (forceBulk || decisions.length <= threshold) return { apply: decisions, deferred: [] };
   const ts = (d) => Date.parse(d && d.c && d.c.data && d.c.data.publishDate) || 0;
-  const ordered = decisions.slice().sort((a, b) => ts(b) - ts(a));
+  // `priority` (lower first) keeps a class the caller must not starve ahead of
+  // newest-first, e.g. prior-run candidates, which are old by definition.
+  const pri = typeof priority === 'function' ? priority : () => 0;
+  const ordered = decisions.slice().sort((a, b) => pri(a) - pri(b) || ts(b) - ts(a));
   return { apply: ordered.slice(0, threshold), deferred: ordered.slice(threshold) };
 }
 

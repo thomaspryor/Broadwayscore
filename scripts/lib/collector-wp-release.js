@@ -22,6 +22,7 @@
 
 const crypto = require('crypto');
 const { findMatchingPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
+const { isRoundupUrl } = require('./review-guards');
 
 const COLLECTOR_WP_PREFIX = 'Collector LLM: wrong production';
 const MIN_TEXT_CHARS = 1500;
@@ -48,6 +49,15 @@ function isCollectorWrongProductionCandidate(data, show, ctx = {}) {
   // Either human verdict settles it: false = cleared, true = confirmed.
   if (data.humanReviewedWrongProduction === false || data.humanReviewedWrongProduction === true) return false;
   if (data.wrongShow === true || data.duplicateOf) return false;
+  // Deterministic exclusions the stale predicate and the prior-run classifier
+  // already apply: a live-text candidate (BRO-5672) must not slip past them.
+  if (data.humanReviewedWrongProduction === true) return false;
+  if (data.isNonReview === true || data.isNotReview === true || data.nonReviewFlag === true) return false;
+  if (data.fullTextWrongAuthor === true) return false;
+  if (data.rejectionReason && data.rejectionReason !== 'wrong_production') return false;
+  if (data.contentVerification && data.contentVerification.wrongArticle === true
+    && data.contentVerification.confidence === 'high') return false;
+  if (isRoundupUrl(data.url || data.sourceUrl || '').isRoundup) return false;
   // The text the verdict is re-judged on: the quarantined copy, or (BRO-5672)
   // the live fullText when the file never got quarantined or a later re-fetch
   // put the text back (Some Woman's Reviews Hub: fullText AND wrongFullText,

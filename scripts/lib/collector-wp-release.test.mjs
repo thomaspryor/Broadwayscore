@@ -57,6 +57,16 @@ describe('isCollectorWrongProductionCandidate', () => {
     assert.equal(collectorCandidateText({ fullText: text, wrongFullText: text }).field, 'fullText');
     assert.equal(collectorCandidateText({ fullText: null, wrongFullText: 'short' }), null);
   });
+  test('live-text candidates keep the stale predicate\'s deterministic exclusions', () => {
+    const live = { ...base, fullText: text, wrongFullText: undefined };
+    assert.equal(isCollectorWrongProductionCandidate({ ...live, humanReviewedWrongProduction: true }, show, ctx), false);
+    assert.equal(isCollectorWrongProductionCandidate({ ...live, isNotReview: true }, show, ctx), false);
+    assert.equal(isCollectorWrongProductionCandidate({ ...live, fullTextWrongAuthor: true }, show, ctx), false);
+    assert.equal(isCollectorWrongProductionCandidate({ ...live, rejectionReason: 'wrong_show' }, show, ctx), false);
+    assert.equal(isCollectorWrongProductionCandidate({ ...live, contentVerification: { wrongArticle: true, confidence: 'high' } }, show, ctx), false);
+    assert.equal(isCollectorWrongProductionCandidate({ ...live, url: 'https://www.broadwayworld.com/article/Review-Roundup-Disgraced-20141024' }, show, ctx), false);
+    assert.equal(isCollectorWrongProductionCandidate({ ...live, url: 'https://www.thereviewshub.com/disgraced-london/' }, show, ctx), true);
+  });
   test('a live-text candidate is asked once per distinct live text', () => {
     const d = { ...base, fullText: text, wrongFullText: undefined };
     stampCollectorWpRejection(d, '2026-10-19T00:00:00Z', text);

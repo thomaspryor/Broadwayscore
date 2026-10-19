@@ -358,7 +358,7 @@ Reply with JSON only: {"isThisProduction": true|false, "isReview": true|false, "
   // the rest to the next run, rather than refusing the batch after paying for
   // its verification (the weekly run did that for weeks, so the backlog never
   // drained). The per-run bound on a verifier/predicate regression is unchanged.
-  const surge = splitSurge(toClear, FIX_SURGE_THRESHOLD, FORCE_BULK);
+  const surge = splitSurge(toClear, FIX_SURGE_THRESHOLD, FORCE_BULK, (d) => (d.c.kind === 'collector-prior-run' ? 0 : 1));
   if (surge.deferred.length > 0) {
     console.warn(`::warning::${toClear.length} confirmed clears exceed the per-run limit of ${FIX_SURGE_THRESHOLD}: clearing the newest ${surge.apply.length}, deferring ${surge.deferred.length} to the next run (re-run with --force-bulk to drain at once). If this count is a sudden jump rather than backlog, the predicate or verifier may have regressed.`);
     for (const d of surge.deferred) console.log(`  deferred: ${d.c.showId}/${d.c.file}`);
@@ -394,7 +394,7 @@ Reply with JSON only: {"isThisProduction": true|false, "isReview": true|false, "
     const clearNote = d.c.kind === 'collector-prior-run'
       ? `[${nowIso.slice(0, 10)} cleared collector wrongProduction — review dated inside a declared earlier run/tour leg; Sonnet (high-conf, given the declared runs) confirmed it is a review of ${d.c.show.title}${restores ? '; text restored' : ''}]`
       : d.c.kind === 'collector-quarantined'
-        ? `[${nowIso.slice(0, 10)} cleared collector wrongProduction — Sonnet (high-conf) confirmed the quarantined text is a review of ${d.c.show.title}; text restored — BRO-4185 C]`
+        ? `[${nowIso.slice(0, 10)} cleared collector wrongProduction — Sonnet (high-conf) confirmed the ${restores ? 'quarantined' : 'live'} text is a review of ${d.c.show.title}${restores ? '; text restored' : ''} — BRO-4185 C / BRO-5672]`
         : `[${nowIso.slice(0, 10)} cleared stale wrongProduction — predicate + Sonnet (high-conf) confirmed real review of ${d.c.show.title} — Notion 34e637c5-416f-811d]`;
     // Apply to a fresh read: the scan-time copy is minutes old after the LLM calls.
     const data = JSON.parse(orig);
@@ -407,6 +407,12 @@ Reply with JSON only: {"isThisProduction": true|false, "isReview": true|false, "
     // Re-classify the fresh record too: an operator reason, ensemble rejection
     // or override added during the LLM calls must win over this verdict.
     if (d.c.kind === 'collector-quarantined') {
+      // Full re-check on the fresh read: an operator reason, human confirmation,
+      // override or exclusion flag added during the LLM calls must win.
+      if (!isCollectorWrongProductionCandidate(data, d.c.show, {
+        inOwnWindow: isReviewWithinOwnProductionWindow,
+        isGarbage: (t) => isGarbageContent(t).isGarbage,
+      })) continue;
       const re = collectorCandidateText(data);
       if (!re || re.field !== d.c.textField || re.text !== d.c.text) continue;
     }
