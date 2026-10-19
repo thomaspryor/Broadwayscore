@@ -50,6 +50,7 @@ const {
   stampCollectorWpRejection,
   collectorCandidateText,
   priorRunVerdictHash,
+  quarantinedTextHash,
 } = require('./lib/collector-wp-release');
 const { buildPriorRunHint } = require('./lib/content-verifier');
 const { CLAUDE_SONNET } = require('./lib/models');
@@ -142,6 +143,9 @@ for (const showId of showDirs) {
     if (data.wrongProduction !== true) continue;
     flagged++;
     if (isLikelyStaleWrongProduction(data, show)) {
+      // BRO-5672: a rejected stale-kind candidate was re-asked on every run (170+
+      // paid calls per drain, crowding the time budget). Settled per live text.
+      if (data.staleWpReverifiedHash && data.staleWpReverifiedHash === quarantinedTextHash(data.fullText)) continue;
       predicateMatches++;
       candidates.push({ showId, file: f, filePath, data, show, kind: 'stale' });
       continue;
@@ -201,6 +205,12 @@ const isCollectorKind = (c) => c.kind === 'collector-quarantined' || c.kind === 
     console.log(`Collector candidates capped at ${COLLECTOR_PER_RUN_CAP} of ${collector.length} this run (prior-run first, then newest).`);
   }
 }
+
+// BRO-5672: under the LLM time budget the order decides who gets judged. Newest
+// publishDate first (prior-run candidates keep their place at the front), so an
+// opening-week review is never the one left for the next run.
+candidates.sort((a, b) => (a.kind === 'collector-prior-run' ? 0 : 1) - (b.kind === 'collector-prior-run' ? 0 : 1)
+  || (Date.parse(b.data.publishDate) || 0) - (Date.parse(a.data.publishDate) || 0));
 
 // The text the LLM judges: the quarantined copy for collector-quarantined,
 // the classifier's pick for collector-prior-run, the live text otherwise.
@@ -381,10 +391,16 @@ Reply with JSON only: {"isThisProduction": true|false, "isReview": true|false, "
   // not stamped (retry next run).
   const nowIso = new Date().toISOString();
   for (const d of decisions) {
-    if (d.verdict || d.error || !isCollectorKind(d.c)) continue;
+    if (d.verdict || d.error || !(isCollectorKind(d.c) || d.c.kind === 'stale')) continue;
     // Re-read: the scan-time copy is minutes old after the LLM calls.
     const orig = fs.readFileSync(d.c.filePath, 'utf8');
     const fresh = JSON.parse(orig);
+    if (d.c.kind === 'stale') {
+      fresh.staleWpReverifiedHash = quarantinedTextHash(d.c.data.fullText);
+      fresh.staleWpReverifiedAt = nowIso;
+      fs.writeFileSync(d.c.filePath, JSON.stringify(fresh, null, 2) + (orig.endsWith('\n') ? '\n' : ''));
+      continue;
+    }
     // Stamp the hash of the text the LLM actually judged.
     if (d.c.kind === 'collector-prior-run') {
       stampCollectorWpRejection(fresh, nowIso, d.c.text, priorRunVerdictHash(d.c.text, d.c.show));
