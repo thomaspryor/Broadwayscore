@@ -24,8 +24,9 @@ function thumbFromFile(m) {
 
 const NAMED_ENTITIES = { amp: '&', apos: "'", quot: '"', nbsp: ' ', lt: '<', gt: '>', rsquo: '’', lsquo: '‘', ldquo: '“', rdquo: '”', ndash: '–', mdash: '—' };
 const decodeEntities = (s) => String(s || '')
-  .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
-  .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+  // Range-checked: String.fromCodePoint throws above 0x10FFFF (BRO-5261 S12).
+  .replace(/&#(\d+);/g, (m, n) => { const c = Number(n); return c <= 0x10ffff ? String.fromCodePoint(c) : m; })
+  .replace(/&#x([0-9a-f]+);/gi, (m, h) => { const c = parseInt(h, 16); return c <= 0x10ffff ? String.fromCodePoint(c) : m; })
   // accented letters (&eacute; -> e) fold the same as the letter itself
   .replace(/&([a-z])(?:acute|grave|circ|uml|tilde|cedil|ring|slash);/gi, '$1')
   .replace(/&([a-z]+);/gi, (m, k) => (k.toLowerCase() in NAMED_ENTITIES ? NAMED_ENTITIES[k.toLowerCase()] : m));
