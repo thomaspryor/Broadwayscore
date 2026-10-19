@@ -1,90 +1,21 @@
 {
-  "updatedAt": "2026-10-19T12:15:22.947Z",
-  "processed": 214,
-  "failed": 113,
-  "successRate": "65.4%",
+  "updatedAt": "2026-10-19T12:46:34.849Z",
+  "processed": 265,
+  "failed": 162,
+  "successRate": "62.1%",
   "tierBreakdown": {
-    "playwright": 102,
-    "amp": 0,
+    "playwright": 130,
+    "amp": 1,
     "browserbase": 0,
     "directCookies": 1,
-    "scrapingdog": 14,
-    "scrapingbee": 21,
-    "brightdata": 4,
+    "scrapingdog": 19,
+    "scrapingbee": 22,
+    "brightdata": 6,
     "archiveToday": 0,
-    "archive": 75
+    "archive": 91
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-10-19T11:03:36.444Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-19T11:07:23.732Z",
-      "event": "bb-session",
-      "session": "7852084c",
-      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
-    },
-    {
-      "t": "2026-10-19T11:07:24.423Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-19T11:07:42.076Z",
-      "event": "bb-session",
-      "session": "9b5a6aee",
-      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
-    },
-    {
-      "t": "2026-10-19T11:07:42.715Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-19T11:23:12.982Z",
-      "event": "bb-session",
-      "session": "8110dc28",
-      "url": "https://bachtrack.com/review-angels-bone-du-yun-vavrek-english-national-opera-lo"
-    },
-    {
-      "t": "2026-10-19T11:23:58.793Z",
-      "event": "bb-session",
-      "session": "fa738e55",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
-    },
-    {
-      "t": "2026-10-19T11:24:06.277Z",
-      "event": "bb-session",
-      "session": "0bb45970",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
-    },
-    {
-      "t": "2026-10-19T11:25:21.241Z",
-      "event": "bb-session",
-      "session": "c0688289",
-      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
-    },
-    {
-      "t": "2026-10-19T11:29:19.175Z",
-      "event": "bb-session",
-      "session": "45cff6e9",
-      "url": "https://ground.news/article/the-banality-of-evil-hannah-arendt-france-1940"
-    },
-    {
-      "t": "2026-10-19T11:30:19.419Z",
-      "event": "bb-session",
-      "session": "c3aeb8a8",
-      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
-    },
-    {
-      "t": "2026-10-19T11:30:28.751Z",
-      "event": "bb-session",
-      "session": "ebf352a7",
-      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
-    },
     {
       "t": "2026-10-19T12:00:04.772Z",
       "event": "bb-session",
@@ -126,6 +57,72 @@
     },
     {
       "t": "2026-10-19T12:11:50.203Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-19T12:20:38.010Z",
+      "event": "bb-session",
+      "session": "28093d12",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-19T12:20:38.502Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-19T12:20:56.129Z",
+      "event": "bb-session",
+      "session": "851615f5",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-19T12:20:56.599Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-19T12:22:56.054Z",
+      "event": "bb-session",
+      "session": "190ac278",
+      "url": "http://theater.nytimes.com/2011/03/25/theater/reviews/the-book-of-mormon-at-euge"
+    },
+    {
+      "t": "2026-10-19T12:22:56.521Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-19T12:23:13.390Z",
+      "event": "bb-session",
+      "session": "1f859b5c",
+      "url": "http://theater.nytimes.com/2011/03/25/theater/reviews/the-book-of-mormon-at-euge"
+    },
+    {
+      "t": "2026-10-19T12:23:13.849Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-19T12:35:42.073Z",
+      "event": "bb-session",
+      "session": "6d05ab64",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-19T12:35:42.609Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-19T12:35:59.396Z",
+      "event": "bb-session",
+      "session": "fd8ab29b",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-19T12:35:59.810Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
