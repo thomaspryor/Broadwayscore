@@ -74,3 +74,17 @@ test('normalizeUrl treats independent.co.uk and the-independent.com as one artic
   assert.notEqual(n('https://notindependent.co.uk' + path), n('https://www.the-independent.com' + path));
   assert.notEqual(n('https://independent.co.uk.example.com' + path), n('https://www.the-independent.com' + path));
 });
+
+test('normalizeUrl host aliases for other same-path domain moves (BRO-5674 cousins)', () => {
+  const { normalizeUrl: n } = require('./review-normalization.js');
+  const pairs = [
+    ['https://www.thetimes.co.uk/article/x-review-abc123', 'https://www.thetimes.com/article/x-review-abc123'],
+    ['https://www.dailymail.com/tvshowbiz/article-1/x.html', 'https://www.dailymail.co.uk/tvshowbiz/article-1/x.html'],
+    ['https://www.huffingtonpost.com/entry/x_us_1', 'https://www.huffpost.com/entry/x_us_1'],
+    ['https://amp.theguardian.com/stage/2026/x', 'https://www.theguardian.com/stage/2026/x'],
+    ['https://www.guardian.co.uk/stage/2010/x', 'https://www.theguardian.com/stage/2010/x'],
+    ['https://online.wsj.com/article/x.html', 'https://www.wsj.com/article/x.html'],
+  ];
+  for (const [a, b] of pairs) assert.equal(n(a), n(b), a);
+  assert.notEqual(n('https://notthetimes.co.uk/article/x'), n('https://www.thetimes.com/article/x'));
+});
