@@ -114,8 +114,13 @@ const ESTIMATE_SOURCE_RE = /^\s*(?:estimat\w*|est\.|~)/i;
  */
 function isEstimatedCapitalization(commercial) {
   if (commercial.isEstimate?.capitalization === true) return true;
-  if (ESTIMATE_SOURCE_RE.test(commercial.capitalizationSource || '')) return true;
+  if (sourceOpensAsEstimate(commercial.capitalizationSource)) return true;
   return !publicSourceText(commercial.capitalizationSource);
 }
 
-module.exports = { publicSourceText, isEstimatedCapitalization, saysRecoupmentUnannounced };
+/** True when the source text opens by calling its figure an estimate. */
+function sourceOpensAsEstimate(text) {
+  return ESTIMATE_SOURCE_RE.test(text || '');
+}
+
+module.exports = { publicSourceText, isEstimatedCapitalization, saysRecoupmentUnannounced, sourceOpensAsEstimate };

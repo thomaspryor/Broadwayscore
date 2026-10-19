@@ -356,7 +356,7 @@ function commercialRecordErrors(showId, show, ctx = {}) {
 }
 
 const { addedPlaceholderSources } = require('./commercial-sources');
-const { saysRecoupmentUnannounced } = require('./public-source-text');
+const { saysRecoupmentUnannounced, publicSourceText, sourceOpensAsEstimate } = require('./public-source-text');
 
 /**
  * Rules that depend on shows.json state as well as the record, plus new rules
@@ -482,6 +482,18 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
     const flaggedBefore = !!(prior && prior.recouped === true && prior.isEstimate && prior.isEstimate.recouped === true);
     if (!flaggedBefore || prior.recoupedSource !== show.recoupedSource) {
       out.push(`commercial.json: "${showId}" isEstimate.recouped prints "Not publicly announced" but recoupedSource does not say it went unannounced (if it did, say "No recoupment was announced."; if the source reports the recoupment, clear the flag)`);
+    }
+  }
+  // isEstimate.capitalization prints the figure with "~", so its source must
+  // say it is an estimate (BRO-5647: bro-5647-b swapped CATS to The Hollywood
+  // Reporter's reported $18M and left the flag, so the card still read
+  // "~$18.0M"). Advisory (§19); only a write that sets the flag or changes the
+  // source counts.
+  if (show.isEstimate && show.isEstimate.capitalization === true && publicSourceText(show.capitalizationSource) && !sourceOpensAsEstimate(show.capitalizationSource)) {
+    const prior = ctx.priorRecord;
+    const flaggedBefore = !!(prior && prior.isEstimate && prior.isEstimate.capitalization === true);
+    if (!flaggedBefore || prior.capitalizationSource !== show.capitalizationSource) {
+      out.push(`commercial.json: "${showId}" isEstimate.capitalization prints "~" but capitalizationSource reads as a reported figure (if it is an estimate, open the source with "Estimate:"; if the source reports it, clear the flag)`);
     }
   }
   if (isPrematureSilenceLabel(show, ctx.showRecord)) {
