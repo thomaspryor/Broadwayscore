@@ -108,10 +108,10 @@ jobs:
     # workflow (2026-07-13). Raised 25->35 (BRO-451, 2026-09-11) to fit the
     # Deploy to Production step's retry-on-transient-failure worst case
     # (~16.5 min, see that step's comment) alongside Build's own 720s worst
-    # case — normal runs still finish in ~3 min either way, so this only
+    # case — normal runs finish in ~9 min either way (measured 2026-10, BRO-5670), so this only
     # widens the window before a genuinely hung run is caught.
     # BRO-2067: 35->45. Worst case is now (upload 240s + wait 480s) + 2x(240+240)
-    # + 30s backoff = ~28.5 min, plus Build's 720s. Normal runs still ~3 min.
+    # + 30s backoff = ~28.5 min, plus Build's 720s. Normal runs take ~9 min.
     timeout-minutes: 45
     concurrency:
       # per-run group intended: GH concurrency queue depth is 1, so a shared
