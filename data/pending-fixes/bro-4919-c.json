@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4919-c",
   "planId": "6e75633e-62ff-4143-8635-c56342155625",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-19T12:00:00.000Z",
   "submitter": {
     "name": null,
@@ -49,5 +49,34 @@
         "description": "Stale copy of Peter Marks' 2022 WaPo review url (death-of-a-salesman-2022/washpost--peter-marks.json holds it) carrying Thomas Floyd's 2026 text."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-19T23:28:10.329Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted death-of-a-salesman-2026/nysr--steven-suskin.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted death-of-a-salesman-2026/variety--payton-turkeltaub.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted death-of-a-salesman-2026/variety--rebecca-rubin.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted death-of-a-salesman-2026/variety--marilyn-stasio.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted death-of-a-salesman-2026/washpost--peter-marks.json"
+    }
+  ],
+  "executedIn": "ci"
 }
