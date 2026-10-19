@@ -118,9 +118,12 @@ function isEstimatedCapitalization(commercial) {
   return !publicSourceText(commercial.capitalizationSource);
 }
 
-/** True when the source text opens by calling its figure an estimate. */
+/**
+ * True when the source opens by calling its figure an estimate, read after
+ * publicSourceText strips leading annotations ("[Auto-designated ...]").
+ */
 function sourceOpensAsEstimate(text) {
-  return ESTIMATE_SOURCE_RE.test(text || '');
+  return ESTIMATE_SOURCE_RE.test(publicSourceText(text) || text || '');
 }
 
 module.exports = { publicSourceText, isEstimatedCapitalization, saysRecoupmentUnannounced, sourceOpensAsEstimate };

@@ -493,7 +493,7 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
     const prior = ctx.priorRecord;
     const flaggedBefore = !!(prior && prior.isEstimate && prior.isEstimate.capitalization === true);
     if (!flaggedBefore || prior.capitalizationSource !== show.capitalizationSource) {
-      out.push(`commercial.json: "${showId}" isEstimate.capitalization prints "~" but capitalizationSource reads as a reported figure (if it is an estimate, open the source with "Estimate:"; if the source reports it, clear the flag)`);
+      out.push(`commercial.json: "${showId}" isEstimate.capitalization prints "~" but capitalizationSource reads as a reported figure (if it is an estimate, open the source with "Estimate:" or "Estimated by ..."; if the source reports it, clear the flag)`);
     }
   }
   if (isPrematureSilenceLabel(show, ctx.showRecord)) {

@@ -42,5 +42,7 @@ describe('isEstimate.capitalization needs an estimate source', () => {
     assert.strictEqual(sourceOpensAsEstimate('Estimated from the tax credit'), true);
     assert.strictEqual(sourceOpensAsEstimate('About $12M per the SEC filing'), false);
     assert.strictEqual(sourceOpensAsEstimate(null), false);
+    assert.strictEqual(sourceOpensAsEstimate('[Auto-designated Fizzle: x] Estimate: $5M from the tax credit'), true);
+    assert.strictEqual(sourceOpensAsEstimate('Estimated by Variety (Mar 2, 2024): $15 million'), true);
   });
 });
