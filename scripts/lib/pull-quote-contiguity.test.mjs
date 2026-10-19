@@ -10,7 +10,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   isContiguousInSource, pickExcerptCandidate, snapToSourceSpan, isTrustedContiguitySource,
-  startsWithPageChrome, phraseContradictsScore,
+  startsWithPageChrome, phraseContradictsScore, stripLeadingCredits,
 } = require('./pull-quote-guards.js');
 const {
   trimToCompleteSentence, cleanExcerpt, truncateAtSentenceBoundary, isOverlongExcerpt, hardCutExcerpt,
@@ -237,5 +237,57 @@ describe('selectBestExcerpt (real cascade)', () => {
   it('manual pullQuote stays exempt from the contiguity check', () => {
     const q = selectBestExcerpt({ ...base, fullText: POST_TEXT, pullQuote: POST_SPLICED }, 'Other Desert Cities');
     assert.equal(q, POST_SPLICED);
+  });
+});
+
+describe('leading credits header (BRO-5718, Talkin\' Broadway)', () => {
+  const base2 = { showId: 'contiguity-test-show', textStatus: 'complete' };
+  const PROSE = 'Other Desert Cities is a sharp, funny family drama that finds fresh bite in its Broadway revival. The performances are superb and the staging is crisp enough to hide the machinery for most of the night.';
+  const HEADER = 'Theatre Review by Howard Miller - October 18, 2026. Other Desert Cities by Jon Robin Baitz. Directed by Scott Ellis. Scenic design by Beowulf Boritt. Costume design by Jane Greenwood. Lighting design by Ken Posner. ';
+
+  it('stripLeadingCredits starts the slice at the first prose sentence', () => {
+    const out = stripLeadingCredits(HEADER + PROSE, { showTitle: 'Other Desert Cities' });
+    assert.ok(out.startsWith('Other Desert Cities is a sharp'), out.slice(0, 60));
+  });
+
+  it('handles abbreviated months and initials in the byline', () => {
+    const out = stripLeadingCredits('Theater Review by J. R. Smith - Oct. 3, 2026. Directed by Jo Q. Public. ' + PROSE);
+    assert.ok(out.startsWith('Other Desert Cities is a sharp'), out.slice(0, 60));
+  });
+
+  it('never touches prose that opens with "Directed by"', () => {
+    const prose = 'Directed by Sam Mendes, this revival soars with a confidence the script rarely earns. ' + PROSE;
+    assert.equal(stripLeadingCredits(prose), prose);
+  });
+
+  it('leaves text alone when stripping would leave a husk', () => {
+    const short = 'Theatre Review by Howard Miller - October 18, 2026. Directed by Scott Ellis. Great.';
+    assert.equal(stripLeadingCredits(short), short);
+  });
+
+  it('startsWithPageChrome flags the header but not "Theatre review of..." prose', () => {
+    assert.ok(startsWithPageChrome(HEADER + PROSE));
+    assert.ok(!startsWithPageChrome('Theatre review of the week is grim reading for Broadway.'));
+  });
+
+  it('strips newline-separated credits and keeps "Cast: <prose>" intact', () => {
+    const nl = 'Theatre Review by Howard Miller - October 18, 2026\nOther Desert Cities by Jon Robin Baitz\nDirected by Scott Ellis\nScenic design by Beowulf Boritt\n' + PROSE;
+    assert.ok(stripLeadingCredits(nl, { showTitle: 'Other Desert Cities' }).startsWith('Other Desert Cities is a sharp'));
+    const cast = 'Cast: a terrific ensemble led by Audra McDonald makes this sing. ' + PROSE;
+    assert.equal(stripLeadingCredits(cast), cast);
+    assert.ok(!startsWithPageChrome(cast));
+    assert.ok(!startsWithPageChrome('Where: it all goes wrong is the second act. ' + PROSE));
+  });
+
+  it('a lowercase "theater review by a critic" sentence is prose, not a header', () => {
+    const prose = 'Theater review by a critic who loved it is rare these days, but here we are. ' + PROSE;
+    assert.equal(stripLeadingCredits(prose), prose);
+    assert.ok(!startsWithPageChrome(prose));
+  });
+
+  it('selectBestExcerpt raw fallback never shows the credits block', () => {
+    const q = selectBestExcerpt({ ...base2, fullText: HEADER + PROSE + PAD }, 'Other Desert Cities');
+    assert.ok(q && !/Theat(?:re|er) Review by|Scenic design by|Directed by/i.test(q), q);
+    assert.ok(q.startsWith('Other Desert Cities is a sharp'), q);
   });
 });

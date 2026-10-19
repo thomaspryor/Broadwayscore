@@ -43,6 +43,7 @@ if (hasHelpFlag(process.argv.slice(2))) {
 
 const {
   hasListingChrome,
+  CREDITS_HEADER_RE,
   isTagCloudExcerpt,
   isMidWordTruncation,
   hasCopyrightChrome,
@@ -84,6 +85,7 @@ function classifyBadQuote(quote, sources) {
   if (isPromoTeaser(quote)) return 'promo-teaser';
   if (isChromePrefix(quote)) return 'chrome-prefix';
   if (hasListingChrome(quote)) return 'listing-chrome';
+  if (CREDITS_HEADER_RE.test(String(quote).trim())) return 'credits-header';
   if (isTagCloudExcerpt(quote)) return 'tag-cloud';
   if (isMidWordTruncation(quote, sources)) return 'mid-word-truncation';
   return null;

@@ -13,6 +13,7 @@
 // middle-paragraph caveat before a positive closer — the LLM reliably picks
 // the caveat as "most quotable".
 const { isSoft404Body } = require('./soft-404-body');
+const { foldDiacritics } = require('./title-match');
 
 const HEDGE_OPENER_RE = /^\s*(but|yet|still|though|although|however|despite|while)\b/i;
 
@@ -270,6 +271,96 @@ function stripListingPrelude(text, opts = {}) {
   // Never strip everything — if the prelude is (almost) the whole text, the
   // caller is better off with the original than with a two-word husk.
   if (remainder.length < 100) return text;
+  return remainder;
+}
+
+// ---------------------------------------------------------------------------
+// Leading credits header (BRO-5718). Talkin' Broadway (and any outlet whose
+// scrape keeps the byline block) opens the body with
+//   "Theatre Review by Howard Miller - October 18, 2026. Other Desert Cities by
+//    Jon Robin Baitz. Directed by Jane Doe. Scenic design by ... "
+// and the raw-body fallback showed that as the pull quote until the LLM ran.
+// stripLeadingCredits() drops that run so the slice starts at the first prose
+// sentence. Conservative by construction: the run must open with a header or
+// credit label, and every "<label> by" sentence must be NAMES ONLY, so prose
+// like "Directed by Sam Mendes, this revival soars." is never touched.
+// ---------------------------------------------------------------------------
+const CREDITS_DATE = `\\s*[-–—|]\\s*(?:${MONTHS}|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sept?|Oct|Nov|Dec)\\.?\\s+\\d{1,2},?\\s+20\\d\\d`;
+const CREDITS_HEADER_RE = new RegExp(
+  `^[Tt]heat(?:re|er) [Rr]eview(?:` +
+  `\\s+by\\s+[A-Z][^\\n]{0,60}?(?=${CREDITS_DATE})(?:${CREDITS_DATE})` +
+  `|\\s+by\\s+[A-Z][^.\\n]{0,60}?(?=\\s*\\.(?:\\s|$|\\n))` +
+  `|\\s+by\\s+[A-Z][^.\\n]{0,60}?(?=\\n)` +
+  `|${CREDITS_DATE})\\s*\\.?(?=\\s|$)`
+);
+const CREDIT_LABEL_BY = '(?:Directed|Written|Music|Lyrics|Book|Choreograph(?:ed|y)|Produced|Presented|Adapted|Orchestrations?|Original music|'
+  + '(?:Scenic|Set|Costume|Lighting|Sound|Projection|Video|Hair|Wig|Makeup|Puppet|Fight|Movement|Music|Casting|Production)(?:\\s+and\\s+\\w+)?\\s+(?:design(?:ed)?|direction|supervision)|'
+  + 'Photos?(?:\\s+credit)?)\\s+by\\b';
+const CREDIT_LABEL_BY_G = new RegExp(CREDIT_LABEL_BY, 'gi');
+const CREDIT_NAMES_COLON_RE = /^(?:Cast|Starring|Photos?(?:\s+credit)?)\s*:\s*/i;
+const CREDIT_FACTS_COLON_RE = /^(?:Tickets|Running\s+time|Runtime|Venue)\s*:\s*/i;
+const NAME_TOKEN_RE = /^(?:[A-Z][\w'’.\-]*|and|&|de|di|van|von|der|la|le|da|del|y)[,;.]?$/;
+// Sentence split that does not break after an initial or title abbreviation.
+const CREDIT_SENTENCE_SPLIT_RE = /\s*\n\s*|(?<=[.!?])(?<!\b(?:[A-Z]|Jr|Sr|St|Mr|Ms|Mrs|Dr)\.)\s+(?=["“‘']?[A-Z])/;
+
+function isNamesOnly(s) {
+  const toks = s.replace(/[–—]/g, ' ').split(/\s+/).filter(Boolean);
+  return toks.length > 0 && toks.every(t => NAME_TOKEN_RE.test(t));
+}
+
+function normalizeCreditTitle(t) {
+  return foldDiacritics(String(t || '').toLowerCase()).replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+/**
+ * @param {string} text
+ * @param {object} [opts]
+ * @param {string} [opts.showTitle] enables the "<Show title> by <Author>." credit
+ * @param {number} [opts.maxCreditsChars=700] the credits run must end within this
+ * @returns {string} text minus the leading credits run, or the input unchanged
+ */
+function stripLeadingCredits(text, opts = {}) {
+  if (!text || typeof text !== 'string') return text;
+  const maxCreditsChars = opts.maxCreditsChars != null ? opts.maxCreditsChars : 700;
+  const title = normalizeCreditTitle(opts.showTitle);
+  let rest = text.replace(/^\s+/, '');
+  let strong = false;
+
+  const header = CREDITS_HEADER_RE.exec(rest);
+  if (header) {
+    strong = true;
+    rest = rest.slice(header[0].length).replace(/^\s+/, '');
+  }
+
+  const sentences = rest.split(CREDIT_SENTENCE_SPLIT_RE);
+  let consumed = 0;
+  for (let i = 0; i < sentences.length - 1; i++) {
+    const sent = sentences[i].trim();
+    if (!sent || sent.length > 220) break;
+    const body = sent.replace(/[.!?]+$/, '');
+    let credit = false;
+    const names = CREDIT_NAMES_COLON_RE.exec(body);
+    const facts = !names && CREDIT_FACTS_COLON_RE.exec(body);
+    if (names && isNamesOnly(body.slice(names[0].length))) {
+      credit = true; strong = true;
+    } else if (facts && body.length <= 90 && /[\d$]/.test(body)) {
+      credit = true; strong = true;
+    } else if (new RegExp('^' + CREDIT_LABEL_BY, 'i').test(body)) {
+      if (isNamesOnly(body.replace(CREDIT_LABEL_BY_G, ' '))) { credit = true; strong = true; }
+    } else if (title) {
+      const m = /^(.{2,80}?)\s+by\s+(.+)$/.exec(body);
+      if (m && normalizeCreditTitle(m[1]) === title && isNamesOnly(m[2])) credit = true;
+    }
+    if (!credit) break;
+    consumed = i + 1;
+  }
+  if (!strong) return text;
+
+  let pos = 0;
+  for (let i = 0; i < consumed; i++) pos = rest.indexOf(sentences[i], pos) + sentences[i].length;
+  const remainder = rest.slice(pos).replace(/^\s+/, '');
+  const removed = text.length - remainder.length;
+  if (removed > maxCreditsChars || remainder.length < 100) return text;
   return remainder;
 }
 
@@ -719,7 +810,8 @@ function startsWithPageChrome(text) {
   return SHARE_TOOLBAR_RE.test(t)
     || /^(?:Review|Photo|Credit|Venue|Production)\s*:/i.test(t)
     || /^read\s+(?:our|the)\s+(?:full\s+)?review\b/i.test(t)
-    || /^(?:buy\s+tickets|tickets\s+from\s+\$)/i.test(t);
+    || /^(?:buy\s+tickets|tickets\s+from\s+\$)/i.test(t)
+    || CREDITS_HEADER_RE.test(t);
 }
 
 // Bug #13: Off-topic excerpt detection. Very loose — only fires when there are
@@ -1007,6 +1099,8 @@ module.exports = {
   RUN_DATES_RE,
   hasListingChrome,
   stripListingPrelude,
+  stripLeadingCredits,
+  CREDITS_HEADER_RE,
   // Tag clouds
   isTagCloudExcerpt,
   // Mid-word truncation

@@ -59,7 +59,7 @@ const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTL
 const { excerptMentionsWrongShow, isTourReviewExcerpt, tourContextForShow, isFilmTvReview, excerptMentionsFormerCast } = require('./lib/excerpt-validation');
 const {
   shouldRejectAsReservation, isInternalNote, hasCopyrightChrome, stripLeadingChrome, isPromoTeaser,
-  hasListingChrome, stripListingPrelude, isTagCloudExcerpt, isMidWordTruncation,
+  hasListingChrome, stripListingPrelude, stripLeadingCredits, isTagCloudExcerpt, isMidWordTruncation,
   isContiguousInSource, snapToSourceSpan, isExcerptAnchoredInSource, isTrustedContiguitySource, startsWithPageChrome,
   phraseContradictsScore, EXCERPT_SOURCE_RANK, RAW_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
@@ -428,9 +428,9 @@ function extractExcerptFromFullText(fullText, showTitle) {
   // "<credits> @<venue> <run dates> Listing details and ticket info..." on a
   // single line; it shipped as the Tao of Glass pull quote (owner report
   // 2026-08-01). No-op when the boilerplate terminator is absent.
-  let text = fixMissingPeriods(fixMojibake(decodeHtmlEntities(
-    stripListingPrelude(chromeStripped || fullText)
-  )));
+  let text = fixMissingPeriods(fixMojibake(
+    stripLeadingCredits(decodeHtmlEntities(stripListingPrelude(chromeStripped || fullText)), { showTitle })
+  ));
 
   // Strip control characters (U+0080–U+009F range)
   text = text.replace(/[\u0080-\u009F]/g, '');
