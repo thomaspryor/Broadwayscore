@@ -32,8 +32,7 @@
 //                the push command. Kill switches: SHIP_CHECK_LAND_GATE_DISABLE=1; LAND_PREFLIGHT_DISABLE=1
 //                turns off the whole land hook. Events are logged to .claude/land-preflight.jsonl.
 //   Stop hook  - for a session with a /ship-check run: reviewers ran; /did-it-work printed its TESTED
-//                block; /what-else printed 5 ordered LENSES lines and read the roadmap (issue 1 of
-//                broadway-scorecard-data); the Linear Done close-out came after the last land push.
+//                block; /what-else printed 5 ordered LENSES lines and searched the Linear board; the Linear Done close-out came after the last land push.
 //                Bypass lines in the closing message: NO-SHIP-CHECK / NO-DID-IT-WORK / NO-WHAT-ELSE /
 //                NO-WRAP-UP: <reason, 10+ chars>, each waiving only its own check. Kill switch
 //                SHIP_CHECK_COVERAGE_DISABLE=1. Blocks at most 3 times per session.
@@ -225,7 +224,9 @@ function lensNumbers(text) {
   });
   return best;
 }
-const ROADMAP_READ_RE = /issue\s+view\s+1\b[^\n]*broadway-scorecard-data|broadway-scorecard-data[^\n]*issue\s+view\s+1\b/;
+// The board is Linear. The old GitHub roadmap (issue 1 of broadway-scorecard-data) is retired and no longer counts.
+const BOARD_READ_RE = /linear-brain\.js\s+(find|get)\b|linear-next\.js\s+--list\b/;
+const BOARD_READ_TOOL_RE = /linear.*__(list_issues|get_issue)$/i;
 const LINEAR_DONE_RE = /linear-brain\.js\s+update\s+BRO-\d+[^\n]*--state[=\s]+["']?Done|linear-session\.js\s+report\b[^\n]*--status[=\s]+["']?done\b/i;
 const LAND_PUSH_RE = /\bgit\b[^\n;&|]*\bpush\b[^\n;&|]*\bland\//;
 
@@ -251,10 +252,10 @@ export function evaluateChain(events, { lastMessage = '' } = {}) {
   if (we.length && !bypass('NO-WHAT-ELSE')) {
     const found = lensNumbers(texts(we[we.length - 1].i));
     if (found.size < 5) problems.push(`/what-else printed ${found.size} of 5 numbered lens lines directly under a LENSES: header, each citing a concrete check`);
-    const readRoadmap = events.some((e) => e.kind === 'assistant_tool_use' && (
-      (/github.*issue_read$/i.test(e.name || '') && e.input?.repo === 'broadway-scorecard-data' && Number(e.input?.issue_number) === 1) ||
-      (e.name === 'Bash' && ROADMAP_READ_RE.test(String(e.input?.command || '')))));
-    if (!readRoadmap) problems.push('/what-else never read the real roadmap (GitHub issue 1 of broadway-scorecard-data, via mcp__github__issue_read; the local memory/roadmap.md is stale)');
+    const readBoard = events.some((e) => e.kind === 'assistant_tool_use' && (
+      BOARD_READ_TOOL_RE.test(e.name || '') ||
+      (e.name === 'Bash' && BOARD_READ_RE.test(String(e.input?.command || '')))));
+    if (!readBoard) problems.push('/what-else never searched the Linear board (linear-brain.js find, or mcp__Linear__list_issues; the old GitHub roadmap issue and memory/roadmap.md are retired and stale)');
   }
 
   if (!bypass('NO-WRAP-UP')) {

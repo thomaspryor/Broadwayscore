@@ -103,7 +103,7 @@ Check for:
    - "I'll monitor" — NO. Monitor NOW, report the result.
    - "The run was triggered" — NO. That's the start, not the end.
 
-### Phase 4: Roadmap Update
+### Phase 4: Board Update (Linear)
 
 **Detect project type:** Check if this is a Linear-tracked project (same detection as session-start: `CLAUDE.md` contains "Broadway Scorecard").
 
@@ -203,26 +203,7 @@ Check for:
 
 5. **If zero candidates:** skip silently. Don't pad the report with "no matches found."
 
-**Otherwise (non-Linear projects):**
-
-Read the current roadmap:
-```bash
-gh issue view 1 --repo thomaspryor/broadway-scorecard-data --json body -q '.body' > /tmp/roadmap-current.md
-cat /tmp/roadmap-current.md
-```
-
-Then update it:
-1. **Move completed items** to the "Recently Done" section with a one-line summary and date
-2. **Update in-progress items** with current status
-3. **Add new backlog items** for anything discovered (extrapolation findings, loose ends, new ideas)
-4. **Write updated roadmap** to `memory/roadmap.md` and sync:
-   ```bash
-   gh issue edit 1 --repo thomaspryor/broadway-scorecard-data --body-file memory/roadmap.md
-   ```
-5. **Post a session comment** (2-3 sentences max):
-   ```bash
-   gh issue comment 1 --repo thomaspryor/broadway-scorecard-data --body "..."
-   ```
+**Otherwise (non-Linear projects):** there is no roadmap file to sync. Note remaining work in the final report and, if the project has an issue tracker, file issues there.
 
 ### Phase 5: Documentation, Memory & Learnings
 
@@ -266,7 +247,7 @@ Present a summary to the user:
 ### Done
 - [completed items]
 
-### Roadmap Updated
+### Board Updated
 - Moved to done: [items]
 - Added to backlog: [items]
 

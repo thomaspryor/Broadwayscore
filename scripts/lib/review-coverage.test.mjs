@@ -27,7 +27,7 @@ const CLOUD = { CLAUDE_CODE_REMOTE: 'true' };
 const text = (t) => ({ kind: 'assistant_text', text: t });
 const TESTED = text('\u2501\u2501\u2501 TESTED \u2501\u2501\u2501\nReal data: yes');
 const LENSES = text('LENSES:\n1. Pattern: grepped x -> clean\n2. Edges: read y -> empty\n3. User impact: z -> empty\n4. Data: q -> spark\n5. Compounding: w -> empty');
-const roadmap = () => tool('mcp__github__issue_read', { method: 'get', owner: 'thomaspryor', repo: 'broadway-scorecard-data', issue_number: 1 });
+const roadmap = () => tool('mcp__Linear__list_issues', { query: 'fantasy' });
 // did-it-work (with its TESTED block) then a fully covered ship-check
 const fullChain = () => [...ev(skill('did-it-work')), TESTED, ...ev(skill(), agent(), curl())];
 
@@ -269,18 +269,18 @@ test('finish chain: did-it-work must have run and printed its TESTED block', () 
   assert.deepEqual(evaluateChain(noDwi, { lastMessage: 'NO-DID-IT-WORK: pure hook revert, nothing to run\n\nSAFE TO EXIT' }), []);
 });
 
-test('finish chain: a hollow /what-else (one lens, no roadmap read) is flagged', () => {
+test('finish chain: a hollow /what-else (one lens, no board search) is flagged', () => {
   const base = fullChain();
   const hollow = [...base, ...ev(skill('what-else')), text('LENSES:\n1. Pattern: found cousins')];
   const p = evaluateChain(hollow).join('|');
   assert.match(p, /1 of 5 numbered lens lines/);
-  assert.match(p, /never read the real roadmap/);
+  assert.match(p, /never searched the Linear board/);
   const good = [...base, roadmap(), res(roadmap()), ...ev(skill('what-else')), LENSES];
   assert.deepEqual(evaluateChain(good), []);
-  const viaGh = [...base, ...ev(skill('what-else')), LENSES, tool('Bash', { command: 'gh issue view 1 --repo thomaspryor/broadway-scorecard-data --json body' })];
-  assert.deepEqual(evaluateChain(viaGh), [], 'the gh form of the roadmap read (Mac) counts too');
-  const wrongRepo = [...base, ...ev(skill('what-else')), LENSES, tool('mcp__github__issue_read', { method: 'get', owner: 'thomaspryor', repo: 'broadwayscore', issue_number: 1 })];
-  assert.match(evaluateChain(wrongRepo).join('|'), /never read the real roadmap/);
+  const viaCli = [...base, ...ev(skill('what-else')), LENSES, tool('Bash', { command: 'node scripts/linear-brain.js find "fantasy"' })];
+  assert.deepEqual(evaluateChain(viaCli), [], 'the linear-brain.js find form of the board search (Mac) counts too');
+  const oldRoadmap = [...base, ...ev(skill('what-else')), LENSES, tool('mcp__github__issue_read', { method: 'get', owner: 'thomaspryor', repo: 'broadway-scorecard-data', issue_number: 1 }), tool('Bash', { command: 'gh issue view 1 --repo thomaspryor/broadway-scorecard-data --json body' })];
+  assert.match(evaluateChain(oldRoadmap).join('|'), /never searched the Linear board/, 'the retired GitHub roadmap read no longer counts');
 });
 
 test('finish chain: a Linear close-out posted before the last landing is flagged', () => {
@@ -400,15 +400,15 @@ test('close-out ordering only counts landings that really ran, and only a real D
   assert.match(problem([...base, ...ev(doneRep), ...ev(mk(landCmd))]), /close-out was posted before/, '--status=done counts');
 });
 
-test('what-else: the best LENSES block wins over a later bare mention, and any github issue_read tool name reads the roadmap', () => {
+test('what-else: the best LENSES block wins over a later bare mention, and any Linear list/get tool name reads the board', () => {
   const five = ['1. a: b', '2. a: b', '3. a: b', '4. a: b', '5. a: b'].join('\n');
-  const rm = (name) => tool(name, { method: 'get', owner: 'thomaspryor', repo: 'broadway-scorecard-data', issue_number: 1 });
+  const rm = (name) => tool(name, { query: 'fantasy' });
   const run = (t, road) => evaluateChain([...fullChain(), ...ev(road), ...ev(skill('what-else')), text(t)]);
-  assert.deepEqual(run(`LENSES:\n${five}\n\nLENSES: done, summary below`, rm('mcp__github__issue_read')), []);
-  assert.deepEqual(run(`LENSES:\n${five}`, rm('mcp__GitHub__issue_read')), [], 'prefix case differs');
-  assert.deepEqual(run(`LENSES:\n${five}`, rm('mcp__claude_ai_GitHub__issue_read')), [], 'prefix differs per container');
-  assert.match(run(`LENSES:\n${five}`, tool('mcp__github__list_issues', { repo: 'broadway-scorecard-data' })).join('|'), /never read the real roadmap/);
+  assert.deepEqual(run(`LENSES:\n${five}\n\nLENSES: done, summary below`, rm('mcp__Linear__list_issues')), []);
+  assert.deepEqual(run(`LENSES:\n${five}`, rm('mcp__claude_ai_Linear__get_issue')), [], 'prefix differs per container');
+  assert.match(run(`LENSES:\n${five}`, tool('mcp__Linear__save_comment', {})).join('|'), /never searched the Linear board/);
 });
+
 
 test('pendingGatedStats sizes a chained push like an unchained one: against the merge base, tracked edits included', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rc-pend-'));

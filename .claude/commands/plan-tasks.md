@@ -39,11 +39,11 @@ Identify the project to plan. This is either:
 
 If working in a codebase, use the repo-sweeper agent (Task tool, subagent_type "repo-sweeper") to understand the existing architecture, patterns, and conventions before planning. This is NOT optional — plans without codebase context produce generic tasks that miss existing infrastructure.
 
-**Roadmap context:** Read the current roadmap to check for related items, dependencies, or prior decisions:
+**Board context:** Search the Linear board (the roadmap; the old GitHub roadmap issue is retired) for related items, dependencies, or prior decisions:
 ```bash
-gh issue view 1 --repo thomaspryor/broadway-scorecard-data --json body -q '.body' | head -100
+node scripts/linear-brain.js find "<project keywords>"
 ```
-Note any roadmap items that overlap with or depend on this work.
+In cloud, `mcp__Linear__list_issues` with `query` returns several matches. Note any open issues that overlap with or depend on this work.
 
 Specifically find out:
 - What already exists that can be reused (scripts, schemas, components, workflows)

@@ -68,19 +68,22 @@ never to whether a lens is run.
 
 ### Phase 3: Filter and prioritize
 
-**Read the current roadmap** to avoid duplicating existing items (mandatory —
-run the command; the LENSES block plus this read are the two things that make
-a /what-else pass real rather than performative):
-```bash
-gh issue view 1 --repo thomaspryor/broadway-scorecard-data --json body -q '.body' 2>/dev/null || cat memory/roadmap.md
-```
+**Read the current board** to avoid duplicating existing items (mandatory;
+run the search; the LENSES block plus this read are the two things that make
+a /what-else pass real rather than performative). The board is Linear. The old
+GitHub roadmap issue (issue 1 of `broadway-scorecard-data`) and `memory/roadmap.md`
+are retired and stale: never use them.
 
-**Cloud (no `gh` CLI): the `|| cat memory/roadmap.md` fallback above reads a stale local file and is NOT the roadmap.** Read issue 1 with `mcp__github__issue_read` (`method: get`, `owner: thomaspryor`, `repo: broadway-scorecard-data`, `issue_number: 1`). The body is about 60k characters, so the tool saves it to a file: `grep -n -i` that file for each spark's keywords and quote the matching lines in the "already covered" call. If the read fails, say so; do not substitute the local file silently.
+For each spark, search open Linear issues for its keywords:
+```bash
+node scripts/linear-brain.js find "<spark keywords>"
+```
+In cloud, `mcp__Linear__list_issues` (`query: "<keywords>"`, open states) works too and returns several matches at once. Quote the matching `BRO-N` titles in the "already covered" call. If a search fails, say so; do not substitute a file silently.
 
 From all the sparks generated, keep only the ones that are:
 - **Actionable** — someone could start on this in the next session
 - **Valuable** — worth the effort, not just interesting
-- **Non-obvious** — not already on the roadmap (check against what you just read)
+- **Non-obvious** — not already on the Linear board (check against what you just searched)
 
 **Quality over quantity.** 3-5 sparks with depth beats 7 shallow ones. If you have more than 5, cut the weakest.
 
@@ -96,7 +99,7 @@ Sort sparks into tiers with effort estimates:
 **Start now in parallel session** (worth doing today but independent):
 - [spark] — [why it matters] (~N min). Prompt: "[ready-to-paste prompt for new session]"
 
-**Roadmap** (good ideas that don't need today's context):
+**Board** (good ideas that don't need today's context; file each as a Linear issue):
 - [spark] — [why it matters]
 
 ### Phase 5: File Linear issues (MANDATORY — do not ask, just do it)
@@ -116,7 +119,7 @@ So, per spark, in this order:
 
 1. **Can you fix it now, in this session?** Then fix it. A spark you can close
    in ten minutes is worth more fixed than filed. This is the default.
-2. **Is it already covered** by an open issue or the roadmap you just read?
+2. **Is it already covered** by an open Linear issue you just searched?
    Then say so and file nothing.
 3. **Only if neither holds**, file it — and the notes MUST name why it needs
    its own session (a decision you cannot make, access you lack, or work that
@@ -164,6 +167,6 @@ Verify the launch output shows a workspace running, then report `DISPATCHED: wor
 **DO the "Do now" items immediately** — never ask "Want me to do the now items?" (that's the banned defer-question; the finish-line gate blocks it). Then, in your final message, triage EVERY card you created so the user knows exactly what's required of them:
 - **Do now** → already done by you (report the result)
 - **P0/P1 cards** → DISPATCHED per Phase 5.5 (workspace name + task); a card link alone is a process failure
-- **Roadmap (P2)** → one line: why it can wait and what would promote it
+- **Board (P2)** → one line: why it can wait and what would promote it
 
 Never present new cards as a bare list of links — the user shouldn't have to ask "what are the priorities of these, and who does them?"
