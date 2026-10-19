@@ -210,13 +210,20 @@ describe('already-open Off-Broadway award EV is measured (BRO-5666)', () => {
 });
 
 describe('constants measured from past seasons (BRO-5667)', () => {
-  test('measureGrossByTier: tier N is the mean of the Nth fifth; ceiling uses the 90th-percentile ticket', () => {
-    const rows = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000].map(g => ({ typeKey: 'play-new', gross: g * 1000, atp: g / 5 }));
+  test('measureGrossByTier: tier N is the mean of the Nth fifth, absolute and per seat', () => {
+    const rows = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000].map(g => ({ typeKey: 'play-new', gross: g * 1000, seats: 1000 }));
     const m = pricing.measureGrossByTier(rows);
     assert.deepEqual(m.byType['play-new'], { 1: 150000, 2: 350000, 3: 550000, 4: 750000, 5: 950000 });
-    assert.equal(m.ceilingAtp.play, 200, 'p90 of 20..200, not one outlier');
+    assert.deepEqual(m.perSeatByType['play-new'], { 1: 150, 2: 350, 3: 550, 4: 750, 5: 950 });
     assert.equal(pricing.measureGrossByTier(rows.slice(0, 9)).byType['play-new'], null, 'under 10 shows: not measured');
-    assert.equal(pricing.weeklyGrossCeiling(1000, 'play', m.ceilingAtp), Math.round(1000 * 8 * 200 * 0.95));
+  });
+
+  test('a known house scales the per-seat tier gross', () => {
+    const grossByTier = pricing.measureGrossByTier([100, 200, 300, 400, 500, 600, 700, 800, 900, 1000].map(g => ({ typeKey: 'play-new', gross: g * 1000, seats: 1000 })));
+    const ctx = { ...base, priors: { tier: 5 }, categoryField: {}, grossByTier };
+    const big = pricing.projectShowPoints(newPlay, { ...ctx, venueCapacity: 1000 });
+    const small = pricing.projectShowPoints(newPlay, { ...ctx, venueCapacity: 500 });
+    assert.ok(Math.abs(small.boxOfficePoints * 2 - big.boxOfficePoints) < 0.05, `${small.boxOfficePoints} vs ${big.boxOfficePoints}`);
   });
 
   test('measureAwardConstants: precursor ratio and extra noms by kind', () => {

@@ -177,10 +177,10 @@ function boxOfficeWeeks(show, { scoringStart, scoringEnd, runWeeks, tier }) {
 }
 
 /** Weekly gross ceiling for a house, or null when capacity is unknown. */
-function weeklyGrossCeiling(capacity, type, ceilingAtp) {
+function weeklyGrossCeiling(capacity, type) {
   if (!Number.isFinite(capacity) || capacity <= 0) return null;
   const family = type === 'musical' ? 'musical' : 'play';
-  const atp = ceilingAtp?.[family] || AVG_TICKET_FOR_CAP[family];
+  const atp = AVG_TICKET_FOR_CAP[family];
   return Math.round(capacity * PERFORMANCES_PER_WEEK * atp * CAP_OCCUPANCY);
 }
 
@@ -189,41 +189,39 @@ function weeklyGrossCeiling(capacity, type, ceilingAtp) {
 // sorted and split into fifths; tier N gets the mean of the Nth fifth (tier 5
 // = the top fifth). This replaces a hand-set median x GROSS_MULTIPLIER, which
 // capped a tier-5 new play at $683K a week when the top fifth of new plays
-// averaged about $1.4M. ceilingAtp (90th percentile of past shows' average
-// ticket, per family) replaces the flat $150 in the house ceiling: star plays
-// sell at $200+. Not the single highest ticket ($379, Othello alone), which
-// made the ceiling bind for no house.
+// averaged about $1.4M. The same fifths are also measured per seat (gross /
+// seats in the house), so a show with a known house is projected as
+// perSeat[tier] x its seats: a 597-seat house earns less than a 1,000-seat
+// one at the same tier without a hand-set ticket-price ceiling, which either
+// never bound (highest real ticket) or clipped star plays below what past
+// tier-5 plays really grossed (90th-percentile ticket).
 const GROSS_TIER_MIN_N = 10;
 
-/** rows: [{ typeKey: 'play-new'|..., gross, atp }] → { byType: { [typeKey]: {1..5} | null }, ceilingAtp: { play, musical } } */
+function fifthMeans(values) {
+  const sorted = [...values].sort((a, b) => a - b);
+  const n = sorted.length;
+  const tiers = {};
+  for (let t = 1; t <= 5; t++) {
+    const fifth = sorted.slice(Math.floor((t - 1) * n / 5), Math.floor(t * n / 5));
+    tiers[t] = Math.round(fifth.reduce((a, b) => a + b, 0) / fifth.length);
+  }
+  return tiers;
+}
+
+/** rows: [{ typeKey: 'play-new'|..., gross, seats? }] → { byType, perSeatByType } ({ [typeKey]: {1..5} | null } each) */
 function measureGrossByTier(rows) {
-  const byTypeRows = {};
-  const atps = {};
+  const grosses = {};
+  const perSeat = {};
   for (const r of rows) {
     if (!Number.isFinite(r.gross) || r.gross <= 0) continue;
-    (byTypeRows[r.typeKey] = byTypeRows[r.typeKey] || []).push(r.gross);
-    const family = r.typeKey.startsWith('musical') ? 'musical' : 'play';
-    if (Number.isFinite(r.atp)) (atps[family] = atps[family] || []).push(r.atp);
+    (grosses[r.typeKey] = grosses[r.typeKey] || []).push(r.gross);
+    if (Number.isFinite(r.seats) && r.seats > 0) (perSeat[r.typeKey] = perSeat[r.typeKey] || []).push(r.gross / r.seats);
   }
   const byType = {};
-  for (const [typeKey, grosses] of Object.entries(byTypeRows)) {
-    if (grosses.length < GROSS_TIER_MIN_N) { byType[typeKey] = null; continue; }
-    const sorted = [...grosses].sort((a, b) => a - b);
-    const n = sorted.length;
-    const tiers = {};
-    for (let t = 1; t <= 5; t++) {
-      const fifth = sorted.slice(Math.floor((t - 1) * n / 5), Math.floor(t * n / 5));
-      tiers[t] = Math.round(fifth.reduce((a, b) => a + b, 0) / fifth.length);
-    }
-    byType[typeKey] = tiers;
-  }
-  const ceilingAtp = {};
-  for (const [family, list] of Object.entries(atps)) {
-    if (list.length < GROSS_TIER_MIN_N) continue;
-    const sorted = [...list].sort((a, b) => a - b);
-    ceilingAtp[family] = Math.round(sorted[Math.min(sorted.length - 1, Math.floor(0.9 * sorted.length))]);
-  }
-  return { byType, ceilingAtp };
+  const perSeatByType = {};
+  for (const [typeKey, list] of Object.entries(grosses)) byType[typeKey] = list.length >= GROSS_TIER_MIN_N ? fifthMeans(list) : null;
+  for (const [typeKey, list] of Object.entries(perSeat)) perSeatByType[typeKey] = list.length >= GROSS_TIER_MIN_N ? fifthMeans(list) : null;
+  return { byType, perSeatByType };
 }
 
 /**
@@ -394,15 +392,18 @@ function projectShowPoints(show, ctx) {
       // (Billy Crystal's solo show) or vice versa; priors.boxOfficeTier
       // separates the two when they differ.
       const grossTier = priors.boxOfficeTier != null ? clampTier(priors.boxOfficeTier) : tier;
+      const perSeat = ctx.grossByTier?.perSeatByType?.[key];
       const measured = ctx.grossByTier?.byType?.[key];
-      if (measured) {
+      if (perSeat && Number.isFinite(ctx.venueCapacity) && ctx.venueCapacity > 0) {
+        weekly = perSeat[grossTier] * ctx.venueCapacity;
+      } else if (measured) {
         weekly = measured[grossTier];
       } else {
         const base = ctx.weeklyGrossPriors?.[key] || 500_000;
         weekly = base * GROSS_MULTIPLIER[grossTier];
+        const ceiling = weeklyGrossCeiling(ctx.venueCapacity, show.type);
+        if (ceiling != null && weekly > ceiling) weekly = ceiling;
       }
-      const ceiling = weeklyGrossCeiling(ctx.venueCapacity, show.type, ctx.grossByTier?.ceilingAtp);
-      if (ceiling != null && weekly > ceiling) weekly = ceiling;
       notes.push(`projected about ${fmtGross(weekly)} a week`);
     }
     boxOfficeEV = weeks * (weekly / 100_000) * S.boxOffice.pointsPer100K;

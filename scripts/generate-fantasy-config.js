@@ -401,7 +401,7 @@ const grossByTier = (() => {
       if (weeks.length === 20) break;
     }
     if (weeks.length < 4) continue;
-    rows.push({ typeKey: `${s.type}-${s.isRevival ? 'revival' : 'new'}`, gross: median(weeks.map(r => r.gross)), atp: median(weeks.map(r => r.atp).filter(Number.isFinite)) });
+    rows.push({ typeKey: `${s.type}-${s.isRevival ? 'revival' : 'new'}`, gross: median(weeks.map(r => r.gross)), seats: median(weeks.map(r => r.seatsOffered / r.performances).filter(Number.isFinite)) });
   }
   const measured = pricing.measureGrossByTier(rows);
   console.error(`Weekly gross by tier (${from}..${to}, ${rows.length} shows): ${JSON.stringify(measured)}`);
