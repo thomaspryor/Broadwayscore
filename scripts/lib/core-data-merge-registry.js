@@ -77,6 +77,7 @@ const { mergeAlertRouterAttempts } = require('./merge-alert-router-attempts');
 const { mergeGuardEscalationState } = require('./merge-guard-escalation-state');
 const { mergeBreakerTransitions } = require('./merge-breaker-transitions');
 const { mergeRetiredRecords } = require('./merge-retired-ids');
+const { mergeNewsletterState } = require('./merge-newsletter-state');
 
 const CORE_DATA_MERGE_REGISTRY = [
   // ── public-repo surface (push-with-retry.sh) ──────────────────────────────
@@ -159,6 +160,22 @@ const CORE_DATA_MERGE_REGISTRY = [
     // by date (BRO-5261 retro-review); without it, running on every
     // fallback push resurrected every pruned post. social-post.yml uses a
     // per-run concurrency group, so this is the file most likely to race.
+    apiFallbackMerge: true,
+  },
+  {
+    file: 'newsletter-state.json',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergeNewsletterState,
+    format: 'json',
+    newline: true,
+    // BRO-5509: the weekly newsletter anti-repeat ledger. newsletter-draft.yml
+    // (per-edition concurrency group), the newsletter-draft-refresh.yml matrix
+    // and newsletter-state-reconcile.yml all upsert it in parallel, and both
+    // editions append to the same `issues` array, so a whole-file pick dropped
+    // the other edition's issue entry. Three-way per (weekStart, edition) key;
+    // base-aware, so the API fallback running it against an untouched remote
+    // keeps our prune/replace instead of resurrecting old entries.
     apiFallbackMerge: true,
   },
   {

@@ -3,7 +3,8 @@
  * Helper invoked by push-with-retry.sh during conflict resolution on
  * data/commercial.json, data/commercial-pending-review.json,
  * data/commercial-research-queue.json, data/diary-shows.json,
- * data/social-post-history.json, or data/audit/feedback-request-ledger.json.
+ * data/social-post-history.json, data/newsletter-state.json, or
+ * data/audit/feedback-request-ledger.json.
  *
  * Usage:
  *   node scripts/lib/merge-commercial-conflict.js <file> <keep_local_flag> <keep_remote_flag>

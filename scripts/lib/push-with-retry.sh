@@ -1887,6 +1887,23 @@ resolve_conflicts() {
           git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
         fi
         ;;
+      data/newsletter-state.json)
+        # BRO-5509: per-(weekStart, edition) issue merge. The Broadway and West
+        # End newsletter runs (newsletter-draft.yml on per-edition concurrency
+        # groups, the newsletter-draft-refresh.yml matrix, the daily
+        # newsletter-state-reconcile.yml) each upsert their own edition's issue
+        # and push in parallel. The generic arm below keeps one side whole and
+        # drops the other edition's entry, so next week's issue can re-feature
+        # the shows it already ran. mergeNewsletterState is three-way per key
+        # (base = stage 1), capped like the writer at the newest 24 issues.
+        echo "  Auto-resolving (newsletter-state merge): $file"
+        if node "$SCRIPT_DIR/merge-commercial-conflict.js" "$file" "$keep_local" "$keep_remote" 2>&1; then
+          git add "$file" 2>/dev/null && resolved=true
+        else
+          echo "  ::warning::newsletter-state merge failed for $file; falling back to keep-local"
+          git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
+        fi
+        ;;
       *)
         # Other data files: accept remote (other workflows' changes) — but
         # ONLY when doing so doesn't discard real content our own commit

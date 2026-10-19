@@ -92,8 +92,15 @@ permissions:
 # Avoid racing a manual dispatch against the Saturday cron, or back-to-back
 # manual runs against each other. cancel-in-progress=false so a scheduled run
 # isn't dropped mid-flight by a manual click.
+# BRO-5509: one group PER EDITION (the Saturday cron has no inputs, so it is
+# broadway). A single static group let newsletter-draft-refresh.yml's Sunday
+# recovery, which dispatches both editions back to back, evict the first
+# edition's pending run (GitHub keeps one pending run per group), so that
+# edition's draft was skipped for the week. The two editions now run in
+# parallel; their data/newsletter-state.json pushes are reconciled per issue by
+# push-with-retry.sh (merge-newsletter-state.js, PUSH_RECONCILE_MERGED_JSON=1).
 concurrency:
-  group: newsletter-draft
+  group: newsletter-draft-${{ github.event.inputs.edition || 'broadway' }}
   cancel-in-progress: false
 
 jobs:
@@ -314,7 +321,9 @@ jobs:
             exit 0
           fi
           git commit -m "chore(newsletter): update de-dup state for ${{ steps.week.outputs.weekStart }}"
-          bash scripts/lib/push-with-retry.sh 5 main || { echo "::warning::newsletter-state push failed"; exit 1; }
+          # BRO-5509: the other edition may push this file concurrently; the
+          # post-rebase reconcile re-merges both editions' issue entries.
+          PUSH_RECONCILE_MERGED_JSON=1 bash scripts/lib/push-with-retry.sh 5 main || { echo "::warning::newsletter-state push failed"; exit 1; }
 
       - name: Notify on failure
         if: failure()

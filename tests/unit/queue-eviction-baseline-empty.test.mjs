@@ -33,8 +33,8 @@ function scriptTexts(dir) {
   return out;
 }
 
-test('queue-eviction baseline holds only the deliberately left newsletter-draft.yml', () => {
-  assert.deepEqual(QUEUE_EVICTION_BASELINE, ['newsletter-draft.yml']);
+test('queue-eviction baseline is empty (BRO-5509 removed newsletter-draft.yml)', () => {
+  assert.deepEqual(QUEUE_EVICTION_BASELINE, []);
 });
 
 test('no dispatched workflow in the repo can silently evict a pending run', () => {

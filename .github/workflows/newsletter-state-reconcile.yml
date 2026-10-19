@@ -79,7 +79,8 @@ jobs:
             exit 0
           fi
           git commit -m "chore(newsletter): reconcile de-dup state vs actually-sent broadcasts [skip ci]"
-          bash scripts/lib/push-with-retry.sh
+          # BRO-5509: newsletter runs may push this file concurrently.
+          PUSH_RECONCILE_MERGED_JSON=1 bash scripts/lib/push-with-retry.sh
 
       - name: Notify on failure
         if: failure()

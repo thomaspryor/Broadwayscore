@@ -62,14 +62,18 @@ permissions:
   contents: write
   actions: write
 
-concurrency:
-  group: newsletter-draft
-  cancel-in-progress: false
-
 jobs:
   refresh:
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    # BRO-5509: job level, one group per edition, shared with
+    # newsletter-draft.yml's per-edition workflow group so a recovery dispatch
+    # for this edition queues behind this job instead of racing it, while the
+    # other edition's run no longer evicts it. Both matrix jobs push
+    # data/newsletter-state.json; push-with-retry.sh merges them per issue.
+    concurrency:
+      group: newsletter-draft-${{ matrix.edition }}
+      cancel-in-progress: false
     strategy:
       fail-fast: false
       matrix:
@@ -210,9 +214,9 @@ jobs:
       # pre-send-check, mobile overflow gate, regression-test, owner preview
       # send, Resend draft creation) instead of a second, drifted copy of it
       # living in this file. Runs async — this job doesn't wait for it, and
-      # doesn't need to: the dispatched run shares this workflow's
-      # `newsletter-draft` concurrency group, so it simply queues behind this
-      # job rather than racing it. The subjectPrefix flags it as a recovered
+      # doesn't need to: the dispatched run shares this job's per-edition
+      # `newsletter-draft-<edition>` concurrency group, so it simply queues
+      # behind this job rather than racing it. The subjectPrefix flags it as a recovered
       # send so the owner can tell it didn't arrive on the normal Saturday
       # schedule.
       - name: Dispatch full creation pipeline (recovery — no draft exists yet)
@@ -255,7 +259,8 @@ jobs:
             exit 0
           fi
           git commit -m "chore(newsletter): update de-dup state for ${{ steps.week.outputs.weekStart }} (Sunday refresh)"
-          bash scripts/lib/push-with-retry.sh 5 main || { echo "::warning::newsletter-state push failed"; exit 1; }
+          # BRO-5509: the other matrix job pushes this file in parallel.
+          PUSH_RECONCILE_MERGED_JSON=1 bash scripts/lib/push-with-retry.sh 5 main || { echo "::warning::newsletter-state push failed"; exit 1; }
 
       - name: Notify on failure
         if: failure()
