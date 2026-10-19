@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-19T16:19:53.296Z",
+  "generatedAt": "2026-10-19T16:49:06.534Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -764,9 +764,9 @@
       "status": "open",
       "slug": "other-desert-cities",
       "thumbnail": "/images/shows/other-desert-cities-2026/thumbnail.webp",
-      "siteScore": 68.67,
+      "siteScore": 68.98,
       "liveScore": 69,
-      "scoreDrift": 0.3299999999999983,
+      "scoreDrift": 0.01999999999999602,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -1061,6 +1061,18 @@
           "t": "2026-10-19T15:50:25.021Z",
           "rc": 27,
           "s": 68.67,
+          "t1": 9,
+          "t2": 16,
+          "t3": 2,
+          "p": 15,
+          "m": 6,
+          "n": 6,
+          "bc": "preview-sent"
+        },
+        {
+          "t": "2026-10-19T16:49:06.534Z",
+          "rc": 27,
+          "s": 68.98,
           "t1": 9,
           "t2": 16,
           "t3": 2,
@@ -2718,23 +2730,11 @@
       },
       "missingT1": [
         {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
           "name": "Observer",
           "isDualMarket": true
         },
         {
-          "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
           "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Sunday Times",
           "isDualMarket": true
         },
         {
@@ -2778,10 +2778,6 @@
         {
           "name": "WhatsOnStage",
           "isDualMarket": true
-        },
-        {
-          "name": "The Arts Desk",
-          "isDualMarket": false
         },
         {
           "name": "BritishTheatre.com",
