@@ -939,9 +939,28 @@ test('makeVerifiedBaseChecks hands the scope to the checks seam; a failed diff m
     checks({ cwd: '/wt', baseSha: b, repoDir: '/repo', changedFiles: ['scripts/lib/foo.js'] });
     return seen.recheckScope;
   };
-  assert.equal(run((args) => (args[0] === 'merge-base' ? '' : args[0] === 'diff' ? 'scripts/lib/bar.js' : '')).mode, 'small');
-  assert.equal(run((args) => (args[0] === 'merge-base' ? '' : args[0] === 'diff' ? 'scripts/lib/foo.js' : '')).mode, 'full');
+  // main's window is `verified..base`; the branch's own files are `base...HEAD`.
+  const fake = (mainFiles, branchFiles) => (args) => {
+    if (args[0] === 'merge-base') return '';
+    if (args[0] !== 'diff') return '';
+    return String(args[args.length - 1]).endsWith('...HEAD') ? branchFiles : mainFiles;
+  };
+  assert.equal(run(fake('scripts/lib/bar.js', 'scripts/lib/foo.js')).mode, 'small');
+  assert.equal(run(fake('scripts/lib/foo.js', 'scripts/lib/foo.js')).mode, 'full');
   assert.equal(run((args) => (args[0] === 'merge-base' ? '' : null)).mode, 'full', 'git diff failed → unknown → full');
+  // Branch-side rename: `git mv scripts/lib/foo.js scripts/lib/foo2.js` while main edits foo.js.
+  const renamed = (args) => {
+    if (args[0] === 'merge-base') return '';
+    if (args[0] === 'diff' && String(args[args.length - 1]).endsWith('...HEAD')) return 'scripts/lib/foo.js\nscripts/lib/foo2.js';
+    return args[0] === 'diff' ? 'scripts/lib/foo.js' : '';
+  };
+  assert.equal(run(renamed).mode, 'full', 'a branch rename of a file main edited is an overlap');
+  // Branch-side diff failed → unknown → full.
+  assert.equal(run((args) => (args[0] === 'merge-base' ? '' : String(args[args.length - 1]).endsWith('...HEAD') ? null : 'x.md')).mode, 'full');
+  // The holder alone after a red train always re-checks in full.
+  const checks = makeVerifiedBaseChecks({ verifiedBase: v, checks: (o) => { seen = o; return []; }, git: (args) => (args[0] === 'merge-base' ? '' : 'x.md'), prepare: () => [] });
+  checks({ cwd: '/wt', baseSha: b, repoDir: '/repo', changedFiles: ['scripts/lib/foo.js'], forceFullRecheck: true });
+  assert.equal(seen.recheckScope.mode, 'full');
   const diffArgs = [];
   run((args) => { if (args[0] === 'diff') diffArgs.push(...args); return args[0] === 'merge-base' ? '' : 'x.md'; });
   assert.ok(diffArgs.includes('--no-renames'), 'a rename on main shows both names to the overlap test');

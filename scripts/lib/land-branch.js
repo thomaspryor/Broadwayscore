@@ -298,6 +298,7 @@ function isBuildCodePath(file) {
 function selectRecheckScope({ ancestor, intervening, changedFiles, disabled = false }) {
   if (disabled) return { mode: 'full', build: true, reason: 'small re-check disabled (LAND_SMALL_RECHECK_DISABLED=true)' };
   if (ancestor !== true || !Array.isArray(intervening)) return { mode: 'full', build: true, reason: 'files main changed since the verified base are unknown' };
+  if (!Array.isArray(changedFiles)) return { mode: 'full', build: true, reason: 'files the branch changed are unknown' };
   const mine = new Set((changedFiles || []).map(String));
   const shared = intervening.map(String).filter((f) => mine.has(f));
   if (shared.length) return { mode: 'full', build: true, reason: `branch and main both changed ${shared.length} file(s) (${shared.slice(0, 3).join(', ')})` };
@@ -339,10 +340,17 @@ function makeVerifiedBaseChecks({ verifiedBase, checks = defaultChecks, git = nu
       // test still does arm it (~4 min, within MERGED_TREE_TIMEOUT_MS).
       const interveningTests = intervening.filter(f => isRunnableTestFile(f) && (!cwd || fs.existsSync(path.join(cwd, f))));
       const extra = ancestor ? `+${interveningTests.length} test file(s) changed on main since the verified base` : 'tests changed on main unknown: verified base is not an ancestor';
-      const recheckScope = selectRecheckScope({
-        ancestor, intervening: diffOut === null ? null : intervening, changedFiles: o.changedFiles,
-        disabled: process.env.LAND_SMALL_RECHECK_DISABLED === 'true',
-      });
+      // Overlap needs the branch's files with renames split too: a branch
+      // `git mv a b` plus a main edit to a would otherwise read as disjoint.
+      const branchOut = run(['diff', '--name-only', '--no-renames', `${baseSha}...HEAD`], cwd);
+      const recheckScope = o.forceFullRecheck
+        ? { mode: 'full', build: true, reason: 'the holder alone after a red merge train' }
+        : selectRecheckScope({
+          ancestor,
+          intervening: diffOut === null ? null : intervening,
+          changedFiles: branchOut === null ? null : branchOut.split('\n').filter(Boolean),
+          disabled: process.env.LAND_SMALL_RECHECK_DISABLED === 'true',
+        });
       log(`[land] verified-base: ${decision.reason} — re-checking on the merged tree (${extra}); ${recheckScope.mode} re-check: ${recheckScope.reason}`);
       return checks({ ...o, interveningTests, recheckScope });
     }
@@ -374,8 +382,11 @@ function mergedTreeGateInput(changedFiles, interveningTests) {
 }
 
 // recheckScope (selectRecheckScope) comes only from makeVerifiedBaseChecks;
-// every other caller (plain land, the merge train, the holder-alone retry)
-// passes none and gets the full re-check.
+// every other caller (plain land, the merge train) passes none and gets the
+// full re-check, and the holder-alone retry after a red train forces full.
+// A small re-check whose floor selects no test passes: the branch already ran
+// the full gauntlet upstream (land.yml Checks), which is the proof tier 3's
+// "no runnable check" refusal would otherwise ask for.
 function defaultChecks({ cwd, changedFiles, interveningTests = [], recheckScope = null, baseSha, repoDir, log = () => {} }) {
   const small = Boolean(recheckScope && recheckScope.mode === 'small');
   const files = (changedFiles || []).map(String);
@@ -779,7 +790,8 @@ function landBranch(o) {
           discardResidue('train red');
           git(['reset', '-q', '--hard', holderHead], workdir);
           files = git(['diff', '--name-only', `${baseSha}...HEAD`], workdir).split('\n').filter(Boolean);
-          results = checks({ cwd: workdir, changedFiles: files, baseSha, repoDir, log }) || [];
+          // A combined tree just tested red: never the small re-check here.
+          results = checks({ cwd: workdir, changedFiles: files, baseSha, repoDir, log, forceFullRecheck: true }) || [];
         }
       } else {
         results = checks({ cwd: workdir, changedFiles: files, baseSha, repoDir, log }) || [];
