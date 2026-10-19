@@ -165,14 +165,17 @@ jobs:
           retention-days: 30
 
       - name: Push review-texts to private repo
+        id: push-review-texts
         if: ${{ steps.inputs.outputs.mode == 'apply' && always() }}
         uses: ./.github/actions/push-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Touring contamination audit (${{ steps.inputs.outputs.market }}) — flag wrongProduction"
 
+      # BRO-5308: dispatch only when review-texts actually reached the private repo
+      # (push-review-texts 'pushed', which also counts in-job checkpoint pushes).
       - name: Trigger rebuild
-        if: ${{ steps.inputs.outputs.mode == 'apply' && success() }}
+        if: ${{ steps.inputs.outputs.mode == 'apply' && success() && steps.push-review-texts.outputs.pushed == 'true' }}
         env:
           GH_TOKEN: ${{ github.token }}
         run: |

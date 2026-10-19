@@ -112,14 +112,17 @@ jobs:
           node scripts/backfill-review-dates.js $ARGS
 
       - name: Push review texts
+        id: push-review-texts
         if: ${{ inputs.dry_run != true && inputs.dry_run != 'true' }}
         uses: ./.github/actions/push-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Backfill publishDate from HTML metadata'
 
+      # BRO-5308: dispatch only when review-texts actually reached the private repo
+      # (push-review-texts 'pushed', which also counts in-job checkpoint pushes).
       - name: Trigger rebuild
-        if: ${{ inputs.dry_run != true && inputs.dry_run != 'true' }}
+        if: ${{ inputs.dry_run != true && inputs.dry_run != 'true' && steps.push-review-texts.outputs.pushed == 'true' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

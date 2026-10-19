@@ -63,6 +63,7 @@ const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { wrongShowCleared } = require('./lib/review-guards');
 const { invalidateWrongShowAutoClear, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
+const { markReviewTextsPushed } = require('./lib/review-texts-pushed-marker.js'); // BRO-5308
 
 const BASE = 'data/review-texts';
 
@@ -496,6 +497,7 @@ function pushReviewTextsCheckpoint(message) {
     // merge_no_flag_and_keep.md), so this is a fix, not a regression.
     const rtPush = pushWithRetry({ cwd: rtDir, branch: 'main', retries: 3 });
     if (rtPush.ok) {
+      markReviewTextsPushed(); // BRO-5308: final push-review-texts reports pushed=true
       console.log('  [checkpoint] ✓ Pushed review-texts to private repo');
       return;
     }

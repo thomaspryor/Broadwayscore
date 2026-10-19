@@ -196,14 +196,17 @@ jobs:
           node scripts/collect-outlet-reviews.js $ARGS
 
       - name: Push review texts
+        id: push-review-texts
         if: always()
         uses: ./.github/actions/push-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "feat: Collect outlet reviews via SERP (manual)"
 
+      # BRO-5308: dispatch only when review-texts actually reached the private repo
+      # (push-review-texts 'pushed', which also counts in-job checkpoint pushes).
       - name: Trigger rebuild
-        if: success() && github.event.inputs.dry_run != 'true'
+        if: success() && github.event.inputs.dry_run != 'true' && steps.push-review-texts.outputs.pushed == 'true'
         run: |
           gh workflow run rebuild-reviews.yml -f reason="Post outlet SERP collection (manual)"
         env:

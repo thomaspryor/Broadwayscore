@@ -78,6 +78,7 @@ jobs:
           node scripts/discover-tour-stop-reviews.js $ARGS
 
       - name: Push review texts
+        id: push-review-texts
         if: always() && github.event.inputs.dry_run != 'true'
         uses: ./.github/actions/push-review-texts
         with:
@@ -104,7 +105,7 @@ jobs:
 
       # Only when a review file was written (the script sets `written`).
       - name: Trigger rebuild
-        if: success() && github.event.inputs.dry_run != 'true' && steps.discover.outputs.written != '0' && steps.discover.outputs.written != ''
+        if: success() && github.event.inputs.dry_run != 'true' && steps.discover.outputs.written != '0' && steps.discover.outputs.written != '' && steps.push-review-texts.outputs.pushed == 'true'
         run: |
           gh workflow run rebuild-reviews.yml -f reason="Post tour-stop discovery"
         env:

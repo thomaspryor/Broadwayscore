@@ -31,6 +31,7 @@ const { execSync } = require('child_process');
 // Shared libraries
 const { classifyContentTier, isGarbageContent, validateShowMentioned, countWords } = require('./lib/content-quality');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
+const { markReviewTextsPushed } = require('./lib/review-texts-pushed-marker.js'); // BRO-5308
 const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { generateReviewFilename } = require('./lib/review-normalization');
@@ -936,6 +937,7 @@ function checkpointReviewTexts(stats) {
     // lib/restore-protected-fields.js and adds the #394/#464/#543 fixes.
     const rtPush = pushWithRetry({ cwd: reviewTextsDir, branch: 'main', retries: 3 });
     if (rtPush.ok) {
+      markReviewTextsPushed(); // BRO-5308: final push-review-texts reports pushed=true
       console.log('  [Checkpoint] review-texts pushed');
       return;
     }

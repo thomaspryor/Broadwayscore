@@ -104,6 +104,7 @@ jobs:
         run: node scripts/recover-wayback-reviews.js
 
       - name: Push review-texts to private repo
+        id: push-review-texts
         if: always()
         uses: ./.github/actions/push-review-texts
         with:
@@ -132,8 +133,10 @@ jobs:
 
           bash scripts/lib/push-with-retry.sh
 
+      # BRO-5308: dispatch only when review-texts actually reached the private repo
+      # (push-review-texts 'pushed', which also counts in-job checkpoint pushes).
       - name: Trigger rebuild if recoveries
-        if: always()
+        if: always() && steps.push-review-texts.outputs.pushed == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

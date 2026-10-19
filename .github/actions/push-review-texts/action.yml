@@ -12,7 +12,7 @@ inputs:
 
 outputs:
   pushed:
-    description: "'true' only when this call pushed a commit to the private repo; empty when there was nothing to push (BRO-3108)"
+    description: "'true' only when this call, or an earlier in-job mid-run push that left the review-texts-pushed marker (BRO-5308), pushed a commit to the private repo; empty when there was nothing to push (BRO-3108)"
     value: ${{ steps.push.outputs.pushed }}
 
 runs:
@@ -30,6 +30,14 @@ runs:
         # transport hang is a failed attempt, not a wait for the job timeout.
         # Fail-open: without the helper, git_net is plain git.
         . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
+        # BRO-5308: a mid-run push earlier in this job (collect-review-texts.js
+        # checkpoint etc., scripts/lib/review-texts-pushed-marker.js) already
+        # landed review-texts changes, so this job counts as having pushed even
+        # if nothing is left to push below. Written first: later steps exit early.
+        if [ -n "${RUNNER_TEMP:-}" ] && [ -f "${RUNNER_TEMP}/review-texts-pushed.marker" ]; then
+          echo "push-review-texts: earlier in-job review-texts push recorded; reporting pushed=true"
+          printf 'pushed=true\n' >> "$GITHUB_OUTPUT"
+        fi
         # Configure git for this nested repo
         git config user.name "GitHub Action"
         git config user.email "action@github.com"

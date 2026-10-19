@@ -63,6 +63,7 @@ const { hostMatchesOutletDomain } = require('./lib/outlet-domain-validation');
 const { loadCookiesForDomain, hasCookiesForUrl, buildCookieHeaderForUrl, COOKIE_DOMAIN_MAP } = require('./lib/cookie-loader');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
+const { markReviewTextsPushed } = require('./lib/review-texts-pushed-marker.js'); // BRO-5308
 const { isTimeBudgetExceeded } = require('./lib/collect-time-budget.js');
 const { buildCollectSummary, writeCollectSummary } = require('./lib/collect-run-summary.js');
 const { shouldSkipAlreadyAttempted, dedupeAttemptState } = require('./lib/collection-attempt-guard.js');
@@ -6389,6 +6390,7 @@ function pushReviewTextsCheckpoint(processed) {
     // merge_no_flag_and_keep.md), so this is a fix, not a regression.
     const rtPush = pushWithRetry({ cwd: rtDir, branch: 'main', retries: 3 });
     if (rtPush.ok) {
+      markReviewTextsPushed(); // BRO-5308: final push-review-texts reports pushed=true
       console.log(`  ✓ Pushed review-texts checkpoint to private repo`);
       return;
     }

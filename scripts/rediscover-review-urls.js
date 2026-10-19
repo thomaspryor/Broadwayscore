@@ -26,6 +26,7 @@ const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const { isCrossOutletUrl } = require('./lib/review-normalization');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
+const { markReviewTextsPushed } = require('./lib/review-texts-pushed-marker.js'); // BRO-5308
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { hasUsableText, isPlausibleArticleRedirect, AGGREGATOR_FIELDS } = require('./lib/rediscovery-candidate');
 
@@ -351,6 +352,7 @@ function pushReviewTextsCheckpoint(message) {
     // merge_no_flag_and_keep.md), so this is a fix, not a regression.
     const rtPush = pushWithRetry({ cwd: rtDir, branch: 'main', retries: 3 });
     if (rtPush.ok) {
+      markReviewTextsPushed(); // BRO-5308: final push-review-texts reports pushed=true
       console.log('  ✓ Pushed review-texts to private repo');
       return;
     }
