@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-19T07:32:33.073Z",
+  "generatedAt": "2026-10-19T08:09:35.660Z",
   "summary": {
-    "total": 7,
-    "high": 3,
+    "total": 10,
+    "high": 6,
     "medium": 3,
     "low": 1
   },
@@ -33,6 +33,33 @@
       "suggestedWinner": "an-american-in-paris-tour-2022",
       "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
       "confidence": "low"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/christmas-carol-goes-wrong-apollo-theatre-review",
+      "normalizedUrl": "https://londonboxoffice.co.uk/news/post/christmas-carol-goes-wrong-apollo-theatre-review",
+      "candidates": [
+        {
+          "showId": "christmas-carol-goes-wrong-apollo-west-end-2025",
+          "file": "london-box-office--stuart-king.json",
+          "publishDate": "2025-12-16",
+          "openingDate": "2025-12-14",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "london-box-office"
+        },
+        {
+          "showId": "christmas-carol-goes-wrong-west-end-2026",
+          "file": "london-box-office--stuart-king.json",
+          "publishDate": "2025-12-16",
+          "openingDate": null,
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "london-box-office"
+        }
+      ],
+      "suggestedWinner": "christmas-carol-goes-wrong-apollo-west-end-2025",
+      "reason": "publishDate 2025-12-16 is 2 days from christmas-carol-goes-wrong-apollo-west-end-2025 opening (2025-12-14)",
+      "confidence": "high"
     },
     {
       "url": "https://www.timeout.com/london/theatre/a-christmas-carol-goes-wrong-review",
@@ -114,6 +141,60 @@
       "suggestedWinner": "giant-royal-court-off-west-end-2024",
       "reason": "publishDate 2024-09-26 is 1 days from giant-royal-court-off-west-end-2024 but also 2 days from giant-west-end-2025",
       "confidence": "medium"
+    },
+    {
+      "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283",
+      "normalizedUrl": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283",
+      "candidates": [
+        {
+          "showId": "into-the-woods-noel-coward-west-end-2026",
+          "file": "i-paper--fiona-mountford.json",
+          "publishDate": "2025-12-12",
+          "openingDate": "2026-10-07",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "i-paper"
+        },
+        {
+          "showId": "into-the-woods-west-end-2025",
+          "file": "i-paper--fiona-mountford.json",
+          "publishDate": "2025-12-12",
+          "openingDate": "2025-12-11",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "i-paper"
+        }
+      ],
+      "suggestedWinner": "into-the-woods-west-end-2025",
+      "reason": "publishDate 2025-12-12 is 1 days from into-the-woods-west-end-2025 opening (2025-12-11); next closest is 299 days from into-the-woods-noel-coward-west-end-2026",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/into-the-woods-bridge-theatre-sondheim-review-b2883199.html",
+      "normalizedUrl": "https://independent.co.uk/arts-entertainment/theatre-dance/reviews/into-the-woods-bridge-theatre-sondheim-review-b2883199.html",
+      "candidates": [
+        {
+          "showId": "into-the-woods-noel-coward-west-end-2026",
+          "file": "independent--louis-chilton.json",
+          "publishDate": "2025-12-12",
+          "openingDate": "2026-10-07",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "independent"
+        },
+        {
+          "showId": "into-the-woods-west-end-2025",
+          "file": "independent--louis-chilton.json",
+          "publishDate": "2025-12-12",
+          "openingDate": "2025-12-11",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "independent"
+        }
+      ],
+      "suggestedWinner": "into-the-woods-west-end-2025",
+      "reason": "publishDate 2025-12-12 is 1 days from into-the-woods-west-end-2025 opening (2025-12-11); next closest is 299 days from into-the-woods-noel-coward-west-end-2026",
+      "confidence": "high"
     },
     {
       "url": "https://www.timeout.com/london/theatre/noises-off-review-1",
