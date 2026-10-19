@@ -6,9 +6,12 @@
  * BWW new-format roundups have per-review thumb images:
  *   uptrans.png → Up, middletrans.png → Meh, downtrans.png → Down
  *
- * These appear in <p> tags in the same order as the BlogPosting JSON-LD entries.
+ * Each icon is paired to the review whose critic name follows it on the page
+ * (scripts/lib/bww-thumb-pairing.js, BRO-5674).
  *
- * Usage: node scripts/backfill-bww-thumbs.js [--dry-run] [--verbose]
+ * Usage: node scripts/backfill-bww-thumbs.js [--dry-run] [--verbose] [--correct] [--shows=a,b]
+ *   --correct  also overwrite a stored bwwThumb that disagrees with the page
+ *              (index pairing misattributed some, BRO-5681)
  */
 
 const fs = require('fs');
@@ -24,9 +27,11 @@ const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
 const VERBOSE = args.includes('--verbose');
+const CORRECT = args.includes('--correct');
+const SHOWS = (args.find(a => a.startsWith('--shows=')) || '').slice('--shows='.length).split(',').filter(Boolean);
 
 let totalArchives = 0, archivesWithThumbs = 0;
-let reviewsParsed = 0, thumbsMatched = 0, thumbsWritten = 0, alreadyHadThumb = 0;
+let reviewsParsed = 0, thumbsMatched = 0, thumbsWritten = 0, alreadyHadThumb = 0, thumbsCorrected = 0;
 
 function log(msg) { if (VERBOSE) console.log(msg); }
 
@@ -121,6 +126,7 @@ console.log(`Mode: ${DRY_RUN ? 'DRY RUN' : 'LIVE'}\n`);
 for (const file of archiveFiles) {
   totalArchives++;
   const showId = file.replace('.html', '');
+  if (SHOWS.length && !SHOWS.includes(showId)) continue;
   const html = fs.readFileSync(path.join(ARCHIVE_DIR, file), 'utf8');
 
   const reviews = extractReviewsWithThumbs(html);
@@ -141,14 +147,24 @@ for (const file of archiveFiles) {
     try {
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
-      if (data.bwwThumb) {
+      if (data.bwwThumb === review.bwwThumb) {
+        alreadyHadThumb++;
+        continue;
+      }
+      if (data.bwwThumb && !CORRECT) {
         alreadyHadThumb++;
         log(`  ○ Already has thumb: ${path.basename(filePath)} (${data.bwwThumb})`);
         continue;
       }
 
+      if (data.bwwThumb) {
+        console.log(`  ↻ ${showId}/${path.basename(filePath)}: bwwThumb ${data.bwwThumb} -> ${review.bwwThumb}`);
+        data.bwwThumbNote = `BRO-5681: corrected ${data.bwwThumb} -> ${review.bwwThumb} by critic-name pairing against the archived roundup`;
+        thumbsCorrected++;
+      } else {
+        log(`  ✓ Set bwwThumb=${review.bwwThumb}: ${path.basename(filePath)}`);
+      }
       data.bwwThumb = review.bwwThumb;
-      log(`  ✓ Set bwwThumb=${review.bwwThumb}: ${path.basename(filePath)}`);
 
       if (!DRY_RUN) {
         const tmp = filePath + '.tmp';
@@ -169,4 +185,5 @@ console.log(`Reviews parsed:       ${reviewsParsed}`);
 console.log(`Matched to files:     ${thumbsMatched}`);
 console.log(`Already had thumb:    ${alreadyHadThumb}`);
 console.log(`Thumbs written:       ${thumbsWritten}`);
+if (CORRECT) console.log(`  of which corrected: ${thumbsCorrected}`);
 if (DRY_RUN) console.log('\n(Dry run — no files modified)');
