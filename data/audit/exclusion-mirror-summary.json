@@ -1,20 +1,20 @@
 {
-  "generatedAt": "2026-10-19T06:30:57.238Z",
-  "totalScanned": 57752,
-  "totalExcluded": 27349,
+  "generatedAt": "2026-10-19T06:42:16.913Z",
+  "totalScanned": 57754,
+  "totalExcluded": 27352,
   "ruleCounts": {
     "wrongProduction": 18478,
     "duplicateOf": 1922,
     "wrongShow": 1799,
     "rejectionReason": 999,
     "unverifiableWebSearchRow": 958,
-    "noTextOrScoreSignal": 635,
+    "noTextOrScoreSignal": 637,
     "nonReview": 517,
     "wrongAttribution": 312,
     "isRoundupArticle": 223,
     "blockedReviewUrl": 211,
     "crossOutletDuplicate": 167,
-    "bodylessAggregatorScoreUncorroborated": 165,
+    "bodylessAggregatorScoreUncorroborated": 166,
     "isSyndicatedDuplicate": 132,
     "previewPlaceholder": 126,
     "cvWrongArticleHighConfidence": 95,
@@ -41,19 +41,19 @@
     "personalRepost": 1
   },
   "ruleDeltas": {
-    "wrongProduction": 2,
-    "nonReview": 1
+    "noTextOrScoreSignal": 2,
+    "bodylessAggregatorScoreUncorroborated": 1
   },
-  "previousGeneratedAt": "2026-10-19T06:08:40.576Z",
+  "previousGeneratedAt": "2026-10-19T06:30:57.238Z",
   "mirror": {
     "comparedShows": 2560,
-    "comparedFiles": 57203,
-    "agreeExcluded": 26576,
-    "agreeIncluded": 29499,
+    "comparedFiles": 57205,
+    "agreeExcluded": 26579,
+    "agreeIncluded": 29519,
     "mirrorOnly": 229,
-    "rebuildOnly": 899,
-    "disagreements": 1128,
-    "disagreementRate": 0.0197,
+    "rebuildOnly": 878,
+    "disagreements": 1107,
+    "disagreementRate": 0.0194,
     "mirrorOnlyByRule": {
       "duplicateOf": 78,
       "cvWrongArticleHighConfidence": 63,
@@ -67,7 +67,7 @@
     "rebuildOnlyByReason": {
       "skippedDuplicateText": 240,
       "skippedUnknownCriticDedup": 222,
-      "skippedNoScore": 109,
+      "skippedNoScore": 88,
       "skippedCrossMarket": 70,
       "skippedInvalidUrl": 63,
       "skippedPreOpening": 47,
@@ -96,5 +96,5 @@
     "notComparedShows": 81,
     "notComparedFiles": 549
   },
-  "previousDisagreementRate": 0.0198
+  "previousDisagreementRate": 0.0197
 }
