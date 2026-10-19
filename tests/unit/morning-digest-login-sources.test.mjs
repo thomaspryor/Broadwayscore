@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { findFrozenLoginSources, injectLoginRows, LOGIN_SOURCES } = require('../../scripts/lib/login-sources.js');
+const { planAutofix } = require('../../scripts/lib/digest-autofix.js');
 const { buildSubject, composeDigestEmail } = require('../../scripts/send-morning-digest.js');
 
 const NOW = new Date('2026-10-18T11:30:00Z');
@@ -79,4 +80,10 @@ test('body top block lists it with days frozen and the fix link', () => {
   assert.ok(html.indexOf('Visitors may notice a problem') > -1 && html.indexOf('Visitors may notice a problem') < i);
   assert.match(html, /BRO-5235/);
   assert.match(html, /fix it here/);
+});
+
+test('autofix never plans a card or dispatch for an expired login', () => {
+  const { sections } = digestWith(null);
+  const plan = planAutofix({ health: sections.health, today: '2026-10-18' });
+  assert.ok(!JSON.stringify(plan).includes('Login expired'), 'login row reached the autofix plan');
 });

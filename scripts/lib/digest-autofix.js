@@ -482,16 +482,19 @@ function buildPlanRow(r, { tasks, today, titleOverride = null } = {}) {
  *   ('parked' is only ever set by runAutofix, never by planAutofix.)
  */
 function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {}) {
+  // BRO-5669: expired owner logins (lib/login-sources.js) can only be renewed
+  // by the owner; an agent dispatched on one has nothing to fix.
+  const notOwnerLogin = (r) => !(r && (r.loginSource === true || /^Login expired:/.test(String(r.name))));
   const healthRows = [
     ...(Array.isArray(health?.errors) ? health.errors : []),
     ...(Array.isArray(health?.warns) ? health.warns : []),
-  ];
+  ].filter(notOwnerLogin);
   // BRO-5168: only daily-health-check rows can be visitor-facing START-NOW
   // cards (isVisitorFacingRow). extraIssues and queued router lines don't go
   // through digest-audience.js, whose default for an unknown name is 'visitors'.
   const fromHealth = new Set(healthRows);
   // BRO-5430: visitor-facing ERRORS skip the persistence gate (computePersistenceGate).
-  const healthErrors = new Set(Array.isArray(health?.errors) ? health.errors : []);
+  const healthErrors = new Set((Array.isArray(health?.errors) ? health.errors : []).filter(notOwnerLogin));
   // health-check.js also routes unrouted health rows through the router,
   // whose queued "BSC Daily: <row>" line would repeat the row (ship-check).
   const healthNames = new Set(healthRows.map((r) => r && r.name));

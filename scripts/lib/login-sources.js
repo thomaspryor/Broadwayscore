@@ -32,12 +32,11 @@ const LOGIN_SOURCES = [
     workflow: 'update-theatr.yml',
     fixUrl: 'https://github.com/thomaspryor/Broadwayscore/actions/workflows/rotate-theatr-token.yml',
   },
-  {
-    id: 'outlet-cookies',
-    name: 'Review outlet logins',
-    workflow: 'check-cookie-health.yml',
-    fixUrl: 'https://github.com/thomaspryor/Broadwayscore/actions/workflows/check-cookie-health.yml',
-  },
+  // Outlet cookies are deliberately not here: check-cookie-health.yml goes red
+  // for expiring/timeout/CI-IP-block reasons too, and the paywall subscriptions
+  // are cancelled (reference_paywall_subscriptions_status), so a run-based
+  // check would cry wolf daily. Cookie rows come from check-cookie-health.js
+  // itself. Add an entry here only when run failure really means "login expired".
 ];
 
 const DEFAULT_MAX_STALE_DAYS = 3;
@@ -93,16 +92,17 @@ function ghFetchRuns(workflow, source = {}) {
   const gh = (args) => JSON.parse(execFileSync('gh', args, { encoding: 'utf8', timeout: 30000, stdio: ['ignore', 'pipe', 'pipe'] }));
   const runs = gh(['run', 'list', '--workflow', workflow, '--limit', '100', '--json', 'conclusion,createdAt,databaseId']);
   if (source.scrapeJob) {
-    // Successful runs only: a failed run did run the job. Cap the calls (one lookup per run, stops at the first real success); the
-    // verdict needs two counted runs, so a short walk is enough.
+    // Every run is looked up (a failed nightly resolver run also skips the
+    // scrape job). Capped; stops at the first run where the scrape job really ran
+    // and succeeded, since older runs cannot change the verdict.
     let looked = 0;
     for (const r of runs) {
-      if (r.conclusion !== 'success' || looked >= 40) continue;
+      if (!r.conclusion || looked >= 40) continue;
       looked++;
       const jobs = gh(['run', 'view', String(r.databaseId), '--json', 'jobs']).jobs || [];
       const j = jobs.find((x) => x.name === source.scrapeJob);
       if (j && j.conclusion === 'skipped') r.scrapeSkipped = true;
-      else break; // first real success found; older runs cannot change the verdict
+      else if (r.conclusion === 'success') break;
     }
   }
   return runs;
