@@ -139,9 +139,45 @@ const PAGE_DATE_SOURCE = /^(?:html-|extracted-from-html|page-|article-byline|hum
 /** dateSource names that say the date came from an aggregator, roundup, feed or search result. */
 const CARRIED_DATE_SOURCE = /(aggregator|roundup|rss|feed|serp|google-news|search|dtli|show-?score|bww|broadwayworld|playbill|nyc-?theatre|stagedoor|westendtheatre|theatre-reviews|lbo|listing|llm)/i;
 
-/** True when dateSource says the date was read from the review's own page or set by a person. */
+/**
+ * dateSource values for a date read from an ARCHIVED copy of the page
+ * (archive.org / archive.today). The copy is the same article, but a snapshot
+ * can be a later edit or a listing that replaced it, so a live-page date may
+ * still replace it and it is not trusted by the opening-window recheck.
+ */
+const ARCHIVE_PAGE_DATE_SOURCE = /^html-archive/;
+
+/** True when dateSource says the date was read from the review's own live page or set by a person. */
 function isPageDateSource(dateSource) {
-  return typeof dateSource === 'string' && PAGE_DATE_SOURCE.test(dateSource);
+  return typeof dateSource === 'string' && PAGE_DATE_SOURCE.test(dateSource) && !ARCHIVE_PAGE_DATE_SOURCE.test(dateSource);
+}
+
+/** The dateSource to store for a date read from fetched HTML: 'html-archive' when the HTML came from an archive. */
+function htmlDateSourceFor(fetchMethod) {
+  return /archive/i.test(String(fetchMethod || '')) ? 'html-archive' : 'html-page';
+}
+
+/** A page date this many days away from a stored carried date is not trusted on its own. */
+const MAX_PAGE_DATE_DIVERGENCE_DAYS = 7;
+
+/**
+ * May a date read from the page replace the stored (carried) date? BRO-5674.
+ * isReplaceableByPageDate holds for most of the corpus (40,903 of 47,855 dated
+ * files), so one misread dateline must not move a date by weeks: a page date
+ * more than MAX_PAGE_DATE_DIVERGENCE_DAYS from the stored date is kept as
+ * `pageDateCandidate` and the file is marked needsDateRecheck instead.
+ * `allowDivergent` is for the recheck sweep, whose stored date is already in
+ * doubt (needsOpeningWindowDateRecheck).
+ *
+ * @param {{storedDate?: string|null, pageDate: string, allowDivergent?: boolean}} args
+ * @returns {{replace: boolean, divergentDays: number|null}}
+ */
+function resolvePageDateReplacement({ storedDate, pageDate, allowDivergent = false } = {}) {
+  if (typeof pageDate !== 'string' || !YMD.test(pageDate)) return { replace: false, divergentDays: null };
+  if (typeof storedDate !== 'string' || !YMD.test(storedDate.slice(0, 10))) return { replace: true, divergentDays: null };
+  const days = Math.abs(Date.parse(`${pageDate}T00:00:00Z`) - Date.parse(`${storedDate.slice(0, 10)}T00:00:00Z`)) / 864e5;
+  if (days <= MAX_PAGE_DATE_DIVERGENCE_DAYS || allowDivergent) return { replace: true, divergentDays: days };
+  return { replace: false, divergentDays: days };
 }
 
 /**
@@ -167,6 +203,7 @@ function isReplaceableByPageDate(review) {
   if (isProvisionalPublishDate(review)) return true;
   const src = review.dateSource;
   if (src == null || src === '') return true;
+  if (typeof src === 'string' && ARCHIVE_PAGE_DATE_SOURCE.test(src)) return true; // a live page outranks a snapshot
   if (isPageDateSource(src)) return false;
   return CARRIED_DATE_SOURCE.test(String(src));
 }
@@ -266,6 +303,9 @@ module.exports = {
   roundupEntryDateFields,
   isProvisionalPublishDate,
   isPageDateSource,
+  htmlDateSourceFor,
+  MAX_PAGE_DATE_DIVERGENCE_DAYS,
+  resolvePageDateReplacement,
   isReplaceableByPageDate,
   OPENING_WINDOW_GRACE_DAYS,
   needsOpeningWindowDateRecheck,

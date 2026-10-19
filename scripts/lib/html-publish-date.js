@@ -151,12 +151,57 @@ function fromOutletDateline(html) {
   return stage ? parseWrittenDate(stage[1]) : null;
 }
 
-/** HTML with scripts, styles, comments, nav/footer/aside removed (their dates are not the article's). */
+/** Elements whose dates are never the article's: comment threads, related-post teasers, sidebars. ("widget" is not here: Blogger wraps the post itself in class="widget Blog".) */
+const NON_ARTICLE_BLOCK = /\b(?:class|id)=["'][^"']*(?:comment|related|recommend|teaser|more-stories|read-next|sidebar)[^"']*["']/i;
+/** A site header (its "today" date is the fetch date). An article's own <header class="entry-header"> is kept. */
+const SITE_HEADER = /<header\b(?=[^>]*(?:role=["']banner["']|(?:class|id)=["'][^"']*(?:site|masthead|global|top-?bar|navbar|page-header)[^"']*["']))[^>]*>[\s\S]*?<\/header>/gi;
+
+/** Remove every element (and its content) whose opening-tag attributes match attrRe. Balanced on the tag name. */
+function stripBlocks(html, attrRe) {
+  const open = /<([a-z][a-z0-9]*)\b([^>]*)>/gi;
+  let out = '';
+  let pos = 0;
+  let m;
+  while ((m = open.exec(html)) !== null) {
+    if (!attrRe.test(m[2] || '')) continue;
+    const tag = m[1].toLowerCase();
+    if (/\/\s*$/.test(m[2] || '')) continue; // self-closing
+    const re = new RegExp(`<(/?)${tag}\\b[^>]*>`, 'gi');
+    re.lastIndex = m.index + m[0].length;
+    let depth = 1, end = html.length, t;
+    while ((t = re.exec(html)) !== null) {
+      depth += t[1] ? -1 : 1;
+      if (depth === 0) { end = t.index + t[0].length; break; }
+    }
+    out += html.slice(pos, m.index) + ' ';
+    pos = end;
+    open.lastIndex = end;
+  }
+  return out + html.slice(pos);
+}
+
+/**
+ * The part of the page that is the article: scripts, styles, HTML comments,
+ * nav/footer/aside, the site header, comment threads and related-post teasers
+ * removed; then, when the page has an <article>, only that.
+ */
 function articleHtml(html) {
-  return html
+  let h = html
     .replace(/<!--[\s\S]*?-->/g, ' ')
     .replace(/<(script|style|noscript|template|svg)\b[\s\S]*?<\/\1>/gi, ' ')
-    .replace(/<(nav|footer|aside)\b[\s\S]*?<\/\1>/gi, ' ');
+    .replace(/<(nav|footer|aside)\b[\s\S]*?<\/\1>/gi, ' ')
+    .replace(SITE_HEADER, ' ');
+  h = stripBlocks(h, NON_ARTICLE_BLOCK);
+  // A page without <article> keeps everything left, minus a leading top-level
+  // <header> (Webflow/static sites put the site banner there).
+  const start = h.search(/<article\b/i);
+  if (start >= 0) {
+    const end = h.lastIndexOf('</article>');
+    if (end > start) h = h.slice(start, end);
+  } else {
+    h = h.replace(/^([\s\S]*?<body\b[^>]*>\s*)<header\b[\s\S]*?<\/header>/i, '$1 ');
+  }
+  return h;
 }
 
 function stripTags(s) {
@@ -171,6 +216,24 @@ function stripTags(s) {
 // class / id / itemprop values that mark a dateline element.
 const DATELINE_ATTR = /\b(?:class|id|itemprop)=["']([^"']*)["']/gi;
 const DATELINE_NAME = /(publish|pub-?date|post-?date|posted|entry-date|article-date|date-published|datepublished|dateline|byline|post-meta|entry-meta|article-meta|meta-date|(?:^|[\s_-])date(?:$|[\s_-]))/i;
+// Named date elements that are not the publish date (fetch date, show dates, edits, print edition).
+const NOT_PUBLISH_NAME = /(current|today|clock|update|modif|edited|print|comment|event|show-?date|opening|closing|preview|performance|(?:^|[\s_-])run|schedule|booking)/i;
+// A date preceded by one of these words is not the publish date.
+const NOT_PUBLISH_PREFIX = /\b(updated|modified|edited|revised|print|opening|opens|opened|closing|closes|closed|previews?|through|until|runs?|playing|performances?|comments?|replied)\b(?:\W+[a-z]{1,10}){0,3}\W*$/i;
+
+const ANY_DATE = new RegExp(`(?:${MONTH_RE})\\s+\\d{1,2}(?:st|nd|rd|th)?,?\\s+\\d{4}|\\d{1,2}(?:st|nd|rd|th)?\\s+(?:${MONTH_RE}),?\\s+\\d{4}`, 'gi');
+
+/** First written date in text whose preceding words do not mark it as an edit/print/show date. */
+function firstPublishDateIn(text) {
+  ANY_DATE.lastIndex = 0;
+  let m;
+  while ((m = ANY_DATE.exec(text)) !== null) {
+    if (NOT_PUBLISH_PREFIX.test(text.slice(Math.max(0, m.index - 50), m.index))) continue;
+    const d = parseWrittenDate(m[0]);
+    if (d) return d;
+  }
+  return null;
+}
 
 function fromVisibleDateline(html) {
   const body = articleHtml(html);
@@ -182,31 +245,37 @@ function fromVisibleDateline(html) {
     const attrs = m[2];
     if (!attrs) continue;
     let named = false;
+    let excluded = false;
     let a;
     DATELINE_ATTR.lastIndex = 0;
     while ((a = DATELINE_ATTR.exec(attrs)) !== null) {
-      if (DATELINE_NAME.test(a[1]) && !/update|modif|comment|event|show-?date|performance|run/i.test(a[1])) { named = true; break; }
+      if (NOT_PUBLISH_NAME.test(a[1])) { excluded = true; break; }
+      if (DATELINE_NAME.test(a[1])) named = true;
     }
-    if (!named) continue;
+    if (!named || excluded) continue;
     // Text up to the element's close (bounded; enough for "By X | October 19, 2026").
     const after = body.slice(m.index + m[0].length, m.index + m[0].length + 400);
     const close = after.search(new RegExp(`</${m[1]}>`, 'i'));
     const inner = stripTags(close >= 0 ? after.slice(0, close) : after.slice(0, 200));
     if (inner.length > 160) continue; // a container, not a dateline
-    const d = parseWrittenDate(inner);
+    const d = firstPublishDateIn(inner);
     if (d) return { date: d, method: 'html-dateline-element' };
   }
 
   const text = stripTags(body);
+  const labelled = (idx) => NOT_PUBLISH_PREFIX.test(text.slice(Math.max(0, idx - 50), idx));
 
-  // 5b. A date with a clock time is a publish stamp, not a run date.
-  const timed = text.match(MDY_WITH_TIME);
-  if (timed) {
+  // 5b. A date with a clock time is a publish stamp, not a run date
+  // (unless labelled Updated/Modified/print).
+  const timedRe = new RegExp(MDY_WITH_TIME.source, 'gi');
+  let timed;
+  while ((timed = timedRe.exec(text)) !== null) {
+    if (labelled(timed.index)) continue;
     const d = ymd(timed[3], monthIndex(timed[1]), timed[2]);
     if (d) return { date: d, method: 'html-dateline-timestamp' };
   }
 
-  // 5c. "By <Name> [on|,|•|-|\|] October 19, 2026" (first byline on the page).
+  // 5c. "By <Name> [on|,|•|-|\|] October 19, 2026" (first byline in the article).
   const byline = new RegExp(`\\bBy\\s+[A-Z][\\w.'’-]*(?:\\s+[A-Z][\\w.'’-]*){0,3}\\s*(?:on|,|\\||•|·|-|–|—|/)?\\s*(?:Published:?\\s*|Posted:?\\s*)?((?:${MONTH_RE})\\s+\\d{1,2}(?:st|nd|rd|th)?,?\\s+\\d{4}|\\d{1,2}(?:st|nd|rd|th)?\\s+(?:${MONTH_RE}),?\\s+\\d{4})`);
   const by = text.match(byline);
   if (by) {
@@ -232,6 +301,28 @@ function fromVisibleDateline(html) {
 }
 
 /**
+ * True when the page's JSON-LD carries more than one entity with different
+ * datePublished values. article-extractor.extractPublishDate abstains then
+ * unless one entity is this page (2026-07-11: a related article's date was
+ * stored), so the first-match JSON-LD and <time> readers must not pick one.
+ */
+function jsonLdDatesAmbiguous(html, pageUrl) {
+  const dates = new Set();
+  const re = /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  let m;
+  while ((m = re.exec(html)) !== null) {
+    let data;
+    try { data = JSON.parse(m[1].trim()); } catch (e) { continue; }
+    for (const item of jsonLdItems(data)) {
+      if (typeof item.datePublished !== 'string') continue;
+      const n = normalizeExtractedDate(item.datePublished, pageUrl);
+      if (n) dates.add(n);
+    }
+  }
+  return dates.size > 1;
+}
+
+/**
  * @param {string} html - the article page
  * @param {string} [pageUrl] - used to pick the publisher's timezone for UTC stamps
  * @returns {{date: string, method: string}|null}
@@ -246,9 +337,13 @@ function extractPublishDateDetailed(html, pageUrl) {
     d = require('./article-extractor').extractPublishDate(html, pageUrl);
     if (d && /^\d{4}-\d{2}-\d{2}$/.test(d)) return { date: d, method: 'scoped-metadata' };
   } catch (e) { /* fall through to the first-match readers */ }
-  if ((d = fromJsonLd(html, pageUrl))) return { date: d, method: 'json-ld' };
+  // Several JSON-LD entities with different dates and none is this page: the
+  // scoped reader abstained on purpose, so the first-match JSON-LD and <time>
+  // readers would only pick a related article's date.
+  const ambiguous = jsonLdDatesAmbiguous(html, pageUrl);
+  if (!ambiguous && (d = fromJsonLd(html, pageUrl))) return { date: d, method: 'json-ld' };
   if ((d = fromMeta(html, pageUrl))) return { date: d, method: 'meta' };
-  if ((d = fromTimeElement(html, pageUrl))) return { date: d, method: 'time-element' };
+  if (!ambiguous && (d = fromTimeElement(html, pageUrl))) return { date: d, method: 'time-element' };
   if ((d = fromOutletDateline(html))) return { date: d, method: 'outlet-dateline' };
   return fromVisibleDateline(html);
 }
