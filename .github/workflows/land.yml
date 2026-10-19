@@ -932,8 +932,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh workflow run vercel-deploy.yml --ref main -f source=land \
-            || echo "::warning::deploy dispatch failed — the next pipeline or heartbeat dispatch ships this landing"
+          # shellcheck source=scripts/lib/dispatch-with-retry.sh
+          source scripts/lib/dispatch-with-retry.sh
+          dispatch_with_retry vercel-deploy.yml --ref main -f source=land \
+            || echo "::warning::deploy dispatch failed after retries — the next pipeline or heartbeat dispatch ships this landing"
 
       - name: Fail the job on a refused landing
         id: refused
