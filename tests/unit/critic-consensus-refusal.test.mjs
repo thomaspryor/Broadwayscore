@@ -128,8 +128,8 @@ describe('requestWithRefusalRetry (mocked model call)', () => {
   it('the generator runs this loop and keeps the old take on keep-old', async () => {
     const fs = await import('node:fs');
     const src = fs.readFileSync(new URL('../../scripts/generate-critic-consensus.js', import.meta.url), 'utf8');
-    assert.match(src, /requestWithRefusalRetry\(/);
-    assert.match(src, /outcome === 'keep-old'[\s\S]*?ConsensusRefusedError/);
+    assert.match(src, /await requestWithRefusalRetry\(\{/);
+    assert.match(src, /outcome === 'keep-old'\) \{\s*throw new ConsensusRefusedError/);
     assert.match(src, /err instanceof ConsensusRefusedError[\s\S]*?keeping the existing take/);
   });
 });
