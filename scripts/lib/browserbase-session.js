@@ -53,7 +53,8 @@
  * needs for its opening-night BWW reviews.php / paywall-login flow. Bulk
  * (non-exempt) callers now check the live count against a REDUCED ceiling
  * (raw ceiling minus reservePerShow * shows-in-window, brightdata-caps.js's
- * own effectiveCeilingForOpeningWindow, reused rather than duplicated —
+ * own effectiveCeilingForOpeningWindow, reused rather than duplicated (BRO-5243
+ * replaced it with browserbase-caps.js openingWindowReserve, which caps the total) —
  * already the pattern scrapingdog-caps.js's check-sd-breaker.js follows).
  * Exempt (opening-night) callers keep checking the RAW ceiling, unchanged
  * from before this card — unlike BD/SD's breaker, this chokepoint has no
@@ -79,8 +80,22 @@ const { recordBbCall } = require('./provider-telemetry');
 const browserbaseLiveUsage = require('./browserbase-live-usage');
 const openingNightSelection = require('./opening-night-selection');
 const path = require('path');
-const { resolveMaxSessionsPerDay, resolveOpeningWindowReservePerShow, resolveExemptScripts } = require('./browserbase-caps');
-const { isExemptCaller, effectiveCeilingForOpeningWindow } = require('./brightdata-caps');
+const {
+  resolveMaxSessionsPerDay,
+  activeTier1Boost,
+  tier1BoostForCaller,
+  callerAllowance,
+  resolveOpeningWindowReservePerShow,
+  resolveOpeningWindowReserveMax,
+  OPENING_WINDOW_RESERVE_OPTS,
+  openingWindowReserve,
+  resolveExemptScripts,
+  resolveRecoveryReserve,
+  resolveUseReserve,
+  isDeniedHost,
+  isTier1RecoveryHost,
+} = require('./browserbase-caps');
+const { isExemptCaller } = require('./brightdata-caps');
 
 const SESSIONS_URL = 'https://api.browserbase.com/v1/sessions';
 const SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
@@ -124,7 +139,7 @@ function getCachedOpeningWindowShows() {
   if (_openingWindowCache.count !== null && now - _openingWindowCache.ts < OPENING_WINDOW_CACHE_TTL_MS) {
     return _openingWindowCache.count;
   }
-  const count = openingNightSelection.countShowsInOpeningWindow(SHOWS_PATH, { lookbackDays: 1, lookAheadHours: 72 });
+  const count = openingNightSelection.countShowsInOpeningWindow(SHOWS_PATH, OPENING_WINDOW_RESERVE_OPTS);
   _openingWindowCache = { count, ts: now };
   return count;
 }
@@ -159,24 +174,44 @@ function sanitizeMetadataValue(value) {
  * @param {Object} [opts.body] - extra session-create fields merged in (keepAlive, timeout, browserSettings, proxies, ...)
  * @returns {Promise<{id: string, connectUrl: string, raw: Object}>}
  */
+/**
+ * A refusal raised before the session-create POST: no session exists, so a
+ * caller that counted the attempt up front can give the count back
+ * (collect-review-texts.js, BRO-5261).
+ */
+function refusal(message) {
+  const err = new Error(message);
+  err.bbNoSession = true;
+  return err;
+}
+
 async function createBbSession(opts) {
   if (process.env.BROWSERBASE_KILL_SWITCH === 'true') {
-    throw new Error('Browserbase kill switch active (BROWSERBASE_KILL_SWITCH=true)');
+    throw refusal('Browserbase kill switch active (BROWSERBASE_KILL_SWITCH=true)');
   }
   const apiKey = opts.apiKey || process.env.BROWSERBASE_API_KEY;
   const projectId = opts.projectId || process.env.BROWSERBASE_PROJECT_ID;
   if (!apiKey || !projectId) {
-    throw new Error('createBbSession: BROWSERBASE_API_KEY / BROWSERBASE_PROJECT_ID not set');
+    throw refusal('createBbSession: BROWSERBASE_API_KEY / BROWSERBASE_PROJECT_ID not set');
   }
   if (!opts.caller) {
-    throw new Error('createBbSession: opts.caller is required (attribution would be lost otherwise)');
+    throw refusal('createBbSession: opts.caller is required (attribution would be lost otherwise)');
   }
   // BRO-3097 ship-check finding: required (not merely validated-if-present) —
   // an omitted category would silently fall into the ledger's null bucket,
   // defeating the review-text/discovery split for any future or regressed
   // call site exactly the way a missing `caller` would defeat attribution.
   if (!BB_CATEGORIES.includes(opts.category)) {
-    throw new Error(`createBbSession: opts.category is required and must be one of ${BB_CATEGORIES.join('/')}, got ${JSON.stringify(opts.category)}`);
+    throw refusal(`createBbSession: opts.category is required and must be one of ${BB_CATEGORIES.join('/')}, got ${JSON.stringify(opts.category)}`);
+  }
+
+  // BRO-5243: never spend a session on a host that is never a review (ticket
+  // sellers, listings, social). Checked before the live count so a refusal
+  // costs no API call. Not a cap: the message must not read as one
+  // (failed-fetch-policy.js routeCapFromBrowserbaseError).
+  if (isDeniedHost(opts.host)) {
+    recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status: 'host-denied' });
+    throw refusal(`Browserbase host denied (${opts.host}): not a review host, session create blocked for ${opts.caller}`);
   }
 
   // Account-wide daily ceiling (#1248). Live count already reflects every
@@ -198,19 +233,68 @@ async function createBbSession(opts) {
     process.env.GITHUB_WORKFLOW || null,
     process.env.BD_OPENING_NIGHT || null,
   );
+  // BRO-5243: the reserve is capped (resolveOpeningWindowReserveMax) and counts
+  // a -1..+2 day window, so a crowded week of cold opens can't hold back
+  // sessions opening night never uses.
+  // BRO-5243 Option B: while the time-boxed Tier-1 boost is active, exempt
+  // (opening-night) callers' raw ceiling rises by the same amount, so boosted
+  // WSJ/NYT sessions can never eat the slots opening night is promised.
+  const boostNow = { now: _now() };
   const effectiveMaxPerDay = exempt
-    ? maxPerDay
-    : effectiveCeilingForOpeningWindow({
-      ceiling: maxPerDay,
+    ? maxPerDay + tier1BoostForCaller(opts.host, { exempt, ...boostNow })
+    : Math.max(0, maxPerDay - openingWindowReserve({
       openingWindowShows: getCachedOpeningWindowShows(),
       reservePerShow: resolveOpeningWindowReservePerShow(),
-    });
+      reserveMax: resolveOpeningWindowReserveMax(),
+    }));
+
+  // BRO-5243: recovery reserve, also enforced here (the collector's local check mirrors it, exempting Tier-1 hosts the same way)
+  // (which only one caller ran). Bulk hosts stop this many sessions short of
+  // the bulk ceiling; Tier-1 paywalled hosts (WSJ, NYT, New Yorker) and
+  // explicit recovery runs (BROWSERBASE_USE_RESERVE=true) may spend it.
+  // A caller with an owner-approved allowance (browserbase-caps.js CALLER_ALLOWANCES)
+  // skips both reserves but is held to the raw ceiling and its own daily count below.
+  const laneAllowance = callerAllowance(opts.caller, boostNow);
+  const mayUseRecoveryReserve = exempt || resolveUseReserve() || isTier1RecoveryHost(opts.host) || laneAllowance > 0;
+  // Tier-1 hosts get the boost on top of their ceiling (0 once it expires).
+  const hostCeiling = exempt
+    ? effectiveMaxPerDay
+    : laneAllowance > 0
+      ? Math.max(effectiveMaxPerDay, maxPerDay + activeTier1Boost(boostNow))
+      : effectiveMaxPerDay + tier1BoostForCaller(opts.host, boostNow);
+  const hostLimit = mayUseRecoveryReserve
+    ? hostCeiling
+    : Math.max(0, effectiveMaxPerDay - resolveRecoveryReserve());
 
   const liveSessionsToday = await getCachedLiveSessionsToday(apiKey, projectId);
-  if (liveSessionsToday !== null && liveSessionsToday >= effectiveMaxPerDay) {
+  // A non-Tier-1 host at the bulk ceiling while the boost is active: refuse
+  // with the non-latching message, so a mixed run keeps serving Tier-1 rows.
+  if (!exempt && liveSessionsToday !== null && liveSessionsToday >= effectiveMaxPerDay
+    && hostCeiling === effectiveMaxPerDay && activeTier1Boost(boostNow) > 0) {
+    recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status: 'recovery-reserve-held' });
+    throw refusal(`Browserbase recovery reserve held (${liveSessionsToday}/${effectiveMaxPerDay}, the rest held for the Tier-1 boost) — session create blocked for ${opts.caller} (${opts.host || 'no host'})`);
+  }
+  if (liveSessionsToday !== null && liveSessionsToday >= hostCeiling) {
     recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status: 'day-cap-reached' });
-    const reserveNote = effectiveMaxPerDay !== maxPerDay ? ` (raw ceiling ${maxPerDay}, reduced for opening-window reserve)` : '';
-    throw new Error(`Browserbase daily cap reached (${liveSessionsToday}/${effectiveMaxPerDay}${reserveNote}) — session create blocked for ${opts.caller}`);
+    const reserveNote = hostCeiling < maxPerDay ? ` (raw ceiling ${maxPerDay}, reduced for opening-window reserve)` : '';
+    throw refusal(`Browserbase daily cap reached (${liveSessionsToday}/${hostCeiling}${reserveNote}) — session create blocked for ${opts.caller}`);
+  }
+  // A distinct message: this refusal holds only non-Tier-1 hosts, so callers
+  // must not latch the whole run shut on it (collect-review-texts.js).
+  if (liveSessionsToday !== null && liveSessionsToday >= hostLimit) {
+    recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status: 'recovery-reserve-held' });
+    throw refusal(`Browserbase recovery reserve held (${liveSessionsToday}/${hostLimit}, last ${hostCeiling - hostLimit} kept for Tier-1 recovery) — session create blocked for ${opts.caller} (${opts.host || 'no host'})`);
+  }
+  // Allowance callers: an unknown account count or an unknown own count refuses
+  // (unknown is not zero), and the caller's own trailing-24h sessions are capped.
+  if (laneAllowance > 0) {
+    const callerUsed = liveSessionsToday === null
+      ? null
+      : await browserbaseLiveUsage.fetchLiveBrowserbaseCallerSessionsToday(apiKey, projectId, sanitizeMetadataValue(opts.caller));
+    if (callerUsed === null || callerUsed >= laneAllowance) {
+      recordBbCall({ caller: opts.caller, host: opts.host, purpose: opts.purpose, category: opts.category, success: false, status: 'caller-allowance-used' });
+      throw refusal(`Browserbase caller allowance used (${callerUsed === null ? 'count unknown' : `${callerUsed}/${laneAllowance}`}) — session create blocked for ${opts.caller} (${opts.host || 'no host'})`);
+    }
   }
 
   const rawUserMetadata = { ...(opts.body && opts.body.userMetadata) };
@@ -235,6 +319,7 @@ async function createBbSession(opts) {
   let status = null;
   try {
     res = await fetch(SESSIONS_URL, {
+      signal: AbortSignal.timeout(60000),
       method: 'POST',
       headers: { 'X-BB-API-Key': apiKey, 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
@@ -268,9 +353,14 @@ async function createBbSession(opts) {
 // that stub fetchLiveBrowserbaseSessionsToday with different return values
 // back-to-back need to clear it between cases or they'll read a stale value
 // cached by the previous test's mock.
+// Clock seam for the time-boxed Tier-1 boost (tests set it; production uses real time).
+let _nowOverride = null;
+function _now() { return _nowOverride ? new Date(_nowOverride) : new Date(); }
+function _setNowForTests(iso) { _nowOverride = iso || null; }
+
 function _resetDayCapCacheForTests() {
   _dayCapCache = { key: null, count: null, ts: 0 };
   _openingWindowCache = { count: null, ts: 0 };
 }
 
-module.exports = { createBbSession, SESSIONS_URL, sanitizeMetadataValue, BB_CATEGORIES, _resetDayCapCacheForTests };
+module.exports = { createBbSession, SESSIONS_URL, sanitizeMetadataValue, BB_CATEGORIES, _resetDayCapCacheForTests, _setNowForTests };

@@ -56,4 +56,56 @@ async function fetchLiveBrowserbaseSessionsToday(apiKey, projectId, { hours = 24
   }
 }
 
-module.exports = { fetchLiveBrowserbaseSessionsToday, countRecentSessions, BROWSERBASE_SESSIONS_URL };
+/**
+ * Count sessions created in the last `hours` by one caller, from a raw list
+ * response, matching userMetadata.caller (createBbSession writes it on every
+ * session). Pure. Returns null when the list has sessions but none carries
+ * userMetadata: the list endpoint may not echo it, and "I cannot tell" must
+ * not read as "this caller has used none" (it would lift the caller's cap).
+ */
+function countRecentSessionsForCaller(responseData, caller, hours = 24, nowMs = Date.now()) {
+  const items = Array.isArray(responseData) ? responseData : (responseData && responseData.data) || [];
+  const cutoff = nowMs - hours * 60 * 60 * 1000;
+  const recent = items.filter(s => s && s.createdAt && new Date(s.createdAt).getTime() >= cutoff);
+  if (recent.length > 0 && !recent.some(s => s.userMetadata && typeof s.userMetadata === 'object')) return null;
+  return recent.filter(s => s.userMetadata && s.userMetadata.caller === caller).length;
+}
+
+/** Live trailing-24h session count for one caller; null on any failure or when the list lacks userMetadata. */
+async function fetchLiveBrowserbaseCallerSessionsToday(apiKey, projectId, caller, { hours = 24, timeout = 8000 } = {}) {
+  if (!apiKey || !projectId || !caller) return null;
+  try {
+    const resp = await axios.get(BROWSERBASE_SESSIONS_URL, {
+      params: { projectId },
+      headers: { 'x-bb-api-key': apiKey },
+      timeout,
+    });
+    return countRecentSessionsForCaller(resp.data, caller, hours);
+  } catch {
+    return null;
+  }
+}
+
+/** Raw sessions list (read-only, no session is created); null on failure. For diagnostics. */
+async function fetchLiveBrowserbaseSessionList(apiKey, projectId, { timeout = 8000 } = {}) {
+  if (!apiKey || !projectId) return null;
+  try {
+    const resp = await axios.get(BROWSERBASE_SESSIONS_URL, {
+      params: { projectId },
+      headers: { 'x-bb-api-key': apiKey },
+      timeout,
+    });
+    return resp.data;
+  } catch {
+    return null;
+  }
+}
+
+module.exports = {
+  fetchLiveBrowserbaseSessionList,
+  fetchLiveBrowserbaseSessionsToday,
+  fetchLiveBrowserbaseCallerSessionsToday,
+  countRecentSessions,
+  countRecentSessionsForCaller,
+  BROWSERBASE_SESSIONS_URL,
+};
