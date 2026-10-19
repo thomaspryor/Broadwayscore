@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5647-b",
   "planId": "0e82a55c-a23a-4193-af42-736ea801b634",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-18T22:57:20.119Z",
   "submitter": {
     "name": null,
@@ -42,5 +42,23 @@
         "description": "cats-the-jellicle-ball: the notes no longer call the capitalization an estimate."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-19T00:42:27.661Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for cats-the-jellicle-ball"
+    }
+  ]
 }
