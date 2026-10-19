@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-10-18T23:14:52.253Z",
+  "timestamp": "2026-10-19T00:46:55.002Z",
   "stats": {
-    "totalReviews": 57531,
-    "alreadyFlagged": 21372,
+    "totalReviews": 57572,
+    "alreadyFlagged": 21374,
     "dateGuardCatches": 196,
-    "directorMismatch": 1952,
-    "tvFilmSignals": 1610,
+    "directorMismatch": 1968,
+    "tvFilmSignals": 1616,
     "londonSignals": 2438,
     "offBroadwaySignals": 523,
-    "yearMismatch": 156,
+    "yearMismatch": 157,
     "noPublishDate": 5230
   },
   "findings": [
@@ -5085,6 +5085,24 @@
     },
     {
       "showId": "book-of-mormon-tour-2022",
+      "file": "localnewsmatters--leslie-katz-bay-city-news.json",
+      "publishDate": "2026-01-16",
+      "url": "https://localnewsmatters.org/2026/01/16/review-on-tour-in-san-francisco-book-of-mormon-as-funny-irreverent-relevant-as-ever/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
       "file": "maryland-theatre-guide--unknown.json",
       "score": 90,
       "publishDate": "2026-04-30",
@@ -8205,6 +8223,32 @@
     },
     {
       "showId": "clue-tour-2025",
+      "file": "broadwayworld--courtney-castellino.json",
+      "publishDate": "2026-01-07",
+      "url": "https://www.broadwayworld.com/ottawa/article/Review-Broadway-Across-Canadas-Presentation-of-CLUE-LIVE-ON-STAGE-at-the-National-Arts-Centre-20260107",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "clue-tour-2025",
+      "file": "broadwayworld--rich-mehrenberg.json",
+      "publishDate": "2026-01-11",
+      "url": "https://www.broadwayworld.com/central-pa/article/Review-CLUE-THE-MUSICAL-at-Dutch-Apple-Dinner-Theatre-20260111",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "clue-tour-2025",
       "file": "broadwayworld--rob-levy.json",
       "score": 87,
       "publishDate": "2026-09-28",
@@ -8335,6 +8379,19 @@
     },
     {
       "showId": "clue-tour-2025",
+      "file": "onstagepittsburgh--sharon-eberson.json",
+      "publishDate": "2025-12-26",
+      "url": "https://onstagepittsburgh.com/2025/12/26/did-the-butler-do-it-cmu-alum-adam-brett-with-the-cast-of-clue-at-the-benedum-center/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "clue-tour-2025",
       "file": "syracuse-herald-journal--len-fonte.json",
       "score": 76,
       "publishDate": "2025-10-30",
@@ -8353,6 +8410,32 @@
       "score": 80,
       "publishDate": "2026-07-02",
       "url": "https://www.spokesman.com/stories/2026/jul/02/clue-brings-silliness-spookiness-of-board-game-fil/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "clue-tour-2025",
+      "file": "trib-live--by-alexis-papalia.json",
+      "publishDate": "2025-12-31",
+      "url": "https://triblive.com/aande/theater-arts/the-twists-and-laughs-of-clue-slay-at-the-benedum-center/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "clue-tour-2025",
+      "file": "whats-up-newp--frank-odonnell.json",
+      "publishDate": "2026-01-17",
+      "url": "https://whatsupnewp.com/2026/01/review-clue-delivers-exactly-what-we-need-right-now/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -20657,7 +20740,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "jolienstheatrediary--jolien.json",
-      "score": 77,
+      "score": 80,
       "publishDate": "2026-10-08",
       "url": "https://www.jolienstheatrediary.com/reviews/review-into-the-woods-noel-coward-theatre",
       "findings": [
@@ -20709,7 +20792,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
-      "score": 74,
+      "score": 75,
       "publishDate": "2026-10-07",
       "url": "https://www.londontheatre1.com/reviews/into-the-woods-noel-coward-theatre/",
       "findings": [
@@ -20803,7 +20886,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "plays-international--david-wootton.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "2026-10-09",
       "url": "https://playsinternational.org.uk/into-the-woods-noel-coward-theatre/",
       "findings": [
@@ -20817,7 +20900,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "plays-international--unknown.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "2026-10-09",
       "url": "https://playsinternational.org.uk/into-the-woods-noel-coward-theatre/",
       "findings": [
@@ -22782,7 +22865,7 @@
       "file": "theatre-weekly--oliver-valentine.json",
       "score": 87,
       "publishDate": "2024-10-07",
-      "url": null,
+      "url": "https://theatreweekly.com/review-juno-and-the-paycock-at-the-gielgud-theatre/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -25505,7 +25588,7 @@
       "file": "independent--isobel-lewis.json",
       "score": 42,
       "publishDate": "2022-10-23",
-      "url": null,
+      "url": "https://www.independent.co.uk/independentpremium/culture/review-my-neighbour-totoro-rsc-marvellous-sohoplace-b2206988.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -26676,6 +26759,24 @@
     },
     {
       "showId": "moulin-rouge-tour-2022",
+      "file": "12thnight--liz-nicholls.json",
+      "publishDate": "2026-01-14",
+      "url": "https://12thnight.ca/2026/01/14/those-belle-epoque-bohemians-are-the-party-people-moulin-rouge-the-musical-a-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2019 (2x) more than 2022 (0x). 2019 matches production: moulin-rouge-2019"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-tour-2022",
       "file": "broadwayworld--alyson-eng.json",
       "score": 78,
       "publishDate": "2026-01-24",
@@ -26708,6 +26809,32 @@
       "score": 94,
       "publishDate": "2026-07-10",
       "url": "https://www.broadwayworld.com/little-rock/article/Review-MOULIN-ROUGE-THE-MUSICAL-at-Walton-Arts-Center-in-Fayetteville-20260710",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-tour-2022",
+      "file": "calgary-herald--unknown.json",
+      "publishDate": "2026-01-07",
+      "url": "https://calgaryherald.com/entertainment/theatre/review-moulin-rouge-the-musical-is-a-treat-for-the-eyes-and-ears",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-tour-2022",
+      "file": "edmonton-journal--unknown.json",
+      "publishDate": "2026-01-14",
+      "url": "https://edmontonjournal.com/entertainment/review-moulin-rouge-the-musical-a-fun-romantic-romp",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -26944,6 +27071,19 @@
       "file": "broadwayworld--stephi-wild.json",
       "publishDate": "2026-07-15",
       "url": "https://www.broadwayworld.com/austin/article/MRS-DOUBTFIRE-to-Play-Bass-Concert-Hall-in-Austin-20260715",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from mrs-doubtfire-2021"
+        }
+      ]
+    },
+    {
+      "showId": "mrs-doubtfire-tour-2025",
+      "file": "houston-press--d-l-groover.json",
+      "publishDate": "2026-10-14",
+      "url": "https://www.houstonpress.com/arts/mrs-doubtfire-staged-in-50s-style-is-on-stage-at-the-hobby/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -27252,7 +27392,7 @@
     {
       "showId": "much-ado-about-nothing-west-end-2025",
       "file": "artsdesk--rachel-halliburton.json",
-      "score": 94,
+      "score": 95,
       "publishDate": "February 20th, 2025",
       "url": "https://theartsdesk.com/theatre/much-ado-about-nothing-theatre-royal-drury-lane-review-shamelessly-hedonistic-production",
       "findings": [
@@ -27481,7 +27621,7 @@
     {
       "showId": "much-ado-about-nothing-west-end-2025",
       "file": "radio-times--olivia-garrett.json",
-      "score": 97,
+      "score": 99,
       "publishDate": "2025-02-21",
       "url": "https://www.radiotimes.com/going-out/going-out-reviews/much-ado-about-nothing-review/",
       "findings": [
@@ -29077,6 +29217,32 @@
     },
     {
       "showId": "oh-mary-tour-2026",
+      "file": "san-jose-mercury-news--randy-mcmullen.json",
+      "publishDate": "2026-10-16",
+      "url": "https://www.mercurynews.com/2026/10/16/review-oh-mary-in-sf/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 5\""
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-tour-2026",
+      "file": "sfist--jay-barmann.json",
+      "publishDate": "2026-10-16",
+      "url": "https://sfist.com/2026/10/16/oh-mary-just-as-subversively-hilarious-on-tour-at-sfs-curran-as-it-was-on-broadway/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-tour-2026",
       "file": "timesofsandiego--drew-sitton-times-of-san-diego.json",
       "score": 93,
       "publishDate": "2026-10-01",
@@ -29536,7 +29702,7 @@
     {
       "showId": "only-fools-and-horses-west-end-2019",
       "file": "guardian--mark-lawson.json",
-      "score": 58,
+      "score": 62,
       "publishDate": "February 20th, 2019",
       "url": "https://www.theguardian.com/stage/2019/feb/20/only-fools-and-horses-the-musical-review-vintage-gags-need-better-tunes",
       "findings": [
@@ -29619,7 +29785,7 @@
     {
       "showId": "only-fools-and-horses-west-end-2019",
       "file": "whatsonstage--alun-hood.json",
-      "score": 64,
+      "score": 67,
       "publishDate": "February 20th, 2019",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/only-fools-and-horses-musical-haymarket_48539.html",
       "findings": [
@@ -29725,6 +29891,19 @@
       "score": 88,
       "publishDate": null,
       "url": "https://aroundthetownchicago.com/theatre-reviews/operation-mincemeat/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-tour-2026",
+      "file": "boston-com--peter-chianca.json",
+      "publishDate": "2026-10-16",
+      "url": "https://www.boston.com/culture/arts/2026/10/16/theater-review-operation-mincemeat-at-emerson-colonial-boston/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -31013,7 +31192,7 @@
       "file": "broadwayworld--aliya-al-hassan.json",
       "score": 78,
       "publishDate": "2023-06-07",
-      "url": null,
+      "url": "https://www.broadwayworld.com/westend/article/Review-PATRIOTS-Nol-Coward-Theatre-20230607",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -41134,7 +41313,7 @@
       "file": "artsdesk--rachel-halliburton.json",
       "score": 62,
       "publishDate": "2025-04-26",
-      "url": null,
+      "url": "https://theartsdesk.com/theatre/great-gatsby-london-coliseum-review-lavish-and-lively-production-fails-capture-novels-tortured-soul",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -43035,6 +43214,24 @@
     },
     {
       "showId": "the-notebook-tour-2025",
+      "file": "latheatrix--anita-w-harris.json",
+      "publishDate": "2026-01-12",
+      "url": "https://www.latheatrix.com/post/review-the-notebook-at-hollywood-pantages",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
       "file": "latimes--charles-mcnulty.json",
       "score": 68,
       "publishDate": "2026-01-09",
@@ -43105,6 +43302,19 @@
       "score": 89,
       "publishDate": "2025-10-01",
       "url": "https://patch.com/connecticut/hartford/theater-review-notebook-musical-tour-bushnell",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
+      "file": "revue--josh.json",
+      "publishDate": "2026-10-15",
+      "url": "https://revuewm.com/arts/review-broadway-breathes-new-life-into-the-notebook",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -43209,6 +43419,19 @@
           "severity": "HIGH",
           "detail": "Mentions director \"michael greif\" from the-notebook-2024"
         },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
+      "file": "stagescenela--unknown.json",
+      "publishDate": "2026-01-09",
+      "url": "https://stagescenela.com/2026/01/the-notebook/",
+      "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -43531,6 +43754,19 @@
     },
     {
       "showId": "the-outsiders-tour-2025",
+      "file": "broadwayworld--drew-eberhard.json",
+      "publishDate": "2026-01-03",
+      "url": "https://www.broadwayworld.com/tampa/article/Review-A-LITERARY-WORK-BECOMES-A-PHENOMENON-WITH-THE-OUTSIDERS-A-NEW-MUSICAL-at-the-Straz-Center-20260103",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
       "file": "broadwayworld--elizabeth-armstrong.json",
       "score": 78,
       "publishDate": "2026-06-19",
@@ -43609,6 +43845,19 @@
       "score": 85,
       "publishDate": "2026-08-08",
       "url": "https://www.broadwayworld.com/chicago/article/Review-THE-OUTSIDERS-National-Tour-Presented-by-Broadway-In-Chicago-20260808",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
+      "file": "broadwayworld--rob-levy.json",
+      "publishDate": "2026-01-11",
+      "url": "https://www.broadwayworld.com/st-louis/article/Review-THE-OUTSIDERS-at-Fox-Theatre-St-Louis-20260111",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -43749,6 +43998,19 @@
       "score": 90,
       "publishDate": "2026-06-20",
       "url": "https://istvandugalin.com/2026/06/20/the-outsiders-mirvish/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
+      "file": "ladue-news--mark-bretz.json",
+      "publishDate": "2026-01-14",
+      "url": "https://www.laduenews.com/arts-and-culture/fox-theatre-theater-the-outsiders-tony-award-musical-performance-stuff-to-do-stl-play/article_10d839a9-41a4-40cc-b692-a8cfe6c70682.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -51235,6 +51497,19 @@
     },
     {
       "showId": "wicked-tour-2021",
+      "file": "onstagepittsburgh--jessica-neu.json",
+      "publishDate": "2026-01-16",
+      "url": "https://onstagepittsburgh.com/2026/01/16/review-defying-expectations-and-dazzling-audiences-wicked-remains-wonderful/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from wicked-2003"
+        }
+      ]
+    },
+    {
+      "showId": "wicked-tour-2021",
       "file": "playoffthepage--mary-aalgaard.json",
       "score": 88,
       "publishDate": "2026-07-11",
@@ -51554,7 +51829,7 @@
     {
       "showId": "1536-west-end-2026",
       "file": "broadwayworld--debbie-gilpin.json",
-      "score": 95,
+      "score": 96,
       "publishDate": "2026-05-14",
       "url": "https://www.broadwayworld.com/westend/article/Review-1536-The-Ambassadors-Theatre-20260514",
       "findings": [
@@ -53078,7 +53353,7 @@
       "file": "times-uk--dominic-maxwell.json",
       "score": 34,
       "publishDate": "2025-05-31",
-      "url": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/after-the-act-review-the-worst-show-of-the-year-so-far-vf965zrxb",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -53512,7 +53787,7 @@
       "file": "financialtimes--sarah-hemming.json",
       "score": 75,
       "publishDate": "2022-08-11",
-      "url": null,
+      "url": "https://www.ft.com/content/c9ca5573-0488-4310-9c42-a24cd1039f99?syn-25a6b1a6=1",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -56146,7 +56421,7 @@
       "file": "artsdesk--helen-hawkins.json",
       "score": 82,
       "publishDate": "2022-10-22",
-      "url": null,
+      "url": "https://theartsdesk.com/theatre/blues-alabama-sky-national-theatre-review-superb-cast-and-production-period-hit",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -59911,7 +60186,7 @@
       "file": "artsdesk--aleks-sierz.json",
       "score": 74,
       "publishDate": "2023-04-26",
-      "url": null,
+      "url": "https://theartsdesk.com/theatre/dixon-and-daughters-national-theatre-review-cold-discomfort-harm",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -61896,7 +62171,7 @@
       "file": "artsdesk--laura-de-lisle.json",
       "score": 91,
       "publishDate": "2022-04-18",
-      "url": null,
+      "url": "https://theartsdesk.com/theatre/black-boys-who-have-considered-suicide-when-hue-gets-too-heavy-royal-court-review-black-joy-pain",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -64460,7 +64735,7 @@
       "file": "sunday-times--quentin-letts.json",
       "score": 71,
       "publishDate": "2019-09-08",
-      "url": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-hansard-fleabag-g8tp8l7qq",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -71412,7 +71687,7 @@
       "file": "telegraph--the-telegraph.json",
       "score": 77,
       "publishDate": "2024-07-03",
-      "url": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/mnemonic-nationals-olivier-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -72485,7 +72760,7 @@
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 63,
       "publishDate": "2023-01-26",
-      "url": null,
+      "url": "https://www.timeout.com/london/theatre/noises-off-review-1",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -75190,7 +75465,7 @@
       "file": "everything-theatre--gabriel-wilding.json",
       "score": 81,
       "publishDate": "2021-11-20",
-      "url": null,
+      "url": "https://everything-theatre.co.uk/2021/11/review-rare-earth-mettle-royal-court/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -76443,7 +76718,7 @@
       "file": "artsdesk--matt-wolf.json",
       "score": 92,
       "publishDate": "2023-03-09",
-      "url": null,
+      "url": "https://theartsdesk.com/theatre/shirley-valentine-duke-yorks-theatre-review-sheridan-smith-slays-it",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -79944,7 +80219,7 @@
       "file": "theatre-weekly--theatre-weekly.json",
       "score": 79,
       "publishDate": "2024-06-17",
-      "url": null,
+      "url": "https://theatreweekly.com/review-the-bounds-at-the-royal-court/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -82311,7 +82586,7 @@
       "file": "artsdesk--demetrios-matheou.json",
       "score": 79,
       "publishDate": "2023-11-30",
-      "url": null,
+      "url": "https://theartsdesk.com/theatre/house-bernarda-alba-lyttelton-theatre-review-dazzling-darkness",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -83932,7 +84207,7 @@
       "file": "thereviewshub--susan-elkin.json",
       "score": 77,
       "publishDate": "2026-03-27",
-      "url": null,
+      "url": "https://www.thereviewshub.com/the-old-ladies-finborough-theatre-london/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -87623,6 +87898,7 @@
     {
       "showId": "triumph-off-west-end-2026",
       "file": "travelbeginsat40--mark-bibby-jackson.json",
+      "score": 87,
       "publishDate": "2026-10-18",
       "url": "https://www.travelbeginsat40.com/2026/10/caryl-churchills-triumph-review-almeida-theatre/",
       "findings": [

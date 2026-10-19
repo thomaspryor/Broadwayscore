@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "other-desert-cities-2026",
   "openingDate": "2026-10-18",
-  "detectedAt": "2026-10-18T23:14:38.916Z",
+  "detectedAt": "2026-10-19T00:46:40.295Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -11,9 +11,9 @@
       "criticName": "Caitlin Huston",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-star-other-desert-cities-a-few-good-men-860-1236729226/",
       "fullTextLen": 1163,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
+      "dispatchActionable": false,
+      "skipReason": "terminal_text_gate_block",
+      "rescoreBlockedReason": "input_validation_failed:body_too_short",
       "humanReviewScore": null,
       "adjudicatedScore": null,
       "originalScore": null,
@@ -24,9 +24,9 @@
     }
   ],
   "orphanCount": 1,
-  "dispatchableOrphanCount": 1,
-  "blockedOrphanCount": 0,
+  "dispatchableOrphanCount": 0,
+  "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-10-18T23:14:38.916Z"
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
 }
