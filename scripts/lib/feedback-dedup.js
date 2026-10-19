@@ -16,8 +16,10 @@
  *
  * Pure function — no I/O. The workflow extracts existing-issue diagnoses from
  * the embedded DIAGNOSIS_JSON and passes them in. Tested in
- * scripts/test-feedback-dedup.mjs.
+ * tests/unit/feedback-dedup*.test.mjs.
  */
+
+const { normalizeDiagnosisShowIds } = require('./feedback-multishow');
 
 const STOPWORDS = new Set([
   'the', 'a', 'an', 'and', 'or', 'but', 'is', 'are', 'was', 'were', 'be',
@@ -95,17 +97,18 @@ function diagnosisText(diag) {
  * null if none.
  *
  * Match rules (first that fires wins):
- *  1. Same resolved showId (non-null) AND topic similarity ≥ showMatchThreshold
- *     — a lower bar, because the show is already pinned.
- *  2. No usable showId on either side, but topic similarity ≥ topicThreshold
+ *  1. Every resolved show in the new report is covered by the existing issue
+ *     AND topic similarity ≥ showMatchThreshold. A report adding affected
+ *     shows must still create an issue so those shows get an auto-fix attempt.
+ *  2. No usable show IDs on either side, but topic similarity ≥ topicThreshold
  *     — for show-agnostic bugs (e.g. "scores fluctuate daily", "OB listings
  *     missing").
  *
- * @param {object} newDiag         New diagnosis ({summary, whatsHappening, showId, submitterShow, originalMessage})
+ * @param {object} newDiag         New diagnosis ({summary, whatsHappening, showId, showIds, resolvedShowIds, submitterShow, originalMessage})
  * @param {Array<{number:number, diagnosis:object}>} openBugs  Existing open bug-diagnosis issues
  * @param {object} [opts]
- * @param {number} [opts.showMatchThreshold=0.12]  Jaccard bar when showId matches
- * @param {number} [opts.topicThreshold=0.5]       Overlap-coefficient bar when no showId
+ * @param {number} [opts.showMatchThreshold=0.12]  Jaccard bar when shows are covered
+ * @param {number} [opts.topicThreshold=0.5]       Overlap-coefficient bar when no show IDs
  * @param {number} [opts.minSharedTokens=2]        Absolute shared-token floor (both branches)
  * @returns {{number:number, diagnosis:object, similarity:number, reason:string}|null}
  */
@@ -122,7 +125,7 @@ function findDuplicateOpenBug(newDiag, openBugs, opts = {}) {
   if (!newDiag || !Array.isArray(openBugs) || openBugs.length === 0) return null;
 
   const newTokens = tokenize(diagnosisText(newDiag));
-  const newShow = newDiag.showId || null;
+  const newShows = normalizeDiagnosisShowIds(newDiag);
 
   let best = null;
 
@@ -133,19 +136,19 @@ function findDuplicateOpenBug(newDiag, openBugs, opts = {}) {
     const existTokens = tokenize(diagnosisText(existing));
     const jac = jaccard(newTokens, existTokens);
     const sharedSameShow = intersectionSize(newTokens, existTokens);
-    const existShow = existing.showId || null;
+    const existShows = new Set(normalizeDiagnosisShowIds(existing));
 
     let isDup = false;
     let reason = '';
     let sim = jac;
 
-    if (newShow && existShow && newShow === existShow && jac >= showMatchThreshold && sharedSameShow >= minSharedTokens) {
+    if (newShows.length > 0 && newShows.every((id) => existShows.has(id)) && jac >= showMatchThreshold && sharedSameShow >= minSharedTokens) {
       // Show already pinned — a modest topic overlap is enough, but still
       // require ≥2 shared tokens so a single coincidental word can't merge two
       // genuinely different bugs on the same show.
       isDup = true;
-      reason = `same showId "${newShow}" + topic similarity ${jac.toFixed(2)}`;
-    } else if (!newShow && !existShow) {
+      reason = `same showId${newShows.length > 1 ? 's' : ''} "${newShows.join(', ')}" + topic similarity ${jac.toFixed(2)}`;
+    } else if (newShows.length === 0 && existShows.size === 0) {
       // Show-agnostic bug — use overlap coefficient so a terse report and a
       // verbose report of the same issue still match. Guard with an absolute
       // shared-token floor: after aggressive stopword stripping a terse report
