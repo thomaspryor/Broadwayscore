@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-19T21:05:31.445Z",
+  "timestamp": "2026-10-19T21:37:44.384Z",
   "stats": {
-    "totalReviews": 57802,
+    "totalReviews": 57801,
     "alreadyFlagged": 21079,
     "dateGuardCatches": 203,
     "directorMismatch": 2017,
     "tvFilmSignals": 1645,
-    "londonSignals": 2537,
+    "londonSignals": 2538,
     "offBroadwaySignals": 530,
     "yearMismatch": 161,
-    "noPublishDate": 5223
+    "noPublishDate": 5215
   },
   "findings": [
     {
@@ -535,6 +535,7 @@
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
       "file": "slotkinletter--unknown.json",
+      "score": 72,
       "publishDate": null,
       "url": "https://slotkinletter.com/2026/05/review-a-beautiful-noise-the-neil-diamond-musical",
       "findings": [
@@ -26216,6 +26217,7 @@
     {
       "showId": "maybe-happy-ending-tour-2026",
       "file": "hotchka--unknown.json",
+      "score": 96,
       "publishDate": "2026-09-16",
       "url": "https://hotchka.com/maybe-happy-ending-tour-review-baltimore-hippodrome",
       "findings": [
@@ -31363,7 +31365,7 @@
     {
       "showId": "paranormal-activity-west-end-2025",
       "file": "1883magazine--unknown.json",
-      "score": null,
+      "score": 88,
       "publishDate": "2025-12-16",
       "url": "https://1883magazine.com/paranormal-activity-on-stage-review/",
       "findings": [
@@ -34043,7 +34045,7 @@
       "showId": "return-of-the-godz-west-end-2026",
       "file": "londontheatre1--ben-ross.json",
       "score": 78,
-      "publishDate": "2026-06-11",
+      "publishDate": "2026-06-10",
       "url": "https://www.londontheatre1.com/reviews/return-of-the-godz-peacock-theatre-review/",
       "findings": [
         {
@@ -43163,7 +43165,7 @@
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": null,
+      "score": 36,
       "publishDate": "2025-11-13",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-hunger-games-on-stage-troubadour-canary-wharf-theatre",
       "findings": [
@@ -44233,6 +44235,7 @@
     {
       "showId": "the-notebook-tour-2025",
       "file": "feature-presentation--patrick-j-regal.json",
+      "score": 63,
       "publishDate": "2026-08-21",
       "url": "https://featurepresentationvideo.substack.com/p/tour-review-the-notebook",
       "findings": [
@@ -44589,6 +44592,7 @@
     {
       "showId": "the-notebook-tour-2025",
       "file": "washpost--thomas-floyd.json",
+      "score": 78,
       "publishDate": "2026-08-25",
       "url": "https://www.washingtonpost.com/entertainment/theater/2026/08/25/notebook-underappreciated-broadway-brings-waterworks-dc/",
       "findings": [
@@ -68939,6 +68943,20 @@
     },
     {
       "showId": "inter-alia-west-end-2026",
+      "file": "elementaltheatre--thomas-levi.json",
+      "score": null,
+      "publishDate": "2026-04-07",
+      "url": "https://www.elementaltheatre.com/post/inter-alia-wyndham-s-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
       "file": "lbc--johnny-jenkins.json",
       "score": 91,
       "publishDate": "2026-04-08",
@@ -83649,6 +83667,7 @@
     {
       "showId": "the-devil-wears-prada-west-end-2024",
       "file": "thereviewshub--the-reviews-hub-london.json",
+      "score": 73,
       "publishDate": "2024-12-06",
       "url": "https://www.thereviewshub.com/the-devil-wears-prada-dominion-theatre-london/",
       "findings": [
