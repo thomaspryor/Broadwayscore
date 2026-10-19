@@ -1343,6 +1343,20 @@
     "queuedAt": "2026-10-19T02:20:52.235Z"
   },
   {
+    "conditionKey": "pending-unrecoverable:midnight-off-broadway-2026",
+    "title": "1 review(s) for midnight-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nypost--37bdc3ba.json (nypost): no byline in page and no recoverable body https://nypost.com/2026/10/14/scooter-braun-and-todrick-hall-join-forces-to-produce-star-studded-off-broadway-musical-midnight-to-rave-reviews/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-19T03:41:15.634Z"
+  },
+  {
     "conditionKey": "land:land/worktree-week-voice-count-and-lede",
     "title": "Landing blocked: resolve red on land/worktree-week-voice-count-and-lede",
     "description": "land.yml did not land land/worktree-week-voice-count-and-lede: the resolve gate went red at 4d9840db58. The branch ref was left in place and nothing was pushed to main. First failure: REFUSED: resolve: land/worktree-week-voice-count-and-lede tip is c664e77add (origin/land/worktree-week-voice-count-and-lede), not the verified tip 4d9840db58 — a newer push superseded this landing; nothing pushed (attempts 0, 28.7s) Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39194124011",
