@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-10-19T09:56:38.378Z",
-  "totalScanned": 57772,
-  "totalExcluded": 27041,
+  "generatedAt": "2026-10-19T11:47:10.875Z",
+  "totalScanned": 57780,
+  "totalExcluded": 27054,
   "ruleCounts": {
-    "wrongProduction": 18151,
-    "duplicateOf": 1932,
-    "wrongShow": 1799,
-    "rejectionReason": 1000,
+    "wrongProduction": 18156,
+    "duplicateOf": 1934,
+    "wrongShow": 1803,
+    "rejectionReason": 998,
     "unverifiableWebSearchRow": 958,
     "noTextOrScoreSignal": 636,
-    "nonReview": 517,
+    "nonReview": 521,
     "wrongAttribution": 312,
     "isRoundupArticle": 223,
     "blockedReviewUrl": 211,
@@ -41,18 +41,22 @@
     "personalRepost": 1
   },
   "ruleDeltas": {
-    "duplicateOf": -4
+    "wrongProduction": 5,
+    "duplicateOf": 2,
+    "wrongShow": 4,
+    "rejectionReason": -2,
+    "nonReview": 4
   },
-  "previousGeneratedAt": "2026-10-19T09:35:36.938Z",
+  "previousGeneratedAt": "2026-10-19T09:56:38.378Z",
   "mirror": {
     "comparedShows": 2560,
-    "comparedFiles": 57222,
-    "agreeExcluded": 26269,
-    "agreeIncluded": 29733,
+    "comparedFiles": 57225,
+    "agreeExcluded": 26280,
+    "agreeIncluded": 29844,
     "mirrorOnly": 227,
-    "rebuildOnly": 993,
-    "disagreements": 1220,
-    "disagreementRate": 0.0213,
+    "rebuildOnly": 874,
+    "disagreements": 1101,
+    "disagreementRate": 0.0192,
     "mirrorOnlyByRule": {
       "duplicateOf": 78,
       "cvWrongArticleHighConfidence": 63,
@@ -64,19 +68,19 @@
       "rejectionReason": 1
     },
     "rebuildOnlyByReason": {
-      "skippedDuplicateText": 253,
-      "skippedUnknownCriticDedup": 226,
-      "skippedNoScore": 168,
+      "skippedDuplicateText": 252,
+      "skippedUnknownCriticDedup": 224,
       "skippedCrossMarket": 80,
       "skippedInvalidUrl": 63,
-      "skippedPreOpening": 47,
+      "skippedNoScore": 53,
+      "skippedPreOpening": 49,
       "skippedShowNotMentioned": 27,
       "skippedListingPage": 25,
-      "skippedCrossShowDupe": 20,
+      "skippedCrossShowDupe": 19,
       "skippedSameArticleNamedTwin": 16,
-      "skippedDateMismatch": 13,
-      "priorRunSuperseded": 11,
-      "skippedScraperGarbage": 10,
+      "skippedDateMismatch": 11,
+      "skippedScraperGarbage": 11,
+      "priorRunSuperseded": 10,
       "skippedPlaceholderBylineTwin": 7,
       "skippedGarbage": 4,
       "heldPreOpeningCorroboration": 3,
@@ -93,7 +97,7 @@
     },
     "rebuildEntriesUnscanned": 0,
     "notComparedShows": 81,
-    "notComparedFiles": 550
+    "notComparedFiles": 555
   },
-  "previousDisagreementRate": 0.0214
+  "previousDisagreementRate": 0.0213
 }
