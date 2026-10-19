@@ -13,6 +13,8 @@
 //   node scripts/audit-push-retry-budgets.js --json      # machine-readable
 //   node scripts/audit-push-retry-budgets.js --top=10    # limit ranked list (default 15)
 //   node scripts/audit-push-retry-budgets.js --fail-on-job-timeout  # BRO-2322: exit 1 on job-timeout-margin-undersized (CI hard gate; other flags advisory)
+// BRO-5312: residual-inclusive budgets warn separately, including with the
+// existing hard-gate flag. Resize callers before arming that advisory.
 'use strict';
 
 const fs = require('fs');
@@ -63,13 +65,15 @@ function main() {
     .sort((a, b) => (a.fundableAttempts - b.fundableAttempts) || (b.fallbackAfterAttempts - a.fallbackAfterAttempts));
 
   const jobTimeoutViolations = allResults.filter((r) => r.flags.includes('job-timeout-margin-undersized'));
+  const residualJobTimeoutViolations = allResults.filter((r) => r.advisoryFlags.includes('job-timeout-margin-with-residual-undersized'));
   if (failOnJobTimeout && jobTimeoutViolations.length > 0) {
     process.exitCode = 1;
     console.error(`::error::${jobTimeoutViolations.length} push-with-retry.sh call site(s) have a job timeout below the summed step budgets (job-timeout-margin-undersized): ${[...new Set(jobTimeoutViolations.map((r) => `${r.file}:${r.job}`))].join(', ')}. Raise the job's timeout-minutes (see node scripts/audit-push-retry-budgets.js).`);
   }
 
   if (jsonOut) {
-    console.log(JSON.stringify({ totalFiles: files.length, filesWithPushCalls, totalCalls: allResults.length, flaggedCount: flagged.length, mixedSafetyBundleCount: mixedBundles.length, fallbackEarlyTriggerUnreachableCount: fallbackEarlyTriggerUnreachable.length, underParsedFiles, ranked }, null, 2));
+    console.log(JSON.stringify({ totalFiles: files.length, filesWithPushCalls, totalCalls: allResults.length, flaggedCount: flagged.length, mixedSafetyBundleCount: mixedBundles.length, fallbackEarlyTriggerUnreachableCount: fallbackEarlyTriggerUnreachable.length, underParsedFiles, ranked,
+      residualJobTimeoutViolationCount: residualJobTimeoutViolations.length, residualJobTimeoutViolations }, null, 2));
     return;
   }
 
@@ -79,6 +83,16 @@ function main() {
   if (underParsedFiles.length > 0) {
     console.log(`⚠️  ${underParsedFiles.length} file(s) may have UNDER-PARSED push-with-retry.sh calls (structured parse found fewer than a raw text scan — verify by hand):`);
     for (const u of underParsedFiles) console.log(`     ${u.file}: parsed=${u.parsed} raw=${u.raw}`);
+    console.log('');
+  }
+
+  if (residualJobTimeoutViolations.length > 0) {
+    console.log(`Warning (advisory only, BRO-5312): ${residualJobTimeoutViolations.length} call site(s) lack job-timeout headroom after residual work past PUSH_DEADLINE_SEC. The existing --fail-on-job-timeout gate is unchanged. Resize callers before arming this check. These estimates include rebase CPU, unclamped survival fetches and the API fallback, but exclude per-file REST blob uploads and caller-supplied API deadline extensions.\n`);
+    for (const r of residualJobTimeoutViolations.slice(0, topN)) {
+      console.log(`  ${r.file} :: ${r.job} / "${r.step}"`);
+      console.log(`      residualPastDeadline=${r.residualPastDeadlineSec}s stepBudgetWithResidual=${r.stepBudgetWithResidualSec}s otherStepsWithResidual=${r.otherStepsBudgetWithResidualSec}s marginWithResidual=${r.marginWithResidualSec}s (${(r.marginRatioWithResidual * 100).toFixed(1)}%)`);
+    }
+    if (residualJobTimeoutViolations.length > topN) console.log(`  ... ${residualJobTimeoutViolations.length - topN} more (--top=N to widen, --json for the full caller list).`);
     console.log('');
   }
 
@@ -144,6 +158,7 @@ function main() {
     console.log(`  [score ${r.contentionScore}] ${r.file} :: ${r.job} / "${r.step}"`);
     console.log(`      retries=${r.maxRetries} deadline=${r.deadlineSec}s backoffSum=${r.backoffSum}s ratio=${r.retryDeadlineRatio.toFixed(2)} fundableAttempts=${r.fundableAttempts}/${r.maxRetries}`);
     console.log(`      jobTimeout=${r.jobTimeoutSec}s stepBudget=${r.stepBudgetSec}s otherSteps=${r.otherStepsBudgetSec}s margin=${r.marginSec}s (${(r.marginRatio * 100).toFixed(1)}%)`);
+    console.log(`      residualPastDeadline=${r.residualPastDeadlineSec}s stepBudgetWithResidual=${r.stepBudgetWithResidualSec}s marginWithResidual=${r.marginWithResidualSec}s (${(r.marginRatioWithResidual * 100).toFixed(1)}%, advisory)`);
     console.log(`      managedFile=${r.touchesManagedFile}${r.touchesManagedFile ? ` (apiFallbackSafe=${r.apiFallbackSafe})` : ''} cronInterval=${r.cronIntervalMinutes ?? 'n/a'}min softFail=${r.softFail} flags=[${flagStr}]\n`);
   }
 

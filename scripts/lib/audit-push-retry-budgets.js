@@ -26,14 +26,9 @@
 //      shape. Flagged when backoffSum < RETRY_DEADLINE_RATIO_THRESHOLD *
 //      deadlineSec.
 //
-//   2. marginRatio — the job-timeout-headroom check #1891's follow-up commit
-//      caught. A push step's realistic worst-case wall time is bounded by
-//      PUSH_DEADLINE_SEC itself (the Git Data API fallback also runs inside
-//      whatever deadline budget remains — see push-with-retry.sh's
-//      "_api_remaining_sec" — so total step time rarely exceeds the deadline
-//      by much). stepBudgetSec is therefore max(deadlineSec, backoffSum) —
-//      backoffSum only wins when MAX_RETRIES is set high enough to outrun a
-//      too-small deadline, an unusual but possible misconfiguration.
+//   2. marginRatio: the existing job-timeout-headroom hard gate. Its legacy
+//      stepBudgetSec = max(deadlineSec, backoffSum) omits work that can finish
+//      AFTER the deadline. Kept unchanged during the BRO-5312 advisory rollout.
 //      "Other named step budgets" = the sum of every OTHER step in the same
 //      job that declares its own explicit `timeout-minutes:` (undeclared
 //      steps aren't counted — there's no static bound to sum). Flagged when
@@ -46,6 +41,13 @@
 //      computeFundableAttempts below for the measurement and the two runs it
 //      was derived from. Flagged as deadline-cannot-fund-retries when
 //      PUSH_DEADLINE_SEC funds fewer than min(MAX_RETRIES, 3) attempts.
+//
+// BRO-5312: residualPastDeadlineSec models the push script's documented
+// post-deadline phases. Separate *WithResidual* budgets and advisoryFlags
+// expose callers needing more headroom without changing the existing gate,
+// ranking or remediation proposals. This is a sizing estimate, not a strict
+// wall-clock bound: rebase CPU is measured, and REST blob-upload time depends
+// on the outgoing files. A silent advisory does not prove a job is safe.
 //
 // No YAML library (none of the CI jobs that would run this npm-install first;
 // same constraint scripts/lib/ci-cancellation-guard.js documents). Parsed
@@ -439,6 +441,7 @@ function parseWorkflow(text) {
         let envFallbackAfterAttempts = null;
         let envFallbackDisabled = false;
         let envGitNetTimeoutSec = null;
+        let envOpMinTimeoutSec = null;
         if (envField) {
           const envKids = childLines(lines, envField.idx);
           const deadlineField = findChildKey(envKids, 'PUSH_DEADLINE_SEC');
@@ -447,10 +450,12 @@ function parseWorkflow(text) {
           if (fallbackAfterField) envFallbackAfterAttempts = parseIntOrNull(fallbackAfterField.inline.replace(/^['"]|['"]$/g, ''));
           const fallbackDisableField = findChildKey(envKids, 'PUSH_API_FALLBACK_DISABLE');
           if (fallbackDisableField) envFallbackDisabled = fallbackDisableField.inline.replace(/^['"]|['"]$/g, '').trim() === '1';
-          // BRO-2801: read for the remediation proposer only — evaluateStep
-          // still models the script default (unchanged audit behaviour).
+          // BRO-2801: the remediation proposer uses the caller's cap. BRO-5312:
+          // the advisory residual also uses it; legacy flags stay unchanged.
           const gitNetField = findChildKey(envKids, 'GIT_NET_TIMEOUT_SEC');
           if (gitNetField) envGitNetTimeoutSec = parseIntOrNull(gitNetField.inline.replace(/^['"]|['"]$/g, ''));
+          const opMinField = findChildKey(envKids, 'PUSH_OP_MIN_TIMEOUT_SEC');
+          if (opMinField) envOpMinTimeoutSec = parseIntOrNull(opMinField.inline.replace(/^['"]|['"]$/g, ''));
         }
 
         step.name = nameField ? nameField.inline.replace(/^['"]|['"]$/g, '') : null;
@@ -459,6 +464,7 @@ function parseWorkflow(text) {
         step.envFallbackAfterAttempts = envFallbackAfterAttempts;
         step.envFallbackDisabled = envFallbackDisabled;
         step.envGitNetTimeoutSec = envGitNetTimeoutSec;
+        step.envOpMinTimeoutSec = envOpMinTimeoutSec;
         step.envIdx = envField ? envField.idx : null;
         step.timeoutMinutes = stepTimeoutField ? parseIntOrNull(stepTimeoutField.inline) : null;
         step.continueOnError = continueOnErrorField ? /^true$/i.test(continueOnErrorField.inline) : false;
@@ -552,18 +558,18 @@ function countRawCallSites(fileText) {
 }
 
 
-// Parse GIT_NET_TIMEOUT_SEC's default out of push-with-retry.sh rather than
+// Parse timeout defaults out of push-with-retry.sh rather than
 // copying the literal — this module's whole history (see MANAGED_FILE_INFO
-// above) is of copied constants drifting from their source. Falls back to 90,
-// the value the script has shipped since task #466, if the line moves.
-function readGitNetTimeoutDefault() {
+// above) is of copied constants drifting from their source. Falls back to the
+// last known default if a declaration moves or the source cannot be read.
+function readPushTimeoutDefault(name, fallback) {
   try {
     // eslint-disable-next-line global-require
     const src = require('fs').readFileSync(require('path').join(__dirname, 'push-with-retry.sh'), 'utf8');
-    const m = src.match(/^GIT_NET_TIMEOUT_SEC=\$\{GIT_NET_TIMEOUT_SEC:-(\d+)\}/m);
+    const m = src.match(new RegExp(`^${name}=\\$\\{${name}:-(\\d+)\\}`, 'm'));
     if (m) return parseInt(m[1], 10);
   } catch { /* fall through */ }
-  return 90;
+  return fallback;
 }
 
 // N^2+4N: sum_{i=1..N} (3 + 2i), push-with-retry.sh's WAIT=3+i*2+jitter
@@ -610,12 +616,39 @@ function computeBackoffSum(maxRetries) {
 //   * the flag STAYING SILENT does NOT prove the step is well funded.
 // The backoff term likewise drops push-with-retry.sh's 0-4s random jitter
 // (~L1769), which only ever adds time. Both omissions push the same way.
-const GIT_NET_TIMEOUT_SEC = readGitNetTimeoutDefault(); // from push-with-retry.sh, not a copy
+const GIT_NET_TIMEOUT_SEC = readPushTimeoutDefault('GIT_NET_TIMEOUT_SEC', 90);
+const PUSH_OP_MIN_TIMEOUT_SEC = readPushTimeoutDefault('PUSH_OP_MIN_TIMEOUT_SEC', 20);
 const MIN_TIMED_OUT_ATTEMPT_SEC = 2 * GIT_NET_TIMEOUT_SEC;
 // Below this many fundable attempts a step cannot ride out even a short burst
 // of contention on main. 3 rather than a ratio: the quantity that matters is a
 // small integer count of attempts, and a ratio would hide "2 of 25".
 const MIN_FUNDABLE_ATTEMPTS = 3;
+
+// BRO-5312: follow push-with-retry.sh's "Honest residual bound" and
+// push-via-git-api.sh's BRO-3125 op breakdown. Keep survival fetches UNCLAMPED.
+// The fallback can still make one attempt after its deadline: ls-remote and
+// up to two fetches are clamped; the first ref update keeps its full cap.
+// Its success path then refreshes origin once before verifying survival.
+// Conservative even for callers whose outgoing paths disable the fallback.
+// Excludes per-file REST blob uploads and caller-supplied API deadline
+// extensions, so do not use this estimate as a new hard gate without review.
+function computeResidualPastDeadlineSec({
+  gitNetTimeoutSec = GIT_NET_TIMEOUT_SEC,
+  opMinTimeoutSec = PUSH_OP_MIN_TIMEOUT_SEC,
+} = {}) {
+  const net = Number.isFinite(gitNetTimeoutSec) && gitNetTimeoutSec > 0 ? gitNetTimeoutSec : GIT_NET_TIMEOUT_SEC;
+  const floor = Number.isFinite(opMinTimeoutSec) && opMinTimeoutSec > 0 ? opMinTimeoutSec : PUSH_OP_MIN_TIMEOUT_SEC;
+  const fullOpSec = net + 10; // timeout's TERM-to-KILL grace
+  const clampedOpSec = Math.min(net, floor) + 10;
+  const rebaseCpuSec = 180; // measured worst case, push-with-retry.sh task #458
+  const survivalFetchesSec = 2 * fullOpSec;
+  // REST attempt-push has its own 60s cap (push-via-git-api.sh), even when
+  // GIT_NET_TIMEOUT_SEC is lower. Cover either update transport, plus the
+  // parent's full-cap post-API refresh. Per-file REST uploads remain excluded.
+  const refUpdateSec = Math.max(net, 60) + 10;
+  const apiFallbackSec = 3 * clampedOpSec + refUpdateSec + fullOpSec;
+  return fullOpSec + rebaseCpuSec + clampedOpSec + survivalFetchesSec + apiFallbackSec;
+}
 
 // push-with-retry.sh's per-attempt backoff, WAIT=3+i*2 with the 0-4s jitter
 // dropped. Single source of truth shared with computeBackoffSum's closed form
@@ -726,12 +759,17 @@ function estimateCronIntervalMinutes(text) {
  *   retryDeadlineRatio: number, jobTimeoutSec: number, stepBudgetSec: number,
  *   otherStepsBudgetSec: number, marginSec: number, marginRatio: number,
  *   fallbackAfterAttempts: number, fallbackEarlyTriggerReachable: boolean,
+ *   residualPastDeadlineSec: number, stepBudgetWithResidualSec: number,
+ *   otherStepsBudgetWithResidualSec: number, marginWithResidualSec: number,
+ *   marginRatioWithResidual: number, advisoryFlags: string[],
  *   flags: string[]
  * }}
  */
 function evaluateStep({
   maxRetries, deadlineSec, jobTimeoutMinutes, otherStepsBudgetSec = 0,
   fallbackAfterAttemptsOverride = null, fallbackDisabled = false,
+  gitNetTimeoutSec = GIT_NET_TIMEOUT_SEC, opMinTimeoutSec = PUSH_OP_MIN_TIMEOUT_SEC,
+  otherStepsBudgetWithResidualSec = otherStepsBudgetSec,
 }) {
   const backoffSum = computeBackoffSum(maxRetries);
   const retryDeadlineRatio = deadlineSec > 0 ? backoffSum / deadlineSec : Infinity;
@@ -739,6 +777,12 @@ function evaluateStep({
   const stepBudgetSec = Math.max(deadlineSec, backoffSum);
   const marginSec = jobTimeoutSec - (stepBudgetSec + otherStepsBudgetSec);
   const marginRatio = jobTimeoutSec > 0 ? marginSec / jobTimeoutSec : -Infinity;
+  const residualPastDeadlineSec = computeResidualPastDeadlineSec({ gitNetTimeoutSec, opMinTimeoutSec });
+  const stepBudgetWithResidualSec = stepBudgetSec + residualPastDeadlineSec;
+  const marginWithResidualSec = jobTimeoutSec - (stepBudgetWithResidualSec + otherStepsBudgetWithResidualSec);
+  const marginRatioWithResidual = jobTimeoutSec > 0 ? marginWithResidualSec / jobTimeoutSec : -Infinity;
+  const advisoryFlags = marginRatioWithResidual < MARGIN_THRESHOLD
+    ? ['job-timeout-margin-with-residual-undersized'] : [];
 
   const fundableAttempts = computeFundableAttempts(maxRetries, deadlineSec);
   const fallbackAfterAttempts = computeEffectiveFallbackAfter(maxRetries, fallbackAfterAttemptsOverride);
@@ -786,6 +830,8 @@ function evaluateStep({
   return {
     maxRetries, deadlineSec, backoffSum, retryDeadlineRatio,
     jobTimeoutSec, stepBudgetSec, otherStepsBudgetSec, marginSec, marginRatio,
+    residualPastDeadlineSec, stepBudgetWithResidualSec, otherStepsBudgetWithResidualSec,
+    marginWithResidualSec, marginRatioWithResidual, advisoryFlags,
     fundableAttempts, fallbackAfterAttempts, fallbackEarlyTriggerReachable,
     flags,
   };
@@ -798,8 +844,9 @@ function evaluateStep({
  * @param {object[]} explicitTimeoutSteps steps with their own timeout-minutes
  * @param {{step: object, stepBudgetSec: number}[]} pushCalls every push call in the job
  * @param {{step: object}} pc the call being evaluated (an element of pushCalls)
+ * @param {string} budgetKey legacy or residual-inclusive budget field
  */
-function computeOtherStepsBudgetSec(explicitTimeoutSteps, pushCalls, pc) {
+function computeOtherStepsBudgetSec(explicitTimeoutSteps, pushCalls, pc, budgetKey = 'stepBudgetSec') {
   const { step } = pc;
   const otherStepInfo = new Map(); // step -> { capped, sec }
   for (const s of explicitTimeoutSteps) {
@@ -807,10 +854,13 @@ function computeOtherStepsBudgetSec(explicitTimeoutSteps, pushCalls, pc) {
     otherStepInfo.set(s, { capped: true, sec: s.timeoutMinutes * 60 });
   }
   for (const other of pushCalls) {
-    if (other === pc || other.step === step) continue;
+    if (other === pc) continue;
+    // Preserve the legacy gate's same-step treatment. The advisory includes
+    // sequential calls in this step too, each of which can overrun separately.
+    if (other.step === step && budgetKey === 'stepBudgetSec') continue;
     const info = otherStepInfo.get(other.step);
     if (info && info.capped) continue; // explicit cap already fully bounds this step
-    otherStepInfo.set(other.step, { capped: false, sec: (info?.sec || 0) + other.stepBudgetSec });
+    otherStepInfo.set(other.step, { capped: false, sec: (info?.sec || 0) + other[budgetKey] });
   }
   return [...otherStepInfo.values()].reduce((sum, v) => sum + v.sec, 0);
 }
@@ -840,7 +890,13 @@ function auditWorkflowText(text, filePath) {
       calls.forEach((call, callIdx) => {
         const deadlineSec = call.inlineDeadlineSec ?? step.envDeadlineSec ?? DEFAULT_DEADLINE_SEC;
         const stepBudgetSec = Math.max(deadlineSec, computeBackoffSum(call.maxRetries));
-        pushCalls.push({ step, call, deadlineSec, stepBudgetSec, stagedPaths: stagedPerCall[callIdx] || [] });
+        const residualPastDeadlineSec = computeResidualPastDeadlineSec({
+          gitNetTimeoutSec: step.envGitNetTimeoutSec,
+          opMinTimeoutSec: step.envOpMinTimeoutSec,
+        });
+        pushCalls.push({ step, call, deadlineSec, stepBudgetSec,
+          stepBudgetWithResidualSec: stepBudgetSec + residualPastDeadlineSec,
+          stagedPaths: stagedPerCall[callIdx] || [] });
       });
     }
 
@@ -859,12 +915,18 @@ function auditWorkflowText(text, filePath) {
       // ONCE, by identity, so a capped+push-calling sibling is counted only
       // via its cap.
       const otherStepsBudgetSec = computeOtherStepsBudgetSec(explicitTimeoutSteps, pushCalls, pc);
+      const otherStepsBudgetWithResidualSec = computeOtherStepsBudgetSec(
+        explicitTimeoutSteps, pushCalls, pc, 'stepBudgetWithResidualSec',
+      );
 
       const evaluation = evaluateStep({
         maxRetries: call.maxRetries,
         deadlineSec,
         jobTimeoutMinutes: job.timeoutMinutes,
         otherStepsBudgetSec,
+        otherStepsBudgetWithResidualSec,
+        gitNetTimeoutSec: step.envGitNetTimeoutSec,
+        opMinTimeoutSec: step.envOpMinTimeoutSec,
         fallbackAfterAttemptsOverride: step.envFallbackAfterAttempts,
         fallbackDisabled: step.envFallbackDisabled === true,
       });
@@ -948,6 +1010,7 @@ module.exports = {
   MARGIN_THRESHOLD,
   RETRY_DEADLINE_RATIO_THRESHOLD,
   GIT_NET_TIMEOUT_SEC,
+  PUSH_OP_MIN_TIMEOUT_SEC,
   MIN_TIMED_OUT_ATTEMPT_SEC,
   MIN_FUNDABLE_ATTEMPTS,
   backoffForAttempt,
@@ -957,6 +1020,7 @@ module.exports = {
   findPushRetryCalls,
   countRawCallSites,
   computeBackoffSum,
+  computeResidualPastDeadlineSec,
   touchesManagedFile,
   managedFileInfo,
   classifyPushFallbackSafety,
