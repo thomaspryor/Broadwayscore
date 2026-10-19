@@ -1,11 +1,28 @@
 {
   "processed": [
-    "pride-west-end-2026/independent--louis-chilton.json"
+    "dog-mom-off-west-end-2026/thereviewshub--unknown.json",
+    "dog-mom-off-west-end-2026/notesfromrowh--helena6.json",
+    "the-second-best-school-shooting-off-broadway-2026/broadway-baby--unknown.json",
+    "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json",
+    "stories-the-tap-dance-sensation-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "stories-the-tap-dance-sensation-west-end-2026/theupcoming--scarlett-bruin.json",
+    "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json"
   ],
-  "failed": [],
+  "failed": [
+    "school-pictures-off-broadway-2026/airmail--air-mail.json",
+    "angels-bone-west-end-2026/bachtrack--unknown.json",
+    "the-second-best-school-shooting-off-broadway-2026/theatreinla--unknown.json",
+    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "dog-mom-off-west-end-2026/thereviewshub--unknown.json",
+      "dog-mom-off-west-end-2026/notesfromrowh--helena6.json",
+      "the-second-best-school-shooting-off-broadway-2026/broadway-baby--unknown.json",
+      "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -14,10 +31,25 @@
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "pride-west-end-2026/independent--louis-chilton.json"
+      "stories-the-tap-dance-sensation-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+      "stories-the-tap-dance-sensation-west-end-2026/theupcoming--scarlett-bruin.json",
+      "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json"
     ]
   },
-  "startTime": "2026-10-19T01:55:40.713Z",
-  "lastProcessed": "pride-west-end-2026/independent--louis-chilton.json",
-  "log": []
+  "startTime": "2026-10-19T02:06:48.972Z",
+  "lastProcessed": "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json",
+  "log": [
+    {
+      "t": "2026-10-19T02:07:54.039Z",
+      "event": "bb-session",
+      "session": "f70df675",
+      "url": "https://bachtrack.com/review-angels-bone-du-yun-vavrek-english-national-opera-lo"
+    },
+    {
+      "t": "2026-10-19T02:09:55.572Z",
+      "event": "bb-session",
+      "session": "7ae5cfdd",
+      "url": "https://www.theatreinla.com/the-second-best-school-shooting/11328/"
+    }
+  ]
 }
