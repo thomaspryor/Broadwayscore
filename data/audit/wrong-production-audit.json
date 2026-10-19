@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-19T17:53:24.750Z",
+  "timestamp": "2026-10-19T18:27:41.264Z",
   "stats": {
-    "totalReviews": 57761,
+    "totalReviews": 57770,
     "alreadyFlagged": 21073,
-    "dateGuardCatches": 207,
-    "directorMismatch": 2008,
+    "dateGuardCatches": 208,
+    "directorMismatch": 2009,
     "tvFilmSignals": 1642,
-    "londonSignals": 2529,
+    "londonSignals": 2532,
     "offBroadwaySignals": 530,
-    "yearMismatch": 159,
-    "noPublishDate": 5241
+    "yearMismatch": 160,
+    "noPublishDate": 5237
   },
   "findings": [
     {
@@ -30617,7 +30617,7 @@
     {
       "showId": "other-desert-cities-2026",
       "file": "nysr--frank-scheck.json",
-      "score": 77,
+      "score": 76,
       "publishDate": "2026-10-19",
       "url": "https://nystagereview.com/2026/10/19/other-desert-cities-star-power-in-action/",
       "findings": [
@@ -30631,7 +30631,7 @@
     {
       "showId": "other-desert-cities-2026",
       "file": "nysr--melissa-rose-bernardo.json",
-      "score": 78,
+      "score": 82,
       "publishDate": "2026-10-19",
       "url": "https://nystagereview.com/2026/10/19/other-desert-cities-a-piercing-revival-of-jon-robin-baitzs-best-play/",
       "findings": [
@@ -30659,7 +30659,7 @@
     {
       "showId": "other-desert-cities-2026",
       "file": "talkinbroadway--howard-miller.json",
-      "score": null,
+      "score": 45,
       "publishDate": "2026-10-18",
       "url": "https://www.talkinbroadway.com/page/world/OtherDesertCities26.html",
       "findings": [
@@ -34512,6 +34512,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"episode 7\""
+        }
+      ]
+    },
+    {
+      "showId": "school-pictures-off-broadway-2026",
+      "file": "nytg--allison-considine.json",
+      "publishDate": "2026-10-19",
+      "url": "https://www.newyorktheatreguide.com/reviews/school-pictures-off-broadway-review-cherry-lane-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"morgan green\" from school-pictures-off-broadway-2023"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2023 (4x) more than 2026 (2x). 2023 matches production: school-pictures-off-broadway-2023"
         }
       ]
     },
@@ -55466,6 +55484,24 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 156d before show (2026-05-13 vs 2026-10-16)"
+        }
+      ]
+    },
+    {
+      "showId": "angels-bone-west-end-2026",
+      "file": "times-uk--rebecca-franks.json",
+      "publishDate": "2026-05-13",
+      "url": "https://www.thetimes.com/culture/classical-opera/article/angels-bone-review-opera-manchester-fn2zqc2dw",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 156d before show (2026-05-13 vs 2026-10-16)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -88979,7 +89015,7 @@
       "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
       "file": "jonathan-baz--unknown.json",
       "score": 76,
-      "publishDate": null,
+      "publishDate": "2026-09-17",
       "url": "https://www.jonathanbaz.com/2026/09/thelma-louise-review.html",
       "findings": [
         {
@@ -90092,6 +90128,19 @@
       ]
     },
     {
+      "showId": "triumph-off-broadway-2026",
+      "file": "nysr--frank-scheck.json",
+      "publishDate": "2026-10-19",
+      "url": "https://nystagereview.com/2026/10/19/triumph-history-repeating-itself/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
       "showId": "triumph-off-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 82,
@@ -90121,7 +90170,22 @@
     },
     {
       "showId": "triumph-off-west-end-2026",
+      "file": "financialtimes--unknown.json",
+      "score": 80,
+      "publishDate": "2026-10-19",
+      "url": "https://www.ft.com/content/cbd99692-7670-4d29-8483-9db10436aadd?syn-25a6b1a6=1",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "triumph-off-west-end-2026",
       "file": "fringereview--simon-jenner.json",
+      "score": 88,
       "publishDate": "2026-10-19",
       "url": "https://fringereview.co.uk/review/fringereview-uk/2026/triumph/",
       "findings": [
@@ -90204,6 +90268,7 @@
     {
       "showId": "triumph-off-west-end-2026",
       "file": "viewfromthegods--simon-jenner.json",
+      "score": 88,
       "publishDate": "2026-10-18",
       "url": "https://viewfromthegods.co.uk/2026/10/18/triumph-almeida-islington/?utm_source=rss&utm_medium=rss&utm_campaign=triumph-almeida-islington",
       "findings": [
