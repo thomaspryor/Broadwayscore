@@ -419,10 +419,10 @@
       "title": "Scraping spend over budget",
       "firstSeen": "2026-08-01T07:38:45.313Z",
       "incidentOpenedAt": "2026-08-01T07:38:45.313Z",
-      "lastSeen": "2026-10-18T07:19:22.526Z",
-      "lastNotifiedAt": "2026-10-18T07:19:22.526Z",
-      "lastSurfacedAt": "2026-10-18T07:19:22.526Z",
-      "notifyCount": 38,
+      "lastSeen": "2026-10-19T07:52:17.561Z",
+      "lastNotifiedAt": "2026-10-19T07:52:17.561Z",
+      "lastSurfacedAt": "2026-10-19T07:52:17.561Z",
+      "notifyCount": 39,
       "cardId": null,
       "linearIdentifier": "BRO-5526"
     },
@@ -9863,14 +9863,14 @@
     },
     "priority-queue:overdue": {
       "status": "open",
-      "disposition": "auto",
-      "title": "Overdue P0/P1 queue: 1 P0 older than 24h, 12 P1 older than 7d",
+      "disposition": "digest",
+      "title": "Overdue P0/P1 queue: 1 P0 older than 24h, 11 P1 older than 7d",
       "firstSeen": "2026-10-02T13:15:40.706Z",
       "incidentOpenedAt": "2026-10-02T13:15:40.706Z",
-      "lastSeen": "2026-10-18T07:17:18.505Z",
-      "lastNotifiedAt": "2026-10-18T07:17:18.505Z",
+      "lastSeen": "2026-10-19T07:49:39.974Z",
+      "lastNotifiedAt": "2026-10-19T07:49:39.974Z",
       "lastSurfacedAt": "2026-10-18T07:17:18.505Z",
-      "notifyCount": 15,
+      "notifyCount": 16,
       "cardId": null,
       "linearIdentifier": "BRO-5613"
     },
@@ -12171,9 +12171,7 @@
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "notifiedIds": [
-        "BRO-5235@5bc985284adf"
-      ]
+      "notifiedIds": []
     },
     "land:land/job/linear-BRO-3619-muuev8ci": {
       "status": "resolved",
@@ -15642,10 +15640,10 @@
       "title": "good-time-charlie-off-broadway-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-12T03:15:02.955Z",
       "incidentOpenedAt": "2026-10-14T02:46:15.395Z",
-      "lastSeen": "2026-10-18T07:17:45.125Z",
-      "lastNotifiedAt": "2026-10-18T07:17:45.125Z",
-      "lastSurfacedAt": "2026-10-18T07:17:45.125Z",
-      "notifyCount": 6,
+      "lastSeen": "2026-10-19T07:50:11.466Z",
+      "lastNotifiedAt": "2026-10-19T07:50:11.466Z",
+      "lastSurfacedAt": "2026-10-19T07:50:11.466Z",
+      "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -17543,13 +17541,13 @@
       "title": "Spend guard bd-circuit-breaker-serp_api1: cap drift",
       "firstSeen": "2026-10-14T02:46:56.653Z",
       "incidentOpenedAt": "2026-10-14T02:46:56.653Z",
-      "lastSeen": "2026-10-18T07:19:21.012Z",
+      "lastSeen": "2026-10-19T07:52:15.709Z",
       "lastNotifiedAt": "2026-10-14T02:46:56.653Z",
       "lastSurfacedAt": "2026-10-14T02:46:56.653Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "guard-audit:bd-web_unlocker2": {
       "status": "open",
@@ -17557,13 +17555,13 @@
       "title": "Spend guard bd-circuit-breaker-web_unlocker2: cap drift",
       "firstSeen": "2026-10-14T02:46:56.661Z",
       "incidentOpenedAt": "2026-10-14T02:46:56.661Z",
-      "lastSeen": "2026-10-18T07:19:21.024Z",
+      "lastSeen": "2026-10-19T07:52:15.724Z",
       "lastNotifiedAt": "2026-10-14T02:46:56.661Z",
       "lastSurfacedAt": "2026-10-14T02:46:56.661Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "land:land/bro-5261-s5-retro-fixes": {
       "status": "resolved",
@@ -18952,7 +18950,7 @@
       "resolveReason": "job-green"
     },
     "coverage-holes:a-ghost-in-your-ear-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "a-ghost-in-your-ear-off-broadway-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-16T07:12:30.550Z",
@@ -18962,7 +18960,9 @@
       "lastSurfacedAt": "2026-10-18T07:17:45.204Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-19T07:50:11.536Z",
+      "resolveReason": "no rejected-but-verified review and no unqueued out-of-band score"
     },
     "land:land/main-red-critic-alias-5434": {
       "status": "open",
@@ -19558,10 +19558,10 @@
       "title": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-17T07:00:59.962Z",
       "incidentOpenedAt": "2026-10-17T07:00:59.962Z",
-      "lastSeen": "2026-10-18T07:17:45.307Z",
-      "lastNotifiedAt": "2026-10-18T07:17:45.307Z",
-      "lastSurfacedAt": "2026-10-18T07:17:45.307Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-10-19T07:50:11.658Z",
+      "lastNotifiedAt": "2026-10-19T07:50:11.658Z",
+      "lastSurfacedAt": "2026-10-19T07:50:11.658Z",
+      "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -20902,6 +20902,19 @@
       "lastSeen": "2026-10-19T07:47:27.848Z",
       "lastNotifiedAt": "2026-10-19T07:47:27.848Z",
       "lastSurfacedAt": "2026-10-19T07:47:27.848Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "coverage-holes:cadel-lungs-on-legs-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "cadel-lungs-on-legs-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+      "firstSeen": "2026-10-19T07:50:11.584Z",
+      "incidentOpenedAt": "2026-10-19T07:50:11.584Z",
+      "lastSeen": "2026-10-19T07:50:11.584Z",
+      "lastNotifiedAt": "2026-10-19T07:50:11.584Z",
+      "lastSurfacedAt": "2026-10-19T07:50:11.584Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
