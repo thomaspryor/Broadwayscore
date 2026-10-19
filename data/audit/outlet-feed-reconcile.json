@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-18T22:56:10.740Z",
+  "generatedAt": "2026-10-19T00:50:59.803Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -7,6 +7,11 @@
       "id": "dirty-dancing-the-classic-story-on-stage-west-end-2026",
       "title": "Dirty Dancing: The Classic Story on Stage",
       "openingDate": "2026-10-16"
+    },
+    {
+      "id": "ilford-boy-west-end-2026",
+      "title": "Ilford Boy",
+      "openingDate": "2026-10-20"
     },
     {
       "id": "stories-the-tap-dance-sensation-west-end-2026",
@@ -22,6 +27,11 @@
       "id": "some-woman-west-end-2026",
       "title": "Some Woman",
       "openingDate": "2026-10-15"
+    },
+    {
+      "id": "king-of-the-yees-off-broadway-2026",
+      "title": "King of the Yees",
+      "openingDate": "2026-10-20"
     },
     {
       "id": "other-desert-cities-2026",
@@ -42,6 +52,11 @@
       "id": "stuffed-off-west-end-2026",
       "title": "Stuffed",
       "openingDate": "2026-10-14"
+    },
+    {
+      "id": "martin-guerre-west-end-2026",
+      "title": "Martin Guerre",
+      "openingDate": "2026-10-20"
     },
     {
       "id": "dog-mom-off-west-end-2026",
@@ -119,11 +134,6 @@
       "openingDate": "2026-10-15"
     },
     {
-      "id": "nina-off-west-end-2026",
-      "title": "Nina",
-      "openingDate": "2026-10-12"
-    },
-    {
       "id": "larger-than-life-starring-wallace-and-gromit-shaun-and-more-off-west-end-2026",
       "title": "Larger Than Life: Starring Wallace & Gromit, Shaun and More",
       "openingDate": "2026-10-14"
@@ -132,6 +142,10 @@
   "skipped": [
     {
       "showId": "copperfield-the-new-musical-off-broadway-2026",
+      "reason": "no data/review-texts directory for this show"
+    },
+    {
+      "showId": "machine-learning-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     },
     {
@@ -174,9 +188,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 714,
+  "itemsScanned": 713,
   "matchedGaps": 1,
-  "possibleGaps": 6,
+  "possibleGaps": 5,
   "gaps": [
     {
       "showId": "some-woman-west-end-2026",
@@ -206,24 +220,6 @@
       "publishDate": null
     },
     {
-      "showId": "nina-off-west-end-2026",
-      "title": "Nina",
-      "level": "possible",
-      "outletId": "north-west-end",
-      "url": "https://northwestend.com/uncle-montys-antique-shop-the-lion-unicorn-theatre/",
-      "headline": "Uncle Monty’s Antique Shop – The Lion &#038; Unicorn Theatre",
-      "publishDate": "2026-10-15"
-    },
-    {
-      "showId": "nina-off-west-end-2026",
-      "title": "Nina",
-      "level": "possible",
-      "outletId": "guardian",
-      "url": "https://www.theguardian.com/stage/2026/oct/14/the-cherry-orchard-review-kristin-scott-thomas-chekhov-harold-pinter-theatre-conor-mcpherson-ian-rickson-stephen-mangan",
-      "headline": "The Cherry Orchard review – Kristin Scott Thomas makes a modern matriarch in trad, earthy Chekhov",
-      "publishDate": "2026-10-14"
-    },
-    {
       "showId": "the-ask-off-broadway-2026",
       "title": "The Ask",
       "level": "possible",
@@ -231,6 +227,15 @@
       "url": "https://www.interestedbystander.com/2026/10/theater-reviews-midnight-is-unique-and.html",
       "headline": "Theater Reviews: “Midnight” Is a Unique and Visionary Musical About Slavery; “School Girls” Is An Enjoyable Broadway Romp; “Slam Frank” Invents a Hip-Hop Anne Frank; and What Is “The Ask” Actually Asking?",
       "publishDate": "2026-10-15"
+    },
+    {
+      "showId": "the-ask-off-broadway-2026",
+      "title": "The Ask",
+      "level": "possible",
+      "outletId": "jackstage",
+      "url": "https://www.jackstage.co.uk/post/opera-north-s-rigoletto-review-verdi-s-tragedy-offered-a-progressive-viewpoint",
+      "headline": "Opera North's Rigoletto Review: Verdi's tragedy offered a progressive viewpoint",
+      "publishDate": "2026-10-19"
     },
     {
       "showId": "the-cherry-orchard-west-end-2026",

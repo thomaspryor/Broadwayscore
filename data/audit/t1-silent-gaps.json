@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-18T22:55:54.868Z",
+  "generatedAt": "2026-10-19T00:48:22.344Z",
   "windowDays": 45,
-  "showsScanned": 185,
+  "showsScanned": 188,
   "gaps": [
     {
       "showId": "slam-frank-off-broadway-2026",
@@ -17,9 +17,9 @@
       "forumLinkRecoveryCount": 3,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=slam-frank-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-18T14:14:33.814Z",
-      "fileAgeHours": 8.68818361111111,
+      "fileAgeHours": 10.562465277777777,
       "gapSeenAt": "2026-10-18T18:09:48.486Z",
-      "nonTerminalAgeHours": 4.768439444444445
+      "nonTerminalAgeHours": 6.642738333333333
     },
     {
       "showId": "stuffed-off-west-end-2026",
@@ -36,9 +36,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=stuffed-off-west-end-2026",
       "firstSeen": "2026-10-15T15:44:57.921Z",
-      "fileAgeHours": 79.18164583333333,
+      "fileAgeHours": 81.05592555555556,
       "gapSeenAt": "2026-10-16T12:12:23.731Z",
-      "nonTerminalAgeHours": 58.72531583333333
+      "nonTerminalAgeHours": 60.59961472222222
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -54,9 +54,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 630.2558127777778,
+      "fileAgeHours": 632.1300858333333,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 181.27551833333334
+      "nonTerminalAgeHours": 183.14981722222223
     }
   ],
   "contradictions": []
