@@ -21,6 +21,14 @@
  *                star is written only when it comes from the page structure
  *                (isScoreClearSupersededBy), which retires the clear; then
  *                late-star-anchor queues the anchored re-score.
+ *   --time-budget-min=N  (BRO-5675) stop starting new reviews once less than
+ *                one worst-case item is left in N minutes; exit 0 with the
+ *                remaining count. The weekly workflow passes what is left of
+ *                its step budget to each outlet.
+ *
+ * Attempts are logged in data/audit/recollect-scores-state.json (see
+ * lib/recollect-state.js): least-recently-attempted reviews go first and a
+ * fetch error backs off for weeks instead of retrying every run.
  */
 
 const fs = require('fs');
@@ -39,8 +47,23 @@ const { isTier15OverrideActive } = require('./lib/rebuild-helpers');
 const { AGGREGATOR_DOMAINS } = require('./lib/aggregator-domains');
 const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { withDeadline } = require('./lib/cron-deadline');
+const { loadState, saveState, orderTargets, recordAttempt } = require('./lib/recollect-state');
 
 const REVIEW_DIR = path.join(__dirname, '..', 'data', 'review-texts');
+const STATE_FILE = path.join(__dirname, '..', 'data', 'audit', 'recollect-scores-state.json');
+
+// fetchPage()'s worst case is ~270s (Scrapingdog 2x45s, Bright Data 45s,
+// ScrapingBee 45s, Playwright tier 90s), and those are idle timeouts, so cap
+// one fetch at 300s. The client-rendered Playwright retry is goto 30s + 3s wait.
+const FETCH_DEADLINE_MS = 300_000;
+const RETRY_DEADLINE_MS = 60_000;
+// Don't start an item that can't finish: one fetch + the retry + delay + slack.
+const MIN_REMAINING_MS_TO_START = FETCH_DEADLINE_MS + RETRY_DEADLINE_MS + 30_000;
+// An outlet whose every fetch fails (culturesauce, 70/70 on 2026-10-18) is one
+// outage, not N URL failures: stop the outlet after this many in a row.
+const MAX_CONSECUTIVE_ERRORS = 8;
 
 // Parse args
 const args = process.argv.slice(2);
@@ -54,6 +77,7 @@ const tier15Cleared = args.includes('--tier15-cleared');
 const outlet = outletArg ? outletArg.split('=')[1] : null;
 const limit = limitArg ? parseInt(limitArg.split('=')[1]) : 5;
 const delay = delayArg ? parseInt(delayArg.split('=')[1]) : 2000;
+const budget = createRunBudget(parseTimeBudgetMin(args));
 
 // Replaceable score sources — aggregators (not outlet's own) + low-reliability extractions
 const AGGREGATOR_SOURCES = new Set([
@@ -229,6 +253,22 @@ function fetchWithScrapingBee(url, cookieHeader) {
   });
 }
 
+// A timed-out fetch keeps running in the background; reset the scraper's
+// shared browser so the next item does not share a page with it.
+async function fetchItem(url) {
+  try {
+    return await withDeadline(() => fetchUrl(url), FETCH_DEADLINE_MS, 'Fetch');
+  } catch (e) {
+    if (/wall-clock timeout/.test(e.message)) {
+      await withDeadline(() => cleanupScraper(), 15000, 'Scraper cleanup').catch(() => {});
+    }
+    // Only a failed fetch earns the error backoff; a bug in this script must not
+    // park the backlog for weeks.
+    e.isFetchError = true;
+    throw e;
+  }
+}
+
 async function main() {
   console.log(`\n=== Re-collect for Scores: ${outlet} ===`);
   console.log(`Mode: ${dryRun ? 'DRY RUN (listing only)' : execute ? 'EXECUTING' : 'FETCH + PREVIEW (no writes)'}`);
@@ -279,7 +319,7 @@ async function main() {
         const showYear = dir.match(/(\d{4})$/)?.[1];
         const urlYear = data.url.match(/(?:nypost|timeout|ew|standard|independent|whatsonstage|telegraph|thestage)\.(?:com|co\.uk)\/(\d{4})\//)?.[1];
         if (showYear && urlYear && Math.abs(parseInt(urlYear) - parseInt(showYear)) > 1) continue;
-        targets.push({ dir, file, fp, url: data.url, data });
+        targets.push({ key: `${dir}/${file}`, dir, file, fp, url: data.url, data });
       } catch (e) { /* skip */ }
     }
   }
@@ -288,8 +328,13 @@ async function main() {
   const aggTargets = targets.filter(t => AGGREGATOR_SOURCES.has(t.data.scoreSource));
   const noScore = targets.length - ssTargets.length - aggTargets.length;
   console.log(`Found ${targets.length} reviews to process (${noScore} missing score, ${ssTargets.length} replacing SS score, ${aggTargets.length} replacing aggregator score)`);
-  const toProcess = targets.slice(0, limit);
-  console.log(`Processing ${toProcess.length} of ${targets.length}\n`);
+  const state = loadState(STATE_FILE);
+  const ordered = orderTargets(targets, state);
+  if (ordered.length < targets.length) {
+    console.log(`Skipping ${targets.length - ordered.length} in error backoff (fetch failed recently)`);
+  }
+  const toProcess = ordered.slice(0, limit);
+  console.log(`Processing ${toProcess.length} of ${ordered.length}${budget.enabled ? ` (time budget ${budget.minutes} min)` : ''}\n`);
 
   if (dryRun) {
     toProcess.forEach(t => console.log(`  ${t.dir}/${t.file}: ${t.url}`));
@@ -300,10 +345,20 @@ async function main() {
   let extracted = 0;
   let failed = 0;
   let errors = 0;
+  let consecutiveErrors = 0;
 
   for (let i = 0; i < toProcess.length; i++) {
     const t = toProcess[i];
     const progress = `[${i + 1}/${toProcess.length}]`;
+    if (!budget.canStartItem(MIN_REMAINING_MS_TO_START)) {
+      console.log(`\nTime budget reached after ${budget.elapsedMin()} min: ${toProcess.length - i} left for the next run`);
+      break;
+    }
+    if (consecutiveErrors >= MAX_CONSECUTIVE_ERRORS) {
+      console.log(`\n${consecutiveErrors} fetch errors in a row: stopping ${outlet}, ${toProcess.length - i} left for the next run`);
+      break;
+    }
+    let itemError = null;
 
     try {
       console.log(`${progress} Fetching: ${t.dir}/${t.file}`);
@@ -327,7 +382,7 @@ async function main() {
       }
 
       if (!result) {
-        html = await fetchUrl(t.url);
+        html = await fetchItem(t.url);
         console.log(`  HTML: ${html.length} chars`);
         result = extractScore(html, t.data.fullText || '', outlet);
       }
@@ -345,13 +400,16 @@ async function main() {
             await ensureBrowser();
             const page = await _context.newPage();
             try {
-              await page.goto(t.url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-              await page.waitForTimeout(3000);
-              html = await page.content();
+              const rendered = await withDeadline(async () => {
+                await page.goto(t.url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+                await page.waitForTimeout(3000);
+                return page.content();
+              }, RETRY_DEADLINE_MS, 'Playwright retry');
+              html = rendered;
               console.log(`  Playwright HTML: ${html.length} chars`);
               result = extractScore(html, t.data.fullText || '', outlet);
             } finally {
-              await page.close();
+              await withDeadline(() => page.close(), 5000, 'Page close').catch(() => {});
             }
           } catch (e) {
             console.log(`  Playwright retry failed: ${e.message}`);
@@ -409,9 +467,17 @@ async function main() {
           fs.writeFileSync(t.fp, JSON.stringify(t.data, null, 2) + '\n');
         }
       }
+      consecutiveErrors = 0;
     } catch (e) {
       errors++;
-      console.log(`  ERROR: ${e.message}`);
+      consecutiveErrors++;
+      console.log(`  ERROR: ${e.message || e}`);
+      if (e.isFetchError) itemError = e.message || String(e);
+    }
+
+    if (execute) {
+      recordAttempt(state, t.key, itemError);
+      saveState(STATE_FILE, state);
     }
 
     // Rate limit
@@ -420,8 +486,8 @@ async function main() {
     }
   }
 
-  if (_browser) await _browser.close().catch(() => {});
-  await cleanupScraper().catch(() => {});
+  if (_browser) await withDeadline(() => _browser.close(), 10000, 'Browser close').catch(() => {});
+  await withDeadline(() => cleanupScraper(), 15000, 'Scraper cleanup').catch(() => {});
 
   console.log('\n=== SUMMARY ===');
   console.log(`Extracted: ${extracted} | No score: ${failed} | Errors: ${errors}`);
@@ -432,7 +498,8 @@ async function main() {
   }
 }
 
-main().catch(e => {
+// Exit explicitly: a fetch abandoned at its deadline can hold a socket open.
+main().then(() => process.exit(0), e => {
   console.error('Fatal:', e);
   process.exit(1);
 });
