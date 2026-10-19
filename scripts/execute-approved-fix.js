@@ -704,7 +704,7 @@ async function main() {
   if (statusAction === 'already-applied') {
     const result = alreadyAppliedResult(issueNumber, planData);
     if (result === 'applied-elsewhere') {
-      console.error(`Plan is already ${planData.status}, but not by a CI run of this workflow (executedIn: ${planData.executedIn || 'none'}), so nothing was applied. A local execute-approved-fix run writes this status; reset it to "pending", drop executedAt/results/rejectedAt/executedIn, land it, then dispatch again.`);
+      console.error(`Plan is already ${planData.status}, by a local execute-approved-fix run (executedIn: local), not by this workflow, so nothing was applied. Reset it to "pending", drop executedAt/results/rejectedAt/executedIn, land it, then dispatch again.`);
     } else {
       console.log(`Plan already ${planData.status} — skipping`);
     }
