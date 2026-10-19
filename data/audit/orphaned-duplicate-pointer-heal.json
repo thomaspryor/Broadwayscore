@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-19T19:08:13.855Z",
+  "generated": "2026-10-19T19:58:49.039Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 36,
+  "count": 35,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -57,6 +57,13 @@
       "loserFile": "nytimes--elisabeth-vincentelli.json",
       "targetFile": "nytimes--ben-brantley.json",
       "reason": "orphaned-duplicate-heal: nytimes--ben-brantley.json was flagged invalid after nytimes--elisabeth-vincentelli.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "just-in-time-2025",
+      "loserFile": "broadwaypodcastnetwork--unknown.json",
+      "targetFile": "broadwaypodcastnetwork--broadway-podcast-network.json",
+      "reason": "orphaned-duplicate-heal: broadwaypodcastnetwork--broadway-podcast-network.json was flagged invalid after broadwaypodcastnetwork--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -214,13 +221,6 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "the-traitors-live-experience-off-west-end-2026",
-      "loserFile": "londontheatredirect--unknown.json",
-      "targetFile": "londontheatredirect--london-theatre-direct-limited.json",
-      "reason": "orphaned-duplicate-heal: londontheatredirect--london-theatre-direct-limited.json was flagged invalid after londontheatredirect--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "torch-song-2018",
       "loserFile": "variety--matt-windman.json",
       "targetFile": "variety--marilyn-stasio.json",
@@ -247,13 +247,6 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "the-traitors-live-experience-off-west-end-2026",
-      "loserFile": "londontheatredirect--unknown.json",
-      "targetFile": "londontheatredirect--london-theatre-direct-limited.json",
-      "reason": "orphaned-duplicate-heal: londontheatredirect--london-theatre-direct-limited.json was flagged invalid after londontheatredirect--unknown.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }

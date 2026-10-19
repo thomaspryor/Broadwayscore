@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-19T19:14:23.636Z",
+  "timestamp": "2026-10-19T20:06:54.879Z",
   "stats": {
-    "totalReviews": 57773,
-    "alreadyFlagged": 21075,
-    "dateGuardCatches": 208,
-    "directorMismatch": 2012,
+    "totalReviews": 57778,
+    "alreadyFlagged": 21072,
+    "dateGuardCatches": 210,
+    "directorMismatch": 2013,
     "tvFilmSignals": 1645,
-    "londonSignals": 2534,
+    "londonSignals": 2536,
     "offBroadwaySignals": 530,
     "yearMismatch": 160,
-    "noPublishDate": 5226
+    "noPublishDate": 5227
   },
   "findings": [
     {
@@ -4421,6 +4421,19 @@
       "score": 83,
       "publishDate": "2026-05-29",
       "url": "https://standard.co.uk/culture/theatre/beetlejuice-the-musical-review-prince-edward-b1284074.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-west-end-2026",
+      "file": "sunday-times--clive-davis.json",
+      "publishDate": "2026-05-29",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/beetlejuice-review-theatre-musical-tim-burton-prince-edward-london-zfgcfwq3s",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -55505,7 +55518,7 @@
     {
       "showId": "angels-bone-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 61,
+      "score": 65,
       "publishDate": "2026-05-13",
       "url": "https://theartsdesk.com/opera/angels-bone-english-national-opera-manchester-review-bold-experiment-elaborate-project",
       "findings": [
@@ -55533,9 +55546,42 @@
     {
       "showId": "angels-bone-west-end-2026",
       "file": "guardian--clive-paget.json",
-      "score": 62,
+      "score": 65,
       "publishDate": "2026-05-13",
       "url": "https://www.theguardian.com/music/2026/may/13/angels-bone-review-du-yun-kip-williams-english-national-opera-aviva-studios-manchster",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 156d before show (2026-05-13 vs 2026-10-16)"
+        }
+      ]
+    },
+    {
+      "showId": "angels-bone-west-end-2026",
+      "file": "sunday-times--rebecca-franks.json",
+      "score": null,
+      "publishDate": "2026-05-13",
+      "url": "https://www.thetimes.com/culture/classical-opera/article/angels-bone-review-opera-manchester-fn2zqc2dw",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 156d before show (2026-05-13 vs 2026-10-16)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "angels-bone-west-end-2026",
+      "file": "telegraph--nicholas-kenyon.json",
+      "score": 53,
+      "publishDate": "2026-05-13",
+      "url": "https://www.telegraph.co.uk/opera/angels-bone-opera-review-manchester-eno/",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -55561,6 +55607,7 @@
     {
       "showId": "angels-bone-west-end-2026",
       "file": "times-uk--rebecca-franks.json",
+      "score": 82,
       "publishDate": "2026-05-13",
       "url": "https://www.thetimes.com/culture/classical-opera/article/angels-bone-review-opera-manchester-fn2zqc2dw",
       "findings": [
@@ -83598,6 +83645,19 @@
     },
     {
       "showId": "the-devil-wears-prada-west-end-2024",
+      "file": "thereviewshub--the-reviews-hub-london.json",
+      "publishDate": "2024-12-06",
+      "url": "https://www.thereviewshub.com/the-devil-wears-prada-dominion-theatre-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
       "file": "times-uk--clive-davis.json",
       "score": 25,
       "publishDate": "2024-12-06",
@@ -90201,6 +90261,7 @@
     {
       "showId": "triumph-off-broadway-2026",
       "file": "nysr--frank-scheck.json",
+      "score": 78,
       "publishDate": "2026-10-19",
       "url": "https://nystagereview.com/2026/10/19/triumph-history-repeating-itself/",
       "findings": [
