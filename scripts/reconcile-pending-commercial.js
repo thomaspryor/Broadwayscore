@@ -6,13 +6,15 @@
  *
  *   node scripts/reconcile-pending-commercial.js            # report only
  *   node scripts/reconcile-pending-commercial.js --apply    # write the pending file
+ *   --data-dir=PATH  read/write PATH instead of ./data (tests)
  */
 require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { reconcilePending } = require('./lib/pending-commercial-reconcile');
 
-const DATA = path.join(__dirname, '..', 'data');
+const dirArg = process.argv.find((a) => a.startsWith('--data-dir='));
+const DATA = dirArg ? path.resolve(dirArg.slice('--data-dir='.length)) : path.join(__dirname, '..', 'data');
 const PENDING = path.join(DATA, 'commercial-pending-review.json');
 const apply = process.argv.includes('--apply');
 

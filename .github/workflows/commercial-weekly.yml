@@ -176,6 +176,14 @@ jobs:
         with:
           configure-git: 'true'
 
+      - name: Reconcile pending-review against commercial.json
+        # BRO-5403: drop pending entries commercial.json already covers with a
+        # cited record, so the list does not refill with sourced shows between
+        # sweeps. Never touches commercial.json; differing figures stay pending.
+        if: inputs.dry_run != true
+        run: node scripts/reconcile-pending-commercial.js --apply
+        continue-on-error: true
+
       - name: Sweep pending-review
         run: |
           ARGS="--report-json=/tmp/sweep-report.json"
