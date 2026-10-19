@@ -6,6 +6,12 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log('Usage: node scripts/repair-awards-season-labels.js [--write]\n\nRepairs Tony season labels in data/awards.json where two of three signals\n(label, ceremony number, opening-date Tony window) agree. Dry run unless --write.');
+  process.exit(0);
+}
 const { repairSeasonLabels } = require('./lib/awards-season-labels');
 const { readTonyCutoffs } = require('./lib/tony-cutoffs-reader');
 
