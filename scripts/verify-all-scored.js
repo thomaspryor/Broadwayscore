@@ -137,11 +137,15 @@ function isWithinWindow(openingDate, now, windowDays) {
  * coarse label ('not-includable' or the canonical excluded-by-rebuild bucket
  * if available).
  */
-function isScoreableSurvivor(data, show) {
+function isScoreableSurvivor(data, show, filePath) {
   if (!data || typeof data !== 'object') {
     return { eligible: false, reason: 'not-an-object' };
   }
-  if (!isIncludableForRebuild(data, show || {})) {
+  // filePath lets rebuild's sibling-aware exclusions apply (knownSyndicationSecondary:
+  // Chris Jones's nydailynews mirror of his chicagotribune review). Without it the
+  // mirror counted as an unscored orphan and blocked the Other Desert Cities 2026
+  // opening-night broadcast for 8 hours, though rebuild never publishes it.
+  if (!isIncludableForRebuild(data, show || {}, filePath)) {
     return { eligible: false, reason: 'not-includable-by-rebuild' };
   }
   return { eligible: true, reason: null };
@@ -197,19 +201,16 @@ function isScoreableSurvivor(data, show) {
  *
  * @returns {{actionable: boolean, skipReason: string|null}}
  */
-function isDispatchActionable(data, show) {
+function isDispatchActionable(data, show, filePath) {
   let skipReason;
   try {
-    // Deliberately NO filePath, matching isScoreableSurvivor's
-    // isIncludableForRebuild(data, show) call above. Ship-check found 3 files
-    // that are eligible without a filePath but excluded with one
-    // (knownSyndicationSecondary): passing it here would mark a file an orphan
-    // and then refuse to dispatch for it, on two different answers to the same
-    // question. Same args to both predicates, and the mismatch errs toward
-    // dispatching rather than toward silence.
+    // Same filePath as isScoreableSurvivor's isIncludableForRebuild call, so
+    // both predicates give one answer for sibling-aware exclusions
+    // (knownSyndicationSecondary).
     skipReason = unscoredSkipReason(data, {
       show: show || undefined,
       showTitle: show && show.title ? show.title : undefined,
+      filePath,
     });
   } catch {
     // Fail OPEN. A throw here (unreadable corpus, unexpected shape) must not
@@ -417,13 +418,13 @@ function auditShow(showId, show) {
       continue;
     }
 
-    const { eligible, reason } = isScoreableSurvivor(data, show);
+    const { eligible, reason } = isScoreableSurvivor(data, show, filePath);
     if (!eligible) continue;
     eligibleScanned++;
 
     if (hasValidScore(data, show)) continue;
 
-    const { actionable, skipReason } = isDispatchActionable(data, show);
+    const { actionable, skipReason } = isDispatchActionable(data, show, filePath);
 
     orphans.push({
       file,

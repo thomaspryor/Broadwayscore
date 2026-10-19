@@ -363,3 +363,31 @@ test('integration: corrupt JSON in show directory surfaces as orphan with corrup
     fs.rmSync(SYNTHETIC_SHOW_DIR, { recursive: true, force: true });
   }
 });
+
+// Other Desert Cities 2026: Chris Jones's nydailynews mirror of his
+// chicagotribune review is excluded by rebuild (knownSyndicationSecondary, a
+// sibling-aware check that needs filePath). The orphan gate asked without
+// filePath, counted the mirror as unscored and held the broadcast for hours.
+test('syndication secondary is not an orphan when its live primary sits beside it', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'vas-synd-'));
+  try {
+    const body = 'Other Desert Cities review body. '.repeat(40);
+    const primary = { outletId: 'chicagotribune', outlet: 'Chicago Tribune', criticName: 'Chris Jones', fullText: body, contentTier: 'complete', llmScore: { score: 88 } };
+    const mirror = { outletId: 'nydailynews', outlet: 'New York Daily News', criticName: 'Chris Jones', fullText: body, contentTier: 'complete' };
+    fs.writeFileSync(path.join(dir, 'chicagotribune--chris-jones.json'), JSON.stringify(primary));
+    const mirrorPath = path.join(dir, 'nydailynews--chris-jones.json');
+    fs.writeFileSync(mirrorPath, JSON.stringify(mirror));
+    assert.equal(isScoreableSurvivor(mirror, {}, mirrorPath).eligible, false);
+    // Without the primary on disk the mirror is a real review and stays eligible.
+    fs.unlinkSync(path.join(dir, 'chicagotribune--chris-jones.json'));
+    assert.equal(isScoreableSurvivor(mirror, {}, mirrorPath).eligible, true);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('auditShow passes filePath to both eligibility and dispatch predicates', () => {
+  const src = fs.readFileSync(verifyAllScoredPath, 'utf8');
+  assert.match(src, /isScoreableSurvivor\(data, show, filePath\)/);
+  assert.match(src, /isDispatchActionable\(data, show, filePath\)/);
+});
