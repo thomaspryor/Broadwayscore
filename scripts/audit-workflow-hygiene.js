@@ -804,6 +804,20 @@ async function main() {
     .filter((f) => f.endsWith('.yml') || f.endsWith('.yaml'))
     .sort();
 
+  // BRO-5431: advisory first. Keep this separate from the blocking total and
+  // isolate parser failures so this new rule cannot arm itself accidentally.
+  try {
+    const { auditDirectory } = require('./lib/missing-deps');
+    const deps = auditDirectory(WORKFLOW_DIR, path.join(__dirname, '..'));
+    for (const hit of deps.findings) {
+      console.log(`::warning::missing-deps: ${hit.workflow} job ${hit.job} runs ${hit.script} before installing dependencies: ${hit.packages.join(', ')}. Use ./.github/actions/setup-node before this step.`);
+    }
+    if (deps.errors.length) console.log(`::warning::missing-deps: ${deps.errors.length} graph inspection error(s); coverage is incomplete. First: ${deps.errors[0].script}: ${deps.errors[0].error}`);
+    console.log(`missing-deps (advisory): ${deps.scripts.length} script invocation(s), ${deps.findings.length} unmet eager dependency graph(s), ${deps.errors.length} inspection error(s)`);
+  } catch (err) {
+    console.log(`::warning::missing-deps inspection unavailable: ${err.message}`);
+  }
+
   const violations = {
     notifyFailure: [],
     playwright: [],
