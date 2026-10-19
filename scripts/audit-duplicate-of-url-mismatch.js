@@ -38,7 +38,8 @@ const { findDuplicateOfCycle } = require('./lib/duplicate-cycle');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 const { clearCrossOutletFields } = require('./lib/cascade-clear-duplicate-refs');
 const { crossOutletCyclePartner } = require('./lib/cross-outlet-cycle');
-const { isCrossOutletSyndicationPair, isRenameCollisionPair } = require('./lib/syndication-pairs');
+const { isCrossOutletSyndicationPair } = require('./lib/syndication-pairs');
+const { isDuplicateOfUrlMismatch, clearDuplicateMismatch } = require('./lib/duplicate-of-url-mismatch');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -355,13 +356,12 @@ function audit() {
       // this, --fix would read the trivially-dirty URL as a DIFFERENT article,
       // clear the duplicateOf, and resurface a real duplicate into scoring. The
       // Sommers/much-ado genuine-stale case still differs by PATH and survives.
-      const canon = canonUrl;
-      const a = canon(data.url);
-      const b = canon(sibling.url);
       // BRO-2406: a cross-outlet syndication pointer (same critic, Tribune-group
       // reprint, wire pair, or a human-declared syndication reason) differs by
       // URL BY DEFINITION — nulling it re-admits the double-counted review.
-      if (a && b && a !== b && !isCrossOutletSyndicationPair(data, sibling, normalizeOutlet) && !isRenameCollisionPair(data, sibling)) {
+      // BRO-5329: explicit protectedFields: ['duplicateOf'] also covers manual
+      // repost decisions whose criticName is unknown.
+      if (isDuplicateOfUrlMismatch(data, sibling)) {
         mismatches.push({
           showId: path.basename(showDir),
           file,
@@ -441,24 +441,7 @@ function fix(mismatches) {
       cleared++;
       continue;
     }
-    const field = m.field || 'duplicateOf';
-    const reason = m.reason === 'self-reference'
-      ? `audit-duplicate-of-url-mismatch.js (--fix) on ${new Date().toISOString().slice(0, 10)}: ${field} pointed at this file itself`
-      : m.reason === 'sibling-missing'
-        ? `audit-duplicate-of-url-mismatch.js (--fix) on ${new Date().toISOString().slice(0, 10)}: sibling ${m.duplicateOf} no longer exists`
-        : `audit-duplicate-of-url-mismatch.js (--fix) on ${new Date().toISOString().slice(0, 10)}: our URL ${data.url} ≠ sibling ${m.duplicateOf} URL ${m.siblingUrl}`;
-    data.duplicateClearReason = reason;
-    if (field === 'duplicateTextOf') {
-      // No duplicateTextOfCleared: the content-fingerprint pass must stay free
-      // to re-flag this file with a CORRECT pointer if a genuine dupe exists.
-      // Delete rather than null — validate-data flags null as "should be string".
-      delete data.duplicateTextOf;
-    } else {
-      data.duplicateOf = null;
-      data.duplicateReason = null;
-    }
-    safeWriteReview(filePath, data);
-    cleared++;
+    if (clearDuplicateMismatch(filePath, data, m)) cleared++;
   }
   return cleared;
 }
