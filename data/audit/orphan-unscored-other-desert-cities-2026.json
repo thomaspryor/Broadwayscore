@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "other-desert-cities-2026",
   "openingDate": "2026-10-18",
-  "detectedAt": "2026-10-19T17:42:32.298Z",
+  "detectedAt": "2026-10-19T17:53:11.808Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "cititour--unknown.json",
+      "outletId": "cititour",
+      "criticName": "Unknown",
+      "url": "https://cititour.com/NYC_News/Is-It-Worth-Traveling-to-Other-Desert-Cities/11129",
+      "fullTextLen": 4302,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "goldderby--ethan-alter.json",
       "outletId": "goldderby",
@@ -38,12 +55,29 @@
       "llmScore": null,
       "contentTier": "complete",
       "eligibilityReason": null
+    },
+    {
+      "file": "talkinbroadway--howard-miller.json",
+      "outletId": "talkinbroadway",
+      "criticName": "Howard Miller",
+      "url": "https://www.talkinbroadway.com/page/world/OtherDesertCities26.html",
+      "fullTextLen": 5137,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 2,
+  "orphanCount": 4,
+  "dispatchableOrphanCount": 4,
   "blockedOrphanCount": 0,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-10-19T17:42:32.298Z"
+  "lastDispatch": "suppressed-cooldown",
+  "lastDispatchAt": null
 }

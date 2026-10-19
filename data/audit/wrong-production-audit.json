@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-19T17:42:48.082Z",
+  "timestamp": "2026-10-19T17:53:24.750Z",
   "stats": {
-    "totalReviews": 57760,
-    "alreadyFlagged": 21072,
+    "totalReviews": 57761,
+    "alreadyFlagged": 21073,
     "dateGuardCatches": 207,
-    "directorMismatch": 2007,
-    "tvFilmSignals": 1640,
-    "londonSignals": 2527,
+    "directorMismatch": 2008,
+    "tvFilmSignals": 1642,
+    "londonSignals": 2529,
     "offBroadwaySignals": 530,
     "yearMismatch": 159,
-    "noPublishDate": 5251
+    "noPublishDate": 5241
   },
   "findings": [
     {
@@ -30658,6 +30658,20 @@
     },
     {
       "showId": "other-desert-cities-2026",
+      "file": "talkinbroadway--howard-miller.json",
+      "score": null,
+      "publishDate": "2026-10-18",
+      "url": "https://www.talkinbroadway.com/page/world/OtherDesertCities26.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
       "file": "theatrely--joey-sims.json",
       "score": 63,
       "publishDate": "2026-10-19",
@@ -31276,6 +31290,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
+      "file": "1883magazine--unknown.json",
+      "score": null,
+      "publishDate": "2025-12-16",
+      "url": "https://1883magazine.com/paranormal-activity-on-stage-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"oren peli\" from paranormal-activity-2026"
         }
       ]
     },
@@ -43053,6 +43081,20 @@
     },
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
+      "file": "all-that-dazzles-uk--unknown.json",
+      "score": null,
+      "publishDate": "2025-11-13",
+      "url": "https://www.allthatdazzles.co.uk/post/review-the-hunger-games-on-stage-troubadour-canary-wharf-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-hunger-games-on-stage-west-end-2025",
       "file": "daily-mail--patrick-marmion.json",
       "score": 58,
       "publishDate": "2025-11-12",
@@ -46889,7 +46931,7 @@
     },
     {
       "showId": "the-secret-diary-of-adrian-mole-aged-13-3-4-west-end-2019",
-      "file": "britishtheatrecom--unknown.json",
+      "file": "britishtheatrecom--paul-t-davies.json",
       "score": 77,
       "publishDate": null,
       "url": "https://www.britishtheatre.com/posts/review-secret-diary-of-adrian-mole-aged-13-3-4-musical-ambassadors-theatre-london",
@@ -79285,7 +79327,7 @@
     },
     {
       "showId": "some-woman-west-end-2026",
-      "file": "theupcoming--unknown.json",
+      "file": "theupcoming--sofia-webster.json",
       "score": 95,
       "publishDate": "2026-10-16",
       "url": "https://www.theupcoming.co.uk/2026/10/16/some-woman-at-the-national-theatre-theatre-review/",
@@ -90079,6 +90121,19 @@
     },
     {
       "showId": "triumph-off-west-end-2026",
+      "file": "fringereview--simon-jenner.json",
+      "publishDate": "2026-10-19",
+      "url": "https://fringereview.co.uk/review/fringereview-uk/2026/triumph/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "triumph-off-west-end-2026",
       "file": "liamodell--liam-odell.json",
       "score": 63,
       "publishDate": "2026-10-18",
@@ -90143,6 +90198,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "triumph-off-west-end-2026",
+      "file": "viewfromthegods--simon-jenner.json",
+      "publishDate": "2026-10-18",
+      "url": "https://viewfromthegods.co.uk/2026/10/18/triumph-almeida-islington/?utm_source=rss&utm_medium=rss&utm_campaign=triumph-almeida-islington",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
