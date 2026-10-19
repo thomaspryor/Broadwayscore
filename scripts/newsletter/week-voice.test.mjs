@@ -31,7 +31,7 @@ test('Off-Broadway week (Aug 10): a weak most-reviewed lead never claims the bes
   const v = composeWeekVoice({ ob: [ob('An American Daughter', 47, 22), ob('Benevolent', 84, 9), ob("The Winter's Tale", 80, 8), ob('Marlise', 70, 5)] });
   assert.equal(v.subject, 'An American Daughter and 3 other shows open off-Broadway this week');
   assert.equal(plain(v.sentences.join(' ')),
-    "A steady week for Off Broadway. An American Daughter draws the most reviews and a weak 47. Benevolent (84) and The Winter's Tale (80) are the ones to see.");
+    "A steady week for Off Broadway. An American Daughter opens to a weak 47. Benevolent (84) and The Winter's Tale (80) are the ones to see.");
 });
 
 test('slow week (Aug 24): quiet-week subject, both markets named', () => {
@@ -61,7 +61,7 @@ test('calendar counts keep "slow week" / "N other shows" true when some openings
   assert.doesNotMatch(plain(v.sentences.join(' ')), /slow week|just one/);
 });
 
-test('"draws the most reviews" is only said when strictly true (count tie → plain grade)', () => {
+test('"draws the most reviews" is never said (review count is a sort key, not news)', () => {
   const ob = (t, s, c) => o(t, s, c, { category: 'off-broadway' });
   const v = composeWeekVoice({ ob: [ob('Tied Lead', 50, 10), ob('Tied Other', 48, 10)] });
   const text = plain(v.sentences.join(' '));
@@ -117,4 +117,14 @@ test('a gold second opening still lifts the week above a score mover (the lead i
     aggregateScore: (id) => ({ avg: scores[id] }),
   });
   assert.deepEqual(c.slice(0, 3).map(x => x.show.id), ['l', 'g', 'mv']);
+});
+
+test('packed week: calendar count stays, and the lede says how many have reviews yet', () => {
+  const ob = (t, s, c) => o(t, s, c, { category: 'off-broadway' });
+  const list = ['A', 'B', 'C', 'D', 'E', 'F', 'G'].map((t, i) => ob(`Show ${t}`, 60 + i, 20 - i));
+  const v = composeWeekVoice({ ob: list, counts: { ob: 12 } });
+  assert.equal(v.subject, 'Show A and 11 other shows open off-Broadway this week');
+  const text = plain(v.sentences.join(' '));
+  assert.match(text, /^A packed week Off Broadway, with twelve openings, seven reviewed so far\./);
+  assert.doesNotMatch(text, /most reviews/);
 });

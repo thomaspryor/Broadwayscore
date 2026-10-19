@@ -100,7 +100,13 @@ export function composeWeekVoice({ bw = [], ob = [], counts = {} } = {}) {
   const sentences = [];
   if (total === 1) sentences.push('A slow week in New York, with just one opening.');
   else if (total === 2) sentences.push('A slow week in New York, with just two openings.');
-  else if (n >= 5) sentences.push(`A packed week ${M.the}, with ${word(n)} openings.`);
+  else if (n >= 5) {
+    // The count is the calendar's; some openings have no reviews yet and get no
+    // card, so say how many do (owner, 2026-10-18: "12 openings, 7 in the email").
+    const reviewed = list.length;
+    const tail = reviewed < n ? `, ${word(reviewed)} reviewed so far` : '';
+    sentences.push(`A packed week ${M.the}, with ${word(n)} openings${tail}.`);
+  }
   else if (total >= 5) sentences.push(`A busy week in New York, with ${word(total)} openings.`);
   else if (!otherN) sentences.push(`A steady week for ${M.name}.`);
   else sentences.push(`A steady week in New York, with ${word(total)} openings.`);
@@ -112,11 +118,10 @@ export function composeWeekVoice({ bw = [], ob = [], counts = {} } = {}) {
   const verdict = VERDICT_VARIANTS[reviewVerdictTier(S, M.category)][0];
   const others = list.slice(1);
   if (others.length && S < 65) {
-    // "Most reviews" only when strictly true: a count tie, or an editor's
-    // NEWSLETTER_OB_LEAD float, can put a show first without it.
-    const mostReviewed = others.every(o => (o.agg?.count ?? 0) < (lead.agg?.count ?? 0));
+    // Never "draws the most reviews": review count is only the lead sort key,
+    // not news (owner, 2026-10-18).
     const grade = `${S < 55 ? 'weak' : 'middling'} ${S}`;
-    sentences.push(mostReviewed ? `${L} draws the most reviews and a ${grade}.` : `${L} ${verb}${loc} to a ${grade}.`);
+    sentences.push(`${L} ${verb}${loc} to a ${grade}.`);
     const toSee = others.filter(o => scoreOf(o) >= 75).sort((a, b) => scoreOf(b) - scoreOf(a)).slice(0, 2);
     if (toSee.length) {
       toSee.forEach(o => named.add(o.show.id));
