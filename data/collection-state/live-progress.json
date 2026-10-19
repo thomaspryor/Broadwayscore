@@ -1,21 +1,65 @@
 {
-  "updatedAt": "2026-10-19T14:35:31.298Z",
-  "processed": 371,
-  "failed": 203,
-  "successRate": "64.6%",
+  "updatedAt": "2026-10-19T14:56:27.862Z",
+  "processed": 415,
+  "failed": 249,
+  "successRate": "62.5%",
   "tierBreakdown": {
-    "playwright": 190,
+    "playwright": 200,
     "amp": 1,
     "browserbase": 0,
     "directCookies": 1,
-    "scrapingdog": 32,
-    "scrapingbee": 29,
+    "scrapingdog": 36,
+    "scrapingbee": 32,
     "brightdata": 6,
     "archiveToday": 0,
-    "archive": 121
+    "archive": 149
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-10-19T12:00:04.772Z",
+      "event": "bb-session",
+      "session": "79b58a6e",
+      "url": "https://www.newyorker.com/goings-on-about-town/just-in-time"
+    },
+    {
+      "t": "2026-10-19T12:00:05.290Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-19T12:04:50.003Z",
+      "event": "bb-session",
+      "session": "126946a3",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/and-juliet-11-28-22"
+    },
+    {
+      "t": "2026-10-19T12:04:50.453Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-19T12:11:32.600Z",
+      "event": "bb-session",
+      "session": "e468f60c",
+      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
+    },
+    {
+      "t": "2026-10-19T12:11:33.082Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-19T12:11:49.758Z",
+      "event": "bb-session",
+      "session": "fd2e5ea9",
+      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
+    },
+    {
+      "t": "2026-10-19T12:11:50.203Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
     {
       "t": "2026-10-19T12:20:38.010Z",
       "event": "bb-session",
@@ -81,54 +125,6 @@
       "t": "2026-10-19T12:35:59.810Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-19T14:11:41.545Z",
-      "event": "bb-session",
-      "session": "cba57587",
-      "url": "https://bachtrack.com/review-angels-bone-du-yun-vavrek-english-national-opera-lo"
-    },
-    {
-      "t": "2026-10-19T14:12:25.072Z",
-      "event": "bb-session",
-      "session": "67831d16",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
-    },
-    {
-      "t": "2026-10-19T14:12:33.554Z",
-      "event": "bb-session",
-      "session": "0c62aed4",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
-    },
-    {
-      "t": "2026-10-19T14:13:40.506Z",
-      "event": "bb-session",
-      "session": "2cd09be2",
-      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
-    },
-    {
-      "t": "2026-10-19T14:16:45.584Z",
-      "event": "bb-session",
-      "session": "367c1630",
-      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
-    },
-    {
-      "t": "2026-10-19T14:16:57.126Z",
-      "event": "bb-session",
-      "session": "e7c7f3c7",
-      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
-    },
-    {
-      "t": "2026-10-19T14:17:39.136Z",
-      "event": "bb-session",
-      "session": "92d4c3c5",
-      "url": "https://www.afridiziak.com/offers/access-10-ticket-offer-to-see-baby-in-previews"
-    },
-    {
-      "t": "2026-10-19T14:17:49.346Z",
-      "event": "bb-session",
-      "session": "d8b5f806",
-      "url": "https://www.afridiziak.com/offers/access-10-ticket-offer-to-see-baby-in-previews"
     }
   ]
 }
