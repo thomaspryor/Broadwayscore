@@ -11,7 +11,19 @@
     "fish-off-broadway-2026/the-100-word-review--unknown.json",
     "fish-off-broadway-2026/broadwayworld--nicole-serratore.json",
     "a-ghost-in-your-ear-off-broadway-2026/wsj--charles-isherwood.json",
-    "the-ask-off-broadway-2026/front-row-center--sarah-downs.json"
+    "the-ask-off-broadway-2026/front-row-center--sarah-downs.json",
+    "other-desert-cities-2026/nyt-theater--jonathan-mandell.json",
+    "other-desert-cities-2026/hollywood-reporter--richard-lawson.json",
+    "other-desert-cities-2026/variety--aramide-tinubu.json",
+    "other-desert-cities-2026/deadline--greg-evans.json",
+    "other-desert-cities-2026/ew--shelby-stivale.json",
+    "other-desert-cities-2026/nypost--johnny-oleksinski.json",
+    "other-desert-cities-2026/thewrap--robert-hofler.json",
+    "other-desert-cities-2026/wsj--charles-isherwood.json",
+    "other-desert-cities-2026/cititour--brian-scott-lipton.json",
+    "other-desert-cities-2026/amny--matt-windman.json",
+    "other-desert-cities-2026/independent--caitlin-hornik.json",
+    "other-desert-cities-2026/slantmagazine--dan-rubins.json"
   ],
   "failed": [
     "angels-bone-west-end-2026/bachtrack--unknown.json",
@@ -41,21 +53,39 @@
       "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json",
       "memoirs-of-amorous-gentlemen-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "fish-off-broadway-2026/the-100-word-review--unknown.json",
-      "the-ask-off-broadway-2026/front-row-center--sarah-downs.json"
+      "the-ask-off-broadway-2026/front-row-center--sarah-downs.json",
+      "other-desert-cities-2026/nyt-theater--jonathan-mandell.json",
+      "other-desert-cities-2026/nypost--johnny-oleksinski.json",
+      "other-desert-cities-2026/amny--matt-windman.json",
+      "other-desert-cities-2026/independent--caitlin-hornik.json",
+      "other-desert-cities-2026/slantmagazine--dan-rubins.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/other-desert-cities-2026/hollywood-reporter--richard-lawson.json",
+      "other-desert-cities-2026/hollywood-reporter--richard-lawson.json",
+      "data/review-texts/other-desert-cities-2026/deadline--greg-evans.json",
+      "other-desert-cities-2026/deadline--greg-evans.json",
+      "data/review-texts/other-desert-cities-2026/wsj--charles-isherwood.json",
+      "other-desert-cities-2026/wsj--charles-isherwood.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [
-      "some-woman-west-end-2026/times-uk--clive-davis.json"
+      "some-woman-west-end-2026/times-uk--clive-davis.json",
+      "other-desert-cities-2026/cititour--brian-scott-lipton.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "other-desert-cities-2026/variety--aramide-tinubu.json",
+      "other-desert-cities-2026/thewrap--robert-hofler.json"
+    ],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "other-desert-cities-2026/ew--shelby-stivale.json"
+    ]
   },
   "startTime": "2026-10-19T04:22:41.812Z",
-  "lastProcessed": "some-woman-west-end-2026/times-uk--clive-davis.json",
+  "lastProcessed": "other-desert-cities-2026/slantmagazine--dan-rubins.json",
   "log": [
     {
       "t": "2026-10-19T04:23:31.216Z",
@@ -160,6 +190,29 @@
       "event": "bb-session",
       "session": "715194b1",
       "url": "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/attachment/alyssa-may-go"
+    },
+    {
+      "t": "2026-10-19T04:51:27.995Z",
+      "event": "bb-session",
+      "session": "8a08db53",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/other-desert-cities-theater-rev"
+    },
+    {
+      "t": "2026-10-19T04:52:19.708Z",
+      "event": "bb-session",
+      "session": "499f4f97",
+      "url": "https://deadline.com/2026/10/other-desert-cities-broadway-review-julia-louis-dre"
+    },
+    {
+      "t": "2026-10-19T04:53:03.708Z",
+      "event": "bb-session",
+      "session": "5e0f855e",
+      "url": "https://www.wsj.com/articles/other-desert-cities-review-julia-louis-dreyfuss-sla"
+    },
+    {
+      "t": "2026-10-19T04:53:04.636Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ],
   "recoveredAfterFailure": [
