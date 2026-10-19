@@ -1,64 +1,63 @@
 {
-  "runDate": "2026-10-19T04:26:30.606Z",
+  "runDate": "2026-10-19T06:14:21.259Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "some-woman-west-end-2026,angels-bone-west-end-2026",
+    "showFilter": "love-love-love-off-broadway-2016",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
+    "processed": 22,
     "failed": 4,
     "skipped": 0,
-    "successRate": "20.0%"
+    "successRate": "84.6%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 7,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 1,
     "scrapingbee": 1,
-    "brightdata": 0,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 11
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 1,
+    "tier1Attempts": 11,
+    "tier1Success": 8,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier1_9Attempts": 2,
-    "tier1_9Success": 0,
+    "tier1_9Success": 1,
     "tier2Attempts": 3,
     "tier2Success": 1,
-    "tier3Attempts": 2,
-    "tier3Success": 0,
-    "tier3_6Attempts": 2,
+    "tier3Attempts": 3,
+    "tier3Success": 2,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
-    "tier4Success": 0,
+    "tier4Attempts": 6,
+    "tier4Success": 4,
     "totalFailed": 4,
-    "scrapingBeePageCredits": 11,
+    "scrapingBeePageCredits": 12,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.6,
-    "urlDiscoveryAttempts": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 1,
+    "processed": 22,
     "failed": 4,
     "shows": [
-      "angels-bone-west-end-2026",
-      "some-woman-west-end-2026"
+      "love-love-love-off-broadway-2016"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -67,42 +66,116 @@
     }
   },
   "processed": [
-    "some-woman-west-end-2026/times-uk--clive-davis.json"
+    "love-love-love-off-broadway-2016/hollywood-reporter--frank-scheck.json",
+    "love-love-love-off-broadway-2016/nytimes--ben-brantley.json",
+    "love-love-love-off-broadway-2016/variety--marilyn-stasio.json",
+    "love-love-love-off-broadway-2016/vulture--jesse-green.json",
+    "love-love-love-off-broadway-2016/deadline--jeremy-gerard.json",
+    "love-love-love-off-broadway-2016/ew--isabella-biedenharn.json",
+    "love-love-love-off-broadway-2016/newsday--linda-winer.json",
+    "love-love-love-off-broadway-2016/nydailynews--joe-dziemianowicz.json",
+    "love-love-love-off-broadway-2016/reviewing-the-drama--robin-riegelhaupt.json",
+    "love-love-love-off-broadway-2016/theatermania--zachary-stewart.json",
+    "love-love-love-off-broadway-2016/thewrap--robert-hofler.json",
+    "love-love-love-off-broadway-2016/cititour--brian-scott-lipton.json",
+    "love-love-love-off-broadway-2016/amny--matt-windman.json",
+    "love-love-love-off-broadway-2016/city-cabaret--elizabeth-ahlfors.json",
+    "love-love-love-off-broadway-2016/front-row-center--stanford-friedman.json",
+    "love-love-love-off-broadway-2016/onstage-blog--asya-gorovits.json",
+    "love-love-love-off-broadway-2016/reflections-in-the-light--lauren-yarger.json",
+    "love-love-love-off-broadway-2016/show-showdown--elizabeth-wollman.json",
+    "love-love-love-off-broadway-2016/the-clyde-fitch-report--david-finkle.json",
+    "love-love-love-off-broadway-2016/theater-pizzazz--sandi-durell.json",
+    "love-love-love-off-broadway-2016/theater-scene--joel-benjamin.json",
+    "love-love-love-off-broadway-2016/times-square-chronicles--suzanna-bowling.json"
   ],
   "failed": [
-    "angels-bone-west-end-2026/bachtrack--unknown.json",
-    "some-woman-west-end-2026/guardian--unknown.json",
-    "some-woman-west-end-2026/sunday-times--clive-davis.json",
-    "some-woman-west-end-2026/thestage--sam-marlowe.json"
+    "love-love-love-off-broadway-2016/act-three-the-reviews--doug-marino.json",
+    "love-love-love-off-broadway-2016/diandra-reviews-it-all--diandra-rivera.json",
+    "love-love-love-off-broadway-2016/guardian--alexis-soloski.json",
+    "love-love-love-off-broadway-2016/timeout--david-cote.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "some-woman-west-end-2026/times-uk--clive-davis.json"
+      "love-love-love-off-broadway-2016/hollywood-reporter--frank-scheck.json",
+      "love-love-love-off-broadway-2016/nytimes--ben-brantley.json",
+      "love-love-love-off-broadway-2016/variety--marilyn-stasio.json",
+      "love-love-love-off-broadway-2016/vulture--jesse-green.json",
+      "love-love-love-off-broadway-2016/deadline--jeremy-gerard.json",
+      "love-love-love-off-broadway-2016/ew--isabella-biedenharn.json",
+      "love-love-love-off-broadway-2016/newsday--linda-winer.json",
+      "love-love-love-off-broadway-2016/nydailynews--joe-dziemianowicz.json",
+      "love-love-love-off-broadway-2016/reviewing-the-drama--robin-riegelhaupt.json",
+      "love-love-love-off-broadway-2016/theatermania--zachary-stewart.json",
+      "love-love-love-off-broadway-2016/thewrap--robert-hofler.json",
+      "love-love-love-off-broadway-2016/cititour--brian-scott-lipton.json",
+      "love-love-love-off-broadway-2016/amny--matt-windman.json",
+      "love-love-love-off-broadway-2016/city-cabaret--elizabeth-ahlfors.json",
+      "love-love-love-off-broadway-2016/front-row-center--stanford-friedman.json",
+      "love-love-love-off-broadway-2016/onstage-blog--asya-gorovits.json",
+      "love-love-love-off-broadway-2016/reflections-in-the-light--lauren-yarger.json",
+      "love-love-love-off-broadway-2016/show-showdown--elizabeth-wollman.json",
+      "love-love-love-off-broadway-2016/the-clyde-fitch-report--david-finkle.json",
+      "love-love-love-off-broadway-2016/theater-pizzazz--sandi-durell.json",
+      "love-love-love-off-broadway-2016/theater-scene--joel-benjamin.json",
+      "love-love-love-off-broadway-2016/times-square-chronicles--suzanna-bowling.json"
     ],
     "failed": [
-      "angels-bone-west-end-2026/bachtrack--unknown.json",
-      "some-woman-west-end-2026/guardian--unknown.json",
-      "some-woman-west-end-2026/sunday-times--clive-davis.json",
-      "some-woman-west-end-2026/thestage--sam-marlowe.json"
+      "love-love-love-off-broadway-2016/act-three-the-reviews--doug-marino.json",
+      "love-love-love-off-broadway-2016/diandra-reviews-it-all--diandra-rivera.json",
+      "love-love-love-off-broadway-2016/guardian--alexis-soloski.json",
+      "love-love-love-off-broadway-2016/timeout--david-cote.json"
     ]
   },
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "love-love-love-off-broadway-2016/reviewing-the-drama--robin-riegelhaupt.json",
+      "love-love-love-off-broadway-2016/theatermania--zachary-stewart.json",
+      "love-love-love-off-broadway-2016/front-row-center--stanford-friedman.json",
+      "love-love-love-off-broadway-2016/onstage-blog--asya-gorovits.json",
+      "love-love-love-off-broadway-2016/reflections-in-the-light--lauren-yarger.json",
+      "love-love-love-off-broadway-2016/show-showdown--elizabeth-wollman.json",
+      "love-love-love-off-broadway-2016/theater-scene--joel-benjamin.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
-    "scrapingbee": [
-      "some-woman-west-end-2026/times-uk--clive-davis.json"
+    "scrapingdog": [
+      "love-love-love-off-broadway-2016/times-square-chronicles--suzanna-bowling.json"
     ],
-    "brightdata": [],
+    "scrapingbee": [
+      "love-love-love-off-broadway-2016/cititour--brian-scott-lipton.json"
+    ],
+    "brightdata": [
+      "love-love-love-off-broadway-2016/variety--marilyn-stasio.json",
+      "love-love-love-off-broadway-2016/vulture--jesse-green.json"
+    ],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "love-love-love-off-broadway-2016/hollywood-reporter--frank-scheck.json",
+      "love-love-love-off-broadway-2016/nytimes--ben-brantley.json",
+      "love-love-love-off-broadway-2016/deadline--jeremy-gerard.json",
+      "love-love-love-off-broadway-2016/ew--isabella-biedenharn.json",
+      "love-love-love-off-broadway-2016/newsday--linda-winer.json",
+      "love-love-love-off-broadway-2016/nydailynews--joe-dziemianowicz.json",
+      "love-love-love-off-broadway-2016/thewrap--robert-hofler.json",
+      "love-love-love-off-broadway-2016/amny--matt-windman.json",
+      "love-love-love-off-broadway-2016/city-cabaret--elizabeth-ahlfors.json",
+      "love-love-love-off-broadway-2016/the-clyde-fitch-report--david-finkle.json",
+      "love-love-love-off-broadway-2016/theater-pizzazz--sandi-durell.json"
+    ]
   },
   "failuresByOutlet": {
-    "Bachtrack": {
+    "Act Three: The Reviews": {
       "count": 1,
-      "domain": "bachtrack.com",
+      "domain": "dougmarino.blogspot.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Diandra Reviews It All": {
+      "count": 1,
+      "domain": "diandrareviewsitall.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -110,13 +183,6 @@
     "The Guardian": {
       "count": 1,
       "domain": "theguardian.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Sunday Times": {
-      "count": 1,
-      "domain": "thetimes.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
