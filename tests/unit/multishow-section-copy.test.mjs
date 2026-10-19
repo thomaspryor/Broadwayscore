@@ -29,6 +29,10 @@ test('creates the target row as a split child and marks the column row as its sp
   assert.equal(r.row.contentTier, 'complete');
   assert.equal(r.row.multiShowSplitChild, true);
   assert.equal(r.row.multiShowSplitParentShowId, 'col-show');
+  assert.deepEqual(r.row.multiShowSource, {
+    showId: 'col-show', outletId: 'wsj', criticName: 'Pat Critic',
+    url: source().url, method: 'venue-box',
+  });
   assert.equal(r.row.needsRescore, true);
   assert.equal(r.parent.multiShowSplitParent, true);
   assert.deepEqual(r.parent.multiShowSplitChildShowIds, ['target-show']);
@@ -59,6 +63,7 @@ test('fills a short stub row, moving excerpts that are not in the section aside'
   assert.equal(r.row.llmMetadata, null);
   assert.equal(r.row.originalScore, null);
   assert.equal(r.row.previousUrl, 'https://www.wsj.com/articles/SB999');
+  assert.equal(r.row.multiShowSource.showId, 'col-show');
   assert.equal(r.row.multiShowSectionCopy.replaced.dtliExcerpt, target.dtliExcerpt);
   assert.equal(r.row.multiShowSectionCopy.replaced.fullText, target.fullText);
 });
@@ -111,11 +116,15 @@ test('a filled web-search stub records the split as a source, so it is not an un
 test('a re-run on a row already filed from this column only refreshes its provenance', () => {
   const first = planSectionCopy(base({ target: { showId: 'target-show', criticName: 'Pat Critic', url: 'u', fullText: 'x', sources: ['web-search'] } }));
   const filed = { ...first.row, sources: ['web-search'], llmScore: { score: 80 } };
+  delete filed.multiShowSource; // Rows recovered before this provenance field existed.
   const r = planSectionCopy(base({ target: filed }));
   assert.equal(r.ok, true, r.reason);
   assert.equal(r.action, 'refresh');
   assert.deepEqual(r.row.sources, ['web-search', 'multi-show-split']);
   assert.deepEqual(r.row.llmScore, { score: 80 }, 'nothing else changes');
+  assert.deepEqual(r.row.multiShowSource, first.row.multiShowSource);
+  assert.equal(r.row.fullText, filed.fullText);
+  assert.deepEqual(r.row.multiShowSectionCopy, filed.multiShowSectionCopy);
   assert.equal(r.parent.multiShowSplitMethod, 'venue-box');
   // A different section in that row is still refused.
   assert.match(planSectionCopy(base({ target: { ...filed, fullText: 'z'.repeat(900) } })).reason, /already holds/);

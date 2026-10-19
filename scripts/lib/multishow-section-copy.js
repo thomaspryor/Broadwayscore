@@ -84,6 +84,10 @@ function planSectionCopy({ source, sourceShowId, section, target, targetShowId, 
   if (!section || !section.ok || typeof section.text !== 'string') return { ok: false, reason: `no unambiguous section: ${(section && section.reason) || 'none'}` };
   const m = markersMatch(section.text, expectStart, expectEnd);
   if (!m.ok) return m;
+  const multiShowSource = {
+    showId: sourceShowId, outletId: source.outletId, criticName: source.criticName,
+    url: source.url, method: 'venue-box',
+  };
 
   // A row this tool already filed from this column with this exact section:
   // only its provenance is brought up to date (a re-run of the plan).
@@ -92,7 +96,7 @@ function planSectionCopy({ source, sourceShowId, section, target, targetShowId, 
   // multiShowSplitMethod keeps the BRO-4431 fan-out from re-cutting the column.
   const parent = { ...source, multiShowSplitParent: true, multiShowSplitMethod: 'venue-box', multiShowSplitChildShowIds: [...ids].sort() };
   if (target && target.multiShowSectionCopy && target.multiShowSectionCopy.fromShowId === sourceShowId && target.fullText === section.text) {
-    return { ok: true, reason: `refresh: ${section.text.length}-char section already filed`, row: { ...target, sources: withSplitSource(target) }, parent, action: 'refresh' };
+    return { ok: true, reason: `refresh: ${section.text.length}-char section already filed`, row: { ...target, sources: withSplitSource(target), multiShowSource }, parent, action: 'refresh' };
   }
 
   let action = 'create';
@@ -112,6 +116,7 @@ function planSectionCopy({ source, sourceShowId, section, target, targetShowId, 
   const child = buildChild(source, { showId: targetShowId, sectionText: section.text, anchorKind: 'venue-box' }, sourceShowId, now);
   child.rescoreReason = 'multi-show column section copied from sibling row (BRO-5325)';
   child.multiShowSectionCopy = { fromShowId: sourceShowId, method: 'venue-box', chars: section.text.length, at: now };
+  child.multiShowSource = multiShowSource;
 
   let row = child;
   if (target) {
