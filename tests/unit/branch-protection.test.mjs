@@ -167,13 +167,26 @@ function ghAuthAvailable() {
   }
 }
 
-test('live: repos/thomaspryor/Broadwayscore branches/main/protection has enforce_admins true and non-empty required checks', { skip: !ghAuthAvailable() && 'gh not authenticated in this environment — CI Unit Tests job has no GH_TOKEN' }, () => {
+test('live: repos/thomaspryor/Broadwayscore branches/main/protection has enforce_admins true and non-empty required checks', { skip: !ghAuthAvailable() && 'gh not authenticated in this environment — CI Unit Tests job has no GH_TOKEN' }, (t) => {
   // This is the ticket's literal acceptance bar, run against real live
   // state, un-gamed. It is EXPECTED TO FAIL until a fleet migration off
   // direct-push-to-main makes FULL_ENFORCEMENT_TARGET safe to --apply — see
   // scripts/setup-branch-protection.js's header comment for the empirical
   // GH006 production break this would otherwise reintroduce.
-  const out = execFileSync('gh', ['api', 'repos/thomaspryor/Broadwayscore/branches/main/protection'], { encoding: 'utf8' });
+  let out;
+  try {
+    out = execFileSync('gh', ['api', 'repos/thomaspryor/Broadwayscore/branches/main/protection'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+  } catch (err) {
+    // Land's gauntlet exports the workflow GITHUB_TOKEN, which cannot read
+    // branch protection, so this probe failed every land run on base and
+    // branch alike (BRO-5670). Only an admin token can answer the question.
+    const stderr = String((err && err.stderr) || '');
+    if (/HTTP 403|Resource not accessible by integration/.test(stderr)) {
+      t.skip('token cannot read branch protection (HTTP 403) — run with an admin token');
+      return;
+    }
+    throw err;
+  }
   const protection = JSON.parse(out);
   assert.equal(protection.enforce_admins && protection.enforce_admins.enabled, true, 'enforce_admins must be enabled on main');
   const contexts = (protection.required_status_checks && protection.required_status_checks.contexts) || [];

@@ -20,6 +20,19 @@ const SCRIPTS_DIR = path.join(__dirname, '..', '..', 'scripts');
 
 let passed = 0;
 let failed = 0;
+let skipped = 0;
+
+// Land's Checks job does not check out review-texts (BRO-5161), so the two
+// corpus checks below skip there and stay enforced in test.yml's E2E job,
+// which has the corpus. Same presence rule as audit-review-contamination.test.mjs.
+const REVIEW_TEXTS_DIR = path.join(DATA_DIR, 'review-texts');
+const corpusPresent = fs.existsSync(REVIEW_TEXTS_DIR) && fs.readdirSync(REVIEW_TEXTS_DIR).length > 10;
+
+function corpusTest(name, fn) {
+  if (corpusPresent) return test(name, fn);
+  console.log(`  - ${name} # SKIP review-texts corpus not checked out`);
+  skipped++;
+}
 
 function test(name, fn) {
   try {
@@ -70,7 +83,7 @@ test('reviews.json exists and is valid JSON', () => {
   assert.ok(Object.keys(data.reviews).length > 20, `Should have 20+ shows, got ${Object.keys(data.reviews).length}`);
 });
 
-test('review-texts directory exists with show directories', () => {
+corpusTest('review-texts directory exists with show directories', () => {
   const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
   assert.ok(fs.existsSync(reviewTextsDir), 'review-texts directory should exist');
 
@@ -176,7 +189,7 @@ test('validate-review-texts.js exists', () => {
   assert.ok(fs.existsSync(scriptPath), 'Script should exist');
 });
 
-test('current review-texts pass validation', () => {
+corpusTest('current review-texts pass validation', () => {
   // Count review files and check for known issues
   const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
   const registryPath = path.join(DATA_DIR, 'outlet-registry.json');
@@ -467,7 +480,7 @@ test('review count above 1700', () => {
 // ============================================================================
 
 console.log('\n' + '='.repeat(50));
-console.log(`\nE2E Pipeline Results: ${passed} passed, ${failed} failed\n`);
+console.log(`\nE2E Pipeline Results: ${passed} passed, ${failed} failed, ${skipped} skipped\n`);
 
 if (failed > 0) {
   console.log('Some components of the data quality pipeline have issues.');
