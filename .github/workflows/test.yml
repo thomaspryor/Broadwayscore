@@ -2051,6 +2051,8 @@ on:
       - 'scripts/score-commercial-blind-test.js'
       - 'scripts/seed-evidence-review-stubs.js'
       - 'scripts/sweep-pending-commercial.js'
+      # scripts/reconcile-pending-commercial.test.mjs spawns this CLI (BRO-5403)
+      - 'scripts/reconcile-pending-commercial.js'
       - 'scripts/sweep-we-aggregators.js'
       # BRO-3887: outlet-serp's --time-budget-min guard + the run-id-keyed-cache
       # hygiene rule. Without these entries a solo edit triggers ZERO CI

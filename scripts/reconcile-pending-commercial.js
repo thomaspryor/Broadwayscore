@@ -14,6 +14,7 @@ const path = require('path');
 const { reconcilePending } = require('./lib/pending-commercial-reconcile');
 
 const dirArg = process.argv.find((a) => a.startsWith('--data-dir='));
+if (dirArg && !dirArg.slice('--data-dir='.length)) { console.error('--data-dir needs a path'); process.exit(2); }
 const DATA = dirArg ? path.resolve(dirArg.slice('--data-dir='.length)) : path.join(__dirname, '..', 'data');
 const PENDING = path.join(DATA, 'commercial-pending-review.json');
 const apply = process.argv.includes('--apply');
@@ -26,7 +27,7 @@ const { drop, keep } = reconcilePending(pending.shows || {}, commercial.shows ||
 console.log(`pending ${Object.keys(pending.shows || {}).length}: covered ${drop.length}, still pending ${keep.length}`);
 for (const k of keep) console.log(`  keep ${k.key} (${k.status || '?'}): ${k.reason}`);
 for (const k of drop) console.log(`  drop ${k}`);
-if (apply) {
+if (apply && drop.length) {
   for (const k of drop) delete pending.shows[k];
   pending.lastUpdated = new Date().toISOString();
   fs.writeFileSync(PENDING, JSON.stringify(pending, null, 2) + '\n');

@@ -51,6 +51,7 @@ test('--apply prunes the covered entry, keeps differing and unsourced ones, leav
   const pending = read(dir, 'commercial-pending-review.json');
   assert.deepEqual(Object.keys(pending.shows).sort(), ['c', 'unsourced']);
   assert.notEqual(pending.lastUpdated, 'old');
+  assert.deepEqual(pending.shows.c, { capitalization: 9, designation: 'TBD' });
   assert.equal(fs.readFileSync(path.join(dir, 'commercial.json'), 'utf8'), commercialBefore);
 });
 
@@ -60,5 +61,6 @@ test('a second --apply is a no-op (idempotent for the weekly sweep)', () => {
   const r = run(dir, '--apply');
   assert.equal(r.status, 0, r.stderr);
   assert.match(r.stdout, /covered 0/);
+  assert.doesNotMatch(r.stdout, /wrote /);
   assert.deepEqual(Object.keys(read(dir, 'commercial-pending-review.json').shows).sort(), ['c', 'unsourced']);
 });
