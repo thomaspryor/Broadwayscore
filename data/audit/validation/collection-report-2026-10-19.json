@@ -1,20 +1,20 @@
 {
-  "runDate": "2026-10-19T01:09:42.022Z",
+  "runDate": "2026-10-19T01:56:53.026Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 20,
+    "maxReviews": 1,
     "priority": "all",
-    "showFilter": "",
-    "aggressive": true,
+    "showFilter": "pride-west-end-2026",
+    "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 20,
+    "processed": 1,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -25,7 +25,7 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
     "tier1Attempts": 0,
@@ -34,49 +34,30 @@
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 11,
-    "tier1_9Success": 11,
-    "tier2Attempts": 10,
+    "tier1_9Attempts": 0,
+    "tier1_9Success": 0,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 12,
-    "tier3Success": 10,
-    "tier3_6Attempts": 10,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 13,
-    "tier4Success": 11,
-    "totalFailed": 9,
-    "scrapingBeePageCredits": 80,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 0,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 5,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 0,
-    "failed": 20,
+    "processed": 1,
+    "failed": 0,
     "shows": [
-      "aladdin-2014",
-      "and-juliet-2022",
-      "cosi-fan-tutte-off-broadway-2026",
-      "funny-girl-2002",
-      "funny-girl-2022",
-      "gutenberg-2023",
-      "into-the-woods-2022",
-      "little-shop-of-horrors-off-broadway-2019",
-      "macbeth-2022",
-      "network-2018",
-      "oklahoma-2019",
-      "the-cher-show-2018",
-      "the-height-of-the-storm-2019",
-      "the-minutes-2022",
-      "the-price-off-west-end-2026",
-      "the-roommate-2024",
-      "the-skin-of-our-teeth-2022",
-      "titanique-2026",
-      "tootsie-2019",
-      "trouble-in-mind-west-end-2021"
+      "pride-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -84,53 +65,15 @@
       "failed": 0
     }
   },
-  "processed": [],
-  "failed": [
-    "the-price-off-west-end-2026/wsj--unknown.json",
-    "funny-girl-2002/wsj--charles-isherwood.json",
-    "trouble-in-mind-west-end-2021/wsj--terry-teachout.json",
-    "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
-    "and-juliet-2022/wsj--charles-isherwood.json",
-    "little-shop-of-horrors-off-broadway-2019/wsj--charles-isherwood.json",
-    "aladdin-2014/wsj--terry-teachout.json",
-    "titanique-2026/wsj--charles-isherwood.json",
-    "the-roommate-2024/wsj--charles-isherwood.json",
-    "gutenberg-2023/wsj--charles-isherwood.json",
-    "into-the-woods-2022/wsj--charles-isherwood.json",
-    "macbeth-2022/wsj--charles-isherwood.json",
-    "the-skin-of-our-teeth-2022/wsj--charles-isherwood.json",
-    "funny-girl-2022/wsj--charles-isherwood.json",
-    "the-minutes-2022/wsj--charles-isherwood.json",
-    "the-height-of-the-storm-2019/wsj--terry-teachout.json",
-    "tootsie-2019/wsj--terry-teachout.json",
-    "oklahoma-2019/wsj--terry-teachout.json",
-    "network-2018/wsj--terry-teachout.json",
-    "the-cher-show-2018/wsj--terry-teachout.json"
+  "processed": [
+    "pride-west-end-2026/independent--louis-chilton.json"
   ],
+  "failed": [],
   "cumulativeResumedState": {
-    "processed": [],
-    "failed": [
-      "the-price-off-west-end-2026/wsj--unknown.json",
-      "funny-girl-2002/wsj--charles-isherwood.json",
-      "trouble-in-mind-west-end-2021/wsj--terry-teachout.json",
-      "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
-      "and-juliet-2022/wsj--charles-isherwood.json",
-      "little-shop-of-horrors-off-broadway-2019/wsj--charles-isherwood.json",
-      "aladdin-2014/wsj--terry-teachout.json",
-      "titanique-2026/wsj--charles-isherwood.json",
-      "the-roommate-2024/wsj--charles-isherwood.json",
-      "gutenberg-2023/wsj--charles-isherwood.json",
-      "into-the-woods-2022/wsj--charles-isherwood.json",
-      "macbeth-2022/wsj--charles-isherwood.json",
-      "the-skin-of-our-teeth-2022/wsj--charles-isherwood.json",
-      "funny-girl-2022/wsj--charles-isherwood.json",
-      "the-minutes-2022/wsj--charles-isherwood.json",
-      "the-height-of-the-storm-2019/wsj--terry-teachout.json",
-      "tootsie-2019/wsj--terry-teachout.json",
-      "oklahoma-2019/wsj--terry-teachout.json",
-      "network-2018/wsj--terry-teachout.json",
-      "the-cher-show-2018/wsj--terry-teachout.json"
-    ]
+    "processed": [
+      "pride-west-end-2026/independent--louis-chilton.json"
+    ],
+    "failed": []
   },
   "tierDetails": {
     "playwright": [],
@@ -141,7 +84,9 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "pride-west-end-2026/independent--louis-chilton.json"
+    ]
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
