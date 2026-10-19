@@ -38,11 +38,14 @@ const FEEDBACK_EDITABLE_FIELDS = {
     // stop refilling it with the next wrong hit. execute-approved-fix checks
     // the shape and the key (lib/no-reliable-art.js).
     'noReliableArt',
-    // BRO-5000: whole array, compare-and-set; human-approved plans only. The only
-    // change a plan may make is a boolean inheritReviews on an existing entry (carry
-    // or stop carrying that earlier run's reviews, lib/prior-run-sibling.js).
-    // priorRunsValueProblem refuses any other difference: priorRuns windows are
-    // scoring inputs and are not re-dated through a plan.
+    // BRO-5000: whole array, compare-and-set; human-approved plans only. A plan may set a
+    // boolean inheritReviews on an existing entry (carry or stop carrying that earlier
+    // run's reviews, lib/prior-run-sibling.js), and (BRO-5687) APPEND one new earlier run
+    // within appendedPriorRunProblem's bounds. Existing windows are never re-dated or
+    // removed: priorRuns windows are scoring inputs. Reach of one added run: a show's
+    // first priorRuns entry also switches off three show-wide guards
+    // (prior-run-republish-guard.js, date-guard.js x2) and lets the rebuild auto-clear
+    // wrongProduction inside the window.
     'priorRuns',
     // BRO-5343: an https URL or null, human-approved plans only. A SERP
     // title match attached another production's site to two London rows;
@@ -220,12 +223,21 @@ function officialUrlValueProblem(newValue) {
 }
 
 // shows.json priorRuns check for the human-approved data-edit path (BRO-5000): same
-// entries in the same order, differing only in a boolean inheritReviews.
-// Returns an error string or null.
-function priorRunsValueProblem(newValue, oldValue) {
+// entries in the same order, differing only in a boolean inheritReviews. BRO-5687: a plan
+// may also APPEND exactly one new earlier run, validated by appendedPriorRunProblem (it
+// needs the show to bound the window). Returns an error string or null.
+function priorRunsValueProblem(newValue, oldValue, show) {
   if (!Array.isArray(newValue)) return 'priorRuns: newValue must be an array';
   const old = Array.isArray(oldValue) ? oldValue : [];
-  if (newValue.length !== old.length) return 'priorRuns: a plan may not add or remove runs, only set inheritReviews';
+  if (newValue.length === old.length + 1) {
+    // Existing runs untouched and in order (a toggle in the same plan is not allowed:
+    // one reviewed change per plan).
+    for (const [i, o] of old.entries()) {
+      if (JSON.stringify(newValue[i]) !== JSON.stringify(o)) return `priorRuns[${i}]: an existing run may not change in the same plan that appends one`;
+    }
+    return appendedPriorRunProblem(newValue[old.length], old, show);
+  }
+  if (newValue.length !== old.length) return 'priorRuns: a plan may append one new earlier run or set inheritReviews, but may not add or remove runs otherwise';
   for (const [i, n] of newValue.entries()) {
     const o = old[i];
     if (!n || typeof n !== 'object' || Array.isArray(n) || !o || typeof o !== 'object' || Array.isArray(o)) {
@@ -234,6 +246,45 @@ function priorRunsValueProblem(newValue, oldValue) {
     if (n.inheritReviews !== undefined && typeof n.inheritReviews !== 'boolean') return `priorRuns[${i}].inheritReviews: must be a boolean`;
     const strip = (r) => { const { inheritReviews, ...rest } = r; return JSON.stringify(rest); };
     if (strip(n) !== strip(o)) return `priorRuns[${i}]: only inheritReviews may change`;
+  }
+  return null;
+}
+
+// A window a plan may add (BRO-5687, owner chose to count Angel's Bone's Manchester
+// premiere). priorRuns windows are scoring inputs: they switch off the show-wide date and
+// republish guards and let the rebuild auto-clear wrongProduction inside them, so the added
+// run is bounded tightly. Same grace the autoclear gives reviews after a close
+// (REVIEW_LAG_GRACE_DAYS in wrong-production-autoclear.js) must not reach the current run.
+const PRIOR_RUN_PLAN_MAX_SPAN_DAYS = 400;
+const PRIOR_RUN_PLAN_GRACE_DAYS = 7;
+const PRIOR_RUN_PLAN_KEYS = ['openingDate', 'closingDate', 'venue', 'inheritReviews', 'source', 'note'];
+function appendedPriorRunProblem(run, existing, show) {
+  if (!run || typeof run !== 'object' || Array.isArray(run)) return 'priorRuns: the appended run must be an object';
+  const extra = Object.keys(run).filter((k) => !PRIOR_RUN_PLAN_KEYS.includes(k));
+  if (extra.length) return `priorRuns: appended run may only carry ${PRIOR_RUN_PLAN_KEYS.join(', ')} (got ${extra.join(', ')})`;
+  if (!isIsoDay(run.openingDate) || !isIsoDay(run.closingDate)) return 'priorRuns: appended run needs real YYYY-MM-DD openingDate and closingDate';
+  if (run.closingDate < run.openingDate) return 'priorRuns: appended run closingDate is before its openingDate';
+  const DAY = 86400000;
+  const day = (d) => Date.parse(`${d}T00:00:00Z`) / DAY;
+  if (day(run.closingDate) - day(run.openingDate) > PRIOR_RUN_PLAN_MAX_SPAN_DAYS) return `priorRuns: appended run spans more than ${PRIOR_RUN_PLAN_MAX_SPAN_DAYS} days`;
+  if (typeof run.venue !== 'string' || !run.venue.trim()) return 'priorRuns: appended run needs a venue';
+  const { sanitizeVenueForWrite } = require('./venue-classification');
+  if (sanitizeVenueForWrite(run.venue) !== run.venue) return `priorRuns: venue "${run.venue}" is a placeholder or not in its sanitised form`;
+  if (run.inheritReviews !== undefined && typeof run.inheritReviews !== 'boolean') return 'priorRuns: inheritReviews must be a boolean';
+  for (const k of ['source', 'note']) {
+    if (run[k] !== undefined && (typeof run[k] !== 'string' || run[k].length > 300)) return `priorRuns: ${k} must be a string of at most 300 characters`;
+  }
+  const own = show && (show.previewsStartDate || show.openingDate);
+  if (!own) return 'priorRuns: the show has no previewsStartDate/openingDate to bound the appended run';
+  if (!(day(run.closingDate) + PRIOR_RUN_PLAN_GRACE_DAYS < day(String(own).slice(0, 10)))) {
+    return `priorRuns: appended run must close more than ${PRIOR_RUN_PLAN_GRACE_DAYS} days before this show's own first performance (${own})`;
+  }
+  for (const e of existing) {
+    if (!e || !isIsoDay(e.openingDate)) continue;
+    const eClose = isIsoDay(e.closingDate) ? e.closingDate : e.openingDate;
+    if (day(run.openingDate) <= day(eClose) + PRIOR_RUN_PLAN_GRACE_DAYS && day(e.openingDate) <= day(run.closingDate) + PRIOR_RUN_PLAN_GRACE_DAYS) {
+      return 'priorRuns: appended run overlaps an existing prior run';
+    }
   }
   return null;
 }
@@ -267,6 +318,7 @@ module.exports = {
   castValueProblem,
   rejectedUrlsValueProblem,
   priorRunsValueProblem,
+  appendedPriorRunProblem,
   officialUrlValueProblem,
   firstRunStartValueProblem,
   isIsoDay,

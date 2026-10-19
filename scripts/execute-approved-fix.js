@@ -386,7 +386,7 @@ function executeDataEdit(action) {
 
     if (field === 'priorRuns') {
       const { priorRunsValueProblem } = require('./lib/feedback-pipeline-fields.js');
-      const problem = priorRunsValueProblem(newValue, oldValue);
+      const problem = priorRunsValueProblem(newValue, oldValue, shows[idx]);
       if (problem) return { ok: false, reason: problem };
     }
 

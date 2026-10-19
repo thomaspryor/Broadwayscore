@@ -197,3 +197,34 @@ test('class 2: a prior run marked inheritReviews:false does not explain its revi
   assert.equal(carried.rows[0].why, 'declared-prior-run');
   assert.equal(carried.unexplained, 0);
 });
+
+// BRO-5687: a plan may append ONE bounded earlier run (Angel's Bone, Manchester premiere).
+const { appendedPriorRunProblem } = require('../../scripts/lib/feedback-pipeline-fields.js');
+test('priorRuns data-edit may append one bounded earlier run', () => {
+  const show = { id: 'angels-bone-west-end-2026', previewsStartDate: '2026-10-16', openingDate: '2026-10-17' };
+  const run = { openingDate: '2026-05-12', closingDate: '2026-05-16', venue: 'Aviva Studios, Manchester' };
+  assert.equal(priorRunsValueProblem([run], null, show), null);
+  assert.equal(priorRunsValueProblem([run], undefined, show), null);
+  assert.equal(priorRunsValueProblem([run], [], show), null);
+  assert.equal(priorRunsValueProblem([run, { ...run, note: 'x' }], [], show) !== null, true, 'two appended runs refused');
+  assert.equal(priorRunsValueProblem([run, { ...run, openingDate: '2025-05-12', closingDate: '2025-05-16' }], [run], show), null, 'second run appended after an existing one');
+  assert.match(priorRunsValueProblem([run], null), /bound the appended run/, 'no show given');
+  assert.match(priorRunsValueProblem([{ ...run, id: 'other-show' }], null, show), /may only carry/);
+  assert.match(priorRunsValueProblem([{ ...run, openingDate: '2026-5-12' }], null, show), /real YYYY-MM-DD/);
+  assert.match(priorRunsValueProblem([{ ...run, openingDate: '2026-02-30' }], null, show), /real YYYY-MM-DD/);
+  assert.match(priorRunsValueProblem([{ ...run, closingDate: '2026-05-01' }], null, show), /before its openingDate/);
+  assert.match(priorRunsValueProblem([{ ...run, openingDate: '2024-01-01' }], null, show), /spans more than/);
+  assert.match(priorRunsValueProblem([{ ...run, closingDate: undefined }], null, show), /real YYYY-MM-DD/);
+  assert.match(priorRunsValueProblem([{ ...run, venue: 'TBD' }], null, show), /placeholder/);
+  assert.match(priorRunsValueProblem([{ ...run, venue: '  ' }], null, show), /needs a venue/);
+  assert.match(priorRunsValueProblem([{ ...run, inheritReviews: 'yes' }], null, show), /boolean/);
+  assert.match(priorRunsValueProblem([{ ...run, note: 'x'.repeat(301) }], null, show), /300/);
+  assert.match(priorRunsValueProblem([{ ...run, openingDate: '2026-10-01', closingDate: '2026-10-09' }], null, show), /more than 7 days before/);
+  assert.equal(priorRunsValueProblem([{ ...run, openingDate: '2026-10-01', closingDate: '2026-10-08' }], null, show), null, 'closes exactly 8 days before previews: allowed');
+  assert.match(priorRunsValueProblem([run], null, { id: 'x' }), /bound the appended run/);
+  assert.match(priorRunsValueProblem([run, { ...run, openingDate: '2026-05-14', closingDate: '2026-05-20' }], [run], show), /overlaps/);
+  assert.match(priorRunsValueProblem([{ ...run, venue: 'Changed' }, run], [run], show), /may not change in the same plan/);
+  assert.match(priorRunsValueProblem([], [run], show), /add or remove/);
+  assert.match(priorRunsValueProblem([run, run, run], [], show), /add or remove/);
+  assert.equal(typeof appendedPriorRunProblem, 'function');
+});
