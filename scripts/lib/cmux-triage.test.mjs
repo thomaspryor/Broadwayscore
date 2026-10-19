@@ -663,6 +663,7 @@ test('CLI: every degraded cause sets degraded:true, names itself, and exits 2', 
     [['--json', '--no-linear'], {}, /Linear lookups skipped/],
     [['--json'], { ledgerThrows: true }, /dispatch ledger unreadable/],
     [['--json'], { probeThrows: ['workspace:140'] }, /could not be probed/],
+    [['--json'], { workspaces: [] }, /no workspaces/],
   ];
   for (const [argv, over, reasonRe] of cases) {
     const r = await runMain(argv, { workspaces: [DASHBOARD_TAB], tsvByRef: { 'workspace:140': DASHBOARD_TSV }, ...over });
@@ -672,7 +673,7 @@ test('CLI: every degraded cause sets degraded:true, names itself, and exits 2', 
     assert.ok(p.degradedReasons.some(s => reasonRe.test(s)), `${reasonRe} in ${JSON.stringify(p.degradedReasons)}`);
   }
   // ...and a clean run carries an empty reasons list, not a missing field.
-  const clean = JSON.parse((await runMain(['--json'], { workspaces: [] })).stdout);
+  const clean = JSON.parse((await runMain(['--json'], { workspaces: [DASHBOARD_TAB], tsvByRef: { 'workspace:140': DASHBOARD_TSV } })).stdout);
   assert.deepEqual([clean.degraded, clean.degradedReasons], [false, []]);
 });
 

@@ -702,6 +702,8 @@ async function main(argv = process.argv.slice(2)) {
     ledgerError ? `dispatch ledger unreadable (${ledgerError})` : null,
     livenessUnverifiable.length ? `${livenessUnverifiable.length} tab(s) could not be probed for a live agent` : null,
     !useLinear ? 'Linear lookups skipped (--no-linear)' : null,
+    dead.length + alive.length === 0 ? 'cmux returned no workspaces (unreadable or empty reply)' : null,
+    buckets.needsOwnerCall.some((e) => e.reason === 'unverifiable-lookup') ? 'Linear status lookup failed for some tabs' : null,
   ].filter(Boolean);
 
   if (asJson) {

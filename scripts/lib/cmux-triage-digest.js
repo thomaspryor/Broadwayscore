@@ -135,7 +135,7 @@ function renderCmuxTriageLine(summary) {
     const more = foreign.length > FOREIGN_LIST_MAX ? ` (+${foreign.length - FOREIGN_LIST_MAX} more)` : '';
     text += ` ${plural(foreign.length, 'tab looks', 'tabs look')} dead to the prune sweep but ${foreign.length === 1 ? 'has' : 'have'} a live agent, not corpses: ${shown.join('; ')}${more}.`;
   }
-  if (s.needsResuming || s.needsOwnerCall) text += ' Details: node scripts/lib/cmux-triage.js';
+  if (s.needsResuming || s.needsOwnerCall) text += '';
   const level = (s.needsResuming || s.needsOwnerCall || foreign.length) ? 'watch' : 'ok';
   return { level, text };
 }
