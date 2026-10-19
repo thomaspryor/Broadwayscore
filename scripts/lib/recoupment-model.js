@@ -25,6 +25,7 @@ const { nyTaxCredit, QUALIFYING_WEEKS, TAX_CREDIT_MAX, TAX_CREDIT_RATE, TAX_CRED
 const { splitCosts, fixedNutFromBasis } = require('./cost-split');
 const { sourcedGrossParticipation, weeklyParticipationCost, starDealUnknown } = require('./gross-participation');
 const { isConvertedToCommercial } = require('./commercial-conversion');
+const { haircutCapitalization } = require('./cap-max-haircut');
 
 // A nonprofit run that switched to a commercial run (BRO-5508) holds two
 // productions' weeks under one grosses key, often in two theaters, and the
@@ -604,10 +605,14 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   const now = asOf || new Date();
 
   // --- Inputs ---
-  const capitalization = commercial.capitalization;
+  // Shadow (BRO-5677, opts.capMaxHaircut): a Form D ceiling ('maximum'
+  // basis) is scaled to a typical actual raise (lib/cap-max-haircut.js).
+  const haircut = haircutCapitalization(commercial, opts.capMaxHaircut);
+  const capitalization = haircut.capitalization;
   if (!capitalization) {
     return { error: 'No capitalization data', warnings: ['Missing capitalization'] };
   }
+  if (haircut.factor) warnings.push(`Capitalization is an offering ceiling: scaled by ${haircut.factor} to $${Math.round(capitalization / 1000)}K`);
 
   const category = classifyShow(show);
   // Shadow only (BRO-5093, opts.costBasis): a breakeven or all-in figure is
