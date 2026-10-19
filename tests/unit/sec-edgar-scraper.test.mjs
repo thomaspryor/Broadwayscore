@@ -556,6 +556,27 @@ describe('capitalizedAmountFromXml', () => {
     assert.strictEqual(capitalizedAmountFromXml(clar('Minimum Capitalization is $5,000,000; Maximum Capitalization is $8,000,000')), null);
   });
 
+  it('scales million wording', () => {
+    assert.strictEqual(capitalizedAmountFromXml(clar('Offering capitalized at $4.1 million')), 4100000);
+  });
+
+  it('skips maximum/minimum limits and takes the stated raise', () => {
+    assert.strictEqual(capitalizedAmountFromXml(clar('Maximum offering capitalized at $8,000,000')), null);
+    assert.strictEqual(capitalizedAmountFromXml(clar('Minimum offering capitalized at $4,000,000; offering capitalized at $4,500,000')), 4500000);
+  });
+
+  it('skips founding contributions and figures above the offering amount', () => {
+    assert.strictEqual(capitalizedAmountFromXml(clar('Company is capitalized at $10,000 by its managing member')), null);
+    assert.strictEqual(capitalizedAmountFromXml(clar('Offering capitalized at $9,000,000'), 8000000), null);
+    assert.strictEqual(capitalizedAmountFromXml(clar('Offering capitalized at $7,000,000'), 8000000), 7000000);
+  });
+
+  it('reads a later clarification when the first is unrelated, and prefixed tags', () => {
+    const xml = clar('Certain fees are paid out of the capitalization.') + clar('Entity capitalized at $3,000,000');
+    assert.strictEqual(capitalizedAmountFromXml(xml), 3000000);
+    assert.strictEqual(capitalizedAmountFromXml('<ns1:clarificationOfResponse>Offering capitalized at $2,450,000</ns1:clarificationOfResponse>'), 2450000);
+  });
+
   it('returns null for unrelated capitalization wording or no xml', () => {
     assert.strictEqual(capitalizedAmountFromXml(clar('Certain fees are paid to the general partner out of the capitalization.')), null);
     assert.strictEqual(capitalizedAmountFromXml(''), null);

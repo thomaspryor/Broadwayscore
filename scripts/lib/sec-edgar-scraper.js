@@ -433,7 +433,7 @@ function parseCompanySearchAtom(xml) {
  * Parse a Form D filing XML to extract capitalization data
  *
  * @param {string} filingUrl - URL to the Form D XML file
- * @returns {Promise<{totalOfferingAmount: number|null, amountSold: number|null, amountRemaining: number|null, filingDate: string|null, isAmendment: boolean, companyName: string|null, description: string|null, minimumInvestment: number|null, relatedPersons: Array<{name: string, role: string}>}>}
+ * @returns {Promise<{totalOfferingAmount: number|null, amountSold: number|null, amountRemaining: number|null, filingDate: string|null, isAmendment: boolean, companyName: string|null, description: string|null, minimumInvestment: number|null, relatedPersons: Array<{name: string, role: string}>, capitalizedAmount: number|null}>}
  */
 async function parseFormDFiling(filingUrl) {
   if (!isAvailable()) {
@@ -490,9 +490,10 @@ async function parseFormDFiling(filingUrl) {
   }
 
   return {
-    totalOfferingAmount: totalOfferingAmount ? parseInt(totalOfferingAmount, 10) : null,
+    // An "Indefinite" offering amount parses to NaN; report it as null.
+    totalOfferingAmount: parseInt(totalOfferingAmount, 10) || null,
     amountSold: totalAmountSold ? parseInt(totalAmountSold, 10) : null,
-    capitalizedAmount: capitalizedAmountFromXml(xml),
+    capitalizedAmount: capitalizedAmountFromXml(xml, parseInt(totalOfferingAmount, 10) || null),
     amountRemaining: totalRemaining ? parseInt(totalRemaining, 10) : null,
     minimumInvestment: minimumInvestment ? parseInt(minimumInvestment, 10) : null,
     filingDate,
@@ -510,12 +511,18 @@ async function parseFormDFiling(filingUrl) {
  * the raise often states the real figure only in a clarification, e.g.
  * "Maximum capitalization was $6,000,000/Minimum capitalization was
  * $4,000,000 - Offering capitalized at $4,108,500" (The Cottage, BRO-5647).
+ * "Maximum/Minimum offering capitalized at" is a limit, not the raise. A figure
+ * under $100,000 (a founding contribution) or above the offering amount is
+ * not a show's capitalization either, so those are skipped.
  */
-function capitalizedAmountFromXml(xml) {
-  const re = /<clarificationOfResponse>([^<]*)<\/clarificationOfResponse>/gi;
-  for (const [, text] of String(xml || '').matchAll(re)) {
-    const m = /\b(?:offering|entity|company|partnership) (?:was |is )?capitalized at \$([\d,]+(?:\.\d+)?)/i.exec(text);
-    if (m) return Math.round(parseFloat(m[1].replace(/,/g, '')));
+function capitalizedAmountFromXml(xml, offeringAmount = null) {
+  const field = /<(?:\w+:)?clarificationOfResponse\b[^>]*>([^<]*)<\/(?:\w+:)?clarificationOfResponse>/gi;
+  const stated = /(?<!\b(?:maximum|minimum|max|min)\s+)\b(?:offering|entity|company|partnership) (?:was |is )?capitalized at \$(\d[\d,]*(?:\.\d+)?)(\s*million\b)?/gi;
+  for (const [, text] of String(xml || '').matchAll(field)) {
+    for (const m of text.matchAll(stated)) {
+      const amount = Math.round(parseFloat(m[1].replace(/,/g, '')) * (m[2] ? 1e6 : 1));
+      if (amount >= 100000 && !(offeringAmount && amount > offeringAmount)) return amount;
+    }
   }
   return null;
 }
@@ -678,8 +685,11 @@ if (require.main === module) {
           console.log('\nParsing filing details...');
           const data = await parseFormDFiling(filing.filingUrl);
 
+          if (data.capitalizedAmount) {
+            console.log(`  Capitalized at: $${data.capitalizedAmount.toLocaleString()}`);
+          }
           if (data.totalOfferingAmount) {
-            console.log(`  Capitalization: $${data.totalOfferingAmount.toLocaleString()}`);
+            console.log(`  Total offering amount (maximum): $${data.totalOfferingAmount.toLocaleString()}`);
           }
           if (data.amountSold) {
             console.log(`  Amount Sold: $${data.amountSold.toLocaleString()}`);

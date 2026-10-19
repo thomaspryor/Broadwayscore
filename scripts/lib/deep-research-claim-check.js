@@ -15,7 +15,8 @@ const { TRUSTED_RECOUPMENT_HOSTS } = require('./trusted-recoupment-domains');
 
 const FIELD_KEYS = { capitalization: 'capitalization', 'weekly running cost': 'weeklyRunningCost' };
 const OUTCOME_FIELD = 'outcome for investors';
-// Reports name fields loosely; a Form D's offering amount is the capitalization.
+// Reports name fields loosely. A Form D's offering amount is checked as capitalization;
+// it is the ceiling, so a mismatch can mean the filing states a lower capitalized amount.
 const FIELD_ALIASES = {
   capitalization: 'capitalization', sec_offering_amount: 'capitalization',
   'weekly running cost': 'weekly running cost', weekly_running_cost: 'weekly running cost', weeklyrunningcost: 'weekly running cost',
