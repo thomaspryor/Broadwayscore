@@ -1092,6 +1092,12 @@ async function searchDTLI(show) {
     allVariations.unshift(...specialCases[titleSlug]);
   }
 
+  const dtliGuessMiss = require('./lib/dtli-guess-miss-cache');
+  if (dtliGuessMiss.guessedRecently(show.id)) {
+    console.log('    ✗ Not found on DTLI (URL-guess ladder skipped: full miss <3h ago, BRO-5526)');
+    return null;
+  }
+
   console.log('  Searching Did They Like It...');
 
   // Remove duplicates and empty strings
@@ -1108,6 +1114,7 @@ async function searchDTLI(show) {
     await sleep(300);
   }
 
+  dtliGuessMiss.recordGuessMiss(show.id);
   console.log('    ✗ Not found on DTLI');
   return null;
 }

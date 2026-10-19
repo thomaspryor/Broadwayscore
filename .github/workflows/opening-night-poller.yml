@@ -278,6 +278,7 @@ jobs:
             /tmp/bd-serp-cache
             /tmp/bww-anchors
             /tmp/bd-serp-negative-cache
+            /tmp/dtli-guess-miss-cache
           key: bd-serp-cache-${{ github.run_id }}
           restore-keys: |
             bd-serp-cache-
