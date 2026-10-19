@@ -50,7 +50,9 @@ test('alreadyAppliedResult: a session plan finished outside CI is applied-elsewh
 });
 
 test('execute-approved-fix.js reports applied-elsewhere for a session plan marked applied without the CI tag', () => {
-  const id = `bro-plan-status-test-${process.pid}`;
+  // No bro- prefix: pending-fix-plans.test.mjs reads every bro-*.json in this folder
+  // in parallel, and this file would vanish under it.
+  const id = `plan-status-elsewhere-test-${process.pid}`;
   const plan = path.join(ROOT, 'data/pending-fixes', `${id}.json`);
   const out = path.join(os.tmpdir(), `${id}.out`);
   fs.writeFileSync(plan, JSON.stringify({ planId: 'p1', status: 'applied', plan: { actions: [] } }));
