@@ -13,12 +13,12 @@
     },
     "budget": 100,
     "teamSize": 8,
-    "generatedAt": "2026-10-19T05:08:26.311Z",
+    "generatedAt": "2026-10-19T22:05:52.472Z",
     "pricing": {
       "source": "frozen",
-      "frozenAt": "2026-10-19T05:08:26.311Z",
+      "frozenAt": "2026-10-19T22:05:52.472Z",
       "method": "preseason-ev",
-      "k": 0.14498908920490328
+      "k": 0.14503157000336941
     }
   },
   "shows": {
@@ -38,7 +38,7 @@
       "closingDate": null,
       "isRevival": false,
       "criticScore": null,
-      "audienceGrade": "A+",
+      "audienceGrade": "A",
       "audienceGradeSince": "2026-10-18",
       "slug": "wanted",
       "image": "/images/shows/wanted-2022/thumbnail.webp"
@@ -100,8 +100,8 @@
       "openingDate": "2026-09-28",
       "closingDate": "2026-11-15",
       "isRevival": true,
-      "criticScore": 83.8,
-      "audienceGrade": "A+",
+      "criticScore": 84,
+      "audienceGrade": "A",
       "audienceGradeSince": "2026-10-16",
       "slug": "school-girls-or-the-african-mean-girls-play",
       "image": "/images/shows/school-girls-or-the-african-mean-girls-play-2026/thumbnail.webp"
@@ -163,7 +163,7 @@
       "openingDate": "2026-10-18",
       "closingDate": "2027-01-17",
       "isRevival": true,
-      "criticScore": 66.85,
+      "criticScore": 67.51,
       "audienceGrade": "B+",
       "audienceGradeSince": "2026-10-16",
       "slug": "other-desert-cities",
@@ -311,7 +311,7 @@
       "closingDate": "2027-01-10",
       "isRevival": true,
       "criticScore": null,
-      "audienceGrade": "A-",
+      "audienceGrade": "B+",
       "audienceGradeSince": "2026-10-18",
       "slug": "a-few-good-men",
       "image": "/images/shows/a-few-good-men-2026/thumbnail.webp"
@@ -353,7 +353,7 @@
       "closingDate": "2026-11-22",
       "isRevival": true,
       "criticScore": null,
-      "audienceGrade": "B+",
+      "audienceGrade": "B",
       "audienceGradeSince": "2026-10-16",
       "slug": "the-imaginary-invalid",
       "image": "/images/shows/the-imaginary-invalid-2026/thumbnail.webp"
@@ -673,6 +673,27 @@
       "slug": "seven-guitars-off-broadway",
       "image": "/images/shows/seven-guitars-off-broadway-2026/thumbnail.webp"
     },
+    "wild-rose-off-broadway-2026": {
+      "price": 5,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": false,
+        "tonys": false
+      },
+      "title": "Wild Rose",
+      "type": "musical",
+      "category": "off-broadway",
+      "status": "upcoming",
+      "openingDate": "2026-12-14",
+      "closingDate": null,
+      "isRevival": true,
+      "criticScore": null,
+      "audienceGrade": null,
+      "audienceGradeSince": null,
+      "slug": "wild-rose-off-broadway",
+      "image": "/images/shows/wild-rose-off-broadway-2026/thumbnail.jpg"
+    },
     "clifford-odets-waiting-for-lefty-off-broadway-2026": {
       "price": 5,
       "eligible": {
@@ -716,7 +737,7 @@
       "image": "/images/shows/well-see-off-broadway-2026/thumbnail.jpg"
     },
     "the-unbelievers-off-broadway-2026": {
-      "price": 5,
+      "price": 3,
       "eligible": {
         "criticScore": true,
         "audienceGrade": true,
@@ -731,8 +752,8 @@
       "closingDate": "2026-11-29",
       "isRevival": false,
       "criticScore": null,
-      "audienceGrade": null,
-      "audienceGradeSince": null,
+      "audienceGrade": "B-",
+      "audienceGradeSince": "2026-10-19",
       "slug": "the-unbelievers-off-broadway",
       "image": "/images/shows/the-unbelievers-off-broadway-2026/thumbnail.webp"
     },
@@ -982,7 +1003,7 @@
       "openingDate": "2026-09-14",
       "closingDate": "2027-01-08",
       "isRevival": false,
-      "criticScore": 72.52,
+      "criticScore": 72.84,
       "audienceGrade": "B",
       "audienceGradeSince": "2026-10-18",
       "slug": "pre-existing-condition-off-broadway",
@@ -1024,7 +1045,7 @@
       "openingDate": "2026-09-29",
       "closingDate": "2026-11-08",
       "isRevival": false,
-      "criticScore": 76.15,
+      "criticScore": 78.18,
       "audienceGrade": "A-",
       "audienceGradeSince": "2026-10-18",
       "slug": "degenerates-off-broadway",
@@ -1088,7 +1109,7 @@
       "closingDate": "2026-11-08",
       "isRevival": false,
       "criticScore": 73.84,
-      "audienceGrade": "A-",
+      "audienceGrade": "B+",
       "audienceGradeSince": "2026-10-18",
       "slug": "midnight-off-broadway",
       "image": "/images/shows/midnight-off-broadway-2026/thumbnail.webp"
@@ -1108,7 +1129,7 @@
       "openingDate": "2026-10-18",
       "closingDate": "2026-11-08",
       "isRevival": false,
-      "criticScore": 80.19,
+      "criticScore": 79.44,
       "audienceGrade": "A-",
       "audienceGradeSince": "2026-10-18",
       "slug": "school-pictures-off-broadway",
@@ -1151,8 +1172,8 @@
       "closingDate": "2026-11-22",
       "isRevival": false,
       "criticScore": null,
-      "audienceGrade": null,
-      "audienceGradeSince": null,
+      "audienceGrade": "B",
+      "audienceGradeSince": "2026-10-19",
       "slug": "king-of-the-yees",
       "image": "/images/shows/king-of-the-yees-off-broadway-2026/thumbnail.jpg"
     },
@@ -1260,6 +1281,27 @@
       "audienceGradeSince": "2026-10-18",
       "slug": "a-ghost-in-your-ear-off-broadway",
       "image": "/images/shows/a-ghost-in-your-ear-off-broadway-2026/thumbnail.webp"
+    },
+    "fish-off-broadway-2026": {
+      "price": 1,
+      "eligible": {
+        "criticScore": false,
+        "audienceGrade": false,
+        "boxOffice": false,
+        "tonys": false
+      },
+      "title": "Fish",
+      "type": "play",
+      "category": "off-broadway",
+      "status": "open",
+      "openingDate": "2026-10-11",
+      "closingDate": "2026-11-01",
+      "isRevival": false,
+      "criticScore": 76.34,
+      "audienceGrade": "B",
+      "audienceGradeSince": "2026-10-19",
+      "slug": "fish-off-broadway",
+      "image": "/images/shows/fish-off-broadway-2026/thumbnail.jpg"
     }
   },
   "scoring": {
