@@ -239,7 +239,7 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -253,7 +253,8 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 142,
       "sweptTracker": "BRO-5554",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-19T11:08:02.724Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -4313,7 +4314,7 @@
       "resolveReason": "absent"
     },
     "test-yml:red:Lint Workflows:1ff49e04": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Lint Workflows / Audit — no submitter PII in committed data/audit files",
       "firstSeen": "2026-09-20T19:22:49.867Z",
@@ -4324,7 +4325,9 @@
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-5691",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-19T11:08:02.388Z",
+      "resolveReason": "job-green"
     },
     "test-yml:red:Data Validation:9e7c89b2": {
       "status": "resolved",
