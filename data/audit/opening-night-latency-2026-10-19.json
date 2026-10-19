@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-19T15:43:12.344Z",
+  "generatedAt": "2026-10-19T19:14:37.035Z",
   "date": "2026-10-19",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 202785,
+  "entryCount": 222346,
   "shows": [
     {
       "showId": "some-woman-west-end-2026",
@@ -51,7 +51,7 @@
     },
     {
       "showId": "nina-off-west-end-2026",
-      "reviewCount": 11,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -231,13 +231,13 @@
     },
     {
       "showId": "degenerates-off-broadway-2026",
-      "reviewCount": 16,
+      "reviewCount": 17,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 707826,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -323,12 +323,12 @@
     },
     {
       "showId": "dog-mom-off-west-end-2026",
-      "reviewCount": 13,
+      "reviewCount": 16,
       "median_e2e_ms": 37537170,
       "p90_e2e_ms": 37537170,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 840574,
+        "collected-to-scored": 672135,
         "scored-to-rebuilt": 175620,
         "rebuilt-to-deployed": 112274825
       },
@@ -495,6 +495,21 @@
     {
       "showId": "the-urmetazoan-off-west-end-2026",
       "reviewCount": 15,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "la-boheme-off-broadway-2026",
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1079,7 +1094,7 @@
     },
     {
       "showId": "spamalot-tour-2025",
-      "reviewCount": 43,
+      "reviewCount": 44,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1394,12 +1409,12 @@
     },
     {
       "showId": "harry-potter-2021",
-      "reviewCount": 63,
+      "reviewCount": 64,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 5490105,
+        "collected-to-scored": 5495853,
         "scored-to-rebuilt": 94007,
         "rebuilt-to-deployed": 61322098
       },
@@ -1544,7 +1559,7 @@
     },
     {
       "showId": "the-outsiders-tour-2025",
-      "reviewCount": 51,
+      "reviewCount": 52,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2727,7 +2742,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 209165,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -3171,13 +3186,13 @@
     },
     {
       "showId": "cadel-lungs-on-legs-west-end-2026",
-      "reviewCount": 11,
+      "reviewCount": 12,
       "median_e2e_ms": 113742824,
       "p90_e2e_ms": 150993574,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 601719,
-        "scored-to-rebuilt": 370057,
+        "scored-to-rebuilt": 421004,
         "rebuilt-to-deployed": 132310220
       },
       "reviews_over_15min": 2,
@@ -3560,13 +3575,13 @@
     },
     {
       "showId": "angels-bone-west-end-2026",
-      "reviewCount": 10,
+      "reviewCount": 15,
       "median_e2e_ms": 63559039,
       "p90_e2e_ms": 63559271,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 589516,
-        "scored-to-rebuilt": 370525,
+        "scored-to-rebuilt": 418228,
         "rebuilt-to-deployed": 61996211
       },
       "reviews_over_15min": 2,
@@ -3736,13 +3751,13 @@
     },
     {
       "showId": "the-fear-of-13-2026",
-      "reviewCount": 30,
+      "reviewCount": 31,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 209170,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -5932,7 +5947,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 209169,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7101,8 +7116,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 321532,
+        "collected-to-scored": 9107621,
+        "scored-to-rebuilt": 209171,
         "rebuilt-to-deployed": 34447131
       },
       "reviews_over_15min": 0,
@@ -7141,13 +7156,13 @@
     },
     {
       "showId": "triumph-off-west-end-2026",
-      "reviewCount": 6,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 104145,
+        "collected-to-scored": 553573,
+        "scored-to-rebuilt": 511617,
         "rebuilt-to-deployed": 28774512
       },
       "reviews_over_15min": 0,
@@ -7201,7 +7216,7 @@
     },
     {
       "showId": "the-traitors-live-experience-off-west-end-2026",
-      "reviewCount": 7,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7396,12 +7411,12 @@
     },
     {
       "showId": "other-desert-cities-2026",
-      "reviewCount": 27,
+      "reviewCount": 29,
       "median_e2e_ms": 8976420,
       "p90_e2e_ms": 8985004,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 164830,
+        "collected-to-scored": 189159,
         "scored-to-rebuilt": 421255,
         "rebuilt-to-deployed": 8230769
       },
@@ -7502,7 +7517,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 189081,
+        "scored-to-rebuilt": 372416,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -8006,7 +8021,7 @@
     },
     {
       "showId": "pride-and-prejudice-sort-of-west-end-2021",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8146,8 +8161,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 20225400,
+        "scored-to-rebuilt": 209215,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -8157,21 +8172,6 @@
     {
       "showId": "dirty-dancing-west-end-2027",
       "reviewCount": 1,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "purpose-regional-2026",
-      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8202,6 +8202,186 @@
     {
       "showId": "mother-courage-and-her-children-globe-west-end-2026",
       "reviewCount": 20,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 9138871,
+        "scored-to-rebuilt": 209178,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-tempest-globe-west-end-2026",
+      "reviewCount": 10,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 295230,
+        "scored-to-rebuilt": 1095494,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "double-bill-tell-me-straight-and-aggy-off-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "music-city-off-broadway-2026",
+      "reviewCount": 11,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1095513,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "antigone-this-play-i-read-in-high-school-off-broadway-2026",
+      "reviewCount": 18,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1095500,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
+      "reviewCount": 13,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1095505,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "just-in-time-2025",
+      "reviewCount": 34,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1095496,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
+      "reviewCount": 27,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1095493,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "beaches-2026",
+      "reviewCount": 34,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1095491,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "titanique-2026",
+      "reviewCount": 30,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1095496,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "christmas-carol-goes-wrong-apollo-west-end-2025",
+      "reviewCount": 15,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1095487,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "two-girls-off-broadway-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 275494,
+        "scored-to-rebuilt": 795121,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-hunger-games-on-stage-west-end-2025",
+      "reviewCount": 26,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
