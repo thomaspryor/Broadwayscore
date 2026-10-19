@@ -113,7 +113,7 @@ export default function FantasyLeaderboardTable() {
     </div>
   );
 
-  if (hidden && !emailNotFound && !error) {
+  if (hidden && hidden.total > 0 && !emailNotFound && !error) {
     const reveal = new Date(`${hidden.revealsOn}T12:00:00Z`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', timeZone: 'UTC' });
     return (
       <div className="space-y-2">
