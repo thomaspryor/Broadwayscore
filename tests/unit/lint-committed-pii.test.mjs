@@ -414,3 +414,16 @@ describe('redaction placeholders are not submitter PII', () => {
     }
   });
 });
+
+describe('vendor support addresses (BRO-5691)', () => {
+  const { firstRealEmail } = require('../../scripts/lib/pii-scan.js');
+  test('scrapingdog support address quoted in an error body is not PII', () => {
+    assert.strictEqual(firstRealEmail('feel free to email us at info@scrapingdog.com.'), null);
+    assert.strictEqual(scanJsonValue({ reason: 'email us at info@scrapingdog.com' }).length, 0);
+  });
+  test('lookalike / subdomain / real address next to a vendor one still flags', () => {
+    assert.ok(firstRealEmail('jane@scrapingdog.com.evil.net'));
+    assert.ok(firstRealEmail('jane@mail.scrapingdog.com'));
+    assert.strictEqual(firstRealEmail('info@scrapingdog.com and entrant@gmail.com'), 'entrant@gmail.com');
+  });
+});

@@ -60,6 +60,18 @@ const EMAIL_RE = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/;
 const REDACTED_LOCAL_RE = /(?:^|_)redacted$/i;
 const EMAIL_RE_G = new RegExp(EMAIL_RE.source, 'g');
 
+// Scraping-vendor support addresses quoted verbatim in upstream error bodies
+// ("...feel free to email us at info@scrapingdog.com", BRO-5691). The vendor's
+// own mailbox, not a submitter. EXACT domain match only (after the '@'), so
+// `jane@scrapingdog.com.evil.net` or `jane@mail.scrapingdog.com` still flag.
+const VENDOR_DOMAINS = new Set(['scrapingdog.com']);
+
+/** True when a matched address is a placeholder or a known vendor mailbox. */
+function isNonSubmitterAddress(addr) {
+  const i = addr.lastIndexOf('@');
+  return REDACTED_LOCAL_RE.test(addr.slice(0, i)) || VENDOR_DOMAINS.has(addr.slice(i + 1).toLowerCase());
+}
+
 /**
  * The first REAL (non-placeholder) address in `value`, or null when every
  * EMAIL_RE hit is a redaction placeholder.
@@ -112,7 +124,7 @@ function judgeAt(s, at, domainSpan) {
     const atPos = m.index + m[0].indexOf('@');
     if (atPos > atInWin) break;            // this '@' is not part of any match
     if (atPos === atInWin) {
-      return REDACTED_LOCAL_RE.test(m[0].split('@')[0]) ? 'placeholder' : m[0];
+      return isNonSubmitterAddress(m[0]) ? 'placeholder' : m[0];
     }
     EMAIL_RE_G.lastIndex = m.index + 1;    // overlapping candidate may follow
   }
@@ -131,7 +143,7 @@ function firstRealEmail(value) {
   // 'jane@' + 'a'.repeat(253) + '.com' (found by fuzzing 220,026 cases).
   const first = EMAIL_RE.exec(s);
   if (!first) return null;
-  if (!REDACTED_LOCAL_RE.test(first[0].split('@')[0])) return first[0];
+  if (!isNonSubmitterAddress(first[0])) return first[0];
 
   // SLOW PATH, reached only when the FIRST match is a redaction placeholder.
   // Now we must keep looking for a real address behind it, and that is the scan
