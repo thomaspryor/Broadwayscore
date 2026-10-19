@@ -167,7 +167,7 @@ test('--advisory exits 0 even when the script itself fails; a bad argument fails
   try {
     const adv = r.run({}, ['--advisory', '--bogus']);
     assert.equal(adv.status, 0, adv.stdout + adv.stderr);
-    assert.match(adv.stdout, /unknown argument\(s\): --bogus/);
+    assert.match(adv.stderr, /unknown argument\(s\): --bogus/);
     assert.match(adv.stdout, /exited 2 \(advisory mode/);
     assert.equal(r.run({}, ['--bogus']).status, 2);
   } finally { r.cleanup(); }

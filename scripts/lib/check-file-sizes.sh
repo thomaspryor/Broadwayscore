@@ -52,7 +52,7 @@ if [ -n "$ADVISORY" ]; then
   trap 'rc=$?; [ "$rc" -ne 0 ] && echo "::warning::check-file-sizes exited $rc (advisory mode, not failing the step)"; exit 0' EXIT
 fi
 if [ -n "$BAD_ARGS" ]; then
-  echo "::warning::check-file-sizes: unknown argument(s):$BAD_ARGS"
+  echo "check-file-sizes: unknown argument(s):$BAD_ARGS (usage: check-file-sizes.sh [--advisory])" >&2
   exit 2
 fi
 
