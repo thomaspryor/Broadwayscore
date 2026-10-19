@@ -16,8 +16,8 @@ export const revalidate = 900;
 export const metadata: Metadata = {
   title: 'Fantasy Draft Guide',
   alternates: { canonical: `${BASE_URL}/fantasy/guide` },
-  description: 'Every draftable show with prices, the reasoning behind each price, scores, and eligibility. Your cheat sheet for the Broadway Fantasy League draft.',
-  ...fantasySocial('Draft Guide | Broadway Fantasy League', '/fantasy/guide', 'Every draftable show with its price and the reasoning behind it. Your cheat sheet for the Broadway Fantasy League.'),
+  description: 'Every draftable show with its price, opening date and eligibility for the Broadway Fantasy League draft.',
+  ...fantasySocial('Draft Guide | Broadway Fantasy League', '/fantasy/guide', 'Every draftable show with its price and opening date for the Broadway Fantasy League.'),
 };
 
 const PREMIUM_MIN = 20;
@@ -35,7 +35,7 @@ function ScorePill({ score: rawScore }: { score: number }) {
   const colorClass = `${getScoreBgColor(score)} ${getScoreColor(score)}`;
 
   return (
-    <span className={`text-xs px-2 py-0.5 rounded-full ${colorClass}`}>
+    <span className={`text-sm px-2 py-0.5 rounded-full ${colorClass}`}>
       {score} &middot; {label}
     </span>
   );
@@ -51,8 +51,8 @@ function ShowCard({ show, variant = 'default' }: { show: { id: string } & Fantas
       variant === 'muted' ? 'bg-surface-raised/30 hover:bg-surface-raised/50' : 'bg-surface-raised/50 hover:bg-surface-raised/80'
     }`}>
       <div className="w-14 text-center shrink-0 pt-1 flex flex-col items-center">
-        <span className="text-lg font-bold text-emerald-400">${show.price}</span>
-        <FantasyOwnershipTag showId={show.id} className="text-[10px] leading-tight mt-0.5" />
+        <span className="text-xl font-bold text-emerald-400">${show.price}</span>
+        <FantasyOwnershipTag showId={show.id} className="text-xs leading-tight mt-0.5" />
       </div>
       {show.image && (
         /* eslint-disable-next-line @next/next/no-img-element */
@@ -60,24 +60,24 @@ function ShowCard({ show, variant = 'default' }: { show: { id: string } & Fantas
       )}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="font-medium text-white">{show.title}</span>
+          <span className="text-base font-semibold text-white">{show.title}</span>
           {show.type === 'musical' && (
-            <span className="text-[10px] bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded">Musical</span>
+            <span className="text-xs bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded">Musical</span>
           )}
           {show.isRevival && (
-            <span className="text-[10px] bg-surface-overlay text-gray-300 px-1.5 py-0.5 rounded">Revival</span>
+            <span className="text-xs bg-surface-overlay text-gray-300 px-1.5 py-0.5 rounded">Revival</span>
           )}
           {show.category === 'off-broadway' && (
-            <span className="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded">OB</span>
+            <span className="text-xs bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded">OB</span>
           )}
           {show.status === 'closed' && (
-            <span className="text-[10px] bg-gray-500/20 text-gray-400 px-1.5 py-0.5 rounded">Closed</span>
+            <span className="text-xs bg-gray-500/20 text-gray-400 px-1.5 py-0.5 rounded">Closed</span>
           )}
           {locked && show.status !== 'closed' && (
-            <span className="text-[10px] border border-score-tepid/40 text-score-tepid px-1.5 py-0.5 rounded">{ELIGIBILITY_MARKERS.criticScoreLocked} {opened ? 'Already open' : 'Opens before the draft'}{earnsBoxOffice(show, scoringFromDate(new Date().toISOString())) ? '' : ': awards only'}</span>
+            <span className="text-xs border border-score-tepid/40 text-score-tepid px-1.5 py-0.5 rounded">{ELIGIBILITY_MARKERS.criticScoreLocked} {opened ? 'Already open' : 'Opens before the draft'}{earnsBoxOffice(show, scoringFromDate(new Date().toISOString())) ? '' : ': awards only'}</span>
           )}
         </div>
-        <div className="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-400">
+        <div className="flex items-center gap-2 mt-1 flex-wrap text-sm text-gray-300">
           {show.openingDate && <span>{opened ? 'Opened' : 'Opens'} {shortDate(show.openingDate)}</span>}
           {show.closingDate && <span>&middot; closes {shortDate(show.closingDate)}</span>}
           {show.criticScore != null && <ScorePill score={show.criticScore} />}
@@ -85,27 +85,24 @@ function ShowCard({ show, variant = 'default' }: { show: { id: string } & Fantas
             <span>Audience: {show.audienceGrade}</span>
           )}
         </div>
-        {show.priceNote && (
-          <p className="text-xs text-gray-500 mt-1.5 leading-snug">{show.priceNote}</p>
-        )}
       </div>
     </div>
   );
 }
 
 function TierSection({ title, subtitle, description, shows }: {
-  title: string; subtitle: string; description: string;
+  title: string; subtitle: string; description?: string;
   shows: Array<{ id: string } & FantasyShow>;
 }) {
   if (shows.length === 0) return null;
   return (
     <section className="mb-8">
-      <div className="flex items-baseline gap-2 mb-1">
+      <div className={`flex items-baseline gap-2 ${description ? 'mb-1' : 'mb-3'}`}>
         <h2 className="text-lg font-semibold">{title}</h2>
         <span className="text-sm text-brand font-medium">{subtitle}</span>
         <span className="text-sm text-gray-500 font-normal">({shows.length})</span>
       </div>
-      <p className="text-xs text-gray-500 mb-3">{description}</p>
+      {description && <p className="text-sm text-gray-400 mb-3">{description}</p>}
       <div className="space-y-2">
         {shows.map(show => <ShowCard key={show.id} show={show} />)}
       </div>
@@ -130,31 +127,32 @@ export default function FantasyGuidePage() {
       <div className="max-w-3xl mx-auto px-4 py-8 sm:py-12">
         {/* Header */}
         <div className="mb-8">
-          <a href="/fantasy" className="text-sm text-gray-500 hover:text-gray-300 transition-colors">
+          <a href="/fantasy" className="text-sm text-gray-400 hover:text-gray-200 transition-colors">
             &larr; Fantasy League
           </a>
           <h1 className="text-2xl sm:text-3xl font-bold mt-2">Draft Guide</h1>
-          <p className="text-gray-400 mt-1">
+          <p className="text-gray-300 mt-1">
             {allShows.length} draftable shows &middot; ${config._meta.budget} budget &middot; up to {config._meta.teamSize} picks
           </p>
         </div>
 
         {/* Legend */}
-        <div className="bg-surface-raised/50 rounded-xl p-4 mb-8 text-sm text-gray-400 space-y-1">
+        <div className="bg-surface-raised/50 rounded-xl p-4 mb-8 text-base text-gray-300 space-y-2">
           {!isDraftOpen() && !isDraftClosed() && (
             <p className="text-brand">Prices are provisional until the draft opens on {shortDate(DRAFT_OPENS)}, then fixed for the season.</p>
           )}
-          <p>Prices reflect projected points: Tony prospects, box office outlook, weeks left to run, and known scores. The line under each show is the reasoning.</p>
-          <p><span className="text-score-tepid">{ELIGIBILITY_MARKERS.criticScoreLocked} Already open</span> = reviews are public, so the show earns box office and awards points only (awards only if it closes before {hasLateEntry() ? 'your first box office week' : <>box office starts on {shortDate(SCORING_START)}</>}).</p>
-          <p><span className="text-purple-400">OB</span> = Off-Broadway (no box office, no Tony eligibility)</p>
-          <p className="text-gray-500">Shows that open after you draft earn critic and audience points for you. Audience points need the show&apos;s audience grade to be still unpublished when you draft (grades can appear in previews). Scores shown here may still change.</p>
+          <p><span className="text-score-tepid">{ELIGIBILITY_MARKERS.criticScoreLocked} Already open</span> = reviews are public, so it earns box office and awards points only (awards only if it closes before {hasLateEntry() ? 'your first box office week' : <>box office starts on {shortDate(SCORING_START)}</>}). <span className="text-purple-400">OB</span> = Off-Broadway (no box office, no Tony eligibility).</p>
+          <details className="text-gray-400">
+            <summary className="cursor-pointer text-gray-300 py-2">More on scoring</summary>
+            <p className="mt-2">Shows that open after you draft earn critic and audience points for you. Audience points need the show&apos;s audience grade to be still unpublished when you draft (grades can appear in previews). Scores shown here may still change.</p>
+          </details>
         </div>
 
-        <TierSection title="Premium Broadway" subtitle={`$${PREMIUM_MIN}+`} description="Tony frontrunners and the biggest box office" shows={premiumBW} />
+        <TierSection title="Premium Broadway" subtitle={`$${PREMIUM_MIN}+`} shows={premiumBW} />
 
-        <TierSection title="Mid-Range Broadway" subtitle={`$${MID_MIN}–${PREMIUM_MIN - 1}`} description="Credible contenders, star vehicles and limited runs" shows={midBW} />
+        <TierSection title="Mid-Range Broadway" subtitle={`$${MID_MIN}–${PREMIUM_MIN - 1}`} shows={midBW} />
 
-        <TierSection title="Value Broadway" subtitle={`Under $${MID_MIN}`} description="Long shots, special events and shows that already opened. A surprise nomination pays off big." shows={valueBW} />
+        <TierSection title="Value Broadway" subtitle={`Under $${MID_MIN}`} shows={valueBW} />
 
         <TierSection
           title="Off-Broadway"

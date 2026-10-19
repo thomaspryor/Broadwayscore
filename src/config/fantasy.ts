@@ -139,8 +139,6 @@ export interface FantasyShow {
   slug: string;
   /** Thumbnail image path */
   image?: string | null;
-  /** One-line pricing rationale shown in the Draft Guide */
-  priceNote?: string | null;
 }
 
 export interface FantasyLeagueConfig {

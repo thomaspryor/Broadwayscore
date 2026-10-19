@@ -21,7 +21,7 @@
  *     AudienceGrade, trailing weekly gross, announced closing date
  *
  * Everything is deterministic and explainable: every priced show carries a
- * `notes` array the Draft Guide can show ("Tier 5: ..., ~24 weeks of grosses,
+ * `notes` array for internal review ("Tier 5: ..., ~24 weeks of grosses,
  * 1 of 5 new musicals for 4 Best Musical slots").
  *
  * Used by: scripts/generate-fantasy-config.js (initial freeze + append-only
@@ -326,7 +326,7 @@ function calibrateK(evTotals, { targetTopPrice = 33, topN = 3 } = {}) {
   return targetTopPrice / avg;
 }
 
-/** A one-line, player-facing pricing rationale for the Draft Guide. */
+/** A one-line pricing rationale. Internal only: never shown to players (the game is guessing it). */
 function priceNoteFor(projection) {
   const notes = projection.breakdown?.notes || [];
   return notes.slice(0, 3).join(' · ');

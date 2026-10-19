@@ -423,7 +423,9 @@ for (const show of catalog) {
     audienceGradeSince,
     slug: show.slug,
     image: show.images?.thumbnail || show.images?.poster || null,
-    priceNote: frozenOut.notes[show.id] || null,
+    // Pricing rationale stays in data/fantasy-league-frozen.json (`notes`). It is
+    // deliberately NOT written here: this file is bundled into the client by the
+    // draft page, and players are meant to guess that reasoning.
   };
 }
 

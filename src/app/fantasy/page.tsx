@@ -428,7 +428,7 @@ export default function FantasyLandingPage() {
             },
             {
               q: 'How do show prices work?',
-              a: `Each show has a price from $${priceRange.min} to $${priceRange.max} based on how many points it is projected to earn: its Tony prospects, its box office outlook, how many weeks it runs, and, for shows that already opened, the score it has. Prices are set when the draft opens and do not change during the season. You have $${info.budget} for up to ${info.teamSize} slots, so you need a mix of big bets and value picks. Every price comes with a one-line rationale in the Draft Guide.`,
+              a: `Each show has a price from $${priceRange.min} to $${priceRange.max} based on how many points it is projected to earn: its Tony prospects, its box office outlook, how many weeks it runs, and, for shows that already opened, the score it has. Prices are set when the draft opens and do not change during the season. You have $${info.budget} for up to ${info.teamSize} slots, so you need a mix of big bets and value picks.`,
             },
             {
               q: 'What is the best strategy?',
