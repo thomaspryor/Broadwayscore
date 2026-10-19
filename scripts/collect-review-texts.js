@@ -157,7 +157,7 @@ function getNytCriticsPicks() {
   return _nytCriticsPicks;
 }
 const { isLondonMarket } = require('./lib/venue-classification');
-const { isUrlCorrectedRefetch, mayShortCircuitCollected } = require('./lib/url-corrected-refetch');
+const { isUrlCorrectedRefetch, mayShortCircuitCollected, bypassesFetchFailureGate } = require('./lib/url-corrected-refetch');
 const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, wrongShowCleared, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords, hasHighConfidenceLlmScore } = require('./lib/review-guards');
 const { resolveShowIdentity } = require('./lib/show-identity');
 // Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
@@ -4798,6 +4798,8 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
 
   // RESCORE TRIGGER: If adding fullText to a review that was scored on excerpt
   const hadFullTextBefore = data.fullText && data.fullText.length > 500;
+  // Read before fullText is replaced: the stale-body signal reads the OLD body.
+  const urlCorrectedBefore = isUrlCorrectedRefetch(data);
   const hasLlmScore = data.llmScore && data.llmScore.score;
   const newTextIsSubstantial = text.length > 1000;
 
@@ -4939,7 +4941,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // refetch this file on every run forever.
   // BRO-5231: the score on a URL-corrected file belongs to the OLD article, so
   // the fresh body must be rescored (this fires only when text was replaced).
-  if (isUrlCorrectedRefetch(data) && hadFullTextBefore && (data.llmScore || data.assignedScore != null)) {
+  if (urlCorrectedBefore && hadFullTextBefore && (data.llmScore || data.assignedScore != null)) {
     data.needsRescore = true;
     markRescoreFlagged(data);
   }
@@ -6701,7 +6703,7 @@ function findReviewsToProcess() {
         const storedTextOnly = data._consentLayerRetry === true && !!salvageConsentPrefixedStoredText(data);
         // The ledger entry may describe a URL the review no longer carries (BRO-3319).
         const ledgerForOtherUrl = isFetchLedgerEntryForOtherUrl(fetchFailureEntry, data);
-        if (fetchFailureEntry && !urlCorrectedRefetch && !reopenStaleMismatch && !storedTextOnly && !ledgerForOtherUrl) {
+        if (fetchFailureEntry && !bypassesFetchFailureGate(data) && !reopenStaleMismatch && !storedTextOnly && !ledgerForOtherUrl) {
           let fetchGate = shouldRetryFetch(showsById.get(showId) || null, data, fetchFailureEntry);
           // A route capped today is capped until the UTC reset (BRO-5222).
           if (fetchGate.shouldRetry && isRouteCapCooldownActive(fetchFailureEntry)) {
@@ -6853,7 +6855,7 @@ function findReviewsToProcess() {
           // Stored text that may not be this url's review (repointed url, show
           // never named) must not be kept over a refetch (BRO-5261). Not
           // wrongFullText: that holds an old quarantined text, not this one.
-          _storedTextSuspect: data.needsRefetch === true || !!data.showNotMentioned,
+          _storedTextSuspect: data.needsRefetch === true || isUrlCorrectedRefetch(data) || !!data.showNotMentioned,
         });
       } catch (e) {
         console.error(`Error reading ${filePath}: ${e.message}`);
@@ -8531,7 +8533,7 @@ function exitIfStuckAfterMain(graceMs = 20000) {
 }
 
 module.exports = {
-  reviewTimeoutMs, pushReviewTextsCheckpoint, commitChanges, extractTextFromHtml };
+  reviewTimeoutMs, pushReviewTextsCheckpoint, commitChanges, extractTextFromHtml, findReviewsToProcess };
 
 // Run (guarded so scripts/collect-review-texts.test.mjs can require() this
 // file for pushReviewTextsCheckpoint() without kicking off a real collection
