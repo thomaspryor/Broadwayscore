@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-19T18:27:41.264Z",
+  "timestamp": "2026-10-19T18:43:20.617Z",
   "stats": {
-    "totalReviews": 57770,
-    "alreadyFlagged": 21073,
+    "totalReviews": 57772,
+    "alreadyFlagged": 21074,
     "dateGuardCatches": 208,
-    "directorMismatch": 2009,
-    "tvFilmSignals": 1642,
-    "londonSignals": 2532,
+    "directorMismatch": 2011,
+    "tvFilmSignals": 1644,
+    "londonSignals": 2533,
     "offBroadwaySignals": 530,
     "yearMismatch": 160,
-    "noPublishDate": 5237
+    "noPublishDate": 5233
   },
   "findings": [
     {
@@ -34518,6 +34518,7 @@
     {
       "showId": "school-pictures-off-broadway-2026",
       "file": "nytg--allison-considine.json",
+      "score": 84,
       "publishDate": "2026-10-19",
       "url": "https://www.newyorktheatreguide.com/reviews/school-pictures-off-broadway-review-cherry-lane-theatre",
       "findings": [
@@ -43099,6 +43100,20 @@
     },
     {
       "showId": "the-hunger-games-on-stage-west-end-2025",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": null,
+      "publishDate": "2025-11-13",
+      "url": "https://www.allthatdazzles.co.uk/post/review-the-hunger-games-on-stage-troubadour-canary-wharf-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-hunger-games-on-stage-west-end-2025",
       "file": "all-that-dazzles-uk--unknown.json",
       "score": null,
       "publishDate": "2025-11-13",
@@ -44488,6 +44503,34 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
+      "file": "washpost--thomas-floyd.json",
+      "publishDate": "2026-08-25",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2026/08/25/notebook-underappreciated-broadway-brings-waterworks-dc/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -51221,7 +51264,7 @@
       "showId": "water-for-elephants-tour-2025",
       "file": "wypr--rob-sivak.json",
       "score": 77,
-      "publishDate": "2025-10-08T10:39:26-04:00",
+      "publishDate": "2025-10-01",
       "url": "https://www.wypr.org/show/midday/2025-10-01/rousucks-review-water-for-elephants-at-the-hippodrome",
       "findings": [
         {
