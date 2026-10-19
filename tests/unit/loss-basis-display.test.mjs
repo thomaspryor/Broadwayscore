@@ -11,8 +11,30 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-const { lossBasisCaveat, LOSS_ON_SILENCE_CAVEAT, toPublicShowCommercial, publicSourceText, lossOutcomePhrase, isReportedLoss, publicNotesText, lossCanChangeNote, LOSS_CAN_CHANGE_NOTE } =
+const { lossBasisCaveat, LOSS_ON_SILENCE_CAVEAT, toPublicShowCommercial, publicSourceText, lossOutcomePhrase, isReportedLoss, publicNotesText, lossCanChangeNote, LOSS_CAN_CHANGE_NOTE, likelyLossLine } =
   await import('../../src/lib/commercial-display.ts');
+
+test('a Did Not Recoup show carries our best guess as a marked Likely line (owner 2026-10-18, BRO-5647)', () => {
+  const dnr = { designation: 'Did Not Recoup' };
+  // Any data quality: low still gives a guess, the label stays Did Not Recoup.
+  assert.equal(likelyLossLine({ ...dnr, modelDataQuality: 'low', modelReturnedExCreditPct: [0, 12, 30] }), 'Likely: Flop');
+  assert.equal(likelyLossLine({ ...dnr, modelReturnedExCreditPct: [20, 45, 70] }), 'Likely: Fizzle');
+  // Order: ex-credit, then V2, then the original figure; a malformed tuple is skipped.
+  assert.equal(likelyLossLine({ ...dnr, modelReturnedExCreditPct: [1, 2], modelRecoupmentPctV2: [20, 45, 70], modelRecoupmentPct: [0, 5, 10] }), 'Likely: Fizzle');
+  assert.equal(likelyLossLine({ ...dnr, modelRecoupmentPct: [0, 5, 10] }), 'Likely: Flop');
+  // The record's own estimate comes first, as for the Fizzle/Flop split.
+  assert.equal(likelyLossLine({ ...dnr, analystRecoupPct: [40, 50], modelReturnedExCreditPct: [0, 12, 30] }), 'Likely: Fizzle');
+  assert.equal(likelyLossLine({ ...dnr, estimatedRecoupmentPct: 5 }), 'Likely: Flop');
+  // No reading, no guess.
+  assert.equal(likelyLossLine(dnr), null);
+  assert.equal(likelyLossLine(null), null);
+  // Only Did Not Recoup: a sized loss label or any other label gets no line.
+  for (const designation of ['Fizzle', 'Flop', 'TBD', 'Windfall', 'Nonprofit']) {
+    assert.equal(likelyLossLine({ designation, modelReturnedExCreditPct: [0, 12, 30] }), null, designation);
+  }
+  assert.equal(toPublicShowCommercial({ designation: 'Did Not Recoup', likelyLoss: 'Likely: Flop' }).likelyLoss, 'Likely: Flop');
+  assert.equal('likelyLoss' in toPublicShowCommercial({ designation: 'Did Not Recoup' }), false);
+});
 
 test('every loss label says it can change if the show recoups later (owner 2026-10-18, BRO-5645)', () => {
   assert.match(LOSS_CAN_CHANGE_NOTE, /recoups later, from tours or licensing/);

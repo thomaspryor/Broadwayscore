@@ -23,6 +23,7 @@ import {
   hasCommercialCard,
   lossBasisCaveat,
   lossCanChangeNote,
+  LIKELY_LOSS_BASIS,
   publicNotesText,
   getDisplayableAnalystRange,
   hasNoInvestorsToRepay,
@@ -288,6 +289,13 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           {lossCaveat && (
             <p className="text-[13px] text-gray-400 mt-1.5 leading-[1.4]" data-testid="loss-basis-caveat">
               {lossCaveat}
+            </p>
+          )}
+          {/* Our best guess at the size of an unsized loss, marked as ours (BRO-5647). */}
+          {commercial.likelyLoss && (
+            <p className="text-[13px] text-gray-300 mt-1.5 leading-[1.4]" data-testid="likely-loss">
+              <span className="font-semibold">{commercial.likelyLoss}</span>
+              <span className="text-xs text-gray-500">{` · ${LIKELY_LOSS_BASIS}`}</span>
             </p>
           )}
           {reportedReturnLine && (

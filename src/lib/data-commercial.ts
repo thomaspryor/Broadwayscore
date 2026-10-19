@@ -42,6 +42,7 @@ import {
   getReportedInvestorMultiple,
   publicSourceText,
   lossBasisCaveat,
+  likelyLossLine,
   isEstimatedCapitalization,
   isUnannouncedRecoupment,
   isEstimatedRunningCost,
@@ -124,7 +125,10 @@ const commercial: CommercialFile = (() => {
     const { costHistory: _costHistory, ...data } = full as ShowCommercial & { costHistory?: unknown };
     const guarded = applyModelDisplayGuard(data, showBySlug.get(slug), now);
     const rr = reportedReturn(data, showBySlug.get(slug));
-    shows[slug] = rr ? { ...guarded, reportedReturn: rr } : guarded;
+    // From the unguarded record: the guard can hide the bar, and the best guess still stands (BRO-5647).
+    // A reported return says what came back, so no guess beside it.
+    const likelyLoss = rr ? null : likelyLossLine(data);
+    shows[slug] = { ...guarded, ...(rr ? { reportedReturn: rr } : {}), ...(likelyLoss ? { likelyLoss } : {}) };
   }
   return { ...file, shows };
 })();
@@ -685,6 +689,7 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
     recoupmentNotAnnounced: isUnannouncedRecoupment(data),
     recoupedWeeks: calculateWeeksToRecoup(recoupClockStart(data, show.openingDate), data.recoupedDate, show.closingDate),
     lossCaveat: lossBasisCaveat(data),
+    likelyLoss: data.likelyLoss ?? null,
     designationBasis: data.designationBasis ?? null,
   };
 }
