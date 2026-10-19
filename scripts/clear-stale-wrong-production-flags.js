@@ -54,6 +54,7 @@ const {
 const { buildPriorRunHint } = require('./lib/content-verifier');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
+const { splitSurge } = require('./lib/surge-drain');
 
 const FIX_SURGE_THRESHOLD = 50;
 // Pre-LLM ceiling — catches a predicate regression BEFORE burning a paid,
@@ -353,10 +354,17 @@ Reply with JSON only: {"isThisProduction": true|false, "isReview": true|false, "
     return;
   }
 
-  if (toClear.length > FIX_SURGE_THRESHOLD && !FORCE_BULK) {
-    console.error(`::error::Refusing to auto-clear ${toClear.length} stale wrongProduction flags (> ${FIX_SURGE_THRESHOLD}). A spike this large usually means the predicate or LLM verification regressed, not routine catch-up drift — auto-clearing would re-admit a flood of reviews to scoring. Investigate the cause, then re-run with --force-bulk if the clears are legitimate.`);
-    process.exit(1);
+  // BRO-5672: above the threshold, clear the newest FIX_SURGE_THRESHOLD and defer
+  // the rest to the next run, rather than refusing the batch after paying for
+  // its verification (the weekly run did that for weeks, so the backlog never
+  // drained). The per-run bound on a verifier/predicate regression is unchanged.
+  const surge = splitSurge(toClear, FIX_SURGE_THRESHOLD, FORCE_BULK);
+  if (surge.deferred.length > 0) {
+    console.warn(`::warning::${toClear.length} confirmed clears exceed the per-run limit of ${FIX_SURGE_THRESHOLD}: clearing the newest ${surge.apply.length}, deferring ${surge.deferred.length} to the next run (re-run with --force-bulk to drain at once). If this count is a sudden jump rather than backlog, the predicate or verifier may have regressed.`);
+    for (const d of surge.deferred) console.log(`  deferred: ${d.c.showId}/${d.c.file}`);
   }
+  toClear.length = 0;
+  toClear.push(...surge.apply);
 
   // Collector-quarantined candidates the LLM did not confirm: stamp the text
   // hash so the next sweep does not re-ask about the same text. Errors are
