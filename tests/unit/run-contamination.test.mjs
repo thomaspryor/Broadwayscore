@@ -206,7 +206,7 @@ test('priorRuns data-edit may append one bounded earlier run', () => {
   assert.equal(priorRunsValueProblem([run], null, show), null);
   assert.equal(priorRunsValueProblem([run], undefined, show), null);
   assert.equal(priorRunsValueProblem([run], [], show), null);
-  assert.equal(priorRunsValueProblem([run, { ...run, note: 'x' }], [], show) !== null, true, 'two appended runs refused');
+  assert.match(priorRunsValueProblem([run, { ...run, note: 'x' }], [], show), /add or remove/, 'two appended runs refused');
   assert.equal(priorRunsValueProblem([run, { ...run, openingDate: '2025-05-12', closingDate: '2025-05-16' }], [run], show), null, 'second run appended after an existing one');
   assert.match(priorRunsValueProblem([run], null), /bound the appended run/, 'no show given');
   assert.match(priorRunsValueProblem([{ ...run, id: 'other-show' }], null, show), /may only carry/);
@@ -224,6 +224,10 @@ test('priorRuns data-edit may append one bounded earlier run', () => {
   assert.match(priorRunsValueProblem([run], null, { id: 'x' }), /bound the appended run/);
   assert.match(priorRunsValueProblem([run, { ...run, openingDate: '2026-05-14', closingDate: '2026-05-20' }], [run], show), /overlaps/);
   assert.match(priorRunsValueProblem([{ ...run, venue: 'Changed' }, run], [run], show), /may not change in the same plan/);
+  // An existing run with no openingDate still blocks an overlapping append (abigails-party shape).
+  const noOpen = { openingDate: null, closingDate: '2026-05-14', venue: 'Richmond Theatre' };
+  assert.match(priorRunsValueProblem([noOpen, run], [noOpen], show), /overlaps/);
+  assert.equal(priorRunsValueProblem([noOpen, { ...run, openingDate: '2026-06-01', closingDate: '2026-06-05' }], [noOpen], show), null);
   assert.match(priorRunsValueProblem([], [run], show), /add or remove/);
   assert.match(priorRunsValueProblem([run, run, run], [], show), /add or remove/);
   assert.equal(typeof appendedPriorRunProblem, 'function');

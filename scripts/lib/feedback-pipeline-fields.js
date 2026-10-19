@@ -280,9 +280,12 @@ function appendedPriorRunProblem(run, existing, show) {
     return `priorRuns: appended run must close more than ${PRIOR_RUN_PLAN_GRACE_DAYS} days before this show's own first performance (${own})`;
   }
   for (const e of existing) {
-    if (!e || !isIsoDay(e.openingDate)) continue;
-    const eClose = isIsoDay(e.closingDate) ? e.closingDate : e.openingDate;
-    if (day(run.openingDate) <= day(eClose) + PRIOR_RUN_PLAN_GRACE_DAYS && day(e.openingDate) <= day(run.closingDate) + PRIOR_RUN_PLAN_GRACE_DAYS) {
+    // A run with only one valid date (abigails-party-west-end-2026 has a null openingDate)
+    // still occupies that day: use it for both ends rather than skip the overlap check.
+    const eOpen = e && (isIsoDay(e.openingDate) ? e.openingDate : (isIsoDay(e.closingDate) ? e.closingDate : null));
+    if (!eOpen) continue;
+    const eClose = isIsoDay(e.closingDate) ? e.closingDate : eOpen;
+    if (day(run.openingDate) <= day(eClose) + PRIOR_RUN_PLAN_GRACE_DAYS && day(eOpen) <= day(run.closingDate) + PRIOR_RUN_PLAN_GRACE_DAYS) {
       return 'priorRuns: appended run overlaps an existing prior run';
     }
   }
