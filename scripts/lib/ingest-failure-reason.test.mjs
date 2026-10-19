@@ -45,6 +45,14 @@ test('audit-show-review-gap uses the helper, not a 100-char execErrorDetail cap'
   assert.equal((src.match(/ingestFailureReason\(e\)/g) || []).length, 2);
 });
 
+test('no audit script caps an ingest child failure at 100 chars', () => {
+  const dir = new URL('../', import.meta.url);
+  for (const f of fs.readdirSync(dir).filter((n) => /^audit-.*\.js$/.test(n))) {
+    const src = fs.readFileSync(new URL(f, dir), 'utf8');
+    assert.doesNotMatch(src, /execErrorDetail\(e, *100\)/, `${f} truncates ingest failures to 100 chars`);
+  }
+});
+
 test('parent timeout keeps the child stderr, not only "spawnSync ETIMEDOUT"', async () => {
   const { execFileSync } = await import('node:child_process');
   let err;

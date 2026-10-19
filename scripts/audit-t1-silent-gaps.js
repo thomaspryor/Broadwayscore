@@ -59,6 +59,7 @@ const { isForumThreadUrl, isForumLinkRecoverable, FORUM_RECOVERY_CAP, FORUM_RECO
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { routeAlert, resolveCondition, loadLedger } = require('./lib/owner-alert-router');
 const { execErrorDetail } = require('./lib/exec-error-detail');
+const { ingestFailureReason } = require('./lib/ingest-failure-reason');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `audit-t1-silent-gaps.js — Sweep for major-outlet (T1/T2) reviews discovered but not reaching the composite score.
@@ -198,7 +199,7 @@ function recoverFromOwnUrl(showId, fileName, d, show, decision = ownUrlRecoveryD
   try {
     execFileSync('node', iargs, { stdio: 'pipe', timeout: 120000 });
   } catch (e) {
-    ok = false; reason = execErrorDetail(e, 100);
+    ok = false; reason = ingestFailureReason(e);
   }
   // Persist the shared retry counter on EVERY attempt (same cap +
   // safeWriteReview routing as audit-show-review-gap's bumpRecoveryCount)
