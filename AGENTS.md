@@ -13,6 +13,9 @@ push. Codex cloud builds the task's diff, and the owner's "Create PR" button, fr
 checkout only; a change made in a side worktree shows as "no diff" and cannot be landed. After
 "Create PR", `.github/workflows/codex-pr-lander.yml` tests, reviews and lands the PR, and comments
 in plain English on it if it does not.
+If a task does create a branch or pull request itself, name the branch `codex/<short-slug>`
+(for example `codex/playbill-london-market`): the lander only picks up `codex/` branches, so a
+`fix/...` or `feat/...` branch is never checked or landed.
 
 ## Codex setup
 Claude's own guards (`.claude/settings.json` hooks, run through `scripts/codex/hook-adapter.js`), live

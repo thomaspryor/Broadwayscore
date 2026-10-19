@@ -892,6 +892,10 @@ test('codexCloudPr: only Codex cloud PRs by the owner or the Codex app, never ca
   const pr = (o = {}) => ({ state: 'open', head: { ref: 'codex/fix-footer-link', repo: { full_name: repo } }, base: { ref: 'main' }, user: { login: 'thomaspryor', type: 'User' }, ...o });
   assert.deepEqual(r.codexCloudPr(pr(), repo), { ok: true });
   assert.equal(r.codexCloudPr(pr({ user: { login: 'chatgpt-codex-connector[bot]', type: 'Bot' } }), repo).ok, true);
+  // The Codex app's Create PR opens drafts by default; the codex/ prefix is the signal, so drafts count.
+  assert.equal(r.codexCloudPr(pr({ draft: true }), repo).ok, true);
+  // PR #1119's real shape: an owner PR on a fix/ head is not a Codex cloud PR.
+  assert.match(r.codexCloudPr(pr({ draft: false, head: { ref: 'fix/playbill-london-market-parity', repo: { full_name: repo } } }), repo).why, /not a codex\/ branch/);
   for (const ref of ['codex/bro-123', 'codex/BRO-3367-fix', 'claude/x', 'land/codex-pr-4']) {
     assert.equal(r.codexCloudPr(pr({ head: { ref, repo: { full_name: repo } } }), repo).ok, false, ref);
   }
@@ -933,4 +937,6 @@ test('AGENTS.md tells Codex cloud tasks to edit in place, not in a side worktree
   const agents = readFileSync(join(ROOT, 'AGENTS.md'), 'utf8');
   assert.match(agents, /## Codex cloud tasks[^\n]*edit in place/);
   assert.match(agents, /do not create a git worktree/);
+  // PR #1119: a task that opened its own PR named the branch fix/..., which the lander never sees.
+  assert.match(agents, /name the branch `codex\/<short-slug>`/);
 });
