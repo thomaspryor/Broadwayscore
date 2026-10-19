@@ -144,6 +144,14 @@ async function main() {
         const own = titleFromPageTitle(r.title);
         if (own && isReviewHref(r.canonical)) entries.push({ url: normalizeTbUrl(r.canonical), title: own });
         for (const l of links) entries.push({ url: l.url, title: l.text, date: l.date });
+        // Self-report links that look like dated reviews ("<title> - M/D/YY") but were not accepted
+        // as review pages, so a change in TB's URL shapes shows up here instead of as silence.
+        const accepted = new Set(links.map((l) => l.url));
+        const rejected = r.anchors.filter((a) => /\d{1,2}\/\d{1,2}\/\d{2,4}\s*$/.test(a.text || '') && !accepted.has(normalizeTbUrl(a.href)));
+        if (rejected.length) {
+          console.log(`index ${url}: ${rejected.length} dated links not accepted as reviews; first 25:`);
+          for (const a of rejected.slice(0, 25)) console.log(`   REJECTED ${a.href} | ${a.text}`);
+        }
         console.log(`index ${url}: ${links.length} review links${own ? `, page is "${own}" (canonical ${r.canonical || 'none'})` : ''}`);
         if (dryRun) for (const l of links.slice(0, 80)) console.log(`   ${l.url} | ${l.text}`);
       } catch (e) {
