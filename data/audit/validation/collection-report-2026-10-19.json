@@ -1,63 +1,63 @@
 {
-  "runDate": "2026-10-19T06:14:21.259Z",
+  "runDate": "2026-10-19T08:49:40.621Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "love-love-love-off-broadway-2016",
+    "showFilter": "school-pictures-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 22,
-    "failed": 4,
+    "processed": 0,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "84.6%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 1,
-    "brightdata": 2,
+    "scrapingdog": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 11
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 11,
-    "tier1Success": 8,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 2,
-    "tier1_9Success": 1,
-    "tier2Attempts": 3,
-    "tier2Success": 1,
-    "tier3Attempts": 3,
-    "tier3Success": 2,
-    "tier3_6Attempts": 1,
+    "tier1_9Attempts": 0,
+    "tier1_9Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 6,
-    "tier4Success": 4,
-    "totalFailed": 4,
-    "scrapingBeePageCredits": 12,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 22,
-    "failed": 4,
+    "processed": 0,
+    "failed": 1,
     "shows": [
-      "love-love-love-off-broadway-2016"
+      "school-pictures-off-broadway-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -65,128 +65,27 @@
       "failed": 0
     }
   },
-  "processed": [
-    "love-love-love-off-broadway-2016/hollywood-reporter--frank-scheck.json",
-    "love-love-love-off-broadway-2016/nytimes--ben-brantley.json",
-    "love-love-love-off-broadway-2016/variety--marilyn-stasio.json",
-    "love-love-love-off-broadway-2016/vulture--jesse-green.json",
-    "love-love-love-off-broadway-2016/deadline--jeremy-gerard.json",
-    "love-love-love-off-broadway-2016/ew--isabella-biedenharn.json",
-    "love-love-love-off-broadway-2016/newsday--linda-winer.json",
-    "love-love-love-off-broadway-2016/nydailynews--joe-dziemianowicz.json",
-    "love-love-love-off-broadway-2016/reviewing-the-drama--robin-riegelhaupt.json",
-    "love-love-love-off-broadway-2016/theatermania--zachary-stewart.json",
-    "love-love-love-off-broadway-2016/thewrap--robert-hofler.json",
-    "love-love-love-off-broadway-2016/cititour--brian-scott-lipton.json",
-    "love-love-love-off-broadway-2016/amny--matt-windman.json",
-    "love-love-love-off-broadway-2016/city-cabaret--elizabeth-ahlfors.json",
-    "love-love-love-off-broadway-2016/front-row-center--stanford-friedman.json",
-    "love-love-love-off-broadway-2016/onstage-blog--asya-gorovits.json",
-    "love-love-love-off-broadway-2016/reflections-in-the-light--lauren-yarger.json",
-    "love-love-love-off-broadway-2016/show-showdown--elizabeth-wollman.json",
-    "love-love-love-off-broadway-2016/the-clyde-fitch-report--david-finkle.json",
-    "love-love-love-off-broadway-2016/theater-pizzazz--sandi-durell.json",
-    "love-love-love-off-broadway-2016/theater-scene--joel-benjamin.json",
-    "love-love-love-off-broadway-2016/times-square-chronicles--suzanna-bowling.json"
-  ],
+  "processed": [],
   "failed": [
-    "love-love-love-off-broadway-2016/act-three-the-reviews--doug-marino.json",
-    "love-love-love-off-broadway-2016/diandra-reviews-it-all--diandra-rivera.json",
-    "love-love-love-off-broadway-2016/guardian--alexis-soloski.json",
-    "love-love-love-off-broadway-2016/timeout--david-cote.json"
+    "school-pictures-off-broadway-2026/airmail--air-mail.json"
   ],
   "cumulativeResumedState": {
-    "processed": [
-      "love-love-love-off-broadway-2016/hollywood-reporter--frank-scheck.json",
-      "love-love-love-off-broadway-2016/nytimes--ben-brantley.json",
-      "love-love-love-off-broadway-2016/variety--marilyn-stasio.json",
-      "love-love-love-off-broadway-2016/vulture--jesse-green.json",
-      "love-love-love-off-broadway-2016/deadline--jeremy-gerard.json",
-      "love-love-love-off-broadway-2016/ew--isabella-biedenharn.json",
-      "love-love-love-off-broadway-2016/newsday--linda-winer.json",
-      "love-love-love-off-broadway-2016/nydailynews--joe-dziemianowicz.json",
-      "love-love-love-off-broadway-2016/reviewing-the-drama--robin-riegelhaupt.json",
-      "love-love-love-off-broadway-2016/theatermania--zachary-stewart.json",
-      "love-love-love-off-broadway-2016/thewrap--robert-hofler.json",
-      "love-love-love-off-broadway-2016/cititour--brian-scott-lipton.json",
-      "love-love-love-off-broadway-2016/amny--matt-windman.json",
-      "love-love-love-off-broadway-2016/city-cabaret--elizabeth-ahlfors.json",
-      "love-love-love-off-broadway-2016/front-row-center--stanford-friedman.json",
-      "love-love-love-off-broadway-2016/onstage-blog--asya-gorovits.json",
-      "love-love-love-off-broadway-2016/reflections-in-the-light--lauren-yarger.json",
-      "love-love-love-off-broadway-2016/show-showdown--elizabeth-wollman.json",
-      "love-love-love-off-broadway-2016/the-clyde-fitch-report--david-finkle.json",
-      "love-love-love-off-broadway-2016/theater-pizzazz--sandi-durell.json",
-      "love-love-love-off-broadway-2016/theater-scene--joel-benjamin.json",
-      "love-love-love-off-broadway-2016/times-square-chronicles--suzanna-bowling.json"
-    ],
+    "processed": [],
     "failed": [
-      "love-love-love-off-broadway-2016/act-three-the-reviews--doug-marino.json",
-      "love-love-love-off-broadway-2016/diandra-reviews-it-all--diandra-rivera.json",
-      "love-love-love-off-broadway-2016/guardian--alexis-soloski.json",
-      "love-love-love-off-broadway-2016/timeout--david-cote.json"
+      "school-pictures-off-broadway-2026/airmail--air-mail.json"
     ]
   },
   "tierDetails": {
-    "playwright": [
-      "love-love-love-off-broadway-2016/reviewing-the-drama--robin-riegelhaupt.json",
-      "love-love-love-off-broadway-2016/theatermania--zachary-stewart.json",
-      "love-love-love-off-broadway-2016/front-row-center--stanford-friedman.json",
-      "love-love-love-off-broadway-2016/onstage-blog--asya-gorovits.json",
-      "love-love-love-off-broadway-2016/reflections-in-the-light--lauren-yarger.json",
-      "love-love-love-off-broadway-2016/show-showdown--elizabeth-wollman.json",
-      "love-love-love-off-broadway-2016/theater-scene--joel-benjamin.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
-      "love-love-love-off-broadway-2016/times-square-chronicles--suzanna-bowling.json"
-    ],
-    "scrapingbee": [
-      "love-love-love-off-broadway-2016/cititour--brian-scott-lipton.json"
-    ],
-    "brightdata": [
-      "love-love-love-off-broadway-2016/variety--marilyn-stasio.json",
-      "love-love-love-off-broadway-2016/vulture--jesse-green.json"
-    ],
+    "scrapingdog": [],
+    "scrapingbee": [],
+    "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "love-love-love-off-broadway-2016/hollywood-reporter--frank-scheck.json",
-      "love-love-love-off-broadway-2016/nytimes--ben-brantley.json",
-      "love-love-love-off-broadway-2016/deadline--jeremy-gerard.json",
-      "love-love-love-off-broadway-2016/ew--isabella-biedenharn.json",
-      "love-love-love-off-broadway-2016/newsday--linda-winer.json",
-      "love-love-love-off-broadway-2016/nydailynews--joe-dziemianowicz.json",
-      "love-love-love-off-broadway-2016/thewrap--robert-hofler.json",
-      "love-love-love-off-broadway-2016/amny--matt-windman.json",
-      "love-love-love-off-broadway-2016/city-cabaret--elizabeth-ahlfors.json",
-      "love-love-love-off-broadway-2016/the-clyde-fitch-report--david-finkle.json",
-      "love-love-love-off-broadway-2016/theater-pizzazz--sandi-durell.json"
-    ]
+    "archive": []
   },
-  "failuresByOutlet": {
-    "Act Three: The Reviews": {
-      "count": 1,
-      "domain": "dougmarino.blogspot.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Diandra Reviews It All": {
-      "count": 1,
-      "domain": "diandrareviewsitall.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Guardian": {
-      "count": 1,
-      "domain": "theguardian.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
