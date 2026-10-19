@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5647-c",
   "planId": "27a61a0f-a4d9-4f63-877f-d09f3c1aec40",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-18T23:13:34.986Z",
   "submitter": {
     "name": null,
@@ -36,5 +36,13 @@
         "description": "all-the-way-2014: add commercial entry (recouped $3.9M, May 2014)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-19T00:47:23.087Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added all-the-way-2014 (Easy Winner)"
+    }
+  ]
 }
