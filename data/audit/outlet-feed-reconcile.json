@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-19T21:47:11.445Z",
+  "generatedAt": "2026-10-19T22:58:55.525Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -167,6 +167,10 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -183,6 +187,10 @@
       "error": "HTTP 401 for https://musicaltheatrereview.com/feed/"
     },
     {
+      "outletId": "viewfromthegods",
+      "error": "AggregateError"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -195,7 +203,7 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 722,
+  "itemsScanned": 710,
   "matchedGaps": 1,
   "possibleGaps": 8,
   "gaps": [
