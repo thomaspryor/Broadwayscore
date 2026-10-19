@@ -113,4 +113,9 @@ describe('outlet /reviews/<id> redirect URLs (BRO-5693)', () => {
   it('a /reviews/ URL with a real headline slug is still checked', () => {
     assert.strictEqual(opaque('https://www.thestage.co.uk/reviews/2019/other-show-review'), false);
   });
+  it('numeric-title slugs under /review(s)/ stay checked', () => {
+    assert.strictEqual(opaque('https://www.thestage.co.uk/reviews/1984'), false);
+    assert.strictEqual(opaque('http://broadway.news/2017/06/22/review/1776-review/'), false);
+    assert.strictEqual(opaque('https://www.thestage.co.uk/reviews/2019/9-to-5-review'), false);
+  });
 });

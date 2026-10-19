@@ -165,8 +165,6 @@ const STRUCTURAL_PATH_WORDS = new Set([
   'p', 'id', 'view', 'node', 'index', 'amp', 'www', 'html', 'htm', 'php',
   // londontheatrereviews.co.uk/post.cfm?p=<id>: an id-only query URL (BRO-5438)
   'post', 'cfm',
-  // thestage.co.uk/reviews/<id>: the Show Score redirect form (BRO-5693)
-  'review', 'reviews',
 ]);
 
 /**
@@ -194,6 +192,11 @@ const STRUCTURAL_PATH_WORDS = new Set([
 // urlSearchSlug already removes them; this covers callers passing raw text.
 function isOpaqueUrlSlug(urlSlug) {
   if (!urlSlug) return true;
+  // thestage.co.uk/reviews/<id> (BRO-5693): "review(s)" is path structure only
+  // beside a 5+ digit id; "1776-review" / "reviews/1984" are title slugs.
+  const words = urlSlug.split(/[^a-z0-9]+/).filter(Boolean);
+  if (words.some(t => /^\d{5,}$/.test(t))
+      && words.every(t => /^\d+$/.test(t) || t === 'review' || t === 'reviews')) return true;
   const tokens = urlSlug.replace(UUID_RE_I, ' ').split(/[^a-z0-9]+/).filter(Boolean);
   for (const t of tokens) {
     if (t.length < 3) continue;          // 'p', 'id', short noise

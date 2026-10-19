@@ -7,7 +7,7 @@
     "email": null
   },
   "plan": {
-    "summary": "BRO-5693: remove a cross-show stub (Evening Standard Rigoletto/Opera Holland Park review filed under No I.D.). The slug-mismatch check no longer flags The Stage /reviews/<id> URLs (code fix).",
+    "summary": "BRO-5693: remove a cross-show stub (Evening Standard Rigoletto/Opera Holland Park review filed under No I.D.). The slug-mismatch check no longer flags The Stage /reviews/<id> URLs (code fix). Deleting the Rigoletto stub also removes its stray 4/5 score from No I.D.'s critic score on the next rebuild.",
     "steps": [
       "Stub with no text; url is a different production (Rigoletto), already flagged url_content_mismatch. Deleted so it stops tripping the lifetime sweep."
     ],
