@@ -38,7 +38,8 @@ const { generateReviewFilename } = require('./lib/review-normalization');
 const { setExtractedScore } = require('./lib/score-routing');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
-const { chooseArticleBody, jsonLdBodyToText } = require('./lib/jsonld-body-choice');
+const { chooseArticleBody } = require('./lib/jsonld-body-choice');
+const { extractFromJsonLd, extractParagraphText } = require('./lib/html-article-text');
 const { extractVarietyBody } = require('./lib/article-extractor');
 
 const USAGE = `recover-wayback-reviews.js — recover review full text from the Wayback Machine for dead-URL reviews.
@@ -254,7 +255,7 @@ function stripWaybackToolbar(html) {
 }
 
 /**
- * Extract readable text from HTML, adapted from collect-review-texts.js:3513.
+ * Extract readable text after archive cleanup, using the shared article helpers.
  */
 function extractTextFromHtml(html, url) {
   if (!html || typeof html !== 'string') return '';
@@ -274,58 +275,17 @@ function extractTextFromHtml(html, url) {
   // Step 2: JSON-LD articleBody (most reliable when available). A short body
   // can be a teaser of the page prose (Variety, BRO-5222): chooseArticleBody
   // prefers the page text only when it is the same article, clearly longer.
-  const ldBody = extractJsonLdArticleBody(html);
-  const pageText = extractPageText(html, url);
-  if (!ldBody) return pageText;
+  const ldBody = extractFromJsonLd(html);
+  const pageText = extractPageText(html);
+  if (ldBody.length <= 200) return pageText;
   return chooseArticleBody(ldBody, pageText).text;
 }
 
-function extractJsonLdArticleBody(html) {
-  const jsonLdMatch = html.match(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi);
-  if (jsonLdMatch) {
-    for (const match of jsonLdMatch) {
-      try {
-        const jsonContent = match.replace(/<\/?script[^>]*>/gi, '');
-        const parsed = JSON.parse(jsonContent);
-        const articleBody = parsed.articleBody ||
-          (parsed['@graph'] && parsed['@graph'].find(item => item.articleBody)?.articleBody);
-        // Some CMSs put markup in articleBody (BRO-5261 retro of BRO-5222).
-        const body = jsonLdBodyToText(articleBody);
-        if (body.length > 200) {
-          return body;
-        }
-      } catch {}
-    }
-  }
-  return '';
-}
+function extractPageText(html) {
+  const paragraphText = extractParagraphText(html);
+  if (paragraphText.length > 200) return paragraphText;
 
-function extractPageText(html, url) {
-  // Step 3: Try article-scoped extraction first (much cleaner than whole-page)
-  // Match <article> tags, or common article container classes
-  const articlePatterns = [
-    /<section\s+class="page">([\s\S]*?)<\/section>/i, // Talkin' Broadway
-    /<article[^>]*>([\s\S]*?)<\/article>/i,
-    /<div[^>]*class="[^"]*article-body[^"]*"[^>]*>([\s\S]*?)<\/div>/i,
-    /<div[^>]*class="[^"]*story-body[^"]*"[^>]*>([\s\S]*?)<\/div>/i,
-    /<div[^>]*class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<\/div>/i,
-    /<div[^>]*class="[^"]*post-content[^"]*"[^>]*>([\s\S]*?)<\/div>/i,
-    /<div[^>]*class="[^"]*review-body[^"]*"[^>]*>([\s\S]*?)<\/div>/i,
-    /<div[^>]*itemprop="articleBody"[^>]*>([\s\S]*?)<\/div>/i,
-  ];
-
-  for (const pattern of articlePatterns) {
-    const articleMatch = html.match(pattern);
-    if (articleMatch) {
-      const articleHtml = articleMatch[1];
-      const articleText = extractParagraphs(articleHtml);
-      if (articleText.length > 200) {
-        return articleText;
-      }
-    }
-  }
-
-  // Step 4: Fallback — remove noise elements and extract from whole page
+  // Keep the legacy <br>-only fallback for old sites such as CurtainUp.
   let text = html
     .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
     .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
@@ -334,34 +294,9 @@ function extractPageText(html, url) {
     .replace(/<footer[^>]*>[\s\S]*?<\/footer>/gi, '')
     .replace(/<aside[^>]*>[\s\S]*?<\/aside>/gi, '');
 
-  const pText = extractParagraphs(text);
-  if (pText.length > 200) return pText;
-
   // Step 5: Fallback for old-style HTML (e.g., CurtainUp) using <br> paragraph breaks
   // These sites use bare text with <br><br> instead of <p> tags
   return extractBrSeparatedText(text);
-}
-
-/**
- * Extract paragraph text from HTML fragment.
- */
-function extractParagraphs(html) {
-  const paragraphs = [];
-  const pRegex = /<p[^>]*>([\s\S]*?)<\/p>/gi;
-  let match;
-  while ((match = pRegex.exec(html)) !== null) {
-    const pText = decodeHtmlEntities(match[1].replace(/<[^>]+>/g, '')).trim();
-
-    if (pText.length > 30 &&
-        !pText.toLowerCase().includes('cookie') &&
-        !pText.toLowerCase().includes('subscribe') &&
-        !pText.toLowerCase().includes('sign up for') &&
-        !pText.toLowerCase().includes('advertisement')) {
-      paragraphs.push(pText);
-    }
-  }
-
-  return paragraphs.join('\n\n');
 }
 
 /**
@@ -1455,12 +1390,16 @@ async function processRecoveredText(candidate, text, html, archiveData) {
 // of #260/#263/#264/#266 — see scripts/lib/cli-help.js). This script has no
 // other process.argv handling at all (config is env-var only), so a bare
 // `--help` invocation used to fall straight through to main().
-if (hasHelpFlag(process.argv.slice(2))) {
-  console.log(USAGE);
-  process.exit(0);
-}
+module.exports = { extractTextFromHtml };
 
-main().catch(err => {
-  console.error('\nFATAL ERROR:', err.message);
-  process.exit(1);
-});
+if (require.main === module) {
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log(USAGE);
+    process.exit(0);
+  }
+
+  main().catch(err => {
+    console.error('\nFATAL ERROR:', err.message);
+    process.exit(1);
+  });
+}

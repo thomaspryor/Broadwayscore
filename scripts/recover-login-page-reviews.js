@@ -11,7 +11,8 @@
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { chooseArticleBody, jsonLdBodyToText } = require('./lib/jsonld-body-choice');
+const { chooseArticleBody } = require('./lib/jsonld-body-choice');
+const { extractFromJsonLd, extractParagraphText } = require('./lib/html-article-text');
 const { extractVarietyBody } = require('./lib/article-extractor');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -73,29 +74,6 @@ function buildCookieHeader(url) {
     .join('; ');
 }
 
-function extractFromJsonLd(html) {
-  const jsonLdPattern = /<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi;
-  let match;
-  while ((match = jsonLdPattern.exec(html)) !== null) {
-    try {
-      let data = JSON.parse(match[1]);
-      if (Array.isArray(data)) data = data[0];
-      // Handle @graph
-      if (data['@graph']) {
-        const article = data['@graph'].find(item =>
-          item['@type'] === 'Article' || item['@type'] === 'Review' ||
-          item['@type'] === 'NewsArticle' || item['@type'] === 'WebPage'
-        );
-        if (article) data = article;
-      }
-      // Markup inside the body is stripped like wayback recovery (BRO-5261).
-      const body = jsonLdBodyToText(data.articleBody) || jsonLdBodyToText(data.reviewBody) || jsonLdBodyToText(data.text);
-      if (body) return body;
-    } catch (e) { /* ignore parse errors */ }
-  }
-  return null;
-}
-
 function extractTextFromHtml(html, url) {
   if (!html || typeof html !== 'string') return '';
 
@@ -112,78 +90,9 @@ function extractTextFromHtml(html, url) {
   // article, clearly longer.
   const jsonLdText = extractFromJsonLd(html);
   if (jsonLdText && jsonLdText.length > 500) {
-    return chooseArticleBody(jsonLdText, extractPageText(html, url)).text;
+    return chooseArticleBody(jsonLdText, extractParagraphText(html)).text;
   }
-  return extractPageText(html, url);
-}
-
-function extractPageText(html, url) {
-  // Strip scripts, styles, nav, header, footer, aside
-  let text = html
-    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
-    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
-    .replace(/<nav[^>]*>[\s\S]*?<\/nav>/gi, '')
-    .replace(/<header[^>]*>[\s\S]*?<\/header>/gi, '')
-    .replace(/<footer[^>]*>[\s\S]*?<\/footer>/gi, '')
-    .replace(/<aside[^>]*>[\s\S]*?<\/aside>/gi, '');
-
-  // Strip sidebar/cruft
-  text = text
-    .replace(/<div[^>]*class="[^"]*(?:sharedaddy|jp-relatedposts|sd-sharing|sd-like|wpcnt|related-posts|widget|sidebar|comment|author-bio|author-info|post-tags|post-meta|social-share|share-buttons)[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '')
-    .replace(/<section[^>]*class="[^"]*(?:related|comments|author)[^"]*"[^>]*>[\s\S]*?<\/section>/gi, '');
-
-  // Try to isolate article body
-  const containerSelectors = [
-    'entry-content', 'post-content', 'article-body', 'review-content',
-    'entry clearfix', 'article-content', 'post-body', 'story-body',
-  ];
-  for (const cls of containerSelectors) {
-    const escapedCls = cls.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const pattern = new RegExp(
-      '<div[^>]*class="[^"]*' + escapedCls + '[^"]*"[^>]*>([\\s\\S]*?)(?:<\\/article>|<div[^>]*class="[^"]*(?:comment|related|sidebar|footer|author-bio|post-nav)[^"]*"|<section[^>]*class="[^"]*comment|$)',
-      'i'
-    );
-    const containerMatch = text.match(pattern);
-    if (containerMatch && containerMatch[1]) {
-      const containerPs = [...containerMatch[1].matchAll(/<p[^>]*>[\s\S]*?<\/p>/gi)];
-      if (containerPs.length >= 3) {
-        text = containerMatch[1];
-        break;
-      }
-    }
-  }
-
-  // Extract paragraph content
-  const paragraphs = [];
-  const pRegex = /<p[^>]*>([\s\S]*?)<\/p>/gi;
-  let pMatch;
-  while ((pMatch = pRegex.exec(text)) !== null) {
-    const pText = pMatch[1]
-      .replace(/<[^>]+>/g, '')
-      .replace(/&nbsp;/g, ' ')
-      .replace(/&amp;/g, '&')
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>')
-      .replace(/&quot;/g, '"')
-      .replace(/&#39;/g, "'")
-      .replace(/&#x27;/g, "'")
-      .replace(/&rsquo;/g, '\u2019')
-      .replace(/&lsquo;/g, '\u2018')
-      .replace(/&rdquo;/g, '\u201D')
-      .replace(/&ldquo;/g, '\u201C')
-      .replace(/&mdash;/g, '\u2014')
-      .replace(/&ndash;/g, '\u2013')
-      .trim();
-
-    if (pText.length > 30 &&
-        !pText.toLowerCase().includes('cookie') &&
-        !pText.toLowerCase().includes('subscribe') &&
-        !pText.toLowerCase().includes('sign up for')) {
-      paragraphs.push(pText);
-    }
-  }
-
-  return paragraphs.join('\n\n');
+  return extractParagraphText(html);
 }
 
 function isLoginPage(text) {

@@ -163,7 +163,7 @@ const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, wrongShowCleared
 const { resolveShowIdentity } = require('./lib/show-identity');
 // Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
 // `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
-const { parseJsonLd } = require('./lib/jsonld');
+const { extractFromJsonLd, extractParagraphText } = require('./lib/html-article-text');
 const {
   isWithinPriorRun,
   isWithinTourLeg,
@@ -4156,50 +4156,6 @@ async function extractArticleText(page) {
   );
 }
 
-/**
- * Extract article text from JSON-LD structured data embedded in the page.
- * Many major outlets (NYT, WaPo, HR, USA Today, The Wrap, etc.) embed
- * the full article body in script[type="application/ld+json"] tags.
- */
-function extractFromJsonLd(html) {
-  try {
-    const ldRegex = /<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi;
-    let match;
-    let bestText = '';
-    while ((match = ldRegex.exec(html)) !== null) {
-      try {
-        const items = parseJsonLd(match[1].trim());
-        for (const item of items) {
-          const body = item.articleBody || item.reviewBody || item.text;
-          if (body && typeof body === 'string' && body.length > bestText.length) {
-            const cleaned = body
-              .replace(/<[^>]+>/g, '')
-              .replace(/&nbsp;/g, ' ')
-              .replace(/&amp;/g, '&')
-              .replace(/&lt;/g, '<')
-              .replace(/&gt;/g, '>')
-              .replace(/&quot;/g, '"')
-              .replace(/&#39;/g, "'")
-              .replace(/&rsquo;/g, '\u2019')
-              .replace(/&lsquo;/g, '\u2018')
-              .replace(/&rdquo;/g, '\u201D')
-              .replace(/&ldquo;/g, '\u201C')
-              .replace(/&mdash;/g, '\u2014')
-              .replace(/&ndash;/g, '\u2013')
-              .trim();
-            if (cleaned.length > bestText.length) {
-              bestText = cleaned;
-            }
-          }
-        }
-      } catch (e) { /* malformed JSON-LD */ }
-    }
-    return bestText;
-  } catch (e) {
-    return '';
-  }
-}
-
 // BRO-3499: only TB and Variety delegated to article-extractor.js; the other
 // DEDICATED_EXTRACTOR_HOSTS (WSJ, La Voce, The Stage, The Times, LSA, Theatre
 // Weekly) ran on the generic extraction alone, leaving their tested dedicated
@@ -4280,100 +4236,6 @@ function extractTextFromHtmlGeneric(html, url) {
     return choice.text;
   }
   return extractParagraphText(html);
-}
-
-/** Generic <p>-based article extraction (sidebar/cruft stripped). */
-function extractParagraphText(html) {
-  // Remove scripts, styles, nav, etc.
-  let text = html
-    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
-    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
-    .replace(/<nav[^>]*>[\s\S]*?<\/nav>/gi, '')
-    .replace(/<header[^>]*>[\s\S]*?<\/header>/gi, '')
-    .replace(/<footer[^>]*>[\s\S]*?<\/footer>/gi, '')
-    .replace(/<aside[^>]*>[\s\S]*?<\/aside>/gi, '');
-
-  // Strip known sidebar/cruft sections before extracting <p> tags.
-  // This is more reliable than trying to regex-match container boundaries
-  // (nested divs make [\s\S]*? unreliable).
-  text = text
-    .replace(/<div[^>]*class="[^"]*(?:sharedaddy|jp-relatedposts|sd-sharing|sd-like|wpcnt|related-posts|widget|sidebar|comment|author-bio|author-info|post-tags|post-meta|social-share|share-buttons)[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '')
-    .replace(/<section[^>]*class="[^"]*(?:related|comments|author)[^"]*"[^>]*>[\s\S]*?<\/section>/gi, '')
-    .replace(/<ul[^>]*class="[^"]*(?:social|share|tag)[^"]*"[^>]*>[\s\S]*?<\/ul>/gi, '');
-
-  // Try to isolate article body container using broad class matches.
-  // Use greedy [\s\S]* bounded by a known end-marker to capture all nested divs.
-  const containerSelectors = [
-    'entry-content', 'post-content', 'article-body', 'review-content',
-    'entry clearfix', 'article-content', 'post-body', 'story-body',
-  ];
-  for (const cls of containerSelectors) {
-    const escapedCls = cls.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    // Match from container open tag to end of article/next major section
-    const pattern = new RegExp(
-      '<div[^>]*class="[^"]*' + escapedCls + '[^"]*"[^>]*>([\\s\\S]*?)(?:<\\/article>|<div[^>]*class="[^"]*(?:comment|related|sidebar|footer|author-bio|post-nav)[^"]*"|<section[^>]*class="[^"]*comment|$)',
-      'i'
-    );
-    const containerMatch = text.match(pattern);
-    if (containerMatch && containerMatch[1]) {
-      const containerPs = Array.from(containerMatch[1].matchAll(/<p[^>]*>[\s\S]*?<\/p>/gi));
-      if (containerPs.length >= 3) {
-        text = containerMatch[1];
-        break;
-      }
-    }
-  }
-
-  // Extract paragraph content
-  const paragraphs = [];
-  const pRegex = /<p[^>]*>([\s\S]*?)<\/p>/gi;
-  let match;
-  while ((match = pRegex.exec(text)) !== null) {
-    const pText = match[1]
-      .replace(/<[^>]+>/g, '')
-      .replace(/&nbsp;/g, ' ')
-      .replace(/&amp;/g, '&')
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>')
-      .replace(/&quot;/g, '"')
-      .replace(/&#39;/g, "'")
-      .replace(/&#x27;/g, "'")
-      .replace(/&rsquo;/g, "'")
-      .replace(/&lsquo;/g, "'")
-      .replace(/&rdquo;/g, '"')
-      .replace(/&ldquo;/g, '"')
-      .replace(/&mdash;/g, '—')
-      .replace(/&ndash;/g, '–')
-      .trim();
-
-    if (pText.length > 30 &&
-        !pText.toLowerCase().includes('cookie') &&
-        !pText.toLowerCase().includes('subscribe') &&
-        !pText.toLowerCase().includes('sign up for')) {
-      paragraphs.push(pText);
-    }
-  }
-
-  let result = paragraphs.join('\n\n');
-
-  // Strip trailing blog cruft: author bios, pingbacks, related post lists
-  // These patterns detect where the actual review ends and boilerplate begins
-  const cruftPatterns = [
-    /\n\nView all posts by \w+.*$/s,
-    /\n\n\[&#8230;\].*$/s,
-    /\n\nPingback:.*$/s,
-    /\n\nAbout the Author.*$/si,
-    /\n\nShare this:.*$/si,
-    /\n\nLike this:.*$/si,
-    /\n\nRelated\n.*$/si,
-    /\n\nFiled Under:.*$/si,
-    /\n\nTagged With:.*$/si,
-  ];
-  for (const pattern of cruftPatterns) {
-    result = result.replace(pattern, '');
-  }
-
-  return result;
 }
 
 /**

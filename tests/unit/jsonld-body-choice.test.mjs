@@ -61,6 +61,8 @@ describe('extractTextFromHtml Variety promo modules (BRO-5222)', () => {
     assert.doesNotMatch(out, /Related Stories|Other Show/);
     assert.match(out, /^Review paragraph 0/);
     assert.match(out, /Review later paragraph 11/);
+    const { extractTextFromHtml: wayback } = require('../../scripts/recover-wayback-reviews.js');
+    assert.equal(wayback(varietyPage('Review paragraph 0 '.repeat(40)), 'https://variety.com/2007/legit/reviews/x/'), out);
   });
   it('leaves non-Variety pages to the generic path', () => {
     const out = extractTextFromHtml(varietyPage('Review paragraph 0 '.repeat(40)), 'https://example.com/x/');
@@ -80,4 +82,18 @@ it('jsonLdBodyToText strips markup and keeps paragraphs; the teaser fallback the
   // Prose with a literal or escaped '<' is not markup.
   assert.equal(jsonLdBodyToText('Ratings: 3 &lt; 4 stars, and the cast &gt; the book.'), 'Ratings: 3 < 4 stars, and the cast > the book.');
   assert.equal(jsonLdBodyToText('I <3 this show. Act two -> better.'), 'I <3 this show. Act two -> better.');
+});
+
+// BRO-5244: the acceptance command must exercise the Wayback caller too.
+it('Wayback recovers at least 90% of the collector body through nested divs', () => {
+  const { extractTextFromHtml: wayback } = require('../../scripts/recover-wayback-reviews.js');
+  const nested = `<article><div class="article-body">${para(3, 'Opening')}<div>${para(3, 'Nested')}</div>${para(12, 'Ending')}</div></article>`;
+  for (const url of ['https://example.com/review', 'https://variety.com/review']) {
+    const html = ldPage('', nested);
+    const collected = extractTextFromHtml(html, url);
+    const recovered = wayback(html, url);
+    assert.ok(collected.length > 3000);
+    assert.ok(recovered.length >= collected.length * 0.9, `${url}: Wayback ${recovered.length}, collector ${collected.length}`);
+    assert.match(recovered, /Ending paragraph 11/);
+  }
 });
