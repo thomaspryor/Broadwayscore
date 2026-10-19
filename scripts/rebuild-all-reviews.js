@@ -60,7 +60,8 @@ const { excerptMentionsWrongShow, isTourReviewExcerpt, tourContextForShow, isFil
 const {
   shouldRejectAsReservation, isInternalNote, hasCopyrightChrome, stripLeadingChrome, isPromoTeaser,
   hasListingChrome, stripListingPrelude, isTagCloudExcerpt, isMidWordTruncation,
-  isContiguousInSource, EXCERPT_SOURCE_RANK, pickExcerptCandidate,
+  isContiguousInSource, snapToSourceSpan, isExcerptAnchoredInSource, isTrustedContiguitySource, startsWithPageChrome,
+  phraseContradictsScore, EXCERPT_SOURCE_RANK, RAW_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds, createExcludedStageEmitter, SHOW_HELD_REASONS, isHeldBeforeOpening } = require('./lib/stage-latency');
 const emitExcludedStage = createExcludedStageEmitter();
@@ -69,6 +70,7 @@ const { buildMultiProdDirectorGuard, inheritPriorRunReviews, findPriorRunSibling
 const { inheritUrlFromDuplicateLosers } = require('./lib/duplicate-fold-url');
 const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, isRejectedByReasonExclusion, isRejectedAtExclusion, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
+const { isSoft404Body } = require('./lib/soft-404-body');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText, otherNamedCriticAtOutlet } = require('./lib/byline-from-text');
 const { isPlaceholderByline } = require('./lib/placeholder-byline');
@@ -731,12 +733,18 @@ function selectBestExcerpt(data, showTitle) {
   // 2,970 displayed quotes dropped a mid-sentence clause, an invented terminal
   // period, or spliced passages with "..."). Same mojibake/entity/period fixes
   // cleanExcerpt applies to candidates, so those never read as a mismatch.
-  // Only a substantial, untruncated body is authoritative — a quote from past
-  // the end of a truncated scrape is not evidence of splicing.
-  const contiguitySource = (typeof data.fullText === 'string' && data.fullText.length > 500
-    && data.textStatus !== 'truncated')
+  // Only a substantial, untruncated body that is not flagged as some other
+  // article is authoritative (pull-quote-guards.isTrustedContiguitySource) —
+  // a quote from past the end of a truncated scrape, or checked against a
+  // wrong-show body, is not evidence of splicing.
+  const contiguitySource = isTrustedContiguitySource(data)
     ? fixMissingPeriods(fixMojibake(decodeHtmlEntities(data.fullText)))
     : null;
+  const reviewScore = data.llmScore?.score ?? null;
+  // Candidates the LLM / extractor took from this very fullText.
+  const LLM_DERIVED_SOURCES = new Set(['llmPullQuote', 'keyPhrase', 'keyQuote', 'fullText', 'fullText-chrome-skip']);
+  // A soft-404 template saved as fullText is not review prose to quote from.
+  const bodyIsSoft404 = isSoft404Body(data.fullText);
 
   /**
    * Resolve the final excerpt once a candidate has been accepted (or every
@@ -874,22 +882,46 @@ function selectBestExcerpt(data, showTitle) {
 
     // Layer 2g: Contiguity — the candidate must be a passage the critic wrote,
     // not words stitched across a dropped clause or closed with an invented
-    // period (pull-quote-guards.isContiguousInSource). SOFT reject: a curated
-    // or LLM quote that paraphrases is still better than no quote, but it
-    // never outranks a contiguous accepted candidate (pickExcerptCandidate).
+    // period (pull-quote-guards.isContiguousInSource). When it is not, SNAP to
+    // the one or two source sentences it came from (the critic's exact words
+    // win over a lower source). Only when no snap exists is it deferred; the
+    // deferral is decided after Layers 3-5 so it still passes cross-show and
+    // hedge screening. A deferred non-contiguous quote never outranks a
+    // contiguous accepted candidate (pickExcerptCandidate).
+    let pendingDeferral = null;
     if (contiguitySource && !isContiguousInSource(excerpt, contiguitySource)) {
-      stats.nonContiguousExcerptsDeferred = (stats.nonContiguousExcerptsDeferred || 0) + 1;
-      deferred.push({ rank, excerpt: hardCutExcerpt(excerpt), reason: 'non-contiguous', source });
-      return null;
+      const snapped = snapToSourceSpan(excerpt, contiguitySource);
+      if (snapped && !/^[\s"'“‘«(\[]*[a-z]/.test(snapped) && !startsWithPageChrome(snapped)
+          && !hasCopyrightChrome(snapped) && !isPromoTeaser(snapped) && !hasListingChrome(snapped)) {
+        stats.nonContiguousExcerptsSnapped = (stats.nonContiguousExcerptsSnapped || 0) + 1;
+        excerpt = snapped;
+      } else if (!LLM_DERIVED_SOURCES.has(source) && !isExcerptAnchoredInSource(excerpt, contiguitySource)) {
+        // An aggregator quote with no anchor anywhere in this body was not
+        // copied from it (print edition / other version): unverifiable, not
+        // spliced. LLM candidates were extracted from this body, so for them
+        // absence means paraphrase and they defer.
+        stats.unanchoredAggregatorExcerpts = (stats.unanchoredAggregatorExcerpts || 0) + 1;
+      } else {
+        stats.nonContiguousExcerptsDeferred = (stats.nonContiguousExcerptsDeferred || 0) + 1;
+        pendingDeferral = 'non-contiguous';
+      }
     }
 
     // Layer 2h: Overlong — no sentence end within the display limit to cut at
     // (cleanExcerpt / extractExcerptFromFullText leave it uncut). Deferred in
     // its word-boundary-cut form, ranked after every other deferral.
-    if (isOverlongExcerpt(excerpt)) {
+    if (!pendingDeferral && isOverlongExcerpt(excerpt)) {
       stats.overlongExcerptsDeferred = (stats.overlongExcerptsDeferred || 0) + 1;
-      deferred.push({ rank, excerpt: hardCutExcerpt(excerpt), reason: 'overlong', source });
-      return null;
+      pendingDeferral = 'overlong';
+    }
+
+    // Layer 2i: raw body text that opens with page chrome ("Gift this
+    // articleShare Any honest musician…", "The New York SunJoin TodaySign
+    // In…") is the last resort of all: it only ships when the review has no
+    // other candidate (old OCR'd print scans glue words the same way).
+    if (!pendingDeferral && rank >= RAW_SOURCE_RANK && startsWithPageChrome(excerpt)) {
+      stats.pageChromeExcerptDeferred = (stats.pageChromeExcerptDeferred || 0) + 1;
+      pendingDeferral = 'page-chrome';
     }
 
     // Layer 2b: Off-topic guard is disabled in the automated pipeline.
@@ -932,7 +964,6 @@ function selectBestExcerpt(data, showTitle) {
     // Aggregator excerpts on positive reviews often quote a middle-paragraph caveat
     // ("But the book still needs work") rather than the critic's actual verdict.
     // shouldRejectAsReservation returns false when score is null (safe for aggregator-only reviews).
-    const reviewScore = data.llmScore?.score ?? null;
     // 2026-08-01: SOFT reject. Hard-rejecting here starved two shipped reviews:
     // Body Count / Theater Scene fell through to a raw fullText slice cut
     // mid-word, and Les Misérables Arena / Cititour got no quote at all. A
@@ -941,7 +972,12 @@ function selectBestExcerpt(data, showTitle) {
       if (!stats.hedgeExcerptSuppressed) stats.hedgeExcerptSuppressed = [];
       stats.hedgeExcerptSuppressed.push({ showId, source, excerpt: excerpt.slice(0, 80) });
       console.log(`  🛡️  [hedge-guard] ${showId}: "${source}" deferred as reservation (score ${reviewScore})`);
-      deferred.push({ rank, excerpt: hardCutExcerpt(excerpt), reason: 'hedge', source });
+      deferred.push({ rank, excerpt: hardCutExcerpt(excerpt), reason: pendingDeferral || 'hedge', source });
+      return null;
+    }
+
+    if (pendingDeferral) {
+      deferred.push({ rank, excerpt: hardCutExcerpt(excerpt), reason: pendingDeferral, source });
       return null;
     }
 
@@ -963,7 +999,8 @@ function selectBestExcerpt(data, showTitle) {
   if (data.llmScore?.keyPhrases?.length > 0) {
     // Find a positive or descriptive quote
     for (const phrase of data.llmScore.keyPhrases) {
-      if (phrase.quote && phrase.quote.length > 30 && phrase.sentiment !== 'negative') {
+      if (phrase.quote && phrase.quote.length > 30 && phrase.sentiment !== 'negative'
+          && !phraseContradictsScore(phrase.sentiment, reviewScore)) {
         const cleaned = cleanExcerpt(phrase.quote);
         if (cleaned && !isJunkExcerpt(cleaned)) {
           const validated = validateExcerpt(cleaned, 'keyPhrase');
@@ -971,13 +1008,21 @@ function selectBestExcerpt(data, showTitle) {
         }
       }
     }
-    // Fall back to any quote
+    // Fall back to any quote. One whose sentiment contradicts the score (a
+    // negative phrase on a 78 review shipped as the quote: Snow Geese / USA
+    // Today "spins its wheels for a bit.") is only a last-resort deferral:
+    // it never outranks another accepted candidate, but still beats no quote.
     for (const phrase of data.llmScore.keyPhrases) {
       if (phrase.quote && phrase.quote.length > 30) {
         const cleaned = cleanExcerpt(phrase.quote);
         if (cleaned && !isJunkExcerpt(cleaned)) {
           const validated = validateExcerpt(cleaned, 'keyPhrase');
-          if (validated) return finish({ rank: EXCERPT_SOURCE_RANK.keyPhrase, excerpt: validated });
+          if (!validated) continue;
+          if (phraseContradictsScore(phrase.sentiment, reviewScore)) {
+            deferred.push({ rank: EXCERPT_SOURCE_RANK.keyPhrase, excerpt: validated, reason: 'sentiment-mismatch', source: 'keyPhrase' });
+            continue;
+          }
+          return finish({ rank: EXCERPT_SOURCE_RANK.keyPhrase, excerpt: validated });
         }
       }
     }
@@ -1066,7 +1111,7 @@ function selectBestExcerpt(data, showTitle) {
 
   // 6. Extract from fullText (last automated option — critics often open with
   //    context/scene-setting, so this is lower priority than aggregator excerpts)
-  if (data.fullText && data.fullText.length > 300 && data.textStatus !== 'truncated') {
+  if (data.fullText && data.fullText.length > 300 && data.textStatus !== 'truncated' && !bodyIsSoft404) {
     const extracted = extractExcerptFromFullText(data.fullText, data.showId);
     if (extracted && extracted.length > 50) {
       const validated = validateExcerpt(extracted, 'fullText');
@@ -1082,7 +1127,7 @@ function selectBestExcerpt(data, showTitle) {
   //    Theatre ⋄ ...". See pull-quote-guards.stripLeadingChrome.
   //    Operates on raw fullText (not the truncated-status version) and bails
   //    when the heuristic would skip >70% of text.
-  if (data.fullText && data.fullText.length > 300 && data.textStatus !== 'truncated') {
+  if (data.fullText && data.fullText.length > 300 && data.textStatus !== 'truncated' && !bodyIsSoft404) {
     const stripped = stripLeadingChrome(data.fullText, { maxLen: 600 });
     if (stripped && stripped.length > 50) {
       const cleaned = cleanExcerpt(stripped);

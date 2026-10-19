@@ -8,7 +8,10 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { isContiguousInSource, pickExcerptCandidate } = require('./pull-quote-guards.js');
+const {
+  isContiguousInSource, pickExcerptCandidate, snapToSourceSpan, isTrustedContiguitySource,
+  startsWithPageChrome, phraseContradictsScore,
+} = require('./pull-quote-guards.js');
 const {
   trimToCompleteSentence, cleanExcerpt, truncateAtSentenceBoundary, isOverlongExcerpt, hardCutExcerpt,
 } = require('./rebuild-helpers.js');
@@ -44,10 +47,13 @@ describe('isContiguousInSource', () => {
   it('accepts a terminal period only where the source also ends a sentence', () => {
     assert.equal(isContiguousInSource('Despite all the squabbling and acting out, family values still hold sway.', SAUCE_TEXT), true);
     assert.equal(isContiguousInSource('Despite all the squabbling and acting out.', SAUCE_TEXT), false);
-    // a scrape that lost the period at a paragraph break (next word capitalised)
-    const lostBreak = `${PAD}It is the kind of show worth coming back to again and again Grindr Mom plays at Waterloo East.`;
+    // a scrape that lost the period at a paragraph break
+    const lostBreak = `${PAD}It is the kind of show worth coming back to again and again\n\nGrindr Mom plays at Waterloo East.`;
     assert.equal(isContiguousInSource('It is the kind of show worth coming back to again and again.', lostBreak), true);
-    // ...but a continuing lowercase clause is still a cut
+    // a capitalised next word alone is NOT a sentence end ("starring Audra." vs "Audra McDonald")
+    const starring = `${PAD}The revival, starring Audra McDonald as Rose, is a thunderclap.`;
+    assert.equal(isContiguousInSource('The revival, starring Audra.', starring), false);
+    // ...and a continuing lowercase clause is still a cut
     assert.equal(isContiguousInSource('It is the kind of show worth coming back to.', lostBreak), false);
   });
 
@@ -98,11 +104,34 @@ describe('cleanExcerpt truncation (People / Culture Sauce "..." hard cut)', () =
 });
 
 describe('pickExcerptCandidate: non-contiguous / overlong deferrals are last resorts', () => {
-  it('never outrank an accepted raw-body sentence', () => {
+  it('overlong / sentiment / chrome deferrals never outrank an accepted raw-body sentence', () => {
     assert.equal(pickExcerptCandidate({
       accepted: { rank: 11, excerpt: 'body' },
-      deferred: [{ rank: 0, excerpt: 'spliced', reason: 'non-contiguous' }, { rank: 1, excerpt: 'long...', reason: 'overlong' }],
+      deferred: [{ rank: 1, excerpt: 'long...', reason: 'overlong' }, { rank: 1, excerpt: 'neg', reason: 'sentiment-mismatch' }],
     }), 'body');
+  });
+
+  it('an unsnappable non-contiguous verdict beats a raw-body slice, but loses to a hedge deferral', () => {
+    assert.equal(pickExcerptCandidate({
+      accepted: { rank: 11, excerpt: 'plot summary' },
+      deferred: [{ rank: 0, excerpt: 'paraphrased verdict', reason: 'non-contiguous' }],
+    }), 'paraphrased verdict');
+    assert.equal(pickExcerptCandidate({
+      accepted: { rank: 11, excerpt: 'plot summary' },
+      deferred: [{ rank: 0, excerpt: 'paraphrased verdict', reason: 'non-contiguous' }, { rank: 3, excerpt: 'hedge', reason: 'hedge' }],
+    }), 'hedge');
+  });
+
+  it('a prefix closed with an invented period snaps to the real prefix + "..." when the sentence runs long', () => {
+    const long = `${PAD}This revival pulsates with energy, snaps with attitude and enlivens history, which takes place mostly in the chamber of the Continental Congress in Philadelphia as these colonial delegates argue about breaking ties with England.${PAD}`;
+    assert.equal(snapToSourceSpan('This revival pulsates with energy, snaps with attitude and enlivens history.', long),
+      'This revival pulsates with energy, snaps with attitude and enlivens history...');
+  });
+
+  it('never splits a source sentence at an initial ("Christopher J. Hanke")', () => {
+    const t = `${PAD}The cast is led by Christopher J. Hanke, who is a delight from start to finish here.${PAD}`;
+    assert.equal(snapToSourceSpan('The cast is led by Christopher Hanke, who is a delight.', t),
+      'The cast is led by Christopher J. Hanke, who is a delight from start to finish here.');
   });
 
   it('rank after hedge/fragment deferrals when nothing was accepted, but still fill the slot', () => {
@@ -116,23 +145,81 @@ describe('pickExcerptCandidate: non-contiguous / overlong deferrals are last res
   });
 });
 
+describe('snapToSourceSpan', () => {
+  it('returns the exact source sentence for a dropped-clause quote', () => {
+    assert.equal(snapToSourceSpan(POST_SPLICED, POST_TEXT), POST_REAL);
+  });
+  it('restores a trailing dash qualifier lost to an invented period', () => {
+    assert.equal(snapToSourceSpan(GUARDIAN_CUT, GUARDIAN_TEXT), GUARDIAN_FULL);
+  });
+  it('declines when the quote spans more than two sentences or is not in the text', () => {
+    assert.equal(snapToSourceSpan('Family dramas thrive on friction ... the second act is better.', POST_TEXT), null);
+    assert.equal(snapToSourceSpan('An entirely invented sentence that no critic ever wrote.', POST_TEXT), null);
+  });
+});
+
+describe('isTrustedContiguitySource / startsWithPageChrome / phraseContradictsScore', () => {
+  it('distrusts flagged or truncated bodies', () => {
+    const ok = { fullText: POST_TEXT, textStatus: 'complete' };
+    assert.equal(isTrustedContiguitySource(ok), true);
+    for (const f of ['wrongShow', 'wrongProduction', 'wrongFullText', 'isRoundupArticle']) {
+      assert.equal(isTrustedContiguitySource({ ...ok, [f]: true }), false, f);
+    }
+    assert.equal(isTrustedContiguitySource({ ...ok, contentTier: 'invalid' }), false);
+    assert.equal(isTrustedContiguitySource({ ...ok, textStatus: 'truncated' }), false);
+    assert.equal(isTrustedContiguitySource({ ...ok, wrongShowAutoRecovered: 'rebuild: heuristic' }), false);
+    assert.equal(isTrustedContiguitySource({ ...ok, wrongShowAutoRecovered: 'x', contentVerification: { wrongArticle: false } }), true);
+  });
+  it('detects share-toolbar chrome but not prose that starts with "By"', () => {
+    assert.equal(startsWithPageChrome('Gift this articleShare Any honest musician'), true);
+    assert.equal(startsWithPageChrome('By the end of the night the audience was on its feet.'), false);
+  });
+  it('flags sentiment that contradicts the score', () => {
+    assert.equal(phraseContradictsScore('negative', 78), true);
+    assert.equal(phraseContradictsScore('positive', 35), true);
+    assert.equal(phraseContradictsScore('negative', 55), false);
+    assert.equal(phraseContradictsScore('negative', null), false);
+  });
+});
+
 describe('selectBestExcerpt (real cascade)', () => {
   const base = { showId: 'contiguity-test-show', textStatus: 'complete' };
 
-  it('NY Post: a spliced llmPullQuote loses to a contiguous keyPhrase', () => {
-    const q = selectBestExcerpt({
-      ...base, fullText: POST_TEXT, llmPullQuote: POST_SPLICED,
-      llmScore: { score: 50, keyPhrases: [{ quote: POST_REAL, sentiment: 'negative' }] },
-    }, 'Other Desert Cities');
+  it('NY Post: a spliced llmPullQuote snaps to the real source sentence', () => {
+    const q = selectBestExcerpt({ ...base, fullText: POST_TEXT, llmPullQuote: POST_SPLICED, llmScore: { score: 50 } }, 'Other Desert Cities');
     assert.equal(q, POST_REAL);
   });
 
-  it('Guardian: a quote closed with an invented period loses to the full sentence', () => {
-    const q = selectBestExcerpt({
-      ...base, fullText: GUARDIAN_TEXT, llmPullQuote: GUARDIAN_CUT,
-      llmScore: { score: 85, keyPhrases: [{ quote: GUARDIAN_FULL, sentiment: 'positive' }] },
-    }, 'Other Desert Cities');
+  it('Guardian: a quote closed with an invented period snaps to the full sentence', () => {
+    const q = selectBestExcerpt({ ...base, fullText: GUARDIAN_TEXT, llmPullQuote: GUARDIAN_CUT, llmScore: { score: 85 } }, 'Other Desert Cities');
     assert.equal(q, GUARDIAN_FULL);
+  });
+
+  it('never falls back to a keyPhrase whose sentiment contradicts the score', () => {
+    const q = selectBestExcerpt({
+      ...base, fullText: SAUCE_TEXT, llmScore: { score: 78, keyPhrases: [
+        { quote: 'The cast is uniformly fine, but the play spins its wheels for a bit.', sentiment: 'negative' },
+      ] },
+      bwwExcerpt: 'Despite all the squabbling and acting out, family values still hold sway.',
+    }, 'Other Desert Cities');
+    assert.equal(q, 'Despite all the squabbling and acting out, family values still hold sway.');
+  });
+
+  it('a contradicting keyPhrase still ships when it is the only candidate', () => {
+    const only = 'Adrien Brody, giving a polished and engaging performance as Yarris.';
+    const q = selectBestExcerpt({ ...base, llmScore: { score: 35, keyPhrases: [{ quote: only, sentiment: 'positive' }] } }, 'The Fear of 13');
+    assert.equal(q, only);
+  });
+
+  it('skips the contiguity check against a body flagged as another article', () => {
+    const q = selectBestExcerpt({ ...base, fullText: POST_TEXT, wrongShow: true, llmPullQuote: GUARDIAN_FULL, llmScore: { score: 85 } }, 'Other Desert Cities');
+    assert.equal(q, GUARDIAN_FULL);
+  });
+
+  it('rejects raw body text that opens with page chrome', () => {
+    const chromeText = `Gift this articleShare Any honest musician will tell you the show is loud. ${PAD}`;
+    const q = selectBestExcerpt({ ...base, fullText: chromeText, bwwExcerpt: 'Despite all the squabbling and acting out, family values still hold sway.' }, 'Other Desert Cities');
+    assert.ok(!q || !/^Gift this article/i.test(q), q);
   });
 
   it('a spliced quote still ships when it is the only candidate (never quote-less)', () => {

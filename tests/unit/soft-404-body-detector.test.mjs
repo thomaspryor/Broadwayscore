@@ -19,6 +19,8 @@ const REAL_SHORT_REVIEW =
 test('soft-404 chrome is detected', () => {
   assert.equal(isSoft404Body(LBO_BODY), true);
   assert.equal(isSoft404Body('Page not found. Sorry, we could not find that page. Home Search Contact'), true);
+  // McClatchy template (the-nance-2013 AP shipped it as a pull quote, 2026-10-19)
+  assert.equal(isSoft404Body('404 | Tacoma News Tribune Log In | Subscribe Unfortunately, we are unable to locate the page you requested. Please check the web address you entered and try again.'), true);
 });
 
 test('a genuine short review is not flagged', () => {

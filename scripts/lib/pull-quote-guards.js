@@ -12,6 +12,8 @@
 // even when they weren't. NYT critics especially structure reviews with a
 // middle-paragraph caveat before a positive closer — the LLM reliably picks
 // the caveat as "most quotable".
+const { isSoft404Body } = require('./soft-404-body');
+
 const HEDGE_OPENER_RE = /^\s*(but|yet|still|though|although|however|despite|while)\b/i;
 
 // Mid-sentence pivots like ", but", ", yet", ", though" on a positive review
@@ -29,6 +31,19 @@ const MID_SENTENCE_PIVOT_RE = /,\s+(but|yet(?!\s+(?:again|another|once more)\b)|
 // or too long to read as a pull quote.
 const MIN_QUOTE_LENGTH = 30;
 const MAX_QUOTE_LENGTH = 300;
+
+/**
+ * Does an LLM keyPhrase's sentiment contradict the review's score? A
+ * 'negative' phrase on a score >= 70 review, or a 'positive' one on a
+ * score <= 40 review, misrepresents the verdict as the display quote.
+ * Null score / unknown sentiment → false (no evidence of a contradiction).
+ */
+function phraseContradictsScore(sentiment, score) {
+  if (score == null || typeof score !== 'number') return false;
+  if (sentiment === 'negative' && score >= 70) return true;
+  if (sentiment === 'positive' && score <= 40) return true;
+  return false;
+}
 
 /**
  * Is this candidate too short or too long to ship as a pull quote?
@@ -404,30 +419,61 @@ function isMidWordTruncation(excerpt, sourceTexts) {
 // must be contiguous, in order.
 // ---------------------------------------------------------------------------
 
-function normalizeForContiguityCased(s) {
-  return normalizeForSourceMatch(s)
-    .replace(/…/g, '...')
-    .replace(/\s*-+\s*/g, '-');
+// Fold the glyph differences verifyInText forgives (curly quotes, dash
+// variants, ellipsis character), then collapse whitespace and the spacing
+// around dashes. Lowercased: case never makes a quote non-contiguous.
+function foldContiguityGlyphs(s) {
+  // Single and double quote marks fold together: an outlet's “1776” is an
+  // aggregator's '1776'.
+  return String(s)
+    .replace(/[‘’‚‛“”„‟"]/g, "'")
+    .replace(/[‐-―]/g, '-')
+    .replace(/…/g, '...');
 }
 
 function normalizeForContiguity(s) {
-  return normalizeForContiguityCased(s).toLowerCase();
+  return foldContiguityGlyphs(s)
+    .replace(/\s+/g, ' ')
+    .replace(/ *-+ */g, '-')
+    .trim()
+    .toLowerCase();
+}
+
+// Source form that keeps paragraph breaks as a single '\n' so a sentence end
+// lost at a paragraph break can still be recognised (see sourceEndsSentenceAt).
+function normalizeSourceKeepingBreaks(s) {
+  return foldContiguityGlyphs(s)
+    .replace(/[^\S\n]*\n\s*/g, '\n')
+    .replace(/[^\S\n]+/g, ' ')
+    .replace(/ *-+ */g, '-')
+    .trim()
+    .toLowerCase();
 }
 
 const CONTIGUITY_SOURCE = Symbol('contiguitySource');
 
-// After `end` in the normalized source, does a sentence end (closing quotes /
-// parens, then terminal punctuation, or end of text)? `cased` (the source
-// before lowercasing, same length) also accepts a capitalised next word: a
-// scrape that lost the period at a paragraph break ("...again and again Grindr
-// Mom plays at..."). A continuing clause (", which", "– perhaps", "directed
-// by") still fails.
-function sourceEndsSentenceAt(hay, end, cased) {
-  if (/^["')\]]*(?:[.!?]|\.\.\.|$)/.test(hay.slice(end, end + 6))) return true;
-  return !!cased && /^ ["'\u201C\u2018(]*[A-Z]/.test(cased.slice(end, end + 4));
+/** Normalized views of one source text, cached for the last text seen. */
+function contiguityViews(fullText) {
+  let cache = contiguityViews[CONTIGUITY_SOURCE];
+  if (!cache || cache.raw !== fullText) {
+    const breaks = normalizeSourceKeepingBreaks(fullText);
+    // `hay` and `breaks` share every index: only '\n' -> ' ' differs.
+    cache = { raw: fullText, breaks, hay: breaks.replace(/\n/g, ' '), sentences: null };
+    contiguityViews[CONTIGUITY_SOURCE] = cache;
+  }
+  return cache;
 }
 
-function findSegment(hay, seg, from, cased) {
+// After `end` in the source, does a sentence end there: closing quotes /
+// parens then terminal punctuation, end of text, or a paragraph break (a
+// scrape that dropped the period before a new paragraph)? A continuing clause
+// (", which", "– perhaps", "directed by", " Audra McDonald") does not.
+function sourceEndsSentenceAt(breaks, end) {
+  return /^["')\]]*(?:[.!?]|\.\.\.|\n|$)/.test(breaks.slice(end, end + 6));
+}
+
+function findSegment(views, seg, from) {
+  const { hay, breaks } = views;
   const at = hay.indexOf(seg, from);
   if (at !== -1) return at + seg.length;
   // Terminal punctuation the source also has, possibly outside a closing quote
@@ -437,10 +483,20 @@ function findSegment(hay, seg, from, cased) {
   const body = m[1];
   let i = hay.indexOf(body, from);
   while (i !== -1) {
-    if (sourceEndsSentenceAt(hay, i + body.length, cased)) return i + body.length;
+    if (sourceEndsSentenceAt(breaks, i + body.length)) return i + body.length;
     i = hay.indexOf(body, i + 1);
   }
   return -1;
+}
+
+function excerptSegments(excerpt) {
+  const ex = normalizeForContiguity(excerpt)
+    .replace(/^["'\s]+/, '')
+    .replace(/["'\s]+$/, '');
+  return ex
+    .split(/\s*(?:\.\.\.|\[[^\]]*\])\s*/)
+    .map(s => s.replace(/^["'\s]+|["'\s]+$/g, ''))
+    .filter(Boolean);
 }
 
 /**
@@ -453,37 +509,217 @@ function findSegment(hay, seg, from, cased) {
 function isContiguousInSource(excerpt, fullText) {
   if (!excerpt || typeof excerpt !== 'string') return true;
   if (!fullText || typeof fullText !== 'string') return true;
-
-  // One-entry cache: selectBestExcerpt checks up to ~9 candidates against the
-  // same body, so normalize it once per review.
-  let cache = isContiguousInSource[CONTIGUITY_SOURCE];
-  if (!cache || cache.raw !== fullText) {
-    const casedNorm = normalizeForContiguityCased(fullText);
-    const norm = casedNorm.toLowerCase();
-    // toLowerCase can change length for a few code points; drop the cased view then.
-    cache = { raw: fullText, norm, cased: casedNorm.length === norm.length ? casedNorm : null };
-    isContiguousInSource[CONTIGUITY_SOURCE] = cache;
-  }
-  const hay = cache.norm;
-
-  const ex = normalizeForContiguity(excerpt)
-    .replace(/^["'\s]+/, '')
-    .replace(/["'\s]+$/, '');
-  if (!ex) return true;
-
-  const segments = ex
-    .split(/\s*(?:\.\.\.|\[[^\]]*\])\s*/)
-    .map(s => s.replace(/^["'\s]+|["'\s]+$/g, ''))
-    .filter(Boolean);
+  const segments = excerptSegments(excerpt);
   if (segments.length === 0) return true;
-
+  const views = contiguityViews(fullText);
   let cursor = 0;
   for (const seg of segments) {
-    const end = findSegment(hay, seg, cursor, cache.cased);
+    const end = findSegment(views, seg, cursor);
     if (end === -1) return false;
     cursor = end;
   }
   return true;
+}
+
+// ---------------------------------------------------------------------------
+// Snap: replace a non-contiguous quote with the real passage it came from.
+//
+// Deferring every non-contiguous candidate (first cut of this fix) handed the
+// slot to worse quotes: a negative keyPhrase on a 78 review, or a raw-body
+// plot summary / page chrome in place of the critic's verdict sentence. Most
+// non-contiguous quotes are one source sentence with a clause dropped or an
+// invented period ("…American rot." for "…American rot – perhaps too
+// eerily."). Snapping displays that exact source sentence (or two
+// consecutive sentences) instead, so the critic's own words win.
+// ---------------------------------------------------------------------------
+
+// Sentence ends in the original text: terminal punctuation (+ closing quotes)
+// followed by whitespace and a sentence-starting character, or a newline.
+// Not after an initial or a common abbreviation ("Christopher J. Hanke",
+// "240 W. 44th", "Mr. Diamond"): splitting there snapped quotes that ended
+// mid-name.
+const SOURCE_SENTENCE_SPLIT_RE = /(?<=[.!?]["'”’)\]]*)(?<!(?:^|[\s(])[A-Z]\.)(?<!\b(?:Mr|Mrs|Ms|Dr|St|Jr|Sr|Mt|No|Nos|Ave|Vol|vs)\.)\s+(?=["'“‘(\[]*[A-Z0-9])|\s*\n\s*/;
+
+function sourceSentences(views) {
+  if (views.sentences) return views.sentences;
+  const raws = views.raw.split(SOURCE_SENTENCE_SPLIT_RE).map(x => (x || '').trim()).filter(Boolean);
+  const list = [];
+  let joined = '';
+  for (const raw of raws) {
+    const norm = normalizeForContiguity(raw);
+    if (!norm) continue;
+    if (joined) joined += ' ';
+    list.push({ raw, norm, start: joined.length });
+    joined += norm;
+  }
+  views.sentences = { list, joined };
+  return views.sentences;
+}
+
+function sentenceIndexAt(list, pos) {
+  let lo = 0, hi = list.length - 1, ans = 0;
+  while (lo <= hi) {
+    const mid = (lo + hi) >> 1;
+    if (list[mid].start <= pos) { ans = mid; lo = mid + 1; } else hi = mid - 1;
+  }
+  return ans;
+}
+
+// Anchors are short word runs from the start and end of the quote; a few
+// alternative offsets tolerate a transcription slip right at either end
+// ("performance" for "performances" in an aggregator copy).
+const SNAP_ANCHOR_WORDS = 3;
+const SNAP_ANCHOR_OFFSETS = 4;
+const SNAP_MAX_SENTENCES = 2;
+const SNAP_MIN_WORD_COVERAGE = 0.85;
+// Source text the snap may add BEFORE the quote's first anchor. Small: a long
+// lead means the sentence split missed a boundary and the span would drag in
+// listing chrome ("Through June 18, $35-$298.50 www.audible.com Sexual…").
+// The tail is bounded only by maxLen, so a quote cut mid-sentence (", not
+// only through…") still snaps to its whole sentence.
+const SNAP_MAX_LEAD = 40;
+// When the quote is the start of a source sentence closed with an invented
+// period and the whole sentence would add more than this, show the real
+// prefix with an honest trailing "..." instead ("This “1776” pulsates with
+// energy, snaps with attitude and enlivens history..."), not 200 chars of
+// production detail. Shorter tails (the Guardian's "– perhaps too eerily")
+// are restored in full: they can change the meaning.
+const SNAP_PREFIX_SLACK = 120;
+const SNAP_CHROME_RE = /©|\ball rights reserved\b|\bsubscribe\b|\bsign in\b/i;
+
+/**
+ * Does any start/end anchor of `excerpt` occur in `fullText`? When none does,
+ * the quote is not a modified copy of THIS text (an aggregator quoting the
+ * print edition, or a body that is some other version): contiguity cannot be
+ * judged, so it is no evidence of splicing.
+ */
+function isExcerptAnchoredInSource(excerpt, fullText) {
+  if (!excerpt || !fullText || typeof excerpt !== 'string' || typeof fullText !== 'string') return false;
+  const segments = excerptSegments(excerpt);
+  if (!segments.length) return false;
+  const { hay } = contiguityViews(fullText);
+  const head = segments[0].split(' ');
+  const tail = segments[segments.length - 1].replace(/["')\]]*[.!?]+["')\]]*$/, '').split(' ');
+  for (let o = 0; o < SNAP_ANCHOR_OFFSETS; o++) {
+    const f = head.slice(o, o + SNAP_ANCHOR_WORDS).join(' ');
+    const l = tail.slice(Math.max(0, tail.length - SNAP_ANCHOR_WORDS - o), tail.length - o).join(' ');
+    if ((f.length >= 10 && hay.includes(f)) || (l.length >= 10 && hay.includes(l))) return true;
+  }
+  return false;
+}
+
+/**
+ * `excerpt` without its invented terminal punctuation, plus "...", when that
+ * body is contiguous in `fullText` (the quote is a real prefix of a longer
+ * sentence). Null otherwise.
+ */
+function honestPrefix(excerpt, fullText) {
+  let body = excerpt.trim();
+  const wrapped = /^["“'‘]/.test(body) && /["”'’]$/.test(body);
+  if (wrapped) body = body.slice(1, -1).trim();
+  body = body.replace(/[\s.!?…,;:–—-]+$/, '');
+  if (body.length < 40 || !/[.!?]["”'’)]*$/.test(excerpt.trim())) return null;
+  if (!isContiguousInSource(body, fullText)) return null;
+  return body + '...';
+}
+
+/**
+ * The exact source span (one or two consecutive sentences, ≤ maxLen chars)
+ * that a non-contiguous `excerpt` was taken from, or null when there is no
+ * such span. Never returns text that is not verbatim in `fullText`.
+ *
+ * @param {string} excerpt
+ * @param {string} fullText
+ * @param {{maxLen?: number}} [opts]
+ * @returns {string|null}
+ */
+function snapToSourceSpan(excerpt, fullText, { maxLen = 350 } = {}) {
+  if (!excerpt || !fullText || typeof excerpt !== 'string' || typeof fullText !== 'string') return null;
+  const segments = excerptSegments(excerpt);
+  if (!segments.length) return null;
+  const headWords = segments[0].split(' ');
+  const tailWords = segments[segments.length - 1].replace(/["')\]]*[.!?]+["')\]]*$/, '').split(' ');
+  const firsts = [];
+  const lasts = [];
+  for (let o = 0; o < SNAP_ANCHOR_OFFSETS; o++) {
+    const f = headWords.slice(o, o + SNAP_ANCHOR_WORDS).join(' ');
+    const l = tailWords.slice(Math.max(0, tailWords.length - SNAP_ANCHOR_WORDS - o), tailWords.length - o).join(' ');
+    if (f.length >= 10) firsts.push(f);
+    if (l.length >= 10) lasts.push(l);
+  }
+  if (!firsts.length || !lasts.length) return null;
+
+  const { list, joined } = sourceSentences(contiguityViews(fullText));
+  if (!list.length) return null;
+  const words = segments.join(' ').split(/[^a-z0-9']+/).filter(w => w.length >= 4);
+
+  for (const first of firsts) {
+    for (let a = joined.indexOf(first); a !== -1; a = joined.indexOf(first, a + 1)) {
+      const si = sentenceIndexAt(list, a);
+      if (a - list[si].start > SNAP_MAX_LEAD) continue;
+      for (const last of lasts) {
+        const b = joined.indexOf(last, a);
+        if (b === -1) continue;
+        const ei = sentenceIndexAt(list, b + last.length - 1);
+        if (ei - si + 1 > SNAP_MAX_SENTENCES) continue;
+        const span = list.slice(si, ei + 1).map(x => x.raw).join(' ');
+        if (SNAP_CHROME_RE.test(span)) continue;
+        // A span that does not end a sentence is a scrape cut mid-clause.
+        if (!/[.!?]["'”’)\]]*$/.test(span)) continue;
+        const spanNorm = normalizeForContiguity(span);
+        const covered = words.filter(w => spanNorm.includes(w)).length;
+        if (words.length && covered / words.length < SNAP_MIN_WORD_COVERAGE) continue;
+        const prefix = honestPrefix(excerpt, fullText);
+        if (prefix && (span.length > maxLen || span.length > excerpt.length + SNAP_PREFIX_SLACK)) return prefix;
+        if (span.length > maxLen) continue;
+        return span;
+      }
+    }
+  }
+  return null;
+}
+
+// ---------------------------------------------------------------------------
+// Which review bodies are authoritative enough to judge contiguity against.
+// A body flagged as the wrong show / production / article, a roundup, or an
+// 'invalid' tier is a different text: a correct aggregator quote "fails"
+// against it (1536 / The Stage's Show Score quote vs an unrelated article).
+// An auto-recovered wrongShow flag is a heuristic, trusted only once content
+// verification has run and found no wrong article.
+// ---------------------------------------------------------------------------
+function isTrustedContiguitySource(data) {
+  if (!data || typeof data.fullText !== 'string' || data.fullText.length <= 500) return false;
+  if (data.textStatus === 'truncated') return false;
+  if (data.wrongShow || data.wrongProduction || data.wrongFullText || data.isRoundupArticle) return false;
+  if (data.contentTier === 'invalid') return false;
+  if (isSoft404Body(data.fullText)) return false;
+  if (data.wrongShowAutoRecovered) {
+    const cv = data.contentVerification;
+    if (!cv || cv.wrongArticle || cv.wrongShow) return false;
+  }
+  return true;
+}
+
+// Share/gift/save toolbars that scrapes glue onto the first sentence
+// ("Gift this articleShare Any honest musician…", NY Sun).
+const SHARE_TOOLBAR_RE = /^(?:gift|share|save|listen to)\s+this\s+(?:article|story)/i;
+
+/**
+ * Does `text` open with page chrome rather than review prose? Narrower than
+ * isChromeLine on purpose: that treats any line starting "By" as a byline,
+ * which is wrong for prose ("By the end of the night…").
+ */
+function startsWithPageChrome(text) {
+  if (!text || typeof text !== 'string') return false;
+  const t = text.trim().replace(/^["'“‘]+/, '');
+  // Navigation glued word-to-word by a scrape ("The New York SunJoin
+  // TodaySign InArts+Neil Diamond…"): three or more lowercase→Uppercase joins
+  // in the opening. Names alone (McDonald, LuPone) rarely reach three.
+  if ((t.slice(0, 120).match(/[a-z][A-Z]/g) || []).length >= 3) return true;
+  return SHARE_TOOLBAR_RE.test(t)
+    || /^(?:Review|Photo|Credit|Venue|Production)\s*:/i.test(t)
+    || /^read\s+(?:our|the)\s+(?:full\s+)?review\b/i.test(t)
+    || /^(?:buy\s+tickets|tickets\s+from\s+\$)/i.test(t);
 }
 
 // Bug #13: Off-topic excerpt detection. Very loose — only fires when there are
@@ -544,6 +780,8 @@ const CHROME_LINE_PATTERNS = [
   /^(?:(?:[A-Z][\w'.-]*|St\.?|The)\s+){1,3}(?:Theatre|Theater|Hall|Auditorium|Playhouse)\b/,
   // Date line MM/DD/YYYY or MM-DD-YYYY
   /^\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}/,
+  // Share / gift toolbar text ("Gift this article", "Share this story").
+  /^(?:gift|share|save|listen to)\s+this\s+(?:article|story)/i,
 ];
 
 // A line that looks like the start of the actual review body. We stop the
@@ -717,21 +955,27 @@ function pickExcerptCandidate({ accepted = null, deferred = [], rawSourceRank = 
   // a contiguous body sentence. They are last resorts, ordered after every
   // hedge/fragment deferral (overlong first: its cut is an honest trailing
   // elision of a real passage), so a review is still never left quote-less.
-  const bestHedgeAboveRaw = soft.find(d => d.rank < rawSourceRank && !FALLBACK_ONLY_REASONS.has(d.reason)) || null;
+  // Within the deferrals, a lower reason tier wins before source rank (a
+  // hedged verbatim aggregator quote beats a paraphrased LLM one).
+  const tier = d => DEFERRAL_REASON_TIER[d.reason] || 0;
+  const byTier = soft.slice().sort((a, b) => tier(a) - tier(b) || a.rank - b.rank);
+  const bestHedgeAboveRaw = byTier.find(d => d.rank < rawSourceRank && !FALLBACK_ONLY_REASONS.has(d.reason)) || null;
 
   if (accepted && accepted.excerpt) {
     if (accepted.rank < rawSourceRank) return accepted.excerpt;
     return bestHedgeAboveRaw ? bestHedgeAboveRaw.excerpt : accepted.excerpt;
   }
-  if (!soft.length) return null;
-  const tier = d => DEFERRAL_REASON_TIER[d.reason] || 0;
-  return soft.slice().sort((a, b) => tier(a) - tier(b) || a.rank - b.rank)[0].excerpt;
+  return byTier.length ? byTier[0].excerpt : null;
 }
 
 // Deferral reasons that may never outrank an accepted candidate.
-const FALLBACK_ONLY_REASONS = new Set(['lowercase-fragment', 'overlong', 'non-contiguous']);
+// 'non-contiguous' is NOT here: an unsnappable LLM/aggregator verdict that
+// paraphrases slightly still beats a raw-body plot summary (Deadline / 1984,
+// Variety / 1776 ship-check, 2026-10-19). It still loses to every accepted
+// curated quote, which returns before raw ranks are reached.
+const FALLBACK_ONLY_REASONS = new Set(['lowercase-fragment', 'overlong', 'sentiment-mismatch', 'page-chrome']);
 // When nothing was accepted: lower tier wins, then source rank.
-const DEFERRAL_REASON_TIER = { overlong: 1, 'non-contiguous': 2 };
+const DEFERRAL_REASON_TIER = { overlong: 1, 'non-contiguous': 2, 'sentiment-mismatch': 3, 'page-chrome': 4 };
 
 module.exports = {
   HEDGE_OPENER_RE,
@@ -742,6 +986,7 @@ module.exports = {
   isHedgeOpener,
   hasMidSentencePivot,
   shouldRejectAsReservation,
+  phraseContradictsScore,
   isInternalNote,
   hasCopyrightChrome,
   isPromoTeaser,
@@ -770,6 +1015,10 @@ module.exports = {
   // Contiguity against the review body
   isContiguousInSource,
   normalizeForContiguity,
+  snapToSourceSpan,
+  isExcerptAnchoredInSource,
+  isTrustedContiguitySource,
+  startsWithPageChrome,
   // Candidate ranking
   EXCERPT_SOURCE_RANK,
   RAW_SOURCE_RANK,

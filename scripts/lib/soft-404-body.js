@@ -16,6 +16,9 @@ const STRONG_SIGNATURES = [
   /\bdocument not found\b/i,
   /\bthe document you are looking for does not exist\b/i,
   /\bthe page you (?:are|were) looking for (?:does not exist|could not be found|can(?:no|')t be found|is no longer available)\b/i,
+  // McClatchy (Tacoma News Tribune / AP syndication) template; shipped as
+  // the-nance-2013 AP's pull quote via raw-fullText extraction (2026-10-19).
+  /\bwe are unable to locate the page you requested\b/i,
 ];
 // Weak: phrases a short real review can contain ("page not found" joke, a
 // show with 404 in its title). Count only alongside site-nav chrome.

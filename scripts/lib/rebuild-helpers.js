@@ -404,7 +404,9 @@ function isGenericQuote(text) {
 // opening quote/paren). "L.A. productions", "Baitz's" and "Mr. smith" are not
 // boundaries; the old rule cut at any straight apostrophe or closing quote
 // ("...the U.K. and L.A." shipped on EW / 1984).
-const SENTENCE_END_RE = /[.!?]["'\u201D\u2019)\]]*(?=\s+["'\u201C\u2018(\[]*[A-Z0-9])/g;
+// Initials and common abbreviations ("Christopher J. Hanke", "240 W. 44th",
+// "Mr. Diamond") are not sentence ends.
+const SENTENCE_END_RE = /(?<!(?:^|[\s(])[A-Z])(?<!\b(?:Mr|Mrs|Ms|Dr|St|Jr|Sr|Mt|No|Nos|Ave|Vol|vs))[.!?]["'\u201D\u2019)\]]*(?=\s+["'\u201C\u2018(\[]*[A-Z0-9])/g;
 
 /** Index just past the last real sentence end in `text` within [minLen, maxEnd], or -1. */
 function lastSentenceEnd(text, minLen = 40, maxEnd = Infinity) {
