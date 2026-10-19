@@ -1493,5 +1493,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-19T05:37:06.373Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5674-independent-alias",
+    "title": "Landing blocked: unit-tests-e2e red on land/bro-5674-independent-alias",
+    "description": "land.yml did not land land/bro-5674-independent-alias: the unit-tests-e2e gate went red at 4f637915e5. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39206483052",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5674-independent-alias"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-e2e"
+      },
+      {
+        "name": "tip",
+        "value": "4f637915e5f2ec66a32e1ea955efbf2e6d5c63b2"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39206483052"
+      }
+    ],
+    "queuedAt": "2026-10-19T06:29:01.635Z"
   }
 ]
