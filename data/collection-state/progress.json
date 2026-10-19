@@ -1,20 +1,5 @@
 {
-  "processed": [
-    "la-boheme-off-broadway-2025/wsj--by-tim-page.json",
-    "the-roommate-2024/wsj--charles-isherwood.json",
-    "i-need-that-2023/wsj--charles-isherwood.json",
-    "new-york-new-york-2023/wsj--charles-isherwood.json",
-    "shucked-2023/wsj--charles-isherwood.json",
-    "a-dolls-house-2023/wsj--charles-isherwood.json",
-    "pictures-from-home-2023/wsj--charles-isherwood.json",
-    "kimberly-akimbo-2022/wsj--charles-isherwood.json",
-    "dog-mom-off-west-end-2026/thereviewshub--unknown.json",
-    "dog-mom-off-west-end-2026/notesfromrowh--helena6.json",
-    "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json",
-    "stories-the-tap-dance-sensation-west-end-2026/thereviewshub--the-reviews-hub-london.json",
-    "stories-the-tap-dance-sensation-west-end-2026/theupcoming--scarlett-bruin.json",
-    "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json"
-  ],
+  "processed": [],
   "failed": [
     "the-price-off-west-end-2026/wsj--unknown.json",
     "funny-girl-2002/wsj--charles-isherwood.json",
@@ -24,21 +9,18 @@
     "little-shop-of-horrors-off-broadway-2019/wsj--charles-isherwood.json",
     "aladdin-2014/wsj--terry-teachout.json",
     "titanique-2026/wsj--charles-isherwood.json",
+    "the-roommate-2024/wsj--charles-isherwood.json",
     "gutenberg-2023/wsj--charles-isherwood.json",
     "into-the-woods-2022/wsj--charles-isherwood.json",
     "macbeth-2022/wsj--charles-isherwood.json",
     "the-skin-of-our-teeth-2022/wsj--charles-isherwood.json",
-    "an-oak-tree-off-west-end-2026/times-uk--dominic-maxwell.json",
-    "angels-bone-west-end-2026/bachtrack--unknown.json",
-    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
-    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
-    "some-woman-west-end-2026/guardian--unknown.json",
-    "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
-    "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json",
-    "some-woman-west-end-2026/financialtimes--unknown.json",
-    "some-woman-west-end-2026/sunday-times--clive-davis.json",
-    "some-woman-west-end-2026/thestage--sam-marlowe.json",
-    "some-woman-west-end-2026/times-uk--clive-davis.json"
+    "funny-girl-2022/wsj--charles-isherwood.json",
+    "the-minutes-2022/wsj--charles-isherwood.json",
+    "the-height-of-the-storm-2019/wsj--terry-teachout.json",
+    "tootsie-2019/wsj--terry-teachout.json",
+    "oklahoma-2019/wsj--terry-teachout.json",
+    "network-2018/wsj--terry-teachout.json",
+    "the-cher-show-2018/wsj--terry-teachout.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -48,26 +30,7 @@
       "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/la-boheme-off-broadway-2025/wsj--by-tim-page.json",
-      "la-boheme-off-broadway-2025/wsj--by-tim-page.json",
-      "data/review-texts/the-roommate-2024/wsj--charles-isherwood.json",
-      "the-roommate-2024/wsj--charles-isherwood.json",
-      "data/review-texts/i-need-that-2023/wsj--charles-isherwood.json",
-      "i-need-that-2023/wsj--charles-isherwood.json",
-      "data/review-texts/gutenberg-2023/wsj--charles-isherwood.json",
-      "data/review-texts/new-york-new-york-2023/wsj--charles-isherwood.json",
-      "new-york-new-york-2023/wsj--charles-isherwood.json",
-      "data/review-texts/shucked-2023/wsj--charles-isherwood.json",
-      "shucked-2023/wsj--charles-isherwood.json",
-      "data/review-texts/a-dolls-house-2023/wsj--charles-isherwood.json",
-      "a-dolls-house-2023/wsj--charles-isherwood.json",
-      "data/review-texts/pictures-from-home-2023/wsj--charles-isherwood.json",
-      "pictures-from-home-2023/wsj--charles-isherwood.json",
-      "data/review-texts/kimberly-akimbo-2022/wsj--charles-isherwood.json",
-      "kimberly-akimbo-2022/wsj--charles-isherwood.json",
-      "data/review-texts/some-woman-west-end-2026/times-uk--clive-davis.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
@@ -79,175 +42,7 @@
       "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json"
     ]
   },
-  "startTime": "2026-10-19T00:37:22.642Z",
-  "lastProcessed": "some-woman-west-end-2026/times-uk--clive-davis.json",
-  "log": [
-    {
-      "t": "2026-10-19T00:38:24.791Z",
-      "event": "bb-session",
-      "session": "727dbf62",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
-    {
-      "t": "2026-10-19T00:38:25.688Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-19T00:38:43.402Z",
-      "event": "bb-session",
-      "session": "f8665d50",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
-    {
-      "t": "2026-10-19T00:38:44.278Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-19T00:39:57.214Z",
-      "event": "bb-session",
-      "session": "71a013b0",
-      "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89"
-    },
-    {
-      "t": "2026-10-19T00:39:58.103Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-19T00:40:15.502Z",
-      "event": "bb-session",
-      "session": "13a54267",
-      "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89"
-    },
-    {
-      "t": "2026-10-19T00:40:16.355Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-19T00:40:37.730Z",
-      "event": "bb-session",
-      "session": "6dc0aa78",
-      "url": "https://www.wsj.com/articles/the-roommate-review-on-broadway-an-odd-couple-in-io"
-    },
-    {
-      "t": "2026-10-19T00:40:38.599Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-19T00:40:58.163Z",
-      "event": "bb-session",
-      "session": "d0a5787d",
-      "url": "https://www.wsj.com/articles/i-need-that-review-danny-devito-theresa-rebeck-lucy"
-    },
-    {
-      "t": "2026-10-19T00:40:59.045Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-19T00:41:16.262Z",
-      "event": "bb-session",
-      "session": "535feb0f",
-      "url": "https://www.wsj.com/articles/gutenberg-the-musical-review-broadway-andrew-rannel"
-    },
-    {
-      "t": "2026-10-19T00:41:17.093Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-19T00:41:56.538Z",
-      "event": "bb-session",
-      "session": "9015fa68",
-      "url": "https://www.wsj.com/articles/new-york-new-york-review-a-musical-of-city-striving"
-    },
-    {
-      "t": "2026-10-19T00:41:57.400Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-19T00:42:16.669Z",
-      "event": "bb-session",
-      "session": "0fed5d43",
-      "url": "https://www.wsj.com/articles/shucked-review-a-cornfed-musical-comedy-71faeddf"
-    },
-    {
-      "t": "2026-10-19T00:42:17.541Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-19T00:42:34.778Z",
-      "event": "bb-session",
-      "session": "e3851ece",
-      "url": "https://www.wsj.com/articles/a-dolls-house-review-jessica-chastain-sits-through-"
-    },
-    {
-      "t": "2026-10-19T00:42:35.634Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-19T00:42:53.198Z",
-      "event": "bb-session",
-      "session": "61b77ca0",
-      "url": "https://www.wsj.com/articles/pictures-from-home-review-family-out-of-focus-e2127"
-    },
-    {
-      "t": "2026-10-19T00:42:54.019Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-19T00:43:12.047Z",
-      "event": "bb-session",
-      "session": "c5af9e81",
-      "url": "https://www.wsj.com/articles/kimberly-akimbo-review-broadway-victoria-clark-jean"
-    },
-    {
-      "t": "2026-10-19T00:43:12.879Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-19T00:51:20.555Z",
-      "event": "bb-session",
-      "session": "5f9c8ac2",
-      "url": "https://bachtrack.com/review-angels-bone-du-yun-vavrek-english-national-opera-lo"
-    },
-    {
-      "t": "2026-10-19T00:52:43.908Z",
-      "event": "bb-session",
-      "session": "7716a495",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
-    },
-    {
-      "t": "2026-10-19T00:52:50.807Z",
-      "event": "bb-session",
-      "session": "d97034b1",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
-    },
-    {
-      "t": "2026-10-19T00:54:06.522Z",
-      "event": "bb-session",
-      "session": "f22018cb",
-      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
-    },
-    {
-      "t": "2026-10-19T00:59:36.053Z",
-      "event": "bb-session",
-      "session": "654333f7",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/some-woman-review-anne-ma"
-    },
-    {
-      "t": "2026-10-19T00:59:36.430Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    }
-  ]
+  "startTime": "2026-10-19T00:57:30.083Z",
+  "lastProcessed": "the-cher-show-2018/wsj--terry-teachout.json",
+  "log": []
 }
