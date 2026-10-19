@@ -245,7 +245,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-19T16:41:29.699Z",
-      "lastSeen": "2026-10-19T20:21:08.924Z",
+      "lastSeen": "2026-10-19T20:40:09.739Z",
       "lastNotifiedAt": "2026-10-19T16:41:29.699Z",
       "lastSurfacedAt": "2026-10-19T16:41:29.699Z",
       "notifyCount": 148,
@@ -253,7 +253,7 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 142,
       "sweptTracker": "BRO-5554",
-      "silentRefires": 8
+      "silentRefires": 9
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -6746,7 +6746,7 @@
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
       "incidentOpenedAt": "2026-10-19T17:19:39.195Z",
-      "lastSeen": "2026-10-19T20:21:08.914Z",
+      "lastSeen": "2026-10-19T20:40:09.730Z",
       "lastNotifiedAt": "2026-10-19T17:19:39.195Z",
       "lastSurfacedAt": null,
       "notifyCount": 10,
@@ -6759,7 +6759,7 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38827743361"
       },
       "absentRunIds": [],
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "resolved",
@@ -20564,7 +20564,9 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-5642",
-      "absentRunIds": [],
+      "absentRunIds": [
+        "39319792021"
+      ],
       "silentRefires": 14
     },
     "land:land/bro-5646-codex-pr-lander": {
@@ -21363,6 +21365,25 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "test-yml:red:Unit Tests:a9c62f81": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Install dependencies — \"/home/runner/work/Broadwayscore/Broadwayscore/scripts/lib/aggregator-candidate-extract.test.mjs\"",
+      "firstSeen": "2026-10-19T20:40:05.987Z",
+      "incidentOpenedAt": "2026-10-19T20:40:05.987Z",
+      "lastSeen": "2026-10-19T20:40:05.987Z",
+      "lastNotifiedAt": "2026-10-19T20:40:05.987Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-5722",
+      "dispatch": {
+        "requestedAt": "2026-10-19T20:40:05.987Z",
+        "mode": "dispatch-at-filing",
+        "runId": "39319792021",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39319792021"
+      }
     },
     "land:land/bro-5673-session-budget": {
       "status": "open",
