@@ -119,8 +119,34 @@ function otherActiveShowMatchesExactly(show, exactMatchFn, activeShows) {
   });
 }
 
+/**
+ * One-typo match of a show title against a fetched page's <title>/<h1>, for a
+ * roundup URL a human put in data/bww-roundup-urls.json. BWW titled
+ * Celebrity Autobiography's roundup "CELEBRITY AUTOPBIOGRAPHY", so the
+ * override fetched fine and then the page-title check threw it away.
+ * Same one-typo rule as the slug matcher; never used for discovered URLs.
+ * @returns {{token: string, slugWord: string}|null}
+ */
+function pageTitleTypoMatch(showTitle, html) {
+  const src = String(html || '');
+  const heads = [];
+  const t = src.match(/<title[^>]*>([^<]+)<\/title>/i);
+  if (t) heads.push(t[1]);
+  const h = src.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+  if (h) heads.push(h[1].replace(/<[^>]*>/g, ' '));
+  const words = (x) => String(x).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(Boolean);
+  const titleTokens = words(showTitle).filter(w => !QUERY_NOISE_WORDS.has(w));
+  for (const head of heads) {
+    const m = tokenFuzzyMatch(titleTokens, words(head));
+    if (m) return m;
+  }
+  return null;
+}
+
 module.exports = {
   tokenFuzzyMatch,
+  pageTitleTypoMatch,
   slugDateMs,
   slugDateNearOpening,
   loadActiveShows,
