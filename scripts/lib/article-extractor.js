@@ -1030,7 +1030,11 @@ function normalizeDate(raw, url) {
     // Unparseable time part ("T2:00:00Z", "+00"): keep the old behaviour, the stamp's own date part.
     return publishedStampToLocalDate(raw, url) || raw.trim().slice(0, 10);
   }
-  // Fall back to Date parsing for non-ISO formats (e.g. "June 19, 2026 11:15 AM").
+  // A written date ("June 19, 2026 11:15 AM") is the calendar date printed on the page. Read it
+  // directly: new Date() parses it as machine-local time and toISOString() reports the UTC day, so
+  // on a New York machine "April 19, 2026 11:25 PM" became 2026-04-20 (BRO-5674).
+  const written = require('./html-publish-date').parseWrittenDate(raw);
+  if (written) return written;
   const d = new Date(raw);
   if (!Number.isNaN(d.getTime())) return d.toISOString().slice(0, 10);
   return null;

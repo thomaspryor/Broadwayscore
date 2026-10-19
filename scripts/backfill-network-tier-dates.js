@@ -21,8 +21,6 @@
  */
 
 'use strict';
-const { maxPlausibleYear } = require('./lib/date-utils');
-const { localizeIsoStamp } = require('./lib/local-date');
 
 const fs = require('fs');
 const path = require('path');
@@ -59,75 +57,8 @@ const SKIP_DOMAINS = new Set([
   'cititour.com', 'nytheatre.com', 'stagedoor.com', 'lightingandsoundamerica.com',
 ]);
 
-// ---- HTML date extraction (mirrors backfill-review-dates.js) ----
-function normalizeExtractedDate(dateStr, pageUrl) {
-  if (!dateStr || typeof dateStr !== 'string') return null;
-  // BRO-5499: a UTC stamp (Z / +00:00) is the next calendar day for an evening ET post; use the publisher-local date.
-  dateStr = localizeIsoStamp(dateStr, pageUrl);
-  try {
-    const m = dateStr.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
-    if (m) {
-      const year = parseInt(m[1], 10), month = parseInt(m[2], 10), day = parseInt(m[3], 10);
-      if (year < 1970 || year > maxPlausibleYear({ atLeast: 2030 })) return null;
-      if (month < 1 || month > 12 || day < 1 || day > 31) return null;
-      return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-    }
-    const d = new Date(dateStr);
-    if (isNaN(d.getTime())) return null;
-    const year = d.getFullYear();
-    if (year < 1970 || year > maxPlausibleYear({ atLeast: 2030 })) return null;
-    return `${year}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-  } catch (e) { return null; }
-}
-
-function extractPublishDateFromHtml(html, pageUrl) {
-  if (!html || html.length < 100) return null;
-
-  const jsonLdRegex = /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
-  let match;
-  while ((match = jsonLdRegex.exec(html)) !== null) {
-    try {
-      const data = JSON.parse(match[1].trim());
-      const items = Array.isArray(data) ? data : (data['@graph'] || [data]);
-      for (const item of items) {
-        const date = item.datePublished || item.dateCreated;
-        if (date) {
-          const normalized = normalizeExtractedDate(date, pageUrl);
-          if (normalized) return normalized;
-        }
-      }
-    } catch (e) { /* invalid JSON-LD, skip */ }
-  }
-
-  const metaSelectors = [
-    /meta[^>]*property=["']article:published_time["'][^>]*content=["']([^"']+)["']/i,
-    /meta[^>]*content=["']([^"']+)["'][^>]*property=["']article:published_time["']/i,
-    /meta[^>]*property=["']og:article:published_time["'][^>]*content=["']([^"']+)["']/i,
-    /meta[^>]*name=["']date["'][^>]*content=["']([^"']+)["']/i,
-    /meta[^>]*name=["']DC\.date\.issued["'][^>]*content=["']([^"']+)["']/i,
-  ];
-  for (const regex of metaSelectors) {
-    const m = html.match(regex);
-    if (m && m[1]) {
-      const normalized = normalizeExtractedDate(m[1], pageUrl);
-      if (normalized) return normalized;
-    }
-  }
-
-  const timeMatch = html.match(/<time[^>]*datetime=["']([^"']+)["'][^>]*>/i);
-  if (timeMatch && timeMatch[1]) {
-    const normalized = normalizeExtractedDate(timeMatch[1], pageUrl);
-    if (normalized) return normalized;
-  }
-
-  const stageMatch = html.match(/aos-ArticleDate[^>]*>((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2},\s*\d{4})/i);
-  if (stageMatch && stageMatch[1]) {
-    const normalized = normalizeExtractedDate(stageMatch[1], pageUrl);
-    if (normalized) return normalized;
-  }
-
-  return null;
-}
+// ---- HTML date extraction: shared with collect-review-texts.js (BRO-5674) ----
+const { extractPublishDateFromHtml, normalizeExtractedDate } = require('./lib/html-publish-date');
 
 const RUN_DATE_WORDS = /\b(through|until|closing|effective|expires|ends|extended|running|booking|playing|performances?|opens|opening|previews?)\b/i;
 function extractDateFromText(text) {
