@@ -41,6 +41,17 @@ test('very long output is capped at INGEST_REASON_MAX', () => {
 
 test('audit-show-review-gap uses the helper, not a 100-char execErrorDetail cap', () => {
   const src = fs.readFileSync(new URL('../audit-show-review-gap.js', import.meta.url), 'utf8');
-  assert.doesNotMatch(src, /execErrorDetail\(e, 100\)/);
-  assert.match(src, /ingestFailureReason\(e\)/);
+  assert.doesNotMatch(src, /execErrorDetail\(/);
+  assert.equal((src.match(/ingestFailureReason\(e\)/g) || []).length, 2);
+});
+
+test('parent timeout keeps the child stderr, not only "spawnSync ETIMEDOUT"', async () => {
+  const { execFileSync } = await import('node:child_process');
+  let err;
+  try {
+    execFileSync('node', ['-e', 'console.error("Paywall detected on thestage.co.uk: subscriber-only"); setTimeout(()=>{}, 20000)'], { stdio: 'pipe', timeout: 1500, killSignal: 'SIGKILL' });
+  } catch (e) { err = e; }
+  const reason = ingestFailureReason(err);
+  assert.match(reason, /ETIMEDOUT/);
+  assert.match(reason, /Paywall detected on thestage\.co\.uk/);
 });
