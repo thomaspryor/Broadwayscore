@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5647-f",
   "planId": "5a6dae92-54b1-49cc-a98c-256640fcfe61",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-19T02:32:50.032Z",
   "submitter": {
     "name": null,
@@ -66,5 +66,33 @@
         "description": "Notes match the new figure."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-19T02:47:13.068Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for liberation"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for liberation"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for dolly-an-original-musical"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for dolly-an-original-musical"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for dolly-an-original-musical"
+    }
+  ]
 }
