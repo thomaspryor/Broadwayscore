@@ -1,3 +1,4 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural: no byte-identical art across unrelated shows; pins no show fact
 // BRO-5729 (BRO-3425 pattern): live-data assertions split out of scripts/lib/duplicate-images.test.mjs. They assert ceilings / zero-counts over
 // bot-rewritten data (data/shows.json + public/), so in a code-test batch they turn main red with no code change.
 // They run in check-corpus-drift.yml's "Live-data assertions" step (data-health), excluded from the unit batches in

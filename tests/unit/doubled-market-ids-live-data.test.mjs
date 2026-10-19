@@ -1,3 +1,4 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural: zero unallowlisted doubled-market ids, allowlist consistency; pins no show fact beyond the documented allowlist
 // BRO-5729 (BRO-3425 pattern): live-data assertions split out of scripts/lib/doubled-market-ids.test.mjs. They assert ceilings / zero-counts over
 // bot-rewritten data (data/shows.json), so in a code-test batch they turn main red with no code change.
 // They run in check-corpus-drift.yml's "Live-data assertions" step (data-health, which checks out core data and
