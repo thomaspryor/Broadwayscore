@@ -145,7 +145,7 @@ export default function FantasyGuidePage() {
             <p className="text-brand">Prices are provisional until the draft opens on {shortDate(DRAFT_OPENS)}, then fixed for the season.</p>
           )}
           <p>Prices reflect projected points: Tony prospects, box office outlook, weeks left to run, and known scores. The line under each show is the reasoning.</p>
-          <p><span className="text-score-tepid">{ELIGIBILITY_MARKERS.criticScoreLocked} Already open</span> = reviews are public, so the show earns box office and awards points only (awards only if it closes before {hasLateEntry() ? 'your first box office week' : <>box office starts on {shortDate(SCORING_START)}</>}).</p>
+          <p><span className="text-score-tepid">{ELIGIBILITY_MARKERS.criticScoreLocked} Already open</span> = reviews are public, so the show earns box office (Broadway only) and awards points only (awards only if it closes before {hasLateEntry() ? 'your first box office week' : <>box office starts on {shortDate(SCORING_START)}</>}).</p>
           <p><span className="text-purple-400">OB</span> = Off-Broadway (no box office, no Tony eligibility)</p>
           <p className="text-gray-500">Shows that open after you draft earn critic and audience points for you. Audience points need the show&apos;s audience grade to be still unpublished when you draft (grades can appear in previews). Scores shown here may still change.</p>
         </div>
@@ -159,7 +159,7 @@ export default function FantasyGuidePage() {
         <TierSection
           title="Off-Broadway"
           subtitle={obShows.length ? `$${Math.min(...obShows.map(s => s.price))}–${Math.max(...obShows.map(s => s.price))}` : ''}
-          description="No box office. Not Tony-eligible. Earn CriticScore, AudienceGrade, and Drama Desk, Outer Critics, Lortel and Obie awards."
+          description="No box office. Not Tony-eligible. Earn CriticScore, AudienceGrade, and Drama Desk, Outer Critics, Drama League and Lortel awards."
           shows={obShows}
         />
 

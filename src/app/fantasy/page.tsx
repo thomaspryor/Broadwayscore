@@ -255,7 +255,7 @@ export default function FantasyLandingPage() {
             <h3 className="font-semibold mb-3 flex items-center gap-2">
               <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-brand/15 text-brand text-sm">🏆</span> Awards
             </h3>
-            <p className="text-xs text-gray-500 mb-2">7 ceremonies: Tonys, Drama Desk, Outer Critics, Drama League, NYDCC, Lortel, Obie</p>
+            <p className="text-xs text-gray-500 mb-2">6 ceremonies: Tonys, Drama Desk, Outer Critics, Drama League, NYDCC, Lortel</p>
             <div className="space-y-1.5 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-400">Tony Best Musical / Play</span>
@@ -284,10 +284,6 @@ export default function FantasyLandingPage() {
               <div className="flex justify-between">
                 <span className="text-gray-400">Lortel Win / Nom</span>
                 <span className="font-mono text-gray-300">{AWARDS_POINTS.lortelWin} / {AWARDS_POINTS.lortelNom} pts</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-400">Obie Award</span>
-                <span className="font-mono text-gray-300">{AWARDS_POINTS.obieAward} pts</span>
               </div>
             </div>
             <p className="text-xs text-gray-500 mt-2">
@@ -444,7 +440,7 @@ export default function FantasyLandingPage() {
             },
             {
               q: 'What about Off-Broadway shows?',
-              a: `${obRange ? `Priced $${obRange.min} to $${obRange.max}. ` : ''}They earn CriticScore and AudienceGrade points, plus Drama Desk, Outer Critics Circle, Lortel, and Obie awards. No box office and no Tony nominations.`,
+              a: `${obRange ? `Priced $${obRange.min} to $${obRange.max}. ` : ''}They earn CriticScore and AudienceGrade points, plus Drama Desk, Outer Critics Circle, Drama League, and Lortel awards. No box office and no Tony nominations.`,
             },
             {
               q: 'What if a new show is announced after I draft?',
