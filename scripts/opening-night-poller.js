@@ -795,7 +795,9 @@ async function runAggregators(show) {
       console.log(`  Playbill Verdict article: ${hit.articleUrl}`);
       const articleFetch = await fetchPage(hit.articleUrl, { skipVerify: true });
       if (articleFetch && articleFetch.content) {
-        const links = extractReviewLinksFromArticle(articleFetch.content, show.id);
+        const identity = checkArchiveCategory(articleFetch.content, show, siblingCategoriesByShowId()[show.id]);
+        if (!identity.ok) console.log(`  Playbill Verdict rejected: ${identity.reason}`);
+        const links = identity.ok ? extractReviewLinksFromArticle(articleFetch.content, show.id) : [];
         // resolveOutletFromUrl lives in review-normalization; using it here
         // sets outletId up-front so processDiscoveredReviews doesn't have to
         // fall back to a slugified domain (which misses aliases — e.g.

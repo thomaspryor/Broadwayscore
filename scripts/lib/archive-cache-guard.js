@@ -1,6 +1,7 @@
 'use strict';
 
 const fs = require('fs');
+const { checkRoundupRunWindow } = require('./roundup-link-coverage');
 const {
   validateRoundupPageTitle,
   isPunctuationFalsePositive,
@@ -37,7 +38,10 @@ const {
  * show.title/show.category), so the rename carries no behavior change.
  *
  * @param {string} html
- * @param {{title: string, category: string}} show
+ * Roundup/Verdict pages also have to pass the run-window check before any
+ * title match or punctuation rescue can be trusted.
+ *
+ * @param {{title: string, category: string, openingDate?: string, previewsStartDate?: string, venue?: string}} show
  * @param {string[]} [siblingCategories]
  * @returns {object} same shape as validateRoundupPageTitle(); a rescued
  *   punctuation false positive comes back with ok:true and rescued:true, or
@@ -45,8 +49,7 @@ const {
  *   rescued page is really a sibling's.
  */
 function checkArchiveCategory(html, show, siblingCategories) {
-  const check = validateRoundupPageTitle(html, show.title, show.category, siblingCategories);
-  if (check.ok) return check;
+  let check = validateRoundupPageTitle(html, show.title, show.category, siblingCategories);
   if (check.reason === 'page-title-mismatch' && isPunctuationFalsePositive(check.pageTitle, show.title)) {
     // A rescue only proves the page names this title. The sibling guards a
     // word-matched page gets (containing-title-sibling, cross-market-sibling)
@@ -57,7 +60,14 @@ function checkArchiveCategory(html, show, siblingCategories) {
     if (siblingFailure) {
       return { ok: false, pageTitle: check.pageTitle, rescuedTitle: true, ...siblingFailure };
     }
-    return { ...check, ok: true, rescued: true };
+    check = { ...check, ok: true, rescued: true };
+  }
+  if (check.ok) {
+    // Scope run-window checks to roundup/Verdict pages, not evergreen show
+    // listings (BWW /reviews/, Show Score, etc.) that share this guard.
+    const kind = /Review Roundup/i.test(check.pageTitle) ? 'bww-roundups'
+      : /\bPlaybill\b/i.test(check.pageTitle) ? 'playbill-verdict' : null;
+    if (kind) return { ...check, ...checkRoundupRunWindow(html, show, kind) };
   }
   return check;
 }

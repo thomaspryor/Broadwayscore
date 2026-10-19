@@ -16,7 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { extractReviewLinks, classifyLinks, isPlausibleForShow } = require('./lib/roundup-link-coverage');
+const { reviewLinksForShow, classifyLinks } = require('./lib/roundup-link-coverage');
 
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
@@ -48,7 +48,7 @@ for (const s of shows) {
   for (const kind of KINDS) {
     const p = path.join(ROOT, 'data', 'aggregator-archive', kind, `${s.id}.html`);
     if (!fs.existsSync(p)) continue;
-    const links = extractReviewLinks(fs.readFileSync(p, 'utf8'), kind).filter((l) => isPlausibleForShow(l, s));
+    const links = reviewLinksForShow(fs.readFileSync(p, 'utf8'), kind, s);
     for (const c of classifyLinks(links, rowsByShow.get(s.id) || [], files)) {
       if (c.status !== 'covered') report.push({ showId: s.id, source: kind, ...c });
     }
