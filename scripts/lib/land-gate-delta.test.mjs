@@ -560,6 +560,6 @@ test('CLI --red-gates prints the comma list land.yml feeds to GAUNTLET_GATES (em
     r = runCli(['--red-gates', someRed]);
     assert.equal(r.stdout.trim(), GATES.filter((g) => g === 'unit-tests-node' || g === 'scripts-lib-tests').join(','));
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 3 });
   }
 });

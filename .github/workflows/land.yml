@@ -931,9 +931,10 @@ jobs:
         # tick: it builds only when site files or core data differ from what
         # is live, so a docs or bookkeeping landing costs one ~30s gate job.
         # Rollback: repo variable LAND_DEPLOY_DISPATCH=0.
-        # always(): a failed cleanup step after the push (ref delete, train
-        # unmark, alert resolve) must not strand a change that is on main.
-        if: always() && steps.admit.outcome == 'success' && steps.land.outputs.landed == 'true' && vars.LAND_DEPLOY_DISPATCH != '0'
+        # !cancelled(): a failed cleanup step after the push (ref delete, train
+        # unmark, alert resolve) must not strand a change that is on main; a
+        # parked (self-cancelled) run never landed anything.
+        if: ${{ !cancelled() && steps.land.outputs.landed == 'true' && steps.admit.outcome == 'success' && vars.LAND_DEPLOY_DISPATCH != '0' }}
         continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
