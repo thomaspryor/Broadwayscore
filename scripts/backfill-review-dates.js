@@ -60,7 +60,7 @@ const prioritize = args.includes('--prioritize'); // sort by high-yield domains 
 const freeOnly = args.includes('--free-only'); // skip paid scrapers (Archive.org + direct fetch only)
 const retryFailed = args.includes('--retry-failed'); // re-try reviews that previously failed backfill
 const recheckDates = args.includes('--recheck-dates'); // BRO-5674: re-read early non-page dates
-const { needsOpeningWindowDateRecheck } = require('./lib/publish-date-provenance');
+const { needsOpeningWindowDateRecheck, resolvePageDateReplacement } = require('./lib/publish-date-provenance');
 
 // Rate limit Archive.org to ~6 req/min (CDX limit is ~15/min)
 let lastArchiveRequest = 0;
@@ -321,22 +321,23 @@ async function main() {
         }
       }
 
-      // Try free sources first (no API credits)
+      // Try free sources first (no API credits). --recheck-dates tries the
+      // live page (paid chain) before archive.org: an archived copy is only a
+      // fallback there (dateSource html-archive-org is not trusted, BRO-5674).
       let html = null;
       let dateSource = null;
 
-      // Free source 1: Direct fetch with cookies (for paywalled domains we have cookies for)
-      try {
-        const result = await fetchWithCookies(url);
-        if (result.html && result.html.length > 500) {
-          html = result.html;
-          dateSource = 'html-cookies';
-          console.log('  → Got HTML via cookies (free)');
-        }
-      } catch (e) { /* try next */ }
-
-      // Free source 2: Archive.org Wayback Machine
-      if (!html) {
+      const tryCookies = async () => {
+        try {
+          const result = await fetchWithCookies(url);
+          if (result.html && result.html.length > 500) {
+            html = result.html;
+            dateSource = 'html-cookies';
+            console.log('  → Got HTML via cookies (free)');
+          }
+        } catch (e) { /* try next */ }
+      };
+      const tryArchive = async () => {
         try {
           const result = await fetchFromArchiveOrg(url);
           if (result.html && result.html.length > 500) {
@@ -345,10 +346,9 @@ async function main() {
             console.log(`  → Got HTML via Archive.org (free, snapshot=${result.archiveTimestamp})`);
           }
         } catch (e) { /* try next */ }
-      }
-
-      // Paid source: ScrapingBee/Bright Data (only if --free-only is NOT set)
-      if (!html && !freeOnly) {
+      };
+      const tryPaid = async () => {
+        if (freeOnly) return;
         try {
           const result = await fetchPage(url, { timeout: 15000 });
           html = typeof result === 'string' ? result : (result?.html || result?.content || '');
@@ -359,6 +359,10 @@ async function main() {
             html = null;
           }
         } catch (e) { /* fall through */ }
+      };
+      for (const step of recheckDates ? [tryCookies, tryPaid, tryArchive] : [tryCookies, tryArchive, tryPaid]) {
+        if (html) break;
+        await step();
       }
 
       if (!html) {
@@ -372,14 +376,44 @@ async function main() {
       if (date) {
         console.log(`  ✓ Extracted date: ${date} (${dateSource})`);
         extracted++;
-        if (!dryRun) {
-          const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        const current = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        // BRO-5674: a page date more than 7 days from the stored one replaces it
+        // only when the stored date is already in doubt (early, non-page).
+        const decision = resolvePageDateReplacement({
+          storedDate: recheckDates ? current.publishDate : null,
+          pageDate: date,
+          allowDivergent: recheckDates && needsOpeningWindowDateRecheck(current, showById.get(show)),
+        });
+        if (!decision.replace) {
+          console.log(`  ✗ Page date ${date} is ${decision.divergentDays} days from stored ${current.publishDate}: kept as pageDateCandidate`);
+          extracted--;
+          failed++;
+          if (!dryRun) {
+            current.pageDateCandidate = date;
+            current.pageDateCandidateSource = dateSource;
+            current.needsDateRecheck = true;
+            current.dateRecheckAttempted = new Date().toISOString();
+            current.dateRecheckAttemptReason = 'page-date-diverges';
+            safeWriteReview(filePath, current);
+          }
+        } else if (!dryRun) {
+          const data = current;
           if (recheckDates && data.publishDate !== date) console.log(`  → replaces ${data.publishDate} (${data.dateSource || 'no dateSource'})`);
+          delete data.pageDateCandidate;
+          delete data.pageDateCandidateSource;
           data.publishDate = date;
           data.dateSource = dateSource;
           delete data.dateBackfillAttempted; // clear failed marker on success
           delete data.dateRecheckAttempted;
-          delete data.needsDateRecheck; // a page date is trusted (BRO-5674)
+          // A live-page date is trusted; an archived copy keeps the file marked (BRO-5674).
+          // Marked attempted too, so the next sweep does not refetch the same snapshot (--retry-failed does).
+          if (dateSource === 'html-archive-org' && recheckDates) {
+            data.needsDateRecheck = true;
+            data.dateRecheckAttempted = new Date().toISOString();
+            data.dateRecheckAttemptReason = 'archive-copy-only';
+          } else {
+            delete data.needsDateRecheck;
+          }
           safeWriteReview(filePath, data, { force: true });
         }
       } else {

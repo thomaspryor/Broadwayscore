@@ -170,7 +170,7 @@ const {
 } = require('./lib/wrong-production-autoclear');
 const { shouldRetryGarbageConsentWall, storedTextNeedsConsentRefetch, shouldReleaseConsentLayerNonReview, salvageConsentPrefixedStoredText, salvageSourceHash, applyVerifiedRetryOutcome } = require('./lib/consent-refetch');
 const { shouldRetryDatelessHoldFetch } = require('./lib/review-slot-guards');
-const { isProvisionalPublishDate, isReplaceableByPageDate, needsOpeningWindowDateRecheck, bodyPublishDateFallback, ingestGateDate } = require('./lib/publish-date-provenance');
+const { isProvisionalPublishDate, isReplaceableByPageDate, needsOpeningWindowDateRecheck, resolvePageDateReplacement, htmlDateSourceFor, bodyPublishDateFallback, ingestGateDate } = require('./lib/publish-date-provenance');
 const { checkBrowserbaseCaps, countBrowserbaseAttempt, resolveMaxSessionsPerDay, resolveRecoveryReserve, resolveUseReserve, isDeniedHost, isTier1RecoveryHost, tier1BoostForCaller, resolveExemptScripts: resolveBbExemptScripts } = require('./lib/browserbase-caps');
 const { isExemptCaller: isBbExemptCaller } = require('./lib/brightdata-caps');
 
@@ -4753,13 +4753,27 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   const carriedDateSource = carriedPublishDate ? (data.dateSource || null) : null;
   if (provisionalPublishDate || carriedPublishDate) data.publishDate = null;
 
-  // Extract publishDate from HTML if not already set
+  // Extract publishDate from HTML if not already set. An archived copy is
+  // stored as 'html-archive' (a live page may still replace it).
+  let pageDateDiverged = false;
   if (!data.publishDate && html) {
     const extractedDate = extractPublishDateFromHtml(html, data.url);
     if (extractedDate) {
-      data.publishDate = extractedDate;
-      data.dateSource = 'html-page';
-      console.log(`    → Extracted publishDate from HTML: ${extractedDate}`);
+      // BRO-5674: a page date more than 7 days from the carried date is not
+      // trusted on its own: keep the carried date, record the candidate.
+      const decision = resolvePageDateReplacement({ storedDate: carriedPublishDate, pageDate: extractedDate });
+      if (decision.replace) {
+        data.publishDate = extractedDate;
+        data.dateSource = htmlDateSourceFor(method);
+        delete data.pageDateCandidate;
+        delete data.pageDateCandidateSource;
+        console.log(`    → Extracted publishDate from HTML: ${extractedDate} (${data.dateSource})`);
+      } else {
+        pageDateDiverged = true;
+        data.pageDateCandidate = extractedDate;
+        data.pageDateCandidateSource = htmlDateSourceFor(method);
+        console.log(`    → Page date ${extractedDate} is ${decision.divergentDays} days from carried ${carriedPublishDate}: kept, needsDateRecheck`);
+      }
     }
   }
   // A carried date the page could not confirm stays as it was. Not replaced by
@@ -4810,13 +4824,13 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       const sid = review.showId || data.showId;
       showMeta = _showsJsonCache.shows.find(s => s.id === sid) || null;
     } catch (e) { /* shows.json unavailable */ }
-    if (showMeta) {
-      if (needsOpeningWindowDateRecheck(data, showMeta)) {
-        if (!data.needsDateRecheck) console.log(`    → publishDate ${data.publishDate} is >2 days before opening ${showMeta.openingDate} and not from the page: needsDateRecheck`);
-        data.needsDateRecheck = true;
-      } else if (data.needsDateRecheck) {
-        delete data.needsDateRecheck;
-      }
+    if (pageDateDiverged) {
+      data.needsDateRecheck = true;
+    } else if (showMeta && needsOpeningWindowDateRecheck(data, showMeta)) {
+      if (!data.needsDateRecheck) console.log(`    → publishDate ${data.publishDate} is >2 days before opening ${showMeta.openingDate} and not from the page: needsDateRecheck`);
+      data.needsDateRecheck = true;
+    } else if (showMeta && data.needsDateRecheck && !data.pageDateCandidate) {
+      delete data.needsDateRecheck;
     }
   }
 
