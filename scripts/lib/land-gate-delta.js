@@ -81,6 +81,11 @@
 //        [--gates a,b,…] [--summary-file F] [--github-output F]
 //     exit 0 = every gate passes under the rule; exit 1 = at least one NEW
 //     failure (named on stdout as ::error:: annotations and in the summary).
+//   node scripts/lib/land-gate-delta.js --red-gates D [--gates a,b,…]
+//     prints the comma list of gates that are not green in result dir D
+//     (non-zero exit, or no result). land.yml runs the base gauntlet for
+//     exactly these: a gate green on the branch passes whatever the base says
+//     (decideGateDelta), so its base result is never needed (BRO-5670).
 //   node scripts/lib/land-gate-delta.js --code-hash <sha> [--cwd DIR]
 //     prints the base cache key material: a sha256 over the tree's
 //     verification-relevant paths (INERT_FOR_VERIFICATION_RE from
@@ -276,6 +281,14 @@ function decideGateDelta({ gate, base, branch }) {
   };
 }
 
+/** Gates whose result in `dir` is not a clean exit 0, in GATES order. */
+function redGates({ gates = GATES, dir, read = readGateResult }) {
+  return gates.filter((gate) => {
+    const r = read(dir, gate);
+    return !r || r.exit !== 0;
+  });
+}
+
 /** Decide every gate. `read(dir, gate)` → {exit,text,root} | null. */
 function decideAllGates({ gates = GATES, base, branch, read = readGateResult }) {
   return gates.map((gate) => {
@@ -401,7 +414,12 @@ function parseArgs(argv) {
 function main(argv = process.argv.slice(2)) {
   const args = parseArgs(argv);
   if (args.help || args.h) {
-    console.log('usage: land-gate-delta.js --base-dir D --branch-dir D [--gates a,b] [--summary-file F] [--github-output F] [--base-source S] [--strict]\n       land-gate-delta.js --code-hash <sha> [--cwd DIR]');
+    console.log('usage: land-gate-delta.js --base-dir D --branch-dir D [--gates a,b] [--summary-file F] [--github-output F] [--base-source S] [--strict]\n       land-gate-delta.js --red-gates D [--gates a,b]\n       land-gate-delta.js --code-hash <sha> [--cwd DIR]');
+    return 0;
+  }
+  if (args['red-gates'] && args['red-gates'] !== true) {
+    const gates = args.gates && args.gates !== true ? String(args.gates).split(',').map((g) => g.trim()).filter(Boolean) : GATES;
+    console.log(redGates({ gates, dir: String(args['red-gates']) }).join(','));
     return 0;
   }
   if (args['code-hash']) {
@@ -454,6 +472,7 @@ module.exports = {
   isCacheKeyRelevant,
   decideGateDelta,
   decideAllGates,
+  redGates,
   firstFailingGate,
   readGateResult,
   readMeta,
