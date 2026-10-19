@@ -1343,6 +1343,37 @@
     "queuedAt": "2026-10-19T02:20:52.235Z"
   },
   {
+    "conditionKey": "land:land/bro-5665-guide-no-hints",
+    "title": "Landing blocked: rebase red on land/bro-5665-guide-no-hints",
+    "description": "land.yml did not land land/bro-5665-guide-no-hints: the rebase gate went red at 8b32f0d83b. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5665-guide-no-hints @ 8b32f0d83b (origin/land/bro-5665-guide-no-hints) → origin/main @ 2b945d3a50 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 2b945d3a50: Rebasing (1/1) error: could not apply 8b32f0d83b9... Fantasy: stop giving players the pricing answers, enlarge Draft Guide text (BRO-5665) hint: Resolve all conflicts manually, mark them as resolved with hi Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39194269351",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5665-guide-no-hints"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "8b32f0d83b90607ff011342606bb76f32fea3cc4"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39194269351"
+      }
+    ],
+    "queuedAt": "2026-10-19T04:10:38.308Z"
+  },
+  {
     "conditionKey": "land:land/bro-5647-formd",
     "title": "Landing blocked: rebase red on land/bro-5647-formd",
     "description": "land.yml did not land land/bro-5647-formd: the rebase gate went red at 20b6811648. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5647-formd @ 20b6811648 (origin/land/bro-5647-formd) → origin/main @ 183e1f21c6 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 183e1f21c6: Rebasing (1/2) error: could not apply e300519a046... fix(sec): read a Form D's stated capitalized amount, not only the offering ceiling hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm <conf Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39193771363",
