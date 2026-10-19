@@ -346,6 +346,7 @@ async function main() {
   let failed = 0;
   let errors = 0;
   let consecutiveErrors = 0;
+  const streakKeys = [];
 
   for (let i = 0; i < toProcess.length; i++) {
     const t = toProcess[i];
@@ -356,6 +357,12 @@ async function main() {
     }
     if (consecutiveErrors >= MAX_CONSECUTIVE_ERRORS) {
       console.log(`\n${consecutiveErrors} fetch errors in a row: stopping ${outlet}, ${toProcess.length - i} left for the next run`);
+      // An outlet-wide failure (outage, expired cookies, spent credits) says
+      // nothing about these URLs: drop their backoff, keep them at the back.
+      if (execute) {
+        for (const key of streakKeys) if (state[key]) delete state[key].lastError;
+        saveState(STATE_FILE, state);
+      }
       break;
     }
     let itemError = null;
@@ -468,9 +475,11 @@ async function main() {
         }
       }
       consecutiveErrors = 0;
+      streakKeys.length = 0;
     } catch (e) {
       errors++;
       consecutiveErrors++;
+      streakKeys.push(t.key);
       console.log(`  ERROR: ${e.message || e}`);
       if (e.isFetchError) itemError = e.message || String(e);
     }
