@@ -30,6 +30,8 @@ for (const k of drop) console.log(`  drop ${k}`);
 if (apply && drop.length) {
   for (const k of drop) delete pending.shows[k];
   pending.lastUpdated = new Date().toISOString();
-  fs.writeFileSync(PENDING, JSON.stringify(pending, null, 2) + '\n');
+  const tmp = `${PENDING}.tmp`;
+  fs.writeFileSync(tmp, JSON.stringify(pending, null, 2) + '\n');
+  fs.renameSync(tmp, PENDING);
   console.log(`wrote ${PENDING} (${Object.keys(pending.shows).length} entries)`);
 }
