@@ -61,8 +61,9 @@
 #     ADVISORY until armed (LAND_E2E_UNIT_BLOCKING=1, see land-gate-delta.js).
 # Env: GAUNTLET_GATES — optional comma list (e.g. "lint-workflows" or
 #   "unit-tests-node,scripts-lib-tests"): run only those gates, skipping the
-#   gold-lists prep unless a unit gate is listed. Unset = every gate (land.yml
-#   never sets it; the Codex runner's pre-review check does).
+#   gold-lists prep unless a unit gate is listed. Unset = every gate. land.yml
+#   sets it on the base run and the confirm run to the branch's red gates
+#   (lazy base, BRO-5670); the Codex runner's pre-review check sets it too.
 # Env: LAND_BASE — the origin/main sha the tree was rebased onto (tony-loso
 #   gate diffs against it; unset/empty → that gate is skipped with a note).
 #   GH_TOKEN — for the audits that read the API. BSC_STAGE_LATENCY_MUTE=1 set

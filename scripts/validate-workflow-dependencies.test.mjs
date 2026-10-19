@@ -146,6 +146,13 @@ test('parser: a dispatch input named schedule is not a cron trigger', () => {
   assert.equal(w.triggers.dispatch, true);
 });
 
+test('parser: a dispatch through dispatch_with_retry (scripts/lib/dispatch-with-retry.sh) is an edge (BRO-5670)', () => {
+  const raw = 'name: X\non: push\njobs:\n  a:\n    runs-on: x\n    steps:\n      - run: |\n          source scripts/lib/dispatch-with-retry.sh\n          dispatch_with_retry vercel-deploy.yml --ref main -f source=land || true\n';
+  assert.ok(g.parseWorkflow('x.yml', raw).dispatches.includes('vercel-deploy.yml'));
+  assert.ok([...g.dispatchTargetsIn(raw)].includes('vercel-deploy.yml'));
+  assert.deepEqual([...g.dispatchTargetsIn('dispatch_with_retry() {\n  local workflow="$1"\n}\n')], []);
+});
+
 test('freeze: unfreeze re-enables only ledger entries; auto waits for expiry', () => {
   const now = new Date('2026-10-05T00:00:00Z');
   const ledger = freeze.buildLedger({ disabled: ['b.yml', 'a.yml'], hours: 8, now, by: 't' });

@@ -131,6 +131,8 @@ function parseWorkflow(file, raw) {
     if (repo && repo[1].toLowerCase() !== 'broadwayscore') external.push({ repo: repo[1], file: m[1] });
     else dispatches.add(m[1]);
   }
+  // scripts/lib/dispatch-with-retry.sh wraps `gh workflow run` (same-repo only).
+  for (const m of raw.matchAll(/\bdispatch_with_retry\s+['"]?([\w.-]+\.ya?ml)/g)) dispatches.add(m[1]);
   if (/\.github\/actions\/dispatch-deploy\b/.test(raw)) dispatches.add('vercel-deploy.yml');
   dispatches.delete(file);
   const secrets = [...new Set([...raw.matchAll(/secrets\.([A-Z][A-Z0-9_]+)/g)].map((m) => m[1]))].sort();
@@ -219,6 +221,9 @@ function dispatchTargetsIn(text) {
   for (const m of text.matchAll(/^([^\n]*?)gh workflow run\b([^\n]*)/gm)) {
     if (!isCommandPosition(m[1])) continue;
     if (!otherRepo(m[2])) addTarget(m[2].replace(/(?:^|\s)--?[\w-]+(?:[ =](?!['"][A-Z])\S+)?/g, ' '));
+  }
+  for (const m of text.matchAll(/^([^\n]*?)\bdispatch_with_retry\s+([^\n]*)/gm)) {
+    if (isCommandPosition(m[1])) addTarget(m[2].replace(/(?:^|\s)--?[\w-]+(?:[ =](?!['"][A-Z])\S+)?/g, ' '));
   }
   for (const m of text.matchAll(/['"]workflow['"]\s*,\s*['"]run['"]\s*,([^\]\n]*)/g)) if (!otherRepo(m[1])) addTarget(m[1]);
   for (const m of text.matchAll(/workflow_id\s*:\s*['"]([\w.-]+\.ya?ml)['"]/g)) out.add(m[1]);

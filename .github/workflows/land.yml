@@ -555,11 +555,15 @@ jobs:
         env:
           REBASED: ${{ steps.rebase.outputs.rebased }}
           BASE_KEY: ${{ steps.basekey.outputs.key }}
+          # This run uploaded a full base result under BASE_KEY (a second
+          # upload under that name in one run would clash). With the lazy base
+          # (BRO-5670) it usually did not, so the branch result fills the key.
+          BASE_PUBLISHED: ${{ steps.base_run.outcome == 'success' && steps.need.outputs.gates == '' }}
         run: |
           HASH=$(node scripts/lib/land-gate-delta.js --code-hash "$REBASED")
           KEY="land-base-gauntlet-v2-${HASH:0:32}-$(date -u +%Y%m%d)"
-          if [ "$KEY" = "$BASE_KEY" ]; then
-            echo "rebased tip ${REBASED:0:10} has the base's code tree — nothing new to publish"
+          if [ "$KEY" = "$BASE_KEY" ] && [ "$BASE_PUBLISHED" = "true" ]; then
+            echo "rebased tip ${REBASED:0:10} has the base's code tree, already published by this run — nothing new to publish"
             exit 0
           fi
           echo "key=$KEY" >> "$GITHUB_OUTPUT"
@@ -927,7 +931,9 @@ jobs:
         # tick: it builds only when site files or core data differ from what
         # is live, so a docs or bookkeeping landing costs one ~30s gate job.
         # Rollback: repo variable LAND_DEPLOY_DISPATCH=0.
-        if: steps.land.outputs.landed == 'true' && vars.LAND_DEPLOY_DISPATCH != '0'
+        # always(): a failed cleanup step after the push (ref delete, train
+        # unmark, alert resolve) must not strand a change that is on main.
+        if: always() && steps.admit.outcome == 'success' && steps.land.outputs.landed == 'true' && vars.LAND_DEPLOY_DISPATCH != '0'
         continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
