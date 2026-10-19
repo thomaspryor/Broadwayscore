@@ -31,8 +31,7 @@
  * was generalized to also cover commercial.json/audience-buzz.json's
  * `{ shows: { [id]: {...} } }` map shape (see commercial-write-guard.js /
  * audience-buzz-write-guard.js and json-write-guard.js's own docstring).
- * The only shows.json-specific behavior kept here is stamping
- * `_meta.totalShows` on every save, which nothing else needs.
+ * Shows-specific invariants are applied after merging, before every write.
  *
  * Usage (drop-in replacement for the loadShows/saveShows pair every script
  * already defines locally):
@@ -55,6 +54,7 @@ const path = require('path');
 const { createJsonWriteGuard, mergeArrayRecords } = require('./json-write-guard');
 const { syncStaleTheaterAddresses } = require('./venue-address-sync');
 const { restoreHumanCorrectedOpeningDates } = require('./opening-date-guard');
+const { sanitizeVenueForWrite } = require('./venue-classification');
 
 const { hasStoredStaleUpcomingTag, stripUpcomingTag } = require('./opening-night-completeness');
 
@@ -99,6 +99,11 @@ function createShowsWriteGuard(showsPath, options = {}) {
     metaKey: '_meta',
     beforeWrite: (finalData) => {
       finalData._meta.totalShows = finalData.shows.length;
+      // Apply the shared venue guard after merging, so every writer and any
+      // concurrent additions are covered (BRO-5579). Keep absent fields absent.
+      for (const show of finalData.shows) {
+        if (show.venue !== undefined) show.venue = sanitizeVenueForWrite(show.venue);
+      }
       // A venue change must carry its address (BRO-5136); only provably stale
       // addresses (another known venue's canonical one) are rewritten.
       const synced = syncStaleTheaterAddresses(finalData.shows);
