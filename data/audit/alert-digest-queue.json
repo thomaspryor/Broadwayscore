@@ -844,5 +844,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-19T19:14:34.219Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5509-newsletter-merge",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5509-newsletter-merge",
+    "description": "land.yml did not land land/bro-5509-newsletter-merge: the unit-tests-node gate went red at 5335b219a8. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39309312886",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5509-newsletter-merge"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "5335b219a84b5d11e892500051c78f710031f30f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39309312886"
+      }
+    ],
+    "queuedAt": "2026-10-19T19:48:02.683Z"
   }
 ]
