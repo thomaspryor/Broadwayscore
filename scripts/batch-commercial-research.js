@@ -362,9 +362,11 @@ async function researchShow(show, grossesData) {
         for (const filing of filings.slice(0, 3)) {
           try {
             const parsed = await secEdgarScraper.parseFormDFiling(filing.filingUrl);
-            if (parsed && parsed.totalOfferingAmount) {
-              evidence.push(`[SEC EDGAR Form D] ${filing.entityName}: Total offering amount $${parsed.totalOfferingAmount.toLocaleString()} (the most it may raise).${parsed.capitalizedAmount ? ` The filing states the offering capitalized at $${parsed.capitalizedAmount.toLocaleString()}.` : ''} Filed ${filing.dateFiled || 'unknown date'}. CIK: ${filing.cik || 'unknown'}.`);
-              console.log(`    ✅ SEC: Found Form D - $${(parsed.totalOfferingAmount / 1e6).toFixed(1)}M`);
+            const cap = parsed && (parsed.capitalizedAmount || parsed.totalOfferingAmount);
+            if (cap) {
+              const offering = parsed.totalOfferingAmount ? `Total offering amount $${parsed.totalOfferingAmount.toLocaleString()} (the most it may raise).` : 'Total offering amount indefinite.';
+              evidence.push(`[SEC EDGAR Form D] ${filing.entityName}: ${offering}${parsed.capitalizedAmount ? ` The filing states the offering capitalized at $${parsed.capitalizedAmount.toLocaleString()}.` : ''} Filed ${filing.dateFiled || 'unknown date'}. CIK: ${filing.cik || 'unknown'}.`);
+              console.log(`    ✅ SEC: Found Form D - $${(cap / 1e6).toFixed(1)}M`);
             }
           } catch (err) {
             // Individual filing parse failure

@@ -1139,7 +1139,7 @@ async function gatherSECFilings(shows, commercial) {
         const latestFiling = filings[0];
         const parsed = await secScraper.parseFormDFiling(latestFiling.url || latestFiling.filingUrl);
 
-        if (parsed?.totalOfferingAmount) {
+        if (parsed?.capitalizedAmount || parsed?.totalOfferingAmount) {
           results.push({
             showSlug: slug,
             // The filing's own "capitalized at" figure beats the offering maximum.
