@@ -130,6 +130,89 @@ function isProvisionalPublishDate(review) {
 }
 
 /**
+ * dateSource values that say the date was read from the review's own page (or
+ * set by a person). These are never replaced by a later fetch, and they are
+ * trusted by the opening-window recheck.
+ */
+const PAGE_DATE_SOURCE = /^(?:html-|extracted-from-html|page-|article-byline|human-|manual)/;
+
+/** dateSource names that say the date came from an aggregator, roundup, feed or search result. */
+const CARRIED_DATE_SOURCE = /(aggregator|roundup|rss|feed|serp|google-news|search|dtli|show-?score|bww|broadwayworld|playbill|nyc-?theatre|stagedoor|westendtheatre|theatre-reviews|lbo|listing|llm)/i;
+
+/** True when dateSource says the date was read from the review's own page or set by a person. */
+function isPageDateSource(dateSource) {
+  return typeof dateSource === 'string' && PAGE_DATE_SOURCE.test(dateSource);
+}
+
+/**
+ * True when the stored publishDate may be replaced by a date read from the
+ * review's own page (dateSource 'html-page'). BRO-5674.
+ *
+ * Covers the provisional sources (isProvisionalPublishDate) plus every date
+ * carried in by an aggregator, roundup, RSS feed or SERP. Those paths
+ * (opening-night-poller.js, gather-reviews.js) mostly wrote publishDate with NO
+ * dateSource at all, so an unmarked date counts as carried. Other Desert
+ * Cities (2026): Theatrely stored 2026-10-16 (no dateSource), the page reads
+ * "October 19, 2026 12:00 AM".
+ *
+ * Never true for a page or human date (isPageDateSource): a page date is not
+ * downgraded. Dates from a URL path or the body text ('url*', 'text-regex')
+ * keep their old rule: they are filled only when the page gave nothing.
+ *
+ * @param {object} review
+ * @returns {boolean}
+ */
+function isReplaceableByPageDate(review) {
+  if (!review || !review.publishDate) return false;
+  if (isProvisionalPublishDate(review)) return true;
+  const src = review.dateSource;
+  if (src == null || src === '') return true;
+  if (isPageDateSource(src)) return false;
+  return CARRIED_DATE_SOURCE.test(String(src));
+}
+
+/** A review dated more than this many days before opening night needs its page date. */
+const OPENING_WINDOW_GRACE_DAYS = 2;
+
+/**
+ * Should this review's publishDate be re-read from its page (needsDateRecheck)?
+ * True when the show has an openingDate, the stored date is more than
+ * OPENING_WINDOW_GRACE_DAYS before it, and the date was not read from the
+ * review's own page or set by a person. BRO-5674.
+ *
+ * The production guards (date-plausibility.js, 180 days; date-guard.js) look
+ * for another production's review, so a current-run review mis-dated by a few
+ * days to a few months passed them. Corpus sweep 2026-10-19 (shows opening
+ * 2025-2026): 201 included reviews dated more than 2 days before opening, some
+ * real preview coverage. A page date ('html-page' and the other page sources)
+ * is trusted, so real preview coverage stops being marked once read.
+ *
+ * Not marked: a human-confirmed early post (humanReviewedEarlyPublish), and a
+ * date inside one of the show's declared prior runs (inherited reviews).
+ *
+ * @param {object} review - review file (publishDate, dateSource)
+ * @param {object} show - shows.json record (openingDate, priorRuns)
+ * @returns {boolean}
+ */
+function needsOpeningWindowDateRecheck(review, show) {
+  if (!review || !show) return false;
+  const pd = typeof review.publishDate === 'string' ? review.publishDate.slice(0, 10) : '';
+  const od = typeof show.openingDate === 'string' ? show.openingDate.slice(0, 10) : '';
+  if (!YMD.test(pd) || !YMD.test(od)) return false;
+  if (isPageDateSource(review.dateSource)) return false;
+  if (review.humanReviewedEarlyPublish === true) return false;
+  const t = Date.parse(`${pd}T00:00:00Z`);
+  const o = Date.parse(`${od}T00:00:00Z`);
+  if (!Number.isFinite(t) || !Number.isFinite(o)) return false;
+  if (t >= o - OPENING_WINDOW_GRACE_DAYS * 864e5) return false;
+  if (Array.isArray(show.priorRuns) && show.priorRuns.length) {
+    const { isWithinPriorRun } = require('./wrong-production-autoclear');
+    if (isWithinPriorRun(pd, show.priorRuns)) return false;
+  }
+  return true;
+}
+
+/**
  * The text-fetch fallback for a review whose page gave no meta/JSON-LD date
  * (BRO-5351). A date parsed out of the URL is never stored as publishDate
  * (CLAUDE.md rule 3: never extract metadata from URLs). The review's own
@@ -182,4 +265,8 @@ module.exports = {
   isPlausibleGuess,
   roundupEntryDateFields,
   isProvisionalPublishDate,
+  isPageDateSource,
+  isReplaceableByPageDate,
+  OPENING_WINDOW_GRACE_DAYS,
+  needsOpeningWindowDateRecheck,
 };
