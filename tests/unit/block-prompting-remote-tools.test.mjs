@@ -114,7 +114,7 @@ test('list_sessions is denied for both server spellings (BRO-4635)', () => {
 const SONNET = 'claude-sonnet-5-5';
 
 test('create_session passes for both server spellings: the owner wants sessions started (BRO-5040, supersedes BRO-4664)', () => {
-  assert.equal(run(remote('create_session', { prompt: 'x', model: SONNET, source_url: 'https://github.com/thomaspryor/Broadwayscore' })), 'pass');
+  assert.equal(run(remote('create_session', { prompt: 'x\nBUDGET: 6h', model: SONNET, source_url: 'https://github.com/thomaspryor/Broadwayscore' })), 'pass');
   assert.equal(run({ tool_name: 'mcp__claude-code-remote__create_session', tool_input: { model: SONNET } }), 'pass');
   assert.equal(run(remote('create_session', { prompt: 'x', model: SONNET, source_url: 'https://github.com/thomaspryor/BroadwayScorecard-app' })), 'pass');
   assert.equal(run(remote('create_session', { prompt: 'x', model: SONNET, source_url: 'https://github.com/thomaspryor/broadway-scorecard-data' })), 'pass');
@@ -159,6 +159,21 @@ test('create_session with a misspelled Broadwayscore source_url is denied (BRO-5
     assert.equal(run(remote('create_session', { prompt: 'x', model: SONNET, source_url: url })), 'deny', url);
     assert.equal(run({ tool_name: 'mcp__claude-code-remote__create_session', tool_input: { model: SONNET, source_url: url } }), 'deny', url);
   }
+});
+
+test('a Broadwayscore worker session needs a BUDGET: <1-12>h line (BRO-5673: sessions ran 8 to 28 h uncapped)', () => {
+  const url = 'https://github.com/thomaspryor/Broadwayscore';
+  for (const prompt of ['Fix BRO-1.', 'Fix BRO-1. BUDGET: 6h inline is not a line', 'BUDGET: 0h', 'BUDGET: 13h', 'BUDGET: 6', 'BUDGET: six hours', 'BUDGET:\n6h']) {
+    assert.equal(run(remote('create_session', { prompt, model: SONNET, source_url: url })), 'deny', prompt);
+  }
+  assert.equal(run(remote('create_session', { model: SONNET, source_url: url })), 'deny');
+  for (const prompt of ['Fix BRO-1.\nBUDGET: 6h\nThen land it.', 'BUDGET: 1h', '  BUDGET:12h', 'BUDGET: 4h (wall clock)']) {
+    assert.equal(run(remote('create_session', { prompt, model: SONNET, source_url: url })), 'pass', prompt);
+  }
+  // Other repos and sessions with no source_url are not worker sessions of this project.
+  assert.equal(run(remote('create_session', { prompt: 'x', model: SONNET, source_url: 'https://github.com/thomaspryor/BroadwayScorecard-app' })), 'pass');
+  assert.equal(run(remote('create_session', { prompt: 'x', model: SONNET })), 'pass');
+  assert.equal(run(remote('create_session', { prompt: 'x', model: SONNET, source_url: url }), { env: { REMOTE_TOOL_BLOCKER_DISABLE: '1' } }), 'pass');
 });
 
 test('unrelated tools, malformed input and the kill switch all pass', () => {
