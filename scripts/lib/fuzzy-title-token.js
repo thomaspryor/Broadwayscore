@@ -26,12 +26,17 @@ const { withinOneEdit, QUERY_NOISE_WORDS } = require('./show-search-match');
 const FUZZY_MIN_TOKEN_LEN = 5;
 const FUZZY_MIN_TITLE_TOKENS = 2;
 const FUZZY_DATE_WINDOW_DAYS = 14;
-const ACTIVE_STATUSES = new Set(['open', 'previews']);
+// Every non-closed show can own a slug: a near-twin still at upcoming/announced
+// (status lags) must block a fuzzy claim on its roundup just like an open one.
+const INACTIVE_STATUSES = new Set(['closed']);
 
 // BWW slug boilerplate is never a title word, so a title token one edit away
 // from "opens"/"returns"/"updating" must not count as a match.
 const SLUG_BOILERPLATE = new Set(['opens', 'opening', 'returns', 'reopens', 'premieres', 'debuts',
-  'updating', 'review', 'roundup', 'broadway', 'critics', 'weigh', 'starring']);
+  'updating', 'review', 'reviews', 'roundup', 'broadway', 'critics', 'weigh', 'starring',
+  // venue / market words that sit in slugs beside the title
+  'theatre', 'theater', 'theatres', 'theaters', 'premiere', 'playhouse', 'london', 'national',
+  'center', 'centre', 'stage', 'world', 'musical', 'revival']);
 
 /**
  * @param {string[]} titleTokens significant title tokens (stop words removed)
@@ -77,15 +82,15 @@ function slugDateNearOpening(urlOrSlug, openingDate, windowDays = FUZZY_DATE_WIN
 }
 
 let _activeShowsCache = null;
-/** Active (open/previews) shows from data/shows.json; [] when unreadable. */
+/** Non-closed shows from data/shows.json; null when shows.json is unreadable. */
 function loadActiveShows() {
   if (_activeShowsCache) return _activeShowsCache;
   try {
     const raw = require(path.join(__dirname, '../../data/shows.json'));
     const shows = Array.isArray(raw) ? raw : (raw.shows || []);
-    _activeShowsCache = shows.filter(s => s && ACTIVE_STATUSES.has(String(s.status || '').toLowerCase()));
+    _activeShowsCache = shows.filter(s => s && !INACTIVE_STATUSES.has(String(s.status || '').toLowerCase()));
   } catch {
-    _activeShowsCache = [];
+    return null;
   }
   return _activeShowsCache;
 }
@@ -99,6 +104,11 @@ function loadActiveShows() {
  */
 function otherActiveShowMatchesExactly(show, exactMatchFn, activeShows) {
   const pool = activeShows || loadActiveShows();
+  // No show list to check ownership against: refuse the fuzzy match.
+  if (!pool) {
+    console.warn('[fuzzy-title-token] data/shows.json unreadable; refusing fuzzy roundup match');
+    return true;
+  }
   const selfId = show && show.id;
   const selfTitle = String((show && show.title) || '').trim().toLowerCase();
   return pool.some(other => {
