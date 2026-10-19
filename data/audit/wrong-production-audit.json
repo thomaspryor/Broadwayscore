@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-19T14:53:22.453Z",
+  "timestamp": "2026-10-19T15:19:48.180Z",
   "stats": {
-    "totalReviews": 57689,
-    "alreadyFlagged": 21059,
-    "dateGuardCatches": 204,
+    "totalReviews": 57713,
+    "alreadyFlagged": 21058,
+    "dateGuardCatches": 205,
     "directorMismatch": 2007,
     "tvFilmSignals": 1638,
-    "londonSignals": 2522,
+    "londonSignals": 2524,
     "offBroadwaySignals": 530,
     "yearMismatch": 159,
-    "noPublishDate": 5240
+    "noPublishDate": 5258
   },
   "findings": [
     {
@@ -12300,6 +12300,19 @@
     },
     {
       "showId": "elf-2024",
+      "file": "amny--matt-windman.json",
+      "publishDate": null,
+      "url": "https://www.amny.com/entertainment/arts-entertainment/review-elf-revival-holidays-broadway-2024/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from elf-2012"
+        }
+      ]
+    },
+    {
+      "showId": "elf-2024",
       "file": "culturesauce--thom-geier.json",
       "score": 79,
       "publishDate": "November 17th, 2024",
@@ -20395,25 +20408,6 @@
           "severity": "MEDIUM",
           "detail": "Published 217d before show (2025-08-14 vs 2026-03-19)"
         },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "timeout-london--caroline-mcginn.json",
-      "score": 76,
-      "publishDate": "2026-04-07",
-      "url": "https://www.timeout.com/london/news/review-inter-alia-starring-rosamund-pike-at-the-national-theatre-072425",
-      "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -30547,6 +30541,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2011 (2x) more than 2026 (0x). 2011 matches production: other-desert-cities-2011"
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
+      "file": "new-york-sun--elysa-gardner.json",
+      "publishDate": "2026-10-19",
+      "url": "https://www.nysun.com/article/republican-family-fireworks-in-other-desert-cities-set-broadway-alight-again",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -68674,6 +68681,17 @@
       ]
     },
     {
+      "showId": "inter-alia-west-end-2026",
+      "file": "timeout-london--caroline-mcginn.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 237d before show (2025-07-25 vs 2026-03-19)"
+        }
+      ]
+    },
+    {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "seatplan--laura-foulger.json",
       "score": 85,
@@ -79151,6 +79169,19 @@
     },
     {
       "showId": "some-woman-west-end-2026",
+      "file": "plays-international--unknown.json",
+      "publishDate": "2026-10-18",
+      "url": "https://playsinternational.org.uk/some-woman-dorfman-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
       "file": "standard--nick-curtis.json",
       "score": 59,
       "publishDate": "2026-10-19",
@@ -79182,6 +79213,19 @@
       "file": "theatremonkey--unknown.json",
       "publishDate": null,
       "url": "https://www.theatremonkey.com/show/some-woman/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
+      "file": "theupcoming--unknown.json",
+      "publishDate": "2026-10-16",
+      "url": "https://www.theupcoming.co.uk/2026/10/16/some-woman-at-the-national-theatre-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
