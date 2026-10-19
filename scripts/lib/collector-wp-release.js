@@ -21,7 +21,7 @@
  */
 
 const crypto = require('crypto');
-const { findMatchingPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
+const { findMatchingPriorRun, isWithinTourLeg, isWithinOptOutPriorRun } = require('./wrong-production-autoclear');
 const { isRoundupUrl } = require('./review-guards');
 
 const COLLECTOR_WP_PREFIX = 'Collector LLM: wrong production';
@@ -186,6 +186,11 @@ function classifyPriorRunWrongProduction(data, show, ctx = {}) {
   const inLeg = !run && isWithinTourLeg(data.publishDate, show.tourLegs);
   if (!run && !inLeg) return null;
   const window = run || { tourLeg: true };
+  // BRO-5724: inheritReviews:false declares the earlier run a SEPARATE production
+  // whose reviews must not count toward this show (Comedy About Spies 2025 vs
+  // 2026, Into the Woods). A review dated inside such a window is correctly
+  // flagged; an LLM "same production" second look must never release it.
+  if (run && isWithinOptOutPriorRun(data.publishDate, show.priorRuns)) return { bucket: 'other', window };
   if (data.rejectedBy === ENSEMBLE_REJECTOR) return { bucket: 'ensemble', window };
   const reason = String(data.wrongProductionReason || '');
   if (!reason.startsWith(COLLECTOR_WP_PREFIX)) {

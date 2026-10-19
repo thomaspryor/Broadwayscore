@@ -83,6 +83,16 @@ test('buildPriorRunHint: missing dates / venue degrade, newlines are flattened',
   assert.match(hint, /; Garrick Theatre\./);
 });
 
+test('BRO-5724: buildPriorRunHint leaves out inheritReviews:false runs (a separate production)', () => {
+  const hint = buildPriorRunHint([
+    { venue: 'Barbican', openingDate: '2022-10-08', closingDate: '2023-01-21' },
+    { venue: 'Noel Coward', openingDate: '2025-04-14', closingDate: '2025-08-03', inheritReviews: false },
+  ], null);
+  assert.match(hint, /Barbican/);
+  assert.doesNotMatch(hint, /Noel Coward/);
+  assert.equal(buildPriorRunHint([{ venue: 'X', inheritReviews: false }], null), '');
+});
+
 test('verifyContent threads show.priorRuns / show.tourLegs into the prompt builder', () => {
   // verifyContent calls an LLM, so assert the wiring at the call site: the
   // collector passes `show`, and verifyContent must forward its runs.

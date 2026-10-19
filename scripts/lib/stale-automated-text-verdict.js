@@ -40,7 +40,7 @@
 
 const { hasHumanAssertedFlag } = require('./contradicted-flag-basis');
 const { isTimestampAfter } = require('./review-guards');
-const { findMatchingPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
+const { findMatchingPriorRun, isWithinTourLeg, isWithinOptOutPriorRun } = require('./wrong-production-autoclear');
 const { clearWrongProductionFlags } = require('./wrong-production-clear');
 
 const TEXT_QUALITY_REASONS = new Set(['not_a_review', 'garbage_text', 'truncated_text']);
@@ -267,6 +267,7 @@ function isPreContextWrongProduction(d, show) {
   if (hasHumanVerdict(d)) return false;
   if (d.wrongProductionManualClear === true || d.wrongProductionOverride === true ||
       d.humanReviewedWrongProduction != null || d.wrongShow === true || d.duplicateOf) return false;
+  if (isWithinOptOutPriorRun(d.publishDate, show.priorRuns)) return false; // BRO-5724
   return !!findMatchingPriorRun(d.publishDate, show.priorRuns) || isWithinTourLeg(d.publishDate, show.tourLegs);
 }
 

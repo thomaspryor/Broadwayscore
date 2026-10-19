@@ -274,6 +274,13 @@ function carManRecord(over = {}) {
   };
 }
 
+test('BRO-5724: a review inside an inheritReviews:false prior run is never requeued as pre-context', () => {
+  const run = { venue: 'Noel Coward Theatre', openingDate: '2026-05-01', closingDate: '2026-08-03' };
+  const d = carManRecord({ publishDate: '2026-06-17' });
+  assert.equal(isPreContextWrongProduction(d, { id: 's', priorRuns: [{ ...run }] }), true);
+  assert.equal(isPreContextWrongProduction(d, { id: 's', priorRuns: [{ ...run, inheritReviews: false }] }), false);
+});
+
 test('BRO-4391: Car Man Curve review is requeued once, never again after the stamp', () => {
   const d = carManRecord();
   assert.equal(isPreContextWrongProduction(d, CAR_MAN_SHOW), true);

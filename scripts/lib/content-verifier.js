@@ -920,7 +920,9 @@ function buildPriorRunHint(priorRuns, tourLegs) {
   };
   const legs = [];
   for (const p of Array.isArray(priorRuns) ? priorRuns : []) {
-    if (p && typeof p === 'object') legs.push(describe(p.venue, p.openingDate, p.closingDate));
+    // BRO-5724: inheritReviews:false is a SEPARATE production; telling the model its reviews are
+    // "this production" is what let the stale-flag sweep release them.
+    if (p && typeof p === 'object' && p.inheritReviews !== false) legs.push(describe(p.venue, p.openingDate, p.closingDate));
   }
   for (const l of Array.isArray(tourLegs) ? tourLegs : []) {
     if (l && typeof l === 'object') legs.push(describe(l.venue, l.startDate, l.endDate));

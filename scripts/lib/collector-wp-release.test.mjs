@@ -128,6 +128,12 @@ describe('classifyPriorRunWrongProduction', () => {
   test('ordinal publishDate still matches the window', () => {
     assert.equal(classifyPriorRunWrongProduction({ ...collector, publishDate: 'October 18th, 2022' }, totoro, noGarbage).bucket, 'candidate');
   });
+  test('BRO-5724: a window declared inheritReviews:false is never a release candidate', () => {
+    const sep = { ...totoro, priorRuns: [{ ...totoro.priorRuns[0], inheritReviews: false }] };
+    assert.equal(classifyPriorRunWrongProduction(collector, sep, noGarbage).bucket, 'other');
+    const inherit = { ...totoro, priorRuns: [{ ...totoro.priorRuns[0], inheritReviews: true }] };
+    assert.equal(classifyPriorRunWrongProduction(collector, inherit, noGarbage).bucket, 'candidate');
+  });
   test('tourLegs windows count too', () => {
     const tour = { id: 't', title: 'T', openingDate: '2026-01-01', tourLegs: [{ venue: 'Curran', startDate: '2022-10-01', endDate: '2022-11-01' }] };
     assert.equal(classifyPriorRunWrongProduction(collector, tour, noGarbage).bucket, 'candidate');
