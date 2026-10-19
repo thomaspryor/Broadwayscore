@@ -386,6 +386,106 @@ function isMidWordTruncation(excerpt, sourceTexts) {
   return false;
 }
 
+// ---------------------------------------------------------------------------
+// Contiguity: is the displayed quote a passage the critic actually wrote?
+//
+// 2026-10-19 audit: 2,970 of 26,321 displayed quotes were not a contiguous
+// passage of the review's fullText. NY Post on Other Desert Cities dropped
+// ", which opened Sunday night at the Hudson Theatre," from mid-sentence; the
+// Guardian's quote stopped at "American rot." where the critic wrote "American
+// rot – perhaps too eerily." extract-pull-quotes.verifyInText forgives an
+// invented terminal period, and nothing in selectBestExcerpt checked
+// keyPhrases / keyQuote / aggregator excerpts against the body at all.
+//
+// Normalization matches verifyInText (curly quotes, dashes, whitespace, case)
+// but NOT its trailing-punctuation forgiveness: a period is accepted at the
+// end only where the source also ends a sentence there. An interior "..." /
+// "…" (or a bracketed editorial insertion) is an honest elision: each segment
+// must be contiguous, in order.
+// ---------------------------------------------------------------------------
+
+function normalizeForContiguityCased(s) {
+  return normalizeForSourceMatch(s)
+    .replace(/…/g, '...')
+    .replace(/\s*-+\s*/g, '-');
+}
+
+function normalizeForContiguity(s) {
+  return normalizeForContiguityCased(s).toLowerCase();
+}
+
+const CONTIGUITY_SOURCE = Symbol('contiguitySource');
+
+// After `end` in the normalized source, does a sentence end (closing quotes /
+// parens, then terminal punctuation, or end of text)? `cased` (the source
+// before lowercasing, same length) also accepts a capitalised next word: a
+// scrape that lost the period at a paragraph break ("...again and again Grindr
+// Mom plays at..."). A continuing clause (", which", "– perhaps", "directed
+// by") still fails.
+function sourceEndsSentenceAt(hay, end, cased) {
+  if (/^["')\]]*(?:[.!?]|\.\.\.|$)/.test(hay.slice(end, end + 6))) return true;
+  return !!cased && /^ ["'\u201C\u2018(]*[A-Z]/.test(cased.slice(end, end + 4));
+}
+
+function findSegment(hay, seg, from, cased) {
+  const at = hay.indexOf(seg, from);
+  if (at !== -1) return at + seg.length;
+  // Terminal punctuation the source also has, possibly outside a closing quote
+  // ('…called it "sublime."' vs '…called it "sublime".').
+  const m = seg.match(/^(.*?)["')\]]*[.!?]+["')\]]*$/s);
+  if (!m || m[1].length < 3) return -1;
+  const body = m[1];
+  let i = hay.indexOf(body, from);
+  while (i !== -1) {
+    if (sourceEndsSentenceAt(hay, i + body.length, cased)) return i + body.length;
+    i = hay.indexOf(body, i + 1);
+  }
+  return -1;
+}
+
+/**
+ * Is `excerpt` a contiguous passage of `fullText` (elisions allowed)?
+ *
+ * @param {string} excerpt   candidate pull quote (wrapping quotes tolerated)
+ * @param {string} fullText  review body
+ * @returns {boolean} true when contiguous, or when there is nothing to check
+ */
+function isContiguousInSource(excerpt, fullText) {
+  if (!excerpt || typeof excerpt !== 'string') return true;
+  if (!fullText || typeof fullText !== 'string') return true;
+
+  // One-entry cache: selectBestExcerpt checks up to ~9 candidates against the
+  // same body, so normalize it once per review.
+  let cache = isContiguousInSource[CONTIGUITY_SOURCE];
+  if (!cache || cache.raw !== fullText) {
+    const casedNorm = normalizeForContiguityCased(fullText);
+    const norm = casedNorm.toLowerCase();
+    // toLowerCase can change length for a few code points; drop the cased view then.
+    cache = { raw: fullText, norm, cased: casedNorm.length === norm.length ? casedNorm : null };
+    isContiguousInSource[CONTIGUITY_SOURCE] = cache;
+  }
+  const hay = cache.norm;
+
+  const ex = normalizeForContiguity(excerpt)
+    .replace(/^["'\s]+/, '')
+    .replace(/["'\s]+$/, '');
+  if (!ex) return true;
+
+  const segments = ex
+    .split(/\s*(?:\.\.\.|\[[^\]]*\])\s*/)
+    .map(s => s.replace(/^["'\s]+|["'\s]+$/g, ''))
+    .filter(Boolean);
+  if (segments.length === 0) return true;
+
+  let cursor = 0;
+  for (const seg of segments) {
+    const end = findSegment(hay, seg, cursor, cache.cased);
+    if (end === -1) return false;
+    cursor = end;
+  }
+  return true;
+}
+
 // Bug #13: Off-topic excerpt detection. Very loose — only fires when there are
 // NO theater-domain words AND NO show-title keywords. False positives (blocking
 // a real review) are worse than letting a bad excerpt through.
@@ -611,14 +711,27 @@ function pickExcerptCandidate({ accepted = null, deferred = [], rawSourceRank = 
   // broken mid-sentence text on the card, which is worse than a clean body
   // sentence that passed every guard (Codex adversarial review, 2026-08-01).
   // Fragments therefore only win when nothing at all was accepted.
-  const bestHedgeAboveRaw = soft.find(d => d.rank < rawSourceRank && d.reason !== 'lowercase-fragment') || null;
+  //
+  // NON-CONTIGUOUS and OVERLONG deferrals are not either: a quote the critic
+  // never wrote as one passage, or one hard-cut mid-sentence, must not displace
+  // a contiguous body sentence. They are last resorts, ordered after every
+  // hedge/fragment deferral (overlong first: its cut is an honest trailing
+  // elision of a real passage), so a review is still never left quote-less.
+  const bestHedgeAboveRaw = soft.find(d => d.rank < rawSourceRank && !FALLBACK_ONLY_REASONS.has(d.reason)) || null;
 
   if (accepted && accepted.excerpt) {
     if (accepted.rank < rawSourceRank) return accepted.excerpt;
     return bestHedgeAboveRaw ? bestHedgeAboveRaw.excerpt : accepted.excerpt;
   }
-  return soft.length ? soft[0].excerpt : null;
+  if (!soft.length) return null;
+  const tier = d => DEFERRAL_REASON_TIER[d.reason] || 0;
+  return soft.slice().sort((a, b) => tier(a) - tier(b) || a.rank - b.rank)[0].excerpt;
 }
+
+// Deferral reasons that may never outrank an accepted candidate.
+const FALLBACK_ONLY_REASONS = new Set(['lowercase-fragment', 'overlong', 'non-contiguous']);
+// When nothing was accepted: lower tier wins, then source rank.
+const DEFERRAL_REASON_TIER = { overlong: 1, 'non-contiguous': 2 };
 
 module.exports = {
   HEDGE_OPENER_RE,
@@ -654,8 +767,12 @@ module.exports = {
   // Mid-word truncation
   isMidWordTruncation,
   normalizeForSourceMatch,
+  // Contiguity against the review body
+  isContiguousInSource,
+  normalizeForContiguity,
   // Candidate ranking
   EXCERPT_SOURCE_RANK,
   RAW_SOURCE_RANK,
   pickExcerptCandidate,
+  FALLBACK_ONLY_REASONS,
 };

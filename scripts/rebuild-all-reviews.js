@@ -60,7 +60,7 @@ const { excerptMentionsWrongShow, isTourReviewExcerpt, tourContextForShow, isFil
 const {
   shouldRejectAsReservation, isInternalNote, hasCopyrightChrome, stripLeadingChrome, isPromoTeaser,
   hasListingChrome, stripListingPrelude, isTagCloudExcerpt, isMidWordTruncation,
-  EXCERPT_SOURCE_RANK, pickExcerptCandidate,
+  isContiguousInSource, EXCERPT_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds, createExcludedStageEmitter, SHOW_HELD_REASONS, isHeldBeforeOpening } = require('./lib/stage-latency');
 const emitExcludedStage = createExcludedStageEmitter();
@@ -73,7 +73,7 @@ const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText, otherNamedCriticAtOutlet } = require('./lib/byline-from-text');
 const { isPlaceholderByline } = require('./lib/placeholder-byline');
 const { isBylineAttestedInText } = require('./lib/byline-attestation');
-const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl, compareFilesForDedupPriority, applyScoreRelevantMigrations, SCORE_SOURCE_LABELS } = require('./lib/rebuild-helpers');
+const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, truncateAtSentenceBoundary, isOverlongExcerpt, hardCutExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl, compareFilesForDedupPriority, applyScoreRelevantMigrations, SCORE_SOURCE_LABELS } = require('./lib/rebuild-helpers');
 const { normalizeCriticName } = require('./lib/byline-normalization');
 const { recoverDisplayBylinesForShow, resolveCriticName } = require('./lib/byline-recovery');
 const { displayCriticName, isPlaceholderCritic } = require('./lib/critic-display-name');
@@ -652,10 +652,10 @@ function extractExcerptFromFullText(fullText, showTitle) {
   // Strip any remaining "| Photo:" artifacts
   excerpt = excerpt.replace(/\|\s*Photo\s*:\s*[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\s*/g, '');
 
-  // Truncate if needed
+  // Truncate at a real sentence end. With none, leave it uncut: validateExcerpt
+  // defers it as 'overlong' so a cleaner source wins (no "..." hard cut).
   if (excerpt.length > 350) {
-    const truncAt = excerpt.lastIndexOf('.', 350);
-    excerpt = truncAt > 100 ? excerpt.substring(0, truncAt + 1) : excerpt.substring(0, 347) + '...';
+    excerpt = truncateAtSentenceBoundary(excerpt, 350) || excerpt;
   }
 
   return excerpt.length > 50 ? excerpt : null;
@@ -696,7 +696,9 @@ function selectBestExcerpt(data, showTitle) {
       // NOT applied — a human editor may legitimately quote a prefix.
       if (!isInternalNote(cleaned) && !hasCopyrightChrome(cleaned) && !isPromoTeaser(cleaned)
           && !hasListingChrome(cleaned) && !isTagCloudExcerpt(cleaned)) {
-        return cleaned;
+        // cleanExcerpt no longer hard-cuts; a human quote with no sentence end
+        // within the limit keeps the old word-boundary cut + "...".
+        return hardCutExcerpt(cleaned);
       }
     }
   }
@@ -724,6 +726,17 @@ function selectBestExcerpt(data, showTitle) {
     data.theStageExcerpt,
     data.outletStandfirst,
   ].filter(t => typeof t === 'string' && t);
+
+  // Body text automated candidates must be a contiguous passage of (2026-10-19:
+  // 2,970 displayed quotes dropped a mid-sentence clause, an invented terminal
+  // period, or spliced passages with "..."). Same mojibake/entity/period fixes
+  // cleanExcerpt applies to candidates, so those never read as a mismatch.
+  // Only a substantial, untruncated body is authoritative — a quote from past
+  // the end of a truncated scrape is not evidence of splicing.
+  const contiguitySource = (typeof data.fullText === 'string' && data.fullText.length > 500
+    && data.textStatus !== 'truncated')
+    ? fixMissingPeriods(fixMojibake(decodeHtmlEntities(data.fullText)))
+    : null;
 
   /**
    * Resolve the final excerpt once a candidate has been accepted (or every
@@ -794,7 +807,7 @@ function selectBestExcerpt(data, showTitle) {
     // "prefer a cleaner source" behaviour while guaranteeing a fallback.
     excerpt = trimToCompleteSentence(excerpt);
     if (/^[\s"'“‘«(\[]*[a-z]/.test(excerpt)) {
-      deferred.push({ rank, excerpt, reason: 'lowercase-fragment', source });
+      deferred.push({ rank, excerpt: hardCutExcerpt(excerpt), reason: 'lowercase-fragment', source });
       return null;
     }
 
@@ -859,6 +872,26 @@ function selectBestExcerpt(data, showTitle) {
       return null;
     }
 
+    // Layer 2g: Contiguity — the candidate must be a passage the critic wrote,
+    // not words stitched across a dropped clause or closed with an invented
+    // period (pull-quote-guards.isContiguousInSource). SOFT reject: a curated
+    // or LLM quote that paraphrases is still better than no quote, but it
+    // never outranks a contiguous accepted candidate (pickExcerptCandidate).
+    if (contiguitySource && !isContiguousInSource(excerpt, contiguitySource)) {
+      stats.nonContiguousExcerptsDeferred = (stats.nonContiguousExcerptsDeferred || 0) + 1;
+      deferred.push({ rank, excerpt: hardCutExcerpt(excerpt), reason: 'non-contiguous', source });
+      return null;
+    }
+
+    // Layer 2h: Overlong — no sentence end within the display limit to cut at
+    // (cleanExcerpt / extractExcerptFromFullText leave it uncut). Deferred in
+    // its word-boundary-cut form, ranked after every other deferral.
+    if (isOverlongExcerpt(excerpt)) {
+      stats.overlongExcerptsDeferred = (stats.overlongExcerptsDeferred || 0) + 1;
+      deferred.push({ rank, excerpt: hardCutExcerpt(excerpt), reason: 'overlong', source });
+      return null;
+    }
+
     // Layer 2b: Off-topic guard is disabled in the automated pipeline.
     // isOffTopicExcerpt() has a ~20% false-positive rate on llmPullQuote: legitimate
     // theater criticism often uses metaphorical language ("It has remembered the ladies")
@@ -908,7 +941,7 @@ function selectBestExcerpt(data, showTitle) {
       if (!stats.hedgeExcerptSuppressed) stats.hedgeExcerptSuppressed = [];
       stats.hedgeExcerptSuppressed.push({ showId, source, excerpt: excerpt.slice(0, 80) });
       console.log(`  🛡️  [hedge-guard] ${showId}: "${source}" deferred as reservation (score ${reviewScore})`);
-      deferred.push({ rank, excerpt, reason: 'hedge', source });
+      deferred.push({ rank, excerpt: hardCutExcerpt(excerpt), reason: 'hedge', source });
       return null;
     }
 

@@ -399,22 +399,93 @@ function isGenericQuote(text) {
   return false;
 }
 
+// A real sentence end: terminal punctuation, optional closing quotes/parens,
+// then whitespace and something that can START a sentence (capital, digit,
+// opening quote/paren). "L.A. productions", "Baitz's" and "Mr. smith" are not
+// boundaries; the old rule cut at any straight apostrophe or closing quote
+// ("...the U.K. and L.A." shipped on EW / 1984).
+const SENTENCE_END_RE = /[.!?]["'\u201D\u2019)\]]*(?=\s+["'\u201C\u2018(\[]*[A-Z0-9])/g;
+
+/** Index just past the last real sentence end in `text` within [minLen, maxEnd], or -1. */
+function lastSentenceEnd(text, minLen = 40, maxEnd = Infinity) {
+  let best = -1;
+  SENTENCE_END_RE.lastIndex = 0;
+  let m;
+  while ((m = SENTENCE_END_RE.exec(text)) !== null) {
+    const end = m.index + m[0].length;
+    if (end > maxEnd) break;
+    if (end >= minLen) best = end;
+  }
+  return best;
+}
+
+// A dash-led qualifier closing the text: "...American rot – perhaps too eerily."
+// It belongs to the sentence before it, so it is never trimmed away.
+const TRAILING_DASH_QUALIFIER_RE = /\s[-\u2013\u2014]{1,2}\s*[^.!?\u2013\u2014]{1,80}[.!?]?["'\u201D\u2019)]*$/;
+
 function trimToCompleteSentence(text) {
   if (!text) return text;
   const trimmed = text.trim();
 
   const contractionMatch = trimmed.match(/(^|\s)(he|she|it|we|they|who|wasn|wouldn|couldn|didn|don|isn|aren|won|haven|hasn|shouldn|mustn|weren|hadn|I)['\u2019]$/);
   if (contractionMatch) {
-    const match = trimmed.match(/^(.*[.!?"\u201D])\s/s);
-    if (match && match[1].length >= 40) return match[1].trim();
+    const end = lastSentenceEnd(trimmed);
+    if (end !== -1) return trimmed.slice(0, end).trim();
     return trimmed;
   }
 
   if (/[.!?"\u201D)]\s*$/.test(trimmed)) return trimmed;
   if (/[.!?][')\u2019]\s*$/.test(trimmed)) return trimmed;
-  const match = trimmed.match(/^(.*[.!?"\u201D'])\s*\S+.*$/s);
-  if (match && match[1].length >= 40) return match[1].trim();
-  return trimmed;
+  // Trailing partial sentence: cut back to the last real sentence end — unless
+  // what follows it is only a dash-led qualifier of that sentence.
+  const end = lastSentenceEnd(trimmed);
+  if (end === -1) return trimmed;
+  const tail = trimmed.slice(end);
+  // "...rot – perhaps too eerily" right after the boundary, or after an
+  // abbreviation-like period the boundary rule skipped ("rot. – perhaps").
+  if (TRAILING_DASH_QUALIFIER_RE.test(tail)
+      && (/^\s*[-\u2013\u2014]/.test(tail) || /[.!?]["'\u201D\u2019)]*\s+[-\u2013\u2014]{1,2}\s*[^.!?\u2013\u2014]{1,80}[.!?]?["'\u201D\u2019)]*$/.test(tail))) {
+    return trimmed;
+  }
+  return trimmed.slice(0, end).trim();
+}
+
+// ===================================================
+// EXCERPT LENGTH
+// ===================================================
+
+const EXCERPT_MAX_LENGTH = 350;
+
+/**
+ * Cut `text` at the last real sentence end within `limit` chars. Never appends
+ * "..." (a hard cut + ellipsis shipped multi-sentence passages chopped
+ * mid-clause: People / Culture Sauce on Other Desert Cities, 2026-10-19).
+ * Returns null when there is no sentence end to cut at.
+ */
+function truncateAtSentenceBoundary(text, limit = EXCERPT_MAX_LENGTH) {
+  if (!text || text.length <= limit) return text;
+  // ≥100 chars, as the old lastIndexOf('.') > 100 rule: a 49-char first
+  // sentence is too thin to stand in for a 350-char passage.
+  const end = lastSentenceEnd(text, 100, limit);
+  if (end === -1) return null;
+  return text.slice(0, end).trim();
+}
+
+/** Longer than a pull quote may display — no sentence end to cut it at. */
+function isOverlongExcerpt(text) {
+  return typeof text === 'string' && text.length > EXCERPT_MAX_LENGTH;
+}
+
+/**
+ * Last-resort display form of an overlong excerpt: cut at a word boundary and
+ * mark the elision. Only used when nothing better exists (pickExcerptCandidate
+ * ranks 'overlong' deferrals after every other deferral).
+ */
+function hardCutExcerpt(text, limit = EXCERPT_MAX_LENGTH) {
+  if (!isOverlongExcerpt(text)) return text;
+  const head = text.slice(0, limit - 3);
+  const sp = head.lastIndexOf(' ');
+  return (sp > limit / 2 ? head.slice(0, sp) : head).replace(/[\s,;:\u2013\u2014-]+$/, '') + '...';
 }
 
 function normalizeQuoteWrapping(text) {
@@ -478,8 +549,11 @@ function cleanExcerpt(text) {
   cleaned = cleaned.replace(/\[\s*["']mid-article\d*["'][^\]]*\]/gi, '');
   cleaned = cleaned.replace(/Related Stories\s+[A-Z][^"]*$/gi, '');
 
-  // Remove photo credits mixed into text
-  cleaned = cleaned.replace(/\b[A-Z][a-z]+ [A-Z][a-z]+\s+(?=Thirty|The|In|When|After|Before|It|This|That|A|An)/g, '');
+  // Remove photo credits mixed into text. The lookahead must end on a word
+  // boundary: without it "Irish Repertory Theatre" / "Lincoln Center Theater"
+  // matched (?=The), deleting the venue name mid-sentence ("...premiere at
+  // Theatre.", WSJ on Ulster American; non-contiguity audit 2026-10-19).
+  cleaned = cleaned.replace(/\b[A-Z][a-z]+ [A-Z][a-z]+\s+(?=(?:Thirty|The|In|When|After|Before|It|This|That|A|An)\b)/g, '');
 
   // Stop at next critic attribution (BWW roundups concatenate multiple critics)
   const nextCriticMatch = cleaned.match(/\.\s+[A-Z][a-z]+(?:\s+[A-Z][a-z'-]+)?,\s+[A-Z][^:]+:/);
@@ -512,10 +586,13 @@ function cleanExcerpt(text) {
     return null;
   }
 
-  // Truncate to 350 chars at sentence boundary
-  if (cleaned.length > 350) {
-    const truncateAt = cleaned.lastIndexOf('.', 350);
-    cleaned = truncateAt > 100 ? cleaned.substring(0, truncateAt + 1) : cleaned.substring(0, 347) + '...';
+  // Truncate to 350 chars at a real sentence boundary. With none, return the
+  // text uncut: the caller sees isOverlongExcerpt() and lets a lower source
+  // win (selectBestExcerpt defers it as 'overlong') instead of shipping a
+  // mid-clause hard cut with an appended "...".
+  if (cleaned.length > EXCERPT_MAX_LENGTH) {
+    const cut = truncateAtSentenceBoundary(cleaned, EXCERPT_MAX_LENGTH);
+    if (cut) cleaned = cut;
   }
 
   // Final junk check
@@ -1578,6 +1655,10 @@ module.exports = {
   trimToCompleteSentence,
   normalizeQuoteWrapping,
   cleanExcerpt,
+  EXCERPT_MAX_LENGTH,
+  truncateAtSentenceBoundary,
+  isOverlongExcerpt,
+  hardCutExcerpt,
   // Scoring
   isContentVerificationActive,
   aggregatorStarsCorroboratedByFullText,

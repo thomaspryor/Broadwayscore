@@ -837,12 +837,16 @@ describe('cleanExcerpt', () => {
     assert.ok(result.endsWith('.'));
   });
 
-  test('truncation without sentence boundary adds ellipsis', () => {
-    // Long text with no period in first 350 chars but > 350 total
+  test('truncation without sentence boundary leaves text uncut (no mid-clause "..." cut)', () => {
+    // Long text with no period in first 350 chars but > 350 total. 2026-10-19:
+    // the old 347-char hard cut + "..." shipped mid-clause splices; the text is
+    // now returned uncut and selectBestExcerpt defers it as 'overlong'
+    // (scripts/lib/pull-quote-contiguity.test.mjs covers the display form).
     const longWord = 'The production delivers an extraordinarily compelling and deeply moving theatrical experience that showcases the remarkable talents of every single member of the cast and crew who bring this magnificent story to life on the Broadway stage with passion, dedication, and an unwavering commitment to artistic excellence that audiences will find absolutely thrilling and unforgettable from start to finish and beyond';
     const result = cleanExcerpt(longWord);
     assert.ok(result);
-    assert.ok(result.endsWith('...'));
+    assert.strictEqual(result, longWord);
+    assert.ok(!result.endsWith('...'));
   });
 
   test('short excerpt (<30 chars) returns null', () => {
