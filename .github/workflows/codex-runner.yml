@@ -4,7 +4,11 @@ name: Codex card runner
 # Codex (owner's ChatGPT plan, login kept encrypted on a Linear card) fixes
 # Todo cards; an independent Claude check (API key, capped per review and per
 # run) must pass before the runner lands the fix via land/codex-bro-N.
-# 5 runs x --limit 4 = up to 20 cards a day. The runner's own branch lock
+# 5 runs x --limit 6 = up to 30 cards a day (BRO-5673: was 4; 57% landed after the
+# 2026-10-18 fixes and most runs stopped on the time guard, not the card limit).
+# --hard-stop-minutes 290 ends a run gracefully (cards hand back) inside the 5h
+# cron spacing and the 355-min job timeout; without it a card started near
+# --max-minutes could run 120 more minutes. The runner's own branch lock
 # (refs/heads/codex-runner-lock) keeps a hand-started cloud run from overlapping.
 #
 # Credential layout: checkout does NOT persist a token (Codex and the unit tests
@@ -19,7 +23,7 @@ on:
     inputs:
       limit:
         description: 'Max cards this run'
-        default: '4'
+        default: '6'
       ids:
         description: 'Only these cards (comma-separated BRO ids), optional'
         default: ''
@@ -99,7 +103,7 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CODEX_RUNNER_PUSH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           GH_TOKEN: ${{ github.token }}
-          LIMIT: ${{ inputs.limit || '4' }}
+          LIMIT: ${{ inputs.limit || '6' }}
           IDS: ${{ inputs.ids }}
           EXTRA: ${{ inputs.extra }}
         run: |
@@ -109,7 +113,7 @@ jobs:
             echo "::warning::CODEX_AUTH_KEY secret is not set, so the Codex runner is skipping (see BRO-4745)"
             exit 0
           fi
-          args=(--limit "$LIMIT" --max-minutes 150)
+          args=(--limit "$LIMIT" --max-minutes 210 --hard-stop-minutes 290)
           if [ -n "$IDS" ]; then args+=(--ids "$IDS"); fi
           # shellcheck disable=SC2206 -- word-split the free-form flags on purpose
           if [ -n "$EXTRA" ]; then args+=($EXTRA); fi
