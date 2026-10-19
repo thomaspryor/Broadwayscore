@@ -148,6 +148,7 @@ const RATED_OUTLETS = new Map([
   ['timeout-london', { format: 'stars/5', api: null }],
   ['i-newspaper', { format: 'stars/5', api: null }],
   ['cityam', { format: 'stars/5', api: null }],
+  ['city-am', { format: 'stars/5', api: null }], // review files' outletId (BRO-5675)
   ['rollingstone', { format: 'stars/5', api: null }],
   ['digital-journal', { format: 'mixed', api: null }],
   ['jks-theatre-scene', { format: 'letter-grade', api: null }],

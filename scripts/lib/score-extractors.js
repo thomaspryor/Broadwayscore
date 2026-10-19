@@ -1414,6 +1414,9 @@ const OUTLET_EXTRACTORS = {
   'the-express': extractUKStarRating,
   'express': extractUKStarRating,
   'cityam': extractUKStarRating,
+  // BRO-5675: review files carry the registry id 'city-am'; 'cityam' alone never
+  // matched them, so the weekly recollect exited "No extractor" for City A.M.
+  'city-am': extractUKStarRating,
   'the-recs': extractUKStarRating,
   'thereviewshub': extractReviewsHubScore,
   'the-reviews-hub': extractReviewsHubScore,

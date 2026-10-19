@@ -148,8 +148,10 @@ jobs:
           # BRO-5675: the outlet loop ran into the 120-min job timeout two weeks
           # running (v6->v7 extractor bump reopened hundreds of reviews per outlet;
           # outlets after daily-mail never ran). Give the loop a 95-min wall-clock
-          # budget (step starts ~3 min in), hand each outlet what is left via
-          # --time-budget-min, and skip the rest once under 8 min. The script stops
+          # budget (step starts ~3 min in), hand each outlet a fair share of what
+          # is left (remaining / outlets left, at least 8 min) via
+          # --time-budget-min, and skip the rest once under 8 min. Time an outlet
+          # doesn't use rolls over to the ones after it. The script stops
           # starting items it can't finish, so the step exits 0, the always() steps
           # push what finished, and the job timeout stays a backstop.
           STEP_BUDGET_MIN=95
@@ -169,19 +171,23 @@ jobs:
           TOTAL_ERRORS=0
           RESULTS=""
 
+          LEFT=$N
           for outlet in "${OUTLET_ARRAY[@]}"; do
             outlet=$(echo "$outlet" | xargs)  # trim whitespace
             REMAINING_MIN=$(( (DEADLINE - $(date +%s)) / 60 ))
+            SHARE_MIN=$(( REMAINING_MIN / LEFT ))
+            LEFT=$(( LEFT - 1 ))
             if [ "$REMAINING_MIN" -lt "$MIN_OUTLET_MIN" ]; then
               SKIPPED="${SKIPPED}${outlet} "
               continue
             fi
+            [ "$SHARE_MIN" -lt "$MIN_OUTLET_MIN" ] && SHARE_MIN=$MIN_OUTLET_MIN
             echo ""
             echo "========================================"
             echo "Processing outlet: $outlet"
             echo "========================================"
 
-            ARGS="--outlet=$outlet --limit=$LIMIT --delay=$DELAY --time-budget-min=$REMAINING_MIN"
+            ARGS="--outlet=$outlet --limit=$LIMIT --delay=$DELAY --time-budget-min=$SHARE_MIN"
             if [ "$DRY_RUN" = "true" ]; then
               ARGS="$ARGS --dry-run"
             else

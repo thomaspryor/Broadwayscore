@@ -6,7 +6,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { loadState, saveState, inErrorBackoff, orderTargets, recordAttempt, ERROR_BACKOFF_DAYS } = require('./recollect-state');
+const { loadState, saveState, inErrorBackoff, orderTargets, recordAttempt, pruneState, ERROR_BACKOFF_DAYS } = require('./recollect-state');
 
 const now = Date.parse('2026-10-19T00:00:00Z');
 const daysAgo = d => new Date(now - d * 86_400_000).toISOString();
@@ -26,6 +26,12 @@ test('an errored target backs off, then comes back after the window', () => {
   assert.equal(inErrorBackoff({ lastAttemptAt: 'garbage', lastError: 'x' }, now), false);
 });
 
+test('pruneState drops only this outlet\'s keys that are no longer targets', () => {
+  const state = { 'show-a/ew--x.json': {}, 'show-b/ew--y.json': {}, 'show-a/new-ew--x.json': {}, 'show-a/timeout--x.json': {} };
+  pruneState(state, '/ew--', ['show-a/ew--x.json']);
+  assert.deepEqual(Object.keys(state).sort(), ['show-a/ew--x.json', 'show-a/new-ew--x.json', 'show-a/timeout--x.json']);
+});
+
 test('recordAttempt clears an old error on success; state round-trips; bad file reads empty', () => {
   const state = {};
   recordAttempt(state, 'k', 'boom', now);
@@ -39,4 +45,16 @@ test('recordAttempt clears an old error on success; state round-trips; bad file 
   fs.writeFileSync(file, '[1,2]');
   assert.deepEqual(loadState(file), {});
   assert.deepEqual(loadState(path.join(dir, 'missing.json')), {});
+});
+
+test('every outlet in the weekly recollect list has a real score extractor', () => {
+  // 'city-am' sat in the list for weeks with no extractor and exited "No extractor" (BRO-5675).
+  const { OUTLET_EXTRACTORS } = require('./score-extractors');
+  const wf = fs.readFileSync(new URL('../../.github/workflows/recollect-for-scores.yml', import.meta.url), 'utf8');
+  const lists = [...wf.matchAll(/^\s*OUTLETS="([a-z0-9,-]+)"/gm)].map(m => m[1].split(','));
+  assert.ok(lists.length > 0, 'no OUTLETS="..." list found in recollect-for-scores.yml');
+  for (const outlet of lists.flat()) {
+    const fn = OUTLET_EXTRACTORS[outlet];
+    assert.ok(fn && fn.name !== 'noScoreExtractor', `recollect outlet "${outlet}" has no score extractor`);
+  }
 });

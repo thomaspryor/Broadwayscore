@@ -61,4 +61,16 @@ function recordAttempt(state, key, error, now = Date.now()) {
   if (error) state[key].lastError = String(error).slice(0, 200);
 }
 
-module.exports = { ERROR_BACKOFF_DAYS, loadState, saveState, inErrorBackoff, orderTargets, recordAttempt };
+/**
+ * Drop this outlet's entries that are no longer targets (scored, marked
+ * no-score, renamed), so the ledger tracks the backlog, not history.
+ * `marker` is the "/<outlet>--" part of a "<dir>/<outlet>--<critic>.json" key.
+ */
+function pruneState(state, marker, liveKeys) {
+  const live = new Set(liveKeys);
+  for (const key of Object.keys(state)) {
+    if (key.includes(marker) && !live.has(key)) delete state[key];
+  }
+}
+
+module.exports = { ERROR_BACKOFF_DAYS, loadState, saveState, inErrorBackoff, orderTargets, recordAttempt, pruneState };

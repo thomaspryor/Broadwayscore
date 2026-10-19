@@ -2441,13 +2441,12 @@ function checkExemptCronLiveness() {
         const raw = cachedShell(runCacheKey(`liveness:${wf}`), ghRunsQuery(wf, { limit: 5, event: 'schedule' }));
         const runs = (raw ? JSON.parse(raw) : []).map(r => ({ conclusion: r.conclusion, created_at: r.createdAt }));
         // Zero scheduled runs: a new cron reads unknown until it has existed past its limit
-        // (BRO-5675). One extra call, zero-run workflows only; a failed lookup stays unknown.
+        // (BRO-5675). One extra call, zero-run workflows only.
+        // A failed lookup must not hide a never-fired cron: it counts as a lookup error.
         let createdAt = null;
         if (!runs.length) {
-          try {
-            createdAt = cachedShell(runCacheKey(`wfcreated:${wf}`),
-              `gh api "repos/${GH_REPO_PLACEHOLDER}/actions/workflows/${wf}" --jq .created_at`);
-          } catch { /* unknown */ }
+          createdAt = cachedShell(runCacheKey(`wfcreated:${wf}`),
+            `gh api "repos/${GH_REPO_PLACEHOLDER}/actions/workflows/${wf}" --jq .created_at`);
         }
         const v = livenessVerdict({ crons, runs, createdAt });
         if (v.status === 'unknown') continue;

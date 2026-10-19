@@ -49,7 +49,7 @@ const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { withDeadline } = require('./lib/cron-deadline');
-const { loadState, saveState, orderTargets, recordAttempt } = require('./lib/recollect-state');
+const { loadState, saveState, orderTargets, recordAttempt, pruneState } = require('./lib/recollect-state');
 
 const REVIEW_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const STATE_FILE = path.join(__dirname, '..', 'data', 'audit', 'recollect-scores-state.json');
@@ -261,6 +261,13 @@ async function fetchItem(url) {
   } catch (e) {
     if (/wall-clock timeout/.test(e.message)) {
       await withDeadline(() => cleanupScraper(), 15000, 'Scraper cleanup').catch(() => {});
+      // Paywalled outlets fetch through this script's own browser: drop it too.
+      if (_browser) {
+        const b = _browser;
+        _browser = null;
+        _context = null;
+        await withDeadline(() => b.close(), 10000, 'Browser close').catch(() => {});
+      }
     }
     // Only a failed fetch earns the error backoff; a bug in this script must not
     // park the backlog for weeks.
@@ -329,6 +336,8 @@ async function main() {
   const noScore = targets.length - ssTargets.length - aggTargets.length;
   console.log(`Found ${targets.length} reviews to process (${noScore} missing score, ${ssTargets.length} replacing SS score, ${aggTargets.length} replacing aggregator score)`);
   const state = loadState(STATE_FILE);
+  pruneState(state, `/${outlet}--`, targets.map(t => t.key));
+  if (execute) saveState(STATE_FILE, state);
   const ordered = orderTargets(targets, state);
   if (ordered.length < targets.length) {
     console.log(`Skipping ${targets.length - ordered.length} in error backoff (fetch failed recently)`);
@@ -356,7 +365,7 @@ async function main() {
       break;
     }
     if (consecutiveErrors >= MAX_CONSECUTIVE_ERRORS) {
-      console.log(`\n${consecutiveErrors} fetch errors in a row: stopping ${outlet}, ${toProcess.length - i} left for the next run`);
+      console.log(`\n${consecutiveErrors} errors in a row: stopping ${outlet}, ${toProcess.length - i} left for the next run`);
       // An outlet-wide failure (outage, expired cookies, spent credits) says
       // nothing about these URLs: drop their backoff, keep them at the back.
       if (execute) {
