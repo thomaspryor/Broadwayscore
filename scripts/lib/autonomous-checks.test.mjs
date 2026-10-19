@@ -264,6 +264,20 @@ test('checksEnv strips secrets, fakes HOME, and disables git prompting', () => {
   assert.equal(env.GIT_TERMINAL_PROMPT, '0');
 });
 
+test('checksEnv keeps CA/proxy trust vars but never GitHub tokens (BRO-5661)', () => {
+  const env = checksEnv({ env: {
+    PATH: '/bin', NODE_EXTRA_CA_CERTS: '/ca.crt', SSL_CERT_FILE: '/ca.crt', CURL_CA_BUNDLE: '/ca.crt', REQUESTS_CA_BUNDLE: '/ca.crt',
+    HTTPS_PROXY: 'http://127.0.0.1:1', https_proxy: 'http://127.0.0.1:1', NO_PROXY: 'localhost', no_proxy: 'localhost',
+    GH_TOKEN: 'ghp_x', GITHUB_TOKEN: 'ghs_x', GH_ENTERPRISE_TOKEN: 'e', HTTP_PROXY: 'http://u:p@h',
+  } });
+  for (const k of checks.NETWORK_ENV) assert.ok(env[k], `${k} kept`);
+  assert.equal(env.NODE_USE_ENV_PROXY, undefined, 'not forced: it adds a warning to every Node child\'s stderr');
+  for (const k of ['GH_TOKEN', 'GITHUB_TOKEN', 'GH_ENTERPRISE_TOKEN', 'HTTP_PROXY']) assert.equal(env[k], undefined, `${k} dropped`);
+  for (const k of checks.NETWORK_ENV) assert.doesNotMatch(k, /TOKEN|KEY|SECRET|PASS/i, 'allow-list holds no credential names');
+  const bare = checksEnv({ env: { PATH: '/bin' } });
+  for (const k of checks.NETWORK_ENV) assert.equal(bare[k], undefined, 'absent stays absent (Mac/CI unchanged)');
+});
+
 test('checksEnv gives checks a heap floor that takes effect and never lowers the default (BRO-4757)', () => {
   const env = checksEnv({ env: { PATH: process.env.PATH, NODE_OPTIONS: '--require /tmp/evil.js' } });
   assert.doesNotMatch(env.NODE_OPTIONS, /--require/, 'caller NODE_OPTIONS is not inherited');

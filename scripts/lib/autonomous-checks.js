@@ -56,6 +56,25 @@ const BUILD_TIMEOUT_MS = 20 * 60 * 1000;
 // owner's credentials) and git prompting is disabled so it fails fast.
 const KEEP_ENV = ['PATH', 'HOME', 'TERM', 'LANG', 'LC_ALL', 'NODE_ENV'];
 
+// BRO-5661: TLS-trust and egress-proxy settings, never secrets. In the cloud
+// container all HTTPS is re-terminated by a local agent proxy, so without the
+// CA bundle every fetch fails SELF_SIGNED_CERT_IN_CHAIN, and without the proxy
+// URL the direct path shares one egress IP whose unauthenticated GitHub quota
+// is routinely exhausted (measured 403). That refused every card verified by
+// check-workflow-run-status.js's public-API fallback. Trade-off, accepted: the
+// cloud proxy may itself authenticate to GitHub, so a check routed through it
+// reaches GitHub as the session does. That is only possible in cloud, where
+// the implementing session already has the same proxy; on the Mac and in CI
+// these vars are unset and nothing changes. Tokens (GH_TOKEN, GITHUB_TOKEN,
+// ...) stay out: they are not on any list here. NODE_USE_ENV_PROXY is NOT
+// set here: it makes every Node child print an experimental-feature warning
+// that pollutes check output; a script that needs the proxy for fetch opts in
+// itself (see check-workflow-run-status.js proxyAwareFetch).
+const NETWORK_ENV = [
+  'NODE_EXTRA_CA_CERTS', 'SSL_CERT_FILE', 'CURL_CA_BUNDLE', 'REQUESTS_CA_BUNDLE',
+  'HTTPS_PROXY', 'https_proxy', 'NO_PROXY', 'no_proxy',
+];
+
 // The feature-flag set a production build needs to compile every route the
 // live site serves. Mirrors package.json's build:ugc script (the auth-aware
 // build test.yml/Vercel use); an explicit constant, not `NEXT_PUBLIC_*`
@@ -94,6 +113,7 @@ const CHECKS_GITCONFIG ='[gc]\n\tauto = 0\n\tautoDetach = false\n[maintenance]\n
 function checksEnv({ env = process.env, build = false, home = null } = {}) {
   const out = {};
   for (const k of KEEP_ENV) if (env[k] !== undefined) out[k] = env[k];
+  for (const k of NETWORK_ENV) if (env[k] !== undefined) out[k] = env[k];
   out.HOME = home || fs.mkdtempSync(path.join(os.tmpdir(), 'auto-checks-home-'));
   // The checks' temp-git-repo tests rm their repos in teardown; git's detached
   // auto-maintenance (spawned by receive-pack in local bare remotes, which
@@ -629,6 +649,7 @@ module.exports = {
   CHECK_TIMEOUT_MS,
   BUILD_TIMEOUT_MS,
   KEEP_ENV,
+  NETWORK_ENV,
   BUILD_ENV,
   CHECK_HEAP_MB,
   UI_PATH_RES,

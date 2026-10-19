@@ -19,6 +19,9 @@
  * Exit codes: 0 conclusion matches --expect · 1 no match / no runs / gh
  * error · 2 usage error
  *
+ * No gh auth (the done-gate's token-free env): falls back to the public REST
+ * API, see fetchWorkflowRuns (BRO-5661).
+ *
  * Multi-run mode (BRO-3579): `--limit=N` inspects the N most recent runs and
  * `--min-match=K` / `--max-match=K` bound how many of them may conclude
  * `--expect`. "3 consecutive successes" = --limit=3 --expect=success
@@ -78,7 +81,84 @@ function evaluate(runs, { expect, limit, minMatch, maxMatch }) {
   return { ok, message: `${ok ? 'MATCH' : 'MISMATCH'} — ${matches}/${window.length} of last ${limit} runs concluded '${expect}' (min ${minMatch ?? '-'}, max ${maxMatch ?? '-'})` };
 }
 
-function main(argv) {
+// ── Public-API fallback (BRO-5661) ─────────────────────────────────────────
+// linear-done-gate runs VERIFY commands under checksEnv() (autonomous-
+// checks.js): fake HOME, no tokens. gh then has no config and no GH_TOKEN, so
+// it exits "gh auth login" and every "Auto-fix: <workflow> Failed" card was
+// refused even when the workflow was green. The repo is public, so the same
+// runs are readable unauthenticated. No token is ever sent from here.
+const PUBLIC_REPO = 'thomaspryor/Broadwayscore';
+const API = 'https://api.github.com';
+
+/** True when gh failed for lack of auth (or is not installed), the only cases the fallback covers. */
+function isGhAuthError(err) {
+  if (!err) return false;
+  if (err.code === 'ENOENT') return true;
+  const text = `${err.stderr || ''}\n${err.message || ''}`;
+  return /gh auth login|GH_TOKEN environment variable|not logged in|authentication required/i.test(text);
+}
+
+/** REST run → the gh `--json conclusion,status,headBranch,url` shape evaluate() reads. */
+function normalizeRestRun(run) {
+  return { conclusion: run.conclusion || '', status: run.status, headBranch: run.head_branch, url: run.html_url };
+}
+
+/** Workflow id from the list API: match file basename (x.yml) or display name. null when absent. */
+function resolveWorkflowId(workflows, name) {
+  const hit = (workflows || []).find((w) => (w.path && w.path.split('/').pop() === name) || w.name === name);
+  return hit ? hit.id : null;
+}
+
+// Node's built-in fetch ignores HTTPS_PROXY unless NODE_USE_ENV_PROXY=1 is set
+// at startup. Behind a proxy (the cloud container) the direct path shares one
+// egress IP whose unauthenticated quota is exhausted, so run the request in a
+// child Node that honours the proxy. Without a proxy (Mac, CI): plain fetch.
+function proxyAwareFetch(env = process.env) {
+  const proxied = (env.HTTPS_PROXY || env.https_proxy) && env.NODE_USE_ENV_PROXY !== '1';
+  if (!proxied) return globalThis.fetch;
+  return async (url, opts) => {
+    const script = 'fetch(process.argv[1], JSON.parse(process.argv[2])).then(async r => process.stdout.write(JSON.stringify({ status: r.status, body: await r.text() }))).catch(e => { process.stderr.write(String(e.cause && e.cause.code || e.message)); process.exit(1); })';
+    let out;
+    try {
+      out = execFileSync(process.execPath, ['--no-warnings', '-e', script, url, JSON.stringify(opts || {})], {
+        encoding: 'utf8', maxBuffer: 16 * 1024 * 1024, timeout: 60 * 1000, stdio: ['ignore', 'pipe', 'pipe'],
+        env: { ...env, NODE_USE_ENV_PROXY: '1' },
+      });
+    } catch (e) {
+      throw new Error(`fetch ${url} failed: ${(e.stderr || e.message || '').toString().trim()}`);
+    }
+    const { status, body } = JSON.parse(out);
+    return { ok: status >= 200 && status < 300, status, json: async () => JSON.parse(body) };
+  };
+}
+
+async function getJson(fetchImpl, url) {
+  const res = await fetchImpl(url, { headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'broadwayscore-check-workflow-run-status' } });
+  if (!res.ok) throw new Error(`GET ${url} -> HTTP ${res.status}`);
+  return res.json();
+}
+
+/**
+ * Newest-first runs for `workflow` via the unauthenticated public REST API.
+ * A file name (x.yml) is addressed directly; a display name is resolved by
+ * paging the workflow list (the repo has ~300 workflows, 100 per page).
+ */
+async function fetchWorkflowRuns({ workflow, branch, limit = 1, completedOnly = false, repo = PUBLIC_REPO, fetchImpl = proxyAwareFetch() }) {
+  let id = /\.ya?ml$/.test(workflow) ? workflow : null;
+  for (let page = 1; !id; page++) {
+    const body = await getJson(fetchImpl, `${API}/repos/${repo}/actions/workflows?per_page=100&page=${page}`);
+    const list = body.workflows || [];
+    id = resolveWorkflowId(list, workflow);
+    if (!id && (list.length < 100 || page >= 10)) throw new Error(`workflow '${workflow}' not found in ${repo}`);
+  }
+  const q = new URLSearchParams({ per_page: String(limit) });
+  if (branch) q.set('branch', branch);
+  if (completedOnly) q.set('status', 'completed');
+  const body = await getJson(fetchImpl, `${API}/repos/${repo}/actions/workflows/${encodeURIComponent(id)}/runs?${q}`);
+  return (body.workflow_runs || []).map(normalizeRestRun);
+}
+
+async function main(argv) {
   argv = argv || [];
   if (hasHelpFlag(argv)) {
     console.log(USAGE);
@@ -112,19 +192,30 @@ function main(argv) {
   if (branch) args.push('--branch', branch);
 
   let stdout;
-  try {
-    stdout = execFileSync('gh', args, { encoding: 'utf8', maxBuffer: 4 * 1024 * 1024 });
-  } catch (err) {
-    console.error(`gh run list failed: ${err.message}`);
-    process.exit(1);
-  }
-
   let runs;
   try {
-    runs = JSON.parse(stdout);
-  } catch {
-    console.error(`gh returned non-JSON output: ${stdout.slice(0, 200)}`);
-    process.exit(1);
+    stdout = execFileSync('gh', args, { encoding: 'utf8', maxBuffer: 4 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] });
+  } catch (err) {
+    if (!isGhAuthError(err)) {
+      console.error(`gh run list failed: ${err.message}`);
+      process.exit(1);
+    }
+    try {
+      runs = await fetchWorkflowRuns({ workflow, branch, limit: limit || 1, completedOnly: limit !== undefined });
+      console.error('(gh not authenticated; read runs from the public GitHub API)');
+    } catch (e) {
+      console.error(`gh not authenticated and public API fallback failed: ${e.message}${e.cause ? ` (${e.cause.code || e.cause.message})` : ''}`);
+      process.exit(1);
+    }
+  }
+
+  if (runs === undefined) {
+    try {
+      runs = JSON.parse(stdout);
+    } catch {
+      console.error(`gh returned non-JSON output: ${stdout.slice(0, 200)}`);
+      process.exit(1);
+    }
   }
 
   const { ok, message } = evaluate(runs, { expect, limit, minMatch, maxMatch });
@@ -133,6 +224,8 @@ function main(argv) {
   process.exit(ok ? 0 : 1);
 }
 
-if (require.main === module) main(process.argv.slice(2));
+if (require.main === module) {
+  main(process.argv.slice(2)).catch((e) => { console.error(e.stack || e.message); process.exit(1); });
+}
 
-module.exports = { parseArgs, evaluate, parseCount };
+module.exports = { parseArgs, evaluate, parseCount, isGhAuthError, normalizeRestRun, resolveWorkflowId, fetchWorkflowRuns, proxyAwareFetch, PUBLIC_REPO };
