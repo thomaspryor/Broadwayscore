@@ -9,7 +9,7 @@ Test conventions (apply to every web task below): new unit tests run through `np
 
 **Landing rule:** Sprints 2, 3 and 4 land **together**, after S3-T2. Landing the page before the analytics redaction would put live tokens into analytics tools.
 
-Roadmap check: the roadmap lives in `thomaspryor/broadway-scorecard-data` issue 1, which is outside this session's repository scope; no overlap found in Linear (`linear-brain.js find` for "share watchlist" / "shared plans" returned nothing). Related, not blocking: `docs/specs/diary-sharing-and-calendar.md`.
+Roadmap check: the roadmap is the Linear board (the old GitHub roadmap issue is retired); no overlap found in Linear (`linear-brain.js find` for "share watchlist" / "shared plans" returned nothing). Related, not blocking: `docs/specs/diary-sharing-and-calendar.md`.
 
 ## Sprint Summary
 | Sprint | Goal | Tasks | Complexity |

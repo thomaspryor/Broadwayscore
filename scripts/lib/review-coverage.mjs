@@ -225,8 +225,8 @@ function lensNumbers(text) {
   return best;
 }
 // The board is Linear. The old GitHub roadmap (issue 1 of broadway-scorecard-data) is retired and no longer counts.
-const BOARD_READ_RE = /linear-brain\.js\s+(find|get)\b|linear-next\.js\s+--list\b/;
-const BOARD_READ_TOOL_RE = /linear.*__(list_issues|get_issue)$/i;
+const BOARD_READ_RE = /(^|[;&|]\s*)(node\s+)?\S*linear-brain\.js\s+find\b|(^|[;&|]\s*)(node\s+)?\S*linear-next\.js\s+--list\b/;
+const BOARD_READ_TOOL_RE = /linear.*__list_issues$/i;
 const LINEAR_DONE_RE = /linear-brain\.js\s+update\s+BRO-\d+[^\n]*--state[=\s]+["']?Done|linear-session\.js\s+report\b[^\n]*--status[=\s]+["']?done\b/i;
 const LAND_PUSH_RE = /\bgit\b[^\n;&|]*\bpush\b[^\n;&|]*\bland\//;
 
@@ -252,10 +252,10 @@ export function evaluateChain(events, { lastMessage = '' } = {}) {
   if (we.length && !bypass('NO-WHAT-ELSE')) {
     const found = lensNumbers(texts(we[we.length - 1].i));
     if (found.size < 5) problems.push(`/what-else printed ${found.size} of 5 numbered lens lines directly under a LENSES: header, each citing a concrete check`);
-    const readBoard = events.some((e) => e.kind === 'assistant_tool_use' && (
+    const readBoard = events.slice(we[we.length - 1].i + 1).some((e) => e.kind === 'assistant_tool_use' && (
       BOARD_READ_TOOL_RE.test(e.name || '') ||
       (e.name === 'Bash' && BOARD_READ_RE.test(String(e.input?.command || '')))));
-    if (!readBoard) problems.push('/what-else never searched the Linear board (linear-brain.js find, or mcp__Linear__list_issues; the old GitHub roadmap issue and memory/roadmap.md are retired and stale)');
+    if (!readBoard) problems.push('/what-else never searched the Linear board (after /what-else started: linear-brain.js find, linear-next.js --list, or mcp__Linear__list_issues; the old GitHub roadmap issue and memory/roadmap.md are retired and stale)');
   }
 
   if (!bypass('NO-WRAP-UP')) {

@@ -1,4 +1,4 @@
-Verify deploys are live (not "should be fine"), update the roadmap, capture what you learned. Clean handoff to next session.
+Verify deploys are live (not "should be fine"), update the Linear board, capture what you learned. Clean handoff to next session.
 
 ## Mode Selection
 
@@ -30,13 +30,13 @@ Summarize in 3-5 bullet points. Be specific — include file names, feature name
 
 **Otherwise**, run `/what-else` now to find adjacent improvements before context fades. This catches pattern reuse, cousin bugs, data quality issues, and compounding improvements that would be expensive to rediscover in a future session.
 
-For each finding, capture it for the roadmap (Phase 4 files Linear issues for what can't be fixed now).
+For each finding, capture it on the Linear board (Phase 4 files Linear issues for what can't be fixed now).
 
 ### Phase 2.5: Mobile App Feature Parity
 
 **Skip** unless this session shipped a new user-facing feature (new page, UI component, user flow). Data/CI/docs/backend changes don't need this.
 
-If applicable, check whether the new feature needs a corresponding update in the mobile app (BroadwayScorecard-app repo). Note it for the roadmap — don't implement it now.
+If applicable, check whether the new feature needs a corresponding update in the mobile app (BroadwayScorecard-app repo). Note it for the Linear board (file an issue) — don't implement it now.
 
 ### Phase 3: Loose Ends Audit
 
@@ -238,8 +238,8 @@ Present a summary to the user:
 - [completed items]
 
 ### Board Updated
-- Moved to done: [items]
-- Added to backlog: [items]
+- Closed: [BRO-N items]
+- Filed: [BRO-N items]
 
 ### Documentation Updated
 - [files changed and why]

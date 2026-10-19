@@ -275,7 +275,11 @@ test('finish chain: a hollow /what-else (one lens, no board search) is flagged',
   const p = evaluateChain(hollow).join('|');
   assert.match(p, /1 of 5 numbered lens lines/);
   assert.match(p, /never searched the Linear board/);
-  const good = [...base, roadmap(), res(roadmap()), ...ev(skill('what-else')), LENSES];
+  const good = [...base, ...ev(skill('what-else')), roadmap(), res(roadmap()), LENSES];
+  const early = [...base, roadmap(), res(roadmap()), ...ev(skill('what-else')), LENSES];
+  assert.match(evaluateChain(early).join('|'), /never searched the Linear board/, 'a search before /what-else started does not count');
+  const cardLookup = [...base, ...ev(skill('what-else')), LENSES, tool('Bash', { command: 'node scripts/linear-brain.js get BRO-1' }), tool('mcp__Linear__get_issue', { id: 'BRO-1' })];
+  assert.match(evaluateChain(cardLookup).join('|'), /never searched the Linear board/, 'fetching one card is not a board search');
   assert.deepEqual(evaluateChain(good), []);
   const viaCli = [...base, ...ev(skill('what-else')), LENSES, tool('Bash', { command: 'node scripts/linear-brain.js find "fantasy"' })];
   assert.deepEqual(evaluateChain(viaCli), [], 'the linear-brain.js find form of the board search (Mac) counts too');
@@ -293,7 +297,7 @@ test('finish chain: a Linear close-out posted before the last landing is flagged
 });
 
 test('stop hook: a LENSES/TESTED block that only exists in the closing message (not yet flushed) counts', () => {
-  const base = [...ev(skill('did-it-work')), ...ev(skill(), agent(), curl()), roadmap(), res(roadmap()), ...ev(skill('what-else'))];
+  const base = [...ev(skill('did-it-work')), ...ev(skill(), agent(), curl()), ...ev(skill('what-else')), roadmap(), res(roadmap())];
   const closing = '\u2501\u2501\u2501 TESTED \u2501\u2501\u2501\n```\nLENSES:\n1. a: b\n2. a: b\n3. a: b\n4. a: b\n5. a: b\n```\n\nSAFE TO EXIT';
   assert.equal(stopHookDecision({ lastMessage: closing, events: base, env: CLOUD }).decision, 'allow');
   assert.equal(stopHookDecision({ lastMessage: 'Done.\n\nSAFE TO EXIT', events: base, env: CLOUD }).decision, 'block');
@@ -317,7 +321,7 @@ test('general-purpose reviewer accepted when it has a real review prompt; a buil
 
 test('review-ship-check ship-check findings: honest formats are not blocked', () => {
   const base = fullChain();
-  const withLenses = (t) => [...base, roadmap(), res(roadmap()), ...ev(skill('what-else')), text(t)];
+  const withLenses = (t) => [...base, ...ev(skill('what-else')), roadmap(), res(roadmap()), text(t)];
   const five = ['1. a: b', '2. a: b', '3. a: b', '4. a: b', '5. a: b'];
   assert.deepEqual(evaluateChain(withLenses(`LENSES:\n${five.join('\n')}`)), []);
   assert.deepEqual(evaluateChain(withLenses(`**LENSES:**\n${five.map((l) => l.replace('. ', ') ')).join('\n')}`)), [], '1) numbering');
@@ -400,12 +404,12 @@ test('close-out ordering only counts landings that really ran, and only a real D
   assert.match(problem([...base, ...ev(doneRep), ...ev(mk(landCmd))]), /close-out was posted before/, '--status=done counts');
 });
 
-test('what-else: the best LENSES block wins over a later bare mention, and any Linear list/get tool name reads the board', () => {
+test('what-else: the best LENSES block wins over a later bare mention, and any Linear list_issues tool name reads the board', () => {
   const five = ['1. a: b', '2. a: b', '3. a: b', '4. a: b', '5. a: b'].join('\n');
   const rm = (name) => tool(name, { query: 'fantasy' });
-  const run = (t, road) => evaluateChain([...fullChain(), ...ev(road), ...ev(skill('what-else')), text(t)]);
+  const run = (t, road) => evaluateChain([...fullChain(), ...ev(skill('what-else')), ...ev(road), text(t)]);
   assert.deepEqual(run(`LENSES:\n${five}\n\nLENSES: done, summary below`, rm('mcp__Linear__list_issues')), []);
-  assert.deepEqual(run(`LENSES:\n${five}`, rm('mcp__claude_ai_Linear__get_issue')), [], 'prefix differs per container');
+  assert.deepEqual(run(`LENSES:\n${five}`, rm('mcp__claude_ai_Linear__list_issues')), [], 'prefix differs per container');
   assert.match(run(`LENSES:\n${five}`, tool('mcp__Linear__save_comment', {})).join('|'), /never searched the Linear board/);
 });
 

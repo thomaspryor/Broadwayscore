@@ -88,7 +88,7 @@ For each spark, search open Linear issues for its keywords:
 ```bash
 node scripts/linear-brain.js find "<spark keywords>"
 ```
-In cloud, `mcp__Linear__list_issues` (`query: "<keywords>"`, open states) works too and returns several matches at once. Quote the matching `BRO-N` titles in the "already covered" call. If a search fails, say so; do not substitute a file silently.
+`find` prints at most ONE hit and matches the exact substring (case-sensitive), so run it once per short keyword (one or two words), never a long phrase; `null` on a phrase proves nothing. In cloud, prefer `mcp__Linear__list_issues` (`query: "<keywords>"`, open states): it returns several matches. Quote the matching `BRO-N` titles in the "already covered" call. If a search fails, say so; do not substitute a file silently.
 
 From all the sparks generated, keep only the ones that are:
 - **Actionable** — someone could start on this in the next session

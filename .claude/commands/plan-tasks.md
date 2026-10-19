@@ -43,7 +43,7 @@ If working in a codebase, use the repo-sweeper agent (Task tool, subagent_type "
 ```bash
 node scripts/linear-brain.js find "<project keywords>"
 ```
-In cloud, `mcp__Linear__list_issues` with `query` returns several matches. Note any open issues that overlap with or depend on this work.
+`find` prints at most ONE hit and needs an exact short keyword (one or two words), so run it once per keyword. In cloud, prefer `mcp__Linear__list_issues` with `query`: it returns several matches. Note any open issues that overlap with or depend on this work.
 
 Specifically find out:
 - What already exists that can be reused (scripts, schemas, components, workflows)
