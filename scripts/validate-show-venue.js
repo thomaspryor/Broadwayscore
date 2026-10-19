@@ -2,8 +2,8 @@
 /**
  * validate-show-venue.js
  *
- * Cross-validate a show's venue + dates against Playbill's authoritative
- * production page. Catches stub entries where the venue or year are wrong
+ * Cross-validate a show's venue + dates against Playbill (NYC) or London
+ * venue/listings pages. Catches stub entries where the venue or year are wrong
  * (e.g. a 2014 revival surfaced as a 2026 production by a venue-page scraper).
  *
  * Resolution chain per show:
@@ -11,6 +11,9 @@
  *   2. SERP query "site:playbill.com production <title> <venue>"
  *      → filter results to /production/ paths
  *      → score by market match (off-broadway vs broadway slug)
+ *   London shows instead use lib/london-venue-validation: venue websites
+ *   from OWE_VENUE_CONFIGS, plus London Theatre / Official London Theatre.
+ *   Fetched production headings, event dates and venues supply the evidence.
  *
  * Comparison:
  *   - venue: canonicalVenue() from scripts/lib/title-match.js
@@ -43,10 +46,9 @@
  *                          Tier-2 verification against a candidate branch)
  *   --time-budget-min=N    (--all-provisional only, BRO-2627) stop starting
  *                          new shows once N minutes have elapsed; writes
- *                          whatever was completed so far (never mid-show —
- *                          checked between shows, not via a process-level
- *                          kill, so the audit file always reflects a clean
- *                          boundary). Targets are ordered by how much evidence
+ *                          whatever was completed so far. Checked between
+ *                          shows and London's source requests; an unfinished
+ *                          show remains deferred. Targets are ordered by how much evidence
  *                          checking them can produce (orderProvisionalTargets
  *                          in lib/venue-date-compare.js): new first, then a
  *                          known mismatch, then a transient error, then
@@ -109,6 +111,7 @@ const { openPlaybillUrls, logSaveResult } = require('./lib/playbill-urls-store')
 const { venueSearchToken } = require('./lib/venue-search-token');
 const { isCrossMarketPlaybillUrl } = require('./lib/playbill-url-market');
 const { classifyNamedShowRun } = require('./lib/named-show-verdict');
+const { routeVenueValidation, validateLondonShow } = require('./lib/london-venue-validation');
 
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
@@ -719,6 +722,18 @@ function parseFactDates(html) {
 
 async function validateOne(show, log) {
   log(`\n${show.id}  "${show.title}"  (${show.venue})`);
+  return routeVenueValidation(show, {
+    london: async s => {
+      const row = await validateLondonShow(s, { fetchPage, serpQuery, log }, timeBudget);
+      log(`  London verdict: ${row.result}`);
+      row.mismatches.forEach(m => log(`    - ${m.field}: shows=${m.shows} source=${m.playbill}`));
+      return row;
+    },
+    playbill: s => validatePlaybillShow(s, log),
+  });
+}
+
+async function validatePlaybillShow(show, log) {
   const urlResult = await findPlaybillUrl(show, log);
   if (!urlResult.url) {
     const outcome = { source: urlResult.source, result: urlResult.result };
@@ -929,6 +944,7 @@ async function main() {
   for (const show of targets) {
     if (timeBudget.exceeded()) break;
     const r = await validateOne(show, log);
+    if (r.result === 'budget-exhausted') break;
     results.push(r);
     if (playbillCache && r.urlSource === 'serp' && r.playbillUrl
         && r.result === 'match' && r.parsed?.titleParse?.venue) {
@@ -958,7 +974,7 @@ async function main() {
 
   const mismatches = results.filter(r => r.result === 'mismatch');
   const infraUnavailable = results.filter(r => r.result === 'infra-unavailable');
-  const errors = results.filter(r => ['fetch-error', 'short-response', 'no-playbill-url', 'serp-error'].includes(r.result));
+  const errors = results.filter(r => ['fetch-error', 'short-response', 'no-playbill-url', 'no-london-url', 'serp-error'].includes(r.result));
   const matches = results.filter(r => r.result === 'match');
   // BRO-3903: checked, nothing disagreed, but the venue itself was never
   // compared (unparseable Playbill venue). Advisory: warned, never gating.
@@ -975,7 +991,7 @@ async function main() {
     console.log(`::warning::validate-show-venue: ${rejectedTitle.length} show(s) have no accepted Playbill page but search returned same/near-title pages that were rejected (check the title and category in shows.json): ${rejectedTitle.map(r => `${r.id} -> ${r.rejectedTitleCandidates.map(c => `${c.url} (${c.kind})`).join(' ')}`).join('; ')}`);
   }
   if (venueUnverified.length) {
-    console.log(`::warning::validate-show-venue: ${venueUnverified.length} show(s) are venue-unverified — the Playbill page's venue could not be parsed, so the shows.json venue was NOT compared (dates/year/revival agree; not a mismatch, not a clean venue pass): ${venueUnverified.map(r => `${r.id} (shows.json venue "${r.venue}", ${r.playbillUrl})`).join(', ')}`);
+    console.log(`::warning::validate-show-venue: ${venueUnverified.length} show(s) are venue-unverified: the source page's venue could not be parsed, so the shows.json venue was NOT compared (other comparable fields agree): ${venueUnverified.map(r => `${r.id} (shows.json venue "${r.venue}", ${r.sourceUrl || r.playbillUrl})`).join(', ')}`);
   }
   if (infraUnavailable.length) {
     // A distinct, non-failing category: these shows were NOT checked at all,
@@ -1033,7 +1049,7 @@ async function main() {
       for (const m of r.mismatches) {
         console.log(`    - ${m.field}: shows=${JSON.stringify(m.shows ?? m.showsCanonical)} playbill=${JSON.stringify(m.playbill ?? m.playbillCanonical)}${m.deltaDays ? ` (Δ${m.deltaDays}d)` : ''}`);
       }
-      console.log(`    pb: ${r.playbillUrl}`);
+      console.log(`    source: ${r.sourceUrl || r.playbillUrl}`);
     }
   }
 

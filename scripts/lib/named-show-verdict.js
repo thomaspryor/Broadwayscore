@@ -54,18 +54,28 @@ const EXIT_NOT_VALIDATED = 3;
 // Why each non-definitive class is not a pass, and whether retrying the same
 // command can plausibly change the outcome.
 const NOT_VALIDATED_REASONS = {
+  'budget-exhausted': {
+    what: 'the time budget ended before the production could be checked',
+    why: 'an unfinished lookup supplies no venue/date verdict',
+    retryable: true,
+  },
+  'no-london-url': {
+    what: 'no London production page supplied a matching title and explicit run dates',
+    why: 'a search result or an undated page cannot certify the production',
+    retryable: true,
+  },
   'no-playbill-url': {
     what: 'no Playbill production page was found for this show',
     why: 'a stub with a wrong year, wrong venue or a title that does not match Playbill produces exactly this result, and so does a search that simply failed to surface a page that exists — either way it is NOT evidence the entry is correct',
     retryable: false,
   },
   'serp-error': {
-    what: 'every SERP query errored, so the Playbill page was never looked for',
+    what: 'every SERP query errored, so the production page was never looked for',
     why: 'this is a provider outage, not evidence of a missing page',
     retryable: true,
   },
   'fetch-error': {
-    what: 'the Playbill page was found but could not be fetched',
+    what: 'the production page was found but could not be fetched',
     why: 'the venue and dates on it were never read',
     retryable: true,
   },
@@ -110,6 +120,7 @@ function classifyNamedShowRun({ showFilter, results, targetCount }) {
   const ok = { validated: true, exitCode: 0, result: null, retryable: false, message: null };
   if (!showFilter) return ok;
   const rows = Array.isArray(results) ? results : [];
+  const sourceName = rows.some(r => r?.validationSource === 'london') ? 'production sources' : 'Playbill';
 
   // A confirmed mismatch outranks everything else: it is the most actionable
   // thing this script can tell you, and it gets the same exit 1 the
@@ -126,7 +137,7 @@ function classifyNamedShowRun({ showFilter, results, targetCount }) {
       exitCode: EXIT_MISMATCH,
       result: 'mismatch',
       retryable: false,
-      message: `validate-show-venue: ${ids} MISMATCHES Playbill on the field(s) listed above. `
+      message: `validate-show-venue: ${ids} MISMATCHES ${sourceName} on the field(s) listed above. `
         + 'Do not commit this entry until the venue and dates agree, or until the difference is '
         + 'explained by a prior run (CLAUDE.md rule 3).',
     };
@@ -181,7 +192,7 @@ function classifyNamedShowRun({ showFilter, results, targetCount }) {
     message: `validate-show-venue: ${ids} was NOT validated — ${reason.what}. This is not a pass: ${reason.why}.`
       + (reason.retryable
         ? ' Retry once the provider or environment recovers; do not read this run as a clean cross-check.'
-        : ' Confirm the title, venue and year against Playbill by hand before committing this entry (CLAUDE.md rule 3).')
+        : ` Confirm the title, venue and year against ${sourceName} by hand before committing this entry (CLAUDE.md rule 3).`)
       + tail,
   };
 }
