@@ -1,52 +1,5 @@
 [
   {
-    "startedAt": "2026-10-17T18:43:27.194Z",
-    "completedAt": "2026-10-17T18:46:16.919Z",
-    "totalReviews": 57417,
-    "processed": 25,
-    "skipped": 57382,
-    "errors": 2,
-    "tokensUsed": {
-      "input": 191843,
-      "output": 8857,
-      "cacheRead": 29883,
-      "cacheWrite": 93250,
-      "total": 482760
-    },
-    "costUsd": 0.51644385,
-    "runId": "39058965776",
-    "errorDetails": [
-      {
-        "showId": "an-enemy-of-the-people-west-end-2024",
-        "outletId": "times-uk",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "the-years-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-10-17T18:46:29.628Z",
-    "completedAt": "2026-10-17T18:47:46.717Z",
-    "totalReviews": 34,
-    "processed": 34,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 90974,
-      "output": 8041,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 99015
-    },
-    "costUsd": 0.25347169999999997,
-    "runId": "39058965776",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-17T20:11:25.361Z",
     "completedAt": "2026-10-17T20:11:31.052Z",
     "totalReviews": 57427,
@@ -875445,6 +875398,42 @@
     },
     "costUsd": 0,
     "runId": "39241795200",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-19T11:38:57.336Z",
+    "completedAt": "2026-10-19T11:39:00.774Z",
+    "totalReviews": 19,
+    "processed": 0,
+    "skipped": 18,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 4510,
+      "output": 118,
+      "cacheRead": 0,
+      "cacheWrite": 3741,
+      "total": 12534
+    },
+    "costUsd": 0.028587750000000002,
+    "runId": "39245520905",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-19T11:39:02.726Z",
+    "completedAt": "2026-10-19T11:39:02.729Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "39245520905",
     "errorDetails": []
   }
 ]
