@@ -3369,8 +3369,10 @@ async function discoverShows() {
       }
 
       // Build tags based on detection
-      // previews is past 'upcoming' (BRO-3208): fix-stale-upcoming-tags.js strips it
-      const tags = (status === 'upcoming' || status === 'announced') ? ['upcoming'] : [];
+      // No 'upcoming' tag: it is derived from status, never stored (BRO-5271).
+      // No reader needs it (generate-mobile-data, compare and related-shows
+      // all drop it as structural), and shows-write-guard strips it past upcoming.
+      const tags = [];
       if (detection.isRevival) {
         tags.push('revival');
       } else if (detection.confidence === 'low') {

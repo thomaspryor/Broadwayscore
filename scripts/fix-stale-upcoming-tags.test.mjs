@@ -30,10 +30,21 @@ test('--apply drops the tag (case-insensitive) only where status moved past upco
 });
 
 test('--show=ID scopes the fix to one show', () => {
+  const dry = runInSandbox('fix-stale-upcoming-tags.js', ['--show=b'], fixture());
+  assert.equal(dry.status, 0);
+  assert.match(dry.stdout, /1 show\(s\) with stale 'upcoming' tag/);
+  assert.doesNotMatch(dry.stdout, /- a \[/);
+  assert.deepEqual(dry.after, fixture());
+
   const r = runInSandbox('fix-stale-upcoming-tags.js', ['--apply', '--show=b'], fixture());
   assert.equal(r.status, 0);
+  assert.match(r.stdout, /Fixed 1 show\(s\)/);
   assert.deepEqual(tags(r.after, 'b'), []);
-  assert.deepEqual(tags(r.after, 'a'), ['Upcoming', 'musical']);
+  // BRO-5271: shows-write-guard strips a stale tag on every save, so 'a' (open,
+  // tagged 'Upcoming') cannot survive the write even though the fixer never
+  // selected it. Scoping governs what the fixer selects and reports, above.
+  assert.deepEqual(tags(r.after, 'a'), ['musical']);
+  assert.deepEqual(tags(r.after, 'c'), ['upcoming']);
 });
 
 test('--check exits 1 when a stale tag remains and 0 when clean, never writing', () => {

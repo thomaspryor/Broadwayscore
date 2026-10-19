@@ -56,7 +56,23 @@ const { createJsonWriteGuard, mergeArrayRecords } = require('./json-write-guard'
 const { syncStaleTheaterAddresses } = require('./venue-address-sync');
 const { restoreHumanCorrectedOpeningDates } = require('./opening-date-guard');
 
+const { hasStoredStaleUpcomingTag, stripUpcomingTag } = require('./opening-night-completeness');
+
 const SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
+
+/**
+ * Drops every 'upcoming' tag (any case) from rows whose status is in
+ * PAST_UPCOMING_STATUSES, in place. upcoming/announced rows are untouched.
+ * @param {Object[]} shows
+ * @returns {string[]} ids of rows that lost the tag
+ */
+function stripStaleUpcomingTags(shows) {
+  const ids = [];
+  for (const s of shows || []) {
+    if (hasStoredStaleUpcomingTag(s) && stripUpcomingTag(s)) ids.push(s.id);
+  }
+  return ids;
+}
 
 /**
  * Build a loadShows/saveShows pair bound to a specific shows.json path.
@@ -89,6 +105,11 @@ function createShowsWriteGuard(showsPath, options = {}) {
       // validate-data's >5 cap doubled as a tripwire for a wrong mass venue
       // edit; keep that signal loud now that the addresses follow along.
       if (synced.length) console.log(`${synced.length > 5 ? '::warning::' : ''}shows-write-guard: synced theaterAddress to venue for ${synced.length} show(s): ${synced.map((c) => `${c.id} (${c.venue})`).join(', ')}`);
+      // 'upcoming' is derived from status, never stored past it (BRO-5271):
+      // whichever writer flips a show to open/previews/closed, the tag cannot
+      // survive the save. fix-stale-upcoming-tags.js --check stays as audit.
+      const unTagged = stripStaleUpcomingTags(finalData.shows);
+      if (unTagged.length) console.log(`shows-write-guard: dropped stale 'upcoming' tag from ${unTagged.length} show(s): ${unTagged.join(', ')}`);
       // A person's openingDate correction outlives every writer (BRO-4911).
       const restored = restoreHumanCorrectedOpeningDates(finalData.shows);
       if (restored.length) console.log(`::warning::shows-write-guard: kept human-corrected openingDate for ${restored.map((r) => `${r.id} (${r.from} -> ${r.to})`).join(', ')}`);
@@ -139,5 +160,6 @@ module.exports = {
   // Exposed for tests:
   createShowsWriteGuard,
   mergeShows,
+  stripStaleUpcomingTags,
   LOCK_DIR: defaultGuard.lockDir,
 };
