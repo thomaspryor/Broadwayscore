@@ -113,7 +113,14 @@ const CHECKS_GITCONFIG ='[gc]\n\tauto = 0\n\tautoDetach = false\n[maintenance]\n
 function checksEnv({ env = process.env, build = false, home = null } = {}) {
   const out = {};
   for (const k of KEEP_ENV) if (env[k] !== undefined) out[k] = env[k];
-  for (const k of NETWORK_ENV) if (env[k] !== undefined) out[k] = env[k];
+  for (const k of NETWORK_ENV) {
+    if (env[k] === undefined) continue;
+    // A proxy URL carrying user:pass is a credential; never forward it.
+    if (/proxy$/i.test(k)) {
+      try { const u = new URL(env[k]); if (u.username || u.password) continue; } catch { /* host list, keep */ }
+    }
+    out[k] = env[k];
+  }
   out.HOME = home || fs.mkdtempSync(path.join(os.tmpdir(), 'auto-checks-home-'));
   // The checks' temp-git-repo tests rm their repos in teardown; git's detached
   // auto-maintenance (spawned by receive-pack in local bare remotes, which

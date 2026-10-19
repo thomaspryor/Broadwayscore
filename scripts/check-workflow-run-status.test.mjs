@@ -178,5 +178,5 @@ test('proxyAwareFetch: plain fetch without a proxy, proxy-honouring wrapper behi
   const wrapped = proxyAwareFetch({ PATH: process.env.PATH, https_proxy: 'http://127.0.0.1:9' });
   assert.notEqual(wrapped, globalThis.fetch);
   // Dead proxy port: the child reports a connection error, never a pass.
-  await assert.rejects(wrapped('https://api.github.com/'), /fetch https:\/\/api\.github\.com\/ failed/);
+  await assert.rejects(wrapped('https://127.0.0.1:9/'), /fetch https:\/\/127\.0\.0\.1:9\/ failed/);
 });
