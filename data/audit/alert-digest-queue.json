@@ -1343,34 +1343,17 @@
     "queuedAt": "2026-10-19T01:25:07.704Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 5 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39188831472",
+    "conditionKey": "pending-unrecoverable:the-ask-off-broadway-2026",
+    "title": "1 review(s) for the-ask-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nbcny--24124b82.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/paul-mccartney-upcoming-beatles-biopics/6560611/",
+    "severity": "warning",
+    "url": null,
     "decision": false,
     "info": false,
     "decisionPrompt": null,
-    "model": "opus",
+    "model": null,
     "tracked": null,
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39188831472)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39188150452)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "5"
-      },
-      {
-        "name": "Currently failing job(s)",
-        "value": "Unit Tests"
-      }
-    ],
-    "queuedAt": "2026-10-19T02:31:35.695Z"
+    "fields": [],
+    "queuedAt": "2026-10-19T02:20:52.235Z"
   }
 ]
