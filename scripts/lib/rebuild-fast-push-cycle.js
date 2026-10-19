@@ -72,7 +72,7 @@ function decideAfterPush({ pushExit, cycle, maxCycles }) {
   if (!Number.isFinite(code) || !Number.isFinite(c) || c < 1) {
     return { action: 'fail', reason: 'invalid-input' };
   }
-  if (code === EXIT_HOOK_REJECTED) return { action: 'fail', reason: 'hook-rejected' };
+  if (code === EXIT_HOOK_REJECTED) return { action: 'fail', reason: 'deterministic-reject(exit 4)' };
   if (c >= max) return { action: 'fail', reason: `cycles-exhausted(${c}/${max})` };
   return { action: 'redo', reason: `lost-race(exit ${code}), cycle ${c}/${max}` };
 }
