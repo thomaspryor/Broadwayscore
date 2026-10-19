@@ -1,26 +1,48 @@
 {
-  "updatedAt": "2026-10-19T09:36:56.968Z",
-  "processed": 1,
-  "failed": 1,
-  "successRate": "50.0%",
+  "updatedAt": "2026-10-19T10:39:51.435Z",
+  "processed": 62,
+  "failed": 40,
+  "successRate": "60.8%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 39,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingdog": 5,
+    "scrapingbee": 1,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 17
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-10-19T09:36:33.117Z",
       "event": "bb-session",
       "session": "a29f6fbf",
       "url": "https://www.theatreinla.com/the-second-best-school-shooting/11328/"
+    },
+    {
+      "t": "2026-10-19T10:09:31.012Z",
+      "event": "bb-session",
+      "session": "1939958f",
+      "url": "https://www.nytimes.com/2021/12/07/theater/harry-potter-cursed-child-broadway-re"
+    },
+    {
+      "t": "2026-10-19T10:09:31.729Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-19T10:09:48.738Z",
+      "event": "bb-session",
+      "session": "ed76a6ea",
+      "url": "https://www.nytimes.com/2021/12/07/theater/harry-potter-cursed-child-broadway-re"
+    },
+    {
+      "t": "2026-10-19T10:09:49.363Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
