@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-19T00:46:55.002Z",
+  "timestamp": "2026-10-19T01:06:24.108Z",
   "stats": {
-    "totalReviews": 57572,
-    "alreadyFlagged": 21374,
+    "totalReviews": 57584,
+    "alreadyFlagged": 21373,
     "dateGuardCatches": 196,
-    "directorMismatch": 1968,
+    "directorMismatch": 1969,
     "tvFilmSignals": 1616,
-    "londonSignals": 2438,
+    "londonSignals": 2439,
     "offBroadwaySignals": 523,
     "yearMismatch": 157,
-    "noPublishDate": 5230
+    "noPublishDate": 5237
   },
   "findings": [
     {
@@ -44313,6 +44313,20 @@
     },
     {
       "showId": "the-pajama-game-2006",
+      "file": "variety--david-rooney.json",
+      "score": 85,
+      "publishDate": null,
+      "url": "https://variety.com/2006/legit/reviews/the-pajama-game-5-1200518102/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george abbott\" from the-pajama-game-1973"
+        }
+      ]
+    },
+    {
+      "showId": "the-pajama-game-2006",
       "file": "variety--unknown.json",
       "score": 85,
       "publishDate": null,
@@ -65117,6 +65131,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
+      "file": "readaboutstuff--dan-english.json",
+      "score": 80,
+      "publishDate": "2026-10-04",
+      "url": "https://readaboutstuff.com/2026/10/04/review-hay-fever-wyndhams-theatre-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
