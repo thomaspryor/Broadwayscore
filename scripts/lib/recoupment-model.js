@@ -278,9 +278,17 @@ function isSoloShow(show) {
 /**
  * Deflate a 2025-anchored estimated cost to the show's opening-year price level.
  */
-function eraDeflator(openingDate) {
+function eraDeflator(openingDate, opts = {}) {
   const year = openingDate ? parseInt(String(openingDate).split('-')[0], 10) : ERA_ANCHOR_YEAR;
   if (!year || year >= ERA_ANCHOR_YEAR) return 1;
+  // opts.eraIndex (BRO-5651): the sourced cost index (Equity minimum, about
+  // 3%/yr) in place of the flat 1.5%/yr, which left a 2014 star play at 85%
+  // of a 2025 nut where the index says 69%. Lazy: cost-for-week requires this module.
+  // A malformed date keeps the flat path (costIndexAt throws on one).
+  if (opts.eraIndex && Number.isFinite(Date.parse(openingDate))) {
+    const { costIndexAt, FALLBACK_AS_OF } = require('./cost-for-week');
+    return Math.max(Math.min(costIndexAt(openingDate) / costIndexAt(FALLBACK_AS_OF), 1), ERA_DEFLATOR_FLOOR);
+  }
   return Math.max(Math.pow(1 - ERA_DEFLATION_RATE, ERA_ANCHOR_YEAR - year), ERA_DEFLATOR_FLOOR);
 }
 
@@ -535,7 +543,17 @@ const MUSICAL_LIVE_OPTS = Object.freeze({ previewsFromWeekly: true, datedCosts: 
 // Plays (BRO-5607): impliedCost, the weekly cost a reported recoupment date
 // pins (lib/implied-recoup-cost.js). Reported-truth plays: Romeo + Juliet 99 -> 141 (error 1 -> 0),
 // no group worse; timing unchanged (never under asOf).
-const PLAY_LIVE_OPTS = Object.freeze({ impliedCost: true });
+// Plays (BRO-5651): eraIndex, an estimated nut deflated by the sourced cost
+// index (pre-2020 star plays read far under at their reported recoupment:
+// All the Way, Sea Wall / A Life); costSplit, a cost tagged all-in loses its
+// royalties and percentage rent, which the model charges again (The Play That
+// Goes Wrong's SEC average; play EXTRA_VARIABLE is 0, so that is all it does).
+// Truth rows: timing plays MAE 17.8 -> 10.1, inside 12 -> 14 of 23, no play
+// row worse; reported-truth plays 9.7 -> 5.3, no row worse, 0 new false
+// recouped. Live outputs move for about half the plays with a cap, mostly up
+// 5-20 points (every pre-2025 estimated nut is lower).
+// eraIndex stays off for musicals: alone it moved their timing MAE 13.7 -> 15.8.
+const PLAY_LIVE_OPTS = Object.freeze({ impliedCost: true, eraIndex: true, costSplit: true });
 function withMusicalDefaults(show, opts) {
   const category = classifyShow(show);
   const live = /^musical/.test(category) ? MUSICAL_LIVE_OPTS : /^play/.test(category) ? PLAY_LIVE_OPTS : null;
@@ -556,7 +574,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
     if (implied.nut) {
       const res = calculateRecoupment(show, withNut(commercial, implied.nut), grossesAllTime, grossesWeekly, { ...opts, impliedCost: false });
       if (!res.error) {
-        res.warnings.unshift(`Weekly cost $${Math.round(implied.nut / 1000)}K implied by the reported recoupment (${implied.date}), in place of $${Math.round((commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial)) / 1000)}K`);
+        res.warnings.unshift(`Weekly cost $${Math.round(implied.nut / 1000)}K implied by the reported recoupment (${implied.date}), in place of $${Math.round((commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial, { eraIndex: !!opts.eraIndex })) / 1000)}K`);
         res.impliedNut = implied.nut;
         // A fitted cost is not a reported one: keep the record's quality.
         res.weeklyFixedCostSource = 'implied';
@@ -597,7 +615,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   // reserve and tax-credit estimate follow it (they are weeks of the real
   // nut), and costSplit is skipped so the share is not taken off twice.
   const basisNut = opts.costBasis && commercial.weeklyRunningCost ? fixedNutFromBasis(commercial, commercial.weeklyRunningCost, getBaseVariableRate(category), THEATER_DEAL, weeklyUncut) : null;
-  const weeklyNut = basisNut ? basisNut.nut : commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial);
+  const weeklyNut = basisNut ? basisNut.nut : commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial, { eraIndex: !!opts.eraIndex });
   // opts.costSourcedOnly (shadow, BRO-5073): a weekly cost with no cited
   // source counts as 'unsourced', and only a cited cost lifts quality (a
   // methodology label with no cost behind it does not).
@@ -893,7 +911,7 @@ function impliedCostFor(show, commercial, grossesAllTime, grossesWeekly, opts) {
   const { impliedRecoupNut, hideRecoupment } = require('./implied-recoup-cost');
   const hidden = hideRecoupment(commercial);
   return impliedRecoupNut(show, commercial, {
-    currentNut: commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial),
+    currentNut: commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial, { eraIndex: !!opts.eraIndex }),
     category: classifyShow(show),
     citedCost: isCitedReportedWeeklyCost(commercial),
     weeklyDates: Object.keys(grossesWeekly || {}),
@@ -1085,7 +1103,7 @@ function estimateWeeklyNut(show, commercial, opts = {}) {
   // Defaults are 2025-anchored and calibrated to each category's typical house;
   // adjust to the show's era and venue size. The lifetime model passes
   // eraAdjust:false — it deflates the current nut to a run-average itself.
-  const era = opts.eraAdjust === false ? 1 : eraDeflator(show.openingDate);
+  const era = opts.eraAdjust === false ? 1 : eraDeflator(show.openingDate, opts);
   return Math.round(base * era * venueSizeFactor(show, category));
 }
 

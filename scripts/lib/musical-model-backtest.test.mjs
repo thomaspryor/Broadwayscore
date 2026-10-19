@@ -10,6 +10,9 @@
 // and still fail if MUSICAL_LIVE_OPTS is undone (18.4 MAE, 4.6 GT MAE).
 // Later the same day (BRO-5648), with more truth rows: musicals 13.7, 38/60;
 // plays 15.7, 12/22 (one new row, see the play bound below).
+// 2026-10-19 (BRO-5651): one more play truth row (All the Way, 2014) took
+// plays to 17.8, 12/23. Play calibration (PLAY_LIVE_OPTS eraIndex + costSplit):
+// timing plays 17.8 -> 10.1, 14/23; reported-truth plays 9.7 -> 5.3, 25/28.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -18,7 +21,7 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
-const { MUSICAL_LIVE_OPTS } = createRequire(import.meta.url)('./recoupment-model.js');
+const { MUSICAL_LIVE_OPTS, PLAY_LIVE_OPTS } = createRequire(import.meta.url)('./recoupment-model.js');
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const NEEDED = ['shows.json', 'commercial.json', 'grosses.json', 'grosses-history.json'];
@@ -41,21 +44,19 @@ function backtest(...args) {
   return JSON.parse(out);
 }
 
-test('timing backtest: musicals hold MAE <= 15.5 and >= 35 inside; plays no worse than before', { skip }, () => {
+test('timing backtest: musicals hold MAE <= 15.5 and >= 35 inside; plays MAE <= 12 and >= 13 inside', { skip }, () => {
   const { summary, rows } = backtest('--timing');
   const m = summary['type:musical'];
   const p = summary['type:play'];
   assert.ok(m.n >= 55, `musical checkpoints ${m.n}`);
   assert.ok(m.newMae <= 15.5, `musical timing MAE ${m.newMae} (was 18.4 before BRO-5598); worst: ${worst(rows, 'musical')}`);
   assert.ok(m.newInside >= 35, `musical timing inside ${m.newInside}/${m.n} (was 34/60)`);
-  // Plays re-pinned 2026-10-18 (BRO-5648): BRO-5647 added sea-wall-a-life-2019,
-  // a nine-week star two-hander that recouped while the model reads -31% at its
-  // recoupment (the playStar weekly cost is too high for it, BRO-5651). That row
-  // alone moved play timing MAE 10.9 -> 15.7 (22 checkpoints) with no model
-  // change. Slack as for musicals, for new truth rows; the test below is the one
-  // that keeps the musical calibration away from plays.
-  assert.ok(p.newMae <= 17, `play timing MAE ${p.newMae} (15.7 on 2026-10-18); worst: ${worst(rows, 'play')}`);
-  assert.ok(p.newInside >= 12, `play timing inside ${p.newInside}/${p.n}`);
+  // Plays (BRO-5651): 10.1, 14/23 with PLAY_LIVE_OPTS; 17.8, 12/23 without
+  // eraIndex + costSplit (the worst rows were pre-2020 star plays on an
+  // estimated nut, Sea Wall / A Life and All the Way). Slack as for musicals.
+  assert.ok(p.n >= 22, `play checkpoints ${p.n}`);
+  assert.ok(p.newMae <= 12, `play timing MAE ${p.newMae} (17.8 before BRO-5651); worst: ${worst(rows, 'play')}`);
+  assert.ok(p.newInside >= 13, `play timing inside ${p.newInside}/${p.n} (was 12/23)`);
 });
 
 // Switching each MUSICAL_LIVE_OPTS option off moves musicals and must leave
@@ -73,10 +74,27 @@ test('timing backtest: the musical-only options leave plays untouched', { skip }
   }
 });
 
-test('reported-truth backtest: musicals hold MAE <= 4.2 and >= 62 inside', { skip }, () => {
+// The mirror for the play-only options (BRO-5651): eraIndex alone moved
+// musical timing MAE 13.7 -> 15.8, so a leak into musicals must fail here.
+test('timing backtest: the play-only options leave musicals untouched', { skip }, () => {
+  const musicals = (...args) => {
+    const { n, newMae, newMedian, newInside } = backtest('--timing', ...args).summary['type:musical'];
+    return { n, newMae, newMedian, newInside };
+  };
+  const base = musicals();
+  for (const name of Object.keys(PLAY_LIVE_OPTS)) {
+    assert.deepEqual(musicals(`--opt=${name}=false`), base, `--opt=${name}=false changed the musical results`);
+  }
+});
+
+test('reported-truth backtest: musicals hold MAE <= 4.2 and >= 62 inside; plays MAE <= 6.5 and >= 24 inside', { skip }, () => {
   const { summary } = backtest('--base=HEAD');
   const m = summary['type:musical'];
   assert.ok(m.n >= 65, `musical rows ${m.n}`);
   assert.ok(m.newMae <= 4.2, `musical reported-truth MAE ${m.newMae} (was 4.6 before BRO-5598)`);
   assert.ok(m.newInside >= 62, `musical reported-truth inside ${m.newInside}/${m.n} (was 61/70)`);
+  const p = summary['type:play'];
+  assert.ok(p.n >= 26, `play rows ${p.n}`);
+  assert.ok(p.newMae <= 6.5, `play reported-truth MAE ${p.newMae} (9.7 before BRO-5651)`);
+  assert.ok(p.newInside >= 24, `play reported-truth inside ${p.newInside}/${p.n} (was 24/28)`);
 });

@@ -34,6 +34,8 @@ const YEAR_MS = 365.25 * DAY_MS;
 /** Range half-width added per year between the anchor and the week (index error). */
 const DRIFT_PER_YEAR = 0.015;
 const MAX_HALF_WIDTH = 0.5;
+/** Date the category estimates (estimateWeeklyNut, eraAdjust:false) are calibrated to. */
+const FALLBACK_AS_OF = '2025-07-01';
 /** Range for a show with no figure at all (category estimate). */
 const NO_ANCHOR_HALF_WIDTH = 0.35;
 const QUALITY_BANDS = [
@@ -173,7 +175,7 @@ function costForWeek(record, weekEnding, ctx = {}) {
 
   if (!anchors.length) {
     if (!Number.isFinite(ctx.fallbackCost)) return null;
-    const asOf = ctx.fallbackAsOf || '2025-07-01';
+    const asOf = ctx.fallbackAsOf || FALLBACK_AS_OF;
     cost = ctx.fallbackCost * rawIndexAt(idx, t) / rawIndexAt(idx, toTime(asOf));
     halfWidth = NO_ANCHOR_HALF_WIDTH;
     basis = 'category-estimate';
@@ -250,6 +252,7 @@ function weeklyCostStatus(gross, cw) {
 
 module.exports = {
   costForWeek,
+  FALLBACK_AS_OF,
   hasCostAnchor,
   weeklyCostStatus,
   costIndexAt,

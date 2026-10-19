@@ -16,7 +16,7 @@ const path = require('path');
 const os = require('os');
 const {
   calculateRecoupment, calculateLifetimeRecoupment,
-  classifyShow, getBaseVariableRate, estimateWeeklyNut,
+  classifyShow,
   calcWeeklyProfit, calcTheaterOverage,
   SCENARIO_MULTIPLIERS, PREVIEW_DEFAULTS, RESERVE_FUND_WEEKS, KNOWN_STAR_DEALS,
 } = require('./lib/recoupment-model');
@@ -74,11 +74,6 @@ function exportShow(slug) {
   const comm = commercial.shows[slug] || commercial.shows[show.slug] || {};
   if (!comm.capitalization) { console.log('No capitalization for:', slug); return; }
 
-  const category = classifyShow(show);
-  const baseVarRate = getBaseVariableRate(category);
-  const weeklyNut = comm.weeklyRunningCost || estimateWeeklyNut(show, comm);
-  const nutSource = comm.weeklyRunningCost ? 'reported' : 'estimated';
-
   // Build the same schedule the model uses
   const grossAllTime = getGrossesAllTime(slug, show.id);
   const weeklyData = getWeeklyData(slug, show.id);
@@ -86,6 +81,13 @@ function exportShow(slug) {
   // Get full model result for summary
   const result = calculateRecoupment(show, comm, grossAllTime, weeklyData);
   if (result.error) { console.log('Model error for', slug, ':', result.error); return; }
+
+  // The nut and rate the model used (its live options, e.g. the play eraIndex
+  // deflator, BRO-5651), not a recomputation that could drift from them.
+  const category = classifyShow(show);
+  const baseVarRate = result.baseVariableRate;
+  const weeklyNut = result.weeklyFixedCosts;
+  const nutSource = result.weeklyFixedCostSource;
 
   // --- Build CSV ---
   const lines = [];
