@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-10-18T07:31:47.964Z",
+  "generatedAt": "2026-10-19T08:04:46.282Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 3764,
-  "flaggedShows": 62,
-  "flaggedFiles": 207,
+  "scannedShows": 3766,
+  "flaggedShows": 61,
+  "flaggedFiles": 205,
   "readmissionRiskFiles": 0,
   "readmissionRisks": [],
   "unevaluatedFiles": 0,
   "unevaluated": [],
   "unreadableFiles": 0,
   "byVerdict": {
-    "likely-contamination": 35,
+    "likely-contamination": 34,
     "needs-human-review": 27
   },
   "shows": [
@@ -2989,56 +2989,6 @@
           "criticName": "Phil Willmott",
           "publishDate": "2018-06-23",
           "url": "https://www.londonboxoffice.co.uk/news/post/nine-night-west-end-transfer",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "loves-labours-lost-off-west-end-2026",
-      "title": "Loves Labours Lost",
-      "market": "west-end",
-      "status": "announced",
-      "venue": "Orange Tree Theatre",
-      "previewsStartDate": null,
-      "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 2,
-        "distinctYears": [
-          2017,
-          2018
-        ],
-        "spanDays": 596,
-        "flaggedCount": 2,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "london-box-office--isabella-james.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Isabella James",
-          "publishDate": "2018-09-06",
-          "url": "https://www.londonboxoffice.co.uk/news/post/review-loves-labours-lost",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-box-office--phil-willmott.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Phil Willmott",
-          "publishDate": "2017-01-18",
-          "url": "https://www.londonboxoffice.co.uk/news/post/review-loves-labours-lost-2",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null

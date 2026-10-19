@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "error",
-  "lastChecked": "2026-10-18T07:16:48.710Z",
+  "lastChecked": "2026-10-19T07:48:59.989Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -59,32 +59,42 @@
     {
       "name": "Data: T1/T2 silent review gaps",
       "status": "error",
-      "message": "2 discovered review(s) not reaching the composite score (1 T1). Oldest: golden-boy-off-west-end-2026 — daily-mail (rejected-unscoreable)"
+      "message": "2 discovered review(s) not reaching the composite score (1 T1). Oldest: golden-boy-off-west-end-2026 — daily-mail (rejected-unscoreable); 1 newer still in flight"
+    },
+    {
+      "name": "Data: uncollected live review strands",
+      "status": "warn",
+      "message": "5 discovered review URL(s) across 5 live show(s) were never fetched. First: maybe-happy-ending-2024 (1 stranded)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
-      "status": "error",
-      "message": "2 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Frank and Percy\" (guardian-review — missing 4d) — 1 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
+      "status": "warn",
+      "message": "1 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Dance Is Not for Us\" (guardian-review — missing 0d)"
     },
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "75 review(s) with no usable text, 47 rejected although verified as a review, 22 never scored, 27 with a blocked URL (0 published on the site), across 433 current shows"
+      "message": "84 review(s) with no usable text, 47 rejected although verified as a review, 48 never scored, 27 with a blocked URL (0 published on the site), across 438 current shows"
+    },
+    {
+      "name": "Data: published scores outside the critic's rating",
+      "status": "warn",
+      "message": "62 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 29031 checked"
     },
     {
       "name": "Data: armed-but-vacuous backlog cards",
       "status": "warn",
-      "message": "2 Linear card(s) carry an acceptance check that cannot tell done from not done (2 can never fail, 0 can never pass). First: BRO-5297 Triage ~150 open Notion-only cards filed after the 2026-08-20 freeze (no Linear twin)"
+      "message": "1 Linear card(s) carry an acceptance check that cannot tell done from not done (1 can never fail, 0 can never pass). First: BRO-2938 P2: 58 review-text filenames carry a URL where the critic slug belongs, and six call sites parse identity by splitting that filename on '--'"
     },
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "77 of 543 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-5531 Ticket links: London venues without a URL, and Park Theatre config over-match"
+      "message": "61 of 563 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-5565 Investigate Sentry weekly digest: TypeError x8, RangeError x3 (New), UgcError apple_sign_in"
     },
     {
       "name": "Data: BWW roundup discovery misses near opening",
       "status": "warn",
-      "message": "1 show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. Oldest: other-desert-cities-2026 (3 misses, last 2026-10-18T03:36:39.200Z)."
+      "message": "1 show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. Oldest: other-desert-cities-2026 (14 misses, last 2026-10-19T04:46:20.568Z)."
     }
   ]
 }
