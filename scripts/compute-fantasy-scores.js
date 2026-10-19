@@ -18,7 +18,7 @@
  * 1. CriticScore: points based on critic tier (Critical Gold = 30 pts)
  * 2. AudienceGrade: points based on audience letter grade (A+ = 25 pts)
  * 3. Box Office: 0.30 points per $100K weekly gross (Broadway only)
- * 4. Awards: Tonys + Drama Desk + Outer Critics + Drama League + NYDCC + Lortel + Obie
+ * 4. Awards: Tonys + Drama Desk + Outer Critics + Drama League + NYDCC + Lortel
  *
  * Per-show output also carries `weeklyBoxOffice` (week-ending → points) and
  * `openingDate` so the leaderboard can score each ENTRY from the week it

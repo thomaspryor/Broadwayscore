@@ -64,7 +64,9 @@ const WIN_RATE_BY_TIER = { 1: 0.10, 2: 0.14, 3: 0.18, 4: 0.24, 5: 0.32 };
 // Pre-Tony ceremonies (Drama Desk, Outer Critics, Drama League, NYDCC) add
 // roughly this much on top of Tony expectation for Broadway shows.
 const PRECURSOR_MULTIPLIER = 1.35;
-// Off-Broadway awards (Lortel, Drama Desk, OCC, Obie): expected points by tier.
+// Off-Broadway awards (Lortel, Drama Desk, OCC, Drama League): expected points by tier.
+// Fallback only: generate-fantasy-config.js passes measured band means
+// (obAwardsByBand), which price both already-open and unopened shows.
 const OB_AWARDS_EV_BY_TIER = { 1: 1.0, 2: 2.0, 3: 3.5, 4: 6.0, 5: 9.0 };
 
 // An Off-Broadway show already open at draft time can only earn award points,
@@ -177,8 +179,49 @@ function boxOfficeWeeks(show, { scoringStart, scoringEnd, runWeeks, tier }) {
 /** Weekly gross ceiling for a house, or null when capacity is unknown. */
 function weeklyGrossCeiling(capacity, type) {
   if (!Number.isFinite(capacity) || capacity <= 0) return null;
-  const atp = AVG_TICKET_FOR_CAP[type === 'musical' ? 'musical' : 'play'];
+  const family = type === 'musical' ? 'musical' : 'play';
+  const atp = AVG_TICKET_FOR_CAP[family];
   return Math.round(capacity * PERFORMANCES_PER_WEEK * atp * CAP_OCCUPANCY);
+}
+
+// Weekly gross by tier, measured (BRO-5667). For each show type, past
+// Broadway shows' median weekly gross over their first 20 reporting weeks is
+// sorted and split into fifths; tier N gets the mean of the Nth fifth (tier 5
+// = the top fifth). This replaces a hand-set median x GROSS_MULTIPLIER, which
+// capped a tier-5 new play at $683K a week when the top fifth of new plays
+// averaged about $1.4M. The same fifths are also measured per seat (gross /
+// seats in the house), so a show with a known house is projected as
+// perSeat[tier] x its seats: a 597-seat house earns less than a 1,000-seat
+// one at the same tier without a hand-set ticket-price ceiling, which either
+// never bound (highest real ticket) or clipped star plays below what past
+// tier-5 plays really grossed (90th-percentile ticket).
+const GROSS_TIER_MIN_N = 10;
+
+function fifthMeans(values) {
+  const sorted = [...values].sort((a, b) => a - b);
+  const n = sorted.length;
+  const tiers = {};
+  for (let t = 1; t <= 5; t++) {
+    const fifth = sorted.slice(Math.floor((t - 1) * n / 5), Math.floor(t * n / 5));
+    tiers[t] = Math.round(fifth.reduce((a, b) => a + b, 0) / fifth.length);
+  }
+  return tiers;
+}
+
+/** rows: [{ typeKey: 'play-new'|..., gross, seats? }] → { byType, perSeatByType } ({ [typeKey]: {1..5} | null } each) */
+function measureGrossByTier(rows) {
+  const grosses = {};
+  const perSeat = {};
+  for (const r of rows) {
+    if (!Number.isFinite(r.gross) || r.gross <= 0) continue;
+    (grosses[r.typeKey] = grosses[r.typeKey] || []).push(r.gross);
+    if (Number.isFinite(r.seats) && r.seats > 0) (perSeat[r.typeKey] = perSeat[r.typeKey] || []).push(r.gross / r.seats);
+  }
+  const byType = {};
+  const perSeatByType = {};
+  for (const [typeKey, list] of Object.entries(grosses)) byType[typeKey] = list.length >= GROSS_TIER_MIN_N ? fifthMeans(list) : null;
+  for (const [typeKey, list] of Object.entries(perSeat)) perSeatByType[typeKey] = list.length >= GROSS_TIER_MIN_N ? fifthMeans(list) : null;
+  return { byType, perSeatByType };
 }
 
 /**
@@ -187,7 +230,7 @@ function weeklyGrossCeiling(capacity, type) {
  * @param {object} priorsById — { [id]: { tier, awardsEligible? } }
  * @param {object} [slots] — nominees per category (default 4; Best Musical/Play use 5 when 8+ contenders)
  */
-function buildCategoryField(shows, priorsById, slots = {}) {
+function buildCategoryField(shows, priorsById, slots = {}, expectedFieldSize = {}) {
   const field = {};
   for (const show of shows) {
     const cat = topCategoryFor(show);
@@ -199,24 +242,65 @@ function buildCategoryField(shows, priorsById, slots = {}) {
     });
   }
   for (const [cat, f] of Object.entries(field)) {
+    // Pre-season, the catalog holds only shows announced so far; spring
+    // openers come later. expectedFieldSize[cat] (the category's average
+    // field in recent seasons) fills the gap with typical (tier-3) shows, or
+    // every announced show looked like a near-certain nominee (BRO-5667).
+    f.unannounced = Math.max(0, Math.round((expectedFieldSize[cat] || 0) - f.contenders.length));
     const explicit = slots[cat];
-    f.slots = explicit != null ? explicit : (f.contenders.length >= 8 ? 5 : 4);
-    f.totalWeight = f.contenders.reduce((s, c) => s + c.weight, 0);
+    f.slots = explicit != null ? explicit : (f.contenders.length + f.unannounced >= 8 ? 5 : 4);
+    f.totalWeight = f.contenders.reduce((s, c) => s + c.weight, 0) + f.unannounced * TIER_WEIGHT[DEFAULT_TIER];
   }
   return field;
+}
+
+/**
+ * Broadway award constants, measured from past seasons (BRO-5667).
+ * rows: [{ kind: 'musical'|'play', topNom: bool, tonyNoms, tonyPoints, allPoints }]
+ * Returns { precursorMultiplier, extraNomsIfTop, extraNomsIfNotTop } with
+ * null for anything measured from fewer than AWARD_CONST_MIN_N shows.
+ */
+const AWARD_CONST_MIN_N = 10;
+
+/** rows: [{ criticLabel, audiencePoints }] → { [criticLabel]: mean points } (labels under 10 shows omitted). */
+function measureAudienceByCriticLabel(rows) {
+  const acc = {};
+  for (const r of rows) {
+    if (!r.criticLabel || !Number.isFinite(r.audiencePoints)) continue;
+    (acc[r.criticLabel] = acc[r.criticLabel] || []).push(r.audiencePoints);
+  }
+  const out = {};
+  for (const [label, pts] of Object.entries(acc)) {
+    if (pts.length >= AWARD_CONST_MIN_N) out[label] = round2(pts.reduce((a, b) => a + b, 0) / pts.length);
+  }
+  return out;
+}
+function measureAwardConstants(rows) {
+  const mean = a => (a.length >= AWARD_CONST_MIN_N ? round2(a.reduce((x, y) => x + y, 0) / a.length) : null);
+  const pick = (kind, top) => rows.filter(r => r.kind === kind && r.topNom === top);
+  const tonyPts = rows.reduce((t, r) => t + r.tonyPoints, 0);
+  return {
+    precursorMultiplier: rows.length >= AWARD_CONST_MIN_N && tonyPts > 0 ? round2(rows.reduce((t, r) => t + r.allPoints, 0) / tonyPts) : null,
+    extraNomsIfTop: { musical: mean(pick('musical', true).map(r => r.tonyNoms - 1)), play: mean(pick('play', true).map(r => r.tonyNoms - 1)) },
+    extraNomsIfNotTop: { musical: mean(pick('musical', false).map(r => r.tonyNoms)), play: mean(pick('play', false).map(r => r.tonyNoms)) },
+  };
 }
 
 /**
  * Expected Tony + precursor awards points for a Broadway show.
  * Returns { points, pTopNom, pTopWin, expectedNoms, expectedWins, note }.
  */
-function expectedAwardsPoints(show, priors, categoryField, scoringAwards) {
+function expectedAwardsPoints(show, priors, categoryField, scoringAwards, measured = {}) {
   const tier = clampTier(priors.tier);
   const cat = topCategoryFor(show);
+  const kind = show.type === 'musical' ? 'musical' : 'play';
+  const precursor = measured.precursorMultiplier ?? PRECURSOR_MULTIPLIER;
+  const extraIfTop = measured.extraNomsIfTop?.[kind] ?? EXTRA_NOMS_IF_TOP[kind];
+  const extraIfNotTop = measured.extraNomsIfNotTop?.[kind] ?? EXTRA_NOMS_IF_NOT_TOP[kind];
   const eligible = priors.awardsEligible !== false && cat && categoryField[cat];
   if (!eligible) {
     // Special events / ineligible productions: an occasional design nod.
-    const points = round2(0.3 * (scoringAwards.tonyNom || 0) * PRECURSOR_MULTIPLIER);
+    const points = round2(0.3 * (scoringAwards.tonyNom || 0) * precursor);
     return { points, pTopNom: 0, pTopWin: 0, expectedNoms: 0.3, expectedWins: 0, note: 'not a top-category contender' };
   }
   const field = categoryField[cat];
@@ -224,8 +308,7 @@ function expectedAwardsPoints(show, priors, categoryField, scoringAwards) {
   const weight = me ? me.weight : TIER_WEIGHT[tier];
   const pTopNom = Math.min(MAX_NOM_PROB, field.slots * weight / field.totalWeight);
   const pTopWin = Math.min(pTopNom, weight / field.totalWeight);
-  const kind = show.type === 'musical' ? 'musical' : 'play';
-  const expectedNoms = pTopNom * (1 + EXTRA_NOMS_IF_TOP[kind]) + (1 - pTopNom) * EXTRA_NOMS_IF_NOT_TOP[kind];
+  const expectedNoms = pTopNom * (1 + extraIfTop) + (1 - pTopNom) * extraIfNotTop;
   const expectedWins = expectedNoms * WIN_RATE_BY_TIER[tier];
   const nomPts = expectedNoms * (scoringAwards.tonyNom || 0);
   // A win upgrades a nom's points to the win value.
@@ -233,11 +316,11 @@ function expectedAwardsPoints(show, priors, categoryField, scoringAwards) {
   const bestBonus = cat === 'Best Musical' ? (scoringAwards.tonyBestMusical || 0)
     : cat === 'Best Play' ? (scoringAwards.tonyBestPlay || 0) : 0;
   const bonusPts = pTopWin * bestBonus;
-  const points = round2((nomPts + winPts + bonusPts) * PRECURSOR_MULTIPLIER);
+  const points = round2((nomPts + winPts + bonusPts) * precursor);
   return {
     points, pTopNom: round2(pTopNom), pTopWin: round2(pTopWin),
     expectedNoms: round2(expectedNoms), expectedWins: round2(expectedWins),
-    note: `${Math.round(pTopNom * 100)}% shot at a ${cat} nom (${field.contenders.length} contenders, ${field.slots} slots)`,
+    note: `${Math.round(pTopNom * 100)}% shot at a ${cat} nom (${field.contenders.length} announced${field.unannounced ? ` + ~${field.unannounced} still to come` : ''}, ${field.slots} slots)`,
   };
 }
 
@@ -280,8 +363,16 @@ function projectShowPoints(show, ctx) {
   // public to every later drafter (grades appear during previews), so it can
   // never score for anyone who drafts at this price (isAudienceLockedForEntry).
   let audienceEV = 0;
+  const audByLabel = ctx.audienceByCriticLabel;
   if (ctx.criticLocked || ctx.audienceGrade) {
     notes.push('AudienceGrade already public: no audience points');
+  } else if (audByLabel && ctx.criticScore != null && ctx.getCriticLabel && audByLabel[ctx.getCriticLabel(ctx.criticScore)] != null) {
+    audienceEV = audByLabel[ctx.getCriticLabel(ctx.criticScore)];
+  } else if (audByLabel && Object.keys(CRITIC_TIER_PRIORS[tier]).every(l => audByLabel[l] != null)) {
+    // Measured: audience points past shows earned at each CriticScore label,
+    // weighted by this tier's critic odds (BRO-5667). AUDIENCE_GRADE_PRIORS
+    // had no C+ or lower, so it over-projected every tier by 2-3 points.
+    for (const [label, p] of Object.entries(CRITIC_TIER_PRIORS[tier])) audienceEV += p * audByLabel[label];
   } else {
     audienceEV = expectedFromPriors(AUDIENCE_GRADE_PRIORS[tier], S.audienceGrade);
   }
@@ -297,14 +388,22 @@ function projectShowPoints(show, ctx) {
       notes.push(`grossing about ${fmtGross(weekly)} a week`);
     } else {
       const key = `${show.type === 'musical' ? 'musical' : 'play'}-${show.isRevival ? 'revival' : 'new'}`;
-      const base = ctx.weeklyGrossPriors[key] || 500_000;
       // A title can be a box-office lock without being an awards contender
       // (Billy Crystal's solo show) or vice versa; priors.boxOfficeTier
       // separates the two when they differ.
       const grossTier = priors.boxOfficeTier != null ? clampTier(priors.boxOfficeTier) : tier;
-      weekly = base * GROSS_MULTIPLIER[grossTier];
-      const ceiling = weeklyGrossCeiling(ctx.venueCapacity, show.type);
-      if (ceiling != null && weekly > ceiling) weekly = ceiling;
+      const perSeat = ctx.grossByTier?.perSeatByType?.[key];
+      const measured = ctx.grossByTier?.byType?.[key];
+      if (perSeat && Number.isFinite(ctx.venueCapacity) && ctx.venueCapacity > 0) {
+        weekly = perSeat[grossTier] * ctx.venueCapacity;
+      } else if (measured) {
+        weekly = measured[grossTier];
+      } else {
+        const base = ctx.weeklyGrossPriors?.[key] || 500_000;
+        weekly = base * GROSS_MULTIPLIER[grossTier];
+        const ceiling = weeklyGrossCeiling(ctx.venueCapacity, show.type);
+        if (ceiling != null && weekly > ceiling) weekly = ceiling;
+      }
       notes.push(`projected about ${fmtGross(weekly)} a week`);
     }
     boxOfficeEV = weeks * (weekly / 100_000) * S.boxOffice.pointsPer100K;
@@ -323,11 +422,16 @@ function projectShowPoints(show, ctx) {
     if (measured) {
       awardsEV = measured.mean;
       awardsMeasuredNote = `Already open, awards only: last season's Off-Broadway shows rated ${OB_AWARD_BAND_LABEL[band]} averaged ${measured.mean} award points`;
+    } else if (['high', 'mid', 'low'].every(b => ctx.obAwardsByBand?.[b])) {
+      // Not open yet: weight the measured band means by how likely this tier
+      // is to land in each band, so both paths price from one source.
+      awardsEV = 0;
+      for (const [label, p] of Object.entries(CRITIC_TIER_PRIORS[tier])) awardsEV += p * ctx.obAwardsByBand[OB_AWARD_BANDS[label]].mean;
     } else {
       awardsEV = OB_AWARDS_EV_BY_TIER[tier];
     }
   } else {
-    awardsDetail = expectedAwardsPoints(show, priors, ctx.categoryField, S.awards);
+    awardsDetail = expectedAwardsPoints(show, priors, ctx.categoryField, S.awards, ctx.awardConstants);
     awardsEV = awardsDetail.points;
     notes.push(awardsDetail.note);
   }
@@ -392,6 +496,9 @@ module.exports = {
   buildCategoryField,
   expectedAwardsPoints,
   measureObAwardsByBand,
+  measureGrossByTier,
+  measureAwardConstants,
+  measureAudienceByCriticLabel,
   projectShowPoints,
   priceFromEV,
   calibrateK,

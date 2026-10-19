@@ -208,3 +208,60 @@ describe('already-open Off-Broadway award EV is measured (BRO-5666)', () => {
     assert.equal(upcoming.awardsPoints, tierEV);
   });
 });
+
+describe('constants measured from past seasons (BRO-5667)', () => {
+  test('measureGrossByTier: tier N is the mean of the Nth fifth, absolute and per seat', () => {
+    const rows = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000].map(g => ({ typeKey: 'play-new', gross: g * 1000, seats: 1000 }));
+    const m = pricing.measureGrossByTier(rows);
+    assert.deepEqual(m.byType['play-new'], { 1: 150000, 2: 350000, 3: 550000, 4: 750000, 5: 950000 });
+    assert.deepEqual(m.perSeatByType['play-new'], { 1: 150, 2: 350, 3: 550, 4: 750, 5: 950 });
+    assert.equal(pricing.measureGrossByTier(rows.slice(0, 9)).byType['play-new'], null, 'under 10 shows: not measured');
+  });
+
+  test('a known house scales the per-seat tier gross', () => {
+    const grossByTier = pricing.measureGrossByTier([100, 200, 300, 400, 500, 600, 700, 800, 900, 1000].map(g => ({ typeKey: 'play-new', gross: g * 1000, seats: 1000 })));
+    const ctx = { ...base, priors: { tier: 5 }, categoryField: {}, grossByTier };
+    const big = pricing.projectShowPoints(newPlay, { ...ctx, venueCapacity: 1000 });
+    const small = pricing.projectShowPoints(newPlay, { ...ctx, venueCapacity: 500 });
+    assert.ok(Math.abs(small.boxOfficePoints * 2 - big.boxOfficePoints) < 0.05, `${small.boxOfficePoints} vs ${big.boxOfficePoints}`);
+  });
+
+  test('measureAwardConstants: precursor ratio and extra noms by kind', () => {
+    const rows = [
+      ...Array.from({ length: 10 }, () => ({ kind: 'musical', topNom: true, tonyNoms: 7, tonyPoints: 50, allPoints: 90 })),
+      ...Array.from({ length: 10 }, () => ({ kind: 'play', topNom: false, tonyNoms: 1, tonyPoints: 10, allPoints: 20 })),
+    ];
+    const c = pricing.measureAwardConstants(rows);
+    assert.equal(c.precursorMultiplier, round2(1100 / 600));
+    assert.equal(c.extraNomsIfTop.musical, 6);
+    assert.equal(c.extraNomsIfNotTop.play, 1);
+    assert.equal(c.extraNomsIfTop.play, null, 'no rows: falls back');
+  });
+
+  test('buildCategoryField counts contenders not announced yet', () => {
+    const shows = [newPlay, { ...newPlay, id: 'p2' }];
+    const without = pricing.buildCategoryField(shows, {}, { 'Best Play': 4 });
+    const withField = pricing.buildCategoryField(shows, {}, { 'Best Play': 4 }, { 'Best Play': 12 });
+    assert.equal(withField['Best Play'].unannounced, 10);
+    const pBefore = pricing.expectedAwardsPoints(newPlay, {}, without, S.awards).pTopNom;
+    const pAfter = pricing.expectedAwardsPoints(newPlay, {}, withField, S.awards).pTopNom;
+    assert.ok(pBefore > 0.9 && Math.abs(pAfter - 4 / 12) < 0.01, `${pBefore} -> ${pAfter}`);
+  });
+
+  test('audience EV follows the measured points per critic label', () => {
+    const aud = { 'Critical Gold': 16, 'Recommended': 13, 'Worth Seeing': 8, 'Skippable': 6, 'Critical Miss': 2 };
+    const p = pricing.projectShowPoints(obPlay, { ...base, priors: { tier: 3 }, audienceByCriticLabel: aud });
+    const expected = Object.entries(pricing.CRITIC_TIER_PRIORS[3]).reduce((a, [l, w]) => a + w * aud[l], 0);
+    assert.equal(p.audienceGradePoints, round2(expected));
+    assert.ok(p.audienceGradePoints < pricing.projectShowPoints(obPlay, { ...base, priors: { tier: 3 } }).audienceGradePoints);
+  });
+
+  test('unopened Off-Broadway award EV comes from the measured bands', () => {
+    const bands = { high: { mean: 7.8 }, mid: { mean: 4.7 }, low: { mean: 0.64 } };
+    const p = pricing.projectShowPoints(obPlay, { ...base, priors: { tier: 5 }, obAwardsByBand: bands });
+    const P5 = pricing.CRITIC_TIER_PRIORS[5];
+    assert.equal(round2(p.awardsPoints), round2((P5['Critical Gold'] + P5['Recommended']) * 7.8 + P5['Worth Seeing'] * 4.7 + (P5['Skippable'] + P5['Critical Miss']) * 0.64));
+  });
+});
+
+function round2(n) { return Math.round(n * 100) / 100; }

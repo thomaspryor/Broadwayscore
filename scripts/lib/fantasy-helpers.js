@@ -150,7 +150,9 @@ function computeAwardsPoints(showId, awardsData, scoringConfig, opts = {}) {
   }
 
   // ── Obie Awards ──────────────────────────────────────────────
-  if (showAwards.obie) {
+  // Not in the current scoring table (Obies land after scoring ends); a zero
+  // weight must not list an award that earned nothing.
+  if (showAwards.obie && scoringConfig.obieAward) {
     const obie = showAwards.obie;
     const awards = obie.awards || obie.wins || [];
     if (awards.length > 0) {

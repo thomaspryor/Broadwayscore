@@ -581,7 +581,9 @@ export default function AwardScoreCard({ showId, awards, openingDate, category, 
             <span>See all award scores</span>
             <span className="inline-block transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
           </Link>
-          {awards?.tony?.ceremony === '78th' && (
+          {/* The 2026 ceremony is the 79th, for the 2025-26 season. Keyed on the
+              season label, which a unit test keeps consistent (BRO-5667). */}
+          {awards?.tony?.season === '2025-26' && (
             <Link
               href="/tony-awards/winners-2026"
               className="inline-flex items-center gap-1.5 text-xs font-medium text-amber-400 hover:text-amber-300 transition-colors group"
