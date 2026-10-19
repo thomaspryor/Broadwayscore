@@ -329,7 +329,14 @@
     "midnight-at-the-never-get-west-end-2026/evening-chronicle--alec-forsdike.json",
     "midnight-at-the-never-get-west-end-2026/everything-theatre--irene-lloyd.json",
     "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json",
-    "hole-off-west-end-2026/broadwayworld--unknown.json"
+    "hole-off-west-end-2026/broadwayworld--unknown.json",
+    "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
+    "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "sukkot-off-broadway-2026/prettykosher--anna-rahmanan.json",
+    "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--m-m-de-voe.json",
+    "allegra-west-end-2026/londongrip--julia-pascal.json",
+    "the-potluck-off-broadway-2026/one-minute-critic--steven-vargas.json",
+    "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json"
   ],
   "failed": [
     "the-second-best-school-shooting-off-broadway-2026/theatreinla--unknown.json",
@@ -508,7 +515,10 @@
     "the-car-man-west-end-2026/thestage--dave-fargnoli.json",
     "trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
     "the-gruffalo-west-end-2026/telegraph--emily-bearn.json",
-    "the-gruffalo-west-end-2026/waterstones--unknown.json"
+    "the-gruffalo-west-end-2026/waterstones--unknown.json",
+    "the-oresteia-west-end-2026/thestage--dave-fargnoli.json",
+    "othello-off-broadway-2026/thestage--fergus-morgan.json",
+    "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--abbey-white.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -673,13 +683,18 @@
       "cat-cohen-broad-strokes-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
       "matchbook-fest-off-broadway-2026/theatermania--david-gordon.json",
       "midnight-at-the-never-get-west-end-2026/evening-chronicle--alec-forsdike.json",
-      "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json"
+      "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json",
+      "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "sukkot-off-broadway-2026/prettykosher--anna-rahmanan.json",
+      "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--m-m-de-voe.json",
+      "allegra-west-end-2026/londongrip--julia-pascal.json",
+      "the-potluck-off-broadway-2026/one-minute-critic--steven-vargas.json",
+      "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json"
     ],
-    "amp": [],
-    "browserbase": [
-      "data/review-texts/the-cherry-orchard-west-end-2026/theupcoming--jim-compton-hall.json",
-      "the-cherry-orchard-west-end-2026/theupcoming--jim-compton-hall.json"
+    "amp": [
+      "data/review-texts/book-of-mormon-2011/variety--steven-suskin.json"
     ],
+    "browserbase": [],
     "directCookies": [
       "some-woman-west-end-2026/standard--nick-curtis.json"
     ],
@@ -865,11 +880,12 @@
       "the-enormous-crocodile-west-end-2026/broadwayworld--christiana-rose.json",
       "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "hungry-women-off-broadway-2026/melissamaney--unknown.json",
-      "midnight-at-the-never-get-west-end-2026/everything-theatre--irene-lloyd.json"
+      "midnight-at-the-never-get-west-end-2026/everything-theatre--irene-lloyd.json",
+      "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json"
     ]
   },
   "startTime": "2026-10-19T09:35:28.489Z",
-  "lastProcessed": "hole-off-west-end-2026/broadwayworld--unknown.json",
+  "lastProcessed": "to-kill-a-mockingbird-west-end-2026/british-theatre--anita-marguerite-butler.json",
   "log": [
     {
       "t": "2026-10-19T09:36:33.117Z",
@@ -1030,52 +1046,70 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-19T12:42:30.193Z",
+      "t": "2026-10-19T12:20:38.010Z",
       "event": "bb-session",
-      "session": "2e002304",
-      "url": "https://bachtrack.com/review-angels-bone-du-yun-vavrek-english-national-opera-lo"
+      "session": "28093d12",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
     },
     {
-      "t": "2026-10-19T12:43:17.859Z",
-      "event": "bb-session",
-      "session": "88975f1e",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+      "t": "2026-10-19T12:20:38.502Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-19T12:43:24.741Z",
+      "t": "2026-10-19T12:20:56.129Z",
       "event": "bb-session",
-      "session": "b4e1ce68",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+      "session": "851615f5",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
     },
     {
-      "t": "2026-10-19T12:44:59.283Z",
-      "event": "bb-session",
-      "session": "58af7eb8",
-      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+      "t": "2026-10-19T12:20:56.599Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-19T12:48:48.209Z",
+      "t": "2026-10-19T12:22:56.054Z",
       "event": "bb-session",
-      "session": "d30fcb53",
-      "url": "https://ground.news/article/the-banality-of-evil-hannah-arendt-france-1940"
+      "session": "190ac278",
+      "url": "http://theater.nytimes.com/2011/03/25/theater/reviews/the-book-of-mormon-at-euge"
     },
     {
-      "t": "2026-10-19T12:49:37.162Z",
-      "event": "bb-session",
-      "session": "ea8bc63c",
-      "url": "https://www.theupcoming.co.uk/2026/10/09/the-cherry-orchard-at-harold-pinter-the"
+      "t": "2026-10-19T12:22:56.521Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-19T12:50:13.462Z",
+      "t": "2026-10-19T12:23:13.390Z",
       "event": "bb-session",
-      "session": "23c6bc5b",
-      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
+      "session": "1f859b5c",
+      "url": "http://theater.nytimes.com/2011/03/25/theater/reviews/the-book-of-mormon-at-euge"
     },
     {
-      "t": "2026-10-19T12:50:22.249Z",
+      "t": "2026-10-19T12:23:13.849Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-19T12:35:42.073Z",
       "event": "bb-session",
-      "session": "d7b1281a",
-      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
+      "session": "6d05ab64",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-19T12:35:42.609Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-19T12:35:59.396Z",
+      "event": "bb-session",
+      "session": "fd8ab29b",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-19T12:35:59.810Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ],
   "recoveredAfterFailure": [

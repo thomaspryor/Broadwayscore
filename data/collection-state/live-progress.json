@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-10-19T13:20:12.966Z",
-  "processed": 330,
-  "failed": 177,
-  "successRate": "65.1%",
+  "updatedAt": "2026-10-19T13:23:33.871Z",
+  "processed": 337,
+  "failed": 180,
+  "successRate": "65.2%",
   "tierBreakdown": {
-    "playwright": 161,
+    "playwright": 167,
     "amp": 1,
     "browserbase": 0,
     "directCookies": 1,
@@ -12,12 +12,56 @@
     "scrapingbee": 28,
     "brightdata": 6,
     "archiveToday": 0,
-    "archive": 111
+    "archive": 112
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
-      "t": "2026-10-19T11:25:21.241Z",
+      "t": "2026-10-19T12:00:04.772Z",
+      "event": "bb-session",
+      "session": "79b58a6e",
+      "url": "https://www.newyorker.com/goings-on-about-town/just-in-time"
+    },
+    {
+      "t": "2026-10-19T12:00:05.290Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-19T12:04:50.003Z",
+      "event": "bb-session",
+      "session": "126946a3",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/and-juliet-11-28-22"
+    },
+    {
+      "t": "2026-10-19T12:04:50.453Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-19T12:11:32.600Z",
+      "event": "bb-session",
+      "session": "e468f60c",
+      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
+    },
+    {
+      "t": "2026-10-19T12:11:33.082Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-19T12:11:49.758Z",
+      "event": "bb-session",
+      "session": "fd2e5ea9",
+      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
+    },
+    {
+      "t": "2026-10-19T12:11:50.203Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-19T12:20:38.010Z",
       "event": "bb-session",
       "session": "28093d12",
       "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
@@ -81,54 +125,6 @@
       "t": "2026-10-19T12:35:59.810Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-19T12:42:30.193Z",
-      "event": "bb-session",
-      "session": "2e002304",
-      "url": "https://bachtrack.com/review-angels-bone-du-yun-vavrek-english-national-opera-lo"
-    },
-    {
-      "t": "2026-10-19T12:43:17.859Z",
-      "event": "bb-session",
-      "session": "88975f1e",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
-    },
-    {
-      "t": "2026-10-19T12:43:24.741Z",
-      "event": "bb-session",
-      "session": "b4e1ce68",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
-    },
-    {
-      "t": "2026-10-19T12:44:59.283Z",
-      "event": "bb-session",
-      "session": "58af7eb8",
-      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
-    },
-    {
-      "t": "2026-10-19T12:48:48.209Z",
-      "event": "bb-session",
-      "session": "d30fcb53",
-      "url": "https://ground.news/article/the-banality-of-evil-hannah-arendt-france-1940"
-    },
-    {
-      "t": "2026-10-19T12:49:37.162Z",
-      "event": "bb-session",
-      "session": "ea8bc63c",
-      "url": "https://www.theupcoming.co.uk/2026/10/09/the-cherry-orchard-at-harold-pinter-the"
-    },
-    {
-      "t": "2026-10-19T12:50:13.462Z",
-      "event": "bb-session",
-      "session": "23c6bc5b",
-      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
-    },
-    {
-      "t": "2026-10-19T12:50:22.249Z",
-      "event": "bb-session",
-      "session": "d7b1281a",
-      "url": "https://www.thereviewshub.com/tag/nina-rogacka-dublin-theatre-festival/"
     }
   ]
 }
