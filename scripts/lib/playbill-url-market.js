@@ -43,7 +43,7 @@
 
 'use strict';
 
-const { titleForms, MARKET_KEYWORDS } = require('./playbill-title-match');
+const { titleForms, MARKET_KEYWORDS, MARKET_KEYWORD_RE, playbillUrlTitleMatch, isLondonPlaybillMarket } = require('./playbill-title-match');
 
 /**
  * Does a TITLE slug carry a market word that can be misread as a market
@@ -148,14 +148,16 @@ function isCrossMarketPlaybillUrl(url, show) {
     ? null
     : stripOwnTitlePrefix(u.slice(at + '/production/'.length).replace(/[?#].*$/, '').replace(/\/+$/, ''), show);
   const haystack = stripped === null ? u : stripped;
-  // Playbill's West End productions use "london" as the market segment, NOT
-  // "west-end" — the same alternative scorePlaybillUrl had to learn (card #590).
-  // Substring tests, deliberately: "-broadway-" must keep matching inside
-  // "-off-broadway-", and "-london-" inside "-off-london-". Exact-equality
-  // classification is what silently disarmed the sibling module's regional
-  // reject and turned CI run 34000023372 red.
-  const isLondonUrl = haystack.includes('-london-');
-  const isNycUrl = haystack.includes('-broadway-') || haystack.includes('-off-broadway-');
+  // Prefer the matcher's split: title and venue words cannot supply market
+  // evidence. Keep the conservative cache fallback for unknown/mismatched titles.
+  const titleMatch = playbillUrlTitleMatch(url, show);
+  const marketTails = titleMatch.match ? [titleMatch.marketTail]
+    : [...haystack.matchAll(new RegExp(MARKET_KEYWORD_RE.source, 'g'))]
+      .map((m) => haystack.slice(m.index));
+  const isLondonUrl = marketTails.some(isLondonPlaybillMarket);
+  const isNycUrl = titleMatch.match
+    ? /^-(?:off-)?broadway-/.test(titleMatch.marketTail)
+    : haystack.includes('-broadway-');
   const isLondonShow = LONDON_CATEGORIES.has(show.category);
 
   // A URL carrying BOTH markers is not evidence of anything — "two-strangers-

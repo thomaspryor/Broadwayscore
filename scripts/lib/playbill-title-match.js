@@ -327,6 +327,11 @@ function classifyMarketTail(tail) {
   return { keyword, market, rest: text.slice(m[0].length) };
 }
 
+/** True only when the URL's market segment (after its title) names London. */
+function isLondonPlaybillMarket(marketTail) {
+  return classifyMarketTail(marketTail).market === 'london';
+}
+
 /**
  * Every title segment the URL could be read as — one per market keyword in the
  * path, shortest first.
@@ -560,6 +565,7 @@ module.exports = {
   legacyDecomposes,
   playbillUrlTitleMatch,
   classifyMarketTail,
+  isLondonPlaybillMarket,
   MARKET_KEYWORDS,
   MARKET_KEYWORD_RE,
   LEGACY_RE,

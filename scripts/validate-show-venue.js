@@ -97,7 +97,7 @@ const { serpQuery } = require('./lib/url-discovery');
 const { canonicalVenue, foldDiacritics } = require('./lib/title-match');
 // normalizeTitle is no longer imported here: the title comparison it backed
 // moved wholesale into playbill-title-match.js (BRO-2821), which calls it.
-const { playbillUrlTitleMatch, venueSlug, classifyMarketTail, titleNearMiss } = require('./lib/playbill-title-match');
+const { playbillUrlTitleMatch, venueSlug, classifyMarketTail, isLondonPlaybillMarket, titleNearMiss } = require('./lib/playbill-title-match');
 const { venuesMatch } = require('./lib/deduplication');
 const { parsePlaybillTagLine } = require('./lib/playbill-tagline');
 const { decodeEntities } = require('./lib/reverse-discovery');
@@ -473,7 +473,7 @@ function scorePlaybillUrl(url, show) {
   // returned null. Latent (0 of the 107 cached URLs use "-west-end-") but it is
   // the same hole card #590 closed for "-london-", left open on the other
   // spelling. Found by review, reproduced before fixing.
-  const isLondonUrl = urlMarket === 'london';
+  const isLondonUrl = isLondonPlaybillMarket(marketTail);
   if (isLondonUrl && !isLondon) return null;
   // A legacy URL (vault page / "-YYYY-YYYY" season page) carries NO market
   // segment at all, so neither the London check above nor the Broadway check
