@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-19T05:36:30.354Z",
+  "generatedAt": "2026-10-19T09:02:10.038Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -157,12 +157,16 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
+      "outletId": "theatre-weekly",
+      "error": "HTTP 500 for https://theatreweekly.com/feed"
     },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
+    },
+    {
+      "outletId": "amny",
+      "error": "HTTP 403 for https://www.amny.com/entertainment/theater/feed/"
     },
     {
       "outletId": "slantmagazine",
@@ -177,10 +181,6 @@
       "error": "HTTP 401 for https://musicaltheatrereview.com/feed/"
     },
     {
-      "outletId": "viewfromthegods",
-      "error": "AggregateError"
-    },
-    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -193,35 +193,17 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 713,
-  "matchedGaps": 4,
+  "itemsScanned": 723,
+  "matchedGaps": 3,
   "possibleGaps": 6,
   "gaps": [
     {
-      "showId": "other-desert-cities-2026",
-      "title": "Other Desert Cities",
+      "showId": "cadel-lungs-on-legs-west-end-2026",
+      "title": "Cadel: Lungs On Legs",
       "level": "matched",
-      "outletId": "nysr",
-      "url": "https://nystagereview.com/2026/10/19/other-desert-cities-a-piercing-revival-of-jon-robin-baitzs-best-play/",
-      "headline": "Other Desert Cities: A Piercing Revival of Jon Robin Baitz’s Best Play",
-      "publishDate": "2026-10-19"
-    },
-    {
-      "showId": "other-desert-cities-2026",
-      "title": "Other Desert Cities",
-      "level": "matched",
-      "outletId": "nysr",
-      "url": "https://nystagereview.com/2026/10/19/other-desert-cities-star-power-in-action/",
-      "headline": "Other Desert Cities: Star Power in Action",
-      "publishDate": "2026-10-19"
-    },
-    {
-      "showId": "other-desert-cities-2026",
-      "title": "Other Desert Cities",
-      "level": "matched",
-      "outletId": "chicagotribune",
-      "url": "https://www.chicagotribune.com/2026/10/18/review-other-desert-cities-broadway/",
-      "headline": "Review: In &#8216;Other Desert Cities&#8217; on Broadway, Julia Louis-Dreyfus in an intense portrait of a family",
+      "outletId": "london-unattached",
+      "url": "https://www.london-unattached.com/cadel-lungs-on-legs-riverside-studios/",
+      "headline": "CADEL: Lungs on Legs &#8211; Riverside Studios",
       "publishDate": "2026-10-18"
     },
     {
@@ -232,6 +214,24 @@
       "url": "https://playsinternational.org.uk/some-woman-dorfman-national-theatre/",
       "headline": "“Some Woman” at the Dorfman, National Theatre",
       "publishDate": "2026-10-18"
+    },
+    {
+      "showId": "some-woman-west-end-2026",
+      "title": "Some Woman",
+      "level": "matched",
+      "outletId": "south-london",
+      "url": "https://southlondon.co.uk/area/southwark/review-some-woman-at-the-dorfman/",
+      "headline": "Review: Some Woman at the Dorfman",
+      "publishDate": "2026-10-19"
+    },
+    {
+      "showId": "cadel-lungs-on-legs-west-end-2026",
+      "title": "Cadel: Lungs On Legs",
+      "level": "possible",
+      "outletId": "a-youngish-perspective",
+      "url": "https://ayoungishperspective.co.uk/2026/10/19/in-conversation-with-connor-delves/",
+      "headline": "IN CONVERSATION WITH: Connor Delves",
+      "publishDate": "2026-10-19"
     },
     {
       "showId": "jane-eyre-rose-kingston-off-west-end-2026",
@@ -249,15 +249,6 @@
       "outletId": "standard",
       "url": "https://standard.co.uk/culture/theatre/midnight-at-the-never-get-review-b1290727.html",
       "headline": "Midnight at the Never Get: Polished if schmaltzy musical",
-      "publishDate": null
-    },
-    {
-      "showId": "other-desert-cities-2026",
-      "title": "Other Desert Cities",
-      "level": "possible",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-other-desert-cities-revival-a-triumphant-broadway-debut-for-julia-louis-dreyfus_1857335/",
-      "headline": "Review: Other Desert Cities Revival, a Triumphant Broadway Debut for Julia Louis-Dreyfus",
       "publishDate": null
     },
     {
