@@ -125,6 +125,6 @@ test('packed week: calendar count stays, and the lede says how many have reviews
   const v = composeWeekVoice({ ob: list, counts: { ob: 12 } });
   assert.equal(v.subject, 'Show A and 11 other shows open off-Broadway this week');
   const text = plain(v.sentences.join(' '));
-  assert.match(text, /^A packed week Off Broadway, with twelve openings, seven reviewed so far\./);
+  assert.match(text, /^A packed week Off Broadway, with 12 openings, seven reviewed so far\./);
   assert.doesNotMatch(text, /most reviews/);
 });
