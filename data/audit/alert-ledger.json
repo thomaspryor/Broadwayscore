@@ -18746,7 +18746,7 @@
       "resolvedAt": "2026-10-15T16:32:18.463Z"
     },
     "time-bomb-tests:unit:tests/unit/scratchpad-retention.test.mjs::pruneScratchpadsIfDue: inside cooldown does nothing, after it prunes again": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/scratchpad-retention.test.mjs — pruneScratchpadsIfDue: inside cooldown does nothing, after it prunes again",
       "firstSeen": "2026-10-15T16:32:18.471Z",
@@ -18756,7 +18756,8 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5410"
+      "linearIdentifier": "BRO-5410",
+      "resolvedAt": "2026-10-19T20:36:23.852Z"
     },
     "feedback-outcomes:2026-10-15T15:52:38.112012+00:00": {
       "status": "open",
@@ -21362,6 +21363,32 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "time-bomb-tests:unit:tests/unit/broadway-fantasy-league.test.mjs::draftable show catalog (data/fantasy-league.json)": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: tests/unit/broadway-fantasy-league.test.mjs — draftable show catalog (data/fantasy-league.json)",
+      "firstSeen": "2026-10-19T20:36:23.865Z",
+      "incidentOpenedAt": "2026-10-19T20:36:23.865Z",
+      "lastSeen": "2026-10-19T20:36:23.865Z",
+      "lastNotifiedAt": "2026-10-19T20:36:23.865Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-5720"
+    },
+    "time-bomb-tests:unit:tests/unit/broadway-fantasy-league.test.mjs::shows marked CriticScore-ineligible (locked) actually carry a score": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: tests/unit/broadway-fantasy-league.test.mjs — shows marked CriticScore-ineligible (locked) actually carry a score",
+      "firstSeen": "2026-10-19T20:36:26.693Z",
+      "incidentOpenedAt": "2026-10-19T20:36:26.693Z",
+      "lastSeen": "2026-10-19T20:36:26.693Z",
+      "lastNotifiedAt": "2026-10-19T20:36:26.693Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-5721"
     }
   }
 }
