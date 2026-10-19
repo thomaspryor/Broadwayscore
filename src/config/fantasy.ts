@@ -79,7 +79,8 @@ export const BOX_OFFICE_POINTS_PER_100K: number = seasonConfig.scoring.boxOffice
  * Drama Desk (late May/early June): noms + wins, covers BW + OB
  * NY Drama Critics' Circle (early May): wins only (best play, best musical)
  * Lucille Lortel Awards (early May): noms + wins, OB only
- * Obie Awards (late May): special citations, no nom/win format, OB + experimental
+ * Obies are not scored: their season runs Sept-Aug and the ceremony follows
+ * the next February, so this season's shows win them after scoring ends.
  */
 export const AWARDS_POINTS = seasonConfig.scoring.awards;
 
