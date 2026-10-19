@@ -1868,6 +1868,15 @@ async function pollCycle() {
     }
   }
 
+  // ── Process layers 1-3 before SERP (BRO-5674) ──
+  // The workflow kills this process at 600s, and one SERP outlet can run for
+  // minutes on provider timeouts. Write what we already found first so a kill
+  // during SERP can no longer discard it (Other Desert Cities 2026 lost 36).
+  const processOpts = { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera', allowRegional: isRegional };
+  const preSerpDiscovered = [...aggResults, ...rssResults, ...siteSearchResults, ...omcResults, ...googleNewsResults];
+  console.log(`\n━━━ Processing ${preSerpDiscovered.length} discovered reviews (before SERP) ━━━`);
+  const preSerp = processDiscoveredReviews(SHOW_ID, preSerpDiscovered, knownUrls, processOpts);
+
   let serpResults = [];
   if ((!SKIP_SERP && shouldRunSerp()) || serpBurstActive) {
     const foundOutletIds = getFoundOutletIds(SHOW_ID, { show, market });
@@ -2010,16 +2019,13 @@ async function pollCycle() {
   }
   // else: ENABLE_WE_SERP_BURST on but burst disallowed — the "burst not allowed" line above already logged it
 
-  // ── Process discovered reviews ──
-  const allDiscovered = [...aggResults, ...rssResults, ...siteSearchResults, ...serpResults, ...omcResults, ...googleNewsResults];
-  console.log(`\n━━━ Processing ${allDiscovered.length} discovered reviews ━━━`);
-
-  const { created, skipped, rejected } = processDiscoveredReviews(
-    SHOW_ID,
-    allDiscovered,
-    knownUrls,
-    { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera', allowRegional: isRegional }
-  );
+  // ── Process SERP results (layers 1-3 were processed before SERP) ──
+  const allDiscovered = [...preSerpDiscovered, ...serpResults];
+  console.log(`\n━━━ Processing ${serpResults.length} SERP-discovered reviews ━━━`);
+  const postSerp = processDiscoveredReviews(SHOW_ID, serpResults, knownUrls, processOpts);
+  const created = preSerp.created + postSerp.created;
+  const skipped = preSerp.skipped + postSerp.skipped;
+  const rejected = preSerp.rejected + postSerp.rejected;
 
   // ── Aggregator thumb enrichment pass ──
   // When reviews arrive via non-aggregator paths (RSS, SERP, outlet-domain-supplement),

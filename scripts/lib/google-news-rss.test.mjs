@@ -27,7 +27,9 @@ test('the channel is wired into both existing opening-night callers and the poll
     assert.match(caller, /require\('\.\/lib\/google-news-rss'\)/);
     assert.match(caller, /discoverGoogleNewsReviews\(show, \{ knownUrls/);
   }
-  assert.match(poller, /allDiscovered = \[.*\.\.\.googleNewsResults\]/);
+  // BRO-5674: layers 1-3 are processed before SERP, via preSerpDiscovered
+  assert.match(poller, /preSerpDiscovered = \[.*\.\.\.googleNewsResults\]/);
+  assert.match(poller, /allDiscovered = \[\.\.\.preSerpDiscovered/);
   assert.match(poller, /google-news-rss:\$\{googleNewsResults.length\}/);
 });
 

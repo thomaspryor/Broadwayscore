@@ -7,8 +7,11 @@
 // 1-3 found. Other Desert Cities 2026 (run 39198573930) lost 36 candidates
 // this way when Bright Data timed out on every outlet (~50s per call).
 //
-// SERP checks this before each outlet and stops once the process has used
-// its share of the 600s window, leaving the rest for processing.
+// The poller now writes layer 1-3 results before SERP starts, so a kill can
+// only lose SERP's own finds. This deadline is the second half: SERP checks it
+// before each outlet so its results and the enrichment passes usually finish
+// too. It does not bound a call already in flight (one outlet can chain several
+// provider timeouts, minutes in the worst case).
 
 const DEFAULT_SERP_DEADLINE_SEC = 360;
 
@@ -17,8 +20,7 @@ function serpDeadlineSec(env = process.env) {
   return Number.isFinite(n) && n > 0 ? n : DEFAULT_SERP_DEADLINE_SEC;
 }
 
-// True when another SERP call may start. A single call can run ~70s past this
-// (BD 30s + BD SERP 20s + SB fallback), which still fits inside 600s.
+// True when another SERP call may start.
 function serpTimeLeft(startMs, nowMs, deadlineSec) {
   return (nowMs - startMs) / 1000 < deadlineSec;
 }
