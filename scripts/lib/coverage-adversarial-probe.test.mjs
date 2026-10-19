@@ -4,6 +4,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
+  pickSample,
   classifyCandidate,
   classifyNonReviewUrl,
   lookupRecord,
@@ -13,6 +14,82 @@ const {
   detectProviderOutage,
   onDiskUnavailable,
 } = require('./coverage-adversarial-probe.js');
+const { classifySample } = require('./census-recall.js');
+
+test('pickSample: same-day and day-after openings do not spend random sample slots', () => {
+  const now = Date.parse('2026-10-19T12:00:00Z');
+  const measured = Array.from({ length: 5 }, (_, i) => ({ id: `measured-${i}`, openingDate: '2026-10-15' }));
+  const settling = [
+    { id: 'same-day', openingDate: '2026-10-19' },
+    { id: 'day-after', openingDate: '2026-10-18' },
+  ];
+  const shows = [...settling, ...measured];
+  const original = structuredClone(shows);
+  for (let seed = 0; seed < 20; seed++) {
+    const selection = pickSample(shows, { now, seed });
+    assert.equal(selection.settlingSkipped, 2);
+    assert.equal(selection.pool.length, 5);
+    assert.deepEqual(new Set(selection.pool.map(s => s.id)), new Set(measured.map(s => s.id)));
+    assert.ok(selection.pool.every(s => classifySample(s, { now }).state === 'measured'));
+  }
+  assert.deepEqual(shows, original, 'selection must not reorder the input');
+});
+
+test('pickSample: configured settling window and exact expiry match measurement', () => {
+  const now = Date.parse('2026-10-19T12:00:00Z');
+  const shows = [
+    { id: 'date-only', openingDate: '2026-10-18' },
+    { id: 'exactly-24h', openingDate: '2026-10-18T12:00:00Z' },
+    { id: 'just-under-24h', openingDate: '2026-10-18T12:00:01Z' },
+    { id: 'older', openingDate: '2026-10-15' },
+  ];
+  for (const [settlingHours, expected, skipped] of [
+    [0, ['date-only', 'exactly-24h', 'just-under-24h', 'older'], 0],
+    [24, ['exactly-24h', 'older'], 2],
+    [48, ['older'], 3],
+  ]) {
+    const selection = pickSample(shows, { now, seed: 1, settlingHours });
+    assert.deepEqual(selection.pool.map(s => s.id).sort(), expected);
+    assert.equal(selection.settlingSkipped, skipped);
+    assert.ok(selection.pool.every(s => classifySample(s, { now, settlingHours }).state === 'measured'));
+  }
+});
+
+test('pickSample: preserves the date window and counts only settling candidates in it', () => {
+  const now = Date.parse('2026-10-19T12:00:00Z');
+  const shows = [
+    { id: 'at-cutoff', openingDate: '2026-09-04T12:00:00Z' },
+    { id: 'before-cutoff', openingDate: '2026-09-04T11:59:59Z' },
+    { id: 'settling', openingDate: '2026-10-19' },
+    { id: 'future', openingDate: '2026-10-20' },
+    { id: 'undated' },
+    { id: 'invalid', openingDate: 'invalid' },
+  ];
+  assert.deepEqual(pickSample(shows, { now, seed: 1 }), { pool: [shows[0]], settlingSkipped: 1 });
+  assert.deepEqual(pickSample(shows, { now, seed: 1, days: 1 }), { pool: [], settlingSkipped: 1 });
+  assert.deepEqual(pickSample([], { now }), { pool: [], settlingSkipped: 0 });
+});
+
+test('pickSample: seed is reproducible and the requested sample size is a ceiling', () => {
+  const shows = Array.from({ length: 10 }, (_, i) => ({ id: `show-${i}`, openingDate: '2026-10-01' }));
+  const opts = { now: Date.parse('2026-10-19T12:00:00Z'), seed: 42, sample: 3 };
+  const first = pickSample(shows, opts);
+  assert.equal(first.pool.length, 3);
+  assert.equal(new Set(first.pool).size, 3);
+  assert.deepEqual(first, pickSample(shows, opts));
+  assert.notDeepEqual(first, pickSample(shows, { ...opts, seed: 1 }));
+  assert.equal(pickSample(shows, { ...opts, sample: 0 }).pool.length, 0);
+});
+
+test('pickSample: explicit IDs retain the operator override, including settling shows', () => {
+  const shows = [
+    { id: 'settling', openingDate: '2026-10-19' },
+    { id: 'old', openingDate: '2025-01-01' },
+  ];
+  assert.deepEqual(pickSample(shows, {
+    now: Date.parse('2026-10-19T12:00:00Z'), showIds: ' old, missing, settling ', sample: 1,
+  }), { pool: [shows[1], shows[0]], settlingSkipped: 0 });
+});
 
 const SHOW = { id: 'the-car-man-west-end-2026', title: 'The Car Man' };
 

@@ -61,7 +61,7 @@ const { classifyReviewUrl } = require('./lib/non-review-url-patterns');
 const isReviewUrl = (u) => classifyReviewUrl(u).ok;
 const { isIncludableForRebuild, explainExclusion } = require('./lib/review-guards');
 const { classifySample } = require('./lib/census-recall.js');
-const { classifyCandidate, summarizeShow, summarizeRun, evaluateAcceptance } = require('./lib/coverage-adversarial-probe.js');
+const { DEFAULT_SAMPLE, DEFAULT_DAYS, pickSample, classifyCandidate, summarizeShow, summarizeRun, evaluateAcceptance } = require('./lib/coverage-adversarial-probe.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { loadEnv } = require('./lib/load-env.js');
 const { serpCensusPreflight } = require('./lib/serp-census-preflight.js');
@@ -74,8 +74,6 @@ const OUT_PATH = path.join(AUDIT_DIR, 'coverage-adversarial-probe.json');
 const TREND_PATH = path.join(AUDIT_DIR, 'coverage-adversarial-probe-trend.jsonl');
 const STATUS_PATH = path.join(AUDIT_DIR, 'coverage-adversarial-probe-status.json');
 
-const DEFAULT_SAMPLE = 5;
-const DEFAULT_DAYS = 45;
 const DEFAULT_PAGES = 1;
 /** A year of weekly runs — matches census-recall-trend.jsonl's own cap. */
 const TREND_MAX_ENTRIES = 52;
@@ -112,47 +110,6 @@ const hasFlag = (name) => args.includes(`--${name}`);
 function loadShows() {
   const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
   return Array.isArray(data) ? data : (data.shows || []);
-}
-
-/** Deterministic PRNG (mulberry32) so --seed makes the sample reproducible. */
-function mulberry32(seed) {
-  let a = seed >>> 0;
-  return function rand() {
-    a |= 0; a = (a + 0x6D2B79F5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-function shuffle(list, rand) {
-  const out = list.slice();
-  for (let i = out.length - 1; i > 0; i--) {
-    const j = Math.floor(rand() * (i + 1));
-    [out[i], out[j]] = [out[j], out[i]];
-  }
-  return out;
-}
-
-/**
- * The ADVERSARY'S sample: shows the operator did not choose. Random, not
- * "most recent" — the recall harness (S1) already covers "most recent
- * openings" on its own schedule; this cadence's whole point is to be a
- * different, unpredictable slice each week.
- */
-function pickSample(shows, opts = {}) {
-  const explicit = opts.showIds;
-  if (explicit) {
-    const ids = String(explicit).split(',').map(s => s.trim()).filter(Boolean);
-    return ids.map(id => shows.find(s => s.id === id)).filter(Boolean);
-  }
-  const days = opts.days === undefined ? DEFAULT_DAYS : opts.days;
-  const sample = opts.sample === undefined ? DEFAULT_SAMPLE : opts.sample;
-  const now = opts.now === undefined ? Date.now() : opts.now;
-  const cutoff = now - days * 86400000;
-  const pool = shows.filter(s => s.openingDate && Date.parse(s.openingDate) >= cutoff && Date.parse(s.openingDate) <= now);
-  const rand = opts.seed !== undefined ? mulberry32(Number(opts.seed)) : Math.random;
-  return shuffle(pool, rand).slice(0, sample);
 }
 
 /** Every review-texts record for a show, keyed by normalized URL, for the
@@ -294,12 +251,14 @@ async function main() {
   const outPath = getArg('out') || OUT_PATH;
   const now = Date.now();
 
-  const sample = pickSample(shows, {
+  const { pool: sample, settlingSkipped } = pickSample(shows, {
     showIds: getArg('shows'),
     days, sample: sampleSize,
     seed: seedRaw !== null ? Number(seedRaw) : undefined,
-    now,
+    now, settlingHours,
   });
+
+  if (settlingSkipped) console.log(`Settling shows skipped before sampling: ${settlingSkipped}`);
 
   if (!sample.length) {
     console.error('No shows matched the sample window — nothing to probe this run.');
@@ -312,7 +271,7 @@ async function main() {
     // reaching the --trend block below).
     const generatedAt = new Date().toISOString();
     const summary = { verdict: 'inconclusive', measured: 0, gapCount: 0, gapShows: [], reason: 'no shows in the sample window' };
-    const out = { generatedAt, sample: [], summary };
+    const out = { generatedAt, sample: [], settlingSkipped, summary };
     fs.mkdirSync(path.dirname(outPath), { recursive: true });
     fs.writeFileSync(outPath, JSON.stringify(out, null, 2) + '\n');
     if (hasFlag('trend')) recordTrendAndStatus({ generatedAt, sampleSize: 0, summary });
@@ -342,7 +301,7 @@ async function main() {
   console.log(`  ${summary.verdict.toUpperCase()} — ${summary.measured} show(s) measured, ${summary.gapCount} gap(s)${summary.gapShows.length ? ` (${summary.gapShows.join(', ')})` : ''}`);
   if (summary.reason) console.log(`  ${summary.reason}`);
 
-  const out = { generatedAt: new Date().toISOString(), days, pages, sample: sample.map(s => s.id), shows: rows, summary };
+  const out = { generatedAt: new Date().toISOString(), days, pages, sample: sample.map(s => s.id), settlingSkipped, shows: rows, summary };
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
   fs.writeFileSync(outPath, JSON.stringify(out, null, 2) + '\n');
   console.log(`\nWrote ${path.relative(ROOT, outPath)}`);

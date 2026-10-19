@@ -33,6 +33,7 @@ const { namedNonReviewReason } = require('./non-review-url-patterns');
 // read as an undiscovered gap for 2 days although review-guards.js already
 // knows the domain is never a review).
 const { isBlockedReviewUrl } = require('./domain-filters');
+const { classifySample } = require('./census-recall.js');
 
 /**
  * coverage-adversarial-probe.js — pure decision layer for the Coverage
@@ -69,6 +70,48 @@ const { isBlockedReviewUrl } = require('./domain-filters');
 const MIN_RUN_GAP_DAYS = 5;
 /** Consecutive clean runs required before the probe calls the sprint proven. */
 const REQUIRED_CLEAN_RUNS = 2;
+const DEFAULT_SAMPLE = 5;
+const DEFAULT_DAYS = 45;
+
+/** Deterministic PRNG (mulberry32) so --seed makes the sample reproducible. */
+function mulberry32(seed) {
+  let a = seed >>> 0;
+  return function rand() {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function shuffle(list, rand) {
+  const out = list.slice();
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
+/** Random recent openings, with settling shows removed before they spend slots. */
+function pickSample(shows, opts = {}) {
+  const explicit = opts.showIds;
+  if (explicit) {
+    const ids = String(explicit).split(',').map(s => s.trim()).filter(Boolean);
+    return { pool: ids.map(id => shows.find(s => s.id === id)).filter(Boolean), settlingSkipped: 0 };
+  }
+  const days = opts.days === undefined ? DEFAULT_DAYS : opts.days;
+  const sample = opts.sample === undefined ? DEFAULT_SAMPLE : opts.sample;
+  const now = opts.now === undefined ? Date.now() : opts.now;
+  const settlingHours = opts.settlingHours;
+  const cutoff = now - days * 86400000;
+  const dated = shows.filter(s => s.openingDate && Date.parse(s.openingDate) >= cutoff && Date.parse(s.openingDate) <= now);
+  // Match the measurement gate in probeOneShow, including date-only openings
+  // whose settling window starts at the end of the opening day (BRO-5181).
+  const measurable = dated.filter(s => classifySample(s, { now, settlingHours }).state === 'measured');
+  const rand = opts.seed !== undefined ? mulberry32(Number(opts.seed)) : Math.random;
+  return { pool: shuffle(measurable, rand).slice(0, sample), settlingSkipped: dated.length - measurable.length };
+}
 
 /**
  * Is this candidate URL a known not-a-review page? Two classes:
@@ -350,6 +393,9 @@ function evaluateAcceptance(entries, opts = {}) {
 }
 
 module.exports = {
+  DEFAULT_SAMPLE,
+  DEFAULT_DAYS,
+  pickSample,
   MIN_RUN_GAP_DAYS,
   REQUIRED_CLEAN_RUNS,
   classifyCandidate,
