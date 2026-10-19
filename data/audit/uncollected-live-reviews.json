@@ -1,8 +1,57 @@
 {
-  "generatedAt": "2026-10-18T22:55:55.100Z",
+  "generatedAt": "2026-10-19T00:50:45.877Z",
   "maxAgeHours": 12,
-  "showsAffected": 0,
-  "strandedFiles": 0,
+  "showsAffected": 3,
+  "strandedFiles": 3,
   "blackoutShows": [],
-  "findings": []
+  "findings": [
+    {
+      "showId": "maybe-happy-ending-2024",
+      "title": "Maybe Happy Ending",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "thestage--nicole-serratore.json",
+          "url": "https://www.thestage.co.uk/reviews/maybe-happy-ending-review-belasco-theatre-new-york-darren-criss-helen-j-shen-will-aronson-hue-park-michael-arden",
+          "outlet": "The Stage",
+          "ageHours": 13.131968333333333
+        }
+      ],
+      "usable": 51,
+      "discovered": 55,
+      "totalBlackout": false
+    },
+    {
+      "showId": "six-the-musical-west-end-2021",
+      "title": "SIX the Musical",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "musical-theatre-review--unknown.json",
+          "url": "https://musicaltheatrereview.com/six-the-musical-to-go-on-an-extensive-nationwide-royal-tour/",
+          "outlet": "Musical Theatre Review",
+          "ageHours": null
+        }
+      ],
+      "usable": 23,
+      "discovered": 36,
+      "totalBlackout": false
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "title": "Cabaret at the Kit Kat Club",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "artsdesk--unknown.json",
+          "url": "https://theartsdesk.com/theatre/cabaret-kit-kat-club-playhouse-theatre-review-polymorphous-prodigious",
+          "outlet": "The Arts Desk",
+          "ageHours": null
+        }
+      ],
+      "usable": 43,
+      "discovered": 57,
+      "totalBlackout": false
+    }
+  ]
 }

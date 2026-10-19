@@ -1,13 +1,96 @@
 {
-  "generatedAt": "2026-10-18T22:56:10.246Z",
+  "generatedAt": "2026-10-19T00:50:59.302Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 247,
-  "clean": 247,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 242,
+  "defective": 5,
+  "byType": {
+    "score-drift": 5
+  },
+  "shows": [
+    {
+      "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
+      "title": "Memoirs of Amorous Gentlemen",
+      "openingDate": "2026-10-15",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 59.68 vs local 59.77 (Δ0.09)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 16,
+      "deployedCount": 16,
+      "firstDefectAt": "2026-10-19T00:50:56.252Z"
+    },
+    {
+      "showId": "nina-off-west-end-2026",
+      "title": "Nina",
+      "openingDate": "2026-10-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 77.53 vs local 77.67 (Δ0.14)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 11,
+      "deployedCount": 11,
+      "firstDefectAt": "2026-10-19T00:50:56.252Z"
+    },
+    {
+      "showId": "fences-off-west-end-2026",
+      "title": "Fences",
+      "openingDate": "2026-10-09",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.3 vs local 84.34 (Δ1.04)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 13,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-10-19T00:50:56.252Z"
+    },
+    {
+      "showId": "baby-off-west-end-2026",
+      "title": "Baby",
+      "openingDate": "2026-10-08",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 69.14 vs local 71.32 (Δ2.18)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 9,
+      "deployedCount": 9,
+      "firstDefectAt": "2026-10-19T00:50:56.252Z"
+    },
+    {
+      "showId": "the-outsiders-2024",
+      "title": "The Outsiders",
+      "openingDate": "2024-04-11",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 69.88 vs local 69.75 (Δ0.13)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 27,
+      "deployedCount": 27,
+      "firstDefectAt": "2026-10-19T00:50:56.252Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
