@@ -3655,13 +3655,13 @@
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
       "incidentOpenedAt": "2026-10-08T11:25:20.258Z",
-      "lastSeen": "2026-10-19T12:18:41.243Z",
+      "lastSeen": "2026-10-19T15:14:38.670Z",
       "lastNotifiedAt": "2026-10-19T02:17:33.334Z",
       "lastSurfacedAt": "2026-10-16T18:32:46.181Z",
       "notifyCount": 29,
       "cardId": null,
       "linearIdentifier": "BRO-4515",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "resolved",
@@ -4427,13 +4427,12 @@
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
       "incidentOpenedAt": "2026-10-05T11:20:30.123Z",
-      "lastSeen": "2026-10-19T12:18:41.228Z",
-      "lastNotifiedAt": "2026-10-18T12:57:26.482Z",
+      "lastSeen": "2026-10-19T15:14:38.400Z",
+      "lastNotifiedAt": "2026-10-19T15:14:38.400Z",
       "lastSurfacedAt": "2026-10-14T01:40:58.305Z",
-      "notifyCount": 26,
+      "notifyCount": 27,
       "cardId": null,
-      "linearIdentifier": "BRO-4795",
-      "silentRefires": 7
+      "linearIdentifier": "BRO-4795"
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -4844,13 +4843,13 @@
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
       "incidentOpenedAt": "2026-10-17T22:22:42.482Z",
-      "lastSeen": "2026-10-19T12:18:41.213Z",
+      "lastSeen": "2026-10-19T15:14:38.381Z",
       "lastNotifiedAt": "2026-10-19T02:17:33.001Z",
       "lastSurfacedAt": "2026-10-17T22:22:42.482Z",
       "notifyCount": 22,
       "cardId": null,
       "linearIdentifier": "BRO-5563",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "test-yml:red:E2E Tests:c58b7c79": {
       "status": "resolved",
@@ -6598,13 +6597,13 @@
       "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
       "firstSeen": "2026-09-28T19:21:55.577Z",
       "incidentOpenedAt": "2026-10-17T16:13:23.493Z",
-      "lastSeen": "2026-10-19T12:18:41.182Z",
+      "lastSeen": "2026-10-19T15:14:38.344Z",
       "lastNotifiedAt": "2026-10-18T20:04:34.279Z",
       "lastSurfacedAt": "2026-10-16T13:37:57.729Z",
       "notifyCount": 17,
       "cardId": null,
       "linearIdentifier": "BRO-5484",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "test-yml:red:Unit Tests:ee08ae2a": {
       "status": "resolved",
@@ -16388,13 +16387,13 @@
       "title": "Corpus drift: data/review-texts folder whose name is not a shows.json id (rebuild skips every review in it)",
       "firstSeen": "2026-10-13T03:27:49.763Z",
       "incidentOpenedAt": "2026-10-13T18:12:08.276Z",
-      "lastSeen": "2026-10-19T12:18:41.272Z",
+      "lastSeen": "2026-10-19T15:14:38.710Z",
       "lastNotifiedAt": "2026-10-19T09:53:05.694Z",
       "lastSurfacedAt": "2026-10-19T09:53:05.694Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "review-gap:opening-window:red-riding-hood-off-broadway-2026": {
       "status": "open",
@@ -17261,13 +17260,13 @@
       "title": "Corpus drift: review files with wrongProduction provenance but the flag dropped (would score silently; baseline-diff)",
       "firstSeen": "2026-10-13T19:33:47.105Z",
       "incidentOpenedAt": "2026-10-13T19:33:47.105Z",
-      "lastSeen": "2026-10-19T12:18:41.195Z",
+      "lastSeen": "2026-10-19T15:14:38.358Z",
       "lastNotifiedAt": "2026-10-19T09:53:05.612Z",
       "lastSurfacedAt": "2026-10-19T09:53:05.612Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-5288-dtli-ingest-guards": {
       "status": "resolved",
