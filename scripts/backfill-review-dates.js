@@ -272,7 +272,7 @@ async function main() {
   console.log(`Found ${candidates.length} ${recheckDates ? 'early-dated reviews to recheck' : 'undated reviews'} with URLs`);
   if (skippedDomain > 0) console.log(`Skipped ${skippedDomain} reviews from zero-yield domains`);
   if (skippedAttempted > 0) console.log(`Skipped ${skippedAttempted} reviews already attempted (use --retry-failed to retry)`);
-  if (domainMode) console.log(`Domain filter: ${domainMode}`);
+  console.log(`Domain filter: ${domainMode || 'all (no filter)'}`);
   if (offset > 0) console.log(`Skipping first ${offset}`);
 
   const batch = candidates.slice(offset, offset + limit);
