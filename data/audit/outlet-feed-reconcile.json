@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-19T09:02:10.038Z",
+  "generatedAt": "2026-10-19T11:34:04.404Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -157,16 +157,8 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theatre-weekly",
-      "error": "HTTP 500 for https://theatreweekly.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
-    },
-    {
-      "outletId": "amny",
-      "error": "HTTP 403 for https://www.amny.com/entertainment/theater/feed/"
     },
     {
       "outletId": "slantmagazine",
@@ -193,9 +185,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 723,
-  "matchedGaps": 3,
-  "possibleGaps": 6,
+  "itemsScanned": 726,
+  "matchedGaps": 5,
+  "possibleGaps": 7,
   "gaps": [
     {
       "showId": "cadel-lungs-on-legs-west-end-2026",
@@ -205,6 +197,24 @@
       "url": "https://www.london-unattached.com/cadel-lungs-on-legs-riverside-studios/",
       "headline": "CADEL: Lungs on Legs &#8211; Riverside Studios",
       "publishDate": "2026-10-18"
+    },
+    {
+      "showId": "dog-mom-off-west-end-2026",
+      "title": "Dog Mom",
+      "level": "matched",
+      "outletId": "north-west-end",
+      "url": "https://northwestend.com/dog-mom-southwark-playhouse-borough/",
+      "headline": "Dog Mom &#8211; Southwark Playhouse Borough",
+      "publishDate": "2026-10-19"
+    },
+    {
+      "showId": "dog-mom-off-west-end-2026",
+      "title": "Dog Mom",
+      "level": "matched",
+      "outletId": "british-theatre",
+      "url": "https://www.britishtheatreguide.info/reviews/dog-mom-southwark-playh-26135",
+      "headline": "Dog Mom",
+      "publishDate": "2026-10-19"
     },
     {
       "showId": "some-woman-west-end-2026",
@@ -249,6 +259,15 @@
       "outletId": "standard",
       "url": "https://standard.co.uk/culture/theatre/midnight-at-the-never-get-review-b1290727.html",
       "headline": "Midnight at the Never Get: Polished if schmaltzy musical",
+      "publishDate": null
+    },
+    {
+      "showId": "some-woman-west-end-2026",
+      "title": "Some Woman",
+      "level": "possible",
+      "outletId": "standard",
+      "url": "https://standard.co.uk/culture/theatre/some-woman-national-theatre-review-b1301402.html",
+      "headline": "Some Woman: Anne-Marie Duff returns in misogyny drama",
       "publishDate": null
     },
     {

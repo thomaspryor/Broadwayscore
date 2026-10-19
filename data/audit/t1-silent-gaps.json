@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-19T08:59:28.818Z",
+  "generatedAt": "2026-10-19T11:33:43.077Z",
   "windowDays": 45,
   "showsScanned": 188,
   "gaps": [
@@ -17,9 +17,9 @@
       "forumLinkRecoveryCount": 3,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=slam-frank-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-18T14:14:33.814Z",
-      "fileAgeHours": 18.7480275,
+      "fileAgeHours": 21.318175833333335,
       "gapSeenAt": "2026-10-18T18:09:48.486Z",
-      "nonTerminalAgeHours": 14.82787
+      "nonTerminalAgeHours": 17.3984975
     },
     {
       "showId": "stuffed-off-west-end-2026",
@@ -36,9 +36,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=stuffed-off-west-end-2026",
       "firstSeen": "2026-10-15T15:44:57.921Z",
-      "fileAgeHours": 89.24142333333333,
+      "fileAgeHours": 91.81164166666667,
       "gapSeenAt": "2026-10-16T12:12:23.731Z",
-      "nonTerminalAgeHours": 68.78474638888889
+      "nonTerminalAgeHours": 71.35537388888889
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -54,9 +54,28 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 640.3155044444444,
+      "fileAgeHours": 642.8858088888888,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 191.3349488888889
+      "nonTerminalAgeHours": 193.90557638888887
+    },
+    {
+      "showId": "maybe-happy-ending-tour-2026",
+      "title": "Maybe Happy Ending",
+      "openingDate": "2026-09-13",
+      "file": "theatermania--zachary-stewart.json",
+      "outletId": "theatermania",
+      "tier": 2,
+      "type": "unscored",
+      "dispatchable": true,
+      "url": "https://www.theatermania.com/news/jazz-vocalist-stella-cole-to-join-cast-of-maybe-happy-ending-on-broadway_1855818/",
+      "recovery": null,
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=maybe-happy-ending-tour-2026",
+      "firstSeen": "2026-10-06T02:28:41.564Z",
+      "fileAgeHours": 321.08339277777776,
+      "gapSeenAt": "2026-10-19T11:33:43.077Z",
+      "nonTerminalAgeHours": 0
     }
   ],
   "contradictions": []

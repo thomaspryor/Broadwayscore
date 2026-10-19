@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-19T08:59:24.560Z",
+  "generatedAt": "2026-10-19T11:33:34.223Z",
   "windowDays": 1095,
-  "targets": 704,
-  "auditedThisRun": 16,
-  "carriedForward": 738,
+  "targets": 693,
+  "auditedThisRun": 13,
+  "carriedForward": 741,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 430,
+    "withGap": 432,
     "missingCurrentRun": 864,
     "totalCitedNoUrl": 7,
-    "totalFlaggedMisses": 958,
+    "totalFlaggedMisses": 960,
     "totalRecoverable": 11,
     "totalRecovered": 17,
     "humanExcluded": 1,
-    "automatedExcluded": 170,
-    "automatedExcludedListed": 131,
-    "priorProductionCitations": 5170
+    "automatedExcluded": 175,
+    "automatedExcludedListed": 135,
+    "priorProductionCitations": 5169
   },
   "results": [
     {
@@ -18998,7 +18998,12 @@
         "liveCount": 1,
         "candidateCount": 2
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-08-31T00:09:38.552Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-19T11:33:34.327Z",
+        "lastAt": "2026-10-19T11:33:34.327Z"
+      }
     },
     {
       "showId": "beetlejuice-tour-2026",
@@ -38872,19 +38877,36 @@
       "aggregatorListedUrls": [
         "https://dickensblog.com/2026/08/02/copperfield-off-broadway/"
       ],
-      "dirFiles": 0,
+      "dirFiles": 1,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [
         {
           "url": "https://dickensblog.com/2026/08/02/copperfield-off-broadway/",
           "host": "dickensblog.com",
           "knownOutletId": null,
-          "serpCensus": true
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "dickensblog--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://dickensblog.com/2026/08/02/copperfield-off-broadway/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
         }
       ],
-      "dirOnly": [],
-      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -38951,39 +38973,21 @@
       "candidatesRejected": {
         "count": 41,
         "byReason": {
-          "aggregator-internal-nav": 4,
-          "venue-production-page": 1,
-          "non-review-host": 27,
-          "census-junk-host": 1,
+          "non-review-host": 26,
+          "show-listing-page": 2,
           "ticketing-listing": 1,
+          "aggregator-internal-nav": 5,
+          "production-database-listing": 1,
+          "census-junk-host": 1,
           "non-review-path": 1,
           "bare-host": 1,
-          "show-listing-page": 2,
-          "production-database-listing": 1,
+          "venue-production-page": 1,
           "review-hub-page": 2
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://dickensblog.com/2026/08/02/copperfield-off-broadway/",
-          "host": "dickensblog.com",
-          "outletId": "dickensblog",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -39009,7 +39013,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-19T04:06:17.625Z"
+      "computedAt": "2026-10-19T11:33:34.223Z"
     },
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
@@ -43381,7 +43385,12 @@
         "liveCount": 21,
         "candidateCount": 25
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-08-31T00:09:38.552Z",
+      "quarantine": {
+        "nextState": "incomplete:19:23",
+        "since": "2026-10-19T11:33:34.327Z",
+        "lastAt": "2026-10-19T11:33:34.327Z"
+      }
     },
     {
       "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
@@ -46978,6 +46987,8 @@
         "https://www.whatsonstage.com/london-theatre/reviews/dirty-dancing-dominion-2022-west-end-review_55891.html",
         "https://musicaltheatrereview.com/london-venue-change-for-dirty-dancing-the-classic-story-on-stage/",
         "https://www.lastminutetheatretickets.com/review-of-dirty-dancing-the-classic-story-on-stage/",
+        "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462",
+        "https://www.yeahlifestyle.com/review-dirty-dancing-the-classic-story-on-stage-at-the-regent-theatre/",
         "https://www.thereviewshub.com/dirty-dancing-the-classic-story-on-stage-dominion-theatre/"
       ],
       "dirFiles": 11,
@@ -47004,6 +47015,12 @@
           "knownOutletId": null,
           "priorRun": true,
           "priorRunSource": "pending-file-date:2013-09-13",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.yeahlifestyle.com/review-dirty-dancing-the-classic-story-on-stage-at-the-regent-theatre/",
+          "host": "yeahlifestyle.com",
+          "knownOutletId": null,
           "serpCensus": true
         }
       ],
@@ -47128,6 +47145,29 @@
           "confirmedNonReview": true,
           "serpCensus": true,
           "reverify": false
+        },
+        {
+          "url": "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462",
+          "host": "edinburghguide.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "edinburghguide--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -47217,7 +47257,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -47227,30 +47267,30 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 6,
         "error": null
       },
       "candidatesRejected": {
-        "count": 30,
+        "count": 32,
         "byReason": {
-          "aggregator-internal-nav": 2,
-          "non-review-host": 19,
-          "write-path-blocked": 2,
-          "census-junk-host": 2,
-          "non-review-path": 1,
-          "bare-host": 1,
+          "non-review-host": 21,
           "ticketing-reseller": 2,
+          "aggregator-internal-nav": 2,
+          "census-junk-host": 1,
+          "non-review-path": 2,
+          "write-path-blocked": 2,
+          "bare-host": 1,
           "ticket-seller-product-page": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -47275,17 +47315,47 @@
           "censusGateOn": true
         }
       ],
-      "ingestResults": [],
+      "ingestResults": [
+        {
+          "url": "https://www.yeahlifestyle.com/review-dirty-dancing-the-classic-story-on-stage-at-the-regent-theatre/",
+          "host": "yeahlifestyle.com",
+          "outletId": "yeahlifestyle",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  provisional outlet \"yeahlifestyle\" (not in registry) — onboard to outlet-registry.json after review.\n  ⚠️  Unvalidated domain for dirty-dancing-the-classic-story-on-stage-west-end-2026/yeahlifestyle: no registered domain for outlet \"yeahlifestyle\" — URL host not checked\n[review-write-guard] date-implausible: dirty-dancing-the-classic-story-on-stage-west-end-2026/yeahlifestyle--yeah-lifestyle.json → quarantined to _pending/dirty-dancing-the-classic-story-on-stage-west-end-2026/yeahlifestyle--yeah-lifestyle.json (1199d before earliest date, not within priorRuns)\n\n❌ Write-guard refused the wr"
+        }
+      ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "yeahlifestyle.com",
+            "outlet": "yeahlifestyle.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.yeahlifestyle.com/review-dirty-dancing-the-classic-story-on-stage-at-the-regent-theatre/"
+          },
           {
             "outletId": "musical-theatre-review",
             "outlet": "musical-theatre-review",
             "critic": "Unknown",
             "stars": null,
             "url": "https://musicaltheatrereview.com/london-venue-change-for-dirty-dancing-the-classic-story-on-stage/"
+          },
+          {
+            "outletId": "edinburghguide.com",
+            "outlet": "edinburghguide.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462"
           }
         ],
         "suppressedMissing": [],
@@ -47297,18 +47367,32 @@
             "firstSeenAt": "2026-10-19T05:36:07.809Z"
           },
           {
+            "url": "https://www.yeahlifestyle.com/review-dirty-dancing-the-classic-story-on-stage-at-the-regent-theatre/",
+            "outletId": "yeahlifestyle.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-19T11:33:34.223Z"
+          },
+          {
             "url": "https://musicaltheatrereview.com/london-venue-change-for-dirty-dancing-the-classic-story-on-stage/",
             "outletId": "musical-theatre-review",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-18T00:39:13.929Z"
+          },
+          {
+            "url": "https://edinburghguide.com/reviews/musicals/dirty-dancing-the-classic-story-on-stage-playhouse-review-15462",
+            "outletId": "edinburghguide.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-19T11:33:34.223Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 1,
-        "candidateCount": 2
+        "candidateCount": 4
       },
-      "computedAt": "2026-10-19T05:36:07.809Z"
+      "computedAt": "2026-10-19T11:33:34.223Z"
     },
     {
       "showId": "dirty-dancing-tour-2026",
@@ -48851,12 +48935,75 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Doll Day Afternoon\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Doll Day Afternoon\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Doll Day Afternoon\" review mama",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Doll Day Afternoon La MaMa / The Downstairs review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Doll Day Afternoon La MaMa / The Downstairs review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Doll Day Afternoon La MaMa / The Downstairs review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 34,
+        "byReason": {
+          "non-review-host": 24,
+          "aggregator-internal-nav": 7,
+          "census-junk-host": 1,
+          "write-path-blocked": 1,
+          "review-hub-page": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -48869,7 +49016,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-19T04:06:17.625Z"
+      "computedAt": "2026-10-19T11:33:34.223Z"
     },
     {
       "showId": "don-giovanni-off-broadway-2025",
@@ -53155,13 +53302,11 @@
         "https://observer.com/2025/01/review-english-speaks-eloquently-of-language-and-loss/",
         "https://www.vulture.com/article/freedom-in-speech-sanaz-toossis-english.html",
         "https://variety.com/2025/legit/reviews/english-review-broadway-play-1236282770/",
-        "https://www.newyorktheatreguide.com/theatre-news/news/how-the-broadway-play-english-speaks-to-diverse-audiences",
-        "https://www.newyorktheatreguide.com/theatre-news/interviews/english-actress-marjan-neshat-feels-like-a-lottery-winner",
         "https://www.msnbc.com/morning-joe/watch/broadway-play-english-makes-history-with-tony-nominations-239459909914"
       ],
-      "dirFiles": 29,
-      "dirClean": 23,
-      "inReviewsJson": 21,
+      "dirFiles": 34,
+      "dirClean": 24,
+      "inReviewsJson": 23,
       "missing": [
         {
           "url": "https://www.theaterpizzazz.com/english/",
@@ -53177,10 +53322,6 @@
         }
       ],
       "dirOnly": [
-        {
-          "host": "broadwaynews.com",
-          "count": 1
-        },
         {
           "host": "culturesauce.com",
           "count": 1
@@ -53212,25 +53353,6 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://observer.com/2022/02/losing-in-translation-iranian-students-struggle-with-feelings-in-english/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "observer--david-cote.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://observer.com/2025/01/review-english-speaks-eloquently-of-language-and-loss/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "https://www.theatrely.com/post/english-a-stunning-education-in-language-review",
           "host": "theatrely.com",
           "knownOutletId": "theatrely",
@@ -53246,80 +53368,13 @@
               "urlInDir": "https://www.theatrely.com/post/english-a-stunning-education-in-language-review"
             }
           ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2022/02/22/theater/english-review-sanaz-toossi.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--jesse-green.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nytimes.com/2025/01/23/theater/english-review-broadway-toossi.html"
-            }
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
           ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nytimes.com/2017/11/19/arts/music/review-nico-muhly-marnie-english-national-opera-metropolitan.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--jesse-green.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nytimes.com/2025/01/23/theater/english-review-broadway-toossi.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2025/01/23/theater/english-review-broadway-toossi.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--jesse-green.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nytimes.com/2025/01/23/theater/english-review-broadway-toossi.html"
-            }
-          ]
-        },
-        {
-          "url": "https://observer.com/2025/01/review-english-speaks-eloquently-of-language-and-loss/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "observer--david-cote.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://observer.com/2025/01/review-english-speaks-eloquently-of-language-and-loss/"
-            }
-          ]
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -53329,13 +53384,16 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 617,
+        "count": 627,
         "byReason": {
           "non-review-host": 75,
+          "roundup-page": 6,
+          "aggregator-internal-nav": 422,
+          "not-http-url": 70,
+          "production-database-listing": 33,
+          "aggregator-section-root": 18,
           "venue-production-page": 1,
-          "aggregator-internal-nav": 459,
-          "not-http-url": 66,
-          "aggregator-section-root": 16
+          "news-article": 2
         }
       },
       "dedupedVariants": [],
@@ -53353,12 +53411,15 @@
           "publishDate": "2017-11-20"
         }
       ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
       "weIngestBlocked": [
         {
           "url": "https://www.theaterpizzazz.com/english/",
           "host": "theaterpizzazz.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         }
       ],
       "ingestResults": [
@@ -53371,7 +53432,10 @@
           "noop": false,
           "conflict": false,
           "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
           "unclassified": false,
+          "zeroChar": false,
           "reason": "Fetch failed: All scraping methods failed"
         }
       ],
@@ -53385,20 +53449,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.msnbc.com/morning-joe/watch/broadway-play-english-makes-history-with-tony-nominations-239459909914"
-          },
-          {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nytimes.com/2025/01/23/theater/english-review-broadway-toossi.html"
-          },
-          {
-            "outletId": "observer",
-            "outlet": "observer",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://observer.com/2025/01/review-english-speaks-eloquently-of-language-and-loss/"
           }
         ],
         "suppressedMissing": [],
@@ -53416,10 +53466,22 @@
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
           },
           {
+            "url": "https://observer.com/2022/02/losing-in-translation-iranian-students-struggle-with-feelings-in-english/",
+            "outletId": "observer.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T11:33:34.223Z"
+          },
+          {
             "url": "https://cititour.com/NYC_Broadway/English/1062",
             "outletId": "cititour.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2022/02/22/theater/english-review-sanaz-toossi.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T11:33:34.223Z"
           },
           {
             "url": "https://www.thewrap.com/english-off-broadway-review-sanaz-toossis-play-gets-lost-in-translation/",
@@ -53442,6 +53504,18 @@
           {
             "url": "http://www.independent.co.uk/arts-entertainment/classical/reviews/marnie-english-national-opera-review-a8065141.html",
             "outletId": "independent.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
+            "url": "http://www.nytimes.com/2017/11/19/arts/music/review-nico-muhly-marnie-english-national-opera-metropolitan.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T11:33:34.223Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2025/01/23/theater/english-review-broadway-toossi.html",
+            "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
           },
@@ -53506,6 +53580,12 @@
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
           },
           {
+            "url": "https://observer.com/2025/01/review-english-speaks-eloquently-of-language-and-loss/",
+            "outletId": "observer.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
             "url": "https://www.vulture.com/article/freedom-in-speech-sanaz-toossis-english.html",
             "outletId": "vulture.com",
             "state": "live",
@@ -53523,27 +53603,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2025/01/23/theater/english-review-broadway-toossi.html",
-            "outletId": "nytimes",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
-            "url": "https://observer.com/2025/01/review-english-speaks-eloquently-of-language-and-loss/",
-            "outletId": "observer",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 14,
+        "liveCount": 16,
         "candidateCount": 17
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-10-19T11:33:34.223Z"
     },
     {
       "showId": "equus-west-end-2026",
@@ -86992,7 +87058,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-19T04:06:17.625Z"
+      "computedAt": "2026-10-19T11:33:34.223Z"
     },
     {
       "showId": "illinoise-2024",
@@ -94674,7 +94740,8 @@
         "https://www.whatsonstage.com/news/full-cast-for-jesus-christ-superstar-at-theatre-royal-drury-lane-confirmed-with-on-stage-ticket-plans-revealed_1731065/",
         "https://entertheatre.com/shows/jesus-christ-superstar/theatre-royal-drury-lane",
         "https://www.westendbestfriend.co.uk/news/jesus-christ-superstar-release-on-stage-tickets-tyrone-huntley-return-drury-lane-season",
-        "https://www.eventim.co.uk/event/jesus-christ-superstar-theatre-royal-drury-lane-22139739/"
+        "https://www.eventim.co.uk/event/jesus-christ-superstar-theatre-royal-drury-lane-22139739/",
+        "https://www.theatreticketsdirect.co.uk/shows/7291/jesus-christ-superstar---theatre-royal-drury-lane-tickets"
       ],
       "dirFiles": 28,
       "dirClean": 22,
@@ -94858,6 +94925,30 @@
           ],
           "serpCensus": true,
           "reverify": true
+        },
+        {
+          "url": "https://www.theatreticketsdirect.co.uk/shows/7291/jesus-christ-superstar---theatre-royal-drury-lane-tickets",
+          "host": "theatreticketsdirect.co.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatreticketsdirect--theatre-tickets-direct-limited.json",
+              "flag": "clean",
+              "urlInDir": "https://www.theatreticketsdirect.co.uk/shows/7291/jesus-christ-superstar---theatre-royal-drury-lane-tickets"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "serpCensus": true,
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -94957,24 +95048,24 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 6,
+        "resultCount": 7,
         "error": null
       },
       "candidatesRejected": {
-        "count": 29,
+        "count": 26,
         "byReason": {
-          "non-review-host": 17,
-          "write-path-blocked": 5,
-          "census-junk-host": 1,
+          "non-review-host": 16,
           "ticketing-listing": 1,
+          "census-junk-host": 1,
           "event-listing": 2,
           "non-review-path": 1,
+          "write-path-blocked": 3,
           "bare-host": 1,
           "ticket-seller-product-page": 1
         }
@@ -95037,6 +95128,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.eventim.co.uk/event/jesus-christ-superstar-theatre-royal-drury-lane-22139739/"
+          },
+          {
+            "outletId": "theatreticketsdirect.co.uk",
+            "outlet": "theatreticketsdirect.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatreticketsdirect.co.uk/shows/7291/jesus-christ-superstar---theatre-royal-drury-lane-tickets"
           }
         ],
         "suppressedMissing": [],
@@ -95081,13 +95179,20 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-18T19:59:01.031Z"
+          },
+          {
+            "url": "https://www.theatreticketsdirect.co.uk/shows/7291/jesus-christ-superstar---theatre-royal-drury-lane-tickets",
+            "outletId": "theatreticketsdirect.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-19T11:33:34.223Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 1,
-        "candidateCount": 6
+        "candidateCount": 7
       },
-      "computedAt": "2026-10-19T04:06:17.625Z"
+      "computedAt": "2026-10-19T11:33:34.223Z"
     },
     {
       "showId": "jesus-christ-superstar-west-end-2026",
@@ -101591,7 +101696,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-19T04:06:17.625Z"
+      "computedAt": "2026-10-19T11:33:34.223Z"
     },
     {
       "showId": "kinky-boots-the-musical-west-end-2026",
@@ -104614,7 +104719,12 @@
         "liveCount": 3,
         "candidateCount": 12
       },
-      "computedAt": "2026-10-19T05:36:07.809Z"
+      "computedAt": "2026-10-19T05:36:07.809Z",
+      "quarantine": {
+        "nextState": "incomplete:2:10",
+        "since": "2026-10-19T11:33:34.327Z",
+        "lastAt": "2026-10-19T11:33:34.327Z"
+      }
     },
     {
       "showId": "lean-to-off-broadway-2026",
@@ -107654,7 +107764,12 @@
         "liveCount": 0,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-19T04:06:17.625Z"
+      "computedAt": "2026-10-19T04:06:17.625Z",
+      "quarantine": {
+        "nextState": "incomplete:0:7",
+        "since": "2026-10-19T11:33:34.327Z",
+        "lastAt": "2026-10-19T11:33:34.327Z"
+      }
     },
     {
       "showId": "little-bear-ridge-road-2025",
@@ -110702,7 +110817,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-19T04:06:17.625Z"
+      "computedAt": "2026-10-19T11:33:34.223Z"
     },
     {
       "showId": "madama-butterfly-off-broadway-2024",
@@ -114564,7 +114679,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -114585,7 +114700,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -114595,7 +114710,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -114617,11 +114732,12 @@
       "candidatesRejected": {
         "count": 25,
         "byReason": {
-          "aggregator-internal-nav": 2,
-          "non-review-host": 17,
+          "non-review-host": 15,
+          "ticketing-listing": 2,
           "ticketing-reseller": 2,
-          "institutional-press-release": 3,
-          "ticketing-listing": 1
+          "aggregator-internal-nav": 1,
+          "census-junk-host": 2,
+          "institutional-press-release": 3
         }
       },
       "dedupedVariants": [],
@@ -114691,7 +114807,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-10-19T04:06:17.625Z"
+      "computedAt": "2026-10-19T11:33:34.223Z"
     },
     {
       "showId": "marcel-on-the-train-off-broadway-2026",
@@ -115948,7 +116064,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-19T04:06:17.625Z"
+      "computedAt": "2026-10-19T11:33:34.223Z"
     },
     {
       "showId": "mary-jane-2024",
@@ -131663,7 +131779,12 @@
         "liveCount": 1,
         "candidateCount": 3
       },
-      "computedAt": "2026-10-19T05:36:07.809Z"
+      "computedAt": "2026-10-19T05:36:07.809Z",
+      "quarantine": {
+        "nextState": "incomplete:1:2",
+        "since": "2026-10-19T11:33:34.327Z",
+        "lastAt": "2026-10-19T11:33:34.327Z"
+      }
     },
     {
       "showId": "my-joy-is-heavy-off-broadway-2025",
@@ -152751,7 +152872,12 @@
         "liveCount": 24,
         "candidateCount": 28
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-08-31T00:09:38.552Z",
+      "quarantine": {
+        "nextState": "incomplete:23:28",
+        "since": "2026-10-19T11:33:34.327Z",
+        "lastAt": "2026-10-19T11:33:34.327Z"
+      }
     },
     {
       "showId": "race-the-movie-the-play-off-broadway-2026",
@@ -159429,7 +159555,6 @@
       "aggregatorListedUrls": [
         "https://www.stlmag.com/events/st-louis-family-theatre-rosie-revere-ada-twist-and-iggy-peck-the-questioneers/",
         "https://www.theatermania.com/news/new-victory-to-open-2026-27-season-with-musical-rosie-revere-ada-twist-and-iggy-peck_1855653/",
-        "https://foxcitiespac.com/event/rosie-revere-ada-twist-and-iggy-peck-the-questioneers/",
         "https://patch.com/new-york/new-york-city/calendar/event/20261017/fc6c7539-7112-4b5b-a799-f8466d5fa150/rosie-revere-ada-twist-and-iggy-peck",
         "https://mommypoppins.com/new-york-city-kids/event/events/rosie-revere-ada-twist-and-iggy-peck-at-the-new-victory",
         "https://queens.kidsoutandabout.com/content/rosie-revere-ada-twist-and-iggy-peck-new-victory-theater"
@@ -159485,31 +159610,6 @@
           ],
           "serpCensus": true,
           "reverify": true
-        },
-        {
-          "url": "https://foxcitiespac.com/event/rosie-revere-ada-twist-and-iggy-peck-the-questioneers/",
-          "host": "foxcitiespac.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "foxcitiespac--ellie-desautel.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://foxcitiespac.com/event/rosie-revere-ada-twist-and-iggy-peck-the-questioneers/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-04-23",
-          "serpCensus": true,
-          "reverify": false
         },
         {
           "url": "https://patch.com/new-york/new-york-city/calendar/event/20261017/fc6c7539-7112-4b5b-a799-f8466d5fa150/rosie-revere-ada-twist-and-iggy-peck",
@@ -159610,7 +159710,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -159626,16 +159726,17 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 6,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 39,
+        "count": 41,
         "byReason": {
-          "aggregator-internal-nav": 9,
-          "venue-production-page": 4,
-          "roundup-page": 1,
-          "non-review-host": 22,
+          "non-review-host": 24,
+          "show-listing-page": 1,
+          "aggregator-internal-nav": 10,
+          "census-junk-host": 1,
+          "venue-production-page": 2,
           "merch-store": 3
         }
       },
@@ -159715,7 +159816,7 @@
         "liveCount": 1,
         "candidateCount": 5
       },
-      "computedAt": "2026-10-19T05:36:07.809Z"
+      "computedAt": "2026-10-19T11:33:34.223Z"
     },
     {
       "showId": "sabrage-off-west-end-2026",
@@ -173751,7 +173852,12 @@
         "liveCount": 3,
         "candidateCount": 3
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-08-31T00:09:38.552Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-19T11:33:34.327Z",
+        "lastAt": "2026-10-19T11:33:34.327Z"
+      }
     },
     {
       "showId": "stories-the-tap-dance-sensation-west-end-2026",
@@ -173760,13 +173866,83 @@
       "status": "open",
       "category": "off-west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "aggregatorListedUrls": [
+        "https://www.londonboxoffice.co.uk/news/post/stories-tap-dance-sensation-review",
+        "https://theatreandtonic.co.uk/blog/stories-a-tap-dance-sensation-peacock-theatre-review",
+        "https://www.westendbestfriend.co.uk/news/review-stories-the-tap-dance-sensation-peacock-theatre",
+        "https://www.londontheatre1.com/reviews/stories-the-tap-dance-sensation-peacock-theatre/",
+        "https://www.liftedleg.com/2026/10/rb-dance-company-stories-the-tap-dance-sensation-review",
+        "https://www.theupcoming.co.uk/2024/10/30/stories-the-tap-dance-sensation-at-peacock-theatre-theatre-review/",
+        "https://www.thereviewshub.com/26-stories-the-tap-dance-sensation-peacock-theatre-london-2/",
+        "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.html",
+        "https://whatsgoodtodo.com/stories-the-tap-dance-sensation-at-peacock-theatre-london-review/",
+        "https://www.abundantart.net/review/review-and-exclusive-interview-romain-rachline-borgeauds-stories-the-tap-dance-sensation-dark-noir-drama-breathes-new-life-into-old-genres-at-peacock-theatre-un/",
+        "https://dancemagazine.co.uk/2026/09/stories-the-tap-dance-sensation-returns-to-london-ahead-of-uk-tour/",
+        "https://www.london-unattached.com/stories-the-tap-dance-sensation/",
+        "https://broadwaybaby.com/shows/stories-the-tap-dance-sensation/839283"
+      ],
+      "dirFiles": 23,
+      "dirClean": 12,
+      "inReviewsJson": 12,
       "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [],
+      "dirOnly": [
+        {
+          "host": "ayoungishperspective.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thetimes.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://dancemagazine.co.uk/2026/09/stories-the-tap-dance-sensation-returns-to-london-ahead-of-uk-tour/",
+          "host": "dancemagazine.co.uk",
+          "knownOutletId": "dance-informa-uk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "dance-informa-uk--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://dancemagazine.co.uk/2026/09/stories-the-tap-dance-sensation-returns-to-london-ahead-of-uk-tour/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://broadwaybaby.com/shows/stories-the-tap-dance-sensation/839283",
+          "host": "broadwaybaby.com",
+          "knownOutletId": "broadway-baby",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadway-baby--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://broadwaybaby.com/shows/stories-the-tap-dance-sensation/839283"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -173807,28 +173983,204 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"STORIES – The Tap Dance Sensation\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"STORIES – The Tap Dance Sensation\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 5,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"STORIES – The Tap Dance Sensation\" review peacock",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"STORIES – The Tap Dance Sensation\" Bergasse review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "STORIES – The Tap Dance Sensation Peacock Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "STORIES – The Tap Dance Sensation Peacock Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "STORIES – The Tap Dance Sensation Peacock Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 13,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 21,
+        "byReason": {
+          "non-review-host": 12,
+          "show-listing-page": 2,
+          "ticketing-listing": 3,
+          "ticketing-reseller": 2,
+          "forum-thread": 1,
+          "roundup-page": 1
+        }
       },
       "dedupedVariants": [],
-      "unextractable": [],
+      "automatedExcludedListed": 2,
+      "unextractable": [
+        {
+          "url": "https://www.abundantart.net/review/review-and-exclusive-interview-romain-rachline-borgeauds-stories-the-tap-dance-sensation-dark-noir-drama-breathes-new-life-into-old-genres-at-peacock-theatre-un/",
+          "host": "abundantart.net",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "zeroCharAttempts": 5
+        }
+      ],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "dance-informa-uk",
+            "outlet": "dance-informa-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://dancemagazine.co.uk/2026/09/stories-the-tap-dance-sensation-returns-to-london-ahead-of-uk-tour/"
+          },
+          {
+            "outletId": "broadway-baby",
+            "outlet": "broadway-baby",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://broadwaybaby.com/shows/stories-the-tap-dance-sensation/839283"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/stories-tap-dance-sensation-review",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T11:33:34.223Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/stories-a-tap-dance-sensation-peacock-theatre-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T11:33:34.223Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-stories-the-tap-dance-sensation-peacock-theatre",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T11:33:34.223Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/stories-the-tap-dance-sensation-peacock-theatre/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T11:33:34.223Z"
+          },
+          {
+            "url": "https://www.liftedleg.com/2026/10/rb-dance-company-stories-the-tap-dance-sensation-review",
+            "outletId": "liftedleg.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T11:33:34.223Z"
+          },
+          {
+            "url": "https://www.theupcoming.co.uk/2024/10/30/stories-the-tap-dance-sensation-at-peacock-theatre-theatre-review/",
+            "outletId": "theupcoming.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T11:33:34.223Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/26-stories-the-tap-dance-sensation-peacock-theatre-london-2/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T11:33:34.223Z"
+          },
+          {
+            "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.html",
+            "outletId": "londonlivinglarge.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T11:33:34.223Z"
+          },
+          {
+            "url": "https://whatsgoodtodo.com/stories-the-tap-dance-sensation-at-peacock-theatre-london-review/",
+            "outletId": "whatsgoodtodo.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T11:33:34.223Z"
+          },
+          {
+            "url": "https://www.london-unattached.com/stories-the-tap-dance-sensation/",
+            "outletId": "london-unattached.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T11:33:34.223Z"
+          },
+          {
+            "url": "https://dancemagazine.co.uk/2026/09/stories-the-tap-dance-sensation-returns-to-london-ahead-of-uk-tour/",
+            "outletId": "dance-informa-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-19T11:33:34.223Z"
+          },
+          {
+            "url": "https://broadwaybaby.com/shows/stories-the-tap-dance-sensation/839283",
+            "outletId": "broadway-baby",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-19T11:33:34.223Z"
+          }
+        ],
         "censusSchema": 3,
-        "liveCount": 0,
-        "candidateCount": 0
+        "liveCount": 10,
+        "candidateCount": 12
       },
-      "computedAt": "2026-10-19T00:48:15.547Z"
+      "computedAt": "2026-10-19T11:33:34.223Z"
     },
     {
       "showId": "stranger-things-2024",
@@ -180358,7 +180710,12 @@
         "liveCount": 3,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-19T05:36:07.809Z"
+      "computedAt": "2026-10-19T05:36:07.809Z",
+      "quarantine": {
+        "nextState": "complete:2:2",
+        "since": "2026-10-19T11:33:34.327Z",
+        "lastAt": "2026-10-19T11:33:34.327Z"
+      }
     },
     {
       "showId": "the-balusters-2026",
@@ -229622,25 +229979,155 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/",
+        "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/",
+        "https://stageraw.com/unconditional-a-musical-memoir/"
+      ],
+      "dirFiles": 1,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/",
+          "host": "hollywoodtimes.net",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2025-02-22",
+          "serpCensus": true
+        },
+        {
+          "url": "https://stageraw.com/unconditional-a-musical-memoir/",
+          "host": "stageraw.com",
+          "knownOutletId": "stage-raw",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2025-02-18",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/",
+          "host": "theatreinla.com",
+          "knownOutletId": "theatreinla",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatreinla--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatreinla.com/unconditional-a-musical-memoir/reviews/10819/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:venue-verified:Skylight Theatre in Los Feliz",
+          "serpCensus": true,
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"UNCONDITIONAL, a new musical memoir\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"UNCONDITIONAL, a new musical memoir\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"UNCONDITIONAL, a new musical memoir\" review mama",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "UNCONDITIONAL, a new musical memoir La MaMa / The Club review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "UNCONDITIONAL, a new musical memoir La MaMa / The Club review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "UNCONDITIONAL, a new musical memoir La MaMa / The Club review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 25,
+        "byReason": {
+          "non-review-host": 19,
+          "aggregator-internal-nav": 1,
+          "census-junk-host": 2,
+          "write-path-blocked": 1,
+          "bare-host": 1,
+          "merch-store": 1
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://hollywoodtimes.net/review-unconditional-a-musical-memoir-by-margot-rose-is-an-utter-delight/",
+          "host": "hollywoodtimes.net",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://stageraw.com/unconditional-a-musical-memoir/",
+          "host": "stageraw.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -229650,7 +230137,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-19T04:06:17.625Z"
+      "computedAt": "2026-10-19T11:33:34.223Z"
     },
     {
       "showId": "under-the-shadow-off-west-end-2026",
@@ -243689,5 +244176,26 @@
       },
       "computedAt": "2026-09-05T17:16:12.711Z"
     }
-  ]
+  ],
+  "staleness": {
+    "at": "2026-10-19T11:33:34.223Z",
+    "reserveEvery": 4,
+    "reservedAttempted": [
+      "sting-west-end-2026",
+      "queen-versailles-2025",
+      "beetlejuice-2025",
+      "dead-outlaw-2025",
+      "english-2025"
+    ],
+    "oldestDueRowAtStart": {
+      "showId": "sting-west-end-2026",
+      "computedAt": "2026-08-31T00:09:38.552Z",
+      "ageHours": 1187.1
+    },
+    "oldestDueRowAfterRun": {
+      "showId": "gypsy-2024",
+      "computedAt": "2026-08-31T14:43:54.309Z",
+      "ageHours": 1172.8
+    }
+  }
 }
