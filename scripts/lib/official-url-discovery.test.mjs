@@ -41,6 +41,26 @@ test('buildSearchQuery: west-end show gets "west end" market term', () => {
 
 // BRO-5343: a title-only match attached another production's site to two London rows.
 const { domainMatchesTitle } = require('./official-url-discovery.js');
+const { isBlockedOfficialUrl } = require('./official-url-discovery.js');
+
+test('isBlockedOfficialUrl: listing and ticket sites remain blocked, including subdomains', () => {
+  for (const url of [
+    'https://www.newyorktheatreguide.com/',
+    'https://www.broadway.org/shows/fallen-angels',
+    'https://tickets.newyorktheatreguide.com/show',
+    'https://www.todaytix.com/nyc/shows/1',
+    'https://playbill.com/article/x',
+  ]) assert.equal(isBlockedOfficialUrl(url), true, url);
+});
+
+test('isBlockedOfficialUrl: known venue hosts are allowed without changing SERP filtering', () => {
+  for (const url of ['https://irishrep.org/', 'https://www.lct.org/shows/ragtime/', 'https://tickets.signaturetheatre.org/']) {
+    assert.equal(isBlockedDomain(url), true, `SERP must still exclude ${url}`);
+    assert.equal(isBlockedOfficialUrl(url), false, url);
+  }
+  assert.equal(isBlockedOfficialUrl('https://www.hamiltonmusical.com/'), false);
+  assert.equal(isBlockedOfficialUrl('https://irishrep.org.newyorktheatreguide.com/'), true);
+});
 
 test('domainMatchesTitle: Peter Pan does not take Peter Pan Goes Wrong', () => {
   assert.equal(domainMatchesTitle('https://pangoeswrongbway.com/', 'Peter Pan', 'off-west-end'), false);

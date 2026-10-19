@@ -94,3 +94,36 @@ test('venueFallbackUrl: normalizes to the domain root, never a season-specific p
   const url = venueFallbackUrl(show({ venue: 'MCC Theater' }), configs);
   assert.equal(url, 'https://mcctheater.org/');
 });
+
+test('venueFallbackUrl: refuses listing sites, malformed URLs and non-http URLs', () => {
+  for (const url of [
+    'https://www.newyorktheatreguide.com/venues/test',
+    'https://www.broadway.org/shows/test',
+    'https://tickets.todaytix.com/show',
+    'not a URL', 'javascript:alert(1)', 'ftp://irishrep.org/',
+  ]) {
+    assert.equal(venueFallbackUrl(show(), [{ name: 'Irish Rep', url }]), null, url);
+  }
+});
+
+test('venueFallbackUrl: explicit officialUrl overrides a listing reader, null disables fallback', () => {
+  const config = { name: 'Irish Rep', url: 'https://www.newyorktheatreguide.com/venues/test' };
+  assert.equal(venueFallbackUrl(show(), [{ ...config, officialUrl: null }]), null);
+  assert.equal(venueFallbackUrl(show(), [{ ...config, officialUrl: 'https://irishrep.org/productions/' }]), 'https://irishrep.org/');
+  assert.equal(venueFallbackUrl(show(), [{ ...config, officialUrl: 'https://www.broadway.org/' }]), null);
+});
+
+test('venueFallbackUrl: real editorial reader configs cannot become official links', () => {
+  const { OB_VENUE_CONFIGS, OWE_VENUE_CONFIGS } = require('./venue-listing-discover.js');
+  const editorial = OB_VENUE_CONFIGS.filter(v => v.strategy === 'nytg-venue');
+  assert.ok(editorial.length > 0);
+  for (const config of editorial) {
+    assert.equal(config.officialUrl, null, config.name);
+    assert.equal(venueFallbackUrl(show({ venue: config.name }), [config]), null, config.name);
+  }
+  const { isBlockedOfficialUrl } = require('./official-url-discovery.js');
+  for (const config of [...OB_VENUE_CONFIGS, ...OWE_VENUE_CONFIGS].filter(v => v.strategy !== 'nytg-venue')) {
+    const fallback = venueFallbackUrl(show({ venue: config.name }), [config]);
+    if (fallback) assert.equal(isBlockedOfficialUrl(fallback), false, config.name);
+  }
+});

@@ -19,6 +19,7 @@
  */
 
 const { foldDiacritics } = require('./title-match');
+const { isBlockedOfficialUrl } = require('./official-url-discovery');
 
 // Statuses a "new show" can be in before it's fully on sale. `closed` and
 // anything else are excluded — a closed show correctly has no buy button.
@@ -77,6 +78,10 @@ function venueFallbackUrl(show, venueConfigs, oweVenueConfigs = venueConfigs) {
     );
   });
   if (!match) return null;
+  // Editorial readers use a listing site's URL for discovery. An explicit
+  // null disables their official-site fallback without disabling the reader.
+  const url = Object.hasOwn(match, 'officialUrl') ? match.officialUrl : match.url;
+  if (!url || isBlockedOfficialUrl(url)) return null;
   // officialUrl is set once and never re-verified (same as every other
   // enricher), so persisting OB_VENUE_CONFIGS' listing-page URL verbatim
   // risks freezing a season-specific path forever — e.g. MCC Theater's
@@ -84,9 +89,11 @@ function venueFallbackUrl(show, venueConfigs, oweVenueConfigs = venueConfigs) {
   // there as needing a manual bump every year. Normalize to the venue's
   // domain root, which is still a genuine, stable "Official Site" link.
   try {
-    return new URL(match.url).origin + '/';
+    const parsed = new URL(url);
+    if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') return null;
+    return parsed.origin + '/';
   } catch {
-    return match.url;
+    return null;
   }
 }
 

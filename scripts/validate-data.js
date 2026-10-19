@@ -79,6 +79,7 @@ const { openingDateSourceHint, venuePageDomainSourceProblem } = require('./lib/o
 const { isNonTheatricalGenre, applyGenreCategoryOverride } = require('./lib/genre-classification');
 const { looksLikeUrlCriticName } = require('./lib/byline-normalization');
 const { hasUndecodedHtmlEntities, hasJsonLdArtifact } = require('./lib/text-cleaning');
+const { isBlockedOfficialUrl } = require('./lib/official-url-discovery');
 
 // Notion 362637c5-416f-8174 — sentinel file consumed by .github/actions/push-core-data
 // to refuse pushing when validation failed. The composite action used `if: always()`
@@ -636,6 +637,20 @@ function validateShowTitles(shows) {
   }
 
   if (bad === 0) ok('No scrape artifacts in show titles');
+}
+
+function validateOfficialUrls(shows) {
+  info('Checking official URLs for blocked listing, ticket and review domains...');
+  let blocked = 0;
+  for (const show of shows) {
+    if (!show.officialUrl || !isBlockedOfficialUrl(show.officialUrl)) continue;
+    blocked++;
+    // BRO-5345 / CLAUDE.md section 19: land advisory first. Switch warn()
+    // back to error() once data/pending-fixes/bro-5345.json has been applied
+    // to private core data, so existing rows do not break gated pipelines.
+    warn(`Show "${show.title}" (${show.id}) has a blocked officialUrl: ${show.officialUrl}. Use the show's own site, a known venue site or null.`);
+  }
+  if (blocked === 0) ok('No blocked official URLs (known venue fallbacks allowed)');
 }
 
 function validateStatus(shows) {
@@ -5435,6 +5450,7 @@ function runValidation() {
   console.log('');
   validateRequiredFields(shows);
   validateShowTitles(shows);
+  validateOfficialUrls(shows);
   console.log('');
   validateStatus(shows);
   validateShowTypes(shows);

@@ -497,6 +497,8 @@ const OB_VENUE_CONFIGS = [
     ...(coversVenues ? { coversVenues } : {}),
     ...(extra || {}),
     url: `https://www.newyorktheatreguide.com/venues/${nytgSlugs[0]}`,
+    // Discovery source only, never an official-site fallback (BRO-5345).
+    officialUrl: null,
     strategy: 'nytg-venue',
     nytgSlugs,
     excludeTitlePatterns: [...COMMON_OB_EXCLUDE_PATTERNS, /\btours?$/i],

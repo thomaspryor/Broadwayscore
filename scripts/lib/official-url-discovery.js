@@ -17,6 +17,15 @@ const { foldDiacritics } = require('./title-match');
 // Domain blocklist — never treat these as official show sites
 // ============================================================================
 
+// Exclude venue sites from dedicated-show SERP discovery, but allow them as
+// intentional venue fallbacks in stored officialUrls (BRO-5345).
+const VENUE_DOMAINS = new Set([
+  'shubert.nyc', 'nederlander.com', 'roundabouttheatre.org', 'lct.org',
+  'manhattantheatreclub.com', '2st.com', 'nytw.org', 'publictheater.org',
+  'signaturetheatre.org', 'mintheatre.org', 'atlantictheater.org',
+  'classicstage.org', 'irishrep.org', 'newworldstages.com',
+]);
+
 const BLOCKED_DOMAINS = new Set([
   // Ticket platforms
   'todaytix.com', 'telecharge.com', 'ticketmaster.com', 'broadwaydirect.com',
@@ -46,10 +55,7 @@ const BLOCKED_DOMAINS = new Set([
   'concordtheatricals.com', 'mtishows.com', 'samuelfrench.com',
   'dramatists.com', 'tamswitmark.com',
   // Theater/venue sites (not show-specific)
-  'shubert.nyc', 'nederlander.com', 'roundabouttheatre.org', 'lct.org',
-  'manhattantheatreclub.com', '2st.com', 'nytw.org', 'publictheater.org',
-  'signaturetheatre.org', 'mintheatre.org', 'atlantictheater.org',
-  'classicstage.org', 'irishrep.org', 'newworldstages.com',
+  ...VENUE_DOMAINS,
   // City/government/tourism sites
   'cityofwhiteplains.com', 'nyc.gov', 'nyctourism.com',
   // Our own site and other aggregators
@@ -110,6 +116,14 @@ function isBlockedDomain(url) {
     if (domain === blocked || domain.endsWith('.' + blocked)) return true;
   }
   return false;
+}
+
+// Stored officialUrls may point to a known venue, but never to a ticket,
+// review or listing site. Keep SERP's stricter isBlockedDomain unchanged.
+function isBlockedOfficialUrl(url) {
+  if (!isBlockedDomain(url)) return false;
+  const domain = getDomain(url);
+  return ![...VENUE_DOMAINS].some(venue => domain === venue || domain.endsWith('.' + venue));
 }
 
 /**
@@ -262,6 +276,7 @@ module.exports = {
   normalizeShowName,
   getDomain,
   isBlockedDomain,
+  isBlockedOfficialUrl,
   buildSearchQuery,
   scoreCandidate,
   domainMatchesTitle,
