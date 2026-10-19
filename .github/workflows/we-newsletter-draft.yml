@@ -12,8 +12,9 @@ name: West End Newsletter Draft
 # carries its own notify-failure. A failed `gh workflow run` surfaces in the run log.
 
 on:
-  # Saturday 11:30 UTC — 30 min after the Broadway edition (0 11 * * 6) so the
-  # two runs don't contend on the shared `newsletter-draft` concurrency group.
+  # Saturday 11:30 UTC — 30 min after the Broadway edition (0 11 * * 6). Each
+  # edition has its own `newsletter-draft-<edition>` concurrency group (BRO-5509),
+  # so the two runs no longer queue on each other; the offset just spreads load.
   schedule:
     - cron: '30 11 * * 6'
   workflow_dispatch:

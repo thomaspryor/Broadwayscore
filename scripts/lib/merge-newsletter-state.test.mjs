@@ -7,7 +7,7 @@ import { createRequire } from 'node:module';
 import { readFileSync, mkdtempSync, writeFileSync, rmSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { tmpdir } from 'node:os';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
@@ -142,6 +142,66 @@ test('end to end: merge-commercial-conflict.js resolves a real two-edition git c
     execFileSync('node', [join(root, 'scripts/lib/merge-commercial-conflict.js'), 'data/newsletter-state.json', '--theirs', '--ours'], { cwd: dir, stdio: 'pipe' });
     const out = JSON.parse(readFileSync(join(dir, 'data/newsletter-state.json'), 'utf8'));
     assert.deepEqual(keys(out), ['2026-10-05|broadway', '2026-10-12|broadway', '2026-10-12|west-end']);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+// Review follow-up: the common race is NOT a git conflict. Two editions append
+// an issue for the same week from the same base; `git rebase -X theirs` resolves
+// the overlapping hunk cleanly in favour of ours, so resolve_conflicts() never
+// runs and only reconcile_merged_json (PUSH_RECONCILE_MERGED_JSON=1, base from
+// PUSH_RECONCILE_BASE=SCRIPT_ENTRY_BASE) puts the other edition back. Drives the
+// real push-with-retry.sh against a local bare origin.
+test('end to end: push-with-retry.sh with PUSH_RECONCILE_MERGED_JSON=1 keeps both editions after a clean -X theirs rebase', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'nl-state-push-'));
+  const env = {
+    ...process.env,
+    GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t',
+    PUSH_FAILURE_LOG: '/dev/null',
+  };
+  const git = (cwd, ...a) => execFileSync('git', a, { cwd, env, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+  const file = 'data/newsletter-state.json';
+  const write = (cwd, doc) => writeFileSync(join(cwd, file), JSON.stringify(doc, null, 2) + '\n');
+  const base = { issues: [issue('2026-10-05', 'broadway', ['a']), issue('2026-10-05', 'west-end', ['b'])] };
+  const bw = issue('2026-10-12', 'broadway', ['bw-new']);
+  const we = issue('2026-10-12', 'west-end', ['we-new']);
+  try {
+    const origin = join(dir, 'origin.git');
+    git(dir, 'init', '-q', '--bare', '-b', 'main', origin);
+    for (const name of ['we', 'runner']) {
+      git(dir, 'clone', '-q', origin, name);
+    }
+    const weDir = join(dir, 'we');
+    const runner = join(dir, 'runner');
+    execFileSync('mkdir', ['-p', join(weDir, 'data'), join(runner, 'data')]);
+    write(weDir, base); git(weDir, 'add', '-A'); git(weDir, 'commit', '-qm', 'base');
+    git(weDir, 'push', '-q', 'origin', 'HEAD:main');
+    git(runner, 'pull', '-q', 'origin', 'main');
+
+    // West End run lands first; the Broadway runner still sits on the base.
+    write(weDir, { issues: [...base.issues, we] }); git(weDir, 'commit', '-qam', 'west-end issue');
+    git(weDir, 'push', '-q', 'origin', 'HEAD:main');
+    write(runner, { issues: [...base.issues, bw] }); git(runner, 'commit', '-qam', 'broadway issue');
+
+    // Precondition (scratch branch, then discarded): the rebase is clean and drops the WE entry.
+    git(runner, 'fetch', '-q', 'origin');
+    git(runner, 'checkout', '-qb', 'probe');
+    git(runner, 'rebase', '-q', '-X', 'theirs', 'origin/main');
+    const probe = JSON.parse(readFileSync(join(runner, file), 'utf8'));
+    assert.deepEqual(keys(probe), ['2026-10-05|broadway', '2026-10-05|west-end', '2026-10-12|broadway'],
+      'precondition: clean -X theirs rebase silently drops the other edition');
+    git(runner, 'checkout', '-q', 'main');
+    git(runner, 'branch', '-qD', 'probe');
+
+    const r = spawnSync('bash', [join(root, 'scripts/lib/push-with-retry.sh'), '3', 'main'], {
+      cwd: runner, env: { ...env, PUSH_RECONCILE_MERGED_JSON: '1' }, encoding: 'utf8', timeout: 240000,
+    });
+    assert.equal(r.status, 0, `push-with-retry.sh failed:\n${r.stdout}\n${r.stderr}`);
+    const landed = JSON.parse(git(dir, '--git-dir', origin, 'show', `main:${file}`));
+    assert.deepEqual(keys(landed), ['2026-10-05|broadway', '2026-10-05|west-end', '2026-10-12|broadway', '2026-10-12|west-end']);
+    assert.deepEqual(landed.issues.find((i) => keyOf(i) === '2026-10-12|west-end').featuredShowIds, ['we-new']);
+    assert.deepEqual(landed.issues.find((i) => keyOf(i) === '2026-10-12|broadway').featuredShowIds, ['bw-new']);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
