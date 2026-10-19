@@ -57,7 +57,10 @@ function mergePendingStubs(local, remote) {
       && local.fullText.length > remote.fullText.length) {
     merged.fullText = local.fullText;
   }
-  return { merged, stats: { filledFromLocal: filled } };
+  // Logged so any local value the merge dropped is visible in the run log.
+  const remoteWon = Object.keys(local).filter((k) => local[k] !== null && local[k] !== undefined
+    && JSON.stringify(local[k]) !== JSON.stringify(merged[k]));
+  return { merged, stats: { filledFromLocal: filled, remoteWon } };
 }
 
 function main(argv) {

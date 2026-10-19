@@ -32,6 +32,7 @@ test('same review: remote wins non-null, nulls filled from local, earliest first
   assert.equal(merged.firstSeenAt, '2026-10-19T17:05:00.000Z');
   assert.equal(merged.fullText, 'longer local text');
   assert.deepEqual(stats.filledFromLocal, ['publishDate']);
+  assert.deepEqual(stats.remoteWon, ['source']);
 });
 
 test('remote earlier firstSeenAt is kept', () => {
