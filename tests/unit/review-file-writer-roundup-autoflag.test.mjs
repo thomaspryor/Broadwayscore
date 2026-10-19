@@ -44,7 +44,7 @@ function withTempReviewTextsDir(showId, fn) {
 }
 
 describe('review-file-writer Guard E (Review-Roundup auto-flag)', () => {
-  test('BWW Review-Roundup URL → isRoundupArticle=true', () => {
+  test('BWW Review-Roundup URL under broadwayworld (page-as-review) → refused by Guard E0', () => {
     withTempReviewTextsDir('joe-turners-come-and-gone-2026', (tmp) => {
       const { createOrMergeReviewFile } = require('../../scripts/lib/review-file-writer');
       const result = createOrMergeReviewFile('joe-turners-come-and-gone-2026', {
@@ -60,11 +60,9 @@ describe('review-file-writer Guard E (Review-Roundup auto-flag)', () => {
         },
       }, { reviewTextsDir: tmp });
 
-      assert.notEqual(result.action, 'skipped', `expected write, got skipped: ${result.reason}`);
-      assert.ok(result.filepath, 'filepath should be set');
-      const written = JSON.parse(fs.readFileSync(result.filepath, 'utf-8'));
-      assert.equal(written.isRoundupArticle, true, 'Guard E must auto-flag');
-      assert.match(written.roundupArticleReason || '', /BWW Review-Roundup/i);
+      assert.equal(result.action, 'skipped', 'the roundup page itself must not be written as a BWW review');
+      assert.match(result.reason, /^roundup-page-as-review:/);
+      assert.equal(fs.readdirSync(path.join(tmp, 'joe-turners-come-and-gone-2026')).length, 0, 'no file written');
     });
   });
 
@@ -90,7 +88,7 @@ describe('review-file-writer Guard E (Review-Roundup auto-flag)', () => {
     });
   });
 
-  test('Guard E1: BWW /reviews/{slug} critics-aggregation page → isRoundupArticle=true (Whoopi Monologues 2026-07-14)', () => {
+  test('Guard E0: BWW /reviews/{slug} critics-aggregation page under broadwayworld → refused (Whoopi Monologues 2026-07-14)', () => {
     withTempReviewTextsDir('the-whoopi-monologues-off-broadway-2026', (tmp) => {
       const { createOrMergeReviewFile } = require('../../scripts/lib/review-file-writer');
       const result = createOrMergeReviewFile('the-whoopi-monologues-off-broadway-2026', {
@@ -106,10 +104,8 @@ describe('review-file-writer Guard E (Review-Roundup auto-flag)', () => {
         },
       }, { reviewTextsDir: tmp });
 
-      assert.notEqual(result.action, 'skipped', `expected write, got skipped: ${result.reason}`);
-      const written = JSON.parse(fs.readFileSync(result.filepath, 'utf-8'));
-      assert.equal(written.isRoundupArticle, true, 'Guard E1 must auto-flag BWW /reviews/ pages');
-      assert.match(written.roundupArticleReason || '', /reviews.*critics-aggregation/i);
+      assert.equal(result.action, 'skipped', 'BWW /reviews/ aggregation page must not be written as a BWW review');
+      assert.match(result.reason, /^roundup-page-as-review:.*critics-aggregation/i);
     });
   });
 
@@ -180,10 +176,8 @@ describe('review-file-writer Guard E (Review-Roundup auto-flag)', () => {
         fields: { publishDate: null, fullText: null, contentTier: 'excerpt' },
       }, { reviewTextsDir: tmp });
 
-      if (result.action !== 'skipped') {
-        const written = JSON.parse(fs.readFileSync(result.filepath, 'utf-8'));
-        assert.equal(written.isRoundupArticle, true, 'lowercase variant must also be flagged');
-      }
+      assert.equal(result.action, 'skipped', 'lowercase variant must also be refused');
+      assert.match(result.reason, /^roundup-page-as-review:/);
     });
   });
 });

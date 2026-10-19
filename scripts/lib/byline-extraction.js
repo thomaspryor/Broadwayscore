@@ -38,7 +38,12 @@ const PUBLISHER_RE = /^(?:cond[eé] nast|the new yorker$|plasa media|dotdash mer
 // Prose-shaped candidates ("By Name", "<b>--Name</b>") also match nav and
 // rating text ("By Date", "By The Numbers", "--Highly Recommended"), so their
 // capture must look like a name: every word capitalised, no house words.
-const INLINE_BY_RE = />By:?\s+([A-Z][A-Za-z](?:[A-Za-z .'’-]|&rsquo;|&#8217;){1,38})(?=\s*[<\/]|\s+(?:[A-Z]|—))/;
+// Multi-author bylines ("By Meg Masseron, Logan Culwell-Block", "By A B &amp;
+// C D", "By A B and C D") yield the FIRST full name: the lookahead accepts a
+// following ',' or '&', and a captured " and " tail is cut in extractByline.
+// Without the ',' / '&' stops the capture backtracked to the first word only
+// ("Meg") because "<word> <Capital>" was the only shape the lookahead allowed.
+const INLINE_BY_RE = />By:?\s+([A-Z][A-Za-z](?:[A-Za-z .'’-]|&rsquo;|&#8217;){1,38})(?=\s*[<\/,&]|\s+(?:[A-Z]|—))/;
 const SIGN_OFF_RE = /<b>\s*(?:--|—)\s*([A-Z][A-Za-z.'’ -]{3,40}?)\s*<\/b>/;
 const PROSE_NOT_A_NAME_RE = /\b(?:date|dates|numbers?|name|title|category|categories|price|popularity|rating|ratings|recommended|highly|stars?|sunday|monday|tuesday|wednesday|thursday|friday|saturday|january|february|march|april|june|july|august|september|october|november|december)\b/i;
 function looksLikeProseName(name) {
@@ -160,6 +165,7 @@ function extractByline(html) {
       if (PUBLISHER_RE.test(name)) continue;
       // A bare "By" preamble span read as the name (BRO-3414).
       if (/^by:?$/i.test(name)) continue;
+      if (re === INLINE_BY_RE) name = name.split(/\s+and\s+/)[0].trim();
       if ((re === INLINE_BY_RE || re === SIGN_OFF_RE) && !looksLikeProseName(name)) continue;
       // Capitalize lowercase author slugs from class="author-name" (e.g. "ross" → "Ross").
       if (/^[a-z][a-z\s.'’-]*$/.test(name)) {

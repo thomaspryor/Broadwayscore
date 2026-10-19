@@ -171,6 +171,17 @@ test('inline By / sign-off reject nav and rating text', () => {
   assert.equal(extractByline('<p>By Holly O&rsquo;Mahony</p>'), "Holly O'Mahony");
 });
 
+// Playbill multi-author byline: other-desert-cities-2026 roundup was filed as
+// critic "Meg" because the name class has no ',' and the lookahead only
+// allowed "<word> <Capital>", so the capture backtracked to the first word.
+test('multi-author inline By yields the first FULL name', () => {
+  assert.equal(extractByline('<p>By Meg Masseron, Logan Culwell-Block</p>'), 'Meg Masseron');
+  assert.equal(extractByline('<p>By Meg Masseron &amp; Logan Culwell-Block</p>'), 'Meg Masseron');
+  assert.equal(extractByline('<p>By Meg Masseron and Logan Culwell-Block</p>'), 'Meg Masseron');
+  assert.equal(extractByline('<p>By Ross Smith, Chief Critic</p>'), 'Ross Smith');
+  assert.equal(extractByline('<p>By Isa Goldberg</p>'), 'Isa Goldberg');
+});
+
 test('publisher names are skipped in JSON-LD and with &eacute; entities', () => {
   const ld = '<script type="application/ld+json">{"@type":"NewsArticle","author":{"@type":"Person","name":"Cond&eacute; Nast"}}</script>';
   assert.equal(extractJsonLdAuthor(ld), null);

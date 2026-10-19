@@ -210,6 +210,11 @@ const EXPECTED_REJECTION_REASONS = [
   // BRO-5134: a Time Out listing blurb (or another critic's capsule) served at
   // the review URL shape; the page, not the URL, tells (lib/timeout-capsule.js).
   'timeout-listing-capsule',
+  // A multi-outlet roundup page (Playbill "what do the critics think of", WOS/
+  // Stage/LBO/WET round-ups, BWW Review-Roundup) under the roundup host's OWN
+  // outletId (review-file-writer.js Guard E0, isRoundupPageAsReview). The page
+  // quotes other critics; it is never a review by that outlet. Permanent.
+  'roundup-page-as-review',
 ];
 
 // Desired end state already holds, or the URL legitimately isn't a review.
@@ -229,6 +234,7 @@ const DURABLE_REJECTION_REASONS = [
   'site-utility-url',
   'unregistered-outlet-non-review-url',
   'credited-person-as-critic',
+  'roundup-page-as-review',
 ];
 
 /** True when a writer skip reason is a permanent refusal (see DURABLE_REJECTION_REASONS). */
@@ -354,6 +360,9 @@ function describeSkip(showId, url, { reason, detail }) {
   }
   if (reason === 'timeout-listing-capsule') {
     return `${showId}: ${url} is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest.`;
+  }
+  if (reason === 'roundup-page-as-review') {
+    return `${showId}: ${url} is a multi-outlet roundup page filed under the roundup host's own outlet (review-file-writer.js Guard E0), so it was refused. Expected rejection; ingest the quoted critics' own review URLs instead.`;
   }
   if (reason === 'credited-person-as-critic') {
     return `${showId}: ${url} was refused because its byline is a creative team member of this same show${detail ? ` (${detail})` : ''} — the mis-parsed-roundup-row shape validate-data.js errors on. Expected rejection; if this person genuinely reviewed the show, ingest it with scripts/ingest-manual-review.js (operator entries are exempt). If the name is wrong on the SHOW side instead, fix that credit in shows.json.`;

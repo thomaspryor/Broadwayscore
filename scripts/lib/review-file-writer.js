@@ -784,6 +784,24 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
     }
   }
 
+  // --- Guard E0: roundup PAGE ingested as the host outlet's own review → refuse ---
+  // A multi-outlet roundup page (Playbill "what do the critics think of",
+  // WOS/Stage/LBO/WET round-ups, BWW Review-Roundup and /reviews/{slug}) filed
+  // under the roundup host's OWN outletId is not a review: its fullText quotes
+  // other critics and its byline is the compiler. Guards E/E1 used to stamp
+  // isRoundupArticle and write anyway, which left a "complete" file that any
+  // later flag-clear, re-ingest or fast-path rebuild could ship as a review
+  // (other-desert-cities-2026/playbill--meg.json, 2026-10). Refuse the write.
+  // isRoundupPageAsReview is keyed on outletId, so a review merely SOURCED from
+  // a roundup under a different outlet still writes (stamped below if needed),
+  // and it honours a human clear (isRoundupArticle:false / clearedNote) passed in.
+  if (input.url && !laneHolds('roundupUrlSwap')
+      && isRoundupPageAsReview({ ...fields, url: input.url, outletId })) {
+    const why = isRoundupUrl(input.url).reason || 'roundup page';
+    console.warn(`  ⏭️  Refusing roundup page as ${outletId} review for ${showId}: ${input.url} (${why})`);
+    return { action: 'skipped', reason: `roundup-page-as-review: ${why}`, guardRefused: true };
+  }
+
   // --- Guard E: BWW Review-Roundup page detection ---
   // If the URL IS a BWW Review-Roundup page itself (not a review discovered FROM
   // a roundup), auto-flag it. The CI audit (audit-review-contamination.js) catches
