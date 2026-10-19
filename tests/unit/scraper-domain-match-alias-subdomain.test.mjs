@@ -18,7 +18,42 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { domainMatchesExpected, setRegistryDomainAliases } = require('../../scripts/lib/scraper.js');
+const { domainMatchesExpected, setRegistryDomainAliases, verifyFetchedUrl } = require('../../scripts/lib/scraper.js');
+
+describe('domainMatchesExpected primary domain boundaries (BRO-5328)', () => {
+  for (const [expected, actual] of [
+    ['nytimes.com', 'nytimes.com'],
+    ['nytimes.com', 'amp.nytimes.com'],
+    ['amp.nytimes.com', 'nytimes.com'],
+    ['nytimes.com', 'archive.amp.nytimes.com'],
+    ['vulture.com', 'nymag.com'],
+    ['nymag.com', 'vulture.com'],
+    ['variety.com', 'deadline.com'],
+  ]) {
+    test(`preserves legitimate match: ${expected} / ${actual}`, () => {
+      assert.equal(domainMatchesExpected(expected, actual), true);
+    });
+  }
+
+  for (const [expected, actual] of [
+    ['nytimes.com', 'times.com'],
+    ['variety.com', 'myvariety.com.example'],
+    ['nymag.com', 'nymag.com.evil'],
+    ['vulture.com', 'notvulture.com'],
+  ]) {
+    test(`rejects look-alikes in both directions: ${expected} / ${actual}`, () => {
+      assert.equal(domainMatchesExpected(expected, actual), false);
+      assert.equal(domainMatchesExpected(actual, expected), false);
+    });
+
+    test(`rejects a fetched canonical on look-alike host: ${actual}`, () => {
+      const html = `<html><head><link rel="canonical" href="https://${actual}/review"></head></html>`;
+      const result = verifyFetchedUrl(html, `https://${expected}/review`);
+      assert.equal(result.verified, false);
+      assert.equal(result.reason, 'url_mismatch');
+    });
+  }
+});
 
 describe('domainMatchesExpected — registry alias subdomain matching', () => {
   test('matches a subdomain of a registered alias domain (Daily Mail e-edition)', () => {

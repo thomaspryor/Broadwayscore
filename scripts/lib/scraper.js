@@ -276,7 +276,7 @@ function _isSameHostIndexRedirect(expectedUrl) {
 function domainMatchesExpected(expectedDomain, actualDomain) {
   if (actualDomain === expectedDomain) return true;
   // Subdomain match (e.g., amp.nytimes.com vs nytimes.com)
-  if (actualDomain.includes(expectedDomain) || expectedDomain.includes(actualDomain)) return true;
+  if (actualDomain.endsWith('.' + expectedDomain) || expectedDomain.endsWith('.' + actualDomain)) return true;
   // Known alias from DOMAIN_ALIAS_GROUPS (e.g., vulture.com → nymag.com)
   const aliases = DOMAIN_ALIASES.get(expectedDomain);
   if (aliases && aliases.has(actualDomain)) return true;
