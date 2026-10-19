@@ -28,6 +28,7 @@ const {
   hostMatchesOutletDomain,
   hasOutletDomainEscapeHatch,
   explainOutletDomainMismatch,
+  classifyOutletHostMismatch,
 } = require_('./outlet-domain-validation.js');
 
 // ── Pure-function unit tests — injected fixture registry ───────────────────
@@ -105,6 +106,41 @@ describe('hostMatchesOutletDomain', () => {
     assert.equal(hostMatchesOutletDomain('https://vulture.com/x', null, FIXTURE_REGISTRY), null);
     assert.equal(hostMatchesOutletDomain('https://vulture.com/x', 'vulture', null), null);
     assert.equal(hostMatchesOutletDomain('not a url', 'vulture', FIXTURE_REGISTRY), null);
+  });
+});
+
+describe('verified publishing domains missing from the registry (BRO-5547)', () => {
+  const registry = require_('../../data/outlet-registry.json');
+
+  for (const [outletId, domain, url] of [
+    ['marquee', 'marqueebymarquis.com', 'https://marqueebymarquis.com/2026/05/spamalot-musical-at-fox-theater-review/'],
+    ['billboard', 'billboard.com.br', 'https://billboard.com.br/ed-motta-toc-toc-pop-entrevista-2026/'],
+  ]) {
+    test(`${outletId}: verified publisher passes both domain guards`, () => {
+      assert.equal(hostMatchesOutletDomain(url, outletId, registry), true);
+      assert.equal(hostMatchesOutletDomain(`https://www.${domain}/review`, outletId, registry), true);
+      assert.equal(explainOutletDomainMismatch({ outletId, url, source: 'submit-review-form' }, registry), null);
+      assert.equal(classifyOutletHostMismatch({ outletId, url }, registry).reason, 'outlet-owns-host');
+      assert.equal(hostMatchesOutletDomain(`https://${registry.outlets[outletId].domain}/review`, outletId, registry), true);
+    });
+
+    test(`${outletId}: extra domain is scoped to its outlet and exact host`, () => {
+      assert.equal(hostMatchesOutletDomain(url, 'vulture', registry), false);
+      for (const host of [`not${domain}`, `${domain}.example`, `${domain}.au`, 'unrelated.example']) {
+        assert.equal(hostMatchesOutletDomain(`https://${host}/review`, outletId, registry), false, host);
+      }
+      assert.equal(hostMatchesOutletDomain(url, outletId, { outlets: {} }), null);
+    });
+  }
+
+  test('real wrong attributions remain excluded without an escape hatch', () => {
+    for (const [outletId, url] of [
+      ['vulture', 'https://events.newyorkfamily.com/event/the-secret-circus-musical/'],
+      ['whatsonstage', 'https://www.whatsonlive.co.uk/birmingham/news/review-as-you-like-it-at-the-royal-shakespeare-theatre/66308'],
+    ]) {
+      assert.equal(hostMatchesOutletDomain(url, outletId, registry), false);
+      assert.ok(explainOutletDomainMismatch({ outletId, url, source: 'submit-review-form' }, registry));
+    }
   });
 });
 

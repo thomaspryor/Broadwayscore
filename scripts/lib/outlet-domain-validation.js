@@ -56,6 +56,17 @@ const { WIRE_SERVICE_OUTLETS, normalizeOutlet, resolveOutletFromUrl } = require(
 // is automatically safe to add.
 const VALIDATED_INGEST_SOURCES = new Set(['submit-review-form']);
 
+// Verified publishing domains missing from the private registry (BRO-5547).
+// Marquee Reviews identifies itself and Cate Marquis at
+// https://marqueebymarquis.com/about-us/ (the registry only lists marquee.tv).
+// Billboard's Brazilian edition: https://billboard.com.br/sobre-billboard-brasil/
+// These supplement a registered outlet's domains; they do not exempt a review
+// from validation or allow arbitrary country-code variants of a domain.
+const ADDITIONAL_OUTLET_DOMAINS = new Map([
+  ['marquee', ['marqueebymarquis.com']],
+  ['billboard', ['billboard.com.br']],
+]);
+
 function normalizeHost(host) {
   return String(host || '').toLowerCase().replace(/^www\./, '');
 }
@@ -131,7 +142,7 @@ function hostMatchesOutletDomain(url, outletId, registry) {
     : normalizeOutlet(outletId);
   const outlet = registry.outlets && registry.outlets[canonicalId];
   if (!outlet) return null;
-  const domains = getOutletDomains(outlet);
+  const domains = [...getOutletDomains(outlet), ...(ADDITIONAL_OUTLET_DOMAINS.get(canonicalId) || [])];
   if (domains.length === 0) return null;
   const host = extractHost(url);
   if (!host) return null;
@@ -249,7 +260,7 @@ function classifyOutletHostMismatch({ outletId, url } = {}, registry) {
   out.outletId = canonicalId;
   out.outletTier = outlet.tier || 3;
   if (WIRE_SERVICE_OUTLETS.has(canonicalId)) return { ...out, reason: 'wire-service' };
-  if (getOutletDomains(outlet).some((d) => hostMatchesDomain(host, d))) return { ...out, reason: 'outlet-owns-host' };
+  if (hostMatchesOutletDomain(url, canonicalId, registry) === true) return { ...out, reason: 'outlet-owns-host' };
   const resolved = resolveOutletFromUrl(url);
   const hostOutletId = resolved && resolved.outletId ? String(resolved.outletId) : null;
   if (!hostOutletId) return { ...out, reason: 'host-not-registered' };
