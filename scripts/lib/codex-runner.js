@@ -757,6 +757,8 @@ const PR_LANDER_MARKER = '<!-- codex-pr-lander -->';
 const PR_LANDER_ERROR_TEXT = 'The automatic check hit an error of its own';
 // The first comment a run posts, edited into the verdict when the run ends (one comment per head).
 const PR_LANDER_STARTED_TEXT = 'Claude is checking this now';
+// A --no-land run's pass: not a verdict either, so a real run still lands it.
+const PR_LANDER_NOT_LANDED_TEXT = 'this run was set not to land anything';
 const PR_LANDER_HEADS = {
   started: ({ minutes }) => `${PR_LANDER_STARTED_TEXT}. ${minutes ? `It usually takes about ${minutes} minutes` : 'It usually takes 30 to 60 minutes'} to a result, and the result will replace this message.`,
   landed: ({ mainSha, site = true }) => {
@@ -770,6 +772,8 @@ const PR_LANDER_HEADS = {
   blocked: () => 'Not live: this change touches something the automatic lane never lands on its own (details below), so it stays open, unlanded.',
   refused: () => 'Not live: it passed the Claude check, but the final landing checks refused it (details below). Ask Codex to fix what they name and press "Update PR"; the check runs again on its own.',
   error: () => `Not live: ${PR_LANDER_ERROR_TEXT}, so this change was not judged (details below). Pressing "Update PR" with a change, or closing and reopening this pull request, tries again.`,
+  notLanded: () => `Not live: it passed the Claude check, but ${PR_LANDER_NOT_LANDED_TEXT} (a test run), so it stays open. Closing and reopening this pull request checks and lands it for real.`,
+  superseded: () => 'Not judged: a newer push replaced this version while it waited. The newer version gets its own comment.',
   unknownAuthor: () => 'Not checked: this looks like a Codex pull request, but it was opened by an account the automatic lane does not know (details below), so it was left alone.',
 };
 /**
@@ -785,10 +789,10 @@ function prLanderComment({ outcome, sha, mainSha, minutes, site, remaining = [],
   return `${PR_LANDER_MARKER}\n**Codex lander${short ? ` (${short})` : ''}:** ${head}${left}${more}`;
 }
 
-/** Has head `short` had a verdict? A started or errored-out comment is not one, so a re-run judges. */
+/** Has head `short` had a verdict? A started, errored-out or --no-land comment is not one, so a re-run judges. */
 function prLanderJudged(bodies, short) {
   return String(bodies || '').split(PR_LANDER_MARKER).some((b) => b.startsWith(`\n**Codex lander (${short})`)
-    && !b.includes(PR_LANDER_ERROR_TEXT) && !b.includes(PR_LANDER_STARTED_TEXT));
+    && ![PR_LANDER_ERROR_TEXT, PR_LANDER_STARTED_TEXT, PR_LANDER_NOT_LANDED_TEXT].some((t) => b.includes(t)));
 }
 
 /**

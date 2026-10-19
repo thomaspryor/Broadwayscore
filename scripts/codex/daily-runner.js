@@ -1376,8 +1376,10 @@ async function runPr(n) {
     const body = R.redactSecrets(R.prLanderComment({ outcome, sha, ...extra }), process.env);
     log(`PR #${n} ${String(sha).slice(0, 7)}: ${outcome}`);
     if (OPTS.dryRun) { log(body); return; }
-    const path = statusId ? `repos/${repo}/issues/comments/${statusId}` : `repos/${repo}/issues/${n}/comments`;
-    const c = gh(['api', '-X', statusId ? 'PATCH' : 'POST', path, '--input', '-', '--jq', '.id'], JSON.stringify({ body }));
+    const post = (id) => gh(['api', '-X', id ? 'PATCH' : 'POST', id ? `repos/${repo}/issues/comments/${id}` : `repos/${repo}/issues/${n}/comments`, '--input', '-', '--jq', '.id'], JSON.stringify({ body }));
+    let c = post(statusId);
+    // The started comment is gone (deleted, or the edit failed): the verdict goes in a new one.
+    if (c.code !== 0 && statusId) { log(`PR #${n}: comment edit failed (${tail(c.out, 300)}); posting a new one`); statusId = ''; c = post(''); }
     if (c.code !== 0) { log(`PR #${n}: comment failed (${tail(c.out, 300)})`); return; }
     if (outcome === 'started') statusId = c.stdout.trim();
   };
@@ -1400,9 +1402,6 @@ async function runPr(n) {
   let minutes = null;
   try { if (runs.code === 0) minutes = R.typicalLanderMinutes(JSON.parse(runs.stdout)); } catch { /* the plain range */ }
   say('started', { minutes });
-  ensureTools({ codex: false });
-  pruneDisk();
-  setupWorktree();
   const card = { identifier: `PR-${n}`, title: String(pr.title || `Codex PR #${n}`) };
   const ref = `land/codex-pr-${n}`;
   function landedOnMain() {
@@ -1414,10 +1413,12 @@ async function runPr(n) {
     say('landed', { mainSha: landedOnMain(), site, remaining });
     if (OPTS.dryRun) return;
     // Codex pushed again while this landed: leave the PR and branch to the newer push's run.
-    const now = gh(['api', `repos/${repo}/pulls/${n}`, '--jq', '.head.sha']);
-    if (now.code !== 0 || now.stdout.trim() !== sha) { log(`PR #${n}: head moved during the landing; left open for the newer push`); return; }
-    // A closed PR reads as a rejection in GitHub and Codex; the title says it landed.
-    const title = gh(['api', '-X', 'PATCH', `repos/${repo}/pulls/${n}`, '-f', `title=${R.prLanderTitle(pr.title, 'Landed')}`, '--jq', '.title']);
+    const now = gh(['api', `repos/${repo}/pulls/${n}`]);
+    let cur = null;
+    try { cur = now.code === 0 ? JSON.parse(now.stdout) : null; } catch { /* unreadable reads as moved */ }
+    if (!cur || !cur.head || cur.head.sha !== sha) { log(`PR #${n}: head moved during the landing; left open for the newer push`); return; }
+    // A closed PR reads as a rejection in GitHub and Codex; the title (as it is now) says it landed.
+    const title = gh(['api', '-X', 'PATCH', `repos/${repo}/pulls/${n}`, '-f', `title=${R.prLanderTitle(cur.title || pr.title, 'Landed')}`, '--jq', '.title']);
     if (title.code !== 0) log(`PR #${n}: title not updated (${tail(title.out, 300)})`);
     const close = gh(['pr', 'close', String(n), '--repo', repo]);
     if (close.code !== 0) log(`PR #${n}: close failed (${tail(close.out, 300)})`);
@@ -1425,9 +1426,13 @@ async function runPr(n) {
     try { git(['push', '--no-verify', `--force-with-lease=refs/heads/${pr.head.ref}:${sha}`, 'origin', `:refs/heads/${pr.head.ref}`]); } catch (e) { log(`PR #${n}: branch not deleted (${e.message.split('\n')[0]})`); }
   }
   try {
+    // Inside the try: a setup throw still turns the started comment into an error verdict.
+    ensureTools({ codex: false });
+    pruneDisk();
+    setupWorktree();
     const data = resetWorktree(`codex-pr-${n}`);
     git(['fetch', 'origin', `+refs/pull/${n}/head:refs/remotes/origin/codex-pr/${n}`]);
-    if (git(['rev-parse', `refs/remotes/origin/codex-pr/${n}`]) !== sha) { log(`PR #${n}: fetched head is not ${short}; a newer push's run handles it`); return; }
+    if (git(['rev-parse', `refs/remotes/origin/codex-pr/${n}`]) !== sha) { log(`PR #${n}: fetched head is not ${short}; a newer push's run handles it`); say('superseded'); return; }
     // The PR's commits squashed onto fresh main: land rebases anyway, and one commit is what reaches main.
     const merge = sh('git', ['merge', '--squash', '--no-commit', `refs/remotes/origin/codex-pr/${n}`], { cwd: WT });
     if (merge.code !== 0) { git(['reset', '-q', '--hard', cardBase]); say('conflict', { details: tail(merge.out, 1500) }); return; }
@@ -1449,7 +1454,7 @@ async function runPr(n) {
     if (check.verdict === 'NONE') { say('error', { details: check.text }); return; }
     if (check.verdict !== 'SHIP') { say('rejected', { details: `Verdict ${check.verdict}.\n\n${check.text}` }); return; }
     const remaining = R.parseRemaining(check.text);
-    if (!OPTS.land) { log(`PR #${n}: passed, not landed (--no-land)`); return; }
+    if (!OPTS.land) { say('notLanded', { remaining }); return; }
     const pre = await landPreflight(ref);
     if (pre.decision === 'block') { say('refused', { details: `Land preflight: ${pre.message}` }); return; }
     // Same push as a card landing (see workCard): --no-verify, --force over an earlier attempt's ref.

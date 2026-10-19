@@ -955,6 +955,10 @@ test('Codex PR lander: started comment, verdict detection, typical time, title, 
   assert.equal(r.prLanderJudged(c('started') + c('rejected'), 'abcdef1'), true);
   assert.equal(r.prLanderJudged(c('landed'), '1111111'), false);
   assert.equal(r.prLanderJudged('', 'abcdef1'), false);
+  // A --no-land pass is not a verdict (a real run still lands it); superseded is final for that head.
+  assert.equal(r.prLanderJudged(c('notLanded'), 'abcdef1'), false);
+  assert.match(c('notLanded'), /Not live: it passed the Claude check/);
+  assert.equal(r.prLanderJudged(c('superseded'), 'abcdef1'), true);
   const run = (min, conclusion = 'success') => ({ status: 'completed', conclusion, run_started_at: '2026-10-19T02:00:00Z', updated_at: new Date(Date.parse('2026-10-19T02:00:00Z') + min * 60000).toISOString() });
   assert.equal(r.typicalLanderMinutes([run(31), run(42), run(0), run(1), run(29, 'failure'), run(44)]), 45);
   assert.equal(r.typicalLanderMinutes([run(20), run(30), run(40), run(50)]), 35);
@@ -970,6 +974,10 @@ test('Codex PR lander: started comment, verdict detection, typical time, title, 
   // The runner posts the started comment once and edits it into the verdict, then titles a landing.
   const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
   assert.match(src, /say\('started', \{ minutes \}\)/);
-  assert.match(src, /statusId \? 'PATCH' : 'POST'/);
-  assert.match(src, /R\.prLanderTitle\(pr\.title, 'Landed'\)/);
+  assert.match(src, /id \? 'PATCH' : 'POST'/);
+  // A failed edit of the started comment still leaves a verdict: it posts a new one.
+  assert.match(src, /statusId = ''; c = post\(''\)/);
+  assert.match(src, /say\('notLanded'/);
+  assert.match(src, /say\('superseded'\)/);
+  assert.match(src, /R\.prLanderTitle\(cur\.title \|\| pr\.title, 'Landed'\)/);
 });
