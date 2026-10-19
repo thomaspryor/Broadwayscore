@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-19T08:14:36.255Z",
+  "generated": "2026-10-19T08:56:08.856Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 37,
+  "count": 34,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -214,13 +214,6 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "the-unknown-off-broadway-2026",
-      "loserFile": "nytimes--helen-shaw.json",
-      "targetFile": "nytimes--alexis-soloski.json",
-      "reason": "orphaned-duplicate-heal: nytimes--alexis-soloski.json was flagged invalid after nytimes--helen-shaw.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "torch-song-2018",
       "loserFile": "variety--matt-windman.json",
       "targetFile": "variety--marilyn-stasio.json",
@@ -247,20 +240,6 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "appropriate-2023",
-      "loserFile": "hollywood-reporter--lovia-gyarkye.json",
-      "targetFile": "hollywood-reporter--angie-han.json",
-      "reason": "orphaned-duplicate-heal: hollywood-reporter--angie-han.json was flagged invalid after hollywood-reporter--lovia-gyarkye.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
-    },
-    {
-      "showId": "the-unknown-off-broadway-2026",
-      "loserFile": "nytimes--helen-shaw.json",
-      "targetFile": "nytimes--alexis-soloski.json",
-      "reason": "orphaned-duplicate-heal: nytimes--alexis-soloski.json was flagged invalid after nytimes--helen-shaw.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }
