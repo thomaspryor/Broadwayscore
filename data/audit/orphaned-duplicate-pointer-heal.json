@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-19T01:11:05.380Z",
+  "generated": "2026-10-19T01:34:18.828Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 36,
+  "count": 34,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -43,13 +43,6 @@
       "loserFile": "ap--unknown.json",
       "targetFile": "ap--mark-kennedy.json",
       "reason": "orphaned-duplicate-heal: ap--mark-kennedy.json was flagged invalid after ap--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "chinglish-2011",
-      "loserFile": "theatermania--david-finkle.json",
-      "targetFile": "theatermania--dan-bacalzo.json",
-      "reason": "orphaned-duplicate-heal: theatermania--dan-bacalzo.json was flagged invalid after theatermania--david-finkle.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -120,13 +113,6 @@
       "loserFile": "variety--frank-rizzo.json",
       "targetFile": "variety--maya-phillips.json",
       "reason": "orphaned-duplicate-heal: variety--maya-phillips.json was flagged invalid after variety--frank-rizzo.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "mrs-warrens-profession-2010",
-      "loserFile": "nytimes--ben-brantley.json",
-      "targetFile": "about-entertainment--ben-brantley.json",
-      "reason": "orphaned-duplicate-heal: about-entertainment--ben-brantley.json was flagged invalid after nytimes--ben-brantley.json was pointed at it",
       "field": "duplicateOf"
     },
     {
