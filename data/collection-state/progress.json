@@ -1,0 +1,61 @@
+{
+  "processed": [
+    "lincoln-in-the-bardo-off-broadway-2026/wisemusicclassical--unknown.json"
+  ],
+  "failed": [
+    "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json",
+    "lincoln-in-the-bardo-off-broadway-2026/hotelbelleclaire--unknown.json"
+  ],
+  "skipped": [],
+  "tierBreakdown": {
+    "playwright": [],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingdog": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": [
+      "lincoln-in-the-bardo-off-broadway-2026/wisemusicclassical--unknown.json"
+    ]
+  },
+  "startTime": "2026-10-19T15:56:21.297Z",
+  "lastProcessed": "lincoln-in-the-bardo-off-broadway-2026/wisemusicclassical--unknown.json",
+  "log": [
+    {
+      "t": "2026-10-19T15:56:38.064Z",
+      "event": "bb-session",
+      "session": "b06c142f",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-19T15:56:38.816Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-19T15:56:55.794Z",
+      "event": "bb-session",
+      "session": "3a592c32",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-19T15:56:56.427Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-19T15:58:12.964Z",
+      "event": "bb-session",
+      "session": "31256e56",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-19T15:58:20.832Z",
+      "event": "bb-session",
+      "session": "93d4f579",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    }
+  ]
+}
