@@ -31,6 +31,7 @@ const np = rows.filter((r) => isSeason(r) && r.gaps.includes('nonprofit-check'))
 const cm = rows.filter((r) => isSeason(r) && !SKIP.has(r.slug) && !r.gaps.includes('nonprofit-check') && r.gaps.some((g) => g !== 'nonprofit-check'));
 const groups = [
   { id: 'p5', group: 'first', kind: 'commercial', title: '2024-25 season: budgets, costs and results', why: 'Last season: budgets the SEC filings did not cover, weekly costs, and closed shows that never said whether investors got paid back.', pick: (r) => yr(r) === 2024 },
+  { id: 'p5b', group: 'first', kind: 'commercial', title: '2025-26 season and later: budgets, costs and results', why: 'This season and the next: the same gaps, for the shows a reporter will look at first.', pick: (r) => yr(r) >= 2025 },
   { id: 'p6', group: 'first', kind: 'commercial', title: '2023-24 season: budgets, costs and results', why: 'Two seasons back: the same three gaps.', pick: (r) => yr(r) === 2023 },
   { id: 'p4', group: 'first', kind: 'nonprofit', title: 'Nonprofit shows, 2023-24 and 2024-25', why: 'Which of these nonprofit productions had commercial investors or switched to a commercial run.', pick: (r) => yr(r) === 2023 || yr(r) === 2024 },
   { id: 'p7', group: 'later', kind: 'commercial', title: '2022-23 season: budgets, costs and results', why: 'Shows from three seasons back whose budgets, weekly costs or final results we are missing.', pick: (r) => yr(r) === 2022 },
