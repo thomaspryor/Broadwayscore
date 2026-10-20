@@ -28,6 +28,39 @@ test('findExactDuplicate does NOT collapse two unrelated venues sharing a leadin
   assert.equal(dup, null);
 });
 
+test('historical discovery keeps distinct full venue names with a shared legacy key (BRO-4308)', () => {
+  const pairs = [
+    ['St. James Theatre', "St. Luke's Theatre"],
+    ["St. Ann's Warehouse", "St. Martin's Theatre"],
+    ['The Griffin Theater at The Shed', 'The Theater Center'],
+    ['The Second City Blackbox', 'The Public Theater'],
+    ['New Amsterdam Theatre', 'New York City Center'],
+    ['New World Stages', 'New Victory Theater'],
+    ['Lyric Theatre', 'Lyric Hammersmith'],
+    ['The Old Vic', 'The Players Theatre'],
+  ];
+  for (const [existingVenue, candidateVenue] of pairs) {
+    const pool = buildVenueTitlePool([{ title: 'A Christmas Carol', venue: existingVenue }]);
+    assert.equal(findExactDuplicate(pool, 'A Christmas Carol', candidateVenue), null,
+      `${existingVenue} must stay distinct from ${candidateVenue}`);
+    assert.ok(findExactDuplicate(pool, 'A Christmas Carol', existingVenue));
+  }
+});
+
+test('historical discovery venue labels retain aliases and separate Atlantic Stage 2 (BRO-4308)', () => {
+  const rows = [
+    { title: 'Lowcountry', venue: 'Linda Gross Theater', label: 'Atlantic Theater' },
+    { title: 'A Show', venue: 'Vineyard Theater', label: 'Vineyard Theatre' },
+    { title: 'Table 17', venue: 'MCC Theater (Susan & Ronald Frankel Theater)', label: 'MCC Theater' },
+  ];
+  for (const { title, venue, label } of rows) {
+    assert.ok(findExactDuplicate(buildVenueTitlePool([{ title, venue }]), title, label),
+      `${label} must still recognize ${venue}`);
+  }
+  const stage2 = buildVenueTitlePool([{ title: 'Lowcountry', venue: 'Atlantic Stage 2' }]);
+  assert.equal(findExactDuplicate(stage2, 'Lowcountry', 'Atlantic Theater'), null);
+});
+
 test('findExactDuplicate finds a genuine same-title same-venue duplicate', () => {
   const pool = buildVenueTitlePool([
     { title: 'The Full Monty', venue: 'Prince Edward Theatre' },
