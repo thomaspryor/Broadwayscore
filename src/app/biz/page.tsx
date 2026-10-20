@@ -78,9 +78,9 @@ function generateRecentDevelopments(): DevelopmentItem[] {
         type: 'recouped',
         showTitle: show.title,
         showSlug: show.slug,
-        // No week count for a year-only recoupment date or one after closing (calculateWeeksToRecoup → null).
+        // No week count for a year-only recoupment date or one reported after closing (calculateWeeksToRecoup → null).
         description: show.weeksToRecoup === null
-          ? (show.afterClosing ? 'recouped after closing' : 'recouped')
+          ? (show.reportedAfterClosing ? 'recouped, reported after closing' : 'recouped')
           : `recouped about ${show.weeksToRecoup} weeks after ${show.fromCommercialRun ? 'its commercial run began' : 'opening'}`,
       },
     });

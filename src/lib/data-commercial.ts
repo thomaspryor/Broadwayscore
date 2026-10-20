@@ -23,7 +23,7 @@ import { getDesignationSortOrder, DESIGNATION_MAP } from '@/config/commercial';
 import { getShowGrosses, getGrossesWeekEnding } from './data-grosses';
 import {
   calculateWeeksToRecoup,
-  recoupedAfterClosing,
+  recoupReportedAfterClosing,
   computeGrossTrend,
   trailingAverageGross,
   summarizeCapital,
@@ -592,8 +592,9 @@ export function getShowsAtRisk(): AtRiskShow[] {
 /**
  * Get shows that recouped within the specified number of months.
  * weeksToRecoup is null when only the recoupment year is known, or the show
- * recouped after its run closed (afterClosing); those rows stay listed, the
- * table says "After closing" for the latter and leaves the former blank.
+ * the recoupment was reported after its run closed (reportedAfterClosing); those
+ * rows stay listed, the table says "Reported after closing" for the latter and
+ * leaves the former blank.
  * A recoupment that was never announced is not news and has no reliable date,
  * so it is left out (isUnannouncedRecoupment).
  */
@@ -618,7 +619,7 @@ export function getRecentRecoupments(months: number = 24): RecentRecoupmentShow[
       season: getSeason(show.openingDate) || 'Unknown',
       weeksToRecoup: calculateWeeksToRecoup(recoupClockStart(data, show.openingDate), data.recoupedDate, show.closingDate),
       fromCommercialRun: isConvertedToCommercial(data),
-      afterClosing: recoupedAfterClosing(data.recoupedDate, show.closingDate),
+      reportedAfterClosing: recoupReportedAfterClosing(data.recoupedDate, show.closingDate),
       capitalization: data.capitalization ?? null,
       capitalizationIsEstimate: isEstimatedCapitalization(data),
       capitalizationIsMaximum: isMaximumCapitalization(data),
@@ -753,7 +754,7 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
     recouped: data.recouped,
     recoupmentNotAnnounced: isUnannouncedRecoupment(data),
     recoupedWeeks: calculateWeeksToRecoup(recoupClockStart(data, show.openingDate), data.recoupedDate, show.closingDate),
-    recoupedAfterClosing: recoupedAfterClosing(data.recoupedDate, show.closingDate),
+    recoupReportedAfterClosing: recoupReportedAfterClosing(data.recoupedDate, show.closingDate),
     lossCaveat: lossBasisCaveat(data),
     likelyOutcome: data.likelyOutcome ?? null,
     likelyOutcomeBasis: data.likelyOutcome ? (data.likelyOutcomeBasis ?? 'model') : null,

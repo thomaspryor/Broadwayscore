@@ -16,7 +16,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   calculateWeeksToRecoup,
-  recoupedAfterClosing,
+  recoupReportedAfterClosing,
   trailingAverageGross,
   computeGrossTrend,
   summarizeCapital,
@@ -34,34 +34,34 @@ import type { ShowCommercial } from '../../src/lib/data-types';
 
 const NOW = new Date(2026, 9, 4); // 2026-10-04 local
 
-// ── recoupedAfterClosing: why a recouped show can have no week count ────────
-test('recoupedAfterClosing: Purpose (closed Aug 2025, recouped Jun 2026) and Kimberly Akimbo', () => {
-  assert.equal(recoupedAfterClosing('2026-06', '2025-08-31'), true);
-  assert.equal(recoupedAfterClosing('2026-04', '2024-04-28'), true);
+// ── recoupReportedAfterClosing: why a recouped show can have no week count ────────
+test('recoupReportedAfterClosing: Purpose (closed Aug 2025, reported Jun 2026) and Kimberly Akimbo (reported Apr 2026)', () => {
+  assert.equal(recoupReportedAfterClosing('2026-06', '2025-08-31'), true);
+  assert.equal(recoupReportedAfterClosing('2026-04', '2024-04-28'), true);
 });
-test('recoupedAfterClosing: recouped in or before the closing month is not after closing', () => {
-  assert.equal(recoupedAfterClosing('2024-04', '2024-04-28'), false);
-  assert.equal(recoupedAfterClosing('2024-03', '2024-04-28'), false);
+test('recoupReportedAfterClosing: reported in or before the closing month is not after closing', () => {
+  assert.equal(recoupReportedAfterClosing('2024-04', '2024-04-28'), false);
+  assert.equal(recoupReportedAfterClosing('2024-03', '2024-04-28'), false);
 });
-test('recoupedAfterClosing: year-only, missing or open-run dates are false', () => {
-  assert.equal(recoupedAfterClosing('2026', '2025-08-31'), false);
-  assert.equal(recoupedAfterClosing('2026-06', null), false);
-  assert.equal(recoupedAfterClosing(null, '2025-08-31'), false);
+test('recoupReportedAfterClosing: year-only, missing or open-run dates are false', () => {
+  assert.equal(recoupReportedAfterClosing('2026', '2025-08-31'), false);
+  assert.equal(recoupReportedAfterClosing('2026-06', null), false);
+  assert.equal(recoupReportedAfterClosing(null, '2025-08-31'), false);
 });
-test('recoupedAfterClosing: a show closing on the 1st does not depend on the build timezone', () => {
+test('recoupReportedAfterClosing: a show closing on the 1st does not depend on the build timezone', () => {
   const prev = process.env.TZ;
   try {
     for (const tz of ['America/New_York', 'UTC', 'Pacific/Kiritimati']) {
       process.env.TZ = tz;
-      assert.equal(recoupedAfterClosing('2024-05', '2024-05-01'), false, tz);
-      assert.equal(recoupedAfterClosing('2024-06', '2024-05-01'), true, tz);
+      assert.equal(recoupReportedAfterClosing('2024-05', '2024-05-01'), false, tz);
+      assert.equal(recoupReportedAfterClosing('2024-06', '2024-05-01'), true, tz);
       assert.notEqual(calculateWeeksToRecoup('2023-11-01', '2024-05', '2024-05-01', NOW), null, tz);
     }
   } finally {
     if (prev === undefined) delete process.env.TZ; else process.env.TZ = prev;
   }
 });
-test('recoupedAfterClosing agrees with calculateWeeksToRecoup returning null', () => {
+test('recoupReportedAfterClosing agrees with calculateWeeksToRecoup returning null', () => {
   assert.equal(calculateWeeksToRecoup('2025-03-17', '2026-06', '2025-08-31', NOW), null);
 });
 

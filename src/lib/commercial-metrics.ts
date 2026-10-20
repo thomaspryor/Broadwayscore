@@ -23,9 +23,9 @@ function parseIsoDay(date: string | null | undefined): Date | null {
  *  - "YYYY" only: null. A year alone cannot place the date within ~52 weeks
  *    (Dec 31 made Lion King "~111 weeks" and Ragtime "~63 weeks").
  *  - null when the recoupment month starts after the closing date
- *    (recoupedAfterClosing: the show paid back after its run, so weeks from
- *    opening do not apply) or after today (a data error, not a number to
- *    publish), or precedes opening.
+ *    (recoupReportedAfterClosing: the report month is the only date known and
+ *    it falls after the run ended, so weeks from opening cannot be measured) or
+ *    after today (a data error, not a number to publish), or precedes opening.
  */
 export function calculateWeeksToRecoup(
   openingDate: string | null | undefined,
@@ -45,7 +45,7 @@ export function calculateWeeksToRecoup(
   const monthStart = new Date(year, monthIdx, 1);
   const close = parseIsoDay(closingDate);
   if (monthStart.getTime() > now.getTime()) return null;
-  if (recoupedAfterClosing(recoupedDate, closingDate)) return null;
+  if (recoupReportedAfterClosing(recoupedDate, closingDate)) return null;
 
   let recoup = new Date(year, monthIdx, 15);
   if (recoup.getTime() > now.getTime()) recoup = now;
@@ -57,13 +57,16 @@ export function calculateWeeksToRecoup(
 }
 
 /**
- * True when the reported recoupment month starts after the closing date: the
- * show paid back from operating profit, tax credits, a tour or licensing after
- * the Broadway run ended (Purpose, Kimberly Akimbo). Weeks from opening is
- * meaningless there, so calculateWeeksToRecoup returns null and the table says
- * "After closing" instead of a bare dash. Year-only dates are not placed.
+ * True when the reported recoupment month starts after the closing date.
+ * recoupedDate is when the recoupment was REPORTED, which is not always when it
+ * happened: only some sources say it came after closing (Purpose: "about nine
+ * months after closing"); others just announce it later (Kimberly Akimbo,
+ * Playbill Apr 2026: "have now recouped"). So this claims only "reported after
+ * closing". Weeks from opening cannot be measured from a report month past the
+ * run, so calculateWeeksToRecoup returns null and the tables say "Reported
+ * after closing" instead of a bare dash. Year-only dates are not placed.
  */
-export function recoupedAfterClosing(
+export function recoupReportedAfterClosing(
   recoupedDate: string | null | undefined,
   closingDate: string | null | undefined,
 ): boolean {
