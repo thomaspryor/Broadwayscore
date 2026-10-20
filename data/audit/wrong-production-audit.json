@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-20T01:50:53.969Z",
+  "timestamp": "2026-10-20T02:28:20.638Z",
   "stats": {
     "totalReviews": 57848,
     "alreadyFlagged": 21089,
     "dateGuardCatches": 198,
     "directorMismatch": 2027,
     "tvFilmSignals": 1647,
-    "londonSignals": 2551,
+    "londonSignals": 2552,
     "offBroadwaySignals": 530,
     "yearMismatch": 161,
-    "noPublishDate": 5204
+    "noPublishDate": 5203
   },
   "findings": [
     {
@@ -76109,6 +76109,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "opening-night-west-end-2024",
+      "file": "telegraph--tim-robey.json",
+      "score": null,
+      "publishDate": "2024-03-22",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/john-cassavetes-gena-rowland-opening-night-sheridan-smith/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
