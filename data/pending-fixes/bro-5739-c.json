@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5739-c",
   "planId": "8560c688-a549-4dae-9af2-fdbc9b522e4f",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -75,5 +75,29 @@
         "description": "three-and-a-bit-off-west-end-2027: mark noReliableArt so the image sweep does not re-attach it (BRO-5739)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-20T12:57:49.169Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-lives-of-others-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for the-lives-of-others-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for three-and-a-bit-off-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for three-and-a-bit-off-west-end-2027"
+    }
+  ],
+  "executedIn": "ci"
 }
