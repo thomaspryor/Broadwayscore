@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-10-19T16:15:20.182Z",
+  "generatedAt": "2026-10-20T14:09:37.233Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-10-19T16:01:00.859Z",
+    "reviewsJsonLastUpdated": "2026-10-20T13:59:39.745Z",
     "reviewsJsonAgeHours": 0.2,
     "freshnessBreach": false,
-    "showsScanned": 35,
-    "allShowsScanned": 2641,
-    "filesScanned": 57695,
+    "showsScanned": 33,
+    "allShowsScanned": 2643,
+    "filesScanned": 57866,
     "showsOverThreshold": 0,
     "newOffenders": 1,
     "blindShows": 26,
@@ -70,8 +70,8 @@
   "perShow": [
     {
       "showDir": "angels-bone-west-end-2026",
-      "actual": 10,
-      "scanned": 12,
+      "actual": 16,
+      "scanned": 22,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -87,15 +87,23 @@
     {
       "showDir": "baby-off-west-end-2026",
       "actual": 11,
-      "scanned": 30,
+      "scanned": 32,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "cadel-lungs-on-legs-west-end-2026",
-      "actual": 11,
-      "scanned": 22,
+      "actual": 13,
+      "scanned": 25,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "copperfield-the-new-musical-off-broadway-2026",
+      "actual": 3,
+      "scanned": 5,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -110,8 +118,8 @@
     },
     {
       "showDir": "dog-mom-off-west-end-2026",
-      "actual": 13,
-      "scanned": 18,
+      "actual": 16,
+      "scanned": 22,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -119,7 +127,7 @@
     {
       "showDir": "ilford-boy-west-end-2026",
       "actual": 1,
-      "scanned": 1,
+      "scanned": 5,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -130,6 +138,22 @@
       "scanned": 21,
       "suppressedCount": 0,
       "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "king-of-the-yees-off-broadway-2026",
+      "actual": 6,
+      "scanned": 11,
+      "suppressedCount": 1,
+      "suppressed": [
+        {
+          "file": "culturesauce--thom-geier.json",
+          "outletId": "culturesauce",
+          "criticName": "Thom Geier",
+          "publishDate": "2026-10-19",
+          "url": "https://culturesauce.com/king-of-the-yees-off-broadway-review/"
+        }
+      ],
       "overThreshold": false
     },
     {
@@ -166,24 +190,32 @@
     },
     {
       "showDir": "other-desert-cities-2026",
-      "actual": 27,
-      "scanned": 36,
-      "suppressedCount": 0,
-      "suppressed": [],
+      "actual": 30,
+      "scanned": 45,
+      "suppressedCount": 1,
+      "suppressed": [
+        {
+          "file": "cititour--unknown.json",
+          "outletId": "cititour",
+          "criticName": "Unknown",
+          "publishDate": "2026-10-19",
+          "url": "https://cititour.com/NYC_News/Is-It-Worth-Traveling-to-Other-Desert-Cities/11129"
+        }
+      ],
       "overThreshold": false
     },
     {
       "showDir": "school-pictures-off-broadway-2026",
       "actual": 6,
-      "scanned": 4,
+      "scanned": 6,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "some-woman-west-end-2026",
-      "actual": 21,
-      "scanned": 36,
+      "actual": 25,
+      "scanned": 40,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -205,22 +237,6 @@
       "overThreshold": false
     },
     {
-      "showDir": "the-ask-off-broadway-2026",
-      "actual": 4,
-      "scanned": 6,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
-      "actual": 14,
-      "scanned": 23,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
       "showDir": "the-bodyguard-tour-2026",
       "actual": 2,
       "scanned": 22,
@@ -229,16 +245,32 @@
       "overThreshold": false
     },
     {
-      "showDir": "the-cherry-orchard-west-end-2026",
-      "actual": 41,
-      "scanned": 86,
+      "showDir": "the-dog-show-come-sit-stay-off-broadway-2026",
+      "actual": 1,
+      "scanned": 5,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-pianist-off-west-end-2026",
+      "actual": 1,
+      "scanned": 5,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "triumph-off-west-end-2026",
-      "actual": 6,
+      "actual": 16,
+      "scanned": 27,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "two-girls-off-broadway-2026",
+      "actual": 3,
       "scanned": 12,
       "suppressedCount": 0,
       "suppressed": [],
