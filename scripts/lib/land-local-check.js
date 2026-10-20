@@ -16,8 +16,8 @@
  * (codex-runner.js CONTAINER_LAND_MUTEX): two at once on a 4-core container time tests out.
  *
  * Usage: node scripts/lib/land-local-check.js [--gates a,b] [--all] [--max-wait-minutes N]
- *   --gates  comma list (default: unit-tests-node,scripts-lib-tests,lint-workflows, the gates
- *            behind the refusals and the ones the Codex runner checks)
+ *   --gates  comma list (default: every gate land.yml blocks on, less LOCAL_SKIPPED_GATES;
+ *            BRO-5771's land was refused on unit-tests-tsx, then not a default)
  *   --all    every gauntlet gate (land-gate-delta.js GATES)
  *   --max-wait-minutes  give up waiting for the mutex after N min (default 20): exit 4 with a
  *            warning, so a worker is never stranded behind another check
@@ -31,9 +31,20 @@ const os = require('os');
 const path = require('path');
 const { spawnSync } = require('child_process');
 const R = require('./codex-runner.js');
-const { GATES } = require('./land-gate-delta.js');
+const { GATES, ADVISORY_GATES } = require('./land-gate-delta.js');
 
-const DEFAULT_GATES = ['unit-tests-node', 'scripts-lib-tests', 'lint-workflows'];
+// Blocking gates left out of the default run, each with its reason. Every other gate land.yml
+// blocks on runs by default, so a new blocking gate is checked locally the day it is armed
+// (land-local-check.test.mjs fails if a blocking gate is in neither list).
+const LOCAL_SKIPPED_GATES = {
+  'bash-integration': 'slow shell suites; rarely behind a refusal (run with --all)',
+  'toplevel-regression': 'slow top-level regression scripts (run with --all)',
+};
+const isAdvisory = (g) => !!(ADVISORY_GATES[g] && ADVISORY_GATES[g]());
+const DEFAULT_GATES = GATES.filter((g) => !isAdvisory(g) && !LOCAL_SKIPPED_GATES[g]);
+// Gates whose test files run under plain `node --test`; a tsx gate's .mjs files import .ts
+// source through `@/` aliases, so a lone `node --test` re-run fails for another reason.
+const NODE_RERUN_GATES = new Set(['unit-tests-node', 'scripts-lib-tests']);
 const ROOT = path.resolve(__dirname, '..', '..');
 
 /** -> { gates, maxWaitMs } or { error } */
@@ -64,24 +75,28 @@ class MutexTimeout extends Error {}
 
 /**
  * The test files behind land-gate-delta.js's "NEW on the branch" lists, or null when a re-run
- * cannot clear the verdict: a new failure that is not a test case (a lint finding), or a FAIL
- * gate with no NEW list of its own (no result, a crash or timeout, a fail-safe verdict).
+ * cannot clear the verdict: a new failure that is not a test case (a lint finding), one in a
+ * gate whose files do not run under plain node (NODE_RERUN_GATES), or a FAIL gate with no NEW
+ * list of its own (no result, a crash or timeout, a fail-safe verdict).
  */
 function newFailureFiles(deltaText) {
   const files = new Set();
   const failGates = new Set();
   const newGates = new Set();
   let inNew = false;
+  let gate = null;
   for (const line of String(deltaText || '').split('\n')) {
     const row = line.match(/^\|\s*([\w-]+)\s*\|\s*\*\*FAIL\*\*/);
     if (row) { failGates.add(row[1]); continue; }
     if (/^#{2,4} /.test(line)) {
       inNew = /NEW on the branch/.test(line);
       const g = line.match(/^#{2,4} ([\w-]+) /);
+      gate = g ? g[1] : null;
       if (inNew && g) newGates.add(g[1]);
       continue;
     }
     if (!inNew || !/^\s+- /.test(line)) continue;
+    if (!NODE_RERUN_GATES.has(gate)) return null;
     const m = line.match(/`([^`:]+\.test\.m?js)::/);
     if (!m) return null;
     files.add(m[1]);
@@ -92,7 +107,11 @@ function newFailureFiles(deltaText) {
 
 function main(argv = process.argv.slice(2)) {
   const opts = parseArgs(argv);
-  if (opts.help) { console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(1, 28).join('\n')); return 0; }
+  if (opts.help) {
+    const lines = fs.readFileSync(__filename, 'utf8').split('\n');
+    console.log(lines.slice(1, lines.indexOf(' */') + 1).join('\n'));
+    return 0;
+  }
   if (opts.error) { console.error(`land-local-check: ${opts.error}`); return 2; }
 
   // The base run checks out origin/main in this tree and returns to HEAD: tracked changes would be lost.
@@ -162,6 +181,6 @@ function main(argv = process.argv.slice(2)) {
   }
 }
 
-module.exports = { parseArgs, newFailureFiles, DEFAULT_GATES };
+module.exports = { parseArgs, newFailureFiles, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
 
 if (require.main === module) process.exit(main());

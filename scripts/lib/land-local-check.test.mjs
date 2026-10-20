@@ -6,8 +6,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { parseArgs, newFailureFiles, DEFAULT_GATES } = require('./land-local-check.js');
-const { GATES } = require('./land-gate-delta.js');
+const { parseArgs, newFailureFiles, DEFAULT_GATES, LOCAL_SKIPPED_GATES } = require('./land-local-check.js');
+const { GATES, ADVISORY_GATES } = require('./land-gate-delta.js');
 const R = require('./codex-runner.js');
 
 test('parseArgs: default gates are real gauntlet gates; --all, --gates and bad input', () => {
@@ -20,6 +20,24 @@ test('parseArgs: default gates are real gauntlet gates; --all, --gates and bad i
   assert.match(parseArgs(['--gates', '']).error, /unknown gate/);
   assert.match(parseArgs(['--bogus']).error, /unknown argument/);
   assert.match(parseArgs(['--max-wait-minutes', 'x']).error, /positive/);
+});
+
+test('every gate land.yml blocks on runs by default or is skipped with a reason (BRO-5771)', () => {
+  const blocking = GATES.filter((g) => !(ADVISORY_GATES[g] && ADVISORY_GATES[g]()));
+  for (const g of blocking) {
+    assert.ok(DEFAULT_GATES.includes(g) || (LOCAL_SKIPPED_GATES[g] || '').length > 10,
+      `${g} blocks a land but is neither a default gate nor in LOCAL_SKIPPED_GATES with a reason`);
+  }
+  for (const g of ['unit-tests-tsx', 'tsc', 'next-lint']) assert.ok(DEFAULT_GATES.includes(g), `${g} runs by default`);
+  for (const g of Object.keys(LOCAL_SKIPPED_GATES)) assert.ok(GATES.includes(g), `${g} is a real gate`);
+});
+
+test('newFailureFiles: a tsx-gate failure is not re-run under plain node', () => {
+  const report = [
+    '#### unit-tests-tsx — NEW on the branch (blocking)',
+    '  - `tests/unit/commercial-unreleased.test.mjs::pages only load commercial data [testCodeFailure]`',
+  ].join('\n');
+  assert.equal(newFailureFiles(report), null);
 });
 
 test('withFileMutex: a throwing onWait gives up without taking or deleting the held lock', () => {
