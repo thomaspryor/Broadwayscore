@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-20T14:38:35.828Z",
+  "timestamp": "2026-10-20T15:11:37.741Z",
   "stats": {
-    "totalReviews": 57886,
-    "alreadyFlagged": 21093,
+    "totalReviews": 57906,
+    "alreadyFlagged": 21095,
     "dateGuardCatches": 198,
     "directorMismatch": 2027,
-    "tvFilmSignals": 1649,
-    "londonSignals": 2559,
+    "tvFilmSignals": 1650,
+    "londonSignals": 2560,
     "offBroadwaySignals": 530,
     "yearMismatch": 161,
-    "noPublishDate": 5210
+    "noPublishDate": 5222
   },
   "findings": [
     {
@@ -39843,6 +39843,24 @@
     },
     {
       "showId": "the-cherry-orchard-west-end-2026",
+      "file": "independent--julianna-barnaby.json",
+      "publishDate": "2026-10-14",
+      "url": "https://www.westendtheatre.com/372090/news/the-cherry-orchard-reviews/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-cherry-orchard-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
       "score": 79,
       "publishDate": "2026-10-13",
@@ -68885,7 +68903,7 @@
       "file": "telegraph--dominic-cavendish.json",
       "score": 87,
       "publishDate": "2023-12-01",
-      "url": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/infinite-life-national-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
