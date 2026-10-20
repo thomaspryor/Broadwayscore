@@ -37,7 +37,7 @@
 'use strict';
 
 const path = require('path');
-const { extractCheckPaths } = require('./autonomous-triage-core.js');
+const { extractCheckPaths } = require('./check-paths.js');
 const { fetchOriginMain, pathExistsOnOriginMain: checkOriginMainPath } = require('./origin-main-path-check.js');
 
 const REPO = path.join(__dirname, '..', '..');

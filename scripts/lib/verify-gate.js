@@ -14,7 +14,7 @@
 'use strict';
 
 const { extractVerifyCmd, candidatesFrom } = require('./autonomous-verify-cmd.js');
-const { isSafeCheckCommand, explainUnsafeCheckCommand } = require('./autonomous-triage-core.js');
+const { isSafeCheckCommand, explainUnsafeCheckCommand } = require('./check-paths.js');
 // Leaf module, deliberately: autonomous-eligibility.js needs the same marker
 // and cannot require THIS file without closing a cycle (task #1154 — see the
 // header of owner-judgment-marker.js). Still re-exported below so existing

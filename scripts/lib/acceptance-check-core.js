@@ -38,7 +38,7 @@ const { shallowFetchArgs } = require('./shallow-fetch-args.js');
 // extractCheckPaths is the SAME path-token extraction isSafeCheckCommand's own
 // SAFE_CHECK_FORMS matches on (CLAUDE.md §15 — one copy, reused here rather
 // than a second regex over the command string).
-const { isSafeCheckCommand, extractCheckPaths } = require('./autonomous-triage-core.js');
+const { isSafeCheckCommand, extractCheckPaths } = require('./check-paths.js');
 const { checksEnv, cardCheckArgv, prepareCheckWorkdir, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
 const { refreshDataClone } = require('./data-clone-refresh.js');
 

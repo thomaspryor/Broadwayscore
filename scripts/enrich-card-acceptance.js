@@ -19,7 +19,7 @@
  *   - Everything else gets ONE cheap Haiku call asked to draft an
  *     "## Acceptance criteria" section naming a safe-form command
  *     (scripts/lib/verify-gate.js SAFE_CHECK_FORMS). The drafted command is
- *     validated with resolveCheckPaths (autonomous-triage-core.js) before
+ *     validated with resolveCheckPaths (check-paths.js) before
  *     ever being written: a phantom path for EXISTING code is refused, not
  *     written (the task #171 incident class) — a path is only accepted as
  *     "to be created" when its parent directory already exists on disk,
@@ -92,7 +92,7 @@ const { evaluateVerifiability, isSafeCheckCommand, candidatesFrom, SECTION_RE, O
 const { isCardEligible } = require('./lib/autonomous-eligibility.js');
 const { OWNER_DECISION_RES, PARKED_SENTINEL_RE } = require('./lib/headless-dispatchability.js');
 const { isTerminalStateType } = require('./lib/linear-state-types.js');
-const { resolveCheckPaths, explainUnsafeCheckCommand, SAFE_CHECK_DESCRIPTION } = require('./lib/autonomous-triage-core.js');
+const { resolveCheckPaths, explainUnsafeCheckCommand, SAFE_CHECK_DESCRIPTION } = require('./lib/check-paths.js');
 // BRO-3378: the "can this command ever FAIL?" predicate, and the origin/main
 // oracle it must be asked against. Deliberately NOT the local fs probe
 // resolveCheckPaths uses: this script runs from worktrees and from CI shallow

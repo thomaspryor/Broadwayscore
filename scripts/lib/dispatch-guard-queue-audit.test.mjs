@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   tallyGuardRefusals, findWeekAgoEntry, buildDispatchGuardQueueAuditSnapshot,
   guardLabel, JUMP_THRESHOLD_PCT, GUARD_NAMES,
+  simulateDispatchGuards,
 } from './dispatch-guard-queue-audit.js';
 
 const DAY_MS = 24 * 3600e3;
@@ -14,12 +15,48 @@ function taskResult(taskId, overrides = {}) {
   return { taskId, guards: { ...guards, ...overrides } };
 }
 
-test('GUARD_NAMES: all 8 sibling guards are named', () => {
+test('GUARD_NAMES: all 9 sibling guards are named', () => {
   assert.deepEqual(GUARD_NAMES, [
     'deadDispatchGuard', 'parkedGuard', 'staleOutcomeGuard', 'closedCardGuard',
     'workBranchCollisionGuard', 'exactTitleOverlapGuard', 'sessionTrackingCloneGuard',
-    'linearMirrorGuard',
+    'linearMirrorGuard', 'pathVerifiabilityGuard',
   ]);
+});
+
+test('blind sweep surfaces a phantom-path refusal in the digest', () => {
+  const task = {
+    id: 'BRO-2626', subject: 'Repair the queue audit',
+    description: '## Acceptance criteria\nVERIFY: node --test scripts/lib/bro2626-missing-directory/phantom.test.mjs',
+  };
+  const result = simulateDispatchGuards(task);
+  assert.deepEqual(Object.keys(result.guards), GUARD_NAMES);
+  assert.match(result.guards.pathVerifiabilityGuard.refusal, /directory that does not exist/);
+  const snap = buildDispatchGuardQueueAuditSnapshot({ results: [result], now: NOW });
+  assert.equal(snap.tally.byGuard.pathVerifiabilityGuard.refused, 1);
+  assert.equal(snap.blockedCount, 1);
+  assert.ok(snap.items.some(item => item.title === 'Path Verifiability'));
+});
+
+test('blind sweep allows existing files, planned files in real directories, and owner judgment', () => {
+  for (const cmd of [
+    'node --test scripts/lib/dispatch-guard-queue-audit.test.mjs',
+    'node --test scripts/lib/bro2626-planned.test.mjs',
+    'owner-judgment',
+  ]) {
+    const result = simulateDispatchGuards({
+      id: 'BRO-2626', subject: 'Repair the queue audit',
+      description: `## Acceptance criteria\nVERIFY: ${cmd}`,
+    });
+    assert.deepEqual(result.guards.pathVerifiabilityGuard, { refusal: null }, cmd);
+  }
+});
+
+test('blind sweep refuses commands that need path canonicalization', () => {
+  const result = simulateDispatchGuards({
+    id: 'BRO-2626', subject: 'Repair the queue audit',
+    description: '## Acceptance criteria\nVERIFY: node --test tests/dispatch-guard.test.mjs',
+  });
+  assert.match(result.guards.pathVerifiabilityGuard.refusal, /correct to a different one/);
 });
 
 test('tallyGuardRefusals: all-clear task counts as ok on every guard, not blocked', () => {

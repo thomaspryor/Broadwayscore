@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * predispatch-queue-audit — tally predispatch-guard verdicts (task #1801)
- * AND all 8 sibling dispatch-guards.js refusal predicates (task #1802)
+ * AND all 9 sibling dispatch-guards.js refusal predicates (task #1802)
  * across every pending/in_progress task in the local mirror, write the
  * digest snapshots scripts/send-morning-digest.js reads.
  *
@@ -14,9 +14,10 @@
  * 7:30am digest), so there's no cross-machine gap to bridge with a git
  * commit; the snapshot + history files are gitignored.
  *
- * Task #1802 (dispatch-guards.js's other 8 guards — deadDispatchGuard,
+ * Task #1802 (dispatch-guards.js's sibling guards: deadDispatchGuard,
  * parkedGuard, staleOutcomeGuard, closedCardGuard, workBranchCollisionGuard,
- * exactTitleOverlapGuard, sessionTrackingCloneGuard, linearMirrorGuard) rides
+ * exactTitleOverlapGuard, sessionTrackingCloneGuard, linearMirrorGuard,
+ * and BRO-2626's pathVerifiabilityGuard) rides
  * in THIS SAME per-task loop rather than a second script with its own
  * launchd plist (second-opinion review, 2026-08-19): two independent `node`
  * processes cannot share fetchCard()'s in-memory result, so a second script
@@ -37,13 +38,11 @@ const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const {
   notionIdOf, loadLinearMirrorMapping,
-  deadDispatchGuard, parkedGuard, staleOutcomeGuard, closedCardGuard,
-  workBranchCollisionGuard, exactTitleOverlapGuard, sessionTrackingCloneGuard,
-  linearMirrorGuard, matchesTaskWorkBranch, findWorkBranchCollisions, GUARD_NAMES,
+  matchesTaskWorkBranch, findWorkBranchCollisions,
 } = require('./lib/dispatch-guards.js');
 const { classifyCandidate, resolveNotionUuid } = require('./lib/predispatch-guard.js');
 const { buildQueueAuditSnapshot } = require('./lib/predispatch-queue-audit.js');
-const { buildDispatchGuardQueueAuditSnapshot } = require('./lib/dispatch-guard-queue-audit.js');
+const { buildDispatchGuardQueueAuditSnapshot, simulateDispatchGuards } = require('./lib/dispatch-guard-queue-audit.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const { findOverlappingCards } = require('./lib/dispatch-overlap-check.js');
 const { unlandedCommitsFor } = require('./lib/worktree-branch-guard.js');
@@ -163,20 +162,6 @@ function computeBranchStatuses(tasks, repoDir, defaultBranch = 'main') {
   });
 }
 
-// Runs one dispatch-guards.js predicate and normalizes its outcome to the
-// {refusal: string|null} shape dispatch-guard-queue-audit.js's tally expects
-// — or `null` (not the shape) when the guard function itself threw, so a
-// crash can't silently read as "ok" (tallyGuardRefusals counts that as
-// `error`, never folded into `ok`).
-function runGuard(name, fn, taskId) {
-  try {
-    return { refusal: fn() || null };
-  } catch (err) {
-    console.error(`[predispatch-queue-audit] guard ${name} threw for #${taskId}: ${String(err.message).slice(0, 160)}`);
-    return null;
-  }
-}
-
 async function main() {
   if (hasHelpFlag(process.argv.slice(2))) {
     process.stdout.write(USAGE);
@@ -194,7 +179,7 @@ async function main() {
     process.exit(1);
   }
 
-  // Shared, read-ONCE-per-run inputs for the 8 sibling guards (task #1802) —
+  // Shared, read-ONCE-per-run inputs for the 9 sibling guards (task #1802) —
   // none of these are per-task I/O. loadLinearMirrorMapping/mergeWithArchive
   // already fail open (empty mapping / plain `tasks`) on any read error, same
   // direction as every guard in dispatch-guards.js on missing data.
@@ -231,7 +216,7 @@ async function main() {
       catch (err) { fetchErrors++; console.error(`[predispatch-queue-audit] classify failed for #${task.id}: ${String(err.message).slice(0, 160)}`); }
     }
 
-    // Task #1802: the other 8 dispatch-guards.js predicates. Run with
+    // Task #1802: the 9 dispatch-guards.js predicates. Run with
     // opts={} (no force/dry-run/print-prompt) so this reports REAL refusal
     // state, not a bypassed one. staleOutcomeGuard/closedCardGuard fail open
     // on card===null (Notion outage or no-uuid native task) exactly the way
@@ -239,26 +224,9 @@ async function main() {
     // that is genuine "ok" data here, not an audit error.
     const own = { id: task.id, subject: task.subject, notes: task.description };
     const overlaps = findOverlappingCards(own, inProgressCards.filter((c) => String(c.id) !== String(task.id)));
-    // GUARD_NAMES (dispatch-guards.js) is the canonical list every 8 keys
-    // below must match — this object is NOT built by looping over
-    // GUARD_NAMES because each guard needs a different extra argument
-    // (ledgerEntries/card/branchStatuses/overlaps/tasksWithArchive/mapping).
-    // Adding a 9th guard to GUARD_NAMES means adding a matching runGuard()
-    // call here too, or tallyGuardRefusals will report it as 100% "error"
-    // forever (see dispatch-guard-queue-audit.test.mjs's GUARD_NAMES test).
-    guardResults.push({
-      taskId: task.id,
-      guards: {
-        deadDispatchGuard: runGuard('deadDispatchGuard', () => deadDispatchGuard(task, ledgerEntries, {}), task.id),
-        parkedGuard: runGuard('parkedGuard', () => parkedGuard(task, ledgerEntries, {}), task.id),
-        staleOutcomeGuard: runGuard('staleOutcomeGuard', () => staleOutcomeGuard(task, card, {}), task.id),
-        closedCardGuard: runGuard('closedCardGuard', () => closedCardGuard(task, card, {}), task.id),
-        workBranchCollisionGuard: runGuard('workBranchCollisionGuard', () => workBranchCollisionGuard(task, branchStatuses, {}), task.id),
-        exactTitleOverlapGuard: runGuard('exactTitleOverlapGuard', () => exactTitleOverlapGuard(task, overlaps, {}), task.id),
-        sessionTrackingCloneGuard: runGuard('sessionTrackingCloneGuard', () => sessionTrackingCloneGuard(task, tasksWithArchive, {}), task.id),
-        linearMirrorGuard: runGuard('linearMirrorGuard', () => linearMirrorGuard(task, linearMapping, {}), task.id),
-      },
-    });
+    guardResults.push(simulateDispatchGuards(task, {
+      ledgerEntries, card, branchStatuses, overlaps, tasksWithArchive, linearMapping, repoRoot: REPO,
+    }));
   }
 
   // BRO-3431: the local task mirror above is the FROZEN Notion board (source
@@ -325,5 +293,5 @@ if (require.main === module) {
 
 module.exports = {
   loadQueuedTasks, fetchCard, loadHistory, TASKS_DIR, SNAPSHOT_FILE, HISTORY_FILE,
-  GUARD_SNAPSHOT_FILE, GUARD_HISTORY_FILE, computeBranchStatuses, listAllWorkBranchNames, runGuard,
+  GUARD_SNAPSHOT_FILE, GUARD_HISTORY_FILE, computeBranchStatuses, listAllWorkBranchNames,
 };
