@@ -99,6 +99,13 @@
  * the test. Reserve it for tests that are legitimately clock-coupled (see the
  * filesystem-mtime note below), not for tests that are merely inconvenient.
  *
+ * EXEMPTING ONE TEST (BRO-5590)
+ * A whole-file marker hides every future time bomb added to that file. When
+ * only one test is clock-coupled, put
+ *   // timebomb-audit-exempt-test: <exact test name> | <reason>
+ * in the file instead; only a shifted failure with that exact name is exempt,
+ * and every other test in the file is still audited.
+ *
  * KNOWN LIMITATION — filesystem mtime is NOT shifted.
  * clock-shift.mjs moves Date.now() inside the process; it cannot move the
  * filesystem clock. Code measuring freshness as
@@ -127,6 +134,7 @@ const { MANIFESTS, readManifest } = require('./lib/test-manifest.js');
 const REPO_ROOT = path.join(__dirname, '..');
 const PRELOAD = path.join(REPO_ROOT, 'tests', 'helpers', 'clock-shift.mjs');
 const EXEMPT_MARKER = 'timebomb-audit-exempt:';
+const EXEMPT_TEST_MARKER = 'timebomb-audit-exempt-test:';
 
 /**
  * tsx's own CLI entry point, resolved via node's normal module resolution
@@ -269,6 +277,48 @@ function readExemptFiles(files) {
 }
 
 /**
+ * Per-test exemptions (BRO-5590), keyed by manifest-relative path to a Map of
+ * exact test name -> reason. Syntax on a comment line:
+ *   // timebomb-audit-exempt-test: <exact test name> | <reason>
+ * Same comment-line rule as readExemptFiles; a line without both a name and a
+ * reason is ignored, so a typo can never exempt anything.
+ */
+function readExemptTests(files) {
+  const exempt = new Map();
+  for (const rel of files) {
+    let src;
+    try {
+      src = fs.readFileSync(path.join(REPO_ROOT, rel), 'utf8');
+    } catch (err) {
+      console.error(`  warning: could not read ${rel} for per-test exemption markers (${err.code || err.message})`);
+      continue;
+    }
+    for (const l of src.split('\n')) {
+      if (!/^\s*(\/\/|\*)/.test(l) || !l.includes(EXEMPT_TEST_MARKER)) continue;
+      const body = l.slice(l.indexOf(EXEMPT_TEST_MARKER) + EXEMPT_TEST_MARKER.length);
+      const bar = body.indexOf('|');
+      if (bar < 0) continue;
+      const name = body.slice(0, bar).trim();
+      const reason = body.slice(bar + 1).trim();
+      if (!name || !reason) continue;
+      if (!exempt.has(rel)) exempt.set(rel, new Map());
+      exempt.get(rel).set(name, reason);
+    }
+  }
+  return exempt;
+}
+
+/**
+ * Reason this failing test is exempt, or null. File marker wins (whole file);
+ * otherwise an exact per-test name match.
+ */
+function exemptionReason(file, name, exemptFiles, exemptTests) {
+  if (exemptFiles.has(file)) return exemptFiles.get(file);
+  const perTest = exemptTests.get(file);
+  return perTest && perTest.has(name) ? perTest.get(name) : null;
+}
+
+/**
  * Run one suite (a manifest + its runner) and return
  * { failures, totals, status, sawTap, unlocated }.
  *
@@ -333,6 +383,7 @@ async function main() {
   // the file count report (a shared file is still one file, not two).
   const allFiles = [...new Set(suites.flatMap((s) => s.files))];
   const exemptFiles = readExemptFiles(allFiles);
+  const exemptTests = readExemptTests(allFiles);
 
   if (!opts.json) {
     console.log(
@@ -389,8 +440,9 @@ async function main() {
     if (suiteProblems.length === 0) {
       for (const [key, { file, name }] of shifted.failures) {
         if (base.failures.has(key)) continue;
-        if (exemptFiles.has(file)) {
-          exempted.push({ suite: s.key, file, name, reason: exemptFiles.get(file) });
+        const exemptReason = exemptionReason(file, name, exemptFiles, exemptTests);
+        if (exemptReason) {
+          exempted.push({ suite: s.key, file, name, reason: exemptReason });
           continue;
         }
         bombs.push({ suite: s.key, file, name });
@@ -535,7 +587,7 @@ async function main() {
 
 // Exported for tests/unit/audit-time-bomb-test-exemption.test.mjs; main() only
 // runs when invoked as a CLI (requiring it only resolves the tsx path).
-module.exports = { readExemptFiles, EXEMPT_MARKER };
+module.exports = { readExemptFiles, readExemptTests, exemptionReason, EXEMPT_MARKER, EXEMPT_TEST_MARKER };
 
 if (require.main === module) {
   main().catch((err) => {
