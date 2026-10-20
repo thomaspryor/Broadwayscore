@@ -61,20 +61,8 @@ const {
   WIRE_SERVICE_OUTLETS,
   outletOwnsUrlDomainIgnoringPath,
 } = require('./lib/review-normalization');
-const { resolveUrlEditionOutletId, provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
-// BRO-4502: the no-registry-match fallbacks below mint from the registrable
-// label (someblog.substack.com -> someblog), never the first label
-// (news.yahoo.com -> "news"). When resolveOutletFromUrl already said "no
-// outlet" for a host, a minted id that IS a registered outlet would override
-// that call (losangeles.timeout.com -> "timeout", Time Out New York), so it
-// becomes 'unknown' instead.
-function fallbackOutletIdFromHost(hostname) {
-  const id = provisionalOutletIdFromHost(hostname);
-  // Exact registry key: isRegisteredOutlet normalizes fuzzily
-  // ('stagedoorjoe' -> 'stagedtheatre').
-  const registry = require('./lib/review-normalization').loadOutletRegistry();
-  return id && !(registry && registry.outlets && registry.outlets[id]) ? id : 'unknown';
-}
+const { resolveUrlEditionOutletId } = require('./lib/outlet-canonicalize');
+const { fallbackOutletIdFromHost, resolveUnlabelledShowScoreOutlet } = require('./lib/show-score-outlet-identity');
 const { findSiblingUrlOwner } = require('./lib/review-url-collision');
 const { extractBwwThumbIcons, pairBwwThumbsByCritic } = require('./lib/bww-thumb-pairing');
 const { findMatchingReviewFile } = require('./lib/review-file-match');
@@ -1653,21 +1641,7 @@ function extractShowScoreReviews(html, showId, showTitle) {
                 outletName = review.publisher.name;
                 outletId = slugify(outletName);
               } else {
-                const resolved = resolveOutletFromUrl(review.url);
-                if (resolved) {
-                  outletId = resolved.outletId;
-                  outletName = resolved.displayName;
-                } else {
-                  // Fallback: use domain base
-                  try {
-                    const hostname = new URL(review.url).hostname.replace(/^www\./, '').toLowerCase();
-                    outletId = fallbackOutletIdFromHost(hostname);
-                    outletName = outletId;
-                  } catch {
-                    outletId = 'unknown';
-                    outletName = 'Unknown';
-                  }
-                }
+                ({ outletId, displayName: outletName } = resolveUnlabelledShowScoreOutlet(review.url));
               }
               reviews.push({
                 showId,
@@ -1795,22 +1769,7 @@ function extractShowScoreReviews(html, showId, showTitle) {
 
       // If no outlet from HTML, try resolving from URL
       if (!outlet) {
-        const resolved = resolveOutletFromUrl(url);
-        if (resolved) {
-          outletId = resolved.outletId;
-          outlet = resolved.displayName;
-        } else {
-          // Fallback: use domain base
-          try {
-            const hostname = new URL(url).hostname.replace(/^www\./, '').toLowerCase();
-            const domainBase = fallbackOutletIdFromHost(hostname);
-            outletId = domainBase;
-            outlet = domainBase.charAt(0).toUpperCase() + domainBase.slice(1);
-          } catch {
-            outletId = 'unknown';
-            outlet = 'Unknown';
-          }
-        }
+        ({ outletId, displayName: outlet } = resolveUnlabelledShowScoreOutlet(url));
       }
 
       // Try to extract critic name
@@ -4050,7 +4009,9 @@ function createReviewFile(showId, reviewData, options = {}) {
   const review = {
     showId,
     outletId: normalizedOutletId,
-    outlet: getOutletDisplayName(normalizedOutletId),
+    // Keep an explicitly unresolved masthead empty instead of restoring the ID.
+    outlet: reviewData.outlet === '' && !isRegisteredOutlet(normalizedOutletId)
+      ? '' : getOutletDisplayName(normalizedOutletId),
     criticName: reviewData.criticName || 'Unknown',
     url: reviewData.url || null,
     publishDate: normalizePublishDate(reviewData.publishDate) || null,
@@ -4512,24 +4473,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           outletId = slugify(review.outlet);
           outletDisplayName = review.outlet;
         } else {
-          // Try to resolve outlet from URL using registry
-          const resolved = resolveOutletFromUrl(review.url);
-          if (resolved) {
-            outletId = resolved.outletId;
-            outletDisplayName = resolved.displayName;
-          } else {
-            // Fallback: use domain base (without TLD) as both ID and display name
-            // Never use literal "Unknown" - use the domain so the review is attributable
-            try {
-              const hostname = new URL(review.url).hostname.replace(/^www\./, '').toLowerCase();
-              const domainBase = fallbackOutletIdFromHost(hostname);
-              outletId = domainBase;
-              outletDisplayName = domainBase; // Will be displayed as-is (e.g., "culturesauce")
-            } catch {
-              outletId = 'unknown';
-              outletDisplayName = 'Unknown';
-            }
-          }
+          ({ outletId, displayName: outletDisplayName } = resolveUnlabelledShowScoreOutlet(review.url));
         }
         showScoreCount++;
         // Convert star rating to originalRating format if available
