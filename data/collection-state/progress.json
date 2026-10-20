@@ -195,7 +195,12 @@
     "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json",
     "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
     "witness-for-the-prosecution-west-end-2022/standard--henry-hitchings.json",
-    "witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json"
+    "witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json",
+    "martin-guerre-west-end-2026/slippedisc--elbie-lebrecht.json",
+    "double-bill-tell-me-straight-and-aggy-off-west-end-2026/nearbuzz--unknown.json",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/londonlivinglarge--london-living-large.json",
+    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
+    "the-book-of-mormon-west-end-2024/mirror--alun-palmer.json"
   ],
   "failed": [
     "triumph-off-west-end-2026/thestage--david-benedict.json",
@@ -317,7 +322,13 @@
     "hamilton-west-end-2021/ew--unknown.json",
     "hamilton-west-end-2021/theatermania--zachary-stewart.json",
     "hamilton-2015/nyt-theater--jonathan-mandell.json",
-    "the-play-that-goes-wrong-west-end-2021/chicagotribune--chris-jones.json"
+    "the-play-that-goes-wrong-west-end-2021/chicagotribune--chris-jones.json",
+    "the-waverly-gallery-2018/theater-news-online--matt-windman.json",
+    "mj-2022/washpost--peter-marks.json",
+    "aladdin-2014/wsj--terry-teachout.json",
+    "aladdin-2014/ap--mark-kennedy.json",
+    "the-book-of-mormon-west-end-2024/talkinbroadway--unknown.json",
+    "the-book-of-mormon-west-end-2024/washpost--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -412,14 +423,18 @@
       "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json",
       "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
       "witness-for-the-prosecution-west-end-2022/standard--henry-hitchings.json",
-      "witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json"
+      "witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json",
+      "catarina-and-the-beauty-of-killing-fascists-west-end-2026/londonlivinglarge--london-living-large.json",
+      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [
       "murder-cathedral-off-west-end-2026/standard--unknown.json"
     ],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "double-bill-tell-me-straight-and-aggy-off-west-end-2026/nearbuzz--unknown.json"
+    ],
     "scrapingbee": [
       "angels-bone-west-end-2026/sunday-times--rebecca-franks.json",
       "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json",
@@ -519,11 +534,13 @@
       "harry-potter-2021/latimes--erin-ben-moche.json",
       "harry-potter-2021/npr--jeff-lunden.json",
       "harry-potter-2021/sfgate--lily-janiak.json",
-      "witness-for-the-prosecution-west-end-2022/broadwayworld--emma-watkins.json"
+      "witness-for-the-prosecution-west-end-2022/broadwayworld--emma-watkins.json",
+      "martin-guerre-west-end-2026/slippedisc--elbie-lebrecht.json",
+      "the-book-of-mormon-west-end-2024/mirror--alun-palmer.json"
     ]
   },
   "startTime": "2026-10-20T08:43:27.579Z",
-  "lastProcessed": "the-play-that-goes-wrong-west-end-2021/chicagotribune--chris-jones.json",
+  "lastProcessed": "the-book-of-mormon-west-end-2024/washpost--unknown.json",
   "log": [
     {
       "t": "2026-10-20T08:44:47.597Z",
@@ -752,6 +769,51 @@
       "t": "2026-10-20T10:54:42.956Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-20T11:08:53.524Z",
+      "event": "bb-session",
+      "session": "cea8294f",
+      "url": "http://www.usatoday.com/life/theater/reviews/2011-03-07-season07_ST_N.htm?csp=34"
+    },
+    {
+      "t": "2026-10-20T11:08:54.031Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-10-20T11:11:11.211Z",
+      "event": "bb-session",
+      "session": "38433008",
+      "url": "http://www.businessweek.com/news/2013-04-18/skinny-baldwin-pales-in-orphans-boom"
+    },
+    {
+      "t": "2026-10-20T11:11:20.323Z",
+      "event": "bb-session",
+      "session": "2c7bf443",
+      "url": "http://www.businessweek.com/news/2013-04-18/skinny-baldwin-pales-in-orphans-boom"
+    },
+    {
+      "t": "2026-10-20T11:35:55.085Z",
+      "event": "bb-session",
+      "session": "78f9c7b7",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-20T11:35:55.607Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-20T11:36:12.429Z",
+      "event": "bb-session",
+      "session": "bd7e717d",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-20T11:36:12.885Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

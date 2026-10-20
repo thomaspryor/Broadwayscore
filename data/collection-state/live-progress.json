@@ -1,66 +1,21 @@
 {
-  "updatedAt": "2026-10-20T10:58:30.697Z",
-  "processed": 196,
-  "failed": 120,
-  "successRate": "62.0%",
+  "updatedAt": "2026-10-20T11:37:47.955Z",
+  "processed": 201,
+  "failed": 126,
+  "successRate": "61.5%",
   "tierBreakdown": {
-    "playwright": 91,
+    "playwright": 93,
     "amp": 0,
-    "browserbase": 4,
-    "directCookies": 0,
-    "scrapingdog": 11,
+    "browserbase": 0,
+    "directCookies": 1,
+    "scrapingdog": 1,
     "scrapingbee": 18,
     "brightdata": 3,
     "archiveToday": 0,
-    "archive": 73
+    "archive": 75
   },
-  "browserbaseSessions": 26,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-10-20T10:23:52.063Z",
-      "event": "bb-session",
-      "session": "99a03f75",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dirty-dancing-the-musical-comin"
-    },
-    {
-      "t": "2026-10-20T10:24:19.145Z",
-      "event": "bb-session",
-      "session": "42376779",
-      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
-    },
-    {
-      "t": "2026-10-20T10:24:19.970Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-20T10:24:37.390Z",
-      "event": "bb-session",
-      "session": "f927fdd3",
-      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
-    },
-    {
-      "t": "2026-10-20T10:24:38.144Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-20T10:41:15.585Z",
-      "event": "bb-session",
-      "session": "85d32ff2",
-      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
-    },
-    {
-      "t": "2026-10-20T10:41:16.476Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-20T10:43:25.010Z",
-      "event": "bb-session",
-      "session": "f169461a",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
-    },
     {
       "t": "2026-10-20T10:43:33.974Z",
       "event": "bb-session",
@@ -128,6 +83,51 @@
       "t": "2026-10-20T10:54:42.956Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-20T11:08:53.524Z",
+      "event": "bb-session",
+      "session": "cea8294f",
+      "url": "http://www.usatoday.com/life/theater/reviews/2011-03-07-season07_ST_N.htm?csp=34"
+    },
+    {
+      "t": "2026-10-20T11:08:54.031Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-10-20T11:11:11.211Z",
+      "event": "bb-session",
+      "session": "38433008",
+      "url": "http://www.businessweek.com/news/2013-04-18/skinny-baldwin-pales-in-orphans-boom"
+    },
+    {
+      "t": "2026-10-20T11:11:20.323Z",
+      "event": "bb-session",
+      "session": "2c7bf443",
+      "url": "http://www.businessweek.com/news/2013-04-18/skinny-baldwin-pales-in-orphans-boom"
+    },
+    {
+      "t": "2026-10-20T11:35:55.085Z",
+      "event": "bb-session",
+      "session": "78f9c7b7",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-20T11:35:55.607Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-20T11:36:12.429Z",
+      "event": "bb-session",
+      "session": "bd7e717d",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-20T11:36:12.885Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
