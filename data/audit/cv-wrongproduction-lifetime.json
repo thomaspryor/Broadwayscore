@@ -1,23 +1,18 @@
 {
-  "updatedAt": "2026-10-20T07:48:35.169Z",
+  "updatedAt": "2026-10-20T12:19:37.528Z",
   "scanned": 2645,
-  "showsWithViolations": 116,
-  "totalViolations": 147,
-  "newSinceLastRun": 4,
+  "showsWithViolations": 115,
+  "totalViolations": 146,
+  "newSinceLastRun": 0,
   "handled": {
-    "temporal-override-low-confidence": 773,
+    "temporal-override-low-confidence": 775,
     "not-shipped": 55,
     "duplicate-not-shipped": 53,
     "rebuild-skip-audit": 31,
     "manual-clear-reason": 14,
     "prior-run-or-tour-leg": 43
   },
-  "newViolationKeys": [
-    "stranger-things-the-first-shadow-west-end-2023::times-uk--dominic-maxwell.json",
-    "spamalot-tour-2025::the-moderate-voice--dough-bursch.json",
-    "punch-west-end-2025::independent--alice-saville.json",
-    "punch-west-end-2025::timeout-london--andrzej-lukowski.json"
-  ],
+  "newViolationKeys": [],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
     "ragtime-2025::america-magazine--weinert-kendt.json",
@@ -60,7 +55,6 @@
     "cyrano-de-bergerac-west-end-2026::artsdesk--unknown.json",
     "cyrano-de-bergerac-west-end-2026::standard--fiona-mountford.json",
     "wicked-west-end-2021::timeout--honour-bayes.json",
-    "stranger-things-the-first-shadow-west-end-2023::times-uk--dominic-maxwell.json",
     "the-phantom-of-the-opera-west-end-1986::britishtheatrecom--douglas-mayo.json",
     "the-phantom-of-the-opera-west-end-1986::guardian--lyndsey-winship.json",
     "into-the-woods-west-end-2025::1883magazine--nick-barr.json",
@@ -958,27 +952,6 @@
           "cvIssues": [
             "Review is explicitly dated 2012 ('This review is from 2012') but expected publish date is 2026-01-15 — massive temporal mismatch indicating this is a legacy/archived review, not the current production",
             "Scraped content truncated mid-sentence at '...as the intense green-skinned undergrad w'"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "title": "Stranger Things: The First Shadow",
-      "openingDate": "2023-12-14",
-      "message": "times-uk/Dominic Maxwell (times-uk--dominic-maxwell.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped content is a valid theater review (2-star critique of a performance, with assessment of cast, direction, sta — https://www.thetimes.com/culture/theatre-dance/article/stranger-things-the-first-shadow-review-you-need-to-be-a-fan-to-follow-this-prequel-blds60b6s",
-      "violations": [
-        {
-          "filename": "times-uk--dominic-maxwell.json",
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/stranger-things-the-first-shadow-review-you-need-to-be-a-fan-to-follow-this-prequel-blds60b6s",
-          "outletId": "times-uk",
-          "criticName": "Dominic Maxwell",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "The scraped content is a valid theater review (2-star critique of a performance, with assessment of cast, direction, sta",
-          "cvIssues": [
-            "Scraped content is a review of a different production entirely — it reviews a climate change/environmental drama at Sohoplace by the RSC (with references to Lynne Truss's 'Eats, Shoots & Leaves'), NOT 'Stranger Things: The First Shadow' at Phoenix Theatre",
-            "The expected excerpt describes an RSC production about climate change at Sohoplace; the scraped content describes a prequel to Netflix's Stranger Things with Henry Creel, Joyce Maldonado, and Hawkins, Indiana — completely different shows"
           ]
         }
       ]

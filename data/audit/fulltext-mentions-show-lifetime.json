@@ -1,18 +1,11 @@
 {
-  "updatedAt": "2026-10-20T07:48:40.125Z",
+  "updatedAt": "2026-10-20T12:19:42.331Z",
   "scanned": 2645,
   "showsWithViolations": 351,
   "totalViolations": 550,
-  "newSinceLastRun": 8,
+  "newSinceLastRun": 1,
   "newViolationKeys": [
-    "la-boheme-off-broadway-2025::wsj--by-tim-page.json",
-    "children-of-the-night-off-west-end-2026::londonpubtheatres--chris-lilly.json",
-    "mrs-warrens-profession-west-end-2025::attitude--jamie-tabberer.json",
-    "people-places-and-things-west-end-2024::thestage--sam-marlowe.json",
-    "a-kind-of-people-west-end-2019::thestage--ava-wong-davies.json",
-    "a-kind-of-people-west-end-2019::timeout-london--holly-williams.json",
-    "the-importance-of-being-earnest-west-end-2024::hampstead-highgate-express--bridget-galton.json",
-    "a-tupperware-of-ashes-west-end-2024::times-uk--clive-davis.json"
+    "till-the-stars-come-down-west-end-2024::guardian--arifa-akbar.json"
   ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
@@ -431,7 +424,7 @@
     "lyonesse-west-end-2023::daily-mail--patrick-marmion.json",
     "the-confessions-west-end-2023::guardian--arifa-akbar.json",
     "the-motive-and-the-cue-west-end-2023::times-uk--dominic-maxwell.json",
-    "till-the-stars-come-down-west-end-2024::guardian--unknown.json",
+    "till-the-stars-come-down-west-end-2024::guardian--arifa-akbar.json",
     "just-for-one-day-west-end-2024::guardian--arifa-akbar.json",
     "just-for-one-day-west-end-2024::i-paper--fiona-mountford.json",
     "just-for-one-day-west-end-2024::telegraph--dominic-cavendish.json",
@@ -9348,13 +9341,13 @@
       "showId": "till-the-stars-come-down-west-end-2024",
       "title": "Till the Stars Come Down",
       "openingDate": "2024-01-31",
-      "message": "guardian/Unknown (guardian--unknown.json) SHIPPED but fullText never mentions 'Till the Stars Come Down' (3269 chars): https://www.theguardian.com/stage/2024/feb/01/till-the-stars-come-down-review-national-theatre-dorfman-beth-mead",
+      "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'Till the Stars Come Down' (3269 chars): https://www.theguardian.com/stage/2024/feb/01/till-the-stars-come-down-review-national-theatre-dorfman-beth-mead",
       "violations": [
         {
-          "filename": "guardian--unknown.json",
+          "filename": "guardian--arifa-akbar.json",
           "url": "https://www.theguardian.com/stage/2024/feb/01/till-the-stars-come-down-review-national-theatre-dorfman-beth-mead",
           "outletId": "guardian",
-          "criticName": "Unknown",
+          "criticName": "Arifa Akbar",
           "haystackLength": 3269,
           "textIssuesFlag": false,
           "triage": {
@@ -14345,7 +14338,7 @@
             "requiresArticleReview": true
           },
           {
-            "file": "till-the-stars-come-down-west-end-2024/guardian--unknown.json",
+            "file": "till-the-stars-come-down-west-end-2024/guardian--arifa-akbar.json",
             "bucket": "unresolved",
             "evidence": [
               "no-conclusive-triage-metadata"
