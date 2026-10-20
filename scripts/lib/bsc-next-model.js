@@ -162,7 +162,8 @@ function countRecentLinearOpusLaunches(entries, nowMs, windowMs = LINEAR_OPUS_WI
 function countPriorLaunches(entries, taskId) {
   let n = 0;
   for (const e of Array.isArray(entries) ? entries : []) {
-    if (isRealLaunch(e) && e.taskId === taskId) n++;
+    // Cloud claim rows (BRO-5730) feed the Opus cap only; a cloud attempt is not a Mac retry.
+    if (isRealLaunch(e) && e.source !== 'cloud-claim' && e.taskId === taskId) n++;
   }
   return n;
 }
@@ -252,6 +253,6 @@ function stampModelHint(description, model) {
 
 module.exports = {
   QUEUE_PATH, MODEL_HINT_RE, SHORT_ALIAS, explicitModelHint, triageSizeFor, modelForSize, resolveModel,
-  LINEAR_OPUS_DAILY_CAP_DEFAULT, LINEAR_OPUS_WINDOW_MS, linearOpusDailyCap, countRecentLinearOpusLaunches, countPriorLaunches, linearEscalationModel, countPriorDispatches, pickLinearModel,
+  isRealLaunch, LINEAR_OPUS_DAILY_CAP_DEFAULT, LINEAR_OPUS_WINDOW_MS, linearOpusDailyCap, countRecentLinearOpusLaunches, countPriorLaunches, linearEscalationModel, countPriorDispatches, pickLinearModel,
   FILING_MODELS, stampModelHint,
 };

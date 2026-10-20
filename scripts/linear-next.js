@@ -479,7 +479,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // BRO-5730: the cap also counts cloud Opus claims ("Worker model: opus" comments). A failed read
   // counts the Mac ledger alone (warned): the ledger is this machine's own record of its launches.
   let cloudOpusClaims = [];
-  if (typeof reportLinearFn.listRecentCommentsContaining === 'function') {
+  if (!explicitModel && typeof reportLinearFn.listRecentCommentsContaining === 'function') {
     try {
       cloudOpusClaims = await fetchOpusClaimEntries(Date.now(), reportLinearFn);
     } catch (e) {

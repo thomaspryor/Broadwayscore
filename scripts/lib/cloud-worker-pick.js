@@ -519,20 +519,23 @@ function opusClaimEntries(comments) {
   const { parseWorkerModel } = require('./linear-session-reporting.js');
   return (Array.isArray(comments) ? comments : [])
     .filter((c) => c && c.issue && parseWorkerModel(c.body) === 'opus')
-    .map((c) => ({ event: 'launch', taskId: `linear:${c.issue.identifier}`, model: 'opus', ts: c.createdAt }));
+    .map((c) => ({ event: 'launch', source: 'cloud-claim', taskId: `linear:${c.issue.identifier}`, model: 'opus', ts: c.createdAt }));
 }
 
 /**
- * Ledger entries plus cloud Opus claim rows, leaving out a claim for a card the ledger already
- * holds a launch of at or before that claim (a Mac-dispatched worker that also posted a claim).
+ * Ledger entries plus cloud Opus claim rows, leaving out a claim within an hour of any real ledger
+ * launch of the same card (a Mac-dispatched worker that also posted a claim). Claim rows carry
+ * source 'cloud-claim': they count toward the 24h Opus cap only, not as prior launches of a card.
  */
 function withCloudOpusClaims(entries, claims) {
+  const { isRealLaunch } = require('./bsc-next-model.js');
   const base = Array.isArray(entries) ? entries : [];
-  const launchedAt = new Map();
+  const launches = new Map();
   for (const e of base) {
-    if (e && e.event === 'launch' && e.taskId) launchedAt.set(e.taskId, Math.max(launchedAt.get(e.taskId) || -Infinity, Date.parse(e.ts) || -Infinity));
+    const ts = isRealLaunch(e) ? Date.parse(e.ts) : NaN;
+    if (Number.isFinite(ts)) launches.set(e.taskId, [...(launches.get(e.taskId) || []), ts]);
   }
-  const extra = (claims || []).filter((c) => !(launchedAt.has(c.taskId) && Math.abs(Date.parse(c.ts) - launchedAt.get(c.taskId)) < 60 * 60_000));
+  const extra = (claims || []).filter((c) => !(launches.get(c.taskId) || []).some((t) => Math.abs(Date.parse(c.ts) - t) < 60 * 60_000));
   return [...base, ...extra];
 }
 

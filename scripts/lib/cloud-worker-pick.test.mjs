@@ -939,7 +939,7 @@ test('opusClaimEntries: only "Worker model: opus" claim comments become Opus lau
     { body: 'quoting Worker model: opus mid-line', createdAt: FRESH, issue: { identifier: 'BRO-9' } },
     { body: 'Worker model: opus', createdAt: FRESH, issue: null },
   ]);
-  assert.deepEqual(rows, [{ event: 'launch', taskId: 'linear:BRO-7', model: 'opus', ts: FRESH }]);
+  assert.deepEqual(rows, [{ event: 'launch', source: 'cloud-claim', taskId: 'linear:BRO-7', model: 'opus', ts: FRESH }]);
   assert.deepEqual(opusClaimEntries(null), []);
 });
 
@@ -954,7 +954,7 @@ test('modelPicker: cloud Opus claims count toward the 24h cap; an unreadable cou
   assert.doesNotMatch(modelPicker(NOW, { cloudClaims: [] })(opusCard).reason, /counts Mac launches only/);
 });
 
-test('withCloudOpusClaims: a claim for a card the ledger launched within the hour is not counted twice (BRO-5730)', () => {
+test('withCloudOpusClaims: a claim within the hour of a ledger launch of the card is not counted twice (BRO-5730)', () => {
   const { withCloudOpusClaims } = require('./cloud-worker-pick.js');
   const ledger = [{ event: 'launch', taskId: 'linear:BRO-1', model: 'opus', ts: '2026-10-20T10:00:00Z' }];
   const claims = [
@@ -965,4 +965,23 @@ test('withCloudOpusClaims: a claim for a card the ledger launched within the hou
   const out = withCloudOpusClaims(ledger, claims);
   assert.deepEqual(out.map((e) => `${e.taskId}@${e.ts}`), ['linear:BRO-1@2026-10-20T10:00:00Z', 'linear:BRO-2@2026-10-20T10:05:00Z', 'linear:BRO-1@2026-10-20T15:00:00Z']);
   assert.equal(withCloudOpusClaims(null, null).length, 0);
+});
+
+test('cloud claim rows count toward the Opus cap but not as prior launches of the card (BRO-5730)', () => {
+  const { withCloudOpusClaims, opusClaimEntries } = require('./cloud-worker-pick.js');
+  const { countPriorLaunches, countRecentLinearOpusLaunches } = require('./bsc-next-model.js');
+  const now = Date.parse('2026-10-20T16:00:00Z');
+  const claims = opusClaimEntries([{ body: 'Worker model: opus', createdAt: '2026-10-20T12:00:00Z', issue: { identifier: 'BRO-7' } }]);
+  const ledger = [
+    { event: 'launch', taskId: 'linear:BRO-1', model: 'opus', ts: '2026-10-20T10:00:00Z' },
+    { event: 'launch', taskId: 'linear:BRO-1', model: 'opus', ts: '2026-10-20T15:00:00Z' },
+  ];
+  const macClaims = [
+    { event: 'launch', source: 'cloud-claim', taskId: 'linear:BRO-1', model: 'opus', ts: '2026-10-20T10:05:00Z' },
+    { event: 'launch', source: 'cloud-claim', taskId: 'linear:BRO-1', model: 'opus', ts: '2026-10-20T15:05:00Z' },
+  ];
+  const merged = withCloudOpusClaims(ledger, [...claims, ...macClaims]);
+  assert.equal(countRecentLinearOpusLaunches(merged, now), 3);
+  assert.equal(countPriorLaunches(merged, 'linear:BRO-7'), 0);
+  assert.equal(countPriorLaunches(merged, 'linear:BRO-1'), 2);
 });
