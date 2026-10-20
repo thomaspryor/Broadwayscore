@@ -39,6 +39,10 @@ const t = (name, fn) => { fn(); n++; console.log('ok -', name); };
   const entries = readRoundupMisses(ledger);
   t('old show is in cooldown after a miss', () => assert.strictEqual(isTrDiscoveryInCooldown(old, entries, Date.now()), true));
   t('cooldown expires after 24h+', () => assert.strictEqual(isTrDiscoveryInCooldown(old, entries, Date.now() + 25 * 3600000), false));
+  t('TR_MISS_CACHE_DISABLED=true bypasses the cache', () => {
+    process.env.TR_MISS_CACHE_DISABLED = 'true';
+    try { assert.strictEqual(isTrDiscoveryInCooldown(old, entries, Date.now()), false); } finally { delete process.env.TR_MISS_CACHE_DISABLED; }
+  });
   t('show with no prior miss is not in cooldown', () => assert.strictEqual(isTrDiscoveryInCooldown({ ...old, id: 'other' }, entries), false));
   t('show opened <2 days ago is never in cooldown', () => {
     const hot = { ...fresh, openingDate: new Date(Date.now() - 12 * 3600000).toISOString().slice(0, 10) };

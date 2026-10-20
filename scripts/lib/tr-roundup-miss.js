@@ -47,6 +47,7 @@ const trMissKey = (showId) => `tr:${showId}`;
 
 /** Pure: should theatre.reviews discovery be skipped for `show`? */
 function isTrDiscoveryInCooldown(show, entries, now = Date.now()) {
+  if (process.env.TR_MISS_CACHE_DISABLED === 'true') return false; // kill switch
   if (!show || !show.id) return false;
   const last = lastMissForShow(trMissKey(show.id), entries);
   if (!last) return false;
