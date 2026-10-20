@@ -113,7 +113,8 @@ function main() {
     }
 
     // Validate target exists
-    if (!showMap.has(targetId)) {
+    const knownShowIds = showMap; // BRO-5791: mkdir below only runs after this shows.json check
+    if (!knownShowIds.has(targetId)) {
       console.log(`  ❌ ${orphanId} → ${targetId} BUT target doesn't exist in shows.json — skipping`);
       skipped += reviews.length;
       continue;

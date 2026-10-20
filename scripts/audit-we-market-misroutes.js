@@ -38,6 +38,7 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { writeReviewOrThrow } = require('./lib/review-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { loadLiveShowIds } = require('./lib/live-show-ids');
 
 const USAGE = `audit-we-market-misroutes.js — Replay the gather-time market-routing classifier.
 
@@ -48,6 +49,7 @@ Usage:
 const ROOT = path.join(__dirname, '..');
 const DEFAULT_REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
+const knownShowIds = loadLiveShowIds(SHOWS_PATH);
 const AUDIT_OUT = path.join(ROOT, 'data', 'audit', 'market-misroutes-migration.json');
 
 function parseFlag(name, fallback) {
@@ -183,7 +185,11 @@ function main() {
       if (!execute) continue;
 
       try {
-        if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
+        // BRO-5791: never mint a review folder for an id shows.json lacks.
+        if (!fs.existsSync(targetDir)) {
+          if (!knownShowIds || !knownShowIds.has(targetShowId)) { summary.targetNotInShowsJson = (summary.targetNotInShowsJson || 0) + 1; continue; }
+          fs.mkdirSync(targetDir, { recursive: true });
+        }
         // Stamp provenance, clear wrongProduction (flag was correct for prior dir).
         const migrated = {
           ...data,

@@ -4547,7 +4547,12 @@ showDirs.forEach(showId => {
           }
           let targetWritten = false;
           try {
-            if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
+            if (!fs.existsSync(targetDir)) {
+              // BRO-5791: never mint a review folder for an id shows.json lacks.
+              const knownShowIds = showById;
+              if (!knownShowIds[targetShowId]) throw new Error(`reroute target ${targetShowId} not in shows.json`);
+              fs.mkdirSync(targetDir, { recursive: true });
+            }
             // Re-read source fresh to avoid clobbering concurrent updates, then stamp
             // routing metadata so future rebuilds have an audit trail.
             const sourceData = JSON.parse(fs.readFileSync(sourcePath, 'utf8'));

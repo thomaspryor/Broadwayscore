@@ -76,6 +76,7 @@ function main() {
   const reviewTextsDir = flag('reviewTextsDir') || path.join(ROOT, 'data', 'review-texts');
   const raw = readJson(path.join(ROOT, 'data', 'shows.json'));
   const shows = Array.isArray(raw) ? raw : (raw && raw.shows) || [];
+  const knownShowIds = new Set(shows.map(s => s.id));
   // Reviewed backlogs allowed past the hard stop (BRO-4656), see sweepLimits.
   const approvals = readJson(path.join(ROOT, 'data', 'tour-sweep-approvals.json'));
   const plans = planTourSweep(shows, loadSweepContext(ROOT)).filter(p => all || p.tourId === only);
@@ -139,6 +140,7 @@ function main() {
     for (const { fromId, file, data, key: decided } of rows) {
       let key = decided;
       if (key === 'tour-review' && overCap) key = 'held-over-cap';
+      if (key === 'tour-review' && execute && !knownShowIds.has(plan.tourId)) key = 'tour-not-in-shows-json'; // BRO-5791
       if (key === 'tour-review' && execute) {
         fs.mkdirSync(toDir, { recursive: true });
         const res = safeWriteReview(path.join(toDir, file), prepareTourMove(data, { fromShowId: fromId, tourId: plan.tourId, at }), { merge: false });

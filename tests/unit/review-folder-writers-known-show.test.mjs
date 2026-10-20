@@ -19,13 +19,6 @@ const ALLOW = {
   'backfill-outlet-from-sitemap.js': 'showId comes from slug-matching shows.json titles',
   'audit-pre2005-reviews.js': 'mkdir only after showById.has(suggestedShowId)',
   'classify-wrong-production.js': 'mkdir only after showById.has(targetShowId)',
-  // The next five move reviews between ids their own classifiers pick. Not yet
-  // proven to check shows.json at every mkdir site; tracked in the BRO-5789 follow-up card.
-  'audit-we-market-misroutes.js': 'misroute target chosen by the market classifier (unverified)',
-  'fix-orphan-show-ids.js': 'target is the orphan-to-show mapping (unverified)',
-  'migrate-reroute-backlog.js': 'target from the reroute backlog (unverified)',
-  'rebuild-all-reviews.js': 'sibling-move target from the rebuild classifier (unverified)',
-  'sweep-tour-reviews.js': 'target is a tourId from shows.json (unverified)',
   'fetch-opera-images.js': 'writes images, not review-text folders',
 };
 

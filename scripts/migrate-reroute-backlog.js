@@ -45,6 +45,7 @@ const reviewTextsDir = path.join(REPO_ROOT, 'data', 'review-texts');
 const showsPath = path.join(REPO_ROOT, '.core-data-checkout', 'shows.json');
 const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
 const showById = new Map(showsData.shows.map(s => [s.id, s]));
+const knownShowIds = new Set(showById.keys());
 
 const args = process.argv.slice(2);
 const MODE = args.includes('--execute') ? 'execute'
@@ -534,7 +535,15 @@ if (MODE === 'execute') {
       // file, so we must not delete what's sitting there — it belongs to
       // whoever raced us.
       const targetDir = path.dirname(targetPath);
-      if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
+      if (!fs.existsSync(targetDir)) {
+        // BRO-5791: never mint a review folder for an id shows.json lacks.
+        if (!knownShowIds.has(targetShowId)) {
+          console.log(`  SKIP ${sourceShowId}/${file}: target ${targetShowId} not in shows.json`);
+          skipped++;
+          continue;
+        }
+        fs.mkdirSync(targetDir, { recursive: true });
+      }
       fs.writeFileSync(targetPath, JSON.stringify(sourceData, null, 2) + '\n', { flag: 'wx' });
       targetWrittenByUs = true;
 
