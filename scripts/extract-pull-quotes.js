@@ -502,7 +502,7 @@ async function processReview(entry) {
     return;
   }
 
-  // Same hard guards audit-pull-quotes.js applies to shipped quotes (BRO-5789).
+  // Subset of the hard guards audit-pull-quotes.js applies to shipped quotes (BRO-5789): internal notes and mid-word truncation.
   const hardReject = llmQuoteHardRejectReason(quote, data.fullText);
   if (hardReject) {
     stats.hardRejected = (stats.hardRejected || 0) + 1;
