@@ -16,15 +16,13 @@
 //    `--show=<addedId>` per added show — same Playbill cross-check, applied
 //    to the one show that changed instead of the whole provisional backlog.
 //
-// 2. NOT CHANGED: scripts/config/provider-spend-thresholds.json's
-//    brightdataDailyUsd stays at 2.5. The fix above doesn't close the gap on
-//    its own (BD volume is still several thousand req/day across other
-//    legitimate callers) — see that file's _comment for the full reasoning.
-//    This is an owner-policy call per check-provider-spend.js's own
-//    decisionPrompt, not something a dispatched session should silently
-//    3x. The test below locks the number (so a future session doesn't
-//    quietly "fix the alarm" by raising it) and requires the _comment to
-//    keep citing BRO-2226's reasoning.
+// 2. RAISED LATER (BRO-5526, 2026-10-20, owner-approved): brightdataDailyUsd
+//    went 2.5 -> 6 after Bright Data sat at $4.3-4.5/day for 3+ weeks across
+//    legitimate callers, so the old line fired daily with no signal. It is
+//    an owner-policy call per check-provider-spend.js's own decisionPrompt.
+//    The test below locks the number (so a future session doesn't quietly
+//    "fix the alarm" by raising it again) and requires the _comment to keep
+//    citing BRO-2226 and BRO-5526.
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -155,7 +153,7 @@ test('safety net preserved: zero resolvable showIds falls back to --all-provisio
 test('BRO-5526 decision: brightdataDailyUsd was raised 2.5 -> 6 by the owner (2026-10-20); any further change must update this number and the _comment', () => {
   const thresholdsPath = path.join(REPO, 'scripts', 'config', 'provider-spend-thresholds.json');
   const thresholds = JSON.parse(fs.readFileSync(thresholdsPath, 'utf8'));
-  // Locks the owner-approved 2026-07-30 number. A future session that wants
+  // Locks the owner-approved 2026-10-20 number. A future session that wants
   // to change this must update BOTH the number and the _comment reasoning
   // below — not just silently 3x it to make the daily alarm stop firing.
   assert.equal(thresholds.brightdataDailyUsd, 6);
