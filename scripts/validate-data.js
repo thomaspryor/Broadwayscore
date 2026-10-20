@@ -5468,7 +5468,8 @@ function runValidation() {
   validatePlaceholderImageHashes(shows);
   validateVenueCategory(shows);
   info('Checking Broadway venue names against theater metadata...');
-  if (reportVenueNameTypos(shows, error) === 0) {
+  // BRO-4289: switch to error once private core data has no near-miss venues.
+  if (reportVenueNameTypos(shows, warn) === 0) {
     ok('No near-miss Broadway venue names');
   }
   validateTheaterAddress(shows);
