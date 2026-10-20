@@ -3160,9 +3160,13 @@ function readPushRetryFailureLedgerOrNull() {
 // digest run and no send-morning-digest.js local fold is needed. The old
 // per-machine caveat is history; see scripts/lib/push-retry-deadman.js SOURCE.
 // Enforced by tests/unit/audit-health-check-audit.test.mjs (BRO-2199).
-function checkPushRetryDeadman() {
+function checkPushRetryDeadman(dryRun = false) {
   const { assessPushRetryDeadman } = require('./lib/push-retry-deadman.js');
-  return [assessPushRetryDeadman(readPushRetryFailureLedgerOrNull())];
+  // Reading this remote ledger fetches its branch. A live probe must leave
+  // refs untouched and report an unreadable ledger, never a clean empty one.
+  const row = assessPushRetryDeadman(dryRun ? null : readPushRetryFailureLedgerOrNull());
+  if (dryRun) row.message = 'Skipped: the side-effect-free probe cannot fetch the durable push-retry-failures ledger.';
+  return [row];
 }
 
 // --- Shared checkout depth (BRO-2049) ---
@@ -5948,7 +5952,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkDeployFreshness(),
     ...(await checkAlertRouterDeadman(isCI)),
     ...(await checkCodexRunner()),
-    ...checkPushRetryDeadman(),
+    ...checkPushRetryDeadman(dryRun),
     ...checkInfraReviewGate(),
     ...checkSharedCheckoutShallow(),
     ...checkDispatchOutcomes(dryRun),

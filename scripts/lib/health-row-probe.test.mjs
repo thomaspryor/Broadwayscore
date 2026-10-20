@@ -227,12 +227,8 @@ test('a probe run performs zero real fs writes (spy on the REAL, unpatched fs)',
 // fs-write monkey-patch above cannot see or block, since it's a child
 // process, not a Node fs call. checkStuckPipelineItems() passes
 // `skipFetch: true` specifically to avoid adding this to the probe's side
-// effects. NOTE: this only pins checkStuckPipelineItems()'s OWN
-// contribution — scripts/lib/autofix-canary.js's checkAutofixCanary()/
-// checkAutofixThroughput() (pre-existing, unrelated to this fix) already run
-// their own unconditional `git fetch` on every core-results computation, so
-// a whole-probe "FETCH_HEAD never changes" assertion would fail for a
-// reason this diff didn't cause and can't fix.
+// effects. The whole-probe no-fetch contract is covered by
+// autofix-canary-probe.test.mjs (BRO-3823).
 test('checkStuckPipelineItems calls gatherDigest with skipFetch (no added git-fetch side effect)', () => {
   const overnightDigestPath = require.resolve('./overnight-digest.js');
   const original = require.cache[overnightDigestPath];
