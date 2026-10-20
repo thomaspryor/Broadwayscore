@@ -148,3 +148,17 @@ test('refuses a tour id that carries the parent market before -tour-<year>', () 
 test('tourOf and tourScheduleSlug still belong only on category "tour"', () => {
   assert.equal(applyAddShow([{ ...parent }], { show: { ...base(), tourScheduleSlug: 'x' } }).ok, false);
 });
+
+// BRO-5789: write-time duplicate gate (audit-duplicate-shows found these after shipping).
+const existingAmaze = { id: 'amaze-magic-off-broadway-2025', slug: 'amaze-magic-off-broadway-2025', title: 'AMAZE Magic', venue: 'New World Stages', market: 'broadway', category: 'off-broadway', status: 'open', openingDate: '2025-08-13' };
+test('refuses a "presents-" prefixed copy of an existing title', () => {
+  const ex = { id: 'pirates-off-west-end-2027', slug: 'pirates-off-west-end-2027', title: "Disney's Pirates of the Caribbean: The Immersive Adventure", venue: 'Secret Cinema, Greenwich Peninsula', market: 'west-end', category: 'off-west-end', status: 'open', openingDate: '2027-03-01', closingDate: '2027-09-01' };
+  const row = { ...base(), id: 'presents-pirates-off-west-end-2027', slug: 'presents-pirates-off-west-end-2027', title: "Secret Cinema Presents Disney's Pirates of the Caribbean: The Immersive Adventure", venue: 'Secret Cinema, Greenwich Peninsula', market: 'west-end', category: 'off-west-end', status: 'open', openingDate: '2027-03-05', closingDate: '2027-08-01' };
+  const r = applyAddShow([ex], { show: row });
+  assert.equal(r.ok, false);
+  assert.match(r.reason, /duplicates existing "pirates-off-west-end-2027"/);
+  assert.equal(applyAddShow([{ ...ex }], { show: row, distinctFrom: ['pirates-off-west-end-2027'] }).ok, true);
+});
+test('an unrelated title is not blocked', () => {
+  assert.equal(applyAddShow([{ ...existingAmaze }], { show: base() }).ok, true);
+});

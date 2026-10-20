@@ -69,6 +69,26 @@ function marketShapeProblem(shows, show) {
   return null;
 }
 
+const { findTitleFragmentDupes, findSharedTicketIdentityDupes } = require('./show-duplicate-detection');
+
+const titleWords = t => String(t || '').toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 4);
+
+// The detectors are O(n^2); only rows sharing a title word or a ticket id with
+// the new row can pair with it, so test that small neighbourhood.
+function newRowDuplicate(shows, show, distinctFrom) {
+  const ok = new Set(Array.isArray(distinctFrom) ? distinctFrom : []);
+  const words = new Set(titleWords(show.title));
+  const tt = String(show.todaytixId || '');
+  const near = shows.filter(s => (tt && String(s.todaytixId || '') === tt) || titleWords(s.title).some(w => words.has(w)));
+  const pool = [{ ...show }, ...near];
+  const hits = [...findTitleFragmentDupes(pool), ...findSharedTicketIdentityDupes(pool)];
+  for (const h of hits) {
+    const other = h.a === show.id ? h.b : h.b === show.id ? h.a : null;
+    if (other && !ok.has(other)) return { other, reason: h.reason || 'title-fragment' };
+  }
+  return null;
+}
+
 function applyAddShow(shows, action, { isRetired } = {}) {
   const show = action && action.show;
   if (!show || typeof show !== 'object') return { ok: false, reason: 'add-show: missing show object' };
@@ -86,6 +106,13 @@ function applyAddShow(shows, action, { isRetired } = {}) {
   const retired = typeof isRetired === 'function' ? isRetired(show.id) : require('./retired-show-ids').isRetiredId(show.id);
   if (retired) return { ok: false, reason: `add-show: id "${show.id}" is in the retired-show registry (data/retired-show-ids.json); unretire it first if this is a deliberate re-add` };
   if (shows.some(s => s.slug === show.slug)) return { ok: false, reason: `add-show: slug "${show.slug}" already exists` };
+
+  // Write-time duplicate gate (BRO-5789): audit-duplicate-shows.js found these
+  // pairs only after the row shipped. Same detectors, run for the new row only.
+  // An owner-confirmed distinct production lists the other id in
+  // action.distinctFrom.
+  const dup = newRowDuplicate(shows, show, action.distinctFrom);
+  if (dup) return { ok: false, reason: `add-show: "${show.id}" duplicates existing "${dup.other}" (${dup.reason}); if it is a genuinely distinct production list "${dup.other}" in the action's distinctFrom` };
 
   let from = null;
   if (action.crossLinkFrom) {
