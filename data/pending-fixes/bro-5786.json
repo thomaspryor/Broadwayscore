@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5786",
   "planId": "4b740c1b-6b93-453b-9df7-d98562dfbaf9",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -38,5 +38,14 @@
         "description": "BRO-5786: owner decided the 2023 reviews are not this run's; the 2023 production has its own page (school-pictures-off-broadway-2023, 6 reviews) and stays linked."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-20T17:33:15.787Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for school-pictures-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
