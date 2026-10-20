@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-20T17:51:02.880Z",
+  "generatedAt": "2026-10-20T19:27:57.047Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -167,10 +167,6 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -199,10 +195,19 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 726,
-  "matchedGaps": 6,
+  "itemsScanned": 732,
+  "matchedGaps": 5,
   "possibleGaps": 6,
   "gaps": [
+    {
+      "showId": "copperfield-the-new-musical-off-broadway-2026",
+      "title": "Copperfield! The New Musical",
+      "level": "matched",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/copperfield-the-new-musical/",
+      "headline": "Copperfield: The New Musical ****",
+      "publishDate": "2026-10-19"
+    },
     {
       "showId": "copperfield-the-new-musical-off-broadway-2026",
       "title": "Copperfield! The New Musical",
@@ -219,24 +224,6 @@
       "outletId": "off-off-online",
       "url": "https://www.offoffonline.com/offoffonline/2026/10/16/copperfield-the-new-musical",
       "headline": "Copperfield! The New Musical",
-      "publishDate": "2026-10-20"
-    },
-    {
-      "showId": "king-of-the-yees-off-broadway-2026",
-      "title": "King of the Yees",
-      "level": "matched",
-      "outletId": "nytimes",
-      "url": "https://www.nytimes.com/2026/10/20/theater/king-of-the-yees-review.html",
-      "headline": "‘King of the Yees’ Review: Buckle Up for a Daughter’s Fantastical Quest",
-      "publishDate": "2026-10-20"
-    },
-    {
-      "showId": "lincoln-in-the-bardo-off-broadway-2026",
-      "title": "Lincoln in the Bardo",
-      "level": "matched",
-      "outletId": "new-york-classical-review",
-      "url": "https://newyorkclassicalreview.com/2026/10/great-music-moving-moments-vie-with-libretto-structural-issues-in-mets-lincoln-in-the-bardo/",
-      "headline": "Great music, moving moments vie with libretto, structural issues in Met premiere of &#8220;Lincoln in the Bardo&#8221;",
       "publishDate": "2026-10-20"
     },
     {
