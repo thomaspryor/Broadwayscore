@@ -793,17 +793,20 @@ function leaveToCodex(issue, { nowMs, verify = '', startNow = false } = {}) {
 /**
  * Cards landed per lane from `git log --format=${LANDED_LOG_FORMAT}` lines: distinct BRO ids in
  * commit subjects by "Codex runner" vs by Claude (every Claude session, not just the board's
- * Claude lane; bots and the owner's own commits are left out). Mac sessions commit under the
- * owner's name, so a Co-Authored-By trailer at noreply@anthropic.com also counts as Claude
- * (BRO-5767: 185 such cards in a week were missing). A Codex cloud PR landing (subject names
+ * Claude lane; bots and the owner's hand commits are left out). Mac sessions commit under the
+ * owner's name, so an owner commit with a Co-Authored-By trailer at noreply@anthropic.com also
+ * counts as Claude (BRO-5767: +83 cards over a week). A Codex cloud PR landing (subject names
  * "Codex PR #N", no BRO id) counts once as PR #N in the Codex lane (BRO-5646). -> { codex, claude }
  */
-const LANDED_LOG_FORMAT = '%an%x09%s%x09%(trailers:key=Co-Authored-By,valueonly,separator=%x2C)';
+const OWNER_GIT_AUTHOR = 'Tom Pryor';
+// Fields: author, co-authors (one line, comma-joined), subject last so a tab in it stays whole.
+const LANDED_LOG_FORMAT = '%an%x09%(trailers:key=Co-Authored-By,valueonly,separator=%x2C)%x09%s';
 function landedPerLane(logText) {
   const ids = { codex: new Set(), claude: new Set() };
   for (const line of String(logText || '').split('\n')) {
-    const [author, subject = '', ...trailers] = line.split('\t');
-    const byClaude = author === 'Claude' || /<noreply@anthropic\.com>/i.test(trailers.join('\t'));
+    const [author, coAuthors = '', ...rest] = line.split('\t');
+    const subject = rest.join('\t');
+    const byClaude = author === 'Claude' || (author === OWNER_GIT_AUTHOR && /<noreply@anthropic\.com>/i.test(coAuthors));
     const lane = author === 'Codex runner' ? 'codex' : byClaude ? 'claude' : null;
     if (!lane) continue;
     const found = subject.match(/\bBRO-\d+\b/g) || (lane === 'codex' && subject.match(/\bCodex PR #\d+\b/g)) || [];

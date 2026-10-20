@@ -71,9 +71,10 @@ test('fetchBoardNumbersData asks for 1 and 7 day windows and survives one failur
 test('readLanded splits 24h and 7d from one log', () => {
   const now = 1_000_000_000_000;
   const t = (h) => Math.floor(now / 1000) - h * 3600;
-  const log = `${t(2)}\tCodex runner\tfix(BRO-1): a\n${t(30)}\tClaude\tfeat(BRO-2): b\n${t(3)}\tClaude\tBRO-3\n${t(1)}\tbot\tBRO-9\n`;
+  // Fields: %ct, author, co-authors, subject (LANDED_LOG_FORMAT). The owner row is a Mac Claude session (BRO-5767).
+  const log = `${t(2)}\tCodex runner\t\tfix(BRO-1): a\n${t(30)}\tClaude\t\tfeat(BRO-2): b\n${t(3)}\tClaude\t\tBRO-3\n${t(1)}\tbot\t\tBRO-9\n${t(4)}\tTom Pryor\tClaude Sonnet 5.5 <noreply@anthropic.com>\tfix: c (BRO-4)\n`;
   const exec = (cmd, args) => (args[0] === 'log' ? log : 'false');
-  assert.deepEqual(B.readLanded({ exec, nowMs: now }), { d1: { codex: 1, claude: 1 }, d7: { codex: 1, claude: 2 } });
+  assert.deepEqual(B.readLanded({ exec, nowMs: now }), { d1: { codex: 1, claude: 2 }, d7: { codex: 1, claude: 3 } });
 });
 
 test('open-walk truncation alone does not flag minimums; shown-count truncation does', () => {

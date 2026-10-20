@@ -795,11 +795,12 @@ test('savings line: check $ per landed card in the summary and the health row; l
   const b = '## Codex runner 2026-10-15: 3 card(s) worked in 100 min (slot 0)\n- Landed and Done: BRO-1, BRO-2\n- Runner error mid-card (back to Todo): none\n- Claude check: 4 review(s), $1.20 API cost\n- Stopped early: no';
   assert.equal(r.runnerSummaryFacts(b).checkUsd, 1.2);
   assert.match(r.runnerHealth([{ createdAt: '2026-10-15T09:00:00Z', body: b }], Date.parse('2026-10-15T10:00:00Z')).message, /2 card\(s\) landed, 0 crashed mid-card, Claude check \$1\.20 \(\$0\.60 per landed card\)/);
-  const log = ['Codex runner\tfix(BRO-10): a', 'Codex runner\tfix(BRO-10): a (review fixes)', 'Claude\tBRO-20: b', 'Claude\tdata(BRO-21) + BRO-20', 'github-actions[bot]\tdata: BRO-99 rebuild', 'Tom Pryor\tBRO-98'].join('\n');
+  const log = ['Codex runner\t\tfix(BRO-10): a', 'Codex runner\t\tfix(BRO-10): a (review fixes)', 'Claude\t\tBRO-20: b', 'Claude\t\tdata(BRO-21) + BRO-20', 'github-actions[bot]\t\tdata: BRO-99 rebuild', 'Tom Pryor\t\tBRO-98'].join('\n');
   assert.deepEqual(r.landedPerLane(log), { codex: 1, claude: 2 });
   // BRO-5767: Mac sessions commit as the owner with a Claude co-author trailer; a bare owner commit stays out.
-  const mac = ['Tom Pryor\tfix: x (BRO-30)\tClaude Sonnet 5.5 <noreply@anthropic.com>', 'Tom Pryor\tBRO-31 by hand\t', 'Codex runner\tBRO-32\tClaude Opus 5.5 <noreply@anthropic.com>', 'github-actions[bot]\tBRO-33\t'].join('\n');
-  assert.deepEqual(r.landedPerLane(mac), { codex: 1, claude: 1 });
+  const C = 'Claude Sonnet 5.5 <noreply@anthropic.com>';
+  const mac = [`Tom Pryor\t${C}\tfix: x (BRO-30)`, 'Tom Pryor\t\tBRO-31 by hand', `Codex runner\t${C}\tBRO-32`, `github-actions[bot]\t${C}\tBRO-33 rebuild`, `Tom Pryor\t${C}\ta\tb BRO-34`].join('\n');
+  assert.deepEqual(r.landedPerLane(mac), { codex: 1, claude: 2 });
   const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
   assert.match(src, /- Claude check by model: /);
   assert.match(src, /- Landed on main, last 24h: /);
@@ -931,7 +932,7 @@ test('prLanderComment: marker, head sha, plain lines, remaining list, fenced det
   assert.match(rej, /- add a test/);
   assert.equal((rej.match(/```/g) || []).length, 2, 'only the outer fence survives');
   assert.match(r.prLanderComment({ outcome: 'weird', sha: '' }), /\*\*Codex lander:\*\* Outcome: weird/);
-  const log = 'Codex runner\tfeat(codex-pr-12): x (Codex PR #12)\nCodex runner\tfix(BRO-10): a\nClaude\tCodex PR #13 mention';
+  const log = 'Codex runner\t\tfeat(codex-pr-12): x (Codex PR #12)\nCodex runner\t\tfix(BRO-10): a\nClaude\t\tCodex PR #13 mention';
   assert.deepEqual(r.landedPerLane(log), { codex: 2, claude: 0 });
 });
 
