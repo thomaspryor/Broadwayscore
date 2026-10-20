@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5739",
   "planId": "00955293-f9dc-48c7-84cf-436ca24bbf4c",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -103,5 +103,34 @@
         "description": "compost-whats-left-off-west-end-2026: art is the 'Work of Devotion' poster (another play), not this production; null so the placeholder shows (BRO-5739)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-20T01:27:27.184Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for north-star-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for petra-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-grocers-evening-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-last-vikings-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for compost-whats-left-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
