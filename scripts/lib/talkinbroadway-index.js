@@ -105,7 +105,7 @@ function titleFromPageTitle(pageTitle) {
  * revival, a regional run of the same play) cannot attach to an old production.
  * @returns {{show: object|null, reason: 'match'|'none'|'ambiguous'}}
  */
-function matchShowByTitle(title, shows, { now = new Date(), windowDays = 75, aheadDays = 3 } = {}) {
+function matchShowByTitle(title, shows, { now = new Date(), windowDays = 200, aheadDays = 3 } = {}) {
   const want = normalizeTitle(title);
   if (!want) return { show: null, reason: 'none' };
   const lo = now.getTime() - windowDays * 86400000;
