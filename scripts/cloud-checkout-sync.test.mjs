@@ -38,7 +38,7 @@ function fixture(fn) {
     git('update-ref', 'refs/remotes/origin/main', 'HEAD');
     git('checkout', '-q', 'session');
     return fn({ dir, git, write, commit, sync });
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 }
 
 test('BRO-4230: squash-landed commits reset with --keep even when git cherry says missing', () => fixture(({ dir, git, write, sync }) => {
