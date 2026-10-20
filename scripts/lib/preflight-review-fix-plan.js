@@ -14,6 +14,7 @@
  *   of review-texts). The tree checked is the live review-texts clone when the session has one.
  */
 const fs = require('fs');
+const { orphanFilesAfterNulling } = require('./image-null-orphan-files');
 const os = require('os');
 const path = require('path');
 const { executeReviewFieldEditIn } = require('./review-field-edit');
@@ -95,6 +96,8 @@ function preflight(planPaths, { reviewTextsDir = pickReviewTextsTree(), log = co
       for (const a of actions) {
         const problem = fileOpSourceProblem(a, (rel) => fs.existsSync(path.join(reviewTextsDir, rel)), removed, created);
         if (problem) { failed++; log(`  FAIL ${id} ${a.operation} ${a.sourcePath}: ${problem}`); continue; }
+        // Advisory (BRO-5739): nulling images while the files stay on disk is undone by pre-deploy-check.
+        for (const f of orphanFilesAfterNulling(a)) log(`  WARN ${id}: ${f} is still on disk; pre-deploy-check re-attaches it, so git rm it in the same land`);
         if (a.type !== 'review-field-edit') { log(`  skip ${a.type} (not replayed)`); continue; }
         const showId = String(a.file || '').split('/')[0];
         if (showId && !copied.has(showId) && fs.existsSync(path.join(reviewTextsDir, showId))) {
