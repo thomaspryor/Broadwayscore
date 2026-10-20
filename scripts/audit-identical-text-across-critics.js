@@ -80,7 +80,7 @@ const BASELINE = path.join(__dirname, '..', 'data', 'audit', 'identical-text-cri
 
 function loadRows(onlyShows) {
   const rows = [];
-  for (const showId of listShowDirs(DIR)) {
+  for (const showId of listShowDirs(DIR, { skipHolding: true })) {
     if (onlyShows && !onlyShows.has(showId)) continue;
     const dir = path.join(DIR, showId);
     for (const file of fs.readdirSync(dir)) {

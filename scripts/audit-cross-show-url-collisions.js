@@ -138,7 +138,7 @@ for (const s of showsData.shows) {
   (showsByTitle[key] = showsByTitle[key] || []).push({ id: s.id, venue: s.venue || null });
 }
 
-const showDirs = listShowDirs(REVIEW_TEXTS_DIR);
+const showDirs = listShowDirs(REVIEW_TEXTS_DIR, { skipHolding: true });
 
 // --- Pre-pass: showId-vs-directory mismatch detection ---
 // BWW scraper placed files in wrong directories but set correct showId internally.

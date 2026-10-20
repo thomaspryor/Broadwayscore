@@ -132,7 +132,7 @@ function mergeReviewData(target, source) {
 }
 
 function getShowDirs() {
-  return listShowDirs(REVIEW_TEXTS_DIR).sort();
+  return listShowDirs(REVIEW_TEXTS_DIR, { skipHolding: true }).sort();
 }
 function getReviewFiles(showId) {
   try { return fs.readdirSync(path.join(REVIEW_TEXTS_DIR, showId)).filter(f => f.endsWith('.json')).sort(); } catch(e) { return []; }

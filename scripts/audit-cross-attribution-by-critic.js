@@ -304,10 +304,7 @@ function scoreFileAgainstShows(content, filedShowId) {
 }
 
 console.log(`Scanning ${REVIEW_TEXTS_DIR}…`);
-const showDirs = listShowDirs(REVIEW_TEXTS_DIR).filter(d => {
-  if (d.startsWith('.') || d === '_pending') return false;
-  return true;
-});
+const showDirs = listShowDirs(REVIEW_TEXTS_DIR, { skipHolding: true });
 
 let totalFiles = 0;
 let scanned = 0;

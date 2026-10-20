@@ -91,3 +91,24 @@ test('listShowDirs silent option suppresses the warning but still skips bad entr
     fs.rmSync(root, { recursive: true, force: true });
   }
 });
+
+// BRO-5743: grouping audits must not treat mixed-show archives as a show.
+test('skipHolding excludes all underscore dirs and preserves real show dirs and symlinks', () => {
+  const root = makeTmpCorpus();
+  try {
+    for (const name of ['_pending', '_superseded-misattributed', '_future-holding']) {
+      fs.mkdirSync(path.join(root, name));
+    }
+    fs.mkdirSync(path.join(root, 'a_show_with_underscores'));
+    fs.symlinkSync(path.join(root, 'wicked'), path.join(root, 'wicked-link'));
+    const expected = ['a_show_with_underscores', 'hamilton', 'wicked', 'wicked-link'];
+    assert.deepEqual(listShowDirs(root, { skipHolding: true, silent: true }).sort(), expected);
+    // Whole-corpus consumers retain the default, including future holding dirs.
+    assert.deepEqual(listShowDirs(root, { silent: true }).sort(),
+      ['_future-holding', '_pending', '_superseded-misattributed', ...expected]);
+    assert.deepEqual(listShowDirs(root, { skipHolding: false, silent: true }).sort(),
+      listShowDirs(root, { silent: true }).sort());
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});

@@ -226,7 +226,7 @@ function run(argv) {
   const doApply = argv.includes('--apply');
   const liveIdx = buildLiveIndex(JSON.parse(fs.readFileSync(REVIEWS_JSON, 'utf8')).reviews);
   const report = [];
-  for (const showId of listShowDirs(dir)) {
+  for (const showId of listShowDirs(dir, { skipHolding: true })) {
     if (only && showId !== only) continue;
     const showDir = path.join(dir, showId);
     let pairs = scanShow(showId, loadRecords(showDir), liveIdx, showDir);

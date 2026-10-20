@@ -55,7 +55,7 @@ const OUTLET_CRITIC_CORRECTIONS = {
 
 function findCruftFiles() {
   const cruftFiles = [];
-  const showDirs = listShowDirs(reviewTextsDir);
+  const showDirs = listShowDirs(reviewTextsDir, { skipHolding: true });
 
   for (const showId of showDirs) {
     const showDir = path.join(reviewTextsDir, showId);

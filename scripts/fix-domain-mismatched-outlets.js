@@ -219,7 +219,7 @@ function processOne(showId, file, fromOutlet, toOutlet) {
 function main() {
   let showDirs;
   try {
-    showDirs = listShowDirs(REVIEW_TEXTS_DIR);
+    showDirs = listShowDirs(REVIEW_TEXTS_DIR, { skipHolding: true });
   } catch (e) {
     console.error(`Cannot read ${REVIEW_TEXTS_DIR}: ${e.message}`);
     process.exit(1);

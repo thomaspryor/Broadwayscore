@@ -343,7 +343,7 @@ function isLiveApPrimary(showDir, f) {
     return !(d.isSyndicatedDuplicate || d.duplicateOf || d.wrongShow || d.wrongProduction || d.isNonReview || d.wrongAttribution);
   } catch { return false; }
 }
-const showDirs = listShowDirs(REVIEW_TEXTS_DIR).filter(d => {
+const showDirs = listShowDirs(REVIEW_TEXTS_DIR, { skipHolding: true }).filter(d => {
   if (SHOW_FILTER && d !== SHOW_FILTER) return false;
   return true;
 });

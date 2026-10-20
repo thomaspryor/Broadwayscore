@@ -32,7 +32,7 @@ function normalize(str) {
 }
 
 // Get all shows
-const shows = listShowDirs(REVIEW_TEXTS_DIR);
+const shows = listShowDirs(REVIEW_TEXTS_DIR, { skipHolding: true });
 
 for (const showId of shows) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);

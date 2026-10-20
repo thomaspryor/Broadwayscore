@@ -432,7 +432,7 @@ function main() {
       shows = [showFilter];
       console.log(`Processing single show: ${showFilter}\n`);
     } else {
-      shows = listShowDirs(REVIEW_TEXTS_DIR)
+      shows = listShowDirs(REVIEW_TEXTS_DIR, { skipHolding: true })
         .filter(f => {
           const fullPath = path.join(REVIEW_TEXTS_DIR, f);
           return fs.statSync(fullPath).isDirectory();

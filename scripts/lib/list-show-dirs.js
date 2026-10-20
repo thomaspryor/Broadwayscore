@@ -30,10 +30,13 @@ const path = require('path');
  * @param {string} dir - absolute or cwd-relative directory path
  * @param {object} [opts]
  * @param {boolean} [opts.silent=false] - suppress the per-skip ::warning::
+ * @param {boolean} [opts.skipHolding=false] - skip _-prefixed holding directories
+ *   when directory names represent show IDs. Leave false for whole-corpus
+ *   forensic scans and backups that need archived/quarantined records too.
  * @returns {string[]} subdirectory names (not full paths)
  */
 function listShowDirs(dir, opts = {}) {
-  const { silent = false } = opts;
+  const { silent = false, skipHolding = false } = opts;
   let entries;
   try {
     entries = fs.readdirSync(dir);
@@ -45,6 +48,7 @@ function listShowDirs(dir, opts = {}) {
   const dirs = [];
   for (const name of entries) {
     if (name.startsWith('.')) continue;  // .git, .DS_Store, etc.
+    if (skipHolding && name.startsWith('_')) continue;
     const full = path.join(dir, name);
     let st;
     try {

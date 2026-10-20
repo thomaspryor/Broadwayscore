@@ -88,7 +88,7 @@ async function pool(items, fn) {
 
 function loadTargets() {
   const out = [];
-  for (const showId of listShowDirs(REVIEW_TEXTS_DIR, { silent: true })) {
+  for (const showId of listShowDirs(REVIEW_TEXTS_DIR, { silent: true, skipHolding: true })) {
     if (ONLY_SHOW && showId !== ONLY_SHOW) continue;
     if (!ONLY_SHOW && !ALL_MARKETS && !/west-end|london/.test(showId)) continue;
     const dir = path.join(REVIEW_TEXTS_DIR, showId);

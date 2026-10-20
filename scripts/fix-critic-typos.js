@@ -82,7 +82,7 @@ function levenshtein(a, b) {
 // Build global critic frequency map for tiebreaking
 function buildCriticFrequency() {
   const freq = {};
-  const showDirs = listShowDirs(DIR);
+  const showDirs = listShowDirs(DIR, { skipHolding: true });
   for (const showId of showDirs) {
     const showDir = path.join(DIR, showId);
     const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
@@ -127,7 +127,7 @@ function main() {
   console.log('Building critic frequency map...');
   const freq = buildCriticFrequency();
 
-  const showDirs = listShowDirs(DIR);
+  const showDirs = listShowDirs(DIR, { skipHolding: true });
 
   let fixed = 0;
   let skipped = 0;

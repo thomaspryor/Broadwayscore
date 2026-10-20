@@ -145,7 +145,7 @@ function compareReviewPriority(a, b) {
 // ── Load all review files ────────────────────────────────────────────────────
 
 function loadAllReviews() {
-  const showDirs = listShowDirs(REVIEW_TEXTS_DIR);
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR, { skipHolding: true });
 
   const allReviews = []; // { showId, file, filePath, data }
 

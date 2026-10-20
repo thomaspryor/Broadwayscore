@@ -183,7 +183,7 @@ async function main() {
   if (SHOW_FILTER) console.log(`Show filter: ${SHOW_FILTER}`);
   console.log('');
 
-  const shows = listShowDirs(REVIEW_TEXTS_DIR)
+  const shows = listShowDirs(REVIEW_TEXTS_DIR, { skipHolding: true })
     .filter(d => !SHOW_FILTER || d === SHOW_FILTER);
 
   const stats = {

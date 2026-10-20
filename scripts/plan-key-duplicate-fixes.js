@@ -32,7 +32,7 @@ function bylineHit(name, d) {
 
 function scan() {
   const groups = new Map();
-  for (const showDir of listShowDirs(RT)) {
+  for (const showDir of listShowDirs(RT, { skipHolding: true })) {
     const dir = path.join(RT, showDir);
     let names;
     try { names = fs.readdirSync(dir); } catch { continue; }

@@ -84,10 +84,7 @@ function main() {
     process.exit(2);
   }
   const showsPath = fs.existsSync(SHOWS_PATH) ? SHOWS_PATH : undefined;
-  const dirs = listShowDirs(REVIEW_TEXTS_DIR).filter(d => {
-    if (d === '_pending') return false;
-    return true;
-  });
+  const dirs = listShowDirs(REVIEW_TEXTS_DIR, { skipHolding: true });
 
   let scanned = 0;
   const hits = [];

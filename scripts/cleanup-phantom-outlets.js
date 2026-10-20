@@ -58,7 +58,7 @@ function isCanonicalOutlet(outletId) {
 function run() {
   console.log(`\n=== Phantom Outlet Cleanup ${apply ? '(APPLY MODE)' : '(DRY RUN)'} ===\n`);
 
-  const showDirs = listShowDirs(REVIEW_TEXTS_DIR);
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR, { skipHolding: true });
 
   let totalDuplicates = 0;
   let totalMerged = 0;
@@ -254,7 +254,7 @@ function auditPhantomOutlets() {
     registryNames.set((data.displayName || id).toLowerCase(), id);
   }
 
-  const showDirs = listShowDirs(REVIEW_TEXTS_DIR);
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR, { skipHolding: true });
 
   // Scan all files, build outlet map
   const outletMap = new Map(); // outletId → { count, showIds, hasFullText }

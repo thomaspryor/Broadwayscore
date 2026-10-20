@@ -179,7 +179,7 @@ function main() {
     errors: []
   };
 
-  const shows = listShowDirs(REVIEW_TEXTS_DIR);
+  const shows = listShowDirs(REVIEW_TEXTS_DIR, { skipHolding: true });
 
   for (const show of shows) {
     const showDir = path.join(REVIEW_TEXTS_DIR, show);

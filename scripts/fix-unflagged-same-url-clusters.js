@@ -85,7 +85,7 @@ function walkShowDirs(root) {
   // dangling symlink per-entry (warns + skips) instead of throwing and
   // crashing the whole run — the 2026-05-27 stray-symlink incident this
   // helper exists to prevent (scripts/lib/list-show-dirs.js).
-  return listShowDirs(root).filter((name) => !NON_SHOW_DIRS.has(name) && !name.startsWith('.'));
+  return listShowDirs(root, { skipHolding: true }).filter((name) => !NON_SHOW_DIRS.has(name) && !name.startsWith('.'));
 }
 
 function loadShowRecords(showDir) {

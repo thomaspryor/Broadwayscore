@@ -23,7 +23,7 @@ const OUTPUT_DIR = path.join(__dirname, '../data/audit');
 const OUTPUT_FILE = path.join(OUTPUT_DIR, 'baseline-assessment.json');
 
 function getShowDirectories() {
-  return listShowDirs(REVIEW_TEXTS_DIR)
+  return listShowDirs(REVIEW_TEXTS_DIR, { skipHolding: true })
     .filter(f => {
       const fullPath = path.join(REVIEW_TEXTS_DIR, f);
       return fs.statSync(fullPath).isDirectory();

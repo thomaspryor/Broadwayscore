@@ -22,8 +22,8 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const ROOT = path.join(__dirname, '..');
 const RT = path.join(ROOT, 'data', 'review-texts');
 
-function* eachReview() {
-  for (const showDir of listShowDirs(RT)) {
+function* eachReview(opts = {}) {
+  for (const showDir of listShowDirs(RT, opts)) {
     const dir = path.join(RT, showDir);
     let st;
     try { st = fs.statSync(dir); } catch { continue; }
@@ -72,7 +72,7 @@ const brief = (r) => {
 
 function dups() {
   const groups = new Map();
-  for (const r of eachReview()) {
+  for (const r of eachReview({ skipHolding: true })) {
     const d = r.data;
     if (d.duplicateOf || d.wrongProduction || d.wrongShow || d.wrongUrl || isRejectedNonReview(d)) continue;
     const key = `${r.showDir}|${(d.outletId || '').toLowerCase() || (d.outlet || '').toLowerCase()}|${(d.criticName || 'unknown').toLowerCase().trim()}`;

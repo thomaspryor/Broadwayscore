@@ -318,6 +318,8 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # BRO-4907 outlet tier audit: the card's acceptance criteria require these committed.
 !/docs/audits/
 /docs/audits/*
+# BRO-5743: retain the written decision for every directory-list consumer.
+!/docs/audits/bro-5743-holding-directory-consumers.md
 !/docs/audits/outlet-tier-audit-2026-10.*
 # BRO-5431 requires the per-workflow run-log classification to survive checkout.
 !/docs/audits/bro-5431-missing-deps.md
