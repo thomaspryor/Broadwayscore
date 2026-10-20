@@ -511,7 +511,7 @@ function llmQuoteHardRejectReason(quote, fullText) {
 
 // A stored llmPullQuote that fails the write-time guard is treated as absent,
 // so the extractor's skip-if-present does not pin it forever: the rebuild
-// drops it from the site and nothing else replaces it (BRO-5796).
+// drops or trims it and nothing else replaces it (BRO-5796).
 function hasUsableLlmQuote(data) {
   return !!(data && data.llmPullQuote && !llmQuoteHardRejectReason(data.llmPullQuote, data.fullText));
 }

@@ -153,6 +153,13 @@ test('llmPullQuote must be verbatim from fullText (quote marks and spacing ignor
   assert.equal(applyReviewFieldEdit(rec, { field: 'llmPullQuote', oldValue: null, newValue: 'too short' }, stamp).ok, false);
 });
 
+// BRO-5796: an edit the extractor's write guard refuses would be re-extracted over.
+test('llmPullQuote edit cut mid-word is refused', () => {
+  const rec = { fullText: 'The play has lost its essential velocity in the move from Lincoln Center Theater, where it began.' };
+  const r = applyReviewFieldEdit(rec, { field: 'llmPullQuote', oldValue: null, newValue: 'The play has lost its essential velocity in the move from Lincoln Cent' }, stamp);
+  assert.equal(r.ok, false);
+});
+
 // BRO-4432: a plan-set flag beside a stale machine auto-clear stayed
 // ineffective (isEffectivelyWrongProductionOrShow reads the auto-clear first).
 test('setting wrongProduction true retracts a stale auto-clear, reported as an expected side effect', () => {

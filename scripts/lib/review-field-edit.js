@@ -178,6 +178,10 @@ const FIELD_VALUE_CHECKS = {
     if (!record.fullText || !norm(record.fullText).includes(norm(v))) {
       return 'llmPullQuote must appear verbatim in the review fullText';
     }
+    // The extractor's write guard (BRO-5796): a quote it refuses would be
+    // re-extracted over this edit on its next run.
+    const reject = require('./pull-quote-guards').llmQuoteHardRejectReason(v, record.fullText);
+    if (reject) return `llmPullQuote rejected: ${reject}`;
     return null;
   },
   // A url edit is allowed only when the CURRENT url is provably wrong for this

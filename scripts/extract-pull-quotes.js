@@ -542,7 +542,9 @@ async function processReview(entry) {
       return;
     }
     // A concurrent run may have already written this same llmPullQuote (or a
-    // human/other extractor set one) since we scanned — don't stomp it.
+    // human/other extractor set one) since we scanned — don't stomp it. A
+    // stored quote failing the write guard is not kept (review-field-edit
+    // refuses those edits too).
     if (hasUsableLlmQuote(current) && !OVERWRITE) { stats.skipped++; return; }
     // Re-verify against the fresh body too: fullText is PROTECTED, but if it
     // legitimately changed since scan time (refetch/heal) the stale quote we
