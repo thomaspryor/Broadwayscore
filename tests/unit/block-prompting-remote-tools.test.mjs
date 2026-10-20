@@ -114,7 +114,7 @@ test('list_sessions is denied for both server spellings (BRO-4635)', () => {
 const SONNET = 'claude-sonnet-5-5';
 
 test('create_session passes for both server spellings: the owner wants sessions started (BRO-5040, supersedes BRO-4664)', () => {
-  assert.equal(run(remote('create_session', { prompt: 'x\nBUDGET: 6h', model: SONNET, source_url: 'https://github.com/thomaspryor/Broadwayscore' })), 'pass');
+  assert.equal(run(remote('create_session', { prompt: 'x\nBUDGET: 6h\nREPORT-BACK: tell @parent', model: SONNET, source_url: 'https://github.com/thomaspryor/Broadwayscore' })), 'pass');
   assert.equal(run({ tool_name: 'mcp__claude-code-remote__create_session', tool_input: { model: SONNET } }), 'pass');
   assert.equal(run(remote('create_session', { prompt: 'x', model: SONNET, source_url: 'https://github.com/thomaspryor/BroadwayScorecard-app' })), 'pass');
   assert.equal(run(remote('create_session', { prompt: 'x', model: SONNET, source_url: 'https://github.com/thomaspryor/broadway-scorecard-data' })), 'pass');
@@ -168,12 +168,33 @@ test('a Broadwayscore worker session needs a BUDGET: <1-12>h line (BRO-5673: ses
   }
   assert.equal(run(remote('create_session', { model: SONNET, source_url: url })), 'deny');
   for (const prompt of ['Fix BRO-1.\nBUDGET: 6h\nThen land it.', 'BUDGET: 1h', '  BUDGET:12h', 'BUDGET: 4h (wall clock)']) {
-    assert.equal(run(remote('create_session', { prompt, model: SONNET, source_url: url })), 'pass', prompt);
+    assert.equal(run(remote('create_session', { prompt: `${prompt}\nREPORT-BACK: tell @parent`, model: SONNET, source_url: url })), 'pass', prompt);
   }
   // Other repos and sessions with no source_url are not worker sessions of this project.
   assert.equal(run(remote('create_session', { prompt: 'x', model: SONNET, source_url: 'https://github.com/thomaspryor/BroadwayScorecard-app' })), 'pass');
   assert.equal(run(remote('create_session', { prompt: 'x', model: SONNET })), 'pass');
   assert.equal(run(remote('create_session', { prompt: 'x', model: SONNET, source_url: url }), { env: { REMOTE_TOOL_BLOCKER_DISABLE: '1' } }), 'pass');
+});
+
+test('a Broadwayscore worker session needs a REPORT-BACK: line so the parent is woken when it ends (BRO-5781)', () => {
+  const url = 'https://github.com/thomaspryor/Broadwayscore';
+  const reason = (payload) => {
+    const res = spawnSyncStdinFile('bash', [HOOK], {
+      cwd: BSC, input: JSON.stringify(payload), encoding: 'utf8',
+      env: { ...process.env, HOME: os.tmpdir(), CLAUDE_PROJECT_DIR: BSC, REMOTE_TOOL_BLOCKER_DISABLE: '' },
+    });
+    const out = res.stdout.trim();
+    return out ? JSON.parse(out).hookSpecificOutput.permissionDecisionReason : '';
+  };
+  for (const prompt of ['BUDGET: 6h', 'BUDGET: 6h\nREPORT-BACK:', 'BUDGET: 6h\nreport back to your parent', 'BUDGET: 6h REPORT-BACK: inline is not a line']) {
+    assert.equal(run(remote('create_session', { prompt, model: SONNET, source_url: url })), 'deny', prompt);
+  }
+  assert.match(reason(remote('create_session', { prompt: 'BUDGET: 6h', model: SONNET, source_url: url })), /REPORT-BACK/);
+  // One deny names both missing lines.
+  const both = reason(remote('create_session', { prompt: 'Fix BRO-1.', model: SONNET, source_url: url }));
+  assert.match(both, /BUDGET/);
+  assert.match(both, /REPORT-BACK/);
+  assert.equal(run(remote('create_session', { prompt: 'BUDGET: 6h\n  REPORT-BACK: send_message @parent when done', model: SONNET, source_url: url })), 'pass');
 });
 
 test('unrelated tools, malformed input and the kill switch all pass', () => {

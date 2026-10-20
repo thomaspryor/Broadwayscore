@@ -98,7 +98,7 @@ test('generated PreToolUse command reaches the real hook from a non-repo cwd: mi
   assert.match(deny.stdout, /"permissionDecision":\s*"deny"/, `got: ${deny.stdout}`);
   const ok = runGenerated(s, 'PreToolUse', 'block-prompting-remote-tools.sh', {
     tool_name: 'mcp__claude-code-remote__create_session',
-    tool_input: { source_url: 'https://github.com/thomaspryor/Broadwayscore', prompt: 'x\nBUDGET: 6h', model: 'claude-sonnet-5-5' },
+    tool_input: { source_url: 'https://github.com/thomaspryor/Broadwayscore', prompt: 'x\nBUDGET: 6h\nREPORT-BACK: tell @parent', model: 'claude-sonnet-5-5' },
   }, target);
   assert.doesNotMatch(ok.stdout, /deny/, 'the canonical URL passes');
 });

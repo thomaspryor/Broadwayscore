@@ -19,7 +19,7 @@
 #     ~100-200 cards deep, so important work waited weeks. The owner accepts
 #     one approval tap per started session. How to start and follow one:
 #     .claude/CLOUD.md "Starting a worker session". Denied for a misspelled Broadwayscore
-#     source_url: it starts in /home/user without project commands or hooks (BRO-5068); and with no `BUDGET: <1-12>h` prompt line (BRO-5673: ran 8-28 h uncapped).
+#     source_url: it starts in /home/user without project commands or hooks (BRO-5068); and with no `BUDGET: <1-12>h` prompt line (BRO-5673: ran 8-28 h uncapped) or `REPORT-BACK:` line (BRO-5781).
 # Fails open (exit 0, no decision) on missing jq or unparseable input.
 # Kill switch: REMOTE_TOOL_BLOCKER_DISABLE=1.
 
@@ -53,7 +53,7 @@ case "$tool" in
     if [ "$names" = "thomaspryor/broadwayscore" ] && [ "$url" != "$canon" ]; then
       deny "Blocked: source_url must be exactly $canon (that spelling: https, capital B, no .git, no trailing slash). Any other form starts the new session in /home/user instead of the project, so it loads none of the project's commands (/ship-check, /what-else, /wrap-up) or Stop hooks (BRO-5068). Retry with source_url \"$canon\"."
     fi
-    [ "$url" = "$canon" ] && ! printf '%s' "$input" | jq -e '.tool_input.prompt // "" | tostring | test("(^|\\n)\\s*BUDGET:[ \\t]*([1-9]|1[0-2])h\\b")' >/dev/null 2>&1 && deny "Blocked: a Broadwayscore worker session needs a \`BUDGET: <hours>h\` line in its prompt (1-12, usually 6h) so it stops on its own: at the budget it lands what is done, reports on its card, files the rest, and ends (BRO-5673; .claude/CLOUD.md 'Starting a worker session')."
+    [ "$url" = "$canon" ] && miss="$(printf '%s' "$input" | jq -r '.tool_input.prompt // "" | tostring | [(if test("(^|\\n)\\s*BUDGET:[ \\t]*([1-9]|1[0-2])h\\b") then empty else "a `BUDGET: <hours>h` line (1-12, usually 6h) so it stops on its own: at the budget it lands what is done, reports on its card, files the rest, and ends (BRO-5673)" end), (if test("(^|\\n)\\s*REPORT-BACK:[ \\t]*\\S") then empty else "a `REPORT-BACK:` line, so this session learns it finished without the owner messaging it (BRO-5781). Paste: REPORT-BACK: as your final action (finished, landed, refused, or stopped at BUDGET), send_message your parent session (session_id \"@parent\") one line: card, outcome, land run URL" end)] | join("; and ")' 2>/dev/null)" && [ -n "$miss" ] && deny "Blocked: a Broadwayscore worker session needs $miss (.claude/CLOUD.md 'Starting a worker session')."
     ;;
   mcp__Claude_Code_Remote__send_later|mcp__claude-code-remote__send_later|\
   mcp__Claude_Code_Remote__create_trigger|mcp__claude-code-remote__create_trigger)

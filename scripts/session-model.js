@@ -11,8 +11,8 @@
  * Usage: node scripts/session-model.js BRO-N [BRO-M ...]   (or --no-card)
  * Prints JSON { model, modelReason, cards: [{identifier, model, modelReason}] }.
  * Pass `model` to create_session and put `MODEL-REASON: <modelReason>` in the
- * prompt, plus a `BUDGET: <hours>h` line (1-12) for a Broadwayscore session
- * (BRO-5673). Exit 1 when Linear can't be read or a card is missing.
+ * prompt, plus a `BUDGET: <hours>h` line (1-12) and a `REPORT-BACK:` line for a
+ * Broadwayscore session (BRO-5673, BRO-5781). Exit 1 when Linear can't be read or a card is missing.
  */
 
 'use strict';
