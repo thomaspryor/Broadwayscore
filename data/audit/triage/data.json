@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "error",
-  "lastChecked": "2026-10-20T07:35:20.795Z",
+  "lastChecked": "2026-10-20T12:08:19.578Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -74,22 +74,22 @@
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "59 of 555 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-5692 Opening-night audit 2026-10-19"
+      "message": "53 of 517 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-5733 Cut theatre.reviews wasted Bright Data calls: negative-cache shows with no roundup"
     },
     {
       "name": "Data: Linear card-verifiability report stale",
       "status": "pass",
-      "message": "data/audit/card-verifiability-linear.json generated 2026-10-19"
+      "message": "data/audit/card-verifiability-linear.json generated 2026-10-20"
     },
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "90 review(s) with no usable text, 49 rejected although verified as a review, 52 never scored, 27 with a blocked URL (0 published on the site), across 441 current shows"
+      "message": "92 review(s) with no usable text, 52 rejected although verified as a review, 47 never scored, 27 with a blocked URL (0 published on the site), across 440 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "warn",
-      "message": "62 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 29381 checked"
+      "message": "62 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 29810 checked"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -99,7 +99,7 @@
     {
       "name": "Data: stale-slot squatters (current-year review slots held by another production)",
       "status": "pass",
-      "message": "audit ran: 587 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
+      "message": "audit ran: 588 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
     },
     {
       "name": "Data: T1/T2 silent review gaps",
@@ -109,7 +109,7 @@
     {
       "name": "Data: reviewed shows missing from shows.json",
       "status": "warn",
-      "message": "2 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Dance Is Not for Us\" (guardian-review — missing 1d)"
+      "message": "3 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Dance Is Not for Us\" (guardian-review — missing 1d)"
     },
     {
       "name": "Data: BWW roundup discovery misses near opening",
