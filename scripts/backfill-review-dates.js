@@ -368,6 +368,9 @@ async function main() {
       if (!html) {
         console.log(freeOnly ? '  ✗ No free source available' : '  ✗ All sources failed');
         failed++;
+        // BRO-5769: without a marker the scheduled free-only sweep re-picks the same unreachable files every
+        // week and starves the rest. Recheck mode only; --retry-failed retries them (e.g. with paid scrapers).
+        if (recheckDates && !dryRun) markAttempted(filePath, freeOnly ? 'no-free-source' : 'all-sources-failed');
         continue;
       }
 

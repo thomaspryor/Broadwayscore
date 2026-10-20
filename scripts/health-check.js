@@ -4798,7 +4798,7 @@ function earlyPublishDatesResults(report, now = Date.now()) {
       hint: 'node scripts/audit-early-unmarked-publish-dates.js lists counts by ingest source; backfill-review-dates.yml (weekly, recheck_dates) clears them (BRO-5769).',
     });
   } else if (fresh && isCountValue(report.awaiting)) {
-    out.push({ name, status: 'pass', message: `${n} early publish date(s) awaiting recheck (limit ${max})` });
+    out.push({ name, status: 'pass', message: `${n} early publish date(s) awaiting recheck (limit ${max}); ${Number(report.attempted) || 0} already attempted and not yet confirmed` });
   }
   if (!fresh) {
     out.push({

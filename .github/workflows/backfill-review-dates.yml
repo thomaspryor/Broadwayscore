@@ -93,6 +93,10 @@ jobs:
           DISPATCH_FREE_ONLY: ${{ inputs.free_only }}
           DISPATCH_DRY_RUN: ${{ inputs.dry_run }}
         run: |
+          # A newline in a dispatch string would inject extra GITHUB_ENV lines.
+          for v in "${DISPATCH_LIMIT}" "${DISPATCH_OFFSET}" "${DISPATCH_SHOW}" "${DISPATCH_DOMAINS}"; do
+            case "$v" in *$'\n'*|*$'\r'*) echo "::error::dispatch input contains a newline"; exit 1;; esac
+          done
           if [ "${EVENT_NAME}" = "schedule" ]; then
             {
               echo "INPUT_LIMIT=20"
