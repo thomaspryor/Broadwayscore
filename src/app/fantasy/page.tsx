@@ -196,7 +196,7 @@ export default function FantasyLandingPage() {
             <li className="flex justify-between gap-4 border-t border-white/10 pt-1.5 font-semibold text-white"><span>Season total from one pick</span><span className="font-mono shrink-0">{example.total} pts</span></li>
           </ul>
           <p className="text-sm text-gray-400 mt-3">
-            A flop earns a few box office points and nothing else. That gap is the whole game.
+            A flop earns a few box office points and little else. That gap is the whole game.
           </p>
         </div>
       </section>

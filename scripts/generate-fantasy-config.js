@@ -500,6 +500,18 @@ if (frozen && !refreeze) {
   }
 }
 
+// No price ceiling (BRO-5768), so refuse a catalog where a show could not be
+// drafted at all: costlier than the budget minus the cheapest possible
+// fill of the other slots. A show this strong would mean the scale is broken.
+{
+  const maxDraftable = BUDGET - (TEAM_SIZE - 1);
+  const tooDear = Object.entries(frozenOut.prices).filter(([, p]) => p > maxDraftable);
+  if (tooDear.length) {
+    console.error(`REFUSED: price above the $${maxDraftable} a full team can afford: ${tooDear.map(([id, p]) => `${id} $${p}`).join(', ')}. Check its EV breakdown before publishing.`);
+    process.exit(1);
+  }
+}
+
 // ── Assemble config ─────────────────────────────────────────────────
 const todayNy = nyDate(new Date().toISOString());
 const showsConfig = {};

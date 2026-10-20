@@ -169,7 +169,7 @@ describe('priceFromEV / calibrateK', () => {
     assert.ok(Math.abs(avg - 33) < 1e-9);
     assert.equal(pricing.priceFromEV(evs[5], k), 2, 'cheap shows go below $5 (BRO-5666)');
     assert.equal(pricing.priceFromEV(1, k), 1, 'floor at $1, never free');
-    assert.equal(pricing.priceFromEV(1000, k), 35, 'ceiling at $35');
+    assert.equal(pricing.priceFromEV(1000, k), Math.round(1000 * k), 'no ceiling: priced from EV (BRO-5768)');
     assert.equal(pricing.priceFromEV(NaN, k), 1);
   });
 

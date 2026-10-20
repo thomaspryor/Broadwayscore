@@ -36,8 +36,8 @@ const evPath = path.join(dataDir, 'fantasy-ev.json');
 
 // Price bounds (consistent with current heuristic).
 const MIN_PRICE = 1;
-const MAX_PRICE = 35;
-// Target: top ~3 shows in the $30-35 range, median BW ~$18-22.
+const MAX_PRICE = Infinity; // no ceiling, same as scripts/lib/fantasy-pricing.js priceFromEV (BRO-5768)
+// Target: top ~3 shows average $33 (no ceiling: a stronger show prices above it).
 const TARGET_TOP_PRICE = 33;
 const TOP_N_ANCHOR = 3;
 

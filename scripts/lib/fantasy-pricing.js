@@ -458,12 +458,15 @@ function projectShowPoints(show, ctx) {
 }
 
 /**
- * price = clamp(round(ev × k), min, max) — same shape as price-fantasy-league.js.
+ * price = max(min, round(ev × k)) — same shape as price-fantasy-league.js.
  * The floor is $1, not $5 (owner 2026-10-19, BRO-5666): a $5 floor left no
  * cheap picks to fill the last slots with, and overpriced shows that can only
  * earn a few points. $1 keeps every pick from being free.
+ * No ceiling (BRO-5768): a $35 cap priced Evita (EV x k = 36.5) at $35, the
+ * one clipped show and the whole edge of the best possible team. k already
+ * pins the top of the scale (top-3 Broadway average $33).
  */
-function priceFromEV(evPoints, k, { minPrice = 1, maxPrice = 35 } = {}) {
+function priceFromEV(evPoints, k, { minPrice = 1, maxPrice = Infinity } = {}) {
   if (!Number.isFinite(evPoints) || evPoints <= 0) return minPrice;
   return Math.max(minPrice, Math.min(maxPrice, Math.round(evPoints * k)));
 }
