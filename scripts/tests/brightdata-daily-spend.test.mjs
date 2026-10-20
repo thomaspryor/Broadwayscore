@@ -152,13 +152,14 @@ test('safety net preserved: zero resolvable showIds falls back to --all-provisio
   assert.ok(checks[0].argv.includes('--data-dir=/tmp/scratch/data'));
 });
 
-test('BRO-2226 decision: brightdataDailyUsd threshold is NOT silently raised — genuine overspend, not a stale alarm line', () => {
+test('BRO-5526 decision: brightdataDailyUsd was raised 2.5 -> 6 by the owner (2026-10-20); any further change must update this number and the _comment', () => {
   const thresholdsPath = path.join(REPO, 'scripts', 'config', 'provider-spend-thresholds.json');
   const thresholds = JSON.parse(fs.readFileSync(thresholdsPath, 'utf8'));
   // Locks the owner-approved 2026-07-30 number. A future session that wants
   // to change this must update BOTH the number and the _comment reasoning
   // below — not just silently 3x it to make the daily alarm stop firing.
-  assert.equal(thresholds.brightdataDailyUsd, 2.5);
+  assert.equal(thresholds.brightdataDailyUsd, 6);
   assert.match(thresholds._comment, /BRO-2226/);
+  assert.match(thresholds._comment, /BRO-5526/);
   assert.match(thresholds._comment, /owner/i);
 });
