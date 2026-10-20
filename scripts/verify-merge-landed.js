@@ -22,7 +22,9 @@
  *     >>data/audit/verify-merge-landed.log 2>&1 &
  *   disown
  *
- * On any failed check: files an 'auto' alert-router card (self-dispatchable
+ * If ancestry fails, checks content in an isolated scratch repository before
+ * alerting, allowing equivalent commits under new SHAs (BRO-3346).
+ * On any failed content check: files an 'auto' alert-router card (self-dispatchable
  * — the fix is always "re-run merge-worktree-to-main.sh for the same
  * branch/files") and exits 1. If every delayed check passes, logs success
  * and exits 0. Fails OPEN (exit 0, no alert) if `gh`/the repo remote can't
@@ -32,7 +34,8 @@
 'use strict';
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { repoOwnerName, checkReachable } = require('./lib/gh-compare-check');
+const { repoOwnerName } = require('./lib/gh-compare-check');
+const { checkReachableWithContentFallback } = require('./lib/delayed-content-survival');
 
 const USAGE = `Usage: verify-merge-landed.js --sha=<sha> --branch=<branch> [--label=<label>] [--delays=<sec,sec,...>]
 
@@ -98,12 +101,16 @@ async function main() {
   let ranAtLeastOnce = false;
   for (const delayMs of delays) {
     if (delayMs > 0) await new Promise(resolve => setTimeout(resolve, delayMs));
-    const result = checkReachable(repoInfo.owner, repoInfo.repo, sha, branch);
+    const result = checkReachableWithContentFallback(repoInfo.owner, repoInfo.repo, sha, branch);
     if (result.ok === null) {
       console.error(`verify-merge-landed: check skipped at +${Math.round(delayMs / 1000)}s (${result.error}) — will retry at next delay`);
       continue;
     }
     ranAtLeastOnce = true;
+    if (result.contentSurvived) {
+      console.log(`verify-merge-landed: ${label} content survived on origin/${branch} despite SHA divergence (compare status: ${result.status}) at +${Math.round(delayMs / 1000)}s`);
+      continue;
+    }
     if (result.ok) {
       console.log(`verify-merge-landed: ${label} still reachable from origin/${branch} (compare status: ${result.status}) at +${Math.round(delayMs / 1000)}s`);
       continue;
