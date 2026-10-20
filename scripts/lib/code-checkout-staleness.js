@@ -152,9 +152,11 @@ function formatFetchFailedMessage(repoDir, headDate, bgPid = null) {
 // the cloud .claude/hooks/session-start.sh calls this, and that file self-skips
 // on the Mac.
 //
-// Fast-forward ONLY (plan review): a diverged branch keeps the DIVERGED
-// warning. Cloud clones are shallow, so a real merge can lack its merge base,
-// and a merge commit on the harness branch mid-task is not ours to make.
+// Fast-forward, or reset --keep when every locally changed path already has
+// exactly the same tree entry on main (BRO-4230). This also recognizes squash
+// landings that git cherry cannot. Missing merge bases fail closed in shallow
+// clones. Resetting rewrites branch history: its next push may require
+// --force-with-lease if the remote branch still points at the old commits.
 
 const SYNC_TIMEOUT_MS = 20000;
 const REMOTE_MAIN = 'refs/remotes/origin/main';
@@ -251,23 +253,25 @@ function reconcileInterruptedFastForward({ repoDir, execFn = execFileSync, timeo
 }
 
 /**
- * Fast-forward repoDir to origin/main when nothing can be lost. Never pushes.
+ * Sync repoDir to origin/main when nothing can be lost. Never pushes.
  * Every precondition failure returns {synced:false, reason} and changes
  * nothing. Expects origin/main already fetched (runCodeCheckoutStalenessCheck).
  */
 function trySyncCodeCheckout({ repoDir, behind, ahead, execFn = execFileSync, env = process.env, syncTimeoutMs = SYNC_TIMEOUT_MS, startBackground = startBackgroundSync } = {}) {
   const fs = require('fs');
   const path = require('path');
-  const git = (args) => String(execFn('git', ['-C', repoDir, ...args], {
+  const rawGit = (args) => String(execFn('git', ['-C', repoDir, ...args], {
     encoding: 'utf8', timeout: syncTimeoutMs, stdio: ['ignore', 'pipe', 'pipe'],
-  })).trim();
+  }));
+  const git = (args) => rawGit(args).trim();
   const no = (reason) => ({ synced: false, reason });
 
   if (env.CODE_SYNC_DISABLED === '1') return no('disabled (CODE_SYNC_DISABLED=1)');
   if (!(behind > 0)) return no('not behind origin/main');
-  if (ahead > 0) return no(`${ahead} local commit(s) not on origin/main; fast-forward only`);
+  const alreadyLanded = ahead > 0;
+  let branch;
   try {
-    git(['symbolic-ref', '-q', 'HEAD']);
+    branch = git(['symbolic-ref', '-q', 'HEAD']);
   } catch {
     return no('detached HEAD');
   }
@@ -290,9 +294,11 @@ function trySyncCodeCheckout({ repoDir, behind, ahead, execFn = execFileSync, en
     }
     // A killed earlier fast-forward leaves origin/main's own bytes in the tree. Cleared only when that explains EVERY
     // dirty tracked file; otherwise nothing is touched and the refusal below changes nothing.
-    healed = reconcileInterruptedFastForward({ repoDir, execFn, timeoutMs: syncTimeoutMs });
+    // Diverged branches may contain session edits that happen to match main.
+    // Do not treat those edits as interrupted fast-forward debris.
+    if (!alreadyLanded) healed = reconcileInterruptedFastForward({ repoDir, execFn, timeoutMs: syncTimeoutMs });
     if (git(['status', '--porcelain', '--untracked-files=no'])) {
-      return no(`uncommitted changes to tracked files${healed.error ? ` (clearing an interrupted sync failed: ${healed.error})` : ''}`);
+      return no(`uncommitted changes to tracked files${healed && healed.error ? ` (clearing an interrupted sync failed: ${healed.error})` : ''}`);
     }
   } catch (err) {
     return no(`could not read git state: ${String(err.message).split('\n')[0]}`);
@@ -300,11 +306,33 @@ function trySyncCodeCheckout({ repoDir, behind, ahead, execFn = execFileSync, en
 
   let from;
   let to;
+  let resetStarted = false;
   try {
     from = git(['rev-parse', 'HEAD']);
-    git(['merge', '--ff-only', '-q', REMOTE_MAIN]);
+    const target = git(['rev-parse', REMOTE_MAIN]);
+    if (alreadyLanded) {
+      const base = git(['merge-base', from, target]);
+      // NUL delimiters and no pathspecs: literal names (including newlines and
+      // brackets), rename endpoints, deletions, modes and binary blobs all count.
+      const changedPaths = (a, b) => new Set(rawGit(['diff', '--no-ext-diff', '--no-textconv', '--ignore-submodules=none', '--no-renames', '--name-only', '-z', a, b]).split('\0').filter(Boolean));
+      const local = changedPaths(base, from);
+      const different = changedPaths(from, target);
+      if ([...local].some((p) => different.has(p))) {
+        return no(`${ahead} local commit(s) not on origin/main; fast-forward only (locally changed paths differ)`);
+      }
+      // A background check can overlap the session continuing its work. The
+      // equivalence proof applies only to the branch and HEAD we inspected.
+      if (git(['rev-parse', 'HEAD']) !== from || git(['symbolic-ref', '-q', 'HEAD']) !== branch) {
+        return no('HEAD moved while checking already-landed commits');
+      }
+      resetStarted = true;
+      git(['reset', '--keep', '-q', target]);
+    } else {
+      git(['merge', '--ff-only', '-q', REMOTE_MAIN]);
+    }
     to = git(['rev-parse', 'HEAD']);
   } catch (err) {
+    if (alreadyLanded && !resetStarted) return no(`already-landed check refused: ${String(err.stderr || err.message).trim().split('\n')[0]}`);
     if (err && (err.killed || err.signal || err.code === 'ETIMEDOUT')) {
       // Killed mid-checkout: put the tree back to a clean state now rather than leave it half-written, and tell the
       // caller to retry with the long-budget background job (the same 20s kill would tear it again).
@@ -313,9 +341,10 @@ function trySyncCodeCheckout({ repoDir, behind, ahead, execFn = execFileSync, en
       const bgPid = startBackground(repoDir);
       return {
         synced: false, timedOut: true, rolledBack: clean, bgPid,
-        reason: `fast-forward timed out after ${syncTimeoutMs / 1000}s; ${clean ? 'tree rolled back' : `tree NOT fully rolled back (${rb.error || rb.skipped}); the next sync retries the cleanup`}; ${bgPid ? `background catch-up started, pid ${bgPid}` : 'background catch-up could not be started: run git merge --ff-only origin/main by hand'}`,
+        reason: `${alreadyLanded ? 'already-landed reset' : 'fast-forward'} timed out after ${syncTimeoutMs / 1000}s; ${clean ? 'tree rolled back' : `tree NOT fully rolled back (${rb.error || rb.skipped}); the next sync retries the cleanup`}; ${bgPid ? `background catch-up started, pid ${bgPid}` : `background catch-up could not be started: run git ${alreadyLanded ? 'reset --keep' : 'merge --ff-only'} origin/main by hand`}`,
       };
     }
+    if (alreadyLanded) return no(`already-landed reset refused: ${String(err.stderr || err.message).trim().split('\n')[0]}`);
     return no(`fast-forward refused: ${String(err.stderr || err.message).trim().split('\n')[0]}`);
   }
   if (to === from) return no('fast-forward made no change');
@@ -324,7 +353,7 @@ function trySyncCodeCheckout({ repoDir, behind, ahead, execFn = execFileSync, en
     const changed = new Set(git(['diff', '--name-only', from, to]).split('\n'));
     changedWatched = SYNC_WATCHED_FILES.filter((f) => changed.has(f));
   } catch { /* informational only */ }
-  return { synced: true, reason: 'fast-forwarded', from, to, count: behind, changedWatched, reconciled: healed ? (healed.reverted || 0) + (healed.removed || 0) : 0 };
+  return { synced: true, reason: alreadyLanded ? 'already landed; reset with --keep' : 'fast-forwarded', ...(alreadyLanded ? { alreadyLanded: true } : {}), from, to, count: behind, changedWatched, reconciled: healed ? (healed.reverted || 0) + (healed.removed || 0) : 0 };
 }
 
 // ── Background catch-up (BRO-5359, CLOUD ONLY) ─────────────────────────────────────────────────────────
@@ -332,7 +361,7 @@ function trySyncCodeCheckout({ repoDir, behind, ahead, execFn = execFileSync, en
 // and the checkout it runs hooks from then stays stale for the whole session (the review gates silently off).
 // When the startup fetch fails, a detached job keeps trying without a deadline and fast-forwards when it can.
 //
-// Lossless by construction: it never runs if the session already moved HEAD or has local commits, refuses when
+// Lossless by construction: it never runs if the session already moved HEAD or has unlanded local commits, refuses when
 // any tracked file OUTSIDE data/ is modified, and for modified tracked data/ files (the cloud core-data copy of
 // audience-reviews-lbo.json is one; a plain `merge --ff-only` aborts on it) it copies the exact bytes aside,
 // lets git put the file back, fast-forwards, and writes the bytes back, success or not.
@@ -364,7 +393,9 @@ function backgroundCatchUp({ repoDir, expectHead = null, execFn = execFileSync, 
   if (expectHead && head !== expectHead) return no('HEAD moved since startup (the session is working in this checkout)');
   const { behind, ahead } = getBehindAheadCounts(repoDir, REMOTE_MAIN, execFn);
   if (!(behind > 0)) return no('already current');
-  if (ahead > 0) return no(`${ahead} local commit(s) not on origin/main; fast-forward only`);
+  // Share the foreground proof and safety checks; never back up or clear
+  // uncommitted edits on a diverged branch before deciding it already landed.
+  if (ahead > 0) return trySyncCodeCheckout({ repoDir, behind, ahead, execFn, env, syncTimeoutMs });
   // Data files are handled by the backup below; any other dirty tracked file must be explained by origin/main or it refuses.
   const healedBg = reconcileInterruptedFastForward({ repoDir, execFn, timeoutMs: syncTimeoutMs, ignore: (p) => p.startsWith('data/') });
   const healedBgCount = (healedBg.reverted || 0) + (healedBg.removed || 0);
@@ -482,9 +513,12 @@ if (require.main === module && process.argv[2] === '--bg-sync') runBackgroundSyn
 function formatCodeCheckoutSyncMessage(result, repoDir) {
   if (!result || !result.synced) return null;
   const lines = [
-    `🔄 CODE CHECKOUT SYNCED: fast-forwarded ${repoDir} by ${result.count} commit(s) to origin/main `
+    (result.alreadyLanded
+      ? `🔄 CODE CHECKOUT SYNCED: local commits already landed; reset --keep ${repoDir} to origin/main `
+      : `🔄 CODE CHECKOUT SYNCED: fast-forwarded ${repoDir} by ${result.count} commit(s) to origin/main `)
       + `(${result.to.slice(0, 11)}), so its hooks and scripts are current.`,
   ];
+  if (result.alreadyLanded) lines.push('   Branch history was reset; the next push to an existing remote branch may require --force-with-lease.');
   const watched = result.changedWatched || [];
   const docs = watched.filter((f) => f !== '.claude/settings.json');
   if (docs.length) lines.push(`   Changed since this session loaded them: ${docs.join(', ')}. Re-read them now.`);
