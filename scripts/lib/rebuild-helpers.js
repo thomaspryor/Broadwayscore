@@ -1623,6 +1623,12 @@ function isPlaceholderAssignedScore(data) {
  */
 const MODEL_SCORE_SOURCES_NOT_CLAMPED = new Set(['human-review', 'adjudicated']);
 function getBestScore(data, opts = {}) {
+  // Older publisher extractions used scoreExtractionSource (BRO-4045).
+  // Canonicalize verified provenance before both the v6 late-rating check
+  // and the published-rating gate, preserving newer provenance and the input.
+  if (!data.originalScoreSource && OUTLET_VERIFIED_SOURCES.has(data.scoreExtractionSource)) {
+    data = { ...data, originalScoreSource: data.scoreExtractionSource };
+  }
   const result = getBestScoreUnclamped(data, opts);
   if (!result || MODEL_SCORE_SOURCES_NOT_CLAMPED.has(result.source)) return result;
   // A rating the pipeline already cleared, or one read off a ticket/info page, is not the critic's rating (the earlier
