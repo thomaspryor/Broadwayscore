@@ -7,9 +7,10 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const dir = path.dirname(new URL(import.meta.url).pathname);
+const dir = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(dir, '..', '..');
 const { build, summarize } = require('./build.js');
 const haveData = fs.existsSync(path.join(root, 'data/commercial.json')) && fs.existsSync(path.join(root, 'data/shows.json'));
@@ -60,6 +61,18 @@ test('live build yields season and deep-dive prompts with shows', { skip: !haveD
   const work = fs.mkdtempSync(path.join(os.tmpdir(), 'rp-'));
   const { season, deep } = build({ work, out: null });
   const ids = [...deep, ...season].map((p) => p.id);
+  const seasonIds = season.map((p) => p.id), ran = Object.keys(JSON.parse(fs.readFileSync(path.join(dir, 'ran-in.json'), 'utf8')));
+  for (const id of ran) assert.ok(seasonIds.includes(id), `ran-in id ${id} has no season prompt`);
   for (const id of ['p14', 'p15', 'p16', 'p5', 'p7']) assert.ok(ids.includes(id), id);
   for (const p of [...deep, ...season]) assert.ok(p.shows.length > 0 && p.title && p.why, p.id);
+});
+
+test('build refuses to splice without Form D files unless --no-formd', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'rp-refuse-'));
+  const html = path.join(tmp, 'page.html');
+  fs.writeFileSync(html, '  {"id": "p13", "x": 1},\n');
+  const r = spawnSync('node', [path.join(dir, 'build.js'), '--out', html, '--work', tmp], { encoding: 'utf8' });
+  assert.notEqual(r.status, 0);
+  assert.match(r.stderr, /refusing to splice/);
+  assert.match(fs.readFileSync(html, 'utf8'), /p13/);
 });

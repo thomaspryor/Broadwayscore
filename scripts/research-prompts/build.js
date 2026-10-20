@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 // Regenerates the owner's deep-research prompts page from live data (BRO-5570).
 //   node scripts/research-prompts/build.js --out <html> [--work <dir>]
+//   (--no-formd allows splicing without the Form D prompts, which drops them from the page)
 //   node scripts/research-prompts/build.js --dry-run [--work <dir>]
 // Reads data/commercial.json + data/shows.json. Without --out (or with --dry-run)
 // it only prints each prompt id and its show count. Splicing needs the page HTML
 // (read it back with the Artifact tool, action read, and republish to the same URL).
 // Form D prompts (p13/p13b) also need <work>/formd-records.tsv and <work>/sold.tsv;
-// sold.py builds sold.tsv from the records and needs SEC_CONTACT_EMAIL in the env.
+// sold.py <records.tsv> <work>/sec > <work>/sold.tsv (caches XML in <work>/sec) needs SEC_CONTACT_EMAIL.
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -38,6 +39,8 @@ function build({ work, out }) {
   fs.writeFileSync(path.join(work, 'season-prompts.json'), JSON.stringify(season));
   fs.writeFileSync(path.join(work, 'deepdives.json'), JSON.stringify(deep));
   if (out) {
+    const haveFd = ['formd-records.tsv', 'sold.tsv'].every((f) => fs.existsSync(path.join(work, f)));
+    if (!haveFd && !flag('--no-formd')) throw new Error('refusing to splice: p13/p13b would be dropped from the page. Put formd-records.tsv and sold.tsv in --work (sold.py <records> <work>/sec), or pass --no-formd.');
     const r = run('python3', ['-I', path.join(__dirname, 'splice.py'), out,
       path.join(work, 'season-prompts.json'), path.join(work, 'deepdives.json'), path.join(__dirname, 'ran-in.json')]);
     console.log(r.stdout.trim());

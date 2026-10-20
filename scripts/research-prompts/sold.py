@@ -1,6 +1,8 @@
 import sys, json, time, re, os, urllib.request, html
-UA = {'User-Agent': 'BroadwayScorecard research ' + os.environ['SEC_CONTACT_EMAIL']}
+UA = {'User-Agent': 'BroadwayScorecard research ' + os.environ.get('SEC_CONTACT_EMAIL', '')}
+if len(sys.argv) != 3 or 'SEC_CONTACT_EMAIL' not in os.environ: sys.exit('usage: SEC_CONTACT_EMAIL=you@x python3 -I sold.py <records.tsv> <outdir>  (outdir must be <work>/sec)')
 tsv, outdir = sys.argv[1], sys.argv[2]
+os.makedirs(outdir, exist_ok=True)
 def get(url, cache):
     p = os.path.join(outdir, cache)
     if os.path.exists(p): return open(p, encoding='utf-8').read()

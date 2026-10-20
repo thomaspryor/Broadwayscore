@@ -1,8 +1,11 @@
 const fs = require('fs');
+const path = require('path');
 const S = process.argv[2];
+if (!S) throw new Error('usage: gen-batches.js <work-dir>');
+const DATA = path.join(__dirname, '../../data');
 const rows = fs.readFileSync(S + '/gaps-all2.txt', 'utf8').trim().split('\n').slice(2).map((l) => { const [season, slug, status, desig, gaps] = l.split(' | '); return { season, slug, status, desig, gaps: gaps.split(',') }; });
-const shows = Object.values(require(process.cwd() + '/data/shows.json').shows);
-const comm = require(process.cwd() + '/data/commercial.json').shows;
+const shows = Object.values(require(DATA + '/shows.json').shows);
+const comm = require(DATA + '/commercial.json').shows;
 const by = new Map(shows.map((s) => [s.slug, s]));
 const M = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const fmt = (d) => { if (!d) return null; const [y, m, dd] = d.split('-').map(Number); return `${M[m - 1]} ${dd}, ${y}`; };
