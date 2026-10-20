@@ -39,6 +39,19 @@ describe('applyShadowReturnFields', () => {
 });
 
 describe('clearStaleModelFields', () => {
+  it('discards the old run\'s contradiction without changing the reported outcome', () => {
+    const reported = { designation: 'TBD', recouped: null, sources: [{ type: 'trade' }] };
+    const comm = {
+      ...reported,
+      modelRecoupmentPct: [150, 198, 240],
+      modelDesignationFlag: 'Model: 198% vs designation: Fizzle',
+    };
+    clearStaleModelFields(comm);
+    assert.deepStrictEqual(comm, reported);
+    clearStaleModelFields(comm);
+    assert.deepStrictEqual(comm, reported);
+  });
+
   it('clears the shadow fields with the live run fields', () => {
     const comm = { modelRecoupmentPct: [1, 2, 3], modelRecouped: false, modelDataQuality: 'medium', modelRecoupmentPctV2: [1, 2, 3], modelInvestorMultiple: [0, 0, 0], designation: 'TBD' };
     clearStaleModelFields(comm);
