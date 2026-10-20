@@ -591,8 +591,8 @@ export function getShowsAtRisk(): AtRiskShow[] {
 
 /**
  * Get shows that recouped within the specified number of months.
- * weeksToRecoup is null when only the recoupment year is known, or the show
- * the recoupment was reported after its run closed (reportedAfterClosing); those
+ * weeksToRecoup is null when only the recoupment year is known, or when the
+ * recoupment was reported after its run closed (reportedAfterClosing); those
  * rows stay listed, the table says "Reported after closing" for the latter and
  * leaves the former blank.
  * A recoupment that was never announced is not news and has no reliable date,

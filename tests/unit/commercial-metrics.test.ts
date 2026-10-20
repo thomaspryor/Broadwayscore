@@ -4,7 +4,7 @@
  * (tests/unit-test-manifest-tsx.txt).
  *
  *  - P0-5  weeks to recoup: year-only is null; YYYY-MM is mid-month; a
- *          recoupment after closing or after today is null.
+ *          recoupment reported after closing, or after today, is null.
  *  - P0-6  capital totals never count an unknown capitalization as $0.
  *  - P0-7 / P1-3  at-risk needs a model estimate and compares the 4-week
  *          average gross with break-even.
@@ -77,7 +77,7 @@ test('weeks to recoup: year-only is null (Dec 31 used to inflate Lion King / Rag
   assert.equal(calculateWeeksToRecoup('2025-10-16', '2026', null, NOW), null);
 });
 
-test('weeks to recoup: recoupment month after closing is null', () => {
+test('weeks to recoup: report month after closing is null', () => {
   assert.equal(calculateWeeksToRecoup('2024-03-10', '2024-09', '2024-08-20', NOW), null);
 });
 
