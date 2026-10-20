@@ -77,6 +77,7 @@ import { ReviewTextFile, ScoringPipelineOptions, PipelineRunSummary } from './ty
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { assessTextQuality, qualityOptsFor, detectGarbageFromReasoning, hasBotStubTruncationSignal } = require('../lib/content-quality.js');
 const { getBestTextForScoring } = require('../lib/text-quality');
+const { shouldSuppressExcerptOnlyWrongShow } = require('../lib/excerpt-wrongshow-guard');
 const { invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = require('../lib/review-write-guard');
 const { laneBypasses } = require('../lib/opening-night-lane/trust-model');
 const { humanClearOverridingRejection } = require('../lib/human-cleared-rejection');
@@ -1542,6 +1543,25 @@ async function main(): Promise<void> {
         ) {
           console.log(`SKIP-REJECT (${rejection} on known bot-stub/paywall truncation): ${rejectionReasoning?.substring(0, 80) || ''}`);
           stampTerminalScoringFailure(fileData, `bot_stub_truncation:${rejection}`);
+          saveReviewFile(filePath, fileData);
+          skipped++;
+          return true;
+        }
+
+        // BRO-5785: a wrong_show verdict that only saw a (possibly mis-paired) aggregator excerpt, with a URL
+        // slug naming the show and no fullText, writes no flag. Same shape as the bot-stub branch: stamp so it
+        // is not re-selected. No new queue marker: the file stays an excerpt-tier, fullText-less review, which
+        // collect-review-texts.js already selects, and isBlockedFromRescore unblocks when fullText length changes.
+        const excerptGuard = shouldSuppressExcerptOnlyWrongShow({
+          rejection,
+          scoredTextType,
+          fileData,
+          showTitle: showTitles.get(reviewFile.showId || '') || undefined,
+        });
+        // Human-cleared / combined / lane files keep the Haiku rescue path below, so the guard defers to it.
+        if (excerptGuard.suppress && !humanClearOverridingRejection(fileData, rejection)) {
+          console.log(`SKIP-REJECT (wrong_show on excerpt only, URL names show; awaiting fullText): ${rejectionReasoning?.substring(0, 80) || ''}`);
+          stampTerminalScoringFailure(fileData, `excerpt_only_wrong_show:${rejection}`);
           saveReviewFile(filePath, fileData);
           skipped++;
           return true;
