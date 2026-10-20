@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-19T15:26:34.879Z",
+    "lastUpdated": "2026-10-20T11:51:11.037Z",
     "version": "2.1.0",
     "lastChange": "BRO-5373: split The Mail on Sunday (mail-on-sunday, splitFrom daily-mail) out of daily-mail"
   },
@@ -13216,6 +13216,60 @@
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
       "regionInferredAt": "2026-10-19T15:26:34.879Z"
+    },
+    "1blocknews": {
+      "displayName": "1BlockNews",
+      "tier": 3,
+      "aliases": [
+        "1blocknews"
+      ],
+      "domain": "1blocknews.com",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-10-20T11:51:11.037Z"
+    },
+    "grandgoldman": {
+      "displayName": "Grand Goldman",
+      "tier": 3,
+      "aliases": [
+        "grandgoldman"
+      ],
+      "domain": "grandgoldman.com",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-10-20T11:51:11.037Z"
+    },
+    "omahamagazine": {
+      "displayName": "Omaha Magazine",
+      "tier": 3,
+      "aliases": [
+        "omahamagazine"
+      ],
+      "domain": "omahamagazine.com"
+    },
+    "ashleyhajimirsadeghi": {
+      "displayName": "Ashley Hajimirsadeghi",
+      "tier": 3,
+      "aliases": [
+        "ashleyhajimirsadeghi"
+      ],
+      "domain": "ashleyhajimirsadeghi.com"
+    },
+    "baltimoremediablog": {
+      "displayName": "Baltimore Media Blog",
+      "tier": 3,
+      "aliases": [
+        "baltimoremediablog"
+      ],
+      "domain": "baltimoremediablog.com"
+    },
+    "pittnews": {
+      "displayName": "The Pitt News",
+      "tier": 3,
+      "aliases": [
+        "pittnews"
+      ],
+      "domain": "pittnews.com"
     }
   },
   "_aliasIndex": {
