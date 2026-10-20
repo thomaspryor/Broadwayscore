@@ -86,7 +86,10 @@
       "outletIds": [
         "nytimes"
       ],
-      "attempted": false
+      "attempted": true,
+      "skipped": true,
+      "skipReason": "no-truncated-t1",
+      "attemptedAt": "2026-10-20T19:40:04.978Z"
     },
     {
       "kind": "truncated-t1-refetch",
