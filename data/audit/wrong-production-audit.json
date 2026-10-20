@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-19T23:36:58.049Z",
+  "timestamp": "2026-10-20T00:06:27.275Z",
   "stats": {
-    "totalReviews": 57811,
-    "alreadyFlagged": 21092,
+    "totalReviews": 57809,
+    "alreadyFlagged": 21089,
     "dateGuardCatches": 199,
-    "directorMismatch": 2017,
+    "directorMismatch": 2016,
     "tvFilmSignals": 1646,
-    "londonSignals": 2542,
+    "londonSignals": 2545,
     "offBroadwaySignals": 530,
     "yearMismatch": 161,
     "noPublishDate": 5205
@@ -12375,7 +12375,7 @@
       "showId": "elf-2024",
       "file": "amny--matt-windman.json",
       "score": 77,
-      "publishDate": "November 17, 2024",
+      "publishDate": "2024-11-17",
       "url": "https://www.amny.com/entertainment/arts-entertainment/review-elf-revival-holidays-broadway-2024/",
       "findings": [
         {
@@ -20707,20 +20707,6 @@
     {
       "showId": "into-the-woods-2022",
       "file": "nytimes--alexis-soloski.json",
-      "score": 88,
-      "publishDate": "July 10, 2022",
-      "url": "https://www.nytimes.com/2022/07/10/theater/into-the-woods-review.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-2022",
-      "file": "nytimes--jesse-green.json",
       "score": 90,
       "publishDate": "July 11, 2022",
       "url": "https://www.nytimes.com/2022/07/10/theater/into-the-woods-review.html",
@@ -20734,7 +20720,7 @@
     },
     {
       "showId": "into-the-woods-2022",
-      "file": "observer--jesse-green.json",
+      "file": "observer--david-cote.json",
       "score": 95,
       "publishDate": "July 11, 2022",
       "url": "https://observer.com/2022/07/review-into-the-woods-still-casts-a-sensational-spell-on-broadway/",
@@ -55604,7 +55590,7 @@
     {
       "showId": "angels-bone-west-end-2026",
       "file": "times-uk--rebecca-franks.json",
-      "score": 78,
+      "score": 81,
       "publishDate": "2026-05-13",
       "url": "https://www.thetimes.com/culture/classical-opera/article/angels-bone-review-opera-manchester-fn2zqc2dw",
       "findings": [
@@ -63259,6 +63245,19 @@
       "score": 94,
       "publishDate": "2025-07-01",
       "url": "https://www.londontheatre.co.uk/reviews/evita-review-london-palladium",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "evita-west-end-2025",
+      "file": "musical-theatre-review--unknown.json",
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/evita-london-palladium/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -74845,6 +74844,19 @@
       "score": 88,
       "publishDate": "October 16th, 2024",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/oedipus-mark-strong-lesley-manville-review-b2630136.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "oedipus-west-end-2024",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2024-10-17",
+      "url": "https://www.londonboxoffice.co.uk/news/post/oedipus-wyndhams-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -86719,6 +86731,20 @@
       "score": 55,
       "publishDate": "2024-10-11",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-other-place-lyttlelton-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-other-place-west-end-2024",
+      "file": "broadwayworld--gary-naylor.json",
+      "score": 97,
+      "publishDate": "2024-10-09",
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-OTHER-PLACE-National-Theatre-20241009",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
