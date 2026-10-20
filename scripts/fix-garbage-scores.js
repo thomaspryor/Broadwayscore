@@ -20,7 +20,7 @@ const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
+const { markRescoreNeeded } = require('./lib/rescore-flagging');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -209,9 +209,7 @@ function invalidateScore(filePath, review) {
     }
   } else if (review.hasExcerpts) {
     // Flag for excerpt-based rescoring
-    data.needsRescore = true;
-    markRescoreFlagged(data);
-    data.rescoreReason = 'LLM score invalidated (based on garbage text), excerpts available';
+    markRescoreNeeded(data, 'LLM score invalidated (based on garbage text), excerpts available', undefined, { requeue: true });
     if (verbose) {
       console.log(`    Flagged for rescore (has excerpts)`);
     }

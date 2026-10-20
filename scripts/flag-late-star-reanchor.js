@@ -30,7 +30,7 @@ const { needsLateStarReanchor } = require('./lib/late-star-anchor');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
+const { markRescoreNeeded } = require('./lib/rescore-flagging');
 
 const USAGE = `flag-late-star-reanchor.js — Flag reviews that should be re-scored in ANCHORED mode: scored UNANCHORED.
 
@@ -69,9 +69,7 @@ for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json')
   byShow[showId] = (byShow[showId] || 0) + 1;
   flagged++;
   if (APPLY) {
-    d.needsRescore = true;
-    markRescoreFlagged(d);
-    d.rescoreReason = 'late-star-anchor';
+    markRescoreNeeded(d, 'late-star-anchor', undefined, { requeue: true });
     d.lateStarAnchorBand = `${verdict.band.floor}-${verdict.band.ceiling} (${verdict.starsRaw})`;
     // BRO-4838 one-shot: a stale-band re-anchor is tried once per stored rating.
     if (verdict.staleBand) d.staleBandReanchoredFor = String(d.originalScore);

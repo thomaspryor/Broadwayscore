@@ -4,7 +4,7 @@
  * its stored body is a multi-review column and the scorer now reads only the
  * target show's section (scripts/llm-scoring/venue-box-sections.ts).
  */
-const { markRescoreFlagged } = require('./rescore-lifecycle');
+const { markRescoreNeeded } = require('./rescore-flagging');
 
 const RESCORE_REASON = 'multi-show column: score the target section (BRO-5294)';
 const BLOCKING = ['wrongAttribution', 'isNonReview', 'duplicateOf', 'wrongShow', 'wrongProduction', 'isSyndicatedDuplicate', '_locked'];
@@ -20,9 +20,7 @@ function flagMultiShowRescore(data, flaggedAt) {
   // (venue-box-sections.ts) decides the section, this only refuses plain reviews.
   if ((String(data.fullText).match(/\(\$\s?\d/g) || []).length < 2) return { ok: false, reason: 'skipped: fewer than 2 production boxes' };
   if (data.humanReviewScore && data.humanReviewScoreProvisional !== true) return { ok: false, reason: 'skipped: locked human score' };
-  data.needsRescore = true;
-  data.rescoreReason = RESCORE_REASON;
-  markRescoreFlagged(data, flaggedAt);
+  markRescoreNeeded(data, RESCORE_REASON, flaggedAt, { requeue: true });
   return { ok: true, reason: 'flagged' };
 }
 

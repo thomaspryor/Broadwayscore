@@ -236,7 +236,9 @@ test('every needsRescore producer under scripts/ calls markRescoreFlagged nearby
       }
     }
   }
-  assert.ok(sites >= 30, `expected to find the producers, saw ${sites} sites`);
+  // Boolean enqueues now share markRescoreNeeded (BRO-5587); legacy string
+  // producers still stamp directly. The chokepoint test guards consolidation.
+  assert.ok(sites >= 1, `expected to find the canonical producer, saw ${sites} sites`);
   assert.deepEqual(missing, [],
     `set needsRescore without markRescoreFlagged() nearby: ${missing.join(', ')}. ` +
     'Call markRescoreFlagged(data) from scripts/lib/rescore-lifecycle.js right after setting the flag.');

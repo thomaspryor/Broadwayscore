@@ -51,7 +51,7 @@ const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
 const { loadCookiesForDomain } = require('./lib/cookie-loader');
 const { checkDatePlausibility } = require('./lib/browser-recovery-helpers');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
+const { markRescoreNeeded } = require('./lib/rescore-flagging');
 
 const CONFIG = {
   reviewTextsDir: path.join(__dirname, '..', 'data', 'review-texts'),
@@ -174,9 +174,7 @@ function processRecoveredText(candidate, rawText) {
   data.contentTierReason = tierResult.tierReason || tierResult.reason || 'Recovered via authenticated WSJ browser session (task #779)';
 
   if (data.llmScore?.score) {
-    data.needsRescore = true;
-    markRescoreFlagged(data);
-    data.rescoreReason = 'fullText recovered via WSJ subscriber browser session (task #779)';
+    markRescoreNeeded(data, 'fullText recovered via WSJ subscriber browser session (task #779)', undefined, { requeue: true });
   }
 
   fs.writeFileSync(candidate.filePath, JSON.stringify(data, null, 2) + '\n');

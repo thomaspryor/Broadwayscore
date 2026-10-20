@@ -25,7 +25,7 @@ const { isIncludableForRebuild } = require('./lib/review-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { OUTLET_VERIFIED_SOURCES, OUTLET_STAR_AUTHORITATIVE } = require('./lib/score-extractors');
-const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
+const { markRescoreNeeded } = require('./lib/rescore-flagging');
 
 const USAGE = `flag-aggregator-band-mismatch.js — Flag reviews anchored to a stale aggregatorStars-derived band (BRO-866).
 
@@ -76,11 +76,9 @@ for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json')
   byShow[showId] = (byShow[showId] || 0) + 1;
   flagged++;
   if (APPLY) {
-    d.needsRescore = true;
-    d.rescoreReason = 'aggregator-band-mismatch';
+    markRescoreNeeded(d, 'aggregator-band-mismatch', undefined, { requeue: true });
     d.lateStarAnchorBand = `${correct.band.floor}-${correct.band.ceiling} (${correct.starsRaw})`;
     delete d.rescoreCompletedAt;
-    markRescoreFlagged(d);
     safeWriteReview(f, d, { force: true });
   }
   if (LIMIT && flagged >= LIMIT) break;

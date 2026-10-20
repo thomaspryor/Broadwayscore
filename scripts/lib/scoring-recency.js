@@ -101,9 +101,7 @@ function carryNewerScoring(winner, other) {
   // one the newer score read, keep the newer (band-anchored) score but queue a
   // re-check so it is re-verified against the new text.
   if (changed && bodyChanged) {
-    winner.needsRescore = true;
-    require('./rescore-lifecycle').markRescoreFlagged(winner);
-    winner.rescoreReason = 'text-changed-after-rescore';
+    require('./rescore-flagging').markRescoreNeeded(winner, 'text-changed-after-rescore', undefined, { requeue: true });
     delete winner.rescoreCompletedAt;
   }
   return { changed, from: a, to: b, bodyChanged };

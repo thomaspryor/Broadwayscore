@@ -16,7 +16,7 @@ const path = require('path');
 const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
+const { markRescoreNeeded } = require('./lib/rescore-flagging');
 
 const dryRun = !process.argv.includes('--apply');
 const base = path.join(__dirname, '..', 'data', 'review-texts');
@@ -66,8 +66,7 @@ for (const d of dirs) {
         data.contentTier = tierResult.contentTier;
         data.contentTierReason = tierResult.reason;
         if (data.needsRescore !== true && data.llmScore && !data.humanReviewScore) {
-          data.needsRescore = true;
-          markRescoreFlagged(data);
+          markRescoreNeeded(data, data.rescoreReason || 'navigation contamination removed from fullText', undefined, { requeue: true });
         }
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
       }

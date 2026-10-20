@@ -52,7 +52,7 @@ const { scoringStamp } = require('./lib/scoring-recency');
 const { shouldUseAnchoredMode } = require('./lib/star-reliability');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { isFalseTruncationScore } = require('./lib/rescore-flagging');
-const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
+const { markRescoreNeeded } = require('./lib/rescore-flagging');
 
 if (hasHelpFlag(process.argv.slice(2))) {
   console.log('Usage:\n  node scripts/detect-star-band-regressions.js [--tol=2] [--history-days=7] [--apply] [--alert] [--json=PATH] [--replay=SHA[,SHA]]\n  --help, -h   print this usage and exit');
@@ -159,10 +159,8 @@ if (APPLY) {
     if (f.kind === 'false-truncation' && process.env.FALSE_TRUNCATION_APPLY !== 'true') continue;
     const d = readJson(f.abs);
     if (!d || d.needsRescore === true) continue;
-    d.needsRescore = true;
-    d.rescoreReason = f.kind === 'false-truncation' ? 'false-truncation-warning' : f.kind === 'unanchored' ? 'late-star-anchor' : `late-star-anchor:${f.kind}`;
+    markRescoreNeeded(d, f.kind === 'false-truncation' ? 'false-truncation-warning' : f.kind === 'unanchored' ? 'late-star-anchor' : `late-star-anchor:${f.kind}`, undefined, { requeue: true });
     delete d.rescoreCompletedAt;
-    markRescoreFlagged(d);
     if (f.kind === 'out-of-band') d.starBandFlaggedAt = new Date().toISOString();
     safeWriteReview(f.abs, d, { force: true });
     flagged++;

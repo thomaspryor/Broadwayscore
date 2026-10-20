@@ -513,8 +513,7 @@ function rewriteParent(data, ownSection, childShowIds, now = new Date().toISOStr
   // from whatever was scored before (or unscored). A critic-published
   // originalScore stays on the parent (the file the article was filed under)
   // and is never copied to children: it can't be attributed to one section.
-  out.needsRescore = true;
-  require('./rescore-lifecycle').markRescoreFlagged(out, now);
+  require('./rescore-flagging').markRescoreNeeded(out, out.rescoreReason || 'multi-show-split: text trimmed to own section', now, { requeue: true });
   out.needsRescoreReason = 'multi-show-split: text trimmed to own section';
   delete out.ensembleData;
   delete out.llmScore;
@@ -541,13 +540,12 @@ function buildChild(parentData, section, parentShowId, now = new Date().toISOStr
     multiShowSplitParentShowId: parentShowId,
     multiShowSplitAnchorKind: section.anchorKind,
     multiShowSplitProcessed: now,
-    needsRescore: true,
     needsRescoreReason: 'multi-show-split: new child file, awaiting scoring',
   };
   if (parentData.textFetchedAt) child.textFetchedAt = parentData.textFetchedAt;
   if (parentData.firstSeenAt) child.firstSeenAt = parentData.firstSeenAt;
   child.textWordCount = child.wordCount;
-  require('./rescore-lifecycle').markRescoreFlagged(child, now); // needsRescore: true above (BRO-117)
+  require('./rescore-flagging').markRescoreNeeded(child, child.needsRescoreReason, now);
   return child;
 }
 
@@ -679,8 +677,7 @@ function unsplitArticle(filePath, data, reviewTextsDir, ownShowId) {
     // cross-show URL check treats the copies as one article.
     out.isCombinedReview = true;
     out.combinedWith = allShows.filter((id) => id !== out.showId);
-    out.needsRescore = true;
-    require('./rescore-lifecycle').markRescoreFlagged(out, now);
+    require('./rescore-flagging').markRescoreNeeded(out, out.rescoreReason || 'multi-show-split undone: article is one essay about both shows', now, { requeue: true });
     out.needsRescoreReason = 'multi-show-split undone: article is one essay about both shows';
     delete out.ensembleData;
     delete out.llmScore;

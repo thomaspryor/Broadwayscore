@@ -37,7 +37,7 @@ const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { generateReviewFilename } = require('./lib/review-normalization');
 const { setExtractedScore } = require('./lib/score-routing');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
+const { markRescoreNeeded } = require('./lib/rescore-flagging');
 const { chooseArticleBody } = require('./lib/jsonld-body-choice');
 const { extractFromJsonLd, extractParagraphText } = require('./lib/html-article-text');
 const { extractVarietyBody } = require('./lib/article-extractor');
@@ -1372,9 +1372,7 @@ async function processRecoveredText(candidate, text, html, archiveData) {
 
   // Flag for LLM rescoring if previously scored on excerpt
   if (data.llmScore && data.llmScore.score) {
-    data.needsRescore = true;
-    markRescoreFlagged(data);
-    data.rescoreReason = 'fullText recovered from Wayback Machine';
+    markRescoreNeeded(data, 'fullText recovered from Wayback Machine', undefined, { requeue: true });
   }
 
   // Write updated file

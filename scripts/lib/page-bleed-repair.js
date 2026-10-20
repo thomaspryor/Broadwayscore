@@ -94,9 +94,7 @@ function applyBleedTrim(record, newText, { at, source } = {}) {
   if ('textWordCount' in out) out.textWordCount = wc;
   if ('wordCount' in out) out.wordCount = wc;
   if (out.llmPullQuote && !norm(newText).includes(norm(out.llmPullQuote))) out.llmPullQuote = null;
-  out.needsRescore = true;
-  out.rescoreReason = RESCORE_REASON;
-  require('./rescore-lifecycle').markRescoreFlagged(out, at);
+  require('./rescore-flagging').markRescoreNeeded(out, RESCORE_REASON, at, { requeue: true });
   delete out.rescoreCompletedAt;
   out.pageBleedRepair = { at: out.rescoreFlaggedAt, previousLength, newLength: newText.length, source: source || null };
   // Push restore must not read the old (longer) copy as richer text (review-write-guard _deliberateTextTrim, BRO-5254).

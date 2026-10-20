@@ -202,9 +202,7 @@ function processRecoveredText(candidate, rawText, labels) {
   data.contentTierReason = tierResult.tierReason || tierResult.reason || labels.contentTierReasonFallback;
 
   if (data.llmScore?.score) {
-    data.needsRescore = true;
-    require('./rescore-lifecycle').markRescoreFlagged(data);
-    data.rescoreReason = `fullText recovered via ${labels.sourceMethod} (task #831)`;
+    require('./rescore-flagging').markRescoreNeeded(data, `fullText recovered via ${labels.sourceMethod} (task #831)`, undefined, { requeue: true });
   }
 
   fs.writeFileSync(candidate.filePath, JSON.stringify(data, null, 2) + '\n');

@@ -20,7 +20,7 @@ const fs = require("fs");
 const path = require("path");
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
+const { markRescoreNeeded } = require('./lib/rescore-flagging');
 
 const USAGE = `cleanup-duplicate-text.js — Fixes 14 same-outlet duplicate-text pairs where two files at the same outlet.
 
@@ -168,9 +168,7 @@ for (const pair of PAIRS) {
       if (deleteData.fetchMethod) keepData.fetchMethod = deleteData.fetchMethod;
       if (deleteData.fetchAttempts) keepData.fetchAttempts = deleteData.fetchAttempts;
       if (deleteData.archivePath) keepData.archivePath = deleteData.archivePath;
-      keepData.needsRescore = true;
-      markRescoreFlagged(keepData);
-      keepData.rescoreReason = "fullText merged from misattributed duplicate";
+      markRescoreNeeded(keepData, "fullText merged from misattributed duplicate", undefined, { requeue: true });
     }
     console.log(`  MERGE fullText: ${pair.show}/${pair.delete} → ${pair.keep}`);
     merged = true;

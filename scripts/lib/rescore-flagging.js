@@ -21,15 +21,12 @@
  * agree on exactly one definition of "this score no longer reflects its
  * input" instead of two hand-rolled conditions drifting apart.
  *
- * Scope note: this is the SET side of the detect/set/clear triad —
- * stuck-rescore-flag.js (detect) / rescore-flagging.js (set, this file) /
- * rescore-lifecycle.js (clear). There are ~17 other raw
- * `needsRescore = true` call sites repo-wide with no shared gate; migrating
- * them onto isStaleScoreInput()/markRescoreNeeded() is explicitly deferred
- * to a follow-up card, not done here (see card #1902 correction 2).
- * BRO-117: those raw sites (and markRescoreNeeded below) all stamp
- * rescoreFlaggedAt through rescore-lifecycle.js markRescoreFlagged(), enforced
- * by scripts/lib/stamp-rescore-flagged-at.test.mjs.
+ * This is the SET side of the detect/set/clear triad:
+ * stuck-rescore-flag.js (detect), this module (set), rescore-lifecycle.js (clear).
+ * BRO-5587: all boolean enqueue writes go through markRescoreNeeded().
+ * isStaleScoreInput() gates opportunistic excerpt/fullText upgrades. Explicit
+ * invalidations (replaced text, late ratings, split children) keep their own
+ * eligibility checks and request requeue to preserve their freshness stamps.
  */
 
 const { isScoreable } = require('./is-scoreable');
@@ -199,11 +196,15 @@ function isLlmScoreSource(scoreSource) {
  * @param {Object} fileData
  * @param {string} reason - short human-readable cause, stored in rescoreReason
  * @param {string} [flaggedAt] - ISO timestamp; defaults to now (injectable for tests)
+ * @param {Object} [options]
+ * @param {boolean} [options.requeue=false] - explicit new invalidation; replace
+ *   the queued reason and stamp even when already flagged. Callers must check
+ *   their trigger first. Ordinary stale-input sweeps remain idempotent.
  * @returns {Object} the same fileData, mutated
  */
-function markRescoreNeeded(fileData, reason, flaggedAt) {
+function markRescoreNeeded(fileData, reason, flaggedAt, { requeue = false } = {}) {
   if (!fileData || typeof fileData !== 'object') return fileData;
-  if (fileData.needsRescore === true) return fileData; // idempotent — no duplicate stamp
+  if (fileData.needsRescore === true && !requeue) return fileData;
   fileData.needsRescore = true;
   fileData.rescoreReason = reason;
   require('./rescore-lifecycle').markRescoreFlagged(fileData, flaggedAt);

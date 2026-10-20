@@ -30,7 +30,7 @@ const { parseDate } = require('./lib/date-utils');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
+const { markRescoreNeeded } = require('./lib/rescore-flagging');
 
 const USAGE = `strip-stale-single-model-scores.js — Strip stale scores from review files.
 
@@ -178,8 +178,7 @@ function runBeforeOpeningMode(openingDateStr, showId) {
       data.assignedScore = null;
       data.llmScore = null;
       data.llmMetadata = null;
-      data.needsRescore = true;
-      markRescoreFlagged(data);
+      markRescoreNeeded(data, data.rescoreReason || 'stale single-model score cleared', undefined, { requeue: true });
       data.staleScoredBeforeOpening = true;
       // Freshness-stamped so the push-restore breadcrumb (review-write-guard.js
       // CLEAR_BREADCRUMBS) can bound how long it suppresses restoring a stale

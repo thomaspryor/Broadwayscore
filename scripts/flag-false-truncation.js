@@ -24,7 +24,7 @@ const { isFalseTruncationScore, isBotStubContaminatedScore, BOT_STUB_RESCORE_REA
 const { safeWriteReview } = require('./lib/review-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
+const { markRescoreNeeded } = require('./lib/rescore-flagging');
 
 const USAGE = `flag-false-truncation.js — flag scored reviews that a page footer made the scorer call truncated.
 
@@ -84,9 +84,7 @@ const byShow = {};
 for (const h of picked) {
   byShow[h.showId] = (byShow[h.showId] || 0) + 1;
   if (APPLY) {
-    h.d.needsRescore = true;
-    h.d.rescoreReason = REASON;
-    markRescoreFlagged(h.d);
+    markRescoreNeeded(h.d, REASON, undefined, { requeue: true });
     delete h.d.rescoreCompletedAt;
     safeWriteReview(h.f, h.d, { force: true });
   }

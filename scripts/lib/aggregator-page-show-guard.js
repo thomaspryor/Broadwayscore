@@ -79,9 +79,7 @@ function planWrongShowRoundupClear(record, rows) {
     delete out.aggregatorStars;
   }
   if (out.scoreSource === 'westendtheatre-star-rating') {
-    out.needsRescore = true;
-    out.rescoreReason = 'wrong-show round-up star removed (BRO-3564)';
-    require('./rescore-lifecycle').markRescoreFlagged(out);
+    require('./rescore-flagging').markRescoreNeeded(out, 'wrong-show round-up star removed (BRO-3564)', undefined, { requeue: true });
     delete out.rescoreCompletedAt;
   }
   out.wrongShowRoundupCleared = { at: new Date().toISOString(), source: 'westendtheatre' };

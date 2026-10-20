@@ -222,9 +222,7 @@ function applyVarietyPromoStrip(record, newText, { at, rescore = true } = {}) {
   if (out.llmPullQuote && !norm(newText).includes(norm(out.llmPullQuote))) out.llmPullQuote = null;
   // rescore false: only a repeated lead paragraph went, the verdict text is unchanged.
   if (rescore) {
-    out.needsRescore = true;
-    out.rescoreReason = RESCORE_REASON;
-    require('./rescore-lifecycle').markRescoreFlagged(out, stamp);
+    require('./rescore-flagging').markRescoreNeeded(out, RESCORE_REASON, stamp, { requeue: true });
     delete out.rescoreCompletedAt;
   }
   // Push restore must not read the old (longer) copy as richer text (review-write-guard _deliberateTextTrim).

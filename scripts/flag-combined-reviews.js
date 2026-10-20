@@ -17,7 +17,7 @@ const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { buildSiblingIndex } = require('./lib/market-routing');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
+const { markRescoreNeeded } = require('./lib/rescore-flagging');
 
 const USAGE = `flag-combined-reviews.js — Flag review-text files that share a URL across 2+ different shows as.
 
@@ -190,8 +190,7 @@ function main() {
           data.rejectedAt = null;
           data.rejectionReasoning = null;
           data.rescoreCompletedAt = null;
-          data.needsRescore = true;
-          markRescoreFlagged(data);
+          markRescoreNeeded(data, data.rescoreReason || 'combined review rejection cleared', undefined, { requeue: true });
         }
         safeWriteReview(entry.filePath, data);
       }

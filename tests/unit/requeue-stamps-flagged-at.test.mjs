@@ -22,8 +22,8 @@ test('every script that clears rescoreCompletedAt also stamps rescoreFlaggedAt',
     const src = fs.readFileSync(path.join(dir, f), 'utf8');
     if (!CLEARS.test(src)) continue;
     seen++;
-    // markRescoreFlagged() (rescore-lifecycle.js, BRO-117) is the shared stamp.
-    if (!/rescoreFlaggedAt\s*=|markRescoreFlagged\(/.test(src)) offenders.push(f);
+    // markRescoreNeeded delegates to the shared lifecycle stamp (BRO-5587).
+    if (!/rescoreFlaggedAt\s*=|markRescore(?:Flagged|Needed)\(/.test(src)) offenders.push(f);
   }
   assert.ok(seen >= 6, `expected to find the requeue scripts, saw ${seen}`);
   assert.deepEqual(offenders, []);

@@ -17,7 +17,7 @@ const path = require('path');
 
 // review-texts is gitignored; resolve from main repo root (handles worktrees)
 const { execSync } = require('child_process');
-const { markRescoreFlagged } = require('../lib/rescore-lifecycle');
+const { markRescoreNeeded } = require('../lib/rescore-flagging');
 const mainWorktree = execSync('git worktree list --porcelain', { encoding: 'utf8' })
   .split('\n').find(l => l.startsWith('worktree '))?.replace('worktree ', '') || __dirname.replace(/\/scripts\/.*/, '');
 const REVIEW_TEXTS_DIR = path.join(mainWorktree, 'data/review-texts');
@@ -66,8 +66,7 @@ function processDir(dir) {
 
       // Flag severe divergences for rescore (if not already flagged)
       if (isSevere && !data.needsRescore) {
-        data.needsRescore = true;
-        markRescoreFlagged(data);
+        markRescoreNeeded(data, data.rescoreReason || 'stale-ensemble-severe-divergence', undefined, { requeue: true });
         data.needsRescoreReason = 'stale-ensemble-severe-divergence';
         flagged++;
         const relPath = path.relative(REVIEW_TEXTS_DIR, fp);

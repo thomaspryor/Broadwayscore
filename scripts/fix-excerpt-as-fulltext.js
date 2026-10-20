@@ -13,7 +13,7 @@ const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
+const { markRescoreNeeded } = require('./lib/rescore-flagging');
 
 const dryRun = !process.argv.includes('--apply');
 const base = path.join(__dirname, '..', 'data', 'review-texts');
@@ -56,8 +56,7 @@ for (const d of dirs) {
       // Clear any LLM score that was based on the bad fullText
       // (scores on excerpts via rebuild-all-reviews.js will still work)
       if (data.llmScore && !data.humanReviewScore) {
-        data.needsRescore = true;
-        markRescoreFlagged(data);
+        markRescoreNeeded(data, data.rescoreReason || 'excerpt incorrectly stored as fullText removed', undefined, { requeue: true });
       }
 
       if (!dryRun) {

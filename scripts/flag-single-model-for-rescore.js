@@ -15,7 +15,7 @@ const fs = require('fs');
 const path = require('path');
 const { isScoreable } = require('./lib/is-scoreable');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
+const { markRescoreNeeded } = require('./lib/rescore-flagging');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_JSON = path.join(__dirname, '..', 'data', 'shows.json');
@@ -89,8 +89,7 @@ function main() {
       byShow[show] = (byShow[show] || 0) + 1;
 
       if (apply) {
-        data.needsRescore = true;
-        markRescoreFlagged(data);
+        markRescoreNeeded(data, data.rescoreReason || 'single-model score queued for ensemble scoring', undefined, { requeue: true });
 
         // Clear stale assignedScore that came from single-model scoring
         // to prevent it from resurfacing via the P4 fallback path

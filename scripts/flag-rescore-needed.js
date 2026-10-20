@@ -34,7 +34,7 @@ if (hasHelpFlag(process.argv.slice(2))) {
 // (category/type). A hand-picked subset dropped category, so this script
 // stripped needsRescore from tour reviews the scorer takes (BRO-4563).
 const { loadShowsById } = require('./lib/scoring-queue-counts');
-const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
+const { markRescoreNeeded } = require('./lib/rescore-flagging');
 const SHOW_TITLES = loadShowsById(path.join(__dirname, '..', 'data', 'shows.json'));
 const showFor = (d) => (d.showId ? SHOW_TITLES.get(d.showId) : undefined);
 
@@ -210,11 +210,9 @@ for (const show of shows) {
       if (isExcerptBased || fullTextMuchLonger) {
         if (!dryRun) {
           // Flag for rescore
-          data.needsRescore = true;
-          markRescoreFlagged(data);
-          data.rescoreReason = isExcerptBased
+          markRescoreNeeded(data, isExcerptBased
             ? 'scored on brief excerpt, now has fullText'
-            : 'fullText significantly longer than excerpt used for scoring';
+            : 'fullText significantly longer than excerpt used for scoring', undefined, { requeue: true });
 
           fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
         }

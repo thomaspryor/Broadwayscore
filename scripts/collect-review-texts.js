@@ -192,7 +192,7 @@ const { isLegacyWebSearchOnly } = require('./lib/legacy-web-search');
 const { parseDate } = require('./lib/date-utils');
 const { evaluateShowScorePreviousProduction } = require('./lib/date-guard');
 const { findExistingFileForUrl, decideSameUrlDifferentFileGuard } = require('./lib/review-url-clusters');
-const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
+const { markRescoreNeeded } = require('./lib/rescore-flagging');
 
 /**
  * Rename a review-text file to match its in-memory criticName when one of the
@@ -4597,9 +4597,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   const legacyRowGotPage = isLegacyWebSearchOnly(data) && text.length >= 300;
   if (!hadFullTextBefore && hasLlmScore && (newTextIsSubstantial || legacyRowGotPage)) {
     // Review was scored on excerpt, now has fullText - flag for rescoring
-    data.needsRescore = true;
-    markRescoreFlagged(data);
-    data.rescoreReason = 'fullText added after excerpt-based scoring';
+    markRescoreNeeded(data, 'fullText added after excerpt-based scoring', undefined, { requeue: true });
     console.log(`    → Flagged for rescore: was scored at ${data.llmScore.score} on excerpt, now has ${text.length} char fullText`);
   }
 
@@ -4670,9 +4668,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // when there was no text before). BRO-5090.
   const forcedReplacement = shouldRescoreForcedReplacement(review, fullTextBeforeUpdate, cleanedText);
   if (forcedReplacement) {
-    data.needsRescore = true;
-    markRescoreFlagged(data);
-    data.rescoreReason = 'fullText replaced by forced refetch (stored text was from the wrong page)';
+    markRescoreNeeded(data, 'fullText replaced by forced refetch (stored text was from the wrong page)', undefined, { requeue: true });
     console.log(`    → Flagged for rescore: forced refetch replaced ${fullTextBeforeUpdate.length} chars with ${cleanedText.length}`);
   }
   // BRO-5348: overrides read from the replaced text must not outlive it.
@@ -4714,9 +4710,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     textBefore: fullTextBeforeUpdate,
     textAfter: cleanedText,
   })) {
-    data.needsRescore = true;
-    markRescoreFlagged(data);
-    data.rescoreReason = 'fullText completed after truncated-text scoring';
+    markRescoreNeeded(data, 'fullText completed after truncated-text scoring', undefined, { requeue: true });
     console.log(`    → Flagged for rescore: truncated text (${fullTextBeforeUpdate.length} chars) replaced by ${cleanedText.length}`);
   }
   data.fullText = cleanedText;
@@ -4730,8 +4724,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // BRO-5231: the score on a URL-corrected file belongs to the OLD article, so
   // the fresh body must be rescored (this fires only when text was replaced).
   if (urlCorrectedBefore && hadFullTextBefore && (data.llmScore || data.assignedScore != null)) {
-    data.needsRescore = true;
-    markRescoreFlagged(data);
+    markRescoreNeeded(data, data.rescoreReason || 'fullText replaced after URL correction', undefined, { requeue: true });
   }
   if (data.needsRefetch) data.needsRefetch = false;
 

@@ -52,7 +52,7 @@ const { discoverCorrectUrl, OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES } = require(
 const { evaluateCandidate, buildDomainOutletIds, isProvenZeroSweep } = require('./lib/serp-text-recovery-candidates');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const { fetchPage, unwrapRedirectUrl, cleanup } = require('./lib/scraper');
-const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
+const { markRescoreNeeded } = require('./lib/rescore-flagging');
 
 const args = process.argv.slice(2);
 const getArg = (name) => {
@@ -371,9 +371,7 @@ async function processRecovered(candidate, text, html, newUrl, method) {
   } catch {}
 
   if (data.llmScore && data.llmScore.score) {
-    data.needsRescore = true;
-    markRescoreFlagged(data);
-    data.rescoreReason = 'fullText recovered via SERP text recovery';
+    markRescoreNeeded(data, 'fullText recovered via SERP text recovery', undefined, { requeue: true });
   }
 
   fs.writeFileSync(candidate.filePath, JSON.stringify(data, null, 2) + '\n');
