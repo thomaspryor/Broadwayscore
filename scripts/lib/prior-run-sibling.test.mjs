@@ -10,6 +10,7 @@ const {
   collectCarriedFiles,
   collectHousedSiblingFiles,
   urlNamesPriorRunVenue,
+  urlDatedInPriorRun,
 } = require('./prior-run-sibling');
 
 // Real shapes from shows.json (BRO-4759): the Feb 2026 NYU Skirball run has NO
@@ -359,4 +360,14 @@ test('collectHousedSiblingFiles skips undated files of a sibling still running w
   const open = { ...SKIRBALL, closingDate: undefined };
   const got = collectHousedSiblingFiles(OPTED_OUT, [open, OPTED_OUT], deps);
   assert.ok(!got.some(d => d._file === 'undated.json'));
+});
+
+test('urlDatedInPriorRun: path date inside the earlier run and before this run starts', () => {
+  const nc = { openingDate: '2026-10-07', previewsStartDate: '2026-09-22', priorRuns: [{ venue: 'Bridge Theatre', openingDate: '2025-12-11', closingDate: '2026-05-30' }] };
+  assert.equal(urlDatedInPriorRun('https://b.wordpress.com/2026/03/29/review-into-the-woods-london/', nc), true);
+  assert.equal(urlDatedInPriorRun('https://x.com/2025/12/review/', nc), true);
+  assert.equal(urlDatedInPriorRun('https://x.com/2026/10/08/review/', nc), false); // this run
+  assert.equal(urlDatedInPriorRun('https://x.com/2026/09/30/review/', nc), false); // after run start (previews)
+  assert.equal(urlDatedInPriorRun('https://x.com/review-into-the-woods/', nc), false); // undated fails open
+  assert.equal(urlDatedInPriorRun('https://x.com/2026/03/29/r/', { ...nc, priorRuns: [] }), false);
 });

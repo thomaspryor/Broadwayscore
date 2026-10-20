@@ -181,7 +181,7 @@ const WE_REFERENCE_WINDOW_DAYS = 45;
 // The one predicate for "citation from an earlier production of this title".
 // Every count a human reads goes through it — see that module's docstring for
 // why five scattered `!m.priorRun` filters were not enough.
-const { collectCarriedFiles, collectHousedSiblingFiles, urlNamesPriorRunVenue } = require('./lib/prior-run-sibling');
+const { collectCarriedFiles, collectHousedSiblingFiles, urlNamesPriorRunVenue, urlDatedInPriorRun } = require('./lib/prior-run-sibling');
 const {
   isPriorProductionCitation,
   currentRunOnly,
@@ -1389,9 +1389,11 @@ async function auditShow(show, opts = {}) {
     }
     // Not held anywhere, but the slug names the earlier run's house and not this one.
     for (const m of [...result.missing, ...result.flaggedMisses]) {
-      if (m.priorRun || !serpCensusOnlyUrls.has(m.url) || !urlNamesPriorRunVenue(m.url, show)) continue;
+      if (m.priorRun || !serpCensusOnlyUrls.has(m.url)) continue;
+      const src = urlNamesPriorRunVenue(m.url, show) ? 'url-names-prior-run-venue' : urlDatedInPriorRun(m.url, show) ? 'url-dated-in-prior-run' : null;
+      if (!src) continue;
       m.priorRun = true;
-      m.priorRunSource = 'url-names-prior-run-venue';
+      m.priorRunSource = src;
     }
   } catch { /* sibling scan is best-effort */ }
 
@@ -2295,7 +2297,7 @@ async function main(argv = process.argv.slice(2)) {
         try {
           const { sendAlert } = require('./lib/discord-notify');
           const lines = [
-            ...weMissing.map(m => `• ${m.knownOutletId || m.host} — ${m.url}${m.priorRun ? (String(m.priorRunSource || '').startsWith('pending-file-date') ? ' [prior-run: stored review date]' : /^(sibling-held|url-names-prior-run-venue)/.test(String(m.priorRunSource || '')) ? ` [prior-run: ${m.priorRunSource}]` : ' [prior-run roundup]') : ''}`),
+            ...weMissing.map(m => `• ${m.knownOutletId || m.host} — ${m.url}${m.priorRun ? (String(m.priorRunSource || '').startsWith('pending-file-date') ? ' [prior-run: stored review date]' : /^(sibling-held|url-names-prior-run-venue|url-dated-in-prior-run)/.test(String(m.priorRunSource || '')) ? ` [prior-run: ${m.priorRunSource}]` : ' [prior-run roundup]') : ''}`),
             ...r.citedNoUrl.map(c => `• ${c.outletId} — cited by ${c.source}${c.stars ? ` (${c.stars}★)` : ''}, no URL${c.priorRun ? ' [prior-run roundup]' : ''}`),
           ];
           const delivered = await sendAlert({

@@ -453,6 +453,26 @@ function urlNamesPriorRunVenue(url, show) {
   return show.priorRuns.some(r => r && typeof r === 'object' && named(r.venue));
 }
 
+/**
+ * True when a review URL's own /YYYY/MM/(DD/) path date falls inside an earlier run's
+ * window and before this run's first preview/opening (BRO-5705: the SERP census kept
+ * surfacing the Bridge run's March/April 2026 blog reviews for the Oct 2026 transfer).
+ * Same URL-date evidence as isUrlYearOutOfWindow, one level finer, and only used to tag a
+ * gap row prior-run (report-only). Undated URLs fail open (stay current).
+ */
+function urlDatedInPriorRun(url, show) {
+  if (!show || !Array.isArray(show.priorRuns) || !show.priorRuns.length) return false;
+  let pathname = '';
+  try { pathname = new URL(url).pathname; } catch { return false; }
+  const m = /\/((?:19|20)\d{2})\/(0[1-9]|1[0-2])(?:\/(0[1-9]|[12]\d|3[01]))?(?:\/|$)/.exec(pathname);
+  if (!m) return false;
+  const date = `${m[1]}-${m[2]}-${m[3] || '15'}`;
+  const ms = toDateMs(date);
+  const start = runStartMs(show);
+  if (!Number.isFinite(ms) || !Number.isFinite(start) || ms >= start) return false;
+  return !!findMatchingPriorRun(date, show.priorRuns.filter(r => r && typeof r === 'object' && r.openingDate));
+}
+
 /** Date windows of every earlier run `show` declares, including dateless id links resolved through the sibling entry. */
 function priorRunWindows(show, shows) {
   const windows = Array.isArray(show && show.priorRuns) ? show.priorRuns.filter(r => r && r.openingDate) : [];
@@ -555,4 +575,5 @@ module.exports = {
   collectCarriedFiles,
   collectHousedSiblingFiles,
   urlNamesPriorRunVenue,
+  urlDatedInPriorRun,
 };
