@@ -10,7 +10,7 @@
  *      quote is live right now: listing/credits chrome, a tag cloud, copyright
  *      furniture, a promo teaser, or a quote cut mid-word.
  *
- *   2. PARITY — re-runs the real selectBestExcerpt() from rebuild-all-reviews.js
+ *   2. PARITY — re-runs the rebuild's finalizePullQuote() (via recoverableQuote)
  *      over each review-texts file and diffs the result against the shipped
  *      pullQuote. Shows what the NEXT rebuild will change, before it runs.
  *      (rebuild-all-reviews.js exports its pure helpers and executes nothing
