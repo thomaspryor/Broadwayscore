@@ -40,6 +40,8 @@
  *   node scripts/audit-regex-patterns.js --full       # scan all ~36k reviews
  *   node scripts/audit-regex-patterns.js --max-hits N # override threshold
  *   node scripts/audit-regex-patterns.js --json       # machine-readable output
+ *   node scripts/audit-regex-patterns.js --auto-recalibrate --dry-run # full guard verification, no writes/API calls
+ *   node scripts/audit-regex-patterns.js --auto-recalibrate # full scan, write proven allowances and open a PR (gh auth required)
  *
  * Exit codes:
  *   0 — all patterns under threshold
@@ -491,17 +493,24 @@ function checkTitleExcludeCoverage(scriptsDir = __dirname) {
 }
 
 function parseArgs(argv) {
-  const args = { full: false, maxHits: DEFAULT_MAX_HITS, json: false };
+  const args = { full: false, maxHits: DEFAULT_MAX_HITS, json: false, autoRecalibrate: false, dryRun: false };
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--full') args.full = true;
     else if (a === '--json') args.json = true;
+    else if (a === '--auto-recalibrate') args.autoRecalibrate = true;
+    else if (a === '--dry-run') args.dryRun = true;
     else if (a === '--max-hits') args.maxHits = parseInt(argv[++i], 10);
     else if (a.startsWith('--max-hits=')) args.maxHits = parseInt(a.split('=')[1], 10);
     else if (a === '-h' || a === '--help') {
-      console.log(fs.readFileSync(__filename, 'utf-8').split('\n').slice(2, 25).join('\n'));
+      console.log(fs.readFileSync(__filename, 'utf-8').split('*/')[0].split('\n').slice(2).join('\n'));
       process.exit(0);
     }
+  }
+  if (args.dryRun && !args.autoRecalibrate) throw new Error('--dry-run requires --auto-recalibrate');
+  if (args.autoRecalibrate) {
+    if (args.maxHits !== DEFAULT_MAX_HITS) throw new Error('Auto-recalibration requires the default threshold');
+    args.full = true;
   }
   return args;
 }
@@ -716,7 +725,8 @@ function findReviewTextsDir() {
   process.exit(2);
 }
 
-function scanCorpus({ full, families }) {
+function scanCorpus({ full, families, verifyGuards = false }) {
+  const guardAudit = verifyGuards ? require('./lib/regex-pattern-recalibration') : null;
   const dir = findReviewTextsDir();
   const showDirs = listShowDirs(dir).filter(d => {
     const p = path.join(dir, d);
@@ -736,11 +746,17 @@ function scanCorpus({ full, families }) {
   for (const show of pool) {
     const showDir = path.join(dir, show);
     let files;
-    try { files = fs.readdirSync(showDir).filter(f => f.endsWith('.json')); } catch { continue; }
+    try { files = fs.readdirSync(showDir).filter(f => f.endsWith('.json')); } catch {
+      if (verifyGuards) throw new Error(`Cannot verify unreadable corpus directory: ${show}`);
+      continue;
+    }
     const take = full ? files : files.slice(0, reviewLimit);
     for (const f of take) {
       let review;
-      try { review = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf-8')); } catch { continue; }
+      try { review = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf-8')); } catch {
+        if (verifyGuards) throw new Error(`Cannot verify unreadable/malformed corpus record: ${show}/${f}`);
+        continue;
+      }
       const text = review.fullText || '';
       if (text.length < 500) continue;
       const tier = review.contentTier;
@@ -751,6 +767,9 @@ function scanCorpus({ full, families }) {
           const m = text.match(patterns[i]);
           if (m) {
             counts[familyName][i].hits++;
+            if (guardAudit) guardAudit.recordGuardHit(counts[familyName][i], {
+              family: familyName, text, review, show, file: f,
+            });
             if (counts[familyName][i].examples.length < 3) {
               const idx = text.indexOf(m[0]);
               counts[familyName][i].examples.push({
@@ -828,9 +847,9 @@ function main() {
   const stamp = { started: new Date().toISOString(), full: args.full, maxHits: args.maxHits, scanned: 0 };
   process.on('exit', exitCode => writeStamp({ ...stamp, exitCode }, process.env.CLAUDE_CODE_SESSION_ID, 'regex-audit'));
   const families = loadPatterns();
-  const { scanned, counts } = scanCorpus({ full: args.full, families });
+  const { scanned, counts } = scanCorpus({ full: args.full, families, verifyGuards: args.autoRecalibrate });
   stamp.scanned = scanned;
-  const violations = evaluate({ counts, maxHits: args.maxHits });
+  let violations = evaluate({ counts, maxHits: args.maxHits });
 
   checkTitleExcludeCoverage();
   const titleFamilies = loadTitleExcludeFamilies();
@@ -845,6 +864,20 @@ function main() {
     counts: operaTitleCounts, allowlist: OPERA_TITLE_EXCLUDE_ALLOWLIST, defaultMaxHits: OPERA_TITLE_EXCLUDE_DEFAULT_MAX_HITS,
   });
 
+  let recalibration;
+  if (args.autoRecalibrate) {
+    const { planRecalibration, applyRecalibration } = require('./lib/regex-pattern-recalibration');
+    recalibration = planRecalibration({ violations, counts, full: args.full, scanned });
+    if (!args.dryRun && recalibration.updates.length) {
+      recalibration.pr = applyRecalibration({ filename: __filename, updates: recalibration.updates });
+      for (const update of recalibration.updates) {
+        PATTERN_ALLOWLIST[update.key] = update.allow;
+        PATTERN_CALIBRATION[update.key] = update.calibration;
+      }
+      violations = evaluate({ counts, maxHits: args.maxHits });
+    }
+  }
+
   const allViolations = violations.length + titleViolations.length + operaTitleViolations.length;
   stamp.violations = allViolations;
   stamp.violationNames = [...violations, ...titleViolations, ...operaTitleViolations]
@@ -853,11 +886,15 @@ function main() {
   if (args.json) {
     const out = {
       scanned, maxHits: args.maxHits, violations, allowlist: PATTERN_ALLOWLIST, calibration: PATTERN_CALIBRATION,
+      ...(recalibration ? { recalibration } : {}),
       titleCorpusSize: titles.length, titleViolations, titleAllowlist: TITLE_EXCLUDE_ALLOWLIST,
       operaTitleCorpusSize: operaTitles.length, operaTitleViolations, operaTitleAllowlist: OPERA_TITLE_EXCLUDE_ALLOWLIST,
     };
     console.log(JSON.stringify(out, null, 2));
   } else {
+    if (recalibration) console.log(`[audit-regex-patterns] ${args.dryRun ? 'Dry run' : 'Auto-recalibration'}: `
+      + `${recalibration.updates.length} verified, ${recalibration.refused.length} remain manual.`
+      + (recalibration.pr ? ` PR: ${recalibration.pr}` : ''));
     console.log(reportText({ scanned, counts, violations, args, families }));
     console.log(reportTitleFamilies({ titleCount: titles.length, counts: titleCounts, violations: titleViolations, families: titleFamilies }));
     console.log(reportTitleFamilies({
