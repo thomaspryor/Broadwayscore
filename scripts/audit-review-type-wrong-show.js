@@ -24,6 +24,10 @@
  *   node scripts/audit-review-type-wrong-show.js --show=ID
  *   node scripts/audit-review-type-wrong-show.js --gate --max=0
  *   node scripts/audit-review-type-wrong-show.js --json
+ *
+ * BRO-3875: also measures preview/interview/profile/feature/news/obituary
+ * files against shows.json titles. These suspects are REPORT-ONLY, excluded
+ * from --apply and --gate: title absence alone has poor measured precision.
  */
 
 'use strict';
@@ -34,6 +38,7 @@ const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { isReviewTypeWrongShowGap } = require('./lib/nonreview-contenttype-wrongshow');
+const { bucketSoftTypeWrongShow } = require('./lib/nonreview-soft-type-wrongshow');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
 const { safeWriteReview, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
@@ -54,6 +59,8 @@ Usage:
   --gate           exit 1 when the match count exceeds --max (baseline floor, wired into CI)
   --max=N          ceiling for --gate (default 0 — every instance of this gap is actionable)
   --json           machine-readable output
+                    Includes report-only softTypes coverage/suspects (BRO-3875).
+                    Soft types never participate in --apply or --gate.
   --verify-pushed  BRO-3954: confirm the files from the LAST --apply run (per
                     ${'`'}data/audit/review-type-wrong-show-audit.json${'`'}) are actually on
                     origin/main of the review-texts private repo — not just written to local
@@ -221,6 +228,13 @@ function main() {
   const args = parseArgs(argv);
 
   const hits = [];
+  const shows = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8')).shows;
+  const showsById = new Map(shows.map((show) => [show.id, show]));
+  const softTypes = {
+    total: 0,
+    counts: { protected: 0, 'already-excluded': 0, 'missing-text': 0, 'missing-show': 0, 'target-mentioned': 0, 'wrong-show-suspect': 0 },
+    suspects: [],
+  };
   let scanned = 0;
 
   const { dirs: showDirs, rootMissing } = listShowDirs(REVIEW_TEXTS_DIR, args.show);
@@ -243,6 +257,16 @@ function main() {
       let data;
       try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
       scanned++;
+
+      const show = showsById.get(showId);
+      const softBucket = bucketSoftTypeWrongShow(data, show);
+      if (softBucket) {
+        softTypes.total++;
+        softTypes.counts[softBucket]++;
+        if (softBucket === 'wrong-show-suspect') {
+          softTypes.suspects.push({ showId, file, title: show.title, nonReviewType: data.nonReviewType });
+        }
+      }
 
       if (!isReviewTypeWrongShowGap(data) || laneBypasses(data, 'nonReview')) continue; // BRO-4807: lane reviews are never flagged
 
@@ -281,11 +305,15 @@ function main() {
   }
 
   if (args.json) {
-    console.log(JSON.stringify({ scanned, count: hits.length, applied: args.apply, hits }, null, 2));
+    console.log(JSON.stringify({ scanned, count: hits.length, applied: args.apply, hits, softTypes }, null, 2));
   } else {
     console.log(`Review-type wrongShow gap audit: ${scanned} review file(s) scanned, ${hits.length} match(es) (${args.apply ? 'APPLIED' : 'report-only, pass --apply to promote'}).`);
     for (const h of hits) {
       console.log(`  ${h.showId}/${h.file}  score=${h.score} outlet=${h.outlet} url=${(h.url || '').slice(0, 80)}`);
+    }
+    console.log(`Soft types (BRO-3875): ${softTypes.total} file(s), coverage=${JSON.stringify(softTypes.counts)}. Suspects require hand verification; never applied or gated.`);
+    for (const s of softTypes.suspects) {
+      console.log(`  SOFT SUSPECT ${s.showId}/${s.file} type=${s.nonReviewType} (filed title absent; not a confirmed mismatch)`);
     }
   }
 
@@ -293,6 +321,7 @@ function main() {
   fs.writeFileSync(LOG_PATH, JSON.stringify({
     _meta: { generatedAt: new Date().toISOString(), scanned, count: hits.length, applied: args.apply },
     hits,
+    softTypes,
   }, null, 2) + '\n');
   if (!args.json) console.log(`\nAudit log: ${LOG_PATH}`);
 

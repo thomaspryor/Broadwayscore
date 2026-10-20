@@ -213,6 +213,8 @@ function detectEssayIntroFalsePositive(data, showId) {
 }
 
 module.exports = {
+  normalizeForMatch,
+  isMentioned,
   SOFT_NONREVIEW_TYPES,
   RECOMMENDATION_PATTERNS,
   REVIEW_LANGUAGE_PATTERNS,
