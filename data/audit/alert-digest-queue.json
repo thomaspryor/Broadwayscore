@@ -1198,5 +1198,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-20T00:24:38.832Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5728-outlet-names",
+    "title": "Landing blocked: rebase red on land/bro-5728-outlet-names",
+    "description": "land.yml did not land land/bro-5728-outlet-names: the rebase gate went red at d392e66576. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5728-outlet-names @ d392e66576 (origin/land/bro-5728-outlet-names) → origin/main @ f36cce9be2 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ f36cce9be2: Rebasing (1/1) error: could not apply d392e665769... data-health: outlet-name ceiling leaves the code gate; daily masthead self-heal (BRO-5728) hint: Resolve all conflicts manually, mark them as resolved with h Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39345870444",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5728-outlet-names"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "d392e665769614d01a2b792e8540ab227bfedf8e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39345870444"
+      }
+    ],
+    "queuedAt": "2026-10-20T00:27:01.296Z"
   }
 ]
