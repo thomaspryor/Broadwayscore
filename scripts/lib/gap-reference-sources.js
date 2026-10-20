@@ -155,6 +155,17 @@ function isCurrentRunRoundup(postDate, show, allShows, opts = {}) {
   return !siblingOwnsRoundup(post, show, opening, allShows, opts);
 }
 
+/**
+ * True when a discovered round-up page's own publish date places it outside this run
+ * (BRO-5705: TR's "into-the-woods-bridge-reviews", dated Dec 2025, was read as the Oct 2026
+ * Noel Coward transfer's round-up, so 17 Bridge-run citations counted as current gaps).
+ * An undated page stays current: TR/LBO pages are already title-validated at discovery.
+ */
+function roundupIsPriorRun(html, url, show) {
+  const { extractPublishDate } = require('./article-extractor');
+  return !isCurrentRunRoundup(extractPublishDate(html, url || null), show, undefined, { londonOnly: true });
+}
+
 /** Stable hash of the missing-outlet set, for alert dedup on set change. */
 function missingSetHash(outletIds) {
   const s = [...new Set(outletIds)].sort().join('|');
@@ -229,7 +240,7 @@ async function getWeReferenceRows(show, opts = {}) {
       const parsed = extractReviews(tr.html, show.id) || [];
       sources['theatre-reviews'].rows = parsed.length;
       if (parsed.length === 0) sources['theatre-reviews'].emptyParse = true;
-      for (const r of parsed) push('theatre-reviews', tr.url, false, r);
+      for (const r of parsed) push('theatre-reviews', tr.url, roundupIsPriorRun(tr.html, tr.url, show), r);
     }
   } catch (e) {
     sources['theatre-reviews'].error = e.message;
@@ -245,7 +256,7 @@ async function getWeReferenceRows(show, opts = {}) {
       const parsed = extractReviewsFromLBO(lbo.html, show.id, lbo.url) || [];
       sources['lbo-roundup'].rows = parsed.length;
       if (parsed.length === 0) sources['lbo-roundup'].emptyParse = true;
-      for (const r of parsed) push('lbo-roundup', lbo.url, false, r);
+      for (const r of parsed) push('lbo-roundup', lbo.url, roundupIsPriorRun(lbo.html, lbo.url, show), r);
     }
   } catch (e) {
     sources['lbo-roundup'].error = e.message;
@@ -331,5 +342,6 @@ module.exports = {
   isWeShow,
   inOpeningWindow,
   isCurrentRunRoundup,
+  roundupIsPriorRun,
   missingSetHash,
 };

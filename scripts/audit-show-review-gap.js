@@ -181,7 +181,7 @@ const WE_REFERENCE_WINDOW_DAYS = 45;
 // The one predicate for "citation from an earlier production of this title".
 // Every count a human reads goes through it — see that module's docstring for
 // why five scattered `!m.priorRun` filters were not enough.
-const { collectCarriedFiles } = require('./lib/prior-run-sibling');
+const { collectCarriedFiles, collectHousedSiblingFiles, urlNamesPriorRunVenue } = require('./lib/prior-run-sibling');
 const {
   isPriorProductionCitation,
   currentRunOnly,
@@ -1371,6 +1371,29 @@ async function auditShow(show, opts = {}) {
       }
     }
   } catch { /* pending scan is best-effort */ }
+
+  // BRO-5705: a URL an earlier-run sibling already holds (reviews it keeps rather than
+  // carries here) is that run's review, not a gap in this one. Report-only, like every prior-run row.
+  try {
+    const housed = new Map();
+    for (const d of collectHousedSiblingFiles(show, opts.allShows, { loadFiles: loadDirFiles, isCovered: isCoveredFile })) {
+      if (d.url) housed.set(gapUrlIdentity(d.url), d._housedOnShowId);
+    }
+    if (housed.size) {
+      for (const m of [...result.missing, ...result.flaggedMisses]) {
+        const sib = housed.get(gapUrlIdentity(m.url));
+        if (!sib || m.priorRun) continue;
+        m.priorRun = true;
+        m.priorRunSource = `sibling-held:${sib}`;
+      }
+    }
+    // Not held anywhere, but the slug names the earlier run's house and not this one.
+    for (const m of [...result.missing, ...result.flaggedMisses]) {
+      if (m.priorRun || !urlNamesPriorRunVenue(m.url, show)) continue;
+      m.priorRun = true;
+      m.priorRunSource = 'url-names-prior-run-venue';
+    }
+  } catch { /* sibling scan is best-effort */ }
 
   // Tag WE-reference-derived missing URLs. Ingest for these is gated by
   // WE_GAP_INGEST=1 (absent = report-only — the SAFE default; a dropped env line

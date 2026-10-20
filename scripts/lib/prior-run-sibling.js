@@ -398,6 +398,53 @@ function collectCarriedFiles(show, shows, deps) {
   return out;
 }
 
+/**
+ * Files an earlier-run sibling HOLDS but does not carry onto `show` (priorRuns
+ * `inheritReviews: false`, or the 5-outlet separation): their reviews belong on
+ * the sibling, so a gap audit must not list them as missing from `show`
+ * (BRO-5705: Into the Woods Noel Coward listed 4 Bridge Theatre reviews the
+ * Bridge entry already held). Same window + covered tests as collectCarriedFiles.
+ * Report-only evidence; never feeds scoring.
+ *
+ * @returns {Array<object>} copies tagged `_housedOnShowId`
+ */
+function collectHousedSiblingFiles(show, shows, deps) {
+  const out = [];
+  if (!Array.isArray(shows)) return out;
+  for (const { sibling, window, run, carryReviews } of findPriorRunSiblings(show, shows)) {
+    const separated = carryReviews && !(run && typeof run === 'object' && run.inheritReviews === true)
+      && reReviewedByManyOutlets(show, shows, deps.loadFiles(show.id) || []);
+    if (carryReviews && !separated) continue;
+    for (const d of deps.loadFiles(sibling.id) || []) {
+      // An undated file the sibling holds still belongs to that run: it was filed there as
+      // its review, and this list only suppresses a gap row (no scoring, no ingest).
+      if (d.publishDate && !findMatchingPriorRun(d.publishDate, [window])) continue;
+      if (!deps.isCovered(d, sibling)) continue;
+      out.push({ ...d, _housedOnShowId: sibling.id });
+    }
+  }
+  return out;
+}
+
+/**
+ * True when a review URL's slug names an earlier run's venue ("...-at-bridge-theatre")
+ * and not this run's own. A review of the return names the house it plays (BRO-5705:
+ * westminsterextra's Bridge Theatre review listed against the Noel Coward transfer).
+ * Slug only, never the host or query; the full venue phrase is required, so a bare
+ * "bridge" in a title cannot match.
+ */
+function urlNamesPriorRunVenue(url, show) {
+  if (!show || !Array.isArray(show.priorRuns) || !show.priorRuns.length) return false;
+  let slug = '';
+  try { slug = decodeURIComponent(new URL(url).pathname).toLowerCase().replace(/[^a-z0-9]+/g, ' '); } catch { return false; }
+  const named = (venue) => {
+    const v = String(venue || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+    return v.split(' ').length >= 2 && ` ${slug} `.includes(` ${v} `);
+  };
+  if (named(show.venue)) return false;
+  return show.priorRuns.some(r => r && typeof r === 'object' && named(r.venue));
+}
+
 /** Date windows of every earlier run `show` declares, including dateless id links resolved through the sibling entry. */
 function priorRunWindows(show, shows) {
   const windows = Array.isArray(show && show.priorRuns) ? show.priorRuns.filter(r => r && r.openingDate) : [];
@@ -498,4 +545,6 @@ module.exports = {
   reReviewedByManyOutlets,
   RERUN_SEPARATE_MIN_OUTLETS,
   collectCarriedFiles,
+  collectHousedSiblingFiles,
+  urlNamesPriorRunVenue,
 };

@@ -8,6 +8,8 @@ const {
   findPriorRunSiblings,
   inheritPriorRunReviews,
   collectCarriedFiles,
+  collectHousedSiblingFiles,
+  urlNamesPriorRunVenue,
 } = require('./prior-run-sibling');
 
 // Real shapes from shows.json (BRO-4759): the Feb 2026 NYU Skirball run has NO
@@ -322,4 +324,30 @@ test('BRO-5333: a carried run, or no priorRuns at all, is unchanged', () => {
   assert.deepEqual(preWindowExemptPriorRuns(carried, [SPIES_2025, carried]), carried.priorRuns);
   assert.equal(preWindowExemptPriorRuns(SPIES_2025, [SPIES_2025]), undefined);
   assert.equal(preWindowExemptPriorRuns(null, []), undefined);
+});
+
+// BRO-5705: files a sibling holds but does not carry are "housed", so the gap audit skips them.
+const OPTED_OUT = { ...ST_ANNS, priorRuns: [{ ...ST_ANNS.priorRuns[0], inheritReviews: false }] };
+
+test('collectHousedSiblingFiles returns in-window covered files of an opted-out sibling', () => {
+  assert.deepEqual(collectCarriedFiles(OPTED_OUT, [SKIRBALL, OPTED_OUT], deps), []);
+  const got = collectHousedSiblingFiles(OPTED_OUT, [SKIRBALL, OPTED_OUT], deps);
+  assert.deepEqual(got.map(d => d._file).sort(), ['nyt.json', 'tm.json', 'undated.json']);
+  assert.ok(got.every(d => d._housedOnShowId === SKIRBALL.id));
+});
+
+test('collectHousedSiblingFiles is empty when the sibling is carried (no double-report) or unlinked', () => {
+  assert.deepEqual(collectHousedSiblingFiles(ST_ANNS, [SKIRBALL, ST_ANNS], deps), []);
+  assert.deepEqual(collectHousedSiblingFiles(SKIRBALL, [SKIRBALL, ST_ANNS], deps), []);
+  assert.deepEqual(collectHousedSiblingFiles(OPTED_OUT, undefined, deps), []);
+});
+
+test('urlNamesPriorRunVenue: slug naming the earlier house and not this one', () => {
+  const nc = { venue: 'Noël Coward Theatre', priorRuns: [{ venue: 'Bridge Theatre', openingDate: '2025-12-11' }] };
+  assert.equal(urlNamesPriorRunVenue('https://x.uk/article/review-into-the-woods-at-bridge-theatre', nc), true);
+  assert.equal(urlNamesPriorRunVenue('https://x.uk/review-into-the-woods-noel-coward-theatre', nc), false);
+  assert.equal(urlNamesPriorRunVenue('https://x.uk/review-into-the-woods-bridge-theatre-then-noel-coward-theatre', nc), false);
+  assert.equal(urlNamesPriorRunVenue('https://x.uk/the-bridge-review', nc), false);
+  assert.equal(urlNamesPriorRunVenue('https://bridge-theatre.uk/review-into-the-woods', nc), false);
+  assert.equal(urlNamesPriorRunVenue('https://x.uk/at-bridge-theatre', { venue: 'Y', priorRuns: [] }), false);
 });
