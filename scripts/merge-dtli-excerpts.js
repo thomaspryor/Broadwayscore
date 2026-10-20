@@ -11,6 +11,7 @@ const path = require('path');
 const { makeArchiveShowChecker } = require('./lib/archive-cache-guard');
 const { loadShows } = require('./lib/show-matching');
 const { normalizeOutlet } = require('./lib/review-normalization');
+const { applyDtliExcerpt } = require('./lib/dtli-sources-merge');
 
 // Archive files are named by show id, but the page inside can be another
 // show's (BRO-3621): skip it rather than extract its reviews into this show.
@@ -123,11 +124,7 @@ for (const file of dtliFiles) {
           dtliOutletId.includes(fileOutletId)) {
         totalMatched++;
 
-        if (!review.dtliExcerpt || review.dtliExcerpt.length < 20) {
-          review.dtliExcerpt = dtliReview.excerpt;
-          review.dtliThumb = dtliReview.thumb || review.dtliThumb;
-          if (!review.url && dtliReview.url) review.url = dtliReview.url;
-
+        if (applyDtliExcerpt(review, dtliReview)) {
           fs.writeFileSync(filePath, JSON.stringify(review, null, 2));
           added++;
           totalAdded++;
