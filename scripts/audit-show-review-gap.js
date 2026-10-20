@@ -1389,7 +1389,7 @@ async function auditShow(show, opts = {}) {
     }
     // Not held anywhere, but the slug names the earlier run's house and not this one.
     for (const m of [...result.missing, ...result.flaggedMisses]) {
-      if (m.priorRun || !m.serpCensus || !urlNamesPriorRunVenue(m.url, show)) continue;
+      if (m.priorRun || !serpCensusOnlyUrls.has(m.url) || !urlNamesPriorRunVenue(m.url, show)) continue;
       m.priorRun = true;
       m.priorRunSource = 'url-names-prior-run-venue';
     }
