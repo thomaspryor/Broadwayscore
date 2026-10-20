@@ -636,3 +636,59 @@ test('--rerun-scope CLI writes <gate>.files for scoped gates only and names ever
     fs.rmSync(dir, { recursive: true, force: true, maxRetries: 3 });
   }
 });
+
+// ── bash-integration / toplevel-regression scope (BRO-5766) ─────────────────
+
+const BASH_RAN = ['scripts/lib/a.test.sh', './scripts/lib/b.test.sh', 'scripts/lib/c.test.sh'];
+const bashRed = (gate, lines) => ({ exit: 1, root: ROOT, text: lines.map((l) => `::error::${gate} gate failed: ${l}`).join('\n') + '\n' });
+
+test('rerun scope: bash-integration failures scope to the failing .sh paths (name, not file)', () => {
+  const d = computeRerunScope({
+    gate: 'bash-integration',
+    branch: bashRed('bash-integration', ['scripts/lib/c.test.sh (exit 1)', 'scripts/lib/b.test.sh (exit 2)']),
+    branchFiles: BASH_RAN,
+  });
+  assert.equal(d.scoped, true);
+  assert.deepEqual(d.files, ['./scripts/lib/b.test.sh', 'scripts/lib/c.test.sh']);
+  const t = computeRerunScope({ gate: 'toplevel-regression', branch: bashRed('toplevel-regression', ['scripts/test-x.js (exit 1)']), branchFiles: ['scripts/test-x.js', 'scripts/test-y.js'] });
+  assert.deepEqual(t.files, ['scripts/test-x.js']);
+});
+
+test('rerun scope: bash-integration runs in full on budget-cut keys, timeouts, strangers and crashes', () => {
+  const cases = [
+    ['a budget-cut key mixed with a real failure', bashRed('bash-integration', ['scripts/lib/a.test.sh (exit 1)', 'scripts/lib/c.test.sh [budget-exceeded-12-34] (exit 124)']), /budget-exceeded/],
+    ['a script that timed out', bashRed('bash-integration', ['scripts/lib/a.test.sh (exit 124)']), /timeout/],
+    ['a path the gate never ran', bashRed('bash-integration', ['scripts/lib/zzz.test.sh (exit 1)']), /not a script of this gate/],
+    ['a crash with nothing parsed', { exit: 1, root: ROOT, text: 'boom' }, /no failure could be parsed/],
+  ];
+  for (const [label, branch, re] of cases) {
+    const d = computeRerunScope({ gate: 'bash-integration', branch, branchFiles: BASH_RAN });
+    assert.equal(d.scoped, false, label);
+    assert.match(d.reason, re, label);
+  }
+});
+
+test('--rerun-scope CLI scopes bash-integration from bash-integration.files', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rerun-scope-bash-'));
+  const out = path.join(dir, 'scope');
+  try {
+    fs.writeFileSync(path.join(dir, 'meta.json'), JSON.stringify({ root: ROOT }));
+    fs.writeFileSync(path.join(dir, 'bash-integration.exit'), '1');
+    fs.writeFileSync(path.join(dir, 'bash-integration.log'), bashRed('bash-integration', ['scripts/lib/b.test.sh (exit 1)']).text);
+    fs.writeFileSync(path.join(dir, 'bash-integration.files'), `${BASH_RAN.join('\n')}\n`);
+    const r = spawnSync(process.execPath, [CLI, '--rerun-scope', dir, '--gates', 'bash-integration', '--out', out], { encoding: 'utf8' });
+    assert.equal(r.status, 0, r.stderr);
+    assert.match(r.stdout, /bash-integration: base re-check scoped/);
+    assert.equal(fs.readFileSync(path.join(out, 'bash-integration.files'), 'utf8'), './scripts/lib/b.test.sh\n');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 3 });
+  }
+});
+
+test('land-gauntlet.sh hands the scope to the background-lane child and scopes both file-keyed gates', () => {
+  const sh = fs.readFileSync(new URL('./land-gauntlet.sh', import.meta.url), 'utf8');
+  const spawn = sh.split('\n').find((l) => l.includes('GAUNTLET_CHILD=1 GAUNTLET_PARALLEL=0'));
+  assert.match(spawn, /GAUNTLET_SCOPE_DIR="\$SCOPE_DIR"/);
+  assert.match(sh, /scope_list bash-integration tests/);
+  assert.match(sh, /scope_list toplevel-regression tests/);
+});

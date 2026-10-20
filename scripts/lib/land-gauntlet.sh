@@ -64,9 +64,9 @@
 #   gold-lists prep unless a unit gate is listed. Unset = every gate. land.yml
 #   sets it on the base run and the confirm run to the branch's red gates
 #   (lazy base, BRO-5670); the Codex runner's pre-review check sets it too.
-# Env: GAUNTLET_SCOPE_DIR (BRO-5728; land.yml sets it on the base re-checks)
-#   holds <gate>.files written by land-gate-delta.js --rerun-scope: that TAP
-#   gate runs only the listed files that exist on this tree (none: its keys
+# Env: GAUNTLET_SCOPE_DIR (BRO-5728, BRO-5766; land.yml sets it on the base
+#   re-checks) holds <gate>.files written by land-gate-delta.js --rerun-scope:
+#   that TAP / bash-integration / toplevel-regression gate runs only the listed files that exist on this tree (none: its keys
 #   are new by construction, so the gate records green without running), and
 #   the gate is named in $OUT/SCOPED so the result is never cached or
 #   published as a full base. Every TAP gate also writes $OUT/<gate>.files,
@@ -174,7 +174,8 @@ if [ "${GAUNTLET_PARALLEL:-0}" = "1" ] && [ -z "${GAUNTLET_CHILD:-}" ]; then
   # A stale .exit in a reused out-dir must not stand in for a lane that died.
   for g in bash-integration lint-workflows; do want_gate "$g" && { BG_GATES="${BG_GATES:+$BG_GATES,}$g"; rm -f "$OUT/$g.exit"; }; done
   if [ -n "$BG_GATES" ]; then
-    GAUNTLET_CHILD=1 GAUNTLET_PARALLEL=0 GAUNTLET_GATES="$BG_GATES" bash "$SELF" "$OUT" > "$OUT/background-lane.log" 2>&1 &
+    # SCOPE_DIR was unset from the env above; hand it to the child explicitly (BRO-5766).
+    GAUNTLET_CHILD=1 GAUNTLET_PARALLEL=0 GAUNTLET_GATES="$BG_GATES" GAUNTLET_SCOPE_DIR="$SCOPE_DIR" bash "$SELF" "$OUT" > "$OUT/background-lane.log" 2>&1 &
     BG_PID=$!
     echo "background lane: $BG_GATES (pid $BG_PID, log $OUT/background-lane.log)"
   fi
@@ -299,7 +300,9 @@ bash_integration() {
   local -a tests
   mapfile -t tests < <(node scripts/lib/bash-integration-test-list.js --list)
   if [ ${#tests[@]} -eq 0 ]; then echo "::error::bash-integration-test-list.js derived ZERO scripts/lib/*.test.sh files from test.yml — broken matcher?"; return 1; fi
+  scope_list bash-integration tests
   echo "# bash integration: ${#tests[@]} files (derived from test.yml)"
+  if [ ${#tests[@]} -eq 0 ]; then echo "bash-integration: none of the branch's failing files exist on this tree (BRO-5766)"; return 0; fi
   local deadline="${GAUNTLET_DEADLINE_SEC:-1800}"
   local reserve="${LINT_WORKFLOWS_RESERVE_SEC:-300}"
   local elapsed_so_far=$(( ($(node -p 'Date.now()') - T0) / 1000 ))
@@ -351,6 +354,7 @@ toplevel_regression() {
   local -a tests
   mapfile -t tests < <(node scripts/lib/land-gauntlet-toplevel-list.js --list)
   if [ ${#tests[@]} -eq 0 ]; then echo "::error::land-gauntlet-toplevel-list.js derived ZERO node scripts/test-*.js steps from test.yml — broken matcher?"; return 1; fi
+  scope_list toplevel-regression tests
   echo "# toplevel regression: ${#tests[@]} files (derived from test.yml)"
   local FAILED="" f rc
   for f in ${tests[@]+"${tests[@]}"}; do

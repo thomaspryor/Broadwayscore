@@ -87,7 +87,7 @@
 //     exactly these: a gate green on the branch passes whatever the base says
 //     (decideGateDelta), so its base result is never needed (BRO-5670).
 //   node scripts/lib/land-gate-delta.js --rerun-scope D --gates a,b,… --out S
-//     for each red TAP gate in branch result dir D whose every failure is
+//     for each red TAP/bash-integration/toplevel-regression gate in branch result dir D whose every failure is
 //     located in one of the gate's own test files (D/<gate>.files, written
 //     by the gauntlet), writes S/<gate>.files: the base re-check runs only
 //     those files (land-gauntlet.sh GAUNTLET_SCOPE_DIR, BRO-5728). Each red
@@ -126,6 +126,8 @@ const ADVISORY_GATES = {
     ? null : 'BRO-5161; arm with LAND_E2E_UNIT_BLOCKING=1'),
 };
 const TAP_GATES = new Set(['unit-tests-node', 'unit-tests-tsx', 'unit-tests-e2e', 'scripts-lib-tests']);
+// Gates whose failure key is the failing script's path in `.name` (BRO-5766).
+const FILE_KEYED_GATES = new Set(['bash-integration', 'toplevel-regression']);
 const TSC_GATES = new Set(['tsc', 'tsc-llm-scoring']);
 
 // ── Parsers: gate output → Map<key, {file, name}> ───────────────────────────
@@ -298,17 +300,20 @@ function redGates({ gates = GATES, dir, read = readGateResult }) {
 }
 
 /**
- * Pure (BRO-5728). Which files a base re-check of `gate` must run to judge
- * the branch's failures: only when every failure is located (`file::name`)
- * in a file the branch run actually ran for this gate. Anything else (a
- * non-TAP gate, a crash with nothing parsed, an unlocated `?::` key, a
- * location in a helper module) runs the gate in full.
+ * Pure (BRO-5728, BRO-5766). Which files a base re-check of `gate` must run to
+ * judge the branch's failures: only when every failure is located (`file::name`)
+ * in a file the branch run actually ran for this gate. For bash-integration and
+ * toplevel-regression the failing path is the key's `.name`. Anything else (a
+ * non-TAP/non-file-keyed gate, a crash with nothing parsed, an unlocated `?::`
+ * key, a location in a helper module, a budget-cut or timed-out script) runs
+ * the gate in full.
  * @param {{gate:string, branch:{exit:number|null,text:string,root?:string}|null, branchFiles:string[]|null}} o
  * @returns {{gate:string, scoped:boolean, files:string[], reason:string}}
  */
 function computeRerunScope({ gate, branch, branchFiles }) {
   const full = (reason) => ({ gate, scoped: false, files: [], reason });
-  if (!TAP_GATES.has(gate)) return full('not keyed by test file');
+  const fileKeyed = FILE_KEYED_GATES.has(gate);
+  if (!TAP_GATES.has(gate) && !fileKeyed) return full('not keyed by test file');
   if (!branch || typeof branch.exit !== 'number') return full('no branch result');
   if (branch.exit === 0) return full('green on the branch');
   if (!Array.isArray(branchFiles) || branchFiles.length === 0) return full('the branch run recorded no file list');
@@ -318,6 +323,22 @@ function computeRerunScope({ gate, branch, branchFiles }) {
   // gauntlet matches its own spelling.
   const ran = new Map(branchFiles.map((p) => [normalizeTestPath(p), p]));
   const files = new Set();
+  if (fileKeyed) {
+    // A budget-cut key never ran; an exit-124 script timed out, maybe only
+    // under full-batch load. Neither can be judged from a lone-file base run.
+    for (const f of failures.values()) {
+      if (/\[budget-exceeded-[^\]]*\]/.test(f.name)) return full(`budget-exceeded key "${f.name}"`);
+    }
+    const t = /^::error::\S+ gate failed: (.+?) \(exit 124\)$/m.exec(stripAnsi(branch.text).replace(/\r/g, ''));
+    if (t) return full(`timeout (exit 124) "${t[1]}"`);
+    for (const f of failures.values()) {
+      const file = normalizeTestPath(f.name);
+      if (!ran.has(file)) return full(`failure located in ${file}, not a script of this gate`);
+      files.add(ran.get(file));
+    }
+    const list = [...files].sort();
+    return { gate, scoped: true, files: list, reason: `${list.length} file(s) hold all ${failures.size} failure(s)` };
+  }
   for (const f of failures.values()) {
     if (!f.file || f.file === '?') return full(`unlocated failure "${f.name}"`);
     // A timeout or cancellation can come from full-batch load; alone on base it
