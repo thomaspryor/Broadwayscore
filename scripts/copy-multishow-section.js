@@ -43,6 +43,8 @@ function main() {
   const fileName = path.basename(from);
   const sourcePath = path.join(root, from);
   if (!fs.existsSync(sourcePath)) { console.error(`not found: ${from}`); return 1; }
+  const { loadLiveShowIds, filterToLiveShowIds } = require('./lib/live-show-ids');
+  if (filterToLiveShowIds([toShow], loadLiveShowIds()).dropped.length) { console.error(`REFUSED ${toShow}: not a show id in shows.json (BRO-5789: no orphan review folders)`); return 1; }
   const targetDir = path.join(root, toShow);
   const targetPath = path.join(targetDir, fileName);
 
