@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5780",
   "planId": "52704611-9508-481e-b49c-e3dd3c969d39",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -31,5 +31,19 @@
         "description": "BRO-5780: clear the flag (see above)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-20T15:58:22.858Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-girls-off-broadway-2026/nytg--allison-considine.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-girls-off-broadway-2026/nytg--allison-considine.json wrongShow: true -> false"
+    }
+  ],
+  "executedIn": "ci"
 }
