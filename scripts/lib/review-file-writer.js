@@ -44,7 +44,7 @@ const { isShowDirHiddenBySparseCheckout } = require('./sparse-checkout-guard');
 const { validateUrlDomain } = require('./url-discovery');
 const { isUnresolvableRedirectUrl } = require('./unresolvable-url');
 const { approvedUrlFixListingReason } = require('./approved-url-fix');
-const { safeWriteReview, safeRenameReview, invalidateWrongProductionAutoClear } = require('./review-write-guard');
+const { safeWriteReview, safeRenameReview, invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = require('./review-write-guard');
 const { isStampedReviewTextsCopy } = require('./review-texts-dir');
 const { classifyContentTier } = require('./content-quality');
 const { clearFailureFlags } = require('./clear-failure-flags');
@@ -1871,6 +1871,7 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     'humanReviewedScore',
   ]);
   const isManualEntry = input.source === 'manual-entry';
+  const mergedFields = new Set();
 
   // Manual-entry protection-field force-override (ST-1, 2026-07): the generic
   // merge loop below only writes a field when the EXISTING value is falsy —
@@ -1889,6 +1890,7 @@ function _mergeIntoExisting(filepath, existing, ctx) {
       if (val === undefined) continue;
       if (JSON.stringify(existing[key]) !== JSON.stringify(val)) {
         existing[key] = val;
+        mergedFields.add(key);
         changed = true;
       }
     }
@@ -1897,26 +1899,6 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   // Default field merge: set scraper-specific fields if existing value is falsy.
   // Exception: skip isRoundupArticle if it was manually cleared — !false would otherwise
   // re-flag the file even though a human explicitly cleared it.
-  //
-  // BRO-3895: this loop is the ONLY place fields.wrongProduction (stamped by
-  // classifyMarketRouting's accept-with-flag branch, Guard J, and Guard K
-  // above — none of which call invalidateWrongProductionAutoClear themselves,
-  // unlike every other wrongProduction writer per that function's docstring)
-  // actually lands on `existing`. Without an invalidate call, a re-flag onto a
-  // file still carrying a stale wrongProductionAutoCleared breadcrumb from an
-  // earlier clear produces wrongProduction:true sitting beside its own
-  // retraction breadcrumb — the exact self-contradictory-clear shape
-  // audit-self-contradictory-clear-drained.test.mjs gates on (caught live on
-  // much-ado-about-nothing-globe-off-west-end-2026/broadwayworld--aliya-al-
-  // hassan.json). Tracked via a flag and invalidated ONCE after the loop,
-  // not inline: `fields` is `input.fields` (a caller-owned object, mutated
-  // in place by the guards above) — inline invalidation deletes
-  // existing.wrongProductionAutoCleared mid-loop, and a LATER key in that
-  // same object (e.g. a replay/import payload that also echoes back
-  // wrongProductionAutoCleared) would immediately re-add it via this same
-  // `!existing[key]` branch before the loop finishes (ship-check/Codex
-  // adversarial finding).
-  let wrongProductionNewlyFlagged = false;
   for (const [key, val] of Object.entries(fields)) {
     if (key === 'isRoundupArticle' && shouldSkipRoundupAudit(existing)) continue;
     if (HUMAN_PROTECTED.has(key)) {
@@ -1931,12 +1913,23 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     }
     if (val != null && !existing[key]) {
       existing[key] = val;
+      mergedFields.add(key);
       changed = true;
-      if (key === 'wrongProduction' && val === true) wrongProductionNewlyFlagged = true;
     }
   }
-  if (wrongProductionNewlyFlagged) {
-    invalidateWrongProductionAutoClear(existing);
+
+  // BRO-3911: invalidate after BOTH merge paths so a later payload key cannot
+  // reintroduce a stale breadcrumb. Track flags AND breadcrumbs: a clear can
+  // arrive on an already-flagged record without the flag itself changing.
+  // Unrelated merges and manual clears retain their existing clear history.
+  for (const [flag, invalidate] of [
+    ['wrongProduction', invalidateWrongProductionAutoClear],
+    ['wrongShow', invalidateWrongShowAutoClear],
+  ]) {
+    if (existing[flag] === true && [flag, `${flag}AutoCleared`, `${flag}AutoClearedAt`]
+      .some(key => mergedFields.has(key))) {
+      invalidate(existing);
+    }
   }
 
   // wrongShow-unknown URL lock (task #1150, 2026-08-09; DoaS Apr 9-10 #13). When
