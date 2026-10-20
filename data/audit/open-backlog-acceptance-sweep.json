@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-20T07:40:40.348Z",
+  "generatedAt": "2026-10-20T12:14:03.306Z",
   "shadow": true,
-  "checkoutSha": "c636d085b284e91ba87dab5141137b8d9a4757dc",
-  "totalCandidates": 523,
-  "eligibleCandidates": 98,
+  "checkoutSha": "a0660271d85615852d5ab8cd4e95121e4e5b58f9",
+  "totalCandidates": 524,
+  "eligibleCandidates": 93,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
@@ -20,18 +20,6 @@
       "detail": null
     },
     {
-      "id": "BRO-5743",
-      "name": "Audit which listShowDirs consumers should skip _-prefixed holding dirs (BRO-5740 cousin)",
-      "verifyCmd": "node --test scripts/lib/critic-spelling-duplicates.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5741",
-      "name": "gather-reviews writes capitalized domain base as review outlet for unresolved hosts",
-      "verifyCmd": "node --test tests/unit/outlet-registry-display-names.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-5739",
       "name": "Null 5 live shows whose art is plainly another work (diamond ring, & Juliet poster, county-fair flyer, book cover, wrong play)",
       "verifyCmd": "node --test scripts/lib/versioned-image-path.test.mjs",
@@ -44,6 +32,12 @@
       "detail": null
     },
     {
+      "id": "BRO-5736",
+      "name": "Version remaining image paths (site pages, search-shows, show-lookup, mobile detail hero) so replaced art busts caches",
+      "verifyCmd": "node --test scripts/lib/versioned-image-path.test.mjs",
+      "detail": null
+    },
+    {
       "id": "BRO-5733",
       "name": "Cut theatre.reviews wasted Bright Data calls: negative-cache shows with no roundup",
       "verifyCmd": "node --test tests/unit/tr-roundup-negative-cache.test.mjs",
@@ -53,6 +47,12 @@
       "id": "BRO-5728",
       "name": "Land: base re-check runs only the branch's failing test files (not the whole gate); auto-repair slug outlet names",
       "verifyCmd": "node --test scripts/lib/land-gate-delta.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5726",
+      "name": "verify-review-recovery: thereviewshub--reviewer-upload.json in the-comedy-about-spies-west-end-2025 reported MISSING though reviews.json holds a thereviewshub entry (Christine Stanton, 91)",
+      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=the-comedy-about-spies-west-end-2025 --reviews=1",
       "detail": null
     },
     {
