@@ -581,9 +581,16 @@ function laneForLogin({ lane = 'cloud', slots, authText, nowMs, runMs, marginMs 
   return { lane, base: l.base, ...plan };
 }
 
-/** Card ids named by a set of lock commit subjects (other slots' run locks). */
-function cardsInLocks(subjects) {
-  return new Set((subjects || []).flatMap((s) => lockCards(s)));
+/**
+ * Card ids named by other slots' lock commit subjects. A stamp older than staleMs is skipped: a
+ * dead run's lock is only adopted when its own slot runs again, and must not block the card for
+ * every other lane until then. A stamp with an unreadable time still counts.
+ */
+function cardsInLocks(subjects, { nowMs = Date.now(), staleMs = Infinity } = {}) {
+  return new Set((subjects || []).flatMap((s) => {
+    const ms = Date.parse((String(s).match(/^(?:locked|released) (\S+)/) || [])[1]);
+    return Number.isFinite(ms) && nowMs - ms > staleMs ? [] : lockCards(s);
+  }));
 }
 
 /**

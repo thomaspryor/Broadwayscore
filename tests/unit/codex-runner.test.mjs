@@ -1054,4 +1054,7 @@ test('cardsInLocks: the cards other slots\' run locks name', () => {
   assert.deepEqual([...s].sort(), ['BRO-1', 'BRO-22', 'BRO-3']);
   assert.equal(r.cardsInLocks([]).size, 0);
   assert.equal(r.cardsInLocks(null).size, 0);
+  const now = Date.parse('2026-10-20T12:00:00Z');
+  const fresh = r.cardsInLocks(['locked 2026-10-20T11:30:00Z cards=BRO-7', 'released 2026-10-20T08:00:00Z cards=BRO-8', 'locked 2026-10-20T09:00:00Z cards=BRO-9'], { nowMs: now, staleMs: 90 * 60_000 });
+  assert.deepEqual([...fresh], ['BRO-7'], 'stamps past the stale window do not block other lanes');
 });

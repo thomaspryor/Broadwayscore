@@ -240,8 +240,8 @@ async function main() {
 }
 
 // Cards one Codex firing works per lane (docs/cloud-routines/board-workers.md: --slots 3 --limit 9;
-// .github/workflows/codex-runner.yml: --lane gha --limit 8).
-const CODEX_FIRING_CARDS = { cloud: 9, gha: 8 };
+// .github/workflows/codex-runner.yml: --lane gha with its default --limit 6).
+const CODEX_FIRING_CARDS = { cloud: 9, gha: 6 };
 
 /**
  * Cards the live Codex lanes will take: the sum over lanes holding a run lock

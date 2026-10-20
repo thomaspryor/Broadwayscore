@@ -1105,8 +1105,18 @@ function refreshLock(nextBlockMs = 0) {
   return !tooOld;
 }
 /** Stamp the lock now (openCards changed before a claim). -> false when it could not be stamped. */
+// Only a stamp that reached the remote counts: a 'kept' or 'unknown' push leaves the remote on
+// an older stamp that does not name the card, and the cross-lane check relies on both runners
+// stamping before they read.
 function lockStamped() {
-  try { return refreshLock() && lockSha !== null; } catch { return false; }
+  if (!lockSha) return false;
+  try {
+    const sha = lockCommit(lockStamp());
+    const res = lockPush(sha, lockSha);
+    if (res.state === 'pushed' || (res.state === 'kept' && res.tip === sha)) { lockSha = sha; lastStampOkMs = ownLockShas.get(sha); return true; }
+    if (res.state === 'kept') { lockSha = res.tip; lastStampOkMs = ownLockShas.get(res.tip); }
+    return false;
+  } catch { return false; }
 }
 function dropOpenCard(id) {
   openCards.delete(id);
@@ -1123,10 +1133,11 @@ function otherLockCards() {
   if (ls.code !== 0) return null;
   const shas = ls.stdout.split('\n').map((l) => l.split(/\s+/)[0]).filter((x) => /^[0-9a-f]{40}$/.test(x));
   if (!shas.length) return new Set();
-  const f = sh('git', ['fetch', '-q', 'origin', ...refs.filter((r) => ls.stdout.includes(r))], { cwd: ROOT, timeoutMs: LOCK_GIT_MS }); // unbounded-fetch-ok: lock commits are parentless, one commit each
+  const present = new Set(ls.stdout.split('\n').map((l) => l.split(/\s+/)[1]).filter(Boolean));
+  const f = sh('git', ['fetch', '-q', 'origin', ...refs.filter((r) => present.has(r))], { cwd: ROOT, timeoutMs: LOCK_GIT_MS }); // unbounded-fetch-ok: lock commits are parentless, one commit each
   if (f.code !== 0) return null;
   const subjects = shas.map((sha) => sh('git', ['log', '-1', '--format=%s', sha], { cwd: ROOT }).stdout.trim());
-  return R.cardsInLocks(subjects);
+  return R.cardsInLocks(subjects, { nowMs: Date.now(), staleMs: LOCK_STALE_MS });
 }
 function releaseLock() {
   if (!lockSha) return;
