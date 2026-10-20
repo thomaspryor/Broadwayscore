@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-20T02:28:20.638Z",
+  "timestamp": "2026-10-20T07:06:01.620Z",
   "stats": {
-    "totalReviews": 57848,
-    "alreadyFlagged": 21089,
+    "totalReviews": 57863,
+    "alreadyFlagged": 21092,
     "dateGuardCatches": 198,
     "directorMismatch": 2027,
-    "tvFilmSignals": 1647,
-    "londonSignals": 2552,
+    "tvFilmSignals": 1648,
+    "londonSignals": 2556,
     "offBroadwaySignals": 530,
     "yearMismatch": 161,
-    "noPublishDate": 5203
+    "noPublishDate": 5206
   },
   "findings": [
     {
@@ -25549,6 +25549,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "machine-learning-off-broadway-2026",
+      "file": "littleenginetheater--unknown.json",
+      "publishDate": null,
+      "url": "https://www.littleenginetheater.com/machine-learning",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
         }
       ]
     },
@@ -68235,10 +68248,36 @@
     },
     {
       "showId": "ilford-boy-west-end-2026",
+      "file": "bestoftheatre--milo-garth.json",
+      "publishDate": "2026-10-19",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/ilford-boy-in-pictures-danny-lee-wynter-donmar-warehouse",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "ilford-boy-west-end-2026",
       "file": "monstagigz--unknown.json",
       "score": 88,
       "publishDate": "2026-10-13",
       "url": "https://monstagigz.com/2026/10/13/theatre-review-ilford-boy-starring-leo-whitfield-harris-craig-steen-ria-zmitrowicz-lindsey-coulson-at-the-donmar-warehouse/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "ilford-boy-west-end-2026",
+      "file": "theatre-weekly--unknown.json",
+      "publishDate": "2026-09-24",
+      "url": "https://theatreweekly.com/first-look-rehearsal-images-released-for-danny-lee-wynters-ilford-boy-at-the-donmar-warehouse/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -72611,6 +72650,19 @@
     },
     {
       "showId": "martin-guerre-west-end-2026",
+      "file": "londontheatredirect--lyn-gardner.json",
+      "publishDate": "2026-09-17",
+      "url": "https://www.londontheatredirect.com/news/10-reasons-to-see-martin-guerre-at-the-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
       "file": "londontheatredirect--steve-mills.json",
       "publishDate": null,
       "url": "https://www.londontheatredirect.com/musical/martin-guerre-tickets?srsltid=AU7gw4WVzbtbXp9TL94RyxsFIGKt5DdfBYwx9DlI3UZ93KzuEc_8bxaK",
@@ -72619,6 +72671,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
+      "file": "timeout-london--unknown.json",
+      "publishDate": "2026-09-27",
+      "url": "https://www.timeout.com/london/theatre/martin-guerre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
