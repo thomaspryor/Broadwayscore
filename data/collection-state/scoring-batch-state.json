@@ -1,0 +1,43 @@
+{
+  "submittedAt": "2026-10-20T20:07:42.054Z",
+  "itemCount": 4,
+  "claudeBatchId": "msgbatch_01Ai2Q5HdDo6pNyAtwqzgUBh",
+  "openaiBatchId": "batch_6ad7ca0a49d88190a47debebd029803b",
+  "geminiBatchId": "batches/9qj0t6erquks2dd45p7gfy0vpvioz4akp2z5",
+  "manifest": [
+    {
+      "index": 0,
+      "showId": "sinatra-the-musical-west-end-2026",
+      "outletId": "theatre-south-east",
+      "filePath": "data/review-texts/sinatra-the-musical-west-end-2026/theatre-south-east--sammi-oneill.json",
+      "inputHash": "971dfe995d7a4ca2b50010f1f22ef122"
+    },
+    {
+      "index": 1,
+      "showId": "titanique-2026",
+      "outletId": "stageandcinema",
+      "filePath": "data/review-texts/titanique-2026/stageandcinema--paulanne-simmons.json",
+      "inputHash": "949521bbd97625e91fb02dd7d2685c27"
+    },
+    {
+      "index": 2,
+      "showId": "the-unknown-off-broadway-2026",
+      "outletId": "exeunt-magazine",
+      "filePath": "data/review-texts/the-unknown-off-broadway-2026/exeunt-magazine--unknown.json",
+      "inputHash": "c85ff59ea39f6ff4dd1dd24f4ec5a4b4"
+    },
+    {
+      "index": 3,
+      "showId": "into-the-woods-west-end-2025",
+      "outletId": "backstageviewandmorereviews",
+      "filePath": "data/review-texts/into-the-woods-west-end-2025/backstageviewandmorereviews--berenice-mann-backstage-view.json",
+      "inputHash": "dd801f61df7dea1a896a33222a279086"
+    }
+  ],
+  "models": {
+    "claude": "claude-sonnet-4-6",
+    "openai": "gpt-4o",
+    "gemini": "gemini-2.5-flash"
+  },
+  "promptVersion": "5.4.0"
+}
