@@ -58,6 +58,8 @@ function walk(dir) {
 
 // Server-side readers of commercial.json that never emit commercial figures.
 // Anything else importing it must go through data-commercial's loaders.
+// Released public pages that show commercial aggregates only (owner-approved, BRO-5777).
+const PUBLIC_AGGREGATE_ROUTES = new Set(['src/app/season-report/page.tsx']);
 const COMMERCIAL_JSON_READERS = new Set([
   'src/lib/data-commercial.ts',
   'src/lib/data-tony-predictions.ts', // only drops "Tour Stop" shows from Tony eligibility
@@ -85,13 +87,11 @@ test('pages only load commercial data behind featureFlags.commercial', () => {
     for (const m of text.matchAll(/\b(\w+)\s+as\s+(\w+)/g)) if (names.has(m[1])) names.add(m[2]);
     const call = new RegExp(`\\b(${[...names].join('|')})\\s*\\(`);
     if (!call.test(text)) continue;
-    // A route that 404s while the flag is off may load whatever it likes. The public
-    // Season Report (BRO-5777) 404s on its own held flag and shows aggregates only.
+    // A route that 404s while the flag is off may load whatever it likes.
     if (/if \(!featureFlags\.commercial\) notFound\(\);/.test(text)) continue;
-    if (/if \(!featureFlags\.seasonReport\) notFound\(\);/.test(text)) {
-      assert.ok(PROD_HELD_FEATURES.has('seasonReport'), `${rel} 404s on seasonReport, which must stay in PROD_HELD_FEATURES until the owner releases it`);
-      continue;
-    }
+    // The public Season Report shows recoupment aggregates only (no budgets, running
+    // costs or named shows); the owner released it 2026-10-20 (BRO-5777). Only that route.
+    if (PUBLIC_AGGREGATE_ROUTES.has(rel)) continue;
     text.split('\n').forEach((line, i) => {
       if (call.test(line) && !/^\s*(\/\/|\*|import\b)/.test(line) && !line.includes('featureFlags.commercial')) {
         offenders.push(`${rel}:${i + 1}: ${line.trim()}`);
@@ -117,8 +117,7 @@ test('the public demo build leaves prod-held flags off (boxOfficeV2 included)', 
   assert.ok(!flags.includes('boxOfficeV2'), 'boxOfficeV2 must not be enabled on demo.broadwayscorecard.com');
   // commercial's demo behavior is pending an owner decision: unchanged (allowlisted).
   assert.ok(flags.includes('commercial'), 'commercial stays on demo until the owner decides');
-  // BRO-5777: the owner previews the held Season Report on demo before releasing it.
-  assert.ok(flags.includes('seasonReport'), 'seasonReport is on demo for the owner preview');
+  assert.ok(!PROD_HELD_FEATURES.has('seasonReport'), 'seasonReport is released (BRO-5777)');
   const wf = readFileSync(path.join(ROOT, '.github/workflows/vercel-demo.yml'), 'utf8');
   const codeLines = wf.split('\n').filter((l) => !/^\s*#/.test(l));
   assert.ok(codeLines.some((l) => /node\s+scripts\/lib\/demo-feature-flags\.js/.test(l)),
