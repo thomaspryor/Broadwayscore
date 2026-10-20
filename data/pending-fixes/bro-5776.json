@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5776",
   "planId": "2c02f506-6927-4d6d-9980-95f2b298a6e7",
-  "status": "pending",
+  "status": "partial",
   "submitter": {
     "name": null,
     "email": null
@@ -160,5 +160,89 @@
         "description": "A holiday special engagement, not a play (Playbill schedule)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-20T22:47:25.878Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for three-days-of-rain-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for three-days-of-rain-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "openingDateSource: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for three-days-of-rain-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for warriors-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for warriors-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "openingDateSource: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for warriors-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for rhinoceros-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for rhinoceros-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "openingDateSource: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for the-full-monty-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-full-monty-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for the-full-monty-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for now-you-see-me-live-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for blue-man-group-a-new-holiday-surprise-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
