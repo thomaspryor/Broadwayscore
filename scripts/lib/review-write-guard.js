@@ -705,48 +705,35 @@ function _recordClearBreadcrumbRetraction(d, fields, reason) {
   d.clearBreadcrumbRetractedFields = Array.from(new Set([...prior, ...fields]));
 }
 
-const _freshWrongProductionAutoClear = (d) => {
-  if (!d || !d.wrongProductionAutoCleared || !d.wrongProductionAutoClearedAt) return false;
-  const at = Date.parse(String(d.wrongProductionAutoClearedAt));
-  if (Number.isNaN(at)) return false;
-  return (Date.now() - at) <= AUTO_CLEAR_FRESH_DAYS * 86400000;
-};
-
-// Shared freshness-gate shape (BRO-3225 codebase review, plan-review 2026-09-14):
-// this is the 6th near-identical "flag + *At stamp, fresh within N days" predicate
-// in this file (wrongProduction above; staleScoredBeforeOpening/fullTextWrongAuthor/
-// stuckRescoreCleared/rescoreCompletedAt below). The three most recent siblings
-// (_freshStaleScoredBeforeOpening, _freshFullTextWrongAuthor, _freshStuckRescoreCleared)
-// all carry an `age >= 0` future-dated-stamp guard that _freshWrongProductionAutoClear
-// above does NOT — added specifically because a codex adversarial review (task #1237,
-// "apply-audit-flags.js fullTextWrongAuthor is the same same-job restore-resurrection
-// bug as task #97's staleScoredBeforeOpening") found a clock-skewed/malformed future
-// stamp can pass `<= FRESH_DAYS` via a negative age and suppress a real data-loss
-// restore FOREVER, not just for the intended window. Copying the OLDER
-// _freshWrongProductionAutoClear shape for a new field would silently reintroduce
-// that already-fixed defect class. This helper is the fix's actual generalization:
-// used by the new wrongShow predicate below; the 4 existing ones are deliberately
-// NOT retrofitted in this diff (out of scope — they are independently battle-tested
-// and retrofitting them is a separate, lower-risk-when-isolated cleanup).
-//
-// `flagIsString`: wrongProduction/wrongShow's own AutoCleared stamps are STRING
-// annotations ("rebuild: ..."), so the flag check is truthiness, matching
-// _freshWrongProductionAutoClear's `!d[flagField]` (not the boolean `!== true`
-// check the 3 newer siblings use for their own, boolean-typed flags).
-function _freshAutoClearStamp(d, { flagField, atField, days, flagIsString = true }) {
-  if (!d) return false;
-  const flagOk = flagIsString ? !!d[flagField] : d[flagField] === true;
-  if (!flagOk || !d[atField]) return false;
-  const at = Date.parse(String(d[atField]));
-  if (Number.isNaN(at)) return false;
-  const age = Date.now() - at;
-  return age >= 0 && age <= days * 86400000;
+// Shared freshness gates (BRO-2444). Boolean flags require true; string
+// annotations use truthiness. Omit flagField for timestamp-only breadcrumbs.
+// age >= 0 rejects future stamps that could otherwise suppress data-loss
+// restoration beyond the intended window (task #1237). Only the legacy
+// wrongProduction gate opts out to preserve its existing behavior.
+function makeFreshnessGate({ flagField, atField, days, flagIsString = false, allowFuture = false }) {
+  return (d) => {
+    if (!d || !d[atField]) return false;
+    if (flagField && (flagIsString ? !d[flagField] : d[flagField] !== true)) return false;
+    const at = Date.parse(String(d[atField]));
+    if (Number.isNaN(at)) return false;
+    const age = Date.now() - at;
+    return (allowFuture || age >= 0) && age <= days * 86400000;
+  };
 }
 
-const _freshWrongShowAutoClear = (d) => _freshAutoClearStamp(d, {
+const _freshWrongProductionAutoClear = makeFreshnessGate({
+  flagField: 'wrongProductionAutoCleared',
+  atField: 'wrongProductionAutoClearedAt',
+  days: AUTO_CLEAR_FRESH_DAYS,
+  flagIsString: true,
+  allowFuture: true,
+});
+
+const _freshWrongShowAutoClear = makeFreshnessGate({
   flagField: 'wrongShowAutoCleared',
   atField: 'wrongShowAutoClearedAt',
   days: AUTO_CLEAR_FRESH_DAYS,
+  flagIsString: true,
 });
 
 // staleScoredBeforeOpening freshness gate (task #97 codex adversarial review).
@@ -758,17 +745,11 @@ const _freshWrongShowAutoClear = (d) => _freshAutoClearStamp(d, {
 // reached (e.g. the show never gets rescored) so the stamp can't suppress
 // restoring a later, unrelated score loss indefinitely.
 const STALE_SCORE_FRESH_DAYS = 3;
-const _freshStaleScoredBeforeOpening = (d) => {
-  if (!d || d.staleScoredBeforeOpening !== true || !d.staleScoredBeforeOpeningAt) return false;
-  const at = Date.parse(String(d.staleScoredBeforeOpeningAt));
-  if (Number.isNaN(at)) return false;
-  // age >= 0 excludes future-dated stamps (malformed or clock-skewed), which
-  // would otherwise pass `<= FRESH_DAYS` via a negative age and suppress
-  // restoring a data-loss forever, not just for the intended window (codex
-  // adversarial review, task #1237).
-  const age = Date.now() - at;
-  return age >= 0 && age <= STALE_SCORE_FRESH_DAYS * 86400000;
-};
+const _freshStaleScoredBeforeOpening = makeFreshnessGate({
+  flagField: 'staleScoredBeforeOpening',
+  atField: 'staleScoredBeforeOpeningAt',
+  days: STALE_SCORE_FRESH_DAYS,
+});
 
 // fullTextWrongAuthor freshness gate (task #1237, same shape as
 // _freshStaleScoredBeforeOpening above). apply-audit-flags.js is invoked by
@@ -783,11 +764,10 @@ const WRONG_AUTHOR_FRESH_DAYS = 3;
 // stale-automated-text-verdict.js parkTextDerivedScore(): same 3-day bridge
 // as _freshStaleScoredBeforeOpening; markRescoreComplete() retires the stamp
 // the moment the scorer writes a score for the new text.
-const _freshStaleTextVerdictScoreParked = (d) => _freshAutoClearStamp(d, {
+const _freshStaleTextVerdictScoreParked = makeFreshnessGate({
   flagField: 'staleTextVerdictScoreParked',
   atField: 'staleTextVerdictScoreParkedAt',
   days: STALE_SCORE_FRESH_DAYS,
-  flagIsString: false,
 });
 
 // star-reliability.invalidateStarSidedAdjudication (BRO-4849): nulls adjudicatedScore/adjudicationNote and stamps
@@ -803,14 +783,11 @@ const _freshAdjudicationInvalidated = (d) => {
   return age >= 0 && age <= STALE_SCORE_FRESH_DAYS * 86400000;
 };
 
-const _freshFullTextWrongAuthor = (d) => {
-  if (!d || d.fullTextWrongAuthor !== true || !d.fullTextWrongAuthorAt) return false;
-  const at = Date.parse(String(d.fullTextWrongAuthorAt));
-  if (Number.isNaN(at)) return false;
-  // age >= 0 excludes future-dated stamps — see _freshStaleScoredBeforeOpening.
-  const age = Date.now() - at;
-  return age >= 0 && age <= WRONG_AUTHOR_FRESH_DAYS * 86400000;
-};
+const _freshFullTextWrongAuthor = makeFreshnessGate({
+  flagField: 'fullTextWrongAuthor',
+  atField: 'fullTextWrongAuthorAt',
+  days: WRONG_AUTHOR_FRESH_DAYS,
+});
 
 // stuckRescoreCleared freshness gate (task #1259, same shape as
 // _freshStaleScoredBeforeOpening/_freshFullTextWrongAuthor above).
@@ -827,14 +804,11 @@ const _freshFullTextWrongAuthor = (d) => {
 // restoring a genuinely-cleared, still-empty field, and expires on its own
 // after STUCK_RESCORE_FRESH_DAYS regardless.
 const STUCK_RESCORE_FRESH_DAYS = 3;
-const _freshStuckRescoreCleared = (d) => {
-  if (!d || d.stuckRescoreCleared !== true || !d.stuckRescoreClearedAt) return false;
-  const at = Date.parse(String(d.stuckRescoreClearedAt));
-  if (Number.isNaN(at)) return false;
-  // age >= 0 excludes future-dated stamps — see _freshStaleScoredBeforeOpening.
-  const age = Date.now() - at;
-  return age >= 0 && age <= STUCK_RESCORE_FRESH_DAYS * 86400000;
-};
+const _freshStuckRescoreCleared = makeFreshnessGate({
+  flagField: 'stuckRescoreCleared',
+  atField: 'stuckRescoreClearedAt',
+  days: STUCK_RESCORE_FRESH_DAYS,
+});
 
 // rescoreCompletedAt freshness gate (BRO-2429). rescore-lifecycle.js's
 // markRescoreComplete() — called from EVERY ensemble scoring success path, not
@@ -851,14 +825,10 @@ const _freshStuckRescoreCleared = (d) => {
 // the stamp ages out — see the "later legitimate re-flag" test below, mirrored
 // from stuckRescoreCleared's sibling test.
 const RESCORE_COMPLETED_FRESH_DAYS = 3;
-const _freshRescoreCompleted = (d) => {
-  if (!d || !d.rescoreCompletedAt) return false;
-  const at = Date.parse(String(d.rescoreCompletedAt));
-  if (Number.isNaN(at)) return false;
-  // age >= 0 excludes future-dated stamps — see _freshStaleScoredBeforeOpening.
-  const age = Date.now() - at;
-  return age >= 0 && age <= RESCORE_COMPLETED_FRESH_DAYS * 86400000;
-};
+const _freshRescoreCompleted = makeFreshnessGate({
+  atField: 'rescoreCompletedAt',
+  days: RESCORE_COMPLETED_FRESH_DAYS,
+});
 
 // Reuse the canonical wrongShow-cleared predicate (lazy require keeps this module
 // circular-safe — review-guards.js has no top-level require back to here). It
