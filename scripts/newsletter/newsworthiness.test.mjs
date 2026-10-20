@@ -343,6 +343,27 @@ test('a later item\'s Critical Gold score cannot outrank an earlier, non-gold we
   assert.ok(weCandidates[0].weight > weCandidates[1].weight, `expected 'first' to outweigh 'second' despite its gold bump; got ${JSON.stringify(weCandidates.map((c) => c.weight))}`);
 });
 
+test('Broadway reopening uses reopens in the primary edition headline, subject and lede (BRO-2976)', () => {
+  const broadwayShow = { id: 'bw-show', slug: 'bw-show', title: 'Big Broadway Hit', category: 'broadway' };
+  // Match generate.mjs's primary bwEvents shape after bwO.reopeningIds is applied.
+  for (const avg of [80, null]) {
+    const candidates = scoreCandidates({
+      edition: 'broadway',
+      bwOpenings: [{ show: broadwayShow, isReopening: true }],
+      aggregateScore: () => ({ avg }),
+    });
+    const headline = avg === null
+      ? 'Big Broadway Hit reopens on Broadway'
+      : 'Big Broadway Hit reopens to strong reviews';
+    assert.equal(candidates[0].kind, 'bw-reopening');
+    assert.equal(candidates[0].headline, headline);
+    assert.equal(buildSubjectFromCandidates(candidates).subject, `${headline}.`);
+    assert.deepEqual(buildLedeSentences(candidates).sentences, [
+      `${headline.replace(broadwayShow.title, `<em>${broadwayShow.title}</em>`)}.`,
+    ]);
+  }
+});
+
 // ── BRO-2598: Broadway can lead the WE edition's subject/lede, but only when
 // there's no real West End/Off West End story that week (owner decision,
 // 2026-09-07) — mirrors how weGoldOpenings is already secondary-weighted in
