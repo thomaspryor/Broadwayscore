@@ -447,12 +447,18 @@ jobs:
       # the cause of SERP-cache eviction) via the GitHub API instead of a fixed
       # credits/day ceiling, hence GH_TOKEN here and actions: read above.
       - name: Live-data assertions (moved from test.yml unit batch)
+        id: livedata
         if: always()
+        # BRO-5788: bounded so the routing + ledger-commit steps below still fit the 30-min job timeout.
+        timeout-minutes: 22
         env:
           GH_TOKEN: ${{ github.token }}
           REQUIRE_REVIEW_CORPUS: '1' # a failed review-texts checkout must fail here, not skip green (BRO-5729)
         run: |
-          node --test \
+          # BRO-5788: spec to stdout (the log reads as before), TAP to a file for
+          # the routing step. The exit code is node --test's own, unchanged.
+          node --test --test-reporter=spec --test-reporter-destination=stdout \
+            --test-reporter=tap --test-reporter-destination="$RUNNER_TEMP/live-data.tap" \
             tests/unit/cast-changes-real-data.test.mjs \
             tests/unit/bro3887-cache-fix-acceptance.test.mjs \
             tests/unit/image-presence.test.mjs \
@@ -470,3 +476,30 @@ jobs:
             tests/unit/automated-clear-not-manual-live-data.test.mjs \
             tests/unit/critic-spelling-duplicates-live-data.test.mjs \
             scripts/verify-contamination-gate.test.mjs
+
+      # BRO-5788: every failing live-data test above becomes its own routed
+      # condition (live-data-test:<file>::<name>): a Linear card once it stays
+      # red (owner-alert-router digest escalation, like routePerAuditAlerts in
+      # check-corpus-drift.js), resolved when green. Best-effort and exit 0, so
+      # the step above stays the sole pass/fail. The ledger commit that
+      # "Commit and push audit" does earlier in the job cannot see these writes,
+      # hence the second commit step.
+      - name: Route live-data failures to owner-alert-router (BRO-5788)
+        if: always() && steps.livedata.outcome != 'skipped'
+        timeout-minutes: 3
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          node scripts/route-live-data-failures.js --tap="$RUNNER_TEMP/live-data.tap" --exit="$([ '${{ steps.livedata.outcome }}' = success ] && echo 0 || echo 1)"
+
+      - name: Commit live-data alert ledger (BRO-5788)
+        if: always()
+        timeout-minutes: 3
+        run: |
+          if git status --porcelain data/audit/alert-digest-queue.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl 2>/dev/null | grep -q .; then
+            git config --local user.email "github-actions[bot]@users.noreply.github.com"
+            git config --local user.name "github-actions[bot]"
+            bash scripts/lib/git-add-existing.sh data/audit/alert-digest-queue.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl
+            git commit -m "audit: live-data alert routing (corpus-drift, BRO-5788) [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
