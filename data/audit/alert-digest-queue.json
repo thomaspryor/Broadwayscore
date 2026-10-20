@@ -169,5 +169,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-20T09:41:20.544Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:murder-cathedral-off-west-end-2026",
+    "title": "1 review(s) for murder-cathedral-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--7b99d1e7.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/murder-in-the-cathedral-review-st-johns-the-divine-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-20T10:53:31.985Z"
   }
 ]
