@@ -700,7 +700,8 @@ async function workCard(pick, stats, inFlight) {
   openCards.add(id);
   if (!lockStamped()) { dropOpenCard(id); log(`${id}: could not name it in the run lock first, skipped`); return 'skip'; }
   const rival = otherLockCards();
-  if (rival && rival.has(id)) { dropOpenCard(id); log(`${id}: another Codex lane's run lock names it, skipped`); return 'skip'; }
+  // Unreadable rival locks: skip rather than claim blind (the claim's started check is read-then-write).
+  if (!rival || rival.has(id)) { dropOpenCard(id); log(`${id}: ${rival ? "another Codex lane's run lock names it" : 'other lanes\' run locks could not be read'}, skipped`); return 'skip'; }
 
   const claimedMs = Date.now();
   const claim = sh('node', ['scripts/linear-session.js', 'claim', `--issue=${id}`, '--worker-model=codex'], { timeoutMs: 900_000 });
@@ -1136,7 +1137,9 @@ function otherLockCards() {
   const present = new Set(ls.stdout.split('\n').map((l) => l.split(/\s+/)[1]).filter(Boolean));
   const f = sh('git', ['fetch', '-q', 'origin', ...refs.filter((r) => present.has(r))], { cwd: ROOT, timeoutMs: LOCK_GIT_MS }); // unbounded-fetch-ok: lock commits are parentless, one commit each
   if (f.code !== 0) return null;
-  const subjects = shas.map((sha) => sh('git', ['log', '-1', '--format=%s', sha], { cwd: ROOT }).stdout.trim());
+  const logs = shas.map((sha) => sh('git', ['log', '-1', '--format=%s', sha], { cwd: ROOT }));
+  if (logs.some((l) => l.code !== 0)) return null;
+  const subjects = logs.map((l) => l.stdout.trim());
   return R.cardsInLocks(subjects, { nowMs: Date.now(), staleMs: LOCK_STALE_MS });
 }
 function releaseLock() {
@@ -1219,6 +1222,7 @@ async function launchSlots() {
   // The lane's slots (R.laneForLogin): a later lane falls back to slot 0 when the login may refresh.
   const plan = restore.code === 0 ? R.laneForLogin({ lane: OPTS.lane, slots: OPTS.slots, authText, nowMs: Date.now(), runMs }) : { lane: 'cloud', base: 0, slots: 1, why: 'the Codex login did not restore' };
   authText = '';
+  if (!plan.slots) { log(`not starting: ${plan.why}`); return; }
   pruneDisk();
   const missingBySlot = [...Array(plan.slots).keys()].map((k) => {
     const n = R.slotNames(plan.base + k);

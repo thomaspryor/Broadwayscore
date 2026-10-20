@@ -565,16 +565,22 @@ function laneSlotList(lane) {
 /**
  * Where a launch runs: { lane, base, slots, why }. Lanes run at once in separate containers,
  * each with its own copy of the rotating login, so a lane past the first runs only when the
- * login outlives its whole run (no refresh anywhere). Otherwise it falls back to the cloud
- * lane's slot 0 with one slot: that lock is the one the cloud routine takes first, so the two
- * never run Codex side by side on a login that may refresh.
+ * login outlives its whole run (no refresh anywhere). If the token could expire it falls back to
+ * the cloud lane's slot 0 with one slot (the cloud lane is down to that slot too); if the CLI could
+ * refresh on age it runs no slots. Either way the two never run Codex side by side on a login
+ * that may refresh.
  */
 function laneForLogin({ lane = 'cloud', slots, authText, nowMs, runMs, marginMs = 30 * 60_000 }) {
   const l = LANES[lane] || LANES.cloud;
   const want = Math.max(1, Math.min(Number(slots) || 1, l.max));
   if (l.base > 0) {
-    const why = loginExpiryWhy({ authText, nowMs, runMs, marginMs }) || refreshAgeWhy({ authText, nowMs, runMs, marginMs });
-    if (why) return { lane: 'cloud', base: 0, slots: 1, why: `${why}; ${lane} lane falls back to slot 0` };
+    // Expiry: the cloud lane also drops to slot 0 alone (slotsForLogin), so sharing slot 0 serializes them.
+    const expiry = loginExpiryWhy({ authText, nowMs, runMs, marginMs });
+    if (expiry) return { lane: 'cloud', base: 0, slots: 1, why: `${expiry}; ${lane} lane falls back to slot 0` };
+    // Refresh age: the cloud lane keeps its slots 1-2 (it alone holds the login then), so slot 0
+    // would still run beside them; this lane stands down for the firing instead.
+    const age = refreshAgeWhy({ authText, nowMs, runMs, marginMs });
+    if (age) return { lane, base: l.base, slots: 0, why: `${age}; ${lane} lane stands down so only the cloud lane holds the login` };
     return { lane, base: l.base, slots: want, why: null };
   }
   const plan = slotsForLogin({ slots: want, authText, nowMs, runMs, marginMs });

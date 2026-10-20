@@ -1043,9 +1043,10 @@ test('laneForLogin: gha runs on its own slots only when the login outlives the r
   assert.equal(r.laneForLogin({ lane: 'cloud', slots: 3, authText: auth(now + 60 * 60_000), nowMs: now, runMs }).slots, 1);
   assert.equal(r.loginExpiryWhy({ authText: fresh, nowMs: now, runMs }), null);
   const old = r.laneForLogin({ lane: 'gha', slots: 2, authText: auth(now + 5 * 24 * 3600_000, '2026-10-13T12:00:00Z'), nowMs: now, runMs });
-  assert.deepEqual([old.lane, old.base, old.slots], ['cloud', 0, 1], 'last refresh near 7 days: the CLI could refresh itself mid-run');
-  assert.match(old.why, /last refreshed/);
-  assert.equal(r.laneForLogin({ lane: 'gha', slots: 2, authText: auth(now + 5 * 24 * 3600_000, ''), nowMs: now, runMs }).base, 0, 'no last_refresh fails safe');
+  assert.deepEqual([old.lane, old.base, old.slots], ['gha', 3, 0], 'last refresh near 7 days: the CLI could refresh itself mid-run, beside cloud slots 1-2, so gha stands down');
+  assert.match(old.why, /last refreshed.*stands down/);
+  assert.equal(r.laneForLogin({ lane: 'gha', slots: 2, authText: auth(now + 5 * 24 * 3600_000, ''), nowMs: now, runMs }).slots, 0, 'no last_refresh fails safe');
+  assert.equal(r.laneForLogin({ lane: 'gha', slots: 2, authText: auth(now + 60 * 60_000, '2026-10-13T12:00:00Z'), nowMs: now, runMs }).base, 0, 'expiry wins: cloud is on slot 0 alone too');
   assert.equal(r.laneForLogin({ lane: 'cloud', slots: 3, authText: auth(now + 5 * 24 * 3600_000, '2026-10-01T00:00:00Z'), nowMs: now, runMs }).slots, 3, 'the cloud lane keeps its own rule');
 });
 
