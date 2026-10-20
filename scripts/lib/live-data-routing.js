@@ -11,7 +11,10 @@ const MAX_KEY_LEN = 200;
 
 function conditionKeyFor(failureKey) {
   const k = `${KEY_PREFIX}${failureKey}`.replace(/\s+/g, ' ');
-  return k.length > MAX_KEY_LEN ? k.slice(0, MAX_KEY_LEN) : k;
+  if (k.length <= MAX_KEY_LEN) return k;
+  // Hash the full text so two long names sharing a prefix keep distinct keys.
+  const h = require('node:crypto').createHash('sha1').update(k).digest('hex').slice(0, 8);
+  return `${k.slice(0, MAX_KEY_LEN - 9)}#${h}`;
 }
 
 /**
@@ -42,7 +45,7 @@ function planLiveDataRouting(failures, openKeys, parsed, exitCode) {
   }
   // The run died before producing a verdict (non-zero exit, no failing leaf):
   // route that as its own condition rather than resolving anything.
-  const ranToVerdict = parsed.sawTap && parsed.totals.tests > 0;
+  const ranToVerdict = parsed.sawTap && parsed.totals.tests > 0 && parsed.totals.fail !== null; // summary lines present = TAP not truncated
   if (exitCode !== 0 && route.length === 0) {
     const conditionKey = `${KEY_PREFIX}run-crashed`;
     seen.add(conditionKey);

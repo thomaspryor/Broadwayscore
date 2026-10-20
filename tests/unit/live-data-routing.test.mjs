@@ -46,3 +46,11 @@ test('clean run resolves every open live-data key', () => {
   assert.deepEqual(plan.resolve, [`${KEY_PREFIX}old`]);
   assert.equal(plan.route.length, 0);
 });
+test('truncated TAP (no summary) resolves nothing; long keys stay distinct', () => {
+  const p = parseTapOutput('ok 1 - a\n', '/r');
+  assert.deepEqual(planLiveDataRouting(p.failures, [`${KEY_PREFIX}old`], p, 0).resolve, []);
+  const a = conditionKeyFor('f::' + 'x'.repeat(300) + 'A');
+  const b = conditionKeyFor('f::' + 'x'.repeat(300) + 'B');
+  assert.notEqual(a, b);
+  assert.ok(a.length <= 200);
+});

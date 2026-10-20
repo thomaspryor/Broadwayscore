@@ -449,7 +449,7 @@ jobs:
       - name: Live-data assertions (moved from test.yml unit batch)
         id: livedata
         if: always()
-        # BRO-5788: bounded so the routing + ledger-commit steps below still fit the 30-min job timeout.
+        # BRO-5788: bounded so the routing + ledger-commit steps below still fit the job timeout.
         timeout-minutes: 22
         env:
           GH_TOKEN: ${{ github.token }}
