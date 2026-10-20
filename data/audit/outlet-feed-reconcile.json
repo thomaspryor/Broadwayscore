@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-20T10:28:19.910Z",
+  "generatedAt": "2026-10-20T12:25:38.754Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -162,6 +162,10 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -188,25 +192,12 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "Timeout fetching https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&af"
     }
   ],
-  "itemsScanned": 703,
-  "matchedGaps": 4,
+  "itemsScanned": 723,
+  "matchedGaps": 3,
   "possibleGaps": 6,
   "gaps": [
-    {
-      "showId": "copperfield-the-new-musical-off-broadway-2026",
-      "title": "Copperfield! The New Musical",
-      "level": "matched",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/copperfield-the-new-musical/",
-      "headline": "Copperfield: The New Musical ****",
-      "publishDate": "2026-10-19"
-    },
     {
       "showId": "king-of-the-yees-off-broadway-2026",
       "title": "King of the Yees",
