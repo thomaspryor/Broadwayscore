@@ -27,7 +27,7 @@ interface AtRiskCardProps {
   /** Set when the display guard hid the model: printed instead of the %. */
   modelHoldLabel: string | null;
   trend: RecoupmentTrend;
-  /** Announced closing date (YYYY-MM-DD), null while no closing is announced. */
+  /** Upcoming announced closing date (YYYY-MM-DD), null when none is ahead. */
   closingDate: string | null;
 }
 
@@ -71,8 +71,8 @@ export default function AtRiskCard({
       <div className="text-sm text-gray-400 mb-3">{season} Season</div>
       {closingText && (
         <div className="flex justify-between text-sm mb-1" data-testid="at-risk-closing">
-          <span className="text-gray-500">Closing</span>
-          <span className="text-amber-400">Announced for {closingText}</span>
+          <span className="text-gray-500">Closing announced</span>
+          <span className="text-score-tepid">{closingText}</span>
         </div>
       )}
       <div className="flex justify-between text-sm">

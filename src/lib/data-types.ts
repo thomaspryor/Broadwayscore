@@ -578,7 +578,7 @@ export interface AtRiskShow {
   /** getModelHoldLabel(): set when the guard hid the model; the card prints it instead of the %. */
   modelHoldLabel: string | null;
   trend: import('@/config/commercial').RecoupmentTrend;
-  /** shows.json closingDate (YYYY-MM-DD) when the closing is announced, else null. */
+  /** shows.json closingDate (YYYY-MM-DD) when it is still ahead, else null (a passed date on an open show is not an announcement). */
   closingDate: string | null;
 }
 

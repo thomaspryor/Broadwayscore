@@ -530,7 +530,7 @@ export function getShowsAtRisk(): AtRiskShow[] {
       modelRecoupmentPct: range as [number, number, number],
       modelHoldLabel: getModelHoldLabel({ ...data, status: show.status }),
       trend: getRecoupmentTrend(slug),
-      closingDate: show.closingDate ?? null,
+      closingDate: isFutureDate(show.closingDate) ? show.closingDate ?? null : null,
     });
   }
 
@@ -543,8 +543,9 @@ export function getShowsAtRisk(): AtRiskShow[] {
 
 /**
  * Get shows that recouped within the specified number of months.
- * weeksToRecoup is null when only the recoupment year is known (or the date
- * is inconsistent with the run); those rows stay listed with a blank week count.
+ * weeksToRecoup is null when only the recoupment year is known, or the show
+ * recouped after its run closed (afterClosing); those rows stay listed, the
+ * table says "After closing" for the latter and leaves the former blank.
  * A recoupment that was never announced is not news and has no reliable date,
  * so it is left out (isUnannouncedRecoupment).
  */
@@ -649,6 +650,11 @@ export function getUpcomingClosings(): UpcomingClosing[] {
   return results.sort((a, b) => {
     return new Date(a.closingDate).getTime() - new Date(b.closingDate).getTime();
   });
+}
+
+/** True for an ISO day after today: a closing date that has passed on a still-open show is not "announced". */
+function isFutureDate(date: string | null | undefined): boolean {
+  return !!date && /^\d{4}-\d{2}-\d{2}/.test(date) && date.slice(0, 10) > new Date().toISOString().slice(0, 10);
 }
 
 function positiveOrNull(value: number | null | undefined): number | null {

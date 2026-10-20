@@ -22,8 +22,10 @@ function parseIsoDay(date: string | null | undefined): Date | null {
  *    closing date or today.
  *  - "YYYY" only: null. A year alone cannot place the date within ~52 weeks
  *    (Dec 31 made Lion King "~111 weeks" and Ragtime "~63 weeks").
- *  - null when the recoupment month starts after the closing date or after
- *    today (a data error, not a number to publish), or precedes opening.
+ *  - null when the recoupment month starts after the closing date
+ *    (recoupedAfterClosing: the show paid back after its run, so weeks from
+ *    opening do not apply) or after today (a data error, not a number to
+ *    publish), or precedes opening.
  */
 export function calculateWeeksToRecoup(
   openingDate: string | null | undefined,
@@ -43,7 +45,7 @@ export function calculateWeeksToRecoup(
   const monthStart = new Date(year, monthIdx, 1);
   const close = parseIsoDay(closingDate);
   if (monthStart.getTime() > now.getTime()) return null;
-  if (close && monthStart.getTime() > close.getTime()) return null;
+  if (recoupedAfterClosing(recoupedDate, closingDate)) return null;
 
   let recoup = new Date(year, monthIdx, 15);
   if (recoup.getTime() > now.getTime()) recoup = now;
@@ -66,11 +68,13 @@ export function recoupedAfterClosing(
   closingDate: string | null | undefined,
 ): boolean {
   const m = /^(\d{4})-(\d{2})$/.exec((recoupedDate ?? '').trim());
-  const close = parseIsoDay(closingDate);
+  const close = /^(\d{4}-\d{2})-\d{2}/.exec((closingDate ?? '').trim());
   if (!m || !close) return false;
-  const monthIdx = parseInt(m[2], 10) - 1;
-  if (monthIdx < 0 || monthIdx > 11) return false;
-  return new Date(parseInt(m[1], 10), monthIdx, 1).getTime() > close.getTime();
+  const month = parseInt(m[2], 10);
+  if (month < 1 || month > 12) return false;
+  // Compared as YYYY-MM strings so the build machine's timezone cannot move a
+  // show that closes on the 1st across the month boundary.
+  return `${m[1]}-${m[2]}` > close[1];
 }
 
 function mean(values: number[]): number {

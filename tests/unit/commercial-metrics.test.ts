@@ -48,6 +48,19 @@ test('recoupedAfterClosing: year-only, missing or open-run dates are false', () 
   assert.equal(recoupedAfterClosing('2026-06', null), false);
   assert.equal(recoupedAfterClosing(null, '2025-08-31'), false);
 });
+test('recoupedAfterClosing: a show closing on the 1st does not depend on the build timezone', () => {
+  const prev = process.env.TZ;
+  try {
+    for (const tz of ['America/New_York', 'UTC', 'Pacific/Kiritimati']) {
+      process.env.TZ = tz;
+      assert.equal(recoupedAfterClosing('2024-05', '2024-05-01'), false, tz);
+      assert.equal(recoupedAfterClosing('2024-06', '2024-05-01'), true, tz);
+      assert.notEqual(calculateWeeksToRecoup('2023-11-01', '2024-05', '2024-05-01', NOW), null, tz);
+    }
+  } finally {
+    if (prev === undefined) delete process.env.TZ; else process.env.TZ = prev;
+  }
+});
 test('recoupedAfterClosing agrees with calculateWeeksToRecoup returning null', () => {
   assert.equal(calculateWeeksToRecoup('2025-03-17', '2026-06', '2025-08-31', NOW), null);
 });
