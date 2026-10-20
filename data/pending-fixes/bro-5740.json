@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5740",
   "planId": "2e3df31a-f4e4-4f58-a1b9-5c23b549a5c5",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -53,5 +53,29 @@
       }
     ]
   },
-  "createdAt": "2026-10-20T01:30:00Z"
+  "createdAt": "2026-10-20T01:30:00Z",
+  "executedAt": "2026-10-20T01:41:47.993Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for an-american-in-paris-tour-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for an-american-in-paris-tour-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for dear-evan-hansen-tour-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for amaze-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
