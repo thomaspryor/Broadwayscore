@@ -1,5 +1,5 @@
 // BRO-5570: the research-prompt generators build prompts from live data and splice
-// them into the prompts page. Node's built-in runner: node --test scripts/research-prompts/build.test.mjs
+// them into the prompts page. Node's built-in runner: node --test scripts/tests/research-prompts.test.mjs
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -10,9 +10,10 @@ import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const dir = path.dirname(fileURLToPath(import.meta.url));
-const root = path.join(dir, '..', '..');
-const { build, summarize } = require('./build.js');
+const here = path.dirname(fileURLToPath(import.meta.url));
+const dir = path.join(here, '..', 'research-prompts');
+const root = path.join(here, '..', '..');
+const { build, summarize } = require('../research-prompts/build.js');
 const haveData = fs.existsSync(path.join(root, 'data/commercial.json')) && fs.existsSync(path.join(root, 'data/shows.json'));
 
 test('summarize reports id and show count in order', () => {
