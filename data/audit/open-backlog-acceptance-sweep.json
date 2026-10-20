@@ -1,18 +1,84 @@
 {
-  "generatedAt": "2026-10-19T07:54:01.914Z",
+  "generatedAt": "2026-10-20T07:40:40.348Z",
   "shadow": true,
-  "checkoutSha": "d5ff295e0598e19aa56191a40fdd712613f2d639",
-  "totalCandidates": 567,
-  "eligibleCandidates": 100,
+  "checkoutSha": "c636d085b284e91ba87dab5141137b8d9a4757dc",
+  "totalCandidates": 523,
+  "eligibleCandidates": 98,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 19,
+    "pass": 25,
     "fail": 0,
-    "unverifiable": 11
+    "unverifiable": 5
   },
   "alreadyDone": [
+    {
+      "id": "BRO-5744",
+      "name": "Scheduled vision sweep of live show art (open/previews/upcoming/announced) that reports wrong-work art",
+      "verifyCmd": "node --test scripts/lib/image-null-orphan-files.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5743",
+      "name": "Audit which listShowDirs consumers should skip _-prefixed holding dirs (BRO-5740 cousin)",
+      "verifyCmd": "node --test scripts/lib/critic-spelling-duplicates.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5741",
+      "name": "gather-reviews writes capitalized domain base as review outlet for unresolved hosts",
+      "verifyCmd": "node --test tests/unit/outlet-registry-display-names.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5739",
+      "name": "Null 5 live shows whose art is plainly another work (diamond ring, & Juliet poster, county-fair flyer, book cover, wrong play)",
+      "verifyCmd": "node --test scripts/lib/versioned-image-path.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5737",
+      "name": "Live-data sweep round 2: duplicate-show-dedup alias-clash + review-gap-remediation reviews.json cross-check to drift run",
+      "verifyCmd": "node --test tests/unit/test-yml-code-only-jobs.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5733",
+      "name": "Cut theatre.reviews wasted Bright Data calls: negative-cache shows with no roundup",
+      "verifyCmd": "node --test tests/unit/tr-roundup-negative-cache.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5728",
+      "name": "Land: base re-check runs only the branch's failing test files (not the whole gate); auto-repair slug outlet names",
+      "verifyCmd": "node --test scripts/lib/land-gate-delta.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5719",
+      "name": "Land: decide on fail-fast in the Checks job (BRO-5673 Part 4d)",
+      "verifyCmd": "node --test tests/unit/land-retry-cancelled-schedule.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5716",
+      "name": "Auto-fix (second try): Opening Night Poller Failed",
+      "verifyCmd": "node scripts/check-workflow-run-status.js --workflow=opening-night-poller.yml --expect=success",
+      "detail": null
+    },
+    {
+      "id": "BRO-5712",
+      "name": "bsc-prune zombie-tab-sweep: add Linear state signal (BRO-3050 piece 2)",
+      "verifyCmd": "node --test scripts/lib/zombie-tab-sweep.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5706",
+      "name": "Retire duplicate row angel-bones-english-national-opera-west-end-2026 (same ENO run as angels-bone-west-end-2026)",
+      "verifyCmd": "node --test scripts/lib/retire-show-action.test.mjs",
+      "detail": null
+    },
     {
       "id": "BRO-5683",
       "name": "CI: run verify-review-text-folders orphan assertions with the review-texts corpus (they skip in the unit job)",
@@ -38,15 +104,15 @@
       "detail": null
     },
     {
-      "id": "BRO-5661",
-      "name": "Done gate cannot run check-workflow-run-status VERIFY: scrubbed env has no gh auth",
-      "verifyCmd": "node --test scripts/check-workflow-run-status.test.mjs",
+      "id": "BRO-5671",
+      "name": "Record Claude cloud-session cost daily, per card, and show cost per landed card in the morning digest",
+      "verifyCmd": "node scripts/validate-data.js --strict",
       "detail": null
     },
     {
-      "id": "BRO-5655",
-      "name": "Review-gap audit starves shows 8-21 days after opening (stale rows, alerts keep firing)",
-      "verifyCmd": "node --test scripts/audit-show-review-gap.test.mjs",
+      "id": "BRO-5657",
+      "name": "Land preflight: run the top-level-script test.yml push-path audit before land",
+      "verifyCmd": "node --test tests/unit/land-preflight.test.mjs",
       "detail": null
     },
     {
@@ -68,184 +134,118 @@
       "detail": null
     },
     {
-      "id": "BRO-5637",
-      "name": "Opening-night readiness: Other Desert Cities (2026-10-18) — verify the pipeline scores every review with no human session",
-      "verifyCmd": "node --test scripts/lib/prior-production-directors.test.mjs",
+      "id": "BRO-5639",
+      "name": "Research apply replaces existing TBD commercial records and drops fields the research row does not carry",
+      "verifyCmd": "node --test tests/unit/commercial-apply-gate.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-5580",
-      "name": "isPlaceholderVenue only matches neighbourhood blobs exactly, so glued venue strings pass",
-      "verifyCmd": "node --test tests/unit/placeholder-venue.test.mjs",
+      "id": "BRO-5627",
+      "name": "Gap audit --ingest-missing writes dateless prior-production reviews into the new run's folder (The Ask: 2024 New Yorker capsule, WSJ careers column)",
+      "verifyCmd": "node --test scripts/lib/audit-show-review-gap.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-5565",
-      "name": "Investigate Sentry weekly digest: TypeError x8, RangeError x3 (New), UgcError apple_sign_in",
-      "verifyCmd": "node --test tests/unit/sentry-triage-classify.test.js",
+      "id": "BRO-5614",
+      "name": "Stop writing URL-derived publishDates: 5 backfill scripts and 666 existing review files",
+      "verifyCmd": "node scripts/validate-data.js --strict",
       "detail": null
     },
     {
-      "id": "BRO-5561",
-      "name": "Roundup archive pages filed under the wrong production (POTUS 2022, The Pass NYC under a West End id) + schedule audit-roundup-link-coverage",
-      "verifyCmd": "node --test scripts/lib/roundup-link-coverage.test.mjs",
+      "id": "BRO-5601",
+      "name": "Sourced weekly running costs for the musicals the recoupment model still misses",
+      "verifyCmd": "node --test scripts/lib/musical-model-backtest.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-5556",
-      "name": "Opening-date audit: 1 show need review (2026-10-17)",
-      "verifyCmd": "node scripts/audit-review-contamination.js",
-      "detail": null
-    },
-    {
-      "id": "BRO-5547",
-      "name": "Corpus test outlet-domain-validation cap (2) exceeded: 4 flagged files (british-theatre x2, vulture x2)",
-      "verifyCmd": "node --test scripts/lib/outlet-domain-validation.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5492",
-      "name": "Guard escalation cards from collector workflows cannot be auto-cancelled (alert ledger not persisted)",
-      "verifyCmd": "node --test scripts/lib/alert-ledger-commit-check.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5480",
-      "name": "Owner email policy: opening-night SLA goes to a worker card, every page-worthy key must name the owner's action",
-      "verifyCmd": "node --test scripts/lib/page-worthy-alerts.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5479",
-      "name": "Poller failures: email owner only for Broadway openings, route the rest to the auto-fixer",
-      "verifyCmd": "node --test tests/unit/poller-failure-audience.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5427",
-      "name": "Opening-night SLA: duplicate P0 emails + junk reviews paging as stuck",
-      "verifyCmd": "node --test tests/unit/opening-night-sla.test.mjs",
+      "id": "BRO-5589",
+      "name": "Teach push-via-git-api.sh protected-field reconciliation so review-texts can use the API fallback",
+      "verifyCmd": "node --test tests/unit/push-via-git-api.test.mjs",
       "detail": null
     }
   ],
   "failing": [],
   "unverifiable": [
     {
-      "id": "BRO-5582",
-      "name": "Backfill provenance for 1,691 legacy wrongProduction flags with no audit trail",
-      "verifyCmd": "node --test tests/unit/wrongproduction-provenance-backfill.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/wrongproduction-provenance-backfill.test.mjs"
+      "id": "BRO-5662",
+      "name": "iOS app To Be Rated hides a past rewatch of an already-rated show",
+      "verifyCmd": "node --test scripts/lib/is-watchlist-entry-rated.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/is-watchlist-entry-rated.test.mjs"
     },
     {
-      "id": "BRO-5579",
-      "name": "Run venue validation inside the shows.json write choke point (saveShows)",
-      "verifyCmd": "node --test tests/unit/shows-write-guard-venue.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/shows-write-guard-venue.test.mjs"
+      "id": "BRO-5656",
+      "name": "P2: collect-review-texts checkpoint push reverted a fresh refetched fullText to the older longer body (Pride Independent, 2026-10-14)",
+      "verifyCmd": "node --test scripts/lib/review-json-three-way-merge.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/review-json-three-way-merge.test.mjs"
     },
     {
-      "id": "BRO-5574",
-      "name": "backfill-playwright-credits.yml writes shows.json outside the shows-json-writer concurrency group",
-      "verifyCmd": "node --test tests/unit/shows-json-writer-concurrency.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/shows-json-writer-concurrency.test.mjs"
+      "id": "BRO-5599",
+      "name": "Business pages: seven closed revivals show no total gross (all-time totals missing, weekly history has them)",
+      "verifyCmd": "node --test scripts/audit-grosses-data.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-grosses-data.test.mjs"
     },
     {
-      "id": "BRO-5573",
-      "name": "Off-Broadway aggregator promotion confirms on a roundup alone, with no 3-review threshold (BRO-125 gap)",
-      "verifyCmd": "node --test tests/unit/promote-ob-aggregator-review-threshold.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/promote-ob-aggregator-review-threshold.test.mjs"
+      "id": "BRO-5590",
+      "name": "audit-time-bomb-tests.js exemptions are whole-file, not per-test",
+      "verifyCmd": "node --test tests/unit/audit-time-bomb-tests-per-test.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/audit-time-bomb-tests-per-test.test.mjs"
     },
     {
-      "id": "BRO-5572",
-      "name": "1,514 live reviews show an Unknown or missing critic name: verify byline impact and fix source parsers",
-      "verifyCmd": "node --test tests/unit/unknown-critic-backlog.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/unknown-critic-backlog.test.mjs"
-    },
-    {
-      "id": "BRO-5571",
-      "name": "US regional show breadcrumbs link to Broadway browse pages",
-      "verifyCmd": "npx tsx --test tests/unit/browse-slugs-regional.test.ts",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/browse-slugs-regional.test.ts"
-    },
-    {
-      "id": "BRO-5570",
-      "name": "Keep the research-prompt generators in the repo (they live in one session's scratchpad)",
-      "verifyCmd": "node --test scripts/research-prompts/build.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/research-prompts/build.test.mjs"
-    },
-    {
-      "id": "BRO-5509",
-      "name": "newsletter-state.json: per-key merge arm in push-with-retry.sh, then drop newsletter-draft.yml from QUEUE_EVICTION_BASELINE",
-      "verifyCmd": "node --test scripts/lib/merge-newsletter-state.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/merge-newsletter-state.test.mjs"
-    },
-    {
-      "id": "BRO-5431",
-      "name": "Workflows that run node scripts without npm ci: find the ones that actually crash, add a guard",
-      "verifyCmd": "node --test scripts/audit-missing-deps.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-missing-deps.test.mjs"
-    },
-    {
-      "id": "BRO-5403",
-      "name": "Run reconcile-pending-commercial.js weekly so the pending commercial list does not refill with already-sourced shows",
-      "verifyCmd": "node --test scripts/reconcile-pending-commercial.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/reconcile-pending-commercial.test.mjs"
-    },
-    {
-      "id": "BRO-5401",
-      "name": "Verify the true author on 18 same-article review pairs the rebuild now counts once",
-      "verifyCmd": "node --test scripts/audit-identical-text-across-critics.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-identical-text-across-critics.test.mjs"
+      "id": "BRO-5588",
+      "name": "Name failing tests in the two test.yml node --test batches that still lack the BRO-2238 summary",
+      "verifyCmd": "node --test tests/unit/test-yml-failing-test-names.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/test-yml-failing-test-names.test.mjs"
     }
   ],
   "landedButOpen": [
+    {
+      "id": "BRO-5739",
+      "name": "Null 5 live shows whose art is plainly another work (diamond ring, & Juliet poster, county-fair flyer, book cover, wrong play)",
+      "branch": "land/bro-5739-more-wrong-art",
+      "sha": "92e9925a28b46169b224d6751d11f5dd58823d7e",
+      "landedAt": "2026-10-20T03:12:35.051Z"
+    },
+    {
+      "id": "BRO-5733",
+      "name": "Cut theatre.reviews wasted Bright Data calls: negative-cache shows with no roundup",
+      "branch": "land/bro-5733-tr-negative-cache",
+      "sha": "9849f3a10f2e1cc3b28452ad3e584e480bff2500",
+      "landedAt": "2026-10-20T00:53:17.277Z"
+    },
+    {
+      "id": "BRO-5728",
+      "name": "Land: base re-check runs only the branch's failing test files (not the whole gate); auto-repair slug outlet names",
+      "branch": "land/bro-5728-outlet-names",
+      "sha": "f4fda913c35a8aa3f2524b3c2b2f1a8eb332051e",
+      "landedAt": "2026-10-20T00:56:05.437Z"
+    },
+    {
+      "id": "BRO-5716",
+      "name": "Auto-fix (second try): Opening Night Poller Failed",
+      "branch": "land/bro-5716-poller-fix",
+      "sha": "99d947fbe11cc7f6f7f3667c730b98b49e8e76d2",
+      "landedAt": "2026-10-19T21:31:13.611Z"
+    },
+    {
+      "id": "BRO-5683",
+      "name": "CI: run verify-review-text-folders orphan assertions with the review-texts corpus (they skip in the unit job)",
+      "branch": "land/codex-bro-5683",
+      "sha": "16c79cd00c31f3a0cfe1a18ee511263484cd0dea",
+      "landedAt": "2026-10-19T16:22:08.393Z"
+    },
+    {
+      "id": "BRO-5677",
+      "name": "Recoupment model treats Form D maximum capitalization as actual raise",
+      "branch": "land/bro-5677-capmax",
+      "sha": "f757e7e93604ab30f6a58cc6232d26b8c301703c",
+      "landedAt": "2026-10-19T18:55:00.797Z"
+    },
     {
       "id": "BRO-5675",
       "name": "recollect-for-scores times out every weekly run; liveness sweep false-flags brand-new crons",
       "branch": "land/bro-5675-recollect-deadline",
       "sha": "e8f5cfd45d52a13f38317eb774d0f88855a76109",
       "landedAt": "2026-10-19T06:05:02.621Z"
-    },
-    {
-      "id": "BRO-5637",
-      "name": "Opening-night readiness: Other Desert Cities (2026-10-18) — verify the pipeline scores every review with no human session",
-      "branch": "land/bro-5637-prior-production-director",
-      "sha": "7a27dbbc49b30a9afc2dccc5c939b800c2730d2c",
-      "landedAt": "2026-10-18T18:55:29.559Z"
-    },
-    {
-      "id": "BRO-5565",
-      "name": "Investigate Sentry weekly digest: TypeError x8, RangeError x3 (New), UgcError apple_sign_in",
-      "branch": "land/bro-5565-triage-noise",
-      "sha": "6d027a4c0eae33555fe6c01cad5004fb14ef1904",
-      "landedAt": "2026-10-18T03:37:22.215Z"
-    },
-    {
-      "id": "BRO-5561",
-      "name": "Roundup archive pages filed under the wrong production (POTUS 2022, The Pass NYC under a West End id) + schedule audit-roundup-link-coverage",
-      "branch": "land/codex-bro-5561",
-      "sha": "dfa5ec65b111e7fb1ba76d692580dcc905cc3043",
-      "landedAt": "2026-10-19T04:27:23.055Z"
-    },
-    {
-      "id": "BRO-5480",
-      "name": "Owner email policy: opening-night SLA goes to a worker card, every page-worthy key must name the owner's action",
-      "branch": "land/bro-5480-sweep-dac",
-      "sha": "8b51acdc45879e1e7d750930c5fa24b2f0403dfb",
-      "landedAt": "2026-10-16T14:03:38.684Z"
-    },
-    {
-      "id": "BRO-5479",
-      "name": "Poller failures: email owner only for Broadway openings, route the rest to the auto-fixer",
-      "branch": "land/bro-5479-poller-broadway-email",
-      "sha": "5da8034c7fb6a7f6dd662ae58402911dd3e4c1dd",
-      "landedAt": "2026-10-16T15:59:16.142Z"
-    },
-    {
-      "id": "BRO-5427",
-      "name": "Opening-night SLA: duplicate P0 emails + junk reviews paging as stuck",
-      "branch": "land/bro-5427-sla-dup-emails",
-      "sha": "f1f0696c576898d24fe4c09f1ba41a24ad06b18e",
-      "landedAt": "2026-10-16T05:28:14.296Z"
     }
   ]
 }
