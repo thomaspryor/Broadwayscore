@@ -19,6 +19,13 @@ const path = require('path');
  * lives downstream at dispatch and at the Done gate. Returns null when the
  * card is armed or has explicitly declared owner-judgment.
  *
+ * BRO-3613: keep creation local and network-independent (option 2, matching
+ * the owner-approved 2026-10-11 deferral). Even `test -f <existing file>`
+ * stays silent here. Determining vacuity requires a fresh origin/main
+ * oracle, whose git fetch can take 30 seconds. resolveVacuousCheck() and
+ * vacuousCheckGuard() in dispatch-guards.js own that check at dispatch.
+ * Do not fetch or consult an origin/main oracle at card creation.
+ *
  * WHY THIS IS A SHARED LIB AND NOT A COPY (BRO-3060, 2026-09-08): this check
  * lived only inside scripts/notion-brain.js. scripts/linear-brain.js — the
  * Linear-side chokepoint that REPLACES it, and the one every session is now
