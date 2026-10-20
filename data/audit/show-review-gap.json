@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-10-20T16:46:22.541Z",
+  "generatedAt": "2026-10-20T17:50:39.724Z",
   "windowDays": 1095,
-  "targets": 660,
-  "auditedThisRun": 19,
-  "carriedForward": 741,
+  "targets": 646,
+  "auditedThisRun": 12,
+  "carriedForward": 748,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 428,
-    "missingCurrentRun": 837,
+    "withGap": 427,
+    "missingCurrentRun": 834,
     "totalCitedNoUrl": 5,
-    "totalFlaggedMisses": 918,
+    "totalFlaggedMisses": 916,
     "totalRecoverable": 11,
     "totalRecovered": 17,
     "humanExcluded": 3,
-    "automatedExcluded": 248,
-    "automatedExcludedListed": 207,
+    "automatedExcluded": 253,
+    "automatedExcludedListed": 210,
     "priorProductionCitations": 5153
   },
   "results": [
@@ -15904,16 +15904,16 @@
         "https://theunforgettableline.com/2024/02/20/sunset-baby/",
         "https://everything-theatre.co.uk/2026/10/review-baby-brixton-house/",
         "https://theatreandtonic.co.uk/blog/baby-brixton-house-review",
+        "https://www.theguardian.com/stage/2026/oct/15/baby-review-brixton-house-london-pearl-mackie",
         "https://liamodell.com/2026/10/16/baby-play-review-brixton-house-theatre-london-pearl-mackie-gurpreet-kaur-bhatti-milli-bhatia/",
         "https://www.afridiziak.com/reviews/baby-brixton-house/",
-        "https://www.theguardian.com/stage/2026/oct/15/baby-review-brixton-house-london-pearl-mackie",
-        "https://northwestend.com/baby-brixton-house/",
         "https://www.allthatdazzles.co.uk/post/review-baby-brixton-house",
         "https://sierz.co.uk/reviews/baby-brixton-house/",
         "https://www.thestage.co.uk/reviews/baby-review-brixton-house-london-clean-break",
         "https://www.whatsonstage.com/news/baby-at-brixton-house-review_1735056/",
         "https://www.itgirlworld.co.uk/2026/10/16/theatre-review-baby-by-gurpreet-kaur-bhatti-clean-break-brixton-house-production-brixton-house-8th-31st-october-2026/",
         "https://loureviews.blog/2026/09/30/show-preview-gurpreet-kaur-bhatti-on-baby-at-brixton-house/",
+        "https://northwestend.com/baby-brixton-house/",
         "https://www.timeout.com/london/theatre/baby-3"
       ],
       "dirFiles": 32,
@@ -16096,7 +16096,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 6,
+            "accepted": 5,
             "error": null
           },
           {
@@ -16136,7 +16136,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
@@ -16146,19 +16146,18 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 132,
+        "count": 131,
         "byReason": {
-          "no-review-evidence": 1,
+          "roundup-page": 2,
           "non-review-host": 33,
+          "aggregator-internal-nav": 67,
+          "production-database-listing": 11,
+          "not-http-url": 5,
+          "aggregator-section-root": 4,
           "write-path-blocked": 5,
           "census-junk-host": 2,
-          "event-listings-page": 1,
-          "aggregator-internal-nav": 67,
-          "not-http-url": 5,
-          "production-database-listing": 11,
-          "aggregator-section-root": 4,
-          "roundup-page": 2,
-          "bare-host": 1
+          "bare-host": 1,
+          "event-listings-page": 1
         }
       },
       "dedupedVariants": [],
@@ -16270,6 +16269,12 @@
             "firstSeenAt": "2026-10-17T14:24:41.672Z"
           },
           {
+            "url": "https://www.theguardian.com/stage/2026/oct/15/baby-review-brixton-house-london-pearl-mackie",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T14:24:41.672Z"
+          },
+          {
             "url": "https://liamodell.com/2026/10/16/baby-play-review-brixton-house-theatre-london-pearl-mackie-gurpreet-kaur-bhatti-milli-bhatia/",
             "outletId": "liamodell.com",
             "state": "live",
@@ -16278,18 +16283,6 @@
           {
             "url": "https://www.afridiziak.com/reviews/baby-brixton-house/",
             "outletId": "afridiziak.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-17T14:24:41.672Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/oct/15/baby-review-brixton-house-london-pearl-mackie",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-17T14:24:41.672Z"
-          },
-          {
-            "url": "https://northwestend.com/baby-brixton-house/",
-            "outletId": "northwestend.com",
             "state": "live",
             "firstSeenAt": "2026-10-17T14:24:41.672Z"
           },
@@ -16324,6 +16317,12 @@
             "firstSeenAt": "2026-10-19T14:57:03.324Z"
           },
           {
+            "url": "https://northwestend.com/baby-brixton-house/",
+            "outletId": "northwestend.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T14:24:41.672Z"
+          },
+          {
             "url": "https://loureviews.blog/2026/09/30/show-preview-gurpreet-kaur-bhatti-on-baby-at-brixton-house/",
             "outletId": "loureviews",
             "state": "GAP",
@@ -16342,7 +16341,7 @@
         "liveCount": 11,
         "candidateCount": 13
       },
-      "computedAt": "2026-10-20T06:53:09.029Z"
+      "computedAt": "2026-10-20T17:50:39.724Z"
     },
     {
       "showId": "barbarians-v-wales-double-header-off-west-end-2026",
@@ -47638,13 +47637,13 @@
         "count": 32,
         "byReason": {
           "non-review-host": 22,
-          "write-path-blocked": 2,
-          "census-junk-host": 2,
-          "non-review-path": 1,
-          "ticketing-reseller": 2,
           "aggregator-internal-nav": 1,
-          "bare-host": 1,
-          "ticket-seller-product-page": 1
+          "no-review-evidence": 1,
+          "write-path-blocked": 2,
+          "ticket-seller-product-page": 1,
+          "ticketing-reseller": 2,
+          "census-junk-host": 2,
+          "bare-host": 1
         }
       },
       "dedupedVariants": [],
@@ -47714,7 +47713,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-10-20T06:53:09.029Z"
+      "computedAt": "2026-10-20T17:50:39.724Z"
     },
     {
       "showId": "dirty-dancing-tour-2026",
@@ -52727,7 +52726,7 @@
         "https://culturesauce.com/2026/03/19/the-wild-party-lachiusa-musical-2026-off-broadway-review/",
         "https://www.interestedbystander.com/2026/03/theater-reviews-jesa-uniquely-focuses.html"
       ],
-      "dirFiles": 13,
+      "dirFiles": 15,
       "dirClean": 10,
       "inReviewsJson": 10,
       "missing": [
@@ -52763,6 +52762,8 @@
         "byReason": {}
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
       "ingestResults": [
         {
           "url": "https://www.interestedbystander.com/2026/03/theater-reviews-jesa-uniquely-focuses.html",
@@ -52773,8 +52774,11 @@
           "noop": false,
           "conflict": false,
           "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
           "unclassified": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+          "zeroChar": false,
+          "reason": "Refusing ingest: could not isolate a \"Encores! The Wild Party\" section in multi-show post https://www.interestedbystander.com/2026/03/theater-reviews-jesa-uniquely-focuses.html. Ingest manually or pass --section-title=<heading as the post spells it>."
         }
       ],
       "ingestSkippedByCap": [],
@@ -52845,7 +52849,7 @@
         "liveCount": 7,
         "candidateCount": 8
       },
-      "computedAt": "2026-09-05T17:16:12.711Z"
+      "computedAt": "2026-10-20T17:50:39.724Z"
     },
     {
       "showId": "end-of-the-rainbow-west-end-2026",
@@ -101693,63 +101697,55 @@
       "showId": "king-of-the-yees-off-broadway-2026",
       "title": "King of the Yees",
       "openingDate": "2026-10-20",
-      "status": "previews",
+      "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signature-center/",
-        "https://www.newyorktheatreguide.com/reviews/king-of-the-yees-off-broadway-review",
-        "https://culturesauce.com/king-of-the-yees-takes-an-antic-tour-through-chinatown-off-broadway-review/",
-        "https://nystagereview.com/2026/10/19/king-of-the-yees-talking-about-chinatown-royalty/",
-        "https://www.vulture.com/article/theater-review-king-of-the-yees-lauren-yee.html",
         "https://newyorktheater.me/2026/10/19/king-of-the-yees-review/",
-        "https://morristheatredc.com/theatre/review-king-of-the-yees-signature-theatre",
-        "https://www.theatreinchicago.com/king-of-the-yees/reviews/9168/",
-        "https://washingtoncitypaper.com/article/631821/king-of-the-yees-a-comic-heros-journey-through-san-franciscos-chinatown/",
-        "https://aroundthetownchicago.com/theatre-reviews/the-king-of-the-yees/",
-        "https://artsfile.ca/theatre-review-king-of-the-yees-search-for-identity-trips-over-its-own-plot/"
+        "https://culturesauce.com/king-of-the-yees-off-broadway-review/",
+        "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signature-center/",
+        "https://www.theatermania.com/news/review-lauren-yees-king-of-the-yees-an-exploration-of-what-it-means-to-be-a-yee_1857614/",
+        "https://www.newyorktheatreguide.com/reviews/king-of-the-yees-off-broadway-review",
+        "https://www.vulture.com/article/theater-review-king-of-the-yees-lauren-yee.html",
+        "https://nyunews.com/arts/performance/2026/10/20/review-king-of-the-yees/",
+        "https://www.timeout.com/newyork/theater/king-of-the-yees",
+        "https://morristheatredc.com/reviews/review-king-of-the-yees-signature-theatre",
+        "https://www.theatermania.com/news/francis-jue-and-kelly-marie-tran-will-star-in-lauren-yees-king-of-the-yees_1849279/"
       ],
-      "dirFiles": 8,
-      "dirClean": 6,
-      "inReviewsJson": 6,
+      "dirFiles": 13,
+      "dirClean": 8,
+      "inReviewsJson": 8,
       "missing": [
         {
-          "url": "https://culturesauce.com/king-of-the-yees-takes-an-antic-tour-through-chinatown-off-broadway-review/",
-          "host": "culturesauce.com",
-          "knownOutletId": "culturesauce",
+          "url": "https://nyunews.com/arts/performance/2026/10/20/review-king-of-the-yees/",
+          "host": "nyunews.com",
+          "knownOutletId": "washington-square-news",
           "serpCensus": true
         },
         {
-          "url": "https://morristheatredc.com/theatre/review-king-of-the-yees-signature-theatre",
+          "url": "https://www.timeout.com/newyork/theater/king-of-the-yees",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "serpCensus": true
+        },
+        {
+          "url": "https://morristheatredc.com/reviews/review-king-of-the-yees-signature-theatre",
           "host": "morristheatredc.com",
           "knownOutletId": "morris-theatre-dc",
           "serpCensus": true
-        },
-        {
-          "url": "https://www.theatreinchicago.com/king-of-the-yees/reviews/9168/",
-          "host": "theatreinchicago.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://washingtoncitypaper.com/article/631821/king-of-the-yees-a-comic-heros-journey-through-san-franciscos-chinatown/",
-          "host": "washingtoncitypaper.com",
-          "knownOutletId": "washingtoncitypaper",
-          "serpCensus": true
-        },
-        {
-          "url": "https://artsfile.ca/theatre-review-king-of-the-yees-search-for-identity-trips-over-its-own-plot/",
-          "host": "artsfile.ca",
-          "knownOutletId": null,
-          "serpCensus": true
         }
       ],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "nystagereview.com",
+          "count": 2
+        }
+      ],
       "flaggedMisses": [
         {
-          "url": "https://aroundthetownchicago.com/theatre-reviews/the-king-of-the-yees/",
-          "host": "aroundthetownchicago.com",
-          "knownOutletId": "around-the-town-chicago",
+          "url": "https://www.theatermania.com/news/francis-jue-and-kelly-marie-tran-will-star-in-lauren-yees-king-of-the-yees_1849279/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -101757,14 +101753,14 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "philadelphia-edge--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://aroundthetownchicago.com/theatre-reviews/the-king-of-the-yees/"
+              "file": "theatermania--jonas-schwartz.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatermania.com/news/francis-jue-and-kelly-marie-tran-will-star-in-lauren-yees-king-of-the-yees_1849279/"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "rejectionReason"
+            "wrongProduction"
           ],
           "serpCensus": true,
           "reverify": true
@@ -101784,7 +101780,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 5,
+            "accepted": 6,
             "error": null
           },
           {
@@ -101793,7 +101789,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 1,
             "error": null
           },
@@ -101804,7 +101800,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 0,
             "error": null
           },
           {
@@ -101814,7 +101810,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -101824,24 +101820,25 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 11,
+        "resultCount": 9,
         "error": null
       },
       "candidatesRejected": {
-        "count": 22,
+        "count": 30,
         "byReason": {
+          "roundup-page": 1,
+          "non-review-host": 21,
+          "aggregator-internal-nav": 2,
+          "production-database-listing": 1,
+          "review-index-page": 1,
           "no-review-evidence": 3,
-          "ticketing-listing": 1,
-          "non-review-host": 15,
-          "census-junk-host": 1,
-          "ticketing-reseller": 1,
-          "show-listing-page": 1
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -101849,11 +101846,11 @@
       "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://culturesauce.com/king-of-the-yees-takes-an-antic-tour-through-chinatown-off-broadway-review/",
-          "host": "culturesauce.com",
-          "outletId": "culturesauce",
+          "url": "https://nyunews.com/arts/performance/2026/10/20/review-king-of-the-yees/",
+          "host": "nyunews.com",
+          "outletId": "washington-square-news",
           "provisional": false,
-          "ok": false,
+          "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
@@ -101861,10 +101858,25 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "Fetch failed: All scraping methods failed"
+          "reason": null
         },
         {
-          "url": "https://morristheatredc.com/theatre/review-king-of-the-yees-signature-theatre",
+          "url": "https://www.timeout.com/newyork/theater/king-of-the-yees",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "timeout-listing-capsule",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "king-of-the-yees-off-broadway-2026: https://www.timeout.com/newyork/theater/king-of-the-yees is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
+        },
+        {
+          "url": "https://morristheatredc.com/reviews/review-king-of-the-yees-signature-theatre",
           "host": "morristheatredc.com",
           "outletId": "morris-theatre-dc",
           "provisional": false,
@@ -101876,52 +101888,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=morristheatredc.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\nFetch failed: All scraping methods failed"
-        },
-        {
-          "url": "https://www.theatreinchicago.com/king-of-the-yees/reviews/9168/",
-          "host": "theatreinchicago.com",
-          "outletId": "theatreinchicago",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://washingtoncitypaper.com/article/631821/king-of-the-yees-a-comic-heros-journey-through-san-franciscos-chinatown/",
-          "host": "washingtoncitypaper.com",
-          "outletId": "washingtoncitypaper",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "[review-write-guard] date-implausible: king-of-the-yees-off-broadway-2026/washingtoncitypaper--ian-thal.json → quarantined to _pending/king-of-the-yees-off-broadway-2026/washingtoncitypaper--ian-thal.json (1097d before earliest date, not within priorRuns)\n\n❌ Write-guard refused the write — nothing changed on disk (date_implausible)\n   quarantined to: /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/_pending/king-of-the-yees-off-broadway-2026/washingtoncitypaper--ian-thal.json"
-        },
-        {
-          "url": "https://artsfile.ca/theatre-review-king-of-the-yees-search-for-identity-trips-over-its-own-plot/",
-          "host": "artsfile.ca",
-          "outletId": "artsfile",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
+          "reason": "[review-write-guard] date-implausible: king-of-the-yees-off-broadway-2026/morris-theatre-dc--drew-morris.json → quarantined to _pending/king-of-the-yees-off-broadway-2026/morris-theatre-dc--drew-morris.json (1110d before earliest date, not within priorRuns)\n\n❌ Write-guard refused the write — nothing changed on disk (date_implausible)\n   quarantined to: /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/_pending/king-of-the-yees-off-broadway-2026/morris-theatre-dc--drew-morris.json"
         }
       ],
       "ingestSkippedByCap": [],
@@ -101929,50 +101896,48 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "culturesauce",
-            "outlet": "culturesauce",
+            "outletId": "washington-square-news",
+            "outlet": "washington-square-news",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://culturesauce.com/king-of-the-yees-takes-an-antic-tour-through-chinatown-off-broadway-review/"
+            "url": "https://nyunews.com/arts/performance/2026/10/20/review-king-of-the-yees/"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/king-of-the-yees"
           },
           {
             "outletId": "morris-theatre-dc",
             "outlet": "morris-theatre-dc",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://morristheatredc.com/theatre/review-king-of-the-yees-signature-theatre"
+            "url": "https://morristheatredc.com/reviews/review-king-of-the-yees-signature-theatre"
           },
           {
-            "outletId": "theatreinchicago.com",
-            "outlet": "theatreinchicago.com",
+            "outletId": "theatermania",
+            "outlet": "theatermania",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.theatreinchicago.com/king-of-the-yees/reviews/9168/"
-          },
-          {
-            "outletId": "washingtoncitypaper",
-            "outlet": "washingtoncitypaper",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://washingtoncitypaper.com/article/631821/king-of-the-yees-a-comic-heros-journey-through-san-franciscos-chinatown/"
-          },
-          {
-            "outletId": "artsfile.ca",
-            "outlet": "artsfile.ca",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://artsfile.ca/theatre-review-king-of-the-yees-search-for-identity-trips-over-its-own-plot/"
-          },
-          {
-            "outletId": "around-the-town-chicago",
-            "outlet": "around-the-town-chicago",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://aroundthetownchicago.com/theatre-reviews/the-king-of-the-yees/"
+            "url": "https://www.theatermania.com/news/francis-jue-and-kelly-marie-tran-will-star-in-lauren-yees-king-of-the-yees_1849279/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://newyorktheater.me/2026/10/19/king-of-the-yees-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-20T06:53:09.029Z"
+          },
+          {
+            "url": "https://culturesauce.com/king-of-the-yees-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-20T17:50:39.724Z"
+          },
           {
             "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signature-center/",
             "outletId": "exeuntnyc.com",
@@ -101980,14 +101945,14 @@
             "firstSeenAt": "2026-10-20T06:53:09.029Z"
           },
           {
-            "url": "https://www.newyorktheatreguide.com/reviews/king-of-the-yees-off-broadway-review",
-            "outletId": "newyorktheatreguide.com",
+            "url": "https://www.theatermania.com/news/review-lauren-yees-king-of-the-yees-an-exploration-of-what-it-means-to-be-a-yee_1857614/",
+            "outletId": "theatermania.com",
             "state": "live",
-            "firstSeenAt": "2026-10-20T06:53:09.029Z"
+            "firstSeenAt": "2026-10-20T17:50:39.724Z"
           },
           {
-            "url": "https://nystagereview.com/2026/10/19/king-of-the-yees-talking-about-chinatown-royalty/",
-            "outletId": "nystagereview.com",
+            "url": "https://www.newyorktheatreguide.com/reviews/king-of-the-yees-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-10-20T06:53:09.029Z"
           },
@@ -101998,59 +101963,39 @@
             "firstSeenAt": "2026-10-20T06:53:09.029Z"
           },
           {
-            "url": "https://newyorktheater.me/2026/10/19/king-of-the-yees-review/",
-            "outletId": "newyorktheater.me",
-            "state": "live",
-            "firstSeenAt": "2026-10-20T06:53:09.029Z"
-          },
-          {
-            "url": "https://culturesauce.com/king-of-the-yees-takes-an-antic-tour-through-chinatown-off-broadway-review/",
-            "outletId": "culturesauce",
+            "url": "https://nyunews.com/arts/performance/2026/10/20/review-king-of-the-yees/",
+            "outletId": "washington-square-news",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-20T06:53:09.029Z"
+            "firstSeenAt": "2026-10-20T17:50:39.724Z"
           },
           {
-            "url": "https://morristheatredc.com/theatre/review-king-of-the-yees-signature-theatre",
+            "url": "https://www.timeout.com/newyork/theater/king-of-the-yees",
+            "outletId": "timeout-london",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-20T17:50:39.724Z"
+          },
+          {
+            "url": "https://morristheatredc.com/reviews/review-king-of-the-yees-signature-theatre",
             "outletId": "morris-theatre-dc",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-20T06:53:09.029Z"
+            "firstSeenAt": "2026-10-20T17:50:39.724Z"
           },
           {
-            "url": "https://www.theatreinchicago.com/king-of-the-yees/reviews/9168/",
-            "outletId": "theatreinchicago.com",
+            "url": "https://www.theatermania.com/news/francis-jue-and-kelly-marie-tran-will-star-in-lauren-yees-king-of-the-yees_1849279/",
+            "outletId": "theatermania",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-20T06:53:09.029Z"
-          },
-          {
-            "url": "https://washingtoncitypaper.com/article/631821/king-of-the-yees-a-comic-heros-journey-through-san-franciscos-chinatown/",
-            "outletId": "washingtoncitypaper",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-20T06:53:09.029Z"
-          },
-          {
-            "url": "https://artsfile.ca/theatre-review-king-of-the-yees-search-for-identity-trips-over-its-own-plot/",
-            "outletId": "artsfile.ca",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-20T06:53:09.029Z"
-          },
-          {
-            "url": "https://aroundthetownchicago.com/theatre-reviews/the-king-of-the-yees/",
-            "outletId": "around-the-town-chicago",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-20T06:53:09.029Z"
+            "firstSeenAt": "2026-10-20T17:50:39.724Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 5,
-        "candidateCount": 11
+        "liveCount": 6,
+        "candidateCount": 10
       },
-      "computedAt": "2026-10-20T06:53:09.029Z"
+      "computedAt": "2026-10-20T17:50:39.724Z"
     },
     {
       "showId": "kinky-boots-the-musical-west-end-2026",
@@ -104755,13 +104700,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 27,
+        "count": 28,
         "byReason": {
-          "non-review-host": 19,
-          "no-review-evidence": 5,
-          "census-junk-host": 1,
+          "non-review-host": 22,
+          "no-review-evidence": 4,
           "write-path-blocked": 1,
-          "non-review-path": 1
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
@@ -104850,7 +104794,7 @@
         "liveCount": 2,
         "candidateCount": 5
       },
-      "computedAt": "2026-10-20T10:25:19.110Z"
+      "computedAt": "2026-10-20T17:50:39.724Z"
     },
     {
       "showId": "lean-to-off-broadway-2026",
@@ -107440,32 +107384,43 @@
       "openingDate": "2026-10-19",
       "status": "open",
       "category": "off-broadway",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-did-reviews-say-about-lincoln-in-the-bardo-at-the-met-opera"
+      ],
       "aggregatorListedUrls": [
+        "https://www.nytimes.com/2026/10/20/arts/music/lincoln-in-the-bardo-met-opera-review.html",
+        "https://www.theatermania.com/news/review-lincoln-in-the-bardo-at-the-met-opera-spooky-for-the-wrong-reasons_1857674/",
+        "https://www.thetimes.com/culture/classical-opera/article/lincoln-in-the-bardo-review-opera-8z28bfrs9",
         "https://www.vogue.com/article/lincoln-in-the-bardo-met-opera",
         "https://www.npr.org/2026/10/19/nx-s1-6003649/lincoln-bardo-metropolitan-opera-mazzoli-saunders",
+        "https://slippedisc.com/2026/10/lincoln-in-the-bardo-first-review-from-the-met/",
         "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661",
-        "https://www.nytimes.com/2026/10/09/t-magazine/lincoln-bardo-george-saunders-met-opera.html",
         "https://www.nytimes.com/2026/09/18/arts/music/missy-mazzoli-lincoln-in-the-bardo-met-opera.html",
+        "https://www.nytimes.com/2026/10/09/t-magazine/lincoln-bardo-george-saunders-met-opera.html",
         "https://www.theatermania.com/news/world-premiere-of-lincoln-in-the-bardo-joins-met-operas-2026-27-season_1824845/",
-        "https://operawire.com/q-a-composer-missy-mazzoli-author-george-saunders-on-lincoln-in-the-bardo/",
         "https://www.newyorker.com/culture/goings-on/lincoln-in-the-bardo-gets-an-opera-at-the-met",
-        "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floor-lincoln-in-the-bardo.html"
+        "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floor-lincoln-in-the-bardo.html",
+        "https://www.yahoo.com/entertainment/music/articles/met-opera-lincoln-bardo-composer-134213196.html"
       ],
-      "dirFiles": 14,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "dirFiles": 18,
+      "dirClean": 2,
+      "inReviewsJson": 2,
       "missing": [
         {
-          "url": "https://www.npr.org/2026/10/19/nx-s1-6003649/lincoln-bardo-metropolitan-opera-mazzoli-saunders",
-          "host": "npr.org",
-          "knownOutletId": "npr",
+          "url": "https://www.nytimes.com/2026/10/20/arts/music/lincoln-in-the-bardo-met-opera-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "https://slippedisc.com/2026/10/lincoln-in-the-bardo-first-review-from-the-met/",
+          "host": "slippedisc.com",
+          "knownOutletId": "slippedisc",
           "serpCensus": true
         },
         {
-          "url": "https://www.theatermania.com/news/world-premiere-of-lincoln-in-the-bardo-joins-met-operas-2026-27-season_1824845/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
+          "url": "https://www.yahoo.com/entertainment/music/articles/met-opera-lincoln-bardo-composer-134213196.html",
+          "host": "yahoo.com",
+          "knownOutletId": "yahoo",
           "serpCensus": true
         }
       ],
@@ -107496,6 +107451,29 @@
           "reverify": false
         },
         {
+          "url": "https://www.npr.org/2026/10/19/nx-s1-6003649/lincoln-bardo-metropolitan-opera-mazzoli-saunders",
+          "host": "npr.org",
+          "knownOutletId": "npr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "npr--jeff-lunden.json",
+              "flag": "clean",
+              "urlInDir": "https://www.npr.org/2026/10/19/nx-s1-6003649/lincoln-bardo-metropolitan-opera-mazzoli-saunders"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
           "url": "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661",
           "host": "apnews.com",
           "knownOutletId": "ap",
@@ -107509,30 +107487,6 @@
               "file": "ap--mike-silverman.json",
               "flag": "clean",
               "urlInDir": "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://www.nytimes.com/2026/10/09/t-magazine/lincoln-bardo-george-saunders-met-opera.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--louis-lucero-ii.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nytimes.com/2026/10/09/t-magazine/lincoln-bardo-george-saunders-met-opera.html"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -107567,28 +107521,26 @@
           "reverify": true
         },
         {
-          "url": "https://operawire.com/q-a-composer-missy-mazzoli-author-george-saunders-on-lincoln-in-the-bardo/",
-          "host": "operawire.com",
-          "knownOutletId": "operawire",
-          "recoverable": true,
-          "recoverableFile": "operawire--david-salazar.json",
-          "recoverableOutletId": "operawire",
-          "recoverableCritic": "David Salazar",
+          "url": "https://www.nytimes.com/2026/10/09/t-magazine/lincoln-bardo-george-saunders-met-opera.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "operawire--david-salazar.json",
-              "flag": "nonReview",
-              "urlInDir": "https://operawire.com/q-a-royce-vavrek-on-premiering-lincoln-in-the-bardo-at-the-met-his-work-with-missy-mazzoli/"
+              "file": "nytimes--louis-lucero-ii.json",
+              "flag": "clean",
+              "urlInDir": "https://www.nytimes.com/2026/10/09/t-magazine/lincoln-bardo-george-saunders-met-opera.html"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "nonReview"
+            "rejectionReason"
           ],
           "confirmedNonReview": true,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2025-11-08",
           "serpCensus": true,
           "reverify": false
         },
@@ -107653,8 +107605,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 1,
+            "results": 9,
+            "accepted": 3,
             "error": null
           },
           {
@@ -107684,7 +107636,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -107700,29 +107652,32 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 9,
+        "resultCount": 12,
         "error": null
       },
       "candidatesRejected": {
-        "count": 34,
+        "count": 128,
         "byReason": {
-          "non-review-host": 22,
-          "aggregator-internal-nav": 2,
-          "no-review-evidence": 6,
-          "event-listing": 1,
-          "census-junk-host": 1,
+          "roundup-page": 2,
+          "non-review-host": 41,
+          "aggregator-internal-nav": 46,
+          "production-database-listing": 6,
+          "no-review-evidence": 5,
+          "not-http-url": 20,
+          "aggregator-section-root": 5,
           "ticketing-reseller": 1,
-          "show-listing-page": 1
+          "census-junk-host": 1,
+          "event-listing": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 2,
+      "automatedExcludedListed": 3,
       "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://www.npr.org/2026/10/19/nx-s1-6003649/lincoln-bardo-metropolitan-opera-mazzoli-saunders",
-          "host": "npr.org",
-          "outletId": "npr",
+          "url": "https://www.nytimes.com/2026/10/20/arts/music/lincoln-in-the-bardo-met-opera-review.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes",
           "provisional": false,
           "ok": true,
           "noop": false,
@@ -107735,9 +107690,24 @@
           "reason": null
         },
         {
-          "url": "https://www.theatermania.com/news/world-premiere-of-lincoln-in-the-bardo-joins-met-operas-2026-27-season_1824845/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
+          "url": "https://slippedisc.com/2026/10/lincoln-in-the-bardo-first-review-from-the-met/",
+          "host": "slippedisc.com",
+          "outletId": "slippedisc",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.yahoo.com/entertainment/music/articles/met-opera-lincoln-bardo-composer-134213196.html",
+          "host": "yahoo.com",
+          "outletId": "yahoo",
           "provisional": false,
           "ok": false,
           "noop": false,
@@ -107746,8 +107716,8 @@
           "expected": false,
           "expectedReason": null,
           "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
         }
       ],
       "ingestSkippedByCap": [],
@@ -107755,18 +107725,25 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "npr",
-            "outlet": "npr",
+            "outletId": "nytimes",
+            "outlet": "nytimes",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.npr.org/2026/10/19/nx-s1-6003649/lincoln-bardo-metropolitan-opera-mazzoli-saunders"
+            "url": "https://www.nytimes.com/2026/10/20/arts/music/lincoln-in-the-bardo-met-opera-review.html"
           },
           {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
+            "outletId": "slippedisc",
+            "outlet": "slippedisc",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.theatermania.com/news/world-premiere-of-lincoln-in-the-bardo-joins-met-operas-2026-27-season_1824845/"
+            "url": "https://slippedisc.com/2026/10/lincoln-in-the-bardo-first-review-from-the-met/"
+          },
+          {
+            "outletId": "yahoo",
+            "outlet": "yahoo",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.yahoo.com/entertainment/music/articles/met-opera-lincoln-bardo-composer-134213196.html"
           },
           {
             "outletId": "vogue",
@@ -107774,6 +107751,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.vogue.com/article/lincoln-in-the-bardo-met-opera"
+          },
+          {
+            "outletId": "npr",
+            "outlet": "npr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.npr.org/2026/10/19/nx-s1-6003649/lincoln-bardo-metropolitan-opera-mazzoli-saunders"
           },
           {
             "outletId": "ap",
@@ -107787,14 +107771,14 @@
             "outlet": "nytimes",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.nytimes.com/2026/10/09/t-magazine/lincoln-bardo-george-saunders-met-opera.html"
+            "url": "https://www.nytimes.com/2026/09/18/arts/music/missy-mazzoli-lincoln-in-the-bardo-met-opera.html"
           },
           {
             "outletId": "nytimes",
             "outlet": "nytimes",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.nytimes.com/2026/09/18/arts/music/missy-mazzoli-lincoln-in-the-bardo-met-opera.html"
+            "url": "https://www.nytimes.com/2026/10/09/t-magazine/lincoln-bardo-george-saunders-met-opera.html"
           },
           {
             "outletId": "nytimes",
@@ -107815,18 +107799,43 @@
         ],
         "candidates": [
           {
-            "url": "https://www.npr.org/2026/10/19/nx-s1-6003649/lincoln-bardo-metropolitan-opera-mazzoli-saunders",
-            "outletId": "npr",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-20T10:25:19.110Z"
+            "url": "https://www.theatermania.com/news/review-lincoln-in-the-bardo-at-the-met-opera-spooky-for-the-wrong-reasons_1857674/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-20T17:50:39.724Z"
+          },
+          {
+            "url": "https://www.thetimes.com/culture/classical-opera/article/lincoln-in-the-bardo-review-opera-8z28bfrs9",
+            "outletId": "thetimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-20T17:50:39.724Z"
           },
           {
             "url": "https://www.theatermania.com/news/world-premiere-of-lincoln-in-the-bardo-joins-met-operas-2026-27-season_1824845/",
-            "outletId": "theatermania",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T04:06:17.625Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/10/20/arts/music/lincoln-in-the-bardo-met-opera-review.html",
+            "outletId": "nytimes",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-19T04:06:17.625Z"
+            "firstSeenAt": "2026-10-20T17:50:39.724Z"
+          },
+          {
+            "url": "https://slippedisc.com/2026/10/lincoln-in-the-bardo-first-review-from-the-met/",
+            "outletId": "slippedisc",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-20T17:50:39.724Z"
+          },
+          {
+            "url": "https://www.yahoo.com/entertainment/music/articles/met-opera-lincoln-bardo-composer-134213196.html",
+            "outletId": "yahoo",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-20T17:50:39.724Z"
           },
           {
             "url": "https://www.vogue.com/article/lincoln-in-the-bardo-met-opera",
@@ -107836,15 +107845,15 @@
             "firstSeenAt": "2026-10-19T04:06:17.625Z"
           },
           {
-            "url": "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661",
-            "outletId": "ap",
+            "url": "https://www.npr.org/2026/10/19/nx-s1-6003649/lincoln-bardo-metropolitan-opera-mazzoli-saunders",
+            "outletId": "npr",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-19T04:06:17.625Z"
+            "firstSeenAt": "2026-10-20T10:25:19.110Z"
           },
           {
-            "url": "https://www.nytimes.com/2026/10/09/t-magazine/lincoln-bardo-george-saunders-met-opera.html",
-            "outletId": "nytimes",
+            "url": "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661",
+            "outletId": "ap",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-19T04:06:17.625Z"
@@ -107855,6 +107864,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-20T10:25:19.110Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/10/09/t-magazine/lincoln-bardo-george-saunders-met-opera.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-19T04:06:17.625Z"
           },
           {
             "url": "https://www.newyorker.com/culture/goings-on/lincoln-in-the-bardo-gets-an-opera-at-the-met",
@@ -107872,10 +107888,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 0,
-        "candidateCount": 6
+        "liveCount": 2,
+        "candidateCount": 9
       },
-      "computedAt": "2026-10-20T10:25:19.110Z"
+      "computedAt": "2026-10-20T17:50:39.724Z"
     },
     {
       "showId": "little-bear-ridge-road-2025",
@@ -116152,7 +116168,7 @@
       "showId": "martin-guerre-west-end-2026",
       "title": "Martin Guerre",
       "openingDate": "2026-10-20",
-      "status": "previews",
+      "status": "open",
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
@@ -116167,32 +116183,16 @@
         "https://www.whatsonstage.com/news/new-version-of-martin-guerre-to-premiere-in-london-this-autumn_1698167/",
         "https://www.oldvictheatre.com/news/video-martin-guerre-in-the-studio/"
       ],
-      "dirFiles": 2,
+      "dirFiles": 6,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
         {
-          "url": "https://www.timeout.com/london/theatre/martin-guerre",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londontheatredirect.com/news/10-reasons-to-see-martin-guerre-at-the-old-vic",
-          "host": "londontheatredirect.com",
-          "knownOutletId": "londontheatredirect",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.oldvictheatre.com/stage/martin-guerre/",
-          "host": "oldvictheatre.com",
-          "knownOutletId": "oldvictheatrecom",
-          "serpCensus": true
-        },
-        {
           "url": "https://www.londontheatre.co.uk/reviews/martin-guerre",
           "host": "londontheatre.co.uk",
           "knownOutletId": "london-theatre",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2016-06-08",
           "serpCensus": true
         },
         {
@@ -116249,6 +116249,79 @@
             "wrongProduction"
           ],
           "confirmedNonReview": true,
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/martin-guerre",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout-london--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.timeout.com/london/theatre/martin-guerre"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://www.londontheatredirect.com/news/10-reasons-to-see-martin-guerre-at-the-old-vic",
+          "host": "londontheatredirect.com",
+          "knownOutletId": "londontheatredirect",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "londontheatredirect--lyn-gardner.json",
+              "flag": "clean",
+              "urlInDir": "https://www.londontheatredirect.com/news/10-reasons-to-see-martin-guerre-at-the-old-vic"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://www.oldvictheatre.com/stage/martin-guerre/",
+          "host": "oldvictheatre.com",
+          "knownOutletId": "oldvictheatrecom",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "oldvictheatrecom--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.oldvictheatre.com/stage/martin-guerre/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-06-08",
           "serpCensus": true,
           "reverify": false
         }
@@ -116350,22 +116423,33 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 25,
+        "count": 26,
         "byReason": {
-          "non-review-host": 21,
+          "roundup-page": 1,
+          "non-review-host": 19,
+          "non-review-path": 3,
           "write-path-blocked": 1,
-          "non-review-path": 2,
+          "ticket-seller-product-page": 1,
           "ticketing-reseller": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/martin-guerre",
+          "host": "londontheatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
       "ingestResults": [
         {
-          "url": "https://www.timeout.com/london/theatre/martin-guerre",
-          "host": "timeout.com",
-          "outletId": "timeout-london",
+          "url": "https://musicaltheatrereview.com/casting-for-the-old-vics-martin-guerre/",
+          "host": "musicaltheatrereview.com",
+          "outletId": "musical-theatre-review",
           "provisional": false,
           "ok": true,
           "noop": false,
@@ -116378,22 +116462,7 @@
           "reason": null
         },
         {
-          "url": "https://www.londontheatredirect.com/news/10-reasons-to-see-martin-guerre-at-the-old-vic",
-          "host": "londontheatredirect.com",
-          "outletId": "londontheatredirect",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.oldvictheatre.com/stage/martin-guerre/",
+          "url": "https://www.oldvictheatre.com/news/things-you-need-to-know-about-martin-guerre/",
           "host": "oldvictheatre.com",
           "outletId": "oldvictheatrecom",
           "provisional": false,
@@ -116408,22 +116477,7 @@
           "reason": null
         },
         {
-          "url": "https://www.londontheatre.co.uk/reviews/martin-guerre",
-          "host": "londontheatre.co.uk",
-          "outletId": "london-theatre",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "[review-write-guard] date-implausible: martin-guerre-west-end-2026/london-theatre--unknown.json → quarantined to _pending/martin-guerre-west-end-2026/london-theatre--unknown.json (3767d before earliest date, not within priorRuns)\n\n❌ Write-guard refused the write — nothing changed on disk (date_implausible)\n   quarantined to: /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/_pending/martin-guerre-west-end-2026/london-theatre--unknown.json"
-        },
-        {
-          "url": "https://musicaltheatrereview.com/casting-for-the-old-vics-martin-guerre/",
+          "url": "https://musicaltheatrereview.com/new-look-martin-guerre-to-debut-at-the-old-vic/",
           "host": "musicaltheatrereview.com",
           "outletId": "musical-theatre-review",
           "provisional": false,
@@ -116436,61 +116490,42 @@
           "unclassified": false,
           "zeroChar": true,
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=musicaltheatrereview.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=musicaltheatrereview.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"s"
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://www.oldvictheatre.com/news/things-you-need-to-know-about-martin-guerre/",
-          "host": "oldvictheatre.com",
-          "outletId": "oldvictheatrecom"
-        },
-        {
-          "url": "https://musicaltheatrereview.com/new-look-martin-guerre-to-debut-at-the-old-vic/",
-          "host": "musicaltheatrereview.com",
-          "outletId": "musical-theatre-review"
         },
         {
           "url": "https://www.whatsonstage.com/news/new-version-of-martin-guerre-to-premiere-in-london-this-autumn_1698167/",
           "host": "whatsonstage.com",
-          "outletId": "whatsonstage"
+          "outletId": "whatsonstage",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         },
         {
           "url": "https://www.oldvictheatre.com/news/video-martin-guerre-in-the-studio/",
           "host": "oldvictheatre.com",
-          "outletId": "oldvictheatrecom"
+          "outletId": "oldvictheatrecom",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
         }
       ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/london/theatre/martin-guerre"
-          },
-          {
-            "outletId": "londontheatredirect",
-            "outlet": "londontheatredirect",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatredirect.com/news/10-reasons-to-see-martin-guerre-at-the-old-vic"
-          },
-          {
-            "outletId": "oldvictheatrecom",
-            "outlet": "oldvictheatrecom",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.oldvictheatre.com/stage/martin-guerre/"
-          },
-          {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre.co.uk/reviews/martin-guerre"
-          },
           {
             "outletId": "musical-theatre-review",
             "outlet": "musical-theatre-review",
@@ -116532,38 +116567,24 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://monstagigz.com/2026/10/10/theatre-review-martin-guerre-starring-liv-andrusier-and-shane-oriordan-at-the-old-vic/"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/martin-guerre"
+          },
+          {
+            "outletId": "londontheatredirect",
+            "outlet": "londontheatredirect",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatredirect.com/news/10-reasons-to-see-martin-guerre-at-the-old-vic"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://www.timeout.com/london/theatre/martin-guerre",
-            "outletId": "timeout-london",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-20T06:53:09.029Z"
-          },
-          {
-            "url": "https://www.londontheatredirect.com/news/10-reasons-to-see-martin-guerre-at-the-old-vic",
-            "outletId": "londontheatredirect",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-20T06:53:09.029Z"
-          },
-          {
-            "url": "https://www.oldvictheatre.com/stage/martin-guerre/",
-            "outletId": "oldvictheatrecom",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-20T06:53:09.029Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/martin-guerre",
-            "outletId": "london-theatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-20T06:53:09.029Z"
-          },
           {
             "url": "https://musicaltheatrereview.com/casting-for-the-old-vics-martin-guerre/",
             "outletId": "musical-theatre-review",
@@ -116605,13 +116626,27 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-20T06:53:09.029Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/martin-guerre",
+            "outletId": "timeout-london",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-20T06:53:09.029Z"
+          },
+          {
+            "url": "https://www.londontheatredirect.com/news/10-reasons-to-see-martin-guerre-at-the-old-vic",
+            "outletId": "londontheatredirect",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-20T06:53:09.029Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 7
+        "candidateCount": 6
       },
-      "computedAt": "2026-10-20T06:53:09.029Z"
+      "computedAt": "2026-10-20T17:50:39.724Z"
     },
     {
       "showId": "mary-jane-2024",
@@ -150458,11 +150493,17 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "culturesauce--unknown.json",
-              "flag": "emptyBody",
+              "file": "culturesauce--thom-geier.json",
+              "flag": "wrongShow",
               "urlInDir": "https://culturesauce.com/2026/03/25/public-charge-off-broadway-review/"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongShow"
+          ],
+          "confirmedNonReview": true,
+          "reverify": false
         },
         {
           "url": "https://www.theatermania.com/news/review-public-charge-a-diplomat-recalls-hillary-clintons-state-department_1829739/",
@@ -150479,7 +150520,12 @@
               "flag": "wrongShow",
               "urlInDir": "https://www.theatermania.com/news/review-public-charge-a-diplomat-recalls-hillary-clintons-state-department_1829739/"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongShow"
+          ],
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -150489,16 +150535,20 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 369,
+        "count": 390,
         "byReason": {
+          "roundup-page": 2,
           "non-review-host": 34,
-          "not-http-url": 72,
-          "aggregator-internal-nav": 251,
-          "aggregator-section-root": 10,
-          "roundup-page": 2
+          "aggregator-internal-nav": 255,
+          "production-database-listing": 6,
+          "not-http-url": 80,
+          "aggregator-section-root": 11,
+          "census-junk-host": 2
         }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -150598,7 +150648,7 @@
         "liveCount": 10,
         "candidateCount": 12
       },
-      "computedAt": "2026-09-05T17:16:12.711Z"
+      "computedAt": "2026-10-20T17:50:39.724Z"
     },
     {
       "showId": "punch-2025",
@@ -159322,74 +159372,24 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.stlmag.com/events/st-louis-family-theatre-rosie-revere-ada-twist-and-iggy-peck-the-questioneers/",
-        "https://patch.com/new-york/new-york-city/calendar/event/20261017/fc6c7539-7112-4b5b-a799-f8466d5fa150/rosie-revere-ada-twist-and-iggy-peck",
-        "https://www.theatermania.com/news/new-victory-to-open-2026-27-season-with-musical-rosie-revere-ada-twist-and-iggy-peck_1855653/"
+        "https://www.theatermania.com/news/new-victory-to-open-2026-27-season-with-musical-rosie-revere-ada-twist-and-iggy-peck_1855653/",
+        "https://patch.com/new-york/new-york-city/calendar/event/20261017/fc6c7539-7112-4b5b-a799-f8466d5fa150/rosie-revere-ada-twist-and-iggy-peck"
       ],
       "dirFiles": 8,
-      "dirClean": 1,
+      "dirClean": 3,
       "inReviewsJson": 0,
       "missing": [],
       "dirOnly": [
         {
           "host": "kidsoutandabout.com",
           "count": 1
+        },
+        {
+          "host": "mommypoppins.com",
+          "count": 1
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.stlmag.com/events/st-louis-family-theatre-rosie-revere-ada-twist-and-iggy-peck-the-questioneers/",
-          "host": "stlmag.com",
-          "knownOutletId": "st-louis-mag",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "st-louis-mag--allison-schmidt.json",
-              "flag": "clean",
-              "urlInDir": "https://www.stlmag.com/events/st-louis-family-theatre-rosie-revere-ada-twist-and-iggy-peck-the-questioneers/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://patch.com/new-york/new-york-city/calendar/event/20261017/fc6c7539-7112-4b5b-a799-f8466d5fa150/rosie-revere-ada-twist-and-iggy-peck",
-          "host": "patch.com",
-          "knownOutletId": "patch",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "patch--sabrina-blandon.json",
-              "flag": "clean",
-              "urlInDir": "https://patch.com/new-york/new-york-city/calendar/event/20261017/fc6c7539-7112-4b5b-a799-f8466d5fa150/rosie-revere-ada-twist-and-iggy-peck"
-            },
-            {
-              "file": "patch--unknown.json",
-              "flag": "duplicate",
-              "urlInDir": "https://patch.com/new-york/new-york-city/calendar/event/20261017/fc6c7539-7112-4b5b-a799-f8466d5fa150/rosie-revere-ada-twist-and-iggy-peck"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason",
-            "duplicateOf"
-          ],
-          "confirmedNonReview": true,
-          "serpCensus": true,
-          "reverify": false
-        },
         {
           "url": "https://www.theatermania.com/news/new-victory-to-open-2026-27-season-with-musical-rosie-revere-ada-twist-and-iggy-peck_1855653/",
           "host": "theatermania.com",
@@ -159428,7 +159428,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -159448,7 +159448,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -159468,46 +159468,33 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 3,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 39,
+        "count": 43,
         "byReason": {
-          "no-review-evidence": 2,
-          "non-review-host": 22,
+          "non-review-host": 23,
           "aggregator-internal-nav": 8,
-          "venue-production-page": 2,
-          "show-listing-page": 2,
-          "merch-store": 3
+          "no-review-evidence": 3,
+          "show-listing-page": 1,
+          "venue-production-page": 4,
+          "merch-store": 3,
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 2,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "st-louis-mag",
-            "outlet": "st-louis-mag",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.stlmag.com/events/st-louis-family-theatre-rosie-revere-ada-twist-and-iggy-peck-the-questioneers/"
-          },
-          {
-            "outletId": "patch",
-            "outlet": "patch",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://patch.com/new-york/new-york-city/calendar/event/20261017/fc6c7539-7112-4b5b-a799-f8466d5fa150/rosie-revere-ada-twist-and-iggy-peck"
-          },
           {
             "outletId": "theatermania",
             "outlet": "theatermania",
@@ -159519,17 +159506,9 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.stlmag.com/events/st-louis-family-theatre-rosie-revere-ada-twist-and-iggy-peck-the-questioneers/",
-            "outletId": "st-louis-mag",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-17T14:50:53.502Z"
-          },
-          {
             "url": "https://patch.com/new-york/new-york-city/calendar/event/20261017/fc6c7539-7112-4b5b-a799-f8466d5fa150/rosie-revere-ada-twist-and-iggy-peck",
-            "outletId": "patch",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "outletId": "patch.com",
+            "state": "live",
             "firstSeenAt": "2026-10-17T14:50:53.502Z"
           },
           {
@@ -159541,10 +159520,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 0,
-        "candidateCount": 3
+        "liveCount": 1,
+        "candidateCount": 2
       },
-      "computedAt": "2026-10-20T06:53:09.029Z"
+      "computedAt": "2026-10-20T17:50:39.724Z"
     },
     {
       "showId": "sabrage-off-west-end-2026",
@@ -173810,25 +173789,33 @@
       "aggregatorListedUrls": [
         "https://www.londonboxoffice.co.uk/news/post/stories-tap-dance-sensation-review",
         "https://theatreandtonic.co.uk/blog/stories-a-tap-dance-sensation-peacock-theatre-review",
-        "https://www.westendbestfriend.co.uk/news/review-stories-the-tap-dance-sensation-peacock-theatre",
         "https://www.thereviewshub.com/26-stories-the-tap-dance-sensation-peacock-theatre-london-2/",
-        "https://www.liftedleg.com/2026/10/rb-dance-company-stories-the-tap-dance-sensation-review",
-        "https://www.londontheatre1.com/reviews/stories-the-tap-dance-sensation-peacock-theatre/",
         "https://www.theupcoming.co.uk/2024/10/30/stories-the-tap-dance-sensation-at-peacock-theatre-theatre-review/",
+        "https://www.liftedleg.com/2026/10/rb-dance-company-stories-the-tap-dance-sensation-review",
+        "https://www.westendbestfriend.co.uk/news/review-stories-the-tap-dance-sensation-peacock-theatre",
         "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.html",
         "https://whatsgoodtodo.com/stories-the-tap-dance-sensation-at-peacock-theatre-london-review/",
-        "https://www.abundantart.net/review/review-and-exclusive-interview-romain-rachline-borgeauds-stories-the-tap-dance-sensation-dark-noir-drama-breathes-new-life-into-old-genres-at-peacock-theatre-un/",
-        "https://dancemagazine.co.uk/2026/09/stories-the-tap-dance-sensation-returns-to-london-ahead-of-uk-tour/",
         "https://www.london-unattached.com/stories-the-tap-dance-sensation/",
-        "https://broadwaybaby.com/shows/stories-the-tap-dance-sensation/839283"
+        "https://www.abundantart.net/review-page/review-and-exclusive-interview-romain-rachline-borgeauds-stories-the-tap-dance-sensation-dark-noir-drama-breathes-new-life-into-old-genres-at-peacock-theatre-until-2-november"
       ],
       "dirFiles": 23,
       "dirClean": 12,
       "inReviewsJson": 12,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.abundantart.net/review-page/review-and-exclusive-interview-romain-rachline-borgeauds-stories-the-tap-dance-sensation-dark-noir-drama-breathes-new-life-into-old-genres-at-peacock-theatre-until-2-november",
+          "host": "abundantart.net",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [
         {
           "host": "ayoungishperspective.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatre1.com",
           "count": 1
         },
         {
@@ -173836,54 +173823,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://dancemagazine.co.uk/2026/09/stories-the-tap-dance-sensation-returns-to-london-ahead-of-uk-tour/",
-          "host": "dancemagazine.co.uk",
-          "knownOutletId": "dance-informa-uk",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "dance-informa-uk--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://dancemagazine.co.uk/2026/09/stories-the-tap-dance-sensation-returns-to-london-ahead-of-uk-tour/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://broadwaybaby.com/shows/stories-the-tap-dance-sensation/839283",
-          "host": "broadwaybaby.com",
-          "knownOutletId": "broadway-baby",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "broadway-baby--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://broadwaybaby.com/shows/stories-the-tap-dance-sensation/839283"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -173941,7 +173881,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 6,
+            "accepted": 0,
             "error": null
           },
           {
@@ -173951,7 +173891,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 6,
             "error": null
           },
           {
@@ -173991,54 +173931,62 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 13,
+        "resultCount": 10,
         "error": null
       },
       "candidatesRejected": {
-        "count": 21,
+        "count": 35,
         "byReason": {
-          "ticketing-listing": 3,
-          "non-review-host": 11,
-          "write-path-blocked": 1,
-          "ticketing-reseller": 2,
           "roundup-page": 1,
-          "show-listing-page": 2,
-          "forum-thread": 1
+          "non-review-host": 14,
+          "aggregator-internal-nav": 1,
+          "no-review-evidence": 4,
+          "ticketing-listing": 3,
+          "not-http-url": 2,
+          "write-path-blocked": 2,
+          "ticketing-reseller": 3,
+          "show-listing-page": 1,
+          "census-junk-host": 1,
+          "forum-thread": 2,
+          "event-listing": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 2,
-      "unextractable": [
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
         {
-          "url": "https://www.abundantart.net/review/review-and-exclusive-interview-romain-rachline-borgeauds-stories-the-tap-dance-sensation-dark-noir-drama-breathes-new-life-into-old-genres-at-peacock-theatre-un/",
+          "url": "https://www.abundantart.net/review-page/review-and-exclusive-interview-romain-rachline-borgeauds-stories-the-tap-dance-sensation-dark-noir-drama-breathes-new-life-into-old-genres-at-peacock-theatre-until-2-november",
           "host": "abundantart.net",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "zeroCharAttempts": 5
+          "outletId": "abundantart",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         }
       ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "dance-informa-uk",
-            "outlet": "dance-informa-uk",
+            "outletId": "abundantart.net",
+            "outlet": "abundantart.net",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://dancemagazine.co.uk/2026/09/stories-the-tap-dance-sensation-returns-to-london-ahead-of-uk-tour/"
-          },
-          {
-            "outletId": "broadway-baby",
-            "outlet": "broadway-baby",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaybaby.com/shows/stories-the-tap-dance-sensation/839283"
+            "url": "https://www.abundantart.net/review-page/review-and-exclusive-interview-romain-rachline-borgeauds-stories-the-tap-dance-sensation-dark-noir-drama-breathes-new-life-into-old-genres-at-peacock-theatre-until-2-november"
           }
         ],
         "suppressedMissing": [],
@@ -174056,14 +174004,14 @@
             "firstSeenAt": "2026-10-19T11:33:34.223Z"
           },
           {
-            "url": "https://www.westendbestfriend.co.uk/news/review-stories-the-tap-dance-sensation-peacock-theatre",
-            "outletId": "westendbestfriend.co.uk",
+            "url": "https://www.thereviewshub.com/26-stories-the-tap-dance-sensation-peacock-theatre-london-2/",
+            "outletId": "thereviewshub.com",
             "state": "live",
             "firstSeenAt": "2026-10-19T11:33:34.223Z"
           },
           {
-            "url": "https://www.thereviewshub.com/26-stories-the-tap-dance-sensation-peacock-theatre-london-2/",
-            "outletId": "thereviewshub.com",
+            "url": "https://www.theupcoming.co.uk/2024/10/30/stories-the-tap-dance-sensation-at-peacock-theatre-theatre-review/",
+            "outletId": "theupcoming.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-19T11:33:34.223Z"
           },
@@ -174074,14 +174022,8 @@
             "firstSeenAt": "2026-10-19T11:33:34.223Z"
           },
           {
-            "url": "https://www.londontheatre1.com/reviews/stories-the-tap-dance-sensation-peacock-theatre/",
-            "outletId": "londontheatre1.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-19T11:33:34.223Z"
-          },
-          {
-            "url": "https://www.theupcoming.co.uk/2024/10/30/stories-the-tap-dance-sensation-at-peacock-theatre-theatre-review/",
-            "outletId": "theupcoming.co.uk",
+            "url": "https://www.westendbestfriend.co.uk/news/review-stories-the-tap-dance-sensation-peacock-theatre",
+            "outletId": "westendbestfriend.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-19T11:33:34.223Z"
           },
@@ -174104,25 +174046,18 @@
             "firstSeenAt": "2026-10-19T11:33:34.223Z"
           },
           {
-            "url": "https://dancemagazine.co.uk/2026/09/stories-the-tap-dance-sensation-returns-to-london-ahead-of-uk-tour/",
-            "outletId": "dance-informa-uk",
+            "url": "https://www.abundantart.net/review-page/review-and-exclusive-interview-romain-rachline-borgeauds-stories-the-tap-dance-sensation-dark-noir-drama-breathes-new-life-into-old-genres-at-peacock-theatre-until-2-november",
+            "outletId": "abundantart.net",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-19T11:33:34.223Z"
-          },
-          {
-            "url": "https://broadwaybaby.com/shows/stories-the-tap-dance-sensation/839283",
-            "outletId": "broadway-baby",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-20T06:53:09.029Z"
+            "firstSeenAt": "2026-10-20T17:50:39.724Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 10,
-        "candidateCount": 12
+        "liveCount": 9,
+        "candidateCount": 10
       },
-      "computedAt": "2026-10-20T06:53:09.029Z"
+      "computedAt": "2026-10-20T17:50:39.724Z"
     },
     {
       "showId": "stranger-things-2024",
@@ -212436,9 +212371,11 @@
       "aggregatorListedUrls": [
         "https://mdtheatreguide.com/2026/09/theatre-review-the-second-best-school-shooting-at-nextstop-theatre/",
         "https://festmag.com/2026/08/08/review-the-second-best-school-shooting/",
-        "https://www.whatsonstage.com/news/the-second-best-school-shooting-at-pleasance-courtyard-review_1728969/",
-        "https://www.theatreinla.com/the-second-best-school-shooting/11328/",
-        "https://www.thestage.co.uk/reviews/the-second-best-school-shooting-review-pleasance-courtyard-edinburgh-alice-stanley-jr"
+        "https://www.theatreindc.com/the-second-best-school-shooting/reviews/5319/",
+        "https://broadwaybaby.com/shows/the-second-best-school-shooting/836812",
+        "https://ayoungishperspective.co.uk/2026/08/08/review-the-second-best-school-shooting-at-baby-grand-pleasance-courtyard/",
+        "https://edinburgh-reviews.co.uk/review-the-second-best-school-shooting-fringe-2026/",
+        "https://www.theatreinla.com/the-second-best-school-shooting/11328/"
       ],
       "dirFiles": 12,
       "dirClean": 0,
@@ -212493,9 +212430,9 @@
           "reverify": true
         },
         {
-          "url": "https://www.whatsonstage.com/news/the-second-best-school-shooting-at-pleasance-courtyard-review_1728969/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
+          "url": "https://www.theatreindc.com/the-second-best-school-shooting/reviews/5319/",
+          "host": "theatreindc.com",
+          "knownOutletId": null,
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -212503,9 +212440,78 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "whatsonstage--alex-wood.json",
+              "file": "theatreindc--unknown.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.theatreindc.com/the-second-best-school-shooting/reviews/5319/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongShow"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://broadwaybaby.com/shows/the-second-best-school-shooting/836812",
+          "host": "broadwaybaby.com",
+          "knownOutletId": "broadway-baby",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadway-baby--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://broadwaybaby.com/shows/the-second-best-school-shooting/836812"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://ayoungishperspective.co.uk/2026/08/08/review-the-second-best-school-shooting-at-baby-grand-pleasance-courtyard/",
+          "host": "ayoungishperspective.co.uk",
+          "knownOutletId": "a-youngish-perspective",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "a-youngish-perspective--unknown.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.whatsonstage.com/news/the-second-best-school-shooting-at-pleasance-courtyard-review_1728969/"
+              "urlInDir": "https://ayoungishperspective.co.uk/2026/08/08/review-the-second-best-school-shooting-at-baby-grand-pleasance-courtyard/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://edinburgh-reviews.co.uk/review-the-second-best-school-shooting-fringe-2026/",
+          "host": "edinburgh-reviews.co.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "edinburgh-reviews--bronwen-winter-phoenix.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://edinburgh-reviews.co.uk/review-the-second-best-school-shooting-fringe-2026/"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -212537,29 +212543,6 @@
           ],
           "serpCensus": true,
           "reverify": true
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/the-second-best-school-shooting-review-pleasance-courtyard-edinburgh-alice-stanley-jr",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thestage--natasha-tripney.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thestage.co.uk/reviews/the-second-best-school-shooting-review-pleasance-courtyard-edinburgh-alice-stanley-jr"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "serpCensus": true,
-          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -212575,7 +212558,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -212606,7 +212589,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 3,
             "error": null
           },
           {
@@ -212616,27 +212599,27 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 5,
+        "resultCount": 7,
         "error": null
       },
       "candidatesRejected": {
-        "count": 35,
+        "count": 29,
         "byReason": {
-          "no-review-evidence": 2,
-          "non-review-host": 22,
-          "aggregator-internal-nav": 5,
-          "venue-production-page": 3,
+          "non-review-host": 20,
+          "aggregator-internal-nav": 3,
+          "aggregator-section-root": 1,
+          "venue-production-page": 2,
           "bare-host": 3
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 5,
+      "automatedExcludedListed": 7,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
@@ -212656,11 +212639,32 @@
             "url": "https://festmag.com/2026/08/08/review-the-second-best-school-shooting/"
           },
           {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
+            "outletId": "theatreindc.com",
+            "outlet": "theatreindc.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.whatsonstage.com/news/the-second-best-school-shooting-at-pleasance-courtyard-review_1728969/"
+            "url": "https://www.theatreindc.com/the-second-best-school-shooting/reviews/5319/"
+          },
+          {
+            "outletId": "broadway-baby",
+            "outlet": "broadway-baby",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://broadwaybaby.com/shows/the-second-best-school-shooting/836812"
+          },
+          {
+            "outletId": "a-youngish-perspective",
+            "outlet": "a-youngish-perspective",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://ayoungishperspective.co.uk/2026/08/08/review-the-second-best-school-shooting-at-baby-grand-pleasance-courtyard/"
+          },
+          {
+            "outletId": "edinburgh-reviews.co.uk",
+            "outlet": "edinburgh-reviews.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://edinburgh-reviews.co.uk/review-the-second-best-school-shooting-fringe-2026/"
           },
           {
             "outletId": "theatreinla",
@@ -212668,13 +212672,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatreinla.com/the-second-best-school-shooting/11328/"
-          },
-          {
-            "outletId": "thestage",
-            "outlet": "thestage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thestage.co.uk/reviews/the-second-best-school-shooting-review-pleasance-courtyard-edinburgh-alice-stanley-jr"
           }
         ],
         "suppressedMissing": [],
@@ -212694,11 +212691,32 @@
             "firstSeenAt": "2026-10-19T08:59:24.560Z"
           },
           {
-            "url": "https://www.whatsonstage.com/news/the-second-best-school-shooting-at-pleasance-courtyard-review_1728969/",
-            "outletId": "whatsonstage",
+            "url": "https://www.theatreindc.com/the-second-best-school-shooting/reviews/5319/",
+            "outletId": "theatreindc.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-20T06:53:09.029Z"
+            "firstSeenAt": "2026-10-20T17:50:39.724Z"
+          },
+          {
+            "url": "https://broadwaybaby.com/shows/the-second-best-school-shooting/836812",
+            "outletId": "broadway-baby",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-20T17:50:39.724Z"
+          },
+          {
+            "url": "https://ayoungishperspective.co.uk/2026/08/08/review-the-second-best-school-shooting-at-baby-grand-pleasance-courtyard/",
+            "outletId": "a-youngish-perspective",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-20T17:50:39.724Z"
+          },
+          {
+            "url": "https://edinburgh-reviews.co.uk/review-the-second-best-school-shooting-fringe-2026/",
+            "outletId": "edinburgh-reviews.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-20T17:50:39.724Z"
           },
           {
             "url": "https://www.theatreinla.com/the-second-best-school-shooting/11328/",
@@ -212706,20 +212724,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-20T06:53:09.029Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/the-second-best-school-shooting-review-pleasance-courtyard-edinburgh-alice-stanley-jr",
-            "outletId": "thestage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-20T06:53:09.029Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 5
+        "candidateCount": 7
       },
-      "computedAt": "2026-10-20T06:53:09.029Z"
+      "computedAt": "2026-10-20T17:50:39.724Z"
     },
     {
       "showId": "the-secret-circus-musical-off-broadway-2026",
@@ -229110,7 +229121,12 @@
               "flag": "wrongProduction",
               "urlInDir": "https://culturesauce.com/2026/01/25/elevator-repair-service-deconstructs-joyces-ulysses-off-broadway-review/"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
         },
         {
           "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=L0HOZ0",
@@ -229127,7 +229143,12 @@
               "flag": "wrongShow",
               "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=L0HOZ0"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongShow"
+          ],
+          "reverify": true
         },
         {
           "url": "https://www.theatrereviews.com/off-broadway-review-ulysses-at-the-public-theaters-martinson-hall-through-sunday-march-1-2026/",
@@ -229144,7 +229165,12 @@
               "flag": "wrongProduction",
               "urlInDir": "https://www.theatrereviews.com/off-broadway-review-ulysses-at-the-public-theaters-martinson-hall-through-sunday-march-1-2026/"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -229154,15 +229180,18 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 388,
+        "count": 403,
         "byReason": {
           "non-review-host": 36,
-          "not-http-url": 53,
-          "aggregator-internal-nav": 290,
-          "aggregator-section-root": 9
+          "aggregator-internal-nav": 285,
+          "production-database-listing": 11,
+          "not-http-url": 61,
+          "aggregator-section-root": 10
         }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 3,
+      "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -229258,7 +229287,7 @@
         "liveCount": 7,
         "candidateCount": 10
       },
-      "computedAt": "2026-09-05T17:16:12.711Z"
+      "computedAt": "2026-10-20T17:50:39.724Z"
     },
     {
       "showId": "uncle-vanya-2024",
@@ -244157,24 +244186,22 @@
     }
   ],
   "staleness": {
-    "at": "2026-10-20T16:46:22.540Z",
+    "at": "2026-10-20T17:50:39.723Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "the-unknown-off-broadway-2026",
-      "the-waterfall-off-broadway-2026",
-      "the-reservoir-off-broadway-2026",
-      "night-side-songs-off-broadway-2026",
-      "mother-russia-off-broadway-2026"
+      "ulysses-off-broadway-2026",
+      "public-charge-off-broadway-2026",
+      "encores-the-wild-party-off-broadway-2026"
     ],
     "oldestDueRowAtStart": {
-      "showId": "the-unknown-off-broadway-2026",
-      "computedAt": "2026-09-02T22:17:45.717Z",
-      "ageHours": 1146.2
-    },
-    "oldestDueRowAfterRun": {
       "showId": "ulysses-off-broadway-2026",
       "computedAt": "2026-09-05T17:16:12.711Z",
-      "ageHours": 1079.5
+      "ageHours": 1080.3
+    },
+    "oldestDueRowAfterRun": {
+      "showId": "the-adding-machine-off-broadway-2026",
+      "computedAt": "2026-09-05T17:16:12.711Z",
+      "ageHours": 1080.6
     }
   }
 }

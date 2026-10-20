@@ -1,110 +1,30 @@
 {
-  "generatedAt": "2026-10-20T16:49:22.304Z",
+  "generatedAt": "2026-10-20T17:51:02.513Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 248,
-  "clean": 242,
-  "defective": 6,
+  "clean": 247,
+  "defective": 1,
   "byType": {
-    "score-drift": 6
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "king-of-the-yees-off-broadway-2026",
-      "title": "King of the Yees",
-      "openingDate": "2026-10-20",
+      "showId": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
+      "title": "The Banality of Evil: Hannah Arendt, France 1940",
+      "openingDate": "2026-10-13",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 74.81 vs local 74.89 (Δ0.08)"
+          "detail": "deployed cs 62.66 vs local 62.71 (Δ0.05)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 7,
-      "deployedCount": 7,
-      "firstDefectAt": "2026-10-20T16:49:16.859Z"
-    },
-    {
-      "showId": "copperfield-the-new-musical-off-broadway-2026",
-      "title": "Copperfield! The New Musical",
-      "openingDate": "2026-10-19",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 76 vs local 74.67 (Δ1.33)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 3,
-      "deployedCount": 4,
-      "firstDefectAt": "2026-10-20T16:49:16.859Z"
-    },
-    {
-      "showId": "murder-cathedral-off-west-end-2026",
-      "title": "Murder in the Cathedral",
-      "openingDate": "2026-10-12",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 81.24 vs local 81.33 (Δ0.09)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 7,
-      "deployedCount": 8,
-      "firstDefectAt": "2026-10-20T16:49:16.859Z"
-    },
-    {
-      "showId": "fences-off-west-end-2026",
-      "title": "Fences",
-      "openingDate": "2026-10-09",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 83.04 vs local 83.43 (Δ0.39)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 14,
+      "localCount": 15,
       "deployedCount": 15,
-      "firstDefectAt": "2026-10-20T16:49:16.859Z"
-    },
-    {
-      "showId": "oh-mary-west-end-2025",
-      "title": "Oh, Mary!",
-      "openingDate": "2025-12-18",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 72.64 vs local 72.86 (Δ0.22)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 39,
-      "deployedCount": 39,
-      "firstDefectAt": "2026-10-20T16:49:16.859Z"
-    },
-    {
-      "showId": "paranormal-activity-west-end-2025",
-      "title": "Paranormal Activity",
-      "openingDate": "2025-12-14",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 72.61 vs local 72.96 (Δ0.35)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 20,
-      "deployedCount": 20,
-      "firstDefectAt": "2026-10-20T16:49:16.859Z"
+      "firstDefectAt": "2026-10-20T17:50:55.979Z"
     }
   ],
   "persistentDefective": 0,
