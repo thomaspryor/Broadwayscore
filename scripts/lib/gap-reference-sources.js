@@ -146,8 +146,8 @@ function isCurrentRunRoundup(postDate, show, allShows, opts = {}) {
     if (!Number.isFinite(post) || !Number.isFinite(previews)) return true;
     if (post >= previews - 30 * DAY_MS) return true;
     // a transfer that declares its earlier run keeps that run's roundups
-    const { findMatchingPriorRun } = require('./wrong-production-autoclear');
-    return !!findMatchingPriorRun(postDate, show.priorRuns);
+    const { isWithinPriorRun } = require('./wrong-production-autoclear');
+    return isWithinPriorRun(postDate, show.priorRuns);
   }
   const opening = Date.parse(show.openingDate);
   if (!Number.isFinite(post) || !Number.isFinite(opening)) return true;

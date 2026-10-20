@@ -66,7 +66,13 @@ const REVIEW_LAG_GRACE_DAYS = 7;
  * @returns {boolean}
  */
 function isWithinPriorRun(reviewDate, priorRuns) {
-  return !!findMatchingPriorRun(reviewDate, priorRuns);
+  // BRO-5732: a run marked inheritReviews:false is a SEPARATE production, so its
+  // window is never a reason to exempt, keep or un-flag a review filed here. This
+  // is the one place that says so; the per-caller !isWithinOptOutPriorRun checks
+  // BRO-5285/5333/5724 added one path at a time are now redundant. Use
+  // findMatchingPriorRun for the raw window (which run a date belongs to).
+  const inheriting = Array.isArray(priorRuns) ? priorRuns.filter((r) => !(r && typeof r === 'object' && r.inheritReviews === false)) : priorRuns;
+  return !!findMatchingPriorRun(reviewDate, inheriting);
 }
 
 /**

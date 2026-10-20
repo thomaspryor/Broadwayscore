@@ -202,8 +202,8 @@ function isPublishDateBeforeRun(publishDate, show, graceDays = 90) {
   const start = toDateMs((show && (show.previewsStartDate || show.openingDate)) || '');
   if (!Number.isFinite(start)) return false;
   if (pub >= start - graceDays * 86400000) return false;
-  const { findMatchingPriorRun } = require('./wrong-production-autoclear');
-  return !findMatchingPriorRun(publishDate, show.priorRuns);
+  const { isWithinPriorRun } = require('./wrong-production-autoclear');
+  return !isWithinPriorRun(publishDate, show.priorRuns);
 }
 
 // A press-night cluster dated further back than this cannot be this run on wrong dates.

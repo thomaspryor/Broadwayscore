@@ -30,7 +30,7 @@ const fs = require('fs');
 const path = require('path');
 const { explainExclusion } = require('./lib/review-guards');
 const { earliestShowDate } = require('./lib/date-guard');
-const { findMatchingPriorRun } = require('./lib/wrong-production-autoclear');
+const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
 const { buildOutletRegionMap } = require('./lib/cross-market-guard');
 const { toDateMs } = require('./lib/date-utils');
 const { foldDiacritics } = require('./lib/title-match');
@@ -86,7 +86,7 @@ function main() {
       const pubMs = toDateMs(r.publishDate || '');
       if (Number.isNaN(pubMs)) continue;
       if (pubMs >= startMs - 21 * DAY && pubMs <= openMs + lagDays * DAY) continue;
-      if (findMatchingPriorRun(new Date(pubMs), show.priorRuns)) continue;
+      if (isWithinPriorRun(new Date(pubMs), show.priorRuns)) continue;
       let excl;
       try { excl = explainExclusion(r, show, path.join(dir, file)); } catch (e) { excl = `error: ${e.message}`; }
       if (excl) continue;

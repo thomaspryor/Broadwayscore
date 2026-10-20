@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { isIncludableForRebuild, canonicalizeUrlForDedup } = require('./review-guards');
 const { findPriorRunSiblings } = require('./prior-run-sibling');
-const { findMatchingPriorRun } = require('./wrong-production-autoclear');
+const { isWithinPriorRun } = require('./wrong-production-autoclear');
 
 /**
  * Reads all JSON files in the show's review-texts directory, applies
@@ -63,7 +63,7 @@ function countLocalIncluded(showId, reviewTextsRoot = 'data/review-texts', show,
           continue;
         }
         if (!isIncludableForRebuild(data, sibling)) continue;
-        if (!findMatchingPriorRun(data.publishDate, show.priorRuns)) continue;
+        if (!isWithinPriorRun(data.publishDate, show.priorRuns)) continue;
         const cu = canonicalizeUrlForDedup(data.url);
         if (cu && haveUrl.has(cu)) continue;
         if (havePerson.has(personKey(data))) continue;
