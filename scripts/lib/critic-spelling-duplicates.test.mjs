@@ -81,3 +81,20 @@ test('findSpellingDuplicates honors the allow list', () => {
 // Part 2 (the live corpus scan + KNOWN_BACKLOG) moved to
 // tests/unit/critic-spelling-duplicates-live-data.test.mjs (BRO-5729): it runs in
 // check-corpus-drift.yml, not the scripts/lib glob step.
+
+test('scanReviewTextsForCriticDuplicates skips _-prefixed holding dirs (BRO-5740)', () => {
+  const root = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'csd-'));
+  const write = (dir, file, criticName) => {
+    fs.mkdirSync(path.join(root, dir), { recursive: true });
+    fs.writeFileSync(path.join(root, dir, file), JSON.stringify({ outletId: 'timeout-london', criticName }));
+  };
+  // Two different shows' files parked in the graveyard: not one show's duplicates.
+  write('_superseded-misattributed', 'show-a--timeout-london--andrjez-lukowski.json', 'Andrjez Lukowski');
+  write('_superseded-misattributed', 'show-b--timeout-london--andrzej-lukowski.json', 'Andrzej Lukowski');
+  // A real duplicate in a real show dir is still caught.
+  write('show-c', 'timeout-london--andrjez-lukowski.json', 'Andrjez Lukowski');
+  write('show-c', 'timeout-london--andrzej-lukowski.json', 'Andrzej Lukowski');
+  const { findings } = scanReviewTextsForCriticDuplicates(root);
+  assert.deepEqual(findings.map((f) => f.showId), ['show-c']);
+  fs.rmSync(root, { recursive: true, force: true });
+});

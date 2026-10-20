@@ -132,6 +132,10 @@ function scanReviewTextsForCriticDuplicates(reviewTextsDir, opts = {}) {
   const records = [];
   let scanned = 0;
   for (const showId of listShowDirs(reviewTextsDir, { silent: true })) {
+    // `_pending` / `_superseded-misattributed` are holding areas for moved files
+    // from many shows, not a show: grouping them by "show" pairs up unrelated
+    // shows' files (BRO-5740). Other corpus audits skip them the same way.
+    if (showId.startsWith('_')) continue;
     const showDir = path.join(reviewTextsDir, showId);
     let files;
     try {
