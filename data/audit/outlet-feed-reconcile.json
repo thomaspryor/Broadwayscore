@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-20T04:58:54.286Z",
+  "generatedAt": "2026-10-20T06:53:24.014Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -109,6 +109,11 @@
       "openingDate": "2026-10-16"
     },
     {
+      "id": "machine-learning-off-broadway-2026",
+      "title": "Machine Learning",
+      "openingDate": "2026-10-20"
+    },
+    {
       "id": "the-second-best-school-shooting-off-broadway-2026",
       "title": "The Second Best School Shooting",
       "openingDate": "2026-10-17"
@@ -150,10 +155,6 @@
       "reason": "no data/review-texts directory for this show"
     },
     {
-      "showId": "machine-learning-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
       "showId": "doll-day-afternoon-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     }
@@ -163,6 +164,10 @@
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
+    },
+    {
+      "outletId": "theater-pizzazz",
+      "error": "Timeout fetching https://theaterpizzazz.com/feed/"
     },
     {
       "outletId": "slantmagazine",
@@ -187,10 +192,14 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "Timeout fetching https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&af"
     }
   ],
-  "itemsScanned": 726,
-  "matchedGaps": 6,
+  "itemsScanned": 685,
+  "matchedGaps": 4,
   "possibleGaps": 5,
   "gaps": [
     {
@@ -209,24 +218,6 @@
       "outletId": "culturesauce",
       "url": "https://culturesauce.com/king-of-the-yees-off-broadway-review/",
       "headline": "&#8216;King of the Yees&#8217; takes an antic tour through Chinatown (Off Broadway review)",
-      "publishDate": "2026-10-19"
-    },
-    {
-      "showId": "king-of-the-yees-off-broadway-2026",
-      "title": "King of the Yees",
-      "level": "matched",
-      "outletId": "nyt-theater",
-      "url": "https://newyorktheater.me/2026/10/19/king-of-the-yees-review/",
-      "headline": "King of the Yees Review",
-      "publishDate": "2026-10-19"
-    },
-    {
-      "showId": "king-of-the-yees-off-broadway-2026",
-      "title": "King of the Yees",
-      "level": "matched",
-      "outletId": "vulture",
-      "url": "https://www.vulture.com/article/theater-review-king-of-the-yees-lauren-yee.html",
-      "headline": null,
       "publishDate": "2026-10-19"
     },
     {
