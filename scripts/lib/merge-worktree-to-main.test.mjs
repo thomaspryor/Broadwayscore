@@ -18,7 +18,7 @@ import { fileURLToPath } from 'node:url';
 const here = path.dirname(fileURLToPath(import.meta.url));
 const script = path.join(here, 'merge-worktree-to-main.stash-pop-head-missing-path.test.sh');
 
-test('stash-pop conflict on a path HEAD does not track is unstaged and removed, stash dropped', () => {
+test('stash-pop conflict on a path HEAD does not track is removed, unrelated stash content retained', () => {
   const r = spawnSync('bash', [script], { encoding: 'utf8', timeout: 170000 });
   const out = `${r.stdout || ''}${r.stderr || ''}`;
   assert.equal(r.status, 0, `shell regression test failed:\n${out.slice(-2000)}`);

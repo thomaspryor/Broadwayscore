@@ -109,11 +109,14 @@ elif grep -qE '^(UU|AA|DU|UD|AU|UA) ' <<<"$status"; then
 elif [ "$fileB_exists" = "yes" ]; then
   echo "FAIL: fileB.json (HEAD has NO version of it — main deleted it) should have been removed by the unstage+rm fallback, but it still exists in the working tree."
   fail=1
-elif [ -n "$stash" ]; then
-  echo "FAIL: a stash entry was left behind — pop_stash_safely should have dropped it once the auto-gen path was resolved."
+elif [ -z "$stash" ]; then
+  echo "FAIL: the unapplied stash was dropped after resolving a different path (BRO-3938)."
+  fail=1
+elif ! gitc "$REPO" show 'stash@{0}:data/audit/fileA.json' | grep -q dirtied; then
+  echo "FAIL: the unrelated dirty file is no longer recoverable from the stash."
   fail=1
 else
-  echo "PASS: modify/delete conflict on an auto-gen path (HEAD has no version) was cleanly unstaged and removed, no unresolved index entries remain, stash dropped."
+  echo "PASS: modify/delete conflict on an auto-gen path (HEAD has no version) was cleanly unstaged and removed, no unresolved index entries remain, unrelated edits retained in stash."
 fi
 
 if [ "$fail" -ne 0 ]; then echo "=== merge-worktree-to-main.stash-pop-head-missing-path.test.sh FAILED ==="; exit 1; fi
