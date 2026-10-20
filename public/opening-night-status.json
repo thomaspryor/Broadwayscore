@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-20T01:40:58.702Z",
+  "generatedAt": "2026-10-20T01:51:02.906Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -179,24 +179,24 @@
       "slug": "king-of-the-yees",
       "thumbnail": "/images/shows/king-of-the-yees-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 70,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 0,
+      "total": 2,
       "t1": 0,
-      "t2": 0,
+      "t2": 2,
       "t3": 0,
-      "positive": 0,
-      "mixed": 0,
+      "positive": 1,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "2/12 total",
           "T1:0/3",
-          "T2:0/3",
+          "T2:2/3",
           "hi-conf:0/8"
         ],
         "highConfidence": 0,
@@ -295,10 +295,6 @@
           "isDualMarket": false
         },
         {
-          "name": "New York Stage Review",
-          "isDualMarket": false
-        },
-        {
           "name": "Chicago Tribune",
           "isDualMarket": false
         },
@@ -325,10 +321,6 @@
         {
           "name": "The Daily Beast",
           "isDualMarket": false
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
         },
         {
           "name": "New York Theater",
@@ -541,6 +533,20 @@
         {
           "name": "The Tennessean",
           "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-20T01:51:02.906Z",
+          "rc": 2,
+          "s": 70,
+          "t1": 0,
+          "t2": 2,
+          "t3": 0,
+          "p": 1,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -1563,10 +1569,6 @@
           "isDualMarket": false
         },
         {
-          "name": "TheaterMania",
-          "isDualMarket": false
-        },
-        {
           "name": "BroadwayWorld",
           "isDualMarket": true
         },
@@ -2025,10 +2027,6 @@
         },
         {
           "name": "The Arts Desk",
-          "isDualMarket": false
-        },
-        {
-          "name": "CBS News",
           "isDualMarket": false
         },
         {
