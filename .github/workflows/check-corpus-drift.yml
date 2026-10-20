@@ -66,6 +66,8 @@ jobs:
         with:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-2388 (task #466 class): timeout is now 30 min (BRO-5729), so the final ledger commit needs depth 300.
+          fetch-depth: 300
 
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
