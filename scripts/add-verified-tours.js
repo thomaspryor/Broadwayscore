@@ -21,6 +21,7 @@ const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { buildTourEntry } = require('./lib/tour-entry');
+const { newRowDuplicate } = require('./lib/add-show-action');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -58,9 +59,16 @@ function main() {
   for (const p of plan) console.log(p.entry ? `${argv.includes('--write') ? 'creating' : 'would create'} ${p.entry.id} (${p.entry.openingDate}..${p.entry.closingDate || 'running'})` : `skip ${p.parent}: ${p.skip}`);
   const entries = plan.filter(p => p.entry).map(p => p.entry);
   if (argv.includes('--write') && entries.length) {
-    snapshot.shows.push(...entries);
-    saveShows(snapshot);
-    console.log(`Wrote ${entries.length} tour(s)`);
+    let wrote = 0;
+    for (const e of entries) {
+      // BRO-5791: ticket-identity gate (a tour and its parent are a declared pair).
+      const dupOf = newRowDuplicate(snapshot.shows, e, [e.tourOf], { ticketOnly: true });
+      if (dupOf) { console.log(`skip ${e.id}: shares a ticketing listing with ${dupOf.other}`); continue; }
+      snapshot.shows.push(e);
+      wrote++;
+    }
+    if (wrote) saveShows(snapshot);
+    console.log(`Wrote ${wrote} tour(s)`);
   }
 }
 

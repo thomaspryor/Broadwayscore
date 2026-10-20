@@ -39,6 +39,7 @@ const { JSDOM } = require('jsdom');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const { parseShortDate, venueFromShowScoreDoc } = require('./lib/show-score-status');
 const { checkKnownShow, detectPlayFromTitle } = require('./lib/known-shows');
+const { newRowDuplicate } = require('./lib/add-show-action');
 const { writeClosingDate } = require('./lib/closing-date-guard');
 const { applyTmFill } = require('./lib/tm-ob-fill');
 const { slugify, checkForDuplicate, findSameTitleTwinIfNoOpeningDate } = require('./lib/deduplication');
@@ -2935,6 +2936,13 @@ async function discoverShows() {
       }
       console.log(`  ↳ "${show.title}": slug "${marketSlug}" taken by an earlier production → using "${yearScoped}"`);
       slug = yearScoped;
+    }
+
+    // BRO-5791: applyAddShow's ticket-identity gate, against the catalogue and this batch.
+    const ticketDup = newRowDuplicate([...data.shows, ...newShows], { ...show, id: showId }, [], { ticketOnly: true });
+    if (ticketDup) {
+      skippedDuplicates.push({ title: show.title, reason: `Shares a ticketing listing with ${ticketDup.other}`, existingId: ticketDup.other });
+      continue;
     }
 
     // Track to prevent intra-batch slug/ID collisions

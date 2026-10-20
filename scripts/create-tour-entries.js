@@ -53,6 +53,7 @@ const { writeClosingDate } = require('./lib/closing-date-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { openTourCandidates, recordTourCandidates, candidateParentId, sortForCreate } = require('./lib/tour-roundup-candidate');
 const { buildTourEntry } = require('./lib/tour-entry');
+const { newRowDuplicate } = require('./lib/add-show-action');
 const { decideTourCreation, candidateRoundupUrl } = require('./lib/tour-create-decision');
 const { loadTourPageClasses } = require('./lib/tour-page-class');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
@@ -234,6 +235,9 @@ async function main() {
       if (r.parentId && !parentNow) { console.log(`  ${r.entry.id} skipped under lock: parent ${r.parentId} is gone`); continue; }
       const recheck = buildTourEntry({ parent: parentNow || null, ...(parentNow ? {} : { title: r.title, type: r.type }), shows: snapshot.shows, decision: { write: { openingDate: r.entry.openingDate, closingDate: r.entry.closingDate }, notes: r.notes, launchSource: r.launchSource }, roundupUrl: r.roundupUrl, scheduleUrl: r.scheduleUrl, retiredIds, knownEnds: r.knownEnds });
       if (recheck.skip) { console.log(`  ${r.entry.id} skipped under lock: ${recheck.skip}`); continue; }
+      // BRO-5791: ticket-identity gate (a tour and its parent are a declared pair).
+      const dupOf = newRowDuplicate(snapshot.shows, r.entry, [r.parentId, r.entry.tourOf], { ticketOnly: true });
+      if (dupOf) { console.log(`  ${r.entry.id} skipped under lock: shares a ticketing listing with ${dupOf.other}`); continue; }
       snapshot.shows.push(r.entry);
       created.push(r.entry.id);
     }

@@ -39,6 +39,7 @@
 
 const { showTypeFor } = require('./lib/title-says-musical');
 const path = require('path');
+const { newRowDuplicate } = require('./lib/add-show-action');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { findExistingMatch } = require('./lib/candidate-dedup');
@@ -351,6 +352,7 @@ async function collectCandidates(opts) {
  * @param {object} ctx
  * @param {Array<{id,title,venue,category}>} ctx.existingCandidates London-pool rows (mutated: promotions are appended)
  * @param {Set<string>} ctx.existingIds (mutated: promoted ids are added)
+ * @param {Array<object>} [ctx.allShows] full catalogue rows, for the ticket-identity duplicate gate (BRO-5791)
  * @param {object} ctx.venueVocabulary from buildVenueVocabulary()
  * @param {number} ctx.limit LBO date-fetch cap this run
  * @param {{exceeded(): boolean, canStartItem(minRemainingMs?: number): boolean, minutes: number}} [ctx.timeBudget]
@@ -366,6 +368,7 @@ async function evaluateCandidates(candidates, ctx) {
   const {
     existingCandidates,
     existingIds,
+    allShows = [],
     venueVocabulary,
     limit,
     timeBudget = null,
@@ -471,6 +474,12 @@ async function evaluateCandidates(candidates, ctx) {
         reject(c, 'skip-id-collision', `id ${entry.id} already exists`, { id: entry.id });
         continue;
       }
+      // BRO-5791: same ticket-identity gate applyAddShow has, against the catalogue and this batch.
+      const dupOf = newRowDuplicate([...allShows, ...promoted.map(p => p.entry)], entry, [entry.priorRunOf, entry.transferredFrom, entry.transferredTo], { ticketOnly: true });
+      if (dupOf) {
+        reject(c, 'skip-ticket-duplicate', `${entry.id} shares a ticketing listing with ${dupOf.other}`, { id: entry.id });
+        continue;
+      }
       promoted.push({ candidate: c, entry, confirmationReason: r.reason });
       existingIds.add(entry.id);
       existingCandidates.push({ id: entry.id, title: entry.title, venue: entry.venue, category: entry.category });
@@ -553,6 +562,7 @@ async function main(argv = process.argv.slice(2), io = {}) {
   const { promoted, skipped, rejectedThisRun } = await evaluateCandidates(candidates, {
     existingCandidates,
     existingIds,
+    allShows: showsData.shows,
     venueVocabulary,
     limit,
     timeBudget,

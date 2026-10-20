@@ -75,12 +75,12 @@ const titleWords = t => String(t || '').normalize('NFD').replace(/[\u0300-\u036f
 
 // The detectors are O(n^2); only rows sharing a title word or a ticket id with
 // the new row can pair with it, so test that small neighbourhood.
-function newRowDuplicate(shows, show, distinctFrom) {
+function newRowDuplicate(shows, show, distinctFrom, { ticketOnly = false } = {}) {
   const ok = new Set(Array.isArray(distinctFrom) ? distinctFrom : []);
   const words = new Set(titleWords(show.title));
   const near = shows.filter(s => titleWords(s.title).some(w => words.has(w)));
   const pool = [{ ...show }, ...near];
-  const hits = [...findTitleFragmentDupes(pool), ...findSharedTicketIdentityDupes(pool)];
+  const hits = [...(ticketOnly ? [] : findTitleFragmentDupes(pool)), ...findSharedTicketIdentityDupes(pool)];
   for (const h of hits) {
     const other = h.a === show.id ? h.b : h.b === show.id ? h.a : null;
     if (other && !ok.has(other)) return { other, reason: h.reason || 'title-fragment' };
@@ -154,4 +154,4 @@ function applyAddShow(shows, action, { isRetired } = {}) {
   return { ok: true, msg: `shows.json: added ${show.id}${from ? ` (priorRuns link on ${from.id})` : ''}${prior ? ` (priorRuns -> ${prior.id})` : ''}` };
 }
 
-module.exports = { applyAddShow };
+module.exports = { applyAddShow, newRowDuplicate };
