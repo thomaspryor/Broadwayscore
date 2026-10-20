@@ -541,7 +541,15 @@ function decideOffBroadwayAggregatorPromotion(candidate, options = {}) {
     return { confirmed: false, reason: `articlePublishedAt is ${Math.round(stalenessDays)}d stale relative to discoveredAt — refusing to auto-promote as currently open` };
   }
 
-  return { confirmed: true, reason: `aggregator roundup page exists + canonical venue "${candidate.venue}" + compatible dates (off-broadway)`, source: 'aggregator-roundup' };
+  // BRO-125 (owner rule 2026-07-30) applies here too (BRO-5573): a roundup
+  // naming fewer than 3 distinct review outlets carries too little critical
+  // signal, same as the regional branch above. Fails closed on a missing count.
+  const reviewThreshold = decideReviewThresholdPromotion(candidate);
+  if (!reviewThreshold.confirmed) {
+    return { confirmed: false, reason: `roundup exists but ${reviewThreshold.reason}` };
+  }
+
+  return { confirmed: true, reason: `aggregator roundup page exists + canonical venue "${candidate.venue}" + compatible dates (off-broadway) — ${reviewThreshold.reason}`, source: 'aggregator-roundup' };
 }
 
 /**

@@ -153,6 +153,7 @@ const OB_ROUNDUP_CANDIDATE = {
   articlePublishedAt: '2026-08-01T10:00:00-04:00',
   discoveredAt: '2026-08-01T18:00:00.000Z',
   category: 'off-broadway',
+  reviewCount: 3,
 };
 
 test('decideOffBroadwayAggregatorPromotion: roundup-sourced OB candidate at a canonical venue with fresh dates is confirmed', () => {
