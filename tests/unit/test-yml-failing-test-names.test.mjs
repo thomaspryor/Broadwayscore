@@ -62,6 +62,13 @@ test('caps annotations at 10 and points at the summary', () => {
   assert.match(r.stdout, /\+4 more failing tests/);
 });
 
+test('missing log and percent-sign names are handled', () => {
+  const r = spawnSync('bash', [script, 'demo', '/nonexistent/x.log', '1'], { encoding: 'utf8' });
+  assert.equal(r.status, 0);
+  assert.match(r.stdout, /log \/nonexistent\/x\.log is missing or unreadable/);
+  assert.match(run('not ok 1 - 100%0A done\n', 1).stdout, /failing test: 100%250A done/);
+});
+
 test('works without GITHUB_STEP_SUMMARY set', () => {
   const dir = mkdtempSync(join(tmpdir(), 'sft-'));
   const logFile = join(dir, 'b.log');

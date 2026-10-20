@@ -7,6 +7,10 @@
 label="$1"; log="$2"; rc="${3:-0}"; level="${4:-error}"
 [ "$rc" -eq 0 ] && exit 0
 summary="${GITHUB_STEP_SUMMARY:-/dev/null}"
+if [ ! -r "$log" ]; then
+  echo "::warning::$label batch exited $rc and its log $log is missing or unreadable, so no failing test could be named."
+  exit 0
+fi
 failures=$(awk '
   /^not ok / { print; show=1; next }
   show && /^  location:/ { print; show=0; next }
@@ -28,6 +32,7 @@ if [ -n "$failures" ]; then
   while IFS= read -r name; do
     n=$((n + 1))
     [ "$n" -gt 10 ] && break
+    name="${name//%/%25}"  # workflow commands decode %XX; keep the name literal
     echo "::$level::$label batch failing test: $name"
   done < <(grep '^not ok ' "$log" | sed -E 's/^not ok [0-9]+ - //')
   [ "$total" -gt 10 ] && echo "::$level::$label batch: +$((total - 10)) more failing tests, see the step summary"
