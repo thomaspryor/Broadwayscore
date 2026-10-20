@@ -505,6 +505,7 @@ jobs:
         continue-on-error: true
         timeout-minutes: 3
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           ALERT_LEDGER_PATH: ${{ runner.temp }}/probe-ledger.json
           ALERT_DIGEST_QUEUE_PATH: ${{ runner.temp }}/probe-queue.json
         run: |
