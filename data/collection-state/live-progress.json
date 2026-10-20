@@ -1,21 +1,27 @@
 {
-  "updatedAt": "2026-10-20T23:58:40.317Z",
-  "processed": 592,
-  "failed": 365,
-  "successRate": "61.9%",
+  "updatedAt": "2026-10-21T00:20:40.820Z",
+  "processed": 594,
+  "failed": 350,
+  "successRate": "62.9%",
   "tierBreakdown": {
     "playwright": 266,
     "amp": 2,
-    "browserbase": 5,
+    "browserbase": 7,
     "directCookies": 1,
     "scrapingdog": 27,
-    "scrapingbee": 49,
+    "scrapingbee": 51,
     "brightdata": 2,
     "archiveToday": 0,
-    "archive": 230
+    "archive": 231
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 3,
   "recentActivity": [
+    {
+      "t": "2026-10-20T18:03:26.145Z",
+      "event": "bb-session",
+      "session": "451494fd",
+      "url": "https://www.nytimes.com/2026/10/20/theater/king-of-the-yees-review.html"
+    },
     {
       "t": "2026-10-20T18:03:26.591Z",
       "event": "bb-cookie-inject",
@@ -109,28 +115,20 @@
       "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
     },
     {
-      "t": "2026-10-20T23:55:12.794Z",
-      "event": "bb-session",
-      "session": "5bf0a496",
-      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+      "t": "2026-10-20T23:40:05.753Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-20T23:55:19.755Z",
+      "t": "2026-10-21T00:12:01.762Z",
       "event": "bb-session",
-      "session": "9d865f4a",
-      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+      "session": "74f76e03",
+      "url": "https://www.wsj.com/articles/the-fear-of-13-review-adrien-brodys-wronged-man-on-"
     },
     {
-      "t": "2026-10-20T23:57:35.099Z",
-      "event": "bb-session",
-      "session": "60a5061a",
-      "url": "https://www.afridiziak.com/offers/access-10-ticket-offer-to-see-baby-in-previews"
-    },
-    {
-      "t": "2026-10-20T23:57:45.734Z",
-      "event": "bb-session",
-      "session": "6d590b81",
-      "url": "https://www.afridiziak.com/offers/access-10-ticket-offer-to-see-baby-in-previews"
+      "t": "2026-10-21T00:12:02.244Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
