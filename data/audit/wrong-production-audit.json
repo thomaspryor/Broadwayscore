@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-20T11:26:33.273Z",
+  "timestamp": "2026-10-20T12:08:09.908Z",
   "stats": {
-    "totalReviews": 57870,
-    "alreadyFlagged": 21093,
+    "totalReviews": 57871,
+    "alreadyFlagged": 21094,
     "dateGuardCatches": 198,
     "directorMismatch": 2027,
     "tvFilmSignals": 1649,
-    "londonSignals": 2559,
+    "londonSignals": 2558,
     "offBroadwaySignals": 530,
     "yearMismatch": 161,
-    "noPublishDate": 5204
+    "noPublishDate": 5203
   },
   "findings": [
     {
@@ -72687,20 +72687,6 @@
       "file": "londontheatredirect--steve-mills.json",
       "publishDate": null,
       "url": "https://www.londontheatredirect.com/musical/martin-guerre-tickets?srsltid=AU7gw4WVzbtbXp9TL94RyxsFIGKt5DdfBYwx9DlI3UZ93KzuEc_8bxaK",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "martin-guerre-west-end-2026",
-      "file": "slippedisc--elbie-lebrecht.json",
-      "score": 19,
-      "publishDate": "2026-10-16",
-      "url": "https://slippedisc.com/2026/10/ruth-leon-recommends-pocket-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
