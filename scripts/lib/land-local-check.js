@@ -8,7 +8,7 @@
  * It is the land.yml sequence, run on HEAD in this checkout with the same CLIs:
  *   1. land-gauntlet.sh on HEAD (GAUNTLET_GATES = the chosen gates)
  *   2. land-gate-delta.js --red-gates: which gates are red on HEAD
- *   3. land-gauntlet.sh --checkout origin/main --return-to HEAD for those gates only
+ *   3. land-gauntlet.sh --checkout <merge-base with origin/main> --return-to HEAD, those gates only
  *   4. land-gate-delta.js --base-dir --branch-dir: a failure counts only when main passes it
  * so a later change to land.yml's judging (land-gate-delta.js) applies here too.
  *
@@ -22,7 +22,7 @@
  *   --max-wait-minutes  give up waiting for the mutex after N min (default 40): exit 4 with a
  *            warning, so a worker is never stranded behind another check
  * Exit: 0 no new failures | 1 new failures (printed) | 2 usage | 3 not ready (tracked
- *       changes, or HEAD not on top of origin/main) | 4 skipped (mutex wait timed out)
+ *       changes, or no common history with origin/main) | 4 skipped (mutex wait timed out)
  */
 'use strict';
 
@@ -73,11 +73,12 @@ function main(argv = process.argv.slice(2)) {
   const fetch = git('fetch', '-q', 'origin', 'main');
   if (fetch.code !== 0) console.error(`land-local-check: git fetch failed, judging against the local origin/main (${fetch.stderr.split('\n').pop()})`);
   const head = git('rev-parse', 'HEAD').stdout;
-  const base = git('rev-parse', 'origin/main').stdout;
-  if (git('merge-base', '--is-ancestor', base, head).code !== 0) {
-    console.error(`land-local-check: HEAD is not on top of origin/main ${base.slice(0, 10)}. Run: git rebase origin/main`);
-    return 3;
-  }
+  // Judge against the main commit HEAD sits on: main moves every few minutes, so demanding the
+  // newest one would refuse nearly every run. Rebase conflicts are land-preflight.mjs's job.
+  const base = git('merge-base', head, 'origin/main').stdout;
+  if (!base) { console.error('land-local-check: HEAD shares no history with origin/main'); return 3; }
+  const behind = Number(git('rev-list', '--count', `${head}..origin/main`).stdout) || 0;
+  if (behind > 200) console.error(`land-local-check: HEAD is ${behind} commits behind origin/main; rebase for a closer match to what land.yml judges`);
 
   const out = fs.mkdtempSync(path.join(os.tmpdir(), `land-local-check-${head.slice(0, 10)}-`));
   const branchDir = path.join(out, 'branch');
@@ -88,7 +89,7 @@ function main(argv = process.argv.slice(2)) {
   try {
     return R.withFileMutex(R.CONTAINER_LAND_MUTEX, () => {
       if (waited) console.log(`land-local-check: got the land-check mutex after ${Math.round((Date.now() - t0) / 60_000)} min`);
-      console.log(`land-local-check: gates ${opts.gates.join(',')} on HEAD ${head.slice(0, 10)} (origin/main ${base.slice(0, 10)})`);
+      console.log(`land-local-check: gates ${opts.gates.join(',')} on HEAD ${head.slice(0, 10)} (base ${base.slice(0, 10)}, the merge-base with origin/main)`);
       const b = run('bash', ['scripts/lib/land-gauntlet.sh', branchDir], { env: { ...env, GAUNTLET_GATES: opts.gates.join(',') }, stdio: ['ignore', 'ignore', 'inherit'] });
       if (!fs.existsSync(path.join(branchDir, 'meta.json'))) { console.error(`land-local-check: the gauntlet wrote no result (exit ${b.code}); see ${branchDir}`); return 1; }
       const red = run('node', ['scripts/lib/land-gate-delta.js', '--red-gates', branchDir, '--gates', opts.gates.join(',')]).stdout;
@@ -96,7 +97,7 @@ function main(argv = process.argv.slice(2)) {
         // Same as land.yml: the gauntlet copy runs from outside the tree it checks out.
         const copy = path.join(out, 'land-gauntlet.sh');
         fs.copyFileSync(path.join(ROOT, 'scripts/lib/land-gauntlet.sh'), copy);
-        console.log(`land-local-check: red on HEAD: ${red}; running them on origin/main to tell new failures from old`);
+        console.log(`land-local-check: red on HEAD: ${red}; running them on the base to tell new failures from old`);
         run('bash', [copy, baseDir, '--checkout', base, '--return-to', head], { env: { ...env, GAUNTLET_GATES: red }, stdio: ['ignore', 'ignore', 'inherit'] });
         if (git('rev-parse', 'HEAD').stdout !== head) console.error(`land-local-check: WARNING: HEAD is not back at ${head.slice(0, 10)}; run git checkout ${head}`);
       }
