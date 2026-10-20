@@ -801,16 +801,23 @@ export function formatEstimateDate(iso: string | null | undefined, form: 'short'
 /** The note over every /biz table: what marks an estimate and whose it is (BRO-5502). */
 export const ESTIMATE_SOURCES_NOTE = "~ and Est. mark estimates: musicals use an r/Broadway analyst's weekly figure, plays use our model.";
 
-/** Who the analyst estimate belongs to, in the words every page uses (BRO-5502). */
-export const ANALYST_SHORT_LABEL = 'r/Broadway analyst';
+/**
+ * Credit text for an analyst estimate in a /biz table cell. Generic on purpose
+ * (owner decision 2026-10-20): the cell links to the post, and the show-page
+ * card, tooltip and footnote carry the full name-and-subreddit credit.
+ */
+export const ANALYST_SHORT_LABEL = 'Analyst est.';
+
+/** Link text on the show-page card for a switch to a commercial run reported on Reddit. */
+export const CONVERSION_REDDIT_LABEL = 'r/Broadway analyst';
 
 /**
  * Link text for where a switch to a commercial run is reported (BRO-5508):
- * the analyst's credit for an r/Broadway post, as on the estimates, else "source".
+ * the r/Broadway credit for a Reddit post, else "source".
  */
 export function getConversionSourceLabel(url: string | null | undefined): string {
   try {
-    if (url && /(^|\.)reddit\.com$/i.test(new URL(url).hostname)) return ANALYST_SHORT_LABEL;
+    if (url && /(^|\.)reddit\.com$/i.test(new URL(url).hostname)) return CONVERSION_REDDIT_LABEL;
   } catch { /* not a URL: plain label */ }
   return 'source';
 }

@@ -1,7 +1,7 @@
 /**
  * Credit line for an estimate published by u/Boring_Waltz_9545 (BRO-5502):
  * names the source and links the post it came from. compact: the /biz table
- * cell ("r/Broadway analyst · Oct 2026"); full: the show-page card.
+ * cell ("Analyst est. · Oct 2026"); full: the show-page card.
  */
 import { ANALYST_FULL_LABEL, ANALYST_SHORT_LABEL, formatEstimateDate } from '@/lib/commercial-display';
 

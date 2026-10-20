@@ -24,6 +24,7 @@ const {
   getRecoupedCellSummary,
   hasCommercialCard,
   getConversionSourceLabel,
+  ANALYST_SHORT_LABEL,
 } = await import('../../src/lib/commercial-display.ts');
 
 test('publicSourceText drops internal research-tooling language', () => {
@@ -404,4 +405,7 @@ test('a nonprofit run that became a commercial run (BRO-5508): says when, counts
   assert.equal(getConversionSourceLabel('https://playbill.com/article/broadways-appropriate-extension-begins-march-25'), 'source');
   assert.equal(getConversionSourceLabel('https://notreddit.com.example/x'), 'source');
   assert.equal(getConversionSourceLabel(null), 'source');
+  // The /biz table cell credit stays generic: no platform or handle (owner decision 2026-10-20).
+  assert.equal(ANALYST_SHORT_LABEL, 'Analyst est.');
+  assert.doesNotMatch(ANALYST_SHORT_LABEL, /reddit|r\/|u\//i);
 });
