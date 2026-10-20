@@ -1155,6 +1155,20 @@
     "queuedAt": "2026-10-20T00:08:03.255Z"
   },
   {
+    "conditionKey": "corpus-drift:outlet-identity-hygiene",
+    "title": "Corpus drift: live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets",
+    "description": "check-corpus-drift.js audit \"outlet-identity-hygiene\" (node scripts/audit-outlet-identity-hygiene.js --strict) has been drifting. Latest output:\n\nlive reviews scanned: 30269\nlive reviews on look-alike/blocked host: 0\nregistry aliases naming a look-alike host: 0\nlive reviews with unregistered outlet: 1 outlet(s)\ncorpus files scanned: 57931; provisional outlets without a decision: 1\n  is-simple (1) e.g. celebrity-autobiography-2026/is-simple--dayle-rayfel.json\nPROBLEMS: 2",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-20T00:27:08.932Z"
+  },
+  {
     "conditionKey": "land:land/bro-5731-cloud-secrets-withheld",
     "title": "Landing blocked: unit-tests-node red on land/bro-5731-cloud-secrets-withheld",
     "description": "land.yml did not land land/bro-5731-cloud-secrets-withheld: the unit-tests-node gate went red at df579c69bd. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39345143505",
