@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-20T06:53:24.014Z",
+  "generatedAt": "2026-10-20T10:28:19.910Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -166,10 +166,6 @@
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
     {
-      "outletId": "theater-pizzazz",
-      "error": "Timeout fetching https://theaterpizzazz.com/feed/"
-    },
-    {
       "outletId": "slantmagazine",
       "error": "HTTP 403 for https://www.slantmagazine.com/theater/feed/"
     },
@@ -198,9 +194,9 @@
       "error": "Timeout fetching https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&af"
     }
   ],
-  "itemsScanned": 685,
+  "itemsScanned": 703,
   "matchedGaps": 4,
-  "possibleGaps": 5,
+  "possibleGaps": 6,
   "gaps": [
     {
       "showId": "copperfield-the-new-musical-off-broadway-2026",
@@ -246,6 +242,15 @@
       "url": "https://twi-ny.com/2026/10/11/ectoplasm-sara-fellini-spit-and-vigor/",
       "headline": "HAUNTED THEATER ON MacDOUGAL: spit&#038;vigor’s ECTOPLASM",
       "publishDate": "2026-10-11"
+    },
+    {
+      "showId": "baby-off-west-end-2026",
+      "title": "Baby",
+      "level": "possible",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/bfi-london-film-festival-2026-club-kid/",
+      "headline": "BFI London Film Festival 2026: Club Kid",
+      "publishDate": "2026-10-20"
     },
     {
       "showId": "cadel-lungs-on-legs-west-end-2026",
