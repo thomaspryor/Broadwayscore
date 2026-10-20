@@ -2,7 +2,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const { parseExclusionLog } = require('./wrong-production-exclusion-analysis');
 const { readDailyTotals } = require('./rebuild-exclusion-audit');
 
 /**
@@ -25,6 +24,21 @@ const { readDailyTotals } = require('./rebuild-exclusion-audit');
 
 const DEFAULT_AUDIT_DIR = process.env.EXCLUSION_LOGGER_AUDIT_DIR
   || path.join(__dirname, '..', '..', 'data', 'audit');
+
+/** Parse JSONL, ignoring blank lines and non-JSON log headers. */
+function parseExclusionLog(jsonlText) {
+  const records = [];
+  for (const line of String(jsonlText || '').split('\n')) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    try {
+      records.push(JSON.parse(trimmed));
+    } catch {
+      // Ignore non-JSON lines.
+    }
+  }
+  return records;
+}
 
 /**
  * Group exclusion-logger records by (reason, showId), tracking a per-file
@@ -54,11 +68,10 @@ const DEFAULT_DISTINCT_FILE_THRESHOLD = 10;
 const DEFAULT_NEW_FILE_THRESHOLD = 1;
 
 /**
- * Categorize one (reason, showId) group — same thresholds/semantics as
- * wrong-production-exclusion-analysis.js's categorizeShow, generalized to
- * carry the reason through and to report new LINE volume (not just new file
- * count) when a knownFiles ledger is supplied, since that's what a
- * volume-based spike detector needs.
+ * Shared categorizer for (reason, showId) groups and the narrow
+ * wrong-production compatibility API. Reports new LINE volume as well as
+ * new file count when per-file counts and a knownFiles ledger are supplied,
+ * since that's what a volume-based spike detector needs.
  */
 // exclusion-logger.js defaults `file` to '-' when a reason has no per-file
 // identity (e.g. show-level reasons like skippedUpcomingShows/skippedPreviewsShows,
@@ -70,15 +83,22 @@ const DEFAULT_NEW_FILE_THRESHOLD = 1;
 // distinguishing information, so it must never be evidence either way.
 const NO_FILE_IDENTITY = '-';
 
+// Aggregate-only callers may pass { files: Set, totalLines } instead of
+// fileCounts. Their new-file count is known, but new-line volume is not.
+// includeUnidentifiedFiles preserves the original narrow tool's '-' behavior;
+// the daily digest keeps its stricter identity handling by default.
 function categorizeGroup(entry, opts = {}) {
   const repeatThreshold = opts.repeatThreshold ?? DEFAULT_REPEAT_THRESHOLD;
   const distinctFileThreshold = opts.distinctFileThreshold ?? DEFAULT_DISTINCT_FILE_THRESHOLD;
   const newFileThreshold = opts.newFileThreshold ?? DEFAULT_NEW_FILE_THRESHOLD;
 
-  const distinctFiles = entry.fileCounts.size;
-  const totalLines = [...entry.fileCounts.values()].reduce((a, b) => a + b, 0);
+  const files = entry.fileCounts ? [...entry.fileCounts.keys()] : [...entry.files];
+  const distinctFiles = files.length;
+  const totalLines = entry.fileCounts
+    ? [...entry.fileCounts.values()].reduce((a, b) => a + b, 0)
+    : entry.totalLines;
   const repeatMultiplier = distinctFiles > 0 ? totalLines / distinctFiles : 0;
-  const realFiles = [...entry.fileCounts.entries()].filter(([file]) => file !== NO_FILE_IDENTITY);
+  const realFiles = files.filter((file) => opts.includeUnidentifiedFiles || file !== NO_FILE_IDENTITY);
   const hasFileIdentity = realFiles.length > 0;
   // Sentinel-tagged lines (file:'-') carry zero repeat-vs-new evidence —
   // never fold them into "repeated" volume, even when the SAME reason also
@@ -86,17 +106,17 @@ function categorizeGroup(entry, opts = {}) {
   // skippedCrossShowUrl pass a real file, others pass '-' — see
   // scripts/gather-reviews.js vs scripts/rebuild-all-reviews.js). Exposed so
   // computeExclusionTrend can always attribute this volume as new.
-  const sentinelLineCount = entry.fileCounts.get(NO_FILE_IDENTITY) || 0;
+  const sentinelLineCount = opts.includeUnidentifiedFiles ? 0 : (entry.fileCounts?.get(NO_FILE_IDENTITY) || 0);
 
   let newFileCount = null;
   let newLineCount = null;
-  if (opts.knownFiles instanceof Set && hasFileIdentity) {
+  if (opts.knownFiles instanceof Set && (hasFileIdentity || opts.includeUnidentifiedFiles)) {
     newFileCount = 0;
-    newLineCount = 0;
-    for (const [file, count] of realFiles) {
+    if (entry.fileCounts) newLineCount = 0;
+    for (const file of realFiles) {
       if (!opts.knownFiles.has(file)) {
         newFileCount++;
-        newLineCount += count;
+        if (entry.fileCounts) newLineCount += entry.fileCounts.get(file);
       }
     }
   }
@@ -122,7 +142,8 @@ function categorizeGroup(entry, opts = {}) {
     repeatMultiplier: Math.round(repeatMultiplier * 100) / 100,
     hasFileIdentity,
     sentinelLineCount,
-    ...(newFileCount !== null ? { newFileCount, newLineCount } : {}),
+    ...(newFileCount !== null ? { newFileCount } : {}),
+    ...(newLineCount !== null ? { newLineCount } : {}),
     category,
   };
 }
@@ -163,10 +184,10 @@ function analyzeExclusionLog(jsonlText, opts = {}) {
 /**
  * Build the next cross-day ledger snapshot: union of everything previously
  * known with everything seen in today's log, per (reason, showId). The
- * generalized counterpart of wrong-production-exclusion-analysis.js's
- * buildNextLedger — nested one level deeper by reason.
+ * narrow compatibility wrapper adapts this reason-keyed result to its
+ * per-show shape and passes includeUnidentifiedFiles to retain '-' entries.
  */
-function buildNextLedger(records, previousLedger = {}) {
+function buildNextLedger(records, previousLedger = {}, opts = {}) {
   const groups = summarizeByReasonAndShow(records);
   const groupList = [...groups.values()];
   const next = {};
@@ -181,7 +202,7 @@ function buildNextLedger(records, previousLedger = {}) {
       const entry = groups.get(`${reason}::${showId}`);
       if (entry) {
         for (const file of entry.fileCounts.keys()) {
-          if (file !== NO_FILE_IDENTITY) known.add(file);
+          if (opts.includeUnidentifiedFiles || file !== NO_FILE_IDENTITY) known.add(file);
         }
       }
       nextByShow[showId] = [...known].sort();
@@ -412,6 +433,7 @@ function computeExclusionTrend(now, opts = {}) {
 
 module.exports = {
   DEFAULT_AUDIT_DIR,
+  parseExclusionLog,
   summarizeByReasonAndShow,
   categorizeGroup,
   analyzeExclusionLog,
