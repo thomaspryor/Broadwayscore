@@ -167,6 +167,7 @@ const { classifyPendingGapsByAge, DEFAULT_STUCK_PENDING_DAYS } = require('./lib/
 // Import deduplication module for duplicate detection
 const { isLondonMarket, isWestEndVenue, isOffWestEndVenue } = require('./lib/venue-classification');
 const { VENUE_ADDRESSES } = require('./lib/venue-addresses');
+const { reportVenueNameTypos } = require('./lib/venue-typo-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `validate-data.js — Comprehensive data validation for Broadway Scorecard.
@@ -5466,6 +5467,10 @@ function runValidation() {
   validateDuplicateImageFiles(shows);
   validatePlaceholderImageHashes(shows);
   validateVenueCategory(shows);
+  info('Checking Broadway venue names against theater metadata...');
+  if (reportVenueNameTypos(shows, error) === 0) {
+    ok('No near-miss Broadway venue names');
+  }
   validateTheaterAddress(shows);
   validateOrphanSubVenueSlugs(shows);
   console.log('');
