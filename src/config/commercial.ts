@@ -284,3 +284,15 @@ export function getTrendIcon(trend: RecoupmentTrend, recouped: boolean | null): 
     default: return '—';
   }
 }
+
+/**
+ * Recouped shows whose recoupment was reported after closing but that we
+ * estimate paid back during the run itself (owner decision 2026-10-20, BRO-5782).
+ * Their weeks column shows opening night to closing, marked as our estimate,
+ * instead of "Reported after closing". Add a slug only on the owner's say-so:
+ * no source gives the recoupment date, so this is an editorial inference.
+ *  - purpose-2025: Broadway News (Jun 4 2026) says run profits plus the NY State
+ *    tax credit earned back the $5.25M; nothing else paid it back.
+ * Not for a show whose source credits other money (Kimberly Akimbo: tour profits).
+ */
+export const RECOUPED_DURING_RUN_ESTIMATE: ReadonlySet<string> = new Set(['purpose-2025']);

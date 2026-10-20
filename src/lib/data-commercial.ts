@@ -19,11 +19,12 @@ import type {
   CommercialShowRow,
 } from './data-types';
 import type { CommercialDesignation, RecoupmentTrend } from '@/config/commercial';
-import { getDesignationSortOrder, DESIGNATION_MAP } from '@/config/commercial';
+import { getDesignationSortOrder, DESIGNATION_MAP, RECOUPED_DURING_RUN_ESTIMATE } from '@/config/commercial';
 import { getShowGrosses, getGrossesWeekEnding } from './data-grosses';
 import {
   calculateWeeksToRecoup,
   recoupReportedAfterClosing,
+  weeksOpenToClose,
   computeGrossTrend,
   trailingAverageGross,
   summarizeCapital,
@@ -613,11 +614,13 @@ export function getRecentRecoupments(months: number = 24): RecentRecoupmentShow[
     const show = rawShows.find(s => s.slug === slug);
     if (!show) continue;
 
+    const weeks = recoupWeeks(slug, data, show);
     results.push({
       slug,
       title: show.title,
       season: getSeason(show.openingDate) || 'Unknown',
-      weeksToRecoup: calculateWeeksToRecoup(recoupClockStart(data, show.openingDate), data.recoupedDate, show.closingDate),
+      weeksToRecoup: weeks.weeks,
+      weeksIsEstimate: weeks.isEstimate,
       fromCommercialRun: isConvertedToCommercial(data),
       reportedAfterClosing: recoupReportedAfterClosing(data.recoupedDate, show.closingDate),
       capitalization: data.capitalization ?? null,
@@ -706,6 +709,26 @@ function isFutureDate(date: string | null | undefined): boolean {
   return !!date && /^\d{4}-\d{2}-\d{2}/.test(date) && date.slice(0, 10) > new Date().toISOString().slice(0, 10);
 }
 
+/**
+ * Weeks to recoup for the /biz tables: the measured figure, else for a show on
+ * RECOUPED_DURING_RUN_ESTIMATE whose recoupment was reported after closing,
+ * opening night to closing marked as an estimate, else null.
+ */
+function recoupWeeks(
+  slug: string,
+  data: ShowCommercial,
+  show: { openingDate?: string | null; closingDate?: string | null },
+): { weeks: number | null; isEstimate: boolean } {
+  const start = recoupClockStart(data, show.openingDate);
+  const measured = calculateWeeksToRecoup(start, data.recoupedDate, show.closingDate);
+  if (measured !== null) return { weeks: measured, isEstimate: false };
+  if (RECOUPED_DURING_RUN_ESTIMATE.has(slug) && recoupReportedAfterClosing(data.recoupedDate, show.closingDate)) {
+    const estimate = weeksOpenToClose(start, show.closingDate);
+    if (estimate !== null) return { weeks: estimate, isEstimate: true };
+  }
+  return { weeks: null, isEstimate: false };
+}
+
 function positiveOrNull(value: number | null | undefined): number | null {
   return typeof value === 'number' && Number.isFinite(value) && value > 0 ? value : null;
 }
@@ -718,6 +741,7 @@ function positiveOrNull(value: number | null | undefined): number | null {
 function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial): CommercialShowRow {
   const grossData = getShowGrosses(slug);
   const running = isRunningStatus(show.status);
+  const weeks = recoupWeeks(slug, data, show);
   return {
     slug,
     title: show.title,
@@ -753,7 +777,8 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
     trend: running ? getRecoupmentTrend(slug) : 'unknown',
     recouped: data.recouped,
     recoupmentNotAnnounced: isUnannouncedRecoupment(data),
-    recoupedWeeks: calculateWeeksToRecoup(recoupClockStart(data, show.openingDate), data.recoupedDate, show.closingDate),
+    recoupedWeeks: weeks.weeks,
+    recoupedWeeksIsEstimate: weeks.isEstimate,
     recoupReportedAfterClosing: recoupReportedAfterClosing(data.recoupedDate, show.closingDate),
     lossCaveat: lossBasisCaveat(data),
     likelyOutcome: data.likelyOutcome ?? null,

@@ -80,6 +80,17 @@ export function recoupReportedAfterClosing(
   return `${m[1]}-${m[2]}` > close[1];
 }
 
+/** Weeks from the start date to the closing date, rounded; null when either is missing or closing is first. */
+export function weeksOpenToClose(
+  startDate: string | null | undefined,
+  closingDate: string | null | undefined,
+): number | null {
+  const start = parseIsoDay(startDate);
+  const close = parseIsoDay(closingDate);
+  if (!start || !close || close.getTime() < start.getTime()) return null;
+  return Math.round((close.getTime() - start.getTime()) / WEEK_MS);
+}
+
 function mean(values: number[]): number {
   return values.reduce((a, b) => a + b, 0) / values.length;
 }

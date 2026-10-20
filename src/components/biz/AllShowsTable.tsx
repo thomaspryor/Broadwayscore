@@ -307,7 +307,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
               )}
               <th
                 className="py-3 px-4 font-medium whitespace-nowrap hidden sm:table-cell"
-                title="Recouped shows: weeks from opening night to the reported recoupment date (mid-month when only the month was reported; blank when only the year was; Reported after closing when the recoupment was reported after the run ended, so weeks cannot be measured). Running shows: average gross of the last 4 weeks vs the 4 weeks before."
+                title="Recouped shows: weeks from opening night to the reported recoupment date (mid-month when only the month was reported; blank when only the year was; Reported after closing when the recoupment was reported after the run ended, so weeks cannot be measured; est. marks our own estimate, counted from opening night to closing). Running shows: average gross of the last 4 weeks vs the 4 weeks before."
               >
                 Time to Recoup
               </th>
@@ -401,7 +401,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                     >
                       {show.recouped
                         ? show.recoupedWeeks
-                          ? `~${show.recoupedWeeks} wks`
+                          ? `~${show.recoupedWeeks} wks${show.recoupedWeeksIsEstimate ? ' est.' : ''}`
                           : show.recoupReportedAfterClosing
                             ? 'Reported after closing'
                             : '—'

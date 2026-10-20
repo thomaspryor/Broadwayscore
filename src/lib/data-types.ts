@@ -588,6 +588,8 @@ export interface RecentRecoupmentShow {
   season: string;
   /** null when only the recoupment year is known (calculateWeeksToRecoup). */
   weeksToRecoup: number | null;
+  /** weeksToRecoup is our estimate (RECOUPED_DURING_RUN_ESTIMATE), not a measured figure. */
+  weeksIsEstimate: boolean;
   /** Recoupment reported after the Broadway run closed (recoupReportedAfterClosing): weeksToRecoup is null by design. */
   reportedAfterClosing: boolean;
   /** weeksToRecoup counts from the switch to a commercial run, not opening night (recoupClockStart). */
@@ -651,6 +653,8 @@ export interface CommercialShowRow {
   /** isUnannouncedRecoupment(): recouped, but never announced (the table says so, like the show page). */
   recoupmentNotAnnounced: boolean;
   recoupedWeeks: number | null;
+  /** recoupedWeeks is our estimate (RECOUPED_DURING_RUN_ESTIMATE), not a measured figure. */
+  recoupedWeeksIsEstimate: boolean;
   /** Recoupment reported after the run closed (recoupReportedAfterClosing): recoupedWeeks is null by design. */
   recoupReportedAfterClosing: boolean;
   /** lossBasisCaveat(): "Based on no recoupment being announced" for a loss label no source reported, else null. */

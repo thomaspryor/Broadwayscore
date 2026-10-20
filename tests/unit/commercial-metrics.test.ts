@@ -17,6 +17,7 @@ import assert from 'node:assert/strict';
 import {
   calculateWeeksToRecoup,
   recoupReportedAfterClosing,
+  weeksOpenToClose,
   trailingAverageGross,
   computeGrossTrend,
   summarizeCapital,
@@ -63,6 +64,16 @@ test('recoupReportedAfterClosing: a show closing on the 1st does not depend on t
 });
 test('recoupReportedAfterClosing agrees with calculateWeeksToRecoup returning null', () => {
   assert.equal(calculateWeeksToRecoup('2025-03-17', '2026-06', '2025-08-31', NOW), null);
+});
+
+// ── weeksOpenToClose: the run length behind the owner's Purpose estimate ─────
+test('weeksOpenToClose: Purpose opened 2025-03-17, closed 2025-08-31 is 24 weeks', () => {
+  assert.equal(weeksOpenToClose('2025-03-17', '2025-08-31'), 24);
+});
+test('weeksOpenToClose: missing or reversed dates are null', () => {
+  assert.equal(weeksOpenToClose(null, '2025-08-31'), null);
+  assert.equal(weeksOpenToClose('2025-03-17', null), null);
+  assert.equal(weeksOpenToClose('2025-08-31', '2025-03-17'), null);
 });
 
 // ── P0-5: calculateWeeksToRecoup ────────────────────────────────────────────
