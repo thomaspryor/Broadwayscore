@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-20T16:23:11.480Z",
+  "generatedAt": "2026-10-20T16:49:22.614Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -167,10 +167,6 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -187,6 +183,10 @@
       "error": "HTTP 401 for https://musicaltheatrereview.com/feed/"
     },
     {
+      "outletId": "viewfromthegods",
+      "error": "AggregateError"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -199,10 +199,28 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 717,
-  "matchedGaps": 1,
+  "itemsScanned": 715,
+  "matchedGaps": 3,
   "possibleGaps": 6,
   "gaps": [
+    {
+      "showId": "copperfield-the-new-musical-off-broadway-2026",
+      "title": "Copperfield! The New Musical",
+      "level": "matched",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/copperfield-the-new-musical/",
+      "headline": "Copperfield: The New Musical ****",
+      "publishDate": "2026-10-19"
+    },
+    {
+      "showId": "the-dog-show-come-sit-stay-off-broadway-2026",
+      "title": "The Dog Show: Come. Sit. Stay.",
+      "level": "matched",
+      "outletId": "theater-pizzazz",
+      "url": "https://theaterpizzazz.com/the-dog-show-come-sit-stay/",
+      "headline": "&#8220;The Dog Show: Come. Sit. Stay.&#8221;",
+      "publishDate": "2026-10-20"
+    },
     {
       "showId": "triumph-off-west-end-2026",
       "title": "Triumph",
