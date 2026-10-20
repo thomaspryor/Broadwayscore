@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-20T19:27:44.582Z",
+  "generatedAt": "2026-10-20T20:01:52.934Z",
   "windowDays": 45,
   "showsScanned": 193,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=other-desert-cities-2026",
       "firstSeen": "2026-10-20T01:24:52.774Z",
-      "fileAgeHours": 18.04713388888889,
+      "fileAgeHours": 18.615585,
       "gapSeenAt": "2026-10-20T16:46:29.082Z",
-      "nonTerminalAgeHours": 2.687638888888889
+      "nonTerminalAgeHours": 3.2566255555555554
     },
     {
       "showId": "slam-frank-off-broadway-2026",
@@ -36,9 +36,9 @@
       "forumLinkRecoveryCount": 4,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=slam-frank-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-18T14:14:33.814Z",
-      "fileAgeHours": 53.21910222222222,
+      "fileAgeHours": 53.78758388888889,
       "gapSeenAt": "2026-10-18T18:09:48.486Z",
-      "nonTerminalAgeHours": 49.29891555555555
+      "nonTerminalAgeHours": 49.86790222222222
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -54,9 +54,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 674.78655,
+      "fileAgeHours": 675.3551855555555,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 225.80599444444445
+      "nonTerminalAgeHours": 226.3749811111111
     },
     {
       "showId": "maybe-happy-ending-tour-2026",
@@ -72,9 +72,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=maybe-happy-ending-tour-2026 --url=https://www.theatermania.com/news/jazz-vocalist-stella-cole-to-join-cast-of-maybe-happy-ending-on-broadway_1855818/ --outlet=theatermania --critic=\"Zachary Stewart\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-06T02:28:41.564Z",
-      "fileAgeHours": 352.9839705555556,
+      "fileAgeHours": 353.55277722222223,
       "gapSeenAt": "2026-10-19T11:33:43.077Z",
-      "nonTerminalAgeHours": 31.900418055555555
+      "nonTerminalAgeHours": 32.46940472222222
     },
     {
       "showId": "all-male-as-you-like-it-regional-2026",
@@ -90,9 +90,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=all-male-as-you-like-it-regional-2026 --url=https://www.talkinbroadway.com/page/regional/minn/minn1539.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-19T17:17:56.172Z",
-      "fileAgeHours": 26.163386111111112,
+      "fileAgeHours": 26.732318055555556,
       "gapSeenAt": "2026-10-19T18:06:42.214Z",
-      "nonTerminalAgeHours": 25.350657777777776
+      "nonTerminalAgeHours": 25.919644444444444
     }
   ],
   "contradictions": []

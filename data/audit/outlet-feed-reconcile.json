@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-20T19:27:57.047Z",
+  "generatedAt": "2026-10-20T20:02:07.305Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -167,8 +167,16 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
+    },
+    {
+      "outletId": "theater-pizzazz",
+      "error": "Timeout fetching https://theaterpizzazz.com/feed/"
     },
     {
       "outletId": "slantmagazine",
@@ -195,28 +203,10 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 732,
-  "matchedGaps": 5,
+  "itemsScanned": 706,
+  "matchedGaps": 2,
   "possibleGaps": 6,
   "gaps": [
-    {
-      "showId": "copperfield-the-new-musical-off-broadway-2026",
-      "title": "Copperfield! The New Musical",
-      "level": "matched",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/copperfield-the-new-musical/",
-      "headline": "Copperfield: The New Musical ****",
-      "publishDate": "2026-10-19"
-    },
-    {
-      "showId": "copperfield-the-new-musical-off-broadway-2026",
-      "title": "Copperfield! The New Musical",
-      "level": "matched",
-      "outletId": "theater-pizzazz",
-      "url": "https://theaterpizzazz.com/copperfield-the-new-musical-a-wonderfully-entertaining-version-of-the-saga/",
-      "headline": "&#8216;Copperfield  &#8211; The New Musical&#8217; &#8211; A Wonderfully Entertaining Version of the Saga",
-      "publishDate": "2026-10-20"
-    },
     {
       "showId": "copperfield-the-new-musical-off-broadway-2026",
       "title": "Copperfield! The New Musical",
@@ -224,15 +214,6 @@
       "outletId": "off-off-online",
       "url": "https://www.offoffonline.com/offoffonline/2026/10/16/copperfield-the-new-musical",
       "headline": "Copperfield! The New Musical",
-      "publishDate": "2026-10-20"
-    },
-    {
-      "showId": "the-dog-show-come-sit-stay-off-broadway-2026",
-      "title": "The Dog Show: Come. Sit. Stay.",
-      "level": "matched",
-      "outletId": "theater-pizzazz",
-      "url": "https://theaterpizzazz.com/the-dog-show-come-sit-stay/",
-      "headline": "&#8220;The Dog Show: Come. Sit. Stay.&#8221;",
       "publishDate": "2026-10-20"
     },
     {
