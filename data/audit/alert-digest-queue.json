@@ -1305,5 +1305,19 @@
       }
     ],
     "queuedAt": "2026-10-20T00:40:47.991Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run BRO-1397 prior-run former-cast sweep (needs review-texts) (still open — BRO-5168)",
+    "description": "Still firing after 21 notifications since it was filed. Tracked at BRO-5168.\n\nCorpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39349589511",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5168",
+    "fields": [],
+    "queuedAt": "2026-10-20T00:51:32.494Z"
   }
 ]
