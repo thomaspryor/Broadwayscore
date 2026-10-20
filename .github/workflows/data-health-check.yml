@@ -399,6 +399,15 @@ jobs:
         timeout-minutes: 1
         run: node scripts/audit-star-band-drift.js --strict --counts=data/audit/star-band-drift.json
 
+      # BRO-5717: early/carried publish dates awaiting a backfill-review-dates recheck. Advisory first (CLAUDE.md
+      # rule 19): exit 1 means the sweep is due, continue-on-error keeps the job green.
+      - name: Early publish date audit
+        # lint-allow-swallow: advisory count; exit 1 only says a recheck sweep is due and must not block the health snapshot commit below
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        run: node scripts/audit-early-unmarked-publish-dates.js
+
       # BRO-4719: email the owner when a card newly carries a "DECISION
       # NEEDED:" line or the awaiting-owner label. Runs here, not on the Mac
       # (owner 2026-10-05: "don't rely on the Mac Studio"). Each card is

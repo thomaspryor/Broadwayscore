@@ -78,12 +78,7 @@ const HIGH_YIELD_DOMAINS = new Set([
 ]);
 
 // Domains that never/rarely have structured date metadata — skip to save API credits
-const SKIP_DOMAINS = new Set([
-  'cititour.com',        // 216 undated, 0% date rate, custom CMS with no metadata
-  'nytheatre.com',       // 11 undated, 0% date rate, defunct
-  'stagedoor.com',       // aggregator excerpts, not original articles
-  'lightingandsoundamerica.com', // print magazine, 1 undated with URL, HTTPS redirect loop
-]);
+const { SKIP_DOMAINS } = require('./lib/date-backfill-skip-domains');
 
 // --- Date extraction from HTML: shared with collect-review-texts.js (BRO-5674) ---
 const { extractPublishDateFromHtml, normalizeExtractedDate } = require('./lib/html-publish-date');
