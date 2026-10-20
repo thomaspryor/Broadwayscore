@@ -23,6 +23,7 @@ import { getDesignationSortOrder, DESIGNATION_MAP } from '@/config/commercial';
 import { getShowGrosses, getGrossesWeekEnding } from './data-grosses';
 import {
   calculateWeeksToRecoup,
+  recoupedAfterClosing,
   computeGrossTrend,
   trailingAverageGross,
   summarizeCapital,
@@ -529,6 +530,7 @@ export function getShowsAtRisk(): AtRiskShow[] {
       modelRecoupmentPct: range as [number, number, number],
       modelHoldLabel: getModelHoldLabel({ ...data, status: show.status }),
       trend: getRecoupmentTrend(slug),
+      closingDate: show.closingDate ?? null,
     });
   }
 
@@ -567,6 +569,7 @@ export function getRecentRecoupments(months: number = 24): RecentRecoupmentShow[
       season: getSeason(show.openingDate) || 'Unknown',
       weeksToRecoup: calculateWeeksToRecoup(recoupClockStart(data, show.openingDate), data.recoupedDate, show.closingDate),
       fromCommercialRun: isConvertedToCommercial(data),
+      afterClosing: recoupedAfterClosing(data.recoupedDate, show.closingDate),
       capitalization: data.capitalization ?? null,
       capitalizationIsEstimate: isEstimatedCapitalization(data),
       capitalizationIsMaximum: isMaximumCapitalization(data),

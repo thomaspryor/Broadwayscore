@@ -16,6 +16,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   calculateWeeksToRecoup,
+  recoupedAfterClosing,
   trailingAverageGross,
   computeGrossTrend,
   summarizeCapital,
@@ -32,6 +33,24 @@ import type { ComputedShow } from '../../src/lib/engine';
 import type { ShowCommercial } from '../../src/lib/data-types';
 
 const NOW = new Date(2026, 9, 4); // 2026-10-04 local
+
+// ── recoupedAfterClosing: why a recouped show can have no week count ────────
+test('recoupedAfterClosing: Purpose (closed Aug 2025, recouped Jun 2026) and Kimberly Akimbo', () => {
+  assert.equal(recoupedAfterClosing('2026-06', '2025-08-31'), true);
+  assert.equal(recoupedAfterClosing('2026-04', '2024-04-28'), true);
+});
+test('recoupedAfterClosing: recouped in or before the closing month is not after closing', () => {
+  assert.equal(recoupedAfterClosing('2024-04', '2024-04-28'), false);
+  assert.equal(recoupedAfterClosing('2024-03', '2024-04-28'), false);
+});
+test('recoupedAfterClosing: year-only, missing or open-run dates are false', () => {
+  assert.equal(recoupedAfterClosing('2026', '2025-08-31'), false);
+  assert.equal(recoupedAfterClosing('2026-06', null), false);
+  assert.equal(recoupedAfterClosing(null, '2025-08-31'), false);
+});
+test('recoupedAfterClosing agrees with calculateWeeksToRecoup returning null', () => {
+  assert.equal(calculateWeeksToRecoup('2025-03-17', '2026-06', '2025-08-31', NOW), null);
+});
 
 // ── P0-5: calculateWeeksToRecoup ────────────────────────────────────────────
 

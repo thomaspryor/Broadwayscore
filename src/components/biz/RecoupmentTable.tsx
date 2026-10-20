@@ -15,6 +15,8 @@ interface RecoupmentShow {
   season: string;
   /** null when only the recoupment year is known (see calculateWeeksToRecoup). */
   weeksToRecoup: number | null;
+  /** Recouped after the Broadway run closed: no weeks-from-opening figure applies. */
+  afterClosing: boolean;
   capitalization: number | null;
   /** Prints the "~" estimate mark only when true (isEstimatedCapitalization). */
   capitalizationIsEstimate: boolean;
@@ -30,7 +32,7 @@ type SortColumn = 'title' | 'weeks' | 'capitalization' | 'date';
 type SortDirection = 'asc' | 'desc';
 
 const WEEKS_TOOLTIP =
-  'Weeks from opening night to the reported recoupment date (the middle of the month when only the month was reported). Blank when only the year was reported.';
+  'Weeks from opening night to the reported recoupment date (the middle of the month when only the month was reported). Shows that recouped after their Broadway run closed (from operating profit, tax credits, a tour or licensing) read "After closing". Blank when only the year was reported.';
 
 function formatDate(dateStr: string): string {
   // Input: "2025-01", "2024-06", or "2026" (year-only when exact month unknown)
@@ -162,7 +164,9 @@ export default function RecoupmentTable({ shows }: RecoupmentTableProps) {
                   {show.season}
                 </td>
                 <td className="py-3 px-4">
-                  {show.weeksToRecoup === null ? (
+                  {show.weeksToRecoup === null && show.afterClosing ? (
+                    <span className="text-gray-400" title="Recouped after the Broadway run closed, so weeks from opening do not apply">After closing</span>
+                  ) : show.weeksToRecoup === null ? (
                     <span className="text-gray-500" title="Only the year of recoupment was reported">—</span>
                   ) : (
                     <span className="text-emerald-400 font-semibold">~{show.weeksToRecoup}</span>

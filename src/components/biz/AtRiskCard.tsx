@@ -8,7 +8,7 @@
 import Link from 'next/link';
 import { getTrendColor, getTrendIcon } from '@/config/commercial';
 import type { RecoupmentTrend } from '@/lib/data-types';
-import { formatCurrency, formatCapitalization } from '@/lib/biz-format';
+import { formatCurrency, formatCapitalization, formatDataDate } from '@/lib/biz-format';
 
 interface AtRiskCardProps {
   slug: string;
@@ -27,6 +27,8 @@ interface AtRiskCardProps {
   /** Set when the display guard hid the model: printed instead of the %. */
   modelHoldLabel: string | null;
   trend: RecoupmentTrend;
+  /** Announced closing date (YYYY-MM-DD), null while no closing is announced. */
+  closingDate: string | null;
 }
 
 const TREND_LABELS: Record<RecoupmentTrend, string> = {
@@ -48,9 +50,11 @@ export default function AtRiskCard({
   modelRecoupmentPct,
   modelHoldLabel,
   trend,
+  closingDate,
 }: AtRiskCardProps) {
   const trendLabel = TREND_LABELS[trend];
   const deficit = Math.max(0, breakEven - avgWeeklyGross);
+  const closingText = formatDataDate(closingDate);
   const optimistic = Math.max(0, Math.round(modelRecoupmentPct[2]));
 
   return (
@@ -65,6 +69,12 @@ export default function AtRiskCard({
         </span>
       </div>
       <div className="text-sm text-gray-400 mb-3">{season} Season</div>
+      {closingText && (
+        <div className="flex justify-between text-sm mb-1" data-testid="at-risk-closing">
+          <span className="text-gray-500">Closing</span>
+          <span className="text-amber-400">Announced for {closingText}</span>
+        </div>
+      )}
       <div className="flex justify-between text-sm">
         <span className="text-gray-500">Capitalization</span>
         <span className="text-white">{formatCapitalization(capitalization, capitalizationIsEstimate, capitalizationIsMaximum)}</span>

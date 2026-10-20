@@ -578,6 +578,8 @@ export interface AtRiskShow {
   /** getModelHoldLabel(): set when the guard hid the model; the card prints it instead of the %. */
   modelHoldLabel: string | null;
   trend: import('@/config/commercial').RecoupmentTrend;
+  /** shows.json closingDate (YYYY-MM-DD) when the closing is announced, else null. */
+  closingDate: string | null;
 }
 
 export interface RecentRecoupmentShow {
@@ -586,6 +588,8 @@ export interface RecentRecoupmentShow {
   season: string;
   /** null when only the recoupment year is known (calculateWeeksToRecoup). */
   weeksToRecoup: number | null;
+  /** Recouped after the Broadway run closed (recoupedAfterClosing): weeksToRecoup is null by design. */
+  afterClosing: boolean;
   /** weeksToRecoup counts from the switch to a commercial run, not opening night (recoupClockStart). */
   fromCommercialRun: boolean;
   capitalization: number | null;

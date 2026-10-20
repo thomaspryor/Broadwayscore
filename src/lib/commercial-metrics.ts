@@ -54,6 +54,25 @@ export function calculateWeeksToRecoup(
   return Math.round(diffMs / WEEK_MS);
 }
 
+/**
+ * True when the reported recoupment month starts after the closing date: the
+ * show paid back from operating profit, tax credits, a tour or licensing after
+ * the Broadway run ended (Purpose, Kimberly Akimbo). Weeks from opening is
+ * meaningless there, so calculateWeeksToRecoup returns null and the table says
+ * "After closing" instead of a bare dash. Year-only dates are not placed.
+ */
+export function recoupedAfterClosing(
+  recoupedDate: string | null | undefined,
+  closingDate: string | null | undefined,
+): boolean {
+  const m = /^(\d{4})-(\d{2})$/.exec((recoupedDate ?? '').trim());
+  const close = parseIsoDay(closingDate);
+  if (!m || !close) return false;
+  const monthIdx = parseInt(m[2], 10) - 1;
+  if (monthIdx < 0 || monthIdx > 11) return false;
+  return new Date(parseInt(m[1], 10), monthIdx, 1).getTime() > close.getTime();
+}
+
 function mean(values: number[]): number {
   return values.reduce((a, b) => a + b, 0) / values.length;
 }
