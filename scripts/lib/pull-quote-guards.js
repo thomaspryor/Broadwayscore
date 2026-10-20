@@ -1035,6 +1035,8 @@ const EXCERPT_SOURCE_RANK = {
   // registration-walled page (walled-page-meta.js).
   theStageExcerpt: 13,
   outletStandfirst: 14,
+  // BRO-5794: headline + standfirst of the review page (page-meta-evidence.js).
+  metaExcerpt: 15,
 };
 
 // The first rank that is a raw scrape of the article body rather than a curated

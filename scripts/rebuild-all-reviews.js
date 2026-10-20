@@ -1146,7 +1146,7 @@ function selectBestExcerpt(data, showTitle) {
   // sentence (deferred) used to win via finish(null) below, and these rank at
   // or above RAW_SOURCE_RANK, so letting them in would replace it (ship-check
   // on #940). Gating on an empty `deferred` keeps every existing quote as is.
-  for (const field of deferred.length ? [] : ['theStageExcerpt', 'outletStandfirst']) {
+  for (const field of deferred.length ? [] : ['theStageExcerpt', 'outletStandfirst', 'metaExcerpt']) {
     if (!data[field]) continue;
     const cleaned = cleanExcerpt(data[field]);
     if (cleaned && cleaned.length > 25) {
@@ -3876,7 +3876,7 @@ showDirs.forEach(showId => {
         const hasAggregatorScore = (data.assignedScore && data.assignedScore >= 1 && data.assignedScore <= 100)
           || (data.originalScore && parseOriginalScore(data.originalScore, data.outletId) !== null)
           || (data.aggregatorStars && parseOriginalScore(data.aggregatorStars, data.outletId) !== null);
-        const hasExcerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt || data.stagedoorExcerpt;
+        const hasExcerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt || data.stagedoorExcerpt || data.metaExcerpt;
         if (!hasAggregatorScore && !hasExcerpt) {
           logExclusion("skippedScraperGarbage", showId, file, data);
           stats.skippedScraperGarbage = (stats.skippedScraperGarbage || 0) + 1;
@@ -4387,7 +4387,7 @@ showDirs.forEach(showId => {
         delete data.fullText;
         delete data.assignedScore;
         delete data.ensembleData;
-        const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt);
+        const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt || data.metaExcerpt);
         // Respect a human contentTier override (the only direct contentTier setter
         // that bypassed classifyContentTier's manualContentTier check). Mirrors the
         // wrongProduction setter-guard discipline (shouldSkipWrongProductionAudit):
@@ -4673,7 +4673,7 @@ showDirs.forEach(showId => {
         delete data.fullText;
         delete data.assignedScore;
         delete data.ensembleData;
-        const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt);
+        const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt || data.metaExcerpt);
         // Respect a human contentTier override (the only direct contentTier setter
         // that bypassed classifyContentTier's manualContentTier check). Mirrors the
         // wrongProduction setter-guard discipline (shouldSkipWrongProductionAudit):
@@ -4871,7 +4871,7 @@ showDirs.forEach(showId => {
         }
 
         if (data.showNotMentioned === true) {
-          const hasExcerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt || data.stagedoorExcerpt;
+          const hasExcerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt || data.stagedoorExcerpt || data.metaExcerpt;
           // Allow through if review has an aggregator-provided star rating (e.g. from WET roundup)
           // even when scraped text was paywall junk that didn't mention the show
           const hasOriginalScore = (data.originalScore && parseOriginalScore(data.originalScore, data.outletId) !== null)

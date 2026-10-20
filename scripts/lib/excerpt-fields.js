@@ -21,6 +21,10 @@ const EXCERPT_FIELDS = [
   'theStageExcerpt',
   'stagedoorExcerpt',
   'playbillVerdictExcerpt',
+  // BRO-5794: headline + standfirst from the review page's own metadata, for a
+  // real review whose full text can't be fetched (lib/page-meta-evidence.js).
+  // Last in the list so verifierExcerpt() prefers every aggregator excerpt.
+  'metaExcerpt',
 ];
 
 /**
