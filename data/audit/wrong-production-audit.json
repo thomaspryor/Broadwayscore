@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-20T09:18:37.688Z",
+  "timestamp": "2026-10-20T10:46:52.650Z",
   "stats": {
-    "totalReviews": 57868,
-    "alreadyFlagged": 21091,
+    "totalReviews": 57869,
+    "alreadyFlagged": 21093,
     "dateGuardCatches": 198,
     "directorMismatch": 2027,
-    "tvFilmSignals": 1648,
-    "londonSignals": 2556,
+    "tvFilmSignals": 1649,
+    "londonSignals": 2559,
     "offBroadwaySignals": 530,
     "yearMismatch": 161,
-    "noPublishDate": 5207
+    "noPublishDate": 5204
   },
   "findings": [
     {
@@ -9727,7 +9727,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "2025-10-08",
       "url": "https://www.theguardian.com/global/2025/oct/08/cyrano-de-bergerac-review-swan-theatre-stratford-upon-avon",
       "findings": [
@@ -9760,7 +9760,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "london-theatre--matt-wolf.json",
-      "score": 96,
+      "score": 98,
       "publishDate": "2026-06-26",
       "url": "https://www.londontheatre.co.uk/reviews/cyrano-de-bergerac-review-noel-coward-theatre",
       "findings": [
@@ -9788,7 +9788,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "telegraph--claire-allfree.json",
-      "score": 96,
+      "score": 95,
       "publishDate": "2026-06-25",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/cyrano-de-bergerac-noel-coward-theatre-review/",
       "findings": [
@@ -9848,7 +9848,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "timeout-london--holly-omahony.json",
-      "score": 94,
+      "score": 92,
       "publishDate": "2026-06-26",
       "url": "https://www.timeout.com/london/theatre/cyrano-de-bergerac-2-review",
       "findings": [
@@ -9867,7 +9867,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "westendtheatre--ghenet-pinderhughes-randall.json",
-      "score": 94,
+      "score": 92,
       "publishDate": "2026-06-26",
       "url": "https://www.westendtheatre.com/359148/news/reviews/cyrano-de-bergerac-noel-coward-reviews/",
       "findings": [
@@ -15610,7 +15610,7 @@
     {
       "showId": "glengarry-glen-ross-west-end-2026",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 57,
+      "score": 55,
       "publishDate": "2026-06-19",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-15911873/Remake-David-Mamets-testosterone-fuelled-masterpiece-female-cast-read-review.html",
       "findings": [
@@ -27190,6 +27190,7 @@
     {
       "showId": "moulin-rouge-tour-2022",
       "file": "localnewsmatters--leslie-katz-bay-city-news.json",
+      "score": 84,
       "publishDate": "2025-12-20",
       "url": "https://localnewsmatters.org/2025/12/20/review-moulin-rouge-a-delightful-jukebox-musical-for-all-fans-of-pop-fans/",
       "findings": [
@@ -33565,6 +33566,7 @@
     {
       "showId": "punch-west-end-2025",
       "file": "independent--unknown.json",
+      "score": 59,
       "publishDate": null,
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/james-graham-punch-review-b2710837.html",
       "findings": [
@@ -33630,6 +33632,7 @@
     {
       "showId": "punch-west-end-2025",
       "file": "timeout-london--unknown.json",
+      "score": 81,
       "publishDate": null,
       "url": "https://www.timeout.com/london/theatre/punch-review",
       "findings": [
@@ -35990,6 +35993,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
+      "file": "grandgoldman--claire-hodges.json",
+      "publishDate": "2026-10-16",
+      "url": "https://grandgoldman.com/blogs/celebrity/some-woman-review-anne-marie-duff-shines-in-flawed-drama",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
         }
       ]
     },
@@ -44374,6 +44390,7 @@
     {
       "showId": "the-notebook-tour-2025",
       "file": "onstage-colorado--toni-tresca.json",
+      "score": 17,
       "publishDate": "2025-12-18",
       "url": "https://onstagecolorado.com/the-notebook-is-an-overproduced-underwritten-mess/",
       "findings": [
@@ -49966,7 +49983,7 @@
     {
       "showId": "under-the-shadow-off-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 82,
+      "score": 80,
       "publishDate": "2026-06-10",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/under-shadow-almeida-theatre-review/",
       "findings": [
@@ -51130,6 +51147,7 @@
     {
       "showId": "water-for-elephants-tour-2025",
       "file": "dc-theater-arts--jennifer-georgia.json",
+      "score": 78,
       "publishDate": "2025-12-12",
       "url": "https://dctheaterarts.org/2025/12/12/big-top-aerial-acts-lift-water-for-elephants-on-tour-at-the-national/",
       "findings": [
@@ -52727,6 +52745,7 @@
     {
       "showId": "wicked-tour-2021",
       "file": "broadwayworld--timoth-david-copney.json",
+      "score": 91,
       "publishDate": "2025-12-22",
       "url": "https://www.broadwayworld.com/baltimore/article/Review-WICKED-at-The-Hippodrome-20251222",
       "findings": [
@@ -52782,6 +52801,7 @@
     {
       "showId": "wicked-tour-2021",
       "file": "pittnews--cassie-st-john.json",
+      "score": 91,
       "publishDate": "2026-01-20",
       "url": "https://pittnews.com/article/199919/top-stories/review-the-musical-wicked-is-a-must-see-even-if-youve-already-watched-the-film/",
       "findings": [
@@ -56278,7 +56298,7 @@
     {
       "showId": "are-you-watching-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 75,
+      "score": 76,
       "publishDate": "2026-06-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/are-you-watching-royal-court-review",
       "findings": [
@@ -58870,7 +58890,7 @@
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
       "file": "sunday-times--quentin-letts.json",
-      "score": 73,
+      "score": 74,
       "publishDate": "2021-12-19",
       "url": "https://www.thetimes.co.uk/article/cabaret-is-amazing-but-eddie-redmayne-is-miscast-nxsnxvczb",
       "findings": [
@@ -60757,7 +60777,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
-      "score": 93,
+      "score": 95,
       "publishDate": "2026-06-25",
       "url": "https://www.allthatdazzles.co.uk/post/review-cyrano-de-bergerac-noel-coward-theatre",
       "findings": [
@@ -61551,7 +61571,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "times-uk--patrick-kidd.json",
-      "score": null,
+      "score": 64,
       "publishDate": "2026-08-18",
       "url": "https://www.thetimes.com/magazines/culture-magazine/article/death-note-musical-barbican-patrick-kidd-lnj85g5lf",
       "findings": [
@@ -67678,7 +67698,7 @@
     {
       "showId": "high-society-west-end-2026",
       "file": "london-theatre--marianka-swain.json",
-      "score": 88,
+      "score": 83,
       "publishDate": "June 4th, 2026",
       "url": "https://www.londontheatre.co.uk/theatre-news/news/get-to-know-the-swellegant-cast-of-high-society-at-the-barbican",
       "findings": [
@@ -72676,6 +72696,20 @@
     },
     {
       "showId": "martin-guerre-west-end-2026",
+      "file": "slippedisc--elbie-lebrecht.json",
+      "score": null,
+      "publishDate": "2026-10-16",
+      "url": "https://slippedisc.com/2026/10/ruth-leon-recommends-pocket-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
       "file": "timeout-london--unknown.json",
       "publishDate": "2026-09-27",
       "url": "https://www.timeout.com/london/theatre/martin-guerre",
@@ -74625,7 +74659,7 @@
     {
       "showId": "next-to-normal-west-end-2024",
       "file": "london-box-office--stuart-king.json",
-      "score": 80,
+      "score": 96,
       "publishDate": "2024-06-27",
       "url": "https://www.londonboxoffice.co.uk/news/post/next-to-normal-review",
       "findings": [
@@ -77300,7 +77334,7 @@
     {
       "showId": "pride-west-end-2026",
       "file": "independent--louis-chilton.json",
-      "score": 77,
+      "score": 83,
       "publishDate": "2026-06-25",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/pride-musical-review-national-theatre-b3003069.html",
       "findings": [
@@ -77775,7 +77809,7 @@
     {
       "showId": "relics-west-end-2026",
       "file": "liamodell--liam-odell.json",
-      "score": 61,
+      "score": 55,
       "publishDate": "2026-06-28",
       "url": "https://liamodell.com/2026/06/28/relics-review-lyric-hammersmith-theatre-ben-ockrent-sally-phillips-sam-swainsbury-jj-feild-charly-clive-michael-longhurst/",
       "findings": [
@@ -79587,6 +79621,19 @@
     },
     {
       "showId": "some-woman-west-end-2026",
+      "file": "1blocknews--maya-patel.json",
+      "publishDate": "2026-10-16",
+      "url": "https://1blocknews.com/news/some-woman-review-anne-marie-duff-is-wholly-believable-but-this-twisty-drama-is",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
       "file": "artsdesk--aleks-sierz.json",
       "score": 55,
       "publishDate": "2026-10-16",
@@ -79679,6 +79726,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
+      "file": "londonlivinglarge--unknown.json",
+      "publishDate": "2026-10-17",
+      "url": "https://www.londonlivinglarge.com/2026/10/some-woman-national-theatre-oct-7-nov.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
@@ -89805,7 +89865,7 @@
     },
     {
       "showId": "three-sisters-west-end-2019",
-      "file": "guardian--unknown.json",
+      "file": "guardian--michael-billington.json",
       "score": 76,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2019/dec/11/three-sisters-review-inua-ellams-chekhov-lyttelton-theatre-london",
@@ -89903,7 +89963,7 @@
     },
     {
       "showId": "till-the-stars-come-down-west-end-2024",
-      "file": "a-youngish-perspective--unknown.json",
+      "file": "a-youngish-perspective--mark-lloyd.json",
       "score": 95,
       "publishDate": null,
       "url": "https://ayoungishperspective.co.uk/2024/02/02/review-till-the-stars-come-down/",
@@ -89959,7 +90019,7 @@
     },
     {
       "showId": "till-the-stars-come-down-west-end-2024",
-      "file": "guardian--unknown.json",
+      "file": "guardian--arifa-akbar.json",
       "score": 97,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2024/feb/01/till-the-stars-come-down-review-national-theatre-dorfman-beth-mead",
@@ -91020,7 +91080,7 @@
     {
       "showId": "under-the-shadow-off-west-end-2026",
       "file": "thereviewshub--maryam-philpott.json",
-      "score": 75,
+      "score": 68,
       "publishDate": "2026-06-10",
       "url": "https://www.thereviewshub.com/under-the-shadow-almeida-theatre-london/",
       "findings": [
@@ -91607,6 +91667,7 @@
     {
       "showId": "water-for-elephants-tour-2025",
       "file": "broadwayworld--rachael-f-goldberg.json",
+      "score": 63,
       "publishDate": "2025-12-12",
       "url": "https://www.broadwayworld.com/washington-dc/article/Review-WATER-FOR-ELEPHANTS-at-The-National-Theatre-20251212",
       "findings": [
@@ -91620,6 +91681,7 @@
     {
       "showId": "water-for-elephants-tour-2025",
       "file": "maryland-theatre-guide--unknown.json",
+      "score": 66,
       "publishDate": "2025-12-10",
       "url": "https://mdtheatreguide.com/2025/12/theatre-review-the-national-tour-of-water-for-elephants-at-the-national-theatre/",
       "findings": [
