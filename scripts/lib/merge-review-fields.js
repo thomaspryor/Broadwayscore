@@ -36,7 +36,7 @@
  * merge just leaves a file in place.
  */
 
-const { wrongShowCleared } = require('./review-guards');
+const { wrongShowCleared, isFullTextWrongAuthorActive } = require('./review-guards');
 const { absorbMergedDuplicates } = require('./merged-duplicate-urls');
 const { canonicalReviewUrl } = require('./review-url-clusters');
 
@@ -186,7 +186,7 @@ function isExclusionFlagged(data) {
     data.nonReviewFlag === true || data.nonReviewContent === true
   ) return true;
   if (data.fabricatedEntry === true) return true;
-  if (data.fullTextWrongAuthor === true) return true;
+  if (isFullTextWrongAuthorActive(data)) return true;
   if (data.isSyndicatedDuplicate === true) return true;
   if (data.crossOutletDuplicate === true) return true;
   if (data.bwwAggregatorAmbiguous === true && !data.bwwAggregatorAmbiguousClearedNote) return true;

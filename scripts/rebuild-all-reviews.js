@@ -68,7 +68,7 @@ const emitExcludedStage = createExcludedStageEmitter();
 let _heldTrackedShows = null; // lazy: readTrackedShowIds() once per run, only if a held show is seen
 const { buildMultiProdDirectorGuard, inheritPriorRunReviews, findPriorRunSiblings, supersededPriorRunReviews, preWindowExemptPriorRuns } = require('./lib/prior-run-sibling');
 const { inheritUrlFromDuplicateLosers } = require('./lib/duplicate-fold-url');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, isRejectedByReasonExclusion, isRejectedAtExclusion, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isSoft404Body } = require('./lib/soft-404-body');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
@@ -4383,7 +4383,7 @@ showDirs.forEach(showId => {
 
       // Handle reviews where fullText is from wrong author but excerpts may be valid
       // Soft flag: keeps excerpts, distrusts fullText. Set by apply-audit-flags.js or collect-review-texts.js
-      if (data.fullTextWrongAuthor === true) {
+      if (isFullTextWrongAuthorActive(data)) {
         delete data.fullText;
         delete data.assignedScore;
         delete data.ensembleData;
@@ -4669,7 +4669,7 @@ showDirs.forEach(showId => {
       }
 
       // Handle fullTextWrongAuthor at second guard point too
-      if (data.fullTextWrongAuthor === true) {
+      if (isFullTextWrongAuthorActive(data)) {
         delete data.fullText;
         delete data.assignedScore;
         delete data.ensembleData;
@@ -7234,7 +7234,7 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
         domain: hintDomain,
       });
       // BRO-5732: never store the slug-derived name; decideOutletAutoRegistration stages it below.
-      const candidateEntry = { displayName, tier: 3, aliases: [outletId] };
+      const candidateEntry = { displayName, tier: require('./lib/regular-poster').newOutletTier(hintDomain), aliases: [outletId] };
       // A new outlet whose id/displayName (raw or "the "-stripped) lands on
       // an already-registered outlet's identity is a silent semantic
       // duplicate (the-la-times/latimes, task #1838/#1843) — it would

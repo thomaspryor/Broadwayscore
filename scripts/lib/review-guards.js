@@ -4640,6 +4640,21 @@ function setMultiProdGuardShows(shows) {
 }
 
 /**
+ * fullTextWrongAuthor is a soft flag stamped when the fetched text's byline did not
+ * match criticName. It goes stale when criticName is later repaired (a first name
+ * expanded to the full name, say) and the text's own byline now attests it: the text
+ * is by that critic, so the flag no longer means anything (BRO-5795: theater-pizzazz
+ * Alix Cohen, Safe House, 84, dropped for weeks after criticNameRepair "Alix" ->
+ * "Alix Cohen" because nothing cleared the flag and no _authorMismatch breadcrumb
+ * existed for collect-review-texts's own stale-flag clear to key on).
+ * Rebuild and explainExclusion both call this, so they cannot disagree.
+ */
+function isFullTextWrongAuthorActive(data) {
+  if (!data || data.fullTextWrongAuthor !== true) return false;
+  return !require('./byline-attestation').isBylineAttestedInText(data.criticName, data.fullText);
+}
+
+/**
  * Canonical rejectionReason exclusion (BRO-4404). explainExclusion AND
  * rebuild-all-reviews.js both call this — rebuild used to carry a narrower inline
  * copy (structural-star exception only), so JSON-LD-star and excerpt-scored
@@ -4699,6 +4714,22 @@ function isRejectedAtExclusion(data) {
     return !reFetched && !wpCleared && !isJsonLdStarNotAReview && !hasIndependentExcerptScore(data) && !hasStructuralStarScore(data);
   }
   return false;
+}
+
+/**
+ * Show-level skips the rebuild applies before it reads any review file: an 'upcoming' show, or a
+ * Broadway-category show still in 'previews'. explainExclusion is per-review and returns null for
+ * these, so a file could read "includable" yet be absent from reviews.json (BRO-5795: zeal-nyc on
+ * Tosca, a prior-season review filed under the not-yet-open November run). Mirrors the two
+ * logExclusion("skippedUpcomingShows" / "skippedPreviewsShows") gates in rebuild-all-reviews.js.
+ * @param {object} show - shows.json entry
+ * @returns {'upcomingShow'|'previewsShow'|null}
+ */
+function explainShowLevelExclusion(show) {
+  if (!show) return null;
+  if (show.status === 'upcoming') return 'upcomingShow';
+  if (show.status === 'previews' && (show.category || 'broadway') === 'broadway') return 'previewsShow';
+  return null;
 }
 
 /**
@@ -5201,7 +5232,7 @@ function explainExclusion(data, show, filePath, opts) {
 
   // fullTextWrongAuthor: rebuild deletes fullText in memory and falls back to excerpts only.
   // On disk the fullText still exists, so we must check excerpt fields directly.
-  if (data.fullTextWrongAuthor === true) {
+  if (isFullTextWrongAuthorActive(data)) {
     if (!require('./excerpt-fields').hasExcerpt(data)) return 'fullTextWrongAuthorNoExcerpt';
     // Has excerpt — fall through to final text/agg check (excerpts count as content)
     return null;
@@ -5297,10 +5328,22 @@ function duplicateOfInheritedFlag(data, refData, show, refPath) {
   // inherit the twin's flag. Only a confirmed text mismatch opts out.
   if (textsConfirmedDifferent(data.fullText, refData.fullText)) return null;
   const refReason = explainExclusion(refData, show, refPath);
+  // BRO-5795: a twin's CV-promoted nonReview does not bind this file when this file's own
+  // verified CV calls the same text a review (theater-scene Garry Starr: a no-byline "Deb Miller"
+  // copy was promoted nonReview, Victor Gluck's own copy verified as a review at 89, and the
+  // inherited flag dropped the real review from the site).
+  if (refReason === 'nonReview' && ownCvAffirmsReview(data)) return null;
   if (refReason === 'wrongShow' || refReason === 'wrongProduction' || refReason === 'nonReview') {
     return refReason;
   }
   return null;
+}
+
+/** This file's own contentVerification: a valid, correct-production review at high confidence. */
+function ownCvAffirmsReview(data) {
+  const cv = data && data.contentVerification;
+  return !!cv && cv.isValid === true && cv.confidence === 'high' && cv.articleType === 'review'
+    && cv.wrongArticle !== true && cv.wrongProduction !== true && data.isNonReview !== true;
 }
 
 /**
@@ -5990,6 +6033,8 @@ function isReviewContentTrustworthy(data) {
 module.exports = {
   isRejectedByReasonExclusion,
   isRejectedAtExclusion,
+  isFullTextWrongAuthorActive,
+  explainShowLevelExclusion,
   buildMultiProdYearGuard,
   shouldSkipScoredReview,
   pickBestDtliSlug,

@@ -48,7 +48,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 
 const { normalizeOutlet, normalizeUrl } = require('./lib/review-normalization');
-const { explainExclusion } = require('./lib/review-guards');
+const { explainExclusion, explainShowLevelExclusion } = require('./lib/review-guards');
 const { resolveReviewTextsDir, mainWorktreeOf } = require('./lib/review-texts-dir');
 const { outletIdCandidates, classifyGap, justifiesUrlResolution, isOtherProductionFile, isPreRunFile, filterByUrl, isDifferentDay } = require('./lib/review-gap-triage');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -442,7 +442,8 @@ function checkLiveProd(json, outletId, url) {
   // BRO-4899: report only the files that actually count as this outlet's coverage.
   reviewText.files = currentFiles;
   reviewText.anyPending = currentFiles.some((f) => f.pending);
-  const exclusionRule = resolveExclusion(currentFiles, showRecord);
+  // BRO-5795: the rebuild skips upcoming/previews shows before reading any file, which the per-file rule cannot see.
+  const exclusionRule = (currentFiles.length > 0 && explainShowLevelExclusion(showRecord)) || resolveExclusion(currentFiles, showRecord);
 
   const state = classifyGap({
     reviewTextsExists: currentFiles.length > 0,

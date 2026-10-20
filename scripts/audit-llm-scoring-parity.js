@@ -32,6 +32,7 @@ const {
   isLikelyStaleSuspectedMisattribution,
   getCriticRegistry,
   invalidTierClearedByHuman,
+  isFullTextWrongAuthorActive,
 } = require('./lib/review-guards');
 const { isScoreable } = require('./lib/is-scoreable');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
@@ -100,7 +101,7 @@ function classifyRebuildExclusion(data, show) {
   }
   if (data.contentTier === 'invalid' && !wpClearedFlags(data) && !invalidTierClearedByHuman(data) && !laneOk('headlineBackstop')) return 'contentTier_invalid';
 
-  if (data.fullTextWrongAuthor === true) {
+  if (isFullTextWrongAuthorActive(data)) {
     const hasExc = !!(
       data.dtliExcerpt ||
       data.bwwExcerpt ||
