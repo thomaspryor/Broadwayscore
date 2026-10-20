@@ -1,39 +1,181 @@
 {
-  "generatedAt": "2026-10-19T08:06:58.808Z",
-  "scope": "2 opening window(s): lincoln-in-the-bardo-off-broadway-2026 (2026-10-19), copperfield-the-new-musical-off-broadway-2026 (2026-10-19)",
+  "generatedAt": "2026-10-20T07:51:03.392Z",
+  "scope": "2 opening window(s): ilford-boy-west-end-2026 (2026-10-20), king-of-the-yees-off-broadway-2026 (2026-10-20)",
   "degraded": null,
   "windows": [
     {
-      "showId": "lincoln-in-the-bardo-off-broadway-2026",
-      "openingDate": "2026-10-19",
-      "from": "2026-10-18T00:00:00.000Z",
-      "to": "2026-10-23T23:59:59.999Z"
+      "showId": "ilford-boy-west-end-2026",
+      "openingDate": "2026-10-20",
+      "from": "2026-10-19T00:00:00.000Z",
+      "to": "2026-10-24T23:59:59.999Z"
     },
     {
-      "showId": "copperfield-the-new-musical-off-broadway-2026",
-      "openingDate": "2026-10-19",
-      "from": "2026-10-18T00:00:00.000Z",
-      "to": "2026-10-23T23:59:59.999Z"
+      "showId": "king-of-the-yees-off-broadway-2026",
+      "openingDate": "2026-10-20",
+      "from": "2026-10-19T00:00:00.000Z",
+      "to": "2026-10-24T23:59:59.999Z"
     }
   ],
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "logEntryCount": 179307,
+  "logEntryCount": 243937,
   "logOldestEntryAt": "2026-10-17T01:28:16.956Z",
   "publishTimesLoaded": 0,
   "verdict": {
-    "verdict": "insufficient-data",
+    "verdict": "fail",
     "pass": false,
-    "evaluated": 0,
+    "evaluated": 5,
     "inFlight": 0,
     "compliant": 0,
-    "compliancePct": null,
-    "p50Ms": null,
-    "p90Ms": null,
+    "compliancePct": 0,
+    "p50Ms": 7502022,
+    "p90Ms": 9082993,
     "targetMinutes": 15,
     "targetPct": 90,
     "minSample": 5,
-    "breaches": [],
-    "byBasis": {}
+    "breaches": [
+      {
+        "showId": "king-of-the-yees-off-broadway-2026",
+        "reviewKey": "nyt-theater:jonathan-mandell:https://newyorktheater.me/2026/10/19/king-of-the-yees-review/",
+        "outletId": "nyt-theater",
+        "publishedAt": null,
+        "publishedAtAssumedZone": false,
+        "firstSeenAt": "2026-10-20T04:14:03.007Z",
+        "collectedAt": null,
+        "scoredAt": null,
+        "rebuiltAt": "2026-10-20T05:08:42.578Z",
+        "liveAt": "2026-10-20T06:35:26.000Z",
+        "pipelineMs": 8482993,
+        "publishedToLiveMs": 9082993,
+        "basis": "poller-bounded",
+        "stuckAtStage": null
+      },
+      {
+        "showId": "king-of-the-yees-off-broadway-2026",
+        "reviewKey": "vulture:sara-holdren:https://www.vulture.com/article/theater-review-king-of-the-yees-lauren-yee.html",
+        "outletId": "vulture",
+        "publishedAt": null,
+        "publishedAtAssumedZone": false,
+        "firstSeenAt": "2026-10-20T04:14:03.320Z",
+        "collectedAt": null,
+        "scoredAt": null,
+        "rebuiltAt": "2026-10-20T05:08:42.578Z",
+        "liveAt": "2026-10-20T06:35:26.000Z",
+        "pipelineMs": 8482680,
+        "publishedToLiveMs": 9082680,
+        "basis": "poller-bounded",
+        "stuckAtStage": null
+      },
+      {
+        "showId": "king-of-the-yees-off-broadway-2026",
+        "reviewKey": "nytg:gillian-russo:https://www.newyorktheatreguide.com/reviews/king-of-the-yees-off-broadway-review",
+        "outletId": "nytg",
+        "publishedAt": null,
+        "publishedAtAssumedZone": false,
+        "firstSeenAt": "2026-10-20T01:13:36.978Z",
+        "collectedAt": null,
+        "scoredAt": null,
+        "rebuiltAt": "2026-10-20T02:02:54.110Z",
+        "liveAt": "2026-10-20T03:08:39.000Z",
+        "pipelineMs": 6902022,
+        "publishedToLiveMs": 7502022,
+        "basis": "poller-bounded",
+        "stuckAtStage": null
+      },
+      {
+        "showId": "king-of-the-yees-off-broadway-2026",
+        "reviewKey": "nysr:michael-sommers:https://nystagereview.com/2026/10/19/king-of-the-yees-talking-about-chinatown-royalty/",
+        "outletId": "nysr",
+        "publishedAt": null,
+        "publishedAtAssumedZone": false,
+        "firstSeenAt": "2026-10-20T01:13:37.341Z",
+        "collectedAt": null,
+        "scoredAt": null,
+        "rebuiltAt": "2026-10-20T02:02:54.110Z",
+        "liveAt": "2026-10-20T03:08:39.000Z",
+        "pipelineMs": 6901659,
+        "publishedToLiveMs": 7501659,
+        "basis": "poller-bounded",
+        "stuckAtStage": null
+      },
+      {
+        "showId": "king-of-the-yees-off-broadway-2026",
+        "reviewKey": "exeunt-magazine:read-more-articles-by-loren-noveck:https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signature-center/",
+        "outletId": "exeunt-magazine",
+        "publishedAt": null,
+        "publishedAtAssumedZone": false,
+        "firstSeenAt": "2026-10-20T02:42:52.961Z",
+        "collectedAt": null,
+        "scoredAt": null,
+        "rebuiltAt": "2026-10-20T03:28:20.225Z",
+        "liveAt": "2026-10-20T04:17:09.000Z",
+        "pipelineMs": 5656039,
+        "publishedToLiveMs": 6256039,
+        "basis": "poller-bounded",
+        "stuckAtStage": null
+      }
+    ],
+    "byBasis": {
+      "poller-bounded": {
+        "evaluated": 5,
+        "compliant": 0
+      }
+    }
   },
-  "records": []
+  "records": [
+    {
+      "showId": "king-of-the-yees-off-broadway-2026",
+      "outletId": "nytg",
+      "reviewKey": "nytg:gillian-russo:https://www.newyorktheatreguide.com/reviews/king-of-the-yees-off-broadway-review",
+      "basis": "poller-bounded",
+      "firstSeenAt": "2026-10-20T01:13:36.978Z",
+      "liveAt": "2026-10-20T03:08:39.000Z",
+      "pipelineMinutes": 115,
+      "publishedToLiveMinutes": 125,
+      "stuckAtStage": null
+    },
+    {
+      "showId": "king-of-the-yees-off-broadway-2026",
+      "outletId": "nysr",
+      "reviewKey": "nysr:michael-sommers:https://nystagereview.com/2026/10/19/king-of-the-yees-talking-about-chinatown-royalty/",
+      "basis": "poller-bounded",
+      "firstSeenAt": "2026-10-20T01:13:37.341Z",
+      "liveAt": "2026-10-20T03:08:39.000Z",
+      "pipelineMinutes": 115,
+      "publishedToLiveMinutes": 125,
+      "stuckAtStage": null
+    },
+    {
+      "showId": "king-of-the-yees-off-broadway-2026",
+      "outletId": "exeunt-magazine",
+      "reviewKey": "exeunt-magazine:read-more-articles-by-loren-noveck:https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signature-center/",
+      "basis": "poller-bounded",
+      "firstSeenAt": "2026-10-20T02:42:52.961Z",
+      "liveAt": "2026-10-20T04:17:09.000Z",
+      "pipelineMinutes": 94.3,
+      "publishedToLiveMinutes": 104.3,
+      "stuckAtStage": null
+    },
+    {
+      "showId": "king-of-the-yees-off-broadway-2026",
+      "outletId": "nyt-theater",
+      "reviewKey": "nyt-theater:jonathan-mandell:https://newyorktheater.me/2026/10/19/king-of-the-yees-review/",
+      "basis": "poller-bounded",
+      "firstSeenAt": "2026-10-20T04:14:03.007Z",
+      "liveAt": "2026-10-20T06:35:26.000Z",
+      "pipelineMinutes": 141.4,
+      "publishedToLiveMinutes": 151.4,
+      "stuckAtStage": null
+    },
+    {
+      "showId": "king-of-the-yees-off-broadway-2026",
+      "outletId": "vulture",
+      "reviewKey": "vulture:sara-holdren:https://www.vulture.com/article/theater-review-king-of-the-yees-lauren-yee.html",
+      "basis": "poller-bounded",
+      "firstSeenAt": "2026-10-20T04:14:03.320Z",
+      "liveAt": "2026-10-20T06:35:26.000Z",
+      "pipelineMinutes": 141.4,
+      "publishedToLiveMinutes": 151.4,
+      "stuckAtStage": null
+    }
+  ]
 }
