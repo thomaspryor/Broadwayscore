@@ -143,3 +143,18 @@ test('withheld keys are expected-absent in cloud only', () => {
     assert.equal(isWithheldInCloud(k, { CLAUDE_CODE_REMOTE: 'false' }), false);
   }
 });
+
+// End to end: runs main() so a deleted or inverted withheld branch fails here
+// (the predicate tests above would still pass). Cloud mode with every
+// non-withheld Tier 1 key present must exit 0 and must not call it "all present".
+import { spawnSync } from 'node:child_process';
+
+test('cloud mode with only the non-withheld Tier 1 keys exits 0 and does not claim all are present (BRO-5731)', () => {
+  const env = { PATH: process.env.PATH, CLAUDE_CODE_REMOTE: 'true' };
+  for (const k of TIER_1.filter((n) => !CLOUD_WITHHELD.includes(n))) env[k] = 'x'.repeat(20);
+  const r = spawnSync(process.execPath, ['scripts/check-cloud-secrets.js'], { env, encoding: 'utf8' });
+  assert.equal(r.status, 0, `expected exit 0, got ${r.status}:\n${r.stdout}\n${r.stderr}`);
+  assert.doesNotMatch(r.stdout, /MISSING/);
+  assert.doesNotMatch(r.stdout, /All Tier 1 secrets present in the environment/,
+    'must not claim every Tier 1 secret is present while withheld keys are absent');
+});

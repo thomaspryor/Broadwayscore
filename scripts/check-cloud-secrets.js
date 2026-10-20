@@ -177,7 +177,9 @@ function main() {
     if (s.set) {
       const via = s.source === '.env' ? ' via .env' : '';
       if (s.source === '.env') tier1FromDisk.push(name);
-      console.log(`  ✓ ${name.padEnd(28)} SET (${describe(s)}${via})`);
+      // A key the owner keeps out of the sandbox on purpose has turned up in it.
+      const leak = isWithheldInCloud(name) ? ' (unexpected: withheld on purpose in cloud)' : '';
+      console.log(`  ✓ ${name.padEnd(28)} SET (${describe(s)}${via})${leak}`);
     } else if (isWithheldInCloud(name)) {
       console.log(`  · ${name.padEnd(28)} withheld by design in cloud`);
       tier1Withheld++;
@@ -201,6 +203,11 @@ function main() {
   }
 
   console.log('');
+  // Never say "all Tier 1 present" while withheld keys are absent.
+  const withheldTail = tier1Withheld > 0 ? ` (${tier1Withheld} withheld by design in cloud)` : '';
+  const allPhrase = tier1Withheld > 0
+    ? `All other Tier 1 secrets present in the environment${withheldTail}`
+    : 'All Tier 1 secrets present in the environment';
   if (tier1Missing > 0) {
     console.log(`✗ ${tier1Missing} Tier 1 secret(s) missing.`);
     console.log('  Set them at claude.ai/code → cloud icon (env name, top of input area) → hover env row → gear icon → Environment variables field (KEY=value, no quotes).');
@@ -216,7 +223,7 @@ function main() {
   // env must be fine" — the inverse of the false-MISSING problem the .env
   // fallback was added to fix, and just as misleading.
   if (tier1FromDisk.length > 0) {
-    console.log('✓ All Tier 1 secrets resolvable — but ' +
+    console.log(`✓ All Tier 1 secrets resolvable${withheldTail} — but ` +
       `${tier1FromDisk.length} came from .env on disk, not the environment:`);
     console.log(`    ${tier1FromDisk.join(', ')}`);
     console.log(`  (.env read: ${envPath || 'unknown path'})`);
@@ -231,7 +238,7 @@ function main() {
     console.log('  no .env, so it would report these MISSING.');
     return 0;
   }
-  console.log('✓ All Tier 1 secrets present in the environment. Cloud session is ready.');
+  console.log(`✓ ${allPhrase}. Cloud session is ready.`);
   return 0;
 }
 
