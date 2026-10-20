@@ -946,8 +946,15 @@ async function runAggregators(show) {
   // to lib/tr-roundup-discover.js (2026-07-10) so the review-gap audit shares it.
   if (isWestEnd) {
     try {
-      console.log('  Checking theatre.reviews...');
-      const tr = await discoverTrRoundupHtml(show);
+      // Negative cache: a recent miss means skip the (paid) URL guesses. Ledger
+      // read failure fails open to a normal discovery.
+      const trMiss = require('./lib/tr-roundup-miss');
+      let trCooldown = false;
+      try { trCooldown = trMiss.isTrDiscoveryInCooldown(show, trMiss.readRoundupMisses()); } catch { /* fail open */ }
+      if (trCooldown) console.log('  theatre.reviews: skipped (no roundup on recent check)');
+      const trStats = {};
+      if (!trCooldown) console.log('  Checking theatre.reviews...');
+      const tr = trCooldown ? null : await discoverTrRoundupHtml(show, { stats: trStats });
       if (tr) {
         // checkArchiveCategory (BRO-3616) — discoverTrRoundupHtml's own
         // verifyAggregatorUrl gate validates the candidate URL, but this
@@ -981,8 +988,9 @@ async function runAggregators(show) {
             });
           }
         }
-      } else {
+      } else if (!trCooldown) {
         console.log('  theatre.reviews: no roundup found');
+        try { trMiss.recordTrMiss(show, trStats); } catch { /* ledger write is best-effort */ }
       }
     } catch (err) {
       console.log(`  theatre.reviews error: ${err.message}`);

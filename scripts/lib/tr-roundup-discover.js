@@ -40,6 +40,7 @@ async function discoverTrRoundupHtml(show, opts = {}) {
   // distinguish "no roundup exists" from "discovery could not fetch anything".
   const stats = opts.stats || {};
   stats.fetchErrors = 0;
+  stats.searchCompleted = false;
 
   const titleSlug = foldDiacritics(show.title).toLowerCase()
     .replace(/[^a-z0-9\s-]/g, '')
@@ -89,6 +90,10 @@ async function discoverTrRoundupHtml(show, opts = {}) {
     const wpApiUrl = `https://theatre.reviews/wp-json/wp/v2/posts?per_page=5&search=${encodeURIComponent(searchTitle)}`;
     const posts = await fetchJSON(wpApiUrl);
     if (posts && Array.isArray(posts)) {
+      // The search itself answered (even with zero hits) — callers use this to
+      // tell a genuine "no roundup exists" from a fetch failure before they
+      // record a negative-cache miss.
+      stats.searchCompleted = true;
       // BRO-4828: the first /reviews-roundup/ hit for a stemmed search ("Hungry
       // Ghost" -> hunger) is often another show; require every title word.
       const roundupLink = pickTheatreReviewsRoundup(posts, show.title);
