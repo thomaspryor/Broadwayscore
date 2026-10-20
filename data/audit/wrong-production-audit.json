@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-20T18:37:00.852Z",
+  "timestamp": "2026-10-20T18:49:08.781Z",
   "stats": {
-    "totalReviews": 57961,
+    "totalReviews": 57962,
     "alreadyFlagged": 21109,
     "dateGuardCatches": 198,
     "directorMismatch": 2026,
     "tvFilmSignals": 1652,
-    "londonSignals": 2566,
+    "londonSignals": 2567,
     "offBroadwaySignals": 531,
     "yearMismatch": 161,
     "noPublishDate": 5223
@@ -57779,6 +57779,19 @@
       "score": 81,
       "publishDate": "2026-10-11",
       "url": "https://readaboutstuff.com/2026/10/11/review-blood-of-my-blood-royal-court-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
+      "file": "the-rendition--eniola-edusi.json",
+      "publishDate": "2026-10-14",
+      "url": "https://www.therendition.co.uk/reviews/blood-of-my-blood",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
