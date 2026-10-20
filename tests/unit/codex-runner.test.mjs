@@ -797,6 +797,9 @@ test('savings line: check $ per landed card in the summary and the health row; l
   assert.match(r.runnerHealth([{ createdAt: '2026-10-15T09:00:00Z', body: b }], Date.parse('2026-10-15T10:00:00Z')).message, /2 card\(s\) landed, 0 crashed mid-card, Claude check \$1\.20 \(\$0\.60 per landed card\)/);
   const log = ['Codex runner\tfix(BRO-10): a', 'Codex runner\tfix(BRO-10): a (review fixes)', 'Claude\tBRO-20: b', 'Claude\tdata(BRO-21) + BRO-20', 'github-actions[bot]\tdata: BRO-99 rebuild', 'Tom Pryor\tBRO-98'].join('\n');
   assert.deepEqual(r.landedPerLane(log), { codex: 1, claude: 2 });
+  // BRO-5767: Mac sessions commit as the owner with a Claude co-author trailer; a bare owner commit stays out.
+  const mac = ['Tom Pryor\tfix: x (BRO-30)\tClaude Sonnet 5.5 <noreply@anthropic.com>', 'Tom Pryor\tBRO-31 by hand\t', 'Codex runner\tBRO-32\tClaude Opus 5.5 <noreply@anthropic.com>', 'github-actions[bot]\tBRO-33\t'].join('\n');
+  assert.deepEqual(r.landedPerLane(mac), { codex: 1, claude: 1 });
   const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
   assert.match(src, /- Claude check by model: /);
   assert.match(src, /- Landed on main, last 24h: /);

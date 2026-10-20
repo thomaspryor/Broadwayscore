@@ -791,18 +791,21 @@ function leaveToCodex(issue, { nowMs, verify = '', startNow = false } = {}) {
 }
 
 /**
- * Cards landed per lane from `git log --format=%an%x09%s` lines: distinct BRO ids in commit
- * subjects by "Codex runner" vs by "Claude" (every Claude session, not just the board's Claude
- * lane; bots and the owner are left out). A Codex cloud PR landing (subject names
+ * Cards landed per lane from `git log --format=${LANDED_LOG_FORMAT}` lines: distinct BRO ids in
+ * commit subjects by "Codex runner" vs by Claude (every Claude session, not just the board's
+ * Claude lane; bots and the owner's own commits are left out). Mac sessions commit under the
+ * owner's name, so a Co-Authored-By trailer at noreply@anthropic.com also counts as Claude
+ * (BRO-5767: 185 such cards in a week were missing). A Codex cloud PR landing (subject names
  * "Codex PR #N", no BRO id) counts once as PR #N in the Codex lane (BRO-5646). -> { codex, claude }
  */
+const LANDED_LOG_FORMAT = '%an%x09%s%x09%(trailers:key=Co-Authored-By,valueonly,separator=%x2C)';
 function landedPerLane(logText) {
   const ids = { codex: new Set(), claude: new Set() };
   for (const line of String(logText || '').split('\n')) {
-    const [author, ...rest] = line.split('\t');
-    const lane = author === 'Codex runner' ? 'codex' : author === 'Claude' ? 'claude' : null;
+    const [author, subject = '', ...trailers] = line.split('\t');
+    const byClaude = author === 'Claude' || /<noreply@anthropic\.com>/i.test(trailers.join('\t'));
+    const lane = author === 'Codex runner' ? 'codex' : byClaude ? 'claude' : null;
     if (!lane) continue;
-    const subject = rest.join('\t');
     const found = subject.match(/\bBRO-\d+\b/g) || (lane === 'codex' && subject.match(/\bCodex PR #\d+\b/g)) || [];
     for (const id of found) ids[lane].add(id);
   }
@@ -1195,7 +1198,7 @@ module.exports = {
   parseSwfCarry,
   fixRoundDeadline,
   checkModel,
-  landedPerLane,
+  landedPerLane, LANDED_LOG_FORMAT,
   codexCloudPr,
   prLanderComment,
   PR_LANDER_MARKER,

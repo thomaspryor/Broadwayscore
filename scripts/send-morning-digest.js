@@ -37,7 +37,6 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const https = require('https');
-const { execFileSync } = require('child_process');
 const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
 const REPO = path.join(__dirname, '..');
@@ -511,20 +510,6 @@ function digestLoopDeadMessage({ sections = {}, autofixRows = null, stuckCount =
 // Sections render via the SAME exported block renderers the old email used —
 // identical visual output for the parts the owner kept, none of the loop
 // parts. `changes` is overnight-digest.js's pre-rendered HTML block (or null).
-// BRO-5767: "Cards landed in the last 24h: Codex N, Claude M." from origin/main's log.
-// The fetch is best-effort (an offline Mac still reports from its last fetch).
-function landedLaneLine({ run = (args) => execFileSync('git', args, { cwd: REPO, encoding: 'utf8', timeout: 30_000, stdio: ['ignore', 'pipe', 'pipe'] }) } = {}) {
-  try {
-    try { run(['fetch', '-q', 'origin', 'main']); } catch { /* use the last fetched origin/main */ }
-    const { landedPerLane } = require('./lib/codex-runner.js');
-    const { codex, claude } = landedPerLane(run(['log', 'origin/main', '--since=24.hours', '--format=%an%x09%s']));
-    return `Cards landed in the last 24h: Codex ${codex}, Claude ${claude}.`;
-  } catch (err) {
-    const why = String(err.stderr || err.message || err).trim().split('\n').pop().slice(0, 100);
-    return `Cards landed in the last 24h: could not be counted (${why}).`;
-  }
-}
-
 function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, boardNumbersData = null, loopDeadMsg: givenLoopDeadMsg, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric',
@@ -1317,12 +1302,6 @@ async function main() {
     drainThroughputLine = `Linear drain: could not be measured this morning (${why}).`;
   }
 
-  // BRO-5767: split the last day's landed cards by who did them, so the Codex lanes' share
-  // is visible. Fail-soft: a failed git read says so instead of dropping or blocking.
-  const laneLine = landedLaneLine();
-  console.log(`[digest] ${laneLine}`);
-  drainThroughputLine = drainThroughputLine ? `${drainThroughputLine} · ${laneLine}` : laneLine;
-
   const problemsNote = describeProblems(problems);
 
   // "What changed while you slept" — fail-soft; a broken collector must
@@ -1583,4 +1562,4 @@ if (require.main === module) {
   main().catch((err) => { console.error(`[digest] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { buildSubject, landedLaneLine, buildHtml, parseArgs, composeDigestEmail, mergeNeedsYouSections, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage };
+module.exports = { buildSubject, buildHtml, parseArgs, composeDigestEmail, mergeNeedsYouSections, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage };

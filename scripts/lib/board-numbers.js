@@ -22,7 +22,7 @@
 const { execFileSync } = require('child_process');
 const { TERMINAL_STATE_TYPES } = require('./linear-state-types.js');
 const { fetchInflowCounts } = require('./backlog-inflow-ratio.js');
-const { landedPerLane } = require('./codex-runner.js');
+const { landedPerLane, LANDED_LOG_FORMAT } = require('./codex-runner.js');
 const { isAutofixFiledIssue } = require('./autofix-filed-marker.js');
 const { isAwaitingOwner } = require('./owner-approval-channel.js');
 const cardDedupe = require('./card-dedupe.js');
@@ -187,7 +187,7 @@ function readLanded({ cwd = process.cwd(), exec = execFileSync, nowMs = Date.now
   }
   for (const ref of ['origin/main', 'HEAD']) {
     try {
-      const lines = run(['log', ref, '--since=7.days', '--format=%ct%x09%an%x09%s']).split('\n').filter(Boolean);
+      const lines = run(['log', ref, '--since=7.days', `--format=%ct%x09${LANDED_LOG_FORMAT}`]).split('\n').filter(Boolean);
       const dayAgo = nowMs / 1000 - 86400;
       const strip = (l) => l.slice(l.indexOf('\t') + 1);
       return {

@@ -1283,7 +1283,7 @@ async function main() {
 /** Cards (distinct BRO ids) landed on main in the last 24h by this runner vs the Claude sessions (R.landedPerLane). */
 function landedPerLane() {
   try {
-    const lane = R.landedPerLane(git(['log', 'origin/main', '--since=24.hours', '--format=%an%x09%s'], ROOT));
+    const lane = R.landedPerLane(git(['log', 'origin/main', '--since=24.hours', `--format=${R.LANDED_LOG_FORMAT}`], ROOT));
     return `Codex runner ${lane.codex} card(s), Claude sessions ${lane.claude} card(s)`;
   } catch { return 'unknown (git log failed)'; }
 }
