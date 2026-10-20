@@ -40,6 +40,7 @@ const CLOUD_FETCH_TIMEOUT_MS = 40000;
  */
 function fetchOriginMain(repoDir, execFn = execFileSync, timeoutMs = FETCH_TIMEOUT_MS) {
   try {
+    // unbounded-fetch-ok: session-start refresh of one ref with a hard timeout (never a workflow checkout step); it only ever deepens a clone the session already has
     execFn('git', ['-C', repoDir, 'fetch', 'origin', '+refs/heads/main:refs/remotes/origin/main', '-q'], {
       timeout: timeoutMs,
       stdio: 'ignore',
