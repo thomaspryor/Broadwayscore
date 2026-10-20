@@ -330,6 +330,98 @@ test('trySyncCodeCheckout: a changed CLAUDE.md / settings.json is called out for
   assert.match(msg, /new hook wiring only takes effect in a new session/);
 }));
 
+// ── BRO-5784: a fast-forward killed mid-checkout leaves a half-written tree ────────────────────────────
+// `git merge --ff-only` writes files BEFORE it moves HEAD/index; a kill leaves tracked files modified (holding
+// origin/main's bytes) and origin/main's new files untracked, and every later sync refused on "uncommitted changes".
+function halfWrittenScenario({ seedDir, cloneDir }) {
+  commitIn(seedDir, '[ab].txt', 'bracket', 'baseline');
+  commitIn(seedDir, 'f', 'was a file', 'baseline f');
+  git(seedDir, ['push', '-q', 'origin', 'main']);
+  git(cloneDir, ['pull', '-q', '--ff-only', 'origin', 'main']);
+  commitIn(seedDir, 'a.txt', 'upstream', 'upstream a');
+  commitIn(seedDir, '[ab].txt', 'bracket2', 'upstream bracket');
+  commitIn(seedDir, 'sub/new.txt', 'new', 'upstream new');
+  git(seedDir, ['rm', '-q', 'f']);
+  commitIn(seedDir, 'f/y', 'now a dir', 'upstream f->dir');
+  git(seedDir, ['push', '-q', 'origin', 'main']);
+  git(cloneDir, ['fetch', '-q', 'origin', 'main']);
+  const head = git(cloneDir, ['rev-parse', 'HEAD']);
+  return { head, tear: (files) => { // the bytes a killed merge had already written
+    for (const [rel, body] of Object.entries(files)) {
+      fs.mkdirSync(path.dirname(path.join(cloneDir, rel)), { recursive: true });
+      fs.writeFileSync(path.join(cloneDir, rel), body);
+    }
+  } };
+}
+const tearAll = { 'a.txt': 'upstream', 'sub/new.txt': 'new' };
+
+test('trySyncCodeCheckout: a half-written tree from an interrupted fast-forward is completed, not refused (BRO-5784)', () => withTrio((trio) => {
+  const { cloneDir } = trio;
+  const { tear } = halfWrittenScenario(trio);
+  tear(tearAll);
+  fs.rmSync(path.join(cloneDir, 'f'));
+  tear({ 'f/y': 'now a dir' });
+  assert.ok(git(cloneDir, ['status', '--porcelain']).length > 0, 'precondition: tree is torn');
+  const s = staleThenSync(cloneDir);
+  assert.equal(s.synced, true, s.reason);
+  assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), git(cloneDir, ['rev-parse', 'origin/main']));
+  assert.equal(git(cloneDir, ['status', '--porcelain']), '');
+  assert.equal(fs.readFileSync(path.join(cloneDir, 'a.txt'), 'utf8'), 'upstream');
+  assert.equal(fs.readFileSync(path.join(cloneDir, '[ab].txt'), 'utf8'), 'bracket2');
+}));
+
+test('trySyncCodeCheckout: a torn tree plus a genuine edit still refuses, keeps the edit, and a bracket path is not a glob (BRO-5784)', () => withTrio((trio) => {
+  const { cloneDir } = trio;
+  const { head, tear } = halfWrittenScenario(trio);
+  tear({ '[ab].txt': 'bracket2', 'sub/new.txt': 'new', 'a.txt': 'my own edit' }); // a.txt matches [ab] as a glob
+  const s = staleThenSync(cloneDir);
+  assert.equal(s.synced, false);
+  assert.match(s.reason, /uncommitted changes/);
+  assert.equal(fs.readFileSync(path.join(cloneDir, 'a.txt'), 'utf8'), 'my own edit');
+  assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), head);
+}));
+
+test('trySyncCodeCheckout: an untracked file that differs from origin/main is never removed (BRO-5784)', () => withTrio((trio) => {
+  const { cloneDir } = trio;
+  const { tear } = halfWrittenScenario(trio);
+  tear({ 'sub/new.txt': 'mine, not upstream' });
+  const s = staleThenSync(cloneDir);
+  assert.equal(s.synced, false);
+  assert.equal(fs.readFileSync(path.join(cloneDir, 'sub/new.txt'), 'utf8'), 'mine, not upstream');
+}));
+
+test('trySyncCodeCheckout: a fast-forward killed mid-checkout is rolled back clean, flagged timedOut, and the next run converges (BRO-5784)', () => withTrio((trio) => {
+  const { cloneDir } = trio;
+  const { head, tear } = halfWrittenScenario(trio);
+  const killedMerge = (cmd, args, opts) => {
+    if (args.includes('merge')) {
+      tear(tearAll);
+      const e = new Error('spawnSync git ETIMEDOUT');
+      e.code = 'ETIMEDOUT'; e.killed = true;
+      throw e;
+    }
+    return execFileSync(cmd, args, opts);
+  };
+  const r = runCodeCheckoutStalenessCheck({ repoDir: cloneDir });
+  const s1 = trySyncCodeCheckout({ repoDir: cloneDir, behind: r.behind, ahead: r.ahead, execFn: killedMerge });
+  assert.equal(s1.synced, false);
+  assert.equal(s1.timedOut, true);
+  assert.equal(git(cloneDir, ['status', '--porcelain']), '', 'tree left clean, not half-written');
+  assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), head);
+  const s2 = staleThenSync(cloneDir);
+  assert.equal(s2.synced, true, s2.reason);
+}));
+
+test('backgroundCatchUp: completes a fast-forward over a half-written tree (BRO-5784)', () => withTrio((trio) => {
+  const { cloneDir } = trio;
+  const { tear } = halfWrittenScenario(trio);
+  tear(tearAll);
+  const { backgroundCatchUp } = require('../lib/code-checkout-staleness.js');
+  const r = backgroundCatchUp({ repoDir: cloneDir, sleepFn: () => {}, attempts: 1, pauseMs: 0 });
+  assert.equal(r.synced, true, r.reason);
+  assert.equal(git(cloneDir, ['status', '--porcelain']), '');
+}));
+
 test('trySyncCodeCheckout: works from a shallow clone (cloud clones are shallow)', () => withTrio(({ root, originDir, seedDir }) => {
   pushMoreCommits(seedDir, 4);
   const shallowDir = path.join(root, 'shallow');

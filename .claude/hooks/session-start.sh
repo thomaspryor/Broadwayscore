@@ -391,6 +391,7 @@ if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } \
       const s = lib.trySyncCodeCheckout({ repoDir, behind: r.behind, ahead: r.ahead });
       const synced = lib.formatCodeCheckoutSyncMessage(s, repoDir);
       if (synced) { console.log(synced); process.exit(0); }
+      if (s.timedOut) console.log(`   (startup fast-forward timed out; background catch-up started, pid ${lib.startBackgroundSync(repoDir)})`);
       if (r.message) console.log(`${r.message}\n   (auto-sync skipped: ${s.reason})`);
       process.exit(0);
     }

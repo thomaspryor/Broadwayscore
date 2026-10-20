@@ -171,6 +171,55 @@ function registeredHookScripts(settingsText) {
 }
 
 /**
+ * Undo the debris of a fast-forward that was killed part-way (BRO-5784). `git merge --ff-only` writes the new
+ * files into the working tree BEFORE it moves HEAD/index, so a kill mid-checkout leaves hundreds of tracked
+ * files modified (they already hold origin/main's bytes) plus untracked files that are really origin/main's
+ * new files, and every later sync refused on "uncommitted changes". Only files whose bytes are IDENTICAL to
+ * origin/main's version are touched: tracked ones are put back to HEAD's version, untracked ones are removed
+ * (the merge rewrites both). Anything that differs from origin/main stays exactly as it is.
+ * Literal pathspecs: 53 tracked paths contain `[slug]`, which is a glob otherwise.
+ * Returns {reverted, removed} or {error}; never throws.
+ */
+function reconcileInterruptedFastForward({ repoDir, execFn = execFileSync, timeoutMs = SYNC_TIMEOUT_MS } = {}) {
+  const fs = require('fs');
+  const path = require('path');
+  const z = (args, input) => String(execFn('git', ['--literal-pathspecs', '-C', repoDir, ...args], {
+    encoding: 'utf8', timeout: timeoutMs, input, stdio: ['pipe', 'pipe', 'pipe'], maxBuffer: 256 * 1024 * 1024,
+  }));
+  const list = (out) => out.split('\0').filter(Boolean);
+  try {
+    const dirty = list(z(['diff', '--name-only', '-z', 'HEAD']));
+    let matchedTracked = [];
+    if (dirty.length) {
+      const differs = new Set(list(z(['diff', '--name-only', '-z', REMOTE_MAIN])));
+      matchedTracked = dirty.filter((p) => !differs.has(p));
+    }
+    const untracked = list(z(['ls-files', '-o', '--exclude-standard', '-z'])).filter((p) => !/[\r\n]/.test(p));
+    let matchedUntracked = [];
+    if (untracked.length) {
+      const blobs = new Map();
+      for (const e of list(z(['ls-tree', '-r', '-z', REMOTE_MAIN]))) {
+        const m = /^\d+ blob ([0-9a-f]+)\t([\s\S]*)$/.exec(e);
+        if (m) blobs.set(m[2], m[1]);
+      }
+      const cand = untracked.filter((p) => blobs.has(p));
+      if (cand.length) {
+        const shas = z(['hash-object', '--stdin-paths'], `${cand.join('\n')}\n`).split('\n').filter(Boolean);
+        matchedUntracked = cand.filter((p, i) => shas[i] === blobs.get(p));
+      }
+    }
+    // Untracked first: a file-to-directory change leaves untracked x/y in the way of restoring tracked x.
+    for (const p of matchedUntracked) fs.rmSync(path.join(repoDir, p), { force: true });
+    if (matchedTracked.length) {
+      z(['checkout', '-q', 'HEAD', '--pathspec-from-file=-', '--pathspec-file-nul'], `${matchedTracked.join('\0')}\0`);
+    }
+    return { reverted: matchedTracked.length, removed: matchedUntracked.length };
+  } catch (err) {
+    return { error: String(err.stderr || err.message).trim().split('\n')[0] };
+  }
+}
+
+/**
  * Fast-forward repoDir to origin/main when nothing can be lost. Never pushes.
  * Every precondition failure returns {synced:false, reason} and changes
  * nothing. Expects origin/main already fetched (runCodeCheckoutStalenessCheck).
@@ -191,11 +240,14 @@ function trySyncCodeCheckout({ repoDir, behind, ahead, execFn = execFileSync, en
   } catch {
     return no('detached HEAD');
   }
+  let healed = null;
   try {
     for (const marker of IN_PROGRESS_MARKERS) {
       const p = git(['rev-parse', '--git-path', marker]);
       if (fs.existsSync(path.isAbsolute(p) ? p : path.join(repoDir, p))) return no(`${marker} in progress`);
     }
+    // A killed earlier fast-forward leaves origin/main's own bytes in the tree; clear those so they don't block this one.
+    healed = reconcileInterruptedFastForward({ repoDir, execFn, timeoutMs: syncTimeoutMs });
     if (git(['status', '--porcelain', '--untracked-files=no'])) return no('uncommitted changes to tracked files');
   } catch (err) {
     return no(`could not read git state: ${String(err.message).split('\n')[0]}`);
@@ -218,6 +270,12 @@ function trySyncCodeCheckout({ repoDir, behind, ahead, execFn = execFileSync, en
     git(['merge', '--ff-only', '-q', REMOTE_MAIN]);
     to = git(['rev-parse', 'HEAD']);
   } catch (err) {
+    if (err && (err.killed || err.signal || err.code === 'ETIMEDOUT')) {
+      // Killed mid-checkout: put the tree back to a clean state now rather than leave it half-written, and tell the
+      // caller to retry with the long-budget background job (the same 20s kill would tear it again).
+      reconcileInterruptedFastForward({ repoDir, execFn, timeoutMs: syncTimeoutMs });
+      return { synced: false, timedOut: true, reason: `fast-forward timed out after ${syncTimeoutMs / 1000}s; tree rolled back` };
+    }
     return no(`fast-forward refused: ${String(err.stderr || err.message).trim().split('\n')[0]}`);
   }
   if (to === from) return no('fast-forward made no change');
@@ -226,7 +284,7 @@ function trySyncCodeCheckout({ repoDir, behind, ahead, execFn = execFileSync, en
     const changed = new Set(git(['diff', '--name-only', from, to]).split('\n'));
     changedWatched = SYNC_WATCHED_FILES.filter((f) => changed.has(f));
   } catch { /* informational only */ }
-  return { synced: true, reason: 'fast-forwarded', from, to, count: behind, changedWatched };
+  return { synced: true, reason: 'fast-forwarded', from, to, count: behind, changedWatched, reconciled: healed ? (healed.reverted || 0) + (healed.removed || 0) : 0 };
 }
 
 // ── Background catch-up (BRO-5359, CLOUD ONLY) ─────────────────────────────────────────────────────────
@@ -267,6 +325,7 @@ function backgroundCatchUp({ repoDir, expectHead = null, execFn = execFileSync, 
   const { behind, ahead } = getBehindAheadCounts(repoDir, REMOTE_MAIN, execFn);
   if (!(behind > 0)) return no('already current');
   if (ahead > 0) return no(`${ahead} local commit(s) not on origin/main; fast-forward only`);
+  reconcileInterruptedFastForward({ repoDir, execFn });
   let dirty;
   try {
     // Not trimmed: porcelain lines start with a space for an unstaged change.
@@ -361,6 +420,7 @@ function runBackgroundSyncMain(argv) {
     // The lock's mtime is its heartbeat: a job that is still working is never taken over as "stale".
     const heartbeat = () => { try { const now = new Date(); fs.utimesSync(lockPath, now, now); } catch { /* ignore */ } };
     const r = backgroundCatchUp({ repoDir: argv[0], expectHead: argv[1] || null, log, heartbeat });
+    if (r.reconciled) log(`cleared ${r.reconciled} file(s) left by an interrupted fast-forward`);
     log(r.synced
       ? `synced ${String(r.from).slice(0, 9)} -> ${String(r.to).slice(0, 9)} (${r.count} commits); ${r.preserved || 0} local data file(s) kept as they were${r.changedWatched && r.changedWatched.length ? `; changed: ${r.changedWatched.join(', ')}` : ''}`
       : `no sync: ${r.reason}`);
@@ -403,6 +463,7 @@ module.exports = {
   formatCodeCheckoutStaleMessage,
   runCodeCheckoutStalenessCheck,
   registeredHookScripts,
+  reconcileInterruptedFastForward,
   trySyncCodeCheckout,
   formatCodeCheckoutSyncMessage,
   backgroundCatchUp,
