@@ -19,24 +19,34 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const { isDeepStrictEqual } = require('util');
 const { recordRecencyMs } = require('./tracker-record-recency');
 
 const SYNC_REPO = 'thomaspryor/broadway-scorecard-data';
 const SYNC_REMOTE_PATH = 'opening-night-sent.json';
 
 /**
- * Pure merge helper — exposed for unit tests. Remote entries are preserved;
+ * Pure merge helper. Remote entries are preserved unless explicitly cleared;
  * on a key conflict, local wins by default (the caller just wrote it from a
  * fresh observation) UNLESS remote's recorded content is strictly newer per
  * recordRecencyMs (task #1914) — the case where a different writer already
  * pushed a newer state for this key (e.g. this caller observed 'queued'
  * before a concurrent send flipped it to 'sent' and landed first).
+ * opts.deletedEntries maps cleared keys to their pre-deletion records. Only
+ * unchanged remote records absent from localShows are deleted, so a concurrent
+ * send or replacement survives, including on a SHA-conflict retry. Omitting a
+ * key from a partial local payload is never itself a deletion request.
  */
-function mergeTrackerEntries(remoteParsed, localParsed) {
+function mergeTrackerEntries(remoteParsed, localParsed, opts = {}) {
   const remoteShows = (remoteParsed && remoteParsed.shows) || {};
   const localShows = (localParsed && localParsed.shows) || {};
   const merged = { ...(remoteParsed || {}) };
   merged.shows = { ...remoteShows };
+  for (const [key, expected] of Object.entries(opts.deletedEntries || {})) {
+    if (!Object.hasOwn(localShows, key) && isDeepStrictEqual(remoteShows[key], expected)) {
+      delete merged.shows[key];
+    }
+  }
   for (const [k, v] of Object.entries(localShows)) {
     const remoteRec = remoteShows[k];
     if (remoteRec && recordRecencyMs(remoteRec) > recordRecencyMs(v)) {
@@ -45,6 +55,19 @@ function mergeTrackerEntries(remoteParsed, localParsed) {
     merged.shows[k] = v;
   }
   return merged;
+}
+
+/** Clear verified old drafts locally and sync their explicit deletion intent. */
+function clearTrackerEntries(localData, keys, { save, sync }) {
+  const deletedEntries = {};
+  for (const key of keys) {
+    if (!Object.hasOwn(localData.shows, key)) continue;
+    deletedEntries[key] = localData.shows[key];
+    delete localData.shows[key];
+  }
+  if (!Object.keys(deletedEntries).length) return;
+  save(localData);
+  sync(localData, { deletedEntries });
 }
 
 /**
@@ -138,7 +161,7 @@ function syncTrackerToOrigin(localData, opts = {}) {
 
   const attempt = () => {
     const remote = fetchRemote();
-    const merged = mergeTrackerEntries(remote.parsed, localData);
+    const merged = mergeTrackerEntries(remote.parsed, localData, opts);
     putRemote(remote.sha, merged);
   };
 
@@ -165,4 +188,4 @@ function syncTrackerToOrigin(localData, opts = {}) {
   }
 }
 
-module.exports = { syncTrackerToOrigin, mergeTrackerEntries, SYNC_REPO, SYNC_REMOTE_PATH };
+module.exports = { syncTrackerToOrigin, mergeTrackerEntries, clearTrackerEntries, SYNC_REPO, SYNC_REMOTE_PATH };

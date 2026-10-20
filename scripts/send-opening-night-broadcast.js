@@ -44,6 +44,7 @@ const { draftLockRecheckBlockReason } = require('./lib/broadcast-lock-recheck');
 const {
   syncTrackerToOrigin: syncTrackerToOriginShared,
   mergeTrackerEntries,
+  clearTrackerEntries,
   SYNC_REPO,
   SYNC_REMOTE_PATH,
 } = require('./lib/opening-night-tracker-sync');
@@ -142,8 +143,8 @@ function saveSentData(data) {
  * existing tests/imports (scripts/test-sync-tracker.js,
  * scripts/send-opening-night-broadcast.test.mjs) keep working unchanged.
  */
-function syncTrackerToOrigin(localData) {
-  return syncTrackerToOriginShared(localData, { dryRun: DRY_RUN });
+function syncTrackerToOrigin(localData, opts = {}) {
+  return syncTrackerToOriginShared(localData, { ...opts, dryRun: DRY_RUN });
 }
 
 /**
@@ -660,10 +661,9 @@ async function main() {
           // Drafts deleted earlier in this loop are gone from Resend: drop their
           // records now, or a rerun would GET a 404 for them and refuse forever.
           if (deletedIds.size) {
-            for (const key of keys) {
-              if (deletedIds.has(sentData.shows[key]?.draftId)) delete sentData.shows[key];
-            }
-            saveSentData(sentData);
+            clearTrackerEntries(sentData,
+              keys.filter(key => deletedIds.has(sentData.shows[key]?.draftId)),
+              { save: saveSentData, sync: syncTrackerToOrigin });
           }
           refuse(`could not delete old draft ${id} (${res.statusCode}: ${String(res.body).slice(0, 100)})`);
         }
@@ -671,8 +671,7 @@ async function main() {
         console.log(`  Old draft deleted from Resend`);
       }
       // Clear every record of the deleted draft(s) so the script treats the show as new
-      for (const key of keys) delete sentData.shows[key];
-      saveSentData(sentData);
+      clearTrackerEntries(sentData, keys, { save: saveSentData, sync: syncTrackerToOrigin });
       console.log(`  Sent records cleared (${keys.join(', ') || 'none'}) — creating fresh draft`);
     }
   }
