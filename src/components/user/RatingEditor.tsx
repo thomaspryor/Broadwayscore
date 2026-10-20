@@ -5,7 +5,7 @@ import Modal from '@/components/show-cards/Modal';
 import StarRating from './StarRating';
 import { sanitizeRating } from '@/lib/rating';
 import DatePickerButton from './DatePickerButton';
-import { localToday } from '@/lib/date-utils';
+import { isIsoCalendarDate, localToday } from '@/lib/date-utils';
 import { trackUgc } from '@/lib/ugc-analytics';
 
 export interface RatingEditorSaveData {
@@ -77,6 +77,7 @@ export default function RatingEditor({
   // native picker years in the past and read as "completely locked"
   // (La Cage aux Folles report, 2026-07-13).
   const maxDate = today;
+  const validSuggestedDate = suggestedDateSeen && isIsoCalendarDate(suggestedDateSeen) ? suggestedDateSeen : null;
 
   const [rating, setRating] = useState<number>(() => sanitizeRating(initialRating));
   const [reviewText, setReviewText] = useState<string>(initialReviewText || '');
@@ -85,7 +86,7 @@ export default function RatingEditor({
     // to today (local), unless a watchlist planned-date was supplied — never past
     // the cap (e.g. a show that closed years ago).
     if (reviewId) return initialDateSeen || '';
-    const fallback = initialDateSeen || suggestedDateSeen || today;
+    const fallback = initialDateSeen || validSuggestedDate || today;
     return fallback > maxDate ? maxDate : fallback;
   });
   const [saving, setSaving] = useState(false);
@@ -107,9 +108,9 @@ export default function RatingEditor({
   // above has already run by then, so without this effect the field stayed on
   // today's date (owner report, 2026-07-17).
   useEffect(() => {
-    if (reviewId || initialDateSeen || dateTouched.current || !suggestedDateSeen) return;
-    setDateSeen(suggestedDateSeen > maxDate ? maxDate : suggestedDateSeen);
-  }, [suggestedDateSeen, reviewId, initialDateSeen, maxDate]);
+    if (reviewId || initialDateSeen || dateTouched.current || !validSuggestedDate) return;
+    setDateSeen(validSuggestedDate > maxDate ? maxDate : validSuggestedDate);
+  }, [validSuggestedDate, reviewId, initialDateSeen, maxDate]);
   // Live hover value from the stars — previewed in the big number so half-star
   // targeting is legible before the click (owner report, 2026-07-13).
   const [hoverValue, setHoverValue] = useState<number | null>(null);

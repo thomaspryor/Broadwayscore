@@ -30,6 +30,7 @@ export default function HamburgerMenu({
   onDeleteAccount,
 }: HamburgerMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [failedAvatarUrl, setFailedAvatarUrl] = useState<string | null>(null);
   const { localList } = useLocalWatchlist();
   // Phones have no sign-in button in the header (no room), so a signed-out
   // visitor gets a small gold dot on the menu icon until they open the menu
@@ -95,9 +96,10 @@ export default function HamburgerMenu({
         aria-expanded={isOpen}
       >
         {isAuthenticated && (
-          profile?.avatar_url ? (
+          profile?.avatar_url && profile.avatar_url !== failedAvatarUrl ? (
             <img
               src={profile.avatar_url}
+              onError={() => setFailedAvatarUrl(profile.avatar_url)}
               alt=""
               className="sm:hidden w-7 h-7 rounded-full border border-white/20"
             />
@@ -149,9 +151,10 @@ export default function HamburgerMenu({
               <div className="px-5 pb-4 border-b border-white/[0.06]">
                 {isAuthenticated ? (
                   <div className="flex items-center gap-3">
-                    {profile?.avatar_url ? (
+                    {profile?.avatar_url && profile.avatar_url !== failedAvatarUrl ? (
                       <img
                         src={profile.avatar_url}
+                        onError={() => setFailedAvatarUrl(profile.avatar_url)}
                         alt=""
                         className="w-10 h-10 rounded-full border border-white/10"
                       />

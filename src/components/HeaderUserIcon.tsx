@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { featureFlags } from '@/config/feature-flags';
 import { useAuth } from '@/contexts/AuthContext';
@@ -10,6 +11,7 @@ import { useAuth } from '@/contexts/AuthContext';
  */
 export default function HeaderUserIcon() {
   const { isAuthenticated, profile, showSignIn } = useAuth();
+  const [failedAvatarUrl, setFailedAvatarUrl] = useState<string | null>(null);
 
   if (!featureFlags.userAccounts) return null;
 
@@ -24,9 +26,10 @@ export default function HeaderUserIcon() {
         className="hidden sm:flex items-center shrink-0 gap-1.5 px-2 py-1.5 text-sm text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-white/[0.05]"
         aria-label="My Shows"
       >
-        {profile?.avatar_url ? (
+        {profile?.avatar_url && profile.avatar_url !== failedAvatarUrl ? (
           <img
             src={profile.avatar_url}
+            onError={() => setFailedAvatarUrl(profile.avatar_url)}
             alt=""
             className="w-6 h-6 rounded-full border border-white/20"
           />
