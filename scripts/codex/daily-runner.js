@@ -169,10 +169,12 @@ const LAUNCH = R.launchRunDir(RUN_DIR, SLOT);
 const runStop = () => LAUNCH.stopped();
 const stopAllSlots = (why) => LAUNCH.stopAll(why);
 const takeCardInRun = (id) => LAUNCH.takeCard(id);
-// Re-stamp the run lock every 10 min while waiting for the land-check mutex.
+// Re-stamp the run lock every 10 min while waiting for the land-check mutexes.
 const withLandMutex = (fn) => {
   let lastStamp = Date.now();
-  return LAUNCH.withMutex('land-checks', fn, () => { if (Date.now() - lastStamp > 10 * 60_000) { keepLock(); lastStamp = Date.now(); } });
+  const onWait = () => { if (Date.now() - lastStamp > 10 * 60_000) { keepLock(); lastStamp = Date.now(); } };
+  // Slots of this launch first, then any other land check in the container (land-local-check.js).
+  return LAUNCH.withMutex('land-checks', () => R.withFileMutex(R.CONTAINER_LAND_MUTEX, fn, { onWait }), onWait);
 };
 
 /**
