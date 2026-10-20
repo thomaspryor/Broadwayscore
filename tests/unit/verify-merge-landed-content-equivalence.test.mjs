@@ -22,7 +22,7 @@ function git(cwd, ...args) {
 
 function fixture(t, { added = false } = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'merge-content-test-'));
-  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const origin = path.join(dir, 'origin.git');
   const writer = path.join(dir, 'writer');
   const checker = path.join(dir, 'checker');
