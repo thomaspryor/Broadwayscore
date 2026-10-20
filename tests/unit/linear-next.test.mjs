@@ -2183,3 +2183,30 @@ test('reportDispatchOnIssue: still claims the state when the fresh refetch confi
   assert.equal(updateCalls.length, 1);
   assert.equal(updateCalls[0].patch.stateId, 'progress-1');
 });
+
+for (const [label, claims, expect] of [
+  ['six cloud Opus claims in 24h fill the cap', 6, 'sonnet'],
+  ['five leave room', 5, 'opus'],
+]) test(`BRO-5730: the Mac Opus cap counts cloud claim comments (${label})`, () => {
+  const script = `
+    const { main } = require('./scripts/linear-next.js');
+    const issue = {
+      id: 'issue-uuid-5730', identifier: 'BRO-9001', title: 'P0 fixture', description: '',
+      url: 'https://linear.app/x/issue/BRO-9001', priority: 1,
+      state: { id: 's', name: 'Todo', type: 'unstarted' }, labels: { nodes: [] }, comments: { nodes: [] },
+    };
+    const now = Date.now();
+    const comments = Array.from({ length: ${claims} }, (_, i) => ({
+      body: 'Claimed\\nWorker model: opus', createdAt: new Date(now - (i + 1) * 3600_000).toISOString(),
+      issue: { identifier: 'BRO-' + (8000 + i) },
+    }));
+    main(['--id', issue.identifier, '--dry-run'], {
+      getIssue: async () => issue,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+      linear: { listRecentCommentsContaining: async () => comments, TEAM_KEY: 'BRO' },
+    }).catch((e) => { console.error(e.stack); process.exit(1); });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000, env: { ...process.env, LINEAR_OPUS_DAILY_CAP: '6' } });
+  assert.match(res.stdout, new RegExp(`model: ${expect} `), `stdout:\n${res.stdout}\nstderr:\n${res.stderr}`);
+});

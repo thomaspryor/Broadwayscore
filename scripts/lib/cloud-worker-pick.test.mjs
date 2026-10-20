@@ -953,3 +953,16 @@ test('modelPicker: cloud Opus claims count toward the 24h cap; an unreadable cou
   assert.equal(modelPicker(NOW, { cloudClaims: null })(opusCard).model, 'sonnet');
   assert.doesNotMatch(modelPicker(NOW, { cloudClaims: [] })(opusCard).reason, /counts Mac launches only/);
 });
+
+test('withCloudOpusClaims: a claim for a card the ledger launched within the hour is not counted twice (BRO-5730)', () => {
+  const { withCloudOpusClaims } = require('./cloud-worker-pick.js');
+  const ledger = [{ event: 'launch', taskId: 'linear:BRO-1', model: 'opus', ts: '2026-10-20T10:00:00Z' }];
+  const claims = [
+    { event: 'launch', taskId: 'linear:BRO-1', model: 'opus', ts: '2026-10-20T10:05:00Z' },
+    { event: 'launch', taskId: 'linear:BRO-2', model: 'opus', ts: '2026-10-20T10:05:00Z' },
+    { event: 'launch', taskId: 'linear:BRO-1', model: 'opus', ts: '2026-10-20T15:00:00Z' },
+  ];
+  const out = withCloudOpusClaims(ledger, claims);
+  assert.deepEqual(out.map((e) => `${e.taskId}@${e.ts}`), ['linear:BRO-1@2026-10-20T10:00:00Z', 'linear:BRO-2@2026-10-20T10:05:00Z', 'linear:BRO-1@2026-10-20T15:00:00Z']);
+  assert.equal(withCloudOpusClaims(null, null).length, 0);
+});

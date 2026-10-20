@@ -522,11 +522,24 @@ function opusClaimEntries(comments) {
     .map((c) => ({ event: 'launch', taskId: `linear:${c.issue.identifier}`, model: 'opus', ts: c.createdAt }));
 }
 
+/**
+ * Ledger entries plus cloud Opus claim rows, leaving out a claim for a card the ledger already
+ * holds a launch of at or before that claim (a Mac-dispatched worker that also posted a claim).
+ */
+function withCloudOpusClaims(entries, claims) {
+  const base = Array.isArray(entries) ? entries : [];
+  const launchedAt = new Map();
+  for (const e of base) {
+    if (e && e.event === 'launch' && e.taskId) launchedAt.set(e.taskId, Math.max(launchedAt.get(e.taskId) || -Infinity, Date.parse(e.ts) || -Infinity));
+  }
+  const extra = (claims || []).filter((c) => !(launchedAt.has(c.taskId) && Math.abs(Date.parse(c.ts) - launchedAt.get(c.taskId)) < 60 * 60_000));
+  return [...base, ...extra];
+}
+
 /** -> the last 24h of "Worker model: opus" claim comments as launch rows (opusClaimEntries). */
-async function fetchOpusClaimEntries(nowMs = Date.now()) {
-  const { listRecentCommentsContaining } = require('./linear-client.js');
+async function fetchOpusClaimEntries(nowMs = Date.now(), client = require('./linear-client.js')) {
   const { LINEAR_OPUS_WINDOW_MS } = require('./bsc-next-model.js');
-  const comments = await listRecentCommentsContaining({ sinceIso: new Date(nowMs - LINEAR_OPUS_WINDOW_MS).toISOString(), text: 'Worker model: opus' });
+  const comments = await client.listRecentCommentsContaining({ sinceIso: new Date(nowMs - LINEAR_OPUS_WINDOW_MS).toISOString(), text: 'Worker model: opus' });
   return opusClaimEntries(comments);
 }
 
@@ -544,7 +557,7 @@ function modelPicker(nowMs = Date.now(), { cloudClaims } = {}) {
   let entries;
   const readEntries = () => {
     if (cloudClaims === null) throw new Error('cloud Opus claims could not be read');
-    if (entries === undefined) entries = [...ledger.readEntries(), ...(cloudClaims || [])];
+    if (entries === undefined) entries = withCloudOpusClaims(ledger.readEntries(), cloudClaims);
     return entries;
   };
   return (issue) => {
@@ -721,6 +734,6 @@ module.exports = {
   leaveCodexCards,
   IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS, RECENT_PAUSE_MS, RECENT_PAUSE_URGENT_MS, MAX_PAUSES, AWAITING_OWNER_MAX_MS, isPausedBacklog,
   AUTOMATION_PARK_STALE_MS, hasPersonParkHold, isFallbackTechnicalPark, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, historySkipReason, landRefCardNumber, resumableCardsByNumber,
-  P2_PRIORITY, TIER_P0P1, TIER_P2, isP2FallbackCandidate, P3_PRIORITY, TIER_P3, isP3FallbackCandidate, buildPickQueue, needsComments, pickModel, modelPicker, opusClaimEntries, fetchOpusClaimEntries, sessionModelFor, cloudPriorAttempts, mayTakeUnchecked,
+  P2_PRIORITY, TIER_P0P1, TIER_P2, isP2FallbackCandidate, P3_PRIORITY, TIER_P3, isP3FallbackCandidate, buildPickQueue, needsComments, pickModel, modelPicker, opusClaimEntries, fetchOpusClaimEntries, withCloudOpusClaims, sessionModelFor, cloudPriorAttempts, mayTakeUnchecked,
   findResumeCandidates, findResumeCard, headlessUnfitReason, AWAITING_OWNER_RE, FALLBACK_PARK_DENY_RE,
 };
