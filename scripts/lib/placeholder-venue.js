@@ -44,6 +44,32 @@ const NEIGHBOURHOOD_BLOBS = new Set([
 ]);
 
 /**
+ * Explicit separators that glue a neighbourhood blob to a venue ("Midtown E at
+ * Goodman Theatre", "Goodman Theatre, Midtown E", "Harlem - Apollo"). Only an
+ * explicit separator counts, never a bare space, so "East Village Basement"
+ * and "West Village Musical Theatre Festival" stay real venue names.
+ */
+const BLOB_SEPARATORS = /\s+at\s+|\s+-\s+|\s*[@,:|\/\u2013\u2014]\s*/;
+
+/**
+ * Is the venue a neighbourhood blob with a venue glued to either end by an
+ * explicit separator (BRO-5580)? Splits on the FIRST and LAST separator so a
+ * blob that itself contains one ("SoHo / TriBeCa") is still recognised.
+ */
+function isGluedNeighbourhoodBlob(lower) {
+  const parts = lower.split(BLOB_SEPARATORS).map((p) => p.trim()).filter(Boolean);
+  if (parts.length < 2) return false;
+  // Rejoin-free check: the first or last segment is a blob, or a leading /
+  // trailing two-segment blob ("soho / tribeca") followed by more text.
+  if (NEIGHBOURHOOD_BLOBS.has(parts[0]) || NEIGHBOURHOOD_BLOBS.has(parts[parts.length - 1])) return true;
+  if (parts.length > 2) {
+    if (NEIGHBOURHOOD_BLOBS.has(parts.slice(0, 2).join(' / '))) return true;
+    if (NEIGHBOURHOOD_BLOBS.has(parts.slice(-2).join(' / '))) return true;
+  }
+  return false;
+}
+
+/**
  * Values meaning "we do not know the venue". Compared case-insensitively
  * against the WHOLE trimmed string, never as a substring — "West End Theatre"
  * (a real Off-Broadway house on W 86th) and "Various Artists Studio" must
@@ -91,6 +117,7 @@ function isPlaceholderVenue(venue) {
 
   if (UNKNOWN_MARKERS.has(lower)) return { placeholder: true, reason: 'unknown_marker' };
   if (NEIGHBOURHOOD_BLOBS.has(lower)) return { placeholder: true, reason: 'neighbourhood_blob' };
+  if (isGluedNeighbourhoodBlob(lower)) return { placeholder: true, reason: 'neighbourhood_blob_glued' };
   for (const j of JUNK_SUBSTRINGS) {
     if (lower.includes(j)) return { placeholder: true, reason: 'junk_text' };
   }
