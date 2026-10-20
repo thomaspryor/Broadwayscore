@@ -1,43 +1,21 @@
 {
-  "updatedAt": "2026-10-20T19:40:48.688Z",
-  "processed": 406,
-  "failed": 238,
-  "successRate": "63.0%",
+  "updatedAt": "2026-10-20T22:18:59.412Z",
+  "processed": 480,
+  "failed": 294,
+  "successRate": "62.0%",
   "tierBreakdown": {
-    "playwright": 205,
+    "playwright": 233,
     "amp": 2,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 15,
-    "scrapingbee": 10,
+    "scrapingdog": 22,
+    "scrapingbee": 12,
     "brightdata": 2,
     "archiveToday": 0,
-    "archive": 149
+    "archive": 189
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-10-20T16:28:39.303Z",
-      "event": "bb-session",
-      "session": "3e33c282",
-      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
-    },
-    {
-      "t": "2026-10-20T16:28:40.066Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-20T16:33:03.370Z",
-      "event": "bb-session",
-      "session": "4915fdf1",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
-    {
-      "t": "2026-10-20T16:33:04.158Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-10-20T16:33:22.439Z",
       "event": "bb-session",
@@ -128,6 +106,28 @@
       "event": "bb-session",
       "session": "0759395b",
       "url": "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/attachment/alyssa-may-go"
+    },
+    {
+      "t": "2026-10-20T21:54:25.270Z",
+      "event": "bb-session",
+      "session": "8da71f93",
+      "url": "https://www.nytimes.com/2026/04/03/theater/burnout-paradise-treadmills-theater-o"
+    },
+    {
+      "t": "2026-10-20T21:54:26.139Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-20T21:54:43.733Z",
+      "event": "bb-session",
+      "session": "13e4da85",
+      "url": "https://www.nytimes.com/2026/04/03/theater/burnout-paradise-treadmills-theater-o"
+    },
+    {
+      "t": "2026-10-20T21:54:44.577Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
