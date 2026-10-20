@@ -520,7 +520,8 @@ function landedLaneLine({ run = (args) => execFileSync('git', args, { cwd: REPO,
     const { codex, claude } = landedPerLane(run(['log', 'origin/main', '--since=24.hours', '--format=%an%x09%s']));
     return `Cards landed in the last 24h: Codex ${codex}, Claude ${claude}.`;
   } catch (err) {
-    return `Cards landed in the last 24h: could not be counted (${String(err.message).slice(0, 80)}).`;
+    const why = String(err.stderr || err.message || err).trim().split('\n').pop().slice(0, 100);
+    return `Cards landed in the last 24h: could not be counted (${why}).`;
   }
 }
 
@@ -1320,7 +1321,7 @@ async function main() {
   // is visible. Fail-soft: a failed git read says so instead of dropping or blocking.
   const laneLine = landedLaneLine();
   console.log(`[digest] ${laneLine}`);
-  drainThroughputLine = drainThroughputLine ? `${drainThroughputLine} ${laneLine}` : laneLine;
+  drainThroughputLine = drainThroughputLine ? `${drainThroughputLine} · ${laneLine}` : laneLine;
 
   const problemsNote = describeProblems(problems);
 
