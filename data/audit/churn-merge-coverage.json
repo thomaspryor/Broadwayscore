@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-20T15:03:01.212Z",
+    "generatedAt": "2026-10-20T15:30:57.865Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -10,13 +10,13 @@
     "minChurn": 30,
     "flaggedCount": 3,
     "exemptCount": 22,
-    "coveredCount": 43,
-    "highChurnTracked": 68
+    "coveredCount": 44,
+    "highChurnTracked": 69
   },
   "flagged": [
     {
       "path": "data/audit/recover-ratings-state.json",
-      "churn": 37
+      "churn": 38
     },
     {
       "path": "data/show-score-candidates.json",
@@ -30,50 +30,50 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 642
+      "churn": 648
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 192
+      "churn": 191
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 192
+      "churn": 191
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 192
+      "churn": 191
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 168
+      "churn": 167
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 136
+      "churn": 135
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 131
+      "churn": 130
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 113
+      "churn": 112
     },
     {
       "path": "public/data/shows/angels-bone-west-end-2026.json",
-      "churn": 54
+      "churn": 53
     },
     {
       "path": "public/data/shows/dog-mom-off-west-end-2026.json",
       "churn": 49
     },
     {
-      "path": "public/data/shows/the-cherry-orchard-west-end-2026.json",
-      "churn": 48
+      "path": "public/data/shows/other-desert-cities-2026.json",
+      "churn": 47
     },
     {
-      "path": "public/data/shows/other-desert-cities-2026.json",
+      "path": "public/data/shows/the-cherry-orchard-west-end-2026.json",
       "churn": 47
     },
     {
@@ -82,18 +82,14 @@
     },
     {
       "path": "public/data/shows/the-ask-off-broadway-2026.json",
-      "churn": 37
+      "churn": 36
     },
     {
       "path": "public/data/shows/some-woman-west-end-2026.json",
-      "churn": 35
+      "churn": 34
     },
     {
       "path": "data/outlet-registry.json",
-      "churn": 33
-    },
-    {
-      "path": "public/data/shows/triumph-off-west-end-2026.json",
       "churn": 33
     },
     {
@@ -105,137 +101,141 @@
       "churn": 32
     },
     {
-      "path": "public/data/shows/memoirs-of-amorous-gentlemen-off-broadway-2026.json",
+      "path": "public/data/shows/triumph-off-west-end-2026.json",
       "churn": 32
+    },
+    {
+      "path": "data/audit/opening-night-history.json",
+      "churn": 31
     },
     {
       "path": "data/audit/we-gate-proving.json",
       "churn": 31
     },
     {
-      "path": "data/audit/opening-night-history.json",
-      "churn": 30
+      "path": "public/data/shows/memoirs-of-amorous-gentlemen-off-broadway-2026.json",
+      "churn": 31
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 801,
+      "churn": 811,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 544,
+      "churn": 542,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 453,
+      "churn": 455,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 434,
+      "churn": 436,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 434,
+      "churn": 436,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 434,
+      "churn": 436,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/landings.jsonl",
-      "churn": 336,
+      "churn": 338,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/exclusion-daily-totals.json",
-      "churn": 271,
+      "churn": 272,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 242,
+      "churn": 244,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/lane-rehearsal.json",
-      "churn": 220,
+      "churn": 221,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 192,
+      "churn": 191,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 185,
+      "churn": 187,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 178,
+      "churn": 181,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 176,
+      "churn": 177,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 154,
+      "churn": 155,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 148,
+      "churn": 147,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/exclusion-mirror-summary.json",
-      "churn": 113,
+      "churn": 112,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphaned-duplicate-pointer-heal.json",
-      "churn": 113,
+      "churn": 112,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 113,
+      "churn": 112,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 113,
+      "churn": 112,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/tour-sweep.json",
-      "churn": 113,
+      "churn": 112,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 113,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 108,
+      "churn": 112,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 108,
+      "churn": 110,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
+      "churn": 107,
       "mergeAttr": "ours"
     },
     {
@@ -245,17 +245,17 @@
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 61,
+      "churn": 62,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 60,
+      "churn": 61,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/main-streak-failing-jobs.json",
-      "churn": 45,
+      "churn": 44,
       "mergeAttr": "ours"
     },
     {
@@ -330,8 +330,13 @@
     },
     {
       "path": "data/audit/remediation-log.jsonl",
-      "churn": 30,
+      "churn": 31,
       "mergeAttr": "union"
+    },
+    {
+      "path": "data/audit/poller-backoff/other-desert-cities-2026.json",
+      "churn": 30,
+      "mergeAttr": "ours"
     }
   ]
 }
