@@ -66,7 +66,8 @@
 #
 # REVIEW-TEXTS MODE (BRO-5589): against the broadway-review-texts remote (URL
 # match, or PUSH_API_REVIEW_TEXTS=1) every path is decided per attempt by
-# rt_apply_path(): modify/delete parity with push-with-retry.sh's local arm, our
+# rt_apply_path(): modify/delete handling (keep remote's edit; fail closed on a
+# remote deletion of a file we changed), our
 # blob verbatim when the tip's copy is unchanged since base, and for a JSON file
 # both sides changed a three-way key merge plus reconcileProtectedFields() (the
 # restore_protected_fields() step) via review-texts-api-fallback.js, failing
@@ -780,14 +781,17 @@ read_blob_or_absent() {
 # what the local flow would leave after its rebase:
 #   - we deleted it, remote changed it since our base -> keep remote's
 #     (push-with-retry.sh is_modify_delete: "We deleted it, remote modified")
-#   - we changed it, remote deleted it since our base -> accept the deletion
-#     ("Remote deleted (renamed), we modified")
+#   - we changed it, remote deleted it since our base -> FAIL CLOSED. The
+#     local flow accepts the deletion only because its rebase follows the
+#     rename to the new path; plumbing cannot, so dropping our change here
+#     could lose it. Leave the push to the local flow.
 #   - remote's copy is absent, unchanged since base, or already ours -> our
 #     blob, byte for byte (no concurrent writer on this file: nothing to
 #     reconcile, identical to the plain overlay)
 #   - a JSON file BOTH sides changed -> review-texts-api-fallback.js merge:
 #     three-way key merge + reconcileProtectedFields, the restore_protected_
-#     fields() equivalent whose absence kept this repo excluded
+#     fields() equivalent whose absence kept this repo excluded (fails closed
+#     when both sides changed the content or scoring group differently)
 #   - a non-JSON file both sides changed -> our blob (archive snapshots)
 # Called inside `if !`, so errexit is OFF here: every step checks its own
 # status. Returns 1 on ANY read/parse/merge error; the caller then aborts the
@@ -821,8 +825,8 @@ rt_apply_path() {
   ours_sha="$(printf '%s' "$ours_line" | awk '{print $3}')"
 
   if [ -n "$base_sha" ] && [ -z "$tip_sha" ]; then
-    echo "  push-via-git-api: accepting the remote deletion of '$path' — we changed it but a concurrent writer removed it since our base (modify/delete, local-flow parity)" >&2
-    return 0
+    echo "::error::push-via-git-api: '$path' was removed on the remote since our base but we changed it (modify/delete; likely a rename only the local flow can follow) — aborting the review-texts fallback (attempt $i)" >&2
+    return 1
   fi
   if [ -z "$tip_sha" ] || [ "$tip_sha" = "$base_sha" ] || [ "$tip_sha" = "$ours_sha" ] \
      || [ "${path%.json}" = "$path" ]; then

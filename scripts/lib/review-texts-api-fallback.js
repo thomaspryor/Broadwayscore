@@ -27,10 +27,15 @@
  *     validate-added-review-ownership.js, needs the working tree and a
  *     full-corpus URL index; it cannot run in plumbing).
  *
- * Modify/delete parity (we modified + remote deleted -> accept the deletion;
- * we deleted + remote modified -> keep remote) is decided in
- * push-via-git-api.sh itself from blob shas, mirroring push-with-retry.sh's
- * is_modify_delete arm.
+ * Modify/delete is decided in push-via-git-api.sh itself from blob shas: we
+ * deleted + remote modified -> keep remote (push-with-retry.sh's
+ * is_modify_delete arm); we modified + remote deleted -> FAIL CLOSED, because
+ * the deletion is usually a rename and only the local flow follows renames.
+ *
+ * Known limit (review LOW 3): the merge is top-level only. A nested object
+ * both sides changed (e.g. contentVerification outside its three protected
+ * sub-keys, llmMetadata outside the scoring group) resolves to ours whole, the
+ * same outcome a conflicting hunk gets under the local flow's -X theirs.
  *
  * CLI (used by push-via-git-api.sh and api-fallback-disqualifier.js):
  *   merge <path> <ours-file> <remote-file> <base-file> <base-present 0|1>
@@ -93,11 +98,12 @@ const same = (a, b) => (a === ABSENT || b === ABSENT ? a === b : stable(a) === s
  * Three-way merge of two review records. A key (or a whole group) ours left
  * unchanged from base takes remote's state, including remote's deletion; a
  * key ours changed keeps ours (conflicts resolve to ours, like the local
- * flow's `-X theirs` replay). No base (new file on our side) = base {}.
+ * flow's `-X theirs` replay). The content and scoring groups are stricter:
+ * if both sides changed one differently, this THROWS (fail closed) instead
+ * of letting ours win. No base (new file on our side) = base {}.
  */
 function threeWayMerge(ours, remote, base) {
-  const groups = [CONTENT_FIELDS, SCORING_GROUP];
-  const grouped = new Set(groups.flat());
+  const grouped = new Set([...CONTENT_FIELDS, ...SCORING_GROUP]);
   const decided = new Map();
   let takenFromRemote = 0;
   for (const k of new Set([...Object.keys(ours), ...Object.keys(remote)])) {
@@ -107,17 +113,28 @@ function threeWayMerge(ours, remote, base) {
     if (pickRemote && !same(o, get(remote, k))) takenFromRemote++;
     decided.set(k, pickRemote ? get(remote, k) : o);
   }
-  for (const group of groups) {
+  for (const [name, group] of [['content', CONTENT_FIELDS], ['scoring', SCORING_GROUP]]) {
     const oursChanged = group.some((f) => !same(get(ours, f), get(base, f)));
+    const remoteChanged = group.some((f) => !same(get(remote, f), get(base, f)));
+    // Both sides rewrote the same body/score group since base and they differ:
+    // there is no safe winner without the local flow's whole-file context
+    // (content-length tie-break, scoring stamps, URL-change breadcrumbs), so
+    // fail closed and let push-with-retry.sh's local flow handle the file.
+    if (oursChanged && remoteChanged && group.some((f) => !same(get(ours, f), get(remote, f)))) {
+      throw new Error(`both sides changed the ${name} group since the merge base; refusing to pick a winner`);
+    }
     const src = oursChanged ? ours : remote;
     if (!oursChanged && group.some((f) => !same(get(ours, f), get(remote, f)))) takenFromRemote++;
     for (const f of group) decided.set(f, get(src, f));
   }
+  // defineProperty, not `merged[k] = v`: a JSON key named "__proto__" is an
+  // own data key after JSON.parse, but plain assignment would set the
+  // prototype instead and silently drop it.
   const merged = {};
   for (const k of [...Object.keys(ours), ...Object.keys(remote), ...decided.keys()]) {
-    if (k in merged || !decided.has(k)) continue;
+    if (Object.prototype.hasOwnProperty.call(merged, k) || !decided.has(k)) continue;
     const v = decided.get(k);
-    if (v !== ABSENT) merged[k] = v;
+    if (v !== ABSENT) Object.defineProperty(merged, k, { value: v, enumerable: true, writable: true, configurable: true });
   }
   return { merged, takenFromRemote };
 }

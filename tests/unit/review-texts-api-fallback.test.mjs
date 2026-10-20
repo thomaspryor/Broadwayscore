@@ -129,3 +129,29 @@ test('push-via-git-api-merge.js restores a concurrent outlet-registry multiAutho
     fs.rmSync(d, { recursive: true, force: true });
   }
 });
+
+test('review LOW/MEDIUM fixes: group conflicts fail closed; a remote-unchanged group takes ours; __proto__ keys survive', () => {
+  assert.throws(() => mergeReviewTextsJson(
+    j({ ...base, fullText: LONG }), j({ ...base, fullText: 'other '.repeat(30) }), j(base),
+  ), /content group/);
+  assert.throws(() => mergeReviewTextsJson(
+    j({ ...base, assignedScore: 70 }), j({ ...base, assignedScore: 40 }), j(base),
+  ), /scoring group/);
+  // Both changed the group identically: not a conflict.
+  assert.equal(JSON.parse(mergeReviewTextsJson(
+    j({ ...base, assignedScore: 70, a: 1 }), j({ ...base, assignedScore: 70, b: 2 }), j(base),
+  ).content).b, 2);
+  // Remote's group unchanged since base: ours wins silently.
+  const m = JSON.parse(mergeReviewTextsJson(
+    j({ ...base, fullText: LONG, assignedScore: 70 }), j({ ...base, note: 'r' }), j(base),
+  ).content);
+  assert.equal(m.fullText, LONG);
+  assert.equal(m.assignedScore, 70);
+  assert.equal(m.note, 'r');
+  const p = JSON.parse(mergeReviewTextsJson(
+    '{"url":"u","__proto__":{"x":1},"k":1}', '{"url":"u","k":2}', '{"url":"u","k":1}',
+  ).content);
+  assert.equal(p.k, 2, 'a real merge ran (remote change taken)');
+  assert.equal(Object.prototype.hasOwnProperty.call(p, '__proto__'), true);
+  assert.deepEqual(p['__proto__'], { x: 1 });
+});

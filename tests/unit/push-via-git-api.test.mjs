@@ -1324,29 +1324,49 @@ test('BRO-5589: a review file no concurrent writer touched is pushed byte-for-by
   }
 });
 
-test('BRO-5589: modify/delete parity — remote deletion of a file we changed is accepted; our deletion of a file remote changed keeps remote', () => {
-  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'pvga-rt-moddel-'));
+test('BRO-5589: our deletion of a file a concurrent writer changed keeps the remote copy', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'pvga-rt-delkeep-'));
   try {
-    const renamed = 'some-show-2026/nytimes--unknown.json';
     const kept = 'some-show-2026/vulture--critic.json';
     const { originDir, runnerDir, concurrentDir, baseSha } = setupReviewTextsRace(tmp, {
-      [renamed]: rtJson(BASE_REVIEW), [kept]: rtJson(BASE_REVIEW), [RT_FILE]: rtJson(BASE_REVIEW),
+      [kept]: rtJson(BASE_REVIEW), [RT_FILE]: rtJson(BASE_REVIEW),
     });
-    fs.rmSync(path.join(concurrentDir, renamed));
     fs.writeFileSync(path.join(concurrentDir, kept), rtJson({ ...BASE_REVIEW, humanReviewScore: 50 }));
-    commitAll(concurrentDir, 'rename away + edit', true);
-    fs.writeFileSync(path.join(runnerDir, renamed), rtJson({ ...BASE_REVIEW, fullText: LONG_TEXT }));
+    commitAll(concurrentDir, 'edit', true);
     fs.rmSync(path.join(runnerDir, kept));
     fs.writeFileSync(path.join(runnerDir, RT_FILE), rtJson({ ...BASE_REVIEW, fullText: LONG_TEXT }));
     commitAll(runnerDir, 'ours');
     runScript(['main', baseSha, '3'], runnerDir);
-    assert.equal(originBlob(originDir, renamed), null, 'a stale writer must not resurrect a file the remote removed');
     assert.equal(JSON.parse(originBlob(originDir, kept)).humanReviewScore, 50, 'our delete must not discard a concurrent edit');
     assert.equal(JSON.parse(originBlob(originDir, RT_FILE)).fullText, LONG_TEXT);
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
+
+for (const [label, prep] of [
+  ['the remote deleted (renamed) a file we changed', (c) => fs.rmSync(path.join(c, RT_FILE))],
+  ['both sides changed the review body differently', (c) => fs.writeFileSync(path.join(c, RT_FILE), rtJson({ ...BASE_REVIEW, fullText: 'Remote body. '.repeat(20) }))],
+  ['both sides changed the scoring group differently', (c) => fs.writeFileSync(path.join(c, RT_FILE), rtJson({ ...BASE_REVIEW, fullText: LONG_TEXT, assignedScore: 40 }))],
+]) {
+  test(`BRO-5589: fails CLOSED when ${label} — exit 1, nothing pushed`, async () => {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'pvga-rt-conflict-'));
+    try {
+      const { originDir, runnerDir, concurrentDir, baseSha } = setupReviewTextsRace(tmp, { [RT_FILE]: rtJson(BASE_REVIEW) });
+      prep(concurrentDir);
+      commitAll(concurrentDir, 'concurrent', true);
+      const tipBefore = sh(`git --git-dir "${originDir}" rev-parse main`, tmp).trim();
+      fs.writeFileSync(path.join(runnerDir, RT_FILE), rtJson({ ...BASE_REVIEW, fullText: LONG_TEXT, assignedScore: 70 }));
+      commitAll(runnerDir, 'ours');
+      const { code, stderr } = await spawnScript(['main', baseSha, '3'], runnerDir);
+      assert.equal(code, 1, stderr);
+      assert.match(stderr, /modify\/delete|refusing to pick a winner/);
+      assert.equal(sh(`git --git-dir "${originDir}" rev-parse main`, tmp).trim(), tipBefore);
+    } finally {
+      fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    }
+  });
+}
 
 for (const [label, rel, content] of [
   ['an ADDED review file (needs the cross-show ownership gate)', 'new-show-2026/new--critic.json', rtJson(BASE_REVIEW)],

@@ -1440,7 +1440,8 @@ refine_entry_base_from_remote_tip() {
 # review file since SCRIPT_ENTRY_BASE, and the API fallback used to overlay our
 # copy outright with no equivalent. BRO-5589 gave push-via-git-api.sh that step
 # (its REVIEW-TEXTS MODE: three-way key merge + reconcileProtectedFields against
-# the live tip each attempt, modify/delete parity, fail closed), and the
+# the live tip each attempt, fail closed on modify/delete or a body/score group
+# both sides changed), and the
 # disqualifier now leaves failed-fetches.json and ADDED review files (the
 # CROSS-SHOW OWNERSHIP GATE below needs the working tree) to this local flow.
 # Detected via remote URL, matching that gate's pattern; exported so the
