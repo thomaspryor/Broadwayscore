@@ -28,6 +28,7 @@ import { getShowAwards } from './data-awards';
 import { BROWSE_PAGES, BrowsePageConfig, BrowseFilterContext, getAllBrowseSlugs as getBrowseSlugsFromConfig, getBrowsePageConfig } from '@/config/browse-pages';
 import { slugify as urlSlugify } from '../../scripts/lib/url-slug';
 import { broadwayTheaterNames, stubTheaterName, HIDDEN_LONDON_IDS } from '../../scripts/lib/page-name-sources';
+import { isPlausibleStamp } from '../../scripts/lib/score-public-since';
 import { resolveNameRedirect, type SlugRedirectMap } from './slug-redirects';
 // Import raw data (loaded at build time for static generation)
 import showsData from '../../data/shows.json';
@@ -136,7 +137,8 @@ export function getAllShows(): ComputedShow[] {
       const cov = covByShowId.get(show.id);
       if (cov) computed.cov = cov;
       const scorePublicSince = scorePublicSinceByShowId.get(show.id);
-      if (scorePublicSince) computed.scorePublicSince = scorePublicSince;
+      // A stamp from before the show opened is a stale wrong-production blip, not a settled score.
+      if (scorePublicSince && isPlausibleStamp(scorePublicSince, show.openingDate)) computed.scorePublicSince = scorePublicSince;
       if (coverageAckedShowIds.has(show.id)) computed.coverageAcked = true;
       return computed;
     });

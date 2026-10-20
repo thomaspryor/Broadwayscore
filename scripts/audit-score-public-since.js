@@ -44,6 +44,15 @@ function loadCsByShowId() {
   return out;
 }
 
+function loadOpeningDates() {
+  const out = {};
+  try {
+    const j = JSON.parse(fs.readFileSync(path.join(REPO, 'data', 'shows.json'), 'utf8'));
+    for (const s of (Array.isArray(j) ? j : j.shows) || []) if (s.id && s.openingDate) out[s.id] = s.openingDate;
+  } catch { /* no shows.json: no opening-date check */ }
+  return out;
+}
+
 function main() {
   const dryRun = process.argv.includes('--dry-run');
   const nowIso = new Date().toISOString();
@@ -52,7 +61,8 @@ function main() {
   try { prevStamps = JSON.parse(fs.readFileSync(STAMP_PATH, 'utf8')); } catch { /* first run */ }
 
   const csByShowId = loadCsByShowId();
-  const { stamps, newlyStamped } = computeScorePublicSinceUpdates(prevStamps, csByShowId, nowIso);
+  const { stamps, newlyStamped, pruned } = computeScorePublicSinceUpdates(prevStamps, csByShowId, nowIso, loadOpeningDates());
+  if (pruned.length) console.log(`[score-public-since] pruned ${pruned.length} pre-opening stamp(s): ${pruned.join(', ')}`);
 
   console.log(`[score-public-since] ${newlyStamped.length} show(s) newly stamped, ${Object.keys(stamps).length} total`);
   if (newlyStamped.length) console.log(`  ${newlyStamped.slice(0, 20).join(', ')}${newlyStamped.length > 20 ? ', …' : ''}`);
@@ -61,7 +71,7 @@ function main() {
     console.log('[score-public-since] --dry-run, not writing');
     return;
   }
-  if (newlyStamped.length === 0) {
+  if (newlyStamped.length === 0 && pruned.length === 0) {
     console.log('[score-public-since] no changes, skipping write');
     return;
   }

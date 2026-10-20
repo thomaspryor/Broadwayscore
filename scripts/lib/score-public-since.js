@@ -16,21 +16,49 @@
  */
 
 /**
+ * A stamp dated more than PRE_OPENING_GRACE_DAYS before the show's opening
+ * date is not a real "score went public" moment: before opening the only
+ * reviews a show can hold are another production's, attached transiently
+ * (School Pictures 2026 was stamped 12 days before it opened, then the floor
+ * kept showing a Critical Gold label on 1 review). Such stamps are never
+ * written, and any already in the store are pruned.
+ *
  * @param {Record<string,string>} prevStamps  {showId: isoTimestamp}
  * @param {Record<string,number|null>} csByShowId  {showId: cs value or null/undefined}
  * @param {string} nowIso
- * @returns {{stamps: Record<string,string>, newlyStamped: string[]}}
+ * @param {Record<string,string|null|undefined>} [openingDateByShowId]  {showId: 'YYYY-MM-DD'}
+ * @returns {{stamps: Record<string,string>, newlyStamped: string[], pruned: string[]}}
  */
-function computeScorePublicSinceUpdates(prevStamps, csByShowId, nowIso) {
+function computeScorePublicSinceUpdates(prevStamps, csByShowId, nowIso, openingDateByShowId) {
+  const opening = openingDateByShowId || {};
   const stamps = { ...(prevStamps || {}) };
   const newlyStamped = [];
+  const pruned = [];
+  for (const [showId, iso] of Object.entries(stamps)) {
+    if (!isPlausibleStamp(iso, opening[showId])) {
+      delete stamps[showId];
+      pruned.push(showId);
+    }
+  }
   for (const [showId, cs] of Object.entries(csByShowId || {})) {
     if (cs == null) continue;
     if (stamps[showId]) continue; // already stamped — append-only, never overwritten
+    if (!isPlausibleStamp(nowIso, opening[showId])) continue; // pre-opening: not a real public score
     stamps[showId] = nowIso;
     newlyStamped.push(showId);
   }
-  return { stamps, newlyStamped };
+  return { stamps, newlyStamped, pruned };
 }
 
-module.exports = { computeScorePublicSinceUpdates };
+const PRE_OPENING_GRACE_DAYS = 2;
+
+/** False when `stampIso` is more than the grace period before `openingDate`. */
+function isPlausibleStamp(stampIso, openingDate) {
+  if (!openingDate) return true;
+  const stampMs = Date.parse(stampIso);
+  const openMs = Date.parse(openingDate);
+  if (!Number.isFinite(stampMs) || !Number.isFinite(openMs)) return true;
+  return stampMs >= openMs - PRE_OPENING_GRACE_DAYS * 86400000;
+}
+
+module.exports = { computeScorePublicSinceUpdates, isPlausibleStamp, PRE_OPENING_GRACE_DAYS };
