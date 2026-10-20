@@ -427,5 +427,36 @@
       }
     ],
     "queuedAt": "2026-10-20T13:31:43.558Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5771-season-profile",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5771-season-profile",
+    "description": "land.yml did not land land/bro-5771-season-profile: the unit-tests-node gate went red at 1e9e794818. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39435846683",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5771-season-profile"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "1e9e794818e309df747b9b20fb181a10a6381c17"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39435846683"
+      }
+    ],
+    "queuedAt": "2026-10-20T14:20:55.206Z"
   }
 ]
