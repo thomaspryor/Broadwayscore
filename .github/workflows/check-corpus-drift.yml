@@ -36,11 +36,6 @@ on:
         required: false
         default: false
         type: boolean
-      probe_live_data_routing:
-        description: 'Also prove live-data routing with a throwaway failing test and a temp ledger (BRO-5788)'
-        required: false
-        default: false
-        type: boolean
 
 permissions:
   contents: write
@@ -499,22 +494,6 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: |
           node scripts/route-live-data-failures.js --tap="$RUNNER_TEMP/live-data.tap" --exit="$([ '${{ steps.livedata.outcome }}' = success ] && echo 0 || echo 1)"
-
-      - name: Probe live-data routing (dispatch-only, temp ledger, BRO-5788)
-        if: inputs.probe_live_data_routing == true
-        continue-on-error: true
-        timeout-minutes: 3
-        env:
-          ALERT_LEDGER_PATH: ${{ runner.temp }}/probe-ledger.json
-          ALERT_DIGEST_QUEUE_PATH: ${{ runner.temp }}/probe-queue.json
-        run: |
-          mkdir -p "$RUNNER_TEMP/probe"; P="$RUNNER_TEMP/probe/probe.test.mjs"
-          printf "import test from 'node:test';import a from 'node:assert';\ntest('probe red',()=>a.equal(1,2));\ntest('probe green',()=>{});\n" > "$P"
-          node --test --test-reporter=tap --test-reporter-destination="$RUNNER_TEMP/probe.tap" "$P" > /dev/null || true
-          node scripts/route-live-data-failures.js --tap="$RUNNER_TEMP/probe.tap" --exit=1
-          node -e "const c=require('./scripts/lib/owner-alert-router').loadLedger().conditions;for(const [k,v] of Object.entries(c).filter(([k])=>k.startsWith('live-data-test:')))console.log('PROBE ledger',k,v.status,'notifyCount='+v.notifyCount)"
-          printf 'ok 1 - probe red\n# tests 1\n# fail 0\n' > "$RUNNER_TEMP/green.tap"
-          node scripts/route-live-data-failures.js --tap="$RUNNER_TEMP/green.tap" --exit=0
 
       - name: Commit live-data alert ledger (BRO-5788)
         if: always()
