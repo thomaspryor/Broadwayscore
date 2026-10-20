@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-20T01:40:40.609Z",
+  "generatedAt": "2026-10-20T04:58:54.286Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -161,10 +161,6 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -181,10 +177,6 @@
       "error": "HTTP 401 for https://musicaltheatrereview.com/feed/"
     },
     {
-      "outletId": "viewfromthegods",
-      "error": "AggregateError"
-    },
-    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -197,17 +189,44 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 711,
-  "matchedGaps": 3,
+  "itemsScanned": 726,
+  "matchedGaps": 6,
   "possibleGaps": 5,
   "gaps": [
+    {
+      "showId": "copperfield-the-new-musical-off-broadway-2026",
+      "title": "Copperfield! The New Musical",
+      "level": "matched",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/copperfield-the-new-musical/",
+      "headline": "Copperfield: The New Musical ****",
+      "publishDate": "2026-10-19"
+    },
     {
       "showId": "king-of-the-yees-off-broadway-2026",
       "title": "King of the Yees",
       "level": "matched",
       "outletId": "culturesauce",
-      "url": "https://culturesauce.com/king-of-the-yees-takes-an-antic-tour-through-chinatown-off-broadway-review/",
+      "url": "https://culturesauce.com/king-of-the-yees-off-broadway-review/",
       "headline": "&#8216;King of the Yees&#8217; takes an antic tour through Chinatown (Off Broadway review)",
+      "publishDate": "2026-10-19"
+    },
+    {
+      "showId": "king-of-the-yees-off-broadway-2026",
+      "title": "King of the Yees",
+      "level": "matched",
+      "outletId": "nyt-theater",
+      "url": "https://newyorktheater.me/2026/10/19/king-of-the-yees-review/",
+      "headline": "King of the Yees Review",
+      "publishDate": "2026-10-19"
+    },
+    {
+      "showId": "king-of-the-yees-off-broadway-2026",
+      "title": "King of the Yees",
+      "level": "matched",
+      "outletId": "vulture",
+      "url": "https://www.vulture.com/article/theater-review-king-of-the-yees-lauren-yee.html",
+      "headline": null,
       "publishDate": "2026-10-19"
     },
     {
