@@ -22,9 +22,23 @@ if (!fs.existsSync(dir)) {
   console.error(`no review-texts corpus at ${dir} (set REVIEW_TEXTS_DIR or run with --review-texts)`);
   process.exit(2);
 }
-const { findings, scanned } = scanReviewTextsForCriticDuplicates(dir);
+// --detail=<showId>/<file>,... : metadata only (url, dates, text length, flags) so a
+// keep/delete choice between two files for one critic can be made without review text.
+const detailArg = process.argv.find((a) => a.startsWith('--detail='));
+const { findings, scanned } = detailArg ? { findings: [], scanned: 0 } : scanReviewTextsForCriticDuplicates(dir);
 
-if (process.argv.includes('--json')) {
+if (detailArg) {
+  const fs = require('fs');
+  for (const rel of detailArg.slice('--detail='.length).split(',')) {
+    try {
+      const r = JSON.parse(fs.readFileSync(path.join(dir, rel), 'utf8'));
+      const len = (k) => (typeof r[k] === 'string' ? r[k].length : 0);
+      console.log(`${rel}: url=${r.url || ''} publishDate=${r.publishDate || ''} source=${r.source || ''} textLen=${Math.max(len('fullText'), len('text'))} excerptLen=${len('excerpt')} isFullReview=${r.isFullReview} score=${r.assignedScore ?? r.originalScore ?? ''} flags=${['wrongShow', 'wrongProduction', 'isNonReview', 'duplicateOf'].filter((k) => r[k]).join('|')}`);
+    } catch (e) {
+      console.log(`${rel}: unreadable (${e.code || e.message})`);
+    }
+  }
+} else if (process.argv.includes('--json')) {
   console.log(JSON.stringify({ scanned, findings }, null, 1));
 } else {
   console.log(`scanned ${scanned} review files, ${findings.length} near-duplicate pair(s)`);
