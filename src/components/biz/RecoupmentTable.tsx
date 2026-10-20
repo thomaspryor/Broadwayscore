@@ -141,7 +141,7 @@ export default function RecoupmentTable({ shows }: RecoupmentTableProps) {
                 onClick={() => handleSort('date')}
                 aria-sort={sortColumn === 'date' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
               >
-                Recoup Date
+                Reported
                 <SortIcon active={sortColumn === 'date'} direction={sortDirection} />
               </th>
             </tr>
