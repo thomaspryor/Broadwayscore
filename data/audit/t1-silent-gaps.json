@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-19T22:58:41.184Z",
+  "generatedAt": "2026-10-20T01:37:38.410Z",
   "windowDays": 45,
-  "showsScanned": 187,
+  "showsScanned": 193,
   "gaps": [
     {
       "showId": "slam-frank-off-broadway-2026",
@@ -17,9 +17,9 @@
       "forumLinkRecoveryCount": 4,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=slam-frank-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-18T14:14:33.814Z",
-      "fileAgeHours": 32.72938388888889,
+      "fileAgeHours": 35.38384138888889,
       "gapSeenAt": "2026-10-18T18:09:48.486Z",
-      "nonTerminalAgeHours": 28.814638055555555
+      "nonTerminalAgeHours": 31.4638675
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -35,9 +35,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 654.2969205555555,
+      "fileAgeHours": 656.9513575,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 205.32171694444443
+      "nonTerminalAgeHours": 207.97094638888888
     },
     {
       "showId": "maybe-happy-ending-tour-2026",
@@ -53,9 +53,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=maybe-happy-ending-tour-2026 --url=https://www.theatermania.com/news/jazz-vocalist-stella-cole-to-join-cast-of-maybe-happy-ending-on-broadway_1855818/ --outlet=theatermania --critic=\"Zachary Stewart\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-06T02:28:41.564Z",
-      "fileAgeHours": 332.4944233333333,
+      "fileAgeHours": 335.14885,
       "gapSeenAt": "2026-10-19T11:33:43.077Z",
-      "nonTerminalAgeHours": 11.416140555555556
+      "nonTerminalAgeHours": 14.06537
     },
     {
       "showId": "all-male-as-you-like-it-regional-2026",
@@ -66,18 +66,14 @@
       "tier": 2,
       "type": "empty-body",
       "url": "https://www.talkinbroadway.com/page/regional/minn/minn1539.html",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
-      },
-      "recoveryCount": 2,
+      "recovery": null,
+      "recoveryCount": 3,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=all-male-as-you-like-it-regional-2026 --url=https://www.talkinbroadway.com/page/regional/minn/minn1539.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-19T17:17:56.172Z",
-      "fileAgeHours": 5.679076944444445,
+      "fileAgeHours": 8.328315555555555,
       "gapSeenAt": "2026-10-19T18:06:42.214Z",
-      "nonTerminalAgeHours": 4.866380277777778
+      "nonTerminalAgeHours": 7.515609722222222
     }
   ],
   "contradictions": []

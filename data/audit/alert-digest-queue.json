@@ -967,48 +967,6 @@
     "queuedAt": "2026-10-19T21:45:11.737Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:memoirs-of-amorous-gentlemen-off-broadway-2026",
-    "title": "Review gap — \"Memoirs of Amorous Gentlemen\" missing 1 cited review(s)",
-    "description": "Memoirs of Amorous Gentlemen (memoirs-of-amorous-gentlemen-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=memoirs-of-amorous-gentlemen-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-19T21:45:11.890Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:other-desert-cities-2026",
-    "title": "Review gap — \"Other Desert Cities\" missing 1 cited review(s)",
-    "description": "Other Desert Cities (other-desert-cities-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=other-desert-cities-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-19T21:45:11.904Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:two-girls-off-broadway-2026",
-    "title": "Review gap — \"Two Girls\" missing 1 cited review(s)",
-    "description": "Two Girls (two-girls-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=two-girls-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-19T21:45:11.954Z"
-  },
-  {
     "conditionKey": "land:land/tb-index-collector",
     "title": "Landing blocked: unit-tests-node red on land/tb-index-collector",
     "description": "land.yml did not land land/tb-index-collector: the unit-tests-node gate went red at d5b1b1d421. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39323731862",
@@ -1381,5 +1339,61 @@
       }
     ],
     "queuedAt": "2026-10-20T01:13:29.541Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:cadel-lungs-on-legs-west-end-2026",
+    "title": "Review gap — \"Cadel: Lungs On Legs\" missing 1 cited review(s)",
+    "description": "Cadel: Lungs On Legs (cadel-lungs-on-legs-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=cadel-lungs-on-legs-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-20T01:37:32.401Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:king-lear-royal-exchange-regional-2026",
+    "title": "Review gap — \"King Lear\" missing 2 cited review(s)",
+    "description": "King Lear (king-lear-royal-exchange-regional-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=king-lear-royal-exchange-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-20T01:37:32.475Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:lincoln-in-the-bardo-off-broadway-2026",
+    "title": "Review gap — \"Lincoln in the Bardo\" missing 5 cited review(s)",
+    "description": "Lincoln in the Bardo (lincoln-in-the-bardo-off-broadway-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=lincoln-in-the-bardo-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-20T01:37:32.502Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
+    "title": "Review gap — \"The Prime of Miss Jean Brodie\" missing 1 cited review(s)",
+    "description": "The Prime of Miss Jean Brodie (the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-20T01:37:32.545Z"
   }
 ]

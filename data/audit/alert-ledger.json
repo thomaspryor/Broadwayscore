@@ -362,13 +362,13 @@
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
       "incidentOpenedAt": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-10-19T22:58:55.343Z",
+      "lastSeen": "2026-10-20T01:40:40.426Z",
       "lastNotifiedAt": "2026-10-19T11:34:03.759Z",
       "lastSurfacedAt": "2026-10-17T10:10:07.512Z",
       "notifyCount": 61,
       "cardId": null,
       "linearIdentifier": "BRO-5532",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "t1-coverage:scoreboard": {
       "status": "resolved",
@@ -5897,7 +5897,7 @@
       "resolveReason": "job-green"
     },
     "review-gap:opening-window:la-boheme-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Review gap — \"La Bohème\" missing 3 cited review(s)",
       "firstSeen": "2026-09-25T08:29:36.877Z",
@@ -5908,7 +5908,9 @@
       "notifyCount": 22,
       "cardId": null,
       "linearIdentifier": "BRO-4915",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-20T01:37:32.332Z",
+      "resolveReason": "review-gap: no uncollected cited reviews on the latest audit, show past its opening window with only SERP-census gaps, or show id retired"
     },
     "health-check:Workflow repeat-failure: Land": {
       "status": "resolved",
@@ -7322,7 +7324,7 @@
       "resolvedAt": "2026-09-29T10:53:52.124Z"
     },
     "roundup-gap:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Elf Lyons: The Woman on the Edge: 6 roundup-listed review(s) still not captured",
       "firstSeen": "2026-09-29T12:06:50.241Z",
@@ -7332,10 +7334,12 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4344",
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-10-20T01:37:32.581Z",
+      "resolveReason": "per-show roundup-gap key retired by the rollup (BRO-5493); quiet past the incident gap"
     },
     "roundup-gap:how-shakespeare-saved-my-life-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "How Shakespeare Saved My Life: 5 roundup-listed review(s) still not captured",
       "firstSeen": "2026-09-29T12:06:55.447Z",
@@ -7345,7 +7349,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4345",
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-10-20T01:37:32.581Z",
+      "resolveReason": "per-show roundup-gap key retired by the rollup (BRO-5493); quiet past the incident gap"
     },
     "roundup-gap:midnight-off-broadway-2026": {
       "status": "open",
@@ -7840,7 +7846,7 @@
       "resolvedAt": "2026-09-29T21:34:27.260Z"
     },
     "roundup-gap:degenerates-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Degenerates: 1 roundup-listed review(s) still not captured",
       "firstSeen": "2026-09-29T21:21:31.221Z",
@@ -7850,10 +7856,12 @@
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-4388",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-20T01:37:32.581Z",
+      "resolveReason": "per-show roundup-gap key retired by the rollup (BRO-5493); quiet past the incident gap"
     },
     "roundup-gap:school-girls-or-the-african-mean-girls-play-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "School Girls; Or, The African Mean Girls Play: 4 roundup-listed review(s) still not captured",
       "firstSeen": "2026-09-29T21:21:37.405Z",
@@ -7863,7 +7871,9 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-4389",
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-10-20T01:37:32.581Z",
+      "resolveReason": "per-show roundup-gap key retired by the rollup (BRO-5493); quiet past the incident gap"
     },
     "uncollected-blackout:the-pass-off-west-end-2026": {
       "status": "resolved",
@@ -8033,13 +8043,13 @@
       "title": "Review gap — \"Who’s Afraid of Virginia Woolf?\" missing 1 cited review(s)",
       "firstSeen": "2026-09-30T01:06:00.334Z",
       "incidentOpenedAt": "2026-09-30T01:06:00.334Z",
-      "lastSeen": "2026-10-19T22:58:17.297Z",
+      "lastSeen": "2026-10-20T01:37:32.572Z",
       "lastNotifiedAt": "2026-10-19T14:57:08.997Z",
       "lastSurfacedAt": "2026-10-15T04:30:22.031Z",
       "notifyCount": 20,
       "cardId": null,
       "linearIdentifier": "BRO-5383",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "land:land/job/linear-BRO-4402-mundeekv": {
       "status": "resolved",
@@ -9074,7 +9084,7 @@
       "resolveReason": "review-gap: no uncollected cited reviews on the latest audit"
     },
     "review-gap:opening-window:motherfucker-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Review gap — \"Motherfucker\" missing 1 cited review(s)",
       "firstSeen": "2026-10-01T02:43:05.402Z",
@@ -9085,7 +9095,9 @@
       "notifyCount": 16,
       "cardId": null,
       "linearIdentifier": "BRO-5349",
-      "silentRefires": 8
+      "silentRefires": 8,
+      "resolvedAt": "2026-10-20T01:37:32.332Z",
+      "resolveReason": "review-gap: no uncollected cited reviews on the latest audit, show past its opening window with only SERP-census gaps, or show id retired"
     },
     "roundup-gap:creation-stories-and-all-the-important-importants-off-broadway-2026": {
       "status": "resolved",
@@ -9106,7 +9118,7 @@
       "notifyCountAtRelease": 3
     },
     "roundup-gap:motherfucker-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Motherfucker: 1 roundup-listed review(s) still not captured",
       "firstSeen": "2026-10-01T02:43:09.598Z",
@@ -9117,7 +9129,9 @@
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-4456",
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-10-20T01:37:32.581Z",
+      "resolveReason": "per-show roundup-gap key retired by the rollup (BRO-5493); quiet past the incident gap"
     },
     "backstop:school-girls-or-the-african-mean-girls-play-2026/nydailynews--chris-jones.json": {
       "status": "resolved",
@@ -9202,7 +9216,7 @@
       "silentRefires": 6
     },
     "roundup-gap:jena-friedman-motherfucker-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Jena Friedman: Motherfucker: 9 roundup-listed review(s) still not captured",
       "firstSeen": "2026-10-01T09:45:45.814Z",
@@ -9213,7 +9227,9 @@
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-4462",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-20T01:37:32.581Z",
+      "resolveReason": "per-show roundup-gap key retired by the rollup (BRO-5493); quiet past the incident gap"
     },
     "opening-night-publish-date-pre-opening:missing:whos-afraid-of-virginia-woolf-west-end-2026": {
       "status": "resolved",
@@ -9580,7 +9596,7 @@
       "resolveReason": "review-gap: no uncollected cited reviews on the latest audit"
     },
     "roundup-gap:a-thousand-natural-shocks-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "A Thousand Natural Shocks: 5 roundup-listed review(s) still not captured",
       "firstSeen": "2026-10-02T02:08:57.220Z",
@@ -9590,7 +9606,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": "BRO-4506"
+      "linearIdentifier": "BRO-4506",
+      "resolvedAt": "2026-10-20T01:37:32.581Z",
+      "resolveReason": "per-show roundup-gap key retired by the rollup (BRO-5493); quiet past the incident gap"
     },
     "land:land/job/linear-BRO-4286-mun0u1wb": {
       "status": "resolved",
@@ -10502,13 +10520,13 @@
       "title": "Review gap — \"What The Animals Say\" missing 1 cited review(s)",
       "firstSeen": "2026-10-03T17:55:46.078Z",
       "incidentOpenedAt": "2026-10-03T17:55:46.078Z",
-      "lastSeen": "2026-10-19T22:58:17.287Z",
+      "lastSeen": "2026-10-20T01:37:32.564Z",
       "lastNotifiedAt": "2026-10-19T14:57:08.825Z",
       "lastSurfacedAt": "2026-10-16T23:20:34.936Z",
       "notifyCount": 18,
       "cardId": null,
       "linearIdentifier": "BRO-5514",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "gap:tru-off-west-end-2026/artsdesk--helen-hawkins.json": {
       "status": "resolved",
@@ -10561,13 +10579,13 @@
       "title": "Review gap — \"Measure for Measure\" missing 15 cited review(s)",
       "firstSeen": "2026-10-03T20:31:28.606Z",
       "incidentOpenedAt": "2026-10-03T20:31:28.606Z",
-      "lastSeen": "2026-10-19T22:58:17.207Z",
+      "lastSeen": "2026-10-20T01:37:32.520Z",
       "lastNotifiedAt": "2026-10-19T14:57:08.643Z",
       "lastSurfacedAt": "2026-10-16T23:20:33.235Z",
       "notifyCount": 18,
       "cardId": null,
       "linearIdentifier": "BRO-5513",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "review-gap:opening-window:twenty-thousand-streets-off-west-end-2026": {
       "status": "resolved",
@@ -10622,13 +10640,13 @@
       "title": "Review gap — \"Kramer/Fauci\" missing 3 cited review(s)",
       "firstSeen": "2026-10-04T03:11:34.477Z",
       "incidentOpenedAt": "2026-10-04T03:11:34.477Z",
-      "lastSeen": "2026-10-19T22:58:17.167Z",
+      "lastSeen": "2026-10-20T01:37:32.485Z",
       "lastNotifiedAt": "2026-10-19T14:57:08.439Z",
       "lastSurfacedAt": "2026-10-16T23:20:30.682Z",
       "notifyCount": 18,
       "cardId": null,
       "linearIdentifier": "BRO-5512",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "review-gap:opening-window:the-hairy-ape-irish-repertory-theatre-off-broadway-2026": {
       "status": "resolved",
@@ -10646,7 +10664,7 @@
       "resolveReason": "review-gap: no uncollected cited reviews on the latest audit"
     },
     "roundup-gap:kramerfauci-st-anns-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Kramer/Fauci: 2 roundup-listed review(s) still not captured",
       "firstSeen": "2026-10-04T03:11:34.610Z",
@@ -10657,10 +10675,12 @@
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-4572",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-20T01:37:32.581Z",
+      "resolveReason": "per-show roundup-gap key retired by the rollup (BRO-5493); quiet past the incident gap"
     },
     "roundup-gap:the-hairy-ape-irish-repertory-theatre-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "The Hairy Ape: 1 roundup-listed review(s) still not captured",
       "firstSeen": "2026-10-04T03:11:44.505Z",
@@ -10671,7 +10691,9 @@
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-4747",
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-10-20T01:37:32.581Z",
+      "resolveReason": "per-show roundup-gap key retired by the rollup (BRO-5493); quiet past the incident gap"
     },
     "land:land/bro-4558-myshows-ios": {
       "status": "resolved",
@@ -11171,7 +11193,7 @@
       "resolveReason": "review-gap: no uncollected cited reviews on the latest audit, show past its opening window with only SERP-census gaps, or show id retired"
     },
     "roundup-gap:slam-frank-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Slam Frank: 6 roundup-listed review(s) still not captured",
       "firstSeen": "2026-10-04T22:50:25.727Z",
@@ -11182,7 +11204,9 @@
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-4629",
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-10-20T01:37:32.581Z",
+      "resolveReason": "per-show roundup-gap key retired by the rollup (BRO-5493); quiet past the incident gap"
     },
     "test-yml:red:Unit Tests:e5dd8ab4": {
       "status": "resolved",
@@ -11312,13 +11336,13 @@
       "title": "Review gap — \"Affluenza\" missing 1 cited review(s)",
       "firstSeen": "2026-10-05T01:35:25.988Z",
       "incidentOpenedAt": "2026-10-05T01:35:25.988Z",
-      "lastSeen": "2026-10-19T22:58:17.006Z",
+      "lastSeen": "2026-10-20T01:37:32.347Z",
       "lastNotifiedAt": "2026-10-19T11:33:34.903Z",
       "lastSurfacedAt": "2026-10-18T13:51:53.401Z",
       "notifyCount": 16,
       "cardId": null,
       "linearIdentifier": "BRO-5629",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "review-gap:opening-window:boop-tour-2026": {
       "status": "open",
@@ -11326,13 +11350,13 @@
       "title": "Review gap — \"Boop! The Musical\" missing 9 cited review(s)",
       "firstSeen": "2026-10-05T01:35:26.008Z",
       "incidentOpenedAt": "2026-10-05T01:35:26.008Z",
-      "lastSeen": "2026-10-19T22:58:17.058Z",
+      "lastSeen": "2026-10-20T01:37:32.392Z",
       "lastNotifiedAt": "2026-10-19T14:57:06.030Z",
       "lastSurfacedAt": "2026-10-17T20:02:37.533Z",
       "notifyCount": 17,
       "cardId": null,
       "linearIdentifier": "BRO-5558",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "review-gap:opening-window:franz-and-marie-west-end-2026": {
       "status": "resolved",
@@ -12049,7 +12073,7 @@
       "linearIdentifier": null
     },
     "roundup-gap:soon-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Soon: 1 roundup-listed review(s) still not captured",
       "firstSeen": "2026-10-06T03:38:48.202Z",
@@ -12059,7 +12083,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": "BRO-4746"
+      "linearIdentifier": "BRO-4746",
+      "resolvedAt": "2026-10-20T01:37:32.581Z",
+      "resolveReason": "per-show roundup-gap key retired by the rollup (BRO-5493); quiet past the incident gap"
     },
     "land:land/bro-4770-clobber": {
       "status": "resolved",
@@ -12584,13 +12610,13 @@
       "title": "Review gap — \"Blood of my Blood\" missing 1 cited review(s)",
       "firstSeen": "2026-10-07T02:08:49.995Z",
       "incidentOpenedAt": "2026-10-07T02:08:49.995Z",
-      "lastSeen": "2026-10-19T22:58:17.048Z",
+      "lastSeen": "2026-10-20T01:37:32.383Z",
       "lastNotifiedAt": "2026-10-19T14:57:03.621Z",
       "lastSurfacedAt": "2026-10-19T14:57:03.621Z",
       "notifyCount": 15,
       "cardId": null,
       "linearIdentifier": "BRO-5704",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "review-gap:opening-window:into-the-woods-noel-coward-west-end-2026": {
       "status": "open",
@@ -12598,13 +12624,13 @@
       "title": "Review gap — \"Into the Woods\" missing 6 cited review(s)",
       "firstSeen": "2026-10-07T02:08:50.046Z",
       "incidentOpenedAt": "2026-10-07T02:08:50.046Z",
-      "lastSeen": "2026-10-19T22:58:17.137Z",
+      "lastSeen": "2026-10-20T01:37:32.457Z",
       "lastNotifiedAt": "2026-10-19T14:57:06.252Z",
       "lastSurfacedAt": "2026-10-19T14:57:06.252Z",
       "notifyCount": 15,
       "cardId": null,
       "linearIdentifier": "BRO-5705",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "land:land/bro-4804-ab-report": {
       "status": "resolved",
@@ -13047,13 +13073,13 @@
       "title": "Review gap — \"MAGIC MIKE LIVE New York\" missing 5 cited review(s)",
       "firstSeen": "2026-10-08T02:35:40.760Z",
       "incidentOpenedAt": "2026-10-08T02:35:40.760Z",
-      "lastSeen": "2026-10-19T22:58:17.195Z",
+      "lastSeen": "2026-10-20T01:37:32.511Z",
       "lastNotifiedAt": "2026-10-19T14:57:08.631Z",
       "lastSurfacedAt": "2026-10-19T14:57:08.631Z",
       "notifyCount": 14,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "review-gap:opening-window:rent-west-end-2026": {
       "status": "resolved",
@@ -13072,7 +13098,7 @@
       "resolveReason": "review-gap: no uncollected cited reviews on the latest audit, or show past its opening window with only SERP-census gaps"
     },
     "roundup-gap:magic-mike-live-new-york-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "MAGIC MIKE LIVE New York: 7 roundup-listed review(s) still not captured",
       "firstSeen": "2026-10-08T02:35:40.940Z",
@@ -13083,7 +13109,9 @@
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-4862",
-      "silentRefires": 3
+      "silentRefires": 3,
+      "resolvedAt": "2026-10-20T01:37:32.581Z",
+      "resolveReason": "per-show roundup-gap key retired by the rollup (BRO-5493); quiet past the incident gap"
     },
     "land:land/bro-4851-season-audit": {
       "status": "resolved",
@@ -13642,7 +13670,7 @@
       "silentRefires": 1
     },
     "roundup-gap:a-ghost-in-your-ear-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "A Ghost In Your Ear: 8 roundup-listed review(s) still not captured",
       "firstSeen": "2026-10-09T09:56:18.560Z",
@@ -13653,7 +13681,9 @@
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-4917",
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-10-20T01:37:32.581Z",
+      "resolveReason": "per-show roundup-gap key retired by the rollup (BRO-5493); quiet past the incident gap"
     },
     "roundup-gap:good-time-charlie-off-broadway-2026": {
       "status": "resolved",
@@ -14112,13 +14142,13 @@
       "title": "Review gap — \"As You Like It\" missing 2 cited review(s)",
       "firstSeen": "2026-10-09T21:34:59.893Z",
       "incidentOpenedAt": "2026-10-09T21:34:59.893Z",
-      "lastSeen": "2026-10-19T22:58:17.017Z",
+      "lastSeen": "2026-10-20T01:37:32.356Z",
       "lastNotifiedAt": "2026-10-19T21:45:11.681Z",
       "lastSurfacedAt": "2026-10-19T21:45:11.681Z",
       "notifyCount": 11,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "review-gap:opening-window:an-oak-tree-off-west-end-2026": {
       "status": "open",
@@ -14126,13 +14156,13 @@
       "title": "Review gap — \"An Oak Tree\" missing 1 cited review(s)",
       "firstSeen": "2026-10-09T21:34:59.899Z",
       "incidentOpenedAt": "2026-10-09T21:34:59.899Z",
-      "lastSeen": "2026-10-19T22:58:17.027Z",
+      "lastSeen": "2026-10-20T01:37:32.364Z",
       "lastNotifiedAt": "2026-10-19T21:45:11.692Z",
       "lastSurfacedAt": "2026-10-19T21:45:11.692Z",
       "notifyCount": 12,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "review-gap:opening-window:from-the-heart-west-end-2026": {
       "status": "resolved",
@@ -14167,7 +14197,7 @@
       "resolveReason": "review-gap: no uncollected cited reviews on the latest audit"
     },
     "roundup-gap:triumph-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Triumph: 1 roundup-listed review(s) still not captured",
       "firstSeen": "2026-10-09T21:35:00.212Z",
@@ -14177,7 +14207,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": "BRO-4943"
+      "linearIdentifier": "BRO-4943",
+      "resolvedAt": "2026-10-20T01:37:32.581Z",
+      "resolveReason": "per-show roundup-gap key retired by the rollup (BRO-5493); quiet past the incident gap"
     },
     "opening-night-publish-date-pre-opening:from-the-heart-west-end-2026": {
       "status": "resolved",
@@ -14477,13 +14509,13 @@
       "title": "Review gap — \"Fences\" missing 1 cited review(s)",
       "firstSeen": "2026-10-10T16:49:49.968Z",
       "incidentOpenedAt": "2026-10-10T16:49:49.968Z",
-      "lastSeen": "2026-10-19T22:58:17.106Z",
+      "lastSeen": "2026-10-20T01:37:32.430Z",
       "lastNotifiedAt": "2026-10-19T14:57:06.223Z",
       "lastSurfacedAt": "2026-10-19T14:57:06.223Z",
       "notifyCount": 11,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "land:land/bro-4977-wrong-show-and-page-bleed": {
       "status": "resolved",
@@ -14620,13 +14652,13 @@
       "title": "Review gap — \"The Virtuous Burglar\" missing 2 cited review(s)",
       "firstSeen": "2026-10-10T19:50:52.627Z",
       "incidentOpenedAt": "2026-10-10T19:50:52.627Z",
-      "lastSeen": "2026-10-19T22:58:17.265Z",
+      "lastSeen": "2026-10-20T01:37:32.554Z",
       "lastNotifiedAt": "2026-10-19T14:57:08.816Z",
       "lastSurfacedAt": "2026-10-19T14:57:08.816Z",
       "notifyCount": 11,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "land:land/bro-4956-land-base-reuse": {
       "status": "resolved",
@@ -14817,7 +14849,7 @@
       "resolveReason": "absent"
     },
     "roundup-gap:fish-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Fish: 6 roundup-listed review(s) still not captured",
       "firstSeen": "2026-10-11T02:30:20.779Z",
@@ -14828,7 +14860,9 @@
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": "BRO-5135",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-20T01:37:32.581Z",
+      "resolveReason": "per-show roundup-gap key retired by the rollup (BRO-5493); quiet past the incident gap"
     },
     "test-yml:red:Unit Tests:e6dd36bc": {
       "status": "resolved",
@@ -15218,13 +15252,13 @@
       "title": "Review gap — \"Fish\" missing 1 cited review(s)",
       "firstSeen": "2026-10-11T16:18:02.053Z",
       "incidentOpenedAt": "2026-10-16T05:39:49.543Z",
-      "lastSeen": "2026-10-19T22:58:17.117Z",
+      "lastSeen": "2026-10-20T01:37:32.438Z",
       "lastNotifiedAt": "2026-10-19T18:05:32.606Z",
       "lastSurfacedAt": "2026-10-19T18:05:32.606Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "review-gap:opening-window:hound-of-the-baskervilles-off-west-end-2026": {
       "status": "open",
@@ -15232,13 +15266,13 @@
       "title": "Review gap — \"Hound of the Baskervilles\" missing 9 cited review(s)",
       "firstSeen": "2026-10-11T16:18:02.065Z",
       "incidentOpenedAt": "2026-10-11T16:18:02.065Z",
-      "lastSeen": "2026-10-19T22:58:17.129Z",
+      "lastSeen": "2026-10-20T01:37:32.449Z",
       "lastNotifiedAt": "2026-10-19T14:57:06.243Z",
       "lastSurfacedAt": "2026-10-19T14:57:06.243Z",
       "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "test-yml:red:Unit Tests:fde8aaea": {
       "status": "resolved",
@@ -16297,13 +16331,12 @@
       "title": "Review gap — \"King Lear\" missing 2 cited review(s)",
       "firstSeen": "2026-10-12T23:33:06.497Z",
       "incidentOpenedAt": "2026-10-12T23:33:06.497Z",
-      "lastSeen": "2026-10-19T22:58:17.158Z",
-      "lastNotifiedAt": "2026-10-19T05:36:08.365Z",
-      "lastSurfacedAt": "2026-10-19T05:36:08.365Z",
-      "notifyCount": 8,
+      "lastSeen": "2026-10-20T01:37:32.475Z",
+      "lastNotifiedAt": "2026-10-20T01:37:32.475Z",
+      "lastSurfacedAt": "2026-10-20T01:37:32.475Z",
+      "notifyCount": 9,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 6
+      "linearIdentifier": null
     },
     "review-gap:opening-window:the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026": {
       "status": "open",
@@ -16311,13 +16344,12 @@
       "title": "Review gap — \"The Prime of Miss Jean Brodie\" missing 1 cited review(s)",
       "firstSeen": "2026-10-12T23:33:06.557Z",
       "incidentOpenedAt": "2026-10-12T23:33:06.557Z",
-      "lastSeen": "2026-10-19T22:58:17.256Z",
-      "lastNotifiedAt": "2026-10-19T05:36:08.502Z",
-      "lastSurfacedAt": "2026-10-19T05:36:08.502Z",
-      "notifyCount": 8,
+      "lastSeen": "2026-10-20T01:37:32.544Z",
+      "lastNotifiedAt": "2026-10-20T01:37:32.544Z",
+      "lastSurfacedAt": "2026-10-20T01:37:32.544Z",
+      "notifyCount": 9,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 6
+      "linearIdentifier": null
     },
     "land:land/bro-4317-orphan-report": {
       "status": "resolved",
@@ -16457,7 +16489,7 @@
       "linearIdentifier": null
     },
     "roundup-gap:the-ask-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "The Ask: 5 roundup-listed review(s) still not captured",
       "firstSeen": "2026-10-13T04:11:59.919Z",
@@ -16467,7 +16499,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": "BRO-5225"
+      "linearIdentifier": "BRO-5225",
+      "resolvedAt": "2026-10-20T01:37:32.581Z",
+      "resolveReason": "per-show roundup-gap key retired by the rollup (BRO-5493); quiet past the incident gap"
     },
     "imageless-scored-show:still-imageless:seven-methods-of-killing-kylie-jenner-west-end-2019": {
       "status": "resolved",
@@ -18267,13 +18301,13 @@
       "title": "Review gap — \"The Bodyguard\" missing 3 cited review(s)",
       "firstSeen": "2026-10-15T01:10:51.467Z",
       "incidentOpenedAt": "2026-10-15T01:10:51.467Z",
-      "lastSeen": "2026-10-19T22:58:17.242Z",
+      "lastSeen": "2026-10-20T01:37:32.534Z",
       "lastNotifiedAt": "2026-10-19T11:33:35.406Z",
       "lastSurfacedAt": "2026-10-19T11:33:35.406Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "review-gap:opening-window:unconditional-a-new-musical-memoir-off-broadway-2026": {
       "status": "resolved",
@@ -19119,13 +19153,13 @@
     "roundup-gap:all": {
       "status": "open",
       "disposition": "auto",
-      "title": "Roundup gaps: 36 listed review(s) not captured across 7 show(s)",
+      "title": "Roundup gaps: 12 listed review(s) not captured across 5 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-10-19T22:58:17.320Z",
-      "lastNotifiedAt": "2026-10-19T11:33:35.488Z",
+      "lastSeen": "2026-10-20T01:37:32.603Z",
+      "lastNotifiedAt": "2026-10-20T01:37:32.603Z",
       "lastSurfacedAt": null,
-      "notifyCount": 6,
+      "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": "BRO-5500",
       "rollupMembers": [
@@ -19143,8 +19177,7 @@
         "music-for-18-musicians-staged-variations-off-broadway-2026",
         "lincoln-in-the-bardo-off-broadway-2026",
         "copperfield-the-new-musical-off-broadway-2026"
-      ],
-      "silentRefires": 4
+      ]
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -19377,13 +19410,13 @@
       "title": "Review gap — \"Jane Eyre\" missing 5 cited review(s)",
       "firstSeen": "2026-10-16T20:46:15.505Z",
       "incidentOpenedAt": "2026-10-16T20:46:15.505Z",
-      "lastSeen": "2026-10-19T22:58:17.146Z",
+      "lastSeen": "2026-10-20T01:37:32.465Z",
       "lastNotifiedAt": "2026-10-19T11:33:35.309Z",
       "lastSurfacedAt": "2026-10-19T11:33:35.309Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "opening-night-remediation-exhausted-t1-missing:memoirs-of-amorous-gentlemen-off-broadway-2026": {
       "status": "open",
@@ -19790,13 +19823,13 @@
       "title": "Review gap — \"End of the World and Hard-Boiled Wonderland\" missing 1 cited review(s)",
       "firstSeen": "2026-10-17T14:24:41.997Z",
       "incidentOpenedAt": "2026-10-17T14:24:41.997Z",
-      "lastSeen": "2026-10-19T22:58:17.097Z",
+      "lastSeen": "2026-10-20T01:37:32.422Z",
       "lastNotifiedAt": "2026-10-19T11:33:35.253Z",
       "lastSurfacedAt": "2026-10-19T11:33:35.253Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "cron-health-failed:Clear Stale Wrong-Production Flags": {
       "status": "open",
@@ -20204,13 +20237,12 @@
       "title": "Review gap — \"Cadel: Lungs On Legs\" missing 1 cited review(s)",
       "firstSeen": "2026-10-18T05:25:48.007Z",
       "incidentOpenedAt": "2026-10-18T05:25:48.007Z",
-      "lastSeen": "2026-10-19T22:58:17.073Z",
-      "lastNotifiedAt": "2026-10-19T04:06:18.367Z",
-      "lastSurfacedAt": "2026-10-19T04:06:18.367Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-10-20T01:37:32.400Z",
+      "lastNotifiedAt": "2026-10-20T01:37:32.400Z",
+      "lastSurfacedAt": "2026-10-20T01:37:32.400Z",
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 7
+      "linearIdentifier": null
     },
     "land:land/bro-5344-excerpt-anchor": {
       "status": "resolved",
@@ -20359,13 +20391,13 @@
       "title": "Review gap — \"Larger Than Life: Starring Wallace & Gromit, Shaun and More\" missing 4 cited review(s)",
       "firstSeen": "2026-10-18T13:51:55.854Z",
       "incidentOpenedAt": "2026-10-18T13:51:55.854Z",
-      "lastSeen": "2026-10-19T22:58:17.176Z",
+      "lastSeen": "2026-10-20T01:37:32.493Z",
       "lastNotifiedAt": "2026-10-19T11:33:35.346Z",
       "lastSurfacedAt": "2026-10-19T11:33:35.346Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "land:land/job/linear-BRO-5626-mvduct1v": {
       "status": "resolved",
@@ -20800,16 +20832,15 @@
     "review-gap:opening-window:lincoln-in-the-bardo-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
-      "title": "Review gap — \"Lincoln in the Bardo\" missing 8 cited review(s)",
+      "title": "Review gap — \"Lincoln in the Bardo\" missing 5 cited review(s)",
       "firstSeen": "2026-10-19T04:06:18.503Z",
       "incidentOpenedAt": "2026-10-19T04:06:18.503Z",
-      "lastSeen": "2026-10-19T22:58:17.186Z",
-      "lastNotifiedAt": "2026-10-19T04:06:18.503Z",
-      "lastSurfacedAt": "2026-10-19T04:06:18.503Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-10-20T01:37:32.501Z",
+      "lastNotifiedAt": "2026-10-20T01:37:32.501Z",
+      "lastSurfacedAt": "2026-10-20T01:37:32.501Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 7
+      "linearIdentifier": null
     },
     "land:land/bro-5667-fantasy-measured-pricing": {
       "status": "resolved",
@@ -21439,13 +21470,13 @@
       "title": "Review gap — \"Copperfield! The New Musical\" missing 1 cited review(s)",
       "firstSeen": "2026-10-19T21:45:11.737Z",
       "incidentOpenedAt": "2026-10-19T21:45:11.737Z",
-      "lastSeen": "2026-10-19T22:58:17.083Z",
+      "lastSeen": "2026-10-20T01:37:32.411Z",
       "lastNotifiedAt": "2026-10-19T21:45:11.737Z",
       "lastSurfacedAt": "2026-10-19T21:45:11.737Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "backstop:slam-frank-off-broadway-2026/talkinbroadway--unknown.json": {
       "status": "open",
@@ -21480,12 +21511,13 @@
       "title": "Review gap — \"Baby\" missing 1 cited review(s)",
       "firstSeen": "2026-10-19T22:58:17.037Z",
       "incidentOpenedAt": "2026-10-19T22:58:17.037Z",
-      "lastSeen": "2026-10-19T22:58:17.037Z",
+      "lastSeen": "2026-10-20T01:37:32.375Z",
       "lastNotifiedAt": "2026-10-19T22:58:17.037Z",
       "lastSurfacedAt": "2026-10-19T22:58:17.037Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-5729-live-data-tests": {
       "status": "resolved",

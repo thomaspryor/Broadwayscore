@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-19T22:58:55.525Z",
+  "generatedAt": "2026-10-20T01:40:40.609Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -19,9 +19,9 @@
       "openingDate": "2026-10-16"
     },
     {
-      "id": "the-cherry-orchard-west-end-2026",
-      "title": "The Cherry Orchard",
-      "openingDate": "2026-10-13"
+      "id": "the-curious-case-of-benjamin-button-off-broadway-2026",
+      "title": "The Curious Case of Benjamin Button",
+      "openingDate": "2026-10-21"
     },
     {
       "id": "some-woman-west-end-2026",
@@ -84,11 +84,6 @@
       "openingDate": "2026-10-18"
     },
     {
-      "id": "the-ask-off-broadway-2026",
-      "title": "The Ask",
-      "openingDate": "2026-10-13"
-    },
-    {
       "id": "sea-wall-off-broadway-2026",
       "title": "Sea Wall",
       "openingDate": "2026-10-16"
@@ -124,11 +119,6 @@
       "openingDate": "2026-10-18"
     },
     {
-      "id": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
-      "title": "The Banality of Evil: Hannah Arendt, France 1940",
-      "openingDate": "2026-10-13"
-    },
-    {
       "id": "baby-off-west-end-2026",
       "title": "Baby",
       "openingDate": "2026-10-14"
@@ -155,6 +145,10 @@
     }
   ],
   "skipped": [
+    {
+      "showId": "billy-crystal-860-2026",
+      "reason": "no data/review-texts directory for this show"
+    },
     {
       "showId": "machine-learning-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
@@ -203,10 +197,28 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 710,
-  "matchedGaps": 1,
-  "possibleGaps": 8,
+  "itemsScanned": 711,
+  "matchedGaps": 3,
+  "possibleGaps": 5,
   "gaps": [
+    {
+      "showId": "king-of-the-yees-off-broadway-2026",
+      "title": "King of the Yees",
+      "level": "matched",
+      "outletId": "culturesauce",
+      "url": "https://culturesauce.com/king-of-the-yees-takes-an-antic-tour-through-chinatown-off-broadway-review/",
+      "headline": "&#8216;King of the Yees&#8217; takes an antic tour through Chinatown (Off Broadway review)",
+      "publishDate": "2026-10-19"
+    },
+    {
+      "showId": "lincoln-in-the-bardo-off-broadway-2026",
+      "title": "Lincoln in the Bardo",
+      "level": "matched",
+      "outletId": "operawire",
+      "url": "https://operawire.com/dua-lipa-attends-metropolitan-operas-lincoln-in-bardo/",
+      "headline": "Dua Lipa Attends Metropolitan Opera’s ‘Lincoln in the Bardo’",
+      "publishDate": "2026-10-19"
+    },
     {
       "showId": "triumph-off-west-end-2026",
       "title": "Triumph",
@@ -251,33 +263,6 @@
       "url": "https://standard.co.uk/culture/theatre/midnight-at-the-never-get-review-b1290727.html",
       "headline": "Midnight at the Never Get: Polished if schmaltzy musical",
       "publishDate": null
-    },
-    {
-      "showId": "the-ask-off-broadway-2026",
-      "title": "The Ask",
-      "level": "possible",
-      "outletId": "the-interested-bystander",
-      "url": "https://www.interestedbystander.com/2026/10/theater-reviews-midnight-is-unique-and.html",
-      "headline": "Theater Reviews: “Midnight” Is a Unique and Visionary Musical About Slavery; “School Girls” Is An Enjoyable Broadway Romp; “Slam Frank” Invents a Hip-Hop Anne Frank; and What Is “The Ask” Actually Asking?",
-      "publishDate": "2026-10-15"
-    },
-    {
-      "showId": "the-ask-off-broadway-2026",
-      "title": "The Ask",
-      "level": "possible",
-      "outletId": "jackstage",
-      "url": "https://www.jackstage.co.uk/post/opera-north-s-rigoletto-review-verdi-s-tragedy-offered-a-progressive-viewpoint",
-      "headline": "Opera North's Rigoletto Review: Verdi's tragedy offered a progressive viewpoint",
-      "publishDate": "2026-10-19"
-    },
-    {
-      "showId": "the-cherry-orchard-west-end-2026",
-      "title": "The Cherry Orchard",
-      "level": "possible",
-      "outletId": "west-end-wilma",
-      "url": "https://westendwilma.com/review-conor-mcphersons-the-seafarer-greenwich-theatre/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=review-conor-mcphersons-the-seafarer-greenwich-theatre",
-      "headline": "REVIEW: 20th anniversary revival of Conor McPherson&#8217;s THE SEAFARER",
-      "publishDate": "2026-10-16"
     },
     {
       "showId": "triumph-off-west-end-2026",
