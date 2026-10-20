@@ -2489,6 +2489,12 @@ function weBroadwaySection() {
     if (Math.round(ar) === Math.round(br)) return (b.agg.count ?? 0) - (a.agg.count ?? 0);
     return br - ar;
   });
+  // Editorial override applies to both the cards and the subject candidate feed.
+  const bwWeLead = (process.env.NEWSLETTER_BW_WE_LEAD || '').trim();
+  if (bwWeLead) {
+    const i = withScore.findIndex(x => x.s.id === bwWeLead);
+    if (i > 0) withScore.unshift(withScore.splice(i, 1)[0]);
+  }
   markFeatured(...withScore.map(x => x.s.id));
   markOpening('broadway-we', withScore.map(x => x.s));
   const cards = withScore.map(x => showRow(x.s)).join('');

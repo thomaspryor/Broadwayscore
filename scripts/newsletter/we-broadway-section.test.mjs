@@ -49,16 +49,19 @@ const OB_SHOW_TITLE = 'The Real Ivanov';
 
 function runGenerator(weekStart, extraEnv = {}) {
   const outDir = fs.mkdtempSync(path.join(os.tmpdir(), 'we-broadway-section-test-'));
-  execFileSync('node', [path.join(repoRoot, 'scripts/newsletter/generate.mjs'), weekStart], {
-    cwd: repoRoot,
-    env: { ...process.env, NEWSLETTER_OUT_DIR: outDir, NEWSLETTER_STATE_PATH: STATE_SANDBOX, ...extraEnv },
-    stdio: 'pipe',
-    timeout: 60_000,
-  });
-  const meta = JSON.parse(fs.readFileSync(path.join(outDir, `A-${weekStart}.meta.json`), 'utf8'));
-  const html = fs.readFileSync(path.join(outDir, `A-${weekStart}.html`), 'utf8');
-  fs.rmSync(outDir, { recursive: true, force: true });
-  return { meta, html };
+  try {
+    execFileSync('node', [path.join(repoRoot, 'scripts/newsletter/generate.mjs'), weekStart], {
+      cwd: repoRoot,
+      env: { ...process.env, NEWSLETTER_EDITION: 'broadway', NEWSLETTER_BW_WE_LEAD: '', GA4_PROPERTY_ID: '', NEWSLETTER_OUT_DIR: outDir, NEWSLETTER_STATE_PATH: STATE_SANDBOX, ...extraEnv },
+      stdio: 'pipe',
+      timeout: 60_000,
+    });
+    const meta = JSON.parse(fs.readFileSync(path.join(outDir, `A-${weekStart}.meta.json`), 'utf8'));
+    const html = fs.readFileSync(path.join(outDir, `A-${weekStart}.html`), 'utf8');
+    return { meta, html };
+  } finally {
+    fs.rmSync(outDir, { recursive: true, force: true });
+  }
 }
 
 test('west-end edition renders a Broadway section for a week with a Broadway opening', () => {
@@ -89,4 +92,54 @@ test('broadway edition never renders a broadway-we section', () => {
   const { meta } = runGenerator(WEEK_START);
   const section = meta.sections.find((s) => s.name === 'broadway-we');
   if (section) assert.equal(section.fired, false, 'expected broadway-we to never fire in the Broadway edition');
+});
+
+// Use three real Broadway openings from one week, with their real reviews,
+// to isolate the secondary feed from London's primary stories. Exercise the
+// composer itself so both its returned list and subject feed are covered.
+test('NEWSLETTER_BW_WE_LEAD keeps cards, subject, and lede in editorial order', () => {
+  const ids = ['fallen-angels-2026', 'proof-2026', 'the-fear-of-13-2026'];
+  const { shows } = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/shows.json'), 'utf8'));
+  const { reviews } = JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/reviews.json'), 'utf8'));
+  const selected = shows.filter(s => ids.includes(s.id));
+  assert.equal(selected.length, 3);
+  const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'bw-we-lead-data-'));
+  try {
+    const showsPath = path.join(dataDir, 'shows.json');
+    const reviewsPath = path.join(dataDir, 'reviews.json');
+    fs.writeFileSync(showsPath, JSON.stringify({ shows: selected }));
+    fs.writeFileSync(reviewsPath, JSON.stringify({ reviews: reviews.filter(r => ids.includes(r.showId)) }));
+    const env = { NEWSLETTER_EDITION: 'west-end', NEWSLETTER_TEST_SHOWS_PATH: showsPath, NEWSLETTER_TEST_REVIEWS_PATH: reviewsPath };
+    const baseline = runGenerator('2026-04-13', env);
+    const baselineIds = baseline.meta.openingShows.map(s => s.id);
+    assert.deepEqual(baselineIds, ids);
+    for (const override of ['proof-2026', '  the-fear-of-13-2026  ', ids[0], 'missing-show', '']) {
+      const lead = ids.includes(override.trim()) ? override.trim() : baselineIds[0];
+      const expected = [lead, ...baselineIds.filter(id => id !== lead)];
+      const { meta, html } = runGenerator('2026-04-13', { ...env, NEWSLETTER_BW_WE_LEAD: override });
+      assert.deepEqual(meta.openingShows.map(s => s.id), expected, override);
+      assert.equal(meta.ledeShows[0].id, lead, override);
+      assert.ok(meta.subject.startsWith(selected.find(s => s.id === lead).title), meta.subject);
+      const heading = html.indexOf('Opened on Broadway');
+      assert.ok(heading >= 0);
+      const positions = expected.map(id => html.indexOf(selected.find(s => s.id === id).title, heading));
+      assert.ok(positions.every((position, i) => position > heading && (i === 0 || position > positions[i - 1])), override);
+    }
+  } finally {
+    fs.rmSync(dataDir, { recursive: true, force: true });
+  }
+});
+
+test('Broadway editorial override stays secondary to real West End stories', () => {
+  const { meta } = runGenerator('2026-04-13', { NEWSLETTER_EDITION: 'west-end', NEWSLETTER_BW_WE_LEAD: 'proof-2026' });
+  assert.equal(meta.openingShows.find(s => s.category === 'broadway').id, 'proof-2026');
+  assert.equal(meta.ledeShows[0].id, 'avenue-q-west-end-2026');
+});
+
+test('NEWSLETTER_BW_WE_LEAD leaves the Broadway edition unchanged', () => {
+  const baseline = runGenerator('2026-04-13');
+  const overridden = runGenerator('2026-04-13', { NEWSLETTER_BW_WE_LEAD: 'proof-2026' });
+  assert.deepEqual(overridden.meta.openingShows, baseline.meta.openingShows);
+  assert.equal(overridden.meta.subject, baseline.meta.subject);
+  assert.deepEqual(overridden.meta.ledeShows, baseline.meta.ledeShows);
 });
