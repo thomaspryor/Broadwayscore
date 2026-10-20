@@ -660,12 +660,19 @@ test('rerun scope: bash-integration runs in full on budget-cut keys, timeouts, s
     ['a script that timed out', bashRed('bash-integration', ['scripts/lib/a.test.sh (exit 124)']), /timeout/],
     ['a path the gate never ran', bashRed('bash-integration', ['scripts/lib/zzz.test.sh (exit 1)']), /not a script of this gate/],
     ['a crash with nothing parsed', { exit: 1, root: ROOT, text: 'boom' }, /no failure could be parsed/],
+    ['a timeout line with trailing spaces and CRLF', { exit: 1, root: ROOT, text: '::error::bash-integration gate failed: scripts/lib/a.test.sh (exit 124)  \r\n' }, /timeout/],
   ];
   for (const [label, branch, re] of cases) {
     const d = computeRerunScope({ gate: 'bash-integration', branch, branchFiles: BASH_RAN });
     assert.equal(d.scoped, false, label);
     assert.match(d.reason, re, label);
   }
+});
+
+test('rerun scope: toplevel-regression timeout forces a full re-check', () => {
+  const d = computeRerunScope({ gate: 'toplevel-regression', branch: bashRed('toplevel-regression', ['scripts/test-x.js (exit 124)']), branchFiles: ['scripts/test-x.js'] });
+  assert.equal(d.scoped, false);
+  assert.match(d.reason, /timeout/);
 });
 
 test('--rerun-scope CLI scopes bash-integration from bash-integration.files', () => {

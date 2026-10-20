@@ -329,7 +329,7 @@ function computeRerunScope({ gate, branch, branchFiles }) {
     for (const f of failures.values()) {
       if (/\[budget-exceeded-[^\]]*\]/.test(f.name)) return full(`budget-exceeded key "${f.name}"`);
     }
-    const t = /^::error::\S+ gate failed: (.+?) \(exit 124\)$/m.exec(stripAnsi(branch.text).replace(/\r/g, ''));
+    const t = /^::error::\S+ gate failed: (.+?) \(exit 124\)$/m.exec(stripAnsi(branch.text).replace(/\r/g, '').replace(/[ \t]+$/gm, ''));
     if (t) return full(`timeout (exit 124) "${t[1]}"`);
     for (const f of failures.values()) {
       const file = normalizeTestPath(f.name);
