@@ -171,6 +171,15 @@ test('.claude/CLOUD.md stays under its byte cap', () => {
   assert.ok(bytes <= CLOUD_MD_MAX_BYTES, `.claude/CLOUD.md is ${bytes}B (cap ${CLOUD_MD_MAX_BYTES}B): trim narrative, keep rules`);
 });
 
+// BRO-5732: two landings each fit under the cap alone but not together (3B of
+// headroom, then 503B over, BRO-5648). Requiring headroom makes the landing
+// that eats the margin fail its own gauntlet, so trim happens in that PR.
+const CLOUD_MD_MIN_HEADROOM_BYTES = 256;
+test('.claude/CLOUD.md keeps headroom under its byte cap', () => {
+  const bytes = fs.statSync(path.join(REPO_ROOT, '.claude', 'CLOUD.md')).size;
+  assert.ok(CLOUD_MD_MAX_BYTES - bytes >= CLOUD_MD_MIN_HEADROOM_BYTES, `.claude/CLOUD.md is ${bytes}B, ${CLOUD_MD_MAX_BYTES - bytes}B under the cap (need ${CLOUD_MD_MIN_HEADROOM_BYTES}B headroom): trim narrative before adding`);
+});
+
 // BRO-5072: AGENTS.md (Codex) points at CLAUDE.md instead of copying it; the
 // copies drifted. A cap stops them growing back.
 const AGENTS_MD_MAX_BYTES = 4 * 1024;
