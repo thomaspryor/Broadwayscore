@@ -1015,3 +1015,38 @@ test('prLanderEmail: one end-of-run email whose subject answers "is it live?" (B
   assert.match(wf, /RESEND_API_KEY: \$\{\{ secrets\.RESEND_API_KEY \}\}/);
   assert.match(wf, /OWNER_EMAIL: \$\{\{ secrets\.OWNER_EMAIL \}\}/);
 });
+
+test('lanes (BRO-5730): cloud owns slots 0-2, gha 3-4, and no two lanes share a slot or lock', () => {
+  assert.deepEqual(r.laneSlotList('cloud'), [0, 1, 2]);
+  assert.deepEqual(r.laneSlotList('gha'), [3, 4]);
+  assert.deepEqual(r.laneSlotList('all'), [0, 1, 2, 3, 4]);
+  assert.equal(r.laneSlotList('nope'), null);
+  assert.equal(r.MAX_SLOTS, 5);
+  const all = Object.keys(r.LANES).flatMap((k) => r.laneSlotList(k));
+  assert.equal(new Set(all).size, all.length, 'lanes overlap');
+  assert.equal(new Set(all.map((k) => r.slotNames(k).lockRef)).size, all.length);
+});
+
+test('laneForLogin: gha runs on its own slots only when the login outlives the run, else slot 0 alone', () => {
+  const now = Date.parse('2026-10-20T10:00:00Z');
+  const jwt = (exp) => `e30.${Buffer.from(JSON.stringify({ exp: Math.floor(exp / 1000) })).toString('base64url')}.sig`;
+  const auth = (exp) => JSON.stringify({ tokens: { access_token: jwt(exp) } });
+  const runMs = 290 * 60_000;
+  const fresh = auth(now + 5 * 24 * 3600_000);
+  assert.deepEqual(r.laneForLogin({ lane: 'gha', slots: 2, authText: fresh, nowMs: now, runMs }), { lane: 'gha', base: 3, slots: 2, why: null });
+  assert.equal(r.laneForLogin({ lane: 'gha', slots: 9, authText: fresh, nowMs: now, runMs }).slots, 2, 'capped at the lane max');
+  const soon = r.laneForLogin({ lane: 'gha', slots: 2, authText: auth(now + 60 * 60_000), nowMs: now, runMs });
+  assert.deepEqual([soon.lane, soon.base, soon.slots], ['cloud', 0, 1]);
+  assert.match(soon.why, /gha lane falls back to slot 0/);
+  assert.deepEqual([r.laneForLogin({ lane: 'gha', slots: 2, authText: 'not json', nowMs: now, runMs }).base], [0], 'unreadable fails safe');
+  assert.deepEqual(r.laneForLogin({ lane: 'cloud', slots: 3, authText: fresh, nowMs: now, runMs }), { lane: 'cloud', base: 0, slots: 3, why: null });
+  assert.equal(r.laneForLogin({ lane: 'cloud', slots: 3, authText: auth(now + 60 * 60_000), nowMs: now, runMs }).slots, 1);
+  assert.equal(r.loginExpiryWhy({ authText: fresh, nowMs: now, runMs }), null);
+});
+
+test('cardsInLocks: the cards other slots\' run locks name', () => {
+  const s = r.cardsInLocks(['locked 2026-10-20T10:00:00Z cards=BRO-1,BRO-22', 'released 2026-10-20T09:00:00Z', 'locked 2026-10-20T10:00:00Z cards=BRO-3']);
+  assert.deepEqual([...s].sort(), ['BRO-1', 'BRO-22', 'BRO-3']);
+  assert.equal(r.cardsInLocks([]).size, 0);
+  assert.equal(r.cardsInLocks(null).size, 0);
+});

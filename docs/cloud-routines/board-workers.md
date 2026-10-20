@@ -29,7 +29,7 @@ the owner to do anything on a Mac.
 ## 1. Codex lane (start first, in the background)
 
 Skip this lane if `pgrep -f scripts/codex/daily-runner.js` finds one in this
-container, or if `node scripts/codex/daily-runner.js --lock-status` exits 3: a
+container, or if `node scripts/codex/daily-runner.js --lock-status --lane cloud` exits 3: a
 runner in another session (an earlier firing's session lives for hours) holds
 the run lock. Exit 0 means no live runner anywhere: start it. Exit 4 (lock
 unreadable): start it anyway, the runner re-checks and waits its turn.

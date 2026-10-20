@@ -522,11 +522,55 @@ function jwtExpMs(token) {
  */
 function slotsForLogin({ slots, authText, nowMs, runMs, marginMs = 30 * 60_000 }) {
   if (!(slots > 1)) return { slots: 1, why: null };
+  const why = loginExpiryWhy({ authText, nowMs, runMs, marginMs });
+  return why ? { slots: 1, why } : { slots, why: null };
+}
+
+/** Why the Codex login could be refreshed during a run of runMs (null: it outlives the run plus margin). */
+function loginExpiryWhy({ authText, nowMs, runMs, marginMs = 30 * 60_000 }) {
   let exp = NaN;
   try { exp = jwtExpMs(JSON.parse(authText).tokens.access_token); } catch { /* unreadable */ }
-  if (!Number.isFinite(exp)) return { slots: 1, why: 'the Codex login expiry is unreadable' };
-  if (exp - nowMs < runMs + marginMs) return { slots: 1, why: `the Codex login expires ${new Date(exp).toISOString()}, within this run, so one Codex process refreshes it` };
-  return { slots, why: null };
+  if (!Number.isFinite(exp)) return 'the Codex login expiry is unreadable';
+  if (exp - nowMs < runMs + marginMs) return `the Codex login expires ${new Date(exp).toISOString()}, within this run, so one Codex process refreshes it`;
+  return null;
+}
+
+/**
+ * Codex lanes (BRO-5730). Each lane owns its own slots, so the cloud routine (cloud) and the
+ * GitHub runner (gha) run at the same time without sharing a slot's lock or worktrees.
+ * MAX_SLOTS covers every lane: --lock-status reads all of their locks.
+ */
+const LANES = { cloud: { base: 0, max: 3 }, gha: { base: 3, max: 2 } };
+const MAX_SLOTS = Math.max(...Object.values(LANES).map((l) => l.base + l.max));
+/** The slot numbers of a lane, or of every lane for 'all'; null for an unknown lane. */
+function laneSlotList(lane) {
+  if (lane === 'all') return [...Array(MAX_SLOTS).keys()];
+  const l = LANES[lane];
+  return l ? [...Array(l.max).keys()].map((k) => l.base + k) : null;
+}
+
+/**
+ * Where a launch runs: { lane, base, slots, why }. Lanes run at once in separate containers,
+ * each with its own copy of the rotating login, so a lane past the first runs only when the
+ * login outlives its whole run (no refresh anywhere). Otherwise it falls back to the cloud
+ * lane's slot 0 with one slot: that lock is the one the cloud routine takes first, so the two
+ * never run Codex side by side on a login that may refresh.
+ */
+function laneForLogin({ lane = 'cloud', slots, authText, nowMs, runMs, marginMs = 30 * 60_000 }) {
+  const l = LANES[lane] || LANES.cloud;
+  const want = Math.max(1, Math.min(Number(slots) || 1, l.max));
+  if (l.base > 0) {
+    const why = loginExpiryWhy({ authText, nowMs, runMs, marginMs });
+    if (why) return { lane: 'cloud', base: 0, slots: 1, why: `${why}; ${lane} lane falls back to slot 0` };
+    return { lane, base: l.base, slots: want, why: null };
+  }
+  const plan = slotsForLogin({ slots: want, authText, nowMs, runMs, marginMs });
+  return { lane, base: l.base, ...plan };
+}
+
+/** Card ids named by a set of lock commit subjects (other slots' run locks). */
+function cardsInLocks(subjects) {
+  return new Set((subjects || []).flatMap((s) => lockCards(s)));
 }
 
 /**
@@ -1113,6 +1157,12 @@ module.exports = {
   slotNames,
   jwtExpMs,
   slotsForLogin,
+  loginExpiryWhy,
+  LANES,
+  MAX_SLOTS,
+  laneSlotList,
+  laneForLogin,
+  cardsInLocks,
   SWF_CARRY_MARKER,
   swfCarryBody,
   parseSwfCarry,

@@ -215,9 +215,10 @@ async function main() {
   // weekly cap, login gone, run over) or unknown bounce state: everything, as before.
   let claudeQueue = queue;
   let leftToCodex = [];
-  if (commentsRead && !process.argv.includes('--no-codex-first') && codexRunnerLive()) {
+  const codexCap = commentsRead && !process.argv.includes('--no-codex-first') ? codexLiveCap() : 0;
+  if (codexCap > 0) {
     const { leaveCodexCards } = require('./lib/cloud-worker-pick.js');
-    ({ queue: claudeQueue, left: leftToCodex } = leaveCodexCards(queue, { nowMs, verifyOf: verifyCommand, cap: CODEX_FIRING_CARDS }));
+    ({ queue: claudeQueue, left: leftToCodex } = leaveCodexCards(queue, { nowMs, verifyOf: verifyCommand, cap: codexCap }));
   }
   const chosen = await firstUnpaused(claudeQueue, nowMs, historySkipped);
   const pick = chosen && chosen.issue;
@@ -238,14 +239,22 @@ async function main() {
   }
 }
 
-// Cards one Codex firing works (docs/cloud-routines/board-workers.md: --slots 3 --limit 9).
-const CODEX_FIRING_CARDS = 9;
+// Cards one Codex firing works per lane (docs/cloud-routines/board-workers.md: --slots 3 --limit 9;
+// .github/workflows/codex-runner.yml: --lane gha --limit 8).
+const CODEX_FIRING_CARDS = { cloud: 9, gha: 8 };
 
-/** True while a Codex runner holds a run lock (daily-runner.js --lock-status exits 3). Unknown: false. */
-function codexRunnerLive() {
+/**
+ * Cards the live Codex lanes will take: the sum over lanes holding a run lock
+ * (daily-runner.js --lock-status prints "held slots: 0,3"). Unknown or none: 0.
+ */
+function codexLiveCap() {
   const { spawnSync } = require('child_process');
-  const r = spawnSync(process.execPath, [require('path').join(__dirname, 'codex', 'daily-runner.js'), '--lock-status'], { encoding: 'utf8', timeout: 180_000 });
-  return r.status === 3;
+  const { LANES } = require('./lib/codex-runner.js');
+  const r = spawnSync(process.execPath, [require('path').join(__dirname, 'codex', 'daily-runner.js'), '--lock-status', '--lane', 'all'], { encoding: 'utf8', timeout: 180_000 });
+  if (r.status !== 3) return 0;
+  const m = String(r.stdout || '').match(/^held slots: ([\d,]+)$/m);
+  const held = m ? m[1].split(',').map(Number) : [0];
+  return Object.entries(LANES).reduce((n, [lane, l]) => n + (held.some((k) => k >= l.base && k < l.base + l.max) ? CODEX_FIRING_CARDS[lane] || 0 : 0), 0);
 }
 
 /** `--list=N` as a positive integer, 0 when absent; a malformed value is an error, never the single-pick output. */

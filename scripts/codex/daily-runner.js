@@ -9,8 +9,8 @@
  *   node scripts/codex/daily-runner.js [--limit 10] [--ids BRO-1,BRO-2]
  *        [--max-minutes 420] [--max-weekly-pct 60] [--no-land] [--dry-run]
  *        [--check-max-usd 4] [--check-budget-usd 30] [--card-max-minutes 120]
- *        [--hard-stop-minutes 112] [--slots 3]
- *   node scripts/codex/daily-runner.js --lock-status   (exit 0 free, 3 a live run holds it, 4 unreadable)
+ *        [--hard-stop-minutes 112] [--slots 3] [--lane cloud|gha]
+ *   node scripts/codex/daily-runner.js --lock-status [--lane cloud|gha|all]   (exit 0 free, 3 a live run holds it, 4 unreadable)
  *   node scripts/codex/daily-runner.js --pr N [--head-sha SHA] [--no-land] [--retry]
  *        (BRO-5646, codex-pr-lander.yml: one Codex cloud PR through the same land checks,
  *        Claude check and land/ push as a card, no run lock or Linear card; see runPr)
@@ -41,6 +41,8 @@
  * dir: a card taken there is never claimed by a second slot, land checks run one slot at a
  * time (CPU), and a STOP file from a Codex failure or a Done refusal stops every slot. One slot
  * only when the Codex login could expire mid-run (R.slotsForLogin: one process refreshes it).
+ * --lane (BRO-5730): the cloud lane runs slots 0-2, the gha lane (GitHub runner) slots 3-4, so both
+ * run at once. Before claiming a card a runner names it in its lock and reads the other locks.
  *
  * Stops early on the time budget, the Codex weekly cap, 3 REJECTs in a row,
  * or a Done refusal (scripts/lib/codex-runner.js stopReason). A crash returns
@@ -111,6 +113,8 @@ const OPTS = {
   // (BRO-5287). Cards, fix rounds and landing waits are all cut to fit inside it.
   hardStopMinutes: Number(arg('hard-stop-minutes', 0)),
   slots: Number(arg('slots', 1)) || 1,
+  // --lane cloud|gha (BRO-5730): which slots a launch runs (R.LANES). The cloud routine is cloud, the GitHub runner gha.
+  lane: String(arg('lane', 'cloud')),
   pickList: Number(arg('pick-list', 0)) || 0,
 };
 // --pr N (BRO-5646): land one Codex cloud pull request instead of working cards (runPr).
@@ -691,12 +695,18 @@ async function workCard(pick, stats, inFlight) {
   const carry = R.parseSwfCarry(comments, Date.now());
   if (OPTS.dryRun) { log(`dry-run: would work ${id} "${card.title}" (${body.length} chars with comments${carry ? ', resuming a carried fix round' : ''})`); return 'skip'; }
   if (!takeCardInRun(id)) { log(`${id}: another slot of this launch has it, skipped`); return 'skip'; }
+  // Across lanes (BRO-5730): name the card in our lock first, then read every other slot's lock.
+  // Two runners that both stamp before they read cannot both miss each other; both may back off.
+  openCards.add(id);
+  if (!lockStamped()) { dropOpenCard(id); log(`${id}: could not name it in the run lock first, skipped`); return 'skip'; }
+  const rival = otherLockCards();
+  if (rival && rival.has(id)) { dropOpenCard(id); log(`${id}: another Codex lane's run lock names it, skipped`); return 'skip'; }
 
   const claimedMs = Date.now();
   const claim = sh('node', ['scripts/linear-session.js', 'claim', `--issue=${id}`, '--worker-model=codex'], { timeoutMs: 900_000 });
   const claimJson = (claim.stdout.split('\n').reverse().find((l) => l.startsWith('{')) || '{}');
   let action = null; try { action = JSON.parse(claimJson).action; } catch { /* unparseable claim output */ }
-  if (claim.code !== 0 || !action || action === 'noop') { log(`${id}: claim ${action || 'failed'}, skipped`); return 'skip'; }
+  if (claim.code !== 0 || !action || action === 'noop') { dropOpenCard(id); log(`${id}: claim ${action || 'failed'}, skipped`); return 'skip'; }
   stats.claimed.push(id);
   current = id;
   openCards.add(id);
@@ -1094,6 +1104,30 @@ function refreshLock(nextBlockMs = 0) {
   log(`lock not re-stamped (${res.state}); last good stamp ${Math.round((Date.now() - lastStampOkMs) / 60_000)} min ago -> ${tooOld ? 'stopping' : 'still held'}`);
   return !tooOld;
 }
+/** Stamp the lock now (openCards changed before a claim). -> false when it could not be stamped. */
+function lockStamped() {
+  try { return refreshLock() && lockSha !== null; } catch { return false; }
+}
+function dropOpenCard(id) {
+  openCards.delete(id);
+  try { refreshLock(); } catch { /* the next stamp drops it */ }
+}
+/**
+ * Cards named by every other slot's run lock (R.cardsInLocks), any lane. One ls-remote and one
+ * fetch for all of them. null when unreadable: the caller goes on, and the claim's own
+ * started-state check still stops a second claim.
+ */
+function otherLockCards() {
+  const refs = [...Array(MAX_SLOTS).keys()].map((k) => R.slotNames(k).lockRef).filter((r) => r !== LOCK_REF);
+  const ls = sh('git', ['ls-remote', 'origin', ...refs], { timeoutMs: LOCK_GIT_MS });
+  if (ls.code !== 0) return null;
+  const shas = ls.stdout.split('\n').map((l) => l.split(/\s+/)[0]).filter((x) => /^[0-9a-f]{40}$/.test(x));
+  if (!shas.length) return new Set();
+  const f = sh('git', ['fetch', '-q', 'origin', ...refs.filter((r) => ls.stdout.includes(r))], { cwd: ROOT, timeoutMs: LOCK_GIT_MS }); // unbounded-fetch-ok: lock commits are parentless, one commit each
+  if (f.code !== 0) return null;
+  const subjects = shas.map((sha) => sh('git', ['log', '-1', '--format=%s', sha], { cwd: ROOT }).stdout.trim());
+  return R.cardsInLocks(subjects);
+}
 function releaseLock() {
   if (!lockSha) return;
   // Unfinished cards (landing still pending): keep the lock stamped with them, so the run
@@ -1134,8 +1168,8 @@ for (const sig of ['SIGTERM', 'SIGINT', 'SIGHUP']) {
   });
 }
 
-// Slots any launch may run; --lock-status reads every one of their locks.
-const MAX_SLOTS = 4;
+// Slots any launch may run, over every lane; --lock-status reads every one of their locks.
+const MAX_SLOTS = R.MAX_SLOTS;
 const SLOT_STAGGER_MS = 2 * 60_000;
 
 /** Fresh cloud containers do not ship the Codex CLI: install the pinned version; exit 2 if a tool is missing. */
@@ -1164,29 +1198,31 @@ function ensureTools({ codex = true } = {}) {
  */
 async function launchSlots() {
   ensureTools(); // once, before the slots: concurrent `npm i -g` would race
-  if (OPTS.slots > MAX_SLOTS) { log(`--slots ${OPTS.slots} is over ${MAX_SLOTS}; running ${MAX_SLOTS}`); OPTS.slots = MAX_SLOTS; }
+  const laneMax = R.LANES[OPTS.lane].max;
+  if (OPTS.slots > laneMax) { log(`--slots ${OPTS.slots} is over the ${OPTS.lane} lane's ${laneMax}; running ${laneMax}`); OPTS.slots = laneMax; }
   const restore = sh('node', ['scripts/codex/auth-store.js', 'restore'], { timeoutMs: 900_000 });
   log(restore.out.trim());
   let authText = '';
   try { authText = fs.readFileSync(path.join(CODEX_HOME, 'auth.json'), 'utf8'); } catch { /* slot 0 reports a missing login */ }
   const runMs = (Number.isFinite(HARD_END_MS) ? HARD_END_MS : RUN_STARTED_MS + OPTS.maxMinutes * 60_000) - Date.now();
-  const plan = restore.code === 0 ? R.slotsForLogin({ slots: OPTS.slots, authText, nowMs: Date.now(), runMs }) : { slots: 1, why: 'the Codex login did not restore' };
+  // The lane's slots (R.laneForLogin): a later lane falls back to slot 0 when the login may refresh.
+  const plan = restore.code === 0 ? R.laneForLogin({ lane: OPTS.lane, slots: OPTS.slots, authText, nowMs: Date.now(), runMs }) : { lane: 'cloud', base: 0, slots: 1, why: 'the Codex login did not restore' };
   authText = '';
   pruneDisk();
   const missingBySlot = [...Array(plan.slots).keys()].map((k) => {
-    const n = R.slotNames(k);
+    const n = R.slotNames(plan.base + k);
     return [n.wt, n.base].filter((w) => !fs.existsSync(path.join(ROOT, '.claude/worktrees', w, '.git'))).length;
   });
   const disk = R.slotsForDisk({ slots: plan.slots, freeBytes: freeDisk(), missingBySlot });
   if (disk.slots < plan.slots) Object.assign(plan, { slots: disk.slots, why: [plan.why, disk.why].filter(Boolean).join('; ') });
-  log(`launching ${plan.slots} slot(s)${plan.why ? ` instead of ${OPTS.slots}: ${plan.why}` : ''}`);
+  log(`launching ${plan.slots} slot(s) from slot ${plan.base} (${plan.lane} lane)${plan.why ? ` instead of ${OPTS.slots}: ${plan.why}` : ''}`);
   // One slot: no run dir, so it runs exactly as a lone runner (2 landings in flight, plain summary).
   const runDir = plan.slots > 1 ? fs.mkdtempSync(path.join(LOG_DIR, 'launch-')) : '';
   const exits = [];
   for (let k = 0; k < plan.slots; k++) {
     if (k) await sleep(SLOT_STAGGER_MS);
     if (dying || (runDir && fs.existsSync(path.join(runDir, 'STOP')))) break;
-    const args = R.slotArgs(process.argv.slice(2), { slot: k, runDir, runStartedMs: RUN_STARTED_MS, limit: Math.ceil(OPTS.limit / plan.slots), checkBudgetUsd: OPTS.checkBudgetUsd / plan.slots, pickList: OPTS.limit + 5 * plan.slots });
+    const args = R.slotArgs(process.argv.slice(2), { slot: plan.base + k, runDir, runStartedMs: RUN_STARTED_MS, limit: Math.ceil(OPTS.limit / plan.slots), checkBudgetUsd: OPTS.checkBudgetUsd / plan.slots, pickList: OPTS.limit + 5 * plan.slots });
     const child = spawn(process.execPath, [__filename, ...args], { cwd: ROOT, stdio: 'inherit' });
     slotChildren.push(child);
     exits.push(new Promise((res) => child.on('exit', (code) => res(code == null ? 1 : code))));
@@ -1202,15 +1238,22 @@ async function main() {
   if (process.argv.includes('--lock-status')) {
     // One ls-remote for every slot's ref, then only the refs that exist are read (check-claude.js
     // gives this 180 s; four sequential reads of up to 120 s each would not fit).
-    const refs = [...Array(MAX_SLOTS).keys()].map((k) => (k === 0 && process.env.CODEX_RUNNER_LOCK_REF ? process.env.CODEX_RUNNER_LOCK_REF : R.slotNames(k).lockRef));
+    // --lane cloud|gha|all (default all): only that lane's slots (BRO-5730), so a live GitHub lane
+    // does not make the cloud routine skip its own lane.
+    const slotList = R.laneSlotList(String(arg('lane', 'all')));
+    if (!slotList) { console.error(`--lane must be one of ${Object.keys(R.LANES).join('|')}|all`); process.exit(2); }
+    const refs = slotList.map((k) => (k === 0 && process.env.CODEX_RUNNER_LOCK_REF ? process.env.CODEX_RUNNER_LOCK_REF : R.slotNames(k).lockRef));
     const ls = sh('git', ['ls-remote', 'origin', ...refs], { timeoutMs: LOCK_GIT_MS });
     const present = new Set(ls.code === 0 ? ls.stdout.split('\n').map((l) => l.split(/\s+/)[1]).filter(Boolean) : []);
     const locks = ls.code !== 0 ? [{ error: 'ls-remote failed' }] : refs.map((ref) => (present.has(ref) ? readLock(ref) : { sha: '' }));
-    locks.forEach((l, k) => { if (k === 0 || l.error || l.sha) console.log(`codex runner lock${k ? ` (slot ${k})` : ''}: ${describeLock(l)}`); });
+    locks.forEach((l, i) => { const k = slotList[i]; if (i === 0 || l.error || l.sha) console.log(`codex runner lock${k ? ` (slot ${k})` : ''}: ${describeLock(l)}`); });
+    console.log(`held slots: ${slotList.filter((k, i) => locks[i] && !locks[i].error && lockHeld(locks[i])).join(',') || 'none'}`);
     process.exit(locks.some(lockHeld) ? 3 : locks.some((l) => l.error) ? 4 : 0);
   }
   if (PR_NUM) { await runPr(PR_NUM); await Promise.allSettled(prMail); return; }
-  if (OPTS.slots > 1 && !process.argv.includes('--slot')) { await launchSlots(); return; }
+  if (!R.LANES[OPTS.lane]) { log(`--lane must be one of ${Object.keys(R.LANES).join('|')}`); process.exit(2); }
+  // A later lane always goes through the launcher, so even one slot runs on that lane's slot.
+  if ((OPTS.slots > 1 || OPTS.lane !== 'cloud') && !process.argv.includes('--slot')) { await launchSlots(); return; }
   ensureTools();
   if (!OPTS.dryRun) {
     const held = takeLock();

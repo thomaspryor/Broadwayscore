@@ -96,8 +96,9 @@ async function main() {
   const skip = quotaSkipReason(R.weeklyPctFromSessions(CODEX_HOME), opts.maxWeeklyPct);
   if (skip) { say(`${opts.card}: skipped, ${skip}`); return; }
   // A live daily runner (any container) shares the Codex login, and refresh tokens rotate:
+  // the cloud lane's (the GitHub lane runs only when the login outlives its run, so never refreshes).
   // a second Codex process refreshing alongside it could log it out. Its work comes first.
-  const lock = sh('node', ['scripts/codex/daily-runner.js', '--lock-status'], { timeoutMs: 180_000 });
+  const lock = sh('node', ['scripts/codex/daily-runner.js', '--lock-status', '--lane', 'cloud'], { timeoutMs: 180_000 });
   if (lock.code !== 0) { say(`${opts.card}: skipped, the daily Codex runner is live or its lock is unreadable (exit ${lock.code})`); return; }
   if (sh('codex', ['--version']).code !== 0) { say(`${opts.card}: skipped, Codex CLI not installed`); return; }
   if (sh('git', ['cat-file', '-e', `${opts.commit}^{commit}`]).code !== 0) { say(`${opts.card}: skipped, commit ${opts.commit} not found (git fetch first)`); return; }

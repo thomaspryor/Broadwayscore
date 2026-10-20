@@ -11,6 +11,10 @@ name: Codex card runner
 # next firing via concurrency, it never overlaps); without it a card started near
 # --max-minutes could run 120 more minutes. The runner's own branch lock
 # (refs/heads/codex-runner-lock) keeps a hand-started cloud run from overlapping.
+# BRO-5730: lane=gha runs 2 slots on slots 3-4 (--lane gha), alongside the cloud
+# routine's slots 0-2 instead of waiting on its slot-0 lock. It falls back to slot 0
+# when the Codex login could refresh during the run. legacy (the cron default until a
+# hand dispatch proves gha) keeps the one slot-0 runner.
 #
 # Credential layout: checkout does NOT persist a token (Codex and the unit tests
 # it writes run in this workspace). The runner pushes through a credential
@@ -31,6 +35,9 @@ on:
       extra:
         description: 'Extra runner flags, e.g. --dry-run or --no-land'
         default: ''
+      lane:
+        description: 'legacy (one runner on slot 0) or gha (2 slots on 3-4, alongside the cloud lane)'
+        default: 'legacy'
 
 concurrency:
   group: codex-runner
@@ -107,6 +114,7 @@ jobs:
           LIMIT: ${{ inputs.limit || '6' }}
           IDS: ${{ inputs.ids }}
           EXTRA: ${{ inputs.extra }}
+          LANE: ${{ inputs.lane || 'legacy' }}
         run: |
           # Until the owner adds the CODEX_AUTH_KEY secret the login cannot be opened here;
           # skip instead of failing five times a day. Adding the secret starts the runner.
@@ -114,7 +122,11 @@ jobs:
             echo "::warning::CODEX_AUTH_KEY secret is not set, so the Codex runner is skipping (see BRO-4745)"
             exit 0
           fi
-          args=(--limit "$LIMIT" --max-minutes 210 --hard-stop-minutes 290)
+          if [ "$LANE" = gha ]; then
+            args=(--lane gha --slots 2 --limit "$LIMIT" --max-minutes 240 --hard-stop-minutes 290)
+          else
+            args=(--limit "$LIMIT" --max-minutes 210 --hard-stop-minutes 290)
+          fi
           if [ -n "$IDS" ]; then args+=(--ids "$IDS"); fi
           # shellcheck disable=SC2206 -- word-split the free-form flags on purpose
           if [ -n "$EXTRA" ]; then args+=($EXTRA); fi
