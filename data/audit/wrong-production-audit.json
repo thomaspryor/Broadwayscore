@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-20T14:12:40.182Z",
+  "timestamp": "2026-10-20T14:38:35.828Z",
   "stats": {
-    "totalReviews": 57885,
+    "totalReviews": 57886,
     "alreadyFlagged": 21093,
     "dateGuardCatches": 198,
     "directorMismatch": 2027,
     "tvFilmSignals": 1649,
-    "londonSignals": 2558,
+    "londonSignals": 2559,
     "offBroadwaySignals": 530,
     "yearMismatch": 161,
-    "noPublishDate": 5213
+    "noPublishDate": 5210
   },
   "findings": [
     {
@@ -54830,6 +54830,20 @@
       "score": 86,
       "publishDate": "April 21st, 2023",
       "url": "https://www.whatsonstage.com/london-theatre/news/aint-too-proud-west-end-temptations-musical_58791.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "alice-in-wonderland-west-end-2026",
+      "file": "britishtheatrecom--susan-novak.json",
+      "score": null,
+      "publishDate": "2026-04-14",
+      "url": "https://www.britishtheatre.com/posts/alice-in-wonderland-circus-show-to-play-in-london",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
