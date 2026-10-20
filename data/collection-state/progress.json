@@ -269,7 +269,9 @@
     "bloodsport-after-helen-of-troy-off-west-end-2026/timeout--marianne-calnan-holland.json",
     "the-children-off-west-end-2026/revstanstheatreblog--unknown.json",
     "the-cook-regional-2026/broadwayworld--steve-murray.json",
-    "garry-starr-classic-penguins-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+    "garry-starr-classic-penguins-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "martin-guerre-west-end-2026/whatsonstage--alex-wood.json",
+    "baby-off-west-end-2026/guardian--holly-omahony.json"
   ],
   "failed": [
     "funny-girl-2002/wsj--charles-isherwood.json",
@@ -418,7 +420,24 @@
     "the-invention-of-love-off-broadway-2026/guardian--david-jays.json",
     "the-invention-of-love-off-broadway-2026/whatsonstage--miriam-sallon.json",
     "september-l-davis-the-apology-tour-off-broadway-2026/timeout--unknown.json",
-    "my-sons-a-queer-but-what-can-you-do-west-end-2026/standard--nick-curtis.json"
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/standard--nick-curtis.json",
+    "triumph-off-west-end-2026/closeupculture--unknown.json",
+    "dog-mom-off-west-end-2026/reviewsgate--william-russell.json",
+    "angels-bone-west-end-2026/bachtrack--unknown.json",
+    "dog-mom-off-west-end-2026/thestage--neil-norman.json",
+    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
+    "some-woman-west-end-2026/guardian--unknown.json",
+    "double-bill-tell-me-straight-and-aggy-off-west-end-2026/soundsandstage--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/alltrippers--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json",
+    "some-woman-west-end-2026/momentsapp--unknown.json",
+    "baby-off-west-end-2026/afridiziak-theatre-news--basil-g-lumsden.json",
+    "larger-than-life-starring-wallace-and-gromit-shaun-and-more-off-west-end-2026/littlelondoner--little-londoner.json",
+    "stuffed-off-west-end-2026/notfar--unknown.json",
+    "stuffed-off-west-end-2026/sunday-times--unknown.json",
+    "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -560,12 +579,16 @@
       "safe-house-off-broadway-2026/theater-pizzazz--alix-cohen.json",
       "the-turn-of-the-screw-off-west-end-2026/islingtontribune--unknown.json",
       "bloodsport-after-helen-of-troy-off-west-end-2026/timeout--marianne-calnan-holland.json",
-      "the-children-off-west-end-2026/revstanstheatreblog--unknown.json"
+      "the-children-off-west-end-2026/revstanstheatreblog--unknown.json",
+      "martin-guerre-west-end-2026/whatsonstage--alex-wood.json",
+      "baby-off-west-end-2026/guardian--holly-omahony.json"
     ],
     "amp": [
       "data/review-texts/book-of-mormon-2011/variety--steven-suskin.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/stuffed-off-west-end-2026/sunday-times--unknown.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026/mommypoppins--unknown.json",
@@ -680,7 +703,7 @@
     ]
   },
   "startTime": "2026-10-20T14:57:10.313Z",
-  "lastProcessed": "garry-starr-classic-penguins-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+  "lastProcessed": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/timeout-london--unknown.json",
   "log": [
     {
       "t": "2026-10-20T14:59:00.551Z",
@@ -799,6 +822,65 @@
       "t": "2026-10-20T17:17:54.888Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-20T17:57:00.311Z",
+      "event": "bb-session",
+      "session": "821da497",
+      "url": "https://bachtrack.com/review-angels-bone-du-yun-vavrek-english-national-opera-lo"
+    },
+    {
+      "t": "2026-10-20T17:58:05.284Z",
+      "event": "bb-session",
+      "session": "cb9af294",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-20T17:58:13.085Z",
+      "event": "bb-session",
+      "session": "c04319ca",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-20T17:59:06.586Z",
+      "event": "bb-session",
+      "session": "59be16dc",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-20T17:59:13.912Z",
+      "event": "bb-session",
+      "session": "27acd1e2",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-20T18:00:54.577Z",
+      "event": "bb-session",
+      "session": "b373ead3",
+      "url": "https://www.afridiziak.com/offers/access-10-ticket-offer-to-see-baby-in-previews"
+    },
+    {
+      "t": "2026-10-20T18:01:04.779Z",
+      "event": "bb-session",
+      "session": "f40209fb",
+      "url": "https://www.afridiziak.com/offers/access-10-ticket-offer-to-see-baby-in-previews"
+    },
+    {
+      "t": "2026-10-20T18:02:24.296Z",
+      "event": "bb-session",
+      "session": "1cc8702c",
+      "url": "https://littlelondoner.co.uk/event/larger-than-life-starring-wallace-and-gromit-"
+    },
+    {
+      "t": "2026-10-20T18:04:05.622Z",
+      "event": "bb-session",
+      "session": "6913ae4f",
+      "url": "https://www.thetimes.com/recipes/entertaining/party-food/article/dates-stuffed-w"
+    },
+    {
+      "t": "2026-10-20T18:04:06.379Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
