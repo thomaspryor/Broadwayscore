@@ -24,7 +24,7 @@ import { getShowGrosses, getGrossesWeekEnding } from './data-grosses';
 import {
   calculateWeeksToRecoup,
   recoupReportedAfterClosing,
-  weeksOpenToClose,
+  resolveRecoupWeeks,
   computeGrossTrend,
   trailingAverageGross,
   summarizeCapital,
@@ -621,6 +621,7 @@ export function getRecentRecoupments(months: number = 24): RecentRecoupmentShow[
       season: getSeason(show.openingDate) || 'Unknown',
       weeksToRecoup: weeks.weeks,
       weeksIsEstimate: weeks.isEstimate,
+      weeksEstimateNote: weeks.isEstimate ? RECOUPED_DURING_RUN_ESTIMATE[slug] : null,
       fromCommercialRun: isConvertedToCommercial(data),
       reportedAfterClosing: recoupReportedAfterClosing(data.recoupedDate, show.closingDate),
       capitalization: data.capitalization ?? null,
@@ -709,24 +710,18 @@ function isFutureDate(date: string | null | undefined): boolean {
   return !!date && /^\d{4}-\d{2}-\d{2}/.test(date) && date.slice(0, 10) > new Date().toISOString().slice(0, 10);
 }
 
-/**
- * Weeks to recoup for the /biz tables: the measured figure, else for a show on
- * RECOUPED_DURING_RUN_ESTIMATE whose recoupment was reported after closing,
- * opening night to closing marked as an estimate, else null.
- */
+/** Weeks to recoup for the /biz tables (resolveRecoupWeeks), with the owner's per-show estimate list applied. */
 function recoupWeeks(
   slug: string,
   data: ShowCommercial,
   show: { openingDate?: string | null; closingDate?: string | null },
-): { weeks: number | null; isEstimate: boolean } {
-  const start = recoupClockStart(data, show.openingDate);
-  const measured = calculateWeeksToRecoup(start, data.recoupedDate, show.closingDate);
-  if (measured !== null) return { weeks: measured, isEstimate: false };
-  if (RECOUPED_DURING_RUN_ESTIMATE.has(slug) && recoupReportedAfterClosing(data.recoupedDate, show.closingDate)) {
-    const estimate = weeksOpenToClose(start, show.closingDate);
-    if (estimate !== null) return { weeks: estimate, isEstimate: true };
-  }
-  return { weeks: null, isEstimate: false };
+) {
+  return resolveRecoupWeeks(
+    recoupClockStart(data, show.openingDate),
+    data.recoupedDate,
+    show.closingDate,
+    Object.prototype.hasOwnProperty.call(RECOUPED_DURING_RUN_ESTIMATE, slug),
+  );
 }
 
 function positiveOrNull(value: number | null | undefined): number | null {

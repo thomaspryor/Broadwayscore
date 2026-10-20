@@ -290,9 +290,15 @@ export function getTrendIcon(trend: RecoupmentTrend, recouped: boolean | null): 
  * estimate paid back during the run itself (owner decision 2026-10-20, BRO-5782).
  * Their weeks column shows opening night to closing, marked as our estimate,
  * instead of "Reported after closing". Add a slug only on the owner's say-so:
- * no source gives the recoupment date, so this is an editorial inference.
+ * no source gives the recoupment date, so this is an editorial inference. The
+ * value is the tooltip text, written per show because each rests on its own source.
  *  - purpose-2025: Broadway News (Jun 4 2026) says run profits plus the NY State
- *    tax credit earned back the $5.25M; nothing else paid it back.
+ *    tax credit earned back the $5.25M; nothing else paid it back. Its "about nine
+ *    months after closing" is the gap to that report, not a sourced recoupment
+ *    date (the show-page wording was corrected in data/pending-fixes/bro-5782.json).
  * Not for a show whose source credits other money (Kimberly Akimbo: tour profits).
  */
-export const RECOUPED_DURING_RUN_ESTIMATE: ReadonlySet<string> = new Set(['purpose-2025']);
+export const RECOUPED_DURING_RUN_ESTIMATE: Readonly<Record<string, string>> = {
+  'purpose-2025':
+    'Our estimate, not a reported figure. Broadway News says run profits plus the NY State tax credit earned back its capitalization, and no source dates the recoupment, so we count weeks from opening night to closing. The recoupment was reported after the run closed.',
+};

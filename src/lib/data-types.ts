@@ -590,6 +590,8 @@ export interface RecentRecoupmentShow {
   weeksToRecoup: number | null;
   /** weeksToRecoup is our estimate (RECOUPED_DURING_RUN_ESTIMATE), not a measured figure. */
   weeksIsEstimate: boolean;
+  /** Per-show tooltip for the estimate (RECOUPED_DURING_RUN_ESTIMATE); null when weeksIsEstimate is false. */
+  weeksEstimateNote: string | null;
   /** Recoupment reported after the Broadway run closed (recoupReportedAfterClosing): weeksToRecoup is null by design. */
   reportedAfterClosing: boolean;
   /** weeksToRecoup counts from the switch to a commercial run, not opening night (recoupClockStart). */

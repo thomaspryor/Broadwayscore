@@ -17,6 +17,7 @@ interface RecoupmentShow {
   weeksToRecoup: number | null;
   /** weeksToRecoup is our estimate, not a measured figure: prints "est.". */
   weeksIsEstimate: boolean;
+  weeksEstimateNote: string | null;
   /** The recoupment was reported after the Broadway run closed. Only the report month is known, so no weeks-from-opening figure applies. */
   reportedAfterClosing: boolean;
   capitalization: number | null;
@@ -32,9 +33,6 @@ interface RecoupmentTableProps {
 
 type SortColumn = 'title' | 'weeks' | 'capitalization' | 'date';
 type SortDirection = 'asc' | 'desc';
-
-const ESTIMATED_WEEKS_TOOLTIP =
-  'Our estimate, not a reported figure. Run profits plus the NY State tax credit paid it back (Broadway News), so we count weeks from opening night to closing. The recoupment itself was reported after the run closed.';
 
 const WEEKS_TOOLTIP =
   'Weeks from opening night to the reported recoupment date (the middle of the month when only the month was reported). Shows marked "est." show our own estimate, counted from opening night to closing. Other shows whose recoupment was reported after their Broadway run closed read "Reported after closing": the report month is the only date known, so weeks cannot be measured. Blank when only the year was reported.';
@@ -174,8 +172,8 @@ export default function RecoupmentTable({ shows }: RecoupmentTableProps) {
                   ) : show.weeksToRecoup === null ? (
                     <span className="text-gray-500" title="Only the year of recoupment was reported">—</span>
                   ) : show.weeksIsEstimate ? (
-                    <span title={ESTIMATED_WEEKS_TOOLTIP}>
-                      <span className="text-emerald-400 font-semibold">~{show.weeksToRecoup}</span>{' '}
+                    <span title={show.weeksEstimateNote ?? undefined}>
+                      <span className="text-emerald-400/60 font-semibold">~{show.weeksToRecoup}</span>{' '}
                       <span className="text-xs text-gray-500">est.</span>
                     </span>
                   ) : (

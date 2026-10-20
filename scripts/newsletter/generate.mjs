@@ -37,6 +37,7 @@ const { classifyEntry } = await import('./section-credential-guard.mjs');
 const { pluralize, pluralNoun } = cjsRequire(path.join(repo, 'scripts/lib/pluralize'));
 const { isFreshRecoupmentNews } = cjsRequire(path.join(repo, 'scripts/lib/recoupment-news'));
 const { recoupClockStart, isConvertedToCommercial } = cjsRequire(path.join(repo, 'scripts/lib/commercial-conversion'));
+const { newsletterWeeksToRecoup } = cjsRequire(path.join(repo, 'scripts/lib/recoup-reported-after-closing'));
 const { isEstimatedCapitalization, isMaximumCapitalization } = cjsRequire(path.join(repo, 'scripts/lib/public-source-text'));
 const { isUkRegionalVenue } = cjsRequire(path.join(repo, 'scripts/lib/market-label'));
 const { getSeasonForDate, getSeasonDates, isEligibleForSeasonStanding } = cjsRequire(path.join(repo, 'scripts/lib/broadway-seasons'));
@@ -1710,14 +1711,8 @@ function commercialSection() {
   // of the recoupedDate month (recoupedDate is YYYY-MM monthly granularity).
   // Falls back to "" when there is no start date so the row still renders.
   function weeksToRecoupLabel(show, c) {
-    const start = recoupClockStart(c, show?.openingDate);
-    if (!start || !c.recoupedDate) return '';
-    const m = /^(\d{4})-(\d{2})$/.exec(c.recoupedDate);
-    if (!m) return '';
-    const recoupMid = new Date(`${m[1]}-${m[2]}-15T12:00:00`);
-    const open = new Date(start + 'T12:00:00');
-    const weeks = Math.round((recoupMid - open) / (7 * 86400000));
-    if (!isFinite(weeks) || weeks <= 0) return '';
+    const weeks = newsletterWeeksToRecoup(recoupClockStart(c, show?.openingDate), c.recoupedDate, show?.closingDate);
+    if (weeks === null) return '';
     return ` in ${pluralize(weeks, 'week')}${isConvertedToCommercial(c) ? ' of its commercial run' : ''}`;
   }
   const rows = fresh.map((f, i, arr) => {
@@ -2887,15 +2882,7 @@ const newsworthyInputs = {
         const show = shows.find(s => s.slug === slug && s.category === 'broadway');
         if (!show || isOperaShow(show)) continue;
         // Same weeks-to-recoup math the section uses.
-        const m = /^(\d{4})-(\d{2})$/.exec(c.recoupedDate);
-        const start = recoupClockStart(c, show.openingDate);
-        let weeksToRecoup = null;
-        if (m && start) {
-          const recoupMid = new Date(`${m[1]}-${m[2]}-15T12:00:00`);
-          const open = new Date(start + 'T12:00:00');
-          const w = Math.round((recoupMid - open) / (7 * 86400000));
-          if (isFinite(w) && w > 0) weeksToRecoup = w;
-        }
+        const weeksToRecoup = newsletterWeeksToRecoup(recoupClockStart(c, show.openingDate), c.recoupedDate, show.closingDate);
         out.push({ show, weeksToRecoup, fromCommercialRun: isConvertedToCommercial(c) });
       }
       return out;

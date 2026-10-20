@@ -513,7 +513,7 @@ export default function MethodologyPage() {
               <strong className="text-white">Trend</strong> compares the last 4 weeks of sales with the 4 weeks before.
             </Bullet>
             <Bullet>
-              <strong className="text-white">Weeks to recoup</strong> counts from opening night to the reported recoupment date, or for a nonprofit show that went commercial, from the start of its commercial run. If only the month was reported we use the middle of the month. If only the year was reported we leave it blank. If the recoupment was reported after the show had closed, the report month is the only date we know (the recoupment may have happened earlier or later), so weeks cannot be measured and the table says "Reported after closing".
+              <strong className="text-white">Weeks to recoup</strong> counts from opening night to the reported recoupment date, or for a nonprofit show that went commercial, from the start of its commercial run. If only the month was reported we use the middle of the month. If only the year was reported we leave it blank. If the recoupment was reported after the show had closed, the report month is the only date we know (the recoupment may have happened earlier or later), so weeks cannot be measured and the table says &ldquo;Reported after closing&rdquo;.
             </Bullet>
           </ul>
           <p className="text-gray-400 text-xs mt-3">

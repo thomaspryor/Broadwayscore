@@ -5,6 +5,10 @@
 
 import type { RecoupmentTrend } from '@/config/commercial';
 import { hasNoInvestorsToRepay } from '../../scripts/lib/commercial-designations';
+import { recoupReportedAfterClosing } from '../../scripts/lib/recoup-reported-after-closing';
+
+// One rule for the site and the newsletter (scripts/lib/recoup-reported-after-closing.js).
+export { recoupReportedAfterClosing };
 
 const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
@@ -56,30 +60,6 @@ export function calculateWeeksToRecoup(
   return Math.round(diffMs / WEEK_MS);
 }
 
-/**
- * True when the reported recoupment month starts after the closing date.
- * recoupedDate is when the recoupment was REPORTED, which is not always when it
- * happened: only some sources say it came after closing (Purpose: "about nine
- * months after closing"); others just announce it later (Kimberly Akimbo,
- * Playbill Apr 2026: "have now recouped"). So this claims only "reported after
- * closing". Weeks from opening cannot be measured from a report month past the
- * run, so calculateWeeksToRecoup returns null and the tables say "Reported
- * after closing" instead of a bare dash. Year-only dates are not placed.
- */
-export function recoupReportedAfterClosing(
-  recoupedDate: string | null | undefined,
-  closingDate: string | null | undefined,
-): boolean {
-  const m = /^(\d{4})-(\d{2})$/.exec((recoupedDate ?? '').trim());
-  const close = /^(\d{4}-\d{2})-\d{2}/.exec((closingDate ?? '').trim());
-  if (!m || !close) return false;
-  const month = parseInt(m[2], 10);
-  if (month < 1 || month > 12) return false;
-  // Compared as YYYY-MM strings so the build machine's timezone cannot move a
-  // show that closes on the 1st across the month boundary.
-  return `${m[1]}-${m[2]}` > close[1];
-}
-
 /** Weeks from the start date to the closing date, rounded; null when either is missing or closing is first. */
 export function weeksOpenToClose(
   startDate: string | null | undefined,
@@ -89,6 +69,28 @@ export function weeksOpenToClose(
   const close = parseIsoDay(closingDate);
   if (!start || !close || close.getTime() < start.getTime()) return null;
   return Math.round((close.getTime() - start.getTime()) / WEEK_MS);
+}
+
+/**
+ * Weeks to recoup as the /biz tables show them: the measured figure, else, only
+ * when the show is on the owner's RECOUPED_DURING_RUN_ESTIMATE list
+ * (`allowEstimate`) and its recoupment was reported after closing, opening
+ * night (or the commercial start) to closing marked as an estimate, else null.
+ */
+export function resolveRecoupWeeks(
+  startDate: string | null | undefined,
+  recoupedDate: string | null | undefined,
+  closingDate: string | null | undefined,
+  allowEstimate: boolean,
+  now: Date = new Date(),
+): { weeks: number | null; isEstimate: boolean } {
+  const measured = calculateWeeksToRecoup(startDate, recoupedDate, closingDate, now);
+  if (measured !== null) return { weeks: measured, isEstimate: false };
+  if (allowEstimate && recoupReportedAfterClosing(recoupedDate, closingDate)) {
+    const estimate = weeksOpenToClose(startDate, closingDate);
+    if (estimate !== null) return { weeks: estimate, isEstimate: true };
+  }
+  return { weeks: null, isEstimate: false };
 }
 
 function mean(values: number[]): number {

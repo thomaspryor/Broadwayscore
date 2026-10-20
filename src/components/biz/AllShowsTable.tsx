@@ -397,7 +397,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                   <td className="py-3 px-4 hidden sm:table-cell">
                     <span
                       className={getTrendColor(show.trend, show.recouped)}
-                      aria-label={show.recouped ? 'Recouped' : running ? show.trend : 'Not running'}
+                      aria-label={show.recouped ? (show.recoupedWeeksIsEstimate ? 'Recouped, estimated weeks' : 'Recouped') : running ? show.trend : 'Not running'}
                     >
                       {show.recouped
                         ? show.recoupedWeeks
