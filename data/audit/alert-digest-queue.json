@@ -657,5 +657,36 @@
       }
     ],
     "queuedAt": "2026-10-20T17:35:26.874Z"
+  },
+  {
+    "conditionKey": "land:land/codex-bro-4308",
+    "title": "Landing blocked: bash-integration red on land/codex-bro-4308",
+    "description": "land.yml did not land land/codex-bro-4308: the bash-integration gate went red at c4b2d8a3a3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39468259069",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/codex-bro-4308"
+      },
+      {
+        "name": "gate",
+        "value": "bash-integration"
+      },
+      {
+        "name": "tip",
+        "value": "c4b2d8a3a3e6154df5d01d7251dbfd40aa9adcd4"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39468259069"
+      }
+    ],
+    "queuedAt": "2026-10-20T18:00:04.345Z"
   }
 ]
