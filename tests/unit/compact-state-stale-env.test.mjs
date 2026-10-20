@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { execFileSync } from 'node:child_process';
+import { execFileSyncStdinFile } from '../helpers/spawn-stdin-file.mjs';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
@@ -55,7 +55,7 @@ function fixture(t) {
   const run = (event, overrides = {}) => {
     const env = { ...liveEnv, ...overrides };
     for (const key of [windowKey, disableKey]) if (env[key] === undefined) delete env[key];
-    return execFileSync('bash', [hook], {
+    return execFileSyncStdinFile('bash', [hook], {
       cwd: dir, env, encoding: 'utf8',
       input: JSON.stringify({ session_id: 'stale-env-test', ...event }),
     });
