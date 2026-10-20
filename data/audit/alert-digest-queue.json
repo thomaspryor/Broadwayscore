@@ -584,5 +584,36 @@
       }
     ],
     "queuedAt": "2026-10-20T16:37:05.534Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5784-sync-partial",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5784-sync-partial",
+    "description": "land.yml did not land land/bro-5784-sync-partial: the unit-tests-node gate went red at 577b5cc1dd. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39465605986",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5784-sync-partial"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "577b5cc1dd2ef497fdf616f1434f463c3aa87ac5"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39465605986"
+      }
+    ],
+    "queuedAt": "2026-10-20T17:35:26.874Z"
   }
 ]
