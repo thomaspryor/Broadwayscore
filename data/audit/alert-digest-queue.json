@@ -870,6 +870,37 @@
     "queuedAt": "2026-10-20T21:17:24.798Z"
   },
   {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 7 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39503972724",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "tracked": null,
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39503972724)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39502789241)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "7"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "Unit Tests"
+      }
+    ],
+    "queuedAt": "2026-10-20T22:13:20.913Z"
+  },
+  {
     "conditionKey": "land:land/bro-5574-playwright-credits-writer-group",
     "title": "Landing blocked: rebase red on land/bro-5574-playwright-credits-writer-group",
     "description": "land.yml did not land land/bro-5574-playwright-credits-writer-group: the rebase gate went red at 1363fe312f. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5574-playwright-credits-writer-group @ 1363fe312f (origin/land/bro-5574-playwright-credits-writer-group) → origin/main @ c0d8a1f3b5 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 44c4efb0b8: Rebasing (1/3) error: could not apply 0707ae5b883... ci: put backfill-playwright-credits in the shows-json-writer concurrency group (BRO-5574) hint: Resolve all conflicts m Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39502441786",
@@ -899,37 +930,6 @@
       }
     ],
     "queuedAt": "2026-10-20T22:04:33.754Z"
-  },
-  {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39502789241",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "tracked": null,
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39502789241)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39502378165)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "6"
-      },
-      {
-        "name": "Currently failing job(s)",
-        "value": "Unit Tests"
-      }
-    ],
-    "queuedAt": "2026-10-20T22:04:13.848Z"
   },
   {
     "conditionKey": "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts",
