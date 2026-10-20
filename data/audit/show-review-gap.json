@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-20T20:01:45.703Z",
+  "generatedAt": "2026-10-20T20:12:05.174Z",
   "windowDays": 21,
   "targets": 1,
   "auditedThisRun": 1,
@@ -7,16 +7,16 @@
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 426,
-    "missingCurrentRun": 830,
+    "withGap": 425,
+    "missingCurrentRun": 828,
     "totalCitedNoUrl": 3,
-    "totalFlaggedMisses": 915,
+    "totalFlaggedMisses": 913,
     "totalRecoverable": 11,
     "totalRecovered": 17,
     "humanExcluded": 4,
-    "automatedExcluded": 252,
-    "automatedExcludedListed": 209,
-    "priorProductionCitations": 5165
+    "automatedExcluded": 250,
+    "automatedExcludedListed": 207,
+    "priorProductionCitations": 5168
   },
   "results": [
     {
@@ -23520,100 +23520,71 @@
       "openingDate": "2026-10-07",
       "status": "open",
       "category": "west-end",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-vampire-pop-opera-blood-love-off-broadway"
+      ],
       "aggregatorListedUrls": [
+        "https://www.newyorktheatreguide.com/reviews/blood-love-off-broadway-review",
+        "https://1minutecritic.com/blood-love-vampire-musical-review/",
+        "https://www.theatermania.com/news/review-blood-love-a-surprisingly-enjoyable-vampire-pop-opera_1826531/",
         "https://www.londontheatre.co.uk/reviews/blood-of-my-blood-review-royal-court",
-        "https://www.theguardian.com/stage/2026/oct/10/blood-of-my-blood-review-royal-court-theatre-london",
         "https://everything-theatre.co.uk/2026/10/review-blood-of-my-blood-royal-court-theatre/",
+        "https://www.theguardian.com/stage/2026/oct/10/blood-of-my-blood-review-royal-court-theatre-london",
+        "https://www.westendbestfriend.co.uk/news/review-blood-of-my-blood-royal-court-theatre",
         "https://www.britishtheatreguide.info/reviews/blood-of-my-blo-royal-court-the-26105",
         "https://www.timeout.com/london/theatre/blood-of-my-blood-review",
-        "https://www.westendbestfriend.co.uk/news/review-blood-of-my-blood-royal-court-theatre",
-        "https://www.allthatdazzles.co.uk/post/review-blood-of-my-blood-royal-court-theatre",
         "https://ayoungishperspective.co.uk/2026/10/11/review-blood-of-my-blood/",
+        "https://www.londonboxoffice.co.uk/news/post/blood-of-my-blood-royal-court-theatre-review",
+        "https://www.allthatdazzles.co.uk/post/review-blood-of-my-blood-royal-court-theatre",
+        "https://www.therendition.co.uk/reviews/blood-of-my-blood",
         "https://www.london-unattached.com/blood-of-my-blood-royal-court-theatre/",
         "https://www.theatremonkey.com/show/blood-of-my-blood/",
         "https://www.camdennewjournal.co.uk/article/review-blood-of-my-blood-at-royal-court-theatre",
-        "https://theatreboard.co.uk/thread/16203/blood-royal-court-theatre",
+        "https://fringereview.co.uk/review/fringereview-uk/2026/blood-of-my-blood/",
         "https://readaboutstuff.com/2026/10/11/review-blood-of-my-blood-royal-court-london/",
-        "https://www.londonboxoffice.co.uk/news/post/blood-of-my-blood-royal-court-theatre-review",
-        "https://hitthetheatre.co.uk/london/shows/blood-of-my-blood",
         "https://playsinternational.org.uk/blood-of-my-blood-royal-court-theatre-upstairs/",
-        "https://www.thestage.co.uk/reviews/blood-of-my-blood-review-jerwood-theatre-upstairs-royal-court-theatre-london",
-        "https://www.standard.co.uk/culture/theatre/blood-of-my-blood-review-b1300132.html",
         "https://www.whatsonstage.com/news/blood-of-my-blood-at-the-royal-court-review_1734857/",
-        "https://www.afridiziak.com/reviews/blood-of-my-blood-by-joy-nesbitt/"
+        "https://www.standard.co.uk/culture/theatre/blood-of-my-blood-review-b1300132.html",
+        "https://www.afridiziak.com/reviews/blood-of-my-blood-by-joy-nesbitt/",
+        "https://www.thestage.co.uk/reviews/blood-of-my-blood-review-jerwood-theatre-upstairs-royal-court-theatre-london"
       ],
-      "dirFiles": 44,
-      "dirClean": 17,
-      "inReviewsJson": 17,
+      "dirFiles": 49,
+      "dirClean": 22,
+      "inReviewsJson": 22,
       "missing": [
         {
-          "url": "https://www.camdennewjournal.co.uk/article/review-blood-of-my-blood-at-royal-court-theatre",
-          "host": "camdennewjournal.co.uk",
-          "knownOutletId": "camdennewjournal",
-          "serpCensus": true
+          "url": "https://www.newyorktheatreguide.com/reviews/blood-love-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://theatreboard.co.uk/thread/16203/blood-royal-court-theatre",
-          "host": "theatreboard.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
+          "url": "https://1minutecritic.com/blood-love-vampire-musical-review/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-blood-love-a-surprisingly-enjoyable-vampire-pop-opera_1826531/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         }
       ],
       "dirOnly": [
+        {
+          "host": "islingtontribune.co.uk",
+          "count": 1
+        },
         {
           "host": "markaspen.com",
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.theatremonkey.com/show/blood-of-my-blood/",
-          "host": "theatremonkey.com",
-          "knownOutletId": "theatremonkey",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatremonkey--unknown.json",
-              "flag": "nonReview",
-              "urlInDir": "https://www.theatremonkey.com/show/blood-of-my-blood/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "nonReview"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://hitthetheatre.co.uk/london/shows/blood-of-my-blood",
-          "host": "hitthetheatre.co.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "hitthetheatre--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://hitthetheatre.co.uk/london/shows/blood-of-my-blood"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 16,
@@ -23679,8 +23650,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 6,
+            "results": 10,
+            "accepted": 8,
             "error": null
           },
           {
@@ -23690,7 +23661,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -23720,7 +23691,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           }
         ],
@@ -23730,83 +23701,57 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 15,
+        "count": 109,
         "byReason": {
-          "non-review-host": 10,
+          "aggregator-internal-nav": 44,
+          "not-http-url": 20,
+          "production-database-listing": 5,
+          "aggregator-section-root": 5,
+          "non-review-host": 28,
+          "bare-host": 1,
           "ticketing-listing": 2,
-          "write-path-blocked": 1,
-          "roundup-page": 1,
-          "venue-production-page": 1
+          "venue-production-page": 1,
+          "write-path-blocked": 2,
+          "roundup-page": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 2,
-      "unextractable": [],
-      "ingestResults": [
+      "priorRunArticles": [
         {
-          "url": "https://www.camdennewjournal.co.uk/article/review-blood-of-my-blood-at-royal-court-theatre",
-          "host": "camdennewjournal.co.uk",
-          "outletId": "camdennewjournal",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://theatreboard.co.uk/thread/16203/blood-royal-court-theatre",
-          "host": "theatreboard.co.uk",
-          "outletId": "theatreboard",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "Fetch returned no usable HTML (got 39 chars)"
+          "url": "https://playbill.com/article/read-the-reviews-for-vampire-pop-opera-blood-love-off-broadway",
+          "publishDate": "2026-03-04"
         }
       ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/blood-love-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://1minutecritic.com/blood-love-vampire-musical-review/",
+          "host": "1minutecritic.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-blood-love-a-surprisingly-enjoyable-vampire-pop-opera_1826531/",
+          "host": "theatermania.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "camdennewjournal",
-            "outlet": "camdennewjournal",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.camdennewjournal.co.uk/article/review-blood-of-my-blood-at-royal-court-theatre"
-          },
-          {
-            "outletId": "theatreboard.co.uk",
-            "outlet": "theatreboard.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreboard.co.uk/thread/16203/blood-royal-court-theatre"
-          },
-          {
-            "outletId": "theatremonkey",
-            "outlet": "theatremonkey",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatremonkey.com/show/blood-of-my-blood/"
-          },
-          {
-            "outletId": "hitthetheatre.co.uk",
-            "outlet": "hitthetheatre.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://hitthetheatre.co.uk/london/shows/blood-of-my-blood"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -23816,16 +23761,22 @@
             "firstSeenAt": "2026-10-08T22:45:07.696Z"
           },
           {
+            "url": "https://everything-theatre.co.uk/2026/10/review-blood-of-my-blood-royal-court-theatre/",
+            "outletId": "everything-theatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-11T02:30:20.375Z"
+          },
+          {
             "url": "https://www.theguardian.com/stage/2026/oct/10/blood-of-my-blood-review-royal-court-theatre-london",
             "outletId": "theguardian.com",
             "state": "live",
             "firstSeenAt": "2026-10-10T16:49:49.759Z"
           },
           {
-            "url": "https://everything-theatre.co.uk/2026/10/review-blood-of-my-blood-royal-court-theatre/",
-            "outletId": "everything-theatre.co.uk",
+            "url": "https://www.westendbestfriend.co.uk/news/review-blood-of-my-blood-royal-court-theatre",
+            "outletId": "westendbestfriend.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-11T02:30:20.375Z"
+            "firstSeenAt": "2026-10-08T22:45:07.696Z"
           },
           {
             "url": "https://www.britishtheatreguide.info/reviews/blood-of-my-blo-royal-court-the-26105",
@@ -23840,8 +23791,14 @@
             "firstSeenAt": "2026-10-08T22:45:07.696Z"
           },
           {
-            "url": "https://www.westendbestfriend.co.uk/news/review-blood-of-my-blood-royal-court-theatre",
-            "outletId": "westendbestfriend.co.uk",
+            "url": "https://ayoungishperspective.co.uk/2026/10/11/review-blood-of-my-blood/",
+            "outletId": "ayoungishperspective.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T16:27:03.506Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/blood-of-my-blood-royal-court-theatre-review",
+            "outletId": "londonboxoffice.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-08T22:45:07.696Z"
           },
@@ -23852,10 +23809,10 @@
             "firstSeenAt": "2026-10-09T21:34:59.683Z"
           },
           {
-            "url": "https://ayoungishperspective.co.uk/2026/10/11/review-blood-of-my-blood/",
-            "outletId": "ayoungishperspective.co.uk",
+            "url": "https://www.therendition.co.uk/reviews/blood-of-my-blood",
+            "outletId": "therendition.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-12T16:27:03.506Z"
+            "firstSeenAt": "2026-10-20T20:12:05.174Z"
           },
           {
             "url": "https://www.london-unattached.com/blood-of-my-blood-royal-court-theatre/",
@@ -23864,16 +23821,28 @@
             "firstSeenAt": "2026-10-08T22:45:07.696Z"
           },
           {
+            "url": "https://www.theatremonkey.com/show/blood-of-my-blood/",
+            "outletId": "theatremonkey.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-16T06:43:45.509Z"
+          },
+          {
+            "url": "https://www.camdennewjournal.co.uk/article/review-blood-of-my-blood-at-royal-court-theatre",
+            "outletId": "camdennewjournal.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-16T06:43:45.509Z"
+          },
+          {
+            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/blood-of-my-blood/",
+            "outletId": "fringereview.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-20T20:12:05.174Z"
+          },
+          {
             "url": "https://readaboutstuff.com/2026/10/11/review-blood-of-my-blood-royal-court-london/",
             "outletId": "readaboutstuff.com",
             "state": "live",
             "firstSeenAt": "2026-10-11T09:38:11.209Z"
-          },
-          {
-            "url": "https://www.londonboxoffice.co.uk/news/post/blood-of-my-blood-royal-court-theatre-review",
-            "outletId": "londonboxoffice.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-08T22:45:07.696Z"
           },
           {
             "url": "https://playsinternational.org.uk/blood-of-my-blood-royal-court-theatre-upstairs/",
@@ -23882,10 +23851,10 @@
             "firstSeenAt": "2026-10-13T10:27:48.199Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/blood-of-my-blood-review-jerwood-theatre-upstairs-royal-court-theatre-london",
-            "outletId": "thestage.co.uk",
+            "url": "https://www.whatsonstage.com/news/blood-of-my-blood-at-the-royal-court-review_1734857/",
+            "outletId": "whatsonstage.com",
             "state": "live",
-            "firstSeenAt": "2026-10-08T22:45:07.696Z"
+            "firstSeenAt": "2026-10-13T02:55:59.865Z"
           },
           {
             "url": "https://www.standard.co.uk/culture/theatre/blood-of-my-blood-review-b1300132.html",
@@ -23894,51 +23863,23 @@
             "firstSeenAt": "2026-10-09T09:56:11.612Z"
           },
           {
-            "url": "https://www.whatsonstage.com/news/blood-of-my-blood-at-the-royal-court-review_1734857/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-13T02:55:59.865Z"
-          },
-          {
             "url": "https://www.afridiziak.com/reviews/blood-of-my-blood-by-joy-nesbitt/",
             "outletId": "afridiziak.com",
             "state": "live",
             "firstSeenAt": "2026-10-10T08:06:08.996Z"
           },
           {
-            "url": "https://www.camdennewjournal.co.uk/article/review-blood-of-my-blood-at-royal-court-theatre",
-            "outletId": "camdennewjournal",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-16T06:43:45.509Z"
-          },
-          {
-            "url": "https://theatreboard.co.uk/thread/16203/blood-royal-court-theatre",
-            "outletId": "theatreboard.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-16T06:43:45.509Z"
-          },
-          {
-            "url": "https://www.theatremonkey.com/show/blood-of-my-blood/",
-            "outletId": "theatremonkey",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-16T06:43:45.509Z"
-          },
-          {
-            "url": "https://hitthetheatre.co.uk/london/shows/blood-of-my-blood",
-            "outletId": "hitthetheatre.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-16T06:43:45.509Z"
+            "url": "https://www.thestage.co.uk/reviews/blood-of-my-blood-review-jerwood-theatre-upstairs-royal-court-theatre-london",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-08T22:45:07.696Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 16,
+        "liveCount": 20,
         "candidateCount": 20
       },
-      "computedAt": "2026-10-16T06:43:45.509Z"
+      "computedAt": "2026-10-20T20:12:05.174Z"
     },
     {
       "showId": "bloodlove-off-broadway-2026",

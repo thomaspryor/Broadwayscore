@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-20T20:02:07.305Z",
+  "generatedAt": "2026-10-20T20:12:19.183Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -175,10 +175,6 @@
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
     {
-      "outletId": "theater-pizzazz",
-      "error": "Timeout fetching https://theaterpizzazz.com/feed/"
-    },
-    {
       "outletId": "slantmagazine",
       "error": "HTTP 403 for https://www.slantmagazine.com/theater/feed/"
     },
@@ -203,10 +199,19 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 706,
-  "matchedGaps": 2,
+  "itemsScanned": 726,
+  "matchedGaps": 4,
   "possibleGaps": 6,
   "gaps": [
+    {
+      "showId": "copperfield-the-new-musical-off-broadway-2026",
+      "title": "Copperfield! The New Musical",
+      "level": "matched",
+      "outletId": "theater-pizzazz",
+      "url": "https://theaterpizzazz.com/copperfield-the-new-musical-a-wonderfully-entertaining-version-of-the-saga/",
+      "headline": "&#8216;Copperfield  &#8211; The New Musical&#8217; &#8211; A Wonderfully Entertaining Version of the Saga",
+      "publishDate": "2026-10-20"
+    },
     {
       "showId": "copperfield-the-new-musical-off-broadway-2026",
       "title": "Copperfield! The New Musical",
@@ -214,6 +219,15 @@
       "outletId": "off-off-online",
       "url": "https://www.offoffonline.com/offoffonline/2026/10/16/copperfield-the-new-musical",
       "headline": "Copperfield! The New Musical",
+      "publishDate": "2026-10-20"
+    },
+    {
+      "showId": "the-dog-show-come-sit-stay-off-broadway-2026",
+      "title": "The Dog Show: Come. Sit. Stay.",
+      "level": "matched",
+      "outletId": "theater-pizzazz",
+      "url": "https://theaterpizzazz.com/the-dog-show-come-sit-stay/",
+      "headline": "&#8220;The Dog Show: Come. Sit. Stay.&#8221;",
       "publishDate": "2026-10-20"
     },
     {
