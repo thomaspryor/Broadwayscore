@@ -536,6 +536,19 @@ function loginExpiryWhy({ authText, nowMs, runMs, marginMs = 30 * 60_000 }) {
 }
 
 /**
+ * The Codex CLI also refreshes on its own once the last refresh is about 8 days old, whatever
+ * the token's expiry. A second lane needs the whole run to end well before that, so neither
+ * container rotates the refresh token the other holds. null: safe; unreadable counts as unsafe.
+ */
+const REFRESH_AGE_SAFE_MS = 7 * 24 * 3600_000;
+function refreshAgeWhy({ authText, nowMs, runMs, marginMs = 30 * 60_000 }) {
+  const last = Date.parse(authLastRefresh(authText));
+  if (!Number.isFinite(last)) return 'the Codex login last_refresh is unreadable';
+  if (nowMs + runMs + marginMs - last > REFRESH_AGE_SAFE_MS) return `the Codex login was last refreshed ${new Date(last).toISOString()}, so it could refresh itself during this run`;
+  return null;
+}
+
+/**
  * Codex lanes (BRO-5730). Each lane owns its own slots, so the cloud routine (cloud) and the
  * GitHub runner (gha) run at the same time without sharing a slot's lock or worktrees.
  * MAX_SLOTS covers every lane: --lock-status reads all of their locks.
@@ -560,7 +573,7 @@ function laneForLogin({ lane = 'cloud', slots, authText, nowMs, runMs, marginMs 
   const l = LANES[lane] || LANES.cloud;
   const want = Math.max(1, Math.min(Number(slots) || 1, l.max));
   if (l.base > 0) {
-    const why = loginExpiryWhy({ authText, nowMs, runMs, marginMs });
+    const why = loginExpiryWhy({ authText, nowMs, runMs, marginMs }) || refreshAgeWhy({ authText, nowMs, runMs, marginMs });
     if (why) return { lane: 'cloud', base: 0, slots: 1, why: `${why}; ${lane} lane falls back to slot 0` };
     return { lane, base: l.base, slots: want, why: null };
   }
@@ -1162,6 +1175,7 @@ module.exports = {
   MAX_SLOTS,
   laneSlotList,
   laneForLogin,
+  refreshAgeWhy,
   cardsInLocks,
   SWF_CARRY_MARKER,
   swfCarryBody,

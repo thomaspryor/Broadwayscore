@@ -1030,7 +1030,7 @@ test('lanes (BRO-5730): cloud owns slots 0-2, gha 3-4, and no two lanes share a 
 test('laneForLogin: gha runs on its own slots only when the login outlives the run, else slot 0 alone', () => {
   const now = Date.parse('2026-10-20T10:00:00Z');
   const jwt = (exp) => `e30.${Buffer.from(JSON.stringify({ exp: Math.floor(exp / 1000) })).toString('base64url')}.sig`;
-  const auth = (exp) => JSON.stringify({ tokens: { access_token: jwt(exp) } });
+  const auth = (exp, lr = '2026-10-18T00:00:00Z') => JSON.stringify({ last_refresh: lr, tokens: { access_token: jwt(exp) } });
   const runMs = 290 * 60_000;
   const fresh = auth(now + 5 * 24 * 3600_000);
   assert.deepEqual(r.laneForLogin({ lane: 'gha', slots: 2, authText: fresh, nowMs: now, runMs }), { lane: 'gha', base: 3, slots: 2, why: null });
@@ -1042,6 +1042,11 @@ test('laneForLogin: gha runs on its own slots only when the login outlives the r
   assert.deepEqual(r.laneForLogin({ lane: 'cloud', slots: 3, authText: fresh, nowMs: now, runMs }), { lane: 'cloud', base: 0, slots: 3, why: null });
   assert.equal(r.laneForLogin({ lane: 'cloud', slots: 3, authText: auth(now + 60 * 60_000), nowMs: now, runMs }).slots, 1);
   assert.equal(r.loginExpiryWhy({ authText: fresh, nowMs: now, runMs }), null);
+  const old = r.laneForLogin({ lane: 'gha', slots: 2, authText: auth(now + 5 * 24 * 3600_000, '2026-10-13T12:00:00Z'), nowMs: now, runMs });
+  assert.deepEqual([old.lane, old.base, old.slots], ['cloud', 0, 1], 'last refresh near 7 days: the CLI could refresh itself mid-run');
+  assert.match(old.why, /last refreshed/);
+  assert.equal(r.laneForLogin({ lane: 'gha', slots: 2, authText: auth(now + 5 * 24 * 3600_000, ''), nowMs: now, runMs }).base, 0, 'no last_refresh fails safe');
+  assert.equal(r.laneForLogin({ lane: 'cloud', slots: 3, authText: auth(now + 5 * 24 * 3600_000, '2026-10-01T00:00:00Z'), nowMs: now, runMs }).slots, 3, 'the cloud lane keeps its own rule');
 });
 
 test('cardsInLocks: the cards other slots\' run locks name', () => {
