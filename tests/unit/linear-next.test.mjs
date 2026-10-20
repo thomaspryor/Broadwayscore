@@ -2184,15 +2184,16 @@ test('reportDispatchOnIssue: still claims the state when the fresh refetch confi
   assert.equal(updateCalls[0].patch.stateId, 'progress-1');
 });
 
-for (const [label, claims, expect] of [
-  ['six cloud Opus claims in 24h fill the cap', 6, 'sonnet'],
-  ['five leave room', 5, 'opus'],
+for (const [label, claims, expect, priority] of [
+  ['six cloud Opus claims in 24h fill the cap', 6, 'sonnet', 2],
+  ['five leave room', 5, 'opus', 2],
+  ['a full cap does not hold back a P0, BRO-5773', 6, 'opus', 1],
 ]) test(`BRO-5730: the Mac Opus cap counts cloud claim comments (${label})`, () => {
   const script = `
     const { main } = require('./scripts/linear-next.js');
     const issue = {
       id: 'issue-uuid-5730', identifier: 'BRO-9001', title: 'Opus-hinted fixture', description: 'Model: Opus',
-      url: 'https://linear.app/x/issue/BRO-9001', priority: 2,
+      url: 'https://linear.app/x/issue/BRO-9001', priority: ${priority},
       state: { id: 's', name: 'Todo', type: 'unstarted' }, labels: { nodes: [] }, comments: { nodes: [] },
     };
     const now = Date.now();

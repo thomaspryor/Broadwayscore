@@ -493,10 +493,11 @@ function cloudPriorAttempts(issue) {
  * The model a cloud worker should run this card on, by the same policy as a
  * Mac dispatch (linear-next.js -> bsc-next-model.js pickLinearModel): a retry
  * escalates, a filer's "Model:" line is honored on the first attempt, a P0
- * gets Opus, within the 24h Opus cap the ledger can see. Cloud retries
+ * gets Opus (exempt from the 24h Opus cap, BRO-5773), other Opus picks stay
+ * within the cap the ledger can see. Cloud retries
  * (cloudPriorAttempts) count as prior launches; they are added as ledger rows
  * with no model, so they never count against the Opus cap. A ledger read that
- * throws makes the cap count as reached (Sonnet), as on the Mac.
+ * throws makes the cap count as reached (Sonnet, P0s excepted), as on the Mac.
  * @param {object} issue - Linear issue, with prefetched comments
  * @param {{nowMs?:number, readEntries?:Function, env?:object}} [opts] - readEntries defaults to the dispatch ledger
  * @returns {{ model: string, reason: string }}

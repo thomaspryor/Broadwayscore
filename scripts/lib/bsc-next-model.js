@@ -180,10 +180,10 @@ function countPriorLaunches(entries, taskId) {
  */
 function linearEscalationModel({ issue, recentOpusLaunches, cap, priorLaunches = 0 }) {
   const priorDispatches = countPriorDispatches(issue, priorLaunches);
-  const isP0 = !!issue && issue.priority === 1;
+  const isP0 = isP0Issue(issue);
   if (!isP0 && priorDispatches === 0) return { model: 'sonnet', reason: 'first attempt, not P0' };
   const why = isP0 && priorDispatches === 0 ? 'P0' : `retry after ${priorDispatches} prior dispatch(es)`;
-  if (isP0) return { model: 'opus', reason: recentOpusLaunches >= cap ? `${why} (P0 is exempt from the Opus cap)` : why };
+  if (isP0) return { model: 'opus', reason: recentOpusLaunches >= cap ? `${why} (${p0CapNote(recentOpusLaunches, cap)})` : why };
   if (recentOpusLaunches >= cap) return { model: 'sonnet', reason: `${why}, but ${capNote(recentOpusLaunches, cap)}` };
   return { model: 'opus', reason: why };
 }
@@ -194,6 +194,15 @@ function countPriorDispatches(issue, priorLaunches = 0) {
   const comments = (issue && issue.comments && issue.comments.nodes) || [];
   const priorComments = comments.filter((c) => c && PRIOR_DISPATCH_RE.test(String(c.body || '').trim())).length;
   return Math.max(priorComments, priorLaunches || 0);
+}
+
+// Linear priority 1 is Urgent (0 is "no priority"); Number() so a string survives.
+function isP0Issue(issue) {
+  return !!issue && Number(issue.priority) === 1;
+}
+
+function p0CapNote(recentOpusLaunches, cap) {
+  return `P0 is exempt from the Opus cap; ${capNote(recentOpusLaunches, cap)}`;
 }
 
 function capNote(recentOpusLaunches, cap) {
@@ -210,14 +219,16 @@ function capNote(recentOpusLaunches, cap) {
  *      failure BRO-4523 fixed.
  *   3. a "Model:" line the filer stamped (linear-brain.js create --model):
  *      opus counts against the same 24h Opus cap as escalation, so a filer
- *      cannot bypass it; sonnet (or haiku: there are no haiku workers) is
+ *      cannot bypass it (a P0 is exempt); sonnet (or haiku: there are no haiku workers) is
  *      honored on the first attempt, even on a P0 the filer judged easy.
  *   4. otherwise the escalation rule (P0 → Opus, exempt from the cap).
- * P0 cards are exempt from the cap in 2 to 4 (BRO-5773); a filer's sonnet line still wins on a first run.
+ * P0 cards are exempt from the cap (BRO-5773); a filer's sonnet line still
+ * wins on a P0's first run.
  * Reading the ledger can fail; then the cap counts as reached (Sonnet, the
- * safe side) and the reason says so.
- * Mac dispatch only (linear-next.js). The cloud worker routine has no model
- * choice, and bsc-next.js resolveModel() is the legacy Notion path.
+ * safe side, except for a P0) and the reason says so.
+ * Used by Mac dispatch (linear-next.js) and the cloud picker
+ * (cloud-worker-pick.js pickModel); bsc-next.js resolveModel() is the legacy
+ * Notion path.
  * @returns {{ model: string, reason: string }}
  */
 function pickLinearModel({ explicitFlag, issue, taskId, readEntries, nowMs = Date.now(), env = process.env }) {
@@ -232,8 +243,9 @@ function pickLinearModel({ explicitFlag, issue, taskId, readEntries, nowMs = Dat
   if (!hint) return escalation;
   if (countPriorDispatches(issue, priorLaunches) > 0) return { ...escalation, reason: `${escalation.reason} (overrides Model: ${hint} on the card)` };
   if (hint === 'opus') {
-    if (recentOpusLaunches >= cap && !(issue && issue.priority === 1)) return { model: 'sonnet', reason: `Model: opus on the card, but ${capNote(recentOpusLaunches, cap)}` };
-    return { model: 'opus', reason: 'Model: opus on the card' };
+    if (recentOpusLaunches < cap) return { model: 'opus', reason: 'Model: opus on the card' };
+    if (isP0Issue(issue)) return { model: 'opus', reason: `Model: opus on the card (${p0CapNote(recentOpusLaunches, cap)})` };
+    return { model: 'sonnet', reason: `Model: opus on the card, but ${capNote(recentOpusLaunches, cap)}` };
   }
   return { model: 'sonnet', reason: `Model: ${hint} on the card` };
 }
