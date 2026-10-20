@@ -4819,7 +4819,12 @@ jobs:
         # not this CI run (second-opinion review, 2026-09-17).
         continue-on-error: true
         run: |
-          node --test --test-timeout 120000 tests/unit/opening-night-checks-skeleton.test.mjs scripts/enrich-fallback-ticket-links-live.test.mjs tests/unit/dmarc-deliverability.test.mjs
+          # BRO-5588: name failing tests (advisory step, so warnings not errors); exit code preserved.
+          set +e
+          node --test --test-timeout 120000 tests/unit/opening-night-checks-skeleton.test.mjs scripts/enrich-fallback-ticket-links-live.test.mjs tests/unit/dmarc-deliverability.test.mjs 2>&1 | tee /tmp/opening-night-live-batch.log
+          rc=${PIPESTATUS[0]}
+          bash scripts/lib/summarize-failing-tests.sh "opening-night live" /tmp/opening-night-live-batch.log "$rc" warning
+          exit "$rc"
 
       - name: Run scripts/lib tests (visual-qa transcript-scan etc.)
         # Tests colocated with the helpers they cover (scripts/lib/*.test.mjs)
@@ -4857,7 +4862,12 @@ jobs:
           shopt -s nullglob
           tests=(scripts/lib/*.test.mjs)
           [ ${#tests[@]} -eq 0 ] && { echo "no scripts/lib tests"; exit 0; }
-          node --test --test-timeout 300000 "${tests[@]}"
+          # BRO-5588: name failing tests; exit code preserved.
+          set +e
+          node --test --test-timeout 300000 "${tests[@]}" 2>&1 | tee /tmp/scripts-lib-batch.log
+          rc=${PIPESTATUS[0]}
+          bash scripts/lib/summarize-failing-tests.sh "scripts/lib" /tmp/scripts-lib-batch.log "$rc"
+          exit "$rc"
 
       - name: Repeat file-lock race test 20x (stale-break regression guard)
         # scripts/lib/file-lock.test.mjs's 'racing stale-lock breakers' test
