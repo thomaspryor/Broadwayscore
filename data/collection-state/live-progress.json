@@ -1,26 +1,61 @@
 {
-  "updatedAt": "2026-10-20T15:03:58.268Z",
-  "processed": 6,
-  "failed": 4,
-  "successRate": "60.0%",
+  "updatedAt": "2026-10-20T15:04:11.160Z",
+  "processed": 7,
+  "failed": 15,
+  "successRate": "31.8%",
   "tierBreakdown": {
     "playwright": 6,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
-      "t": "2026-10-20T15:01:33.861Z",
+      "t": "2026-10-20T14:55:54.700Z",
       "event": "bb-session",
-      "session": "b0baec82",
+      "session": "7ed82cda",
       "url": "https://www.cbsnews.com/video/other-desert-cities-on-broadway-family-secrets-lai"
+    },
+    {
+      "t": "2026-10-20T14:57:27.508Z",
+      "event": "bb-session",
+      "session": "cf9949de",
+      "url": "https://www.theatreinla.com/the-second-best-school-shooting/11328/"
+    },
+    {
+      "t": "2026-10-20T14:59:47.852Z",
+      "event": "bb-session",
+      "session": "1ba93439",
+      "url": "https://openingnight.online/midnight-off-broadway-review-todrick-halls-new-music"
+    },
+    {
+      "t": "2026-10-20T15:01:38.710Z",
+      "event": "bb-session",
+      "session": "4fe38b32",
+      "url": "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/attachment/alyssa-may-go"
+    },
+    {
+      "t": "2026-10-20T15:01:46.146Z",
+      "event": "bb-session",
+      "session": "9e63e397",
+      "url": "https://exeuntnyc.com/reviews/review-fish-at-wp-theater/attachment/alyssa-may-go"
+    },
+    {
+      "t": "2026-10-20T15:04:04.898Z",
+      "event": "bb-session",
+      "session": "6998f41d",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654594"
+    },
+    {
+      "t": "2026-10-20T15:04:05.164Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
