@@ -54,5 +54,19 @@
     "tracked": "BRO-5526",
     "fields": [],
     "queuedAt": "2026-10-20T07:37:35.229Z"
+  },
+  {
+    "conditionKey": "time-to-publish-sla:missed",
+    "title": "Time-to-publish SLA missed — 0% within 15 min (target 90%)",
+    "description": "Scope: 2 opening window(s): ilford-boy-west-end-2026 (2026-10-20), king-of-the-yees-off-broadway-2026 (2026-10-20)\nEvaluated 5 review(s), p90 151m.\nSlowest:\n• king-of-the-yees-off-broadway-2026 / nyt-theater — 151m\n• king-of-the-yees-off-broadway-2026 / vulture — 151m\n• king-of-the-yees-off-broadway-2026 / nytg — 125m\n• king-of-the-yees-off-broadway-2026 / nysr — 125m\n• king-of-the-yees-off-broadway-2026 / exeunt-magazine — 104m",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-20T07:51:04.089Z"
   }
 ]
