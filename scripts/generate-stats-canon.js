@@ -21,6 +21,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { versionedImagePath } = require('./lib/versioned-image-path');
 
 const dataDir = path.join(__dirname, '../data');
 const outputPath = path.join(__dirname, '../public/data/stats-canon.json');
@@ -79,8 +80,8 @@ function main() {
       id: nom.showId,
       t: show.title,
     };
-    if (show.images?.poster) entry.img = show.images.poster;
-    else if (show.images?.thumbnail) entry.img = show.images.thumbnail;
+    if (show.images?.poster) entry.img = versionedImagePath(show.images.poster);
+    else if (show.images?.thumbnail) entry.img = versionedImagePath(show.images.thumbnail);
     winners[key].push(entry);
   }
   winners.bestMusical.sort((a, b) => a.ceremony - b.ceremony);

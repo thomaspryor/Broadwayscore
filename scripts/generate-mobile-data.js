@@ -21,6 +21,7 @@ const { shouldHideReviews } = require('./lib/should-hide-reviews');
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 const { isHiddenFromAppFeed } = require('./lib/markets');
 const { isUpcomingTag } = require('./lib/opening-night-completeness');
+const { versionedImagePath } = require('./lib/versioned-image-path');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data');
@@ -207,8 +208,8 @@ const mobileShows = visibleShows.map(show => {
 
   // Images
   const img = {};
-  if (show.images?.thumbnail) img.th = show.images.thumbnail;
-  if (show.images?.poster) img.po = show.images.poster;
+  if (show.images?.thumbnail) img.th = versionedImagePath(show.images.thumbnail);
+  if (show.images?.poster) img.po = versionedImagePath(show.images.poster);
   if (Object.keys(img).length > 0) entry.img = img;
 
   // Scores

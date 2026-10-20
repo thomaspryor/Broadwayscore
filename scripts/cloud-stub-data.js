@@ -67,7 +67,8 @@ const shows = picked.map(s => ({
   category: cat(s.id),
   runtime: '2h 30m',
   intermissions: 1,
-  images: s.img ? { thumbnail: s.img.th, poster: s.img.po } : undefined,
+  // mobile-shows.json paths carry a ?v=<hash> cache-bust suffix (BRO-5734); stub shows.json wants plain file paths
+  images: s.img ? { thumbnail: s.img.th && s.img.th.split('?')[0], poster: s.img.po && s.img.po.split('?')[0] } : undefined,
   synopsis: s.syn || '',
   tags: s.tg || [],
   creativeTeam: (s.ct || []).map(c => ({ name: c.n, role: c.r })),
