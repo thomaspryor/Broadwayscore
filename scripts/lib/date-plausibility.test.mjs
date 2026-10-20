@@ -252,21 +252,52 @@ test('#832 an existing dateless stub getting a PLAUSIBLE publishDate for the fir
   assert.equal(onDisk.publishDate, '2026-04-13');
 });
 
-test('#832 a file that already carries NON-score protected content (e.g. a contentTier stub) is exempt — a date correction there is a deliberate fixup, not new ingest', () => {
+function stubTest(onDisk, incoming, { show } = {}) {
   const root = mkReviewTextsRoot();
   const showId = 'some-show-2026';
-  _setShowsCacheForTest(new Map([[showId, { id: showId, openingDate: '2026-04-14' }]]));
-
+  _setShowsCacheForTest(new Map([[showId, show || { id: showId, openingDate: '2026-04-14' }]]));
   const targetPath = path.join(root, showId, 'outlet--critic.json');
   fs.mkdirSync(path.dirname(targetPath), { recursive: true });
-  // Protected but UNSCORED — contentTier only, no assignedScore.
-  fs.writeFileSync(targetPath, JSON.stringify({ criticName: 'Critic', contentTier: 'stub' }));
+  fs.writeFileSync(targetPath, JSON.stringify(onDisk));
+  const result = safeWriteReview(targetPath, incoming);
+  return { result, disk: JSON.parse(fs.readFileSync(targetPath, 'utf-8')) };
+}
 
-  const result = safeWriteReview(targetPath, { criticName: 'Critic', contentTier: 'stub', publishDate: '2020-01-01' });
-  assert.equal(result.wrote, true);
-  assert.equal(result.skipped, undefined);
-  const onDisk = JSON.parse(fs.readFileSync(targetPath, 'utf-8'));
-  assert.equal(onDisk.wrongProduction, undefined, 'unscored protected content keeps the old no-fire behavior — no new blast radius beyond scored records');
+test('BRO-5799 a dateless protected stub (show-score / rss-discovery) that later receives an implausible date is flagged wrongProduction in place', () => {
+  for (const source of ['show-score', 'rss-discovery']) {
+    const { result, disk } = stubTest(
+      { criticName: 'Critic', source, isFullReview: false },
+      { criticName: 'Critic', source, publishDate: '2018-04-30' },
+    );
+    assert.equal(result.wrote, true, source);
+    assert.equal(disk.wrongProduction, true, `${source}: stamped, not left live`);
+    assert.equal(disk.publishDate, '2018-04-30', `${source}: enrichment kept`);
+    assert.match(disk.wrongProductionNote, /^Date guard:/);
+  }
+});
+
+test('BRO-5799 controls: plausible date, on-disk verdicts and locked stubs are not stamped', () => {
+  const stub = { criticName: 'Critic', source: 'show-score', isFullReview: false };
+  const bad = { criticName: 'Critic', source: 'show-score', publishDate: '2018-04-30' };
+  assert.equal(stubTest(stub, { ...bad, publishDate: '2026-04-20' }).disk.wrongProduction, undefined, 'plausible date');
+  assert.equal(stubTest({ ...stub, humanReviewScore: 70 }, bad).disk.wrongProduction, undefined, 'on-disk humanReviewScore');
+  assert.equal(stubTest({ ...stub, humanReviewedWrongProduction: false }, bad).disk.wrongProduction, undefined, 'human verdict');
+  const manual = stubTest({ ...stub, wrongProduction: true, wrongProductionNote: 'manual' }, bad).disk;
+  assert.doesNotMatch(String(manual.wrongProductionNote), /^Date guard:/, 'manual flag not rewritten as an auto-clearable date-guard flag');
+  const locked = stubTest({ ...stub, _locked: true }, bad);
+  assert.equal(locked.result.wrote, true, 'locked stub write is not dropped');
+  assert.equal(locked.disk.wrongProduction, undefined, 'locked stub not stamped');
+});
+
+test('BRO-5799 override-cleared stub keeps its date unflagged; on-disk exemptions (wrongShow) are honored', () => {
+  const stub = { criticName: 'Critic', source: 'rss-discovery', isFullReview: false };
+  const bad = { criticName: 'Critic', source: 'rss-discovery', publishDate: '2018-04-30' };
+  for (const extra of [{ wrongProductionOverride: true }, { wrongProductionManualClear: true }, { wrongShow: true }]) {
+    const { result, disk } = stubTest({ ...stub, ...extra }, bad);
+    assert.equal(result.wrote, true, JSON.stringify(extra));
+    assert.equal(disk.publishDate, '2018-04-30', 'date landed');
+    assert.notEqual(disk.wrongProductionNote && /^Date guard:/.test(disk.wrongProductionNote), true, JSON.stringify(extra));
+  }
 });
 
 // --- #1678: a review scored WHILE dateless, then the real (implausible) date arrives ---
