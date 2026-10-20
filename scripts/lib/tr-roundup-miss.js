@@ -10,8 +10,7 @@
  * (data/audit/bww-roundup-miss-ledger.jsonl) under the key `tr:<showId>`, so no
  * new file needs workflow staging, a union-merge rule or a push-with-retry
  * entry, and BWW cooldown lookups (keyed by the bare showId) never see them.
- * The cooldown rule is the same as BWW's: none within 7 days of opening (the
- * roundup may be about to publish), 24h otherwise.
+ * Cooldown tiers are TR-specific (see cooldownMsFor).
  */
 
 'use strict';
@@ -19,16 +18,39 @@
 const {
   readRoundupMisses,
   lastMissForShow,
-  isInRoundupMissCooldown,
   recordRoundupMiss,
 } = require('./bww-roundup-persistence');
+
+const HOUR = 3600000;
+// Tiered, unlike BWW's all-or-nothing 7-day exemption: replaying poller run
+// 39249486257 against it skipped only 5 of 15 misses, because 10 of the 15
+// opened 3-6 days earlier. TR publishes its roundup after the press night
+// reviews, so the first 2 days stay uncached; after that a miss holds for 6h
+// (still inside the 7-day window), then 24h. An unknown opening date holds 12h.
+const HOT_DAYS = 2;
+const WINDOW_DAYS = 7;
+const COOLDOWN_HOT_MS = 0;
+const COOLDOWN_WINDOW_MS = 6 * HOUR;
+const COOLDOWN_SETTLED_MS = 24 * HOUR;
+const COOLDOWN_UNDATED_MS = 12 * HOUR;
+
+function cooldownMsFor(show, now) {
+  const openingMs = show && show.openingDate ? new Date(show.openingDate).getTime() : NaN;
+  if (!Number.isFinite(openingMs)) return COOLDOWN_UNDATED_MS;
+  const days = Math.abs(now - openingMs) / 86400000;
+  if (days < HOT_DAYS) return COOLDOWN_HOT_MS;
+  if (days < WINDOW_DAYS) return COOLDOWN_WINDOW_MS;
+  return COOLDOWN_SETTLED_MS;
+}
 
 const trMissKey = (showId) => `tr:${showId}`;
 
 /** Pure: should theatre.reviews discovery be skipped for `show`? */
 function isTrDiscoveryInCooldown(show, entries, now = Date.now()) {
   if (!show || !show.id) return false;
-  return isInRoundupMissCooldown(show, lastMissForShow(trMissKey(show.id), entries), now);
+  const last = lastMissForShow(trMissKey(show.id), entries);
+  if (!last) return false;
+  return now - new Date(last.ts).getTime() < cooldownMsFor(show, now);
 }
 
 /** Record a miss, only when the WP search answered (not on a fetch failure). */
@@ -38,4 +60,4 @@ function recordTrMiss(show, stats, ledgerPath) {
   return true;
 }
 
-module.exports = { trMissKey, isTrDiscoveryInCooldown, recordTrMiss, readRoundupMisses };
+module.exports = { cooldownMsFor, trMissKey, isTrDiscoveryInCooldown, recordTrMiss, readRoundupMisses };

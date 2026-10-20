@@ -40,9 +40,24 @@ const t = (name, fn) => { fn(); n++; console.log('ok -', name); };
   t('old show is in cooldown after a miss', () => assert.strictEqual(isTrDiscoveryInCooldown(old, entries, Date.now()), true));
   t('cooldown expires after 24h+', () => assert.strictEqual(isTrDiscoveryInCooldown(old, entries, Date.now() + 25 * 3600000), false));
   t('show with no prior miss is not in cooldown', () => assert.strictEqual(isTrDiscoveryInCooldown({ ...old, id: 'other' }, entries), false));
-  t('show near opening is never in cooldown', () => {
-    recordTrMiss(fresh, stats, ledger);
-    assert.strictEqual(isTrDiscoveryInCooldown(fresh, readRoundupMisses(ledger), Date.now()), false);
+  t('show opened <2 days ago is never in cooldown', () => {
+    const hot = { ...fresh, openingDate: new Date(Date.now() - 12 * 3600000).toISOString().slice(0, 10) };
+    recordTrMiss(hot, stats, ledger);
+    assert.strictEqual(isTrDiscoveryInCooldown(hot, readRoundupMisses(ledger), Date.now()), false);
+  });
+  t('show opened 4 days ago: 6h cooldown, expires after', () => {
+    const mid = { ...fresh, id: 'mid-show', openingDate: new Date(Date.now() - 4 * 86400000).toISOString().slice(0, 10) };
+    recordTrMiss(mid, stats, ledger);
+    const e = readRoundupMisses(ledger);
+    assert.strictEqual(isTrDiscoveryInCooldown(mid, e, Date.now()), true);
+    assert.strictEqual(isTrDiscoveryInCooldown(mid, e, Date.now() + 7 * 3600000), false);
+  });
+  t('undated show: 12h cooldown', () => {
+    const u = { id: 'undated', title: 'U' };
+    recordTrMiss(u, stats, ledger);
+    const e = readRoundupMisses(ledger);
+    assert.strictEqual(isTrDiscoveryInCooldown(u, e, Date.now() + 11 * 3600000), true);
+    assert.strictEqual(isTrDiscoveryInCooldown(u, e, Date.now() + 13 * 3600000), false);
   });
   t('TR miss does not put BWW lookup of same show in cooldown', () =>
     assert.strictEqual(isInRoundupMissCooldown(old, lastMissForShow(old.id, entries)), false));
