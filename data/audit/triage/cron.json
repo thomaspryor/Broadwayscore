@@ -1,7 +1,7 @@
 {
   "system": "cron",
   "status": "warn",
-  "lastChecked": "2026-10-19T07:48:59.990Z",
+  "lastChecked": "2026-10-20T07:35:20.796Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,42 +9,42 @@
     {
       "name": "Cron: Update Show Status",
       "status": "pass",
-      "message": "20h ago, success"
+      "message": "17h ago, success"
     },
     {
       "name": "Cron: Rebuild Reviews",
       "status": "pass",
-      "message": "0h ago, success"
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: Collect Review Texts",
       "status": "pass",
-      "message": "0h ago, success"
+      "message": "7h ago, success"
     },
     {
       "name": "Cron: LLM Ensemble Score",
+      "status": "pass",
+      "message": "0h ago, success"
+    },
+    {
+      "name": "Cron: Test Suite",
       "status": "warn",
       "message": "Last run still running (started 0h ago)"
     },
     {
-      "name": "Cron: Test Suite",
+      "name": "Cron: Opening Night Broadcast",
       "status": "pass",
       "message": "0h ago, success"
     },
     {
-      "name": "Cron: Opening Night Broadcast",
-      "status": "pass",
-      "message": "1h ago, success"
-    },
-    {
       "name": "Cron: Update Lottery/Rush",
       "status": "pass",
-      "message": "4d ago, success"
+      "message": "15h ago, success"
     },
     {
       "name": "Cron: Weekly Grosses",
       "status": "pass",
-      "message": "5d ago, success"
+      "message": "6d ago, success"
     },
     {
       "name": "Cron: Update Show Score",
@@ -54,32 +54,37 @@
     {
       "name": "Cron: Update Mezzanine",
       "status": "pass",
-      "message": "3h ago, success"
+      "message": "7h ago, success"
     },
     {
       "name": "Cron: Update Cast Changes",
       "status": "pass",
-      "message": "2d ago, success"
+      "message": "3d ago, success"
     },
     {
       "name": "Cron: NYT Critics Picks",
+      "status": "pass",
+      "message": "21h ago, success"
+    },
+    {
+      "name": "Cron: Weekly Video Reviews",
       "status": "pass",
       "message": "22h ago, success"
     },
     {
       "name": "Cron: Reverse Discovery",
       "status": "pass",
-      "message": "13h ago, success (newest run failure — superseded, not a failure)"
+      "message": "6h ago, success"
     },
     {
       "name": "Cron: Cron Health Watchdog",
       "status": "pass",
-      "message": "17h ago, ran (failure; liveness-only check)"
+      "message": "13h ago, ran (failure; liveness-only check)"
     },
     {
       "name": "Cron: Affiliate Link Integrity",
       "status": "pass",
-      "message": "6d ago, success"
+      "message": "13h ago, success"
     },
     {
       "name": "Cron: Cloud Memory Reconcile",
@@ -89,7 +94,7 @@
     {
       "name": "Cron: exempt-cron liveness",
       "status": "warn",
-      "message": "2 of 127 exempt scheduled workflow(s) stopped starting: dependabot-auto-merge.yml (no scheduled start in last 5 runs, limit 48h); recollect-for-scores.yml (last start 345h ago, limit 192h)."
+      "message": "1 of 128 exempt scheduled workflow(s) stopped starting: recollect-for-scores.yml (last start 369h ago, limit 192h)."
     }
   ]
 }

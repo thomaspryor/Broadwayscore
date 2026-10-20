@@ -1,15 +1,15 @@
 {
   "system": "data",
   "status": "error",
-  "lastChecked": "2026-10-19T07:48:59.989Z",
+  "lastChecked": "2026-10-20T07:35:20.795Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
       "name": "Data: OB shows no closing signal can detect",
-      "status": "pass",
-      "message": "Every open Off-Broadway show has a closing signal the detector can watch"
+      "status": "warn",
+      "message": "1 open Off-Broadway show(s) have no TodayTix id, no review texts and no closingDate, so a closure would go unnoticed. Oldest: bettys-summer-vacation-the-heights-players-off-broadway-2026"
     },
     {
       "name": "Data: OB closing candidates awaiting review",
@@ -57,29 +57,14 @@
       "message": "No closed national tour lists new dates"
     },
     {
-      "name": "Data: T1/T2 silent review gaps",
-      "status": "error",
-      "message": "2 discovered review(s) not reaching the composite score (1 T1). Oldest: golden-boy-off-west-end-2026 — daily-mail (rejected-unscoreable); 1 newer still in flight"
+      "name": "Data: live show with zero critic reviews on site",
+      "status": "pass",
+      "message": "No live show is missing every discovered critic review"
     },
     {
       "name": "Data: uncollected live review strands",
-      "status": "warn",
-      "message": "5 discovered review URL(s) across 5 live show(s) were never fetched. First: maybe-happy-ending-2024 (1 stranded)"
-    },
-    {
-      "name": "Data: reviewed shows missing from shows.json",
-      "status": "warn",
-      "message": "1 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Dance Is Not for Us\" (guardian-review — missing 0d)"
-    },
-    {
-      "name": "Data: review coverage holes",
-      "status": "warn",
-      "message": "84 review(s) with no usable text, 47 rejected although verified as a review, 48 never scored, 27 with a blocked URL (0 published on the site), across 438 current shows"
-    },
-    {
-      "name": "Data: published scores outside the critic's rating",
-      "status": "warn",
-      "message": "62 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 29031 checked"
+      "status": "pass",
+      "message": "Every discovered review URL for live shows was fetched"
     },
     {
       "name": "Data: armed-but-vacuous backlog cards",
@@ -89,12 +74,47 @@
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "61 of 563 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-5565 Investigate Sentry weekly digest: TypeError x8, RangeError x3 (New), UgcError apple_sign_in"
+      "message": "59 of 555 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-5692 Opening-night audit 2026-10-19"
+    },
+    {
+      "name": "Data: Linear card-verifiability report stale",
+      "status": "pass",
+      "message": "data/audit/card-verifiability-linear.json generated 2026-10-19"
+    },
+    {
+      "name": "Data: review coverage holes",
+      "status": "warn",
+      "message": "90 review(s) with no usable text, 49 rejected although verified as a review, 52 never scored, 27 with a blocked URL (0 published on the site), across 441 current shows"
+    },
+    {
+      "name": "Data: published scores outside the critic's rating",
+      "status": "warn",
+      "message": "62 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 29381 checked"
+    },
+    {
+      "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
+      "status": "pass",
+      "message": "duplicate-flag inheritance audit is within its committed floor"
+    },
+    {
+      "name": "Data: stale-slot squatters (current-year review slots held by another production)",
+      "status": "pass",
+      "message": "audit ran: 587 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
+    },
+    {
+      "name": "Data: T1/T2 silent review gaps",
+      "status": "error",
+      "message": "3 discovered review(s) not reaching the composite score (1 T1). Oldest: golden-boy-off-west-end-2026 — daily-mail (rejected-unscoreable); 1 newer still in flight"
+    },
+    {
+      "name": "Data: reviewed shows missing from shows.json",
+      "status": "warn",
+      "message": "2 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Dance Is Not for Us\" (guardian-review — missing 1d)"
     },
     {
       "name": "Data: BWW roundup discovery misses near opening",
       "status": "warn",
-      "message": "1 show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. Oldest: other-desert-cities-2026 (14 misses, last 2026-10-19T04:46:20.568Z)."
+      "message": "1 show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. Oldest: other-desert-cities-2026 (11 misses, last 2026-10-19T04:46:20.568Z)."
     }
   ]
 }
