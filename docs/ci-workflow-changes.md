@@ -28,3 +28,12 @@ since 10-14 days run 91-98% green, current streak green x20.
 Remaining reds on 10-16/17 were genuine code/unit-test regressions in the pushed commits
 (scripts/lib and unit batches), not data-gate flaps; each was followed by a green fix.
 Acceptance: 14 consecutive days at >=80%, checked by `scripts/autonomous-acceptance-recheck.js`.
+
+## Reading 2026-10-20
+7d rate 75.8% (486 green / 155 red of 642), current streak green x66, 10-20 at 52/52 green.
+The 10-19 dip (74 reds, 04:00Z to 21:50Z) was one class-A hit in `audit-review-contamination.js --gate`
+(west-end re-opening folders such as into-the-woods-noel-coward-west-end-2026 holding reviews dated at the
+2025 sibling's opening) plus a parallel unit-test regression; both were corrected by data/code fixes and the
+branch has been green since. The class-A gate stays blocking by design: it flags real mis-filed reviews that
+need a human call (marked heal-exempt in test.yml). The 7d window will clear 80% once 10-19 ages out
+(10-27); `autonomous-acceptance-recheck.js` owns the 14-day confirmation.
