@@ -142,31 +142,46 @@ test('task #1847: PUSH_API_FALLBACK_DISABLE=1 still disables the fallback under 
   }
 });
 
-test('task #1847: the broadway-review-texts repo is excluded from the fallback (Codex ship-check P0 finding)', () => {
-  // Codex's second (post-merge) adversarial ship-check pass found this: the
-  // API fallback overlays every path our diff touched outright onto the
-  // current remote tip, with no equivalent to restore_protected_fields()
-  // (which runs after every LOCAL resolution branch and restores manually-
-  // set fields like humanReviewScore that -X theirs conflict resolution can
-  // drop). A concurrent writer's protected-field edit to a review file we
-  // ALSO touched would be silently discarded by the fallback. Excluded via
-  // remote URL detection until the fallback gains its own reconciliation.
+test('BRO-5589: the broadway-review-texts repo now USES the fallback (it gained protected-field reconciliation) for a modify-only diff', () => {
+  // task #1847 excluded this repo because the fallback had no
+  // restore_protected_fields() equivalent. push-via-git-api.sh's review-texts
+  // mode now reconciles protected fields against the live tip (see
+  // push-via-git-api.test.mjs BRO-5589 cases), so the exclusion is gone.
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-retry-elig-reviewtexts-'));
   try {
     // Bare repo directory literally named to contain the substring the
     // script matches on — real local git operations, no network dependency.
-    const { runnerDir } = setupRunner(tmp, undefined, 'broadway-review-texts.git');
-    fs.writeFileSync(path.join(runnerDir, 'plain.js'), 'const x = 1;\n');
+    const { runnerDir } = setupRunner(tmp, ['show-2026/outlet--critic.json', '{"url":"u"}\n'], 'broadway-review-texts.git');
+    fs.writeFileSync(path.join(runnerDir, 'show-2026', 'outlet--critic.json'), '{"url":"u","fullText":"x"}\n');
     sh('git add -A', runnerDir);
-    sh('git commit -q -m "plain commit"', runnerDir);
+    sh('git commit -q -m "modify review"', runnerDir);
+
+    const fakeGitDir = makeAlwaysFailPushGitDir(tmp);
+    const { stdout } = runFixture(runnerDir, fakeGitDir, {}, tmp);
+
+    assert.match(stdout, /trying the Git Data API fallback/,
+      `expected the review-texts repo to attempt the fallback. Output:\n${stdout}`);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+test('BRO-5589: a review-texts diff that ADDS a review file is still left to the local flow (cross-show ownership gate)', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-retry-elig-reviewtexts-add-'));
+  try {
+    const { runnerDir } = setupRunner(tmp, undefined, 'broadway-review-texts.git');
+    fs.mkdirSync(path.join(runnerDir, 'show-2026'));
+    fs.writeFileSync(path.join(runnerDir, 'show-2026', 'outlet--critic.json'), '{"url":"u"}\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "add review"', runnerDir);
 
     const fakeGitDir = makeAlwaysFailPushGitDir(tmp);
     const { stdout } = runFixture(runnerDir, fakeGitDir, {}, tmp);
 
     assert.doesNotMatch(stdout, /trying the Git Data API fallback/,
-      `expected the broadway-review-texts repo to be excluded from the fallback. Output:\n${stdout}`);
-    assert.match(stdout, /this is the broadway-review-texts repo \(excluded/,
-      `expected the discoverability pointer to name the review-texts exclusion. Output:\n${stdout}`);
+      `expected an added review file to disqualify the fallback. Output:\n${stdout}`);
+    assert.match(stdout, /added review file needs the local cross-show ownership gate/,
+      `expected the disqualifier to name the added review file. Output:\n${stdout}`);
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }

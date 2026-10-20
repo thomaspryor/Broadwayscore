@@ -65,13 +65,9 @@ const {
   _isOwnableUrl,
 } = require('./lib/url-ownership');
 
-function isReviewFilePath(rel) {
-  if (!rel || !rel.endsWith('.json') || rel.endsWith('failed-fetches.json')) return false;
-  const parts = rel.split('/');
-  if (parts.length !== 2) return false; // review files are exactly <show>/<file>.json
-  if (parts[0].startsWith('_') || parts[0].startsWith('.')) return false;
-  return true;
-}
+// Shared with the API push fallback's review-texts disqualifier (BRO-5589),
+// which leaves every ADDED review file to this gate.
+const { isReviewFilePath } = require('./lib/review-texts-api-fallback');
 
 /**
  * Files ADDED between base and HEAD (committed — the retry-loop mode).

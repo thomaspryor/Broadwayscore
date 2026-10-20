@@ -1180,3 +1180,192 @@ test('NEGATIVE CONTROL: with a retry budget of 1 the same lost CAS is fatal, and
     fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
+
+// ---------------------------------------------------------------------------
+// BRO-5589: review-texts mode. The broadway-review-texts repo used to be
+// excluded from this fallback because a plain overlay has no
+// restore_protected_fields() step. Fixtures name the bare origin
+// `broadway-review-texts.git` so the script's real URL detection fires.
+// ---------------------------------------------------------------------------
+const RT_FILE = 'some-show-2026/nytimes--critic.json';
+const rtJson = (o) => JSON.stringify(o, null, 2) + '\n';
+const LONG_TEXT = 'Ours collected this full review body. '.repeat(10);
+
+function setupReviewTextsRace(tmp, seedFiles, { originName = 'broadway-review-texts.git' } = {}) {
+  const originDir = path.join(tmp, originName);
+  const seedDir = path.join(tmp, 'seed');
+  sh(`git init -q --bare "${originDir}"`, tmp);
+  sh(`git init -q "${seedDir}"`, tmp);
+  sh('git config user.email t@t.t', seedDir);
+  sh('git config user.name t', seedDir);
+  for (const [rel, content] of Object.entries(seedFiles)) {
+    fs.mkdirSync(path.dirname(path.join(seedDir, rel)), { recursive: true });
+    fs.writeFileSync(path.join(seedDir, rel), content);
+  }
+  sh('git add -A', seedDir);
+  sh('git commit -q -m base', seedDir);
+  sh('git branch -M main', seedDir);
+  sh(`git push -q "${originDir}" main`, seedDir);
+  const runnerDir = path.join(tmp, 'runner');
+  const concurrentDir = path.join(tmp, 'concurrent');
+  cloneRepo(originDir, runnerDir);
+  cloneRepo(originDir, concurrentDir);
+  return { originDir, runnerDir, concurrentDir, baseSha: sh('git rev-parse HEAD', runnerDir).trim() };
+}
+
+function commitAll(dir, msg, push = false) {
+  sh('git add -A', dir);
+  sh(`git commit -q -m "${msg}"`, dir);
+  if (push) sh('git push -q origin main', dir);
+}
+
+function originBlob(originDir, rel) {
+  try {
+    return execFileSync('git', ['--git-dir', originDir, 'show', `main:${rel}`], { stdio: 'pipe' }).toString();
+  } catch {
+    return null;
+  }
+}
+
+const BASE_REVIEW = { url: 'https://example.com/r', outlet: 'NYT', fullText: '' };
+
+test('BRO-5589: a humanReviewScore a concurrent writer set on a review file we also changed survives the review-texts API fallback', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'pvga-rt-protected-'));
+  try {
+    const { originDir, runnerDir, concurrentDir, baseSha } = setupReviewTextsRace(tmp, { [RT_FILE]: rtJson(BASE_REVIEW) });
+    // Concurrent human correction lands first: a protected field plus an
+    // unprotected one, on the same file.
+    fs.writeFileSync(path.join(concurrentDir, RT_FILE), rtJson({ ...BASE_REVIEW, humanReviewScore: 77, humanReviewNote: 'checked', reviewerNote: 'x' }));
+    commitAll(concurrentDir, 'human score', true);
+    // Our stale writer fills fullText from the pre-correction base.
+    fs.writeFileSync(path.join(runnerDir, RT_FILE), rtJson({ ...BASE_REVIEW, fullText: LONG_TEXT }));
+    commitAll(runnerDir, 'collect text');
+
+    const newSha = runScript(['main', baseSha, '3'], runnerDir);
+    assert.match(newSha, /^[0-9a-f]{40}$/);
+    const final = JSON.parse(originBlob(originDir, RT_FILE));
+    assert.equal(final.humanReviewScore, 77, 'protected field set by the concurrent writer must survive');
+    assert.equal(final.humanReviewNote, 'checked');
+    assert.equal(final.reviewerNote, 'x', 'an unprotected key ours never touched keeps the concurrent value (three-way merge)');
+    assert.equal(final.fullText, LONG_TEXT, 'our own change must land too');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+test('BRO-5589: NEGATIVE CONTROL — outside review-texts mode the same race drops the concurrent humanReviewScore (what the old exclusion protected)', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'pvga-rt-negctl-'));
+  try {
+    const { originDir, runnerDir, concurrentDir, baseSha } = setupReviewTextsRace(tmp, { [RT_FILE]: rtJson(BASE_REVIEW) }, { originName: 'origin.git' });
+    fs.writeFileSync(path.join(concurrentDir, RT_FILE), rtJson({ ...BASE_REVIEW, humanReviewScore: 77 }));
+    commitAll(concurrentDir, 'human score', true);
+    fs.writeFileSync(path.join(runnerDir, RT_FILE), rtJson({ ...BASE_REVIEW, fullText: LONG_TEXT }));
+    commitAll(runnerDir, 'collect text');
+    runScript(['main', baseSha, '3'], runnerDir);
+    assert.equal(JSON.parse(originBlob(originDir, RT_FILE)).humanReviewScore, undefined);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+test('BRO-5589: PUSH_API_REVIEW_TEXTS=1 switches review-texts mode on for a remote whose URL does not say so', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'pvga-rt-env-'));
+  try {
+    const { originDir, runnerDir, concurrentDir, baseSha } = setupReviewTextsRace(tmp, { [RT_FILE]: rtJson(BASE_REVIEW) }, { originName: 'origin.git' });
+    fs.writeFileSync(path.join(concurrentDir, RT_FILE), rtJson({ ...BASE_REVIEW, humanReviewScore: 77 }));
+    commitAll(concurrentDir, 'human score', true);
+    fs.writeFileSync(path.join(runnerDir, RT_FILE), rtJson({ ...BASE_REVIEW, fullText: LONG_TEXT }));
+    commitAll(runnerDir, 'collect text');
+    execFileSync('bash', [SCRIPT, 'main', baseSha, '3'], {
+      cwd: runnerDir, env: { ...process.env, ...GIT_ENV, PUSH_API_REVIEW_TEXTS: '1' }, stdio: 'pipe',
+    });
+    const final = JSON.parse(originBlob(originDir, RT_FILE));
+    assert.equal(final.humanReviewScore, 77);
+    assert.equal(final.fullText, LONG_TEXT);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+test('BRO-5589: an unparsable remote copy fails CLOSED — exit 1, origin untouched, our copy never overlaid', async () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'pvga-rt-unparsable-'));
+  try {
+    const { originDir, runnerDir, concurrentDir, baseSha } = setupReviewTextsRace(tmp, { [RT_FILE]: rtJson(BASE_REVIEW) });
+    fs.writeFileSync(path.join(concurrentDir, RT_FILE), '{"humanReviewScore": 77, <<<<<<< broken\n');
+    commitAll(concurrentDir, 'broken json', true);
+    const tipBefore = sh(`git --git-dir "${originDir}" rev-parse main`, tmp).trim();
+    fs.writeFileSync(path.join(runnerDir, RT_FILE), rtJson({ ...BASE_REVIEW, fullText: LONG_TEXT }));
+    commitAll(runnerDir, 'collect text');
+
+    const { code, stderr } = await spawnScript(['main', baseSha, '3'], runnerDir);
+    assert.equal(code, 1, stderr);
+    assert.match(stderr, /review-texts reconciliation failed/);
+    assert.equal(sh(`git --git-dir "${originDir}" rev-parse main`, tmp).trim(), tipBefore, 'nothing may be pushed');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+test('BRO-5589: a review file no concurrent writer touched is pushed byte-for-byte (no re-serialization)', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'pvga-rt-verbatim-'));
+  try {
+    const other = 'other-show/x--y.json';
+    const { originDir, runnerDir, concurrentDir, baseSha } = setupReviewTextsRace(tmp, { [RT_FILE]: rtJson(BASE_REVIEW), [other]: rtJson(BASE_REVIEW) });
+    fs.writeFileSync(path.join(concurrentDir, other), rtJson({ ...BASE_REVIEW, humanReviewScore: 1 }));
+    commitAll(concurrentDir, 'other file', true);
+    const oddlyFormatted = '{"url":"https://example.com/r","outlet":"NYT","fullText":"x"}';
+    fs.writeFileSync(path.join(runnerDir, RT_FILE), oddlyFormatted);
+    commitAll(runnerDir, 'ours');
+    runScript(['main', baseSha, '3'], runnerDir);
+    assert.equal(originBlob(originDir, RT_FILE), oddlyFormatted);
+    assert.equal(JSON.parse(originBlob(originDir, other)).humanReviewScore, 1);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+test('BRO-5589: modify/delete parity — remote deletion of a file we changed is accepted; our deletion of a file remote changed keeps remote', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'pvga-rt-moddel-'));
+  try {
+    const renamed = 'some-show-2026/nytimes--unknown.json';
+    const kept = 'some-show-2026/vulture--critic.json';
+    const { originDir, runnerDir, concurrentDir, baseSha } = setupReviewTextsRace(tmp, {
+      [renamed]: rtJson(BASE_REVIEW), [kept]: rtJson(BASE_REVIEW), [RT_FILE]: rtJson(BASE_REVIEW),
+    });
+    fs.rmSync(path.join(concurrentDir, renamed));
+    fs.writeFileSync(path.join(concurrentDir, kept), rtJson({ ...BASE_REVIEW, humanReviewScore: 50 }));
+    commitAll(concurrentDir, 'rename away + edit', true);
+    fs.writeFileSync(path.join(runnerDir, renamed), rtJson({ ...BASE_REVIEW, fullText: LONG_TEXT }));
+    fs.rmSync(path.join(runnerDir, kept));
+    fs.writeFileSync(path.join(runnerDir, RT_FILE), rtJson({ ...BASE_REVIEW, fullText: LONG_TEXT }));
+    commitAll(runnerDir, 'ours');
+    runScript(['main', baseSha, '3'], runnerDir);
+    assert.equal(originBlob(originDir, renamed), null, 'a stale writer must not resurrect a file the remote removed');
+    assert.equal(JSON.parse(originBlob(originDir, kept)).humanReviewScore, 50, 'our delete must not discard a concurrent edit');
+    assert.equal(JSON.parse(originBlob(originDir, RT_FILE)).fullText, LONG_TEXT);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+for (const [label, rel, content] of [
+  ['an ADDED review file (needs the cross-show ownership gate)', 'new-show-2026/new--critic.json', rtJson(BASE_REVIEW)],
+  ['failed-fetches.json (multi-writer array)', 'failed-fetches.json', '[]\n'],
+]) {
+  test(`BRO-5589: review-texts mode refuses ${label} — exit 1, nothing pushed`, async () => {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'pvga-rt-refuse-'));
+    try {
+      const { originDir, runnerDir, baseSha } = setupReviewTextsRace(tmp, { [RT_FILE]: rtJson(BASE_REVIEW), 'failed-fetches.json': '[{"a":1}]\n' });
+      const tipBefore = sh(`git --git-dir "${originDir}" rev-parse main`, tmp).trim();
+      fs.mkdirSync(path.dirname(path.join(runnerDir, rel)), { recursive: true });
+      fs.writeFileSync(path.join(runnerDir, rel), content);
+      commitAll(runnerDir, 'ours');
+      const { code, stderr } = await spawnScript(['main', baseSha, '3'], runnerDir);
+      assert.equal(code, 1, stderr);
+      assert.match(stderr, /review-texts mode refuses this diff/);
+      assert.equal(sh(`git --git-dir "${originDir}" rev-parse main`, tmp).trim(), tipBefore);
+    } finally {
+      fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    }
+  });
+}

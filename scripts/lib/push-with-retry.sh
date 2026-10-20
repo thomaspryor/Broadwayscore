@@ -1433,26 +1433,24 @@ refine_entry_base_from_remote_tip() {
 # PUSH_API_FALLBACK_DISABLE=1 remains available as an env-level override for
 # any single caller that needs to opt back out without a revert.
 #
-# EXCLUDED: the private broadway-review-texts repo (Codex ship-check P0,
-# found on the FINAL diff after merge — fixed same-session before any
-# non-canary review-texts push could hit it). restore_protected_fields()
-# (called after every LOCAL resolution branch above) restores manually-set
-# fields — humanReviewScore, wrongProductionManualClear, etc. — that a
-# concurrent writer's push may have set on a review file since our
-# SCRIPT_ENTRY_BASE. The API fallback has NO equivalent step: it overlays
-# our version of every touched path outright onto whatever the current
-# remote tip has, so a protected field a concurrent writer just set on a
-# file we ALSO touched would be silently discarded — the exact class of
-# loss restore_protected_fields() exists to prevent, reachable through a
-# path that was never taught about it. Detected via remote URL, matching
-# the CROSS-SHOW OWNERSHIP GATE's existing pattern below. Re-enable once
-# the fallback gains its own protected-field reconciliation step.
-_PUSH_API_REPO_EXCLUDED=false
+# The private broadway-review-texts repo WAS excluded here (Codex ship-check
+# P0): restore_protected_fields() (called after every LOCAL resolution branch
+# above) restores manually-set fields — humanReviewScore,
+# wrongProductionManualClear, etc. — that a concurrent writer may have set on a
+# review file since SCRIPT_ENTRY_BASE, and the API fallback used to overlay our
+# copy outright with no equivalent. BRO-5589 gave push-via-git-api.sh that step
+# (its REVIEW-TEXTS MODE: three-way key merge + reconcileProtectedFields against
+# the live tip each attempt, modify/delete parity, fail closed), and the
+# disqualifier now leaves failed-fetches.json and ADDED review files (the
+# CROSS-SHOW OWNERSHIP GATE below needs the working tree) to this local flow.
+# Detected via remote URL, matching that gate's pattern; exported so the
+# fallback and the disqualifier take the same decision even if they would
+# read a different remote.
 case "$(git remote get-url origin 2>/dev/null || true)" in
-  *broadway-review-texts*) _PUSH_API_REPO_EXCLUDED=true ;;
+  *broadway-review-texts*) export PUSH_API_REVIEW_TEXTS=1 ;;
 esac
 _PUSH_API_FALLBACK_ELIGIBLE=false
-if [ "${PUSH_API_FALLBACK_DISABLE:-}" != "1" ] && [ "$_PUSH_API_REPO_EXCLUDED" != "true" ] \
+if [ "${PUSH_API_FALLBACK_DISABLE:-}" != "1" ] \
      && [ -n "$SCRIPT_ENTRY_BASE" ] && [ -f "$SCRIPT_DIR/push-via-git-api.sh" ]; then
   _PUSH_API_FALLBACK_ELIGIBLE=true
 fi
@@ -3370,7 +3368,7 @@ if [ "$pushed" != "true" ]; then
   # content-dropped error) and repeating the pointer here would read as "try
   # the thing that was just tried and failed."
   if [ "$_api_fallback_ok" != "true" ]; then
-    echo "::error::push-with-retry: the Git Data API fallback (default-on) did NOT run this attempt — either PUSH_API_FALLBACK_DISABLE=1 was set, this is the broadway-review-texts repo (excluded — no protected-field reconciliation in the fallback yet), no origin merge-base could be resolved at script start (SCRIPT_ENTRY_BASE empty), scripts/lib/push-via-git-api.sh is missing, the pre-fallback HEAD reset itself failed, the diff touched a MANAGED/shows.json/reviews.json/unaudited-data-audit path not on API_FALLBACK_SAFE or API_FALLBACK_MERGE, or the outgoing range contains a merge commit the fallback would squash (BRO-3899) (see the warnings above for which). It has landed on the first attempt in confirmed production incidents where this local fetch+rebase+push flow lost 20-100+ consecutive attempts (tasks #707, #1791) — see scripts/lib/push-via-git-api.sh if none of the disqualifying reasons above apply."
+    echo "::error::push-with-retry: the Git Data API fallback (default-on) did NOT run this attempt — either PUSH_API_FALLBACK_DISABLE=1 was set, no origin merge-base could be resolved at script start (SCRIPT_ENTRY_BASE empty), scripts/lib/push-via-git-api.sh is missing, the pre-fallback HEAD reset itself failed, the diff touched a MANAGED/shows.json/reviews.json/unaudited-data-audit path not on API_FALLBACK_SAFE or API_FALLBACK_MERGE, in the broadway-review-texts repo the diff touched failed-fetches.json or ADDED a review file (BRO-5589), or the outgoing range contains a merge commit the fallback would squash (BRO-3899) (see the warnings above for which). It has landed on the first attempt in confirmed production incidents where this local fetch+rebase+push flow lost 20-100+ consecutive attempts (tasks #707, #1791) — see scripts/lib/push-via-git-api.sh if none of the disqualifying reasons above apply."
   fi
   restore_head_if_moved "$_EXHAUSTION_REASON"
   exit 1

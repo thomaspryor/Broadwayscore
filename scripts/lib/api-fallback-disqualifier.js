@@ -94,5 +94,21 @@ if (require.main === module) {
     console.error(`api-fallback-disqualifier: ${hit}`);
     process.exit(1);
   }
+  // BRO-5589: the broadway-review-texts repo has extra rules (failed-fetches.json,
+  // ADDED review files). Detected the same two ways push-via-git-api.sh does:
+  // the origin URL, or PUSH_API_REVIEW_TEXTS=1 (which can only switch them ON).
+  // A throw inside exits non-zero, which every caller reads as disqualified.
+  const rt = require('./review-texts-api-fallback.js');
+  let originUrl = '';
+  try {
+    originUrl = require('child_process').execFileSync('git', ['remote', 'get-url', 'origin'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+  } catch { /* no origin: URL detection simply does not fire */ }
+  if (process.env.PUSH_API_REVIEW_TEXTS === '1' || rt.isReviewTextsRemote(originUrl)) {
+    const r = require('child_process').spawnSync(process.execPath, [require.resolve('./review-texts-api-fallback.js'), 'disqualify', base, head], { encoding: 'utf8' });
+    if (r.status !== 0) {
+      process.stderr.write(r.stderr || `api-fallback-disqualifier: review-texts check failed (status ${r.status})\n`);
+      process.exit(r.status === 1 ? 1 : 3);
+    }
+  }
   process.exit(0);
 }

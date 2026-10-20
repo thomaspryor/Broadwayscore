@@ -42,10 +42,10 @@
 # repos)". That justification was simply false, and it was load-bearing in a
 # proposed design before plan-review caught it. Every remote this repo
 # pushes to is GitHub — github.com/thomaspryor/broadway-review-texts and
-# github.com/thomaspryor/broadway-scorecard-data — and review-texts is in any
-# case hard-excluded from this script entirely by push-with-retry.sh's
-# _PUSH_API_REPO_EXCLUDED gate, because the API path has no
-# restore_protected_fields() step. So "we must stay provider-agnostic for the
+# github.com/thomaspryor/broadway-scorecard-data. (Review-texts was then
+# hard-excluded by push-with-retry.sh's _PUSH_API_REPO_EXCLUDED gate because
+# this path had no restore_protected_fields() step; BRO-5589 added that step,
+# see REVIEW-TEXTS MODE below, and removed the exclusion.) So "we must stay provider-agnostic for the
 # non-GitHub remotes" can never justify a design decision here: there are no
 # non-GitHub remotes. The local-fixture testability above is the real
 # constraint, and any GitHub-specific path added later must keep the
@@ -62,6 +62,16 @@
 # script overwrites also needs union-merge semantics, that reconciliation
 # must happen in the LOCAL diff we're replaying (i.e. before base_sha..HEAD
 # is computed) — this script has no working tree to run a merge in.
+# Exceptions: apiFallbackMerge registry paths (BRO-2413) and REVIEW-TEXTS MODE.
+#
+# REVIEW-TEXTS MODE (BRO-5589): against the broadway-review-texts remote (URL
+# match, or PUSH_API_REVIEW_TEXTS=1) every path is decided per attempt by
+# rt_apply_path(): modify/delete parity with push-with-retry.sh's local arm, our
+# blob verbatim when the tip's copy is unchanged since base, and for a JSON file
+# both sides changed a three-way key merge plus reconcileProtectedFields() (the
+# restore_protected_fields() step) via review-texts-api-fallback.js, failing
+# closed on any error. failed-fetches.json and ADDED review files are refused
+# (left to the local flow and its cross-show ownership gate).
 #
 # Usage:
 #   bash scripts/lib/push-via-git-api.sh <branch> <base_sha> [max_retries]
@@ -370,6 +380,26 @@ _github_repo_slug() {
 # and the one-time blob-upload phase below both need REST_SLUG/REST_TOKEN,
 # and re-resolving per attempt would waste a git-config read for no benefit
 # (neither can change mid-invocation).
+# BRO-5589: review-texts mode. The broadway-review-texts repo needs the local
+# flow's protected-field reconciliation (restore_protected_fields) and its
+# modify/delete arm, which a plain overlay skips — see the per-path block in the
+# retry loop and scripts/lib/review-texts-api-fallback.js. Detected from the
+# remote URL (the same match push-with-retry.sh uses) or PUSH_API_REVIEW_TEXTS=1,
+# which push-with-retry.sh exports when it detected it. The env var can only
+# switch the mode ON, never off.
+REVIEW_TEXTS_MODE=false
+[ "${PUSH_API_REVIEW_TEXTS:-}" = "1" ] && REVIEW_TEXTS_MODE=true
+case "$(git remote get-url "$REMOTE" 2>/dev/null || true)" in
+  *broadway-review-texts*) REVIEW_TEXTS_MODE=true ;;
+esac
+if [ "$REVIEW_TEXTS_MODE" = "true" ] && [ "$PUSH_API_REST_REF_UPDATE_EXPERIMENTAL" = "1" ]; then
+  # The REST path pre-uploads blobs once and has no per-attempt delete entry
+  # for an accepted remote deletion. No review-texts caller opts in; refuse
+  # the combination rather than teach it a second reconciliation route.
+  echo "::warning::push-via-git-api: PUSH_API_REST_REF_UPDATE=1 ignored in review-texts mode — using the git-push path (BRO-5589)" >&2
+  PUSH_API_REST_REF_UPDATE_EXPERIMENTAL=0
+fi
+
 USE_REST_REF_UPDATE=false
 REST_SLUG=""
 REST_TOKEN=""
@@ -561,7 +591,20 @@ for entry in ${CHANGED_STATUS[@]+"${CHANGED_STATUS[@]}"}; do
   MERGE_CANDIDATE_PATHS+=("$path")
 done
 MERGE_PATHS=()
-if [ ${#MERGE_CANDIDATE_PATHS[@]} -gt 0 ]; then
+# BRO-5589: in review-texts mode the public-repo registry does not apply (its
+# endsWith() matching could even pick a public merge fn for a review file);
+# every JSON path goes through review-texts reconciliation instead. Paths that
+# reconciliation cannot handle are refused here too (defense in depth: the
+# caller's disqualifier already ran the same check), failing closed.
+if [ "$REVIEW_TEXTS_MODE" = "true" ]; then
+  RT_DQ_RC=0
+  node "$SCRIPT_DIR/review-texts-api-fallback.js" disqualify "$BASE_SHA" "$HEAD_SHA" || RT_DQ_RC=$?
+  if [ "$RT_DQ_RC" -ne 0 ]; then
+    echo "::error::push-via-git-api: review-texts mode refuses this diff (rc=$RT_DQ_RC, see above) — leave it to push-with-retry.sh's local flow" >&2
+    exit 1
+  fi
+fi
+if [ ${#MERGE_CANDIDATE_PATHS[@]} -gt 0 ] && [ "$REVIEW_TEXTS_MODE" != "true" ]; then
   # Fail CLOSED on a classification error (Codex adversarial ship-check P0
   # finding, BRO-2413 round-2): the old `2>/dev/null || true` swallowed ANY
   # failure (missing helper, thrown exception, registry syntax error) into a
@@ -732,6 +775,79 @@ read_blob_or_absent() {
   return 1
 }
 
+# BRO-5589: one changed path, review-texts mode, against this attempt's
+# CURRENT_TIP, into $TMP_INDEX (which starts as CURRENT_TIP's tree). Mirrors
+# what the local flow would leave after its rebase:
+#   - we deleted it, remote changed it since our base -> keep remote's
+#     (push-with-retry.sh is_modify_delete: "We deleted it, remote modified")
+#   - we changed it, remote deleted it since our base -> accept the deletion
+#     ("Remote deleted (renamed), we modified")
+#   - remote's copy is absent, unchanged since base, or already ours -> our
+#     blob, byte for byte (no concurrent writer on this file: nothing to
+#     reconcile, identical to the plain overlay)
+#   - a JSON file BOTH sides changed -> review-texts-api-fallback.js merge:
+#     three-way key merge + reconcileProtectedFields, the restore_protected_
+#     fields() equivalent whose absence kept this repo excluded
+#   - a non-JSON file both sides changed -> our blob (archive snapshots)
+# Called inside `if !`, so errexit is OFF here: every step checks its own
+# status. Returns 1 on ANY read/parse/merge error; the caller then aborts the
+# whole script. It never falls back to the overlay for a JSON path.
+rt_apply_path() {
+  local op="$1" path="$2" tip_line base_line ours_line tip_sha base_sha ours_sha mode
+  local rt_ours rt_remote rt_base rt_merged rt_err base_present merged_sha
+  if ! tip_line="$(git ls-tree "$CURRENT_TIP" -- "$path")" \
+     || ! base_line="$(git ls-tree "$BASE_SHA" -- "$path")"; then
+    echo "::error::push-via-git-api: could not read '$path' from the tip or merge-base tree (attempt $i)" >&2
+    return 1
+  fi
+  tip_sha="$(printf '%s' "$tip_line" | awk '{print $3}')"
+  base_sha="$(printf '%s' "$base_line" | awk '{print $3}')"
+
+  if [ "$op" = "D" ]; then
+    if [ -n "$tip_sha" ] && [ "$tip_sha" != "$base_sha" ]; then
+      echo "  push-via-git-api: keeping remote's copy of '$path' — we deleted it but a concurrent writer changed it since our base (modify/delete, local-flow parity)" >&2
+      return 0
+    fi
+    GIT_INDEX_FILE="$TMP_INDEX" git update-index --force-remove -- "$path" 2>/dev/null || true
+    return 0
+  fi
+
+  ours_line="$(git ls-tree "$HEAD_SHA" -- "$path")"
+  if [ -z "$ours_line" ]; then
+    echo "::error::push-via-git-api: '$path' not found in HEAD's tree (attempt $i)" >&2
+    return 1
+  fi
+  mode="$(printf '%s' "$ours_line" | cut -d' ' -f1)"
+  ours_sha="$(printf '%s' "$ours_line" | awk '{print $3}')"
+
+  if [ -n "$base_sha" ] && [ -z "$tip_sha" ]; then
+    echo "  push-via-git-api: accepting the remote deletion of '$path' — we changed it but a concurrent writer removed it since our base (modify/delete, local-flow parity)" >&2
+    return 0
+  fi
+  if [ -z "$tip_sha" ] || [ "$tip_sha" = "$base_sha" ] || [ "$tip_sha" = "$ours_sha" ] \
+     || [ "${path%.json}" = "$path" ]; then
+    GIT_INDEX_FILE="$TMP_INDEX" git update-index --add --cacheinfo "$mode,$ours_sha,$path" || return 1
+    return 0
+  fi
+
+  rt_ours="$(mktemp)"; rt_remote="$(mktemp)"; rt_base="$(mktemp)"; rt_merged="$(mktemp)"; rt_err="$(mktemp)"
+  base_present=0
+  if git cat-file blob "$ours_sha" > "$rt_ours" 2>"$rt_err" \
+     && git cat-file blob "$tip_sha" > "$rt_remote" 2>>"$rt_err" \
+     && { [ -z "$base_sha" ] || { base_present=1; git cat-file blob "$base_sha" > "$rt_base" 2>>"$rt_err"; }; } \
+     && node "$SCRIPT_DIR/review-texts-api-fallback.js" merge "$path" "$rt_ours" "$rt_remote" "$rt_base" "$base_present" > "$rt_merged" 2>>"$rt_err" \
+     && merged_sha="$(git hash-object -w "$rt_merged")" && [ -n "$merged_sha" ] \
+     && GIT_INDEX_FILE="$TMP_INDEX" git update-index --add --cacheinfo "$mode,$merged_sha,$path"; then
+    cat "$rt_err" >&2
+    rm -f "$rt_ours" "$rt_remote" "$rt_base" "$rt_merged" "$rt_err"
+    return 0
+  fi
+  echo "::error::push-via-git-api: review-texts reconciliation failed for '$path' (attempt $i) — aborting rather than overlaying our copy over a concurrent writer's:" >&2
+  cat "$rt_err" >&2
+  rm -f "$rt_ours" "$rt_remote" "$rt_base" "$rt_merged" "$rt_err"
+  return 1
+}
+
 # Why each attempt died, so the exhaustion message can state the OBSERVED
 # distribution instead of inferring one. The old message asserted "remote tip
 # kept advancing past every build" unconditionally, including for runs where
@@ -842,6 +958,14 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   for entry in ${CHANGED_STATUS[@]+"${CHANGED_STATUS[@]}"}; do
     op="${entry%% *}"
     path="${entry#* }"
+    if [ "$REVIEW_TEXTS_MODE" = "true" ]; then
+      # BRO-5589: decide against THIS attempt's tip, fail closed on any error.
+      if ! rt_apply_path "$op" "$path"; then
+        build_ok=false
+        break
+      fi
+      continue
+    fi
     if [ "$op" = "D" ]; then
       GIT_INDEX_FILE="$TMP_INDEX" git update-index --force-remove -- "$path" 2>/dev/null || true
     else

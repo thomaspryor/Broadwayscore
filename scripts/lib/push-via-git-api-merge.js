@@ -70,6 +70,17 @@ function main() {
     remote = parse(fs.readFileSync(remoteFile, 'utf8'), format);
     base = baseFile ? parse(fs.readFileSync(baseFile, 'utf8'), format) : undefined;
     result = entry.merge(ours, remote, base);
+    // BRO-5589: the local flow runs restore_protected_fields() after its
+    // rebase, which routes outlet-registry.json through
+    // reconcileOutletRegistry (human-curated multiAuthor/defaultCritic and
+    // aliases). mergeOutletRegistry lets OUR whole entry win when we changed
+    // it, so a concurrent writer's curated field on that entry was dropped on
+    // this path only. Same reconciler, same direction (fill missing only).
+    if (/(^|\/)outlet-registry\.json$/.test(path) && result && result.merged && remote) {
+      const { reconcileOutletRegistry } = require('./restore-protected-fields');
+      const { notes } = reconcileOutletRegistry(result.merged, remote);
+      if (notes.length) result.stats = { ...(result.stats || {}), protectedRestored: notes };
+    }
   } catch (e) {
     console.error(`push-via-git-api-merge: '${path}' failed to parse or merge (${String(e && e.message || e).slice(0, 200)})`);
     process.exit(1);
