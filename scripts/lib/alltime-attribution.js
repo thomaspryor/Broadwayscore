@@ -304,7 +304,46 @@ function fillClearedFromHistory(grossesShows, shows, history, clears, opts = {})
       entry.partialRun = { ...totals, since: own.since };
     }
   }
+  // BRO-5599: a closed Broadway run the scrapers never tracked has no entry at
+  // all, so the loop above never sees it (seven revivals showed no total gross
+  // on /biz while the weekly rows held their whole run). Give it an allTime
+  // only when the rows cover the whole run; partial or gappy rows stay blank.
+  const now = (opts.now || new Date()).getTime();
+  for (const show of shows) {
+    const slug = show.slug || show.id;
+    if (!slug || grossesShows[slug] || !isBroadway(show)) continue;
+    const closing = toMs(show.closingDate);
+    if (closing == null || closing >= now) continue;
+    const own = ownRunTotals(history, show, opts);
+    if (!own || own.status !== 'complete') continue;
+    fills.push({ slug, status: own.status, weeks: own.weeks, gaps: own.gaps, since: own.since, gross: own.gross });
+    grossesShows[slug] = {
+      allTime: { gross: own.gross, performances: own.performances, attendance: own.attendance },
+      allTimeSource: 'history',
+    };
+  }
   return fills;
+}
+
+/**
+ * Closed Broadway runs whose weekly rows cover the whole run but that still
+ * show no all-time gross (BRO-5599). The fill above should have written one,
+ * so a hit means the attribution step has not run on this data. Runs with
+ * partial or gappy rows are not listed: blank is the honest answer there.
+ * @returns {Array<{slug:string, gross:number, weeks:number}>}
+ */
+function closedRunsMissingAllTime(grossesShows, shows, history, opts = {}) {
+  const now = (opts.now || new Date()).getTime();
+  const out = [];
+  for (const show of shows) {
+    const slug = show.slug || show.id;
+    const closing = toMs(show.closingDate);
+    if (!slug || !isBroadway(show) || closing == null || closing >= now) continue;
+    if (grossesShows?.[slug]?.allTime?.gross != null) continue;
+    const own = ownRunTotals(history, show, opts);
+    if (own && own.status === 'complete') out.push({ slug, gross: own.gross, weeks: own.weeks });
+  }
+  return out;
 }
 
 /**
@@ -343,4 +382,4 @@ function unholdableAllTimeClears(grossesShows, shows, { now = new Date() } = {})
   return clears.sort((x, y) => x.slug.localeCompare(y.slug));
 }
 
-module.exports = { applyAllTimeAttribution, sharedAllTimeClears, misplacedAllTimeMoves, unholdableAllTimeClears, ownRunTotals, fillClearedFromHistory, runCapacity, constants:{ PERFS_PER_WEEK, FIT_SLACK_RATIO, FIT_SLACK_PERFS, FIT_MIN_SHARE } };
+module.exports = { applyAllTimeAttribution, sharedAllTimeClears, misplacedAllTimeMoves, unholdableAllTimeClears, ownRunTotals, fillClearedFromHistory, closedRunsMissingAllTime, runCapacity, constants:{ PERFS_PER_WEEK, FIT_SLACK_RATIO, FIT_SLACK_PERFS, FIT_MIN_SHARE } };

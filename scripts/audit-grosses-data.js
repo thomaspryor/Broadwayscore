@@ -31,6 +31,7 @@ const fs = require('fs');
 const path = require('path');
 const integrity = require('./lib/grosses-integrity');
 const { isBroadwayCategory } = require('./lib/venue-classification');
+const { closedRunsMissingAllTime } = require('./lib/alltime-attribution');
 
 // The League grosses cover Broadway only. Off-Broadway, West End, regional and
 // tour shows never have rows, so they must not count as "missing" ones.
@@ -298,6 +299,12 @@ function checkYoYWoWSanity() {
 // 6. AllTime Consistency
 // ==========================================================================
 function checkAllTimeConsistency() {
+  // BRO-5599: a closed run whose weekly rows cover the whole run must carry a
+  // total gross, even when the scrapers never tracked it (no entry at all).
+  for (const m of closedRunsMissingAllTime(grosses.shows, showsData.shows, history)) {
+    addIssue('closed-run-missing-alltime', 'medium', m.slug,
+      `Closed run has ${m.weeks} complete weekly rows ($${m.gross.toLocaleString()}) but no allTime gross`);
+  }
   for (const [slug, data] of Object.entries(grosses.shows)) {
     const at = data.allTime;
     if (!at) {
