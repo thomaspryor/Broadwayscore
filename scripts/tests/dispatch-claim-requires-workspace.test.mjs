@@ -23,7 +23,7 @@
 //      the hook lives outside this repo at ~/.claude/hooks/, so there is no
 //      pure function to require() the way rule 15 prefers for gate 2.
 
-import { test } from 'node:test';
+import { after, test } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { mkdtempSync, mkdirSync, writeFileSync, copyFileSync, rmSync, chmodSync, existsSync } from 'node:fs';
@@ -119,17 +119,15 @@ function makeFakeCmuxEmpty(dir) {
 // specifically, git-common-dir resolves to the MAIN repo, not the worktree
 // — so pointing `cwd` at this worktree would look for the checker script in
 // the main repo, where an unmerged worktree branch's new files don't exist
-// yet. Building a throwaway one-file git repo containing just the checker +
-// its one dependency sidesteps both problems and needs no repo state at all.
+// yet. Building a throwaway git repo containing the checker and all its local
+// dependencies sidesteps both problems and needs no repo state at all.
 function makeCheckerFixtureRepo() {
   const dir = mkdtempSync(path.join(tmpdir(), 'esg-dispatch-repo-'));
   const libDir = path.join(dir, 'scripts', 'lib');
   mkdirSync(libDir, { recursive: true });
-  // dispatch-ledger.js's own local requires — a fixture missing either one
-  // makes the checker script's require() throw, which must degrade Gate P
-  // to skip (not a false MATCH/NOMATCH) — exercised by construction here
-  // since a real checkout always has all three together.
-  for (const f of ['title-overlap-check.mjs', 'dispatch-ledger.js', 'dispatch-attempts.js', 'workspace-naming.js']) {
+  // Include the checker's full local dependency chain. A missing module makes
+  // it exit 2 before matching titles, so hook results cannot validate Gate P.
+  for (const f of ['title-overlap-check.mjs', 'dispatch-ledger.js', 'dispatch-attempts.js', 'workspace-naming.js', 'test-run-guard.js', 'repo-root.js']) {
     copyFileSync(path.join(REPO_ROOT, 'scripts', 'lib', f), path.join(libDir, f));
   }
   spawnSync('git', ['init', '-q'], { cwd: dir });
@@ -138,6 +136,25 @@ function makeCheckerFixtureRepo() {
   return dir;
 }
 const CHECKER_REPO = makeCheckerFixtureRepo();
+after(() => rmSync(CHECKER_REPO, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+
+// Always exercise the fixture's real checker, even when the private hook is
+// absent. Missing transitive dependencies must fail rather than hide in skips.
+const glyphTitle = '🤖⚡ Infra·P1: nothing alarms when main has been red for hour';
+const rawTitle = 'P1: some real work item wrongly created with --no-spawn';
+for (const { name, subject, title, status, output } of [
+  { name: 'glyph-prefixed title matches itself', subject: glyphTitle, title: glyphTitle, status: 0, output: 'MATCH' },
+  { name: 'raw claim matches a prefixed live title', subject: rawTitle, title: `🤖⚡ Data·${rawTitle}`, status: 0, output: 'MATCH' },
+  { name: 'unrelated live title does not match', subject: rawTitle, title: '🤖⚡ Data·A completely unrelated workspace title here', status: 1, output: 'NOMATCH' },
+]) {
+  test(`fixture checker: ${name}`, () => {
+    const result = spawnSync(process.execPath, [
+      path.join(CHECKER_REPO, 'scripts', 'lib', 'title-overlap-check.mjs'), subject, title,
+    ], { cwd: CHECKER_REPO, encoding: 'utf8' });
+    assert.equal(result.status, status, `stdout:\n${result.stdout}\nstderr:\n${result.stderr}`);
+    assert.equal(result.stdout.trim(), output);
+  });
+}
 
 function runGate(lastAssistantMessage, extraEnv = {}) {
   const dir = mkdtempSync(path.join(tmpdir(), 'esg-dispatch-'));
