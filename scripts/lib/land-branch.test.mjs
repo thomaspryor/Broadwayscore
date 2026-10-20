@@ -19,7 +19,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   landBranch, defaultPushMain, firstFailedCheck, classifyPushFailure, shouldRetry, decideCancelledLandRetry, decideCancelledWait, MAX_CANCEL_RETRIES, isPlausibleBranchName, formatLandLine, MAX_ATTEMPTS,
-  isInertForVerification, classifyIntervening, decideVerifiedBaseSkip, makeVerifiedBaseChecks, mergedTreeGateInput,
+  isInertForVerification, classifyIntervening, decideVerifiedBaseSkip, makeVerifiedBaseChecks, mergedTreeGateInput, CAPPED_DOCS_TEST,
   selectRecheckScope, isBuildCodePath,
   isPromisorFetchFailure,
 } = require('./land-branch.js');
@@ -280,6 +280,10 @@ test('isInertForVerification / classifyIntervening: bot data churn is inert, cod
   for (const f of ['scripts/lib/x.js', 'src/app/page.tsx', '.github/workflows/test.yml', 'package.json', 'scripts/x.sh', 'tests/unit/a.test.mjs', 'public/sitemap.xml', 'public/opening-night-status.json.bak', 'public/images/logo.svg', 'public/favicon.ico']) {
     assert.equal(isInertForVerification(f), false, f);
   }
+  // BRO-5732: byte-capped docs are never inert; nested CLAUDE.md files (not capped) stay inert.
+  for (const f of ['.claude/CLOUD.md', 'CLAUDE.md', 'AGENTS.md']) assert.equal(isInertForVerification(f), false, f);
+  assert.equal(isInertForVerification('.github/workflows/CLAUDE.md'), true);
+  assert.equal(classifyIntervening(['data/audit/a.json', '.claude/CLOUD.md']), 'substantive');
   assert.equal(classifyIntervening(['data/audit/a.json', 'memory/b.md']), 'inert');
   assert.equal(classifyIntervening(['data/audit/a.json', 'scripts/lib/x.js']), 'substantive');
   assert.equal(classifyIntervening([]), 'substantive', 'an empty intervening set is never "inert" — nothing to fast-forward across');
@@ -730,6 +734,21 @@ test('makeVerifiedBaseChecks: reuses the verdict (and still prepares the worktre
   checks = makeVerifiedBaseChecks({ verifiedBase: v, checks: inner, git: fakeGit('not-ancestor', ['memory/x.md']), prepare: () => [] });
   out = checks({ cwd: '/wt', baseSha: b, repoDir: '/repo' });
   assert.deepEqual(out.map(r => r.name), ['inner-ran']);
+});
+
+test('BRO-5732: a capped doc changed on main runs the byte-cap test in the re-check', () => {
+  const v = 'a'.repeat(40);
+  const b = 'b'.repeat(40);
+  const wt = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5732-wt-'));
+  try {
+    fs.mkdirSync(path.join(wt, 'scripts/tests'), { recursive: true });
+    fs.writeFileSync(path.join(wt, CAPPED_DOCS_TEST), '');
+    const git = (args) => (args[0] === 'merge-base' ? '' : args[0] === 'diff' ? '.claude/CLOUD.md' : '');
+    const seen = [];
+    const checks = makeVerifiedBaseChecks({ verifiedBase: v, checks: (o) => { seen.push(o.interveningTests); return []; }, git, prepare: () => [] });
+    checks({ cwd: wt, baseSha: b, repoDir: '/repo' });
+    assert.deepEqual(seen, [[CAPPED_DOCS_TEST]]);
+  } finally { fs.rmSync(wt, { recursive: true, force: true }); }
 });
 
 test('BRO-5180: a substantive move hands the test files main changed since the verified base to the merged-tree floor', () => {

@@ -142,8 +142,16 @@ function firstFailedCheck(results) {
  */
 const INERT_FOR_VERIFICATION_RE = /^(data\/|public\/data\/|public\/images\/shows\/|cloud-memory\/|memory\/|docs\/)|^public\/opening-night-status\.json$|\.(md|jsonl|log|txt)$/;
 
+// Byte-capped docs (scripts/tests/global-instructions.test.mjs, claude-md integrity):
+// a main move that edits one changes what the merged tree's cap test sees, so it
+// is never inert even though it is prose (BRO-5732: two lands each editing
+// .claude/CLOUD.md passed the cap alone and exceeded it together, BRO-5594/5648).
+// Anchored: .github/workflows/CLAUDE.md is not capped and stays inert.
+const CAPPED_DOCS_RE = /^(CLAUDE\.md|AGENTS\.md|\.claude\/CLOUD\.md)$/;
+const CAPPED_DOCS_TEST = 'scripts/tests/global-instructions.test.mjs';
+
 function isInertForVerification(file) {
-  return INERT_FOR_VERIFICATION_RE.test(String(file));
+  return !CAPPED_DOCS_RE.test(String(file)) && INERT_FOR_VERIFICATION_RE.test(String(file));
 }
 
 /** 'inert' when every intervening file is inert (and there is at least one), else 'substantive'. */
@@ -339,6 +347,8 @@ function makeVerifiedBaseChecks({ verifiedBase, checks = defaultChecks, git = nu
       // the whole scripts/lib suite for nothing. An intervening scripts/lib
       // test still does arm it (~4 min, within MERGED_TREE_TIMEOUT_MS).
       const interveningTests = intervening.filter(f => isRunnableTestFile(f) && (!cwd || fs.existsSync(path.join(cwd, f))));
+      // BRO-5732: a capped doc changed on main selects no test by name, so run the cap test explicitly.
+      if (intervening.some(f => CAPPED_DOCS_RE.test(f)) && (!cwd || fs.existsSync(path.join(cwd, CAPPED_DOCS_TEST))) && !interveningTests.includes(CAPPED_DOCS_TEST)) interveningTests.push(CAPPED_DOCS_TEST);
       const extra = ancestor ? `+${interveningTests.length} test file(s) changed on main since the verified base` : 'tests changed on main unknown: verified base is not an ancestor';
       // Overlap needs the branch's files with renames split too: a branch
       // `git mv a b` plus a main edit to a would otherwise read as disjoint.
@@ -953,6 +963,8 @@ module.exports = {
   MAX_ATTEMPTS,
   MAX_CHURN_SKIPS,
   INERT_FOR_VERIFICATION_RE,
+  CAPPED_DOCS_RE,
+  CAPPED_DOCS_TEST,
   isInertForVerification,
   isBuildCodePath,
   selectRecheckScope,

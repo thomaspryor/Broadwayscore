@@ -407,7 +407,8 @@ function formatSummary({ decisions, baseMeta, branchMeta, baseSource }) {
 // anything under tests/, plus tracked docs, because tests read them (the
 // CLAUDE.md integrity audit, the .claude/CLOUD.md and AGENTS.md byte caps,
 // docs/ and memory/ inventories). They are part of the cache key even though
-// land-branch.js's re-check rule ignores them (Claude adversarial review), and
+// land-branch.js's re-check rule ignores most of them (Claude adversarial review;
+// the byte-capped CLAUDE.md, AGENTS.md and .claude/CLOUD.md are NOT ignored, BRO-5732), and
 // land-gauntlet-optimizer.js never skips the gauntlet for them: 8aa74a7f6
 // landed CLOUD.md 503B over its cap through a skipped gauntlet and test.yml
 // stayed red on main (BRO-5648). Doc-only commits were 15 of 2,980 on main in
