@@ -434,9 +434,11 @@ test('trySyncCodeCheckout: a fast-forward killed mid-checkout is rolled back cle
     return execFileSync(cmd, args, opts);
   };
   const r = runCodeCheckoutStalenessCheck({ repoDir: cloneDir });
-  const s1 = trySyncCodeCheckout({ repoDir: cloneDir, behind: r.behind, ahead: r.ahead, execFn: killedMerge });
+  const s1 = trySyncCodeCheckout({ repoDir: cloneDir, behind: r.behind, ahead: r.ahead, execFn: killedMerge, startBackground: () => 4242 });
   assert.equal(s1.synced, false);
   assert.equal(s1.timedOut, true);
+  assert.equal(s1.bgPid, 4242);
+  assert.match(s1.reason, /background catch-up started, pid 4242/);
   assert.equal(git(cloneDir, ['status', '--porcelain']), '', 'tree left clean, not half-written');
   assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), head);
   const s2 = staleThenSync(cloneDir);

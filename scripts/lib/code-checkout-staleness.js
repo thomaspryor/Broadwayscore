@@ -255,7 +255,7 @@ function reconcileInterruptedFastForward({ repoDir, execFn = execFileSync, timeo
  * Every precondition failure returns {synced:false, reason} and changes
  * nothing. Expects origin/main already fetched (runCodeCheckoutStalenessCheck).
  */
-function trySyncCodeCheckout({ repoDir, behind, ahead, execFn = execFileSync, env = process.env, syncTimeoutMs = SYNC_TIMEOUT_MS } = {}) {
+function trySyncCodeCheckout({ repoDir, behind, ahead, execFn = execFileSync, env = process.env, syncTimeoutMs = SYNC_TIMEOUT_MS, startBackground = startBackgroundSync } = {}) {
   const fs = require('fs');
   const path = require('path');
   const git = (args) => String(execFn('git', ['-C', repoDir, ...args], {
@@ -310,9 +310,10 @@ function trySyncCodeCheckout({ repoDir, behind, ahead, execFn = execFileSync, en
       // caller to retry with the long-budget background job (the same 20s kill would tear it again).
       const rb = reconcileInterruptedFastForward({ repoDir, execFn, timeoutMs: syncTimeoutMs });
       const clean = !rb.error && !rb.skipped;
+      const bgPid = startBackground(repoDir);
       return {
-        synced: false, timedOut: true, rolledBack: clean,
-        reason: `fast-forward timed out after ${syncTimeoutMs / 1000}s; ${clean ? 'tree rolled back' : `tree NOT fully rolled back (${rb.error || rb.skipped}); the next sync retries the cleanup`}`,
+        synced: false, timedOut: true, rolledBack: clean, bgPid,
+        reason: `fast-forward timed out after ${syncTimeoutMs / 1000}s; ${clean ? 'tree rolled back' : `tree NOT fully rolled back (${rb.error || rb.skipped}); the next sync retries the cleanup`}; ${bgPid ? `background catch-up started, pid ${bgPid}` : 'background catch-up could not be started: run git merge --ff-only origin/main by hand'}`,
       };
     }
     return no(`fast-forward refused: ${String(err.stderr || err.message).trim().split('\n')[0]}`);
