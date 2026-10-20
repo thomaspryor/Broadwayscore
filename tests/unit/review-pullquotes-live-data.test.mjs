@@ -32,7 +32,7 @@ test('no review missing a pullQuote has a recoverable excerpt sitting unused in 
   const outletRegistryFile = process.env.OUTLET_REGISTRY_FILE || path.join(ROOT, 'data', 'outlet-registry.json');
   const reviewTextsDir = process.env.REVIEW_TEXTS_DIR || path.join(ROOT, 'data', 'review-texts');
 
-  if (!fs.existsSync(reviewsFile) || !fs.existsSync(outletRegistryFile) || !fs.existsSync(reviewTextsDir)) {
+  if (!fs.existsSync(reviewsFile) || !fs.existsSync(showsFile) || !fs.existsSync(outletRegistryFile) || !fs.existsSync(reviewTextsDir)) {
     // An absent corpus must read as SKIPPED, not passed (a bare return passes). The data-health job sets
     // REQUIRE_REVIEW_CORPUS=1 so a failed checkout fails here instead of skipping green.
     assert.ok(!REQUIRE_CORPUS, 'REQUIRE_REVIEW_CORPUS=1 but reviews.json / outlet-registry.json / review-texts is missing; fix the checkout rather than unsetting the flag.');

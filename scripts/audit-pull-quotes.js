@@ -269,8 +269,9 @@ function main() {
   if (doParity) {
     // Requiring rebuild-all-reviews.js runs NOTHING (top-level return guard);
     // it only hands back the pure excerpt helpers.
-    const { selectBestExcerpt } = require('./rebuild-all-reviews.js');
+    const { recoverableQuote } = require('./backfill-missing-pullquotes.js');
     const titleById = new Map(shows.map(s => [s.id, s.title]));
+    const statusById = new Map(shows.map(s => [s.id, s.status]));
 
     const changes = { filled: [], cleared: [], changed: [], same: 0, skipped: 0 };
     for (const r of scoped) {
@@ -278,7 +279,7 @@ function main() {
       if (!entry) { changes.skipped++; continue; }
       let next;
       try {
-        next = selectBestExcerpt(entry.data, titleById.get(r.showId));
+        next = recoverableQuote(entry.data, titleById.get(r.showId), statusById.get(r.showId));
       } catch (e) {
         changes.skipped++;
         continue;

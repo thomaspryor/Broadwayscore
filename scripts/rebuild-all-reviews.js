@@ -1287,7 +1287,7 @@ function finalizePullQuote(data, showTitle, showStatus) {
   data._showStatus = showStatus;
   const raw = selectBestExcerpt(data, showTitle);
   if (raw && isJunkExcerpt(raw)) return null;
-  const quote = normalizeQuoteWrapping(raw);
+  const quote = normalizeQuoteWrapping(raw && decodeHtmlEntities(raw));
   // Reject quotes ending with broken contractions (truncated at HTML entity boundaries)
   if (quote && /(^|\s)(he|she|it|we|they|who|wasn|wouldn|couldn|didn|don|isn|aren|won|haven|hasn|shouldn|mustn|weren|hadn|I)['\u2019]$/.test(quote)) {
     return null;
