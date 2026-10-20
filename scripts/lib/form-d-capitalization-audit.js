@@ -50,7 +50,9 @@ function classifyFormDCapitalization(entry, filings) {
   // filing only corroborates it (the-bands-visit-2017: $8.75M per Broadway News,
   // Form D filed early with $2.46M sold).
   const cited = String(entry.capitalizationSource || '').match(/https?:\/\/[^\s"')]+/g) || [];
-  if (cited.some((u) => !/sec\.gov/i.test(u))) return { status: 'ok', reason: 'figure is attributed to a non-SEC source' };
+  // applyFigureEvidence writes the source as `host: "quote"` with no URL.
+  const hostPrefix = /^\s*(?:www\.)?([a-z0-9-]+(?:\.[a-z0-9-]+)+):\s*"/i.exec(String(entry.capitalizationSource || ''));
+  if (cited.some((u) => !/sec\.gov/i.test(u)) || (hostPrefix && !/sec\.gov$/i.test(hostPrefix[1]))) return { status: 'ok', reason: 'figure is attributed to a non-SEC source' };
   for (const f of filings || []) {
     const max = f && f.totalOfferingAmount;
     if (!max || cap !== max) continue;

@@ -7304,7 +7304,7 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
       nowIso: new Date().toISOString(),
       stillUnregistered: (id) => !registeredLower.has(String(id).toLowerCase()) && seenInAnyFile(id),
     });
-    const fingerprint = (list) => JSON.stringify(list.map((e) => [e.outletId, e.reason, e.reviewCount || 0, e.domainHint || null]).sort());
+    const fingerprint = (list) => JSON.stringify(list.map((e) => [e.outletId, e.reason, e.reviewCount || 0, e.domainHint || null, e.mastheadName || null]).sort());
     const before = fingerprint(existingStaged);
     const after = fingerprint(merged);
     if (before !== after || (stagedOutlets.length > 0 && !fs.existsSync(stagingPath))) {

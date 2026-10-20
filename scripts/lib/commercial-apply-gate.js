@@ -198,7 +198,7 @@ function recoupClaimDesignationAction(existing) {
  * Shared by apply-commercial-pending (verified evidence) and batch-commercial-research --apply (no verifier,
  * so every figure lands as an estimate): there is exactly one place that decides what may print as fact.
  */
-const isSecFilingUrl = (url) => { try { return /(^|\.)sec\.gov$/i.test(new URL(url).hostname); } catch { return false; } };
+const isSecFilingUrl = (url) => { try { const u = new URL(url); return /(^|\.)sec\.gov$/i.test(u.hostname) && /^\/Archives\/edgar\/data\//i.test(u.pathname); } catch { return false; } };
 
 function applyFigureEvidence(result, entry, figureEvidence = {}, existing = null) {
   for (const field of ['capitalization', 'weeklyRunningCost']) {

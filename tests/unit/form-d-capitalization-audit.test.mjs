@@ -44,3 +44,14 @@ test('apply gate: a verified bare Form D figure defaults to the maximum basis, a
   const press = applyFigureEvidence({}, { capitalization: 8750000 }, { capitalization: { found: true, quote: 'recouped its $8.75 million capitalization', source: { type: 'trade', url: 'https://www.broadwaynews.com/x' } } });
   assert.equal(press.capitalizationBasis, undefined);
 });
+
+test('audit: a press figure written as `host: "quote"` is attributed to the press, not the filing', () => {
+  const v = classifyFormDCapitalization({ capitalization: 6500000, capitalizationSource: 'broadwaynews.com: "recouped its $6.5 million capitalization"' }, [filing]);
+  assert.equal(v.status, 'ok');
+  assert.equal(classifyFormDCapitalization({ capitalization: 6500000, capitalizationSource: 'sec.gov: "Form D $6,500,000"' }, [filing]).status, 'maximum-as-fact');
+});
+
+test('apply gate: only EDGAR archive documents default to the maximum basis', () => {
+  const other = applyFigureEvidence({}, { capitalization: 6500000 }, { capitalization: { found: true, quote: 'raised $6,500,000', source: { type: 'sec', url: 'https://www.sec.gov/news/press-release/2026-1' } } });
+  assert.equal(other.capitalizationBasis, undefined);
+});

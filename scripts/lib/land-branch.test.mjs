@@ -748,7 +748,7 @@ test('BRO-5732: a capped doc changed on main runs the byte-cap test in the re-ch
     const checks = makeVerifiedBaseChecks({ verifiedBase: v, checks: (o) => { seen.push(o.interveningTests); return []; }, git, prepare: () => [] });
     checks({ cwd: wt, baseSha: b, repoDir: '/repo' });
     assert.deepEqual(seen, [[CAPPED_DOCS_TEST]]);
-  } finally { fs.rmSync(wt, { recursive: true, force: true }); }
+  } finally { fs.rmSync(wt, { recursive: true, force: true, maxRetries: 3 }); }
 });
 
 test('BRO-5180: a substantive move hands the test files main changed since the verified base to the merged-tree floor', () => {

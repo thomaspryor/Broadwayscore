@@ -12,7 +12,7 @@
  * as NEW gaps and turns Data Validation red.
  *
  * Document shape: { _comment, updatedAt, staged: [{ outletId, reason,
- * domainHint, reviewCount, exampleShowId, firstSeenAt, lastSeenAt }] }.
+ * domainHint, reviewCount, exampleShowId, mastheadName?, firstSeenAt, lastSeenAt }] }.
  *
  * Rules: union by outletId. On a shared id ours wins every field except
  * firstSeenAt (earliest of the two — the file's own "how long has this been
@@ -62,7 +62,8 @@ function mergeOutletRegistryStaging(ours, remote) {
     const r = byId.get(e.outletId);
     if (r) {
       kept++;
-      byId.set(e.outletId, { ...e, firstSeenAt: earliest(e.firstSeenAt, r.firstSeenAt) });
+      const mastheadName = e.mastheadName || r.mastheadName; // BRO-5732: a masthead found by the fetch audit survives
+      byId.set(e.outletId, { ...e, ...(mastheadName ? { mastheadName } : {}), firstSeenAt: earliest(e.firstSeenAt, r.firstSeenAt) });
     } else {
       byId.set(e.outletId, e);
     }

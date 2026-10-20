@@ -917,3 +917,13 @@ test('hasReviewEvidence reads url, title and snippet', () => {
   assert.equal(hasReviewEvidence({ url: 'https://x.example/a', title: 'Great show ★★★★' }), true);
   assert.equal(hasReviewEvidence({ url: 'https://x.example/first-photos-released', title: 'First photos released', snippet: 'See them' }), false);
 });
+
+test('BRO-5732: a prior-census URL is not re-judged on a bare URL; multilingual review words count', () => {
+  const { hasReviewEvidence } = require('./lib/serp-review-evidence.js');
+  const show = { id: 'midnight-off-broadway-2026', title: 'Midnight', category: 'off-broadway' };
+  const url = 'https://unknown-news-site.example/en/midnight-at-the-lyric-a-triumph/';
+  assert.equal(acceptSerpCensusResult({ url }, { show, showInfo: {} }), null);
+  assert.ok(acceptSerpCensusResult({ url }, { show, showInfo: {}, priorVetted: true }));
+  assert.equal(hasReviewEvidence({ url: 'https://x.example/a', title: 'Midnight: la recensione' }), true);
+  assert.equal(hasReviewEvidence({ url: 'https://x.example/a', title: 'Midnight Kritik' }), true);
+});

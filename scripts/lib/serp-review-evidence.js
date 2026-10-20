@@ -11,7 +11,7 @@
  */
 'use strict';
 
-const REVIEW_EVIDENCE_RE = /\breviews?\b|\breviewed\b|\breviewer\b|\bcritic'?s?\b|[★☆]|\b[1-5](?:\.5)?\s*(?:\/|out of)\s*5\b|\b[1-5](?:\.5)?[- ]stars?\b|\bstars?\b\s*[:–-]|\bverdict\b|\bour take\b/i;
+const REVIEW_EVIDENCE_RE = /\breviews?\b|\breviewed\b|\breviewer\b|\bcritic'?s?\b|\b(?:recensi(?:on[ei]|e)|rezension(?:en)?|kritik|critiques?|cr[i\u00ed]ticas?|rese[n\u00f1]as?|besprechung|avis)\b|[★☆]|\b[1-5](?:\.5)?\s*(?:\/|out of)\s*5\b|\b[1-5](?:\.5)?[- ]stars?\b|\bstars?\b\s*[:–-]|\bverdict\b|\bour take\b/i;
 
 /**
  * @param {{url?: string, link?: string, title?: string, snippet?: string}} sr raw SERP result

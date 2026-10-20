@@ -746,6 +746,7 @@ function landBranch(o) {
         if (gitOrNull(['merge-base', '--is-ancestor', b, baseSha], workdir) === null) continue;
         for (const f of (gitOrNull(['diff', '--name-only', `${b}..${baseSha}`], workdir) || '').split('\n').filter(Boolean)) {
           if (isRunnableTestFile(f) && fs.existsSync(path.join(workdir, f))) set.add(f);
+          if (CAPPED_DOCS_RE.test(f) && fs.existsSync(path.join(workdir, CAPPED_DOCS_TEST))) set.add(CAPPED_DOCS_TEST); // BRO-5732
         }
       }
       return [...set];

@@ -47,3 +47,11 @@ test('the registry wires this merge fn to the staging file as apiFallbackMerge',
   assert.equal(entry.apiFallbackMerge, true);
   assert.equal(entry.format, 'json');
 });
+
+test('BRO-5732: a remote mastheadName survives when ours has none', () => {
+  const ours = { staged: [{ outletId: 'a', reason: 'name-unresolved', firstSeenAt: '2026-10-02T00:00:00Z' }] };
+  const remote = { staged: [{ outletId: 'a', reason: 'name-unresolved', mastheadName: 'A Magazine', firstSeenAt: '2026-10-01T00:00:00Z' }] };
+  const { merged } = mergeOutletRegistryStaging(ours, remote);
+  assert.equal(merged.staged[0].mastheadName, 'A Magazine');
+  assert.equal(merged.staged[0].firstSeenAt, '2026-10-01T00:00:00Z');
+});

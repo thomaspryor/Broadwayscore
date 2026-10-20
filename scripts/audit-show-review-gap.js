@@ -680,18 +680,20 @@ function isOwnVenueUrl(u, show) {
 // @param {{url?: string, link?: string, title?: string, snippet?: string}} sr raw SERP result
 // @param {{show: object, showInfo: object}} ctx show ({id,title}) + url-discovery's getShowInfo(show.id) shape
 // @returns {string|null} normalized review URL if accepted, else null
-function acceptSerpCensusResult(sr, { show, showInfo }) {
+function acceptSerpCensusResult(sr, { show, showInfo, priorVetted = false }) {
   const u = sr && (sr.url || sr.link);
   if (!u || !isReviewUrl(u)) return null;
+  const tokens = titleTokens(show.title);
+  if (!urlMatchesShow(u, tokens)) return null;
   // BRO-5732: fail closed. An unregistered host must show review-shaped evidence
-  // (url/title/snippet), not merely avoid every known-bad pattern.
-  if (!getKnownDomainMap().has(registrableHost(hostOf(u))) && !hasReviewEvidence(sr)) {
+  // (url/title/snippet), not merely avoid every known-bad pattern. `priorVetted`:
+  // a URL seeded from the prior census already passed this once and its SERP
+  // title/snippet are gone (BRO-5516), so it is not re-judged on a bare URL.
+  if (!priorVetted && !getKnownDomainMap().has(registrableHost(hostOf(u))) && !hasReviewEvidence(sr)) {
     candidateRejections.count++;
     candidateRejections.byReason['no-review-evidence'] = (candidateRejections.byReason['no-review-evidence'] || 0) + 1;
     return null;
   }
-  const tokens = titleTokens(show.title);
-  if (!urlMatchesShow(u, tokens)) return null;
   // Different-work guard (BRO-4540). urlMatchesShow tolerates ONE missing token
   // on 3+ token titles (slug truncation), which on an un-scoped SERP query lets
   // a different work through: "A Thousand Natural Shocks" -> ['thousand',
@@ -1097,7 +1099,7 @@ async function auditShow(show, opts = {}) {
       // showInfo omitted on purpose: the generic-title disambiguation gate needs the SERP
       // title/snippet we no longer have, and would reject every URL of a one-word title.
       for (const u of (opts.priorCensusUrls || [])) {
-        const ok = acceptSerpCensusResult({ url: u }, { show, showInfo: {} });
+        const ok = acceptSerpCensusResult({ url: u }, { show, showInfo: {}, priorVetted: true });
         if (ok) serpCensusUrls.add(ok);
       }
     }
