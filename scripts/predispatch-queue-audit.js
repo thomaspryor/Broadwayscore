@@ -293,5 +293,5 @@ if (require.main === module) {
 
 module.exports = {
   loadQueuedTasks, fetchCard, loadHistory, TASKS_DIR, SNAPSHOT_FILE, HISTORY_FILE,
-  GUARD_SNAPSHOT_FILE, GUARD_HISTORY_FILE, computeBranchStatuses, listAllWorkBranchNames, runGuard,
+  GUARD_SNAPSHOT_FILE, GUARD_HISTORY_FILE, computeBranchStatuses, listAllWorkBranchNames,
 };
