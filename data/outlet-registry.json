@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-20T11:51:11.037Z",
+    "lastUpdated": "2026-10-20T18:24:21.935Z",
     "version": "2.1.0",
     "lastChange": "BRO-5373: split The Mail on Sunday (mail-on-sunday, splitFrom daily-mail) out of daily-mail"
   },
@@ -13270,6 +13270,14 @@
         "pittnews"
       ],
       "domain": "pittnews.com"
+    },
+    "enspire": {
+      "displayName": "Enspire",
+      "tier": 3,
+      "aliases": [
+        "enspire"
+      ],
+      "domain": "enspiremag.com"
     }
   },
   "_aliasIndex": {
