@@ -1,19 +1,32 @@
 {
-  "updatedAt": "2026-10-20T15:20:27.308Z",
-  "processed": 70,
-  "failed": 40,
-  "successRate": "63.6%",
+  "updatedAt": "2026-10-20T15:39:04.401Z",
+  "processed": 99,
+  "failed": 51,
+  "successRate": "66.0%",
   "tierBreakdown": {
-    "playwright": 48,
+    "playwright": 66,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 6,
-    "scrapingbee": 4,
+    "scrapingdog": 9,
+    "scrapingbee": 7,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 12
+    "archive": 18
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-10-20T15:23:50.348Z",
+      "event": "bb-session",
+      "session": "488bdb27",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-10-20T15:24:52.177Z",
+      "event": "bb-session",
+      "session": "01566e4b",
+      "url": "https://playstosee.com/reviews/uk-reviews/man-to-man-2/?utm_source=rss&utm_mediu"
+    }
+  ]
 }
