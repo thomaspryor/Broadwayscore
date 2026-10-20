@@ -47,6 +47,11 @@ const STAGE_REASONS = Object.freeze({
   // An id that is a bare domain label ("co" from stagedoorjoe.co.uk), not an
   // outlet name (BRO-4468).
   UNUSABLE_SLUG: 'unusable-slug',
+  // The only display name on offer is the capitalized run-together slug
+  // ("Hackneycitizen"); no masthead or review label spells the id. Fail
+  // closed (BRO-5732): a slug-shaped name rendered under every review and
+  // was hand-renamed 167 + 4 times (BRO-5336, BRO-5642).
+  NAME_UNRESOLVED: 'name-unresolved',
 });
 
 // Public-suffix / generic host labels that a domain-parsing writer can emit as
@@ -146,8 +151,9 @@ function nameSpellsOutlet(name, outletId, domain) {
  *      accepted only when it spells the same id, so a critic name or a
  *      different outlet's label can never become the display name.
  *   3. the hyphen-split capitalized slug, reported `inferred: true` when that
- *      fallback is for a single run-together token (the case a human must
- *      look at; validate-data.js warns on that shape).
+ *      fallback is for a single run-together token. Writers must not store
+ *      that name: decideOutletAutoRegistration stages the outlet instead
+ *      (NAME_UNRESOLVED, BRO-5732) until a masthead name is found.
  *
  * @param {{outletId: string, reviewOutletNames?: Array<string|null|undefined>, siteNames?: Array<string|null|undefined>, domain?: string|null}} facts
  * @returns {{displayName: string, inferred: boolean}}
@@ -266,9 +272,10 @@ function criticNameSlugs(criticRegistry, reviews) {
  * @param {string|null} facts.domainHint  majority-vote hostname from the outlet's review URLs (outlet-domain-hint.js), or null
  * @param {boolean} [facts.domainCollides]  true when domainHint already belongs to a registered outlet
  * @param {Set<string>} [facts.criticSlugs]  from criticNameSlugs()
+ * @param {boolean} [facts.displayNameInferred]  deriveOutletDisplayName's `inferred`: only a slug-derived name exists (BRO-5732)
  * @returns {{action:'register', domain:string}|{action:'stage', reason:string}}
  */
-function decideOutletAutoRegistration({ outletId, domainHint, domainCollides = false, criticSlugs }) {
+function decideOutletAutoRegistration({ outletId, domainHint, domainCollides = false, criticSlugs, displayNameInferred = false }) {
   const id = String(outletId || '').toLowerCase();
   if (isUnusableOutletSlug(id)) {
     return { action: 'stage', reason: STAGE_REASONS.UNUSABLE_SLUG };
@@ -290,6 +297,9 @@ function decideOutletAutoRegistration({ outletId, domainHint, domainCollides = f
   }
   if (domainCollides) {
     return { action: 'stage', reason: STAGE_REASONS.DOMAIN_COLLISION };
+  }
+  if (displayNameInferred) {
+    return { action: 'stage', reason: STAGE_REASONS.NAME_UNRESOLVED };
   }
   return { action: 'register', domain: domainHint };
 }
@@ -319,6 +329,9 @@ function mergeStagingEntries(existing, fresh, { nowIso, stillUnregistered } = {}
       domainHint: f.domainHint || null,
       reviewCount: f.reviewCount || 0,
       exampleShowId: f.exampleShowId || null,
+      // A masthead found by audit-registry-slug-displaynames --fetch --apply
+      // survives refreshes so the next rebuild can register with it.
+      ...((f.mastheadName || (prev && prev.mastheadName)) ? { mastheadName: f.mastheadName || prev.mastheadName } : {}),
       firstSeenAt: (prev && prev.firstSeenAt) || nowIso,
       lastSeenAt: nowIso,
     });

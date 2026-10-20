@@ -7199,13 +7199,22 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
     // absent from it) — but the same name rides on the correctly attributed
     // twin record in this very run.
     const criticSlugs = criticNameSlugs(criticRegistry, allReviews);
+    // BRO-5732: a masthead name found for a parked outlet (audit-registry-slug-displaynames --fetch --apply)
+    let stagedMastheads = {};
+    try {
+      const prevStaged = JSON.parse(fs.readFileSync(path.join(__dirname, '..', OUTLET_STAGING_RELATIVE_PATH), 'utf8')).staged || [];
+      for (const e of prevStaged) if (e && e.outletId && e.mastheadName) stagedMastheads[e.outletId] = e.mastheadName;
+    } catch { /* no staging file yet */ }
     for (const outletId of newOutlets) {
+      const hintDomain = outletDomainHints[outletId] || null;
       const { displayName, inferred: displayNameInferred } = deriveOutletDisplayName({
         outletId,
         reviewOutletNames: outletNamesSeen[outletId] || [],
+        siteNames: stagedMastheads[outletId] ? [stagedMastheads[outletId]] : [],
+        domain: hintDomain,
       });
+      // BRO-5732: never store the slug-derived name; decideOutletAutoRegistration stages it below.
       const candidateEntry = { displayName, tier: 3, aliases: [outletId] };
-      if (displayNameInferred) candidateEntry.displayNameInferred = true; // BRO-4468: slug-derived, needs a human look
       // A new outlet whose id/displayName (raw or "the "-stripped) lands on
       // an already-registered outlet's identity is a silent semantic
       // duplicate (the-la-times/latimes, task #1838/#1843) — it would
@@ -7247,12 +7256,12 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
       // domain-collision gate the instant this commit lands (task #1776).
       // That case, a critic-name id, and a hint-less id are all STAGED
       // rather than written with domain:null (BRO-4370).
-      const hintDomain = outletDomainHints[outletId] || null;
       const decision = decideOutletAutoRegistration({
         outletId,
         domainHint: hintDomain,
         domainCollides: !!hintDomain && wouldCauseDomainCollision(outletRegistry.outlets, outletId, hintDomain),
         criticSlugs,
+        displayNameInferred,
       });
       if (decision.action === 'stage') {
         stagedOutlets.push({

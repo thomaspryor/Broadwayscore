@@ -90,7 +90,23 @@ async function fetchMastheads({ apply }) {
     for (const f of fixes) outlets[f.outletId].displayName = f.proposed;
     fs.writeFileSync(registryPath, JSON.stringify(registry, null, 2));
   }
-  console.log(`[audit-registry-slug-displaynames --fetch] ${fixes.length} masthead name(s) found${apply ? ' and applied' : ''}, ${unresolved.length} left`);
+  // BRO-5732: outlets the rebuild parked because only a slug-shaped name existed.
+  // A masthead found here is stored on the staging row; the next rebuild reads it
+  // and registers the outlet through its normal collision checks.
+  const { STAGING_RELATIVE_PATH, STAGE_REASONS } = require('./lib/outlet-auto-register');
+  const stagingPath = path.join(ROOT, STAGING_RELATIVE_PATH);
+  let stagedFound = 0;
+  if (fs.existsSync(stagingPath)) {
+    const doc = JSON.parse(fs.readFileSync(stagingPath, 'utf8'));
+    for (const row of doc.staged || []) {
+      if (row.reason !== STAGE_REASONS.NAME_UNRESOLVED || row.mastheadName || !row.domainHint) continue;
+      const r = await resolveMastheadName({ outletId: row.outletId, domain: row.domainHint, fetchPage });
+      if (r.displayName) { row.mastheadName = r.displayName; stagedFound++; console.log(`  staged ${row.outletId}: masthead "${r.displayName}"`); }
+      else console.log(`  staged ${row.outletId}: still unresolved (${r.error || 'no masthead spells the id'})`);
+    }
+    if (apply && stagedFound) fs.writeFileSync(stagingPath, JSON.stringify(doc, null, 2) + '\n');
+  }
+  console.log(`[audit-registry-slug-displaynames --fetch] ${stagedFound} staged masthead(s) found; ${fixes.length} masthead name(s) found${apply ? ' and applied' : ''}, ${unresolved.length} left`);
 }
 
 function main() {

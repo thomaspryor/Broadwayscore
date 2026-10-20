@@ -897,7 +897,7 @@ async function updateRegistry(auditResult, dryRun = false) {
   const { wouldCauseDomainCollision } = require('./lib/outlet-registry-domain-collisions');
   // Same register-or-stage rule as the rebuild's auto-register pass
   // (BRO-4370 / BRO-4401): never write a domain:null row from here either.
-  const { decideOutletAutoRegistration, criticNameSlugs, isRunTogetherSlugDisplayName, resolveMastheadName } = require('./lib/outlet-auto-register');
+  const { decideOutletAutoRegistration, criticNameSlugs, deriveOutletDisplayName, resolveMastheadName } = require('./lib/outlet-auto-register');
   const criticSlugs = criticNameSlugs(
     normalization && typeof normalization.loadCriticRegistry === 'function' ? normalization.loadCriticRegistry() : null,
   );
@@ -928,25 +928,30 @@ async function updateRegistry(auditResult, dryRun = false) {
     // rather than written with domain:null (BRO-4370); check against the
     // registry AS IT WILL BE after earlier entries in this same batch are
     // added, so two colliding new outlets in one run don't both claim it.
+    // BRO-5336 / BRO-5732: a run-together id has no word breaks to recover
+    // ("hackneycitizen" -> "Hackneycitizen"); take the outlet's own
+    // og:site_name / <title> when it spells the id or domain, and fail
+    // closed (refuse the row) when none does, instead of storing the slug.
+    const slugFallback = deriveOutletDisplayName({ outletId: entry.outletId });
+    let displayName = entry.displayName;
+    let nameUnresolved = slugFallback.inferred && entry.displayName === slugFallback.displayName;
+    if (nameUnresolved && entry.domain) {
+      const { fetchPage } = require('./lib/scraper');
+      const masthead = await resolveMastheadName({ outletId: entry.outletId, domain: entry.domain, fetchPage });
+      if (masthead.displayName) { displayName = masthead.displayName; nameUnresolved = false; }
+    }
     const decision = decideOutletAutoRegistration({
       outletId: entry.outletId,
       domainHint: entry.domain || null,
       domainCollides: !!entry.domain && wouldCauseDomainCollision(registry.outlets, entry.outletId, entry.domain),
       criticSlugs,
+      displayNameInferred: nameUnresolved,
     });
     if (decision.action === 'stage') {
       skippedStaged.push({ outletId: entry.outletId, reason: decision.reason });
       continue;
     }
-    const safeEntry = { ...entry, domain: decision.domain };
-    // BRO-5336: a run-together id has no word breaks to recover
-    // ("hackneycitizen" -> "Hackneycitizen"); take the outlet's own
-    // og:site_name / <title> instead when it spells the id or domain.
-    if (isRunTogetherSlugDisplayName(safeEntry.outletId, safeEntry.displayName) && safeEntry.domain) {
-      const { fetchPage } = require('./lib/scraper');
-      const masthead = await resolveMastheadName({ outletId: safeEntry.outletId, domain: safeEntry.domain, fetchPage });
-      if (masthead.displayName) safeEntry.displayName = masthead.displayName;
-    }
+    const safeEntry = { ...entry, displayName, domain: decision.domain };
     registry.outlets[entry.outletId] = safeEntry;
     safeAdditions.push(safeEntry);
   }

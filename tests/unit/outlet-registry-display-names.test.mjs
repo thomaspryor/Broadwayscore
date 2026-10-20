@@ -13,7 +13,7 @@ const {
 } = require('../../scripts/lib/outlet-auto-register.js');
 const registry = require('../../data/outlet-registry.json');
 
-const MAX_SLUG_DISPLAY_NAMES = 10;
+const MAX_SLUG_DISPLAY_NAMES = 10; // BRO-5732: writers now fail closed, so new slug names cannot arrive; lower to 0 once the live registry is clean
 
 test('live registry: at most 10 displayNames are the capitalized run-together id', () => {
   const rows = findRunTogetherSlugDisplayNames(registry.outlets || registry);
@@ -71,4 +71,38 @@ test('resolveMastheadName fetches the homepage through the injected fetcher and 
   const failed = await resolveMastheadName({ outletId: 'hackneycitizen', domain: 'hackneycitizen.co.uk', fetchPage: async () => { throw new Error('All scraping methods failed'); } });
   assert.equal(failed.displayName, null);
   assert.match(failed.error, /fetch failed/);
+});
+
+// BRO-5732: fail closed. A slug-derived name must never reach the registry.
+test('an outlet whose only name is the capitalized slug is staged, not registered', () => {
+  const { decideOutletAutoRegistration, STAGE_REASONS } = require('../../scripts/lib/outlet-auto-register.js');
+  const derived = deriveOutletDisplayName({ outletId: 'hackneycitizen', reviewOutletNames: [], siteNames: [] });
+  assert.equal(derived.inferred, true);
+  const facts = { outletId: 'hackneycitizen', domainHint: 'hackneycitizen.co.uk', criticSlugs: new Set() };
+  assert.deepEqual(
+    decideOutletAutoRegistration({ ...facts, displayNameInferred: derived.inferred }),
+    { action: 'stage', reason: STAGE_REASONS.NAME_UNRESOLVED },
+  );
+  assert.deepEqual(decideOutletAutoRegistration({ ...facts, displayNameInferred: false }), { action: 'register', domain: 'hackneycitizen.co.uk' });
+  // The more specific reasons still win.
+  assert.equal(decideOutletAutoRegistration({ ...facts, domainHint: null, displayNameInferred: true }).reason, STAGE_REASONS.NO_DOMAIN);
+});
+
+test('a staged masthead name lets the next rebuild register with a real name, and survives staging refreshes', () => {
+  const { mergeStagingEntries, STAGE_REASONS } = require('../../scripts/lib/outlet-auto-register.js');
+  const existing = [{ outletId: 'hackneycitizen', reason: STAGE_REASONS.NAME_UNRESOLVED, mastheadName: 'Hackney Citizen', firstSeenAt: 'a', lastSeenAt: 'a' }];
+  const fresh = [{ outletId: 'hackneycitizen', reason: STAGE_REASONS.NAME_UNRESOLVED, domainHint: 'hackneycitizen.co.uk', reviewCount: 3 }];
+  const [row] = mergeStagingEntries(existing, fresh, { nowIso: 'b' });
+  assert.equal(row.mastheadName, 'Hackney Citizen');
+  assert.equal(row.firstSeenAt, 'a');
+  const d = deriveOutletDisplayName({ outletId: 'hackneycitizen', domain: 'hackneycitizen.co.uk', siteNames: [row.mastheadName] });
+  assert.deepEqual(d, { displayName: 'Hackney Citizen', inferred: false });
+});
+
+test('rebuild and audit writers gate on displayNameInferred (no entry written with a slug name)', async () => {
+  const fs = require('node:fs');
+  for (const f of ['scripts/rebuild-all-reviews.js', 'scripts/audit-outlet-registry.js']) {
+    const src = fs.readFileSync(new URL(`../../${f}`, import.meta.url), 'utf8');
+    assert.match(src, /displayNameInferred(:\s*nameUnresolved)?,?\s*\n?\s*\}\);/, `${f} must pass displayNameInferred to decideOutletAutoRegistration`);
+  }
 });
