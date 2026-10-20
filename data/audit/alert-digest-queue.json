@@ -872,9 +872,9 @@
   {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "description": "main test.yml is STILL red after 5 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39502212858",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39502378165",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -883,22 +883,22 @@
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39502212858)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39502378165)"
       },
       {
         "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39501630051)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/39502212858)"
       },
       {
         "name": "Consecutive failures",
-        "value": "4"
+        "value": "5"
       },
       {
         "name": "Currently failing job(s)",
         "value": "Unit Tests"
       }
     ],
-    "queuedAt": "2026-10-20T22:00:17.557Z"
+    "queuedAt": "2026-10-20T22:02:20.884Z"
   },
   {
     "conditionKey": "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts",
