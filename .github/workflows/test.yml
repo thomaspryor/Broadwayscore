@@ -6528,7 +6528,12 @@ jobs:
           # measurement of the slowest honest test, never to silence a hang.
           mapfile -t e2e_unit_tests < tests/e2e-unit-test-manifest.txt
           [ ${#e2e_unit_tests[@]} -eq 0 ] && { echo "::error::tests/e2e-unit-test-manifest.txt is empty or missing"; exit 1; }
-          npx tsx --test --test-timeout 300000 "${e2e_unit_tests[@]}"
+          # BRO-5588 cousin: name failing tests; exit code preserved.
+          set +e
+          npx tsx --test --test-timeout 300000 "${e2e_unit_tests[@]}" 2>&1 | tee /tmp/e2e-unit-batch.log
+          rc=${PIPESTATUS[0]}
+          bash scripts/lib/summarize-failing-tests.sh "e2e unit" /tmp/e2e-unit-batch.log "$rc"
+          exit "$rc"
 
       # BRO-4668: E2E hits production, so a push that lands site code with its
       # own E2E test raced the Vercel deploy and went red for ~10 min with

@@ -80,7 +80,7 @@ test('works without GITHUB_STEP_SUMMARY set', () => {
 });
 
 test('both bare batches in test.yml call the summarizer and keep the exit code', () => {
-  for (const [log, label] of [['/tmp/opening-night-live-batch.log', 'opening-night live'], ['/tmp/scripts-lib-batch.log', 'scripts/lib']]) {
+  for (const [log, label] of [['/tmp/opening-night-live-batch.log', 'opening-night live'], ['/tmp/scripts-lib-batch.log', 'scripts/lib'], ['/tmp/e2e-unit-batch.log', 'e2e unit']]) {
     const i = yml.indexOf(`tee ${log}`);
     assert.ok(i > 0, `${log} tee missing`);
     const block = yml.slice(i, i + 400);
