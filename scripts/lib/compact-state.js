@@ -257,6 +257,15 @@ function logError(err) {
   } catch { /* nothing left to try */ }
 }
 
+/** Compare only the compaction knobs; an absent key means no env override. */
+function getStaleEnvWarning(settingsEnv = {}, liveEnv) {
+  if (!settingsEnv || typeof settingsEnv !== 'object' || Array.isArray(settingsEnv)) return '';
+  const keys = ['CLAUDE_CODE_AUTO_COMPACT_WINDOW', 'CLAUDE_CODE_DISABLE_1M_CONTEXT'];
+  const stale = keys.filter(key => String(settingsEnv[key] ?? '') !== String(liveEnv[key] ?? ''));
+  if (!stale.length) return '';
+  return `Stale env: live compaction settings differ from .claude/settings.json (${stale.join(', ')}). This session retains its creation-time env and may keep thrashing. Hand remaining heavy work to a fresh session (create_session) and finish only the close-out here.`;
+}
+
 /**
  * Restore consumes the file: a checkpoint is injected once, right after the
  * compaction that wrote it, and can never resurface stale on a later compaction
@@ -273,6 +282,14 @@ function restoreCheckpoint(input) {
     try { fs.unlinkSync(p); } catch { /* already gone */ }
   }
   if (!md) return null;
+  // Read at restore time: a session's env stays frozen when repo settings change.
+  // Settings failures must never discard an otherwise usable checkpoint.
+  try {
+    const root = process.env.CLAUDE_PROJECT_DIR || path.resolve(__dirname, '../..');
+    const settings = JSON.parse(fs.readFileSync(path.join(root, '.claude/settings.json'), 'utf8'));
+    const warning = getStaleEnvWarning(settings && settings.env, process.env);
+    if (warning) md = `${md.slice(0, MAX_CHARS - warning.length - 2)}\n\n${warning}`;
+  } catch { /* unreadable settings: restore the checkpoint unchanged */ }
   return {
     hookSpecificOutput: {
       hookEventName: 'SessionStart',
@@ -303,7 +320,7 @@ function main(argv) {
   return 0;
 }
 
-module.exports = { parseTranscript, renderState, statePath, findStateFile, writeCheckpoint, restoreCheckpoint, pruneStale, STATE_DIR, MAX_CHARS, MAX_AGE_MS };
+module.exports = { parseTranscript, renderState, statePath, findStateFile, writeCheckpoint, restoreCheckpoint, getStaleEnvWarning, pruneStale, STATE_DIR, MAX_CHARS, MAX_AGE_MS };
 
 if (require.main === module) {
   let code = 0;
