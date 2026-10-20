@@ -17,7 +17,7 @@
  *   mergeReviewTextsJson()  top-level three-way key merge (base = our merge
  *     base, ours wins only keys it actually changed; CONTENT_FIELDS and the
  *     scoring group move as units) followed by reconcileProtectedFields()
- *     with staleCheckoutGuard on, the same call the local flow makes. THROWS
+ *     (staleCheckoutGuard off: the real merge base replaces it, see below). THROWS
  *     on any unparsable or non-object side: the caller fails the whole
  *     attempt closed, it never falls back to the overlay.
  *
@@ -172,7 +172,14 @@ function mergeReviewTextsJson(oursText, remoteText, baseText) {
   const oursView = same(get(ours, 'fullText'), get(base, 'fullText'))
     ? Object.fromEntries(Object.entries(ours).filter(([k]) => k !== 'fullText'))
     : ours;
-  const { notes } = reconcileProtectedFields(merged, remote, oursView, { staleCheckoutGuard: true });
+  // staleCheckoutGuard OFF (review LOW): its remote-richer fullText/score
+  // restore and newer-scoring carry approximate a merge base the local flow
+  // does not have. Here the three-way merge above already decides the content
+  // and scoring groups against the real base (and throws when both sides
+  // changed one), so the guard could only undo a deliberate change of ours,
+  // e.g. restore a remote fullText or score that is just the unchanged base
+  // copy after our commit shortened the body or cleared the score.
+  const { notes } = reconcileProtectedFields(merged, remote, oursView, { staleCheckoutGuard: false });
   if (takenFromRemote) notes.unshift(`kept ${takenFromRemote} concurrent remote change(s) ours did not touch`);
   if (same(merged, ours)) return { content: oursText, notes, changed: false };
   const content = JSON.stringify(merged, null, 2) + (oursText.endsWith('\n') ? '\n' : '');

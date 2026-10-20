@@ -155,3 +155,35 @@ test('review LOW/MEDIUM fixes: group conflicts fail closed; a remote-unchanged g
   assert.equal(Object.prototype.hasOwnProperty.call(p, '__proto__'), true);
   assert.deepEqual(p['__proto__'], { x: 1 });
 });
+
+test('outlet-registry: a field or alias OUR commit removed is not restored from the remote\'s unchanged base copy', () => {
+  const d = fs.mkdtempSync(path.join(os.tmpdir(), 'rtaf-registry-rm-'));
+  try {
+    const curated = { name: 'Outlet', tier: 2, multiAuthor: true, defaultCritic: 'A', aliases: ['alt', 'keep'] };
+    fs.writeFileSync(path.join(d, 'b'), JSON.stringify({ outlets: { o1: curated } }));
+    fs.writeFileSync(path.join(d, 'o'), JSON.stringify({ outlets: { o1: { name: 'Outlet', tier: 2, aliases: ['keep'] } } }));
+    // Remote changed something ELSE, so the merge really runs; o1 is untouched there.
+    fs.writeFileSync(path.join(d, 'r'), JSON.stringify({ outlets: { o1: curated, o2: { name: 'New' } } }));
+    const out = execFileSync(process.execPath, [path.join(ROOT, 'scripts/lib/push-via-git-api-merge.js'), 'data/outlet-registry.json', path.join(d, 'o'), path.join(d, 'r'), path.join(d, 'b')], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+    const reg = JSON.parse(out);
+    assert.equal(reg.outlets.o1.multiAuthor, undefined, 'our deliberate clear stands');
+    assert.equal(reg.outlets.o1.defaultCritic, undefined);
+    assert.deepEqual(reg.outlets.o1.aliases, ['keep'], 'our removed alias stays removed');
+    assert.equal(reg.outlets.o2.name, 'New', 'the concurrent addition still lands');
+  } finally {
+    fs.rmSync(d, { recursive: true, force: true });
+  }
+});
+
+test('review file: our deliberate shorter body and cleared score are not undone by the remote\'s unchanged base copy', () => {
+  const baseRec = { ...base, fullText: LONG, assignedScore: 60, llmScore: { score: 60 } };
+  const m = JSON.parse(mergeReviewTextsJson(
+    j({ ...base, fullText: 'short corrected body' }),
+    j({ ...baseRec, note: 'remote' }),
+    j(baseRec),
+  ).content);
+  assert.equal(m.fullText, 'short corrected body');
+  assert.equal(m.assignedScore, undefined);
+  assert.equal(m.llmScore, undefined);
+  assert.equal(m.note, 'remote');
+});

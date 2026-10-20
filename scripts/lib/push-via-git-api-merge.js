@@ -48,6 +48,31 @@ function serialize(value, format, newline) {
   return JSON.stringify(value, null, 2) + (newline ? '\n' : '');
 }
 
+// The part of the remote outlet registry reconcileOutletRegistry may restore
+// from: per outlet, the multiAuthor/defaultCritic values that differ from
+// base and the aliases base did not have. No base = the whole remote (the
+// conservative two-way behavior).
+function remoteChangesSinceBase(remote, base) {
+  const baseOutlets = base && base.outlets && typeof base.outlets === 'object' ? base.outlets : null;
+  if (!baseOutlets || !remote || !remote.outlets) return remote;
+  const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+  const outlets = {};
+  for (const [id, r] of Object.entries(remote.outlets)) {
+    if (!r || typeof r !== 'object') continue;
+    const b = Object.prototype.hasOwnProperty.call(baseOutlets, id) && baseOutlets[id] && typeof baseOutlets[id] === 'object' ? baseOutlets[id] : {};
+    const delta = {};
+    for (const f of ['multiAuthor', 'defaultCritic']) {
+      if (r[f] !== undefined && r[f] !== null && !same(r[f], b[f])) delta[f] = r[f];
+    }
+    if (Array.isArray(r.aliases)) {
+      const baseAliases = Array.isArray(b.aliases) ? b.aliases : [];
+      delta.aliases = r.aliases.filter((a) => !baseAliases.includes(a));
+    }
+    outlets[id] = delta;
+  }
+  return { ...remote, outlets };
+}
+
 function main() {
   const [path, oursFile, remoteFile, baseFile] = process.argv.slice(2);
   if (!path || !oursFile || !remoteFile) {
@@ -75,10 +100,14 @@ function main() {
     // reconcileOutletRegistry (human-curated multiAuthor/defaultCritic and
     // aliases). mergeOutletRegistry lets OUR whole entry win when we changed
     // it, so a concurrent writer's curated field on that entry was dropped on
-    // this path only. Same reconciler, same direction (fill missing only).
+    // this path only. Same reconciler, same direction (fill missing only),
+    // but fed only what the REMOTE changed since base (review MEDIUM): the
+    // local flow runs it only after a conflicting rebase, while this path runs
+    // every attempt, so a field or alias OUR commit deliberately removed would
+    // otherwise come back from the remote's unchanged base copy every time.
     if (/(^|\/)outlet-registry\.json$/.test(path) && result && result.merged && remote) {
       const { reconcileOutletRegistry } = require('./restore-protected-fields');
-      const { notes } = reconcileOutletRegistry(result.merged, remote);
+      const { notes } = reconcileOutletRegistry(result.merged, remoteChangesSinceBase(remote, base));
       if (notes.length) result.stats = { ...(result.stats || {}), protectedRestored: notes };
     }
   } catch (e) {
