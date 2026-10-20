@@ -182,6 +182,17 @@ test('BRO-4830: a stale DIRTY data clone is untouched and the checkout is unveri
   } finally { fs.rmSync(f.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
+test('BRO-5784: a data clone torn by a killed fast-forward (files already hold origin/main bytes) is healed and advanced', () => {
+  const f = fixture();
+  try {
+    f.advance(2);
+    fs.writeFileSync(path.join(f.dataClone, 'shows.json'), '{"v":2}'); // origin/main's bytes, HEAD/index still old
+    const r = refreshDataClone(f.repo, { memoize: false });
+    assert.equal(r.status, 'fast-forwarded', r.detail);
+    assert.equal(fs.readFileSync(path.join(f.dataClone, 'shows.json'), 'utf8'), '{"v":2}');
+  } finally { fs.rmSync(f.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
 test('BRO-5332: a failed ff-merge reports git\'s error line, not "Command failed"', () => {
   const f = fixture();
   try {

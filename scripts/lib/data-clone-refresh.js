@@ -88,7 +88,14 @@ function refreshDataClone(repo, { dataRepo = null, memoize = true } = {}) {
     const headInOrigin = isAncestor('HEAD', 'origin/main');
     const originInHead = isAncestor('origin/main', 'HEAD');
     const behind = !originInHead;
-    const statusOut = git(clone, ['status', '--porcelain', '--untracked-files=no']);
+    let statusOut = git(clone, ['status', '--porcelain', '--untracked-files=no']);
+    if (statusOut !== '' && behind) {
+      // BRO-5784: a fast-forward killed mid-checkout leaves origin/main's own bytes in the tree and every later
+      // refresh then says "uncommitted changes". Cleared only when origin/main's bytes explain EVERY dirty file.
+      const { reconcileInterruptedFastForward } = require('./code-checkout-staleness.js');
+      const healed = reconcileInterruptedFastForward({ repoDir: clone, timeoutMs: 60000 });
+      if (!healed.error && !healed.skipped) statusOut = git(clone, ['status', '--porcelain', '--untracked-files=no']);
+    }
     const dirty = statusOut !== '';
     verdict = decideRefresh({ behind, headInOrigin, originInHead, dirty });
     if (verdict === 'unsafe') {
