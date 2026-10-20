@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5782",
   "planId": "d2e7f3d2-186f-47d0-9fc2-9a80fcb43772",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-20T16:09:51.000Z",
   "submitter": {
     "name": null,
@@ -34,5 +34,19 @@
         "description": "Same wording fix in the research notes shown under Show details."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-20T16:54:22.195Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for purpose-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for purpose-2025"
+    }
+  ],
+  "executedIn": "ci"
 }
