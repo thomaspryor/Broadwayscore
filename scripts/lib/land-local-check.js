@@ -62,6 +62,23 @@ const git = (...args) => run('git', args);
 
 class MutexTimeout extends Error {}
 
+/**
+ * The test files behind land-gate-delta.js's "NEW on the branch" lists, or null when any new
+ * failure is not a test case (a lint finding, a whole-gate failure): those are never re-run.
+ */
+function newFailureFiles(deltaText) {
+  const files = new Set();
+  let inNew = false;
+  for (const line of String(deltaText || '').split('\n')) {
+    if (/^#{2,4} /.test(line)) { inNew = /NEW on the branch/.test(line); continue; }
+    if (!inNew || !/^\s+- /.test(line)) continue;
+    const m = line.match(/`([^`:]+\.test\.m?js)::/);
+    if (!m) return null;
+    files.add(m[1]);
+  }
+  return [...files];
+}
+
 function main(argv = process.argv.slice(2)) {
   const opts = parseArgs(argv);
   if (opts.help) { console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(1, 28).join('\n')); return 0; }
@@ -101,9 +118,20 @@ function main(argv = process.argv.slice(2)) {
         run('bash', [copy, baseDir, '--checkout', base, '--return-to', head], { env: { ...env, GAUNTLET_GATES: red }, stdio: ['ignore', 'ignore', 'inherit'] });
         if (git('rev-parse', 'HEAD').stdout !== head) console.error(`land-local-check: WARNING: HEAD is not back at ${head.slice(0, 10)}; run git checkout ${head}`);
       }
-      const d = run('node', ['scripts/lib/land-gate-delta.js', '--base-dir', baseDir, '--branch-dir', branchDir, '--gates', opts.gates.join(','), '--base-source', red ? `ran locally for ${red}` : 'not needed (every gate green on HEAD)'], { stdio: ['ignore', 'inherit', 'inherit'] });
-      console.log(`land-local-check: ${d.code === 0 ? 'CLEAN, no new failures' : 'NEW FAILURES, fix them before pushing land/'} (${Math.round((Date.now() - t0) / 60_000)} min; logs in ${out})`);
-      return d.code === 0 ? 0 : 1;
+      const d = run('node', ['scripts/lib/land-gate-delta.js', '--base-dir', baseDir, '--branch-dir', branchDir, '--gates', opts.gates.join(','), '--base-source', red ? `ran locally for ${red}` : 'not needed (every gate green on HEAD)'], { stdio: ['ignore', 'pipe', 'inherit'] });
+      console.log(d.stdout);
+      let clean = d.code === 0;
+      // A gauntlet test file failing under load can pass alone (2026-10-20: a duplicate-of-url
+      // test failed in the gauntlet, then passed 16/16 twice by itself). Re-run the new failures'
+      // files once, alone; clean only when every new failure is a test file and all of them pass.
+      const files = clean ? [] : newFailureFiles(d.stdout);
+      if (files && files.length) {
+        const again = run('node', ['--test', ...files]);
+        console.log(`land-local-check: re-ran ${files.length} new-failure file(s) alone: ${again.code === 0 ? 'all pass (failed only under gauntlet load)' : 'still failing'}`);
+        clean = again.code === 0;
+      }
+      console.log(`land-local-check: ${clean ? 'CLEAN, no new failures' : 'NEW FAILURES, fix them before pushing land/'} (${Math.round((Date.now() - t0) / 60_000)} min; logs in ${out})`);
+      return clean ? 0 : 1;
     }, {
       pollMs: 15_000,
       onWait: () => {
@@ -119,6 +147,6 @@ function main(argv = process.argv.slice(2)) {
   }
 }
 
-module.exports = { parseArgs, DEFAULT_GATES };
+module.exports = { parseArgs, newFailureFiles, DEFAULT_GATES };
 
 if (require.main === module) process.exit(main());

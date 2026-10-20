@@ -105,7 +105,11 @@ For each card:
    A card that genuinely needs an owner decision: write the one-sentence
    question on the card and pause it; do not build it.
 5. Land: a commit holding ONLY your files on a branch from current origin/main
-   (never `git reset --soft` over a failed merge),
+   (never `git reset --soft` over a failed merge). Before the push, run
+   `node scripts/lib/land-local-check.js | tail -15` in the background
+   (timeout 2700000, ~20 min; it runs land.yml's test gates here, so a
+   guard-test refusal costs minutes, not a land run). Push only on exit 0 or 4;
+   on 1 fix the new failures it lists. Then
    `git push origin HEAD:refs/heads/land/bro-<N>-<short-name>`, then
    `node scripts/lib/wait-for-land.js land/<name> 58` in the background, and
    pick the next card now. When a waiter reports a refusal, read the run log,

@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { parseArgs, DEFAULT_GATES } = require('./land-local-check.js');
+const { parseArgs, newFailureFiles, DEFAULT_GATES } = require('./land-local-check.js');
 const { GATES } = require('./land-gate-delta.js');
 const R = require('./codex-runner.js');
 
@@ -33,4 +33,17 @@ test('withFileMutex: a throwing onWait gives up without taking or deleting the h
   assert.equal(R.withFileMutex(join(dir, 'free.lock'), () => 7), 7);
   assert.ok(!existsSync(join(dir, 'free.lock')), 'released after fn');
   assert.match(R.CONTAINER_LAND_MUTEX, /bsc-land-checks\.lock$/);
+});
+
+test('newFailureFiles: the NEW test files only; null when a new failure is not a test case', () => {
+  const report = [
+    '#### unit-tests-node — NEW on the branch (blocking)',
+    '  - `tests/unit/duplicate-of-url-mismatch.test.mjs::duplicateOf-cycle mismatches are excluded [testCodeFailure]`',
+    '',
+    '#### unit-tests-node — pre-existing on origin/main (not blocking; still real, file an issue)',
+    '  - `scripts/award-scores.test.mjs::computeSiteAwardScore [testCodeFailure]`',
+  ].join('\n');
+  assert.deepEqual(newFailureFiles(report), ['tests/unit/duplicate-of-url-mismatch.test.mjs']);
+  assert.equal(newFailureFiles('#### lint-workflows — NEW on the branch (blocking)\n  - `lint-workflows::actionlint`'), null);
+  assert.deepEqual(newFailureFiles('no lists at all'), []);
 });
