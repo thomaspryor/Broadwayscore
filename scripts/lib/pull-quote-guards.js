@@ -509,6 +509,13 @@ function llmQuoteHardRejectReason(quote, fullText) {
   return null;
 }
 
+// A stored llmPullQuote that fails the write-time guard is treated as absent,
+// so the extractor's skip-if-present does not pin it forever: the rebuild
+// drops it from the site and nothing else replaces it (BRO-5796).
+function hasUsableLlmQuote(data) {
+  return !!(data && data.llmPullQuote && !llmQuoteHardRejectReason(data.llmPullQuote, data.fullText));
+}
+
 // ---------------------------------------------------------------------------
 // Contiguity: is the displayed quote a passage the critic actually wrote?
 //
@@ -1088,6 +1095,7 @@ const DEFERRAL_REASON_TIER = { overlong: 1, 'non-contiguous': 2, 'sentiment-mism
 
 module.exports = {
   llmQuoteHardRejectReason,
+  hasUsableLlmQuote,
   HEDGE_OPENER_RE,
   MID_SENTENCE_PIVOT_RE,
   MIN_QUOTE_LENGTH,

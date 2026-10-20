@@ -26,7 +26,7 @@ const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { shouldRejectAsReservation, isPromoTeaser, isInServiceSection, isBadCandidateLength, llmQuoteHardRejectReason, MIN_QUOTE_LENGTH, MAX_QUOTE_LENGTH } = require('./lib/pull-quote-guards');
+const { shouldRejectAsReservation, isPromoTeaser, isInServiceSection, isBadCandidateLength, llmQuoteHardRejectReason, hasUsableLlmQuote, MIN_QUOTE_LENGTH, MAX_QUOTE_LENGTH } = require('./lib/pull-quote-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./lib/models');
@@ -344,7 +344,7 @@ function scanReviewFiles() {
         if (!data.fullText || data.fullText.length < 300) { stats.skipped++; continue; }
 
         // Skip if already has llmPullQuote (unless --overwrite)
-        if (data.llmPullQuote && !OVERWRITE) { stats.skipped++; continue; }
+        if (hasUsableLlmQuote(data) && !OVERWRITE) { stats.skipped++; continue; }
 
         // Skip garbage / wrong show / roundup articles
         if (data.wrongProduction || data.wrongShow || data.wrongAttribution || data.duplicateOf ||
@@ -543,7 +543,7 @@ async function processReview(entry) {
     }
     // A concurrent run may have already written this same llmPullQuote (or a
     // human/other extractor set one) since we scanned — don't stomp it.
-    if (current.llmPullQuote && !OVERWRITE) { stats.skipped++; return; }
+    if (hasUsableLlmQuote(current) && !OVERWRITE) { stats.skipped++; return; }
     // Re-verify against the fresh body too: fullText is PROTECTED, but if it
     // legitimately changed since scan time (refetch/heal) the stale quote we
     // extracted may no longer be a substring of the current text.
