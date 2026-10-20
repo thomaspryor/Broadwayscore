@@ -2,10 +2,16 @@
  * Contract guard for the score-tier label split (Skippable→Mixed rename, 2026-06-30).
  *
  * The 55-64 band has TWO distinct labels by design:
- *   - DATA / wire key  = "Skippable"  (scoring.ts getCriticLabel → engine.ts → mobile-shows.json
- *     cr.l, fantasy points). NEVER rename without coordinating the iOS app + fantasy data.
+ *   - DATA / wire key  = "Skippable"  (scoring.ts getCriticLabel → engine.ts, fantasy points).
+ *     NEVER rename without coordinating the fantasy data.
  *   - DISPLAY label     = "Mixed"      (score-buckets SCORE_BUCKETS, ScoreBadge SCORE_TIERS,
  *     route handlers, email, methodology, etc. — what humans see).
+ *
+ * The app feed's cr.l (public/data/mobile-shows.json) moved from the DATA label to the DISPLAY
+ * label on 2026-10-20: the iOS app prints cr.l as text under the badge (app/show/[slug].tsx) and
+ * keys nothing on it, so "Skippable" was reaching users. It now comes from
+ * scripts/lib/score-tiers.js (rounded, market-aware, the thresholds score-buckets.ts re-exports);
+ * tests/unit/mobile-feed-website-parity.test.ts checks it against ScoreBadge for every show.
  *
  * Plan-review (2026-06-30) found that a blind rename would (a) desync the iOS app, (b) zero out
  * 55-64 fantasy points (undefined map key), and (c) silently render the wrong red color
@@ -22,10 +28,10 @@ import { dirname, join } from 'node:path';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const read = p => readFileSync(join(ROOT, p), 'utf8');
 
-test('DATA/wire label stays "Skippable" (iOS + fantasy contract)', () => {
-  // scoring.ts getCriticLabel feeds engine.ts -> mobile-shows.json cr.l, read by the iOS app.
+test('DATA/wire label stays "Skippable" (fantasy contract)', () => {
+  // scoring.ts getCriticLabel feeds engine.ts criticScore.label and the fantasy scorer.
   assert.match(read('src/config/scoring.ts'), /score >= 55\) return 'Skippable'/,
-    'scoring.ts getCriticLabel must still emit "Skippable" — renaming desyncs mobile-shows.json/iOS');
+    'scoring.ts getCriticLabel must still emit "Skippable" — renaming desyncs the fantasy data');
   // The same wire label is the key in the fantasy points map. Since the
   // 2026-27 relaunch the map lives in fantasy-season.json (one file read by
   // the site, the API and the weekly scripts) and fantasy.ts re-exports it.
@@ -33,12 +39,26 @@ test('DATA/wire label stays "Skippable" (iOS + fantasy contract)', () => {
     'fantasy-season.json scoring.criticScore must keep the "Skippable" key or 55-64 shows score undefined points');
   assert.match(read('src/config/fantasy.ts'), /CRITIC_SCORE_POINTS[^\n]*seasonConfig\.scoring\.criticScore/,
     'fantasy.ts CRITIC_SCORE_POINTS must come from fantasy-season.json (the file the guard above pins)');
-  // The mobile-data generator and the shared fantasy scorer emit the same wire key.
-  assert.match(read('scripts/generate-mobile-data.js'), /score >= 55\) return 'Skippable'/);
+  // The shared fantasy scorer emits the same wire key.
   assert.match(read('scripts/lib/fantasy-helpers.js'), /score >= 55\) return 'Skippable'/,
     'fantasy-helpers.js criticLabelForScore must still emit "Skippable" — it keys the points map for the weekly scorer');
   assert.match(read('scripts/compute-fantasy-scores.js'), /criticLabelForScore/,
     'compute-fantasy-scores.js must use the shared criticLabelForScore (no local copy to drift)');
+});
+
+test('app feed cr.l is the DISPLAY label from the shared tier module (no local label copy)', async () => {
+  const { createRequire } = await import('node:module');
+  const require = createRequire(import.meta.url);
+  const tiers = require('./score-tiers.js');
+  assert.equal(tiers.SCORE_TIER_LABELS.skippable, 'Mixed', 'score-tiers.js 55-64 label must be the display label');
+  assert.ok(!Object.values(tiers.SCORE_TIER_LABELS).includes('Skippable'), 'score-tiers.js must not carry the data label');
+  assert.match(read('scripts/lib/mobile-critic-score.js'), /l: getScoreTierLabel\(result\.s, show\.category\)/,
+    'mobile-critic-score.js must label cr with the shared, market-aware getScoreTierLabel');
+  assert.match(read('scripts/generate-mobile-data.js'), /buildMobileCriticScore\(/,
+    'generate-mobile-data.js must build cr with the shared buildMobileCriticScore');
+  for (const f of ['scripts/generate-mobile-data.js', 'scripts/lib/mobile-critic-score.js']) {
+    assert.doesNotMatch(read(f), /Skippable|function getCriticLabel/, `${f} must not keep its own tier labels`);
+  }
 });
 
 test('DISPLAY label is "Mixed" everywhere a human sees the 55-64 tier', () => {

@@ -16,8 +16,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { computeCriticScore } = require('./lib/compute-critic-score');
 const { shouldHideReviews } = require('./lib/should-hide-reviews');
+const { buildMobileCriticScore } = require('./lib/mobile-critic-score');
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 const { isHiddenFromAppFeed } = require('./lib/markets');
 const { isUpcomingTag } = require('./lib/opening-night-completeness');
@@ -26,24 +26,18 @@ const { versionedImagePath } = require('./lib/versioned-image-path');
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data');
 
-// Schema version — bump when output format changes
+// Schema version. Bump only for a breaking change (a field renamed, removed or
+// retyped). New optional fields (cr.q, ps) stay on 1: the app compares _v to
+// its EXPECTED_SCHEMA_VERSION and logs a mismatch, and ignores keys it doesn't know.
 const SCHEMA_VERSION = 1;
 
-// Scoring constants and computeCriticScore imported from ./lib/compute-critic-score.js
+// Scoring constants and computeCriticScore: ./lib/compute-critic-score.js (via ./lib/mobile-critic-score.js)
 
 const SCORE_DISPLAY_YEAR_CUTOFF = 2005;
 const MIN_HIGH_CONF_REVIEWS_PRE_CUTOFF = 3;
 const LOW_CONF_SCORE_SOURCES = new Set([
   'llmScore-lowconf', 'llmScore-thumb-boosted', 'thumb', 'bwwScore-fallback',
 ]);
-
-function getCriticLabel(score) {
-  if (score >= 83) return 'Critical Gold';
-  if (score >= 75) return 'Recommended';
-  if (score >= 65) return 'Worth Seeing';
-  if (score >= 55) return 'Skippable';
-  return 'Critical Miss';
-}
 
 // Audience grade thresholds (from src/lib/audience-grade-utils.ts)
 function getAudienceGrade(score) {
@@ -62,6 +56,11 @@ function getAudienceGrade(score) {
 }
 
 const MIN_AUDIENCE_REVIEWS = 15;
+
+// `ps` is documented to the app as a plain calendar date; anything else is left out.
+function isIsoDate(v) {
+  return typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v);
+}
 
 // ===========================================
 // LOAD DATA
@@ -132,14 +131,8 @@ for (const review of reviews) {
   reviewsByShow[review.showId].push(review);
 }
 
-// computeCriticScore imported from ./lib/compute-critic-score.js
-// Wrap to pass outletRegistry and add critic label.
-// v5 (2026-04-29): pass showCategory so per-region tier + off-market multiplier apply.
-function computeShowScore(showReviews, showCategory, showType) {
-  const result = computeCriticScore(showReviews, outletRegistry, showCategory, showType);
-  if (!result) return null;
-  return { ...result, l: getCriticLabel(result.s) };
-}
+// The `cr` object: shared scorer numbers plus the website badge's tier label
+// (`l`) and review-count gate (`q`). See scripts/lib/mobile-critic-score.js.
 
 // ===========================================
 // GENERATE MOBILE DATA
@@ -168,7 +161,7 @@ const mobileShows = visibleShows.map(show => {
 
   // Pre-2005 closed shows: hide reviews entirely (unreliable data from bulk import)
   const hideReviews = shouldHideReviews(show);
-  let criticScore = hideReviews ? null : computeShowScore(showReviews, show.category, show.type);
+  let criticScore = hideReviews ? null : buildMobileCriticScore(show, showReviews, outletRegistry);
 
   // Composite score = critic score (V1: critic-only, same as engine.ts line 618)
   const compositeScore = criticScore ? criticScore.s : null;
@@ -202,6 +195,8 @@ const mobileShows = visibleShows.map(show => {
   if (show.category && show.category !== 'broadway') entry.cat = show.category;
   if (show.openingDate) entry.od = show.openingDate;
   if (show.closingDate) entry.cd = show.closingDate;
+  // First preview date (YYYY-MM-DD) when shows.json has one; omitted otherwise.
+  if (isIsoDate(show.previewsStartDate)) entry.ps = show.previewsStartDate;
   // Bookability: tickets on sale for a not-yet-open show (same derivation as
   // generate-show-lookup.js — powers the app's "Tix on sale" watchlist badge)
   if ((status === 'upcoming' || status === 'announced') && show.ticketLinks?.length) entry.tx = 1;

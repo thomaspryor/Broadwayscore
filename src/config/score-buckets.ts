@@ -6,6 +6,7 @@
  */
 
 import type { ScoreBucket } from '@/types/canonical';
+import { getGoldThreshold, getScoreTierId } from '../../scripts/lib/score-tiers';
 
 // ===========================================
 // SCORE BUCKET DEFINITIONS
@@ -119,17 +120,10 @@ export const MIN_TIER1_FOR_HIGH_CONFIDENCE = 3;
 // ===========================================
 // WE star ratings (5-point scale) cluster at 80/100, inflating scores.
 // WE Gold requires 85+ vs Broadway's 83+ for a more meaningful distinction.
-
-export const MARKET_GOLD_THRESHOLD: Record<string, number> = {
-  'west-end': 85,
-  'off-west-end': 85,
-};
-const DEFAULT_GOLD_THRESHOLD = 83;
-
-/** Get the Critical Gold minimum score for a given market */
-export function getGoldThreshold(category?: string): number {
-  return MARKET_GOLD_THRESHOLD[category || ''] ?? DEFAULT_GOLD_THRESHOLD;
-}
+// The thresholds live ONLY in scripts/lib/score-tiers.js, shared with the app
+// feed generator (scripts/generate-mobile-data.js writes cr.l from it) so the
+// site badge and the iOS app cannot disagree on a show's tier.
+export { MARKET_GOLD_THRESHOLD, getGoldThreshold } from '../../scripts/lib/score-tiers';
 
 /**
  * Whether a score qualifies as Critical Gold (renders the crown).
@@ -154,14 +148,10 @@ export function getScoreBucket(score: number | null, category?: string): ScoreBu
     return SCORE_BUCKETS.find(b => b.id === 'pending')!;
   }
 
-  const goldMin = getGoldThreshold(category);
-  // Must-see uses market-aware threshold; other buckets use static ranges
-  if (score >= goldMin) return SCORE_BUCKETS.find(b => b.id === 'must-see')!;
-  // Recommended upper bound adjusts with Gold threshold
-  if (score >= 75) return SCORE_BUCKETS.find(b => b.id === 'recommended')!;
-  if (score >= 65) return SCORE_BUCKETS.find(b => b.id === 'worth-seeing')!;
-  if (score >= 55) return SCORE_BUCKETS.find(b => b.id === 'skippable')!;
-  return SCORE_BUCKETS.find(b => b.id === 'stay-away')!;
+  // Must-see uses the market-aware threshold; the other tiers use static ranges
+  // (scripts/lib/score-tiers.js). Recommended's upper bound moves with Gold.
+  const id = getScoreTierId(score, category);
+  return SCORE_BUCKETS.find(b => b.id === id)!;
 }
 
 /**
