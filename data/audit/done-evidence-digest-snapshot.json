@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-20T07:40:50.753Z",
-  "bannerText": "194/204 Done(14d) verified on main · 6 FAILED · 0 vacuous · 15 stuck-but-done",
+  "generatedAt": "2026-10-20T12:14:12.579Z",
+  "bannerText": "153/161 Done(14d) verified on main · 5 FAILED · 0 vacuous · 15 stuck-but-done",
   "items": [
     {
       "title": "FAILED BRO-5668 — System assessment: card throughput, Codex lanes, waste, design (owner-requested audit 2026-10-19)",
@@ -14,23 +14,23 @@
     },
     {
       "title": "FAILED BRO-5536 — BSC Daily: Data quality: slug-mismatch lifetime sweep",
-      "detail": "[check-health-row-absent] FAIL: \"Data quality: slug-mismatch lifetime sweep\" still listed in the 2026-10-20T07:35:24.557Z health snapshot",
+      "detail": "[check-health-row-absent] FAIL: \"Data quality: slug-mismatch lifetime sweep\" still listed in the 2026-10-20T12:08:24.981Z health snapshot",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5536/bsc-daily-data-quality-slug-mismatch-lifetime-sweep"
     },
     {
-      "title": "FAILED BRO-5461 — BSC Daily: Corpus drift: live reviews",
-      "detail": "[check-health-row-absent] FAIL: \"Corpus drift: live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets\" still listed in the 2026-10…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5461/bsc-daily-corpus-drift-live-reviews"
-    },
-    {
       "title": "FAILED BRO-5453 — BSC Daily: Commercial model drift",
-      "detail": "[check-health-row-absent] FAIL: \"Commercial model drift\" still listed in the 2026-10-20T07:35:24.557Z health snapshot",
+      "detail": "[check-health-row-absent] FAIL: \"Commercial model drift\" still listed in the 2026-10-20T12:08:24.981Z health snapshot",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5453/bsc-daily-commercial-model-drift"
     },
     {
       "title": "FAILED BRO-5314 — Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
-      "detail": "[check-alert-condition-absent] FAIL: \"corpus-drift:duplicate-shows\" still firing — open, last fired 2026-10-20T02:48:04.631Z (4.9h ago, within 168h)",
+      "detail": "[check-alert-condition-absent] FAIL: \"corpus-drift:duplicate-shows\" still firing — open, last fired 2026-10-20T11:47:55.572Z (0.5h ago, within 168h)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5314/corpus-drift-duplicate-show-entries-in-showsjson-baseline-diff"
+    },
+    {
+      "title": "STUCK BRO-5684 — BSC Daily: Quality: outlet invalid-content rate",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5684/bsc-daily-quality-outlet-invalid-content-rate"
     },
     {
       "title": "STUCK BRO-5646 — Codex PRs land on their own: the owner's only step is pressing Create PR in Codex",
@@ -43,5 +43,5 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5610/bsc-daily-quality-show-score-gap"
     }
   ],
-  "moreCount": 13
+  "moreCount": 12
 }
