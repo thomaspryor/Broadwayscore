@@ -165,7 +165,6 @@ async function main() {
 
   function enrichShow(show, tt, location) {
     if (enriched.has(show.id)) return; // Already processed
-    enriched.add(show.id);
     // BRO-5796: another row already holds this listing under an agreeing
     // title, so this row is its duplicate. Giving it the id/url/link too is
     // how the AMAZE pair was minted; leave both rows for the duplicate audit.
@@ -173,8 +172,9 @@ async function main() {
     if (holder) {
       stats.duplicateIdRefused = (stats.duplicateIdRefused || 0) + 1;
       console.log(`  ⛔ ${show.id}: TodayTix ${tt.id} already belongs to ${holder.id}; not enriching a duplicate row`);
-      return;
+      return; // not marked enriched: this row's own listing may still come later
     }
+    enriched.add(show.id);
     stats.matched++;
     const changes = [];
 

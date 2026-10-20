@@ -653,3 +653,10 @@ test('a headline glued to a capitalized next word is not a mid-word cut', () => 
   const lowerNext = 'Meteor Shower may be a cloudburst of laugh lines lasting only about 80 minutes, but it';
   assert.strictEqual(isMidWordTruncation(lowerNext, [`${lowerNext}s non-sequiturs`]), true);
 });
+
+test('a name cut after a short prefix ("Mc", "Lu") is still a mid-word cut', () => {
+  const q = 'The evening belongs entirely to the great and incomparable Audra Mc';
+  assert.strictEqual(isMidWordTruncation(q, [`${q}Donald, who sings`]), true);
+  const q2 = 'Nobody else on Broadway sings the role quite the way it is sung by Patti Lu';
+  assert.strictEqual(isMidWordTruncation(q2, [`${q2}Pone tonight`]), true);
+});

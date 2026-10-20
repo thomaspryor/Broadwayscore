@@ -39,6 +39,19 @@ test('the row already holding the listing, a declared transfer, and no id are no
   assert.equal(findTicketIdentityHolder([amaze, dupe], dupe, ''), null);
 });
 
+test('a closed holder does not block: TodayTix moved the listing on', () => {
+  const closed = { id: 'death-becomes-her-2024', title: 'Death Becomes Her', status: 'closed', todaytixId: 34895 };
+  const tour = { id: 'death-becomes-her-tour-2026', title: 'Death Becomes Her', status: 'previews' };
+  assert.equal(findTicketIdentityHolder([closed, tour], tour, 34895), null);
+});
+
+test('enrich marks a row done only after the holder check passes', () => {
+  const src = fs.readFileSync(new URL('../../scripts/enrich-todaytix-data.js', import.meta.url), 'utf8');
+  const body = src.slice(src.indexOf('function enrichShow('));
+  assert.ok(body.indexOf('findTicketIdentityHolder(') < body.indexOf('enriched.add(show.id)'),
+    'a refused duplicate listing must not mark the row enriched before its own listing arrives');
+});
+
 test('both id writers check for a holder before assigning', () => {
   for (const f of ['enrich-todaytix-data.js', 'update-show-status.js']) {
     const src = fs.readFileSync(new URL(`../../scripts/${f}`, import.meta.url), 'utf8');

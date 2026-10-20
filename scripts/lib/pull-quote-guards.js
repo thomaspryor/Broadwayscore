@@ -489,8 +489,9 @@ function isMidWordTruncation(excerpt, sourceTexts) {
     const next = hay[at + cleaned.length];
     // A lowercase end followed by a capital is scraped text gluing a headline
     // to the next line ("...for the Resistance" + "By Jason Zinoman"), not a
-    // word cut in half (BRO-5796).
-    if (/\p{Ll}$/u.test(cleaned) && next && /\p{Lu}/u.test(next)) continue;
+    // word cut in half (BRO-5796). A short last word stays a cut: "Audra Mc" +
+    // "Donald", "Patti Lu" + "Pone".
+    if (/\p{L}{4,}$/u.test(cleaned) && /\p{Ll}$/u.test(cleaned) && next && /\p{Lu}/u.test(next)) continue;
     if (next && /\p{L}/u.test(next)) return true;
   }
   return false;

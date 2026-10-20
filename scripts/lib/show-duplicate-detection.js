@@ -322,12 +322,14 @@ function findSharedTicketIdentityDupes(shows) {
 // mint a pair that audit flags. enrich-todaytix-data and update-show-status
 // assigned ids with no check, which is how the AMAZE pair was made. Null when
 // `show` already holds the listing itself (an existing pair is the audit's).
+// A closed holder never counts: a live listing on a closed row's id means the
+// id moved on (the same rule as enrich-todaytix-data directIdMatch).
 function findTicketIdentityHolder(shows, show, ttId) {
   if (!Array.isArray(shows) || !show || ttId == null || String(ttId).trim() === '') return null;
   const key = `todaytix:${String(ttId).trim()}`;
   if (ticketIdentityKeys(show).has(key)) return null;
   const probe = { ...show, todaytixId: String(ttId).trim() };
-  return shows.find((s) => s && s.id && s.id !== show.id
+  return shows.find((s) => s && s.id && s.id !== show.id && s.status !== 'closed'
     && ticketIdentityKeys(s).has(key)
     && !isDeclaredTransferPair(probe, s)
     && titlesAgree(probe, s)) || null;
