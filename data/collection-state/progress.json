@@ -591,7 +591,8 @@
     "blue-mist-west-end-2023/broadwayworld--cindy-marcolina.json",
     "company-tour-2023/nytimes--maya-phillips.json",
     "jajas-african-hair-braiding-2023/broadwaynews--brittani-samuel.json",
-    "sunset-boulevard-west-end-2023/guardian--arifa-akbar.json"
+    "sunset-boulevard-west-end-2023/guardian--arifa-akbar.json",
+    "aladdin-2014/wsj--terry-teachout.json"
   ],
   "failed": [
     "funny-girl-2002/wsj--charles-isherwood.json",
@@ -696,7 +697,6 @@
     "hamilton-west-end-2021/theatermania--zachary-stewart.json",
     "hamilton-2015/nyt-theater--jonathan-mandell.json",
     "the-play-that-goes-wrong-west-end-2021/chicagotribune--chris-jones.json",
-    "aladdin-2014/wsj--terry-teachout.json",
     "aladdin-2014/ap--mark-kennedy.json",
     "the-book-of-mormon-west-end-2024/washpost--unknown.json",
     "matilda-the-musical-west-end-2021/ew--unknown.json",
@@ -1224,7 +1224,9 @@
     "browserbase": [
       "data/review-texts/the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json",
       "data/review-texts/company-tour-2023/nytimes--maya-phillips.json",
-      "company-tour-2023/nytimes--maya-phillips.json"
+      "company-tour-2023/nytimes--maya-phillips.json",
+      "data/review-texts/aladdin-2014/wsj--terry-teachout.json",
+      "aladdin-2014/wsj--terry-teachout.json"
     ],
     "directCookies": [
       "dear-octopus-west-end-2024/standard--nick-curtis.json"
@@ -1548,7 +1550,7 @@
     ]
   },
   "startTime": "2026-10-20T14:57:10.313Z",
-  "lastProcessed": "old-friends-west-end-2023/telegraph--helen-brown.json",
+  "lastProcessed": "my-sons-a-queer-but-what-can-you-do-west-end-2026/standard--nick-curtis.json",
   "log": [
     {
       "t": "2026-10-20T14:59:00.551Z",
@@ -1758,6 +1760,31 @@
       "t": "2026-10-20T23:08:38.179Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-20T23:39:47.934Z",
+      "event": "bb-session",
+      "session": "ff5d5504",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-20T23:39:48.430Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-20T23:40:05.323Z",
+      "event": "bb-session",
+      "session": "a6a4dfa4",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-20T23:40:05.753Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
+  ],
+  "recoveredAfterFailure": [
+    "aladdin-2014/wsj--terry-teachout.json"
   ]
 }

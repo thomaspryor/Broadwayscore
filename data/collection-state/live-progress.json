@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-10-20T23:10:18.672Z",
-  "processed": 592,
-  "failed": 352,
-  "successRate": "62.7%",
+  "updatedAt": "2026-10-20T23:48:41.603Z",
+  "processed": 593,
+  "failed": 351,
+  "successRate": "62.8%",
   "tierBreakdown": {
     "playwright": 266,
     "amp": 2,
-    "browserbase": 3,
+    "browserbase": 5,
     "directCookies": 1,
     "scrapingdog": 27,
     "scrapingbee": 49,
@@ -14,30 +14,8 @@
     "archiveToday": 0,
     "archive": 230
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-10-20T17:17:37.624Z",
-      "event": "bb-session",
-      "session": "fde449ff",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
-    {
-      "t": "2026-10-20T17:17:37.967Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-20T17:17:54.591Z",
-      "event": "bb-session",
-      "session": "78045bfc",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
-    {
-      "t": "2026-10-20T17:17:54.888Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-10-20T18:03:08.906Z",
       "event": "bb-session",
@@ -128,6 +106,28 @@
       "t": "2026-10-20T23:08:38.179Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-20T23:39:47.934Z",
+      "event": "bb-session",
+      "session": "ff5d5504",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-20T23:39:48.430Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-20T23:40:05.323Z",
+      "event": "bb-session",
+      "session": "a6a4dfa4",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-20T23:40:05.753Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
