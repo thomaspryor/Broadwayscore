@@ -1,47 +1,7 @@
 {
   "_comment": "Outlets seen on included reviews that the rebuild REFUSED to auto-register (BRO-4370): no resolvable domain, a critic name, or a domain collision. Resolve by adding the outlet to data/outlet-registry.json with a domain, merging it into the right outlet, or fixing the review files; the rebuild prunes resolved rows on its next run.",
-  "updatedAt": "2026-10-20T11:03:56.713Z",
+  "updatedAt": "2026-10-20T11:51:11.036Z",
   "staged": [
-    {
-      "outletId": "1blocknews",
-      "reason": "name-unresolved",
-      "domainHint": "1blocknews.com",
-      "reviewCount": 1,
-      "exampleShowId": "some-woman-west-end-2026",
-      "firstSeenAt": "2026-10-20T11:00:39.070Z",
-      "lastSeenAt": "2026-10-20T11:03:56.712Z",
-      "mastheadName": "1BlockNews"
-    },
-    {
-      "outletId": "ashleyhajimirsadeghi",
-      "reason": "name-unresolved",
-      "domainHint": "ashleyhajimirsadeghi.com",
-      "reviewCount": 1,
-      "exampleShowId": "wicked-tour-2021",
-      "firstSeenAt": "2026-10-20T10:34:18.616Z",
-      "lastSeenAt": "2026-10-20T11:03:56.712Z",
-      "mastheadName": "Ashley Hajimirsadeghi"
-    },
-    {
-      "outletId": "baltimoremediablog",
-      "reason": "name-unresolved",
-      "domainHint": "baltimoremediablog.com",
-      "reviewCount": 1,
-      "exampleShowId": "wicked-tour-2021",
-      "firstSeenAt": "2026-10-20T10:34:18.616Z",
-      "lastSeenAt": "2026-10-20T11:03:56.712Z",
-      "mastheadName": "Baltimore Media Blog"
-    },
-    {
-      "outletId": "grandgoldman",
-      "reason": "name-unresolved",
-      "domainHint": "grandgoldman.com",
-      "reviewCount": 1,
-      "exampleShowId": "some-woman-west-end-2026",
-      "firstSeenAt": "2026-10-20T11:00:39.070Z",
-      "lastSeenAt": "2026-10-20T11:03:56.712Z",
-      "mastheadName": "Grand Goldman"
-    },
     {
       "outletId": "is-simple",
       "reason": "no-domain",
@@ -49,27 +9,7 @@
       "reviewCount": 1,
       "exampleShowId": "celebrity-autobiography-2026",
       "firstSeenAt": "2026-10-19T21:36:17.244Z",
-      "lastSeenAt": "2026-10-20T11:03:56.712Z"
-    },
-    {
-      "outletId": "omahamagazine",
-      "reason": "name-unresolved",
-      "domainHint": "omahamagazine.com",
-      "reviewCount": 1,
-      "exampleShowId": "the-notebook-tour-2025",
-      "firstSeenAt": "2026-10-20T10:34:18.616Z",
-      "lastSeenAt": "2026-10-20T11:03:56.712Z",
-      "mastheadName": "Omaha Magazine"
-    },
-    {
-      "outletId": "pittnews",
-      "reason": "name-unresolved",
-      "domainHint": "pittnews.com",
-      "reviewCount": 1,
-      "exampleShowId": "wicked-tour-2021",
-      "firstSeenAt": "2026-10-20T10:34:18.616Z",
-      "lastSeenAt": "2026-10-20T11:03:56.712Z",
-      "mastheadName": "The Pitt News"
+      "lastSeenAt": "2026-10-20T11:51:11.035Z"
     }
   ]
 }
