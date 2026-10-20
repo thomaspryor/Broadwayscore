@@ -58,7 +58,7 @@ jobs:
     # confirm against the first few real runs' logged durations and adjust
     # (see BRO-2706 for the measured-cost-model precedent this should follow
     # if 20 turns out to be wrong in either direction).
-    timeout-minutes: 40 # BRO-5788: 30->40, real runs reached the live-data step at 29m10s (Deepen 13m + monitor 6.5m), leaving no room for routing; BRO-5729: +verify-contamination-gate (2 audit runs, up to 600s each) in the live-data step
+    timeout-minutes: 60 # BRO-5788: 30->60 (reached live-data at 29m + 22m step cap + 8m routing/commit), real runs reached the live-data step at 29m10s (Deepen 13m + monitor 6.5m), leaving no room for routing; BRO-5729: +verify-contamination-gate (2 audit runs, up to 600s each) in the live-data step
 
     steps:
       - name: Checkout repository

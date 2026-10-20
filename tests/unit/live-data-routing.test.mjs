@@ -54,3 +54,8 @@ test('truncated TAP (no summary) resolves nothing; long keys stay distinct', () 
   assert.notEqual(a, b);
   assert.ok(a.length <= 200);
 });
+test('open keys of a file that failed this run are not resolved', () => {
+  const p = parseTapOutput(TAP, '/r');
+  const plan = planLiveDataRouting(p.failures, [conditionKeyFor('tests/unit/a.test.mjs::renamed test')], p, 1);
+  assert.deepEqual(plan.resolve, []);
+});

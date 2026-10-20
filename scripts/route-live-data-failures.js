@@ -15,8 +15,9 @@ async function main() {
   const exitCode = Number(arg('exit') || 0);
   let tap = '';
   try { tap = fs.readFileSync(tapPath, 'utf8'); } catch (e) {
-    console.error(`::warning::[live-data-routing] cannot read TAP file "${tapPath}": ${e.message}; nothing routed or resolved.`);
-    return;
+    console.error(`::warning::[live-data-routing] cannot read TAP file "${tapPath}": ${e.message}; nothing resolved.`);
+    if (exitCode === 0) return;
+    tap = ''; // non-zero exit with no results file: route run-crashed below
   }
   const parsed = parseTapOutput(tap, path.resolve('.'));
   let router;

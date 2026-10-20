@@ -9,6 +9,8 @@
 const KEY_PREFIX = 'live-data-test:';
 const MAX_KEY_LEN = 200;
 
+function fileOfKey(k) { return String(k).slice(KEY_PREFIX.length).split('::')[0]; }
+
 function conditionKeyFor(failureKey) {
   const k = `${KEY_PREFIX}${failureKey}`.replace(/\s+/g, ' ');
   if (k.length <= MAX_KEY_LEN) return k;
@@ -38,13 +40,16 @@ function planLiveDataRouting(failures, openKeys, parsed, exitCode) {
       conditionKey,
       title: `Live-data test failing: ${f.name} (${f.file})`,
       description: `check-corpus-drift.yml "Live-data assertions" step: node:test "${f.name}" in ${f.file} is red against the live corpus.\n\n${String(f.payload || '(no assertion payload captured)').slice(0, 1500)}`,
-      hint: `Run: node --test ${f.file}`,
+      hint: f.file === '?' ? 'Open the latest Check Corpus Drift run, "Live-data assertions" step.' : `Run: node --test ${f.file}`,
       disposition: 'digest',
       cooldownHours: 24,
     });
   }
   // The run died before producing a verdict (non-zero exit, no failing leaf):
   // route that as its own condition rather than resolving anything.
+  // A file that failed this run (load error, renamed test) has not shown its old
+  // tests green, so its other open keys wait for a clean run of that file.
+  const failedFiles = new Set(route.map((r) => fileOfKey(r.conditionKey)));
   const ranToVerdict = parsed.sawTap && parsed.totals.tests > 0 && parsed.totals.fail !== null; // summary lines present = TAP not truncated
   if (exitCode !== 0 && route.length === 0) {
     const conditionKey = `${KEY_PREFIX}run-crashed`;
@@ -60,7 +65,7 @@ function planLiveDataRouting(failures, openKeys, parsed, exitCode) {
   }
   // Resolve only on a run that reached a verdict; a crashed run proves nothing.
   const resolve = ranToVerdict
-    ? openKeys.filter((k) => k.startsWith(KEY_PREFIX) && !seen.has(k))
+    ? openKeys.filter((k) => k.startsWith(KEY_PREFIX) && !seen.has(k) && !failedFiles.has(fileOfKey(k)))
     : [];
   return { route, resolve };
 }
