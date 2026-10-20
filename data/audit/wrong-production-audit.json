@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-20T20:25:51.754Z",
+  "timestamp": "2026-10-20T21:21:48.252Z",
   "stats": {
-    "totalReviews": 57972,
+    "totalReviews": 57979,
     "alreadyFlagged": 21109,
     "dateGuardCatches": 198,
-    "directorMismatch": 2027,
+    "directorMismatch": 2028,
     "tvFilmSignals": 1652,
     "londonSignals": 2567,
     "offBroadwaySignals": 531,
     "yearMismatch": 161,
-    "noPublishDate": 5231
+    "noPublishDate": 5230
   },
   "findings": [
     {
@@ -34629,6 +34629,19 @@
       ]
     },
     {
+      "showId": "school-pictures-off-broadway-2026",
+      "file": "nytimes--helen-shaw.json",
+      "publishDate": "2026-10-20",
+      "url": "https://www.nytimes.com/2026/10/20/theater/school-pictures-two-girls-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"morgan green\" from school-pictures-off-broadway-2023"
+        }
+      ]
+    },
+    {
       "showId": "scorched-earth-off-broadway-2026",
       "file": "theatermania--kenji-fujishima.json",
       "score": 71,
@@ -55838,7 +55851,7 @@
     },
     {
       "showId": "angels-bone-west-end-2026",
-      "file": "theupcoming--unknown.json",
+      "file": "theupcoming--chloe-vilarrubi.json",
       "score": 63,
       "publishDate": "2026-10-17",
       "url": "https://www.theupcoming.co.uk/2026/10/17/angels-bone-at-london-coliseum-theatre-review/",
@@ -90814,7 +90827,7 @@
     },
     {
       "showId": "triumph-off-west-end-2026",
-      "file": "british-theatre--unknown.json",
+      "file": "british-theatre--keith-mckenna.json",
       "publishDate": "2026-10-20",
       "url": "https://www.britishtheatreguide.info/reviews/triumph-almeida-theatre-26141",
       "findings": [
@@ -91050,7 +91063,7 @@
     },
     {
       "showId": "twilight-los-angeles-1992-1994",
-      "file": "nytg--unknown.json",
+      "file": "nytg--naveen-kumar.json",
       "score": 75,
       "publishDate": null,
       "url": "https://www.newyorktheatreguide.com/reviews/anna-deavere-smith-twilight-los-angeles-1992-signature-theatre-review",
@@ -91189,7 +91202,7 @@
     },
     {
       "showId": "under-the-shadow-off-west-end-2026",
-      "file": "guardian--unknown.json",
+      "file": "guardian--ryan-gilbey.json",
       "score": 82,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2026/jun/10/under-the-shadow-review-leila-farzad-tehran-almeida-theatre",
