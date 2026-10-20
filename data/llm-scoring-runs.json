@@ -1,57 +1,5 @@
 [
   {
-    "startedAt": "2026-10-18T23:18:10.065Z",
-    "completedAt": "2026-10-18T23:18:10.067Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "39175685940",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-19T00:25:40.534Z",
-    "completedAt": "2026-10-19T00:28:28.102Z",
-    "totalReviews": 57650,
-    "processed": 17,
-    "skipped": 57630,
-    "errors": 3,
-    "tokensUsed": {
-      "input": 73824,
-      "output": 4936,
-      "cacheRead": 22266,
-      "cacheWrite": 40740,
-      "total": 211610
-    },
-    "costUsd": 0.21970190000000003,
-    "runId": "39180267117",
-    "errorDetails": [
-      {
-        "showId": "the-sound-of-music-tour-2025",
-        "outletId": "the-daily-texan",
-        "error": "input_validation_failed:nav_chrome_majority"
-      },
-      {
-        "showId": "an-enemy-of-the-people-west-end-2024",
-        "outletId": "times-uk",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "the-years-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-10-19T00:28:42.630Z",
     "completedAt": "2026-10-19T00:29:42.038Z",
     "totalReviews": 27,
@@ -613699,6 +613647,53 @@
     },
     "costUsd": 0,
     "runId": "39427932460",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-20T15:17:53.062Z",
+    "completedAt": "2026-10-20T15:21:50.373Z",
+    "totalReviews": 58031,
+    "processed": 22,
+    "skipped": 58003,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 138514,
+      "output": 7309,
+      "cacheRead": 33622,
+      "cacheWrite": 63411,
+      "total": 362363
+    },
+    "costUsd": 0.37372657499999995,
+    "runId": "39446364526",
+    "errorDetails": [
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "the-years-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-20T15:22:04.891Z",
+    "completedAt": "2026-10-20T15:22:34.401Z",
+    "totalReviews": 12,
+    "processed": 12,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 22032,
+      "output": 2656,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 24688
+    },
+    "costUsd": 0.06861199999999999,
+    "runId": "39446364526",
     "errorDetails": []
   }
 ]
