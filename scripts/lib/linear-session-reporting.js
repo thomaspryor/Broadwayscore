@@ -337,8 +337,19 @@ function isSessionSpecificRef(ref) {
   return !String(ref).startsWith('a session on ');
 }
 
-function buildClaimComment({ sessionRef, ts }) {
-  return `Claimed by ${sessionRef} at ${ts}`;
+// BRO-5730: the model that works the card, so the cloud can count its 24h Opus cap (it has no
+// dispatch ledger) and the board can see which model did the work.
+const WORKER_MODELS = ['sonnet', 'opus', 'codex'];
+const WORKER_MODEL_RE = /^Worker model: (sonnet|opus|codex)\b/m;
+
+function buildClaimComment({ sessionRef, ts, workerModel = null }) {
+  return `Claimed by ${sessionRef} at ${ts}${WORKER_MODELS.includes(workerModel) ? `\nWorker model: ${workerModel}` : ''}`;
+}
+
+/** 'sonnet' | 'opus' | 'codex' from a claim comment's "Worker model:" line, else null. */
+function parseWorkerModel(body) {
+  const m = String(body || '').match(WORKER_MODEL_RE);
+  return m ? m[1] : null;
 }
 
 /** The newest claim or dispatch comment on the issue, or null. */
@@ -352,6 +363,8 @@ function latestHolderComment(issue) {
 module.exports = {
   claimSessionRef,
   buildClaimComment,
+  parseWorkerModel,
+  WORKER_MODELS,
   isSessionSpecificRef,
   latestHolderComment,
   CLAIM_STATE_NAME,

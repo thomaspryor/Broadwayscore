@@ -18,6 +18,8 @@ const {
   planCompletion,
   hasBypass,
   evaluateSessionClose,
+  buildClaimComment,
+  parseWorkerModel,
 } = require('./linear-session-reporting.js');
 
 const STATES = [
@@ -292,4 +294,12 @@ test('evaluateSessionClose: claiming alone is NOT enough — a session that only
   // the ONLY thing checked here, not a separate claimedIssueId.
   const result = evaluateSessionClose({ trackedEditsMade: true, reportedIssueId: null, bypassText: '' });
   assert.equal(result.action, 'block');
+});
+
+test('buildClaimComment records the worker model only when it is a known one (BRO-5730)', () => {
+  const base = { sessionRef: 'cloud session x', ts: '2026-10-20T00:00:00Z' };
+  assert.equal(parseWorkerModel(buildClaimComment({ ...base, workerModel: 'opus' })), 'opus');
+  assert.equal(parseWorkerModel(buildClaimComment({ ...base, workerModel: 'codex' })), 'codex');
+  assert.equal(buildClaimComment({ ...base, workerModel: 'gpt' }), buildClaimComment(base));
+  assert.equal(parseWorkerModel(buildClaimComment(base)), null);
 });

@@ -29,7 +29,7 @@ if (hasHelpFlag(process.argv)) {
 require('./lib/load-env').loadEnv();
 
 async function main() {
-  const { modelPicker, sessionModelFor } = require('./lib/cloud-worker-pick.js');
+  const { modelPicker, sessionModelFor, fetchOpusClaimEntries } = require('./lib/cloud-worker-pick.js');
   if (process.argv.includes('--no-card')) {
     console.log(JSON.stringify({ model: sessionModelFor([]).model, modelReason: 'no card', cards: [] }, null, 2));
     return;
@@ -40,7 +40,10 @@ async function main() {
     process.exit(2);
   }
   const { getIssue } = require('./lib/linear-client.js');
-  const modelOf = modelPicker(Date.now());
+  const nowMs = Date.now();
+  // BRO-5730: count the cloud's own Opus claims against the 24h cap (null: read failed, cap reached).
+  const cloudClaims = await fetchOpusClaimEntries(nowMs).catch(() => null);
+  const modelOf = modelPicker(nowMs, { cloudClaims });
   const issues = await Promise.all(ids.map((id) => getIssue(id)));
   const cards = issues.map((issue, i) => {
     if (!issue) throw new Error(`${ids[i]} not found`);

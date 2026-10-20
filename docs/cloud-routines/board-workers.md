@@ -74,7 +74,7 @@ For each card:
    START-NOW cards, and everything once Codex stops). Cards Codex would skip
    for their pause history stay in this lane's queue (BRO-5407). A null pick then means
    nothing is left for this lane: that is the saving, not a problem.
-2. Claim: `node scripts/linear-session.js claim --issue=<pick.identifier>`. A
+2. Claim: `node scripts/linear-session.js claim --issue=<pick.identifier> --worker-model=<pick.model>`. A
    `"action": "noop"` or a failure means the Codex lane or another worker has
    it: pick again once, then stop this lane.
 3. Read the full card. If a comment starts "SAME ROOT CAUSE" and lists sibling

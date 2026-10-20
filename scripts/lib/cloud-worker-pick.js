@@ -511,22 +511,45 @@ function pickModel(issue, { nowMs = Date.now(), readEntries, env = process.env }
 }
 
 /**
+ * Ledger-shaped launch rows for the cloud's own Opus work (BRO-5730): one per claim comment whose
+ * "Worker model:" line says opus. The cloud has no dispatch ledger, so without these the 24h Opus
+ * cap never saw a cloud launch. comments: [{ body, createdAt, issue: { identifier } }].
+ */
+function opusClaimEntries(comments) {
+  const { parseWorkerModel } = require('./linear-session-reporting.js');
+  return (Array.isArray(comments) ? comments : [])
+    .filter((c) => c && c.issue && parseWorkerModel(c.body) === 'opus')
+    .map((c) => ({ event: 'launch', taskId: `linear:${c.issue.identifier}`, model: 'opus', ts: c.createdAt }));
+}
+
+/** -> the last 24h of "Worker model: opus" claim comments as launch rows (opusClaimEntries). */
+async function fetchOpusClaimEntries(nowMs = Date.now()) {
+  const { listRecentCommentsContaining } = require('./linear-client.js');
+  const { LINEAR_OPUS_WINDOW_MS } = require('./bsc-next-model.js');
+  const comments = await listRecentCommentsContaining({ sinceIso: new Date(nowMs - LINEAR_OPUS_WINDOW_MS).toISOString(), text: 'Worker model: opus' });
+  return opusClaimEntries(comments);
+}
+
+/**
  * pickModel with the dispatch ledger read once per run. The ledger is the Mac's
- * (gitignored); in a cloud container it is absent and reads as [], so the 24h
- * Opus cap sees no launches. The reason says so rather than implying a check.
+ * (gitignored); in a cloud container it is absent and reads as [].
+ * cloudClaims: fetchOpusClaimEntries() rows, so the 24h Opus cap also counts cloud
+ * Opus claims; null when that read failed, which counts the cap as reached (Sonnet),
+ * as a failed ledger read does on the Mac; undefined (not fetched) leaves the old note.
  * Shared by scripts/cloud-worker-pick.js and scripts/session-model.js.
  */
-function modelPicker(nowMs = Date.now()) {
+function modelPicker(nowMs = Date.now(), { cloudClaims } = {}) {
   const ledger = require('./dispatch-ledger.js');
   const ledgerMissing = !require('fs').existsSync(ledger.LEDGER_PATH);
   let entries;
   const readEntries = () => {
-    if (entries === undefined) entries = ledger.readEntries();
+    if (cloudClaims === null) throw new Error('cloud Opus claims could not be read');
+    if (entries === undefined) entries = [...ledger.readEntries(), ...(cloudClaims || [])];
     return entries;
   };
   return (issue) => {
     const m = pickModel(issue, { nowMs, readEntries });
-    return ledgerMissing && m.model === 'opus' ? { ...m, reason: `${m.reason} (no dispatch ledger here: the 24h Opus cap counts Mac launches only)` } : m;
+    return ledgerMissing && cloudClaims === undefined && m.model === 'opus' ? { ...m, reason: `${m.reason} (no dispatch ledger here: the 24h Opus cap counts Mac launches only)` } : m;
   };
 }
 
@@ -698,6 +721,6 @@ module.exports = {
   leaveCodexCards,
   IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS, RECENT_PAUSE_MS, RECENT_PAUSE_URGENT_MS, MAX_PAUSES, AWAITING_OWNER_MAX_MS, isPausedBacklog,
   AUTOMATION_PARK_STALE_MS, hasPersonParkHold, isFallbackTechnicalPark, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, historySkipReason, landRefCardNumber, resumableCardsByNumber,
-  P2_PRIORITY, TIER_P0P1, TIER_P2, isP2FallbackCandidate, P3_PRIORITY, TIER_P3, isP3FallbackCandidate, buildPickQueue, needsComments, pickModel, modelPicker, sessionModelFor, cloudPriorAttempts, mayTakeUnchecked,
+  P2_PRIORITY, TIER_P0P1, TIER_P2, isP2FallbackCandidate, P3_PRIORITY, TIER_P3, isP3FallbackCandidate, buildPickQueue, needsComments, pickModel, modelPicker, opusClaimEntries, fetchOpusClaimEntries, sessionModelFor, cloudPriorAttempts, mayTakeUnchecked,
   findResumeCandidates, findResumeCard, headlessUnfitReason, AWAITING_OWNER_RE, FALLBACK_PARK_DENY_RE,
 };

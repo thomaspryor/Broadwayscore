@@ -693,7 +693,7 @@ async function workCard(pick, stats, inFlight) {
   if (!takeCardInRun(id)) { log(`${id}: another slot of this launch has it, skipped`); return 'skip'; }
 
   const claimedMs = Date.now();
-  const claim = sh('node', ['scripts/linear-session.js', 'claim', `--issue=${id}`], { timeoutMs: 900_000 });
+  const claim = sh('node', ['scripts/linear-session.js', 'claim', `--issue=${id}`, '--worker-model=codex'], { timeoutMs: 900_000 });
   const claimJson = (claim.stdout.split('\n').reverse().find((l) => l.startsWith('{')) || '{}');
   let action = null; try { action = JSON.parse(claimJson).action; } catch { /* unparseable claim output */ }
   if (claim.code !== 0 || !action || action === 'noop') { log(`${id}: claim ${action || 'failed'}, skipped`); return 'skip'; }

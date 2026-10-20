@@ -397,6 +397,26 @@ async function listIssueComments(identifiers, teamKey = TEAM_KEY) {
   return byId;
 }
 
+// Comments across the workspace created after sinceIso whose body contains `text`, newest first,
+// up to `max` (BRO-5730: the cloud's 24h Opus cap counts "Worker model: opus" claim comments).
+async function listRecentCommentsContaining({ sinceIso, text, max = 250 }) {
+  const out = [];
+  let after = null;
+  while (out.length < max) {
+    const data = await graphql(`query($since: DateTimeOrDuration!, $text: String!, $after: String) {
+      comments(first: 100, after: $after, orderBy: createdAt, filter: { createdAt: { gt: $since }, body: { contains: $text } }) {
+        nodes { body createdAt issue { identifier } }
+        pageInfo { hasNextPage endCursor }
+      }
+    }`, { since: sinceIso, text, after });
+    const page = data.comments || { nodes: [], pageInfo: {} };
+    out.push(...page.nodes);
+    if (!page.pageInfo.hasNextPage) break;
+    after = page.pageInfo.endCursor;
+  }
+  return out.slice(0, max);
+}
+
 // Every dispatched issue's completion report (linear-dispatch.js:195) hits
 // createComment + updateIssue on an id that may have been archived out from
 // under it — either a race with the cap-management archival (BRO-285) or a
@@ -739,6 +759,7 @@ module.exports = {
   listOpenIssuesWithDescriptions,
   listIssuesByProvenance,
   listIssueComments,
+  listRecentCommentsContaining,
   searchIssues,
   createComment,
   createIssueRelation,

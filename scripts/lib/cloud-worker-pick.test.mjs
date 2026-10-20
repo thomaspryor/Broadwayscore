@@ -930,3 +930,26 @@ test('a card whose newest RECHECK-AFTER date is ahead waits for the recheck (BRO
   // From midnight UTC of the stamped day the card is pickable.
   assert.equal(pausedHistorySkipReason([report('paused', `RECHECK-AFTER: ${day(NOW)}`, 8 * RECENT_PAUSE_MS)], NOW), null);
 });
+
+test('opusClaimEntries: only "Worker model: opus" claim comments become Opus launch rows (BRO-5730)', () => {
+  const { opusClaimEntries } = require('./cloud-worker-pick.js');
+  const rows = opusClaimEntries([
+    { body: 'Claimed by cloud session x\nWorker model: opus', createdAt: FRESH, issue: { identifier: 'BRO-7' } },
+    { body: 'Claimed by cloud session y\nWorker model: sonnet', createdAt: FRESH, issue: { identifier: 'BRO-8' } },
+    { body: 'quoting Worker model: opus mid-line', createdAt: FRESH, issue: { identifier: 'BRO-9' } },
+    { body: 'Worker model: opus', createdAt: FRESH, issue: null },
+  ]);
+  assert.deepEqual(rows, [{ event: 'launch', taskId: 'linear:BRO-7', model: 'opus', ts: FRESH }]);
+  assert.deepEqual(opusClaimEntries(null), []);
+});
+
+test('modelPicker: cloud Opus claims count toward the 24h cap; an unreadable count picks Sonnet (BRO-5730)', () => {
+  const { modelPicker } = require('./cloud-worker-pick.js');
+  const opusCard = issue({ identifier: 'BRO-555', priority: 2, description: `${BODY}\n\nModel: Opus` });
+  const claims = Array.from({ length: 6 }, (_, i) => ({ event: 'launch', taskId: `linear:BRO-${900 + i}`, model: 'opus', ts: new Date(NOW - 3600_000).toISOString() }));
+  const capped = modelPicker(NOW, { cloudClaims: claims })(opusCard);
+  assert.equal(capped.model, 'sonnet');
+  assert.match(capped.reason, /Model: opus on the card, but/);
+  assert.equal(modelPicker(NOW, { cloudClaims: null })(opusCard).model, 'sonnet');
+  assert.doesNotMatch(modelPicker(NOW, { cloudClaims: [] })(opusCard).reason, /counts Mac launches only/);
+});

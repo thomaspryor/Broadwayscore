@@ -55,7 +55,7 @@ const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
 const { checkIssueStaleness, newestComments } = require('./lib/linear-staleness-check');
 
 const USAGE = `Usage:
-  node scripts/linear-session.js claim --issue=BRO-123
+  node scripts/linear-session.js claim --issue=BRO-123 [--worker-model=sonnet|opus|codex]
   node scripts/linear-session.js claim --title="..." --description="..." [--priority=2] [--project="Name"] [--new-anyway="<reason ≥10 chars>"]
     (a --title claim that repeats an open card is refused with "already open: BRO-N";
      claim that card instead, or pass --new-anyway with why this is different work)
@@ -138,6 +138,10 @@ async function cmdClaim(args) {
   } else {
     throw new Error(`claim requires --issue=BRO-N or --title="..."\n\n${USAGE}`);
   }
+
+  // BRO-5730: --worker-model=sonnet|opus|codex adds a "Worker model:" line to the claim comment.
+  const workerModel = typeof args['worker-model'] === 'string' ? args['worker-model'].toLowerCase() : null;
+  if (workerModel && !lsr.WORKER_MODELS.includes(workerModel)) throw new Error(`--worker-model must be one of ${lsr.WORKER_MODELS.join('|')}`);
 
   const plan = lsr.planClaim({
     issue,
@@ -222,7 +226,7 @@ async function cmdClaim(args) {
   }
   // BRO-5626: leave a trace on the card so the next claimer sees who holds it. Never fails the claim.
   if (plan.action !== 'noop') try {
-    await linear.createComment(result.id, lsr.buildClaimComment({ sessionRef: lsr.claimSessionRef(), ts: new Date().toISOString() }));
+    await linear.createComment(result.id, lsr.buildClaimComment({ sessionRef: lsr.claimSessionRef(), ts: new Date().toISOString(), workerModel }));
   } catch (e) {
     console.error(`[linear-session] WARN could not post the claim comment: ${e.message}`);
   }

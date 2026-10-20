@@ -252,6 +252,6 @@ function stampModelHint(description, model) {
 
 module.exports = {
   QUEUE_PATH, MODEL_HINT_RE, SHORT_ALIAS, explicitModelHint, triageSizeFor, modelForSize, resolveModel,
-  LINEAR_OPUS_DAILY_CAP_DEFAULT, linearOpusDailyCap, countRecentLinearOpusLaunches, countPriorLaunches, linearEscalationModel, countPriorDispatches, pickLinearModel,
+  LINEAR_OPUS_DAILY_CAP_DEFAULT, LINEAR_OPUS_WINDOW_MS, linearOpusDailyCap, countRecentLinearOpusLaunches, countPriorLaunches, linearEscalationModel, countPriorDispatches, pickLinearModel,
   FILING_MODELS, stampModelHint,
 };
