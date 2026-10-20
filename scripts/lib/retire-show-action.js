@@ -33,7 +33,7 @@
 const ID_RE = /^[a-z0-9][a-z0-9-]*$/;
 const { normalizeVenueName } = require('./venue-classification');
 const { normalizeTitle } = require('./title-match');
-const { isStrictTitleSubset } = require('./show-duplicate-detection');
+const { isStrictTitleSubset, findSharedTicketIdentityDupes } = require('./show-duplicate-detection');
 
 // Same building: normalized names equal, or one is the other plus only a
 // generic building/room word ("Barbican" / "Barbican Centre"). Never a
@@ -57,11 +57,19 @@ function isoOrNull(v) {
 // The duplicate's run sits inside the kept row's run: it starts no earlier
 // than the kept run and the kept run has not closed before it starts. A
 // later revival or return run at the same house fails this.
-function sameRun(kept, row) {
+function sameRun(kept, row, ticketDup) {
   const keptStart = isoOrNull(kept.previewsStartDate) || isoOrNull(kept.openingDate);
   const keptEnd = isoOrNull(kept.closingDate);
   const rowStart = isoOrNull(row.previewsStartDate) || isoOrNull(row.openingDate);
   const rowEnd = isoOrNull(row.closingDate);
+  // BRO-5797: an undated stub that resolves to the kept row's ticketing listing
+  // (the daily shared-ticket-identity audit's pair) has no run of its own to
+  // compare; it is inside the kept run when it does not outlast it.
+  // Guards: both runs still live, the stub states a closing date, and it is not an announced return run.
+  if (!rowStart && ticketDup && keptStart) {
+    if (kept.status === 'closed' || row.status === 'closed' || row.status === 'announced' || row.status === 'upcoming') return false;
+    return !!(keptEnd && rowEnd && rowEnd <= keptEnd);
+  }
   if (!keptStart || !rowStart) return false;
   if (rowStart < keptStart) return false;
   if (keptEnd && rowStart > keptEnd) return false;
@@ -81,10 +89,13 @@ function duplicateRefusal(row, duplicateOf, shows, reviewCount) {
   if (typeof duplicateOf !== 'string' || !ID_RE.test(duplicateOf) || duplicateOf === row.id) return 'duplicateOf must name another show id';
   const kept = shows.find(s => s && s.id === duplicateOf);
   if (!kept) return `duplicateOf "${duplicateOf}" is not in shows.json`;
-  if (normalizeTitle(kept.title) !== normalizeTitle(row.title) && !isStrictTitleSubset(kept, row)) return `title "${row.title}" does not match "${kept.title}"`;
+  // A shared ticketing listing with agreeing titles ("AMAZE" vs "AMAZE Magic") is the
+  // audit's own proof of one production, so a single-word prefix title is accepted too.
+  const ticketDup = findSharedTicketIdentityDupes([kept, row]).length > 0;
+  if (normalizeTitle(kept.title) !== normalizeTitle(row.title) && !isStrictTitleSubset(kept, row) && !ticketDup) return `title "${row.title}" does not match "${kept.title}"`;
   if (!sameHouse(kept.venue, row.venue)) return `venue "${row.venue}" is not the same house as "${kept.venue}"`;
   if ((kept.market || null) !== (row.market || null)) return `market ${row.market} differs from ${kept.market}`;
-  if (!sameRun(kept, row)) return `run dates do not fall inside ${duplicateOf}'s run (a revival or return run is not a duplicate)`;
+  if (!sameRun(kept, row, ticketDup)) return `run dates do not fall inside ${duplicateOf}'s run (a revival or return run is not a duplicate)`;
   if (typeof reviewCount !== 'function') return 'review count unavailable';
   const n = reviewCount(row.id);
   if (n !== 0) return `${row.id} has ${n} review(s): move them before retiring`;
@@ -152,6 +163,13 @@ function applyRetireShow(shows, action, { retire, now, reviewCount, isRetired } 
     return { ok: false, reason: `retire-show ${a.id}: ${e.message}` };
   }
   shows.splice(idx, 1);
+  // A merged duplicate keeps its old URLs reachable: build-slug-redirects.js turns the
+  // kept row's `aliases` into permanent redirects to its slug (BRO-5797).
+  if (a.duplicateOf !== undefined) {
+    const kept = shows.find(s => s && s.id === a.duplicateOf);
+    const add = [row.id, row.slug].filter(x => x && x !== kept.id && x !== kept.slug);
+    if (add.length) kept.aliases = [...new Set([...(Array.isArray(kept.aliases) ? kept.aliases : []), ...add])];
+  }
   return { ok: true, msg: `retired ${a.id} ("${row.title}" @ ${row.venue})${a.blockTitleVenue ? ' — title+venue blocked' : ''}` };
 }
 

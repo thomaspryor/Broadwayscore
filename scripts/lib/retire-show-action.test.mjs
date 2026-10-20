@@ -191,3 +191,36 @@ test('reMinted with blockTitleVenue is refused: a re-minted row needs no new tit
   assert.match(r.reason, /blockTitleVenue/);
   assert.equal(shows.length, 1);
 });
+
+test('duplicateOf: an undated stub sharing the kept row\'s ticket listing retires and its old slug/id become aliases (BRO-5797)', () => {
+  const { retire } = scratch();
+  const tt = 'https://www.todaytix.com/nyc/shows/44453-amaze-magic';
+  const kept = { id: 'amaze-magic-off-broadway-2025', slug: 'amaze-magic-off-broadway', title: 'AMAZE Magic', venue: 'New World Stages', market: 'broadway', openingDate: '2025-08-13', previewsStartDate: '2025-07-20', closingDate: '2027-01-31', todaytixId: 44453, ticketLinks: [{ platform: 'TodayTix', url: tt }] };
+  const stub = { id: 'amaze-off-broadway-2026', slug: 'amaze-off-broadway', title: 'AMAZE', venue: 'New World Stages', market: 'broadway', openingDate: null, previewsStartDate: null, closingDate: '2027-01-31', ticketLinks: [{ platform: 'TodayTix', url: tt }] };
+  const action = { id: stub.id, expectTitle: 'AMAZE', reason: 'duplicate stub', duplicateOf: kept.id };
+  const none = () => 0;
+  // No shared listing: an undated single-word title is still refused.
+  const noTicket = [{ ...kept }, { ...stub, ticketLinks: [] }];
+  assert.equal(applyRetireShow(noTicket, action, { retire, reviewCount: none }).ok, false);
+  // A recycled listing id under an unrelated title is not a duplicate.
+  const recycled = [{ ...kept }, { ...stub, title: 'Something Else' }];
+  assert.match(applyRetireShow(recycled, { ...action, expectTitle: 'Something Else' }, { retire, reviewCount: none }).reason, /does not match/);
+  // An undated stub with no closing date, a closed kept run, or an announced stub is not proven the same run.
+  for (const [k, st] of [[{}, { closingDate: null }], [{ status: 'closed' }, {}], [{}, { status: 'announced' }]]) {
+    const sh = [{ ...kept, ...k }, { ...stub, ...st }];
+    assert.equal(applyRetireShow(sh, action, { retire, reviewCount: none }).ok, false);
+    assert.equal(sh.length, 2);
+    assert.equal(sh[0].aliases, undefined);
+  }
+  // Stub outlasting the kept run is a different run.
+  const longer = [{ ...kept }, { ...stub, closingDate: '2027-06-01' }];
+  assert.match(applyRetireShow(longer, action, { retire, reviewCount: none }).reason, /revival or return run/);
+  const shows = [{ ...kept }, { ...stub }];
+  const r = applyRetireShow(shows, action, { retire, reviewCount: none });
+  assert.equal(r.ok, true, r.reason);
+  assert.deepEqual(shows.map(s => s.id), [kept.id]);
+  assert.deepEqual(shows[0].aliases, ['amaze-off-broadway-2026', 'amaze-off-broadway']);
+  const withAlias = [{ ...kept, aliases: ['old-slug'] }, { ...stub }];
+  assert.equal(applyRetireShow(withAlias, action, { retire: scratch().retire, reviewCount: none }).ok, true);
+  assert.deepEqual(withAlias[0].aliases, ['old-slug', 'amaze-off-broadway-2026', 'amaze-off-broadway']);
+});
