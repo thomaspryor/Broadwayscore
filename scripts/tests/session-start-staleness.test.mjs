@@ -222,6 +222,7 @@ test('session-start.sh (global ~/.claude copy) carries the same wiring — local
 
 const {
   trySyncCodeCheckout,
+  reconcileInterruptedFastForward,
   formatCodeCheckoutSyncMessage,
   registeredHookScripts,
 } = require('../lib/code-checkout-staleness.js');
@@ -379,6 +380,36 @@ test('trySyncCodeCheckout: a torn tree plus a genuine edit still refuses, keeps 
   assert.match(s.reason, /uncommitted changes/);
   assert.equal(fs.readFileSync(path.join(cloneDir, 'a.txt'), 'utf8'), 'my own edit');
   assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), head);
+  // A refused sync changes nothing: the torn-but-matching files are left exactly as they were.
+  assert.equal(fs.readFileSync(path.join(cloneDir, '[ab].txt'), 'utf8'), 'bracket2');
+  assert.equal(fs.readFileSync(path.join(cloneDir, 'sub/new.txt'), 'utf8'), 'new');
+}));
+
+test('trySyncCodeCheckout: a merge killed after it wrote the index (new file staged as an add) is healed (BRO-5784)', () => withTrio((trio) => {
+  const { cloneDir } = trio;
+  const { tear } = halfWrittenScenario(trio);
+  tear(tearAll);
+  git(cloneDir, ['add', 'sub/new.txt']); // index written, HEAD not moved
+  const s = staleThenSync(cloneDir);
+  assert.equal(s.synced, true, s.reason);
+  assert.equal(git(cloneDir, ['status', '--porcelain']), '');
+}));
+
+test('reconcileInterruptedFastForward: bytes are compared raw, so a CRLF copy of origin/main\'s file is not debris (BRO-5784)', () => withTrio((trio) => {
+  const { cloneDir } = trio;
+  const { tear } = halfWrittenScenario(trio);
+  git(cloneDir, ['config', 'core.autocrlf', 'true']);
+  tear({ 'sub/new.txt': 'new\r\n' });
+  const r = reconcileInterruptedFastForward({ repoDir: cloneDir });
+  assert.equal(r.removed, 0);
+  assert.equal(fs.readFileSync(path.join(cloneDir, 'sub/new.txt'), 'utf8'), 'new\r\n');
+}));
+
+test('reconcileInterruptedFastForward: reports a git failure instead of claiming success (BRO-5784)', () => withTrio((trio) => {
+  const { cloneDir } = trio;
+  halfWrittenScenario(trio);
+  const r = reconcileInterruptedFastForward({ repoDir: cloneDir, execFn: () => { throw new Error('boom'); } });
+  assert.equal(r.error, 'boom');
 }));
 
 test('trySyncCodeCheckout: an untracked file that differs from origin/main is never removed (BRO-5784)', () => withTrio((trio) => {

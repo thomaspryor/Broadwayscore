@@ -172,48 +172,78 @@ function registeredHookScripts(settingsText) {
 
 /**
  * Undo the debris of a fast-forward that was killed part-way (BRO-5784). `git merge --ff-only` writes the new
- * files into the working tree BEFORE it moves HEAD/index, so a kill mid-checkout leaves hundreds of tracked
- * files modified (they already hold origin/main's bytes) plus untracked files that are really origin/main's
- * new files, and every later sync refused on "uncommitted changes". Only files whose bytes are IDENTICAL to
- * origin/main's version are touched: tracked ones are put back to HEAD's version, untracked ones are removed
- * (the merge rewrites both). Anything that differs from origin/main stays exactly as it is.
- * Literal pathspecs: 53 tracked paths contain `[slug]`, which is a glob otherwise.
- * Returns {reverted, removed} or {error}; never throws.
+ * files into the working tree (and index) BEFORE it moves HEAD, so a kill mid-checkout leaves hundreds of tracked
+ * files modified (they already hold origin/main's bytes) plus untracked files that are really origin/main's new
+ * files, and every later sync refused on "uncommitted changes".
+ *
+ * Plan first, apply second: a file counts as debris only when its raw bytes (no clean filters) equal origin/main's
+ * blob, or it is absent on both sides. The plan is applied only when EVERY dirty tracked path (except those
+ * `ignore` waves through) is debris; otherwise nothing at all is touched, so a refused sync still changes nothing.
+ * Applying puts tracked debris back to HEAD's version (or drops it from the index if HEAD lacks it) and removes
+ * untracked debris; the merge rewrites both. Literal pathspecs: 53 tracked paths contain `[slug]`, a glob otherwise.
+ * Returns {reverted, removed}, {skipped, unmatched} (nothing touched) or {error}; never throws.
  */
-function reconcileInterruptedFastForward({ repoDir, execFn = execFileSync, timeoutMs = SYNC_TIMEOUT_MS } = {}) {
+function reconcileInterruptedFastForward({ repoDir, execFn = execFileSync, timeoutMs = SYNC_TIMEOUT_MS, ignore = () => false } = {}) {
   const fs = require('fs');
   const path = require('path');
   const z = (args, input) => String(execFn('git', ['--literal-pathspecs', '-C', repoDir, ...args], {
     encoding: 'utf8', timeout: timeoutMs, input, stdio: ['pipe', 'pipe', 'pipe'], maxBuffer: 256 * 1024 * 1024,
   }));
   const list = (out) => out.split('\0').filter(Boolean);
+  const isRegular = (p) => { try { return fs.lstatSync(path.join(repoDir, p)).isFile(); } catch { return false; } };
+  // Gone, or now a directory (a file-to-directory change; its untracked children are judged on their own bytes).
+  const goneOrDir = (p) => { try { return fs.lstatSync(path.join(repoDir, p)).isDirectory(); } catch { return true; } };
+  // Raw-byte blob ids for regular files (no clean filters, so autocrlf/eol cannot make different bytes look equal).
+  // Paths go in argv, chunked: --stdin-paths would C-unquote a path that starts with a quote.
+  const rawShas = (paths) => {
+    const out = new Map();
+    for (let i = 0; i < paths.length; i += 200) {
+      const chunk = paths.slice(i, i + 200);
+      const shas = z(['hash-object', '--no-filters', '--', ...chunk]).split('\n').filter(Boolean);
+      if (shas.length !== chunk.length) throw new Error('hash-object returned a different number of ids than paths');
+      chunk.forEach((p, j) => out.set(p, shas[j]));
+    }
+    return out;
+  };
   try {
-    const dirty = list(z(['diff', '--name-only', '-z', 'HEAD']));
-    let matchedTracked = [];
-    if (dirty.length) {
-      const differs = new Set(list(z(['diff', '--name-only', '-z', REMOTE_MAIN])));
-      matchedTracked = dirty.filter((p) => !differs.has(p));
-    }
+    const dirty = list(z(['diff', '--name-only', '--no-renames', '-z', 'HEAD']));
     const untracked = list(z(['ls-files', '-o', '--exclude-standard', '-z'])).filter((p) => !/[\r\n]/.test(p));
-    let matchedUntracked = [];
-    if (untracked.length) {
-      const blobs = new Map();
-      for (const e of list(z(['ls-tree', '-r', '-z', REMOTE_MAIN]))) {
-        const m = /^\d+ blob ([0-9a-f]+)\t([\s\S]*)$/.exec(e);
-        if (m) blobs.set(m[2], m[1]);
-      }
-      const cand = untracked.filter((p) => blobs.has(p));
-      if (cand.length) {
-        const shas = z(['hash-object', '--stdin-paths'], `${cand.join('\n')}\n`).split('\n').filter(Boolean);
-        matchedUntracked = cand.filter((p, i) => shas[i] === blobs.get(p));
-      }
+    if (!dirty.length && !untracked.length) return { reverted: 0, removed: 0 };
+
+    const remote = new Map(); // path -> blob id, regular files only (symlinks and submodules never match)
+    for (const e of list(z(['ls-tree', '-r', '-z', REMOTE_MAIN]))) {
+      const m = /^100(?:644|755) blob ([0-9a-f]+)\t([\s\S]*)$/.exec(e);
+      if (m) remote.set(m[2], m[1]);
     }
+    const matches = (paths) => {
+      const need = paths.filter((p) => remote.has(p) && isRegular(p));
+      const shas = rawShas(need);
+      return paths.filter((p) => (remote.has(p) ? shas.get(p) === remote.get(p) : goneOrDir(p)));
+    };
+
+    const matchedTracked = new Set(matches(dirty));
+    const unmatched = dirty.filter((p) => !matchedTracked.has(p) && !ignore(p));
+    if (unmatched.length) return { skipped: 'dirty tracked file(s) that are not origin/main\'s bytes', unmatched: unmatched.length };
+
+    const matchedUntracked = matches(untracked.filter((p) => remote.has(p)));
+    const tracked = [...matchedTracked];
+    let notInHead = [];
+    if (tracked.length) {
+      const inHead = new Set(list(z(['ls-tree', '-r', '-z', '--name-only', 'HEAD'])));
+      notInHead = tracked.filter((p) => !inHead.has(p));
+    }
+    const dropped = new Set(notInHead);
+    const restore = tracked.filter((p) => !dropped.has(p));
+
     // Untracked first: a file-to-directory change leaves untracked x/y in the way of restoring tracked x.
     for (const p of matchedUntracked) fs.rmSync(path.join(repoDir, p), { force: true });
-    if (matchedTracked.length) {
-      z(['checkout', '-q', 'HEAD', '--pathspec-from-file=-', '--pathspec-file-nul'], `${matchedTracked.join('\0')}\0`);
+    if (restore.length) z(['checkout', '-q', 'HEAD', '--pathspec-from-file=-', '--pathspec-file-nul'], `${restore.join('\0')}\0`);
+    if (notInHead.length) {
+      // Staged as an add by the killed merge: HEAD has no version to restore, so un-stage it and drop the written copy.
+      z(['rm', '-q', '--cached', '--pathspec-from-file=-', '--pathspec-file-nul'], `${notInHead.join('\0')}\0`);
+      for (const p of notInHead) fs.rmSync(path.join(repoDir, p), { force: true });
     }
-    return { reverted: matchedTracked.length, removed: matchedUntracked.length };
+    return { reverted: tracked.length, removed: matchedUntracked.length };
   } catch (err) {
     return { error: String(err.stderr || err.message).trim().split('\n')[0] };
   }
@@ -240,19 +270,6 @@ function trySyncCodeCheckout({ repoDir, behind, ahead, execFn = execFileSync, en
   } catch {
     return no('detached HEAD');
   }
-  let healed = null;
-  try {
-    for (const marker of IN_PROGRESS_MARKERS) {
-      const p = git(['rev-parse', '--git-path', marker]);
-      if (fs.existsSync(path.isAbsolute(p) ? p : path.join(repoDir, p))) return no(`${marker} in progress`);
-    }
-    // A killed earlier fast-forward leaves origin/main's own bytes in the tree; clear those so they don't block this one.
-    healed = reconcileInterruptedFastForward({ repoDir, execFn, timeoutMs: syncTimeoutMs });
-    if (git(['status', '--porcelain', '--untracked-files=no'])) return no('uncommitted changes to tracked files');
-  } catch (err) {
-    return no(`could not read git state: ${String(err.message).split('\n')[0]}`);
-  }
-
   // Hook registration is snapshotted at session start; only script CONTENTS
   // are re-read. If main deleted a script this session still has registered,
   // its wrapper would exit 2 on every tool call after the sync.
@@ -262,6 +279,23 @@ function trySyncCodeCheckout({ repoDir, behind, ahead, execFn = execFileSync, en
     try { git(['cat-file', '-e', `${REMOTE_MAIN}:${p}`]); return false; } catch { return true; }
   });
   if (missing.length) return no(`origin/main removes registered hook script(s): ${missing.join(', ')}`);
+
+
+  let healed = null;
+  try {
+    for (const marker of IN_PROGRESS_MARKERS) {
+      const p = git(['rev-parse', '--git-path', marker]);
+      if (fs.existsSync(path.isAbsolute(p) ? p : path.join(repoDir, p))) return no(`${marker} in progress`);
+    }
+    // A killed earlier fast-forward leaves origin/main's own bytes in the tree. Cleared only when that explains EVERY
+    // dirty tracked file; otherwise nothing is touched and the refusal below changes nothing.
+    healed = reconcileInterruptedFastForward({ repoDir, execFn, timeoutMs: syncTimeoutMs });
+    if (git(['status', '--porcelain', '--untracked-files=no'])) {
+      return no(`uncommitted changes to tracked files${healed.error ? ` (clearing an interrupted sync failed: ${healed.error})` : ''}`);
+    }
+  } catch (err) {
+    return no(`could not read git state: ${String(err.message).split('\n')[0]}`);
+  }
 
   let from;
   let to;
@@ -273,8 +307,12 @@ function trySyncCodeCheckout({ repoDir, behind, ahead, execFn = execFileSync, en
     if (err && (err.killed || err.signal || err.code === 'ETIMEDOUT')) {
       // Killed mid-checkout: put the tree back to a clean state now rather than leave it half-written, and tell the
       // caller to retry with the long-budget background job (the same 20s kill would tear it again).
-      reconcileInterruptedFastForward({ repoDir, execFn, timeoutMs: syncTimeoutMs });
-      return { synced: false, timedOut: true, reason: `fast-forward timed out after ${syncTimeoutMs / 1000}s; tree rolled back` };
+      const rb = reconcileInterruptedFastForward({ repoDir, execFn, timeoutMs: syncTimeoutMs });
+      const clean = !rb.error && !rb.skipped;
+      return {
+        synced: false, timedOut: true, rolledBack: clean,
+        reason: `fast-forward timed out after ${syncTimeoutMs / 1000}s; ${clean ? 'tree rolled back' : `tree NOT fully rolled back (${rb.error || rb.skipped}); the next sync retries the cleanup`}`,
+      };
     }
     return no(`fast-forward refused: ${String(err.stderr || err.message).trim().split('\n')[0]}`);
   }
@@ -325,7 +363,10 @@ function backgroundCatchUp({ repoDir, expectHead = null, execFn = execFileSync, 
   const { behind, ahead } = getBehindAheadCounts(repoDir, REMOTE_MAIN, execFn);
   if (!(behind > 0)) return no('already current');
   if (ahead > 0) return no(`${ahead} local commit(s) not on origin/main; fast-forward only`);
-  reconcileInterruptedFastForward({ repoDir, execFn });
+  // Data files are handled by the backup below; any other dirty tracked file must be explained by origin/main or it refuses.
+  const healedBg = reconcileInterruptedFastForward({ repoDir, execFn, timeoutMs: syncTimeoutMs, ignore: (p) => p.startsWith('data/') });
+  const healedBgCount = (healedBg.reverted || 0) + (healedBg.removed || 0);
+  if (healedBg.error) log(`could not clear an interrupted sync: ${healedBg.error}`);
   let dirty;
   try {
     // Not trimmed: porcelain lines start with a space for an unstaged change.
@@ -352,6 +393,7 @@ function backgroundCatchUp({ repoDir, expectHead = null, execFn = execFileSync, 
     }
     heartbeat();
     result = trySyncCodeCheckout({ repoDir, behind, ahead, execFn, env, syncTimeoutMs });
+    if (healedBgCount) result.reconciled = (result.reconciled || 0) + healedBgCount;
     return result;
   } catch (e) {
     result = no(`catch-up failed: ${String(e.message).split('\n')[0]}`);

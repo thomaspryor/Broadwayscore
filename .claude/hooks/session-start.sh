@@ -381,17 +381,23 @@ if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } \
     const lib = require(process.argv[1]);
     const repoDir = process.argv[2];
     const cloud = process.argv[3] === "yes";
+    let bgPid = null;
     const r = lib.runCodeCheckoutStalenessCheck({ repoDir, fetchTimeoutMs: cloud ? lib.CLOUD_FETCH_TIMEOUT_MS : undefined });
     if (cloud && r.fetched === false) {
       let d = "";
       try { d = require("child_process").execFileSync("git", ["-C", repoDir, "log", "-1", "--format=%cd"], { encoding: "utf8" }).trim(); } catch {}
-      console.log(lib.formatFetchFailedMessage(repoDir, d, lib.startBackgroundSync(repoDir)));
+      bgPid = lib.startBackgroundSync(repoDir);
+      console.log(lib.formatFetchFailedMessage(repoDir, d, bgPid));
     }
-    if (cloud && r.behind > 0) {
+    // A live background catch-up owns the fast-forward; a second merge at the same time could itself tear the tree.
+    if (cloud && r.behind > 0 && !bgPid) {
       const s = lib.trySyncCodeCheckout({ repoDir, behind: r.behind, ahead: r.ahead });
       const synced = lib.formatCodeCheckoutSyncMessage(s, repoDir);
       if (synced) { console.log(synced); process.exit(0); }
-      if (s.timedOut) console.log(`   (startup fast-forward timed out; background catch-up started, pid ${lib.startBackgroundSync(repoDir)})`);
+      if (s.timedOut) {
+        const pid = lib.startBackgroundSync(repoDir);
+        console.log(pid ? `   (startup fast-forward timed out; background catch-up started, pid ${pid})` : "   (startup fast-forward timed out and the background catch-up could not be started: run git merge --ff-only origin/main by hand)");
+      }
       if (r.message) console.log(`${r.message}\n   (auto-sync skipped: ${s.reason})`);
       process.exit(0);
     }
