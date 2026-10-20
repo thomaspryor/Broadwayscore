@@ -84,6 +84,7 @@ import HeroRankLine from '@/components/show-page/HeroRankLine';
 import LimitedRunBadge from '@/components/show-page/LimitedRunBadge';
 import ShowPageAddToListButton from '@/components/user/ShowPageAddToListButton';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
+import { hasEnoughReviews } from '@/config/score-buckets';
 
 // ─── Props ───────────────────────────────────────────────────────────────
 
@@ -223,7 +224,10 @@ function Inner({
   const reviewCount = show.criticScore?.reviewCount ?? 0;
   const tier1And2Count = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
   const criticReviewsForBar = show.criticScore?.reviews ?? [];
-  const tier = score !== null ? getScoreTier(score, show.category) : null;
+  // Label only when the badge itself shows a number: the coverage floor can keep
+  // hasEnoughCriticReviews true on a count the badge calls TBD.
+  const tier = (score !== null && hasEnoughReviews(reviewCount, show.category, tier1And2Count, CURATED_HISTORICAL_SHOWS.has(show.id)))
+    ? getScoreTier(score, show.category) : null;
   const isClosed = show.status === 'closed';
   const isPreviews = show.status === 'previews' || show.status === 'upcoming';
 
