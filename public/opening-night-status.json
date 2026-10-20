@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-20T16:20:23.835Z",
+  "generatedAt": "2026-10-20T16:49:41.866Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1133,27 +1133,27 @@
       "slug": "lincoln-in-the-bardo-off-broadway",
       "thumbnail": "/images/shows/lincoln-in-the-bardo-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 80,
+      "liveScore": 60,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 1,
+      "total": 2,
       "t1": 1,
-      "t2": 0,
+      "t2": 1,
       "t3": 0,
       "positive": 1,
       "mixed": 0,
-      "negative": 0,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/12 total",
+          "2/12 total",
           "T1:1/3",
-          "T2:0/3",
-          "hi-conf:1/8"
+          "T2:1/3",
+          "hi-conf:2/8"
         ],
-        "highConfidence": 1,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1521,6 +1521,18 @@
           "m": 0,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-20T16:49:41.866Z",
+          "rc": 2,
+          "s": 60,
+          "t1": 1,
+          "t2": 1,
+          "t3": 0,
+          "p": 1,
+          "m": 0,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -1534,27 +1546,27 @@
       "status": "open",
       "slug": "copperfield-the-new-musical-off-broadway",
       "thumbnail": "/images/shows/copperfield-the-new-musical-off-broadway-2026/thumbnail.webp",
-      "siteScore": 74.67,
-      "liveScore": 75,
-      "scoreDrift": 0.3299999999999983,
+      "siteScore": 76.37,
+      "liveScore": 76,
+      "scoreDrift": -0.37000000000000455,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
+      "total": 6,
       "t1": 0,
-      "t2": 3,
-      "t3": 0,
-      "positive": 2,
-      "mixed": 1,
+      "t2": 4,
+      "t3": 2,
+      "positive": 4,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/12 total",
+          "6/12 total",
           "T1:0/3",
-          "hi-conf:3/8"
+          "hi-conf:6/8"
         ],
-        "highConfidence": 3,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1643,10 +1655,6 @@
         },
         {
           "name": "amNewYork",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Stage Review",
           "isDualMarket": false
         },
         {
@@ -1920,6 +1928,18 @@
           "t3": 0,
           "p": 2,
           "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-20T16:49:41.866Z",
+          "rc": 6,
+          "s": 76.37,
+          "t1": 0,
+          "t2": 4,
+          "t3": 2,
+          "p": 4,
+          "m": 2,
           "n": 0,
           "bc": "waiting"
         }
@@ -3156,6 +3176,10 @@
         },
         {
           "name": "The Arts Desk",
+          "isDualMarket": false
+        },
+        {
+          "name": "British Theatre Guide",
           "isDualMarket": false
         },
         {
@@ -4403,23 +4427,23 @@
       "status": "open",
       "slug": "angels-bone-west-end",
       "thumbnail": "/images/shows/angels-bone-west-end-2026/thumbnail.jpg",
-      "siteScore": 65.11,
+      "siteScore": 65.08,
       "liveScore": 65,
-      "scoreDrift": -0.10999999999999943,
+      "scoreDrift": -0.0799999999999983,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 16,
+      "total": 17,
       "t1": 6,
       "t2": 5,
-      "t3": 5,
+      "t3": 6,
       "positive": 5,
-      "mixed": 8,
+      "mixed": 9,
       "negative": 3,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 13,
+        "highConfidence": 14,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -4669,6 +4693,18 @@
           "t3": 5,
           "p": 5,
           "m": 8,
+          "n": 3,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-20T16:49:41.866Z",
+          "rc": 17,
+          "s": 65.08,
+          "t1": 6,
+          "t2": 5,
+          "t3": 6,
+          "p": 5,
+          "m": 9,
           "n": 3,
           "bc": "waiting"
         }

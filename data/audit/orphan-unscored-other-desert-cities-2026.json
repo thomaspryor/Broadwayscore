@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "other-desert-cities-2026",
   "openingDate": "2026-10-18",
-  "detectedAt": "2026-10-20T16:19:52.180Z",
+  "detectedAt": "2026-10-20T16:49:10.726Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "aussie-theatre--james-kennedy.json",
-      "outletId": "aussie-theatre",
-      "criticName": "James Kennedy",
-      "url": "https://www.aussietheatre.com.au/international/other-desert-cities-broadway-reviews-julia-louis-dreyfus/",
-      "fullTextLen": 4188,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "cbsnews--unknown.json",
       "outletId": "cbsnews",
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-20T16:20:09.452Z",
+  "timestamp": "2026-10-20T16:49:27.466Z",
   "stats": {
-    "totalReviews": 57935,
-    "alreadyFlagged": 21097,
+    "totalReviews": 57947,
+    "alreadyFlagged": 21101,
     "dateGuardCatches": 198,
     "directorMismatch": 2027,
     "tvFilmSignals": 1651,
-    "londonSignals": 2561,
+    "londonSignals": 2566,
     "offBroadwaySignals": 531,
     "yearMismatch": 161,
-    "noPublishDate": 5230
+    "noPublishDate": 5225
   },
   "findings": [
     {
@@ -53755,6 +53755,19 @@
       ]
     },
     {
+      "showId": "a-ghost-in-your-ear-off-broadway-2026",
+      "file": "seatplan--unknown.json",
+      "publishDate": null,
+      "url": "https://seatplan.com/new-york/ghost-in-your-ear-tickets/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "a-good-house-west-end-2025",
       "file": "artsdesk--aleks-sierz.json",
       "score": 64,
@@ -55805,6 +55818,20 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 156d before show (2026-05-13 vs 2026-10-16)"
+        }
+      ]
+    },
+    {
+      "showId": "angels-bone-west-end-2026",
+      "file": "theupcoming--unknown.json",
+      "score": 63,
+      "publishDate": "2026-10-17",
+      "url": "https://www.theupcoming.co.uk/2026/10/17/angels-bone-at-london-coliseum-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -68364,9 +68391,35 @@
     },
     {
       "showId": "ilford-boy-west-end-2026",
+      "file": "priceless--unknown.json",
+      "publishDate": null,
+      "url": "https://www.priceless.com/entertainment/product/242059/ilford-boy",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "ilford-boy-west-end-2026",
       "file": "theatre-weekly--unknown.json",
       "publishDate": "2026-09-24",
       "url": "https://theatreweekly.com/first-look-rehearsal-images-released-for-danny-lee-wynters-ilford-boy-at-the-donmar-warehouse/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "ilford-boy-west-end-2026",
+      "file": "theatremonkey--unknown.json",
+      "publishDate": null,
+      "url": "https://www.theatremonkey.com/show/ilford-boy/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -90722,6 +90775,19 @@
       "score": 82,
       "publishDate": "2026-10-19",
       "url": "https://www.allthatdazzles.co.uk/post/review-triumph-almeida-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "triumph-off-west-end-2026",
+      "file": "british-theatre--unknown.json",
+      "publishDate": "2026-10-20",
+      "url": "https://www.britishtheatreguide.info/reviews/triumph-almeida-theatre-26141",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
