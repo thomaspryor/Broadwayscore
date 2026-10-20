@@ -1274,5 +1274,36 @@
       }
     ],
     "queuedAt": "2026-10-20T00:34:54.056Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5732-capped-docs",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5732-capped-docs",
+    "description": "land.yml did not land land/bro-5732-capped-docs: the unit-tests-node gate went red at 89dcbc5050. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39347699337",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5732-capped-docs"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "89dcbc5050e57e8f5292d973bbae316cbdeeb641"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39347699337"
+      }
+    ],
+    "queuedAt": "2026-10-20T00:40:47.991Z"
   }
 ]
