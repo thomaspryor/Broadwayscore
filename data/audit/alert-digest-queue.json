@@ -522,6 +522,20 @@
     "queuedAt": "2026-10-20T15:58:45.169Z"
   },
   {
+    "conditionKey": "review-gap:opening-window:fish-off-broadway-2026",
+    "title": "Review gap — \"Fish\" missing 1 cited review(s)",
+    "description": "Fish (fish-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=fish-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-20T16:22:25.866Z"
+  },
+  {
     "conditionKey": "cron-health-failed:Fetch All Image Formats",
     "title": "Cron's latest run failed (not yet stale): Fetch All Image Formats",
     "description": "Fetch All Image Formats: Latest run failed (last success 20h ago). Not stale yet; fix it before it is.",
