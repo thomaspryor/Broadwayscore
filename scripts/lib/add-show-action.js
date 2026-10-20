@@ -71,15 +71,14 @@ function marketShapeProblem(shows, show) {
 
 const { findTitleFragmentDupes, findSharedTicketIdentityDupes } = require('./show-duplicate-detection');
 
-const titleWords = t => String(t || '').toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 4);
+const titleWords = t => String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 3);
 
 // The detectors are O(n^2); only rows sharing a title word or a ticket id with
 // the new row can pair with it, so test that small neighbourhood.
 function newRowDuplicate(shows, show, distinctFrom) {
   const ok = new Set(Array.isArray(distinctFrom) ? distinctFrom : []);
   const words = new Set(titleWords(show.title));
-  const tt = String(show.todaytixId || '');
-  const near = shows.filter(s => (tt && String(s.todaytixId || '') === tt) || titleWords(s.title).some(w => words.has(w)));
+  const near = shows.filter(s => titleWords(s.title).some(w => words.has(w)));
   const pool = [{ ...show }, ...near];
   const hits = [...findTitleFragmentDupes(pool), ...findSharedTicketIdentityDupes(pool)];
   for (const h of hits) {
@@ -111,7 +110,10 @@ function applyAddShow(shows, action, { isRetired } = {}) {
   // pairs only after the row shipped. Same detectors, run for the new row only.
   // An owner-confirmed distinct production lists the other id in
   // action.distinctFrom.
-  const dup = newRowDuplicate(shows, show, action.distinctFrom);
+  // A declared priorRunOf / crossLinkFrom link is an explicit statement that the
+  // other row is a related but separate run, so those ids are exempt too.
+  const declared = [].concat(action.distinctFrom || [], action.priorRunOf || [], action.crossLinkFrom || []);
+  const dup = newRowDuplicate(shows, show, declared);
   if (dup) return { ok: false, reason: `add-show: "${show.id}" duplicates existing "${dup.other}" (${dup.reason}); if it is a genuinely distinct production list "${dup.other}" in the action's distinctFrom` };
 
   let from = null;

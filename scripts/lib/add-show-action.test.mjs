@@ -158,6 +158,9 @@ test('refuses a "presents-" prefixed copy of an existing title', () => {
   assert.equal(r.ok, false);
   assert.match(r.reason, /duplicates existing "pirates-off-west-end-2027"/);
   assert.equal(applyAddShow([{ ...ex }], { show: row, distinctFrom: ['pirates-off-west-end-2027'] }).ok, true);
+  // A declared link is an explicit statement of relatedness, so it exempts the gate too.
+  assert.equal(applyAddShow([{ ...ex }], { show: row, priorRunOf: 'pirates-off-west-end-2027' }).reason?.includes('duplicates existing') ?? false, false);
+  assert.equal(applyAddShow([{ ...ex }], { show: row, crossLinkFrom: 'pirates-off-west-end-2027' }).reason?.includes('duplicates existing') ?? false, false);
 });
 test('an unrelated title is not blocked', () => {
   assert.equal(applyAddShow([{ ...existingAmaze }], { show: base() }).ok, true);
