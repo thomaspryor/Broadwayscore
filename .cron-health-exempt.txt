@@ -309,3 +309,5 @@ dependabot-auto-merge.yml
 # BRO-5679: daily Talkin Broadway index read; a missed run delays missing-review pickup by a day, nothing
 # user-facing. Failures go to the digest through notify-failure; the opening-night poller still runs.
 collect-talkinbroadway-index.yml
+# BRO-5769: weekly early/carried publish-date recheck; a missed week only leaves the early-date count (digest row from the daily audit) higher, nothing user-facing. Failures go through notify-failure.
+backfill-review-dates.yml
