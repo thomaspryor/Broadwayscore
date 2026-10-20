@@ -236,3 +236,14 @@ test('ACTIONABLE_RECONCILE_KINDS excludes known routine/success kinds', () => {
     assert.ok(!ACTIONABLE_RECONCILE_KINDS.has(k), `expected ${k} to be excluded (routine/success)`);
   }
 });
+
+// BRO-2989: the orphaned in-flight sweep's owner alert is how a dead crown
+// session reaches the owner. A kind reported by bsc-reconcile but missing from
+// the actionable set is silently dropped from the digest.
+test('every linear-orphaned-* kind bsc-reconcile reports is digest-actionable', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../bsc-reconcile.js', import.meta.url), 'utf8');
+  const kinds = [...src.matchAll(/kind: '(linear-orphaned-[a-z-]+)'/g)].map((m) => m[1]);
+  assert.ok(kinds.includes('linear-orphaned-owner-alert'), 'owner alert kind must exist');
+  for (const k of new Set(kinds)) assert.ok(ACTIONABLE_RECONCILE_KINDS.has(k), `${k} missing from ACTIONABLE_RECONCILE_KINDS`);
+});
