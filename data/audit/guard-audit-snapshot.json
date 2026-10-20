@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-19T07:52:15.506Z",
+  "generatedAt": "2026-10-20T07:37:33.228Z",
   "window": {
-    "since": "2026-10-13",
-    "until": "2026-10-19"
+    "since": "2026-10-14",
+    "until": "2026-10-20"
   },
   "bannerText": "Spend guard audit (last 7 days): 0 defect(s), 2 cap drift(s).",
   "items": [
@@ -12,7 +12,7 @@
     },
     {
       "title": "bd-circuit-breaker-web_unlocker2",
-      "detail": "ACCEPTED: 6 trip day(s); rerouted spend on trip days $0.05 (461 rows) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 2734"
+      "detail": "ACCEPTED: 6 trip day(s); rerouted spend on trip days $0.05 (416 rows) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 2787"
     },
     {
       "title": "sb-circuit-breaker",
@@ -59,17 +59,17 @@
       "verdict": "ACCEPTED",
       "days": 6,
       "dayList": [
-        "2026-10-13",
         "2026-10-14",
         "2026-10-15",
         "2026-10-16",
         "2026-10-17",
-        "2026-10-18"
+        "2026-10-18",
+        "2026-10-19"
       ],
       "lowerBound": false,
       "spend": {
         "usd": 0.05,
-        "rows": 461,
+        "rows": 416,
         "unpriced": 0,
         "label": "bd-budget",
         "partialSince": null,
@@ -80,7 +80,7 @@
         "source": "opening-window-reserve",
         "from": "trip-row",
         "currentZero": false,
-        "median14d": 2734,
+        "median14d": 2787,
         "drift": true,
         "note": null
       }
@@ -103,7 +103,7 @@
         "caveat": null
       },
       "drift": {
-        "ceiling": 31166,
+        "ceiling": 32570,
         "source": "plan+opening-window-reserve",
         "from": "state",
         "currentZero": false,
@@ -130,11 +130,11 @@
         "caveat": null
       },
       "drift": {
-        "ceiling": 257964,
+        "ceiling": 292525,
         "source": "plan",
         "from": "state",
         "currentZero": false,
-        "median14d": 54874,
+        "median14d": 57706,
         "drift": false,
         "note": null
       }
@@ -216,6 +216,16 @@
       }
     },
     "2026-10-19": {
+      "partial": false,
+      "guards": {
+        "bd-circuit-breaker-web_unlocker2": {
+          "usd": 0.0013,
+          "rows": 13,
+          "unpriced": 0
+        }
+      }
+    },
+    "2026-10-20": {
       "partial": true,
       "guards": {}
     }
