@@ -37,8 +37,8 @@ function decodeEntities(s) {
     .replace(/&ndash;|&mdash;|&#8211;|&#8212;/g, '-')
     .replace(/&hellip;|&#8230;/g, '...')
     .replace(/&amp;/g, '&')
-    .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
-    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+    .replace(/&#x([0-9a-f]+);/gi, (m, h) => { const c = parseInt(h, 16); return c <= 0x10FFFF ? String.fromCodePoint(c) : m; })
+    .replace(/&#(\d+);/g, (m, n) => { const c = Number(n); return c <= 0x10FFFF ? String.fromCodePoint(c) : m; })
     .replace(/<[^>]+>/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
