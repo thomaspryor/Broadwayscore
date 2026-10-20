@@ -492,6 +492,18 @@ function isMidWordTruncation(excerpt, sourceTexts) {
   return false;
 }
 
+/**
+ * Write-time hard guard for a freshly extracted llmPullQuote (BRO-5789).
+ * audit-pull-quotes.js flags these classes on shipped quotes; extract-pull-quotes
+ * stored them anyway and relied on a later rebuild to drop them. Returns the
+ * audit's class name, or null when the quote may be stored.
+ */
+function llmQuoteHardRejectReason(quote, fullText) {
+  if (isInternalNote(quote)) return 'internal-note';
+  if (isMidWordTruncation(quote, fullText ? [fullText] : [])) return 'mid-word-truncation';
+  return null;
+}
+
 // ---------------------------------------------------------------------------
 // Contiguity: is the displayed quote a passage the critic actually wrote?
 //
@@ -1070,6 +1082,7 @@ const FALLBACK_ONLY_REASONS = new Set(['lowercase-fragment', 'overlong', 'sentim
 const DEFERRAL_REASON_TIER = { overlong: 1, 'non-contiguous': 2, 'sentiment-mismatch': 3, 'page-chrome': 4 };
 
 module.exports = {
+  llmQuoteHardRejectReason,
   HEDGE_OPENER_RE,
   MID_SENTENCE_PIVOT_RE,
   MIN_QUOTE_LENGTH,

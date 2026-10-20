@@ -26,7 +26,7 @@ const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { shouldRejectAsReservation, isPromoTeaser, isInServiceSection, isBadCandidateLength, MIN_QUOTE_LENGTH, MAX_QUOTE_LENGTH } = require('./lib/pull-quote-guards');
+const { shouldRejectAsReservation, isPromoTeaser, isInServiceSection, isBadCandidateLength, llmQuoteHardRejectReason, MIN_QUOTE_LENGTH, MAX_QUOTE_LENGTH } = require('./lib/pull-quote-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./lib/models');
@@ -499,6 +499,14 @@ async function processReview(entry) {
   if (!verifyInText(quote, data.fullText)) {
     stats.notInText++;
     if (VERBOSE) console.log(`  NOT IN TEXT: "${quote.slice(0, 80)}..." — ${path.basename(filePath)}`);
+    return;
+  }
+
+  // Same hard guards audit-pull-quotes.js applies to shipped quotes (BRO-5789).
+  const hardReject = llmQuoteHardRejectReason(quote, data.fullText);
+  if (hardReject) {
+    stats.hardRejected = (stats.hardRejected || 0) + 1;
+    if (VERBOSE) console.log(`  ${hardReject.toUpperCase()}: "${quote.slice(0, 80)}..." — ${path.basename(filePath)}`);
     return;
   }
 
