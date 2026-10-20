@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-20T07:05:48.097Z",
+  "generatedAt": "2026-10-20T09:04:26.553Z",
   "totalScanned": 57962,
-  "totalExcluded": 27106,
+  "totalExcluded": 27114,
   "ruleCounts": {
-    "wrongProduction": 18185,
+    "wrongProduction": 18184,
     "duplicateOf": 1945,
     "wrongShow": 1809,
-    "rejectionReason": 1012,
+    "rejectionReason": 1020,
     "unverifiableWebSearchRow": 957,
-    "noTextOrScoreSignal": 608,
+    "noTextOrScoreSignal": 609,
     "nonReview": 536,
     "wrongAttribution": 312,
     "isRoundupArticle": 226,
@@ -41,19 +41,20 @@
     "personalRepost": 1
   },
   "ruleDeltas": {
-    "wrongProduction": 3,
-    "rejectionReason": 1
+    "wrongProduction": -1,
+    "rejectionReason": 8,
+    "noTextOrScoreSignal": 1
   },
-  "previousGeneratedAt": "2026-10-20T02:28:03.857Z",
+  "previousGeneratedAt": "2026-10-20T07:05:48.097Z",
   "mirror": {
     "comparedShows": 2563,
     "comparedFiles": 57411,
-    "agreeExcluded": 26362,
-    "agreeIncluded": 29947,
+    "agreeExcluded": 26370,
+    "agreeIncluded": 29949,
     "mirrorOnly": 198,
-    "rebuildOnly": 904,
-    "disagreements": 1102,
-    "disagreementRate": 0.0192,
+    "rebuildOnly": 894,
+    "disagreements": 1092,
+    "disagreementRate": 0.019,
     "mirrorOnlyByRule": {
       "duplicateOf": 77,
       "cvWrongArticleHighConfidence": 60,
@@ -67,8 +68,8 @@
     "rebuildOnlyByReason": {
       "skippedDuplicateText": 253,
       "skippedUnknownCriticDedup": 225,
-      "skippedNoScore": 83,
       "skippedCrossMarket": 81,
+      "skippedNoScore": 75,
       "skippedInvalidUrl": 63,
       "skippedPreOpening": 47,
       "skippedShowNotMentioned": 27,
@@ -83,18 +84,17 @@
       "heldPreOpeningCorroboration": 3,
       "skippedDuplicateTextInheritedFlag": 3,
       "skippedGluedBylineTwin": 3,
-      "skippedMultiCriticOutletDedup": 3,
       "skippedCrossOutletFingerprintDedup": 2,
       "skippedDuplicateOf": 2,
+      "skippedMultiCriticOutletDedup": 2,
       "skippedUrlPathCrossMarket": 2,
       "skippedWithinShowDupe": 2,
       "skippedDuplicateOfInheritedFlag": 1,
-      "skippedOutletAsCriticDedup": 1,
       "skippedWrongShow": 1
     },
     "rebuildEntriesUnscanned": 0,
     "notComparedShows": 80,
     "notComparedFiles": 551
   },
-  "previousDisagreementRate": 0.0191
+  "previousDisagreementRate": 0.0192
 }
