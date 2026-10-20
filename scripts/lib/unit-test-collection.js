@@ -146,6 +146,10 @@ const TESTS_UNIT_QUARANTINE = new Map([
     'BRO-5729 (BRO-3425 pattern) — runs in check-corpus-drift.yml (data-health), not test.yml: ceiling / zero-count assertions split out of audit-bad-stub-visibility.test.mjs over bot-rewritten data/shows.json. In the unit batch they turn main red with no code change.',
   ],
   [
+    'tests/unit/review-pullquotes-live-data.test.mjs',
+    'BRO-5798 (BRO-3425 pattern) — runs in check-corpus-drift.yml (data-health), not test.yml: asserts no review missing a pullQuote has a recoverable excerpt in review-texts, split out of review-pullquotes.test.mjs over bot-rewritten data/reviews.json + data/review-texts. In the unit batch it turned main red 2026-10-20 (4 reviews) with no code change.',
+  ],
+  [
     'tests/unit/doubled-market-ids-live-data.test.mjs',
     'BRO-5729 (BRO-3425 pattern) — runs in check-corpus-drift.yml (data-health), not test.yml: ceiling / zero-count assertions split out of doubled-market-ids.test.mjs over bot-rewritten data/shows.json. In the unit batch they turn main red with no code change.',
   ],

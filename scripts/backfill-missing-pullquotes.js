@@ -7,7 +7,7 @@
  * normalization, quote-wrapping) — a 20,000+ review diff for a bug that is
  * only about one field on ~40 reviews. This script touches ONLY the
  * `pullQuote` field, and ONLY on reviews that currently have none, using the
- * same selectBestExcerpt() the rebuild uses so the two never disagree.
+ * same finalizePullQuote() the rebuild uses (BRO-5798) so the two never disagree.
  *
  * Scope (matches the BRO-767 audit query): T1/T2 reviews, critic-level dedup
  * winner, assignedScore >= 70, pullQuote null/empty/<30 chars.
@@ -29,7 +29,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const { selectBestExcerpt } = require('./rebuild-all-reviews.js');
+const { finalizePullQuote } = require('./rebuild-all-reviews.js');
+const { decodeHtmlEntities } = require('./lib/text-cleaning');
 const { fileForReview, loadShowTexts } = require('./audit-pull-quotes.js');
 
 const ROOT = path.join(__dirname, '..');
@@ -64,6 +65,17 @@ function findAllMissingPullQuoteReviews(reviews) {
   return reviews.filter(r => !r.pullQuote || r.pullQuote.length < 30);
 }
 
+/**
+ * The pullQuote the rebuild would ship for this review-texts file, or null.
+ * Goes through finalizePullQuote (BRO-5798), not selectBestExcerpt alone, so
+ * "recoverable" means what the rebuild means: an excerpt it would then discard
+ * as junk is not recoverable, and filling it here would be wiped next rebuild.
+ */
+function recoverableQuote(data, showTitle, showStatus) {
+  const q = finalizePullQuote(data, showTitle, showStatus);
+  return q ? decodeHtmlEntities(q) : null;
+}
+
 function main() {
   const dryRun = process.argv.includes('--dry-run');
   const allScope = process.argv.includes('--all');
@@ -72,6 +84,7 @@ function main() {
   const shows = readJson(SHOWS_FILE).shows || [];
   const outlets = readJson(OUTLET_REGISTRY_FILE).outlets || {};
   const titleById = new Map(shows.map(s => [s.id, s.title]));
+  const statusById = new Map(shows.map(s => [s.id, s.status]));
 
   const targets = allScope
     ? findAllMissingPullQuoteReviews(reviewsData.reviews)
@@ -99,7 +112,7 @@ function main() {
 
     let excerpt;
     try {
-      excerpt = selectBestExcerpt(entry.data, titleById.get(target.showId));
+      excerpt = recoverableQuote(entry.data, titleById.get(target.showId), statusById.get(target.showId));
     } catch (e) {
       stillMissing.push({ showId: target.showId, outletId: target.outletId, criticName: target.criticName, reason: `error: ${e.message}` });
       continue;
@@ -151,4 +164,4 @@ if (require.main === module) {
   process.exit(main());
 }
 
-module.exports = { findTargetReviews, findAllMissingPullQuoteReviews };
+module.exports = { findTargetReviews, findAllMissingPullQuoteReviews, recoverableQuote };

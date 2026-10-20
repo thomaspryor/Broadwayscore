@@ -443,6 +443,7 @@ jobs:
       # automated-clear-not-manual and critic-spelling-duplicates (split into
       # tests/unit/*-live-data.test.mjs), plus scripts/verify-contamination-gate.test.mjs
       # (whole file is a live-corpus probe; dropped from OPT_IN).
+      # BRO-5798: + review-pullquotes-live-data (recoverable excerpt left unused in review-texts).
       # BRO-447: the bro3887 probe now asserts repo Actions cache usage (< 8 GiB,
       # the cause of SERP-cache eviction) via the GitHub API instead of a fixed
       # credits/day ceiling, hence GH_TOKEN here and actions: read above.
@@ -475,6 +476,7 @@ jobs:
             tests/unit/outlet-domain-validation-live-data.test.mjs \
             tests/unit/automated-clear-not-manual-live-data.test.mjs \
             tests/unit/critic-spelling-duplicates-live-data.test.mjs \
+            tests/unit/review-pullquotes-live-data.test.mjs \
             scripts/verify-contamination-gate.test.mjs
 
       # BRO-5788: every failing live-data test above becomes its own routed

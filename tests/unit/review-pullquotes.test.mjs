@@ -1,17 +1,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const { selectBestExcerpt } = require('../../scripts/rebuild-all-reviews.js');
 const { EXCERPT_SOURCE_RANK } = require('../../scripts/lib/pull-quote-guards.js');
-const { fileForReview, loadShowTexts } = require('../../scripts/audit-pull-quotes.js');
-const { findTargetReviews } = require('../../scripts/backfill-missing-pullquotes.js');
 
 // BRO-767: T1/T2 reviews with assignedScore >= 70 shipped with pullQuote:null
 // because three aggregator excerpt fields that ARE captured in review-texts —
@@ -64,58 +58,40 @@ test('selectBestExcerpt still prefers dtliExcerpt over the three new aggregator 
   assert.equal(excerpt, 'The dtli-curated evaluative quote that should win.');
 });
 
-// Integration check against the live corpus: the BRO-767 audit query
-// (findTargetReviews — T1/T2, critic-level dedup winner, assignedScore >= 70,
-// pullQuote null/empty/<30 chars) must never contain a review the pipeline
-// could already fill. If it does, the wiring gap has regressed (or a new
-// aggregator excerpt field needs the same treatment this fix gave the other
-// three). Reviews with genuinely no captured excerpt anywhere (stub-tier, no
-// fullText, no aggregator field) are a separate, tracked problem — see
-// BRO-767 follow-up — and are expected to still appear here.
-test('no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts', () => {
-  const ROOT = path.join(__dirname, '..', '..');
-  const reviewsFile = process.env.REVIEWS_FILE || path.join(ROOT, 'data', 'reviews.json');
-  const showsFile = process.env.SHOWS_FILE || path.join(ROOT, 'data', 'shows.json');
-  const outletRegistryFile = process.env.OUTLET_REGISTRY_FILE || path.join(ROOT, 'data', 'outlet-registry.json');
-  const reviewTextsDir = process.env.REVIEW_TEXTS_DIR || path.join(ROOT, 'data', 'review-texts');
+// The live-corpus integration check (no review missing a pullQuote has a recoverable excerpt) moved to
+// tests/unit/review-pullquotes-live-data.test.mjs (BRO-5798, BRO-3425 pattern): it reads bot-rewritten data.
 
-  if (!fs.existsSync(reviewsFile) || !fs.existsSync(outletRegistryFile)) {
-    // Local dev without data set up — the CI job that runs this test always
-    // has data/ populated (checkout-review-texts action + core-data symlinks).
-    console.log('  [skip] reviews.json / outlet-registry.json not present locally');
-    return;
-  }
+// BRO-5798: "recoverable" must mean "the rebuild would ship it". The rebuild rejects junk excerpts AFTER
+// selectBestExcerpt(); backfill and the live-corpus check used to stop before that step and so reported
+// reviews the rebuild had correctly left without a pullQuote.
+const { finalizePullQuote } = require('../../scripts/rebuild-all-reviews.js');
+const { recoverableQuote } = require('../../scripts/backfill-missing-pullquotes.js');
 
-  const reviews = JSON.parse(fs.readFileSync(reviewsFile, 'utf8')).reviews;
-  const shows = JSON.parse(fs.readFileSync(showsFile, 'utf8')).shows || [];
-  const outlets = JSON.parse(fs.readFileSync(outletRegistryFile, 'utf8')).outlets || {};
-  const titleById = new Map(shows.map(s => [s.id, s.title]));
+test('a quote selectBestExcerpt accepts but the rebuild discards (broken contraction) is not recoverable', () => {
+  const data = {
+    showId: 'some-show-2015', outletId: 'cititour',
+    pullQuote: 'A thoroughly gripping production that deserves every bit of praise it gets from audiences, and the lead performance is something special because he wasn\u2019',
+  };
+  // The gap itself: the cascade returns it, the rebuild's last-step filter then drops it.
+  assert.ok(selectBestExcerpt({ ...data }, 'Some Show'), 'fixture must get past selectBestExcerpt for this test to mean anything');
+  assert.equal(finalizePullQuote({ ...data }, 'Some Show', 'closed'), null);
+  assert.equal(recoverableQuote({ ...data }, 'Some Show', 'closed'), null);
+});
 
-  const targets = findTargetReviews(reviews, outlets);
+test('recoverableQuote returns the display form the rebuild ships (wrapping quotes stripped)', () => {
+  const data = {
+    showId: 'some-show-2015', outletId: 'cititour',
+    pullQuote: '\u201cA thoroughly gripping production that deserves every bit of praise it gets from audiences here.\u201d',
+  };
+  assert.equal(recoverableQuote({ ...data }, 'Some Show', 'open'),
+    'A thoroughly gripping production that deserves every bit of praise it gets from audiences here.');
+});
 
-  const textsByShow = new Map();
-  function textsFor(showId) {
-    if (!textsByShow.has(showId)) textsByShow.set(showId, loadShowTexts(showId, reviewTextsDir));
-    return textsByShow.get(showId);
-  }
-
-  const stillRecoverable = [];
-  for (const target of targets) {
-    const entry = fileForReview(textsFor(target.showId), target);
-    if (!entry) continue; // no source file at all — not a wiring gap
-    let excerpt;
-    try {
-      excerpt = selectBestExcerpt(entry.data, titleById.get(target.showId));
-    } catch {
-      continue;
-    }
-    if (excerpt) {
-      stillRecoverable.push({ showId: target.showId, outletId: target.outletId, criticName: target.criticName });
-    }
-  }
-
-  assert.deepEqual(
-    stillRecoverable, [],
-    `${stillRecoverable.length} review(s) have a usable excerpt in review-texts but no pullQuote in reviews.json — run scripts/backfill-missing-pullquotes.js`
-  );
+test('a clean aggregator excerpt is recoverable through the same path', () => {
+  const data = {
+    showId: 'some-show-2026', outletId: 'broadwayworld',
+    dtliExcerpt: 'The dtli-curated evaluative quote that is long enough to ship and says the production is a triumph.',
+  };
+  const q = recoverableQuote(data, 'Some Show', 'open');
+  assert.ok(q && q.includes('triumph'), `expected a quote, got ${q}`);
 });

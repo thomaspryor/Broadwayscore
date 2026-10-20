@@ -1273,6 +1273,28 @@ function preWindowPriorRuns(showId) {
   return preWindowPriorRunsCache.get(showId);
 }
 
+/**
+ * The pullQuote a review row actually ships: selectBestExcerpt() plus the
+ * post-selection rejections the rebuild applies (junk page chrome, wrapping
+ * quotes, broken contractions). BRO-5798: the rebuild did this inline while
+ * backfill-missing-pullquotes.js and the live-corpus test stopped at
+ * selectBestExcerpt(), so they called a review "recoverable" when the rebuild
+ * (correctly) discarded the excerpt (a "Cititour.com Review" chrome prefix,
+ * a Swedish translated BWW page failing the English common-word check). One
+ * function, so the three can never disagree again.
+ */
+function finalizePullQuote(data, showTitle, showStatus) {
+  data._showStatus = showStatus;
+  const raw = selectBestExcerpt(data, showTitle);
+  if (raw && isJunkExcerpt(raw)) return null;
+  const quote = normalizeQuoteWrapping(raw);
+  // Reject quotes ending with broken contractions (truncated at HTML entity boundaries)
+  if (quote && /(^|\s)(he|she|it|we|they|who|wasn|wouldn|couldn|didn|don|isn|aren|won|haven|hasn|shouldn|mustn|weren|hadn|I)['\u2019]$/.test(quote)) {
+    return null;
+  }
+  return quote;
+}
+
 // ---------------------------------------------------------------------------
 // Require-as-a-library escape hatch (2026-08-01).
 //
@@ -1291,6 +1313,7 @@ function preWindowPriorRuns(showId) {
 // require.main === module, so the pipeline below executes exactly as before.
 module.exports = {
   selectBestExcerpt,
+  finalizePullQuote,
   extractExcerptFromFullText,
   // BRO-925: exposed so scripts/rebuild-all-reviews.test.mjs can exercise the
   // per-file exclusion logging (logExclusion buffers into stats.byShow[id]
@@ -5587,17 +5610,7 @@ showDirs.forEach(showId => {
           : (source === 'aggregatorStars-relay' || source === 'aggregatorStars-fallback')
           ? data.aggregatorStars || null  // S6-T5: the relayed star that drove the score IS the displayed rating
           : null,  // Don't display star rating when it wasn't used for scoring
-        pullQuote: (() => {
-          data._showStatus = showStatusMap[showId];
-          const raw = selectBestExcerpt(data, showTitleMap[showId]);
-          if (raw && isJunkExcerpt(raw)) return null;
-          const quote = normalizeQuoteWrapping(raw);
-          // Reject quotes ending with broken contractions (truncated at HTML entity boundaries)
-          if (quote && /(^|\s)(he|she|it|we|they|who|wasn|wouldn|couldn|didn|don|isn|aren|won|haven|hasn|shouldn|mustn|weren|hadn|I)['\u2019]$/.test(quote)) {
-            return null;
-          }
-          return quote;
-        })(),
+        pullQuote: finalizePullQuote(data, showTitleMap[showId], showStatusMap[showId]),
         dtliThumb: data.dtliThumb || null,
         bwwThumb: data.bwwThumb || null,
         contentTier: data.contentTier || 'none',
