@@ -2191,8 +2191,8 @@ for (const [label, claims, expect] of [
   const script = `
     const { main } = require('./scripts/linear-next.js');
     const issue = {
-      id: 'issue-uuid-5730', identifier: 'BRO-9001', title: 'P0 fixture', description: '',
-      url: 'https://linear.app/x/issue/BRO-9001', priority: 1,
+      id: 'issue-uuid-5730', identifier: 'BRO-9001', title: 'Opus-hinted fixture', description: 'Model: Opus',
+      url: 'https://linear.app/x/issue/BRO-9001', priority: 2,
       state: { id: 's', name: 'Todo', type: 'unstarted' }, labels: { nodes: [] }, comments: { nodes: [] },
     };
     const now = Date.now();
