@@ -13,7 +13,7 @@ const { findWorkBranchCollisions } = require('../../scripts/lib/dispatch-guards.
 
 function repository(t) {
   const dir = mkdtempSync(path.join(tmpdir(), 'bro-2814-'));
-  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  t.after(() => rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const git = (...args) => execFileSync('git', ['-c', 'core.hooksPath=/dev/null', ...args], {
     cwd: dir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'],
   }).trim();
@@ -86,7 +86,7 @@ test('missing refs and non-repositories are unknown, never genuinely empty', t =
   assert.equal(classifyJobBranch('--all', dir).status, 'unknown');
   git('update-ref', '-d', 'refs/remotes/origin/main');
   assert.equal(classifyJobBranch('HEAD', dir).status, 'unknown');
-  rmSync(path.join(dir, '.git'), { recursive: true });
+  rmSync(path.join(dir, '.git'), { recursive: true, maxRetries: 10, retryDelay: 50 });
   assert.equal(classifyJobBranch('HEAD', dir).status, 'unknown');
 });
 
