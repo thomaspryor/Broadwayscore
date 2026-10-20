@@ -107,6 +107,19 @@ test('email is plain English with the question and link', () => {
   assert.doesNotMatch(description, /—/);
 });
 
+test('decision email keys change with listed IDs or content within one window', () => {
+  const { alertIdempotencyKey } = require('../../scripts/lib/owner-alert-router.js');
+  const now = Date.parse('2026-10-20T12:00:00Z');
+  const card = { identifier: 'BRO-1', title: 'Pick an option', question: 'Choose A or B?' };
+  const emailFor = (cards) => formatEmail(planNotification(cards, []));
+  const keyFor = (email) => alertIdempotencyKey(CONDITION_KEY, 20, now, '', email.idempotencySalt);
+  const first = emailFor([card]);
+  assert.equal(keyFor(first), keyFor(emailFor([card])), 'identical retries deduplicate');
+  assert.notEqual(keyFor(first), keyFor(emailFor([{ ...card, identifier: 'BRO-2' }])), 'different IDs with identical visible text differ');
+  assert.notEqual(keyFor(first), keyFor(emailFor([card, { ...card, identifier: 'BRO-2' }])));
+  assert.notEqual(keyFor(first), keyFor(emailFor([{ ...card, question: 'Choose C or D?' }])));
+});
+
 test('the condition key is on the owner page-worthy allowlist', () => {
   assert.equal(CONDITION_KEY, 'owner-decisions:new');
   assert.equal(isPageWorthy(CONDITION_KEY), true);

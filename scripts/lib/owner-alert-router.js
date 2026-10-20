@@ -852,7 +852,8 @@ function drainDigestQueue() {
  *           approach" or is folded into the email body), severity (default
  *           'error'), fields ([{name,value}]), url, cardAction (Notion Action
  *           value for disposition='auto', default 'Investigate'), priority,
- *           category, tags, cooldownHours (default 7 days), decision +
+ *           category, tags, cooldownHours (default 7 days), idempotencySalt
+ *           (caller-specific content identity for human emails), decision +
  *           decisionPrompt (disposition='digest'/page-gated-'human' only —
  *           marks the row a genuine judgment call so digest-autofix.js
  *           never auto-dispatches it, see queueDigestLine's header note),
@@ -871,11 +872,15 @@ function drainDigestQueue() {
 // long-window work.
 // `incident` (the prior resolvedAt when a resolved condition re-fires) makes a
 // red -> green -> red recurrence inside one bucket a new email, not a dupe.
-function alertIdempotencyKey(conditionKey, cooldownHours, nowMs, incident = '') {
+function alertIdempotencyKey(conditionKey, cooldownHours, nowMs, incident = '', idempotencySalt = '') {
   const h = Number(cooldownHours);
   const windowMs = Math.max(1, Math.min(Number.isFinite(h) ? h : 24, 24)) * 3600e3;
   // Hashed so a long conditionKey can't push the bucket past Resend's 256 chars.
-  const id = require('crypto').createHash('sha1').update(`${conditionKey}|${incident}`).digest('hex').slice(0, 20);
+  const identity = `${conditionKey}|${incident}`;
+  // Preserve existing keys for every caller that does not opt into salting.
+  const id = require('crypto').createHash('sha1')
+    .update(idempotencySalt ? JSON.stringify([identity, idempotencySalt]) : identity)
+    .digest('hex').slice(0, 20);
   return `owner-alert:${id}:${Math.floor(nowMs / windowMs)}`;
 }
 
@@ -948,6 +953,7 @@ async function routeAlert(opts) {
     category,
     tags,
     cooldownHours = DEFAULT_COOLDOWN_HOURS,
+    idempotencySalt = '',
     decision,
     info,
     decisionPrompt,
@@ -1209,7 +1215,7 @@ async function routeAlert(opts) {
     const delivered = await sendAlert({
       title, description: emailBody, severity: deliverySeverity, fields, url, email: true, subjectLabel,
       idempotencyKey: alertIdempotencyKey(conditionKey, cooldownHours, Date.now(),
-        existing && existing.status === 'resolved' ? existing.resolvedAt || '' : ''),
+        existing && existing.status === 'resolved' ? existing.resolvedAt || '' : '', idempotencySalt),
     });
     result.delivered = delivered;
     notifyOk = delivered;

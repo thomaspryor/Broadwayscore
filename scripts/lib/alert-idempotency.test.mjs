@@ -33,6 +33,13 @@ test('a condition that resolved and re-fired in the same bucket gets a new key',
   assert.notEqual(alertIdempotencyKey(k, 24, T), alertIdempotencyKey(k, 24, T, '2026-09-23T03:00:00Z'));
 });
 
+test('optional content salt preserves unsalted keys and distinguishes incidents', () => {
+  const k = 'owner-decisions:new';
+  assert.equal(alertIdempotencyKey(k, 20, T), alertIdempotencyKey(k, 20, T, '', ''));
+  assert.notEqual(alertIdempotencyKey(k, 20, T, '', 'cards-a'), alertIdempotencyKey(k, 20, T, '', 'cards-b'));
+  assert.notEqual(alertIdempotencyKey(k, 20, T, '', 'cards-a'), alertIdempotencyKey(k, 20, T, 'resolved', 'cards-a'));
+});
+
 test('cooldown 0 means a 1h window, not 24h', () => {
   assert.notEqual(alertIdempotencyKey('x', 0, T), alertIdempotencyKey('x', 0, T + 3600e3));
 });

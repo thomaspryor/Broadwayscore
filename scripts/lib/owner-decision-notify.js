@@ -153,7 +153,13 @@ function formatEmail(plan) {
   const others = plan.totalOpen - n;
   if (others > 0) lines.push('', `${others} older ${plural(others, 'decision is', 'decisions are')} still waiting too.`);
   lines.push('', 'To answer, open the card to read the options, then tell Claude in any chat the card name and the option you picked.');
-  return { title, description: lines.join('\n') };
+  const description = lines.join('\n');
+  // BRO-4738: a lost told-set must not reuse a completed send's key for
+  // different cards or a changed question, even inside the same time bucket.
+  const idempotencySalt = crypto.createHash('sha256')
+    .update(JSON.stringify([plan.listed.map((d) => d.identifier), title, description]))
+    .digest('hex');
+  return { title, description, idempotencySalt };
 }
 
 /**

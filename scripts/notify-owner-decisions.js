@@ -123,6 +123,7 @@ async function main(argv = process.argv.slice(2)) {
     disposition: 'human',
     subjectLabel: '',
     cooldownHours: 20,
+    idempotencySalt: email.idempotencySalt,
   });
   if (result && result.action === 'human' && result.delivered) {
     if (!router.patchCondition(CONDITION_KEY, { notifiedIds: plan.nextNotified })) {

@@ -2488,3 +2488,21 @@ test('routeAlert: an owner email opens with the What-to-do line from OWNER_ACTIO
     restore();
   }
 });
+
+test('routeAlert passes the optional content salt to the email key', async () => {
+  const sent = [];
+  const { router, restore } = loadRouterWithFakes({ sendAlertImpl: (opts) => { sent.push(opts); return true; } });
+  const now = Date.parse('2026-10-20T12:00:00Z');
+  const originalNow = Date.now;
+  Date.now = () => now;
+  try {
+    const conditionKey = 'owner-decisions:new';
+    await router.routeAlert({ conditionKey, title: 't', disposition: 'human', cooldownHours: 20, idempotencySalt: 'listed-cards' });
+    assert.equal(sent.length, 1);
+    assert.equal(sent[0].idempotencyKey, router.alertIdempotencyKey(conditionKey, 20, now, '', 'listed-cards'));
+    assert.notEqual(sent[0].idempotencyKey, router.alertIdempotencyKey(conditionKey, 20, now));
+  } finally {
+    Date.now = originalNow;
+    restore();
+  }
+});
