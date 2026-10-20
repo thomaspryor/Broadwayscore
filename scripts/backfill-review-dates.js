@@ -60,7 +60,7 @@ const prioritize = args.includes('--prioritize'); // sort by high-yield domains 
 const freeOnly = args.includes('--free-only'); // skip paid scrapers (Archive.org + direct fetch only)
 const retryFailed = args.includes('--retry-failed'); // re-try reviews that previously failed backfill
 const recheckDates = args.includes('--recheck-dates'); // BRO-5674: re-read early non-page dates
-const { needsOpeningWindowDateRecheck, resolvePageDateReplacement } = require('./lib/publish-date-provenance');
+const { needsOpeningWindowDateRecheck, isDateRecheckCandidate, resolvePageDateReplacement } = require('./lib/publish-date-provenance');
 
 // Rate limit Archive.org to ~6 req/min (CDX limit is ~15/min)
 let lastArchiveRequest = 0;
@@ -232,7 +232,7 @@ async function main() {
       try {
         const data = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
         const wanted = recheckDates
-          ? (data.needsDateRecheck === true || needsOpeningWindowDateRecheck(data, showById.get(show)))
+          ? isDateRecheckCandidate(data, showById.get(show))
           : !data.publishDate;
         if (wanted && data.url && !data.wrongProduction && !data.wrongShow) {
           // Skip previously-attempted files unless --retry-failed is set

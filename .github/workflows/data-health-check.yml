@@ -402,6 +402,14 @@ jobs:
         timeout-minutes: 1
         run: node scripts/audit-star-band-drift.js --strict --counts=data/audit/star-band-drift.json
 
+      # BRO-5769: early or carried publish dates no page read has confirmed (counts only, digest row).
+      # Advisory: exit 1 means the weekly backfill-review-dates recheck is behind; continue-on-error keeps the job green.
+      - name: Early publish date audit
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        run: node scripts/audit-early-unmarked-publish-dates.js --counts=data/audit/early-publish-dates.json
+
       # BRO-4719: email the owner when a card newly carries a "DECISION
       # NEEDED:" line or the awaiting-owner label. Runs here, not on the Mac
       # (owner 2026-10-05: "don't rely on the Mac Studio"). Each card is
@@ -520,6 +528,8 @@ jobs:
           git add data/audit/coverage-holes.json 2>/dev/null || true
           # BRO-4840: counts-only published-score audit written by the step above.
           git add data/audit/star-band-drift.json 2>/dev/null || true
+          # BRO-5769: counts-only early-publish-date audit written by the step above.
+          git add data/audit/early-publish-dates.json 2>/dev/null || true
           # BRO-3011: the spend-guard audit snapshot written just above.
           git add data/audit/guard-audit-snapshot.json 2>/dev/null || true
           git add data/audit/scraper-spend-daily-agg.jsonl 2>/dev/null || true

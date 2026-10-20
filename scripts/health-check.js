@@ -4775,6 +4775,42 @@ function starBandDriftResults(report, now = Date.now()) {
   return out;
 }
 
+const EARLY_PUBLISH_DATES_STALE_MS = 3 * 24 * 60 * 60 * 1000; // audit-early-unmarked-publish-dates.js runs daily in data-health-check.yml
+
+/**
+ * BRO-5769: early or carried publish dates still awaiting the page-date recheck. backfill-review-dates.yml sweeps
+ * them weekly; a count above the audit's own --max means the sweep is not keeping up (or its ingest sources are
+ * writing faster than it clears).
+ */
+function earlyPublishDatesResults(report, now = Date.now()) {
+  if (!report || typeof report !== 'object') return [];
+  const name = 'Data: early publish dates awaiting page-date recheck';
+  const out = [];
+  const n = Number(report.awaiting) || 0;
+  const max = isCountValue(report.max) ? report.max : 40;
+  const at = Date.parse(report.generatedAt);
+  const fresh = Number.isFinite(at) && now - at <= EARLY_PUBLISH_DATES_STALE_MS;
+  if (n > max) {
+    out.push({
+      name,
+      status: 'warn',
+      message: `${n} review(s) carry an early or carried publish date no page read has confirmed (limit ${max}; ${Number(report.attempted) || 0} more already attempted)`,
+      hint: 'node scripts/audit-early-unmarked-publish-dates.js lists counts by ingest source; backfill-review-dates.yml (weekly, recheck_dates) clears them (BRO-5769).',
+    });
+  } else if (fresh && isCountValue(report.awaiting)) {
+    out.push({ name, status: 'pass', message: `${n} early publish date(s) awaiting recheck (limit ${max})` });
+  }
+  if (!fresh) {
+    out.push({
+      name,
+      status: 'warn',
+      message: 'data/audit/early-publish-dates.json is missing a readable generatedAt or is more than 3 days old',
+      hint: 'data-health-check.yml refreshes it daily (its "Early publish date audit" step); check that workflow\'s last runs.',
+    });
+  }
+  return out;
+}
+
 function cardVerifiabilityBacklogResults(drainMetric, linearReport, now = Date.now()) {
   const results = [];
   // BRO-5164: pass rows only from a fresh Linear report whose bucket was
@@ -4909,6 +4945,11 @@ function checkCorpusAudits() {
 function checkStarBandDrift() {
   const report = readAuditJsonOrNull('star-band-drift.json');
   return report ? starBandDriftResults(report) : [];
+}
+
+function checkEarlyPublishDates() {
+  const report = readAuditJsonOrNull('early-publish-dates.json');
+  return report ? earlyPublishDatesResults(report) : [];
 }
 
 // Daily-digest surfacing for stalled pipeline surfaces (data/audit/
@@ -5971,6 +6012,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkCardVerifiabilityBacklog(),
     ...checkCoverageHoles(),
     ...checkStarBandDrift(),
+    ...checkEarlyPublishDates(),
     ...checkCorpusAudits(),
   ];
 }
@@ -6205,4 +6247,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness, checkUncollectedStrands };
+module.exports = { corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness, checkUncollectedStrands };

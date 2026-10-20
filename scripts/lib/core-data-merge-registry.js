@@ -434,6 +434,14 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-10-17 (BRO-4840): sole writer scripts/audit-star-band-drift.js --counts, invoked only by data-health-check.yml\'s "Published score star-band audit" step and committed by its "Commit provider spend ledger (apiFallbackSafe)" step. Counts only (no file names or text), regenerated each run — nothing to union.',
   },
   {
+    file: 'audit/early-publish-dates.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-10-20 (BRO-5769): sole writer scripts/audit-early-unmarked-publish-dates.js --counts, invoked only by data-health-check.yml\'s "Early publish date audit" step and committed by its "Commit provider spend ledger (apiFallbackSafe)" step. Counts only (no file names or text), regenerated each run — nothing to union.',
+  },
+  {
     file: 'audit/guard-audit-snapshot.json',
     surface: 'public-repo',
     status: 'single-writer',

@@ -4,12 +4,12 @@
  * was not read from the page (needsOpeningWindowDateRecheck), split by whether
  * the recheck sweep already tried them (BRO-5717). New ones arrive through
  * aggregator, SERP and submit-form ingest that writes a date with no dateSource.
- * Advisory: exits 1 only when the unattempted count exceeds --max (default 40),
+ * --counts=PATH writes a counts-only snapshot for the health digest. Advisory: exits 1 only when the unattempted count exceeds --max (default 40),
  * meaning backfill-review-dates --recheck-dates is due.
  */
 const fs = require('fs');
 const path = require('path');
-const { needsOpeningWindowDateRecheck } = require('./lib/publish-date-provenance');
+const { isDateRecheckCandidate } = require('./lib/publish-date-provenance');
 
 const max = parseInt((process.argv.find(a => a.startsWith('--max=')) || '--max=40').split('=')[1], 10);
 const root = path.join(__dirname, '..', 'data', 'review-texts');
@@ -25,7 +25,7 @@ for (const d of fs.readdirSync(root)) {
     if (!f.endsWith('.json') || f.startsWith('_')) continue;
     let r; try { r = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { continue; }
     if (r.wrongProduction || r.wrongShow || !r.url) continue;
-    if (!(r.needsDateRecheck === true || needsOpeningWindowDateRecheck(r, byId.get(d)))) continue;
+    if (!isDateRecheckCandidate(r, byId.get(d))) continue;
     if (r.dateRecheckAttempted) { attempted++; continue; }
     pending++;
     const k = r.source || r.sourceType || 'unknown';
@@ -34,4 +34,8 @@ for (const d of fs.readdirSync(root)) {
 }
 console.log(`early/carried dates: ${pending} awaiting recheck, ${attempted} already attempted`);
 console.log('awaiting by ingest source:', JSON.stringify(bySource));
+const countsArg = process.argv.find(a => a.startsWith('--counts='));
+if (countsArg) {
+  fs.writeFileSync(countsArg.split('=')[1], JSON.stringify({ generatedAt: new Date().toISOString(), awaiting: pending, attempted, max, bySource }, null, 2) + '\n');
+}
 if (pending > max) { console.log(`ADVISORY: ${pending} > ${max}: run backfill-review-dates with recheck_dates=true`); process.exit(1); }

@@ -250,6 +250,22 @@ function needsOpeningWindowDateRecheck(review, show) {
 }
 
 /**
+ * Whether the recheck sweep (backfill-review-dates --recheck-dates) and its audit should pick this file (BRO-5769).
+ * The live predicate decides. The sticky needsDateRecheck flag alone no longer selects a file: it outlives the
+ * condition that set it (collect-review-texts.js is the only other clearer), so a stale flag re-fetched pages whose
+ * date the predicate no longer flags and parked them as pageDateCandidate. The flag still counts when a
+ * pageDateCandidate exists, because that file holds a page date awaiting a decision.
+ * @param {object} review
+ * @param {object} show - shows.json record
+ * @returns {boolean}
+ */
+function isDateRecheckCandidate(review, show) {
+  if (!review) return false;
+  if (needsOpeningWindowDateRecheck(review, show)) return true;
+  return review.needsDateRecheck === true && !!review.pageDateCandidate;
+}
+
+/**
  * The text-fetch fallback for a review whose page gave no meta/JSON-LD date
  * (BRO-5351). A date parsed out of the URL is never stored as publishDate
  * (CLAUDE.md rule 3: never extract metadata from URLs). The review's own
@@ -309,4 +325,5 @@ module.exports = {
   isReplaceableByPageDate,
   OPENING_WINDOW_GRACE_DAYS,
   needsOpeningWindowDateRecheck,
+  isDateRecheckCandidate,
 };
