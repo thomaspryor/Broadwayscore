@@ -15,7 +15,9 @@
  *   node scripts/ci-green-rate.js [--days 7] [--min 80] [--json] [--record]
  *                                 [--workflow test.yml] [--branch main] [--max-pages 10]
  *
- * Exit codes:  0 PASS   1 FAIL   2 usage / gh API error (never a PASS)
+ * Exit codes:  0 PASS   1 FAIL   2 usage / API error (never a PASS)
+ * Missing gh or gh auth falls back to the public REST API with the same
+ * pagination limits, proxy support and fail-closed verdicts (BRO-5715).
  *
  * Reaches the owner two ways:
  *   - as a safe-form acceptance command (scripts/lib/autonomous-triage-core.js
@@ -42,6 +44,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const core = require('./lib/ci-green-rate.js');
+const { ghApiJson, normalizeRunsPage } = require('./lib/github-public-api.js');
 
 const REPO_ROOT = path.join(__dirname, '..');
 const LEDGER_PATH = path.join(REPO_ROOT, 'data', 'audit', 'ci-green-rate.jsonl');
@@ -104,14 +107,13 @@ function fetchRuns({ repo, workflow, branch, days, maxPages, now }, exec = execF
   delete env.GH_REPO; // belt-and-braces: the path is explicit, but never let an override leak into gh
   for (let page = 1; page <= maxPages; page++) {
     const apiPath = core.buildRunsApiPath({ repo, workflow, branch, page, sinceDate, perPage: core.DEFAULTS.perPage });
-    const stdout = exec('gh', ['api', apiPath, '--jq', JQ], {
-      encoding: 'utf8',
+    const parsed = ghApiJson(apiPath, {
+      exec,
+      jq: JQ,
+      mapRest: normalizeRunsPage,
       cwd: REPO_ROOT,
       env,
-      maxBuffer: 16 * 1024 * 1024,
-      stdio: ['ignore', 'pipe', 'pipe'],
     });
-    const parsed = JSON.parse(stdout);
     const rows = parsed && parsed.runs;
     if (!Array.isArray(rows)) throw new Error('unexpected gh api payload (no runs array after --jq)');
     if (Number.isFinite(parsed.total)) total = parsed.total;
