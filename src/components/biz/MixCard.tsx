@@ -53,7 +53,7 @@ function GroupRows({ title, rows, columns }: { title: string; rows: ComparisonRo
         <tr key={r.label} className="border-b border-white/5">
           <td className="py-2 pl-3 pr-2 sm:px-4 text-gray-300">{r.label}</td>
           {columns.map((c) => (
-            <td key={c.label} className="py-2 px-2 sm:px-4 text-right whitespace-nowrap">
+            <td key={c.label} className="py-2 px-2 sm:px-4 text-center whitespace-nowrap">
               <span className={c.value === 'current' ? 'font-semibold text-white' : 'text-gray-300'}>{formatRowValue(r.format, r[c.value])}</span>
               {c.value === 'current' && r.currentDetail && <span className="block text-xs text-gray-500">{r.currentDetail}</span>}
             </td>
@@ -93,7 +93,7 @@ export default function MixCard({ columns, overallRows, withinRows }: { columns:
             <tr className="text-left text-gray-400 border-b border-white/10 bg-surface-overlay">
               <th className="py-2.5 pl-3 pr-2 sm:px-4 font-medium">Share of productions</th>
               {columns.map((c) => (
-                <th key={c.label} className="py-2.5 px-2 sm:px-4 font-medium text-right">{c.label}</th>
+                <th key={c.label} className="py-2.5 px-2 sm:px-4 font-medium text-center">{c.label}</th>
               ))}
             </tr>
           </thead>
@@ -105,7 +105,7 @@ export default function MixCard({ columns, overallRows, withinRows }: { columns:
                   {s.label}
                 </td>
                 {columns.map((c, i) => (
-                  <td key={c.label} className="py-2 px-2 sm:px-4 text-right whitespace-nowrap">
+                  <td key={c.label} className="py-2 px-2 sm:px-4 text-center whitespace-nowrap">
                     <span className={i === 0 ? 'font-semibold text-white' : 'text-gray-300'}>
                       {formatRowValue('pct', share(c.mix[s.key], c.mix.total))}
                     </span>

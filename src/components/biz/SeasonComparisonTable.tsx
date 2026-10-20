@@ -22,25 +22,25 @@ export default function SeasonComparisonTable({ comparison }: { comparison: Seas
           <thead>
             <tr className="text-left text-gray-400 border-b border-white/10 bg-surface-overlay">
               <th className="py-3 pl-3 pr-2 sm:px-4 font-medium"><span className="sr-only">Measure</span></th>
-              <th className="py-3 px-2 sm:px-4 font-medium text-right sm:whitespace-nowrap">
+              <th className="py-3 px-2 sm:px-4 font-medium text-center sm:whitespace-nowrap">
                 {shortSeason(season)}{inProgress ? ' so far' : ''}
               </th>
-              <th className="py-3 px-2 sm:px-4 font-medium text-right sm:whitespace-nowrap bg-white/[0.03]">
+              <th className="py-3 px-2 sm:px-4 font-medium text-center sm:whitespace-nowrap bg-white/[0.03]">
                 {lastSeason ? shortSeason(lastSeason) : 'Last season'}
               </th>
-              <th className="py-3 px-2 sm:px-4 font-medium text-right sm:whitespace-nowrap bg-white/[0.03]">Prior seasons avg</th>
+              <th className="py-3 px-2 sm:px-4 font-medium text-center sm:whitespace-nowrap bg-white/[0.03]">Prior seasons avg</th>
             </tr>
           </thead>
           <tbody>
             {rows.map((row) => (
               <tr key={row.label} className="border-b border-white/5">
                 <td className="py-2.5 pl-3 pr-2 sm:px-4 text-gray-300">{row.label}</td>
-                <td className="py-2.5 px-2 sm:px-4 text-right sm:whitespace-nowrap">
+                <td className="py-2.5 px-2 sm:px-4 text-center sm:whitespace-nowrap">
                   <span className="font-semibold text-white">{formatRowValue(row.format, row.current)}</span>
                   {row.currentDetail && <span className="block text-xs text-gray-500">{row.currentDetail}</span>}
                 </td>
-                <td className="py-2.5 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap bg-white/[0.03]">{formatRowValue(row.format, row.last)}</td>
-                <td className="py-2.5 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap bg-white/[0.03]">
+                <td className="py-2.5 px-2 sm:px-4 text-center text-gray-300 whitespace-nowrap bg-white/[0.03]">{formatRowValue(row.format, row.last)}</td>
+                <td className="py-2.5 px-2 sm:px-4 text-center text-gray-300 whitespace-nowrap bg-white/[0.03]">
                   {formatRowValue(row.format, row.avg)}
                   {row.avg != null && row.avgSeasons < baselineSeasons && (
                     <span className="block text-xs text-gray-500">{row.avgSeasons} {row.avgSeasons === 1 ? 'season' : 'seasons'}</span>

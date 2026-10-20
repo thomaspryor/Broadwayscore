@@ -30,7 +30,7 @@ export default function WhoRecoupsCard({ findings }: { findings: RecoupFindings 
         <thead>
           <tr className="text-left text-gray-400 border-b border-white/10">
             <th className="py-2 px-4 font-medium">Show type</th>
-            <th className="py-2 px-4 font-medium text-right whitespace-nowrap">Recouped</th>
+            <th className="py-2 px-4 font-medium text-center whitespace-nowrap">Recouped</th>
             <th className="py-2 px-4 font-medium w-2/5"><span className="sr-only">Rate</span></th>
           </tr>
         </thead>
@@ -40,7 +40,7 @@ export default function WhoRecoupsCard({ findings }: { findings: RecoupFindings 
             return (
               <tr key={b.label} className="border-b border-white/5">
                 <td className="py-2.5 px-4 text-gray-300">{b.label}</td>
-                <td className="py-2.5 px-4 text-right whitespace-nowrap">
+                <td className="py-2.5 px-4 text-center whitespace-nowrap">
                   <span className="font-semibold text-white">{r == null ? '—' : `${Math.round(r * 100)}%`}</span>
                   <span className="block text-xs text-gray-500">{b.recouped} of {b.total}</span>
                 </td>

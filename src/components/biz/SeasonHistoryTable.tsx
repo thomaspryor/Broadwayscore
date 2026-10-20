@@ -35,14 +35,14 @@ export default function SeasonHistoryTable({ profiles, currentSeason, showCapita
           <thead>
             <tr className="text-left text-gray-400 border-b border-white/10 bg-surface-overlay">
               <th className="py-3 px-3 font-medium whitespace-nowrap sticky left-0 z-10 bg-surface-overlay">Season</th>
-              <th className="py-3 px-3 font-medium text-right whitespace-nowrap">Productions</th>
-              <th className="py-3 px-3 font-medium text-right whitespace-nowrap">Musicals</th>
-              <th className="py-3 px-3 font-medium text-right whitespace-nowrap">Revivals</th>
-              <th className="hidden md:table-cell py-3 px-3 font-medium text-right whitespace-nowrap">Revivals among musicals</th>
-              <th className="hidden md:table-cell py-3 px-3 font-medium text-right whitespace-nowrap">Revivals among plays</th>
-              <th className="hidden md:table-cell py-3 px-3 font-medium text-right whitespace-nowrap">Nonprofit</th>
-              <th className="py-3 px-3 font-medium text-right whitespace-nowrap">Recouped</th>
-              {showCapital && <th className="py-3 px-3 font-medium text-right whitespace-nowrap">Disclosed capital</th>}
+              <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Productions</th>
+              <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Musicals</th>
+              <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Revivals</th>
+              <th className="hidden md:table-cell py-3 px-3 font-medium text-center whitespace-nowrap">Revivals among musicals</th>
+              <th className="hidden md:table-cell py-3 px-3 font-medium text-center whitespace-nowrap">Revivals among plays</th>
+              <th className="hidden md:table-cell py-3 px-3 font-medium text-center whitespace-nowrap">Nonprofit</th>
+              <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Recouped</th>
+              {showCapital && <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Disclosed capital</th>}
             </tr>
           </thead>
           <tbody>
@@ -63,23 +63,23 @@ export default function SeasonHistoryTable({ profiles, currentSeason, showCapita
                     )}
                     {current && <span className="block text-xs text-gray-500">so far + announced</span>}
                   </td>
-                  <td className="py-2.5 px-3 text-right text-white font-semibold">{p.productions}</td>
-                  <td className="py-2.5 px-3 text-right text-gray-300">
+                  <td className="py-2.5 px-3 text-center text-white font-semibold">{p.productions}</td>
+                  <td className="py-2.5 px-3 text-center text-gray-300">
                     {pct(p.musicals, p.productions)}
                     <span className="block text-xs text-gray-500">{p.musicals}</span>
                   </td>
-                  <td className="py-2.5 px-3 text-right text-gray-300">
+                  <td className="py-2.5 px-3 text-center text-gray-300">
                     {pct(p.revivals, p.revivalKnown)}
                     <span className="block text-xs text-gray-500">{p.revivals}</span>
                   </td>
-                  <td className="hidden md:table-cell py-2.5 px-3 text-right text-gray-300">{pct(p.musicalRevivals, p.musicalRevivalKnown)}</td>
-                  <td className="hidden md:table-cell py-2.5 px-3 text-right text-gray-300">{pct(p.playRevivals, p.playRevivalKnown)}</td>
-                  <td className="hidden md:table-cell py-2.5 px-3 text-right text-gray-300">{tracked ? pct(p.nonprofit, p.tracked) : '—'}</td>
-                  <td className="py-2.5 px-3 text-right text-gray-300 whitespace-nowrap">
+                  <td className="hidden md:table-cell py-2.5 px-3 text-center text-gray-300">{pct(p.musicalRevivals, p.musicalRevivalKnown)}</td>
+                  <td className="hidden md:table-cell py-2.5 px-3 text-center text-gray-300">{pct(p.playRevivals, p.playRevivalKnown)}</td>
+                  <td className="hidden md:table-cell py-2.5 px-3 text-center text-gray-300">{tracked ? pct(p.nonprofit, p.tracked) : '—'}</td>
+                  <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap">
                     {tracked || current ? `${p.recouped} of ${p.commercial}` : '—'}
                   </td>
                   {showCapital && (
-                    <td className="py-2.5 px-3 text-right text-gray-300 whitespace-nowrap">
+                    <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap">
                       {capital ? formatRowValue('money', p.capitalization.all.total) : '—'}
                       {(tracked || current) && p.capitalization.all.of > 0 && (
                         <span className="block text-xs text-gray-500">
