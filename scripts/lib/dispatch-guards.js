@@ -75,10 +75,9 @@ const { evaluateVerifiability } = require('./verify-gate.js');
 // phantom-path check enrich-card-acceptance.js already runs on LLM-drafted
 // acceptance criteria (BRO-2546), applied once more at the point a
 // dispatcher actually commits to launching a workspace on a hand-written or
-// imported command that never went through that check (BRO-2569). No cycle:
-// autonomous-triage-core.js's own requires (autonomous-eligibility.js,
-// attempt-memory.js) never reach back to this file.
-const { resolveCheckPaths } = require('./autonomous-triage-core.js');
+// imported command that never went through that check (BRO-2569). The leaf
+// module shares the command grammar without loading the triage schema or prompt.
+const { resolveCheckPaths } = require('./check-paths.js');
 // classifyVacuousCheck/fetchOriginMain/pathExistsOnOriginMain only (no
 // audit-report machinery pulled in) — resolveVacuousCheck()/vacuousCheckGuard()
 // below need the identical opposite-polarity check (BRO-3378: "can this
@@ -336,7 +335,7 @@ function staleOutcomeGuard(task, card, opts) {
 // the command names actually exist on disk, or sit in a directory the
 // dispatched work can plausibly create them in. BRO-2546 closed that hole for
 // LLM-drafted acceptance criteria (enrich-card-acceptance.js, via
-// resolveCheckPaths in autonomous-triage-core.js) but every OTHER path a
+// resolveCheckPaths in check-paths.js) but every OTHER path a
 // card's acceptance command can arrive by — hand-written, `linear-brain.js
 // create`, the plan-tasks skill, an imported Notion card — reached both real
 // dispatchers with no path check at all, arming a card on a command that can
@@ -351,15 +350,9 @@ function staleOutcomeGuard(task, card, opts) {
 // `repoRoot`, and pathVerifiabilityGuard() stays pure over the result,
 // matching workBranchCollisionGuard/staleOutcomeGuard's shape.
 //
-// Deliberately NOT added to GUARD_NAMES: that array is blind-simulated by
-// predispatch-queue-audit.js across the WHOLE backlog with a task-shaped
-// `{id, subject, description}` object, and dispatch-guard-queue-audit.test.mjs
-// pins its length. Unlike dispatchClaimGuard/checkTerminalStateGuard (excluded
-// for being stateful or shape-incompatible), this guard IS blind-simulatable
-// — leaving it out is a real, acknowledged audit-coverage gap (a phantom-path
-// card stays invisible to the proactive sweep and is only caught here, at
-// actual dispatch time), not a structural incompatibility. Wiring it into the
-// audit is separate scope from this dispatch-time fix; tracked as BRO-2626.
+// Included in GUARD_NAMES so the proactive queue sweep can surface the same
+// refusal before dispatch. It needs only a task-shaped {id, subject, description}
+// and local filesystem stats, with no stateful claim or network fetch (BRO-2626).
 //
 // A dedicated `--allow-phantom-path` bypass (not `--allow-unverifiable`,
 // which every sibling guard here already uses for "no command exists to
@@ -498,10 +491,7 @@ function pathVerifiabilityGuard(task, pathCheck, opts) {
 // own stated rationale (above) for why IT has a dedicated flag too.
 //
 // Deliberately NOT added to GUARD_NAMES (predispatch-queue-audit.js's
-// blind-simulation array, pinned to exactly 8 entries by
-// dispatch-guard-queue-audit.test.mjs) — same acknowledged-gap treatment
-// pathVerifiabilityGuard already gets (see its own header above, BRO-2626),
-// and more strongly warranted here: this guard's I/O is a LIVE NETWORK FETCH
+// blind-simulation array) because this guard's I/O is a LIVE NETWORK FETCH
 // per task, not a local fs stat, so blind-simulating it across the WHOLE
 // backlog would be a real per-run network cost, not just a side-effect-safety
 // question. Wiring it into that audit — if ever done — needs its own scoped
@@ -1140,7 +1130,7 @@ function linearMirrorGuard(task, mapping, opts) {
 // that needs to enumerate "every dispatch guard" without re-deriving the list
 // (task #1802: scripts/lib/dispatch-guard-queue-audit.js tallies a refusal
 // per name below across every queued task). Keeping this here, next to the
-// functions it names, means adding a 9th guard can't silently leave the
+// functions it names, means adding another guard can't silently leave the
 // audit's list stale the way a second, standalone copy would.
 const GUARD_NAMES = [
   'deadDispatchGuard',
@@ -1151,6 +1141,7 @@ const GUARD_NAMES = [
   'exactTitleOverlapGuard',
   'sessionTrackingCloneGuard',
   'linearMirrorGuard',
+  'pathVerifiabilityGuard',
 ];
 
 module.exports = {
@@ -1189,7 +1180,7 @@ module.exports = {
   remainingHeadlessBlockers,
   isAutomationParked,
   isDrainableSessionParked,
-  // BRO-2569 — deliberately not in GUARD_NAMES, see the guard's own header.
+  // BRO-2569: also simulated by the proactive queue audit (BRO-2626).
   resolvePathCheck,
   resolveCanonicalRepoRoot,
   pathVerifiabilityGuard,

@@ -1,11 +1,11 @@
 /**
  * dispatch-guard-queue-audit.js — pure tally + trend logic for task #1802,
  * generalizing task #1801's predispatch-queue-audit.js pattern from ONE
- * guard (predispatch-guard's classifyCandidate) to all 8 sibling
+ * guard (predispatch-guard's classifyCandidate) to all 9 sibling
  * dispatch-guards.js predicates named in GUARD_NAMES (dispatch-guards.js):
  * deadDispatchGuard, parkedGuard, staleOutcomeGuard, closedCardGuard,
  * workBranchCollisionGuard, exactTitleOverlapGuard, sessionTrackingCloneGuard,
- * linearMirrorGuard.
+ * linearMirrorGuard, pathVerifiabilityGuard.
  *
  * Each guard is only ever visible one refusal at a time, at the moment a
  * single dispatch attempt hits it — there is no aggregate view across every
@@ -32,12 +32,56 @@
  * `{refusal: null}` result is real "ok" data, matching exactly what a live
  * bsc-next.js dispatch would see under the same outage.
  *
- * Pure functions only — no fs, no network, no clock read internally (now is
- * always passed in) — the CLI wrapper owns all I/O.
+ * Snapshot builders are pure. simulateDispatchGuards also checks local paths;
+ * the CLI wrapper owns network calls and loads shared state once per sweep.
  */
 'use strict';
 
-const { GUARD_NAMES } = require('./dispatch-guards.js');
+const {
+  GUARD_NAMES, deadDispatchGuard, parkedGuard, staleOutcomeGuard, closedCardGuard,
+  workBranchCollisionGuard, exactTitleOverlapGuard, sessionTrackingCloneGuard,
+  linearMirrorGuard, resolvePathCheck, pathVerifiabilityGuard,
+} = require('./dispatch-guards.js');
+const { evaluateVerifiability } = require('./verify-gate.js');
+
+// Runs one dispatch-guards.js predicate and normalizes its outcome to the
+// {refusal: string|null} shape dispatch-guard-queue-audit.js's tally expects
+// — or `null` (not the shape) when the guard function itself threw, so a
+// crash can't silently read as "ok" (tallyGuardRefusals counts that as
+// `error`, never folded into `ok`).
+function runGuard(name, fn, taskId) {
+  try {
+    return { refusal: fn() || null };
+  } catch (err) {
+    console.error(`[predispatch-queue-audit] guard ${name} threw for #${taskId}: ${String(err.message).slice(0, 160)}`);
+    return null;
+  }
+}
+
+// The CLI and tests share the real blind sweep, including its error handling.
+// Local path checks run without force or dispatch bypasses.
+function simulateDispatchGuards(task, {
+  ledgerEntries = [], card = null, branchStatuses = [], overlaps = [],
+  tasksWithArchive = [], linearMapping = {}, repoRoot,
+} = {}) {
+  return {
+    taskId: task.id,
+    guards: {
+      deadDispatchGuard: runGuard('deadDispatchGuard', () => deadDispatchGuard(task, ledgerEntries, {}), task.id),
+      parkedGuard: runGuard('parkedGuard', () => parkedGuard(task, ledgerEntries, {}), task.id),
+      staleOutcomeGuard: runGuard('staleOutcomeGuard', () => staleOutcomeGuard(task, card, {}), task.id),
+      closedCardGuard: runGuard('closedCardGuard', () => closedCardGuard(task, card, {}), task.id),
+      workBranchCollisionGuard: runGuard('workBranchCollisionGuard', () => workBranchCollisionGuard(task, branchStatuses, {}), task.id),
+      exactTitleOverlapGuard: runGuard('exactTitleOverlapGuard', () => exactTitleOverlapGuard(task, overlaps, {}), task.id),
+      sessionTrackingCloneGuard: runGuard('sessionTrackingCloneGuard', () => sessionTrackingCloneGuard(task, tasksWithArchive, {}), task.id),
+      linearMirrorGuard: runGuard('linearMirrorGuard', () => linearMirrorGuard(task, linearMapping, {}), task.id),
+      pathVerifiabilityGuard: runGuard('pathVerifiabilityGuard', () => {
+        const gate = evaluateVerifiability(task.description || '');
+        return pathVerifiabilityGuard(task, resolvePathCheck(gate, repoRoot), {});
+      }, task.id),
+    },
+  };
+}
 
 // Owner's own suggested-approach threshold from task #1801's card body,
 // reused here — a meaningful jump, not the raw count, is what's alert-worthy.
@@ -169,6 +213,7 @@ function buildDispatchGuardQueueAuditSnapshot({
 }
 
 module.exports = {
+  simulateDispatchGuards,
   tallyGuardRefusals, findWeekAgoEntry, buildDispatchGuardQueueAuditSnapshot, guardLabel,
   JUMP_THRESHOLD_PCT, WOW_MIN_AGE_MS, WOW_MAX_AGE_MS, GUARD_NAMES,
 };

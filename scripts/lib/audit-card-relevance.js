@@ -27,6 +27,7 @@
  */
 'use strict';
 
+const { extractCheckPaths } = require('./check-paths.js');
 const { evaluateVerifiability } = require('./verify-gate.js');
 const { RECHECK_AFTER_RE } = require('./recheck-stamp.js');
 const { foldDiacritics } = require('./title-match.js');
@@ -39,10 +40,9 @@ const { foldDiacritics } = require('./title-match.js');
 // count went UP to 364). opts.readFile is optional: when not injected this
 // check is skipped entirely (backward compatible — ambiguous, never assumed
 // weak) so callers that don't wire file reads keep prior behavior.
-const CMD_TEST_FILE_RE = /(\S+\.test\.(?:m|c)?(?:j|t)s)\b/;
+const CMD_TEST_FILE_RE = /\.test\.(?:m|c)?(?:j|t)s$/;
 function extractTestFileFromCmd(cmd) {
-  const m = CMD_TEST_FILE_RE.exec(String(cmd || ''));
-  return m ? m[1] : null;
+  return extractCheckPaths(cmd).find(p => CMD_TEST_FILE_RE.test(p)) || null;
 }
 
 const LOCAL_IMPORT_RE = /(?:require\(\s*['"]([^'"]+)['"]\s*\)|from\s+['"]([^'"]+)['"])/g;
@@ -243,7 +243,7 @@ const TITLE_OVERLAP_THRESHOLD = 0.6;
 const TITLE_MIN_TOKENS = 3;
 
 // Repo-relative file paths named in card prose — same root-dir allowlist
-// autonomous-triage-core.js's SAFE_CHECK_FORMS pathPrefix uses.
+// check-paths.js's SAFE_CHECK_FORMS pathPrefix uses.
 const FILE_REF_RE = /\b(?:scripts|src|data|tests)\/[\w./-]+\.(?:m?js|ts|tsx|json)\b/g;
 // Backticked bare identifiers — `evaluateVerifiability`, `runVerify`, etc.
 // Deliberately excludes anything containing '/' or '(' so it never doubles
@@ -325,7 +325,7 @@ function extractReferencedPaths(text) {
 // evidence of rot: CLAUDE.md §15 convention is that a fix ships with its own
 // colocated test, so an open card naming a test file it hasn't written yet
 // is normal, in-progress work — the same "new-artifact allowance"
-// autonomous-triage-core.js's resolveCheckPaths already carves out for
+// check-paths.js's resolveCheckPaths already carves out for
 // exactly this class. Confirmed live on this classifier's first real run
 // (task #1719): both initial LIKELY-STALE hits were in-progress/paused
 // cards naming their own not-yet-written test file, not deleted code.
