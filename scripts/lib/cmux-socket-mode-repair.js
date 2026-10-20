@@ -10,23 +10,33 @@
 // check-cmux-reachability.js (launchd, every 15 min) now rewrites the file so
 // the next cmux restart or `cmux reload-config` brings automation back.
 //
-// Only the MODE triggers a rewrite. cmux has run password mode with the
-// password stored outside the file (2026-09-21 migration), so a missing
-// socketPassword alone is not drift; it is only filled in while rewriting.
+// The MODE triggers a rewrite. cmux has run password mode with the password
+// stored outside the file (2026-09-21 migration), so a missing socketPassword
+// alone is not drift. EXCEPT when the socket itself says "Password mode is
+// enabled but no socket password is configured" (BRO-5640: 2026-10-18 cmux
+// rewrote the file without the password and every launchd job was locked out
+// for 44h+): then the file is the only place to put it back.
 //
 // Pure decision logic here (CLAUDE.md rule 15); file I/O stays in the caller.
 
 'use strict';
 
 const WANTED_MODE = 'password';
+const NO_PASSWORD_RE = /password mode is enabled but no socket password is configured/i;
+
+/** True when a cmux CLI error says password mode has no password configured. */
+function isNoPasswordError(text) {
+  return NO_PASSWORD_RE.test(String(text || ''));
+}
 
 /**
  * @param {object} a
  * @param {string} a.configText  raw cmux.json contents
  * @param {string} [a.password]  the socket password launchd callers use
+ * @param {boolean} [a.socketReportsNoPassword]  live socket said no password is configured
  * @returns {{action: 'none'|'rewrite', reason: string, newText?: string, fromMode?: string}}
  */
-function planSocketModeRepair({ configText, password }) {
+function planSocketModeRepair({ configText, password, socketReportsNoPassword = false }) {
   if (!password) return { action: 'none', reason: 'no-password' };
   let config;
   try {
@@ -41,7 +51,14 @@ function planSocketModeRepair({ configText, password }) {
   }
   const automation = config.automation && typeof config.automation === 'object' ? config.automation : {};
   const fromMode = automation.socketControlMode || '(unset)';
-  if (automation.socketControlMode === WANTED_MODE) return { action: 'none', reason: 'already-password' };
+  if (automation.socketControlMode === WANTED_MODE) {
+    if (socketReportsNoPassword && !automation.socketPassword) {
+      const next = { ...automation, socketPassword: password };
+      const newText = JSON.stringify({ ...config, automation: next }, null, 2) + '\n';
+      return { action: 'rewrite', reason: 'password-missing', fromMode: WANTED_MODE, newText };
+    }
+    return { action: 'none', reason: 'already-password' };
+  }
 
   const next = { ...automation, socketControlMode: WANTED_MODE };
   if (!next.socketPassword) next.socketPassword = password;
@@ -64,4 +81,4 @@ function backupsToPrune(names, keep) {
   return ours.slice(keep).map((x) => x.n);
 }
 
-module.exports = { WANTED_MODE, planSocketModeRepair, backupsToPrune };
+module.exports = { WANTED_MODE, isNoPasswordError, planSocketModeRepair, backupsToPrune };

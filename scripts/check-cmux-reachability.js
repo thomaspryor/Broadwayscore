@@ -29,7 +29,7 @@ require('./lib/load-env.js').loadEnv(path.join(__dirname, '..'));
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { cmuxSpawnEnv } = require('./lib/cmux-socket-auth.js');
 const { runReachabilityCheck } = require('./lib/cmux-reachability-check.js');
-const { planSocketModeRepair, backupsToPrune } = require('./lib/cmux-socket-mode-repair.js');
+const { planSocketModeRepair, backupsToPrune, isNoPasswordError } = require('./lib/cmux-socket-mode-repair.js');
 
 const CMUX_DIR = path.join(os.homedir(), '.config', 'cmux');
 const CMUX_CONFIG = path.join(CMUX_DIR, 'cmux.json');
@@ -43,6 +43,15 @@ const BACKUPS_KEPT = 5;
 // and survives cmux restarts. Put it back to password mode so the next restart
 // (or reload) recovers on its own. Never throws: the reachability check below
 // must run regardless.
+function socketReportsNoPassword() {
+  try {
+    execFileSync(CMUX_BIN, ['list-workspaces'], { stdio: 'pipe', timeout: 10000, env: cmuxSpawnEnv(process.env) });
+    return false;
+  } catch (err) {
+    return isNoPasswordError(`${err.stderr || ''}${err.stdout || ''}${err.message || ''}`);
+  }
+}
+
 function repairSocketMode() {
   try {
     if (fs.existsSync(REPAIR_OFF_FILE)) return 'repair disabled by ' + REPAIR_OFF_FILE;
@@ -50,6 +59,7 @@ function repairSocketMode() {
     const plan = planSocketModeRepair({
       configText: fs.readFileSync(CMUX_CONFIG, 'utf8'),
       password: process.env.CMUX_SOCKET_PASSWORD,
+      socketReportsNoPassword: socketReportsNoPassword(),
     });
     if (plan.action !== 'rewrite') {
       return plan.reason === 'already-password' ? null : `socket-mode repair skipped: ${plan.reason}`;
@@ -73,7 +83,7 @@ function repairSocketMode() {
       execFileSync(CMUX_BIN, ['reload-config'], { stdio: 'ignore', timeout: 10000, env: cmuxSpawnEnv(process.env) });
       reloaded = true;
     } catch { /* expected while locked out */ }
-    return `REPAIRED cmux socket mode ${plan.fromMode} -> password; ` +
+    return `REPAIRED cmux socket (${plan.reason}: ${plan.fromMode} -> password); ` +
       (reloaded ? 'config reloaded' : 'takes effect at next cmux restart (reload refused)');
   } catch (err) {
     return `socket-mode repair failed: ${err.message}`;
