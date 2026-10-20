@@ -191,7 +191,7 @@ describe('wiring', () => {
       assert.match(s, /require\('\.\/lib\/html-publish-date'\)/, f);
       assert.doesNotMatch(s, /function extractPublishDateFromHtml\(/, f);
     }
-    assert.match(src('scripts/backfill-review-dates.js'), /needsOpeningWindowDateRecheck\(data, showById\.get\(show\)\)/);
+    assert.match(src('scripts/backfill-review-dates.js'), /isDateRecheckCandidate\(data, showById\.get\(show\)\)/); // BRO-5769: live predicate via the shared selector
   });
 });
 
