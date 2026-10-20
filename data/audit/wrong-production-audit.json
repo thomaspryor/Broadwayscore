@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-20T17:03:46.128Z",
+  "timestamp": "2026-10-20T18:37:00.852Z",
   "stats": {
-    "totalReviews": 57948,
-    "alreadyFlagged": 21102,
+    "totalReviews": 57961,
+    "alreadyFlagged": 21109,
     "dateGuardCatches": 198,
-    "directorMismatch": 2027,
-    "tvFilmSignals": 1651,
+    "directorMismatch": 2026,
+    "tvFilmSignals": 1652,
     "londonSignals": 2566,
     "offBroadwaySignals": 531,
     "yearMismatch": 161,
-    "noPublishDate": 5225
+    "noPublishDate": 5223
   },
   "findings": [
     {
@@ -34615,25 +34615,6 @@
       ]
     },
     {
-      "showId": "school-pictures-off-broadway-2026",
-      "file": "theatermania--zachary-stewart.json",
-      "score": null,
-      "publishDate": "2023-11-22",
-      "url": "https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boys-in-harpy-land-at-playwrights-horizons_1722069/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1050d before show (2023-11-22 vs 2026-10-07)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"morgan green\" from school-pictures-off-broadway-2023"
-        }
-      ]
-    },
-    {
       "showId": "scorched-earth-off-broadway-2026",
       "file": "theatermania--kenji-fujishima.json",
       "score": 71,
@@ -37142,6 +37123,25 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 718d before show (2024-10-26 vs 2026-10-14)"
+        }
+      ]
+    },
+    {
+      "showId": "stories-the-tap-dance-sensation-west-end-2026",
+      "file": "abundantart--unknown.json",
+      "score": 74,
+      "publishDate": "2024-10-30",
+      "url": "https://www.abundantart.net/review-page/review-and-exclusive-interview-romain-rachline-borgeauds-stories-the-tap-dance-sensation-dark-noir-drama-breathes-new-life-into-old-genres-at-peacock-theatre-until-2-november",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 714d before show (2024-10-30 vs 2026-10-14)"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -65279,7 +65279,7 @@
     {
       "showId": "good-time-charlie-off-broadway-2026",
       "file": "theater-scene--victor-gluck.json",
-      "score": 73,
+      "score": 87,
       "publishDate": "2026-10-19",
       "url": "https://www.theaterscene.net/plays/offbway-plays/good-time-charlie/victor-gluck/",
       "findings": [

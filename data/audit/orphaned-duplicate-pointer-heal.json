@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-20T16:54:34.191Z",
+  "generated": "2026-10-20T18:28:12.028Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 36,
+  "count": 33,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -116,13 +116,6 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "paranormal-activity-west-end-2025",
-      "loserFile": "whatsonstage--unknown.json",
-      "targetFile": "whatsonstage--rachel-agyekum.json",
-      "reason": "orphaned-duplicate-heal: whatsonstage--rachel-agyekum.json was flagged invalid after whatsonstage--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "proof-2026",
       "loserFile": "nytimes--sarah-bahr.json",
       "targetFile": "nytimes--helen-shaw.json",
@@ -141,13 +134,6 @@
       "loserFile": "patch--unknown.json",
       "targetFile": "patch--katie-rosin.json",
       "reason": "orphaned-duplicate-heal: patch--katie-rosin.json was flagged invalid after patch--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026",
-      "loserFile": "patch--unknown.json",
-      "targetFile": "patch--sabrina-blandon.json",
-      "reason": "orphaned-duplicate-heal: patch--sabrina-blandon.json was flagged invalid after patch--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -247,13 +233,6 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "paranormal-activity-west-end-2025",
-      "loserFile": "whatsonstage--unknown.json",
-      "targetFile": "whatsonstage--rachel-agyekum.json",
-      "reason": "orphaned-duplicate-heal: whatsonstage--rachel-agyekum.json was flagged invalid after whatsonstage--unknown.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }
