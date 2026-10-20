@@ -51,3 +51,21 @@ test('prunes an existing pre-opening stamp, keeps a genuine one', () => {
   assert.deepStrictEqual(r.pruned, ['show-a']);
   assert.deepStrictEqual(r.stamps, { 'show-b': '2026-10-19T00:00:00.000Z' });
 });
+
+test('a pruned pre-opening stamp is re-stamped once cs is public after opening', () => {
+  const r = computeScorePublicSinceUpdates({ a: '2026-10-06T00:00:00.000Z' }, { a: 80 }, '2026-10-20T00:00:00.000Z', { a: '2026-10-18' });
+  assert.deepStrictEqual(r.pruned, ['a']);
+  assert.deepStrictEqual(r.stamps, { a: '2026-10-20T00:00:00.000Z' });
+});
+
+test('missing or unparseable openingDate fails open (stamp kept)', () => {
+  const prev = { a: '2026-10-06T00:00:00.000Z', b: '2026-10-06T00:00:00.000Z' };
+  const r = computeScorePublicSinceUpdates(prev, {}, '2026-10-20T00:00:00.000Z', { b: 'TBA' });
+  assert.deepStrictEqual(r.pruned, []);
+});
+
+test('grace boundary: exactly 2 days before opening is allowed, 1ms earlier is not', () => {
+  const open = { a: '2026-10-18' };
+  assert.deepStrictEqual(computeScorePublicSinceUpdates({}, { a: 1 }, '2026-10-16T00:00:00.000Z', open).newlyStamped, ['a']);
+  assert.deepStrictEqual(computeScorePublicSinceUpdates({}, { a: 1 }, '2026-10-15T23:59:59.999Z', open).newlyStamped, []);
+});

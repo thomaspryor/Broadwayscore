@@ -11,8 +11,9 @@
  * show's score currently public" signal (CLAUDE.md: canonical-critic-scores.ts
  * already trusts this same field). This module just watches for the FIRST
  * time each show crosses that line and stamps it, append-only — once
- * stamped, a stamp is never removed or updated, even if `cs` later goes
- * null again (a dip must not reset the score-regression floor's clock).
+ * stamped, a stamp is never updated, even if `cs` later goes null again (a dip
+ * must not reset the score-regression floor's clock). The one exception is a
+ * stamp from before the show opened (see isPlausibleStamp), which is pruned.
  */
 
 /**
