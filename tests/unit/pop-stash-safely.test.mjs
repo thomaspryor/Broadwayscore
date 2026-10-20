@@ -12,7 +12,7 @@ const env = { ...process.env, GIT_AUTHOR_NAME: 'Fixture', GIT_AUTHOR_EMAIL: 'fix
 
 function fixture(t) {
   const dir = mkdtempSync(path.join(os.tmpdir(), 'pop-stash-'));
-  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  t.after(() => rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const git = (...args) => execFileSync('git', args, { cwd: dir, env, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
   const write = (name, text) => {
     mkdirSync(path.dirname(path.join(dir, name)), { recursive: true });
