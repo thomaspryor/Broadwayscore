@@ -15,11 +15,12 @@ import { getSeason, getSeasonComparison, getSeasonProfiles, getRecoupFindings } 
 import { getMarketDate } from '@/lib/date-utils';
 import { formatDataDate } from '@/lib/biz-format';
 import { BASE_URL, SITE_OG_IMAGE, generateBreadcrumbSchema } from '@/lib/seo';
-import type { RecoupFindings, SeasonComparison, SeasonProfile } from '@/lib/season-profile';
+import { MIX_ROW_LABELS, MIX_ROW_LABELS_HIDDEN, mix, seasonBaseline, type RecoupFindings, type SeasonComparison, type SeasonProfile } from '@/lib/season-profile';
 
 import SeasonComparisonTable from '@/components/biz/SeasonComparisonTable';
 import SeasonHistoryTable from '@/components/biz/SeasonHistoryTable';
 import WhoRecoupsCard from '@/components/biz/WhoRecoupsCard';
+import MixCard, { type MixColumn } from '@/components/biz/MixCard';
 
 export const metadata: Metadata = {
   title: 'Broadway Season Report: Openings, Revivals and Who Recoups',
@@ -40,6 +41,13 @@ function shortSeason(season: string): string {
 
 const pct = (n: number, d: number) => `${Math.round((n / d) * 100)}%`;
 
+const HIDDEN_ROW_LABELS = new Set<string>(MIX_ROW_LABELS_HIDDEN);
+
+/** A finding with **figures** marked for bold; rendered by <Finding>. */
+function Finding({ text }: { text: string }) {
+  return <>{text.split(/\*\*(.+?)\*\*/g).map((part, i) => (i % 2 ? <strong key={i} className="font-semibold text-white">{part}</strong> : part))}</>;
+}
+
 function ordinal(n: number): string {
   const tens = n % 100;
   if (tens >= 11 && tens <= 13) return `${n}th`;
@@ -58,7 +66,7 @@ function keyFindings(
   const opened = comparison?.rows.find((r) => r.label === 'Opened so far');
   if (comparison?.inProgress && opened?.current != null && opened.last != null && comparison.lastSeason) {
     const avg = opened.avg != null ? ` (average for this point: ${opened.avg.toFixed(1)})` : '';
-    out.push(`${opened.current} new Broadway ${opened.current === 1 ? 'production has' : 'productions have'} opened so far this season, against ${opened.last} at this point in ${shortSeason(comparison.lastSeason)}${avg}.`);
+    out.push(`**${opened.current}** new Broadway ${opened.current === 1 ? 'production has' : 'productions have'} opened so far this season, against **${opened.last}** at this point in ${shortSeason(comparison.lastSeason)}${avg}.`);
   }
 
   // Last finished season's revival share, ranked among every season we track with 10+ openings.
@@ -76,7 +84,7 @@ function keyFindings(
     const rankText = rank === 1 && !tied
       ? `the highest in our records, which go back to ${shortSeason(oldest)}${runnerUp ? ` (next highest: ${pct(runnerUp.revivals, runnerUp.revivalKnown)} in ${shortSeason(runnerUp.season)})` : ''}`
       : `${tied ? 'tied for ' : ''}the ${rank === 1 ? '' : `${ordinal(rank)} `}highest of the ${ranked.length} seasons in our records, back to ${shortSeason(oldest)}`;
-    out.push(`Revivals were ${pct(last.revivals, last.revivalKnown)} of ${shortSeason(last.season)}'s new productions${vs}: ${rankText}.`);
+    out.push(`Revivals were **${pct(last.revivals, last.revivalKnown)}** of ${shortSeason(last.season)}'s new productions${vs}: ${rankText}.`);
   }
 
   const by = Object.fromEntries(recoup.buckets.map((b) => [b.label, b]));
@@ -86,12 +94,12 @@ function keyFindings(
     // State the two rates with their counts: a single "N times" multiple rests on a handful of
     // recoupments and overstates its precision (review, BRO-5777).
     if (pr.recouped / pr.total > (om.recouped / om.total) * 1.5) {
-      out.push(`For shows that opened ${shortSeason(recoup.range[0])} to ${shortSeason(recoup.range[1])}, ${pct(pr.recouped, pr.total)} of commercial play revivals have recouped (${pr.recouped} of ${pr.total}), against ${pct(om.recouped, om.total)} of original musicals (${om.recouped} of ${om.total}).`);
+      out.push(`For shows that opened ${shortSeason(recoup.range[0])} to ${shortSeason(recoup.range[1])}, **${pct(pr.recouped, pr.total)}** of commercial play revivals have recouped (${pr.recouped} of ${pr.total}), against **${pct(om.recouped, om.total)}** of original musicals (${om.recouped} of ${om.total}).`);
     }
   }
 
   if (recoup.under60.total >= 10) {
-    out.push(`Of ${recoup.under60.total} commercial shows from ${recoup.range ? `${shortSeason(recoup.range[0])} to ${shortSeason(recoup.range[1])}` : 'recent seasons'} that scored under 60 with critics and have since closed or recouped, ${recoup.under60.recouped === 0 ? 'none' : recoup.under60.recouped === 1 ? 'one' : recoup.under60.recouped} recouped.`);
+    out.push(`Of ${recoup.under60.total} commercial shows from ${recoup.range ? `${shortSeason(recoup.range[0])} to ${shortSeason(recoup.range[1])}` : 'recent seasons'} that scored under 60 with critics and have since closed or recouped, **${recoup.under60.recouped === 0 ? 'none' : recoup.under60.recouped === 1 ? 'one' : recoup.under60.recouped}** recouped.`);
   }
   return out;
 }
@@ -103,8 +111,19 @@ export default function SeasonReportPage() {
   const currentSeason = getSeason(today);
   const fullComparison = currentSeason ? getSeasonComparison(currentSeason) : null;
   // Public page: mix, pace and recoupment rows only; budgets and running costs stay on the held /biz.
-  const comparison = fullComparison ? { ...fullComparison, rows: fullComparison.rows.filter((r) => r.format !== 'money') } : null;
+  const comparison = fullComparison
+    ? { ...fullComparison, rows: fullComparison.rows.filter((r) => r.format !== 'money' && !HIDDEN_ROW_LABELS.has(r.label)) }
+    : null;
   const profiles = getSeasonProfiles();
+  const cur = profiles.find((p) => p.season === currentSeason) ?? null;
+  const { baseline, last: lastProfile } = currentSeason ? seasonBaseline(profiles, currentSeason) : { baseline: [], last: null };
+  const mixColumns: MixColumn[] = [];
+  if (cur) mixColumns.push({ label: `${shortSeason(cur.season)}${fullComparison?.inProgress ? ' so far' : ''}`, note: `${cur.productions} productions${fullComparison?.inProgress ? ', opened or announced' : ''}`, mix: mix(cur), showCounts: true, value: 'current' });
+  if (lastProfile) mixColumns.push({ label: shortSeason(lastProfile.season), note: `${lastProfile.productions} productions`, mix: mix(lastProfile), showCounts: true, value: 'last' });
+  if (baseline.length) mixColumns.push({ label: 'Prior seasons avg', note: `${baseline.length} seasons pooled`, mix: mix(...baseline), showCounts: false, value: 'avg' });
+  const pick = (labels: readonly string[]) => labels.map((l) => fullComparison?.rows.find((r) => r.label === l)).filter((r): r is NonNullable<typeof r> => !!r);
+  const overallRows = pick(MIX_ROW_LABELS.slice(0, 2));
+  const withinRows = pick(MIX_ROW_LABELS.slice(2));
   const history = profiles.filter((p) => !currentSeason || p.season <= currentSeason).slice(0, 11);
   const scores = new Map(getAllShows().map((s) => [s.slug, s.compositeScore == null ? null : Math.round(s.compositeScore)]));
   const recoup = getRecoupFindings(scores, today);
@@ -135,20 +154,10 @@ export default function SeasonReportPage() {
             <section className="mb-8">
               <h2 className="text-xl font-bold text-white mb-3">Key Findings</h2>
               <ul className="card rounded-xl p-4 space-y-2 text-gray-300 list-disc list-inside" data-testid="season-report-findings">
-                {findings.map((f) => <li key={f}>{f}</li>)}
+                {findings.map((f) => <li key={f}><Finding text={f} /></li>)}
               </ul>
             </section>
           )}
-
-          <section className="mb-8 text-sm text-gray-400" data-testid="season-report-definitions">
-            <h2 className="text-base font-semibold text-white mb-1">How we count</h2>
-            <p>
-              A season runs July 1 to June 30 by opening night. A production is a new Broadway opening; a revival is a
-              new production of a show seen on Broadway before. &ldquo;Commercial&rdquo; shows have investors to repay
-              (nonprofit-only runs and tour stops are left out), and a show has recouped when its producers report that
-              investors got their money back. Averages leave out the pandemic seasons 2019-20 and 2020-21.
-            </p>
-          </section>
 
           {comparison && (
             <section className="mb-8">
@@ -156,6 +165,14 @@ export default function SeasonReportPage() {
                 The {comparison.season} Season{comparison.inProgress ? ' So Far' : ''}
               </h2>
               <SeasonComparisonTable comparison={comparison} />
+            </section>
+          )}
+
+          {mixColumns.length > 0 && (
+            <section className="mb-8">
+              <h2 className="text-xl font-bold text-white mb-1">Production Mix</h2>
+              <p className="text-sm text-gray-400 mb-3">Originals and revivals, each split into musicals and plays.</p>
+              <MixCard columns={mixColumns} overallRows={overallRows} withinRows={withinRows} />
             </section>
           )}
 
@@ -170,6 +187,16 @@ export default function SeasonReportPage() {
               <SeasonHistoryTable profiles={history} currentSeason={currentSeason} showCapital={false} linkSeasons={false} />
             </section>
           )}
+
+          <section className="mb-8 text-sm text-gray-400" data-testid="season-report-definitions">
+            <h2 className="text-base font-semibold text-white mb-1">How we count</h2>
+            <p>
+              A season runs July 1 to June 30 by opening night. A production is a new Broadway opening; a revival is a
+              new production of a show seen on Broadway before. &ldquo;Commercial&rdquo; shows have investors to repay
+              (nonprofit-only runs and tour stops are left out), and a show has recouped when its producers report that
+              investors got their money back. Averages leave out the pandemic seasons 2019-20 and 2020-21.
+            </p>
+          </section>
 
           <footer className="text-sm text-gray-500 border-t border-white/5 pt-6">
             <p className="mb-2">

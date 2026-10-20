@@ -25,10 +25,10 @@ export default function SeasonComparisonTable({ comparison }: { comparison: Seas
               <th className="py-3 px-2 sm:px-4 font-medium text-right sm:whitespace-nowrap">
                 {shortSeason(season)}{inProgress ? ' so far' : ''}
               </th>
-              <th className="py-3 px-2 sm:px-4 font-medium text-right sm:whitespace-nowrap">
+              <th className="py-3 px-2 sm:px-4 font-medium text-right sm:whitespace-nowrap bg-white/[0.03]">
                 {lastSeason ? shortSeason(lastSeason) : 'Last season'}
               </th>
-              <th className="py-3 px-2 sm:px-4 font-medium text-right sm:whitespace-nowrap">Prior seasons avg</th>
+              <th className="py-3 px-2 sm:px-4 font-medium text-right sm:whitespace-nowrap bg-white/[0.03]">Prior seasons avg</th>
             </tr>
           </thead>
           <tbody>
@@ -39,8 +39,8 @@ export default function SeasonComparisonTable({ comparison }: { comparison: Seas
                   <span className="font-semibold text-white">{formatRowValue(row.format, row.current)}</span>
                   {row.currentDetail && <span className="block text-xs text-gray-500">{row.currentDetail}</span>}
                 </td>
-                <td className="py-2.5 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap">{formatRowValue(row.format, row.last)}</td>
-                <td className="py-2.5 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap">
+                <td className="py-2.5 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap bg-white/[0.03]">{formatRowValue(row.format, row.last)}</td>
+                <td className="py-2.5 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap bg-white/[0.03]">
                   {formatRowValue(row.format, row.avg)}
                   {row.avg != null && row.avgSeasons < baselineSeasons && (
                     <span className="block text-xs text-gray-500">{row.avgSeasons} {row.avgSeasons === 1 ? 'season' : 'seasons'}</span>

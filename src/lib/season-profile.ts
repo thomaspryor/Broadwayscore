@@ -255,6 +255,57 @@ function pctDetail(n: number, d: number): string | null {
 }
 
 /**
+ * The BASELINE_SEASONS seasons before `season` with openings, pandemic
+ * seasons left out, and the season just before it (even if disrupted; 2020-21
+ * had no openings at all). Newest first.
+ */
+export function seasonBaseline(profiles: SeasonProfile[], season: string): { baseline: SeasonProfile[]; last: SeasonProfile | null } {
+  const sorted = [...profiles].sort((a, b) => b.season.localeCompare(a.season));
+  const idx = sorted.findIndex((p) => p.season === season);
+  if (idx === -1) return { baseline: [], last: null };
+  return {
+    baseline: sorted.slice(idx + 1).filter((p) => p.productions > 0 && !DISRUPTED_SEASONS.has(p.season)).slice(0, BASELINE_SEASONS),
+    last: sorted.slice(idx + 1).find((p) => p.productions > 0) ?? null,
+  };
+}
+
+/**
+ * compareSeason rows about the production mix (the public report shows them in
+ * its Production Mix card, not the comparison table). One list so a renamed row
+ * fails season-profile.test.ts instead of silently reappearing.
+ */
+export const MIX_ROW_LABELS = [
+  'Musicals', 'Revivals (all)', 'Revivals among musicals', 'Revivals among plays',
+  'Musicals among originals', 'Musicals among revivals',
+] as const;
+/** Mix rows the report drops outright ('Plays' is 100% less 'Musicals' less specials). */
+export const MIX_ROW_LABELS_HIDDEN = [...MIX_ROW_LABELS, 'Plays'] as const;
+
+export interface MixBreakdown {
+  originalMusicals: number;
+  musicalRevivals: number;
+  originalPlays: number;
+  playRevivals: number;
+  /** Specials, operas, untyped, and musicals/plays with no original/revival flag. */
+  other: number;
+  total: number;
+}
+
+/** The 2x2 of musicals/plays by original/revival; several profiles are summed (pooled). */
+export function mix(...ps: SeasonProfile[]): MixBreakdown {
+  const m: MixBreakdown = { originalMusicals: 0, musicalRevivals: 0, originalPlays: 0, playRevivals: 0, other: 0, total: 0 };
+  for (const p of ps) {
+    m.originalMusicals += p.musicalRevivalKnown - p.musicalRevivals;
+    m.musicalRevivals += p.musicalRevivals;
+    m.originalPlays += p.playRevivalKnown - p.playRevivals;
+    m.playRevivals += p.playRevivals;
+    m.total += p.productions;
+  }
+  m.other = m.total - m.originalMusicals - m.musicalRevivals - m.originalPlays - m.playRevivals;
+  return m;
+}
+
+/**
  * Compare a season with the season before it and the BASELINE_SEASONS seasons
  * before it, leaving out the pandemic seasons (DISRUPTED_SEASONS). Mix shares
  * are pooled. Nonprofit and recoupment rows use only seasons we track well
@@ -267,12 +318,7 @@ export function compareSeason(profiles: SeasonProfile[], season: string, asOf: s
   const idx = sorted.findIndex((p) => p.season === season);
   if (idx === -1) return null;
   const cur = sorted[idx];
-  const baseline = sorted
-    .slice(idx + 1)
-    .filter((p) => p.productions > 0 && !DISRUPTED_SEASONS.has(p.season))
-    .slice(0, BASELINE_SEASONS);
-  // "Last season" is the one before, even if disrupted; 2020-21 had no openings at all.
-  const last = sorted.slice(idx + 1).find((p) => p.productions > 0) ?? null;
+  const { baseline, last } = seasonBaseline(sorted, season);
 
   const asOfMs = Date.parse(asOf);
   const start = seasonStartMs(season);
@@ -321,6 +367,9 @@ export function compareSeason(profiles: SeasonProfile[], season: string, asOf: s
   shareRow('Revivals (all)', (p) => p.revivals, (p) => p.revivalKnown);
   shareRow('Revivals among musicals', (p) => p.musicalRevivals, (p) => p.musicalRevivalKnown);
   shareRow('Revivals among plays', (p) => p.playRevivals, (p) => p.playRevivalKnown);
+  // The other way round (owner, 2026-10-20): what each of originals and revivals is made of.
+  shareRow('Musicals among originals', (p) => mix(p).originalMusicals, (p) => mix(p).originalMusicals + mix(p).originalPlays);
+  shareRow('Musicals among revivals', (p) => p.musicalRevivals, (p) => p.musicalRevivals + p.playRevivals);
 
   // Nonprofit share and recoupment need commercial.json coverage.
   const tracked = baseline.filter(hasTrackedCoverage);

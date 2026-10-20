@@ -38,9 +38,9 @@ export default function SeasonHistoryTable({ profiles, currentSeason, showCapita
               <th className="py-3 px-3 font-medium text-right whitespace-nowrap">Productions</th>
               <th className="py-3 px-3 font-medium text-right whitespace-nowrap">Musicals</th>
               <th className="py-3 px-3 font-medium text-right whitespace-nowrap">Revivals</th>
-              <th className="py-3 px-3 font-medium text-right whitespace-nowrap">Musical revivals</th>
-              <th className="py-3 px-3 font-medium text-right whitespace-nowrap">Play revivals</th>
-              <th className="py-3 px-3 font-medium text-right whitespace-nowrap">Nonprofit</th>
+              <th className="hidden md:table-cell py-3 px-3 font-medium text-right whitespace-nowrap">Revivals among musicals</th>
+              <th className="hidden md:table-cell py-3 px-3 font-medium text-right whitespace-nowrap">Revivals among plays</th>
+              <th className="hidden md:table-cell py-3 px-3 font-medium text-right whitespace-nowrap">Nonprofit</th>
               <th className="py-3 px-3 font-medium text-right whitespace-nowrap">Recouped</th>
               {showCapital && <th className="py-3 px-3 font-medium text-right whitespace-nowrap">Disclosed capital</th>}
             </tr>
@@ -72,9 +72,9 @@ export default function SeasonHistoryTable({ profiles, currentSeason, showCapita
                     {pct(p.revivals, p.revivalKnown)}
                     <span className="block text-xs text-gray-500">{p.revivals}</span>
                   </td>
-                  <td className="py-2.5 px-3 text-right text-gray-300">{pct(p.musicalRevivals, p.musicalRevivalKnown)}</td>
-                  <td className="py-2.5 px-3 text-right text-gray-300">{pct(p.playRevivals, p.playRevivalKnown)}</td>
-                  <td className="py-2.5 px-3 text-right text-gray-300">{tracked ? pct(p.nonprofit, p.tracked) : '—'}</td>
+                  <td className="hidden md:table-cell py-2.5 px-3 text-right text-gray-300">{pct(p.musicalRevivals, p.musicalRevivalKnown)}</td>
+                  <td className="hidden md:table-cell py-2.5 px-3 text-right text-gray-300">{pct(p.playRevivals, p.playRevivalKnown)}</td>
+                  <td className="hidden md:table-cell py-2.5 px-3 text-right text-gray-300">{tracked ? pct(p.nonprofit, p.tracked) : '—'}</td>
                   <td className="py-2.5 px-3 text-right text-gray-300 whitespace-nowrap">
                     {tracked || current ? `${p.recouped} of ${p.commercial}` : '—'}
                   </td>

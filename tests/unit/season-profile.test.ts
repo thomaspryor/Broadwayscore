@@ -16,6 +16,9 @@ import {
   buildSeasonProfiles,
   compareSeason,
   formatRowValue,
+  mix,
+  MIX_ROW_LABELS_HIDDEN,
+  seasonBaseline,
   type SeasonShowInput,
 } from '../../src/lib/season-profile';
 
@@ -234,4 +237,32 @@ test('who recoups: buckets over finished, well-tracked seasons; critic bands ove
   assert.equal(f.recoupedScored, 2);
   assert.equal(f.recoupedAvgScore, null); // 2 scores: under MIN_AVERAGE_SAMPLE
   assert.equal(f.closedUnrecoupedScored, 2);
+});
+
+test('2x2 mix: originals and revivals each split into musicals vs plays; pooled across seasons', () => {
+  const ps = buildSeasonProfiles([
+    show({ openingDate: '2024-10-01', type: 'musical', isRevival: false }),
+    show({ openingDate: '2024-10-02', type: 'musical', isRevival: true }),
+    show({ openingDate: '2024-10-03', type: 'play', isRevival: true }),
+    show({ openingDate: '2024-10-04', type: 'play', isRevival: true }),
+    show({ openingDate: '2024-10-05', type: 'play', isRevival: false }),
+    show({ openingDate: '2024-10-06', type: 'special', isRevival: false }),
+    show({ openingDate: '2023-10-01', type: 'musical', isRevival: false }),
+  ]);
+  const [y25, y24] = ps;
+  assert.deepEqual(mix(y25), { originalMusicals: 1, musicalRevivals: 1, originalPlays: 1, playRevivals: 2, other: 1, total: 6 });
+  assert.equal(mix(y25, y24).originalMusicals, 2);
+  const cmp = compareSeason(ps, '2024-2025', '2026-01-01')!;
+  const row = (l: string) => cmp.rows.find((r) => r.label === l)!;
+  assert.equal(row('Musicals among originals').current, 0.5);
+  assert.equal(row('Musicals among originals').currentDetail, '1 of 2');
+  assert.equal(row('Musicals among revivals').current, 1 / 3);
+  assert.equal(row('Musicals among originals').last, 1);
+  assert.deepEqual(seasonBaseline(ps, '2024-2025').baseline.map((p) => p.season), ['2023-2024']);
+});
+
+test('every mix row label the report relies on is a real compareSeason row', () => {
+  const ps = buildSeasonProfiles([show({ openingDate: '2024-10-01' }), show({ openingDate: '2023-10-01' })]);
+  const labels = new Set(compareSeason(ps, '2024-2025', '2026-01-01')!.rows.map((r) => r.label));
+  for (const l of MIX_ROW_LABELS_HIDDEN) assert.ok(labels.has(l), `compareSeason has no '${l}' row`);
 });

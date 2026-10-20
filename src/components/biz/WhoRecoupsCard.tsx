@@ -56,11 +56,27 @@ export default function WhoRecoupsCard({ findings }: { findings: RecoupFindings 
       </table>
       <div className="px-4 py-4 space-y-2 text-sm text-gray-300">
         {lowRate != null && highRate != null && (
-          <p>
-            <span className="text-white font-semibold">Reviews and recoupment line up.</span> Of {under60.total} shows that scored under{' '}
-            {LOW_SCORE} with critics and have closed or recouped, {under60.recouped} recouped ({Math.round(lowRate * 100)}%). Shows scoring {HIGH_SCORE} or
-            higher recouped {Math.round(highRate * 100)}% of the time ({atLeast80.recouped} of {atLeast80.total}).
-          </p>
+          <div>
+            <p className="text-white font-semibold mb-2">Reviews and recoupment line up</p>
+            <div className="space-y-2" data-testid="critic-bands">
+              {[
+                { label: `Critic score ${HIGH_SCORE}+`, r: highRate, band: atLeast80 },
+                { label: `Critic score under ${LOW_SCORE}`, r: lowRate, band: under60 },
+              ].map((row) => (
+                <div key={row.label} className="grid grid-cols-[8.5rem_1fr_auto] sm:grid-cols-[11rem_1fr_auto] items-center gap-3">
+                  <span className="text-gray-300">{row.label}</span>
+                  <div className="h-2 rounded-full bg-white/5">
+                    <div className="h-2 rounded-full bg-brand" style={{ width: `${row.r * 100}%` }} />
+                  </div>
+                  <span className="text-right whitespace-nowrap">
+                    <span className="font-semibold text-white">{Math.round(row.r * 100)}%</span>{' '}
+                    <span className="text-xs text-gray-500">{row.band.recouped} of {row.band.total}</span>
+                  </span>
+                </div>
+              ))}
+            </div>
+            <p className="mt-2 text-xs text-gray-500">Share that recouped, among shows that have closed or recouped.</p>
+          </div>
         )}
         {findings.recoupedAvgScore != null && findings.closedUnrecoupedAvgScore != null && (
           <p>
