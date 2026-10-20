@@ -21,7 +21,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { computeScorePublicSinceUpdates } = require('./lib/score-public-since.js');
+const { computeScorePublicSinceUpdates, stampReferenceDate } = require('./lib/score-public-since.js');
 
 const REPO = path.join(__dirname, '..');
 const SLIM_DIR = path.join(REPO, 'public', 'data', 'shows');
@@ -48,7 +48,10 @@ function loadOpeningDates() {
   const out = {};
   try {
     const j = JSON.parse(fs.readFileSync(path.join(REPO, 'data', 'shows.json'), 'utf8'));
-    for (const s of (Array.isArray(j) ? j : j.shows) || []) if (s.id && s.openingDate) out[s.id] = s.openingDate;
+    for (const s of (Array.isArray(j) ? j : j.shows) || []) {
+      const ref = stampReferenceDate(s);
+      if (s.id && ref) out[s.id] = ref;
+    }
   } catch { /* no shows.json: no opening-date check */ }
   return out;
 }

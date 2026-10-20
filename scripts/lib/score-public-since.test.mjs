@@ -69,3 +69,16 @@ test('grace boundary: exactly 2 days before opening is allowed, 1ms earlier is n
   assert.deepStrictEqual(computeScorePublicSinceUpdates({}, { a: 1 }, '2026-10-16T00:00:00.000Z', open).newlyStamped, ['a']);
   assert.deepStrictEqual(computeScorePublicSinceUpdates({}, { a: 1 }, '2026-10-15T23:59:59.999Z', open).newlyStamped, []);
 });
+
+test('with no opening date, the first preview is the reference (Christmas Carol Goes Wrong 2026)', () => {
+  const { stampReferenceDate, isPlausibleStamp } = createRequire(import.meta.url)('./score-public-since.js');
+  assert.equal(stampReferenceDate({ openingDate: '2026-12-01', previewsStartDate: '2026-11-01' }), '2026-12-01');
+  assert.equal(stampReferenceDate({ openingDate: null, previewsStartDate: '2026-12-18' }), '2026-12-18');
+  assert.equal(stampReferenceDate({}), null);
+  // Stamped in October from another production's reviews, previews in December: dropped.
+  assert.equal(isPlausibleStamp('2026-10-08T14:47:17Z', stampReferenceDate({ previewsStartDate: '2026-12-18' })), false);
+  // Within the grace period of the first preview: kept.
+  assert.equal(isPlausibleStamp('2026-12-17T00:00:00Z', stampReferenceDate({ previewsStartDate: '2026-12-18' })), true);
+  // No dates at all: nothing to check against, kept.
+  assert.equal(isPlausibleStamp('2026-10-08T14:47:17Z', stampReferenceDate({})), true);
+});

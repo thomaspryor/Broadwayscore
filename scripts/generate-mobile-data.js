@@ -18,6 +18,7 @@ const fs = require('fs');
 const path = require('path');
 const { shouldHideReviews } = require('./lib/should-hide-reviews');
 const { buildMobileCriticScore } = require('./lib/mobile-critic-score');
+const { loadCoverageFloorInputs, coverageFloorOptsForShow } = require('./lib/coverage-floor-inputs');
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 const { isHiddenFromAppFeed } = require('./lib/markets');
 const { isUpcomingTag } = require('./lib/opening-night-completeness');
@@ -156,12 +157,17 @@ const visibleShows = shows.filter(show =>
   (showsWithScores.has(show.id) || show.status !== 'closed')
 );
 
+// The website show page's coverage floor inputs, for cr.pq (same loader as src/lib/data-core.ts).
+const coverageFloorInputs = loadCoverageFloorInputs(dataDir);
+
 const mobileShows = visibleShows.map(show => {
   const showReviews = reviewsByShow[show.id] || [];
 
   // Pre-2005 closed shows: hide reviews entirely (unreliable data from bulk import)
   const hideReviews = shouldHideReviews(show);
-  let criticScore = hideReviews ? null : buildMobileCriticScore(show, showReviews, outletRegistry);
+  let criticScore = hideReviews
+    ? null
+    : buildMobileCriticScore(show, showReviews, outletRegistry, coverageFloorOptsForShow(coverageFloorInputs, show));
 
   // Composite score = critic score (V1: critic-only, same as engine.ts line 618)
   const compositeScore = criticScore ? criticScore.s : null;

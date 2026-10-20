@@ -53,6 +53,21 @@ function computeScorePublicSinceUpdates(prevStamps, csByShowId, nowIso, openingD
 
 const PRE_OPENING_GRACE_DAYS = 2;
 
+/**
+ * The date a stamp is checked against: the opening date, or, while that is
+ * unknown, the first preview. Opening never comes before previews, so a
+ * stamp more than the grace period before the first preview is also before
+ * opening. Without this fallback a show with no opening date yet kept any
+ * stamp (Christmas Carol Goes Wrong, previews in December, showed a score
+ * on its page in October from another production's reviews).
+ *
+ * @param {{openingDate?: string | null, previewsStartDate?: string | null}} show
+ * @returns {string | null}
+ */
+function stampReferenceDate(show) {
+  return (show && (show.openingDate || show.previewsStartDate)) || null;
+}
+
 /** False when `stampIso` is more than the grace period before `openingDate`. */
 function isPlausibleStamp(stampIso, openingDate) {
   if (!openingDate) return true;
@@ -62,4 +77,4 @@ function isPlausibleStamp(stampIso, openingDate) {
   return stampMs >= openMs - PRE_OPENING_GRACE_DAYS * 86400000;
 }
 
-module.exports = { computeScorePublicSinceUpdates, isPlausibleStamp, PRE_OPENING_GRACE_DAYS };
+module.exports = { computeScorePublicSinceUpdates, isPlausibleStamp, stampReferenceDate, PRE_OPENING_GRACE_DAYS };

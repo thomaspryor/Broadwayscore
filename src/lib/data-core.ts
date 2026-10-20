@@ -28,7 +28,7 @@ import { getShowAwards } from './data-awards';
 import { BROWSE_PAGES, BrowsePageConfig, BrowseFilterContext, getAllBrowseSlugs as getBrowseSlugsFromConfig, getBrowsePageConfig } from '@/config/browse-pages';
 import { slugify as urlSlugify } from '../../scripts/lib/url-slug';
 import { broadwayTheaterNames, stubTheaterName, HIDDEN_LONDON_IDS } from '../../scripts/lib/page-name-sources';
-import { isPlausibleStamp } from '../../scripts/lib/score-public-since';
+import { loadCoverageFloorInputs, coverageFloorOptsForShow } from '../../scripts/lib/coverage-floor-inputs';
 import { resolveNameRedirect, type SlugRedirectMap } from './slug-redirects';
 // Import raw data (loaded at build time for static generation)
 import showsData from '../../data/shows.json';
@@ -72,54 +72,13 @@ for (const r of reviews) {
   else reviewsByShowId.set(r.showId, [r]);
 }
 
-// Coverage Verdict (S2/S3, tasks #906/#905) — read once at module load, same
-// fail-open contract as generate-mobile-show-details.js's `cov` wiring: a
-// missing/unreadable audit file (or COVERAGE_GATE_DISABLED) just means every
-// show gets no `cov`/`scorePublicSince`, so existing TBD behavior is
-// unchanged. fs.readFileSync (not a static JSON import) because these audit
-// files can legitimately be absent on a fresh checkout — a static import
-// would hard-fail the build instead of degrading gracefully.
-const coverageGateDisabled = /^(1|true|yes|on)$/i.test(String(process.env.COVERAGE_GATE_DISABLED || '').trim());
-const covByShowId = new Map<string, ComputedShow['cov']>();
-const scorePublicSinceByShowId = new Map<string, string>();
-const coverageAckedShowIds = new Set<string>();
-// Same namespace pre-send-check.mjs writes with --ack-gap=<showId> (see
-// scripts/lib/t1-scoreboard.js cellKey/NEWSLETTER_GAP_NS) — one ack covers
-// both the newsletter swap gate and this show-page floor gate, since both
-// are the owner acknowledging the same underlying coverage gap on the same
-// show. The literal name is a historical newsletter-first artifact, not a
-// scoping restriction.
-const COVERAGE_ACK_NS_SUFFIX = '::newsletter-gap';
-if (!coverageGateDisabled) {
-  try {
-    const gapAudit = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data', 'audit', 'show-review-gap.json'), 'utf-8'));
-    for (const r of (gapAudit.results || [])) {
-      if (!r || !r.showId || !r.censusVerdict) continue;
-      covByShowId.set(r.showId, {
-        state: r.censusVerdict.verdict,
-        liveCount: r.censusVerdict.liveCount,
-        candidateCount: r.censusVerdict.candidateCount,
-        computedAt: r.computedAt || null,
-      });
-    }
-  } catch { /* absent/unreadable — every show gets no cov, existing behavior unchanged */ }
-  try {
-    const stamps = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data', 'audit', 'score-public-since.json'), 'utf-8'));
-    for (const [showId, iso] of Object.entries(stamps)) {
-      if (typeof iso === 'string') scorePublicSinceByShowId.set(showId, iso);
-    }
-  } catch { /* absent/unreadable — every show gets no scorePublicSince */ }
-  try {
-    const acks = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data', 'audit', 't1-coverage-ack.json'), 'utf-8'));
-    if (Array.isArray(acks)) {
-      for (const a of acks) {
-        if (a && typeof a.key === 'string' && a.key.endsWith(COVERAGE_ACK_NS_SUFFIX)) {
-          coverageAckedShowIds.add(a.key.slice(0, -COVERAGE_ACK_NS_SUFFIX.length));
-        }
-      }
-    }
-  } catch { /* absent/unreadable — every show gets coverageAcked=false */ }
-}
+// Coverage Verdict (S2/S3, tasks #906/#905) — read once at module load by
+// the loader the app feed also uses (scripts/lib/coverage-floor-inputs.js),
+// so the site's show page and the app's cr.pq read the same verdicts, stamps
+// and acks. Fail-open: a missing/unreadable audit file (or
+// COVERAGE_GATE_DISABLED) just means every show gets no
+// `cov`/`scorePublicSince`, so existing TBD behavior is unchanged.
+const coverageFloorInputs = loadCoverageFloorInputs(path.join(process.cwd(), 'data'));
 
 // Cache for computed shows
 let computedShowsCache: ComputedShow[] | null = null;
@@ -134,12 +93,12 @@ export function getAllShows(): ComputedShow[] {
     .filter((show: any) => !show._devOnly)
     .map(show => {
       const computed = computeShowData(show, reviewsByShowId.get(show.id) || [], audience, buzz);
-      const cov = covByShowId.get(show.id);
+      const cov = coverageFloorInputs.covByShowId.get(show.id);
       if (cov) computed.cov = cov;
-      const scorePublicSince = scorePublicSinceByShowId.get(show.id);
-      // A stamp from before the show opened is a stale wrong-production blip, not a settled score.
-      if (scorePublicSince && isPlausibleStamp(scorePublicSince, show.openingDate)) computed.scorePublicSince = scorePublicSince;
-      if (coverageAckedShowIds.has(show.id)) computed.coverageAcked = true;
+      // A stamp from before the show opened is dropped there (stale wrong-production blip).
+      const floorOpts = coverageFloorOptsForShow(coverageFloorInputs, show);
+      if (floorOpts.scorePublicSince) computed.scorePublicSince = floorOpts.scorePublicSince;
+      if (floorOpts.coverageAcked) computed.coverageAcked = true;
       return computed;
     });
 
