@@ -13,7 +13,6 @@ function applyDtliExcerpt(review, dtliReview) {
   if (review.source) sources.add(review.source);
   sources.add('dtli');
   review.sources = Array.from(sources);
-  if (!review.source) review.source = review.sources[0];
   return true;
 }
 

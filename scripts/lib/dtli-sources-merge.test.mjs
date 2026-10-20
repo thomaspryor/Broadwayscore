@@ -20,11 +20,11 @@ test('row with no sources array gets source plus dtli', () => {
   assert.deepEqual(r.sources, ['web-search', 'dtli']);
 });
 
-test('row with neither source nor sources gets dtli as source', () => {
+test('row with neither source nor sources gets sources only; source stays unset', () => {
   const r = {};
   applyDtliExcerpt(r, dtli);
   assert.deepEqual(r.sources, ['dtli']);
-  assert.equal(r.source, 'dtli');
+  assert.equal(r.source, undefined);
 });
 
 test('existing real excerpt is untouched and sources unchanged', () => {
