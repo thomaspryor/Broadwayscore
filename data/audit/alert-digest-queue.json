@@ -1153,5 +1153,19 @@
       }
     ],
     "queuedAt": "2026-10-20T00:08:03.255Z"
+  },
+  {
+    "conditionKey": "ugc:error-spike",
+    "title": "Accounts features are throwing errors",
+    "description": "In the last 24 hours the accounts features logged 13 errors on 3 devices (offline and expired-session errors not counted).",
+    "severity": "error",
+    "url": "https://broadwayscorecard.com/admin/accounts",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-20T00:24:38.832Z"
   }
 ]
