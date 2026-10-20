@@ -952,45 +952,47 @@ async function runAggregators(show) {
       let trCooldown = false;
       try { trCooldown = trMiss.isTrDiscoveryInCooldown(show, trMiss.readRoundupMisses()); } catch { /* fail open */ }
       if (trCooldown) console.log('  theatre.reviews: skipped (no roundup on recent check)');
-      const trStats = {};
-      if (!trCooldown) console.log('  Checking theatre.reviews...');
-      const tr = trCooldown ? null : await discoverTrRoundupHtml(show, { stats: trStats });
-      if (tr) {
-        // checkArchiveCategory (BRO-3616) — discoverTrRoundupHtml's own
-        // verifyAggregatorUrl gate validates the candidate URL, but this
-        // freshly-discovered HTML was previously written straight to the
-        // shared archive cache (read back later by gather-reviews.js's own
-        // guarded TR site, BRO-3610) with ZERO category/cross-market-sibling
-        // check of its own — a regional show's page vs. its later Broadway
-        // transfer could still poison the write.
-        const trCatCheck = checkArchiveCategory(tr.html, show, siblingCategoriesByShowId()[show.id]);
-        if (!trCatCheck.ok) {
-          console.log(`  theatre.reviews: page mismatch (${trCatCheck.reason}) — not archiving`);
-        } else {
-          // Cache to archive for future runs
-          const archivePath = path.join(DATA_DIR, 'aggregator-archive', 'theatre-reviews', `${show.id}.html`);
-          if (!fs.existsSync(path.dirname(archivePath))) fs.mkdirSync(path.dirname(archivePath), { recursive: true });
-          fs.writeFileSync(archivePath, tr.html);
+      if (!trCooldown) {
+        console.log('  Checking theatre.reviews...');
+        const tr = await discoverTrRoundupHtml(show);
+        const trStats = discoverTrRoundupHtml.lastStats || {};
+        if (tr) {
+          // checkArchiveCategory (BRO-3616) — discoverTrRoundupHtml's own
+          // verifyAggregatorUrl gate validates the candidate URL, but this
+          // freshly-discovered HTML was previously written straight to the
+          // shared archive cache (read back later by gather-reviews.js's own
+          // guarded TR site, BRO-3610) with ZERO category/cross-market-sibling
+          // check of its own — a regional show's page vs. its later Broadway
+          // transfer could still poison the write.
+          const trCatCheck = checkArchiveCategory(tr.html, show, siblingCategoriesByShowId()[show.id]);
+          if (!trCatCheck.ok) {
+            console.log(`  theatre.reviews: page mismatch (${trCatCheck.reason}) — not archiving`);
+          } else {
+            // Cache to archive for future runs
+            const archivePath = path.join(DATA_DIR, 'aggregator-archive', 'theatre-reviews', `${show.id}.html`);
+            if (!fs.existsSync(path.dirname(archivePath))) fs.mkdirSync(path.dirname(archivePath), { recursive: true });
+            fs.writeFileSync(archivePath, tr.html);
 
-          const trReviews = extractTheatreReviews(tr.html, show.id);
-          console.log(`  theatre.reviews: ${trReviews.length} reviews found`);
-          for (const r of trReviews) {
-            results.push({
-              showId: show.id,
-              outletId: resolveArchiveRowOutletId({ url: r.url, outletLabel: r.outlet, cachedOutletId: r.outletId }),
-              outlet: r.outlet || 'Unknown',
-              criticName: r.critic || 'Unknown',
-              url: r.url || '',
-              excerpt: r.excerpt || '',
-              // TR rates shows independently — don't use as outlet's score
-              theatreReviewsStars: r.stars ? `${r.stars}/${r.starsOutOf || 5}` : undefined,
-              source: 'theatre-reviews',
-            });
+            const trReviews = extractTheatreReviews(tr.html, show.id);
+            console.log(`  theatre.reviews: ${trReviews.length} reviews found`);
+            for (const r of trReviews) {
+              results.push({
+                showId: show.id,
+                outletId: resolveArchiveRowOutletId({ url: r.url, outletLabel: r.outlet, cachedOutletId: r.outletId }),
+                outlet: r.outlet || 'Unknown',
+                criticName: r.critic || 'Unknown',
+                url: r.url || '',
+                excerpt: r.excerpt || '',
+                // TR rates shows independently — don't use as outlet's score
+                theatreReviewsStars: r.stars ? `${r.stars}/${r.starsOutOf || 5}` : undefined,
+                source: 'theatre-reviews',
+              });
+            }
           }
+        } else {
+          console.log('  theatre.reviews: no roundup found');
+          try { trMiss.recordTrMiss(show, trStats); } catch { /* ledger write is best-effort */ }
         }
-      } else if (!trCooldown) {
-        console.log('  theatre.reviews: no roundup found');
-        try { trMiss.recordTrMiss(show, trStats); } catch { /* ledger write is best-effort */ }
       }
     } catch (err) {
       console.log(`  theatre.reviews error: ${err.message}`);

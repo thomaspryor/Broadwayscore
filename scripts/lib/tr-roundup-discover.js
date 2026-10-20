@@ -39,6 +39,7 @@ async function discoverTrRoundupHtml(show, opts = {}) {
   // opts.stats (optional, mutated): { fetchErrors } — lets the gap audit
   // distinguish "no roundup exists" from "discovery could not fetch anything".
   const stats = opts.stats || {};
+  discoverTrRoundupHtml.lastStats = stats; // side channel for callers that pass no opts
   stats.fetchErrors = 0;
   stats.searchCompleted = false;
 
