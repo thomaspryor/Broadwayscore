@@ -3680,7 +3680,8 @@ function createReviewFile(showId, reviewData, options = {}) {
   // BRO-5791: merged writes into an existing file go through safeWriteReview (phantom,
   // temporal-byline, cross-market and protected-field guards), not a raw writeFileSync.
   const writeMergedInto = (existingFile, data) => {
-    const res = safeWriteReview(path.join(showDir, existingFile), data);
+    // merge:false: `data` already contains the existing record; a disk re-merge would resurrect fields mergeReviews dropped (isPreviewPlaceholder).
+    const res = safeWriteReview(path.join(showDir, existingFile), data, { merge: false });
     if (res && res.wrote === false) {
       console.log(`    ✗ Merge into ${existingFile} refused by write guard (${res.skipped || 'locked'})`);
       return false;

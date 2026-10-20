@@ -175,6 +175,12 @@ function main() {
         continue;
       }
 
+      // BRO-5791: never mint a review folder for an id shows.json lacks (checked before counting).
+      if (!fs.existsSync(targetDir) && (!knownShowIds || !knownShowIds.has(targetShowId))) {
+        summary.targetNotInShowsJson = (summary.targetNotInShowsJson || 0) + 1;
+        continue;
+      }
+
       summary.rerouted++;
       summary.byFromShow[showId] = (summary.byFromShow[showId] || 0) + 1;
       summary.byToShow[targetShowId] = (summary.byToShow[targetShowId] || 0) + 1;
@@ -186,10 +192,7 @@ function main() {
 
       try {
         // BRO-5791: never mint a review folder for an id shows.json lacks.
-        if (!fs.existsSync(targetDir)) {
-          if (!knownShowIds || !knownShowIds.has(targetShowId)) { summary.targetNotInShowsJson = (summary.targetNotInShowsJson || 0) + 1; continue; }
-          fs.mkdirSync(targetDir, { recursive: true });
-        }
+        if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
         // Stamp provenance, clear wrongProduction (flag was correct for prior dir).
         const migrated = {
           ...data,
