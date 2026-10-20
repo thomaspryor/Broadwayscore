@@ -174,6 +174,9 @@ function deriveOutletDisplayName({ outletId, reviewOutletNames = [], siteNames =
     // A name that is just the lowercase slug adds nothing over the fallback.
     if (name === String(outletId).toLowerCase()) continue;
     if (compactName(name) !== idCompact) continue;
+    // gather-reviews.js writes review.outlet as the capitalized domain base for an
+    // unresolved host ("Hackneycitizen"); that label IS the slug fallback, not a masthead (BRO-5732).
+    if (!String(outletId).includes('-') && name === String(outletId).charAt(0).toUpperCase() + String(outletId).slice(1).toLowerCase()) continue;
     counts.set(name, (counts.get(name) || 0) + 1);
   }
   const best = [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0];

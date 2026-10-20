@@ -96,3 +96,14 @@ test('rebuild and audit writers gate on displayNameInferred (no entry written wi
     assert.match(src, /displayNameInferred(:\s*nameUnresolved)?,?\s*\n?\s*\}\);/, `${f} must pass displayNameInferred to decideOutletAutoRegistration`);
   }
 });
+
+test('a review label that is just the capitalized slug (gather-reviews fallback) is not a masthead', () => {
+  assert.deepEqual(
+    deriveOutletDisplayName({ outletId: 'hackneycitizen', reviewOutletNames: ['Hackneycitizen', 'Hackneycitizen'] }),
+    { displayName: 'Hackneycitizen', inferred: true },
+  );
+  // a real multi-word label for the same id still wins
+  assert.equal(deriveOutletDisplayName({ outletId: 'hackneycitizen', reviewOutletNames: ['Hackneycitizen', 'Hackney Citizen'] }).displayName, 'Hackney Citizen');
+  // short real names are unaffected
+  assert.deepEqual(deriveOutletDisplayName({ outletId: 'variety', reviewOutletNames: ['Variety'] }), { displayName: 'Variety', inferred: false });
+});
