@@ -717,14 +717,13 @@ function recoupWeeks(
   data: ShowCommercial,
   show: { openingDate?: string | null; closingDate?: string | null },
 ) {
-  // An estimated recoupment date cannot anchor a week count (BRO-5568: Chicago "March 1997" is ours).
-  if (data.isEstimate?.recoupedDate === true) return { weeks: null, isEstimate: false };
-  return resolveRecoupWeeks(
-    recoupClockStart(data, show.openingDate),
-    data.recoupedDate,
-    show.closingDate,
-    Object.prototype.hasOwnProperty.call(RECOUPED_DURING_RUN_ESTIMATE, slug),
-  );
+  return resolveRecoupWeeks({
+    startDate: recoupClockStart(data, show.openingDate),
+    recoupedDate: data.recoupedDate,
+    closingDate: show.closingDate,
+    allowEstimate: Object.prototype.hasOwnProperty.call(RECOUPED_DURING_RUN_ESTIMATE, slug),
+    dateIsEstimate: data.isEstimate?.recoupedDate === true,
+  });
 }
 
 function positiveOrNull(value: number | null | undefined): number | null {

@@ -506,8 +506,9 @@ export function getRecoupmentAttribution(commercial: ShowCommercial): Recoupment
   const notAnnounced = isUnannouncedRecoupment(commercial);
   const qualifier = notAnnounced ? NOT_ANNOUNCED_LABEL : null;
 
+  const dateIsEstimate = commercial.isEstimate?.recoupedDate === true;
   let confidence: RecoupmentAttribution['confidence'];
-  if (sourceUrl && !notAnnounced) {
+  if (sourceUrl && !notAnnounced && !dateIsEstimate) {
     const basis = (commercial.sources ?? []).some((s) => s.type === 'sec' && s.url === sourceUrl)
       ? 'SEC filing'
       : 'Trade press report';
@@ -516,7 +517,7 @@ export function getRecoupmentAttribution(commercial: ShowCommercial): Recoupment
     confidence = {
       level: 'medium',
       label: 'Medium confidence',
-      basis: qualifier ?? 'Industry reports, no linked source',
+      basis: qualifier ?? (dateIsEstimate ? 'Recoupment reported, date is our estimate' : 'Industry reports, no linked source'),
     };
   }
   const isSec = !!sourceUrl && (commercial.sources ?? []).some((s) => s.type === 'sec' && s.url === sourceUrl);

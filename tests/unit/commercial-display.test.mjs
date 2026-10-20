@@ -349,6 +349,9 @@ test('P0-8: neutral wording, high confidence only with a trade or SEC link', () 
   // BRO-5568: a date we estimated prints "~", a reported one stays plain.
   const estimated = getRecoupmentAttribution({ ...base, recouped: true, recoupedDate: '1997-03', isEstimate: { recoupedDate: true } });
   assert.equal(estimated.headline, 'Recouped, ~March 1997');
+  // An estimated date is never "High confidence" even with a cited trade source (BRO-5568).
+  assert.equal(getRecoupmentAttribution({ ...base, recouped: true, recoupedDate: '1997-03', isEstimate: { recoupedDate: true }, sources: [{ type: 'trade', url: 'https://example.com/a', date: '1997-04-01' }] }).confidence.level, 'medium');
+  assert.equal(getRecoupmentAttribution({ ...base, recouped: true, recoupedDate: '1997-03', sources: [{ type: 'trade', url: 'https://example.com/a', date: '1997-04-01' }] }).confidence.level, 'high');
   const reported = getRecoupmentAttribution({ ...base, recouped: true, recoupedDate: '1997-03', isEstimate: { recoupedDate: false } });
   assert.equal(reported.headline, 'Recouped, March 1997');
   assert.equal(unlinked.confidence.level, 'medium');

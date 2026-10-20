@@ -97,6 +97,21 @@ function saysRecoupmentUnannounced(text) {
   return NOT_ANNOUNCED_RE.test(text || '');
 }
 
+// A recoupedSource that calls the recoupment DATE our estimate: "No public report
+// gives the date; March 1997 is our estimate." (Chicago), "the 1999 date is an
+// estimate." (The Lion King). Such a record carries isEstimate.recoupedDate so the
+// card prints "~" and /biz counts no weeks from it (BRO-5568).
+const DATE_ESTIMATE_RE = /\b(?:date|month|year)\b[^.;]{0,40}\b(?:is|was)\b[^.;]{0,12}\b(?:an |our )?estimate\b|\bis our estimate\b|\bestimated (?:date|month|year)\b|\beditorial judgment\b[^.;]{0,30}\bdated to\b/i;
+
+/**
+ * True when the recoupment source says the recoupment date is an estimate.
+ * @param {string | null | undefined} text
+ * @returns {boolean}
+ */
+function saysRecoupmentDateIsEstimate(text) {
+  return DATE_ESTIMATE_RE.test(text || '');
+}
+
 // A source that opens by calling the figure an estimate: "Estimate: $2,000,887
 // NYC theatrical tax credit ... at the 25% credit rate" (Plaza Suite),
 // "Estimated from ...", "Est. $5M", "~$8M". Only an explicit marker counts:
@@ -181,6 +196,6 @@ function retagCapitalizationBasis(rec) {
 }
 
 module.exports = {
-  publicSourceText, isEstimatedCapitalization, saysRecoupmentUnannounced, sourceOpensAsEstimate,
+  publicSourceText, isEstimatedCapitalization, saysRecoupmentUnannounced, saysRecoupmentDateIsEstimate, sourceOpensAsEstimate,
   CAPITALIZATION_BASES, capitalizationBasisFromText, isMaximumCapitalization, retagCapitalizationBasis,
 };

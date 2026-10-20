@@ -79,19 +79,25 @@ test('weeksOpenToClose: missing or reversed dates are null', () => {
 
 // ── resolveRecoupWeeks: the owner's per-show estimate, and only that ─────────
 test('resolveRecoupWeeks: a measured figure always wins, estimate flag or not', () => {
-  assert.deepEqual(resolveRecoupWeeks('2024-03-10', '2024-09', null, true, NOW), { weeks: 27, isEstimate: false });
+  assert.deepEqual(resolveRecoupWeeks({ startDate: '2024-03-10', recoupedDate: '2024-09', closingDate: null, allowEstimate: true, now: NOW }), { weeks: 27, isEstimate: false });
 });
 test('resolveRecoupWeeks: listed show, reported after closing -> opening to closing, marked estimate', () => {
-  assert.deepEqual(resolveRecoupWeeks('2025-03-17', '2026-06', '2025-08-31', true, NOW), { weeks: 24, isEstimate: true });
+  assert.deepEqual(resolveRecoupWeeks({ startDate: '2025-03-17', recoupedDate: '2026-06', closingDate: '2025-08-31', allowEstimate: true, now: NOW }), { weeks: 24, isEstimate: true });
 });
 test('resolveRecoupWeeks: unlisted show stays blank (Kimberly Akimbo)', () => {
-  assert.deepEqual(resolveRecoupWeeks('2022-11-10', '2026-04', '2024-04-28', false, NOW), { weeks: null, isEstimate: false });
+  assert.deepEqual(resolveRecoupWeeks({ startDate: '2022-11-10', recoupedDate: '2026-04', closingDate: '2024-04-28', allowEstimate: false, now: NOW }), { weeks: null, isEstimate: false });
 });
 test('resolveRecoupWeeks: listed show with no closing date, a year-only date or a report inside the run gets no estimate', () => {
   // No closing date: the measured figure (to the report month) applies, never the estimate.
-  assert.deepEqual(resolveRecoupWeeks('2025-03-17', '2026-06', null, true, NOW), { weeks: 65, isEstimate: false });
-  assert.deepEqual(resolveRecoupWeeks('2025-03-17', '2026', '2025-08-31', true, NOW), { weeks: null, isEstimate: false });
-  assert.deepEqual(resolveRecoupWeeks('2025-03-17', '2025-06', '2025-08-31', true, NOW), { weeks: 13, isEstimate: false });
+  assert.deepEqual(resolveRecoupWeeks({ startDate: '2025-03-17', recoupedDate: '2026-06', closingDate: null, allowEstimate: true, now: NOW }), { weeks: 65, isEstimate: false });
+  assert.deepEqual(resolveRecoupWeeks({ startDate: '2025-03-17', recoupedDate: '2026', closingDate: '2025-08-31', allowEstimate: true, now: NOW }), { weeks: null, isEstimate: false });
+  assert.deepEqual(resolveRecoupWeeks({ startDate: '2025-03-17', recoupedDate: '2025-06', closingDate: '2025-08-31', allowEstimate: true, now: NOW }), { weeks: 13, isEstimate: false });
+});
+
+test('resolveRecoupWeeks: a date we estimated is never counted, listed or not (Chicago, BRO-5568)', () => {
+  assert.deepEqual(resolveRecoupWeeks({ startDate: '1996-11-14', recoupedDate: '1997-03', closingDate: null, allowEstimate: false, dateIsEstimate: true, now: NOW }), { weeks: null, isEstimate: false });
+  assert.deepEqual(resolveRecoupWeeks({ startDate: '1996-11-14', recoupedDate: '1997-03', closingDate: null, allowEstimate: false, dateIsEstimate: false, now: NOW }), { weeks: 17, isEstimate: false });
+  assert.deepEqual(resolveRecoupWeeks({ startDate: '2025-03-17', recoupedDate: '2026-06', closingDate: '2025-08-31', allowEstimate: true, dateIsEstimate: true, now: NOW }), { weeks: null, isEstimate: false });
 });
 
 // ── P0-5: calculateWeeksToRecoup ────────────────────────────────────────────

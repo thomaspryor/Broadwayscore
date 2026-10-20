@@ -365,7 +365,7 @@ function commercialRecordErrors(showId, show, ctx = {}) {
 }
 
 const { addedPlaceholderSources } = require('./commercial-sources');
-const { saysRecoupmentUnannounced, publicSourceText, sourceOpensAsEstimate } = require('./public-source-text');
+const { saysRecoupmentUnannounced, saysRecoupmentDateIsEstimate, publicSourceText, sourceOpensAsEstimate } = require('./public-source-text');
 
 /**
  * Rules that depend on shows.json state as well as the record, plus new rules
@@ -503,6 +503,22 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
     const flaggedBefore = !!(prior && prior.isEstimate && prior.isEstimate.capitalization === true);
     if (!flaggedBefore || prior.capitalizationSource !== show.capitalizationSource) {
       out.push(`commercial.json: "${showId}" isEstimate.capitalization prints "~" but capitalizationSource reads as a reported figure (if it is an estimate, open the source with "Estimate:" or "Estimated by ..."; if the source reports it, clear the flag)`);
+    }
+  }
+  // isEstimate.recoupedDate prints the date with "~" and counts no weeks from it, so
+  // it goes with a source that calls the date our estimate, and the reverse (BRO-5568:
+  // Chicago "March 1997", Phantom 1989 printed as reported). Advisory (§19); only a
+  // write that sets the flag or changes the source counts.
+  if (show.recouped === true) {
+    const prior = ctx.priorRecord;
+    const flagged = !!(show.isEstimate && show.isEstimate.recoupedDate === true);
+    const says = saysRecoupmentDateIsEstimate(show.recoupedSource);
+    const priorFlagged = !!(prior && prior.isEstimate && prior.isEstimate.recoupedDate === true);
+    const changed = !prior || prior.recoupedSource !== show.recoupedSource || priorFlagged !== flagged;
+    if (changed && says && !flagged) {
+      out.push(`commercial.json: "${showId}" recoupedSource says the recoupment date is an estimate but isEstimate.recoupedDate is not set (the card would print it as reported and /biz would count weeks from it)`);
+    } else if (changed && flagged && !says) {
+      out.push(`commercial.json: "${showId}" isEstimate.recoupedDate prints "~" but recoupedSource does not say the date is our estimate (if the date is reported, drop the flag)`);
     }
   }
   if (isPrematureSilenceLabel(show, ctx.showRecord)) {

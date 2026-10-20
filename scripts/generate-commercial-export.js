@@ -91,6 +91,8 @@ for (const [slug, data] of Object.entries(commercial.shows)) {
     isRunningCostEstimate: data.isEstimate?.weeklyRunningCost || false,
     recouped: data.recouped,
     recoupedDate: data.recoupedDate,
+    // The date is our estimate when true (BRO-5568); recoupedDate is when the recoupment was REPORTED.
+    isRecoupDateEstimate: data.isEstimate?.recoupedDate === true,
     recoupedWeeks: data.recoupedWeeks,
     recoupedSource: data.recoupedSource || null,
     estimatedRecoupmentPctLow: data.estimatedRecoupmentPct?.[0] || null,
@@ -162,7 +164,7 @@ for (const show of exportData.shows) {
     show.isRunningCostEstimate ? 'Yes' : '',
     show.recouped === true ? 'Yes' : show.recouped === false ? 'No' : '',
     show.recoupedWeeks || '',
-    show.recoupedDate || '',
+    show.recoupedDate ? `${show.isRecoupDateEstimate ? '~' : ''}${show.recoupedDate}` : '',
     show.estimatedRecoupmentPctLow || '',
     show.estimatedRecoupmentPctHigh || '',
     `"${(show.notes || '').replace(/"/g, '""').replace(/\n/g, ' ')}"`,

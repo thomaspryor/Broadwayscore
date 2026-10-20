@@ -76,14 +76,19 @@ export function weeksOpenToClose(
  * when the show is on the owner's RECOUPED_DURING_RUN_ESTIMATE list
  * (`allowEstimate`) and its recoupment was reported after closing, opening
  * night (or the commercial start) to closing marked as an estimate, else null.
+ * A recoupedDate we estimated ourselves (`dateIsEstimate`, isEstimate.recoupedDate)
+ * never anchors a count: it is null (BRO-5568, Chicago "March 1997").
  */
-export function resolveRecoupWeeks(
-  startDate: string | null | undefined,
-  recoupedDate: string | null | undefined,
-  closingDate: string | null | undefined,
-  allowEstimate: boolean,
-  now: Date = new Date(),
-): { weeks: number | null; isEstimate: boolean } {
+export function resolveRecoupWeeks(args: {
+  startDate: string | null | undefined;
+  recoupedDate: string | null | undefined;
+  closingDate: string | null | undefined;
+  allowEstimate: boolean;
+  dateIsEstimate?: boolean;
+  now?: Date;
+}): { weeks: number | null; isEstimate: boolean } {
+  const { startDate, recoupedDate, closingDate, allowEstimate, dateIsEstimate = false, now = new Date() } = args;
+  if (dateIsEstimate) return { weeks: null, isEstimate: false };
   const measured = calculateWeeksToRecoup(startDate, recoupedDate, closingDate, now);
   if (measured !== null) return { weeks: measured, isEstimate: false };
   if (allowEstimate && recoupReportedAfterClosing(recoupedDate, closingDate)) {

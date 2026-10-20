@@ -440,3 +440,25 @@ test('a Nonprofit record citing an SEC filing warns; a commercial one or a non-S
   assert.equal(nonprofitSec(rec('Nonprofit', 'https://www.notsec.gov/x')).length, 0);
   assert.equal(nonprofitSec({ designation: 'Nonprofit' }).length, 0);
 });
+
+test('an estimated recoupment date needs the flag, and the flag needs a source that says so (BRO-5568)', () => {
+  const warn = (rec, ctx = {}) => commercialRecordWarnings('k', { designation: 'Miracle', recouped: true, recoupedDate: '1997-03', ...rec }, ctx)
+    .filter((m) => m.includes('isEstimate.recoupedDate')).length;
+  const chicago = 'New York Theatre Guide: Chicago earned back its $2.5 million cost. No public report gives the date; March 1997 is our estimate.';
+  const lion = 'Reported by Broadway Journal; the 1999 date is an estimate.';
+  const reported = 'Playbill (Mar 19, 2024) reported the revival "recouped its original investment," per the producers announcement.';
+  // The chicago and the-lion-king shapes: source says estimate, flag missing.
+  assert.equal(warn({ recoupedSource: chicago }), 1);
+  assert.equal(warn({ recoupedDate: '1999', recoupedSource: lion }), 1);
+  // The appropriate shape: dated by our editorial judgment.
+  assert.equal(warn({ recoupedDate: '2024-06', recoupedSource: 'No recoupment was announced. Counted as recouped as an editorial judgment, dated to the commercial run final month.' }), 1);
+  // Flagged and says so, or reported with no flag: fine.
+  assert.equal(warn({ recoupedSource: chicago, isEstimate: { recoupedDate: true } }), 0);
+  assert.equal(warn({ recoupedSource: reported }), 0);
+  // Flag on a reported date.
+  assert.equal(warn({ recoupedSource: reported, isEstimate: { recoupedDate: true } }), 1);
+  // A write that leaves an old unflagged record alone does not warn; one that changes the source does.
+  const prior = { designation: 'Miracle', recouped: true, recoupedDate: '1997-03', recoupedSource: chicago };
+  assert.equal(warn({ ...prior, notes: 'new note' }, { priorRecord: prior }), 0);
+  assert.equal(warn({ ...prior, recoupedSource: chicago + ' Also in Variety.' }, { priorRecord: prior }), 1);
+});
