@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5568",
   "planId": "6fc415a4-8840-4dfd-aa7f-24c7b90531ee",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-20T20:28:32.000Z",
   "submitter": {
     "name": null,
@@ -122,5 +122,49 @@
         "description": "appropriate: recoupedDate 2024-06 is our estimate per its own source."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-20T21:28:56.686Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for chicago"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for the-phantom-of-the-opera-1988"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for the-lion-king"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for aladdin"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for plaza-suite-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for the-lehman-trilogy-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for appropriate"
+    }
+  ],
+  "executedIn": "ci"
 }
