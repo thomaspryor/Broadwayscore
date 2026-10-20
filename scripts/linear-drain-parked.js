@@ -108,7 +108,7 @@ const fs = require('fs');
 const { parseArgs: parseCliArgs } = require('./lib/cli-args.js');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { selectDrainCandidates, isAutoFiledParked, isDrainEligible, isSessionParkedDrainable } = require('./lib/linear-drain-parked.js');
+const { selectDrainCandidates, fetchDrainIssuesWithComments, isAutoFiledParked, isDrainEligible, isSessionParkedDrainable } = require('./lib/linear-drain-parked.js');
 const { checkPark, computeContentHash } = require('./lib/attempt-memory.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const dispatchReconcile = require('./lib/dispatch-reconcile.js');
@@ -491,6 +491,9 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   }
 
   const alreadyAttempted = recentlyAttempted(effectiveLedgerEntries);
+  issues = await fetchDrainIssuesWithComments(issues, {
+    getIssue: deps.getIssue, alreadyAttempted, log,
+  });
 
   // Permanent park: check only issues that would otherwise be selectable
   // (auto-filed, parked, verifiable) — no point computing/logging park state

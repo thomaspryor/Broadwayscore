@@ -55,6 +55,7 @@ const { redactEmails } = require('./lib/pii-scan.js');
 // for any other caller.
 const { findCardCheckPathDefects, isCheckPathCommand, auditCardCheckPaths, auditVacuousChecks, pathExistsOnOriginMain } = require('./lib/card-premises-auditor.js');
 const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
+const { evaluateLinearIssue, evaluateLinearIssues } = require('./lib/linear-issue-verifiability.js');
 // Lazy-safe to require unconditionally — same reasoning as
 // enrich-card-acceptance.js: getApiKey() is only called inside an actual
 // graphql() call, so a Notion-only sweep never needs LINEAR_API_KEY set.
@@ -178,32 +179,6 @@ function writeReport(report, reportPath = REPORT_PATH) {
   fs.renameSync(`${reportPath}.tmp`, reportPath);
 }
 
-// Pure (task #1830) — same evaluated shape evaluateCard() produces for a
-// Notion card ({id, name, url, priority, armed, ownerJudgment, reason, ...}),
-// so buildReport() works unchanged across both providers. priority/status are
-// null: Linear's priority is a raw int with its own remap
-// (linear-dispatch.js's priorityRank), not the Notion "P0 Now" string this
-// report's consumers print — not needed for the refused-count metric this
-// report exists to surface.
-function evaluateLinearIssue(issue) {
-  const gate = evaluateVerifiability(issue.description || '');
-  return {
-    id: issue.identifier,
-    name: issue.title,
-    url: issue.url,
-    priority: null,
-    status: (issue.state && issue.state.name) || null,
-    category: null,
-    tags: [],
-    notes: issue.description || '',
-    armed: gate.armed,
-    ownerJudgment: gate.ownerJudgment,
-    reason: gate.reason,
-    kind: gate.kind,
-    cmd: gate.cmd,
-  };
-}
-
 async function fetchLinearOpenIssuesWithDescriptions() {
   return linear.listOpenIssuesWithDescriptions();
 }
@@ -285,8 +260,7 @@ function reconcileMissingCheckPathsWithComments(flagged, opts = {}) {
 }
 
 // BRO-3378: a vacuous command gets the same correction path. The bulk sweep
-// evaluates descriptions ONLY (evaluateLinearIssue passes no comments, to keep
-// a ~1000-issue fetch cheap), so without this a card whose weak `test -f` was
+// evaluates bulk descriptions first, to keep a ~1000-issue fetch cheap, so without this a card whose weak `test -f` was
 // already corrected by a later comment — the only way a Linear description's
 // command can be fixed after filing, per BRO-2796 — would be reported as
 // vacuous forever, and any repair sweep would act on a card that is already fine.
@@ -326,7 +300,8 @@ async function reconcileCheckDefectsBothBuckets({ missing, vacuous }, opts = {})
 }
 
 // opts.measureOnly (BRO-2720, the bare `--source all` default): bulk-fetch
-// verdicts only. The check-path pass below re-fetches every flagged issue one
+// verdicts plus refused-card correction reads only. The check-path pass
+// below re-fetches every flagged issue one
 // by one (~400 round trips on the full ~890 corpus, 429s included), too slow
 // for a bare instrument, and writing a report without those buckets would
 // clobber the full report's missingCheckPaths/vacuousChecks — so measureOnly
@@ -334,7 +309,15 @@ async function reconcileCheckDefectsBothBuckets({ missing, vacuous }, opts = {})
 async function runLinearAudit(limit, opts = {}) {
   const issues = await fetchLinearOpenIssuesWithDescriptions();
   console.error(`[audit-card-verifiability] linear: ${issues.length} open issue(s) fetched`);
-  const evaluated = issues.slice(0, limit).map(evaluateLinearIssue);
+  // Share reads with the existing path-defect reconciliation below: a
+  // newly armed card can enter that pass without costing a second request.
+  const cache = new Map();
+  const getIssue = (id) => {
+    if (!cache.has(id)) cache.set(id, Promise.resolve().then(() => (opts.getIssue || linear.getIssue)(id)));
+    return cache.get(id);
+  };
+  const readOpts = { ...opts, getIssue, log: console.error };
+  const evaluated = await evaluateLinearIssues(issues.slice(0, limit), readOpts);
   const report = buildReport(evaluated);
   if (opts.measureOnly) return report;
   const initial = findCardCheckPathDefects(evaluated, { log: console.error });
@@ -342,7 +325,7 @@ async function runLinearAudit(limit, opts = {}) {
   if (flaggedCount) {
     console.error(`[audit-card-verifiability] linear: re-checking ${flaggedCount} flagged card(s) against their own comments (BRO-2796 correction path; ${initial.missing.length} missing-path, ${initial.vacuous.length} vacuous)`);
   }
-  const reconciled = await reconcileCheckDefectsBothBuckets(initial, { log: console.error });
+  const reconciled = await reconcileCheckDefectsBothBuckets(initial, readOpts);
   // Names redacted like `refused` above: this report is committed to the PUBLIC repo, now on a daily schedule.
   const redactName = (c) => ({ ...c, name: redactEmails(c.name || '') });
   report.missingCheckPaths = reconciled.missing.map(redactName);

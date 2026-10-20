@@ -380,6 +380,7 @@ describe('main() — permanent park integration (BRO-2434 acceptance criteria)',
     const appended = [];
     const result = await main([], {
       listOpenIssuesWithDescriptions: async () => [target],
+      getIssue: async (identifier) => target,
       dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
       readLedger: () => ledgerEntries,
       appendLedger: (entry) => appended.push(entry),
@@ -410,6 +411,7 @@ describe('main() — permanent park integration (BRO-2434 acceptance criteria)',
     const appended = [];
     const result = await main([], {
       listOpenIssuesWithDescriptions: async () => [target],
+      getIssue: async (identifier) => target,
       dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
       readLedger: () => ledgerEntries,
       appendLedger: (entry) => appended.push(entry),
@@ -435,6 +437,7 @@ describe('main() — permanent park integration (BRO-2434 acceptance criteria)',
     const dispatchedTaskIds = [];
     const result = await main([], {
       listOpenIssuesWithDescriptions: async () => [target],
+      getIssue: async (identifier) => target,
       dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
       readLedger: () => ledgerEntries,
       appendLedger: () => {},
@@ -467,6 +470,7 @@ describe('main() — permanent park integration (BRO-2434 acceptance criteria)',
     async function tick(now) {
       return main([], {
         listOpenIssuesWithDescriptions: async () => [target],
+        getIssue: async (identifier) => target,
         dispatchFn: (taskId) => {
           jobCounter += 1;
           const jobId = `j${jobCounter}`;
@@ -518,6 +522,7 @@ describe('main() — kill switch and dispatch wiring, fully injected (no live I/
     try {
       const result = await main([], {
         listOpenIssuesWithDescriptions: async () => { fetchCalled = true; return []; },
+        getIssue: async (identifier) => issue({ identifier }),
         dispatchFn: () => { throw new Error('must not dispatch'); },
         readLedger: () => [],
         appendLedger: () => { throw new Error('must not write ledger'); },
@@ -540,6 +545,7 @@ describe('main() — kill switch and dispatch wiring, fully injected (no live I/
     try {
       const result = await main([], {
         listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-1' }), issue({ identifier: 'BRO-2' })],
+        getIssue: async (identifier) => issue({ identifier }),
         dispatchFn: (taskId, _log, _delay, _model, opts) => { dispatchedTaskIds.push(taskId); dispatchOpts.push(opts); },
         readLedger: () => [],
         appendLedger: (entry) => journaled.push(entry),
@@ -596,6 +602,7 @@ describe('main() — kill switch and dispatch wiring, fully injected (no live I/
     const dispatchedTaskIds = [];
     const result = await main(['--cap', '1'], {
       listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-1' }), issue({ identifier: 'BRO-2' })],
+      getIssue: async (identifier) => issue({ identifier }),
       dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
       readLedger: () => [],
       appendLedger: () => {},
@@ -614,6 +621,7 @@ describe('main() — kill switch and dispatch wiring, fully injected (no live I/
       const dispatchedTaskIds = [];
       const result = await main(argv, {
         listOpenIssuesWithDescriptions: async () => issues,
+        getIssue: async (identifier) => issues.find((i) => i.identifier === identifier),
         dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
         readLedger: () => [],
         appendLedger: () => {},
@@ -637,6 +645,7 @@ describe('main() — kill switch and dispatch wiring, fully injected (no live I/
     let ledgerWritten = false;
     const result = await main(['--dry-run'], {
       listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-1' })],
+      getIssue: async (identifier) => issue({ identifier }),
       dispatchFn: () => { dispatchCalled = true; },
       readLedger: () => [],
       appendLedger: () => { ledgerWritten = true; },
@@ -667,6 +676,7 @@ describe('main() — kill switch and dispatch wiring, fully injected (no live I/
     const logs = [];
     const result = await main(['--dry-run'], {
       listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-10' })],
+      getIssue: async (identifier) => issue({ identifier }),
       dispatchFn: () => { throw new Error('dry-run must not dispatch'); },
       readLedger: () => ledger.slice(),
       appendLedger: (entry) => appended.push(entry),
@@ -776,6 +786,7 @@ describe('main() — BRO-3454 spend circuit breaker + concurrency ceiling', () =
     const dispatchedTaskIds = [];
     const result = await main([], {
       listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-1' })],
+      getIssue: async (identifier) => issue({ identifier }),
       dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
       readLedger: () => ledgerEntries,
       appendLedger: () => {},
@@ -804,6 +815,7 @@ describe('main() — BRO-3454 spend circuit breaker + concurrency ceiling', () =
     // should stop it.
     const result = await main([], {
       listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-10' })],
+      getIssue: async (identifier) => issue({ identifier }),
       dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
       readLedger: () => ledgerEntries,
       appendLedger: () => {},
@@ -824,6 +836,7 @@ describe('main() — BRO-3454 spend circuit breaker + concurrency ceiling', () =
     // digest-autofix.test.mjs's BRO-3412 test documents for its sibling.
     const result = await main([], {
       listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-1' })],
+      getIssue: async (identifier) => issue({ identifier }),
       dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
       readLedger: () => [],
       appendLedger: () => {},
@@ -867,6 +880,7 @@ describe('main() — BRO-3454 spend circuit breaker + concurrency ceiling', () =
     // still halt the whole run's dispatch budget.
     const result = await main([], {
       listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-10' })],
+      getIssue: async (identifier) => issue({ identifier }),
       dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
       readLedger: () => ledger.slice(),
       appendLedger: (entry) => ledger.push({ ts: new Date().toISOString(), ...entry }),
@@ -884,6 +898,7 @@ describe('main() — BRO-3454 spend circuit breaker + concurrency ceiling', () =
     const dispatchedTaskIds = [];
     const result = await main([], {
       listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-1' })],
+      getIssue: async (identifier) => issue({ identifier }),
       dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
       readLedger: () => [],
       appendLedger: () => {},
@@ -899,6 +914,7 @@ describe('main() — BRO-3454 spend circuit breaker + concurrency ceiling', () =
     let guardReadAttempted = false;
     const result = await main(['--dry-run'], {
       listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-1' })],
+      getIssue: async (identifier) => issue({ identifier }),
       dispatchFn: () => { throw new Error('must not dispatch'); },
       readLedger: () => { guardReadAttempted = true; return []; },
       appendLedger: () => {},
@@ -943,6 +959,7 @@ describe('main() — BRO-3454 spend circuit breaker + concurrency ceiling', () =
         const dispatchedTaskIds = [];
         const result = await main([], {
           listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-1' })],
+          getIssue: async (identifier) => issue({ identifier }),
           dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
           appendLedger: () => {},
           dispatchLedgerEntries: () => [],
@@ -967,6 +984,7 @@ describe('main() — BRO-3454 spend circuit breaker + concurrency ceiling', () =
         const dispatchedTaskIds = [];
         const result = await main([], {
           listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-1' })],
+          getIssue: async (identifier) => issue({ identifier }),
           dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
           appendLedger: () => {},
           dispatchLedgerEntries: () => [],
@@ -983,6 +1001,7 @@ describe('main() — BRO-3454 spend circuit breaker + concurrency ceiling', () =
         const dispatchedTaskIds = [];
         const result = await main([], {
           listOpenIssuesWithDescriptions: async () => [issue({ identifier: 'BRO-1' })],
+          getIssue: async (identifier) => issue({ identifier }),
           dispatchFn: (taskId) => { dispatchedTaskIds.push(taskId); },
           appendLedger: () => {},
           dispatchLedgerEntries: () => [],
@@ -1051,6 +1070,7 @@ describe('session-parked eligibility (BRO-4535)', () => {
 describe('main: session-parked dispatch and daily cap (BRO-4535)', () => {
   const baseDeps = (issues, extra = {}) => ({
     listOpenIssuesWithDescriptions: async () => issues,
+    getIssue: async (identifier) => issues.find((i) => i.identifier === identifier),
     readLedger: () => [],
     appendLedger: () => {},
     dispatchLedgerEntries: () => [],
@@ -1127,4 +1147,24 @@ describe('main: session-parked dispatch and daily cap (BRO-4535)', () => {
     const result = await main([], baseDeps(issues, { readLedger: () => used, concurrencyCap: 100, dispatchFn: () => {} }));
     assert.strictEqual(result.dispatched.length, 2);
   });
+});
+
+test('BRO-2802: CLI dry run reads a corrected VERIFY before selecting parked issues', async () => {
+  const target = issue({ description: 'PARKED: Auto-filed by owner-alert-router\nVERIFY: broken command' });
+  const logs = [];
+  const reads = [];
+  await main(['--dry-run'], {
+    listOpenIssuesWithDescriptions: async () => [target],
+    getIssue: async (identifier) => {
+      reads.push(identifier);
+      return { ...target, comments: { nodes: [{ body: 'VERIFY: node --test scripts/lib/linear-dispatch.test.mjs' }] } };
+    },
+    readLedger: () => [],
+    dispatchLedgerEntries: () => [],
+    appendLedger: () => assert.fail('dry run must not write'),
+    dispatchFn: () => assert.fail('dry run must not dispatch'),
+    log: (line) => logs.push(line),
+  });
+  assert.deepStrictEqual(reads, [target.identifier]);
+  assert.ok(logs.some((line) => line.includes(`DRY RUN would dispatch ${target.identifier}:`)));
 });

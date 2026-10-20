@@ -1,5 +1,5 @@
 /**
- * linear-drain-parked.js — pure selection logic for the Linear-side drain
+ * linear-drain-parked.js: selection logic and shortlisted comment reads for the Linear-side drain
  * (BRO-293, BRO-286 Phase 2 completion).
  *
  * BRO-286 repointed owner-alert-router.js's dispatchCard() to file PARKED
@@ -117,6 +117,21 @@ function isDrainEligible(issue) {
   return isAutoFiledParked(issue) || isSessionParkedDrainable(issue);
 }
 
+// Shortlist before fetching: never read comments for active issues, owner
+// holds or recently attempted cards. Verify and all remaining guards run on
+// the fresh payload through selectDrainCandidates after this read.
+async function fetchDrainIssuesWithComments(issues, opts = {}) {
+  const { alreadyAttempted = new Set() } = opts;
+  const hd = require('./headless-dispatchability.js');
+  const shortlist = (Array.isArray(issues) ? issues : []).filter((issue) =>
+    issue && issue.identifier && !alreadyAttempted.has(issue.identifier)
+    && issue.state && PARKED_STATE_TYPES.has(issue.state.type)
+    && (isAutoFiledParked(issue)
+      || (SESSION_PARKED_PRIORITIES.has(Number(issue.priority))
+        && hd.isDrainableSessionParked(issue.description || ''))));
+  return require('./linear-issue-verifiability.js').fetchIssuesWithComments(shortlist, opts);
+}
+
 /**
  * Pure selection: drain-eligible issues, most urgent Linear priority first,
  * then oldest (lowest issue number), excluding anything the caller already
@@ -187,4 +202,5 @@ module.exports = {
   isSessionParkedDrainable,
   isDrainEligible,
   selectDrainCandidates,
+  fetchDrainIssuesWithComments,
 };

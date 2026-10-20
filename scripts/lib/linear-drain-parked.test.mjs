@@ -165,3 +165,49 @@ test('BRO-5626: owner wording in the body and wait reasons hold the card (ported
     assert.equal(hd.isWorkerTakeableParkReason(r), false, r);
   }
 });
+
+// BRO-2802: the bulk listing omits comments. Hydrate the shortlist before
+// applying the same production selection predicate as the CLI.
+test('comment-corrected parked cards enter the drain after shortlist hydration', async () => {
+  const parked = issue(2802, lib.AUTO_FILED_MARKER + '\nVERIFY: broken command');
+  assert.deepEqual(lib.selectDrainCandidates([parked]), []);
+  const reads = [];
+  const hydrated = await lib.fetchDrainIssuesWithComments([parked], {
+    getIssue: async (identifier) => {
+      reads.push(identifier);
+      return { ...parked, comments: { nodes: [{ body: VERIFY }] } };
+    },
+  });
+  assert.deepEqual(reads, ['BRO-2802']);
+  assert.deepEqual(lib.selectDrainCandidates(hydrated).map((i) => i.identifier), ['BRO-2802']);
+});
+
+test('drain comment reads skip active issues, owner holds and attempted cards', async () => {
+  const cases = [
+    issue(1, lib.AUTO_FILED_MARKER, { state: { type: 'started' } }),
+    issue(2, 'PARKED: waiting for owner approval'),
+    issue(3, lib.AUTO_FILED_MARKER),
+    issue(4, 'ordinary backlog'),
+    issue(5, 'PARKED: needs a worktree'),
+  ];
+  const reads = [];
+  const hydrated = await lib.fetchDrainIssuesWithComments(cases, {
+    alreadyAttempted: new Set(['BRO-3']),
+    getIssue: async (id) => { reads.push(id); return { ...cases[4], comments: { nodes: [{ body: VERIFY }] } }; },
+  });
+  assert.deepEqual(reads, ['BRO-5']);
+  assert.deepEqual(lib.selectDrainCandidates(hydrated).map((i) => i.identifier), ['BRO-5']);
+});
+
+test('drain rechecks fresh state and fails closed on unreadable comments', async () => {
+  const parked = issue(1, lib.AUTO_FILED_MARKER + VERIFY);
+  for (const getIssue of [
+    async () => null,
+    async () => { throw new Error('offline'); },
+    async () => ({ ...parked, state: { type: 'started' } }),
+    async () => ({ ...parked, comments: { nodes: [{ body: 'VERIFY: owner-judgment' }] } }),
+  ]) {
+    const hydrated = await lib.fetchDrainIssuesWithComments([parked], { getIssue });
+    assert.deepEqual(lib.selectDrainCandidates(hydrated), []);
+  }
+});

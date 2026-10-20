@@ -48,6 +48,7 @@ const linear = require('./lib/linear-client.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const linearDispatch = require('./lib/linear-dispatch.js');
 const { evaluateVerifiability } = require('./lib/verify-gate.js');
+const { fetchIssuesWithComments } = require('./lib/linear-issue-verifiability.js');
 const { makeFreshCheckout, removeCheckout, runVerify } = require('./lib/acceptance-check-core.js');
 const { readLease, leaseLooksLive, REPO } = require('./lib/bsc-runner.js');
 const { classifyLandedButOpen, lastLedgerEventForTask } = require('./lib/landed-but-open-reconciler.js');
@@ -373,7 +374,12 @@ async function main(argv = process.argv.slice(2)) {
           deferredCount++;
           continue;
         }
-        const gate = evaluateVerifiability(c.issue.description || '');
+        const [fresh] = await fetchIssuesWithComments([c.issue], { log: console.error });
+        if (!fresh) {
+          acceptanceByIdentifier.set(c.identifier, { status: 'unverifiable', detail: 'could not read current issue comments' });
+          continue;
+        }
+        const gate = evaluateVerifiability(fresh.description || '', linearDispatch.sortedCommentBodies(fresh));
         if (!gate.cmd) {
           // No machine-runnable acceptance command (owner-judgment marker, or
           // no parseable "## Acceptance criteria" section at all — BRO-2546:
