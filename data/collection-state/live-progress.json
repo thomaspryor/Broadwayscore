@@ -1,27 +1,21 @@
 {
-  "updatedAt": "2026-10-20T17:15:21.016Z",
-  "processed": 226,
-  "failed": 91,
-  "successRate": "71.3%",
+  "updatedAt": "2026-10-20T17:49:39.275Z",
+  "processed": 270,
+  "failed": 147,
+  "successRate": "64.7%",
   "tierBreakdown": {
-    "playwright": 111,
-    "amp": 0,
+    "playwright": 138,
+    "amp": 1,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 3,
-    "scrapingbee": 2,
+    "scrapingdog": 8,
+    "scrapingbee": 6,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 79
+    "archive": 87
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-10-20T14:59:00.551Z",
-      "event": "bb-session",
-      "session": "4702453d",
-      "url": "https://bachtrack.com/review-angels-bone-du-yun-vavrek-english-national-opera-lo"
-    },
     {
       "t": "2026-10-20T15:01:48.619Z",
       "event": "bb-session",
@@ -109,6 +103,28 @@
     },
     {
       "t": "2026-10-20T16:33:23.204Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-20T17:17:37.624Z",
+      "event": "bb-session",
+      "session": "fde449ff",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-20T17:17:37.967Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-20T17:17:54.591Z",
+      "event": "bb-session",
+      "session": "78045bfc",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-20T17:17:54.888Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
