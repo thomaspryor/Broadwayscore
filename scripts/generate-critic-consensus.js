@@ -5,6 +5,8 @@
  * Concise 1-2 sentence summaries (max 280 chars) capturing critical reception
  */
 
+import models from './lib/models.js';
+const { COPY_SONNET } = models;
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -80,7 +82,7 @@ async function requestConsensus(reviews, buildPrompt, temperature, startAttempt 
     create: (params) => anthropic.messages.create(params),
     reviews,
     buildPrompt,
-    params: { model: 'claude-sonnet-4-5-20250929', max_tokens: 150, temperature },
+    params: { model: COPY_SONNET, max_tokens: 150, temperature },
     startAttempt,
     onRetry: (msg) => console.warn(`  ⚠️  Claude refused (${describeResponse(msg)}) — retrying once with ${REFUSAL_RETRY_EXCERPT_CHARS}-char excerpts, quoted lyrics removed`),
     pause: () => new Promise(resolve => setTimeout(resolve, 1000)),

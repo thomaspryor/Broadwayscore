@@ -25,6 +25,7 @@
  *   GEMINI_API_KEY     Required for gemini provider
  *   OPENAI_API_KEY     Required for openai provider
  */
+const { ADJUDICATE_SONNET } = require('./lib/models.js');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
@@ -108,7 +109,7 @@ function callClaude(systemPrompt, userPrompt) {
   if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
 
   const body = JSON.stringify({
-    model: 'claude-sonnet-4-5-20250929',
+    model: ADJUDICATE_SONNET,
     max_tokens: 300,
     temperature: 0.1,
     system: systemPrompt,

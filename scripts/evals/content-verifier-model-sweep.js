@@ -56,21 +56,21 @@ const MODELS = {
     priceIn: 0.15, priceOut: 2.50,
     envKey: 'OPENROUTER_API_KEY',
   },
-  'claude-haiku-4-5': {
+  [CLAUDE_HAIKU.replace(/-\d{8}$/, '')]: {
     provider: 'anthropic',
     api: 'anthropic',
     model: CLAUDE_HAIKU,
     priceIn: 1.00, priceOut: 5.00,
     envKey: 'ANTHROPIC_API_KEY',
   },
-  'claude-sonnet-4-6': {
+  [CLAUDE_SONNET]: {
     provider: 'anthropic',
     api: 'anthropic',
     model: CLAUDE_SONNET,
     priceIn: 3.00, priceOut: 15.00,
     envKey: 'ANTHROPIC_API_KEY',
   },
-  'claude-opus-4-7': {
+  [CLAUDE_OPUS]: {
     provider: 'anthropic',
     api: 'anthropic',
     model: CLAUDE_OPUS,

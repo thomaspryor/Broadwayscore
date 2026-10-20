@@ -17,6 +17,7 @@
  *   }
  */
 
+const { EXTRACTION_SONNET } = require('./models.js');
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
@@ -206,7 +207,7 @@ function callClaude(systemPrompt, userPrompt, maxTokens = 2000) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) return Promise.reject(new Error('ANTHROPIC_API_KEY not set'));
   const body = JSON.stringify({
-    model: 'claude-sonnet-4-5-20250929',
+    model: EXTRACTION_SONNET,
     max_tokens: maxTokens,
     temperature: 0.1,
     system: systemPrompt,

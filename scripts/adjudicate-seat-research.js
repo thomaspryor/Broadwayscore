@@ -20,6 +20,8 @@
  *   1  — script error
  */
 
+import models from './lib/models.js';
+const { ADJUDICATE_SONNET } = models;
 import fs from 'fs';
 import pathMod from 'path';
 import { fileURLToPath } from 'url';
@@ -49,7 +51,7 @@ try {
 
 const { fetchPage } = require('./lib/scraper');
 
-const MODEL = 'claude-sonnet-4-5-20250929';
+const MODEL = ADJUDICATE_SONNET;
 const MAX_EVIDENCE_CHARS = 2000;
 const CACHE_DIR = '/tmp/seat-evidence-cache';
 

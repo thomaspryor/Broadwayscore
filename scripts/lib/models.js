@@ -26,6 +26,16 @@ module.exports = {
   // and 2-2.5x cheaper per token than the 4.x pair above.
   DISPATCH_SONNET: 'claude-sonnet-5-5',
   DISPATCH_OPUS: 'claude-opus-5-5',
+  // Frozen caller-group pins (BRO-4497). Centralizing these must not upgrade
+  // models: migrations need their own before/after samples, and walkthrough
+  // token limits depend on its current model's thinking behavior.
+  COPY_SONNET: 'claude-sonnet-4-5-20250929',
+  ADJUDICATE_SONNET: 'claude-sonnet-4-5-20250929',
+  EXTRACTION_SONNET: 'claude-sonnet-4-5-20250929',
+  COPY_FALLBACK_SONNET: 'claude-3-5-sonnet-20241022',
+  REDDIT_SONNET: 'claude-sonnet-5-5',
+  WALKTHROUGH_SONNET: 'claude-sonnet-5',
+  TRIAGE_SONNET: 'claude-sonnet-5',
   // Review-SCORING pins (CLAUDE.md §13): changing the scoring model shifts
   // scores corpus-wide, so these move only after the A/B gate passes. Every
   // call site that scores reviews uses these, never CLAUDE_SONNET/CLAUDE_OPUS

@@ -12,6 +12,8 @@
  * - Batch-parallel API calls (5 concurrent) for speed
  */
 
+import models from './lib/models.js';
+const { COPY_SONNET } = models;
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -141,7 +143,7 @@ async function callClaudeWithRetry(prompt) {
           'anthropic-version': '2023-06-01',
         },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-5-20250929',
+          model: COPY_SONNET,
           max_tokens: 500,
           temperature: 0.7,
           messages: [{ role: 'user', content: prompt }],

@@ -25,12 +25,13 @@
  *     so the orchestrator can still log the mention without crashing
  */
 
+const { COPY_SONNET, COPY_FALLBACK_SONNET } = require('./models.js');
 const https = require('https');
 const { VOICE_CHARACTERISTICS } = require('./voice-characteristics');
 
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
-const MODEL = 'claude-sonnet-4-5-20250929';  // Claude Sonnet 4.5, stable
-const FALLBACK_MODEL = 'claude-3-5-sonnet-20241022';  // last-known-good fallback
+const MODEL = COPY_SONNET;  // Claude Sonnet 4.5, stable
+const FALLBACK_MODEL = COPY_FALLBACK_SONNET;  // last-known-good fallback
 
 // Platform character/word limits
 const PLATFORM_LIMITS = {

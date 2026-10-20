@@ -28,6 +28,7 @@
  *   --event=closed --show=SLUG   Show just closed
  */
 
+const { COPY_SONNET } = require('./lib/models.js');
 const fs = require('fs');
 const path = require('path');
 
@@ -510,7 +511,7 @@ Rules:
 
   try {
     const message = await anthropic.messages.create({
-      model: 'claude-sonnet-4-5-20250929',
+      model: COPY_SONNET,
       max_tokens: 200,
       temperature: 0.8,
       system: systemPrompt,

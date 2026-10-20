@@ -12,6 +12,8 @@
  * to permanently clear the review from the queue.
  */
 
+import models from './lib/models.js';
+const { ADJUDICATE_SONNET } = models;
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -139,7 +141,7 @@ async function adjudicateReview(review, sourceData, showTitle) {
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
       const message = await anthropic.messages.create({
-        model: 'claude-sonnet-4-5-20250929',
+        model: ADJUDICATE_SONNET,
         max_tokens: 300,
         temperature: 0.3,
         system: buildSystemPrompt(),
@@ -332,7 +334,7 @@ Respond with ONLY this JSON (no markdown fences):
         for (let attempt = 0; attempt < 3; attempt++) {
           try {
             const message = await anthropic.messages.create({
-              model: 'claude-sonnet-4-5-20250929',
+              model: ADJUDICATE_SONNET,
               max_tokens: 300,
               temperature: 0.2,
               messages: [{ role: 'user', content: contaminationPrompt }],

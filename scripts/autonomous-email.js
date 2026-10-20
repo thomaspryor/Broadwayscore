@@ -22,6 +22,7 @@
 
 'use strict';
 
+const { CLAUDE_HAIKU } = require('./lib/models.js');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
@@ -81,7 +82,7 @@ const MAX_ATTACH_BYTES = 8 * 1024 * 1024;
 const QUEUE_SUMMARY_MAX_AGE_H = 24; // stale queues describe a different night
 // Cheap model for the plain-language item copy (owner scope-add 2026-07-14)
 // — one short call per item, ≤3 items/night.
-const PLAIN_LANGUAGE_MODEL = process.env.AUTONOMOUS_EMAIL_COPY_MODEL || 'claude-haiku-4-5-20251001';
+const PLAIN_LANGUAGE_MODEL = process.env.AUTONOMOUS_EMAIL_COPY_MODEL || CLAUDE_HAIKU;
 
 for (const envPath of [path.join(REPO, '.env'), path.join(MAIN_REPO_ROOT, '.env')]) {
   if (!fs.existsSync(envPath)) continue;

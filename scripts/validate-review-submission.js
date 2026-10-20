@@ -14,6 +14,8 @@
  * 5. Is it already in our reviews?
  */
 
+import models from './lib/models.js';
+const { ADJUDICATE_SONNET } = models;
 import { Anthropic } from '@anthropic-ai/sdk';
 import fs from 'fs';
 import path from 'path';
@@ -231,7 +233,7 @@ Respond in this JSON format:
 }`;
 
   const message = await anthropic.messages.create({
-    model: 'claude-sonnet-4-5-20250929',
+    model: ADJUDICATE_SONNET,
     max_tokens: 2000,
     messages: [
       {

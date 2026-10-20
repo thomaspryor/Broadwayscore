@@ -33,6 +33,7 @@
  * reaches 'links-ok' again.
  */
 
+const { COPY_SONNET } = require('./lib/models.js');
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
@@ -132,7 +133,7 @@ function log(msg) {
 function callClaude(systemPrompt, userMessage, maxTokens = 4000, timeoutMs = 120000) {
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
-      model: 'claude-sonnet-4-5-20250929',
+      model: COPY_SONNET,
       max_tokens: maxTokens,
       system: systemPrompt,
       messages: [{ role: 'user', content: userMessage }],

@@ -21,6 +21,7 @@
  * domain Tags). The executor (scripts/autonomous-run.js) consumes the queue.
  */
 
+const { TRIAGE_SONNET } = require('./lib/models.js');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -37,7 +38,7 @@ const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
 const REPO = path.join(__dirname, '..');
 const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
-const MODEL = process.env.AUTONOMOUS_TRIAGE_MODEL || 'claude-sonnet-5';
+const MODEL = process.env.AUTONOMOUS_TRIAGE_MODEL || TRIAGE_SONNET;
 // Night-1 fix: the backlog's top is crowded with human-territory P0s, so a
 // raw top-N fetch can produce a window with zero workable cards. Fetch a
 // deeper slice and stop once `--limit` cards have actually reached the LLM.

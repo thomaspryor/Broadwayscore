@@ -9,13 +9,14 @@
  */
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
 const root = join(dirname(fileURLToPath(import.meta.url)), '../..');
+const ts = require('typescript');
 const models = require('../../scripts/lib/models.js');
 const budget = require('../../scripts/lib/autonomous-budget.js');
 const { SHORT_ALIAS } = require('../../scripts/lib/bsc-next-model.js');
@@ -32,6 +33,45 @@ const SCORING_JS = [
 ];
 
 describe('models.js is the single Claude model table', () => {
+  test('executable scripts import versioned Claude ids from models.js', () => {
+    const violations = [];
+    for (const rel of readdirSync(join(root, 'scripts'), { recursive: true })) {
+      const file = rel.replaceAll('\\', '/');
+      // Test fixtures assert historical ids; scoring experiments are frozen.
+      if (!/\.(?:js|mjs|ts)$/.test(file) || /\.(?:test|spec)\./.test(file)
+        || file.startsWith('tests/') || /^llm-scoring\/.*\.ts$/.test(file)
+        || file === 'lib/models.js') continue;
+      const src = ts.createSourceFile(file,
+        readFileSync(join(root, 'scripts', rel), 'utf8'), ts.ScriptTarget.Latest, true);
+      function visit(node) {
+        // Parsing ignores comments, but catches object keys, escaped strings,
+        // double quotes and static template literals as well as single quotes.
+        if ((ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node))
+          && /^claude-(?:[a-z]+-)?\d/.test(node.text)) {
+          const { line } = src.getLineAndCharacterOfPosition(node.getStart(src));
+          violations.push(`scripts/${file}:${line + 1}: ${node.text}`);
+        }
+        ts.forEachChild(node, visit);
+      }
+      visit(src);
+    }
+    assert.deepEqual(violations, [],
+      `Import a named pin from scripts/lib/models.js:\n${violations.join('\n')}`);
+  });
+
+  test('caller-group pins preserve the pre-centralization models', () => {
+    const pins = {
+      COPY_SONNET: 'claude-sonnet-4-5-20250929',
+      ADJUDICATE_SONNET: 'claude-sonnet-4-5-20250929',
+      EXTRACTION_SONNET: 'claude-sonnet-4-5-20250929',
+      COPY_FALLBACK_SONNET: 'claude-3-5-sonnet-20241022',
+      REDDIT_SONNET: 'claude-sonnet-5-5',
+      WALKTHROUGH_SONNET: 'claude-sonnet-5',
+      TRIAGE_SONNET: 'claude-sonnet-5',
+    };
+    for (const [name, id] of Object.entries(pins)) assert.equal(models[name], id, name);
+  });
+
   test('SCORING_SONNET stays pinned to claude-sonnet-4-6 (§13 A/B gate)', () => {
     assert.equal(models.SCORING_SONNET, 'claude-sonnet-4-6');
   });

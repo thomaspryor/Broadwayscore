@@ -41,6 +41,7 @@
 
 'use strict';
 
+const { TRIAGE_SONNET } = require('./lib/models.js');
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
@@ -74,7 +75,7 @@ function isHumanTerritory(card) {
 }
 
 const REPO = path.join(__dirname, '..');
-const MODEL = process.env.AUTONOMOUS_TRIAGE_MODEL || 'claude-sonnet-5';
+const MODEL = process.env.AUTONOMOUS_TRIAGE_MODEL || TRIAGE_SONNET;
 
 for (const envPath of [path.join(REPO, '.env'), path.join(MAIN_REPO_ROOT, '.env')]) {
   if (!fs.existsSync(envPath)) continue;

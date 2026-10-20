@@ -36,6 +36,8 @@
 // Exit codes: 0 success, 1 fatal (auth/seed/capture failure), 2 review panel
 // fully failed (all 3 models errored — screenshots still captured).
 
+import models from './lib/models.js';
+const { WALKTHROUGH_SONNET } = models;
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
@@ -1073,7 +1075,7 @@ async function reviewWithClaude(shots, apiKey) {
     // review and 1500 tokens were consumed ENTIRELY by the thinking block —
     // the response had no text and the reviewer errored 'no content' every
     // run (verification, 2026-07-20). Budget must cover thinking + answer.
-    body: JSON.stringify({ model: 'claude-sonnet-5', max_tokens: 6000, messages: [{ role: 'user', content }] }),
+    body: JSON.stringify({ model: WALKTHROUGH_SONNET, max_tokens: 6000, messages: [{ role: 'user', content }] }),
     signal: AbortSignal.timeout(180000),
   });
   if (!res.ok) throw new Error(`Anthropic HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`);

@@ -31,6 +31,7 @@
 
 'use strict';
 
+const { COPY_SONNET, REDDIT_SONNET } = require('./lib/models.js');
 const fs = require('fs');
 const path = require('path');
 const lib = require('./lib/reddit-opening-post');
@@ -49,7 +50,7 @@ const NO_LLM = args.includes('--no-llm');
 const FORCE_SHOW = getArg('show');
 const TODAY = getArg('today') || new Date().toISOString().slice(0, 10);
 
-const ANTHROPIC_MODELS = ['claude-sonnet-5-5', 'claude-sonnet-4-5-20250929'];
+const ANTHROPIC_MODELS = [REDDIT_SONNET, COPY_SONNET];
 
 function loadJSON(p, fallback = null) {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return fallback; }
