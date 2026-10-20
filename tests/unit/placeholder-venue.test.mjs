@@ -95,7 +95,7 @@ test('the three consumers require() scripts/lib/placeholder-venue.js and carry n
 // BRO-5580: a neighbourhood blob glued to a venue by an explicit separator is
 // contamination, but a real house that merely STARTS with a blob is not.
 test('blob glued to a venue by an explicit separator is a placeholder', () => {
-  for (const v of ['Midtown E at Goodman Theatre', 'Goodman Theatre, Midtown E', 'Harlem - Apollo Theater', 'SoHo / TriBeCa: Playhouse', 'Brooklyn @ Kings Theatre']) {
+  for (const v of ['Midtown E at Goodman Theatre', 'Harlem - Apollo Theater', 'SoHo / TriBeCa: Playhouse', 'Brooklyn @ Kings Theatre']) {
     const r = lib.isPlaceholderVenue(v);
     assert.equal(r.placeholder, true, `expected "${v}" to be a placeholder`);
     assert.equal(r.reason, 'neighbourhood_blob_glued');
@@ -104,7 +104,7 @@ test('blob glued to a venue by an explicit separator is a placeholder', () => {
 });
 
 test('real houses that start with a blob, or use it without a separator, still pass', () => {
-  for (const v of ['East Village Basement', 'West Village Musical Theatre Festival', 'Brooklyn Academy of Music', 'Queens Theatre', 'Harlem Stage']) {
+  for (const v of ['East Village Basement', 'West Village Musical Theatre Festival', 'Brooklyn Academy of Music', 'Queens Theatre', 'Harlem Stage', "St. Ann's Warehouse, Brooklyn", 'Apollo Theater, Harlem', 'Mabou Mines, East Village', 'La MaMa \u2013 East Village', 'Pershing Square Signature Center, Midtown West', 'Theatre at Harlem']) {
     assert.equal(lib.isPlaceholderVenue(v).placeholder, false, `expected "${v}" to pass`);
   }
 });

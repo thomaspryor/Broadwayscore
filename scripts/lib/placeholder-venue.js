@@ -45,28 +45,25 @@ const NEIGHBOURHOOD_BLOBS = new Set([
 
 /**
  * Explicit separators that glue a neighbourhood blob to a venue ("Midtown E at
- * Goodman Theatre", "Goodman Theatre, Midtown E", "Harlem - Apollo"). Only an
+ * Goodman Theatre", "Harlem - Apollo"). Only an
  * explicit separator counts, never a bare space, so "East Village Basement"
  * and "West Village Musical Theatre Festival" stay real venue names.
  */
 const BLOB_SEPARATORS = /\s+at\s+|\s+-\s+|\s*[@,:|\/\u2013\u2014]\s*/;
 
 /**
- * Is the venue a neighbourhood blob with a venue glued to either end by an
- * explicit separator (BRO-5580)? Splits on the FIRST and LAST separator so a
- * blob that itself contains one ("SoHo / TriBeCa") is still recognised.
+ * Does the venue START with a neighbourhood blob followed by an explicit
+ * separator and more text (BRO-5580)? Only the leading position counts: the
+ * ShowScore scrape puts the region label first. A TRAILING region is the
+ * repo's own "Venue, Neighbourhood" format ("Kings Theatre, Brooklyn",
+ * "Apollo Theater, Harlem") and must pass.
  */
 function isGluedNeighbourhoodBlob(lower) {
   const parts = lower.split(BLOB_SEPARATORS).map((p) => p.trim()).filter(Boolean);
   if (parts.length < 2) return false;
-  // Rejoin-free check: the first or last segment is a blob, or a leading /
-  // trailing two-segment blob ("soho / tribeca") followed by more text.
-  if (NEIGHBOURHOOD_BLOBS.has(parts[0]) || NEIGHBOURHOOD_BLOBS.has(parts[parts.length - 1])) return true;
-  if (parts.length > 2) {
-    if (NEIGHBOURHOOD_BLOBS.has(parts.slice(0, 2).join(' / '))) return true;
-    if (NEIGHBOURHOOD_BLOBS.has(parts.slice(-2).join(' / '))) return true;
-  }
-  return false;
+  if (NEIGHBOURHOOD_BLOBS.has(parts[0])) return true;
+  // A blob that itself contains a separator ("soho / tribeca") followed by more text.
+  return parts.length > 2 && NEIGHBOURHOOD_BLOBS.has(parts.slice(0, 2).join(' / '));
 }
 
 /**
