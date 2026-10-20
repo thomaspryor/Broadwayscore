@@ -60,7 +60,8 @@
       "market": "west-end",
       "queuedAt": "2026-10-19T16:02:08.526Z",
       "dueAt": "2026-10-20T08:02:08.526Z",
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-10-20T10:04:37.020Z"
     },
     {
       "kind": "truncated-t1-refetch",
@@ -102,7 +103,10 @@
       "outletIds": [
         "sunday-times"
       ],
-      "attempted": false
+      "attempted": true,
+      "skipped": true,
+      "skipReason": "no-truncated-t1",
+      "attemptedAt": "2026-10-20T10:04:37.020Z"
     }
   ]
 }
