@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-10-20T01:40:28.506Z",
-  "totalScanned": 57939,
-  "totalExcluded": 27109,
+  "generatedAt": "2026-10-20T01:50:38.816Z",
+  "totalScanned": 57947,
+  "totalExcluded": 27105,
   "ruleCounts": {
     "wrongProduction": 18182,
-    "duplicateOf": 1947,
+    "duplicateOf": 1945,
     "wrongShow": 1809,
     "rejectionReason": 1011,
     "unverifiableWebSearchRow": 957,
-    "noTextOrScoreSignal": 610,
+    "noTextOrScoreSignal": 609,
     "nonReview": 536,
     "wrongAttribution": 312,
     "isRoundupArticle": 226,
     "blockedReviewUrl": 211,
-    "bodylessAggregatorScoreUncorroborated": 167,
+    "bodylessAggregatorScoreUncorroborated": 166,
     "crossOutletDuplicate": 166,
     "isSyndicatedDuplicate": 133,
     "previewPlaceholder": 127,
@@ -41,19 +41,19 @@
     "personalRepost": 1
   },
   "ruleDeltas": {
-    "rejectionReason": 1,
+    "duplicateOf": -2,
     "noTextOrScoreSignal": -1,
-    "contentTierInvalid": 1
+    "bodylessAggregatorScoreUncorroborated": -1
   },
-  "previousGeneratedAt": "2026-10-20T01:08:17.650Z",
+  "previousGeneratedAt": "2026-10-20T01:40:28.506Z",
   "mirror": {
     "comparedShows": 2562,
-    "comparedFiles": 57389,
-    "agreeExcluded": 26365,
-    "agreeIncluded": 29930,
+    "comparedFiles": 57396,
+    "agreeExcluded": 26360,
+    "agreeIncluded": 29937,
     "mirrorOnly": 199,
-    "rebuildOnly": 895,
-    "disagreements": 1094,
+    "rebuildOnly": 900,
+    "disagreements": 1099,
     "disagreementRate": 0.0191,
     "mirrorOnlyByRule": {
       "duplicateOf": 77,
@@ -69,12 +69,12 @@
       "skippedDuplicateText": 253,
       "skippedUnknownCriticDedup": 225,
       "skippedCrossMarket": 81,
-      "skippedNoScore": 75,
+      "skippedNoScore": 79,
       "skippedInvalidUrl": 63,
       "skippedPreOpening": 47,
       "skippedShowNotMentioned": 27,
       "skippedListingPage": 25,
-      "skippedCrossShowDupe": 19,
+      "skippedCrossShowDupe": 20,
       "skippedSameArticleNamedTwin": 16,
       "priorRunSuperseded": 11,
       "skippedScraperGarbage": 11,
@@ -95,7 +95,7 @@
     },
     "rebuildEntriesUnscanned": 0,
     "notComparedShows": 80,
-    "notComparedFiles": 550
+    "notComparedFiles": 551
   },
-  "previousDisagreementRate": 0.0186
+  "previousDisagreementRate": 0.0191
 }

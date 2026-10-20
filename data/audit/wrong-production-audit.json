@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-20T01:40:44.948Z",
+  "timestamp": "2026-10-20T01:50:53.969Z",
   "stats": {
-    "totalReviews": 57841,
-    "alreadyFlagged": 21090,
+    "totalReviews": 57848,
+    "alreadyFlagged": 21089,
     "dateGuardCatches": 198,
-    "directorMismatch": 2025,
+    "directorMismatch": 2027,
     "tvFilmSignals": 1647,
-    "londonSignals": 2549,
+    "londonSignals": 2551,
     "offBroadwaySignals": 530,
     "yearMismatch": 161,
-    "noPublishDate": 5203
+    "noPublishDate": 5204
   },
   "findings": [
     {
@@ -33551,6 +33551,19 @@
     },
     {
       "showId": "punch-west-end-2025",
+      "file": "independent--unknown.json",
+      "publishDate": null,
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/james-graham-punch-review-b2710837.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adam penford\" from punch-2025"
+        }
+      ]
+    },
+    {
+      "showId": "punch-west-end-2025",
       "file": "london-box-office--stuart-king.json",
       "score": 80,
       "publishDate": "2025-09-29",
@@ -33598,6 +33611,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"leanne pinder\" from punch-2025"
+        }
+      ]
+    },
+    {
+      "showId": "punch-west-end-2025",
+      "file": "timeout-london--unknown.json",
+      "publishDate": null,
+      "url": "https://www.timeout.com/london/theatre/punch-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adam penford\" from punch-2025"
         }
       ]
     },
@@ -61511,6 +61537,20 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
+      "file": "times-uk--patrick-kidd.json",
+      "score": null,
+      "publishDate": "2026-08-18",
+      "url": "https://www.thetimes.com/magazines/culture-magazine/article/death-note-musical-barbican-patrick-kidd-lnj85g5lf",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
       "file": "west-end-best-friend--oli-burgin.json",
       "score": 79,
       "publishDate": "2026-08-12",
@@ -69066,6 +69106,19 @@
       "score": 91,
       "publishDate": "2026-04-08",
       "url": "https://www.lbc.co.uk/article/inter-alia-review-best-plays-ever-seen-5HjdXRZ_2/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "sunday-times--dominic-maxwell.json",
+      "publishDate": "2026-04-07",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/inter-alia-review-rosamund-pike-kpnr8cmg6",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -79606,7 +79659,7 @@
     },
     {
       "showId": "some-woman-west-end-2026",
-      "file": "south-london--unknown.json",
+      "file": "south-london--michael-holland.json",
       "score": 61,
       "publishDate": "2026-10-19",
       "url": "https://southlondon.co.uk/area/southwark/review-some-woman-at-the-dorfman/",
@@ -90497,7 +90550,7 @@
     },
     {
       "showId": "triumph-off-west-end-2026",
-      "file": "financialtimes--unknown.json",
+      "file": "financialtimes--sarah-hemming.json",
       "score": 78,
       "publishDate": "2026-10-19",
       "url": "https://www.ft.com/content/cbd99692-7670-4d29-8483-9db10436aadd?syn-25a6b1a6=1",
