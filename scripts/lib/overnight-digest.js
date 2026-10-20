@@ -58,7 +58,8 @@ const ACTIONABLE_RECONCILE_KINDS = new Set([
   'linear-zombie-refused', 'linear-zombie-reset', 'linear-zombie-reset-failed',
   'linear-zombie-reset-stale', 'linear-zombie-fetch-error',
   // BRO-2989: orphaned in-flight sweep. owner-alert is how a dead crown / un-re-ownable card reaches the owner.
-  'linear-orphaned-redispatched', 'linear-orphaned-owner-alert', 'linear-orphaned-reown-failed', 'linear-orphaned-fetch-error',
+  // (redispatched is deliberately NOT here: informational, and it would crowd the 4 visible slots.)
+  'linear-orphaned-owner-alert', 'linear-orphaned-reown-failed', 'linear-orphaned-fetch-error',
 ]);
 
 // Subset of ACTIONABLE_RECONCILE_KINDS whose taskId (+jobId for orphan) is a
@@ -311,8 +312,13 @@ function gatherDigest({ repo, hours = 24, skipFetch = false } = {}) {
         const key = e.jobId != null ? `${e.taskId ?? ''}:${e.jobId}` : String(e.taskId ?? '');
         return !resolvedKeys.has(key);
       });
-      if (recent.length) {
-        digest.stuck.headlessJobs = recent.map(e => `[${e.kind}] ${e.detail}`.slice(0, 200));
+      // BRO-2989: a card that lost its session and was NOT restarted gets its own
+      // line, ahead of the noisy headless list (a 24h window held ~300 other lines).
+      const ownerAlerts = recent.filter(e => e.kind === 'linear-orphaned-owner-alert');
+      if (ownerAlerts.length) digest.stuck.ownerAlerts = ownerAlerts.map(e => String(e.detail).slice(0, 300));
+      const rest = recent.filter(e => e.kind !== 'linear-orphaned-owner-alert');
+      if (rest.length) {
+        digest.stuck.headlessJobs = rest.map(e => `[${e.kind}] ${e.detail}`.slice(0, 200));
       }
     }
   } catch (err) {
@@ -359,6 +365,9 @@ function stuckSignals(digest) {
   }
   if (digest.stuck?.reviewRegressions?.length) {
     stuck.push(`Shows losing scored reviews: ${digest.stuck.reviewRegressions.map(esc).join('; ')}`);
+  }
+  if (digest.stuck?.ownerAlerts?.length) {
+    stuck.push(`Cards whose session died and were NOT restarted (they need you): ${digest.stuck.ownerAlerts.slice(0, 5).map(esc).join('; ')}`);
   }
   if (digest.stuck?.headlessJobs?.length) {
     stuck.push(`Headless jobs needing a look (orphaned/retried in the window): ${digest.stuck.headlessJobs.slice(0, 4).map(esc).join('; ')}`);

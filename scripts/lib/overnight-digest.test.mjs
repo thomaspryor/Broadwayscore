@@ -245,5 +245,21 @@ test('every linear-orphaned-* kind bsc-reconcile reports is digest-actionable', 
   const src = fs.readFileSync(new URL('../bsc-reconcile.js', import.meta.url), 'utf8');
   const kinds = [...src.matchAll(/kind: '(linear-orphaned-[a-z-]+)'/g)].map((m) => m[1]);
   assert.ok(kinds.includes('linear-orphaned-owner-alert'), 'owner alert kind must exist');
-  for (const k of new Set(kinds)) assert.ok(ACTIONABLE_RECONCILE_KINDS.has(k), `${k} missing from ACTIONABLE_RECONCILE_KINDS`);
+  // Informational only: would crowd the digest's visible slots, so deliberately not actionable.
+  const INFORMATIONAL = new Set(['linear-orphaned-redispatched']);
+  for (const k of new Set(kinds)) {
+    if (INFORMATIONAL.has(k)) { assert.ok(!ACTIONABLE_RECONCILE_KINDS.has(k)); continue; }
+    assert.ok(ACTIONABLE_RECONCILE_KINDS.has(k), `${k} missing from ACTIONABLE_RECONCILE_KINDS`);
+  }
+});
+
+test('BRO-2989: owner alerts get their own digest line ahead of the noisy headless list', () => {
+  const { stuckSignals } = require('./overnight-digest.js');
+  const digest = { stuck: {
+    ownerAlerts: ['BRO-9 lost its session and was NOT auto-restarted (owner-card-session-died): Crown v33'],
+    headlessJobs: ['[orphan] a', '[orphan] b', '[orphan] c', '[orphan] d', '[orphan] e'],
+  } };
+  const lines = stuckSignals(digest);
+  assert.match(lines[0], /NOT restarted.*owner-card-session-died/);
+  assert.equal(lines.length, 2);
 });

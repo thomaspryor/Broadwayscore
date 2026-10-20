@@ -613,3 +613,60 @@ test('BRO-2989: bad inputs throw instead of silently re-owning the board', () =>
   assert.throws(() => classifyOrphanedInFlight({ issues: [], ledgerEntries: [], nowMs: NaN }), TypeError);
   assert.throws(() => classifyOrphanedInFlight({ issues: [], ledgerEntries: null, nowMs: NOW }), TypeError);
 });
+
+test('BRO-2989: an unverified launch is a death only when a paired dead row exists (slow-boot launches are live)', () => {
+  const launch = { event: 'launch', taskId: tid('BRO-30'), workspaceRef: 'workspace:9', unverified: true, ts: iso(4 * H) };
+  assert.deepEqual(run([issue('BRO-30')], [launch]).decisions, [], 'bare unverified launch = booting session');
+  const paired = [{ event: 'dead', taskId: tid('BRO-30'), workspaceRef: 'workspace:9', ts: iso(4 * H) }, launch];
+  assert.equal(run([issue('BRO-30')], paired).decisions[0].kind, ORPHAN_KINDS.REDISPATCH);
+});
+
+test('BRO-2989: a timed-out job the resume path can still pick up is not re-owned', () => {
+  const ledger = [spawned('BRO-31', 'j', 5 * H), { event: E.FAILED, stage: 'timeout', taskId: tid('BRO-31'), jobId: 'j', ts: iso(4 * H) }];
+  assert.equal(run([issue('BRO-31')], ledger).skipped[0].reason, 'timeout-resumable');
+});
+
+test('BRO-2989: candidate selection is newest-death-first and drops unsettled deaths, so old dead cards cannot starve new ones', () => {
+  const { selectOrphanCandidates } = require('./linear-orphaned-inflight.js');
+  const ledger = [];
+  for (let i = 0; i < 30; i++) { // 30 old stopped-short cards the classifier will always skip
+    ledger.push(spawned(`BRO-${100 + i}`, `o${i}`, (900 - i) * H), { event: E.STOPPED_SHORT, taskId: tid(`BRO-${100 + i}`), jobId: `o${i}`, ts: iso((899 - i) * H) });
+  }
+  ledger.push(spawned('BRO-500', 'n', 3 * H), orphanedRow('BRO-500', 'n', 2 * H));
+  const picked = selectOrphanCandidates(ledger, { limit: 5 });
+  assert.deepEqual(picked.map((c) => c.identifier), ['BRO-500']);
+  const handled = new Set([handledKey(tid('BRO-500'), iso(2 * H))]);
+  assert.deepEqual(selectOrphanCandidates(ledger, { handled }), []);
+});
+
+// The sweep wrapper itself (I/O seams injected).
+test('BRO-2989: sweepOrphanedLinearInFlight moves dead cards, never live ones, persists handled, and is hourly', async () => {
+  const fs2 = await import('node:fs');
+  const os2 = await import('node:os');
+  const { sweepOrphanedLinearInFlight } = require('../bsc-reconcile.js');
+  const statePath = path.join(fs2.mkdtempSync(path.join(os2.tmpdir(), 'orph-')), 'state.json');
+  const ledger = [
+    spawned('BRO-40', 'a', 5 * H), orphanedRow('BRO-40', 'a', 4 * H),      // dead
+    spawned('BRO-41', 'b', 1 * H),                                         // alive
+    spawned('BRO-42', 'c', 5 * H), orphanedRow('BRO-42', 'c', 4 * H),      // dead owner card
+  ];
+  const issues = { 'BRO-40': issue('BRO-40'), 'BRO-41': issue('BRO-41'), 'BRO-42': issue('BRO-42', { title: '👑 OWNER — Crown v9' }) };
+  const applied = []; const reports = []; let fail = true;
+  const deps = {
+    readLedgerEntriesFn: () => ledger, getIssueFn: async (id) => issues[id],
+    applyFn: (a) => { applied.push(a.identifier); return fail ? { ok: false, status: 1, stderr: 'boom' } : { ok: true }; },
+    reportFn: (r) => reports.push(r), hasLiveLeaseFn: () => false, nowFn: () => NOW, statePath,
+  };
+  const r1 = await sweepOrphanedLinearInFlight({ deps });
+  assert.deepEqual(applied, ['BRO-40']);                       // alive BRO-41 and owner card BRO-42 never moved
+  assert.ok(reports.some((x) => x.kind === 'linear-orphaned-owner-alert' && x.identifier === 'BRO-42'));
+  assert.ok(reports.some((x) => x.kind === 'linear-orphaned-reown-failed'));
+  assert.equal(r1.notified.length, 1);
+  // Inside the hour: gated. After it: failed move retried, owner alert NOT repeated.
+  assert.equal((await sweepOrphanedLinearInFlight({ deps })).ran, false);
+  fail = false; reports.length = 0;
+  const r2 = await sweepOrphanedLinearInFlight({ deps: { ...deps, nowFn: () => NOW + 2 * H } });
+  assert.deepEqual(applied, ['BRO-40', 'BRO-40']);
+  assert.equal(reports.filter((x) => x.kind === 'linear-orphaned-owner-alert').length, 0);
+  assert.equal(r2.redispatched.length, 1);
+});

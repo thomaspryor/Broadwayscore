@@ -56,10 +56,33 @@ const KINDS = Object.freeze({ REDISPATCH: 'redispatch', NOTIFY_OWNER: 'notify-ow
 
 function handledKey(taskId, deadTs) { return `${taskId}|${deadTs}`; }
 
-function isSettledDead(entry) {
+// An unverified launch is only a death when failedLaunchEntries wrote a paired
+// 'dead' row for the same workspace (deadConfirmed). A bare unverified launch is
+// the slow-boot case: the wrapper was STILL RUNNING and a real session is
+// probably booting — cmux-tab sessions write no job rows, so nothing else would
+// tell us it is alive.
+function isSettledDead(entry, ledgerEntries = []) {
   if (!entry) return false;
   if (SETTLED_DEAD_EVENTS.has(entry.event)) return true;
-  return entry.event === 'launch' && entry.unverified === true;
+  if (entry.event !== 'launch' || entry.unverified !== true) return false;
+  return ledgerEntries.some((e) => e && e.event === 'dead' && String(e.taskId) === String(entry.taskId)
+    && e.workspaceRef === entry.workspaceRef && Date.parse(e.ts) <= Date.parse(entry.ts));
+}
+
+/**
+ * Cards worth a Linear fetch: latest attempt settled-dead and not yet handled,
+ * NEWEST death first. Newest-first matters: the ledger holds hundreds of old
+ * dead cards the classifier will skip every time (stopped-short, stranded...),
+ * and an oldest-first slice would refetch the same ones forever and never reach
+ * a card that died today.
+ */
+function selectOrphanCandidates(ledgerEntries, { handled = new Set(), limit = 25 } = {}) {
+  const { findLinearDeadLaunchCandidates } = require('./linear-dead-completion-source.js');
+  return findLinearDeadLaunchCandidates(ledgerEntries)
+    .map((c) => ({ ...c, dead: ledger.resolveDeadAttempt(c.taskId, ledgerEntries) }))
+    .filter((c) => c.dead && isSettledDead(c.dead, ledgerEntries) && !handled.has(handledKey(c.taskId, c.dead.ts)))
+    .sort((a, b) => Date.parse(b.dead.ts) - Date.parse(a.dead.ts))
+    .slice(0, limit);
 }
 
 /**
@@ -98,7 +121,10 @@ function classifyOrphanedInFlight({
 
     const dead = ledger.resolveDeadAttempt(taskId, ledgerEntries);
     if (!dead) { skip('latest-attempt-not-dead'); continue; }
-    if (!isSettledDead(dead)) { skip(`dead-event-not-settled:${dead.event}`); continue; }
+    if (!isSettledDead(dead, ledgerEntries)) { skip(`dead-event-not-settled:${dead.event}`); continue; }
+    // A timed-out job is still resumable by bsc-reconcile's resume path; moving
+    // the card to Todo would let two sessions pick it up.
+    if (dead.event === JOB_EVENTS.FAILED && dead.stage === 'timeout') { skip('timeout-resumable'); continue; }
     const deadMs = Date.parse(dead.ts);
     if (!Number.isFinite(deadMs)) { skip('dead-ts-unparseable'); continue; }
     // A vanished/parked workspace row at or after the death is the owner's (or
@@ -145,4 +171,4 @@ function buildReownComment({ identifier, deadEvent, deadTs, kind, reason } = {})
     : `${head} Not auto-redispatched (${reason}); the owner has been told.`;
 }
 
-module.exports = { classifyOrphanedInFlight, buildReownComment, handledKey, KINDS, REOWN_MARKER, GRACE_MS, MAX_PER_TICK };
+module.exports = { classifyOrphanedInFlight, selectOrphanCandidates, isSettledDead, buildReownComment, handledKey, KINDS, REOWN_MARKER, GRACE_MS, MAX_PER_TICK };

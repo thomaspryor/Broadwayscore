@@ -1109,12 +1109,12 @@ const LINEAR_ORPHANED_MAX_FETCH_PER_TICK = 25;
 
 async function sweepOrphanedLinearInFlight({ dryRun = false, deps = {} } = {}) {
   const orphaned = require('./lib/linear-orphaned-inflight.js');
-  const { findLinearDeadLaunchCandidates } = require('./lib/linear-dead-completion-source.js');
   const {
     readLedgerEntriesFn = ledger.readEntries,
     getIssueFn = (identifier) => require('./lib/linear-client.js').getIssue(identifier),
     applyFn = (args) => require('./lib/linear-started-zombie-sweep-verify.js').applyZombieAction(args, { cwd: REPO }),
     reportFn = report,
+    hasLiveLeaseFn = hasLiveLease,
     nowFn = Date.now,
     statePath = LINEAR_ORPHANED_STATE_PATH,
     disabled = process.env.LINEAR_ORPHANED_SWEEP_DISABLED === '1',
@@ -1130,9 +1130,7 @@ async function sweepOrphanedLinearInFlight({ dryRun = false, deps = {} } = {}) {
 
   const entries = readLedgerEntriesFn();
   const handled = new Set((state && Array.isArray(state.handled)) ? state.handled : []);
-  const candidates = findLinearDeadLaunchCandidates(entries)
-    .filter((c) => !handled.has(orphaned.handledKey(c.taskId, c.deadAttemptTs)))
-    .slice(0, LINEAR_ORPHANED_MAX_FETCH_PER_TICK);
+  const candidates = orphaned.selectOrphanCandidates(entries, { handled, limit: LINEAR_ORPHANED_MAX_FETCH_PER_TICK });
 
   const issues = [];
   for (const c of candidates) {
@@ -1141,7 +1139,13 @@ async function sweepOrphanedLinearInFlight({ dryRun = false, deps = {} } = {}) {
     }
   }
   result.checked = issues.length;
-  const { decisions, skipped } = orphaned.classifyOrphanedInFlight({ issues, ledgerEntries: entries, nowMs: nowFn(), handled });
+  // A live worktree lease on the dead attempt's cwd means something still owns the card.
+  const liveTaskIds = new Set();
+  for (const c of candidates) {
+    const cwd = (ledger.foldJobs(entries).get(c.dead.jobId) || {}).cwd;
+    if (cwd && hasLiveLeaseFn(cwd)) liveTaskIds.add(c.taskId);
+  }
+  const { decisions, skipped } = orphaned.classifyOrphanedInFlight({ issues, ledgerEntries: entries, nowMs: nowFn(), handled, liveTaskIds });
   result.skipped = skipped;
 
   for (const d of decisions) {
@@ -1160,7 +1164,7 @@ async function sweepOrphanedLinearInFlight({ dryRun = false, deps = {} } = {}) {
       result.notified.push(row);
       if (dryRun) continue;
       handled.add(d.key);
-      reportFn({ kind: 'linear-orphaned-owner-alert', identifier: d.identifier, reason: d.reason, detail: `${d.identifier} "${String((d.issue && d.issue.title) || '').slice(0, 80)}" lost its session (${d.deadEvent}) and was NOT auto-restarted: ${d.reason}` });
+      reportFn({ kind: 'linear-orphaned-owner-alert', identifier: d.identifier, reason: d.reason, detail: `${d.identifier} lost its session and was NOT auto-restarted (${d.reason}): ${String((d.issue && d.issue.title) || '').slice(0, 80)}` });
     }
   }
 
