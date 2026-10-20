@@ -614,6 +614,7 @@ async function main() {
   console.log(`LLM calls: ${stats.llmCalls}`);
   console.log(`Extracted: ${stats.extracted}`);
   console.log(`Verified (in text): ${stats.verified}`);
+  console.log(`Hard-rejected (internal note / mid-word truncation): ${stats.hardRejected || 0}`);
   console.log(`Not in text (rejected): ${stats.notInText}`);
   console.log(`Too short: ${stats.tooShort}`);
   console.log(`Too long: ${stats.tooLong}`);
