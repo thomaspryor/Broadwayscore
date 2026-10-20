@@ -1,45 +1,6 @@
 {
   "entries": [
     {
-      "kind": "truncated-t1-refetch",
-      "showId": "stories-the-tap-dance-sensation-west-end-2026",
-      "market": "west-end",
-      "queuedAt": "2026-10-17T17:30:58.663Z",
-      "dueAt": "2026-10-17T18:30:58.663Z",
-      "offsetHours": 1,
-      "outletIds": [
-        "times-uk"
-      ],
-      "attempted": true,
-      "attemptedAt": "2026-10-17T19:44:55.288Z"
-    },
-    {
-      "kind": "truncated-t1-refetch",
-      "showId": "stories-the-tap-dance-sensation-west-end-2026",
-      "market": "west-end",
-      "queuedAt": "2026-10-17T17:30:58.663Z",
-      "dueAt": "2026-10-17T20:30:58.663Z",
-      "offsetHours": 3,
-      "outletIds": [
-        "times-uk"
-      ],
-      "attempted": true,
-      "attemptedAt": "2026-10-17T21:47:27.588Z"
-    },
-    {
-      "kind": "truncated-t1-refetch",
-      "showId": "stories-the-tap-dance-sensation-west-end-2026",
-      "market": "west-end",
-      "queuedAt": "2026-10-17T17:30:58.663Z",
-      "dueAt": "2026-10-18T05:30:58.663Z",
-      "offsetHours": 12,
-      "outletIds": [
-        "times-uk"
-      ],
-      "attempted": true,
-      "attemptedAt": "2026-10-18T06:39:11.884Z"
-    },
-    {
       "showId": "school-pictures-off-broadway-2026",
       "market": "broadway",
       "queuedAt": "2026-10-18T12:59:53.917Z",
@@ -113,6 +74,42 @@
       "market": "west-end",
       "queuedAt": "2026-10-20T13:54:36.424Z",
       "dueAt": "2026-10-21T05:54:36.424Z",
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "king-of-the-yees-off-broadway-2026",
+      "market": "broadway",
+      "queuedAt": "2026-10-20T18:35:49.372Z",
+      "dueAt": "2026-10-20T19:35:49.372Z",
+      "offsetHours": 1,
+      "outletIds": [
+        "nytimes"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "king-of-the-yees-off-broadway-2026",
+      "market": "broadway",
+      "queuedAt": "2026-10-20T18:35:49.372Z",
+      "dueAt": "2026-10-20T21:35:49.372Z",
+      "offsetHours": 3,
+      "outletIds": [
+        "nytimes"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "king-of-the-yees-off-broadway-2026",
+      "market": "broadway",
+      "queuedAt": "2026-10-20T18:35:49.372Z",
+      "dueAt": "2026-10-21T06:35:49.372Z",
+      "offsetHours": 12,
+      "outletIds": [
+        "nytimes"
+      ],
       "attempted": false
     }
   ]
