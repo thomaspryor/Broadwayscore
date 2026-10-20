@@ -33,6 +33,7 @@
  */
 
 const fs = require('fs');
+const { buildStagedUrlSkipSet } = require('./lib/staged-refetch');
 const path = require('path');
 const { classifyCandidate, slugCollidesWith, referenceTitle, collisionSlugSet, obRegionalShows, pruneStagedCandidates } = require('./lib/aggregator-candidate-extract');
 const { writeStagingCandidates, loadStaging, updateStaging } = require('./lib/venue-listing-discover');
@@ -111,7 +112,9 @@ async function main() {
   }
 
   // URLs already staged → don't re-fetch (idempotency without a bespoke cache).
-  const stagedUrls = new Set(stagingKept.map(c => c.sourceUrl).filter(Boolean));
+  // BRO-5793: roundup rows still under the 3-outlet threshold are re-fetched
+  // (replaced by candidateHash on write) so late-arriving reviews can count.
+  const stagedUrls = buildStagedUrlSkipSet(stagingKept);
 
   const records = [];
   if (onlySource !== 'bww') {
