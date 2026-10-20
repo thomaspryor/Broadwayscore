@@ -17,6 +17,11 @@ const path = require('path');
 const { scanReviewTextsForCriticDuplicates } = require('./lib/critic-spelling-duplicates');
 
 const dir = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
+const fs = require('fs');
+if (!fs.existsSync(dir)) {
+  console.error(`no review-texts corpus at ${dir} (set REVIEW_TEXTS_DIR or run with --review-texts)`);
+  process.exit(2);
+}
 const { findings, scanned } = scanReviewTextsForCriticDuplicates(dir);
 
 if (process.argv.includes('--json')) {

@@ -7,10 +7,11 @@
     "email": null
   },
   "plan": {
-    "summary": "BRO-5740: fill the two national-tour gaps the daily live-data assertions flag (An American in Paris tour runtime/intermissions, Dear Evan Hansen tour synopsis).",
+    "summary": "BRO-5740: fill the two national-tour gaps (American in Paris tour runtime/intermissions, Dear Evan Hansen tour synopsis) and use the bare 'New World Stages' venue on amaze-off-broadway-2026.",
     "steps": [
       "set runtime + intermissions on an-american-in-paris-tour-2022",
-      "set synopsis on dear-evan-hansen-tour-2024"
+      "set synopsis on dear-evan-hansen-tour-2024",
+      "set venue on amaze-off-broadway-2026 to the bare complex name"
     ],
     "riskLevel": "low",
     "actions": [
@@ -38,9 +39,19 @@
         "showId": "dear-evan-hansen-tour-2024",
         "field": "synopsis",
         "oldValue": null,
-        "newValue": "Dear Evan Hansen is a musical by Steven Levenson, Benj Pasek and Justin Paul about Evan Hansen, an anxious high school senior whose life changes when a classmate's death is mistaken for a close friendship with him. As the lie grows, the story follows its effect on Evan, the family he lets in, and a community looking for something to hold onto. This North American tour of the 2016 Broadway production ran from September 2024 to April 2025.",
-        "description": "BRO-5740: tour synopsis, restating the show's premise (the Broadway parent has none to inherit); tour dates from shows.json."
+        "newValue": "Dear Evan Hansen is a musical by Steven Levenson, Benj Pasek and Justin Paul about Evan Hansen, an anxious high school senior. After a classmate dies, a letter Evan wrote to himself is mistaken for proof that the two were close friends, and the lie he does not correct grows into a story that changes his life, the family that takes him in, and the community around them. This is the North American tour, which ran from September 2024 to April 2025.",
+        "description": "BRO-5740: tour synopsis restating the show's premise (the Broadway parent has none to inherit); tour dates from shows.json."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "amaze-off-broadway-2026",
+        "field": "venue",
+        "oldValue": "New World Stages / Stage 5",
+        "newValue": "New World Stages",
+        "description": "BRO-5740: the 'New World Stages / Stage 5' venue string leaves the new-world-stages-stage-5 sub-venue slug unlinked in venue-complexes.json; tests/unit/venue-complex-live-data.test.mjs pins that complex's subVenueSlugs as empty (a 2026-09-05 merge orphaned this slug once), so use the bare venue name, as the sibling amaze-magic-off-broadway-2025 does."
       }
     ]
-  }
+  },
+  "createdAt": "2026-10-20T01:30:00Z"
 }
