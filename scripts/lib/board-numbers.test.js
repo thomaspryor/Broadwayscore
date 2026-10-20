@@ -2,6 +2,10 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const B = require('./board-numbers.js');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
+const { readDispatchLedgers } = require('./board-targeting-sources.js');
 
 const open = { total: 551, byPriority: { 1: 1, 2: 39, 3: 265, 4: 239, 0: 7 } };
 const inflow = (created, completed, canceled = 0, extra = {}) => ({ created, completed, canceled, ...extra });
@@ -34,6 +38,7 @@ test('failed reads render n/a, never 0', () => {
   assert.match(text, /Added: n\/a in 24h, 5 in 7 days/);
   assert.match(text, /Waiting on you: n\/a/);
   assert.match(text, /Landed on main, 24h: n\/a/);
+  assert.match(text, /Opus in last 24h: n\/a/);
 });
 
 test('truncated walk marks counts as minimums', () => {
@@ -59,12 +64,14 @@ test('fetchBoardNumbersData asks for 1 and 7 day windows and survives one failur
     graphql: null,
     fetchOpen: async () => { throw new Error('boom'); },
     fetchStuck: async () => ({ count: 2 }),
+    fetchOpus: async () => ({ count: 7, cap: 6 }),
     fetchInflow: async ({ windowDays }) => { seen.push(windowDays); return inflow(windowDays, 1); },
     readLandedFn: () => ({ d1: { codex: 1, claude: 0 }, d7: { codex: 7, claude: 0 } }),
   });
   assert.deepEqual(seen.sort(), [1, 7]);
   assert.equal(d.open.error, 'boom');
   assert.equal(d.stuckCards.count, 2);
+  assert.deepEqual(d.opus, { count: 7, cap: 6 });
   assert.deepEqual(d.landed7, { codex: 7, claude: 0 });
 });
 
@@ -181,4 +188,91 @@ test('BRO-5626: the parked line renders a number, or n/a when the read fails', (
   assert.match(B.renderBoardNumbersLines(ok).join('\n'), /Parked, never picked: 41 \(Backlog cards with a PARKED line/);
   const bad = B.buildBoardNumbers({ data: { parked: { error: 'x' } } });
   assert.match(B.renderBoardNumbersLines(bad).join('\n'), /Parked, never picked: n\/a\n/);
+});
+
+const opusNow = new Date('2026-10-20T12:00:00Z');
+const opusLaunch = (id, hoursAgo = 1, extra = {}) => ({
+  event: 'launch', taskId: `linear:BRO-${id}`, model: 'opus',
+  ts: new Date(opusNow.getTime() - hoursAgo * 3600_000).toISOString(), ...extra,
+});
+
+function opusLedger(t, rows) {
+  const repo = fs.mkdtempSync(path.join(os.tmpdir(), 'board-opus-'));
+  t.after(() => fs.rmSync(repo, { recursive: true, force: true }));
+  if (rows !== null) {
+    fs.mkdirSync(path.join(repo, 'data/audit'), { recursive: true });
+    fs.writeFileSync(path.join(repo, 'data/audit/dispatch-ledger.jsonl'), rows.map((r) => JSON.stringify(r)).join('\n'));
+  }
+  return ({ files }) => readDispatchLedgers({ repo, files });
+}
+
+test('BRO-5770: Opus usage shares the cap counter and cloud dedupe, including P0 above the cap', async (t) => {
+  const readLedger = opusLedger(t, [
+    ...Array.from({ length: 6 }, (_, i) => opusLaunch(i, 4)),
+    opusLaunch(7, 1, { priority: 1 }), // P0 exemption still counts as launch 7.
+    opusLaunch(8, 24), // exact window boundary
+    opusLaunch(9, -1), // future
+    opusLaunch(10, 1, { unverified: true }),
+    opusLaunch(11, 1, { remapped: true }),
+    opusLaunch(12, 1, { model: 'sonnet' }),
+    opusLaunch(13, 1, { taskId: 'notion:13' }),
+    { event: 'job-spawned', taskId: 'linear:BRO-7', model: 'opus', ts: opusNow.toISOString() },
+  ]);
+  const usage = await B.fetchOpusUsage({
+    now: opusNow, env: {}, readLedger,
+    fetchClaims: async (nowMs) => {
+      assert.equal(nowMs, opusNow.getTime());
+      return [opusLaunch(7, 0.9, { source: 'cloud-claim' }), opusLaunch(14, 2, { source: 'cloud-claim' })];
+    },
+  });
+  assert.deepEqual(usage, { count: 8, cap: 6 });
+  const model = B.buildBoardNumbers({ data: { opus: usage } });
+  assert.ok(B.renderBoardNumbersLines(model).includes('Opus in last 24h: 8 of 6'));
+  assert.match(B.renderBoardNumbersHtml(model), /Opus in last 24h<\/td><td[^>]*>8 of 6/);
+});
+
+test('BRO-5770: readable empty ledgers show zero and use the configured cap, including zero', async (t) => {
+  const readLedger = opusLedger(t, []);
+  for (const cap of [0, 10]) {
+    const usage = await B.fetchOpusUsage({
+      now: opusNow, env: { LINEAR_OPUS_DAILY_CAP: String(cap) }, readLedger, fetchClaims: async () => [],
+    });
+    assert.deepEqual(usage, { count: 0, cap });
+    assert.ok(B.renderBoardNumbersLines(B.buildBoardNumbers({ data: { opus: usage } })).includes(`Opus in last 24h: 0 of ${cap}`));
+  }
+});
+
+test('BRO-5770: missing Mac ledger is unknown and skips the cloud API read', async (t) => {
+  await assert.rejects(B.fetchOpusUsage({
+    now: opusNow, readLedger: opusLedger(t, null),
+    fetchClaims: async () => { assert.fail('a partial count cannot be shown'); },
+  }), /could not read data\/audit\/dispatch-ledger.jsonl/);
+});
+
+test('BRO-5770: cloud read failure never shows a partial Mac-only count', async (t) => {
+  const readLedger = opusLedger(t, [opusLaunch(1)]);
+  await assert.rejects(B.fetchOpusUsage({
+    now: opusNow, readLedger, fetchClaims: async () => { throw new Error('cloud unavailable'); },
+  }), /cloud unavailable/);
+  await assert.rejects(B.fetchOpusUsage({ now: opusNow, readLedger, fetchClaims: async () => null }), /could not read cloud/);
+});
+
+test('BRO-5770: an Opus read failure preserves the rest of the digest and renders n/a', async () => {
+  const data = await B.fetchBoardNumbersData({
+    now: opusNow, graphql: null,
+    fetchOpen: async () => open,
+    fetchInflow: async () => inflow(3, 2),
+    fetchStuck: async () => ({ count: 1 }),
+    fetchParked: async () => ({ count: 0 }),
+    fetchBySource: async () => B.summarizeInflowBySource([]),
+    readLandedFn: () => null,
+    fetchOpus: async ({ now }) => {
+      assert.equal(now, opusNow);
+      throw new Error('cloud unavailable');
+    },
+  });
+  assert.equal(data.opus.error, 'cloud unavailable');
+  const lines = B.renderBoardNumbersLines(B.buildBoardNumbers({ data }));
+  assert.ok(lines.includes('Added: 3 in 24h, 3 in 7 days'));
+  assert.ok(lines.includes(`Opus in last 24h: n/a of ${require('./bsc-next-model.js').linearOpusDailyCap()}`));
 });
