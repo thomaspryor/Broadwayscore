@@ -300,6 +300,42 @@ function stripDowJonesReprintChrome(text) {
   return body.length >= DOW_JONES_MIN_BODY ? body : text;
 }
 
+// BRO-5684: publisher templates that inline a subscribe/paywall/newsletter block
+// in the MIDDLE of a full article (Postmedia's hidden register modal, Third Coast
+// Review's newsletter signup). The leading/trailing-junk exemptions never cover a
+// mid-text block, so full 5-7K articles were tiered `invalid` ("Paywall/subscription
+// prompt", "Newsletter form"). Each entry is anchored on the template's own fixed
+// start AND end phrases (no end phrase = nothing cut), so a real paywall
+// truncation that merely says "subscribe to continue" is never touched.
+// A new publisher is one more entry here.
+const MID_TEXT_CHROME_BLOCKS = [
+  { name: 'postmedia-register-modal', maxGap: 3500,
+    start: 'THIS CONTENT IS RESERVED FOR SUBSCRIBERS ONLY', end: 'Activate your Online Access Now' },
+  { name: 'third-coast-review-newsletter', maxGap: 250,
+    start: 'Never Miss a Moment in Chicago Culture', end: 'Enter your email address Subscribe' },
+].map((b) => ({
+  ...b,
+  re: new RegExp(`${b.start}[\\s\\S]{0,${b.maxGap}}?${b.end}`, 'gi'),
+}));
+// Same floor as DOW_JONES_MIN_BODY: what is left must still be a review.
+const MID_TEXT_CHROME_MIN_BODY = 300;
+
+/**
+ * Cut known mid-article publisher chrome blocks (see above). Each block becomes a
+ * newline so the sentences either side stay separate. Unchanged when nothing
+ * matches or less than MID_TEXT_CHROME_MIN_BODY chars would remain.
+ * @param {string} text
+ * @returns {string}
+ */
+function stripMidTextChromeBlocks(text) {
+  if (typeof text !== 'string' || !text) return text;
+  let out = text;
+  for (const { re } of MID_TEXT_CHROME_BLOCKS) out = out.replace(re, '\n');
+  if (out === text) return text;
+  out = out.replace(/[ \t]*\n[ \t]*/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+  return out.length >= MID_TEXT_CHROME_MIN_BODY ? out : text;
+}
+
 // Unambiguous full-page chrome (cookie-consent banners, dedicated legal/privacy
 // pages, hard paywall walls) whose distinctive marker can be pushed PAST the
 // first-500-char windows used by detectCookieConsent (line ~271) and the legal
@@ -1255,7 +1291,7 @@ function stripLeadingJsonBlob(text) {
  * @returns {string}
  */
 function stripLeadingFetchDebris(text) {
-  return stripDowJonesReprintChrome(stripLeadingJsonBlob(text));
+  return stripMidTextChromeBlocks(stripDowJonesReprintChrome(stripLeadingJsonBlob(text)));
 }
 
 /**
@@ -1298,6 +1334,9 @@ function isGarbageContent(text) {
       return { isGarbage: true, reason: `WSJ registration interstitial: "${interstitial.match}"` };
     }
   }
+
+  // BRO-5684: known mid-article publisher chrome blocks are not review prose.
+  text = stripMidTextChromeBlocks(text);
 
   // Empty or whitespace-only
   const trimmed = (typeof text === 'string') ? text.trim() : '';
@@ -1855,7 +1894,7 @@ const MAX_CHROME_LINE = 200;
 function stripExemptedChrome(text) {
   // BRO-5198: Dow Jones chrome is a prefix, never exempted — cut it first so
   // the splitter, word counts and tier all judge the review alone.
-  text = stripDowJonesReprintChrome(text);
+  text = stripMidTextChromeBlocks(stripDowJonesReprintChrome(text));
   if (!text || text.length < 500 || !text.includes('\n')) return text;
   const stripped = _stripExemptedChromeLines(text);
   if (stripped !== text && isGarbageContent(stripped).isGarbage) return text;
@@ -2211,8 +2250,9 @@ function classifyContentTier(review) {
 
   // BRO-4429: a leading JSON blob must not count toward length/completeness.
   const rawFullText = stripLeadingJsonBlob(review.fullText || '');
-  const fullText = stripDowJonesReprintChrome(rawFullText);
-  const hadDowJonesChrome = fullText !== rawFullText || isDowJonesChromeTrim(review.fullTextTrimmed, review.fullText);
+  const djStripped = stripDowJonesReprintChrome(rawFullText);
+  const fullText = stripMidTextChromeBlocks(djStripped);
+  const hadDowJonesChrome = djStripped !== rawFullText || isDowJonesChromeTrim(review.fullTextTrimmed, review.fullText);
   const wordCount = countWords(fullText);
   const charCount = fullText.length;
 
@@ -3948,6 +3988,7 @@ module.exports = {
   detectStrongWsjArchiveTruncationAnywhere,
   detectWsjRegistrationInterstitial,
   stripDowJonesReprintChrome,
+  stripMidTextChromeBlocks,
   isDowJonesChromeTrim,
   DOW_JONES_TRIM_REASON,
   detectStrongChromeDumpAnywhere,
