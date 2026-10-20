@@ -198,6 +198,8 @@ function recoupClaimDesignationAction(existing) {
  * Shared by apply-commercial-pending (verified evidence) and batch-commercial-research --apply (no verifier,
  * so every figure lands as an estimate): there is exactly one place that decides what may print as fact.
  */
+const isSecFilingUrl = (url) => { try { return /(^|\.)sec\.gov$/i.test(new URL(url).hostname); } catch { return false; } };
+
 function applyFigureEvidence(result, entry, figureEvidence = {}, existing = null) {
   for (const field of ['capitalization', 'weeklyRunningCost']) {
     if (entry[field] == null) continue;
@@ -222,6 +224,10 @@ function applyFigureEvidence(result, entry, figureEvidence = {}, existing = null
         && !capitalizationBasisFromText(result.capitalizationSource);
       if (keep) result.capitalizationBasis = existing.capitalizationBasis;
       else retagCapitalizationBasis(result);
+      // BRO-5732: a Form D's headline figure is the offering MAXIMUM. When the
+      // verified quote is a bare Form D number (neither "sold" nor "up to"
+      // wording), default to the ceiling instead of printing it as the raise.
+      if (verified && !result.capitalizationBasis && isSecFilingUrl(evidence.source.url)) result.capitalizationBasis = 'maximum';
     }
   }
   return result;
