@@ -1454,5 +1454,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-20T04:58:32.460Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5420-roundplan",
+    "title": "Landing blocked: rebase red on land/bro-5420-roundplan",
+    "description": "land.yml did not land land/bro-5420-roundplan: the rebase gate went red at 1cddcda908. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38890352172",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5420-roundplan"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "1cddcda908a55e023e98f4fb5d0a4853bebfe424"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38890352172"
+      }
+    ],
+    "queuedAt": "2026-10-20T05:04:30.646Z"
   }
 ]
