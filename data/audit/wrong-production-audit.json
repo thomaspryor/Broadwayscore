@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-20T19:15:33.522Z",
+  "timestamp": "2026-10-20T19:48:48.267Z",
   "stats": {
-    "totalReviews": 57962,
+    "totalReviews": 57972,
     "alreadyFlagged": 21109,
     "dateGuardCatches": 198,
-    "directorMismatch": 2026,
+    "directorMismatch": 2027,
     "tvFilmSignals": 1652,
     "londonSignals": 2567,
     "offBroadwaySignals": 531,
     "yearMismatch": 161,
-    "noPublishDate": 5223
+    "noPublishDate": 5232
   },
   "findings": [
     {
@@ -21374,6 +21374,19 @@
       "score": 81,
       "publishDate": "2025-12-13",
       "url": "http://www.theartsdesk.com/theatre/woods-bridge-theatre-review-grimm-sometimes-grim-always-fast-and-furious",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "backstageviewandmorereviews--berenice-mann-backstage-view.json",
+      "publishDate": "2026-03-29",
+      "url": "https://backstageviewandmorereviews.wordpress.com/2026/03/29/review-into-the-woods-london/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
