@@ -36,6 +36,8 @@ const INVENTORY = {
   isPrematureReviewForUnopenedShow: 'live',
   isPreviewFirstLookPiece: 'live',
   isCombinedReviewOfOtherMemberOnly: 'live',
+  // BRO-5795: rebuild and explainExclusion both call this stale-flag check.
+  isFullTextWrongAuthorActive: 'live',
   isRejectedAtExclusion: 'live',
   isRejectedByReasonExclusion: 'live',
   isRoundupPageAsReview: 'live',
