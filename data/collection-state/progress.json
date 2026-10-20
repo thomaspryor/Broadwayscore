@@ -196,11 +196,11 @@
     "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
     "witness-for-the-prosecution-west-end-2022/standard--henry-hitchings.json",
     "witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json",
-    "martin-guerre-west-end-2026/slippedisc--elbie-lebrecht.json",
+    "murder-cathedral-off-west-end-2026/theatre-weekly--maggie-oshea.json",
+    "double-bill-tell-me-straight-and-aggy-off-west-end-2026/iloveeventfest--unknown.json",
     "double-bill-tell-me-straight-and-aggy-off-west-end-2026/nearbuzz--unknown.json",
-    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/londonlivinglarge--london-living-large.json",
-    "harry-potter-2021/melindas-malarky--melinda-pressler.json",
-    "the-book-of-mormon-west-end-2024/mirror--alun-palmer.json"
+    "some-woman-west-end-2026/sunday-times--clive-davis.json",
+    "baby-off-west-end-2026/guardian--holly-omahony.json"
   ],
   "failed": [
     "triumph-off-west-end-2026/thestage--david-benedict.json",
@@ -241,12 +241,10 @@
     "a-few-good-men-2026/times-square-chronicles--genevieve-rafter-keddy.json",
     "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
     "rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026/kidsoutandabout--unknown.json",
-    "double-bill-tell-me-straight-and-aggy-off-west-end-2026/iloveeventfest--unknown.json",
     "jane-eyre-rose-kingston-off-west-end-2026/alltrippers--unknown.json",
     "some-woman-west-end-2026/momentsapp--unknown.json",
     "some-woman-west-end-2026/thestage--sam-marlowe.json",
     "some-woman-west-end-2026/tixculture--unknown.json",
-    "baby-off-west-end-2026/guardian--holly-omahony.json",
     "larger-than-life-starring-wallace-and-gromit-shaun-and-more-off-west-end-2026/firstnews--unknown.json",
     "nina-off-west-end-2026/guardian--kate-wyver.json",
     "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/the-scotsman--jane-bradley.json",
@@ -323,12 +321,12 @@
     "hamilton-west-end-2021/theatermania--zachary-stewart.json",
     "hamilton-2015/nyt-theater--jonathan-mandell.json",
     "the-play-that-goes-wrong-west-end-2021/chicagotribune--chris-jones.json",
-    "the-waverly-gallery-2018/theater-news-online--matt-windman.json",
-    "mj-2022/washpost--peter-marks.json",
-    "aladdin-2014/wsj--terry-teachout.json",
-    "aladdin-2014/ap--mark-kennedy.json",
-    "the-book-of-mormon-west-end-2024/talkinbroadway--unknown.json",
-    "the-book-of-mormon-west-end-2024/washpost--unknown.json"
+    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
+    "some-woman-west-end-2026/guardian--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
+    "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json",
+    "baby-off-west-end-2026/afridiziak-theatre-news--basil-g-lumsden.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -424,15 +422,18 @@
       "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
       "witness-for-the-prosecution-west-end-2022/standard--henry-hitchings.json",
       "witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json",
-      "catarina-and-the-beauty-of-killing-fascists-west-end-2026/londonlivinglarge--london-living-large.json",
-      "harry-potter-2021/melindas-malarky--melinda-pressler.json"
+      "baby-off-west-end-2026/guardian--holly-omahony.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/double-bill-tell-me-straight-and-aggy-off-west-end-2026/iloveeventfest--unknown.json",
+      "double-bill-tell-me-straight-and-aggy-off-west-end-2026/iloveeventfest--unknown.json"
+    ],
     "directCookies": [
       "murder-cathedral-off-west-end-2026/standard--unknown.json"
     ],
     "scrapingdog": [
+      "murder-cathedral-off-west-end-2026/theatre-weekly--maggie-oshea.json",
       "double-bill-tell-me-straight-and-aggy-off-west-end-2026/nearbuzz--unknown.json"
     ],
     "scrapingbee": [
@@ -453,7 +454,8 @@
       "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
       "stranger-things-the-first-shadow-west-end-2023/times-uk--dominic-maxwell.json",
       "singfeld-a-musical-about-nothing-off-broadway-2023/backstage--unknown.json",
-      "hadestown-2019/theatrely--theatrely-staff.json"
+      "hadestown-2019/theatrely--theatrely-staff.json",
+      "some-woman-west-end-2026/sunday-times--clive-davis.json"
     ],
     "brightdata": [
       "dirty-dancing-tour-2026/nytimes--michael-paulson.json",
@@ -540,7 +542,7 @@
     ]
   },
   "startTime": "2026-10-20T08:43:27.579Z",
-  "lastProcessed": "the-book-of-mormon-west-end-2024/washpost--unknown.json",
+  "lastProcessed": "baby-off-west-end-2026/guardian--holly-omahony.json",
   "log": [
     {
       "t": "2026-10-20T08:44:47.597Z",
@@ -771,49 +773,32 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-20T11:08:53.524Z",
+      "t": "2026-10-20T11:34:54.925Z",
       "event": "bb-session",
-      "session": "cea8294f",
-      "url": "http://www.usatoday.com/life/theater/reviews/2011-03-07-season07_ST_N.htm?csp=34"
+      "session": "4e91b0c4",
+      "url": "https://bachtrack.com/review-angels-bone-du-yun-vavrek-english-national-opera-lo"
     },
     {
-      "t": "2026-10-20T11:08:54.031Z",
-      "event": "bb-cookie-inject",
-      "domain": "usatoday.com"
-    },
-    {
-      "t": "2026-10-20T11:11:11.211Z",
+      "t": "2026-10-20T11:38:22.376Z",
       "event": "bb-session",
-      "session": "38433008",
-      "url": "http://www.businessweek.com/news/2013-04-18/skinny-baldwin-pales-in-orphans-boom"
+      "session": "7fb3bdf7",
+      "url": "https://www.iloveeventfest.com/arts/event/double-bill-tell-me-straight-aggy-lond"
     },
     {
-      "t": "2026-10-20T11:11:20.323Z",
+      "t": "2026-10-20T11:41:01.478Z",
       "event": "bb-session",
-      "session": "2c7bf443",
-      "url": "http://www.businessweek.com/news/2013-04-18/skinny-baldwin-pales-in-orphans-boom"
+      "session": "3dc480b5",
+      "url": "https://www.afridiziak.com/offers/access-10-ticket-offer-to-see-baby-in-previews"
     },
     {
-      "t": "2026-10-20T11:35:55.085Z",
+      "t": "2026-10-20T11:41:11.187Z",
       "event": "bb-session",
-      "session": "78f9c7b7",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
-    {
-      "t": "2026-10-20T11:35:55.607Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-20T11:36:12.429Z",
-      "event": "bb-session",
-      "session": "bd7e717d",
-      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
-    },
-    {
-      "t": "2026-10-20T11:36:12.885Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "session": "8dbeeb27",
+      "url": "https://www.afridiziak.com/offers/access-10-ticket-offer-to-see-baby-in-previews"
     }
+  ],
+  "recoveredAfterFailure": [
+    "double-bill-tell-me-straight-and-aggy-off-west-end-2026/iloveeventfest--unknown.json",
+    "baby-off-west-end-2026/guardian--holly-omahony.json"
   ]
 }
