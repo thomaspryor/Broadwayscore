@@ -68,7 +68,7 @@ test('live build yields season and deep-dive prompts with shows', { skip: !haveD
   for (const p of [...deep, ...season]) assert.ok(p.shows.length > 0 && p.title && p.why, p.id);
 });
 
-test('build refuses to splice without Form D files unless --no-formd', () => {
+test('build refuses to splice without Form D files unless --no-formd', { skip: !haveData && 'no data/commercial.json here' }, () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'rp-refuse-'));
   const html = path.join(tmp, 'page.html');
   fs.writeFileSync(html, '  {"id": "p13", "x": 1},\n');

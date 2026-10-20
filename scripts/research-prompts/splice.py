@@ -13,13 +13,13 @@ first, later, older = [], [], []
 covered = {}
 for p in deep:
     for show in p["shows"]:
-        covered.setdefault(show[0], set()).update(show[3] or [])
+        covered.setdefault((show[0], show[2]), set()).update(show[3] or [])
 def trim(p):
     if p.get("kind") != "commercial":
         return p
     shows = []
     for show in p["shows"]:
-        need = [n for n in (show[3] or []) if n not in covered.get(show[0], set())]
+        need = [n for n in (show[3] or []) if n not in covered.get((show[0], show[2]), set())]
         if need:
             shows.append([show[0], show[1], show[2], need, *show[4:]])
     return {**p, "shows": shows}

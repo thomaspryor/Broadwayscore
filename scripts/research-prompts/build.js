@@ -50,6 +50,7 @@ function build({ work, out }) {
 
 if (require.main === module) {
   const work = opt('--work') || fs.mkdtempSync(path.join(os.tmpdir(), 'research-prompts-'));
+  if (flag('--out') && !opt('--out')) throw new Error('--out needs a path');
   const out = flag('--dry-run') ? null : opt('--out');
   const { season, deep } = build({ work, out });
   for (const s of summarize([...deep, ...season])) console.log(`${s.id}\t${s.shows}`);

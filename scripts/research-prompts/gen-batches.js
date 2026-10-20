@@ -34,6 +34,7 @@ const groups = [
   { id: 'p5b', group: 'first', kind: 'commercial', title: '2025-26 season and later: budgets, costs and results', why: 'This season and the next: the same gaps, for the shows a reporter will look at first.', pick: (r) => yr(r) >= 2025 },
   { id: 'p6', group: 'first', kind: 'commercial', title: '2023-24 season: budgets, costs and results', why: 'Two seasons back: the same three gaps.', pick: (r) => yr(r) === 2023 },
   { id: 'p4', group: 'first', kind: 'nonprofit', title: 'Nonprofit shows, 2023-24 and 2024-25', why: 'Which of these nonprofit productions had commercial investors or switched to a commercial run.', pick: (r) => yr(r) === 2023 || yr(r) === 2024 },
+  { id: 'p4b', group: 'first', kind: 'nonprofit', title: 'Nonprofit shows, 2025-26 and later', why: 'Which of the current nonprofit productions had commercial investors or switched to a commercial run.', pick: (r) => yr(r) >= 2025 },
   { id: 'p7', group: 'later', kind: 'commercial', title: '2022-23 season: budgets, costs and results', why: 'Shows from three seasons back whose budgets, weekly costs or final results we are missing.', pick: (r) => yr(r) === 2022 },
   { id: 'p8', group: 'later', kind: 'commercial', title: '2021-22 season: budgets, costs and results', why: 'The first season back after the shutdown.', pick: (r) => yr(r) === 2021 },
   { id: 'p9', group: 'later', kind: 'commercial', title: '2017-18 to 2019-20: budgets and costs', why: 'The three seasons before the shutdown.', pick: (r) => yr(r) >= 2017 && yr(r) <= 2019 },
@@ -53,4 +54,5 @@ const out = groups.map((g) => {
 for (const g of out) console.error(g.id, g.kind, g.shows.length);
 const all = [...np, ...cm].length, used = seen.size;
 console.error('rows', all, 'placed', used);
+if (used < all) throw new Error(`gen-batches: ${all - used} gap rows fit no prompt group (add or widen a group)`);
 console.log(JSON.stringify(out));
