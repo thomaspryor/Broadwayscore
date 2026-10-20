@@ -300,8 +300,8 @@ async function reconcileCheckDefectsBothBuckets({ missing, vacuous }, opts = {})
 }
 
 // opts.measureOnly (BRO-2720, the bare `--source all` default): bulk-fetch
-// verdicts plus refused-card correction reads only. The check-path pass
-// below re-fetches every flagged issue one
+// verdicts and batched comments only, with no per-issue reads. The check-path
+// pass below re-fetches every flagged issue one
 // by one (~400 round trips on the full ~890 corpus, 429s included), too slow
 // for a bare instrument, and writing a report without those buckets would
 // clobber the full report's missingCheckPaths/vacuousChecks — so measureOnly
@@ -309,14 +309,7 @@ async function reconcileCheckDefectsBothBuckets({ missing, vacuous }, opts = {})
 async function runLinearAudit(limit, opts = {}) {
   const issues = await fetchLinearOpenIssuesWithDescriptions();
   console.error(`[audit-card-verifiability] linear: ${issues.length} open issue(s) fetched`);
-  // Share reads with the existing path-defect reconciliation below: a
-  // newly armed card can enter that pass without costing a second request.
-  const cache = new Map();
-  const getIssue = (id) => {
-    if (!cache.has(id)) cache.set(id, Promise.resolve().then(() => (opts.getIssue || linear.getIssue)(id)));
-    return cache.get(id);
-  };
-  const readOpts = { ...opts, getIssue, log: console.error };
+  const readOpts = { ...opts, log: console.error };
   const evaluated = await evaluateLinearIssues(issues.slice(0, limit), readOpts);
   const report = buildReport(evaluated);
   if (opts.measureOnly) return report;

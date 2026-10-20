@@ -24,30 +24,63 @@ test('audit evaluator uses the newest comment correction without mutating commen
   assert.deepEqual(issue, before);
 });
 
-test('audit refreshes only refused bulk rows and preserves report order and fields', async () => {
+test('audit batches only refused identifiers once and preserves report order and fields', async () => {
   const calls = [];
-  const issues = [corrected({ comments: undefined }), corrected({ identifier: 'BRO-2', description: `VERIFY: ${CMD}`, comments: undefined })];
-  const rows = await evaluateLinearIssues(issues, { getIssue: async (id) => { calls.push(id); return corrected(); } });
-  assert.deepEqual(calls, ['BRO-2802']);
-  assert.deepEqual(rows.map((r) => [r.id, r.armed]), [['BRO-2802', true], ['BRO-2', true]]);
+  const issues = [corrected({ comments: undefined }), corrected({ identifier: 'BRO-2', description: `VERIFY: ${CMD}`, comments: undefined }), corrected({ identifier: 'BRO-3', comments: undefined })];
+  const before = structuredClone(issues);
+  const rows = await evaluateLinearIssues(issues, {
+    getIssue: () => { assert.fail('audit must not fetch individual issues'); },
+    listIssueComments: async (ids) => {
+      calls.push(ids);
+      return new Map(ids.map((id) => [id, corrected().comments.nodes]));
+    },
+  });
+  assert.deepEqual(calls, [['BRO-2802', 'BRO-3']]);
+  assert.deepEqual(rows.map((r) => [r.id, r.armed]), [['BRO-2802', true], ['BRO-2', true], ['BRO-3', true]]);
+  assert.deepEqual(issues, before);
   assert.equal(rows[0].status, 'In Progress');
   assert.equal(rows[0].cmd, CMD);
 });
 
-test('audit failed or absent fresh reads leave refused cards refused', async () => {
-  const issue = corrected({ comments: undefined });
-  for (const getIssue of [async () => null, async () => { throw new Error('offline'); }]) {
-    const logs = [];
-    const [row] = await evaluateLinearIssues([issue], { getIssue, log: (s) => logs.push(s) });
-    assert.equal(row.armed, false);
-    assert.equal(logs.length, 1);
-    assert.match(logs[0], /BRO-2802/);
-  }
+test('audit batch failure is logged and leaves every refused card refused', async () => {
+  const issues = [corrected({ comments: undefined }), corrected({ identifier: 'BRO-3', comments: undefined }), corrected({ identifier: 'BRO-2', description: `VERIFY: ${CMD}`, comments: undefined })];
+  const logs = [];
+  let calls = 0;
+  const rows = await evaluateLinearIssues(issues, {
+    getIssue: () => { assert.fail('audit must not fetch individual issues'); },
+    listIssueComments: async (ids) => {
+      calls++;
+      assert.deepEqual(ids, ['BRO-2802', 'BRO-3']);
+      throw new Error('offline');
+    },
+    log: (s) => logs.push(s),
+  });
+  assert.equal(calls, 1);
+  assert.deepEqual(rows, issues.map(evaluateLinearIssue));
+  assert.equal(logs.length, 1);
+  assert.match(logs[0], /offline/);
+});
+
+test('audit missing and empty comment results leave refused cards refused', async () => {
+  const issues = [corrected({ comments: undefined }), corrected({ identifier: 'BRO-3', comments: undefined })];
+  const rows = await evaluateLinearIssues(issues, {
+    listIssueComments: async () => new Map([['BRO-2802', []]]),
+  });
+  assert.deepEqual(rows, issues.map(evaluateLinearIssue));
+});
+
+test('audit with no refused rows skips comment fetching', async () => {
+  const issue = corrected({ comments: undefined, description: `VERIFY: ${CMD}` });
+  const opts = { listIssueComments: () => { assert.fail('no refused cards'); } };
+  assert.deepEqual(await evaluateLinearIssues([], opts), []);
+  assert.deepEqual(await evaluateLinearIssues([issue], opts), [evaluateLinearIssue(issue)]);
 });
 
 test('a comment can arm owner judgment while providing no acceptance command', async () => {
   const issue = corrected({ comments: { nodes: [{ body: 'VERIFY: owner-judgment' }] } });
-  const [row] = await evaluateLinearIssues([{ ...issue, comments: undefined }], { getIssue: async () => issue });
+  const [row] = await evaluateLinearIssues([{ ...issue, comments: undefined }], {
+    listIssueComments: async () => new Map([[issue.identifier, issue.comments.nodes]]),
+  });
   assert.equal(row.armed, true);
   assert.equal(row.ownerJudgment, true);
   assert.equal(row.cmd, null);

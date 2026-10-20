@@ -43,13 +43,23 @@ function evaluateLinearIssue(issue) {
 }
 
 // Armed bulk rows already have proof. Only refused rows need a correction
-// read to resolve this report's false refusals; failed reads stay refused.
+// read to resolve this report's false refusals. Batch the board-wide audit
+// rather than making one request per refused row; failed reads stay refused.
 async function evaluateLinearIssues(issues, opts = {}) {
   const evaluated = issues.map(evaluateLinearIssue);
   const refused = issues.filter((_, i) => !evaluated[i].armed);
-  const refreshed = await fetchIssuesWithComments(refused, opts);
-  const byId = new Map(refreshed.map((issue) => [issue.identifier, evaluateLinearIssue(issue)]));
-  return evaluated.map((card) => byId.get(card.id) || card);
+  if (!refused.length) return evaluated;
+  try {
+    const listIssueComments = opts.listIssueComments || require('./linear-client.js').listIssueComments;
+    const comments = await listIssueComments(refused.map((issue) => issue.identifier));
+    return issues.map((issue, i) => evaluated[i].armed ? evaluated[i] : evaluateLinearIssue({
+      ...issue, comments: { nodes: comments.get(issue.identifier) || [] },
+    }));
+  } catch (err) {
+    const log = opts.log || (() => {});
+    log(`[linear-verifiability] WARN could not read comments for ${refused.length} refused issue(s): ${err.message}`);
+    return evaluated;
+  }
 }
 
 module.exports = { fetchIssuesWithComments, evaluateLinearIssue, evaluateLinearIssues };
