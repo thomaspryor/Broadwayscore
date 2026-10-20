@@ -586,6 +586,20 @@
     "queuedAt": "2026-10-20T16:37:05.534Z"
   },
   {
+    "conditionKey": "pending-unrecoverable:lincoln-in-the-bardo-off-broadway-2026",
+    "title": "1 review(s) for lincoln-in-the-bardo-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- metopera-org--4e1c5928.json (metopera-org): no byline in page and no recoverable body https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-20T17:14:20.780Z"
+  },
+  {
     "conditionKey": "review-gap:opening-window:all-male-as-you-like-it-regional-2026",
     "title": "Review gap — \"As You Like It\" missing 2 cited review(s)",
     "description": "As You Like It (all-male-as-you-like-it-regional-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=all-male-as-you-like-it-regional-2026 --checkpoint --ingest-missing",
