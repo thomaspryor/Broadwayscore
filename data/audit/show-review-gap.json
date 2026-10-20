@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-20T20:12:05.174Z",
-  "windowDays": 21,
-  "targets": 1,
-  "auditedThisRun": 1,
-  "carriedForward": 759,
+  "generatedAt": "2026-10-20T21:11:21.454Z",
+  "windowDays": 1095,
+  "targets": 650,
+  "auditedThisRun": 15,
+  "carriedForward": 745,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 425,
-    "missingCurrentRun": 828,
+    "withGap": 426,
+    "missingCurrentRun": 831,
     "totalCitedNoUrl": 3,
-    "totalFlaggedMisses": 913,
+    "totalFlaggedMisses": 910,
     "totalRecoverable": 11,
     "totalRecovered": 17,
     "humanExcluded": 4,
-    "automatedExcluded": 250,
-    "automatedExcludedListed": 207,
-    "priorProductionCitations": 5168
+    "automatedExcluded": 256,
+    "automatedExcludedListed": 212,
+    "priorProductionCitations": 5167
   },
   "results": [
     {
@@ -12336,7 +12336,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 3,
             "accepted": 0,
             "error": null
           }
@@ -12349,16 +12349,16 @@
       "candidatesRejected": {
         "count": 319,
         "byReason": {
-          "non-review-host": 27,
-          "aggregator-internal-nav": 217,
-          "census-junk-host": 2,
-          "ticketing-reseller": 5,
-          "not-http-url": 49,
+          "non-review-host": 30,
+          "aggregator-internal-nav": 216,
+          "not-http-url": 51,
+          "production-database-listing": 3,
           "aggregator-section-root": 6,
-          "roundup-page": 7,
+          "roundup-page": 3,
           "venue-production-page": 2,
-          "production-database-listing": 2,
+          "ticketing-reseller": 3,
           "ticketing-listing": 1,
+          "census-junk-host": 3,
           "news-article": 1
         }
       },
@@ -12410,7 +12410,7 @@
         "liveCount": 1,
         "candidateCount": 3
       },
-      "computedAt": "2026-10-20T10:25:19.110Z"
+      "computedAt": "2026-10-20T21:11:21.454Z"
     },
     {
       "showId": "anonymous-off-broadway-2026",
@@ -12422,7 +12422,7 @@
       "aggregatorListedUrls": [
         "https://www.offoffonline.com/offoffonline/2026/1/31/anonymous"
       ],
-      "dirFiles": 2,
+      "dirFiles": 3,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [],
@@ -12443,7 +12443,12 @@
               "flag": "wrongShow",
               "urlInDir": "https://www.offoffonline.com/offoffonline/2026/1/31/anonymous"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongShow"
+          ],
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -12457,6 +12462,8 @@
         "byReason": {}
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -12482,7 +12489,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-09-05T17:16:12.711Z"
+      "computedAt": "2026-10-20T21:11:21.454Z"
     },
     {
       "showId": "antigone-exits-chichester-regional-2026",
@@ -12841,9 +12848,9 @@
         "https://www.theaterscene.net/plays/offbway-plays/antigone-this-play-i-read-in-high-school/victor-gluck/",
         "https://exeuntnyc.com/reviews/review-antigone-this-play-i-read-in-high-school-at-the-public-theater/"
       ],
-      "dirFiles": 20,
-      "dirClean": 17,
-      "inReviewsJson": 17,
+      "dirFiles": 23,
+      "dirClean": 19,
+      "inReviewsJson": 19,
       "missing": [],
       "dirOnly": [
         {
@@ -12871,7 +12878,15 @@
           "count": 1
         },
         {
+          "host": "theaterlife.com",
+          "count": 1
+        },
+        {
           "host": "theaterscene.com",
+          "count": 1
+        },
+        {
+          "host": "theatermania.com",
           "count": 1
         },
         {
@@ -12899,7 +12914,12 @@
               "flag": "wrongShow",
               "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-7E6L0"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongShow"
+          ],
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -12909,15 +12929,18 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 289,
+        "count": 304,
         "byReason": {
           "non-review-host": 15,
-          "not-http-url": 63,
-          "aggregator-internal-nav": 206,
-          "aggregator-section-root": 5
+          "aggregator-internal-nav": 210,
+          "not-http-url": 71,
+          "aggregator-section-root": 6,
+          "roundup-page": 2
         }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -12991,7 +13014,7 @@
         "liveCount": 8,
         "candidateCount": 9
       },
-      "computedAt": "2026-09-05T17:16:12.711Z"
+      "computedAt": "2026-10-20T21:11:21.454Z"
     },
     {
       "showId": "appropriate-2023",
@@ -23030,7 +23053,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-20T10:25:19.110Z"
+      "computedAt": "2026-10-20T21:11:21.454Z"
     },
     {
       "showId": "birthright-off-broadway-2026",
@@ -24230,7 +24253,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 1,
             "accepted": 0,
             "error": null
           },
@@ -24260,7 +24283,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 1,
+            "results": 2,
             "accepted": 0,
             "error": null
           }
@@ -24271,12 +24294,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 15,
+        "count": 16,
         "byReason": {
           "non-review-host": 11,
+          "write-path-blocked": 1,
           "aggregator-internal-nav": 1,
           "ticketing-reseller": 1,
-          "write-path-blocked": 1,
+          "census-junk-host": 1,
           "tag-index-page": 1
         }
       },
@@ -24308,7 +24332,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-20T10:25:19.110Z"
+      "computedAt": "2026-10-20T21:11:21.454Z"
     },
     {
       "showId": "bone-wars-a-new-musical-off-broadway-2026",
@@ -37647,8 +37671,8 @@
         "https://www.theatrereviews.com/off-broadway-review-chinese-republicans-at-roundabout-theatre-companys-laura-pels-theatre-through-sunday-april-5-2026/"
       ],
       "dirFiles": 21,
-      "dirClean": 18,
-      "inReviewsJson": 18,
+      "dirClean": 19,
+      "inReviewsJson": 19,
       "missing": [],
       "dirOnly": [
         {
@@ -37678,23 +37702,6 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.nytimes.com/2026/02/27/theater/chinese-republicans-review-alex-lin.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--tim-teeman.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.nytimes.com/2026/02/27/theater/chinese-republicans-review-alex-lin.html"
-            }
-          ]
-        },
-        {
           "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TB51II",
           "host": "lightingandsoundamerica.com",
           "knownOutletId": "lighting-and-sound-america",
@@ -37709,7 +37716,12 @@
               "flag": "wrongShow",
               "urlInDir": "https://www.lightingandsoundamerica.com/news/story.asp?ID=TB51II"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongShow"
+          ],
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -37719,25 +37731,21 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 375,
+        "count": 390,
         "byReason": {
           "non-review-host": 36,
-          "not-http-url": 77,
           "aggregator-internal-nav": 252,
-          "aggregator-section-root": 10
+          "not-http-url": 85,
+          "production-database-listing": 6,
+          "aggregator-section-root": 11
         }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nytimes.com/2026/02/27/theater/chinese-republicans-review-alex-lin.html"
-          },
           {
             "outletId": "lighting-and-sound-america",
             "outlet": "lighting-and-sound-america",
@@ -37785,6 +37793,12 @@
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
           {
+            "url": "https://www.nytimes.com/2026/02/27/theater/chinese-republicans-review-alex-lin.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-05T17:16:12.711Z"
+          },
+          {
             "url": "https://www.theatermania.com/news/review-a-hard-look-at-how-chinese-republicans-survive-in-corporate-america_1825857/",
             "outletId": "theatermania.com",
             "state": "live",
@@ -37821,13 +37835,6 @@
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
           {
-            "url": "https://www.nytimes.com/2026/02/27/theater/chinese-republicans-review-alex-lin.html",
-            "outletId": "nytimes",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-05T17:16:12.711Z"
-          },
-          {
             "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TB51II",
             "outletId": "lighting-and-sound-america",
             "state": "GAP",
@@ -37836,10 +37843,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 12,
+        "liveCount": 13,
         "candidateCount": 14
       },
-      "computedAt": "2026-09-05T17:16:12.711Z"
+      "computedAt": "2026-10-20T21:11:21.454Z"
     },
     {
       "showId": "clara-sex-love-and-classical-music-off-broadway-2026",
@@ -49172,7 +49179,12 @@
         "liveCount": 16,
         "candidateCount": 19
       },
-      "computedAt": "2026-10-20T12:25:09.398Z"
+      "computedAt": "2026-10-20T12:25:09.398Z",
+      "quarantine": {
+        "nextState": "incomplete:16:18",
+        "since": "2026-10-20T21:11:21.564Z",
+        "lastAt": "2026-10-20T21:11:21.564Z"
+      }
     },
     {
       "showId": "doll-day-afternoon-off-broadway-2026",
@@ -92204,19 +92216,18 @@
         "https://www.whatsonstage.com/news/jane-eyre-at-mercury-theatre-and-on-tour-review_1734669/",
         "https://timeandleisure.co.uk/things-to-do/review-jane-eyre-rose-theatre/",
         "https://broadwaybaby.com/shows/jane-eyre/838635",
-        "https://www.allthatdazzles.co.uk/post/review-jane-eyre-rose-theatre",
         "https://kingston.nub.news/news/local-features/review-electrifying-jane-eyre-adaptation-captivates-theatre-audiences-in-kingston-311482",
+        "https://www.allthatdazzles.co.uk/post/review-jane-eyre-rose-theatre",
         "https://www.curtaincallreviews.co.uk/jane-eyre",
         "https://northwestend.com/jane-eyre-rose-theatre/",
         "https://www.theguardian.com/stage/2026/sep/09/jane-eyre-a-musical-review-southwark-playhouse-elephant-london-charlotte-bronte",
         "https://www.britishtheatreguide.info/reviews/jane-eyre-the-southwark-playh-25995",
         "https://blackeyedtheatre.co.uk/press-reviews/jane-eyre/",
-        "https://brightonsource.co.uk/reviews/jane-eyre-review/",
         "https://www.southernartsreviews.co.uk/review-jane-eyre/",
-        "https://www.londontheatre.co.uk/reviews/jane-eyre",
         "https://ayoungishperspective.co.uk/2026/09/11/review-jane-eyre/",
         "https://everything-theatre.co.uk/2026/06/review-jane-eyre-convention-bread-and-roses-theatre/",
         "https://artsreviewhub.com/jane-eyre-set-to-enchant-storyhouse-audiences-this-autumn/",
+        "https://5thingstodotoday.com/2026/10/17/5-reasons-to-see-jane-eyre-at-the-rose-theatre-kingston-from-31/",
         "https://www.londonboxoffice.co.uk/news/post/jane-eyre-southwark-playhouse-elephant-review"
       ],
       "dirFiles": 21,
@@ -92236,25 +92247,15 @@
           "serpCensus": true
         },
         {
-          "url": "https://brightonsource.co.uk/reviews/jane-eyre-review/",
-          "host": "brightonsource.co.uk",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2026-03-09",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/jane-eyre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2016-06-08",
-          "serpCensus": true
-        },
-        {
           "url": "https://ayoungishperspective.co.uk/2026/09/11/review-jane-eyre/",
           "host": "ayoungishperspective.co.uk",
           "knownOutletId": "a-youngish-perspective",
+          "serpCensus": true
+        },
+        {
+          "url": "https://5thingstodotoday.com/2026/10/17/5-reasons-to-see-jane-eyre-at-the-rose-theatre-kingston-from-31/",
+          "host": "5thingstodotoday.com",
+          "knownOutletId": null,
           "serpCensus": true
         },
         {
@@ -92262,11 +92263,8 @@
           "host": "londonboxoffice.co.uk",
           "knownOutletId": "london-box-office",
           "weRef": true,
-          "weRefSources": [
-            "lbo-roundup"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "lbo-roundup"
+          "weRefSources": [],
+          "priorRun": true
         }
       ],
       "dirOnly": [
@@ -92435,7 +92433,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0
+            "fetchErrors": 1
           },
           "lbo-roundup": {
             "found": true,
@@ -92460,7 +92458,7 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 1,
+        "currentRunRows": 0,
         "corroborated": 0,
         "perSource": {}
       },
@@ -92476,7 +92474,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           },
           {
@@ -92486,7 +92484,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -92506,7 +92504,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 4,
             "error": null
           },
           {
@@ -92522,13 +92520,13 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 17,
+        "resultCount": 16,
         "error": null
       },
       "candidatesRejected": {
-        "count": 23,
+        "count": 22,
         "byReason": {
-          "non-review-host": 21,
+          "non-review-host": 20,
           "write-path-blocked": 2
         }
       },
@@ -92537,15 +92535,8 @@
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://brightonsource.co.uk/reviews/jane-eyre-review/",
-          "host": "brightonsource.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/jane-eyre",
-          "host": "londontheatre.co.uk",
+          "url": "https://www.londonboxoffice.co.uk/news/post/jane-eyre-southwark-playhouse-elephant-review",
+          "host": "londonboxoffice.co.uk",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -92598,11 +92589,11 @@
           "reason": "jane-eyre-rose-kingston-off-west-end-2026: https://ayoungishperspective.co.uk/2026/09/11/review-jane-eyre/ is already owned by jane-eyre-off-west-end-2026 — one of the two is contaminated. Inspect data/review-texts/jane-eyre-off-west-end-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
         },
         {
-          "url": "https://www.londonboxoffice.co.uk/news/post/jane-eyre-southwark-playhouse-elephant-review",
-          "host": "londonboxoffice.co.uk",
-          "outletId": "london-box-office",
-          "provisional": false,
-          "ok": false,
+          "url": "https://5thingstodotoday.com/2026/10/17/5-reasons-to-see-jane-eyre-at-the-rose-theatre-kingston-from-31/",
+          "host": "5thingstodotoday.com",
+          "outletId": "5thingstodotoday",
+          "provisional": true,
+          "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
@@ -92610,7 +92601,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Cross-market reroute: jane-eyre-rose-kingston-off-west-end-2026 → jane-eyre-off-west-end-2026 (sibling-venue-in-url: \"southwark-playhouse-elephant\")\n\n❌ Stale merge: fullText still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/jane-eyre-off-west-end-2026/london-box-office--stuart-king.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -92639,11 +92630,11 @@
             "url": "https://ayoungishperspective.co.uk/2026/09/11/review-jane-eyre/"
           },
           {
-            "outletId": "london-box-office",
-            "outlet": "london-box-office",
+            "outletId": "5thingstodotoday.com",
+            "outlet": "5thingstodotoday.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.londonboxoffice.co.uk/news/post/jane-eyre-southwark-playhouse-elephant-review"
+            "url": "https://5thingstodotoday.com/2026/10/17/5-reasons-to-see-jane-eyre-at-the-rose-theatre-kingston-from-31/"
           },
           {
             "outletId": "whatsonstage",
@@ -92689,16 +92680,16 @@
             "firstSeenAt": "2026-10-17T14:24:41.672Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-jane-eyre-rose-theatre",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-17T14:24:41.672Z"
-          },
-          {
             "url": "https://kingston.nub.news/news/local-features/review-electrifying-jane-eyre-adaptation-captivates-theatre-audiences-in-kingston-311482",
             "outletId": "kingston.nub.news",
             "state": "live",
             "firstSeenAt": "2026-10-19T05:36:07.809Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-jane-eyre-rose-theatre",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-17T14:24:41.672Z"
           },
           {
             "url": "https://www.curtaincallreviews.co.uk/jane-eyre",
@@ -92734,11 +92725,11 @@
             "firstSeenAt": "2026-10-17T14:24:41.672Z"
           },
           {
-            "url": "https://www.londonboxoffice.co.uk/news/post/jane-eyre-southwark-playhouse-elephant-review",
-            "outletId": "london-box-office",
+            "url": "https://5thingstodotoday.com/2026/10/17/5-reasons-to-see-jane-eyre-at-the-rose-theatre-kingston-from-31/",
+            "outletId": "5thingstodotoday.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-13T17:02:51.141Z"
+            "firstSeenAt": "2026-10-20T21:11:21.454Z"
           },
           {
             "url": "https://www.whatsonstage.com/news/jane-eyre-at-mercury-theatre-and-on-tour-review_1734669/",
@@ -92773,7 +92764,7 @@
         "liveCount": 6,
         "candidateCount": 14
       },
-      "computedAt": "2026-10-20T10:25:19.110Z"
+      "computedAt": "2026-10-20T21:11:21.454Z"
     },
     {
       "showId": "jasmines-demo-show-4-the-end-off-broadway-2026",
@@ -93511,7 +93502,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-20T10:25:19.110Z"
+      "computedAt": "2026-10-20T21:11:21.454Z"
     },
     {
       "showId": "jesus-christ-superstar-off-west-end-2026",
@@ -94983,7 +94974,12 @@
         "liveCount": 0,
         "candidateCount": 10
       },
-      "computedAt": "2026-10-20T10:25:19.110Z"
+      "computedAt": "2026-10-20T10:25:19.110Z",
+      "quarantine": {
+        "nextState": "incomplete:0:5",
+        "since": "2026-10-20T21:11:21.564Z",
+        "lastAt": "2026-10-20T21:11:21.564Z"
+      }
     },
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
@@ -120753,7 +120749,12 @@
               "flag": "wrongProduction",
               "urlInDir": "https://www.newyorktheatreguide.com/reviews/meat-suit-or-the-shitshow-of-motherhood-off-broadway-review"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
         },
         {
           "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-SRUKAB",
@@ -120770,7 +120771,12 @@
               "flag": "wrongShow",
               "urlInDir": "https://www.lightingandsoundamerica.com/news/story.asp?ID=-SRUKAB"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongShow"
+          ],
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -120784,6 +120790,8 @@
         "byReason": {}
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 2,
+      "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -120859,7 +120867,7 @@
         "liveCount": 6,
         "candidateCount": 8
       },
-      "computedAt": "2026-09-05T17:16:12.711Z"
+      "computedAt": "2026-10-20T21:11:21.454Z"
     },
     {
       "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
@@ -120885,17 +120893,15 @@
         "https://www.thewrap.com/creative-content/theater/memoirs-of-amorous-gentlemen-off-broadway-review/",
         "https://pagesonstages.com/2026/10/15/memoirs-of-amorous-gentlemen/",
         "https://t2conline.com/memoirs-of-amorous-gentlemen-offers-a-first-look-at-one-of-duncan-sheiks-final-musicals/",
-        "https://nypost.com/2026/10/17/entertainment/memoirs-of-amorous-gentlemen-review-the-musical-duncan-sheik-was-working-on-when-he-died-is-an-awkward-letdown/"
+        "https://nypost.com/2026/10/17/entertainment/memoirs-of-amorous-gentlemen-review-the-musical-duncan-sheik-was-working-on-when-he-died-is-an-awkward-letdown/",
+        "https://www.theatermania.com/news/sophia-anne-caruso-to-star-in-duncan-sheik-musical-memoirs-of-amorous-gentlemen_1848982/",
+        "https://thefrontrowcenter.com/2026/10/memoirs-of-amorous-gentlemen/"
       ],
       "dirFiles": 28,
       "dirClean": 16,
       "inReviewsJson": 16,
       "missing": [],
       "dirOnly": [
-        {
-          "host": "thefrontrowcenter.com",
-          "count": 1
-        },
         {
           "host": "nysun.com",
           "count": 1
@@ -120944,7 +120950,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 6,
             "error": null
           },
@@ -120954,7 +120960,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 1,
             "error": null
           },
@@ -120964,8 +120970,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -120975,7 +120981,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -120985,7 +120991,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
@@ -120995,21 +121001,19 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 392,
+        "count": 398,
         "byReason": {
-          "non-review-host": 47,
-          "aggregator-internal-nav": 252,
-          "census-junk-host": 3,
+          "non-review-host": 52,
+          "write-path-blocked": 2,
+          "aggregator-internal-nav": 253,
           "not-http-url": 61,
-          "production-database-listing": 10,
+          "production-database-listing": 9,
           "aggregator-section-root": 11,
-          "bare-host": 2,
-          "roundup-page": 1,
-          "ticketing-listing": 1,
+          "roundup-page": 2,
           "venue-production-page": 1,
-          "merch-store": 1,
-          "no-review-evidence": 1,
-          "write-path-blocked": 1
+          "census-junk-host": 4,
+          "bare-host": 2,
+          "merch-store": 1
         }
       },
       "dedupedVariants": [],
@@ -121107,6 +121111,18 @@
             "firstSeenAt": "2026-10-18T08:32:02.058Z"
           },
           {
+            "url": "https://www.theatermania.com/news/sophia-anne-caruso-to-star-in-duncan-sheik-musical-memoirs-of-amorous-gentlemen_1848982/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-20T21:11:21.454Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2026/10/memoirs-of-amorous-gentlemen/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-20T21:11:21.454Z"
+          },
+          {
             "url": "https://t2conline.com/memoirs-of-amorous-gentlemen-offers-a-first-look-at-one-of-duncan-sheiks-final-musicals/",
             "outletId": "times-square-chronicles",
             "state": "GAP",
@@ -121115,10 +121131,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 13,
-        "candidateCount": 14
+        "liveCount": 14,
+        "candidateCount": 15
       },
-      "computedAt": "2026-10-20T12:25:09.398Z"
+      "computedAt": "2026-10-20T21:11:21.454Z"
     },
     {
       "showId": "meow-meow-off-broadway-2026",
@@ -145546,7 +145562,7 @@
         "http://www.usatoday.com/life/theater/reviews/story/2011-11-03/other-desert-cities/51064886/1",
         "http://www.ny1.com/content/ny1_living/on_stage/150158/ny1-theater-review---other-desert-cities-"
       ],
-      "dirFiles": 45,
+      "dirFiles": 51,
       "dirClean": 32,
       "inReviewsJson": 30,
       "missing": [
@@ -145621,7 +145637,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -145651,7 +145667,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 4,
             "error": null
           },
           {
@@ -145661,27 +145677,27 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 5,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 15,
+        "resultCount": 17,
         "error": null
       },
       "candidatesRejected": {
-        "count": 687,
+        "count": 681,
         "byReason": {
-          "non-review-host": 63,
-          "aggregator-internal-nav": 479,
-          "ticketing-reseller": 3,
+          "non-review-host": 61,
+          "aggregator-internal-nav": 480,
           "not-http-url": 109,
-          "aggregator-section-root": 15,
-          "roundup-page": 4,
           "production-database-listing": 9,
-          "bare-host": 2,
-          "show-hub": 3
+          "aggregator-section-root": 15,
+          "roundup-page": 3,
+          "ticketing-reseller": 2,
+          "bare-host": 1,
+          "show-hub": 1
         }
       },
       "dedupedVariants": [],
@@ -145940,7 +145956,7 @@
         "liveCount": 29,
         "candidateCount": 29
       },
-      "computedAt": "2026-10-20T10:25:19.110Z"
+      "computedAt": "2026-10-20T21:11:21.454Z"
     },
     {
       "showId": "our-sinatra-a-musical-celebration-off-broadway-2026",
@@ -161463,7 +161479,12 @@
         "liveCount": 7,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-20T10:25:19.110Z"
+      "computedAt": "2026-10-20T10:25:19.110Z",
+      "quarantine": {
+        "nextState": "incomplete:1:4",
+        "since": "2026-10-20T21:11:21.564Z",
+        "lastAt": "2026-10-20T21:11:21.564Z"
+      }
     },
     {
       "showId": "schtick-a-pole-in-it-off-broadway-2026",
@@ -168829,7 +168850,12 @@
         "liveCount": 20,
         "candidateCount": 25
       },
-      "computedAt": "2026-10-20T10:25:19.110Z"
+      "computedAt": "2026-10-20T10:25:19.110Z",
+      "quarantine": {
+        "nextState": "incomplete:20:21",
+        "since": "2026-10-20T21:11:21.564Z",
+        "lastAt": "2026-10-20T21:11:21.564Z"
+      }
     },
     {
       "showId": "soon-off-broadway-2026",
@@ -180348,8 +180374,8 @@
         "https://www.theaterscene.net/plays/offbway-plays/the-adding-machine/victor-gluck/"
       ],
       "dirFiles": 25,
-      "dirClean": 18,
-      "inReviewsJson": 18,
+      "dirClean": 19,
+      "inReviewsJson": 19,
       "missing": [],
       "dirOnly": [
         {
@@ -180385,24 +180411,12 @@
               "flag": "clean",
               "urlInDir": "https://culturesauce.com/2026/04/14/the-adding-machine-off-broadway-review/"
             }
-          ]
-        },
-        {
-          "url": "https://nystagereview.com/2026/04/14/the-adding-machine-a-1920s-flashback-zeroes-into-fears-of-a-mechanical-world/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--michael-sommers.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://nystagereview.com/2026/04/14/the-adding-machine-a-1920s-flashback-zeroes-into-fears-of-a-mechanical-world/"
-            }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectedAt"
+          ],
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -180412,16 +180426,19 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 405,
+        "count": 420,
         "byReason": {
           "non-review-host": 38,
-          "not-http-url": 100,
           "aggregator-internal-nav": 255,
-          "aggregator-section-root": 10,
+          "not-http-url": 108,
+          "production-database-listing": 6,
+          "aggregator-section-root": 11,
           "roundup-page": 2
         }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -180431,13 +180448,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://culturesauce.com/2026/04/14/the-adding-machine-off-broadway-review/"
-          },
-          {
-            "outletId": "nysr",
-            "outlet": "nysr",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://nystagereview.com/2026/04/14/the-adding-machine-a-1920s-flashback-zeroes-into-fears-of-a-mechanical-world/"
           }
         ],
         "suppressedMissing": [],
@@ -180451,6 +180461,12 @@
           {
             "url": "https://frontmezzjunkies.com/2026/04/14/counting-the-cost-the-adding-machine-and-the-machinery-of-living/",
             "outletId": "frontmezzjunkies.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-05T17:16:12.711Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/04/14/the-adding-machine-a-1920s-flashback-zeroes-into-fears-of-a-mechanical-world/",
+            "outletId": "nystagereview.com",
             "state": "live",
             "firstSeenAt": "2026-09-05T17:16:12.711Z"
           },
@@ -180532,20 +180548,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-05T17:16:12.711Z"
-          },
-          {
-            "url": "https://nystagereview.com/2026/04/14/the-adding-machine-a-1920s-flashback-zeroes-into-fears-of-a-mechanical-world/",
-            "outletId": "nysr",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-05T17:16:12.711Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 14,
+        "liveCount": 15,
         "candidateCount": 16
       },
-      "computedAt": "2026-09-05T17:16:12.711Z"
+      "computedAt": "2026-10-20T21:11:21.454Z"
     },
     {
       "showId": "the-amazing-adventures-of-kavalier-and-clay-off-broadway-2025",
@@ -182579,7 +182588,12 @@
         "liveCount": 2,
         "candidateCount": 7
       },
-      "computedAt": "2026-10-20T12:25:09.398Z"
+      "computedAt": "2026-10-20T12:25:09.398Z",
+      "quarantine": {
+        "nextState": "incomplete:2:5",
+        "since": "2026-10-20T21:11:21.564Z",
+        "lastAt": "2026-10-20T21:11:21.564Z"
+      }
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
@@ -185833,7 +185847,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-20T10:25:19.110Z"
+      "computedAt": "2026-10-20T21:11:21.454Z"
     },
     {
       "showId": "the-devil-wears-prada-west-end-2024",
@@ -186288,13 +186302,22 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://theknockturnal.com/triad-theater-presents-the-dog-show-come-sit-stay/",
         "https://nitelifeexchange.com/the-dog-show-come-sit-stay-a-new-comedy-at-the-triad-theater-from-tuesday-october-13-sunday-november-29/",
-        "https://theknockturnal.com/triad-theater-presents-the-dog-show-come-sit-stay/"
+        "https://nitelifeexchange.com/the-dog-show-come-sit-stay-fetch-as-in-tickets-to-a-funny-and-charming-show/",
+        "https://www.picturethispost.com/30-minutes-from-broadway-entertainment-presents-the-dog-show-come-sit-stay-preview/"
       ],
       "dirFiles": 5,
       "dirClean": 1,
       "inReviewsJson": 1,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://nitelifeexchange.com/the-dog-show-come-sit-stay-fetch-as-in-tickets-to-a-funny-and-charming-show/",
+          "host": "nitelifeexchange.com",
+          "knownOutletId": "nitelifeexchange-com",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [
         {
@@ -186320,6 +186343,30 @@
           "confirmedNonReview": true,
           "serpCensus": true,
           "reverify": false
+        },
+        {
+          "url": "https://www.picturethispost.com/30-minutes-from-broadway-entertainment-presents-the-dog-show-come-sit-stay-preview/",
+          "host": "picturethispost.com",
+          "knownOutletId": "picture-this-post",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "picture-this-post--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.picturethispost.com/30-minutes-from-broadway-entertainment-presents-the-dog-show-come-sit-stay-preview/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "serpCensus": true,
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -186335,7 +186382,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 2,
             "error": null
           },
@@ -186345,8 +186392,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -186356,7 +186403,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -186382,25 +186429,41 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 2,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
         "count": 35,
         "byReason": {
-          "non-review-host": 22,
-          "aggregator-internal-nav": 5,
-          "no-review-evidence": 1,
-          "write-path-blocked": 1,
+          "non-review-host": 21,
+          "aggregator-internal-nav": 8,
+          "venue-production-page": 2,
           "non-review-path": 2,
-          "venue-production-page": 1,
-          "bare-host": 1,
-          "merch-store": 2
+          "merch-store": 1,
+          "no-review-evidence": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://nitelifeexchange.com/the-dog-show-come-sit-stay-fetch-as-in-tickets-to-a-funny-and-charming-show/",
+          "host": "nitelifeexchange.com",
+          "outletId": "nitelifeexchange-com",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -186409,7 +186472,21 @@
             "outlet": "nitelifeexchange-com",
             "critic": "Unknown",
             "stars": null,
+            "url": "https://nitelifeexchange.com/the-dog-show-come-sit-stay-fetch-as-in-tickets-to-a-funny-and-charming-show/"
+          },
+          {
+            "outletId": "nitelifeexchange-com",
+            "outlet": "nitelifeexchange-com",
+            "critic": "Unknown",
+            "stars": null,
             "url": "https://nitelifeexchange.com/the-dog-show-come-sit-stay-a-new-comedy-at-the-triad-theater-from-tuesday-october-13-sunday-november-29/"
+          },
+          {
+            "outletId": "picture-this-post",
+            "outlet": "picture-this-post",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.picturethispost.com/30-minutes-from-broadway-entertainment-presents-the-dog-show-come-sit-stay-preview/"
           }
         ],
         "suppressedMissing": [],
@@ -186421,18 +186498,32 @@
             "firstSeenAt": "2026-10-20T01:37:32.051Z"
           },
           {
+            "url": "https://nitelifeexchange.com/the-dog-show-come-sit-stay-fetch-as-in-tickets-to-a-funny-and-charming-show/",
+            "outletId": "nitelifeexchange-com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-20T21:11:21.454Z"
+          },
+          {
             "url": "https://nitelifeexchange.com/the-dog-show-come-sit-stay-a-new-comedy-at-the-triad-theater-from-tuesday-october-13-sunday-november-29/",
             "outletId": "nitelifeexchange-com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-18T22:55:46.864Z"
+          },
+          {
+            "url": "https://www.picturethispost.com/30-minutes-from-broadway-entertainment-presents-the-dog-show-come-sit-stay-preview/",
+            "outletId": "picture-this-post",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-20T21:11:21.454Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 1,
-        "candidateCount": 2
+        "candidateCount": 3
       },
-      "computedAt": "2026-10-20T10:25:19.110Z"
+      "computedAt": "2026-10-20T21:11:21.454Z"
     },
     {
       "showId": "the-enormous-crocodile-west-end-2026",
@@ -227549,52 +227640,39 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.newyorktheatreguide.com/reviews/two-girls-off-broadway-review",
-        "https://www.theatermania.com/news/review-two-girls-an-interrogation-of-a-memory-of-a-brazilian-porno_1857490/",
+        "https://exeuntnyc.com/reviews/review-two-girls-a-homeric-retelling-in-the-oral-tradition-at-cherry-lane-theatre/",
+        "https://nyunews.com/arts/performance/2026/10/20/two-girls-cherry-lane-review/",
         "https://thefrontrowcenter.com/2026/10/two-girls-one-cup-at-cherry-lane-theatre/",
         "https://www.timeout.com/newyork/theater/two-girls",
+        "https://www.theatermania.com/news/review-two-girls-an-interrogation-of-a-memory-of-a-brazilian-porno_1857490/",
+        "https://www.yahoo.com/entertainment/articles/two-girls-one-cup-inspired-192755191.html",
         "https://airmail.news/arts-intel/events/school-pictures-and-two-girls"
       ],
-      "dirFiles": 12,
-      "dirClean": 3,
-      "inReviewsJson": 2,
+      "dirFiles": 13,
+      "dirClean": 4,
+      "inReviewsJson": 4,
       "missing": [
+        {
+          "url": "https://nyunews.com/arts/performance/2026/10/20/two-girls-cherry-lane-review/",
+          "host": "nyunews.com",
+          "knownOutletId": "washington-square-news",
+          "serpCensus": true
+        },
         {
           "url": "https://www.timeout.com/newyork/theater/two-girls",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
           "serpCensus": true
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "exeuntnyc.com",
-          "count": 1
-        }
-      ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/two-girls-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytg--allison-considine.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.newyorktheatreguide.com/reviews/two-girls-off-broadway-review"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongShow"
-          ],
-          "serpCensus": true,
-          "reverify": true
         },
+        {
+          "url": "https://www.yahoo.com/entertainment/articles/two-girls-one-cup-inspired-192755191.html",
+          "host": "yahoo.com",
+          "knownOutletId": "yahoo",
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
         {
           "url": "https://airmail.news/arts-intel/events/school-pictures-and-two-girls",
           "host": "airmail.news",
@@ -227634,7 +227712,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -227644,7 +227722,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -227653,7 +227731,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -227664,7 +227742,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -227680,22 +227758,41 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 5,
+        "resultCount": 8,
         "error": null
       },
       "candidatesRejected": {
-        "count": 29,
+        "count": 27,
         "byReason": {
-          "non-review-host": 21,
-          "aggregator-internal-nav": 5,
-          "non-review-path": 2,
-          "census-junk-host": 1
+          "non-review-host": 18,
+          "write-path-blocked": 1,
+          "aggregator-internal-nav": 3,
+          "venue-production-page": 1,
+          "ticketing-listing": 1,
+          "census-junk-host": 1,
+          "bare-host": 1,
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "ingestResults": [
+        {
+          "url": "https://nyunews.com/arts/performance/2026/10/20/two-girls-cherry-lane-review/",
+          "host": "nyunews.com",
+          "outletId": "washington-square-news",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
         {
           "url": "https://www.timeout.com/newyork/theater/two-girls",
           "host": "timeout.com",
@@ -227710,12 +227807,34 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "two-girls-off-broadway-2026: https://www.timeout.com/newyork/theater/two-girls is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
+        },
+        {
+          "url": "https://www.yahoo.com/entertainment/articles/two-girls-one-cup-inspired-192755191.html",
+          "host": "yahoo.com",
+          "outletId": "yahoo",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
         }
       ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "washington-square-news",
+            "outlet": "washington-square-news",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nyunews.com/arts/performance/2026/10/20/two-girls-cherry-lane-review/"
+          },
           {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
@@ -227724,11 +227843,11 @@
             "url": "https://www.timeout.com/newyork/theater/two-girls"
           },
           {
-            "outletId": "nytg",
-            "outlet": "nytg",
+            "outletId": "yahoo",
+            "outlet": "yahoo",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.newyorktheatreguide.com/reviews/two-girls-off-broadway-review"
+            "url": "https://www.yahoo.com/entertainment/articles/two-girls-one-cup-inspired-192755191.html"
           },
           {
             "outletId": "airmail",
@@ -227741,16 +227860,35 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.theatermania.com/news/review-two-girls-an-interrogation-of-a-memory-of-a-brazilian-porno_1857490/",
-            "outletId": "theatermania.com",
+            "url": "https://www.newyorktheatreguide.com/reviews/two-girls-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-10-19T18:05:32.145Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-two-girls-a-homeric-retelling-in-the-oral-tradition-at-cherry-lane-theatre/",
+            "outletId": "exeuntnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-20T21:11:21.454Z"
           },
           {
             "url": "https://thefrontrowcenter.com/2026/10/two-girls-one-cup-at-cherry-lane-theatre/",
             "outletId": "thefrontrowcenter.com",
             "state": "live",
             "firstSeenAt": "2026-10-20T01:37:32.051Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-two-girls-an-interrogation-of-a-memory-of-a-brazilian-porno_1857490/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T18:05:32.145Z"
+          },
+          {
+            "url": "https://nyunews.com/arts/performance/2026/10/20/two-girls-cherry-lane-review/",
+            "outletId": "washington-square-news",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-20T21:11:21.454Z"
           },
           {
             "url": "https://www.timeout.com/newyork/theater/two-girls",
@@ -227760,11 +227898,11 @@
             "firstSeenAt": "2026-10-18T22:55:46.864Z"
           },
           {
-            "url": "https://www.newyorktheatreguide.com/reviews/two-girls-off-broadway-review",
-            "outletId": "nytg",
+            "url": "https://www.yahoo.com/entertainment/articles/two-girls-one-cup-inspired-192755191.html",
+            "outletId": "yahoo",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-19T18:05:32.145Z"
+            "firstSeenAt": "2026-10-20T21:11:21.454Z"
           },
           {
             "url": "https://airmail.news/arts-intel/events/school-pictures-and-two-girls",
@@ -227775,10 +227913,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 2,
-        "candidateCount": 5
+        "liveCount": 4,
+        "candidateCount": 8
       },
-      "computedAt": "2026-10-20T12:25:09.398Z"
+      "computedAt": "2026-10-20T21:11:21.454Z"
     },
     {
       "showId": "two-strangers-bway-2025",
@@ -244323,22 +244461,24 @@
     }
   ],
   "staleness": {
-    "at": "2026-10-20T17:50:39.723Z",
+    "at": "2026-10-20T21:11:21.453Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "ulysses-off-broadway-2026",
-      "public-charge-off-broadway-2026",
-      "encores-the-wild-party-off-broadway-2026"
+      "the-adding-machine-off-broadway-2026",
+      "anonymous-off-broadway-2026",
+      "antigone-this-play-i-read-in-high-school-off-broadway-2026",
+      "chinese-republicans-off-broadway-2026",
+      "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026"
     ],
     "oldestDueRowAtStart": {
-      "showId": "ulysses-off-broadway-2026",
-      "computedAt": "2026-09-05T17:16:12.711Z",
-      "ageHours": 1080.3
-    },
-    "oldestDueRowAfterRun": {
       "showId": "the-adding-machine-off-broadway-2026",
       "computedAt": "2026-09-05T17:16:12.711Z",
-      "ageHours": 1080.6
+      "ageHours": 1083.6
+    },
+    "oldestDueRowAfterRun": {
+      "showId": "hate-radio-off-broadway-2026",
+      "computedAt": "2026-09-05T17:16:12.711Z",
+      "ageHours": 1083.9
     }
   }
 }

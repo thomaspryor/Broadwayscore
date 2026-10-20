@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-20T20:12:19.183Z",
+  "generatedAt": "2026-10-20T21:11:43.997Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -183,8 +183,16 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
+      "outletId": "plays-international",
+      "error": "AggregateError"
+    },
+    {
       "outletId": "musical-theatre-review",
       "error": "HTTP 401 for https://musicaltheatrereview.com/feed/"
+    },
+    {
+      "outletId": "theatre-vibe",
+      "error": "HTTP 403 for https://theatrevibe.co.uk/feed/"
     },
     {
       "outletId": "theartsdispatch",
@@ -199,7 +207,7 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 726,
+  "itemsScanned": 716,
   "matchedGaps": 4,
   "possibleGaps": 6,
   "gaps": [
