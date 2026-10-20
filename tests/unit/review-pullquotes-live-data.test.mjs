@@ -44,6 +44,7 @@ test('no review missing a pullQuote has a recoverable excerpt sitting unused in 
   const outlets = JSON.parse(fs.readFileSync(outletRegistryFile, 'utf8')).outlets || {};
   const titleById = new Map(shows.map(s => [s.id, s.title]));
   const statusById = new Map(shows.map(s => [s.id, s.status]));
+  const showById = new Map(shows.map(s => [s.id, s]));
 
   const targets = findTargetReviews(reviews, outlets);
 
@@ -59,7 +60,7 @@ test('no review missing a pullQuote has a recoverable excerpt sitting unused in 
     if (!entry) continue; // no source file at all — not a wiring gap
     let excerpt;
     try {
-      excerpt = recoverableQuote(entry.data, titleById.get(target.showId), statusById.get(target.showId));
+      excerpt = recoverableQuote(entry.data, titleById.get(target.showId), statusById.get(target.showId), { show: showById.get(target.showId), filePath: path.join(reviewTextsDir, target.showId, entry.file) });
     } catch {
       continue;
     }

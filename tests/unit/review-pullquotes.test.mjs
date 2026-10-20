@@ -104,3 +104,13 @@ test('a quote cut off on a trailing comma is not shipped', () => {
   assert.equal(finalizePullQuote({ ...data }, 'Some Show', 'closed'), null);
   assert.equal(recoverableQuote({ ...data }, 'Some Show', 'closed'), null);
 });
+
+test('a clean excerpt on a file the rebuild excludes is not recoverable', () => {
+  const data = {
+    showId: 'some-show-2019', outletId: 'timeout-london', wrongProduction: true,
+    dtliExcerpt: 'The dtli-curated evaluative quote that is long enough to ship and says the production is a triumph.',
+  };
+  const show = { id: 'some-show-2019', title: 'Some Show', status: 'closed' };
+  assert.ok(recoverableQuote({ ...data, wrongProduction: false }, 'Some Show', 'closed'), 'control: same file without the flag is recoverable');
+  assert.equal(recoverableQuote({ ...data }, 'Some Show', 'closed', { show, filePath: 'x/timeout-london--a.json' }), null);
+});

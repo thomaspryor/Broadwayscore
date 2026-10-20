@@ -30,6 +30,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { finalizePullQuote } = require('./rebuild-all-reviews.js');
+const { isIncludableForRebuild } = require('./lib/review-guards');
 const { decodeHtmlEntities } = require('./lib/text-cleaning');
 const { fileForReview, loadShowTexts } = require('./audit-pull-quotes.js');
 
@@ -71,7 +72,10 @@ function findAllMissingPullQuoteReviews(reviews) {
  * "recoverable" means what the rebuild means: an excerpt it would then discard
  * as junk is not recoverable, and filling it here would be wiped next rebuild.
  */
-function recoverableQuote(data, showTitle, showStatus) {
+function recoverableQuote(data, showTitle, showStatus, exclusion) {
+  // A file the rebuild leaves out (duplicate, wrong production, non-review) can never ship a quote,
+  // so its excerpt is not "recoverable" however clean it looks (BRO-5798, Fiddler / Time Out London).
+  if (exclusion && exclusion.show && !isIncludableForRebuild(data, exclusion.show, exclusion.filePath)) return null;
   const q = finalizePullQuote(data, showTitle, showStatus);
   return q ? decodeHtmlEntities(q) : null;
 }
@@ -85,6 +89,7 @@ function main() {
   const outlets = readJson(OUTLET_REGISTRY_FILE).outlets || {};
   const titleById = new Map(shows.map(s => [s.id, s.title]));
   const statusById = new Map(shows.map(s => [s.id, s.status]));
+  const showById = new Map(shows.map(s => [s.id, s]));
 
   const targets = allScope
     ? findAllMissingPullQuoteReviews(reviewsData.reviews)
@@ -112,7 +117,7 @@ function main() {
 
     let excerpt;
     try {
-      excerpt = recoverableQuote(entry.data, titleById.get(target.showId), statusById.get(target.showId));
+      excerpt = recoverableQuote(entry.data, titleById.get(target.showId), statusById.get(target.showId), { show: showById.get(target.showId), filePath: path.join(REVIEW_TEXTS_DIR, target.showId, entry.file) });
     } catch (e) {
       stillMissing.push({ showId: target.showId, outletId: target.outletId, criticName: target.criticName, reason: `error: ${e.message}` });
       continue;

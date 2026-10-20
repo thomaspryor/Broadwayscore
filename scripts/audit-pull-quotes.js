@@ -272,6 +272,7 @@ function main() {
     const { recoverableQuote } = require('./backfill-missing-pullquotes.js');
     const titleById = new Map(shows.map(s => [s.id, s.title]));
     const statusById = new Map(shows.map(s => [s.id, s.status]));
+    const showById = new Map(shows.map(s => [s.id, s]));
 
     const changes = { filled: [], cleared: [], changed: [], same: 0, skipped: 0 };
     for (const r of scoped) {
@@ -279,7 +280,7 @@ function main() {
       if (!entry) { changes.skipped++; continue; }
       let next;
       try {
-        next = recoverableQuote(entry.data, titleById.get(r.showId), statusById.get(r.showId));
+        next = recoverableQuote(entry.data, titleById.get(r.showId), statusById.get(r.showId), { show: showById.get(r.showId), filePath: path.join(REVIEW_TEXTS_DIR, r.showId, entry.file) });
       } catch (e) {
         changes.skipped++;
         continue;
