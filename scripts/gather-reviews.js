@@ -3677,6 +3677,17 @@ function createReviewFile(showId, reviewData, options = {}) {
   // refuse a cross-production url instead of merging it into an existing slot.
   let _incomingCrossProdReason = null;
   try { _incomingCrossProdReason = incomingCrossProductionReason(reviewData, _showMeta); } catch (e) { /* guard failure never blocks */ }
+  // BRO-5791: merged writes into an existing file go through safeWriteReview (phantom,
+  // temporal-byline, cross-market and protected-field guards), not a raw writeFileSync.
+  const writeMergedInto = (existingFile, data) => {
+    const res = safeWriteReview(path.join(showDir, existingFile), data);
+    if (res && res.wrote === false) {
+      console.log(`    ✗ Merge into ${existingFile} refused by write guard (${res.skipped || 'locked'})`);
+      return false;
+    }
+    return true;
+  };
+
   const refuseMergeInto = (existingReview, existingFile) => {
     const reason = crossProductionMergeRefusal(existingReview, reviewData, _incomingCrossProdReason, normalizeUrl);
     if (!reason) return null;
@@ -3708,7 +3719,7 @@ function createReviewFile(showId, reviewData, options = {}) {
               ...reviewData,
               source: reviewData.source || 'gather-reviews',
             }, mergeOpts, { script: 'gather-reviews', showId, showDir, file: existingFile, show: _showMeta });
-            fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
+            if (!writeMergedInto(existingFile, merged)) return false;
             console.log(`    ⟳ Prefix match: merged ${filename} into ${existingFile}`);
             return true;
           }
@@ -3720,7 +3731,7 @@ function createReviewFile(showId, reviewData, options = {}) {
               ...reviewData,
               source: reviewData.source || 'gather-reviews',
             }, mergeOpts, { script: 'gather-reviews', showId, showDir, file: existingFile, show: _showMeta });
-            fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
+            if (!writeMergedInto(existingFile, merged)) return false;
             if (existingFile !== filename) {
               fs.renameSync(path.join(showDir, existingFile), filepath);
             }
@@ -3737,7 +3748,7 @@ function createReviewFile(showId, reviewData, options = {}) {
               ...reviewData,
               source: reviewData.source || 'gather-reviews',
             }, mergeOpts, { script: 'gather-reviews', showId, showDir, file: existingFile, show: _showMeta });
-            fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
+            if (!writeMergedInto(existingFile, merged)) return false;
             if (existingFile !== filename) {
               fs.renameSync(path.join(showDir, existingFile), filepath);
             }
@@ -3865,6 +3876,7 @@ function createReviewFile(showId, reviewData, options = {}) {
             // invariant call above. The legacy needsRecollection flag set here
             // was written by this one line and read by nothing (ship-check
             // 2026-07-11), so it was dropped.
+            // RAW-WRITE-OK (BRO-5791): deliberately clears wrongShow/wrongProduction, which safeWriteReview would restore.
             fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(replacement, null, 2) + '\n');
             if (existingFile !== filename) {
               fs.renameSync(path.join(showDir, existingFile), filepath);
@@ -3878,7 +3890,7 @@ function createReviewFile(showId, reviewData, options = {}) {
             ...reviewData,
             source: reviewData.source || 'gather-reviews',
           }, mergeOpts, { script: 'gather-reviews', showId, showDir, file: existingFile, show: _showMeta });
-          fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
+          if (!writeMergedInto(existingFile, merged)) return false;
 
           // Rename to canonical filename if different
           if (existingFile !== filename) {
@@ -3969,7 +3981,7 @@ function createReviewFile(showId, reviewData, options = {}) {
               toSource: reviewData.source,
               correctedAt: new Date().toISOString(),
             };
-            fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(corrected, null, 2));
+            if (!writeMergedInto(existingFile, corrected)) return false;
             if (existingFile !== filename) {
               fs.renameSync(path.join(showDir, existingFile), filepath);
             }
@@ -3983,7 +3995,7 @@ function createReviewFile(showId, reviewData, options = {}) {
             ...reviewData,
             source: reviewData.source || 'gather-reviews',
           }, mergeOpts, { script: 'gather-reviews', showId, showDir, file: existingFile, show: _showMeta });
-          fs.writeFileSync(path.join(showDir, existingFile), JSON.stringify(merged, null, 2));
+          if (!writeMergedInto(existingFile, merged)) return false;
           console.log(`    ⟳ URL match: ${!merged.isPreviewPlaceholder && existingReview.isPreviewPlaceholder ? 'replaced placeholder' : 'merged'} ${filename} into ${existingFile}`);
           return true;
         }
