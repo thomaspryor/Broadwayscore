@@ -158,6 +158,27 @@ function pageTitleMatchesShow(pageTitle, showTitle) {
   return !!t && normalizeTitle(t) === normalizeTitle(showTitle);
 }
 
+const MONTHS = { january: 1, february: 2, march: 3, april: 4, may: 5, june: 6, july: 7, august: 8, september: 9, october: 10, november: 11, december: 12 };
+
+/** First "Theatre Review by {Critic} - {Month D, YYYY}" date on a page, as YYYY-MM-DD; null if none. */
+function bylineDate(html) {
+  const m = String(html || '').replace(/<[^>]*>/g, ' ')
+    .match(/Theatre Review by[^\n]{1,80}?-\s*([A-Za-z]+)\.?\s+(\d{1,2}),?\s+(\d{4})/i);
+  if (!m) return null;
+  const mo = MONTHS[m[1].toLowerCase()];
+  if (!mo) return null;
+  return `${m[3]}-${String(mo).padStart(2, '0')}-${String(Number(m[2])).padStart(2, '0')}`;
+}
+
+/** Resolve an anchor href against the page it was read from ("Bug.html" on /page/world/past.html). */
+function resolveAgainst(pageUrl, href) {
+  try {
+    return new URL(href, pageUrl).href;
+  } catch {
+    return null;
+  }
+}
+
 /** Key for "we already hold a Talkin' Broadway review of this show". TB posts one review per production. */
 function heldKey(showId) {
   return String(showId);
@@ -195,8 +216,10 @@ function planCollection(entries, shows, held, opts = {}) {
       skipped.push({ url: e.url, title: e.title, why: reason === 'ambiguous' ? 'ambiguous-title' : 'no-tracked-show' });
       continue;
     }
-    if (!reviewDateFitsShow(e.date, show)) {
-      skipped.push({ url: e.url, title: e.title, why: e.date ? 'date-outside-run' : 'no-date' });
+    // Broadway list links carry no date ("Bug.html | Bug"); those are checked against the review
+    // page's own byline date after the fetch (verifyPageDate), never taken on trust.
+    if (e.date && !reviewDateFitsShow(e.date, show)) {
+      skipped.push({ url: e.url, title: e.title, why: 'date-outside-run' });
       continue;
     }
     const key = heldKey(show.id);
@@ -209,7 +232,7 @@ function planCollection(entries, shows, held, opts = {}) {
       continue;
     }
     queued.add(key);
-    toFetch.push({ showId: show.id, url: normalizeTbUrl(e.url), title: e.title });
+    toFetch.push({ showId: show.id, url: normalizeTbUrl(e.url), title: e.title, openingDate: show.openingDate, verifyPageDate: !e.date });
   }
   return { toFetch, skipped };
 }
@@ -223,6 +246,8 @@ module.exports = {
   titleFromLinkText,
   dateFromLinkText,
   reviewDateFitsShow,
+  bylineDate,
+  resolveAgainst,
   titleFromPageTitle,
   matchShowByTitle,
   bylineSections,

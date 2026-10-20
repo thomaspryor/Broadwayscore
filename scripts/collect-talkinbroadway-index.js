@@ -32,7 +32,7 @@ const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const {
   BASE, extractReviewLinks, isReviewHref, normalizeTbUrl, titleFromPageTitle, planCollection, heldKey,
-  pickCriticForShow, pageTitleMatchesShow,
+  pickCriticForShow, pageTitleMatchesShow, bylineDate, reviewDateFitsShow, resolveAgainst,
 } = require('./lib/talkinbroadway-index');
 const { isForumThreadUrl } = require('./lib/talkinbroadway-forum-link');
 
@@ -85,7 +85,9 @@ async function readPage(page, url) {
   if (CHALLENGE.test(title) || CHALLENGE.test(text.slice(0, 400)) || text.length < 500) {
     throw new Error(`challenge or empty page at ${url}`);
   }
-  const anchors = await page.evaluate(() => Array.from(document.querySelectorAll('a[href]')).map((a) => ({ href: a.getAttribute('href'), text: (a.textContent || '').trim().slice(0, 120) })));
+  const rawAnchors = await page.evaluate(() => Array.from(document.querySelectorAll('a[href]')).map((a) => ({ href: a.getAttribute('href'), text: (a.textContent || '').trim().slice(0, 120) })));
+  // List pages use relative hrefs ("Bug.html"); resolve them against the page they came from.
+  const anchors = rawAnchors.map((a) => ({ href: resolveAgainst(url, a.href), text: a.text })).filter((a) => a.href);
   const canonical = await page.evaluate(() => {
     const el = document.querySelector('link[rel="canonical"]') || document.querySelector('meta[property="og:url"]');
     return el ? (el.getAttribute('href') || el.getAttribute('content')) : null;
@@ -177,6 +179,11 @@ async function main() {
         // The page must be about this show, and the critic must be the one who reviewed it.
         if (!pageTitleMatchesShow(r.title, t.title)) {
           console.log(`  ${t.showId} skipped: page title "${r.title.slice(0, 80)}" is not "${t.title}"`);
+          continue;
+        }
+        const pageDate = bylineDate(r.html);
+        if (pageDate ? !reviewDateFitsShow(pageDate, { openingDate: t.openingDate }) : t.verifyPageDate) {
+          console.log(`  ${t.showId} skipped: page byline date ${pageDate || 'missing'} does not fit the opening ${t.openingDate} (${t.url})`);
           continue;
         }
         const picked = pickCriticForShow(r.html, t.title);

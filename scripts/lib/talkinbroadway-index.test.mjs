@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  titleFromLinkText, dateFromLinkText, reviewDateFitsShow, normalizeTbUrl, isReviewHref, normalizeTitle, extractReviewLinks, titleFromPageTitle,
+  titleFromLinkText, dateFromLinkText, bylineDate, resolveAgainst, reviewDateFitsShow, normalizeTbUrl, isReviewHref, normalizeTitle, extractReviewLinks, titleFromPageTitle,
   matchShowByTitle, heldKey, planCollection, pickCriticForShow, pageTitleMatchesShow,
 } = require('./talkinbroadway-index.js');
 
@@ -87,11 +87,10 @@ test('an earlier same-title run or a review far from the opening is not attached
   const entries = [
     { url: 'https://www.talkinbroadway.com/page/ob/01_16_22.html', title: 'Good Time Charlie', date: '2022-01-16' },
     { url: 'https://www.talkinbroadway.com/page/ob/01_12_26.html', title: 'Good Time Charlie', date: '2026-01-12' },
-    { url: 'https://www.talkinbroadway.com/page/ob/10_09_26.html', title: 'Good Time Charlie', date: null },
   ];
   const { toFetch, skipped } = planCollection(entries, shows, new Set(), { now: NOW });
   assert.deepEqual(toFetch, []);
-  assert.deepEqual(skipped.map((s) => s.why), ['date-outside-run', 'date-outside-run', 'no-date']);
+  assert.deepEqual(skipped.map((s) => s.why), ['date-outside-run', 'date-outside-run']);
 });
 
 test('reviewDateFitsShow: ten days before to sixty days after the opening', () => {
@@ -145,4 +144,32 @@ test('extractReviewLinks strips the date so the title can match a tracked show',
   assert.equal(links[0].date, '2026-10-09');
   const { toFetch } = planCollection(links.map((l) => ({ url: l.url, title: l.text, date: l.date })), shows, new Set(), { now: NOW });
   assert.deepEqual(toFetch.map((t) => t.showId), ['good-time-charlie-off-broadway-2026']);
+});
+
+test('Broadway list links have no date: they are queued for a check against the page byline date', () => {
+  const entries = [{ url: 'https://www.talkinbroadway.com/page/world/GoodTimeCharlie.html', title: 'Good Time Charlie', date: null }];
+  const { toFetch } = planCollection(entries, shows, new Set(), { now: NOW });
+  assert.equal(toFetch.length, 1);
+  assert.equal(toFetch[0].verifyPageDate, true);
+  assert.equal(toFetch[0].openingDate, '2026-10-09');
+});
+
+test('bylineDate reads the page byline, so an older run of the same title is caught after the fetch', () => {
+  const html = '<P><B>Theatre Review by <A HREF="mailto:x">Howard Miller</A> - October 19, 2026</B>';
+  assert.equal(bylineDate(html), '2026-10-19');
+  assert.equal(bylineDate('<B>Theatre Review by Matthew Murray - May 3, 2022</B>'), '2022-05-03');
+  assert.equal(bylineDate('<p>no byline</p>'), null);
+  assert.equal(reviewDateFitsShow(bylineDate('<B>Theatre Review by Matthew Murray - May 3, 2022</B>'), { openingDate: '2026-10-09' }), false);
+});
+
+test('resolveAgainst makes the Broadway list hrefs absolute under /page/world/', () => {
+  const base = 'https://www.talkinbroadway.com/page/world/past.html';
+  assert.equal(resolveAgainst(base, 'JoeTurnersComeandGone.html'), 'https://www.talkinbroadway.com/page/world/JoeTurnersComeandGone.html');
+  assert.equal(resolveAgainst(base, '/page/ob/10_09_26.html'), 'https://www.talkinbroadway.com/page/ob/10_09_26.html');
+  const links = extractReviewLinks([
+    { href: resolveAgainst(base, 'Bug.html'), text: 'Bug' },
+    { href: resolveAgainst(base, 'past.html'), text: 'Past reviews' },
+    { href: resolveAgainst(base, '/'), text: 'Home page' },
+  ]);
+  assert.deepEqual(links.map((l) => l.url), ['https://www.talkinbroadway.com/page/world/Bug.html']);
 });
