@@ -18,8 +18,8 @@
  * incident (three cmux workspaces independently working the identical
  * Linear issue, undetected).
  *
- * This file only shells out to git to build the {name, unlandedCommits}
- * list those pure functions consume.
+ * This file shells out to git to build the {name, status, reason,
+ * unlandedCommits} list and reports the relationship during dispatch.
  *
  * Correctness notes (second-opinion + ship-check adversarial review, 2026-08-14):
  *   - Filters branch names to task-matching candidates BEFORE any per-branch
@@ -40,22 +40,43 @@
 const { execFileSync } = require('child_process');
 const { matchesTaskWorkBranch } = require('./dispatch-guards.js');
 
-function unlandedCommitsFor(branch, repoDir, defaultBranch) {
+/**
+ * BRO-2814: an empty upstream..branch range is not evidence of lost work.
+ * Report the relationship explicitly instead of making readers interpret [].
+ * "genuinely-empty" means the refs have the same tip, not that a worker
+ * produced nothing: a just-landed job can also point at main's current tip.
+ * Determining whether a job produced commits requires its starting SHA.
+ */
+function classifyJobBranch(branch, repoDir, defaultBranch = 'main') {
   const upstream = `origin/${defaultBranch}`;
-  let headSha = null;
+  const git = (args) => execFileSync('git', args, {
+    cwd: repoDir, encoding: 'utf8', timeout: 15000,
+    stdio: ['ignore', 'pipe', 'ignore'],
+  }).trim();
+  const result = (status, reason, unlandedCommits = []) => ({ status, reason, unlandedCommits });
+  let headSha;
+  let upstreamSha;
   try {
-    headSha = execFileSync('git', ['rev-parse', '--verify', '--quiet', branch], { cwd: repoDir, encoding: 'utf8' }).trim();
+    headSha = git(['rev-parse', '--verify', '--end-of-options', `${branch}^{commit}`]);
+    upstreamSha = git(['rev-parse', '--verify', '--end-of-options', `${upstream}^{commit}`]);
   } catch {
-    // Branch vanished between listing and check (raced a delete) — no
-    // signal, fall through to the cherry check below (will also no-op).
+    return result('unknown', 'branch or upstream could not be resolved');
   }
-  if (headSha) {
-    try {
-      execFileSync('git', ['merge-base', '--is-ancestor', headSha, upstream], { cwd: repoDir, timeout: 15000 });
-      return []; // fully contained in origin/<defaultBranch> — landed (fast path)
-    } catch {
-      // Not a plain ancestor — could still be squash-merged; fall through.
+  if (headSha === upstreamSha) {
+    return result('genuinely-empty', 'same tip as upstream; may have just landed; worker output cannot be inferred');
+  }
+  try {
+    git(['merge-base', '--is-ancestor', headSha, upstreamSha]);
+    return result('landed', 'branch head is an ancestor of upstream');
+  } catch (err) {
+    if (err.status !== 1) return result('unknown', 'ancestry check failed');
+  }
+  try {
+    if (git(['rev-parse', '--is-shallow-repository']) === 'true') {
+      return result('unknown', 'shallow history cannot rule out a landing');
     }
+  } catch {
+    return result('unknown', 'history completeness could not be checked');
   }
   // '+' = git found no patch-id-equivalent commit upstream (truly unlanded);
   // '-' = an equivalent commit already landed (the squash-merge case this
@@ -71,11 +92,32 @@ function unlandedCommitsFor(branch, repoDir, defaultBranch) {
   // therefore treated as NO signal, same as a listing failure below.
   let raw;
   try {
-    raw = execFileSync('git', ['cherry', '-v', upstream, branch], { cwd: repoDir, encoding: 'utf8', timeout: 15000 });
+    raw = git(['cherry', '-v', upstreamSha, headSha]);
   } catch {
-    return [];
+    return result('unknown', 'patch comparison failed');
   }
-  return raw.split('\n').filter(l => l.startsWith('+')).map(l => l.replace(/^\+\s*/, ''));
+  const unlandedCommits = raw.split('\n').filter(l => l.startsWith('+')).map(l => l.replace(/^\+\s*/, ''));
+  if (unlandedCommits.length) {
+    return result('unlanded-with-commits', 'commits have no patch equivalent upstream', unlandedCommits);
+  }
+  if (/^-/m.test(raw)) {
+    // cherry omits merges even when it lists equivalent ordinary commits.
+    // A branch-exclusive merge may contain resolutions absent upstream.
+    try {
+      if (git(['rev-list', '--merges', '--max-count=1', `${upstreamSha}..${headSha}`])) {
+        return result('unknown', 'patch comparison omits branch-exclusive merge resolutions');
+      }
+    } catch {
+      return result('unknown', 'merge history could not be checked');
+    }
+    return result('landed', 'patch-equivalent commits are already upstream');
+  }
+  // git cherry omits merges. Empty output cannot prove equivalence.
+  return result('unknown', 'patch comparison produced no evidence');
+}
+
+function unlandedCommitsFor(branch, repoDir, defaultBranch) {
+  return classifyJobBranch(branch, repoDir, defaultBranch).unlandedCommits;
 }
 
 // taskId is required and used to pre-filter BEFORE any per-branch git call —
@@ -110,11 +152,13 @@ function listWorkBranchStatuses(taskId, { repoDir, defaultBranch = 'main' } = {}
 
   return candidates.map(name => {
     try {
-      return { name, unlandedCommits: unlandedCommitsFor(name, repoDir, defaultBranch) };
+      const classification = classifyJobBranch(name, repoDir, defaultBranch);
+      console.error(`[work-branch] ${name}: ${classification.status} (${classification.reason})`);
+      return { name, ...classification };
     } catch {
-      return { name, unlandedCommits: [] };
+      return { name, status: 'unknown', reason: 'branch check failed', unlandedCommits: [] };
     }
   });
 }
 
-module.exports = { listWorkBranchStatuses, unlandedCommitsFor };
+module.exports = { classifyJobBranch, listWorkBranchStatuses, unlandedCommitsFor };
