@@ -216,6 +216,29 @@ test('a write aimed at a tour: UK outlets rejected; dated reviews go to the tour
   const r = (url, publishDate, dateSource) => classifyMarketRouting({ showId: 'wicked-tour-2013', url, publishDate, dateSource, category: 'tour', siblingIndex: idx });
   assert.equal(r('https://www.whatsonstage.com/news/wicked-review', '2019-05-01').action, 'reject');
   assert.equal(r('https://www.thestage.co.uk/reviews/wicked', '2019-05-01').action, 'reject');
+  // Guardian's UK stage section uses .com, so the .uk domain guard misses it.
+  for (const url of [
+    'https://www.theguardian.com/stage/2024/mar/07/wicked-review',
+    'https://theguardian.com/stage/2024/mar/07/wicked-review',
+    'https://www.theguardian.com/stage',
+  ]) {
+    for (const publishDate of [null, '2019-05-01', '2008-05-01']) {
+      const decision = r(url, publishDate);
+      assert.equal(decision.action, 'reject', `${url} must be rejected before tour-date rerouting`);
+      assert.match(decision.reason, /^tour-review: UK outlet/);
+    }
+  }
+  // Guardian US coverage and Time Out London remain eligible for tour writes.
+  for (const url of [
+    'https://www.theguardian.com/us-news/2024/mar/07/wicked-review',
+    'https://www.theguardian.com/stage/us-news/2024/mar/07/wicked-review',
+    'https://www.theguardian.com/culture/2024/mar/07/wicked-review',
+    'https://www.theguardian.com/stagecraft/wicked-review',
+    'https://theguardian.com.example.org/stage/wicked-review',
+    'https://www.timeout.com/london/theatre/wicked-review',
+  ]) {
+    assert.equal(r(url, null).action, 'accept', url);
+  }
   // US sites with 'theatre'/'independent' in the name are tour stops, not UK outlets.
   assert.equal(r('https://mdtheatreguide.com/2024/12/theatre-review-wicked-at-the-hippodrome/', null).action, 'accept');
   assert.equal(r('https://bgindependentmedia.org/wicked-at-stranahan/', null).action, 'accept');
