@@ -11,6 +11,7 @@
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { filterToLiveShowIds, loadLiveShowIds } = require('./lib/live-show-ids');
 
 const reviewsFile = path.join(__dirname, '../data/reviews.json');
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -89,8 +90,14 @@ if (createStubs && missing.length > 0) {
   console.log('\nCreating stub files...\n');
 
   let created = 0;
+  const liveShowIds = loadLiveShowIds();
   for (const { review, filename } of missing) {
     const showDir = path.join(reviewTextsDir, review.showId);
+    // BRO-5789: never mint a folder for an id shows.json lacks (orphan review folders).
+    if (!fs.existsSync(showDir) && filterToLiveShowIds([review.showId], liveShowIds).dropped.length) {
+      console.log(`  Skipping ${review.showId}: not in shows.json`);
+      continue;
+    }
 
     // Create show directory if needed
     if (!fs.existsSync(showDir)) {

@@ -20,6 +20,7 @@ const fs = require('fs');
 const path = require('path');
 const { makeArchiveShowChecker } = require('./lib/archive-cache-guard');
 const { loadShows } = require('./lib/show-matching');
+const { filterToLiveShowIds, loadLiveShowIds } = require('./lib/live-show-ids');
 const { normalizeOutletFull: normalizeOutlet, slugify } = require('./lib/review-normalization');
 
 // Archive files are named by show id, but the page inside can be another
@@ -76,9 +77,16 @@ function extractFromArticleBody(articleBody, showId, publishDate, sourceUrl) {
   return reviews;
 }
 
+const liveShowIds = loadLiveShowIds();
+
 function saveReview(review) {
   const showDir = path.join(outputDir, review.showId);
   if (!fs.existsSync(showDir)) {
+    // BRO-5789: a roundup mapped to an id shows.json lacks would mint an orphan folder.
+    if (filterToLiveShowIds([review.showId], liveShowIds).dropped.length) {
+      console.log(`Skipping ${review.showId}: not in shows.json`);
+      return null;
+    }
     fs.mkdirSync(showDir, { recursive: true });
   }
 
@@ -136,7 +144,7 @@ for (const file of files.sort()) {
   if (reviews.length > 0) {
     totalShows++;
     for (const review of reviews) {
-      saveReview(review);
+      if (saveReview(review) === null) continue;
       totalReviews++;
     }
     console.log(`${showId}: ${reviews.length} reviews saved`);

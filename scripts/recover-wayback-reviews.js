@@ -22,6 +22,7 @@
 
 const { decodeBloxRot47 } = require('./lib/blox-rot47-decode');
 const { isolateMultiShowSectionForShowId } = require('./lib/multi-show-section-extract');
+const { filterToLiveShowIds, loadLiveShowIds } = require('./lib/live-show-ids');
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
@@ -1296,7 +1297,14 @@ async function processRecoveredText(candidate, text, html, archiveData) {
   if (candidate.isNewFile) {
     // Create new review-text file from reviews.json metadata
     const showDir = path.dirname(candidate.filePath);
-    if (!fs.existsSync(showDir)) fs.mkdirSync(showDir, { recursive: true });
+    if (!fs.existsSync(showDir)) {
+      // BRO-5789: no orphan show folder for an id shows.json lacks.
+      if (filterToLiveShowIds([candidate.showId], loadLiveShowIds()).dropped.length) {
+        console.log(`    Skipping ${candidate.showId}: not in shows.json`);
+        return false;
+      }
+      fs.mkdirSync(showDir, { recursive: true });
+    }
     data = {
       showId: candidate.showId,
       outlet: candidate.outlet,
