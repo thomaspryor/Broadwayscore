@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-20T11:11:54.682Z",
+  "generatedAt": "2026-10-20T11:26:47.642Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -572,22 +572,22 @@
       "slug": "martin-guerre-west-end",
       "thumbnail": "/images/shows/martin-guerre-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 19,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 7,
+      "reviewsNeeded": 6,
       "siteFileExists": true,
-      "total": 0,
+      "total": 1,
       "t1": 0,
       "t2": 0,
-      "t3": 0,
+      "t3": 1,
       "positive": 0,
       "mixed": 0,
-      "negative": 0,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/8 total",
+          "1/8 total",
           "T1:0/3",
           "T2:0/2",
           "hi-conf:0/6"
@@ -710,6 +710,20 @@
         {
           "name": "London Box Office",
           "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-20T11:26:47.642Z",
+          "rc": 1,
+          "s": 19,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 0,
+          "m": 0,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
