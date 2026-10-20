@@ -6,7 +6,9 @@
  * publicly reachable, so a held feature on demo is a public leak (BRO-5007).
  *
  * `commercial` is allowlisted: its demo behavior is pending an owner decision
- * and this change leaves it as it was.
+ * and this change leaves it as it was. `seasonReport` (BRO-5777) is allowlisted
+ * so the owner can preview the public Season Report on demo before releasing it
+ * (owner, 2026-10-20: "All on the demo subdomain").
  *
  *   node scripts/lib/demo-feature-flags.js   -> prints the comma-separated list
  */
@@ -15,7 +17,7 @@ const path = require('path');
 const { parseHeldFeatures } = require('./prod-held-flags-guard');
 
 /** Prod-held flags the demo build may still enable. */
-const DEMO_HELD_ALLOWLIST = new Set(['commercial']);
+const DEMO_HELD_ALLOWLIST = new Set(['commercial', 'seasonReport']);
 
 function computeDemoFlags(flagsSrc, allowlist = DEMO_HELD_ALLOWLIST) {
   const flags = [...flagsSrc.matchAll(/get\s+(\w+)\(\)/g)].map((m) => m[1]);

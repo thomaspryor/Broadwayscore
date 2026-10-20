@@ -13,6 +13,7 @@ export default function SeasonComparisonTable({ comparison }: { comparison: Seas
   const { season, lastSeason, baselineRange, baselineSeasons, inProgress, lastDisrupted, recoupUnsettled, rows } = comparison;
   const avgLabel = baselineRange ? `${shortSeason(baselineRange[0])} to ${shortSeason(baselineRange[1])}` : null;
   const partialAvg = rows.some((r) => r.avg != null && r.avgSeasons < baselineSeasons);
+  const hasMoney = rows.some((r) => r.format === 'money');
 
   return (
     <div className="card rounded-xl overflow-hidden" data-testid="season-comparison">
@@ -60,7 +61,7 @@ export default function SeasonComparisonTable({ comparison }: { comparison: Seas
         {inProgress && (
           <p>
             &ldquo;Opened so far&rdquo; compares the same point in each season. Other rows count the announced
-            slate against whole seasons. Budget averages for this season need most of its announced shows disclosed.
+            slate against whole seasons.{hasMoney && ' Budget averages for this season need most of its announced shows disclosed.'}
           </p>
         )}
         {lastDisrupted && lastSeason && <p>{shortSeason(lastSeason)} stopped in March 2020 when theaters closed.</p>}
@@ -70,12 +71,13 @@ export default function SeasonComparisonTable({ comparison }: { comparison: Seas
         {partialAvg && (
           <p>
             Rows marked with a season count average fewer seasons: only those where we have most productions&apos;
-            figures (recoupment: only seasons that ended over a year ago). Money averages are per show with a
-            disclosed figure, averaged across seasons; shares and averages need at least 3 shows. The capitalization
-            sum is compared only between finished seasons where nearly every budget is public.
+            figures (recoupment: only seasons that ended over a year ago). Shares{hasMoney && ' and averages'} need at least 3 shows.
+            {hasMoney && ' Money averages are per show with a disclosed figure, averaged across seasons. The capitalization sum is compared only between finished seasons where nearly every budget is public.'}
           </p>
         )}
-        <p>Seasons run July 1 to June 30 by opening date. Running costs and some capitalizations are estimates.</p>
+        <p>
+          Seasons run July 1 to June 30 by opening date.{hasMoney && ' Running costs and some capitalizations are estimates.'}
+        </p>
       </div>
     </div>
   );

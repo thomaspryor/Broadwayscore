@@ -12,6 +12,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
+  buildRecoupFindings,
   buildSeasonProfiles,
   compareSeason,
   formatRowValue,
@@ -207,4 +208,30 @@ test('shares of fewer than 3 shows are not stated; a disrupted last season still
   assert.equal(cmp.lastDisrupted, true);
   assert.equal(cmp.baselineSeasons, 0);
   assert.equal(recoup.last, 0.2);
+});
+
+test('who recoups: buckets over finished, well-tracked seasons; critic bands over decided shows', () => {
+  const r = (o: Partial<Parameters<typeof buildRecoupFindings>[0][number]> & { openingDate: string }) => ({
+    type: 'play', isRevival: false, status: 'closed', criticScore: 70, commercial: com({}), ...o,
+  });
+  const shows = [
+    r({ openingDate: '2024-10-01', isRevival: true, commercial: com({ recouped: true }), criticScore: 85 }),
+    r({ openingDate: '2024-10-02', isRevival: true, criticScore: 82 }),
+    r({ openingDate: '2024-10-03', type: 'musical', criticScore: 55 }),
+    r({ openingDate: '2024-10-04', type: 'musical', status: 'open', criticScore: 50 }), // undecided: in bucket, not in bands
+    r({ openingDate: '2024-10-05', commercial: com({ designation: 'Nonprofit' }) }), // no investors: out
+    r({ openingDate: '2024-10-06', commercial: com({ recouped: true }), criticScore: 90 }),
+    // 2026-27 is under way and 2025-26 ended under a year ago on 2026-10-20: both left out.
+    r({ openingDate: '2026-09-01', commercial: com({ recouped: true }), criticScore: 99 }),
+    r({ openingDate: '2025-09-01', commercial: com({ recouped: true }), criticScore: 99 }),
+  ];
+  const f = buildRecoupFindings(shows, '2026-10-20');
+  assert.deepEqual(f.range, ['2024-2025', '2024-2025']);
+  const b = Object.fromEntries(f.buckets.map((x) => [x.label, [x.recouped, x.total]]));
+  assert.deepEqual(b, { 'Play revivals': [1, 2], 'Original plays': [1, 1], 'Musical revivals': [0, 0], 'Original musicals': [0, 2] });
+  assert.deepEqual(f.under60, { recouped: 0, total: 1 });
+  assert.deepEqual(f.atLeast80, { recouped: 2, total: 3 });
+  assert.equal(f.recoupedScored, 2);
+  assert.equal(f.recoupedAvgScore, null); // 2 scores: under MIN_AVERAGE_SAMPLE
+  assert.equal(f.closedUnrecoupedScored, 2);
 });

@@ -21,7 +21,7 @@ import { fileURLToPath } from 'node:url';
 process.env.NEXT_PUBLIC_FEATURES = '';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '../..');
-const { featureFlags } = await import('../../src/config/feature-flags.ts');
+const { featureFlags, PROD_HELD_FEATURES } = await import('../../src/config/feature-flags.ts');
 const { BROWSE_PAGES, getAllBrowseSlugs, getBrowsePageConfig } = await import('../../src/config/browse-pages.ts');
 
 test('commercial flag is off when NEXT_PUBLIC_FEATURES does not list it', () => {
@@ -85,8 +85,13 @@ test('pages only load commercial data behind featureFlags.commercial', () => {
     for (const m of text.matchAll(/\b(\w+)\s+as\s+(\w+)/g)) if (names.has(m[1])) names.add(m[2]);
     const call = new RegExp(`\\b(${[...names].join('|')})\\s*\\(`);
     if (!call.test(text)) continue;
-    // A route that 404s while the flag is off may load whatever it likes.
+    // A route that 404s while the flag is off may load whatever it likes. The public
+    // Season Report (BRO-5777) 404s on its own held flag and shows aggregates only.
     if (/if \(!featureFlags\.commercial\) notFound\(\);/.test(text)) continue;
+    if (/if \(!featureFlags\.seasonReport\) notFound\(\);/.test(text)) {
+      assert.ok(PROD_HELD_FEATURES.has('seasonReport'), `${rel} 404s on seasonReport, which must stay in PROD_HELD_FEATURES until the owner releases it`);
+      continue;
+    }
     text.split('\n').forEach((line, i) => {
       if (call.test(line) && !/^\s*(\/\/|\*|import\b)/.test(line) && !line.includes('featureFlags.commercial')) {
         offenders.push(`${rel}:${i + 1}: ${line.trim()}`);
@@ -97,7 +102,6 @@ test('pages only load commercial data behind featureFlags.commercial', () => {
 });
 
 // BRO-5007: Box Office Scorecard v2 is not public yet (owner, 2026-10-10).
-const { PROD_HELD_FEATURES } = await import('../../src/config/feature-flags.ts');
 const { computeDemoFlags } = await import('../../scripts/lib/demo-feature-flags.js');
 
 test('boxOfficeV2 is off without the env var and held back from production', () => {
@@ -113,6 +117,8 @@ test('the public demo build leaves prod-held flags off (boxOfficeV2 included)', 
   assert.ok(!flags.includes('boxOfficeV2'), 'boxOfficeV2 must not be enabled on demo.broadwayscorecard.com');
   // commercial's demo behavior is pending an owner decision: unchanged (allowlisted).
   assert.ok(flags.includes('commercial'), 'commercial stays on demo until the owner decides');
+  // BRO-5777: the owner previews the held Season Report on demo before releasing it.
+  assert.ok(flags.includes('seasonReport'), 'seasonReport is on demo for the owner preview');
   const wf = readFileSync(path.join(ROOT, '.github/workflows/vercel-demo.yml'), 'utf8');
   const codeLines = wf.split('\n').filter((l) => !/^\s*#/.test(l));
   assert.ok(codeLines.some((l) => /node\s+scripts\/lib\/demo-feature-flags\.js/.test(l)),

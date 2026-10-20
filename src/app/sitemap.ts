@@ -424,6 +424,13 @@ async function buildCoreShard(ctx: DateContext): Promise<MetadataRoute.Sitemap> 
       changeFrequency: 'weekly' as const,
       priority: 0.7,
     }] : []),
+    // /season-report is a 404 until the owner releases it (BRO-5777).
+    ...(featureFlags.seasonReport ? [{
+      url: `${BASE_URL}/season-report`,
+      lastModified: ctx.showsDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    }] : []),
     {
       url: `${BASE_URL}/discount-tickets`,
       lastModified: ctx.showsDate,

@@ -55,7 +55,7 @@ import {
   hasNoInvestorsToRepay,
 } from './commercial-display';
 import { reportedReturn } from '../../scripts/lib/reported-return';
-import { buildSeasonProfiles, compareSeason, type SeasonProfile, type SeasonComparison } from './season-profile';
+import { buildSeasonProfiles, buildRecoupFindings, compareSeason, type SeasonProfile, type SeasonComparison, type RecoupFindings } from './season-profile';
 import { getMarketDate } from './date-utils';
 import { isLossDesignation } from '../../scripts/lib/commercial-designations';
 import { conversionOf, isConvertedToCommercial, commercialRunWeeks, recoupClockStart } from '../../scripts/lib/commercial-conversion';
@@ -346,6 +346,28 @@ export function getSeasonProfiles(): SeasonProfile[] {
     );
   }
   return seasonProfilesCache;
+}
+
+/**
+ * Who recoups, by show type and critic score (public Season Report, BRO-5777).
+ * Critic scores come from the caller (compositeScore by slug): this module
+ * does not load reviews.
+ */
+export function getRecoupFindings(criticScoreBySlug: Map<string, number | null>, asOf: string = getMarketDate('broadway')): RecoupFindings {
+  const shows = commercial.shows;
+  return buildRecoupFindings(
+    rawShows
+      .filter((s) => s.category === 'broadway' && !!s.openingDate)
+      .map((s) => ({
+        type: s.type,
+        isRevival: s.isRevival,
+        openingDate: s.openingDate,
+        status: s.status,
+        criticScore: criticScoreBySlug.get(s.slug) ?? null,
+        commercial: shows[s.slug] ?? null,
+      })),
+    asOf,
+  );
 }
 
 /** A season vs last season and the 10-season average, as of today in New York (build time). */

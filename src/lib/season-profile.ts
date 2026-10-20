@@ -413,3 +413,107 @@ export function formatRowValue(format: RowFormat, value: number | null): string 
   if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
   return `$${Math.round(value / 1000)}K`;
 }
+
+// ============================================
+// Who recoups (public Season Report, BRO-5777)
+// ============================================
+
+export interface RecoupShowInput extends SeasonShowInput {
+  status: string | null | undefined;
+  /** Broadway Scorecard critic score (compositeScore), null when unscored. */
+  criticScore: number | null | undefined;
+}
+
+export interface RecoupBucket {
+  label: string;
+  recouped: number;
+  total: number;
+}
+
+export interface ScoreBand {
+  recouped: number;
+  total: number;
+}
+
+export interface RecoupFindings {
+  /** Oldest and newest season counted, null when none qualifies. */
+  range: [string, string] | null;
+  seasonCount: number;
+  /** Commercial productions by type and original/revival; still-running shows count, so rates are floors. */
+  buckets: RecoupBucket[];
+  /** Mean critic score of shows that recouped vs shows that closed without recouping. */
+  recoupedAvgScore: number | null;
+  recoupedScored: number;
+  closedUnrecoupedAvgScore: number | null;
+  closedUnrecoupedScored: number;
+  /** Among decided shows (recouped, or closed without recouping). */
+  under60: ScoreBand;
+  atLeast80: ScoreBand;
+}
+
+/** Critic score under this reads as a weak review consensus. */
+export const LOW_SCORE = 60;
+/** Critic score at or above this reads as a strong review consensus. */
+export const HIGH_SCORE = 80;
+
+/**
+ * Recoupment by show type and by critic score, over settled seasons we
+ * track well (hasTrackedCoverage; ended RECOUP_SETTLE_DAYS ago, the same rule
+ * as compareSeason's recoupment average), pandemic seasons left out. Pure
+ * nonprofit runs and tour stops have no investors and are left out.
+ */
+export function buildRecoupFindings(shows: RecoupShowInput[], asOf: string): RecoupFindings {
+  const profiles = buildSeasonProfiles(shows);
+  const asOfMs = Date.parse(asOf);
+  const seasons = new Set(
+    profiles
+      .filter((p) => hasTrackedCoverage(p) && !DISRUPTED_SEASONS.has(p.season)
+        && asOfMs - Date.UTC(parseInt(p.season.slice(5), 10), 6, 1) >= RECOUP_SETTLE_DAYS * DAY_MS)
+      .map((p) => p.season),
+  );
+  const sorted = [...seasons].sort();
+
+  const buckets: Record<string, RecoupBucket> = {
+    'play|true': { label: 'Play revivals', recouped: 0, total: 0 },
+    'play|false': { label: 'Original plays', recouped: 0, total: 0 },
+    'musical|true': { label: 'Musical revivals', recouped: 0, total: 0 },
+    'musical|false': { label: 'Original musicals', recouped: 0, total: 0 },
+  };
+  const recScores: number[] = [];
+  const lossScores: number[] = [];
+  const under60: ScoreBand = { recouped: 0, total: 0 };
+  const atLeast80: ScoreBand = { recouped: 0, total: 0 };
+
+  for (const s of shows) {
+    const season = getSeason(s.openingDate);
+    if (!season || !seasons.has(season) || !s.commercial || isExcludedFromSeasonStats(s.commercial)) continue;
+    const recouped = s.commercial.recouped === true;
+    const b = buckets[`${s.type}|${s.isRevival === true}`];
+    if (b && typeof s.isRevival === 'boolean') {
+      b.total++;
+      if (recouped) b.recouped++;
+    }
+    const decided = recouped || s.status === 'closed';
+    const score = typeof s.criticScore === 'number' ? s.criticScore : null;
+    if (!decided || score == null) continue;
+    (recouped ? recScores : lossScores).push(score);
+    for (const [band, hit] of [[under60, score < LOW_SCORE], [atLeast80, score >= HIGH_SCORE]] as const) {
+      if (!hit) continue;
+      band.total++;
+      if (recouped) band.recouped++;
+    }
+  }
+
+  const avg = (xs: number[]) => (xs.length >= MIN_AVERAGE_SAMPLE ? xs.reduce((a, b) => a + b, 0) / xs.length : null);
+  return {
+    range: sorted.length ? [sorted[0], sorted[sorted.length - 1]] : null,
+    seasonCount: sorted.length,
+    buckets: Object.values(buckets),
+    recoupedAvgScore: avg(recScores),
+    recoupedScored: recScores.length,
+    closedUnrecoupedAvgScore: avg(lossScores),
+    closedUnrecoupedScored: lossScores.length,
+    under60,
+    atLeast80,
+  };
+}

@@ -18,7 +18,16 @@ function pct(n: number, d: number): string {
   return d > 0 ? `${Math.round((n / d) * 100)}%` : '—';
 }
 
-export default function SeasonHistoryTable({ profiles, currentSeason }: { profiles: SeasonProfile[]; currentSeason: string | null }) {
+interface SeasonHistoryTableProps {
+  profiles: SeasonProfile[];
+  currentSeason: string | null;
+  /** Disclosed capital column (the held /biz page only). */
+  showCapital?: boolean;
+  /** Link each season to /biz/season/[season] (the held /biz page only). */
+  linkSeasons?: boolean;
+}
+
+export default function SeasonHistoryTable({ profiles, currentSeason, showCapital = true, linkSeasons = true }: SeasonHistoryTableProps) {
   return (
     <div className="card rounded-xl overflow-hidden" data-testid="season-history">
       <div className="overflow-x-auto">
@@ -33,7 +42,7 @@ export default function SeasonHistoryTable({ profiles, currentSeason }: { profil
               <th className="py-3 px-3 font-medium text-right whitespace-nowrap">Play revivals</th>
               <th className="py-3 px-3 font-medium text-right whitespace-nowrap">Nonprofit</th>
               <th className="py-3 px-3 font-medium text-right whitespace-nowrap">Recouped</th>
-              <th className="py-3 px-3 font-medium text-right whitespace-nowrap">Disclosed capital</th>
+              {showCapital && <th className="py-3 px-3 font-medium text-right whitespace-nowrap">Disclosed capital</th>}
             </tr>
           </thead>
           <tbody>
@@ -45,9 +54,13 @@ export default function SeasonHistoryTable({ profiles, currentSeason }: { profil
               return (
                 <tr key={p.season} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                   <td className="py-2.5 px-3 whitespace-nowrap sticky left-0 z-10 bg-surface-raised">
-                    <Link href={`/biz/season/${p.season}`} className="text-brand hover:text-brand-hover font-medium">
-                      {p.season}
-                    </Link>
+                    {linkSeasons ? (
+                      <Link href={`/biz/season/${p.season}`} className="text-brand hover:text-brand-hover font-medium">
+                        {p.season}
+                      </Link>
+                    ) : (
+                      <span className="text-white font-medium">{p.season}</span>
+                    )}
                     {current && <span className="block text-xs text-gray-500">so far + announced</span>}
                   </td>
                   <td className="py-2.5 px-3 text-right text-white font-semibold">{p.productions}</td>
@@ -65,14 +78,16 @@ export default function SeasonHistoryTable({ profiles, currentSeason }: { profil
                   <td className="py-2.5 px-3 text-right text-gray-300 whitespace-nowrap">
                     {tracked || current ? `${p.recouped} of ${p.commercial}` : '—'}
                   </td>
-                  <td className="py-2.5 px-3 text-right text-gray-300 whitespace-nowrap">
-                    {capital ? formatRowValue('money', p.capitalization.all.total) : '—'}
-                    {(tracked || current) && p.capitalization.all.of > 0 && (
-                      <span className="block text-xs text-gray-500">
-                        {p.capitalization.all.known} of {p.capitalization.all.of} disclosed
-                      </span>
-                    )}
-                  </td>
+                  {showCapital && (
+                    <td className="py-2.5 px-3 text-right text-gray-300 whitespace-nowrap">
+                      {capital ? formatRowValue('money', p.capitalization.all.total) : '—'}
+                      {(tracked || current) && p.capitalization.all.of > 0 && (
+                        <span className="block text-xs text-gray-500">
+                          {p.capitalization.all.known} of {p.capitalization.all.of} disclosed
+                        </span>
+                      )}
+                    </td>
+                  )}
                 </tr>
               );
             })}
@@ -82,7 +97,8 @@ export default function SeasonHistoryTable({ profiles, currentSeason }: { profil
       <p className="px-4 py-3 text-xs text-gray-500">
         New Broadway productions by opening date (July 1 to June 30); 2020-21 had none and 2019-20 stopped in March 2020. Recouped counts commercial
         productions (nonprofit runs and tour stops have no investors to repay). &ldquo;—&rdquo; means we track too few of
-        that season&apos;s productions to say; a capital sum shows only where at least 80% of budgets are disclosed. Recent seasons&apos; recoupment counts can still rise.
+        that season&apos;s productions to say{showCapital && '; a capital sum shows only where at least 80% of budgets are disclosed'}. Recent seasons&apos;
+        recoupment counts can still rise.
       </p>
     </div>
   );

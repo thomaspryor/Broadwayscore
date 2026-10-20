@@ -25,7 +25,9 @@ const DEMO_FEATURES = new Set(['showtimes']);
 // Releasing one means removing it here. BRO-4525: commercial is not to be released.
 // BRO-5007: boxOfficeV2 is not public yet (owner, 2026-10-10). vercel-demo.yml
 // also leaves held flags off the public demo build unless DEMO_HELD_ALLOWLIST names them.
-export const PROD_HELD_FEATURES = new Set(['commercial', 'boxOfficeV2']);
+// BRO-5777: seasonReport (public Season Report, shows recoupment aggregates) waits for the
+// owner's go after a preview (owner chose it 2026-10-20).
+export const PROD_HELD_FEATURES = new Set(['commercial', 'boxOfficeV2', 'seasonReport']);
 
 function isDemo(): boolean {
   if (typeof window === 'undefined') return false;
@@ -73,6 +75,8 @@ export const featureFlags = {
   // Box Office Scorecard v2 (BRO-5007): status vs weekly cost. Needs commercial
   // too. Held from prod (PROD_HELD_FEATURES) and from the public demo build.
   get boxOfficeV2() { return has('boxOfficeV2'); },
+  // Public Broadway Season Report (BRO-5777): season pace, mix, who recoups. Held until the owner's go.
+  get seasonReport() { return has('seasonReport'); },
   get awards() { return true; }, // launched 2026-05-17 — flag retained for cleanup
   get tonyPredictions() { return has('tonyPredictions'); },
   /** Reveals Our Pick % column and Predicted Winner badge on the predictions page.
