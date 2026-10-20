@@ -19,7 +19,7 @@
  *   --gates  comma list (default: unit-tests-node,scripts-lib-tests,lint-workflows, the gates
  *            behind the refusals and the ones the Codex runner checks)
  *   --all    every gauntlet gate (land-gate-delta.js GATES)
- *   --max-wait-minutes  give up waiting for the mutex after N min (default 40): exit 4 with a
+ *   --max-wait-minutes  give up waiting for the mutex after N min (default 20): exit 4 with a
  *            warning, so a worker is never stranded behind another check
  * Exit: 0 no new failures | 1 new failures (printed) | 2 usage | 3 not ready (tracked
  *       changes, or no common history with origin/main) | 4 skipped (mutex wait timed out)
@@ -39,7 +39,7 @@ const ROOT = path.resolve(__dirname, '..', '..');
 /** -> { gates, maxWaitMs } or { error } */
 function parseArgs(argv) {
   let gates = DEFAULT_GATES;
-  let maxWaitMs = 40 * 60_000;
+  let maxWaitMs = 20 * 60_000;
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--all') gates = GATES;
@@ -63,19 +63,30 @@ const git = (...args) => run('git', args);
 class MutexTimeout extends Error {}
 
 /**
- * The test files behind land-gate-delta.js's "NEW on the branch" lists, or null when any new
- * failure is not a test case (a lint finding, a whole-gate failure): those are never re-run.
+ * The test files behind land-gate-delta.js's "NEW on the branch" lists, or null when a re-run
+ * cannot clear the verdict: a new failure that is not a test case (a lint finding), or a FAIL
+ * gate with no NEW list of its own (no result, a crash or timeout, a fail-safe verdict).
  */
 function newFailureFiles(deltaText) {
   const files = new Set();
+  const failGates = new Set();
+  const newGates = new Set();
   let inNew = false;
   for (const line of String(deltaText || '').split('\n')) {
-    if (/^#{2,4} /.test(line)) { inNew = /NEW on the branch/.test(line); continue; }
+    const row = line.match(/^\|\s*([\w-]+)\s*\|\s*\*\*FAIL\*\*/);
+    if (row) { failGates.add(row[1]); continue; }
+    if (/^#{2,4} /.test(line)) {
+      inNew = /NEW on the branch/.test(line);
+      const g = line.match(/^#{2,4} ([\w-]+) /);
+      if (inNew && g) newGates.add(g[1]);
+      continue;
+    }
     if (!inNew || !/^\s+- /.test(line)) continue;
     const m = line.match(/`([^`:]+\.test\.m?js)::/);
     if (!m) return null;
     files.add(m[1]);
   }
+  if ([...failGates].some((g) => !newGates.has(g))) return null;
   return [...files];
 }
 
@@ -90,6 +101,9 @@ function main(argv = process.argv.slice(2)) {
   const fetch = git('fetch', '-q', 'origin', 'main');
   if (fetch.code !== 0) console.error(`land-local-check: git fetch failed, judging against the local origin/main (${fetch.stderr.split('\n').pop()})`);
   const head = git('rev-parse', 'HEAD').stdout;
+  // land-gauntlet.sh returns to a detached sha; put a branch checkout back on its branch, or
+  // fix commits made after an exit 1 would not advance it.
+  const branch = git('symbolic-ref', '-q', '--short', 'HEAD').stdout;
   // Judge against the main commit HEAD sits on: main moves every few minutes, so demanding the
   // newest one would refuse nearly every run. Rebase conflicts are land-preflight.mjs's job.
   const base = git('merge-base', head, 'origin/main').stdout;
@@ -116,7 +130,8 @@ function main(argv = process.argv.slice(2)) {
         fs.copyFileSync(path.join(ROOT, 'scripts/lib/land-gauntlet.sh'), copy);
         console.log(`land-local-check: red on HEAD: ${red}; running them on the base to tell new failures from old`);
         run('bash', [copy, baseDir, '--checkout', base, '--return-to', head], { env: { ...env, GAUNTLET_GATES: red }, stdio: ['ignore', 'ignore', 'inherit'] });
-        if (git('rev-parse', 'HEAD').stdout !== head) console.error(`land-local-check: WARNING: HEAD is not back at ${head.slice(0, 10)}; run git checkout ${head}`);
+        if (git('rev-parse', 'HEAD').stdout !== head) console.error(`land-local-check: WARNING: HEAD is not back at ${head.slice(0, 10)}; run git checkout ${branch || head}`);
+        else if (branch && git('checkout', '-q', branch).code !== 0) console.error(`land-local-check: WARNING: could not return to branch ${branch}; run git checkout ${branch}`);
       }
       const d = run('node', ['scripts/lib/land-gate-delta.js', '--base-dir', baseDir, '--branch-dir', branchDir, '--gates', opts.gates.join(','), '--base-source', red ? `ran locally for ${red}` : 'not needed (every gate green on HEAD)'], { stdio: ['ignore', 'pipe', 'inherit'] });
       console.log(d.stdout);

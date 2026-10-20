@@ -46,4 +46,8 @@ test('newFailureFiles: the NEW test files only; null when a new failure is not a
   assert.deepEqual(newFailureFiles(report), ['tests/unit/duplicate-of-url-mismatch.test.mjs']);
   assert.equal(newFailureFiles('#### lint-workflows — NEW on the branch (blocking)\n  - `lint-workflows::actionlint`'), null);
   assert.deepEqual(newFailureFiles('no lists at all'), []);
+  const table = (rows) => ['| gate | verdict | mode | new |', '|---|---|---|---|', ...rows].join('\n');
+  assert.deepEqual(newFailureFiles(table(['| unit-tests-node | **FAIL** | delta | 1 |']) + '\n' + report), ['tests/unit/duplicate-of-url-mismatch.test.mjs']);
+  assert.equal(newFailureFiles(table(['| unit-tests-node | **FAIL** | delta | 1 |', '| scripts-lib-tests | **FAIL** | strict | 0 |']) + '\n' + report), null,
+    'a gate that failed with no NEW list (crash, timeout) is never cleared by re-running another gate\'s files');
 });
