@@ -130,3 +130,21 @@ test('reviewYear reads the year from prose dates and ignores junk', () => {
   assert.equal(reviewYear('x-2007', { publishDate: 'Act 1' }), 2007, 'no year written: falls back to the show id');
   assert.equal(reviewYear('x-2007', {}), 2007);
 });
+
+test('describeTenureFlag never throws for any kind findTenureFlags emits (BRO-5789)', () => {
+  const { describeTenureFlag } = require('../../scripts/lib/critic-tenure.js');
+  const critics = {
+    'ann-b': {
+      displayName: 'Ann B',
+      reviews: [
+        ...rows('variety', [2005, 2006, 2007, 2008]),
+        { showId: 'x-2010', file: 'wsj--ann-b.json', outlet: 'wsj', year: 2010, verified: false },
+        { showId: 'y-2011', file: 'nyt--ann-b.json', outlet: 'nyt', year: 2011, verified: true, bylineContradicted: true },
+      ],
+    },
+  };
+  const flags = findTenureFlags(critics);
+  assert.ok(flags.some(f => f.kind === 'byline_contradicted'), 'fixture must hit the kind that used to crash');
+  for (const f of flags) assert.equal(typeof describeTenureFlag(f), 'string');
+  assert.match(describeTenureFlag({ kind: 'weird' }), /unrecognised/);
+});

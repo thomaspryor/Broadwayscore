@@ -196,4 +196,23 @@ function applyReviewedTenureFlags(flags, reviewed = []) {
   return { unresolved, reviewed: matched, stale, invalid };
 }
 
-module.exports = { bylineContradicted, tenureFlagKey, applyReviewedTenureFlags, isVerifiedRow, reviewYear, findTenureFlags, MIN_PAIR_VERIFIED, MIN_CRITIC_VERIFIED, TENURE_SLACK_YEARS, MIN_ELSEWHERE_VERIFIED };
+/**
+ * One-line human description of a flag for audit output. Switches on every
+ * kind findTenureFlags emits so a new kind cannot crash the reporter (the
+ * daily corpus-drift run died on byline_contradicted, which carries no
+ * verifiedOutlets: BRO-5789).
+ */
+function describeTenureFlag(f) {
+  switch (f.kind) {
+    case 'outside_tenure':
+      return `${f.year} outside ${f.tenure.first}-${f.tenure.last} (${f.tenure.count} verified); verified at ${f.verifiedElsewhereThatYear.join(', ')} that year`;
+    case 'unsupported_pair':
+      return `no verified row at this outlet; verified at ${Object.keys(f.verifiedOutlets || {}).join(', ') || 'no outlet'}`;
+    case 'byline_contradicted':
+      return 'stored page credits another critic of this outlet';
+    default:
+      return `unrecognised flag kind ${f.kind}`;
+  }
+}
+
+module.exports = { describeTenureFlag, bylineContradicted, tenureFlagKey, applyReviewedTenureFlags, isVerifiedRow, reviewYear, findTenureFlags, MIN_PAIR_VERIFIED, MIN_CRITIC_VERIFIED, TENURE_SLACK_YEARS, MIN_ELSEWHERE_VERIFIED };

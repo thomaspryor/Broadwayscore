@@ -36,7 +36,7 @@ const fs = require('fs');
 const path = require('path');
 const { baselineKeySet, computeNewViolators } = require('./lib/critic-outlets-baseline');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
-const { findTenureFlags } = require('./lib/critic-tenure');
+const { findTenureFlags, describeTenureFlag } = require('./lib/critic-tenure');
 const { scanReviewTexts: scanCriticReviewTexts } = require('./lib/critic-review-scan');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -271,9 +271,7 @@ function main() {
   console.log(`\nTenure flags (advisory): ${tenureFlags.length}`);
   if (!jsonOutput) {
     for (const f of tenureFlags) {
-      const detail = f.kind === 'outside_tenure'
-        ? `${f.year} outside ${f.tenure.first}-${f.tenure.last} (${f.tenure.count} verified); verified at ${f.verifiedElsewhereThatYear.join(', ')} that year`
-        : `no verified row at this outlet; verified at ${Object.keys(f.verifiedOutlets).join(', ')}`;
+      const detail = describeTenureFlag(f);
       console.log(`  [${f.kind}] ${f.critic} at ${f.outlet} for ${f.showId}: ${detail}`);
     }
   }
