@@ -102,6 +102,13 @@ test('dispatchClaimGuard: claimResult === true is silent (this attempt won the c
   assert.equal(dispatchClaimGuard(TASK, true, {}), null);
 });
 
+test('BRO-5584: dispatchClaimGuard accepts ownership tokens and rejects empty tokens', () => {
+  assert.equal(dispatchClaimGuard(TASK, { nonce: 'owner-token' }, {}), null);
+  for (const result of [{ nonce: '' }, { nonce: false }, {}, null, undefined]) {
+    assert.match(dispatchClaimGuard(TASK, result, {}), /REFUSING/);
+  }
+});
+
 test('dispatchClaimGuard: claimResult === false (genuinely held elsewhere) refuses, naming the mirror-staleness race', () => {
   const err = dispatchClaimGuard(TASK, false, {});
   assert.match(err, /REFUSING to dispatch #1811/);

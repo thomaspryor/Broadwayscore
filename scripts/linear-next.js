@@ -408,7 +408,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // Task #1898: injectable so tests can simulate "another attempt already
     // holds this issue's claim" without touching the real filesystem dir.
     acquireDispatchClaim: acquireDispatchClaimFn = (id, opts) => acquireClaim(DISPATCH_CLAIM_DIR, id, opts),
-    releaseDispatchClaim: releaseDispatchClaimFn = (id) => releaseClaim(DISPATCH_CLAIM_DIR, id),
+    releaseDispatchClaim: releaseDispatchClaimFn = (id, token) => releaseClaim(DISPATCH_CLAIM_DIR, id, token),
     // BRO-287: reportDispatchOnIssue()'s own Linear client, threaded through
     // so a successful dispatch in a test never falls through to the real
     // network client — closes the same "no live Linear API calls" gap the
@@ -849,9 +849,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     const claimResult = acquireDispatchClaimFn(identifier, { staleMs: DISPATCH_CLAIM_STALE_MS });
     const claimErr = dispatchClaimGuard({ id: identifier }, claimResult, args);
     if (claimErr) { console.error(`[linear-next] ${claimErr}`); process.exit(1); }
-    if (claimResult === true) {
-      process.on('exit', () => { if (!dispatchConfirmed) releaseDispatchClaimFn(identifier); });
-    }
+    process.on('exit', () => { if (!dispatchConfirmed) releaseDispatchClaimFn(identifier, claimResult.nonce); });
   }
 
   await runOverlapCheck();

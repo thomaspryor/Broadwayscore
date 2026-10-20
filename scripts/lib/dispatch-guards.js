@@ -894,7 +894,7 @@ function exactTitleOverlapGuard(task, overlaps, opts) {
 // function turns the claim's result into a refusal. Pure, like every other
 // guard here — the mkdir/EEXIST I/O happens at the call site (bsc-next.js),
 // this only interprets its outcome. `claimResult` is exactly acquireClaim()'s
-// return value: true (claimed — proceed), false (genuinely held elsewhere,
+// return value: { nonce } (claimed, proceed), false (genuinely held elsewhere,
 // not stale), or 'error' (existing claim unreadable/corrupt — fail closed).
 //
 // Deliberately NOT added to GUARD_NAMES below: every guard listed there is a
@@ -905,7 +905,8 @@ function exactTitleOverlapGuard(task, overlaps, opts) {
 // dispatching, which is exactly the bug this guard exists to prevent.
 function dispatchClaimGuard(task, claimResult, opts) {
   if (opts.force || opts['dry-run'] || opts['print-prompt']) return null;
-  if (claimResult === true) return null;
+  // Keep boolean success for injected callers using the old test seam.
+  if (claimResult === true || (typeof claimResult?.nonce === 'string' && claimResult.nonce)) return null;
   if (claimResult === 'error') {
     return `REFUSING to dispatch #${task.id}: could not acquire the per-task dispatch claim (claim dir ` +
       `unreadable/corrupt) — failing closed rather than risk a concurrent double-dispatch.`;

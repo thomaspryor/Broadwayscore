@@ -99,7 +99,7 @@ test('acquireClaim: race simulation — two dispatch attempts for the same stale
     // this claim, would BOTH have passed findOverlappingCards and dispatched.
     const first = acquireClaim(dir, '1893');
     const second = acquireClaim(dir, '1893');
-    assert.equal(first, true, 'first attempt claims the slot');
+    assert.equal(typeof first.nonce, 'string', 'first attempt claims the slot');
     assert.equal(second, false, 'second concurrent attempt on the same task must be refused, not also proceed');
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
@@ -109,8 +109,8 @@ test('acquireClaim: race simulation — two dispatch attempts for the same stale
 test('acquireClaim: does not block a DIFFERENT task id', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dispatch-claim-race-'));
   try {
-    assert.equal(acquireClaim(dir, '1893'), true);
-    assert.equal(acquireClaim(dir, '1894'), true, 'an unrelated task id must never contend for #1893\'s claim');
+    assert.equal(typeof acquireClaim(dir, '1893').nonce, 'string');
+    assert.equal(typeof acquireClaim(dir, '1894').nonce, 'string', 'an unrelated task id must never contend for #1893\'s claim');
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }
@@ -119,9 +119,9 @@ test('acquireClaim: does not block a DIFFERENT task id', () => {
 test('acquireClaim: a stale claim (crashed or long-dead prior attempt) can be taken over', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dispatch-claim-race-'));
   try {
-    assert.equal(acquireClaim(dir, '1893', { staleMs: 1000, now: 1000 }), true);
+    assert.equal(typeof acquireClaim(dir, '1893', { staleMs: 1000, now: 1000 }).nonce, 'string');
     assert.equal(acquireClaim(dir, '1893', { staleMs: 1000, now: 1500 }), false, 'still fresh at +500ms');
-    assert.equal(acquireClaim(dir, '1893', { staleMs: 1000, now: 3000 }), true, 'stale at +2000ms — takeover allowed');
+    assert.equal(typeof acquireClaim(dir, '1893', { staleMs: 1000, now: 3000 }).nonce, 'string', 'stale at +2000ms — takeover allowed');
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }
@@ -133,9 +133,9 @@ test('releaseClaim allows an immediate reclaim — the legitimate same-session d
     // Mirrors the real incident's OWN legitimate retries (08:33 dead ->
     // 08:39 relaunch of the same task by the same session): those must never
     // be blocked by this claim, only genuinely concurrent OTHER attempts.
-    assert.equal(acquireClaim(dir, '1893'), true);
-    releaseClaim(dir, '1893');
-    assert.equal(acquireClaim(dir, '1893'), true, 'a retry after releasing must not be refused');
+    const owner = acquireClaim(dir, '1893');
+    releaseClaim(dir, '1893', owner.nonce);
+    assert.equal(typeof acquireClaim(dir, '1893').nonce, 'string', 'a retry after releasing must not be refused');
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }

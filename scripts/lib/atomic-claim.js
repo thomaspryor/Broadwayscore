@@ -28,10 +28,11 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const DEFAULT_STALE_MS = 8 * 60 * 1000; // matches bsc-next.js's pre-existing SUCCESSION_LOCK_STALE_MS
 
-// Returns true (claimed), false (genuinely held by a fresh claim), or
+// Returns { nonce } (claimed; pass nonce to releaseClaim), false (held), or
 // 'error' (existing claim's meta is unreadable/corrupt — fails CLOSED,
 // never guesses a corrupt claim is free).
 function acquireClaim(dir, key, opts = {}) {
@@ -39,11 +40,11 @@ function acquireClaim(dir, key, opts = {}) {
   const now = opts.now != null ? opts.now : Date.now();
   try { fs.mkdirSync(dir, { recursive: true }); } catch { /* best-effort — mkdirSync below still fails informatively */ }
   const p = path.join(dir, `${key}.claim`);
-  const meta = { pid: process.pid, ts: now };
+  const meta = { pid: process.pid, ts: now, nonce: crypto.randomBytes(16).toString('hex') };
   try {
     fs.mkdirSync(p); // atomic: EEXIST iff another process's mkdirSync already won
     fs.writeFileSync(path.join(p, 'meta.json'), JSON.stringify(meta));
-    return true;
+    return { nonce: meta.nonce };
   } catch (e) {
     if (e.code !== 'EEXIST') return 'error';
     try {
@@ -53,12 +54,11 @@ function acquireClaim(dir, key, opts = {}) {
       // otherwise make `now - existing.ts` negative, always < staleMs, and
       // read as "fresh" forever, wedging this claim permanently instead of
       // letting a stale-takeover ever happen. A future existing.ts is treated
-      // as untrustworthy, not fresh, so it falls straight to takeover below —
-      // same direction as the file's own KNOWN GAP above: takeover here is
-      // already not ownership-token-gated, so this doesn't introduce new risk.
+      // as untrustworthy, not fresh, so it falls straight to takeover below.
+      // The new nonce prevents the old holder from releasing this takeover.
       if (existing.ts <= now && now - existing.ts < staleMs) return false; // fresh — genuinely held elsewhere
       fs.writeFileSync(path.join(p, 'meta.json'), JSON.stringify(meta)); // stale — take over
-      return true;
+      return { nonce: meta.nonce };
     } catch (readErr) {
       // ENOENT specifically (task #1896 CI catch): mkdirSync(p) and the
       // meta.json write are two separate syscalls, not one atomic unit — a
@@ -76,16 +76,16 @@ function acquireClaim(dir, key, opts = {}) {
   }
 }
 
-// KNOWN GAP (inherited from bsc-next.js's pre-extraction acquireSuccessionLock,
-// BRO-2251): release is keyed on `key` alone, not an ownership token
-// (pid/nonce). If a holder's own attempt runs past staleMs before releasing,
-// a second caller's stale-takeover can acquire the "same" claim, and the
-// FIRST holder's deferred release then deletes the second holder's claim out
-// from under it. Not fixed here (both succession's and this module's every
-// caller inherit it) — closing it needs an ownership check (compare pid/nonce
-// before rm, not just key), a separate, testable change of its own.
-function releaseClaim(dir, key) {
-  try { fs.rmSync(path.join(dir, `${key}.claim`), { recursive: true, force: true }); } catch { /* next attempt's staleness check recovers */ }
+// Missing tokens (including pre-token callers) and unreadable metadata fail
+// closed. A later staleness check can recover an abandoned claim.
+function releaseClaim(dir, key, token) {
+  if (typeof token !== 'string' || !token) return;
+  const p = path.join(dir, `${key}.claim`);
+  try {
+    const meta = JSON.parse(fs.readFileSync(path.join(p, 'meta.json'), 'utf8'));
+    if (meta.nonce !== token) return;
+    fs.rmSync(p, { recursive: true, force: true });
+  } catch { /* next attempt's staleness check recovers */ }
 }
 
 module.exports = { acquireClaim, releaseClaim, DEFAULT_STALE_MS };

@@ -597,31 +597,13 @@ const SUCCESSION_LOCK_STALE_MS = 8 * 60 * 1000;
 const DISPATCH_CLAIM_DIR = path.join(REPO, 'data', 'audit', 'dispatch-claims');
 const DISPATCH_CLAIM_STALE_MS = 8 * 60 * 1000;
 
-// Delegates to scripts/lib/atomic-claim.js (task #1896 extraction — this was
-// the second hand-copy of the mkdir/EEXIST/staleness idiom in this tree
-// before that module existed; it's now the shared primitive both this and
-// the new per-task dispatch-claim guard sit on). Behavior/signature
-// unchanged — existing callers and tests are untouched by this refactor.
+// Succession uses the same ownership token as fresh dispatch claims.
 function acquireSuccessionLock(taskId, lockDir = SUCCESSION_LOCK_DIR, staleMs = SUCCESSION_LOCK_STALE_MS) {
   return acquireClaim(lockDir, taskId, { staleMs });
 }
 
-// KNOWN GAP (Codex adversarial review, BRO-2251): release is keyed on taskId
-// alone, not an ownership token (pid/nonce). If a holder's own launch attempt
-// runs past staleMs (~8 min — plausible: launchCmux's slowBootCapSec allows
-// up to 6 min of boot after the injection window) before returning, a second
-// caller's stale-takeover can acquire the "same" lock, and the FIRST holder's
-// deferred release then deletes the second holder's lock out from under it.
-// BRO-2251's fix makes this reachable for the first time in practice (release
-// used to be skipped entirely on any failure — see runSuccessionDispatch's
-// header comment), so it is now a real, if narrow, race rather than a purely
-// theoretical one. Not fixed here: closing it needs an ownership check
-// (compare pid/nonce before rm, not just taskId) which is a separate,
-// testable change of its own. The gap now lives in scripts/lib/atomic-claim.js's
-// releaseClaim (task #1896 extraction) and applies to the new dispatch claim
-// too — see that file's own KNOWN GAP comment.
-function releaseSuccessionLock(taskId, lockDir = SUCCESSION_LOCK_DIR) {
-  releaseClaim(lockDir, taskId);
+function releaseSuccessionLock(taskId, token, lockDir = SUCCESSION_LOCK_DIR) {
+  releaseClaim(lockDir, taskId, token);
 }
 
 // Side-effecting succession dispatch, split out of main() so the CI-red-
@@ -656,8 +638,9 @@ function runSuccessionDispatch(task, args, deps) {
 
   // dry-run/print-prompt never touch the lock — they launch nothing, so
   // there's nothing to race (and --dry-run must stay side-effect-free).
+  let acquired;
   if (!(args['dry-run'] || args['print-prompt'])) {
-    const acquired = acquireLockFn(task.id);
+    acquired = acquireLockFn(task.id);
     if (acquired === false) {
       console.error(`[bsc-next] REFUSING succession dispatch: another succession dispatch for task #${task.id} is already in flight (lock held, not stale). Wait for it to finish or fail before retrying — dispatching concurrently would let two successors both pass the depth cap.`);
       process.exit(1);
@@ -684,7 +667,7 @@ function runSuccessionDispatch(task, args, deps) {
   try {
     exitCode = runSuccessionDispatchLocked(task, args, { launchCmuxFn, readLedgerEntriesFn, appendLedgerEntryFn, fetchCardFn, pageCapExceededFn, selfCloseFn });
   } finally {
-    if (!(args['dry-run'] || args['print-prompt'])) releaseLockFn(task.id);
+    if (!(args['dry-run'] || args['print-prompt'])) releaseLockFn(task.id, acquired?.nonce);
   }
   if (exitCode) process.exit(exitCode);
 }
@@ -1085,7 +1068,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     // Task #1896: injectable so tests can simulate "another attempt already
     // holds this task's claim" without touching the real filesystem dir.
     acquireDispatchClaim: acquireDispatchClaimFn = (taskId, opts) => acquireClaim(DISPATCH_CLAIM_DIR, taskId, opts),
-    releaseDispatchClaim: releaseDispatchClaimFn = (taskId) => releaseClaim(DISPATCH_CLAIM_DIR, taskId),
+    releaseDispatchClaim: releaseDispatchClaimFn = (taskId, token) => releaseClaim(DISPATCH_CLAIM_DIR, taskId, token),
   } = deps;
 
   // BRO-1703: a matching workspace the ledger + cmux both PROVE dead must not
@@ -1306,9 +1289,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     const claimResult = acquireDispatchClaimFn(task.id, { staleMs: DISPATCH_CLAIM_STALE_MS });
     const claimErr = dispatchClaimGuard(task, claimResult, args);
     if (claimErr) { console.error(`[bsc-next] ${claimErr}`); process.exit(1); }
-    if (claimResult === true) {
-      process.on('exit', () => { if (!dispatchConfirmed) releaseDispatchClaimFn(task.id); });
-    }
+    process.on('exit', () => { if (!dispatchConfirmed) releaseDispatchClaimFn(task.id, claimResult.nonce); });
   }
 
   // Card #955: task-store-archive.js can archive an in_progress task
