@@ -316,6 +316,10 @@ function fillClearedFromHistory(grossesShows, shows, history, clears, opts = {})
     if (closing == null || closing >= now) continue;
     const own = ownRunTotals(history, show, opts);
     if (!own || own.status !== 'complete') continue;
+    // A run that may have begun before the history does (it starts December
+    // 2001) can look complete from one late row: leave it blank.
+    const firstWeek = toMs(Object.keys(history?.weeks || {}).sort()[0]);
+    if (firstWeek != null && toMs(own.since) <= firstWeek + OWN_RUN_START_SLACK_DAYS * DAY_MS) continue;
     fills.push({ slug, status: own.status, weeks: own.weeks, gaps: own.gaps, since: own.since, gross: own.gross });
     grossesShows[slug] = {
       allTime: { gross: own.gross, performances: own.performances, attendance: own.attendance },

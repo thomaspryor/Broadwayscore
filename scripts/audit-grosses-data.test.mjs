@@ -21,6 +21,8 @@ function hist(slug, from, to, skip = []) {
     const w = new Date(t).toISOString().slice(0, 10);
     if (!skip.includes(w)) weeks[w] = { [slug]: { ...ROW } };
   }
+  // The real history starts in December 2001; another show's week stands in for it.
+  weeks['2001-12-02'] = { other: { ...ROW } };
   return { weeks };
 }
 
@@ -60,4 +62,20 @@ test('open runs and non-Broadway shows never get a history total from the no-ent
   const g = {};
   applyAllTimeAttribution(g, [open, ob], { now: NOW, history });
   assert.deepEqual(g, {});
+});
+
+test('a run that could predate the history (first rows at the history start) is left blank', () => {
+  const s = show('early-2001', '2001-11-01', '2002-03-03');
+  const history = hist('early-2001', '2001-12-09', '2002-03-03');
+  const g = {};
+  applyAllTimeAttribution(g, [s], { now: NOW, history });
+  assert.equal(g['early-2001'], undefined);
+});
+
+test('an existing entry (real BWW row) is left alone by the no-entry path', () => {
+  const s = show('revival-2022', '2022-03-13', '2022-06-05');
+  const history = hist('revival-2022', '2022-03-13', '2022-06-05');
+  const g = { 'revival-2022': { allTime: { gross: 99, performances: 9, attendance: 9 } } };
+  applyAllTimeAttribution(g, [s], { now: NOW, history });
+  assert.equal(g['revival-2022'].allTime.gross, 99);
 });

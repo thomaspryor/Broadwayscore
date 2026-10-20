@@ -1159,7 +1159,11 @@ async function scrapeGrosses(): Promise<void> {
           allTime: { ...existing.allTime },
           lastUpdated: existing.lastUpdated || new Date().toISOString()
         } as ShowGrosses;
+        // BRO-5599: a total summed from the weekly rows is marked so the next
+        // all-time run refreshes it instead of merging a BWW row into it.
+        if (existing.allTimeSource) grossesData.shows[slug].allTimeSource = existing.allTimeSource;
       }
+      if (existing.partialRun && grossesData.shows[slug]) grossesData.shows[slug].partialRun = existing.partialRun;
     }
   }
 
