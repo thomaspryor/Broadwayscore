@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-20T21:54:51.175Z",
+    "generatedAt": "2026-10-20T22:31:38.127Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -9,9 +9,9 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 5,
-    "exemptCount": 24,
-    "coveredCount": 48,
-    "highChurnTracked": 77
+    "exemptCount": 23,
+    "coveredCount": 47,
+    "highChurnTracked": 75
   },
   "flagged": [
     {
@@ -23,11 +23,11 @@
       "churn": 36
     },
     {
-      "path": "data/show-score-candidates.json",
+      "path": "data/audit/bundle-size-history.json",
       "churn": 33
     },
     {
-      "path": "data/audit/bundle-size-history.json",
+      "path": "data/show-score-candidates.json",
       "churn": 32
     },
     {
@@ -38,23 +38,23 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 698
+      "churn": 712
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 204
+      "churn": 201
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 204
+      "churn": 201
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 204
+      "churn": 201
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 175
+      "churn": 179
     },
     {
       "path": "data/llm-scoring-runs.json",
@@ -62,11 +62,11 @@
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 135
+      "churn": 132
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 116
+      "churn": 114
     },
     {
       "path": "public/data/shows/angels-bone-west-end-2026.json",
@@ -85,11 +85,11 @@
       "churn": 44
     },
     {
-      "path": "public/data/shows/dog-mom-off-west-end-2026.json",
-      "churn": 40
+      "path": "data/outlet-registry.json",
+      "churn": 39
     },
     {
-      "path": "data/outlet-registry.json",
+      "path": "public/data/shows/dog-mom-off-west-end-2026.json",
       "churn": 39
     },
     {
@@ -121,10 +121,6 @@
       "churn": 31
     },
     {
-      "path": "data/audit/opening-night-history.json",
-      "churn": 30
-    },
-    {
       "path": "public/data/shows/cadel-lungs-on-legs-west-end-2026.json",
       "churn": 30
     },
@@ -136,72 +132,72 @@
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 820,
+      "churn": 812,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 566,
+      "churn": 562,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 474,
+      "churn": 471,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 455,
+      "churn": 451,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 455,
+      "churn": 451,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 455,
+      "churn": 451,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/landings.jsonl",
-      "churn": 359,
+      "churn": 364,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/exclusion-daily-totals.json",
-      "churn": 288,
+      "churn": 285,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 261,
+      "churn": 258,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/lane-rehearsal.json",
-      "churn": 233,
+      "churn": 237,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 204,
+      "churn": 201,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 196,
+      "churn": 194,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 189,
+      "churn": 186,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 184,
+      "churn": 181,
       "mergeAttr": "ours"
     },
     {
@@ -216,42 +212,42 @@
     },
     {
       "path": "data/audit/exclusion-mirror-summary.json",
-      "churn": 116,
+      "churn": 114,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphaned-duplicate-pointer-heal.json",
-      "churn": 116,
+      "churn": 114,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 116,
+      "churn": 114,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 116,
+      "churn": 114,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/tour-sweep.json",
-      "churn": 116,
+      "churn": 114,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 116,
+      "churn": 114,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 110,
+      "churn": 108,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 108,
+      "churn": 105,
       "mergeAttr": "ours"
     },
     {
@@ -261,17 +257,17 @@
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 59,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/pipeline-health/collect-review-texts.last-success",
       "churn": 58,
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/pipeline-health/collect-review-texts.last-success",
+      "churn": 57,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/main-streak-failing-jobs.json",
-      "churn": 49,
+      "churn": 52,
       "mergeAttr": "ours"
     },
     {
@@ -368,11 +364,6 @@
       "path": "data/audit/poller-backoff/harry-potter-and-the-cursed-child-one-part-west-end-2026.json",
       "churn": 31,
       "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/remediation-log.jsonl",
-      "churn": 30,
-      "mergeAttr": "union"
     }
   ]
 }
