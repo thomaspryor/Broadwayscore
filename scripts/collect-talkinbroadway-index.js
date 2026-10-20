@@ -145,7 +145,8 @@ async function main() {
         // review URL; never under index.html, which shows a different review tomorrow.
         const own = titleFromPageTitle(r.title);
         if (own && isReviewHref(r.canonical)) entries.push({ url: normalizeTbUrl(r.canonical), title: own });
-        for (const l of links) entries.push({ url: l.url, title: l.text, date: l.date });
+        const section = url.includes('/page/world/') ? 'world' : 'ob';
+        links.forEach((l, rank) => entries.push({ url: l.url, title: l.text, date: l.date, section, rank }));
         // Self-report links that look like dated reviews ("<title> - M/D/YY") but were not accepted
         // as review pages, so a change in TB's URL shapes shows up here instead of as silence.
         const accepted = new Set(links.map((l) => l.url));

@@ -198,6 +198,9 @@ function reviewDateFitsShow(reviewDate, show) {
   return days >= -REVIEW_DATE_WINDOW.daysBeforeOpening && days <= REVIEW_DATE_WINDOW.daysAfterOpening;
 }
 
+const SECTION_CATEGORY = Object.freeze({ world: 'broadway', ob: 'off-broadway' });
+const MAX_UNDATED_RANK = 80;
+
 /**
  * Decide what to fetch. A link needs a title that matches one tracked New York show, a review
  * date near that show's opening, and no Talkin' Broadway review of the show already held.
@@ -218,6 +221,18 @@ function planCollection(entries, shows, held, opts = {}) {
     }
     // Broadway list links carry no date ("Bug.html | Bug"); those are checked against the review
     // page's own byline date after the fetch (verifyPageDate), never taken on trust.
+    // A Broadway-list link belongs to a Broadway show, an Off Broadway-list link to an Off Broadway show:
+    // the same title is often both (Macbeth, The Cherry Orchard, La Boheme).
+    const wantCategory = SECTION_CATEGORY[e.section];
+    if (wantCategory && show.category !== wantCategory) {
+      skipped.push({ url: e.url, title: e.title, why: 'wrong-section' });
+      continue;
+    }
+    // Lists run newest first. An undated link far down is an old review, not worth a page load.
+    if (!e.date && Number.isFinite(e.rank) && e.rank >= (opts.maxUndatedRank ?? MAX_UNDATED_RANK)) {
+      skipped.push({ url: e.url, title: e.title, why: 'undated-not-recent' });
+      continue;
+    }
     if (e.date && !reviewDateFitsShow(e.date, show)) {
       skipped.push({ url: e.url, title: e.title, why: 'date-outside-run' });
       continue;
@@ -255,4 +270,6 @@ module.exports = {
   pageTitleMatchesShow,
   heldKey,
   planCollection,
+  SECTION_CATEGORY,
+  MAX_UNDATED_RANK,
 };

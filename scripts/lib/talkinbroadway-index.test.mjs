@@ -10,8 +10,8 @@ const {
 
 const NOW = new Date('2026-10-19T12:00:00Z');
 const shows = [
-  { id: 'good-time-charlie-off-broadway-2026', title: 'Good Time Charlie', openingDate: '2026-10-09', market: 'broadway' },
-  { id: 'the-ask-off-broadway-2026', title: 'The Ask', openingDate: '2026-10-15', market: 'broadway' },
+  { id: 'good-time-charlie-off-broadway-2026', title: 'Good Time Charlie', openingDate: '2026-10-09', market: 'broadway', category: 'off-broadway' },
+  { id: 'the-ask-off-broadway-2026', title: 'The Ask', openingDate: '2026-10-15', market: 'broadway', category: 'off-broadway' },
   { id: 'old-play-off-broadway-2019', title: 'Old Play', openingDate: '2019-03-01', market: 'broadway' },
   { id: 'twin-a-2026', title: 'Twin', openingDate: '2026-10-10', market: 'broadway' },
   { id: 'twin-b-2026', title: 'Twin', openingDate: '2026-10-12', market: 'broadway' },
@@ -172,4 +172,20 @@ test('resolveAgainst makes the Broadway list hrefs absolute under /page/world/',
     { href: resolveAgainst(base, '/'), text: 'Home page' },
   ]);
   assert.deepEqual(links.map((l) => l.url), ['https://www.talkinbroadway.com/page/world/Bug.html']);
+});
+
+test('a Broadway-list link never attaches to an Off Broadway show of the same title, and vice versa', () => {
+  const both = [
+    { id: 'macbeth-off-broadway-2026', title: 'Macbeth', openingDate: '2026-10-05', market: 'broadway', category: 'off-broadway' },
+  ];
+  const fromWorld = [{ url: 'https://www.talkinbroadway.com/page/world/Macbeth22.html', title: 'Macbeth', date: null, section: 'world', rank: 9 }];
+  assert.equal(planCollection(fromWorld, both, new Set(), { now: NOW }).skipped[0].why, 'wrong-section');
+  const fromOb = [{ url: 'https://www.talkinbroadway.com/page/ob/10_05_26.html', title: 'Macbeth', date: '2026-10-05', section: 'ob', rank: 3 }];
+  assert.equal(planCollection(fromOb, both, new Set(), { now: NOW }).toFetch.length, 1);
+});
+
+test('an undated link far down a newest-first list is skipped without a page load', () => {
+  const entry = (rank) => [{ url: 'https://www.talkinbroadway.com/page/ob/Thing.html', title: 'Good Time Charlie', date: null, section: 'ob', rank }];
+  assert.equal(planCollection(entry(5), shows, new Set(), { now: NOW }).toFetch.length, 1);
+  assert.equal(planCollection(entry(500), shows, new Set(), { now: NOW }).skipped[0].why, 'undated-not-recent');
 });
