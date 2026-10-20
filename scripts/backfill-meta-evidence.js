@@ -117,7 +117,12 @@ async function main() {
         html = (r && (r.content || r.html)) || null;
       } catch (e) { console.log(`  x ${label}: fetch failed (${String(e.message || e).slice(0, 80)})`); }
     }
-    if (!html) { unreachable++; continue; }
+    if (!html) {
+      unreachable++;
+      // Stamp so a permanently walled URL doesn't take a slot in every weekly run.
+      if (!dryRun && !fromCache) { try { stampChecked(fp, d.url, 'unreachable'); } catch { /* best effort */ } }
+      continue;
+    }
     const evidence = evaluatePageMeta({
       data: d, show, meta: extractPageMeta(html),
       inWindow: (s, date) => isReviewWithinOwnProductionWindow(s, date),

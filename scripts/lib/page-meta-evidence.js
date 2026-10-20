@@ -139,7 +139,7 @@ function starRunRating(text) {
   const t = String(text || '');
   const run = t.match(/[★⭐]{1,5}/);
   if (run) return run[0].length;
-  const m = t.match(/\b([1-5])(?:\.5)?\s*(?:\/\s*5\s*)?stars?\b/i) || t.match(/\b([1-5])\s*(?:\/|out of)\s*5\b/i);
+  const m = t.match(/\b([1-5](?:\.5)?)\s*(?:\/\s*5\s*)?stars?\b/i) || t.match(/\b([1-5](?:\.5)?)\s*(?:\/|out of)\s*5\b/i);
   return m ? Number(m[1]) : null;
 }
 

@@ -51,6 +51,7 @@ const GATED = [
   ['discover-tour-stop-reviews.yml', 'Trigger rebuild'],
   ['overnight-collect.yml', 'Trigger reviews rebuild'],
   ['backfill-review-dates.yml', 'Trigger rebuild'],
+  ['backfill-meta-evidence.yml', 'Trigger rebuild'],
   ['audit-touring-contamination.yml', 'Trigger rebuild'],
   ['recover-wayback-reviews.yml', 'Trigger rebuild'],
   ['collect-we-ob-reviews.yml', 'Trigger rebuild'],

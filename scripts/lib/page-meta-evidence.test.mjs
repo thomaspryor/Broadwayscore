@@ -26,6 +26,7 @@ test('genuine review of the right show is accepted', () => {
 
 test('star-run headline counts as a rating and tolerates a short standfirst', () => {
   assert.equal(starRunRating('The Last Ship - Theatre Royal Drury Lane ★★★★'), 4);
+  assert.equal(starRunRating('Some Show: 3.5 stars'), 3.5);
   const r = judge(show('The Last Ship', { venue: 'Theatre Royal Drury Lane' }), page('The Last Ship - Theatre Royal Drury Lane ★★★★★', "Sting's political folk musical."));
   assert.equal(r.ok, true);
   assert.deepEqual(r.rating, { value: 5, best: 5 });
