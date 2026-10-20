@@ -705,6 +705,7 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
     recouped: data.recouped,
     recoupmentNotAnnounced: isUnannouncedRecoupment(data),
     recoupedWeeks: calculateWeeksToRecoup(recoupClockStart(data, show.openingDate), data.recoupedDate, show.closingDate),
+    recoupedAfterClosing: recoupedAfterClosing(data.recoupedDate, show.closingDate),
     lossCaveat: lossBasisCaveat(data),
     likelyOutcome: data.likelyOutcome ?? null,
     likelyOutcomeBasis: data.likelyOutcome ? (data.likelyOutcomeBasis ?? 'model') : null,

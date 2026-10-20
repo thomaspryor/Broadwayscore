@@ -402,7 +402,9 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                       {show.recouped
                         ? show.recoupedWeeks
                           ? `~${show.recoupedWeeks} wks`
-                          : '—'
+                          : show.recoupedAfterClosing
+                            ? 'After closing'
+                            : '—'
                         : running
                           ? getTrendIcon(show.trend, show.recouped)
                           : '—'}
