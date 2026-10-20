@@ -497,3 +497,119 @@ test('ORPHAN_TIMEOUT_H is exported here and is the value all reconcilers use', (
   assert.ok(ORPHAN_TIMEOUT_H > 0);
   assert.equal(ORPHAN_TIMEOUT_H, 3, 'changing this changes orphan detection for every drain at once — deliberate');
 });
+
+// ── BRO-2989: orphaned in-flight Linear work is detected and re-owned ───────
+// The acceptance contract for the card: a started issue whose owning session
+// is dead IS re-dispatched; one whose owner is alive is NOT touched. A
+// one-way test would pass on a bug that re-dispatches everything.
+const { classifyOrphanedInFlight, KINDS: ORPHAN_KINDS, handledKey, buildReownComment, REOWN_MARKER } = require('./linear-orphaned-inflight.js');
+const { classifyZombieComment } = require('./linear-started-zombie-sweep-verify.js');
+
+const NOW = Date.parse('2026-10-20T12:00:00Z');
+const iso = (msAgo) => new Date(NOW - msAgo).toISOString();
+const H = 3600e3;
+const tid = (id) => `linear:${id}`;
+function issue(identifier, over = {}) {
+  return {
+    identifier, title: `P1: thing ${identifier}`, priority: 2,
+    description: '## Acceptance criteria\n\n`node --test scripts/lib/dispatch-reconcile.test.mjs`\n',
+    state: { type: 'started', name: 'In Progress' }, comments: { nodes: [] }, ...over,
+  };
+}
+const spawned = (id, jobId, msAgo) => ({ event: E.SPAWNED, taskId: tid(id), jobId, ts: iso(msAgo) });
+const orphanedRow = (id, jobId, msAgo) => ({ event: E.ORPHANED, taskId: tid(id), jobId, ts: iso(msAgo) });
+const run = (issues, ledgerEntries, over = {}) => classifyOrphanedInFlight({ issues, ledgerEntries, nowMs: NOW, ...over });
+
+test('BRO-2989: a started issue whose session is dead is detected and re-dispatched', () => {
+  const ledger = [spawned('BRO-1', 'j1', 5 * H), orphanedRow('BRO-1', 'j1', 4 * H)];
+  const { decisions } = run([issue('BRO-1')], ledger);
+  assert.equal(decisions.length, 1);
+  assert.equal(decisions[0].kind, ORPHAN_KINDS.REDISPATCH);
+  assert.equal(decisions[0].identifier, 'BRO-1');
+});
+
+test('BRO-2989: a started issue whose owner is ALIVE is not touched', () => {
+  const alive = [spawned('BRO-2', 'j2', 1 * H)];
+  assert.deepEqual(run([issue('BRO-2')], alive).decisions, []);
+  assert.equal(run([issue('BRO-2')], alive).skipped[0].reason, 'owner-alive');
+  // An older death superseded by a live re-dispatch must not fire either.
+  const redispatched = [spawned('BRO-3', 'a', 9 * H), orphanedRow('BRO-3', 'a', 8 * H), spawned('BRO-3', 'b', 1 * H)];
+  assert.deepEqual(run([issue('BRO-3')], redispatched).decisions, []);
+  // The caller's own liveness knowledge (lease/process) also protects it.
+  const dead = [spawned('BRO-4', 'j4', 5 * H), orphanedRow('BRO-4', 'j4', 4 * H)];
+  assert.deepEqual(run([issue('BRO-4')], dead, { liveTaskIds: new Set([tid('BRO-4')]) }).decisions, []);
+});
+
+test('BRO-2989: dead and alive in one pass — only the dead one is acted on', () => {
+  const ledger = [spawned('BRO-5', 'j5', 5 * H), orphanedRow('BRO-5', 'j5', 4 * H), spawned('BRO-6', 'j6', 1 * H)];
+  const { decisions } = run([issue('BRO-5'), issue('BRO-6')], ledger);
+  assert.deepEqual(decisions.map((d) => d.identifier), ['BRO-5']);
+});
+
+test('BRO-2989: dead-shaped rows that do NOT mean a dead owner are left alone', () => {
+  const cases = {
+    abandoned: [{ event: E.ABANDONED, taskId: tid('BRO-7'), jobId: 'x', ts: iso(4 * H) }],   // another job holds the card
+    stranded: [spawned('BRO-7', 'x', 5 * H), { event: E.STRANDED, taskId: tid('BRO-7'), jobId: 'x', ts: iso(4 * H) }], // real commits exist
+    done: [spawned('BRO-7', 'x', 5 * H), { event: E.DONE, taskId: tid('BRO-7'), jobId: 'x', ts: iso(4 * H) }],         // zombie sweep's job
+    suspect: [spawned('BRO-7', 'x', 5 * H), { event: E.ORPHAN_SUSPECT, taskId: tid('BRO-7'), jobId: 'x', ts: iso(4 * H) }], // one liveness glance
+    none: [],
+  };
+  for (const [name, ledger] of Object.entries(cases)) {
+    assert.deepEqual(run([issue('BRO-7')], ledger).decisions, [], name);
+  }
+  const vanished = [spawned('BRO-8', 'y', 5 * H), orphanedRow('BRO-8', 'y', 4 * H), { event: 'vanished', taskId: tid('BRO-8'), ts: iso(3 * H) }];
+  assert.deepEqual(run([issue('BRO-8')], vanished).decisions, [], 'parked/vanished workspace');
+});
+
+test('BRO-2989: an owner/crown card with a dead session is surfaced, never auto-redispatched', () => {
+  const ledger = [spawned('BRO-9', 'j9', 5 * H), orphanedRow('BRO-9', 'j9', 4 * H)];
+  const { decisions } = run([issue('BRO-9', { title: '❓ 👑 OWNER — Crown v33: P1 backlog dispatch' })], ledger);
+  assert.equal(decisions.length, 1);
+  assert.equal(decisions[0].kind, ORPHAN_KINDS.NOTIFY_OWNER);
+  assert.equal(decisions[0].reason, 'owner-card-session-died');
+});
+
+test('BRO-2989: cards the watchdog would refuse, or out of attempts, are surfaced not moved', () => {
+  const ledger = [spawned('BRO-10', 'j', 5 * H), orphanedRow('BRO-10', 'j', 4 * H)];
+  const unarmed = run([issue('BRO-10', { description: 'no acceptance command' })], ledger).decisions[0];
+  assert.equal(unarmed.kind, ORPHAN_KINDS.NOTIFY_OWNER);
+  assert.match(unarmed.reason, /^watchdog-would-refuse:/);
+  const many = [];
+  for (let i = 0; i < 2; i++) many.push(spawned('BRO-11', `k${i}`, (20 - i * 4) * H), orphanedRow('BRO-11', `k${i}`, (19 - i * 4) * H));
+  const exhausted = run([issue('BRO-11')], many).decisions[0];
+  assert.equal(exhausted.kind, ORPHAN_KINDS.NOTIFY_OWNER);
+  assert.match(exhausted.reason, /^attempts-exhausted/);
+});
+
+test('BRO-2989: grace window, human comment, report, in-review and opt-out all hold the card', () => {
+  const fresh = [spawned('BRO-12', 'j', 1 * H), orphanedRow('BRO-12', 'j', 5 * 60e3)];
+  assert.equal(run([issue('BRO-12')], fresh).skipped[0].reason, 'within-grace');
+  const dead = [spawned('BRO-13', 'j', 5 * H), orphanedRow('BRO-13', 'j', 4 * H)];
+  const comment = (body) => ({ comments: { nodes: [{ body, createdAt: iso(1 * H) }] } });
+  assert.equal(run([issue('BRO-13', comment('can you look at the footer?'))], dead).skipped[0].reason, 'human-on-thread');
+  assert.equal(run([issue('BRO-13', comment('**Session report (blocked)** stuck'))], dead).skipped[0].reason, 'already-reported');
+  assert.equal(run([issue('BRO-13', { state: { type: 'started', name: 'In Review' } })], dead).skipped[0].reason, 'in-review');
+  assert.equal(run([issue('BRO-13', { description: 'NO-RECLAIM: tracker' })], dead).skipped[0].reason, 'opted-out');
+});
+
+test('BRO-2989: one action per dead attempt, and a tick cap on moves', () => {
+  const ledger = [spawned('BRO-14', 'j', 5 * H), orphanedRow('BRO-14', 'j', 4 * H)];
+  const handled = new Set([handledKey(tid('BRO-14'), iso(4 * H))]);
+  assert.equal(run([issue('BRO-14')], ledger, { handled }).skipped[0].reason, 'already-handled');
+  const ids = ['BRO-20', 'BRO-21', 'BRO-22'];
+  const many = ids.flatMap((id) => [spawned(id, id, 5 * H), orphanedRow(id, id, 4 * H)]);
+  const capped = run(ids.map((id) => issue(id)), many, { maxPerTick: 2 });
+  assert.equal(capped.decisions.length, 2);
+  assert.ok(capped.skipped.some((s) => s.reason === 'tick-cap'));
+});
+
+test('BRO-2989: the sweep\'s own comment reads as a machine comment, not a human', () => {
+  const body = buildReownComment({ identifier: 'BRO-1', deadEvent: E.ORPHANED, deadTs: iso(H), kind: ORPHAN_KINDS.REDISPATCH });
+  assert.ok(body.includes(REOWN_MARKER));
+  assert.equal(classifyZombieComment(body), 'own-reset');
+});
+
+test('BRO-2989: bad inputs throw instead of silently re-owning the board', () => {
+  assert.throws(() => classifyOrphanedInFlight({ issues: [], ledgerEntries: [], nowMs: NaN }), TypeError);
+  assert.throws(() => classifyOrphanedInFlight({ issues: [], ledgerEntries: null, nowMs: NOW }), TypeError);
+});

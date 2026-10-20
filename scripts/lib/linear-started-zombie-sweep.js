@@ -123,6 +123,13 @@ function sortedComments(issue) {
 // stuck card behind the exact write-back that was supposed to unstick it.
 const ZOMBIE_RESET_MARKER = "Auto-reset by bsc-reconcile's Linear zombie sweep (BRO-3925)";
 
+// BRO-2989: marker of the orphaned in-flight sweep's own comment
+// (linear-orphaned-inflight.js). Lives here so classifyZombieComment reads it
+// as a MACHINE comment: every machine comment is posted under the owner's key,
+// and an unrecognised shape would otherwise count as a human on the thread and
+// freeze this sweep's cards for HUMAN_FRESH_MS.
+const REOWN_MARKER = "Auto-re-owned by bsc-reconcile's orphaned in-flight sweep (BRO-2989)";
+
 // buildIssueQuery (linear-dispatch.js) fetches `comments(first: 50, orderBy:
 // createdAt)` with no pagination cursor. Hitting exactly this cap is the only
 // available signal that older comments exist beyond what was fetched. The
@@ -250,6 +257,7 @@ module.exports = {
   isZombieResetParked,
   zombieLocalDay,
   ZOMBIE_RESET_MARKER,
+  REOWN_MARKER,
   COMMENT_PAGE_CAP,
   // Re-exported for tests that want to assert on the raw sort without
   // reimplementing it (CLAUDE.md rule 15).

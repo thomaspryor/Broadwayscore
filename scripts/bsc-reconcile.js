@@ -1096,6 +1096,86 @@ async function sweepLinearStartedZombies({ dryRun = false, deps = {} } = {}) {
   return result;
 }
 
+// ── Orphaned in-flight Linear sweep (BRO-2989) ──────────────────────────────
+// A started card whose owning session died without finishing is re-owned
+// (moved to Todo for the watchdog) or, for owner/crown cards and cards the
+// machine cannot re-own, surfaced to the owner via the digest-visible report.
+// Decisions are linear-orphaned-inflight.js's; this function only does I/O.
+// Trusts ledger rows only: sweepOrphanedJobs runs earlier in the same tick and
+// owns the debounced pid check. Kill switch LINEAR_ORPHANED_SWEEP_DISABLED=1.
+const LINEAR_ORPHANED_STATE_PATH = path.join(REPO, 'data', 'audit', 'linear-orphaned-inflight-state.json');
+const LINEAR_ORPHANED_INTERVAL_MS = 3600 * 1000; // Linear fetches cost quota
+const LINEAR_ORPHANED_MAX_FETCH_PER_TICK = 25;
+
+async function sweepOrphanedLinearInFlight({ dryRun = false, deps = {} } = {}) {
+  const orphaned = require('./lib/linear-orphaned-inflight.js');
+  const { findLinearDeadLaunchCandidates } = require('./lib/linear-dead-completion-source.js');
+  const {
+    readLedgerEntriesFn = ledger.readEntries,
+    getIssueFn = (identifier) => require('./lib/linear-client.js').getIssue(identifier),
+    applyFn = (args) => require('./lib/linear-started-zombie-sweep-verify.js').applyZombieAction(args, { cwd: REPO }),
+    reportFn = report,
+    nowFn = Date.now,
+    statePath = LINEAR_ORPHANED_STATE_PATH,
+    disabled = process.env.LINEAR_ORPHANED_SWEEP_DISABLED === '1',
+  } = deps;
+  const result = { ran: false, checked: 0, redispatched: [], notified: [], skipped: [] };
+  if (disabled) return result;
+
+  let state = null;
+  try { state = JSON.parse(fs.readFileSync(statePath, 'utf8')); } catch { /* first run */ }
+  if (!dryRun && state && Number.isFinite(Date.parse(state.lastRunTs))
+    && nowFn() - Date.parse(state.lastRunTs) < LINEAR_ORPHANED_INTERVAL_MS) return result;
+  result.ran = true;
+
+  const entries = readLedgerEntriesFn();
+  const handled = new Set((state && Array.isArray(state.handled)) ? state.handled : []);
+  const candidates = findLinearDeadLaunchCandidates(entries)
+    .filter((c) => !handled.has(orphaned.handledKey(c.taskId, c.deadAttemptTs)))
+    .slice(0, LINEAR_ORPHANED_MAX_FETCH_PER_TICK);
+
+  const issues = [];
+  for (const c of candidates) {
+    try { const iss = await getIssueFn(c.identifier); if (iss) issues.push(iss); } catch (e) {
+      reportFn({ kind: 'linear-orphaned-fetch-error', identifier: c.identifier, detail: `${c.identifier}: ${e.message}` });
+    }
+  }
+  result.checked = issues.length;
+  const { decisions, skipped } = orphaned.classifyOrphanedInFlight({ issues, ledgerEntries: entries, nowMs: nowFn(), handled });
+  result.skipped = skipped;
+
+  for (const d of decisions) {
+    const row = { identifier: d.identifier, reason: d.reason, deadEvent: d.deadEvent, deadTs: d.deadTs };
+    if (d.kind === orphaned.KINDS.REDISPATCH) {
+      result.redispatched.push(row);
+      if (dryRun) continue;
+      const applied = applyFn({ action: 'todo', identifier: d.identifier, comment: orphaned.buildReownComment(d) });
+      if (!applied.ok) {
+        reportFn({ kind: 'linear-orphaned-reown-failed', identifier: d.identifier, detail: `${d.identifier} orphaned (${d.deadEvent}) but the move to Todo failed (exit ${applied.status}): ${applied.stderr}` });
+        continue; // not marked handled: retried next tick
+      }
+      handled.add(d.key);
+      reportFn({ kind: 'linear-orphaned-redispatched', identifier: d.identifier, detail: `${d.identifier} moved to Todo: its session died (${d.deadEvent}) without reporting back` });
+    } else {
+      result.notified.push(row);
+      if (dryRun) continue;
+      handled.add(d.key);
+      reportFn({ kind: 'linear-orphaned-owner-alert', identifier: d.identifier, reason: d.reason, detail: `${d.identifier} "${String((d.issue && d.issue.title) || '').slice(0, 80)}" lost its session (${d.deadEvent}) and was NOT auto-restarted: ${d.reason}` });
+    }
+  }
+
+  if (!dryRun) {
+    try {
+      fs.mkdirSync(path.dirname(statePath), { recursive: true });
+      fs.writeFileSync(statePath, JSON.stringify({
+        lastRunTs: new Date(nowFn()).toISOString(),
+        handled: [...handled].slice(-500),
+      }, null, 2));
+    } catch { /* state write must never fail the sweep */ }
+  }
+  return result;
+}
+
 // ── Flagless-resume sweep (task #985) ───────────────────────────────────────
 // cmux's OWN restart-recovery path (triggered reviving a dead pane — #886)
 // can resume a session with a bare `claude --worktree X --resume <id>`
@@ -1536,6 +1616,14 @@ async function main() {
     console.error(`[bsc-reconcile] linear-zombie sweep crashed (non-fatal): ${e.message}`);
   }
 
+  // BRO-2989: re-own started Linear cards whose session died unfinished.
+  try {
+    const orphanedSweep = await sweepOrphanedLinearInFlight({ dryRun: DRY });
+    if (orphanedSweep.ran) console.log(`[bsc-reconcile] linear-orphaned checked=${orphanedSweep.checked} redispatched=${orphanedSweep.redispatched.length} notified=${orphanedSweep.notified.length}${DRY ? ' (dry-run)' : ''}`);
+  } catch (e) {
+    console.error(`[bsc-reconcile] linear-orphaned sweep crashed (non-fatal): ${e.message}`);
+  }
+
   // Owner mandate 2026-08-03: stalled-task sweep, same best-effort isolation.
   try {
     const stallSweep = reconcileStalledTasks({ dryRun: DRY });
@@ -1631,4 +1719,4 @@ if (require.main === module) {
   main().catch(err => { console.error('bsc-reconcile crashed:', err); process.exit(1); });
 }
 
-module.exports = { main, runRedFirstPassBounded, RED_FIRST_TIMEOUT_MS, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, reconcileFlaglessSessions, reconcileCardDrift, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, MAX_STALL_ATTEMPTS_PER_TASK, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK, MAX_REVIVE_PER_TICK, collectTimeoutResumeCandidates, MAX_RESUME_PER_TASK, RESUME_LOOKBACK_MS, sweepUntrackedInProgress, UNTRACKED_SWEEP_STATE_PATH, stripOwnParkNote, UNTRACKED_MARKER, OUTCOME_PARK_MARKER, sweepOrphanedJobs, GRACE_MS, sweepLinearStartedZombies, LINEAR_ZOMBIE_SWEEP_STATE_PATH, LINEAR_ZOMBIE_LEDGER_PATH, LINEAR_ZOMBIE_MAX_RESETS_PER_DAY, LINEAR_ZOMBIE_MAX_DONES_PER_DAY, readLinearZombieLedger };
+module.exports = { main, runRedFirstPassBounded, RED_FIRST_TIMEOUT_MS, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, reconcileFlaglessSessions, reconcileCardDrift, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, MAX_STALL_ATTEMPTS_PER_TASK, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK, MAX_REVIVE_PER_TICK, collectTimeoutResumeCandidates, MAX_RESUME_PER_TASK, RESUME_LOOKBACK_MS, sweepUntrackedInProgress, UNTRACKED_SWEEP_STATE_PATH, stripOwnParkNote, UNTRACKED_MARKER, OUTCOME_PARK_MARKER, sweepOrphanedJobs, GRACE_MS, sweepLinearStartedZombies, sweepOrphanedLinearInFlight, LINEAR_ZOMBIE_SWEEP_STATE_PATH, LINEAR_ZOMBIE_LEDGER_PATH, LINEAR_ZOMBIE_MAX_RESETS_PER_DAY, LINEAR_ZOMBIE_MAX_DONES_PER_DAY, readLinearZombieLedger };

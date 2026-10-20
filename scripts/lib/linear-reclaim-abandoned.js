@@ -151,5 +151,6 @@ function buildReclaimComment({ action, reclaims, staleRefs, idleHours }, nowMs) 
 
 module.exports = {
   RECLAIM_IDLE_MS, LIVE_LAND_REF_MS, MAX_RECLAIMS, MAX_PER_RUN, COMMENT_CAP, RECLAIM_MARKER,
+  OWNER_CARD_RE, NO_RECLAIM_RE,
   reclaimListSkipReason, findReclaimCandidates, reclaimDecision, buildReclaimComment,
 };

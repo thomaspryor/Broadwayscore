@@ -26,7 +26,7 @@ const { parseSessionReportStatus } = require('./linear-session-reporting.js');
 const { DISPATCH_COMMENT_CORRELATION_RE, isCompletePrEvidence } = require('./linear-dispatch.js');
 const { BYPASS_LINE_PREFIX } = require('./linear-gate-bypass-ledger.js');
 const { evaluateVerifiability } = require('./verify-gate.js');
-const { ZOMBIE_RESET_MARKER, COMMENT_PAGE_CAP, sortedComments } = require('./linear-started-zombie-sweep.js');
+const { ZOMBIE_RESET_MARKER, REOWN_MARKER, COMMENT_PAGE_CAP, sortedComments } = require('./linear-started-zombie-sweep.js');
 
 // A person on the thread this recently blocks any state change. Older
 // unclassified comments (typically the dispatched worker's own free-form
@@ -50,6 +50,7 @@ const ENV_FAILURE_RE = /ENOENT|Cannot find module|MODULE_NOT_FOUND|no such file 
 function classifyZombieComment(body) {
   const text = String(body || '');
   if (text.includes(ZOMBIE_RESET_MARKER)) return 'own-reset';
+  if (text.includes(REOWN_MARKER)) return 'own-reset'; // BRO-2989: same "our write-back is on the thread" meaning
   const trimmed = text.trim();
   if (parseSessionReportStatus(trimmed) || isCompletePrEvidence(trimmed)) return 'report';
   if (DISPATCH_COMMENT_CORRELATION_RE.test(trimmed)

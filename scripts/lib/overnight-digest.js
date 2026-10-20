@@ -57,6 +57,8 @@ const ACTIONABLE_RECONCILE_KINDS = new Set([
   // still true, not just once).
   'linear-zombie-refused', 'linear-zombie-reset', 'linear-zombie-reset-failed',
   'linear-zombie-reset-stale', 'linear-zombie-fetch-error',
+  // BRO-2989: orphaned in-flight sweep. owner-alert is how a dead crown / un-re-ownable card reaches the owner.
+  'linear-orphaned-redispatched', 'linear-orphaned-owner-alert', 'linear-orphaned-reown-failed', 'linear-orphaned-fetch-error',
 ]);
 
 // Subset of ACTIONABLE_RECONCILE_KINDS whose taskId (+jobId for orphan) is a
