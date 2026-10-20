@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-20T11:46:29.143Z",
+  "generatedAt": "2026-10-20T15:05:02.824Z",
   "date": "2026-10-20",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 253370,
+  "entryCount": 265039,
   "shows": [
     {
       "showId": "some-woman-west-end-2026",
@@ -736,7 +736,7 @@
     },
     {
       "showId": "million-dollar-quartet-off-west-end-2026",
-      "reviewCount": 26,
+      "reviewCount": 27,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1928,7 +1928,7 @@
     },
     {
       "showId": "paranormal-activity-west-end-2025",
-      "reviewCount": 21,
+      "reviewCount": 22,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3203,13 +3203,13 @@
     },
     {
       "showId": "cadel-lungs-on-legs-west-end-2026",
-      "reviewCount": 12,
+      "reviewCount": 13,
       "median_e2e_ms": 209058824,
       "p90_e2e_ms": 246309574,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 601719,
-        "scored-to-rebuilt": 421004,
+        "scored-to-rebuilt": 471950,
         "rebuilt-to-deployed": 219362202
       },
       "reviews_over_15min": 2,
@@ -8309,7 +8309,7 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "reviewCount": 35,
+      "reviewCount": 36,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8519,13 +8519,13 @@
     },
     {
       "showId": "two-girls-off-broadway-2026",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 275494,
-        "scored-to-rebuilt": 399156,
+        "collected-to-scored": 176997,
+        "scored-to-rebuilt": 402327,
         "rebuilt-to-deployed": 43139828
       },
       "reviews_over_15min": 0,
@@ -8804,7 +8804,7 @@
     },
     {
       "showId": "king-of-the-yees-off-broadway-2026",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": 25530039,
       "p90_e2e_ms": 30886022,
       "per_stage_median_ms": {
@@ -8950,13 +8950,13 @@
     },
     {
       "showId": "murder-cathedral-off-west-end-2026",
-      "reviewCount": 2,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 50201,
-        "scored-to-rebuilt": 390550,
+        "collected-to-scored": 343629,
+        "scored-to-rebuilt": 387534,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -9107,21 +9107,6 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1834042,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "martin-guerre-west-end-2026",
-      "reviewCount": 1,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 908125,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
