@@ -1,0 +1,46 @@
+{
+  "issueNumber": "bro-5740",
+  "planId": "2e3df31a-f4e4-4f58-a1b9-5c23b549a5c5",
+  "status": "pending",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5740: fill the two national-tour gaps the daily live-data assertions flag (An American in Paris tour runtime/intermissions, Dear Evan Hansen tour synopsis).",
+    "steps": [
+      "set runtime + intermissions on an-american-in-paris-tour-2022",
+      "set synopsis on dear-evan-hansen-tour-2024"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-american-in-paris-tour-2022",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "2h 30m",
+        "description": "BRO-5740: runtime published on https://tourstoyou.org/shows/an-american-in-paris/ (Runtime: 2 hours 30 minutes, checked 2026-10-20)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-american-in-paris-tour-2022",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "BRO-5740: https://tourstoyou.org/shows/an-american-in-paris/ lists Intermissions: 1."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dear-evan-hansen-tour-2024",
+        "field": "synopsis",
+        "oldValue": null,
+        "newValue": "Dear Evan Hansen is a musical by Steven Levenson, Benj Pasek and Justin Paul about Evan Hansen, an anxious high school senior whose life changes when a classmate's death is mistaken for a close friendship with him. As the lie grows, the story follows its effect on Evan, the family he lets in, and a community looking for something to hold onto. This North American tour of the 2016 Broadway production ran from September 2024 to April 2025.",
+        "description": "BRO-5740: tour synopsis, restating the show's premise (the Broadway parent has none to inherit); tour dates from shows.json."
+      }
+    ]
+  }
+}
