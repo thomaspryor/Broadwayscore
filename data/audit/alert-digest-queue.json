@@ -1485,5 +1485,36 @@
       }
     ],
     "queuedAt": "2026-10-20T05:04:30.646Z"
+  },
+  {
+    "conditionKey": "land:land/codex-bro-4303",
+    "title": "Landing blocked: unit-tests-tsx red on land/codex-bro-4303",
+    "description": "land.yml did not land land/codex-bro-4303: the unit-tests-tsx gate went red at 9ba89a1f25. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39377036870",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/codex-bro-4303"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-tsx"
+      },
+      {
+        "name": "tip",
+        "value": "9ba89a1f252ecf4f3bb215c412e7970cd66834bf"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39377036870"
+      }
+    ],
+    "queuedAt": "2026-10-20T06:03:23.490Z"
   }
 ]
