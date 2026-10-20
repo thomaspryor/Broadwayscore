@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5786-b",
   "planId": "b2b72f97-75c4-4fd8-8220-f571738a8b1a",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -30,5 +30,19 @@
         "description": "BRO-5786: reason for the flag above."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-20T17:53:18.382Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "school-pictures-off-broadway-2026/front-row-center--brittany-crowell.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "school-pictures-off-broadway-2026/front-row-center--brittany-crowell.json wrongProductionReason: null -> \"2023 Playwrights Horizons production review (same text as the FRC file under school-pictures-off-broadway-2023)\""
+    }
+  ],
+  "executedIn": "ci"
 }
