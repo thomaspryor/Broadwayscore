@@ -332,7 +332,7 @@ const OPTED_OUT = { ...ST_ANNS, priorRuns: [{ ...ST_ANNS.priorRuns[0], inheritRe
 test('collectHousedSiblingFiles returns in-window covered files of an opted-out sibling', () => {
   assert.deepEqual(collectCarriedFiles(OPTED_OUT, [SKIRBALL, OPTED_OUT], deps), []);
   const got = collectHousedSiblingFiles(OPTED_OUT, [SKIRBALL, OPTED_OUT], deps);
-  assert.deepEqual(got.map(d => d._file).sort(), ['nyt.json', 'tm.json', 'undated.json']);
+  assert.deepEqual(got.map(d => d._file).sort(), ['nyt.json', 'tm.json', 'undated.json']); // SKIRBALL closed before OPTED_OUT opened
   assert.ok(got.every(d => d._housedOnShowId === SKIRBALL.id));
 });
 
@@ -350,4 +350,13 @@ test('urlNamesPriorRunVenue: slug naming the earlier house and not this one', ()
   assert.equal(urlNamesPriorRunVenue('https://x.uk/the-bridge-review', nc), false);
   assert.equal(urlNamesPriorRunVenue('https://bridge-theatre.uk/review-into-the-woods', nc), false);
   assert.equal(urlNamesPriorRunVenue('https://x.uk/at-bridge-theatre', { venue: 'Y', priorRuns: [] }), false);
+  assert.equal(urlNamesPriorRunVenue('https://x.uk/into-the-woods-transfers-from-bridge-theatre', nc), false);
+  assert.equal(urlNamesPriorRunVenue('https://x.uk/review-bridge-theatre-no%C3%ABl-coward', nc), false);
+  assert.equal(urlNamesPriorRunVenue('https://x.uk/review-bridge-theatre-noel-coward', nc), false);
+});
+
+test('collectHousedSiblingFiles skips undated files of a sibling still running when this run starts', () => {
+  const open = { ...SKIRBALL, closingDate: undefined };
+  const got = collectHousedSiblingFiles(OPTED_OUT, [open, OPTED_OUT], deps);
+  assert.ok(!got.some(d => d._file === 'undated.json'));
 });

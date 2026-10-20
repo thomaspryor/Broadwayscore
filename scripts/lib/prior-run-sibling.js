@@ -418,7 +418,10 @@ function collectHousedSiblingFiles(show, shows, deps) {
     for (const d of deps.loadFiles(sibling.id) || []) {
       // An undated file the sibling holds still belongs to that run: it was filed there as
       // its review, and this list only suppresses a gap row (no scoring, no ingest).
-      if (d.publishDate && !findMatchingPriorRun(d.publishDate, [window])) continue;
+      // Only from a sibling whose run closed before this one started, so a misfiled
+      // current-run review cannot hide behind it.
+      const siblingClosedFirst = toDateMs(sibling.closingDate) < runStartMs(show);
+      if (d.publishDate ? !findMatchingPriorRun(d.publishDate, [window]) : !siblingClosedFirst) continue;
       if (!deps.isCovered(d, sibling)) continue;
       out.push({ ...d, _housedOnShowId: sibling.id });
     }
@@ -436,10 +439,15 @@ function collectHousedSiblingFiles(show, shows, deps) {
 function urlNamesPriorRunVenue(url, show) {
   if (!show || !Array.isArray(show.priorRuns) || !show.priorRuns.length) return false;
   let slug = '';
-  try { slug = decodeURIComponent(new URL(url).pathname).toLowerCase().replace(/[^a-z0-9]+/g, ' '); } catch { return false; }
+  const fold = (t) => String(t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+  try { slug = fold(decodeURIComponent(new URL(url).pathname)); } catch { return false; }
+  // A transfer review names the old house too ("transfers-from-the-bridge-theatre").
+  if (/\btransfer/.test(slug)) return false;
   const named = (venue) => {
-    const v = String(venue || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
-    return v.split(' ').length >= 2 && ` ${slug} `.includes(` ${v} `);
+    const v = fold(venue);
+    const bare = v.replace(/\b(theatre|theater)\b/g, ' ').replace(/\s+/g, ' ').trim();
+    const has = (p) => p.split(' ').length >= 2 && ` ${slug} `.includes(` ${p} `);
+    return has(v) || has(bare);
   };
   if (named(show.venue)) return false;
   return show.priorRuns.some(r => r && typeof r === 'object' && named(r.venue));

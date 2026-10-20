@@ -1389,7 +1389,7 @@ async function auditShow(show, opts = {}) {
     }
     // Not held anywhere, but the slug names the earlier run's house and not this one.
     for (const m of [...result.missing, ...result.flaggedMisses]) {
-      if (m.priorRun || !urlNamesPriorRunVenue(m.url, show)) continue;
+      if (m.priorRun || !m.serpCensus || !urlNamesPriorRunVenue(m.url, show)) continue;
       m.priorRun = true;
       m.priorRunSource = 'url-names-prior-run-venue';
     }
@@ -2295,7 +2295,7 @@ async function main(argv = process.argv.slice(2)) {
         try {
           const { sendAlert } = require('./lib/discord-notify');
           const lines = [
-            ...weMissing.map(m => `• ${m.knownOutletId || m.host} — ${m.url}${m.priorRun ? (String(m.priorRunSource || '').startsWith('pending-file-date') ? ' [prior-run: stored review date]' : ' [prior-run roundup]') : ''}`),
+            ...weMissing.map(m => `• ${m.knownOutletId || m.host} — ${m.url}${m.priorRun ? (String(m.priorRunSource || '').startsWith('pending-file-date') ? ' [prior-run: stored review date]' : /^(sibling-held|url-names-prior-run-venue)/.test(String(m.priorRunSource || '')) ? ` [prior-run: ${m.priorRunSource}]` : ' [prior-run roundup]') : ''}`),
             ...r.citedNoUrl.map(c => `• ${c.outletId} — cited by ${c.source}${c.stars ? ` (${c.stars}★)` : ''}, no URL${c.priorRun ? ' [prior-run roundup]' : ''}`),
           ];
           const delivered = await sendAlert({
