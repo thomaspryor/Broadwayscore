@@ -121,6 +121,7 @@ const BOILERPLATE = [
   /\bcookies?\b/i,
   CHALLENGE_PAGE,
   /\bpage not found\b|\b404\b/i,
+  /\b(?:home of|your (?:source|guide) (?:for|to)|latest (?:news|reviews)|(?:news|jobs),? (?:and |& )?(?:reviews|features|jobs|interviews))\b/i,
   /\bbuy tickets?\b|\bbook (?:now|tickets)\b|\btickets? (?:on sale|from)\b/i,
 ];
 
@@ -129,7 +130,14 @@ const NON_REVIEW_HEADLINE = /\b(?:interview|q\s*&\s*a|preview|first look|meets t
 
 // Never a review of a stage production, whatever else the page says (games, TV,
 // film, year-end lists, photo captions, roundups).
-const ALWAYS_NON_REVIEW = /\b(?:video game|game review|pc game|playstation|xbox|nintendo|switch review|tv review|tv series|season \d+|episode|streaming|netflix|box office|film review|movie review|in cinemas|year in review|best of \d{4}|top \d+|photo credits?|photos? by|photograph by|review round-?\s?up|critics'? (?:picks|round-?\s?up))\b/i;
+const ALWAYS_NON_REVIEW = /\b(?:video game|game review|pc game|playstation|xbox|nintendo|switch review|tv review|tv series|season \d+|episode|streaming|netflix|box office|film review|movie review|in cinemas|year in review|best of \d{4}|top \d+|photo credits?|photos? by|photograph by|review round-?\s?up|critics'? (?:picks|round-?\s?up)|\(\d{4} (?:film|movie)\)|(?:film|movie|tv|album|book)s?\b.{0,12}\breview|and more)\b/i;
+
+// A headline that says "review" but is an interview/profile/list built around it.
+const INTERVIEW_TEXT = /\b(?:in an? (?:lengthy |long |wide-ranging )?(?:chat|conversation|interview)|talks to|spoke to|speaks to|sits down with)\b|review:\s*[A-Z][\w.'-]+(?: [A-Z][\w.'-]+){1,2} (?:on|talks|discusses|reflects|reveals)\b/;
+const REVIEW_WORD_NON_REVIEW = /\b(?:interview|in conversation|chat|talks|on the role|profile|reviews?:\s*[^,]+,[^,]+,)\b|^\s*theatre reviews?\s*:/i;
+
+// Regional / foreign cities: a headline naming one is another production.
+const OTHER_CITIES = /\b(?:stratford|edinburgh|manchester|bristol|leeds|birmingham|glasgow|sheffield|chichester|liverpool|cardiff|newcastle|oxford|cambridge|bath|brighton|nottingham|sydney|melbourne|toronto|chicago|boston|washington|philadelphia|los angeles|san francisco|dublin|paris|berlin)\b/i;
 
 const REVIEW_WORD = /\breview(?:s|ed)?\b/i;
 const RATING_TOKEN = /(?:\b[1-5](?:\.5)?\s*(?:\/|out of)\s*5\b|\b[1-5]\s*stars?\b|★|\bfive stars?\b|\bfour stars?\b|\bthree stars?\b)/i;
@@ -141,10 +149,6 @@ function starRunRating(text) {
   if (run) return run[0].length;
   const m = t.match(/\b([1-5](?:\.5)?)\s*(?:\/\s*5\s*)?stars?\b/i) || t.match(/\b([1-5](?:\.5)?)\s*(?:\/|out of)\s*5\b/i);
   return m ? Number(m[1]) : null;
-}
-
-function slugWords(url) {
-  try { return new URL(url).pathname.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim(); } catch { return String(url || '').toLowerCase(); }
 }
 
 /** Distinctive words of a show title (folded, stop words and short words dropped). */
@@ -255,11 +259,15 @@ function evaluatePageMeta({ data, show, meta, inWindow }) {
   if (description.length < MIN_EVIDENCE_CHARS && !(stars && description.length >= 20)) return { ok: false, reason: 'description-too-short' };
   if (description.toLowerCase() === headline.toLowerCase()) return { ok: false, reason: 'description-is-headline' };
   if (NON_REVIEW_HEADLINE.test(headline) && !REVIEW_WORD.test(headline)) return { ok: false, reason: 'non-review-headline' };
-  const reviewSignal = REVIEW_WORD.test(headline) || REVIEW_WORD.test(slugWords(data.url))
+  if (REVIEW_WORD_NON_REVIEW.test(headline) || INTERVIEW_TEXT.test(`${headline} ${description}`)) return { ok: false, reason: 'non-review-headline' };
+  // The page's own words must signal a review; a URL slug or outlet-wide text can't.
+  const reviewSignal = REVIEW_WORD.test(headline)
     || RATING_TOKEN.test(`${headline} ${description}`) || meta.ratingValue != null;
   if (!reviewSignal) return { ok: false, reason: 'no-review-signal' };
   if (!evidenceNamesShow(show, headline, description, data.url)) return { ok: false, reason: 'show-not-named' };
   if (venueConflicts(show, headline)) return { ok: false, reason: 'venue-mismatch' };
+  const city = headline.match(OTHER_CITIES);
+  if (city && !normalizeWords(`${show && show.venue} ${show && show.title}`).includes(city[0].toLowerCase())) return { ok: false, reason: 'other-city' };
   const date = meta.publishedTime || (/^\d{4}-\d{2}-\d{2}$/.test(String(data.publishDate || '')) ? data.publishDate : null);
   if (date) {
     if (!inWindow(show, date)) return { ok: false, reason: 'outside-production-window' };
@@ -268,13 +276,15 @@ function evaluatePageMeta({ data, show, meta, inWindow }) {
     // filed under a revival carries the old year in its path).
     const { extractDateFromUrl } = require('./rebuild-helpers');
     const urlDate = extractDateFromUrl(data.url);
-    if (urlDate && !inWindow(show, urlDate)) return { ok: false, reason: 'url-date-outside-window' };
+    if (!urlDate) return { ok: false, reason: 'no-date' };
+    if (!inWindow(show, urlDate)) return { ok: false, reason: 'url-date-outside-window' };
   }
   const excerpt = buildMetaExcerpt(headline, description);
   if (excerpt.length < MIN_EVIDENCE_CHARS) return { ok: false, reason: 'excerpt-too-short' };
   const rating = meta.ratingValue != null ? { value: meta.ratingValue, best: meta.ratingBest || 5 } : (stars ? { value: stars, best: 5 } : null);
   const author = meta.author && meta.author.length <= 60 && !/staff|editor|desk|team/i.test(meta.author) ? meta.author : null;
-  return { ok: true, excerpt, publishDate: date, criticName: author, rating };
+  const ratingSource = meta.ratingValue != null ? 'page-meta-jsonld' : 'page-meta-headline';
+  return { ok: true, excerpt, publishDate: date, criticName: author, rating, ratingSource };
 }
 
 /**
@@ -301,11 +311,9 @@ function applyMetaEvidence(data, evidence, now = new Date()) {
   if (evidence.rating && !data.originalScore && data.originalScoreCleared !== true && !data.originalScoreManual) {
     const { value, best } = evidence.rating;
     if (best === 5 && value >= 1 && value <= 5) {
-      data.originalScore = `${value}/5 stars`; data.originalScoreSource = 'page-meta-jsonld'; set.push('originalScore');
+      data.originalScore = `${value}/5 stars`; data.originalScoreSource = evidence.ratingSource || 'page-meta-jsonld'; set.push('originalScore');
     }
   }
-  // The earlier fetch failure is superseded by this evidence.
-  if (data.incompleteReason === 'url_content_mismatch') { delete data.incompleteReason; delete data.incompleteDetail; }
   return set;
 }
 

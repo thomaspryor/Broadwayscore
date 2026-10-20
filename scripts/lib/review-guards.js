@@ -5741,7 +5741,7 @@ function isRejectedNonReview(data) {
 function hasAggregatorExcerpt(data) {
   return !!(
     data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt ||
-    data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt
+    data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt || data.metaExcerpt
   );
 }
 

@@ -5458,7 +5458,7 @@ showDirs.forEach(showId => {
 
       // CHECK: Flag reviews that SHOULD have LLM scores but don't
       // These have scorable text but were never run through LLM scoring
-      const scorableText = data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt || '';
+      const scorableText = data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt || data.metaExcerpt || '';
       const hasScorableText = scorableText.length >= 100;
       const hasLlmScore = data.llmScore && data.llmScore.score;
 

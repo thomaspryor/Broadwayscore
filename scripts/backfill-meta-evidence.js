@@ -108,6 +108,7 @@ async function main() {
     if (budget.exceeded()) { console.log(`  time budget reached, ${candidates.length - i} left for the next run`); break; }
     const label = path.relative(reviewTextsDir, fp);
     let html = null;
+    let fetchThrew = false;
     const cached = htmlCacheDir && path.join(htmlCacheDir, `${cacheKey(d.url)}.html`);
     const fromCache = !!(cached && fs.existsSync(cached));
     if (fromCache) html = fs.readFileSync(cached, 'utf8');
@@ -115,12 +116,12 @@ async function main() {
       try {
         const r = await fetchPage(d.url, { renderJs: false });
         html = (r && (r.content || r.html)) || null;
-      } catch (e) { console.log(`  x ${label}: fetch failed (${String(e.message || e).slice(0, 80)})`); }
+      } catch (e) { fetchThrew = true; console.log(`  x ${label}: fetch failed (${String(e.message || e).slice(0, 80)})`); }
     }
     if (!html) {
       unreachable++;
       // Stamp so a permanently walled URL doesn't take a slot in every weekly run.
-      if (!dryRun && !fromCache) { try { stampChecked(fp, d.url, 'unreachable'); } catch { /* best effort */ } }
+      if (!dryRun && !fromCache && !fetchThrew) { try { stampChecked(fp, d.url, 'unreachable'); } catch { /* best effort */ } }
       continue;
     }
     const evidence = evaluatePageMeta({
@@ -133,6 +134,11 @@ async function main() {
       if (!dryRun && !fromCache) { try { stampChecked(fp, d.url, evidence.reason); } catch { /* attempt stamp is best effort */ } }
     } else {
       const fresh = JSON.parse(fs.readFileSync(fp, 'utf8'));
+      const { normalizeUrl } = require('./lib/review-normalization');
+      if (normalizeUrl(fresh.url || '') !== normalizeUrl(d.url || '') || fresh.metaExcerpt || (fresh.fullText && String(fresh.fullText).trim())) {
+        console.log(`  - ${label}: changed since scan, skipped`);
+        continue;
+      }
       const set = applyMetaEvidence(fresh, evidence);
       console.log(`  + ${label}: ${set.join(', ')} | ${evidence.excerpt.slice(0, 110)}`);
       if (!dryRun) safeWriteReview(fp, fresh);

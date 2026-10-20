@@ -27,7 +27,7 @@ test('genuine review of the right show is accepted', () => {
 test('star-run headline counts as a rating and tolerates a short standfirst', () => {
   assert.equal(starRunRating('The Last Ship - Theatre Royal Drury Lane ★★★★'), 4);
   assert.equal(starRunRating('Some Show: 3.5 stars'), 3.5);
-  const r = judge(show('The Last Ship', { venue: 'Theatre Royal Drury Lane' }), page('The Last Ship - Theatre Royal Drury Lane ★★★★★', "Sting's political folk musical."));
+  const r = judge(show('The Last Ship', { venue: 'Theatre Royal Drury Lane' }), page('The Last Ship - Theatre Royal Drury Lane ★★★★★', "Sting's political folk musical.", '<meta property="article:published_time" content="2026-09-20T10:00:00Z">'));
   assert.equal(r.ok, true);
   assert.deepEqual(r.rating, { value: 5, best: 5 });
 });
@@ -73,7 +73,7 @@ test('applyMetaEvidence gap-fills and never overwrites', () => {
   assert.equal(data.criticName, 'Real Person');
   assert.equal(data.contentTier, 'excerpt');
   assert.equal(data.originalScore, '4/5 stars');
-  assert.equal(data.incompleteReason, undefined);
+  assert.equal(data.incompleteReason, 'url_content_mismatch'); // left as is: it records that the page did not match the URL
   assert.ok(set.includes('metaExcerpt'));
 });
 
@@ -83,4 +83,35 @@ test('rebuild treats metaExcerpt as text', () => {
   const stub = { url: 'https://a.com/x', outletId: 'city-am', criticName: 'A B', publishDate: '2026-09-20' };
   assert.equal(explainExclusion(stub, show('Ballad Lines'), 'x/city-am--a-b.json'), 'noTextOrScoreSignal');
   assert.notEqual(explainExclusion({ ...stub, metaExcerpt: 'Headline. A standfirst that is long enough to count.' }, show('Ballad Lines'), 'x/city-am--a-b.json'), 'noTextOrScoreSignal');
+});
+
+// Ship-check regressions (BRO-5794): each of these used to come back ok:true.
+test('roundups, films, interviews, taglines, other cities and dateless pages are rejected', () => {
+  const s = show('Hamlet');
+  const d = '<meta property="article:published_time" content="2026-09-20T10:00:00Z">';
+  const long = 'A lengthy description that runs well past the minimum evidence length for testing.';
+  const cases = {
+    roundup: [page('Theatre reviews: Hamlet, Macbeth and more', long, d)],
+    film: [page('Hamlet (2026 film) review', long, d)],
+    interview: [page('Hamlet review: Ian McKellen on Hamlet, the role he always wanted', 'In a lengthy chat about the role he always wanted to play on stage.', d)],
+    tagline: [page('Hamlet', 'The Stage is the home of performing arts news, jobs, reviews and features for the industry.', d), 'https://example.com/reviews/hamlet'],
+    city: [page('Hamlet review - Stratford', long, d)],
+    dateless: [page('Hamlet review: a bold staging', long)],
+  };
+  for (const [name, [html, url]] of Object.entries(cases)) {
+    assert.equal(judge(s, html, url || 'https://example.com/a').ok, false, name);
+  }
+});
+
+test('headline star rating is labelled as page-meta-headline, not jsonld', () => {
+  const r = judge(show('Ballad Lines'), page('Ballad Lines review ★★★★', 'A folk song cycle with moments of brilliance and a strong cast.',
+    '<meta property="article:published_time" content="2026-09-20T10:00:00Z">'));
+  assert.equal(r.ok, true);
+  const rec = {}; applyMetaEvidence(rec, r);
+  assert.equal(rec.originalScoreSource, 'page-meta-headline');
+});
+
+test('classifyContentTier and hasAggregatorExcerpt count metaExcerpt', () => {
+  const { hasAggregatorExcerpt } = require('./review-guards.js');
+  assert.equal(hasAggregatorExcerpt({ metaExcerpt: 'x'.repeat(60) }), true);
 });
