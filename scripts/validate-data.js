@@ -2887,7 +2887,7 @@ function validateOutletRegistryDuplicates() {
  * BRO-5336: displayNames that are just the capitalized run-together id
  * ("Hackneycitizen"). They render under every review on the site. Advisory
  * warning; the count ceiling lives in
- * tests/unit/outlet-registry-display-names.test.mjs. Fix with the real
+ * tests/unit/outlet-registry-live-data.test.mjs (data-health, BRO-5728). Fix with the real
  * masthead (node scripts/audit-registry-slug-displaynames.js --fetch --apply),
  * or stamp displayNameReviewed:true when the one-word name is genuine.
  */

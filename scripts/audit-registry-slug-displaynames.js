@@ -82,14 +82,19 @@ async function fetchMastheads({ apply }) {
     const r = await resolveMastheadName({ outletId, domain, fetchPage });
     if (r.error) { unresolved.push({ outletId, current, reason: r.error }); continue; }
     if (!r.displayName || r.displayName === current) unresolved.push({ outletId, current, reason: `no masthead spells the id (page offered: ${r.siteNames.slice(0, 3).join(' / ') || 'nothing'})` });
-    else fixes.push({ outletId, current, proposed: r.displayName });
+    else {
+      fixes.push({ outletId, current, proposed: r.displayName });
+      // Written per fix, so a run cut off by its step timeout keeps what it found.
+      if (apply) {
+        outlets[outletId].displayName = r.displayName;
+        delete outlets[outletId].displayNameInferred; // the masthead replaced the slug guess
+        outlets[outletId].displayNameSource = 'homepage'; // provenance for a later audit
+        fs.writeFileSync(registryPath, JSON.stringify(registry, null, 2));
+      }
+    }
   }
   for (const f of fixes) console.log(`  ${f.outletId}: "${f.current}" -> "${f.proposed}"`);
   for (const u of unresolved) console.log(`  ${u.outletId}: "${u.current}" left (${u.reason})`);
-  if (apply && fixes.length) {
-    for (const f of fixes) outlets[f.outletId].displayName = f.proposed;
-    fs.writeFileSync(registryPath, JSON.stringify(registry, null, 2));
-  }
   // BRO-5732: outlets the rebuild parked because only a slug-shaped name existed.
   // A masthead found here is stored on the staging row; the next rebuild reads it
   // and registers the outlet through its normal collision checks.
@@ -107,6 +112,12 @@ async function fetchMastheads({ apply }) {
     if (apply && stagedFound) fs.writeFileSync(stagingPath, JSON.stringify(doc, null, 2) + '\n');
   }
   console.log(`[audit-registry-slug-displaynames --fetch] ${stagedFound} staged masthead(s) found; ${fixes.length} masthead name(s) found${apply ? ' and applied' : ''}, ${unresolved.length} left`);
+  // Every fetch failing means the scraper is down, not that nothing is fixable.
+  // Two or more, so one permanently dead site is not reported as an outage.
+  if (!fixes.length && !stagedFound && unresolved.filter((u) => /^fetch failed/.test(u.reason)).length >= 2 && unresolved.every((u) => /^fetch failed|^no domain/.test(u.reason))) {
+    console.error('::warning::every masthead fetch failed (scraper keys or credits?)');
+    process.exitCode = 1;
+  }
 }
 
 function main() {

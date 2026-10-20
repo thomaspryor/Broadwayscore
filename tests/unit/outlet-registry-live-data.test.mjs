@@ -55,3 +55,21 @@ describe('outlet-registry.json domain audit (BRO-1343)', () => {
   });
 });
 
+
+// BRO-5728: moved here from tests/unit/outlet-registry-display-names.test.mjs.
+// Rebuild auto-registers outlets offline and capitalizes the id when nothing
+// better is known ("Hackneycitizen", BRO-5336), so this count rose with no
+// code change and reddened unit-tests-node on main in 34 land runs on
+// 2026-10-19. check-corpus-drift.yml repairs fetchable names just before
+// this check runs.
+const { findRunTogetherSlugDisplayNames } = require(resolve(ROOT, 'scripts', 'lib', 'outlet-auto-register.js'));
+const MAX_SLUG_DISPLAY_NAMES = 10; // BRO-5732: writers now fail closed, so new slug names cannot arrive; lower to 0 once the live registry is clean
+
+test(`live registry: at most ${MAX_SLUG_DISPLAY_NAMES} displayNames are the capitalized run-together id`, () => {
+  const rows = findRunTogetherSlugDisplayNames(registry.outlets || registry);
+  assert.ok(
+    rows.length <= MAX_SLUG_DISPLAY_NAMES,
+    `${rows.length} slug-shaped displayNames (max ${MAX_SLUG_DISPLAY_NAMES}): ${rows.slice(0, 15).map((r) => r.outletId).join(', ')}. `
+      + 'Fix with node scripts/audit-registry-slug-displaynames.js --fetch --apply, or stamp displayNameReviewed:true on a genuine one-word masthead.',
+  );
+});

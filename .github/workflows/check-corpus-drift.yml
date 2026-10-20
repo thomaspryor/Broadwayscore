@@ -114,6 +114,39 @@ jobs:
             bash scripts/lib/push-with-retry.sh
           fi
 
+      - name: Auto-heal slug-shaped outlet names before the live-data check
+        # BRO-5728: rebuild-all-reviews.js auto-registers outlets offline and,
+        # with no review label, capitalizes the id ("Slotkinletter",
+        # displayNameInferred). Nothing repaired those, so the live-registry
+        # ceiling in tests/unit/outlet-registry-live-data.test.mjs crept past
+        # 10 every few days. This fetches each slug-shaped outlet's homepage
+        # and applies the masthead only when it spells the id or domain
+        # (deriveOutletDisplayName's rule); the rest stay for a human to stamp
+        # displayNameReviewed. About a dozen fetches a day, capped below; 180s
+        # because the job's 20-minute timeout is already close (each fix is
+        # written as found, so a cut-off run keeps its progress).
+        # Non-blocking: a heal failure must not fail a monitoring job.
+        continue-on-error: true
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          SB_CREDIT_BUDGET: '60'
+          # outlet-registry.json is union-merged (the rebuild commits it too).
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          status=0; timeout 180 node scripts/audit-registry-slug-displaynames.js --fetch --apply || status=$?
+          # BRO-5732: mastheads found for outlets the rebuild parked land on
+          # the staging file; the next rebuild registers them from there.
+          if git status --porcelain data/outlet-registry.json data/audit/outlet-registry-staging.json | grep -q .; then
+            git add data/outlet-registry.json data/audit/outlet-registry-staging.json
+            git commit -m "data: Auto-heal slug-shaped outlet names (corpus-drift self-heal, BRO-5728) [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
+          exit "$status"
+
       - name: Deepen history for churn-merge-coverage audit
         # audit-churn-merge-coverage.js (run by check-corpus-drift.js) measures
         # per-file commit churn over the last 3 days. The checkout above is shallow

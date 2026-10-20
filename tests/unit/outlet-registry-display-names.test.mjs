@@ -11,18 +11,8 @@ const {
   extractSiteNames,
   deriveOutletDisplayName,
 } = require('../../scripts/lib/outlet-auto-register.js');
-const registry = require('../../data/outlet-registry.json');
-
-const MAX_SLUG_DISPLAY_NAMES = 10; // BRO-5732: writers now fail closed, so new slug names cannot arrive; lower to 0 once the live registry is clean
-
-test('live registry: at most 10 displayNames are the capitalized run-together id', () => {
-  const rows = findRunTogetherSlugDisplayNames(registry.outlets || registry);
-  assert.ok(
-    rows.length <= MAX_SLUG_DISPLAY_NAMES,
-    `${rows.length} slug-shaped displayNames (max ${MAX_SLUG_DISPLAY_NAMES}): ${rows.slice(0, 15).map((r) => r.outletId).join(', ')}. `
-      + 'Fix with node scripts/audit-registry-slug-displaynames.js --fetch --apply, or stamp displayNameReviewed:true on a genuine one-word masthead.',
-  );
-});
+// The live-registry ceiling (at most 10 slug-shaped names) runs in
+// tests/unit/outlet-registry-live-data.test.mjs, the data-health batch (BRO-5728).
 
 // outlet-tiers.json names are intentionally not checked: src/lib/data-reviews.ts slugifies them into
 // public /critics/outlets URLs, so renaming one 404s the old page (BRO-5336 review).
