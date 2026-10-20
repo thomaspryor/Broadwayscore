@@ -311,3 +311,5 @@ dependabot-auto-merge.yml
 collect-talkinbroadway-index.yml
 # BRO-5769: weekly early/carried publish-date recheck; a missed week only leaves the early-date count (digest row from the daily audit) higher, nothing user-facing. Failures go through notify-failure.
 backfill-review-dates.yml
+# BRO-5794: weekly page-meta evidence sweep; a missed week only delays counting a few unfetchable reviews, nothing user-facing. Failures go through notify-failure.
+backfill-meta-evidence.yml
