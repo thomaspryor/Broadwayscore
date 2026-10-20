@@ -26,9 +26,12 @@ on:
 permissions:
   contents: write
 
-# BRO-934: per-workflow group: stops overlapping runs of the same job racing on the private-repo push. Not a shared class group (GH pending-queue depth is 1; see rebuild-fast.yml).
+# BRO-5574: this job read-mutate-writes data/shows.json (saveShows + checkpoint pushes), so it joins the shared
+# shows-json-writer group with the other shows.json writers (update-show-status, enrich-ibdb-dates, ...). It is
+# workflow_dispatch-only, so the GH pending-queue depth of 1 (see rebuild-fast.yml) costs little. Supersedes the
+# BRO-934 per-workflow group, which still serialized overlapping runs of this job (same group now covers that).
 concurrency:
-  group: backfill-playwright-credits
+  group: shows-json-writer
   cancel-in-progress: false
 
 jobs:
