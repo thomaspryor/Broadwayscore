@@ -47,3 +47,9 @@ test('negatives: paywall stub (block with almost no article) stays garbage', () 
   assert.equal(stripMidTextChromeBlocks(t), t);
   assert.equal(isGarbageContent(t).isGarbage, true);
 });
+
+test('negatives: teaser followed by the block at the end (paywall stub) is not stripped', () => {
+  const t = `Review: Clue ${PROSE} ${POSTMEDIA}`;
+  assert.equal(stripMidTextChromeBlocks(t), t);
+  // Left intact: pre-existing trailing-junk handling decides, not this strip.
+});

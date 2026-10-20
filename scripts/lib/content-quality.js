@@ -317,7 +317,7 @@ const MID_TEXT_CHROME_BLOCKS = [
   ...b,
   re: new RegExp(`${b.start}[\\s\\S]{0,${b.maxGap}}?${b.end}`, 'gi'),
 }));
-// Same floor as DOW_JONES_MIN_BODY: what is left must still be a review.
+// Same floor as DOW_JONES_MIN_BODY: article text must follow the block, and what is left must still be a review.
 const MID_TEXT_CHROME_MIN_BODY = 300;
 
 /**
@@ -330,7 +330,13 @@ const MID_TEXT_CHROME_MIN_BODY = 300;
 function stripMidTextChromeBlocks(text) {
   if (typeof text !== 'string' || !text) return text;
   let out = text;
-  for (const { re } of MID_TEXT_CHROME_BLOCKS) out = out.replace(re, '\n');
+  // Only a block with article text AFTER it is mid-article chrome. A block at
+  // the end of the text is a teaser followed by the paywall: keep it so the
+  // paywall check still sees it (otherwise a truncated stub reads as complete).
+  for (const { re } of MID_TEXT_CHROME_BLOCKS) {
+    out = out.replace(re, (m, offset, whole) =>
+      (whole.length - offset - m.length >= MID_TEXT_CHROME_MIN_BODY ? '\n' : m));
+  }
   if (out === text) return text;
   out = out.replace(/[ \t]*\n[ \t]*/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
   return out.length >= MID_TEXT_CHROME_MIN_BODY ? out : text;
