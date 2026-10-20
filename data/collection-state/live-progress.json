@@ -1,38 +1,21 @@
 {
-  "updatedAt": "2026-10-20T12:10:23.535Z",
-  "processed": 267,
-  "failed": 170,
-  "successRate": "61.1%",
+  "updatedAt": "2026-10-20T12:39:09.381Z",
+  "processed": 314,
+  "failed": 203,
+  "successRate": "60.7%",
   "tierBreakdown": {
-    "playwright": 128,
+    "playwright": 160,
     "amp": 1,
     "browserbase": 0,
     "directCookies": 1,
     "scrapingdog": 11,
-    "scrapingbee": 23,
+    "scrapingbee": 26,
     "brightdata": 3,
     "archiveToday": 0,
-    "archive": 93
+    "archive": 106
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-10-20T10:41:15.585Z",
-      "event": "bb-session",
-      "session": "85d32ff2",
-      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
-    },
-    {
-      "t": "2026-10-20T10:41:16.476Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-20T10:43:25.010Z",
-      "event": "bb-session",
-      "session": "f169461a",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
-    },
     {
       "t": "2026-10-20T10:43:33.974Z",
       "event": "bb-session",
@@ -102,34 +85,49 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-20T11:34:54.925Z",
+      "t": "2026-10-20T11:08:53.524Z",
       "event": "bb-session",
-      "session": "4e91b0c4",
-      "url": "https://bachtrack.com/review-angels-bone-du-yun-vavrek-english-national-opera-lo"
+      "session": "cea8294f",
+      "url": "http://www.usatoday.com/life/theater/reviews/2011-03-07-season07_ST_N.htm?csp=34"
     },
     {
-      "t": "2026-10-20T11:38:22.376Z",
-      "event": "bb-session",
-      "session": "7fb3bdf7",
-      "url": "https://www.iloveeventfest.com/arts/event/double-bill-tell-me-straight-aggy-lond"
+      "t": "2026-10-20T11:08:54.031Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     },
     {
-      "t": "2026-10-20T11:41:01.478Z",
+      "t": "2026-10-20T11:11:11.211Z",
       "event": "bb-session",
-      "session": "3dc480b5",
-      "url": "https://www.afridiziak.com/offers/access-10-ticket-offer-to-see-baby-in-previews"
+      "session": "38433008",
+      "url": "http://www.businessweek.com/news/2013-04-18/skinny-baldwin-pales-in-orphans-boom"
     },
     {
-      "t": "2026-10-20T11:41:11.187Z",
+      "t": "2026-10-20T11:11:20.323Z",
       "event": "bb-session",
-      "session": "8dbeeb27",
-      "url": "https://www.afridiziak.com/offers/access-10-ticket-offer-to-see-baby-in-previews"
+      "session": "2c7bf443",
+      "url": "http://www.businessweek.com/news/2013-04-18/skinny-baldwin-pales-in-orphans-boom"
     },
     {
-      "t": "2026-10-20T11:57:19.104Z",
+      "t": "2026-10-20T11:35:55.085Z",
       "event": "bb-session",
-      "session": "3d864648",
-      "url": "https://www.cbsnews.com/video/other-desert-cities-on-broadway-family-secrets-lai"
+      "session": "78f9c7b7",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-20T11:35:55.607Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-20T11:36:12.429Z",
+      "event": "bb-session",
+      "session": "bd7e717d",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-20T11:36:12.885Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
