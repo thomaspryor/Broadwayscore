@@ -19,7 +19,7 @@
  *
  * Linear dispatch (linear-next.js) uses pickLinearModel() below instead: flag,
  * then retry escalation, then the filer's "Model:" line (capped), then P0 →
- * Opus. The filer's line is written by linear-brain.js create --model.
+ * Opus (P0 is exempt from the cap). The filer's line is written by linear-brain.js create --model.
  *
  * Fable/Mythos is excluded from every hint/triage path: MODEL_HINT_RE has no
  * fable alternative, and pickModel() itself throws on a forbidden tier — only
@@ -126,7 +126,9 @@ function resolveModel({ explicitFlag, task, card, notionId, queuePath = QUEUE_PA
 // it), gets Opus. Same retry rule digest-autofix.js already uses
 // (`attempt >= 2 ? 'opus'`). A rolling 24h cap on Opus Linear launches
 // keeps a backlog drain from spending the week's allowance on Opus; over
-// the cap the card falls back to Sonnet rather than waiting.
+// the cap the card falls back to Sonnet rather than waiting. P0 cards are
+// exempt (owner decision 2026-10-20, BRO-5773: two P0s a week, and a weak
+// first attempt costs most there); their launches still count toward it.
 const LINEAR_OPUS_DAILY_CAP_DEFAULT = 6;
 const LINEAR_OPUS_WINDOW_MS = 24 * 60 * 60 * 1000;
 const PRIOR_DISPATCH_RE = /^Dispatched\b/;
@@ -181,6 +183,7 @@ function linearEscalationModel({ issue, recentOpusLaunches, cap, priorLaunches =
   const isP0 = !!issue && issue.priority === 1;
   if (!isP0 && priorDispatches === 0) return { model: 'sonnet', reason: 'first attempt, not P0' };
   const why = isP0 && priorDispatches === 0 ? 'P0' : `retry after ${priorDispatches} prior dispatch(es)`;
+  if (isP0) return { model: 'opus', reason: recentOpusLaunches >= cap ? `${why} (P0 is exempt from the Opus cap)` : why };
   if (recentOpusLaunches >= cap) return { model: 'sonnet', reason: `${why}, but ${capNote(recentOpusLaunches, cap)}` };
   return { model: 'opus', reason: why };
 }
@@ -209,7 +212,8 @@ function capNote(recentOpusLaunches, cap) {
  *      opus counts against the same 24h Opus cap as escalation, so a filer
  *      cannot bypass it; sonnet (or haiku: there are no haiku workers) is
  *      honored on the first attempt, even on a P0 the filer judged easy.
- *   4. otherwise the escalation rule (P0 → Opus within the cap).
+ *   4. otherwise the escalation rule (P0 → Opus, exempt from the cap).
+ * P0 cards are exempt from the cap in 2 to 4 (BRO-5773); a filer's sonnet line still wins on a first run.
  * Reading the ledger can fail; then the cap counts as reached (Sonnet, the
  * safe side) and the reason says so.
  * Mac dispatch only (linear-next.js). The cloud worker routine has no model
@@ -228,7 +232,7 @@ function pickLinearModel({ explicitFlag, issue, taskId, readEntries, nowMs = Dat
   if (!hint) return escalation;
   if (countPriorDispatches(issue, priorLaunches) > 0) return { ...escalation, reason: `${escalation.reason} (overrides Model: ${hint} on the card)` };
   if (hint === 'opus') {
-    if (recentOpusLaunches >= cap) return { model: 'sonnet', reason: `Model: opus on the card, but ${capNote(recentOpusLaunches, cap)}` };
+    if (recentOpusLaunches >= cap && !(issue && issue.priority === 1)) return { model: 'sonnet', reason: `Model: opus on the card, but ${capNote(recentOpusLaunches, cap)}` };
     return { model: 'opus', reason: 'Model: opus on the card' };
   }
   return { model: 'sonnet', reason: `Model: ${hint} on the card` };

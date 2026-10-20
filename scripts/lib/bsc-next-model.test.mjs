@@ -121,11 +121,22 @@ test('linearEscalationModel: P0 or a prior "Dispatched" comment escalates to opu
 });
 
 test('linearEscalationModel: over the rolling cap falls back to sonnet and says why', () => {
-  const r = linearEscalationModel({ issue: { priority: 1, comments: { nodes: [] } }, recentOpusLaunches: 6, cap: 6 });
+  const retry = { priority: 2, comments: { nodes: [{ body: 'Dispatched to worker' }] } };
+  const r = linearEscalationModel({ issue: retry, recentOpusLaunches: 6, cap: 6 });
   assert.equal(r.model, 'sonnet');
   assert.match(r.reason, /cap reached \(6\/6/);
   // an unreadable ledger is passed in as Infinity by the caller: fail toward sonnet
-  assert.equal(linearEscalationModel({ issue: { priority: 1 }, recentOpusLaunches: Infinity, cap: 6 }).model, 'sonnet');
+  assert.equal(linearEscalationModel({ issue: retry, recentOpusLaunches: Infinity, cap: 6 }).model, 'sonnet');
+});
+
+test('linearEscalationModel: a P0 is exempt from the cap (BRO-5773)', () => {
+  const p0 = { priority: 1, comments: { nodes: [] } };
+  const r = linearEscalationModel({ issue: p0, recentOpusLaunches: 6, cap: 6 });
+  assert.deepEqual(r, { model: 'opus', reason: 'P0 (P0 is exempt from the Opus cap)' });
+  assert.equal(linearEscalationModel({ issue: p0, recentOpusLaunches: Infinity, cap: 6 }).model, 'opus');
+  assert.deepEqual(linearEscalationModel({ issue: p0, recentOpusLaunches: 0, cap: 6 }), { model: 'opus', reason: 'P0' });
+  const p0retry = linearEscalationModel({ issue: { priority: 1, comments: { nodes: [{ body: 'Dispatched' }] } }, recentOpusLaunches: 9, cap: 6 });
+  assert.equal(p0retry.model, 'opus');
 });
 
 test('countRecentLinearOpusLaunches: counts only linear opus launch rows inside the 24h window', () => {
@@ -184,10 +195,12 @@ test('pickLinearModel: flag, then hint, then escalation; a crashed earlier run e
   assert.equal(retry.model, 'opus');
   assert.match(retry.reason, /retry after 1 prior/);
   // ledger unreadable: no retry signal and the cap counts as reached
-  const broken = pickLinearModel({ ...base, explicitFlag: null, issue: { ...p1, priority: 1 }, readEntries: () => { throw new Error('EIO'); } });
+  const broken = pickLinearModel({ ...base, explicitFlag: null, issue: { ...p1, description: 'Model: Opus' }, readEntries: () => { throw new Error('EIO'); } });
   assert.equal(broken.model, 'sonnet');
-  // the env cap is honoured
-  assert.equal(pickLinearModel({ ...base, explicitFlag: null, issue: { ...p1, priority: 1 }, readEntries: () => [], env: { LINEAR_OPUS_DAILY_CAP: '0' } }).model, 'sonnet');
+  // the env cap is honoured, except by a P0 (BRO-5773)
+  assert.equal(pickLinearModel({ ...base, explicitFlag: null, issue: { ...p1, description: 'Model: Opus' }, readEntries: () => [], env: { LINEAR_OPUS_DAILY_CAP: '0' } }).model, 'sonnet');
+  assert.equal(pickLinearModel({ ...base, explicitFlag: null, issue: { ...p1, priority: 1 }, readEntries: () => [], env: { LINEAR_OPUS_DAILY_CAP: '0' } }).model, 'opus');
+  assert.equal(pickLinearModel({ ...base, explicitFlag: null, issue: { ...p1, priority: 1 }, readEntries: () => { throw new Error('EIO'); } }).model, 'opus');
 });
 
 test('pickLinearModel: a Model: hint picked at filing', () => {
@@ -205,6 +218,8 @@ test('pickLinearModel: a Model: hint picked at filing', () => {
   const broken = pickLinearModel({ ...base, issue: card(2, 'Model: Opus'), readEntries: () => { throw new Error('EIO'); } });
   assert.equal(broken.model, 'sonnet');
   assert.match(broken.reason, /ledger unreadable/);
+  // a P0 with an opus line keeps Opus over the cap (BRO-5773)
+  assert.equal(pickLinearModel({ ...base, issue: card(1, 'Model: Opus'), readEntries: () => [], env: { LINEAR_OPUS_DAILY_CAP: '0' } }).model, 'opus');
   // a P0 the filer judged easy runs on Sonnet the first time
   assert.deepEqual(pickLinearModel({ ...base, issue: card(1, 'Model: Sonnet'), readEntries: () => [] }), { model: 'sonnet', reason: 'Model: sonnet on the card' });
   // haiku hint maps to sonnet (no haiku workers)

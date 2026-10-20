@@ -561,9 +561,12 @@ test('model: same policy as linear-next (P0 and Model: Opus get Opus, the rest S
   const bounced = issue({ priority: 2, comments: { nodes: [{ body: `${require('./codex-runner.js').BOUNCED_MARKER}\nCodex could not land it.`, createdAt: at(60_000) }] } });
   assert.equal(pickModel(bounced, opts).model, 'opus');
   assert.equal(cloudPriorAttempts(issue({ comments: { nodes: [report('done', 'Closed.', 60_000), { body: 'a note', createdAt: at(1) }] } })), 0);
-  // Over the 24h Opus cap, or with an unreadable ledger, it falls back to Sonnet (cloud attempts never count against the cap).
-  assert.equal(pickModel(issue({ priority: 1 }), { ...opts, env: { LINEAR_OPUS_DAILY_CAP: '0' } }).model, 'sonnet');
-  assert.equal(pickModel(issue({ priority: 1 }), { ...opts, readEntries: () => { throw new Error('EIO'); } }).model, 'sonnet');
+  // A P0 keeps Opus over the 24h cap or with an unreadable ledger (BRO-5773); any other Opus card falls back to Sonnet.
+  assert.equal(pickModel(issue({ priority: 1 }), { ...opts, env: { LINEAR_OPUS_DAILY_CAP: '0' } }).model, 'opus');
+  assert.equal(pickModel(issue({ priority: 1 }), { ...opts, readEntries: () => { throw new Error('EIO'); } }).model, 'opus');
+  const opusP2 = issue({ priority: 2, description: `${BODY}\n\nModel: Opus` });
+  assert.equal(pickModel(opusP2, { ...opts, env: { LINEAR_OPUS_DAILY_CAP: '0' } }).model, 'sonnet');
+  assert.equal(pickModel(opusP2, { ...opts, readEntries: () => { throw new Error('EIO'); } }).model, 'sonnet');
   assert.equal(pickModel(paused, { ...opts, env: { LINEAR_OPUS_DAILY_CAP: '1' } }).model, 'opus');
   // No dispatch ledger at all (a cloud container): the real reader returns [], so a P0 still gets Opus.
   assert.equal(pickModel(issue({ priority: 1 }), { nowMs: NOW, readEntries: () => require('./dispatch-ledger.js').readEntries('/nonexistent/dispatch-ledger.jsonl'), env: {} }).model, 'opus');
