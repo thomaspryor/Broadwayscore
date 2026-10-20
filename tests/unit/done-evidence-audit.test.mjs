@@ -605,7 +605,8 @@ test('items are capped and the rest roll into moreCount', () => {
 // ── command's SHAPE.
 //
 // BRO-3426 shipped the mis-armed rule wired to card-premises-auditor's
-// extractCheckFilePaths, which only recognises `node --test` and `test -f`.
+// extractCheckFilePaths, which at the time only recognised `node --test` and
+// `test -f`. BRO-3078 also extends that extractor to generic audit/lint paths.
 // The owner hand-checked the first live sweep and 2 of its 5 FAILED verdicts
 // were false accusations against finished work. Both were this same hole seen
 // from different sides, which is why these tests assert on all three shapes at
@@ -618,10 +619,10 @@ test('BRO-3476: the phantom-path rule reaches EVERY command shape, not just `nod
 
   // THE REGRESSION. BRO-3335 is armed `node scripts/audit-worktree-unpushed.js`
   // — a script with zero commits in this repo's entire history. The narrow
-  // extractor returns nothing for it, so the mis-armed branch never ran and a
+  // extractor returned nothing for it, so the mis-armed branch never ran and a
   // finished card was reported as broken work.
   const bro3335 = 'node scripts/audit-worktree-unpushed.js';
-  assert.deepEqual(extractCheckFilePaths(bro3335), [], 'the old extractor is why this shape leaked through');
+  assert.deepEqual(extractCheckFilePaths(bro3335), ['scripts/audit-worktree-unpushed.js'], 'BRO-3078 also covers this shape in the premises auditor');
   assert.deepEqual(extractCheckPaths(bro3335), ['scripts/audit-worktree-unpushed.js']);
 
   // The two shapes that already worked must keep working — this change is a

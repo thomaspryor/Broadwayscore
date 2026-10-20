@@ -30,12 +30,17 @@ test('isTestFCommand: recognizes test -f, rejects everything else', () => {
   assert.equal(isTestFCommand(null), false);
 });
 
-test('isCheckPathCommand: true for either file-naming form, false for shapes with no hallucinable path', () => {
+test('isCheckPathCommand: includes generic audit/lint paths, excludes forms without a variable path', () => {
   assert.equal(isCheckPathCommand('node --test tests/unit/foo.test.mjs'), true);
   assert.equal(isCheckPathCommand('npx tsx --test tests/unit/foo.test.ts'), true);
   assert.equal(isCheckPathCommand('test -f docs/foo.md'), true);
   assert.equal(isCheckPathCommand('npx tsc --noEmit'), false);
-  assert.equal(isCheckPathCommand('node scripts/audit-review-contamination.js'), false);
+  assert.equal(isCheckPathCommand('node scripts/audit-review-contamination.js'), true);
+  assert.equal(isCheckPathCommand('node scripts/audit-worktree-unpushed.js --strict'), true);
+  assert.equal(isCheckPathCommand('node scripts/lint-resend-calls.js --json'), true);
+  assert.equal(isCheckPathCommand('bash scripts/lib/sync-audit-checkout.test.sh'), false);
+  assert.equal(isCheckPathCommand('node scripts/validate-data.js'), false);
+  assert.equal(isCheckPathCommand(null), false);
 });
 
 test('extractCheckFilePaths: pulls the file paths out of a node --test command', () => {
@@ -62,7 +67,45 @@ test('extractCheckFilePaths: pulls the file paths out of a test -f command (BRO-
 
 test('extractCheckFilePaths: non-file-naming commands yield no paths', () => {
   assert.deepEqual(extractCheckFilePaths('npx tsc --noEmit'), []);
-  assert.deepEqual(extractCheckFilePaths('node scripts/audit-review-contamination.js'), []);
+  assert.deepEqual(extractCheckFilePaths('bash scripts/lib/sync-audit-checkout.test.sh'), []);
+});
+
+test('extractCheckFilePaths: extracts generic audit/lint script paths without their flags (BRO-3078)', () => {
+  for (const flag of ['', ' --strict', ' --gate', ' --json', ' --dry-run', ' --window=7', ' --max=2']) {
+    for (const name of ['audit-worktree-unpushed', 'lint-resend-calls']) {
+      assert.deepEqual(extractCheckFilePaths(`node scripts/${name}.js${flag}`), [`scripts/${name}.js`]);
+    }
+  }
+  assert.deepEqual(extractCheckFilePaths('node scripts/audit-worktree-unpushed.js --unsupported'), []);
+});
+
+test('auditCardCheckPaths: reports only confirmed missing generic audit/lint paths (BRO-3078)', () => {
+  const cards = [
+    { id: 'audit-missing', cmd: 'node scripts/audit-worktree-unpushed.js --strict' },
+    { id: 'lint-missing', cmd: 'node scripts/lint-resend-calls.js --json' },
+    { id: 'audit-present', cmd: 'node scripts/audit-review-contamination.js' },
+    { id: 'audit-unresolved', cmd: 'node scripts/audit-orphan-tests.js' },
+  ];
+  const existsFn = (p) => p === 'scripts/audit-orphan-tests.js' ? null : p === 'scripts/audit-review-contamination.js';
+  assert.deepEqual(auditCardCheckPaths(cards, existsFn).map(c => [c.id, c.missingPaths]), [
+    ['audit-missing', ['scripts/audit-worktree-unpushed.js']],
+    ['lint-missing', ['scripts/lint-resend-calls.js']],
+  ]);
+});
+
+test('findCardCheckPathDefects: armed generic audit/lint paths reach the fetch guard (BRO-3078)', (t) => {
+  const fs = require('fs');
+  const os = require('os');
+  const path = require('path');
+  const notARepo = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-3078-not-a-repo-'));
+  t.after(() => fs.rmSync(notARepo, { recursive: true, force: true }));
+  const cards = [{ id: 'audit-missing', cmd: 'node scripts/audit-worktree-unpushed.js', armed: true }];
+  const logs = [];
+  assert.deepEqual(findCardCheckPathDefects(cards, { repo: notARepo, log: line => logs.push(line) }), { missing: [], vacuous: [] });
+  assert.ok(logs.some(line => line.includes('could not fetch origin/main')));
+  logs.length = 0;
+  assert.deepEqual(findCardCheckPathDefects([{ ...cards[0], armed: false }], { repo: notARepo, log: line => logs.push(line) }), { missing: [], vacuous: [] });
+  assert.deepEqual(logs, []);
 });
 
 test('auditCardCheckPaths: flags a card whose test file is confirmed missing', () => {

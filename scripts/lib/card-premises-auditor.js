@@ -1,6 +1,6 @@
 /**
  * card-premises-auditor.js — does an armed card's file-naming acceptance
- * command (`node --test`/`npx tsx --test`/`test -f`) name a file that
+ * command (`node --test`/`npx tsx --test`/`test -f`/generic audit or lint) name a file that
  * actually exists?
  *
  * BRO-2977: isSafeCheckCommand (autonomous-triage-core.js) only validates the
@@ -54,21 +54,13 @@ function isTestFCommand(cmd) {
   return /^test -f\b/.test(String(cmd || '').trim());
 }
 
-// Scoped to the two forms BRO-2977/BRO-3076 actually cover — NOT a claim that
-// every other SAFE_CHECK_FORMS shape with a pathsGroup is immune to this bug.
-// The bash *.test.sh form IS immune (its regex hardcodes the one existing
-// path, autonomous-triage-core.js:284 — no card-authored value to hallucinate).
-// The generic audit-/lint- form is NOT immune despite checking its basename
-// against AUDIT_LINT_GENERIC_FORM_ALLOWED: that allowlist deliberately admits
-// basenames "shape-only," before the file exists on disk (see
-// autonomous-triage-core.js's audit-worktree-unpushed.js entry and comment —
-// confirmed still absent from origin/main as of this writing), so a card
-// naming `node scripts/audit-worktree-unpushed.js` is exactly as armed and
-// exactly as starvable as a phantom `node --test` path. Left out of scope
-// here deliberately (BRO-3076 is `test -f` only) — tracked as a follow-up,
-// not silently declared safe.
+// BRO-3078: generic audit/lint commands also need the existence check. Their
+// basename allowlist admits scripts before they exist, such as
+// audit-worktree-unpushed.js. extractCheckPaths still owns full shape parsing.
+// The bash *.test.sh form names only individually vetted existing paths.
 function isCheckPathCommand(cmd) {
-  return isNodeTestCommand(cmd) || isTestFCommand(cmd);
+  return isNodeTestCommand(cmd) || isTestFCommand(cmd)
+    || /^node scripts\/(?:audit|lint)-[A-Za-z0-9_-]+\.js(?: |$)/.test(String(cmd || '').trim());
 }
 
 // Pure: reuses the SAME regex/path-group extraction isSafeCheckCommand
@@ -78,7 +70,7 @@ function extractCheckFilePaths(cmd) {
   return extractCheckPaths(cmd);
 }
 
-// Both acceptance-command forms assert a file, so directories are absent.
+// These acceptance-command forms assert a file, so directories are absent.
 function pathExistsOnOriginMain(relPath, opts = {}) {
   return checkOriginMainPath(relPath, { ...opts, fileOnly: true });
 }
@@ -209,7 +201,7 @@ function auditVacuousChecks(cards, existsFn) {
 
 /**
  * Pure core: which of these armed cards name a `node --test`/`npx tsx
- * --test`/`test -f` file that `existsFn` reports as confirmed-missing?
+ * --test`/`test -f`/generic audit or lint file that `existsFn` reports as confirmed-missing?
  *
  * A path `existsFn` returns null for (unresolved this run) is never counted
  * as missing — same fail-open contract as the git-backed existsFn itself, so
@@ -241,7 +233,7 @@ function auditCardCheckPaths(cards, existsFn) {
 
 /**
  * I/O wrapper: fetches origin/main once, then checks every armed card's
- * `node --test`/`npx tsx --test`/`test -f` path against it. Skips the fetch
+ * `node --test`/`npx tsx --test`/`test -f`/generic audit or lint path against it. Skips the fetch
  * entirely when no card is a file-naming-shaped candidate (cheap common case).
  *
  * A failed fetch bails out to [] rather than falling through to whatever
