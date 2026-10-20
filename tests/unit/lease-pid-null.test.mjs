@@ -19,7 +19,8 @@ test('leaseLooksLive: pid:null is live inside the startup grace, dead pid is dea
   assert.equal(leaseLooksLive({ pid: null, acquiredAt: ago(5_000) }, never, NOW), true);
   assert.equal(leaseLooksLive({ acquiredAt: ago(5_000) }, never, NOW), true);
   assert.equal(leaseLooksLive({ pid: 123 }, never, NOW), false);
-  assert.equal(leaseLooksLive({ pid: 123 }, () => true, NOW), true);
+  assert.equal(leaseLooksLive({ pid: 123 }, () => true, NOW), false, 'pid with no identity timestamp is not a live lease');
+  assert.equal(leaseLooksLive({ pid: 123, acquiredAt: ago(5_000) }, () => true, NOW, () => true), true);
   assert.equal(leaseLooksLive(null, () => true, NOW), false);
   assert.equal(leaseLooksLive(undefined, () => true, NOW), false);
 });
@@ -74,7 +75,7 @@ test('every site named on BRO-2954 uses leaseLooksLive', () => {
 
 test('grace-judged sweep sites keep pid:null as not-alive (crashed-at-startup leases must still be reclaimed)', () => {
   const src = fs.readFileSync(path.join(ROOT, 'scripts/bsc-reconcile.js'), 'utf8');
-  assert.equal((src.match(/pid-null-grace-ok/g) || []).length, 2);
+  assert.equal((src.match(/pid-null-grace-ok/g) || []).length, 1);
   assert.match(src, /pidLooksLikeClaudeFn\(lease\.pid\)/);
-  assert.match(src, /if \(lease && pidLooksLikeClaude\(lease\.pid\)\) continue; \/\/ live process/);
+  assert.match(src, /if \(leaseLooksLive\(lease\)\) continue; \/\/ matching process/);
 });

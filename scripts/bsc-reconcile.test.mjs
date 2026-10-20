@@ -675,9 +675,26 @@ test('zombie sweep: live-pid check is injectable (no host ps lookup)', () => {
   const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72) } } });
   h.deps.readLeaseFn = () => ({ pid: 4242, acquiredAt: new Date(T1184_NOW - 6 * 3600_000).toISOString() });
   h.deps.pidLooksLikeClaudeFn = (pid) => pid === 4242;
+  h.deps.pidStartedNearFn = (pid, acquiredAt, now) => {
+    assert.equal(pid, 4242);
+    assert.equal(acquiredAt, new Date(T1184_NOW - 6 * 3600_000).toISOString());
+    assert.equal(now, T1184_NOW);
+    return true;
+  };
   const r = sweepUntrackedInProgress({ deps: h.deps });
   assert.equal(r.ran, true);
   assert.deepEqual(h.flips, []);
+});
+
+test('zombie sweep: a recycled Claude pid does not hide a stale task', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72) } } });
+  h.deps.readLeaseFn = () => ({ pid: 4242, acquiredAt: new Date(T1184_NOW - 6 * 3600_000).toISOString() });
+  h.deps.pidLooksLikeClaudeFn = () => true;
+  h.deps.pidStartedNearFn = () => false;
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.equal(r.ran, true);
+  assert.deepEqual(h.flips, ['9']);
 });
 
 test('zombie sweep: cadence gate — a recent prior run skips entirely (no Notion fetches)', () => {
@@ -838,6 +855,15 @@ test('sweepOrphanedJobs: an alive lease is never touched', () => {
   const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
   assert.deepEqual(orphans, []);
   assert.deepEqual(h.appended, []);
+});
+
+test('sweepOrphanedJobs: a live pid for another job cannot validate this job', () => {
+  const h = orphanHarness({ lease: { jobId: 'replacement', pid: 123, acquiredAt: new Date(ORPHAN_NOW - 3600e3).toISOString() }, alive: true });
+  const entries = [{ event: JOB_EVENTS.SPAWNED, taskId: '1', jobId: 'j1' }];
+  sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.equal(h.appended.length, 1);
+  assert.equal(h.appended[0].event, JOB_EVENTS.ORPHAN_SUSPECT);
+  assert.deepEqual(h.released, []);
 });
 
 test('sweepOrphanedJobs: a freshly-acquired lease (pid:null, inside GRACE_MS) is presumed starting, not orphaned', () => {

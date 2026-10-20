@@ -66,7 +66,7 @@ const { hasAutoDispatchMarker } = require('./lib/prune-closeable.js');
 const { setAppFocus, osActivateCmuxApp, makeSeedProcessProbe } = require('./lib/cmux-launch.js');
 const reviveSessionLib = require('./lib/revive-session.js');
 const bscNext = require('./bsc-next.js');
-const { readLease, releaseLease, pidLooksLikeClaude, leaseLooksLive, PID_NULL_GRACE_MS, runJob, LEASE_ROOT, REPO } = require('./lib/bsc-runner.js');
+const { readLease, releaseLease, pidLooksLikeClaude, pidStartedNear, leaseLooksLive, PID_NULL_GRACE_MS, runJob, LEASE_ROOT, REPO } = require('./lib/bsc-runner.js');
 const { RECHECK_AFTER_RE } = require('./lib/recheck-stamp.js');
 const { summarizeCmuxFailures, classifyCmuxError } = require('./lib/cmux-socket-auth.js');
 // BRO-4054: red-main signature cards are dispatched by THIS tick (the most
@@ -601,6 +601,7 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
     listWorkspacesFn = cmuxws.listWorkspaces,
     readLeaseFn = readLease,
     pidLooksLikeClaudeFn = pidLooksLikeClaude,
+    pidStartedNearFn = pidStartedNear,
     fetchCardFn = (notionId) => {
       const r = spawnSync('node', [path.join(REPO, 'scripts', 'notion-brain.js'), 'get', notionId], { encoding: 'utf8', timeout: 60_000 });
       if (r.status !== 0) return null;
@@ -709,7 +710,7 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
     if (!hasSweptField && String(task.description || '').includes(UNTRACKED_MARKER)) continue;
     if (!hasParkedField && String(task.description || '').includes(OUTCOME_PARK_MARKER)) continue;
     const lease = readLeaseFn(id);
-    if (leaseLooksLive(lease, pidLooksLikeClaudeFn, nowFn())) { skipped.push({ id, why: 'live-lease' }); continue; }
+    if (leaseLooksLive(lease, pidLooksLikeClaudeFn, nowFn(), pidStartedNearFn)) { skipped.push({ id, why: 'live-lease' }); continue; }
     // BRO-2993: cmux couldn't be asked this tick — uncertainty must not
     // authorize action, so treat every remaining candidate as if its tab
     // were live rather than falling through with an unverified empty list.
@@ -1357,6 +1358,7 @@ function sweepOrphanedJobs(entries, { dryRun = false, deps = {} } = {}) {
     // Anything younger than the grace window is presumed starting.
     const leaseAgeMs = lease && lease.acquiredAt ? now - Date.parse(lease.acquiredAt) : Infinity;
     const starting = lease && lease.jobId === job.jobId && leaseAgeMs < GRACE_MS;
+    // Identity is cross-checked by jobId here; keep the separate startup grace.
     // pid-null-grace-ok: pid:null is judged by the GRACE_MS `starting` check above; a lease stuck at pid:null past grace must read dead so it is orphaned.
     const alive = lease && lease.jobId === job.jobId && pidLooksLikeClaudeFn(lease.pid);
     if (alive || starting) {
@@ -1493,8 +1495,7 @@ async function main() {
   for (const dir of leaseDirs) {
     if (openTasks.has(dir)) continue;
     const lease = readLease(dir);
-    // pid-null-grace-ok: pid:null is judged by the GRACE_MS age check below, so a crashed-at-startup lease is still reclaimed.
-    if (lease && pidLooksLikeClaude(lease.pid)) continue; // live process, not ours to sweep
+    if (leaseLooksLive(lease)) continue; // matching process or lease inside startup grace
     // Same startup grace as the orphan loop (Opus ship-check P0): runJob
     // acquires the lease BEFORE provisioning the worktree and appending
     // job-spawned, so a young pid:null lease with no open job is a healthy

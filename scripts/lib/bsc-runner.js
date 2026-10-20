@@ -25,7 +25,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { runClaudeCli } = require('./claude-cli.js');
 const ledger = require('./dispatch-ledger.js');
-const { shouldRefuseDispatch, isLeaseLive } = require('./worktree-gc-reclaim.js');
+const { shouldRefuseDispatch, isLeaseLive, parseEtime } = require('./worktree-gc-reclaim.js');
 const { classifyHeadlessJobResult } = require('./headless-wrapup-block.js');
 const { detectJobLanding } = require('./headless-unlanded-detection.js');
 const { killedTasksLedgerFields } = require('./headless-background-task-guard.js');
@@ -48,9 +48,24 @@ function pidLooksLikeClaude(pid) {
   if (!pid) return false;
   try {
     const cmd = execFileSync('ps', ['-o', 'command=', '-p', String(pid)], { encoding: 'utf8' }).trim();
-    // argv check, not bare kill -0: PIDs recycle, and a recycled PID must not
-    // read as "job still running" (plan-review structure finding).
+    // argv rejects recycled non-Claude processes. Lease callers also need
+    // pidStartedNear below to reject a different Claude process at this pid.
     return /(^|\/)claude(\s|$)/.test(cmd);
+  } catch { return false; }
+}
+
+// BRO-2465: ps elapsed time has second precision. Allow bounded timestamp
+// skew and legacy acquisition-to-spawn delay, never an arbitrary newer pid.
+const PID_START_TOLERANCE_MS = 2 * 60 * 1000;
+function pidStartedNear(pid, acquiredAt, nowMs = Date.now(), execFileSyncFn = execFileSync) {
+  const acquiredMs = Date.parse(acquiredAt || '');
+  if (!pid || !Number.isFinite(acquiredMs)) return false;
+  try {
+    const elapsed = execFileSyncFn('ps', ['-o', 'etime=', '-p', String(pid)], {
+      encoding: 'utf8', timeout: 5000, stdio: ['ignore', 'pipe', 'ignore'],
+    });
+    const seconds = parseEtime(elapsed);
+    return seconds != null && Math.abs(nowMs - seconds * 1000 - acquiredMs) <= PID_START_TOLERANCE_MS;
   } catch { return false; }
 }
 
@@ -66,13 +81,15 @@ function pidLooksLikeClaude(pid) {
 // NOT acquireLease's steal rule (isLeaseLive: pid:null is never stolen;
 // bsc-reconcile reclaims it).
 const PID_NULL_GRACE_MS = 2 * 60 * 1000;
-function leaseLooksLive(lease, isAliveFn = pidLooksLikeClaude, nowMs = Date.now()) {
+function leaseLooksLive(lease, isAliveFn = pidLooksLikeClaude, nowMs = Date.now(), startedNearFn = pidStartedNear) {
   if (!lease) return false;
   if (lease.pid == null) {
     const acquired = Date.parse(lease.acquiredAt || '');
     return Number.isFinite(acquired) && nowMs - acquired < PID_NULL_GRACE_MS;
   }
-  return isAliveFn(lease.pid);
+  // acquiredAt is the fallback for old leases. Legacy provisioning exceeding
+  // the tolerance cannot establish identity; new leases record spawn time.
+  return isAliveFn(lease.pid) && startedNearFn(lease.pid, lease.pidStartedAt ?? lease.acquiredAt, nowMs);
 }
 
 /**
@@ -426,7 +443,7 @@ async function runJob(opts) {
       // makes Gate H's detection independent of cwd entirely for every job
       // this module spawns.
       env: { ESG_HEADLESS: '1' },
-      onSpawn: (pid) => updateLease(taskId, { pid, cwd }),
+      onSpawn: (pid) => updateLease(taskId, { pid, cwd, pidStartedAt: new Date().toISOString() }),
       // Persisted the moment the stream's first event lands (~1s in), so a
       // later kill — timeout, crash, power loss — leaves a resumable session
       // id on the lease AND lets bsc-reconcile resume instead of restarting.
@@ -516,7 +533,7 @@ async function runJob(opts) {
 
 module.exports = {
   gitSafeJobId,
-  runJob, acquireLease, releaseLease, readLease, updateLease, pidLooksLikeClaude, leaseLooksLive, PID_NULL_GRACE_MS,
+  runJob, acquireLease, releaseLease, readLease, updateLease, pidLooksLikeClaude, pidStartedNear, leaseLooksLive, PID_NULL_GRACE_MS,
   LEASE_ROOT, LOG_ROOT, REPO, leaseDir, leaseFile,
   DEFAULT_JOB_TIMEOUT_MS, buildBudgetPreamble,
 };

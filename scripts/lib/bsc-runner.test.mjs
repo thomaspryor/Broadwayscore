@@ -17,7 +17,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { runJob } = require('./bsc-runner.js');
+const { runJob, pidStartedNear, leaseLooksLive, PID_NULL_GRACE_MS } = require('./bsc-runner.js');
 const { scanFile } = require('../audit-alert-senders.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -79,4 +79,63 @@ test('bsc-runner.js: no direct sendAlert(email:true) bypass of owner-alert-route
 
   const routed = findings.filter((f) => f.kind === 'routeAlert');
   assert.ok(routed.length >= 1, 'expected bsc-runner.js to route its alert(s) through routeAlert()');
+});
+
+// BRO-2465: exercise the shared implementation, including ps elapsed formats.
+const IDENTITY_NOW = Date.parse('2026-10-20T12:00:00Z');
+const identityLease = { pid: 4242, acquiredAt: new Date(IDENTITY_NOW - 3600_000).toISOString() };
+
+test('pidStartedNear: matching process starts in portable ps elapsed formats', () => {
+  for (const [elapsed, age] of [['01:00', 60_000], ['01:02:03', 3723_000], ['2-01:02:03', 176523_000]]) {
+    const acquired = new Date(IDENTITY_NOW - age).toISOString();
+    assert.equal(pidStartedNear(4242, acquired, IDENTITY_NOW, (command, args) => {
+      assert.equal(command, 'ps');
+      assert.deepEqual(args, ['-o', 'etime=', '-p', '4242']);
+      return elapsed;
+    }), true, elapsed);
+  }
+});
+
+test('pidStartedNear: recycled Claude pid with a different start time is dead', () => {
+  assert.equal(pidStartedNear(4242, identityLease.acquiredAt, IDENTITY_NOW, () => '00:10'), false);
+  assert.equal(pidStartedNear(4242, new Date(IDENTITY_NOW).toISOString(), IDENTITY_NOW, () => '01:00:00'), false);
+});
+
+test('pidStartedNear: missing pid, invalid timestamps, unreadable or malformed ps fail closed', () => {
+  const never = () => { throw new Error('ps unavailable'); };
+  for (const timestamp of [undefined, '', 'invalid']) {
+    assert.equal(pidStartedNear(4242, timestamp, IDENTITY_NOW, never), false);
+  }
+  assert.equal(pidStartedNear(null, identityLease.acquiredAt, IDENTITY_NOW, never), false);
+  assert.equal(pidStartedNear(4242, identityLease.acquiredAt, IDENTITY_NOW, never), false);
+  assert.equal(pidStartedNear(4242, identityLease.acquiredAt, IDENTITY_NOW, () => 'unknown'), false);
+});
+
+test('pidStartedNear: real process-table data accepts this process and rejects an old lease', () => {
+  assert.equal(pidStartedNear(process.pid, new Date().toISOString()), true);
+  assert.equal(pidStartedNear(process.pid, '2020-01-01T00:00:00Z'), false);
+});
+
+test('leaseLooksLive: argv alone cannot validate a recycled Claude pid', () => {
+  assert.equal(leaseLooksLive(identityLease, () => true, IDENTITY_NOW,
+    (pid, acquiredAt, now) => pidStartedNear(pid, acquiredAt, now, () => '00:10')), false);
+  assert.equal(leaseLooksLive(identityLease, () => true, IDENTITY_NOW,
+    (pid, acquiredAt, now) => pidStartedNear(pid, acquiredAt, now, () => '01:00:00')), true);
+  assert.equal(leaseLooksLive(identityLease, () => false, IDENTITY_NOW,
+    () => { throw new Error('dead pid must not query start time'); }), false);
+});
+
+test('leaseLooksLive: recorded spawn time survives slow provisioning and rejects mismatches', () => {
+  const lease = { ...identityLease, pidStartedAt: new Date(IDENTITY_NOW - 10_000).toISOString() };
+  const startedNear = (pid, timestamp, now) => pidStartedNear(pid, timestamp, now, () => '00:10');
+  assert.equal(leaseLooksLive(lease, () => true, IDENTITY_NOW, startedNear), true);
+  assert.equal(leaseLooksLive({ ...lease, pidStartedAt: identityLease.acquiredAt }, () => true, IDENTITY_NOW, startedNear), false);
+  assert.equal(leaseLooksLive({ ...lease, pidStartedAt: 'invalid' }, () => true, IDENTITY_NOW, startedNear), false);
+});
+
+test('leaseLooksLive: null-pid startup grace never queries process identity', () => {
+  const never = () => { throw new Error('startup must not inspect ps'); };
+  for (const [age, live] of [[1000, true], [PID_NULL_GRACE_MS, false]]) {
+    assert.equal(leaseLooksLive({ pid: null, acquiredAt: new Date(IDENTITY_NOW - age).toISOString() }, never, IDENTITY_NOW, never), live);
+  }
 });
