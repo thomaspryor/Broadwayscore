@@ -29,6 +29,7 @@ const { openingDateSourceHint } = require('./lib/opening-date-sources');
 const { decideAnnouncedPromotion, blockAnnouncedCatchUp, typeForListedShow } = require('./lib/announced-promotion');
 const { decidePrematurePreviews } = require('./lib/premature-previews');
 const showsWriteGuard = require('./lib/shows-write-guard');
+const { findTicketIdentityHolder } = require('./lib/show-duplicate-detection');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -237,11 +238,17 @@ async function refreshTodayTixDates(data, updates, opts = {}) {
         const normTtTitle = (ttShow.displayName || ttShow.name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 
         // Try to match within each category this location covers
+        // Id first across every category, then title: a title hit in the first
+        // category used to beat the row holding this exact id in a later one,
+        // and then got that id too (BRO-5796).
         let match = null;
         for (const cat of loc.categories) {
-          const map = catMaps[cat];
-          match = map.byTodayTixId[ttShow.id] || map.byTitle[normTtTitle];
+          match = catMaps[cat].byTodayTixId[ttShow.id];
           if (match) break;
+        }
+        for (const cat of loc.categories) {
+          if (match) break;
+          match = catMaps[cat].byTitle[normTtTitle];
         }
 
         // Check wrongly-closed shows if no active match found
@@ -304,8 +311,13 @@ async function refreshTodayTixDates(data, updates, opts = {}) {
 
         // Save todaytixId if we matched by title but show doesn't have one
         if (!match.todaytixId && ttShow.id) {
-          if (!dryRun) match.todaytixId = ttShow.id;
-          newTtIds++;
+          const holder = findTicketIdentityHolder(data.shows, match, ttShow.id);
+          if (holder) {
+            console.log(`  ⛔ ${match.id}: TodayTix ${ttShow.id} already belongs to ${holder.id}; not copying the id onto a duplicate row`);
+          } else {
+            if (!dryRun) match.todaytixId = ttShow.id;
+            newTtIds++;
+          }
         }
 
         if (!ttEndDate) continue; // Open-ended run, skip date updates

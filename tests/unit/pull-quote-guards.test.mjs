@@ -642,3 +642,14 @@ test('", yet again in triumph" on a rave is not rejected as a reservation', () =
   assert.equal(shouldRejectAsReservation('The set is impressive, but nothing could save this salesman from death.', 92), true);
   assert.equal(shouldRejectAsReservation('The cast is lovely, yet the evening never takes flight.', 85), true);
 });
+
+// BRO-5796: scraped fullText glues a headline to the next line. The real
+// 1984-2017 Bloomberg and Malory Towers Time Out quotes were flagged as cut.
+test('a headline glued to a capitalized next word is not a mid-word cut', () => {
+  const q = 'Broadway’s 1984 Is an Electrifying Fable With a Message for the Resistance';
+  assert.strictEqual(isMidWordTruncation(q, [`${q}By Jason ZinomanThe show opens`]), false);
+  const cut = 'The play has lost its essential velocity in the move from Lincoln Cent';
+  assert.strictEqual(isMidWordTruncation(cut, [`${cut}er Theater, where`]), true);
+  const lowerNext = 'Meteor Shower may be a cloudburst of laugh lines lasting only about 80 minutes, but it';
+  assert.strictEqual(isMidWordTruncation(lowerNext, [`${lowerNext}s non-sequiturs`]), true);
+});

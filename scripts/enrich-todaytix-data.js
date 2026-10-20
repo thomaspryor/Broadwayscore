@@ -21,6 +21,7 @@ const { classifyTodayTixStartDate, unconfirmedStartFlags } = require('./lib/toda
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { gateScrapedSynopsis, truncateAtSentence } = require('./lib/synopsis-fact-check');
 const { setSynopsis } = require('./lib/synopsis-source');
+const { findTicketIdentityHolder } = require('./lib/show-duplicate-detection');
 
 const USAGE = `enrich-todaytix-data.js — Enrich shows.json with TodayTix data (all categories: Broadway, OB, WE).
 
@@ -165,6 +166,15 @@ async function main() {
   function enrichShow(show, tt, location) {
     if (enriched.has(show.id)) return; // Already processed
     enriched.add(show.id);
+    // BRO-5796: another row already holds this listing under an agreeing
+    // title, so this row is its duplicate. Giving it the id/url/link too is
+    // how the AMAZE pair was minted; leave both rows for the duplicate audit.
+    const holder = findTicketIdentityHolder(shows, show, tt.id);
+    if (holder) {
+      stats.duplicateIdRefused = (stats.duplicateIdRefused || 0) + 1;
+      console.log(`  ⛔ ${show.id}: TodayTix ${tt.id} already belongs to ${holder.id}; not enriching a duplicate row`);
+      return;
+    }
     stats.matched++;
     const changes = [];
 
@@ -364,6 +374,7 @@ async function main() {
   console.log(`unconfirmedStartDate cleared: ${stats.unconfirmedStartDateCleared || 0}`);
   console.log(`start date skipped — past placeholder: ${stats.pastPlaceholderSkipped || 0}`);
   console.log(`start date skipped — title mismatch: ${stats.dateSkippedTitleMismatch || 0}`);
+  console.log(`duplicate rows refused (listing held by another row): ${stats.duplicateIdRefused || 0}`);
   console.log(`Shows mutated: ${stats.mutated || 0}`);
   console.log(`Unmatched TodayTix shows: ${stats.skipped}`);
 

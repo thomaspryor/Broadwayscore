@@ -317,6 +317,22 @@ function findSharedTicketIdentityDupes(shows) {
   return dupes;
 }
 
+// Write-time twin of findSharedTicketIdentityDupes (BRO-5796): the row that
+// already holds TodayTix listing `ttId` such that giving it to `show` too would
+// mint a pair that audit flags. enrich-todaytix-data and update-show-status
+// assigned ids with no check, which is how the AMAZE pair was made. Null when
+// `show` already holds the listing itself (an existing pair is the audit's).
+function findTicketIdentityHolder(shows, show, ttId) {
+  if (!Array.isArray(shows) || !show || ttId == null || String(ttId).trim() === '') return null;
+  const key = `todaytix:${String(ttId).trim()}`;
+  if (ticketIdentityKeys(show).has(key)) return null;
+  const probe = { ...show, todaytixId: String(ttId).trim() };
+  return shows.find((s) => s && s.id && s.id !== show.id
+    && ticketIdentityKeys(s).has(key)
+    && !isDeclaredTransferPair(probe, s)
+    && titlesAgree(probe, s)) || null;
+}
+
 function sameMarketPair(a, b) {
   return !a.market || !b.market || a.market === b.market;
 }
@@ -337,6 +353,7 @@ module.exports = {
   stubIsUnplacedDupe,
   findTitleFragmentDupes,
   findSharedTicketIdentityDupes,
+  findTicketIdentityHolder,
   ticketIdentityKeys,
   isDeclaredTransferPair,
   canonicalVenue,
