@@ -20,12 +20,17 @@ import {
   getCommercialLastUpdated,
   getCommercialModelLastRun,
   getBoxOfficeCostCoverage,
+  getSeason,
+  getSeasonComparison,
+  getSeasonProfiles,
 } from '@/lib/data-commercial';
 import { getGrossesWeekEnding } from '@/lib/data-grosses';
 import { formatDataDate, formatDevelopmentDate, sortNewestFirst } from '@/lib/biz-format';
 import { lossOutcomePhrase, ESTIMATE_SOURCES_NOTE } from '@/lib/commercial-display';
 
 import SeasonStatsCard from '@/components/biz/SeasonStatsCard';
+import SeasonComparisonTable from '@/components/biz/SeasonComparisonTable';
+import SeasonHistoryTable from '@/components/biz/SeasonHistoryTable';
 import RecentDevelopmentsList, { type DevelopmentItem } from '@/components/biz/RecentDevelopmentsList';
 import ApproachingRecoupmentCard from '@/components/biz/ApproachingRecoupmentCard';
 import AtRiskCard from '@/components/biz/AtRiskCard';
@@ -35,6 +40,7 @@ import DesignationLegend from '@/components/biz/DesignationLegend';
 import BizPageTracker from '@/components/biz/BizPageTracker';
 import CostCoverageCard from '@/components/box-office/CostCoverageCard';
 import { BASE_URL, generateBreadcrumbSchema } from '@/lib/seo';
+import { getMarketDate } from '@/lib/date-utils';
 
 export const metadata: Metadata = {
   title: 'Broadway Investment Tracker',
@@ -134,6 +140,14 @@ export default function BizDashboard() {
   // Show up to 4 most recent seasons
   const displaySeasons = allSeasons.slice(0, 4);
   const seasonStats = displaySeasons.map(season => getSeasonStats(season));
+
+  // Season profile: this season vs last season and the 10-season average, and
+  // the last 11 seasons side by side (season-profile.ts).
+  const currentSeason = getSeason(getMarketDate('broadway'));
+  const currentComparison = currentSeason ? getSeasonComparison(currentSeason) : null;
+  const seasonHistory = getSeasonProfiles()
+    .filter((p) => !currentSeason || p.season <= currentSeason)
+    .slice(0, 11);
 
   // Unreleased (BRO-5007): running shows by break-even band, moved here from /box-office.
   const costCoverage = featureFlags.commercial && featureFlags.boxOfficeV2 ? getBoxOfficeCostCoverage() : null;
@@ -249,6 +263,21 @@ export default function BizDashboard() {
           </div>
         </div>
 
+        {/* This season vs last season and the 10-season average */}
+        {currentComparison && (
+          <section className="mb-8">
+            <div className="flex items-baseline justify-between gap-4 mb-3">
+              <h2 className="text-xl font-bold text-white">
+                The {currentComparison.season} Season{currentComparison.inProgress ? ' So Far' : ''}
+              </h2>
+              <Link href={`/biz/season/${currentComparison.season}`} className="text-sm text-brand hover:text-brand-hover whitespace-nowrap">
+                Every show →
+              </Link>
+            </div>
+            <SeasonComparisonTable comparison={currentComparison} />
+          </section>
+        )}
+
         {/* Season Stats Row */}
         <section className="mb-8">
           <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">
@@ -267,6 +296,14 @@ export default function BizDashboard() {
             ))}
           </div>
         </section>
+
+        {/* Season by season */}
+        {seasonHistory.length > 0 && (
+          <section className="mb-8">
+            <h2 className="text-xl font-bold text-white mb-3">Season by Season</h2>
+            <SeasonHistoryTable profiles={seasonHistory} currentSeason={currentSeason} />
+          </section>
+        )}
 
         {costCoverage && <CostCoverageCard counts={costCoverage.counts} shares={costCoverage.shares} />}
 

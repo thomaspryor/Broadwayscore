@@ -12,9 +12,11 @@ import {
   getSeasonsWithCommercialData,
   getSeasonStats,
   getShowsBySeasonWithCommercial,
+  getSeasonComparison,
 } from '@/lib/data-commercial';
 
 import AllShowsTable from '@/components/biz/AllShowsTable';
+import SeasonComparisonTable from '@/components/biz/SeasonComparisonTable';
 import { formatCapitalSummary } from '@/lib/biz-format';
 import { ESTIMATE_SOURCES_NOTE } from '@/lib/commercial-display';
 
@@ -57,6 +59,7 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
 
   const stats = getSeasonStats(season);
   const shows = getShowsBySeasonWithCommercial(season);
+  const comparison = getSeasonComparison(season);
 
   // If no shows found, show message
   if (shows.length === 0) {
@@ -155,6 +158,16 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
             {capitalAtRisk.note && <div className="text-xs text-gray-500">{capitalAtRisk.note}</div>}
           </div>
         </div>
+
+        {/* Mix, capital and recoupment vs last season and the 10-season average */}
+        {comparison && (
+          <section className="mb-8">
+            <h2 className="text-xl font-bold text-white mb-3">
+              Compared with {comparison.lastSeason ? 'Last Season and ' : ''}Prior Seasons
+            </h2>
+            <SeasonComparisonTable comparison={comparison} />
+          </section>
+        )}
 
         {/* Show breakdown */}
         {(openShows > 0 || closedShows > 0) && (

@@ -55,6 +55,8 @@ import {
   hasNoInvestorsToRepay,
 } from './commercial-display';
 import { reportedReturn } from '../../scripts/lib/reported-return';
+import { buildSeasonProfiles, compareSeason, type SeasonProfile, type SeasonComparison } from './season-profile';
+import { getMarketDate } from './date-utils';
 import { isLossDesignation } from '../../scripts/lib/commercial-designations';
 import { conversionOf, isConvertedToCommercial, commercialRunWeeks, recoupClockStart } from '../../scripts/lib/commercial-conversion';
 import {
@@ -325,6 +327,30 @@ export function getSeasonStats(season: string): SeasonStats {
     totalShows,
     recoupedShows: recoupedShowsList,
   };
+}
+
+/** Every Broadway season's profile (mix, capital, recoupment), newest first. Built once. */
+let seasonProfilesCache: SeasonProfile[] | null = null;
+export function getSeasonProfiles(): SeasonProfile[] {
+  if (!seasonProfilesCache) {
+    const shows = commercial.shows;
+    seasonProfilesCache = buildSeasonProfiles(
+      rawShows
+        .filter((s) => s.category === 'broadway' && !!s.openingDate)
+        .map((s) => ({
+          type: s.type,
+          isRevival: s.isRevival,
+          openingDate: s.openingDate,
+          commercial: shows[s.slug] ? { ...shows[s.slug], weeklyCost: shows[s.slug].weeklyRunningCost } : null,
+        })),
+    );
+  }
+  return seasonProfilesCache;
+}
+
+/** A season vs last season and the 10-season average, as of today in New York (build time). */
+export function getSeasonComparison(season: string, asOf: string = getMarketDate('broadway')): SeasonComparison | null {
+  return compareSeason(getSeasonProfiles(), season, asOf);
 }
 
 /**
