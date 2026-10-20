@@ -82,7 +82,7 @@ elif grep -q scratch.tmp <<<"$pushed_files"; then echo "FAIL[1]: untracked file 
 elif [ ! -f "$TMP/c1-work/scratch.tmp" ]; then echo "FAIL[1]: untracked file lost"; fail=1
 elif [ "$(refs_left c1)" != "0" ]; then echo "FAIL[1]: snapshot ref not cleaned"; fail=1
 elif [ -s "$TMP/c1-fail.jsonl" ]; then echo "FAIL[1]: clean restore wrote a failure row"; fail=1
-elif ! git -C "$TMP/c1.git" show main:tracked.txt | grep -q remote-advance; then echo "FAIL[1]: upstream commit lost"; fail=1
+elif ! grep -q remote-advance <<<"$(git -C "$TMP/c1.git" show main:tracked.txt)"; then echo "FAIL[1]: upstream commit lost"; fail=1
 else echo "PASS[1]: rebase path, dirt restored, not pushed, ref cleaned"; fi
 
 # ── Case 2: upstream changed the dirty file in a different hunk ─────────────
@@ -107,7 +107,7 @@ elif ! grep -q l4-upstream "$TMP/c3-work/shared.txt" || grep -q '<<<<<<<' "$TMP/
 elif ! grep -q "::error::.*shared.txt conflicts" <<<"$out"; then echo "FAIL[3]: no ::error:: naming the path"; echo "$out"; fail=1
 elif [ "$(refs_left c3)" != "1" ]; then echo "FAIL[3]: snapshot ref should be kept"; fail=1
 elif ! grep -q '"autostash-conflict"' "$TMP/c3-fail.jsonl" 2>/dev/null; then echo "FAIL[3]: conflict not recorded in the failure ledger"; fail=1
-elif ! git -C "$TMP/c3-work" show "$(git -C "$TMP/c3-work" for-each-ref --format='%(objectname)' refs/worktree/push-autostash):shared.txt" | grep -q l4-caller; then
+elif ! grep -q l4-caller <<<"$(git -C "$TMP/c3-work" show "$(git -C "$TMP/c3-work" for-each-ref --format='%(objectname)' refs/worktree/push-autostash):shared.txt")"; then
   echo "FAIL[3]: kept snapshot lacks the caller's edit"; fail=1
 else echo "PASS[3]: conflict keeps upstream, errors, keeps recoverable snapshot"; fi
 

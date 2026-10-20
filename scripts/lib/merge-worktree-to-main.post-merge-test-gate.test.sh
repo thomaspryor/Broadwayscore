@@ -158,7 +158,7 @@ if grep -qi "post-merge test floor" <<<"$OUT"; then ok "failure message names th
 # Not pushed: origin/main must still be at the pre-feature-merge tip.
 D="$TMP/fail"
 git -C "$D/main" fetch -q origin main
-if git -C "$D/main" show "origin/main:scripts/lib/dummy-helper.js" 2>/dev/null | grep -q "unrelated whitespace"; then
+if grep -q "unrelated whitespace" <<<"$(git -C "$D/main" show "origin/main:scripts/lib/dummy-helper.js" 2>/dev/null)"; then
   bad "feature's change landed on origin despite the refusal"
 else
   ok "origin/main unchanged — feature's merge was NOT pushed"
@@ -180,7 +180,7 @@ echo "$OUT" | sed 's/^/    /'
 if [ "$RC" -eq 0 ]; then ok "script exited 0"; else bad "script exited $RC — should have proceeded"; fi
 D="$TMP/pass"
 git -C "$D/main" fetch -q origin main
-if git -C "$D/main" show "origin/main:scripts/lib/dummy-helper.js" 2>/dev/null | grep -q "unrelated whitespace"; then
+if grep -q "unrelated whitespace" <<<"$(git -C "$D/main" show "origin/main:scripts/lib/dummy-helper.js" 2>/dev/null)"; then
   ok "feature's change landed on origin"
 else
   bad "feature's change did not reach origin despite a passing merged tree"
@@ -212,7 +212,7 @@ OUT="$(cd "$D/jobwt" && bash scripts/merge-worktree-to-main.sh feature 2>&1)"; R
 echo "$OUT" | sed 's/^/    /'
 if [ "$RC" -eq 0 ]; then ok "script exited 0 — did not load the worktree's broken gate.js"; else bad "script exited $RC — likely loaded the broken worktree copy instead of \$MAIN_DIR's"; fi
 git -C "$D/main" fetch -q origin main
-if git -C "$D/main" show "origin/main:scripts/lib/dummy-helper.js" 2>/dev/null | grep -q "unrelated whitespace"; then
+if grep -q "unrelated whitespace" <<<"$(git -C "$D/main" show "origin/main:scripts/lib/dummy-helper.js" 2>/dev/null)"; then
   ok "feature's change landed on origin"
 else
   bad "feature's change did not reach origin — the broken worktree gate.js likely blocked it"

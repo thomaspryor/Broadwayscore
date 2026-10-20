@@ -276,7 +276,9 @@ elif [ -f "$snap8" ]; then
   echo "FAIL[8]: a recovered run must leave no refusal snapshot, found $snap8:"; cat "$snap8"; fail=1
 elif [ ! -f "$C8/session-work.txt" ]; then
   echo "FAIL[8]: the unpushed local commit's content was LOST by the recovery"; fail=1
-elif ! git -C "$C8" log --format=%s | grep -q "^merge session work$"; then
+# Capture first, THEN grep: under pipefail `git log | grep -q` flakes (grep exits on the
+# first match, git takes SIGPIPE, the pipeline reads as "not found"; BRO-5777 land refusals).
+elif ! grep -q "^merge session work$" <<<"$(git -C "$C8" log --format=%s)"; then
   echo "FAIL[8]: the unpushed MERGE COMMIT was rewritten away — recovery must merge, never rebase. Log:"; git -C "$C8" log --oneline | head -5; fail=1
 elif [ "$(git -C "$C8" rev-list --count HEAD..origin/main)" != "0" ]; then
   echo "FAIL[8]: checkout is still behind origin/main after recovery"; fail=1
