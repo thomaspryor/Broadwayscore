@@ -58,7 +58,7 @@ jobs:
     # confirm against the first few real runs' logged durations and adjust
     # (see BRO-2706 for the measured-cost-model precedent this should follow
     # if 20 turns out to be wrong in either direction).
-    timeout-minutes: 30 # BRO-5729: +verify-contamination-gate (2 audit runs, up to 600s each) in the live-data step
+    timeout-minutes: 40 # BRO-5788: 30->40, real runs reached the live-data step at 29m10s (Deepen 13m + monitor 6.5m), leaving no room for routing; BRO-5729: +verify-contamination-gate (2 audit runs, up to 600s each) in the live-data step
 
     steps:
       - name: Checkout repository
@@ -485,7 +485,8 @@ jobs:
       # "Commit and push audit" does earlier in the job cannot see these writes,
       # hence the second commit step.
       - name: Route live-data failures to owner-alert-router (BRO-5788)
-        if: always() && steps.livedata.outcome != 'skipped'
+        if: always() && contains(fromJSON('["success","failure"]'), steps.livedata.outcome)
+        continue-on-error: true # routing is best-effort; the live-data step stays the sole pass/fail
         timeout-minutes: 3
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
@@ -494,7 +495,8 @@ jobs:
 
       - name: Commit live-data alert ledger (BRO-5788)
         if: always()
-        timeout-minutes: 3
+        continue-on-error: true # a slow push must not red a job whose tests passed
+        timeout-minutes: 5
         run: |
           if git status --porcelain data/audit/alert-digest-queue.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl 2>/dev/null | grep -q .; then
             git config --local user.email "github-actions[bot]@users.noreply.github.com"

@@ -26,7 +26,8 @@ function planLiveDataRouting(failures, openKeys, parsed, exitCode) {
   const seen = new Set();
   for (const [fkey, f] of failures) {
     // Parent containers ("N subtests failed") duplicate their leaf failures.
-    if (f.failureType === 'subtestsFailed') continue;
+    // cancelledByParent leaves are one hang fanning out; the run-level condition covers it.
+    if (f.failureType === 'subtestsFailed' || f.failureType === 'cancelledByParent') continue;
     const conditionKey = conditionKeyFor(fkey);
     if (seen.has(conditionKey)) continue;
     seen.add(conditionKey);
