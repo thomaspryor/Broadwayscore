@@ -24,6 +24,8 @@ test("isFullTextWrongAuthorActive: a stale flag is ignored once the byline attes
   assert.equal(g.isFullTextWrongAuthorActive({ fullTextWrongAuthor: true, criticName: "Alix", fullText: text }), true);
   assert.equal(g.isFullTextWrongAuthorActive({ criticName: "Alix Cohen", fullText: text }), false);
   assert.equal(g.isFullTextWrongAuthorActive(null), false);
+  const ap = { fullTextWrongAuthor: true, _authorMismatch: "AP wire content detected in non-AP file: x", criticName: "Alix Cohen", fullText: text };
+  assert.equal(g.isFullTextWrongAuthorActive(ap), true);
 });
 
 test("duplicateOfInheritedFlag: own affirming CV beats a twin's nonReview, otherwise it still inherits", () => {

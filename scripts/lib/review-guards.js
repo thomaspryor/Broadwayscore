@@ -4651,6 +4651,9 @@ function setMultiProdGuardShows(shows) {
  */
 function isFullTextWrongAuthorActive(data) {
   if (!data || data.fullTextWrongAuthor !== true) return false;
+  // apply-audit-flags.js stamps this flag for AP wire text in a non-AP file; that text often prints a
+  // byline too, so byline attestation says nothing about it and the flag stands.
+  if (/^AP wire/i.test(String(data._authorMismatch || ''))) return true;
   return !require('./byline-attestation').isBylineAttestedInText(data.criticName, data.fullText);
 }
 
