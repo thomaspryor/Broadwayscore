@@ -6,6 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 const { chromium } = require('playwright');
+const { getScoreTierId, SCORE_TIER_LABELS } = require('../lib/score-tiers');
 
 const OUTPUT_DIR = path.join(__dirname, '../../public/og/social');
 fs.mkdirSync(OUTPUT_DIR, { recursive: true });
@@ -56,16 +57,16 @@ function footerHTML() {
   </div>`;
 }
 
-function tierClass(score) {
-  if (score >= 83) return 'gold';
-  if (score >= 75) return 'recommended';
-  if (score >= 65) return 'worth-seeing';
-  if (score >= 55) return 'skippable';
-  return 'stay-away';
+// CSS class per tier (score-tiers.js decides the tier, rounded like the site badge).
+const TIER_CLASS = { 'must-see': 'gold', recommended: 'recommended', 'worth-seeing': 'worth-seeing', skippable: 'skippable', 'stay-away': 'stay-away' };
+const TIER_ID_BY_CLASS = Object.fromEntries(Object.entries(TIER_CLASS).map(([id, cls]) => [cls, id]));
+
+function tierClass(score, category) {
+  return TIER_CLASS[getScoreTierId(Math.round(score), category)];
 }
 
 function tierLabel(tier) {
-  return { gold: 'Critical Gold', recommended: 'Recommended', 'worth-seeing': 'Worth Seeing', skippable: 'Skippable', 'stay-away': 'Critical Miss' }[tier];
+  return SCORE_TIER_LABELS[TIER_ID_BY_CLASS[tier]];
 }
 
 function scoreBadgeCSS() {
@@ -457,7 +458,7 @@ function dualScorePostHTML(height, config) {
     </div>
     <div class="rows">
     ${config.shows.map(s => {
-      const tier = tierClass(s.criticScore);
+      const tier = tierClass(s.criticScore, s.category);
       const ext = s.posterExt || 'webp';
       const posterUrl = `https://broadwayscorecard.com/images/shows/${s.posterId}/poster.${ext}`;
       const crown = tier === 'gold' ? `<div class="crown-wrap"><svg width="26" height="12" viewBox="0 0 24 14"><path d="M2,13 L5,5 L9,8 L12,1 L15,8 L19,5 L22,13 Z" fill="#FFD700" opacity="0.85"/></svg></div>` : '';
@@ -492,7 +493,7 @@ function dualScorePostHTML(height, config) {
 // ── Posts 12-16: Show Scorecards ──
 function scorecardHTML(height, config) {
   const { title, headline, score, reviews, audGrade, audScore, opened, venue, status, posterId } = config;
-  const tier = tierClass(score);
+  const tier = tierClass(score, config.category);
   const ext = config.posterExt || 'webp';
   const posterUrl = `https://broadwayscorecard.com/images/shows/${posterId}/poster.${ext}`;
   const posterHeight = Math.round(height * 0.58);

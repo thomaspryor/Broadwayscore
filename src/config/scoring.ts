@@ -1,6 +1,7 @@
 // Scoring Configuration - Version controlled methodology
 // Based on user's Google Sheet methodology
 // Change this file to update scoring rules site-wide
+import { DEFAULT_GOLD_THRESHOLD, RECOMMENDED_MIN, WORTH_SEEING_MIN, MIXED_MIN } from '../../scripts/lib/score-tiers';
 
 export const METHODOLOGY_VERSION = "2.2.0";
 export const METHODOLOGY_DATE = "2026-02-22";
@@ -249,19 +250,22 @@ export const CONFIDENCE_RULES = {
 // ===========================================
 // CRITIC SCORE LABEL THRESHOLDS
 // ===========================================
+// DATA labels (fantasy points keys). Thresholds are the Broadway/default bands
+// from scripts/lib/score-tiers.js; the 55-64 data label stays "Skippable" while
+// the site displays "Mixed" (score-tier-label-contract.test.mjs).
 export const CRITIC_LABEL_THRESHOLDS = {
-  'Critical Gold': 83,
-  'Recommended': 75,
-  'Worth Seeing': 65,
-  'Skippable': 55,
+  'Critical Gold': DEFAULT_GOLD_THRESHOLD,
+  'Recommended': RECOMMENDED_MIN,
+  'Worth Seeing': WORTH_SEEING_MIN,
+  'Skippable': MIXED_MIN,
   'Critical Miss': 0,
 };
 
 export function getCriticLabel(score: number): string {
-  if (score >= 83) return 'Critical Gold';
-  if (score >= 75) return 'Recommended';
-  if (score >= 65) return 'Worth Seeing';
-  if (score >= 55) return 'Skippable';
+  if (score >= DEFAULT_GOLD_THRESHOLD) return 'Critical Gold';
+  if (score >= RECOMMENDED_MIN) return 'Recommended';
+  if (score >= WORTH_SEEING_MIN) return 'Worth Seeing';
+  if (score >= MIXED_MIN) return 'Skippable';
   return 'Critical Miss';
 }
 

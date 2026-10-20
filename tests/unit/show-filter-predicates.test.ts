@@ -70,3 +70,26 @@ test('missing score matches no tier', () => {
     assert.equal(tier(s, ctx), false);
   }
 });
+
+// The West End badge needs 85 for Critical Gold (getGoldThreshold), so the
+// filter must agree: an 84 West End show shows a green "Recommended" badge and
+// must not appear under the Critical Gold filter.
+test('critic tier filter uses the market Gold threshold like the badge', () => {
+  const we = (score: number) => ({ ...show(score), category: 'west-end' } as ShowCardShow);
+  const owe = (score: number) => ({ ...show(score), category: 'off-west-end' } as ShowCardShow);
+  assert.equal(SCORE_TIER_CRITICAL_GOLD(we(84), ctx), false);
+  assert.equal(SCORE_TIER_RECOMMENDED(we(84), ctx), true);
+  assert.equal(SCORE_TIER_CRITICAL_GOLD(we(84.5), ctx), true, '84.5 displays as 85');
+  assert.equal(SCORE_TIER_CRITICAL_GOLD(owe(84), ctx), false);
+  assert.equal(SCORE_TIER_CRITICAL_GOLD(show(83), ctx), true, 'Broadway Gold stays 83');
+  for (const score of [54.6, 64.5, 82.5, 83, 84, 84.49, 84.5, 99.9]) {
+    const matches = TIERS.filter((tier) => tier(we(score), ctx));
+    assert.equal(matches.length, 1, `west-end ${score} matched ${matches.length} tiers`);
+  }
+});
+
+test('audience mode keeps the default bands (no market-specific audience tiers)', () => {
+  const audCtx: FilterPredicateCtx = { ...ctx, scoreMode: 'audience' };
+  const s = { id: 'x', category: 'west-end', audienceCombinedScore: 84 } as unknown as ShowCardShow;
+  assert.equal(SCORE_TIER_CRITICAL_GOLD(s, audCtx), true);
+});

@@ -10,25 +10,29 @@
 const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
+const { getScoreTierId, getScoreTierLabel } = require('./lib/score-tiers');
 
 const REVIEWS_DIR = path.join(__dirname, '../content/reviews');
 const OUTPUT_DIR = path.join(__dirname, '../public/og/reviews');
 
-// Score tier colors (mirrors ScoreBadge.tsx)
-function getScoreColor(score) {
-  if (score >= 83) return '#FFD700'; // Critical Gold
-  if (score >= 75) return '#22c55e'; // Recommended (green)
-  if (score >= 65) return '#14b8a6'; // Worth Seeing (teal)
-  if (score >= 55) return '#f59e0b'; // Skippable (amber)
-  return '#ef4444';                  // Critical Miss (red)
+// Score tier colors (mirror ScoreBadge.tsx). Which tier a score lands in, and
+// its label, come from scripts/lib/score-tiers.js (market-aware Gold, rounded
+// like the site badge). A review's optional `category` frontmatter selects the
+// market; absent means Broadway.
+const TIER_COLORS = {
+  'must-see': '#FFD700',     // Critical Gold
+  recommended: '#22c55e',    // Recommended (green)
+  'worth-seeing': '#14b8a6', // Worth Seeing (teal)
+  skippable: '#f59e0b',      // Mixed (amber)
+  'stay-away': '#ef4444',    // Critical Miss (red)
+};
+
+function getScoreColor(score, category) {
+  return TIER_COLORS[getScoreTierId(Math.round(score), category)];
 }
 
-function getScoreLabel(score) {
-  if (score >= 83) return 'Critical Gold';
-  if (score >= 75) return 'Recommended';
-  if (score >= 65) return 'Worth Seeing';
-  if (score >= 55) return 'Skippable';
-  return 'Critical Miss';
+function getScoreLabel(score, category) {
+  return getScoreTierLabel(score, category);
 }
 
 // Wrap text to fit within maxWidth (approximate character limit per line)
@@ -53,8 +57,8 @@ function escapeXml(s) {
 }
 
 function generateSvg(review) {
-  const scoreColor = getScoreColor(review.score);
-  const scoreLabel = getScoreLabel(review.score);
+  const scoreColor = getScoreColor(review.score, review.category);
+  const scoreLabel = getScoreLabel(review.score, review.category);
   const titleLines = wrapText(review.title, 35);
   const titleY = titleLines.length === 1 ? 280 : titleLines.length === 2 ? 250 : 220;
 
@@ -151,6 +155,7 @@ async function main() {
       show: data.show,
       venue: data.venue,
       score: Number(data.score),
+      category: data.category,
     });
 
     // Save SVG

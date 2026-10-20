@@ -12,8 +12,14 @@
  * "Skippable" where the site says "Mixed".
  *
  * ScoreBadge.getScoreTier (src/components/show-cards/ScoreBadge.tsx) still
- * spells out the 75/65/55 boundaries; tests/unit/score-tiers-parity.test.ts
+ * spells out the 75/65/55 boundaries; tests/unit/mobile-feed-website-parity.test.ts
  * fails if it and getScoreTierLabel ever disagree on any score or market.
+ *
+ * The social cards, review OG images, emails, newsletter, status page, brand
+ * tokens and the site's score-tier filter all take their tiers from here too.
+ * scripts/lib/score-tier-literals.test.mjs fails if a new copy appears: a Gold
+ * literal 83 next to a tier label, or "Skippable" in code, anywhere in scripts/
+ * or src/ outside this file and its listed exceptions.
  *
  * Keep this file pure (no fs, no path, no requires): it is bundled into client
  * components through score-buckets.ts, like scripts/lib/min-reviews.js.

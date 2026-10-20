@@ -14,6 +14,13 @@
  *   - src/app/brand/page.tsx (/brand public palette page)
  */
 
+// Tier labels and score ranges come from score-tiers.js (the module the site's
+// score-buckets.ts re-exports). Ranges are the Broadway/default bands; West End
+// Critical Gold starts at getGoldThreshold('west-end') = 85.
+const {
+  SCORE_TIER_LABELS, DEFAULT_GOLD_THRESHOLD, RECOMMENDED_MIN, WORTH_SEEING_MIN, MIXED_MIN,
+} = require('./score-tiers');
+
 const BRAND_COLORS = {
   surface: {
     default: '#0f0f14',   // Page background
@@ -39,34 +46,34 @@ const BRAND_COLORS = {
   // Score tier BADGE colors (used by .score-* CSS classes — what users actually see on scores)
   scores: {
     mustSee: {
-      label: 'Critical Gold',
-      range: '83-100',
+      label: SCORE_TIER_LABELS['must-see'],
+      range: `${DEFAULT_GOLD_THRESHOLD}-100`,
       gradient: 'linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%)',
       solid: '#FFD700',
       border: '#C8960E',
       text: '#1a1a1a',
     },
     great: {
-      label: 'Recommended',
-      range: '75-82',
+      label: SCORE_TIER_LABELS.recommended,
+      range: `${RECOMMENDED_MIN}-${DEFAULT_GOLD_THRESHOLD - 1}`,
       solid: '#22c55e',
       text: '#ffffff',
     },
     good: {
-      label: 'Worth Seeing',
-      range: '65-74',
+      label: SCORE_TIER_LABELS['worth-seeing'],
+      range: `${WORTH_SEEING_MIN}-${RECOMMENDED_MIN - 1}`,
       solid: '#14b8a6',
       text: '#ffffff',
     },
     tepid: {
-      label: 'Skippable',
-      range: '55-64',
+      label: SCORE_TIER_LABELS.skippable,
+      range: `${MIXED_MIN}-${WORTH_SEEING_MIN - 1}`,
       solid: '#d97706',
       text: '#1a1a1a',
     },
     skip: {
-      label: 'Critical Miss',
-      range: '0-54',
+      label: SCORE_TIER_LABELS['stay-away'],
+      range: `0-${MIXED_MIN - 1}`,
       solid: '#ef4444',
       text: '#ffffff',
     },

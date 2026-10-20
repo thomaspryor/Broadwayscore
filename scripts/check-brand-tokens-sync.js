@@ -61,7 +61,7 @@ const checks = [
   ['score must-see (Critical Gold)', getValue(score,   'must-see'), tokens.scores.mustSee.solid],
   ['score great (Recommended)',      getValue(score,   'great'),    tokens.scores.great.solid],
   ['score good (Worth Seeing)',      getValue(score,   'good'),     tokens.scores.good.solid],
-  ['score tepid (Skippable)',        getValue(score,   'tepid'),    tokens.scores.tepid.solid],
+  ['score tepid (Mixed)',            getValue(score,   'tepid'),    tokens.scores.tepid.solid],
   ['score skip (Critical Miss)',     getValue(score,   'skip'),     tokens.scores.skip.solid],
   ['score none (Pending)',           getValue(score,   'none'),     tokens.scores.pending.solid],
   ['status open',                    getValue(status,  'open'),     tokens.status.open],

@@ -14,6 +14,7 @@
  */
 
 const https = require('https');
+const { DEFAULT_GOLD_THRESHOLD, RECOMMENDED_MIN, WORTH_SEEING_MIN, MIXED_MIN } = require('./score-tiers');
 
 // ── Awards computation ─────────────────────────────────────────────
 
@@ -286,11 +287,13 @@ function fetchEntriesPage(url, key, useAdmin) {
 // src/lib/audience-grade-utils.ts getAudienceGrade; pinned by
 // tests/unit/fantasy-tier-parity.test.ts.
 
+// DATA labels: Broadway/default bands from score-tiers.js; 55-64 stays
+// "Skippable" because it keys the fantasy points map.
 function criticLabelForScore(score) {
-  if (score >= 83) return 'Critical Gold';
-  if (score >= 75) return 'Recommended';
-  if (score >= 65) return 'Worth Seeing';
-  if (score >= 55) return 'Skippable';
+  if (score >= DEFAULT_GOLD_THRESHOLD) return 'Critical Gold';
+  if (score >= RECOMMENDED_MIN) return 'Recommended';
+  if (score >= WORTH_SEEING_MIN) return 'Worth Seeing';
+  if (score >= MIXED_MIN) return 'Skippable';
   return 'Critical Miss';
 }
 

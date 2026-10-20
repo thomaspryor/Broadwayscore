@@ -14,6 +14,9 @@
  */
 import type { ShowCardShow } from '@/components/show-cards/types';
 import type { DateRange } from '@/lib/tony-seasons';
+import { getScoreTierId } from '../../scripts/lib/score-tiers';
+
+type ScoreTierId = ReturnType<typeof getScoreTierId>;
 
 export interface FilterPredicateCtx {
   /** Reconstructed Sets from AwardWinnerSets — O(1) lookup */
@@ -61,26 +64,26 @@ export const TIME_PERIOD_RANGE: FilterPredicate = (s, ctx) => {
 };
 
 // ─────────────── Score tier ───────────────
-// Uses the canonical buckets from src/config/score-buckets.ts. Reads the
-// score that matches the active scoreMode (critics vs audience).
-
-const inScoreRange = (min: number, max: number): FilterPredicate => (s, ctx) => {
-  const score = ctx.scoreMode === 'audience'
-    ? s.audienceCombinedScore
-    : s.criticScore?.score;
+// Reads the score that matches the active scoreMode (critics vs audience).
+// Tier boundaries come from scripts/lib/score-tiers.js (re-exported by
+// score-buckets.ts). Critics mode tiers by the show's market exactly like the
+// badge (West End Critical Gold starts at 85); audience mode has no
+// market-specific tiers, so it uses the default bands.
+const inScoreTier = (tierId: ScoreTierId): FilterPredicate => (s, ctx) => {
+  const audience = ctx.scoreMode === 'audience';
+  const score = audience ? s.audienceCombinedScore : s.criticScore?.score;
   if (typeof score !== 'number') return false;
   // Round to match the displayed badge (e.g. 82.94 shows as 83) — a raw
   // fractional score can fall in the open interval between two tiers
   // (54-55, 64-65, etc.) and match neither without this.
-  const rounded = Math.round(score);
-  return rounded >= min && rounded <= max;
+  return getScoreTierId(Math.round(score), audience ? undefined : s.category) === tierId;
 };
 
-export const SCORE_TIER_CRITICAL_GOLD = inScoreRange(83, 100);
-export const SCORE_TIER_RECOMMENDED = inScoreRange(75, 82);
-export const SCORE_TIER_WORTH_SEEING = inScoreRange(65, 74);
-export const SCORE_TIER_SKIPPABLE = inScoreRange(55, 64);
-export const SCORE_TIER_CRITICAL_MISS = inScoreRange(0, 54);
+export const SCORE_TIER_CRITICAL_GOLD = inScoreTier('must-see');
+export const SCORE_TIER_RECOMMENDED = inScoreTier('recommended');
+export const SCORE_TIER_WORTH_SEEING = inScoreTier('worth-seeing');
+export const SCORE_TIER_SKIPPABLE = inScoreTier('skippable');
+export const SCORE_TIER_CRITICAL_MISS = inScoreTier('stay-away');
 
 // ─────────────── Tickets & access ───────────────
 

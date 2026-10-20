@@ -15,6 +15,7 @@ const consensus = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/critic-consen
 const require = createRequire(import.meta.url);
 // The site's Critic Score (BRO-4313: this used to raw-mean assignedScore).
 const { computeSlimCriticScore } = require('./lib/slim-critic-score');
+const { getScoreTierLabel } = require('./lib/score-tiers');
 const outletRegistry = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/outlet-registry.json'), 'utf-8')).outlets || {};
 
 // Helper to calculate score
@@ -50,12 +51,8 @@ showsToCheck.forEach(showId => {
   const { cs } = computeSlimCriticScore(show, showReviews, outletRegistry);
   const avgScore = cs != null ? Math.round(cs) : 0;
 
-  let sentiment = 'Mixed';
-  if (avgScore >= 83) sentiment = 'Critical Gold';
-  else if (avgScore >= 75) sentiment = 'Great';
-  else if (avgScore >= 65) sentiment = 'Good';
-  else if (avgScore >= 55) sentiment = 'Tepid';
-  else if (avgScore < 55) sentiment = 'Skip';
+  // Same tier label the site badge shows (market-aware Gold).
+  const sentiment = cs != null ? getScoreTierLabel(cs, show.category) : 'No score';
 
   console.log('========================================');
   console.log(`${show.title}`);

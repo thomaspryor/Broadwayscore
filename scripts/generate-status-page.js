@@ -22,6 +22,7 @@ const { checkReadiness, getMissingT1T2Outlets, getThresholds } = require('./open
 const { getTier, TIER_WEIGHTS } = require('./lib/outlet-tiers');
 const { computeCriticScore } = require('./lib/compute-critic-score');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { MARKET_GOLD_THRESHOLD, DEFAULT_GOLD_THRESHOLD, RECOMMENDED_MIN, WORTH_SEEING_MIN, MIXED_MIN } = require('./lib/score-tiers');
 const { parseTimelineJsonl } = require('./lib/opening-night-timeline');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -379,12 +380,15 @@ function generateHTML() {
 <div class="refresh" id="refresh" role="status" aria-live="polite"></div>
 <div class="footer"><a href="https://broadwayscorecard.com">broadwayscorecard.com</a></div>
 <script>
-function scoreTier(s) {
+// Thresholds injected from scripts/lib/score-tiers.js (market-aware Gold, rounded like the site badge).
+function scoreTier(s, category) {
   if (s == null) return 'none';
-  if (s >= 83) return 'gold';
-  if (s >= 75) return 'green';
-  if (s >= 65) return 'teal';
-  if (s >= 55) return 'amber';
+  var r = Math.round(s);
+  var gold = (${JSON.stringify(MARKET_GOLD_THRESHOLD)})[category] || ${DEFAULT_GOLD_THRESHOLD};
+  if (r >= gold) return 'gold';
+  if (r >= ${RECOMMENDED_MIN}) return 'green';
+  if (r >= ${WORTH_SEEING_MIN}) return 'teal';
+  if (r >= ${MIXED_MIN}) return 'amber';
   return 'red';
 }
 function bcClass(s) { return { complete:'bc-complete', 'preview-sent':'bc-preview', 'preview-sent-earlier':'bc-preview', overdue:'bc-overdue', 'not-sent':'bc-notsent' }[s] || 'bc-waiting'; }
@@ -543,7 +547,7 @@ function renderShows(data) {
     // doesn't flash a big "84" for a show the public page correctly hides.
     const rawScore = s.siteScore != null ? s.siteScore : s.liveScore;
     const score = s.belowThreshold ? null : rawScore;
-    const tier = scoreTier(score);
+    const tier = scoreTier(score, s.category);
     const th = s.readiness.thresholds || {};
     const minR = th.minReviews || 12, minT1 = th.minT1 || 3, minT2 = th.minT2 || 3, minH = th.minHiConf || 8;
     function gate(v, req, label) {

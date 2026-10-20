@@ -6,7 +6,10 @@
  */
 
 import type { ScoreBucket } from '@/types/canonical';
-import { getGoldThreshold, getScoreTierId } from '../../scripts/lib/score-tiers';
+import {
+  getGoldThreshold, getScoreTierId,
+  DEFAULT_GOLD_THRESHOLD, RECOMMENDED_MIN, WORTH_SEEING_MIN, MIXED_MIN,
+} from '../../scripts/lib/score-tiers';
 
 // ===========================================
 // SCORE BUCKET DEFINITIONS
@@ -28,7 +31,7 @@ export const SCORE_BUCKETS: ScoreBucketConfig[] = [
     id: 'must-see',
     label: 'Critical Gold',
     shortLabel: 'Critical Gold',
-    minScore: 83,
+    minScore: DEFAULT_GOLD_THRESHOLD,
     maxScore: 100,
     color: 'text-amber-400',      // Gold
     bgColor: 'bg-amber-400/20',
@@ -38,8 +41,8 @@ export const SCORE_BUCKETS: ScoreBucketConfig[] = [
     id: 'recommended',
     label: 'Recommended',
     shortLabel: 'Recommended',
-    minScore: 75,
-    maxScore: 82,
+    minScore: RECOMMENDED_MIN,
+    maxScore: DEFAULT_GOLD_THRESHOLD - 1,
     color: 'text-emerald-400',    // Green
     bgColor: 'bg-emerald-400/20',
     description: 'Strong choice—most people will have a great time.',
@@ -48,8 +51,8 @@ export const SCORE_BUCKETS: ScoreBucketConfig[] = [
     id: 'worth-seeing',
     label: 'Worth Seeing',
     shortLabel: 'Worth Seeing',
-    minScore: 65,
-    maxScore: 74,
+    minScore: WORTH_SEEING_MIN,
+    maxScore: RECOMMENDED_MIN - 1,
     color: 'text-sky-400',        // Blue
     bgColor: 'bg-sky-400/20',
     description: 'Good, with caveats. Best if the premise/cast/genre is your thing.',
@@ -58,8 +61,8 @@ export const SCORE_BUCKETS: ScoreBucketConfig[] = [
     id: 'skippable',
     label: 'Mixed',
     shortLabel: 'Mixed',
-    minScore: 55,
-    maxScore: 64,
+    minScore: MIXED_MIN,
+    maxScore: WORTH_SEEING_MIN - 1,
     color: 'text-orange-500',     // Orange (darker, distinct from Must-See gold)
     bgColor: 'bg-orange-500/20',
     description: 'Critics are split — worth a look if the premise grabs you.',
@@ -69,7 +72,7 @@ export const SCORE_BUCKETS: ScoreBucketConfig[] = [
     label: 'Critical Miss',
     shortLabel: 'Critical Miss',
     minScore: 0,
-    maxScore: 54,
+    maxScore: MIXED_MIN - 1,
     color: 'text-red-400',        // Red
     bgColor: 'bg-red-400/20',
     description: 'Not recommended—save your time and money.',
@@ -252,9 +255,9 @@ export function applyCoverageFloor(
 // ===========================================
 
 export const CRITIC_LABEL_THRESHOLDS = {
-  Rave: 83,
-  Positive: 75,
-  Mixed: 55,
+  Rave: DEFAULT_GOLD_THRESHOLD,
+  Positive: RECOMMENDED_MIN,
+  Mixed: MIXED_MIN,
   Negative: 0,
 } as const;
 

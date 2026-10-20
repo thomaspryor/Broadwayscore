@@ -10,6 +10,7 @@
 const https = require('https');
 const { isLondonMarket } = require('./venue-classification');
 const BRAND = require('./brand-colors');
+const { getScoreTierId, SCORE_TIER_LABELS } = require('./score-tiers');
 const { showFormatTitle } = require('./show-format');
 
 // Canonical brand values — see scripts/lib/brand-colors.js for full palette.
@@ -59,21 +60,25 @@ function escapeHtml(str) {
   return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+// Badge colors per tier id. Thresholds and labels come from score-tiers.js
+// (the same module the site's score-buckets.ts re-exports).
+const EMAIL_TIER_COLORS = {
+  'must-see': { bg: '#FFD700', bgGradient: 'linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%)', text: '#1a1a1a' },
+  recommended: { bg: '#22c55e', text: '#ffffff' },
+  'worth-seeing': { bg: '#14b8a6', text: '#ffffff' },
+  skippable: { bg: '#d97706', text: '#1a1a1a' },
+  'stay-away': { bg: '#ef4444', text: '#ffffff' },
+};
+
 function getScoreColor(score, market) {
   if (score == null) return { bg: '#6b7280', text: '#ffffff', label: 'TBD' };
   // Round before comparing — the badge displays Math.round(score) and the live
   // site (ScoreBadge.getScoreTier) rounds before tiering, so a 64.69 must read
   // "Worth Seeing" (displays 65), not "Mixed". Raw thresholds made the email
   // disagree with both its own displayed score and the site (2026-06-30).
-  const s = Math.round(score);
-  // West End Critical Gold needs 85 (UK star ratings compress scores up), matching
-  // the site's getGoldThreshold(category). Broadway/default stays 83.
-  const goldThreshold = (market === 'west-end' || market === 'off-west-end') ? 85 : 83;
-  if (s >= goldThreshold) return { bg: '#FFD700', bgGradient: 'linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%)', text: '#1a1a1a', label: 'Critical Gold' };
-  if (s >= 75) return { bg: '#22c55e', text: '#ffffff', label: 'Recommended' };
-  if (s >= 65) return { bg: '#14b8a6', text: '#ffffff', label: 'Worth Seeing' };
-  if (s >= 55) return { bg: '#d97706', text: '#1a1a1a', label: 'Mixed' };
-  return { bg: '#ef4444', text: '#ffffff', label: 'Critical Miss' };
+  // West End Critical Gold needs 85 (getGoldThreshold in score-tiers.js).
+  const id = getScoreTierId(Math.round(score), market);
+  return { ...EMAIL_TIER_COLORS[id], label: SCORE_TIER_LABELS[id] };
 }
 
 // Single source of truth for the 4-tier breakdown bar + label row.

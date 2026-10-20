@@ -27,6 +27,7 @@ const {
 } = require('./lib/email-templates');
 const { applyUtm } = require('./lib/email-utm');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { getGoldThreshold } = require('./lib/score-tiers');
 
 // Wrap the HTML builder so every send/draft path picks up GA4/PostHog UTM
 // attribution (idempotent — see scripts/lib/email-utm.js). Campaign is the
@@ -239,7 +240,7 @@ function findRecentlyOpenedShows(shows, lookbackDays) {
  * Count scored reviews and compute rave/positive/mixed/negative for a show.
  * 4-tier breakdown matching the live site's ScoreBreakdownBar.getBreakdownTier:
  *   - Rounds score before comparing (a 69.6 displays as 70, so it's Positive)
- *   - Rave: >=83 Broadway, >=85 West End
+ *   - Rave: >= getGoldThreshold(market) (score-tiers.js: 83 Broadway, 85 West End)
  *   - Positive: >=70
  *   - Mixed: >=55
  *   - Negative: <55
@@ -251,7 +252,7 @@ function getReviewStats(reviews, showId, market, show, shows) {
   // ones written about THIS run so the email can say how many are new.
   const runs = show && Array.isArray(show.priorRuns) && show.priorRuns.length ? priorRunClassifier(show, shows) : null;
   const newReviewCount = runs && runs.windows.length ? showReviews.filter(runs.isCurrent).length : null;
-  const goldThreshold = isLondonMarket(market) ? 85 : 83;
+  const goldThreshold = getGoldThreshold(market);
   let rave = 0, positive = 0, mixed = 0, negative = 0;
 
   for (const r of showReviews) {

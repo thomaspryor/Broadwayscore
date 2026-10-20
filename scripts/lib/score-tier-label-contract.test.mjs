@@ -30,7 +30,7 @@ const read = p => readFileSync(join(ROOT, p), 'utf8');
 
 test('DATA/wire label stays "Skippable" (fantasy contract)', () => {
   // scoring.ts getCriticLabel feeds engine.ts criticScore.label and the fantasy scorer.
-  assert.match(read('src/config/scoring.ts'), /score >= 55\) return 'Skippable'/,
+  assert.match(read('src/config/scoring.ts'), /score >= MIXED_MIN\) return 'Skippable'/,
     'scoring.ts getCriticLabel must still emit "Skippable" — renaming desyncs the fantasy data');
   // The same wire label is the key in the fantasy points map. Since the
   // 2026-27 relaunch the map lives in fantasy-season.json (one file read by
@@ -40,7 +40,7 @@ test('DATA/wire label stays "Skippable" (fantasy contract)', () => {
   assert.match(read('src/config/fantasy.ts'), /CRITIC_SCORE_POINTS[^\n]*seasonConfig\.scoring\.criticScore/,
     'fantasy.ts CRITIC_SCORE_POINTS must come from fantasy-season.json (the file the guard above pins)');
   // The shared fantasy scorer emits the same wire key.
-  assert.match(read('scripts/lib/fantasy-helpers.js'), /score >= 55\) return 'Skippable'/,
+  assert.match(read('scripts/lib/fantasy-helpers.js'), /score >= MIXED_MIN\) return 'Skippable'/,
     'fantasy-helpers.js criticLabelForScore must still emit "Skippable" — it keys the points map for the weekly scorer');
   assert.match(read('scripts/compute-fantasy-scores.js'), /criticLabelForScore/,
     'compute-fantasy-scores.js must use the shared criticLabelForScore (no local copy to drift)');

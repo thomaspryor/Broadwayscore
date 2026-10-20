@@ -28,6 +28,8 @@ const cjsRequire = createRequire(import.meta.url);
 // pills agree with the site and the digest emails — `special` is EVENT, not
 // a raw uppercased type string.
 const { showFormatTitle, showFormatLabel, resolveShowFormat } = cjsRequire('../lib/show-format.js');
+// Tier thresholds + display labels (market-aware Gold) shared with the site's score-buckets.ts.
+const { getScoreTierId, SCORE_TIER_LABELS } = cjsRequire('../lib/score-tiers.js');
 const { buildUnsubscribeUrl, resolveNewsletterEdition, buildAccountCtaHtml } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
 const { reconcileClosure, reconcileClosureDateWithClosingDate } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
 const { compareOpeningStories } = cjsRequire(path.join(repo, 'scripts/lib/opening-story-order'));
@@ -321,14 +323,21 @@ function getImage(show) {
   return null;
 }
 
+// Badge styling per tier. The local ids (gold/rec/worth/skip/miss) key
+// TIER_COLORS and badge-render.mjs; which tier a score lands in comes from
+// score-tiers.js, rounded like the site badge.
+const NEWSLETTER_TIER_STYLE = {
+  'must-see': { id: 'gold', bg: 'linear-gradient(135deg,#DAA520 0%,#FFD700 30%,#FFF0A0 50%,#FFD700 70%,#DAA520 100%)', solid: '#FFD700', text: '#1a1a1a', border: '#C8960E', glow: '0 0 24px rgba(218,165,32,0.55),0 4px 12px rgba(0,0,0,0.3)' },
+  recommended: { id: 'rec', bg: '#22c55e', solid: '#22c55e', text: '#fff', glow: '0 2px 8px rgba(34,197,94,0.3)' },
+  'worth-seeing': { id: 'worth', bg: '#14b8a6', solid: '#14b8a6', text: '#fff', glow: '0 2px 8px rgba(20,184,166,0.3)' },
+  skippable: { id: 'skip', bg: '#d97706', solid: '#d97706', text: '#1a1a1a', glow: '0 2px 8px rgba(217,119,6,0.3)' },
+  'stay-away': { id: 'miss', bg: '#ef4444', solid: '#ef4444', text: '#fff', glow: '0 2px 8px rgba(239,68,68,0.3)' },
+};
 function scoreTier(score, category) {
   if (score == null) return null;
-  const goldMin = (category === 'west-end' || category === 'off-west-end') ? 85 : 83;
-  if (score >= goldMin) return { id: 'gold', label: 'Critical Gold', bg: 'linear-gradient(135deg,#DAA520 0%,#FFD700 30%,#FFF0A0 50%,#FFD700 70%,#DAA520 100%)', solid: '#FFD700', text: '#1a1a1a', border: '#C8960E', glow: '0 0 24px rgba(218,165,32,0.55),0 4px 12px rgba(0,0,0,0.3)' };
-  if (score >= 75) return { id: 'rec', label: 'Recommended', bg: '#22c55e', solid: '#22c55e', text: '#fff', glow: '0 2px 8px rgba(34,197,94,0.3)' };
-  if (score >= 65) return { id: 'worth', label: 'Worth Seeing', bg: '#14b8a6', solid: '#14b8a6', text: '#fff', glow: '0 2px 8px rgba(20,184,166,0.3)' };
-  if (score >= 55) return { id: 'skip', label: 'Skippable', bg: '#d97706', solid: '#d97706', text: '#1a1a1a', glow: '0 2px 8px rgba(217,119,6,0.3)' };
-  return { id: 'miss', label: 'Critical Miss', bg: '#ef4444', solid: '#ef4444', text: '#fff', glow: '0 2px 8px rgba(239,68,68,0.3)' };
+  const tierId = getScoreTierId(Math.round(score), category);
+  const style = NEWSLETTER_TIER_STYLE[tierId];
+  return { id: style.id, label: SCORE_TIER_LABELS[tierId], ...style };
 }
 function isGoldTier(score, category) { return scoreTier(score, category)?.id === 'gold'; }
 

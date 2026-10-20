@@ -22,6 +22,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { getScoreTierId, getScoreTierLabel, getGoldThreshold } = require('./lib/score-tiers');
 
 const ROOT = path.resolve(__dirname, '..');
 const IMAGES_DIR = path.join(ROOT, 'public', 'images', 'shows');
@@ -37,22 +38,18 @@ const SCORE_COLORS = {
   tbd:     { bg: '#2a2a2a', text: '#9ca3af', label: '#6b7280' },
 };
 
-function getScoreStyle(score, reviewCount) {
+// score-tiers.js decides the tier (market-aware Gold, rounded like the site
+// badge); this file only owns the card colors.
+const TIER_COLOR_KEY = { 'must-see': 'mustSee', recommended: 'great', 'worth-seeing': 'good', skippable: 'tepid', 'stay-away': 'skip' };
+
+function getScoreStyle(score, reviewCount, category) {
   if (!score || reviewCount < 5) return SCORE_COLORS.tbd;
-  if (score >= 83) return SCORE_COLORS.mustSee;
-  if (score >= 75) return SCORE_COLORS.great;
-  if (score >= 65) return SCORE_COLORS.good;
-  if (score >= 55) return SCORE_COLORS.tepid;
-  return SCORE_COLORS.skip;
+  return SCORE_COLORS[TIER_COLOR_KEY[getScoreTierId(Math.round(score), category)]];
 }
 
-function getScoreLabel(score) {
+function getScoreLabel(score, category) {
   if (!score) return 'Awaiting Reviews';
-  if (score >= 83) return 'Critical Gold';
-  if (score >= 75) return 'Recommended';
-  if (score >= 65) return 'Worth Seeing';
-  if (score >= 55) return 'Skippable';
-  return 'Critical Miss';
+  return getScoreTierLabel(score, category);
 }
 
 /**
@@ -104,9 +101,9 @@ const BASE_STYLES = `
  * Generate a "show" type social card
  */
 function generateShowHTML(data) {
-  const { title, score, reviewCount, venue, showId } = data;
-  const style = getScoreStyle(score, reviewCount);
-  const label = getScoreLabel(score);
+  const { title, score, reviewCount, venue, showId, category } = data;
+  const style = getScoreStyle(score, reviewCount, category);
+  const label = getScoreLabel(score, category);
   const imageData = showId ? getShowImageBase64(showId) : null;
   const displayScore = score && reviewCount >= 5 ? Math.round(score) : null;
   const titleSize = title.length > 25 ? '54px' : '64px';
@@ -115,7 +112,7 @@ function generateShowHTML(data) {
     ? `<img src="${imageData}" style="width:280px;height:420px;border-radius:16px;object-fit:cover;box-shadow:0 25px 50px -12px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.1);">`
     : `<div style="width:280px;height:420px;background:#1a1a1a;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:100px;border:1px solid rgba(255,255,255,0.1);">&#127917;</div>`;
 
-  const scoreBadgeShadow = displayScore && displayScore >= 83
+  const scoreBadgeShadow = displayScore && displayScore >= getGoldThreshold(category)
     ? 'box-shadow:0 0 40px rgba(212,175,55,0.4);'
     : 'box-shadow:0 4px 24px rgba(0,0,0,0.3);';
 
@@ -194,10 +191,10 @@ function generateBoxOfficeHTML(data) {
  */
 function generatePicksHTML(data) {
   const { headline, shows } = data;
-  // shows: [{ title, score, reviewCount, showId }]
+  // shows: [{ title, score, reviewCount, showId, category? }]
 
   const cardsHTML = shows.slice(0, 4).map(show => {
-    const style = getScoreStyle(show.score, show.reviewCount);
+    const style = getScoreStyle(show.score, show.reviewCount, show.category);
     const imageData = show.showId ? getShowImageBase64(show.showId) : null;
     const displayScore = show.score && show.reviewCount >= 5 ? Math.round(show.score) : null;
     const cardWidth = shows.length <= 3 ? '280px' : '220px';

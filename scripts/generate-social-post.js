@@ -73,6 +73,25 @@ const _outletRegistryData = loadJSON('outlet-registry.json');
 const _outletRegistry = _outletRegistryData?.outlets || _outletRegistryData || {};
 
 /**
+ * Attach each show's category to social-card image data so the card's tier
+ * color/label use the market's Gold threshold (West End is 85, see
+ * scripts/lib/score-tiers.js).
+ */
+function withShowCategories(data) {
+  if (!data) return data;
+  const needsLookup = data.showId || Array.isArray(data.shows);
+  if (!needsLookup) return data;
+  const categoryById = {};
+  for (const s of loadShows()) categoryById[s.id] = s.category;
+  const out = { ...data };
+  if (out.showId && out.category == null) out.category = categoryById[out.showId];
+  if (Array.isArray(out.shows)) {
+    out.shows = out.shows.map(s => (s && s.showId && s.category == null ? { ...s, category: categoryById[s.showId] } : s));
+  }
+  return out;
+}
+
+/**
  * Compute per-show scores using the shared engine-parity module.
  * Pass FULL review objects (not projections) so designation bumps, content-tier confidence
  * weights, dedup by outlet, and top-critic promotion all work correctly.
@@ -638,7 +657,7 @@ async function main() {
 
     imagePath = await generateSocialImage({
       type: content.imageType,
-      data: content.imageData,
+      data: withShowCategories(content.imageData),
     });
   } catch (err) {
     console.error('[Social] Image generation failed:', err.message);
@@ -700,3 +719,5 @@ if (require.main === module) main().catch(err => {
   console.error('[Social] Fatal error:', err);
   process.exit(1);
 });
+
+module.exports = { withShowCategories };
