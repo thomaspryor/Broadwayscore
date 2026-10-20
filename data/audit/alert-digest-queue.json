@@ -553,5 +553,36 @@
       }
     ],
     "queuedAt": "2026-10-20T16:09:19.773Z"
+  },
+  {
+    "conditionKey": "land:land/tb-allowance-8",
+    "title": "Landing blocked: rebase red on land/tb-allowance-8",
+    "description": "land.yml did not land land/tb-allowance-8: the rebase gate went red at d013b7d2fa. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/tb-allowance-8 @ d013b7d2fa (origin/land/tb-allowance-8) → origin/main @ bbe86f8c4a [land] train: + land/job/linear-BRO-5769-mvgtib3k @ 53d3a6d7b9 (6 commit(s)) [land] train: + land/bro-5781-report-back @ dbf8fc38c5 (1 commit(s)) [land] attempt 1/3: rebased onto bbe86f8c4a, 19 file(s) changed (train: land/tb-allowance-8 + land/job/linear-BRO-5769-mvgtib3k, land/bro-5781-report-back) —  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39452654977",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/tb-allowance-8"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "d013b7d2fac2fe2e3c480fe54dbd270ef9399315"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39452654977"
+      }
+    ],
+    "queuedAt": "2026-10-20T16:37:05.534Z"
   }
 ]
