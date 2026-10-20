@@ -25,7 +25,8 @@ const HOUR = 3600000;
 // Tiered, unlike BWW's all-or-nothing 7-day exemption: replaying poller run
 // 39249486257 against it skipped only 5 of 15 misses, because 10 of the 15
 // opened 3-6 days earlier. TR publishes its roundup after the press night
-// reviews, so the first 2 days stay uncached; after that a miss holds for 6h
+// reviews, so the first 2 days (from UTC midnight of openingDate, i.e. ~28h after
+// a 19:30 London press night) stay uncached; after that a miss holds for 6h
 // (still inside the 7-day window), then 24h. An unknown opening date holds 12h.
 const HOT_DAYS = 2;
 const WINDOW_DAYS = 7;
@@ -57,6 +58,9 @@ function isTrDiscoveryInCooldown(show, entries, now = Date.now()) {
 /** Record a miss, only when the WP search answered (not on a fetch failure). */
 function recordTrMiss(show, stats, ledgerPath) {
   if (!show || !show.id || !stats || !stats.searchCompleted) return false;
+  // Inside the hot window the cooldown is 0, so a row would never be read:
+  // skip it rather than append one per poll.
+  if (cooldownMsFor(show, Date.now()) === 0) return false;
   recordRoundupMiss(trMissKey(show.id), ledgerPath);
   return true;
 }

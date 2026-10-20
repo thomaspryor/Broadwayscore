@@ -98,6 +98,9 @@ async function discoverTrRoundupHtml(show, opts = {}) {
       // Ghost" -> hunger) is often another show; require every title word.
       const roundupLink = pickTheatreReviewsRoundup(posts, show.title);
       const roundup = roundupLink ? posts.find(p => p.link === roundupLink) : null;
+      // A roundup exists: if its page then fails to fetch or validate, that is
+      // NOT a miss and must not be negative-cached.
+      if (roundup) stats.searchCompleted = false;
       if (roundup) {
         log(`    WP API found: ${roundup.link}`);
         const pageResult = await fetchPage(roundup.link, { renderJs: false });

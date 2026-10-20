@@ -9,7 +9,6 @@ const { isTrDiscoveryInCooldown, recordTrMiss, readRoundupMisses, trMissKey } = 
 const { isInRoundupMissCooldown, lastMissForShow } = require('./lib/bww-roundup-persistence');
 
 const DAY = 86400000;
-const now = Date.parse('2026-10-20T12:00:00Z');
 const old = { id: 'dirty-dancing-west-end-2022', title: 'Dirty Dancing', venue: 'Dominion', openingDate: '2022-06-01' };
 const fresh = { id: 'new-show-west-end-2026', title: 'New Show', venue: 'Soho Place', openingDate: '2026-10-18' };
 const ledger = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'trmiss-')), 'ledger.jsonl');
@@ -44,9 +43,11 @@ const t = (name, fn) => { fn(); n++; console.log('ok -', name); };
     try { assert.strictEqual(isTrDiscoveryInCooldown(old, entries, Date.now()), false); } finally { delete process.env.TR_MISS_CACHE_DISABLED; }
   });
   t('show with no prior miss is not in cooldown', () => assert.strictEqual(isTrDiscoveryInCooldown({ ...old, id: 'other' }, entries), false));
-  t('show opened <2 days ago is never in cooldown', () => {
+  t('show opened <2 days ago: no row written, never in cooldown', () => {
     const hot = { ...fresh, openingDate: new Date(Date.now() - 12 * 3600000).toISOString().slice(0, 10) };
-    recordTrMiss(hot, stats, ledger);
+    const before = readRoundupMisses(ledger).length;
+    assert.strictEqual(recordTrMiss(hot, stats, ledger), false);
+    assert.strictEqual(readRoundupMisses(ledger).length, before);
     assert.strictEqual(isTrDiscoveryInCooldown(hot, readRoundupMisses(ledger), Date.now()), false);
   });
   t('show opened 4 days ago: 6h cooldown, expires after', () => {
@@ -66,9 +67,19 @@ const t = (name, fn) => { fn(); n++; console.log('ok -', name); };
   t('TR miss does not put BWW lookup of same show in cooldown', () =>
     assert.strictEqual(isInRoundupMissCooldown(old, lastMissForShow(old.id, entries)), false));
 
-  // hit path unaffected: a found roundup still returns html
-  const html = '<html>' + 'Dirty Dancing ⭑⭑⭑⭑ review '.repeat(80) + '</html>';
+  // WP search finds a roundup but its page fetch fails: NOT a miss
+  const link = 'https://theatre.reviews/reviews-roundup/dirty-dancing-reviews/';
+  const found = { fetchPage: async () => { throw new Error('bd timeout'); }, fetchJSON: async () => [{ link, title: { rendered: 'Dirty Dancing reviews' } }], log: () => {} };
+  const s2 = {};
+  await discoverTrRoundupHtml(old, { ...found, stats: s2 });
+  t('roundup found by search but page fetch fails => searchCompleted false, no miss', () => {
+    assert.strictEqual(s2.searchCompleted, false);
+    assert.strictEqual(recordTrMiss({ ...old, id: 'fetch-fail-show' }, s2, ledger), false);
+  });
+
+  // happy path: guessed URL returns a valid roundup page
+  const html = '<html>' + 'Dirty Dancing \u2b51\u2b51\u2b51\u2b51 review '.repeat(80) + '</html>';
   const hit = await discoverTrRoundupHtml(old, { fetchPage: async () => ({ content: html, source: 'test' }), fetchJSON: async () => [], log: () => {}, stats: {} });
-  t('found roundup path still returns (or is rejected by guard, not crashed)', () => assert.ok(hit === null || hit.html));
+  t('guessed URL hit returns html (or a guard rejection, never a miss record)', () => assert.ok(hit === null || (hit.html && hit.url)));
   console.log(`\n${n} passed`);
 })().catch(e => { console.error('FAIL', e); process.exit(1); });
