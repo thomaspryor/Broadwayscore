@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5799",
-  "planId": "a138cc4d-64b6-49a3-8b48-6211fe6069e2",
-  "status": "partial",
+  "planId": "81fdfe50-162f-4835-bbf3-2d0a622f40ec",
+  "status": "pending",
   "submitter": {
     "name": null,
     "email": null
@@ -17,19 +17,10 @@
         "type": "review-field-edit",
         "file": "harry-potter-and-the-cursed-child-one-part-west-end-2026/front-row-center--tulis-mccall.json",
         "field": "wrongProduction",
-        "oldValue": null,
+        "oldValue": false,
         "newValue": true,
         "description": "2018 Broadway production review (Front Row Center, dated 2018-04-30) filed under the 2026 West End one-part run; no Broadway Cursed Child show exists to move it to, so it is flagged wrongProduction like the sibling 2016 Deadline review already is."
       }
     ]
-  },
-  "executedAt": "2026-10-20T22:02:13.980Z",
-  "results": [
-    {
-      "action": "review-field-edit",
-      "ok": false,
-      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
-    }
-  ],
-  "executedIn": "ci"
+  }
 }
