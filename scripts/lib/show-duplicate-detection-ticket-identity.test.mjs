@@ -186,3 +186,11 @@ test('ticketIdentityKeys dedupes the numeric field against its own URL', () => {
   const keys = ticketIdentityKeys(AMAZE_2025);
   assert.deepEqual([...keys], ['todaytix:44453'], 'one listing must produce exactly one key');
 });
+
+// BRO-5796: the id writers give a closed row's listing to a live same-title
+// row (TodayTix moved the id on), so the audit must not flag that pair.
+test('a pair with a closed member is not reported', () => {
+  const closed = { id: 'death-becomes-her-2024', title: 'Death Becomes Her', status: 'closed', todaytixId: 34895 };
+  const tour = { id: 'death-becomes-her-tour-2026', title: 'Death Becomes Her', status: 'previews', todaytixId: 34895 };
+  assert.deepEqual(findSharedTicketIdentityDupes([closed, tour]), []);
+});

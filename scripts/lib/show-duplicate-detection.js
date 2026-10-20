@@ -300,6 +300,9 @@ function findSharedTicketIdentityDupes(shows) {
         const a = members[i];
         const b = members[j];
         if (a.id === b.id) continue;
+        // A closed row's listing id has moved on; the id writers treat it as
+        // free (findTicketIdentityHolder), so the audit must too (BRO-5796).
+        if (a.status === 'closed' || b.status === 'closed') continue;
         if (isDeclaredTransferPair(a, b)) continue;
         if (!titlesAgree(a, b)) continue; // recycled listing id, not one production
         const pairKey = [a.id, b.id].sort().join('\0');
