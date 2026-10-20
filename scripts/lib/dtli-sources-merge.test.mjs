@@ -27,11 +27,16 @@ test('row with neither source nor sources gets sources only; source stays unset'
   assert.equal(r.source, undefined);
 });
 
-test('existing real excerpt is untouched and sources unchanged', () => {
+test('existing real excerpt is kept but the row still gets dtli provenance', () => {
   const r = { source: 'a', sources: ['a'], dtliExcerpt: 'y'.repeat(30) };
-  assert.equal(applyDtliExcerpt(r, dtli), false);
-  assert.deepEqual(r.sources, ['a']);
+  assert.equal(applyDtliExcerpt(r, dtli), true);
+  assert.deepEqual(r.sources, ['a', 'dtli']);
   assert.equal(r.dtliExcerpt, 'y'.repeat(30));
+});
+
+test('excerpt and dtli both already present is a no-op', () => {
+  const r = { source: 'a', sources: ['a', 'dtli'], dtliExcerpt: 'y'.repeat(30) };
+  assert.equal(applyDtliExcerpt(r, dtli), false);
 });
 
 test('no duplicate dtli entry', () => {
