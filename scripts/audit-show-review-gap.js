@@ -266,6 +266,7 @@ const { auditExitDecision } = require('./lib/aggregator-gap-audit-exit');
 // (task #1073): registrableHost/hostOf moved there VERBATIM so the canonical
 // classifyReviewUrl and this audit share one implementation.
 const { classifyReviewUrl, classifyGapCandidateUrl, registrableHost, hostOf } = require('./lib/non-review-url-patterns');
+const { hasReviewEvidence } = require('./lib/serp-review-evidence');
 const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
 const { syndicatedReprintOf } = require('./lib/syndicated-reprint-match'); // BRO-5489
 const { isSyndicationHost } = require('./lib/syndication-canonical');
@@ -682,6 +683,13 @@ function isOwnVenueUrl(u, show) {
 function acceptSerpCensusResult(sr, { show, showInfo }) {
   const u = sr && (sr.url || sr.link);
   if (!u || !isReviewUrl(u)) return null;
+  // BRO-5732: fail closed. An unregistered host must show review-shaped evidence
+  // (url/title/snippet), not merely avoid every known-bad pattern.
+  if (!getKnownDomainMap().has(registrableHost(hostOf(u))) && !hasReviewEvidence(sr)) {
+    candidateRejections.count++;
+    candidateRejections.byReason['no-review-evidence'] = (candidateRejections.byReason['no-review-evidence'] || 0) + 1;
+    return null;
+  }
   const tokens = titleTokens(show.title);
   if (!urlMatchesShow(u, tokens)) return null;
   // Different-work guard (BRO-4540). urlMatchesShow tolerates ONE missing token

@@ -242,7 +242,7 @@ test('acceptSerpCensusResult keeps an older URL when priorRuns declares that yea
   const old2015 = {
     url: 'https://theidlewoman.net/2015/07/29/the-car-man-matthew-bourne/',
     title: 'The Car Man — Matthew Bourne',
-    snippet: 'Sadler’s Wells, 2015.',
+    snippet: 'Review of Matthew Bourne at Sadler’s Wells, 2015.',
   };
   assert.ok(acceptSerpCensusResult(old2015, { show: withPrior, showInfo: CAR_MAN_INFO }));
 });
@@ -893,4 +893,27 @@ test('BRO-5655: reserveStalestSlots survives duplicate ids without throwing', as
   const list = [{ id: 'a' }, { id: 'a' }, { id: 'b' }];
   const out = reserveStalestSlots(list, new Map([['b', 1]]));
   assert.ok(out.targets.length >= 2);
+});
+
+// BRO-5732: the census fails closed on unregistered hosts. 24-ore.com's
+// photo-release post (BRO-5134) was dropped by a one-off URL pattern; a new
+// non-review shape on a new host must not need another pattern.
+test('acceptSerpCensusResult requires review evidence from an unregistered host', () => {
+  const show = { id: 'midnight-off-broadway-2026', title: 'Midnight', category: 'off-broadway' };
+  const info = { title: 'Midnight', cast: [], creativeNames: [] };
+  const news = {
+    url: 'https://unknown-news-site.example/en/todrick-halls-midnight-opens-after-one-week-delay/',
+    title: "Todrick Hall's Midnight opens after one week delay",
+    snippet: 'The off-Broadway musical Midnight announced new opening dates.',
+  };
+  assert.equal(acceptSerpCensusResult(news, { show, showInfo: info }), null);
+  const review = { ...news, title: "Midnight review: Todrick Hall's musical", url: 'https://unknown-news-site.example/en/midnight-review/' };
+  assert.ok(acceptSerpCensusResult(review, { show, showInfo: info }));
+});
+
+test('hasReviewEvidence reads url, title and snippet', () => {
+  const { hasReviewEvidence } = require('./lib/serp-review-evidence.js');
+  assert.equal(hasReviewEvidence({ url: 'https://x.example/trainspotting-the-musical-review/' }), true);
+  assert.equal(hasReviewEvidence({ url: 'https://x.example/a', title: 'Great show ★★★★' }), true);
+  assert.equal(hasReviewEvidence({ url: 'https://x.example/first-photos-released', title: 'First photos released', snippet: 'See them' }), false);
 });
