@@ -1319,5 +1319,36 @@
     "tracked": "BRO-5168",
     "fields": [],
     "queuedAt": "2026-10-20T00:59:01.819Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5732-cloudmd-headroom",
+    "title": "Landing blocked: rebase red on land/bro-5732-cloudmd-headroom",
+    "description": "land.yml did not land land/bro-5732-cloudmd-headroom: the rebase gate went red at eb2e066cc5. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5732-cloudmd-headroom @ eb2e066cc5 (origin/land/bro-5732-cloudmd-headroom) → origin/main @ 3475590920 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 4afbe80a25: Rebasing (1/2) error: could not apply e934d026055... BRO-5732: CLOUD.md byte-cap headroom test and trim hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm <conflicted_fil Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39350284066",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5732-cloudmd-headroom"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "eb2e066cc5f04d3c13eebbc22ef18ecc3b5eda13"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39350284066"
+      }
+    ],
+    "queuedAt": "2026-10-20T01:08:21.790Z"
   }
 ]
