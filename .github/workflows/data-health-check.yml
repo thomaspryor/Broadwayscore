@@ -936,6 +936,22 @@ jobs:
         timeout-minutes: 5
         run: node scripts/audit-cv-wrongproduction-lifetime.js
 
+      # BRO-5561: roundup / Playbill Verdict review links we hold nowhere (BRO-5557
+      # audit). Advisory first (CLAUDE.md §19): no --strict and continue-on-error,
+      # so a wrong-production archive page shows in the log without reddening the cron.
+      - name: Checkout aggregator-archive (roundup link coverage)
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Roundup link coverage (advisory)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 5
+        run: node scripts/audit-roundup-link-coverage.js
+
       # BRO-80: unopened-show prior-run / readmission sweep. The pre-opening
       # temporal gate (review-guards.js isPrematureReviewForUnopenedShow) is a
       # TEMPORARY exclusion - it only fires while a show's status is
