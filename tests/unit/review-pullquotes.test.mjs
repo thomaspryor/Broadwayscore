@@ -95,3 +95,12 @@ test('a clean aggregator excerpt is recoverable through the same path', () => {
   const q = recoverableQuote(data, 'Some Show', 'open');
   assert.ok(q && q.includes('triumph'), `expected a quote, got ${q}`);
 });
+
+test('a quote cut off on a trailing comma is not shipped', () => {
+  const data = {
+    showId: 'some-show-2019', outletId: 'timeout-london',
+    pullQuote: 'There is a lot of random wandering on and off. Even with Wilton giving it both barrels and a decent,',
+  };
+  assert.equal(finalizePullQuote({ ...data }, 'Some Show', 'closed'), null);
+  assert.equal(recoverableQuote({ ...data }, 'Some Show', 'closed'), null);
+});

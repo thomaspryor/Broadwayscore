@@ -1292,6 +1292,8 @@ function finalizePullQuote(data, showTitle, showStatus) {
   if (quote && /(^|\s)(he|she|it|we|they|who|wasn|wouldn|couldn|didn|don|isn|aren|won|haven|hasn|shouldn|mustn|weren|hadn|I)['\u2019]$/.test(quote)) {
     return null;
   }
+  // A quote cut off on a comma or colon is a fragment ("... and a decent,"), never a finished thought.
+  if (quote && /[,:;]\s*$/.test(quote)) return null;
   return quote;
 }
 
