@@ -1094,9 +1094,9 @@ async function main() {
   writeLastPromotionFile(promoted);
 
   // An over-cap abort or failed save must never claim successful promotions.
-  // Regional reviewCount is the actual threshold count; other sources omit it.
+  // Regional and aggregator-roundup reviewCount is the actual threshold count; other sources omit it.
   for (const p of promoted) {
-    logEntry({ kind: 'promote', title: p.candidate.title, venue: p.candidate.venue, id: p.entry.id, confirmationSource: p.confirmationSource, reviewCount: p.candidate.category === 'regional' ? p.candidate.reviewCount : undefined });
+    logEntry({ kind: 'promote', title: p.candidate.title, venue: p.candidate.venue, id: p.entry.id, confirmationSource: p.confirmationSource, reviewCount: (p.candidate.category === 'regional' || p.confirmationSource === 'aggregator-roundup') ? p.candidate.reviewCount : undefined });
   }
 
   // Rewrite staging file with only the unpromoted candidates.
