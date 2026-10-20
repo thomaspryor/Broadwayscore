@@ -1,28 +1,29 @@
 {
-  "updatedAt": "2026-10-19T08:04:45.879Z",
-  "scanned": 2643,
-  "showsWithViolations": 118,
-  "totalViolations": 150,
-  "newSinceLastRun": 1,
+  "updatedAt": "2026-10-20T07:48:35.169Z",
+  "scanned": 2645,
+  "showsWithViolations": 116,
+  "totalViolations": 147,
+  "newSinceLastRun": 4,
   "handled": {
-    "temporal-override-low-confidence": 774,
-    "not-shipped": 63,
-    "duplicate-not-shipped": 52,
-    "rebuild-skip-audit": 32,
-    "manual-clear-reason": 15,
-    "prior-run-or-tour-leg": 41
+    "temporal-override-low-confidence": 773,
+    "not-shipped": 55,
+    "duplicate-not-shipped": 53,
+    "rebuild-skip-audit": 31,
+    "manual-clear-reason": 14,
+    "prior-run-or-tour-leg": 43
   },
   "newViolationKeys": [
-    "the-brightening-air-west-end-2025::london-theatre--anya-ryan.json"
+    "stranger-things-the-first-shadow-west-end-2023::times-uk--dominic-maxwell.json",
+    "spamalot-tour-2025::the-moderate-voice--dough-bursch.json",
+    "punch-west-end-2025::independent--alice-saville.json",
+    "punch-west-end-2025::timeout-london--andrzej-lukowski.json"
   ],
   "violationKeys": [
-    "the-fear-of-13-2026::theatre-reviews-limited--david-roberts.json",
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
     "ragtime-2025::america-magazine--weinert-kendt.json",
     "hells-kitchen-2024::chelsea-community-news--michael-musto.json",
     "hells-kitchen-2024::theater-life--samuel-l-leiter.json",
     "the-sign-in-sidney-brusteins-window-2023::nytg--brian-scott-lipton.json",
-    "shucked-2023::variety--frank-rizzo.json",
     "a-dolls-house-2023::talkinbroadway--matthew-murray.json",
     "between-riverside-and-crazy-2022::vulture--jackson-mchenry.json",
     "the-rose-tattoo-2019::broadwayworld--michael-dale.json",
@@ -48,13 +49,10 @@
     "the-receptionist-off-broadway-2026::theatre-reviews-limited--unknown.json",
     "titus-andronicus-off-broadway-2026::nysr--melissa-rose-bernardo.json",
     "music-city-off-broadway-2026::new-york-sun--elysa-gardner.json",
-    "masquerade-off-broadway-2025::nyt-theater--jonathan-mandell.json",
-    "masquerade-off-broadway-2025::nytimes--alexis-soloski.json",
     "girl-interrupted-off-broadway-2026::theatrely--joey-sims.json",
     "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026::new-york-classical-review--george-grella.json",
     "the-devil-wears-prada-west-end-2024::broadwayworld--aliya-al-hassan.json",
     "mj-the-musical-west-end-2024::timeout-london--andrzej-lukowski.json",
-    "oliver-west-end-2024::standard--nick-curtis.json",
     "oliver-west-end-2024::sunday-telegraph--dominic-cavendish.json",
     "grace-pervades-west-end-2026::whatsonstage--kris-hallett.json",
     "all-my-sons-west-end-2025::guardian--arifa-akbar.json",
@@ -62,6 +60,7 @@
     "cyrano-de-bergerac-west-end-2026::artsdesk--unknown.json",
     "cyrano-de-bergerac-west-end-2026::standard--fiona-mountford.json",
     "wicked-west-end-2021::timeout--honour-bayes.json",
+    "stranger-things-the-first-shadow-west-end-2023::times-uk--dominic-maxwell.json",
     "the-phantom-of-the-opera-west-end-1986::britishtheatrecom--douglas-mayo.json",
     "the-phantom-of-the-opera-west-end-1986::guardian--lyndsey-winship.json",
     "into-the-woods-west-end-2025::1883magazine--nick-barr.json",
@@ -109,6 +108,7 @@
     "sylvia-west-end-2023::standard--nick-curtis.json",
     "crybabies-the-scaring-off-west-end-2026::london-box-office--stuart-king.json",
     "operation-mincemeat-tour-2026::boston-globe--unknown.json",
+    "spamalot-tour-2025::the-moderate-voice--dough-bursch.json",
     "a-beautiful-noise-the-neil-diamond-musical-tour-2024::broadwayworld--jarrod-michael.json",
     "waiting-for-godot-west-end-2024::timeout-london--unknown.json",
     "the-curious-case-of-benjamin-button-west-end-2024::broadwayworld--unknown.json",
@@ -118,7 +118,6 @@
     "clueless-west-end-2025::timeout-london--andrzej-lukowski.json",
     "manhunt-west-end-2025::london-theatre--olivia-rook.json",
     "manhunt-west-end-2025::standard--nick-curtis.json",
-    "the-brightening-air-west-end-2025::london-theatre--anya-ryan.json",
     "the-deep-blue-sea-west-end-2025::telegraph--dominic-cavendish.json",
     "the-fifth-step-west-end-2025::everything-theatre--mary-pollard.json",
     "the-fifth-step-west-end-2025::london-theatre--holly-omahony.json",
@@ -127,8 +126,9 @@
     "inter-alia-west-end-2025::financialtimes--unknown.json",
     "inter-alia-west-end-2025::nytimes--houman-barekat.json",
     "inter-alia-west-end-2025::observer--unknown.json",
+    "punch-west-end-2025::independent--alice-saville.json",
+    "punch-west-end-2025::timeout-london--andrzej-lukowski.json",
     "othello-west-end-2025::thestage--david-fargnoli.json",
-    "p-rn-play-west-end-2025::observer--susannah-clapp.json",
     "the-little-big-things-west-end-2023::london-theatre--unknown.json",
     "sunset-boulevard-west-end-2023::whatsonstage--sarah-crompton.json",
     "old-friends-west-end-2023::artsdesk--helen-hawkins.json",
@@ -168,27 +168,6 @@
     "the-importance-of-being-earnest-west-end-2024::londontheatre1--unknown.json"
   ],
   "hits": [
-    {
-      "showId": "the-fear-of-13-2026",
-      "title": "The Fear of 13",
-      "openingDate": "2026-04-15",
-      "message": "theatre-reviews-limited/David Roberts (theatre-reviews-limited--david-roberts.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate review of 'The Fear of 13' with strong critical assessment, but it describes a completed production — https://www.theatrereviews.com/broadway-review-the-fear-of-13-at-the-james-earl-jones-theatre-currently-on/",
-      "violations": [
-        {
-          "filename": "theatre-reviews-limited--david-roberts.json",
-          "url": "https://www.theatrereviews.com/broadway-review-the-fear-of-13-at-the-james-earl-jones-theatre-currently-on/",
-          "outletId": "theatre-reviews-limited",
-          "criticName": "David Roberts",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "This is a legitimate review of 'The Fear of 13' with strong critical assessment, but it describes a completed production",
-          "cvIssues": [
-            "Cast member Adrien Brody is mentioned, but expected Broadway opening is 2026-04-15 (future date). Review describes a completed production with Brody's full performance, indicating this is a review of a different production (likely pre-Broadway or earlier staging).",
-            "Review is truncated mid-sentence at 8761 characters total ('the parallel between t...'), cutting off mid-word."
-          ]
-        }
-      ]
-    },
     {
       "showId": "cats-the-jellicle-ball-2026",
       "title": "CATS: The Jellicle Ball",
@@ -277,27 +256,6 @@
           "cvIssues": [
             "Review describes a production running through July 2, but expected Broadway opening was April 27, 2023, with review publish date of October 12, 2023 — these dates do not align (July 2 would be mid-run if opening was April 27, but review is published in October after the show would have closed)",
             "The text explicitly states the production was 'transferred from the Brooklyn Academy of Music at the last minute to earn Tony Award nominations' — this indicates a pre-Broadway or out-of-town engagement at BAM before the Broadway transfer, suggesting this review may be of the BAM production or the transitional period"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "shucked-2023",
-      "title": "Shucked",
-      "openingDate": "2023-04-04",
-      "message": "variety/Frank Rizzo (variety--frank-rizzo.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: While this is clearly a review of the Broadway musical 'Shucked' with detailed critical assessment of the production and — https://variety.com/2023/legit/reviews/shucked-review-corn-musical-broadway-brandy-clark-shane-mcanally-1235574263/",
-      "violations": [
-        {
-          "filename": "variety--frank-rizzo.json",
-          "url": "https://variety.com/2023/legit/reviews/shucked-review-corn-musical-broadway-brandy-clark-shane-mcanally-1235574263/",
-          "outletId": "variety",
-          "criticName": "Frank Rizzo",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "While this is clearly a review of the Broadway musical 'Shucked' with detailed critical assessment of the production and",
-          "cvIssues": [
-            "Critic name 'Frank Rizzo' does not appear in the scraped content",
-            "Outlet 'Variety' not identified in the scraped text"
           ]
         }
       ]
@@ -786,40 +744,6 @@
       ]
     },
     {
-      "showId": "masquerade-off-broadway-2025",
-      "title": "Masquerade",
-      "openingDate": "2025-09-29",
-      "message": "nyt-theater/Jonathan Mandell (nyt-theater--jonathan-mandell.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a genuine review of the Off-Broadway 'Masquerade' production at Masquerade NYC with substantive critical assessm — https://newyorktheater.me/2025/10/14/masquerade-review/\nnytimes/Alexis Soloski (nytimes--alexis-soloski.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate review of 'Masquerade' by The New York Times critic, but the production being reviewed is an immers — https://www.nytimes.com/2025/09/29/theater/masquerade-review-phantom-of-the-opera.html",
-      "violations": [
-        {
-          "filename": "nyt-theater--jonathan-mandell.json",
-          "url": "https://newyorktheater.me/2025/10/14/masquerade-review/",
-          "outletId": "nyt-theater",
-          "criticName": "Jonathan Mandell",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "This is a genuine review of the Off-Broadway 'Masquerade' production at Masquerade NYC with substantive critical assessm",
-          "cvIssues": [
-            "Director name mismatch: scraped text says 'Diane Paulus' but expected excerpt says 'Diana Paulus'",
-            "Text is truncated mid-sentence ('Immersive theater officially began in the city with')"
-          ]
-        },
-        {
-          "filename": "nytimes--alexis-soloski.json",
-          "url": "https://www.nytimes.com/2025/09/29/theater/masquerade-review-phantom-of-the-opera.html",
-          "outletId": "nytimes",
-          "criticName": "Alexis Soloski",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "This is a legitimate review of 'Masquerade' by The New York Times critic, but the production being reviewed is an immers",
-          "cvIssues": [
-            "Review describes an immersive, multi-floor production staged 'six times a night across several floors, as well as a basement and, weather permitting, a rooftop' — this does not match a traditional Off-Broadway theater venue",
-            "Venue description ('recently renovated residence just south of Central Park') does not correspond to 'Masquerade NYC' theater"
-          ]
-        }
-      ]
-    },
-    {
       "showId": "girl-interrupted-off-broadway-2026",
       "title": "Girl, Interrupted",
       "openingDate": "2026-06-04",
@@ -906,21 +830,8 @@
       "showId": "oliver-west-end-2024",
       "title": "Oliver!",
       "openingDate": "2024-12-14",
-      "message": "standard/Nick Curtis (standard--nick-curtis.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped content is a review of Tennessee Williams's 'Cat on a Hot Tin Roof' starring Daisy Edgar-Jones at the Almeid — https://www.standard.co.uk/culture/theatre/oliver-gielgud-theatre-review-cameron-mackintosh-matthew-bourne-b1204920.html\nsunday-telegraph/Dominic Cavendish (sunday-telegraph--dominic-cavendish.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a review of the Chichester Festival Theatre production of Oliver!, which is a pre-West End tryout. The critic is — https://www.telegraph.co.uk/theatre/what-to-see/oliver-chichester-festival-theatre-review/",
+      "message": "sunday-telegraph/Dominic Cavendish (sunday-telegraph--dominic-cavendish.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a review of the Chichester Festival Theatre production of Oliver!, which is a pre-West End tryout. The critic is — https://www.telegraph.co.uk/theatre/what-to-see/oliver-chichester-festival-theatre-review/",
       "violations": [
-        {
-          "filename": "standard--nick-curtis.json",
-          "url": "https://www.standard.co.uk/culture/theatre/oliver-gielgud-theatre-review-cameron-mackintosh-matthew-bourne-b1204920.html",
-          "outletId": "standard",
-          "criticName": "Nick Curtis",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "The scraped content is a review of Tennessee Williams's 'Cat on a Hot Tin Roof' starring Daisy Edgar-Jones at the Almeid",
-          "cvIssues": [
-            "Review is for 'Cat on a Hot Tin Roof' (Tennessee Williams play), not 'Oliver!'",
-            "Production is at the Almeida Theatre (Off-West-End venue), not Gielgud Theatre (West End)"
-          ]
-        },
         {
           "filename": "sunday-telegraph--dominic-cavendish.json",
           "url": "https://www.telegraph.co.uk/theatre/what-to-see/oliver-chichester-festival-theatre-review/",
@@ -1047,6 +958,27 @@
           "cvIssues": [
             "Review is explicitly dated 2012 ('This review is from 2012') but expected publish date is 2026-01-15 — massive temporal mismatch indicating this is a legacy/archived review, not the current production",
             "Scraped content truncated mid-sentence at '...as the intense green-skinned undergrad w'"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "title": "Stranger Things: The First Shadow",
+      "openingDate": "2023-12-14",
+      "message": "times-uk/Dominic Maxwell (times-uk--dominic-maxwell.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped content is a valid theater review (2-star critique of a performance, with assessment of cast, direction, sta — https://www.thetimes.com/culture/theatre-dance/article/stranger-things-the-first-shadow-review-you-need-to-be-a-fan-to-follow-this-prequel-blds60b6s",
+      "violations": [
+        {
+          "filename": "times-uk--dominic-maxwell.json",
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/stranger-things-the-first-shadow-review-you-need-to-be-a-fan-to-follow-this-prequel-blds60b6s",
+          "outletId": "times-uk",
+          "criticName": "Dominic Maxwell",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "The scraped content is a valid theater review (2-star critique of a performance, with assessment of cast, direction, sta",
+          "cvIssues": [
+            "Scraped content is a review of a different production entirely — it reviews a climate change/environmental drama at Sohoplace by the RSC (with references to Lynne Truss's 'Eats, Shoots & Leaves'), NOT 'Stranger Things: The First Shadow' at Phoenix Theatre",
+            "The expected excerpt describes an RSC production about climate change at Sohoplace; the scraped content describes a prequel to Netflix's Stranger Things with Henry Creel, Joyce Maldonado, and Hawkins, Indiana — completely different shows"
           ]
         }
       ]
@@ -1931,6 +1863,27 @@
       ]
     },
     {
+      "showId": "spamalot-tour-2025",
+      "title": "Spamalot",
+      "openingDate": "2025-12-01",
+      "message": "the-moderate-voice/Doug Bursch (the-moderate-voice--dough-bursch.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped review clearly evaluates a touring production of Spamalot at Seattle's 5th Avenue Theatre ('The touring prod — https://themoderatevoice.com/review-of-the-touring-production-of-spamalot-at-the-5th-avenue-theatre/",
+      "violations": [
+        {
+          "filename": "the-moderate-voice--dough-bursch.json",
+          "url": "https://themoderatevoice.com/review-of-the-touring-production-of-spamalot-at-the-5th-avenue-theatre/",
+          "outletId": "the-moderate-voice",
+          "criticName": "Doug Bursch",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "The scraped review clearly evaluates a touring production of Spamalot at Seattle's 5th Avenue Theatre ('The touring prod",
+          "cvIssues": [
+            "Review evaluates the touring production at Seattle's 5th Avenue Theatre, not the Off-Broadway production at State Theatre New Jersey",
+            "Venue mismatch: Seattle's 5th Avenue Theatre vs. expected State Theatre New Jersey"
+          ]
+        }
+      ]
+    },
+    {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
       "title": "A Beautiful Noise, The Neil Diamond Musical",
       "openingDate": "2024-09-21",
@@ -2112,27 +2065,6 @@
       ]
     },
     {
-      "showId": "the-brightening-air-west-end-2025",
-      "title": "The Brightening Air",
-      "openingDate": "2025-04-24",
-      "message": "london-theatre/Anya Ryan (london-theatre--anya-ryan.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate theater review of 'The Brightening Air' at the Old Vic with the expected critic assessment and know — https://www.londontheatre.co.uk/reviews/the-brightening-air-review-old-vic",
-      "violations": [
-        {
-          "filename": "london-theatre--anya-ryan.json",
-          "url": "https://www.londontheatre.co.uk/reviews/the-brightening-air-review-old-vic",
-          "outletId": "london-theatre",
-          "criticName": "Anya Ryan",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "This is a legitimate theater review of 'The Brightening Air' at the Old Vic with the expected critic assessment and know",
-          "cvIssues": [
-            "Review publish date (April 25, 2025) does not match expected review publish date (2026-10-08) — a difference of over 1.5 years",
-            "West End opening date mismatch: scraped content states 'now in performances at the Old Vic to 14 June' (June 2025) and 'Originally published on Apr 25, 2025', but expected opening date is 2025-04-24 with review publish expected in October 2026"
-          ]
-        }
-      ]
-    },
-    {
       "showId": "the-deep-blue-sea-west-end-2025",
       "title": "The Deep Blue Sea",
       "openingDate": null,
@@ -2261,6 +2193,40 @@
       ]
     },
     {
+      "showId": "punch-west-end-2025",
+      "title": "Punch",
+      "openingDate": "2025-09-26",
+      "message": "independent/Alice Saville (independent--alice-saville.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid theater review, but it evaluates the Young Vic production (a pre-West End tryout/transfer venue), not th — https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/james-graham-punch-review-b2710837.html\ntimeout-london/Andrzej Lukowski (timeout-london--andrzej-lukowski.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped content explicitly states 'This review is from the Young Vic, March 2025. Punch will transfer to the West En — https://www.timeout.com/london/theatre/punch-review",
+      "violations": [
+        {
+          "filename": "independent--alice-saville.json",
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/james-graham-punch-review-b2710837.html",
+          "outletId": "independent",
+          "criticName": "Alice Saville",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "This is a valid theater review, but it evaluates the Young Vic production (a pre-West End tryout/transfer venue), not th",
+          "cvIssues": [
+            "Review is of the Young Vic production, not the West End Apollo Theatre production",
+            "Young Vic is a pre-West End tryout venue, not a West End theatre"
+          ]
+        },
+        {
+          "filename": "timeout-london--andrzej-lukowski.json",
+          "url": "https://www.timeout.com/london/theatre/punch-review",
+          "outletId": "timeout-london",
+          "criticName": "Andrzej Lukowski",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "The scraped content explicitly states 'This review is from the Young Vic, March 2025. Punch will transfer to the West En",
+          "cvIssues": [
+            "Review is of the Young Vic production (March 2025), not the West End Apollo Theatre production (opening September 2025)",
+            "Scraped text is truncated mid-sentence ('ry broken down into forensic bites...' and 's evocative but unshowy...')"
+          ]
+        }
+      ]
+    },
+    {
       "showId": "othello-west-end-2025",
       "title": "Othello",
       "openingDate": null,
@@ -2277,27 +2243,6 @@
           "cvIssues": [
             "Critic name mismatch: scraped content does not attribute the review to David Fargnoli. The byline states 'Dave is a playwright and critic. He was the winner of The Stage's Critic Search 2015' but does not name David Fargnoli.",
             "Venue mismatch: scraped content does not mention Theatre Royal Haymarket. No West End venue is named in the review body."
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "p-rn-play-west-end-2025",
-      "title": "Porn Play",
-      "openingDate": "2025-11-13",
-      "message": "observer/Susannah Clapp (observer--susannah-clapp.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate theater review with strong critical assessment ('startlingly agile,' 'ferocious but light on its fe — https://observer.co.uk/culture/theatre/article/porn-play-is-an-unflinching-portrayal-of-self-destructive-addiction",
-      "violations": [
-        {
-          "filename": "observer--susannah-clapp.json",
-          "url": "https://observer.co.uk/culture/theatre/article/porn-play-is-an-unflinching-portrayal-of-self-destructive-addiction",
-          "outletId": "observer",
-          "criticName": "Susannah Clapp",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "This is a legitimate theater review with strong critical assessment ('startlingly agile,' 'ferocious but light on its fe",
-          "cvIssues": [
-            "Review evaluates Theatre Upstairs production, not West End venue (Royal Court Theatre Upstairs is a studio/off-West-End space, not a West End theater proper)",
-            "Text ends mid-sentence and appears truncated"
           ]
         }
       ]
