@@ -8,6 +8,8 @@
  * meaning backfill-review-dates --recheck-dates is due.
  */
 const fs = require('fs');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+if (hasHelpFlag(process.argv.slice(2))) { console.log('Usage:\n  node scripts/audit-early-unmarked-publish-dates.js [--max=40] [--counts=PATH]\n  --max=N      exit 1 when more than N early dates await recheck (default 40)\n  --counts=PATH write a counts-only JSON snapshot for the health digest\n  --help, -h   print this usage and exit'); process.exit(0); }
 const path = require('path');
 const { isDateRecheckCandidate } = require('./lib/publish-date-provenance');
 

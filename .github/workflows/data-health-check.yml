@@ -173,7 +173,8 @@ jobs:
     # BRO-5561: 330->345 for the two advisory roundup-coverage steps (5 min each
     # cap); the margin was 15.15% and the added caps would have dropped it to
     # 13.6%, below the gate's 15%. 345min = 20700s keeps ~16% margin.
-    timeout-minutes: 345
+    # BRO-5769: 345->350 for the 1-min early-publish-date audit step (job-timeout-margin gate).
+    timeout-minutes: 350
     permissions:
       contents: write
       issues: write
@@ -407,7 +408,7 @@ jobs:
       - name: Early publish date audit
         if: always()
         continue-on-error: true
-        timeout-minutes: 2
+        timeout-minutes: 1
         run: node scripts/audit-early-unmarked-publish-dates.js --counts=data/audit/early-publish-dates.json
 
       # BRO-4719: email the owner when a card newly carries a "DECISION
