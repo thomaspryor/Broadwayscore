@@ -1155,6 +1155,37 @@
     "queuedAt": "2026-10-20T00:08:03.255Z"
   },
   {
+    "conditionKey": "land:land/bro-5731-cloud-secrets-withheld",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5731-cloud-secrets-withheld",
+    "description": "land.yml did not land land/bro-5731-cloud-secrets-withheld: the unit-tests-node gate went red at df579c69bd. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39345143505",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5731-cloud-secrets-withheld"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "df579c69bd7c54a8a6ed74ac31a7375696ad81b7"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39345143505"
+      }
+    ],
+    "queuedAt": "2026-10-20T00:25:18.704Z"
+  },
+  {
     "conditionKey": "ugc:error-spike",
     "title": "Accounts features are throwing errors",
     "description": "In the last 24 hours the accounts features logged 13 errors on 3 devices (offline and expired-session errors not counted).",
