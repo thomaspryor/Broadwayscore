@@ -65,3 +65,12 @@ test('a file may exempt several tests independently', () => {
     assert.equal(exemptionReason(rel, 'c', files, tests), null);
   });
 });
+
+test('TAP-escaped "#" matches its unescaped marker; a "|" in the name is kept (split at last "|")', () => {
+  withFixture(`// ${EXEMPT_TEST_MARKER} a # b | c | the reason\n`, (rel) => {
+    const tests = readExemptTests([rel]);
+    const files = readExemptFiles([rel]);
+    assert.equal(exemptionReason(rel, 'a \\# b | c', files, tests), 'the reason');
+    assert.equal(exemptionReason(rel, 'a \\# b', files, tests), null);
+  });
+});

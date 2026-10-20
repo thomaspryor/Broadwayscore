@@ -104,7 +104,10 @@
  * only one test is clock-coupled, put
  *   // timebomb-audit-exempt-test: <exact test name> | <reason>
  * in the file instead; only a shifted failure with that exact name is exempt,
- * and every other test in the file is still audited.
+ * and every other test in the file is still audited. The name is the TOP-LEVEL
+ * test name as TAP prints it (the reason is split at the LAST '|'); tests
+ * nested in describe()/t.test() are not supported, because the failing parent
+ * is reported separately — exempt the file instead.
  *
  * KNOWN LIMITATION — filesystem mtime is NOT shifted.
  * clock-shift.mjs moves Date.now() inside the process; it cannot move the
@@ -296,7 +299,7 @@ function readExemptTests(files) {
     for (const l of src.split('\n')) {
       if (!/^\s*(\/\/|\*)/.test(l) || !l.includes(EXEMPT_TEST_MARKER)) continue;
       const body = l.slice(l.indexOf(EXEMPT_TEST_MARKER) + EXEMPT_TEST_MARKER.length);
-      const bar = body.indexOf('|');
+      const bar = body.lastIndexOf('|');
       if (bar < 0) continue;
       const name = body.slice(0, bar).trim();
       const reason = body.slice(bar + 1).trim();
@@ -315,7 +318,9 @@ function readExemptTests(files) {
 function exemptionReason(file, name, exemptFiles, exemptTests) {
   if (exemptFiles.has(file)) return exemptFiles.get(file);
   const perTest = exemptTests.get(file);
-  return perTest && perTest.has(name) ? perTest.get(name) : null;
+  // The TAP reporter escapes '#' and '\\' in test names; compare unescaped.
+  const plain = String(name).replace(/\\([#\\])/g, '$1');
+  return perTest && perTest.has(plain) ? perTest.get(plain) : null;
 }
 
 /**
