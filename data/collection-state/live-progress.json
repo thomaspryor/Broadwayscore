@@ -1,21 +1,49 @@
 {
-  "updatedAt": "2026-10-20T22:51:39.275Z",
-  "processed": 561,
-  "failed": 333,
-  "successRate": "62.8%",
+  "updatedAt": "2026-10-20T23:10:18.672Z",
+  "processed": 592,
+  "failed": 352,
+  "successRate": "62.7%",
   "tierBreakdown": {
-    "playwright": 254,
+    "playwright": 266,
     "amp": 2,
-    "browserbase": 1,
-    "directCookies": 0,
-    "scrapingdog": 26,
-    "scrapingbee": 42,
+    "browserbase": 3,
+    "directCookies": 1,
+    "scrapingdog": 27,
+    "scrapingbee": 49,
     "brightdata": 2,
     "archiveToday": 0,
-    "archive": 218
+    "archive": 230
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 3,
   "recentActivity": [
+    {
+      "t": "2026-10-20T17:17:37.624Z",
+      "event": "bb-session",
+      "session": "fde449ff",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-20T17:17:37.967Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-20T17:17:54.591Z",
+      "event": "bb-session",
+      "session": "78045bfc",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
+    },
+    {
+      "t": "2026-10-20T17:17:54.888Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-20T18:03:08.906Z",
+      "event": "bb-session",
+      "session": "26cc5b4f",
+      "url": "https://www.nytimes.com/2026/10/20/theater/king-of-the-yees-review.html"
+    },
     {
       "t": "2026-10-20T18:03:09.385Z",
       "event": "bb-cookie-inject",
@@ -91,46 +119,15 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-20T22:29:21.749Z",
+      "t": "2026-10-20T23:08:37.228Z",
       "event": "bb-session",
-      "session": "b397c244",
-      "url": "https://bachtrack.com/review-angels-bone-du-yun-vavrek-english-national-opera-lo"
+      "session": "4eb3e8d4",
+      "url": "https://www.nytimes.com/topic/organization/atlantic-theater-company?page=7"
     },
     {
-      "t": "2026-10-20T22:30:34.871Z",
-      "event": "bb-session",
-      "session": "c26c73b0",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
-    },
-    {
-      "t": "2026-10-20T22:30:42.818Z",
-      "event": "bb-session",
-      "session": "45d259e6",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
-    },
-    {
-      "t": "2026-10-20T22:32:21.540Z",
-      "event": "bb-session",
-      "session": "39ec6b15",
-      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
-    },
-    {
-      "t": "2026-10-20T22:34:28.738Z",
-      "event": "bb-session",
-      "session": "496b35a1",
-      "url": "https://www.afridiziak.com/offers/access-10-ticket-offer-to-see-baby-in-previews"
-    },
-    {
-      "t": "2026-10-20T22:34:39.582Z",
-      "event": "bb-session",
-      "session": "22095776",
-      "url": "https://www.afridiziak.com/offers/access-10-ticket-offer-to-see-baby-in-previews"
-    },
-    {
-      "t": "2026-10-20T22:36:26.892Z",
-      "event": "bb-session",
-      "session": "ff773c04",
-      "url": "https://littlelondoner.co.uk/event/larger-than-life-starring-wallace-and-gromit-"
+      "t": "2026-10-20T23:08:38.179Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
