@@ -628,6 +628,7 @@ export function getRecentRecoupments(months: number = 24): RecentRecoupmentShow[
       capitalizationIsEstimate: isEstimatedCapitalization(data),
       capitalizationIsMaximum: isMaximumCapitalization(data),
       recoupDate: data.recoupedDate,
+      recoupDateIsEstimate: data.isEstimate?.recoupedDate === true,
     });
   }
 
@@ -716,6 +717,8 @@ function recoupWeeks(
   data: ShowCommercial,
   show: { openingDate?: string | null; closingDate?: string | null },
 ) {
+  // An estimated recoupment date cannot anchor a week count (BRO-5568: Chicago "March 1997" is ours).
+  if (data.isEstimate?.recoupedDate === true) return { weeks: null, isEstimate: false };
   return resolveRecoupWeeks(
     recoupClockStart(data, show.openingDate),
     data.recoupedDate,

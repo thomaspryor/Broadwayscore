@@ -485,6 +485,8 @@ export interface ShowCommercial {
     capitalization?: boolean;
     weeklyRunningCost?: boolean;
     recouped?: boolean;
+    /** The recoupedDate is our estimate (the source reports the recoupment, not when): prints "~", no weeks counted (BRO-5568). */
+    recoupedDate?: boolean;
   };
   productionType?: 'original' | 'tour-stop' | 'return-engagement' | 'enhancement' | 'international-transfer';
   originalProductionId?: string;
@@ -602,6 +604,8 @@ export interface RecentRecoupmentShow {
   /** A Form D maximum or "up to" figure: prints "up to $X" (BRO-5660). */
   capitalizationIsMaximum: boolean;
   recoupDate: string;
+  /** recoupDate is our estimate: prints "~" (BRO-5568). */
+  recoupDateIsEstimate: boolean;
 }
 
 /** One row of the /biz and /biz/season tables (AllShowsTable). */

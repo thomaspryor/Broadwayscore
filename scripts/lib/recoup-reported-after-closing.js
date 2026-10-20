@@ -34,10 +34,11 @@ function recoupReportedAfterClosing(recoupedDate, closingDate) {
  * @param {string | null | undefined} startDate YYYY-MM-DD
  * @param {string | null | undefined} recoupedDate YYYY-MM
  * @param {string | null | undefined} closingDate YYYY-MM-DD
+ * @param {boolean} [dateIsEstimate] the record's isEstimate.recoupedDate: our own date, never counted
  * @returns {number | null}
  */
-function newsletterWeeksToRecoup(startDate, recoupedDate, closingDate) {
-  if (!startDate || !recoupedDate) return null;
+function newsletterWeeksToRecoup(startDate, recoupedDate, closingDate, dateIsEstimate = false) {
+  if (!startDate || !recoupedDate || dateIsEstimate) return null;
   if (recoupReportedAfterClosing(recoupedDate, closingDate)) return null;
   const m = /^(\d{4})-(\d{2})$/.exec(recoupedDate);
   if (!m) return null;

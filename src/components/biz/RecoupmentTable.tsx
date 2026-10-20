@@ -25,6 +25,7 @@ interface RecoupmentShow {
   capitalizationIsEstimate: boolean;
   capitalizationIsMaximum: boolean;
   recoupDate: string;
+  recoupDateIsEstimate: boolean;
 }
 
 interface RecoupmentTableProps {
@@ -182,7 +183,7 @@ export default function RecoupmentTable({ shows }: RecoupmentTableProps) {
                 </td>
                 <td className="py-3 px-4">{formatCapitalization(show.capitalization, show.capitalizationIsEstimate, show.capitalizationIsMaximum)}</td>
                 <td className="py-3 px-4 text-gray-500 hidden sm:table-cell">
-                  {formatDate(show.recoupDate)}
+                  {show.recoupDateIsEstimate ? '~' : ''}{formatDate(show.recoupDate)}
                 </td>
               </tr>
             ))}

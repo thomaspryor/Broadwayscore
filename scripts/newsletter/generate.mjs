@@ -1711,7 +1711,7 @@ function commercialSection() {
   // of the recoupedDate month (recoupedDate is YYYY-MM monthly granularity).
   // Falls back to "" when there is no start date so the row still renders.
   function weeksToRecoupLabel(show, c) {
-    const weeks = newsletterWeeksToRecoup(recoupClockStart(c, show?.openingDate), c.recoupedDate, show?.closingDate);
+    const weeks = newsletterWeeksToRecoup(recoupClockStart(c, show?.openingDate), c.recoupedDate, show?.closingDate, c.isEstimate?.recoupedDate === true);
     if (weeks === null) return '';
     return ` in ${pluralize(weeks, 'week')}${isConvertedToCommercial(c) ? ' of its commercial run' : ''}`;
   }
@@ -2888,7 +2888,7 @@ const newsworthyInputs = {
         const show = shows.find(s => s.slug === slug && s.category === 'broadway');
         if (!show || isOperaShow(show)) continue;
         // Same weeks-to-recoup math the section uses.
-        const weeksToRecoup = newsletterWeeksToRecoup(recoupClockStart(c, show.openingDate), c.recoupedDate, show.closingDate);
+        const weeksToRecoup = newsletterWeeksToRecoup(recoupClockStart(c, show.openingDate), c.recoupedDate, show.closingDate, c.isEstimate?.recoupedDate === true);
         out.push({ show, weeksToRecoup, fromCommercialRun: isConvertedToCommercial(c) });
       }
       return out;

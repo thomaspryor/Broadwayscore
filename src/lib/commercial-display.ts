@@ -500,7 +500,8 @@ export interface RecoupmentAttribution {
  */
 export function getRecoupmentAttribution(commercial: ShowCommercial): RecoupmentAttribution {
   const date = formatRecoupedDate(commercial.recoupedDate);
-  const headline = date ? `Recouped, ${date}` : 'Recouped';
+  // A date we estimated (isEstimate.recoupedDate) prints "~": the source reports the recoupment, not when (BRO-5568).
+  const headline = date ? `Recouped, ${commercial.isEstimate?.recoupedDate === true ? '~' : ''}${date}` : 'Recouped';
   const sourceUrl = getCitedSourceUrl(commercial.sources);
   const notAnnounced = isUnannouncedRecoupment(commercial);
   const qualifier = notAnnounced ? NOT_ANNOUNCED_LABEL : null;

@@ -1,0 +1,45 @@
+{
+  "issueNumber": "bro-5568",
+  "planId": "2287c277-254b-4995-94bc-1b7ae020b0d4",
+  "status": "pending",
+  "createdAt": "2026-10-20T20:28:32.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5568: chicago (recoupedDate 1997-03) and the-phantom-of-the-opera-1988 (recoupedDate 1989) carry recoupment dates that their own sources call our estimate, but print as reported and (Chicago) drive a 17-week count. Mark both with isEstimate.recoupedDate so the card prints ~ and /biz counts no weeks.",
+    "steps": [
+      "Compare-and-set commercial.json isEstimate for chicago: absent -> {recoupedDate: true}.",
+      "Compare-and-set commercial.json isEstimate for the-phantom-of-the-opera-1988: {recouped: true} -> {recouped: true, recoupedDate: true}."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chicago",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "recoupedDate": true
+        },
+        "description": "Source: 'No public report gives the date; March 1997 is our estimate.'"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-phantom-of-the-opera-1988",
+        "field": "isEstimate",
+        "oldValue": {
+          "recouped": true
+        },
+        "newValue": {
+          "recouped": true,
+          "recoupedDate": true
+        },
+        "description": "Source: 'the 1989 date is our estimate.'"
+      }
+    ]
+  }
+}

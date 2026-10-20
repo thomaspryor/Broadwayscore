@@ -44,3 +44,8 @@ test('newsletter weeks: missing, year-only or non-positive is null', () => {
   assert.equal(newsletterWeeksToRecoup('2024-03-10', '2024', null), null);
   assert.equal(newsletterWeeksToRecoup('2024-09-30', '2024-03', null), null);
 });
+
+test('newsletter weeks: an estimated recoupment date is never counted (Chicago "March 1997")', () => {
+  assert.equal(newsletterWeeksToRecoup('1996-11-14', '1997-03', null, true), null);
+  assert.equal(newsletterWeeksToRecoup('1996-11-14', '1997-03', null, false), 17);
+});
