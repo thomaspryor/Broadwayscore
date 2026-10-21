@@ -305,7 +305,7 @@ async function generateSocialImage({ type, data, outputPath }) {
   return outPath;
 }
 
-module.exports = { generateSocialImage };
+module.exports = { generateSocialImage, getScoreLabel };
 
 // CLI test mode
 if (require.main === module) {

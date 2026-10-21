@@ -95,7 +95,7 @@ function withShowCategories(data) {
  * Compute per-show scores using the shared engine-parity module.
  * Pass FULL review objects (not projections) so designation bumps, content-tier confidence
  * weights, dedup by outlet, and top-critic promotion all work correctly.
- * Returns { [showId]: { compositeScore, reviewCount, title } }
+ * Returns { [showId]: { compositeScore, reviewCount, tier1And2Count, title } }
  */
 function computeShowScores() {
   // Shared loader appends blog-reviews-for-scoring.json so social post scores
@@ -124,6 +124,9 @@ function computeShowScores() {
     result[showId] = {
       compositeScore: Math.round(scoreResult.s * 10) / 10,
       reviewCount: scoreResult.rc,
+      // The card hides the score below the site's review minimum (hasEnoughReviews),
+      // which needs T1+T2 to apply the T3-only extra.
+      tier1And2Count: scoreResult.t1 + scoreResult.t2,
       title,
     };
   }
@@ -227,7 +230,7 @@ function getSpotlightContent(history) {
     .map(s => {
       const r = scores[s.id];
       if (!r || r.reviewCount < 5 || r.compositeScore < 70) return null;
-      return { ...s, score: r.compositeScore, reviewCount: r.reviewCount };
+      return { ...s, score: r.compositeScore, reviewCount: r.reviewCount, tier1And2Count: r.tier1And2Count };
     })
     .filter(Boolean)
     .filter(s => !wasPostedRecently(history, s.id, 30))
@@ -244,7 +247,7 @@ function getSpotlightContent(history) {
     showId: pick.id,
     url: `${BASE_URL}/show/${pick.slug}`,
     imageType: 'show',
-    imageData: { title: pick.title, score: pick.score, reviewCount: pick.reviewCount, venue: pick.venue, showId: pick.id },
+    imageData: { title: pick.title, score: pick.score, reviewCount: pick.reviewCount, tier1And2Count: pick.tier1And2Count, venue: pick.venue, showId: pick.id },
     promptData: `Show: ${pick.title}\nScore: ${Math.round(pick.score)}/100 (${pick.reviewCount} reviews)\nVenue: ${pick.venue}\nType: ${pick.type}\n${con?.text ? `Critics' Take: ${con.text}` : ''}`,
     prompt: `Write a tweet spotlighting this Broadway show. Be conversational, not salesy. Include the score. Under 230 chars. End with: ${BASE_URL}/show/${pick.slug}`,
   };
@@ -289,7 +292,7 @@ function getPicksContent(history) {
     .map(s => {
       const r = scores[s.id];
       if (!r || r.reviewCount < 5 || r.compositeScore < 75) return null;
-      return { ...s, score: r.compositeScore, reviewCount: r.reviewCount };
+      return { ...s, score: r.compositeScore, reviewCount: r.reviewCount, tier1And2Count: r.tier1And2Count };
     })
     .filter(Boolean)
     .sort((a, b) => b.score - a.score)
@@ -305,7 +308,7 @@ function getPicksContent(history) {
     imageType: 'picks',
     imageData: {
       headline: 'Weekend Picks',
-      shows: picks.map(s => ({ title: s.title, score: s.score, reviewCount: s.reviewCount, showId: s.id })),
+      shows: picks.map(s => ({ title: s.title, score: s.score, reviewCount: s.reviewCount, tier1And2Count: s.tier1And2Count, showId: s.id })),
     },
     promptData: `Top picks for this weekend:\n${picks.map(s => `- ${s.title} (${Math.round(s.score)}/100, ${s.reviewCount} reviews)`).join('\n')}`,
     prompt: `Recommend these Broadway shows for the weekend. Brief, enthusiastic but honest. Under 200 chars. End with: ${BASE_URL}/browse/best-broadway-shows`,
@@ -325,7 +328,7 @@ function getDivergenceContent(history) {
       const a = audience.shows?.[s.id];
       if (!r || !a?.combinedScore || r.reviewCount < 5) return null;
       const gap = Math.abs(r.compositeScore - a.combinedScore);
-      return { ...s, criticScore: r.compositeScore, audienceScore: a.combinedScore, gap, reviewCount: r.reviewCount };
+      return { ...s, criticScore: r.compositeScore, audienceScore: a.combinedScore, gap, reviewCount: r.reviewCount, tier1And2Count: r.tier1And2Count };
     })
     .filter(Boolean)
     .filter(s => !wasPostedRecently(history, s.id, 60))
@@ -340,7 +343,7 @@ function getDivergenceContent(history) {
     showId: pick.id,
     url: `${BASE_URL}/show/${pick.slug}`,
     imageType: 'show',
-    imageData: { title: pick.title, score: pick.criticScore, reviewCount: pick.reviewCount, venue: pick.venue, showId: pick.id },
+    imageData: { title: pick.title, score: pick.criticScore, reviewCount: pick.reviewCount, tier1And2Count: pick.tier1And2Count, venue: pick.venue, showId: pick.id },
     promptData: `Show: ${pick.title}\nCritic score: ${Math.round(pick.criticScore)}/100\nAudience score: ${Math.round(pick.audienceScore)}/100\nGap: ${Math.round(pick.gap)} points (${direction})`,
     prompt: `Critics scored ${pick.title} at ${Math.round(pick.criticScore)}, but audiences gave it ${Math.round(pick.audienceScore)}. Write a tweet about this gap. Be curious, not judgmental. Under 230 chars. End with: ${BASE_URL}/show/${pick.slug}`,
   };
@@ -362,7 +365,7 @@ function getClosingContent(history) {
     .map(s => {
       const r = scores[s.id];
       const daysLeft = Math.ceil((new Date(s.closingDate) - now) / (1000 * 60 * 60 * 24));
-      return { ...s, score: r?.compositeScore, reviewCount: r?.reviewCount || 0, daysLeft };
+      return { ...s, score: r?.compositeScore, reviewCount: r?.reviewCount || 0, tier1And2Count: r?.tier1And2Count, daysLeft };
     })
     .filter(s => !wasPostedRecently(history, s.id, 14))
     .sort((a, b) => a.daysLeft - b.daysLeft);
@@ -375,7 +378,7 @@ function getClosingContent(history) {
     showId: pick.id,
     url: `${BASE_URL}/show/${pick.slug}`,
     imageType: 'show',
-    imageData: { title: pick.title, score: pick.score, reviewCount: pick.reviewCount, venue: pick.venue, showId: pick.id },
+    imageData: { title: pick.title, score: pick.score, reviewCount: pick.reviewCount, tier1And2Count: pick.tier1And2Count, venue: pick.venue, showId: pick.id },
     promptData: `Show: ${pick.title}\nClosing: ${pick.closingDate} (${pick.daysLeft} days left)\nScore: ${pick.score ? Math.round(pick.score) + '/100' : 'N/A'}\nVenue: ${pick.venue}`,
     prompt: `${pick.title} closes on ${new Date(pick.closingDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}. ${pick.score ? `It scored ${Math.round(pick.score)}/100.` : ''} Write a "last chance to see" tweet. Informative, not FOMO. Under 230 chars. End with: ${BASE_URL}/show/${pick.slug}`,
   };
@@ -431,7 +434,7 @@ function getEventContent(event, showSlug) {
       showId: show.id,
       url: `${BASE_URL}/show/${show.slug}`,
       imageType: 'show',
-      imageData: { title: show.title, score, reviewCount, venue: show.venue, showId: show.id },
+      imageData: { title: show.title, score, reviewCount, tier1And2Count: r?.tier1And2Count, venue: show.venue, showId: show.id },
       promptData: `${show.title} just officially opened at ${show.venue}.${score ? ` Early critic score: ${Math.round(score)}/100 from ${reviewCount} reviews.` : ''}`,
       prompt: `${show.title} just opened on Broadway at ${show.venue}.${score ? ` Critic score so far: ${Math.round(score)}/100 from ${reviewCount} reviews.` : ''} Write a brief announcement tweet. Under 230 chars. End with: ${BASE_URL}/show/${show.slug}`,
     };
@@ -443,7 +446,7 @@ function getEventContent(event, showSlug) {
       showId: show.id,
       url: `${BASE_URL}/show/${show.slug}`,
       imageType: 'show',
-      imageData: { title: show.title, score, reviewCount, venue: show.venue, showId: show.id },
+      imageData: { title: show.title, score, reviewCount, tier1And2Count: r?.tier1And2Count, venue: show.venue, showId: show.id },
       promptData: `${show.title} has closed at ${show.venue}.${score ? ` Final critic score: ${Math.round(score)}/100 from ${reviewCount} reviews.` : ''}`,
       prompt: `${show.title} has taken its final bow at ${show.venue}.${score ? ` Final score: ${Math.round(score)}/100 from ${reviewCount} reviews.` : ''} Write a brief closing tweet. Respectful, celebratory of the run. Under 230 chars. End with: ${BASE_URL}/show/${show.slug}`,
     };
@@ -720,4 +723,4 @@ if (require.main === module) main().catch(err => {
   process.exit(1);
 });
 
-module.exports = { withShowCategories };
+module.exports = { withShowCategories, computeShowScores, loadShows };
