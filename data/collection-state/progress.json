@@ -1,26 +1,83 @@
 {
   "processed": [
-    "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json"
+    "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json",
+    "king-of-the-yees-off-broadway-2026/culturesauce--thom-geier.json",
+    "lincoln-in-the-bardo-off-broadway-2026/operawire--david-salazar.json",
+    "lincoln-in-the-bardo-off-broadway-2026/slippedisc--norman-lebrecht.json",
+    "other-desert-cities-2026/new-york-city-theatre--unknown.json",
+    "the-second-best-school-shooting-off-broadway-2026/broadway-baby--unknown.json",
+    "memoirs-of-amorous-gentlemen-off-broadway-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "martin-guerre-west-end-2026/sunday-times--dominic-maxwell.json",
-    "martin-guerre-west-end-2026/times-uk--dominic-maxwell.json"
+    "martin-guerre-west-end-2026/times-uk--dominic-maxwell.json",
+    "king-of-the-yees-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json",
+    "other-desert-cities-2026/cbsnews--unknown.json",
+    "school-pictures-off-broadway-2026/airmail--air-mail.json",
+    "the-dog-show-come-sit-stay-off-broadway-2026/talkalmanmusic--unknown.json",
+    "two-girls-off-broadway-2026/howdidimissthat--unknown.json",
+    "the-second-best-school-shooting-off-broadway-2026/theatreinla--unknown.json",
+    "midnight-off-broadway-2026/timeout--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "midnight-off-broadway-2026/openingnight--edward-a-kliszus.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json"
+      "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json",
+      "king-of-the-yees-off-broadway-2026/culturesauce--thom-geier.json",
+      "lincoln-in-the-bardo-off-broadway-2026/operawire--david-salazar.json",
+      "lincoln-in-the-bardo-off-broadway-2026/slippedisc--norman-lebrecht.json",
+      "the-second-best-school-shooting-off-broadway-2026/broadway-baby--unknown.json",
+      "memoirs-of-amorous-gentlemen-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "other-desert-cities-2026/new-york-city-theatre--unknown.json"
+    ]
   },
   "startTime": "2026-10-21T04:45:03.587Z",
-  "lastProcessed": "martin-guerre-west-end-2026/times-uk--dominic-maxwell.json",
-  "log": []
+  "lastProcessed": "midnight-off-broadway-2026/openingnight--edward-a-kliszus.json",
+  "log": [
+    {
+      "t": "2026-10-21T05:22:47.669Z",
+      "event": "bb-session",
+      "session": "1884831c",
+      "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
+    },
+    {
+      "t": "2026-10-21T05:23:48.351Z",
+      "event": "bb-session",
+      "session": "3f87f586",
+      "url": "https://www.cbsnews.com/video/other-desert-cities-on-broadway-family-secrets-lai"
+    },
+    {
+      "t": "2026-10-21T05:25:51.126Z",
+      "event": "bb-session",
+      "session": "715c8f98",
+      "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07"
+    },
+    {
+      "t": "2026-10-21T05:25:59.557Z",
+      "event": "bb-session",
+      "session": "d1e71d21",
+      "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07"
+    },
+    {
+      "t": "2026-10-21T05:27:40.290Z",
+      "event": "bb-session",
+      "session": "7c7bce94",
+      "url": "https://www.theatreinla.com/the-second-best-school-shooting/11328/"
+    }
+  ]
 }
