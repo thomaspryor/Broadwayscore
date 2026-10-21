@@ -57,6 +57,9 @@ test('an openingDateSource edit after an openingDate edit must expect human-corr
   assert.deepEqual(planShapeProblems('bro-1.json', plan([se('openingDate', null, '2024-01-02'), se('openingDateSource', 'human-correction', 'sourced')])), []);
   assert.equal(planShapeProblems('bro-1.json', plan([se('openingDate', null, '2024-01-02'), se('openingDateSource', null, 'sourced')])).length, 1);
   assert.deepEqual(planShapeProblems('bro-1.json', plan([se('openingDateSource', null, 'sourced')])), []);
+  // Same class: setSynopsis stamps synopsisSource 'manual'.
+  assert.equal(planShapeProblems('bro-1.json', plan([se('synopsis', null, 'A play.'), se('synopsisSource', null, 'llm')])).length, 1);
+  assert.deepEqual(planShapeProblems('bro-1.json', plan([se('synopsis', null, 'A play.'), se('synopsisSource', 'manual', 'llm')])), []);
   assert.deepEqual(planShapeProblems('bro-1.json', { planId: 'p-1', status: 'pending', plan: {} }), ['bro-1.json: plan.actions is not an array']);
   // Only a pending plan is judged: an applied one stays in the directory as history.
   assert.deepEqual(planShapeProblems('bro-1.json', plan(many(MAX_PLAN_ACTIONS + 1), { status: 'applied' })), []);
