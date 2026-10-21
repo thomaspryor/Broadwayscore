@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5866",
   "planId": "3b160434-aad6-4c3d-920a-c1c6b77c94e4",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-21T21:47:40.841Z",
   "submitter": {
     "name": null,
@@ -155,5 +155,104 @@
         "description": "Search-discovery junk under Fire Fire (Arcola): the url is a review of the film The Fire Within You, not a review of Fire Fire."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T23:00:26.625Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran purge-wrong-production-show-score.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "safe-house-off-broadway-2026/exeunt-magazine--loren-noveck.json wrongProductionReason: \"anticipatory_pre_opening_post\" -> \"manual\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-and-the-cursed-child-one-part-west-end-2026/front-row-center--tulis-mccall.json wrongProductionReason: \"dateless-revival\" -> \"manual\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-and-the-cursed-child-one-part-west-end-2026/front-row-center--tulis-mccall.json wrongProduction: false -> true (retracted wrongProductionAutoCleared, wrongProductionAutoClearedAt)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/chiswickcalendar--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/daily-mail--lettice-bromovsky.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/dailyinfo--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/empire--matt-kamen.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/ground--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/guardian--alexandra-coghlan.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/guardian--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/hollywood-reporter--angie-han.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/islingtontribune--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/metro-uk--brooke-ivey-johnson.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/nytimes--kit-dillon.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/observer--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/sunday-express--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/times-uk--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted fire-fire-off-west-end-2026/variety--jay-weissberg.json"
+    }
+  ],
+  "executedIn": "ci"
 }
