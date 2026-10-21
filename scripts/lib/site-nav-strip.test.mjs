@@ -70,3 +70,31 @@ test('stripRecord clears a pull quote that only the menu held and stamps the tri
   assert.equal(stripRecord({ ...d, _locked: true }, 'x'), null);
   assert.equal(stripRecord({ fullText: PROSE }, 'x'), null);
 });
+
+test('BRO-5875: Time Out icon-chevron breadcrumb is cut, the title block after it stays', () => {
+  const crumbs = ['Worldwide', 'North America', 'United States', 'New York State', 'New York']
+    .map((c) => `${c}\n \n icon-chevron-right\n \n\n \n \n `).join('');
+  const out = stripLeadingSiteNav(`${crumbs}The Lehman Trilogy\n \n \n \nThe Lehman Trilogy\n \n${PROSE}`);
+  assert.ok(out.startsWith('The Lehman Trilogy'), out.slice(0, 60));
+  assert.ok(!/icon-chevron-right|Worldwide/.test(out));
+});
+
+test('BRO-5875: Chronicle "Toggle Search" drawer is cut up to the byline', () => {
+  const drawer = 'Toggle Search\n \n \n Search Keywords\n \n \n \n Search\n \n\n \n Need more options? Try advanced search.\n\n';
+  const out = stripLeadingSiteNav(`${drawer}Photo by \n Emily Cui\n | The Chronicle\n\n${PROSE}`);
+  assert.ok(out.startsWith('Photo by'), out.slice(0, 60));
+  assert.ok(!/Toggle Search|advanced search/.test(out));
+});
+
+test('BRO-5875: a credit block opening with "Home" and a prose line starting "Worldwide" are not cut', () => {
+  const credits = `Home\nBy Jane Critic\nDirected by Some Director\nMusic by A Composer\nBook by A Writer\n${PROSE}`;
+  assert.equal(stripLeadingSiteNav(credits), credits);
+  const prose = `Worldwide, audiences have loved this show.\n${PROSE}`;
+  assert.equal(stripLeadingSiteNav(prose), prose);
+});
+
+test('BRO-5875: a menu that ends right before the byline is cut, the byline stays', () => {
+  const t = `Menu\nWorld\nU.S.\nPolitics\nSports\nEntertainment\nBy MARK KENNEDY\n${PROSE}`;
+  const out = stripLeadingSiteNav(t);
+  assert.ok(out.startsWith('By MARK KENNEDY'), out.slice(0, 40));
+});

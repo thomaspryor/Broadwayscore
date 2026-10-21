@@ -77,3 +77,22 @@ test('a large WAF "Access Denied" robot-block page is garbage, a review quoting 
   const article = `<html><head><title>A review</title></head><body>The bouncer says your request appears similar to malicious requests sent by robots.${pad}</body></html>`;
   assert.equal(s.isChallengeOrGarbage(article), false);
 });
+
+test('BRO-5874: a near-empty HTML shell is garbage so the chain moves on', () => {
+  const shell = '<html><head><title>Bachtrack</title><meta name="description" content="x"></head><body><script>var a=1;</script></body></html>';
+  assert.equal(s.isChallengeOrGarbage(shell), true);
+  assert.equal(s.isNearEmptyHtmlShell(shell), true);
+  // A short page with real prose, JSON and markdown are not judged by the shell rule.
+  const prose = `<html><body><p>${'A real sentence of review text. '.repeat(10)}</p></body></html>`;
+  assert.equal(s.isChallengeOrGarbage(prose), false);
+  assert.equal(s.isChallengeOrGarbage('{"ok":true}'), false);
+  assert.equal(s.isChallengeOrGarbage('# Heading\n\nshort markdown'), false);
+  // A big page is never a shell, even with little text.
+  assert.equal(s.isNearEmptyHtmlShell(`<html><body>${'<div></div>'.repeat(800)}</body></html>`), false);
+});
+
+test('BRO-5875: redirect wrappers and <pre> pages are not judged as empty shells', () => {
+  assert.equal(s.isNearEmptyHtmlShell('<html><head><meta http-equiv="refresh" content="0;url=https://x.com/a"></head><body></body></html>'), false);
+  assert.equal(s.isNearEmptyHtmlShell('<html><body><script>location.replace("https://x.com/a")</script></body></html>'), false);
+  assert.equal(s.isNearEmptyHtmlShell('<html><body><pre>{"a":1}</pre></body></html>'), false);
+});

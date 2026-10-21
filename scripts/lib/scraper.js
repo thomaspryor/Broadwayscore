@@ -146,6 +146,9 @@ function _isChallengeOrGarbage(content) {
   if (content && /<title[^>]*>\s*(?:Just a moment(?:\.\.\.|…)|Attention Required!)/i.test(content)) return true;
   // Both Cloudflare managed-challenge script markers together never appear in a real article (same rule as bww-roundup-validator.js).
   if (content && content.includes('cf_chl_opt') && content.includes('challenge-platform')) return true;
+  // BRO-5874: a rendered HTML shell with almost no text (bachtrack.com served CI runners a
+  // 175-char page that Playwright reported as Success, so the chain stopped before BD/SB).
+  if (isNearEmptyHtmlShell(content)) return true;
   return (!!content && content.length < 10000 && (
     content.includes('Just a moment...') ||
     content.includes('cf_chl_opt') ||
@@ -160,6 +163,26 @@ function _isChallengeOrGarbage(content) {
     content.includes('<title>Verifying Device</title>') ||
     content.includes('p.toadmash.net')
   )) || isRobotBlockPage(content) || isTollbitGate(content);
+}
+
+/**
+ * An HTML document under 5KB whose visible text (scripts, styles and tags stripped) is under
+ * ~100 chars. No real article, listing or cast page is that empty; a bot wall or a failed
+ * render is. Non-HTML content (JSON, markdown) is never judged by this.
+ */
+function isNearEmptyHtmlShell(content) {
+  if (!content || typeof content !== 'string' || content.length >= 5000) return false;
+  if (!/<(?:!doctype\s+html|html|body)\b/i.test(content)) return false;
+  // Redirect wrappers (Google News) and Chrome's <pre> view of JSON/text carry their payload outside visible text.
+  if (/http-equiv\s*=\s*["']?refresh|location\.(?:replace|href)|<pre\b|rel=["']canonical/i.test(content)) return false;
+  const text = content
+    .replace(/<(script|style|noscript)\b[\s\S]*?<\/\1\s*>/gi, ' ')
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&[a-z#0-9]+;/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return text.length < 100;
 }
 
 /**
@@ -2235,6 +2258,7 @@ module.exports = {
   __setChromiumForTest,
   __resetRunMemoForTest,
   isChallengeOrGarbage: _isChallengeOrGarbage,
+  isNearEmptyHtmlShell,
   isTollbitGate,
   cleanup,
   domainMatchesExpected,

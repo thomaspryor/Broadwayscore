@@ -298,9 +298,15 @@ const LEADING_SITE_NAV_PATTERNS = [
   /^Home\s*([»›\/])\s*(?:[A-Z][\w&'’. -]{0,40}?\s*\1\s*){1,6}/,
   // "Search" followed only by blank lines (Vulture, Time Out page chrome)
   /^Search[^\S\n]*\n(?:[^\S\n]*\n)+/,
+  // Time Out location breadcrumb: "Worldwide\n icon-chevron-right\n North America\n icon-chevron-right ... The Lehman Trilogy\n" (BRO-5875)
+  /^(?:[^\S\n]*[A-Za-z][^\n]{0,60}\n\s*icon-chevron-right\s*){2,8}[^\n]{1,80}\n/,
+  // Duke Chronicle (and sister college-paper CMS) search drawer: "Toggle Search ... Need more options? Try advanced search." (BRO-5875)
+  /^Toggle Search\b[\s\S]{0,600}?Need more options\? Try advanced search\.\s*/,
 ];
 const MENU_LINE_MAX = 40;
 const MENU_MIN_LINES = 5;
+// A byline/credit block ("By X", "Directed by Y") opening a review is article text, never menu (BRO-5875).
+const CREDIT_LINE_RE = /^\s*(?:By|Directed by|Written by|Music by|Book by|Lyrics by|Choreograph(?:y|ed) by|Starring)\b/m;
 const RATING_RE = /★|☆|\bout of (?:five|\d)\b|\b\d(?:\.\d)?\s*\/\s*(?:5|10)\b|\bstars?\b/i;
 
 /**
@@ -327,6 +333,13 @@ function stripLeadingSiteNav(text) {
       if (!t) continue;
       if (t.length > MENU_LINE_MAX || (/[.!?]/.test(t) && t.split(/\s+/).length >= 4)) { cut = i; break; }
       navLines++;
+    }
+    if (cut > 0 && navLines >= MENU_MIN_LINES) {
+      // A byline/credit line ends the menu: keep it and everything after (BRO-5875).
+      // A credit line inside the first MENU_MIN_LINES lines means this is a credit block, not a menu.
+      const creditAt = lines.slice(0, cut).findIndex((l) => CREDIT_LINE_RE.test(l));
+      if (creditAt >= 0 && creditAt < MENU_MIN_LINES) cut = -1;
+      else if (creditAt >= 0) cut = creditAt;
     }
     if (cut > 0 && navLines >= MENU_MIN_LINES) {
       const removed = lines.slice(0, cut).join('\n');
