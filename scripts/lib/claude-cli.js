@@ -245,7 +245,16 @@ const AUTH_PING_REASONS = Object.freeze({
   SPAWN_STARVED: 'spawn-starved',
   SPAWN_ERROR: 'spawn-error',
   AUTH_REJECTED: 'auth-rejected',
+  USAGE_CAP: 'usage-cap',
 });
+
+// 2026-10-21: the plan's monthly spend cap made every probe fail with a valid
+// token and paged "log in again". The CLI reports the cap only as prose in the
+// result envelope, so this one string match is unavoidable (structural fields
+// are identical to a rejection); it is isolated here so a reword is a one-line fix.
+function isUsageCapMessage(text) {
+  return /hit your (monthly spend|usage|weekly|session|5-hour)?\s*limit|spend limit|usage limit reached/i.test(String(text || ''));
+}
 
 /**
  * Classify a failed authPing() spawnSync result: did the process never even
@@ -257,6 +266,7 @@ const AUTH_PING_REASONS = Object.freeze({
  * @returns {'spawn-starved'|'spawn-error'|'auth-rejected'}
  */
 function classifyAuthPingFailure(r) {
+  if (!r.error && !r.signal && isUsageCapMessage(`${r.stdout || ''} ${r.stderr || ''}`)) return AUTH_PING_REASONS.USAGE_CAP;
   if (r.error) {
     const code = r.error.code || '';
     return SPAWN_STARVATION_ERROR_CODES.has(code) ? AUTH_PING_REASONS.SPAWN_STARVED : AUTH_PING_REASONS.SPAWN_ERROR;
@@ -278,6 +288,9 @@ function classifyAuthPingFailure(r) {
 function worseAuthPingReason(a, b) {
   if (a === AUTH_PING_REASONS.SPAWN_STARVED || b === AUTH_PING_REASONS.SPAWN_STARVED) return AUTH_PING_REASONS.SPAWN_STARVED;
   if (a === AUTH_PING_REASONS.SPAWN_ERROR || b === AUTH_PING_REASONS.SPAWN_ERROR) return AUTH_PING_REASONS.SPAWN_ERROR;
+  // A cap on either probe means the credential itself was accepted (the server
+  // answered with a limit message), so it outranks a plain rejection from the other.
+  if (a === AUTH_PING_REASONS.USAGE_CAP || b === AUTH_PING_REASONS.USAGE_CAP) return AUTH_PING_REASONS.USAGE_CAP;
   return AUTH_PING_REASONS.AUTH_REJECTED;
 }
 
@@ -341,7 +354,7 @@ function authPing(extraEnv) {
   try {
     const body = JSON.parse(r.stdout);
     if (body.is_error === false && /pong/i.test(String(body.result || ''))) return { ok: true, reason: AUTH_PING_REASONS.OK };
-    return { ok: false, reason: AUTH_PING_REASONS.AUTH_REJECTED, detail: `ping returned no pong: ${String(body.result || r.stdout).slice(0, 200)}` };
+    return { ok: false, reason: isUsageCapMessage(body.result) ? AUTH_PING_REASONS.USAGE_CAP : AUTH_PING_REASONS.AUTH_REJECTED, detail: `ping returned no pong: ${String(body.result || r.stdout).slice(0, 200)}` };
   } catch {
     return { ok: false, reason: AUTH_PING_REASONS.AUTH_REJECTED, detail: `unparseable ping output: ${String(r.stdout || r.stderr).slice(0, 200)}` };
   }
@@ -801,7 +814,7 @@ function runClaudeCli(opts) {
 module.exports = {
   runClaudeCli, parseEnvelope, strippedEnv, STAGES, FORBIDDEN_MODEL_RE,
   authPing, authPingArgs, AUTH_PING_SETTINGS, resolvePassAuth, preflightAuth, resolveAuthEnv, AUTH_KEYS,
-  classifyAuthPingFailure, pingFailureDetail, AUTH_PING_REASONS, worseAuthPingReason,
+  classifyAuthPingFailure, isUsageCapMessage, pingFailureDetail, AUTH_PING_REASONS, worseAuthPingReason,
   parseStreamLine, addUsage, estimateCostUSD, APPROX_MODEL_RATES_PER_MTOK,
   resolveClaudeBin, pathWithClaudeBinDir,
 };

@@ -250,3 +250,26 @@ test('buildBillingFallbackAlertPayload: an actual revoked stored login (auth-rej
 
   assert.match(health.reason, /stored OAuth login failed/);
 });
+
+// BRO-5846: 2026-10-21 the plan's monthly spend cap made a valid token fail the
+// probe and the owner was told to log in again.
+test('usage cap: real CLI cap envelope classifies as usage-cap, not auth-rejected, and never says to re-login', () => {
+  const { classifyAuthPingFailure, isUsageCapMessage, worseAuthPingReason } = require('../../scripts/lib/claude-cli.js');
+  const msg = "You've hit your monthly spend limit · raise it at https://claude.ai/settings/usage?from=cc_cli_limit_message";
+  assert.equal(isUsageCapMessage(msg), true);
+  assert.equal(isUsageCapMessage('Invalid API key · Please run /login'), false);
+  assert.equal(classifyAuthPingFailure({ status: 1, stdout: JSON.stringify({ is_error: true, result: msg }), stderr: '' }), 'usage-cap');
+  assert.equal(classifyAuthPingFailure({ status: 1, stdout: '', stderr: 'Not logged in' }), 'auth-rejected');
+  assert.equal(worseAuthPingReason('usage-cap', 'auth-rejected'), 'usage-cap');
+  assert.equal(worseAuthPingReason('usage-cap', 'spawn-starved'), 'spawn-starved');
+
+  const health = evaluateAuthHealth({ preflight: { ok: false, mode: 'fail', reason: 'usage-cap', detail: msg }, authStatus: { loggedIn: true } });
+  assert.equal(health.mode, 'usage-cap');
+  const payload = buildAlertPayload(health);
+  assert.equal(payload.conditionKey, 'claude-usage-cap');
+  assert.equal(payload.disposition, 'digest');
+  assert.match(payload.description, /do NOT re-run `claude auth login`/);
+  assert.doesNotMatch(payload.hint, /auth login/);
+  const { isPageWorthy } = require('../../scripts/lib/page-worthy-alerts.js');
+  assert.equal(isPageWorthy(payload.conditionKey), false);
+});
