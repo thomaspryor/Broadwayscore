@@ -54,6 +54,9 @@ test('never-idle domains are registered for domcontentloaded', () => {
 
 test('Cloudflare interstitial is still treated as garbage', () => {
   assert.equal(s.isChallengeOrGarbage('<title>Just a moment...</title>'), true);
+  // BRO-5725: full-size (~29KB) Cloudflare managed challenge must not pass the <10KB gate
+  assert.equal(s.isChallengeOrGarbage(`<html><head><title>Just a moment...</title></head><body>${'x'.repeat(28000)}</body></html>`), true);
+  assert.equal(s.isChallengeOrGarbage(`<html><head><title>Review: Just a moment</title></head><body>${'x'.repeat(28000)}</body></html>`), false);
 });
 
 test('Akamai "Access Denied" (dailymail.co.uk to a throttled IP) is garbage, not a Playwright success (BRO-716)', () => {
