@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-21T22:55:07.062Z",
+  "timestamp": "2026-10-21T23:22:24.309Z",
   "stats": {
-    "totalReviews": 58450,
-    "alreadyFlagged": 21162,
-    "dateGuardCatches": 199,
-    "directorMismatch": 2056,
-    "tvFilmSignals": 1655,
-    "londonSignals": 2626,
+    "totalReviews": 58443,
+    "alreadyFlagged": 21161,
+    "dateGuardCatches": 198,
+    "directorMismatch": 2057,
+    "tvFilmSignals": 1654,
+    "londonSignals": 2627,
     "offBroadwaySignals": 530,
     "yearMismatch": 165,
-    "noPublishDate": 5391
+    "noPublishDate": 5380
   },
   "findings": [
     {
@@ -13958,20 +13958,6 @@
       ]
     },
     {
-      "showId": "fire-fire-off-west-end-2026",
-      "file": "hollywood-reporter--angie-han.json",
-      "score": null,
-      "publishDate": "2026-09-21",
-      "url": "https://www.hollywoodreporter.com/tv/tv-reviews/line-of-fire-review-nbc-hope-davis-peter-krause-1236700815/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "fish-in-the-dark-2015",
       "file": "broadwayworld--michael-dale.json",
       "score": 78,
@@ -17652,25 +17638,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hbo max\""
-        }
-      ]
-    },
-    {
-      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
-      "file": "front-row-center--tulis-mccall.json",
-      "score": 90,
-      "publishDate": "2018-04-30",
-      "url": "http://thefrontrowcenter.com/2018/04/harry-potter-and-the-cursed-child/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 3084d before show (2018-04-30 vs 2026-10-09)"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -25241,6 +25208,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"robert falls\" from long-days-journey-into-night-2003"
+        }
+      ]
+    },
+    {
+      "showId": "long-days-journey-into-night-west-end-2018",
+      "file": "nytimes--matt-wolf.json",
+      "publishDate": "2018-02-07",
+      "url": "https://www.nytimes.com/2018/02/07/theater/london-theater-long-days-journey-into-night-julius-caesar.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jonathan miller\" from long-days-journey-into-night-1986"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
@@ -69157,6 +69142,20 @@
     },
     {
       "showId": "ilford-boy-west-end-2026",
+      "file": "guardian--kate-wyver.json",
+      "score": 60,
+      "publishDate": "2026-10-21",
+      "url": "https://www.theguardian.com/stage/2026/oct/21/ilford-boy-review-donmar-warehouse-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "ilford-boy-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
       "score": 78,
       "publishDate": "2026-10-21",
@@ -73753,7 +73752,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 46,
+      "score": 55,
       "publishDate": "2026-10-21",
       "url": "https://www.standard.co.uk/culture/theatre/martin-guerre-at-the-old-vic-b1301716.html",
       "findings": [

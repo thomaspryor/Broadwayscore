@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T22:55:21.187Z",
+  "generatedAt": "2026-10-21T23:22:36.188Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -433,10 +433,6 @@
         {
           "name": "Variety",
           "isDualMarket": true
-        },
-        {
-          "name": "The Hollywood Reporter",
-          "isDualMarket": false
         },
         {
           "name": "The New Yorker",
@@ -1154,23 +1150,23 @@
       "status": "open",
       "slug": "ilford-boy-west-end",
       "thumbnail": "/images/shows/ilford-boy-west-end-2026/thumbnail.jpg",
-      "siteScore": 70.17,
-      "liveScore": 70,
-      "scoreDrift": -0.1700000000000017,
+      "siteScore": 72.77,
+      "liveScore": 73,
+      "scoreDrift": 0.23000000000000398,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 9,
-      "t1": 3,
+      "total": 11,
+      "t1": 5,
       "t2": 3,
       "t3": 3,
-      "positive": 5,
-      "mixed": 4,
+      "positive": 6,
+      "mixed": 5,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 7,
+        "highConfidence": 8,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1183,10 +1179,6 @@
         "detail": "Ready — awaiting send"
       },
       "missingT1": [
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -1404,6 +1396,18 @@
           "t3": 3,
           "p": 5,
           "m": 4,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-21T23:22:36.188Z",
+          "rc": 11,
+          "s": 72.77,
+          "t1": 5,
+          "t2": 3,
+          "t3": 3,
+          "p": 6,
+          "m": 5,
           "n": 0,
           "bc": "waiting"
         }
@@ -1898,9 +1902,9 @@
       "status": "open",
       "slug": "martin-guerre-west-end",
       "thumbnail": "/images/shows/martin-guerre-west-end-2026/thumbnail.webp",
-      "siteScore": 67.84,
-      "liveScore": 68,
-      "scoreDrift": 0.1599999999999966,
+      "siteScore": 67.19,
+      "liveScore": 67,
+      "scoreDrift": -0.18999999999999773,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -2151,6 +2155,18 @@
           "t": "2026-10-21T22:55:21.187Z",
           "rc": 16,
           "s": 67.84,
+          "t1": 5,
+          "t2": 5,
+          "t3": 6,
+          "p": 6,
+          "m": 9,
+          "n": 1,
+          "bc": "preview-sent"
+        },
+        {
+          "t": "2026-10-21T23:22:36.188Z",
+          "rc": 16,
+          "s": 67.19,
           "t1": 5,
           "t2": 5,
           "t3": 6,
@@ -2852,10 +2868,6 @@
         {
           "name": "The Spectator (UK)",
           "isDualMarket": false
-        },
-        {
-          "name": "The Sunday Times",
-          "isDualMarket": true
         },
         {
           "name": "Evening Standard",
