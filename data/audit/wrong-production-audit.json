@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-21T14:57:36.018Z",
+  "timestamp": "2026-10-21T15:11:32.036Z",
   "stats": {
-    "totalReviews": 58071,
-    "alreadyFlagged": 21126,
+    "totalReviews": 58073,
+    "alreadyFlagged": 21125,
     "dateGuardCatches": 198,
     "directorMismatch": 2060,
     "tvFilmSignals": 1652,
-    "londonSignals": 2583,
+    "londonSignals": 2584,
     "offBroadwaySignals": 530,
     "yearMismatch": 162,
-    "noPublishDate": 5252
+    "noPublishDate": 5245
   },
   "findings": [
     {
@@ -70248,6 +70248,20 @@
       "score": 99,
       "publishDate": "2022-04-29",
       "url": "https://www.whatsonstage.com/news/jerusalem-review-mark-rylances-blistering-byron-returns-to-the-west-end_56412/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-off-west-end-2026",
+      "file": "britishtheatrecom--british-theatre.json",
+      "score": null,
+      "publishDate": "2026-10-07",
+      "url": "https://www.britishtheatre.com/de/posts/jesus-christ-superstar-glenn-close-herod-drury-lane-2027",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
