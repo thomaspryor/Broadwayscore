@@ -25,9 +25,20 @@ test('probe: macOS never runs unshare', () => {
 test('choose: usable -> workspace-write', () => {
   assert.equal(P.chooseSandbox({ usable: true, reason: 'x' }, {}).mode, 'workspace-write');
 });
-test('choose: unusable in cloud VM -> danger-full-access', () => {
+test('choose: unusable in cloud VM -> refuses by default (full access would let Codex rewrite the runner)', () => {
   const c = P.chooseSandbox(P.probeNamespaceSandbox(BLOCKED, 'linux'), { CLAUDE_CODE_REMOTE: 'true' });
-  assert.deepEqual([c.ok, c.mode], [true, 'danger-full-access']);
+  assert.equal(c.ok, false);
+  assert.match(c.reason, /codex unusable here/);
+});
+test('choose: danger-full-access only with explicit opt-in inside a cloud VM', () => {
+  const probe = P.probeNamespaceSandbox(BLOCKED, 'linux');
+  assert.equal(P.chooseSandbox(probe, { CLAUDE_CODE_REMOTE: 'true', CODEX_RUNNER_ALLOW_FULL_ACCESS: '1' }).mode, 'danger-full-access');
+  assert.equal(P.chooseSandbox(probe, { CODEX_RUNNER_ALLOW_FULL_ACCESS: '1' }).ok, false);
+});
+test('probe: missing unshare (empty output) is unusable with a hint', () => {
+  const r = P.probeNamespaceSandbox(() => ({ code: -1, out: '' }), 'linux');
+  assert.equal(r.usable, false);
+  assert.match(r.reason, /unshare installed/);
 });
 test('choose: unusable on a non-cloud host -> refuses, never unsandboxed', () => {
   const c = P.chooseSandbox(P.probeNamespaceSandbox(BLOCKED, 'linux'), {});
