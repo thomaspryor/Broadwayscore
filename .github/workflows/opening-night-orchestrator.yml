@@ -272,6 +272,8 @@ jobs:
           #   - days 0-2: 'aggressive' (every cron fire)
           #   - days 3-13: 'daily' (only morning-cron slot — once/day per show)
           #   - days 14-59: 'every-3d' (~once every 3 mornings)
+          # pollMode gates only SERP; outside the opening window the poller's
+          # backoff gate also spaces full polls of a show >= 6h apart (BRO-5861).
           # The 30-shows/cycle SERP_BUDGET cap limits total cost.
           LOOKBACK=21
           echo "lookback=$LOOKBACK" >> $GITHUB_OUTPUT

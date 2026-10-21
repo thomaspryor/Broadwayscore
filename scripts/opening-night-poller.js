@@ -74,7 +74,7 @@ const { discoverLboRoundupHtml } = require('./lib/lbo-roundup-discover');
 const { discoverTrRoundupHtml } = require('./lib/tr-roundup-discover');
 const { discoverWetRoundupRows } = require('./lib/wet-roundup-discover');
 const { tryTbDirectUrl } = require('./lib/tb-direct-url');
-const { isInOpeningWindow } = require('./lib/opening-window-backoff');
+const { isInOpeningWindow, nextPollDelayMs } = require('./lib/opening-window-backoff');
 const { getLondonSupplementalOutlets, rotateMissingOutlets, warnStalledReviewStubs } = require('./lib/opening-night-discovery-policy');
 const {
   DEFAULT_SERP_BURST_CONFIG,
@@ -343,7 +343,9 @@ const { getThresholds, getMissingT1T2Outlets, checkReadiness } = require('./lib/
  *   - Pre-opening:   skip if >48h before parsed opening
  *
  * Note: layers 1-3 (aggregators, RSS, SSR site search) still run unless mode='skip'.
- * Only layer 4 (SERP, the expensive BD-backed layer) is gated by mode.
+ * Only layer 4 (SERP, the expensive BD-backed layer) is gated by mode. Outside the
+ * opening window the backoff gate spaces whole polls at least 6h apart
+ * (nextPollDelayMs, scripts/lib/opening-window-backoff.js, BRO-5861).
  */
 function pollMode(show, now = new Date()) {
   if (!show.openingDate) return 'daily'; // conservative default
@@ -2109,10 +2111,11 @@ async function pollCycle() {
       jsOutletMisses,
       ...(show.category === 'off-west-end' ? { serpOutletOffset: nextSerpOutletOffset } : {}),
     };
-    nextBackoff.nextRunAfter = Date.now() + computeNextBackoffDelayMs(nextBackoff.consecutiveNoOp);
+    // BRO-5861: outside the opening window, also wait at least 6h between full polls.
+    nextBackoff.nextRunAfter = Date.now() + nextPollDelayMs(computeNextBackoffDelayMs(nextBackoff.consecutiveNoOp), show);
     saveBackoffState(SHOW_ID, nextBackoff);
-    if (nextBackoff.consecutiveNoOp > 0) {
-      console.log(`  [BACKOFF] ${nextBackoff.consecutiveNoOp} consecutive no-ops — next run after ${new Date(nextBackoff.nextRunAfter).toISOString()}`);
+    if (nextBackoff.nextRunAfter > Date.now()) {
+      console.log(`  [BACKOFF] ${nextBackoff.consecutiveNoOp} consecutive no-ops — next full poll after ${new Date(nextBackoff.nextRunAfter).toISOString()}`);
     }
   } catch (e) {
     console.log(`  [BACKOFF] state update failed (non-fatal): ${e.message}`);

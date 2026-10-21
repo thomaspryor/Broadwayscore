@@ -33,4 +33,25 @@ function isInOpeningWindow(show, now = new Date()) {
   return nowMs >= opening - WINDOW_BEFORE_MS && nowMs <= opening + WINDOW_AFTER_MS;
 }
 
-module.exports = { isInOpeningWindow, WINDOW_BEFORE_MS, WINDOW_AFTER_MS };
+/**
+ * Outside the opening window, a full poll of one show runs at most this often
+ * (BRO-5861). The orchestrator polls a 21-day lookback, and layers 1-3
+ * (aggregators, RSS, site search) cost 2-5 min per show whatever pollMode says.
+ * With 32 shows in the lookback the serial loop took ~2h and the job hit its
+ * 145-min limit (run 39632362408). Reviews outside the window trickle in over
+ * days, so a 6h floor costs little freshness; inside the window the backoff
+ * gate is bypassed and every run still polls.
+ */
+const OUTSIDE_WINDOW_MIN_INTERVAL_MS = 6 * 60 * 60 * 1000;
+
+/**
+ * Delay before the next full poll of `show`: the no-op backoff delay, raised to
+ * the outside-window floor. The floor applies even after a run that found new
+ * reviews; the gate ignores it while the show is in its opening window.
+ */
+function nextPollDelayMs(noOpDelayMs, show, now = new Date()) {
+  if (isInOpeningWindow(show, now)) return noOpDelayMs;
+  return Math.max(noOpDelayMs, OUTSIDE_WINDOW_MIN_INTERVAL_MS);
+}
+
+module.exports = { isInOpeningWindow, nextPollDelayMs, WINDOW_BEFORE_MS, WINDOW_AFTER_MS, OUTSIDE_WINDOW_MIN_INTERVAL_MS };

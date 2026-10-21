@@ -111,6 +111,9 @@ jobs:
     # 125->145 (BRO-5426): fast_path rebuild 5->15 and readiness rebuild 5->10
     # took other steps to 6660s; (6660+600)/0.85 = 8541s, so 145min = 8700s
     # (~17% margin). Real runs still finish in ~50-70 min.
+    # BRO-5861: the poll loop step itself had no limit; with the 21-day
+    # lookback (32 shows) it ran ~2h and the job hit this ceiling. The loop
+    # now stops starting shows 65 min after job start (step backstop 85).
     timeout-minutes: 145
     steps:
       # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
@@ -127,6 +130,8 @@ jobs:
         run: |
           git config --global http.lowSpeedLimit 1000
           git config --global http.lowSpeedTime 45
+          # BRO-5861: the poll loop's time budget counts from here (job start).
+          echo "POLL_JOB_START_EPOCH=$(date +%s)" >> "$GITHUB_ENV"
 
       - name: Checkout
         uses: actions/checkout@v5
@@ -236,6 +241,10 @@ jobs:
                 d.setHours(0,0,0,0);
                 return d >= cutoff && d <= now;
               });
+              // BRO-5861: newest opening first, so the poll loop's time budget
+              // never cuts a show that is in its opening window. Undated last.
+              const t = (s) => (s.openingDate ? new Date(s.openingDate).getTime() : NaN);
+              opened.sort((a, b) => (Number.isNaN(t(b)) ? -1 : Number.isNaN(t(a)) ? 1 : t(b) - t(a)));
               if (opened.length > 0) console.log(opened.map(s => s.id).join(','));
             ")
 
@@ -319,7 +328,15 @@ jobs:
       - name: Run poller for each show
         if: steps.find.outputs.has_shows == 'true'
         id: poll
+        # BRO-5861: hard backstop only. The loop stops starting shows at
+        # POLL_LOOP_DEADLINE_MIN after job start, and each show is capped at 600s.
+        timeout-minutes: 85
         env:
+          # Stop starting new shows this many minutes after job start (BRO-5861).
+          # 65 + one 10-min show = 75 min, leaving 70 of the job's 145 for the
+          # steps after the loop. Shows cut here have not had their backoff state
+          # pushed out, so they are due first on the next run.
+          POLL_LOOP_DEADLINE_MIN: '65'
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -376,7 +393,13 @@ jobs:
           # step near the end of this job — see scripts/lib/opening-night-pipeline-stages.js.
           GATHER_FAILED=0
           GATHER_TOTAL=0
+          POLL_DEADLINE=$(( ${POLL_JOB_START_EPOCH:-$(date +%s)} + POLL_LOOP_DEADLINE_MIN * 60 ))
+          DEFERRED_SHOWS=""
           for SHOW_ID in "${SHOW_ARRAY[@]}"; do
+            if [ -n "$DEFERRED_SHOWS" ] || [ "$(date +%s)" -ge "$POLL_DEADLINE" ]; then
+              DEFERRED_SHOWS="${DEFERRED_SHOWS:+$DEFERRED_SHOWS,}$SHOW_ID"
+              continue
+            fi
             echo "════════════════════════════════════════"
             echo "Polling: $SHOW_ID"
             echo "════════════════════════════════════════"
@@ -463,6 +486,11 @@ jobs:
           # unscored reviews — closes the Joe-Turner gap).
           ANY_ACTION=false
           if [ "$ANY_NEW" = "true" ] || [ "$ANY_READY" = "true" ]; then ANY_ACTION=true; fi
+          if [ -n "$DEFERRED_SHOWS" ]; then
+            echo "::notice::Poll loop hit its ${POLL_LOOP_DEADLINE_MIN}-min budget; deferred to the next run: $DEFERRED_SHOWS"
+            echo "### Poll loop budget reached (BRO-5861)" >> "$GITHUB_STEP_SUMMARY"
+            echo "Deferred to the next run: \`$DEFERRED_SHOWS\`" >> "$GITHUB_STEP_SUMMARY"
+          fi
           echo "any_new=$ANY_NEW" >> $GITHUB_OUTPUT
           echo "any_ready=$ANY_READY" >> $GITHUB_OUTPUT
           echo "any_action=$ANY_ACTION" >> $GITHUB_OUTPUT
