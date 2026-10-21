@@ -237,6 +237,29 @@ test('makeIsCommitOnMain: offline — nothing is confirmed OR denied, even a com
   assert.equal(isOnMain(tip), null, 'no refresh possible -> unknown');
 });
 
+test('makeIsCommitOnMain: shallow clones stay shallow and use the shared remote policy', (t) => {
+  const { root, git, commit, work } = makeRepo();
+  t.after(() => fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  const old = commit('old.txt');
+  const tip = commit('tip.txt');
+  const shallow = path.join(root, 'shallow');
+  execFileSync('git', ['clone', '-q', '--depth=1', `file://${work}`, shallow]);
+  // Any attempted fetch would fail. Local shallow checks must return before
+  // fetching, while GitHub can still confirm an older SHA absent locally.
+  execFileSync('git', ['remote', 'set-url', 'origin', path.join(root, 'missing.git')], { cwd: shallow });
+  const log = [];
+  const local = makeIsCommitOnMain({ cwd: shallow, log: s => log.push(s) });
+  assert.equal(local(old), null);
+  assert.equal(local(tip), null);
+  assert.ok(log.every(s => s.includes('shallow clone')));
+  for (const status of ['behind', 'identical', 'ahead', 'diverged']) {
+    const remote = makeRemoteLookup({ originRepo: LOCAL, httpGetJson: () => ({ status }) });
+    assert.equal(makeIsCommitOnMain({ cwd: shallow, remote })(old),
+      status === 'behind' || status === 'identical' ? true : null, status);
+  }
+  assert.equal(execFileSync('git', ['rev-parse', '--is-shallow-repository'], { cwd: shallow, encoding: 'utf8' }).trim(), 'true');
+});
+
 test('makeIsCommitOnMain: after a history rewrite that dropped a commit, the refreshed check denies it (stale local ref must not approve)', (t) => {
   const { root, git, commit, work } = makeRepo();
   t.after(() => fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));

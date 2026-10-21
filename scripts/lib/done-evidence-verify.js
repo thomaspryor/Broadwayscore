@@ -264,14 +264,14 @@ function defaultHttpGetJson(url, { timeoutMs = 20000 } = {}) {
  * origin is unknown: a bare SHA must never be checked against a guessed repo.
  *
  * commit(sha): GET compare/main...{sha}. "behind"/"identical" = the SHA is an
- * ancestor of main (done-evidence-remote.js commitIsOnMain's mapping). In that
+ * ancestor of main. In that
  * direction merge_base_commit IS the SHA, so its message comes free and the
  * response stays small (the {sha}...main direction carries main's whole diff
  * and overflowed 1 MB on a 95-commit-old SHA). "ahead"/"diverged" answer
  * onMain:null, not false: a land/** tip is rebased before main fast-forwards,
  * so an honest branch-tip SHA reads "diverged", and only the local git-cherry
  * check can tell it from an unlanded one. Unknown never accuses; the nightly
- * sweep (done-evidence-remote.js) deliberately calls "diverged" broken.
+ * sweep (done-evidence-remote.js) shares this policy.
  *
  * pull(n): GET pulls/{n} → {merged, mergeSha, state, text}.
  */
@@ -402,9 +402,12 @@ function detectOriginRepo(cwd = process.cwd()) {
  * a SHA git cannot resolve (never fetched, ambiguous prefix) is unknown, never
  * false; an existing non-ancestor gets a patch-equivalence check so a
  * rebase-rewritten SHA still counts; a merge commit gets no such shortcut.
+ * remoteOnly skips local git for remote sweeps: the host checkout need not
+ * be the repository being checked. Both modes share the conservative remote
+ * fallback, and neither ever attempts to unshallow a checkout (BRO-3468).
  */
-function makeIsCommitOnMain({ cwd = process.cwd(), log = () => {}, remote = null } = {}) {
-  const local = makeLocalIsCommitOnMain({ cwd, log });
+function makeIsCommitOnMain({ cwd = process.cwd(), log = () => {}, remote = null, remoteOnly = false } = {}) {
+  const local = remoteOnly ? () => null : makeLocalIsCommitOnMain({ cwd, log });
   if (!remote || !remote.enabled) return local;
   // Local answers first (it alone can prove "definitively not" and see a
   // rebased patch); GitHub only settles what local could not (BRO-4206).

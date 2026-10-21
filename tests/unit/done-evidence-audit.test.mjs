@@ -444,11 +444,11 @@ test('a non-git evidence url (a prod data JSON, like BRO-3247) resolves UNKNOWN,
   assert.equal(resolveEvidenceUrl('https://broadwayscorecard.com/data/shows/x.json', { runGh: () => { throw new Error('must not be called'); } }), 'unknown');
 });
 
-test('commitIsOnMain maps the compare API status: behind/identical = landed, ahead/diverged = not', () => {
+test('commitIsOnMain shares the gate policy: behind/identical = landed, ahead/diverged = unknown', () => {
   assert.equal(commitIsOnMain('abc', { runGh: () => 'behind' }), 'holds');
   assert.equal(commitIsOnMain('abc', { runGh: () => 'identical' }), 'holds');
-  assert.equal(commitIsOnMain('abc', { runGh: () => 'ahead' }), 'broken');
-  assert.equal(commitIsOnMain('abc', { runGh: () => 'diverged' }), 'broken');
+  assert.equal(commitIsOnMain('abc', { runGh: () => 'ahead' }), 'unknown');
+  assert.equal(commitIsOnMain('abc', { runGh: () => 'diverged' }), 'unknown');
 });
 
 test('a gh failure or an unrecognised status is UNKNOWN — rate limits must not accuse anyone', () => {

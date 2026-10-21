@@ -2,47 +2,18 @@
  * done-evidence-remote.js — resolve a card's evidence against GitHub's copy of
  * the history, because this sweep's host has no local copy of it (BRO-3426).
  *
- * WHY REMOTE, AND WHY THIS IS NOT A REINVENTION OF landing-verify.js.
- *
- * The obvious implementation of "did this commit land on main" is
- * `git merge-base --is-ancestor <sha> origin/main`, and this repo already has
- * the careful version of it: scripts/lib/landing-verify.js's checkLanded(),
- * with the LANDED / NOT_LANDED / UNKNOWN contract this module's EVIDENCE
- * tri-state is copied from. It cannot be used here, and the reason is written
- * in its own header: on a shallow checkout that git call returns a FALSE
- * "not an ancestor", so checkLanded first tries `git fetch --unshallow` — and
- * under GITHUB_ACTIONS it skips that fetch outright and returns UNKNOWN,
- * because on this repo an unshallow must move ~1.8 GB and cannot finish inside
- * any workable timeout (BRO-3320; it was the wall behind ~3,800 push failures).
- *
- * This sweep's host is exactly that case. .github/workflows/data-health-check.yml
- * checks out with a bare `actions/checkout@v5`, i.e. fetch-depth 1. So every
- * local ancestry probe here would answer UNKNOWN, forever, and the whole
- * PR-EVIDENCE channel would be inert while looking green — the same
- * "silently unverified" shape BRO-3373 had to fix for a different reason.
- * checkLanded's own header names the escape hatch ("callers can escalate to a
- * remote-side check … GitHub compare API"); this module is that escalation,
- * not a second copy of the local check. Measured 2026-09-15: the whole live
- * board carries 19 PR-EVIDENCE lines, so this is ~19 API calls a night.
+ * Ancestry delegates to done-evidence-verify.js makeIsCommitOnMain and
+ * makeRemoteLookup (BRO-3468). The sweep uses remoteOnly because its host
+ * has a depth-1 checkout and may be checking a different repository. Shared
+ * policy: never unshallow, confirm behind/identical remotely, and leave
+ * ahead/diverged UNKNOWN because a rebased patch may already have landed.
+ * Only a complete, refreshed local graph can prove a negative via git cherry.
+ * The Done gate and nightly sweep therefore use the same remote verdicts.
  *
  * The same argument applies to the vacuous-check refinement below. BRO-3426
  * asks for `git log --diff-filter=A` against the issue's createdAt, and that
  * needs history a depth-1 checkout does not have either — so it is asked of
  * the same remote.
- *
- * TODO (BRO-3426, consolidation): the Linear Migration owner tab is adding
- * scripts/lib/pr-evidence-verify.js — a git-ancestry verifier for PR-EVIDENCE
- * at CLOSE time, i.e. the same question commitIsOnMain/pullIsOnMain answer
- * here, asked at the moment a card is marked Done rather than the morning
- * after. It was NOT on origin/main when this shipped (checked with
- * `git ls-tree origin/main scripts/lib/`), so the check is implemented inline
- * here per that card's own instruction. When it lands, this module should
- * import it rather than keep a second copy — and note that
- * scripts/lib/linear-done-gate.js:85 currently calls extractPrRef and TRUSTS
- * the marker text without re-proving it, which is precisely the gap that
- * makes this sweep necessary after the fact; whichever module wins should be
- * wired into that gate too. Do not edit linear-done-gate.js from here: that
- * tab owns it concurrently.
  *
  * `gh` is injected (runGh) so every function here is unit-testable with a stub
  * and makes zero network calls in tests.
@@ -51,6 +22,7 @@
 'use strict';
 
 const { execFileSync } = require('child_process');
+const { makeIsCommitOnMain, makeRemoteLookup } = require('./done-evidence-verify.js');
 
 const REPO_SLUG = 'thomaspryor/Broadwayscore';
 // One call, bounded. A hung probe must never eat the step budget the verify
@@ -122,21 +94,23 @@ function parseEvidenceUrl(url, { repo = REPO_SLUG } = {}) {
  *
  * GitHub's compare endpoint answers this directly: comparing main...<sha>
  * reports "behind" when <sha> is reachable from main and "identical" when it
- * IS main's tip. "ahead" or "diverged" means it genuinely is not on main.
- * Verified live against four real PR-EVIDENCE shas (including abbreviated
- * ones, which the endpoint resolves).
+ * IS main's tip. Other statuses stay unknown under the shared gate policy:
+ * remote ancestry alone cannot rule out a rebase landing.
  *
  * @returns {'holds'|'broken'|'unknown'}
  */
 function commitIsOnMain(sha, { runGh = defaultRunGh, repo = REPO_SLUG } = {}) {
   if (!sha) return 'unknown';
-  const out = runGh(['api', `repos/${repo}/compare/main...${sha}`, '--jq', '.status']);
-  if (out === null || out === '') return 'unknown';
-  const status = out.trim();
-  if (status === 'behind' || status === 'identical') return 'holds';
-  if (status === 'ahead' || status === 'diverged') return 'broken';
-  // An unrecognised status is a schema change, not a verdict about this card.
-  return 'unknown';
+  const remote = makeRemoteLookup({
+    originRepo: repo,
+    httpGetJson: (url) => {
+      const endpoint = url.replace('https://api.github.com/', '');
+      const out = runGh(['api', endpoint, '--jq', '.status']);
+      return typeof out === 'string' && out.trim() ? { status: out.trim() } : null;
+    },
+  });
+  const onMain = makeIsCommitOnMain({ remoteOnly: true, remote })(sha);
+  return onMain === true ? 'holds' : onMain === false ? 'broken' : 'unknown';
 }
 
 /**
