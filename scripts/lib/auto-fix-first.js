@@ -28,6 +28,8 @@
  * deps so tests run without Linear or GitHub. defaultDeps() holds the real IO.
  */
 
+const { parseSessionReportStatus } = require('./linear-session-reporting.js');
+
 const HOUR_MS = 3600000;
 const WINDOW_MS = 3 * HOUR_MS;
 const LOOKBACK_MS = 24 * HOUR_MS;
@@ -99,6 +101,27 @@ function closedAtMs(card) {
   return ms(card && (card.completedAt || card.canceledAt));
 }
 
+/**
+ * PURE. When a worker parked this card with its fix already landed, as ms; else
+ * null. linear-session.js writes `**Session report (paused)**` plus a
+ * `RECHECK-AFTER:` stamp when a fix only shows on a later scheduled run (the
+ * poller has no cron). The card goes back to Backlog, which reads as "not
+ * started", but a fix exists: it must wait for proof, not page the owner
+ * (BRO-5835: BRO-5716 was claimed 20:53Z, fixed 21:06Z, parked 21:33Z, and
+ * emailed as "nobody picked it up" at 00:10Z while the poller was green).
+ */
+function fixParkedAt(card) {
+  const created = ms(card && card.createdAt);
+  let newest = null;
+  for (const c of (card && card.comments) || []) {
+    const body = String((c && c.body) || '');
+    if (parseSessionReportStatus(body) !== 'paused' || !body.includes('RECHECK-AFTER:')) continue;
+    const at = ms(c.createdAt);
+    if (at !== null && (created === null || at >= created) && (newest === null || at > newest)) newest = at;
+  }
+  return newest;
+}
+
 function isEscalated(card) {
   const comments = (card && card.comments) || [];
   return comments.some((c) => String((c && c.body) || '').includes(ESCALATED_MARKER));
@@ -138,7 +161,14 @@ function decideAttempt(recent, { redObservedAt, nowMs, canFile, windowMs, graceM
     const card = open[0];
     const created = ms(card.createdAt);
     if (nowMs - created < windowMs) return { action: 'hold', reason: 'fix-window', card };
-    if (!isStarted(card)) return { action: 'escalate', reason: 'not-started', card };
+    if (!isStarted(card)) {
+      const parked = fixParkedAt(card);
+      if (parked === null) return { action: 'escalate', reason: 'not-started', card };
+      // Same rule as a Done card: red only counts after the fix landed, and the
+      // grace hour covers a run already in flight when the worker parked it.
+      if (red !== null && red > parked && nowMs >= parked + graceMs) return { action: 'escalate', reason: 'still-red', card };
+      return { action: 'hold', reason: 'fix-parked-awaiting-proof', card };
+    }
     if (red !== null && red >= created + windowMs) return { action: 'escalate', reason: 'still-red', card };
     // A crashed fix session leaves the card In Progress forever, and the
     // poller (no cron) may never show red again: give up waiting at 2x window.
@@ -245,7 +275,11 @@ function escalationPreamble({ reason, card, error, nowMs, what = 'An opening-nig
   const queued = card && cardAttempt(card) >= 2 ? 'A second automatic fix' : 'An automatic fix';
   let first;
   if (reason === 'not-started') {
-    first = `${what} is failing. ${queued} was queued at ${utc(created)}, but no fix session picked it up in ${hours} hours. The fix card stays open, so the next free fix session takes it.`;
+    // startedAt survives a worker handing the card back (see isStarted).
+    const picked = card && card.startedAt
+      ? 'a fix session started on it but stopped without a fix'
+      : `no fix session picked it up in ${hours} hours`;
+    first = `${what} is failing. ${queued} was queued at ${utc(created)}, but ${picked}. The fix card stays open, so the next free fix session takes it.`;
   } else if (reason === 'still-red') {
     first = `${what} is still failing. ${tries} ${last} was queued at ${utc(created)} and it is still failing ${hours} hours later.`;
   } else if (reason === 'stalled') {

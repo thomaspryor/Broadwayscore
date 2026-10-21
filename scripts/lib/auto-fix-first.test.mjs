@@ -371,3 +371,43 @@ test('owner copy (owner 2026-10-16): never asks him to open Claude or do what a 
   assert.match(afx.escalationPreamble({ reason: 'red-after-fix', card: card({ createdAt: iso(5 * H), completedAt: iso(2 * H) }), nowMs: NOW, what: 'X' }),
     /^X is still failing\. Two automatic fixes were tried\. The second finished at 2026-10-16T10:00:00Z, but it failed again afterwards\.\nThe automation has stopped retrying for now and will not email you about this again before 2026-10-17T07:00:00Z\. If it is still failing after that, it starts a new automatic fix by itself\.$/);
 });
+
+// BRO-5835: replay of the 2026-10-20 false escalation. BRO-5716 was filed
+// 19:14:41Z, claimed 20:53Z, fix landed 21:06Z, parked to Backlog with a paused
+// report + RECHECK-AFTER at 21:33Z. At 00:10Z the poller was green (no red).
+test('replay BRO-5716 2026-10-20T00:10Z: a card parked with its fix landed holds, it is not "not-started"', () => {
+  const at = (s) => Date.parse(s);
+  const parkedCard = {
+    identifier: 'BRO-5716', url: 'https://linear.app/x/BRO-5716', title: 'Auto-fix (second try): Opening Night Poller Failed',
+    description: 'x\n\nauto-fix-first-key: workflow-red:opening-night-poller.yml\n\nauto-fix-first-attempt: 2\n',
+    createdAt: '2026-10-19T19:14:41.374Z', startedAt: '2026-10-19T20:53:00.337Z', state: { type: 'backlog' },
+    comments: [
+      { body: '**Session report (paused)**\n\nFix landed. RECHECK-AFTER: 2026-10-20 recheck: node scripts/check-workflow-run-status.js', createdAt: '2026-10-19T21:33:03.691Z' },
+      { body: 'Claimed by https://claude.ai/code/session_x at 2026-10-19T20:53:00.418Z', createdAt: '2026-10-19T20:53:00.601Z' },
+    ],
+  };
+  const run = (redAt, nowMs = at('2026-10-20T00:10:00Z')) => {
+    const v = afx.decide({ cards: [parkedCard], redObservedAt: redAt === null ? null : at(redAt), nowMs, canFile: false });
+    return `${v.action}:${v.reason}`;
+  };
+  assert.equal(run(null), 'hold:fix-parked-awaiting-proof', 'poller green: nothing to page');
+  assert.equal(run('2026-10-19T18:08:00Z'), 'hold:fix-parked-awaiting-proof', 'red from before the fix landed is the old failure');
+  assert.equal(run('2026-10-19T22:20:00Z', at('2026-10-19T22:30:00Z')), 'hold:fix-parked-awaiting-proof', 'grace hour after the park');
+  assert.equal(run('2026-10-19T23:00:00Z'), 'escalate:still-red', 'a run red after the fix landed is a failed fix (attempt 2 is the last try)');
+});
+
+test('decide: a paused report without RECHECK-AFTER, or one older than the card, is not a landed fix', () => {
+  const base = { createdAt: iso(4 * H), startedAt: iso(3 * H), state: { type: 'backlog' } };
+  const noStamp = card({ ...base, comments: [{ body: '**Session report (paused)**\n\ngave up', createdAt: iso(2 * H) }] });
+  assert.equal(decide([noStamp], null), 'escalate:not-started');
+  const stale = card({ ...base, comments: [{ body: '**Session report (paused)**\n\nRECHECK-AFTER: 2026-10-01', createdAt: iso(5 * H) }] });
+  assert.equal(decide([stale], null), 'escalate:not-started');
+});
+
+test('escalationPreamble: a handed-back card (startedAt set) does not claim nobody picked it up', () => {
+  const gaveUp = card({ createdAt: iso(4 * H), startedAt: iso(3 * H), state: { type: 'unstarted' } });
+  const text = afx.escalationPreamble({ reason: 'not-started', card: gaveUp, nowMs: NOW });
+  assert.match(text, /started on it but stopped without a fix/);
+  assert.doesNotMatch(text, /no fix session picked it up/);
+  assert.match(afx.escalationPreamble({ reason: 'not-started', card: card({ createdAt: iso(4 * H) }), nowMs: NOW }), /no fix session picked it up/);
+});
