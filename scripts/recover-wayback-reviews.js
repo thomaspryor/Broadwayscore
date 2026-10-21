@@ -42,6 +42,7 @@ const { markRescoreNeeded } = require('./lib/rescore-flagging');
 const { chooseArticleBody } = require('./lib/jsonld-body-choice');
 const { extractFromJsonLd, extractParagraphText } = require('./lib/html-article-text');
 const { extractVarietyBody } = require('./lib/article-extractor');
+const { fillPublishDateFromHtml, waybackTimestampDate } = require('./lib/fill-publish-date-from-html');
 
 const USAGE = `recover-wayback-reviews.js — recover review full text from the Wayback Machine for dead-URL reviews.
 
@@ -1339,6 +1340,14 @@ async function processRecoveredText(candidate, text, html, archiveData) {
   // Clear incomplete status — prevents re-processing before next rebuild
   delete data.incompleteReason;
   delete data.incompleteDetail;
+
+  // BRO-5859: the archived page carries the publish date; an undated record
+  // took the text but never the date (19 NYT reviews shipped undated).
+  fillPublishDateFromHtml(data, html, {
+    url: candidate.url || data.url,
+    source: 'html-archive',
+    notAfter: archiveData.source === 'archive.org' ? waybackTimestampDate(archiveData.timestamp) : null,
+  });
 
   if (archiveData.source === 'archive.org') {
     data.archiveOrgTimestamp = archiveData.timestamp;

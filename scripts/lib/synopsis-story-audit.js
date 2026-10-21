@@ -18,7 +18,7 @@
  * Pure, no I/O. scripts/lib/synopsis-story-audit.test.mjs.
  */
 
-const { WIKITEXT_DEBRIS_RE, isAudiencePitch, BULLET_LIST_RE } = require('./synopsis-validation');
+const { WIKITEXT_DEBRIS_RE, isAudiencePitch, BULLET_LIST_RE, isTruncatedSynopsis } = require('./synopsis-validation');
 // Initials and titles ("Buddy Young Jr.", "F. Murray Abraham") end in a full
 // stop that does not end a sentence; same list the TodayTix cleaner uses.
 const { ABBREV_DOT_RE } = require('./todaytix-page-identity');
@@ -80,6 +80,7 @@ function synopsisStoryProblems(show, nonStoryReason) {
   if (WIKITEXT_DEBRIS_RE.test(text)) hard.push('wikitext-debris');
   if (isAudiencePitch(text)) hard.push('audience-pitch');
   if (BULLET_LIST_RE.test(text)) hard.push('bullet-list');
+  if (isTruncatedSynopsis(text)) hard.push('truncated-ellipsis');
   const soft = [];
   for (const sentence of storySentences(text, show.title).slice(0, 4)) {
     const reason = nonStoryReason(sentence);

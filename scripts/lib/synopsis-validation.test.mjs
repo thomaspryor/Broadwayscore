@@ -239,3 +239,17 @@ test('a spaced bullet list is rejected, a title with a bullet is not (BRO-5063)'
   assert.equal(isValidSynopsis('Spies converge on a London hotel. Subject matters in the show include : • Physical and verbal abuse are depicted. • Characters are jump scared.'), false);
   assert.equal(isValidSynopsis('*Label•less* is a new musical experience that gives voice to today\'s issues, sharing the resilience needed to overcome barriers.'), true);
 });
+
+// BRO-5859: collector cuts marked with an ellipsis are rejected; teasers pass.
+test('isTruncatedSynopsis: Show Score 800-char cut, 300-char meta cut, open-quote cut', () => {
+  const { isTruncatedSynopsis } = pkg;
+  const cut800 = ('The company sings well and the second act moves quickly. '.repeat(14)).slice(0, 797) + '...';
+  assert.equal(cut800.length, 800);
+  assert.equal(isTruncatedSynopsis(cut800), true);
+  assert.equal(isValidSynopsis(cut800), false);
+  assert.equal(isTruncatedSynopsis('x '.repeat(149) + 'b…'), true);
+  assert.equal(isTruncatedSynopsis('He laments his isolation in a world he sees as base, saying early in Act I, "...'), true);
+  const teaser = 'In a game of loyalty and betrayal, remember, even your closest ally could be your most dangerous enemy…';
+  assert.equal(isTruncatedSynopsis(teaser), false);
+  assert.equal(isTruncatedSynopsis('A full sentence ends here.'), false);
+});

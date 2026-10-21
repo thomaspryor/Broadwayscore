@@ -143,6 +143,7 @@ const ALLOWED_SCRIPTS = [
   // queues a rescore for each trimmed file).
   'repair-page-bleed.js',
   'strip-variety-promo-bleed.js', // BRO-5254: strip Variety promo modules from stored texts
+  'strip-leading-site-nav.js', // BRO-5859: cut site nav menus / Stage and Cinema footer from stored texts
   // BRO-5080: West End historical rows whose openingDate is a WhatsOnStage
   // first-performance date (221 rows, past the plan action cap). --apply
   // recomputes from live data and is idempotent; rules in

@@ -38,6 +38,7 @@ const { recordSbCall, recordBdCall } = require('./lib/provider-telemetry');
 const { consultBrightData } = require('./lib/brightdata-caps');
 const { gateScrapedSynopsis } = require('./lib/synopsis-fact-check');
 const { setSynopsis } = require('./lib/synopsis-source');
+const { extractShowScoreSynopsis } = require('./lib/show-score-synopsis');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -812,72 +813,8 @@ function extractMetadata(html) {
     }
 
     // ── Synopsis extraction ──
-    // Show Score structure: <div class="about-header"><h2>About the Show</h2></div>
-    // followed by <div class="about"><p>...</p></div> (sibling of heading's parent).
-    const headings = doc.querySelectorAll('h2, h3');
-    for (const heading of headings) {
-      const headingText = (heading.textContent || '').trim().toLowerCase();
-      if (headingText === 'about the show' || headingText === 'about this show') {
-        const container = heading.parentElement;
-
-        // Strategy 1: paragraphs in the heading's own parent
-        if (container) {
-          const paragraphs = container.querySelectorAll('p');
-          const texts = Array.from(paragraphs)
-            .map(p => (p.textContent || '').trim())
-            .filter(t => t.length > 10);
-          if (texts.length > 0) {
-            let synopsis = texts.join(' ').trim();
-            if (synopsis.length > 800) synopsis = synopsis.slice(0, 797) + '...';
-            result.synopsis = synopsis;
-            break;
-          }
-        }
-
-        // Strategy 2: heading's parent's next siblings (Show Score's actual pattern)
-        if (!result.synopsis && container) {
-          let parentSibling = container.nextElementSibling;
-          let checked = 0;
-          while (parentSibling && !result.synopsis && checked < 3) {
-            const paragraphs = parentSibling.querySelectorAll('p');
-            const texts = Array.from(paragraphs)
-              .map(p => (p.textContent || '').trim())
-              .filter(t => t.length > 10);
-            if (texts.length > 0) {
-              let synopsis = texts.join(' ').trim();
-              if (synopsis.length > 800) synopsis = synopsis.slice(0, 797) + '...';
-              result.synopsis = synopsis;
-              break;
-            }
-            const sibText = (parentSibling.textContent || '').trim();
-            if (sibText.length > 20) {
-              let synopsis = sibText;
-              if (synopsis.length > 800) synopsis = synopsis.slice(0, 797) + '...';
-              result.synopsis = synopsis;
-              break;
-            }
-            parentSibling = parentSibling.nextElementSibling;
-            checked++;
-          }
-        }
-
-        // Strategy 3: heading's own next siblings (generic fallback)
-        if (!result.synopsis) {
-          let sibling = heading.nextElementSibling;
-          while (sibling && !result.synopsis) {
-            const text = (sibling.textContent || '').trim();
-            if (text.length > 20) {
-              let synopsis = text;
-              if (synopsis.length > 800) synopsis = synopsis.slice(0, 797) + '...';
-              result.synopsis = synopsis;
-            }
-            sibling = sibling.nextElementSibling;
-            if (sibling && sibling.tagName && /^H[1-6]$/.test(sibling.tagName)) break;
-          }
-        }
-        break;
-      }
-    }
+    // About-the-Show text cut at a sentence end, never mid-word (BRO-5859).
+    result.synopsis = extractShowScoreSynopsis(doc);
 
     dom.window.close();
   } catch (e) {

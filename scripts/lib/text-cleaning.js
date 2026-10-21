@@ -255,6 +255,13 @@ const TRAILING_JUNK_PATTERNS = [
   /\s*Frequently asked questions\s*Where is[\s\S]*$/is,
 ];
 
+// Site footers that follow the article on one outlet (BRO-5859). Also in
+// HIGH_CONFIDENCE_JUNK_PATTERNS; stripSiteChrome applies only these.
+const SITE_FOOTER_PATTERNS = [
+  // stageandcinema.com share bar, comment form and donate box
+  /\s*Share on Facebook\s+(?:𝕏\s+)?Share on X[\s\S]*SUPPORT STAGE & CINEMA\s+DONATE\s*$/i,
+];
+
 // High-confidence patterns — definitively junk, bypass back-half guard.
 // These use [\s\S]*$ to consume everything after the anchor.
 const HIGH_CONFIDENCE_JUNK_PATTERNS = [
@@ -278,7 +285,73 @@ const HIGH_CONFIDENCE_JUNK_PATTERNS = [
   // a dozen other shows. assessTextQuality read that as a multi-show page and
   // the Tru London Theatre review was never scored (BRO-4430).
   /\s*Originally published on [A-Z][a-z]{2,8}\.? \d{1,2}, \d{4}[\s\S]*$/,
+  ...SITE_FOOTER_PATTERNS,
 ];
+
+// Site navigation menus captured AHEAD of the article by fallback fetchers
+// (BRO-5859). Each pattern is anchored at the start and ends where the article
+// begins, so only the menu goes. Stage and Cinema's menu is one flat line
+// ("Home Contact Us Areas We Cover Categories ... Technology Virtual").
+const LEADING_SITE_NAV_PATTERNS = [
+  /^Home Contact Us Areas We Cover Categories\b[\s\S]{0,800}?\bTechnology\s+Virtual\s+/,
+  // Breadcrumb trail: "Home » Reviews » ", "Home / Reviews / ", "Home › London Theatre Tickets › "
+  /^Home\s*([»›\/])\s*(?:[A-Z][\w&'’. -]{0,40}?\s*\1\s*){1,6}/,
+  // "Search" followed only by blank lines (Vulture, Time Out page chrome)
+  /^Search[^\S\n]*\n(?:[^\S\n]*\n)+/,
+];
+const MENU_LINE_MAX = 40;
+const MENU_MIN_LINES = 5;
+const RATING_RE = /★|☆|\bout of (?:five|\d)\b|\b\d(?:\.\d)?\s*\/\s*(?:5|10)\b|\bstars?\b/i;
+
+/**
+ * Strip a site navigation menu from the start of scraped text (BRO-5859).
+ * Known flat menus and breadcrumbs go by pattern. A multi-line menu that opens
+ * with "Home" or "Menu" goes when its first MENU_MIN_LINES+ non-empty lines are
+ * all short and unpunctuated; the cut stops at the first prose line and is
+ * refused when the removed lines hold a rating (Time Out prints its stars in
+ * the header) or more than half the text.
+ */
+function stripLeadingSiteNav(text) {
+  if (!text || typeof text !== 'string') return text;
+  let cleaned = text;
+  for (const re of LEADING_SITE_NAV_PATTERNS) {
+    const m = cleaned.match(re);
+    if (m && m[0].length < cleaned.length * 0.5) cleaned = cleaned.slice(m[0].length);
+  }
+  if (/^(?:Home|Menu)[^\S\n]*\n/.test(cleaned)) {
+    const lines = cleaned.split('\n');
+    let navLines = 0;
+    let cut = -1;
+    for (let i = 0; i < lines.length; i++) {
+      const t = lines[i].trim();
+      if (!t) continue;
+      if (t.length > MENU_LINE_MAX || (/[.!?]/.test(t) && t.split(/\s+/).length >= 4)) { cut = i; break; }
+      navLines++;
+    }
+    if (cut > 0 && navLines >= MENU_MIN_LINES) {
+      const removed = lines.slice(0, cut).join('\n');
+      if (!RATING_RE.test(removed) && removed.length < cleaned.length * 0.5) {
+        cleaned = lines.slice(cut).join('\n');
+      }
+    }
+  }
+  return cleaned === text ? text : cleaned.trim();
+}
+
+/**
+ * Leading site nav plus the SITE_FOOTER_PATTERNS footers, nothing else: the
+ * repair for stored texts (scripts/strip-leading-site-nav.js), which must not
+ * pick up every other stripTrailingJunk rule at the same time.
+ */
+function stripSiteChrome(text) {
+  if (!text || typeof text !== 'string') return text;
+  let cleaned = stripLeadingSiteNav(text);
+  for (const re of SITE_FOOTER_PATTERNS) {
+    const m = cleaned.match(re);
+    if (m && m.index > cleaned.length * 0.5) cleaned = cleaned.slice(0, m.index).trim();
+  }
+  return cleaned;
+}
 
 /**
  * Strip trailing junk (newsletter promos, login prompts, site footers) from review text.
@@ -295,7 +368,7 @@ const HIGH_CONFIDENCE_JUNK_PATTERNS = [
  */
 function stripTrailingJunk(text) {
   if (!text) return text;
-  let cleaned = text;
+  let cleaned = stripLeadingSiteNav(text);
   const originalLength = text.length;
   const minRemaining = Math.max(200, originalLength * 0.15);
   const minRemainingHighConf = Math.max(100, originalLength * 0.10);
@@ -533,6 +606,8 @@ module.exports = {
   stripLeadingHtmlArtifacts,
   stripLeadingNavigation,
   stripTrailingJunk,
+  stripLeadingSiteNav,
+  stripSiteChrome,
   stripCrossReferences,
   cleanText,
   stripConsentLayerPrefix,

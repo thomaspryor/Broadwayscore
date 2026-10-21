@@ -274,6 +274,24 @@ function isLlmRefusal(text) {
 }
 
 /**
+ * A synopsis that a collector cut off and marked with an ellipsis (BRO-5859):
+ * the Show Score scraper's 797 chars + "..." (800 total), a 300-char
+ * meta-description cut ending "…", or an ellipsis right after an opening
+ * quote ('saying in Act I, "...'). A teaser that ends on a deliberate
+ * ellipsis ("your closest ally could be your enemy…") passes.
+ *
+ * @param {string} text
+ * @returns {boolean}
+ */
+function isTruncatedSynopsis(text) {
+  if (!text || typeof text !== 'string') return false;
+  const t = text.trim();
+  if (!/(\.\.\.|\u2026)$/.test(t)) return false;
+  if (t.length === 800 || t.length === 300) return true;
+  return /[,:]\s*["\u201C']\s*(\.\.\.|\u2026)$/.test(t);
+}
+
+/**
  * Validate whether text is a genuine synopsis (not accessibility info,
  * marketing copy, truncated text, or an LLM refusal).
  *
@@ -312,6 +330,8 @@ function isValidSynopsis(text) {
   if (/^(See |Get tickets|Don't miss|Experience the|Come discover)/i.test(straight)) return false;
   if (isAudiencePitch(trimmed)) return false;
 
+  if (isTruncatedSynopsis(trimmed)) return false;
+
   // Reject text that ends mid-sentence (ends with comma, or ends with lowercase letter without period)
   if (/,\s*$/.test(trimmed)) return false;
   if (/[a-z]$/.test(trimmed) && !/[.!?'")\]]$/.test(trimmed)) return false;
@@ -337,6 +357,7 @@ function cutToLastSentence(text) {
 }
 
 module.exports = {
+  isTruncatedSynopsis,
   synopsisAuthorMismatch,
   PLOT_SIGNAL_RE,
   REFUSAL_PATTERNS,
