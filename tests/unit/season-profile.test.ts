@@ -19,6 +19,7 @@ import {
   mix,
   MIX_ROW_LABELS_HIDDEN,
   seasonBaseline,
+  seasonHistoryAverage,
   showGroup,
   type SeasonShowInput,
 } from '../../src/lib/season-profile';
@@ -267,6 +268,69 @@ test('every mix row label the report relies on is a real compareSeason row', () 
   const ps = buildSeasonProfiles([show({ openingDate: '2024-10-01' }), show({ openingDate: '2023-10-01' })]);
   const labels = new Set(compareSeason(ps, '2024-2025', '2026-01-01')!.rows.map((r) => r.label));
   for (const l of MIX_ROW_LABELS_HIDDEN) assert.ok(labels.has(l), `compareSeason has no '${l}' row`);
+});
+
+// Owner 2026-10-21: a season's capital total should not just track how many budgets are public.
+test('estimated capital adds a median of similar disclosed shows for each undisclosed one', () => {
+  const ps = buildSeasonProfiles([
+    // Disclosed original musicals around 2023: median 15M.
+    show({ openingDate: '2022-10-01', type: 'musical', commercial: com({ capitalization: 10e6 }) }),
+    show({ openingDate: '2023-10-01', type: 'musical', commercial: com({ capitalization: 15e6 }) }),
+    show({ openingDate: '2024-10-01', type: 'musical', commercial: com({ capitalization: 30e6 }) }),
+    // A disclosed revival never sizes an original.
+    show({ openingDate: '2023-11-01', type: 'musical', isRevival: true, commercial: com({ capitalization: 90e6 }) }),
+    show({ openingDate: '2023-12-01', type: 'musical', commercial: com({ capitalization: null }) }),
+    // Nonprofit runs have no investors: neither counted nor estimated.
+    show({ openingDate: '2023-12-02', type: 'musical', commercial: com({ designation: 'Nonprofit', nonprofitOrg: 'MTC' }) }),
+  ]);
+  const p = ps.find((x) => x.season === '2023-2024')!;
+  assert.equal(p.capitalization.all.total, 105e6);
+  assert.deepEqual(p.estimatedCapital, { total: 120e6, estimated: 1, missing: 0, nonprofitOut: 0 });
+});
+
+test('estimated capital widens the window, then drops the revival match, then gives up', () => {
+  const plays = (year: number, caps: number[], isRevival = false) =>
+    caps.map((c, i) => show({ openingDate: `${year}-0${i + 1}-15`, isRevival, commercial: com({ capitalization: c }) }));
+  // Revival plays only 4 seasons away: the 2-season window has none, the 4-season one has 3.
+  const widened = buildSeasonProfiles([...plays(2016, [2e6, 4e6, 6e6], true),
+    show({ openingDate: '2019-10-01', isRevival: true, commercial: com() })]);
+  assert.equal(widened.find((x) => x.season === '2019-2020')!.estimatedCapital.total, 4e6);
+  // No revival plays at all: originals of the same type stand in.
+  const anyRevival = buildSeasonProfiles([...plays(2019, [1e6, 3e6, 5e6]),
+    show({ openingDate: '2019-10-01', isRevival: true, commercial: com() })]);
+  assert.equal(anyRevival.find((x) => x.season === '2019-2020')!.estimatedCapital.estimated, 1);
+  // Too few comparable shows: counted as missing, not guessed.
+  const [lone] = buildSeasonProfiles([show({ openingDate: '2019-10-01', commercial: com() })]);
+  assert.deepEqual(lone.estimatedCapital, { total: 0, estimated: 0, missing: 1, nonprofitOut: 0 });
+});
+
+test('the history average leaves out the season under way and the pandemic seasons', () => {
+  const ps = buildSeasonProfiles([
+    ...season(2021, 10, { musicals: 5, tracked: true }),
+    ...season(2022, 20, { musicals: 5, tracked: true }),
+    ...season(2019, 4, { tracked: true }),
+    ...season(2026, 30, { musicals: 30, tracked: true }),
+  ]);
+  const avg = seasonHistoryAverage(ps, '2026-2027', '2026-10-21');
+  assert.equal(avg.seasons, 2);
+  assert.equal(avg.productions, 15);
+  assert.equal(avg.musicals.share, 10 / 30);
+  // Both seasons ended over a year before the as-of date, so both count toward recoupment.
+  assert.deepEqual(avg.recouped, { recouped: 1, commercial: 15, seasons: 2 });
+  assert.deepEqual(avg.estimatedCapital, { avg: 75e6, seasons: 2 });
+});
+
+test('nonprofit-presented runs are neither estimated nor used to estimate', () => {
+  const ps = buildSeasonProfiles([
+    show({ openingDate: '2023-10-01', commercial: com({ capitalization: 4e6 }) }),
+    show({ openingDate: '2023-10-02', commercial: com({ capitalization: 6e6 }) }),
+    show({ openingDate: '2023-10-03', commercial: com({ capitalization: 8e6 }) }),
+    // An enhancement deal's small disclosed figure stays out of the commercial pool.
+    show({ openingDate: '2023-10-04', commercial: com({ nonprofitOrg: 'MTC', productionType: 'enhancement', capitalization: 1e5 }) }),
+    show({ openingDate: '2023-10-05', commercial: com({ nonprofitOrg: 'LCT', productionType: 'enhancement' }) }),
+    show({ openingDate: '2023-10-06', commercial: com() }),
+  ]);
+  assert.deepEqual(ps[0].estimatedCapital, { total: 18.1e6 + 6e6, estimated: 1, missing: 0, nonprofitOut: 1 });
 });
 
 test('every column carries its counts: last season as "n of d", the average per season', () => {

@@ -13,7 +13,10 @@ import {
   getSeasonStats,
   getShowsBySeasonWithCommercial,
   getSeasonComparison,
+  getSeasonProfiles,
 } from '@/lib/data-commercial';
+import { mixSection, withoutMixRows } from '@/lib/season-findings';
+import MixCard from '@/components/biz/MixCard';
 
 import AllShowsTable from '@/components/biz/AllShowsTable';
 import SeasonComparisonTable from '@/components/biz/SeasonComparisonTable';
@@ -60,6 +63,7 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
   const stats = getSeasonStats(season);
   const shows = getShowsBySeasonWithCommercial(season);
   const comparison = getSeasonComparison(season);
+  const mixCard = mixSection(getSeasonProfiles(), season, comparison);
 
   // If no shows found, show message
   if (shows.length === 0) {
@@ -165,7 +169,15 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
             <h2 className="text-xl font-bold text-white mb-3">
               Compared with {comparison.lastSeason ? 'Last Season and ' : ''}Prior Seasons
             </h2>
-            <SeasonComparisonTable comparison={comparison} />
+            <SeasonComparisonTable comparison={mixCard.columns.length ? withoutMixRows(comparison) : comparison} />
+          </section>
+        )}
+
+        {mixCard.columns.length > 0 && (
+          <section className="mb-8">
+            <h2 className="text-xl font-bold text-white mb-1">Production Mix</h2>
+            <p className="text-sm text-gray-400 mb-3">Originals and revivals, each split into musicals and plays. Counts every Broadway opening, including shows the list below has no investment data for.</p>
+            <MixCard columns={mixCard.columns} overallRows={mixCard.overallRows} withinRows={mixCard.withinRows} />
           </section>
         )}
 

@@ -272,7 +272,7 @@ export default function SeasonReportPage() {
           {history.length > 0 && (
             <section id="season-by-season" className="mb-8 scroll-mt-20">
               <h2 className="text-xl font-bold text-white mb-3">Season by Season</h2>
-              <SeasonHistoryTable profiles={history} currentSeason={currentSeason} showCapital={false} linkSeasons={false} />
+              <SeasonHistoryTable profiles={history} currentSeason={currentSeason} asOf={today} showCapital={false} linkSeasons={false} />
             </section>
           )}
 
