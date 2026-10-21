@@ -1057,5 +1057,61 @@
       }
     ],
     "queuedAt": "2026-10-21T22:22:57.999Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:cadel-lungs-on-legs-west-end-2026",
+    "title": "Review gap — \"Cadel: Lungs On Legs\" missing 2 cited review(s)",
+    "description": "Cadel: Lungs On Legs (cadel-lungs-on-legs-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=cadel-lungs-on-legs-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-21T22:56:47.270Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:jane-eyre-rose-kingston-off-west-end-2026",
+    "title": "Review gap — \"Jane Eyre\" missing 1 cited review(s)",
+    "description": "Jane Eyre (jane-eyre-rose-kingston-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=jane-eyre-rose-kingston-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-21T22:56:47.329Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:king-lear-royal-exchange-regional-2026",
+    "title": "Review gap — \"King Lear\" missing 1 cited review(s)",
+    "description": "King Lear (king-lear-royal-exchange-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=king-lear-royal-exchange-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-21T22:56:47.373Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:lincoln-in-the-bardo-off-broadway-2026",
+    "title": "Review gap — \"Lincoln in the Bardo\" missing 1 cited review(s)",
+    "description": "Lincoln in the Bardo (lincoln-in-the-bardo-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=lincoln-in-the-bardo-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-21T22:56:47.385Z"
   }
 ]

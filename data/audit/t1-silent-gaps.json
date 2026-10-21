@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T19:57:53.062Z",
+  "generatedAt": "2026-10-21T22:56:54.168Z",
   "windowDays": 45,
   "showsScanned": 196,
   "gaps": [
@@ -12,18 +12,14 @@
       "tier": 2,
       "type": "empty-body",
       "url": "https://www.whatsonstage.com/news/disneys-high-school-musical-at-troubadour-wembley-park-theatre-review-exactly-what-ive-been-looking-",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
-      },
-      "recoveryCount": 1,
+      "recovery": null,
+      "recoveryCount": 3,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=high-school-musical-off-west-end-2026 --url=https://www.whatsonstage.com/news/disneys-high-school-musical-at-troubadour-wembley-park-theatre-review-exactly-what-ive-been-looking- --outlet=whatsonstage --critic=\"Hang Yuen\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-20T23:20:06.795Z",
-      "fileAgeHours": 20.628358333333335,
+      "fileAgeHours": 23.611988333333333,
       "gapSeenAt": "2026-10-21T15:56:47.605Z",
-      "nonTerminalAgeHours": 4.0181825
+      "nonTerminalAgeHours": 7.001823055555556
     },
     {
       "showId": "other-desert-cities-2026",
@@ -40,9 +36,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=other-desert-cities-2026",
       "firstSeen": "2026-10-20T01:24:52.774Z",
-      "fileAgeHours": 42.548985,
+      "fileAgeHours": 45.53261194444445,
       "gapSeenAt": "2026-10-20T16:46:29.082Z",
-      "nonTerminalAgeHours": 27.189994444444444
+      "nonTerminalAgeHours": 30.173635
     },
     {
       "showId": "slam-frank-off-broadway-2026",
@@ -58,9 +54,9 @@
       "forumLinkRecoveryCount": 5,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=slam-frank-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-18T14:14:33.814Z",
-      "fileAgeHours": 77.72098277777778,
+      "fileAgeHours": 80.70460944444444,
       "gapSeenAt": "2026-10-18T18:09:48.486Z",
-      "nonTerminalAgeHours": 73.8012711111111
+      "nonTerminalAgeHours": 76.78491166666667
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -76,9 +72,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 699.2885711111111,
+      "fileAgeHours": 702.2721997222222,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 250.30835
+      "nonTerminalAgeHours": 253.29199055555554
     },
     {
       "showId": "all-male-as-you-like-it-regional-2026",
@@ -94,9 +90,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=all-male-as-you-like-it-regional-2026 --url=https://www.talkinbroadway.com/page/regional/minn/minn1539.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-19T17:17:56.172Z",
-      "fileAgeHours": 50.66568361111111,
+      "fileAgeHours": 53.64933027777778,
       "gapSeenAt": "2026-10-19T18:06:42.214Z",
-      "nonTerminalAgeHours": 49.85301333333334
+      "nonTerminalAgeHours": 52.83665388888889
     }
   ],
   "contradictions": []

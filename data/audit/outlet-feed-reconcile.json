@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T19:58:06.431Z",
+  "generatedAt": "2026-10-21T22:59:45.118Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -183,6 +183,14 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
+      "outletId": "south-london",
+      "error": "Timeout fetching https://southlondon.co.uk/feed/"
+    },
+    {
+      "outletId": "theatre-vibe",
+      "error": "AggregateError"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -195,8 +203,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 737,
-  "matchedGaps": 4,
+  "itemsScanned": 730,
+  "matchedGaps": 5,
   "possibleGaps": 4,
   "gaps": [
     {
@@ -215,6 +223,15 @@
       "outletId": "theater-scene",
       "url": "https://www.theaterscene.net/plays/offbway-plays/king-of-the-yees/tony-marinelli/",
       "headline": "King of the Yees",
+      "publishDate": "2026-10-21"
+    },
+    {
+      "showId": "machine-learning-off-broadway-2026",
+      "title": "Machine Learning",
+      "level": "matched",
+      "outletId": "stageandcinema",
+      "url": "https://stageandcinema.com/2026/10/21/machine-learning-off-broadway-review/",
+      "headline": "Off-Broadway Review: MACHINE LEARNING (Little Engine Theater)",
       "publishDate": "2026-10-21"
     },
     {

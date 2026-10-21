@@ -1,126 +1,78 @@
 {
-  "generatedAt": "2026-10-21T19:58:06.054Z",
+  "generatedAt": "2026-10-21T22:59:44.747Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 251,
-  "clean": 244,
-  "defective": 7,
+  "clean": 247,
+  "defective": 4,
   "byType": {
-    "score-drift": 7
+    "score-drift": 4
   },
   "shows": [
     {
-      "showId": "ilford-boy-west-end-2026",
-      "title": "Ilford Boy",
-      "openingDate": "2026-10-20",
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "title": "The Devil Wears Prada",
+      "openingDate": "2024-12-05",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 72.42 vs local 71.88 (Δ0.54)"
+          "detail": "deployed cs 57.72 vs local 57.64 (Δ0.08)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 8,
-      "deployedCount": 8,
-      "firstDefectAt": "2026-10-21T19:58:02.749Z"
+      "localCount": 27,
+      "deployedCount": 28,
+      "firstDefectAt": "2026-10-21T22:59:38.446Z"
     },
     {
-      "showId": "the-cherry-orchard-west-end-2026",
-      "title": "The Cherry Orchard",
-      "openingDate": "2026-10-13",
+      "showId": "operation-mincemeat-west-end-2024",
+      "title": "Operation Mincemeat",
+      "openingDate": "2023-05-09",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 72.77 vs local 72.87 (Δ0.1)"
+          "detail": "deployed cs 88.89 vs local 88.62 (Δ0.27)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 42,
-      "deployedCount": 42,
-      "firstDefectAt": "2026-10-21T19:58:02.749Z"
+      "localCount": 24,
+      "deployedCount": 25,
+      "firstDefectAt": "2026-10-21T22:59:38.446Z"
     },
     {
-      "showId": "high-school-musical-off-west-end-2026",
-      "title": "High School Musical",
-      "openingDate": "2026-10-12",
+      "showId": "abba-voyage-off-west-end-2026",
+      "title": "ABBA Voyage",
+      "openingDate": "2022-05-28",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 84.05 vs local 84.16 (Δ0.11)"
+          "detail": "deployed cs 85.65 vs local 86.09 (Δ0.44)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 10,
-      "deployedCount": 10,
-      "firstDefectAt": "2026-10-21T19:58:02.749Z"
+      "localCount": 22,
+      "deployedCount": 23,
+      "firstDefectAt": "2026-10-21T22:59:38.446Z"
     },
     {
-      "showId": "murder-cathedral-off-west-end-2026",
-      "title": "Murder in the Cathedral",
-      "openingDate": "2026-10-12",
+      "showId": "magic-mike-live-west-end-2021",
+      "title": "Magic Mike Live",
+      "openingDate": "2018-11-28",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 82.81 vs local 81.56 (Δ1.25)"
+          "detail": "deployed cs 61.99 vs local 64.78 (Δ2.79)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 17,
-      "deployedCount": 17,
-      "firstDefectAt": "2026-10-21T19:58:02.749Z"
-    },
-    {
-      "showId": "triumph-off-broadway-2026",
-      "title": "Triumph",
-      "openingDate": "2026-10-08",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 74.1 vs local 73.79 (Δ0.31)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 4,
-      "deployedCount": 4,
-      "firstDefectAt": "2026-10-21T19:58:02.749Z"
-    },
-    {
-      "showId": "kramerfauci-st-anns-off-broadway-2026",
-      "title": "Kramer/Fauci",
-      "openingDate": "2026-10-04",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 81.27 vs local 80.93 (Δ0.34)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 17,
-      "deployedCount": 17,
-      "firstDefectAt": "2026-10-21T19:58:02.749Z"
-    },
-    {
-      "showId": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
-      "title": "The Hairy Ape",
-      "openingDate": "2026-10-04",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 76.78 vs local 76.44 (Δ0.34)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 18,
-      "deployedCount": 18,
-      "firstDefectAt": "2026-10-21T19:58:02.749Z"
+      "localCount": 12,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-10-21T22:59:38.446Z"
     }
   ],
   "persistentDefective": 0,
