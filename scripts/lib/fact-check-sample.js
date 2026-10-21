@@ -33,6 +33,7 @@ const COHORTS = {
   'we-historical': {
     label: 'West End historical backfill (we-historical:wos)',
     market: 'West End (London)',
+    // WOS rows only: review-led 'we-historical:tr' rows are covered by season samples (cohortRows).
     filter: (s) => s.discoverySource === 'we-historical:wos' && WE_SEASONS.includes(s.season),
     stratum: (s) => s.season,
   },
@@ -135,13 +136,15 @@ function cohortRows(shows, key) {
 
 /** The cohort's rows and the seeded sample (ids + strata), ready to save. */
 function drawSample(shows, cohortName, n, seed) {
-  const cohort = COHORTS[parseCohortKey(cohortName).base];
+  const { base, season } = parseCohortKey(cohortName);
+  const cohort = COHORTS[base];
+  const label = season && base === 'we-historical' ? `West End historical backfill ${season} (we-historical:wos + we-historical:tr)` : cohort.label;
   const rows = cohortRows(shows, cohortName);
   const sample = stratifiedSample(rows, cohort.stratum, n, seed);
   const strata = {};
   for (const r of rows) { const k = cohort.stratum(r); strata[k] = strata[k] || { population: 0, sampled: 0 }; strata[k].population++; }
   for (const r of sample) strata[r.stratum].sampled++;
-  return { cohort: cohortName, label: cohort.label, seed: Number(seed), n: sample.length, population: rows.length, strata, ids: sample.map((r) => ({ id: r.id, stratum: r.stratum })) };
+  return { cohort: cohortName, label, seed: Number(seed), n: sample.length, population: rows.length, strata, ids: sample.map((r) => ({ id: r.id, stratum: r.stratum })) };
 }
 
 /** "2019-2020" -> "the 2019-20 season". */
