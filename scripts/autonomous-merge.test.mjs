@@ -53,7 +53,7 @@ test('cloneDataRepo refuses an unknown repoKey before touching the network', () 
 
 test('verifyRebaseData: missing-show class rebases, gates, and leaves the repo venue ledger untouched', (t) => {
   const { tmp, clone } = makeFixtureRepo({ 'shows.json': '[]' });
-  t.after(() => fs.rmSync(tmp, { recursive: true, force: true }));
+  t.after(() => fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   git(clone, ['checkout', '-b', 'auto/fixture-missing-show']);
   fs.writeFileSync(path.join(clone, 'shows.json'), '[{"id":"fixture-2026","provisional":false}]');
   git(clone, ['add', '-A']);
@@ -78,7 +78,7 @@ test('validate-show-venue: --data-dir isolates provisional, full-corpus, and fil
     return fs.existsSync(file) ? fs.readFileSync(file) : null;
   });
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-4278-'));
-  t.after(() => fs.rmSync(tmp, { recursive: true, force: true }));
+  t.after(() => fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const candidates = path.join(tmp, 'candidates.json');
   fs.writeFileSync(candidates, '[]');
 
