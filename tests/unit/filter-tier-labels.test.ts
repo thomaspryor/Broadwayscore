@@ -30,3 +30,12 @@ test('London critics labels start Gold at 85', () => {
   assert.deepEqual(tier.options.map((o) => o.id), base.options.map((o) => o.id));
   tier.options.forEach((o, i) => assert.equal(o.predicate, base.options[i].predicate));
 });
+
+test('page score legends use the market Gold threshold', async () => {
+  const { getScoreTierRange } = await import('../../src/components/show-cards/ScoreBadge');
+  const keys = ['mustSee', 'recommended', 'worthSeeing', 'skippable', 'stayAway'] as const;
+  assert.deepEqual(keys.map((k) => getScoreTierRange(k, 'broadway')), ['83-100', '75-82', '65-74', '55-64', '<55']);
+  assert.deepEqual(keys.map((k) => getScoreTierRange(k)), keys.map((k) => getScoreTierRange(k, 'broadway')));
+  assert.deepEqual(keys.slice(0, 2).map((k) => getScoreTierRange(k, 'west-end')), ['85-100', '75-84']);
+  assert.equal(getScoreTierRange('mustSee', 'off-west-end'), '85-100');
+});

@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback, useEffect, startTransition, Suspense } from 'react';
 import Link from 'next/link';
-import { ShowListCard, MiniShowCard, ToggleBar, SCORE_TIERS } from '@/components/show-cards';
+import { ShowListCard, MiniShowCard, ToggleBar, SCORE_TIERS, getScoreTierRange } from '@/components/show-cards';
 import type { ShowCardShow, ScoreModeParam } from '@/components/show-cards/types';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { getNextSort, getSortArrow, normalizeSort } from '@/lib/sort-toggle';
@@ -271,23 +271,23 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
       <div className="flex flex-wrap items-center justify-center gap-4 mt-8 mb-4 text-xs text-gray-400">
         <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.mustSee.tooltip}>
           <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.mustSee.color, boxShadow: '0 0 6px rgba(255, 215, 0, 0.5)' }}></div>
-          <span>{SCORE_TIERS.mustSee.range} {SCORE_TIERS.mustSee.label}</span>
+          <span>{getScoreTierRange('mustSee', 'off-broadway')} {SCORE_TIERS.mustSee.label}</span>
         </div>
         <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.recommended.tooltip}>
           <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.recommended.color }}></div>
-          <span>{SCORE_TIERS.recommended.range} {SCORE_TIERS.recommended.label}</span>
+          <span>{getScoreTierRange('recommended', 'off-broadway')} {SCORE_TIERS.recommended.label}</span>
         </div>
         <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.worthSeeing.tooltip}>
           <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.worthSeeing.color }}></div>
-          <span>{SCORE_TIERS.worthSeeing.range} {SCORE_TIERS.worthSeeing.label}</span>
+          <span>{getScoreTierRange('worthSeeing', 'off-broadway')} {SCORE_TIERS.worthSeeing.label}</span>
         </div>
         <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.skippable.tooltip}>
           <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.skippable.color }}></div>
-          <span>{SCORE_TIERS.skippable.range} {SCORE_TIERS.skippable.label}</span>
+          <span>{getScoreTierRange('skippable', 'off-broadway')} {SCORE_TIERS.skippable.label}</span>
         </div>
         <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.stayAway.tooltip}>
           <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.stayAway.color }}></div>
-          <span>{SCORE_TIERS.stayAway.range} {SCORE_TIERS.stayAway.label}</span>
+          <span>{getScoreTierRange('stayAway', 'off-broadway')} {SCORE_TIERS.stayAway.label}</span>
         </div>
       </div>
     </div>

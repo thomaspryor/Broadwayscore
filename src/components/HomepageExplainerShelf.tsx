@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { featureFlags } from '@/config/feature-flags';
-import { SCORE_TIERS } from '@/components/show-cards';
+import { SCORE_TIERS, getScoreTierRange } from '@/components/show-cards';
 
 interface HomepageExplainerShelfProps {
   totalShows: number;
@@ -21,11 +21,11 @@ export default function HomepageExplainerShelf({ totalShows, totalReviews, total
   if (!featureFlags.homepageExplainer) return null;
 
   const tiers = [
-    { ...SCORE_TIERS.mustSee, sample: 92 },
-    { ...SCORE_TIERS.recommended, sample: 78 },
-    { ...SCORE_TIERS.worthSeeing, sample: 70 },
-    { ...SCORE_TIERS.skippable, sample: 60 },
-    { ...SCORE_TIERS.stayAway, sample: 45 },
+    { ...SCORE_TIERS.mustSee, range: getScoreTierRange('mustSee', 'broadway'), sample: 92 },
+    { ...SCORE_TIERS.recommended, range: getScoreTierRange('recommended', 'broadway'), sample: 78 },
+    { ...SCORE_TIERS.worthSeeing, range: getScoreTierRange('worthSeeing', 'broadway'), sample: 70 },
+    { ...SCORE_TIERS.skippable, range: getScoreTierRange('skippable', 'broadway'), sample: 60 },
+    { ...SCORE_TIERS.stayAway, range: getScoreTierRange('stayAway', 'broadway'), sample: 45 },
   ];
 
   return (

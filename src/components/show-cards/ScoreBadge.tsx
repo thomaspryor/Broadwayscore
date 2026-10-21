@@ -1,53 +1,62 @@
 import { getGoldThreshold, isCriticalGold, reviewsRemainingForScore } from '@/config/score-buckets';
+import { RECOMMENDED_MIN, WORTH_SEEING_MIN, MIXED_MIN } from '../../../scripts/lib/score-tiers';
 
 // Score tier labels and tooltips
 export const SCORE_TIERS = {
   mustSee: {
     label: 'Critical Gold',
     tooltip: 'Drop-everything great. If you\'re seeing one show, make it this.',
-    range: '83-100',
     color: '#FFD700',
     glow: true,
   },
   recommended: {
     label: 'Recommended',
     tooltip: 'Strong choice—most people will have a great time.',
-    range: '75-82',
     color: '#22c55e',
     glow: false,
   },
   worthSeeing: {
     label: 'Worth Seeing',
     tooltip: 'Good, with caveats. Best if the premise/cast/genre is your thing.',
-    range: '65-74',
     color: '#14b8a6',
     glow: false,
   },
   skippable: {
     label: 'Mixed',
     tooltip: 'Critics are split — worth a look if the premise grabs you.',
-    range: '55-64',
     color: '#d97706',
     glow: false,
   },
   stayAway: {
     label: 'Critical Miss',
     tooltip: 'Not recommended—save your time and money.',
-    range: '<55',
     color: '#ef4444',
     glow: false,
   },
 };
 
 export type ScoreTier = typeof SCORE_TIERS.mustSee;
+export type ScoreTierKey = keyof typeof SCORE_TIERS;
+
+/** Score range for a tier legend, e.g. "83-100". Gold starts at 85 in London, so pass the market. */
+export function getScoreTierRange(tier: ScoreTierKey, category?: string): string {
+  const gold = getGoldThreshold(category);
+  switch (tier) {
+    case 'mustSee': return `${gold}-100`;
+    case 'recommended': return `${RECOMMENDED_MIN}-${gold - 1}`;
+    case 'worthSeeing': return `${WORTH_SEEING_MIN}-${RECOMMENDED_MIN - 1}`;
+    case 'skippable': return `${MIXED_MIN}-${WORTH_SEEING_MIN - 1}`;
+    case 'stayAway': return `<${MIXED_MIN}`;
+  }
+}
 
 export function getScoreTier(score: number | null | undefined, category?: string): ScoreTier | null {
   if (score === null || score === undefined) return null;
   const rounded = Math.round(score);
   if (rounded >= getGoldThreshold(category)) return SCORE_TIERS.mustSee;
-  if (rounded >= 75) return SCORE_TIERS.recommended;
-  if (rounded >= 65) return SCORE_TIERS.worthSeeing;
-  if (rounded >= 55) return SCORE_TIERS.skippable;
+  if (rounded >= RECOMMENDED_MIN) return SCORE_TIERS.recommended;
+  if (rounded >= WORTH_SEEING_MIN) return SCORE_TIERS.worthSeeing;
+  if (rounded >= MIXED_MIN) return SCORE_TIERS.skippable;
   return SCORE_TIERS.stayAway;
 }
 

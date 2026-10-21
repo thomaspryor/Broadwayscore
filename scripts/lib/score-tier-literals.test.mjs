@@ -49,7 +49,6 @@ const GOLD_83_BASELINE = {
   'src/app/methodology/page.tsx': { count: 2, why: 'methodology prose and tier legend' },
   'src/app/west-end/methodology/page.tsx': { count: 2, why: 'prose comparing WE 85 to Broadway 83' },
   'src/components/HomepageExplainerShelf.tsx': { count: 1, why: 'homepage explainer legend "83+ Critical Gold"' },
-  'src/components/show-cards/ScoreBadge.tsx': { count: 1, why: 'SCORE_TIERS.mustSee.range display string' },
 };
 
 function walk(dir, out) {

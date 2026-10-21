@@ -5,7 +5,7 @@ import { replaceLocationSearch } from '@/lib/hooks/useLocationSearch';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import type Fuse from 'fuse.js';
-import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from '@/components/show-cards';
+import { SCORE_TIERS, getScoreTierRange, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from '@/components/show-cards';
 import FeaturedSpot from '@/components/FeaturedSpot';
 import MarketFilterBar from '@/components/MarketFilterBar';
 
@@ -930,23 +930,23 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
         <div className="flex flex-wrap items-center justify-center gap-4 mt-8 mb-4 text-xs text-gray-400">
           <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.mustSee.tooltip}>
             <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.mustSee.color, boxShadow: '0 0 6px rgba(255, 215, 0, 0.5)' }}></div>
-            <span>{SCORE_TIERS.mustSee.range} {SCORE_TIERS.mustSee.label}</span>
+            <span>{getScoreTierRange('mustSee', 'broadway')} {SCORE_TIERS.mustSee.label}</span>
           </div>
           <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.recommended.tooltip}>
             <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.recommended.color }}></div>
-            <span>{SCORE_TIERS.recommended.range} {SCORE_TIERS.recommended.label}</span>
+            <span>{getScoreTierRange('recommended', 'broadway')} {SCORE_TIERS.recommended.label}</span>
           </div>
           <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.worthSeeing.tooltip}>
             <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.worthSeeing.color }}></div>
-            <span>{SCORE_TIERS.worthSeeing.range} {SCORE_TIERS.worthSeeing.label}</span>
+            <span>{getScoreTierRange('worthSeeing', 'broadway')} {SCORE_TIERS.worthSeeing.label}</span>
           </div>
           <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.skippable.tooltip}>
             <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.skippable.color }}></div>
-            <span>{SCORE_TIERS.skippable.range} {SCORE_TIERS.skippable.label}</span>
+            <span>{getScoreTierRange('skippable', 'broadway')} {SCORE_TIERS.skippable.label}</span>
           </div>
           <div className="flex items-center gap-1.5 cursor-help" title={SCORE_TIERS.stayAway.tooltip}>
             <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SCORE_TIERS.stayAway.color }}></div>
-            <span>{SCORE_TIERS.stayAway.range} {SCORE_TIERS.stayAway.label}</span>
+            <span>{getScoreTierRange('stayAway', 'broadway')} {SCORE_TIERS.stayAway.label}</span>
           </div>
         </div>
       )}

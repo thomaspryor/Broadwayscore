@@ -102,7 +102,7 @@ const ShowListCard = memo(function ShowListCard({
       score = show.audienceCombinedScore;
       audienceGrade = show.audienceGrade;
       if (audienceGrade) {
-        tier = { label: audienceGrade.grade, color: audienceGrade.color, tooltip: audienceGrade.tooltip, range: '', glow: false };
+        tier = { label: audienceGrade.grade, color: audienceGrade.color, tooltip: audienceGrade.tooltip, glow: false };
       }
     }
   } else {

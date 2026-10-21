@@ -1,4 +1,4 @@
-export { SCORE_TIERS, getScoreTier, getScoreColorClass, getScoreTextColorClass, ScoreBadge, MustSeeCrown } from './ScoreBadge';
+export { SCORE_TIERS, getScoreTier, getScoreTierRange, getScoreColorClass, getScoreTextColorClass, ScoreBadge, MustSeeCrown } from './ScoreBadge';
 export type { ScoreTier, ScoreBadgeProps } from './ScoreBadge';
 export { ScoreBreakdownBar, getBreakdownTier } from './ScoreBreakdownBar';
 export type { BreakdownTier } from './ScoreBreakdownBar';

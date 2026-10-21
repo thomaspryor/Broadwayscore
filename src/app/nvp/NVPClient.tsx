@@ -267,7 +267,7 @@ function NVPPageInner({ shows, offBroadway }: { shows: NVPShow[]; offBroadway: N
               if (show.audienceHasEnoughReviews && show.audienceCombinedScore != null && show.status !== 'previews') {
                 const grade = getAudienceGrade(show.audienceCombinedScore);
                 audienceGradeData = grade;
-                tier = { label: grade.grade, color: grade.color, tooltip: grade.tooltip, range: '', glow: false };
+                tier = { label: grade.grade, color: grade.color, tooltip: grade.tooltip, glow: false };
               }
             } else {
               tier = getScoreTier(show.criticScore?.score);

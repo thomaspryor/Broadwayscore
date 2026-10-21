@@ -11,9 +11,9 @@
  * "Recommended" in the app, "Critical Gold" on the site) and still said
  * "Skippable" where the site says "Mixed".
  *
- * ScoreBadge.getScoreTier (src/components/show-cards/ScoreBadge.tsx) still
- * spells out the 75/65/55 boundaries; tests/unit/mobile-feed-website-parity.test.ts
- * fails if it and getScoreTierLabel ever disagree on any score or market.
+ * ScoreBadge.getScoreTier and getScoreTierRange (src/components/show-cards/ScoreBadge.tsx)
+ * read these constants; tests/unit/mobile-feed-website-parity.test.ts fails if
+ * getScoreTier and getScoreTierLabel ever disagree on any score or market.
  *
  * The social cards, review OG images, emails, newsletter, status page, brand
  * tokens and the site's score-tier filter all take their tiers from here too.
