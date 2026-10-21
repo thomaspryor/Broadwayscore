@@ -769,6 +769,21 @@ test('flagged-miss-basis: CV-confirmed non-review is not residual; low-confidenc
   assert.equal(computeResidualCounts({ flaggedMisses: [row({})] }, false).flaggedOut, 1);
 });
 
+// BRO-5514: Time Out listing capsule + held syndicated reprint are correct exclusions.
+// Fixtures are the real what-the-animals-say-off-west-end-2026 timeout-london / viewfromthegods shapes.
+test('flagged-miss-basis: Time Out capsule and held syndicated reprint are confirmed, unheld ones are not', () => {
+  const { classifyFlaggedMiss } = require('./lib/flagged-miss-basis.js');
+  const capsule = { contentTier: 'truncated', incompleteReason: 'url_content_mismatch', incompleteDetail: 'timeout_listing_capsule: Time Out unsigned listing capsule (91 words), not the review' };
+  assert.equal(classifyFlaggedMiss([capsule]).confirmedNonReview, true);
+  assert.equal(classifyFlaggedMiss([{ ...capsule, incompleteDetail: 'other' }]).confirmedNonReview, false);
+  const dup = { isSyndicatedDuplicate: true, syndicatedPrimaryFile: 's/fringereview--x.json', syndicationSimilarity: 87 };
+  assert.equal(classifyFlaggedMiss([dup], null, () => true).confirmedNonReview, true);
+  assert.equal(classifyFlaggedMiss([dup], null, () => false).confirmedNonReview, false);
+  assert.equal(classifyFlaggedMiss([dup]).confirmedNonReview, false);
+  assert.equal(classifyFlaggedMiss([{ ...dup, syndicatedPrimaryFile: undefined }], null, () => true).confirmedNonReview, false);
+  assert.equal(classifyFlaggedMiss([{ ...dup, syndicationSimilarity: 40 }], null, () => true).confirmedNonReview, false);
+});
+
 // BRO-5500: the audit pre-classifies ingest-refused URLs (exit 1 in the child, which the
 // submission workflow relies on) as expected skips, and confirmed non-reviews drop out of
 // every gap count, not just flaggedOut.

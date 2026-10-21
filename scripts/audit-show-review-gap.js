@@ -1318,7 +1318,11 @@ async function auditShow(show, opts = {}) {
         // wrong-show / manually-protected exclusions are NOT recoverable.
         const recoverableFile = dirFiles.find(d => isRecoverableFlaggedFile(d));
         // BRO-4971: humanExcluded vs automatedExcluded + which detector (basis).
-        const { exclusion, basis, confirmedNonReview } = classifyFlaggedMiss(dirFiles, d => explainFileExclusion(d, show));
+        const { exclusion, basis, confirmedNonReview } = classifyFlaggedMiss(dirFiles, d => explainFileExclusion(d, show), d => {
+          // BRO-5514: pointer must be '<this show>/<file>' and that file present and counted.
+          const [pShow, pFile] = String(d.syndicatedPrimaryFile).split('/');
+          return pShow === show.id && dirData.some(x => x._file === pFile && x !== d && isCoveredFile(x, show));
+        });
         result.flaggedMisses.push({
           url: aggUrl,
           host: aggHost,

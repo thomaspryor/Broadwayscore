@@ -77,8 +77,30 @@ function isHumanConfirmedNonReview(d) {
   return !!d && d.isNotReview === true && d.rejectionReason === 'not_a_review'
     && d.nonReviewMethod === 'manual-verified';
 }
-function isConfirmedNonReviewFile(d) {
+// BRO-5514: Time Out serves an unsigned listing capsule (~90 words) at review-shaped
+// URLs; collect-review-texts tags it url_content_mismatch/timeout_listing_capsule.
+// Time Out swaps a closed show's review for this blurb at the same URL, so the
+// text is unrecoverable from here; there is nothing capturable behind the URL.
+function isTimeoutListingCapsule(d) {
+  return !!d && d.incompleteReason === 'url_content_mismatch'
+    && typeof d.incompleteDetail === 'string' && d.incompleteDetail.startsWith('timeout_listing_capsule');
+}
+// BRO-5514: a syndicated reprint (same text, other outlet's URL) is a correct
+// exclusion ONLY if its primary is actually held and counted in this show. The
+// pointer alone is not proof: it can dangle, cross shows, or name an excluded
+// primary (heal-dangling-syndication.js / heal-syndicated-duplicates.js), in
+// which case the rebuild still drops the reprint and the review counts nowhere.
+// `isHeldPrimary` is supplied by the audit, which holds the show's dir files.
+function isHeldSyndicatedReprint(d, isHeldPrimary) {
+  return !!d && d.isSyndicatedDuplicate === true && !!d.syndicatedPrimaryFile
+    && Number(d.syndicationSimilarity) >= 80
+    && typeof isHeldPrimary === 'function' && !!isHeldPrimary(d);
+}
+// "Confirmed" = the exclusion is the correct outcome (a non-review, a Time Out
+// listing capsule, a held syndicated reprint), not a gap. Name kept from BRO-5500.
+function isConfirmedNonReviewFile(d, isHeldPrimary) {
   if (isEnsembleNonReview(d) || isHumanConfirmedNonReview(d)) return true;
+  if (isTimeoutListingCapsule(d) || isHeldSyndicatedReprint(d, isHeldPrimary)) return true;
   const cv = d && d.contentVerification;
   if (!cv || cv.isValid !== false || cv.confidence !== 'high') return false;
   if (cv.articleTypeConfidence !== 'high' || !NONREVIEW_ARTICLE_TYPES.has(cv.articleType)) return false;
@@ -93,7 +115,7 @@ function isConfirmedNonReviewFile(d) {
  *   to the raw detector field, then 'unknown'
  * @returns {{ exclusion: 'humanExcluded'|'automatedExcluded', basis: string[] }}
  */
-function classifyFlaggedMiss(files, explain) {
+function classifyFlaggedMiss(files, explain, isHeldPrimary) {
   const list = Array.isArray(files) ? files.filter(Boolean) : [];
   const human = list.some(hasHumanExclusionAssertion);
   const basis = [];
@@ -105,7 +127,7 @@ function classifyFlaggedMiss(files, explain) {
   }
   // A human assertion normally means "never second-guess"; it only counts as a
   // confirmed non-review when the human said so (isNotReview), not e.g. wrongProduction.
-  const confirmedNonReview = list.length > 0 && list.every(isConfirmedNonReviewFile)
+  const confirmedNonReview = list.length > 0 && list.every(d => isConfirmedNonReviewFile(d, isHeldPrimary))
     && (!human || list.every(isHumanConfirmedNonReview));
   return { exclusion: human ? 'humanExcluded' : 'automatedExcluded', basis, confirmedNonReview };
 }
