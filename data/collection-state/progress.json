@@ -1,105 +1,47 @@
 {
-  "processed": [
-    "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json",
-    "martin-guerre-west-end-2026/sunday-times--dominic-maxwell.json",
-    "martin-guerre-west-end-2026/times-uk--dominic-maxwell.json",
-    "lincoln-in-the-bardo-off-broadway-2026/hollywood-reporter--unknown.json",
-    "lincoln-in-the-bardo-off-broadway-2026/operawire--david-salazar.json",
-    "lincoln-in-the-bardo-off-broadway-2026/slippedisc--norman-lebrecht.json",
-    "other-desert-cities-2026/new-york-city-theatre--unknown.json",
-    "triumph-off-west-end-2026/londonlivinglarge--london-living-large.json"
-  ],
+  "processed": [],
   "failed": [
-    "king-of-the-yees-off-broadway-2026/new-york-sun--elysa-gardner.json",
-    "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json",
-    "other-desert-cities-2026/cbsnews--unknown.json",
-    "school-pictures-off-broadway-2026/airmail--air-mail.json",
     "the-dog-show-come-sit-stay-off-broadway-2026/talkalmanmusic--unknown.json",
-    "triumph-off-west-end-2026/closeupculture--unknown.json",
-    "triumph-off-west-end-2026/thestage--david-benedict.json",
+    "two-girls-off-broadway-2026/airmail--air-mail.json",
     "two-girls-off-broadway-2026/howdidimissthat--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json",
-      "lincoln-in-the-bardo-off-broadway-2026/operawire--david-salazar.json",
-      "lincoln-in-the-bardo-off-broadway-2026/slippedisc--norman-lebrecht.json",
-      "triumph-off-west-end-2026/londonlivinglarge--london-living-large.json"
-    ],
+    "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/martin-guerre-west-end-2026/sunday-times--dominic-maxwell.json",
-      "martin-guerre-west-end-2026/sunday-times--dominic-maxwell.json",
-      "data/review-texts/lincoln-in-the-bardo-off-broadway-2026/hollywood-reporter--unknown.json",
-      "lincoln-in-the-bardo-off-broadway-2026/hollywood-reporter--unknown.json",
-      "data/review-texts/the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [
-      "martin-guerre-west-end-2026/times-uk--dominic-maxwell.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "other-desert-cities-2026/new-york-city-theatre--unknown.json"
-    ]
+    "archive": []
   },
-  "startTime": "2026-10-21T08:31:09.524Z",
+  "startTime": "2026-10-21T09:21:37.956Z",
   "lastProcessed": "two-girls-off-broadway-2026/howdidimissthat--unknown.json",
   "log": [
     {
-      "t": "2026-10-21T08:32:42.718Z",
+      "t": "2026-10-21T09:21:56.087Z",
       "event": "bb-session",
-      "session": "0c04b3fa",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/martin-guerre-is-too-conf"
-    },
-    {
-      "t": "2026-10-21T08:32:43.269Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-10-21T08:33:17.394Z",
-      "event": "bb-session",
-      "session": "dc45e042",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dua-lipa-amy-poehler-bowen-yang"
-    },
-    {
-      "t": "2026-10-21T08:35:00.697Z",
-      "event": "bb-session",
-      "session": "25048453",
-      "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
-    },
-    {
-      "t": "2026-10-21T08:36:00.647Z",
-      "event": "bb-session",
-      "session": "1bffeead",
-      "url": "https://www.cbsnews.com/video/other-desert-cities-on-broadway-family-secrets-lai"
-    },
-    {
-      "t": "2026-10-21T08:37:12.372Z",
-      "event": "bb-session",
-      "session": "a1622339",
+      "session": "2f97eaeb",
       "url": "https://lessons.talkalmanmusic.com/shows/event/triad-the/the-dog-show-come-sit-s"
     },
     {
-      "t": "2026-10-21T08:37:20.129Z",
+      "t": "2026-10-21T09:22:03.109Z",
       "event": "bb-session",
-      "session": "80d5a602",
+      "session": "588f54ec",
       "url": "https://lessons.talkalmanmusic.com/shows/event/triad-the/the-dog-show-come-sit-s"
     },
     {
-      "t": "2026-10-21T08:38:49.463Z",
+      "t": "2026-10-21T09:23:02.803Z",
       "event": "bb-session",
-      "session": "0481a9c9",
+      "session": "d0777d4f",
       "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07"
     },
     {
-      "t": "2026-10-21T08:38:56.860Z",
+      "t": "2026-10-21T09:23:10.334Z",
       "event": "bb-session",
-      "session": "5bacdc87",
+      "session": "d912e454",
       "url": "https://howdidimissthat.com/new-york/evenement/two-girls-2026-10-07"
     }
   ]
