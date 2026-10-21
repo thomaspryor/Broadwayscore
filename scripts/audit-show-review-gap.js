@@ -237,7 +237,7 @@ function writeJsonAtomic(filePath, obj) {
 // Freshness + ordering policy (extracted 2026-07-14 — opening-week shows must
 // re-audit every hourly run and sort ahead of the back-catalogue grind; The
 // Whoopi Monologues' missing NYT review sat 3 days behind the backlog).
-const { freshnessMsFor, compareAuditPriority, checkpointTs, gapRowTimestamps, reserveStalestSlots, oldestGapRow, STALE_RESERVE_EVERY } = require('./lib/gap-audit-freshness');
+const { freshnessMsFor, compareAuditPriority, auditTier, checkpointTs, gapRowTimestamps, reserveStalestSlots, oldestGapRow, STALE_RESERVE_EVERY } = require('./lib/gap-audit-freshness');
 // Per-show merge for the audit file (#893) + the S0 blast-radius guard.
 const { mergeGapAudit, countsFor, priorCensusUrls, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults, withFileLock } = require('./lib/gap-audit-merge');
 // Merge-aware checkpoint read-modify-write (#923 — the #893 race class, one
@@ -1820,10 +1820,30 @@ function openingWindowConditionKey(showId) {
 // kept its last pre-retirement row and alerted for two weeks on an id that no
 // longer exists. Pass liveShowIds (the ids in shows.json) and a row for any
 // other id counts as cleared.
-function openingWindowClearedKeys(results, now = Date.now(), { liveShowIds } = {}) {
+// BRO-5489: judge the window and status from today's shows.json entry
+// (`showById`), not the row. A row keeps the openingDate and status of its
+// last audit, and the audit re-checks a closed show only every 14 days at the
+// back of the queue (and an upcoming one never), so a frozen row alerted for
+// weeks: Magic Mike Live New York was rescheduled to 2027-01-28 but its
+// 2026-10-08 row kept firing; Measure for Measure, The Virtuous Burglar and
+// Hound of the Baskervilles closed after 1-2 performances and re-alerted
+// daily on SERP-census hits for other productions (Folger DC, RSC, Perth).
+// A closed show is treated like one past its window: census-only gaps are
+// report-only, a non-census gap still alerts.
+function alertShowState(r, showById) {
+  const s = showById && showById.get(r.showId);
+  if (!s) return { openingDate: r.openingDate, status: r.status };
+  return { openingDate: s.openingDate, previewsStartDate: s.previewsStartDate, status: s.status };
+}
+
+function censusGapsAlert(state, now = Date.now()) {
+  return inOpeningWindow(state, now) && state.status !== 'closed';
+}
+
+function openingWindowClearedKeys(results, now = Date.now(), { liveShowIds, showById } = {}) {
   return (results || [])
     .filter(r => r && r.showId && ((liveShowIds && !liveShowIds.has(r.showId)) || currentRunUncollected(r) <= 0
-      || (!inOpeningWindow({ openingDate: r.openingDate }, now) && currentRunUncollected(r, { ignoreCensusTagged: true }) <= 0)))
+      || (!censusGapsAlert(alertShowState(r, showById), now) && currentRunUncollected(r, { ignoreCensusTagged: true }) <= 0)))
     .map(r => openingWindowConditionKey(r.showId));
 }
 
@@ -2198,7 +2218,9 @@ async function main(argv = process.argv.slice(2)) {
     } catch (e) {
       console.log(`  (stale-slot reservation skipped: ${AUDIT_PATH} unreadable — ${(e.message || '').slice(0, 80)})`);
     }
-    const reserved = reserveStalestSlots(targets, gapRowTsAtStart);
+    // BRO-5489: rows the opening-window alert still reads (tier 1) refresh first.
+    const alertingIds = new Set(targets.filter(s => auditTier(s, checkpoint[s.id], now) === 1).map(s => s.id));
+    const reserved = reserveStalestSlots(targets, gapRowTsAtStart, { preferIds: alertingIds });
     targets = reserved.targets;
     staleReservedIds = reserved.reservedIds;
     const oldest = oldestDueAtStart = oldestGapRow(gapRowTsAtStart, targets.map(s => s.id), now);
@@ -3000,6 +3022,7 @@ async function main(argv = process.argv.slice(2)) {
   // carried forward forever; they must never alert, only resolve.
   // null on an implausibly small shows.json: no filter, never a mass resolve.
   const liveShowIds = plausibleLiveShowIds(new Set(allShows.map(s => s && s.id).filter(Boolean)));
+  const showById = new Map(allShows.filter(s => s && s.id).map(s => [s.id, s]));
   const liveReportedResults = liveShowIds ? reportedResults.filter(r => r && liveShowIds.has(r.showId)) : reportedResults;
   if (liveShowIds && liveReportedResults.length < reportedResults.length) console.log(`Ignoring ${reportedResults.length - liveReportedResults.length} row(s) on file for show ids no longer in shows.json (alerts only resolve).`);
   console.log(`Summary: ${reportedAudit.counts.withGap}/${reportedResults.length} shows on file with gaps (${results.length} audited this run) | ${reportedAudit.counts.missingCurrentRun} URLs not in dir | ${reportedAudit.counts.totalFlaggedMisses} URLs in dir but flagged out (${reportedAudit.counts.totalRecoverable} recoverable, ${reportedAudit.counts.totalRecovered} self-healed, ${reportedAudit.counts.humanExcluded} human-excluded, ${reportedAudit.counts.automatedExcludedListed} automated-excluded to re-verify) | ${outletsWritten.length} unknown outlets${reportedAudit.counts.priorProductionCitations ? ` | +${reportedAudit.counts.priorProductionCitations} prior-production citation(s) on file, permanently report-only, NOT counted above` : ''}`);
@@ -3042,15 +3065,18 @@ async function main(argv = process.argv.slice(2)) {
       // the per-show condition stayed 'open' forever and its card's
       // check-alert-condition-absent VERIFY could never pass.
       try {
-        const cleared = resolveQuietConditions(openingWindowClearedKeys(reportedResults, Date.now(), { liveShowIds }), { reason: 'review-gap: no uncollected cited reviews on the latest audit, show past its opening window with only SERP-census gaps, or show id retired' });
+        const cleared = resolveQuietConditions(openingWindowClearedKeys(reportedResults, Date.now(), { liveShowIds, showById }), { reason: 'review-gap: no uncollected cited reviews on the latest audit, show past its opening window (or closed) with only SERP-census gaps, or show id retired' });
         if (cleared.length) console.log(`[Alert Router] resolved ${cleared.length} cleared opening-window gap condition(s): ${cleared.join(', ')}`);
       } catch (e) {
         console.error(`::warning::resolving cleared opening-window gap conditions failed: ${(e.message || '').slice(0, 120)}`);
       }
       for (const r of liveReportedResults) {
-        if (!r || !r.showId || !inOpeningWindow({ openingDate: r.openingDate })) continue;
+        if (!r || !r.showId) continue;
+        const state = alertShowState(r, showById);
+        if (!inOpeningWindow(state)) continue;
         const conditionKey = openingWindowConditionKey(r.showId);
-        const uncollected = currentRunUncollected(r);
+        // BRO-5489: a closed show alerts only on non-census gaps (see alertShowState).
+        const uncollected = currentRunUncollected(r, { ignoreCensusTagged: !censusGapsAlert(state) });
         if (uncollected <= 0) {
           // Trim the not-yet-sent digest queue. The ledger resolve is the
           // debounced resolveQuietConditions call above, never a per-run

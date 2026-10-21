@@ -816,6 +816,36 @@ test('openingWindowClearedKeys: a row for a retired show id counts as cleared ev
   assert.deepEqual(openingWindowClearedKeys(rows, now), []);
 });
 
+test('openingWindowClearedKeys: window and status come from shows.json, not the frozen row (BRO-5489)', () => {
+  const { openingWindowClearedKeys } = require('./audit-show-review-gap.js');
+  const now = Date.parse('2026-10-21T03:00:00Z');
+  const censusRow = (showId, openingDate) => ({
+    showId, openingDate,
+    missing: [{ url: `https://a.example/${showId}-review`, host: 'a.example', knownOutletId: null, serpCensus: true }],
+  });
+  // Real shapes from show-review-gap.json on 2026-10-21.
+  const rows = [
+    censusRow('measure-for-measure-off-west-end-2026', '2026-10-02'),        // closed after 2 nights, census-only
+    censusRow('magic-mike-live-new-york-off-broadway-2026', '2026-10-08'),   // rescheduled to 2027-01-28
+    censusRow('kramerfauci-st-anns-off-broadway-2026', '2026-10-04'),        // open, in window: still alerting
+  ];
+  const closedReal = censusRow('fences-closed-2026', '2026-10-09');
+  closedReal.missing.push({ url: 'https://b.example/cited-review', host: 'b.example' });
+  rows.push(closedReal);                                                     // closed but a non-census gap: stays open
+  const showById = new Map([
+    ['measure-for-measure-off-west-end-2026', { id: 'measure-for-measure-off-west-end-2026', openingDate: '2026-10-02', status: 'closed' }],
+    ['magic-mike-live-new-york-off-broadway-2026', { id: 'magic-mike-live-new-york-off-broadway-2026', openingDate: '2027-01-28', status: 'upcoming' }],
+    ['kramerfauci-st-anns-off-broadway-2026', { id: 'kramerfauci-st-anns-off-broadway-2026', openingDate: '2026-10-04', status: 'open' }],
+    ['fences-closed-2026', { id: 'fences-closed-2026', openingDate: '2026-10-09', status: 'closed' }],
+  ]);
+  assert.deepEqual(openingWindowClearedKeys(rows, now, { showById }), [
+    'review-gap:opening-window:measure-for-measure-off-west-end-2026',
+    'review-gap:opening-window:magic-mike-live-new-york-off-broadway-2026',
+  ]);
+  // Without shows.json the row's own date decides (old behaviour): all in window, none cleared.
+  assert.deepEqual(openingWindowClearedKeys(rows, now), []);
+});
+
 test('plausibleLiveShowIds: a stub shows.json yields null so retired-id clearing never mass-resolves (BRO-5349)', () => {
   const { plausibleLiveShowIds, MIN_PLAUSIBLE_SHOWS } = require('./lib/live-show-ids.js');
   assert.equal(plausibleLiveShowIds(new Set()), null);
@@ -858,6 +888,29 @@ test('BRO-5655: stalest rows get reserved slots even when many fresh opening sho
   assert.equal(new Set(targets.map(s => s.id)).size, ordered.length);
   // About a quarter of slots are reserved.
   assert.ok(reservedIds.length >= Math.floor(ordered.length / STALE_RESERVE_EVERY));
+});
+
+test('BRO-5489: reserved slots go to rows the alert still reads before older back-catalogue rows', () => {
+  const NOW = Date.parse('2026-10-21T00:49:00Z');
+  const opening = Array.from({ length: 20 }, (_, i) => ({ id: `opening-${i}` }));
+  const backCatalogue = [{ id: 'hate-radio' }, { id: 'pen-pals' }];
+  const alerting = [{ id: 'what-the-animals-say' }, { id: 'kramerfauci' }];
+  const ordered = [...opening, ...alerting, ...backCatalogue];
+  const ts = new Map([
+    ...opening.map(s => [s.id, NOW - 2 * 3600e3]),
+    ['hate-radio', Date.parse('2026-09-05T17:16:12Z')],
+    ['pen-pals', Date.parse('2026-09-08T00:00:00Z')],
+    ['what-the-animals-say', Date.parse('2026-10-10T10:36:33Z')],
+    ['kramerfauci', Date.parse('2026-10-14T19:12:18Z')],
+  ]);
+  const preferIds = new Set(alerting.map(s => s.id));
+  const { targets, reservedIds } = reserveStalestSlots(ordered, ts, { preferIds });
+  assert.deepEqual(reservedIds.slice(0, 4), ['what-the-animals-say', 'kramerfauci', 'hate-radio', 'pen-pals']);
+  assert.equal(targets[1].id, 'what-the-animals-say');
+  assert.equal(targets[1 + STALE_RESERVE_EVERY].id, 'kramerfauci');
+  assert.equal(new Set(targets.map(s => s.id)).size, ordered.length);
+  // No preferIds: oldest-first as before.
+  assert.deepEqual(reserveStalestSlots(ordered, ts).reservedIds.slice(0, 2), ['hate-radio', 'pen-pals']);
 });
 
 test('BRO-5655: no-row, quarantined and unparseable rows are not reserved-slot candidates', () => {
