@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     images: [TONY_OG_IMAGE],
-    title: `${season.ceremonyYear} Tony Nominations Center: Broadway Scorecard`,
+    title: `${season.ceremonyYear} Tony Nominations Center | Broadway Scorecard`,
     description: `All ${season.label} Tony nominees with critic scores, audience grades, and crowd-sourced win odds from GoldDerby, Polymarket, and Kalshi.`,
     url: `${BASE_URL}/tony-awards/nominees`,
     type: 'website',

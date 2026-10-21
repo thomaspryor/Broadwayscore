@@ -196,7 +196,7 @@ export function PredictionRetrospective({ ceremonyYear }: { ceremonyYear: number
                 <div className="min-w-0">
                   <span className="font-medium text-white">{m.category.replace('Best ', '')}</span>
                   <span className="text-gray-400">
-                    {' '}– {m.from} <span className="text-gray-600">→</span> {m.to}
+                    {': '}{m.from} <span className="text-gray-600">→</span> {m.to}
                   </span>
                   <span className="text-gray-500"> · {m.note}</span>
                 </div>

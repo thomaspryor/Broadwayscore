@@ -627,7 +627,7 @@ export function CategorySection({ category, winProbs, ceremonyDate, sectionId, d
                 <Link href={`/show/${item.slug}`} className="text-gray-300 hover:text-white font-medium">
                   {item.title}
                 </Link>
-                <span className="text-gray-500"> – {item.note}</span>
+                <span className="text-gray-500">: {item.note}</span>
               </li>
             ))}
           </ul>

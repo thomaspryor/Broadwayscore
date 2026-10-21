@@ -17,6 +17,12 @@ const BANNED_PHRASES = new RegExp(
   'i',
 );
 
+// A spaced en dash is an em dash in disguise (template-literal date ranges like `${a} – ${b}` are typography and stay). A bare "–" is the empty-cell placeholder and is fine.
+const SPACED_EN_DASH = /(?:^|\s)–(?:\s|$)/;
+
+// "–" alone, or alone on its own JSX line, is an empty-cell placeholder. " – " between expressions is a separator.
+const isPlaceholder = (text) => /^\s*–\s*$/.test(text) && (text === '–' || text.includes('\n'));
+
 // A find-and-replace that eats an ampersand leaves text like "navigateapos;ll".
 const BROKEN_ENTITY = /(?<![&\w])\w+(?:apos|quot|amp|mdash);|[A-Za-z](?:apos|quot);/;
 
@@ -37,7 +43,9 @@ function copyViolationsIn(file, root = process.cwd()) {
   const visit = (node) => {
     const literal = ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node) || ts.isTemplateHead(node)
       || ts.isTemplateMiddle(node) || ts.isTemplateTail(node) || ts.isJsxText(node);
-    if (literal && (EM_DASH.test(node.text) || BANNED_PHRASES.test(node.text) || BROKEN_ENTITY.test(node.text)) && !isConsoleArg(node)) {
+    if (literal && (EM_DASH.test(node.text) || BANNED_PHRASES.test(node.text) || BROKEN_ENTITY.test(node.text)
+      || (!ts.isTemplateMiddle(node) && !ts.isTemplateTail(node) && !ts.isTemplateHead(node) && !ts.isNoSubstitutionTemplateLiteral(node)
+        && SPACED_EN_DASH.test(node.text) && !isPlaceholder(node.text))) && !isConsoleArg(node)) {
       const { line } = src.getLineAndCharacterOfPosition(node.getStart(src));
       hits.push(`${path.relative(root, file)}:${line + 1}: ${node.text.trim().replace(/\s+/g, ' ').slice(0, 90)}`);
     }

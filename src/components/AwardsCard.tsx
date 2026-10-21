@@ -234,7 +234,7 @@ function PrecursorExpanded({
                 <TrophyIcon className={`w-3 h-3 ${iconColor} flex-shrink-0`} />
                 {win}
                 {performers.length > 0 && (
-                  <span className="text-gray-500 font-normal">– {performers.join(' & ')}</span>
+                  <span className="text-gray-500 font-normal">({performers.join(' & ')})</span>
                 )}
               </li>
             );

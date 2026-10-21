@@ -1302,7 +1302,7 @@ function DetectedField({
         <div className="text-xs text-score-skip">⚠ {missingHint}</div>
       )}
       {!inputVisible && !value && optional && !override?.length && (
-        <div className="text-xs text-gray-500">– {missingHint || 'not detected (optional)'}</div>
+        <div className="text-xs text-gray-500">{missingHint || 'not detected (optional)'}</div>
       )}
 
       {candidates && candidates.length > 1 && (
