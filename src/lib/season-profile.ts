@@ -693,21 +693,28 @@ export const LOW_SCORE = 60;
 export const HIGH_SCORE = 80;
 
 /**
+ * Seasons whose recoupment rates can be compared, oldest first: tracked well
+ * (hasTrackedCoverage), ended RECOUP_SETTLE_DAYS ago (the same rule as
+ * compareSeason's recoupment average), pandemic seasons left out.
+ */
+export function settledRecoupSeasons(shows: SeasonShowInput[], asOf: string): string[] {
+  const asOfMs = Date.parse(asOf);
+  return buildSeasonProfiles(shows)
+    .filter((p) => hasTrackedCoverage(p) && !DISRUPTED_SEASONS.has(p.season)
+      && asOfMs - Date.UTC(parseInt(p.season.slice(5), 10), 6, 1) >= RECOUP_SETTLE_DAYS * DAY_MS)
+    .map((p) => p.season)
+    .sort();
+}
+
+/**
  * Recoupment by show type and by critic score, over settled seasons we
  * track well (hasTrackedCoverage; ended RECOUP_SETTLE_DAYS ago, the same rule
  * as compareSeason's recoupment average), pandemic seasons left out. Pure
  * nonprofit runs and tour stops have no investors and are left out.
  */
 export function buildRecoupFindings(shows: RecoupShowInput[], asOf: string): RecoupFindings {
-  const profiles = buildSeasonProfiles(shows);
-  const asOfMs = Date.parse(asOf);
-  const seasons = new Set(
-    profiles
-      .filter((p) => hasTrackedCoverage(p) && !DISRUPTED_SEASONS.has(p.season)
-        && asOfMs - Date.UTC(parseInt(p.season.slice(5), 10), 6, 1) >= RECOUP_SETTLE_DAYS * DAY_MS)
-      .map((p) => p.season),
-  );
-  const sorted = [...seasons].sort();
+  const sorted = settledRecoupSeasons(shows, asOf);
+  const seasons = new Set(sorted);
 
   const buckets: Record<string, RecoupBucket> = {
     'play|true': { label: 'Play revivals', recouped: 0, total: 0, recoupedShows: [] },

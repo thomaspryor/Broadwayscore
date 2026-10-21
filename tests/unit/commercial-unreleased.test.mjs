@@ -59,7 +59,8 @@ function walk(dir) {
 // Server-side readers of commercial.json that never emit commercial figures.
 // Anything else importing it must go through data-commercial's loaders.
 // Released public pages that show commercial aggregates only (owner-approved, BRO-5777).
-const PUBLIC_AGGREGATE_ROUTES = new Set(['src/app/season-report/page.tsx']);
+// Path to Broadway (BRO-5842): recoupment rates by route/source, aggregates only, held behind its own flag.
+const PUBLIC_AGGREGATE_ROUTES = new Set(['src/app/season-report/page.tsx', 'src/app/path-to-broadway/page.tsx']);
 const COMMERCIAL_JSON_READERS = new Set([
   'src/lib/data-commercial.ts',
   'src/lib/data-tony-predictions.ts', // only drops "Tour Stop" shows from Tony eligibility

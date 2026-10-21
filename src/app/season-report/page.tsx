@@ -267,6 +267,12 @@ export default function SeasonReportPage() {
           <section id="who-recoups" className="mb-8 scroll-mt-20">
             <h2 className="text-xl font-bold text-white mb-3">Who Recoups</h2>
             <WhoRecoupsCard findings={recoup} />
+            {featureFlags.pathToBroadway && (
+              <p className="mt-3 text-sm text-gray-400">
+                Recoupment by route to Broadway (Off-Broadway, London, straight in) and by source material is on{' '}
+                <Link href="/path-to-broadway" className="text-brand hover:text-brand-hover">Path to Broadway</Link>.
+              </p>
+            )}
           </section>
 
           {history.length > 0 && (

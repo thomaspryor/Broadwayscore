@@ -106,6 +106,7 @@ const SITE_DATA_FILES = [
   'data/nyt-critics-picks.json',
   'data/outlet-registry.json',
   'data/related-shows.json',
+  'data/show-origins.json',
   'data/show-schedules.json',
   'data/show-score-urls.json',
   'data/slug-redirects-compact.json',

@@ -75,6 +75,8 @@ export const featureFlags = {
   get boxOfficeV2() { return has('boxOfficeV2'); },
   // Public Broadway Season Report (BRO-5777): season pace, mix, who recoups (aggregates only).
   get seasonReport() { return true; }, // launched 2026-10-20 (owner go after demo preview) — flag retained for cleanup
+  // Path to Broadway (BRO-5842): routes and source material of new productions, with recoupment (aggregates only).
+  get pathToBroadway() { return has('pathToBroadway'); },
   get awards() { return true; }, // launched 2026-05-17 — flag retained for cleanup
   get tonyPredictions() { return has('tonyPredictions'); },
   /** Reveals Our Pick % column and Predicted Winner badge on the predictions page.

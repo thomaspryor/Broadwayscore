@@ -74,6 +74,8 @@ import {
   type WeekRow,
 } from './box-office-status';
 import commercialData from '../../data/commercial.json';
+import showOriginsData from '../../data/show-origins.json';
+import { buildOriginFindings, type OriginFindings, type OriginRecord } from './show-origins';
 import grossesHistoryData from '../../data/grosses-history.json';
 import showsData from '../../data/shows.json';
 import { showFacts, type MarketInput, type MarketShow, type ShowFacts } from './box-office-market';
@@ -400,6 +402,30 @@ export function getRecoupFindings(criticScoreBySlug: Map<string, number | null>,
         slug: s.slug,
         title: s.title,
       })),
+    asOf,
+  );
+}
+
+/** Path to Broadway and source material findings (BRO-5842), as of today in New York (build time). */
+export function getOriginFindings(asOf: string = getMarketDate('broadway')): OriginFindings {
+  const shows = commercial.shows;
+  return buildOriginFindings(
+    rawShows
+      .filter((s) => s.category === 'broadway' && !!s.openingDate)
+      .map((s) => ({
+        id: s.id,
+        creativeTeam: (s as { creativeTeam?: Array<{ name?: string | null }> }).creativeTeam ?? null,
+        closingDate: s.closingDate ?? null,
+        type: s.type,
+        isRevival: s.isRevival,
+        openingDate: s.openingDate,
+        status: s.status,
+        criticScore: null,
+        commercial: shows[s.slug] ?? null,
+        slug: s.slug,
+        title: s.title,
+      })),
+    (showOriginsData as unknown as { shows: Record<string, OriginRecord> }).shows,
     asOf,
   );
 }
