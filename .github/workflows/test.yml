@@ -4834,6 +4834,19 @@ jobs:
           bash scripts/lib/summarize-failing-tests.sh "opening-night live" /tmp/opening-night-live-batch.log "$rc" warning
           exit "$rc"
 
+      - name: Rendered copy voice guard (BRO-5812, advisory)
+        # Owner voice rules for on-screen copy: no em dashes, no AI-flavored
+        # phrases in JSX text or string literals under src/app and
+        # src/components. Advisory first (CLAUDE.md section 19); promote to
+        # blocking in a later commit once it has run clean on main.
+        continue-on-error: true
+        run: |
+          set +e
+          node --test --test-timeout 120000 tests/unit/rendered-copy-voice.test.mjs 2>&1 | tee /tmp/copy-voice.log
+          rc=${PIPESTATUS[0]}
+          bash scripts/lib/summarize-failing-tests.sh "copy voice" /tmp/copy-voice.log "$rc" warning
+          exit "$rc"
+
       - name: Run scripts/lib tests (visual-qa transcript-scan etc.)
         # Tests colocated with the helpers they cover (scripts/lib/*.test.mjs)
         # per CLAUDE.md §15 test-extraction pattern. Covered helpers:

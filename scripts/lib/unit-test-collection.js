@@ -81,6 +81,10 @@ const RUNS_AT_OWN_STEP = 'DOES run';
 // UNREGISTERED_TEST_QUARANTINE, and still verifies the RUNS_AT_OWN_STEP claims).
 const TESTS_UNIT_QUARANTINE = new Map([
   [
+    'tests/unit/rendered-copy-voice.test.mjs',
+    'BRO-5812 \u2014 DOES run at its own advisory test.yml step ("Rendered copy voice guard (BRO-5812, advisory)", continue-on-error: true). CLAUDE.md section 19: new gates land advisory first, so a voice-rule regression must not block the unit batch.',
+  ],
+  [
     'tests/unit/scraper-cookie-wiring.test.mjs',
     'BRO-2778 — DOES run in CI, by design, at its own test.yml step ("Run scraper-cookie-wiring tests (direct exec, no --test wrapper)"). It monkey-patches https.get/https.request globally, which under `node --test` trips a worker-IPC "Unable to deserialize cloned data" error on Node 20 EVERY run (regression noted 2026-04-30). Collecting it would put it back in the `node --test` batch, which has no continue-on-error. Must stay excluded.',
   ],
