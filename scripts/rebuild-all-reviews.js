@@ -119,7 +119,7 @@ const { detectOtherProductionUrl, shouldReleaseOtherProductionUrl, OTHER_PRODUCT
 const { resolveBackfillPublishDate, resolveGuardReviewDate } = require('./lib/backfill-publish-date');
 const { COLLECTED_BEFORE_PREVIEWS_REASON, COLLECTED_BEFORE_PREVIEWS_NOTE_PREFIX, shouldFlagCollectedBeforePreviews } = require('./lib/collected-before-previews');
 const { guardPublishDate, evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
-const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
+const { rebuildPreWindowHold } = require('./lib/date-guard-hold');
 const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
 const { safeWriteReview, writeReviewOrThrow, invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear, retractScriptWrongProductionClear } = require('./lib/review-write-guard');
 const { KNOWN_SYNDICATION_PAIRS, getSyndicationPrimaries, hasLiveSyndicationPrimary } = require('./lib/syndication-pairs');
@@ -2083,8 +2083,12 @@ const crossShowFingerprints = new Map();
             // incident 2026-07-11): Theatre Record archiving this review under
             // an in-window month contradicts the early date — likely a
             // misparsed publishDate. HOLD the auto-flag; route to human review.
-            const corrob = evaluateCurrentRunCorroboration({ review: d, show: showRecord });
-            if (corrob.strength === 'strong') {
+            // rebuildPreWindowHold, not bare strength === 'strong': cv-affirms-
+            // production alone holds only inside the 180-day line, same rule as
+            // flag-wrong-production-by-date.js (BRO-4884). Without it a 2018
+            // review 3084d early stayed unflagged every rebuild (BRO-5877).
+            const { hold, corrob } = rebuildPreWindowHold({ review: d, show: showRecord });
+            if (hold) {
               console.log(`  [PRE-OPENING-HELD] ${sid}/${f}: date ${reviewDate.toISOString().split('T')[0]} pre-window but current-run corroboration [${corrob.signals.join(', ')}] — needs human review, NOT auto-flagged`);
               preOpenHeld++;
             } else {
@@ -4293,8 +4297,11 @@ showDirs.forEach(showId => {
           // validate-data CHECK 0 hard-errors unflagged >180d-early reviews,
           // except a flagger-held one, which warns (BRO-5030; the CV-override
           // branch below is scored, so it stays an error).
-          const corrobIncl = evaluateCurrentRunCorroboration({ review: data, show: showById[showId] });
-          if (corrobIncl.strength === 'strong') {
+          // BRO-5877: past the 180-day line cv-affirms-production alone neither
+          // holds nor includes (rebuildPreWindowHold, BRO-4884); the review is
+          // excluded and flagged like any other pre-window date.
+          const { hold: holdIncl, corrob: corrobIncl } = rebuildPreWindowHold({ review: data, show: showById[showId] });
+          if (holdIncl) {
             // cv-affirms-production is a direct read of the fetched fullText
             // confirming this IS the current production (unlike the TR-month/
             // roundup-excerpt signals, which only contradict the date via a

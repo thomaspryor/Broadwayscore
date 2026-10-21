@@ -104,6 +104,25 @@ function rebuildExcludesHeld({ review, show, corrob }) {
 }
 
 /**
+ * rebuild-all-reviews.js pre-window guard: should a review dated before the
+ * window be HELD (not flagged / CV-included) on current-run corroboration?
+ * One rule for the rebuild's flag pass and inclusion pass, the same one
+ * flag-wrong-production-by-date.js applies (shouldHoldDateGuardFlag, BRO-4884):
+ * cv-affirms-production alone holds only inside the 180-day plausibility line.
+ * Before BRO-5877 the rebuild held on any 'strong' verdict, so a 2018 review
+ * 3084d early on Cursed Child WE 2026 was never re-flagged after a hold
+ * release, and its inclusion pass scored it.
+ *
+ * @returns {{hold: boolean, corrob: {strength: string|null, signals: string[]}}}
+ */
+function rebuildPreWindowHold({ review, show }) {
+  const corrob = evaluateCurrentRunCorroboration({ review, show });
+  if (corrob.strength !== 'strong') return { hold: false, corrob };
+  const implausible = evaluateDatePlausibility({ review, show }).implausible;
+  return { hold: shouldHoldDateGuardFlag({ corrob, implausible }), corrob };
+}
+
+/**
  * validate-data.js CHECK 0 decision.
  *   'ok'    — date plausible for this show (or exempt: priorRun, wrongProduction, ...)
  *   'held'  — implausible, but a valid flagger hold is on file → warning, routed to review
@@ -125,6 +144,7 @@ module.exports = {
   clearDateGuardHold,
   isDateGuardHeld,
   rebuildExcludesHeld,
+  rebuildPreWindowHold,
   classifyDateGuardBackstop,
 };
 

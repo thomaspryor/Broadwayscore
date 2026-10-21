@@ -782,11 +782,23 @@ function shouldAutoClearDatelessRevival(data, { hasUsableDate } = {}) {
   if (!data || data.wrongProduction !== true) return false;
   const note = data.wrongProductionNote || '';
   const reason = data.wrongProductionReason || '';
-  const isOurs = note.startsWith('Dateless revival guard') || reason === 'dateless-revival';
+  // The note names the guard that set the CURRENT flag. A stale
+  // wrongProductionReason 'dateless-revival' survives a release (push-time
+  // restore) and a later re-flag by another guard, which writes only its note
+  // (flag-wrong-production-by-date.js "Date guard: ..."). Keying on the reason
+  // then released that dated flag every rebuild (BRO-5877: Cursed Child WE 2026
+  // Front Row Center 2018 review, 3084d early, flipped twice on 2026-10-21).
+  // The reason alone counts only when no note says otherwise.
+  const isOurs = note ? note.startsWith('Dateless revival guard') : reason === 'dateless-revival';
   if (!isOurs) return false;
+  // A person stands behind the flag (approved-fix flag, humanReviewedWrongProduction
+  // === true, manual provenance): never released (BRO-3585, same as
+  // shouldAutoClearCollectedBeforePreviews). BRO-5877: an approved plan re-set
+  // wrongProduction on this hold and the next rebuild released it again.
+  if (isWrongProductionHeld(data)) return false;
   const humanOverride = !!data.allowEarlyDate
     || !!data.wrongProductionManualClear
-    || data.humanReviewedWrongProduction === true;
+    || data.humanReviewedWrongProduction === false;
   if (humanOverride) return true;
   if (hasEnsembleConsensus(data, 'wrong_production')) return false;
   return !!hasUsableDate;
