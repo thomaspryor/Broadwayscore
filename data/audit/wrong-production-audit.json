@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-21T16:19:58.226Z",
+  "timestamp": "2026-10-21T17:39:51.744Z",
   "stats": {
-    "totalReviews": 58121,
-    "alreadyFlagged": 21128,
+    "totalReviews": 58120,
+    "alreadyFlagged": 21131,
     "dateGuardCatches": 198,
     "directorMismatch": 2060,
     "tvFilmSignals": 1652,
     "londonSignals": 2586,
     "offBroadwaySignals": 530,
-    "yearMismatch": 162,
-    "noPublishDate": 5253
+    "yearMismatch": 163,
+    "noPublishDate": 5249
   },
   "findings": [
     {
@@ -50615,6 +50615,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"sam yates\" from vanya-west-end-2023"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2023 (2x) more than 2025 (0x). 2023 matches production: vanya-west-end-2023"
         }
       ]
     },
@@ -68832,7 +68837,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "broadwayworld--aliya-al-hassan.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2026-10-21",
       "url": "https://www.broadwayworld.com/westend/article/Review-ILFORD-BOY-Donmar-Warehouse-20261021",
       "findings": [
@@ -73318,7 +73323,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 86,
+      "score": 87,
       "publishDate": "2026-10-21",
       "url": "https://www.londonboxoffice.co.uk/news/post/martin-guerre-the-old-vic-review",
       "findings": [
@@ -91560,6 +91565,7 @@
     {
       "showId": "triumph-off-west-end-2026",
       "file": "theqr--will-quinn.json",
+      "score": 39,
       "publishDate": "2026-10-20",
       "url": "https://theqr.co.uk/2026/10/20/caryl-churchills-triumph-falters-at-the-almeida-theatre/",
       "findings": [

@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-21T16:11:01.555Z",
+  "generated": "2026-10-21T17:32:22.466Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 33,
+  "count": 34,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -134,6 +134,13 @@
       "loserFile": "patch--unknown.json",
       "targetFile": "patch--katie-rosin.json",
       "reason": "orphaned-duplicate-heal: patch--katie-rosin.json was flagged invalid after patch--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "loserFile": "standard--unknown.json",
+      "targetFile": "standard--nick-curtis.json",
+      "reason": "orphaned-duplicate-heal: standard--nick-curtis.json was flagged invalid after standard--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
