@@ -594,7 +594,7 @@
     "sunset-boulevard-west-end-2023/guardian--arifa-akbar.json",
     "aladdin-2014/wsj--terry-teachout.json",
     "the-fear-of-13-2026/wsj--charles-isherwood.json",
-    "king-of-the-yees-off-broadway-2026/culturesauce--thom-geier.json"
+    "hercules-west-end-2025/sunday-times--unknown.json"
   ],
   "failed": [
     "funny-girl-2002/wsj--charles-isherwood.json",
@@ -880,7 +880,6 @@
     "beetlejuice-2025/dailybeast--tim-teeman.json",
     "art-2025/broadwaynews--michael-abourizk.json",
     "burlesque-west-end-2026/broadwayworld--unknown.json",
-    "hercules-west-end-2025/sunday-times--unknown.json",
     "hercules-west-end-2025/times-uk--dominic-maxwell.json",
     "call-me-izzy-2025/theater-life--david-sheward.json",
     "mrs-warrens-profession-west-end-2025/plays-international--maryam-philpott.json",
@@ -946,21 +945,7 @@
     "blue-mist-west-end-2023/standard--nick-curtis.json",
     "blue-mist-west-end-2023/whatsonstage--theo-bosanquet.json",
     "old-friends-west-end-2023/getthechance--unknown.json",
-    "old-friends-west-end-2023/telegraph--helen-brown.json",
-    "martin-guerre-west-end-2026/times-uk--dominic-maxwell.json",
-    "triumph-off-west-end-2026/closeupculture--unknown.json",
-    "dog-mom-off-west-end-2026/reviewsgate--william-russell.json",
-    "angels-bone-west-end-2026/bachtrack--unknown.json",
-    "dog-mom-off-west-end-2026/thestage--neil-norman.json",
-    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
-    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
-    "some-woman-west-end-2026/guardian--unknown.json",
-    "jane-eyre-rose-kingston-off-west-end-2026/alltrippers--unknown.json",
-    "jane-eyre-rose-kingston-off-west-end-2026/artsdesk--unknown.json",
-    "jane-eyre-rose-kingston-off-west-end-2026/broadway-baby--unknown.json",
-    "some-woman-west-end-2026/momentsapp--unknown.json",
-    "baby-off-west-end-2026/afridiziak-theatre-news--basil-g-lumsden.json",
-    "king-of-the-yees-off-broadway-2026/new-york-sun--elysa-gardner.json"
+    "old-friends-west-end-2023/telegraph--helen-brown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1276,7 +1261,8 @@
       "shucked-tour-2024/cleveland-plain-dealer--joey-morona.json",
       "shucked-tour-2024/the-charlotte-ledger--lawrence-toppman.json",
       "the-hills-of-california-2024/express-uk--george-simpson.json",
-      "peter-pan-goes-wrong-west-end-2023/lost-in-theatreland--amy-rye.json"
+      "peter-pan-goes-wrong-west-end-2023/lost-in-theatreland--amy-rye.json",
+      "hercules-west-end-2025/sunday-times--unknown.json"
     ],
     "scrapingbee": [
       "222-a-ghost-story-off-broadway-2026/theatrely--unknown.json",
@@ -1571,7 +1557,7 @@
     ]
   },
   "startTime": "2026-10-20T14:57:10.313Z",
-  "lastProcessed": "king-of-the-yees-off-broadway-2026/new-york-sun--elysa-gardner.json",
+  "lastProcessed": "a-mirror-west-end-2024/times-uk--dominic-maxwell.json",
   "log": [
     {
       "t": "2026-10-20T14:59:00.551Z",
@@ -1783,22 +1769,21 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-20T23:52:16.205Z",
+      "t": "2026-10-20T23:39:47.934Z",
       "event": "bb-session",
-      "session": "28063c57",
-      "url": "https://bachtrack.com/review-angels-bone-du-yun-vavrek-english-national-opera-lo"
+      "session": "ff5d5504",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
     },
     {
-      "t": "2026-10-20T23:53:48.448Z",
-      "event": "bb-session",
-      "session": "337d5b63",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+      "t": "2026-10-20T23:39:48.430Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-20T23:53:55.862Z",
+      "t": "2026-10-20T23:40:05.323Z",
       "event": "bb-session",
-      "session": "31dd44b5",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+      "session": "a6a4dfa4",
+      "url": "http://online.wsj.com/news/articles/SB10001424052702303802104579449142401496978?"
     },
     {
       "t": "2026-10-20T23:40:05.753Z",
@@ -1819,6 +1804,7 @@
   ],
   "recoveredAfterFailure": [
     "aladdin-2014/wsj--terry-teachout.json",
-    "the-fear-of-13-2026/wsj--charles-isherwood.json"
+    "the-fear-of-13-2026/wsj--charles-isherwood.json",
+    "hercules-west-end-2025/sunday-times--unknown.json"
   ]
 }
