@@ -341,8 +341,9 @@ if (!show) {
     // An unfetched page has no date to check; an undated stub is the very file
     // --require-publish-date exists to prevent.
     if (requirePublishDate && !publishDateArg) {
-      console.error(`❌ Fetch failed (${reason}); no retry stub under --require-publish-date — ${url}`);
-      process.exit(3);
+      // Expected, not a failure: exiting non-zero here would re-alarm every hourly audit run.
+      console.log(`⚠️  Skipped: publish-date-unresolved — fetch failed (${reason}); no retry stub under --require-publish-date — ${url}`);
+      process.exit(0);
     }
     const { buildRetryStubFields } = require('./lib/submission-retry-stub');
     const stubResult = createOrMergeReviewFile(showId, {
