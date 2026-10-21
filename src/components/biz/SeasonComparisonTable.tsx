@@ -73,10 +73,11 @@ export default function SeasonComparisonTable({ comparison }: { comparison: Seas
         )}
         {lastDisrupted && lastSeason && <p>{shortSeason(lastSeason)} stopped in March 2020 when theaters closed.</p>}
         {recoupUnsettled && <p>Shows still running can recoup later, so recent seasons&apos; recoupment rates can still rise.</p>}
-        {partialAvg && (
+        {partialAvg && <p>* Averages only the seasons where we have the figures (for recoupment, seasons that ended over a year ago).</p>}
+        {hasMoney && (
           <p>
-            * Averages only the seasons where we have the figures.
-            {hasMoney && ' Budgets count only those made public, so a sum is a floor. Some running costs and budgets are estimates.'}
+            Money figures cover only the budgets and running costs made public, so each sum is a floor. Some are
+            estimates.
           </p>
         )}
         <p>Seasons run July 1 to June 30 by opening night.</p>

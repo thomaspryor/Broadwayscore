@@ -11,12 +11,11 @@ import { notFound } from 'next/navigation';
 
 import { featureFlags } from '@/config/feature-flags';
 import { getAllShows } from '@/lib/data-core';
-import { getSeason, getSeasonComparison, getSeasonProfiles, getRecoupFindings } from '@/lib/data-commercial';
+import { getSeason, getSeasonComparison, getSeasonProfiles, getSeasonShowList, getRecoupFindings, type SeasonListShow } from '@/lib/data-commercial';
 import { getMarketDate } from '@/lib/date-utils';
 import { formatDataDate } from '@/lib/biz-format';
 import { BASE_URL, SITE_OG_IMAGE, generateBreadcrumbSchema } from '@/lib/seo';
 import { MIX_ROW_LABELS, MIX_ROW_LABELS_HIDDEN, SHOW_GROUPS, mix, seasonBaseline, showGroup, type RecoupFindings, type SeasonComparison, type SeasonProfile } from '@/lib/season-profile';
-import type { ComputedShow } from '@/lib/engine';
 
 import SeasonComparisonTable from '@/components/biz/SeasonComparisonTable';
 import SeasonHistoryTable from '@/components/biz/SeasonHistoryTable';
@@ -60,13 +59,13 @@ function Finding({ item }: { item: FindingItem }) {
 }
 
 /** One line of the show list: linked title and its opening date (or "no date yet"). */
-function ShowLine({ show, today, note }: { show: ComputedShow; today: string; note?: string }) {
-  const date = formatDataDate(show.openingDate);
+function ShowLine({ show, today, note }: { show: SeasonListShow; today: string; note?: string }) {
+  const date = show.openingDate ? formatDataDate(show.openingDate) : null;
   return (
     <li className="flex flex-wrap items-baseline justify-between gap-x-3 py-1.5 border-b border-white/5 last:border-b-0">
-      <Link href={`/show/${show.slug}`} className="text-gray-200 hover:text-white hover:underline underline-offset-2">{show.title}</Link>
+      <Link href={`/show/${show.slug}`} className="text-gray-200 hover:text-white underline decoration-white/25 underline-offset-2 hover:decoration-white">{show.title}</Link>
       <span className="text-xs text-gray-500 whitespace-nowrap">
-        {note ?? (date ? `${show.openingDate <= today ? 'Opened' : 'Opens'} ${date}` : 'No date yet')}
+        {note ?? (date && show.openingDate ? `${show.openingDate <= today ? 'Opened' : 'Opens'} ${date}` : 'No date yet')}
       </span>
     </li>
   );
@@ -90,16 +89,18 @@ function keyFindings(
   const out: FindingItem[] = [];
   const opened = comparison?.rows.find((r) => r.label === 'Opened so far');
   if (comparison?.inProgress && opened?.current != null && opened.last != null && comparison.lastSeason) {
-    const avg = opened.avg != null ? ` The 10-season average for this date is ${opened.avg.toFixed(1)}.` : '';
+    const avg = opened.avg != null ? ` The ${opened.avgSeasons}-season average for this date is ${opened.avg.toFixed(1)}.` : '';
     out.push({
       text: `**${opened.current}** new Broadway ${opened.current === 1 ? 'production has' : 'productions have'} opened this season. By this date in ${shortSeason(comparison.lastSeason)}, **${opened.last}** had.${avg}`,
       href: '#this-season',
     });
   }
   if (cur && cur.playRevivalKnown > 0) {
+    const prev = comparison?.lastSeason ? profiles.find((p) => p.season === comparison.lastSeason) : null;
+    const was = prev && prev.playRevivalKnown > 0 ? ` In ${shortSeason(prev.season)} it was ${prev.playRevivals} of ${prev.playRevivalKnown} (${pct(prev.playRevivals, prev.playRevivalKnown)}).` : '';
     out.push({
-      text: `Play revivals make up **${cur.playRevivals} of ${cur.playRevivalKnown}** plays opened or announced for ${shortSeason(cur.season)} (${pct(cur.playRevivals, cur.playRevivalKnown)}), and ${cur.playRevivals} of all ${cur.productions} productions (${pct(cur.playRevivals, cur.productions)}).`,
-      href: '#play-revivals',
+      text: `Play revivals make up **${cur.playRevivals} of ${cur.playRevivalKnown}** plays opened or announced for ${shortSeason(cur.season)} (${pct(cur.playRevivals, cur.playRevivalKnown)}), and ${cur.playRevivals} of all ${cur.productions} productions (${pct(cur.playRevivals, cur.productions)}).${was}`,
+      href: cur.playRevivals > 0 ? '#play-revivals' : '#every-show',
     });
   }
 
@@ -114,7 +115,7 @@ function keyFindings(
     const oldest = ranked[ranked.length - 1].season;
     const runnerUp = ranked.filter((p) => p !== last).sort((x, y) => shareOf(y) - shareOf(x))[0];
     const avg = compare(last.season)?.rows.find((r) => r.label === 'Revivals (all)');
-    const vs = avg?.avg != null ? ` The 10 seasons before it averaged ${Math.round(avg.avg * 100)}%.` : '';
+    const vs = avg?.avg != null ? ` The ${avg.avgSeasons} seasons before it averaged ${Math.round(avg.avg * 100)}%.` : '';
     const rankText = rank === 1 && !tied
       ? `the highest share in our records, which go back to ${shortSeason(oldest)}${runnerUp ? `. Next highest: ${pct(runnerUp.revivals, runnerUp.revivalKnown)} in ${shortSeason(runnerUp.season)}` : ''}`
       : `${tied ? 'tied for ' : ''}the ${rank === 1 ? '' : `${ordinal(rank)} `}highest of the ${ranked.length} seasons in our records, back to ${shortSeason(oldest)}`;
@@ -173,17 +174,12 @@ export default function SeasonReportPage() {
   const scores = new Map(allShows.map((s) => [s.slug, s.compositeScore == null ? null : Math.round(s.compositeScore)]));
   const recoup = getRecoupFindings(scores, today);
   const findings = keyFindings(fullComparison, profiles, recoup, currentSeason, (season) => getSeasonComparison(season, today), cur);
-  // The same shows the season profile counts (Broadway, dated in this season), by mix group.
-  const broadway = allShows.filter((s) => s.category === 'broadway');
-  const seasonShows = broadway
-    .filter((s) => !!s.openingDate && getSeason(s.openingDate) === currentSeason)
-    .sort((a, b) => a.openingDate.localeCompare(b.openingDate) || a.title.localeCompare(b.title));
+  // The same shows the season profile counts, by mix group.
+  const { dated: seasonShows, undated } = currentSeason ? getSeasonShowList(currentSeason) : { dated: [], undated: [] };
   const showGroups = SHOW_GROUPS.map((g) => ({ ...g, shows: seasonShows.filter((s) => showGroup(s.type, s.isRevival) === g.id) }))
     .filter((g) => g.shows.length > 0);
   const groupKind = new Map<string, string>(SHOW_GROUPS.map((g) => [g.id, g.one]));
-  const undated = broadway
-    .filter((s) => !s.openingDate && s.status === 'announced')
-    .sort((a, b) => a.title.localeCompare(b.title));
+
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
@@ -199,8 +195,8 @@ export default function SeasonReportPage() {
             <h1 className="text-3xl sm:text-4xl font-bold text-white">Broadway Season Report</h1>
             <p className="text-gray-400 mt-2">
               {cur && currentSeason
-                ? `${cur.productions} new productions have opened or been announced for ${shortSeason(currentSeason)}. Here's how that compares with last season and the 10 before it, and which kinds of shows pay back their investors.`
-                : 'This Broadway season against last season and the 10 before it, and which kinds of shows pay back their investors.'}
+                ? `${cur.productions} new Broadway productions have opened or been announced for ${shortSeason(currentSeason)}. We compare them with last season and the 10 before it, and track which kinds of shows earn their money back.`
+                : 'This Broadway season compared with last season and the 10 before it, plus which kinds of shows earn their money back.'}
             </p>
             <p className="text-xs text-gray-500 mt-1" data-testid="season-report-asof">
               As of {formatDataDate(today) ?? today}. Updated as shows open, close and recoup.
@@ -232,7 +228,7 @@ export default function SeasonReportPage() {
             <section className="mb-8">
               <h2 className="text-xl font-bold text-white mb-1">Production Mix</h2>
               <p className="text-sm text-gray-400 mb-3">Originals and revivals, each split into musicals and plays. Each group links to its shows.</p>
-              <MixCard columns={mixColumns} overallRows={overallRows} withinRows={withinRows} linkGroups={showGroups.length > 0} />
+              <MixCard columns={mixColumns} overallRows={overallRows} withinRows={withinRows} linkGroups={new Set(showGroups.map((g) => g.id))} />
             </section>
           )}
 
@@ -240,7 +236,9 @@ export default function SeasonReportPage() {
             <section id="every-show" className="mb-8 scroll-mt-20" data-testid="season-show-list">
               <h2 className="text-xl font-bold text-white mb-1">Every {shortSeason(currentSeason)} Show</h2>
               <p className="text-sm text-gray-400 mb-3">
-                The {seasonShows.length} productions counted above, opened or announced with a date.
+                {seasonShows.length === cur?.productions
+                  ? `The ${seasonShows.length} productions counted above, opened or announced with a date.`
+                  : `${seasonShows.length} productions opened or announced with a date.`}
               </p>
               <div className="grid gap-4 md:grid-cols-2">
                 {showGroups.map((g) => (

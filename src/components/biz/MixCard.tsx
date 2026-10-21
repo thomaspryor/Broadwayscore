@@ -71,8 +71,8 @@ function GroupRows({ title, rows, columns }: { title: string; rows: ComparisonRo
   );
 }
 
-/** `linkGroups`: segment names link to the page's per-group show lists (#original-musicals...). */
-export default function MixCard({ columns, overallRows, withinRows, linkGroups = false }: { columns: MixColumn[]; overallRows: ComparisonRow[]; withinRows: ComparisonRow[]; linkGroups?: boolean }) {
+/** `linkGroups`: groups whose names link to the page's show list (#original-musicals...); only groups that have one. */
+export default function MixCard({ columns, overallRows, withinRows, linkGroups }: { columns: MixColumn[]; overallRows: ComparisonRow[]; withinRows: ComparisonRow[]; linkGroups?: ReadonlySet<string> }) {
   return (
     <div className="card rounded-xl overflow-hidden" data-testid="mix-card">
       <div className="p-4 space-y-3">
@@ -110,7 +110,7 @@ export default function MixCard({ columns, overallRows, withinRows, linkGroups =
               <tr key={s.key} className="border-b border-white/5">
                 <td className="py-2 pl-3 pr-2 sm:px-4 text-gray-300">
                   <span className={`mr-2 inline-block h-2.5 w-2.5 rounded-sm ${s.className}`} aria-hidden="true" />
-                  {linkGroups ? <a href={`#${s.id}`} className="text-brand hover:text-brand-hover">{s.label}</a> : s.label}
+                  {linkGroups?.has(s.id) ? <a href={`#${s.id}`} className="text-brand hover:text-brand-hover">{s.label}</a> : s.label}
                 </td>
                 {columns.map((c, i) => (
                   <td key={c.label} className="py-2 px-2 sm:px-4 text-center whitespace-nowrap">
@@ -129,8 +129,8 @@ export default function MixCard({ columns, overallRows, withinRows, linkGroups =
       </div>
       <p className="px-4 py-3 text-xs text-gray-500">
         The average pools every production from the prior seasons (skipping 2019-20 and 2020-21), and its counts are
-        per season. Specials, like magic and holiday shows, fill the rest of each bar. This season includes shows
-        announced but not yet open.
+        per season. Specials (magic and holiday shows, for example) and any show we haven&apos;t classed as original or
+        revival fill the rest of each bar. This season includes shows announced but not yet open.
       </p>
     </div>
   );

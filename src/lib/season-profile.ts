@@ -445,18 +445,19 @@ export function compareSeason(profiles: SeasonProfile[], season: string, asOf: s
   const moneyRow = (label: string, agg: (p: SeasonProfile) => MoneyAggregate, slate: (p: SeasonProfile) => number) => {
     const ok = (p: SeasonProfile) => hasTrackedCoverage(p);
     const { avg, n } = moneyAvg(baseline, ok, (p) => mean(agg(p)));
+    const used = baseline.filter((p) => ok(p) && mean(agg(p)) != null);
     const a = agg(cur);
     // A season under way is judged against its whole announced bucket: most of it is not in commercial.json yet.
     const curOf = inProgress ? Math.max(a.of, slate(cur)) : a.of;
     rows.push({
       label,
       format: 'money',
-      current: mean(a),
+      current: trackedOk || inProgress ? mean(a) : null,
       currentDetail: disclosedDetail({ ...a, of: curOf }),
       last: last && ok(last) ? mean(agg(last)) : null,
       lastDetail: last && ok(last) ? disclosedDetail(agg(last)) : null,
       avg,
-      avgDetail: null,
+      avgDetail: used.length ? `${avgCountDetail(used, (p) => agg(p).known, (p) => agg(p).of)} disclosed` : null,
       avgSeasons: n,
     });
   };
@@ -520,7 +521,7 @@ export interface RecoupBucket {
   recouped: number;
   total: number;
   /** The shows that recouped (named publicly; shows that did not are never listed). */
-  recoupedShows: Array<{ slug: string; title: string }>;
+  recoupedShows: Array<{ slug: string; title: string; year: string }>;
 }
 
 export interface ScoreBand {
@@ -586,7 +587,7 @@ export function buildRecoupFindings(shows: RecoupShowInput[], asOf: string): Rec
       b.total++;
       if (recouped) {
         b.recouped++;
-        if (s.slug && s.title) b.recoupedShows.push({ slug: s.slug, title: s.title });
+        if (s.slug && s.title) b.recoupedShows.push({ slug: s.slug, title: s.title, year: s.openingDate.slice(0, 4) });
       }
     }
     const decided = recouped || s.status === 'closed';

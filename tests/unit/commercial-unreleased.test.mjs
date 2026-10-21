@@ -89,8 +89,9 @@ test('pages only load commercial data behind featureFlags.commercial', () => {
     if (!call.test(text)) continue;
     // A route that 404s while the flag is off may load whatever it likes.
     if (/if \(!featureFlags\.commercial\) notFound\(\);/.test(text)) continue;
-    // The public Season Report shows recoupment aggregates only (no budgets, running
-    // costs or named shows); the owner released it 2026-10-20 (BRO-5777). Only that route.
+    // The public Season Report shows recoupment aggregates and names only shows that
+    // recouped (no budgets, running costs or shows that did not recoup); the owner
+    // released it 2026-10-20 (BRO-5777) and asked for show links 2026-10-21 (BRO-5808).
     if (PUBLIC_AGGREGATE_ROUTES.has(rel)) continue;
     text.split('\n').forEach((line, i) => {
       if (call.test(line) && !/^\s*(\/\/|\*|import\b)/.test(line) && !line.includes('featureFlags.commercial')) {

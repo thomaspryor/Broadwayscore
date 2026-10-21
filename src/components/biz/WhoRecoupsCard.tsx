@@ -95,7 +95,10 @@ export default function WhoRecoupsCard({ findings }: { findings: RecoupFindings 
               </summary>
               <ul className="mt-1 mb-2 ml-4 flex flex-wrap gap-x-4 gap-y-1">
                 {b.recoupedShows.map((s) => (
-                  <li key={s.slug}><Link href={`/show/${s.slug}`} className="text-gray-300 hover:text-white underline-offset-2 hover:underline">{s.title}</Link></li>
+                  <li key={s.slug}>
+                    <Link href={`/show/${s.slug}`} className="text-gray-300 hover:text-white underline decoration-white/25 underline-offset-2 hover:decoration-white">{s.title}</Link>
+                    <span className="text-gray-500"> ({s.year})</span>
+                  </li>
                 ))}
               </ul>
             </details>
@@ -104,9 +107,9 @@ export default function WhoRecoupsCard({ findings }: { findings: RecoupFindings 
       )}
       <p className="px-4 pb-4 text-xs text-gray-500">
         Leaves out nonprofit-only runs and tour stops, which have no investors to repay. Shows still running count as
-        not recouped yet, so these rates can only go up. The critic rows count shows with a critic score that have
-        recouped or closed. They show a pattern; they don&apos;t prove reviews caused it. Recoupment comes from
-        producer announcements and trade press. Critic scores are Broadway Scorecard&apos;s.
+        not recouped yet, so the rates by show type can only go up. The critic rows count shows with a critic score
+        that have recouped or closed, and show a correlation only. Recoupment comes from producer announcements and
+        trade press. Critic scores are Broadway Scorecard&apos;s.
       </p>
     </div>
   );
