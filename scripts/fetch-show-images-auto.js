@@ -54,7 +54,7 @@ const { armRunWatchdog } = require('./lib/run-watchdog');
 const inFlightFetches = new Map();
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { findNewerSameTitleProduction } = require('./lib/canon-poster-art');
-const { buildRetryCandidateImages } = require('./lib/google-image-retry-candidate.js');
+const { createGoogleImageRetry } = require('./lib/google-image-retry');
 const { pickOwnProductionPhotoFallback, stripCrossShowImages } = require('./lib/cross-show-images');
 const scraper = require('./lib/scraper');
 const { fetchPage, checkScrapingBeeCredits } = scraper;
@@ -1889,54 +1889,6 @@ async function fetchFromGoogleImages(show) {
   };
 }
 
-// Try next Google Images candidate after rejection
-// Re-uses the remaining candidates from the initial search
-// Handles both ScrapingBee (base64) and Bright Data (direct URL) results
-//
-// previousPoster: the poster path (if any) fetchFromGoogleImages prepared
-// before its thumbnail candidate got rejected. The poster search is
-// independent of which square/thumbnail candidate wins verification, so a
-// retry here must NOT null it out — that orphaned a real poster.jpg on disk
-// while shows.json kept images.poster: null forever (card #795: gimme-a-sign,
-// el-quijote both stuck "missing_poster" with a valid poster file already
-// sitting unreferenced in public/images/shows/).
-// previousPosterFile: that poster's _fileSources entry, so its source is still
-// recorded when this retry's thumbnail wins.
-// previousPosterStaged: that poster's bytes in memory, still unpromoted.
-async function tryNextGoogleCandidate(show, remainingCandidates, previousPoster = null, previousPosterFile = null, previousPosterStaged = null) {
-  for (const result of remainingCandidates) {
-    try {
-      const buffer = await extractImageBuffer(result);
-      if (!buffer) continue;
-
-      console.log(`   ✓ Trying next Google Images candidate (${(buffer.length/1024).toFixed(0)} KB) from ${result.domain}: ${result.title?.substring(0, 50)}`);
-
-      const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
-      const showDir = path.join(outputBase, show.id);
-      const compressed = await compressImage(await ensureThumbnailAspect(buffer), 'thumbnail');
-      const _staged = {};
-      writeStagedCandidate(_staged, 'thumbnail', { local: `/images/shows/${show.id}/thumbnail.jpg`, final: path.join(showDir, 'thumbnail.jpg') }, compressed);
-
-      const nextRemaining = remainingCandidates.slice(remainingCandidates.indexOf(result) + 1);
-      const images = buildRetryCandidateImages({ showId: show.id, previousPoster });
-      const _fileSources = { thumbnail: { path: images.thumbnail, source: googleResultSource(result) } };
-      if (previousPoster && previousPosterFile && previousPosterFile.path === previousPoster) _fileSources.poster = previousPosterFile;
-      if (previousPoster && previousPosterStaged && previousPosterStaged.local === previousPoster) _staged.poster = previousPosterStaged;
-      return {
-        ...images,
-        _verifyBuffer: buffer,
-        _verifyMeta: googleResultMeta(result),
-        _remainingCandidates: nextRemaining,
-        _fileSources,
-        _staged,
-      };
-    } catch {
-      continue;
-    }
-  }
-  return null;
-}
-
 // Score an image candidate based on verification result and URL heuristics.
 // Higher score = more desirable image (promotional art > production still > other).
 function scoreCandidate(verifyResult, url) {
@@ -2400,31 +2352,22 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
     if (googleErrored && verifyCtx) strictTallyFor(verifyCtx, show.id).searchErrored = true;
     if (googleImages) await verifyGooglePoster(googleImages, show, verifyCtx);
   }
-  while (googleImages && googleImages.thumbnail) {
-    // Save remaining candidates, and any verified poster in memory, before
-    // verifyAndCollect/the rejection path below can lose them. The poster
-    // search is independent of the thumbnail candidate being verified here,
-    // so a rejected thumbnail must not cost us a verified poster candidate.
-    const remaining = googleImages._remainingCandidates || [];
-    const previousPoster = googleImages.poster || null;
-    const previousPosterFile = (googleImages._fileSources && googleImages._fileSources.poster) || null;
-    const previousPosterStaged = (googleImages._staged && googleImages._staged.poster) || null;
-    const candidate = await verifyAndCollect(googleImages, show, 'Google Images', verifyCtx);
-    if (candidate) {
-      candidates.push(candidate);
-      googleAccepted = true;
-      if (candidate.verifyResult?.imageType === 'promotional_art' &&
-          candidate.verifyResult?.confidence === 'high') {
-        console.log(`   ★ Promotional art found at high confidence — using this`);
-        noteGoogleAttempt(show.id, true);
-        return candidate.images;
-      }
-      if (!verifyCtx) { noteGoogleAttempt(show.id, true); return candidate.images; }
-      break;  // Accepted — stop trying more candidates
+  const collectGoogleImageCandidate = createGoogleImageRetry({
+    extractImageBuffer, compressImage, ensureThumbnailAspect,
+    googleResultSource, googleResultMeta, verifyAndCollect,
+    outputBase: dryRunMode ? DRY_RUN_DIR : IMAGES_DIR,
+  });
+  const googleCandidate = await collectGoogleImageCandidate(show, googleImages, verifyCtx);
+  if (googleCandidate) {
+    candidates.push(googleCandidate);
+    googleAccepted = true;
+    if (googleCandidate.verifyResult?.imageType === 'promotional_art' &&
+        googleCandidate.verifyResult?.confidence === 'high') {
+      console.log(`   ★ Promotional art found at high confidence — using this`);
+      noteGoogleAttempt(show.id, true);
+      return googleCandidate.images;
     }
-    // Rejected — try next candidate from the same search results
-    if (remaining.length === 0) break;
-    googleImages = await tryNextGoogleCandidate(show, remaining, previousPoster, previousPosterFile, previousPosterStaged);
+    if (!verifyCtx) { noteGoogleAttempt(show.id, true); return googleCandidate.images; }
   }
   if (!googleGate.skip && !googleErrored) noteGoogleAttempt(show.id, googleAccepted);
 
