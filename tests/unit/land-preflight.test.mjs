@@ -699,3 +699,38 @@ test('pending plans: a branch moving a bro-* plan off pending blocks; editing on
     assert.deepEqual(v.problems.map((p) => p.slice(0, 80)), [`data/pending-fixes/bro-8.json: this branch moves it from "pending" to "${status}", which only`.slice(0, 80)]);
   }
 });
+
+// BRO-5657: cloud containers have no pre-push hook, so land.yml was the first to see a
+// new top-level script missing from test.yml on.push.paths (one ~45 min land cycle lost).
+test('BRO-5657: toplevel push-path check blocks a new uncovered script, names the line, passes once covered', async () => {
+  const { checkToplevelPushPaths, judgeLand, TOPLEVEL_PUSH_PATH_RE } = await import('../../scripts/lib/land-preflight.mjs');
+  const d = baseRepo();
+  write(d, 'scripts/audit-toplevel-script-test-yml-coverage.js', '\n');
+  write(d, 'README.md', 'x\n');
+  sh(d, 'git add -A && git commit -qm base && git checkout -qb feat');
+  // unrelated change: the audit never runs
+  write(d, 'g.txt', 'x\n');
+  sh(d, 'git add -A && git commit -qm unrelated');
+  const never = () => { throw new Error('audit must not run'); };
+  assert.equal(checkToplevelPushPaths({ base: 'main', tip: 'HEAD', cwd: d, gapsFor: never }).status, 'clean');
+
+  write(d, 'scripts/foo-probe.js', '\n');
+  sh(d, 'git add -A && git commit -qm probe');
+  const gap = { test: 'tests/unit/foo-probe.test.mjs', testCovered: true, source: 'scripts/foo-probe.js', sourceCovered: false, via: 'require' };
+  // new gap vs base -> fail with the exact line to add
+  const gapsFor = (root) => (fs.existsSync(path.join(root, 'scripts/foo-probe.js')) ? [gap] : []);
+  const bad = checkToplevelPushPaths({ base: 'main', tip: 'HEAD', cwd: d, gapsFor });
+  assert.equal(bad.status, 'fail');
+  assert.match(bad.problems[0], /- 'scripts\/foo-probe\.js'/);
+  const v = judgeLand({ cwd: d, src: 'HEAD', target: 'land/x', base: 'main', fetch: false, checkTests: false, seams: { checkToplevelPushPaths: () => bad } });
+  assert.equal(v.decision, 'block');
+  assert.match(v.message, /Top-level script push paths/);
+  assert.match(v.message, /- 'scripts\/foo-probe\.js'/);
+  // same branch once covered -> clean
+  assert.equal(checkToplevelPushPaths({ base: 'main', tip: 'HEAD', cwd: d, gapsFor: () => [] }).status, 'clean');
+  // a gap already on base is not this branch's fault
+  assert.equal(checkToplevelPushPaths({ base: 'main', tip: 'HEAD', cwd: d, gapsFor: () => [gap] }).status, 'clean');
+  // audit cannot run -> fail open
+  assert.equal(checkToplevelPushPaths({ base: 'main', tip: 'HEAD', cwd: d, gapsFor: () => null }).status, 'skip');
+  assert.ok(TOPLEVEL_PUSH_PATH_RE.test('scripts/foo-probe.js') && !TOPLEVEL_PUSH_PATH_RE.test('scripts/lib/x.js'));
+});

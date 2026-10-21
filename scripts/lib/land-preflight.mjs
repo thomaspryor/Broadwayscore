@@ -554,6 +554,64 @@ export function checkWorkflowChecks({ base, tip, cwd, landedTip = null, run = sp
   }
 }
 
+// BRO-5657: a new top-level script whose test is collected but whose path is
+// missing from test.yml on.push.paths was refused by land.yml (floor test in
+// audit-toplevel-script-test-yml-coverage.test.mjs) about 45 minutes in. Cloud
+// containers have no pre-push hook, so run the same audit here: the judged
+// tree's own copy, compared with base so a gap already on main is not blamed.
+export const TOPLEVEL_PUSH_PATH_RE = /^scripts\/[^/]+\.(js|mjs|cjs|ts|tsx)$|^tests\/|^\.github\/workflows\/test\.yml$|^tests\/unit-test-manifest/;
+const TOPLEVEL_AUDIT = 'scripts/audit-toplevel-script-test-yml-coverage.js';
+const gapKey = (g) => `${g.source || ''}|${g.test || ''}`;
+/** -> gaps array, or null when the audit could not run / parse (fail open). */
+function toplevelGaps(treeRoot, env) {
+  if (!fs.existsSync(path.join(treeRoot, TOPLEVEL_AUDIT))) return null;
+  const r = spawnSync('node', [TOPLEVEL_AUDIT, '--json'], { cwd: treeRoot, env, encoding: 'utf8', timeout: 45000 });
+  if (r.status !== 0) return null;
+  try {
+    const gaps = JSON.parse(r.stdout).gaps;
+    return Array.isArray(gaps) ? gaps : null;
+  } catch {
+    return null;
+  }
+}
+/** -> { status: 'clean' | 'fail' | 'skip', problems?, reason? }. Fails open. */
+export function checkToplevelPushPaths({ base, tip, cwd, landedTip = null, gapsFor = toplevelGaps }) {
+  const diff = git(cwd, ['diff', '--name-only', '--no-renames', `${base}...${tip}`]);
+  if (!ok(diff)) return { status: 'skip', reason: 'diff vs base failed' };
+  if (!out(diff).split('\n').some((f) => TOPLEVEL_PUSH_PATH_RE.test(f))) return { status: 'clean', reason: 'no top-level scripts, tests or test.yml changed' };
+  const root = out(git(cwd, ['rev-parse', '--show-toplevel']));
+  const nm = findNodeModules(root);
+  const env = { ...process.env, NODE_PATH: [nm, process.env.NODE_PATH].filter(Boolean).join(path.delimiter) };
+  const judgeRoot = materializeTree(cwd, landedTip || tip);
+  if (!judgeRoot) return { status: 'skip', reason: 'could not materialize the landing tree' };
+  try {
+    if (nm) { try { fs.symlinkSync(nm, path.join(judgeRoot, 'node_modules'), 'dir'); } catch { /* NODE_PATH still covers require() */ } }
+    const gaps = gapsFor(judgeRoot, env);
+    if (gaps === null) return { status: 'skip', reason: 'toplevel push-path audit could not run' };
+    if (gaps.length === 0) return { status: 'clean' };
+    let fresh = gaps;
+    const baseRoot = materializeTree(cwd, base);
+    if (baseRoot) {
+      try {
+        if (nm) { try { fs.symlinkSync(nm, path.join(baseRoot, 'node_modules'), 'dir'); } catch { /* as above */ } }
+        const onBase = gapsFor(baseRoot, env);
+        if (onBase) { const known = new Set(onBase.map(gapKey)); fresh = gaps.filter((g) => !known.has(gapKey(g))); }
+      } finally {
+        fs.rmSync(baseRoot, { recursive: true, force: true, maxRetries: 5 });
+      }
+    }
+    const problems = [];
+    for (const g of fresh) {
+      for (const [file, covered] of [[g.source, g.sourceCovered], [g.test, g.testCovered]]) {
+        if (file && covered === false) problems.push(`${file} is not in test.yml on.push.paths (land.yml refuses a push that adds it; the test is ${g.test}). Add this line under on.push.paths in .github/workflows/test.yml: - '${file}'`);
+      }
+    }
+    return problems.length ? { status: 'fail', problems: [...new Set(problems)] } : { status: 'clean', reason: 'gaps also present on base' };
+  } finally {
+    fs.rmSync(judgeRoot, { recursive: true, force: true, maxRetries: 5 });
+  }
+}
+
 // BRO-5520: two session plans of 41 and 49 actions (the cap is 25) reached
 // land.yml, which refused the first on tests/unit/pending-fix-plans.test.mjs
 // about 40 minutes later. Same checks (scripts/lib/pending-fix-plan-checks.js)
@@ -624,7 +682,7 @@ function testTreeDirty(cwd) {
   return paths.filter((p) => TEST_FILE_RE.test(p) || isManifest(p) || p.startsWith('.github/workflows/'));
 }
 
-export function blockMessage({ target, rebase, tests, base, botOwned, staleRevert, manifests, workflows, pendingPlans }) {
+export function blockMessage({ target, rebase, tests, base, botOwned, staleRevert, manifests, workflows, pendingPlans, toplevel }) {
   const lines = [`LAND PREFLIGHT: land.yml would refuse this push to ${target}. Fix it on the branch and push again (about 30 minutes saved).`];
   if (rebase?.status === 'conflict') {
     lines.push(
@@ -649,6 +707,10 @@ export function blockMessage({ target, rebase, tests, base, botOwned, staleRever
   if (workflows?.status === 'fail') {
     lines.push('', '* Workflow checks (CI would go red on these):');
     for (const p of workflows.problems) lines.push(`   - ${p}`);
+  }
+  if (toplevel?.status === 'fail') {
+    lines.push('', '* Top-level script push paths (audit-toplevel-script-test-yml-coverage would go red):');
+    for (const p of toplevel.problems) lines.push(`   - ${p}`);
   }
   if (pendingPlans?.status === 'fail') {
     lines.push('', '* Pending data plans (execute-approved-fix.js refuses these at apply time, and tests/unit/pending-fix-plans.test.mjs fails on them):');
@@ -726,10 +788,12 @@ export function judgeLand({ cwd, src, target, base = 'origin/main', fetch = true
   detail.workflows = workflows;
   const pendingPlans = (seams.checkPendingPlans || checkPendingPlans)({ base, tip: src, cwd, landedTip: rebase.status === 'clean' ? rebase.tip : null });
   detail.pendingPlans = pendingPlans;
+  const toplevel = (seams.checkToplevelPushPaths || checkToplevelPushPaths)({ base, tip: src, cwd, landedTip: rebase.status === 'clean' ? rebase.tip : null });
+  detail.toplevel = toplevel;
   const warnings = [...(tests.warnings || []), ...(pendingPlans.warnings || []), ...(seams.retiredManifestWarnings || retiredManifestWarnings)({ base, src, cwd })];
   detail.warnings = warnings;
-  if ([rebase.status === 'conflict', tests.status, botOwned.status, staleRevert.status, manifests.status, workflows.status, pendingPlans.status].some((x) => x === true || x === 'fail')) {
-    const message = blockMessage({ target, rebase, tests, base, botOwned, staleRevert, manifests, workflows, pendingPlans });
+  if ([rebase.status === 'conflict', tests.status, botOwned.status, staleRevert.status, manifests.status, workflows.status, pendingPlans.status, toplevel.status].some((x) => x === true || x === 'fail')) {
+    const message = blockMessage({ target, rebase, tests, base, botOwned, staleRevert, manifests, workflows, pendingPlans, toplevel });
     return { decision: 'block', message: warnings.length ? `${message}\n\nAlso: ${warnings.join('\n')}` : message, warnings, detail };
   }
   return { decision: rebase.status === 'skip' && tests.status === 'skip' ? 'skip' : 'allow', warnings, detail };
