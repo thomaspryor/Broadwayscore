@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-20T23:13:44.300Z",
+  "generatedAt": "2026-10-21T00:57:22.884Z",
   "summary": {
-    "total": 9,
-    "high": 4,
+    "total": 10,
+    "high": 5,
     "medium": 4,
     "low": 1
   },
@@ -86,6 +86,33 @@
       ],
       "suggestedWinner": "christmas-carol-goes-wrong-apollo-west-end-2025",
       "reason": "publishDate 2025-12-14 is 0 days from christmas-carol-goes-wrong-apollo-west-end-2025 opening (2025-12-14)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-death-of-a-salesman-piccadilly",
+      "normalizedUrl": "https://londonboxoffice.co.uk/news/post/review-death-of-a-salesman-piccadilly",
+      "candidates": [
+        {
+          "showId": "death-of-a-salesman-west-end-2019",
+          "file": "london-box-office--phil-willmott.json",
+          "publishDate": "2019-11-06",
+          "openingDate": "2019-11-05",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "london-box-office"
+        },
+        {
+          "showId": "death-of-a-salesman-west-end-2026",
+          "file": "london-box-office--phil-willmott.json",
+          "publishDate": null,
+          "openingDate": null,
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "london-box-office"
+        }
+      ],
+      "suggestedWinner": "death-of-a-salesman-west-end-2019",
+      "reason": "publishDate 2019-11-06 is 1 days from death-of-a-salesman-west-end-2019 opening (2019-11-05)",
       "confidence": "high"
     },
     {
