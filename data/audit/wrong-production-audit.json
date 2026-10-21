@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-21T11:24:25.438Z",
+  "timestamp": "2026-10-21T12:15:32.632Z",
   "stats": {
-    "totalReviews": 58046,
+    "totalReviews": 58049,
     "alreadyFlagged": 21124,
     "dateGuardCatches": 197,
     "directorMismatch": 2047,
     "tvFilmSignals": 1654,
-    "londonSignals": 2576,
+    "londonSignals": 2578,
     "offBroadwaySignals": 531,
     "yearMismatch": 163,
     "noPublishDate": 5233
@@ -70229,20 +70229,6 @@
     },
     {
       "showId": "jesus-christ-superstar-west-end-2026",
-      "file": "times-uk--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.thetimes.com/culture/music/article/sam-ryder-jesus-christ-superstar-pc5q9glmz",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "jesus-christ-superstar-west-end-2026",
       "file": "whatsonstage--alex-wood.json",
       "publishDate": "2026-07-08",
       "url": "https://www.whatsonstage.com/news/did-sam-ryder-reach-for-the-stars-jesus-christ-superstar-review-round-up_1726870/",
@@ -73159,6 +73145,20 @@
     },
     {
       "showId": "martin-guerre-west-end-2026",
+      "file": "london-theatre--anya-ryan.json",
+      "score": null,
+      "publishDate": "2026-10-21",
+      "url": "https://www.londontheatre.co.uk/reviews/martin-guerre-review-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
       "file": "londontheatredirect--lyn-gardner.json",
       "publishDate": "2026-09-17",
       "url": "https://www.londontheatredirect.com/news/10-reasons-to-see-martin-guerre-at-the-old-vic",
@@ -73175,6 +73175,33 @@
       "file": "londontheatredirect--steve-mills.json",
       "publishDate": null,
       "url": "https://www.londontheatredirect.com/musical/martin-guerre-tickets?srsltid=AU7gw4WVzbtbXp9TL94RyxsFIGKt5DdfBYwx9DlI3UZ93KzuEc_8bxaK",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
+      "file": "south-london--michael-holland.json",
+      "score": null,
+      "publishDate": "2026-10-21",
+      "url": "https://southlondon.co.uk/area/southwark/review-martin-guerre-old-vic/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
+      "file": "whatsonstage--alex-wood.json",
+      "publishDate": "2026-10-21",
+      "url": "https://www.whatsonstage.com/news/martin-guerre-review-a-compelling-case-for-a-musical-with-a-complicated-past_1735581/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -91207,9 +91234,8 @@
     {
       "showId": "triumph-off-west-end-2026",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 78,
       "publishDate": "2026-10-19",
-      "url": "https://www.ft.com/content/cbd99692-7670-4d29-8483-9db10436aadd?syn-25a6b1a6=1",
+      "url": "https://www.ft.com/content/cbd99692-7670-4d29-8483-9db10436aadd",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
