@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-21T14:22:11.705Z",
+    "generatedAt": "2026-10-21T23:14:11.240Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 376,
-  "errorSeverity": 266,
-  "warningSeverity": 110,
+  "totalGaps": 367,
+  "errorSeverity": 261,
+  "warningSeverity": 106,
   "gaps": [
     {
       "showId": "1776-2022",
@@ -23,15 +23,6 @@
       "extracted": 8,
       "gap": 18,
       "ratio": 0.31,
-      "severity": "error"
-    },
-    {
-      "showId": "a-bronx-tale-2007",
-      "category": "broadway",
-      "expected": 52,
-      "extracted": 8,
-      "gap": 44,
-      "ratio": 0.15,
       "severity": "error"
     },
     {
@@ -176,15 +167,6 @@
       "extracted": 8,
       "gap": 42,
       "ratio": 0.16,
-      "severity": "error"
-    },
-    {
-      "showId": "an-act-of-god-2016",
-      "category": "broadway",
-      "expected": 31,
-      "extracted": 8,
-      "gap": 23,
-      "ratio": 0.26,
       "severity": "error"
     },
     {
@@ -419,15 +401,6 @@
       "extracted": 8,
       "gap": 11,
       "ratio": 0.42,
-      "severity": "error"
-    },
-    {
-      "showId": "building-the-wall-off-broadway-2026",
-      "category": "off-broadway",
-      "expected": 31,
-      "extracted": 8,
-      "gap": 23,
-      "ratio": 0.26,
       "severity": "error"
     },
     {
@@ -1520,15 +1493,6 @@
       "severity": "error"
     },
     {
-      "showId": "les-miserables-1987",
-      "category": "broadway",
-      "expected": 27,
-      "extracted": 8,
-      "gap": 19,
-      "ratio": 0.3,
-      "severity": "error"
-    },
-    {
       "showId": "les-miserables-west-end-2021",
       "category": "west-end",
       "expected": 9,
@@ -1725,15 +1689,6 @@
       "gap": 4,
       "ratio": 0.67,
       "severity": "warning"
-    },
-    {
-      "showId": "miles-for-mary-off-broadway-2026",
-      "category": "off-broadway",
-      "expected": 23,
-      "extracted": 8,
-      "gap": 15,
-      "ratio": 0.35,
-      "severity": "error"
     },
     {
       "showId": "misery-2015",
@@ -2012,15 +1967,6 @@
       "extracted": 8,
       "gap": 6,
       "ratio": 0.57,
-      "severity": "warning"
-    },
-    {
-      "showId": "oratorio-for-living-things-off-broadway-2026",
-      "category": "off-broadway",
-      "expected": 9,
-      "extracted": 8,
-      "gap": 1,
-      "ratio": 0.89,
       "severity": "warning"
     },
     {
@@ -2906,15 +2852,6 @@
       "severity": "warning"
     },
     {
-      "showId": "the-peculiar-patriot-off-broadway-2026",
-      "category": "off-broadway",
-      "expected": 10,
-      "extracted": 8,
-      "gap": 2,
-      "ratio": 0.8,
-      "severity": "warning"
-    },
-    {
       "showId": "the-phantom-of-the-opera-1988",
       "category": "broadway",
       "expected": 10,
@@ -2948,24 +2885,6 @@
       "extracted": 8,
       "gap": 6,
       "ratio": 0.57,
-      "severity": "warning"
-    },
-    {
-      "showId": "the-pirates-of-penzance-1976",
-      "category": "broadway",
-      "expected": 13,
-      "extracted": 8,
-      "gap": 5,
-      "ratio": 0.62,
-      "severity": "warning"
-    },
-    {
-      "showId": "the-pirates-of-penzance-1981",
-      "category": "broadway",
-      "expected": 13,
-      "extracted": 8,
-      "gap": 5,
-      "ratio": 0.62,
       "severity": "warning"
     },
     {
