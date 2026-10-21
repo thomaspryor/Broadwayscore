@@ -26,7 +26,9 @@ function run(files) {
     encoding: 'utf8',
     env: { ...process.env, SCORE_INTEGRITY_REVIEW_TEXTS_DIR: rt, SCORE_INTEGRITY_OUTPUT_PATH: out },
   });
-  return { r, report: JSON.parse(fs.readFileSync(out, 'utf8')) };
+  const report = JSON.parse(fs.readFileSync(out, 'utf8'));
+  fs.rmSync(dir, { recursive: true, force: true });
+  return { r, report };
 }
 
 const leaked = {
@@ -71,4 +73,29 @@ test('discardNoRatingOutletScore leaves star outlets and display-name outlets ha
   assert.equal(g.originalScore, '4/5');
   const d = { outletId: 'London Theatre', originalScore: '3/5 stars' };
   assert.equal(discardNoRatingOutletScore(d), true);
+});
+
+test('London Theatre anchor worklists include cleared and missing ratings', () => {
+  const anchored = {
+    outletId: 'london-theatre', scoreSource: 'anchored-v6',
+    originalScore: '4/5 stars', originalScoreSource: 'londontheatre-page-json',
+    llmScore: { score: 79, band: { floor: 71, ceiling: 90 } },
+  };
+  const { r, report } = run({
+    'show-a/london-theatre--confirmed.json': anchored,
+    'show-a/london-theatre--unknown.json': {
+      ...anchored, originalScore: null, originalScoreCleared: true,
+    },
+    'show-a/london-theatre--mismatch.json': { ...anchored, originalScore: '2/5 stars' },
+    'show-a/guardian--control.json': { ...anchored, outletId: 'guardian' },
+  });
+  assert.equal(r.status, 0, r.stdout);
+  const audit = report.londonTheatreAnchors;
+  assert.equal(audit.total, 3);
+  assert.equal(audit.confirmed.length, 1);
+  assert.equal(audit.ratingVerificationQueue.length, 1);
+  assert.equal(audit.reanchorQueue.length, 1);
+  assert.equal(audit.ratingVerificationQueue[0].file, 'show-a/london-theatre--unknown.json');
+  assert.deepEqual(audit.reanchorQueue[0].criticBand, { floor: 31, ceiling: 50 });
+  assert.equal(report.totalIssues, 0, 'anchor worklists are advisory, not new blocking gates');
 });

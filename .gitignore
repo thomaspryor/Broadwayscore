@@ -330,6 +330,8 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 !/docs/audits/outlet-tier-audit-2026-10.*
 # BRO-5431 requires the per-workflow run-log classification to survive checkout.
 !/docs/audits/bro-5431-missing-deps.md
+# BRO-4991: retain the unresolved critic-rating worklist for follow-up.
+!/docs/audits/bro-4991-london-theatre-anchors.md
 # Task #1218's hit/miss audit of the review process itself — acceptance
 # criteria requires it committed (not scratch), so future sessions/audits
 # can find it without depending on one machine's claude-outputs copy.

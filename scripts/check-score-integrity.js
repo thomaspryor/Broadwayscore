@@ -14,6 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { auditLondonTheatreAnchor, summarizeLondonTheatreAnchors } = require('./lib/london-theatre-anchor-audit');
 
 // Env overrides exist so the test can run against a fixture corpus (BRO-2809).
 const REVIEW_TEXTS_DIR = process.env.SCORE_INTEGRITY_REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
@@ -49,6 +50,7 @@ const issues = {
 };
 
 let totalFiles = 0;
+const londonTheatreAnchorRows = [];
 
 const shows = listShowDirs(REVIEW_TEXTS_DIR);
 
@@ -60,6 +62,10 @@ for (const show of shows) {
     totalFiles++;
     try {
       const d = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
+      // Inspect before the originalScore guard: missing/cleared ratings are the
+      // unresolved relayed anchors this report must retain (BRO-4991).
+      const anchor = auditLondonTheatreAnchor(d, `${show}/${file}`);
+      if (anchor) londonTheatreAnchorRows.push(anchor);
       if (!d.originalScore || d.originalScoreCleared || d.wrongProduction) continue;
 
       // Check 1: aggregator scoreSource in P0
@@ -83,6 +89,7 @@ for (const show of shows) {
 const totalIssues = issues.aggregatorScoreInP0.length
   + issues.aggregatorSourceNoScoreSource.length
   + issues.noStarOutletWithScore.length;
+const londonTheatreAnchors = summarizeLondonTheatreAnchors(londonTheatreAnchorRows);
 
 // Report
 console.log('=== Score Integrity Check ===');
@@ -91,6 +98,7 @@ console.log(`Aggregator scoreSource in P0: ${issues.aggregatorScoreInP0.length}`
 console.log(`Aggregator source, no scoreSource: ${issues.aggregatorSourceNoScoreSource.length}`);
 console.log(`No-star outlet with originalScore: ${issues.noStarOutletWithScore.length}`);
 console.log(`Total issues: ${totalIssues}`);
+console.log(`London Theatre anchored-v6: ${londonTheatreAnchors.total}; confirmed: ${londonTheatreAnchors.confirmed.length}; reanchor: ${londonTheatreAnchors.reanchorQueue.length}; verify rating: ${londonTheatreAnchors.ratingVerificationQueue.length}`);
 
 if (totalIssues > 0) {
   console.log('\n--- Details ---');
@@ -114,6 +122,9 @@ fs.writeFileSync(OUTPUT_PATH, JSON.stringify({
     noStarOutletWithScore: issues.noStarOutletWithScore.length,
   },
   totalIssues,
+  // Advisory worklists only. Consumers can inspect every file and both bands;
+  // no private review writes or automatic paid re-scores occur in this audit.
+  londonTheatreAnchors,
   details: totalIssues > 0 ? issues : undefined,
 }, null, 2));
 console.log(`\nReport: ${OUTPUT_PATH}`);
