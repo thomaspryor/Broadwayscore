@@ -91,6 +91,15 @@ describe('hasSameMarketTitleMatch', () => {
     const shows = [show, { id: 'death-of-a-salesman-2012', title: 'Death of a Salesman', market: 'broadway' }];
     assert.equal(hasSameMarketTitleMatch(show, shows), true);
   });
+  it('false when the only same-title sibling is a LATER production (BRO-5439: sacrilegious 2026 vs 2027)', () => {
+    const show = { id: 's-2026', title: 'Sacrilegious', category: 'off-west-end', previewsStartDate: '2026-12-05' };
+    const later = { id: 's-2027', title: 'Sacrilegious', category: 'off-west-end', previewsStartDate: '2027-04-03', isRevival: true };
+    assert.equal(hasSameMarketTitleMatch(show, [show, later]), false);
+    assert.equal(hasSameMarketTitleMatch(later, [show, later]), true);
+    // undated: a sibling already flagged isRevival is the later one
+    const u = { id: 'u1', title: 'X', category: 'broadway' };
+    assert.equal(hasSameMarketTitleMatch(u, [u, { id: 'u2', title: 'X', category: 'broadway', isRevival: true }]), false);
+  });
   it('false for same title, different market (transfer, not revival — regression: Hamilton/Wicked/Hadestown/Oh Mary FP)', () => {
     const show = { id: 'hamilton-2015', title: 'Hamilton', market: 'broadway' };
     const shows = [show, { id: 'hamilton-west-end-2021', title: 'Hamilton', market: 'west-end' }];

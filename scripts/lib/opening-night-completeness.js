@@ -122,11 +122,19 @@ function hasSameMarketTitleMatch(show, shows) {
   // or of a sibling tour segment (BRO-5439).
   if (isTourShow(show)) return false;
   const targetMarket = show.category || show.market || null;
+  const startOf = x => x.openingDate || x.previewsStartDate || null;
   return shows.some(s => {
     if (!s || s.id === show.id) return false;
     const t = (s.canonicalTitle || s.title || '').toLowerCase().trim();
     if (t !== targetTitle) return false;
-    return (s.category || s.market || null) === targetMarket;
+    if ((s.category || s.market || null) !== targetMarket) return false;
+    // Only an EARLIER production makes `show` a revival. A later sibling
+    // (e.g. sacrilegious-2027 flagged isRevival, BRO-5439) is the revival;
+    // this show is the original.
+    const a = startOf(s);
+    const b = startOf(show);
+    if (a && b) return a <= b;
+    return s.isRevival !== true;
   });
 }
 
