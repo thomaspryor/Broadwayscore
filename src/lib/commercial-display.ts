@@ -24,6 +24,7 @@ import {
   analystRange, estimateFitsDesignation, RUNNING_SHOWN_MAX,
 } from '../../scripts/lib/model-display-guard';
 import { hasNoInvestorsToRepay, isLossDesignation, likelyOutcomeDesignation, ownReturnedEstimatePct } from '../../scripts/lib/commercial-designations';
+import { pickLead, leadRange } from '../../scripts/lib/commercial-leads';
 import { publicSourceText, isEstimatedCapitalization, isMaximumCapitalization, saysRecoupmentUnannounced } from '../../scripts/lib/public-source-text';
 import { conversionOf } from '../../scripts/lib/commercial-conversion';
 
@@ -53,6 +54,10 @@ interface RecoupmentSignals {
 export function meetsModelQualityFloor(commercial: Pick<RecoupmentSignals, 'modelDataQuality' | 'modelMethod'>): boolean {
   return (
     commercial.modelDataQuality !== 'low' &&
+    // 'estimate-based' = an input came from a guess-grade lead (BRO-5849). Off
+    // the bar until the graded backtest says the estimates earn a bar; leads
+    // print as "~ Estimated" figures instead.
+    commercial.modelDataQuality !== 'estimate-based' &&
     commercial.modelMethod !== 'ai-estimated'
   );
 }
@@ -324,6 +329,59 @@ export function getCitedSourceUrl(sources: SourceList): string | null {
  * modelWarnings, classifiedReason, estimatedRecoupmentSource, source
  * excerpts...) never leaves the server. Call it in the server component.
  */
+/** What each lead class is called on the page. A forum estimate is labelled, never quoted (BRO-5020 Group C). */
+const LEAD_CLASS_LABEL: Record<string, string> = {
+  qualified: 'a qualified press report',
+  'press-projection': 'a press projection',
+  'sec-ceiling-inferred-issuer': 'an SEC offering ceiling',
+  reddit: 'a fan-forum estimate',
+  joint: 'a budget shared with another show',
+  floor: 'a reported minimum',
+};
+
+/** A guess-grade figure the card may print in place of a missing fact (BRO-5849). */
+export interface EstimatedLead {
+  center: number;
+  low: number;
+  high: number;
+  /** "a fan-forum estimate", "a press projection"... */
+  sourceLabel: string;
+  /** The source's words and link, only when publicSourceText allows printing them. */
+  quote: string | null;
+  url: string | null;
+  date: string;
+}
+
+/**
+ * The best lead for an input the record does not disclose, or null. Always
+ * printed "~ Estimated" with its source; never counted as disclosed. Runs in
+ * the server component: the raw leads never reach the browser.
+ */
+export function getEstimatedLead(
+  commercial: Pick<ShowCommercial, 'capitalization' | 'weeklyRunningCost' | 'leads'>,
+  kind: 'capitalization' | 'weeklyRunningCost',
+): EstimatedLead | null {
+  if (commercial[kind]) return null;
+  const lead = pickLead(commercial.leads, kind);
+  if (!lead) return null;
+  const range = leadRange(lead);
+  // A forum post is labelled, never quoted or linked, whatever it says.
+  const quote = lead.sourceClass === 'reddit' ? null : publicSourceText(lead.source.quote);
+  return {
+    center: range.center, low: range.low, high: range.high,
+    sourceLabel: LEAD_CLASS_LABEL[lead.sourceClass] ?? 'an unconfirmed report',
+    quote, url: quote ? lead.source.url : null, date: lead.date,
+  };
+}
+
+function estimatedLeadsOf(commercial: ShowCommercial): Pick<ShowCommercial, 'estimatedLeads'> | Record<string, never> {
+  const capitalization = getEstimatedLead(commercial, 'capitalization');
+  const weeklyRunningCost = getEstimatedLead(commercial, 'weeklyRunningCost');
+  return capitalization || weeklyRunningCost
+    ? { estimatedLeads: { ...(capitalization ? { capitalization } : {}), ...(weeklyRunningCost ? { weeklyRunningCost } : {}) } }
+    : {};
+}
+
 export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommercial {
   const rawRecoupedSource = commercial.recoupedSource ?? null;
   const recoupedSource =
@@ -334,6 +392,7 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     designation: commercial.designation,
     capitalization: commercial.capitalization,
     capitalizationSource: publicSourceText(commercial.capitalizationSource),
+    ...estimatedLeadsOf(commercial),
     ...(commercial.capitalizationBasis ? { capitalizationBasis: commercial.capitalizationBasis } : {}),
     weeklyRunningCost: commercial.weeklyRunningCost,
     weeklyRunningCostSource: publicSourceText(commercial.weeklyRunningCostSource),

@@ -34,7 +34,7 @@ const ALLOWED = new Set([
   'capitalization', 'capitalizationSource', 'weeklyRunningCost',
   'weeklyRunningCostSource', 'costMethodology', 'notes', 'sources',
   'nonprofitOrg', 'productionType', 'designationBasis', 'weeklyRunningCostBasis', 'capitalizationBasis',
-  'commercialConversion',
+  'commercialConversion', 'leads',
 ]);
 const WIN = new Set(['Miracle', 'Windfall', 'Easy Winner', 'Trickle']);
 const RECOUPED_DATE_RE = /^\d{4}(-\d{2})?$/;

@@ -193,6 +193,9 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
   // research notes ("GPT DR Batch 3...", "deep research synthesis"), which
   // publicSourceText drops. Estimated weekly costs read "Estimate".
   const capSourceText = publicSourceText(commercial.capitalizationSource);
+  // Guess-grade leads (BRO-5849): shown "~ Estimated" with their source, only where no fact exists.
+  const capLead = commercial.capitalization ? null : commercial.estimatedLeads?.capitalization ?? null;
+  const costLead = commercial.weeklyRunningCost ? null : commercial.estimatedLeads?.weeklyRunningCost ?? null;
   const weeklyCostSourceText = commercial.weeklyRunningCost ? getWeeklyCostSourceLabel(commercial) : null;
   const notesText = publicNotesText(commercial);
   const hasDetails = !!(notesText || capSourceText || weeklyCostSourceText);
@@ -337,11 +340,11 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
             {/* "up to $18.0M" runs one step smaller so it stays on one line beside the other tiles (BRO-5660). */}
             <div className={`${isMaximumCapitalization(commercial) ? 'text-base sm:text-xl lg:text-2xl' : 'text-lg sm:text-2xl lg:text-3xl'} font-extrabold text-white tracking-tight`}>
               {commercial.capitalization == null
-                ? 'Undisclosed'
+                ? (capLead ? `~${formatCurrency(capLead.center)}` : 'Undisclosed')
                 : formatCapitalization(commercial.capitalization, isEstimatedCapitalization(commercial), isMaximumCapitalization(commercial))}
             </div>
             <div className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
-              Capitalization
+              {capLead ? 'Capitalization (estimated)' : 'Capitalization'}
             </div>
           </div>
 
@@ -353,6 +356,18 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
               </div>
               <div className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
                 Weekly Cost
+              </div>
+            </div>
+          )}
+
+          {/* Estimated weekly cost from a lead, when none is disclosed */}
+          {!commercial.weeklyRunningCost && costLead && (
+            <div className="flex-1 min-w-[calc(50%-0.25rem)] sm:min-w-0 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
+              <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
+                ~{formatCurrency(costLead.center)}
+              </div>
+              <div className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
+                Weekly Cost (estimated)
               </div>
             </div>
           )}
@@ -493,6 +508,24 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
             </div>
           </div>
         )}
+
+        {/* Estimated figures: a lead is a guess, so it prints with its source and never as a disclosed number. */}
+        {[capLead && { label: 'Capitalization', lead: capLead }, costLead && { label: 'Weekly cost', lead: costLead }].filter(Boolean).map((row) => {
+          const { label, lead } = row as { label: string; lead: NonNullable<typeof capLead> };
+          return (
+            <p key={label} className="text-xs text-gray-500 break-words">
+              ~ Estimated {label.toLowerCase()}, {formatCurrency(lead.low)} to {formatCurrency(lead.high)}, from {lead.sourceLabel} (not a disclosed figure).
+              {lead.quote && lead.url && (
+                <>
+                  {' '}&ldquo;{lead.quote}&rdquo;{' '}
+                  <a href={lead.url} target="_blank" rel="noopener noreferrer" className="underline decoration-white/20 hover:text-brand">
+                    source<span className="sr-only"> (opens in a new tab)</span>
+                  </a>
+                </>
+              )}
+            </p>
+          );
+        })}
 
         {/* Source Attribution (visible without expanding) */}
         {capSourceText && !hasDetails && (

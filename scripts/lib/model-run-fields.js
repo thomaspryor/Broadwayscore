@@ -36,6 +36,7 @@ function clearStaleModelFields(comm) {
   delete comm.modelCostBasis;
   delete comm.modelCategory;
   delete comm.modelWarnings;
+  delete comm.modelLeadsUsed;
   // A contradiction belongs to the discarded run, not the AI fallback.
   delete comm.modelDesignationFlag;
   // A run that now errors (a split run, BRO-5515) must not keep the old

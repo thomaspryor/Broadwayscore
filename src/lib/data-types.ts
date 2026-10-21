@@ -481,6 +481,17 @@ export interface ShowCommercial {
   weeklyRunningCostSource?: string | null;
   /** What the cited weekly cost is: fixed running costs, a breakeven gross, or an all-in operating expense (BRO-5093). */
   weeklyRunningCostBasis?: 'running' | 'breakeven' | 'all-in';
+  /**
+   * Guess-grade figures (BRO-5849): never disclosed facts. The model reads one
+   * only when the record has no fact for that input; the site prints it as
+   * "~ Estimated" with its source.
+   */
+  leads?: CommercialLead[];
+  /** Page-safe leads for inputs with no fact (built by toPublicShowCommercial; BRO-5849). */
+  estimatedLeads?: {
+    capitalization?: EstimatedLeadFigure;
+    weeklyRunningCost?: EstimatedLeadFigure;
+  };
   isEstimate?: {
     capitalization?: boolean;
     weeklyRunningCost?: boolean;
@@ -527,11 +538,13 @@ export interface ShowCommercial {
   modelRecouped?: boolean | null;
   modelBreakeven?: number | null;
   modelCostBasis?: number | null;
-  modelDataQuality?: 'high' | 'medium' | 'low';
+  modelDataQuality?: 'high' | 'medium' | 'low' | 'estimate-based';
   modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated';
   modelCategory?: string;
   modelLastRun?: string;
   modelWarnings?: string[];
+  /** Model inputs filled from guess-grade leads (BRO-5849); the run is 'estimate-based'. */
+  modelLeadsUsed?: Array<{ kind: string; sourceClass: string; confidence: string; low: number; center: number; high: number }>;
   modelDesignationFlag?: string;
 }
 
@@ -648,7 +661,7 @@ export interface CommercialShowRow {
   /** A closed show's trade-reported % returned (ShowCommercial.reportedReturn). */
   reportedReturn?: ShowCommercial['reportedReturn'];
   modelMethod: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
-  modelDataQuality?: 'high' | 'medium' | 'low';
+  modelDataQuality?: 'high' | 'medium' | 'low' | 'estimate-based';
   /** Reported investor multiple from a cited record (getReportedInvestorMultiple); never modeled. */
   reportedMultiple: number | null;
   /** recoupedSource after publicSourceText (null when it is internal research text). */
@@ -1010,4 +1023,27 @@ export interface ActorProfile {
   openShowCount: number;
   closedShowCount: number;
   hasBroadwayDebut: boolean;
+}
+
+/** A guess-grade commercial figure (scripts/lib/commercial-leads.js). */
+export interface CommercialLead {
+  kind: 'capitalization' | 'weeklyRunningCost' | 'breakeven' | 'percentReturned';
+  value?: number;
+  low?: number;
+  high?: number;
+  sourceClass: 'qualified' | 'press-projection' | 'sec-ceiling-inferred-issuer' | 'reddit' | 'joint' | 'floor';
+  confidence: 'low' | 'medium';
+  source: { quote: string; url: string };
+  date: string;
+}
+
+/** A lead as the card prints it (src/lib/commercial-display.ts getEstimatedLead). */
+export interface EstimatedLeadFigure {
+  center: number;
+  low: number;
+  high: number;
+  sourceLabel: string;
+  quote: string | null;
+  url: string | null;
+  date: string;
 }

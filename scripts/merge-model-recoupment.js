@@ -158,6 +158,8 @@ function main() {
     comm.modelCategory = result.category;
     comm.modelLastRun = today;
     comm.modelWarnings = result.warnings;
+    // Inputs filled from guess-grade leads (BRO-5849): absent when every input is a fact.
+    if (result.leadInputs) comm.modelLeadsUsed = result.leadInputs; else delete comm.modelLeadsUsed;
     // Shadow fields (BRO-4989 G): SVOG-denominator fix + investor multiple.
     // Nothing reads them yet; modelRecoupmentPct above stays the live value.
     applyShadowReturnFields(comm, result, show);
