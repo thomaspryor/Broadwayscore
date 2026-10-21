@@ -74,7 +74,8 @@
       "market": "west-end",
       "queuedAt": "2026-10-20T13:54:36.424Z",
       "dueAt": "2026-10-21T05:54:36.424Z",
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-10-21T06:38:15.491Z"
     },
     {
       "kind": "truncated-t1-refetch",
@@ -116,7 +117,10 @@
       "outletIds": [
         "nytimes"
       ],
-      "attempted": false
+      "attempted": true,
+      "skipped": true,
+      "skipReason": "no-truncated-t1",
+      "attemptedAt": "2026-10-21T06:38:15.491Z"
     }
   ]
 }
