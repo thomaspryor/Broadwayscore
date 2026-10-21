@@ -28,7 +28,7 @@
 // planned oldValue.
 const { canonicalDesignation } = require('./commercial-designations');
 const { stampDesignationBasis } = require('./commercial-apply-gate');
-const { capitalizationBasisFromText, retagCapitalizationBasis } = require('./public-source-text');
+const { capitalizationBasisFromText, isBareCapitalizationSource, retagCapitalizationBasis } = require('./public-source-text');
 
 function applyCommercialFieldEdit(commercial, slug, field, oldValue, newValue, now = new Date().toISOString()) {
   const record = commercial && commercial.shows && commercial.shows[slug];
@@ -39,6 +39,12 @@ function applyCommercialFieldEdit(commercial, slug, field, oldValue, newValue, n
   const impliedRetag = field === 'capitalizationBasis' && currentVal === capitalizationBasisFromText(record.capitalizationSource);
   if (!impliedDrop && !impliedRetag && JSON.stringify(currentVal) !== JSON.stringify(oldValue)) {
     return { ok: false, reason: `commercial.json:${field}: value changed since plan` };
+  }
+
+  // BRO-5815: a new capitalizationSource must quote the figure's sentence, give
+  // a URL, or state its basis; a bare outlet name leaves the basis a guess.
+  if (field === 'capitalizationSource' && isBareCapitalizationSource(newValue)) {
+    return { ok: false, reason: `commercial.json:capitalizationSource for "${slug}" names an outlet but quotes nothing; quote the sentence, give a URL, or state "up to"/"sold" wording` };
   }
 
   if (field === 'designation') {

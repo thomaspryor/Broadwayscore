@@ -754,3 +754,24 @@ it('a filing\'s "Offering capitalized at" is a sold basis, its limits are not (B
   assert.equal(capitalizationBasisFromText('Offering capitalized at $4,108,500 Maximum capitalization was $6,000,000'), 'sold');
   assert.equal(capitalizationBasisFromText('Broadway Journal: "Its capitalization is indeed modest for Broadway ... a maximum of $9.5 million"'), 'maximum');
 });
+
+// BRO-5815: a source that names an outlet but quotes nothing cannot be written.
+describe('bare capitalizationSource (BRO-5815)', () => {
+  const { isBareCapitalizationSource } = require('../../scripts/lib/public-source-text');
+  const { applyCommercialFieldEdit } = require('../../scripts/lib/commercial-field-edit');
+
+  it('flags an outlet name, passes quotes, URLs and basis wording', () => {
+    for (const s of ['Broadway Journal (Philip Boroff)', 'SEC filing / press reports', 'Deadline (Feb 2025)']) assert.equal(isBareCapitalizationSource(s), true, s);
+    for (const s of ['Broadway Journal: "a maximum of $9.5 million"', 'https://www.sec.gov/Archives/edgar/data/1/x', 'SEC Form D: up to $10M', 'SEC Form D/A: $10M, fully sold', '', null]) assert.equal(isBareCapitalizationSource(s), false, String(s));
+  });
+
+  it('applyCommercialFieldEdit refuses a bare new source and accepts a quoted one', () => {
+    const mk = () => ({ shows: { x: { capitalization: 9500000, capitalizationSource: null } } });
+    const bad = applyCommercialFieldEdit(mk(), 'x', 'capitalizationSource', null, 'Broadway Journal (Philip Boroff)');
+    assert.equal(bad.ok, false);
+    const c = mk();
+    const good = applyCommercialFieldEdit(c, 'x', 'capitalizationSource', null, 'Broadway Journal: "a maximum of $9.5 million"');
+    assert.equal(good.ok, true);
+    assert.equal(c.shows.x.capitalizationBasis, 'maximum');
+  });
+});

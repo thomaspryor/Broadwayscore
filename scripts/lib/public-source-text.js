@@ -172,6 +172,18 @@ function capitalizationBasisFromText(text) {
 }
 
 /**
+ * True when a capitalizationSource only names an outlet: no basis wording, no
+ * quoted sentence, no URL (BRO-5815). Such a source lets isMaximumCapitalization
+ * guess, so a Form D ceiling cited this way prints as an amount raised.
+ * @param {string | null | undefined} text
+ * @returns {boolean}
+ */
+function isBareCapitalizationSource(text) {
+  if (!text || !String(text).trim()) return false;
+  return !capitalizationBasisFromText(text) && !/["\u201c]/.test(text) && !/https?:/.test(text);
+}
+
+/**
  * True when the capitalization is a ceiling (a Form D offering maximum or an
  * "up to" figure) and must print "up to $X", never as an exact amount. An
  * explicit capitalizationBasis wins; otherwise the source's wording decides.
@@ -198,5 +210,5 @@ function retagCapitalizationBasis(rec) {
 
 module.exports = {
   publicSourceText, isEstimatedCapitalization, saysRecoupmentUnannounced, saysRecoupmentDateIsEstimate, sourceOpensAsEstimate,
-  CAPITALIZATION_BASES, capitalizationBasisFromText, isMaximumCapitalization, retagCapitalizationBasis,
+  CAPITALIZATION_BASES, capitalizationBasisFromText, isBareCapitalizationSource, isMaximumCapitalization, retagCapitalizationBasis,
 };
