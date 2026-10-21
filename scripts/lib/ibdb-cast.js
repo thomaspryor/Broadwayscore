@@ -468,6 +468,7 @@ async function lookupIBDBCast(title, options = {}) {
       currentCast: castData.currentCast,
       replacements: castData.replacements,
       ibdbUrl: bestMatch.url,
+      productionYear: castData.productionYear || null,
       found: true
     };
 

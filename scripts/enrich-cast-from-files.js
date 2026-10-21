@@ -20,6 +20,7 @@
  */
 
 const fs = require('fs');
+const { castFileMismatchReason } = require('./lib/cast-tombstone');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
@@ -209,6 +210,7 @@ function main() {
   let skippedNoCastFile = 0;
   let skippedEmptySource = 0;
   let skippedNoPrincipals = 0;
+  let skippedMismatch = 0;
   const enrichedShows = [];
 
   for (const show of targets) {
@@ -230,6 +232,14 @@ function main() {
       castData = JSON.parse(fs.readFileSync(path.join(CAST_DIR, `${show.id}.json`), 'utf8'));
     } catch (e) {
       console.log(`  Warning: Failed to read cast file for ${show.id}: ${e.message}`);
+      continue;
+    }
+
+    // BRO-5809: refuse a cast file from a different production of the same title
+    const mismatch = castFileMismatchReason(castData, show);
+    if (mismatch) {
+      console.log(`  Skipping ${show.id}: cast file rejected (${mismatch})`);
+      skippedMismatch++;
       continue;
     }
 

@@ -26,7 +26,7 @@ const path = require('path');
 require('./lib/load-env').loadEnv();
 
 const { lookupIBDBCast, RATE_LIMIT_MS } = require('./lib/ibdb-cast');
-const { shouldTombstone, shouldAbortMassWipe } = require('./lib/cast-tombstone');
+const { shouldTombstone, shouldAbortMassWipe, expectedOpeningYear } = require('./lib/cast-tombstone');
 const { isBroadwayCategory } = require('./lib/venue-classification');
 const { cleanup } = require('./lib/scraper');
 const showsWriteGuard = require('./lib/shows-write-guard');
@@ -185,7 +185,7 @@ async function main() {
 
   for (let i = 0; i < shows.length; i++) {
     const show = shows[i];
-    const openingYear = show.openingDate ? parseInt(show.openingDate.split('-')[0]) : null;
+    const openingYear = expectedOpeningYear(show);
 
     console.log(`\n📌 [${i + 1}/${shows.length}] ${show.title} (${show.id})`);
 
@@ -261,6 +261,7 @@ async function main() {
       const castFile = {
         showId: show.id,
         ibdbUrl: result.ibdbUrl,
+        productionYear: result.productionYear || null,
         scrapedAt: new Date().toISOString(),
         openingNightCast: result.openingNightCast
       };
