@@ -36,7 +36,7 @@ const { spawnSync } = require('child_process');
 require('./lib/load-env.js').loadEnv(path.join(__dirname, '..'));
 
 const { preflightAuth } = require('./lib/claude-cli.js');
-const { evaluateAuthHealth, buildAlertPayload, buildBillingFallbackAlertPayload } = require('./lib/claude-auth-health.js');
+const { probeWithConfirm, evaluateAuthHealth, buildAlertPayload, buildBillingFallbackAlertPayload } = require('./lib/claude-auth-health.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 // Best-effort only — never allowed to affect the pass/fail verdict (see file
@@ -68,7 +68,13 @@ async function main(argv = process.argv.slice(2)) {
   // Before preflightAuth(), which spawns the CLI and makes a billable API call
   // — and before any routeAlert() that could page the owner from a --help run.
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
-  const preflight = preflightAuth({ log: msg => console.error(`[claude-auth-health] ${msg}`) });
+  const log = msg => console.error(`[claude-auth-health] ${msg}`);
+  // Confirm a failure with a delayed second probe before paging (2026-10-21).
+  const { preflight } = probeWithConfirm({
+    probe: () => preflightAuth({ log }),
+    sleep: ms => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms),
+    log,
+  });
   const authStatus = getAuthStatus();
   const health = evaluateAuthHealth({ preflight, authStatus });
 

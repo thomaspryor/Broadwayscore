@@ -288,6 +288,18 @@ function authPingArgs() {
   return ['-p', 'Reply with exactly: pong', '--model', 'sonnet', '--output-format', 'json', '--settings', AUTH_PING_SETTINGS];
 }
 
+// A non-zero exit with a JSON envelope on stdout used to be sliced from its
+// leading usage fields, hiding the actual error text (2026-10-21: the alert
+// showed only zeroed token counters). Prefer the envelope's `result`.
+function pingFailureDetail(r) {
+  if (r.stderr) return String(r.stderr).slice(0, 300);
+  try {
+    const body = JSON.parse(r.stdout);
+    if (body && body.result) return `exit ${r.status}: ${String(body.result)}`.slice(0, 300);
+  } catch { /* not JSON — fall through to raw stdout */ }
+  return String(r.stdout || `exit ${r.status}${r.signal ? ` signal=${r.signal}` : ''}`).slice(0, 300);
+}
+
 function authPing(extraEnv) {
   // Same effective-env-before-resolve fix as runClaudeCli (task #1780): probe
   // the SAME binary the real spawn would use, including any CLAUDE_BIN pin
@@ -315,7 +327,7 @@ function authPing(extraEnv) {
     return {
       ok: false,
       reason: classifyAuthPingFailure(r),
-      detail: (r.stderr || r.stdout || `exit ${r.status}${r.signal ? ` signal=${r.signal}` : ''}`).slice(0, 300),
+      detail: pingFailureDetail(r),
     };
   }
   // Positive validation, never a grep for the error string (it may get reworded):
@@ -783,7 +795,7 @@ function runClaudeCli(opts) {
 module.exports = {
   runClaudeCli, parseEnvelope, strippedEnv, STAGES, FORBIDDEN_MODEL_RE,
   authPing, authPingArgs, AUTH_PING_SETTINGS, resolvePassAuth, preflightAuth, resolveAuthEnv, AUTH_KEYS,
-  classifyAuthPingFailure, AUTH_PING_REASONS, worseAuthPingReason,
+  classifyAuthPingFailure, pingFailureDetail, AUTH_PING_REASONS, worseAuthPingReason,
   parseStreamLine, addUsage, estimateCostUSD, APPROX_MODEL_RATES_PER_MTOK,
   resolveClaudeBin, pathWithClaudeBinDir,
 };

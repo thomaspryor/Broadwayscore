@@ -76,6 +76,32 @@ function evaluateAuthHealth({ preflight, authStatus = null }) {
   };
 }
 
+/**
+ * Confirm-before-paging (2026-10-21 false alarm): the 09:00 ET probe failed once
+ * (empty zero-token envelope) and paged "log in again"; a re-run 100 minutes
+ * later and 10+ earlier runs were healthy. A single failed live call is not a
+ * revoked token. Re-probe after a delay and only report failure when EVERY
+ * attempt fails; the last failure is returned so the alert carries its detail.
+ * Pure + injectable (CLAUDE.md rule 15): probe/sleep are passed in by the script.
+ * @param {{probe: () => object, sleep: (ms:number) => void, attempts?: number, delayMs?: number, log?: (msg:string) => void}} args
+ * @returns {{preflight: object, attemptsUsed: number}}
+ */
+function probeWithConfirm({ probe, sleep, attempts = 2, delayMs = 45000, log = () => {} }) {
+  let preflight;
+  for (let i = 1; i <= attempts; i++) {
+    preflight = probe();
+    if (preflight && preflight.ok) {
+      if (i > 1) log(`probe recovered on attempt ${i}/${attempts} — first failure was transient, not paging`);
+      return { preflight, attemptsUsed: i };
+    }
+    if (i < attempts) {
+      log(`probe attempt ${i}/${attempts} failed (${preflight && preflight.reason}); re-probing in ${Math.round(delayMs / 1000)}s before paging`);
+      sleep(delayMs);
+    }
+  }
+  return { preflight, attemptsUsed: attempts };
+}
+
 const REPAIR_STEPS = 'claude auth logout && claude auth login && claude -p "say ok"';
 const SPAWN_STARVATION_REPAIR_STEPS = 'free memory (check for the BRO-2789 OOM plateau) or prune cmux sessions (cmux is at/near its ~33-runtime ceiling) — then re-run scripts/check-claude-auth-health.js';
 const SPAWN_ERROR_REPAIR_STEPS = 'check that the `claude` binary is installed and executable at the resolved path (CLAUDE_BIN / candidate list in scripts/lib/claude-cli.js) — this is a missing/broken binary, not a credential problem — then re-run scripts/check-claude-auth-health.js';
@@ -146,4 +172,4 @@ function buildBillingFallbackAlertPayload(health) {
   };
 }
 
-module.exports = { evaluateAuthHealth, buildAlertPayload, buildBillingFallbackAlertPayload, REPAIR_STEPS, SPAWN_STARVATION_REPAIR_STEPS, SPAWN_ERROR_REPAIR_STEPS };
+module.exports = { probeWithConfirm, evaluateAuthHealth, buildAlertPayload, buildBillingFallbackAlertPayload, REPAIR_STEPS, SPAWN_STARVATION_REPAIR_STEPS, SPAWN_ERROR_REPAIR_STEPS };

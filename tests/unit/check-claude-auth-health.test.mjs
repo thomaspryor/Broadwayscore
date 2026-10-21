@@ -10,7 +10,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { evaluateAuthHealth, buildAlertPayload, buildBillingFallbackAlertPayload, REPAIR_STEPS } = require('../../scripts/lib/claude-auth-health.js');
+const { probeWithConfirm, evaluateAuthHealth, buildAlertPayload, buildBillingFallbackAlertPayload, REPAIR_STEPS } = require('../../scripts/lib/claude-auth-health.js');
 
 test('revoked-token shape: preflight fails while auth status still says loggedIn:true → treated as FAILURE', () => {
   // This is the exact real-world bug: authPing's live call gets a 401 (spawn
@@ -184,6 +184,39 @@ test('buildBillingFallbackAlertPayload: a spawn-starved stored-probe blip is NOT
   assert.doesNotMatch(health.reason, /stored OAuth login failed/, 'must not assert a confirmed failure for an unreached probe');
   assert.match(health.reason, /NOT a confirmed revoked credential/);
   assert.equal(payload.conditionKey, 'claude-auth:api-key-fallback');
+});
+
+const { pingFailureDetail } = require('../../scripts/lib/claude-cli.js');
+
+test('probeWithConfirm: a single transient failure that recovers on re-probe is healthy (2026-10-21 false alarm)', () => {
+  const results = [{ ok: false, mode: 'fail', reason: 'auth-rejected', detail: 'empty envelope' }, { ok: true, mode: 'oauth' }];
+  const sleeps = [];
+  const { preflight, attemptsUsed } = probeWithConfirm({ probe: () => results.shift(), sleep: ms => sleeps.push(ms), delayMs: 1000 });
+  assert.equal(preflight.ok, true);
+  assert.equal(attemptsUsed, 2);
+  assert.deepEqual(sleeps, [1000], 'waits between attempts');
+});
+
+test('probeWithConfirm: failing every attempt still reports failure (a real revocation must page), with the LAST detail', () => {
+  const results = [{ ok: false, reason: 'auth-rejected', detail: 'first' }, { ok: false, reason: 'auth-rejected', detail: 'second' }];
+  const { preflight, attemptsUsed } = probeWithConfirm({ probe: () => results.shift(), sleep: () => {}, delayMs: 1 });
+  assert.equal(preflight.ok, false);
+  assert.equal(preflight.detail, 'second');
+  assert.equal(attemptsUsed, 2);
+});
+
+test('probeWithConfirm: a healthy first probe never sleeps or re-probes', () => {
+  let calls = 0;
+  const { attemptsUsed } = probeWithConfirm({ probe: () => { calls++; return { ok: true, mode: 'oauth' }; }, sleep: () => { throw new Error('must not sleep'); } });
+  assert.equal(calls, 1);
+  assert.equal(attemptsUsed, 1);
+});
+
+test('pingFailureDetail: surfaces the envelope result text instead of the leading zeroed usage fields', () => {
+  const stdout = JSON.stringify({ duration_api_ms: 0, usage: { input_tokens: 0 }, is_error: true, result: 'Invalid API key · Please run /login' });
+  assert.match(pingFailureDetail({ status: 1, stdout, stderr: '' }), /Please run \/login/);
+  assert.match(pingFailureDetail({ status: 1, stdout: 'plain text', stderr: '' }), /plain text/);
+  assert.match(pingFailureDetail({ status: 1, stdout: '', stderr: 'boom' }), /boom/);
 });
 
 test('buildBillingFallbackAlertPayload: an actual revoked stored login (auth-rejected reason) keeps the confirmed-failure wording', () => {
