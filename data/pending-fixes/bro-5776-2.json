@@ -7,7 +7,7 @@
     "email": null
   },
   "plan": {
-    "summary": "BRO-5776: add commercial.json records for every announced or upcoming Broadway production that had none (22 shows) and record the three SEC Form D offering maximums found (Damn Yankees, Inter Alia, Much Ado). Producers of Roundabout, Second Stage, MTC and Lincoln Center shows are marked Nonprofit with nonprofitOrg, each cited to a trade article; all others are TBD.",
+    "summary": "BRO-5776: add commercial.json records for every announced or upcoming Broadway production that had none (22 shows) and record the Inter Alia and Much Ado SEC Form D offering maximums (Damn Yankees is in bro-5776-2-b). Producers of Roundabout, Second Stage, MTC and Lincoln Center shows are marked Nonprofit with nonprofitOrg, each cited to a trade article; all others are TBD.",
     "steps": [
       "Nonprofit only where a trade article names the nonprofit as producer; commercial shows are TBD, never a guessed outcome.",
       "SEC Form D amounts are offering maxima and carry capitalizationBasis=maximum."
@@ -429,69 +429,6 @@
           "capitalizationSource": "SEC Form D filing (JLC Much Ado Limited Partnership, CIK 0002133246): total offering amount $7,500,000, an offering maximum rather than a reported final capitalization. Matched to Much Ado About Nothing by the issuer name and its related persons."
         },
         "description": "much-ado-about-nothing: add commercial entry (BRO-5776 enrollment)"
-      },
-      {
-        "type": "data-edit",
-        "file": "commercial.json",
-        "showSlug": "damn-yankees",
-        "field": "notes",
-        "oldValue": "No capitalization reported.",
-        "newValue": "Capitalization shown is the SEC Form D offering maximum for DY Broadway LLC (CIK 0002106793), not a reported final figure. Previews begin March 24, 2027 at the Marquis Theatre.",
-        "description": "damn-yankees: notes from SEC Form D (DY Broadway LLC, CIK 0002106793)"
-      },
-      {
-        "type": "data-edit",
-        "file": "commercial.json",
-        "showSlug": "damn-yankees",
-        "field": "capitalization",
-        "oldValue": null,
-        "newValue": 18500000,
-        "description": "damn-yankees: capitalization from SEC Form D (DY Broadway LLC, CIK 0002106793)"
-      },
-      {
-        "type": "data-edit",
-        "file": "commercial.json",
-        "showSlug": "damn-yankees",
-        "field": "capitalizationBasis",
-        "newValue": "maximum",
-        "description": "damn-yankees: capitalizationBasis from SEC Form D (DY Broadway LLC, CIK 0002106793)"
-      },
-      {
-        "type": "data-edit",
-        "file": "commercial.json",
-        "showSlug": "damn-yankees",
-        "field": "capitalizationSource",
-        "oldValue": null,
-        "newValue": "SEC Form D filing (DY Broadway Ltd Liability Co, CIK 0002106793): total offering amount $18,500,000, an offering maximum rather than a reported final capitalization. Matched to Damn Yankees by the issuer name and its related persons.",
-        "description": "damn-yankees: capitalizationSource from SEC Form D (DY Broadway LLC, CIK 0002106793)"
-      },
-      {
-        "type": "data-edit",
-        "file": "commercial.json",
-        "showSlug": "damn-yankees",
-        "field": "sources",
-        "oldValue": [
-          {
-            "type": "trade",
-            "url": "https://www.amny.com/entertainment/broadway/damn-yankees-broadway-blue-man-group/",
-            "date": "2026-09-29",
-            "excerpt": "Previews begin March 24, 2027, at the Marquis Theatre."
-          }
-        ],
-        "newValue": [
-          {
-            "type": "trade",
-            "url": "https://www.amny.com/entertainment/broadway/damn-yankees-broadway-blue-man-group/",
-            "date": "2026-09-29",
-            "excerpt": "Previews begin March 24, 2027, at the Marquis Theatre."
-          },
-          {
-            "type": "sec",
-            "url": "https://www.sec.gov/Archives/edgar/data/2106793/000210679326000001/primary_doc.xml",
-            "date": null
-          }
-        ],
-        "description": "damn-yankees: sources from SEC Form D (DY Broadway LLC, CIK 0002106793)"
       }
     ]
   }
