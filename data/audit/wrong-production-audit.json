@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-21T14:23:18.208Z",
+  "timestamp": "2026-10-21T14:40:01.412Z",
   "stats": {
-    "totalReviews": 58070,
-    "alreadyFlagged": 21125,
+    "totalReviews": 58069,
+    "alreadyFlagged": 21124,
     "dateGuardCatches": 198,
     "directorMismatch": 2060,
     "tvFilmSignals": 1652,
     "londonSignals": 2583,
     "offBroadwaySignals": 530,
     "yearMismatch": 162,
-    "noPublishDate": 5252
+    "noPublishDate": 5253
   },
   "findings": [
     {
@@ -68830,6 +68830,20 @@
     },
     {
       "showId": "ilford-boy-west-end-2026",
+      "file": "london-theatre--holly-omahony.json",
+      "score": 78,
+      "publishDate": "2026-10-21",
+      "url": "https://www.londontheatre.co.uk/reviews/ilford-boy-review-donmar-warehouse",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "ilford-boy-west-end-2026",
       "file": "monstagigz--unknown.json",
       "score": 88,
       "publishDate": "2026-10-13",
@@ -68847,19 +68861,6 @@
       "file": "priceless--unknown.json",
       "publishDate": null,
       "url": "https://www.priceless.com/entertainment/product/242059/ilford-boy",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
-        }
-      ]
-    },
-    {
-      "showId": "ilford-boy-west-end-2026",
-      "file": "theatre-weekly--unknown.json",
-      "publishDate": "2026-09-24",
-      "url": "https://theatreweekly.com/first-look-rehearsal-images-released-for-danny-lee-wynters-ilford-boy-at-the-donmar-warehouse/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -73356,7 +73357,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": null,
+      "score": 46,
       "publishDate": "2026-10-21",
       "url": "https://www.standard.co.uk/culture/theatre/martin-guerre-at-the-old-vic-b1301716.html",
       "findings": [
@@ -80365,6 +80366,7 @@
     {
       "showId": "some-woman-west-end-2026",
       "file": "liamodell--liam-odell.json",
+      "score": 95,
       "publishDate": "2026-10-21",
       "url": "https://liamodell.com/2026/10/21/some-woman-review-dorfman-theatre-national-theatre-play-anne-marie-duff-helen-edmundson-cast/",
       "findings": [
