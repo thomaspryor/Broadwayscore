@@ -568,7 +568,7 @@ function withMusicalDefaults(show, opts) {
  * no capitalization runs on a comparables figure ({value, low, high, n},
  * lib/cap-comparables.js). The guess fills a COPY of the record, never the
  * stored `capitalization`; the result carries it as capitalizationEstimate and
- * its quality is forced to 'low' (the display floor rejects it) until a backtest earns promotion (BRO-5849 step 5). A record with its own figure ignores it.
+ * its quality is capped at 'medium' (never raised: a record with no cost figure stays 'low' and hidden). Leave-one-out backtest: scripts/backtest-cap-comparables.js. A record with its own figure ignores it.
  */
 function withCapEstimate(run, commercial, opts) {
   const est = opts.capEstimate;
@@ -578,7 +578,7 @@ function withCapEstimate(run, commercial, opts) {
   if (res.error) return res;
   res.capitalizationEstimate = { value: est.value, low: est.low, high: est.high, n: est.n };
   res.warnings.unshift(`Capitalization $${Math.round(est.value / 1000)}K is a comparables estimate (${est.n} shows, range $${Math.round(est.low / 1000)}K to $${Math.round(est.high / 1000)}K)`);
-  res.dataQuality = 'low';
+  if (res.dataQuality === 'high') res.dataQuality = 'medium';
   return res;
 }
 

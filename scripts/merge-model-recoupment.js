@@ -45,9 +45,10 @@ const { loadCommercial, saveCommercial } = createCommercialWriteGuard(COMMERCIAL
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
 const SINGLE = args.find(a => a.startsWith('--show='))?.split('=')[1];
-// --opt=capComparables (BRO-5849, shadow): a record with no capitalization runs on a comparables
-// figure, kept in modelCapitalizationEstimate. `capitalization` itself is never written.
-const CAP_COMPARABLES = args.includes('--opt=capComparables');
+// Live (BRO-5849 step 5): a record with no capitalization runs on a comparables figure, kept in
+// modelCapitalizationEstimate and labelled an estimate. `capitalization` itself is never written.
+// --opt=capComparables=false turns it off.
+const CAP_COMPARABLES = !args.includes('--opt=capComparables=false');
 
 // ---------------------------------------------------------------------------
 // Data Loading

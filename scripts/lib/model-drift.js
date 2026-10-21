@@ -17,7 +17,7 @@
 
 const { calculateRecoupment, calculateLifetimeRecoupment } = require('./recoupment-model');
 const { classifyTier } = require('./model-return-v2');
-const { optsWithCapEstimate } = require('./cap-comparables');
+const { optsWithCapEstimate, makeCapEstimator } = require('./cap-comparables');
 
 /**
  * The live model for one record, exactly as merge-model-recoupment.js runs it.
@@ -87,13 +87,15 @@ function modelDrift(comm, fresh, today) {
 function scanModelDrift(shows, commercialShows, lookup, today) {
   const by = {};
   for (const s of shows) { if (s.slug) by[s.slug] = s; if (s.id) by[s.id] = s; }
+  // Same inputs as merge-model-recoupment.js, which runs the comparables fallback live (BRO-5849).
+  const runOpts = { capComparables: true, capEstimator: makeCapEstimator(shows, commercialShows) };
   let checked = 0;
   const flagged = [];
   for (const [key, comm] of Object.entries(commercialShows)) {
     const show = by[key] || by[comm.slug] || by[key.replace(/-\d{4}$/, '')];
     if (!show || !comm.modelLastRun) continue;
     checked++;
-    const d = modelDrift(comm, liveModelRun(show, comm, lookup), today);
+    const d = modelDrift(comm, liveModelRun(show, comm, lookup, runOpts), today);
     if (d) flagged.push({ slug: key, ...d });
   }
   const count = (k) => flagged.filter((f) => f.kind === k).length;
