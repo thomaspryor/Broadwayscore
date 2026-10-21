@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-21T22:03:52.983Z",
+  "timestamp": "2026-10-21T22:55:07.062Z",
   "stats": {
-    "totalReviews": 58412,
-    "alreadyFlagged": 21161,
+    "totalReviews": 58450,
+    "alreadyFlagged": 21162,
     "dateGuardCatches": 199,
-    "directorMismatch": 2052,
+    "directorMismatch": 2056,
     "tvFilmSignals": 1655,
-    "londonSignals": 2625,
+    "londonSignals": 2626,
     "offBroadwaySignals": 530,
     "yearMismatch": 165,
-    "noPublishDate": 5367
+    "noPublishDate": 5391
   },
   "findings": [
     {
@@ -5002,10 +5002,52 @@
     },
     {
       "showId": "boop-tour-2026",
+      "file": "behindthecurtaincincy--unknown.json",
+      "score": 88,
+      "publishDate": "2026-10-21",
+      "url": "https://behindthecurtaincincy.com/2026/10/21/boop-the-musical-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from boop-2025"
+        }
+      ]
+    },
+    {
+      "showId": "boop-tour-2026",
+      "file": "leagueofcincytheatres--liz-eichler.json",
+      "score": 77,
+      "publishDate": "2026-10-21",
+      "url": "https://www.leagueofcincytheatres.info/review-boop-has-something-for-everyoneand-then-some/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from boop-2025"
+        }
+      ]
+    },
+    {
+      "showId": "boop-tour-2026",
       "file": "newsfromme--unknown.json",
       "score": 79,
       "publishDate": "2026-10-05",
       "url": "https://www.newsfromme.com/2026/10/05/the-boop-report/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from boop-2025"
+        }
+      ]
+    },
+    {
+      "showId": "boop-tour-2026",
+      "file": "rogerogreen--roger.json",
+      "score": 74,
+      "publishDate": "2026-10-21",
+      "url": "https://www.rogerogreen.com/2026/10/21/musical-boop-the-musical/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -48849,6 +48891,20 @@
     },
     {
       "showId": "tina-the-tina-turner-musical-west-end-2018",
+      "file": "thestage--tim-bano.json",
+      "score": 64,
+      "publishDate": "2018-04-17",
+      "url": "https://www.thestage.co.uk/reviews/2018/tina-turner-musical-review-aldwych-theatre-london/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"phyllida lloyd\" from tina-2019"
+        }
+      ]
+    },
+    {
+      "showId": "tina-the-tina-turner-musical-west-end-2018",
       "file": "variety--david-benedict.json",
       "score": 82,
       "publishDate": "2018-04-17",
@@ -73725,7 +73781,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "thereviewshub--john-cutler.json",
-      "score": 48,
+      "score": 50,
       "publishDate": "2026-10-21",
       "url": "https://www.thereviewshub.com/martin-guerre-the-old-vic-london/",
       "findings": [
@@ -73739,7 +73795,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "thereviewshub--unknown.json",
-      "score": 48,
+      "score": 50,
       "publishDate": "2026-10-21",
       "url": "https://www.thereviewshub.com/martin-guerre-the-old-vic-london/",
       "findings": [
@@ -90664,6 +90720,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-years-west-end-2025",
+      "file": "londontheatredirect--sian-mcbride.json",
+      "score": null,
+      "publishDate": "2025-02-20",
+      "url": "https://www.londontheatredirect.com/news/tuppence-middleton-the-years?srsltid=AU7gw4V3MfIOKX6Q1uVlDAF0yOr5NSSFMUZAgSOihv0l5_3wlc6vUEPx",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
