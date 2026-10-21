@@ -199,6 +199,9 @@ async function main() {
   let drafts = loadJSON(DRAFTS_PATH, null) || { _meta: {}, drafts: {} };
 
   const posts = await fetchRecentOwnerPosts();
+  // The email step holds back "Updated" emails when this run could not check
+  // for the owner's post (archive down), so a posted draft is not updated (BRO-5879).
+  drafts._meta = { ...drafts._meta, postedDetection: posts ? 'ok' : 'skipped' };
   if (posts) {
     const before = Object.values(drafts.drafts).filter(d => d.status === 'posted').length;
     drafts = lib.applyPostedDetection(drafts, posts);
@@ -262,20 +265,7 @@ async function main() {
     // A redraft (retry after an LLM outage, or --show) keeps the email
     // stamps and posted state, so it never re-sends a "new post" email or
     // revives a draft the owner already posted (ship-check 2026-09-29).
-    const prev = drafts.drafts[c.show.id];
-    if (prev) {
-      for (const k of ['createdAt', 'emailedAt', 'reminderAt', 'status', 'postedAt', 'postedUrl', 'postedSubreddit', 'postedScore']) {
-        if (prev[k] !== undefined) entry[k] = prev[k];
-      }
-      // Already emailed: the reminder says the numbers moved since.
-      if (prev.emailedAt) {
-        entry.refreshedAt = new Date().toISOString();
-        // Keep the numbers from the email the owner actually got, across
-        // repeated refreshes.
-        entry.previousReviewCount = prev.previousReviewCount ?? prev.reviewCount;
-        entry.previousScore = prev.previousScore ?? prev.score;
-      }
-    }
+    lib.carryOverState(drafts.drafts[c.show.id], entry, new Date().toISOString());
     drafts.drafts[c.show.id] = entry;
     console.log(`\n── r/${entry.subreddit} · ${entry.showTitle} (${source}${problems.length ? `, fell back: ${problems.join('; ')}` : ''})`);
     console.log(`TITLE: ${entry.title}\n\n${entry.body}\n`);
@@ -285,6 +275,7 @@ async function main() {
   }
 
   drafts._meta = {
+    postedDetection: drafts._meta.postedDetection,
     description: 'Reddit "reviews are in" post drafts for Broadway, WE/OWE/OB openings (BRO-4333). Written by scripts/draft-reddit-opening-posts.js, shown in the opening digest email.',
     lastRun: new Date().toISOString(),
   };

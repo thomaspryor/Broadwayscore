@@ -57,12 +57,12 @@ const SCHEDULED_SENDERS = [
   // decideDayMissing skips earlier days so the restore's first monitor run
   // can't false-fire a dead-sender alarm (ship-check QA finding).
   { key: 'opening-digest', label: 'Opening digest (standalone radar)', script: 'scripts/send-opening-digest.js', pattern: /^(?:\d+ needs? help|\d+ broadcast-ready|\d+ opening today|\d+ tomorrow|\d+ upcoming this week|Quiet week)(?: · (?:\d+ needs? help|\d+ broadcast-ready|\d+ opening today|\d+ tomorrow|\d+ upcoming this week))* · [A-Z][a-z]{2} \d{1,2}$/, expected: true, expectedSince: '2026-07-31' },
-  // BRO-4360: one email per new Reddit opening-post draft (+ one reminder).
+  // BRO-4360: one email per new Reddit opening-post draft (+ one reminder, + up to 3 updates when its numbers move, BRO-5879).
   // Event-driven, not daily, so allowed rather than expected.
   // eventDriven (BRO-4956): several drafts on one day are several legitimate
   // emails, so only an identical subject twice counts as a duplicate. Counting
   // every second send filed a "delivered MORE THAN ONCE" card on 8 of 9 days.
-  { key: 'reddit-post-ready', label: 'Reddit opening-post draft', script: 'scripts/send-reddit-post-email.js', pattern: /^(?:Reddit post ready|Still ready to post): .+ \(\d{1,3}\/100\) for r\/\w+$/, allowed: true, eventDriven: true },
+  { key: 'reddit-post-ready', label: 'Reddit opening-post draft', script: 'scripts/send-reddit-post-email.js', pattern: /^(?:Reddit post ready|Still ready to post|Updated Reddit post): .+ \(\d{1,3}\/100\) for r\/\w+$/, allowed: true, eventDriven: true },
   { key: 'reddit-engagement-digest', label: 'Reddit engagement digest', script: 'scripts/reddit-engagement-digest.js', pattern: /^r\/Broadway —/ },
   // allowed (not expected): a legitimate WEEKLY send — never a violation,
   // but its absence on the other six days must not read as "missing"

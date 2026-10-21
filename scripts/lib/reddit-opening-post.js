@@ -53,7 +53,14 @@ const MAX_OB_DRAFTS_PER_RUN = 1;
 // the year, so they sit outside the shared cap and can't be starved by West End
 // ones (BRO-5702 review).
 const MAX_BWAY_DRAFTS_PER_RUN = 2;
-const MAX_REFRESHES_PER_RUN = 5; // pre-reminder redrafts, outside the caps above (BRO-5083)
+const MAX_REFRESHES_PER_RUN = 5; // redrafts of already-emailed drafts, outside the caps above (BRO-5083)
+
+// An emailed, unposted draft whose score changed, or whose review count moved
+// by this many, gets a fresh "Updated" email (new text, new screenshots)
+// instead of leaving the stale one in the inbox (BRO-5879). Capped per draft
+// so a show with reviews still trickling in can't turn into a daily chore.
+const MATERIAL_REVIEW_DELTA = 3;
+const MAX_UPDATE_EMAILS = 3;
 
 const MIN_AUDIENCE_REVIEWS = 15; // parity with src/lib/audience-grade-utils.ts
 
@@ -267,16 +274,65 @@ function isRefreshable(d) {
 }
 
 /**
- * Emailed, unposted, and its reminder can still go out (same TTL the sender's
- * activeDrafts uses): the only drafts worth an out-of-cap, any-age refresh.
- * Without the TTL bound a draft that never gets reminded (emailed late,
- * posted under a title detection misses) would be redrafted daily for 60
- * days (BRO-5083 review). nowMs is the start of `today`, so at worst one
- * refresh lands on the day its reminder window closes.
+ * Emailed, unposted, inside the sender's TTL and not out of update emails:
+ * the drafts worth an out-of-cap, any-age refresh. Each run re-checks them
+ * against today's numbers (a refresh is skipped when the text is still
+ * accurate), so a draft whose score or review count moved after its first
+ * email carries the new text into an "Updated" email, and the reminder
+ * carries fresh numbers too (BRO-5083, BRO-5879). The TTL bound keeps a draft
+ * that never gets posted from being redrafted daily for 60 days. nowMs is the
+ * start of `today`, so at worst one refresh lands on the day its window closes.
  */
-function awaitsReminder(d, nowMs) {
-  return isRefreshable(d) && !!d.emailedAt
+function awaitsUpdate(d, nowMs) {
+  return !!d && d.status === 'ready' && !!d.emailedAt
+    && (d.updateCount || 0) < MAX_UPDATE_EMAILS
     && (nowMs - Date.parse(d.createdAt)) / 86400000 <= DRAFT_TTL_DAYS;
+}
+
+/**
+ * Score and review count in the email the owner last got for this draft.
+ * Sends stamp them (emailedScore / emailedReviewCount). Drafts emailed before
+ * BRO-5879 have no stamp: an un-reminded one was emailed with the numbers a
+ * refresh keeps in previousScore / previousReviewCount (else its own); a
+ * reminded one went out with its own, since the reminder follows the refresh.
+ */
+function emailedNumbers(d) {
+  const reminded = !!d.reminderAt;
+  return {
+    score: d.emailedScore ?? (reminded ? d.score : (d.previousScore ?? d.score)),
+    reviewCount: d.emailedReviewCount ?? (reminded ? d.reviewCount : (d.previousReviewCount ?? d.reviewCount)),
+  };
+}
+
+/**
+ * A redraft replaces the stored entry; this carries over what must survive it:
+ * dates, email stamps and posted state. For an already-emailed draft it also
+ * pins the numbers of the email the owner has (emailedScore / emailedReviewCount,
+ * so a pre-BRO-5879 draft gets its stamp on its first redraft instead of
+ * losing its baseline to the new numbers) and records them as previous* for
+ * the "numbers moved" note.
+ */
+function carryOverState(prev, entry, nowIso) {
+  if (!prev) return entry;
+  for (const k of ['createdAt', 'emailedAt', 'reminderAt', 'emailedScore', 'emailedReviewCount', 'updateCount', 'status', 'postedAt', 'postedUrl', 'postedSubreddit', 'postedScore']) {
+    if (prev[k] !== undefined) entry[k] = prev[k];
+  }
+  if (prev.emailedAt) {
+    const was = emailedNumbers(prev);
+    entry.emailedScore = was.score;
+    entry.emailedReviewCount = was.reviewCount;
+    entry.refreshedAt = nowIso;
+    entry.previousScore = was.score;
+    entry.previousReviewCount = was.reviewCount;
+  }
+  return entry;
+}
+
+/** The draft's numbers differ enough from its last email to send a new one. */
+function numbersMoved(d) {
+  const was = emailedNumbers(d);
+  if (![was.score, was.reviewCount, d.score, d.reviewCount].every(Number.isFinite)) return false;
+  return d.score !== was.score || Math.abs(d.reviewCount - was.reviewCount) >= MATERIAL_REVIEW_DELTA;
 }
 
 /**
@@ -320,16 +376,18 @@ function selectCandidates({ shows, slims, drafts, peersByMarket, today, seenLook
     } else {
       const prev = already[show.id];
       // An existing draft is left alone, unless its LLM call failed, or it is
-      // still unposted with its reminder not sent yet and no longer matches
-      // today's numbers (counts and ranks move as reviews land): then it is
-      // redrafted (see below), so the reminder email carries fresh numbers.
-      // The owner posted the first two with stale counts (Woolf drafted at 21
-      // reviews, 24 by the time they posted; BRO-4597).
-      if (prev && !isRetryableDraft(prev) && !isRefreshable(prev)) continue;
+      // still unposted (not yet reminded, or emailed and inside its update
+      // window) and no longer matches today's numbers (counts and ranks move
+      // as reviews land): then it is redrafted (see below), so the next email
+      // carries fresh numbers. The owner posted the first two with stale
+      // counts (Woolf drafted at 21 reviews, 24 by the time they posted;
+      // BRO-4597), and kept having to ask for a new draft after the numbers
+      // moved past the one emailed (BRO-5879).
+      if (prev && !isRetryableDraft(prev) && !isRefreshable(prev) && !awaitsUpdate(prev, nowMs)) continue;
       // The opening-age window decides which shows get a FIRST email; a
-      // draft already emailed gets its pre-reminder refresh at any age
-      // (one emailed on day 5 is reminded on day 6, BRO-5083).
-      if (!awaitsReminder(prev, nowMs)) {
+      // draft already emailed is refreshed at any age (one emailed on day 5
+      // is reminded on day 6, BRO-5083).
+      if (!awaitsUpdate(prev, nowMs)) {
         if (!show.openingDate) continue;
         const age = daysBetween(show.openingDate, today);
         if (age < MIN_AGE_DAYS || age > MAX_AGE_DAYS) continue;
@@ -345,13 +403,12 @@ function selectCandidates({ shows, slims, drafts, peersByMarket, today, seenLook
     if (!forceShowId && prev && !isRetryableDraft(prev) && prev.subreddit === facts.subreddit && lintDraft(prev, facts).ok) continue; // unsent but still accurate
     // Off-West End shows only when they'd carry a post on their own.
     if (!forceShowId && market === 'off-west-end' && notability(facts) < 25) continue;
-    out.push({ show, facts, notability: notability(facts), refresh: awaitsReminder(prev, nowMs) });
+    out.push({ show, facts, notability: notability(facts), refresh: awaitsUpdate(prev, nowMs) });
   }
   // New openings first. The per-run caps limit how many NEW posts the owner
-  // gets a day; refreshes sit outside them, since each runs once (right
-  // before its reminder) and a starved refresh means the reminder goes out
-  // with the first email's numbers (Rent reminded at 15 reviews with 30
-  // live, BRO-5083).
+  // gets a day; refreshes sit outside them, since a starved refresh means the
+  // reminder or update goes out with the first email's numbers (Rent reminded
+  // at 15 reviews with 30 live, BRO-5083).
   out.sort((a, b) => (a.refresh - b.refresh) || (b.notability - a.notability));
   if (forceShowId) return out;
   const picked = [];
@@ -1003,6 +1060,11 @@ module.exports = {
   crosspostSubreddit,
   makeSeenLookup,
   normTitle,
+  emailedNumbers,
+  numbersMoved,
+  carryOverState,
+  MATERIAL_REVIEW_DELTA,
+  MAX_UPDATE_EMAILS,
   buildUserPrompt,
   pickRecentExamples,
   lintDraft,

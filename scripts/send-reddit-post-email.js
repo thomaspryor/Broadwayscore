@@ -10,7 +10,10 @@
  *
  * Per draft:
  *   - status 'ready' and never emailed   → "Reddit post ready: <show> ..." email
- *   - emailed 20h+ ago, still not posted  → one "Still ready" reminder
+ *   - emailed, still not posted, score changed or review count moved by 3+
+ *     since that email (the drafter redrafts it first) → "Updated Reddit post"
+ *     with fresh text and screenshots, up to 3 times (BRO-5879)
+ *   - emailed 20h+ ago, still not posted, numbers steady → one "Still ready" reminder
  *   - posted, stale (past DRAFT_TTL_DAYS) → nothing
  * Sends stamp emailedAt / reminderAt on the draft so nothing sends twice; the
  * job's commit step persists that. Sends go out BEFORE that commit (outputs
@@ -50,7 +53,7 @@ const USAGE = `send-reddit-post-email.js: email each new Reddit opening-post dra
   --resend=ID,ID     send these unposted drafts again now (ignores age and earlier sends)`;
 
 const os = require('os');
-const { dueEmails, resendEmails, buildSubject, buildHtml } = require('./lib/reddit-post-email');
+const { dueEmails, resendEmails, buildSubject, buildHtml, stampsFor, afterSend, liveMatchesDraft } = require('./lib/reddit-post-email');
 const { captureShowImages } = require('./lib/reddit-post-screenshots');
 
 // ── Send ────────────────────────────────────────────────────────────────────
@@ -121,7 +124,11 @@ async function main() {
     // its images (the job timeout allows for this; see the workflow).
     const budget = RESEND.length ? Math.max(SCREENSHOT_BUDGET_MS, RESEND.length * 90_000) : SCREENSHOT_BUDGET_MS;
     const withinBudget = Date.now() - started < budget;
-    const shots = NO_SCREENSHOTS || !withinBudget ? [] : await captureShowImages(draft.url, path.join(os.tmpdir(), 'reddit-post-images', draft.showId));
+    // The live page must show the draft's numbers, or the pictures would
+    // contradict the text (a deploy can lag the data commit).
+    const siteBehind = !NO_SCREENSHOTS && withinBudget && await liveMatchesDraft(draft) === 'stale';
+    if (siteBehind) console.log(`  ${draft.showId}: live site still shows older numbers; sending without screenshots`);
+    const shots = NO_SCREENSHOTS || !withinBudget || siteBehind ? [] : await captureShowImages(draft.url, path.join(os.tmpdir(), 'reddit-post-images', draft.showId));
     let images = [];
     let attachments = [];
     try {
@@ -132,7 +139,7 @@ async function main() {
       images = [];
       attachments = [];
     }
-    const html = buildHtml(draft, kind, images);
+    const html = buildHtml(draft, kind, images, { siteBehind });
     if (DRY_RUN) {
       console.log(`\nSubject: ${subject}\nRecipient: ${SEND_TO}\nImages: ${shots.map(sh => sh.file).join(', ') || 'none'}\n---HTML---\n${html}`);
       continue;
@@ -141,12 +148,7 @@ async function main() {
       const res = await postJSON('https://api.resend.com/emails', { from: FROM, to: [SEND_TO], subject, html, ...(attachments.length ? { attachments } : {}) },
         { Authorization: `Bearer ${process.env.RESEND_API_KEY}` });
       const stamp = new Date().toISOString();
-      // A resend stamps both, so tomorrow's run doesn't follow it with a reminder.
-      const stamps = RESEND.length ? { emailedAt: stamp, reminderAt: stamp } : { [kind === 'new' ? 'emailedAt' : 'reminderAt']: stamp };
-      drafts.drafts[draft.showId] = { ...drafts.drafts[draft.showId], ...stamps };
-      // The resend is now the email the owner has: later "numbers moved"
-      // notes measure from it, not from the first one.
-      if (RESEND.length) for (const k of ['refreshedAt', 'previousReviewCount', 'previousScore']) delete drafts.drafts[draft.showId][k];
+      drafts.drafts[draft.showId] = afterSend(drafts.drafts[draft.showId], stampsFor(kind, draft, stamp, { resend: RESEND.length > 0 }));
       // Stamp right away: a run killed later in the loop must not re-send this one.
       fs.writeFileSync(DRAFTS_PATH, JSON.stringify(drafts, null, 2) + '\n');
       console.log(`Sent: ${subject} (id ${res && res.id || '?'})`);

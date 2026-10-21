@@ -7,7 +7,7 @@
 'use strict';
 
 const { TOKENS, esc } = require('./email-components');
-const { activeDrafts } = require('./reddit-opening-post');
+const { activeDrafts, numbersMoved, MAX_UPDATE_EMAILS } = require('./reddit-opening-post');
 
 const REMIND_AFTER_HOURS = 20;
 
@@ -15,12 +15,21 @@ function isComplete(d) {
   return !!(d && d.title && d.body && d.subreddit && d.submitUrl && d.showTitle && typeof d.score === 'number');
 }
 
-/** Which drafts get an email now, and which kind. */
+/**
+ * Which drafts get an email now, and which kind. An emailed draft whose score
+ * or review count moved since that email gets an 'update' (the redrafted text,
+ * new screenshots) rather than a reminder; one email per draft per run
+ * (BRO-5879).
+ */
 function dueEmails(drafts, nowMs) {
   const out = [];
+  // An update says "use this one": not worth sending when the last run could
+  // not check whether the owner already posted (BRO-5879).
+  const canUpdate = !(drafts && drafts._meta && drafts._meta.postedDetection === 'skipped');
   for (const d of activeDrafts(drafts, nowMs)) {
     if (!isComplete(d)) continue;
     if (!d.emailedAt) out.push({ draft: d, kind: 'new' });
+    else if (canUpdate && (d.updateCount || 0) < MAX_UPDATE_EMAILS && numbersMoved(d)) out.push({ draft: d, kind: 'update' });
     else if (!d.reminderAt && (nowMs - Date.parse(d.emailedAt)) / 3600000 >= REMIND_AFTER_HOURS) out.push({ draft: d, kind: 'reminder' });
   }
   return out;
@@ -46,8 +55,58 @@ function resendEmails(drafts, ids) {
   return { due, skipped };
 }
 
+/**
+ * What a send writes back onto the draft: when it went out, the numbers it
+ * carried (the baseline for the next "moved" check) and the update count.
+ * A resend stamps both dates so tomorrow's run doesn't follow it with a
+ * reminder; an update is a fresh copy, so it counts as the nudge too.
+ */
+function stampsFor(kind, draft, stamp, { resend = false } = {}) {
+  const sent = { emailedScore: draft.score, emailedReviewCount: draft.reviewCount };
+  if (resend) return { emailedAt: stamp, reminderAt: stamp, ...sent };
+  if (kind === 'update') return { emailedAt: stamp, reminderAt: stamp, updateCount: (draft.updateCount || 0) + 1, ...sent };
+  return { [kind === 'new' ? 'emailedAt' : 'reminderAt']: stamp, ...sent };
+}
+
+/** A send drops the refresh notes: this email is now the one the owner has. */
+function afterSend(entry, stamps) {
+  const out = { ...entry, ...stamps };
+  for (const k of ['refreshedAt', 'previousReviewCount', 'previousScore']) delete out[k];
+  return out;
+}
+
+/**
+ * Do the numbers on the live site match the draft's? The screenshots are of
+ * the live page and the text comes from the repo's data, so a deploy that
+ * lags the data commit would pair new text with old screenshots (BRO-5879).
+ * Returns 'match', 'stale' (still behind after the retries) or 'unknown' (the
+ * check itself failed: take the screenshots as before). fetchJson and sleep
+ * are injectable for tests.
+ */
+async function liveMatchesDraft(draft, { fetchJson = defaultFetchJson, sleep = ms => new Promise(r => setTimeout(r, ms)), attempts = 3, waitMs = 45000 } = {}) {
+  for (let i = 0; i < attempts; i++) {
+    let live;
+    try {
+      live = await fetchJson(`https://broadwayscorecard.com/data/shows/${encodeURIComponent(draft.showId)}.json`);
+    } catch {
+      return 'unknown';
+    }
+    const rc = live && (live.rc ?? (live.rv || []).length);
+    if (!live || !Number.isFinite(live.cs) || !Number.isFinite(rc)) return 'unknown';
+    if (Math.round(live.cs) === draft.score && rc === draft.reviewCount) return 'match';
+    if (i < attempts - 1) await sleep(waitMs);
+  }
+  return 'stale';
+}
+
+async function defaultFetchJson(url) {
+  const res = await fetch(url, { headers: { 'User-Agent': 'broadwayscorecard-draft-bot/1.0' }, signal: AbortSignal.timeout(20_000) });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
 function buildSubject(d, kind) {
-  const lead = kind === 'reminder' ? 'Still ready to post' : 'Reddit post ready';
+  const lead = kind === 'reminder' ? 'Still ready to post' : kind === 'update' ? 'Updated Reddit post' : 'Reddit post ready';
   return `${lead}: ${d.showTitle} (${d.score}/100) for r/${d.subreddit}`;
 }
 
@@ -60,23 +119,27 @@ function textBlock(s) {
  * send-reddit-post-email.js). Shown inline so they can be long-pressed and
  * saved straight to Photos for the Reddit post.
  */
-function buildHtml(d, kind, images = []) {
+function buildHtml(d, kind, images = [], { siteBehind = false } = {}) {
   // Only when both old numbers are known: an older draft without them would
   // print "was undefined".
   const known = [d.previousReviewCount, d.previousScore, d.reviewCount, d.score].every(Number.isFinite);
-  const moved = kind === 'reminder' && d.refreshedAt && known && (d.previousReviewCount !== d.reviewCount || d.previousScore !== d.score)
-    ? ` The numbers moved since the first email, so I updated them: now ${esc(d.reviewCount)} reviews and ${esc(d.score)}/100 (was ${esc(d.previousReviewCount)} and ${esc(d.previousScore)}).`
+  const moved = (kind === 'reminder' || kind === 'update') && d.refreshedAt && known && (d.previousReviewCount !== d.reviewCount || d.previousScore !== d.score)
+    ? `now ${esc(d.reviewCount)} reviews and ${esc(d.score)}/100 (was ${esc(d.previousReviewCount)} and ${esc(d.previousScore)})`
     : '';
-  const intro = kind === 'reminder'
-    ? `Reviews for ${esc(d.showTitle)} are still fresh. Here's the draft again in case yesterday got away from you.${moved} This is the last nudge for this one.`
-    : `Reviews are in for ${esc(d.showTitle)}. Tap the button, give it a read, hit Post. These stop once your post shows up on Reddit.`;
+  const intro = kind === 'update'
+    ? `The numbers for ${esc(d.showTitle)} moved since the last email${moved ? `: ${moved}` : ''}. I redrafted the post and retook the screenshots below, so use this one and skip the earlier email.`
+    : kind === 'reminder'
+      ? `Reviews for ${esc(d.showTitle)} are still fresh. Here's the draft again in case yesterday got away from you.${moved ? ` The numbers moved since the first email, so I updated them: ${moved}.` : ''} This is the last nudge for this one.`
+      : `Reviews are in for ${esc(d.showTitle)}. Tap the button, give it a read, hit Post. These stop once your post shows up on Reddit.`;
   const shots = images.length
     ? `<div style="margin-top:18px;">
       <div style="color:${TOKENS.text};font-size:14px;font-weight:700;">Screenshots for the post</div>
       <div style="color:${TOKENS.textMuted};font-size:13px;line-height:1.5;margin:4px 0 10px 0;">Taken at phone width, so the Reddit app won't crop them. Press and hold to save, then add them as images in the post. They're attached too.</div>
       ${images.map(im => `<div style="margin:0 0 12px 0;"><img src="cid:${esc(im.cid)}" alt="${esc(im.label)}" width="320" style="display:block;width:320px;max-width:100%;height:auto;border-radius:8px;border:1px solid ${TOKENS.borderSubtle};"></div>`).join('\n      ')}
     </div>`
-    : '';
+    : siteBehind
+      ? `<div style="margin-top:18px;color:${TOKENS.textMuted};font-size:13px;line-height:1.5;"><strong style="color:${TOKENS.text};">No screenshots this time.</strong> The live page doesn't show the same numbers as this draft yet, so a picture would contradict the text. Open the show page in a few minutes and screenshot from there.</div>`
+      : '';
   const note = (label, text) => text
     ? `<div style="margin-top:12px;color:${TOKENS.textMuted};font-size:14px;line-height:1.5;"><strong style="color:${TOKENS.text};">${label}</strong> ${text}</div>`
     : '';
@@ -89,7 +152,7 @@ function buildHtml(d, kind, images = []) {
   return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
 <body style="margin:0;padding:0;background:${TOKENS.surface};font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;color:${TOKENS.text};">
   <div style="max-width:600px;margin:0 auto;padding:24px 18px;background:${TOKENS.surfaceRaised};border:1px solid ${TOKENS.border};">
-    <div style="font-size:11px;letter-spacing:0.10em;text-transform:uppercase;color:${TOKENS.brand};font-weight:600;">Reddit post ready · r/${esc(d.subreddit)}</div>
+    <div style="font-size:11px;letter-spacing:0.10em;text-transform:uppercase;color:${TOKENS.brand};font-weight:600;">Reddit post ${kind === 'update' ? 'updated' : 'ready'} · r/${esc(d.subreddit)}</div>
     <h1 style="margin:6px 0 8px 0;font-size:22px;line-height:1.25;color:${TOKENS.text};">${esc(d.showTitle)} · ${esc(d.score)}/100 from ${esc(d.reviewCount)} reviews</h1>
     <div style="color:${TOKENS.textMuted};font-size:14px;line-height:1.5;">${intro}</div>
     <div style="margin:18px 0 6px 0;">
@@ -109,4 +172,4 @@ function buildHtml(d, kind, images = []) {
 </body></html>`;
 }
 
-module.exports = { resendEmails, dueEmails, buildSubject, buildHtml, REMIND_AFTER_HOURS };
+module.exports = { liveMatchesDraft, stampsFor, afterSend, resendEmails, dueEmails, buildSubject, buildHtml, REMIND_AFTER_HOURS };
