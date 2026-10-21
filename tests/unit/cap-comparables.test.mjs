@@ -81,7 +81,7 @@ describe('model fallback on real shows', () => {
     }
   });
 
-  it('runs on the estimate, labels it, caps quality, and never touches the record', () => {
+  it('runs on the estimate, labels it, forces quality to low, and never touches the record', () => {
     for (const [s, c] of targets) {
       const before = JSON.stringify(c);
       const all = L.getGrossesAllTime(s.slug || s.id, s.id);
@@ -89,7 +89,7 @@ describe('model fallback on real shows', () => {
       if (r.error) continue; // e.g. a split-run record
       assert.strictEqual(r.capitalization, est.value);
       assert.deepStrictEqual(r.capitalizationEstimate, est);
-      assert.notStrictEqual(r.dataQuality, 'high');
+      assert.strictEqual(r.dataQuality, 'low', 'below the display floor until promoted');
       assert.ok(r.warnings[0].includes('comparables estimate'));
       assert.ok(modelInputBasis(c, r).some((e) => e.input === 'capitalization' && e.basis === 'comparables'));
       assert.strictEqual(JSON.stringify(c), before, 'record is not modified');
