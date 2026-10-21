@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-20T12:14:03.306Z",
+  "generatedAt": "2026-10-21T07:46:18.287Z",
   "shadow": true,
-  "checkoutSha": "a0660271d85615852d5ab8cd4e95121e4e5b58f9",
-  "totalCandidates": 524,
-  "eligibleCandidates": 93,
+  "checkoutSha": "8b1cd22a6740838858fc2536a12dd79850cb3ae3",
+  "totalCandidates": 505,
+  "eligibleCandidates": 79,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
@@ -14,15 +14,39 @@
   },
   "alreadyDone": [
     {
-      "id": "BRO-5744",
-      "name": "Scheduled vision sweep of live show art (open/previews/upcoming/announced) that reports wrong-work art",
-      "verifyCmd": "node --test scripts/lib/image-null-orphan-files.test.mjs",
+      "id": "BRO-5807",
+      "name": "Cloud land-local-check reports missing rsync/actionlint as pre-existing failures ('still real, file an issue')",
+      "verifyCmd": "node --test scripts/cloud-memory-sync.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-5739",
-      "name": "Null 5 live shows whose art is plainly another work (diamond ring, & Juliet poster, county-fair flyer, book cover, wrong play)",
-      "verifyCmd": "node --test scripts/lib/versioned-image-path.test.mjs",
+      "id": "BRO-5803",
+      "name": "Put the remaining shows.json-writing workflows in the shows-json-writer concurrency group (or document why not)",
+      "verifyCmd": "node --test tests/unit/shows-json-writer-concurrency.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5783",
+      "name": "Land: trim the in-lock full re-check tail (7 of 43 lands >5 min on 2026-10-20, max 16 min; queued lands wait up to 22 min)",
+      "verifyCmd": "node --test scripts/lib/land-branch.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5770",
+      "name": "Morning digest: show Opus cap use (N of 6 in 24h, cards that fell back to Sonnet)",
+      "verifyCmd": "node --test scripts/lib/board-numbers.test.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-5745",
+      "name": "Poller review-texts push burns 20 attempts on a false rename/delete conflict (git pairs unrelated _pending files)",
+      "verifyCmd": "node --test scripts/lib/push-with-retry.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5744",
+      "name": "Scheduled vision sweep of live show art (open/previews/upcoming/announced) that reports wrong-work art",
+      "verifyCmd": "node --test scripts/lib/image-null-orphan-files.test.mjs",
       "detail": null
     },
     {
@@ -44,12 +68,6 @@
       "detail": null
     },
     {
-      "id": "BRO-5728",
-      "name": "Land: base re-check runs only the branch's failing test files (not the whole gate); auto-repair slug outlet names",
-      "verifyCmd": "node --test scripts/lib/land-gate-delta.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-5726",
       "name": "verify-review-recovery: thereviewshub--reviewer-upload.json in the-comedy-about-spies-west-end-2025 reported MISSING though reviews.json holds a thereviewshub entry (Christine Stanton, 91)",
       "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=the-comedy-about-spies-west-end-2025 --reviews=1",
@@ -59,12 +77,6 @@
       "id": "BRO-5719",
       "name": "Land: decide on fail-fast in the Checks job (BRO-5673 Part 4d)",
       "verifyCmd": "node --test tests/unit/land-retry-cancelled-schedule.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5716",
-      "name": "Auto-fix (second try): Opening Night Poller Failed",
-      "verifyCmd": "node scripts/check-workflow-run-status.js --workflow=opening-night-poller.yml --expect=success",
       "detail": null
     },
     {
@@ -86,15 +98,15 @@
       "detail": null
     },
     {
-      "id": "BRO-5678",
-      "name": "Feedback 'missing show' for an older Off-Broadway run has no automatic add path (Love, Love, Love 2016 needed a hand-built plan)",
-      "verifyCmd": "node --test tests/unit/content-request-routing.test.mjs",
+      "id": "BRO-5682",
+      "name": "audit-aggregator-gap.yml: 'Run gap audit' step fails (05:14Z, 03:44Z runs); ODC census entry stale with junk candidates",
+      "verifyCmd": "node scripts/validate-data.js --strict",
       "detail": null
     },
     {
-      "id": "BRO-5677",
-      "name": "Recoupment model treats Form D maximum capitalization as actual raise",
-      "verifyCmd": "node --test scripts/lib/musical-model-backtest.test.mjs",
+      "id": "BRO-5678",
+      "name": "Feedback 'missing show' for an older Off-Broadway run has no automatic add path (Love, Love, Love 2016 needed a hand-built plan)",
+      "verifyCmd": "node --test tests/unit/content-request-routing.test.mjs",
       "detail": null
     },
     {
@@ -134,33 +146,21 @@
       "detail": null
     },
     {
-      "id": "BRO-5639",
-      "name": "Research apply replaces existing TBD commercial records and drops fields the research row does not carry",
-      "verifyCmd": "node --test tests/unit/commercial-apply-gate.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-5627",
-      "name": "Gap audit --ingest-missing writes dateless prior-production reviews into the new run's folder (The Ask: 2024 New Yorker capsule, WSJ careers column)",
-      "verifyCmd": "node --test scripts/lib/audit-show-review-gap.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-5614",
       "name": "Stop writing URL-derived publishDates: 5 backfill scripts and 666 existing review files",
       "verifyCmd": "node scripts/validate-data.js --strict",
       "detail": null
     },
     {
-      "id": "BRO-5601",
-      "name": "Sourced weekly running costs for the musicals the recoupment model still misses",
-      "verifyCmd": "node --test scripts/lib/musical-model-backtest.test.mjs",
+      "id": "BRO-5565",
+      "name": "Investigate Sentry weekly digest: TypeError x8, RangeError x3 (New), UgcError apple_sign_in",
+      "verifyCmd": "node --test tests/unit/sentry-triage-classify.test.js",
       "detail": null
     },
     {
-      "id": "BRO-5589",
-      "name": "Teach push-via-git-api.sh protected-field reconciliation so review-texts can use the API fallback",
-      "verifyCmd": "node --test tests/unit/push-via-git-api.test.mjs",
+      "id": "BRO-5561",
+      "name": "Roundup archive pages filed under the wrong production (POTUS 2022, The Pass NYC under a West End id) + schedule audit-roundup-link-coverage",
+      "verifyCmd": "node --test scripts/lib/roundup-link-coverage.test.mjs",
       "detail": null
     }
   ],
@@ -185,25 +185,25 @@
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-grosses-data.test.mjs"
     },
     {
-      "id": "BRO-5590",
-      "name": "audit-time-bomb-tests.js exemptions are whole-file, not per-test",
-      "verifyCmd": "node --test tests/unit/audit-time-bomb-tests-per-test.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/audit-time-bomb-tests-per-test.test.mjs"
+      "id": "BRO-5582",
+      "name": "Backfill provenance for 1,691 legacy wrongProduction flags with no audit trail",
+      "verifyCmd": "node --test tests/unit/wrongproduction-provenance-backfill.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/wrongproduction-provenance-backfill.test.mjs"
     },
     {
-      "id": "BRO-5588",
-      "name": "Name failing tests in the two test.yml node --test batches that still lack the BRO-2238 summary",
-      "verifyCmd": "node --test tests/unit/test-yml-failing-test-names.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/test-yml-failing-test-names.test.mjs"
+      "id": "BRO-5572",
+      "name": "1,514 live reviews show an Unknown or missing critic name: verify byline impact and fix source parsers",
+      "verifyCmd": "node --test tests/unit/unknown-critic-backlog.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/unknown-critic-backlog.test.mjs"
     }
   ],
   "landedButOpen": [
     {
-      "id": "BRO-5739",
-      "name": "Null 5 live shows whose art is plainly another work (diamond ring, & Juliet poster, county-fair flyer, book cover, wrong play)",
-      "branch": "land/bro-5739-more-wrong-art",
-      "sha": "92e9925a28b46169b224d6751d11f5dd58823d7e",
-      "landedAt": "2026-10-20T03:12:35.051Z"
+      "id": "BRO-5770",
+      "name": "Morning digest: show Opus cap use (N of 6 in 24h, cards that fell back to Sonnet)",
+      "branch": "land/codex-bro-5770",
+      "sha": "a96f86d7f7e0e36c713bfa853db0c55ff1e425b7",
+      "landedAt": "2026-10-20T22:08:39.515Z"
     },
     {
       "id": "BRO-5733",
@@ -213,20 +213,6 @@
       "landedAt": "2026-10-20T00:53:17.277Z"
     },
     {
-      "id": "BRO-5728",
-      "name": "Land: base re-check runs only the branch's failing test files (not the whole gate); auto-repair slug outlet names",
-      "branch": "land/bro-5728-outlet-names",
-      "sha": "f4fda913c35a8aa3f2524b3c2b2f1a8eb332051e",
-      "landedAt": "2026-10-20T00:56:05.437Z"
-    },
-    {
-      "id": "BRO-5716",
-      "name": "Auto-fix (second try): Opening Night Poller Failed",
-      "branch": "land/bro-5716-poller-fix",
-      "sha": "99d947fbe11cc7f6f7f3667c730b98b49e8e76d2",
-      "landedAt": "2026-10-19T21:31:13.611Z"
-    },
-    {
       "id": "BRO-5683",
       "name": "CI: run verify-review-text-folders orphan assertions with the review-texts corpus (they skip in the unit job)",
       "branch": "land/codex-bro-5683",
@@ -234,18 +220,32 @@
       "landedAt": "2026-10-19T16:22:08.393Z"
     },
     {
-      "id": "BRO-5677",
-      "name": "Recoupment model treats Form D maximum capitalization as actual raise",
-      "branch": "land/bro-5677-capmax",
-      "sha": "f757e7e93604ab30f6a58cc6232d26b8c301703c",
-      "landedAt": "2026-10-19T18:55:00.797Z"
-    },
-    {
       "id": "BRO-5675",
       "name": "recollect-for-scores times out every weekly run; liveness sweep false-flags brand-new crons",
       "branch": "land/bro-5675-recollect-deadline",
       "sha": "e8f5cfd45d52a13f38317eb774d0f88855a76109",
       "landedAt": "2026-10-19T06:05:02.621Z"
+    },
+    {
+      "id": "BRO-5614",
+      "name": "Stop writing URL-derived publishDates: 5 backfill scripts and 666 existing review files",
+      "branch": "land/bro-5614-recover-null",
+      "sha": "aca108dc38d0d1d755dd1aabeef5958e66e25095",
+      "landedAt": "2026-10-21T03:54:21.694Z"
+    },
+    {
+      "id": "BRO-5565",
+      "name": "Investigate Sentry weekly digest: TypeError x8, RangeError x3 (New), UgcError apple_sign_in",
+      "branch": "land/bro-5565-triage-noise",
+      "sha": "6d027a4c0eae33555fe6c01cad5004fb14ef1904",
+      "landedAt": "2026-10-18T03:37:22.215Z"
+    },
+    {
+      "id": "BRO-5561",
+      "name": "Roundup archive pages filed under the wrong production (POTUS 2022, The Pass NYC under a West End id) + schedule audit-roundup-link-coverage",
+      "branch": "land/bro-5561-roundup-health-step",
+      "sha": "2f84835ecadcbaa409a9c68597c5387fd5aed93b",
+      "landedAt": "2026-10-20T15:40:57.647Z"
     }
   ]
 }
