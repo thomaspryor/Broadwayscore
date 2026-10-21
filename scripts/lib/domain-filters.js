@@ -490,8 +490,7 @@ function isBlockedReviewUrl(url, opts) {
     // tickets-in-london stay blocked (same rule as isEvergreenListingUrl).
     const pathSaysReview = /(^|[^a-z])review(ed)?([^a-z]|$)/.test(lowerPath);
     if ((!pathSaysReview && lowerPath.includes('/tickets/')) || lowerPath.includes('/buy-tickets')
-      || lowerPath.includes('/book-tickets') || lowerPath.includes('tickets-in-london')
-      || (!pathSaysReview && lowerPath.includes('/going-out/tickets/'))) return true;
+      || lowerPath.includes('/book-tickets') || lowerPath.includes('tickets-in-london')) return true;
     // Feature articles and interviews — not reviews
     // Matches exact path segments: /features/, /feature/, /interviews/, /interview/
     // Does NOT match /featured-review/ or /review-features-xyz/ (substring matches)
