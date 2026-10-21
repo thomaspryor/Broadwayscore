@@ -91,6 +91,11 @@ describe('classifyTier', () => {
     assert.strictEqual(classifyTier({ openingDate: open, closingDate: close }, { capitalization: 1 }, { gross: 1 }), 'simplified-lifetime');
     assert.strictEqual(classifyTier({ openingDate: open, closingDate: '2005-01-01' }, { capitalization: 1 }, { gross: 1 }), 'weekly-model');
   });
+  it('keeps a long run on the weekly model when its total is only summed weeks (BRO-5647)', () => {
+    const open = '2000-01-01';
+    const close = new Date(Date.parse(open) + LONG_RUN_WEEKS * 7 * 86400000).toISOString();
+    assert.strictEqual(classifyTier({ openingDate: open, closingDate: close }, { capitalization: 1 }, { gross: 1, fromWeekly: true }), 'weekly-model');
+  });
   it('TIERS lists exactly the values it returns, and every tier name the scripts compare against', async () => {
     const fs = await import('node:fs');
     assert.deepStrictEqual([...TIERS].sort(), ['ai-estimated', 'simplified-lifetime', 'weekly-model']);

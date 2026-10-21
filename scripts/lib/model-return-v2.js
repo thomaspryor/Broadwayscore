@@ -44,7 +44,9 @@ function classifyTier(show, comm, grossesAllTime) {
   const close = show.closingDate ? new Date(show.closingDate) : new Date();
   const runWeeks = open ? Math.round((close - open) / (7 * 86400000)) : 0;
 
-  if (runWeeks >= LONG_RUN_WEEKS) return 'simplified-lifetime';
+  // The lifetime path spreads grossesAllTime.gross over the run; a total summed
+  // from partial weekly history (fromWeekly) would undercount it.
+  if (runWeeks >= LONG_RUN_WEEKS && !grossesAllTime.fromWeekly) return 'simplified-lifetime';
   return 'weekly-model';
 }
 

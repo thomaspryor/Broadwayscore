@@ -40,6 +40,9 @@ test('a production with weekly rows but no all-time row gets the sum of its own 
   assert.deepEqual(L.getGrossesAllTime('cabaret-2024'), { gross: 5 });
   // No rows of its own: still nothing.
   assert.equal(L.getGrossesAllTime('ragtime-2009', 'ragtime-2009'), null);
+  // Weeks that all gross zero sum to nothing.
+  const z = makeGrossesLookup({ shows: {} }, { weeks: { '2022-01-02': { 'dark-show': { gross: 0 } } } });
+  assert.equal(z.getGrossesAllTime('dark-show'), null);
 });
 
 test('the recoupment scripts use the shared lookup, not their own fuzzy copy', () => {

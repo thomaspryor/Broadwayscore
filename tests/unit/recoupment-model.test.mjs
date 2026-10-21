@@ -320,3 +320,25 @@ describe('model honors "tax credit not received" notes (BRO-4623)', () => {
     assert.strictEqual(result.svogGrant, 0);
   });
 });
+
+// BRO-5647: a total summed from the show's own weeks (grosses-lookup
+// sumOfWeeks) must not be spread over the run when weekly coverage is sparse;
+// the weekly path gap-fills the missing weeks at the average week instead.
+describe('calculateRecoupment with a total summed from weekly rows', () => {
+  const show = {
+    slug: 'test-show', title: 'Test Show', type: 'play', venue: 'Ethel Barrymore Theatre',
+    openingDate: '2022-10-01', closingDate: '2023-07-01',
+  };
+  const commercial = { capitalization: 8000000, weeklyRunningCost: 500000 };
+  const sparse = weeklyGrosses(10, 900000);
+
+  it('models sparse weeks like a full all-time row, not a partial sum spread thin', () => {
+    const summed = calculateRecoupment(show, commercial, { gross: 9000000, performances: 80, fromWeekly: true }, sparse);
+    const full = calculateRecoupment(show, commercial, { gross: 9000000, performances: 80 }, sparse);
+    assert.ok(!summed.error, summed.error);
+    // A real all-time row of 9M over a 39-week run spreads thin; the summed one
+    // gap-fills at 900K a week, so it reads far higher.
+    assert.ok(summed.recoupmentPctCentral > full.recoupmentPctCentral + 50,
+      `${summed.recoupmentPctCentral} vs ${full.recoupmentPctCentral}`);
+  });
+});

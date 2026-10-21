@@ -995,7 +995,10 @@ function buildWeeklySchedule(show, grossesAllTime, grossesWeekly, previewWeeks, 
   const expectedPerfs = totalRunWeeks * 8;
   const actualPerfs = grossesAllTime?.performances || 0;
   const isContaminated = actualPerfs > expectedPerfs * 1.3;
-  const useWeekly = hasWeekly && (weeklyCoverage > 0.5 || isContaminated);
+  // (c) the all-time total is only the sum of these same weeks (grosses-lookup
+  // sumOfWeeks): spreading a partial sum over the run would undercount, while
+  // the weekly path gap-fills missing weeks at the average week.
+  const useWeekly = hasWeekly && (weeklyCoverage > 0.5 || isContaminated || !!grossesAllTime?.fromWeekly);
 
   if (useWeekly) {
     // Tier 1: Weekly data covers most of the run
