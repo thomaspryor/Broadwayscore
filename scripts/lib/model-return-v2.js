@@ -29,17 +29,13 @@
  * Uses the live model's costs, weeks and scenarios unchanged.
  */
 
-const { withLeadCenters } = require('./commercial-leads');
-
 const LONG_RUN_WEEKS = 520; // 10 years
 /** Every value classifyTier returns. */
 const TIERS = Object.freeze(['ai-estimated', 'simplified-lifetime', 'weekly-model']);
 const INVESTOR_SHARE_ABOVE_CAP = 0.5;
 
 /** Which live calculation a record gets (moved verbatim from merge-model-recoupment.js). */
-function classifyTier(show, rawComm, grossesAllTime) {
-  // A lead can stand in for a missing capitalization (BRO-5849).
-  const comm = withLeadCenters(rawComm);
+function classifyTier(show, comm, grossesAllTime) {
   if (!comm.capitalization) return 'ai-estimated';
   if (!grossesAllTime) return 'ai-estimated';
 

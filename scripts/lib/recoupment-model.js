@@ -26,7 +26,6 @@ const { splitCosts, fixedNutFromBasis } = require('./cost-split');
 const { sourcedGrossParticipation, weeklyParticipationCost, starDealUnknown } = require('./gross-participation');
 const { isConvertedToCommercial } = require('./commercial-conversion');
 const { haircutCapitalization } = require('./cap-max-haircut');
-const { runWithLeads } = require('./commercial-leads');
 
 // A nonprofit run that switched to a commercial run (BRO-5508) holds two
 // productions' weeks under one grosses key, often in two theaters, and the
@@ -564,18 +563,7 @@ function withMusicalDefaults(show, opts) {
   return { ...live, ...set };
 }
 
-// Guess-grade leads (BRO-5849, lib/commercial-leads.js): a missing capitalization
-// or weekly cost is filled from the record's best lead, the range widens, and
-// the run is marked 'estimate-based'. A record with no lead runs unchanged.
 function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, opts = {}) {
-  return runWithLeads(commercial, (c) => calculateRecoupmentCore(show, c, grossesAllTime, grossesWeekly, opts));
-}
-
-function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}) {
-  return runWithLeads(commercial, (c) => calculateLifetimeRecoupmentCore(show, c, grossesAllTime, opts));
-}
-
-function calculateRecoupmentCore(show, commercial, grossesAllTime, grossesWeekly, opts = {}) {
   opts = withMusicalDefaults(show, opts);
   const warnings = [];
   if (isConvertedToCommercial(commercial)) return { error: SPLIT_RUN_ERROR, warnings: [SPLIT_RUN_ERROR] };
@@ -1211,7 +1199,7 @@ function parseTaxCreditFromNotes(notes) {
  *
  * The blended weekly nut is deflated to a run-average (current nut reflects end-of-run costs).
  */
-function calculateLifetimeRecoupmentCore(show, commercial, grossesAllTime, opts = {}) {
+function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}) {
   opts = withMusicalDefaults(show, opts);
   const warnings = ['Simplified lifetime model (10+ year run)'];
   if (isConvertedToCommercial(commercial)) return { error: SPLIT_RUN_ERROR, warnings: [SPLIT_RUN_ERROR] };

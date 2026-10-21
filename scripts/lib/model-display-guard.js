@@ -133,7 +133,7 @@ function displaysModel(comm, show) {
   if (hasNoInvestorsToRepay(comm)) return false;
   if (displaysAnalyst(comm, show)) return false;
   if (!comm.modelRecoupmentPct) return false;
-  if (comm.modelDataQuality === 'low' || comm.modelDataQuality === 'estimate-based' || comm.modelMethod === 'ai-estimated') return false;
+  if (comm.modelDataQuality === 'low' || comm.modelMethod === 'ai-estimated') return false;
   // Closed TBD shows the final estimate; a closed Fizzle/Flop only when the
   // estimate agrees with it (BRO-5502, replacing BRO-5020's blanket hide).
   return !isFinalClosed(comm, show) || estimateFitsDesignation(comm.modelRecoupmentPct, comm.designation);

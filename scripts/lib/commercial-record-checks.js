@@ -11,8 +11,6 @@
  * strings ([] = ok).
  */
 
-const { leadProblems } = require('./commercial-leads');
-
 const VALID_COST_METHODOLOGIES = [
   'reddit-standard',
   'trade-reported',
@@ -124,24 +122,6 @@ function commercialRecordErrors(showId, show, ctx = {}) {
         out.push(`commercial.json: "${showId}" estimatedRecoupmentPct values must be numbers`);
       } else if (low < 0 || high > 100 || low > high) {
         out.push(`commercial.json: "${showId}" estimatedRecoupmentPct must satisfy 0 <= low <= high <= 100, got [${low}, ${high}]`);
-      }
-    }
-  }
-
-  // Guess-grade leads (BRO-5849): shape and public wording. A lead beside a fact
-  // is allowed (the model ignores it while the fact stands).
-  if (show.leads != null) {
-    if (!Array.isArray(show.leads)) out.push(`commercial.json: "${showId}" leads must be an array`);
-    else {
-      for (const [i, lead] of show.leads.entries()) {
-        for (const problem of leadProblems(lead)) out.push(`commercial.json: "${showId}" leads[${i}] ${problem}`);
-        const url = lead && lead.source && lead.source.url;
-        if (typeof url === 'string' && /^https:\/\/([^/]*\.)?(reddit\.com|redd\.it)\//i.test(url) && lead.sourceClass !== 'reddit') out.push(`commercial.json: "${showId}" leads[${i}] links reddit.com, so sourceClass must be reddit`);
-        const quote = lead && lead.source && lead.source.quote;
-        if (typeof quote === 'string') {
-          const bad = internalWordingIn(quote);
-          if (bad) out.push(`commercial.json: "${showId}" leads[${i}].source.quote has internal wording: "${bad}"`);
-        }
       }
     }
   }

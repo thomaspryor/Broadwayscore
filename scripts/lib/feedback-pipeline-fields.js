@@ -94,9 +94,6 @@ const FEEDBACK_EDITABLE_FIELDS = {
     'needsLossEvidence', 'designationBasis',
     'estimatedRecoupmentPct', 'estimatedRecoupmentSource', 'estimatedRecoupmentDate',
     'weeklyRunningCostBasis', 'commercialConversion',
-    // leads: guess-grade figures the model reads only when no fact exists (BRO-5849;
-    // shape in commercial-leads.js, checked by commercial-record-checks.js).
-    'leads',
     // capitalizationBasis: 'maximum' (a Form D offering maximum or an "up to"
     // figure, printed "up to $X"), 'sold' or 'reported' (BRO-5660; values in
     // public-source-text.js, checked by commercial-record-checks.js).
