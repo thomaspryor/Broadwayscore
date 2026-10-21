@@ -125,6 +125,9 @@ function leadFills(comm) {
 /** A shallow copy of the record with each filled input set to `pick(fill)`. */
 function withFills(comm, fills, pick) {
   const out = { ...comm };
+  // A lead is not a reported figure: drop provenance that would call it one or haircut it twice.
+  if (fills.some((f) => f.field === 'weeklyRunningCost')) for (const k of ['costMethodology', 'weeklyRunningCostSource', 'weeklyRunningCostBasis']) delete out[k];
+  if (fills.some((f) => f.field === 'capitalization')) for (const k of ['capitalizationSource', 'capitalizationBasis']) delete out[k];
   for (const f of fills) out[f.field] = Math.round(pick(f));
   return out;
 }
@@ -168,8 +171,10 @@ function runWithLeads(comm, run) {
     highs.push(r.recoupmentPctHigh);
   }
   const num = (v) => typeof v === 'number' && Number.isFinite(v);
-  mid.recoupmentPctLow = Math.min(...lows.filter(num));
-  mid.recoupmentPctHigh = Math.max(...highs.filter(num));
+  const lo = lows.filter(num);
+  const hi = highs.filter(num);
+  if (lo.length) mid.recoupmentPctLow = Math.min(...lo);
+  if (hi.length) mid.recoupmentPctHigh = Math.max(...hi);
   mid.dataQuality = 'estimate-based';
   mid.leadInputs = leadsUsedSummary(fills);
   mid.warnings = [...(mid.warnings || []), ...fills.map((f) => `${f.field} is an estimate from a ${f.lead.sourceClass} lead (${f.lead.confidence} confidence): ~$${Math.round(f.range.center / 1000)}K`)];

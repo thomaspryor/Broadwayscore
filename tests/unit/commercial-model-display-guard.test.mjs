@@ -90,7 +90,7 @@ test('displaysModel mirrors getRecoupmentDisplayMode === "model"', () => {
   for (const recouped of [true, false, null])
     for (const designation of ['TBD', 'Flop', 'Nonprofit', undefined])
       for (const status of ['open', 'closed'])
-        for (const modelDataQuality of ['high', 'low'])
+        for (const modelDataQuality of ['high', 'low', 'estimate-based'])
           for (const modelMethod of ['weekly-model', 'ai-estimated'])
             for (const modelRecoupmentPct of [pct, null])
               for (const productionType of [undefined, 'enhancement'])

@@ -143,6 +143,9 @@ function modelAt(libs, show, comm, lookup, asOf, opts = {}) {
   const slug = show.slug || show.id;
   const allTime = lookup.getGrossesAllTime(slug, show.id);
   const closing = show.closingDate && show.closingDate < asOf ? show.closingDate : asOf;
+  // A lead dated after asOf did not exist yet: the replay must not see it.
+  const known = Array.isArray(comm && comm.leads) ? { ...comm, leads: comm.leads.filter((l) => l && l.date <= asOf) } : comm;
+  comm = known;
   const tier = libs.classifyTier({ ...show, closingDate: closing }, comm, allTime);
   if (tier !== 'weekly-model') return { tier, result: null };
   const result = libs.calculateRecoupment(show, comm, allTime, lookup.getWeeklyData(slug, show.id), { ...opts, asOf });
@@ -161,7 +164,7 @@ function displayableAt({ comm, tier, result, playedWeeks }, guard) {
   // A replay has no cumulative grosses (they cannot be cut at a date), which
   // alone drops a reported-cost record to 'low'; the site had them then.
   const quality = result.dataQuality === 'low' && result.weeklyFixedCostSource === 'reported' ? 'medium' : result.dataQuality;
-  if (quality === 'low') return false;
+  if (quality === 'low' || quality === 'estimate-based') return false;
   const pct = [result.recoupmentPctLow, result.recoupmentPctCentral, result.recoupmentPctHigh];
   return guard.modelDisplayGuard({ pct, playedWeeks, independent: guard.independentEstimate(comm), running: true, runningEnabled: true }).show;
 }

@@ -105,6 +105,8 @@ function lossDesignationFor(returnedPct) {
  * null for any other label, or with no estimate at all.
  */
 function likelyOutcomeDesignation(entry) {
+  // A run fed by a guess-grade lead is not a claim we print as "likely" (BRO-5849).
+  if (entry?.modelDataQuality === 'estimate-based') return null;
   const undisclosed = entry?.designation === 'TBD' && entry.status === 'closed' && entry.recouped !== true;
   if (entry?.designation !== 'Did Not Recoup' && !undisclosed) return null;
   const own = ownReturnedEstimatePct(entry);

@@ -99,3 +99,26 @@ test('validator: leads shape is enforced and internal wording is refused', () =>
   assert.match(commercialRecordErrors('k', { designation: 'TBD', leads: [lead({ kind: 'nope' })] }, {}).join(), /leads\[0\] kind/);
   assert.match(commercialRecordErrors('k', { designation: 'TBD', leads: [lead({ source: { quote: 'GPT deep research says $8M', url: 'https://a.b/c' } })] }, {}).join(), /internal wording/);
 });
+
+test('a lead fill drops reported-cost provenance and never survives as a fact', () => {
+  const seen = [];
+  runWithLeads({ costMethodology: 'trade-reported', capitalizationSource: 'maximum', leads: [lead({ value: 12e6 }), lead({ kind: 'weeklyRunningCost', value: 750_000 })] }, (c) => {
+    seen.push(c);
+    return { recoupmentPctLow: 10, recoupmentPctCentral: 20, recoupmentPctHigh: 30, warnings: [] };
+  });
+  assert.ok(seen.length > 1);
+  for (const c of seen) { assert.equal(c.costMethodology, undefined); assert.equal(c.capitalizationSource, undefined); }
+});
+
+test('validator: a reddit.com link must be classed reddit', () => {
+  const reddit = { quote: 'about $8 million to open the show', url: 'https://www.reddit.com/r/Broadway/comments/abc' };
+  assert.match(commercialRecordErrors('k', { designation: 'TBD', leads: [lead({ source: reddit, sourceClass: 'press-projection' })] }, {}).join(), /sourceClass must be reddit/);
+  assert.deepEqual(commercialRecordErrors('k', { designation: 'TBD', leads: [lead({ source: reddit, sourceClass: 'reddit' })] }, {}), []);
+});
+
+test('the likely-outcome label ignores an estimate-based run', () => {
+  const { likelyOutcomeDesignation } = require('./commercial-designations.js');
+  const e = { designation: 'Did Not Recoup', modelRecoupmentPct: [10, 20, 30] };
+  assert.ok(likelyOutcomeDesignation(e));
+  assert.equal(likelyOutcomeDesignation({ ...e, modelDataQuality: 'estimate-based' }), null);
+});
