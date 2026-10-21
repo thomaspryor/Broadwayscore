@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5647-k",
   "planId": "d33e662d-f713-4c14-8027-9baf09634f81",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-21T14:46:19.761Z",
   "submitter": {
     "name": null,
@@ -434,5 +434,114 @@
         "description": "walking-with-ghosts-2022: add entry ($2.3M sold)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-21T15:00:02.091Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-fear-of-13"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-fear-of-13"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-fear-of-13"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-fear-of-13"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for bob-fosses-dancin-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for bob-fosses-dancin-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for bob-fosses-dancin-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for dog-day-afternoon"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for dog-day-afternoon"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for dog-day-afternoon"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for dog-day-afternoon"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added diana-the-musical-2021 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added chicken-and-biscuits-2021 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added aint-no-mo-2022 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added ohio-state-murders-2022 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added walking-with-ghosts-2022 (TBD)"
+    }
+  ],
+  "executedIn": "ci"
 }
