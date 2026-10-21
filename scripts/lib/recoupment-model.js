@@ -26,6 +26,7 @@ const { splitCosts, fixedNutFromBasis } = require('./cost-split');
 const { sourcedGrossParticipation, weeklyParticipationCost, starDealUnknown } = require('./gross-participation');
 const { isConvertedToCommercial } = require('./commercial-conversion');
 const { haircutCapitalization } = require('./cap-max-haircut');
+const { modelInputBasis } = require('./model-input-basis');
 
 // A nonprofit run that switched to a commercial run (BRO-5508) holds two
 // productions' weeks under one grosses key, often in two theaters, and the
@@ -568,7 +569,7 @@ function withMusicalDefaults(show, opts) {
  * no capitalization runs on a comparables figure ({value, low, high, n},
  * lib/cap-comparables.js). The guess fills a COPY of the record, never the
  * stored `capitalization`; the result carries it as capitalizationEstimate and
- * its quality is capped at 'medium' (never raised: a record with no cost figure stays 'low' and hidden). Leave-one-out backtest: scripts/backtest-cap-comparables.js. A record with its own figure ignores it.
+ * its quality is capped at 'medium' (never raised). A run that also rests on another guess (an estimated or type-default cost) is forced to 'low', which the display floor hides. Leave-one-out backtest: scripts/backtest-cap-comparables.js. A record with its own figure ignores it.
  */
 function withCapEstimate(run, commercial, opts) {
   const est = opts.capEstimate;
@@ -579,6 +580,8 @@ function withCapEstimate(run, commercial, opts) {
   res.capitalizationEstimate = { value: est.value, low: est.low, high: est.high, n: est.n };
   res.warnings.unshift(`Capitalization $${Math.round(est.value / 1000)}K is a comparables estimate (${est.n} shows, range $${Math.round(est.low / 1000)}K to $${Math.round(est.high / 1000)}K)`);
   if (res.dataQuality === 'high') res.dataQuality = 'medium';
+  // Two guesses stacked: hidden by the display floor (meetsModelQualityFloor rejects 'low').
+  if (modelInputBasis(commercial, res).some((b) => b.input !== 'capitalization')) res.dataQuality = 'low';
   return res;
 }
 

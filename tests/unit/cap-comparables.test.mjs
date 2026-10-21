@@ -97,6 +97,16 @@ describe('model fallback on real shows', () => {
     }
   });
 
+  it('a comparables run that also rests on another guess is low (hidden by the display floor)', () => {
+    for (const [s, c] of targets) {
+      const all = L.getGrossesAllTime(s.slug || s.id, s.id);
+      const r = calculateRecoupment(s, c, all, L.getWeeklyData(s.slug || s.id, s.id), { capEstimate: est });
+      if (r.error) continue;
+      const stacked = modelInputBasis(c, r).some((e) => e.input !== 'capitalization');
+      if (stacked) assert.strictEqual(r.dataQuality, 'low', 'two guesses never display');
+    }
+  });
+
   it('a record with its own capitalization ignores the estimate', () => {
     const [k, c] = Object.entries(commercial).find(([key, v]) => v.capitalization && by[key] && L.getGrossesAllTime(by[key].slug || by[key].id, by[key].id));
     const s = by[k];

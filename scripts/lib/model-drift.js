@@ -31,7 +31,7 @@ function liveModelRun(show, comm, lookup, opts = {}) {
   opts = optsWithCapEstimate(opts, show, comm); // shadow, BRO-5849
   const tier = classifyTier(show, comm, allTime, opts);
   let result = null;
-  // opts is for shadow runs only (backtest-recoupment-ground-truth.js); live passes none.
+  // opts carries the shadow flags and the live comparables estimator (BRO-5849).
   if (tier === 'weekly-model') result = calculateRecoupment(show, comm, allTime, lookup.getWeeklyData(slug, show.id), opts);
   else if (tier === 'simplified-lifetime') result = calculateLifetimeRecoupment(show, comm, allTime, opts);
   if (result && result.error) return { tier: 'ai-estimated', result: null };
