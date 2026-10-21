@@ -54,6 +54,11 @@ const DEFAULT_TIMEOUT_MS = 180000;
 // re-run; a killed one leaves its fresh checkout behind.
 const VERIFY_ATTEMPTS = 1;
 
+/** spawnSync/execFileSync killed by its own time box (git fetch, worktree add). */
+function isCheckoutTimeout(err) {
+  return !!err && (err.code === 'ETIMEDOUT' || (!!err.signal && err.status == null) || /\bETIMEDOUT\b/.test(String(err.message || '')));
+}
+
 /**
  * @param {{repo?:string, timeoutMs?:number, log?:Function}} [opts]
  * @returns {(cmd:string) => {allowed:boolean, verdict:string, reason:string, notOnMain:boolean, sha:string|null}}
@@ -108,10 +113,16 @@ function makeVerifyCmdEvidence({ repo = path.join(__dirname, '..', '..'), timeou
     } catch (err) {
       const message = String((err && err.message) || err).slice(0, 200);
       log(`[linear-cmd-execution] could not execute \`${cmd}\` against origin/main: ${message}`);
+      // BRO-5837: a git timeout while building the checkout says nothing about
+      // the card. Say so, and name the way out, instead of reading as a failed
+      // command. No retry/clone here: callers cap this whole gate at 300s.
+      const infraTimeout = isCheckoutTimeout(err);
       return {
         allowed: false,
-        verdict: 'execution-error',
-        reason: `could not execute the recorded command against a fresh origin/main checkout: ${message}`,
+        verdict: infraTimeout ? 'verify-cmd-infra-timeout' : 'execution-error',
+        reason: infraTimeout
+          ? `building the origin/main checkout timed out (${message}). That is infrastructure, not a verdict on \`${cmd}\`: re-run the Done update, or record \`PR-EVIDENCE: merged deployed checked (<url>)\` instead.`
+          : `could not execute the recorded command against a fresh origin/main checkout: ${message}`,
         notOnMain: false,
         sha: null,
       };
@@ -121,4 +132,4 @@ function makeVerifyCmdEvidence({ repo = path.join(__dirname, '..', '..'), timeou
   };
 }
 
-module.exports = { makeVerifyCmdEvidence, DEFAULT_TIMEOUT_MS, VERIFY_ATTEMPTS };
+module.exports = { makeVerifyCmdEvidence, isCheckoutTimeout, DEFAULT_TIMEOUT_MS, VERIFY_ATTEMPTS };

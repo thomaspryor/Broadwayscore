@@ -137,3 +137,30 @@ test('Done-gate worst case stays under the callers\' spawn timeouts', () => {
   const worst = DEFAULT_TIMEOUT_MS * VERIFY_ATTEMPTS + CHECKOUT_HEADROOM_MS;
   assert.ok(worst < Math.min(...caps), `worst case ${worst}ms >= caller cap ${Math.min(...caps)}ms`);
 });
+
+// BRO-5837: a checkout timeout is infrastructure, not a verdict on the command.
+test('isCheckoutTimeout: spawnSync ETIMEDOUT and signal kills count, ordinary errors do not', () => {
+  const { isCheckoutTimeout } = require('./linear-cmd-execution.js');
+  assert.equal(isCheckoutTimeout(new Error('spawnSync git ETIMEDOUT')), true);
+  assert.equal(isCheckoutTimeout(Object.assign(new Error('x'), { code: 'ETIMEDOUT' })), true);
+  assert.equal(isCheckoutTimeout(Object.assign(new Error('x'), { signal: 'SIGTERM', status: null })), true);
+  assert.equal(isCheckoutTimeout(new Error('fatal: not a git repository')), false);
+  assert.equal(isCheckoutTimeout(null), false);
+});
+
+test('makeVerifyCmdEvidence: checkout timeout yields verify-cmd-infra-timeout, still not allowed', () => {
+  const core = require('./acceptance-check-core.js');
+  const orig = core.makeFreshCheckout;
+  core.makeFreshCheckout = () => { throw new Error('spawnSync git ETIMEDOUT'); };
+  try {
+    delete require.cache[require.resolve('./linear-cmd-execution.js')];
+    const { makeVerifyCmdEvidence } = require('./linear-cmd-execution.js');
+    const r = makeVerifyCmdEvidence({ repo: REPO })('node --test x.mjs');
+    assert.equal(r.allowed, false);
+    assert.equal(r.verdict, 'verify-cmd-infra-timeout');
+    assert.match(r.reason, /PR-EVIDENCE/);
+  } finally {
+    core.makeFreshCheckout = orig;
+    delete require.cache[require.resolve('./linear-cmd-execution.js')];
+  }
+});
