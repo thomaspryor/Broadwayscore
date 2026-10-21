@@ -772,6 +772,37 @@
     "queuedAt": "2026-10-21T18:53:51.279Z"
   },
   {
+    "conditionKey": "land:land/bro-5842-path-to-broadway",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5842-path-to-broadway",
+    "description": "land.yml did not land land/bro-5842-path-to-broadway: the unit-tests-node gate went red at 096a32ef87. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39654678374",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5842-path-to-broadway"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "096a32ef872cc29bf0e4f110f9c7cf99f980cb7a"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/39654678374"
+      }
+    ],
+    "queuedAt": "2026-10-21T18:57:29.019Z"
+  },
+  {
     "conditionKey": "land:land/job/linear-BRO-5721-mvig970e",
     "title": "Landing blocked: rebase red on land/job/linear-BRO-5721-mvig970e",
     "description": "land.yml did not land land/job/linear-BRO-5721-mvig970e: the rebase gate went red at 6190c3177d. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-5721-mvig970e @ 6190c3177d (origin/land/job/linear-BRO-5721-mvig970e) → origin/main @ 4f6a587630 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 4f6a587630: Rebasing (1/2) error: could not apply 751bc87f7ef... test(fantasy): anchor locked-score check on snapshot generatedAt, not wall clock (BRO-5721) hint: Resolve all conflicts manually, mark them as  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/39654460239",
