@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "error",
-  "lastChecked": "2026-10-20T12:08:19.578Z",
+  "lastChecked": "2026-10-21T07:39:58.110Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -84,12 +84,12 @@
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "92 review(s) with no usable text, 52 rejected although verified as a review, 47 never scored, 27 with a blocked URL (0 published on the site), across 440 current shows"
+      "message": "91 review(s) with no usable text, 52 rejected although verified as a review, 24 never scored, 27 with a blocked URL (0 published on the site), across 440 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "warn",
-      "message": "62 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 29810 checked"
+      "message": "62 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 29825 checked"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -104,17 +104,17 @@
     {
       "name": "Data: T1/T2 silent review gaps",
       "status": "error",
-      "message": "3 discovered review(s) not reaching the composite score (1 T1). Oldest: golden-boy-off-west-end-2026 — daily-mail (rejected-unscoreable); 1 newer still in flight"
+      "message": "5 discovered review(s) not reaching the composite score (1 T1). Oldest: golden-boy-off-west-end-2026 — daily-mail (rejected-unscoreable)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
       "status": "warn",
-      "message": "3 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Dance Is Not for Us\" (guardian-review — missing 1d)"
+      "message": "4 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Dance Is Not for Us\" (guardian-review — missing 2d)"
     },
     {
       "name": "Data: BWW roundup discovery misses near opening",
       "status": "warn",
-      "message": "1 show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. Oldest: other-desert-cities-2026 (11 misses, last 2026-10-19T04:46:20.568Z)."
+      "message": "1 show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. Oldest: billy-crystal-860-2026 (2 misses, last 2026-10-21T04:13:22.986Z)."
     }
   ]
 }

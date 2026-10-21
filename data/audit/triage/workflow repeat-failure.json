@@ -1,20 +1,15 @@
 {
   "system": "workflow repeat-failure",
-  "status": "warn",
-  "lastChecked": "2026-10-20T12:08:19.582Z",
+  "status": "error",
+  "lastChecked": "2026-10-21T07:39:58.113Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Workflow repeat-failure: Update Reddit Sentiment",
-      "status": "warn",
-      "message": "Update Reddit Sentiment failed 2 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Fetch Guardian Reviews via API",
-      "status": "warn",
-      "message": "Fetch Guardian Reviews via API failed 2 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+      "name": "Workflow repeat-failure: Test Suite",
+      "status": "error",
+      "message": "Test Suite failed 13 times in the last 24h — likely broken, not transient."
     }
   ]
 }
